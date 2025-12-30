@@ -1,0 +1,27 @@
+{
+  "name": "nika-landing-tmp",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "^4.2.2",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@nuxt/fonts": "^0.12.1",
+    "@nuxt/icon": "^2.1.1",
+    "@nuxtjs/robots": "^5.6.7",
+    "@nuxtjs/seo": "^3.3.0",
+    "@nuxtjs/sitemap": "^7.5.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@playwright/test": "^1.57.0",
+    "@vueuse/nuxt": "^14.1.0"
+  }
+}

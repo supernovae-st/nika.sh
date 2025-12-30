@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-terminal-bg text-terminal-text antialiased;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+  }
+
+  ::selection {
+    @apply bg-space-500/40 text-white;
+  }
+}
+
+@layer components {
+  /* Terminal-style code blocks */
+  .terminal-block {
+    @apply bg-terminal-surface border border-terminal-border rounded-xl p-5 font-mono text-sm;
+  }
+
+  /* Glow effects - subtle */
+  .glow-violet {
+    box-shadow:
+      0 0 0 1px rgba(139, 92, 246, 0.1),
+      0 4px 24px rgba(139, 92, 246, 0.15);
+  }
+
+  .glow-violet:hover {
+    box-shadow:
+      0 0 0 1px rgba(139, 92, 246, 0.2),
+      0 8px 32px rgba(139, 92, 246, 0.25);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-space-400 via-space-300 to-terminal-cyan bg-clip-text text-transparent;
+    background-size: 200% auto;
+  }
+
+  /* Button styles - use standard hover colors */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-space-500 text-white font-semibold rounded-lg
+           transition-all duration-200;
+  }
+
+  .btn-primary:hover {
+    @apply bg-space-400 shadow-lg;
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.25);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-terminal-surface border border-terminal-border
+           text-terminal-text font-medium rounded-lg
+           transition-all duration-200;
+  }
+
+  .btn-secondary:hover {
+    @apply border-zinc-500 bg-zinc-800;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5
+           text-xs font-medium rounded-full
+           bg-terminal-surface border border-terminal-border text-terminal-muted;
+  }
+
+  .badge-accent {
+    @apply bg-space-950 border-space-500/30 text-space-300;
+  }
+
+  .badge-success {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+  }
+
+  /* Card styles */
+  .feature-card {
+    @apply relative p-6 rounded-xl
+           bg-terminal-surface border border-terminal-border
+           transition-all duration-200;
+  }
+
+  .feature-card:hover {
+    @apply border-space-500/40;
+    background: #27272a; /* zinc-800 */
+  }
+
+  /* Section headers */
+  .section-header {
+    @apply text-center max-w-3xl mx-auto mb-16;
+  }
+
+  .section-title {
+    @apply text-3xl sm:text-4xl font-bold text-white mb-4;
+  }
+
+  .section-subtitle {
+    @apply text-terminal-muted text-lg;
+  }
+}
+
+@layer utilities {
+  /* Scrollbar styling */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #3f3f46 transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #3f3f46;
+    border-radius: 9999px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #52525b;
+  }
+
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Animation delays */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+}
