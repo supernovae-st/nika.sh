@@ -138,6 +138,78 @@ const changelogEntries = (await getCollection('changelog', ({ data }) => !data.d
   </section>
 
   {/* ========================================================================
+      CHRYSALIS PROGRESS — the organism's vital signs, real numbers
+      ======================================================================== */}
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-[72rem] px-6 py-20 md:py-28">
+      <span class="annotation annotation-dim block mb-2">§ 04 · VITAL SIGNS</span>
+      <h2 class="font-mono text-2xl leading-tight mb-10">Inside the chrysalis</h2>
+
+      <div class="grid gap-6 md:grid-cols-4 mb-12">
+        <div class="border border-[var(--color-border)] p-6">
+          <span class="font-mono text-4xl md:text-5xl text-[var(--color-nika-orange)]">5</span>
+          <span class="font-mono text-4xl md:text-5xl text-[var(--color-dim-star)]">/40</span>
+          <p class="annotation annotation-dim mt-3">ORGANS ADMITTED</p>
+        </div>
+        <div class="border border-[var(--color-border)] p-6">
+          <span class="font-mono text-4xl md:text-5xl text-[var(--color-bone)]">10,434</span>
+          <p class="annotation annotation-dim mt-3">LINES OF RUST</p>
+        </div>
+        <div class="border border-[var(--color-border)] p-6">
+          <span class="font-mono text-4xl md:text-5xl text-[var(--color-bone)]">369</span>
+          <p class="annotation annotation-dim mt-3">TESTS</p>
+        </div>
+        <div class="border border-[var(--color-border)] p-6">
+          <span class="font-mono text-4xl md:text-5xl text-[var(--color-signal-green)]">0</span>
+          <p class="annotation annotation-dim mt-3">.UNWRAP() IN SRC</p>
+        </div>
+      </div>
+
+      {/* Architecture cross-section — NERV Terminal Dogma inspired */}
+      <div class="border border-[var(--color-border)] p-6 md:p-8">
+        <span class="annotation annotation-dim block mb-4">FIG 02 · ANATOMY CROSS-SECTION</span>
+        <pre class="terminal-frame !border-0 !p-0 !bg-transparent text-xs md:text-sm"><code>{`L5 ┃ BINARY          nika                                        ░░░░░░
+L4 ┃ INTERFACES      cli · lsp · serve · init · lints            ░░░░░░
+L3 ┃ ORCHESTRATION   runtime · daemon                            ░░░░░░
+L2 ┃ DOMAIN          verb-exec · fetch · invoke · infer · agent  ░░░░░░
+L1 ┃ EFFECTS         fs · http · process · blob · clock · crypto ░░░░░░
+L0.5 KERNEL          kernel · kernel-mock                        ██████
+L0 ┃ FOUNDATIONS     error · catalog · schema · binding · event  ██░░░░
+    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                     ██ admitted    ░░ growing`}</code></pre>
+      </div>
+
+      <div class="mt-10 grid gap-4 md:grid-cols-5">
+        <a href="https://github.com/supernovae-st/nika" class="border border-[var(--color-signal-green)] p-4 hover:bg-[var(--color-signal-green)]/5 transition-colors">
+          <span class="annotation text-[var(--color-signal-green)] block mb-1">nika-error</span>
+          <span class="text-xs text-[var(--color-bone-mute)]">L0 · 1,013 LOC · 44 tests</span>
+        </a>
+        <a href="https://github.com/supernovae-st/nika" class="border border-[var(--color-signal-green)] p-4 hover:bg-[var(--color-signal-green)]/5 transition-colors">
+          <span class="annotation text-[var(--color-signal-green)] block mb-1">nika-catalog</span>
+          <span class="text-xs text-[var(--color-bone-mute)]">L0 · 3,741 LOC · 138 tests</span>
+        </a>
+        <a href="https://github.com/supernovae-st/nika" class="border border-[var(--color-signal-green)] p-4 hover:bg-[var(--color-signal-green)]/5 transition-colors">
+          <span class="annotation text-[var(--color-signal-green)] block mb-1">nika-kernel</span>
+          <span class="text-xs text-[var(--color-bone-mute)]">L0.5 · 3,375 LOC · 99 tests</span>
+        </a>
+        <a href="https://github.com/supernovae-st/nika" class="border border-[var(--color-signal-green)] p-4 hover:bg-[var(--color-signal-green)]/5 transition-colors">
+          <span class="annotation text-[var(--color-signal-green)] block mb-1">nika-kernel-mock</span>
+          <span class="text-xs text-[var(--color-bone-mute)]">L0.5 · 1,705 LOC · 88 tests</span>
+        </a>
+        <div class="border border-[var(--color-border)] border-dashed p-4 opacity-60">
+          <span class="annotation annotation-dim block mb-1">nika-schema</span>
+          <span class="text-xs text-[var(--color-dim-star)]">L0 · ~12k LOC · next</span>
+        </div>
+      </div>
+
+      <p class="text-sm text-[var(--color-bone-mute)] mt-8">
+        Numbers grep-verified from the <code class="font-mono text-xs px-1 bg-[var(--color-space-sunken)] border border-[var(--color-border)]">nika-diamond</code> branch.
+        Full inventory at <a href="https://docs.nika.sh/reference/crates" class="text-[var(--color-nika-orange)]">docs.nika.sh/reference/crates</a>.
+      </p>
+    </div>
+  </section>
+
+  {/* ========================================================================
       RECENT DEV LOGS — 3 most recent changelog entries
       ======================================================================== */}
   {changelogEntries.length > 0 && (
