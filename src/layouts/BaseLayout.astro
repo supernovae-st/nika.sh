@@ -1,5 +1,6 @@
 ---
 import '~/styles/global.css';
+import { Font } from 'astro:assets';
 import Header from '~/components/Header.astro';
 import Footer from '~/components/Footer.astro';
 
@@ -58,8 +59,10 @@ const titleFull = title === 'Nika' ? 'Nika — workflow engine for AI' : `${titl
     {/* Theme color for mobile browsers */}
     <meta name="theme-color" content="#0B0D17" />
 
-    {/* Preconnect to font host — uncomment when self-hosting from CDN */}
-    {/* <link rel="preconnect" href="https://fonts.nika.sh" crossorigin /> */}
+    {/* astro:fonts — local Geist + Geist Mono, Google Instrument Serif italic */}
+    <Font cssVariable="--font-sans" preload />
+    <Font cssVariable="--font-mono" />
+    <Font cssVariable="--font-serif" />
 
     {/* Sitemap */}
     <link rel="sitemap" href="/sitemap-index.xml" />
