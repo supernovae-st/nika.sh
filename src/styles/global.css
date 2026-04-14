@@ -76,6 +76,21 @@
   --font-body:    var(--font-sans), "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-code:    var(--font-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --font-editorial: var(--font-serif), ui-serif, Georgia, "Times New Roman", serif;
+  --font-display-mono-stack: var(--font-display-mono), var(--font-mono), ui-monospace, monospace;
+
+  /* -----------------------------------------------------------------------
+     CHRYSALIS GRAMMAR — editorial surfaces + radius tokens
+     Radius is 0, 2, or 4px. Larger = SaaS-bro. Never deviate.
+     Cream is an optional editorial surface for /method + blog articles.
+     ----------------------------------------------------------------------- */
+  --radius-hair:   2px;
+  --radius-edge:   4px;
+
+  --color-ink:       oklch(0.08 0.012 258);   /* darker than bg, for true black */
+  --color-ink-20:    oklch(0.22 0.018 258);
+  --color-ink-40:    oklch(0.38 0.018 258);
+  --color-cream:     oklch(0.97 0.012 75);    /* optional light editorial */
+  --color-cream-ink: oklch(0.20 0.010 75);
 
   /* -----------------------------------------------------------------------
      MOTION — shared eases + durations (locked per animation spec §6)
@@ -644,221 +659,241 @@ pre code {
 }
 
 /* ==========================================================================
-   AURA UTILITIES — 8 hand-authored classes extracted from the
-   Aura / Nexus / Slash templates (agent 12 verified HTML scrape).
-   These are the only classes we vendor instead of importing: they're
-   small, semantic, and under our control.
+   CHRYSALIS GRAMMAR — the utility system for nika.sh
+   Post-Aura cleanse. Sharp corners, hairlines, grain, tactile press,
+   typographic display-mono, ASCII hero container. No glass pills.
    ========================================================================== */
 
-/* 1 — tactile-glass: backdrop-blur surface with inset highlight + subtle
-   1px border. Used by the floating pill nav and live status badge. */
-.tactile-glass {
-  background: oklch(0.16 0.018 258 / 0.6);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  border: 1px solid oklch(1 0 0 / 0.08);
+/* --- mono display (Departure Mono @ big sizes) -------------------------- */
+
+.mono-display {
+  font-family: var(--font-display-mono-stack);
+  font-feature-settings: "kern" off, "liga" off, "calt" off;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.mono-display-sm { font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.15rem); }
+.mono-display-md { font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);     line-height: 1.05; }
+.mono-display-lg { font-size: clamp(2.25rem, 1.25rem + 4vw, 4.5rem); line-height: 1.02; }
+.mono-display-xl { font-size: clamp(3rem,    1.5rem + 6vw, 7.5rem);  line-height: 0.95; letter-spacing: -0.01em; }
+
+/* --- hairline: the anti-SaaS container ---------------------------------- */
+/* Sharp corners (0-2px) + 1px border + optional top-edge highlight.
+   Replaces every "rounded-2xl shadow-xl" SaaS-bro card. */
+
+.hairline {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius-hair);
+  box-shadow: inset 0 1px 0 0 oklch(1 0 0 / 0.03);
+}
+.hairline-edge {
+  border-radius: var(--radius-edge);
+}
+.hairline:hover,
+.hairline-hover:hover {
+  border-color: var(--color-border-bright);
+}
+.hairline-brand {
+  border-color: oklch(0.62 0.195 258 / 0.45);
   box-shadow:
-    inset 0 1px 0 0 oklch(1 0 0 / 0.08),
-    0 20px 60px -20px oklch(0 0 0 / 0.6);
+    inset 0 1px 0 0 oklch(0.62 0.195 258 / 0.15),
+    0 0 0 1px oklch(0.62 0.195 258 / 0.1);
 }
 
-/* 2 — tactile-inset: dark inset surface for terminal title bars and
-   telemetry pills. Pairs with tactile-glass as its recessed counterpart. */
-.tactile-inset {
-  background: oklch(0.10 0.016 258 / 0.8);
-  box-shadow:
-    inset 0 1px 0 0 oklch(0 0 0 / 0.4),
-    inset 0 -1px 0 0 oklch(1 0 0 / 0.03);
+/* --- chamfer: the single strongest anti-SaaS move ----------------------- */
+/* Clip-path cut corners. Use .chamfer-* on cards, buttons, hero container. */
+
+.chamfer-tl { clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%, 0 14px); }
+.chamfer-tr { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); }
+.chamfer-bl { clip-path: polygon(0 0, 100% 0, 100% 100%, 14px 100%, 0 calc(100% - 14px)); }
+.chamfer-br { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%); }
+.chamfer-diag {
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
 }
 
-/* 3 — btn-physical-light: raised CTA with top-edge inset highlight and
-   brand gradient. The primary rhythm button for floating nav + CTAs. */
-.btn-physical-light {
+/* --- press-flat: the physical tactile button ---------------------------- */
+/* Sharp corners. 2px drop shadow settles into 0 on :active. No radius pill.
+   Primary CTA surface. Reads as industrial instrument, not SaaS gradient. */
+
+.press-flat {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1.25rem;
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-fg);
-  background:
-    linear-gradient(180deg, oklch(1 0 0 / 0.1) 0%, oklch(1 0 0 / 0) 60%),
-    var(--grad-brand-sheen);
-  border: 1px solid oklch(0.72 0.172 258 / 0.5);
-  border-radius: 999px;
+  padding: 0.625rem 1.125rem;
+  font-family: var(--font-display-mono-stack);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  background: var(--color-fg);
+  border: 1px solid var(--color-fg);
+  border-radius: var(--radius-hair);
   box-shadow:
-    inset 0 1px 0 0 oklch(1 0 0 / 0.25),
-    inset 0 -1px 0 0 oklch(0 0 0 / 0.25),
-    0 2px 0 0 oklch(0.38 0.150 258 / 0.6),
-    0 10px 30px -10px oklch(0.62 0.195 258 / 0.7);
+    0 2px 0 0 oklch(0 0 0 / 0.9),
+    0 0 0 1px oklch(1 0 0 / 0.15) inset;
   text-decoration: none;
-  transition: transform var(--dur-fast) var(--ease-out-quint),
-              box-shadow var(--dur-fast) var(--ease-out-quint);
   cursor: pointer;
+  transition: transform 80ms var(--ease-spring),
+              box-shadow 80ms var(--ease-spring);
 }
-.btn-physical-light:hover {
+.press-flat:hover {
   transform: translateY(-1px);
   box-shadow:
-    inset 0 1px 0 0 oklch(1 0 0 / 0.35),
-    inset 0 -1px 0 0 oklch(0 0 0 / 0.25),
-    0 3px 0 0 oklch(0.38 0.150 258 / 0.7),
-    0 20px 50px -10px oklch(0.62 0.195 258 / 0.8);
+    0 3px 0 0 oklch(0 0 0 / 0.9),
+    0 0 0 1px oklch(1 0 0 / 0.2) inset;
 }
-.btn-physical-light:active {
-  transform: translateY(0);
+.press-flat:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 0 oklch(0 0 0 / 0.9),
+              0 0 0 1px oklch(1 0 0 / 0.1) inset;
+}
+
+.press-flat-brand {
+  color: var(--color-fg);
+  background: var(--color-brand);
+  border-color: oklch(0.54 0.210 258);
   box-shadow:
-    inset 0 2px 4px 0 oklch(0 0 0 / 0.3),
-    0 1px 0 0 oklch(0.38 0.150 258 / 0.4);
+    0 2px 0 0 oklch(0.30 0.130 258),
+    0 0 0 1px oklch(1 0 0 / 0.2) inset;
 }
+.press-flat-brand:hover { box-shadow: 0 3px 0 0 oklch(0.30 0.130 258), 0 0 0 1px oklch(1 0 0 / 0.25) inset; }
+.press-flat-brand:active { box-shadow: 0 0 0 0 oklch(0.30 0.130 258), 0 0 0 1px oklch(1 0 0 / 0.1) inset; }
 
-/* 4 — pipeline-shell: container for the vertical timeline. Establishes
-   the spacing + relative positioning the spine + beam ride on. */
-.pipeline-shell {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-  padding: 4rem 0;
+.press-flat-ghost {
+  color: var(--color-fg);
+  background: transparent;
+  border-color: var(--color-border-bright);
+  box-shadow: 0 2px 0 0 var(--color-border-bright);
 }
+.press-flat-ghost:hover {
+  background: var(--color-surface-2);
+  box-shadow: 0 3px 0 0 var(--color-border-bright);
+}
+.press-flat-ghost:active { box-shadow: 0 0 0 0 var(--color-border-bright); }
 
-/* 5 — pipeline-spine + pipeline-beam: the center line + scroll-driven
-   gradient that travels as the user reads. --target is set via inline
-   style from JS (0..1 progress); the beam covers that fraction. */
-.pipeline-spine {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 1px;
-  background:
-    linear-gradient(
-      180deg,
-      transparent 0%,
-      var(--color-border-bright) 10%,
-      var(--color-border-bright) 90%,
-      transparent 100%
-    );
-  transform: translateX(-50%);
+/* --- hairline rule: typographic 1px section divider --------------------- */
+
+.edge-rule,
+.edge-rule-top    { border-top: 1px solid var(--color-border); }
+.edge-rule-bottom { border-bottom: 1px solid var(--color-border); }
+.edge-rule-brand  { border-color: oklch(0.62 0.195 258 / 0.4); }
+
+/* --- grain: the post-processing layer ----------------------------------- */
+/* SVG feTurbulence noise at ~5% opacity. Add ::after or wrap component. */
+
+.grain-overlay,
+.grain-overlay::after {
   pointer-events: none;
 }
-.pipeline-beam {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 2px;
-  height: calc(var(--target, 0) * 100%);
-  background: var(--grad-pipeline-beam);
-  filter: drop-shadow(0 0 6px oklch(0.62 0.195 258 / 0.8));
-  transform: translateX(-50%);
-  transition: height 120ms linear;
-  pointer-events: none;
-}
-
-/* 6 — pipeline-step: individual stage. Alternates left/right via
-   :nth-child(even). Two-column grid (copy | card) pinned to the spine. */
-.pipeline-step {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 40px 1fr;
-  align-items: center;
-  gap: 2rem;
-}
-.pipeline-step:nth-child(even) .step-copy {
-  grid-column: 3; order: 2; text-align: left;
-}
-.pipeline-step:nth-child(even) .step-card {
-  grid-column: 1; order: 1;
-}
-@media (max-width: 768px) {
-  .pipeline-step {
-    grid-template-columns: 40px 1fr;
-    gap: 1rem;
-  }
-  .pipeline-step .step-copy,
-  .pipeline-step .step-card {
-    grid-column: 2 !important;
-    order: initial !important;
-    text-align: left !important;
-  }
-  .pipeline-spine,
-  .pipeline-beam {
-    left: 20px;
-  }
-}
-
-/* Step atoms — copy column, card column, center node on spine */
-.step-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  grid-column: 1;
-  text-align: right;
-  max-width: 32ch;
-  justify-self: end;
-}
-.step-card {
-  padding: 1.25rem 1.5rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px -10px oklch(0 0 0 / 0.6);
-  grid-column: 3;
-  max-width: 28rem;
-  transition: border-color var(--dur-fast) var(--ease-cut),
-              transform var(--dur-fast) var(--ease-cut);
-}
-.step-card:hover {
-  border-color: var(--color-brand);
-  transform: translateY(-2px);
-}
-.step-node {
-  grid-column: 2;
-  justify-self: center;
-  position: relative;
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  background: var(--color-surface-3);
-  box-shadow: 0 0 0 4px var(--color-bg),
-              0 0 0 5px var(--color-border-bright);
-  z-index: 2;
-}
-.step-node::after {
+.grain-overlay::after {
   content: '';
   position: absolute;
-  inset: 3px;
-  border-radius: 999px;
-  background: var(--color-brand);
-  opacity: 0;
-  transition: opacity var(--dur-fast) var(--ease-cut);
+  inset: 0;
+  background-image: var(--dither-noise);
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  z-index: 1;
 }
-.pipeline-step.is-reached .step-node::after { opacity: 1; }
-.pipeline-step.is-reached .step-node        { box-shadow:
-    0 0 0 4px var(--color-bg),
-    0 0 0 5px var(--color-brand),
-    0 0 16px oklch(0.62 0.195 258 / 0.8);
+.grain-overlay-loud::after { opacity: 0.09; }
+.grain-overlay-soft::after { opacity: 0.03; }
+
+/* --- scan: the CRT scanline micro-dose ---------------------------------- */
+
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    oklch(1 0 0 / 0.02) 2px 3px
+  );
+  mix-blend-mode: overlay;
 }
 
-/* 7 + 8 — progress-track + progress-fill: scroll-driven horizontal
-   progress bar. --target set via inline style (0..1). Used for section
-   headers + the reading progress indicator. */
-.progress-track {
-  position: relative;
-  width: 100%;
-  height: 2px;
-  background: var(--color-border);
-  border-radius: 999px;
+/* --- ascii-hero: the selectable text hero container --------------------- */
+/* <pre> wrapped in this class gets the Departure Mono body + brand-blue
+   character gradient + subtle grain. Content is driven by HeroAscii.tsx. */
+
+.ascii-hero {
+  font-family: var(--font-display-mono-stack);
+  font-feature-settings: "kern" off, "liga" off, "calt" off;
+  font-size: clamp(8px, 0.55vw + 6px, 14px);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  color: var(--color-brand);
+  text-shadow: 0 0 4px oklch(0.62 0.195 258 / 0.35);
+  user-select: text;
+  cursor: text;
   overflow: hidden;
+  width: 100%;
+  display: block;
+  -webkit-text-size-adjust: none;
 }
-.progress-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: calc(var(--target, 0) * 100%);
-  background: var(--grad-brand-sheen);
-  border-radius: 999px;
-  box-shadow: 0 0 8px oklch(0.62 0.195 258 / 0.6);
-  transition: width 120ms linear;
+.ascii-hero-fallback {
+  background: var(--grad-mesh-hero), var(--color-bg);
+  width: 100%;
+  min-height: 360px;
+  position: relative;
+}
+
+/* --- text-dither: ditherable headline fill ------------------------------ */
+/* Use on <h1 class="display"> — adds a subtle Bayer dither mask to the
+   gradient text fill so headlines feel PRINTED, not digital-smooth. */
+
+.text-dither {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cfilter id='b'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='1' seed='2'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .3 0'/%3E%3C/filter%3E%3Crect width='8' height='8' filter='url(%23b)'/%3E%3C/svg%3E"),
+    var(--grad-headline-blue);
+  background-size: 4px 4px, 100% 100%;
+  background-blend-mode: multiply;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* --- scroll-driven reveals (2025 Safari shipped) ------------------------ */
+/* Pure CSS. Falls back to visible if not supported. */
+
+@supports (animation-timeline: view()) {
+  .reveal-rise {
+    animation: reveal-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+  .reveal-fade {
+    animation: reveal-fade linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  @keyframes reveal-rise {
+    from { opacity: 0; transform: translateY(12px); filter: blur(1px); }
+    to   { opacity: 1; transform: none;             filter: none; }
+  }
+  @keyframes reveal-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
+/* --- starting-style reveals (instant enter for mounted elements) -------- */
+
+@supports (transition-behavior: allow-discrete) {
+  .mount-fade {
+    opacity: 1;
+    transition: opacity var(--dur-reveal) var(--ease-out-quint);
+  }
+  @starting-style {
+    .mount-fade { opacity: 0; }
+  }
 }
