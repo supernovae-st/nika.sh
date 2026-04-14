@@ -56,6 +56,21 @@ export default defineConfig({
         subsets: ['latin'],
         fallbacks: ['ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
       },
+      {
+        provider: fontProviders.local(),
+        name: 'Departure Mono',
+        cssVariable: '--font-display-mono',
+        options: {
+          variants: [
+            {
+              weight: '400',
+              style: 'normal',
+              src: ['./public/fonts/DepartureMono-Regular.woff2'],
+            },
+          ],
+        },
+        fallbacks: ['ui-monospace', 'Menlo', 'Consolas', 'monospace'],
+      },
     ],
   },
   integrations: [
