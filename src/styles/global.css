@@ -1,84 +1,193 @@
 /*
- * nika.sh — global styles
- * Modern dev-tool aesthetic. Blue brand. ONE typography system.
- * License: AGPL-3.0-or-later
+ * nika.sh — global stylesheet
+ * Aura / Nexus aesthetic. OKLCH palette. Blue brand (#3B82F6).
+ * Editorial typography: Geist + Instrument Serif Italic (via astro:fonts).
+ * License: AGPL-3.0-or-later  ·  © 2026 SuperNovae Studio
  */
 
-/* Geist + Geist Mono — modern, free, friendly. MUST come before @import "tailwindcss". */
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
 
-/* ========================================================================
+/* ==========================================================================
    @theme — Tailwind v4 design tokens
-   Blue brand. Modern. No more navy/orange-as-primary slop.
-   ======================================================================== */
+   All colors are OKLCH (wide-gamut, perceptually uniform, no hue shift on
+   alpha blending). Hex equivalents are noted in comments for reviewers.
+   ========================================================================== */
 
 @theme {
-  /* Surfaces — near-black with subtle blue tint */
-  --color-bg:             #08090C;
-  --color-surface:        #0F1117;
-  --color-surface-2:      #161922;
-  --color-surface-3:      #1E2230;
+  /* -----------------------------------------------------------------------
+     SURFACES — 11-stop dark ramp with a 258° blue tint
+     Cast is intentional: pure neutrals feel dead under saturated blue UI.
+     ----------------------------------------------------------------------- */
+  --color-bg:             oklch(0.12 0.018 258);   /* #08090C — page */
+  --color-surface:        oklch(0.16 0.018 258);   /* #0F1117 — cards */
+  --color-surface-2:      oklch(0.20 0.020 258);   /* #161922 — raised */
+  --color-surface-3:      oklch(0.24 0.022 258);   /* #1E2230 — hover */
+  --color-surface-4:      oklch(0.28 0.024 258);   /* deep highlight   */
+  --color-sunken:         oklch(0.08 0.015 258);   /* terminal title bar */
+  --color-scrim:          oklch(0.05 0.010 258 / 0.7); /* overlay */
 
-  /* Borders */
-  --color-border:         #1F2330;
-  --color-border-bright:  #2D3243;
+  --color-border:         oklch(0.27 0.020 258);   /* #1F2330 */
+  --color-border-bright:  oklch(0.33 0.024 258);   /* #2D3243 */
+  --color-border-glow:    oklch(0.55 0.080 258);   /* focus halo base */
 
-  /* Text */
-  --color-fg:             #FAFAFA;
-  --color-fg-mute:        #A1A1AA;
-  --color-fg-dim:         #71717A;
-  --color-fg-ghost:       #3F3F46;
+  /* -----------------------------------------------------------------------
+     TEXT — 4-stop grayscale with the same blue cast for cohesion
+     ----------------------------------------------------------------------- */
+  --color-fg:             oklch(0.98 0.003 258);   /* #FAFAFA */
+  --color-fg-mute:        oklch(0.72 0.010 258);   /* #A1A1AA */
+  --color-fg-dim:         oklch(0.55 0.012 258);   /* #71717A */
+  --color-fg-ghost:       oklch(0.38 0.012 258);   /* #3F3F46 */
 
-  /* Brand — BLUE */
-  --color-brand:          #3B82F6;
-  --color-brand-hover:    #60A5FA;
-  --color-brand-soft:     #1E3A8A;
+  /* -----------------------------------------------------------------------
+     BRAND — blue-500 with 5-shade ramp, perceptually tuned
+     ----------------------------------------------------------------------- */
+  --color-brand:          oklch(0.62 0.195 258);   /* #3B82F6  blue-500 */
+  --color-brand-hover:    oklch(0.72 0.172 258);   /* #60A5FA  blue-400 */
+  --color-brand-active:   oklch(0.54 0.210 258);   /* blue-600 */
+  --color-brand-soft:     oklch(0.38 0.150 258);   /* #1E3A8A  blue-900 */
+  --color-brand-ghost:    oklch(0.62 0.195 258 / 0.08); /* tint */
 
-  /* Accents (used sparingly) */
-  --color-cyan:           #22D3EE;   /* code highlights, hover glows */
-  --color-violet:         #8B5CF6;   /* gradient companion */
-  --color-amber:          #F59E0B;   /* warnings, "admitted" pulses */
-  --color-green:          #10B981;   /* success, gates passed */
-  --color-red:            #EF4444;   /* errors, shadow zones */
+  /* -----------------------------------------------------------------------
+     ACCENTS — 4 pairs, each with a glow partner.
+     Used sparingly: status pills, chart highlights, rare emphasis.
+     ----------------------------------------------------------------------- */
+  --color-cyan:           oklch(0.80 0.145 200);   /* #22D3EE */
+  --color-cyan-glow:      oklch(0.80 0.145 200 / 0.55);
+  --color-violet:         oklch(0.64 0.200 292);   /* #8B5CF6 */
+  --color-violet-glow:    oklch(0.64 0.200 292 / 0.55);
+  --color-emerald:        oklch(0.69 0.150 160);   /* #10B981 */
+  --color-emerald-glow:   oklch(0.69 0.150 160 / 0.55);
+  --color-amber:          oklch(0.77 0.160 71);    /* #F59E0B */
+  --color-amber-glow:     oklch(0.77 0.160 71 / 0.55);
+  --color-rose:           oklch(0.66 0.220 25);    /* #EF4444  reserved */
+  --color-rose-glow:      oklch(0.66 0.220 25 / 0.55);
 
-  /* Typography — Geist only. ONE system. */
-  --font-display: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-body:    "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono:    "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* Status cohesion — CRITICAL is intentionally NEUTRAL ZINC, not red.
+     Aura / Nexus rule: keep palette cohesion even in error states. */
+  --color-critical:       oklch(0.55 0.012 258);
+  --color-critical-bg:    oklch(0.28 0.018 258 / 0.6);
 
-  /* Easing */
-  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-cut:  cubic-bezier(0.4, 0, 0.2, 1);
+  /* -----------------------------------------------------------------------
+     TYPOGRAPHY — editorial three-font system via astro:fonts
+     --font-sans / --font-mono / --font-serif are injected by <Font />.
+     The Tailwind tokens below re-expose them under their semantic names.
+     ----------------------------------------------------------------------- */
+  --font-display: var(--font-sans), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    var(--font-sans), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-code:    var(--font-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-editorial: var(--font-serif), ui-serif, Georgia, "Times New Roman", serif;
+
+  /* -----------------------------------------------------------------------
+     MOTION — shared eases + durations (locked per animation spec §6)
+     ----------------------------------------------------------------------- */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cut:       cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:    cubic-bezier(0.2, 0.8, 0.2, 1.2);
+
+  --dur-fast:   150ms;
+  --dur-base:   300ms;
+  --dur-slow:   450ms;
+  --dur-reveal: 700ms;
 }
 
-/* ========================================================================
-   Backwards-compat alias tokens (for legacy class refs in other pages
-   until they're rewritten). Map old names → new blue palette.
-   ======================================================================== */
-:root {
-  --color-space-navy:     var(--color-bg);
-  --color-space-panel:    var(--color-surface);
-  --color-space-raised:   var(--color-surface-2);
-  --color-space-sunken:   #050608;
-  --color-bone:           var(--color-fg);
-  --color-bone-mute:      var(--color-fg-mute);
-  --color-dim-star:       var(--color-fg-dim);
-  --color-text-ghost:     var(--color-fg-ghost);
-  --color-nika-orange:    var(--color-brand);    /* legacy alias → blue */
-  --color-chrysalis-amber:var(--color-brand-hover);
-  --color-signal-green:   var(--color-green);
-  --color-fever-red:      var(--color-red);
-}
+/* ==========================================================================
+   Root-level CSS variables (not Tailwind tokens — utility recipes)
+   ========================================================================== */
 
-/* Subtle dither noise — SVG data URI */
 :root {
+  /* ---------------------------------------------------------------------
+     10 GRADIENT RECIPES — semantic names. Use as `background:
+     var(--grad-eclipse)`.
+     --------------------------------------------------------------------- */
+  --grad-eclipse:        radial-gradient(ellipse 70% 70% at 50% 50%,
+                           oklch(0.62 0.195 258 / 0.45) 0%,
+                           oklch(0.64 0.200 292 / 0.22) 40%,
+                           transparent 75%);
+
+  --grad-corona:         radial-gradient(circle at center,
+                           oklch(0.62 0.195 258 / 0.7) 0%,
+                           oklch(0.64 0.200 292 / 0.35) 50%,
+                           transparent 100%);
+
+  --grad-mesh-hero:      radial-gradient(ellipse 70% 90% at 15% 0%,
+                             oklch(0.55 0.180 258 / 0.22), transparent 60%),
+                         radial-gradient(ellipse 60% 80% at 85% 30%,
+                             oklch(0.80 0.145 200 / 0.16), transparent 65%),
+                         radial-gradient(ellipse 60% 70% at 50% 100%,
+                             oklch(0.50 0.200 292 / 0.14), transparent 70%);
+
+  --grad-headline:       linear-gradient(180deg,
+                             oklch(0.98 0.003 258) 20%,
+                             oklch(0.72 0.010 258) 100%);
+
+  --grad-headline-blue:  linear-gradient(135deg,
+                             oklch(0.62 0.195 258),
+                             oklch(0.80 0.145 200));
+
+  --grad-brand-sheen:    linear-gradient(135deg,
+                             oklch(0.62 0.195 258) 0%,
+                             oklch(0.72 0.172 258) 50%,
+                             oklch(0.80 0.145 200) 100%);
+
+  --grad-tactile-face:   linear-gradient(180deg,
+                             oklch(1 0 0 / 0.08) 0%,
+                             oklch(1 0 0 / 0) 40%);
+
+  --grad-terminal-scan:  linear-gradient(180deg,
+                             oklch(1 0 0 / 0) 0%,
+                             oklch(1 0 0 / 0.02) 50%,
+                             oklch(1 0 0 / 0) 100%);
+
+  --grad-pipeline-beam:  linear-gradient(180deg,
+                             transparent 0%,
+                             oklch(0.62 0.195 258 / 0.6) 40%,
+                             oklch(0.80 0.145 200 / 0.9) 50%,
+                             oklch(0.62 0.195 258 / 0.6) 60%,
+                             transparent 100%);
+
+  --grad-watermark:      linear-gradient(180deg,
+                             oklch(1 0 0 / 0.04) 0%,
+                             oklch(1 0 0 / 0) 100%);
+
+  /* ---------------------------------------------------------------------
+     5 GLOW PRIMITIVES — drop-shadow / box-shadow ready
+     --------------------------------------------------------------------- */
+  --glow-brand-sm:  0 0 0 1px oklch(0.62 0.195 258 / 0.4),
+                    0 0 20px -4px oklch(0.62 0.195 258 / 0.6);
+  --glow-brand-md:  0 10px 40px -10px oklch(0.62 0.195 258 / 0.6),
+                    0 0 0 1px oklch(0.62 0.195 258 / 0.3);
+  --glow-brand-lg:  0 20px 80px -10px oklch(0.62 0.195 258 / 0.7),
+                    0 0 40px -4px oklch(0.64 0.200 292 / 0.5);
+  --glow-cyan-pulse: 0 0 24px oklch(0.80 0.145 200 / 0.7);
+  --glow-ring-focus: 0 0 0 3px oklch(0.62 0.195 258 / 0.4);
+
+  /* Subtle dither noise — SVG data URI, reused across background layers */
   --dither-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+
+  /* ---------------------------------------------------------------------
+     Backwards-compat aliases for pages not yet rewritten (method,
+     changelog, blog, install, errors). Remove after Phase 4.
+     --------------------------------------------------------------------- */
+  --color-space-navy:      var(--color-bg);
+  --color-space-panel:     var(--color-surface);
+  --color-space-raised:    var(--color-surface-2);
+  --color-space-sunken:    var(--color-sunken);
+  --color-bone:            var(--color-fg);
+  --color-bone-mute:       var(--color-fg-mute);
+  --color-dim-star:        var(--color-fg-dim);
+  --color-text-ghost:      var(--color-fg-ghost);
+  --color-nika-orange:     var(--color-brand);
+  --color-chrysalis-amber: var(--color-brand-hover);
+  --color-signal-green:    var(--color-emerald);
+  --color-fever-red:       var(--color-rose);
+  --color-green:           var(--color-emerald);
+  --color-red:             var(--color-rose);
 }
 
-/* ========================================================================
-   Base
-   ======================================================================== */
+/* ==========================================================================
+   Base — typography + accessibility
+   ========================================================================== */
 
 html {
   color-scheme: dark;
@@ -102,13 +211,14 @@ body {
 
 ::selection {
   background: var(--color-brand);
-  color: var(--color-bg);
+  color: var(--color-fg);
 }
 
 :focus-visible {
   outline: 2px solid var(--color-brand);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
+  box-shadow: var(--glow-ring-focus);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -120,28 +230,67 @@ body {
   }
 }
 
-/* ========================================================================
-   Mesh / grid / dither — modern dev-tool background layers
-   ======================================================================== */
+/* ==========================================================================
+   Editorial headline system — ONE italic word per headline, on the NOUN
+   ========================================================================== */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 4vw + 1rem, 5rem);
+  letter-spacing: -0.028em;
+  line-height: 1.02;
+  text-wrap: balance;
+  color: var(--color-fg);
+  background: var(--grad-headline);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.display em,
+.editorial {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  font-size: 1.05em; /* optical — serif italic x-height differs */
+  background: none;
+  -webkit-text-fill-color: oklch(0.98 0.003 258);
+  color: var(--color-fg);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-fg-dim);
+}
+
+/* ==========================================================================
+   Background layers — mesh gradient, grid floor, dither
+   ========================================================================== */
 
 .mesh-bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 90% at 15% 0%, oklch(0.55 0.18 250 / 0.22), transparent 60%),
-    radial-gradient(ellipse 60% 80% at 85% 30%, oklch(0.65 0.16 200 / 0.18), transparent 65%),
-    radial-gradient(ellipse 60% 70% at 50% 100%, oklch(0.50 0.20 280 / 0.14), transparent 70%),
+    var(--grad-mesh-hero),
     var(--color-bg);
   z-index: 0;
+  pointer-events: none;
 }
 
 .grid-floor {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to right, oklch(0.40 0.02 250 / 0.10) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.40 0.02 250 / 0.10) 1px, transparent 1px);
-  background-size: 64px 64px;
+    linear-gradient(to right, oklch(0.40 0.020 258 / 0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.40 0.020 258 / 0.10) 1px, transparent 1px);
+  background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 85%);
   pointer-events: none;
   z-index: 0;
@@ -157,25 +306,11 @@ body {
   z-index: 1;
 }
 
-/* ========================================================================
-   Modern UI primitives — buttons, badges, cards, terminal
-   ======================================================================== */
+/* ==========================================================================
+   Legacy primitives (preserved until Phase 4 rewrites)
+   New work should use the Aura utilities below and the React islands.
+   ========================================================================== */
 
-/* Gradient text */
-.text-gradient {
-  background: linear-gradient(180deg, #FFFFFF 30%, #A1A1AA);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-.text-gradient-blue {
-  background: linear-gradient(135deg, var(--color-brand), var(--color-cyan));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-/* Buttons — modern, rounded, subtle glow */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -194,7 +329,7 @@ body {
 }
 .btn-primary:hover {
   background: var(--color-brand-hover);
-  box-shadow: 0 10px 30px -10px oklch(0.6 0.20 250 / 0.6);
+  box-shadow: var(--glow-brand-md);
   transform: translateY(-1px);
 }
 
@@ -215,11 +350,10 @@ body {
   white-space: nowrap;
 }
 .btn-ghost:hover {
-  border-color: oklch(0.55 0.02 250);
+  border-color: var(--color-brand);
   background: var(--color-surface-2);
 }
 
-/* Badge — subtle pill, used for status/links */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -227,7 +361,6 @@ body {
   padding: 0.375rem 0.875rem;
   font-family: var(--font-display);
   font-size: 0.8125rem;
-  font-weight: 400;
   background: var(--color-surface-2);
   color: var(--color-fg-mute);
   border: 1px solid var(--color-border);
@@ -246,12 +379,7 @@ body {
   box-shadow: 0 0 8px var(--color-brand);
   animation: pulse 2.4s ease-in-out infinite;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
 
-/* Soft surface card */
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -264,22 +392,21 @@ body {
   transform: translateY(-2px);
 }
 
-/* Modern terminal window — Warp/iTerm aesthetic, NO ASCII boxes */
 .terminal {
-  background: #0A0B10;
+  background: var(--color-sunken);
   border: 1px solid var(--color-border-bright);
   border-radius: 12px;
   overflow: hidden;
   box-shadow:
     0 24px 64px -16px oklch(0 0 0 / 0.6),
-    0 0 0 1px oklch(0.30 0.02 250 / 0.15) inset;
+    inset 0 0 0 1px oklch(0.30 0.020 258 / 0.15);
 }
 .terminal-bar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: #11131A;
+  background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
 }
 .terminal-dot {
@@ -291,13 +418,13 @@ body {
 .terminal-dot.green  { background: #28c840; }
 .terminal-title {
   margin-left: auto;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   color: var(--color-fg-dim);
 }
 .terminal-body {
   padding: 1.25rem 1.5rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.875rem;
   line-height: 1.65;
   color: var(--color-fg);
@@ -308,7 +435,7 @@ body {
 .terminal-prompt { color: var(--color-brand); margin-right: 0.5rem; }
 .terminal-out    { color: var(--color-fg-mute); }
 .terminal-key    { color: var(--color-cyan); }
-.terminal-str    { color: var(--color-green); }
+.terminal-str    { color: var(--color-emerald); }
 .terminal-cmt    { color: var(--color-fg-dim); font-style: italic; }
 .terminal-cursor {
   display: inline-block;
@@ -318,11 +445,9 @@ body {
   animation: blink 1s steps(2) infinite;
   vertical-align: text-bottom;
 }
-@keyframes blink { 50% { opacity: 0; } }
 
-/* Inline code */
 code, .inline-code {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.9em;
   background: var(--color-surface-2);
   padding: 0.125rem 0.4rem;
@@ -338,12 +463,7 @@ pre code {
   color: inherit;
 }
 
-/* ========================================================================
-   Legacy utility classes (used across pages — repurposed to clean modern)
-   These keep older pages rendering nicely without rewriting every file.
-   ======================================================================== */
-
-/* .annotation — was mono uppercase "§ 01 · LABEL". Now: subtle small caption. */
+/* .annotation / .display-hero / .prose-nika — legacy helpers for older pages */
 .annotation,
 .annotation-orange,
 .annotation-dim {
@@ -352,40 +472,35 @@ pre code {
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-fg-mute);
-  letter-spacing: 0;
-  text-transform: none;
 }
 .annotation-orange { color: var(--color-brand); }
 .annotation-dim    { color: var(--color-fg-dim); }
 
-/* .display-hero — clean Geist heading, gradient */
 .display-hero {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(2.5rem, 2rem + 4vw, 4.5rem);
   line-height: 1.05;
   letter-spacing: -0.035em;
-  background: linear-gradient(180deg, #FFFFFF 30%, #A1A1AA);
+  background: var(--grad-headline);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }
 
-/* .terminal-frame — was ASCII box. Now: modern code card. */
 .terminal-frame {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.875rem;
   line-height: 1.6;
   white-space: pre;
   color: var(--color-fg);
-  background: #0A0B10;
+  background: var(--color-sunken);
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 1.25rem 1.5rem;
   overflow-x: auto;
 }
 
-/* .prose-nika — clean article body, Geist sans */
 .prose-nika {
   font-family: var(--font-body);
   font-size: 1rem;
@@ -400,7 +515,6 @@ pre code {
   margin-top: 3rem;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
-  color: var(--color-fg);
 }
 .prose-nika h3 {
   font-family: var(--font-display);
@@ -408,23 +522,17 @@ pre code {
   font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  color: var(--color-fg);
 }
-.prose-nika p {
-  margin-bottom: 1.2em;
-  color: var(--color-fg);
-}
+.prose-nika p { margin-bottom: 1.2em; }
 .prose-nika a {
   color: var(--color-brand);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
-.prose-nika a:hover {
-  color: var(--color-brand-hover);
-}
+.prose-nika a:hover { color: var(--color-brand-hover); }
 .prose-nika code {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.9375em;
   background: var(--color-surface-2);
   color: var(--color-cyan);
@@ -433,9 +541,9 @@ pre code {
   border: 1px solid var(--color-border);
 }
 .prose-nika pre {
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.875rem;
-  background: #0A0B10;
+  background: var(--color-sunken);
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 1rem 1.25rem;
@@ -452,12 +560,85 @@ pre code {
   margin-bottom: 1.2em;
   padding-left: 1.5rem;
 }
-.prose-nika li {
-  margin-bottom: 0.4em;
-}
+.prose-nika li { margin-bottom: 0.4em; }
 .prose-nika blockquote {
   border-left: 2px solid var(--color-brand);
   padding-left: 1rem;
   margin: 1.5em 0;
   color: var(--color-fg-mute);
+}
+
+/* ==========================================================================
+   KEYFRAMES — seven locked animations for Aura-grade motion
+   All respect prefers-reduced-motion via the global reset above.
+   ========================================================================== */
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* 1 — staggered terminal traffic-light blink */
+@keyframes blinkNode {
+  0%, 60%, 100% { background: oklch(0.22 0.018 258); box-shadow: none; }
+  30%           { background: var(--color-brand);
+                  box-shadow: 0 0 8px var(--color-brand); }
+}
+
+/* 2 — rotating conic border on the primary CTA */
+@keyframes beam-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 3 — drifting dot pattern inside the conic CTA surface */
+@keyframes dots-move {
+  from { background-position: 0 0; }
+  to   { background-position: 240px 240px; }
+}
+
+/* 4 — radar sweep over the network mesh */
+@keyframes radar-sweep {
+  0%   { transform: rotate(0deg); opacity: 0.6; }
+  50%  { opacity: 1; }
+  100% { transform: rotate(360deg); opacity: 0.6; }
+}
+
+/* 5 — word-by-word rise + rotate headline reveal */
+@keyframes reveal-word {
+  from { opacity: 0; transform: translateY(110%) rotate(3deg); }
+  to   { opacity: 1; transform: translateY(0)    rotate(0); }
+}
+
+/* 6 — dashed SVG data-link travelling along path */
+@keyframes data-link {
+  from { stroke-dashoffset: 24; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* 7 — pulsing node on the mesh (center dot) */
+@keyframes pulse-node {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(1.4); opacity: 0.75; }
+}
+
+/* Utility reveal-word class for editorial headlines */
+.reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%) rotate(3deg);
+  transform-origin: top left;
+  animation: reveal-word 600ms var(--ease-out-quint) forwards;
+}
+
+/* Animate data-link helper for the SVG mesh */
+.animate-data-link {
+  stroke-dasharray: 1.2 1.2;
+  animation: data-link 3s linear infinite;
+}
+.animate-pulse-node {
+  animation: pulse-node 2.4s ease-in-out infinite;
 }
