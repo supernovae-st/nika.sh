@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { errors, errorCodes, getError } from '~/data/errors';
+import { getAllErrors } from '~/data/errors';
 
 export function getStaticPaths() {
-  return errorCodes.map((code) => ({
-    params: { code },
-    props: { error: errors[code] },
+  return getAllErrors().map((error) => ({
+    params: { code: error.code },
+    props: { error },
   }));
 }
 

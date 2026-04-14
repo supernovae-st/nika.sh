@@ -22,8 +22,7 @@ const links = [
       class="flex items-center gap-3 group"
       aria-label="Nika home"
     >
-      <span class="text-[24px] leading-none select-none transition-transform group-hover:rotate-6" aria-hidden="true">🦋</span>
-      <span class="font-mono text-sm tracking-[0.08em] uppercase text-[var(--color-bone)]">
+      <span class="font-mono text-base tracking-[0.08em] uppercase text-[var(--color-bone)] group-hover:text-[var(--color-nika-orange)] transition-colors">
         nika
       </span>
     </a>
@@ -55,13 +54,20 @@ const links = [
 
   {/* Mobile nav — minimal, always visible inline */}
   <nav class="sm:hidden flex items-center justify-center gap-4 pb-3 overflow-x-auto px-6" aria-label="Mobile primary">
-    {links.map((link) => (
-      <a
-        href={link.href}
-        class="font-mono text-xs tracking-[0.08em] uppercase text-[var(--color-bone-mute)] whitespace-nowrap"
-      >
-        {link.label}
-      </a>
-    ))}
+    {links.map((link) => {
+      const isActive = currentSection === link.label;
+      return (
+        <a
+          href={link.href}
+          class={`font-mono text-xs tracking-[0.08em] uppercase whitespace-nowrap
+                  ${isActive
+                    ? 'text-[var(--color-nika-orange)]'
+                    : 'text-[var(--color-bone-mute)]'}`}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      );
+    })}
   </nav>
 </header>

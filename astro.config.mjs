@@ -9,7 +9,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://nika.sh',
   output: 'static',
-  trailingSlash: 'never',
+  trailingSlash: 'always',
   build: {
     format: 'directory',
     inlineStylesheets: 'auto',
