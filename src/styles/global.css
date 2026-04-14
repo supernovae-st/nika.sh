@@ -1547,3 +1547,275 @@ pre code {
   margin-top: 0.25rem;
   font-style: italic;
 }
+
+/* ==========================================================================
+   § SCROLL PROGRESS — thin brand line driven by CSS scroll-timeline
+   Degrades gracefully: unsupported browsers see nothing (scaleX=0 default).
+   ========================================================================== */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-brand);
+  transform-origin: left center;
+  transform: scaleX(0);
+  z-index: 200;
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes scroll-progress {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+}
+
+/* ==========================================================================
+   § INSTALL SNIPPET — OS-detection + copy button
+   ========================================================================== */
+
+.install-snippet {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--color-border-bright);
+  border-radius: var(--radius-edge);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  max-width: 100%;
+}
+
+.install-os-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-sunken);
+}
+
+.install-os-tab {
+  padding: 0.3rem 0.875rem;
+  font-family: var(--font-display-mono-stack);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-ghost);
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.install-os-tab:last-child { border-right: none; }
+.install-os-tab.is-active  { color: var(--color-brand); }
+.install-os-tab:hover:not(.is-active) { color: var(--color-fg-dim); }
+
+.install-cmd-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  background: var(--color-surface);
+}
+
+.install-cmd {
+  font-size: 0.8rem;
+  color: var(--color-fg-dim);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.install-copy {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--color-border-bright);
+  border-radius: var(--radius-hair);
+  cursor: pointer;
+  color: var(--color-fg-ghost);
+  font-size: 0.875rem;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  line-height: 1;
+}
+.install-copy:hover         { color: var(--color-fg);      border-color: var(--color-fg-ghost); background: var(--color-surface-2); }
+.install-copy.is-copied     { color: var(--color-emerald); border-color: var(--color-emerald); }
+
+/* ==========================================================================
+   § COMMAND PALETTE — ⌘K keyboard-first navigation
+   Custom implementation (no cmdk/Radix) — ~900 bytes brotli.
+   ========================================================================== */
+
+.cmdk-backdrop {
+  position: fixed;
+  inset: 0;
+  background: oklch(0.05 0.01 258 / 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: min(15vh, 120px);
+}
+
+.cmdk-panel {
+  width: min(580px, calc(100vw - 2rem));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-bright);
+  border-radius: var(--radius-edge);
+  overflow: hidden;
+  box-shadow: 0 24px 80px -8px oklch(0 0 0 / 0.7),
+              0 0 0 1px var(--color-border-bright);
+  clip-path: polygon(
+    0 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% 100%,
+    0 100%
+  );
+}
+
+.cmdk-search-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-sunken);
+}
+
+.cmdk-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--color-fg);
+  letter-spacing: 0.02em;
+  caret-color: var(--color-brand);
+  min-width: 0;
+}
+.cmdk-input::placeholder { color: var(--color-fg-ghost); }
+
+.cmdk-esc-badge {
+  font-family: var(--font-display-mono-stack);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--color-fg-ghost);
+  border: 1px solid var(--color-border-bright);
+  border-radius: 3px;
+  padding: 0.2em 0.5em;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cmdk-esc-badge:hover { color: var(--color-fg-dim); border-color: var(--color-fg-ghost); }
+
+.cmdk-list {
+  max-height: 380px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-bright) transparent;
+}
+
+.cmdk-empty {
+  padding: 1.75rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-fg-ghost);
+  letter-spacing: 0.06em;
+}
+
+.cmdk-group {
+  padding: 0.4rem 0;
+}
+.cmdk-group:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cmdk-group-heading {
+  padding: 0.45rem 1.25rem 0.2rem;
+  font-family: var(--font-display-mono-stack);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-fg-ghost);
+}
+
+.cmdk-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.55rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s, border-color 0.1s;
+  gap: 0.5rem;
+}
+.cmdk-item:hover { background: var(--color-surface-2); }
+.cmdk-item.is-sel {
+  background: var(--color-surface-3);
+  border-left-color: var(--color-brand);
+  padding-left: calc(1.25rem - 2px);
+}
+
+.cmdk-item-label {
+  flex: 1;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--color-fg);
+  letter-spacing: 0.01em;
+  min-width: 0;
+}
+
+.cmdk-item-hint {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--color-fg-ghost);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.cmdk-footer {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.625rem 1.25rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-sunken);
+}
+.cmdk-fhint {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--color-fg-ghost);
+  letter-spacing: 0.06em;
+}
+.cmdk-fhint kbd {
+  font-family: inherit;
+  font-size: 0.6rem;
+  color: var(--color-fg-dim);
+  border: 1px solid var(--color-border-bright);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+}

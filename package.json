@@ -46,7 +46,7 @@
     {
       "name": "total bundle — JS + CSS (brotli)",
       "path": "dist/**/*.{js,css}",
-      "limit": "125 KB",
+      "limit": "132 KB",
       "brotli": true
     }
   ]

@@ -14,6 +14,7 @@ import Oscilloscope from '~/components/react/Oscilloscope';
 import HorizontalTimeline from '~/components/react/HorizontalTimeline';
 import VerbExplorer from '~/components/react/VerbExplorer';
 import DitheringCanvas from '~/components/react/DitheringCanvas';
+import InstallSnippet from '~/components/react/InstallSnippet';
 import { getCollection } from 'astro:content';
 import dashboard from '~/data/dashboard.stub.json';
 
@@ -97,7 +98,12 @@ const STATS = {
           </PressButton>
         </div>
 
-        <div class="mt-16 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.7rem] uppercase tracking-[0.14em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">
+        {/* Install snippet — OS-detected + one-click copy */}
+        <div class="mt-6">
+          <InstallSnippet client:load />
+        </div>
+
+        <div class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.7rem] uppercase tracking-[0.14em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">
           <span>AGPL-3.0</span>
           <span class="text-[var(--color-fg-ghost)]">·</span>
           <span>Rust</span>
@@ -107,6 +113,11 @@ const STATS = {
           <span>9 providers</span>
           <span class="text-[var(--color-fg-ghost)]">·</span>
           <span>Single binary</span>
+          <span class="text-[var(--color-fg-ghost)]">·</span>
+          <span class="hidden md:inline-flex items-center gap-1.5 text-[var(--color-fg-ghost)] cursor-default">
+            <kbd class="font-[var(--font-display-mono-stack)] text-[0.6rem] border border-[var(--color-border-bright)] rounded-[3px] px-1.5 py-0.5 text-[var(--color-fg-dim)]">⌘K</kbd>
+            <span>commands</span>
+          </span>
         </div>
       </div>
     </div>
@@ -121,7 +132,7 @@ const STATS = {
   {/* =====================================================================
       § 01 — VITAL SIGNS (live stats + oscilloscope)
       ===================================================================== */}
-  <section class="edge-rule-bottom">
+  <section id="vital-signs" class="edge-rule-bottom">
     <div class="mx-auto max-w-[82rem] px-6 py-16 md:py-20">
       <Rule number="01" label="§ VITAL SIGNS" variant="faint" class="mb-10" />
 
@@ -223,7 +234,7 @@ const STATS = {
   {/* =====================================================================
       § 03 — FIVE VERBS (interactive verb explorer)
       ===================================================================== */}
-  <section class="edge-rule-bottom">
+  <section id="five-verbs" class="edge-rule-bottom">
     <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
       <Rule number="03" label="§ FIVE VERBS" variant="faint" class="mb-12" />
 
@@ -309,7 +320,7 @@ const STATS = {
       § 04 — CRATE CONSTELLATION
       SVG star map: 35 crates, admitted/growing/planned.
       ===================================================================== */}
-  <section class="edge-rule-bottom overflow-hidden">
+  <section id="workspace" class="edge-rule-bottom overflow-hidden">
     <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
       <Rule number="05" label="§ THE WORKSPACE" variant="faint" class="mb-12" />
 
@@ -350,7 +361,7 @@ const STATS = {
       § 06 — PROVIDERS
       Nine LLM providers: 6 admitted, 3 planned.
       ===================================================================== */}
-  <section class="edge-rule-bottom">
+  <section id="providers" class="edge-rule-bottom">
     <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
       <Rule number="06" label="§ PROVIDERS" variant="faint" class="mb-12" />
 
@@ -375,7 +386,7 @@ const STATS = {
       § 07 — CHRYSALIS TIMELINE
       Horizontal scroll through Nika's weekly dev chapters.
       ===================================================================== */}
-  <section class="edge-rule-bottom">
+  <section id="chrysalis" class="edge-rule-bottom">
     <div class="mx-auto max-w-[82rem] px-6 pt-20 md:pt-28 pb-0">
       <Rule number="07" label="§ CHRYSALIS" variant="faint" class="mb-0" />
     </div>
