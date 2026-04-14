@@ -1,0 +1,42 @@
+---
+const buildDate = new Date().toISOString().slice(0, 10);
+---
+
+<footer class="border-t border-[var(--color-border)] mt-24">
+  <div class="mx-auto max-w-[72rem] px-6 py-10 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+
+    <div class="space-y-3">
+      <p class="annotation annotation-dim">
+        ◆ AGPL-3.0-or-later · SuperNovae Studio · Paris · 2026
+      </p>
+      <p class="font-mono text-sm text-[var(--color-bone-mute)] max-w-prose">
+        Nika is alive. We craft 34 crates over 11–12 months in a glass chrysalis.
+        Every Friday we publish what grew that week.
+      </p>
+    </div>
+
+    <nav class="grid gap-3 text-sm" aria-label="Footer">
+      <div class="grid grid-cols-2 gap-x-8 gap-y-2">
+        <a href="/method" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">method</a>
+        <a href="https://github.com/supernovae-st/nika" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">github</a>
+        <a href="/changelog" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">changelog</a>
+        <a href="/install" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">install</a>
+        <a href="/blog" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">blog</a>
+        <a href="/errors" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">errors</a>
+        <a href="/design.md" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">design.md</a>
+        <a href="/llms.txt" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">llms.txt</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-[72rem] px-6 py-3 flex flex-wrap items-center justify-between gap-2">
+      <span class="annotation annotation-dim">
+        § nika · LAST BUILD {buildDate}
+      </span>
+      <span class="annotation annotation-dim">
+        Scaleway Object Storage · fr-par · Cloudflare CDN
+      </span>
+    </div>
+  </div>
+</footer>

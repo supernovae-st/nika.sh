@@ -1,0 +1,50 @@
+name: Deploy nika.sh
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id:     ${{ secrets.SCW_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SCW_SECRET_KEY }}
+          aws-region: fr-par
+
+      - name: Sync to Scaleway Object Storage
+        run: |
+          aws --endpoint-url=https://s3.fr-par.scw.cloud \
+              s3 sync ./dist/ s3://nika-sh/ \
+              --delete \
+              --cache-control "public, max-age=3600"
+
+      - name: Set immutable cache for hashed assets
+        run: |
+          aws --endpoint-url=https://s3.fr-par.scw.cloud \
+              s3 cp s3://nika-sh/_astro/ s3://nika-sh/_astro/ \
+              --recursive --metadata-directive REPLACE \
+              --cache-control "public, max-age=31536000, immutable"

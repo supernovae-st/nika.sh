@@ -1,0 +1,31 @@
+# nika.sh — llms.txt
+# https://llmstxt.org/
+
+> Nika is a semantic YAML workflow engine for AI.
+> AGPL-3.0-or-later. Rust. Paris. SuperNovae Studio.
+
+## What
+
+Nika reads `.nika.yaml` files and executes them as AI workflows.
+Five verbs: exec, fetch, invoke, infer, agent.
+9 providers: Anthropic, OpenAI, Google, Mistral, Cohere, Groq, DeepSeek, Ollama, local GGUF.
+63 builtin tools. 34 crates. Runs on your laptop, no daemon.
+
+## Links
+
+- Source: https://github.com/supernovae-st/nika
+- Install: https://nika.sh/install
+- Docs: https://docs.nika.sh
+- Errors: https://nika.sh/errors
+- Schema: https://nika.sh/schema/workflow.json
+- Design: https://nika.sh/design.md
+- Changelog: https://nika.sh/changelog
+
+## Status
+
+Chrysalis (pre-v0.90 emergence). 4 of 34 crates admitted.
+Building in public. Weekly dev logs on Fridays.
+
+## License
+
+AGPL-3.0-or-later. Full copyleft. No SaaS loophole.

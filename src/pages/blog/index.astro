@@ -1,0 +1,34 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Blog" description="Monthly deep dives into one organ at a time." section="blog">
+  <article class="mx-auto max-w-[52rem] px-6 py-20 md:py-28">
+    <span class="annotation annotation-orange block mb-6">§ BLOG · MONTHLY DEEP DIVES</span>
+    <h1 class="display-hero mb-4" style="font-size: clamp(2.5rem, 2rem + 3vw, 4rem);">One organ at a time.</h1>
+    <p class="prose-nika text-lg text-[var(--color-bone-mute)] mb-12">
+      Each month we go deep on one part of the organism. Problem, decision,
+      resolution, rule derived. 2,400 words typical.
+    </p>
+
+    {posts.length > 0 ? (
+      <div class="space-y-8">
+        {posts.map((post) => (
+          <article class="border border-[var(--color-border)] p-6 hover:border-[var(--color-border-bright)] transition-colors">
+            <span class="annotation annotation-dim block mb-2">{post.data.date.toISOString().slice(0, 10)}</span>
+            <h2 class="font-mono text-xl leading-snug mb-2">
+              <a href={`/blog/${post.id}`} class="hover:text-[var(--color-nika-orange)]">{post.data.title}</a>
+            </h2>
+            <p class="text-sm text-[var(--color-bone-mute)]">{post.data.description}</p>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="text-[var(--color-bone-mute)] italic">First deep dive coming soon. The organs are forming.</p>
+    )}
+  </article>
+</BaseLayout>

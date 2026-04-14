@@ -1,0 +1,65 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('changelog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="Changelog"
+  description="Weekly dev logs. What grew, what hurt, what we learned."
+  section="changelog"
+>
+  <article class="mx-auto max-w-[52rem] px-6 py-20 md:py-28">
+    <span class="annotation annotation-orange block mb-6">
+      § CHANGELOG · WEEKLY DEV LOGS · FRIDAYS 18:00 PARIS
+    </span>
+
+    <h1 class="display-hero mb-4" style="font-size: clamp(2.5rem, 2rem + 3vw, 4rem);">
+      What grew this week.
+    </h1>
+
+    <p class="prose-nika text-lg text-[var(--color-bone-mute)] mb-12">
+      Every Friday we publish what grew. Honestly. Numbers grep-verified before
+      publishing. If we don't know, we say we don't know yet.
+    </p>
+
+    {entries.length > 0 ? (
+      <div class="border-l-2 border-[var(--color-nika-orange)] space-y-8 pl-8">
+        {entries.map((entry) => (
+          <article class="relative">
+            <span
+              class="absolute -left-[calc(2rem+5px)] top-1 w-2 h-2 bg-[var(--color-nika-orange)] rounded-full"
+              aria-hidden="true"
+            />
+            <span class="annotation annotation-dim block mb-2">
+              WEEK {String(entry.data.week).padStart(2, '0')} · {entry.data.date.toISOString().slice(0, 10)}
+              {entry.data.sha && ` · #${entry.data.sha.slice(0, 9)}`}
+            </span>
+            <h2 class="font-mono text-xl leading-snug mb-2">
+              <a
+                href={`/changelog/${entry.id}`}
+                class="hover:text-[var(--color-nika-orange)]"
+              >
+                {entry.data.title}
+              </a>
+            </h2>
+            {entry.data.organ && (
+              <span class="annotation text-[var(--color-chrysalis-amber)]">
+                {entry.data.organ} grew
+              </span>
+            )}
+            <p class="text-sm text-[var(--color-bone-mute)] mt-2">
+              {entry.data.summary}
+            </p>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="text-[var(--color-bone-mute)] italic">
+        The first dev log arrives soon. The chrysalis is forming.
+      </p>
+    )}
+  </article>
+</BaseLayout>

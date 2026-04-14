@@ -1,0 +1,24 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} section="blog">
+  <article class="mx-auto max-w-[42rem] px-6 py-20 md:py-28">
+    <a href="/blog" class="annotation annotation-dim inline-flex items-center gap-2 mb-8 hover:text-[var(--color-bone)]">◀ all posts</a>
+    <span class="annotation annotation-dim block mb-4">{post.data.date.toISOString().slice(0, 10)}{post.data.organ && ` · ${post.data.organ}`}</span>
+    <h1 class="display-hero mb-8" style="font-size: clamp(2rem, 1.6rem + 3vw, 3rem);">{post.data.title}</h1>
+    <div class="prose-nika"><Content /></div>
+    <footer class="mt-16 pt-6 border-t border-[var(--color-border)]">
+      <span class="annotation annotation-dim">🦋</span>
+    </footer>
+  </article>
+</BaseLayout>
