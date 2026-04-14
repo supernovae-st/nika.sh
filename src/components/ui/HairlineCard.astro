@@ -1,0 +1,57 @@
+---
+/**
+ * HairlineCard — chrysalis-grammar card. Sharp corners (2 or 4px),
+ * hairline border, optional chamfer, optional grain.
+ *
+ * Replaces Card.astro spotlight-radial on most surfaces. Use Card.astro
+ * when you specifically want the mouse-tracked halo.
+ */
+
+interface Props {
+  as?: 'div' | 'article' | 'section' | 'li';
+  href?: string;
+  chamfer?: 'none' | 'tl' | 'tr' | 'bl' | 'br' | 'diag';
+  brand?: boolean;
+  grain?: boolean;
+  edge?: boolean;
+  class?: string;
+}
+
+const {
+  as: Tag = 'div',
+  href,
+  chamfer = 'none',
+  brand = false,
+  grain = false,
+  edge = false,
+  class: className = '',
+} = Astro.props;
+
+const chamferClass = chamfer === 'none' ? '' : `chamfer-${chamfer}`;
+const Root = href ? 'a' : Tag;
+---
+
+<Root
+  href={href}
+  class:list={[
+    'relative overflow-hidden',
+    'hairline',
+    edge ? 'hairline-edge' : '',
+    brand ? 'hairline-brand' : '',
+    chamferClass,
+    'p-6 transition-colors duration-200',
+    'no-underline',
+    className,
+  ]}
+>
+  {grain && (
+    <span
+      class="absolute inset-0 pointer-events-none"
+      aria-hidden="true"
+      style="background-image: var(--dither-noise); opacity: 0.05; mix-blend-mode: overlay;"
+    ></span>
+  )}
+  <div class="relative z-[1]">
+    <slot />
+  </div>
+</Root>

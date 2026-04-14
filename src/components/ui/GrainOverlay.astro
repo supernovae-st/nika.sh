@@ -1,0 +1,21 @@
+---
+/**
+ * GrainOverlay — SVG feTurbulence noise layer. Absolutely positioned.
+ * Drop inside a relative parent to grain the whole area. Replaces
+ * purple mesh gradients as the default texture.
+ */
+
+interface Props {
+  intensity?: 'soft' | 'normal' | 'loud';
+}
+
+const { intensity = 'normal' } = Astro.props;
+
+const opacity = { soft: 0.03, normal: 0.055, loud: 0.09 }[intensity];
+---
+
+<div
+  class="absolute inset-0 pointer-events-none"
+  aria-hidden="true"
+  style={`background-image: var(--dither-noise); opacity: ${opacity}; mix-blend-mode: overlay;`}
+></div>
