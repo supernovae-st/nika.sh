@@ -3,9 +3,14 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
 import Rule from '~/components/ui/Rule.astro';
 import HairlineCard from '~/components/ui/HairlineCard.astro';
 import PressButton from '~/components/ui/PressButton.astro';
+import CommitTicker from '~/components/ui/CommitTicker.astro';
 import HeroAscii from '~/components/react/HeroAscii';
 import BrailleSpinner from '~/components/react/BrailleSpinner';
 import LiveStat from '~/components/react/LiveStat';
+import SplitReveal from '~/components/react/SplitReveal';
+import CrateConstellation from '~/components/react/CrateConstellation';
+import Oscilloscope from '~/components/react/Oscilloscope';
+import HorizontalTimeline from '~/components/react/HorizontalTimeline';
 import { getCollection } from 'astro:content';
 import dashboard from '~/data/dashboard.stub.json';
 
@@ -32,6 +37,7 @@ const STATS = {
       § 00 — HERO
       ASCII flow field + overlaid editorial headline. The hero IS the
       signature: real text, selectable, driven by a 3-octave FBM shader.
+      SplitReveal on the headline: simplex-noise character stagger.
       ===================================================================== */}
   <section class="relative min-h-[88svh] overflow-hidden grain-overlay isolate">
     <div class="absolute inset-0 z-0">
@@ -51,7 +57,7 @@ const STATS = {
           <a
             href="/changelog/"
             class="hover:text-[var(--color-fg)] transition-colors"
-          >nika grew &nbsp;·&nbsp; week 22 &nbsp;·&nbsp; nika-catalog-verify admitted</a>
+          >nika grew &nbsp;·&nbsp; week 01 &nbsp;·&nbsp; nika-error admitted</a>
           <span class="text-[var(--color-fg-ghost)]">→</span>
         </div>
 
@@ -63,7 +69,13 @@ const STATS = {
             class="block font-[var(--font-display)] font-normal tracking-[-0.035em] leading-[0.92] text-[var(--color-fg)] mt-2"
             style="font-size: clamp(2.5rem, 1.5rem + 6vw, 7rem);"
           >
-            is <em class="editorial text-[var(--color-fg)]">alive</em>.
+            is{' '}
+            <SplitReveal
+              client:load
+              text="alive"
+              className="editorial text-[var(--color-fg)] italic"
+              maxDelay={0.45}
+            />{'.'}
           </span>
         </h1>
 
@@ -98,13 +110,19 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 01 — VITAL SIGNS (live stats)
+      § TICKER — Bloomberg commit tape
+      Sits between hero and vital signs, full-width.
       ===================================================================== */}
-  <section class="edge-rule-top edge-rule-bottom">
+  <CommitTicker />
+
+  {/* =====================================================================
+      § 01 — VITAL SIGNS (live stats + oscilloscope)
+      ===================================================================== */}
+  <section class="edge-rule-bottom">
     <div class="mx-auto max-w-[82rem] px-6 py-16 md:py-20">
       <Rule number="01" label="§ VITAL SIGNS" variant="faint" class="mb-10" />
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 mb-12">
         <div>
           <div class="flex items-baseline gap-1">
             <LiveStat client:visible to={STATS.organsAdmitted} />
@@ -124,6 +142,22 @@ const STATS = {
           <LiveStat client:visible to={STATS.unwraps} />
           <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">.unwrap() in src</div>
         </div>
+      </div>
+
+      {/* Oscilloscope trace — driven by test count */}
+      <div class="flex flex-col gap-2">
+        <div class="text-[0.68rem] uppercase tracking-[0.14em] text-[var(--color-fg-ghost)] font-[var(--font-mono)]">
+          test signal · {STATS.tests} passing
+        </div>
+        <Oscilloscope
+          client:visible
+          value={STATS.tests}
+          accent={STATS.loc}
+          width={900}
+          height={72}
+          label={`Oscilloscope: ${STATS.tests} tests, ${STATS.loc} LOC`}
+          className="w-full max-w-full"
+        />
       </div>
     </div>
   </section>
@@ -245,12 +279,64 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 04 — BUILT IN PUBLIC (latest dev logs)
+      § 04 — CRATE CONSTELLATION
+      SVG star map: 35 crates, admitted/growing/planned.
+      ===================================================================== */}
+  <section class="edge-rule-bottom overflow-hidden">
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
+      <Rule number="04" label="§ THE WORKSPACE" variant="faint" class="mb-12" />
+
+      <div class="grid lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-16 items-center">
+        <div>
+          <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
+            31 crates.<br /><em class="editorial">One vision</em>.
+          </h2>
+          <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[40ch]">
+            Every crate is an organ — admitted when all twelve gates pass.
+            Watch the constellation grow one dot at a time.
+          </p>
+          <div class="mt-8 flex flex-col gap-3 font-[var(--font-mono)] text-sm">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[var(--color-brand)] inline-block" style="box-shadow: 0 0 6px var(--color-brand)"></span>
+              <span class="text-[var(--color-fg-dim)] tracking-[0.06em] uppercase text-[0.72rem]">admitted — all gates passed</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[var(--color-emerald)] inline-block" style="box-shadow: 0 0 6px var(--color-emerald)"></span>
+              <span class="text-[var(--color-fg-dim)] tracking-[0.06em] uppercase text-[0.72rem]">growing — in active development</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full border border-[var(--color-border-bright)] inline-block"></span>
+              <span class="text-[var(--color-fg-dim)] tracking-[0.06em] uppercase text-[0.72rem]">planned — on the roadmap</span>
+            </div>
+          </div>
+        </div>
+
+        <CrateConstellation
+          client:visible
+          data-cursor="explore crates"
+        />
+      </div>
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 05 — CHRYSALIS TIMELINE
+      Horizontal scroll through Nika's weekly dev chapters.
+      ===================================================================== */}
+  <section class="edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 pt-20 md:pt-28 pb-0">
+      <Rule number="05" label="§ CHRYSALIS" variant="faint" class="mb-0" />
+    </div>
+    <HorizontalTimeline client:visible />
+  </section>
+
+  {/* =====================================================================
+      § 06 — BUILT IN PUBLIC (latest dev logs)
       ===================================================================== */}
   {changelogEntries.length > 0 && (
     <section class="edge-rule-bottom">
       <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-        <Rule number="04" label="§ DEV LOGS" variant="faint" class="mb-12" />
+        <Rule number="06" label="§ DEV LOGS" variant="faint" class="mb-12" />
 
         <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
           <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)] max-w-[18ch]">
@@ -287,11 +373,11 @@ const STATS = {
   )}
 
   {/* =====================================================================
-      § 05 — GROW WITH IT (final CTA)
+      § 07 — GROW WITH IT (final CTA)
       ===================================================================== */}
   <section class="relative overflow-hidden grain-overlay isolate">
     <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32 text-center relative z-10">
-      <Rule number="05" label="§ EMERGE" variant="brand" class="mb-12 max-w-xl mx-auto" />
+      <Rule number="07" label="§ EMERGE" variant="brand" class="mb-12 max-w-xl mx-auto" />
 
       <h2 class="font-[var(--font-display)] font-normal text-5xl md:text-7xl leading-[1.02] tracking-[-0.03em] text-[var(--color-fg)] max-w-[18ch] mx-auto">
         Watch Nika <em class="editorial">grow</em>.

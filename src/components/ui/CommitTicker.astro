@@ -1,0 +1,79 @@
+---
+/**
+ * CommitTicker — Bloomberg-style horizontal git tape.
+ *
+ * Renders a CSS-only infinite marquee of Nika dev milestones.
+ * Static milestones always present + dynamic changelog entries appended.
+ * Color-coded by type: feat=brand, fix=emerald, docs=amber, chore=dim.
+ * Doubles the track for seamless looping at -50% translateX.
+ *
+ * No JS. Pauses on hover.
+ */
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('changelog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 12);
+
+// Static milestone tape — shown even before real changelog entries exist.
+type TickType = 'feat' | 'fix' | 'docs' | 'chore';
+interface Tick {
+  type: TickType;
+  label: string;
+  date: string;
+}
+
+const STATIC_TICKS: Tick[] = [
+  { type: 'feat',  label: 'nika-error admitted · 44 tests · 0 unwrap()',  date: 'W01' },
+  { type: 'feat',  label: 'nika-engine core loop · topological executor',  date: 'W02' },
+  { type: 'feat',  label: 'nika-schema · YAML workflow contract',          date: 'W03' },
+  { type: 'chore', label: 'zero .unwrap() policy enforced globally',       date: 'W04' },
+  { type: 'feat',  label: 'nika-dag · parallel task graph executor',       date: 'W05' },
+  { type: 'feat',  label: 'infer verb · Anthropic + OpenAI admitted',      date: 'W06' },
+  { type: 'fix',   label: 'prompt injection shield v1 · 6-layer defense',  date: 'W07' },
+  { type: 'feat',  label: 'structured output · Zod schema validation',     date: 'W08' },
+  { type: 'feat',  label: 'invoke verb · 63 builtin tools available',      date: 'W09' },
+  { type: 'docs',  label: 'MANIFESTO.md · AGPL forever · your keys',       date: 'W10' },
+  { type: 'feat',  label: 'fetch + exec verbs · full verb set reached',    date: 'W11' },
+  { type: 'feat',  label: 'nika-catalog-verify · self-hosted registry',    date: 'W12' },
+];
+
+// Build combined tick list from static + dynamic
+const dynamicTicks: Tick[] = entries.map(e => ({
+  type: 'feat' as TickType,
+  label: e.data.title,
+  date: `W${String(e.data.week).padStart(2, '0')}`,
+}));
+
+const allTicks = [...STATIC_TICKS, ...dynamicTicks];
+
+const colorClass: Record<TickType, string> = {
+  feat:  'ticker-dot-feat',
+  fix:   'ticker-dot-fix',
+  docs:  'ticker-dot-amber',
+  chore: 'ticker-dot-chore',
+};
+---
+
+<div class="ticker-belt edge-rule-top edge-rule-bottom" aria-hidden="true">
+  <div class="ticker-track">
+    {/* First copy */}
+    {allTicks.map((tick) => (
+      <span class="ticker-item">
+        <span class={`ticker-dot ${colorClass[tick.type]}`}>▸</span>
+        <span class="ticker-date">{tick.date}</span>
+        <span class="ticker-title">{tick.label}</span>
+        <span class="ticker-sep">·</span>
+      </span>
+    ))}
+    {/* Duplicate for seamless loop */}
+    {allTicks.map((tick) => (
+      <span class="ticker-item">
+        <span class={`ticker-dot ${colorClass[tick.type]}`}>▸</span>
+        <span class="ticker-date">{tick.date}</span>
+        <span class="ticker-title">{tick.label}</span>
+        <span class="ticker-sep">·</span>
+      </span>
+    ))}
+  </div>
+</div>
