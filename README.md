@@ -61,23 +61,14 @@ npx astro check
 
 ## Deploy
 
-Auto on push to `main` via `.github/workflows/deploy.yml`. Uploads `dist/` to Scaleway Object Storage bucket `nika-sh` (fr-par) using the AWS CLI with S3 API + Scaleway endpoint.
+**Push to `main` = site auto-deploys.** DigitalOcean App Platform is connected to this repo (managed by Nicolas).
 
-**Cache strategy:**
-- HTML: `public, max-age=3600` (1h, safe to purge)
-- `/_astro/*` (hashed assets): `public, max-age=31536000, immutable`
+Astro config needed on DO side:
+- **Build command**: `pnpm install && pnpm build`
+- **Output directory**: `dist/`
+- **Framework preset**: Astro (or Static Site)
 
-**Required GH secrets:**
-- `SCW_ACCESS_KEY`
-- `SCW_SECRET_KEY`
-
-**Manual deploy (one-off):**
-
-```bash
-aws --profile scaleway --endpoint-url=https://s3.fr-par.scw.cloud \
-    s3 sync ./dist/ s3://nika-sh/ --delete \
-    --cache-control "public, max-age=3600"
-```
+We manage the code. Nicolas manages the infrastructure.
 
 ## Roadmap
 

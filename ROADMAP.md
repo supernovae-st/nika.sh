@@ -50,8 +50,7 @@
 - [ ] Rewrite `src/styles/global.css` to `@import` skill tokens, map via `@theme`
 - [ ] Token rename pass: `var(--color-*)` → `var(--nika-*)` across all 8 `.astro` pages
 - [ ] Palette reconciliation: decide site-adopts-skill OR skill-adopts-site (architect agent recommends site → skill)
-- [ ] `CF_ZONE_ID` + `CF_API_TOKEN` GH secrets
-- [ ] Cloudflare cache purge step in `deploy.yml` after sync
+- [ ] Ask Nicolas to add trailing-slash redirect rule on DO/Cloudflare side
 
 ### Self-hosted fonts
 - [ ] Download Basteleur Bold + Moonlight (Velvetyne, OFL) → `public/fonts/`

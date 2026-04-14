@@ -5,7 +5,8 @@ The marketing site for [Nika](https://github.com/supernovae-st/nika), the AGPL w
 ## Stack
 
 Astro 5 (static output) + Tailwind v4 (Vite plugin) + React islands + MDX.
-Deployed to Scaleway Object Storage (Paris) + Cloudflare CDN.
+Deployed via DigitalOcean App Platform (auto-deploy on push to `main`).
+Nicolas manages DO config. We manage code only.
 
 ## Design system
 
