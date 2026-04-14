@@ -1,6 +1,10 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import HeroDots from '~/components/react/HeroDots';
+import CountUp from '~/components/react/CountUp';
+import Reveal from '~/components/react/Reveal';
+import RevealText from '~/components/react/RevealText';
 
 const changelogEntries = (await getCollection('changelog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -14,10 +18,21 @@ const changelogEntries = (await getCollection('changelog', ({ data }) => !data.d
 >
   {/* ========================================================================
       HERO — ceremonial, governing sentence, minimal.
-      The butterfly in the header is the only one on this screen (scarcity rule).
+      Three.js dot grid background (hexagonal Bayer-jittered, slow pulse,
+      RGB shift + bloom). client:visible to defer load until in viewport.
       ======================================================================== */}
-  <section class="relative">
-    <div class="mx-auto max-w-[72rem] px-6 pt-16 md:pt-28 pb-24 md:pb-32">
+  <section class="relative overflow-hidden min-h-[88vh] flex items-center">
+    {/* Three.js animated background — lazy-loaded */}
+    <HeroDots client:visible />
+
+    {/* Subtle gradient mask — fades dots near edges */}
+    <div
+      class="absolute inset-0 z-[1] pointer-events-none"
+      style="background: radial-gradient(ellipse at center, transparent 30%, var(--color-space-navy) 90%);"
+      aria-hidden="true"
+    />
+
+    <div class="relative z-10 mx-auto max-w-[72rem] px-6 pt-16 md:pt-28 pb-24 md:pb-32 w-full">
 
       <span class="annotation annotation-orange block mb-6">
         ◆ CHRYSALIS · v0.90.0 · WEEK 22 OF 48
@@ -142,27 +157,44 @@ const changelogEntries = (await getCollection('changelog', ({ data }) => !data.d
       ======================================================================== */}
   <section class="border-t border-[var(--color-border)]">
     <div class="mx-auto max-w-[72rem] px-6 py-20 md:py-28">
-      <span class="annotation annotation-dim block mb-2">§ 04 · VITAL SIGNS</span>
-      <h2 class="font-mono text-2xl leading-tight mb-10">Inside the chrysalis</h2>
+      <Reveal>
+        <span class="annotation annotation-dim block mb-2">§ 04 · VITAL SIGNS</span>
+        <h2 class="font-mono text-2xl leading-tight mb-10">Inside the chrysalis</h2>
+      </Reveal>
 
       <div class="grid gap-6 md:grid-cols-4 mb-12">
-        <div class="border border-[var(--color-border)] p-6">
-          <span class="font-mono text-4xl md:text-5xl text-[var(--color-nika-orange)]">5</span>
-          <span class="font-mono text-4xl md:text-5xl text-[var(--color-dim-star)]">/40</span>
-          <p class="annotation annotation-dim mt-3">ORGANS ADMITTED</p>
-        </div>
-        <div class="border border-[var(--color-border)] p-6">
-          <span class="font-mono text-4xl md:text-5xl text-[var(--color-bone)]">10,434</span>
-          <p class="annotation annotation-dim mt-3">LINES OF RUST</p>
-        </div>
-        <div class="border border-[var(--color-border)] p-6">
-          <span class="font-mono text-4xl md:text-5xl text-[var(--color-bone)]">369</span>
-          <p class="annotation annotation-dim mt-3">TESTS</p>
-        </div>
-        <div class="border border-[var(--color-border)] p-6">
-          <span class="font-mono text-4xl md:text-5xl text-[var(--color-signal-green)]">0</span>
-          <p class="annotation annotation-dim mt-3">.UNWRAP() IN SRC</p>
-        </div>
+        <Reveal delay={0.0}>
+          <div class="border border-[var(--color-border)] p-6 hover:border-[var(--color-nika-orange)] transition-colors">
+            <span class="font-mono text-4xl md:text-5xl text-[var(--color-nika-orange)] tabular-nums">
+              <CountUp client:visible to={5} duration={1.6} format={false} suffix="/40" />
+            </span>
+            <p class="annotation annotation-dim mt-3">ORGANS ADMITTED</p>
+          </div>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <div class="border border-[var(--color-border)] p-6 hover:border-[var(--color-border-bright)] transition-colors">
+            <span class="font-mono text-4xl md:text-5xl text-[var(--color-bone)] tabular-nums">
+              <CountUp client:visible to={10434} duration={2.4} />
+            </span>
+            <p class="annotation annotation-dim mt-3">LINES OF RUST</p>
+          </div>
+        </Reveal>
+        <Reveal delay={0.2}>
+          <div class="border border-[var(--color-border)] p-6 hover:border-[var(--color-border-bright)] transition-colors">
+            <span class="font-mono text-4xl md:text-5xl text-[var(--color-bone)] tabular-nums">
+              <CountUp client:visible to={369} duration={2.0} />
+            </span>
+            <p class="annotation annotation-dim mt-3">TESTS</p>
+          </div>
+        </Reveal>
+        <Reveal delay={0.3}>
+          <div class="border border-[var(--color-border)] p-6 hover:border-[var(--color-signal-green)] transition-colors">
+            <span class="font-mono text-4xl md:text-5xl text-[var(--color-signal-green)] tabular-nums">
+              <CountUp client:visible to={0} duration={0.5} format={false} />
+            </span>
+            <p class="annotation annotation-dim mt-3">.UNWRAP() IN SRC</p>
+          </div>
+        </Reveal>
       </div>
 
       {/* Architecture cross-section — NERV Terminal Dogma inspired */}
