@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.5",
-    "@size-limit/preset-app": "^11.1.6",
+    "@size-limit/preset-small-lib": "^11.1.6",
     "@types/react": "^19.2.4",
     "@types/react-dom": "^19.2.3",
     "size-limit": "^11.1.6",
@@ -44,9 +44,10 @@
   },
   "size-limit": [
     {
-      "name": "homepage — total bundle gz",
+      "name": "total bundle — JS + CSS (brotli)",
       "path": "dist/**/*.{js,css}",
-      "limit": "120 KB"
+      "limit": "120 KB",
+      "brotli": true
     }
   ]
 }

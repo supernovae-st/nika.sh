@@ -1,293 +1,313 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import Rule from '~/components/ui/Rule.astro';
+import HairlineCard from '~/components/ui/HairlineCard.astro';
+import PressButton from '~/components/ui/PressButton.astro';
+import HeroAscii from '~/components/react/HeroAscii';
+import BrailleSpinner from '~/components/react/BrailleSpinner';
+import LiveStat from '~/components/react/LiveStat';
 import { getCollection } from 'astro:content';
+import dashboard from '~/data/dashboard.stub.json';
 
 const changelogEntries = (await getCollection('changelog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
+
+// Fallback values when real dashboard data hasn't been written yet
+const STATS = {
+  organsAdmitted: dashboard.total_crates_admitted || 5,
+  organsPlanned:  dashboard.total_crates_planned  || 40,
+  loc:            dashboard.total_loc             || 10434,
+  tests:          dashboard.total_tests           || 369,
+  unwraps:        dashboard.total_unwraps         || 0,
+};
 ---
 
 <BaseLayout
   title="Nika"
-  description="Nika is a semantic workflow engine for AI agents. One YAML file, five verbs, nine providers. Single Rust binary. AGPL."
+  description="Nika is alive — a semantic YAML workflow engine for AI. One Rust binary, five verbs, nine providers. AGPL forever."
   section=""
 >
-  {/* ========================================================================
-      HERO — modern, blue brand, mesh gradient, terminal demo on the right
-      ======================================================================== */}
-  <section class="relative overflow-hidden">
-    <div class="mesh-bg" aria-hidden="true"></div>
-    <div class="grid-floor" aria-hidden="true"></div>
-    <div class="dither-overlay" aria-hidden="true"></div>
+  {/* =====================================================================
+      § 00 — HERO
+      ASCII flow field + overlaid editorial headline. The hero IS the
+      signature: real text, selectable, driven by a 3-octave FBM shader.
+      ===================================================================== */}
+  <section class="relative min-h-[88svh] overflow-hidden grain-overlay isolate">
+    <div class="absolute inset-0 z-0">
+      <HeroAscii client:load cols={160} rows={46} speed={1} />
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="background: linear-gradient(180deg, var(--color-bg) 0%, transparent 18%, transparent 68%, var(--color-bg) 100%), radial-gradient(ellipse 60% 70% at 15% 30%, oklch(0.62 0.195 258 / 0.08), transparent 70%);"
+        aria-hidden="true"
+      ></div>
+    </div>
 
-    <div class="relative z-10 mx-auto max-w-[78rem] px-6 pt-24 pb-32 md:pt-32 md:pb-40">
-      <div class="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-20 items-center">
+    <div class="relative z-10 mx-auto max-w-[82rem] px-6 pt-24 pb-20 md:pt-32 md:pb-28">
+      <div class="max-w-3xl">
 
-        {/* LEFT — copy + CTAs */}
-        <div>
-          <a href="/changelog/" class="badge mb-8">
-            <span class="dot"></span>
-            <span>Week 22 · nika-catalog-verify admitted</span>
-            <span aria-hidden="true">→</span>
-          </a>
-
-          <h1 class="text-gradient text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-[-0.04em] leading-[1.0] mb-7">
-            Workflows for AI<br/>
-            <span class="text-gradient-blue">in a single YAML file.</span>
-          </h1>
-
-          <p class="text-lg lg:text-[1.15rem] text-[var(--color-fg-mute)] mb-10 max-w-[44ch] leading-relaxed">
-            A semantic workflow engine for AI agents. Five verbs, nine providers,
-            one Rust binary. AGPL — yours forever, runs on your laptop.
-          </p>
-
-          <div class="flex flex-wrap gap-3 items-center">
-            <a href="/install/" class="btn-primary">
-              Install Nika
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a href="/method/" class="btn-ghost">
-              Read the method
-            </a>
-          </div>
-
-          <div class="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-[var(--color-fg-dim)]">
-            <span>AGPL-3.0</span>
-            <span class="opacity-30">·</span>
-            <span>Rust</span>
-            <span class="opacity-30">·</span>
-            <span>macOS · Linux</span>
-            <span class="opacity-30">·</span>
-            <span>9 providers</span>
-            <span class="opacity-30">·</span>
-            <span>Open source</span>
-          </div>
+        <div class="mb-10 flex items-center gap-3 text-xs tracking-[0.12em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">
+          <BrailleSpinner client:load />
+          <a
+            href="/changelog/"
+            class="hover:text-[var(--color-fg)] transition-colors"
+          >nika grew &nbsp;·&nbsp; week 22 &nbsp;·&nbsp; nika-catalog-verify admitted</a>
+          <span class="text-[var(--color-fg-ghost)]">→</span>
         </div>
 
-        {/* RIGHT — terminal demo */}
-        <div class="terminal lg:translate-y-2">
-          <div class="terminal-bar">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">~/triage · nika</span>
-          </div>
-          <div class="terminal-body"><span class="terminal-prompt">$</span>nika run triage.nika.yaml
+        <h1 class="relative">
+          <span class="block mono-display mono-display-xl text-[var(--color-fg)]">
+            NIKA
+          </span>
+          <span
+            class="block font-[var(--font-display)] font-normal tracking-[-0.035em] leading-[0.92] text-[var(--color-fg)] mt-2"
+            style="font-size: clamp(2.5rem, 1.5rem + 6vw, 7rem);"
+          >
+            is <em class="editorial text-[var(--color-fg)]">alive</em>.
+          </span>
+        </h1>
 
-<span class="terminal-cmt"># 4 tasks, 1.42s</span>
-<span class="terminal-out">▸</span> <span class="terminal-key">fetch</span>   issue.json        <span class="terminal-out">200 · 42ms</span>
-<span class="terminal-out">▸</span> <span class="terminal-key">infer</span>   classify          <span class="terminal-str">claude-opus-4-6</span>
-  <span class="terminal-out">└</span> <span class="terminal-str">"label: bug, priority: high"</span>
-<span class="terminal-out">▸</span> <span class="terminal-key">invoke</span>  gh.label          <span class="terminal-str">"bug"</span> <span class="terminal-str">"P1"</span>
-<span class="terminal-out">▸</span> <span class="terminal-key">infer</span>   reply             <span class="terminal-str">claude-opus-4-6</span>
-  <span class="terminal-out">└</span> <span class="terminal-str">streaming</span><span class="terminal-cursor">&nbsp;</span>
+        <p class="mt-8 max-w-[44ch] text-lg md:text-xl leading-[1.55] text-[var(--color-fg-mute)]">
+          A semantic YAML workflow engine for AI — <em class="editorial text-[var(--color-fg)]">five verbs</em>, nine providers, one Rust
+          binary. AGPL forever. Watch it <em class="editorial text-[var(--color-fg)]">grow</em>.
+        </p>
 
-<span class="terminal-out">✓ workflow complete</span>
-</div>
+        <div class="mt-10 flex flex-wrap gap-3 items-center">
+          <PressButton variant="brand" href="/install/">
+            Install&nbsp;/&nbsp;curl
+            <span aria-hidden="true">▸</span>
+          </PressButton>
+          <PressButton variant="ghost" href="/method/">
+            Read the method
+          </PressButton>
+        </div>
+
+        <div class="mt-16 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.7rem] uppercase tracking-[0.14em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">
+          <span>AGPL-3.0</span>
+          <span class="text-[var(--color-fg-ghost)]">·</span>
+          <span>Rust</span>
+          <span class="text-[var(--color-fg-ghost)]">·</span>
+          <span>macOS · Linux</span>
+          <span class="text-[var(--color-fg-ghost)]">·</span>
+          <span>9 providers</span>
+          <span class="text-[var(--color-fg-ghost)]">·</span>
+          <span>Single binary</span>
         </div>
       </div>
     </div>
   </section>
 
-  {/* ========================================================================
-      VALUE PROP — three clean cards, no mono fatigue, no §-labels
-      ======================================================================== */}
-  <section class="border-t border-[var(--color-border)] bg-[var(--color-bg)]">
-    <div class="mx-auto max-w-[78rem] px-6 py-24 md:py-32">
-      <div class="max-w-2xl mb-16">
-        <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-4 text-[var(--color-fg)]">
-          One file, the whole pipeline.
+  {/* =====================================================================
+      § 01 — VITAL SIGNS (live stats)
+      ===================================================================== */}
+  <section class="edge-rule-top edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 py-16 md:py-20">
+      <Rule number="01" label="§ VITAL SIGNS" variant="faint" class="mb-10" />
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+        <div>
+          <div class="flex items-baseline gap-1">
+            <LiveStat client:visible to={STATS.organsAdmitted} />
+            <span class="mono-display mono-display-md text-[var(--color-fg-dim)]">/{STATS.organsPlanned}</span>
+          </div>
+          <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">organs admitted</div>
+        </div>
+        <div>
+          <LiveStat client:visible to={STATS.loc} />
+          <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">lines of Rust</div>
+        </div>
+        <div>
+          <LiveStat client:visible to={STATS.tests} />
+          <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">tests passing</div>
+        </div>
+        <div>
+          <LiveStat client:visible to={STATS.unwraps} />
+          <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">.unwrap() in src</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 02 — WORKFLOWS ARE TEXT (YAML demo)
+      ===================================================================== */}
+  <section class="edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
+      <Rule number="02" label="§ A WORKFLOW" variant="faint" class="mb-12" />
+
+      <div class="grid lg:grid-cols-[0.9fr_1.4fr] gap-12 lg:gap-16 items-start">
+        <div>
+          <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
+            Workflows are <em class="editorial">text</em>.
+          </h2>
+          <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[42ch]">
+            A task has an <code class="inline-code">id</code>, one verb, and an
+            optional <code class="inline-code">depends_on</code>. Tasks form a DAG.
+            Nika executes in topological order, parallelises what it can,
+            streams events as it goes — the same YAML is read by the engine
+            and understood by the human.
+          </p>
+          <div class="mt-8">
+            <PressButton variant="ghost" href="/method/">
+              Read the method&nbsp;→
+            </PressButton>
+          </div>
+        </div>
+
+        <HairlineCard edge chamfer="tr" class="!p-0 overflow-hidden">
+          <div class="flex items-center gap-2 px-4 py-3 edge-rule-bottom bg-[var(--color-sunken)]">
+            <span class="inline-block w-2.5 h-2.5 [border-radius:1px] bg-[var(--color-brand)]" aria-hidden="true"></span>
+            <span class="text-[0.7rem] uppercase tracking-[0.14em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">
+              triage.nika.yaml
+            </span>
+            <span class="ml-auto text-[0.7rem] text-[var(--color-fg-dim)] font-[var(--font-mono)]">v0.12</span>
+          </div>
+          <pre class="p-6 font-[var(--font-mono)] text-[0.86rem] leading-[1.65] text-[var(--color-fg)] overflow-x-auto whitespace-pre">
+<span class="text-[var(--color-fg-dim)]"># nika grew this workflow — 4 tasks, 1 DAG</span>
+<span class="text-[var(--color-cyan)]">schema</span>: nika/workflow@<span class="text-[var(--color-emerald)]">0.12</span>
+<span class="text-[var(--color-cyan)]">workflow</span>: triage
+
+<span class="text-[var(--color-cyan)]">tasks</span>:
+  - <span class="text-[var(--color-cyan)]">id</span>: classify
+    <span class="text-[var(--color-cyan)]">infer</span>:
+      <span class="text-[var(--color-cyan)]">provider</span>: anthropic
+      <span class="text-[var(--color-cyan)]">model</span>: claude-opus-4-6
+      <span class="text-[var(--color-cyan)]">prompt</span>: <span class="text-[var(--color-emerald)]">"Classify issue: &#123;&#123; inputs.body &#125;&#125;"</span>
+      <span class="text-[var(--color-cyan)]">structured</span>: &#123; <span class="text-[var(--color-cyan)]">label</span>: string, <span class="text-[var(--color-cyan)]">priority</span>: enum &#125;
+
+  - <span class="text-[var(--color-cyan)]">id</span>: label
+    <span class="text-[var(--color-cyan)]">depends_on</span>: [classify]
+    <span class="text-[var(--color-cyan)]">invoke</span>:
+      <span class="text-[var(--color-cyan)]">tool</span>: gh.label
+      <span class="text-[var(--color-cyan)]">input</span>: <span class="text-[var(--color-emerald)]">"&#123;&#123; tasks.classify.output &#125;&#125;"</span></pre>
+        </HairlineCard>
+      </div>
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 03 — THE SHAPE OF NIKA (3 cards)
+      ===================================================================== */}
+  <section class="edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
+      <Rule number="03" label="§ THE SHAPE" variant="faint" class="mb-12" />
+
+      <div class="max-w-2xl mb-14">
+        <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
+          Three rules. Nothing <em class="editorial">else</em>.
         </h2>
-        <p class="text-lg text-[var(--color-fg-mute)] leading-relaxed">
-          The same YAML is read by the engine and understood by the human. No DSL,
-          no callbacks scattered across nodes, no Python pretending to be config.
-        </p>
       </div>
 
       <div class="grid gap-5 md:grid-cols-3">
-        <div class="card">
-          <div class="w-10 h-10 mb-5 flex items-center justify-center rounded-lg bg-[var(--color-brand-soft)]/30 border border-[var(--color-brand)]/30">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-brand)]">
-              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-            </svg>
+        <HairlineCard chamfer="tl">
+          <div class="mono-display mono-display-sm text-[var(--color-brand)] mb-5">
+            01 · SEMANTIC
           </div>
-          <h3 class="text-lg font-semibold mb-2 text-[var(--color-fg)]">Semantic</h3>
-          <p class="text-[var(--color-fg-mute)] text-[0.9375rem] leading-relaxed">
-            Five verbs cover everything: <code class="inline-code">exec</code>, <code class="inline-code">fetch</code>, <code class="inline-code">invoke</code>, <code class="inline-code">infer</code>, <code class="inline-code">agent</code>. Closed set. The schema is the contract.
+          <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
+            Five verbs. Closed set.
+          </h3>
+          <p class="text-[0.925rem] text-[var(--color-fg-mute)] leading-[1.65]">
+            <code class="inline-code">exec</code>, <code class="inline-code">fetch</code>, <code class="inline-code">invoke</code>,
+            <code class="inline-code">infer</code>, <code class="inline-code">agent</code>.
+            The schema is the contract. No DSL, no callbacks, no Python pretending to be config.
           </p>
-        </div>
+        </HairlineCard>
 
-        <div class="card">
-          <div class="w-10 h-10 mb-5 flex items-center justify-center rounded-lg bg-[var(--color-brand-soft)]/30 border border-[var(--color-brand)]/30">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-brand)]">
-              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-3.086-3.086a2 2 0 00-2.828 0L6 21"/>
-            </svg>
+        <HairlineCard chamfer="tl" brand>
+          <div class="mono-display mono-display-sm text-[var(--color-brand)] mb-5">
+            02 · SOVEREIGN
           </div>
-          <h3 class="text-lg font-semibold mb-2 text-[var(--color-fg)]">Sovereign</h3>
-          <p class="text-[var(--color-fg-mute)] text-[0.9375rem] leading-relaxed">
-            One Rust binary. Zero daemon. Your keys in your keychain. Any provider —
-            Anthropic, OpenAI, Google, Mistral, Ollama, local GGUF. AGPL forever.
+          <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
+            One binary. Your keys.
+          </h3>
+          <p class="text-[0.925rem] text-[var(--color-fg-mute)] leading-[1.65]">
+            No daemon. No cloud. Your keys live in your keychain — Anthropic,
+            OpenAI, Google, Mistral, Ollama, local GGUF. AGPL: yours forever,
+            forkable in anger.
           </p>
-        </div>
+        </HairlineCard>
 
-        <div class="card">
-          <div class="w-10 h-10 mb-5 flex items-center justify-center rounded-lg bg-[var(--color-brand-soft)]/30 border border-[var(--color-brand)]/30">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-brand)]">
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-            </svg>
+        <HairlineCard chamfer="tl">
+          <div class="mono-display mono-display-sm text-[var(--color-brand)] mb-5">
+            03 · CRAFTED
           </div>
-          <h3 class="text-lg font-semibold mb-2 text-[var(--color-fg)]">Crafted</h3>
-          <p class="text-[var(--color-fg-mute)] text-[0.9375rem] leading-relaxed">
-            Every crate passes 12 gates. Mutation tested ≥ 90%. Zero
-            <code class="inline-code">.unwrap()</code> in production. Built in public, week by week.
+          <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
+            Twelve gates. Zero <code class="inline-code">unwrap</code>.
+          </h3>
+          <p class="text-[0.925rem] text-[var(--color-fg-mute)] leading-[1.65]">
+            Every crate passes SPEC → TDD → IMPL → CLIPPY → MUTATION (≥90%) → 7
+            more. Built in public, week by week. Chrysalis is not a beta —
+            it's the witnessed growth of an organ toward <em class="editorial">emerge</em>.
           </p>
-        </div>
+        </HairlineCard>
       </div>
     </div>
   </section>
 
-  {/* ========================================================================
-      SHOW THE CODE — proper code block, no ASCII boxes
-      ======================================================================== */}
-  <section class="border-t border-[var(--color-border)]">
-    <div class="mx-auto max-w-[78rem] px-6 py-24 md:py-32">
-      <div class="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-16 items-start">
-        <div>
-          <span class="text-sm text-[var(--color-brand)] font-medium mb-3 block">A workflow</span>
-          <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-5 text-[var(--color-fg)]">
-            Workflows are text.
-          </h2>
-          <p class="text-[var(--color-fg-mute)] leading-relaxed mb-6">
-            A task has an <code class="inline-code">id</code>, one verb, and optional
-            <code class="inline-code">depends_on</code>. Tasks form a DAG. Nika executes
-            in topological order, parallelizes what it can, streams events as it goes.
-          </p>
-          <a href="/method/" class="btn-ghost">
-            Read the method
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
-
-        <div class="terminal">
-          <div class="terminal-bar">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">triage.nika.yaml</span>
-          </div>
-          <div class="terminal-body"><span class="terminal-key">schema</span>: nika/workflow@<span class="terminal-str">0.12</span>
-<span class="terminal-key">workflow</span>: triage
-
-<span class="terminal-key">tasks</span>:
-  - <span class="terminal-key">id</span>: classify
-    <span class="terminal-key">infer</span>:
-      <span class="terminal-key">provider</span>: anthropic
-      <span class="terminal-key">model</span>: claude-opus-4-6
-      <span class="terminal-key">prompt</span>: <span class="terminal-str">"Classify this issue: &#123;&#123; inputs.body &#125;&#125;"</span>
-      <span class="terminal-key">structured</span>: &#123; <span class="terminal-key">label</span>: string, <span class="terminal-key">priority</span>: enum &#125;
-
-  - <span class="terminal-key">id</span>: label
-    <span class="terminal-key">depends_on</span>: [classify]
-    <span class="terminal-key">invoke</span>:
-      <span class="terminal-key">tool</span>: gh.label
-      <span class="terminal-key">input</span>: <span class="terminal-str">"&#123;&#123; tasks.classify.output &#125;&#125;"</span>
-</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* ========================================================================
-      STATS — minimal, clean
-      ======================================================================== */}
-  <section class="border-t border-[var(--color-border)] bg-[var(--color-surface)]/30">
-    <div class="mx-auto max-w-[78rem] px-6 py-20">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div>
-          <div class="text-3xl md:text-4xl font-semibold text-[var(--color-fg)] mb-1">
-            5<span class="text-[var(--color-fg-dim)]">/40</span>
-          </div>
-          <div class="text-sm text-[var(--color-fg-mute)]">Organs admitted</div>
-        </div>
-        <div>
-          <div class="text-3xl md:text-4xl font-semibold text-[var(--color-fg)] mb-1">10,434</div>
-          <div class="text-sm text-[var(--color-fg-mute)]">Lines of Rust</div>
-        </div>
-        <div>
-          <div class="text-3xl md:text-4xl font-semibold text-[var(--color-fg)] mb-1">369</div>
-          <div class="text-sm text-[var(--color-fg-mute)]">Tests</div>
-        </div>
-        <div>
-          <div class="text-3xl md:text-4xl font-semibold text-[var(--color-green)] mb-1">0</div>
-          <div class="text-sm text-[var(--color-fg-mute)]">.unwrap() in src</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* ========================================================================
-      RECENT DEV LOGS — clean cards, no labels overload
-      ======================================================================== */}
+  {/* =====================================================================
+      § 04 — BUILT IN PUBLIC (latest dev logs)
+      ===================================================================== */}
   {changelogEntries.length > 0 && (
-    <section class="border-t border-[var(--color-border)]">
-      <div class="mx-auto max-w-[78rem] px-6 py-24 md:py-32">
+    <section class="edge-rule-bottom">
+      <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
+        <Rule number="04" label="§ DEV LOGS" variant="faint" class="mb-12" />
+
         <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
-          <div>
-            <span class="text-sm text-[var(--color-brand)] font-medium mb-3 block">Built in public</span>
-            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-fg)]">
-              Latest dev logs
-            </h2>
-          </div>
-          <a href="/changelog/" class="text-[var(--color-brand)] hover:text-[var(--color-brand-hover)] text-sm font-medium">
-            All logs →
-          </a>
+          <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)] max-w-[18ch]">
+            Built in <em class="editorial">public</em>.
+          </h2>
+          <a
+            href="/changelog/"
+            class="mono-display mono-display-sm text-[var(--color-brand)] hover:text-[var(--color-brand-hover)] transition-colors"
+          >ALL LOGS →</a>
         </div>
 
         <div class="grid gap-5 md:grid-cols-3">
-          {changelogEntries.map((entry) => (
-            <a href={`/changelog/${entry.id}/`} class="card group">
-              <div class="text-xs text-[var(--color-fg-dim)] mb-3">
-                Week {String(entry.data.week).padStart(2, '0')} · {entry.data.date.toISOString().slice(0, 10)}
+          {changelogEntries.map((entry, i) => (
+            <HairlineCard
+              as="article"
+              href={`/changelog/${entry.id}/`}
+              chamfer={i === 1 ? 'tr' : 'tl'}
+              class="group"
+            >
+              <div class="mono-display mono-display-sm text-[var(--color-fg-dim)] mb-5">
+                WEEK {String(entry.data.week).padStart(2, '0')} · {entry.data.date.toISOString().slice(0, 10)}
               </div>
-              <h3 class="text-lg font-semibold mb-2 text-[var(--color-fg)] group-hover:text-[var(--color-brand)] transition-colors">
+              <h3 class="font-[var(--font-display)] font-medium text-lg mb-3 text-[var(--color-fg)] group-hover:text-[var(--color-brand)] transition-colors">
                 {entry.data.title}
               </h3>
-              <p class="text-sm text-[var(--color-fg-mute)] line-clamp-3 leading-relaxed">
+              <p class="text-sm text-[var(--color-fg-mute)] line-clamp-3 leading-[1.65]">
                 {entry.data.summary}
               </p>
-            </a>
+            </HairlineCard>
           ))}
         </div>
       </div>
     </section>
   )}
 
-  {/* ========================================================================
-      CTA — one clean strip
-      ======================================================================== */}
-  <section class="border-t border-[var(--color-border)]">
-    <div class="mx-auto max-w-[78rem] px-6 py-24 md:py-28 text-center">
-      <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-5 text-gradient">
-        Built in public.<br/>
-        <span class="text-gradient-blue">Read the commits.</span>
+  {/* =====================================================================
+      § 05 — GROW WITH IT (final CTA)
+      ===================================================================== */}
+  <section class="relative overflow-hidden grain-overlay isolate">
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32 text-center relative z-10">
+      <Rule number="05" label="§ EMERGE" variant="brand" class="mb-12 max-w-xl mx-auto" />
+
+      <h2 class="font-[var(--font-display)] font-normal text-5xl md:text-7xl leading-[1.02] tracking-[-0.03em] text-[var(--color-fg)] max-w-[18ch] mx-auto">
+        Watch Nika <em class="editorial">grow</em>.
       </h2>
-      <p class="text-lg text-[var(--color-fg-mute)] mb-10 max-w-xl mx-auto">
-        Every Friday at 18:00 Paris we publish what grew that week. Honest numbers, real commits.
+      <p class="mt-6 text-lg text-[var(--color-fg-mute)] max-w-xl mx-auto leading-[1.65]">
+        Every Friday 18:00 Paris, we publish what grew that week.
+        Honest numbers. Real commits. No roadmap theatre.
       </p>
-      <div class="flex flex-wrap justify-center gap-3">
-        <a href="https://github.com/supernovae-st/nika" class="btn-primary">
-          github.com/supernovae-st/nika
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M5 3h6v6M11 3l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a href="/changelog/" class="btn-ghost">
+
+      <div class="mt-12 flex flex-wrap justify-center gap-3">
+        <PressButton variant="brand" href="https://github.com/supernovae-st/nika">
+          github.com/supernovae-st/nika&nbsp;↗
+        </PressButton>
+        <PressButton variant="ghost" href="/changelog/">
           Latest dev log
-        </a>
+        </PressButton>
       </div>
     </div>
   </section>

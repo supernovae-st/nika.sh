@@ -43,8 +43,9 @@ export function HeroAscii({
   useEffect(() => {
     setHydrated(true);
 
-    const node = preRef.current;
+    const node: HTMLPreElement | null = preRef.current;
     if (!node) return;
+    const target: HTMLPreElement = node;
 
     const prefersReduced = typeof matchMedia !== 'undefined'
       && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -98,7 +99,7 @@ export function HeroAscii({
         }
         out[y] = row;
       }
-      node.textContent = out.join('\n');
+      target.textContent = out.join('\n');
     }
 
     if (prefersReduced) {
@@ -112,16 +113,16 @@ export function HeroAscii({
       },
       { threshold: 0 }
     );
-    io.observe(node);
+    io.observe(target);
 
     const onVisibility = () => {
       if (document.hidden) state.visible = false;
-      else if (node.getBoundingClientRect().top < window.innerHeight) state.visible = true;
+      else if (target.getBoundingClientRect().top < window.innerHeight) state.visible = true;
     };
     document.addEventListener('visibilitychange', onVisibility);
 
     const onPointer = (e: PointerEvent) => {
-      const rect = node.getBoundingClientRect();
+      const rect = target.getBoundingClientRect();
       state.mx = (e.clientX - rect.left) / rect.width;
       state.my = (e.clientY - rect.top)  / rect.height;
     };
