@@ -6,6 +6,9 @@
 
 @import "tailwindcss";
 
+/* Geist + Geist Mono — Vercel's font, free, modern, Linear-grade */
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
+
 /* ========================================================================
    @theme — Tailwind v4 design tokens
    Locked narrative palette (see NIKA_NARRATIVE_LOCKED.md)
@@ -40,11 +43,19 @@
   --color-success:   var(--color-signal-green);
   --color-danger:    var(--color-fever-red);
 
-  /* Typography stacks */
-  --font-display: "Basteleur", "Instrument Serif", "Times New Roman", ui-serif, serif;
-  --font-mono:    "Departure Mono", "Berkeley Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  --font-body:    "Recursive", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-frame:   "JGS Font", "Departure Mono", ui-monospace, monospace;
+  /* Typography — modern, Linear/Vercel-grade */
+  --font-display: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body:    "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-frame:   "Geist Mono", ui-monospace, monospace;
+
+  /* Modern accent gradient stops (subtle violet/cyan added to brand) */
+  --grad-violet:  oklch(0.65 0.20 285);
+  --grad-cyan:    oklch(0.78 0.13 220);
+  --grad-orange:  var(--color-nika-orange);
+
+  /* Subtle dither noise — SVG data URI, used as bg overlay */
+  --dither-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 
   /* Motion — two curves, no third */
   --ease-zoom: cubic-bezier(0.16, 1, 0.3, 1);
@@ -125,6 +136,182 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ========================================================================
+   Modern utilities — mesh gradients, dither, glow, pill button
+   ======================================================================== */
+
+/* Mesh gradient hero background — navy base + orange/violet/cyan blobs */
+.mesh-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 20% 0%, oklch(0.65 0.20 285 / 0.18), transparent 60%),
+    radial-gradient(ellipse 50% 70% at 80% 20%, oklch(0.74 0.16 35 / 0.20), transparent 65%),
+    radial-gradient(ellipse 60% 60% at 50% 100%, oklch(0.78 0.13 220 / 0.10), transparent 70%),
+    var(--color-space-navy);
+  z-index: 0;
+}
+
+/* Subtle dither noise overlay — gives that "scan line / film grain" feel */
+.dither-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: var(--dither-noise);
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Animated grid floor — Vercel/Tron style */
+.grid-floor {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, oklch(0.30 0.02 240 / 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.30 0.02 240 / 0.18) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 50% at 50% 0%, #000 30%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gradient text — modern Linear/Vercel headline */
+.text-gradient {
+  background: linear-gradient(180deg, var(--color-bone) 30%, oklch(0.93 0.004 240 / 0.55));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-warm {
+  background: linear-gradient(135deg, var(--color-nika-orange), var(--color-chrysalis-amber));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Modern pill button with glow on hover */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-nika-orange);
+  color: var(--color-space-navy);
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: oklch(0.78 0.18 40);
+  box-shadow: 0 8px 32px -8px oklch(0.74 0.16 35 / 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  color: var(--color-bone);
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border-radius: 10px;
+  border: 1px solid var(--color-border-bright);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  border-color: oklch(0.55 0.02 240);
+  background: oklch(0.20 0.010 240 / 0.4);
+}
+
+/* Modern badge — pill, subtle glow */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  background: oklch(0.20 0.010 240 / 0.6);
+  color: var(--color-bone-mute);
+  border: 1px solid var(--color-border-bright);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+.badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 999px;
+  background: var(--color-nika-orange);
+  box-shadow: 0 0 8px var(--color-nika-orange);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Modern terminal window — like Warp/iTerm screenshots */
+.terminal {
+  background: oklch(0.10 0.010 240);
+  border: 1px solid var(--color-border-bright);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 64px -16px oklch(0 0 0 / 0.5),
+    0 0 0 1px oklch(0.30 0.02 240 / 0.3) inset;
+}
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: oklch(0.14 0.010 240);
+  border-bottom: 1px solid var(--color-border);
+}
+.terminal-dot {
+  width: 12px; height: 12px;
+  border-radius: 999px;
+}
+.terminal-dot.red    { background: #ff5f57; }
+.terminal-dot.yellow { background: #febc2e; }
+.terminal-dot.green  { background: #28c840; }
+.terminal-title {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-bone-mute);
+}
+.terminal-body {
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--color-bone);
+  overflow-x: auto;
+}
+.terminal-prompt { color: var(--color-nika-orange); margin-right: 0.5rem; }
+.terminal-out    { color: var(--color-bone-mute); }
+.terminal-key    { color: oklch(0.78 0.13 220); }   /* cyan */
+.terminal-str    { color: oklch(0.74 0.14 145); }   /* lichen */
+.terminal-cursor {
+  display: inline-block;
+  width: 0.55ch;
+  background: var(--color-nika-orange);
+  margin-left: 1px;
+  animation: blink 1s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
 
 /* ========================================================================
    Utility classes (not generated by Tailwind — hand-authored)

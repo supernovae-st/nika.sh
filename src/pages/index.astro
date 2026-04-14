@@ -17,63 +17,82 @@ const changelogEntries = (await getCollection('changelog', ({ data }) => !data.d
   section=""
 >
   {/* ========================================================================
-      HERO — ceremonial, governing sentence, minimal.
-      Three.js dot grid background (hexagonal Bayer-jittered, slow pulse,
-      RGB shift + bloom). client:visible to defer load until in viewport.
+      HERO — modern Linear-grade. Mesh gradient + grid floor + dither overlay.
+      Big gradient headline, clear value prop, real animated terminal demo.
       ======================================================================== */}
-  <section class="relative overflow-hidden min-h-[88vh] flex items-center">
-    {/* Three.js animated background — lazy-loaded */}
-    <HeroDots client:visible />
+  <section class="relative overflow-hidden min-h-[92vh] flex items-center">
+    {/* Layered backgrounds — mesh gradient, grid, subtle dither */}
+    <div class="mesh-bg" aria-hidden="true"></div>
+    <div class="grid-floor" aria-hidden="true"></div>
+    <div class="dither-overlay" aria-hidden="true"></div>
 
-    {/* Subtle gradient mask — fades dots near edges */}
-    <div
-      class="absolute inset-0 z-[1] pointer-events-none"
-      style="background: radial-gradient(ellipse at center, transparent 30%, var(--color-space-navy) 90%);"
-      aria-hidden="true"
-    />
+    <div class="relative z-10 mx-auto max-w-[72rem] px-6 pt-24 pb-28 md:pt-32 md:pb-36 w-full">
+      <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
 
-    <div class="relative z-10 mx-auto max-w-[72rem] px-6 pt-16 md:pt-28 pb-24 md:pb-32 w-full">
+        {/* LEFT — copy + CTAs */}
+        <div>
+          {/* Live status badge */}
+          <a href="/changelog" class="badge mb-8 hover:border-[var(--color-nika-orange)] transition-colors">
+            <span class="dot"></span>
+            <span>Week 22 — nika-catalog-verify admitted</span>
+            <span aria-hidden="true">→</span>
+          </a>
 
-      <span class="annotation annotation-orange block mb-6">
-        ◆ CHRYSALIS · v0.90.0 · WEEK 22 OF 48
-      </span>
+          {/* Headline — gradient text, big, modern */}
+          <h1 class="text-gradient text-5xl sm:text-6xl lg:text-7xl font-bold tracking-[-0.04em] leading-[0.95] mb-6">
+            Workflows for AI<br/>
+            <span class="text-gradient-warm">in a single YAML file.</span>
+          </h1>
 
-      <h1 class="display-hero mb-8 max-w-[16ch]">
-        Nika is alive.<br />
-        <span class="text-[var(--color-nika-orange)]">Watch it grow.</span>
-      </h1>
+          {/* Subtitle — clear, friendly, direct */}
+          <p class="text-lg lg:text-xl text-[var(--color-bone-mute)] mb-10 max-w-[40ch] leading-relaxed">
+            Nika is a semantic workflow engine for AI agents. One file, five verbs,
+            nine providers. Single Rust binary. AGPL — yours forever.
+          </p>
 
-      <p class="prose-nika text-lg md:text-xl text-[var(--color-bone-mute)] mb-10 max-w-[34rem]">
-        A semantic YAML workflow engine for AI. Not an agent framework, not a chatbot
-        wrapper — the same file read by the machine and understood by the human.
-        Grown one cell at a time, in public, inside a glass chrysalis.
-      </p>
+          <div class="flex flex-wrap gap-3 items-center">
+            <a href="/install/" class="btn-primary">
+              Install Nika
+              <span aria-hidden="true">→</span>
+            </a>
+            <a href="/method/" class="btn-ghost">
+              Read the method
+            </a>
+          </div>
 
-      <div class="flex flex-wrap gap-4 items-center">
-        <a
-          href="/method"
-          class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-nika-orange)] text-[var(--color-nika-orange)] hover:bg-[var(--color-nika-orange)] hover:text-[var(--color-space-navy)] transition-colors"
-        >
-          Read the method
-          <span aria-hidden="true">→</span>
-        </a>
-        <a
-          href="/changelog"
-          class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-border-bright)] text-[var(--color-bone)] hover:border-[var(--color-bone)] transition-colors"
-        >
-          Watch it grow
-          <span aria-hidden="true">→</span>
-        </a>
+          {/* Trust strip */}
+          <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs text-[var(--color-dim-star)]">
+            <span class="font-mono">AGPL-3.0</span>
+            <span class="font-mono">Rust</span>
+            <span class="font-mono">macOS · Linux</span>
+            <span class="font-mono">9 providers</span>
+            <span class="font-mono">Anthropic · OpenAI · Ollama · GGUF</span>
+          </div>
+        </div>
+
+        {/* RIGHT — animated terminal demo */}
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">~/projects/triage · nika</span>
+          </div>
+          <div class="terminal-body">
+<span class="terminal-prompt">$</span>nika run triage.nika.yaml
+
+<span class="terminal-out">▶</span> <span class="terminal-key">fetch</span>     issue.json        <span class="terminal-out">200</span> <span class="terminal-out">42ms</span>
+<span class="terminal-out">▶</span> <span class="terminal-key">infer</span>     classify          <span class="terminal-str">claude-opus-4-6</span>
+  <span class="terminal-out">└─</span> <span class="terminal-str">"label: bug, priority: high"</span>
+<span class="terminal-out">▶</span> <span class="terminal-key">invoke</span>    gh.label          <span class="terminal-str">"bug"</span> <span class="terminal-str">"P1"</span>
+<span class="terminal-out">▶</span> <span class="terminal-key">infer</span>     reply             <span class="terminal-str">claude-opus-4-6</span>
+  <span class="terminal-out">└─</span> <span class="terminal-str">streaming…</span><span class="terminal-cursor">&nbsp;</span>
+
+<span class="terminal-out">✓ workflow complete · 1.42s · 4 tasks</span>
+          </div>
+        </div>
       </div>
     </div>
-
-    {/* Edge-anchored corner annotations — "everything is labeled" */}
-    <span class="annotation annotation-dim absolute top-6 right-6 hidden lg:block">
-      [48.8566, 2.3522] · PARIS
-    </span>
-    <span class="annotation annotation-dim absolute bottom-6 right-6 hidden lg:block">
-      T+22WK · BUILD 7e6b4d943
-    </span>
   </section>
 
   {/* ========================================================================
