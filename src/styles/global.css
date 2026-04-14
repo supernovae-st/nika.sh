@@ -1,99 +1,83 @@
 /*
  * nika.sh — global styles
- * Tailwind v4 + locked narrative palette
+ * Modern dev-tool aesthetic. Blue brand. ONE typography system.
  * License: AGPL-3.0-or-later
  */
 
-@import "tailwindcss";
-
-/* Geist + Geist Mono — Vercel's font, free, modern, Linear-grade */
+/* Geist + Geist Mono — modern, free, friendly. MUST come before @import "tailwindcss". */
 @import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap");
+@import "tailwindcss";
 
 /* ========================================================================
    @theme — Tailwind v4 design tokens
-   Locked narrative palette (see NIKA_NARRATIVE_LOCKED.md)
+   Blue brand. Modern. No more navy/orange-as-primary slop.
    ======================================================================== */
 
 @theme {
-  /* Surfaces — navy-based, cooler-than-pure */
-  --color-space-navy:     #0B0D17;
-  --color-space-panel:    #11131E;
-  --color-space-raised:   #16182A;
-  --color-space-sunken:   #070811;
+  /* Surfaces — near-black with subtle blue tint */
+  --color-bg:             #08090C;
+  --color-surface:        #0F1117;
+  --color-surface-2:      #161922;
+  --color-surface-3:      #1E2230;
 
   /* Borders */
-  --color-border:         #1F2333;
-  --color-border-bright:  #2C3145;
+  --color-border:         #1F2330;
+  --color-border-bright:  #2D3243;
 
   /* Text */
-  --color-bone:           #F4F1EA;
-  --color-bone-mute:      #A8A59E;
-  --color-dim-star:       #4A4E5C;
-  --color-text-ghost:     #2C2F3A;
+  --color-fg:             #FAFAFA;
+  --color-fg-mute:        #A1A1AA;
+  --color-fg-dim:         #71717A;
+  --color-fg-ghost:       #3F3F46;
 
-  /* Accents — one hot per screen (PRINCIPLES §6) */
-  --color-nika-orange:     #FF6B1A;   /* pulse, CTA, admitted nodes */
-  --color-chrysalis-amber: #F5C28B;   /* highlights, hover, secondary */
-  --color-signal-green:    #4ADE80;   /* gates passed */
-  --color-fever-red:       #EF4444;   /* shadow zones */
+  /* Brand — BLUE */
+  --color-brand:          #3B82F6;
+  --color-brand-hover:    #60A5FA;
+  --color-brand-soft:     #1E3A8A;
 
-  /* Functional aliases */
-  --color-primary:   var(--color-nika-orange);
-  --color-accent:    var(--color-chrysalis-amber);
-  --color-success:   var(--color-signal-green);
-  --color-danger:    var(--color-fever-red);
+  /* Accents (used sparingly) */
+  --color-cyan:           #22D3EE;   /* code highlights, hover glows */
+  --color-violet:         #8B5CF6;   /* gradient companion */
+  --color-amber:          #F59E0B;   /* warnings, "admitted" pulses */
+  --color-green:          #10B981;   /* success, gates passed */
+  --color-red:            #EF4444;   /* errors, shadow zones */
 
-  /* Typography — modern, Linear/Vercel-grade */
+  /* Typography — Geist only. ONE system. */
   --font-display: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-body:    "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono:    "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --font-frame:   "Geist Mono", ui-monospace, monospace;
+  --font-mono:    "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* Modern accent gradient stops (subtle violet/cyan added to brand) */
-  --grad-violet:  oklch(0.65 0.20 285);
-  --grad-cyan:    oklch(0.78 0.13 220);
-  --grad-orange:  var(--color-nika-orange);
-
-  /* Subtle dither noise — SVG data URI, used as bg overlay */
-  --dither-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-
-  /* Motion — two curves, no third */
-  --ease-zoom: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Easing */
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
   --ease-cut:  cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========================================================================
-   @font-face — progressive enhancement.
-   Self-host once WOFF2 files land in /public/fonts/.
-   For v0.1 the site falls back to system fonts (no FOIT risk).
+   Backwards-compat alias tokens (for legacy class refs in other pages
+   until they're rewritten). Map old names → new blue palette.
    ======================================================================== */
-
-/*
-@font-face {
-  font-family: "Basteleur";
-  src: url("/fonts/Basteleur-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-display: swap;
+:root {
+  --color-space-navy:     var(--color-bg);
+  --color-space-panel:    var(--color-surface);
+  --color-space-raised:   var(--color-surface-2);
+  --color-space-sunken:   #050608;
+  --color-bone:           var(--color-fg);
+  --color-bone-mute:      var(--color-fg-mute);
+  --color-dim-star:       var(--color-fg-dim);
+  --color-text-ghost:     var(--color-fg-ghost);
+  --color-nika-orange:    var(--color-brand);    /* legacy alias → blue */
+  --color-chrysalis-amber:var(--color-brand-hover);
+  --color-signal-green:   var(--color-green);
+  --color-fever-red:      var(--color-red);
 }
 
-@font-face {
-  font-family: "Departure Mono";
-  src: url("/fonts/DepartureMono-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
+/* Subtle dither noise — SVG data URI */
+:root {
+  --dither-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 }
-
-@font-face {
-  font-family: "Recursive";
-  src: url("/fonts/Recursive_VF.woff2") format("woff2-variations");
-  font-weight: 300 1000;
-  font-display: swap;
-  font-variation-settings: "MONO" 0, "CASL" 0, "slnt" 0, "CRSV" 0.5;
-}
-*/
 
 /* ========================================================================
-   Base styles
+   Base
    ======================================================================== */
 
 html {
@@ -106,28 +90,27 @@ html {
 }
 
 body {
-  background: var(--color-space-navy);
-  color: var(--color-bone);
+  background: var(--color-bg);
+  color: var(--color-fg);
   font-family: var(--font-body);
-  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  font-size: 16px;
   line-height: 1.6;
-  font-feature-settings: "kern", "liga", "calt";
+  font-feature-settings: "kern", "liga", "calt", "ss01", "ss02", "ss03";
   min-height: 100svh;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--color-nika-orange);
-  color: var(--color-space-navy);
+  background: var(--color-brand);
+  color: var(--color-bg);
 }
 
-/* Focus ring — orange, never outline:none */
 :focus-visible {
-  outline: 2px solid var(--color-nika-orange);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
-/* Respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -138,79 +121,80 @@ body {
 }
 
 /* ========================================================================
-   Modern utilities — mesh gradients, dither, glow, pill button
+   Mesh / grid / dither — modern dev-tool background layers
    ======================================================================== */
 
-/* Mesh gradient hero background — navy base + orange/violet/cyan blobs */
 .mesh-bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 80% at 20% 0%, oklch(0.65 0.20 285 / 0.18), transparent 60%),
-    radial-gradient(ellipse 50% 70% at 80% 20%, oklch(0.74 0.16 35 / 0.20), transparent 65%),
-    radial-gradient(ellipse 60% 60% at 50% 100%, oklch(0.78 0.13 220 / 0.10), transparent 70%),
-    var(--color-space-navy);
+    radial-gradient(ellipse 70% 90% at 15% 0%, oklch(0.55 0.18 250 / 0.22), transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 30%, oklch(0.65 0.16 200 / 0.18), transparent 65%),
+    radial-gradient(ellipse 60% 70% at 50% 100%, oklch(0.50 0.20 280 / 0.14), transparent 70%),
+    var(--color-bg);
   z-index: 0;
 }
 
-/* Subtle dither noise overlay — gives that "scan line / film grain" feel */
+.grid-floor {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, oklch(0.40 0.02 250 / 0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.40 0.02 250 / 0.10) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 85%);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .dither-overlay {
   position: absolute;
   inset: 0;
   background-image: var(--dither-noise);
-  opacity: 0.06;
+  opacity: 0.04;
   mix-blend-mode: overlay;
   pointer-events: none;
   z-index: 1;
 }
 
-/* Animated grid floor — Vercel/Tron style */
-.grid-floor {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, oklch(0.30 0.02 240 / 0.18) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.30 0.02 240 / 0.18) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 70% 50% at 50% 0%, #000 30%, transparent 80%);
-  pointer-events: none;
-  z-index: 0;
-}
+/* ========================================================================
+   Modern UI primitives — buttons, badges, cards, terminal
+   ======================================================================== */
 
-/* Gradient text — modern Linear/Vercel headline */
+/* Gradient text */
 .text-gradient {
-  background: linear-gradient(180deg, var(--color-bone) 30%, oklch(0.93 0.004 240 / 0.55));
+  background: linear-gradient(180deg, #FFFFFF 30%, #A1A1AA);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.text-gradient-blue {
+  background: linear-gradient(135deg, var(--color-brand), var(--color-cyan));
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
 }
 
-.text-gradient-warm {
-  background: linear-gradient(135deg, var(--color-nika-orange), var(--color-chrysalis-amber));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-/* Modern pill button with glow on hover */
+/* Buttons — modern, rounded, subtle glow */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  background: var(--color-nika-orange);
-  color: var(--color-space-navy);
+  padding: 0.625rem 1.125rem;
+  background: var(--color-brand);
+  color: #FFFFFF;
   font-family: var(--font-display);
   font-size: 0.9375rem;
-  font-weight: 600;
-  border-radius: 10px;
+  font-weight: 500;
+  border-radius: 8px;
   border: 1px solid transparent;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.18s var(--ease-cut);
   text-decoration: none;
+  white-space: nowrap;
 }
 .btn-primary:hover {
-  background: oklch(0.78 0.18 40);
-  box-shadow: 0 8px 32px -8px oklch(0.74 0.16 35 / 0.6);
+  background: var(--color-brand-hover);
+  box-shadow: 0 10px 30px -10px oklch(0.6 0.20 250 / 0.6);
   transform: translateY(-1px);
 }
 
@@ -218,65 +202,84 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.625rem 1.125rem;
   background: transparent;
-  color: var(--color-bone);
+  color: var(--color-fg);
   font-family: var(--font-display);
   font-size: 0.9375rem;
   font-weight: 500;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid var(--color-border-bright);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.18s var(--ease-cut);
   text-decoration: none;
+  white-space: nowrap;
 }
 .btn-ghost:hover {
-  border-color: oklch(0.55 0.02 240);
-  background: oklch(0.20 0.010 240 / 0.4);
+  border-color: oklch(0.55 0.02 250);
+  background: var(--color-surface-2);
 }
 
-/* Modern badge — pill, subtle glow */
+/* Badge — subtle pill, used for status/links */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.375rem 0.875rem;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
-  background: oklch(0.20 0.010 240 / 0.6);
-  color: var(--color-bone-mute);
-  border: 1px solid var(--color-border-bright);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  background: var(--color-surface-2);
+  color: var(--color-fg-mute);
+  border: 1px solid var(--color-border);
   border-radius: 999px;
-  backdrop-filter: blur(8px);
+  text-decoration: none;
+  transition: all 0.18s var(--ease-cut);
+}
+.badge:hover {
+  border-color: var(--color-brand);
+  color: var(--color-fg);
 }
 .badge .dot {
   width: 6px; height: 6px;
   border-radius: 999px;
-  background: var(--color-nika-orange);
-  box-shadow: 0 0 8px var(--color-nika-orange);
-  animation: pulse 2s ease-in-out infinite;
+  background: var(--color-brand);
+  box-shadow: 0 0 8px var(--color-brand);
+  animation: pulse 2.4s ease-in-out infinite;
 }
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0.5; }
 }
 
-/* Modern terminal window — like Warp/iTerm screenshots */
+/* Soft surface card */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s var(--ease-cut);
+}
+.card:hover {
+  border-color: var(--color-border-bright);
+  transform: translateY(-2px);
+}
+
+/* Modern terminal window — Warp/iTerm aesthetic, NO ASCII boxes */
 .terminal {
-  background: oklch(0.10 0.010 240);
+  background: #0A0B10;
   border: 1px solid var(--color-border-bright);
   border-radius: 12px;
   overflow: hidden;
   box-shadow:
-    0 24px 64px -16px oklch(0 0 0 / 0.5),
-    0 0 0 1px oklch(0.30 0.02 240 / 0.3) inset;
+    0 24px 64px -16px oklch(0 0 0 / 0.6),
+    0 0 0 1px oklch(0.30 0.02 250 / 0.15) inset;
 }
 .terminal-bar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: oklch(0.14 0.010 240);
+  background: #11131A;
   border-bottom: 1px solid var(--color-border);
 }
 .terminal-dot {
@@ -290,144 +293,171 @@ body {
   margin-left: auto;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--color-bone-mute);
+  color: var(--color-fg-dim);
 }
 .terminal-body {
   padding: 1.25rem 1.5rem;
   font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.65;
-  color: var(--color-bone);
+  color: var(--color-fg);
   overflow-x: auto;
+  font-feature-settings: "ss01", "ss02";
+  white-space: pre;
 }
-.terminal-prompt { color: var(--color-nika-orange); margin-right: 0.5rem; }
-.terminal-out    { color: var(--color-bone-mute); }
-.terminal-key    { color: oklch(0.78 0.13 220); }   /* cyan */
-.terminal-str    { color: oklch(0.74 0.14 145); }   /* lichen */
+.terminal-prompt { color: var(--color-brand); margin-right: 0.5rem; }
+.terminal-out    { color: var(--color-fg-mute); }
+.terminal-key    { color: var(--color-cyan); }
+.terminal-str    { color: var(--color-green); }
+.terminal-cmt    { color: var(--color-fg-dim); font-style: italic; }
 .terminal-cursor {
   display: inline-block;
   width: 0.55ch;
-  background: var(--color-nika-orange);
+  background: var(--color-brand);
   margin-left: 1px;
   animation: blink 1s steps(2) infinite;
+  vertical-align: text-bottom;
 }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* ========================================================================
-   Utility classes (not generated by Tailwind — hand-authored)
-   ======================================================================== */
-
-.annotation {
+/* Inline code */
+code, .inline-code {
   font-family: var(--font-mono);
-  font-size: clamp(0.625rem, 0.6rem + 0.1vw, 0.6875rem);
-  line-height: 1;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-bone-mute);
-  font-feature-settings: "tnum" 1, "zero" 1;
+  font-size: 0.9em;
+  background: var(--color-surface-2);
+  padding: 0.125rem 0.4rem;
+  border-radius: 4px;
+  color: var(--color-cyan);
+  border: 1px solid var(--color-border);
+  font-feature-settings: "ss01", "ss02";
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  border: 0;
+  color: inherit;
 }
 
-.annotation-orange { color: var(--color-nika-orange); }
-.annotation-dim    { color: var(--color-dim-star); }
+/* ========================================================================
+   Legacy utility classes (used across pages — repurposed to clean modern)
+   These keep older pages rendering nicely without rewriting every file.
+   ======================================================================== */
 
-.terminal-frame {
-  font-family: var(--font-frame);
+/* .annotation — was mono uppercase "§ 01 · LABEL". Now: subtle small caption. */
+.annotation,
+.annotation-orange,
+.annotation-dim {
+  display: inline-block;
+  font-family: var(--font-display);
   font-size: 0.8125rem;
-  line-height: 1.25;
+  font-weight: 500;
+  color: var(--color-fg-mute);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.annotation-orange { color: var(--color-brand); }
+.annotation-dim    { color: var(--color-fg-dim); }
+
+/* .display-hero — clean Geist heading, gradient */
+.display-hero {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.5rem, 2rem + 4vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  background: linear-gradient(180deg, #FFFFFF 30%, #A1A1AA);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* .terminal-frame — was ASCII box. Now: modern code card. */
+.terminal-frame {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
   white-space: pre;
-  color: var(--color-bone-mute);
-  background: var(--color-space-sunken);
+  color: var(--color-fg);
+  background: #0A0B10;
   border: 1px solid var(--color-border);
+  border-radius: 10px;
   padding: 1.25rem 1.5rem;
   overflow-x: auto;
 }
 
-.display-hero {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(3rem, 2.5rem + 5vw, 6rem);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-}
-
+/* .prose-nika — clean article body, Geist sans */
 .prose-nika {
   font-family: var(--font-body);
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.7;
   max-width: 38rem;
+  color: var(--color-fg);
 }
-
 .prose-nika h2 {
-  font-family: var(--font-mono);
-  font-size: 1.375rem;
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
   margin-top: 3rem;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
+  color: var(--color-fg);
 }
-
 .prose-nika h3 {
-  font-family: var(--font-mono);
-  font-size: 1.125rem;
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
+  color: var(--color-fg);
 }
-
 .prose-nika p {
   margin-bottom: 1.2em;
-  color: var(--color-bone);
+  color: var(--color-fg);
 }
-
 .prose-nika a {
-  color: var(--color-nika-orange);
+  color: var(--color-brand);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
-
 .prose-nika a:hover {
-  color: var(--color-chrysalis-amber);
+  color: var(--color-brand-hover);
 }
-
 .prose-nika code {
   font-family: var(--font-mono);
   font-size: 0.9375em;
-  background: var(--color-space-sunken);
-  padding: 0.1em 0.4em;
+  background: var(--color-surface-2);
+  color: var(--color-cyan);
+  padding: 0.125rem 0.4rem;
+  border-radius: 4px;
   border: 1px solid var(--color-border);
-  border-radius: 2px;
 }
-
 .prose-nika pre {
   font-family: var(--font-mono);
   font-size: 0.875rem;
-  background: var(--color-space-sunken);
+  background: #0A0B10;
   border: 1px solid var(--color-border);
+  border-radius: 10px;
   padding: 1rem 1.25rem;
   overflow-x: auto;
   margin: 1.5em 0;
 }
-
 .prose-nika pre code {
   background: transparent;
   padding: 0;
   border: 0;
+  color: inherit;
 }
-
 .prose-nika ul, .prose-nika ol {
   margin-bottom: 1.2em;
   padding-left: 1.5rem;
 }
-
 .prose-nika li {
   margin-bottom: 0.4em;
 }
-
 .prose-nika blockquote {
-  border-left: 2px solid var(--color-nika-orange);
+  border-left: 2px solid var(--color-brand);
   padding-left: 1rem;
   margin: 1.5em 0;
-  color: var(--color-bone-mute);
-  font-style: normal;
+  color: var(--color-fg-mute);
 }

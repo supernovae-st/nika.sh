@@ -1,10 +1,6 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import HeroDots from '~/components/react/HeroDots';
-import CountUp from '~/components/react/CountUp';
-import Reveal from '~/components/react/Reveal';
-import RevealText from '~/components/react/RevealText';
 
 const changelogEntries = (await getCollection('changelog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -13,285 +9,257 @@ const changelogEntries = (await getCollection('changelog', ({ data }) => !data.d
 
 <BaseLayout
   title="Nika"
-  description="Nika is alive. A semantic YAML workflow engine for AI — growing in public inside a glass chrysalis. AGPL, Rust, Paris."
+  description="Nika is a semantic workflow engine for AI agents. One YAML file, five verbs, nine providers. Single Rust binary. AGPL."
   section=""
 >
   {/* ========================================================================
-      HERO — modern Linear-grade. Mesh gradient + grid floor + dither overlay.
-      Big gradient headline, clear value prop, real animated terminal demo.
+      HERO — modern, blue brand, mesh gradient, terminal demo on the right
       ======================================================================== */}
-  <section class="relative overflow-hidden min-h-[92vh] flex items-center">
-    {/* Layered backgrounds — mesh gradient, grid, subtle dither */}
+  <section class="relative overflow-hidden">
     <div class="mesh-bg" aria-hidden="true"></div>
     <div class="grid-floor" aria-hidden="true"></div>
     <div class="dither-overlay" aria-hidden="true"></div>
 
-    <div class="relative z-10 mx-auto max-w-[72rem] px-6 pt-24 pb-28 md:pt-32 md:pb-36 w-full">
-      <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+    <div class="relative z-10 mx-auto max-w-[78rem] px-6 pt-24 pb-32 md:pt-32 md:pb-40">
+      <div class="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-20 items-center">
 
         {/* LEFT — copy + CTAs */}
         <div>
-          {/* Live status badge */}
-          <a href="/changelog" class="badge mb-8 hover:border-[var(--color-nika-orange)] transition-colors">
+          <a href="/changelog/" class="badge mb-8">
             <span class="dot"></span>
-            <span>Week 22 — nika-catalog-verify admitted</span>
+            <span>Week 22 · nika-catalog-verify admitted</span>
             <span aria-hidden="true">→</span>
           </a>
 
-          {/* Headline — gradient text, big, modern */}
-          <h1 class="text-gradient text-5xl sm:text-6xl lg:text-7xl font-bold tracking-[-0.04em] leading-[0.95] mb-6">
+          <h1 class="text-gradient text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-[-0.04em] leading-[1.0] mb-7">
             Workflows for AI<br/>
-            <span class="text-gradient-warm">in a single YAML file.</span>
+            <span class="text-gradient-blue">in a single YAML file.</span>
           </h1>
 
-          {/* Subtitle — clear, friendly, direct */}
-          <p class="text-lg lg:text-xl text-[var(--color-bone-mute)] mb-10 max-w-[40ch] leading-relaxed">
-            Nika is a semantic workflow engine for AI agents. One file, five verbs,
-            nine providers. Single Rust binary. AGPL — yours forever.
+          <p class="text-lg lg:text-[1.15rem] text-[var(--color-fg-mute)] mb-10 max-w-[44ch] leading-relaxed">
+            A semantic workflow engine for AI agents. Five verbs, nine providers,
+            one Rust binary. AGPL — yours forever, runs on your laptop.
           </p>
 
           <div class="flex flex-wrap gap-3 items-center">
             <a href="/install/" class="btn-primary">
               Install Nika
-              <span aria-hidden="true">→</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </a>
             <a href="/method/" class="btn-ghost">
               Read the method
             </a>
           </div>
 
-          {/* Trust strip */}
-          <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs text-[var(--color-dim-star)]">
-            <span class="font-mono">AGPL-3.0</span>
-            <span class="font-mono">Rust</span>
-            <span class="font-mono">macOS · Linux</span>
-            <span class="font-mono">9 providers</span>
-            <span class="font-mono">Anthropic · OpenAI · Ollama · GGUF</span>
+          <div class="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-[var(--color-fg-dim)]">
+            <span>AGPL-3.0</span>
+            <span class="opacity-30">·</span>
+            <span>Rust</span>
+            <span class="opacity-30">·</span>
+            <span>macOS · Linux</span>
+            <span class="opacity-30">·</span>
+            <span>9 providers</span>
+            <span class="opacity-30">·</span>
+            <span>Open source</span>
           </div>
         </div>
 
-        {/* RIGHT — animated terminal demo */}
+        {/* RIGHT — terminal demo */}
+        <div class="terminal lg:translate-y-2">
+          <div class="terminal-bar">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">~/triage · nika</span>
+          </div>
+          <div class="terminal-body"><span class="terminal-prompt">$</span>nika run triage.nika.yaml
+
+<span class="terminal-cmt"># 4 tasks, 1.42s</span>
+<span class="terminal-out">▸</span> <span class="terminal-key">fetch</span>   issue.json        <span class="terminal-out">200 · 42ms</span>
+<span class="terminal-out">▸</span> <span class="terminal-key">infer</span>   classify          <span class="terminal-str">claude-opus-4-6</span>
+  <span class="terminal-out">└</span> <span class="terminal-str">"label: bug, priority: high"</span>
+<span class="terminal-out">▸</span> <span class="terminal-key">invoke</span>  gh.label          <span class="terminal-str">"bug"</span> <span class="terminal-str">"P1"</span>
+<span class="terminal-out">▸</span> <span class="terminal-key">infer</span>   reply             <span class="terminal-str">claude-opus-4-6</span>
+  <span class="terminal-out">└</span> <span class="terminal-str">streaming</span><span class="terminal-cursor">&nbsp;</span>
+
+<span class="terminal-out">✓ workflow complete</span>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ========================================================================
+      VALUE PROP — three clean cards, no mono fatigue, no §-labels
+      ======================================================================== */}
+  <section class="border-t border-[var(--color-border)] bg-[var(--color-bg)]">
+    <div class="mx-auto max-w-[78rem] px-6 py-24 md:py-32">
+      <div class="max-w-2xl mb-16">
+        <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-4 text-[var(--color-fg)]">
+          One file, the whole pipeline.
+        </h2>
+        <p class="text-lg text-[var(--color-fg-mute)] leading-relaxed">
+          The same YAML is read by the engine and understood by the human. No DSL,
+          no callbacks scattered across nodes, no Python pretending to be config.
+        </p>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        <div class="card">
+          <div class="w-10 h-10 mb-5 flex items-center justify-center rounded-lg bg-[var(--color-brand-soft)]/30 border border-[var(--color-brand)]/30">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-brand)]">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 text-[var(--color-fg)]">Semantic</h3>
+          <p class="text-[var(--color-fg-mute)] text-[0.9375rem] leading-relaxed">
+            Five verbs cover everything: <code class="inline-code">exec</code>, <code class="inline-code">fetch</code>, <code class="inline-code">invoke</code>, <code class="inline-code">infer</code>, <code class="inline-code">agent</code>. Closed set. The schema is the contract.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="w-10 h-10 mb-5 flex items-center justify-center rounded-lg bg-[var(--color-brand-soft)]/30 border border-[var(--color-brand)]/30">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-brand)]">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-3.086-3.086a2 2 0 00-2.828 0L6 21"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 text-[var(--color-fg)]">Sovereign</h3>
+          <p class="text-[var(--color-fg-mute)] text-[0.9375rem] leading-relaxed">
+            One Rust binary. Zero daemon. Your keys in your keychain. Any provider —
+            Anthropic, OpenAI, Google, Mistral, Ollama, local GGUF. AGPL forever.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="w-10 h-10 mb-5 flex items-center justify-center rounded-lg bg-[var(--color-brand-soft)]/30 border border-[var(--color-brand)]/30">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-brand)]">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 text-[var(--color-fg)]">Crafted</h3>
+          <p class="text-[var(--color-fg-mute)] text-[0.9375rem] leading-relaxed">
+            Every crate passes 12 gates. Mutation tested ≥ 90%. Zero
+            <code class="inline-code">.unwrap()</code> in production. Built in public, week by week.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ========================================================================
+      SHOW THE CODE — proper code block, no ASCII boxes
+      ======================================================================== */}
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-[78rem] px-6 py-24 md:py-32">
+      <div class="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-16 items-start">
+        <div>
+          <span class="text-sm text-[var(--color-brand)] font-medium mb-3 block">A workflow</span>
+          <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-5 text-[var(--color-fg)]">
+            Workflows are text.
+          </h2>
+          <p class="text-[var(--color-fg-mute)] leading-relaxed mb-6">
+            A task has an <code class="inline-code">id</code>, one verb, and optional
+            <code class="inline-code">depends_on</code>. Tasks form a DAG. Nika executes
+            in topological order, parallelizes what it can, streams events as it goes.
+          </p>
+          <a href="/method/" class="btn-ghost">
+            Read the method
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
         <div class="terminal">
           <div class="terminal-bar">
             <span class="terminal-dot red"></span>
             <span class="terminal-dot yellow"></span>
             <span class="terminal-dot green"></span>
-            <span class="terminal-title">~/projects/triage · nika</span>
+            <span class="terminal-title">triage.nika.yaml</span>
           </div>
-          <div class="terminal-body">
-<span class="terminal-prompt">$</span>nika run triage.nika.yaml
+          <div class="terminal-body"><span class="terminal-key">schema</span>: nika/workflow@<span class="terminal-str">0.12</span>
+<span class="terminal-key">workflow</span>: triage
 
-<span class="terminal-out">▶</span> <span class="terminal-key">fetch</span>     issue.json        <span class="terminal-out">200</span> <span class="terminal-out">42ms</span>
-<span class="terminal-out">▶</span> <span class="terminal-key">infer</span>     classify          <span class="terminal-str">claude-opus-4-6</span>
-  <span class="terminal-out">└─</span> <span class="terminal-str">"label: bug, priority: high"</span>
-<span class="terminal-out">▶</span> <span class="terminal-key">invoke</span>    gh.label          <span class="terminal-str">"bug"</span> <span class="terminal-str">"P1"</span>
-<span class="terminal-out">▶</span> <span class="terminal-key">infer</span>     reply             <span class="terminal-str">claude-opus-4-6</span>
-  <span class="terminal-out">└─</span> <span class="terminal-str">streaming…</span><span class="terminal-cursor">&nbsp;</span>
+<span class="terminal-key">tasks</span>:
+  - <span class="terminal-key">id</span>: classify
+    <span class="terminal-key">infer</span>:
+      <span class="terminal-key">provider</span>: anthropic
+      <span class="terminal-key">model</span>: claude-opus-4-6
+      <span class="terminal-key">prompt</span>: <span class="terminal-str">"Classify this issue: &#123;&#123; inputs.body &#125;&#125;"</span>
+      <span class="terminal-key">structured</span>: &#123; <span class="terminal-key">label</span>: string, <span class="terminal-key">priority</span>: enum &#125;
 
-<span class="terminal-out">✓ workflow complete · 1.42s · 4 tasks</span>
-          </div>
+  - <span class="terminal-key">id</span>: label
+    <span class="terminal-key">depends_on</span>: [classify]
+    <span class="terminal-key">invoke</span>:
+      <span class="terminal-key">tool</span>: gh.label
+      <span class="terminal-key">input</span>: <span class="terminal-str">"&#123;&#123; tasks.classify.output &#125;&#125;"</span>
+</div>
         </div>
       </div>
     </div>
   </section>
 
   {/* ========================================================================
-      VALUE PROP — three nouns, Linear-restraint, mono labels
+      STATS — minimal, clean
       ======================================================================== */}
-  <section class="border-t border-[var(--color-border)]">
-    <div class="mx-auto max-w-[72rem] px-6 py-20 md:py-28 grid gap-10 md:grid-cols-3">
-      <article class="space-y-3">
-        <span class="annotation annotation-orange">§ 01 · SEMANTIC</span>
-        <h2 class="font-mono text-2xl leading-tight text-[var(--color-bone)]">
-          Workflows you can read.
-        </h2>
-        <p class="text-[var(--color-bone-mute)]">
-          One <code class="font-mono text-sm px-1 bg-[var(--color-space-sunken)] border border-[var(--color-border)]">.nika.yaml</code> file.
-          Same source for the machine and the human. No DSL. No YAML-that-pretends-to-be-Python.
-          The schema is the contract.
-        </p>
-      </article>
-
-      <article class="space-y-3">
-        <span class="annotation annotation-orange">§ 02 · SOVEREIGN</span>
-        <h2 class="font-mono text-2xl leading-tight text-[var(--color-bone)]">
-          Runs on your laptop.
-        </h2>
-        <p class="text-[var(--color-bone-mute)]">
-          Rust binary. Zero daemon. Your keys in your keychain. Any provider —
-          Anthropic, OpenAI, Ollama, local GGUF. No SaaS dependency. No vendor lock-in.
-          AGPL, so it stays that way.
-        </p>
-      </article>
-
-      <article class="space-y-3">
-        <span class="annotation annotation-orange">§ 03 · SLOW</span>
-        <h2 class="font-mono text-2xl leading-tight text-[var(--color-bone)]">
-          34 organs over a year.
-        </h2>
-        <p class="text-[var(--color-bone-mute)]">
-          Every crate passes 12 gates before admission. Mutation tested ≥ 90%.
-          No <code class="font-mono text-sm px-1 bg-[var(--color-space-sunken)] border border-[var(--color-border)]">.unwrap()</code> in src.
-          If it can't explain itself in 1500 lines, it gets split. Slow on purpose.
-        </p>
-      </article>
-    </div>
-  </section>
-
-  {/* ========================================================================
-      TERMINAL DEMO PREVIEW — a single .nika.yaml block, typeset as terminal
-      ======================================================================== */}
-  <section class="border-t border-[var(--color-border)]">
-    <div class="mx-auto max-w-[72rem] px-6 py-20">
-      <div class="grid gap-10 md:grid-cols-[14rem_1fr]">
+  <section class="border-t border-[var(--color-border)] bg-[var(--color-surface)]/30">
+    <div class="mx-auto max-w-[78rem] px-6 py-20">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <div>
-          <span class="annotation annotation-dim block mb-3">
-            FIG 01 · HELLO.NIKA.YAML
-          </span>
-          <p class="text-[var(--color-bone-mute)] text-sm">
-            A workflow is a text file. The verbs are <code class="font-mono">exec</code>, <code class="font-mono">fetch</code>, <code class="font-mono">invoke</code>, <code class="font-mono">infer</code>, <code class="font-mono">agent</code>. Everything else is data.
-          </p>
+          <div class="text-3xl md:text-4xl font-semibold text-[var(--color-fg)] mb-1">
+            5<span class="text-[var(--color-fg-dim)]">/40</span>
+          </div>
+          <div class="text-sm text-[var(--color-fg-mute)]">Organs admitted</div>
         </div>
-        <pre class="terminal-frame"><code>┌─ hello.nika.yaml ──────────────────────────────┐
-│                                                │
-│  schema: nika/workflow@0.12                    │
-│  workflow: hello                               │
-│                                                │
-│  tasks:                                        │
-│    - id: greet                                 │
-│      infer:                                    │
-│        provider: anthropic                     │
-│        model: claude-opus-4-6                  │
-│        prompt: "Say hi to the chrysalis."      │
-│                                                │
-│  ▊                                             │
-│                                                │
-└────────────────────────────────────────────────┘</code></pre>
+        <div>
+          <div class="text-3xl md:text-4xl font-semibold text-[var(--color-fg)] mb-1">10,434</div>
+          <div class="text-sm text-[var(--color-fg-mute)]">Lines of Rust</div>
+        </div>
+        <div>
+          <div class="text-3xl md:text-4xl font-semibold text-[var(--color-fg)] mb-1">369</div>
+          <div class="text-sm text-[var(--color-fg-mute)]">Tests</div>
+        </div>
+        <div>
+          <div class="text-3xl md:text-4xl font-semibold text-[var(--color-green)] mb-1">0</div>
+          <div class="text-sm text-[var(--color-fg-mute)]">.unwrap() in src</div>
+        </div>
       </div>
     </div>
   </section>
 
   {/* ========================================================================
-      CHRYSALIS PROGRESS — the organism's vital signs, real numbers
-      ======================================================================== */}
-  <section class="border-t border-[var(--color-border)]">
-    <div class="mx-auto max-w-[72rem] px-6 py-20 md:py-28">
-      <Reveal>
-        <span class="annotation annotation-dim block mb-2">§ 04 · VITAL SIGNS</span>
-        <h2 class="font-mono text-2xl leading-tight mb-10">Inside the chrysalis</h2>
-      </Reveal>
-
-      <div class="grid gap-6 md:grid-cols-4 mb-12">
-        <Reveal delay={0.0}>
-          <div class="border border-[var(--color-border)] p-6 hover:border-[var(--color-nika-orange)] transition-colors">
-            <span class="font-mono text-4xl md:text-5xl text-[var(--color-nika-orange)] tabular-nums">
-              <CountUp client:visible to={5} duration={1.6} format={false} suffix="/40" />
-            </span>
-            <p class="annotation annotation-dim mt-3">ORGANS ADMITTED</p>
-          </div>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <div class="border border-[var(--color-border)] p-6 hover:border-[var(--color-border-bright)] transition-colors">
-            <span class="font-mono text-4xl md:text-5xl text-[var(--color-bone)] tabular-nums">
-              <CountUp client:visible to={10434} duration={2.4} />
-            </span>
-            <p class="annotation annotation-dim mt-3">LINES OF RUST</p>
-          </div>
-        </Reveal>
-        <Reveal delay={0.2}>
-          <div class="border border-[var(--color-border)] p-6 hover:border-[var(--color-border-bright)] transition-colors">
-            <span class="font-mono text-4xl md:text-5xl text-[var(--color-bone)] tabular-nums">
-              <CountUp client:visible to={369} duration={2.0} />
-            </span>
-            <p class="annotation annotation-dim mt-3">TESTS</p>
-          </div>
-        </Reveal>
-        <Reveal delay={0.3}>
-          <div class="border border-[var(--color-border)] p-6 hover:border-[var(--color-signal-green)] transition-colors">
-            <span class="font-mono text-4xl md:text-5xl text-[var(--color-signal-green)] tabular-nums">
-              <CountUp client:visible to={0} duration={0.5} format={false} />
-            </span>
-            <p class="annotation annotation-dim mt-3">.UNWRAP() IN SRC</p>
-          </div>
-        </Reveal>
-      </div>
-
-      {/* Architecture cross-section — NERV Terminal Dogma inspired */}
-      <div class="border border-[var(--color-border)] p-6 md:p-8">
-        <span class="annotation annotation-dim block mb-4">FIG 02 · ANATOMY CROSS-SECTION</span>
-        <pre class="terminal-frame !border-0 !p-0 !bg-transparent text-xs md:text-sm"><code>{`L5 ┃ BINARY          nika                                        ░░░░░░
-L4 ┃ INTERFACES      cli · lsp · serve · init · lints            ░░░░░░
-L3 ┃ ORCHESTRATION   runtime · daemon                            ░░░░░░
-L2 ┃ DOMAIN          verb-exec · fetch · invoke · infer · agent  ░░░░░░
-L1 ┃ EFFECTS         fs · http · process · blob · clock · crypto ░░░░░░
-L0.5 KERNEL          kernel · kernel-mock                        ██████
-L0 ┃ FOUNDATIONS     error · catalog · schema · binding · event  ██░░░░
-    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                     ██ admitted    ░░ growing`}</code></pre>
-      </div>
-
-      <div class="mt-10 grid gap-4 md:grid-cols-5">
-        <a href="https://github.com/supernovae-st/nika" class="border border-[var(--color-signal-green)] p-4 hover:bg-[var(--color-signal-green)]/5 transition-colors">
-          <span class="annotation text-[var(--color-signal-green)] block mb-1">nika-error</span>
-          <span class="text-xs text-[var(--color-bone-mute)]">L0 · 1,013 LOC · 44 tests</span>
-        </a>
-        <a href="https://github.com/supernovae-st/nika" class="border border-[var(--color-signal-green)] p-4 hover:bg-[var(--color-signal-green)]/5 transition-colors">
-          <span class="annotation text-[var(--color-signal-green)] block mb-1">nika-catalog</span>
-          <span class="text-xs text-[var(--color-bone-mute)]">L0 · 3,741 LOC · 138 tests</span>
-        </a>
-        <a href="https://github.com/supernovae-st/nika" class="border border-[var(--color-signal-green)] p-4 hover:bg-[var(--color-signal-green)]/5 transition-colors">
-          <span class="annotation text-[var(--color-signal-green)] block mb-1">nika-kernel</span>
-          <span class="text-xs text-[var(--color-bone-mute)]">L0.5 · 3,375 LOC · 99 tests</span>
-        </a>
-        <a href="https://github.com/supernovae-st/nika" class="border border-[var(--color-signal-green)] p-4 hover:bg-[var(--color-signal-green)]/5 transition-colors">
-          <span class="annotation text-[var(--color-signal-green)] block mb-1">nika-kernel-mock</span>
-          <span class="text-xs text-[var(--color-bone-mute)]">L0.5 · 1,705 LOC · 88 tests</span>
-        </a>
-        <div class="border border-[var(--color-border)] border-dashed p-4 opacity-60">
-          <span class="annotation annotation-dim block mb-1">nika-schema</span>
-          <span class="text-xs text-[var(--color-dim-star)]">L0 · ~12k LOC · next</span>
-        </div>
-      </div>
-
-      <p class="text-sm text-[var(--color-bone-mute)] mt-8">
-        Numbers grep-verified from the <code class="font-mono text-xs px-1 bg-[var(--color-space-sunken)] border border-[var(--color-border)]">nika-diamond</code> branch.
-        Full inventory at <a href="https://docs.nika.sh/reference/crates" class="text-[var(--color-nika-orange)]">docs.nika.sh/reference/crates</a>.
-      </p>
-    </div>
-  </section>
-
-  {/* ========================================================================
-      RECENT DEV LOGS — 3 most recent changelog entries
+      RECENT DEV LOGS — clean cards, no labels overload
       ======================================================================== */}
   {changelogEntries.length > 0 && (
     <section class="border-t border-[var(--color-border)]">
-      <div class="mx-auto max-w-[72rem] px-6 py-20">
-        <div class="flex items-baseline justify-between mb-10 flex-wrap gap-4">
+      <div class="mx-auto max-w-[78rem] px-6 py-24 md:py-32">
+        <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
           <div>
-            <span class="annotation annotation-dim block mb-2">§ 04 · WHAT GREW</span>
-            <h2 class="font-mono text-2xl leading-tight">Latest dev logs</h2>
+            <span class="text-sm text-[var(--color-brand)] font-medium mb-3 block">Built in public</span>
+            <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-fg)]">
+              Latest dev logs
+            </h2>
           </div>
-          <a
-            href="/changelog"
-            class="font-mono text-sm uppercase tracking-[0.08em] text-[var(--color-nika-orange)] hover:text-[var(--color-chrysalis-amber)]"
-          >
+          <a href="/changelog/" class="text-[var(--color-brand)] hover:text-[var(--color-brand-hover)] text-sm font-medium">
             All logs →
           </a>
         </div>
 
-        <div class="grid gap-6 md:grid-cols-3">
+        <div class="grid gap-5 md:grid-cols-3">
           {changelogEntries.map((entry) => (
-            <article class="border border-[var(--color-border)] p-6 hover:border-[var(--color-border-bright)] transition-colors">
-              <span class="annotation annotation-dim block mb-3">
-                WEEK {String(entry.data.week).padStart(2, '0')} · {entry.data.date.toISOString().slice(0, 10)}
-              </span>
-              <h3 class="font-mono text-lg leading-snug mb-3">
-                <a href={`/changelog/${entry.id}`} class="hover:text-[var(--color-nika-orange)]">
-                  {entry.data.title}
-                </a>
+            <a href={`/changelog/${entry.id}/`} class="card group">
+              <div class="text-xs text-[var(--color-fg-dim)] mb-3">
+                Week {String(entry.data.week).padStart(2, '0')} · {entry.data.date.toISOString().slice(0, 10)}
+              </div>
+              <h3 class="text-lg font-semibold mb-2 text-[var(--color-fg)] group-hover:text-[var(--color-brand)] transition-colors">
+                {entry.data.title}
               </h3>
-              <p class="text-sm text-[var(--color-bone-mute)] line-clamp-3">{entry.data.summary}</p>
-            </article>
+              <p class="text-sm text-[var(--color-fg-mute)] line-clamp-3 leading-relaxed">
+                {entry.data.summary}
+              </p>
+            </a>
           ))}
         </div>
       </div>
@@ -299,22 +267,28 @@ L0 ┃ FOUNDATIONS     error · catalog · schema · binding · event  ██░
   )}
 
   {/* ========================================================================
-      CTA strip — the single action on this page
+      CTA — one clean strip
       ======================================================================== */}
   <section class="border-t border-[var(--color-border)]">
-    <div class="mx-auto max-w-[72rem] px-6 py-24 text-center">
-      <p class="annotation annotation-orange mb-4">◆ WELCOME INSIDE THE CHRYSALIS</p>
-      <p class="font-display text-3xl md:text-5xl leading-tight max-w-[28ch] mx-auto mb-8">
-        We publish every Friday.<br />
-        You can read the commits.
+    <div class="mx-auto max-w-[78rem] px-6 py-24 md:py-28 text-center">
+      <h2 class="text-3xl md:text-5xl font-semibold tracking-tight mb-5 text-gradient">
+        Built in public.<br/>
+        <span class="text-gradient-blue">Read the commits.</span>
+      </h2>
+      <p class="text-lg text-[var(--color-fg-mute)] mb-10 max-w-xl mx-auto">
+        Every Friday at 18:00 Paris we publish what grew that week. Honest numbers, real commits.
       </p>
-      <a
-        href="https://github.com/supernovae-st/nika"
-        class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-bone)] text-[var(--color-bone)] hover:bg-[var(--color-bone)] hover:text-[var(--color-space-navy)] transition-colors"
-      >
-        github.com/supernovae-st/nika
-        <span aria-hidden="true">↗</span>
-      </a>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="https://github.com/supernovae-st/nika" class="btn-primary">
+          github.com/supernovae-st/nika
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M5 3h6v6M11 3l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/changelog/" class="btn-ghost">
+          Latest dev log
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

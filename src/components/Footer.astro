@@ -2,41 +2,58 @@
 const buildDate = new Date().toISOString().slice(0, 10);
 ---
 
-<footer class="border-t border-[var(--color-border)] mt-24">
-  <div class="mx-auto max-w-[72rem] px-6 py-10 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+<footer class="border-t border-[var(--color-border)] mt-32">
+  <div class="mx-auto max-w-[78rem] px-6 py-16">
+    <div class="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
 
-    <div class="space-y-3">
-      <p class="annotation annotation-dim">
-        ◆ AGPL-3.0-or-later · SuperNovae Studio · Paris · 2026
-      </p>
-      <p class="font-mono text-sm text-[var(--color-bone-mute)] max-w-prose">
-        Nika is alive. We craft 34 crates over 11–12 months in a glass chrysalis.
-        Every Friday we publish what grew that week.
-      </p>
+      <div>
+        <a href="/" class="flex items-center gap-2 mb-4">
+          <div class="w-6 h-6 rounded-md bg-gradient-to-br from-[var(--color-brand)] to-[var(--color-cyan)] grid place-items-center">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 11V3l5 8 5-8v8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="text-base font-semibold text-[var(--color-fg)] tracking-tight">Nika</span>
+        </a>
+        <p class="text-sm text-[var(--color-fg-mute)] max-w-xs leading-relaxed">
+          A semantic workflow engine for AI agents. AGPL, Rust, Paris. Built in the open.
+        </p>
+      </div>
+
+      <nav aria-label="Product">
+        <h3 class="text-xs font-semibold text-[var(--color-fg)] mb-4 uppercase tracking-wide">Product</h3>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="/method/" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">Method</a></li>
+          <li><a href="/install/" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">Install</a></li>
+          <li><a href="/errors/" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">Error codes</a></li>
+          <li><a href="https://docs.nika.sh" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">Docs</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Build in public">
+        <h3 class="text-xs font-semibold text-[var(--color-fg)] mb-4 uppercase tracking-wide">Build in public</h3>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="/changelog/" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">Changelog</a></li>
+          <li><a href="/blog/" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">Blog</a></li>
+          <li><a href="/changelog.xml" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">RSS</a></li>
+          <li><a href="https://github.com/supernovae-st/nika" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">GitHub</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Resources">
+        <h3 class="text-xs font-semibold text-[var(--color-fg)] mb-4 uppercase tracking-wide">Resources</h3>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="/install.sh" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">install.sh</a></li>
+          <li><a href="/schema/workflow.json" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">JSON Schema</a></li>
+          <li><a href="/design.md" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">design.md</a></li>
+          <li><a href="/llms.txt" class="text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]">llms.txt</a></li>
+        </ul>
+      </nav>
     </div>
 
-    <nav class="grid gap-3 text-sm" aria-label="Footer">
-      <div class="grid grid-cols-2 gap-x-8 gap-y-2">
-        <a href="/method" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">method</a>
-        <a href="https://github.com/supernovae-st/nika" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">github</a>
-        <a href="/changelog" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">changelog</a>
-        <a href="/install" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">install</a>
-        <a href="/blog" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">blog</a>
-        <a href="/errors" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">errors</a>
-        <a href="/design.md" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">design.md</a>
-        <a href="/llms.txt" class="font-mono text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]">llms.txt</a>
-      </div>
-    </nav>
-  </div>
-
-  <div class="border-t border-[var(--color-border)]">
-    <div class="mx-auto max-w-[72rem] px-6 py-3 flex flex-wrap items-center justify-between gap-2">
-      <span class="annotation annotation-dim">
-        § nika · LAST BUILD {buildDate}
-      </span>
-      <span class="annotation annotation-dim">
-        Scaleway Object Storage · fr-par · Cloudflare CDN
-      </span>
+    <div class="mt-12 pt-8 border-t border-[var(--color-border)] flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--color-fg-dim)]">
+      <span>AGPL-3.0-or-later · SuperNovae Studio · Paris · 2026</span>
+      <span>Last build {buildDate}</span>
     </div>
   </div>
 </footer>
