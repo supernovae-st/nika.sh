@@ -1,23 +1,11 @@
 ---
-import PillNav from '~/components/ui/PillNav.astro';
-
+/**
+ * Placeholder during Phase 2 migration.
+ * Real editorial top bar lands in P2-8 (EditorialTopBar.astro).
+ */
 interface Props {
   currentSection?: string;
 }
-const { currentSection } = Astro.props;
-
-const links = [
-  { href: '/method/',    label: 'Method' },
-  { href: '/changelog/', label: 'Changelog' },
-  { href: '/blog/',      label: 'Blog' },
-  { href: '/install/',   label: 'Install' },
-];
+const { currentSection: _ } = Astro.props;
 ---
-
-<PillNav
-  links={links}
-  currentSection={currentSection}
-  ctaLabel="Install"
-  ctaHref="/install/"
-  githubHref="https://github.com/supernovae-st/nika"
-/>
+<div aria-hidden="true"></div>
