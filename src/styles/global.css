@@ -1549,6 +1549,27 @@ pre code {
 }
 
 /* ==========================================================================
+   § PILL — small verb / status tags used in use-case cards
+   ========================================================================== */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2em 0.6em;
+  font-family: var(--font-display-mono-stack);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--radius-hair);
+  border: 1px solid transparent;
+}
+.pill-brand   { color: var(--color-brand);   border-color: oklch(0.62 0.195 258 / 0.35); background: oklch(0.62 0.195 258 / 0.08); }
+.pill-cyan    { color: var(--color-cyan);    border-color: oklch(0.80 0.145 200 / 0.35); background: oklch(0.80 0.145 200 / 0.08); }
+.pill-emerald { color: var(--color-emerald); border-color: oklch(0.69 0.150 160 / 0.35); background: oklch(0.69 0.150 160 / 0.08); }
+.pill-violet  { color: var(--color-violet);  border-color: oklch(0.64 0.200 292 / 0.35); background: oklch(0.64 0.200 292 / 0.08); }
+.pill-amber   { color: var(--color-amber);   border-color: oklch(0.77 0.160 71  / 0.35); background: oklch(0.77 0.160 71  / 0.08); }
+
+/* ==========================================================================
    § SCROLL PROGRESS — thin brand line driven by CSS scroll-timeline
    Degrades gracefully: unsupported browsers see nothing (scaleX=0 default).
    ========================================================================== */

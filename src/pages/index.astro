@@ -53,7 +53,7 @@ const STATS = {
       ></div>
     </div>
 
-    <div class="relative z-10 mx-auto max-w-[82rem] px-6 pt-24 pb-20 md:pt-32 md:pb-28">
+    <div class="relative z-10 mx-auto max-w-[82rem] px-6 pt-12 pb-24 md:pt-16 md:pb-32">
       <div class="max-w-3xl">
 
         <div class="mb-10 flex items-center gap-3 text-xs tracking-[0.12em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">
@@ -113,11 +113,6 @@ const STATS = {
           <span>9 providers</span>
           <span class="text-[var(--color-fg-ghost)]">·</span>
           <span>Single binary</span>
-          <span class="text-[var(--color-fg-ghost)]">·</span>
-          <span class="hidden md:inline-flex items-center gap-1.5 text-[var(--color-fg-ghost)] cursor-default">
-            <kbd class="font-[var(--font-display-mono-stack)] text-[0.6rem] border border-[var(--color-border-bright)] rounded-[3px] px-1.5 py-0.5 text-[var(--color-fg-dim)]">⌘K</kbd>
-            <span>commands</span>
-          </span>
         </div>
       </div>
     </div>
@@ -133,7 +128,7 @@ const STATS = {
       § 01 — VITAL SIGNS (live stats + oscilloscope)
       ===================================================================== */}
   <section id="vital-signs" class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-16 md:py-20">
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
       <Rule number="01" label="§ VITAL SIGNS" variant="faint" class="mb-10" />
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 mb-12">
@@ -178,7 +173,7 @@ const STATS = {
       § 02 — WORKFLOWS ARE TEXT (YAML demo)
       ===================================================================== */}
   <section class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
       <Rule number="02" label="§ A WORKFLOW" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[0.9fr_1.4fr] gap-12 lg:gap-16 items-start">
@@ -232,11 +227,65 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 03 — FIVE VERBS (interactive verb explorer)
+      § 03 — HOW IT RUNS (execution model)
+      Four explicit steps: Write → Parse → Schedule → Stream.
+      Static HTML — no React island.
+      ===================================================================== */}
+  <section id="how-it-runs" class="edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+      <Rule number="03" label="§ HOW IT RUNS" variant="faint" class="mb-12" />
+
+      <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 items-start mb-16">
+        <div>
+          <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
+            Four steps.<br /><em class="editorial">No hidden state</em>.
+          </h2>
+          <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[42ch]">
+            The execution model is explicit. Every task declares its inputs, runs exactly one verb, and streams its result. No magic, no callbacks, no surprises.
+          </p>
+        </div>
+      </div>
+
+      {/* 4-step flow grid */}
+      <div class="grid grid-cols-2 md:grid-cols-4 border border-[var(--color-border)] bg-[var(--color-border)]" style="gap:1px;">
+        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4">
+          <div class="mono-display mono-display-sm text-[var(--color-brand)]">01 · WRITE</div>
+          <h3 class="font-[var(--font-display)] font-medium text-lg text-[var(--color-fg)] leading-[1.3]">A text file</h3>
+          <p class="text-[0.875rem] text-[var(--color-fg-mute)] leading-[1.65]">
+            Your workflow is a YAML file. Human-readable, version-controllable, diffable. No GUI required.
+          </p>
+        </div>
+        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4">
+          <div class="mono-display mono-display-sm text-[var(--color-cyan)]">02 · PARSE</div>
+          <h3 class="font-[var(--font-display)] font-medium text-lg text-[var(--color-fg)] leading-[1.3]">Build the DAG</h3>
+          <p class="text-[0.875rem] text-[var(--color-fg-mute)] leading-[1.65]">
+            Nika validates schema, resolves <code class="inline-code">depends_on</code> edges, and constructs a directed acyclic graph.
+          </p>
+        </div>
+        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4">
+          <div class="mono-display mono-display-sm text-[var(--color-emerald)]">03 · SCHEDULE</div>
+          <h3 class="font-[var(--font-display)] font-medium text-lg text-[var(--color-fg)] leading-[1.3]">Run in parallel</h3>
+          <p class="text-[0.875rem] text-[var(--color-fg-mute)] leading-[1.65]">
+            Topological sort determines order. Independent branches run concurrently. Blocked tasks wait.
+          </p>
+        </div>
+        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4">
+          <div class="mono-display mono-display-sm text-[var(--color-violet)]">04 · STREAM</div>
+          <h3 class="font-[var(--font-display)] font-medium text-lg text-[var(--color-fg)] leading-[1.3]">Events flow out</h3>
+          <p class="text-[0.875rem] text-[var(--color-fg-mute)] leading-[1.65]">
+            As each task starts and finishes, structured events stream out. Output binds to task IDs for downstream use.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 04 — FIVE VERBS (interactive verb explorer)
       ===================================================================== */}
   <section id="five-verbs" class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-      <Rule number="03" label="§ FIVE VERBS" variant="faint" class="mb-12" />
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+      <Rule number="04" label="§ FIVE VERBS" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[1fr_2.5fr] gap-12 lg:gap-16 items-start mb-12">
         <div>
@@ -258,11 +307,11 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 04 — THE SHAPE OF NIKA (3 cards)
+      § 05 — THE SHAPE OF NIKA (3 cards)
       ===================================================================== */}
   <section class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-      <Rule number="04" label="§ THE SHAPE" variant="faint" class="mb-12" />
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+      <Rule number="05" label="§ THE SHAPE" variant="faint" class="mb-12" />
 
       <div class="max-w-2xl mb-14">
         <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
@@ -317,12 +366,92 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 04 — CRATE CONSTELLATION
+      § 06 — BUILD WITH NIKA (use cases)
+      Four concrete things you can build with 5 verbs.
+      ===================================================================== */}
+  <section class="edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+      <Rule number="06" label="§ BUILD" variant="faint" class="mb-12" />
+
+      <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 items-start mb-14">
+        <div>
+          <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
+            What you <em class="editorial">build</em>.
+          </h2>
+          <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[38ch]">
+            Five verbs cover everything from a 4-line shell script to a fully autonomous multi-agent pipeline.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5">
+        <HairlineCard chamfer="tl">
+          <div class="mono-display mono-display-sm text-[var(--color-brand)] mb-4">DevOps</div>
+          <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
+            GitHub triage bot
+          </h3>
+          <p class="text-[0.9rem] text-[var(--color-fg-mute)] leading-[1.65] mb-5">
+            <code class="inline-code">infer</code> classifies the issue body. <code class="inline-code">invoke</code> applies labels and assigns reviewers. Runs on every new issue, zero glue code.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="pill pill-cyan">INFER</span>
+            <span class="pill pill-emerald">INVOKE</span>
+          </div>
+        </HairlineCard>
+
+        <HairlineCard chamfer="tr">
+          <div class="mono-display mono-display-sm text-[var(--color-cyan)] mb-4">CI/CD</div>
+          <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
+            Release pipeline
+          </h3>
+          <p class="text-[0.9rem] text-[var(--color-fg-mute)] leading-[1.65] mb-5">
+            <code class="inline-code">exec</code> runs your build. <code class="inline-code">fetch</code> polls the status API. <code class="inline-code">invoke</code> cuts the release. All wired in one YAML file.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="pill pill-brand">EXEC</span>
+            <span class="pill pill-cyan">FETCH</span>
+            <span class="pill pill-emerald">INVOKE</span>
+          </div>
+        </HairlineCard>
+
+        <HairlineCard chamfer="tl">
+          <div class="mono-display mono-display-sm text-[var(--color-violet)] mb-4">AI Research</div>
+          <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
+            Autonomous research agent
+          </h3>
+          <p class="text-[0.9rem] text-[var(--color-fg-mute)] leading-[1.65] mb-5">
+            <code class="inline-code">agent</code> searches and reads sources. <code class="inline-code">infer</code> synthesises a structured report. Runs overnight, no babysitting.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="pill pill-violet">AGENT</span>
+            <span class="pill pill-violet">INFER</span>
+          </div>
+        </HairlineCard>
+
+        <HairlineCard chamfer="tr">
+          <div class="mono-display mono-display-sm text-[var(--color-emerald)] mb-4">Local AI</div>
+          <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
+            Offline data pipeline
+          </h3>
+          <p class="text-[0.9rem] text-[var(--color-fg-mute)] leading-[1.65] mb-5">
+            <code class="inline-code">exec</code> preprocesses files. <code class="inline-code">infer</code> calls Ollama (local, no key). <code class="inline-code">exec</code> writes results. Fully air-gapped.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="pill pill-brand">EXEC</span>
+            <span class="pill pill-emerald">INFER (Ollama)</span>
+          </div>
+        </HairlineCard>
+      </div>
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 07 — CRATE CONSTELLATION
       SVG star map: 35 crates, admitted/growing/planned.
       ===================================================================== */}
   <section id="workspace" class="edge-rule-bottom overflow-hidden">
-    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-      <Rule number="05" label="§ THE WORKSPACE" variant="faint" class="mb-12" />
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+      <Rule number="07" label="§ THE WORKSPACE" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-16 items-center">
         <div>
@@ -362,8 +491,8 @@ const STATS = {
       Nine LLM providers: 6 admitted, 3 planned.
       ===================================================================== */}
   <section id="providers" class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-      <Rule number="06" label="§ PROVIDERS" variant="faint" class="mb-12" />
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+      <Rule number="08" label="§ PROVIDERS" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[1fr_2.2fr] gap-12 lg:gap-16 items-start mb-12">
         <div>
@@ -387,8 +516,8 @@ const STATS = {
       Horizontal scroll through Nika's weekly dev chapters.
       ===================================================================== */}
   <section id="chrysalis" class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 pt-20 md:pt-28 pb-0">
-      <Rule number="07" label="§ CHRYSALIS" variant="faint" class="mb-0" />
+    <div class="mx-auto max-w-[82rem] px-6 pt-24 md:pt-32 pb-0">
+      <Rule number="09" label="§ CHRYSALIS" variant="faint" class="mb-0" />
     </div>
     <HorizontalTimeline client:visible />
   </section>
@@ -398,8 +527,8 @@ const STATS = {
       ===================================================================== */}
   {changelogEntries.length > 0 && (
     <section class="edge-rule-bottom">
-      <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-        <Rule number="08" label="§ DEV LOGS" variant="faint" class="mb-12" />
+      <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+        <Rule number="10" label="§ DEV LOGS" variant="faint" class="mb-12" />
 
         <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
           <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)] max-w-[18ch]">
@@ -436,15 +565,14 @@ const STATS = {
   )}
 
   {/* =====================================================================
-      § 09 — SIGNAL (WebGL dither canvas)
+      § 11 — SIGNAL (WebGL dither canvas)
       Full-bleed atmospheric section — the "alive" signal made visible.
-      Raw WebGL Bayer dither field with mouse spotlight.
       ===================================================================== */}
   <section class="dither-section edge-rule-top edge-rule-bottom">
     <DitheringCanvas client:visible height={500} />
     <div class="dither-section-overlay" aria-hidden="true"></div>
     <div class="dither-section-content">
-      <div class="dither-eyebrow">§ 09 · signal</div>
+      <div class="dither-eyebrow">§ 11 · signal</div>
       <div class="dither-headline">
         Nika is <em style="font-style: italic; font-family: var(--font-editorial)">alive</em>.
       </div>
@@ -453,11 +581,69 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 10 — GROW WITH IT (final CTA)
+      § 12 — GET STARTED (inline install guide)
+      Three steps: install → verify → run. Terminal-style code blocks.
+      ===================================================================== */}
+  <section class="edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+      <Rule number="12" label="§ GET STARTED" variant="faint" class="mb-12" />
+
+      <div class="grid lg:grid-cols-[1fr_1.6fr] gap-16 items-start">
+        <div>
+          <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
+            Up in <em class="editorial">60 seconds</em>.
+          </h2>
+          <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[38ch]">
+            One binary. No daemon. No cloud account. Works on macOS and Linux — on your laptop, your CI, or your server.
+          </p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <PressButton variant="brand" href="/install/">
+              Full install guide&nbsp;→
+            </PressButton>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-0 border border-[var(--color-border-bright)] [border-radius:var(--radius-edge)] overflow-hidden [clip-path:polygon(0_0,calc(100%-12px)_0,100%_12px,100%_100%,0_100%)]">
+          {/* Step 1 */}
+          <div class="border-b border-[var(--color-border)] bg-[var(--color-sunken)] px-5 py-3 flex items-center gap-3">
+            <span class="mono-display mono-display-sm text-[var(--color-brand)]">01</span>
+            <span class="text-[0.72rem] uppercase tracking-[0.1em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">Install</span>
+          </div>
+          <pre class="px-5 py-4 font-[var(--font-mono)] text-[0.82rem] leading-[1.7] bg-[var(--color-surface)] overflow-x-auto whitespace-pre"><span class="text-[var(--color-fg-ghost)]"># macOS</span>
+<span class="text-[var(--color-fg-dim)]">$</span> <span class="text-[var(--color-fg)]">brew install supernovae-st/tap/nika</span>
+
+<span class="text-[var(--color-fg-ghost)]"># Linux</span>
+<span class="text-[var(--color-fg-dim)]">$</span> <span class="text-[var(--color-fg)]">curl -fsSL https://nika.sh/install | sh</span></pre>
+
+          {/* Step 2 */}
+          <div class="border-y border-[var(--color-border)] bg-[var(--color-sunken)] px-5 py-3 flex items-center gap-3">
+            <span class="mono-display mono-display-sm text-[var(--color-cyan)]">02</span>
+            <span class="text-[0.72rem] uppercase tracking-[0.1em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">Verify</span>
+          </div>
+          <pre class="px-5 py-4 font-[var(--font-mono)] text-[0.82rem] leading-[1.7] bg-[var(--color-surface)] overflow-x-auto whitespace-pre"><span class="text-[var(--color-fg-dim)]">$</span> <span class="text-[var(--color-fg)]">nika --version</span>
+<span class="text-[var(--color-emerald)]">nika 0.53.0 (chrysalis)</span></pre>
+
+          {/* Step 3 */}
+          <div class="border-y border-[var(--color-border)] bg-[var(--color-sunken)] px-5 py-3 flex items-center gap-3">
+            <span class="mono-display mono-display-sm text-[var(--color-emerald)]">03</span>
+            <span class="text-[0.72rem] uppercase tracking-[0.1em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">Run</span>
+          </div>
+          <pre class="px-5 py-4 font-[var(--font-mono)] text-[0.82rem] leading-[1.7] bg-[var(--color-surface)] overflow-x-auto whitespace-pre"><span class="text-[var(--color-fg-dim)]">$</span> <span class="text-[var(--color-fg)]">nika run triage.nika.yaml</span>
+<span class="text-[var(--color-fg-ghost)]">  task:classify  </span><span class="text-[var(--color-emerald)]">started</span>
+<span class="text-[var(--color-fg-ghost)]">  task:classify  </span><span class="text-[var(--color-brand)]">done</span>   <span class="text-[var(--color-fg-ghost)]">label=bug priority=P1</span>
+<span class="text-[var(--color-fg-ghost)]">  task:label     </span><span class="text-[var(--color-emerald)]">started</span>
+<span class="text-[var(--color-fg-ghost)]">  task:label     </span><span class="text-[var(--color-brand)]">done</span>   <span class="text-[var(--color-fg-ghost)]">applied 2 labels</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 13 — EMERGE (final CTA)
       ===================================================================== */}
   <section class="relative overflow-hidden grain-overlay isolate">
-    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32 text-center relative z-10">
-      <Rule number="10" label="§ EMERGE" variant="brand" class="mb-12 max-w-xl mx-auto" />
+    <div class="mx-auto max-w-[82rem] px-6 py-28 md:py-36 text-center relative z-10">
+      <Rule number="13" label="§ EMERGE" variant="brand" class="mb-12 max-w-xl mx-auto" />
 
       <h2 class="font-[var(--font-display)] font-normal text-5xl md:text-7xl leading-[1.02] tracking-[-0.03em] text-[var(--color-fg)] max-w-[18ch] mx-auto">
         Watch Nika <em class="editorial">grow</em>.
