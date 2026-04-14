@@ -4,6 +4,7 @@ import Rule from '~/components/ui/Rule.astro';
 import HairlineCard from '~/components/ui/HairlineCard.astro';
 import PressButton from '~/components/ui/PressButton.astro';
 import CommitTicker from '~/components/ui/CommitTicker.astro';
+import ProviderGrid from '~/components/ui/ProviderGrid.astro';
 import HeroAscii from '~/components/react/HeroAscii';
 import BrailleSpinner from '~/components/react/BrailleSpinner';
 import LiveStat from '~/components/react/LiveStat';
@@ -11,6 +12,8 @@ import SplitReveal from '~/components/react/SplitReveal';
 import CrateConstellation from '~/components/react/CrateConstellation';
 import Oscilloscope from '~/components/react/Oscilloscope';
 import HorizontalTimeline from '~/components/react/HorizontalTimeline';
+import VerbExplorer from '~/components/react/VerbExplorer';
+import DitheringCanvas from '~/components/react/DitheringCanvas';
 import { getCollection } from 'astro:content';
 import dashboard from '~/data/dashboard.stub.json';
 
@@ -218,11 +221,37 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 03 — THE SHAPE OF NIKA (3 cards)
+      § 03 — FIVE VERBS (interactive verb explorer)
       ===================================================================== */}
   <section class="edge-rule-bottom">
     <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-      <Rule number="03" label="§ THE SHAPE" variant="faint" class="mb-12" />
+      <Rule number="03" label="§ FIVE VERBS" variant="faint" class="mb-12" />
+
+      <div class="grid lg:grid-cols-[1fr_2.5fr] gap-12 lg:gap-16 items-start mb-12">
+        <div>
+          <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
+            Five verbs.<br /><em class="editorial">Closed set</em>.
+          </h2>
+          <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[38ch]">
+            Every workflow is a DAG of tasks. Every task uses exactly one verb.
+            The schema is the contract — nothing leaks outside it.
+          </p>
+        </div>
+        <div class="text-[0.75rem] text-[var(--color-fg-ghost)] font-[var(--font-mono)] tracking-[0.08em] uppercase pt-2">
+          ← click a verb to see its syntax
+        </div>
+      </div>
+
+      <VerbExplorer client:visible />
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 04 — THE SHAPE OF NIKA (3 cards)
+      ===================================================================== */}
+  <section class="edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
+      <Rule number="04" label="§ THE SHAPE" variant="faint" class="mb-12" />
 
       <div class="max-w-2xl mb-14">
         <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
@@ -282,7 +311,7 @@ const STATS = {
       ===================================================================== */}
   <section class="edge-rule-bottom overflow-hidden">
     <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-      <Rule number="04" label="§ THE WORKSPACE" variant="faint" class="mb-12" />
+      <Rule number="05" label="§ THE WORKSPACE" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-16 items-center">
         <div>
@@ -318,23 +347,48 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 05 — CHRYSALIS TIMELINE
+      § 06 — PROVIDERS
+      Nine LLM providers: 6 admitted, 3 planned.
+      ===================================================================== */}
+  <section class="edge-rule-bottom">
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
+      <Rule number="06" label="§ PROVIDERS" variant="faint" class="mb-12" />
+
+      <div class="grid lg:grid-cols-[1fr_2.2fr] gap-12 lg:gap-16 items-start mb-12">
+        <div>
+          <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
+            Nine providers.<br /><em class="editorial">Your keys</em>.
+          </h2>
+          <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[38ch]">
+            Every provider lives in your keychain — not a cloud proxy.
+            Switch with one YAML line. Mix providers in one workflow.
+          </p>
+        </div>
+        <div></div>
+      </div>
+
+      <ProviderGrid />
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 07 — CHRYSALIS TIMELINE
       Horizontal scroll through Nika's weekly dev chapters.
       ===================================================================== */}
   <section class="edge-rule-bottom">
     <div class="mx-auto max-w-[82rem] px-6 pt-20 md:pt-28 pb-0">
-      <Rule number="05" label="§ CHRYSALIS" variant="faint" class="mb-0" />
+      <Rule number="07" label="§ CHRYSALIS" variant="faint" class="mb-0" />
     </div>
     <HorizontalTimeline client:visible />
   </section>
 
   {/* =====================================================================
-      § 06 — BUILT IN PUBLIC (latest dev logs)
+      § 08 — BUILT IN PUBLIC (latest dev logs)
       ===================================================================== */}
   {changelogEntries.length > 0 && (
     <section class="edge-rule-bottom">
       <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
-        <Rule number="06" label="§ DEV LOGS" variant="faint" class="mb-12" />
+        <Rule number="08" label="§ DEV LOGS" variant="faint" class="mb-12" />
 
         <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
           <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)] max-w-[18ch]">
@@ -371,11 +425,28 @@ const STATS = {
   )}
 
   {/* =====================================================================
-      § 07 — GROW WITH IT (final CTA)
+      § 09 — SIGNAL (WebGL dither canvas)
+      Full-bleed atmospheric section — the "alive" signal made visible.
+      Raw WebGL Bayer dither field with mouse spotlight.
+      ===================================================================== */}
+  <section class="dither-section edge-rule-top edge-rule-bottom">
+    <DitheringCanvas client:visible height={500} />
+    <div class="dither-section-overlay" aria-hidden="true"></div>
+    <div class="dither-section-content">
+      <div class="dither-eyebrow">§ 09 · signal</div>
+      <div class="dither-headline">
+        Nika is <em style="font-style: italic; font-family: var(--font-editorial)">alive</em>.
+      </div>
+      <div class="dither-sub">move your cursor · watch the field respond</div>
+    </div>
+  </section>
+
+  {/* =====================================================================
+      § 10 — GROW WITH IT (final CTA)
       ===================================================================== */}
   <section class="relative overflow-hidden grain-overlay isolate">
     <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32 text-center relative z-10">
-      <Rule number="07" label="§ EMERGE" variant="brand" class="mb-12 max-w-xl mx-auto" />
+      <Rule number="10" label="§ EMERGE" variant="brand" class="mb-12 max-w-xl mx-auto" />
 
       <h2 class="font-[var(--font-display)] font-normal text-5xl md:text-7xl leading-[1.02] tracking-[-0.03em] text-[var(--color-fg)] max-w-[18ch] mx-auto">
         Watch Nika <em class="editorial">grow</em>.

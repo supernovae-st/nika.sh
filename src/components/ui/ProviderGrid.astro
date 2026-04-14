@@ -1,0 +1,120 @@
+---
+/**
+ * ProviderGrid — nine LLM provider cards.
+ *
+ * Admitted providers have a live blue indicator.
+ * Planned providers are dim with a dashed border.
+ * Static Astro — zero client JS.
+ */
+
+type Status = 'admitted' | 'planned';
+
+interface Provider {
+  id: string;
+  name: string;
+  status: Status;
+  models: string[];
+  note?: string;
+}
+
+const PROVIDERS: Provider[] = [
+  {
+    id: 'anthropic',
+    name: 'Anthropic',
+    status: 'admitted',
+    models: ['claude-opus-4-6', 'claude-sonnet-4-6', 'claude-haiku-4-5'],
+  },
+  {
+    id: 'openai',
+    name: 'OpenAI',
+    status: 'admitted',
+    models: ['gpt-4o', 'gpt-4o-mini', 'o1-mini'],
+  },
+  {
+    id: 'google',
+    name: 'Google',
+    status: 'admitted',
+    models: ['gemini-2.5-pro', 'gemini-2.0-flash'],
+  },
+  {
+    id: 'mistral',
+    name: 'Mistral',
+    status: 'admitted',
+    models: ['mistral-large-2', 'mistral-small'],
+  },
+  {
+    id: 'ollama',
+    name: 'Ollama',
+    status: 'admitted',
+    models: ['any local model'],
+    note: 'localhost, no key needed',
+  },
+  {
+    id: 'gguf',
+    name: 'GGUF',
+    status: 'admitted',
+    models: ['any GGUF model'],
+    note: 'llama.cpp backend',
+  },
+  {
+    id: 'groq',
+    name: 'Groq',
+    status: 'planned',
+    models: ['llama-3.3-70b', 'mixtral-8x7b'],
+  },
+  {
+    id: 'deepseek',
+    name: 'DeepSeek',
+    status: 'planned',
+    models: ['deepseek-r1', 'deepseek-v3'],
+  },
+  {
+    id: 'cohere',
+    name: 'Cohere',
+    status: 'planned',
+    models: ['command-r+', 'command-r'],
+  },
+];
+
+const admitted = PROVIDERS.filter(p => p.status === 'admitted');
+const planned  = PROVIDERS.filter(p => p.status === 'planned');
+---
+
+<div class="provider-grid-wrap">
+  {/* Admitted row */}
+  <div class="provider-grid">
+    {admitted.map(p => (
+      <div class="provider-card provider-card--admitted hairline">
+        <div class="provider-status-row">
+          <span class="provider-dot provider-dot--admitted" aria-hidden="true"></span>
+          <span class="provider-status-label">admitted</span>
+        </div>
+        <div class="provider-name">{p.name}</div>
+        <ul class="provider-models" aria-label={`${p.name} models`}>
+          {p.models.map(m => (
+            <li class="provider-model">{m}</li>
+          ))}
+        </ul>
+        {p.note && <div class="provider-note">{p.note}</div>}
+      </div>
+    ))}
+  </div>
+
+  {/* Planned row */}
+  <div class="provider-grid provider-grid--planned">
+    {planned.map(p => (
+      <div class="provider-card provider-card--planned">
+        <div class="provider-status-row">
+          <span class="provider-dot provider-dot--planned" aria-hidden="true"></span>
+          <span class="provider-status-label">planned</span>
+        </div>
+        <div class="provider-name">{p.name}</div>
+        <ul class="provider-models" aria-label={`${p.name} models`}>
+          {p.models.map(m => (
+            <li class="provider-model">{m}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</div>
