@@ -12,6 +12,11 @@ interface NikaErrorEntry {
   category: string;
 }
 
+interface Catalog {
+  version: number;
+  errors: Record<string, NikaErrorEntry>;
+}
+
 const route = useRoute();
 const rawCode = String(route.params.code ?? '').trim();
 
@@ -22,19 +27,27 @@ const normalizedCode = computed(() => {
   return m ? `NIKA-${m[1].padStart(3, '0')}` : up;
 });
 
-const { data: entry, error } = await useFetch<NikaErrorEntry>(
-  () => `/api/errors/${normalizedCode.value}`,
-  { key: () => `error-${normalizedCode.value}` },
-);
+// Fetched from a static JSON, so this works on any static host (DO Spaces,
+// Cloudflare Pages, S3, etc.) — no server runtime required.
+const { data: catalog } = await useFetch<Catalog>('/errors/catalog.json', {
+  key: 'errors-catalog',
+  default: () => ({ version: 0, errors: {} }),
+});
+
+const entry = computed<NikaErrorEntry | undefined>(() => {
+  return catalog.value?.errors?.[normalizedCode.value];
+});
 
 useSeoMeta({
-  title: entry.value
-    ? `${entry.value.code}: ${entry.value.title} | Nika Error Reference`
-    : `Unknown error ${normalizedCode.value} | Nika`,
-  description: entry.value?.summary ?? 'Nika error code reference.',
-  ogTitle: entry.value ? `${entry.value.code}: ${entry.value.title}` : 'Nika error',
-  ogDescription: entry.value?.summary ?? 'Nika error code reference.',
-  robots: entry.value ? 'index, follow' : 'noindex',
+  title: () =>
+    entry.value
+      ? `${entry.value.code}: ${entry.value.title} | Nika Error Reference`
+      : `Unknown error ${normalizedCode.value} | Nika`,
+  description: () => entry.value?.summary ?? 'Nika error code reference.',
+  ogTitle: () =>
+    entry.value ? `${entry.value.code}: ${entry.value.title}` : 'Nika error',
+  ogDescription: () => entry.value?.summary ?? 'Nika error code reference.',
+  robots: () => (entry.value ? 'index, follow' : 'noindex'),
 });
 </script>
 
@@ -112,15 +125,20 @@ useSeoMeta({
           </h1>
           <p class="text-lg text-terminal-muted leading-relaxed">
             <span class="font-mono text-amber-400">{{ normalizedCode }}</span>
-            is not in the Nika error catalog.
+            is not in the Nika error catalog yet.
           </p>
-          <p v-if="error" class="mt-4 text-sm text-terminal-muted">
+          <p class="mt-4 text-sm text-terminal-muted">
             If your CLI reported this code, please
             <a
               href="https://github.com/SuperNovae-studio/nika/issues/new"
               class="text-space-400 hover:text-white"
             >open an issue</a>
             with the full workflow and command so we can document it.
+          </p>
+          <p class="mt-6">
+            <NuxtLink to="/" class="text-space-400 hover:text-white">
+              ← Back to home
+            </NuxtLink>
           </p>
         </header>
       </template>
