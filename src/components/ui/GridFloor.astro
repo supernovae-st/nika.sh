@@ -1,0 +1,32 @@
+---
+/**
+ * GridFloor — subtle 48px grid with a top-center radial mask.
+ * Used as an absolutely-positioned layer inside hero + section shells.
+ */
+
+interface Props {
+  size?: 32 | 48 | 64;
+  opacity?: number;
+  fade?: 'top' | 'center' | 'none';
+}
+
+const { size = 48, opacity = 0.08, fade = 'top' } = Astro.props;
+
+const mask = {
+  top: 'mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 85%);',
+  center: 'mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 40%, transparent 90%);',
+  none: '',
+}[fade];
+---
+
+<div
+  class="absolute inset-0 pointer-events-none"
+  aria-hidden="true"
+  style={`
+    background-image:
+      linear-gradient(to right, oklch(0.40 0.020 258 / ${opacity}) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(0.40 0.020 258 / ${opacity}) 1px, transparent 1px);
+    background-size: ${size}px ${size}px;
+    ${mask}
+  `}
+></div>

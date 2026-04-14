@@ -1,0 +1,89 @@
+---
+/**
+ * PillNav — floating glass pill navigation.
+ * Verified HTML pattern from Nexus AI Platform (Aura template).
+ *
+ * Used by Header.astro. Kept as a standalone primitive so docs.nika.sh
+ * and /stats can reuse the exact same shell.
+ */
+
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  links: NavLink[];
+  currentSection?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  githubHref?: string;
+}
+
+const {
+  links,
+  currentSection,
+  ctaLabel = 'Install',
+  ctaHref = '/install/',
+  githubHref = 'https://github.com/supernovae-st/nika',
+} = Astro.props;
+---
+
+<nav
+  class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-5xl
+         rounded-full tactile-glass px-4 py-2.5
+         flex items-center justify-between gap-4
+         transition-transform duration-500 hover:-translate-y-[2px]"
+  aria-label="Primary"
+>
+  <div class="flex items-center gap-6 pl-2">
+    <a href="/" class="flex items-center gap-2 group" aria-label="Nika home">
+      <span
+        class="w-6 h-6 rounded-md grid place-items-center"
+        style="background: var(--grad-brand-sheen);"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2 11V3l5 8 5-8v8" stroke="white" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="text-sm font-medium text-[var(--color-fg)] tracking-tight">Nika</span>
+    </a>
+
+    <ul class="hidden sm:flex items-center gap-1" role="list">
+      {links.map((link) => {
+        const active = currentSection?.toLowerCase() === link.label.toLowerCase();
+        return (
+          <li>
+            <a
+              href={link.href}
+              class:list={[
+                'px-3 py-1.5 rounded-full text-sm transition-colors',
+                active
+                  ? 'text-[var(--color-fg)] bg-[oklch(1_0_0_/_0.06)]'
+                  : 'text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]',
+              ]}
+              aria-current={active ? 'page' : undefined}
+            >{link.label}</a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <a
+      href={githubHref}
+      class="hidden md:inline-flex w-9 h-9 items-center justify-center rounded-full
+             text-[var(--color-fg-mute)] hover:text-[var(--color-fg)]
+             hover:bg-[oklch(1_0_0_/_0.06)] transition-colors"
+      aria-label="GitHub"
+      rel="noopener"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 0a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.1-.74.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23.96-.27 2-.4 3.02-.4s2.06.13 3.02.4c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0012 0z"/>
+      </svg>
+    </a>
+    <a href={ctaHref} class="btn-physical-light rounded-full">{ctaLabel}</a>
+  </div>
+</nav>

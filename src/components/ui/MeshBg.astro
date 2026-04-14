@@ -1,0 +1,27 @@
+---
+/**
+ * MeshBg — 3-blob radial gradient backdrop for hero + section tops.
+ * Uses --grad-mesh-hero from global.css (OKLCH wide-gamut).
+ */
+
+interface Props {
+  intensity?: 'subtle' | 'normal' | 'loud';
+}
+
+const { intensity = 'normal' } = Astro.props;
+
+const opacity = {
+  subtle: 0.55,
+  normal: 0.8,
+  loud: 1.0,
+}[intensity];
+---
+
+<div
+  class="absolute inset-0 pointer-events-none"
+  aria-hidden="true"
+  style={`
+    background: var(--grad-mesh-hero);
+    opacity: ${opacity};
+  `}
+></div>
