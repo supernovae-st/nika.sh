@@ -1,0 +1,52 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+const butterfly = `
+        .    .
+       /\\  //\\
+      /  \\//  \\
+     <   🦋   >
+      \\  //\\\\  /
+       \\//  \\\\/
+        '    '
+`.trim();
+---
+
+<BaseLayout
+  title="Not found"
+  description="The page you asked for is not yet part of the organism."
+  noindex
+>
+  <section class="mx-auto max-w-[42rem] px-6 py-24 md:py-32 text-center">
+    <pre class="font-mono text-xs md:text-sm leading-none text-[var(--color-dim-star)] whitespace-pre mb-12 inline-block">{butterfly}</pre>
+
+    <span class="annotation annotation-dim block mb-4">
+      NIKA-404 · PATH NOT FOUND · T+∞
+    </span>
+
+    <h1 class="display-hero mb-6" style="font-size: clamp(2rem, 1.6rem + 3vw, 3.5rem);">
+      This route was never compiled.
+    </h1>
+
+    <p class="text-[var(--color-bone-mute)] mb-10 max-w-[38ch] mx-auto">
+      The chrysalis is small. Every cell we built is linked from
+      <a href="/" class="text-[var(--color-nika-orange)]">the root</a>. If you followed a
+      link that died, consider the address a fossil.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-4">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-nika-orange)] text-[var(--color-nika-orange)] hover:bg-[var(--color-nika-orange)] hover:text-[var(--color-space-navy)] transition-colors"
+      >
+        ◀ return to root
+      </a>
+      <a
+        href="/changelog"
+        class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-border-bright)] text-[var(--color-bone-mute)] hover:border-[var(--color-bone)] hover:text-[var(--color-bone)] transition-colors"
+      >
+        dev logs →
+      </a>
+    </div>
+  </section>
+</BaseLayout>

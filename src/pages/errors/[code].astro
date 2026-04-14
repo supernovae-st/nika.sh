@@ -1,0 +1,81 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getAllErrors } from '~/data/errors';
+
+export function getStaticPaths() {
+  return getAllErrors().map((error) => ({
+    params: { code: error.code },
+    props: { error },
+  }));
+}
+
+const { code } = Astro.params;
+const { error } = Astro.props;
+---
+
+<BaseLayout
+  title={`${error.code} — ${error.title}`}
+  description={error.summary}
+>
+  <article class="mx-auto max-w-[42rem] px-6 py-20 md:py-28">
+    <a
+      href="/errors"
+      class="annotation annotation-dim inline-flex items-center gap-2 mb-8 hover:text-[var(--color-bone)]"
+    >
+      ◀ all error codes
+    </a>
+
+    <div class="flex items-baseline gap-4 flex-wrap mb-4">
+      <span class="annotation annotation-orange text-base">{error.code}</span>
+      <span class="annotation annotation-dim">{error.category}</span>
+    </div>
+
+    <h1 class="display-hero mb-6" style="font-size: clamp(2rem, 1.6rem + 3vw, 3rem);">
+      {error.title}
+    </h1>
+
+    <p class="prose-nika text-lg text-[var(--color-bone-mute)] mb-10">
+      {error.summary}
+    </p>
+
+    <section class="mt-10">
+      <span class="annotation annotation-dim block mb-3">§ HELP</span>
+      <p class="prose-nika">{error.help}</p>
+    </section>
+
+    {error.example && (
+      <section class="mt-10">
+        <span class="annotation annotation-dim block mb-3">§ EXAMPLE</span>
+        <pre class="terminal-frame"><code>{error.example}</code></pre>
+      </section>
+    )}
+
+    {error.related && error.related.length > 0 && (
+      <section class="mt-10">
+        <span class="annotation annotation-dim block mb-3">§ RELATED</span>
+        <div class="flex flex-wrap gap-3">
+          {error.related.map((rel: string) => (
+            <a
+              href={`/errors/${rel}`}
+              class="font-mono text-sm text-[var(--color-nika-orange)] hover:text-[var(--color-chrysalis-amber)] border border-[var(--color-border)] px-3 py-1.5"
+            >
+              {rel}
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-10 pt-10 border-t border-[var(--color-border)]">
+      <p class="text-sm text-[var(--color-bone-mute)]">
+        Still stuck?
+        <a
+          href={`https://github.com/supernovae-st/nika/issues?q=${error.code}`}
+          class="text-[var(--color-nika-orange)]"
+        >
+          Search issues for {error.code} ↗
+        </a>
+      </p>
+    </section>
+  </article>
+</BaseLayout>

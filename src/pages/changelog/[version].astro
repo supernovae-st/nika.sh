@@ -1,0 +1,58 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('changelog', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { version: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+  title={`Week ${entry.data.week} — ${entry.data.title}`}
+  description={entry.data.summary}
+  section="changelog"
+>
+  <article class="mx-auto max-w-[42rem] px-6 py-20 md:py-28">
+    <a
+      href="/changelog"
+      class="annotation annotation-dim inline-flex items-center gap-2 mb-8 hover:text-[var(--color-bone)]"
+    >
+      ◀ all dev logs
+    </a>
+
+    <span class="annotation annotation-dim block mb-4">
+      WEEK {String(entry.data.week).padStart(2, '0')} · {entry.data.date.toISOString().slice(0, 10)}
+      {entry.data.sha && ` · #${entry.data.sha.slice(0, 9)}`}
+    </span>
+
+    <h1 class="display-hero mb-4" style="font-size: clamp(2rem, 1.6rem + 3vw, 3rem);">
+      {entry.data.title}
+    </h1>
+
+    {entry.data.organ && (
+      <span class="annotation annotation-orange mb-8 block">
+        ◆ {entry.data.organ} grew
+      </span>
+    )}
+
+    <div class="prose-nika mt-10">
+      <Content />
+    </div>
+
+    <footer class="mt-16 pt-6 border-t border-[var(--color-border)] flex items-center justify-between flex-wrap gap-4">
+      <span class="annotation annotation-dim">
+        🦋 Commit: {entry.data.sha || 'pending'}
+      </span>
+      {entry.data.version && (
+        <span class="annotation annotation-orange">{entry.data.version}</span>
+      )}
+    </footer>
+  </article>
+</BaseLayout>

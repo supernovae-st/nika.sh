@@ -1,0 +1,63 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Playground"
+  description="Run Nika workflows directly in your browser. Leptos WASM engine embedded — coming at v0.95."
+>
+  <article class="mx-auto max-w-[42rem] px-6 py-20 md:py-28 text-center">
+    <span class="annotation annotation-orange block mb-6">
+      § PLAYGROUND · CHRYSALIS · v0.95
+    </span>
+
+    <h1 class="display-hero mb-6" style="font-size: clamp(2.5rem, 2rem + 3vw, 4rem);">
+      Not yet grown.
+    </h1>
+
+    <p class="prose-nika text-lg text-[var(--color-bone-mute)] mb-10 text-left mx-auto">
+      The playground will let you run a <code>.nika.yaml</code> workflow directly
+      in the browser — the Rust engine compiled to WebAssembly, your keys
+      stored in browser storage, no server roundtrip.
+    </p>
+
+    <p class="prose-nika text-left mx-auto">
+      It's scheduled for <strong>v0.95</strong>, after the engine emerges at
+      v0.90. Building it now would fragment the focus. So we wait.
+    </p>
+
+    <div class="my-12 p-8 border border-[var(--color-border)] text-left">
+      <p class="annotation annotation-dim block mb-4">FIG 01 · WHAT IT WILL LOOK LIKE</p>
+      <pre class="terminal-frame !border-0 !p-0 !bg-transparent"><code>┌─ play.nika.sh ──────────────────────────────┐
+│                                             │
+│  $ edit   hello.nika.yaml   (in browser)    │
+│  $ run    ▶                                 │
+│                                             │
+│  ● greet  infer   claude-opus-4-6  T+1.42   │
+│    "Welcome inside the chrysalis. 🦋"       │
+│                                             │
+│  ✓ workflow complete  T+1.43                │
+│                                             │
+└─────────────────────────────────────────────┘</code></pre>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-4">
+      <a
+        href="/changelog"
+        class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-nika-orange)] text-[var(--color-nika-orange)] hover:bg-[var(--color-nika-orange)] hover:text-[var(--color-space-navy)] transition-colors"
+      >
+        Watch it grow →
+      </a>
+      <a
+        href="/install"
+        class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-border-bright)] text-[var(--color-bone)] hover:border-[var(--color-bone)] transition-colors"
+      >
+        install nika locally →
+      </a>
+    </div>
+
+    <p class="annotation annotation-dim mt-16">
+      T+∞ · WASM COMPILE PENDING · LEPTOS WORKFLOW RUNNER
+    </p>
+  </article>
+</BaseLayout>

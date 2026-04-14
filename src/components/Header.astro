@@ -1,0 +1,73 @@
+---
+interface Props {
+  currentSection?: string;
+}
+const { currentSection } = Astro.props;
+
+const links = [
+  { href: '/method',    label: 'method' },
+  { href: '/changelog', label: 'changelog' },
+  { href: '/blog',      label: 'blog' },
+  { href: '/install',   label: 'install' },
+];
+---
+
+<header
+  class="sticky top-0 z-40 backdrop-blur-md bg-[var(--color-space-navy)]/80 border-b border-[var(--color-border)]"
+>
+  <div class="mx-auto max-w-[72rem] px-6 py-4 flex items-center justify-between gap-8">
+    {/* Brand lockup — butterfly at 24px per PRINCIPLES scarcity rule */}
+    <a
+      href="/"
+      class="flex items-center gap-3 group"
+      aria-label="Nika home"
+    >
+      <span class="font-mono text-base tracking-[0.08em] uppercase text-[var(--color-bone)] group-hover:text-[var(--color-nika-orange)] transition-colors">
+        nika
+      </span>
+    </a>
+
+    {/* Primary nav */}
+    <nav class="hidden sm:flex items-center gap-6" aria-label="Primary">
+      {links.map((link) => {
+        const isActive = currentSection === link.label;
+        return (
+          <a
+            href={link.href}
+            class={`font-mono text-xs tracking-[0.08em] uppercase transition-colors
+                    ${isActive
+                      ? 'text-[var(--color-nika-orange)]'
+                      : 'text-[var(--color-bone-mute)] hover:text-[var(--color-bone)]'}`}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    {/* Version stamp (right-aligned per GITS/NERV pattern) */}
+    <span class="annotation annotation-dim hidden md:block" aria-hidden="true">
+      v0.90.0 · chrysalis
+    </span>
+  </div>
+
+  {/* Mobile nav — minimal, always visible inline */}
+  <nav class="sm:hidden flex items-center justify-center gap-4 pb-3 overflow-x-auto px-6" aria-label="Mobile primary">
+    {links.map((link) => {
+      const isActive = currentSection === link.label;
+      return (
+        <a
+          href={link.href}
+          class={`font-mono text-xs tracking-[0.08em] uppercase whitespace-nowrap
+                  ${isActive
+                    ? 'text-[var(--color-nika-orange)]'
+                    : 'text-[var(--color-bone-mute)]'}`}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      );
+    })}
+  </nav>
+</header>

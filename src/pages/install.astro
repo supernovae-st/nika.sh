@@ -1,0 +1,90 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Install"
+  description="Install Nika. One curl command, platform-detected. Rust binary, zero daemon."
+  section="install"
+>
+  <article class="mx-auto max-w-[42rem] px-6 py-20 md:py-28">
+    <span class="annotation annotation-orange block mb-6">
+      § INSTALL · CHRYSALIS
+    </span>
+
+    <h1 class="display-hero mb-6" style="font-size: clamp(2.5rem, 2rem + 3vw, 4rem);">
+      One command.
+    </h1>
+
+    <p class="prose-nika text-lg text-[var(--color-bone-mute)] mb-10">
+      Detects your platform (macOS / Linux). Prefers Homebrew if available.
+      Falls back to the latest GitHub release. Rust binary, zero runtime
+      dependency, no daemon, no telemetry.
+    </p>
+
+    <div class="border border-[var(--color-nika-orange)] bg-[var(--color-space-sunken)] p-6 mb-10">
+      <span class="annotation annotation-orange block mb-3">FIG 01 · RECOMMENDED</span>
+      <pre class="terminal-frame !border-0 !p-0 !bg-transparent"><code>curl -LsSf https://nika.sh/install.sh | sh</code></pre>
+    </div>
+
+    <section class="mt-16">
+      <span class="annotation annotation-dim block mb-3">§ 02 · HOMEBREW</span>
+      <pre class="terminal-frame"><code>brew install supernovae-st/tap/nika</code></pre>
+    </section>
+
+    <section class="mt-10">
+      <span class="annotation annotation-dim block mb-3">§ 03 · FROM SOURCE (RUST)</span>
+      <pre class="terminal-frame"><code>cargo install --git https://github.com/supernovae-st/nika nika --locked</code></pre>
+    </section>
+
+    <section class="mt-10">
+      <span class="annotation annotation-dim block mb-3">§ 04 · VERIFY</span>
+      <pre class="terminal-frame"><code>nika --version
+nika doctor    # checks keys, providers, system</code></pre>
+    </section>
+
+    <section class="mt-16 pt-10 border-t border-[var(--color-border)]">
+      <span class="annotation annotation-dim block mb-3">§ 05 · PLATFORMS</span>
+      <div class="font-mono text-sm grid gap-1 text-[var(--color-bone-mute)]">
+        <div class="flex items-baseline gap-3">
+          <span class="text-[var(--color-signal-green)] w-3">●</span>
+          <span class="w-44">macOS (Apple Silicon)</span>
+          <span class="annotation annotation-dim">aarch64-apple-darwin</span>
+        </div>
+        <div class="flex items-baseline gap-3">
+          <span class="text-[var(--color-signal-green)] w-3">●</span>
+          <span class="w-44">macOS (Intel)</span>
+          <span class="annotation annotation-dim">x86_64-apple-darwin</span>
+        </div>
+        <div class="flex items-baseline gap-3">
+          <span class="text-[var(--color-signal-green)] w-3">●</span>
+          <span class="w-44">Linux (x86_64)</span>
+          <span class="annotation annotation-dim">x86_64-unknown-linux-gnu</span>
+        </div>
+        <div class="flex items-baseline gap-3">
+          <span class="text-[var(--color-signal-green)] w-3">●</span>
+          <span class="w-44">Linux (aarch64)</span>
+          <span class="annotation annotation-dim">aarch64-unknown-linux-gnu</span>
+        </div>
+        <div class="flex items-baseline gap-3">
+          <span class="text-[var(--color-dim-star)] w-3">◦</span>
+          <span class="w-44">Windows</span>
+          <span class="annotation annotation-dim">planned post-v0.90</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-16 pt-10 border-t border-[var(--color-border)]">
+      <span class="annotation annotation-dim block mb-3">§ 06 · TRUST BUT VERIFY</span>
+      <p class="text-[var(--color-bone-mute)] text-sm mb-4">
+        The install script is public at <a href="/install.sh" class="text-[var(--color-nika-orange)]">nika.sh/install.sh</a>.
+        Read it before piping to <code class="font-mono">sh</code>. All release binaries are signed
+        and published at <a href="https://github.com/supernovae-st/nika/releases" class="text-[var(--color-nika-orange)]">github.com/supernovae-st/nika/releases</a>.
+      </p>
+      <p class="text-[var(--color-bone-mute)] text-sm">
+        If something breaks, <a href="/errors" class="text-[var(--color-nika-orange)]">find your NIKA-XXX code</a> or
+        <a href="https://github.com/supernovae-st/nika/issues" class="text-[var(--color-nika-orange)]">open an issue</a>.
+      </p>
+    </section>
+  </article>
+</BaseLayout>

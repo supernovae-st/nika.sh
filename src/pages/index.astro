@@ -1,0 +1,197 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const changelogEntries = (await getCollection('changelog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Nika"
+  description="Nika is alive. A semantic YAML workflow engine for AI — growing in public inside a glass chrysalis. AGPL, Rust, Paris."
+  section=""
+>
+  {/* ========================================================================
+      HERO — ceremonial, governing sentence, minimal.
+      The butterfly in the header is the only one on this screen (scarcity rule).
+      ======================================================================== */}
+  <section class="relative">
+    <div class="mx-auto max-w-[72rem] px-6 pt-16 md:pt-28 pb-24 md:pb-32">
+
+      <span class="annotation annotation-orange block mb-6">
+        ◆ CHRYSALIS · v0.90.0 · WEEK 22 OF 48
+      </span>
+
+      <h1 class="display-hero mb-8 max-w-[16ch]">
+        Nika is alive.<br />
+        <span class="text-[var(--color-nika-orange)]">Watch it grow.</span>
+      </h1>
+
+      <p class="prose-nika text-lg md:text-xl text-[var(--color-bone-mute)] mb-10 max-w-[34rem]">
+        A semantic YAML workflow engine for AI. Not an agent framework, not a chatbot
+        wrapper — the same file read by the machine and understood by the human.
+        Grown one cell at a time, in public, inside a glass chrysalis.
+      </p>
+
+      <div class="flex flex-wrap gap-4 items-center">
+        <a
+          href="/method"
+          class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-nika-orange)] text-[var(--color-nika-orange)] hover:bg-[var(--color-nika-orange)] hover:text-[var(--color-space-navy)] transition-colors"
+        >
+          Read the method
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
+          href="/changelog"
+          class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-border-bright)] text-[var(--color-bone)] hover:border-[var(--color-bone)] transition-colors"
+        >
+          Watch it grow
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    {/* Edge-anchored corner annotations — "everything is labeled" */}
+    <span class="annotation annotation-dim absolute top-6 right-6 hidden lg:block">
+      [48.8566, 2.3522] · PARIS
+    </span>
+    <span class="annotation annotation-dim absolute bottom-6 right-6 hidden lg:block">
+      T+22WK · BUILD 7e6b4d943
+    </span>
+  </section>
+
+  {/* ========================================================================
+      VALUE PROP — three nouns, Linear-restraint, mono labels
+      ======================================================================== */}
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-[72rem] px-6 py-20 md:py-28 grid gap-10 md:grid-cols-3">
+      <article class="space-y-3">
+        <span class="annotation annotation-orange">§ 01 · SEMANTIC</span>
+        <h2 class="font-mono text-2xl leading-tight text-[var(--color-bone)]">
+          Workflows you can read.
+        </h2>
+        <p class="text-[var(--color-bone-mute)]">
+          One <code class="font-mono text-sm px-1 bg-[var(--color-space-sunken)] border border-[var(--color-border)]">.nika.yaml</code> file.
+          Same source for the machine and the human. No DSL. No YAML-that-pretends-to-be-Python.
+          The schema is the contract.
+        </p>
+      </article>
+
+      <article class="space-y-3">
+        <span class="annotation annotation-orange">§ 02 · SOVEREIGN</span>
+        <h2 class="font-mono text-2xl leading-tight text-[var(--color-bone)]">
+          Runs on your laptop.
+        </h2>
+        <p class="text-[var(--color-bone-mute)]">
+          Rust binary. Zero daemon. Your keys in your keychain. Any provider —
+          Anthropic, OpenAI, Ollama, local GGUF. No SaaS dependency. No vendor lock-in.
+          AGPL, so it stays that way.
+        </p>
+      </article>
+
+      <article class="space-y-3">
+        <span class="annotation annotation-orange">§ 03 · SLOW</span>
+        <h2 class="font-mono text-2xl leading-tight text-[var(--color-bone)]">
+          34 organs over a year.
+        </h2>
+        <p class="text-[var(--color-bone-mute)]">
+          Every crate passes 12 gates before admission. Mutation tested ≥ 90%.
+          No <code class="font-mono text-sm px-1 bg-[var(--color-space-sunken)] border border-[var(--color-border)]">.unwrap()</code> in src.
+          If it can't explain itself in 1500 lines, it gets split. Slow on purpose.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  {/* ========================================================================
+      TERMINAL DEMO PREVIEW — a single .nika.yaml block, typeset as terminal
+      ======================================================================== */}
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-[72rem] px-6 py-20">
+      <div class="grid gap-10 md:grid-cols-[14rem_1fr]">
+        <div>
+          <span class="annotation annotation-dim block mb-3">
+            FIG 01 · HELLO.NIKA.YAML
+          </span>
+          <p class="text-[var(--color-bone-mute)] text-sm">
+            A workflow is a text file. The verbs are <code class="font-mono">exec</code>, <code class="font-mono">fetch</code>, <code class="font-mono">invoke</code>, <code class="font-mono">infer</code>, <code class="font-mono">agent</code>. Everything else is data.
+          </p>
+        </div>
+        <pre class="terminal-frame"><code>┌─ hello.nika.yaml ──────────────────────────────┐
+│                                                │
+│  schema: nika/workflow@0.12                    │
+│  workflow: hello                               │
+│                                                │
+│  tasks:                                        │
+│    - id: greet                                 │
+│      infer:                                    │
+│        provider: anthropic                     │
+│        model: claude-opus-4-6                  │
+│        prompt: "Say hi to the chrysalis."      │
+│                                                │
+│  ▊                                             │
+│                                                │
+└────────────────────────────────────────────────┘</code></pre>
+      </div>
+    </div>
+  </section>
+
+  {/* ========================================================================
+      RECENT DEV LOGS — 3 most recent changelog entries
+      ======================================================================== */}
+  {changelogEntries.length > 0 && (
+    <section class="border-t border-[var(--color-border)]">
+      <div class="mx-auto max-w-[72rem] px-6 py-20">
+        <div class="flex items-baseline justify-between mb-10 flex-wrap gap-4">
+          <div>
+            <span class="annotation annotation-dim block mb-2">§ 04 · WHAT GREW</span>
+            <h2 class="font-mono text-2xl leading-tight">Latest dev logs</h2>
+          </div>
+          <a
+            href="/changelog"
+            class="font-mono text-sm uppercase tracking-[0.08em] text-[var(--color-nika-orange)] hover:text-[var(--color-chrysalis-amber)]"
+          >
+            All logs →
+          </a>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-3">
+          {changelogEntries.map((entry) => (
+            <article class="border border-[var(--color-border)] p-6 hover:border-[var(--color-border-bright)] transition-colors">
+              <span class="annotation annotation-dim block mb-3">
+                WEEK {String(entry.data.week).padStart(2, '0')} · {entry.data.date.toISOString().slice(0, 10)}
+              </span>
+              <h3 class="font-mono text-lg leading-snug mb-3">
+                <a href={`/changelog/${entry.id}`} class="hover:text-[var(--color-nika-orange)]">
+                  {entry.data.title}
+                </a>
+              </h3>
+              <p class="text-sm text-[var(--color-bone-mute)] line-clamp-3">{entry.data.summary}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* ========================================================================
+      CTA strip — the single action on this page
+      ======================================================================== */}
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-[72rem] px-6 py-24 text-center">
+      <p class="annotation annotation-orange mb-4">◆ WELCOME INSIDE THE CHRYSALIS</p>
+      <p class="font-display text-3xl md:text-5xl leading-tight max-w-[28ch] mx-auto mb-8">
+        We publish every Friday.<br />
+        You can read the commits.
+      </p>
+      <a
+        href="https://github.com/supernovae-st/nika"
+        class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-bone)] text-[var(--color-bone)] hover:bg-[var(--color-bone)] hover:text-[var(--color-space-navy)] transition-colors"
+      >
+        github.com/supernovae-st/nika
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

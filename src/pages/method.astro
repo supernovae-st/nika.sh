@@ -1,0 +1,118 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Method"
+  description="The 12 gates, the 7 shadow zones, and the origin story of Nika — a living organism being built in public."
+  section="method"
+>
+  <article class="mx-auto max-w-[42rem] px-6 py-20 md:py-28">
+    <span class="annotation annotation-orange block mb-6">
+      § METHOD · LOCKED 2026-04-14
+    </span>
+
+    <h1 class="display-hero mb-10" style="font-size: clamp(2.5rem, 2rem + 3vw, 4rem);">
+      Nika is alive.
+    </h1>
+
+    <div class="prose-nika space-y-5">
+      <p class="text-lg leading-relaxed">
+        Five months ago we started writing a workflow engine for AI. Not an agent
+        framework, not a chatbot wrapper, not another SDK. A semantic YAML engine
+        where workflows are read by the machine and understood by the human — the
+        same file, the same truth.
+      </p>
+
+      <p>
+        Somewhere between week three and week twelve it stopped being a project.
+        It became a thing with a pulse. A kernel that beats. Errors that propagate
+        like a nervous system. A schema that translates intent into structure.
+        Verbs that act. Interfaces that breathe.
+      </p>
+
+      <p>
+        So we did something unusual. Instead of hiding the build behind a launch
+        date, we put the organism in a glass chrysalis. Every Friday we publish
+        what grew that week. Every month we explain one organ in depth. Every
+        quarter we sit down and narrate the journey. The commits are public.
+        The mutation scores are public. The architecture diagram is a living
+        anatomy.
+      </p>
+
+      <p>
+        We are crafting 34 crates over 11 to 12 months. No deadline. No hack
+        week. Each crate passes 12 gates before it enters the body. If it fails
+        mutation testing, it doesn't ship. If it leaks an <code>.unwrap()</code> into
+        production, it doesn't ship. If it can't explain itself in under 1500
+        lines, it gets split. This is slow on purpose.
+      </p>
+
+      <p>
+        The butterfly on the logo is not what Nika is. It's what Nika becomes
+        on v0.90 emergence, when the chrysalis opens. Until then, Nika is a
+        chrysalis — and you are welcome to watch it transform, week by week,
+        cell by cell.
+      </p>
+
+      <p class="font-mono text-sm uppercase tracking-[0.08em] text-[var(--color-bone-mute)] pt-4">
+        Rust. AGPL. Paris. SuperNovae.
+      </p>
+    </div>
+
+    <div class="mt-20 pt-10 border-t border-[var(--color-border)]">
+      <span class="annotation annotation-dim block mb-4">§ 02 · THE 12 GATES</span>
+      <p class="text-[var(--color-bone-mute)] mb-6">
+        A crate is not admitted to the workspace until all 12 gates are green
+        in the same pull request. No exceptions.
+      </p>
+      <ol class="font-mono text-sm space-y-2 text-[var(--color-bone-mute)] pl-0 list-none">
+        <li><span class="text-[var(--color-nika-orange)]">01</span> · spec — <span class="text-[var(--color-bone)]">docs/crate-specs/nika-X.md</span> exists</li>
+        <li><span class="text-[var(--color-nika-orange)]">02</span> · TDD — tests written before implementation, RED then GREEN</li>
+        <li><span class="text-[var(--color-nika-orange)]">03</span> · impl — minimal, compiles, tests pass</li>
+        <li><span class="text-[var(--color-nika-orange)]">04</span> · clippy — <span class="text-[var(--color-bone)]">0 warnings, -D warnings</span></li>
+        <li><span class="text-[var(--color-nika-orange)]">05</span> · mutation ≥ 90% — <span class="text-[var(--color-bone)]">cargo-mutants</span></li>
+        <li><span class="text-[var(--color-nika-orange)]">06</span> · property — <span class="text-[var(--color-bone)]">proptest</span> if sensitive</li>
+        <li><span class="text-[var(--color-nika-orange)]">07</span> · benchmarks — if hot path</li>
+        <li><span class="text-[var(--color-nika-orange)]">08</span> · docs — <span class="text-[var(--color-bone)]">cargo doc --no-deps, 0 warnings</span></li>
+        <li><span class="text-[var(--color-nika-orange)]">09</span> · canary E2E — or documented exemption</li>
+        <li><span class="text-[var(--color-nika-orange)]">10</span> · parity legacy — golden test vs legacy</li>
+        <li><span class="text-[var(--color-nika-orange)]">11</span> · review swarm — 3 agents, P0/P1 fixed same session</li>
+        <li><span class="text-[var(--color-nika-orange)]">12</span> · atomic commit — 1 crate admission = 1 commit</li>
+      </ol>
+    </div>
+
+    <div class="mt-16 pt-10 border-t border-[var(--color-border)]">
+      <span class="annotation annotation-dim block mb-4">§ 03 · THE 7 SHADOW ZONES</span>
+      <p class="text-[var(--color-bone-mute)] mb-6">
+        Identified by audit. Not optional. <code>git tag v0.90.0</code> is blocked
+        until all 7 are green.
+      </p>
+      <ol class="font-mono text-sm space-y-2 text-[var(--color-bone-mute)] pl-0 list-none">
+        <li><span class="text-[var(--color-fever-red)]">01</span> · <code>nika serve</code> input trust (P0)</li>
+        <li><span class="text-[var(--color-fever-red)]">02</span> · cross-provider structured output parity (P0)</li>
+        <li><span class="text-[var(--color-fever-red)]">03</span> · binding/template split</li>
+        <li><span class="text-[var(--color-fever-red)]">04</span> · L1 taint runtime</li>
+        <li><span class="text-[var(--color-fever-red)]">05</span> · <code>for_each</code> per-element spotlight</li>
+        <li><span class="text-[var(--color-fever-red)]">06</span> · NikaError Display parity</li>
+        <li><span class="text-[var(--color-fever-red)]">07</span> · provider parity matrix</li>
+      </ol>
+    </div>
+
+    <div class="mt-16 pt-10 border-t border-[var(--color-border)] flex flex-wrap items-center gap-4">
+      <a
+        href="/changelog"
+        class="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.08em] px-5 py-3 border border-[var(--color-nika-orange)] text-[var(--color-nika-orange)] hover:bg-[var(--color-nika-orange)] hover:text-[var(--color-space-navy)] transition-colors"
+      >
+        Watch it grow
+        <span aria-hidden="true">→</span>
+      </a>
+      <a
+        href="https://github.com/supernovae-st/nika"
+        class="font-mono text-sm text-[var(--color-bone-mute)] hover:text-[var(--color-nika-orange)]"
+      >
+        github.com/supernovae-st/nika ↗
+      </a>
+    </div>
+  </article>
+</BaseLayout>

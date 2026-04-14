@@ -1,0 +1,49 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getAllErrors, errorCatalogMeta } from '~/data/errors';
+
+const errors = getAllErrors();
+---
+
+<BaseLayout
+  title="Error codes"
+  description="NIKA-XXX error code reference. Every error Nika emits points here."
+>
+  <article class="mx-auto max-w-[52rem] px-6 py-20 md:py-28">
+    <span class="annotation annotation-orange block mb-6">
+      § ERRORS · {errorCatalogMeta.count} CODES · UPDATED {errorCatalogMeta.updated}
+    </span>
+
+    <h1 class="display-hero mb-6" style="font-size: clamp(2.5rem, 2rem + 3vw, 4rem);">
+      Error codes
+    </h1>
+
+    <p class="prose-nika text-lg text-[var(--color-bone-mute)] mb-12">
+      Every error Nika emits carries a unique <code>NIKA-XXX</code> code.
+      Find yours below, or open an
+      <a href="https://github.com/supernovae-st/nika/issues" class="text-[var(--color-nika-orange)]">issue</a>
+      if your code is missing.
+    </p>
+
+    <div class="space-y-4">
+      {errors.map((error) => (
+        <a
+          href={`/errors/${error.code}`}
+          class="block border border-[var(--color-border)] p-5 hover:border-[var(--color-border-bright)] transition-colors group"
+        >
+          <div class="flex items-baseline gap-4 flex-wrap">
+            <span class="font-mono text-sm text-[var(--color-chrysalis-amber)] tracking-[0.04em]">
+              {error.code}
+            </span>
+            <span class="font-mono text-base text-[var(--color-bone)] group-hover:text-[var(--color-nika-orange)]">
+              {error.title}
+            </span>
+          </div>
+          <p class="text-sm text-[var(--color-bone-mute)] mt-2 line-clamp-2">
+            {error.summary}
+          </p>
+        </a>
+      ))}
+    </div>
+  </article>
+</BaseLayout>

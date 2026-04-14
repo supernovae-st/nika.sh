@@ -1,0 +1,34 @@
+---
+week: 1
+title: "nika-error admitted — the nervous system begins"
+organ: nika-error
+date: 2026-04-14
+sha: 42909b1c7
+version: v0.90.0-alpha.1
+summary: "First crate admitted to the diamond workspace. 44 tests, 100% mutation score. The error propagation layer that every other organ depends on."
+---
+
+## What grew
+
+- **nika-error** admitted to workspace (commit `42909b1c7`)
+- 44 tests (unit + property)
+- 100% mutation score (cargo-mutants — 0 surviving mutants)
+- 0 `.unwrap()` in src/
+- 0 clippy warnings
+- ~1,200 LOC
+
+## What hurt
+
+- The error code registry design went through three iterations before settling
+  on `NikaCode` as the dual enum (category + numeric). The first two attempts
+  leaked the Display impl into downstream crates, violating the L0 boundary.
+
+## What we learned
+
+- In Rust, error enums that are `#[non_exhaustive]` from day one save
+  downstream crates from breaking-change cascades. Add it before anyone
+  depends on you, not after.
+
+## Next week
+
+- nika-catalog (the MCP alias registry, ~2,200 LOC).
