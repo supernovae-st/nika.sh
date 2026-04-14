@@ -1,11 +1,15 @@
 ---
-/**
- * Placeholder during Phase 2 migration.
- * Real editorial top bar lands in P2-8 (EditorialTopBar.astro).
- */
+import EditorialTopBar from '~/components/ui/EditorialTopBar.astro';
+
 interface Props {
   currentSection?: string;
 }
-const { currentSection: _ } = Astro.props;
+const { currentSection } = Astro.props;
 ---
-<div aria-hidden="true"></div>
+
+<EditorialTopBar
+  currentSection={currentSection}
+  ctaLabel="Install"
+  ctaHref="/install/"
+  githubHref="https://github.com/supernovae-st/nika"
+/>
