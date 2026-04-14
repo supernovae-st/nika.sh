@@ -20,26 +20,30 @@ export default defineConfig({
         provider: fontProviders.local(),
         name: 'Geist',
         cssVariable: '--font-sans',
-        variants: [
-          {
-            weight: '100 900',
-            style: 'normal',
-            src: ['./node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2'],
-          },
-        ],
+        options: {
+          variants: [
+            {
+              weight: '100 900',
+              style: 'normal',
+              src: ['./node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2'],
+            },
+          ],
+        },
         fallbacks: ['ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
       },
       {
         provider: fontProviders.local(),
         name: 'Geist Mono',
         cssVariable: '--font-mono',
-        variants: [
-          {
-            weight: '100 900',
-            style: 'normal',
-            src: ['./node_modules/geist/dist/fonts/geist-mono/GeistMono-Variable.woff2'],
-          },
-        ],
+        options: {
+          variants: [
+            {
+              weight: '100 900',
+              style: 'normal',
+              src: ['./node_modules/geist/dist/fonts/geist-mono/GeistMono-Variable.woff2'],
+            },
+          ],
+        },
         fallbacks: ['ui-monospace', 'SF Mono', 'Menlo', 'Consolas', 'monospace'],
       },
       {

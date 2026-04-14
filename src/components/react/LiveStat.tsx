@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ComponentProps } from 'react';
 import NumberFlow from '@number-flow/react';
+
+type NumberFlowFormat = ComponentProps<typeof NumberFlow>['format'];
 
 /**
  * LiveStat — a live counter that ticks from 0 to its target value when
@@ -14,7 +16,7 @@ export interface LiveStatProps {
   prefix?: string;
   suffix?: string;
   label?: string;
-  format?: Intl.NumberFormatOptions;
+  format?: NumberFlowFormat;
   durationMs?: number;
   className?: string;
 }
