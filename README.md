@@ -102,7 +102,7 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 - [`supernovae-st/nika-design-skill`](https://github.com/supernovae-st/nika-design-skill) — design system + Claude Code skill
 - [`supernovae-st/nika-client`](https://github.com/supernovae-st/nika-client) — TS SDK
 - [`supernovae-st/nika-registry`](https://github.com/supernovae-st/nika-registry) — community workflows
-- [`supernovae-st/homebrew-tap`](https://github.com/supernovae-st/homebrew-tap) — `brew install supernovae-st/tap/nika`
+- [`supernovae-st/homebrew-nika`](https://github.com/supernovae-st/homebrew-nika) — `brew tap supernovae-st/nika && brew install nika`
 
 ---
 
