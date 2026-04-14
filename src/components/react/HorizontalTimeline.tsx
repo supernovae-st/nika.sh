@@ -82,7 +82,7 @@ export function HorizontalTimeline({ className = '' }: HorizontalTimelineProps) 
   return (
     <div
       className={`timeline-outer ${className}`}
-      style={{ height: '420vh' }}
+      style={{ height: '360vh' }}
     >
       {/* Sticky viewport — fills screen height */}
       <div
@@ -90,8 +90,8 @@ export function HorizontalTimeline({ className = '' }: HorizontalTimelineProps) 
         className="timeline-sticky"
         style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}
       >
-        {/* Vertical centering wrapper */}
-        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+        {/* Top-aligned with breathing room — avoids blank space above content */}
+        <div style={{ display: 'flex', alignItems: 'center', height: '100%', paddingTop: '6vh' }}>
           {/* Sliding track */}
           <div
             ref={trackRef}

@@ -43,7 +43,7 @@ const STATS = {
       signature: real text, selectable, driven by a 3-octave FBM shader.
       SplitReveal on the headline: simplex-noise character stagger.
       ===================================================================== */}
-  <section class="relative min-h-[88svh] overflow-hidden grain-overlay isolate">
+  <section class="relative overflow-hidden grain-overlay isolate">
     <div class="absolute inset-0 z-0">
       <HeroAscii client:load cols={160} rows={46} speed={1} />
       <div
@@ -53,16 +53,32 @@ const STATS = {
       ></div>
     </div>
 
-    <div class="relative z-10 mx-auto max-w-[82rem] px-6 pt-12 pb-24 md:pt-16 md:pb-32">
+    <div class="relative z-10 mx-auto max-w-[82rem] px-6 pt-20 pb-28 md:pt-24 md:pb-36">
       <div class="max-w-3xl">
 
-        <div class="mb-10 flex items-center gap-3 text-xs tracking-[0.12em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">
-          <BrailleSpinner client:load />
+        <div class="mb-10">
           <a
             href="/changelog/"
-            class="hover:text-[var(--color-fg)] transition-colors"
-          >nika grew &nbsp;·&nbsp; week 01 &nbsp;·&nbsp; nika-error admitted</a>
-          <span class="text-[var(--color-fg-ghost)]">→</span>
+            class="inline-flex items-center gap-2.5 h-8 px-3
+                   border border-[var(--color-border-bright)]
+                   [border-radius:var(--radius-hair)]
+                   bg-[var(--color-surface)]
+                   hover:border-[oklch(0.62_0.195_258_/_0.4)]
+                   hover:bg-[var(--color-surface-2)]
+                   transition-colors no-underline"
+            aria-label="Latest changelog entry"
+          >
+            <span
+              class="w-1.5 h-1.5 rounded-full bg-[var(--color-emerald)] shrink-0"
+              style="box-shadow: 0 0 6px var(--color-emerald-glow); animation: pulse 2.5s ease-in-out infinite;"
+              aria-hidden="true"
+            ></span>
+            <BrailleSpinner client:load />
+            <span class="text-[0.67rem] tracking-[0.1em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">
+              nika grew &nbsp;·&nbsp; week 01 &nbsp;·&nbsp; nika-error admitted
+            </span>
+            <span class="text-[var(--color-fg-ghost)] text-[0.67rem]">→</span>
+          </a>
         </div>
 
         <h1 class="relative">
@@ -88,22 +104,31 @@ const STATS = {
           binary. AGPL forever. Watch it <em class="editorial text-[var(--color-fg)]">grow</em>.
         </p>
 
-        <div class="mt-10 flex flex-wrap gap-3 items-center">
-          <PressButton variant="brand" href="/install/">
-            Install&nbsp;/&nbsp;curl
-            <span aria-hidden="true">▸</span>
-          </PressButton>
-          <PressButton variant="ghost" href="/method/">
-            Read the method
-          </PressButton>
-        </div>
-
-        {/* Install snippet — OS-detected + one-click copy */}
-        <div class="mt-6">
+        {/* Install snippet — primary hero CTA, OS-detected */}
+        <div class="mt-10 relative">
+          {/* Ambient glow halo behind snippet */}
+          <div
+            class="absolute pointer-events-none -z-10"
+            style="inset: -2rem -3rem; background: radial-gradient(ellipse 75% 90% at 25% 55%, oklch(0.62 0.195 258 / 0.18) 0%, transparent 65%); filter: blur(20px);"
+            aria-hidden="true"
+          />
           <InstallSnippet client:load />
         </div>
 
-        <div class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.7rem] uppercase tracking-[0.14em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">
+        {/* Secondary CTAs */}
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <PressButton variant="ghost" href="/method/">
+            Read the method&nbsp;→
+          </PressButton>
+          <a
+            href="/install/"
+            class="inline-flex items-center gap-1.5 text-[0.72rem] text-[var(--color-fg-dim)] hover:text-[var(--color-fg-mute)] transition-colors font-[var(--font-mono)] tracking-[0.06em] uppercase"
+          >
+            Full guide&nbsp;<span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.7rem] uppercase tracking-[0.14em] text-[var(--color-fg-dim)] font-[var(--font-mono)]">
           <span>AGPL-3.0</span>
           <span class="text-[var(--color-fg-ghost)]">·</span>
           <span>Rust</span>
@@ -128,26 +153,26 @@ const STATS = {
       § 01 — VITAL SIGNS (live stats + oscilloscope)
       ===================================================================== */}
   <section id="vital-signs" class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
-      <Rule number="01" label="§ VITAL SIGNS" variant="faint" class="mb-10" />
+    <div class="mx-auto max-w-[82rem] px-6 py-16 md:py-20">
+      <Rule number="01" label="§ VITAL SIGNS" variant="faint" class="mb-12" />
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 mb-12">
-        <div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-12">
+        <div class="stat-cell stat-cell-reveal" data-reveal>
           <div class="flex items-baseline gap-1">
             <LiveStat client:visible to={STATS.organsAdmitted} />
             <span class="mono-display mono-display-md text-[var(--color-fg-dim)]">/{STATS.organsPlanned}</span>
           </div>
           <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">organs admitted</div>
         </div>
-        <div>
+        <div class="stat-cell stat-cell-reveal" data-reveal data-delay="1">
           <LiveStat client:visible to={STATS.loc} />
           <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">lines of Rust</div>
         </div>
-        <div>
+        <div class="stat-cell stat-cell-reveal" data-reveal data-delay="2">
           <LiveStat client:visible to={STATS.tests} />
           <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">tests passing</div>
         </div>
-        <div>
+        <div class="stat-cell stat-cell-reveal" data-reveal data-delay="3">
           <LiveStat client:visible to={STATS.unwraps} />
           <div class="mt-3 text-xs tracking-[0.14em] uppercase text-[var(--color-fg-mute)] font-[var(--font-mono)]">.unwrap() in src</div>
         </div>
@@ -232,7 +257,7 @@ const STATS = {
       Static HTML — no React island.
       ===================================================================== */}
   <section id="how-it-runs" class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
       <Rule number="03" label="§ HOW IT RUNS" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 items-start mb-16">
@@ -247,29 +272,33 @@ const STATS = {
       </div>
 
       {/* 4-step flow grid */}
-      <div class="grid grid-cols-2 md:grid-cols-4 border border-[var(--color-border)] bg-[var(--color-border)]" style="gap:1px;">
-        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 border border-[var(--color-border)] bg-[var(--color-border)]" style="gap:1px;" data-reveal>
+        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4"
+          style="box-shadow: inset 0 2px 0 0 var(--color-brand);">
           <div class="mono-display mono-display-sm text-[var(--color-brand)]">01 · WRITE</div>
           <h3 class="font-[var(--font-display)] font-medium text-lg text-[var(--color-fg)] leading-[1.3]">A text file</h3>
           <p class="text-[0.875rem] text-[var(--color-fg-mute)] leading-[1.65]">
             Your workflow is a YAML file. Human-readable, version-controllable, diffable. No GUI required.
           </p>
         </div>
-        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4">
+        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4"
+          style="box-shadow: inset 0 2px 0 0 var(--color-cyan);">
           <div class="mono-display mono-display-sm text-[var(--color-cyan)]">02 · PARSE</div>
           <h3 class="font-[var(--font-display)] font-medium text-lg text-[var(--color-fg)] leading-[1.3]">Build the DAG</h3>
           <p class="text-[0.875rem] text-[var(--color-fg-mute)] leading-[1.65]">
             Nika validates schema, resolves <code class="inline-code">depends_on</code> edges, and constructs a directed acyclic graph.
           </p>
         </div>
-        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4">
+        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4"
+          style="box-shadow: inset 0 2px 0 0 var(--color-emerald);">
           <div class="mono-display mono-display-sm text-[var(--color-emerald)]">03 · SCHEDULE</div>
           <h3 class="font-[var(--font-display)] font-medium text-lg text-[var(--color-fg)] leading-[1.3]">Run in parallel</h3>
           <p class="text-[0.875rem] text-[var(--color-fg-mute)] leading-[1.65]">
             Topological sort determines order. Independent branches run concurrently. Blocked tasks wait.
           </p>
         </div>
-        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4">
+        <div class="bg-[var(--color-surface)] p-7 flex flex-col gap-4"
+          style="box-shadow: inset 0 2px 0 0 var(--color-violet);">
           <div class="mono-display mono-display-sm text-[var(--color-violet)]">04 · STREAM</div>
           <h3 class="font-[var(--font-display)] font-medium text-lg text-[var(--color-fg)] leading-[1.3]">Events flow out</h3>
           <p class="text-[0.875rem] text-[var(--color-fg-mute)] leading-[1.65]">
@@ -310,10 +339,10 @@ const STATS = {
       § 05 — THE SHAPE OF NIKA (3 cards)
       ===================================================================== */}
   <section class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
       <Rule number="05" label="§ THE SHAPE" variant="faint" class="mb-12" />
 
-      <div class="max-w-2xl mb-14">
+      <div class="max-w-3xl mb-12">
         <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
           Three rules. Nothing <em class="editorial">else</em>.
         </h2>
@@ -385,7 +414,7 @@ const STATS = {
       </div>
 
       <div class="grid md:grid-cols-2 gap-5">
-        <HairlineCard chamfer="tl">
+        <HairlineCard chamfer="tl" class="hairline-glow-brand" data-reveal>
           <div class="mono-display mono-display-sm text-[var(--color-brand)] mb-4">DevOps</div>
           <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
             GitHub triage bot
@@ -399,7 +428,7 @@ const STATS = {
           </div>
         </HairlineCard>
 
-        <HairlineCard chamfer="tr">
+        <HairlineCard chamfer="tr" class="hairline-glow-cyan" data-reveal data-delay="1">
           <div class="mono-display mono-display-sm text-[var(--color-cyan)] mb-4">CI/CD</div>
           <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
             Release pipeline
@@ -414,7 +443,7 @@ const STATS = {
           </div>
         </HairlineCard>
 
-        <HairlineCard chamfer="tl">
+        <HairlineCard chamfer="tl" class="hairline-glow-violet" data-reveal data-delay="2">
           <div class="mono-display mono-display-sm text-[var(--color-violet)] mb-4">AI Research</div>
           <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
             Autonomous research agent
@@ -428,7 +457,7 @@ const STATS = {
           </div>
         </HairlineCard>
 
-        <HairlineCard chamfer="tr">
+        <HairlineCard chamfer="tr" class="hairline-glow-emerald" data-reveal data-delay="3">
           <div class="mono-display mono-display-sm text-[var(--color-emerald)] mb-4">Local AI</div>
           <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
             Offline data pipeline
@@ -450,7 +479,7 @@ const STATS = {
       SVG star map: 35 crates, admitted/growing/planned.
       ===================================================================== */}
   <section id="workspace" class="edge-rule-bottom overflow-hidden">
-    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
       <Rule number="07" label="§ THE WORKSPACE" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-16 items-center">
@@ -491,7 +520,7 @@ const STATS = {
       Nine LLM providers: 6 admitted, 3 planned.
       ===================================================================== */}
   <section id="providers" class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+    <div class="mx-auto max-w-[82rem] px-6 py-16 md:py-20">
       <Rule number="08" label="§ PROVIDERS" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[1fr_2.2fr] gap-12 lg:gap-16 items-start mb-12">
@@ -516,9 +545,6 @@ const STATS = {
       Horizontal scroll through Nika's weekly dev chapters.
       ===================================================================== */}
   <section id="chrysalis" class="edge-rule-bottom">
-    <div class="mx-auto max-w-[82rem] px-6 pt-24 md:pt-32 pb-0">
-      <Rule number="09" label="§ CHRYSALIS" variant="faint" class="mb-0" />
-    </div>
     <HorizontalTimeline client:visible />
   </section>
 
@@ -527,7 +553,7 @@ const STATS = {
       ===================================================================== */}
   {changelogEntries.length > 0 && (
     <section class="edge-rule-bottom">
-      <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
+      <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
         <Rule number="10" label="§ DEV LOGS" variant="faint" class="mb-12" />
 
         <div class="flex items-end justify-between mb-12 flex-wrap gap-4">
@@ -569,14 +595,21 @@ const STATS = {
       Full-bleed atmospheric section — the "alive" signal made visible.
       ===================================================================== */}
   <section class="dither-section edge-rule-top edge-rule-bottom">
-    <DitheringCanvas client:visible height={500} />
+    <DitheringCanvas client:visible height={620} />
     <div class="dither-section-overlay" aria-hidden="true"></div>
+    <div class="dither-section-inner-shadow" aria-hidden="true"></div>
     <div class="dither-section-content">
       <div class="dither-eyebrow">§ 11 · signal</div>
       <div class="dither-headline">
         Nika is <em style="font-style: italic; font-family: var(--font-editorial)">alive</em>.
       </div>
-      <div class="dither-sub">move your cursor · watch the field respond</div>
+      <p class="dither-sub">move your cursor &nbsp;·&nbsp; watch the field respond</p>
+      <div class="dither-badge">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-emerald)] inline-block shrink-0"
+          style="box-shadow: 0 0 8px var(--color-emerald-glow); animation: pulse 2.5s ease-in-out infinite;"
+          aria-hidden="true"></span>
+        <span>live · WebGL · Bayer 4×4 dithered FBM noise</span>
+      </div>
     </div>
   </section>
 
@@ -597,7 +630,7 @@ const STATS = {
             One binary. No daemon. No cloud account. Works on macOS and Linux — on your laptop, your CI, or your server.
           </p>
           <div class="mt-10 flex flex-wrap gap-3">
-            <PressButton variant="brand" href="/install/">
+            <PressButton variant="brand" href="/install/" class="press-flat-beam">
               Full install guide&nbsp;→
             </PressButton>
           </div>
@@ -642,7 +675,13 @@ const STATS = {
       § 13 — EMERGE (final CTA)
       ===================================================================== */}
   <section class="relative overflow-hidden grain-overlay isolate">
-    <div class="mx-auto max-w-[82rem] px-6 py-28 md:py-36 text-center relative z-10">
+    {/* Radial glow rising from the bottom — brand blue */}
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(ellipse 70% 55% at 50% 100%, oklch(0.62 0.195 258 / 0.22), transparent 65%);"
+      aria-hidden="true"
+    ></div>
+    <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28 text-center relative z-10">
       <Rule number="13" label="§ EMERGE" variant="brand" class="mb-12 max-w-xl mx-auto" />
 
       <h2 class="font-[var(--font-display)] font-normal text-5xl md:text-7xl leading-[1.02] tracking-[-0.03em] text-[var(--color-fg)] max-w-[18ch] mx-auto">
@@ -654,7 +693,7 @@ const STATS = {
       </p>
 
       <div class="mt-12 flex flex-wrap justify-center gap-3">
-        <PressButton variant="brand" href="https://github.com/supernovae-st/nika">
+        <PressButton variant="brand" href="https://github.com/supernovae-st/nika" class="press-flat-beam">
           github.com/supernovae-st/nika&nbsp;↗
         </PressButton>
         <PressButton variant="ghost" href="/changelog/">
@@ -663,4 +702,20 @@ const STATS = {
       </div>
     </div>
   </section>
+
+  {/* Scroll reveal — IntersectionObserver adds .is-visible to [data-reveal] elements */}
+  <script>
+    (() => {
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
+        }),
+        { threshold: 0.07, rootMargin: '0px 0px -6% 0px' }
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    })();
+  </script>
 </BaseLayout>

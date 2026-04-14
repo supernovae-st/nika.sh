@@ -41,23 +41,15 @@ export function CursorFx() {
       const el = e.target as HTMLElement;
       const label = labelRef.current;
       if (!label) return;
-
+      // Only show label when element explicitly opts in via data-cursor
       const cursorEl = el.closest('[data-cursor]') as HTMLElement | null;
-      const linkEl   = el.closest('a, button')   as HTMLElement | null;
-
-      if (cursorEl?.dataset.cursor) {
-        label.textContent = cursorEl.dataset.cursor;
-      } else if (linkEl) {
-        label.textContent = linkEl.tagName === 'BUTTON' ? 'press' : 'open';
-      } else {
-        label.textContent = '';
-      }
+      label.textContent = cursorEl?.dataset.cursor ?? '';
     };
 
     const loop = () => {
       rafId = requestAnimationFrame(loop);
-      cx += (tx - cx) * 0.15;
-      cy += (ty - cy) * 0.15;
+      cx += (tx - cx) * 0.22;
+      cy += (ty - cy) * 0.22;
       if (dotRef.current) {
         // Round to 1dp — avoids sub-pixel jitter without visible lag
         dotRef.current.style.transform =

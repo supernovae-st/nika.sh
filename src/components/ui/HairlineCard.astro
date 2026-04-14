@@ -15,6 +15,7 @@ interface Props {
   grain?: boolean;
   edge?: boolean;
   class?: string;
+  [key: string]: unknown;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   grain = false,
   edge = false,
   class: className = '',
+  ...rest
 } = Astro.props;
 
 const chamferClass = chamfer === 'none' ? '' : `chamfer-${chamfer}`;
@@ -33,6 +35,7 @@ const Root = href ? 'a' : Tag;
 
 <Root
   href={href}
+  {...rest}
   class:list={[
     'relative overflow-hidden',
     'hairline',
