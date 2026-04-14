@@ -2,6 +2,11 @@
 dist/
 .astro/
 
+# Generated data JSON (stubs are committed, real values written at build time)
+src/data/dashboard.json
+src/data/github-metrics.json
+src/data/search-index.json
+
 # Dependencies
 node_modules/
 .pnpm-store/
