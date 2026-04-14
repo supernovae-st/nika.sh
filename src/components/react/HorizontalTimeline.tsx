@@ -96,7 +96,7 @@ export function HorizontalTimeline({ className = '' }: HorizontalTimelineProps) 
           <div
             ref={trackRef}
             className="timeline-track"
-            style={{ willChange: 'transform', transition: 'transform 60ms linear' }}
+            style={{ willChange: 'transform' }}
           >
             {/* Section header card */}
             <div className="timeline-header-card">

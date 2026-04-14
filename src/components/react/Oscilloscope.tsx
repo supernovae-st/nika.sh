@@ -8,35 +8,33 @@ interface OscilloscopeProps {
   value?: number;
   /** Secondary accent value — drives a faint second trace */
   accent?: number;
-  width?: number;
+  /** Display height in CSS pixels (default: 80) */
   height?: number;
   className?: string;
-  /** aria-label for the canvas */
   label?: string;
 }
 
 /**
  * Oscilloscope — green phosphor CRT trace driven by simplex-noise FBM.
  *
- * The primary `value` (e.g. test count) determines amplitude: a flat line
- * at 0, max amplitude at 600. A secondary accent trace runs at 40% opacity
- * for depth.
+ * The primary `value` (e.g. test count) determines amplitude: flat line
+ * at 0, max amplitude at ~600. A secondary accent trace runs at 40% opacity.
  *
- * Phosphor persistence: each frame draws a 5% opaque black rect over the
- * canvas, so bright traces decay into a warm afterglow over ~20 frames.
+ * Canvas sizing: reads actual rendered width via `offsetWidth` so it fills
+ * its CSS container correctly regardless of breakpoint. A window `resize`
+ * listener redraws the buffer when the container changes.
  *
- * Canvas is scaled to devicePixelRatio (capped at 2×) for crisp text
- * and line rendering on HiDPI displays.
+ * Phosphor persistence: each frame draws a 5.5% opaque black rect, so
+ * bright traces decay into warm afterglow over ~18 frames.
  *
  * Guardrails:
- * - rAF-gated, pauses when hidden (document.hidden)
- * - IntersectionObserver pauses when scrolled out of view
+ * - rAF pauses when hidden (document.hidden) or scrolled out (IO)
  * - prefers-reduced-motion: static single frame, no loop
+ * - HiDPI: pixel buffer is capped at 2× device pixel ratio
  */
 export function Oscilloscope({
   value = 369,
   accent,
-  width = 400,
   height = 80,
   className = '',
   label = 'Oscilloscope trace',
@@ -49,26 +47,31 @@ export function Oscilloscope({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // HiDPI setup
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width  = width  * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width  = `${width}px`;
-    canvas.style.height = `${height}px`;
-    ctx.scale(dpr, dpr);
 
-    // Fill initial black background
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, width, height);
+    // Measure actual rendered CSS dimensions — CSS controls display size.
+    let W = canvas.offsetWidth || 400;
+    const H = height;
+
+    const setupBuffer = () => {
+      W = canvas.offsetWidth || 400;
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      // setTransform is idempotent unlike ctx.scale (which accumulates)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, W, H);
+    };
+    setupBuffer();
 
     const prefersReduced =
       typeof matchMedia !== 'undefined' &&
       matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Normalize value to amplitude (0 = flat, 600 = full height)
-    const amp = Math.min((value / 600) * (height * 0.38), height * 0.42);
+    // Normalise value → amplitude (0 = flat line, 600 = full height)
+    const amp       = Math.min((value / 600) * (H * 0.38), H * 0.42);
     const accentAmp = accent != null
-      ? Math.min((accent / 600) * (height * 0.22), height * 0.25)
+      ? Math.min((accent / 600) * (H * 0.22), H * 0.25)
       : amp * 0.3;
 
     let t = 0;
@@ -78,23 +81,22 @@ export function Oscilloscope({
     const drawFrame = () => {
       // Phosphor decay
       ctx.fillStyle = 'rgba(0, 0, 0, 0.055)';
-      ctx.fillRect(0, 0, width, height);
+      ctx.fillRect(0, 0, W, H);
 
-      const cy = height / 2;
+      const cy = H / 2;
 
       const drawTrace = (a: number, alpha: number, freq: number) => {
         ctx.beginPath();
         ctx.strokeStyle = `rgba(0, 255, 65, ${alpha})`;
         ctx.shadowBlur  = 5;
-        ctx.shadowColor = 'rgba(0, 255, 65, 0.6)';
+        ctx.shadowColor = 'rgba(0, 255, 65, 0.55)';
         ctx.lineWidth   = 1.2;
-
-        for (let x = 0; x <= width; x++) {
-          const nx = x / width;
+        for (let x = 0; x <= W; x++) {
+          const nx = x / W;
           const n =
             _noise(nx * 2.8 * freq, t * 0.45, 0) * 0.6 +
-            _noise(nx * 6.0 * freq, t * 0.9, 1)  * 0.3 +
-            _noise(nx * 11  * freq, t * 1.8, 2)  * 0.1;
+            _noise(nx * 6.0 * freq, t * 0.9,  1) * 0.3 +
+            _noise(nx * 11  * freq, t * 1.8,  2) * 0.1;
           const y = cy + n * a;
           x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
         }
@@ -102,9 +104,7 @@ export function Oscilloscope({
         ctx.shadowBlur = 0;
       };
 
-      // Primary trace
       drawTrace(amp, 0.88, 1);
-      // Accent trace (faint, higher frequency)
       drawTrace(accentAmp, 0.28, 1.6);
 
       t += 0.013;
@@ -121,8 +121,11 @@ export function Oscilloscope({
     );
     io.observe(canvas);
 
-    const onVis = () => { visible = !document.hidden; };
+    const onVis    = () => { visible = !document.hidden; };
+    const onResize = () => { setupBuffer(); };  // rebuffer on window resize
+
     document.addEventListener('visibilitychange', onVis);
+    window.addEventListener('resize', onResize, { passive: true });
 
     const loop = () => {
       rafId = requestAnimationFrame(loop);
@@ -135,13 +138,16 @@ export function Oscilloscope({
       cancelAnimationFrame(rafId);
       io.disconnect();
       document.removeEventListener('visibilitychange', onVis);
+      window.removeEventListener('resize', onResize);
     };
-  }, [value, accent, width, height]);
+  }, [value, accent, height]);
 
   return (
     <canvas
       ref={canvasRef}
       className={`oscilloscope ${className}`}
+      // CSS controls display size — no inline width/height override.
+      style={{ display: 'block', width: '100%', height: `${height}px` }}
       aria-label={label}
       role="img"
     />

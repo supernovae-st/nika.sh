@@ -25,10 +25,11 @@ export function CursorFx() {
 
     document.documentElement.style.cursor = 'none';
 
-    let tx = window.innerWidth / 2;
-    let ty = window.innerHeight / 2;
-    let cx = tx;
-    let cy = ty;
+    // Start off-screen — dot becomes visible only after the first pointermove.
+    let tx = -100;
+    let ty = -100;
+    let cx = -100;
+    let cy = -100;
     let rafId = 0;
 
     const onMove = (e: PointerEvent) => {

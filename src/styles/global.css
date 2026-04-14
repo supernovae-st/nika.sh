@@ -1016,7 +1016,6 @@ pre code {
   border: 1px solid var(--color-border);
   background: #000;
   border-radius: var(--radius-hair);
-  image-rendering: pixelated;
   /* Subtle outer glow matching the green phosphor */
   box-shadow: 0 0 0 1px oklch(0 0.15 160 / 0.08),
               inset 0 0 20px oklch(0 0.15 160 / 0.06);

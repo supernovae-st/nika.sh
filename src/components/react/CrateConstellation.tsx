@@ -89,8 +89,17 @@ const EDGES: [string, string][] = [
   ['cli', 'ui'], ['ui', 'registry'],
 ];
 
+// Module-scope constants — CRATES/EDGES are static, no reason to recompute per render.
+const CRATE_MAP = new Map(CRATES.map(c => [c.id, c]));
+const CRATE_COUNTS = {
+  admitted: CRATES.filter(c => c.status === 'admitted').length,
+  growing:  CRATES.filter(c => c.status === 'growing').length,
+  planned:  CRATES.filter(c => c.status === 'planned').length,
+};
+
 interface CrateConstellationProps {
   className?: string;
+  'data-cursor'?: string;
 }
 
 /**
@@ -104,10 +113,8 @@ interface CrateConstellationProps {
  * Hover highlights the crate + all its direct connections.
  * Pure SVG + SMIL for the pulse — no JS animation loop.
  */
-export function CrateConstellation({ className = '' }: CrateConstellationProps) {
+export function CrateConstellation({ className = '', 'data-cursor': dataCursor }: CrateConstellationProps) {
   const [hovered, setHovered] = useState<string | null>(null);
-
-  const crateMap = new Map(CRATES.map(c => [c.id, c]));
 
   const isHighlighted = (id: string): boolean => {
     if (!hovered) return false;
@@ -117,18 +124,12 @@ export function CrateConstellation({ className = '' }: CrateConstellationProps) 
     );
   };
 
-  const counts = {
-    admitted: CRATES.filter(c => c.status === 'admitted').length,
-    growing:  CRATES.filter(c => c.status === 'growing').length,
-    planned:  CRATES.filter(c => c.status === 'planned').length,
-  };
-
   return (
-    <div className={`constellation-wrap ${className}`}>
+    <div className={`constellation-wrap ${className}`} data-cursor={dataCursor}>
       <svg
         viewBox="0 0 720 400"
         xmlns="http://www.w3.org/2000/svg"
-        aria-label={`Nika crate constellation: ${counts.admitted} admitted, ${counts.growing} growing, ${counts.planned} planned`}
+        aria-label={`Nika crate constellation: ${CRATE_COUNTS.admitted} admitted, ${CRATE_COUNTS.growing} growing, ${CRATE_COUNTS.planned} planned`}
         role="img"
         style={{ width: '100%', height: 'auto', overflow: 'visible' }}
       >
@@ -161,8 +162,8 @@ export function CrateConstellation({ className = '' }: CrateConstellationProps) 
 
         {/* ── Constellation edges ─────────────────────────────────────── */}
         {EDGES.map(([fromId, toId]) => {
-          const from = crateMap.get(fromId);
-          const to   = crateMap.get(toId);
+          const from = CRATE_MAP.get(fromId);
+          const to   = CRATE_MAP.get(toId);
           if (!from || !to) return null;
 
           const active = hovered && (isHighlighted(fromId) || isHighlighted(toId));
@@ -290,11 +291,11 @@ export function CrateConstellation({ className = '' }: CrateConstellationProps) 
 
       {/* Legend */}
       <div className="constellation-legend">
-        <span className="cc-legend-item cc-admitted">{counts.admitted} admitted</span>
+        <span className="cc-legend-item cc-admitted">{CRATE_COUNTS.admitted} admitted</span>
         <span className="cc-sep">·</span>
-        <span className="cc-legend-item cc-growing">{counts.growing} growing</span>
+        <span className="cc-legend-item cc-growing">{CRATE_COUNTS.growing} growing</span>
         <span className="cc-sep">·</span>
-        <span className="cc-legend-item cc-planned">{counts.planned} planned</span>
+        <span className="cc-legend-item cc-planned">{CRATE_COUNTS.planned} planned</span>
       </div>
     </div>
   );
