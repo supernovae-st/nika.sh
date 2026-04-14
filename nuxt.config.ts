@@ -62,6 +62,13 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/**': { prerender: true },
+    // Dynamic + binary-ish endpoints: render at runtime, never prerender.
+    '/errors/**': { prerender: false, ssr: true },
+    '/api/errors/**': { prerender: false },
+    // Static-file assets in public/ are served by Nitro automatically;
+    // we just make sure Nuxt never treats install.sh as an HTML route.
+    '/install.sh': { prerender: false },
+    '/schema/**': { prerender: false },
   },
 
   nitro: {
