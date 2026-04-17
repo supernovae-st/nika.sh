@@ -1,7 +1,7 @@
 # nika.sh — Roadmap
 
-> Site version track, tied but not locked to Nika engine version.
-> Chrysalis timeline: follows the engine's 11–12 month emergence arc.
+> Website-only roadmap. Engine milestones live in the engine repo — see
+> [`supernovae-st/nika` ROADMAP](https://github.com/supernovae-st/nika/blob/nika-diamond/ROADMAP.md).
 
 ---
 
@@ -23,8 +23,7 @@
 - [x] Landing blockers: `/install.sh`, `/schema/workflow.json`, `/errors/catalog.json`, `/design.md`, `/llms.txt`, `/humans.txt`, `/changelog.xml`
 - [x] 404 page with ASCII butterfly
 - [x] Header/Footer with narrative vocabulary ("organ", "admitted", "grew")
-- [x] Scaleway Object Storage deploy (fr-par, public-read, website hosting)
-- [x] GitHub Actions auto-deploy on `main` push
+- [x] `.do/app.yaml` — DigitalOcean App Platform deploy spec
 - [x] `.claude/CLAUDE.md` for Claude Code DX
 - [x] 3-agent review swarm: 6 P0 + 7 P1 fixed
 
@@ -50,7 +49,7 @@
 - [ ] Rewrite `src/styles/global.css` to `@import` skill tokens, map via `@theme`
 - [ ] Token rename pass: `var(--color-*)` → `var(--nika-*)` across all 8 `.astro` pages
 - [ ] Palette reconciliation: decide site-adopts-skill OR skill-adopts-site (architect agent recommends site → skill)
-- [ ] Ask Nicolas to add trailing-slash redirect rule on DO/Cloudflare side
+- [ ] Trailing-slash redirect rule on DO/Cloudflare side (infra owner task)
 
 ### Self-hosted fonts
 - [ ] Download Basteleur Bold + Moonlight (Velvetyne, OFL) → `public/fonts/`
