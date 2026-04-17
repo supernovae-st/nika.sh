@@ -1,11 +1,11 @@
 # nika.sh 🦋
 
-> The marketing site for [Nika](https://github.com/supernovae-st/nika) — the AGPL workflow engine for AI.
-> Astro 5 (static) + Tailwind v4. Hosted on Scaleway Object Storage (Paris) + Cloudflare CDN.
+> The marketing site for [Nika](https://github.com/supernovae-st/nika) — the AGPL workflow engine for AI. Astro 5 + Tailwind v4, static output.
 
-**Live** : [https://nika.sh](https://nika.sh)
 **Source** : [github.com/supernovae-st/nika.sh](https://github.com/supernovae-st/nika.sh)
 **License** : AGPL-3.0-or-later
+
+> The live site is not deployed yet — we ship when the engine crosses a quality bar worth pointing at.
 
 ---
 
@@ -17,6 +17,7 @@
 - `/changelog` — weekly dev logs (Friday 18:00 Paris)
 - `/blog` — monthly deep dives (one organ at a time)
 - `/errors/[code]` — NIKA-XXX catalog reference
+- `/play` — placeholder for future WASM playground
 - `/404` — ASCII butterfly captain's log
 - `/install.sh` — platform-detect installer script
 - `/schema/workflow.json` — JSON Schema for `.nika.yaml` (used by the LSP)
@@ -33,42 +34,53 @@ Astro 5 (output: static, trailingSlash: always)
 ├── @astrojs/react     — islands for interactive components
 ├── @astrojs/sitemap   — auto-generated sitemap-index.xml
 └── @astrojs/rss       — /changelog.xml feed
-
-Design system: design/ (git submodule, planned)
-  → supernovae-st/nika-design-skill
 ```
 
 Zero JS on most pages. React islands only where needed. Shiki for code highlighting (`github-dark-dimmed`).
 
 ## Local development
 
+Requires **Node 22** and **pnpm 9** (enabled via `corepack enable`).
+
 ```bash
-# First time on this machine (monorepo quirk — supernovae/ has pnpm workspace)
+# First time on this machine (monorepo quirk — parent supernovae-hq has a
+# pnpm workspace that would otherwise pull this repo in). Safe to omit if
+# you cloned this repo standalone.
 pnpm install --ignore-workspace
 
-# Dev
-npx astro dev              # http://localhost:4321
+# Dev server — http://localhost:4321
+pnpm dev
 
-# Build
-npx astro build            # output → dist/
+# Production build — output → dist/
+pnpm build
 
-# Preview
-npx astro preview
+# Preview the built site locally
+pnpm preview
 
 # Type check
-npx astro check
+pnpm check
+```
+
+## Content structure
+
+```
+src/
+├── pages/           Astro routes (.astro + dynamic /errors/[code])
+├── components/
+│   ├── ui/          Astro-only presentational components
+│   └── react/       React islands (client:* directives)
+├── content/
+│   ├── blog/        MDX blog posts (Zod-typed)
+│   └── changelog/   MDX weekly dev logs (Zod-typed)
+├── layouts/         BaseLayout + shared page chrome
+├── data/            JSON fixtures (build-time inputs)
+├── styles/          global.css — Tailwind + tokens
+└── lib/             TS helpers
 ```
 
 ## Deploy
 
-**Push to `main` = site auto-deploys.** DigitalOcean App Platform is connected to this repo (managed by Nicolas).
-
-Astro config needed on DO side:
-- **Build command**: `pnpm install && pnpm build`
-- **Output directory**: `dist/`
-- **Framework preset**: Astro (or Static Site)
-
-We manage the code. Nicolas manages the infrastructure.
+Deployed to **DigitalOcean App Platform** on push to `main`. See [`.do/app.yaml`](./.do/app.yaml) for the full spec (build command, output dir, domains, routes).
 
 ## Roadmap
 
@@ -84,16 +96,15 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 - **Narrative vocabulary**: "organ" (not module), "admitted" (not added), "grew" (not shipped), "chrysalis" (not beta), "emerge" reserved for v0.90.
 - **Butterfly 🦋 scarcity**: favicon, changelog dev-log seals, v0.90 launch page. Never in nav, never decorative.
-- **Design rules**: `design/nika-design/PRINCIPLES.md` (when submodule lands).
-- **Commits**: `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`.
+- **Commits**: `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`. Never Claude.
 
 ## Related repos
 
-- [`supernovae-st/nika`](https://github.com/supernovae-st/nika) — the Rust workflow engine itself
+- [`supernovae-st/nika`](https://github.com/supernovae-st/nika) — the Rust workflow engine itself (AGPL, Diamond rewrite)
+- [`supernovae-st/nika-client`](https://github.com/supernovae-st/nika-client) — TypeScript SDK
 - [`supernovae-st/nika-design-skill`](https://github.com/supernovae-st/nika-design-skill) — design system + Claude Code skill
-- [`supernovae-st/nika-client`](https://github.com/supernovae-st/nika-client) — TS SDK
-- [`supernovae-st/nika-registry`](https://github.com/supernovae-st/nika-registry) — community workflows
-- [`supernovae-st/homebrew-nika`](https://github.com/supernovae-st/homebrew-nika) — `brew tap supernovae-st/nika && brew install nika`
+- [`supernovae-st/homebrew-tap`](https://github.com/supernovae-st/homebrew-tap) — `brew install supernovae-st/tap/nika`
+- [`supernovae-st/nika-site-audit`](https://github.com/supernovae-st/nika-site-audit) — example Nika workflow: audit a website
 
 ---
 
