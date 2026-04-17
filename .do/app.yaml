@@ -1,0 +1,62 @@
+# DigitalOcean App Platform — nika.sh
+#
+# App spec for the Nika marketing site + catalog sub-path. Static Astro 5
+# build, auto-deployed on every push to `main` via the DO GitHub App.
+#
+# To create the app from this spec:
+#   doctl apps create --spec .do/app.yaml
+#
+# To update an existing app:
+#   doctl apps update <app-id> --spec .do/app.yaml
+#
+# Dashboard equivalent: cloud.digitalocean.com → Apps → Create App
+# → GitHub → supernovae-st/nika.sh → Autodetect (Astro) → customize per
+# values below.
+#
+# Serves:
+#   - https://nika.sh          (marketing, Astro pages)
+#   - https://www.nika.sh      (alias → nika.sh)
+#   - https://nika.sh/catalog/v1/*.json  (static catalog sub-path)
+#
+# Does NOT serve:
+#   - docs.nika.sh             (hosted by Mintlify — separate CNAME)
+#   - olympus.nika.sh          (private, not deployed)
+
+name: nika-sh
+region: fra  # Frankfurt — closest DO region to Paris
+
+static_sites:
+  - name: web
+    github:
+      repo: supernovae-st/nika.sh
+      branch: main
+      deploy_on_push: true
+
+    source_dir: /
+    environment_slug: node-js
+
+    # pnpm via corepack (bundled in Node 22). --frozen-lockfile enforces
+    # reproducible installs from pnpm-lock.yaml.
+    build_command: corepack enable && pnpm install --frozen-lockfile && pnpm build
+
+    output_dir: /dist
+    index_document: index.html
+    error_document: 404.html
+
+    envs:
+      - key: NODE_VERSION
+        value: "22"
+        scope: BUILD_TIME
+        type: GENERAL
+
+    routes:
+      - path: /
+
+domains:
+  - domain: nika.sh
+    type: PRIMARY
+    zone: nika.sh
+
+  - domain: www.nika.sh
+    type: ALIAS
+    zone: nika.sh
