@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "version": "0.1.0",
-  "description": "The marketing site for nika.sh — the AGPL workflow engine for AI. Astro + Tailwind v4, static output, deployed to Scaleway Object Storage (Paris).",
+  "description": "The marketing site for nika.sh — the AGPL workflow engine for AI. Astro 5 + Tailwind v4, static output, deployed to DigitalOcean App Platform.",
   "license": "AGPL-3.0-or-later",
   "packageManager": "pnpm@9.15.0",
   "scripts": {
