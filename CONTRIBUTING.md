@@ -56,10 +56,14 @@ Never Claude co-author. Always Nika 🦋.
 
 ## Local dev
 
+Requires Node 22 + pnpm 9 (`corepack enable`).
+
 ```bash
-pnpm install --ignore-workspace
-npx astro dev
+pnpm install --ignore-workspace   # --ignore-workspace only needed inside the supernovae-hq monorepo
+pnpm dev                          # http://localhost:4321
 ```
+
+See [`README.md`](./README.md#local-development) for the full command set (build, preview, check).
 
 ## License
 
