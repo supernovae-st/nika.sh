@@ -1,7 +1,8 @@
 ---
 /**
- * ProviderGrid — nine LLM provider cards.
+ * ProviderGrid — thirteen canonical LLM provider cards.
  *
+ * Per nika/spec/stdlib/providers-v0.1.md (canonical 13: 7 cloud + 5 local + 1 test).
  * Admitted providers have a live blue indicator.
  * Planned providers are dim with a dashed border.
  * Static Astro — zero client JS.
@@ -17,7 +18,12 @@ interface Provider {
   note?: string;
 }
 
+// The canonical 13 · per nika/spec/stdlib/providers-v0.1.md (committed HEAD).
+// Cloud (7) · anthropic · openai · mistral · groq · deepseek · gemini · xai
+// Local (5) · ollama · lmstudio · llamacpp · localai · vllm
+// Test  (1) · mock
 const PROVIDERS: Provider[] = [
+  // ── Cloud ───────────────────────────────────────────────────────────────
   {
     id: 'anthropic',
     name: 'Anthropic',
@@ -31,48 +37,82 @@ const PROVIDERS: Provider[] = [
     models: ['gpt-4o', 'gpt-4o-mini', 'o1-mini'],
   },
   {
-    id: 'google',
-    name: 'Google',
+    id: 'gemini',
+    name: 'Gemini',
     status: 'admitted',
     models: ['gemini-2.5-pro', 'gemini-2.0-flash'],
+    note: 'Google · long context · multimodal',
   },
   {
     id: 'mistral',
     name: 'Mistral',
     status: 'admitted',
     models: ['mistral-large-2', 'mistral-small'],
-  },
-  {
-    id: 'ollama',
-    name: 'Ollama',
-    status: 'admitted',
-    models: ['any local model'],
-    note: 'localhost, no key needed',
-  },
-  {
-    id: 'gguf',
-    name: 'GGUF',
-    status: 'admitted',
-    models: ['any GGUF model'],
-    note: 'llama.cpp backend',
+    note: 'EU · sovereign-leaning',
   },
   {
     id: 'groq',
     name: 'Groq',
     status: 'planned',
     models: ['llama-3.3-70b', 'mixtral-8x7b'],
+    note: 'fastest open-weight',
   },
   {
     id: 'deepseek',
     name: 'DeepSeek',
     status: 'planned',
     models: ['deepseek-r1', 'deepseek-v3'],
+    note: 'reasoning · cost-efficient',
   },
   {
-    id: 'cohere',
-    name: 'Cohere',
+    id: 'xai',
+    name: 'xAI',
     status: 'planned',
-    models: ['command-r+', 'command-r'],
+    models: ['grok-4', 'grok-3'],
+  },
+  // ── Local · sovereign-first ────────────────────────────────────────────
+  {
+    id: 'ollama',
+    name: 'Ollama',
+    status: 'admitted',
+    models: ['any local model'],
+    note: 'localhost:11434 · no key',
+  },
+  {
+    id: 'llamacpp',
+    name: 'llama.cpp',
+    status: 'admitted',
+    models: ['any GGUF model'],
+    note: 'llama-server · localhost:8080',
+  },
+  {
+    id: 'lmstudio',
+    name: 'LM Studio',
+    status: 'planned',
+    models: ['any loaded model'],
+    note: 'localhost:1234 · no key',
+  },
+  {
+    id: 'localai',
+    name: 'LocalAI',
+    status: 'planned',
+    models: ['any compatible model'],
+    note: 'OpenAI drop-in · multi-backend',
+  },
+  {
+    id: 'vllm',
+    name: 'vLLM',
+    status: 'planned',
+    models: ['any HF model'],
+    note: 'high-throughput · self-hosted',
+  },
+  // ── Test ────────────────────────────────────────────────────────────────
+  {
+    id: 'mock',
+    name: 'mock',
+    status: 'admitted',
+    models: ['deterministic fixture'],
+    note: 'no LLM call · test only',
   },
 ];
 
