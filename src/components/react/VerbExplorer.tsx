@@ -41,9 +41,9 @@ const VERBS: Verb[] = [
     invoke:
       tool: "nika:fetch"
       args:
-        url: "https://api.github.com/repos/{{ inputs.repo }}/pulls/{{ inputs.pr }}"
+        url: "https://api.github.com/repos/\${{ vars.repo }}/pulls/\${{ vars.pr }}"
         headers:
-          Authorization: "Bearer {{ env.GH_TOKEN }}"
+          Authorization: "Bearer \${{ secrets.GH_TOKEN }}"
       output: pr_data`,
     color: 'var(--color-emerald)',
   },
@@ -61,7 +61,7 @@ const VERBS: Verb[] = [
       model: claude-opus-4-6
       prompt: |
         Classify this GitHub issue:
-        {{ tasks.get-pr.output.body }}
+        \${{ tasks.get-pr.output.body }}
       structured:
         label:    string
         priority: enum(P0, P1, P2, P3)
@@ -82,7 +82,7 @@ const VERBS: Verb[] = [
       provider: anthropic
       model: claude-opus-4-6
       goal: |
-        Research {{ inputs.topic }}.
+        Research \${{ vars.topic }}.
         Produce a 500-word summary with 5 citations.
       tools: [web.search, web.fetch, fs.write]
       max_steps: 12
@@ -273,12 +273,13 @@ function YamlLine({ line, accentColor }: { line: string; accentColor: string }) 
 function YamlValue({ value, accentColor }: { value: string; accentColor: string }) {
   if (!value.trim()) return <span>{value}</span>;
 
-  // Highlight {{ template expressions }} inside strings
-  const parts = value.split(/({{[^}]+}})/g);
+  // Highlight ${{ ... }} CEL template expressions inside strings (spec/04-variables ·
+  // the one canonical substitution syntax · leading $ is part of the token).
+  const parts = value.split(/(\$\{\{[^}]+\}\})/g);
   return (
     <span style={{ color: 'var(--color-emerald)' }}>
       {parts.map((part, i) =>
-        /^{{/.test(part)
+        /^\$\{\{/.test(part)
           ? <span key={i} style={{ color: accentColor }}>{part}</span>
           : <span key={i}>{part}</span>
       )}
