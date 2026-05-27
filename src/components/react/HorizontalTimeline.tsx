@@ -15,7 +15,7 @@ const WEEKS: Week[] = [
   { number:  3, organ: 'nika-schema',   headline: 'The YAML contract is written',        stat: '4 verbs · 1 schema' },
   { number:  4, organ: 'nika-dag',      headline: 'Parallel task graph admitted',        stat: 'Topo-sort · cycle detection' },
   { number:  5, organ: 'nika-infer',    headline: 'First LLM call succeeds',             stat: 'Anthropic · OpenAI online' },
-  { number:  6, organ: 'nika-invoke',   headline: '63 builtin tools available',          stat: 'shell · fs · http · git' },
+  { number:  6, organ: 'nika-invoke',   headline: '22 builtin tools available',          stat: 'shell · fs · http · git' },
   { number:  7, organ: 'nika-shield',   headline: 'Six-layer injection defense',         stat: 'OWASP LLM Top-10 covered' },
   { number:  8, organ: 'nika-cli',      headline: 'The binary ships to users',           stat: 'brew install · 13 providers' },
   { number:  9, organ: 'nika-catalog',  headline: 'Self-hosted registry grows',          stat: 'Catalog verify admitted' },

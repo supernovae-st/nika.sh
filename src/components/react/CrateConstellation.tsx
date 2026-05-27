@@ -27,7 +27,6 @@ const CRATES: Crate[] = [
 
   // ── Verbs ─────────────────────────────────────────────────────────────
   { id: 'exec',      label: 'exec',      x: 185, y: 140, status: 'admitted' },
-  { id: 'fetch',     label: 'fetch',     x: 155, y: 185, status: 'admitted' },
   { id: 'invoke',    label: 'invoke',    x: 175, y: 230, status: 'admitted' },
   { id: 'infer',     label: 'infer',     x: 215, y: 255, status: 'admitted' },
   { id: 'agent',     label: 'agent',     x: 220, y: 170, status: 'growing'  },
@@ -70,7 +69,7 @@ const EDGES: [string, string][] = [
   ['runtime', 'context'], ['cli', 'config'], ['schema', 'error'],
   ['error', 'engine'],
   // Verbs → engine
-  ['exec', 'engine'], ['fetch', 'engine'], ['invoke', 'engine'],
+  ['exec', 'engine'], ['invoke', 'engine'],
   ['infer', 'engine'], ['agent', 'engine'],
   // Verbs lateral
   ['exec', 'config'], ['agent', 'exec'],

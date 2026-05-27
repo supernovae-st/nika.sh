@@ -15,7 +15,7 @@ function makeCmds(): Cmd[] {
 
   return [
     { id: 'nav-01', group: 'navigate', label: '§ 01 · Vital Signs',    action: go('/#vital-signs') },
-    { id: 'nav-03', group: 'navigate', label: '§ 03 · Five Verbs',     action: go('/#five-verbs') },
+    { id: 'nav-03', group: 'navigate', label: '§ 03 · Four Verbs',     action: go('/#verbs') },
     { id: 'nav-05', group: 'navigate', label: '§ 05 · The Workspace',  action: go('/#workspace') },
     { id: 'nav-06', group: 'navigate', label: '§ 06 · Providers',      action: go('/#providers') },
     { id: 'nav-07', group: 'navigate', label: '§ 07 · Chrysalis',      action: go('/#chrysalis') },

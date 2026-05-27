@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-type VerbId = 'exec' | 'fetch' | 'invoke' | 'infer' | 'agent';
+type VerbId = 'exec' | 'invoke' | 'infer' | 'agent';
 
 interface Verb {
   id: VerbId;
@@ -30,38 +30,21 @@ const VERBS: Verb[] = [
     color: 'var(--color-brand)',
   },
   {
-    id: 'fetch',
-    label: 'FETCH',
-    tagline: 'Retrieve a resource',
-    description:
-      'HTTP request with headers, auth, and structured response binding. ' +
-      'Supports GET, POST, streaming. Output is available to downstream tasks.',
-    yaml: `tasks:
-  - id: get-pr
-    fetch:
-      url: "https://api.github.com/repos/{{ inputs.repo }}/pulls/{{ inputs.pr }}"
-      headers:
-        Authorization: "Bearer {{ env.GH_TOKEN }}"
-        Accept: "application/vnd.github+json"
-      output: pr_data`,
-    color: 'var(--color-cyan)',
-  },
-  {
     id: 'invoke',
     label: 'INVOKE',
     tagline: 'Call a builtin tool',
     description:
-      '63 builtin tools: filesystem, HTTP, shell, git, GitHub, Slack, Jira, ' +
-      'databases, and more. One line replaces a hundred lines of glue code.',
+      '22 builtin tools — including nika:fetch for HTTP, plus filesystem, shell, ' +
+      'git, GitHub, Slack, Jira, databases. One line replaces a hundred lines of glue code.',
     yaml: `tasks:
-  - id: label-issue
-    depends_on: [classify]
+  - id: get-pr
     invoke:
-      tool: gh.label
-      input:
-        repo:   "{{ inputs.repo }}"
-        issue:  "{{ inputs.issue_number }}"
-        labels: "{{ tasks.classify.output.labels }}"`,
+      tool: "nika:fetch"
+      args:
+        url: "https://api.github.com/repos/{{ inputs.repo }}/pulls/{{ inputs.pr }}"
+        headers:
+          Authorization: "Bearer {{ env.GH_TOKEN }}"
+      output: pr_data`,
     color: 'var(--color-emerald)',
   },
   {
@@ -120,7 +103,7 @@ interface VerbExplorerProps {
 }
 
 /**
- * VerbExplorer — interactive five-verb showcase.
+ * VerbExplorer — interactive four-verb showcase.
  *
  * Left column: verb tabs with keyboard navigation (← →).
  * Right column: YAML code preview with a syntax-highlight-like coloring,

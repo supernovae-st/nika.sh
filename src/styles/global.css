@@ -1361,7 +1361,7 @@ pre code {
   background: oklch(0.10 0.015 258 / 0.7);
 }
 
-/* --- verb-explorer: interactive five-verb tabset ------------------------- */
+/* --- verb-explorer: interactive four-verb tabset ------------------------- */
 
 .verb-explorer {
   display: grid;

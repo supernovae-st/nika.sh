@@ -310,16 +310,16 @@ const STATS = {
   </section>
 
   {/* =====================================================================
-      § 04 — FIVE VERBS (interactive verb explorer)
+      § 04 — FOUR VERBS (interactive verb explorer)
       ===================================================================== */}
-  <section id="five-verbs" class="edge-rule-bottom">
+  <section id="verbs" class="edge-rule-bottom">
     <div class="mx-auto max-w-[82rem] px-6 py-24 md:py-32">
-      <Rule number="04" label="§ FIVE VERBS" variant="faint" class="mb-12" />
+      <Rule number="04" label="§ FOUR VERBS" variant="faint" class="mb-12" />
 
       <div class="grid lg:grid-cols-[1fr_2.5fr] gap-12 lg:gap-16 items-start mb-12">
         <div>
           <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
-            Five verbs.<br /><em class="editorial">Closed set</em>.
+            Four verbs.<br /><em class="editorial">Closed set</em>.
           </h2>
           <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[38ch]">
             Every workflow is a DAG of tasks. Every task uses exactly one verb.
@@ -354,10 +354,10 @@ const STATS = {
             01 · SEMANTIC
           </div>
           <h3 class="font-[var(--font-display)] font-medium text-xl mb-3 text-[var(--color-fg)]">
-            Five verbs. Closed set.
+            Four verbs. Closed set.
           </h3>
           <p class="text-[0.925rem] text-[var(--color-fg-mute)] leading-[1.65]">
-            <code class="inline-code">exec</code>, <code class="inline-code">fetch</code>, <code class="inline-code">invoke</code>,
+            <code class="inline-code">exec</code>, <code class="inline-code">invoke</code>,
             <code class="inline-code">infer</code>, <code class="inline-code">agent</code>.
             The schema is the contract. No DSL, no callbacks, no Python pretending to be config.
           </p>
@@ -408,7 +408,7 @@ const STATS = {
             What you <em class="editorial">build</em>.
           </h2>
           <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[38ch]">
-            Five verbs cover everything from a 4-line shell script to a fully autonomous multi-agent pipeline.
+            Four verbs cover everything from a 4-line shell script to a fully autonomous multi-agent pipeline.
           </p>
         </div>
       </div>
@@ -434,11 +434,10 @@ const STATS = {
             Release pipeline
           </h3>
           <p class="text-[0.9rem] text-[var(--color-fg-mute)] leading-[1.65] mb-5">
-            <code class="inline-code">exec</code> runs your build. <code class="inline-code">fetch</code> polls the status API. <code class="inline-code">invoke</code> cuts the release. All wired in one YAML file.
+            <code class="inline-code">exec</code> runs your build. <code class="inline-code">invoke</code> polls the status API via <code class="inline-code">nika:fetch</code> and cuts the release. All wired in one YAML file.
           </p>
           <div class="flex flex-wrap gap-2">
             <span class="pill pill-brand">EXEC</span>
-            <span class="pill pill-cyan">FETCH</span>
             <span class="pill pill-emerald">INVOKE</span>
           </div>
         </HairlineCard>
