@@ -12,12 +12,12 @@ interface Week {
 const WEEKS: Week[] = [
   { number:  1, organ: 'nika-error',    headline: 'The nervous system begins',          stat: '44 tests · 0 unwrap()' },
   { number:  2, organ: 'nika-engine',   headline: 'Topological executor awakens',        stat: 'DAG executor · 0 panics' },
-  { number:  3, organ: 'nika-schema',   headline: 'The YAML contract is written',        stat: '5 verbs · 1 schema' },
+  { number:  3, organ: 'nika-schema',   headline: 'The YAML contract is written',        stat: '4 verbs · 1 schema' },
   { number:  4, organ: 'nika-dag',      headline: 'Parallel task graph admitted',        stat: 'Topo-sort · cycle detection' },
   { number:  5, organ: 'nika-infer',    headline: 'First LLM call succeeds',             stat: 'Anthropic · OpenAI online' },
   { number:  6, organ: 'nika-invoke',   headline: '63 builtin tools available',          stat: 'shell · fs · http · git' },
   { number:  7, organ: 'nika-shield',   headline: 'Six-layer injection defense',         stat: 'OWASP LLM Top-10 covered' },
-  { number:  8, organ: 'nika-cli',      headline: 'The binary ships to users',           stat: 'brew install · 9 providers' },
+  { number:  8, organ: 'nika-cli',      headline: 'The binary ships to users',           stat: 'brew install · 13 providers' },
   { number:  9, organ: 'nika-catalog',  headline: 'Self-hosted registry grows',          stat: 'Catalog verify admitted' },
   { number: 10, organ: 'nika-agent',    headline: 'Agent verb enters chrysalis',         stat: 'In-progress · v0.90.0-alpha' },
 ];
