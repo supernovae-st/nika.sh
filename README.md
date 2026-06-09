@@ -101,6 +101,7 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 ## Related repos
 
 - [`supernovae-st/nika`](https://github.com/supernovae-st/nika) — the Rust workflow engine itself (AGPL, Diamond rewrite)
+- [`supernovae-st/nika-spec`](https://github.com/supernovae-st/nika-spec) — the open workflow language spec (Apache-2.0) the engine implements
 - [`supernovae-st/nika-client`](https://github.com/supernovae-st/nika-client) — TypeScript SDK
 - [`supernovae-st/nika-design-skill`](https://github.com/supernovae-st/nika-design-skill) — design system + Claude Code skill
 - [`supernovae-st/homebrew-tap`](https://github.com/supernovae-st/homebrew-tap) — `brew install supernovae-st/tap/nika`
