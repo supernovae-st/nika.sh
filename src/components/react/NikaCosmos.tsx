@@ -37,6 +37,14 @@ function scrollIgnite(): number {
   return Math.min(1, 0.15 + (y / (vh * 0.7)) * 0.85);
 }
 
+// Normalized scroll across the first viewport → 0..1. Drives the camera dolly
+// (we fall INTO the field as the page begins) for an other-world depth pull.
+function scrollDepth(): number {
+  if (typeof window === 'undefined') return 0;
+  const vh = window.innerHeight || 800;
+  return Math.min(1, (window.scrollY || 0) / vh);
+}
+
 const SHARD_VERT = /* glsl */ `
   varying vec3 vNormal;
   varying vec3 vView;
@@ -56,10 +64,13 @@ const SHARD_FRAG = /* glsl */ `
   varying vec3 vNormal;
   varying vec3 vView;
   void main() {
-    float f = pow(1.0 - max(dot(vNormal, vView), 0.0), 3.0);
+    // sharper fresnel = a harder obsidian edge; thin secondary rim for depth
+    float fres = 1.0 - max(dot(vNormal, vView), 0.0);
+    float f = pow(fres, 3.4);
+    float edge = smoothstep(0.55, 0.95, fres) * 0.4;
     float pulse = 0.5 + 0.5 * sin(uTime * 1.2);
-    vec3 col = mix(uCore, uRim, f * (0.35 + 0.65 * uIgnite));
-    col += uRim * f * uIgnite * pulse * 0.7;
+    vec3 col = mix(uCore, uRim, (f + edge) * (0.3 + 0.7 * uIgnite));
+    col += uRim * f * uIgnite * pulse * 0.85;
     gl_FragColor = vec4(col, 1.0);
   }
 `;
@@ -83,7 +94,7 @@ function VerbShard({ still }: { still: boolean }) {
       uTime: { value: 0 },
       uIgnite: { value: still ? 0.6 : 0.15 },
       uRim: { value: new THREE.Color(CYAN) },
-      uCore: { value: new THREE.Color('#05070f') },
+      uCore: { value: new THREE.Color('#02030a') },
     }),
     [still],
   );
@@ -198,31 +209,59 @@ function Supernova({ still }: { still: boolean }) {
   );
 }
 
-// Slow camera-group drift + a whisper of mouse parallax.
+// Slow camera-group drift + mouse parallax + a scroll-driven dolly that
+// falls into the field. Exponential fog gives the scene real depth — distant
+// stars dissolve into a brand-tinted haze (the "other world").
 function Scene({ still }: { still: boolean }) {
   const group = useRef<THREE.Group>(null);
+  const far = useRef<THREE.Group>(null); // far dust — parallaxes least
+  const near = useRef<THREE.Group>(null); // near dust — parallaxes most
   const mouse = useRef({ x: 0, y: 0 });
+  const depth = useRef(0);
 
   useFrame((state) => {
-    if (!group.current) return;
     const t = state.clock.elapsedTime;
     const tx = still ? 0 : mouse.current.x * 0.25;
     const ty = still ? 0 : mouse.current.y * 0.2;
-    group.current.rotation.y += ((still ? 0 : t * 0.0) + tx - group.current.rotation.y) * 0.04;
-    group.current.rotation.x += (ty - group.current.rotation.x) * 0.04;
+
+    if (group.current) {
+      group.current.rotation.y += (tx - group.current.rotation.y) * 0.04;
+      group.current.rotation.x += (ty - group.current.rotation.x) * 0.04;
+    }
+    // Depth parallax: far layer counter-drifts gently, near layer leads.
+    if (far.current) far.current.rotation.y = t * 0.008 + tx * 0.4;
+    if (near.current) {
+      near.current.rotation.y = -t * 0.02 + tx * 1.6;
+      near.current.rotation.x = ty * 1.4;
+    }
+
+    // Scroll dolly — fall INTO the field (z 6 → 4.2) + slight breath.
+    const targetDepth = still ? 0 : scrollDepth();
+    depth.current += (targetDepth - depth.current) * 0.05;
+    const breath = still ? 0 : Math.sin(t * 0.5) * 0.06;
+    state.camera.position.z = 6 - depth.current * 1.8 + breath;
+    state.camera.position.y = depth.current * 0.5;
+    state.camera.lookAt(0, 0, 0);
   });
 
   const onMove = (e: ThreeEvent<PointerEvent>) => {
-    mouse.current = { x: (e.pointer?.x ?? 0), y: (e.pointer?.y ?? 0) };
+    mouse.current = { x: e.pointer?.x ?? 0, y: e.pointer?.y ?? 0 };
   };
 
   return (
     <group ref={group} onPointerMove={onMove}>
-      <Stars radius={60} depth={50} count={2600} factor={4} saturation={0} fade speed={still ? 0 : 0.4} />
+      {/* exponential depth haze — distant field dissolves into brand-dark */}
+      <fogExp2 attach="fog" args={['#04060e', still ? 0.0 : 0.062]} />
+
+      <group ref={far}>
+        <Stars radius={70} depth={60} count={3200} factor={4} saturation={0} fade speed={still ? 0 : 0.35} />
+      </group>
       <Supernova still={still} />
       <VerbShard still={still} />
       <Sparkles count={130} scale={[14, 9, 7]} size={3.2} speed={still ? 0 : 0.3} color={BRAND} opacity={0.7} />
-      <Sparkles count={70} scale={[11, 7, 6]} size={2.1} speed={still ? 0 : 0.4} color={CYAN} opacity={0.55} />
+      <group ref={near}>
+        <Sparkles count={90} scale={[9, 6, 5]} size={2.1} speed={still ? 0 : 0.5} color={CYAN} opacity={0.6} />
+      </group>
     </group>
   );
 }
