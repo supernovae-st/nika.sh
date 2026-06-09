@@ -45,6 +45,28 @@ function scrollDepth(): number {
   return Math.min(1, (window.scrollY || 0) / vh);
 }
 
+// Scroll VELOCITY — the field reacts to how hard you move. Accumulated on each
+// scroll event, decayed every frame. 0 at rest → ~1 when scrolling fast. Lets
+// the supernova flare and the shard spin up: you FEEL the energy of motion.
+let _scrollVel = 0;
+let _lastY = 0;
+if (typeof window !== 'undefined') {
+  _lastY = window.scrollY || 0;
+  window.addEventListener(
+    'scroll',
+    () => {
+      const y = window.scrollY || 0;
+      _scrollVel = Math.min(1, _scrollVel + Math.abs(y - _lastY) * 0.012);
+      _lastY = y;
+    },
+    { passive: true },
+  );
+}
+const scrollVel = () => _scrollVel;
+const decayVel = () => {
+  _scrollVel *= 0.9;
+};
+
 const SHARD_VERT = /* glsl */ `
   varying vec3 vNormal;
   varying vec3 vView;
@@ -117,7 +139,7 @@ function VerbShard({ still }: { still: boolean }) {
     uniforms.uIgnite.value = ig.current;
 
     if (shard.current && !still) {
-      shard.current.rotation.y = t * 0.12;
+      shard.current.rotation.y = t * 0.12 + scrollVel() * 1.1; // spin up with energy
       shard.current.rotation.x = Math.sin(t * 0.2) * 0.18;
     }
     nodes.current.forEach((n, i) => {
@@ -185,10 +207,13 @@ function Supernova({ still }: { still: boolean }) {
   useFrame((state) => {
     if (!pts.current || still) return;
     const t = state.clock.elapsedTime;
-    pts.current.rotation.y = t * 0.06;
+    const v = scrollVel();
+    pts.current.rotation.y = t * 0.06 + v * 0.4;
     pts.current.rotation.z = t * 0.02;
-    const breathe = 1 + Math.sin(t * 0.6) * 0.06;
+    // breathe normally, FLARE with scroll energy
+    const breathe = 1 + Math.sin(t * 0.6) * 0.06 + v * 0.18;
     pts.current.scale.setScalar(breathe);
+    (pts.current.material as THREE.PointsMaterial).opacity = 0.9 + v * 0.1;
   });
 
   return (
@@ -206,6 +231,52 @@ function Supernova({ still }: { still: boolean }) {
         depthWrite={false}
       />
     </points>
+  );
+}
+
+// THE DRUM — concentric shockwave rings that ripple outward from the Seed.
+// The Joy Boy "drum of liberation" made visible: a slow pulse through the
+// cosmos. Tilted (not flat) so it reads as a 3D wave, never a clock-face.
+// Amplitude swells with scroll velocity. Silent (invisible) when still.
+function ShockRings({ still }: { still: boolean }) {
+  const rings = useRef<Array<THREE.Mesh | null>>([null, null, null]);
+  const N = 3;
+
+  useFrame((state) => {
+    if (still) return;
+    const t = state.clock.elapsedTime;
+    const energy = 0.55 + 0.45 * scrollVel();
+    rings.current.forEach((r, i) => {
+      if (!r) return;
+      const phase = (t * 0.16 + i / N) % 1; // 0..1 sawtooth, phase-offset
+      const s = 0.5 + phase * 6.8;
+      r.scale.set(s, s, s);
+      (r.material as THREE.MeshBasicMaterial).opacity = (1 - phase) * (1 - phase) * 0.16 * energy;
+      r.rotation.z = t * 0.05 + i * 2.1;
+    });
+  });
+
+  return (
+    <group>
+      {Array.from({ length: N }).map((_, i) => (
+        <mesh
+          key={i}
+          ref={(el) => {
+            rings.current[i] = el;
+          }}
+          rotation={[Math.PI / 2.5, 0, 0]}
+        >
+          <torusGeometry args={[1, 0.012, 8, 110]} />
+          <meshBasicMaterial
+            color={CYAN}
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+      ))}
+    </group>
   );
 }
 
@@ -235,6 +306,8 @@ function Scene({ still }: { still: boolean }) {
       near.current.rotation.x = ty * 1.4;
     }
 
+    decayVel();
+
     // Scroll dolly — fall INTO the field (z 6 → 4.2) + slight breath.
     const targetDepth = still ? 0 : scrollDepth();
     depth.current += (targetDepth - depth.current) * 0.05;
@@ -257,6 +330,7 @@ function Scene({ still }: { still: boolean }) {
         <Stars radius={70} depth={60} count={3200} factor={4} saturation={0} fade speed={still ? 0 : 0.35} />
       </group>
       <Supernova still={still} />
+      <ShockRings still={still} />
       <VerbShard still={still} />
       <Sparkles count={130} scale={[14, 9, 7]} size={3.2} speed={still ? 0 : 0.3} color={BRAND} opacity={0.7} />
       <group ref={near}>
