@@ -43,9 +43,8 @@ Zero JS on most pages. React islands only where needed. Shiki for code highlight
 Requires **Node 22** and **pnpm 9** (enabled via `corepack enable`).
 
 ```bash
-# First time on this machine (monorepo quirk — parent supernovae-hq has a
-# pnpm workspace that would otherwise pull this repo in). Safe to omit if
-# you cloned this repo standalone.
+# First time on this machine: if a parent pnpm workspace would otherwise pull
+# this repo in, ignore it. Safe to omit if you cloned this repo standalone.
 pnpm install --ignore-workspace
 
 # Dev server — http://localhost:4321
@@ -100,7 +99,7 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 ## Related repos
 
-- [`supernovae-st/nika`](https://github.com/supernovae-st/nika) — the Rust workflow engine itself (AGPL, Diamond rewrite)
+- [`supernovae-st/nika`](https://github.com/supernovae-st/nika) — the Rust workflow engine (AGPL-3.0)
 - [`supernovae-st/nika-spec`](https://github.com/supernovae-st/nika-spec) — the open workflow language spec (Apache-2.0) the engine implements
 - [`supernovae-st/nika-client`](https://github.com/supernovae-st/nika-client) — TypeScript SDK
 - [`supernovae-st/nika-design-skill`](https://github.com/supernovae-st/nika-design-skill) — design system + Claude Code skill
