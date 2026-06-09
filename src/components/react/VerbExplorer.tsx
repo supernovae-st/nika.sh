@@ -15,10 +15,11 @@ const VERBS: Verb[] = [
   {
     id: 'exec',
     label: 'EXEC',
-    tagline: 'Run a command',
+    tagline: 'Run a shell command',
     description:
-      'Execute any shell command. Captures stdout, stderr, exit code. ' +
-      'Supports env injection and timeout. The primitive everything else is built on.',
+      'Execute any shell command — stdout, stderr, exit code, with env injection ' +
+      'and a timeout. A blocklist guards what can run; output streams as it happens. ' +
+      'The primitive everything else is built on.',
     yaml: `tasks:
   - id: build
     exec:
@@ -32,10 +33,11 @@ const VERBS: Verb[] = [
   {
     id: 'invoke',
     label: 'INVOKE',
-    tagline: 'Call a builtin tool',
+    tagline: 'Call a tool',
     description:
-      '22 builtin tools — including nika:fetch for HTTP, plus filesystem, shell, ' +
-      'git, GitHub, Slack, Jira, databases. One line replaces a hundred lines of glue code.',
+      'Reach any MCP server — or one of 22 builtins: nika:fetch for HTTP, plus ' +
+      'filesystem, git, GitHub, Slack, databases. The whole MCP ecosystem and a ' +
+      'sharp standard library, one line each.',
     yaml: `tasks:
   - id: get-pr
     invoke:
@@ -52,13 +54,14 @@ const VERBS: Verb[] = [
     label: 'INFER',
     tagline: 'Call an LLM',
     description:
-      'Provider-agnostic inference: Anthropic, OpenAI, Google, Mistral, ' +
-      'Ollama, local GGUF. Structured output baked in — no prompt hacks.',
+      'Provider-agnostic inference across 13 providers — Anthropic, OpenAI, ' +
+      'Google, Mistral, Ollama, local GGUF. Structured output, vision, and ' +
+      'extended thinking are first-class, not prompt hacks.',
     yaml: `tasks:
   - id: classify
     infer:
       provider: anthropic
-      model: claude-opus-4-6
+      model: claude-opus-4-8
       prompt: |
         Classify this GitHub issue:
         \${{ tasks.get-pr.output.body }}
@@ -73,14 +76,14 @@ const VERBS: Verb[] = [
     label: 'AGENT',
     tagline: 'Autonomous sub-agent',
     description:
-      'Spawn an autonomous agent with a goal, tools, and a step budget. ' +
-      'The agent plans, calls tools, reflects, and returns a structured result. ' +
-      'Composable: agents can delegate to other agents.',
+      'Spawn an agent with a goal, tools, and a step budget. It plans, calls ' +
+      'tools, reflects, returns a structured result — inside guardrails you set, ' +
+      'so the loop stays verifiable. Agents compose: they delegate to other agents.',
     yaml: `tasks:
   - id: researcher
     agent:
       provider: anthropic
-      model: claude-opus-4-6
+      model: claude-opus-4-8
       goal: |
         Research \${{ vars.topic }}.
         Produce a 500-word summary with 5 citations.
