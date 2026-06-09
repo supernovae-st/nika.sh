@@ -293,18 +293,26 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'kern' 1, 'calt' 1;
 }
 
+/* The serif counterpoint — Instrument Serif against the technical grotesk.
+   A deliberate editorial voice, not a tacked-on suffix: larger optical size,
+   tuned italic tracking, a true-white fill so it lifts off the gradient. */
 .display em,
 .editorial {
   font-family: var(--font-editorial);
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -0.015em;
-  font-size: 1.05em; /* optical — serif italic x-height differs */
+  letter-spacing: -0.01em;
+  font-size: 1.08em; /* optical — serif italic x-height differs */
   background: none;
-  -webkit-text-fill-color: oklch(0.98 0.003 258);
+  -webkit-text-fill-color: oklch(0.99 0.004 250);
   color: var(--color-fg);
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
 }
 
 .eyebrow {
