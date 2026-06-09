@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber';
-import { Stars, Sparkles } from '@react-three/drei';
+import { Stars, Sparkles, Edges } from '@react-three/drei';
 import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
@@ -21,6 +21,136 @@ import * as THREE from 'three';
 
 const BRAND = '#3B82F6'; // --color-brand · blue-500
 const CYAN = '#22D3EE'; // --color-cyan
+
+// ---------------------------------------------------------------------------
+// THE SEED — an obsidian verb-shard. A faceted icosahedron with a cyan
+// fresnel rim, glowing facet edges, and four verb-nodes (infer · exec ·
+// invoke · agent) that pulse in sequence and fire threads of light from the
+// core. The whole thing IGNITES as you scroll: the metamorphosis seed.
+// ---------------------------------------------------------------------------
+
+// Scroll-driven ignition: 0.15 at the top → 1 across the first viewport.
+function scrollIgnite(): number {
+  if (typeof window === 'undefined') return 0.15;
+  const vh = window.innerHeight || 800;
+  const y = window.scrollY || 0;
+  return Math.min(1, 0.15 + (y / (vh * 0.7)) * 0.85);
+}
+
+const SHARD_VERT = /* glsl */ `
+  varying vec3 vNormal;
+  varying vec3 vView;
+  void main() {
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    vNormal = normalize(normalMatrix * normal);
+    vView = normalize(-mv.xyz);
+    gl_Position = projectionMatrix * mv;
+  }
+`;
+
+const SHARD_FRAG = /* glsl */ `
+  uniform float uTime;
+  uniform float uIgnite;
+  uniform vec3 uRim;
+  uniform vec3 uCore;
+  varying vec3 vNormal;
+  varying vec3 vView;
+  void main() {
+    float f = pow(1.0 - max(dot(vNormal, vView), 0.0), 3.0);
+    float pulse = 0.5 + 0.5 * sin(uTime * 1.2);
+    vec3 col = mix(uCore, uRim, f * (0.35 + 0.65 * uIgnite));
+    col += uRim * f * uIgnite * pulse * 0.7;
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+// Four verbs ignite at tetrahedral vertices around the seed.
+const VERB_DIRS = [
+  new THREE.Vector3(1, 1, 1),
+  new THREE.Vector3(1, -1, -1),
+  new THREE.Vector3(-1, 1, -1),
+  new THREE.Vector3(-1, -1, 1),
+].map((v) => v.normalize().multiplyScalar(1.85));
+
+function VerbShard({ still }: { still: boolean }) {
+  const shard = useRef<THREE.Mesh>(null);
+  const nodes = useRef<Array<THREE.Mesh | null>>([null, null, null, null]);
+  const threads = useRef<THREE.LineSegments>(null);
+  const ig = useRef(still ? 0.6 : 0.15);
+
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uIgnite: { value: still ? 0.6 : 0.15 },
+      uRim: { value: new THREE.Color(CYAN) },
+      uCore: { value: new THREE.Color('#05070f') },
+    }),
+    [still],
+  );
+
+  const threadGeo = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    const arr = new Float32Array(VERB_DIRS.length * 6);
+    VERB_DIRS.forEach((v, i) => {
+      arr.set([0, 0, 0, v.x, v.y, v.z], i * 6);
+    });
+    g.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+    return g;
+  }, []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    uniforms.uTime.value = t;
+    const target = still ? 0.6 : scrollIgnite();
+    ig.current += (target - ig.current) * 0.06;
+    uniforms.uIgnite.value = ig.current;
+
+    if (shard.current && !still) {
+      shard.current.rotation.y = t * 0.12;
+      shard.current.rotation.x = Math.sin(t * 0.2) * 0.18;
+    }
+    nodes.current.forEach((n, i) => {
+      if (!n) return;
+      const p = still ? 0.7 : 0.5 + 0.5 * Math.sin(t * 1.6 - i * 1.9);
+      n.scale.setScalar((0.05 + 0.06 * p) * (0.4 + 0.6 * ig.current));
+      (n.material as THREE.MeshBasicMaterial).opacity = (0.25 + 0.75 * p) * ig.current;
+    });
+    if (threads.current) {
+      (threads.current.material as THREE.LineBasicMaterial).opacity = 0.1 + 0.4 * ig.current;
+    }
+  });
+
+  return (
+    <group>
+      <mesh ref={shard} scale={1.15}>
+        <icosahedronGeometry args={[1, 0]} />
+        <shaderMaterial uniforms={uniforms} vertexShader={SHARD_VERT} fragmentShader={SHARD_FRAG} />
+        <Edges threshold={1} color={CYAN} />
+      </mesh>
+      <lineSegments ref={threads} geometry={threadGeo}>
+        <lineBasicMaterial color={CYAN} transparent opacity={0.2} blending={THREE.AdditiveBlending} depthWrite={false} />
+      </lineSegments>
+      {VERB_DIRS.map((v, i) => (
+        <mesh
+          key={i}
+          ref={(el) => {
+            nodes.current[i] = el;
+          }}
+          position={v}
+        >
+          <sphereGeometry args={[1, 14, 14]} />
+          <meshBasicMaterial
+            color={i % 2 === 0 ? BRAND : CYAN}
+            transparent
+            opacity={0.85}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
 
 // The supernova core — a spherical shell of points that breathes.
 function Supernova({ still }: { still: boolean }) {
@@ -90,6 +220,7 @@ function Scene({ still }: { still: boolean }) {
     <group ref={group} onPointerMove={onMove}>
       <Stars radius={60} depth={50} count={2600} factor={4} saturation={0} fade speed={still ? 0 : 0.4} />
       <Supernova still={still} />
+      <VerbShard still={still} />
       <Sparkles count={130} scale={[14, 9, 7]} size={3.2} speed={still ? 0 : 0.3} color={BRAND} opacity={0.7} />
       <Sparkles count={70} scale={[11, 7, 6]} size={2.1} speed={still ? 0 : 0.4} color={CYAN} opacity={0.55} />
     </group>
