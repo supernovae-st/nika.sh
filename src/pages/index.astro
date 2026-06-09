@@ -244,7 +244,7 @@ const STATS = {
 <span class="text-[var(--color-fg-dim)]"># triage an issue, label it — 2 tasks, 1 DAG</span>
 <span class="text-[var(--color-cyan)]">nika</span>: v1
 <span class="text-[var(--color-cyan)]">workflow</span>: triage
-<span class="text-[var(--color-cyan)]">model</span>: anthropic/claude-opus-4-6   <span class="text-[var(--color-fg-dim)]"># any provider · local too</span>
+<span class="text-[var(--color-cyan)]">model</span>: anthropic/claude-opus-4-8   <span class="text-[var(--color-fg-dim)]"># any provider · local too</span>
 
 <span class="text-[var(--color-cyan)]">tasks</span>:
   - <span class="text-[var(--color-cyan)]">id</span>: classify
@@ -486,7 +486,7 @@ const STATS = {
 
   {/* =====================================================================
       § 07 — CRATE CONSTELLATION
-      SVG star map: 35 crates, admitted/growing/planned.
+      SVG star map: crates as stars, admitted/growing/planned (count from dashboard projection).
       ===================================================================== */}
   <section id="workspace" class="edge-rule-bottom overflow-hidden">
     <div class="mx-auto max-w-[82rem] px-6 py-20 md:py-28">
@@ -495,7 +495,7 @@ const STATS = {
       <div class="grid lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-16 items-center">
         <div>
           <h2 class="font-[var(--font-display)] font-normal text-4xl md:text-5xl leading-[1.02] tracking-[-0.025em] text-[var(--color-fg)]">
-            31 crates.<br /><em class="editorial">One vision</em>.
+            {STATS.organsPlanned} crates.<br /><em class="editorial">One vision</em>.
           </h2>
           <p class="mt-6 text-[var(--color-fg-mute)] leading-[1.65] max-w-[40ch]">
             Every crate is an organ — admitted when all twelve gates pass.
@@ -675,7 +675,7 @@ const STATS = {
           </div>
           <pre class="px-5 py-4 font-[var(--font-mono)] text-[0.82rem] leading-[1.7] bg-[var(--color-surface)] overflow-x-auto whitespace-pre"><span class="text-[var(--color-fg-dim)]">$</span> <span class="text-[var(--color-fg)]">nika run triage.nika.yaml</span>
 <span class="text-[var(--color-fg-ghost)]">  task:classify  </span><span class="text-[var(--color-emerald)]">started</span>
-<span class="text-[var(--color-fg-ghost)]">  task:classify  </span><span class="text-[var(--color-brand)]">done</span>   <span class="text-[var(--color-fg-ghost)]">label=bug priority=P1</span>
+<span class="text-[var(--color-fg-ghost)]">  task:classify  </span><span class="text-[var(--color-brand)]">done</span>   <span class="text-[var(--color-fg-ghost)]">label=bug priority=high</span>
 <span class="text-[var(--color-fg-ghost)]">  task:label     </span><span class="text-[var(--color-emerald)]">started</span>
 <span class="text-[var(--color-fg-ghost)]">  task:label     </span><span class="text-[var(--color-brand)]">done</span>   <span class="text-[var(--color-fg-ghost)]">applied 2 labels</span></pre>
         </div>
