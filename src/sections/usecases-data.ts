@@ -66,6 +66,14 @@ export const UC_TABS: UCTab[] = [
         outcome: 'Release day: one command, a changelog in your voice, zero copy-paste.',
       },
       {
+        slug: 't2-release-radar',
+        icon: '🛰️',
+        title: 'Release radar',
+        body: 'Reads your dependencies’ release feeds, diffs against last run — only the NEW ships reach you.',
+        tier: 'T2',
+        outcome: 'Silence means nothing shipped. A ping means it matters. Zero tab-checking.',
+      },
+      {
         slug: 't3-pr-review-fanout',
         icon: '🐝',
         title: 'PR review swarm',
@@ -87,6 +95,14 @@ export const UC_TABS: UCTab[] = [
         body: 'Maps their sitemap, reads the 8 freshest pages in parallel — with retry — digests one brief.',
         tier: 'T3',
         outcome: 'Monday 8am: everything they shipped last week, on your desk, with what it signals.',
+      },
+      {
+        slug: 't4-release-train',
+        icon: '🚂',
+        title: 'Release train',
+        body: 'Parallel gates, a human GO with full information, a hold until the window — ship, verify, record.',
+        tier: 'T4',
+        outcome: 'The train departs on time or not at all — and the journal knows either way.',
       },
       {
         slug: 't4-deep-research-brief',
@@ -159,6 +175,14 @@ export const UC_TABS: UCTab[] = [
         outcome: 'Alert fatigue dies: silence means prod matches what was signed off. Exactly.',
       },
       {
+        slug: 't2-etl-quarantine',
+        icon: '🧪',
+        title: 'ETL quarantine',
+        body: 'The schema gate splits good rows from bad — rejects land in a quarantine file, the pipeline lives.',
+        tier: 'T2',
+        outcome: '“Re-run the whole night” becomes “fix three rows tomorrow morning.”',
+      },
+      {
         slug: 't4-incident-war-room',
         icon: '🧯',
         title: 'Incident war room',
@@ -196,6 +220,14 @@ export const UC_TABS: UCTab[] = [
         body: 'CSV → jq filters the overdue → reminders drafted → a human gate before anything is saved.',
         tier: 'T2',
         outcome: 'Friday’s awkward chore becomes: read the drafts, type yes.',
+      },
+      {
+        slug: 't3-resume-screener',
+        icon: '🧑‍💼',
+        title: 'Resume screener',
+        body: 'One local-model rubric per candidate — enums, evidence quotes required, jq ranks deterministically.',
+        tier: 'T3',
+        outcome: 'Candidate #1 and #40 get the same rubric. PII never leaves the machine.',
       },
       {
         slug: 't2-contract-guard',
