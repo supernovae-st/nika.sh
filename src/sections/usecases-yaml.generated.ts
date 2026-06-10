@@ -1618,3 +1618,288 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
   't4-incident-war-room': {"tasks": [{"id": "logs", "verb": "exec", "deps": [], "wave": 0, "gloss": "run `journalctl`", "flags": [], "line0": 18, "line1": 21}, {"id": "status_history", "verb": "invoke", "deps": [], "wave": 0, "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 23, "line1": 33}, {"id": "runbook", "verb": "invoke", "deps": [], "wave": 0, "gloss": "call `nika:read`", "flags": [], "line0": 35, "line1": 40}, {"id": "timeline", "verb": "infer", "deps": ["logs", "status_history", "runbook"], "wave": 1, "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 41, "line1": 65}, {"id": "settle", "verb": "invoke", "deps": ["timeline"], "wave": 2, "gloss": "call `nika:wait`", "flags": [], "line0": 66, "line1": 70}, {"id": "recheck", "verb": "invoke", "deps": ["settle"], "wave": 3, "gloss": "call `nika:fetch`", "flags": [], "line0": 72, "line1": 79}, {"id": "confirmed", "verb": "invoke", "deps": ["recheck"], "wave": 4, "gloss": "call `nika:assert`", "flags": [], "line0": 81, "line1": 89}, {"id": "postmortem", "verb": "infer", "deps": ["timeline", "confirmed"], "wave": 5, "gloss": "ask the model · thinking budget", "flags": [], "line0": 90, "line1": 99}, {"id": "save", "verb": "invoke", "deps": ["postmortem"], "wave": 6, "gloss": "call `nika:write`", "flags": ["cleanup always runs"], "line0": 101, "line1": 123}], "outputs": ["events", "postmortem"], "waves": 7},
   't4-release-train': {"tasks": [{"id": "t0", "verb": "invoke", "deps": [], "wave": 0, "gloss": "call `nika:date`", "flags": [], "line0": 17, "line1": 22}, {"id": "tests", "verb": "exec", "deps": [], "wave": 0, "gloss": "run `cargo`", "flags": ["timeout 15m"], "line0": 23, "line1": 27}, {"id": "lint", "verb": "exec", "deps": [], "wave": 0, "gloss": "run `cargo`", "flags": ["timeout 10m"], "line0": 29, "line1": 33}, {"id": "audit", "verb": "exec", "deps": [], "wave": 0, "gloss": "run `cargo`", "flags": ["retry", "timeout 5m"], "line0": 35, "line1": 41}, {"id": "gates_green", "verb": "invoke", "deps": ["tests", "lint", "audit"], "wave": 1, "gloss": "call `nika:assert`", "flags": [], "line0": 43, "line1": 49}, {"id": "gate_time", "verb": "invoke", "deps": ["t0", "gates_green"], "wave": 2, "gloss": "call `nika:date`", "flags": [], "line0": 51, "line1": 61}, {"id": "conductor", "verb": "invoke", "deps": ["gates_green", "gate_time"], "wave": 3, "gloss": "call `nika:prompt`", "flags": [], "line0": 62, "line1": 68}, {"id": "approved", "verb": "invoke", "deps": ["conductor"], "wave": 4, "gloss": "call `nika:assert`", "flags": [], "line0": 70, "line1": 78}, {"id": "hold", "verb": "invoke", "deps": ["approved"], "wave": 5, "gloss": "call `nika:wait`", "flags": [], "line0": 79, "line1": 85}, {"id": "ship", "verb": "exec", "deps": ["hold"], "wave": 6, "gloss": "run `./scripts/release.sh`", "flags": ["timeout 30m"], "line0": 87, "line1": 92}, {"id": "verify", "verb": "invoke", "deps": ["ship"], "wave": 7, "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 94, "line1": 105}, {"id": "live", "verb": "invoke", "deps": ["verify"], "wave": 8, "gloss": "call `nika:assert`", "flags": ["cleanup always runs"], "line0": 107, "line1": 128}], "outputs": ["shipped"], "waves": 9},
 }
+
+/** the 6 instantiable skeletons (spec templates/ · SLOT comments
+    kept — they are the instructions) · the playground's seeds */
+export const TEMPLATES_YAML: Record<string, string> = {
+  'agent-loop': `nika: v1
+workflow: agent-loop-template       # SLOT: kebab-case workflow id
+description: "plan → budgeted agent → typed result"   # SLOT
+
+model: mock/echo                    # SLOT: agents want a tool-calling model
+
+vars:
+  goal:
+    type: string
+    required: true
+    description: "What the agent must accomplish"   # SLOT
+
+tasks:
+  - id: plan
+    infer:
+      prompt: "Break '\${{ vars.goal }}' into at most 4 concrete steps."   # SLOT
+      schema:
+        type: object
+        required: [steps]
+        properties:
+          steps: { type: array, items: { type: string } }
+
+  - id: execute
+    depends_on: [plan]
+    agent:
+      system: "Work the plan step by step. Call nika:done when finished."   # SLOT
+      prompt: "Plan · \${{ tasks.plan.output.steps }}"
+      tools:                        # SLOT: the MINIMUM grant for the job
+        - "nika:read"
+        - "nika:done"
+      max_turns: 15                 # SLOT: the loop bound
+      max_tokens_total: 80000       # SLOT: the spend bound
+      schema:                       # SLOT: the typed final-message contract
+        type: object
+        required: [findings]
+        properties:
+          findings: { type: array, items: { type: string } }
+
+  - id: confirm
+    depends_on: [execute]
+    invoke:
+      tool: "nika:assert"
+      args:
+        condition: "\${{ size(tasks.execute.output.findings) > 0 }}"
+        message: "Agent returned no findings — do not trust an empty run"   # SLOT
+
+outputs:
+  findings:
+    value: \${{ tasks.execute.output.findings }}
+    type: array
+    description: "The agent's typed findings"   # SLOT
+`,
+  'chain': `nika: v1
+workflow: chain-template            # SLOT: kebab-case workflow id
+description: "gather → think → persist"   # SLOT: one honest sentence
+
+model: mock/echo                    # SLOT: provider/model (mock/echo = CI-safe)
+
+vars:
+  source: "./input.txt"             # SLOT: your inputs · typed where required
+
+tasks:
+  - id: gather
+    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec
+      tool: "nika:read"
+      args: { path: "\${{ vars.source }}" }
+
+  - id: think
+    depends_on: [gather]
+    infer:
+      prompt: |
+        # SLOT: the one model job · interpolate \${{ tasks.gather.output }}
+        Summarize · \${{ tasks.gather.output }}
+
+  - id: persist
+    depends_on: [think]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./output.md"         # SLOT: destination
+        content: "\${{ tasks.think.output }}"   # ALWAYS pass content · a write without it writes nothing
+
+outputs:
+  result: \${{ tasks.think.output }}  # SLOT: the callable contract
+`,
+  'etl-state': `nika: v1
+workflow: etl-state-template        # SLOT: kebab-case workflow id
+description: "read state · fetch fresh · diff · process the delta · save state"   # SLOT
+
+vars:
+  source_url: "https://api.example.com/v1/records"   # SLOT: the data source
+  state_path: "./state/etl-state.json"               # SLOT: the cursor file
+
+tasks:
+  # First run · no state file yet · recover to an empty list.
+  - id: empty
+    invoke:
+      tool: "nika:jq"
+      args: { input: [], expression: "." }
+
+  - id: previous
+    invoke:
+      tool: "nika:read"
+      args: { path: "\${{ vars.state_path }}" }
+    on_error:
+      recover: \${{ tasks.empty.output }}
+
+  - id: fresh
+    invoke:
+      tool: "nika:fetch"            # SLOT: fetch / read / exec — the fresh data
+      args:
+        url: "\${{ vars.source_url }}"
+        mode: jq
+        jq: ".records"
+
+  - id: delta
+    depends_on: [previous, fresh]
+    invoke:
+      tool: "nika:json_diff"        # RFC 6902 · empty patch = nothing new
+      args:
+        before: "\${{ tasks.previous.output }}"
+        after: "\${{ tasks.fresh.output }}"
+
+  - id: process
+    depends_on: [delta]
+    when: \${{ size(tasks.delta.output) > 0 }}
+    invoke:
+      tool: "nika:jq"               # SLOT: the delta job (jq · infer · write…)
+      args:
+        input: "\${{ tasks.delta.output }}"
+        expression: "length"
+
+  - id: save_state
+    depends_on: [fresh]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "\${{ vars.state_path }}"
+        content: "\${{ tasks.fresh.output }}"
+        create_dirs: true
+        overwrite: true
+
+outputs:
+  changes:
+    value: \${{ tasks.delta.output }}
+    type: array
+    description: "RFC 6902 ops since last run · empty = no-op run"
+`,
+  'fanout': `nika: v1
+workflow: fanout-template           # SLOT: kebab-case workflow id
+description: "discover N items · process in parallel · merge"   # SLOT
+
+model: mock/echo                    # SLOT: provider/model
+
+vars:
+  collection_source: "./items"      # SLOT: where the collection comes from
+
+tasks:
+  - id: discover
+    invoke:                         # SLOT: glob / fetch sitemap / exec + jq split
+      tool: "nika:glob"
+      args: { pattern: "\${{ vars.collection_source }}/*.md" }
+
+  - id: process
+    depends_on: [discover]
+    for_each: \${{ tasks.discover.output }}
+    max_parallel: 4                 # SLOT: the polite ceiling
+    fail_fast: false
+    timeout: "60s"                  # SLOT: per-iteration bound
+    retry:
+      max_attempts: 3
+      backoff_strategy: exponential
+      jitter: true
+    infer:                          # SLOT: the per-item job (any verb)
+      prompt: |
+        Process this item · \${{ item }}
+
+  - id: merge
+    depends_on: [process]
+    infer:
+      prompt: |
+        # SLOT: the fan-in · tasks.process.output is the ARRAY (input order)
+        Merge these results into one report · \${{ tasks.process.output }}
+
+outputs:
+  report: \${{ tasks.merge.output }}
+`,
+  'gate-and-act': `nika: v1
+workflow: gate-and-act-template     # SLOT: kebab-case workflow id
+description: "watch a value · act only when the condition holds"   # SLOT
+
+vars:
+  source_url: "https://api.example.com/v1/value"   # SLOT: what to watch
+  threshold: 100                    # SLOT: the trigger condition value
+
+secrets:
+  webhook:
+    source: env
+    key: ALERTS_WEBHOOK_URL         # SLOT: where the act lands
+
+tasks:
+  - id: check
+    invoke:
+      tool: "nika:fetch"
+      args:
+        url: "\${{ vars.source_url }}"
+        mode: jq
+        jq: "."
+    output:
+      value: ".value"               # SLOT: the jq path to the watched field
+
+  - id: act
+    depends_on: [check]
+    when: \${{ tasks.check.value > vars.threshold }}   # SLOT: the CEL condition
+    invoke:
+      tool: "nika:notify"           # SLOT: the action · notify / write / exec
+      args:
+        channel: webhook
+        target: "\${{ secrets.webhook }}"
+        message: "Threshold crossed · \${{ tasks.check.value }}"   # SLOT
+        severity: warning
+
+outputs:
+  value: \${{ tasks.check.value }}
+`,
+  'human-gated-ship': `nika: v1
+workflow: human-gated-ship-template  # SLOT: kebab-case workflow id
+description: "verify in parallel · human GO · act · record"   # SLOT
+
+secrets:
+  webhook:
+    source: env
+    key: TEAM_WEBHOOK_URL           # SLOT: where the record lands
+
+tasks:
+  # ── the verification wave · all checks run in parallel ──
+  - id: check_a
+    exec:
+      command: "echo ok"            # SLOT: gate 1 (tests · lint · probe)
+      capture: structured
+
+  - id: check_b
+    exec:
+      command: "echo ok"            # SLOT: gate 2
+      capture: structured
+
+  - id: gates
+    depends_on: [check_a, check_b]
+    invoke:
+      tool: "nika:assert"
+      args:
+        condition: "\${{ tasks.check_a.output.exit_code == 0 && tasks.check_b.output.exit_code == 0 }}"
+        message: "A gate is RED — refusing to proceed"   # SLOT
+
+  - id: human
+    depends_on: [gates]
+    invoke:
+      tool: "nika:prompt"
+      args:
+        message: "All gates GREEN. Proceed?"   # SLOT: the decision, fully informed
+        default: false
+
+  - id: act
+    depends_on: [human]
+    when: \${{ tasks.human.output == true }}
+    exec:
+      command: "echo shipped"       # SLOT: the irreversible action
+      capture: structured
+    on_finally:                     # the record lands · acted OR refused
+      - invoke:
+          tool: "nika:notify"
+          args:
+            channel: webhook
+            target: "\${{ secrets.webhook }}"
+            message: "Run finished · act=\${{ tasks.act.status }}"   # SLOT
+            severity: info
+
+outputs:
+  acted: \${{ tasks.act.status }}
+`,
+}
