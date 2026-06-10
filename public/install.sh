@@ -5,7 +5,7 @@
 #
 # Usage:
 #   curl -LsSf https://nika.sh/install.sh | sh
-#   curl -LsSf https://nika.sh/install.sh | sh -s -- --version 0.90.0
+#   curl -LsSf https://nika.sh/install.sh | sh -s -- --version 0.81.0
 #
 # On macOS we try Homebrew first (supernovae-st/tap/nika), then fall back to
 # downloading the release binary from GitHub. On Linux we always use the
@@ -112,7 +112,7 @@ resolve_version() {
     [ -n "$VERSION" ] && [ "$VERSION" != "latest" ] \
       || die 'failed to resolve latest release tag'
   fi
-  # Normalize: "v0.90.0" ↔ "0.90.0"
+  # Normalize: "v0.81.0" ↔ "0.81.0"
   case "$VERSION" in
     v*) VERSION_TAG="$VERSION"; VERSION_NUM="${VERSION#v}" ;;
     *)  VERSION_TAG="v$VERSION"; VERSION_NUM="$VERSION" ;;
