@@ -10,7 +10,7 @@ export const SHOWCASE_YAML: Record<string, string> = {
 workflow: meeting-actions
 description: "Transcript → typed action items {owner, task, due}"
 
-model: mock/echo            # swap for openai/gpt-5.2 or any of the 14 providers
+model: mock/echo            # swap for openai/gpt-5.2 or any provider in the catalog
 
 vars:
   transcript_path:
