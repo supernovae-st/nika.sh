@@ -29,6 +29,8 @@ starter → T4 epic), each a complete validated file. The manifest
 verifiable end-to-end; docs and site render projections of the same
 files.
 
+- Templates (instantiate, never invent — 6 valid skeletons with SLOT markers): https://github.com/supernovae-st/nika-spec/tree/main/templates
+- Agent authoring protocol: https://docs.nika.sh/guides/agent-authoring
 - Pack manifest: https://github.com/supernovae-st/nika-spec/blob/main/examples/manifest.yaml
 - Showcase source: https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase
 - Walkthroughs: https://docs.nika.sh/examples/overview
