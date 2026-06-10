@@ -8,10 +8,10 @@
 
 - `main` carries the v3 site (Vite + React 19 + r3f). Build verified
   locally: `pnpm check && pnpm lint && pnpm build` → `dist/`.
-- **The live app is STALE**: nika.sh serves a build from 2026-01-07 (the
-  old Nuxt site). No deployment has succeeded since January — either the
-  DO GitHub App lost its connection to `supernovae-st/nika.sh`, or builds
-  have been failing silently. This is the one thing to fix.
+- **ROOT CAUSE CONFIRMED (spec exported by Nicolas)**: the live app still
+  points at the **legacy repo `supernovae-ai/nika-landing`** (the old Nuxt
+  site: `npm run generate` → `.output/public`). Nothing is "broken" — it
+  deploys the wrong repo. The fix is a spec update (section 3).
 - DNS zone `nika.sh` is on DO nameservers (`ns1-3.digitalocean.com`).
   The Cloudflare IPs you see on `dig nika.sh` are DO App Platform's
   built-in CDN, not a separate Cloudflare account.
@@ -43,16 +43,17 @@ doctl apps list-deployments <APP_ID> \
 doctl apps logs <APP_ID> --type build --deployment <DEPLOYMENT_ID>
 ```
 
-Most likely causes, in order:
+## 3 · Apply the corrected spec (the actual fix)
 
-1. **GitHub connection broken** — dashboard → Apps → nika-sh → Settings
-   → web component → Source: reconnect GitHub → `supernovae-st/nika.sh`
-   branch `main`, re-enable *Autodeploy*.
-2. **Stale build command** — the dashboard may still carry the old Nuxt
-   or Astro command. Re-sync the spec from the repo (next section).
-3. **Old Node version** — must be 22 (`NODE_VERSION=22` env, set in spec).
+`.do/app.yaml` in this repo is the corrected spec — same app name (`nika`),
+same region (`lon`), same component name (`nika-landing`), same alerts and
+ingress as the live export; only the source repo, build command, output
+dir, Node version and error document change.
 
-## 3 · Re-sync the spec + force a deploy
+**Prerequisite first**: the DigitalOcean GitHub App must have access to
+`supernovae-st/nika.sh` (github.com → org `supernovae-st` → Settings →
+GitHub Apps → DigitalOcean → grant the repo). Without it the update is
+rejected with a repo-access error.
 
 ```sh
 # from the repo root — pushes .do/app.yaml as the live spec
@@ -102,8 +103,8 @@ CNAME starts resolving.
 
 ## Reference
 
-- App spec: [`.do/app.yaml`](.do/app.yaml) (domains nika.sh + www alias ·
-  fra region · static site)
+- App spec: [`.do/app.yaml`](.do/app.yaml) (app `nika` · region lon ·
+  component `nika-landing` · domains nika.sh + www alias · static site)
 - Repo gates: `pnpm check && pnpm lint && pnpm build` — all green before
   any push to `main` (every push deploys).
 - Live URL contracts (never delete): `/install.sh` · `/llms.txt` ·

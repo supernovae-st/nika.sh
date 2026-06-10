@@ -1,62 +1,64 @@
 # DigitalOcean App Platform — nika.sh
 #
-# App spec for the Nika marketing site + catalog sub-path. Static Astro 5
-# build, auto-deployed on every push to `main` via the DO GitHub App.
+# SOURCE OF TRUTH for the live app (name: nika · region: lon). Apply with:
+#   doctl apps update 205698cb-6ca5-48ad-a614-7d15ff71de58 --spec .do/app.yaml
 #
-# To create the app from this spec:
-#   doctl apps create --spec .do/app.yaml
+# 2026-06-10 · repointed from the legacy supernovae-ai/nika-landing (Nuxt)
+# to THIS repo (supernovae-st/nika.sh · Vite v3 site). Conventions kept from
+# the live spec Nicolas exported: app name, region, component name, alerts,
+# ingress, buildpack feature.
 #
-# To update an existing app:
-#   doctl apps update <app-id> --spec .do/app.yaml
+# PREREQUISITE · the DigitalOcean GitHub App must have access to
+# supernovae-st/nika.sh (github.com → Settings → Installations →
+# DigitalOcean → grant the repo) BEFORE applying — otherwise the update
+# is rejected with a repo-access error.
 #
-# Dashboard equivalent: cloud.digitalocean.com → Apps → Create App
-# → GitHub → supernovae-st/nika.sh → Autodetect (Astro) → customize per
-# values below.
-#
-# Serves:
-#   - https://nika.sh          (marketing, Astro pages)
-#   - https://www.nika.sh      (alias → nika.sh)
-#   - https://nika.sh/catalog/v1/*.json  (static catalog sub-path)
-#
-# Does NOT serve:
-#   - docs.nika.sh             (hosted by Mintlify — separate CNAME)
-#   - olympus.nika.sh          (private, not deployed)
+# docs.nika.sh is NOT served by this app — it is a Mintlify custom domain
+# (CNAME in the nika.sh DO zone). See DEPLOY.md §5. Do not add it here.
 
-name: nika-sh
-region: fra  # Frankfurt — closest DO region to Paris
+alerts:
+  - rule: DEPLOYMENT_FAILED
+  - rule: DOMAIN_FAILED
+
+domains:
+  - domain: nika.sh
+    type: PRIMARY
+    zone: nika.sh
+  - domain: www.nika.sh
+    type: ALIAS
+    zone: nika.sh
+
+features:
+  - buildpack-stack=ubuntu-22
+
+ingress:
+  rules:
+    - component:
+        name: nika-landing
+      match:
+        authority:
+          exact: ""
+        path:
+          prefix: /
+
+name: nika
+region: lon
 
 static_sites:
-  - name: web
+  - name: nika-landing
     github:
       repo: supernovae-st/nika.sh
       branch: main
       deploy_on_push: true
-
     source_dir: /
     environment_slug: node-js
 
-    # pnpm via corepack (bundled in Node 22). --frozen-lockfile enforces
-    # reproducible installs from pnpm-lock.yaml.
+    # pnpm via corepack (bundled in Node 22) · reproducible via lockfile
     build_command: corepack enable && pnpm install --frozen-lockfile && pnpm build
-
-    output_dir: /dist
-    index_document: index.html
+    output_dir: dist
     error_document: 404.html
 
     envs:
       - key: NODE_VERSION
         value: "22"
         scope: BUILD_TIME
-        type: GENERAL
-
-    routes:
-      - path: /
-
-domains:
-  - domain: nika.sh
-    type: PRIMARY
-    zone: nika.sh
-
-  - domain: www.nika.sh
-    type: ALIAS
-    zone: nika.sh
