@@ -1,111 +1,68 @@
-# nika.sh 🦋
+# nika.sh — Intent as Code
 
-> The marketing site for [Nika](https://github.com/supernovae-st/nika) — the AGPL workflow engine for AI. Astro 5 + Tailwind v4, static output.
+The public site for [Nika](https://github.com/supernovae-st/nika), the open
+language for AI workflows. A cinematic single-page experience: one WebGL
+galaxy scene (react-three-fiber), a scroll-driven camera journey, and the
+whole pitch written into the dive.
 
-**Source** : [github.com/supernovae-st/nika.sh](https://github.com/supernovae-st/nika.sh)
-**License** : AGPL-3.0-or-later
-
-> The live site is not deployed yet — we ship when the engine crosses a quality bar worth pointing at.
-
----
-
-## What's here
-
-- `/` — landing ("Nika is alive. Watch it grow.")
-- `/method` — manifesto, 12 gates, 7 shadow zones
-- `/install` — curl, brew, cargo, platform matrix
-- `/changelog` — weekly dev logs (Friday 18:00 Paris)
-- `/blog` — monthly deep dives (one organ at a time)
-- `/errors/[code]` — NIKA-XXX catalog reference
-- `/play` — placeholder for future WASM playground
-- `/404` — ASCII butterfly captain's log
-- `/install.sh` — platform-detect installer script
-- `/schema/workflow.json` — JSON Schema for `.nika.yaml` (used by the LSP)
-- `/errors/catalog.json` — machine-readable error catalog
-- `/design.md` — plain-markdown design system for AI agents
-- `/llms.txt`, `/humans.txt`, `/changelog.xml` (RSS)
+**Live** · [nika.sh](https://nika.sh)
+**License** · AGPL-3.0-or-later
 
 ## Stack
 
-```
-Astro 5 (output: static, trailingSlash: always)
-├── @tailwindcss/vite (Tailwind v4)
-├── @astrojs/mdx       — changelog + blog
-├── @astrojs/react     — islands for interactive components
-├── @astrojs/sitemap   — auto-generated sitemap-index.xml
-└── @astrojs/rss       — /changelog.xml feed
-```
+- **Vite + React 19 + TypeScript** — static output, no server
+- **three.js / @react-three/fiber + postprocessing** — the galaxy scene,
+  the butterfly intro, the curved-glass lens, the stargate warp
+- **Tailwind v4** — utility layer over a hand-rolled cosmic design system
+- **Fonts** — Clash Display (Fontshare ITF FFL), Martian Grotesk + Martian
+  Mono (OFL), self-hosted
 
-Zero JS on most pages. React islands only where needed. Shiki for code highlighting (`github-dark-dimmed`).
+## Develop
 
-## Local development
-
-Requires **Node 22** and **pnpm 9** (enabled via `corepack enable`).
-
-```bash
-# First time on this machine: if a parent pnpm workspace would otherwise pull
-# this repo in, ignore it. Safe to omit if you cloned this repo standalone.
-pnpm install --ignore-workspace
-
-# Dev server — http://localhost:4321
-pnpm dev
-
-# Production build — output → dist/
-pnpm build
-
-# Preview the built site locally
-pnpm preview
-
-# Type check
-pnpm check
+```sh
+corepack enable          # pnpm via the packageManager pin
+pnpm install
+pnpm dev                 # http://localhost:5173
 ```
 
-## Content structure
+Gates (all must pass before pushing):
+
+```sh
+pnpm check               # tsc --noEmit
+pnpm lint                # eslint, zero warnings
+pnpm build               # tsc -b && vite build → dist/
+```
+
+Dev helpers:
+
+- `?it=<seconds>` freezes the intro film at an exact beat
+  (deterministic screenshots)
+- type `nika` anywhere — the galaxy answers
+
+## Layout
 
 ```
 src/
-├── pages/           Astro routes (.astro + dynamic /errors/[code])
-├── components/
-│   ├── ui/          Astro-only presentational components
-│   └── react/       React islands (client:* directives)
-├── content/
-│   ├── blog/        MDX blog posts (Zod-typed)
-│   └── changelog/   MDX weekly dev logs (Zod-typed)
-├── layouts/         BaseLayout + shared page chrome
-├── data/            JSON fixtures (build-time inputs)
-├── styles/          global.css — Tailwind + tokens
-└── lib/             TS helpers
+  App.tsx            page assembly · hash-router-lite (#/blog · #/learn)
+  content.ts         copy + spec-correct YAML (source: supernovae-st/nika-spec)
+  scene/             the 3D film (galaxy · butterfly · director · lens · verbs)
+  sections/          scroll story · transform · use cases · toolbelt · diagrams
+  pages/             Blog · Learn
+public/
+  install.sh         curl install entry (live URL)
+  llms.txt           LLM-readable site summary (live URL)
+  schema/ errors/    workflow JSON schema · error catalog (live URLs)
 ```
+
+Every YAML fragment on the site is validated against the
+[nika-spec](https://github.com/supernovae-st/nika-spec) — never invent
+shapes when editing copy.
 
 ## Deploy
 
-Deployed to **DigitalOcean App Platform** on push to `main`. See [`.do/app.yaml`](./.do/app.yaml) for the full spec (build command, output dir, domains, routes).
+DigitalOcean App Platform, auto-deploy on push to `main` (spec in
+`.do/app.yaml`). Static build → `dist/`, `404.html` as error document.
 
-## Roadmap
+## License
 
-See [`ROADMAP.md`](./ROADMAP.md).
-
-## Contributing
-
-Content PRs welcome (changelog + blog + errors catalog). Design/stack PRs: open an issue first.
-
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
-
-## Conventions
-
-- **Narrative vocabulary**: "organ" (not module), "admitted" (not added), "grew" (not shipped), "chrysalis" (not beta), "emerge" reserved for v0.90.
-- **Butterfly 🦋 scarcity**: favicon, changelog dev-log seals, v0.90 launch page. Never in nav, never decorative.
-- **Commits**: `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`. Never Claude.
-
-## Related repos
-
-- [`supernovae-st/nika`](https://github.com/supernovae-st/nika) — the Rust workflow engine (AGPL-3.0)
-- [`supernovae-st/nika-spec`](https://github.com/supernovae-st/nika-spec) — the open workflow language spec (Apache-2.0) the engine implements
-- [`supernovae-st/nika-client`](https://github.com/supernovae-st/nika-client) — TypeScript SDK
-- [`supernovae-st/nika-design-skill`](https://github.com/supernovae-st/nika-design-skill) — design system + Claude Code skill
-- [`supernovae-st/homebrew-tap`](https://github.com/supernovae-st/homebrew-tap) — `brew install supernovae-st/tap/nika`
-- [`supernovae-st/nika-site-audit`](https://github.com/supernovae-st/nika-site-audit) — example Nika workflow: audit a website
-
----
-
-🦋 SuperNovae Studio · Paris · 2026
+AGPL-3.0-or-later · a [SuperNovae Studio](https://supernovae.studio) creation

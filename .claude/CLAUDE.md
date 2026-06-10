@@ -1,69 +1,27 @@
 # nika.sh — Claude Code rules
 
-The marketing site for [Nika](https://github.com/supernovae-st/nika), the AGPL workflow engine for AI.
+The public site for [Nika](https://github.com/supernovae-st/nika) — Intent
+as Code. Cinematic Vite + React 19 + react-three-fiber single-page site.
 
 ## Stack
 
-Astro 5 (static output) + Tailwind v4 (Vite plugin) + React islands + MDX.
-Deployed via DigitalOcean App Platform (auto-deploy on push to `main`).
-Nicolas manages DO config. We manage code only.
+Vite + React 19 + TypeScript · @react-three/fiber + postprocessing ·
+Tailwind v4 · static output → `dist/` · auto-deploys on push to `main`
+(DigitalOcean App Platform · `.do/app.yaml` · pnpm frozen-lockfile).
 
-## Design system
+## Gates (every push)
 
-The design skill lives in `design/nika-design/` (git submodule from
-`supernovae-st/nika-design-skill`). **For any UI work, read
-`design/nika-design/SKILL.md` first.** It will direct you to load
-`PRINCIPLES.md` (15 non-negotiable rules) and `references/forbidden.md`
-(anti-slop firewall).
-
-Palette tokens: `design/nika-design/tokens/colors.css`
-Typography:     `design/nika-design/tokens/typography.css`
-Spacing:        `design/nika-design/tokens/spacing.css`
-Motion:         `design/nika-design/tokens/motion.css`
-
-**Never create inline colors.** Always reference `var(--color-*)` from the
-`@theme` block in `src/styles/global.css`, which maps to the skill tokens.
-
-## Narrative rules (NIKA_NARRATIVE_LOCKED.md)
-
-Governing sentence: "Nika is alive. Watch it grow."
-
-Vocabulary:
-- organ (not module/component)
-- admitted (not added/merged)
-- grew (not built/shipped)
-- chrysalis (not beta/pre-release)
-- emerge (RESERVED for v0.90 only)
-- shadow zone (not tech debt/known issue)
-- gate (not check/requirement)
-
-## Butterfly scarcity
-
-🦋 appears ONLY at:
-- Favicon
-- Changelog dev-log seal (footer of individual entries)
-- v0.90 launch page (full unfold)
-
-**Never in nav, never in body copy more than once per page, never as decoration.**
-
-## Commands
-
-```bash
-pnpm install --ignore-workspace    # first time (parent monorepo quirk)
-npx astro dev                      # dev server
-npx astro build                    # static build → dist/
-npx astro preview                  # preview build
-npx astro check                    # type check
+```sh
+pnpm check && pnpm lint && pnpm build
 ```
 
-## Commits
+## Rules
 
-```
-Co-Authored-By: Nika 🦋 <nika@supernovae.studio>
-```
-
-Never Claude co-author. Always Nika 🦋.
-
-## License
-
-AGPL-3.0-or-later. Copyright © 2026 SuperNovae Studio.
+- Full agent contract in `AGENTS.md` (spec-truth · live URLs · scene rules ·
+  copy discipline). Read it first.
+- This repo is PUBLIC — never commit strategy/brand/research content.
+- Spec-correct YAML only (supernovae-st/nika-spec) · 4 verbs · 22 builtins ·
+  13 providers — counts derive from the spec `canon.yaml`.
+- Commit trailer: `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`.
+- Scene code: ONE clock for film beats · no troika `<Text>` · verify
+  headless via swiftshader screenshots (`?it=N` freezes the intro).

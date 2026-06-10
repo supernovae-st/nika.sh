@@ -1,22 +1,38 @@
-# AGENTS.md — nika.sh (marketing site)
+# AGENTS.md — nika.sh (public site)
 
 Vendor-neutral agent entry per the AGENTS.md convention (agents.md).
-Claude Code users: `.claude/CLAUDE.md` carries the same rules in full.
 
 ## What this repo is
 
-The Astro 5 static marketing site for Nika. Tailwind v4 + React islands
-+ MDX. Auto-deploys on push to `main` (DigitalOcean).
+The public site for Nika (Intent as Code): a Vite + React 19 +
+react-three-fiber cinematic single-page experience. Static output,
+auto-deploys on push to `main` (DigitalOcean App Platform, `.do/app.yaml`).
 
 ## Non-negotiables
 
-1. **Design skill first** — for ANY UI work read
-   `design/nika-design/SKILL.md` (15 principles + anti-slop firewall).
-   Never inline colors; use `var(--color-*)` tokens.
-2. **Narrative vocabulary** (locked): organ (not module) · admitted
-   (not merged) · grew (not shipped) · chrysalis (not beta) ·
-   « emerge » RESERVED for v0.90 · 🦋 only favicon/changelog-seal/v0.90.
-3. **Canon counts**: 4 verbs (`infer·exec·invoke·agent` — fetch is a
-   builtin) · counts for builtins/providers come from the nika-spec
-   `canon.yaml`; `public/llms.txt` must stay in sync with them.
-4. Commit trailer: `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`.
+1. **Spec truth** — every YAML fragment shown on the site must be valid
+   against the nika-spec (supernovae-st/nika-spec). Canon counts come from
+   the spec `canon.yaml`: 4 verbs (`infer · exec · invoke · agent` — fetch
+   is a builtin) · 22 builtins · 13 providers · 9 extract modes.
+   `public/llms.txt` must stay in sync.
+2. **Gates before push** — `pnpm check && pnpm lint && pnpm build`,
+   zero warnings.
+3. **Live URLs are contracts** — `public/install.sh`, `public/llms.txt`,
+   `public/schema/workflow.json`, `public/errors/catalog.json`,
+   `public/404.html` are served in production. Never delete; update in
+   sync with the engine.
+4. **No private content** — this repo is PUBLIC. Strategy, brand bibles
+   and research never land here.
+5. **Copy discipline** — direct, jargon-free, no em-dash AI-slop. The
+   main 3D title stays « Intent as Code. » permanently.
+6. Commit trailer: `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`
+   (never Claude).
+
+## Scene rules (src/scene/)
+
+- ONE clock: the intro film (canvas + DOM titles) is driven from the R3F
+  frame clock — never CSS keyframes for film beats.
+- No troika/drei `<Text>` (SDF readbacks break software-GL verification);
+  text in the scene is CanvasTexture or extruded TextGeometry.
+- Verify visually headless: build, serve `dist/`, screenshot with
+  swiftshader Chromium (`?it=N` freezes the film deterministically).
