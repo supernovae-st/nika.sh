@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nika.sh/sitemap-index.xml
+Sitemap: https://nika.sh/sitemap.xml

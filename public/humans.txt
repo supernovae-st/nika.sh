@@ -13,10 +13,10 @@
   Mascot:   Butterfly (🦋 — reserved for emergence)
 
 /* SITE */
-  Stack:    Astro + Tailwind v4 + React islands
-  Host:     Scaleway Object Storage (Paris) + Cloudflare CDN
+  Stack:    Vite + React 19 + react-three-fiber + Tailwind v4
+  Host:     DigitalOcean App Platform (fra) + Cloudflare
   Domain:   nika.sh
   Source:   github.com/supernovae-st/nika.sh
 
 /* LAST UPDATED */
-  Date:     2026-04-14
+  Date:     2026-06-10

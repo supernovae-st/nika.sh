@@ -24,9 +24,9 @@ stays yours. Local-first. Runs on your laptop, no daemon.
 
 - Language spec (Apache-2.0): https://github.com/supernovae-st/nika-spec
 - Engine source (AGPL): https://github.com/supernovae-st/nika
-- Install: https://nika.sh/install
+- Install: https://nika.sh/#install (or `brew install supernovae-st/tap/nika`)
 - Docs: https://docs.nika.sh
-- Changelog: https://nika.sh/changelog
+- Releases: https://github.com/supernovae-st/nika/releases
 
 ## Status
 
