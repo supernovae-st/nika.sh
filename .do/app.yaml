@@ -8,10 +8,10 @@
 # the live spec Nicolas exported: app name, region, component name, alerts,
 # ingress, buildpack feature.
 #
-# PREREQUISITE · the DigitalOcean GitHub App must have access to
-# supernovae-st/nika.sh (github.com → Settings → Installations →
-# DigitalOcean → grant the repo) BEFORE applying — otherwise the update
-# is rejected with a repo-access error.
+# PREREQUISITE · VERIFIED SATISFIED 2026-06-10 — the DigitalOcean GitHub
+# App is installed on the supernovae-st org with repository_selection=all
+# (checked via `gh api orgs/supernovae-st/installations`). No grant step
+# needed; `doctl apps update` can be applied directly.
 #
 # docs.nika.sh is NOT served by this app — it is a Mintlify custom domain
 # (CNAME in the nika.sh DO zone). See DEPLOY.md §5. Do not add it here.

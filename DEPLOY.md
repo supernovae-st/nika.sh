@@ -50,10 +50,10 @@ same region (`lon`), same component name (`nika-landing`), same alerts and
 ingress as the live export; only the source repo, build command, output
 dir, Node version and error document change.
 
-**Prerequisite first**: the DigitalOcean GitHub App must have access to
-`supernovae-st/nika.sh` (github.com → org `supernovae-st` → Settings →
-GitHub Apps → DigitalOcean → grant the repo). Without it the update is
-rejected with a repo-access error.
+**Prerequisite — already satisfied (verified 2026-06-10)**: the
+DigitalOcean GitHub App is installed on the `supernovae-st` org with
+access to **all repositories** (`gh api orgs/supernovae-st/installations`
+→ `repository_selection: all`). No grant step needed — apply directly.
 
 ```sh
 # from the repo root — pushes .do/app.yaml as the live spec
