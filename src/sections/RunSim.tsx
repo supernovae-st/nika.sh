@@ -190,7 +190,11 @@ export default function RunSim({
               key={t.id}
               className={stClass(t.id)}
               style={{ ['--rs-c' as string]: c, cursor: 'pointer' }}
-              onClick={() => phase !== 'running' && onTask(t)}
+              onClick={() => {
+                if (phase === 'running') return
+                setCurrent(t)        // narrate the clicked task (gloss + deps)
+                onTask(t)            // light its lines in the YAML panel
+              }}
             >
               <title>{`${t.id} · ${t.gloss}`}</title>
               <rect
