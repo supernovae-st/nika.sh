@@ -20,6 +20,30 @@ Mistral, Groq, DeepSeek, xAI, OpenRouter, Ollama, LM Studio, llama.cpp,
 LocalAI, vLLM, mock) · 9 extract modes. Bring your own keys — every key
 stays yours. Local-first. Runs on your laptop, no daemon.
 
+## Examples (canonical · conformance-gated)
+
+Every spec version ships a versioned examples pack — 27 workflows
+(7 foundation teaching the constructs + 20 showcase real jobs, T1
+starter → T4 epic), each a complete validated file. The manifest
+(pack_version · constructs · sha256 per file) makes the pack
+verifiable end-to-end; docs and site render projections of the same
+files.
+
+- Pack manifest: https://github.com/supernovae-st/nika-spec/blob/main/examples/manifest.yaml
+- Showcase source: https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase
+- Walkthroughs: https://docs.nika.sh/examples/overview
+- Interactive explorer: https://nika.sh/#use-cases
+
+## How to write Nika (the 12 patterns)
+
+Deterministic core, model at the edges · parallelism is the default ·
+type the boundaries · fan out with a leash · plan-then-execute · three
+gates (when=skip, assert=fail, prompt=human) · sovereignty is a model:
+line · agents get budgets · evidence always lands (on_finally) · one
+data language (jq) · workflows are callable · mock-first.
+
+- Patterns guide: https://docs.nika.sh/guides/patterns
+
 ## Links
 
 - Language spec (Apache-2.0): https://github.com/supernovae-st/nika-spec
