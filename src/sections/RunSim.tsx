@@ -251,6 +251,12 @@ export default function RunSim({
                   {current.id}
                 </span>
                 <span className="text-[var(--fg-mute)]"> — {current.gloss}</span>
+                {current.deps.length > 0 && (
+                  <span className="text-[var(--fg-ghost)]">
+                    {' '}
+                    (after <span className="mono">{current.deps.join(' + ')}</span>)
+                  </span>
+                )}
                 {current.flags.length > 0 && (
                   <span className="mono text-[10.5px] text-[var(--fg-ghost)]">
                     {'  '}· {current.flags.join(' · ')}
