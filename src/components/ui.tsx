@@ -16,6 +16,7 @@ const NAV_LINKS: { label: string; href: string }[] = [
   { label: 'Verbs', href: '#verbs' },
   { label: 'Use cases', href: '#use-cases' },
   { label: 'Learn', href: '#/learn' },
+  { label: 'Play', href: '#/play' },
   { label: 'Blog', href: '#/blog' },
   { label: 'Spec', href: SPEC },
 ]
