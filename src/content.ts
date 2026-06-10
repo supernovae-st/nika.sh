@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 
 export const REPO = 'https://github.com/supernovae-st/nika'
 export const SPEC = 'https://github.com/supernovae-st/nika-spec'
+export const DOCS = 'https://docs.nika.sh'
 
 /* §1 · the language — one real workflow */
 export const WF = `nika: v1

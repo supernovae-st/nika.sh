@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { REPO, SPEC } from '../content'
+import { REPO, SPEC, DOCS } from '../content'
 
 /* ─── /learn · one file, line by line ───────────────────────────────────────
    Hash-routed (#/learn) · the 5-minute annotated walkthrough. Every YAML
@@ -278,6 +278,12 @@ export default function Learn() {
             className="text-[15px] text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
           >
             Read the full spec ↗
+          </a>
+          <a
+            href={DOCS} target="_blank" rel="noreferrer"
+            className="text-[15px] text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
+          >
+            Full docs ↗
           </a>
         </div>
       </section>

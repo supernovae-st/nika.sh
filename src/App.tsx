@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Galaxy3D from './scene/Galaxy'
 import { scroll, mouse, egg } from './scene/state'
 import Code from './Code'
-import { WF, NOTES, VERBS, WEDGE, VERSUS, REPO, SPEC } from './content'
+import { WF, NOTES, VERBS, WEDGE, VERSUS, REPO, SPEC, DOCS } from './content'
 import { Nav, InstallPill, Plain } from './components/ui'
 import ScrollStory from './sections/ScrollStory'
 import MethodDiagram from './sections/MethodDiagram'
@@ -819,6 +819,14 @@ export default function App() {
                   className="transition-colors hover:text-[var(--fg-mute)]"
                 >
                   Spec
+                </a>
+                <a
+                  href={DOCS}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition-colors hover:text-[var(--fg-mute)]"
+                >
+                  Docs
                 </a>
               </span>
             </footer>
