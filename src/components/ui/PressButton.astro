@@ -1,0 +1,46 @@
+---
+/**
+ * PressButton — sharp-corner tactile CTA. Replaces ConicCTA.
+ *
+ * Applies .press-flat + optional -brand / -ghost variants from the
+ * chrysalis grammar. Renders as <a> if href, else <button>.
+ */
+
+interface Props {
+  href?: string;
+  variant?: 'default' | 'brand' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  type?: 'button' | 'submit';
+}
+
+const {
+  href,
+  variant = 'default',
+  size = 'md',
+  class: className = '',
+  type = 'button',
+} = Astro.props;
+
+const variantClass = {
+  default: 'press-flat',
+  brand:   'press-flat press-flat-brand',
+  ghost:   'press-flat press-flat-ghost',
+}[variant];
+
+const sizeClass = {
+  sm: '!py-1.5 !px-3 !text-[0.7rem]',
+  md: '',
+  lg: '!py-3 !px-5 !text-sm',
+}[size];
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  href={href}
+  type={href ? undefined : type}
+  class:list={[variantClass, sizeClass, className]}
+>
+  <slot />
+</Tag>

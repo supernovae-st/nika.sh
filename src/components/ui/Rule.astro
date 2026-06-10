@@ -1,0 +1,42 @@
+---
+/**
+ * Rule — typographic 1px horizontal hairline. Optional inline label.
+ * Replaces decorative "• • •" dividers and pointless <hr>.
+ *
+ * Example:  <Rule label="§ ORGANS" number="03" />
+ */
+
+interface Props {
+  label?: string;
+  number?: string | number;
+  variant?: 'faint' | 'normal' | 'brand';
+  class?: string;
+}
+
+const {
+  label,
+  number,
+  variant = 'normal',
+  class: className = '',
+} = Astro.props;
+
+const lineClass = {
+  faint:  'bg-[var(--color-border)]/50',
+  normal: 'bg-[var(--color-border)]',
+  brand:  'bg-[oklch(0.62_0.195_258_/_0.45)]',
+}[variant];
+---
+
+<div class:list={['flex items-center gap-3 w-full', className]}>
+  {number && (
+    <span class="mono-display mono-display-sm text-[var(--color-fg-dim)] shrink-0">
+      {typeof number === 'number' ? String(number).padStart(2, '0') : number}
+    </span>
+  )}
+  {label && (
+    <span class="mono-display mono-display-sm text-[var(--color-fg-mute)] tracking-[0.12em] shrink-0">
+      {label}
+    </span>
+  )}
+  <span class:list={['h-px flex-1', lineClass]} aria-hidden="true"></span>
+</div>

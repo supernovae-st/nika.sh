@@ -1,0 +1,22 @@
+/* TEAM */
+  Craft:    Thibaut Melen
+  Studio:   SuperNovae Studio
+  City:     Paris, France
+  Contact:  nika [at] supernovae.studio
+  GitHub:   github.com/ThibautMelen
+  License:  AGPL-3.0-or-later
+
+/* ORGANISM */
+  Name:     Nika
+  Kind:     Semantic YAML workflow engine for AI
+  Status:   Chrysalis (growing toward v0.90 emergence)
+  Mascot:   Butterfly (🦋 — reserved for emergence)
+
+/* SITE */
+  Stack:    Astro + Tailwind v4 + React islands
+  Host:     Scaleway Object Storage (Paris) + Cloudflare CDN
+  Domain:   nika.sh
+  Source:   github.com/supernovae-st/nika.sh
+
+/* LAST UPDATED */
+  Date:     2026-04-14

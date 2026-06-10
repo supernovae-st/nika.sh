@@ -1,0 +1,57 @@
+{
+  "$schema": "https://nika.sh/schema/errors-catalog.json",
+  "version": 1,
+  "updated": "2026-04-14",
+  "description": "Nika error code catalog. Seed data — will be replaced by the generated output of the nika-error L0 crate.",
+  "errors": {
+    "NIKA-001": {
+      "code": "NIKA-001",
+      "title": "Workflow parse error",
+      "summary": "The .nika.yaml file could not be parsed.",
+      "help": "Check YAML indentation, quoting, and that the top-level `schema:` and `tasks:` keys are present.",
+      "example": "schema: nika/workflow@0.12\ntasks:\n  - id: hello\n    verb: infer\n    with:\n      prompt: \"Hi\"",
+      "docs": "https://nika.sh/docs/workflow-syntax",
+      "related": ["NIKA-002", "NIKA-003"],
+      "category": "workflow"
+    },
+    "NIKA-002": {
+      "code": "NIKA-002",
+      "title": "Schema version mismatch",
+      "summary": "The `schema:` field does not match a version Nika understands.",
+      "help": "Use `schema: nika/workflow@0.12` (current stable). Older versions can be migrated with `nika migrate`.",
+      "example": "schema: nika/workflow@0.12",
+      "docs": "https://nika.sh/docs/workflow-syntax#schema",
+      "related": ["NIKA-001"],
+      "category": "workflow"
+    },
+    "NIKA-003": {
+      "code": "NIKA-003",
+      "title": "Duplicate task id",
+      "summary": "Two tasks share the same `id`. Task ids must be unique within a workflow.",
+      "help": "Rename one of the conflicting tasks. Task ids follow the identifier pattern `[a-zA-Z_][a-zA-Z0-9_-]*`.",
+      "docs": "https://nika.sh/docs/workflow-syntax#tasks",
+      "related": ["NIKA-001"],
+      "category": "workflow"
+    },
+    "NIKA-004": {
+      "code": "NIKA-004",
+      "title": "Unknown binding",
+      "summary": "A template expression references a variable that does not exist in the current scope.",
+      "help": "Check that the referenced task ran before this one (via `depends_on`) and that the field name matches its output schema.",
+      "example": "${tasks.greet.output}",
+      "docs": "https://nika.sh/docs/bindings",
+      "related": ["NIKA-005"],
+      "category": "binding"
+    },
+    "NIKA-005": {
+      "code": "NIKA-005",
+      "title": "Template evaluation failed",
+      "summary": "A template expression could not be rendered (type mismatch, missing field, or bad filter).",
+      "help": "Verify the type of the referenced value. Use `| default(...)` to provide a fallback for optional fields.",
+      "example": "${tasks.fetch.response.body | default('')}",
+      "docs": "https://nika.sh/docs/bindings#filters",
+      "related": ["NIKA-004"],
+      "category": "binding"
+    }
+  }
+}

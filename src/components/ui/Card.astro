@@ -1,0 +1,38 @@
+---
+/**
+ * Card — spotlight-tracking surface. The CSS var --spotlight-x / -y are
+ * set by a tiny inline handler on mouse-move; the pseudo-element paints
+ * a radial halo at that position.
+ */
+
+interface Props {
+  as?: 'div' | 'article' | 'section';
+  href?: string;
+  class?: string;
+}
+
+const { as: Tag = 'div', href, class: className = '' } = Astro.props;
+const Root = href ? 'a' : Tag;
+---
+
+<Root
+  href={href}
+  class:list={[
+    'group relative overflow-hidden rounded-2xl',
+    'border border-[var(--color-border)] bg-[var(--color-surface)]',
+    'p-6 transition-colors duration-300',
+    'hover:border-[var(--color-border-bright)]',
+    'no-underline',
+    className,
+  ]}
+  data-card
+  onmousemove="this.style.setProperty('--spotlight-x', event.offsetX + 'px'); this.style.setProperty('--spotlight-y', event.offsetY + 'px');"
+>
+  <span
+    class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100
+           transition-opacity duration-300"
+    style="background: radial-gradient(240px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), oklch(0.62 0.195 258 / 0.12), transparent 60%);"
+    aria-hidden="true"
+  ></span>
+  <slot />
+</Root>

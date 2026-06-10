@@ -1,0 +1,15 @@
+---
+import EditorialTopBar from '~/components/ui/EditorialTopBar.astro';
+
+interface Props {
+  currentSection?: string;
+}
+const { currentSection } = Astro.props;
+---
+
+<EditorialTopBar
+  currentSection={currentSection}
+  ctaLabel="Install"
+  ctaHref="/install/"
+  githubHref="https://github.com/supernovae-st/nika"
+/>

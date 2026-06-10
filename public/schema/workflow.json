@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nika.sh/schema/workflow.json",
+  "title": "Nika Workflow",
+  "description": "JSON Schema for .nika.yaml workflow files. Validates the semantic YAML format accepted by the Nika workflow engine. Used by nika-lsp and compatible editors (VS Code, Neovim, Zed) for autocomplete and diagnostics.",
+  "type": "object",
+  "required": ["schema", "tasks"],
+  "additionalProperties": false,
+
+  "properties": {
+    "schema": {
+      "type": "string",
+      "pattern": "^nika/workflow@\\d+\\.\\d+$",
+      "description": "Schema version. Current stable: nika/workflow@0.12. Format: 'nika/workflow@<major>.<minor>'.",
+      "examples": ["nika/workflow@0.12"]
+    },
+
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Human-readable workflow name. Shown in TUI and logs."
+    },
+
+    "description": {
+      "type": "string",
+      "description": "Optional free-form description of what this workflow does."
+    },
+
+    "inputs": {
+      "type": "object",
+      "description": "Declared inputs (parameters) for this workflow. Keys are input names, values are input specs.",
+      "additionalProperties": { "$ref": "#/$defs/Input" }
+    },
+
+    "env": {
+      "type": "object",
+      "description": "Environment variables exposed to exec tasks. String values only.",
+      "additionalProperties": { "type": "string" }
+    },
+
+    "defaults": {
+      "type": "object",
+      "description": "Default values applied to every task unless overridden per-task.",
+      "additionalProperties": true,
+      "properties": {
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "timeout_ms": { "type": "integer", "minimum": 0 },
+        "retry": { "$ref": "#/$defs/RetryPolicy" }
+      }
+    },
+
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Ordered list of tasks. Dependency order is resolved via `depends_on` into a DAG.",
+      "items": { "$ref": "#/$defs/Task" }
+    },
+
+    "outputs": {
+      "type": "object",
+      "description": "Named outputs of the workflow, typically templated from task results.",
+      "additionalProperties": { "type": ["string", "number", "boolean", "object", "array", "null"] }
+    }
+  },
+
+  "$defs": {
+    "Input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["string", "number", "integer", "boolean", "path", "json", "secret"],
+          "description": "Expected type for this input. `secret` is redacted from logs."
+        },
+        "required": { "type": "boolean", "default": false },
+        "default": {},
+        "description": { "type": "string" },
+        "pattern": { "type": "string", "description": "Optional regex validation (strings only)." }
+      }
+    },
+
+    "Task": {
+      "type": "object",
+      "required": ["id", "verb"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z_][a-zA-Z0-9_-]*$",
+          "description": "Unique task identifier within this workflow. Used in `depends_on` and templates (${tasks.<id>.output})."
+        },
+        "verb": {
+          "type": "string",
+          "enum": ["infer", "exec", "fetch", "invoke", "agent"],
+          "description": "The 5 Nika verbs: infer (LLM), exec (shell/builtin), fetch (HTTP/file), invoke (MCP tool), agent (multi-turn tool-using LLM)."
+        },
+        "name": { "type": "string", "description": "Optional display name." },
+        "depends_on": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ],
+          "description": "Task IDs this task depends on. Forms the execution DAG."
+        },
+        "when": {
+          "type": "string",
+          "description": "Conditional expression (template syntax). Task is skipped when this evaluates to false/empty."
+        },
+        "for_each": {
+          "oneOf": [
+            { "type": "string", "description": "Template expression producing an iterable." },
+            { "type": "array" }
+          ],
+          "description": "Iterate the task body over each element; per-iteration state scoped under `${item}` / `${index}`."
+        },
+        "with": {
+          "type": "object",
+          "description": "Verb-specific parameters. Shape depends on `verb`. See https://nika.sh/docs for per-verb reference.",
+          "additionalProperties": true
+        },
+        "timeout_ms": { "type": "integer", "minimum": 0 },
+        "retry": { "$ref": "#/$defs/RetryPolicy" },
+        "on_error": {
+          "type": "string",
+          "enum": ["fail", "continue", "skip-downstream"],
+          "default": "fail",
+          "description": "Error handling policy for this task."
+        },
+        "output": {
+          "type": "object",
+          "description": "Optional structured-output schema the task result must match.",
+          "additionalProperties": true
+        },
+        "redact": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Field paths to redact from logs (useful for secrets/PII)."
+        }
+      }
+    },
+
+    "RetryPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_attempts": { "type": "integer", "minimum": 1, "maximum": 20, "default": 1 },
+        "backoff": {
+          "type": "string",
+          "enum": ["none", "linear", "exponential"],
+          "default": "exponential"
+        },
+        "initial_delay_ms": { "type": "integer", "minimum": 0, "default": 200 },
+        "max_delay_ms":     { "type": "integer", "minimum": 0, "default": 30000 },
+        "on": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Only retry on these error kinds (e.g. 'transient', 'NIKA-503'). Default: all transient errors."
+        }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "schema": "nika/workflow@0.12",
+      "name": "hello-world",
+      "tasks": [
+        {
+          "id": "greet",
+          "verb": "infer",
+          "with": {
+            "model": "claude-3-5-sonnet",
+            "prompt": "Say hi in one word."
+          }
+        }
+      ]
+    }
+  ]
+}

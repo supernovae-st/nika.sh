@@ -1,0 +1,62 @@
+---
+/**
+ * StatusPill — locked palette of status states.
+ * CRITICAL is neutral zinc, not red — keeps palette cohesion under pressure
+ * (Aura / Nexus convention, verified HTML scrape).
+ */
+
+type Variant = 'nominal' | 'degraded' | 'critical-neutral' | 'unknown';
+
+interface Props {
+  variant: Variant;
+  label?: string;
+  size?: 'sm' | 'md';
+}
+
+const { variant, label, size = 'sm' } = Astro.props;
+
+const defaultLabels: Record<Variant, string> = {
+  nominal: 'NOMINAL',
+  degraded: 'DEGRADED',
+  'critical-neutral': 'CRITICAL',
+  unknown: 'UNKNOWN',
+};
+
+const styles: Record<Variant, string> = {
+  nominal: [
+    'text-[oklch(0.72_0.150_160)]',
+    'border-[oklch(0.72_0.150_160_/_0.2)]',
+    'bg-[oklch(0.72_0.150_160_/_0.1)]',
+  ].join(' '),
+  degraded: [
+    'text-[oklch(0.80_0.160_71)]',
+    'border-[oklch(0.80_0.160_71_/_0.25)]',
+    'bg-[oklch(0.80_0.160_71_/_0.12)]',
+  ].join(' '),
+  'critical-neutral': [
+    'text-[var(--color-fg-mute)]',
+    'border-[var(--color-border-bright)]',
+    'bg-[var(--color-surface-2)]',
+  ].join(' '),
+  unknown: [
+    'text-[var(--color-fg-dim)]',
+    'border-[var(--color-border)]',
+    'bg-[var(--color-surface)]',
+  ].join(' '),
+};
+
+const sizes = {
+  sm: 'text-[10px] px-2 py-0.5',
+  md: 'text-xs px-2.5 py-1',
+};
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1 font-mono tracking-wider uppercase',
+    'rounded border',
+    styles[variant],
+    sizes[size],
+  ]}
+  role="status"
+>{label ?? defaultLabels[variant]}</span>
