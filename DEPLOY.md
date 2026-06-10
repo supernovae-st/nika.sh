@@ -27,6 +27,10 @@ doctl account get        # sanity: you're on the right team
 
 ## 2 · Diagnose the stale app
 
+The live app ID (read from the `x-do-app-origin` response header on
+nika.sh, 2026-06-10): **`205698cb-6ca5-48ad-a614-7d15ff71de58`** — verify
+it's still the one with `doctl apps list`, then use it as `<APP_ID>` below.
+
 ```sh
 # find the app
 doctl apps list --format ID,Spec.Name,DefaultIngress,UpdatedAt
