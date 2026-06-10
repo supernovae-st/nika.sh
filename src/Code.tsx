@@ -4,7 +4,7 @@ const RE =
 
 const VERBS = new Set(['infer', 'exec', 'invoke', 'agent'])
 
-function tint(line: string, key: number) {
+function tint(line: string, key: number, lit: boolean) {
   const out: React.ReactNode[] = []
   let rest = line
   let i = 0
@@ -30,18 +30,26 @@ function tint(line: string, key: number) {
     rest = rest.slice(m.index + full.length)
   }
   return (
-    <span key={key} className="block">
+    <span key={key} className={lit ? 'block hl-line' : 'block'}>
       {out}
       {'\n'}
     </span>
   )
 }
 
-export default function Code({ code }: { code: string }) {
+export default function Code({
+  code,
+  highlight,
+}: {
+  code: string
+  /** 0-based inclusive line range to light up (the run-sim active task) */
+  highlight?: [number, number] | null
+}) {
   const lines = code.replace(/\n$/, '').split('\n')
+  const [h0, h1] = highlight ?? [-1, -2]
   return (
     <pre className="code">
-      <code>{lines.map((l, i) => tint(l, i))}</code>
+      <code>{lines.map((l, i) => tint(l, i, i >= h0 && i <= h1))}</code>
     </pre>
   )
 }

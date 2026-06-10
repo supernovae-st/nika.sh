@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Code from '../Code'
 import { Plain } from '../components/ui'
+import RunSim from './RunSim'
 import { VERB_COLOR } from './transform-data'
 import { UC_TABS, yamlFor, fileFor, docsFor, type UC } from './usecases-data'
 import { CANON } from '../canon.generated'
+import { SHOWCASE_DAG, type ShowcaseTask } from './usecases-yaml.generated'
 
 /* ─── §use-cases · the tabbed explorer ──────────────────────────────────────
    5 métier tabs × 3-4 SELECTABLE workflows — click a card, the right
@@ -14,12 +16,31 @@ import { CANON } from '../canon.generated'
 export default function UseCases() {
   const [tab, setTab] = useState(0)
   const [sel, setSel] = useState(0)
+  const [hl, setHl] = useState<[number, number] | null>(null)
+  const codeBox = useRef<HTMLDivElement>(null)
   const t = UC_TABS[tab]
   const active: UC = t.cases[Math.min(sel, t.cases.length - 1)]
+  const dag = SHOWCASE_DAG[active.slug]
 
   const pickTab = (i: number) => {
     setTab(i)
     setSel(0)
+    setHl(null)
+  }
+
+  /* the run-sim narrates a task → light its lines + scroll them into view */
+  const onSimTask = (task: ShowcaseTask | null) => {
+    if (!task) {
+      setHl(null)
+      return
+    }
+    setHl([task.line0, task.line1])
+    const box = codeBox.current
+    const firstLine = box?.querySelector('code > .block')
+    if (box && firstLine) {
+      const lh = firstLine.getBoundingClientRect().height || 23
+      box.scrollTo({ top: Math.max(0, task.line0 * lh - 44), behavior: 'smooth' })
+    }
   }
 
   return (
@@ -80,7 +101,10 @@ export default function UseCases() {
                 key={u.slug}
                 role="tab"
                 aria-selected={selected}
-                onClick={() => setSel(i)}
+                onClick={() => {
+                  setSel(i)
+                  setHl(null)
+                }}
                 className={`uc-in skeuo group flex gap-5 rounded-2xl px-6 py-5 text-left transition-all duration-300 hover:-translate-y-0.5 ${
                   selected ? 'ring-1 ring-[var(--cyan)]/60' : 'opacity-80 hover:opacity-100'
                 }`}
@@ -140,8 +164,9 @@ export default function UseCases() {
               walkthrough →
             </a>
           </div>
-          <div className="max-h-[460px] overflow-y-auto px-5 py-4">
-            <Code code={yamlFor(active)} />
+          {dag && <RunSim key={`sim-${active.slug}`} dag={dag} onTask={onSimTask} />}
+          <div ref={codeBox} className="max-h-[380px] overflow-y-auto px-5 py-4">
+            <Code code={yamlFor(active)} highlight={hl} />
           </div>
           <div
             className="border-t px-5 py-3.5 text-[13.5px] leading-relaxed text-[var(--cyan)]"
