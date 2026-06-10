@@ -1,31 +1,41 @@
 # nika.sh — llms.txt
 # https://llmstxt.org/
 
-> Nika is a semantic YAML workflow engine for AI.
-> AGPL-3.0-or-later. Rust. Paris. SuperNovae Studio.
+> Nika is an open workflow language for AI — plus its reference engine in Rust.
+> Apache-2.0 spec · AGPL-3.0-or-later engine. Paris. SuperNovae Studio.
 
 ## What
 
 Nika reads `.nika.yaml` files and executes them as AI workflows.
-Five verbs: exec, fetch, invoke, infer, agent.
-9 providers: Anthropic, OpenAI, Google, Mistral, Cohere, Groq, DeepSeek, Ollama, local GGUF.
-63 builtin tools. 34 crates. Runs on your laptop, no daemon.
+Four verbs, locked forever: `infer` (LLM call), `exec` (subprocess),
+`invoke` (builtin/tool — HTTP fetch is the `nika:fetch` builtin here),
+`agent` (agent loop). Everything callable is a tool under `invoke`;
+a verb is a distinct native execution model.
+
+The language envelope is `nika: v1` — frozen forever. The engine versions
+independently (forever-v0.x semver; no v1.0 ever).
+
+Stdlib v0.1: 22 builtins · 14 providers (Anthropic, OpenAI, Gemini,
+Mistral, Groq, DeepSeek, xAI, OpenRouter, Ollama, LM Studio, llama.cpp,
+LocalAI, vLLM, mock) · 9 extract modes. Bring your own keys — every key
+stays yours. Local-first. Runs on your laptop, no daemon.
 
 ## Links
 
-- Source: https://github.com/supernovae-st/nika
+- Language spec (Apache-2.0): https://github.com/supernovae-st/nika-spec
+- Engine source (AGPL): https://github.com/supernovae-st/nika
 - Install: https://nika.sh/install
 - Docs: https://docs.nika.sh
-- Errors: https://nika.sh/errors
-- Schema: https://nika.sh/schema/workflow.json
-- Design: https://nika.sh/design.md
 - Changelog: https://nika.sh/changelog
 
 ## Status
 
-Chrysalis (pre-v0.90 emergence). 4 of 34 crates admitted.
-Building in public. Weekly dev logs on Fridays.
+Chrysalis (pre-v0.90 emergence). 13 of 42 organs admitted — each passes
+a 12-gate admission (TDD, mutation testing ≥90%, zero `.unwrap()` in src).
+Language v0.1 public spec + the first usable binary (v0.81): summer 2026.
+Building in public.
 
 ## License
 
-AGPL-3.0-or-later. Full copyleft. No SaaS loophole.
+Spec: Apache-2.0 (adopt freely, patent grant). Engine: AGPL-3.0-or-later.
+Full copyleft. No SaaS loophole.
