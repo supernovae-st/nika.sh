@@ -1,4 +1,5 @@
 import { REPO, SPEC } from '../content'
+import { CANON } from '../canon.generated'
 
 /* ─── /blog · the journal — pedagogy in long form ───────────────────────────
    Hash-routed (#/blog) · no 3D (fast, readable) · one REAL flagship article
@@ -162,7 +163,7 @@ export default function Blog() {
             <span className="text-[var(--fg)]">fetching is not a distinct execution model.</span>{' '}
             It is a tool call. So <code className="mono text-[13px] text-[var(--cyan)]">
             nika:fetch</code> lives in the standard library, reached through invoke, next to read,
-            write, jq and the other 21 builtins. Everything callable is a tool. Everything about
+            write, jq and the other {CANON.builtins - 4} builtins. Everything callable is a tool. Everything about
             ordering is the graph.
           </p>
           <p>

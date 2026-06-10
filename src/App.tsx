@@ -559,7 +559,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* ─── §toolbelt · 22 builtins + 13 providers (spec canon.yaml truth) ─── */}
+          {/* ─── §toolbelt · builtins + providers (derived from canon.generated.ts) ─── */}
           <Toolbelt />
 
           {/* ─── §use-cases · tabbed explorer (persona tabs + real files) ─── */}

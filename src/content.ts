@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { CANON } from './canon.generated'
 
 /* ─── all copy + code on the page · verified against nika-spec (spec/02-verbs.md ·
        spec/01-envelope.md · stdlib/builtins-v0.1.md) — never invent YAML ─── */
@@ -49,7 +50,7 @@ export const NOTES: { token: string; body: ReactNode }[] = [
   },
   {
     token: 'tool: nika:write',
-    body: 'Tools live behind invoke:, either nika: builtins or mcp: servers. 22 builtins, 13 providers, nothing to install.',
+    body: `Tools live behind invoke:, either nika: builtins or mcp: servers. ${CANON.builtins} builtins, ${CANON.providers} providers, nothing to install.`,
   },
 ]
 
@@ -58,7 +59,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
   {
     verb: 'infer',
     tagline: 'Call a model',
-    body: 'Any of 13 providers: Anthropic, OpenAI, Mistral, Ollama and more. You pick, per task or per file.',
+    body: `Any of ${CANON.providers} providers: Anthropic, OpenAI, Mistral, Ollama and more. You pick, per task or per file.`,
     code: `- id: research
   infer:
     prompt: "Research \${{ vars.topic }}"`,
