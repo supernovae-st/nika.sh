@@ -75,7 +75,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
   {
     verb: 'invoke',
     tagline: 'Call a tool',
-    body: '22 nika: builtins (read, write, fetch, jq) plus any mcp: server you already use.',
+    body: `${CANON.builtins} nika: builtins (read, write, fetch, jq) plus any mcp: server you already use.`,
     code: `- id: read_config
   invoke:
     tool: "nika:read"

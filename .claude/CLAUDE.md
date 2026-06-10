@@ -20,8 +20,10 @@ pnpm check && pnpm lint && pnpm build
 - Full agent contract in `AGENTS.md` (spec-truth · live URLs · scene rules ·
   copy discipline). Read it first.
 - This repo is PUBLIC — never commit strategy/brand/research content.
-- Spec-correct YAML only (supernovae-st/nika-spec) · 4 verbs · 22 builtins ·
-  13 providers — counts derive from the spec `canon.yaml`.
+- Spec-correct YAML only (supernovae-st/nika-spec) — language counts derive
+  from the spec `canon.yaml` via `src/canon.generated.ts` (never hand-type).
+- Use-cases YAML + run-sim DAG model derive from spec showcase via
+  `src/sections/usecases-yaml.generated.ts` (showcase-projector · never edit).
 - Commit trailer: `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`.
 - Scene code: ONE clock for film beats · no troika `<Text>` · verify
   headless via swiftshader screenshots (`?it=N` freezes the intro).

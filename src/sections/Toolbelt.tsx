@@ -36,7 +36,7 @@ const FAMILIES: { label: string; c: string; tools: { n: string; d: string }[] }[
   {
     label: 'Web',
     c: '#b07bff',
-    tools: [{ n: 'fetch', d: 'get a page · 9 extract modes' }],
+    tools: [{ n: 'fetch', d: `get a page · ${CANON.extractModes} extract modes` }],
   },
   {
     label: 'Flow',
