@@ -1,8 +1,9 @@
 ---
 /**
- * ProviderGrid — thirteen canonical LLM provider cards.
+ * ProviderGrid — fourteen canonical LLM provider cards.
  *
- * Per nika/spec/stdlib/providers-v0.1.md (canonical 13: 7 cloud + 5 local + 1 test).
+ * Per nika-spec stdlib/providers-v0.1.md (canonical 14: 7 cloud + 1 router +
+ * 5 local + 1 test · openrouter promoted D-2026-06-10).
  * Admitted providers have a live blue indicator.
  * Planned providers are dim with a dashed border.
  * Static Astro — zero client JS.
@@ -18,10 +19,11 @@ interface Provider {
   note?: string;
 }
 
-// The canonical 13 · per nika/spec/stdlib/providers-v0.1.md (committed HEAD).
-// Cloud (7) · anthropic · openai · mistral · groq · deepseek · gemini · xai
-// Local (5) · ollama · lmstudio · llamacpp · localai · vllm
-// Test  (1) · mock
+// The canonical 14 · per nika-spec stdlib/providers-v0.1.md (committed HEAD).
+// Cloud  (7) · anthropic · openai · mistral · groq · deepseek · gemini · xai
+// Router (1) · openrouter
+// Local  (5) · ollama · lmstudio · llamacpp · localai · vllm
+// Test   (1) · mock
 const PROVIDERS: Provider[] = [
   // ── Cloud ───────────────────────────────────────────────────────────────
   {
@@ -105,6 +107,14 @@ const PROVIDERS: Provider[] = [
     status: 'planned',
     models: ['any HF model'],
     note: 'high-throughput · self-hosted',
+  },
+  // ── Router ──────────────────────────────────────────────────────────────
+  {
+    id: 'openrouter',
+    name: 'OpenRouter',
+    status: 'planned',
+    models: ['~200 models · one key'],
+    note: 'aggregator · openai-chat dialect',
   },
   // ── Test ────────────────────────────────────────────────────────────────
   {
