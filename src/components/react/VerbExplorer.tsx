@@ -54,7 +54,7 @@ const VERBS: Verb[] = [
     label: 'INFER',
     tagline: 'Call an LLM',
     description:
-      'Provider-agnostic inference across 13 providers — Anthropic, OpenAI, ' +
+      'Provider-agnostic inference across 14 providers — Anthropic, OpenAI, OpenRouter, ' +
       'Google, Mistral, Ollama, local GGUF. Structured output, vision, and ' +
       'extended thinking are first-class, not prompt hacks.',
     yaml: `tasks:
