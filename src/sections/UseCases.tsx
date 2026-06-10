@@ -3,9 +3,9 @@ import Code from '../Code'
 import { Plain } from '../components/ui'
 import RunSim from './RunSim'
 import { VERB_COLOR } from './transform-data'
-import { UC_TABS, yamlFor, fileFor, docsFor, type UC } from './usecases-data'
+import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from './usecases-data'
 import { CANON } from '../canon.generated'
-import { SHOWCASE_DAG, type ShowcaseTask } from './usecases-yaml.generated'
+import { SHOWCASE_DAG, SHOWCASE_YAML, type ShowcaseTask } from './usecases-yaml.generated'
 
 /* ─── §use-cases · the tabbed explorer ──────────────────────────────────────
    5 métier tabs × 3-4 SELECTABLE workflows — click a card, the right
@@ -122,7 +122,7 @@ export default function UseCases() {
                       {u.tier}
                     </span>
                     <span className="mono flex gap-1.5 text-[10.5px]">
-                      {u.verbs.map((v) => (
+                      {verbsFor(u).map((v) => (
                         <span
                           key={v}
                           className="rounded-md border px-1.5 py-0.5"
@@ -187,8 +187,9 @@ export default function UseCases() {
         >
           nika-spec/examples/showcase
         </a>{' '}
-        and passes the spec&apos;s conformance gate — schema, DAG cross-references, stdlib surface.
-        Sixteen workflows, four tiers, all {CANON.builtins} builtins exercised.
+        and passes the spec&apos;s conformance gate — schema, DAG cross-references, stdlib
+        surface. {Object.keys(SHOWCASE_YAML).length} workflows, four tiers, all{' '}
+        {CANON.builtins} builtins exercised.
       </p>
     </section>
   )

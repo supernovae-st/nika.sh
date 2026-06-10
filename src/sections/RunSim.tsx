@@ -134,7 +134,9 @@ export default function RunSim({
         <button
           onClick={() => setFast((f) => !f)}
           aria-pressed={fast}
-          className="mono rounded-md border px-2 py-1 text-[11px] text-[var(--fg-dim)] transition-colors hover:text-[var(--fg)]"
+          disabled={phase === 'running'}
+          title={phase === 'running' ? 'speed applies on the next run' : 'playback speed'}
+          className="mono rounded-md border px-2 py-1 text-[11px] text-[var(--fg-dim)] transition-colors hover:text-[var(--fg)] disabled:opacity-40"
           style={{ borderColor: 'var(--hair)' }}
         >
           {fast ? '2×' : '1×'}
@@ -144,14 +146,16 @@ export default function RunSim({
         </span>
       </div>
 
-      {/* ── the DAG · columns are waves ── */}
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        className="w-full"
-        style={{ maxHeight: 170 }}
-        role="img"
-        aria-label="Workflow DAG · columns are parallel waves"
-      >
+      {/* ── the DAG · columns are waves · natural size + h-scroll keeps
+            wave-heavy workflows legible (7-wave epics would shrink to 6px) ── */}
+      <div className="overflow-x-auto pb-1">
+        <svg
+          width={width}
+          height={Math.min(height, 170)}
+          viewBox={`0 0 ${width} ${height}`}
+          role="img"
+          aria-label="Workflow DAG · columns are parallel waves"
+        >
         {/* edges first (under nodes) */}
         {dag.tasks.flatMap((t) =>
           t.deps.map((d) => {
@@ -217,7 +221,8 @@ export default function RunSim({
             </g>
           )
         })}
-      </svg>
+        </svg>
+      </div>
 
       {/* ── the narration · every action explained ── */}
       <div
