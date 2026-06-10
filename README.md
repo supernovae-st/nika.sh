@@ -62,6 +62,8 @@ shapes when editing copy.
 
 DigitalOcean App Platform, auto-deploy on push to `main` (spec in
 `.do/app.yaml`). Static build → `dist/`, `404.html` as error document.
+Full runbook — doctl, diagnosis, docs.nika.sh setup: [`DEPLOY.md`](DEPLOY.md).
+Infra DRI: Nicolas.
 
 ## License
 
