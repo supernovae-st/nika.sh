@@ -82,10 +82,10 @@ model: ollama/llama3.1`,
     n: '06',
     title: 'Branch like an adult',
     plain:
-      'when: makes a task conditional: a boolean expression over what already happened. No if-else pyramids; the branch is part of the graph.',
+      'when: makes a task conditional: a boolean over what already happened. Success-gating is free (depends_on already does it) — when: is for conditions BEYOND it, like a value check.',
     yaml: `- id: alert
   depends_on: [check]
-  when: \${{ tasks.check.status == 'success' }}
+  when: \${{ tasks.check.output.errors > 0 }}
   invoke:
     tool: "nika:notify"`,
   },

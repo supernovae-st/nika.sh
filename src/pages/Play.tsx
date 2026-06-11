@@ -148,8 +148,8 @@ export default function Play() {
             </p>
             {valid ? (
               <p className="text-[13.5px] leading-relaxed text-[var(--cyan)]">
-                ✓ This file passes every static check the engine runs — envelope, verbs, edges,
-                namespaces, providers. Ship it with{' '}
+                ✓ This file passes the playground's static checks — envelope, verbs, edges,
+                namespaces, providers, expressions. The engine's <code className="mono text-[12px]">nika check</code> runs the full oracle. Ship it with{' '}
                 <code className="mono text-[12px]">nika run {seed}.nika.yaml</code>.
               </p>
             ) : (

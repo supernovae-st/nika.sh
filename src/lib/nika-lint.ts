@@ -26,7 +26,9 @@ interface Task {
 
 const VERBS = ['infer', 'exec', 'invoke', 'agent'] as const
 const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
-const EXPR_BODY = /\$\{\{(.*?)\}\}/gs
+const EXPR_BODY = /(?<!\\)\$\{\{(.*?)\}\}/gs
+const EXPR_OPEN = /(?<!\\)\$\{\{/g
+const DURATION = /^([0-9]+(\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$/
 const ROOT_ID = /(?<![.\w])([A-Za-z_][A-Za-z0-9_]*)(?:\.([A-Za-z_][A-Za-z0-9_]*))?/g
 const CEL_BUILTINS = new Set(['true', 'false', 'null', 'in', 'size'])
 const LOOP_LOCALS = new Set(['item', 'index'])
@@ -125,6 +127,17 @@ export function lintNika(src: string): LintDiag[] {
       seen.add(id)
     }
 
+    // timeout: quoted Go-duration (used by task · wait · on_finally rules below)
+    const checkDuration = (v: unknown, whereFix: string) => {
+      if (typeof v === 'number')
+        diags.push({ line, code: 'NIKA-PARSE', message: `timeout ${v} is a number — must be a quoted duration`, fix: `write "${v}s" (${whereFix})` })
+      else if (typeof v === 'string' && !v.includes('${{') && !DURATION.test(v))
+        diags.push({ line, code: 'NIKA-PARSE', message: `timeout '${v}' is not a Go-duration`, fix: `e.g. "30s" · "5m" · "1h30m" (${whereFix})` })
+    }
+    checkDuration(t.timeout, 'task timeout')
+    for (const step of Array.isArray(t.on_finally) ? (t.on_finally as Record<string, unknown>[]) : [])
+      if (step && typeof step === 'object') checkDuration(step.timeout, 'on_finally timeout')
+
     // exactly one verb
     const verbs = VERBS.filter((v) => v in t)
     if (verbs.length !== 1)
@@ -184,17 +197,80 @@ export function lintNika(src: string): LintDiag[] {
       if (!('content' in args))
         diags.push({ line, code: 'NIKA-BUILTIN', message: `task '${id}' · nika:write without content:`, fix: 'a write without content writes nothing' })
     }
+    // fetch: mode must be canonical · jq arg only with mode: jq
+    if (inv && typeof inv === 'object' && inv.tool === 'nika:fetch') {
+      const args = (inv.args as Record<string, unknown>) || {}
+      const mode = args.mode
+      if (typeof mode === 'string' && !mode.includes('${{') && !(CANON.extractModeNames as readonly string[]).includes(mode))
+        diags.push({ line, code: 'NIKA-BUILTIN', message: `unknown extract mode '${mode}'`, fix: `one of · ${CANON.extractModeNames.join(' · ')}` })
+      if ('jq' in args && args.mode !== 'jq')
+        diags.push({ line, code: 'NIKA-BUILTIN', message: `'jq' argument without mode: jq`, fix: 'set mode: jq (the jq program needs the jq mode)' })
+    }
+    // wait: durations
+    if (inv && typeof inv === 'object' && inv.tool === 'nika:wait') {
+      const args = (inv.args as Record<string, unknown>) || {}
+      checkDuration(args.duration, 'wait duration')
+      checkDuration(args.timeout, 'wait timeout')
+    }
+
     // hard rule 7 · done only in agent.tools
     if (inv && typeof inv === 'object' && inv.tool === 'nika:done')
-      diags.push({ line, code: 'NIKA-BUILTIN', message: 'nika:done outside an agent loop', fix: 'it is the loop sentinel — grant it in agent.tools instead' })
+      diags.push({ line, code: 'NIKA-BUILTIN-DONE-001', message: 'nika:done outside an agent loop', fix: 'it is the loop sentinel — grant it in agent.tools instead' })
 
-    // hard rule 4 · when: should look boolean
+    // hard rule 4 · when: is a ${{ }} CEL boolean OR a YAML boolean literal
     if (typeof t.when === 'string') {
       const body = [...t.when.matchAll(EXPR_BODY)].map((m) => m[1]).join(' ')
-      if (body && !/[=!<>]|&&|\|\||\bin\b|size\s*\(|^\s*!/.test(body))
-        diags.push({ line, code: 'NIKA-VAR', message: `when: on '${id}' is not boolean-shaped`, fix: 'compare something · e.g. ${{ vars.x > 0 }}' })
+      if (!body)
+        diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is a bare string — never evaluated`, fix: 'wrap it · when: ${{ … }} · or use the literal true/false' })
+      else if (!/[=!<>]|&&|\|\||\bin\b|size\s*\(|^\s*!/.test(body))
+        diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is not boolean-shaped`, fix: 'compare something · e.g. ${{ vars.x > 0 }}' })
     }
+
+    // output: bindings are pure jq — ${{ }} never appears inside them
+    const out = t.output
+    if (out && typeof out === 'object')
+      for (const [name, expr] of Object.entries(out as Record<string, unknown>))
+        if (typeof expr === 'string' && EXPR_BODY.test(expr)) {
+          EXPR_BODY.lastIndex = 0
+          diags.push({ line, code: 'NIKA-VAR-005', message: `output.${name} on '${id}' contains \${{ }}`, fix: 'bindings are pure jq over the task output — shape the verb INPUT with ${{ }} instead' })
+        }
+
+
+    // DAG-004 · recover: must not point downstream of this task
+    const onErr = t.on_error as Record<string, unknown> | undefined
+    if (id && onErr && typeof onErr === 'object' && typeof onErr.recover === 'string')
+      for (const m of String(onErr.recover).matchAll(TASK_REF)) {
+        const target = m[1]
+        if (!idset.has(target)) continue
+        // downstream test · does target transitively depend on id?
+        const depsOf = (n: string): string[] => {
+          const tt = tasks.find((x) => x?.id === n)
+          return Array.isArray(tt?.depends_on) ? (tt.depends_on as string[]) : []
+        }
+        const stack = [target]
+        const seenD = new Set<string>()
+        while (stack.length) {
+          const n = stack.pop() as string
+          if (n === id) {
+            diags.push({ line, code: 'NIKA-DAG-004', message: `recover: on '${id}' reads tasks.${target} — downstream of '${id}'`, fix: 'a recovery source must be upstream or independent (the await would deadlock)' })
+            break
+          }
+          if (seenD.has(n)) continue
+          seenD.add(n)
+          stack.push(...depsOf(n))
+        }
+      }
   }
+
+  // unclosed ${{ — an opener with no closing }}
+  src.split('\n').forEach((l, i) => {
+    const opens = (l.match(EXPR_OPEN) || []).length
+    EXPR_OPEN.lastIndex = 0
+    const closed = [...l.matchAll(EXPR_BODY)].length
+    EXPR_BODY.lastIndex = 0
+    if (opens > closed)
+      diags.push({ line: i + 1, code: 'NIKA-VAR-008', message: 'unclosed ${{ — the opener never closes', fix: 'close the expression with }}' })
+  })
 
   // DAG-001 · cycles
   const graph = new Map(tasks.filter((t) => typeof t?.id === 'string').map((t) => [t.id as string, (Array.isArray(t.depends_on) ? (t.depends_on as string[]) : []).filter((d) => idset.has(d))]))
