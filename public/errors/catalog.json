@@ -149,6 +149,12 @@
    "failure": "unclosed ${{ opener"
   },
   {
+   "code": "NIKA-VAR-009",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "typed outputs value did not match its declared type: at run end (the output half of the callable contract)"
+  },
+  {
    "code": "NIKA-INFER-001",
    "category": "provider_error",
    "transient": "engine-assessed",
