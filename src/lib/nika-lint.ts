@@ -222,8 +222,8 @@ export function lintNika(src: string): LintDiag[] {
       const body = [...t.when.matchAll(EXPR_BODY)].map((m) => m[1]).join(' ')
       if (!body)
         diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is a bare string — never evaluated`, fix: 'wrap it · when: ${{ … }} · or use the literal true/false' })
-      else if (!/[=!<>]|&&|\|\||\bin\b|size\s*\(|^\s*!/.test(body))
-        diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is not boolean-shaped`, fix: 'compare something · e.g. ${{ vars.x > 0 }}' })
+      else if (!/[=!<>?]|&&|\|\||\bin\b|\b(size|has)\s*\(|\.(contains|startsWith|endsWith)\s*\(|^\s*!/.test(body))
+        diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is not boolean-shaped`, fix: 'compare something · e.g. ${{ vars.x > 0 }} · has(vars.x) · x.contains("…")' })
     }
 
     // output: bindings are pure jq — ${{ }} never appears inside them
