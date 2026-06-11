@@ -272,6 +272,61 @@ export function lintNika(src: string): LintDiag[] {
       diags.push({ line: i + 1, code: 'NIKA-VAR-008', message: 'unclosed ${{ — the opener never closes', fix: 'close the expression with }}' })
   })
 
+  // PERMITS-FIT · once permits: is present the body must fit it (01 §permits)
+  const permits = doc.permits as Record<string, unknown> | undefined
+  if (permits && typeof permits === 'object') {
+    // gitignore-style glob → regex (* never crosses / · ** does · : literal)
+    const globRe = (pat: string) =>
+      new RegExp(
+        '^' +
+          pat
+            .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+            .replace(/\*\*/g, '<GLOBSTAR>')
+            .replace(/\*/g, '[^/]*')
+            .replace(/<GLOBSTAR>/g, '.*') +
+          '$',
+      )
+    const toolPats = Array.isArray(permits.tools)
+      ? (permits.tools as string[]).filter((x) => typeof x === 'string' && !x.startsWith('!'))
+      : null
+    const toolOk = (tool: string) => toolPats !== null && toolPats.some((p2) => globRe(p2).test(tool))
+    const execRule = 'exec' in permits ? permits.exec : false
+    const net = permits.net as Record<string, unknown> | undefined
+    const hosts = net && Array.isArray(net.http) ? (net.http as string[]) : null
+
+    for (const t of tasks) {
+      if (!t || typeof t !== 'object') continue
+      const id = typeof t.id === 'string' ? t.id : undefined
+      const line = at(id)
+      if ('exec' in t) {
+        const body = t.exec as Record<string, unknown> | undefined
+        const cmd = body && typeof body === 'object' ? body.command : undefined
+        if (execRule === false || execRule === undefined || execRule === null)
+          diags.push({ line, code: 'NIKA-SEC-004', message: `task '${id}' uses exec: but permits.exec is false/omitted`, fix: 'permits is default-deny once present — allow exec or drop the task' })
+        else if (Array.isArray(execRule) && Array.isArray(cmd) && typeof cmd[0] === 'string' && !cmd[0].includes('${{') && !execRule.includes(cmd[0]))
+          diags.push({ line, code: 'NIKA-SEC-004', message: `argv program '${cmd[0]}' not in permits.exec`, fix: `allowed: ${execRule.join(' · ')}` })
+      }
+      const pinv = t.invoke as Record<string, unknown> | undefined
+      if (pinv && typeof pinv === 'object' && typeof pinv.tool === 'string') {
+        if (!toolOk(pinv.tool))
+          diags.push({ line, code: 'NIKA-SEC-004', message: `invoke ${pinv.tool} outside permits.tools`, fix: 'the file IS the blast radius — permit the tool or drop the call' })
+        if (pinv.tool === 'nika:fetch' && hosts) {
+          const url = ((pinv.args as Record<string, unknown>) || {}).url
+          if (typeof url === 'string' && !url.includes('${{')) {
+            const host = (() => { try { return new URL(url).hostname } catch { return '' } })()
+            if (host && !hosts.some((h) => globRe(h).test(host)))
+              diags.push({ line, code: 'NIKA-SEC-004', message: `fetch host '${host}' not in permits.net.http`, fix: `allowed hosts: ${hosts.join(' · ')}` })
+          }
+        }
+      }
+      const pag = t.agent as Record<string, unknown> | undefined
+      if (pag && typeof pag === 'object' && Array.isArray(pag.tools))
+        for (const w of pag.tools as string[])
+          if (typeof w === 'string' && !w.startsWith('!') && !toolOk(w))
+            diags.push({ line, code: 'NIKA-SEC-004', message: `agent whitelist '${w}' outside permits.tools`, fix: 'the agent cannot exceed the file boundary' })
+    }
+  }
+
   // DAG-001 · cycles
   const graph = new Map(tasks.filter((t) => typeof t?.id === 'string').map((t) => [t.id as string, (Array.isArray(t.depends_on) ? (t.depends_on as string[]) : []).filter((d) => idset.has(d))]))
   const color = new Map<string, number>()
