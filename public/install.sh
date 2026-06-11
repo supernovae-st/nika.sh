@@ -112,6 +112,17 @@ resolve_version() {
     [ -n "$VERSION" ] && [ "$VERSION" != "latest" ] \
       || die 'failed to resolve latest release tag'
   fi
+  # Pre-release coherence (2026-06-11) · anything below 0.81 is the
+  # LEGACY pre-rewrite engine — the first supported release is v0.81
+  # (language v0.1 + vertical slice · summer 2026). Same caveat as the
+  # Homebrew formula · this covers the GitHub-asset path.
+  case "$VERSION" in
+    v0.7* | 0.7* | v0.80* | 0.80*)
+      warn 'this version predates the Diamond rewrite — LEGACY PREVIEW'
+      warn 'first supported release: v0.81 (summer 2026) · syntax WILL change'
+      warn 'follow the rebuild: https://nika.sh'
+      ;;
+  esac
   # Normalize: "v0.81.0" ↔ "0.81.0"
   case "$VERSION" in
     v*) VERSION_TAG="$VERSION"; VERSION_NUM="${VERSION#v}" ;;
