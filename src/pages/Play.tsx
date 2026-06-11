@@ -147,11 +147,22 @@ export default function Play() {
               Validator · {valid ? 'green' : 'speaking'}
             </p>
             {valid ? (
-              <p className="text-[13.5px] leading-relaxed text-[var(--cyan)]">
-                ✓ This file passes the playground's static checks — envelope, verbs, edges,
-                namespaces, providers, expressions. The engine's <code className="mono text-[12px]">nika check</code> runs the full oracle. Ship it with{' '}
-                <code className="mono text-[12px]">nika run {seed}.nika.yaml</code>.
-              </p>
+              <div className="flex flex-col gap-2.5">
+                <p className="text-[13.5px] leading-relaxed text-[var(--cyan)]">
+                  ✓ This file passes the playground's static checks — envelope, verbs, edges,
+                  namespaces, providers, expressions. The engine's <code className="mono text-[12px]">nika check</code> runs the full oracle. Ship it with{' '}
+                  <code className="mono text-[12px]">nika run {seed}.nika.yaml</code>.
+                </p>
+                {(seed === 'human-gated-ship' || seed === 'resume-screener') && (
+                  <p className="text-[12.5px] leading-relaxed text-[var(--fg-mute)]">
+                    Experiment · this file declares <code className="mono text-[11.5px]">permits:</code> —
+                    its whole blast radius, in-file. Remove an entry from{' '}
+                    <code className="mono text-[11.5px]">permits.tools</code> and watch{' '}
+                    <code className="mono text-[11.5px]">NIKA-SEC-004</code> fire: once the boundary is
+                    declared, the body must fit it.
+                  </p>
+                )}
+              </div>
             ) : (
               <ul className="flex flex-col gap-3">
                 {diags.slice(0, 8).map((d, i) => (
