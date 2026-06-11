@@ -9,8 +9,37 @@ import type { ShowcaseDag, ShowcaseTask } from './usecases-yaml.generated'
    each is narrated in turn — its gloss in the caption, its lines lit in the
    YAML panel via onTask. Deterministic data, zero client YAML parsing. */
 
-type Status = 'pending' | 'running' | 'done'
-type Phase = 'idle' | 'running' | 'done'
+type Status = 'pending' | 'running' | 'done' | 'failed' | 'cancelled' | 'skipped'
+type Phase = 'idle' | 'running' | 'done' | 'failed'
+type Mode = 'happy' | 'chaos'
+
+/* the chaos plan · pure + deterministic · real spec semantics
+   (05-errors §workflow-level · gate-based propagation) ·
+   - victim: first default-gate task with dependents in the middle wave
+   - default gate satisfied ⟺ all deps ∈ {done, skipped} · else cancelled
+   - explicit when: evaluates over terminal deps · poisoned → skipped here
+     (one possible failing run) · clean deps → runs
+   - when: true (gate 'always') → ALWAYS runs · the record lands */
+function chaosPlan(dag: ShowcaseDag): { victim: string; final: Record<string, Status> } {
+  const hasDependents = new Set(dag.tasks.flatMap((t) => t.deps))
+  const mid = Math.floor((dag.waves - 1) / 2)
+  const victim =
+    dag.tasks.find((t) => t.wave === mid && t.gate === 'default' && hasDependents.has(t.id)) ??
+    dag.tasks.find((t) => t.gate === 'default' && hasDependents.has(t.id)) ??
+    dag.tasks[0]
+  const final: Record<string, Status> = {}
+  for (const t of [...dag.tasks].sort((a, b) => a.wave - b.wave)) {
+    if (t.id === victim.id) {
+      final[t.id] = 'failed'
+      continue
+    }
+    const poisoned = t.deps.some((d) => final[d] === 'failed' || final[d] === 'cancelled')
+    if (t.gate === 'always') final[t.id] = 'done'
+    else if (t.gate === 'when') final[t.id] = poisoned ? 'skipped' : 'done'
+    else final[t.id] = poisoned ? 'cancelled' : 'done'
+  }
+  return { victim: victim.id, final }
+}
 
 const NODE_W = 102
 const NODE_H = 28
@@ -32,6 +61,7 @@ export default function RunSim({
   const [current, setCurrent] = useState<ShowcaseTask | null>(null)
   const [waveIdx, setWaveIdx] = useState(-1)
   const [fast, setFast] = useState(false)
+  const [mode, setMode] = useState<Mode>('happy')
   const timers = useRef<number[]>([])
   const fastRef = useRef(false)
   useEffect(() => {
@@ -70,44 +100,59 @@ export default function RunSim({
     onTask(null)
   }
 
-  const play = () => {
+  const play = (m: Mode) => {
     clearTimers()
+    setMode(m)
     setPhase('running')
     setStatus(Object.fromEntries(dag.tasks.map((t) => [t.id, 'pending'])))
     setCurrent(null)
+    const plan = m === 'chaos' ? chaosPlan(dag) : null
     let delay = 120
     const schedule = (fn: () => void, ms: number) => {
       timers.current.push(window.setTimeout(fn, delay))
       delay += ms / (fastRef.current ? 2 : 1)
     }
     byWave.forEach((wave, w) => {
-      // the whole wave starts together — parallelism made visible
+      // the whole wave starts together — parallelism made visible.
+      // in chaos mode, tasks the plan kills never start (cancelled at
+      // the gate · skipped by their when:) — they settle immediately.
       schedule(() => {
         setWaveIdx(w)
         setStatus((s) => ({
           ...s,
-          ...Object.fromEntries(wave.map((t) => [t.id, 'running' as Status])),
+          ...Object.fromEntries(
+            wave.map((t) => {
+              const end = plan?.final[t.id]
+              return [t.id, (end === 'cancelled' || end === 'skipped' ? end : 'running') as Status]
+            }),
+          ),
         }))
       }, 420)
-      // then each task is narrated, and completes
+      // then each task is narrated, and completes per the plan
       wave.forEach((t) => {
         schedule(() => {
           setCurrent(t)
           onTask(t)
         }, 1050)
         schedule(() => {
-          setStatus((s) => ({ ...s, [t.id]: 'done' }))
+          setStatus((s) => ({ ...s, [t.id]: plan ? plan.final[t.id] : 'done' }))
         }, 160)
       })
     })
     schedule(() => {
       setCurrent(null)
       onTask(null)
-      setPhase('done')
+      setPhase(plan ? 'failed' : 'done')
     }, 0)
   }
 
-  const stColor = (t: ShowcaseTask) => VERB_COLOR[t.verb]
+  const stColor = (t: ShowcaseTask) => {
+    const st = status[t.id]
+    if (st === 'failed') return '#e5484d'
+    if (st === 'cancelled') return 'var(--fg-ghost)'
+    if (st === 'skipped') return '#d6a000'
+    return VERB_COLOR[t.verb]
+  }
   const stClass = (id: string) =>
     phase === 'idle' ? 'rs-node' : `rs-node rs-${status[id] ?? 'pending'}`
 
@@ -124,12 +169,22 @@ export default function RunSim({
             ■ stop
           </button>
         ) : (
-          <button
-            onClick={play}
-            className="skeuo-brand mono rounded-md px-3 py-1 text-[11.5px] text-white transition-transform hover:-translate-y-px"
-          >
-            {phase === 'done' ? '↻ replay' : '▶ run it'}
-          </button>
+          <>
+            <button
+              onClick={() => play('happy')}
+              className="skeuo-brand mono rounded-md px-3 py-1 text-[11.5px] text-white transition-transform hover:-translate-y-px"
+            >
+              {phase !== 'idle' ? '↻ replay' : '▶ run it'}
+            </button>
+            <button
+              onClick={() => play('chaos')}
+              title="fail a mid-run task — watch gate-based propagation (the always-pattern)"
+              className="mono rounded-md border px-3 py-1 text-[11.5px] text-[var(--fg-dim)] transition-colors hover:text-[var(--fg)]"
+              style={{ borderColor: 'var(--hair)' }}
+            >
+              ⚡ break it
+            </button>
+          </>
         )}
         <button
           onClick={() => setFast((f) => !f)}
@@ -217,9 +272,18 @@ export default function RunSim({
                 {t.id.length > 11 ? `${t.id.slice(0, 10)}…` : t.id}
                 {t.flags.some((f) => f.startsWith('fan-out')) ? ' ∥' : ''}
               </text>
-              {status[t.id] === 'done' && (
+              {(status[t.id] === 'done' ||
+                status[t.id] === 'failed' ||
+                status[t.id] === 'cancelled' ||
+                status[t.id] === 'skipped') && (
                 <text x={p.x + NODE_W - 14} y={p.y + NODE_H / 2 + 3.5} fontSize={10} fill={c}>
-                  ✓
+                  {status[t.id] === 'done'
+                    ? '✓'
+                    : status[t.id] === 'failed'
+                      ? '✗'
+                      : status[t.id] === 'cancelled'
+                        ? '⊘'
+                        : '↷'}
                 </text>
               )}
             </g>
@@ -259,17 +323,43 @@ export default function RunSim({
                 <span className="mono" style={{ color: stColor(current) }}>
                   {current.id}
                 </span>
-                <span className="text-[var(--fg-mute)]"> — {current.gloss}</span>
-                {current.deps.length > 0 && (
-                  <span className="text-[var(--fg-ghost)]">
+                {mode === 'chaos' && status[current.id] === 'failed' ? (
+                  <span className="text-[var(--fg-mute)]">
                     {' '}
-                    (after <span className="mono">{current.deps.join(' + ')}</span>)
+                    — ✗ fails (retries exhausted · a typed error, not a stack trace)
                   </span>
-                )}
-                {current.flags.length > 0 && (
-                  <span className="mono text-[10.5px] text-[var(--fg-ghost)]">
-                    {'  '}· {current.flags.join(' · ')}
+                ) : mode === 'chaos' && status[current.id] === 'cancelled' ? (
+                  <span className="text-[var(--fg-mute)]">
+                    {' '}
+                    — ⊘ cancelled · its default gate needs every dep green — one is not
                   </span>
+                ) : mode === 'chaos' && status[current.id] === 'skipped' ? (
+                  <span className="text-[var(--fg-mute)]">
+                    {' '}
+                    — ↷ its <span className="mono">when:</span> gate evaluated over the wreckage
+                    — false this run · skipped, not killed
+                  </span>
+                ) : mode === 'chaos' && current.gate === 'always' ? (
+                  <span className="text-[var(--fg-mute)]">
+                    {' '}
+                    — <span className="mono">when: true</span> replaces the gate · runs ANYWAY —
+                    the record lands
+                  </span>
+                ) : (
+                  <>
+                    <span className="text-[var(--fg-mute)]"> — {current.gloss}</span>
+                    {current.deps.length > 0 && (
+                      <span className="text-[var(--fg-ghost)]">
+                        {' '}
+                        (after <span className="mono">{current.deps.join(' + ')}</span>)
+                      </span>
+                    )}
+                    {current.flags.length > 0 && (
+                      <span className="mono text-[10.5px] text-[var(--fg-ghost)]">
+                        {'  '}· {current.flags.join(' · ')}
+                      </span>
+                    )}
+                  </>
                 )}
               </>
             ) : (
@@ -286,6 +376,27 @@ export default function RunSim({
                 · outputs ready: <span className="mono">{dag.outputs.join(', ')}</span>
               </span>
             )}
+          </span>
+        )}
+        {phase === 'failed' && (
+          <span>
+            <span style={{ color: '#e5484d' }}>✗ run failed</span>
+            <span className="text-[var(--fg-mute)]">
+              {' '}
+              — and that is the lesson: in-flight work drains, only the poisoned subtree is
+              cancelled
+              {dag.tasks.some((t) => t.gate === 'always') ? (
+                <>
+                  , and the <span className="mono">when: true</span> tasks still ran — the record
+                  lands even at 3am.
+                </>
+              ) : (
+                <>
+                  . Add a terminal <span className="mono">when: true</span> task and the record
+                  lands even on this path.
+                </>
+              )}
+            </span>
           </span>
         )}
       </div>

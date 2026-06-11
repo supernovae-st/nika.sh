@@ -814,6 +814,9 @@ h1, h2 { font-family: var(--headline); }
 .rs-pending { opacity: 0.32; }
 .rs-running { animation: rsPulse 0.9s ease-in-out infinite; }
 .rs-done { opacity: 1; }
+.rs-failed { opacity: 1; }
+.rs-cancelled { opacity: 0.22; filter: grayscale(1); }
+.rs-skipped { opacity: 0.45; filter: saturate(0.4); }
 @keyframes rsPulse {
   0%, 100% { filter: drop-shadow(0 0 1px var(--rs-c)); opacity: 0.85; }
   50% { filter: drop-shadow(0 0 7px var(--rs-c)); opacity: 1; }
