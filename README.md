@@ -25,7 +25,9 @@ pnpm install
 pnpm dev                 # http://localhost:5173
 ```
 
-Gates (all must pass before pushing):
+Gates (all must pass before pushing — CI re-runs them on every push/PR
+via `.github/workflows/gate.yml`, plus a live-URL-contract presence check
+on `dist/`):
 
 ```sh
 pnpm check               # tsc --noEmit
@@ -46,17 +48,23 @@ src/
   App.tsx            page assembly · hash-router-lite (#/blog · #/learn)
   content.ts         copy + spec-correct YAML (source: supernovae-st/nika-spec)
   scene/             the 3D film (galaxy · butterfly · director · lens · verbs)
-  sections/          scroll story · transform · use cases · toolbelt · diagrams
+  sections/          scroll story · transform · use cases · toolbelt ·
+                     run simulator (break-it) · diagrams
   pages/             Blog · Learn
 public/
-  install.sh         curl install entry (live URL)
+  install.sh         curl install entry (live URL · warns on pre-0.81 legacy)
   llms.txt           LLM-readable site summary (live URL)
-  schema/ errors/    workflow JSON schema · error catalog (live URLs)
+  schema/ errors/    workflow JSON schema · error catalog (live URLs · PROJECTED)
 ```
 
-Every YAML fragment on the site is validated against the
-[nika-spec](https://github.com/supernovae-st/nika-spec) — never invent
-shapes when editing copy.
+**Generated content — never hand-edit**:
+`src/sections/usecases-yaml.generated.ts` (the showcase explorer YAML +
+DAGs + the 6 templates), `public/schema/workflow.json` and
+`public/errors/catalog.json` are all projected from
+[nika-spec](https://github.com/supernovae-st/nika-spec) by
+`scripts/showcase-projector.py --write` (drift-gated by `--check` in the
+monorepo audit). Every other YAML fragment in copy is hand-written but
+spec-validated — never invent shapes.
 
 ## Deploy
 
