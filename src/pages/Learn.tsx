@@ -41,12 +41,12 @@ workflow: weekly-radar`,
     n: '03',
     title: 'Pick a brain. Any brain.',
     plain:
-      'One line chooses the default model. Cloud or local, same file. Swap Anthropic for a model running on your own machine and nothing else changes.',
-    yaml: `# cloud
-model: anthropic/claude-sonnet-4-6
+      'One line chooses the default model. Local or cloud, same file. Start on your own machine — no key, no cloud — and swap to any cloud provider when you want; nothing else changes.',
+    yaml: `# fully local · no cloud needed
+model: ollama/llama3.1
 
-# or fully local · no cloud needed
-model: ollama/llama3.1`,
+# or swap to any cloud provider
+model: mistral/mistral-large`,
   },
   {
     n: '04',

@@ -144,20 +144,8 @@ export default function Toolbelt() {
         ))}
       </div>
 
-      {/* the providers · cloud row + sovereign local row (counts from CANON) */}
+      {/* the providers · sovereign local row FIRST + cloud row (counts from CANON) */}
       <div className="rv mt-5 grid gap-5 md:grid-cols-2">
-        <div className="glass rounded-2xl px-6 py-5">
-          <p className="mono mb-4 text-[11px] tracking-[0.24em] text-[var(--fg-dim)] uppercase">
-            Cloud providers · {CANON.providersCloud}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {CLOUD.map((p) => (
-              <span key={p} className="tool-chip mono" style={{ ['--tc' as string]: '#aab4c9' }}>
-                {p}
-              </span>
-            ))}
-          </div>
-        </div>
         <div className="skeuo rounded-2xl px-6 py-5">
           <p className="mono mb-4 flex items-center gap-2.5 text-[11px] tracking-[0.24em] text-[var(--cyan)] uppercase">
             <span
@@ -178,6 +166,18 @@ export default function Toolbelt() {
             the whole workflow runs offline. Plus <code className="mono text-[12px]">mock</code> —
             the deterministic test provider that makes workflows CI-runnable with zero keys.
           </p>
+        </div>
+        <div className="glass rounded-2xl px-6 py-5">
+          <p className="mono mb-4 text-[11px] tracking-[0.24em] text-[var(--fg-dim)] uppercase">
+            Cloud providers · {CANON.providersCloud}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {CLOUD.map((p) => (
+              <span key={p} className="tool-chip mono" style={{ ['--tc' as string]: '#aab4c9' }}>
+                {p}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

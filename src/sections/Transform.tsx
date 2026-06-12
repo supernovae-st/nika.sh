@@ -137,8 +137,8 @@ export default function Transform() {
                 {[
                   { at: 0.04, txt: 'fetch_news    invoke nika:fetch · 20 headlines pulled', c: '#22d3ee' },
                   { at: 0.04, txt: 'repo_log      exec git log · 20 commits read', c: '#ff7a3c' },
-                  { at: 0.3, txt: 'digest        infer claude-sonnet · signal summarized', c: '#5b8cff' },
-                  { at: 0.3, txt: 'changelog     infer claude-sonnet · notes drafted', c: '#5b8cff' },
+                  { at: 0.3, txt: 'digest        infer llama3.1 · signal summarized', c: '#5b8cff' },
+                  { at: 0.3, txt: 'changelog     infer llama3.1 · notes drafted', c: '#5b8cff' },
                   { at: 0.56, txt: 'brief         agent · merged both into weekly-brief.md', c: '#b07bff' },
                 ].map((l) => (
                   <div key={l.txt} data-at={l.at} className="tw-log-line flex items-baseline gap-2" style={{ opacity: 0 }}>

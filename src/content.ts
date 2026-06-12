@@ -12,7 +12,7 @@ export const DOCS = 'https://docs.nika.sh'
 export const WF = `nika: v1
 workflow: research-pipeline
 
-model: anthropic/claude-sonnet-4-6
+model: ollama/llama3.1
 vars:
   topic:
     type: string
@@ -59,7 +59,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
   {
     verb: 'infer',
     tagline: 'Call a model',
-    body: `Any of ${CANON.providers} providers: Anthropic, OpenAI, Mistral, Ollama and more. You pick, per task or per file.`,
+    body: `Any of ${CANON.providers} providers: Ollama, Mistral, Anthropic, OpenAI and more. You pick, per task or per file.`,
     code: `- id: research
   infer:
     prompt: "Research \${{ vars.topic }}"`,

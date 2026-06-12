@@ -77,6 +77,114 @@
  ],
  "codes": [
   {
+   "code": "NIKA-PARSE-001",
+   "category": "parse_error",
+   "transient": "false",
+   "failure": "the YAML itself does not parse (syntax error)"
+  },
+  {
+   "code": "NIKA-PARSE-002",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "missing envelope field (nika: / workflow: / non-empty tasks:)"
+  },
+  {
+   "code": "NIKA-PARSE-003",
+   "category": "parse_error",
+   "transient": "false",
+   "failure": "nika: version marker is not exactly v1"
+  },
+  {
+   "code": "NIKA-PARSE-004",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "workflow: id violates ^[a-z][a-z0-9-]*$"
+  },
+  {
+   "code": "NIKA-PARSE-005",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "unknown field — strict mode rejects anything outside the closed v1 set"
+  },
+  {
+   "code": "NIKA-PARSE-006",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "task id violates ^[a-z][a-z0-9_]*$ (snake_case · CEL-safe · no hyphens)"
+  },
+  {
+   "code": "NIKA-PARSE-007",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "duplicate task id within the workflow"
+  },
+  {
+   "code": "NIKA-PARSE-008",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "task declares no verb — exactly one of infer/exec/invoke/agent required"
+  },
+  {
+   "code": "NIKA-PARSE-009",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "task declares multiple verbs — exactly one required"
+  },
+  {
+   "code": "NIKA-PARSE-010",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "timeout: violates the quoted Go-duration contract (positive · max 24h · descending units)"
+  },
+  {
+   "code": "NIKA-PARSE-011",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "retry: block violates the spec shape"
+  },
+  {
+   "code": "NIKA-PARSE-012",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "on_error: block violates the spec shape (fields mutually exclusive)"
+  },
+  {
+   "code": "NIKA-PARSE-013",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)"
+  },
+  {
+   "code": "NIKA-PARSE-014",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "secrets: entry is not a store reference — inline literals forbidden"
+  },
+  {
+   "code": "NIKA-PARSE-015",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "typed vars: declaration malformed (type in string/number/integer/boolean/array/object)"
+  },
+  {
+   "code": "NIKA-PARSE-017",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "duplicate mapping key — no silent last-wins"
+  },
+  {
+   "code": "NIKA-PARSE-018",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "missing required field in a verb body (infer.prompt · exec.command · invoke.tool)"
+  },
+  {
+   "code": "NIKA-PARSE-019",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "generic structural validation — wrong YAML shape for a field"
+  },
+  {
    "code": "NIKA-DAG-001",
    "category": "validation_error",
    "transient": "false",
@@ -249,6 +357,12 @@
    "category": "cancelled",
    "transient": "false",
    "failure": "task cancelled (workflow failure gate · user cancellation)"
+  },
+  {
+   "code": "NIKA-BUILTIN-001",
+   "category": "validation_error",
+   "transient": "false",
+   "failure": "builtin invoke violates its statically-checkable arg contract (e.g. nika:fetch without url: · nika:jq arg shape)"
   },
   {
    "code": "NIKA-BUILTIN-DONE-001",
