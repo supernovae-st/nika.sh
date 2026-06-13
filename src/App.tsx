@@ -15,6 +15,7 @@ import { lazy, Suspense } from 'react'
 const Blog = lazy(() => import('./pages/Blog'))
 const Learn = lazy(() => import('./pages/Learn'))
 const Play = lazy(() => import('./pages/Play'))
+const Manifesto = lazy(() => import('./pages/Manifesto'))
 import { VERB_COLOR, type Verb } from './sections/transform-data'
 
 const TICKER_LINES = [
@@ -25,9 +26,10 @@ const TICKER_LINES = [
   'Free & open source · AGPL forever',
 ]
 
-function pageFromHash(): 'main' | 'blog' | 'learn' | 'play' {
+function pageFromHash(): 'main' | 'blog' | 'learn' | 'play' | 'manifesto' {
   if (typeof window === 'undefined') return 'main'
   const h = window.location.hash
+  if (h.startsWith('#/manifesto')) return 'manifesto'
   if (h.startsWith('#/learn')) return 'learn'
   if (h.startsWith('#/play')) return 'play'
   if (h.startsWith('#/')) return 'blog'
@@ -219,6 +221,12 @@ export default function App() {
     return (
       <Suspense fallback={null}>
         <Play />
+      </Suspense>
+    )
+  if (page === 'manifesto')
+    return (
+      <Suspense fallback={null}>
+        <Manifesto />
       </Suspense>
     )
 
