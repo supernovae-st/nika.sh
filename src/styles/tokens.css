@@ -1,0 +1,28 @@
+/* ─── v4 trust-landing palette — black & white ──────────────────────────────
+   Color is rare (only the live run + the reactive aurora). Design doc §3.1.
+
+   PURELY ADDITIVE. The v3 cinematic site (home + pages) keeps its own
+   vocabulary (`--fg`, `--cyan`, `--hair`, the cosmic `--bg: #050a1c` …) which
+   lives in `index.css :root` and is NOT touched here. To avoid clobbering the
+   v3-owned `--bg`/`--cyan` (still consumed by the galaxy body + Play.tsx), the
+   v4 monochrome base is exposed to Tailwind through the `--color-*` theme vars
+   below (see index.css `@theme`), not by redefining v3's raw `--bg`.
+
+   The v4 raw tokens that DON'T collide with v3 are declared here so future v4
+   sections can read them directly via var(). */
+:root {
+  /* v4 surfaces / ink — used by future v4 trust-landing sections only */
+  --v4-bg: #0a0b0d;          /* near-black base (Linear/Cursor register)   */
+  --v4-bg-raised: #121317;   /* panels, code surfaces                       */
+  --v4-line: rgb(255 255 255 / 0.08); /* 1px hairline borders               */
+  --v4-text: #f4f5f7;        /* primary ink                                 */
+  --v4-text-dim: #8a8f98;    /* secondary / labels / FIG numbers            */
+  --v4-text-faint: #5a606b;  /* captions                                    */
+
+  /* the 4 verb hues — used ONLY inside a live run (design doc §3.4),
+     never as static UI color */
+  --verb-infer: #5b8cff;
+  --verb-exec: #ff7a3c;
+  --verb-invoke: #22d3ee;
+  --verb-agent: #b07bff;
+}

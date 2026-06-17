@@ -1,4 +1,25 @@
 @import 'tailwindcss';
+@import './styles/tokens.css';
+
+/* ─── v4 trust-landing utilities · black & white token system ────────────────
+   Maps the monochrome v4 palette (src/styles/tokens.css) onto Tailwind v4
+   utilities so future v4 sections get: bg-bg · bg-bg-raised · text-text ·
+   text-dim · text-faint · border-line (+ the 4 verb hues for live runs).
+   `inline` = the utility reads the raw var() at runtime; the v4 vars are not
+   re-emitted here, so v3's own `--bg`/`--cyan` stay untouched. Additive. */
+@theme inline {
+  --color-bg: var(--v4-bg);
+  --color-bg-raised: var(--v4-bg-raised);
+  --color-line: var(--v4-line);
+  --color-text: var(--v4-text);
+  --color-dim: var(--v4-text-dim);
+  --color-faint: var(--v4-text-faint);
+
+  --color-verb-infer: var(--verb-infer);
+  --color-verb-exec: var(--verb-exec);
+  --color-verb-invoke: var(--verb-invoke);
+  --color-verb-agent: var(--verb-agent);
+}
 
 /* ─── Martian Grotesk (display) + Martian Mono (code) · OFL · variable ─── */
 @font-face {
