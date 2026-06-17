@@ -3,7 +3,9 @@ import { CodeFile } from '../../components/CodeFile'
 import { useAuroraPulse } from '../../fx/aurora-context'
 import { SHOWCASE_DAG, SHOWCASE_YAML, type ShowcaseTask } from '../usecases-yaml.generated'
 import { runStateAt, CLI_GLYPH, type RunState, type TaskStatus } from './run-model'
+import Corridor from './Corridor'
 import './living.css'
+import './corridor.css'
 
 /* ─── The Living File · Pass 1 (2D comprehension + live event stream) ──────────
    Design doc §5. A theme-dark sticky-scroll section: a tall outer track (~280vh)
@@ -310,6 +312,11 @@ export default function LivingFile() {
      track + absolute pin. Default false keeps the SSR / no-JS / reduced-motion
      frame a normal in-flow full section showing the static end-state. */
   const [scrub, setScrub] = useState(false)
+  /* the CSS-3D depth corridor (Pass 2). Default false → SSR / no-JS /
+     reduced-motion / low-end render the flat 2D <Dag> (the fallback). Flipped
+     true on mount, only when motion is allowed AND the device isn't coarse +
+     narrow (a cheap low-end heuristic), so the corridor stays an enhancement. */
+  const [corridor3d, setCorridor3d] = useState(false)
 
   /* refs the rAF loop reads/writes WITHOUT re-rendering every frame. We only
      setState (re-render) when the DISCRETIZED state actually changes — the
@@ -323,6 +330,13 @@ export default function LivingFile() {
     if (typeof window === 'undefined') return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) return // keep the static end-state frame · no scrub
+
+    // a cheap low-end gate for the 3D corridor: a coarse pointer on a narrow
+    // viewport (phones) keeps the clean 2D DAG (the fallback). The scroll-scrub
+    // run still plays; only the depth corridor is withheld (design doc §5.3 perf
+    // tier). Everything else (fine pointer / wide viewport) gets the corridor.
+    const coarse = window.matchMedia('(pointer: coarse)').matches
+    const enable3d = !(coarse && window.innerWidth < 640)
 
     // motion allowed → take over from the static end-state. The reset (start the
     // run at the top) happens INSIDE the first rAF tick, not synchronously in the
@@ -338,6 +352,7 @@ export default function LivingFile() {
         // enable the tall track + absolute pin · done in the first rAF tick (not
         // synchronously in the effect body) so it never cascades a render at mount
         setScrub(true)
+        if (enable3d) setCorridor3d(true)
       }
       const track = trackRef.current
       const stage = stageRef.current
@@ -444,19 +459,25 @@ export default function LivingFile() {
               <CodeFile filename="standup-digest.nika.yaml" yaml={YAML} highlight={[8, 11]} />
             </div>
 
-            {/* BEAT 2+3 · the graph + (during execution) the stream & outputs */}
-            <div className="lf-run">
+            {/* BEAT 2+3 · the graph + (during execution) the stream & outputs.
+                In 3D-corridor mode the graph is the MAIN stage and the stream
+                becomes a right rail; the flat <Dag> stays the fallback. */}
+            <div className="lf-run" data-corridor={corridor3d}>
               <div className="lf-graph">
                 <p className="lf-panel-cap">
                   <span aria-hidden>FIG 1.1</span>
                   <span aria-hidden className="lf-cap-dash">
                     —
                   </span>
-                  the DAG · columns are parallel waves
+                  {corridor3d ? 'the run · a corridor in depth' : 'the DAG · columns are parallel waves'}
                 </p>
-                <div className="lf-dag-wrap">
-                  <Dag run={run} morph={morph} />
-                </div>
+                {corridor3d ? (
+                  <Corridor dag={DAG} run={run} runP={runP} />
+                ) : (
+                  <div className="lf-dag-wrap">
+                    <Dag run={run} morph={morph} />
+                  </div>
+                )}
               </div>
 
               {/* the observability column · live stream + outputs (execution beat) */}

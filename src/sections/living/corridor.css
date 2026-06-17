@@ -1,0 +1,375 @@
+/* ─── The Living File · Pass 2 · the CSS-3D depth corridor · styles ────────────
+   Design doc §5.2/§5.3. Pure CSS 3D (transform/opacity only — compositor-cheap,
+   zero WebGL). The flat 2D DAG (Pass 1) stays as the reduced-motion / no-JS /
+   low-end fallback; the corridor mounts only behind `data-corridor='true'`
+   (set on mount when prefers-reduced-motion: no-preference · see LivingFile).
+
+   Register continuity with the hero's `.v4depth` / `.v4hud`: thin white
+   hairline lines on black, FIG/SEC/EVT marks, dimension lines, crosshair
+   reticle. Color is rare — only the verb-hue whisper on the running node.
+
+   GEOMETRY
+   • .cor-stage owns `perspective` (the camera lens) + perspective-origin.
+   • .cor-world / .cor-grid keep `transform-style: preserve-3d`; their Z is
+     advanced per-frame (inline transform from React) so the camera flies
+     forward through the run.
+   • node plates are positioned with translate3d in world space; the plate face
+     is billboarded upright so its text always faces the camera. */
+
+/* the stage — the camera. A tall black well the corridor recedes into. */
+.cor-stage {
+  position: relative;
+  width: 100%;
+  height: clamp(260px, 42vh, 420px);
+  border: 1px solid var(--v4-line);
+  border-radius: 12px;
+  background: var(--v4-bg-raised);
+  overflow: hidden;
+  /* the lens — smaller perspective = stronger depth. ~900px reads as a real
+     corridor without being vertiginous. The vanishing point sits up-center so
+     the corridor recedes UP toward the horizon (road perspective). */
+  perspective: 900px;
+  perspective-origin: 50% 34%;
+  /* fade the rim into the dark so plates dissolve at the frame edges */
+  -webkit-mask-image: radial-gradient(135% 130% at 50% 40%, #000 56%, transparent 100%);
+  mask-image: radial-gradient(135% 130% at 50% 40%, #000 56%, transparent 100%);
+}
+
+/* ── the receding depth grid (floor + side walls) ───────────────────────────
+   Sits at the BOTTOM of the perspective box; the floor tips away from the
+   camera and the two walls stand at the corridor sides. All hairline, masked
+   to fade toward the vanishing point. */
+.cor-grid {
+  position: absolute;
+  /* the grid's reference frame matches the world origin (low-center) so the
+     floor sits just under wave 0 and recedes back/up with it. */
+  left: 50%;
+  top: 58%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  /* the grid Z/Y is set inline (matches the world's travel) */
+  will-change: transform;
+  pointer-events: none;
+}
+.cor-grid-floor,
+.cor-grid-wall {
+  position: absolute;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      color-mix(in oklch, var(--v4-text) 100%, transparent) 0,
+      color-mix(in oklch, var(--v4-text) 100%, transparent) 1px,
+      transparent 1px,
+      transparent 64px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--v4-text) 100%, transparent) 0,
+      color-mix(in oklch, var(--v4-text) 100%, transparent) 1px,
+      transparent 1px,
+      transparent 64px
+    );
+}
+/* the floor — a wide plane laid flat just below the node plates, receding from
+   the foreground deep into the corridor toward the vanishing point. rotateX(90)
+   lays it on the ground; it's anchored at the world origin (its top edge) and
+   extends BACK (−Z, into local +Y after the rotation). */
+.cor-grid-floor {
+  left: -900px;
+  top: 40px; /* just under the wave-0 plate row */
+  width: 1800px;
+  height: 2600px;
+  transform-origin: 50% 0%;
+  transform: rotateX(90deg);
+  opacity: 0.08;
+  /* fade toward the far end (top in local space) + the side rims */
+  -webkit-mask-image: radial-gradient(62% 80% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.45) 50%, transparent 84%);
+  mask-image: radial-gradient(62% 80% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.45) 50%, transparent 84%);
+}
+/* the two side walls — vertical planes standing at the corridor's left/right,
+   receding into depth. Fainter than the floor (secondary depth cue). */
+.cor-grid-wall {
+  top: -640px;
+  width: 2600px;
+  height: 760px;
+  opacity: 0.04;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 20%, transparent 80%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 20%, transparent 80%);
+}
+.cor-grid-wall--l {
+  left: -360px;
+  transform-origin: 0% 100%;
+  transform: rotateY(90deg);
+}
+.cor-grid-wall--r {
+  left: 360px;
+  transform-origin: 0% 100%;
+  transform: rotateY(-90deg);
+}
+
+/* ── the world — holds every node + edge in 3D ──────────────────────────────
+   Centered in the stage; its Z is advanced inline (camera-forward). */
+.cor-world {
+  position: absolute;
+  left: 50%;
+  /* origin low-center: wave 0 sits in the foreground; deeper waves rise toward
+     the up-center vanishing point. */
+  top: 58%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* ── a node — positioned in world space (translate3d set inline) ─────────────
+   The wrapper sits at the slot; the .cor-plate is billboarded upright so its
+   readable face holds the camera. preserve-3d so its Z is honoured. */
+.cor-node {
+  position: absolute;
+  transform-style: preserve-3d;
+  /* default ink derived from status (overridden when running/focal) */
+  --cor-ink: var(--v4-text-faint);
+  transition: opacity 0.4s ease;
+}
+
+/* the plate face — a hairline wireframe rectangle. Centered on its slot. */
+.cor-plate {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 150px;
+  height: 52px;
+  margin-left: -75px;
+  margin-top: -26px;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in oklch, var(--cor-ink) 52%, transparent);
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--cor-ink) 6%, transparent);
+  /* subtle inner stroke for the "blueprint plate" feel */
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--cor-ink) 8%, transparent);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr;
+  align-content: center;
+  gap: 1px 6px;
+  padding: 6px 10px;
+  font-family: var(--mono);
+  transition:
+    border-color 0.32s ease,
+    background-color 0.32s ease,
+    box-shadow 0.32s ease;
+}
+
+/* the corner event code (top-left) + status mark (top-right) */
+.cor-plate-evt {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  color: color-mix(in oklch, var(--cor-ink) 60%, transparent);
+  text-transform: uppercase;
+}
+.cor-plate-mark {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  font-size: 10px;
+  line-height: 1;
+  color: color-mix(in oklch, var(--cor-ink) 90%, transparent);
+}
+
+/* the readable label (id) — real DOM text, bright */
+.cor-plate-id {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: center;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: color-mix(in oklch, var(--cor-ink) 100%, transparent);
+}
+/* the verb tag (id's right) */
+.cor-plate-verb {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: color-mix(in oklch, var(--cor-ink) 76%, transparent);
+}
+.cor-plate-glyph {
+  font-size: 9px;
+  opacity: 0.85;
+}
+
+/* ── status registers (mirror the 2D DAG's status ramp) ─────────────────────*/
+.cor-node--pending {
+  --cor-ink: var(--v4-text-faint);
+  opacity: 0.7;
+}
+.cor-node--pending .cor-plate {
+  background: transparent;
+  border-style: dashed;
+}
+
+/* running · the verb-hue whisper (the only colour · design doc §3.3) */
+.cor-node--running {
+  --cor-ink: var(--cor-hue, var(--v4-text));
+}
+.cor-node--running .cor-plate {
+  border-color: var(--cor-hue, var(--v4-text));
+  background: color-mix(in oklch, var(--cor-hue, var(--v4-text)) 12%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklch, var(--cor-hue, var(--v4-text)) 20%, transparent),
+    0 0 22px color-mix(in oklch, var(--cor-hue, var(--v4-text)) 22%, transparent);
+}
+
+/* success · settles to bright white ink */
+.cor-node--success {
+  --cor-ink: var(--v4-text);
+}
+.cor-node--success .cor-plate {
+  border-color: color-mix(in oklch, var(--v4-text) 60%, transparent);
+  background: color-mix(in oklch, var(--v4-text) 9%, transparent);
+}
+
+/* failure / cancelled / skipped · muted dashed (the failure path · §5.4d) */
+.cor-node--failure .cor-plate {
+  border-color: color-mix(in oklch, var(--v4-text) 50%, transparent);
+  border-style: dashed;
+}
+.cor-node--cancelled .cor-plate,
+.cor-node--skipped .cor-plate {
+  border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  border-style: dashed;
+  background: transparent;
+}
+.cor-node--cancelled,
+.cor-node--skipped {
+  opacity: 0.6;
+}
+
+/* the focal-plane node — emphasised (slightly larger, brighter mark) */
+.cor-node--focal .cor-plate {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklch, var(--cor-ink) 14%, transparent),
+    0 0 28px color-mix(in oklch, var(--cor-ink) 16%, transparent);
+}
+
+/* the focal crosshair reticle — sits behind the plate, centered on the slot */
+.cor-reticle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: color-mix(in oklch, var(--cor-ink) 60%, transparent);
+  pointer-events: none;
+}
+
+/* running-plate pulse · opacity only, motion-safe (the "live" tick) */
+@media (prefers-reduced-motion: no-preference) {
+  .cor-node--running .cor-plate {
+    animation: cor-pulse 1.5s ease-in-out infinite;
+  }
+}
+@keyframes cor-pulse {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── edges — thin connectors bridging waves across depth ─────────────────────*/
+.cor-edge-wrap {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+.cor-edge {
+  position: absolute;
+  height: 1px;
+  transform-origin: 50% 50%;
+  background: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  transition: background-color 0.35s ease;
+  pointer-events: none;
+}
+.cor-edge-wrap--flow .cor-edge {
+  background: color-mix(in oklch, var(--v4-text) 56%, transparent);
+}
+
+/* ── the HUD over the corridor (vanishing-point tick + dimension line) ───────*/
+.cor-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font-family: var(--mono);
+  color: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+.cor-hud-vp {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+}
+.cor-hud-dim {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  color: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+.cor-hud-z {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+}
+
+/* ── corridor-mode reflow of the run surface ─────────────────────────────────
+   When the 3D corridor is active the corridor is the MAIN stage (wider left
+   column) and the observability column (stream + outputs) becomes a right rail.
+   On mobile both stack (the base .lf-run @640 rule already collapses to one
+   column; the corridor sits above the stream). */
+.lf-run[data-corridor='true'] {
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+.lf-run[data-corridor='true'] .lf-graph {
+  display: flex;
+  flex-direction: column;
+}
+.lf-run[data-corridor='true'] .lf-graph .cor-stage {
+  flex: 1 1 auto;
+}
+
+/* ── responsive · keep the corridor calm on small screens ────────────────────*/
+@media (max-width: 860px) {
+  /* below the lf two-column breakpoint, the corridor stacks above the stream */
+  .lf-run[data-corridor='true'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .cor-stage {
+    height: clamp(240px, 38vh, 320px);
+    perspective: 760px;
+  }
+  .cor-hud-vp {
+    font-size: 8px;
+  }
+}
