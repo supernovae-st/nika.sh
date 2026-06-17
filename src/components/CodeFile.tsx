@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { tokenize, verbGlyph, type Token, type TokenKind } from './codefile-highlight'
+import '../shell/shell.css'
 
 /* ─── CodeFile · static, monochrome, syntax-highlighted .nika.yaml panel ──────
    Design doc §4 (hero) + §5.1 (Living File). A pure, SERVER-RENDERED panel:
@@ -41,10 +42,11 @@ const KIND_CLASS: Record<TokenKind, string> = {
 
 function TokenSpan({ token }: { token: Token }) {
   if (token.kind === 'verb') {
-    // verb keyword gets a small leading glyph; both stay grayscale (text-text).
+    // verb keyword stays bright (text-text); the leading glyph reads CLEARLY
+    // (text-dim, not faint) so the ◇▷◆✦ marks are legible — still grayscale.
     return (
-      <span className="text-text">
-        <span className="mr-1 text-faint select-none" aria-hidden>
+      <span className="font-medium text-text">
+        <span className="mr-1 text-dim select-none" aria-hidden>
           {verbGlyph(token.verb ?? token.text)}
         </span>
         {token.text}
@@ -118,7 +120,7 @@ export function CodeFile({ yaml, highlight, filename, className }: CodeFileProps
               return (
                 <span
                   key={i}
-                  className={`block min-h-[1.65em] ${lit ? 'bg-line/60' : ''}`}
+                  className={`block min-h-[1.65em] ${lit ? 'v4code-lit' : ''}`}
                 >
                   {line.tokens.length === 0
                     ? '​' /* zero-width: keep empty lines tall */

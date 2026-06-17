@@ -1,84 +1,10 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
-import { REPO, SPEC } from '../content'
 
-/* the brand mark everywhere is the REAL logo — /nika.svg (the butterfly) */
-
-function GitHubIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden>
-      <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.34c-2.23.49-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.05-.49.05-.49.81.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.11.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
-    </svg>
-  )
-}
-
-/* nav entries · `route` = a React Router path · `anchor` = an in-page section
-   on the home page (native scroll) · `external` = off-site link. The Nav is
-   rendered on the home route, so the anchors target sections present there. */
-type NavLink =
-  | { label: string; kind: 'route'; to: string }
-  | { label: string; kind: 'anchor'; href: string }
-  | { label: string; kind: 'external'; href: string }
-
-const NAV_LINKS: NavLink[] = [
-  { label: 'Language', kind: 'anchor', href: '#language' },
-  { label: 'Verbs', kind: 'anchor', href: '#verbs' },
-  { label: 'Use cases', kind: 'anchor', href: '#use-cases' },
-  { label: 'Learn', kind: 'route', to: '/learn' },
-  { label: 'Play', kind: 'route', to: '/play' },
-  { label: 'Blog', kind: 'route', to: '/blog' },
-  { label: 'Spec', kind: 'external', href: SPEC },
-]
-
-const NAV_LINK_CLASS =
-  'hidden rounded-full px-3 py-1.5 whitespace-nowrap text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)] md:block'
-
-export function Nav() {
-  return (
-    <nav className="nav-in fixed top-5 left-1/2 z-30 -translate-x-1/2">
-      <div className="glass nav-glass flex items-center gap-1 rounded-full px-2 py-1.5 text-[13px]">
-        <Link to="/" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
-          <img
-            src="/nika.svg"
-            alt=""
-            width={17}
-            height={17}
-            style={{ filter: 'drop-shadow(0 0 6px rgba(98,210,255,0.7))' }}
-          />
-          nika
-        </Link>
-        <span className="mx-1 hidden h-4 w-px md:block" style={{ background: 'var(--hair)' }} />
-        {NAV_LINKS.map((l) =>
-          l.kind === 'route' ? (
-            <Link key={l.label} to={l.to} className={NAV_LINK_CLASS}>
-              {l.label}
-            </Link>
-          ) : l.kind === 'external' ? (
-            <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className={NAV_LINK_CLASS}>
-              {l.label}
-            </a>
-          ) : (
-            <a key={l.label} href={l.href} className={NAV_LINK_CLASS}>
-              {l.label}
-            </a>
-          ),
-        )}
-        <span className="mx-1 h-4 w-px" style={{ background: 'var(--hair)' }} />
-        <a
-          href={REPO} target="_blank" rel="noreferrer"
-          aria-label="GitHub"
-          className="skeuo flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[var(--fg-mute)]"
-        >
-          <GitHubIcon />
-          <span className="hidden sm:inline">GitHub</span>
-        </a>
-        <a href="#get-started" className="skeuo-brand ml-1 rounded-full px-4 py-1.5 font-medium">
-          Install
-        </a>
-      </div>
-    </nav>
-  )
-}
+/* the brand mark everywhere is the REAL logo — /nika.svg (the butterfly).
+   The v3 glass-pill Nav that lived here was replaced by the shared v4 monochrome
+   nav (src/shell/Nav.tsx, mounted in RootLayout). InstallPill + Plain stay —
+   InstallPill is the v3-styled install affordance (still used in the v3 hero +
+   final-CTA below the fold); the v4 hero has its own monochrome install line. */
 
 /* ─── « en clair » · the plain-words rail — one line per section so the site
        reads for EVERYONE, not just devs (operator-locked 2026-06-10) ─── */

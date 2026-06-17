@@ -1,0 +1,565 @@
+/* ─── v4 shell · nav + hero atmosphere (monochrome blueprint) ─────────────────
+   The sovereign-engineering-instrument register: austere, precise, hairline 1px
+   rules, FIG numbering, grain not gradient. Color lives ONLY in the global
+   EdgeAurora; everything here is grayscale via the v4 tokens
+   (--v4-bg / --v4-text / --v4-line …). SSR-safe: pure CSS, no JS at render.
+
+   The nav is transparent over the hero and solidifies once a hero sentinel
+   scrolls out of view ([data-scrolled] toggled from an IntersectionObserver). */
+
+/* ─── the nav ─────────────────────────────────────────────────────────────── */
+.v4nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50; /* above content, below the aurora frame (z-60) and any sheet */
+  /* transparent at the top of the hero · solid once scrolled */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 0.32s ease;
+}
+.v4nav[data-scrolled='true'] {
+  background: color-mix(in oklch, var(--v4-bg) 78%, transparent);
+  border-bottom-color: var(--v4-line);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.v4nav-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 60px;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* the brand lockup · butterfly mark + wordmark */
+.v4nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 6px;
+  margin-left: -6px;
+  color: var(--v4-text);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  border-radius: 8px;
+}
+.v4nav-brand img {
+  width: 19px;
+  height: 19px;
+  /* the butterfly is full-color art; in the monochrome shell we keep it but let
+     it read as a precise instrument mark — a hairline-soft glow, never a tech-blue
+     halo. (grayscale would kill the brand; a soft luminance lift is the seam.) */
+  opacity: 0.96;
+}
+
+/* the desktop link rail */
+.v4nav-rail {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  margin-left: 6px;
+}
+@media (min-width: 900px) {
+  .v4nav-rail {
+    display: flex;
+  }
+}
+
+.v4nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px; /* ≥24px hit target, comfortably */
+  padding: 7px 11px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 450;
+  letter-spacing: -0.005em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+.v4nav-link:hover {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4nav-link[aria-current='true'] {
+  color: var(--v4-text);
+}
+/* the engineering-blueprint underline tick — a hairline that draws on hover */
+.v4nav-link::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.24s ease;
+}
+.v4nav-link:hover::after,
+.v4nav-link[data-open='true']::after {
+  opacity: 0.4;
+  transform: scaleX(1);
+}
+
+.v4nav-caret {
+  transition: transform 0.2s ease;
+}
+.v4nav-link[data-open='true'] .v4nav-caret {
+  transform: rotate(180deg);
+}
+
+.v4nav-ext-arrow {
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+/* the right cluster */
+.v4nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.v4nav-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 7px 11px;
+  border-radius: 7px;
+  font-size: 13.5px;
+  color: var(--v4-text-dim);
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+.v4nav-ghost:hover {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4nav-ghost-label {
+  display: none;
+}
+@media (min-width: 560px) {
+  .v4nav-ghost-label {
+    display: inline;
+  }
+}
+
+/* the ONE solid CTA — near-white on the dark shell (bg-text/text-bg register).
+   No pill, no hover-lift cliché: a crisp rectangle with a hairline base shadow
+   and a contrast bump on hover (per a11y: contrast must rise on hover/focus). */
+.v4nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 560;
+  letter-spacing: -0.005em;
+  color: var(--v4-bg);
+  background: var(--v4-text);
+  border: 1px solid var(--v4-text);
+  box-shadow: 0 1px 0 color-mix(in oklch, var(--v4-text) 30%, transparent);
+  transition: background-color 0.18s ease, transform 0.12s ease;
+}
+.v4nav-cta:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+.v4nav-cta:active {
+  transform: translateY(0.5px);
+}
+.v4nav-cta-glyph {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* the mobile menu button — collapses the rail */
+.v4nav-burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px; /* ≥44px hit area via padding below */
+  margin-right: -8px;
+  border-radius: 8px;
+  color: var(--v4-text);
+}
+.v4nav-burger:hover {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+@media (min-width: 900px) {
+  .v4nav-burger {
+    display: none;
+  }
+}
+
+/* ─── the Product ▾ mega-menu (WAI-ARIA disclosure) ─────────────────────────── */
+.v4mega-wrap {
+  position: relative;
+}
+.v4mega {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 540px;
+  max-width: calc(100vw - 40px);
+  padding: 16px;
+  border-radius: 14px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 96%, transparent);
+  border: 1px solid var(--v4-line);
+  box-shadow:
+    0 1px 0 color-mix(in oklch, #ffffff 6%, transparent) inset,
+    0 24px 60px -18px rgba(0, 0, 0, 0.7),
+    0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 18px;
+  /* entrance · a short, motion-safe drop-in */
+  transform-origin: top left;
+  animation: v4mega-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes v4mega-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.v4mega-col-title {
+  grid-column: 1 / -1;
+  margin: 4px 12px 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+/* the items inside the panel — two columns of disclosure menuitems */
+.v4mega-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--v4-text);
+  transition: background-color 0.16s ease;
+}
+.v4mega-item:hover,
+.v4mega-item:focus-visible {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4mega-glyph {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--v4-text-faint);
+}
+.v4mega-item:hover .v4mega-glyph,
+.v4mega-item:focus-visible .v4mega-glyph {
+  color: var(--v4-text-dim);
+}
+.v4mega-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.v4mega-desc {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--v4-text-dim);
+}
+
+/* ─── the mobile sheet ──────────────────────────────────────────────────────── */
+.v4sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  background: color-mix(in oklch, var(--v4-bg) 60%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: v4scrim-in 0.2s ease both;
+}
+@keyframes v4scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.v4sheet {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 50;
+  width: min(86vw, 360px);
+  padding: 18px 18px calc(24px + env(safe-area-inset-bottom));
+  background: var(--v4-bg-raised);
+  border-left: 1px solid var(--v4-line);
+  box-shadow: -24px 0 60px -20px rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: v4sheet-in 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes v4sheet-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.v4sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.v4sheet-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border-radius: 9px;
+  color: var(--v4-text);
+}
+.v4sheet-close:hover {
+  background: color-mix(in oklch, var(--v4-text) 8%, transparent);
+}
+.v4sheet-sectitle {
+  margin: 16px 8px 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.v4sheet-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px; /* generous touch target */
+  padding: 8px 8px;
+  border-radius: 10px;
+  font-size: 16px; /* ≥16px so iOS never zooms */
+  color: var(--v4-text);
+}
+.v4sheet-link:hover {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4sheet-link .v4mega-glyph {
+  font-size: 14px;
+}
+.v4sheet-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  margin-top: 18px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 560;
+  color: var(--v4-bg);
+  background: var(--v4-text);
+}
+.v4sheet-rule {
+  height: 1px;
+  margin: 14px 0 2px;
+  background: var(--v4-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v4mega,
+  .v4sheet,
+  .v4sheet-scrim {
+    animation: none;
+  }
+  .v4nav-link::after,
+  .v4nav-caret {
+    transition: none;
+  }
+}
+
+/* ─── the hero · atmosphere without color ───────────────────────────────────
+   Fine grain (an SVG-noise data-URI tile) + a faint radial vignette pin depth
+   onto the near-black surface so it never reads as flat black. Both layers are
+   pointer-events:none and compositor-cheap (no per-frame work). */
+.v4hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* a tiled fractal-noise tile · ~3% opacity · the "fine grain" of a printed plate */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  opacity: 0.035;
+  mix-blend-mode: screen;
+}
+.v4hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 90% at 50% 18%,
+      color-mix(in oklch, var(--v4-text) 4%, transparent) 0%,
+      transparent 46%
+    ),
+    radial-gradient(
+      130% 100% at 50% 110%,
+      rgba(0, 0, 0, 0.5) 0%,
+      transparent 60%
+    );
+}
+/* the faint blueprint grid — a 1px hairline mesh, masked to fade at the edges.
+   This is the "engineering plate" texture: precise, austere, color-free. */
+.v4hero-plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--v4-text) 100%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--v4-text) 100%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.022;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 35%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(120% 90% at 50% 35%, #000 0%, transparent 72%);
+}
+
+/* the install affordance · monochrome (replaces the v3 blue-glass pill) */
+.v4install {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: 10px;
+  border: 1px solid var(--v4-line);
+  background: var(--v4-bg-raised);
+  overflow: hidden;
+  font-family: var(--mono);
+}
+.v4install-cmd {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 11px 14px;
+  font-size: 13px;
+  white-space: nowrap;
+  color: var(--v4-text);
+}
+.v4install-dollar {
+  color: var(--v4-text-faint);
+  margin-right: 8px;
+  user-select: none;
+}
+.v4install-dim {
+  color: var(--v4-text-faint);
+}
+.v4install-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 13px;
+  border-left: 1px solid var(--v4-line);
+  background: color-mix(in oklch, var(--v4-text) 3%, transparent);
+  color: var(--v4-text-dim);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+.v4install-copy:hover {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 7%, transparent);
+}
+.v4install-copy[data-copied='true'] {
+  color: var(--v4-text);
+}
+
+/* the trust line · mono, tabular, faint */
+.v4trust {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--v4-text-faint);
+}
+.v4trust b {
+  font-weight: 500;
+  color: var(--v4-text-dim);
+}
+
+/* ─── hero entrance · ONE orchestrated staggered reveal (motion-safe only) ────
+   Content is fully visible by DEFAULT (SSR / no-JS / reduced-motion). The
+   stagger only applies when the .v4-enter root opts in (added on mount AND the
+   media query allows motion). transform+opacity only — compositor-friendly. */
+@media (prefers-reduced-motion: no-preference) {
+  .v4-enter [data-rise] {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: v4rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--rise-delay, 0ms);
+  }
+}
+@keyframes v4rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* the emphasized code line — a subtle band + a left hairline tick (the one
+   representative line in the hero file). Stays grayscale (no accent fill). */
+.v4code-lit {
+  position: relative;
+  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+  box-shadow: inset 2px 0 0 color-mix(in oklch, var(--v4-text) 32%, transparent);
+}
+
+/* the FIG label rule — a hairline tick that anchors the blueprint number */
+.v4fig {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.v4fig::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--v4-line);
+}

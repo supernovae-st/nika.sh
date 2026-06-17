@@ -5,7 +5,7 @@ import ClientOnlyGalaxy from '../scene/ClientOnlyGalaxy'
 import { scroll, mouse, egg } from '../scene/state'
 import Code from '../Code'
 import { WF, NOTES, VERBS, WEDGE, VERSUS, REPO, SPEC, DOCS } from '../content'
-import { Nav, InstallPill, Plain } from '../components/ui'
+import { InstallPill, Plain } from '../components/ui'
 import ScrollStory from '../sections/ScrollStory'
 import MethodDiagram from '../sections/MethodDiagram'
 import Toolbelt from '../sections/Toolbelt'
@@ -306,7 +306,6 @@ export function Component() {
       <div id="cursor-glow" aria-hidden />
       {/* curved-tube screen feel · whole site (very light · comfort first) */}
       <div className="crt-curve" />
-      <Nav />
 
       <main className="relative z-20">
         {/* ─── v4 hero · DOM-first · opaque · theme-dark · the calm first screen.
@@ -360,7 +359,7 @@ export function Component() {
             </p>
 
             <div
-              id="install"
+              id="install-v3"
               data-px="0.12"
               className="mt-11 flex flex-wrap items-center justify-center gap-4"
             >
