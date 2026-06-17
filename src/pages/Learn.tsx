@@ -175,22 +175,6 @@ export function Component() {
 
   return (
     <main className="relative z-20 mx-auto max-w-5xl px-6 pt-32 pb-24">
-      {/* mini nav */}
-      <nav className="glass fixed top-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1 rounded-full px-2 py-1.5 text-[13px]">
-        <Link to="/" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
-          <img src="/nika.svg" alt="" width={17} height={17} />
-          nika
-        </Link>
-        <span className="mx-1 h-4 w-px" style={{ background: 'var(--hair)' }} />
-        <span className="px-3 py-1.5 text-[var(--fg)]">Learn</span>
-        <Link
-          to="/"
-          className="rounded-full px-3 py-1.5 whitespace-nowrap text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
-        >
-          ← Back to site
-        </Link>
-      </nav>
-
       <p className="mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
         Learn · 5 minutes
       </p>
