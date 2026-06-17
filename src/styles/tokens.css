@@ -26,3 +26,36 @@
   --verb-invoke: #22d3ee;
   --verb-agent: #b07bff;
 }
+
+/* ─── section themes · alternation (light ⇄ dark) ────────────────────────────
+   v4 alternates light-mode and dark-mode sections (Stripe/Linear rhythm) — it is
+   NOT all dark. A section opts in with class="theme-dark" / "theme-light" (or a
+   data-theme attr). These re-scope the v4 surface/ink vars, so the SAME Tailwind
+   utilities (bg-bg · bg-bg-raised · text-text · text-dim · text-faint ·
+   border-line) resolve to that section's surface automatically, and the class
+   self-paints its own background + ink. TYPOGRAPHY IS UNCHANGED — only color
+   flips between modes. */
+.theme-dark,
+[data-theme='dark'] {
+  --v4-bg: #0a0b0d;          /* near-black base                             */
+  --v4-bg-raised: #121317;
+  --v4-line: rgb(255 255 255 / 0.08);
+  --v4-text: #f4f5f7;
+  --v4-text-dim: #8a8f98;
+  --v4-text-faint: #5a606b;
+}
+.theme-light,
+[data-theme='light'] {
+  --v4-bg: #f7f7f5;          /* warm off-white (Cursor register)            */
+  --v4-bg-raised: #ffffff;   /* cards on light sit pure white               */
+  --v4-line: rgb(10 11 13 / 0.10);
+  --v4-text: #0a0b0d;        /* near-black ink                              */
+  --v4-text-dim: #565b66;
+  --v4-text-faint: #8a8f98;
+}
+.theme-dark,
+.theme-light,
+[data-theme] {
+  background-color: var(--v4-bg);
+  color: var(--v4-text);
+}

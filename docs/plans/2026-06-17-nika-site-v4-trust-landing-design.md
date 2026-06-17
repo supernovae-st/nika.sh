@@ -65,6 +65,21 @@ v4 keeps the soul but flips the ratio.
 ```
 Static site = grayscale. **Color = energy, reserved for the rare wow.**
 
+> **3.1.1 · Same typography as v3 — only color changes.** v4 keeps the existing
+> type system verbatim (Martian Grotesk display + Martian Mono + the current
+> scale/weights). No new fonts, no resize — the redesign is **color + layout only**.
+>
+> **3.1.2 · Light AND dark sections (alternation).** "Black & white" means BOTH:
+> the page alternates **dark-mode** sections (near-black bg, light ink) and
+> **light-mode** sections (warm off-white bg, near-black ink) for rhythm
+> (Stripe/Linear register) — it is not all dark. Mechanism: a section opts in with
+> `class="theme-dark"` or `class="theme-light"`, which re-scopes the v4 surface/ink
+> vars (`src/styles/tokens.css`) so the SAME `bg-bg` / `text-text` / `text-dim` /
+> `border-line` utilities flip per section. Typography identical across both; only
+> surfaces + ink invert. Light surface `#F7F7F5` · raised `#FFFFFF` · ink `#0A0B0D`;
+> dark surface `#0A0B0D` · raised `#121317` · ink `#F4F5F7`. The verb hues + edge
+> aurora are the only color, in both modes.
+
 ### 3.2 The signature device — reactive edge aurora (the "Siri / Oryzo" halo)
 - Center stays **black & readable** (Cursor/Linear). A blurred multicolor
   **halo hugs the screen frame**.
