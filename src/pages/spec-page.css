@@ -1,0 +1,541 @@
+/* ─── /spec page · the language reference register ────────────────────────────
+   Extends the shared v4 blueprint register (.v4sec* / .v4belt* in
+   sections/v4-home.css) with the page-level chrome for the language reference:
+   a full-height theme-dark surface, a contents rail, and a stack of FIG-numbered
+   spec blocks (envelope · verbs · task shape · stdlib · providers · extract ·
+   errors · license). Monochrome blueprint; the ONLY colour is the global
+   EdgeAurora. Everything reads off the v4 theme tokens (--v4-* via theme-dark),
+   so it would invert cleanly if ever themed light. SSR-safe: pure CSS. */
+
+/* the page fills the viewport so theme-dark paints edge-to-edge under the fixed
+   nav (solid immediately on a page with no hero sentinel). */
+.spec-page {
+  min-height: 100vh;
+}
+/* clear the fixed nav: the page has no hero, so the nav is solid from the top —
+   add headroom on top of the section's own padding. */
+.spec-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+
+/* the h1 reads a touch tighter than the default measure */
+.spec-title {
+  max-width: 20ch;
+}
+.v4sec-lede code,
+.spec-inline-link {
+  font-variant-numeric: tabular-nums;
+}
+.v4sec-lede code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  color: var(--v4-text);
+}
+.spec-inline-link {
+  color: var(--v4-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
+  transition: text-decoration-color 0.18s ease;
+}
+.spec-inline-link:hover {
+  text-decoration-color: var(--v4-text);
+}
+
+/* ── the contents rail · jump links to each FIG (hairline pills) ───────────── */
+.spec-toc {
+  margin-top: clamp(28px, 4vh, 44px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.spec-toc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 13px;
+  border: 1px solid var(--v4-line);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+}
+.spec-toc-link:hover {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
+}
+.spec-toc-n {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── a spec block · the unit of the reference · hairline-topped ───────────────
+   Each FIG section opens with a sub-head, then its own ledger. The first block
+   draws the top rule; subsequent blocks inherit the rhythm. scroll-margin clears
+   the fixed nav for the in-page jump links. */
+.spec-block {
+  margin-top: clamp(44px, 6.5vh, 84px);
+  padding-top: clamp(34px, 5vh, 56px);
+  border-top: 1px solid var(--v4-line);
+  scroll-margin-top: 104px;
+}
+.spec-block--last {
+  /* no extra bottom rule — the section's own padding closes it */
+}
+
+/* the FIG sub-head · figure number · name · count · caption */
+.spec-head-line {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+}
+.spec-head-fig {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.spec-head-name {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.05;
+  font-size: clamp(1.4rem, 1rem + 1.5vw, 1.9rem);
+  color: var(--v4-text);
+}
+.spec-head-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.spec-head-cap {
+  margin-top: 14px;
+  max-width: 46rem;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.spec-head-cap b {
+  color: var(--v4-text);
+  font-weight: 560;
+}
+.spec-head-cap code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--v4-text);
+  white-space: nowrap;
+}
+.spec-head-cap em {
+  font-style: normal;
+  color: var(--v4-text);
+}
+
+/* ── FIG S.0 · the split · the key ledger (left) + a real file (right) ──────── */
+.spec-split {
+  margin-top: clamp(26px, 4vh, 40px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
+}
+@media (min-width: 960px) {
+  .spec-split {
+    grid-template-columns: 1fr 0.9fr;
+    gap: 36px;
+  }
+}
+/* the envelope key list · a hairline-ruled ledger of name · req · gloss */
+.spec-keys {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.spec-key {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, auto) auto;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.spec-key-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 560;
+  color: var(--v4-text);
+}
+.spec-key-req {
+  justify-self: end;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+}
+.spec-key-req--opt {
+  color: var(--v4-text-faint);
+}
+.spec-key-gloss {
+  grid-column: 1 / -1;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+
+/* the aside · a real file panel, captioned */
+.spec-aside {
+  position: relative;
+  min-width: 0;
+}
+@media (min-width: 960px) {
+  .spec-aside {
+    position: sticky;
+    top: 96px;
+  }
+}
+.spec-aside-cap {
+  margin-bottom: 10px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.spec-code {
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+/* ── FIG S.1 · the four verbs · glyph + name + one-line model ────────────────
+   A hairline-ruled register; the verb glyph is grayscale (the verb-hue whisper
+   is reserved for the live run, never the static reference). */
+.spec-verbs {
+  margin: clamp(24px, 3.5vh, 36px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.spec-verb {
+  display: grid;
+  grid-template-columns: 1.4rem 6rem 1fr;
+  align-items: baseline;
+  gap: 6px 14px;
+  padding: 16px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+@media (max-width: 560px) {
+  .spec-verb {
+    grid-template-columns: 1.4rem 1fr;
+  }
+}
+.spec-verb-glyph {
+  font-family: var(--mono);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--v4-text-dim);
+  user-select: none;
+}
+.spec-verb-name {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v4-text);
+}
+.spec-verb-line {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+@media (max-width: 560px) {
+  .spec-verb-line {
+    grid-column: 2 / -1;
+  }
+}
+
+/* ── FIG S.2 · the task shape · name + req tag + gloss ledger ────────────────── */
+.spec-fields {
+  margin: clamp(24px, 3.5vh, 36px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.spec-field {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, auto) 2.6rem 1fr;
+  align-items: baseline;
+  gap: 6px 14px;
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+@media (max-width: 560px) {
+  .spec-field {
+    grid-template-columns: 1fr auto;
+  }
+}
+.spec-field-name {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  font-weight: 560;
+  color: var(--v4-text);
+}
+.spec-field-req {
+  justify-self: start;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .spec-field-req {
+    justify-self: end;
+  }
+}
+.spec-field-req--opt {
+  color: var(--v4-text-faint);
+}
+.spec-field-gloss {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+@media (max-width: 560px) {
+  .spec-field-gloss {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ── FIG S.3 + S.4 · the families · a labelled wrap of mono chips ────────────── */
+.spec-fams {
+  margin-top: clamp(24px, 3.5vh, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+.spec-fam {
+  min-width: 0;
+}
+.spec-fam-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.spec-fam-label::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--v4-text) 40%, transparent);
+}
+.spec-fam-n {
+  color: var(--v4-text-faint);
+}
+
+/* the chip wrap · mono tokens, hairline-bordered (matches .v4belt-chip) */
+.spec-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.spec-chip {
+  display: inline-flex;
+  align-items: baseline;
+  padding: 6px 11px;
+  border: 1px solid var(--v4-line);
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--v4-text);
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+.spec-chip:hover {
+  border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  background: color-mix(in oklch, var(--v4-bg-raised) 85%, transparent);
+}
+/* S.5 extract modes sit directly under the head (no family wrap) */
+#s5 .spec-chips {
+  margin-top: clamp(24px, 3.5vh, 36px);
+}
+
+/* ── FIG S.6 · the error namespaces · name + scope, two columns ─────────────── */
+.spec-ns {
+  margin: clamp(24px, 3.5vh, 36px) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--v4-line);
+}
+@media (min-width: 760px) {
+  .spec-ns {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 40px;
+  }
+}
+.spec-ns-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.spec-ns-name {
+  flex: 0 0 auto;
+  width: 8.5rem;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 560;
+  color: var(--v4-text);
+  letter-spacing: 0.01em;
+}
+.spec-ns-scope {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+
+/* ── FIG S.7 · the invariants · a claim + a one-line detail ─────────────────── */
+.spec-invariants {
+  margin: clamp(24px, 3.5vh, 36px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.spec-invariant {
+  padding: 18px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.spec-invariant-claim {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--v4-text);
+}
+.spec-invariant-fig {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.spec-invariant-detail {
+  margin: 8px 0 0;
+  padding-left: calc(12px + 2.6rem);
+  max-width: 44rem;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+@media (max-width: 520px) {
+  .spec-invariant-detail {
+    padding-left: 0;
+  }
+}
+.spec-invariant-detail code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--v4-text);
+}
+
+/* ── the close · the spec-truth dimension line + the forward links ──────────── */
+.spec-note {
+  margin-top: clamp(34px, 5vh, 56px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  flex-wrap: wrap;
+}
+.spec-note::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 42px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+.spec-note code {
+  font-family: var(--mono);
+  color: var(--v4-text-dim);
+}
+
+.spec-links {
+  margin-top: clamp(24px, 4vh, 38px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 24px;
+}
+.spec-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 14.5px;
+  color: var(--v4-text);
+  border-radius: 7px;
+  transition: color 0.18s ease;
+}
+.spec-link--dim {
+  color: var(--v4-text-dim);
+}
+.spec-link--dim:hover {
+  color: var(--v4-text);
+}
+.spec-link-glyph {
+  color: var(--v4-text-dim);
+  transition: color 0.18s ease;
+}
+.spec-link:hover .spec-link-glyph {
+  color: var(--v4-text);
+}
+.spec-link-arrow {
+  transition: transform 0.18s ease;
+}
+.spec-link:hover .spec-link-arrow {
+  transform: translateX(2px);
+}

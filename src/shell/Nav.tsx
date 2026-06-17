@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
-import { REPO, SPEC, DOCS } from '../content'
+import { REPO, DOCS } from '../content'
 import './shell.css'
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
@@ -61,7 +61,7 @@ const PRODUCT_GROUPS: MegaGroup[] = [
 /* the flat top-level links after Product */
 const TOP_LINKS: { label: string; href: string; external?: boolean; newTab?: boolean }[] = [
   { label: 'Docs', href: DOCS, external: true },
-  { label: 'Spec', href: SPEC, external: true, newTab: true },
+  { label: 'Spec', href: '/spec' },
   { label: 'Changelog', href: '/changelog' },
   { label: 'Blog', href: '/blog' },
 ]
