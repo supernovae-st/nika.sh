@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { useHead } from '@unhead/react'
 import { REPO, SPEC } from '../content'
 import { CANON } from '../canon.generated'
 
@@ -42,6 +43,21 @@ const POSTS = [
 ]
 
 export function Component() {
+  useHead({
+    title: 'Blog · Nika',
+    meta: [
+      {
+        name: 'description',
+        content:
+          'Notes from the source. Long-form pedagogy on Intent as Code, the four verbs, and building sovereign AI workflows with Nika.',
+      },
+      { property: 'og:title', content: 'Blog · Nika' },
+      {
+        property: 'og:description',
+        content: 'Notes from the source — long-form pedagogy on Intent as Code.',
+      },
+    ],
+  })
   return (
     <main className="relative z-20 mx-auto max-w-3xl px-6 pt-32 pb-24">
       {/* mini nav */}

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router'
+import { useHead } from '@unhead/react'
 import { REPO, SPEC, DOCS } from '../content'
 
 /* ─── /learn · one file, line by line ───────────────────────────────────────
@@ -136,6 +137,22 @@ const ERROR_JSON = `{
 }`
 
 export function Component() {
+  useHead({
+    title: 'Learn · Nika',
+    meta: [
+      {
+        name: 'description',
+        content:
+          'One file, line by line. A five-minute annotated walkthrough of a real Nika workflow — every YAML fragment is spec-correct.',
+      },
+      { property: 'og:title', content: 'Learn · Nika' },
+      {
+        property: 'og:description',
+        content: 'One file, line by line — the five-minute Nika walkthrough.',
+      },
+    ],
+  })
+
   /* gentle rise-in as steps cross the fold */
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>('.lrn')

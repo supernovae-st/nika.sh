@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router'
+import { useHead } from '@unhead/react'
 import { REPO, SPEC } from '../content'
 
 /* ─── /manifesto · the drum of liberation ───────────────────────────────────
@@ -43,6 +44,22 @@ const PROMISES = [
 ]
 
 export function Component() {
+  useHead({
+    title: 'Manifesto · Nika',
+    meta: [
+      {
+        name: 'description',
+        content:
+          'The drum of liberation. Why your workflows should run on your machine, with any model, and never be switched off by anyone but you.',
+      },
+      { property: 'og:title', content: 'Manifesto · Nika' },
+      {
+        property: 'og:description',
+        content: 'The drum of liberation — sovereign AI workflows, owned by you.',
+      },
+    ],
+  })
+
   /* reveal-on-scroll (reuses the site .rv/.in) + the cursor lamp + card spotlight */
   useEffect(() => {
     const io = new IntersectionObserver(

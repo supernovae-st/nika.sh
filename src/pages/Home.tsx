@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
-import Galaxy3D from '../scene/Galaxy'
+import { useHead } from '@unhead/react'
+import ClientOnlyGalaxy from '../scene/ClientOnlyGalaxy'
 import { scroll, mouse, egg } from '../scene/state'
 import Code from '../Code'
 import { WF, NOTES, VERBS, WEDGE, VERSUS, REPO, SPEC, DOCS } from '../content'
@@ -33,6 +34,23 @@ const TICKER_LINES = [
 export function Component() {
   const heroRef = useRef<HTMLDivElement>(null)
   const tickerRef = useRef<HTMLSpanElement>(null)
+
+  /* per-route <head> · prerendered into dist/index.html by @unhead/react */
+  useHead({
+    title: 'Nika · Intent as Code',
+    meta: [
+      {
+        name: 'description',
+        content:
+          'Open language for AI workflows. Write what you want in one file: Nika fetches, thinks, runs commands and saves the result. Four verbs, one Rust binary, any model, no cloud. Free and AGPL forever.',
+      },
+      { property: 'og:title', content: 'Nika · Intent as Code' },
+      {
+        property: 'og:description',
+        content: 'Open language for AI workflows. One file, four verbs, one binary.',
+      },
+    ],
+  })
 
   /* benefits ticker · glitch-swap a SECONDARY line (the title never changes) */
   useEffect(() => {
@@ -181,7 +199,7 @@ export function Component() {
 
   return (
     <>
-      <Galaxy3D />
+      <ClientOnlyGalaxy />
 
       {/* ─── cinematic opening · black → the ELECTRIC BUTTERFLY (in the canvas,
            made of the galaxy's own particles) → SUPERNOVAE presents / NIKA →

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
+import { useHead } from '@unhead/react'
 import CodeMirror from '@uiw/react-codemirror'
 import { yaml as yamlLang } from '@codemirror/lang-yaml'
 import { linter, lintGutter, type Diagnostic } from '@codemirror/lint'
@@ -34,8 +35,23 @@ export function Component() {
   const [code, setCode] = useState(TEMPLATES_YAML['chain'] ?? '')
   const [diags, setDiags] = useState<LintDiag[]>(() => lintNika(TEMPLATES_YAML['chain'] ?? ''))
 
+  useHead({
+    title: 'Playground · Nika',
+    meta: [
+      {
+        name: 'description',
+        content:
+          'Edit real Nika in the browser. The validator runs live with the engine’s own NIKA error codes — write a workflow, see it check in place.',
+      },
+      { property: 'og:title', content: 'Playground · Nika' },
+      {
+        property: 'og:description',
+        content: 'Edit real Nika in the browser — live validation with the engine’s NIKA codes.',
+      },
+    ],
+  })
+
   useEffect(() => {
-    document.title = 'Playground · Nika'
     window.scrollTo(0, 0)
   }, [])
 
