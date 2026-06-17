@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is REGENERATED at build time from react-ssg.config.ts PATHS by the
+     sitemap plugin in vite.config.ts (dist/sitemap.xml is the shipped artifact).
+     The entries below are a faithful fallback copy; edit PATHS, not this file. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://nika.sh/</loc>
-    <lastmod>2026-06-10</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://nika.sh/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nika.sh/learn</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nika.sh/play</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nika.sh/manifesto</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nika.sh/changelog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nika.sh/use-cases</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nika.sh/spec</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

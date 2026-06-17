@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import CodeMirror from '@uiw/react-codemirror'
-import { yaml as yamlLang } from '@codemirror/lang-yaml'
-import { linter, lintGutter, type Diagnostic } from '@codemirror/lint'
-import { EditorView } from '@codemirror/view'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
 import { routeHead } from '../content'
 import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import { VERB_COLOR } from '../sections/transform-data'
+
+/* the editor (CodeMirror + @codemirror/*) is its own chunk · loaded client-side
+   only, so it never rides the shared main bundle that every route eager-loads.
+   The prerendered /play already has zero .cm-editor DOM, so this is a pure win. */
+const PlayEditor = lazy(() => import('./PlayEditor'))
 
 /* ─── /play · the playground ────────────────────────────────────────────────
    Edit real Nika in the browser · the validator's own NIKA codes appear
@@ -18,18 +19,6 @@ import { VERB_COLOR } from '../sections/transform-data'
    from the spec. */
 
 const TEMPLATE_ORDER = ['chain', 'gate-and-act', 'fanout', 'etl-state', 'agent-loop', 'human-gated-ship']
-
-const cmTheme = EditorView.theme(
-  {
-    '&': { backgroundColor: 'transparent', fontSize: '13px' },
-    '.cm-content': { fontFamily: 'var(--mono)', caretColor: 'var(--cyan)' },
-    '.cm-gutters': { backgroundColor: 'transparent', borderRight: '1px solid var(--hair)', color: 'var(--fg-ghost)' },
-    '.cm-activeLine': { backgroundColor: 'color-mix(in srgb, var(--cyan) 5%, transparent)' },
-    '.cm-activeLineGutter': { backgroundColor: 'transparent', color: 'var(--fg-mute)' },
-    '&.cm-focused': { outline: 'none' },
-  },
-  { dark: true },
-)
 
 export function Component() {
   const [seed, setSeed] = useState('chain')
@@ -69,26 +58,6 @@ export function Component() {
     setCode(src)
     setDiags(lintNika(src))
   }
-
-  /* the CodeMirror lint source · same call that fills the panel */
-  const cmLinter = useMemo(
-    () =>
-      linter((view) => {
-        const src = view.state.doc.toString()
-        const found = lintNika(src)
-        setDiags(found)
-        return found.map((d): Diagnostic => {
-          const line = view.state.doc.line(Math.min(d.line, view.state.doc.lines))
-          return {
-            from: line.from,
-            to: line.to,
-            severity: 'error',
-            message: `${d.code} · ${d.message}\n→ ${d.fix}`,
-          }
-        })
-      }, { delay: 300 }),
-    [],
-  )
 
   const valid = diags.length === 0
 
@@ -156,13 +125,19 @@ export function Component() {
               {valid ? '✓ valid' : `${diags.length} issue${diags.length > 1 ? 's' : ''}`}
             </span>
           </div>
-          <CodeMirror
-            value={code}
-            onChange={setCode}
-            extensions={[yamlLang(), cmLinter, lintGutter(), cmTheme]}
-            basicSetup={{ foldGutter: false, autocompletion: false, highlightActiveLine: true }}
-            style={{ minHeight: 480 }}
-          />
+          <Suspense
+            fallback={
+              <div
+                className="mono flex items-center px-4 py-3 text-[13px] text-[var(--fg-ghost)]"
+                style={{ minHeight: 480 }}
+                aria-hidden="true"
+              >
+                <span className="opacity-70">loading editor…</span>
+              </div>
+            }
+          >
+            <PlayEditor value={code} onChange={setCode} onDiags={setDiags} />
+          </Suspense>
         </div>
 
         {/* ── the verdict panel · error → fix ── */}

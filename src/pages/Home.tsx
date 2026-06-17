@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 import { useHead } from '@unhead/react'
-import { routeHead } from '../content'
+import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
 import LivingFile from '../sections/living/LivingFile'
 import Verbs from '../sections/Verbs'
@@ -31,6 +31,45 @@ import FinalCTA from '../sections/FinalCTA'
    trigger, so it never enters the default home bundle (design doc §8). */
 const GalaxyEgg = lazy(() => import('../scene/GalaxyEgg'))
 
+/* ─── home structured data · SoftwareApplication + SoftwareSourceCode ─────────
+   Honest only — describes what ships (free, AGPL, one binary, any model). NO
+   softwareVersion (the live count is on the README; not fabricated here). The
+   @graph links the app to its AGPL source by @id. @unhead/react flushes this
+   into dist/index.html at prerender (zero runtime cost). */
+const HOME_JSONLD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${SITE}/#nika`,
+      name: 'Nika',
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'macOS, Linux, Windows',
+      url: SITE,
+      downloadUrl: `${SITE}/install.sh`,
+      license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+      description:
+        'The control layer for AI agents. Nika makes an agent write its plan as a readable file first — every step, tool and permission. You review it, the runtime enforces it, then it runs: traced and replayable. One Rust binary, any model, AGPL forever.',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+      isAccessibleForFree: true,
+      author: { '@id': `${SITE}/#organization` },
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': `${REPO}#sourcecode`,
+      name: 'Nika',
+      codeRepository: REPO,
+      programmingLanguage: 'Rust',
+      license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+      about: { '@id': `${SITE}/#nika` },
+    },
+  ],
+}
+
 export function Component() {
   const [eggOpen, setEggOpen] = useState(false)
 
@@ -38,6 +77,13 @@ export function Component() {
   useHead({
     title: 'Nika · Intent as Code',
     link: routeHead('/').link,
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(HOME_JSONLD),
+        processTemplateParams: false,
+      },
+    ],
     meta: [
       ...routeHead('/').meta,
       {

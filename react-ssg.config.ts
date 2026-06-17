@@ -1,5 +1,6 @@
 import { defineReactSsgConfig } from 'vite-plugin-react-ssg'
 import { routes } from './src/routes'
+import { ORIGIN, PATHS } from './site.config'
 
 /* ─── build-time prerender config · vite-plugin-react-ssg (route mode) ────────
    The route table in src/routes.tsx is the single source of truth; the plugin
@@ -14,7 +15,7 @@ import { routes } from './src/routes'
 
 export default defineReactSsgConfig({
   history: 'browser',
-  origin: 'https://nika.sh',
+  origin: ORIGIN,
   routes,
-  paths: ['/', '/blog', '/learn', '/play', '/manifesto', '/changelog', '/use-cases', '/spec'],
+  paths: PATHS,
 })

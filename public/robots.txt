@@ -2,3 +2,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://nika.sh/sitemap.xml
+
+# LLM-readable site summary (https://llmstxt.org/)
+# https://nika.sh/llms.txt

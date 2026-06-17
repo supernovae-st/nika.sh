@@ -1,7 +1,35 @@
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
+import { useHead } from '@unhead/react'
 import { AuroraProvider } from '../fx/EdgeAurora'
+import { REPO, SITE } from '../content'
 import Nav from './Nav'
 import './skip-link.css'
+
+/* ─── site-wide JSON-LD · Organization + WebSite (schema.org) ─────────────────
+   Build-time / zero-runtime: @unhead/react flushes this <script> into every
+   route's prerendered HTML (and reconciles on the client — one node, no dupes).
+   Honest only — no fabricated version/metrics. The @graph links the two
+   entities by @id so crawlers read one connected knowledge object. */
+const SITE_JSONLD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE}/#organization`,
+      name: 'SuperNovae Studio',
+      url: SITE,
+      sameAs: [REPO, 'https://github.com/supernovae-st'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE}/#website`,
+      name: 'Nika',
+      url: SITE,
+      publisher: { '@id': `${SITE}/#organization` },
+      inLanguage: 'en',
+    },
+  ],
+}
 
 /* ─── the app shell ─────────────────────────────────────────────────────────
    The routed outlet + scroll restoration (restores scroll on back/forward and
@@ -29,6 +57,18 @@ const BARE_NAV_ROUTES = new Set(['/manifesto'])
 export default function RootLayout() {
   const { pathname } = useLocation()
   const showNav = !BARE_NAV_ROUTES.has(pathname)
+
+  /* site-wide structured data · prerendered into every route's <head> */
+  useHead({
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(SITE_JSONLD),
+        // unhead: don't HTML-escape JSON (keeps it valid ld+json, not &quot;)
+        processTemplateParams: false,
+      },
+    ],
+  })
 
   return (
     <AuroraProvider>

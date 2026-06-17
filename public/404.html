@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <title>404 · This page has no plan — Nika</title>
+    <meta name="theme-color" content="#0a0b0d" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!--
+      Standalone static 404 (served by DigitalOcean App Platform via
+      `.do/app.yaml` error_document on a hard miss). Dependency-free: ZERO JS,
+      inline <style>, system fallback fonts so it paints even if /fonts never
+      load. Monochrome v4 register (#0a0b0d ground, #f4f5f7 ink).
+    -->
+    <style>
+      :root {
+        --bg: #0a0b0d;
+        --bg-raised: #121317;
+        --line: rgb(255 255 255 / 0.08);
+        --ink: #f4f5f7;
+        --dim: #8a8f98;
+        --faint: #696d76;
+        --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo,
+          Consolas, monospace;
+        --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        color-scheme: dark;
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        min-height: 100svh;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        /* a single faint vignette + grid wash — atmosphere, not noise */
+        background-image:
+          radial-gradient(
+            120% 80% at 50% -10%,
+            rgb(255 255 255 / 0.05),
+            transparent 60%
+          ),
+          linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size:
+          100% 100%,
+          64px 64px,
+          64px 64px;
+        background-position:
+          center top,
+          center,
+          center;
+      }
+      main {
+        min-height: 100svh;
+        display: grid;
+        align-content: center;
+        gap: 1.5rem;
+        max-width: 40rem;
+        margin: 0 auto;
+        padding: clamp(2rem, 6vh, 5rem) 1.5rem
+          calc(clamp(2rem, 6vh, 5rem) + env(safe-area-inset-bottom));
+      }
+      .tag {
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin: 0;
+      }
+      h1 {
+        font-family: var(--sans);
+        font-weight: 650;
+        font-size: clamp(2.25rem, 1.4rem + 4vw, 3.75rem);
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      h1 .four {
+        font-family: var(--mono);
+        font-weight: 600;
+        color: var(--dim);
+      }
+      p.lede {
+        font-size: clamp(1rem, 0.95rem + 0.4vw, 1.15rem);
+        line-height: 1.55;
+        color: var(--dim);
+        max-width: 34rem;
+        margin: 0;
+        text-wrap: pretty;
+      }
+      /* the file-shaped one-liner — the nod, rendered as a tiny plan */
+      .file {
+        font-family: var(--mono);
+        font-size: 13.5px;
+        line-height: 1.7;
+        color: var(--faint);
+        background: var(--bg-raised);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 0.9rem 1.1rem;
+        overflow-x: auto;
+        margin: 0;
+      }
+      .file .key {
+        color: var(--dim);
+      }
+      .file .val {
+        color: var(--ink);
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+      }
+      a.btn {
+        font-family: var(--mono);
+        font-size: 13px;
+        letter-spacing: 0.01em;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 1.1rem;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        background: var(--bg-raised);
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+      a.btn.primary {
+        background: var(--ink);
+        color: var(--bg);
+        border-color: var(--ink);
+        font-weight: 600;
+      }
+      a.btn:hover,
+      a.btn:focus-visible {
+        border-color: rgb(255 255 255 / 0.32);
+        color: #fff;
+      }
+      a.btn.primary:hover,
+      a.btn.primary:focus-visible {
+        background: #fff;
+        color: var(--bg);
+        border-color: #fff;
+      }
+      a.btn:focus-visible {
+        outline: 2px solid rgb(255 255 255 / 0.65);
+        outline-offset: 2px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        a.btn {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="tag">Nika · Intent as Code</p>
+      <h1><span class="four">404</span> · this page doesn&rsquo;t exist</h1>
+      <p class="lede">The file you&rsquo;re looking for has no plan.</p>
+      <pre class="file" aria-hidden="true"><span class="key">nika:</span> <span class="val">v1</span>
+<span class="key">workflow:</span> <span class="val">not-found</span>
+<span class="key">status:</span> <span class="val">404</span></pre>
+      <nav aria-label="Recover">
+        <a class="btn primary" href="/">Back to nika.sh</a>
+        <a class="btn" href="/spec">Read the spec</a>
+      </nav>
+    </main>
+  </body>
+</html>
