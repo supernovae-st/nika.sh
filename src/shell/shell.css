@@ -461,21 +461,8 @@
       transparent 60%
     );
 }
-/* the faint blueprint grid — a 1px hairline mesh, masked to fade at the edges.
-   This is the "engineering plate" texture: precise, austere, color-free. */
-.v4hero-plate {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(to right, color-mix(in oklch, var(--v4-text) 100%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklch, var(--v4-text) 100%, transparent) 1px, transparent 1px);
-  background-size: 64px 64px;
-  opacity: 0.022;
-  -webkit-mask-image: radial-gradient(120% 90% at 50% 35%, #000 0%, transparent 72%);
-  mask-image: radial-gradient(120% 90% at 50% 35%, #000 0%, transparent 72%);
-}
+/* (the flat blueprint plate moved to the 3D perspective depth grid in
+   src/sections/hero.css — .v4depth supersedes the static .v4hero-plate) */
 
 /* the install affordance · monochrome (replaces the v3 blue-glass pill).
    max-width:100% + min-width:0 keeps it inside the column on mobile; the command

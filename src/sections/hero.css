@@ -1,0 +1,227 @@
+/* ─── hero · depth + HUD chrome (aerospace-blueprint enrichment) ──────────────
+   Pushes the "sovereign engineering instrument" register FAR without a single
+   WebGL byte. Two pure-DOM layers sit BEHIND / AROUND the real hero content:
+
+     1. .v4depth   — a CSS-only 3D perspective floor grid that recedes to a
+                     vanishing point and fades into the dark. Reads as physical
+                     depth, not a flat plate. Compositor-only (transform/opacity).
+     2. .v4hud-*   — a sparse technical HUD: registration marks, a dimension
+                     line, coordinate pairs, an event code, and one dashed
+                     crosshair reticle floating in negative space.
+
+   Everything here is grayscale (the only colour anywhere is the global
+   EdgeAurora at the frame), aria-hidden, pointer-events:none, and SSR-safe
+   (pure CSS / static SVG — no window at render). Reduced-motion → fully static.
+   Small screens → the HUD simplifies to a couple of marks so it never crowds
+   the readable column or reintroduces horizontal overflow. */
+
+/* ── 1 · the 3D perspective depth grid ──────────────────────────────────────
+   A plane laid into the floor: perspective() gives the receding lines, rotateX
+   tips it away from the camera, the repeating-linear-gradients draw the mesh,
+   and the mask fades the whole thing into the dark toward the horizon + edges.
+   Held in a fixed-height stage anchored to the bottom so the vanishing point
+   lands just below the content baseline. */
+.v4depth {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 0;
+  height: 74%;
+  pointer-events: none;
+  overflow: hidden;
+  /* the camera — depth of the receding projection */
+  perspective: 720px;
+  perspective-origin: 50% 0%;
+  /* fade the stage itself into the dark at top (horizon) and sides */
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 86%);
+  mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 86%);
+}
+.v4depth-plane {
+  position: absolute;
+  /* oversize the plane so the rotation never exposes a hard edge */
+  inset: -60% -40% -40% -40%;
+  transform-origin: 50% 100%;
+  transform: rotateX(64deg);
+  background-image:
+    /* depth lines (running toward the vanishing point) */
+    repeating-linear-gradient(
+      to right,
+      color-mix(in oklch, var(--v4-text) 100%, transparent) 0,
+      color-mix(in oklch, var(--v4-text) 100%, transparent) 1px,
+      transparent 1px,
+      transparent 56px
+    ),
+    /* cross lines (the rungs, compressing with distance via the mask) */
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--v4-text) 100%, transparent) 0,
+      color-mix(in oklch, var(--v4-text) 100%, transparent) 1px,
+      transparent 1px,
+      transparent 56px
+    );
+  opacity: 0.05;
+  /* radial fade so the lines dissolve toward the vanishing point + the rim,
+     leaving only a soft floor near the camera */
+  -webkit-mask-image: radial-gradient(120% 88% at 50% 100%, #000 0%, rgba(0, 0, 0, 0.55) 42%, transparent 78%);
+  mask-image: radial-gradient(120% 88% at 50% 100%, #000 0%, rgba(0, 0, 0, 0.55) 42%, transparent 78%);
+  will-change: transform;
+}
+
+/* a faint back-wall grid standing at the horizon — gives the floor a room to
+   recede INTO (depth cue), even fainter than the floor. */
+.v4depth-wall {
+  position: absolute;
+  inset: 0 0 36% 0;
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--v4-text) 100%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--v4-text) 100%, transparent) 1px, transparent 1px);
+  background-size: 88px 88px;
+  opacity: 0.022;
+  -webkit-mask-image: radial-gradient(90% 120% at 50% 100%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(90% 120% at 50% 100%, #000 0%, transparent 70%);
+}
+
+/* the slow drift — ONLY when motion is welcome. A 1px/56px-period grid drifting
+   one full cell pushes the floor gently toward the camera. transform-only, so
+   it stays on the compositor; 38s makes it ambient, never distracting. */
+@media (prefers-reduced-motion: no-preference) {
+  .v4-enter .v4depth-plane {
+    animation: v4depth-drift 38s linear infinite;
+  }
+}
+@keyframes v4depth-drift {
+  to {
+    /* translate by exactly one 56px cell along the plane's local Y so it loops
+       seamlessly; rotateX is preserved so the perspective holds. */
+    transform: rotateX(64deg) translate3d(0, 56px, 0);
+  }
+}
+
+/* ── 2 · the technical HUD layer ─────────────────────────────────────────────
+   Absolutely-positioned registration marks framing the hero like an instrument
+   readout. Mono, faint, abstract (registration marks — never fake metrics that
+   read as real claims). Lives in the margins so it never touches the readable
+   column. Hidden below the lg breakpoint except for two corner marks. */
+.v4hud {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  font-family: var(--mono);
+  color: var(--v4-text-faint);
+  /* default: only the lightest marks show; richer set unlocks at ≥lg */
+}
+.v4hud-mark {
+  position: absolute;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  line-height: 1.5;
+  color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.v4hud-mark--coord {
+  letter-spacing: 0.1em;
+}
+.v4hud-mark--code {
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+/* the SVG vector marks (reticle, dimension line, register crosshairs) — crisp
+   1px hairlines, dashed arcs. Stroke inherits currentColor → grayscale only. */
+.v4hud-svg {
+  position: absolute;
+  color: color-mix(in oklch, var(--v4-text) 22%, transparent);
+  overflow: visible;
+}
+.v4hud-svg [data-faint] {
+  color: color-mix(in oklch, var(--v4-text) 14%, transparent);
+}
+
+/* placement — top register mark (upper-left margin, above the FIG column) */
+.v4hud-register {
+  top: clamp(88px, 13vh, 132px);
+  left: max(20px, env(safe-area-inset-left));
+}
+/* a coordinate pair pinned to the upper-right margin */
+.v4hud-coord-tr {
+  top: clamp(88px, 13vh, 128px);
+  right: max(20px, env(safe-area-inset-right));
+  text-align: right;
+}
+/* the dashed crosshair reticle — quiet focal mark dropped into the lower
+   negative space between the left copy column and the file panel (the empty
+   band on the asymmetric grid), so it never overlaps the readable text.
+   Explicitly sized to its SVG so the -50% centring resolves correctly. */
+.v4hud-reticle {
+  position: absolute;
+  top: 70%;
+  left: 46%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+}
+.v4hud-reticle .v4hud-svg {
+  position: static;
+  display: block;
+}
+@media (min-width: 1280px) {
+  /* a touch further into the gap on very wide screens */
+  .v4hud-reticle {
+    left: 48%;
+  }
+}
+/* the dimension line + Φ label, lower-left margin near the install row */
+.v4hud-dim {
+  bottom: clamp(96px, 17vh, 168px);
+  left: max(20px, env(safe-area-inset-left));
+}
+.v4hud-dim-label {
+  bottom: calc(clamp(96px, 17vh, 168px) + 12px);
+  left: calc(max(20px, env(safe-area-inset-left)) + 70px);
+}
+/* an event code in the lower-right margin */
+.v4hud-evt {
+  bottom: clamp(40px, 7vh, 74px);
+  right: max(20px, env(safe-area-inset-right));
+  text-align: right;
+}
+
+/* a barely-there pulse on the reticle dot — motion-safe only, opacity-only so
+   it's compositor-cheap and reads as a "live" register tick. */
+@media (prefers-reduced-motion: no-preference) {
+  .v4-enter .v4hud-reticle-dot {
+    animation: v4reticle-pulse 4.2s ease-in-out infinite;
+  }
+}
+@keyframes v4reticle-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
+/* ── responsive · keep it sparse and overflow-proof on small screens ──────────
+   Below lg the two-column grid stacks, so the between-columns reticle and the
+   margin marks would crowd the content. Hide the dense set; keep ONLY the two
+   top corner marks (register + coord) which sit safely in the top gutter. */
+@media (max-width: 1023px) {
+  .v4hud-reticle,
+  .v4hud-dim,
+  .v4hud-dim-label,
+  .v4hud-evt {
+    display: none;
+  }
+  /* pull the floor's vanishing point a touch lower so it stays behind the
+     stacked column rather than rising into the text. */
+  .v4depth {
+    height: 62%;
+    opacity: 0.85;
+  }
+}
+@media (max-width: 639px) {
+  /* on the smallest screens, even the top marks go — pure calm, zero risk of
+     a long mono token nudging the viewport wider than 390px. */
+  .v4hud-register,
+  .v4hud-coord-tr {
+    display: none;
+  }
+}

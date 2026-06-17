@@ -4,6 +4,7 @@ import { CodeFile } from '../components/CodeFile'
 import { REPO, SPEC } from '../content'
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
 import '../shell/shell.css'
+import './hero.css'
 
 /* ─── Hero · the v4 trust-landing first surface (design doc §4) ───────────────
    Register: a sovereign engineering instrument / technical blueprint. Austere,
@@ -77,6 +78,74 @@ function InstallLine() {
   )
 }
 
+/* ─── the blueprint chrome · depth grid + technical HUD ───────────────────────
+   PURE DOM. Two decorative layers (aria-hidden, pointer-events:none) that frame
+   the hero like an aerospace instrument readout: a 3D perspective floor grid
+   receding to a vanishing point, plus a sparse set of registration marks. The
+   values are ABSTRACT registration marks (FIG / SEC / EVT / coord pairs) — not
+   fake metrics dressed as real claims. The SVG strokes inherit currentColor so
+   the whole thing stays grayscale (the only colour is the global EdgeAurora). */
+function HeroChrome() {
+  return (
+    <>
+      {/* 1 · the 3D perspective depth grid — a floor receding to a vanishing
+            point + a fainter back-wall grid it recedes into. CSS-only. */}
+      <div className="v4depth" aria-hidden>
+        <div className="v4depth-wall" />
+        <div className="v4depth-plane" />
+      </div>
+
+      {/* 2 · the technical HUD — sparse marks in the margins / negative space */}
+      <div className="v4hud" aria-hidden>
+        {/* upper-left · a register crosshair + section code (anchors the plate) */}
+        <div className="v4hud-mark v4hud-register">
+          <svg className="v4hud-svg" width="34" height="34" viewBox="0 0 34 34" fill="none" style={{ position: 'static', display: 'block', marginBottom: 6 }}>
+            <path d="M17 2v30M2 17h30" stroke="currentColor" strokeWidth="1" />
+            <circle cx="17" cy="17" r="4.5" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2.6" data-faint />
+          </svg>
+          SEC_00 · ORIGIN
+        </div>
+
+        {/* upper-right · a coordinate pair (frame register) */}
+        <div className="v4hud-mark v4hud-mark--coord v4hud-coord-tr">
+          x 1185 · y 414
+        </div>
+
+        {/* center-right negative space · the dashed crosshair reticle —
+            a quiet focal mark with a slow opacity pulse (motion-safe). */}
+        <div className="v4hud-reticle">
+          <svg className="v4hud-svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+            {/* outer dashed ring */}
+            <circle cx="60" cy="60" r="46" stroke="currentColor" strokeWidth="1" strokeDasharray="2 7" data-faint />
+            {/* inner solid ring */}
+            <circle cx="60" cy="60" r="18" stroke="currentColor" strokeWidth="1" />
+            {/* crosshair ticks (broken at center so the dot reads clean) */}
+            <path d="M60 6v26M60 88v26M6 60h26M88 60h26" stroke="currentColor" strokeWidth="1" />
+            {/* the live center dot */}
+            <circle className="v4hud-reticle-dot" cx="60" cy="60" r="2.4" fill="currentColor" />
+            {/* a small bearing tick on the ring */}
+            <path d="M60 14v6" stroke="currentColor" strokeWidth="1" />
+          </svg>
+        </div>
+
+        {/* lower-left · a dimension line with a Φ measure label (the engine's
+            register — abstract, not a claim). */}
+        <svg className="v4hud-svg v4hud-dim" width="118" height="14" viewBox="0 0 118 14" fill="none">
+          {/* end ticks + the span line, with arrowheads */}
+          <path d="M3 2v10M115 2v10M3 7h112" stroke="currentColor" strokeWidth="1" />
+          <path d="M3 7l7-3.2M3 7l7 3.2M115 7l-7-3.2M115 7l-7 3.2" stroke="currentColor" strokeWidth="1" data-faint />
+        </svg>
+        <div className="v4hud-mark v4hud-dim-label">Φ 218</div>
+
+        {/* lower-right · an event code register */}
+        <div className="v4hud-mark v4hud-mark--code v4hud-evt">
+          EVT_36 ·{' '}STABLE
+        </div>
+      </div>
+    </>
+  )
+}
+
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null)
 
@@ -95,9 +164,11 @@ export default function Hero() {
       id="hero"
       className="theme-dark relative isolate flex min-h-screen flex-col justify-center overflow-hidden"
     >
-      {/* atmosphere · grain + vignette + blueprint plate (pointer-events:none) */}
+      {/* atmosphere · vignette + 3D depth grid + technical HUD + grain.
+          (pointer-events:none, aria-hidden — pure background/chrome). The flat
+          blueprint plate is superseded by the perspective depth grid below. */}
       <div className="v4hero-vignette" aria-hidden />
-      <div className="v4hero-plate" aria-hidden />
+      <HeroChrome />
       <div className="v4hero-grain" aria-hidden />
 
       {/* generous gutters + top padding clears the fixed nav. px clamps with the
