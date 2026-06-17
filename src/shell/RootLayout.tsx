@@ -1,4 +1,4 @@
-import { Outlet, ScrollRestoration } from 'react-router'
+import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { AuroraProvider } from '../fx/EdgeAurora'
 import Nav from './Nav'
 
@@ -13,13 +13,26 @@ import Nav from './Nav'
    <Nav/> is the ONE shared v4 nav (monochrome blueprint) — mounted here so every
    route shares a single nav (no per-page duplicate). It is fixed/sticky and
    transparent over a hero, solid once scrolled. The Footer stays per-page for
-   now (the SUPERNOVAE wordmark lives inside Home). */
+   now (the SUPERNOVAE wordmark lives inside Home).
+
+   Exception · /manifesto. The manifesto is a self-contained cinematic page in a
+   different visual register (the cosmic cyan "drum", not the v4 monochrome
+   blueprint) and ships its OWN centered glass mini-nav (brand · "Manifesto" ·
+   ← Back to site) that belongs to that identity. So the shared monochrome Nav is
+   suppressed there — exactly one nav on that route, no overlap. Deriving this
+   from the path (not a route flag) keeps it identical on SSR + client, so it
+   never introduces a hydration branch. */
+
+const BARE_NAV_ROUTES = new Set(['/manifesto'])
 
 export default function RootLayout() {
+  const { pathname } = useLocation()
+  const showNav = !BARE_NAV_ROUTES.has(pathname)
+
   return (
     <AuroraProvider>
       <ScrollRestoration />
-      <Nav />
+      {showNav ? <Nav /> : null}
       <Outlet />
     </AuroraProvider>
   )

@@ -247,8 +247,6 @@ export default function Nav() {
     }
   }, [sheetOpen])
 
-  const isHome = location.pathname === '/'
-
   return (
     <>
       <header className="v4nav" data-scrolled={scrolled} data-mega={megaOpen}>
@@ -353,9 +351,13 @@ export default function Nav() {
               <span className="v4nav-ghost-label">GitHub</span>
             </a>
 
-            {/* the ONE solid CTA — anchors the hero install on home, jumps there otherwise */}
+            {/* the ONE solid CTA — always the absolute hash so the rendered href is
+               identical on the server prerender and the client (no isHome branch
+               that could diverge during hydration → React #418). React Router's
+               <ScrollRestoration/> scrolls to #install after the route+hash nav;
+               on home it is a same-page hash scroll. */}
             <a
-              href={isHome ? '#install' : '/#install'}
+              href="/#install"
               className="v4nav-cta"
               aria-label="Install Nika"
             >
@@ -466,7 +468,7 @@ export default function Nav() {
             </a>
 
             <a
-              href={isHome ? '#install' : '/#install'}
+              href="/#install"
               className="v4sheet-cta"
               onClick={() => setSheetOpen(false)}
             >
