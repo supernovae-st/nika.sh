@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { REPO, SPEC, DOCS } from '../content'
+import { useRevealOnce } from './use-reveal-once'
 import './v4-home.css'
 
 /* ─── FIG 10.0 · Final CTA + SUPERNOVAE footer (theme-dark · the close) ─────────
@@ -63,29 +64,9 @@ function InstallLine() {
 }
 
 export default function FinalCTA() {
-  const ref = useRef<HTMLElement>(null)
-
-  /* reveal the rows once, on first intersection (motion-safe; default visible) */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
+  /* reveal the rows once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>()
 
   return (
     <section
@@ -157,21 +138,21 @@ export default function FinalCTA() {
         <p className="mono -mt-2 text-[11px] tracking-[0.42em] text-[var(--fg-ghost)] uppercase">
           a SuperNovae Studio creation
         </p>
-        <p className="mono mt-5 flex items-center justify-center gap-6 text-[12px] text-[var(--fg-dim)]">
+        <p className="mono mt-5 flex flex-wrap items-center justify-center gap-x-6 text-[12px] text-[var(--fg-dim)]">
           <a
             href="https://x.com/ThibautMelen"
             target="_blank"
             rel="noreferrer"
-            className="transition-colors hover:text-[var(--cyan)]"
+            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--cyan)]"
           >
             𝕏 @ThibautMelen
           </a>
-          <span className="text-[var(--fg-ghost)]">·</span>
+          <span aria-hidden className="text-[var(--fg-ghost)]">·</span>
           <a
             href="https://x.com/niccela"
             target="_blank"
             rel="noreferrer"
-            className="transition-colors hover:text-[var(--cyan)]"
+            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--cyan)]"
           >
             𝕏 @niccela
           </a>
@@ -185,14 +166,29 @@ export default function FinalCTA() {
             <img src="/nika.svg" alt="" width={13} height={13} style={{ opacity: 0.7 }} />
             nika · free software · AGPL-3.0-or-later
           </span>
-          <span className="flex gap-5">
-            <a href={REPO} target="_blank" rel="noreferrer" className="transition-colors hover:text-[var(--fg-mute)]">
+          <span className="flex flex-wrap items-center gap-x-5">
+            <a
+              href={REPO}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
+            >
               GitHub
             </a>
-            <a href={SPEC} target="_blank" rel="noreferrer" className="transition-colors hover:text-[var(--fg-mute)]">
+            <a
+              href={SPEC}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
+            >
               Spec
             </a>
-            <a href={DOCS} target="_blank" rel="noreferrer" className="transition-colors hover:text-[var(--fg-mute)]">
+            <a
+              href={DOCS}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
+            >
               Docs
             </a>
           </span>

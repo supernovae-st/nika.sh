@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRevealOnce } from './use-reveal-once'
 import { VERBS } from '../content'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import './v4-home.css'
@@ -107,29 +107,9 @@ function VerbCard({
 }
 
 export default function Verbs() {
-  const ref = useRef<HTMLElement>(null)
-
-  /* reveal the rows once, on first intersection (motion-safe; default visible) */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -10% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
+  /* reveal the rows once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>()
 
   const verbs = VERBS as { verb: NikaVerb; tagline: string; body: string }[]
 

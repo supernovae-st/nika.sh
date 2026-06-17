@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useRevealOnce } from './use-reveal-once'
 import { verbGlyph } from '../components/codefile-highlight'
 import { useAuroraPulse } from '../fx/aurora-context'
 import {
@@ -185,7 +186,9 @@ function OutcomePanel({
 }
 
 export default function HumanInTheLoop() {
-  const ref = useRef<HTMLElement>(null)
+  // one orchestrated reveal on first view (motion-safe; default visible; a
+  // safety-net timer reveals anyway if the observer misfires)
+  const ref = useRevealOnce<HTMLElement>()
   const [permits, setPermits] = useState<PermitState>(DEFAULT_PERMITS)
   const [runKey, setRunKey] = useState(0)
   const [reducedMotion, setReducedMotion] = useState(true) // SSR-safe default
@@ -222,27 +225,6 @@ export default function HumanInTheLoop() {
     return () => mq.removeEventListener('change', apply)
   }, [])
 
-  // one orchestrated reveal on first view (motion-safe; default visible).
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.08, rootMargin: '0px 0px -10% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
 
   return (
     <section

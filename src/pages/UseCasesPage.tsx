@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CodeFile } from '../components/CodeFile'
@@ -127,7 +128,9 @@ function MetierSection({ tab, index }: { tab: UCTab; index: number }) {
 }
 
 export function Component() {
-  const ref = useRef<HTMLElement>(null)
+  /* reveal the page once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -6% 0px' })
   const [active, setActive] = useState(UC_TABS[0]?.id ?? '')
 
   useHead({
@@ -154,28 +157,6 @@ export function Component() {
       },
     ],
   })
-
-  /* reveal the page once, on first intersection (motion-safe; default visible) */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.02, rootMargin: '0px 0px -6% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
 
   /* highlight the rail anchor for the métier currently in view (scroll-spy) */
   useEffect(() => {

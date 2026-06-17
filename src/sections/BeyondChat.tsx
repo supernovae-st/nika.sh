@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useRevealOnce } from './use-reveal-once'
 import { VERSUS } from '../content'
 import './v4-home.css'
 
@@ -29,35 +30,15 @@ const BASE_FREQ_REST = 0.006
 const BASE_FREQ_PEAK = 0.022
 
 export default function BeyondChat() {
-  const ref = useRef<HTMLElement>(null)
+  /* reveal the rows once (motion-safe; content visible by default; a safety-net
+     timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>()
   const dispRef = useRef<SVGFEDisplacementMapElement>(null)
   const turbRef = useRef<SVGFETurbulenceElement>(null)
   const acidRef = useRef<HTMLDivElement>(null)
   const readoutRef = useRef<HTMLDivElement>(null)
   /* 'off' = reduced-motion / pre-mount (filter never referenced). 'live' = armed. */
   const [acid, setAcid] = useState<'off' | 'live'>('off')
-
-  /* reveal the rows once (motion-safe; content visible by default). */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -10% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
 
   /* the acid warp · a scroll-velocity-driven displacement that decays to still.
      Only runs while the section is on-screen (IntersectionObserver gate) and
@@ -124,7 +105,9 @@ export default function BeyondChat() {
       cancelAnimationFrame(raf)
       vis.disconnect()
     }
-  }, [])
+    // ref is a stable RefObject (from useRevealOnce → useRef) — listed to satisfy
+    // exhaustive-deps; it never changes identity so the effect runs once.
+  }, [ref])
 
   return (
     <section ref={ref} id="beyond" aria-labelledby="beyond-title" className="theme-dark v4sec scroll-mt-24">

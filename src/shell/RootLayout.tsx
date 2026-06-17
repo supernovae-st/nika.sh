@@ -1,6 +1,7 @@
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { AuroraProvider } from '../fx/EdgeAurora'
 import Nav from './Nav'
+import './skip-link.css'
 
 /* ─── the app shell ─────────────────────────────────────────────────────────
    The routed outlet + scroll restoration (restores scroll on back/forward and
@@ -32,8 +33,19 @@ export default function RootLayout() {
   return (
     <AuroraProvider>
       <ScrollRestoration />
+      {/* the first focusable on every page · visually hidden until focused, then
+          it reveals and jumps keyboard users past the nav straight to the routed
+          content (#main). */}
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       {showNav ? <Nav /> : null}
-      <Outlet />
+      {/* the routed content target · the skip link lands here (id="main"); each
+          page renders its own <main> landmark inside. tabindex=-1 so the link can
+          move focus to it programmatically. */}
+      <div id="main" tabIndex={-1} className="skip-target">
+        <Outlet />
+      </div>
     </AuroraProvider>
   )
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRevealOnce } from './use-reveal-once'
 import { CANON } from '../canon.generated'
 import './v4-home.css'
 
@@ -118,29 +118,9 @@ function Chip({ n, d }: { n: string; d?: string }) {
 }
 
 export default function Toolbelt() {
-  const ref = useRef<HTMLElement>(null)
-
-  /* reveal the rows once, on first intersection (motion-safe; default visible) */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
+  /* reveal the rows once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>()
 
   return (
     <section

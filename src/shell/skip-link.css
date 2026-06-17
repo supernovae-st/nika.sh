@@ -1,0 +1,54 @@
+/* ─── skip-to-content link · the first focusable on every page ────────────────
+   Visually hidden until it receives keyboard focus, then it springs into the
+   top-left corner with a high-contrast pill so a keyboard / screen-reader user
+   can jump past the fixed nav straight to the routed content (#main).
+   Near-black ink on white = 19.7:1 (well past WCAG AA). */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100; /* above the nav (z-50) and the aurora frame (z-60) */
+  /* off-screen until focused — keeps it out of the visual layout */
+  transform: translateY(-150%);
+  padding: 10px 16px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0a0b0d;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  outline: 2px solid #0a0b0d;
+  outline-offset: 2px;
+}
+
+/* the routed-content focus target · the link lands here (#main, tabindex=-1).
+   It must NOT show a focus ring when reached programmatically (it's a wrapper,
+   not an interactive control) — only the link itself carries the visible ring. */
+.skip-target {
+  outline: none;
+}
+.skip-target:focus,
+.skip-target:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}

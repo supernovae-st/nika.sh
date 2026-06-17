@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRevealOnce } from './use-reveal-once'
 import { REPO, SPEC } from '../content'
 import { CANON } from '../canon.generated'
 import './v4-home.css'
@@ -76,28 +76,9 @@ const LEDGER: { fig: string; name: string; value: React.ReactNode }[] = [
 ]
 
 export default function OwnWorkflows() {
-  const ref = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -10% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
+  /* reveal the rows once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>()
 
   return (
     <section ref={ref} id="own" aria-labelledby="own-title" className="theme-light v4sec scroll-mt-24">

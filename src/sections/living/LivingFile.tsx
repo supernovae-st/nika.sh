@@ -201,6 +201,45 @@ function Dag({ run, morph }: { run: RunState; morph: number }) {
   )
 }
 
+/* ── the screen-reader run summary · the corridor's accessible equivalent ─────
+   The 3D corridor is an aria-hidden decorative visual, and the role="img" <Dag>
+   only renders in the 2D fallback — so corridor users would get NO textual
+   equivalent of the workflow. This renders the ordered plan (wave order ==
+   topological order) as a real, always-present sr-only list: each step's id,
+   verb and gloss, plus the permits/enforce note. It is NOT either/or with the
+   corridor — both ship together, so SR users always have the run described. */
+const ORDERED_TASKS = [...DAG.tasks].sort(
+  (a, b) => a.wave - b.wave || a.line0 - b.line0 || (a.id < b.id ? -1 : 1),
+)
+
+function RunSummarySR() {
+  return (
+    <div className="sr-only">
+      <h3>Workflow run · {FILENAME}</h3>
+      <p>
+        The plan runs {DAG.tasks.length} steps across {DAG.waves} parallel waves.
+        Steps in the same wave run in parallel; each step’s verb is its execution
+        model (infer · exec · invoke · agent).
+      </p>
+      <ol>
+        {ORDERED_TASKS.map((task) => (
+          <li key={task.id}>
+            {task.id} — {task.verb}: {task.gloss}
+            {task.deps.length > 0 ? ` (after ${task.deps.join(', ')})` : ''}
+          </li>
+        ))}
+      </ol>
+      <p>
+        It declares a <code>permits:</code> block: a local model with no network
+        access at all, so the CVs cannot leave this machine even if one hijacks
+        the model. The runtime enforces those permits on every action — an effect
+        outside the declared boundary is denied with {SEC_004.code} before it
+        runs, not logged after the fact.
+      </p>
+    </div>
+  )
+}
+
 /* ── the live event stream · pretty CLI ↔ raw NDJSON (design doc §5.4) ───────── */
 type StreamMode = 'cli' | 'ndjson'
 
@@ -540,7 +579,12 @@ export default function LivingFile() {
                   {corridor3d ? 'the plan, in depth — every step legible' : 'the plan · columns are parallel waves'}
                 </p>
                 {corridor3d ? (
-                  <Corridor dag={DAG} run={run} runP={runP} />
+                  <>
+                    {/* the corridor is an aria-hidden visual · this sr-only
+                        summary is its textual equivalent (always alongside it) */}
+                    <RunSummarySR />
+                    <Corridor dag={DAG} run={run} runP={runP} />
+                  </>
                 ) : (
                   <div className="lf-dag-wrap">
                     <Dag run={run} morph={morph} />

@@ -60,7 +60,7 @@
   --fg: #f3f5fb;
   --fg-mute: #bac9ec;
   --fg-dim: #7585b0;
-  --fg-ghost: #4a567f;
+  --fg-ghost: #828fb4; /* WCAG AA · 6.13:1 on #0a0b0d (v4 footer) · 5.80:1 on #0a1226 */
   --brand: oklch(0.62 0.195 258); /* BRAND-05 blue */
   --brand-bright: oklch(0.72 0.172 258);
   --cyan: #22d3ee;

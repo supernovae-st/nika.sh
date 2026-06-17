@@ -1052,7 +1052,7 @@
   color: var(--v4-text);
   border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
 }
-.v4uc-tab[aria-selected='true'] {
+.v4uc-tab[aria-pressed='true'] {
   background: var(--v4-text);
   border-color: var(--v4-text);
   color: var(--v4-bg);
@@ -1063,7 +1063,7 @@
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
 }
-.v4uc-tab[aria-selected='true'] .v4uc-tab-n {
+.v4uc-tab[aria-pressed='true'] .v4uc-tab-n {
   color: color-mix(in oklch, var(--v4-bg) 70%, var(--v4-text));
 }
 
@@ -1115,12 +1115,12 @@
   border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
   background: var(--v4-bg-raised);
 }
-.v4uc-card[aria-selected='true'] {
+.v4uc-card[aria-pressed='true'] {
   border-color: color-mix(in oklch, var(--v4-text) 42%, transparent);
   background: var(--v4-bg-raised);
 }
 /* the selected card grows a left rule (blueprint marker, monochrome) */
-.v4uc-card[aria-selected='true']::before {
+.v4uc-card[aria-pressed='true']::before {
   content: '';
   position: absolute;
   left: 0;

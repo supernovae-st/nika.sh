@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRevealOnce } from './use-reveal-once'
 import { Link } from 'react-router'
 import { CHANGELOG, TAG_LABEL, fmtDate } from '../content/changelog'
 import './v4-home.css'
@@ -21,29 +21,9 @@ const PREVIEW_COUNT = 4
 const ENTRIES = CHANGELOG.slice(0, PREVIEW_COUNT)
 
 export default function ChangelogPreview() {
-  const ref = useRef<HTMLElement>(null)
-
-  /* reveal the rows once, on first intersection (motion-safe; default visible) */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -10% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
+  /* reveal the rows once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>()
 
   return (
     <section

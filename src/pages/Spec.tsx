@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CANON } from '../canon.generated'
@@ -177,7 +177,9 @@ const SAMPLE_YAML =
   SHOWCASE_YAML['t1-standup-digest'] ?? Object.values(SHOWCASE_YAML)[0] ?? 'nika: v1\n'
 
 export function Component() {
-  const ref = useRef<HTMLElement>(null)
+  /* reveal the section once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
   useHead({
     title: 'Spec · Nika',
@@ -203,28 +205,6 @@ export function Component() {
       },
     ],
   })
-
-  /* reveal the section once, on first intersection (motion-safe; default visible) */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.02, rootMargin: '0px 0px -4% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
 
   return (
     <main className="theme-dark spec-page">

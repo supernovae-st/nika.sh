@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 import { Link } from 'react-router'
+import { useRevealOnce } from '../sections/use-reveal-once'
 import { useHead } from '@unhead/react'
 import { CHANGELOG, TAG_LABEL, fmtDate, type ChangelogEntry } from '../content/changelog'
 import { REPO, SPEC, routeHead } from '../content'
@@ -41,7 +42,9 @@ function groupByYear(entries: ChangelogEntry[]): YearGroup[] {
 }
 
 export function Component() {
-  const ref = useRef<HTMLElement>(null)
+  /* reveal the section once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const groups = useMemo(() => groupByYear(CHANGELOG), [])
 
   useHead({
@@ -66,28 +69,6 @@ export function Component() {
       },
     ],
   })
-
-  /* reveal the section once, on first intersection (motion-safe; default visible) */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.04, rootMargin: '0px 0px -6% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
 
   const total = CHANGELOG.length
 

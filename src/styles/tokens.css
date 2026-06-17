@@ -17,7 +17,8 @@
   --v4-line: rgb(255 255 255 / 0.08); /* 1px hairline borders               */
   --v4-text: #f4f5f7;        /* primary ink                                 */
   --v4-text-dim: #8a8f98;    /* secondary / labels / FIG numbers            */
-  --v4-text-faint: #5a606b;  /* captions                                    */
+  --v4-text-faint: #838995;  /* captions · WCAG AA 5.28:1 on #121317        */
+  --v4-hud-faint: #5a606b;   /* DECORATIVE only · aria-hidden HUD marks      */
 
   /* the 4 verb hues — used ONLY inside a live run (design doc §3.4),
      never as static UI color */
@@ -42,7 +43,8 @@
   --v4-line: rgb(255 255 255 / 0.08);
   --v4-text: #f4f5f7;
   --v4-text-dim: #8a8f98;
-  --v4-text-faint: #5a606b;
+  --v4-text-faint: #838995;  /* WCAG AA 5.28:1 on #121317 · 5.60:1 on #0a0b0d */
+  --v4-hud-faint: #5a606b;   /* DECORATIVE only · aria-hidden HUD marks      */
 }
 .theme-light,
 [data-theme='light'] {
@@ -51,7 +53,8 @@
   --v4-line: rgb(10 11 13 / 0.10);
   --v4-text: #0a0b0d;        /* near-black ink                              */
   --v4-text-dim: #565b66;
-  --v4-text-faint: #8a8f98;
+  --v4-text-faint: #696d76;  /* WCAG AA 4.83:1 on #f7f7f5 · 5.19:1 on #fff   */
+  --v4-hud-faint: #8a8f98;   /* DECORATIVE only · aria-hidden HUD marks      */
 }
 .theme-dark,
 .theme-light,

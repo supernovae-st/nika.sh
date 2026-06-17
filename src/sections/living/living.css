@@ -534,10 +534,14 @@
   transition: transform 0.12s linear;
 }
 
-/* ─── reduced-motion · freeze the cross-fades, keep both surfaces legible ─────
-   The static end-state frame the component renders for SSR shows data-beat='run',
-   so the run surface is the one shown; the file panel is simply faded behind it.
-   We disable the transitions so nothing animates. */
+/* ─── reduced-motion · freeze the cross-fades, show BOTH surfaces statically ───
+   The static end-state frame the component renders for SSR shows data-beat='run'.
+   The cross-fade rules would hide the WRITE panel (.lf-file opacity:0) — and that
+   panel carries the YAML plan with the highlighted `permits:` block, which is the
+   whole point of the section. So under reduced-motion we DON'T overlap-and-fade:
+   we drop the grid stacking, lay the file panel and the run out one above the
+   other, fully visible, and disable every transition. Nothing animates; nothing
+   is hidden. */
 @media (prefers-reduced-motion: reduce) {
   .lf-file,
   .lf-run,
@@ -547,6 +551,34 @@
   .lf-node-verb,
   .lf-rail-fill {
     transition: none;
+  }
+  /* un-stack: file plan, then the run, both legible (no overlap, no fade) */
+  .lf-body {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 4vh, 2.5rem);
+  }
+  .lf-file,
+  .lf-run {
+    grid-area: auto;
+  }
+  /* force BOTH panels visible regardless of the static data-beat='run' frame */
+  .lf-stage[data-beat='file'] .lf-file,
+  .lf-stage[data-beat='morph'] .lf-file,
+  .lf-stage[data-beat='run'] .lf-file,
+  .lf-stage[data-beat='file'] .lf-run,
+  .lf-stage[data-beat='morph'] .lf-run,
+  .lf-stage[data-beat='run'] .lf-run {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  /* the pinned-scrub layout is JS-gated and never engages under reduced-motion,
+     so the stage can grow to fit both panels in normal flow */
+  .lf-stage {
+    height: auto;
+    min-height: 0;
+    justify-content: flex-start;
   }
 }
 

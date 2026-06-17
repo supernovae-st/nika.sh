@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
+import { useRevealOnce } from './use-reveal-once'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from './usecases-data'
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
@@ -31,7 +32,9 @@ const VERB_HUE: Record<NikaVerb, string> = {
 }
 
 export default function UseCasesV4() {
-  const ref = useRef<HTMLElement>(null)
+  /* reveal the rows once, on first intersection (motion-safe; default visible;
+     safety-net timer reveals anyway if the observer misfires) */
+  const ref = useRevealOnce<HTMLElement>()
   const [tab, setTab] = useState(0)
   const [sel, setSel] = useState(0)
 
@@ -43,28 +46,6 @@ export default function UseCasesV4() {
     setTab(i)
     setSel(0)
   }
-
-  /* reveal the rows once, on first intersection (motion-safe; default visible) */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            el.classList.add('v4-in')
-            io.disconnect()
-            break
-          }
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
 
   const total = Object.keys(SHOWCASE_YAML).length
 
@@ -93,11 +74,13 @@ export default function UseCasesV4() {
           the conformance gate. Pick your métier, open a card, read the exact YAML that runs it.
         </p>
 
-        {/* the métier tab bar */}
+        {/* the métier filter bar · plain toggle buttons (aria-pressed), not a
+            tablist — switching a métier filters the gallery below, it isn't an
+            APG tab/tabpanel relationship, so toggle semantics are the correct fit */}
         <div
           className="v4uc-tabs"
-          role="tablist"
-          aria-label="Use case categories"
+          role="group"
+          aria-label="Filter use cases by métier"
           data-rise
           style={{ ['--rise-delay' as string]: '160ms' }}
         >
@@ -105,8 +88,7 @@ export default function UseCasesV4() {
             <button
               key={tb.id}
               type="button"
-              role="tab"
-              aria-selected={i === tab}
+              aria-pressed={i === tab}
               className="v4uc-tab"
               onClick={() => pickTab(i)}
             >
@@ -121,11 +103,12 @@ export default function UseCasesV4() {
         </p>
 
         <div className="v4uc-stage">
-          {/* the card rail · selectable workflows of this métier */}
+          {/* the card rail · selectable workflows of this métier · plain toggle
+              buttons (aria-pressed) that reveal the chosen card's YAML below */}
           <div
             key={`cards-${t.id}`}
             className="v4uc-cards v4uc-fade"
-            role="tablist"
+            role="group"
             aria-label="Workflows"
           >
             {t.cases.map((u, i) => {
@@ -135,8 +118,7 @@ export default function UseCasesV4() {
                 <button
                   key={u.slug}
                   type="button"
-                  role="tab"
-                  aria-selected={selected}
+                  aria-pressed={selected}
                   className="v4uc-card"
                   onClick={() => setSel(i)}
                 >
@@ -167,7 +149,7 @@ export default function UseCasesV4() {
           <div key={`panel-${t.id}-${active.slug}`} className="v4uc-panel v4uc-fade">
             <div className="v4uc-panel-meta">
               <span className="v4uc-panel-file">
-                <span aria-hidden style={{ color: 'var(--v4-text-faint)' }}>
+                <span aria-hidden style={{ color: 'var(--v4-hud-faint)' }}>
                   ❯{' '}
                 </span>
                 <b>{fileFor(active)}</b>

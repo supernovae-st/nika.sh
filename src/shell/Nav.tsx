@@ -225,15 +225,42 @@ export default function Nav() {
     }
   }, [])
 
-  /* ── sheet: Escape + scroll lock + focus the close button ── */
+  /* ── sheet: Escape + scroll lock + focus trap (Tab cycles WITHIN the sheet) ──
+     role="dialog" aria-modal needs a real trap or focus escapes to the page
+     behind. We cycle Tab / Shift+Tab across the sheet's focusable set (querying
+     it live on each Tab so it stays correct as the DOM changes), Escape closes
+     and returns focus to the burger. */
   useEffect(() => {
     if (!sheetOpen) return
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    const focusables = () =>
+      Array.from(
+        sheetRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter((el) => el.offsetParent !== null || el === document.activeElement)
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setSheetOpen(false)
         burgerRef.current?.focus()
+        return
+      }
+      if (e.key !== 'Tab') return
+      const items = focusables()
+      if (items.length === 0) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      const active = document.activeElement as HTMLElement | null
+      // wrap at the edges; also pull focus back in if it has somehow escaped
+      if (e.shiftKey) {
+        if (active === first || !sheetRef.current?.contains(active)) {
+          e.preventDefault()
+          last.focus()
+        }
+      } else if (active === last || !sheetRef.current?.contains(active)) {
+        e.preventDefault()
+        first.focus()
       }
     }
     document.addEventListener('keydown', onKey)
