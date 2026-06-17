@@ -328,7 +328,132 @@
   }
 }
 
-/* ── FIG S.3 + S.4 · the families · a labelled wrap of mono chips ────────────── */
+/* ── FIG S.3 · the permits · the enforcement model (prominent · the seatbelt) ──
+   A two-column stage: the four declarable categories (left) + the denial codes
+   (right). Marked --permits so it reads as the load-bearing block: a faint inset
+   surface + a slightly heavier top rule than the plain reference blocks. */
+.spec-block--permits {
+  border-top-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+}
+.spec-permits-grid {
+  margin-top: clamp(26px, 4vh, 40px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
+}
+@media (min-width: 880px) {
+  .spec-permits-grid {
+    grid-template-columns: 1.25fr 0.9fr;
+    gap: 36px;
+  }
+}
+/* the four categories · a hairline-ruled ledger, fig-marked i–iv */
+.spec-permits-cats {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--v4-line);
+}
+.spec-permits-cat {
+  padding: 15px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.spec-permits-cat-key {
+  display: flex;
+  align-items: baseline;
+  gap: 11px;
+}
+.spec-permits-cat-fig {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+}
+.spec-permits-cat-key code {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 560;
+  color: var(--v4-text);
+}
+.spec-permits-cat-gloss {
+  margin: 7px 0 0;
+  padding-left: calc(1.6rem + 11px);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+@media (max-width: 520px) {
+  .spec-permits-cat-gloss {
+    padding-left: 0;
+  }
+}
+.spec-permits-cat-shape {
+  display: block;
+  margin-top: 6px;
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-faint);
+}
+
+/* the denial codes · the inset card · « out of bounds » → a typed refusal */
+.spec-permits-denials {
+  padding: 18px;
+  border: 1px solid var(--v4-line);
+  border-radius: 12px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
+}
+@media (min-width: 880px) {
+  .spec-permits-denials {
+    position: sticky;
+    top: 96px;
+  }
+}
+.spec-permits-denials-head {
+  margin: 0 0 14px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.spec-permits-codes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.spec-permits-code {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.spec-permits-code-id {
+  font-size: 12.5px;
+  font-weight: 560;
+  letter-spacing: 0.01em;
+  color: var(--v4-text);
+}
+.spec-permits-code-fail {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.spec-permits-foot {
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--v4-line);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+
+/* ── FIG S.4 + S.5 · the families · a labelled wrap of mono chips ────────────── */
 .spec-fams {
   margin-top: clamp(24px, 3.5vh, 36px);
   display: flex;

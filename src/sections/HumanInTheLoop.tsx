@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { verbGlyph } from '../components/codefile-highlight'
+import { useAuroraPulse } from '../fx/aurora-context'
 import {
   DEFAULT_PERMITS,
   PERMITS,
@@ -188,6 +189,11 @@ export default function HumanInTheLoop() {
   const [permits, setPermits] = useState<PermitState>(DEFAULT_PERMITS)
   const [runKey, setRunKey] = useState(0)
   const [reducedMotion, setReducedMotion] = useState(true) // SSR-safe default
+  /* the edge aurora = the control heartbeat (the drum). The HITL verdict is an
+     enforced/run moment, so « Let it run » beats it — the pulse lands on the
+     verdict (a within-bounds run OR a denial), making the seatbelt felt at the
+     frame. pulse() is inert under reduced-motion (the aurora is static there). */
+  const pulse = useAuroraPulse()
 
   // the outcome reacts LIVE to the toggles (pure, deterministic).
   const outcome = useMemo(() => resolveOutcome(permits), [permits])
@@ -200,7 +206,11 @@ export default function HumanInTheLoop() {
     // re-announce + replay the CLI reveal — the outcome is already live, this
     // gives the deliberate "I ran it" beat (and re-keys the reveal animation).
     setRunKey((k) => k + 1)
-  }, [])
+    // beat the drum on the verdict — every enforced step is a deliberate, checked
+    // beat (design §6: the aurora pulses on enforced/run events). The denial is
+    // an enforced event too, so the pulse fires on the « blocked » verdict as well.
+    pulse()
+  }, [pulse])
 
   // motion preference (client-only) — gates the CLI reveal animation.
   useEffect(() => {

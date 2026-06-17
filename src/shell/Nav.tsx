@@ -41,11 +41,12 @@ interface MegaGroup {
    Internal routes use RR <Link>; home anchors use /#x; externals open a tab. */
 const PRODUCT_GROUPS: MegaGroup[] = [
   {
-    title: 'Language',
+    title: 'The control layer',
     items: [
-      { label: 'The language', desc: 'One file, the whole workflow', glyph: '❯', href: '/#language' },
+      { label: 'See it run', desc: 'The plan, reviewed and enforced', glyph: '❯', href: '/#living-file' },
       { label: 'The four verbs', desc: 'infer · exec · invoke · agent', glyph: '◆', href: '/#verbs' },
-      { label: 'Use cases', desc: 'Real workflows from the spec', glyph: '◇', to: '/use-cases' },
+      { label: 'What it can touch', desc: 'The permits enforcement model', glyph: '◈', href: '/#permits' },
+      { label: 'Use cases', desc: 'Real plans, reviewable and bound', glyph: '◇', to: '/use-cases' },
     ],
   },
   {

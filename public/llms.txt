@@ -1,8 +1,11 @@
 # nika.sh — llms.txt
 # https://llmstxt.org/
 
-> Nika is an open workflow language for AI — plus its reference engine in Rust.
-> Apache-2.0 spec · AGPL-3.0-or-later engine. Paris. SuperNovae Studio.
+> Nika is the control layer for AI agents: the agent writes its plan as a
+> readable file first — steps, tools, permissions, outputs — you review it, the
+> runtime enforces it, then it runs (traced and replayable). An open workflow
+> language plus its reference engine in Rust. Apache-2.0 spec ·
+> AGPL-3.0-or-later engine. Paris. SuperNovae Studio.
 
 ## What
 

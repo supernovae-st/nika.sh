@@ -210,6 +210,16 @@ export function Component() {
           </p>
 
           <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
+            And as these tools start to act on the world, the same rule holds for what they
+            do, not just where they run.{' '}
+            <span className="text-[var(--fg)]">
+              An agent should never act from a hidden prompt.
+            </span>{' '}
+            The plan it intends to run should be a file you can read, and reviewable before it
+            acts. Power you cannot see is power you do not control.
+          </p>
+
+          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
             <span className="text-[var(--fg)]">
               There is no US open source AI. There is no French open source AI.
             </span>{' '}

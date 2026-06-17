@@ -69,7 +69,43 @@ const TASK_FIELDS: { name: string; req: boolean; gloss: string }[] = [
   { name: 'on_error', req: false, gloss: 'fallback · recover from another task · or continue' },
 ]
 
-/* ── FIG S.3 · the stdlib · 23 builtins, grouped into 4 families ──────────────
+/* ── FIG S.3 · the permits · the enforcement model (from public/schema/workflow.json
+   §permits + public/errors/catalog.json security_error class) ─────────────────
+   The capability boundary an agent must satisfy before it acts. Once `permits:`
+   is present, every category is DEFAULT-DENY — anything not declared is refused
+   BEFORE the effect runs (not logged after). Worded straight off the JSON schema. */
+const PERMIT_CATS: { cap: string; gloss: string; shape: string }[] = [
+  {
+    cap: 'fs.read / fs.write',
+    gloss: 'which files it can read, which it can write — read XOR write, by glob.',
+    shape: 'read: [globs] · write: [globs]',
+  },
+  {
+    cap: 'net.http',
+    gloss: 'which hosts it can reach. Omit the category and the plan cannot touch the network at all.',
+    shape: 'http: [host allowlist]',
+  },
+  {
+    cap: 'exec',
+    gloss: 'which programs it can run — none, any (blocklist-gated), or a named allowlist.',
+    shape: 'false · true · [program names]',
+  },
+  {
+    cap: 'tools',
+    gloss: 'which nika:/mcp: tools it may call. Anything off the list is unreachable.',
+    shape: 'tools: [allowed tool ids]',
+  },
+]
+
+/* the enforcement codes · what « out of bounds » resolves to — a denial BEFORE
+   the effect, from public/errors/catalog.json (security_error class · NIKA-SEC). */
+const PERMIT_DENIALS: { code: string; failure: string }[] = [
+  { code: 'NIKA-SEC-004', failure: 'effect outside the declared permits: boundary (fs / net / exec / tool)' },
+  { code: 'NIKA-SEC-002', failure: 'agent tool call outside the tools: whitelist' },
+  { code: 'NIKA-SEC-001', failure: 'exec: blocklist hit' },
+]
+
+/* ── FIG S.4 · the stdlib · 23 builtins, grouped into 4 families ──────────────
    The chips DERIVE from CANON.builtinNames; the family grouping is craft. A
    canon builtin not assigned to a family lands in Flow (structural guard), so
    the rendered chip count can never drop below CANON.builtins. */
@@ -89,7 +125,7 @@ const BUILTIN_GROUPS = BUILTIN_FAMILIES.map((f) => ({
   names: f.names.filter((n) => (CANON.builtinNames as readonly string[]).includes(n)),
 }))
 
-/* ── FIG S.4 · providers · local-first → Mistral/cloud → mock (from CANON) ──── */
+/* ── FIG S.5 · providers · local-first → Mistral/cloud → mock (from CANON) ──── */
 const PROVIDER_DISPLAY: Record<string, string> = {
   ollama: 'Ollama',
   lmstudio: 'LM Studio',
@@ -151,7 +187,7 @@ export function Component() {
       {
         name: 'description',
         content:
-          'The Nika language reference: the nika: v1 envelope, the four verbs (infer · exec · invoke · agent), the task shape, 23 builtins, 14 providers, 9 extract modes, and the 14 NIKA-XXX error namespaces. The friendly index into the nika-spec.',
+          'The contract an agent must satisfy before it acts: the nika: v1 envelope, the four verbs (infer · exec · invoke · agent), the task shape, the permits enforcement model (default-deny · NIKA-SEC denials), 23 builtins, 14 providers, 9 extract modes, 14 error namespaces. The friendly index into the nika-spec.',
       },
       { property: 'og:title', content: 'Spec · Nika' },
       {
@@ -204,12 +240,13 @@ export function Component() {
             data-rise
             style={{ ['--rise-delay' as string]: '60ms' }}
           >
-            One file. The whole contract.
+            The contract an agent must satisfy before it acts.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            A <code className="mono">.nika.yaml</code> is a small, closed language: one envelope,{' '}
-            <b>four verbs</b>, a typed task shape, and a standard library you don&apos;t install.
-            This is the friendly map. The{' '}
+            A <code className="mono">.nika.yaml</code> is the plan, written down: one envelope,{' '}
+            <b>four verbs</b>, a typed task shape, and a <b>permits</b> block that declares —
+            and bounds — everything it&apos;s allowed to touch. You review it, the runtime
+            enforces it, then it runs. This is the friendly map; the{' '}
             <a href={SPEC} target="_blank" rel="noreferrer" className="spec-inline-link">
               nika-spec repository
             </a>{' '}
@@ -222,11 +259,12 @@ export function Component() {
               ['S.0', 'Envelope', '#s0'],
               ['S.1', 'Verbs', '#s1'],
               ['S.2', 'Task shape', '#s2'],
-              ['S.3', 'Stdlib', '#s3'],
-              ['S.4', 'Providers', '#s4'],
-              ['S.5', 'Extract', '#s5'],
-              ['S.6', 'Errors', '#s6'],
-              ['S.7', 'License', '#s7'],
+              ['S.3', 'Permits', '#permits'],
+              ['S.4', 'Stdlib', '#s3'],
+              ['S.5', 'Providers', '#s4'],
+              ['S.6', 'Extract', '#s5'],
+              ['S.7', 'Errors', '#s6'],
+              ['S.8', 'License', '#s7'],
             ].map(([n, label, href]) => (
               <a key={n} href={href} className="spec-toc-link">
                 <span className="spec-toc-n">{n}</span>
@@ -304,10 +342,67 @@ export function Component() {
             </ul>
           </div>
 
-          {/* ══ FIG S.3 · the stdlib ════════════════════════════════════════ */}
-          <div id="s3" className="spec-block" data-rise>
+          {/* ══ FIG S.3 · the permits — the enforcement model (the seatbelt) ══ */}
+          <div id="permits" className="spec-block spec-block--permits" data-rise>
             <SpecHead
               fig="FIG S.3"
+              name="The permits"
+              count="default-deny once present"
+            >
+              The <b>capability boundary</b> — the contract an agent must satisfy before it
+              acts. Once <code>permits:</code> is present, every category is{' '}
+              <b>default-deny</b>: which files it can read, which it can write (read XOR
+              write), which hosts it can reach, which programs it can run, which tools it may
+              call. The runtime <em>enforces</em> it — out of bounds is <b>denied</b>, not
+              logged after the fact.
+            </SpecHead>
+            <div className="spec-permits-grid">
+              {/* the four declarable categories */}
+              <dl className="spec-permits-cats">
+                {PERMIT_CATS.map((c, i) => (
+                  <div className="spec-permits-cat" key={c.cap}>
+                    <dt className="spec-permits-cat-key">
+                      <span className="spec-permits-cat-fig" aria-hidden>
+                        {['i', 'ii', 'iii', 'iv'][i]}
+                      </span>
+                      <code>{c.cap}</code>
+                    </dt>
+                    <dd className="spec-permits-cat-gloss">
+                      {c.gloss}
+                      <span className="spec-permits-cat-shape mono" aria-hidden>
+                        {c.shape}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              {/* the enforcement codes · denied, before it runs */}
+              <div className="spec-permits-denials">
+                <p className="spec-permits-denials-head mono">denied, before it runs</p>
+                <ul className="spec-permits-codes">
+                  {PERMIT_DENIALS.map((d) => (
+                    <li className="spec-permits-code" key={d.code}>
+                      <span className="spec-permits-code-id mono">{d.code}</span>
+                      <span className="spec-permits-code-fail">{d.failure}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="spec-permits-foot">
+                  See it felt, not told —{' '}
+                  <Link to="/#human-in-the-loop" className="spec-inline-link">
+                    toggle a permit and watch the runtime obey
+                  </Link>
+                  .
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* ══ FIG S.4 · the stdlib ════════════════════════════════════════ */}
+          <div id="s3" className="spec-block" data-rise>
+            <SpecHead
+              fig="FIG S.4"
               name="The standard library"
               count={`${CANON.builtins} builtins · 4 families`}
             >
@@ -336,7 +431,7 @@ export function Component() {
           {/* ══ FIG S.4 · providers ═════════════════════════════════════════ */}
           <div id="s4" className="spec-block" data-rise>
             <SpecHead
-              fig="FIG S.4"
+              fig="FIG S.5"
               name="Providers"
               count={`${CANON.providers} · ${CANON.providersLocal} local · ${CANON.providersCloud} cloud · ${CANON.providersTest} mock`}
             >
@@ -389,7 +484,7 @@ export function Component() {
           {/* ══ FIG S.5 · extract modes ═════════════════════════════════════ */}
           <div id="s5" className="spec-block" data-rise>
             <SpecHead
-              fig="FIG S.5"
+              fig="FIG S.6"
               name="Extract modes"
               count={`${CANON.extractModes} modes on fetch`}
             >
@@ -409,7 +504,7 @@ export function Component() {
           {/* ══ FIG S.6 · error namespaces ══════════════════════════════════ */}
           <div id="s6" className="spec-block" data-rise>
             <SpecHead
-              fig="FIG S.6"
+              fig="FIG S.7"
               name="Error namespaces"
               count={`${CANON.errorNamespaces} namespaces · ${CANON.errorCodes} codes`}
             >
@@ -429,23 +524,23 @@ export function Component() {
 
           {/* ══ FIG S.7 · license + invariants ══════════════════════════════ */}
           <div id="s7" className="spec-block spec-block--last" data-rise>
-            <SpecHead fig="FIG S.7" name="License + invariants" count="locked, forever">
+            <SpecHead fig="FIG S.8" name="License + invariants" count="locked, forever">
               The contract you can count on — the parts that never change.
             </SpecHead>
             <ul className="spec-invariants">
-              <Invariant fig="S.7a" claim="Forever v0.x">
+              <Invariant fig="S.8a" claim="Forever v0.x">
                 No v1.0 target. The engine matures in place; the language envelope stays{' '}
                 <code>nika: v1</code>.
               </Invariant>
-              <Invariant fig="S.7b" claim="Four verbs, locked">
+              <Invariant fig="S.8b" claim="Four verbs, locked">
                 <code>infer · exec · invoke · agent</code> — a closed set, locked forever. New
                 capability arrives as a tool, never a fifth verb.
               </Invariant>
-              <Invariant fig="S.7c" claim="The spec is Apache-2.0">
+              <Invariant fig="S.8c" claim="The spec is Apache-2.0">
                 The language spec is permissive — adopt it, build a runtime against it, with a
                 patent grant. The standard for the workflow file.
               </Invariant>
-              <Invariant fig="S.7d" claim="The engine is AGPL-3.0-or-later">
+              <Invariant fig="S.8d" claim="The engine is AGPL-3.0-or-later">
                 Copyleft on the engine — a hosted fork shares its source. Anti-extraction by
                 construction.
               </Invariant>

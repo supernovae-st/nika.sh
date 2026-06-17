@@ -138,7 +138,7 @@ export function Component() {
       {
         name: 'description',
         content:
-          'Real Nika workflows across five métiers — builders, research, content, ops and business. Every example is projected from the spec showcase: title, outcome, verbs and the exact YAML that runs it.',
+          'Real Nika plans across five métiers — builders, research, content, ops and business. Each is reviewable before it acts and permission-bound, projected from the spec showcase: title, outcome, verbs and the exact YAML that runs it.',
       },
       { property: 'og:title', content: 'Use cases · Nika' },
       {
@@ -211,11 +211,12 @@ export function Component() {
             data-rise
             style={{ ['--rise-delay' as string]: '60ms' }}
           >
-            Real files you&apos;d write.
+            Real plans you&apos;d review.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Anything you&apos;d ask an AI to do more than once belongs in a file. Every workflow
-            below is <b>real</b> — projected from <code className="mono">nika-spec</code>, passing
+            Anything you&apos;d ask an AI to do more than once belongs in a file you can{' '}
+            <b>read before it acts</b> — reviewable, permission-bound, replayable. Every workflow
+            below is <b>real</b>, projected from <code className="mono">nika-spec</code> and passing
             the conformance gate. Five métiers, {total} workflows, each with the exact YAML that
             runs it.
           </p>
