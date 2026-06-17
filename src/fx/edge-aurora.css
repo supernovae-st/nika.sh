@@ -1,0 +1,97 @@
+/* ─── EdgeAurora · the v4 signature ──────────────────────────────────────────
+   A reactive multicolor halo that hugs the screen frame while the center stays
+   transparent (the "Siri / Oryzo" effect · design doc §3.2). It is THE DRUM:
+   it pulses on workflow events. Center black & readable; a blurred cyan→violet
+   →cyan ring lives at the edges only. Intensity is driven by the
+   `--aurora-intensity` custom property (rest ≈ 0.06) — pulses mutate it on the
+   element directly (no React re-render). At rest it breathes slowly via CSS.
+
+   Pure CSS so it renders during the Node prerender (vite-plugin-react-ssg)
+   without touching window/document — the component only reads matchMedia in an
+   effect. The center is fully transparent (pointer-events:none) so it never
+   intercepts clicks or obscures content; it reads over BOTH light- and dark-mode
+   sections because the rest intensity is subtle and the hues are additive. */
+
+.edge-aurora {
+  /* rest intensity · pulses raise this toward ~1 then decay back (design §3.2) */
+  --aurora-intensity: 0.06;
+
+  position: fixed;
+  inset: 0;
+  z-index: 60; /* above content, below any modal */
+  pointer-events: none;
+
+  /* The glow itself is the ::before ring; the layer is otherwise transparent. */
+  background: transparent;
+
+  /* gate the breath via the custom-property pipeline, not opacity-on-layer, so
+     reduced-motion can freeze it without affecting the pulse intensity var */
+  animation: edge-aurora-breathe 10s ease-in-out infinite;
+
+  /* Hint the compositor: only the ring's opacity/blur animates. */
+  will-change: opacity;
+}
+
+/* The visible ring · a blurred conic sweep masked to the frame edges only.
+   `mask` punches a transparent rectangle out of the center so only the rim
+   glows. The conic gradient gives the multicolor cyan→violet→cyan sweep. */
+.edge-aurora::before {
+  content: '';
+  position: absolute;
+  inset: -20%; /* bleed past the frame so the blur falls off the screen edges  */
+  background:
+    conic-gradient(
+      from 0deg,
+      #22d3ee 0%,
+      #b07bff 25%,
+      #22d3ee 50%,
+      #b07bff 75%,
+      #22d3ee 100%
+    );
+
+  /* keep the GLOW at the rim only — fade the inner area to transparent so the
+     center stays black & readable (the Siri/Oryzo look) */
+  mask: radial-gradient(
+    ellipse 78% 78% at 50% 50%,
+    transparent 58%,
+    #000 100%
+  );
+  -webkit-mask: radial-gradient(
+    ellipse 78% 78% at 50% 50%,
+    transparent 58%,
+    #000 100%
+  );
+
+  filter: blur(64px);
+  opacity: var(--aurora-intensity);
+
+  /* slow hue drift makes the rim feel alive even between pulses */
+  animation: edge-aurora-rotate 26s linear infinite;
+}
+
+/* breathing · gently swells the whole ring's opacity around its rest value.
+   Drives a multiplier through the layer opacity so it composes with the
+   per-element --aurora-intensity that pulse() mutates. */
+@keyframes edge-aurora-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes edge-aurora-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* reduced-motion · no breathing, no hue drift · static low intensity. */
+@media (prefers-reduced-motion: reduce) {
+  .edge-aurora,
+  .edge-aurora::before {
+    animation: none;
+  }
+}
