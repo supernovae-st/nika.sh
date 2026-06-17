@@ -1017,3 +1017,29 @@ h1, h2 { font-family: var(--headline); }
   letter-spacing: 0.2em;
   color: var(--cyan);
 }
+
+/* ─── « enter the galaxy » egg · the close affordance ─────────────────────────
+   A quiet glass chip over the cinematic; contrast lifts on hover/focus and the
+   focus ring is always visible (keyboard exit · frontend-design). */
+.egg-close {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  border: 1px solid color-mix(in srgb, var(--cyan) 22%, transparent);
+  background: color-mix(in srgb, #05060e 55%, transparent);
+  backdrop-filter: blur(8px);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.egg-close:hover,
+.egg-close:focus-visible {
+  color: var(--fg);
+  border-color: color-mix(in srgb, var(--cyan) 60%, transparent);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--cyan) 24%, transparent);
+}
+.egg-close:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}

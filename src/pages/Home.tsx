@@ -1,51 +1,35 @@
-import { useEffect, useRef } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { useHead } from '@unhead/react'
-import ClientOnlyGalaxy from '../scene/ClientOnlyGalaxy'
-import { scroll, mouse, egg } from '../scene/state'
-import Code from '../Code'
-import { WF, NOTES, WEDGE, REPO, SPEC } from '../content'
-import { InstallPill, Plain } from '../components/ui'
-import ScrollStory from '../sections/ScrollStory'
-import MethodDiagram from '../sections/MethodDiagram'
-import Toolbelt from '../sections/Toolbelt'
 import Hero from '../sections/Hero'
-/* (the v3 four-verbs + versus blocks were removed in the v4 §6 pass — their
-   VerbForm / VERB_COLOR helpers are no longer mounted on the home) */
 import LivingFile from '../sections/living/LivingFile'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import OwnWorkflows from '../sections/OwnWorkflows'
+import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
 import ChangelogPreview from '../sections/ChangelogPreview'
 import Proof from '../sections/Proof'
 import FinalCTA from '../sections/FinalCTA'
 
-/* v4 redesign · the cinematic intro film + WebGL hero are GATED OFF so the page
-   loads straight to the calm DOM-first v4 <Hero> (Task 1.2). The whole film code
-   below is KEPT INTACT — it returns as the easter egg in a later phase. Flip this
-   to `true` to bring the v3 opening back. */
-const INTRO_ENABLED = false
+/* ─── / · the v4 trust landing ───────────────────────────────────────────────
+   Renders PURELY the v4 sections (design doc §6), in order:
+     Hero → LivingFile → Verbs → BeyondChat → OwnWorkflows → Toolbelt →
+     UseCasesV4 → ChangelogPreview → Proof → FinalCTA (→ footer in FinalCTA).
+   Zero WebGL on first load — the hero is prerendered DOM, instant + crawlable.
 
-/* ─── / · the cinematic home ─────────────────────────────────────────────────
-   The whole v3 home: the cinematic intro film, the Galaxy3D r3f canvas, the
-   scroll director, every section. Moved verbatim out of the old App.tsx when
-   routing switched hash → React Router (Task 0.3). This module only mounts on
-   the index route, so the scroll/parallax/ticker effects that used to be gated
-   on `page === 'main'` now simply run on mount.
+   The whole v3 cinematic (the butterfly→supernova intro film + the Galaxy3D
+   r3f canvas + the old below-the-fold sections) was removed from the default
+   render and now lives behind the « enter the galaxy » easter egg (design doc
+   §10): typing « nika » lazy-loads <GalaxyEgg/> as a fullscreen overlay. Their
+   component files (`src/scene/*`, ScrollStory, MethodDiagram, Transform, the v3
+   Hero/UseCases/etc.) are kept in the repo, just unmounted here. */
 
-   RR v7 `lazy` convention: export `Component`. */
-
-const TICKER_LINES = [
-  'Runs on your machine',
-  'Any model, cloud or local',
-  'Never lose your work',
-  'Pure Rust · one binary',
-  'Free & open source · AGPL forever',
-]
+/* lazy chunk · the entire three.js scene + intro film loads ONLY on the egg
+   trigger, so it never enters the default home bundle (design doc §8). */
+const GalaxyEgg = lazy(() => import('../scene/GalaxyEgg'))
 
 export function Component() {
-  const heroRef = useRef<HTMLDivElement>(null)
-  const tickerRef = useRef<HTMLSpanElement>(null)
+  const [eggOpen, setEggOpen] = useState(false)
 
   /* per-route <head> · prerendered into dist/index.html by @unhead/react */
   useHead({
@@ -69,26 +53,9 @@ export function Component() {
     ],
   })
 
-  /* benefits ticker · glitch-swap a SECONDARY line (the title never changes) */
-  useEffect(() => {
-    const el = tickerRef.current
-    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let i = 0
-    const id = setInterval(() => {
-      i = (i + 1) % TICKER_LINES.length
-      el.classList.add('tick-glitch')
-      setTimeout(() => {
-        el.textContent = TICKER_LINES[i]
-      }, 140)
-      setTimeout(() => el.classList.remove('tick-glitch'), 340)
-    }, 3800)
-    return () => clearInterval(id)
-  }, [])
-
-  /* dev: ?it=N freezes the whole intro film at t=N (handled in director.tsx —
-     ONE clock drives the canvas phases AND the DOM title cards) */
-
-  /* easter eggs · console lore + type « nika » → the butterfly re-forms */
+  /* easter egg · console lore + type « nika » → enter the galaxy (the v3
+     cinematic). The keystroke buffer matches the last 4 keys; on « nika » we
+     flip eggOpen, which lazy-loads + mounts <GalaxyEgg/> (the heavy chunk). */
   useEffect(() => {
     console.log(
       '%c\n   ⊱ ✦ ⊰\n  nika 🦋\n\n' +
@@ -102,114 +69,26 @@ export function Component() {
       if (e.key.length !== 1) return
       buf = (buf + e.key.toLowerCase()).slice(-4)
       if (buf === 'nika') {
-        egg.bflyUntil = Date.now() + 4500
-        console.log('%c🦋 she heard you.', 'color:#7fe9ff;font-family:monospace')
+        buf = ''
+        setEggOpen((open) => {
+          if (!open) console.log('%c🦋 she heard you.', 'color:#7fe9ff;font-family:monospace')
+          return true
+        })
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  /* intro disabled (v4) → the film normally reveals .nav-in / .hero-in from
-     opacity:0; with it off, force them visible immediately so the v3 nav + hero
-     below the fold render correctly (the calm v4 <Hero> covers the first screen). */
+  /* lock body scroll while the galaxy overlay owns the screen */
   useEffect(() => {
-    if (INTRO_ENABLED) return
-    document
-      .querySelectorAll<HTMLElement>('.nav-in, .hero-in')
-      .forEach((el) => (el.style.opacity = '1'))
-  }, [])
-
-  /* smooth scroll + granular parallax + global mouse — one rAF, zero re-renders */
-  useEffect(() => {
-    let raf = 0
-    let sY = 0
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const pxEls = reduced ? [] : Array.from(document.querySelectorAll<HTMLElement>('[data-px]'))
-
-    const apply = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      scroll.progress = max > 0 ? Math.min(1, Math.max(0, sY / max)) : 0
-      scroll.y = sY
-      scroll.vh = window.innerHeight
-      const ht = Math.min(1, sY / (window.innerHeight * 0.85))
-      const el = heroRef.current
-      if (el) {
-        el.style.opacity = String(Math.max(0, 1 - ht * 1.05))
-        el.style.filter = `blur(${ht * 5}px)`
-      }
-      // granular per-element parallax (depth, not one flat block)
-      for (const p of pxEls) {
-        const f = Number(p.dataset.px)
-        const my = mouse.y * f * -9
-        const mx = mouse.x * f * -13
-        p.style.transform = `translate(${mx}px, ${sY * f + my}px)`
-      }
-    }
-
-    let last = performance.now()
-    const tick = (now: number) => {
-      // dt-based damp — frame-rate independent (same feel at 2fps and 120Hz)
-      const dt = Math.min(0.1, (now - last) / 1000)
-      last = now
-      sY = reduced ? window.scrollY : sY + (window.scrollY - sY) * (1 - Math.exp(-8.5 * dt))
-      if (glow) {
-        const k = 1 - Math.exp(-7 * dt)
-        gx += (mxPx - gx) * k
-        gy += (myPx - gy) * k
-        glow.style.transform = `translate(${gx - 190}px, ${gy - 190}px)`
-      }
-      apply()
-      raf = requestAnimationFrame(tick)
-    }
-    // spotlight: the hovered glass card gets a light that FOLLOWS the cursor
-    let lastCard: HTMLElement | null = null
-    // magnetic CTAs: hero buttons lean toward a nearby cursor
-    const magnets = Array.from(document.querySelectorAll<HTMLElement>('[data-magnet]'))
-    const glow = document.getElementById('cursor-glow')
-    let gx = window.innerWidth / 2
-    let gy = window.innerHeight / 2
-    let mxPx = gx
-    let myPx = gy
-    const onMove = (e: PointerEvent) => {
-      mouse.x = (e.clientX / window.innerWidth - 0.5) * 2
-      mouse.y = (e.clientY / window.innerHeight - 0.5) * 2
-      mxPx = e.clientX
-      myPx = e.clientY
-      const card = (e.target as HTMLElement).closest?.('.skeuo, .glass') as HTMLElement | null
-      if (lastCard && lastCard !== card) lastCard.style.removeProperty('--spot-o')
-      if (card) {
-        const r = card.getBoundingClientRect()
-        card.style.setProperty('--mx', `${e.clientX - r.left}px`)
-        card.style.setProperty('--my', `${e.clientY - r.top}px`)
-        card.style.setProperty('--spot-o', '1')
-      }
-      lastCard = card
-      for (const m of magnets) {
-        const r = m.getBoundingClientRect()
-        const cx = r.left + r.width / 2
-        const cy = r.top + r.height / 2
-        const dx = e.clientX - cx
-        const dy = e.clientY - cy
-        const d = Math.hypot(dx, dy)
-        const reach = 130
-        if (d < reach) {
-          const k = (1 - d / reach) * 0.22
-          m.style.transform = `translate(${dx * k}px, ${dy * k}px)`
-        } else if (m.style.transform) {
-          m.style.transform = ''
-        }
-      }
-    }
-
-    apply()
-    raf = requestAnimationFrame(tick)
-    if (!reduced) window.addEventListener('pointermove', onMove, { passive: true })
+    if (!eggOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
     return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('pointermove', onMove)
+      document.body.style.overflow = prev
     }
-  }, [])
+  }, [eggOpen])
 
   /* entrance choreography — sections rise + fade as they cross into view. */
   useEffect(() => {
@@ -226,460 +105,42 @@ export function Component() {
 
   return (
     <>
-      <ClientOnlyGalaxy />
-
-      {/* ─── cinematic opening · black → the ELECTRIC BUTTERFLY (in the canvas,
-           made of the galaxy's own particles) → SUPERNOVAE presents / NIKA →
-           supernova burst → the butterfly scatters into the galaxy → reveal.
-           Timing locked to the scene clock (4.6s) — see director.tsx.
-           v4: gated OFF (INTRO_ENABLED=false) so the page opens on the calm
-           DOM-first hero. Kept intact — returns as the easter egg. ─── */}
-      {INTRO_ENABLED ? (
-      <div id="intro" className="pointer-events-none fixed inset-0 z-[60]">
-        {/* pure black — lifts to unveil the flickering butterfly */}
-        <div className="intro-black absolute inset-0" style={{ background: '#000005' }} />
-
-        {/* card 1 · the studio line — 2001 grammar: thin grotesque · vast
-             tracking · small size · pure fade · sits quiet below the wings */}
-        <div className="intro-super absolute inset-x-0 top-[76%] flex flex-col items-center gap-5">
-          <p
-            style={{
-              fontFamily: 'var(--display)',
-              fontWeight: 420,
-              letterSpacing: '0.68em',
-              textIndent: '0.68em',
-              fontSize: 'clamp(0.95rem, 1.7vw, 1.35rem)',
-              color: '#e9eef8',
-            }}
-          >
-            SUPERNOVAE
-          </p>
-          <p
-            className="mono text-[10px] tracking-[0.55em] uppercase"
-            style={{ color: 'var(--fg-dim)', textIndent: '0.55em' }}
-          >
-            presents
-          </p>
-        </div>
-
-        {/* card 2 · the title — same restraint, one step louder */}
-        <div className="intro-nika absolute inset-x-0 top-[75%] flex flex-col items-center gap-6">
-          <p
-            className="intro-nika-word"
-            style={{
-              fontFamily: 'var(--display)',
-              fontWeight: 460,
-              letterSpacing: '0.55em',
-              textIndent: '0.55em',
-              fontSize: 'clamp(1.7rem, 3.6vw, 2.9rem)',
-              lineHeight: 1,
-              color: '#f2f5fc',
-            }}
-          >
-            NIKA
-          </p>
-          <p
-            className="px-6 text-center text-[13.5px] tracking-[0.04em]"
-            style={{ color: 'var(--fg-dim)' }}
-          >
-            Intent as Code
-          </p>
-        </div>
-
-        {/* the supernova burst */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div
-            className="intro-burst h-[46vmin] w-[46vmin] rounded-full"
-            style={{
-              background:
-                'radial-gradient(circle, #ffffff 0%, #d8f0ff 26%, rgba(110,190,255,0.55) 52%, transparent 70%)',
-            }}
-          />
-        </div>
-      </div>
-      ) : null}
-
-      {/* light readability vignette (canvas already vignettes) */}
-      <div
-        className="pointer-events-none fixed inset-0 z-10"
-        style={{
-          background:
-            'radial-gradient(130% 90% at 50% 42%, transparent 42%, rgba(5,6,14,0.4) 78%, rgba(5,6,14,0.82) 100%)',
-        }}
-      />
-      {/* cursor light · a soft cyan lamp that trails the pointer (fine pointers only) */}
-      <div id="cursor-glow" aria-hidden />
-      {/* curved-tube screen feel · whole site (very light · comfort first) */}
-      <div className="crt-curve" />
-
-      <main className="relative z-20">
-        {/* ─── v4 hero · DOM-first · opaque · theme-dark · the calm first screen.
-             Covers the galaxy canvas so the first impression is restrained. ─── */}
+      <main className="relative">
+        {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
         <Hero />
 
-        {/* ─── v4 centerpiece · "The Living File" (Pass 1 · 2D comprehension +
-             live event stream). A sticky-scroll section: the hero's file becomes a
-             running DAG with real CLI/NDJSON logs and a real result. Supersedes
-             the v3 <Transform/> (kept in the repo, just unmounted). Pass 2 layers
-             the 3D depth corridor on top of this. ─── */}
+        {/* FIG 1.0 · « The Living File » — the file becomes a running DAG with
+             real CLI/NDJSON logs and a concrete result (THE wow, dosed) */}
         <LivingFile />
 
-        {/* ─── v4 home sections · the trust-landing body (design doc §6) ───────
-             FIG 2.0 verbs · FIG 3.0 beyond-the-chat (the dosed acid moment) ·
-             FIG 4.0 own-your-workflows (the theme-light rhythm break). They
-             SUPERSEDE the v3 four-verbs (#verbs), versus (#versus) and the
-             local-first copy — those blocks are removed below so there's no
-             duplication. The remaining v3 sections (toolbelt, use-cases, final
-             CTA, footer) stay for a later pass. ─── */}
+        {/* FIG 2.0–4.0 · clarity → the acid moment → sovereignty */}
         <Verbs />
         <BeyondChat />
         <OwnWorkflows />
 
-        {/* ─── FIG 5.0 · Toolbelt (theme-dark · the instrument spec sheet) — the
-             engine's capability inventory as a technical ledger · counts from
-             CANON. SUPERSEDES the v3 #toolbelt (removed below). ─── */}
+        {/* FIG 5.0 · Toolbelt — the capability ledger (counts from CANON) */}
         <Toolbelt />
 
-        {/* ─── FIG 6.0 · Use cases (theme-light · the editorial gallery · rhythm
-             break) — real showcase workflows tabbed by métier, each opening its
-             real spec YAML. SUPERSEDES the v3 #use-cases (removed below). ─── */}
+        {/* FIG 6.0 · Use cases — the editorial gallery (real spec workflows) */}
         <UseCasesV4 />
 
-        {/* ─── FIG 7.0 · Changelog (theme-dark · the ship log) — the latest REAL
-             milestones as a dated, hairline-ruled register, with a Full changelog →
-             link to the /changelog page (Phase 4). ─── */}
+        {/* FIG 7.0 · Changelog — the ship log (latest milestones) */}
         <ChangelogPreview />
 
-        {/* ─── FIG 8.0 · Proof (theme-light · the authority close) — proof BY THE
-             NUMBERS + the sovereignty guarantees (no testimonials; we have none
-             yet). Counts from CANON. The last rhythm break before the CTA. ─── */}
+        {/* FIG 8.0 · Proof — authority by the numbers + sovereignty guarantees */}
         <Proof />
 
-        {/* ─── FIG 9.0 · Final CTA + SUPERNOVAE footer (theme-dark · the close) —
-             the v4 monochrome install + Star + Read the spec, with the SUPERNOVAE
-             footer KEPT INTACT below it. SUPERSEDES the v3 #get-started close +
-             footer (removed below). ─── */}
+        {/* FIG 9.0 · Final CTA + SUPERNOVAE footer (kept intact) */}
         <FinalCTA />
-
-        {/* ─── v3 hero · the title itself lives inside the galaxy scene · kept
-             below the fold (redesigned in a later phase) ─── */}
-        <section className="hero-in relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
-          <div
-            ref={heroRef}
-            className="hero-scrim relative flex flex-col items-center"
-            style={{ willChange: 'transform, opacity, filter' }}
-          >
-            <p
-              data-px="-0.05"
-              className="mono mb-7 flex items-center justify-center gap-3 text-[12px] tracking-[0.32em] text-[var(--fg-mute)] uppercase"
-            >
-              <img
-                src="/nika.svg"
-                alt=""
-                width={19}
-                height={19}
-                className="cursor-pointer transition-transform hover:scale-125"
-                style={{ filter: 'drop-shadow(0 0 9px rgba(98,210,255,0.65))' }}
-                onClick={() => {
-                  egg.bflyUntil = Date.now() + 4500
-                }}
-              />
-              <span className="font-semibold text-[var(--fg-mute)]">Nika</span>
-              <span className="text-[var(--fg-ghost)]">·</span>
-              <span style={{ color: "var(--fg-dim)" }}>Open language for AI workflows</span>
-            </p>
-
-            {/* invisible spacer — reserves the headline's space (+ accessible);
-                the visible title is real 3D text living in the galaxy scene */}
-            <h1 className="h-hero mb-5" style={{ opacity: 0, pointerEvents: 'none' }}>
-              Intent
-              <br />
-              as Code.
-            </h1>
-
-            {/* ONE short line — the full pitch is WRITTEN INTO the dive below
-                (ScrollStory · word-by-word on scroll) */}
-            <p
-              data-px="0.06"
-              className="hero-sub mt-14 max-w-[46rem] text-[20px] leading-relaxed text-pretty"
-            >
-              Write what you want in <span className="font-semibold text-[var(--fg)]">one file</span>.
-              Nika does the rest.
-            </p>
-
-            <div
-              id="install-v3"
-              data-px="0.12"
-              className="mt-11 flex flex-wrap items-center justify-center gap-4"
-            >
-              <span data-magnet className="magnet-wrap">
-                <InstallPill />
-              </span>
-              <a
-                href={REPO}
-                target="_blank"
-                rel="noreferrer"
-                data-magnet
-                className="skeuo magnet-wrap group flex items-center gap-2.5 rounded-full px-5 py-3 text-[14.5px] font-medium text-[var(--fg)]"
-              >
-                <span className="star-spark text-[15px]" aria-hidden>
-                  ★
-                </span>
-                Star on GitHub
-              </a>
-              <a
-                href={SPEC}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex items-center gap-2 text-[15px] text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
-              >
-                Read the spec
-                <span className="transition-transform group-hover:translate-x-0.5">↗</span>
-              </a>
-            </div>
-          </div>
-
-          {/* ONE quiet strip at the hero's bottom edge — the rotating benefit,
-              framed by thin rules (the old 3-line stack is gone) */}
-          <p
-            className="hero-strip mono absolute inset-x-0 bottom-9 flex items-center justify-center gap-5 px-8 text-[12px] tracking-[0.26em] uppercase"
-            aria-hidden
-          >
-            <span className="strip-rule" />
-            <span ref={tickerRef} className="whitespace-nowrap text-[var(--cyan)]">
-              Runs on your machine
-            </span>
-            <span className="strip-rule" />
-          </p>
-        </section>
-
-        {/* ─── stargate spacer · the camera dives the curve and flies THROUGH
-             real extruded 3D letters (WireWords · in the canvas) — the only
-             DOM here is the quiet kicker line ─── */}
-        <section className="pointer-events-none relative h-[380vh]">
-          <p className="sr-only">
-            Beyond the chat. You write what you want. Nika fetches, thinks, runs, saves.
-            Same file, same outcome, forever.
-          </p>
-          <ScrollStory />
-        </section>
-
-        {/* ─── the content acts · galaxy keeps breathing behind the veil ───
-             the veil arrives over ~45vh — you drift INTO the reading light,
-             never hit a wall (the hard seam was operator-flagged 2026-06-10) */}
-        <div className="relative" style={{ background: 'rgba(4,8,24,0.85)' }}>
-          <div
-            className="pointer-events-none absolute inset-x-0 -top-[45vh] h-[45vh]"
-            style={{
-              background:
-                'linear-gradient(to bottom, rgba(4,8,24,0) 0%, rgba(4,8,24,0.3) 45%, rgba(4,8,24,0.62) 75%, rgba(4,8,24,0.85) 100%)',
-            }}
-          />
-
-          {/* ─── §1 · the language made tangible ─── */}
-          <section id="language" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-28 md:py-36">
-            <p className="rv mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-              § The language
-            </p>
-            <h2
-              className="rv mb-3 font-semibold tracking-tight"
-              style={{ fontSize: 'clamp(2rem, 1rem + 3.5vw, 3.6rem)', lineHeight: 1.02 }}
-            >
-              One file. The whole workflow.
-            </h2>
-            <p className="rv max-w-[40rem] text-[17px] leading-relaxed text-[var(--fg-mute)]">
-              Not a config that hides the logic. The logic itself, in YAML a human reads and a
-              machine runs. Same file, same truth.
-            </p>
-
-            {/* how it works · the whole loop in three beats */}
-            <div className="rv hiw mt-9 mb-2" aria-label="How it works">
-              <div className="hiw-step">
-                <span className="hiw-n mono">01</span>
-                <div>
-                  <p className="hiw-t">Write the file</p>
-                  <p className="hiw-d">plain YAML · say what you want</p>
-                </div>
-              </div>
-              <span className="hiw-arrow" />
-              <div className="hiw-step">
-                <span className="hiw-n mono">02</span>
-                <div>
-                  <p className="hiw-t mono">nika run</p>
-                  <p className="hiw-d">the engine does every step</p>
-                </div>
-              </div>
-              <span className="hiw-arrow" />
-              <div className="hiw-step">
-                <span className="hiw-n mono">03</span>
-                <div>
-                  <p className="hiw-t">Keep the result</p>
-                  <p className="hiw-d">and the file · run it forever</p>
-                </div>
-              </div>
-            </div>
-            <div className="mb-14">
-              <Plain>
-                You describe what you want in a simple text file. The machine does it the same
-                way, every time, on any computer.
-              </Plain>
-            </div>
-
-            <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-              {/* the code card */}
-              <div className="rv skeuo overflow-hidden rounded-2xl">
-                <div
-                  className="flex items-center gap-2 border-b px-4 py-3"
-                  style={{ borderColor: 'var(--hair)' }}
-                >
-                  <span className="h-3 w-3 rounded-full" style={{ background: '#ff5f57' }} />
-                  <span className="h-3 w-3 rounded-full" style={{ background: '#febc2e' }} />
-                  <span className="h-3 w-3 rounded-full" style={{ background: '#28c840' }} />
-                  <span className="mono ml-3 text-[12px] text-[var(--fg-dim)]">
-                    research-pipeline.nika.yaml
-                  </span>
-                </div>
-                <div className="px-5 py-5">
-                  <Code code={WF} />
-                </div>
-              </div>
-
-              {/* the annotations */}
-              <div className="flex flex-col gap-3">
-                {NOTES.map((n, i) => (
-                  <div
-                    key={n.token}
-                    className="rv glass rounded-xl px-5 py-4"
-                    style={{ transitionDelay: `${i * 90}ms` }}
-                  >
-                    <code className="mono text-[13px] break-words text-[var(--cyan)]">
-                      {n.token}
-                    </code>
-                    <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--fg-mute)]">
-                      {n.body}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ─── §transform (v3) · superseded by the v4 <LivingFile/> above · the
-               component file stays in the repo, just unmounted here ─── */}
-
-          {/* ─── §2 · the four verbs · SUPERSEDED by the v4 <Verbs/> (FIG 2.0)
-               mounted above · the v3 block is removed to avoid duplication ─── */}
-
-          {/* ─── §toolbelt + §use-cases · the v3 mounts here were SUPERSEDED by the
-               v4 <Toolbelt/> (FIG 5.0 · theme-dark) + <UseCasesV4/> (FIG 6.0 ·
-               theme-light) mounted above, after <OwnWorkflows/>. Removed here so
-               there's no duplication. ─── */}
-
-          {/* ─── §3 · the method · the white room (2001: after the stargate, the
-               readable light) — the cosmos fades to paper, the source reads like print ─── */}
-          <div className="light-fade-in pointer-events-none" />
-          <div className="light-zone">
-            <section id="method" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-28 md:py-40">
-            <p className="rv mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-              {WEDGE.eyebrow}
-            </p>
-            <h2
-              className="rv mb-3 max-w-[46rem] font-semibold tracking-tight"
-              style={{ fontSize: 'clamp(2rem, 1rem + 3.5vw, 3.6rem)', lineHeight: 1.04 }}
-            >
-              {WEDGE.title}
-            </h2>
-            <p className="rv max-w-[42rem] text-[17px] leading-relaxed text-[var(--fg-mute)]">
-              {WEDGE.body}
-            </p>
-            <div className="mb-10">
-              <Plain>
-                Chat to figure things out, then keep the result as a file. The chat disappears;
-                the file works again tomorrow.
-              </Plain>
-            </div>
-
-            {/* the pipeline · intent → four verbs → result (animated · paper-legible) */}
-            <MethodDiagram />
-
-            <div className="relative grid items-stretch gap-6 md:grid-cols-2">
-              {/* the duel badge */}
-              <span className="vs-badge mono" aria-hidden>
-                VS
-              </span>
-
-              {/* the chat tier · a real chat window, dissolving */}
-              <div className="rv vs-chat flex flex-col rounded-2xl" style={{ opacity: 0.96 }}>
-                <div className="term-bar">
-                  <span className="t-dot r" />
-                  <span className="t-dot y" />
-                  <span className="t-dot g" />
-                  <span className="term-name mono">chat · session #847</span>
-                </div>
-                <div className="flex flex-1 flex-col gap-3.5 px-6 py-6">
-                  <p className="mono mb-1 text-[10.5px] tracking-[0.22em] text-[var(--fg-dim)] uppercase">
-                    {WEDGE.chat.label}
-                  </p>
-                  {WEDGE.chat.lines.map((l, i) => (
-                    <div key={l} className="flex items-end gap-2.5">
-                      <span className="chat-ava mono">U</span>
-                      <p
-                        className="chat-bubble chat-line text-[14.5px] leading-relaxed"
-                        style={{
-                          opacity: 1 - i * 0.22,
-                          filter: `blur(${i * 0.4}px)`,
-                          animationDelay: `${i * 1.1}s`,
-                        }}
-                      >
-                        {l}
-                      </p>
-                    </div>
-                  ))}
-                  <p className="mt-auto pt-5 text-[13.5px] text-[var(--fg-ghost)]">
-                    <span className="tab-closed mono">× tab closed</span> {WEDGE.chat.verdict}
-                  </p>
-                </div>
-              </div>
-
-              {/* the source tier · a real terminal, durable */}
-              <div className="rv vs-src flex flex-col rounded-2xl">
-                <div className="term-bar">
-                  <span className="t-dot r" />
-                  <span className="t-dot y" />
-                  <span className="t-dot g" />
-                  <span className="term-name mono">research-pipeline.nika.yaml</span>
-                </div>
-                <div className="flex flex-1 flex-col px-6 py-6">
-                  <p className="mono mb-4 text-[10.5px] tracking-[0.22em] text-[var(--cyan)] uppercase">
-                    {WEDGE.source.label}
-                  </p>
-                  <div className="code-well flex-1 px-5 py-4">
-                    <pre className="code">{WEDGE.source.code}</pre>
-                  </div>
-                  <p className="mt-6 flex flex-wrap items-center gap-3 text-[14px] font-medium text-[var(--cyan)]">
-                    {WEDGE.source.verdict}
-                    <span className="replay-badge mono">
-                      <span className="spin-slow">⟳</span> replays forever
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            </section>
-
-            {/* ─── §versus · SUPERSEDED by the v4 <BeyondChat/> (FIG 3.0 · the
-                 acid moment) mounted above · the v3 block is removed to avoid
-                 duplication (it reused the same VERSUS copy) ─── */}
-          </div>
-          {/* back into the cosmos for the close */}
-          <div className="light-fade-out pointer-events-none" />
-
-          {/* ─── final CTA + SUPERNOVAE footer · SUPERSEDED by the v4 <FinalCTA/>
-               (FIG 9.0 · theme-dark) mounted above, after <Proof/>. The footer is
-               KEPT INTACT there (same .supernovae-type wordmark + founders + free-
-               software rule). Removed here so there is no duplicate close. ─── */}
-        </div>
       </main>
+
+      {/* ─── the easter egg · « enter the galaxy » · lazy chunk, on trigger only.
+           Esc / the close button unmounts it → frees the WebGL context. ─── */}
+      {eggOpen && (
+        <Suspense fallback={null}>
+          <GalaxyEgg onClose={() => setEggOpen(false)} />
+        </Suspense>
+      )}
     </>
   )
 }
