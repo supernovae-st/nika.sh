@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import ClientOnlyGalaxy from '../scene/ClientOnlyGalaxy'
 import { scroll, mouse, egg } from '../scene/state'
 import Code from '../Code'
-import { WF, NOTES, WEDGE, REPO, SPEC, DOCS } from '../content'
+import { WF, NOTES, WEDGE, REPO, SPEC } from '../content'
 import { InstallPill, Plain } from '../components/ui'
 import ScrollStory from '../sections/ScrollStory'
 import MethodDiagram from '../sections/MethodDiagram'
@@ -17,6 +16,9 @@ import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import OwnWorkflows from '../sections/OwnWorkflows'
 import UseCasesV4 from '../sections/UseCasesV4'
+import ChangelogPreview from '../sections/ChangelogPreview'
+import Proof from '../sections/Proof'
+import FinalCTA from '../sections/FinalCTA'
 
 /* v4 redesign · the cinematic intro film + WebGL hero are GATED OFF so the page
    loads straight to the calm DOM-first v4 <Hero> (Task 1.2). The whole film code
@@ -343,6 +345,22 @@ export function Component() {
              real spec YAML. SUPERSEDES the v3 #use-cases (removed below). ─── */}
         <UseCasesV4 />
 
+        {/* ─── FIG 7.0 · Changelog (theme-dark · the ship log) — the latest REAL
+             milestones as a dated, hairline-ruled register, with a Full changelog →
+             link to the /changelog page (Phase 4). ─── */}
+        <ChangelogPreview />
+
+        {/* ─── FIG 8.0 · Proof (theme-light · the authority close) — proof BY THE
+             NUMBERS + the sovereignty guarantees (no testimonials; we have none
+             yet). Counts from CANON. The last rhythm break before the CTA. ─── */}
+        <Proof />
+
+        {/* ─── FIG 9.0 · Final CTA + SUPERNOVAE footer (theme-dark · the close) —
+             the v4 monochrome install + Star + Read the spec, with the SUPERNOVAE
+             footer KEPT INTACT below it. SUPERSEDES the v3 #get-started close +
+             footer (removed below). ─── */}
+        <FinalCTA />
+
         {/* ─── v3 hero · the title itself lives inside the galaxy scene · kept
              below the fold (redesigned in a later phase) ─── */}
         <section className="hero-in relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
@@ -656,128 +674,10 @@ export function Component() {
           {/* back into the cosmos for the close */}
           <div className="light-fade-out pointer-events-none" />
 
-          {/* ─── final CTA · the close (the "own your workflows" sovereignty
-               statement now lives in the v4 <OwnWorkflows/> · FIG 4.0 above · so
-               the close reframes to a distinct start-now CTA; the install row +
-               SUPERNOVAE footer below are KEPT intact) ─── */}
-          <section
-            id="get-started"
-            className="mx-auto flex max-w-4xl scroll-mt-24 flex-col items-center px-6 pt-32 pb-24 text-center md:pt-44"
-          >
-            <div className="rv">
-              <img
-                src="/nika.svg"
-                alt="Nika"
-                width={56}
-                height={56}
-                style={{ filter: 'drop-shadow(0 0 20px rgba(98,210,255,0.7))' }}
-              />
-            </div>
-            <h2
-              className="rv mt-8 mb-5 font-semibold tracking-tight"
-              style={{ fontSize: 'clamp(2.2rem, 1rem + 4.5vw, 4.4rem)', lineHeight: 1 }}
-            >
-              Start in one file<span style={{ color: 'var(--cyan)' }}>.</span>
-            </h2>
-            <p className="rv mb-10 max-w-[34rem] text-[16.5px] leading-relaxed text-[var(--fg-mute)]">
-              Install the binary, write a few lines of YAML, run it. Same file, same result,
-              on your machine — tomorrow and the day the vendor is gone.
-            </p>
-            <div className="rv flex flex-wrap items-center justify-center gap-4">
-              <InstallPill />
-              <a
-                href={REPO}
-                target="_blank"
-                rel="noreferrer"
-                className="skeuo flex items-center gap-2.5 rounded-full px-5 py-3 text-[15px] font-medium text-[var(--fg)] transition-transform hover:-translate-y-0.5"
-              >
-                <span className="star-spark" aria-hidden>
-                  ★
-                </span>
-                Star on GitHub
-              </a>
-              <Link
-                to="/learn"
-                className="text-[15px] text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
-              >
-                Learn it in 5 minutes →
-              </Link>
-            </div>
-
-            {/* ─── SUPERNOVAE · the type play — born from a supernova, signed by one.
-                 Per-letter float wave + hover lift · gradient dissolving into the void ─── */}
-            <a
-              href="https://supernovae.studio"
-              target="_blank"
-              rel="noreferrer"
-              className="supernovae-type mt-32 block w-full transition-opacity hover:opacity-90"
-              aria-label="SuperNovae Studio"
-            >
-              {'SUPERNOVAE'.split('').map((ch, i) => (
-                <span key={i} style={{ '--i': i } as React.CSSProperties}>
-                  {ch}
-                </span>
-              ))}
-            </a>
-            <p className="mono -mt-2 text-[11px] tracking-[0.42em] text-[var(--fg-ghost)] uppercase">
-              a SuperNovae Studio creation
-            </p>
-            <p className="mono mt-5 flex items-center justify-center gap-6 text-[12px] text-[var(--fg-dim)]">
-              <a
-                href="https://x.com/ThibautMelen"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-[var(--cyan)]"
-              >
-                𝕏 @ThibautMelen
-              </a>
-              <span className="text-[var(--fg-ghost)]">·</span>
-              <a
-                href="https://x.com/niccela"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-[var(--cyan)]"
-              >
-                𝕏 @niccela
-              </a>
-            </p>
-
-            <footer
-              className="mono mt-20 flex w-full flex-wrap items-center justify-between gap-3 border-t pt-6 text-[12px] text-[var(--fg-ghost)]"
-              style={{ borderColor: 'var(--hair)' }}
-            >
-              <span className="flex items-center gap-2">
-                <img src="/nika.svg" alt="" width={13} height={13} style={{ opacity: 0.7 }} />
-                nika · free software · AGPL-3.0-or-later
-              </span>
-              <span className="flex gap-5">
-                <a
-                  href={REPO}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition-colors hover:text-[var(--fg-mute)]"
-                >
-                  GitHub
-                </a>
-                <a
-                  href={SPEC}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition-colors hover:text-[var(--fg-mute)]"
-                >
-                  Spec
-                </a>
-                <a
-                  href={DOCS}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition-colors hover:text-[var(--fg-mute)]"
-                >
-                  Docs
-                </a>
-              </span>
-            </footer>
-          </section>
+          {/* ─── final CTA + SUPERNOVAE footer · SUPERSEDED by the v4 <FinalCTA/>
+               (FIG 9.0 · theme-dark) mounted above, after <Proof/>. The footer is
+               KEPT INTACT there (same .supernovae-type wordmark + founders + free-
+               software rule). Removed here so there is no duplicate close. ─── */}
         </div>
       </main>
     </>
