@@ -1,0 +1,508 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { CodeFile } from '../../components/CodeFile'
+import { useAuroraPulse } from '../../fx/aurora-context'
+import { SHOWCASE_DAG, SHOWCASE_YAML, type ShowcaseTask } from '../usecases-yaml.generated'
+import { runStateAt, CLI_GLYPH, type RunState, type TaskStatus } from './run-model'
+import './living.css'
+
+/* ─── The Living File · Pass 1 (2D comprehension + live event stream) ──────────
+   Design doc §5. A theme-dark sticky-scroll section: a tall outer track (~280vh)
+   with a sticky, viewport-height inner STAGE. The stage's animation is driven by
+   the section's OWN scroll progress t ∈ [0,1] — computed from getBoundingClientRect
+   in a rAF loop (NOT drei ScrollControls, which would hijack the whole page).
+
+   One `runStateAt(dag, t)` call per visual frame is the SINGLE SOURCE OF TRUTH:
+   it drives the 2D DAG, the live CLI/NDJSON stream AND the outputs panel together,
+   so a reader scrolling clearly SEES the file become a running workflow with real
+   logs and a real result. Three beats across t:
+
+     beat 1 · the file       (t 0.00–0.25) — the CodeFile centered, FIG 1.0.
+     beat 2 · file → DAG      (t 0.25–0.50) — task lines detach into a flat 2D graph.
+     beat 3 · execution       (t 0.50–1.00) — nodes light pending→running→success
+                                              in topological order; edges flow when
+                                              a dep completes; each completion beats
+                                              the edge aurora (the drum); the live
+                                              stream + outputs render alongside.
+
+   SSR / no-JS / reduced-motion: the stage renders a sensible STATIC end-state
+   (the fully-executed run · full log + outputs) so the section is coherent with
+   zero scroll animation. The rAF scroll-scrub is a prefers-reduced-motion:
+   no-preference enhancement, added on mount — it must prerender without `window`.
+   This 2D version is ALSO the low-end / reduced-motion fallback for the Pass-2
+   3D corridor. */
+
+const DAG = SHOWCASE_DAG['t1-standup-digest']
+const YAML = SHOWCASE_YAML['t1-standup-digest']
+/** the static frame used for SSR / no-JS / reduced-motion (fully executed). */
+const END_STATE: RunState = runStateAt(DAG, 1)
+
+/* ── beat boundaries on the master t-timeline ──────────────────────────────── */
+const T_FILE_END = 0.25 // beat 1 → 2
+const T_MORPH_END = 0.5 // beat 2 → 3 (execution begins)
+
+/** map the master t (0..1) onto the EXECUTION sub-progress (0..1 across run). */
+function runProgress(t: number): number {
+  if (t <= T_MORPH_END) return 0
+  return Math.min(1, (t - T_MORPH_END) / (1 - T_MORPH_END))
+}
+
+/** how "detached from the file → landed as a graph" beat 2 is (0..1). */
+function morphProgress(t: number): number {
+  if (t <= T_FILE_END) return 0
+  if (t >= T_MORPH_END) return 1
+  return (t - T_FILE_END) / (T_MORPH_END - T_FILE_END)
+}
+
+/* ── 2D DAG layout · column = wave · row = index within wave (RunSim's math) ── */
+const NODE_W = 116
+const NODE_H = 34
+const COL_W = 150
+const ROW_H = 50
+const PAD_X = 14
+const PAD_Y = 14
+
+interface Pt {
+  x: number
+  y: number
+}
+
+interface Layout {
+  width: number
+  height: number
+  at: Record<string, Pt>
+  byWave: ShowcaseTask[][]
+}
+
+function computeLayout(): Layout {
+  const byWave: ShowcaseTask[][] = Array.from({ length: DAG.waves }, () => [])
+  for (const task of DAG.tasks) byWave[task.wave].push(task)
+  for (const col of byWave) col.sort((a, b) => a.line0 - b.line0 || (a.id < b.id ? -1 : 1))
+  const maxRows = Math.max(...byWave.map((w) => w.length))
+  const width = PAD_X * 2 + DAG.waves * COL_W - (COL_W - NODE_W)
+  const height = PAD_Y * 2 + maxRows * ROW_H - (ROW_H - NODE_H)
+  const at: Record<string, Pt> = {}
+  for (const task of DAG.tasks) {
+    const col = byWave[task.wave]
+    const idx = col.indexOf(task)
+    const colH = col.length * ROW_H - (ROW_H - NODE_H)
+    at[task.id] = {
+      x: PAD_X + task.wave * COL_W,
+      y: PAD_Y + (height - PAD_Y * 2 - colH) / 2 + idx * ROW_H,
+    }
+  }
+  return { width, height, at, byWave }
+}
+
+const LAYOUT = computeLayout()
+
+/* the verb → CSS var(); a whisper of the verb hue only while the node is
+   `running` (diegetic · design doc §3.3). Everything else is grayscale ink. */
+const VERB_VAR: Record<ShowcaseTask['verb'], string> = {
+  infer: 'var(--verb-infer)',
+  exec: 'var(--verb-exec)',
+  invoke: 'var(--verb-invoke)',
+  agent: 'var(--verb-agent)',
+}
+
+/** a status → a stable, compositor-cheap CSS class on the node group. */
+function nodeClass(status: TaskStatus): string {
+  return `lf-node lf-node--${status}`
+}
+
+/* ── the 2D DAG (SVG) ──────────────────────────────────────────────────────── */
+function Dag({ run, morph }: { run: RunState; morph: number }) {
+  const { width, height, at } = LAYOUT
+  return (
+    <svg
+      className="lf-dag"
+      viewBox={`0 0 ${width} ${height}`}
+      role="img"
+      aria-label="Workflow DAG · columns are parallel waves · nodes light as the run reaches them"
+      style={{ ['--lf-morph' as string]: morph }}
+    >
+      {/* edges first (under nodes) · flow when the source completes */}
+      {DAG.tasks.flatMap((task) =>
+        task.deps.map((dep) => {
+          const a = at[dep]
+          const b = at[task.id]
+          if (!a || !b) return null
+          const x1 = a.x + NODE_W
+          const y1 = a.y + NODE_H / 2
+          const x2 = b.x
+          const y2 = b.y + NODE_H / 2
+          const flowing =
+            run.nodes[dep]?.status === 'success' && run.nodes[task.id]?.status !== 'pending'
+          return (
+            <path
+              key={`${dep}->${task.id}`}
+              className={`lf-edge ${flowing ? 'lf-edge--flow' : ''}`}
+              d={`M ${x1} ${y1} C ${x1 + 30} ${y1}, ${x2 - 30} ${y2}, ${x2} ${y2}`}
+              fill="none"
+            />
+          )
+        }),
+      )}
+
+      {/* nodes */}
+      {DAG.tasks.map((task) => {
+        const p = at[task.id]
+        const node = run.nodes[task.id]
+        const status = node?.status ?? 'pending'
+        const running = status === 'running'
+        const hue = running ? VERB_VAR[task.verb] : undefined
+        const mark =
+          status === 'success'
+            ? CLI_GLYPH.done
+            : status === 'failure'
+              ? CLI_GLYPH.fail
+              : status === 'cancelled' || status === 'skipped'
+                ? CLI_GLYPH.cancel
+                : ''
+        return (
+          <g key={task.id} className={nodeClass(status)} style={hue ? { ['--lf-hue' as string]: hue } : undefined}>
+            <title>{`${task.id} · ${task.gloss}`}</title>
+            <rect className="lf-node-box" x={p.x} y={p.y} width={NODE_W} height={NODE_H} rx={9} />
+            <text className="lf-node-id" x={p.x + 12} y={p.y + NODE_H / 2 + 3.5}>
+              {task.id}
+            </text>
+            <text className="lf-node-verb" x={p.x + NODE_W - 12} y={p.y + NODE_H / 2 + 3.5} textAnchor="end">
+              {mark || task.verb}
+            </text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
+/* ── the live event stream · pretty CLI ↔ raw NDJSON (design doc §5.4) ───────── */
+type StreamMode = 'cli' | 'ndjson'
+
+/** classify a pretty CLI row so we can tint only the active (running) row. */
+function cliRowKind(line: string): { running: boolean; done: boolean; fail: boolean; rule: boolean } {
+  return {
+    running: line.startsWith(CLI_GLYPH.run),
+    done: line.startsWith(CLI_GLYPH.done),
+    fail: line.startsWith(CLI_GLYPH.fail) || line.startsWith(CLI_GLYPH.cancel),
+    rule: line.startsWith('──') || line.startsWith('exit '),
+  }
+}
+
+/** which task a running CLI row belongs to (so we can pick its verb hue). */
+function runningRowVerb(line: string, run: RunState): string | undefined {
+  // a running row is "▶ <id>  <verb>  → <target>"; find the matching running task
+  for (const task of DAG.tasks) {
+    if (run.nodes[task.id]?.status !== 'running') continue
+    if (line.includes(` ${task.id} `) || line.includes(`${CLI_GLYPH.run} ${task.id}`)) {
+      return VERB_VAR[task.verb]
+    }
+  }
+  return undefined
+}
+
+function Stream({ run, mode }: { run: RunState; mode: StreamMode }) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  // keep the latest line in view as the log grows (the terminal-tail feel)
+  useEffect(() => {
+    const el = scrollRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  })
+
+  if (mode === 'ndjson') {
+    return (
+      <div className="lf-stream-scroll" ref={scrollRef}>
+        <pre className="lf-ndjson" aria-label="Raw NDJSON event stream">
+          {run.events.length === 0 ? (
+            <span className="lf-ndjson-idle">{'// nika run --events ndjson · waiting for the run…'}</span>
+          ) : (
+            run.events.map((e) => (
+              <span className="lf-ndjson-line" key={e.id}>
+                {JSON.stringify({ kind: e.kind, task_id: e.payload.task_id, timestamp_ms: e.timestamp_ms })}
+              </span>
+            ))
+          )}
+        </pre>
+      </div>
+    )
+  }
+
+  return (
+    <div className="lf-stream-scroll" ref={scrollRef}>
+      <pre className="lf-cli" aria-label="nika run · live output">
+        {run.cli.length === 0 ? (
+          <span className="lf-cli-idle">{'❯ nika run standup-digest.nika.yaml'}</span>
+        ) : (
+          run.cli.map((line, i) => {
+            const k = cliRowKind(line)
+            const hue = k.running ? runningRowVerb(line, run) : undefined
+            const cls = k.running
+              ? 'lf-cli-row lf-cli-row--running'
+              : k.done
+                ? 'lf-cli-row lf-cli-row--done'
+                : k.fail
+                  ? 'lf-cli-row lf-cli-row--fail'
+                  : k.rule
+                    ? 'lf-cli-row lf-cli-row--rule'
+                    : 'lf-cli-row lf-cli-row--sub'
+            return (
+              <span className={cls} key={i} style={hue ? { color: hue } : undefined}>
+                {line}
+              </span>
+            )
+          })
+        )}
+      </pre>
+    </div>
+  )
+}
+
+/* ── the outputs panel · the outputs object + exit code (design doc §5.4e) ───── */
+function Outputs({ run }: { run: RunState }) {
+  const done = run.exitCode !== null
+  const failed = run.exitCode !== null && run.exitCode !== 0
+  return (
+    <div className="lf-outputs" data-state={!done ? 'pending' : failed ? 'fail' : 'ok'}>
+      <p className="lf-panel-cap">
+        <span aria-hidden>FIG 1.3</span>
+        <span aria-hidden className="lf-cap-dash">
+          —
+        </span>
+        outputs <span className="lf-cap-mono">(stdout)</span>
+      </p>
+      {!done ? (
+        <p className="lf-outputs-pending mono">…the run is still in flight</p>
+      ) : (
+        <>
+          <pre className="lf-outputs-json">
+            {run.outputs
+              ? JSON.stringify(run.outputs, null, 2)
+              : '{ "error": "run did not complete" }'}
+          </pre>
+          <p className="lf-exit mono" data-fail={failed}>
+            <span aria-hidden>{failed ? CLI_GLYPH.fail : CLI_GLYPH.done}</span> exit {run.exitCode}
+          </p>
+        </>
+      )}
+    </div>
+  )
+}
+
+/* ── beat caption · the one-line "where you are" register ─────────────────────*/
+function beatLabel(t: number): { fig: string; title: string } {
+  if (t < T_FILE_END) return { fig: 'FIG 1.0', title: 'The file is the workflow' }
+  if (t < T_MORPH_END) return { fig: 'FIG 1.1', title: 'The file becomes a graph' }
+  return { fig: 'FIG 1.2', title: 'One binary runs it — watch it execute' }
+}
+
+export default function LivingFile() {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  const pulse = useAuroraPulse()
+
+  /* The run state that drives EVERYTHING. Initialised to the END state so the
+     prerendered / no-JS / reduced-motion DOM is the coherent fully-executed
+     frame (full log + outputs). On mount (motion allowed) we reset to t=0 and
+     follow the section's scroll. */
+  const [run, setRun] = useState<RunState>(END_STATE)
+  const [t, setT] = useState(1)
+  const [mode, setMode] = useState<StreamMode>('cli')
+  /* false until the rAF scroll-scrub takes over (motion allowed) → gates the tall
+     track + absolute pin. Default false keeps the SSR / no-JS / reduced-motion
+     frame a normal in-flow full section showing the static end-state. */
+  const [scrub, setScrub] = useState(false)
+
+  /* refs the rAF loop reads/writes WITHOUT re-rendering every frame. We only
+     setState (re-render) when the DISCRETIZED state actually changes — the
+     run-state "signature" (status set + revealed-line count) or a coarse t step
+     for the beat transitions. This keeps React churn low while staying smooth. */
+  const sigRef = useRef<string>('')
+  const tStepRef = useRef(-1)
+  const completedRef = useRef<Set<string>>(new Set(DAG.tasks.map((x) => x.id))) // end-state: all done
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced) return // keep the static end-state frame · no scrub
+
+    // motion allowed → take over from the static end-state. The reset (start the
+    // run at the top) happens INSIDE the first rAF tick, not synchronously in the
+    // effect body, so it never triggers a cascading render at mount.
+    let raf = 0
+    let primed = false
+    const tick = () => {
+      if (!primed) {
+        primed = true
+        completedRef.current = new Set()
+        sigRef.current = ''
+        tStepRef.current = -1
+        // enable the tall track + absolute pin · done in the first rAF tick (not
+        // synchronously in the effect body) so it never cascades a render at mount
+        setScrub(true)
+      }
+      const track = trackRef.current
+      const stage = stageRef.current
+      if (track && stage) {
+        const rect = track.getBoundingClientRect()
+        const vh = window.innerHeight
+        // progress = how far the stage has travelled through the track.
+        // 0 when the track top hits the viewport top; 1 when its bottom is one
+        // viewport-height from the top (the stage's full travel).
+        const travel = rect.height - vh
+        const p = travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 0
+
+        // PIN the stage ourselves (CSS position:sticky is dead here because an
+        // ancestor — body — has overflow-x:hidden, which silently turns it into a
+        // scroll container and disables sticky for descendants). We translate the
+        // absolutely-positioned stage so it tracks the viewport across the track's
+        // travel, then releases at the ends. transform-only → stays compositor-cheap.
+        const pinned = Math.min(Math.max(-rect.top, 0), travel)
+        stage.style.transform = `translate3d(0, ${pinned}px, 0)`
+
+        // coarse t step (1/120) gates beat-caption + progress re-renders
+        const step = Math.round(p * 120)
+        const next = runStateAt(DAG, p)
+
+        // signature = status of every node + revealed line count. Cheap to diff.
+        let sig = `${next.cli.length}|`
+        for (const task of DAG.tasks) sig += next.nodes[task.id].status[0]
+
+        if (sig !== sigRef.current || step !== tStepRef.current) {
+          // newly-completed nodes → beat the drum (the aurora pulse)
+          for (const task of DAG.tasks) {
+            const st = next.nodes[task.id].status
+            if ((st === 'success' || st === 'failure') && !completedRef.current.has(task.id)) {
+              completedRef.current.add(task.id)
+              pulse()
+            }
+          }
+          sigRef.current = sig
+          tStepRef.current = step
+          setRun(next)
+          setT(p)
+        }
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [pulse])
+
+  const morph = useMemo(() => morphProgress(t), [t])
+  const runP = useMemo(() => runProgress(t), [t])
+  const beat = beatLabel(t)
+  /* which beat owns the stage (drives the CSS cross-fades). The execution beat
+     is "active" as soon as the run has begun so the graph/stream are present. */
+  const stageBeat = t < T_FILE_END ? 'file' : t < T_MORPH_END ? 'morph' : 'run'
+
+  return (
+    <section
+      aria-labelledby="living-file-title"
+      className="theme-dark lf-section"
+      data-scrub={scrub}
+    >
+      {/* the tall scroll track — its height defines the scrub distance */}
+      <div ref={trackRef} className="lf-track">
+        {/* the viewport-height stage · JS-pinned (see the rAF loop) because CSS
+            position:sticky is disabled by the body's overflow-x:hidden ancestor */}
+        <div ref={stageRef} className="lf-stage" data-beat={stageBeat}>
+          {/* ── header · the FIG register + the section title ── */}
+          <div className="lf-head">
+            <p className="lf-head-fig mono">
+              <span aria-hidden>{beat.fig}</span>
+              <span aria-hidden className="lf-cap-dash">
+                —
+              </span>
+              <span className="lf-head-step" aria-live="polite">
+                {beat.title}
+              </span>
+            </p>
+            <h2 id="living-file-title" className="lf-title">
+              The Living File
+            </h2>
+            <p className="lf-lede">
+              One file. Scroll, and watch <span className="lf-em">standup-digest.nika.yaml</span>{' '}
+              become a running workflow — real logs, a real result.
+            </p>
+            {/* a dimension line · the blueprint HUD register (decorative) */}
+            <svg className="lf-dim" width="180" height="12" viewBox="0 0 180 12" fill="none" aria-hidden>
+              <path d="M2 2v8M178 2v8M2 6h176" stroke="currentColor" strokeWidth="1" />
+              <path d="M2 6l6-2.6M2 6l6 2.6M178 6l-6-2.6M178 6l-6 2.6" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+            </svg>
+          </div>
+
+          {/* ── the stage body · the file, the graph, the run surfaces ── */}
+          <div className="lf-body">
+            {/* BEAT 1 · the file (fades out as the graph takes over) */}
+            <div className="lf-file" aria-hidden={stageBeat !== 'file'}>
+              <p className="lf-panel-cap">
+                <span aria-hidden>FIG 1.0</span>
+                <span aria-hidden className="lf-cap-dash">
+                  —
+                </span>
+                the file, as written
+              </p>
+              <CodeFile filename="standup-digest.nika.yaml" yaml={YAML} highlight={[8, 11]} />
+            </div>
+
+            {/* BEAT 2+3 · the graph + (during execution) the stream & outputs */}
+            <div className="lf-run">
+              <div className="lf-graph">
+                <p className="lf-panel-cap">
+                  <span aria-hidden>FIG 1.1</span>
+                  <span aria-hidden className="lf-cap-dash">
+                    —
+                  </span>
+                  the DAG · columns are parallel waves
+                </p>
+                <div className="lf-dag-wrap">
+                  <Dag run={run} morph={morph} />
+                </div>
+              </div>
+
+              {/* the observability column · live stream + outputs (execution beat) */}
+              <div className="lf-obs">
+                <div className="lf-stream">
+                  <div className="lf-stream-head">
+                    <p className="lf-panel-cap lf-panel-cap--inline">
+                      <span aria-hidden>FIG 1.2</span>
+                      <span aria-hidden className="lf-cap-dash">
+                        —
+                      </span>
+                      live run
+                    </p>
+                    {/* the CLI ↔ NDJSON toggle (the detail that proves a real engine) */}
+                    <div className="lf-toggle" role="group" aria-label="Event stream format">
+                      <button
+                        type="button"
+                        className="lf-toggle-btn"
+                        aria-pressed={mode === 'cli'}
+                        onClick={() => setMode('cli')}
+                      >
+                        pretty
+                      </button>
+                      <button
+                        type="button"
+                        className="lf-toggle-btn"
+                        aria-pressed={mode === 'ndjson'}
+                        onClick={() => setMode('ndjson')}
+                      >
+                        NDJSON
+                      </button>
+                    </div>
+                  </div>
+                  <Stream run={run} mode={mode} />
+                </div>
+                <Outputs run={run} />
+              </div>
+            </div>
+          </div>
+
+          {/* a thin progress rail at the stage foot — where you are in the run */}
+          <div className="lf-rail" aria-hidden>
+            <div className="lf-rail-fill" style={{ transform: `scaleX(${runP})` }} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

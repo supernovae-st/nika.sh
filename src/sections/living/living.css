@@ -1,0 +1,503 @@
+/* ─── The Living File · Pass 1 (2D) · styles ──────────────────────────────────
+   Design doc §5. A theme-dark sticky-scroll section. The austere blueprint
+   register of the hero (FIG/SEC codes · hairline borders · mono captions ·
+   dimension lines · grayscale ink). Color is rare: only the verb-hue whisper on
+   the running node/log row + the global edge aurora (the drum).
+
+   Motion: every beat transition + node light-up is transform/opacity only
+   (compositor-friendly). prefers-reduced-motion freezes the cross-fades — the
+   static end-state frame (rendered by the component for SSR / no-JS) stays fully
+   legible without any scroll scrub. */
+
+.lf-section {
+  position: relative;
+  /* self-paints its theme-dark surface (the .theme-dark class also sets bg/ink) */
+}
+/* in scrub mode the pinned stage translates DOWN over the v3 sections that follow
+   in <main>. Raise the whole section into its own stacking context above them so
+   the opaque pinned run fully occludes their scroll region while it owns the
+   viewport. (Source-order alone would paint the later siblings on top.) */
+.lf-section[data-scrub='true'] {
+  z-index: 30;
+}
+
+/* the track. DEFAULT (no-JS / SSR / reduced-motion): auto height · the stage
+   sits in normal flow as a single full section showing the static end-state.
+   SCRUB (JS, motion allowed): the track grows to ~280vh and the stage is absolutely
+   pinned (JS transform) — see data-scrub on the section + the rAF loop. */
+.lf-track {
+  position: relative;
+}
+.lf-section[data-scrub='true'] .lf-track {
+  height: 280vh;
+}
+
+/* the inner stage */
+.lf-stage {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1.25rem, 3vh, 2.5rem);
+  padding: clamp(4.5rem, 9vh, 7rem) clamp(1.25rem, 5vw, 4rem) clamp(2.5rem, 5vh, 4rem);
+  max-width: 1180px;
+  margin-inline: auto;
+  overflow: hidden;
+}
+/* in scrub mode the stage is pinned by JS: absolute within the track, fixed
+   viewport height, translated each frame to track the viewport (transform only).
+   It carries the section's opaque dark surface so it fully OCCLUDES whatever
+   scrolls behind it (the v3 sections below) while pinned — the pin overlaps them
+   by design. A full-bleed background pad sits behind the max-width stage content. */
+.lf-section[data-scrub='true'] .lf-stage {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 100vh;
+  min-height: 640px;
+  margin-inline: auto;
+  background: var(--v4-bg);
+  /* lift above the v3 sections that FOLLOW this one in <main> — the pinned stage
+     translates DOWN over their scroll region, and an absolute z:auto box would be
+     painted under later positioned siblings (source order). A high z keeps the
+     pinned run fully opaque over them while it owns the viewport. */
+  z-index: 30;
+  will-change: transform;
+}
+/* the stage is max-width:1180px + centered, so its own bg leaves side gutters
+   transparent. A wider pseudo-pad paints the full viewport width behind it. */
+.lf-section[data-scrub='true'] .lf-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: var(--v4-bg);
+  z-index: -1;
+}
+
+/* ─── header · FIG register + title + lede + dimension line ──────────────────*/
+.lf-head {
+  max-width: 44rem;
+}
+.lf-head-fig {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.lf-head-step {
+  color: var(--v4-text);
+  letter-spacing: 0.12em;
+}
+.lf-cap-dash {
+  color: var(--v4-text-faint);
+}
+.lf-title {
+  margin-top: 0.6rem;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-size: clamp(1.9rem, 1rem + 3.2vw, 3.4rem);
+  color: var(--v4-text);
+}
+.lf-lede {
+  margin-top: 0.85rem;
+  max-width: 36rem;
+  font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.1rem);
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+}
+.lf-em {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--v4-text);
+}
+.lf-dim {
+  display: block;
+  margin-top: 1.1rem;
+  color: color-mix(in oklch, var(--v4-text) 20%, transparent);
+}
+
+/* ─── the stage body · the file / graph / observability surfaces ─────────────
+   The file panel and the run panel occupy the SAME grid cell and cross-fade as
+   the beats advance (one strong thing at a time · design doc P5). */
+.lf-body {
+  position: relative;
+  display: grid;
+  flex: 0 1 auto;
+}
+.lf-file,
+.lf-run {
+  grid-area: 1 / 1;
+  min-width: 0;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* beat 1 · the file is centered & forward; the run waits behind it */
+.lf-file {
+  max-width: 560px;
+  margin-inline: auto;
+  width: 100%;
+}
+.lf-stage[data-beat='file'] .lf-file {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.lf-stage[data-beat='morph'] .lf-file,
+.lf-stage[data-beat='run'] .lf-file {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.985);
+  pointer-events: none;
+}
+
+/* beat 2/3 · the run surface (graph + observability) */
+.lf-run {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(1rem, 2.4vw, 2rem);
+  align-items: start;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+}
+.lf-stage[data-beat='morph'] .lf-run,
+.lf-stage[data-beat='run'] .lf-run {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* the panel captions (engineering-manual register) */
+.lf-panel-cap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.6rem;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.lf-cap-mono {
+  font-family: var(--mono);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ─── the 2D DAG ─────────────────────────────────────────────────────────────*/
+.lf-graph {
+  min-width: 0;
+}
+.lf-dag-wrap {
+  border: 1px solid var(--v4-line);
+  border-radius: 12px;
+  background: var(--v4-bg-raised);
+  padding: 0.5rem;
+  overflow-x: auto;
+}
+.lf-dag {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 230px;
+}
+
+/* edges · hairline by default; "flow" (lit) once the source completes */
+.lf-edge {
+  stroke: var(--v4-line);
+  stroke-width: 1;
+  opacity: 0.7;
+  transition: stroke 0.35s ease, stroke-width 0.35s ease, opacity 0.35s ease;
+}
+.lf-edge--flow {
+  stroke: color-mix(in oklch, var(--v4-text) 46%, transparent);
+  stroke-width: 1.6;
+  opacity: 0.9;
+}
+
+/* nodes · grayscale ink; the box brightens by status; the verb-hue whisper
+   only appears while running (set via --lf-hue inline on the group). */
+.lf-node {
+  /* node-local ink derived from status (overridden on running) */
+  --lf-ink: var(--v4-text-faint);
+}
+.lf-node-box {
+  fill: color-mix(in oklch, var(--lf-ink) 8%, transparent);
+  stroke: color-mix(in oklch, var(--lf-ink) 55%, transparent);
+  stroke-width: 1;
+  transition: fill 0.3s ease, stroke 0.3s ease, stroke-width 0.3s ease;
+}
+.lf-node-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: var(--lf-ink);
+  transition: fill 0.3s ease;
+}
+.lf-node-verb {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: color-mix(in oklch, var(--lf-ink) 80%, transparent);
+  transition: fill 0.3s ease;
+}
+
+/* pending · faint */
+.lf-node--pending {
+  --lf-ink: var(--v4-text-faint);
+}
+.lf-node--pending .lf-node-box {
+  fill: transparent;
+}
+
+/* running · the verb-hue whisper (only state with color · design doc §3.3) */
+.lf-node--running {
+  --lf-ink: var(--lf-hue, var(--v4-text));
+}
+.lf-node--running .lf-node-box {
+  fill: color-mix(in oklch, var(--lf-hue, var(--v4-text)) 16%, transparent);
+  stroke: var(--lf-hue, var(--v4-text));
+  stroke-width: 1.6;
+}
+
+/* success · settles to bright white ink (the hue resolves to white on ✓) */
+.lf-node--success {
+  --lf-ink: var(--v4-text);
+}
+.lf-node--success .lf-node-box {
+  fill: color-mix(in oklch, var(--v4-text) 14%, transparent);
+  stroke: color-mix(in oklch, var(--v4-text) 65%, transparent);
+}
+
+/* failure / cancelled / skipped · muted (the failure path · design doc §5.4d) */
+.lf-node--failure .lf-node-box {
+  stroke: color-mix(in oklch, var(--v4-text) 50%, transparent);
+  stroke-dasharray: 3 3;
+}
+.lf-node--cancelled .lf-node-box,
+.lf-node--skipped .lf-node-box {
+  fill: transparent;
+  stroke: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  stroke-dasharray: 2 4;
+}
+
+/* the running-node ring pulse · opacity-only, motion-safe */
+@media (prefers-reduced-motion: no-preference) {
+  .lf-node--running .lf-node-box {
+    animation: lf-node-pulse 1.4s ease-in-out infinite;
+  }
+}
+@keyframes lf-node-pulse {
+  0%,
+  100% {
+    opacity: 0.78;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ─── the observability column · stream + outputs ────────────────────────────*/
+.lf-obs {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.5vh, 1.1rem);
+  min-width: 0;
+}
+
+.lf-stream {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--v4-line);
+  border-radius: 12px;
+  background: var(--v4-bg-raised);
+  overflow: hidden;
+}
+.lf-stream-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--v4-line);
+}
+.lf-panel-cap--inline {
+  margin-bottom: 0;
+}
+
+/* the CLI ↔ NDJSON toggle */
+.lf-toggle {
+  display: inline-flex;
+  border: 1px solid var(--v4-line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.lf-toggle-btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 4px 10px;
+  min-height: 28px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.lf-toggle-btn:hover {
+  color: var(--v4-text-dim);
+}
+.lf-toggle-btn[aria-pressed='true'] {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 9%, transparent);
+}
+.lf-toggle-btn + .lf-toggle-btn {
+  border-left: 1px solid var(--v4-line);
+}
+
+/* the scrolling log body · fixed height so the layout never jumps as it fills */
+.lf-stream-scroll {
+  height: clamp(150px, 26vh, 240px);
+  overflow-y: auto;
+  padding: 0.6rem 0.75rem;
+  scrollbar-width: thin;
+}
+.lf-cli,
+.lf-ndjson {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.55;
+  white-space: pre;
+  color: var(--v4-text-dim);
+}
+.lf-cli-row,
+.lf-ndjson-line {
+  display: block;
+}
+.lf-cli-idle,
+.lf-ndjson-idle {
+  color: var(--v4-text-faint);
+}
+
+/* the pretty CLI row register · color ONLY on the active running row */
+.lf-cli-row--running {
+  color: var(--v4-text); /* overridden inline with the verb hue when known */
+  font-weight: 500;
+}
+.lf-cli-row--done {
+  color: var(--v4-text);
+}
+.lf-cli-row--sub {
+  color: var(--v4-text-faint);
+}
+.lf-cli-row--fail {
+  color: color-mix(in oklch, var(--v4-text) 88%, transparent);
+}
+.lf-cli-row--rule {
+  color: var(--v4-text-faint);
+}
+
+/* raw NDJSON · dim monospace lines (the engine-truth surface) */
+.lf-ndjson {
+  font-size: 11px;
+  color: var(--v4-text-faint);
+}
+.lf-ndjson-line {
+  color: var(--v4-text-dim);
+}
+
+/* ─── the outputs panel ──────────────────────────────────────────────────────*/
+.lf-outputs {
+  border: 1px solid var(--v4-line);
+  border-radius: 12px;
+  background: var(--v4-bg-raised);
+  padding: 0.7rem 0.85rem 0.85rem;
+}
+.lf-outputs-pending {
+  font-size: 11.5px;
+  color: var(--v4-text-faint);
+}
+.lf-outputs-json {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--v4-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.lf-exit {
+  margin-top: 0.5rem;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: color-mix(in oklch, var(--v4-text) 70%, transparent);
+}
+.lf-exit[data-fail='true'] {
+  color: color-mix(in oklch, var(--v4-text) 88%, transparent);
+}
+
+/* ─── the run progress rail (stage foot) ─────────────────────────────────────*/
+.lf-rail {
+  height: 2px;
+  border-radius: 2px;
+  background: var(--v4-line);
+  overflow: hidden;
+}
+.lf-rail-fill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  background: color-mix(in oklch, var(--v4-text) 55%, transparent);
+  transition: transform 0.12s linear;
+}
+
+/* ─── reduced-motion · freeze the cross-fades, keep both surfaces legible ─────
+   The static end-state frame the component renders for SSR shows data-beat='run',
+   so the run surface is the one shown; the file panel is simply faded behind it.
+   We disable the transitions so nothing animates. */
+@media (prefers-reduced-motion: reduce) {
+  .lf-file,
+  .lf-run,
+  .lf-edge,
+  .lf-node-box,
+  .lf-node-id,
+  .lf-node-verb,
+  .lf-rail-fill {
+    transition: none;
+  }
+}
+
+/* ─── responsive · stack the run surface; keep everything ≤ viewport width ────*/
+@media (max-width: 860px) {
+  .lf-run {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lf-dag {
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .lf-stage {
+    height: auto;
+    min-height: 100vh;
+    justify-content: flex-start;
+    gap: 1.25rem;
+  }
+  .lf-stream-scroll {
+    height: 180px;
+  }
+  .lf-toggle-btn {
+    min-height: 32px; /* ≥ comfortable touch target inside the 28px chrome */
+  }
+}

@@ -10,9 +10,9 @@ import ScrollStory from '../sections/ScrollStory'
 import MethodDiagram from '../sections/MethodDiagram'
 import Toolbelt from '../sections/Toolbelt'
 import { VerbForm } from '../scene/verb-forms'
-import Transform from '../sections/Transform'
 import UseCases from '../sections/UseCases'
 import Hero from '../sections/Hero'
+import LivingFile from '../sections/living/LivingFile'
 import { VERB_COLOR, type Verb } from '../sections/transform-data'
 
 /* v4 redesign · the cinematic intro film + WebGL hero are GATED OFF so the page
@@ -312,6 +312,13 @@ export function Component() {
              Covers the galaxy canvas so the first impression is restrained. ─── */}
         <Hero />
 
+        {/* ─── v4 centerpiece · "The Living File" (Pass 1 · 2D comprehension +
+             live event stream). A sticky-scroll section: the hero's file becomes a
+             running DAG with real CLI/NDJSON logs and a real result. Supersedes
+             the v3 <Transform/> (kept in the repo, just unmounted). Pass 2 layers
+             the 3D depth corridor on top of this. ─── */}
+        <LivingFile />
+
         {/* ─── v3 hero · the title itself lives inside the galaxy scene · kept
              below the fold (redesigned in a later phase) ─── */}
         <section className="hero-in relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
@@ -515,8 +522,8 @@ export function Component() {
             </div>
           </section>
 
-          {/* ─── §transform · the showpiece · file → DAG → run, in one scroll ─── */}
-          <Transform />
+          {/* ─── §transform (v3) · superseded by the v4 <LivingFile/> above · the
+               component file stays in the repo, just unmounted here ─── */}
 
           {/* ─── §2 · the four verbs · the whole operation space ─── */}
           <section id="verbs" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-28 md:py-36">
