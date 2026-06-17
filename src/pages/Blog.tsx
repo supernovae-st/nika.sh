@@ -1,9 +1,10 @@
+import { Link } from 'react-router'
 import { REPO, SPEC } from '../content'
 import { CANON } from '../canon.generated'
 
 /* ─── /blog · the journal — pedagogy in long form ───────────────────────────
-   Hash-routed (#/blog) · no 3D (fast, readable) · one REAL flagship article
-   + upcoming teasers. Same cosmos palette, print rhythm. */
+   Routed at /blog (React Router) · no 3D (fast, readable) · one REAL flagship
+   article + upcoming teasers. Same cosmos palette, print rhythm. */
 
 const POSTS = [
   {
@@ -40,23 +41,23 @@ const POSTS = [
   },
 ]
 
-export default function Blog() {
+export function Component() {
   return (
     <main className="relative z-20 mx-auto max-w-3xl px-6 pt-32 pb-24">
       {/* mini nav */}
       <nav className="glass fixed top-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1 rounded-full px-2 py-1.5 text-[13px]">
-        <a href="#" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
+        <Link to="/" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
           <img src="/nika.svg" alt="" width={17} height={17} />
           nika
-        </a>
+        </Link>
         <span className="mx-1 h-4 w-px" style={{ background: 'var(--hair)' }} />
         <span className="px-3 py-1.5 text-[var(--fg)]">Blog</span>
-        <a
-          href="#"
+        <Link
+          to="/"
           className="rounded-full px-3 py-1.5 whitespace-nowrap text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
         >
           ← Back to site
-        </a>
+        </Link>
       </nav>
 
       <p className="mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
@@ -182,9 +183,9 @@ export default function Blog() {
           <a href={SPEC} target="_blank" rel="noreferrer" className="text-[var(--cyan)] transition-colors hover:text-[var(--fg)]">
             Read the spec →
           </a>
-          <a href="#/learn" className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]">
+          <Link to="/learn" className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]">
             Learn the file, line by line →
-          </a>
+          </Link>
         </div>
       </article>
 
@@ -208,9 +209,9 @@ export default function Blog() {
           <img src="/nika.svg" alt="" width={13} height={13} style={{ opacity: 0.7 }} />
           nika · free software · AGPL-3.0-or-later
         </span>
-        <a href="#" className="transition-colors hover:text-[var(--fg-mute)]">
+        <Link to="/" className="transition-colors hover:text-[var(--fg-mute)]">
           ← supernovae
-        </a>
+        </Link>
       </footer>
     </main>
   )

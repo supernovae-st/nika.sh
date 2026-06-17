@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router'
 import { REPO, SPEC, DOCS } from '../content'
 
 /* ─── /learn · one file, line by line ───────────────────────────────────────
-   Hash-routed (#/learn) · the 5-minute annotated walkthrough. Every YAML
-   fragment is spec-correct (nika-spec 01-envelope · 03-dag · 05-errors).
+   Routed at /learn (React Router) · the 5-minute annotated walkthrough. Every
+   YAML fragment is spec-correct (nika-spec 01-envelope · 03-dag · 05-errors).
    Each step: the code on one side, the plain-words story on the other. */
 
 interface Step {
@@ -134,7 +135,7 @@ const ERROR_JSON = `{
   "attempt": 2
 }`
 
-export default function Learn() {
+export function Component() {
   /* gentle rise-in as steps cross the fold */
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>('.lrn')
@@ -152,18 +153,18 @@ export default function Learn() {
     <main className="relative z-20 mx-auto max-w-5xl px-6 pt-32 pb-24">
       {/* mini nav */}
       <nav className="glass fixed top-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1 rounded-full px-2 py-1.5 text-[13px]">
-        <a href="#" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
+        <Link to="/" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
           <img src="/nika.svg" alt="" width={17} height={17} />
           nika
-        </a>
+        </Link>
         <span className="mx-1 h-4 w-px" style={{ background: 'var(--hair)' }} />
         <span className="px-3 py-1.5 text-[var(--fg)]">Learn</span>
-        <a
-          href="#"
+        <Link
+          to="/"
           className="rounded-full px-3 py-1.5 whitespace-nowrap text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
         >
           ← Back to site
-        </a>
+        </Link>
       </nav>
 
       <p className="mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
@@ -256,12 +257,12 @@ export default function Learn() {
           That&apos;s the whole language.
         </h2>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="#install"
+          <Link
+            to="/#install"
             className="skeuo-brand rounded-full px-6 py-3 text-[15px] font-semibold"
           >
             Install Nika
-          </a>
+          </Link>
           <a
             href={REPO}
             target="_blank"

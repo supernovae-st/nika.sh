@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
+import { Link } from 'react-router'
 import { REPO, SPEC } from '../content'
 
 /* ─── /manifesto · the drum of liberation ───────────────────────────────────
-   Hash-routed (#/manifesto) · no 3D, but cinematic: a CSS cosmic backdrop, the
+   Routed at /manifesto (React Router) · no 3D, but cinematic: a CSS cosmic backdrop, the
    DRUM as concentric cyan ripples radiating from a beating core (every workflow
    run is a beat), gradient hero + statement type, glowing cognitive-stack tokens,
    skeuo promise cards. The sovereignty manifesto, written the day a single
@@ -41,7 +42,7 @@ const PROMISES = [
   },
 ]
 
-export default function Manifesto() {
+export function Component() {
   /* reveal-on-scroll (reuses the site .rv/.in) + the cursor lamp + card spotlight */
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -100,18 +101,18 @@ export default function Manifesto() {
 
       {/* mini nav */}
       <nav className="glass fixed top-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1 rounded-full px-2 py-1.5 text-[13px]">
-        <a href="#" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
+        <Link to="/" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
           <img src="/nika.svg" alt="" width={17} height={17} />
           nika
-        </a>
+        </Link>
         <span className="mx-1 h-4 w-px" style={{ background: 'var(--hair)' }} />
         <span className="px-3 py-1.5 text-[var(--fg)]">Manifesto</span>
-        <a
-          href="#"
+        <Link
+          to="/"
           className="rounded-full px-3 py-1.5 whitespace-nowrap text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
         >
           ← Back to site
-        </a>
+        </Link>
       </nav>
 
       <main className="relative z-20">
@@ -266,9 +267,9 @@ export default function Manifesto() {
             >
               Star on GitHub →
             </a>
-            <a href="#" className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]">
+            <Link to="/" className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]">
               ← Back to site
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -280,9 +281,9 @@ export default function Manifesto() {
             <img src="/nika.svg" alt="" width={13} height={13} style={{ opacity: 0.7 }} />
             nika · free software · AGPL-3.0-or-later
           </span>
-          <a href="#" className="transition-colors hover:text-[var(--fg-mute)]">
+          <Link to="/" className="transition-colors hover:text-[var(--fg-mute)]">
             ← supernovae
-          </a>
+          </Link>
         </footer>
       </main>
     </>

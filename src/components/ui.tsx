@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router'
 import { REPO, SPEC } from '../content'
 
 /* the brand mark everywhere is the REAL logo — /nika.svg (the butterfly) */
@@ -11,21 +12,32 @@ function GitHubIcon({ size = 14 }: { size?: number }) {
   )
 }
 
-const NAV_LINKS: { label: string; href: string }[] = [
-  { label: 'Language', href: '#language' },
-  { label: 'Verbs', href: '#verbs' },
-  { label: 'Use cases', href: '#use-cases' },
-  { label: 'Learn', href: '#/learn' },
-  { label: 'Play', href: '#/play' },
-  { label: 'Blog', href: '#/blog' },
-  { label: 'Spec', href: SPEC },
+/* nav entries · `route` = a React Router path · `anchor` = an in-page section
+   on the home page (native scroll) · `external` = off-site link. The Nav is
+   rendered on the home route, so the anchors target sections present there. */
+type NavLink =
+  | { label: string; kind: 'route'; to: string }
+  | { label: string; kind: 'anchor'; href: string }
+  | { label: string; kind: 'external'; href: string }
+
+const NAV_LINKS: NavLink[] = [
+  { label: 'Language', kind: 'anchor', href: '#language' },
+  { label: 'Verbs', kind: 'anchor', href: '#verbs' },
+  { label: 'Use cases', kind: 'anchor', href: '#use-cases' },
+  { label: 'Learn', kind: 'route', to: '/learn' },
+  { label: 'Play', kind: 'route', to: '/play' },
+  { label: 'Blog', kind: 'route', to: '/blog' },
+  { label: 'Spec', kind: 'external', href: SPEC },
 ]
+
+const NAV_LINK_CLASS =
+  'hidden rounded-full px-3 py-1.5 whitespace-nowrap text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)] md:block'
 
 export function Nav() {
   return (
     <nav className="nav-in fixed top-5 left-1/2 z-30 -translate-x-1/2">
       <div className="glass nav-glass flex items-center gap-1 rounded-full px-2 py-1.5 text-[13px]">
-        <a href="#" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
+        <Link to="/" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
           <img
             src="/nika.svg"
             alt=""
@@ -34,17 +46,23 @@ export function Nav() {
             style={{ filter: 'drop-shadow(0 0 6px rgba(98,210,255,0.7))' }}
           />
           nika
-        </a>
+        </Link>
         <span className="mx-1 hidden h-4 w-px md:block" style={{ background: 'var(--hair)' }} />
-        {NAV_LINKS.map((l) => (
-          <a
-            key={l.label}
-            href={l.href}
-            className="hidden rounded-full px-3 py-1.5 whitespace-nowrap text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)] md:block"
-          >
-            {l.label}
-          </a>
-        ))}
+        {NAV_LINKS.map((l) =>
+          l.kind === 'route' ? (
+            <Link key={l.label} to={l.to} className={NAV_LINK_CLASS}>
+              {l.label}
+            </Link>
+          ) : l.kind === 'external' ? (
+            <a key={l.label} href={l.href} className={NAV_LINK_CLASS}>
+              {l.label}
+            </a>
+          ) : (
+            <a key={l.label} href={l.href} className={NAV_LINK_CLASS}>
+              {l.label}
+            </a>
+          ),
+        )}
         <span className="mx-1 h-4 w-px" style={{ background: 'var(--hair)' }} />
         <a
           href={REPO} target="_blank" rel="noreferrer"

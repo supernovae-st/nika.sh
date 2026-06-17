@@ -1,22 +1,26 @@
-import { useEffect, useRef, useState } from 'react'
-import Galaxy3D from './scene/Galaxy'
-import { scroll, mouse, egg } from './scene/state'
-import Code from './Code'
-import { WF, NOTES, VERBS, WEDGE, VERSUS, REPO, SPEC, DOCS } from './content'
-import { Nav, InstallPill, Plain } from './components/ui'
-import ScrollStory from './sections/ScrollStory'
-import MethodDiagram from './sections/MethodDiagram'
-import Toolbelt from './sections/Toolbelt'
-import { VerbForm } from './scene/verb-forms'
-import Transform from './sections/Transform'
-import UseCases from './sections/UseCases'
-import { lazy, Suspense } from 'react'
+import { useEffect, useRef } from 'react'
+import { Link } from 'react-router'
+import Galaxy3D from '../scene/Galaxy'
+import { scroll, mouse, egg } from '../scene/state'
+import Code from '../Code'
+import { WF, NOTES, VERBS, WEDGE, VERSUS, REPO, SPEC, DOCS } from '../content'
+import { Nav, InstallPill, Plain } from '../components/ui'
+import ScrollStory from '../sections/ScrollStory'
+import MethodDiagram from '../sections/MethodDiagram'
+import Toolbelt from '../sections/Toolbelt'
+import { VerbForm } from '../scene/verb-forms'
+import Transform from '../sections/Transform'
+import UseCases from '../sections/UseCases'
+import { VERB_COLOR, type Verb } from '../sections/transform-data'
 
-const Blog = lazy(() => import('./pages/Blog'))
-const Learn = lazy(() => import('./pages/Learn'))
-const Play = lazy(() => import('./pages/Play'))
-const Manifesto = lazy(() => import('./pages/Manifesto'))
-import { VERB_COLOR, type Verb } from './sections/transform-data'
+/* ─── / · the cinematic home ─────────────────────────────────────────────────
+   The whole v3 home: the cinematic intro film, the Galaxy3D r3f canvas, the
+   scroll director, every section. Moved verbatim out of the old App.tsx when
+   routing switched hash → React Router (Task 0.3). This module only mounts on
+   the index route, so the scroll/parallax/ticker effects that used to be gated
+   on `page === 'main'` now simply run on mount.
+
+   RR v7 `lazy` convention: export `Component`. */
 
 const TICKER_LINES = [
   'Runs on your machine',
@@ -26,37 +30,12 @@ const TICKER_LINES = [
   'Free & open source · AGPL forever',
 ]
 
-function pageFromHash(): 'main' | 'blog' | 'learn' | 'play' | 'manifesto' {
-  if (typeof window === 'undefined') return 'main'
-  const h = window.location.hash
-  if (h.startsWith('#/manifesto')) return 'manifesto'
-  if (h.startsWith('#/learn')) return 'learn'
-  if (h.startsWith('#/play')) return 'play'
-  if (h.startsWith('#/')) return 'blog'
-  return 'main'
-}
-
-export default function App() {
+export function Component() {
   const heroRef = useRef<HTMLDivElement>(null)
   const tickerRef = useRef<HTMLSpanElement>(null)
-  const [page, setPage] = useState(() => pageFromHash())
-
-  /* hash-router-lite · #/blog · #/learn = pages · plain #anchors = native scroll */
-  useEffect(() => {
-    const onHash = () => {
-      setPage((prev) => {
-        const next = pageFromHash()
-        if (prev !== next) window.scrollTo(0, 0)
-        return next
-      })
-    }
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
 
   /* benefits ticker · glitch-swap a SECONDARY line (the title never changes) */
   useEffect(() => {
-    if (page !== 'main') return
     const el = tickerRef.current
     if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let i = 0
@@ -69,7 +48,7 @@ export default function App() {
       setTimeout(() => el.classList.remove('tick-glitch'), 340)
     }, 3800)
     return () => clearInterval(id)
-  }, [page])
+  }, [])
 
   /* dev: ?it=N freezes the whole intro film at t=N (handled in director.tsx —
      ONE clock drives the canvas phases AND the DOM title cards) */
@@ -98,7 +77,6 @@ export default function App() {
 
   /* smooth scroll + granular parallax + global mouse — one rAF, zero re-renders */
   useEffect(() => {
-    if (page !== 'main') return
     let raf = 0
     let sY = 0
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -186,14 +164,10 @@ export default function App() {
       cancelAnimationFrame(raf)
       window.removeEventListener('pointermove', onMove)
     }
-  }, [page])
+  }, [])
 
-  /* entrance choreography — sections rise + fade as they cross into view.
-     Re-runs whenever we come back to the main page: the first mount may have
-     happened on #/blog or #/learn where none of these nodes existed (the
-     blurred-forever light-zone bug · operator-caught 2026-06-10 morning). */
+  /* entrance choreography — sections rise + fade as they cross into view. */
   useEffect(() => {
-    if (page !== 'main') return
     const els = document.querySelectorAll<HTMLElement>('.rv')
     const io = new IntersectionObserver(
       (entries) => {
@@ -203,32 +177,7 @@ export default function App() {
     )
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
-  }, [page])
-
-  if (page === 'blog')
-    return (
-      <Suspense fallback={null}>
-        <Blog />
-      </Suspense>
-    )
-  if (page === 'learn')
-    return (
-      <Suspense fallback={null}>
-        <Learn />
-      </Suspense>
-    )
-  if (page === 'play')
-    return (
-      <Suspense fallback={null}>
-        <Play />
-      </Suspense>
-    )
-  if (page === 'manifesto')
-    return (
-      <Suspense fallback={null}>
-        <Manifesto />
-      </Suspense>
-    )
+  }, [])
 
   return (
     <>
@@ -765,12 +714,12 @@ export default function App() {
                 </span>
                 Star on GitHub
               </a>
-              <a
-                href="#/learn"
+              <Link
+                to="/learn"
                 className="text-[15px] text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
               >
                 Learn it in 5 minutes →
-              </a>
+              </Link>
             </div>
 
             {/* ─── SUPERNOVAE · the type play — born from a supernova, signed by one.

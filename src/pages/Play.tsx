@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router'
 import CodeMirror from '@uiw/react-codemirror'
 import { yaml as yamlLang } from '@codemirror/lang-yaml'
 import { linter, lintGutter, type Diagnostic } from '@codemirror/lint'
@@ -7,7 +8,7 @@ import { lintNika, type LintDiag } from '../lib/nika-lint'
 import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import { VERB_COLOR } from '../sections/transform-data'
 
-/* ─── #/play · the playground ───────────────────────────────────────────────
+/* ─── /play · the playground ────────────────────────────────────────────────
    Edit real Nika in the browser · the validator's own NIKA codes appear
    live (the TS port of the conformance cross-refs + the eight hard
    rules). Client-only — nothing leaves the tab. Seeds = the 6 templates
@@ -28,7 +29,7 @@ const cmTheme = EditorView.theme(
   { dark: true },
 )
 
-export default function Play() {
+export function Component() {
   const [seed, setSeed] = useState('chain')
   const [code, setCode] = useState(TEMPLATES_YAML['chain'] ?? '')
   const [diags, setDiags] = useState<LintDiag[]>(() => lintNika(TEMPLATES_YAML['chain'] ?? ''))
@@ -70,9 +71,9 @@ export default function Play() {
   return (
     <div className="relative z-10 mx-auto max-w-7xl px-6 pt-24 pb-28">
       <header className="mb-8">
-        <a href="#" className="mono text-[12px] text-[var(--fg-dim)] transition-colors hover:text-[var(--fg)]">
+        <Link to="/" className="mono text-[12px] text-[var(--fg-dim)] transition-colors hover:text-[var(--fg)]">
           ← nika.sh
-        </a>
+        </Link>
         <h1 className="mt-4 mb-2 font-semibold tracking-tight" style={{ fontSize: 'clamp(2rem, 1rem + 3vw, 3rem)' }}>
           Playground
         </h1>
