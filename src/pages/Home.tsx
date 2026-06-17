@@ -12,7 +12,14 @@ import Toolbelt from '../sections/Toolbelt'
 import { VerbForm } from '../scene/verb-forms'
 import Transform from '../sections/Transform'
 import UseCases from '../sections/UseCases'
+import Hero from '../sections/Hero'
 import { VERB_COLOR, type Verb } from '../sections/transform-data'
+
+/* v4 redesign · the cinematic intro film + WebGL hero are GATED OFF so the page
+   loads straight to the calm DOM-first v4 <Hero> (Task 1.2). The whole film code
+   below is KEPT INTACT — it returns as the easter egg in a later phase. Flip this
+   to `true` to bring the v3 opening back. */
+const INTRO_ENABLED = false
 
 /* ─── / · the cinematic home ─────────────────────────────────────────────────
    The whole v3 home: the cinematic intro film, the Galaxy3D r3f canvas, the
@@ -96,6 +103,16 @@ export function Component() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  /* intro disabled (v4) → the film normally reveals .nav-in / .hero-in from
+     opacity:0; with it off, force them visible immediately so the v3 nav + hero
+     below the fold render correctly (the calm v4 <Hero> covers the first screen). */
+  useEffect(() => {
+    if (INTRO_ENABLED) return
+    document
+      .querySelectorAll<HTMLElement>('.nav-in, .hero-in')
+      .forEach((el) => (el.style.opacity = '1'))
   }, [])
 
   /* smooth scroll + granular parallax + global mouse — one rAF, zero re-renders */
@@ -209,7 +226,10 @@ export function Component() {
       {/* ─── cinematic opening · black → the ELECTRIC BUTTERFLY (in the canvas,
            made of the galaxy's own particles) → SUPERNOVAE presents / NIKA →
            supernova burst → the butterfly scatters into the galaxy → reveal.
-           Timing locked to the scene clock (4.6s) — see director.tsx. ─── */}
+           Timing locked to the scene clock (4.6s) — see director.tsx.
+           v4: gated OFF (INTRO_ENABLED=false) so the page opens on the calm
+           DOM-first hero. Kept intact — returns as the easter egg. ─── */}
+      {INTRO_ENABLED ? (
       <div id="intro" className="pointer-events-none fixed inset-0 z-[60]">
         {/* pure black — lifts to unveil the flickering butterfly */}
         <div className="intro-black absolute inset-0" style={{ background: '#000005' }} />
@@ -272,6 +292,7 @@ export function Component() {
           />
         </div>
       </div>
+      ) : null}
 
       {/* light readability vignette (canvas already vignettes) */}
       <div
@@ -288,7 +309,12 @@ export function Component() {
       <Nav />
 
       <main className="relative z-20">
-        {/* ─── hero · the title itself lives inside the galaxy scene ─── */}
+        {/* ─── v4 hero · DOM-first · opaque · theme-dark · the calm first screen.
+             Covers the galaxy canvas so the first impression is restrained. ─── */}
+        <Hero />
+
+        {/* ─── v3 hero · the title itself lives inside the galaxy scene · kept
+             below the fold (redesigned in a later phase) ─── */}
         <section className="hero-in relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
           <div
             ref={heroRef}
