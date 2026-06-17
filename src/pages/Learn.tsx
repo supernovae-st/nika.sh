@@ -150,6 +150,11 @@ export function Component() {
         property: 'og:description',
         content: 'One file, line by line — the five-minute Nika walkthrough.',
       },
+      { name: 'twitter:title', content: 'Learn · Nika' },
+      {
+        name: 'twitter:description',
+        content: 'One file, line by line — the five-minute Nika walkthrough.',
+      },
     ],
   })
 

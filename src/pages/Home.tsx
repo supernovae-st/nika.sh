@@ -49,6 +49,11 @@ export function Component() {
         property: 'og:description',
         content: 'Open language for AI workflows. One file, four verbs, one binary.',
       },
+      { name: 'twitter:title', content: 'Nika · Intent as Code' },
+      {
+        name: 'twitter:description',
+        content: 'Open language for AI workflows. One file, four verbs, one binary.',
+      },
     ],
   })
 

@@ -56,6 +56,11 @@ export function Component() {
         property: 'og:description',
         content: 'Notes from the source — long-form pedagogy on Intent as Code.',
       },
+      { name: 'twitter:title', content: 'Blog · Nika' },
+      {
+        name: 'twitter:description',
+        content: 'Notes from the source — long-form pedagogy on Intent as Code.',
+      },
     ],
   })
   return (

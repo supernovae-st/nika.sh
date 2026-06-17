@@ -48,6 +48,11 @@ export function Component() {
         property: 'og:description',
         content: 'Edit real Nika in the browser — live validation with the engine’s NIKA codes.',
       },
+      { name: 'twitter:title', content: 'Playground · Nika' },
+      {
+        name: 'twitter:description',
+        content: 'Edit real Nika in the browser — live validation with the engine’s NIKA codes.',
+      },
     ],
   })
 
