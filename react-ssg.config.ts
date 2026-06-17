@@ -16,5 +16,5 @@ export default defineReactSsgConfig({
   history: 'browser',
   origin: 'https://nika.sh',
   routes,
-  paths: ['/', '/blog', '/learn', '/play', '/manifesto'],
+  paths: ['/', '/blog', '/learn', '/play', '/manifesto', '/changelog', '/use-cases'],
 })

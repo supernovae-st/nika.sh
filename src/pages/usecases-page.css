@@ -1,0 +1,354 @@
+/* ─── /use-cases page · the full editorial gallery ───────────────────────────
+   The fuller, scroll-everything counterpart to the home teaser (UseCasesV4). The
+   same theme-light blueprint register (FIG numbering, hairline rules, mono dims,
+   tabular-nums, monochrome verb-glyph whisper), laid out as a métier rail + a
+   grid of workflow cards, each with its real YAML open inline (via <CodeFile>).
+   Reads off the v4 theme tokens (--v4-* via the theme-light scope). SSR-safe:
+   pure CSS. Motion is opacity/transform only, gated to reduced-motion. */
+
+.ucp-page {
+  min-height: 100vh;
+}
+/* a page (no hero) → the nav is solid from the top; give headroom under it. */
+.ucp-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.ucp-title {
+  max-width: 16ch;
+}
+
+/* ── the métier rail · sticky in-page anchor jumps ───────────────────────────
+   Hairline pills; the section in view (scroll-spy) gets the inked-solid state,
+   mirroring the home section's active tab. */
+.ucp-rail {
+  margin-top: clamp(34px, 5vh, 52px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: sticky;
+  top: 64px;
+  z-index: 2;
+  padding: 10px 0;
+  /* a faint backing so the pills stay legible over a card scrolling beneath */
+  background: linear-gradient(
+    to bottom,
+    var(--v4-bg) 0%,
+    var(--v4-bg) 72%,
+    transparent 100%
+  );
+}
+.ucp-rail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  min-height: 40px;
+  border: 1px solid var(--v4-line);
+  border-radius: 999px;
+  background: var(--v4-bg-raised);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+}
+.ucp-rail-link:hover {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+}
+.ucp-rail-link[aria-current='true'] {
+  background: var(--v4-text);
+  border-color: var(--v4-text);
+  color: var(--v4-bg);
+}
+.ucp-rail-n {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ucp-rail-link[aria-current='true'] .ucp-rail-n {
+  color: color-mix(in oklch, var(--v4-bg) 70%, var(--v4-text));
+}
+
+/* ── the métier sections stack ───────────────────────────────────────────────*/
+.ucp-metiers {
+  margin-top: clamp(28px, 4vh, 44px);
+}
+.ucp-metier {
+  padding-top: clamp(40px, 6vh, 64px);
+  border-top: 1px solid var(--v4-line);
+}
+.ucp-metier:first-child {
+  border-top: 0;
+  padding-top: clamp(20px, 3vh, 32px);
+}
+.ucp-metier-head {
+  margin-bottom: clamp(24px, 4vh, 40px);
+}
+.ucp-metier-fig {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ucp-metier-count {
+  letter-spacing: 0.1em;
+  color: var(--v4-text-faint);
+}
+.ucp-metier-title {
+  margin-top: 14px;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.02;
+  font-size: clamp(1.6rem, 1rem + 2.4vw, 2.6rem);
+  color: var(--v4-text);
+}
+.ucp-metier-hook {
+  margin-top: 12px;
+  max-width: 44rem;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+
+/* ── the workflow grid · two columns on wide, one on narrow ──────────────────*/
+.ucp-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 880px) {
+  .ucp-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+}
+
+/* ── a workflow card · head + body + verbs + open file + outcome ─────────────*/
+.ucp-wf {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px 22px 20px;
+  border: 1px solid var(--v4-line);
+  border-radius: 16px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.ucp-wf:hover {
+  border-color: color-mix(in oklch, var(--v4-text) 22%, transparent);
+  background: var(--v4-bg-raised);
+}
+.ucp-wf-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ucp-wf-fig {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+.ucp-wf-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v4-text);
+}
+.ucp-wf-tier {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border: 1px solid var(--v4-line);
+  border-radius: 6px;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ucp-wf-body {
+  margin-top: 11px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+
+/* the verb chips · glyph + name, hairline-bordered, monochrome (hue whisper on
+   the glyph only) — same register as the home section's .v4uc-verb */
+.ucp-verbs {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.ucp-verb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border: 1px solid var(--v4-line);
+  border-radius: 7px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+}
+.ucp-verb-glyph {
+  color: var(--vh, var(--v4-text-faint));
+  user-select: none;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* the open file · meta strip + the code well */
+.ucp-wf-file {
+  margin-top: 16px;
+}
+.ucp-wf-filemeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+.ucp-wf-filename {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ucp-wf-filename b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.ucp-wf-prompt {
+  color: var(--v4-text-faint);
+}
+.ucp-wf-walk {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+  white-space: nowrap;
+}
+.ucp-wf-walk:hover {
+  color: var(--v4-text);
+  text-decoration-color: var(--v4-text);
+}
+/* the CodeFile sits in a bounded scroll well so long files stay contained */
+.ucp-wf-code {
+  max-height: 340px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.ucp-wf-code > div {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+/* the outcome footer under the open file */
+.ucp-wf-outcome {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--v4-line);
+  display: flex;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text);
+  text-wrap: pretty;
+}
+.ucp-arrow {
+  flex: 0 0 auto;
+  color: var(--v4-text-faint);
+}
+
+/* ── the close · the spec-truth dimension line + forward links ───────────────*/
+.ucp-note {
+  margin-top: clamp(44px, 6vh, 72px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  flex-wrap: wrap;
+}
+.ucp-note::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 42px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+.ucp-note a {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  transition: color 0.18s ease;
+}
+.ucp-note a:hover {
+  color: var(--v4-text);
+}
+
+.ucp-links {
+  margin-top: clamp(26px, 4vh, 40px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 24px;
+}
+.ucp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 14.5px;
+  color: var(--v4-text);
+  border-radius: 7px;
+  transition: color 0.18s ease;
+}
+.ucp-link--dim {
+  color: var(--v4-text-dim);
+}
+.ucp-link--dim:hover {
+  color: var(--v4-text);
+}
+.ucp-link-glyph {
+  color: var(--v4-text-dim);
+  transition: color 0.18s ease;
+}
+.ucp-link:hover .ucp-link-glyph {
+  color: var(--v4-text);
+}
+.ucp-link-arrow {
+  transition: transform 0.18s ease;
+}
+.ucp-link:hover .ucp-link-arrow {
+  transform: translateX(2px);
+}

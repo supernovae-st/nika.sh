@@ -5,6 +5,8 @@ import { Component as Blog } from './pages/Blog'
 import { Component as Learn } from './pages/Learn'
 import { Component as Play } from './pages/Play'
 import { Component as Manifesto } from './pages/Manifesto'
+import { Component as Changelog } from './pages/Changelog'
+import { Component as UseCasesPage } from './pages/UseCasesPage'
 
 /* ─── central route table · React Router v7 data router ──────────────────────
    Replaces the old hand-rolled hash navigation (#/blog, #/manifesto …) with
@@ -30,7 +32,8 @@ export const routes: RouteObject[] = [
       { path: 'learn', Component: Learn },
       { path: 'play', Component: Play },
       { path: 'manifesto', Component: Manifesto },
-      // new pages added in Phase 4
+      { path: 'changelog', Component: Changelog },
+      { path: 'use-cases', Component: UseCasesPage },
     ],
   },
 ]

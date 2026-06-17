@@ -45,7 +45,7 @@ const PRODUCT_GROUPS: MegaGroup[] = [
     items: [
       { label: 'The language', desc: 'One file, the whole workflow', glyph: '❯', href: '/#language' },
       { label: 'The four verbs', desc: 'infer · exec · invoke · agent', glyph: '◆', href: '/#verbs' },
-      { label: 'Use cases', desc: 'Real workflows from the spec', glyph: '◇', href: '/#use-cases' },
+      { label: 'Use cases', desc: 'Real workflows from the spec', glyph: '◇', to: '/use-cases' },
     ],
   },
   {
@@ -62,6 +62,7 @@ const PRODUCT_GROUPS: MegaGroup[] = [
 const TOP_LINKS: { label: string; href: string; external?: boolean; newTab?: boolean }[] = [
   { label: 'Docs', href: DOCS, external: true },
   { label: 'Spec', href: SPEC, external: true, newTab: true },
+  { label: 'Changelog', href: '/changelog' },
   { label: 'Blog', href: '/blog' },
 ]
 

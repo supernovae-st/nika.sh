@@ -1,0 +1,129 @@
+/* ─── /changelog page · the full ship-log register ───────────────────────────
+   Extends the shared FIG 7.0 ship-log register (.v4log* in sections/v4-home.css)
+   with the page-level chrome: a full-height theme-dark surface, a year-grouped
+   register, and the closing dimension line + forward links. Monochrome blueprint
+   register; the ONLY colour is the global EdgeAurora. Reads off the v4 theme
+   tokens (--v4-* via the theme-dark scope), so it inverts cleanly if ever themed
+   light. SSR-safe: pure CSS. */
+
+/* the page fills the viewport so the theme-dark surface paints edge-to-edge under
+   the fixed nav (which solidifies immediately on a page with no hero sentinel). */
+.cl-page {
+  min-height: 100vh;
+}
+/* clear the fixed nav: the section's own top padding already gives ~96px+, but on
+   a page (no hero) the nav is solid from the top, so add a little headroom. */
+.cl-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+
+/* the h1 reads a touch larger than a section <h2> · still the same display face */
+.cl-title {
+  max-width: 18ch;
+}
+
+/* ── the year group · a labelled bucket of releases ──────────────────────────
+   Each year gets a register header (the year, a hairline rule, a release count),
+   then the shared .v4log list. The first group's top rule is the list's own. */
+.cl-year {
+  margin-top: clamp(44px, 6vh, 72px);
+}
+.cl-year:first-of-type {
+  margin-top: clamp(40px, 6vh, 64px);
+}
+.cl-year-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.cl-year-n {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.cl-year-rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 16%, transparent);
+}
+.cl-year-count {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* the list sits tight under its year header (the shared .v4log has a big top
+   margin meant for in-section use — collapse it here). */
+.cl-log.v4log {
+  margin-top: 20px;
+}
+
+/* ── the close · dimension line + forward links ──────────────────────────────
+   Same register as the shared .v4uc-note / .v4belt-note dimension lines. */
+.cl-note {
+  margin-top: clamp(40px, 6vh, 64px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  flex-wrap: wrap;
+}
+.cl-note::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 42px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+.cl-note code {
+  font-family: var(--mono);
+  color: var(--v4-text-dim);
+}
+
+.cl-links {
+  margin-top: clamp(26px, 4vh, 40px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 24px;
+}
+.cl-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 14.5px;
+  color: var(--v4-text);
+  border-radius: 7px;
+  transition: color 0.18s ease;
+}
+.cl-link--dim {
+  color: var(--v4-text-dim);
+}
+.cl-link--dim:hover {
+  color: var(--v4-text);
+}
+.cl-link-glyph {
+  color: var(--v4-text-dim);
+  transition: color 0.18s ease;
+}
+.cl-link:hover .cl-link-glyph {
+  color: var(--v4-text);
+}
+.cl-link-arrow {
+  transition: transform 0.18s ease;
+}
+.cl-link:hover .cl-link-arrow {
+  transform: translateX(2px);
+}
