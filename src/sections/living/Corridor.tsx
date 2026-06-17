@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useId, useMemo } from 'react'
 import type { ShowcaseDag, ShowcaseTask } from '../usecases-yaml.generated'
 import { CLI_GLYPH, type RunState, type TaskStatus } from './run-model'
 
@@ -181,6 +181,11 @@ interface CorridorProps {
 export default function Corridor({ dag, run, runP }: CorridorProps) {
   const layout = useMemo(() => computeCorridorLayout(dag), [dag])
 
+  /* a per-instance unique id for the SVG gradient — `useId()` can contain colons
+     (`:r0:`) which are not valid inside a CSS `url(#…)` reference, so we sanitize
+     to word chars. Prevents a second <Corridor/> from colliding on a global id. */
+  const vpGlowId = `cor-vp-glow-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
+
   /* The camera flies forward as the run advances. The (fractional) active wave
      is `runP × (waves − 1)`; we translate the WHOLE world by that wave's focal
      offset so the active wave's plane lands in the foreground (z≈0, y≈0). Prior
@@ -211,13 +216,13 @@ export default function Corridor({ dag, run, runP }: CorridorProps) {
           black, gives the eye the corridor read even where plates are sparse. */}
       <svg className="cor-vp" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden>
         <defs>
-          <radialGradient id="cor-vp-glow" cx="50%" cy="40%" r="42%">
+          <radialGradient id={vpGlowId} cx="50%" cy="40%" r="42%">
             <stop offset="0%" stopColor="currentColor" stopOpacity="0.10" />
             <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
           </radialGradient>
         </defs>
         {/* a soft glow at the vanishing point (depth-of-field bloom) */}
-        <rect x="0" y="0" width="400" height="300" fill="url(#cor-vp-glow)" />
+        <rect x="0" y="0" width="400" height="300" fill={`url(#${vpGlowId})`} />
         {/* four guide lines from the frame corners converging on the VP */}
         <g className="cor-vp-lines">
           <path d="M-40 320 L200 120" />

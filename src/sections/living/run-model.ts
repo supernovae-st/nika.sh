@@ -328,12 +328,15 @@ export function runStateAt(
     let status: TaskStatus = happy
     if (planned && reached) status = planned
 
-    const started = status !== 'pending'
+    // a node only DISPATCHES (gets a start time) when it actually ran —
+    // running/success/failure. cancelled/skipped never dispatch in real engine
+    // semantics, so they carry no startedAtMs (the gate refused them upfront).
+    const dispatched = status === 'running' || status === 'success' || status === 'failure'
     const finished = status === 'success' || status === 'failure'
 
     nodes[task.id] = {
       status,
-      startedAtMs: started ? sched.startMs[task.id] : null,
+      startedAtMs: dispatched ? sched.startMs[task.id] : null,
       endedAtMs: finished ? sched.endMs[task.id] : null,
       durationMs: finished ? sched.durMs[task.id] : null,
       ...(status === 'success' ? { output: verbResult(task) } : {}),
@@ -382,7 +385,21 @@ export function runStateAt(
     const end = sched.endMs[task.id]
     const mid = Math.floor((start + end) / 2) // sub-events sit between start & end
 
-    // task.started
+    // cancelled/skipped never DISPATCH — the gate refused them before they ran,
+    // so they get NO task.started + NO `▶` row (only the terminal ⊘/↷). Render
+    // those rows here and move on, before the dispatch path below.
+    if (node.status === 'cancelled' || node.status === 'skipped') {
+      if (node.status === 'cancelled') {
+        emit('task.cancelled', start, 2, { task_id: task.id, reason: 'default gate needs an upstream success' })
+        cli.push(`${CLI_GLYPH.cancel} ${col(task.id, 7)} cancelled · ${task.gate} gate needs an upstream success`)
+      } else {
+        // skipped (when gate) — render in cli, no event surfaced (stays out of the closed set)
+        cli.push(`${CLI_GLYPH.cancel} ${col(task.id, 7)} skipped · when gate not met`)
+      }
+      continue
+    }
+
+    // the node DISPATCHED (running/success/failure) → task.started + the ▶ row
     emit('task.started', start, 0, { task_id: task.id, verb: task.verb })
     cli.push(`${CLI_GLYPH.run} ${col(task.id, 7)} ${col(task.verb, 7)} → ${verbTarget(task, dag)}`)
 
@@ -404,17 +421,6 @@ export function runStateAt(
       })
       cli.push(`${CLI_GLYPH.fail} ${col(task.id, 7)} ${err.code}   transient:${err.transient}`)
       failedSeen = true
-      continue
-    }
-
-    if (node.status === 'cancelled' || node.status === 'skipped') {
-      if (node.status === 'cancelled') {
-        emit('task.cancelled', start, 2, { task_id: task.id, reason: 'default gate needs an upstream success' })
-        cli.push(`${CLI_GLYPH.cancel} ${col(task.id, 7)} cancelled · ${task.gate} gate needs an upstream success`)
-      } else {
-        // skipped (when gate) — render in cli, no event surfaced (stays out of the closed set)
-        cli.push(`${CLI_GLYPH.cancel} ${col(task.id, 7)} skipped · when gate not met`)
-      }
       continue
     }
 

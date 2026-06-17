@@ -21,7 +21,7 @@ import { Component as Spec } from './pages/Spec'
    and the route renders the default ErrorBoundary instead. Sync `Component`
    keeps the route table the single source of truth for both prerender and the
    browser router. Genuinely heavy leaves stay code-split where they're used
-   (e.g. the three.js galaxy via React.lazy in ClientOnlyGalaxy). */
+   (e.g. the three.js galaxy via React.lazy as <GalaxyEgg/> in Home). */
 
 export const routes: RouteObject[] = [
   {

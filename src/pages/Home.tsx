@@ -21,11 +21,11 @@ import FinalCTA from '../sections/FinalCTA'
    Zero WebGL on first load — the hero is prerendered DOM, instant + crawlable.
 
    The whole v3 cinematic (the butterfly→supernova intro film + the Galaxy3D
-   r3f canvas + the old below-the-fold sections) was removed from the default
-   render and now lives behind the « enter the galaxy » easter egg (design doc
-   §10): typing « nika » lazy-loads <GalaxyEgg/> as a fullscreen overlay. Their
-   component files (`src/scene/*`, ScrollStory, MethodDiagram, Transform, the v3
-   Hero/UseCases/etc.) are kept in the repo, just unmounted here. */
+   r3f canvas) was removed from the default render and now lives behind the
+   « enter the galaxy » easter egg (design doc §10): typing « nika » lazy-loads
+   <GalaxyEgg/> as a fullscreen overlay (`src/scene/GalaxyEgg → Galaxy`). The old
+   v3 below-the-fold sections (ScrollStory, MethodDiagram, Transform, UseCases,
+   RunSim) were unmounted in the v4 migration and have now been deleted. */
 
 /* lazy chunk · the entire three.js scene + intro film loads ONLY on the egg
    trigger, so it never enters the default home bundle (design doc §8). */

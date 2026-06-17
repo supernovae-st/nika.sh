@@ -274,6 +274,53 @@ describe('runStateAt · failure path (opts.failAt)', () => {
     const completed = s.events.find((e) => e.kind === 'task.completed' && e.payload.task_id === 'b')
     expect(completed).toBeUndefined()
   })
+
+  it('a cancelled node never DISPATCHES: no task.started event, no ▶ row before its ⊘', () => {
+    // d is cancelled (depends on failed b · default gate). In real engine
+    // semantics a cancelled task is never dispatched, so it must NOT emit a
+    // task.started, and the CLI must NOT show a ▶ d row.
+    const started = s.events.find((e) => e.kind === 'task.started' && e.payload.task_id === 'd')
+    expect(started).toBeUndefined()
+    // the cancellation IS surfaced as a task.cancelled event though
+    const cancelled = s.events.find((e) => e.kind === 'task.cancelled' && e.payload.task_id === 'd')
+    expect(cancelled).toBeTruthy()
+    // CLI: no `▶ d` row, and the only d row is its `⊘ d cancelled`
+    const dRows = s.cli.filter((l) => /(^|\s)d(\s|$)/.test(l) && (l.startsWith(CLI_GLYPH.run) || l.startsWith(CLI_GLYPH.cancel)))
+    const runRowForD = s.cli.find((l) => l.startsWith(`${CLI_GLYPH.run} `) && /\bd\b/.test(l.slice(0, 12)))
+    expect(runRowForD).toBeUndefined()
+    expect(dRows.some((l) => l.startsWith(CLI_GLYPH.cancel) && /\bd\b/.test(l))).toBe(true)
+  })
+
+  it('a cancelled node carries a null startedAtMs (it never got a start time)', () => {
+    expect(s.nodes.d.status).toBe('cancelled')
+    expect(s.nodes.d.startedAtMs).toBeNull()
+    expect(s.nodes.d.endedAtMs).toBeNull()
+    expect(s.nodes.d.durationMs).toBeNull()
+  })
+})
+
+describe('runStateAt · skipped node (when gate) never dispatches', () => {
+  // a `when`-gated downstream of a failed node becomes `skipped` — and like
+  // cancelled, it never dispatches: no task.started, no ▶ row, null start time.
+  const WHEN_DAG: ShowcaseDag = {
+    tasks: [
+      { id: 'a', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'call `nika:fetch`', flags: [], line0: 1, line1: 4 },
+      { id: 'g', verb: 'exec', deps: ['a'], wave: 1, gate: 'when', gloss: 'run `git`', flags: [], line0: 6, line1: 9 },
+    ],
+    outputs: ['result'],
+    waves: 2,
+  }
+  const s = runStateAt(WHEN_DAG, 1, { failAt: 'a' })
+
+  it('the when-gated downstream is skipped with a null start time and no task.started', () => {
+    expect(s.nodes.g.status).toBe('skipped')
+    expect(s.nodes.g.startedAtMs).toBeNull()
+    const started = s.events.find((e) => e.kind === 'task.started' && e.payload.task_id === 'g')
+    expect(started).toBeUndefined()
+    const runRow = s.cli.find((l) => l.startsWith(`${CLI_GLYPH.run} `) && /\bg\b/.test(l.slice(0, 12)))
+    expect(runRow).toBeUndefined()
+    expect(s.cli.join('\n')).toMatch(/skipped · when gate not met/)
+  })
 })
 
 describe('runStateAt · permits denial override (opts.deny)', () => {

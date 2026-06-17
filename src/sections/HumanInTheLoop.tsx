@@ -317,6 +317,22 @@ export default function HumanInTheLoop() {
                 ))}
               </div>
 
+              {/* honest note · the bottom two switches (net / exec) are absent
+                  from this plan by default (loadBearing:false). Turning exec ON
+                  changes nothing because the plan declares no programs to run —
+                  the seatbelt is what the file CAN'T do, not a switch to flip.
+                  (net ON does show the calm « it could phone home » consequence.) */}
+              <p className="hitl-permits-note">
+                <span className="hitl-permits-note-mark mono" aria-hidden>
+                  ⌁
+                </span>
+                This plan declares no{' '}
+                <code>net</code> or <code>exec</code> — so there&apos;s nothing to
+                allow there. The seatbelt isn&apos;t a switch you flip; it&apos;s
+                what the file <b>can&apos;t</b> do. Adding either would be your
+                explicit, reviewable edit.
+              </p>
+
               <button type="button" className="hitl-run" onClick={run}>
                 <span className="hitl-run-glyph" aria-hidden>
                   ▶

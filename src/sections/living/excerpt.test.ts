@@ -52,6 +52,16 @@ describe('sliceExcerpt', () => {
     expect(text).toBe('')
   })
 
+  it('handles an empty range list: empty text, no highlight, no throw', () => {
+    const { text, highlight } = sliceExcerpt(YAML, [])
+    expect(text).toBe('')
+    expect(highlight).toBeUndefined()
+    // even with a highlight tag, an empty range yields no highlight
+    const withTag = sliceExcerpt(YAML, [], /permits:/)
+    expect(withTag.text).toBe('')
+    expect(withTag.highlight).toBeUndefined()
+  })
+
   it('the real t3 file carries a permits block with no net category', () => {
     // the story depends on this: fs read/write + tools, and crucially NO net:
     expect(YAML).toMatch(/permits:/)

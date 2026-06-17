@@ -79,8 +79,13 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     intensityRef.current = PULSE_INTENSITY
     const el = elRef.current
     if (el) el.style.setProperty('--aurora-intensity', String(PULSE_INTENSITY))
+    // ALWAYS rebase the decay clock on a pulse — whether we cold-start the rAF
+    // loop OR re-pulse mid-decay (loop already running). The tick reads
+    // `lastTsRef.current || ts`, so 0 makes the next frame's dt = 0 instead of a
+    // large gap since the previous frame, keeping the decay smooth under rapid
+    // successive pulses.
+    lastTsRef.current = 0
     if (rafRef.current == null) {
-      lastTsRef.current = 0
       rafRef.current = requestAnimationFrame(tickRef.current)
     }
   }, [])

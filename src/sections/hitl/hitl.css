@@ -264,6 +264,44 @@
   }
 }
 
+/* ── the honest note · why the absent-by-default permits don't "do" anything ─
+   Sits between the switches and the run button, tinted with the amber caution
+   accent so it reads as a continuation of the warn switches. Keeps the section
+   honest: a visitor who flips exec and sees nothing change gets a reason. */
+.hitl-permits-note {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  margin-top: 13px;
+  padding: 10px 13px;
+  border: 1px solid color-mix(in oklch, var(--hitl-warn) 30%, var(--v4-line));
+  border-radius: 9px;
+  background: color-mix(in oklch, var(--hitl-warn) 5%, transparent);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.hitl-permits-note-mark {
+  flex: none;
+  margin-top: 1px;
+  color: color-mix(in oklch, var(--hitl-warn) 78%, var(--v4-text));
+  font-size: 13px;
+  line-height: 1.2;
+}
+.hitl-permits-note code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: color-mix(in oklch, var(--hitl-warn) 12%, transparent);
+  color: color-mix(in oklch, var(--hitl-warn) 60%, var(--v4-text));
+}
+.hitl-permits-note b {
+  font-weight: 620;
+  color: var(--v4-text);
+}
+
 /* ── the run button · the deliberate "I ran it" beat ─────────────────────── */
 .hitl-run {
   appearance: none;
