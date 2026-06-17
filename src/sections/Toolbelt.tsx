@@ -1,16 +1,28 @@
-import { Plain } from '../components/ui'
+import { useEffect, useRef } from 'react'
 import { CANON } from '../canon.generated'
+import './v4-home.css'
 
-/* ─── § the toolbelt · the standard library as a constellation ──────────────
-   Spec-true by CONSTRUCTION: every count + every list derives from
-   canon.generated.ts (projected from nika-spec canon.yaml · the SSOT).
-   Hand-curated craft = the per-chip glosses + provider display names only.
-   Hover a chip → its plain-words gloss. */
+/* ─── FIG 5.0 · The toolbelt (theme-dark · the instrument spec sheet) ──────────
+   Design doc §6 (FIG 5.0) — trust by numbers. The engine's capability inventory
+   as a TECHNICAL LEDGER, not a marketing grid: a banner of headline counts (all
+   from CANON · tabular-nums), then hairline-ruled registers — builtins (4
+   families), providers (local-first → Mistral/cloud → mock), extract modes, and
+   MCP. Reads like the spec sheet on the back of an instrument.
 
-const FAMILIES: { label: string; c: string; tools: { n: string; d: string }[] }[] = [
+   Spec-true BY CONSTRUCTION: every count + list derives from canon.generated.ts
+   (projected from nika-spec canon.yaml · the SSOT). Hand-curated craft = the
+   per-builtin glosses + provider display names only. A canon builtin that isn't
+   glossed still renders (structural guard) — so the lists can never under-render.
+
+   Monochrome: the only colour is the global aurora + a hairline verb-hue whisper
+   on a register's marker tick. SSR-safe: pure DOM; the reveal is an
+   IntersectionObserver added on mount, content visible by default. */
+
+/* the 4 builtin families · craft layer (labels + glosses). The chips themselves
+   DERIVE from CANON.builtinNames via the structural guard below. */
+const FAMILIES: { label: string; tools: { n: string; d: string }[] }[] = [
   {
     label: 'Files',
-    c: '#7fe9ff',
     tools: [
       { n: 'read', d: 'read a file' },
       { n: 'write', d: 'save a file' },
@@ -21,13 +33,13 @@ const FAMILIES: { label: string; c: string; tools: { n: string; d: string }[] }[
   },
   {
     label: 'Data',
-    c: '#5b8cff',
     tools: [
       { n: 'jq', d: 'transform JSON' },
       { n: 'convert', d: 'between formats' },
       { n: 'validate', d: 'check a schema' },
       { n: 'json_diff', d: 'what changed' },
       { n: 'json_merge_patch', d: 'merge JSON' },
+      { n: 'compose', d: 'chain tools' },
       { n: 'hash', d: 'fingerprint data' },
       { n: 'uuid', d: 'fresh id' },
       { n: 'date', d: 'now · parse · format' },
@@ -35,12 +47,10 @@ const FAMILIES: { label: string; c: string; tools: { n: string; d: string }[] }[
   },
   {
     label: 'Web',
-    c: '#b07bff',
     tools: [{ n: 'fetch', d: `get a page · ${CANON.extractModes} extract modes` }],
   },
   {
     label: 'Flow',
-    c: '#ff7a3c',
     tools: [
       { n: 'assert', d: 'check a condition' },
       { n: 'done', d: 'end the loop' },
@@ -54,8 +64,16 @@ const FAMILIES: { label: string; c: string; tools: { n: string; d: string }[] }[
   },
 ]
 
-/* canonical ids → display names (craft layer · a new canon id renders as its
-   raw id until given a display name, so the lists can never under-render) */
+/* structural guard · every canonical builtin appears as a chip. A builtin added
+   to canon.yaml but not yet glossed lands in Flow with a placeholder gloss, so
+   the family chips can never silently drop below CANON.builtins. */
+const GLOSSED = new Set(FAMILIES.flatMap((f) => f.tools.map((t) => t.n)))
+for (const b of CANON.builtinNames) {
+  if (!GLOSSED.has(b)) FAMILIES[FAMILIES.length - 1].tools.push({ n: b, d: 'see the docs' })
+}
+
+/* canonical provider ids → display names (craft layer · an un-named new canon id
+   renders as its raw id, so the lists can never under-render). */
 const PROVIDER_DISPLAY: Record<string, string> = {
   anthropic: 'Anthropic',
   openai: 'OpenAI',
@@ -70,115 +88,264 @@ const PROVIDER_DISPLAY: Record<string, string> = {
   llamacpp: 'llama.cpp',
   localai: 'LocalAI',
   vllm: 'vLLM',
+  mock: 'mock',
 }
 const display = (id: string) => PROVIDER_DISPLAY[id] ?? id
-const CLOUD = CANON.providerIdsCloud.map(display)
+/* provider presentation order (studio convention): local/open-weight first,
+   then Mistral + the rest of cloud, then mock. CANON.providerIdsCloud is already
+   Mistral-led; CANON.providerIdsLocal carries the local runtimes. */
 const LOCAL = CANON.providerIdsLocal.map(display)
+const CLOUD = CANON.providerIdsCloud.map(display)
+const TEST = CANON.providerIdsTest.map(display)
 const MODES = CANON.extractModeNames
 
-/* structural guard · every canonical builtin appears as a chip — a builtin
-   added to canon.yaml but not yet glossed renders un-glossed in Flow. */
-const GLOSSED = new Set(FAMILIES.flatMap((f) => f.tools.map((t) => t.n)))
-for (const b of CANON.builtinNames) {
-  if (!GLOSSED.has(b)) FAMILIES[FAMILIES.length - 1].tools.push({ n: b, d: 'see the docs' })
+/* the verb hue feeding each register's marker tick (whisper · hairline only) */
+const REG_HUE = [
+  'var(--verb-invoke)', // builtins — reached via invoke
+  'var(--verb-infer)', // providers — reached via infer
+  'var(--verb-invoke)', // extract modes — fetch is a builtin (invoke)
+  'var(--verb-agent)', // MCP — tools an agent can drive
+]
+
+function Chip({ n, d }: { n: string; d?: string }) {
+  return (
+    <span className="v4belt-chip">
+      {n}
+      {d ? <em>· {d}</em> : null}
+    </span>
+  )
 }
 
 export default function Toolbelt() {
-  return (
-    <section id="toolbelt" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-28 md:py-36">
-      <p className="rv mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-        § The toolbelt
-      </p>
-      <h2
-        className="rv mb-3 font-semibold tracking-tight"
-        style={{ fontSize: 'clamp(2rem, 1rem + 3.5vw, 3.6rem)', lineHeight: 1.02 }}
-      >
-        Everything else is a tool.
-      </h2>
-      <p className="rv max-w-[42rem] text-[17px] leading-relaxed text-[var(--fg-mute)]">
-        The language stays four verbs. The standard library does the rest. {CANON.builtins}{' '}
-        builtins, any MCP server your editor already uses, and {CANON.providers} model providers.
-        All reached the same way:{' '}
-        <code className="mono text-[14px] text-[var(--cyan)]">invoke:</code>.
-      </p>
-      <div className="mb-12">
-        <Plain>
-          Nika ships with the everyday tools: read files, fetch pages, transform data, ping you
-          when it&apos;s done. Hover one to see what it does.
-        </Plain>
-      </div>
+  const ref = useRef<HTMLElement>(null)
 
-      {/* the builtins · 4 families · chips derive from CANON.builtinNames */}
-      <div className="rv grid gap-5 md:grid-cols-2">
-        {FAMILIES.map((f) => (
-          <div key={f.label} className="glass rounded-2xl px-6 py-5">
-            <p
-              className="mono mb-4 flex items-center gap-2.5 text-[11px] tracking-[0.24em] uppercase"
-              style={{ color: f.c }}
-            >
-              <span
-                className="inline-block h-1.5 w-1.5 rounded-full"
-                style={{ background: f.c, boxShadow: `0 0 8px ${f.c}` }}
-              />
-              {f.label}
-              <span className="text-[var(--fg-ghost)]">· {f.tools.length}</span>
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {f.tools.map((t) => (
-                <span key={t.n} className="tool-chip mono" style={{ ['--tc' as string]: f.c }}>
-                  {t.n}
-                  <em>{t.d}</em>
-                </span>
+  /* reveal the rows once, on first intersection (motion-safe; default visible) */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            el.classList.add('v4-in')
+            io.disconnect()
+            break
+          }
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  return (
+    <section
+      ref={ref}
+      id="toolbelt"
+      aria-labelledby="toolbelt-title"
+      className="theme-dark v4sec scroll-mt-24"
+    >
+      <div className="v4sec-wrap">
+        <p className="v4sec-fig" data-rise>
+          FIG 5.0
+        </p>
+        <h2
+          id="toolbelt-title"
+          className="v4sec-title"
+          data-rise
+          style={{ ['--rise-delay' as string]: '60ms' }}
+        >
+          The toolbelt, by the numbers.
+        </h2>
+        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+          The language stays four verbs. The standard library does the rest —{' '}
+          <b>{CANON.builtins} builtins</b>, <b>{CANON.providers} model providers</b>, and any{' '}
+          <b>MCP</b> server your editor already uses. All reached the same way:{' '}
+          <code className="mono">invoke:</code>.
+        </p>
+
+        {/* the headline-count banner · big tabular numbers, hairline-separated */}
+        <div className="v4belt-counts" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+          <div className="v4belt-count">
+            <span className="v4belt-count-fig">5.A</span>
+            <span className="v4belt-count-n">{CANON.builtins}</span>
+            <span className="v4belt-count-label">builtin tools · nothing to install</span>
+          </div>
+          <div className="v4belt-count">
+            <span className="v4belt-count-fig">5.B</span>
+            <span className="v4belt-count-n">{CANON.providers}</span>
+            <span className="v4belt-count-label">
+              model providers · {CANON.providersLocal} local, {CANON.providersCloud} cloud, 1 mock
+            </span>
+          </div>
+          <div className="v4belt-count">
+            <span className="v4belt-count-fig">5.C</span>
+            <span className="v4belt-count-n">{CANON.extractModes}</span>
+            <span className="v4belt-count-label">
+              extract modes on <code className="mono">fetch</code>
+            </span>
+          </div>
+          <div className="v4belt-count">
+            <span className="v4belt-count-fig">5.D</span>
+            <span className="v4belt-count-n">
+              MCP<span className="v4belt-count-unit">native</span>
+            </span>
+            <span className="v4belt-count-label">any server, via the same verb</span>
+          </div>
+        </div>
+
+        {/* the registers · hairline-ruled blocks · label rail + chips */}
+        <div
+          className="v4belt-registers"
+          data-rise
+          style={{ ['--rise-delay' as string]: '200ms' }}
+        >
+          {/* 5.1 · builtins — 4 families */}
+          <div className="v4belt-reg">
+            <div className="v4belt-reg-head">
+              <span className="v4belt-reg-fig">
+                <span
+                  className="v4belt-reg-tick"
+                  aria-hidden
+                  style={{ ['--vh' as string]: REG_HUE[0] }}
+                />
+                FIG 5.1 · Builtins
+              </span>
+              <span className="v4belt-reg-cap">
+                The everyday tools. All called with <code>invoke:</code>.
+              </span>
+              <span className="v4belt-reg-count">{CANON.builtins} tools · 4 families</span>
+            </div>
+            <div className="v4belt-fams">
+              {FAMILIES.map((f) => (
+                <div key={f.label} className="min-w-0">
+                  <p className="v4belt-fam-label">
+                    <span className="v4belt-fam-dot" aria-hidden />
+                    {f.label}
+                    <span style={{ color: 'var(--v4-text-faint)' }}>· {f.tools.length}</span>
+                  </p>
+                  <div className="v4belt-chips">
+                    {f.tools.map((t) => (
+                      <Chip key={t.n} n={t.n} d={t.d} />
+                    ))}
+                  </div>
+                </div>
               ))}
-              {f.label === 'Web' && (
-                <span className="flex flex-wrap items-center gap-1.5 pl-1">
-                  {MODES.map((m) => (
-                    <span key={m} className="mode-chip mono">
-                      {m}
-                    </span>
-                  ))}
-                </span>
-              )}
             </div>
           </div>
-        ))}
-      </div>
 
-      {/* the providers · sovereign local row FIRST + cloud row (counts from CANON) */}
-      <div className="rv mt-5 grid gap-5 md:grid-cols-2">
-        <div className="skeuo rounded-2xl px-6 py-5">
-          <p className="mono mb-4 flex items-center gap-2.5 text-[11px] tracking-[0.24em] text-[var(--cyan)] uppercase">
-            <span
-              className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--cyan)]"
-              style={{ boxShadow: '0 0 8px var(--cyan)' }}
-            />
-            Local runtimes · {CANON.providersLocal} · no cloud needed
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {LOCAL.map((p) => (
-              <span key={p} className="tool-chip mono" style={{ ['--tc' as string]: '#7fe9ff' }}>
-                {p}
+          {/* 5.2 · providers — local-first, then Mistral/cloud, then mock */}
+          <div className="v4belt-reg">
+            <div className="v4belt-reg-head">
+              <span className="v4belt-reg-fig">
+                <span
+                  className="v4belt-reg-tick"
+                  aria-hidden
+                  style={{ ['--vh' as string]: REG_HUE[1] }}
+                />
+                FIG 5.2 · Providers
               </span>
-            ))}
-          </div>
-          <p className="mt-4 text-[13px] leading-relaxed text-[var(--fg-mute)]">
-            Point <code className="mono text-[12px]">provider: ollama</code> at your own machine and
-            the whole workflow runs offline. Plus <code className="mono text-[12px]">mock</code> —
-            the deterministic test provider that makes workflows CI-runnable with zero keys.
-          </p>
-        </div>
-        <div className="glass rounded-2xl px-6 py-5">
-          <p className="mono mb-4 text-[11px] tracking-[0.24em] text-[var(--fg-dim)] uppercase">
-            Cloud providers · {CANON.providersCloud}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {CLOUD.map((p) => (
-              <span key={p} className="tool-chip mono" style={{ ['--tc' as string]: '#aab4c9' }}>
-                {p}
+              <span className="v4belt-reg-cap">
+                Pick per task or per file. <code>provider: ollama</code> runs offline.
               </span>
-            ))}
+              <span className="v4belt-reg-count">{CANON.providers} total</span>
+            </div>
+            <div className="v4belt-fams">
+              <div className="min-w-0">
+                <p className="v4belt-fam-label">
+                  <span className="v4belt-fam-dot" aria-hidden />
+                  Local runtimes
+                  <span style={{ color: 'var(--v4-text-faint)' }}>
+                    · {CANON.providersLocal} · no cloud needed
+                  </span>
+                </p>
+                <div className="v4belt-chips">
+                  {LOCAL.map((p) => (
+                    <Chip key={p} n={p} />
+                  ))}
+                </div>
+              </div>
+              <div className="min-w-0">
+                <p className="v4belt-fam-label">
+                  <span className="v4belt-fam-dot" aria-hidden />
+                  Cloud · open-weight first
+                  <span style={{ color: 'var(--v4-text-faint)' }}>· {CANON.providersCloud}</span>
+                </p>
+                <div className="v4belt-chips">
+                  {CLOUD.map((p) => (
+                    <Chip key={p} n={p} />
+                  ))}
+                </div>
+              </div>
+              <div className="min-w-0">
+                <p className="v4belt-fam-label">
+                  <span className="v4belt-fam-dot" aria-hidden />
+                  Test
+                  <span style={{ color: 'var(--v4-text-faint)' }}>· {CANON.providersTest}</span>
+                </p>
+                <div className="v4belt-chips">
+                  {TEST.map((p) => (
+                    <Chip key={p} n={p} d="deterministic · zero keys · CI-runnable" />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 5.3 · extract modes — on fetch */}
+          <div className="v4belt-reg">
+            <div className="v4belt-reg-head">
+              <span className="v4belt-reg-fig">
+                <span
+                  className="v4belt-reg-tick"
+                  aria-hidden
+                  style={{ ['--vh' as string]: REG_HUE[2] }}
+                />
+                FIG 5.3 · Extract modes
+              </span>
+              <span className="v4belt-reg-cap">
+                How <code>fetch</code> turns a page into typed output.
+              </span>
+              <span className="v4belt-reg-count">{CANON.extractModes} modes</span>
+            </div>
+            <div className="v4belt-chips">
+              {MODES.map((m) => (
+                <Chip key={m} n={m} />
+              ))}
+            </div>
+          </div>
+
+          {/* 5.4 · MCP — the open surface */}
+          <div className="v4belt-reg">
+            <div className="v4belt-reg-head">
+              <span className="v4belt-reg-fig">
+                <span
+                  className="v4belt-reg-tick"
+                  aria-hidden
+                  style={{ ['--vh' as string]: REG_HUE[3] }}
+                />
+                FIG 5.4 · MCP
+              </span>
+              <span className="v4belt-reg-cap">
+                Any Model Context Protocol server, reached as <code>mcp:</code>.
+              </span>
+              <span className="v4belt-reg-count">native · unbounded</span>
+            </div>
+            <div className="v4belt-chips">
+              <Chip n="mcp:" d="the server your editor already uses" />
+              <Chip n="stdio" />
+              <Chip n="http" />
+              <Chip n="default-deny" d="tools whitelisted in the file" />
+            </div>
           </div>
         </div>
+
+        <p className="v4belt-note" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+          every count derives from the spec&apos;s <code>canon.yaml</code> — never hand-typed
+        </p>
       </div>
     </section>
   )

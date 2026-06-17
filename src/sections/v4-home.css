@@ -548,3 +548,538 @@
 .v4own-sep {
   color: var(--v4-text-faint);
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FIG 5.0 · THE TOOLBELT  (theme-dark · the instrument spec sheet)
+   The engine's capability inventory as a TECHNICAL LEDGER, not a marketing grid.
+   Reads like the spec sheet on the back of an instrument: a banner of headline
+   counts (tabular-nums, from CANON), then hairline-ruled registers for builtins
+   (4 families), providers (local-first → Mistral/cloud → mock), extract modes,
+   and MCP. Monochrome; the only colour is the global aurora + a hairline verb-
+   hue whisper on a register's marker tick on hover.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* the headline-count banner · a row of big tabular numbers, hairline-separated */
+.v4belt-counts {
+  margin-top: clamp(40px, 6vh, 72px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border: 1px solid var(--v4-line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+@media (min-width: 760px) {
+  .v4belt-counts {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.v4belt-count {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 22px 20px;
+  border-top: 1px solid var(--v4-line);
+  border-left: 1px solid var(--v4-line);
+}
+/* kill the doubled outer rules (the wrapper already draws the frame) */
+.v4belt-count:nth-child(-n + 2) {
+  border-top: 0;
+}
+.v4belt-count:nth-child(odd) {
+  border-left: 0;
+}
+@media (min-width: 760px) {
+  .v4belt-count:nth-child(-n + 4) {
+    border-top: 0;
+  }
+  .v4belt-count:nth-child(odd) {
+    border-left: 1px solid var(--v4-line);
+  }
+  .v4belt-count:nth-child(4n + 1) {
+    border-left: 0;
+  }
+}
+.v4belt-count-fig {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.v4belt-count-n {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  font-size: clamp(2.1rem, 1rem + 4vw, 3.1rem);
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+}
+.v4belt-count-n .v4belt-count-unit {
+  margin-left: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-faint);
+  vertical-align: 4px;
+}
+.v4belt-count-label {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--v4-text-dim);
+}
+
+/* the registers stack · each a hairline-topped block of a label + chips/rows */
+.v4belt-registers {
+  margin-top: clamp(36px, 5vh, 56px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+.v4belt-reg {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 24px 2px;
+  border-top: 1px solid var(--v4-line);
+}
+.v4belt-reg:last-child {
+  border-bottom: 1px solid var(--v4-line);
+}
+@media (min-width: 860px) {
+  .v4belt-reg {
+    grid-template-columns: 13rem 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+}
+/* the register's left rail · FIG sub-label + a one-line caption + a count */
+.v4belt-reg-head {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.v4belt-reg-fig {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+}
+/* a small registration tick in the verb hue (whisper) ahead of the sub-label */
+.v4belt-reg-tick {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--vh, color-mix(in oklch, var(--v4-text) 40%, transparent));
+  border-left: 1px solid var(--vh, color-mix(in oklch, var(--v4-text) 40%, transparent));
+}
+.v4belt-reg-cap {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  max-width: 24ch;
+}
+.v4belt-reg-cap code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--v4-text);
+}
+.v4belt-reg-count {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* the register body · a wrap of mono chips (tools, providers, modes) */
+.v4belt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.v4belt-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 6px 11px;
+  border: 1px solid var(--v4-line);
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--v4-text);
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+.v4belt-chip:hover {
+  border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  background: color-mix(in oklch, var(--v4-bg-raised) 85%, transparent);
+}
+/* the per-chip gloss · revealed on hover/focus as a faint trailing caption */
+.v4belt-chip em {
+  font-style: normal;
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-faint);
+  white-space: nowrap;
+}
+/* a faint family marker dot · monochrome, sits before the chip group label */
+.v4belt-fam-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--v4-text) 40%, transparent);
+  margin-right: 1px;
+}
+/* the family sub-groups inside the builtins register · each a labelled wrap */
+.v4belt-fams {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.v4belt-fam-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 9px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* the closing dimension line · same register as .v4verbs-note */
+.v4belt-note {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.v4belt-note::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 42px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+.v4belt-note code {
+  color: var(--v4-text-dim);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FIG 6.0 · USE CASES  (theme-LIGHT · the editorial gallery · rhythm break)
+   A clean GALLERY of real showcase workflows — NOT a run animation (the Living
+   File owns the run). Tabbed by métier; each card = title + outcome + verb chips
+   (glyphs) + a peek of its real YAML. Selecting a card reveals its full YAML
+   panel via <CodeFile>. Light surface, blueprint register inverted, tabular-nums.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* the métier tab bar · hairline pills, the active one inked solid */
+.v4uc-tabs {
+  margin-top: clamp(34px, 5vh, 52px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.v4uc-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  border: 1px solid var(--v4-line);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+  /* generous hit target on touch */
+  min-height: 40px;
+}
+.v4uc-tab:hover {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+}
+.v4uc-tab[aria-selected='true'] {
+  background: var(--v4-text);
+  border-color: var(--v4-text);
+  color: var(--v4-bg);
+}
+.v4uc-tab-n {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.v4uc-tab[aria-selected='true'] .v4uc-tab-n {
+  color: color-mix(in oklch, var(--v4-bg) 70%, var(--v4-text));
+}
+
+/* the hook line under the tabs */
+.v4uc-hook {
+  margin-top: 24px;
+  max-width: 44rem;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+
+/* the gallery layout · the card rail (left) + the open YAML panel (right) */
+.v4uc-stage {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  align-items: start;
+}
+@media (min-width: 940px) {
+  .v4uc-stage {
+    grid-template-columns: 1fr 0.96fr;
+    gap: 24px;
+  }
+}
+
+/* the card rail · a column of selectable workflow cards */
+.v4uc-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.v4uc-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 18px 20px 16px;
+  border: 1px solid var(--v4-line);
+  border-radius: 14px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+.v4uc-card:hover {
+  border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  background: var(--v4-bg-raised);
+}
+.v4uc-card[aria-selected='true'] {
+  border-color: color-mix(in oklch, var(--v4-text) 42%, transparent);
+  background: var(--v4-bg-raised);
+}
+/* the selected card grows a left rule (blueprint marker, monochrome) */
+.v4uc-card[aria-selected='true']::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--v4-text);
+}
+.v4uc-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.v4uc-card-fig {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+.v4uc-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v4-text);
+}
+.v4uc-card-tier {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border: 1px solid var(--v4-line);
+  border-radius: 6px;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.v4uc-card-outcome {
+  margin-top: 9px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+/* the verb chips · glyph + name, hairline-bordered, monochrome (hue whisper on
+   the glyph only) */
+.v4uc-verbs {
+  margin-top: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.v4uc-verb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border: 1px solid var(--v4-line);
+  border-radius: 7px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+}
+.v4uc-verb-glyph {
+  color: var(--vh, var(--v4-text-faint));
+  user-select: none;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* the open YAML panel · sticks alongside the rail on wide screens */
+.v4uc-panel {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+@media (min-width: 940px) {
+  .v4uc-panel {
+    position: sticky;
+    top: 88px;
+  }
+}
+/* the panel meta strip · filename + the walkthrough link + the count */
+.v4uc-panel-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.v4uc-panel-file {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+}
+.v4uc-panel-file b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.v4uc-panel-link {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+  white-space: nowrap;
+}
+.v4uc-panel-link:hover {
+  color: var(--v4-text);
+  text-decoration-color: var(--v4-text);
+}
+/* the CodeFile sits in a max-height scroll well so long files stay contained */
+.v4uc-panel-code {
+  max-height: 460px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.v4uc-panel-code .v4uc-scroll {
+  max-height: 460px;
+  overflow-y: auto;
+}
+/* the outcome footer under the open file */
+.v4uc-panel-outcome {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text);
+  text-wrap: pretty;
+}
+.v4uc-panel-outcome .v4uc-arrow {
+  flex: 0 0 auto;
+  color: var(--v4-text-faint);
+}
+
+/* the closing dimension line · the spec-truth footnote */
+.v4uc-note {
+  margin-top: clamp(28px, 4vh, 44px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  flex-wrap: wrap;
+}
+.v4uc-note::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 42px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+.v4uc-note a {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  transition: color 0.18s ease;
+}
+.v4uc-note a:hover {
+  color: var(--v4-text);
+}
+
+/* tab-switch / selection reveal · the rail + panel re-enter softly (motion-safe) */
+@media (prefers-reduced-motion: no-preference) {
+  .v4uc-fade {
+    animation: v4uc-fade-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes v4uc-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

@@ -9,7 +9,6 @@ import { InstallPill, Plain } from '../components/ui'
 import ScrollStory from '../sections/ScrollStory'
 import MethodDiagram from '../sections/MethodDiagram'
 import Toolbelt from '../sections/Toolbelt'
-import UseCases from '../sections/UseCases'
 import Hero from '../sections/Hero'
 /* (the v3 four-verbs + versus blocks were removed in the v4 §6 pass — their
    VerbForm / VERB_COLOR helpers are no longer mounted on the home) */
@@ -17,6 +16,7 @@ import LivingFile from '../sections/living/LivingFile'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import OwnWorkflows from '../sections/OwnWorkflows'
+import UseCasesV4 from '../sections/UseCasesV4'
 
 /* v4 redesign · the cinematic intro film + WebGL hero are GATED OFF so the page
    loads straight to the calm DOM-first v4 <Hero> (Task 1.2). The whole film code
@@ -333,6 +333,16 @@ export function Component() {
         <BeyondChat />
         <OwnWorkflows />
 
+        {/* ─── FIG 5.0 · Toolbelt (theme-dark · the instrument spec sheet) — the
+             engine's capability inventory as a technical ledger · counts from
+             CANON. SUPERSEDES the v3 #toolbelt (removed below). ─── */}
+        <Toolbelt />
+
+        {/* ─── FIG 6.0 · Use cases (theme-light · the editorial gallery · rhythm
+             break) — real showcase workflows tabbed by métier, each opening its
+             real spec YAML. SUPERSEDES the v3 #use-cases (removed below). ─── */}
+        <UseCasesV4 />
+
         {/* ─── v3 hero · the title itself lives inside the galaxy scene · kept
              below the fold (redesigned in a later phase) ─── */}
         <section className="hero-in relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
@@ -542,11 +552,10 @@ export function Component() {
           {/* ─── §2 · the four verbs · SUPERSEDED by the v4 <Verbs/> (FIG 2.0)
                mounted above · the v3 block is removed to avoid duplication ─── */}
 
-          {/* ─── §toolbelt · builtins + providers (derived from canon.generated.ts) ─── */}
-          <Toolbelt />
-
-          {/* ─── §use-cases · tabbed explorer (persona tabs + real files) ─── */}
-          <UseCases />
+          {/* ─── §toolbelt + §use-cases · the v3 mounts here were SUPERSEDED by the
+               v4 <Toolbelt/> (FIG 5.0 · theme-dark) + <UseCasesV4/> (FIG 6.0 ·
+               theme-light) mounted above, after <OwnWorkflows/>. Removed here so
+               there's no duplication. ─── */}
 
           {/* ─── §3 · the method · the white room (2001: after the stargate, the
                readable light) — the cosmos fades to paper, the source reads like print ─── */}
