@@ -4,16 +4,19 @@ import { useHead } from '@unhead/react'
 import ClientOnlyGalaxy from '../scene/ClientOnlyGalaxy'
 import { scroll, mouse, egg } from '../scene/state'
 import Code from '../Code'
-import { WF, NOTES, VERBS, WEDGE, VERSUS, REPO, SPEC, DOCS } from '../content'
+import { WF, NOTES, WEDGE, REPO, SPEC, DOCS } from '../content'
 import { InstallPill, Plain } from '../components/ui'
 import ScrollStory from '../sections/ScrollStory'
 import MethodDiagram from '../sections/MethodDiagram'
 import Toolbelt from '../sections/Toolbelt'
-import { VerbForm } from '../scene/verb-forms'
 import UseCases from '../sections/UseCases'
 import Hero from '../sections/Hero'
+/* (the v3 four-verbs + versus blocks were removed in the v4 §6 pass — their
+   VerbForm / VERB_COLOR helpers are no longer mounted on the home) */
 import LivingFile from '../sections/living/LivingFile'
-import { VERB_COLOR, type Verb } from '../sections/transform-data'
+import Verbs from '../sections/Verbs'
+import BeyondChat from '../sections/BeyondChat'
+import OwnWorkflows from '../sections/OwnWorkflows'
 
 /* v4 redesign · the cinematic intro film + WebGL hero are GATED OFF so the page
    loads straight to the calm DOM-first v4 <Hero> (Task 1.2). The whole film code
@@ -319,6 +322,17 @@ export function Component() {
              the 3D depth corridor on top of this. ─── */}
         <LivingFile />
 
+        {/* ─── v4 home sections · the trust-landing body (design doc §6) ───────
+             FIG 2.0 verbs · FIG 3.0 beyond-the-chat (the dosed acid moment) ·
+             FIG 4.0 own-your-workflows (the theme-light rhythm break). They
+             SUPERSEDE the v3 four-verbs (#verbs), versus (#versus) and the
+             local-first copy — those blocks are removed below so there's no
+             duplication. The remaining v3 sections (toolbelt, use-cases, final
+             CTA, footer) stay for a later pass. ─── */}
+        <Verbs />
+        <BeyondChat />
+        <OwnWorkflows />
+
         {/* ─── v3 hero · the title itself lives inside the galaxy scene · kept
              below the fold (redesigned in a later phase) ─── */}
         <section className="hero-in relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
@@ -525,59 +539,8 @@ export function Component() {
           {/* ─── §transform (v3) · superseded by the v4 <LivingFile/> above · the
                component file stays in the repo, just unmounted here ─── */}
 
-          {/* ─── §2 · the four verbs · the whole operation space ─── */}
-          <section id="verbs" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-28 md:py-36">
-            <p className="rv mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-              § The verbs
-            </p>
-            <h2
-              className="rv mb-3 font-semibold tracking-tight"
-              style={{ fontSize: 'clamp(2rem, 1rem + 3.5vw, 3.6rem)', lineHeight: 1.02 }}
-            >
-              Four verbs. Locked forever.
-            </h2>
-            <p className="rv max-w-[40rem] text-[17px] leading-relaxed text-[var(--fg-mute)]">
-              A verb is a distinct execution model. Everything callable is a tool; everything
-              about ordering is the DAG. No fifth verb, ever.
-            </p>
-            <div className="mb-14">
-              <Plain>
-                Four words cover everything an AI helper can do: think, run a program, use a tool,
-                or work on its own. That&apos;s the whole language.
-              </Plain>
-            </div>
-
-            <div className="grid gap-5 md:grid-cols-2">
-              {VERBS.map((v, i) => (
-                <div
-                  key={v.verb}
-                  className="rv skeuo group rounded-2xl px-6 py-6 transition-transform duration-300 hover:-translate-y-1"
-                  style={{ transitionDelay: `${i * 80}ms` }}
-                >
-                  <div className="mb-1 flex items-baseline gap-3">
-                    <span
-                      className="mono text-[20px] font-semibold"
-                      style={{ color: VERB_COLOR[v.verb as Verb] }}
-                    >
-                      {v.verb}
-                    </span>
-                    <span className="text-[13.5px] text-[var(--fg-dim)]">{v.tagline}</span>
-                    <span
-                      className="ml-auto inline-block h-2 w-2 rounded-full"
-                      style={{ background: VERB_COLOR[v.verb as Verb] }}
-                    />
-                  </div>
-                  <VerbForm kind={v.verb as Verb} />
-                  <p className="mb-5 text-[14.5px] leading-relaxed text-[var(--fg-mute)]">
-                    {v.body}
-                  </p>
-                  <div className="code-well px-4 py-3.5">
-                    <Code code={v.code} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* ─── §2 · the four verbs · SUPERSEDED by the v4 <Verbs/> (FIG 2.0)
+               mounted above · the v3 block is removed to avoid duplication ─── */}
 
           {/* ─── §toolbelt · builtins + providers (derived from canon.generated.ts) ─── */}
           <Toolbelt />
@@ -677,62 +640,17 @@ export function Component() {
             </div>
             </section>
 
-            {/* ─── §versus · why a file beats the alternatives (printed-page clarity) ─── */}
-            <section id="versus" className="mx-auto max-w-6xl scroll-mt-24 px-6 pt-6 pb-32 md:pb-44">
-              <h2
-                className="rv mb-3 font-semibold tracking-tight"
-                style={{ fontSize: 'clamp(1.7rem, 0.9rem + 2.6vw, 2.9rem)', lineHeight: 1.04 }}
-              >
-                Same goal. Different fate.
-              </h2>
-              <p className="rv mb-12 max-w-[42rem] text-[16px] leading-relaxed text-[var(--fg-mute)]">
-                Three honest comparisons: what you trade away with each alternative, and what a
-                file keeps.
-              </p>
-              <div className="grid gap-5 md:grid-cols-3">
-                {VERSUS.map((v) => (
-                  <div
-                    key={v.them}
-                    data-fate={v.fate}
-                    className="rv vs-card glass relative flex flex-col rounded-2xl px-6 py-6"
-                  >
-                    <span className="fate-stamp mono" aria-hidden>
-                      {v.fate}
-                    </span>
-                    <p className="mono mb-3 text-[11px] tracking-[0.2em] text-[var(--fg-dim)] uppercase">
-                      {v.them}
-                    </p>
-                    <ul className="vs-them mb-5 space-y-1.5 text-[13.5px] leading-relaxed text-[var(--fg-mute)]">
-                      {v.themLines.map((l) => (
-                        <li key={l} className="flex gap-2">
-                          <span className="text-[var(--fg-ghost)]">–</span>
-                          {l}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-auto border-t pt-4" style={{ borderColor: 'var(--hair)' }}>
-                      <p className="mono mb-2 flex items-center gap-2 text-[11px] tracking-[0.2em] text-[var(--cyan)] uppercase">
-                        <img src="/nika.svg" alt="" width={12} height={12} style={{ opacity: 0.8 }} />
-                        {v.nika}
-                      </p>
-                      <ul className="vs-nika space-y-1.5 text-[13.5px] leading-relaxed text-[var(--fg)]">
-                        {v.nikaLines.map((l) => (
-                          <li key={l} className="flex gap-2">
-                            <span className="text-[var(--cyan)]">✓</span>
-                            {l}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+            {/* ─── §versus · SUPERSEDED by the v4 <BeyondChat/> (FIG 3.0 · the
+                 acid moment) mounted above · the v3 block is removed to avoid
+                 duplication (it reused the same VERSUS copy) ─── */}
           </div>
           {/* back into the cosmos for the close */}
           <div className="light-fade-out pointer-events-none" />
 
-          {/* ─── final CTA · own your workflows ─── */}
+          {/* ─── final CTA · the close (the "own your workflows" sovereignty
+               statement now lives in the v4 <OwnWorkflows/> · FIG 4.0 above · so
+               the close reframes to a distinct start-now CTA; the install row +
+               SUPERNOVAE footer below are KEPT intact) ─── */}
           <section
             id="get-started"
             className="mx-auto flex max-w-4xl scroll-mt-24 flex-col items-center px-6 pt-32 pb-24 text-center md:pt-44"
@@ -750,11 +668,11 @@ export function Component() {
               className="rv mt-8 mb-5 font-semibold tracking-tight"
               style={{ fontSize: 'clamp(2.2rem, 1rem + 4.5vw, 4.4rem)', lineHeight: 1 }}
             >
-              Own your workflows<span style={{ color: 'var(--cyan)' }}>.</span>
+              Start in one file<span style={{ color: 'var(--cyan)' }}>.</span>
             </h2>
             <p className="rv mb-10 max-w-[34rem] text-[16.5px] leading-relaxed text-[var(--fg-mute)]">
-              One Rust binary. Your machine, your models, your files. The spec is open and the
-              license is AGPL, forever.
+              Install the binary, write a few lines of YAML, run it. Same file, same result,
+              on your machine — tomorrow and the day the vendor is gone.
             </p>
             <div className="rv flex flex-wrap items-center justify-center gap-4">
               <InstallPill />

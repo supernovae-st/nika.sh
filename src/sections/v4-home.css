@@ -1,0 +1,550 @@
+/* ─── v4 home sections · Verbs · Beyond-the-chat · Own-your-workflows ─────────
+   The "sovereign engineering instrument / blueprint" register, continued from
+   the hero (src/sections/hero.css + src/shell/shell.css): monochrome surfaces,
+   FIG numbering, 1px hairline rules, a crosshair/dimension HUD vocabulary. The
+   ONLY colour is the global EdgeAurora + a per-verb hairline "whisper" (never a
+   fill). Everything reads off the v4 theme tokens (--v4-bg / --v4-text / … via
+   the theme-dark / theme-light scope), so the same rules invert for the LIGHT
+   section automatically.
+
+   SSR-safe: pure CSS, no JS at render. Motion is gated to
+   prefers-reduced-motion: no-preference and is transform/opacity only. */
+
+/* ── shared section scaffolding ─────────────────────────────────────────────
+   A generous, asymmetric column shell shared by all three. The eyebrow/FIG, the
+   title, and the body sit on a left-weighted measure (not centered). */
+.v4sec {
+  position: relative;
+  isolation: isolate;
+  overflow: clip; /* contain the decorative HUD; never widen the viewport */
+}
+.v4sec-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding-top: clamp(96px, 14vh, 168px);
+  padding-bottom: clamp(96px, 14vh, 168px);
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+}
+@media (min-width: 768px) {
+  .v4sec-wrap {
+    padding-left: max(28px, env(safe-area-inset-left));
+    padding-right: max(28px, env(safe-area-inset-right));
+  }
+}
+
+/* the FIG number — same hairline-tick register as the hero's .v4fig */
+.v4sec-fig {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.v4sec-fig::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
+}
+
+.v4sec-title {
+  margin-top: 26px;
+  max-width: 22ch;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.0;
+  font-size: clamp(2rem, 1rem + 3.4vw, 3.4rem);
+  color: var(--v4-text);
+  text-wrap: balance;
+}
+.v4sec-lede {
+  margin-top: 20px;
+  max-width: 40rem;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.v4sec-lede b {
+  color: var(--v4-text);
+  font-weight: 560;
+}
+
+/* ── one orchestrated reveal · sections fade their rows up on first view ─────
+   The `.v4-in` class is added by an IntersectionObserver on first intersect.
+   Default (SSR / no-JS / reduced-motion) = fully visible. */
+@media (prefers-reduced-motion: no-preference) {
+  .v4sec [data-rise] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--rise-delay, 0ms);
+  }
+  .v4sec.v4-in [data-rise] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FIG 2.0 · THE FOUR VERBS  (theme-dark)
+   A composed, asymmetric grid — NOT a plain 2×2 of equal centered cards. The
+   first verb (infer) is the lead plate (wide); the other three stack in a rail.
+   Each verb: glyph + name + gloss + a 2-line spec snippet. Verb hue is a
+   hairline accent ONLY (left edge / glyph) on hover/active, never a fill.
+   ════════════════════════════════════════════════════════════════════════════ */
+.v4verbs-grid {
+  margin-top: clamp(40px, 6vh, 72px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 880px) {
+  .v4verbs-grid {
+    /* asymmetric: the lead plate spans the left column twice as tall as a rail
+       card; the three rail cards stack on the right. */
+    grid-template-columns: 1.18fr 0.82fr;
+    grid-template-rows: repeat(3, auto);
+    gap: 16px;
+  }
+  .v4verb--lead {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+  }
+  .v4verb--rail {
+    grid-column: 2;
+  }
+}
+
+.v4verb {
+  --vh: var(--v4-text); /* the verb hue · neutral until hover/focus */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px 22px 20px;
+  border: 1px solid var(--v4-line);
+  border-radius: 14px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
+  /* the hairline verb-hue accent rides the LEFT edge · 0-width until hover */
+  box-shadow: inset 0 0 0 0 transparent;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+}
+.v4verb::before {
+  /* a corner registration tick — the blueprint vocabulary */
+  content: '';
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 9px;
+  height: 9px;
+  border-top: 1px solid color-mix(in oklch, var(--v4-text) 22%, transparent);
+  border-right: 1px solid color-mix(in oklch, var(--v4-text) 22%, transparent);
+  pointer-events: none;
+}
+.v4verb:hover,
+.v4verb:focus-within {
+  border-color: color-mix(in oklch, var(--vh) 38%, var(--v4-line));
+  background: color-mix(in oklch, var(--v4-bg-raised) 92%, transparent);
+  /* the verb whisper — a hairline left rule in the verb's hue (accent, not fill) */
+  box-shadow: inset 2px 0 0 0 color-mix(in oklch, var(--vh) 70%, transparent);
+}
+.v4verb--lead {
+  /* the lead plate gets a touch more presence */
+  padding: 26px 26px 24px;
+}
+
+.v4verb-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.v4verb-glyph {
+  font-family: var(--mono);
+  font-size: 20px;
+  line-height: 1;
+  color: var(--v4-text-dim);
+  transition: color 0.22s ease;
+}
+.v4verb:hover .v4verb-glyph,
+.v4verb:focus-within .v4verb-glyph {
+  color: var(--vh);
+}
+.v4verb-name {
+  font-family: var(--mono);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v4-text);
+}
+.v4verb--lead .v4verb-name {
+  font-size: 23px;
+}
+.v4verb-tag {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--v4-text-faint);
+  white-space: nowrap;
+}
+.v4verb-sub {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.v4verb-gloss {
+  margin-top: 9px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+}
+.v4verb--lead .v4verb-gloss {
+  font-size: 15.5px;
+  max-width: 34ch;
+}
+/* the 2-line spec snippet · sits at the card foot, hairline-topped */
+.v4verb-snip {
+  margin-top: auto;
+  padding-top: 16px;
+}
+.v4verb-snip pre {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 9px;
+  border: 1px solid var(--v4-line);
+  background: color-mix(in oklch, var(--v4-bg) 75%, transparent);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: pre;
+}
+.v4verb-snip pre::-webkit-scrollbar {
+  display: none;
+}
+.v4verb-snip .v4snip-verb {
+  color: var(--v4-text);
+  font-weight: 560;
+}
+.v4verb-snip .v4snip-glyph {
+  color: var(--vh);
+  user-select: none;
+}
+
+/* the closing register line under the grid — "a verb is a distinct native
+   execution model" framing, as a mono dimension caption */
+.v4verbs-note {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.v4verbs-note::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 42px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FIG 3.0 · BEYOND THE CHAT  (theme-dark · THE ACID MOMENT)
+   The one place the fluid/chromatic-warp effect lives. The whole comparison
+   layer can be displaced by an SVG turbulence filter whose scale tracks fast
+   scroll, then settles to still. Reduced-motion → the filter is never applied
+   and the layer is plain. The single strong effect, dosed.
+   ════════════════════════════════════════════════════════════════════════════ */
+.v4beyond-stage {
+  margin-top: clamp(40px, 6vh, 72px);
+}
+
+/* the warp wrapper · the filter ref is set in markup; `--acid` (0..1) is driven
+   by the section's rAF on fast scroll. We translate that into the chromatic
+   split + a faint scale wobble. The SVG displacement filter does the fluid part.
+   At rest (--acid:0) everything is identity → pixel-still. */
+.v4acid {
+  position: relative;
+  will-change: filter, transform;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v4acid[data-acid='live'] {
+    filter: url(#v4-acid-warp);
+  }
+  /* the chromatic fringe · two offset, blended ghosts that part on fast scroll.
+     Built with drop-shadows in the verb hues (diegetic colour, earned by the
+     motion) — they collapse to 0 offset at rest. */
+  .v4acid[data-acid='live'] .v4versus-grid {
+    transition: filter 0.45s ease;
+  }
+}
+
+/* the comparison grid · file (kept) vs the three alternatives that lose */
+.v4versus-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 760px) {
+  .v4versus-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+.v4versus-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 20px 20px 18px;
+  border: 1px solid var(--v4-line);
+  border-radius: 14px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
+}
+/* the "fate" stamp · a faint mono ghost in the corner */
+.v4versus-fate {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.v4versus-them {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.v4versus-themlist {
+  margin: 14px 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+}
+.v4versus-themlist li {
+  display: flex;
+  gap: 9px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+}
+.v4versus-themlist .v4versus-dash {
+  flex: 0 0 auto;
+  color: var(--v4-text-faint);
+}
+.v4versus-foot {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--v4-line);
+}
+.v4versus-nika {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v4-text);
+}
+.v4versus-nika img {
+  width: 12px;
+  height: 12px;
+  opacity: 0.85;
+}
+.v4versus-nikalist {
+  margin: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+}
+.v4versus-nikalist li {
+  display: flex;
+  gap: 9px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--v4-text);
+}
+.v4versus-nikalist .v4versus-tick {
+  flex: 0 0 auto;
+  color: var(--v4-text-dim);
+}
+
+/* the acid read-out · a tiny live HUD that shows the warp arming/settling so the
+   effect feels SYSTEMIC (an instrument reacting), not random. Pure status text. */
+.v4acid-readout {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.v4acid-readout-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.v4acid-readout[data-live='true'] .v4acid-readout-dot {
+  background: var(--verb-invoke);
+  box-shadow: 0 0 8px color-mix(in oklch, var(--verb-invoke) 70%, transparent);
+}
+.v4acid-readout[data-live='true'] .v4acid-readout-label {
+  color: var(--v4-text-dim);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FIG 4.0 · OWN YOUR WORKFLOWS  (theme-LIGHT · the rhythm break)
+   Warm off-white surface, near-black ink, the SAME blueprint register inverted.
+   A confident editorial statement: the sovereignty sentence as a large measure,
+   with a tabular spec ledger (counts from CANON). No cards-grid cliché — an
+   editorial column + a hairline-ruled facts ledger.
+   ════════════════════════════════════════════════════════════════════════════ */
+.v4own-statement {
+  margin-top: clamp(34px, 5vh, 56px);
+  max-width: 26ch;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.04;
+  font-size: clamp(2.1rem, 1rem + 4vw, 3.8rem);
+  color: var(--v4-text);
+  text-wrap: balance;
+}
+.v4own-statement .v4own-dim {
+  color: var(--v4-text-dim);
+}
+.v4own-body {
+  margin-top: 28px;
+  max-width: 38rem;
+  font-size: 17.5px;
+  line-height: 1.62;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.v4own-body b {
+  color: var(--v4-text);
+  font-weight: 560;
+}
+
+/* the facts ledger · a hairline-ruled table of sovereign guarantees · the counts
+   are tabular-nums and come from CANON (never hand-typed). Reads like the spec
+   sheet on the back of an instrument. */
+.v4own-ledger {
+  margin-top: clamp(40px, 6vh, 64px);
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--v4-line);
+}
+@media (min-width: 720px) {
+  .v4own-ledger {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 48px;
+  }
+}
+.v4own-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.v4own-row-label {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+.v4own-row-fig {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+.v4own-row-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--v4-text);
+}
+.v4own-row-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.v4own-row-value b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+
+/* the close · the license line as a confident mono footer rule */
+.v4own-license {
+  margin-top: clamp(36px, 5vh, 56px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.v4own-license img {
+  width: 15px;
+  height: 15px;
+  opacity: 0.8;
+}
+.v4own-license b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.v4own-license a {
+  color: var(--v4-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 30%, transparent);
+  transition: text-decoration-color 0.18s ease;
+}
+.v4own-license a:hover {
+  text-decoration-color: var(--v4-text);
+}
+.v4own-sep {
+  color: var(--v4-text-faint);
+}
