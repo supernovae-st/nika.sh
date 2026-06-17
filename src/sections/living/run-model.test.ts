@@ -276,6 +276,42 @@ describe('runStateAt · failure path (opts.failAt)', () => {
   })
 })
 
+describe('runStateAt · permits denial override (opts.deny)', () => {
+  // the ENFORCE beat: an out-of-bounds effect is denied with NIKA-SEC-004
+  // (effect outside the declared permits boundary) instead of the verb-default.
+  const SEC = {
+    code: 'NIKA-SEC-004',
+    category: 'security_error',
+    transient: false,
+    message: 'effect outside the declared permits: capability boundary (fs/net/exec/tool)',
+  }
+  const s = runStateAt(DIAMOND, 1, { failAt: 'd', deny: SEC })
+
+  it('the denied node surfaces the SECURITY code, not the verb-default', () => {
+    expect(s.nodes.d.status).toBe('failure')
+    const err = s.nodes.d.error
+    expect(err).toBeTruthy()
+    expect(err!.code).toBe('NIKA-SEC-004')
+    expect(err!.category).toBe('security_error')
+    expect(err!.transient).toBe(false)
+    expect(err!.task_id).toBe('d')
+  })
+
+  it('the pretty CLI shows ✗ <id> NIKA-SEC-004', () => {
+    expect(s.cli.join('\n')).toMatch(/✗ d\s+NIKA-SEC-004/)
+  })
+
+  it('deny only applies to the failAt node (others keep verb-default behaviour)', () => {
+    // failing `a` with deny → `a` carries SEC-004; downstream b/c/d cancel (default gate)
+    const s2 = runStateAt(DIAMOND, 1, { failAt: 'a', deny: SEC })
+    expect(s2.nodes.a.error!.code).toBe('NIKA-SEC-004')
+    // no other node carries an error code (they're cancelled, not failed)
+    for (const id of ['b', 'c', 'd']) {
+      expect(s2.nodes[id].error).toBeUndefined()
+    }
+  })
+})
+
 describe('runStateAt · determinism', () => {
   it('same inputs → byte-identical state (no Date.now / Math.random)', () => {
     const a = runStateAt(STANDUP, 0.5, { runId: 'fixed-seed' })
@@ -300,6 +336,38 @@ describe('runStateAt · determinism', () => {
       for (const id of Object.keys(s.nodes)) {
         expect(ALL_STATUSES).toContain(s.nodes[id].status)
       }
+    }
+  })
+})
+
+describe('runStateAt · the Living File fil-rouge t3-resume-screener', () => {
+  const T3 = SHOWCASE_DAG['t3-resume-screener']
+
+  it('exists with a terminal `save` node (the permits-boundary write)', () => {
+    const save = T3.tasks.find((t) => t.id === 'save')
+    expect(save).toBeTruthy()
+    // nothing depends on `save` → denying it shows ONE denial, no cascade
+    const dependents = T3.tasks.filter((t) => t.deps.includes('save'))
+    expect(dependents).toHaveLength(0)
+  })
+
+  it('the within-bounds run completes successfully (exit 0, shortlist output)', () => {
+    const s = runStateAt(T3, 1)
+    expect(s.exitCode).toBe(0)
+    expect(Object.keys(s.outputs ?? {})).toContain('shortlist')
+  })
+
+  it('denying the terminal write surfaces NIKA-SEC-004 with no cascade', () => {
+    const s = runStateAt(T3, 1, {
+      failAt: 'save',
+      deny: { code: 'NIKA-SEC-004', category: 'security_error', transient: false, message: 'x' },
+    })
+    expect(s.nodes.save.status).toBe('failure')
+    expect(s.nodes.save.error!.code).toBe('NIKA-SEC-004')
+    // every OTHER node still succeeded (no cancel cascade from a terminal node)
+    for (const t of T3.tasks) {
+      if (t.id === 'save') continue
+      expect(s.nodes[t.id].status).toBe('success')
     }
   })
 })

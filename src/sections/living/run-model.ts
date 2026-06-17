@@ -279,7 +279,20 @@ function failurePlan(dag: ShowcaseDag, failAt: string): Record<string, 'failure'
   return out
 }
 
-function buildTypedError(task: ShowcaseTask): TypedError {
+/* an explicit error override for the failed node — used to surface a SECURITY
+   denial (`NIKA-SEC-004` · effect outside the declared `permits:` boundary)
+   instead of the verb-default code. Real catalog rows (public/errors/catalog.json). */
+export interface DenyOverride {
+  code: string
+  category: string
+  transient: boolean
+  message: string
+}
+
+function buildTypedError(task: ShowcaseTask, override?: DenyOverride): TypedError {
+  if (override) {
+    return { ...override, task_id: task.id, attempt: 1 }
+  }
   const row = CATALOG[task.verb]
   return {
     code: row.code,
@@ -295,7 +308,7 @@ function buildTypedError(task: ShowcaseTask): TypedError {
 export function runStateAt(
   dag: ShowcaseDag,
   t: number,
-  opts: { failAt?: string; runId?: string } = {},
+  opts: { failAt?: string; runId?: string; deny?: DenyOverride } = {},
 ): RunState {
   const progress = Math.min(1, Math.max(0, t))
   const runId = opts.runId ?? DEFAULT_RUN_ID
@@ -324,7 +337,9 @@ export function runStateAt(
       endedAtMs: finished ? sched.endMs[task.id] : null,
       durationMs: finished ? sched.durMs[task.id] : null,
       ...(status === 'success' ? { output: verbResult(task) } : {}),
-      ...(status === 'failure' ? { error: buildTypedError(task) } : {}),
+      ...(status === 'failure'
+        ? { error: buildTypedError(task, opts.failAt === task.id ? opts.deny : undefined) }
+        : {}),
     }
   }
 

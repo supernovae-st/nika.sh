@@ -3,13 +3,21 @@ import { Link } from 'react-router'
 import { CodeFile } from '../components/CodeFile'
 import { REPO, SPEC } from '../content'
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
+import { sliceExcerpt } from './living/excerpt'
 import '../shell/shell.css'
 import './hero.css'
 
-/* ─── Hero · the v4 trust-landing first surface (design doc §4) ───────────────
+/* ─── Hero · the v4.1 control-narrative first surface (plan §4 · FIG 0.0) ──────
    Register: a sovereign engineering instrument / technical blueprint. Austere,
    monochrome, hairline rules, FIG numbering. PURE DOM — ZERO WebGL. The SEO win:
-   the headline `Intent as Code.` is a REAL <h1> in the prerendered HTML.
+   the headline is a REAL <h1> in the prerendered HTML.
+
+   The pitch is CONTROL: "See what your AI will do. Before it does it." The agent
+   writes its plan as a file — steps, tools, PERMISSIONS, outputs — you review
+   it, the runtime enforces it, then it runs. The file on the right is the
+   control example: a real slice of `t3-resume-screener` (the only projected
+   showcase with a real `permits:` block) — a LOCAL model screens CVs and the
+   `permits:` block is the visual focus (the seatbelt: PII can't leave the box).
 
    Atmosphere WITHOUT color: a fine grain tile + a faint radial vignette + a
    barely-there blueprint grid pin depth onto the near-black surface so it never
@@ -17,14 +25,30 @@ import './hero.css'
    frame. The verb-hue whisper is reserved for live runs, NOT this static screen.
 
    Layout: asymmetric — copy left, the real .nika.yaml right (stacks on mobile),
-   on a 1fr/1.08fr grid (not centered-symmetric). The file is a REAL projected
-   showcase workflow (`t1-standup-digest`), never hand-typed.
+   on a 1fr/1.08fr grid (not centered-symmetric). The file is a TRUE slice of a
+   projected showcase workflow (`sliceExcerpt`), never hand-typed.
 
    Entrance: ONE orchestrated staggered reveal (motion-safe only). Everything is
    visible by DEFAULT (SSR / no-JS / reduced-motion) — the `.v4-enter` opt-in is
    added on mount and only animates when motion is allowed. */
 
-const HERO_YAML = SHOWCASE_YAML['t1-standup-digest']
+/* The control example — a FOCUSED, true slice of the real projected file:
+   header + model + the `permits:` block · the local-infer scoring task with its
+   typed schema · the conditional `when:` gate. `…` marks where lines were
+   trimmed. The permits span is auto-located for emphasis (never re-counted by
+   hand). See plan §5 (LOCKED fil-rouge = t3-resume-screener). */
+const FULL_YAML = SHOWCASE_YAML['t3-resume-screener']
+const { text: HERO_YAML, highlight: PERMITS_HL } = sliceExcerpt(
+  FULL_YAML,
+  [
+    [1, 11], // nika:v1 · workflow · description · model · the permits block
+    [43, 45], // - id: screened · depends_on · for_each (the local infer task head)
+    [52, 53], // infer: · prompt: |
+    [60, 68], // schema head · the fit enum (typed output)
+    [86, 88], // - id: brief · depends_on · the when: gate
+  ],
+  /^permits:|^\s{2,}(fs|read|write|tools):/,
+)
 const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
 
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads.
@@ -182,30 +206,42 @@ export default function Hero() {
               FIG 0.0
             </p>
 
-            {/* the REAL <h1> · permanent title (AGENTS.md) · the SEO win */}
+            {/* the brand kicker · "Intent as Code" survives only as a small mark,
+                never the explainer (plan §2). Keeps the permanent phrase on-page. */}
+            <p data-rise style={rise(40)} className="v4kicker mb-4">
+              <span aria-hidden>✦</span> Intent as Code
+            </p>
+
+            {/* the REAL <h1> · the control hook (plan §4 · FIG 0.0) · the SEO win.
+                Two clauses on their own lines so the cadence reads as a promise. */}
             <h1
               data-rise
               style={{
                 ...rise(70),
                 fontFamily: 'var(--display)',
-                /* floor lowered so "Intent as Code." (incl. the period) is fully
-                   contained at 390px; still scales up big on wider screens. */
-                fontSize: 'clamp(2.2rem, 0.95rem + 5.4vw, 5.3rem)',
-                lineHeight: 0.98,
+                /* floor kept low so both clauses are fully contained at 390px;
+                   still scales up big on wider screens. */
+                fontSize: 'clamp(1.95rem, 0.7rem + 5vw, 4.6rem)',
+                lineHeight: 0.99,
                 letterSpacing: '-0.025em',
                 fontWeight: 600,
               }}
               className="text-text text-pretty"
             >
-              Intent as Code.
+              See what your AI will do.
+              <br />
+              <span className="text-dim">Before it does it.</span>
             </h1>
 
             <p
               data-rise
               style={rise(140)}
-              className="mt-6 max-w-[33rem] text-[17.5px] leading-relaxed text-dim"
+              className="mt-6 max-w-[35rem] text-[17px] leading-relaxed text-dim"
             >
-              One file. The whole workflow&nbsp;— on your machine, forever.
+              Agents are starting to touch real systems&nbsp;— your code, your
+              APIs, production. Nika makes an agent write its plan as a file
+              first: every step, tool, <b className="font-semibold text-text">permission</b>{' '}
+              and output. You review it. The runtime enforces it. Then it runs.
             </p>
 
             {/* the monochrome install line · #install is the nav CTA's target */}
@@ -222,38 +258,42 @@ export default function Hero() {
               className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-[14.5px] sm:mt-7 sm:gap-x-7"
             >
               <a
-                href={REPO}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex min-h-11 items-center gap-2 rounded-md text-text transition-colors"
-              >
-                <span aria-hidden className="text-dim transition-colors group-hover:text-text">
-                  ★
-                </span>
-                Star on GitHub
-              </a>
-              <a
                 href={SPEC}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-dim transition-colors hover:text-text"
+                className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-text transition-colors"
               >
                 Read the spec
                 <span className="transition-transform group-hover:translate-x-0.5">→</span>
               </a>
-              <Link
-                to="/learn"
+              <a
+                href="#living-file"
                 className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-dim transition-colors hover:text-text"
               >
-                Learn it in 5&nbsp;min
-                <span className="transition-transform group-hover:translate-x-0.5">→</span>
-              </Link>
+                <span aria-hidden className="text-dim transition-transform group-hover:translate-y-0.5">
+                  ↓
+                </span>
+                see it run
+              </a>
+              <a
+                href={REPO}
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex min-h-11 items-center gap-2 rounded-md text-dim transition-colors hover:text-text"
+              >
+                <span aria-hidden className="text-faint transition-colors group-hover:text-text">
+                  ★
+                </span>
+                Star on GitHub
+              </a>
             </div>
 
-            {/* the trust line · mono, tabular, faint */}
+            {/* the trust line · the control guarantee (plan §4) · mono, faint */}
             <p data-rise style={rise(350)} className="v4trust mt-9">
-              Pure Rust<span className="px-2 text-faint">·</span>
-              one binary<span className="px-2 text-faint">·</span>
+              Reviewable<span className="px-2 text-faint">·</span>
+              enforced<span className="px-2 text-faint">·</span>
+              replayable<span className="px-2 text-faint">·</span>
+              one Rust binary<span className="px-2 text-faint">·</span>
               any model<span className="px-2 text-faint">·</span>
               <b>AGPL</b> forever
             </p>
@@ -270,9 +310,23 @@ export default function Hero() {
               <span aria-hidden className="text-faint/60">
                 —
               </span>
-              a workflow, as you would write it
+              the plan, before it acts
             </p>
-            <CodeFile filename="standup-digest.nika.yaml" yaml={HERO_YAML} highlight={[8, 11]} />
+            <CodeFile filename="screen-cvs.nika.yaml" yaml={HERO_YAML} highlight={PERMITS_HL} />
+            {/* the permits block is the focus — a one-line gloss + the full-file link */}
+            <p className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[12.5px] text-dim">
+              <span>
+                <b className="font-semibold text-text">permits:</b> everything it
+                can touch&nbsp;— and nothing&nbsp;else.
+              </span>
+              <Link
+                to="/use-cases"
+                className="group inline-flex min-h-11 items-center gap-1.5 text-faint transition-colors hover:text-text"
+              >
+                view the full file
+                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+              </Link>
+            </p>
           </div>
         </div>
       </div>

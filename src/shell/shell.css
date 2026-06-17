@@ -537,6 +537,20 @@
   color: var(--v4-text-dim);
 }
 
+/* the brand kicker · "Intent as Code" as a small mark above the hook (plan §2).
+   Mono, tracked, faint — the blueprint register, never the explainer. */
+.v4kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.v4kicker span {
+  margin-right: 0.5em;
+  color: var(--v4-text-faint);
+}
+
 /* ─── hero entrance · ONE orchestrated staggered reveal (motion-safe only) ────
    Content is fully visible by DEFAULT (SSR / no-JS / reduced-motion). The
    stagger only applies when the .v4-enter root opts in (added on mount AND the

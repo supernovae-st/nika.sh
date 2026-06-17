@@ -7,36 +7,60 @@ import Corridor from './Corridor'
 import './living.css'
 import './corridor.css'
 
-/* ─── The Living File · Pass 1 (2D comprehension + live event stream) ──────────
-   Design doc §5. A theme-dark sticky-scroll section: a tall outer track (~280vh)
-   with a sticky, viewport-height inner STAGE. The stage's animation is driven by
-   the section's OWN scroll progress t ∈ [0,1] — computed from getBoundingClientRect
-   in a rAF loop (NOT drei ScrollControls, which would hijack the whole page).
+/* ─── The Living File · the CONTROL centerpiece (plan §4 · FIG 1.0) ────────────
+   A theme-dark sticky-scroll section: a tall outer track with a sticky,
+   viewport-height inner STAGE driven by the section's OWN scroll progress
+   t ∈ [0,1] — computed from getBoundingClientRect in a rAF loop.
 
-   One `runStateAt(dag, t)` call per visual frame is the SINGLE SOURCE OF TRUTH:
-   it drives the 2D DAG, the live CLI/NDJSON stream AND the outputs panel together,
-   so a reader scrolling clearly SEES the file become a running workflow with real
-   logs and a real result. Three beats across t:
+   The narrative is CONTROL, in four beats:
+     1 · WRITE   — the agent emits its plan as a file (the YAML). "What it intends."
+     2 · REVIEW  — the human-readable plan + the `permits:` block lit up: everything
+                   it's allowed to touch, and nothing else. A human gate.
+     3 · ENFORCE — the runtime checks every action against `permits`. An out-of-bounds
+                   write is DENIED (`NIKA-SEC-004`) — the seatbelt, made visible.
+     4 · RUN     — it executes WITHIN bounds; the CLI / NDJSON stream is the audit
+                   trail (replayable).
 
-     beat 1 · the file       (t 0.00–0.25) — the CodeFile centered, FIG 1.0.
-     beat 2 · file → DAG      (t 0.25–0.50) — task lines detach into a flat 2D graph.
-     beat 3 · execution       (t 0.50–1.00) — nodes light pending→running→success
-                                              in topological order; edges flow when
-                                              a dep completes; each completion beats
-                                              the edge aurora (the drum); the live
-                                              stream + outputs render alongside.
+   One `runStateAt(dag, t)` per frame is the SINGLE SOURCE OF TRUTH for the happy
+   (within-bounds) path: it drives the 2D DAG / 3D corridor, the live CLI/NDJSON
+   stream AND the outputs. A SECOND, scroll-independent `DENIED` state surfaces the
+   enforced-denial row in the ENFORCE callout (a real `✗ NIKA-SEC-004` line).
+
+   Fil-rouge = `t3-resume-screener` — the only projected showcase with a real
+   `permits:` block (a LOCAL model screens CVs · no `net:` at all · PII cannot
+   leave the machine even if a CV hijacks the model). Its richer 8-wave DAG makes
+   a deeper corridor.
 
    SSR / no-JS / reduced-motion: the stage renders a sensible STATIC end-state
-   (the fully-executed run · full log + outputs) so the section is coherent with
-   zero scroll animation. The rAF scroll-scrub is a prefers-reduced-motion:
-   no-preference enhancement, added on mount — it must prerender without `window`.
-   This 2D version is ALSO the low-end / reduced-motion fallback for the Pass-2
-   3D corridor. */
+   (the fully-executed within-bounds run · full log + outputs) so the section is
+   coherent with zero scroll animation. The rAF scroll-scrub + 3D corridor are
+   prefers-reduced-motion: no-preference enhancements added on mount. */
 
-const DAG = SHOWCASE_DAG['t1-standup-digest']
-const YAML = SHOWCASE_YAML['t1-standup-digest']
+const DAG = SHOWCASE_DAG['t3-resume-screener']
+const YAML = SHOWCASE_YAML['t3-resume-screener']
+const FILENAME = 'screen-cvs.nika.yaml'
 /** the static frame used for SSR / no-JS / reduced-motion (fully executed). */
 const END_STATE: RunState = runStateAt(DAG, 1)
+
+/* ── the ENFORCE beat · a real `permits:`-boundary denial ─────────────────────
+   The runtime checks every effect against the declared `permits:`. We model an
+   out-of-bounds WRITE on the terminal `save` node: it tries to write outside the
+   declared paths → the engine DENIES it with `NIKA-SEC-004` (effect outside the
+   permits capability boundary). Real catalog row (public/errors/catalog.json).
+   This is scroll-INDEPENDENT — it's the "what the seatbelt does" proof, shown as
+   a fixed callout, while the main timeline stays the happy within-bounds run. */
+const DENY_NODE = 'save'
+const SEC_004 = {
+  code: 'NIKA-SEC-004',
+  category: 'security_error',
+  transient: false,
+  message: 'effect outside the declared permits: capability boundary (fs/net/exec/tool)',
+} as const
+const DENIED_STATE: RunState = runStateAt(DAG, 1, { failAt: DENY_NODE, deny: SEC_004 })
+/** the single pretty-CLI row that shows the denied write (✗ <id> NIKA-SEC-004). */
+const DENIED_CLI_ROW =
+  DENIED_STATE.cli.find((l) => l.includes(SEC_004.code)) ??
+  `${CLI_GLYPH.fail} ${DENY_NODE}   ${SEC_004.code}`
 
 /* ── beat boundaries on the master t-timeline ──────────────────────────────── */
 const T_FILE_END = 0.25 // beat 1 → 2
@@ -232,7 +256,7 @@ function Stream({ run, mode }: { run: RunState; mode: StreamMode }) {
     <div className="lf-stream-scroll" ref={scrollRef}>
       <pre className="lf-cli" aria-label="nika run · live output">
         {run.cli.length === 0 ? (
-          <span className="lf-cli-idle">{'❯ nika run standup-digest.nika.yaml'}</span>
+          <span className="lf-cli-idle">{`❯ nika run ${FILENAME}`}</span>
         ) : (
           run.cli.map((line, i) => {
             const k = cliRowKind(line)
@@ -289,11 +313,43 @@ function Outputs({ run }: { run: RunState }) {
   )
 }
 
-/* ── beat caption · the one-line "where you are" register ─────────────────────*/
+/* ── the ENFORCE callout · the seatbelt, made visible (plan §4 · FIG 1.0 beat 3)
+   A small fixed panel that shows what the runtime does when an action steps
+   OUTSIDE the declared `permits:`: it is DENIED with `NIKA-SEC-004` — not logged
+   after the fact, blocked before it happens. The denied row is a REAL pretty-CLI
+   line from a `failAt`+`deny` run (DENIED_STATE), so the code + format are the
+   engine's, not decoration. Out of bounds = denied. */
+function EnforceCallout() {
+  return (
+    <div className="lf-enforce" role="note" aria-label="Permits enforcement">
+      <p className="lf-panel-cap">
+        <span aria-hidden>FIG 1.3</span>
+        <span aria-hidden className="lf-cap-dash">
+          —
+        </span>
+        enforce — out of bounds is denied
+      </p>
+      {/* the denied write, as the engine prints it (✗ <id>  NIKA-SEC-004) */}
+      <pre className="lf-enforce-row mono" aria-label="A denied action — NIKA-SEC-004">
+        <span className="lf-enforce-glyph" aria-hidden>
+          {CLI_GLYPH.fail}
+        </span>
+        {DENIED_CLI_ROW.replace(new RegExp(`^${CLI_GLYPH.fail}\\s*`), '')}
+      </pre>
+      <p className="lf-enforce-note">
+        tried to write outside <span className="lf-enforce-key">permits:</span> →{' '}
+        denied. The boundary is the seatbelt — checked on every action, before it
+        runs.
+      </p>
+    </div>
+  )
+}
+
+/* ── beat caption · the one-line "where you are" register (the 4 control beats) */
 function beatLabel(t: number): { fig: string; title: string } {
-  if (t < T_FILE_END) return { fig: 'FIG 1.0', title: 'The file is the workflow' }
-  if (t < T_MORPH_END) return { fig: 'FIG 1.1', title: 'The file becomes a graph' }
-  return { fig: 'FIG 1.2', title: 'One binary runs it — watch it execute' }
+  if (t < T_FILE_END) return { fig: 'FIG 1.0', title: 'Write — the agent declares its plan' }
+  if (t < T_MORPH_END) return { fig: 'FIG 1.1', title: 'Review — what it’s allowed to touch' }
+  return { fig: 'FIG 1.2', title: 'Enforce, then run — within bounds' }
 }
 
 export default function LivingFile() {
@@ -411,8 +467,9 @@ export default function LivingFile() {
 
   return (
     <section
+      id="living-file"
       aria-labelledby="living-file-title"
-      className="theme-dark lf-section"
+      className="theme-dark lf-section scroll-mt-24"
       data-scrub={scrub}
     >
       {/* the tall scroll track — its height defines the scrub distance */}
@@ -435,8 +492,8 @@ export default function LivingFile() {
               The Living File
             </h2>
             <p className="lf-lede">
-              One file. Scroll, and watch <span className="lf-em">standup-digest.nika.yaml</span>{' '}
-              become a running workflow — real logs, a real result.
+              Not a black box. The agent writes the plan — you review it — the
+              runtime <span className="lf-em">enforces</span> it — then it runs.
             </p>
             {/* a dimension line · the blueprint HUD register (decorative) */}
             <svg className="lf-dim" width="180" height="12" viewBox="0 0 180 12" fill="none" aria-hidden>
@@ -447,16 +504,27 @@ export default function LivingFile() {
 
           {/* ── the stage body · the file, the graph, the run surfaces ── */}
           <div className="lf-body">
-            {/* BEAT 1 · the file (fades out as the graph takes over) */}
+            {/* BEAT 1 · WRITE · the agent's plan, as a file (the permits: block
+                lit — what it's allowed to touch, and nothing else). */}
             <div className="lf-file" aria-hidden={stageBeat !== 'file'}>
               <p className="lf-panel-cap">
                 <span aria-hidden>FIG 1.0</span>
                 <span aria-hidden className="lf-cap-dash">
                   —
                 </span>
-                the file, as written
+                write — the plan, before it acts
               </p>
-              <CodeFile filename="standup-digest.nika.yaml" yaml={YAML} highlight={[8, 11]} />
+              <CodeFile filename={FILENAME} yaml={YAML} highlight={[7, 11]} />
+              {/* the REVIEW gloss · the permits: block is the star (plan §4 FIG 1.0) */}
+              <p className="lf-file-note mono">
+                <span aria-hidden className="lf-file-note-mark">
+                  permits:
+                </span>{' '}
+                a LOCAL model · <b>no </b>
+                <span className="lf-file-note-key">net:</span>
+                <b> at all</b> — the CVs cannot leave this machine, even if one
+                hijacks the model.
+              </p>
             </div>
 
             {/* BEAT 2+3 · the graph + (during execution) the stream & outputs.
@@ -469,7 +537,7 @@ export default function LivingFile() {
                   <span aria-hidden className="lf-cap-dash">
                     —
                   </span>
-                  {corridor3d ? 'the run · a corridor in depth' : 'the DAG · columns are parallel waves'}
+                  {corridor3d ? 'the plan, in depth — every step legible' : 'the plan · columns are parallel waves'}
                 </p>
                 {corridor3d ? (
                   <Corridor dag={DAG} run={run} runP={runP} />
@@ -489,7 +557,7 @@ export default function LivingFile() {
                       <span aria-hidden className="lf-cap-dash">
                         —
                       </span>
-                      live run
+                      run — the audit trail (replayable)
                     </p>
                     {/* the CLI ↔ NDJSON toggle (the detail that proves a real engine) */}
                     <div className="lf-toggle" role="group" aria-label="Event stream format">
@@ -514,6 +582,7 @@ export default function LivingFile() {
                   <Stream run={run} mode={mode} />
                 </div>
                 <Outputs run={run} />
+                <EnforceCallout />
               </div>
             </div>
           </div>

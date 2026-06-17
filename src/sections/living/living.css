@@ -456,6 +456,69 @@
   color: color-mix(in oklch, var(--v4-text) 88%, transparent);
 }
 
+/* ─── the REVIEW gloss under the file · the permits: block is the star ────────*/
+.lf-file-note {
+  margin-top: 0.7rem;
+  font-size: 11.5px;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+}
+.lf-file-note b {
+  font-weight: 500;
+  color: var(--v4-text);
+}
+.lf-file-note-mark,
+.lf-file-note-key {
+  color: var(--v4-text);
+  font-weight: 500;
+}
+
+/* ─── the ENFORCE callout · the seatbelt, made visible (NIKA-SEC-004 denial) ──
+   Monochrome by design — the ✗ glyph + the real error code are the redundant,
+   non-color-only cue. A left hairline tick (the v4 emphasis register) marks it
+   as the load-bearing control moment, not decoration. */
+.lf-enforce {
+  border: 1px solid var(--v4-line);
+  border-radius: 12px;
+  background: var(--v4-bg-raised);
+  padding: 0.7rem 0.85rem 0.8rem;
+  position: relative;
+  overflow: hidden;
+}
+.lf-enforce::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: color-mix(in oklch, var(--v4-text) 34%, transparent);
+}
+.lf-enforce-row {
+  margin: 0.15rem 0 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5ch;
+  font-size: 11.5px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: color-mix(in oklch, var(--v4-text) 90%, transparent);
+}
+.lf-enforce-glyph {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.lf-enforce-note {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--v4-text-faint);
+}
+.lf-enforce-key {
+  font-family: var(--mono);
+  color: var(--v4-text-dim);
+}
+
 /* ─── the run progress rail (stage foot) ─────────────────────────────────────*/
 .lf-rail {
   height: 2px;
