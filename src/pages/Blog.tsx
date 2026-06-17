@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import { REPO, SPEC } from '../content'
+import { REPO, SPEC, routeHead } from '../content'
 import { CANON } from '../canon.generated'
 
 /* ─── /blog · the journal — pedagogy in long form ───────────────────────────
@@ -45,7 +45,9 @@ const POSTS = [
 export function Component() {
   useHead({
     title: 'Blog · Nika',
+    link: routeHead('/blog').link,
     meta: [
+      ...routeHead('/blog').meta,
       {
         name: 'description',
         content:

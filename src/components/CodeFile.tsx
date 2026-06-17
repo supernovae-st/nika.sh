@@ -53,7 +53,18 @@ function TokenSpan({ token }: { token: Token }) {
       </span>
     )
   }
-  return <span className={KIND_CLASS[token.kind]}>{token.text}</span>
+  /* suppressHydrationWarning: YAML scalars are commonly double-quoted ("…").
+     React's server renderers escape a bare " in text to &quot;, while the client
+     renders the raw " — a serialization-only difference that round-trips to the
+     same DOM text but trips React 19's byte-level hydration check (this threw
+     React #418 on /use-cases, which renders many quoted values). The text node
+     is the lowest element carrying the quote, so the suppression is scoped tight;
+     the server text is correct, so React keeps it instead of regenerating. */
+  return (
+    <span className={KIND_CLASS[token.kind]} suppressHydrationWarning>
+      {token.text}
+    </span>
+  )
 }
 
 function CopyButton({ value }: { value: string }) {
@@ -122,9 +133,13 @@ export function CodeFile({ yaml, highlight, filename, className }: CodeFileProps
                   key={i}
                   className={`block min-h-[1.65em] ${lit ? 'v4code-lit' : ''}`}
                 >
-                  {line.tokens.length === 0
-                    ? '​' /* zero-width: keep empty lines tall */
-                    : line.tokens.map((t, j) => <TokenSpan key={j} token={t} />)}
+                  {line.tokens.length === 0 ? (
+                    /* empty line · the zero-width filler is wrapped in an ELEMENT (not
+                       a bare text node) so the line stays tall and hydrates cleanly. */
+                    <span aria-hidden>{'​'}</span>
+                  ) : (
+                    line.tokens.map((t, j) => <TokenSpan key={j} token={t} />)
+                  )}
                 </span>
               )
             })}

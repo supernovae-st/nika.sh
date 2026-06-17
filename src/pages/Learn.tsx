@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import { REPO, SPEC, DOCS } from '../content'
+import { REPO, SPEC, DOCS, routeHead } from '../content'
 
 /* ─── /learn · one file, line by line ───────────────────────────────────────
    Routed at /learn (React Router) · the 5-minute annotated walkthrough. Every
@@ -139,7 +139,9 @@ const ERROR_JSON = `{
 export function Component() {
   useHead({
     title: 'Learn · Nika',
+    link: routeHead('/learn').link,
     meta: [
+      ...routeHead('/learn').meta,
       {
         name: 'description',
         content:

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CHANGELOG, TAG_LABEL, fmtDate, type ChangelogEntry } from '../content/changelog'
-import { REPO, SPEC } from '../content'
+import { REPO, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './changelog-page.css'
 
@@ -46,7 +46,9 @@ export function Component() {
 
   useHead({
     title: 'Changelog · Nika',
+    link: routeHead('/changelog').link,
     meta: [
+      ...routeHead('/changelog').meta,
       {
         name: 'description',
         content:

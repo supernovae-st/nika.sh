@@ -13,7 +13,7 @@ import {
   type UCTab,
 } from '../sections/usecases-data'
 import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
-import { REPO, SPEC } from '../content'
+import { REPO, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './usecases-page.css'
 
@@ -132,7 +132,9 @@ export function Component() {
 
   useHead({
     title: 'Use cases · Nika',
+    link: routeHead('/use-cases').link,
     meta: [
+      ...routeHead('/use-cases').meta,
       {
         name: 'description',
         content:

@@ -6,6 +6,7 @@ import { yaml as yamlLang } from '@codemirror/lang-yaml'
 import { linter, lintGutter, type Diagnostic } from '@codemirror/lint'
 import { EditorView } from '@codemirror/view'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
+import { routeHead } from '../content'
 import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import { VERB_COLOR } from '../sections/transform-data'
 
@@ -37,7 +38,9 @@ export function Component() {
 
   useHead({
     title: 'Playground · Nika',
+    link: routeHead('/play').link,
     meta: [
+      ...routeHead('/play').meta,
       {
         name: 'description',
         content:

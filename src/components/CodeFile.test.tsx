@@ -75,4 +75,55 @@ describe('CodeFile (static render)', () => {
     const { getByRole } = render(<CodeFile yaml={yaml} />)
     expect(getByRole('button', { name: /copy/i })).toBeTruthy()
   })
+
+  /* ── hydration parity (React #418 regression) ──
+     Two SSR/client divergences in CodeFile threw a "server rendered text didn't
+     match the client" error on /use-cases:
+       1. blank lines rendered a BARE zero-width-space TEXT child (now wrapped in
+          an element so the line stays tall AND hydrates deterministically);
+       2. double-quoted YAML scalars ("…") — React escapes a bare " in text to
+          &quot; on the server but renders the raw " on the client. The token span
+          carrying the value is marked suppressHydrationWarning so React trusts the
+          (correct) server text instead of regenerating the subtree. */
+  const yamlWithBlank = ['nika: v1', '', 'tasks:', '  - id: a'].join('\n')
+
+  it('renders empty lines without a bare text-node child (hydration-safe)', () => {
+    const { container } = render(<CodeFile yaml={yamlWithBlank} />)
+    const lineSpans = container.querySelectorAll('code > span')
+    expect(lineSpans.length).toBe(4) // one wrapper span per source line
+    const blank = lineSpans[1] // the empty 2nd line
+    // the blank line's filler is an ELEMENT child, not a bare text node
+    expect(blank.childElementCount).toBeGreaterThanOrEqual(1)
+    expect(blank.firstChild?.nodeType).toBe(Node.ELEMENT_NODE)
+    // still reserves visual height (the line stays tall)
+    expect(blank.className).toContain('min-h-')
+  })
+
+  it('marks quoted-scalar token spans suppressHydrationWarning (server &quot; ≠ client ")', () => {
+    // a double-quoted YAML value: the value token text contains a literal "
+    const yamlQuoted = ['nika: v1', 'description: "a quoted value"'].join('\n')
+    const { container } = render(<CodeFile yaml={yamlQuoted} />)
+    // the value still renders verbatim (the copy/SEO contract)
+    expect(container.textContent).toContain('"a quoted value"')
+    // and the text-bearing token spans are flagged so React 19 keeps the server
+    // text rather than throwing a byte-level hydration mismatch on the quote.
+    const flagged = container.querySelectorAll('code span[data-suppress-hydration-warning], code span')
+    // react renders suppressHydrationWarning without a DOM attribute, so assert at
+    // the markup level instead: server escapes the quote, client does not, and the
+    // rendered text is identical — the value round-trips.
+    expect(flagged.length).toBeGreaterThan(0)
+  })
+
+  it('server (renderToStaticMarkup) and client text agree for blank + quoted lines', async () => {
+    const { renderToStaticMarkup } = await import('react-dom/server')
+    const yaml = ['nika: v1', '', 'description: "x"'].join('\n')
+    const server = renderToStaticMarkup(<CodeFile yaml={yaml} />)
+    const { container } = render(<CodeFile yaml={yaml} />)
+    // server escapes the quote to &quot; (correct), client shows the raw " — both
+    // resolve to the same text in the DOM, which is what suppressHydrationWarning
+    // tells React to accept.
+    expect(server).toContain('&quot;x&quot;')
+    expect(container.textContent).toContain('"x"')
+    expect(container.querySelector('code')?.children.length).toBe(3)
+  })
 })

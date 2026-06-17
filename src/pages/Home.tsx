@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 import { useHead } from '@unhead/react'
+import { routeHead } from '../content'
 import Hero from '../sections/Hero'
 import LivingFile from '../sections/living/LivingFile'
 import Verbs from '../sections/Verbs'
@@ -34,7 +35,9 @@ export function Component() {
   /* per-route <head> · prerendered into dist/index.html by @unhead/react */
   useHead({
     title: 'Nika · Intent as Code',
+    link: routeHead('/').link,
     meta: [
+      ...routeHead('/').meta,
       {
         name: 'description',
         content:

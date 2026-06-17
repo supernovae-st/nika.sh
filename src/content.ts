@@ -8,6 +8,26 @@ export const REPO = 'https://github.com/supernovae-st/nika'
 export const SPEC = 'https://github.com/supernovae-st/nika-spec'
 export const DOCS = 'https://docs.nika.sh'
 
+/* the canonical site origin (matches react-ssg.config.ts `origin`). */
+export const SITE = 'https://nika.sh'
+
+/* Per-route <head> canonical + og:url. The base index.html declares the HOME
+   canonical/og:url; without this every prerendered route would inherit
+   `https://nika.sh/` (telling crawlers each page IS the homepage). useHead's
+   `link` + `meta` are flushed into each route's static HTML by
+   vite-plugin-react-ssg, so the canonical/og:url ship correct per route.
+   Pass the route path (e.g. '/spec'); '/' yields the bare origin + trailing slash. */
+export function routeHead(path: string): {
+  link: { rel: 'canonical'; href: string }[]
+  meta: { property: 'og:url'; content: string }[]
+} {
+  const url = path === '/' ? `${SITE}/` : `${SITE}${path}`
+  return {
+    link: [{ rel: 'canonical', href: url }],
+    meta: [{ property: 'og:url', content: url }],
+  }
+}
+
 /* §1 · the language — one real workflow */
 export const WF = `nika: v1
 workflow: research-pipeline

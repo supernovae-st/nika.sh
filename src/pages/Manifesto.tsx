@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import { REPO, SPEC } from '../content'
+import { REPO, SPEC, routeHead } from '../content'
 
 /* ─── /manifesto · the drum of liberation ───────────────────────────────────
    Routed at /manifesto (React Router) · no 3D, but cinematic: a CSS cosmic backdrop, the
@@ -46,7 +46,9 @@ const PROMISES = [
 export function Component() {
   useHead({
     title: 'Manifesto · Nika',
+    link: routeHead('/manifesto').link,
     meta: [
+      ...routeHead('/manifesto').meta,
       {
         name: 'description',
         content:

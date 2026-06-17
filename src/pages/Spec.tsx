@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CANON } from '../canon.generated'
-import { SPEC, REPO } from '../content'
+import { SPEC, REPO, routeHead } from '../content'
 import { CodeFile } from '../components/CodeFile'
 import { verbGlyph } from '../components/codefile-highlight'
 import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
@@ -145,7 +145,9 @@ export function Component() {
 
   useHead({
     title: 'Spec · Nika',
+    link: routeHead('/spec').link,
     meta: [
+      ...routeHead('/spec').meta,
       {
         name: 'description',
         content:
