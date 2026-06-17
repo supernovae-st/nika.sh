@@ -3,8 +3,8 @@ import { Link } from 'react-router'
 import { REPO, SPEC, DOCS } from '../content'
 import './v4-home.css'
 
-/* ─── FIG 9.0 · Final CTA + SUPERNOVAE footer (theme-dark · the close) ──────────
-   Design doc §6 (FIG 9.0). The clean v4 close: the install affordance (the same
+/* ─── FIG 10.0 · Final CTA + SUPERNOVAE footer (theme-dark · the close) ─────────
+   Design doc §6 (FIG 10.0). The clean v4 close: the install affordance (the same
    monochrome install line as the hero, §4), Star on GitHub, Read the spec — in
    the blueprint register. The SUPERNOVAE footer below is KEPT INTACT (operator
    lock): the per-letter wordmark float, the studio line, the founders, the
@@ -97,7 +97,7 @@ export default function FinalCTA() {
       <div className="v4sec-wrap v4cta-wrap">
         {/* the close · the install affordance + two flat CTAs, blueprint register */}
         <p className="v4sec-fig" data-rise>
-          FIG 9.0
+          FIG 10.0
         </p>
         <h2
           id="cta-title"
@@ -105,11 +105,12 @@ export default function FinalCTA() {
           data-rise
           style={{ ['--rise-delay' as string]: '60ms' }}
         >
-          Start in one file.
+          Put your agents on a leash you can&nbsp;read.
         </h2>
         <p className="v4cta-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-          Install the binary, write a few lines of YAML, run it. Same file, same
-          result, on your machine — tomorrow and the day the vendor is gone.
+          Install the binary, write the plan as a file, review what it&apos;s allowed
+          to touch, run it. Same file, same result, enforced on your machine —
+          tomorrow and the day the vendor is gone.
         </p>
 
         <div className="v4cta-install" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>

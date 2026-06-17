@@ -5,6 +5,7 @@ import Hero from '../sections/Hero'
 import LivingFile from '../sections/living/LivingFile'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
+import Permits from '../sections/Permits'
 import OwnWorkflows from '../sections/OwnWorkflows'
 import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
@@ -41,17 +42,19 @@ export function Component() {
       {
         name: 'description',
         content:
-          'Open language for AI workflows. Write what you want in one file: Nika fetches, thinks, runs commands and saves the result. Four verbs, one Rust binary, any model, no cloud. Free and AGPL forever.',
+          'The control layer for AI agents. Nika makes an agent write its plan as a readable file first — every step, tool and permission. You review it, the runtime enforces it, then it runs: traced and replayable. One Rust binary, any model, AGPL forever.',
       },
       { property: 'og:title', content: 'Nika · Intent as Code' },
       {
         property: 'og:description',
-        content: 'Open language for AI workflows. One file, four verbs, one binary.',
+        content:
+          'The control layer for AI agents. Review the plan before it acts, enforce its permissions, replay the trace. One file, four verbs, one binary.',
       },
       { name: 'twitter:title', content: 'Nika · Intent as Code' },
       {
         name: 'twitter:description',
-        content: 'Open language for AI workflows. One file, four verbs, one binary.',
+        content:
+          'The control layer for AI agents. Review before it acts, enforce its permissions, replay the trace.',
       },
     ],
   })
@@ -116,24 +119,33 @@ export function Component() {
              real CLI/NDJSON logs and a concrete result (THE wow, dosed) */}
         <LivingFile />
 
-        {/* FIG 2.0–4.0 · clarity → the acid moment → sovereignty */}
+        {/* FIG 2.0 · clarity — what an agent can do, declared not hidden */}
         <Verbs />
+
+        {/* FIG 3.0 · the acid moment — beyond the black box (file vs chat/API) */}
         <BeyondChat />
+
+        {/* FIG 3.5 · the seatbelt — what it's ALLOWED to do (permits:) ·
+             a clear spot for FIG 4.0 « Be the human in the loop » follows after
+             this, a SEPARATE later pass (the interactive section). */}
+        <Permits />
+
+        {/* FIG 5.0 · sovereignty — the procedure is yours (theme-light) */}
         <OwnWorkflows />
 
-        {/* FIG 5.0 · Toolbelt — the capability ledger (counts from CANON) */}
+        {/* FIG 6.0 · Toolbelt — what an agent can be permitted to use (CANON) */}
         <Toolbelt />
 
-        {/* FIG 6.0 · Use cases — the editorial gallery (real spec workflows) */}
+        {/* FIG 7.0 · Use cases — the editorial gallery (real spec workflows) */}
         <UseCasesV4 />
 
-        {/* FIG 7.0 · Changelog — the ship log (latest milestones) */}
+        {/* FIG 8.0 · Changelog — the ship log (latest milestones) */}
         <ChangelogPreview />
 
-        {/* FIG 8.0 · Proof — authority by the numbers + sovereignty guarantees */}
+        {/* FIG 9.0 · Proof — the control guarantees + CANON counts */}
         <Proof />
 
-        {/* FIG 9.0 · Final CTA + SUPERNOVAE footer (kept intact) */}
+        {/* FIG 10.0 · Final CTA + SUPERNOVAE footer (kept intact) */}
         <FinalCTA />
       </main>
 

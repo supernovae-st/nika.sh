@@ -5,8 +5,8 @@ import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from './usecase
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
 import './v4-home.css'
 
-/* ─── FIG 6.0 · Use cases (theme-LIGHT · the editorial gallery) ────────────────
-   Design doc §6 (FIG 6.0) — proof. A clean GALLERY of real showcase workflows,
+/* ─── FIG 7.0 · Use cases (theme-LIGHT · the editorial gallery) ────────────────
+   Design doc §6 (FIG 7.0) — proof. A clean GALLERY of real showcase workflows,
    tabbed by métier (data from usecases-data.ts · the 5 UC_TABS). Each card =
    title + one-line outcome + verb chips (glyphs) + a peek of its real YAML.
    Selecting a card reveals its full YAML panel via <CodeFile>.
@@ -77,7 +77,7 @@ export default function UseCasesV4() {
     >
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          FIG 6.0
+          FIG 7.0
         </p>
         <h2
           id="usecases-title"
@@ -141,7 +141,7 @@ export default function UseCasesV4() {
                   onClick={() => setSel(i)}
                 >
                   <span className="v4uc-card-head">
-                    <span className="v4uc-card-fig">6.{tab + 1}.{i + 1}</span>
+                    <span className="v4uc-card-fig">7.{tab + 1}.{i + 1}</span>
                     <span className="v4uc-card-title">{u.title}</span>
                     <span className="v4uc-card-tier" title={`Complexity tier ${u.tier.slice(1)} of 4`}>
                       {u.tier}

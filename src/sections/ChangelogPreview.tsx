@@ -3,8 +3,8 @@ import { Link } from 'react-router'
 import { CHANGELOG, TAG_LABEL, fmtDate } from '../content/changelog'
 import './v4-home.css'
 
-/* ─── FIG 7.0 · Changelog (theme-dark · the ship log) ──────────────────────────
-   Design doc §6 (FIG 7.0) — "alive / shipping" (Cursor/Linear steal). A dated,
+/* ─── FIG 8.0 · Changelog (theme-dark · the ship log) ──────────────────────────
+   Design doc §6 (FIG 8.0) — "alive / shipping" (Cursor/Linear steal). A dated,
    monochrome, hairline-ruled SHIP-LOG REGISTER: the latest few REAL milestones,
    each a date + a tag + a one-line description. No invented features, no fake
    metrics — the entries live in src/content/changelog.ts (counts from CANON).
@@ -54,7 +54,7 @@ export default function ChangelogPreview() {
     >
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          FIG 7.0
+          FIG 8.0
         </p>
         <h2
           id="changelog-title"

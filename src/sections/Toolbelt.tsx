@@ -2,12 +2,13 @@ import { useEffect, useRef } from 'react'
 import { CANON } from '../canon.generated'
 import './v4-home.css'
 
-/* ─── FIG 5.0 · The toolbelt (theme-dark · the instrument spec sheet) ──────────
-   Design doc §6 (FIG 5.0) — trust by numbers. The engine's capability inventory
-   as a TECHNICAL LEDGER, not a marketing grid: a banner of headline counts (all
-   from CANON · tabular-nums), then hairline-ruled registers — builtins (4
-   families), providers (local-first → Mistral/cloud → mock), extract modes, and
-   MCP. Reads like the spec sheet on the back of an instrument.
+/* ─── FIG 6.0 · The toolbelt (theme-dark · what you can permit) ────────────────
+   Design doc §6 (FIG 6.0) — "what an agent can be permitted to use." The engine's
+   capability inventory as a TECHNICAL LEDGER, not a marketing grid: a banner of
+   headline counts (all from CANON · tabular-nums), then hairline-ruled registers
+   — builtins (4 families), providers (local-first → Mistral/cloud → mock), extract
+   modes, and MCP. The whole inventory is what you ALLOW — nothing here runs unless
+   the file's permits: let it. Reads like the spec sheet on the back of an instrument.
 
    Spec-true BY CONSTRUCTION: every count + list derives from canon.generated.ts
    (projected from nika-spec canon.yaml · the SSOT). Hand-curated craft = the
@@ -150,7 +151,7 @@ export default function Toolbelt() {
     >
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          FIG 5.0
+          FIG 6.0
         </p>
         <h2
           id="toolbelt-title"
@@ -158,38 +159,39 @@ export default function Toolbelt() {
           data-rise
           style={{ ['--rise-delay' as string]: '60ms' }}
         >
-          The toolbelt, by the numbers.
+          What an agent can be permitted to&nbsp;use.
         </h2>
         <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
           The language stays four verbs. The standard library does the rest —{' '}
           <b>{CANON.builtins} builtins</b>, <b>{CANON.providers} model providers</b>, and any{' '}
           <b>MCP</b> server your editor already uses. All reached the same way:{' '}
-          <code className="mono">invoke:</code>.
+          <code className="mono">invoke:</code> — and none of it runs unless the file&apos;s{' '}
+          <code className="mono">permits:</code> allows it.
         </p>
 
         {/* the headline-count banner · big tabular numbers, hairline-separated */}
         <div className="v4belt-counts" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">5.A</span>
+            <span className="v4belt-count-fig">6.A</span>
             <span className="v4belt-count-n">{CANON.builtins}</span>
             <span className="v4belt-count-label">builtin tools · nothing to install</span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">5.B</span>
+            <span className="v4belt-count-fig">6.B</span>
             <span className="v4belt-count-n">{CANON.providers}</span>
             <span className="v4belt-count-label">
               model providers · {CANON.providersLocal} local, {CANON.providersCloud} cloud, 1 mock
             </span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">5.C</span>
+            <span className="v4belt-count-fig">6.C</span>
             <span className="v4belt-count-n">{CANON.extractModes}</span>
             <span className="v4belt-count-label">
               extract modes on <code className="mono">fetch</code>
             </span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">5.D</span>
+            <span className="v4belt-count-fig">6.D</span>
             <span className="v4belt-count-n">
               MCP<span className="v4belt-count-unit">native</span>
             </span>
@@ -212,7 +214,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[0] }}
                 />
-                FIG 5.1 · Builtins
+                FIG 6.1 · Builtins
               </span>
               <span className="v4belt-reg-cap">
                 The everyday tools. All called with <code>invoke:</code>.
@@ -246,7 +248,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[1] }}
                 />
-                FIG 5.2 · Providers
+                FIG 6.2 · Providers
               </span>
               <span className="v4belt-reg-cap">
                 Pick per task or per file. <code>provider: ollama</code> runs offline.
@@ -304,7 +306,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[2] }}
                 />
-                FIG 5.3 · Extract modes
+                FIG 6.3 · Extract modes
               </span>
               <span className="v4belt-reg-cap">
                 How <code>fetch</code> turns a page into typed output.
@@ -327,7 +329,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[3] }}
                 />
-                FIG 5.4 · MCP
+                FIG 6.4 · MCP
               </span>
               <span className="v4belt-reg-cap">
                 Any Model Context Protocol server, reached as <code>mcp:</code>.

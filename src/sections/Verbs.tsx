@@ -140,12 +140,13 @@ export default function Verbs() {
           FIG 2.0
         </p>
         <h2 id="verbs-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          Four verbs. Locked&nbsp;forever.
+          What an agent can&nbsp;do — declared, not&nbsp;hidden.
         </h2>
         <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-          A verb is a <b>distinct native execution model</b> — not a plugin, not a
-          preset. Everything <i>callable</i> is a tool under <code className="mono">invoke</code>;
-          everything about <i>ordering</i> is the DAG. No fifth verb, ever.
+          Four verbs are the <b>only</b> native execution models — every action
+          explicit and typed, never improvised from a hidden prompt. Everything{' '}
+          <i>callable</i> is a tool under <code className="mono">invoke</code> — and tools are{' '}
+          <b>allow-listed</b>. Everything about <i>ordering</i> is the DAG. No fifth verb, ever.
         </p>
 
         <div className="v4verbs-grid">
@@ -163,7 +164,7 @@ export default function Verbs() {
 
         <p className="v4verbs-note" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
           infer&nbsp;◇&nbsp;·&nbsp;exec&nbsp;▷&nbsp;·&nbsp;invoke&nbsp;◆&nbsp;·&nbsp;agent&nbsp;✦
-          &nbsp;&nbsp;—&nbsp;&nbsp;the whole operation space, in one file
+          &nbsp;&nbsp;—&nbsp;&nbsp;the whole operation space, declared in one file
         </p>
       </div>
     </section>

@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { VERSUS } from '../content'
 import './v4-home.css'
 
-/* ─── FIG 3.0 · Beyond the chat (theme-dark · THE ACID MOMENT) ─────────────────
+/* ─── FIG 3.0 · Beyond the black box (theme-dark · THE ACID MOMENT) ────────────
    Design doc §3.3 + §6 (FIG 3.0). The "file vs chat / API / platform" comparison
    (reuses the VERSUS copy from content.ts). This is the ONE place the dosed acid
-   effect lives (§3.3 EffectBudget): a fluid SVG turbulence/displacement warp that
+   effect lives — and now it MEANS something: the warp is the instability/opacity
+   of the black box, resolving into the still, crisp file (chaos → contract). It
    INTENSIFIES on fast scroll, then settles to still. Single strong effect, no
    clutter — and gated:
 
@@ -142,12 +143,13 @@ export default function BeyondChat() {
           FIG 3.0
         </p>
         <h2 id="beyond-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          Beyond the chat.
+          Beyond the black box.
         </h2>
         <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-          A chat, an API call, a platform run — each gives you an <b>answer</b>. A
-          file gives you the <b>workflow</b>: the same steps, in the same order, that
-          you can read, run again, and diff. Here is what each alternative trades away.
+          A prompt or a chat shows you intent — then hopes. A Nika file <i>is</i> the
+          procedure: <b>reviewable</b>, <b>permission-bound</b>, <b>replayable</b>.{' '}
+          <b>Seeing the steps is not the same as enforcing them.</b> Here is what
+          each black box trades away.
         </p>
 
         <div className="v4beyond-stage">
@@ -194,7 +196,7 @@ export default function BeyondChat() {
           {/* the acid read-out · shows the warp arming/settling (systemic, not random) */}
           <div ref={readoutRef} className="v4acid-readout" data-live="false" aria-hidden>
             <span className="v4acid-readout-dot" />
-            <span className="v4acid-readout-label">scroll fast — the frame warps, then settles still</span>
+            <span className="v4acid-readout-label">scroll fast — the black box warps, then resolves into the still file</span>
           </div>
         </div>
       </div>

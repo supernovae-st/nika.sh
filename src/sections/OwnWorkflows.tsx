@@ -3,12 +3,13 @@ import { REPO, SPEC } from '../content'
 import { CANON } from '../canon.generated'
 import './v4-home.css'
 
-/* ─── FIG 4.0 · Own your workflows (theme-LIGHT · the rhythm break) ────────────
-   Design doc §3.1.2 + §6 (FIG 4.0) — sovereignty. The local-first statement, on
-   a warm off-white surface with near-black ink (the page's light rhythm break —
-   same typography, only surfaces + ink invert via .theme-light). Reuses the real
-   v3 copy ("Own your workflows. One Rust binary. Your machine, your models, your
-   files. The spec is open and the license is AGPL, forever.").
+/* ─── FIG 5.0 · The procedure is yours (theme-LIGHT · the rhythm break) ─────────
+   Design doc §6 (FIG 5.0) — sovereignty, reframed to control. The local-first
+   statement, on a warm off-white surface with near-black ink (the page's light
+   rhythm break — same typography, only surfaces + ink invert via .theme-light).
+   The plan an agent writes is YOURS: reviewable before it acts, portable off any
+   platform, versioned like code, runs on your machine, AGPL forever. The file
+   outlives the vendor.
 
    A confident editorial column, NOT a card grid: a large sovereignty sentence +
    a body line + a hairline-ruled FACTS LEDGER. Every count is tabular-nums and
@@ -102,18 +103,19 @@ export default function OwnWorkflows() {
     <section ref={ref} id="own" aria-labelledby="own-title" className="theme-light v4sec scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          FIG 4.0
+          FIG 5.0
         </p>
 
         <h2 id="own-title" className="v4own-statement" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          Own your <span className="v4own-dim">workflows.</span>
+          The procedure is <span className="v4own-dim">yours.</span>
         </h2>
 
         <p className="v4own-body" data-rise style={{ ['--rise-delay' as string]: '130ms' }}>
-          One Rust binary. <b>Your machine, your models, your files.</b> Nothing leaves
-          unless you say so, nothing meters your runs, nothing rots when a vendor
-          pivots. The spec is open and the license is <b>AGPL, forever</b> — so the
-          file you write today still runs the day after the company that made it is gone.
+          <b>Reviewable before it acts.</b> Portable off any platform, versioned like
+          code, runs on your machine. Nothing leaves unless you say so, nothing meters
+          your runs, nothing rots when a vendor pivots. The spec is open and the license
+          is <b>AGPL, forever</b> — the file outlives the vendor, still running the day
+          the company that made it is gone.
         </p>
 
         {/* the facts ledger · hairline-ruled · counts from CANON (tabular-nums) */}
@@ -122,7 +124,7 @@ export default function OwnWorkflows() {
             <div className="v4own-row" key={row.fig}>
               <dt className="v4own-row-label">
                 <span className="v4own-row-fig" aria-hidden>
-                  4.{row.fig}
+                  5.{row.fig}
                 </span>
                 <span className="v4own-row-name">{row.name}</span>
               </dt>
