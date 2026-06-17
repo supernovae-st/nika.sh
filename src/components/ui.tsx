@@ -54,7 +54,7 @@ export function Nav() {
               {l.label}
             </Link>
           ) : l.kind === 'external' ? (
-            <a key={l.label} href={l.href} className={NAV_LINK_CLASS}>
+            <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className={NAV_LINK_CLASS}>
               {l.label}
             </a>
           ) : (
