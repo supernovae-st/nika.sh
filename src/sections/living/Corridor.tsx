@@ -55,14 +55,17 @@ const VERB_GLYPH: Record<ShowcaseTask['verb'], string> = {
 
 /* ── corridor geometry (px, in the world's local space) ─────────────────────
    The corridor recedes like a road toward a vanishing point: each deeper WAVE
-   steps BACK (−Z) and RISES toward the horizon (−Y, screen-up). Same-wave
-   siblings spread on X (parallel branches side by side). The perspective lens
-   then shrinks + lifts deeper waves automatically, so the layout reads as a
-   true corridor in depth — never a stack of overlapping plates.
-   (the plate's px size lives in corridor.css — .cor-plate is 150×52) */
-const Z_GAP = 300 // depth between consecutive waves
-const Y_RISE = 96 // each deeper wave rises this much toward the horizon (screen-up)
-const X_SLOT = 178 // horizontal spread between same-wave siblings
+   steps BACK (−Z) by a BIG step so the whole pipeline reads as a procession of
+   plates marching into the distance (near = large/bright · far = small/dim).
+   Deeper waves rise only slightly toward the horizon (−Y) so the enfilade stays
+   near the optical center instead of climbing a staircase. Same-wave siblings
+   spread on X (parallel branches side by side). The tight perspective lens
+   (corridor.css · 640px) then shrinks + lifts deeper waves dramatically, so the
+   layout reads as a true corridor in depth — multiple waves visible at once.
+   (the plate's px size lives in corridor.css — .cor-plate is 156×54) */
+const Z_GAP = 560 // depth between consecutive waves (was 300 · big steps = clear recession)
+const Y_RISE = 34 // each deeper wave rises this much toward the horizon (gentle · was 96)
+const X_SLOT = 188 // horizontal spread between same-wave siblings
 
 interface Slot {
   x: number // world X (centered: same-wave nodes spread around 0)
@@ -98,11 +101,26 @@ function computeCorridorLayout(dag: ShowcaseDag): CorridorLayout {
   return { at, byWave, waves: dag.waves }
 }
 
-/* the per-wave world offset the camera must apply to bring wave W's plane to
-   the focal foreground (z≈0, y≈0). Interpolated by the (fractional) active
-   wave so the travel is smooth between waves. */
+/* the world offset the camera applies as the run advances. We do NOT slam the
+   active wave to z≈0 (that flattens the corridor to one plate); instead we keep
+   the WHOLE procession in view and only DOLLY the camera forward by a fraction
+   of a wave-gap per active wave. A fixed forward bias seats the procession so
+   wave 0 sits just in front of the lens and deeper waves recede toward the VP.
+   Result: you always SEE several plates in depth, and the camera glides through
+   them as the run lights each wave. */
+const CAM_TRAVEL = 0.48 // how much of a wave-gap the camera dollies per active wave (gentle · keeps the whole procession in view while the focal wave comes forward)
+const CAM_BIAS_Z = 120 // seat the procession this far in front of the lens (px)
+const CAM_BIAS_Y = 44 // upward seat so the procession sits near optical center (not clipped low)
+/* near-plane cull (px, camera-space Z) — a passed plate dollying closer than
+   NEAR_FADE_START fades out over NEAR_FADE_SPAN so it dissolves before it
+   balloons + clips the bottom rim (lens perspective is 640px). */
+const NEAR_FADE_START = 360
+const NEAR_FADE_SPAN = 200
 function focalOffset(activeWave: number): { y: number; z: number } {
-  return { y: activeWave * Y_RISE, z: activeWave * Z_GAP }
+  return {
+    y: activeWave * Y_RISE * CAM_TRAVEL + CAM_BIAS_Y,
+    z: activeWave * Z_GAP * CAM_TRAVEL + CAM_BIAS_Z,
+  }
 }
 
 /** status → the wireframe plate class (stable, compositor-cheap). */
@@ -178,14 +196,41 @@ export default function Corridor({ dag, run, runP }: CorridorProps) {
 
   return (
     <div className="cor-stage" aria-hidden>
-      {/* the receding depth grid — floor + two side walls (decorative HUD).
-          Travels forward with the world so the corridor floor moves under the
-          run. */}
+      {/* the receding depth grid — floor + ceiling + two side walls (decorative
+          HUD). Travels forward with the world so the corridor recedes under/over
+          the run toward the vanishing point. */}
       <div className="cor-grid" style={{ transform: worldTransform }}>
         <div className="cor-grid-floor" />
+        <div className="cor-grid-ceil" />
         <div className="cor-grid-wall cor-grid-wall--l" />
         <div className="cor-grid-wall cor-grid-wall--r" />
       </div>
+
+      {/* flat 2D perspective guide lines converging on the vanishing point +
+          a brighter focal-plane band — pure screen-space atmosphere over the
+          black, gives the eye the corridor read even where plates are sparse. */}
+      <svg className="cor-vp" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden>
+        <defs>
+          <radialGradient id="cor-vp-glow" cx="50%" cy="40%" r="42%">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.10" />
+            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        {/* a soft glow at the vanishing point (depth-of-field bloom) */}
+        <rect x="0" y="0" width="400" height="300" fill="url(#cor-vp-glow)" />
+        {/* four guide lines from the frame corners converging on the VP */}
+        <g className="cor-vp-lines">
+          <path d="M-40 320 L200 120" />
+          <path d="M440 320 L200 120" />
+          <path d="M-40 -20 L200 120" />
+          <path d="M440 -20 L200 120" />
+        </g>
+        {/* the vanishing-point crosshair */}
+        <g className="cor-vp-mark">
+          <circle cx="200" cy="120" r="3.2" />
+          <path d="M200 110v-7M200 130v7M190 120h-7M210 120h7" />
+        </g>
+      </svg>
 
       {/* the world holds every node + edge; we fly the camera forward through
           it by translating it with the run progress. transform-only. */}
@@ -215,12 +260,19 @@ export default function Corridor({ dag, run, runP }: CorridorProps) {
           const focal = slot.wave === focalWave
           const hue = running ? VERB_VAR[task.verb] : undefined
           const evt = `EVT_${String(i + 1).padStart(2, '0')}`
+          // near-plane cull: a plate's camera-space Z = slot.z + cam.z (the world
+          // is translated +cam.z toward the lens). As a PASSED wave dollies very
+          // close it would balloon + clip the bottom rim — fade it out instead so
+          // it dissolves cleanly (atmosphere, not clutter). Compositor-cheap (opacity).
+          const camZ = slot.z + cam.z
+          const nearFade = camZ > NEAR_FADE_START ? Math.max(0, 1 - (camZ - NEAR_FADE_START) / NEAR_FADE_SPAN) : 1
           return (
             <div
               key={task.id}
               className={plateClass(status) + (focal ? ' cor-node--focal' : '')}
               style={{
                 transform: `translate3d(${slot.x}px, ${slot.y}px, ${slot.z}px)`,
+                ...(nearFade < 1 ? { opacity: nearFade } : {}),
                 ...(hue ? { ['--cor-hue' as string]: hue } : {}),
               }}
             >
@@ -252,6 +304,11 @@ export default function Corridor({ dag, run, runP }: CorridorProps) {
           )
         })}
       </div>
+
+      {/* a depth-fog veil — sits OVER the world so it dissolves the FAR plates
+          + grid into black toward the vanishing point (atmosphere · DoF), while
+          the transparent center keeps the near focal plate crisp. */}
+      <div className="cor-fog" aria-hidden />
 
       {/* a static HUD layer over the corridor (vanishing-point tick + a
           dimension line) — the blueprint instrument register, aria-hidden. */}

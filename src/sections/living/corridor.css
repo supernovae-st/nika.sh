@@ -16,35 +16,43 @@
    • node plates are positioned with translate3d in world space; the plate face
      is billboarded upright so its text always faces the camera. */
 
-/* the stage — the camera. A tall black well the corridor recedes into. */
+/* the stage — the camera. A tall black well the corridor recedes into. Taller
+   than before so the procession has room to march into depth + fill the frame. */
 .cor-stage {
   position: relative;
   width: 100%;
-  height: clamp(260px, 42vh, 420px);
+  height: clamp(360px, 56vh, 560px);
   border: 1px solid var(--v4-line);
   border-radius: 12px;
-  background: var(--v4-bg-raised);
+  /* a faint vertical wash — lighter toward the horizon, pitch-black at the floor
+     — so the well already reads as deep space before any geometry lands. */
+  background:
+    radial-gradient(120% 90% at 50% 38%, rgba(255, 255, 255, 0.035) 0%, transparent 60%),
+    linear-gradient(to bottom, #0c0e12 0%, var(--v4-bg-raised) 30%, #07080a 100%);
   overflow: hidden;
-  /* the lens — smaller perspective = stronger depth. ~900px reads as a real
-     corridor without being vertiginous. The vanishing point sits up-center so
-     the corridor recedes UP toward the horizon (road perspective). */
-  perspective: 900px;
-  perspective-origin: 50% 34%;
+  /* the lens — smaller perspective = stronger depth. 640px reads as a dramatic
+     corridor you travel down. The vanishing point sits up-center (40%) so the
+     corridor recedes UP toward the horizon (road perspective) with the focal
+     plane near the optical center. */
+  perspective: 640px;
+  perspective-origin: 50% 38%;
   /* fade the rim into the dark so plates dissolve at the frame edges */
-  -webkit-mask-image: radial-gradient(135% 130% at 50% 40%, #000 56%, transparent 100%);
-  mask-image: radial-gradient(135% 130% at 50% 40%, #000 56%, transparent 100%);
+  -webkit-mask-image: radial-gradient(140% 140% at 50% 42%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(140% 140% at 50% 42%, #000 60%, transparent 100%);
 }
 
-/* ── the receding depth grid (floor + side walls) ───────────────────────────
-   Sits at the BOTTOM of the perspective box; the floor tips away from the
-   camera and the two walls stand at the corridor sides. All hairline, masked
-   to fade toward the vanishing point. */
+/* ── the receding depth grid (floor + ceiling + side walls) ──────────────────
+   A real corridor box: a floor below the plates, a ceiling above, and two side
+   walls — all four planes receding to the vanishing point. Hairline white on
+   black, masked to dissolve into the dark at the far end. Much more present than
+   before (the grid is the corridor, not a faint hint). */
 .cor-grid {
   position: absolute;
-  /* the grid's reference frame matches the world origin (low-center) so the
-     floor sits just under wave 0 and recedes back/up with it. */
+  /* the grid's reference frame matches the world origin (slightly-above-center)
+     so the floor sits below wave 0 and the ceiling above it, receding back/up,
+     with the near plates lifted off the bottom rim. */
   left: 50%;
-  top: 58%;
+  top: 46%;
   width: 0;
   height: 0;
   transform-style: preserve-3d;
@@ -53,69 +61,134 @@
   pointer-events: none;
 }
 .cor-grid-floor,
+.cor-grid-ceil,
 .cor-grid-wall {
   position: absolute;
+  /* two-scale grid: a coarse 80px lattice + a finer 16px lattice so near rows
+     read crisp and the lattice densifies with distance toward the VP. */
   background-image:
     repeating-linear-gradient(
       to right,
-      color-mix(in oklch, var(--v4-text) 100%, transparent) 0,
-      color-mix(in oklch, var(--v4-text) 100%, transparent) 1px,
-      transparent 1px,
-      transparent 64px
+      rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0.9) 1px,
+      transparent 1px, transparent 80px
     ),
     repeating-linear-gradient(
       to bottom,
-      color-mix(in oklch, var(--v4-text) 100%, transparent) 0,
-      color-mix(in oklch, var(--v4-text) 100%, transparent) 1px,
-      transparent 1px,
-      transparent 64px
+      rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0.9) 1px,
+      transparent 1px, transparent 80px
+    ),
+    repeating-linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.5) 0, rgba(255, 255, 255, 0.5) 1px,
+      transparent 1px, transparent 16px
     );
 }
-/* the floor — a wide plane laid flat just below the node plates, receding from
-   the foreground deep into the corridor toward the vanishing point. rotateX(90)
-   lays it on the ground; it's anchored at the world origin (its top edge) and
-   extends BACK (−Z, into local +Y after the rotation). */
+/* the floor — a wide plane laid flat below the node plates, receding from the
+   foreground deep into the corridor toward the vanishing point. rotateX(90)
+   lays it on the ground; anchored at its top edge, extends BACK (−Z). */
 .cor-grid-floor {
-  left: -900px;
-  top: 40px; /* just under the wave-0 plate row */
-  width: 1800px;
-  height: 2600px;
+  left: -1100px;
+  top: 150px; /* below the wave-0 plate row */
+  width: 2200px;
+  height: 3200px;
   transform-origin: 50% 0%;
   transform: rotateX(90deg);
-  opacity: 0.08;
+  opacity: 0.14;
   /* fade toward the far end (top in local space) + the side rims */
-  -webkit-mask-image: radial-gradient(62% 80% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.45) 50%, transparent 84%);
-  mask-image: radial-gradient(62% 80% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.45) 50%, transparent 84%);
+  -webkit-mask-image: radial-gradient(70% 88% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.55) 46%, transparent 82%);
+  mask-image: radial-gradient(70% 88% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.55) 46%, transparent 82%);
+}
+/* the ceiling — mirror of the floor above the plates (fainter · secondary). */
+.cor-grid-ceil {
+  left: -1100px;
+  top: -150px;
+  width: 2200px;
+  height: 3200px;
+  transform-origin: 50% 0%;
+  transform: rotateX(-90deg);
+  opacity: 0.07;
+  -webkit-mask-image: radial-gradient(70% 88% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.5) 46%, transparent 80%);
+  mask-image: radial-gradient(70% 88% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.5) 46%, transparent 80%);
 }
 /* the two side walls — vertical planes standing at the corridor's left/right,
-   receding into depth. Fainter than the floor (secondary depth cue). */
+   receding into depth. Between the floor + ceiling brightness. */
 .cor-grid-wall {
-  top: -640px;
-  width: 2600px;
-  height: 760px;
-  opacity: 0.04;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 20%, transparent 80%);
-  mask-image: linear-gradient(to right, transparent 0%, #000 20%, transparent 80%);
+  top: -300px;
+  width: 3200px;
+  height: 600px;
+  opacity: 0.085;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 24%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 24%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
 }
 .cor-grid-wall--l {
-  left: -360px;
-  transform-origin: 0% 100%;
+  left: -440px;
+  transform-origin: 0% 50%;
   transform: rotateY(90deg);
 }
 .cor-grid-wall--r {
-  left: 360px;
-  transform-origin: 0% 100%;
+  left: 440px;
+  transform-origin: 0% 50%;
   transform: rotateY(-90deg);
 }
 
+/* ── flat screen-space perspective guides + VP crosshair ─────────────────────
+   2D atmosphere over the black: four hairlines from the frame corners converging
+   on the vanishing point, plus a soft glow + crosshair there. Static (it doesn't
+   travel with the world) — it marks WHERE the corridor recedes to, so the eye
+   reads depth even where plates are sparse. */
+.cor-vp {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--v4-text);
+  pointer-events: none;
+}
+.cor-vp-lines path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.5;
+  opacity: 0.1;
+}
+.cor-vp-mark {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.7;
+  opacity: 0.34;
+}
+.cor-vp-mark circle {
+  fill: currentColor;
+  opacity: 0.5;
+}
+
+/* ── the depth-fog veil — dissolves far geometry into black at the VP ─────────
+   A radial wash sitting over the corridor: transparent in the near foreground,
+   opaque black toward the vanishing point, so deep plates + grid melt into the
+   dark (atmosphere · depth-of-field). Pointer-transparent, above the grid/world
+   but the plates' own glow still reads through near the front. */
+.cor-fog {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    78% 92% at 50% 40%,
+    transparent 0%,
+    transparent 34%,
+    color-mix(in oklch, var(--v4-bg) 70%, transparent) 66%,
+    var(--v4-bg) 100%
+  );
+  mix-blend-mode: normal;
+}
+
 /* ── the world — holds every node + edge in 3D ──────────────────────────────
-   Centered in the stage; its Z is advanced inline (camera-forward). */
+   Centered in the stage; its Z is advanced inline (camera-forward). Shares the
+   grid's mid-center origin so the plates sit between floor + ceiling. */
 .cor-world {
   position: absolute;
   left: 50%;
-  /* origin low-center: wave 0 sits in the foreground; deeper waves rise toward
-     the up-center vanishing point. */
-  top: 58%;
+  /* origin slightly-above-center: wave 0 sits in the foreground; deeper waves
+     recede toward the up-center vanishing point, between floor + ceiling. */
+  top: 46%;
   width: 0;
   height: 0;
   transform-style: preserve-3d;
@@ -139,10 +212,10 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 150px;
-  height: 52px;
-  margin-left: -75px;
-  margin-top: -26px;
+  width: 156px;
+  height: 54px;
+  margin-left: -78px;
+  margin-top: -27px;
   box-sizing: border-box;
   border: 1px solid color-mix(in oklch, var(--cor-ink) 52%, transparent);
   border-radius: 8px;
@@ -365,9 +438,11 @@
   }
 }
 @media (max-width: 640px) {
+  /* (a narrow desktop window — a real coarse-pointer phone gets the 2D fallback).
+     Keep the dramatic lens, just trim the well height so it isn't vertiginous. */
   .cor-stage {
-    height: clamp(240px, 38vh, 320px);
-    perspective: 760px;
+    height: clamp(320px, 48vh, 420px);
+    perspective: 560px;
   }
   .cor-hud-vp {
     font-size: 8px;
