@@ -35,7 +35,10 @@
   width: 100%;
   max-width: 72rem;
   margin: 0 auto;
-  padding: 0 20px;
+  /* fold the safe-area inset into the gutter so the burger/CTA never ride under
+     a notch in landscape, and the row always fits a 390px viewport. */
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
 }
 
 /* the brand lockup · butterfly mark + wordmark */
@@ -191,16 +194,17 @@
   opacity: 0.7;
 }
 
-/* the mobile menu button — collapses the rail */
+/* the mobile menu button — collapses the rail · full ≥44px touch target */
 .v4nav-burger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px; /* ≥44px hit area via padding below */
-  margin-right: -8px;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
   border-radius: 8px;
   color: var(--v4-text);
+  touch-action: manipulation;
 }
 .v4nav-burger:hover {
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
@@ -414,6 +418,21 @@
    Fine grain (an SVG-noise data-URI tile) + a faint radial vignette pin depth
    onto the near-black surface so it never reads as flat black. Both layers are
    pointer-events:none and compositor-cheap (no per-frame work). */
+
+/* hero content gutters · clamp horizontal padding and fold in the safe-area
+   inset so nothing rides under a notch (landscape) and the column always fits
+   within a 390px viewport with comfortable margins. */
+.v4hero-wrap {
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+}
+@media (min-width: 768px) {
+  .v4hero-wrap {
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+  }
+}
+
 .v4hero-grain {
   position: absolute;
   inset: 0;
@@ -458,10 +477,14 @@
   mask-image: radial-gradient(120% 90% at 50% 35%, #000 0%, transparent 72%);
 }
 
-/* the install affordance · monochrome (replaces the v3 blue-glass pill) */
+/* the install affordance · monochrome (replaces the v3 blue-glass pill).
+   max-width:100% + min-width:0 keeps it inside the column on mobile; the command
+   itself stays one line but SCROLLS within its own box (never clips the page),
+   while the Copy button stays pinned and fully visible. */
 .v4install {
   display: inline-flex;
   align-items: stretch;
+  max-width: 100%;
   border-radius: 10px;
   border: 1px solid var(--v4-line);
   background: var(--v4-bg-raised);
@@ -472,10 +495,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0;
+  min-width: 0;
   padding: 11px 14px;
   font-size: 13px;
   white-space: nowrap;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none; /* the scroll is an affordance, not a visible bar */
   color: var(--v4-text);
+}
+.v4install-cmd::-webkit-scrollbar {
+  display: none;
 }
 .v4install-dollar {
   color: var(--v4-text-faint);
@@ -487,6 +517,7 @@
 }
 .v4install-copy {
   display: inline-flex;
+  flex: 0 0 auto; /* never shrink the copy button — it stays fully visible */
   align-items: center;
   gap: 6px;
   padding: 0 13px;

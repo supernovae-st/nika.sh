@@ -100,11 +100,12 @@ export default function Hero() {
       <div className="v4hero-plate" aria-hidden />
       <div className="v4hero-grain" aria-hidden />
 
-      {/* generous gutters + top padding clears the fixed nav */}
-      <div className="relative z-[1] mx-auto w-full max-w-6xl px-6 pt-28 pb-20 md:pt-32">
+      {/* generous gutters + top padding clears the fixed nav. px clamps with the
+          safe-area inset so nothing rides under a notch in landscape. */}
+      <div className="v4hero-wrap relative z-[1] mx-auto w-full max-w-6xl pt-28 pb-20 md:pt-32">
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.08fr] lg:gap-16">
-          {/* ── left · the copy ── */}
-          <div className="flex flex-col">
+          {/* ── left · the copy ── (min-w-0 so a long token never blows the grid) */}
+          <div className="flex min-w-0 flex-col">
             {/* FIG 0.0 · the blueprint numbering with its hairline tick */}
             <p className="v4fig mb-7" data-rise style={rise(0)}>
               FIG 0.0
@@ -116,7 +117,9 @@ export default function Hero() {
               style={{
                 ...rise(70),
                 fontFamily: 'var(--display)',
-                fontSize: 'clamp(2.7rem, 1.3rem + 5.4vw, 5.3rem)',
+                /* floor lowered so "Intent as Code." (incl. the period) is fully
+                   contained at 390px; still scales up big on wider screens. */
+                fontSize: 'clamp(2.2rem, 0.95rem + 5.4vw, 5.3rem)',
                 lineHeight: 0.98,
                 letterSpacing: '-0.025em',
                 fontWeight: 600,
@@ -139,17 +142,19 @@ export default function Hero() {
               <InstallLine />
             </div>
 
-            {/* one row of flat B/W CTAs · :focus-visible rings come from the global rule */}
+            {/* one row of flat B/W CTAs · they WRAP on narrow screens (flex-wrap)
+                so every link stays fully visible. Each is a ≥44px mobile hit
+                target (min-h-11). :focus-visible rings come from the global rule. */}
             <div
               data-rise
               style={rise(280)}
-              className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-3 text-[14.5px]"
+              className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-[14.5px] sm:mt-7 sm:gap-x-7"
             >
               <a
                 href={REPO}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex items-center gap-2 rounded-md py-1 text-text transition-colors"
+                className="group inline-flex min-h-11 items-center gap-2 rounded-md text-text transition-colors"
               >
                 <span aria-hidden className="text-dim transition-colors group-hover:text-text">
                   ★
@@ -160,14 +165,14 @@ export default function Hero() {
                 href={SPEC}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex items-center gap-1.5 rounded-md py-1 text-dim transition-colors hover:text-text"
+                className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-dim transition-colors hover:text-text"
               >
                 Read the spec
                 <span className="transition-transform group-hover:translate-x-0.5">→</span>
               </a>
               <Link
                 to="/learn"
-                className="group inline-flex items-center gap-1.5 rounded-md py-1 text-dim transition-colors hover:text-text"
+                className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-dim transition-colors hover:text-text"
               >
                 Learn it in 5&nbsp;min
                 <span className="transition-transform group-hover:translate-x-0.5">→</span>
@@ -183,8 +188,11 @@ export default function Hero() {
             </p>
           </div>
 
-          {/* ── right · the real file (SEO-crawlable DOM text) ── */}
-          <div className="w-full" data-rise style={rise(180)}>
+          {/* ── right · the real file (SEO-crawlable DOM text) ──
+              min-w-0 lets the <pre>'s own overflow-x:auto contain the long YAML
+              instead of the grid track stretching the whole page wider than the
+              viewport (the mobile-clipping root cause). */}
+          <div className="w-full min-w-0" data-rise style={rise(180)}>
             {/* a FIG caption above the panel — the engineering-manual register */}
             <p className="mono mb-3 flex items-center gap-2 text-[11px] tracking-[0.22em] text-faint uppercase">
               <span aria-hidden>FIG 0.1</span>

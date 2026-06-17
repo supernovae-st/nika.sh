@@ -84,6 +84,12 @@
 
 * { box-sizing: border-box; }
 html, body, #app { margin: 0; padding: 0; }
+/* Clamp the layout viewport (ICB) to the visual viewport so a rogue wide child
+   (e.g. an internally-scrolling code panel) can never inflate the document width
+   or push the fixed nav off-screen. `clip` on <html> contains it without making
+   a scroll container — keeping position:sticky/fixed working. The body keeps the
+   legacy hidden as a belt-and-braces fallback. */
+html { overflow-x: clip; }
 body { background: var(--bg); overflow-x: hidden; }
 ::selection { background: color-mix(in oklch, var(--brand) 40%, transparent); color: #fff; }
 
