@@ -6,6 +6,7 @@ import LivingFile from '../sections/living/LivingFile'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import Permits from '../sections/Permits'
+import HumanInTheLoop from '../sections/HumanInTheLoop'
 import OwnWorkflows from '../sections/OwnWorkflows'
 import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
@@ -125,10 +126,13 @@ export function Component() {
         {/* FIG 3.0 · the acid moment — beyond the black box (file vs chat/API) */}
         <BeyondChat />
 
-        {/* FIG 3.5 · the seatbelt — what it's ALLOWED to do (permits:) ·
-             a clear spot for FIG 4.0 « Be the human in the loop » follows after
-             this, a SEPARATE later pass (the interactive section). */}
+        {/* FIG 3.5 · the seatbelt — what it's ALLOWED to do (permits:) */}
         <Permits />
+
+        {/* FIG 4.0 · be the human in the loop — the interactive permits demo:
+             review the plan, toggle what it can touch, watch the runtime obey
+             (a real NIKA-SEC-004 denial when a load-bearing permit is removed) */}
+        <HumanInTheLoop />
 
         {/* FIG 5.0 · sovereignty — the procedure is yours (theme-light) */}
         <OwnWorkflows />
