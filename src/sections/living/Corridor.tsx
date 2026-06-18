@@ -270,7 +270,7 @@ export default function Corridor({ dag, run, runP }: CorridorProps) {
      squarely in the run's path as it reaches the write. */
   const lastWave = layout.waves - 1
   const permitsZ = -lastWave * Z_GAP + (FOCAL_Z - 180) // a touch IN FRONT of the last plate
-  const permitsReached = focalWave >= lastWave - 1
+  const permitsReached = focalWave >= lastWave - 2
   const permitsTransform = `translate3d(0, ${cam.y}px, ${cam.z}px)`
 
   return (
