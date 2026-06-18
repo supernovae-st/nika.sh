@@ -62,9 +62,9 @@ tasks:
       prompt: "Score each CV against \${{ vars.role }}"
 `
 
-/* the heavy three.js butterfly canvas — code-split so it never enters the
+/* the full-bleed three.js depth tunnel — code-split so it never enters the
    first-paint bundle (the hero ships as instant prerendered DOM + CSS). */
-const HeroButterfly = lazy(() => import('../scene/HeroButterfly'))
+const DepthTunnel = lazy(() => import('../scene/DepthTunnel'))
 
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
 const rise = (ms: number): React.CSSProperties =>
@@ -115,25 +115,20 @@ function InstallLine() {
   )
 }
 
-/* ─── the blue atmosphere · gradient + perspective grid + HUD + butterfly canvas ─
-   PURE-CSS layers (instant) PLUS the lazy WebGL canvas (client-only, mounted
-   after first paint). All decorative — aria-hidden, pointer-events:none. The
-   butterfly canvas is a large atmospheric figure centred in the scene (the
-   content floats inside it), not hidden behind the editor. */
+/* ─── the depth atmosphere · the full-bleed Three.js tunnel + HUD ──────────────
+   The header background is ONE Three.js layer now: a wireframe SQUARE tunnel that
+   recedes + TWISTS into a centre vanishing point (the operator's reference), dark
+   + a blue tache. Mounted after first paint (idle) so the prerendered DOM (copy +
+   editor) paints instantly; aria-hidden + pointer-events:none (decorative). */
 function HeroAtmosphere() {
-  const [mountCanvas, setMountCanvas] = useState(false)
-  const [shown, setShown] = useState(false)
+  const [mount, setMount] = useState(false)
 
-  /* mount the heavy canvas only AFTER the DOM has painted. We defer to an
-     idle/next-frame so the hero's first paint (blue + grid + copy + editor) is
-     never blocked by WebGL init. */
   useEffect(() => {
     if (typeof window === 'undefined') return
     let raf = 0
-    const idle =
-      (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
-        .requestIdleCallback
-    const arm = () => setMountCanvas(true)
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
+      .requestIdleCallback
+    const arm = () => setMount(true)
     if (idle) idle(arm)
     else raf = window.setTimeout(arm, 200) as unknown as number
     return () => {
@@ -141,35 +136,18 @@ function HeroAtmosphere() {
     }
   }, [])
 
-  /* a one-tick flag → the canvas fades/scales in once it's actually in the tree */
-  useEffect(() => {
-    if (!mountCanvas) return
-    const id = requestAnimationFrame(() => setShown(true))
-    return () => cancelAnimationFrame(id)
-  }, [mountCanvas])
-
   return (
     <>
-      {/* 1 · the deep blue gradient — instant CSS */}
-      <div className="v4hero-blue" aria-hidden />
-
-      {/* 2 · the faint blue perspective grid receding below — instant CSS */}
-      <div className="v4bluegrid" aria-hidden>
-        <div className="v4bluegrid-plane" />
+      {/* the full-bleed depth tunnel (lazy WebGL · dark + blue tache) */}
+      <div className="v4hero-tunnel" aria-hidden>
+        {mount && (
+          <Suspense fallback={null}>
+            <DepthTunnel />
+          </Suspense>
+        )}
       </div>
 
-      {/* 3 · the particle butterfly — fixed shape · fast-streaming particles · centred */}
-      <div className="v4bfly-stage" aria-hidden>
-        <div className="v4bfly-canvas" data-mounted={shown}>
-          {mountCanvas && (
-            <Suspense fallback={null}>
-              <HeroButterfly />
-            </Suspense>
-          )}
-        </div>
-      </div>
-
-      {/* 4 · faint HUD registration marks · the four corner ticks (decorative) */}
+      {/* faint HUD registration marks · the four corner ticks (decorative) */}
       <div className="v4hud" aria-hidden>
         <span className="v4hud-tick v4hud-tick--tl" />
         <span className="v4hud-tick v4hud-tick--tr" />
@@ -177,7 +155,7 @@ function HeroAtmosphere() {
         <span className="v4hud-tick v4hud-tick--br" />
       </div>
 
-      {/* a soft readability vignette so the copy clears contrast over the blue */}
+      {/* a soft readability vignette so the LEFT copy clears contrast over the tunnel */}
       <div className="v4hero-readscrim" aria-hidden />
     </>
   )

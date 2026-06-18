@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import nikaRaw from '../assets/nika.svg?raw'
@@ -22,7 +22,7 @@ import nikaRaw from '../assets/nika.svg?raw'
    and it eases the flow + drops the pointer parallax under prefers-reduced-motion.
    Pure additive · the v3 scene is untouched. */
 
-const COUNT = 15000 // dense enough to read as a solid figure, not a sparse cloud
+const COUNT = 9000 // dense enough to read as a solid figure · trimmed for perf
 const SPHERE = 0.62 // build-up shell radius before the shape forms
 
 /* the butterfly's white→soft-cyan/blue family — bright cores on the dark base.
@@ -253,24 +253,52 @@ function ButterflyPoints({ reduced }: { reduced: boolean }) {
   )
 }
 
-export default function HeroButterfly() {
+export default function NikaButterfly() {
   const reduced =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+
+  /* THE PERF FIX · render frames ONLY while the figure is in view. Off-screen the
+     canvas is idle (frameloop "never") so the particle system costs nothing — it
+     no longer runs continuously behind the whole page (that was the lag). */
+  useEffect(() => {
+    const el = wrapRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setVisible(true)
+      return
+    }
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), {
+      rootMargin: '200px',
+    })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  // reduced motion → a static logo, no WebGL at all (zero continuous motion)
+  if (reduced) {
+    return (
+      <div ref={wrapRef} className="nika-bfly-static" aria-hidden>
+        <img src="/nika.svg" alt="" width={132} height={132} />
+      </div>
+    )
+  }
 
   return (
-    <Canvas
-      // aria-hidden: the butterfly is decorative — the headline carries meaning
-      aria-hidden
-      gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
-      dpr={[1, 1.75]}
-      camera={{ position: [0, 0, 3.4], fov: 50 }}
-      // the canvas surface is transparent — the CSS blue gradient shows through
-      style={{ width: '100%', height: '100%', display: 'block' }}
-      // never block the page: the canvas paints on its own, behind the copy
-      frameloop="always"
-    >
-      <ButterflyPoints reduced={reduced} />
-    </Canvas>
+    <div ref={wrapRef} style={{ width: '100%', height: '100%' }}>
+      <Canvas
+        // aria-hidden: the particle mark is decorative — the wordmark carries meaning
+        aria-hidden
+        gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, 3.4], fov: 50 }}
+        style={{ width: '100%', height: '100%', display: 'block' }}
+        // idle off-screen (perf) · animates only while in view
+        frameloop={visible ? 'always' : 'never'}
+      >
+        <ButterflyPoints reduced={reduced} />
+      </Canvas>
+    </div>
   )
 }
