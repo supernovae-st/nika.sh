@@ -3,30 +3,38 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import nikaRaw from '../assets/nika.svg?raw'
 
-/* ─── Hero butterfly · the standalone v4 centerpiece ──────────────────────────
+/* ─── Hero butterfly · the PROMINENT v4 focal accent ──────────────────────────
    A self-contained r3f particle system that REUSES the v3 butterfly sampler
    idea (src/scene/butterfly.ts) + the v3 glowing-mote shader (src/scene/
    particles.tsx · Sparks): it rasterizes the REAL nika.svg offscreen, samples
-   its opaque pixels into particle target positions, and spins the whole cloud
-   fast + continuously around its vertical axis — a 3D spinning logo made of
-   white→cyan glowing particles, floating on the deep blue.
+   its opaque pixels into particle target positions, and holds that FIXED shape
+   while the particles FLOW fast across it (NO rigid spin) — a still butterfly of
+   constantly-streaming white→soft-cyan/blue glowing particles that tilts subtly
+   toward the pointer (mouse parallax), set against the DARK field inside the
+   single blue accent lamp (the POINTE). This is the v3 cinematic effect, brought
+   back as a genuine VISIBLE focal mark — dense, bright, present (NOT a faint,
+   hidden thing).
 
    Unlike the v3 Galaxy3D (a persistent full-page scene with an intro film,
    scroll rig, postprocessing), this is a SMALL isolated canvas: no scroll
    coupling, no intro state, no postprocessing chain. It mounts lazily (the
    parent code-splits it via React.lazy) so the hero's first paint stays instant,
-   and it short-circuits the spin under prefers-reduced-motion (a gentle drift
-   only). Pure additive · the v3 scene is untouched. */
+   and it eases the flow + drops the pointer parallax under prefers-reduced-motion.
+   Pure additive · the v3 scene is untouched. */
 
-const COUNT = 9000
+const COUNT = 15000 // dense enough to read as a solid figure, not a sparse cloud
 const SPHERE = 0.62 // build-up shell radius before the shape forms
 
-/* the butterfly's white→cyan family (on blue) — a touch cooler than the v3 mix */
+/* the butterfly's white→soft-cyan/blue family — bright cores on the dark base.
+   Weighted toward white/ice so the figure reads CRISP, with a cyan/blue minority
+   so it carries the accent (the pointe) without going neon. */
 const TINTS = [
   new THREE.Color('#ffffff'),
-  new THREE.Color('#dff3ff'),
-  new THREE.Color('#a9deff'),
-  new THREE.Color('#7fe9ff'),
+  new THREE.Color('#ffffff'),
+  new THREE.Color('#e6f5ff'),
+  new THREE.Color('#bfe6ff'),
+  new THREE.Color('#8fd6ff'),
+  new THREE.Color('#74c4ff'),
 ]
 
 /** fill `out` with a faint sphere shell — the synchronous fallback so the first
@@ -63,7 +71,7 @@ function sampleButterflyInto(out: Float32Array, count: number, onReady: () => vo
         for (let x = 0; x < S; x++) if (data[(y * S + x) * 4 + 3] > 128) px.push(x, y)
       const n = px.length / 2
       if (n < 50) return // degenerate raster — keep the sphere fallback
-      const HEIGHT = 2.0 // world height of the butterfly
+      const HEIGHT = 2.35 // world height of the butterfly — large, present
       const scale = HEIGHT / S
       for (let i = 0; i < count; i++) {
         const k = (Math.random() * n) | 0
@@ -87,6 +95,7 @@ function ButterflyPoints({ reduced }: { reduced: boolean }) {
   const group = useRef<THREE.Group>(null!)
   const born = useRef(0) // 0→1 morph: sphere shell → the butterfly shape
   const snapped = useRef(false) // positions locked to targets (stop the lerp loop)
+  const mouse = useRef({ x: 0, y: 0 }) // normalized pointer (-1..1) → the parallax tilt
 
   const { geom, material, targets } = useMemo(() => {
     // the butterfly target positions — start as the sphere shell; the effect
@@ -111,7 +120,9 @@ function ButterflyPoints({ reduced }: { reduced: boolean }) {
       pos[i * 3 + 1] = start[i * 3 + 1]
       pos[i * 3 + 2] = start[i * 3 + 2]
       seed[i] = Math.random()
-      size[i] = 26 + Math.random() * 70
+      // a wider size spread with a brighter floor — a few large hero motes carry
+      // the glow, the many small ones build the figure's body
+      size[i] = 30 + Math.random() * 96
       const c = TINTS[(Math.random() * TINTS.length) | 0]
       tint.set([c.r, c.g, c.b], i * 3)
     }
@@ -134,15 +145,21 @@ function ButterflyPoints({ reduced }: { reduced: boolean }) {
         void main(){
           vTint = aTint;
           vec3 p = position;
-          // a faint living shimmer so the cloud breathes (not a rigid plate)
-          p.x += sin(uTime * 0.6 + aSeed * 24.0) * 0.012;
-          p.y += cos(uTime * 0.5 + aSeed * 18.0) * 0.012;
+          // FAST-FLOWING particles forming a FIXED shape (no rigid spin): a
+          // coherent flow wave ripples across the figure (neighbours move together
+          // → it reads as FLOW, not random shimmer) + a fast per-particle jitter
+          // (the "super vite" sparkle). The butterfly form holds; the motes stream.
+          float ph = position.x * 2.2 + position.y * 1.8;
+          p.x += sin(uTime * 1.9 + ph) * 0.045 + sin(uTime * 4.2 + aSeed * 40.0) * 0.018;
+          p.y += cos(uTime * 1.7 + ph * 1.1) * 0.045 + cos(uTime * 4.6 + aSeed * 40.0) * 0.018;
+          p.z += sin(uTime * 2.3 + ph) * 0.07;
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
-          // a slow twinkle on each particle (firefly cadence)
-          float blink = 0.55 + 0.45 * sin(uTime * (1.1 + aSeed * 2.4) + aSeed * 40.0);
-          vTw = (0.34 + 0.66 * blink) * uReveal;
-          gl_PointSize = clamp(aSize * (0.6 + blink * 0.5) * (1.0 / -mv.z), 1.0, 64.0);
+          // a slow twinkle on each particle (firefly cadence) — a higher floor so
+          // the figure stays solid/bright between blinks (it must READ, not flicker)
+          float blink = 0.62 + 0.38 * sin(uTime * (1.1 + aSeed * 2.4) + aSeed * 40.0);
+          vTw = (0.46 + 0.54 * blink) * uReveal;
+          gl_PointSize = clamp(aSize * (0.66 + blink * 0.5) * (1.0 / -mv.z), 1.2, 80.0);
         }
       `,
       fragmentShader: /* glsl */ `
@@ -152,11 +169,12 @@ function ButterflyPoints({ reduced }: { reduced: boolean }) {
           vec2 q = gl_PointCoord - 0.5;
           float d = length(q);
           if (d > 0.5) discard;
-          float core = smoothstep(0.18, 0.0, d);   // bright firefly core
-          float halo = exp(-d * 3.6);               // soft glow
-          float a = clamp(core * 0.95 + halo * 0.5, 0.0, 1.0) * vTw;
+          float core = smoothstep(0.20, 0.0, d);   // bright firefly core
+          float halo = exp(-d * 3.2);               // soft glow (a touch wider)
+          float a = clamp(core * 1.05 + halo * 0.6, 0.0, 1.0) * vTw;
           if (a < 0.01) discard;
-          gl_FragColor = vec4(mix(vTint, vec3(1.0), core * 0.6) * 1.2, a);
+          // brighter output (1.5×) so the additive cloud glows hard on the dark
+          gl_FragColor = vec4(mix(vTint, vec3(1.0), core * 0.65) * 1.5, a);
         }
       `,
     })
@@ -178,6 +196,18 @@ function ButterflyPoints({ reduced }: { reduced: boolean }) {
       material.dispose()
     }
   }, [geom, material])
+
+  /* track the pointer (normalized -1..1) for the subtle parallax tilt — the only
+     body motion (the shape never spins). Passive listener, cleaned up on unmount. */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const onMove = (e: PointerEvent) => {
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1
+      mouse.current.y = (e.clientY / window.innerHeight) * 2 - 1
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onMove)
+  }, [])
 
   useFrame((state, dt) => {
     const t = state.clock.elapsedTime
@@ -203,13 +233,16 @@ function ButterflyPoints({ reduced }: { reduced: boolean }) {
       pos.needsUpdate = true
     }
 
-    // THE SPIN — fast, continuous, around the vertical axis (a spinning logo).
-    // Reduced motion → a gentle, near-still drift instead of the fast spin.
-    const speed = reduced ? 0.12 : 1.5
+    // NO rigid spin — the SHAPE is fixed; the particles flow (shader). The only
+    // body motion is a subtle MOUSE PARALLAX: the figure eases its tilt toward the
+    // pointer (a few degrees max), reading as a 3D object reacting to you, never a
+    // turntable. Reduced motion → no parallax (the shape rests still).
     if (group.current) {
-      group.current.rotation.y = t * speed
-      // a faint nod so it reads as a 3D object, not a flat decal
-      group.current.rotation.x = Math.sin(t * 0.4) * (reduced ? 0.04 : 0.1)
+      const tx = reduced ? 0 : mouse.current.x * 0.22
+      const ty = reduced ? 0 : -mouse.current.y * 0.16
+      const k = 1 - Math.exp(-6 * dt) // frame-rate-independent ease
+      group.current.rotation.y += (tx - group.current.rotation.y) * k
+      group.current.rotation.x += (ty - group.current.rotation.x) * k
     }
   })
 

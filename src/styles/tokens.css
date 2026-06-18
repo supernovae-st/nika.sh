@@ -37,17 +37,24 @@
   --dur-ui: 140ms;   /* hover / focus / state — the standard micro-interaction */
   --dur-press: 90ms; /* active / press — snappier than hover */
 
-  /* ── the HERO blue · the ONE place the v4 site leaves monochrome ───────────
-     A deep, refined navy→azure lab (Maxime Heckel register · Linear/Raycast
-     restraint) — NOT a garish blue→purple, NOT a neon cyan tech-glow. The hues
-     are dark and desaturated at the base, lifting to a single cool azure bloom.
-     Scoped to #hero in hero.css; declared here as the documented source so the
-     blue is auditable in one place. */
-  --hero-blue-deep: #05091a;  /* the darkest pool · lower edge + corners        */
-  --hero-blue-rich: #0b1740;  /* the rich mid navy · the body of the field      */
-  --hero-blue-lift: #163a7e;  /* the lifted azure · the single high-center bloom */
-  --hero-blue-line: #6f9dff;  /* the grid hairline + HUD ink (used at low alpha) */
-  --hero-blue-glow: #4f86ff;  /* the soft lamp behind the butterfly accent      */
+  /* ── the HERO · DARK base + a POINTE of blue ───────────────────────────────
+     RECALIBRATED 2026-06-18: the field is DARK (Linear/Cursor near-black) and
+     DOMINANT — NOT a blue gradient. Blue appears as ONE localized ACCENT (a soft
+     off-axis bloom behind the spinning particle butterfly) — the v3 cinematic
+     pointe. Never a full blue wash, never blue→purple, never neon. The dark
+     reads first; the blue is the sharp accent (frontend-design: dominant + sharp
+     accent > evenly-distributed). Auditable in one place here, scoped in hero.css.
+
+     --hero-base-*: the dark field (this is what the page reads as).
+     --hero-blue-*: the POINTE — used ONLY in the localized accent bloom + the
+                    faint grid hairlines + the HUD ink (all at low alpha). */
+  --hero-base-deep: #060708;  /* the darkest pool · corners + lower edge        */
+  --hero-base-body: #0a0b0d;  /* the dominant near-black field (Linear/Cursor)  */
+  --hero-base-lift: #0e1014;  /* a barely-there top lift (keeps it from flat)   */
+
+  --hero-blue-core: #2f6bff;  /* the accent bloom CORE · the single bright note */
+  --hero-blue-glow: #4f86ff;  /* the soft lamp directly behind the butterfly    */
+  --hero-blue-line: #5f86d8;  /* the grid hairline + HUD ink (used at low alpha) */
 
   /* the 4 verb hues — used ONLY inside a live run (design doc §3.4),
      never as static UI color */

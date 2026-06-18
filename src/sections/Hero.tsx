@@ -6,23 +6,24 @@ import '../shell/shell.css'
 import './hero.css'
 
 /* ─── Hero · the v4.3 BLUE control-narrative · two-column composition ──────────
-   Register: a deep, refined blue lab (Maxime Heckel · Linear/Raycast restraint).
-   A premium navy→azure gradient fills the surface, a faint blue perspective grid
-   recedes below, faint HUD registration marks sit at the corners, and a 3D
-   particle NIKA BUTTERFLY spins continuously as a focal accent behind the editor.
+   Register: a DARK lab (Linear/Cursor near-black) with ONE pointe of blue — the
+   Maxime-Heckel / Raycast restraint. A near-black field dominates, a localized
+   blue bloom + a faint perspective grid + corner HUD ticks add depth, and a 3D
+   particle NIKA BUTTERFLY (a FIXED shape whose particles stream fast, tilting to
+   the pointer) presides as a large atmospheric figure the content floats inside.
 
    The composition is the classic operator layout: the HEADLINE + pitch + install
    + CTAs sit LEFT, and the premium CodeFile editor (the product replica · a real
    .nika.yaml plan) sits RIGHT — KEPT, given room, balanced. Lots of whitespace;
-   the two columns breathe (the previous hero felt crammed).
+   the two columns breathe over the centred particle field.
 
    The pitch stays CONTROL: "See what your AI will do. Before it does it." — the
    agent writes its plan as a reviewable file; the runtime enforces it; then it
    runs. The headline is a REAL <h1> in the prerendered HTML (the SEO win); the
-   editor is real <pre>/<code> DOM text (crawlable, instant). The blue gradient +
-   grid + HUD are PURE CSS (instant first paint). The WebGL butterfly is a lazy,
-   client-only, aria-hidden ENHANCEMENT — it never blocks first paint, and it
-   spins gently under prefers-reduced-motion.
+   editor is real <pre>/<code> DOM text (crawlable, instant). The dark field +
+   blue bloom + grid + HUD are PURE CSS (instant first paint). The WebGL butterfly
+   is a lazy, client-only, aria-hidden ENHANCEMENT — it never blocks first paint,
+   and its flow eases + parallax drops under prefers-reduced-motion.
 
    Entrance: ONE orchestrated staggered reveal (motion-safe only). Everything is
    visible by DEFAULT (SSR / no-JS / reduced-motion) — the `.v4-enter` opt-in is
@@ -117,8 +118,8 @@ function InstallLine() {
 /* ─── the blue atmosphere · gradient + perspective grid + HUD + butterfly canvas ─
    PURE-CSS layers (instant) PLUS the lazy WebGL canvas (client-only, mounted
    after first paint). All decorative — aria-hidden, pointer-events:none. The
-   butterfly canvas anchors to the RIGHT column band (behind the editor) so it
-   reads as a focal accent, not a busy centerpiece. */
+   butterfly canvas is a large atmospheric figure centred in the scene (the
+   content floats inside it), not hidden behind the editor. */
 function HeroAtmosphere() {
   const [mountCanvas, setMountCanvas] = useState(false)
   const [shown, setShown] = useState(false)
@@ -157,7 +158,7 @@ function HeroAtmosphere() {
         <div className="v4bluegrid-plane" />
       </div>
 
-      {/* 3 · the spinning particle butterfly — lazy WebGL, client-only, RIGHT band */}
+      {/* 3 · the particle butterfly — fixed shape · fast-streaming particles · centred */}
       <div className="v4bfly-stage" aria-hidden>
         <div className="v4bfly-canvas" data-mounted={shown}>
           {mountCanvas && (
@@ -225,10 +226,11 @@ export default function Hero() {
             style={{
               ...rise(80),
               fontFamily: 'var(--headline)',
-              fontSize: 'clamp(1.45rem, 0.45rem + 4.6vw, 3.9rem)',
-              lineHeight: 1.0,
+              fontSize: 'clamp(1.5rem, 0.5rem + 4.7vw, 4.05rem)',
+              lineHeight: 1.02,
               letterSpacing: '-0.025em',
               fontWeight: 600,
+              textWrap: 'balance',
             }}
             className="text-text"
           >

@@ -1,74 +1,88 @@
-/* ─── hero · the BLUE atmosphere + two-column composition ─────────────────────
-   The v4.3 hero leaves the monochrome v4 base for ONE surface: a deep, refined
-   BLUE lab (register: Maxime Heckel · Linear/Raycast restraint). NOT a garish
-   blue→purple, NOT a neon cyan tech-glow — a dark navy field lifting to a single
-   cool azure bloom, layered radial+linear so it never reads as a flat fill or a
-   banded ramp.
+/* ─── hero · DARK base + a POINTE of blue + the spinning particle butterfly ───
+   RECALIBRATED 2026-06-18. The hero was over-blued (a full navy→azure field).
+   It now reads DARK (Linear/Cursor near-black `#0a0b0d`) as the DOMINANT surface,
+   with ONE localized blue ACCENT — a soft off-axis bloom behind the spinning
+   particle butterfly (the v3 cinematic pointe). The dark reads first; the blue is
+   the sharp accent (frontend-design: dominant + sharp accent > evenly distributed).
+   NEVER a full blue wash, never blue→purple, never neon.
 
    This file owns:
-     1 · .v4hero-blue   — the premium navy→azure gradient (PURE CSS · instant).
-     2 · .v4bluegrid    — a faint blue perspective floor grid receding below.
-     3 · .v4bfly-stage  — the lazy butterfly canvas frame, anchored to the RIGHT
-                          band (a focal accent behind the editor · not a busy
-                          centerpiece), with a soft lamp behind it.
+     1 · .v4hero-blue   — the DARK field + the single off-axis blue bloom (CSS).
+     2 · .v4bluegrid    — a faint blue perspective floor grid receding on the dark.
+     3 · .v4bfly-stage  — the lazy butterfly canvas, the FOCAL ACCENT in the right
+                          band, sitting in a localized blue lamp (the POINTE).
      4 · .v4hud         — faint corner registration ticks (the blueprint HUD).
      5 · .v4hero-grid   — the two-column layout (copy LEFT · editor RIGHT), with
                           generous space; stacks to one column on narrow screens.
 
    Everything decorative is pointer-events:none + aria-hidden, SSR-safe (pure CSS
    / no window at render), and reduced-motion-aware (the grid stops drifting; the
-   canvas spins gently). The blue tokens are documented in tokens.css and only
-   re-aliased here, scoped to #hero so the rest of the monochrome v4 site is
-   untouched. */
+   canvas spins gently). Tokens documented in tokens.css, re-aliased here, scoped
+   to #hero so the rest of the monochrome v4 site is untouched. */
 
-/* the hero's own blue palette — aliased from the documented tokens.css source,
-   scoped so the global v4 tokens stay monochrome. */
+/* the hero's own palette — aliased from the documented tokens.css source, scoped
+   so the global v4 tokens stay monochrome. --base-* is the dark field (dominant);
+   --blue-* is the localized accent (the pointe). */
 #hero {
-  --v4-blue-deep: var(--hero-blue-deep);
-  --v4-blue-rich: var(--hero-blue-rich);
-  --v4-blue-lift: var(--hero-blue-lift);
-  --v4-blue-line: var(--hero-blue-line);
+  --v4-base-deep: var(--hero-base-deep);
+  --v4-base-body: var(--hero-base-body);
+  --v4-base-lift: var(--hero-base-lift);
+  --v4-blue-core: var(--hero-blue-core);
   --v4-blue-glow: var(--hero-blue-glow);
+  --v4-blue-line: var(--hero-blue-line);
 }
 
-/* ── 1 · the premium blue gradient ───────────────────────────────────────────
-   Layered, asymmetric, mask-softened so there is no banding and no flat fill:
-   • a single cool azure bloom high on the RIGHT (where the butterfly + editor
-     sit) — the one bright note, off-axis (never centered/symmetric).
-   • a faint cool side-light, lower-left, to balance the diagonal.
-   • the body wash · rich navy at the top → a near-black pool at the lower edge.
-   Reads as deep atmosphere with depth — Maxime's lab, not a tech banner. */
+/* ── 1 · the DARK field + the single off-axis blue bloom (the POINTE) ─────────
+   The field reads DARK (near-black, Linear/Cursor) and DOMINANT. The blue is ONE
+   localized accent — a soft azure bloom anchored OFF-AXIS in the upper-right band
+   (where the butterfly + editor sit), the v3 cinematic pointe. NOT a full wash.
+   • layer 1: the blue bloom · upper-right · tight, soft, the single bright note.
+   • layer 2: a whisper of blue lower-left to keep the diagonal from feeling empty
+     (very faint — it must NOT read as a second light source).
+   • layer 3: the body · the dark field · a barely-there top lift → deep pool at
+     the bottom, so it has depth without ever lifting into "blue". */
 .v4hero-blue {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background:
-    /* the azure bloom · high-right · the single bright note */
-    radial-gradient(86% 72% at 72% 16%, var(--v4-blue-lift) 0%, transparent 56%),
-    /* a soft cool wash · lower-left · balances the diagonal (off-axis) */
-    radial-gradient(70% 64% at 12% 86%, color-mix(in oklch, var(--v4-blue-glow) 22%, transparent) 0%, transparent 58%),
-    /* the body · rich navy top → deep pool at the bottom edge */
-    linear-gradient(174deg, var(--v4-blue-rich) 0%, #081132 50%, var(--v4-blue-deep) 100%);
+    /* THE POINTE · the blue accent bloom · upper-right · off-axis · tight */
+    radial-gradient(
+      44% 48% at 58% 44%,
+      color-mix(in oklch, var(--v4-blue-core) 22%, transparent) 0%,
+      color-mix(in oklch, var(--v4-blue-glow) 8%, transparent) 34%,
+      transparent 62%
+    ),
+    /* a whisper lower-left · keeps the diagonal alive · barely visible */
+    radial-gradient(
+      54% 50% at 6% 92%,
+      color-mix(in oklch, var(--v4-blue-glow) 8%, transparent) 0%,
+      transparent 52%
+    ),
+    /* the body · DARK · subtle top lift → deep pool at the bottom edge */
+    linear-gradient(176deg, var(--v4-base-lift) 0%, var(--v4-base-body) 46%, var(--v4-base-deep) 100%);
 }
 
-/* a very sparse cosmic star-dust over the blue (a quiet depth cue · the v3
-   'star' nod) so the field never reads as a banded gradient. Static, mask-faded
+/* a very sparse cosmic star-dust on the dark (a quiet depth cue · the v3 'star'
+   nod) so the field never reads as a flat fill. Static, cool-white, mask-faded
    at the rim so it dissolves into the dark corners. */
 .v4hero-blue::after {
   content: '';
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(1px 1px at 16% 22%, rgba(200, 225, 255, 0.42), transparent),
-    radial-gradient(1px 1px at 72% 14%, rgba(190, 215, 255, 0.36), transparent),
-    radial-gradient(1.2px 1.2px at 41% 62%, rgba(180, 210, 255, 0.3), transparent),
-    radial-gradient(1px 1px at 88% 52%, rgba(210, 230, 255, 0.34), transparent),
-    radial-gradient(1px 1px at 9% 74%, rgba(190, 215, 255, 0.28), transparent),
-    radial-gradient(1.1px 1.1px at 60% 84%, rgba(200, 222, 255, 0.3), transparent);
+    radial-gradient(1px 1px at 16% 22%, rgba(190, 210, 245, 0.30), transparent),
+    radial-gradient(1px 1px at 72% 14%, rgba(185, 205, 245, 0.26), transparent),
+    radial-gradient(1.2px 1.2px at 41% 62%, rgba(175, 198, 240, 0.20), transparent),
+    radial-gradient(1px 1px at 88% 52%, rgba(195, 215, 248, 0.24), transparent),
+    radial-gradient(1px 1px at 9% 74%, rgba(180, 202, 242, 0.18), transparent),
+    radial-gradient(1.1px 1.1px at 60% 84%, rgba(188, 208, 244, 0.20), transparent);
   background-repeat: no-repeat;
-  -webkit-mask-image: radial-gradient(120% 100% at 60% 24%, #000 28%, transparent 86%);
-  mask-image: radial-gradient(120% 100% at 60% 24%, #000 28%, transparent 86%);
+  /* concentrate the dust toward the blue bloom (upper-right) so it belongs to
+     the accent, not the whole field */
+  -webkit-mask-image: radial-gradient(110% 96% at 70% 22%, #000 18%, transparent 78%);
+  mask-image: radial-gradient(110% 96% at 70% 22%, #000 18%, transparent 78%);
 }
 
 /* ── 2 · the faint blue perspective grid ─────────────────────────────────────
@@ -108,7 +122,9 @@
       transparent 1px,
       transparent 60px
     );
-  opacity: 0.1;
+  /* present enough to read as a receding depth-grid (the Maxime floor), still a
+     blueprint hint — not a wireframe */
+  opacity: 0.2;
   -webkit-mask-image: radial-gradient(120% 86% at 50% 100%, #000 0%, rgba(0, 0, 0, 0.5) 40%, transparent 76%);
   mask-image: radial-gradient(120% 86% at 50% 100%, #000 0%, rgba(0, 0, 0, 0.5) 40%, transparent 76%);
   will-change: transform;
@@ -151,16 +167,20 @@
 .v4bfly-stage::before {
   content: '';
   position: absolute;
-  width: min(58vmin, 560px);
-  height: min(58vmin, 560px);
+  width: min(56vmin, 540px);
+  height: min(56vmin, 540px);
   border-radius: 50%;
+  /* the POINTE lamp · a concentrated blue glow ONLY behind the figure, so the
+     particles sit in light against the dark. Tighter + warmer-core than before so
+     it reads as a single localized accent, not a wash. */
   background: radial-gradient(
     circle,
-    color-mix(in oklch, var(--v4-blue-glow) 24%, transparent) 0%,
-    color-mix(in oklch, var(--v4-blue-glow) 8%, transparent) 40%,
-    transparent 66%
+    color-mix(in oklch, var(--v4-blue-core) 16%, transparent) 0%,
+    color-mix(in oklch, var(--v4-blue-glow) 7%, transparent) 34%,
+    color-mix(in oklch, var(--v4-blue-glow) 2%, transparent) 56%,
+    transparent 72%
   );
-  filter: blur(10px);
+  filter: blur(12px);
 }
 /* the canvas mount frame — sized to the figure. Fades/scales in on mount. */
 .v4bfly-canvas {
@@ -183,29 +203,37 @@
   }
 }
 
-/* on desktop the figure anchors to the RIGHT band (behind/beside the editor),
-   sitting slightly above center so the editor reads cleanly over it. */
+/* on desktop the figure is a LARGE atmospheric presence centred in the scene
+   (NOT hidden behind the editor): its dense body lands just right-of-centre — in
+   the open channel between the headline (clean left) and the editor — and it is
+   tall enough to glow ABOVE and BELOW the content columns, so it fills the
+   vertical space and the copy + editor float INSIDE the particle field (the
+   Maxime-Heckel / v3 cinematic register). Additive blending keeps it from
+   fighting the opaque editor panel; the readscrim protects the headline. */
 @media (min-width: 1024px) {
   .v4bfly-stage {
-    justify-items: end;
-    align-items: center;
+    place-items: center;
   }
   .v4bfly-canvas {
-    width: min(52vw, 640px);
-    height: min(72vh, 640px);
-    /* nudge it into the right third, slightly up — the focal accent */
-    margin-right: clamp(-40px, -2vw, -10px);
-    margin-top: clamp(-60px, -6vh, -20px);
+    width: min(72vw, 900px);
+    height: min(94vh, 860px);
+    /* body in the OPEN centre channel (between the headline + the editor), NOT
+       crowding the editor — wings spread under both columns (the readscrim dims
+       the left so the headline stays crisp; the opaque editor panel hides the
+       right wing, only its glow spills around the panel). Nudged UP off-bottom. */
+    margin-left: 0;
+    margin-top: clamp(-80px, -7vh, -28px);
     opacity: 0;
   }
   .v4bfly-canvas[data-mounted='true'] {
-    opacity: 0.92;
+    opacity: 1;
   }
   .v4bfly-stage::before {
-    width: min(46vw, 560px);
-    height: min(46vw, 560px);
-    margin-right: clamp(0px, 6vw, 110px);
-    margin-top: clamp(-40px, -4vh, -10px);
+    /* the blue lamp · a tight pointe behind the figure's body (NOT a wash) */
+    width: min(40vw, 480px);
+    height: min(40vw, 480px);
+    margin-left: 0;
+    margin-top: clamp(-80px, -7vh, -24px);
   }
 }
 @media (max-width: 1023px) {
@@ -215,15 +243,17 @@
     padding-top: 6vh;
   }
   .v4bfly-canvas {
-    width: min(110vmin, 520px);
-    height: min(110vmin, 520px);
+    width: min(112vmin, 540px);
+    height: min(112vmin, 540px);
     opacity: 0;
   }
   .v4bfly-canvas[data-mounted='true'] {
-    opacity: 0.5;
+    /* a touch brighter than before so it still reads behind the stacked copy,
+       but calm (the copy + editor stay legible over it) */
+    opacity: 0.64;
   }
   .v4bfly-stage::before {
-    opacity: 0.7;
+    opacity: 0.8;
   }
 }
 
@@ -271,28 +301,29 @@
 .v4hud-tick--br::before { top: auto; bottom: 0; right: 0; }
 .v4hud-tick--br::after { top: auto; bottom: 0; left: auto; right: 0; }
 
-/* the readability scrim · a soft vignette so the copy column clears contrast
-   over the blue without dimming the figure too far. Darker toward the lower
-   edge + the LEFT (where the headline sits). */
+/* the readability scrim · a soft vignette so the LEFT copy column always clears
+   contrast even if the right-anchored blue bloom reaches across on a wide
+   viewport. The base is already dark, so this is a light touch — a deep-base
+   wash on the left + lower edge (it keeps dim/faint copy ≥4.5:1 by pulling the
+   left margin back to the near-black base). */
 .v4hero-readscrim {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background:
-    /* the LEFT vignette · keeps dim/faint copy ≥4.5:1 even if the right-anchored
-       azure bloom reaches across on a wide viewport (the scrim wins the margin) */
+    /* the LEFT vignette · the scrim wins the headline margin back to dark base */
     linear-gradient(
       100deg,
-      color-mix(in oklch, var(--v4-blue-deep) 66%, transparent) 0%,
-      color-mix(in oklch, var(--v4-blue-deep) 30%, transparent) 40%,
-      transparent 62%
+      color-mix(in oklch, var(--v4-base-deep) 78%, transparent) 0%,
+      color-mix(in oklch, var(--v4-base-deep) 34%, transparent) 38%,
+      transparent 60%
     ),
     linear-gradient(
       180deg,
       transparent 0%,
-      transparent 50%,
-      color-mix(in oklch, var(--v4-blue-deep) 46%, transparent) 100%
+      transparent 54%,
+      color-mix(in oklch, var(--v4-base-deep) 40%, transparent) 100%
     );
 }
 
@@ -340,26 +371,29 @@
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.06),
     0 1px 0 rgb(0 0 0 / 0.5),
-    0 26px 70px -28px rgb(0 0 0 / 0.78),
-    0 10px 28px -16px color-mix(in oklch, var(--v4-blue-deep) 80%, black);
+    0 26px 70px -28px rgb(0 0 0 / 0.82),
+    /* a faint blue spill in the editor's ambient shadow — the pointe reaching the
+       panel it sits beside (kept very subtle) */
+    0 12px 34px -18px color-mix(in oklch, var(--v4-blue-glow) 26%, black);
 }
 
-/* ── blue-scoped overrides for the shared hero chrome ─────────────────────────
+/* ── dark-scoped overrides for the shared hero chrome ─────────────────────────
    The install line, kicker, trust line + FIG eyebrow are shared (shell.css) and
-   read --v4-text* (near-white). On the blue they already clear contrast; we only
-   warm the install panel surface + hairlines toward the blue so they belong. */
+   read --v4-text* (near-white) — they already clear contrast on the dark base.
+   The surfaces sit on the raised dark panel with a HAIRLINE of blue (the pointe
+   touch) so they feel part of the accent without turning navy. */
 #hero .v4install {
-  background: color-mix(in oklch, #0c1838 80%, transparent);
-  border-color: color-mix(in oklch, var(--v4-blue-line) 24%, transparent);
+  background: color-mix(in oklch, #101216 84%, transparent);
+  border-color: color-mix(in oklch, var(--v4-blue-line) 20%, transparent);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
 #hero .v4install-copy {
-  border-left-color: color-mix(in oklch, var(--v4-blue-line) 24%, transparent);
-  background: color-mix(in oklch, var(--v4-blue-line) 8%, transparent);
+  border-left-color: color-mix(in oklch, var(--v4-blue-line) 18%, transparent);
+  background: color-mix(in oklch, var(--v4-blue-line) 6%, transparent);
 }
 #hero .v4fig::before {
-  background: color-mix(in oklch, var(--v4-blue-line) 46%, transparent);
+  background: color-mix(in oklch, var(--v4-blue-line) 40%, transparent);
 }
 
 /* the small reference chip below the editor · a compact mono row that POINTS to
@@ -370,8 +404,8 @@
   gap: 10px;
   padding: 9px 14px;
   border-radius: 10px;
-  border: 1px solid color-mix(in oklch, var(--v4-blue-line) 22%, transparent);
-  background: color-mix(in oklch, #0c1838 66%, transparent);
+  border: 1px solid color-mix(in oklch, var(--v4-blue-line) 18%, transparent);
+  background: color-mix(in oklch, #101216 70%, transparent);
   font-family: var(--mono);
   font-size: 12.5px;
   color: var(--v4-text-dim);
