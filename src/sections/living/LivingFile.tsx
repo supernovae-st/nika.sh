@@ -71,12 +71,13 @@ const T_FILE_END = 0.18 // file → morph
 const T_MORPH_END = 0.3 // morph → DAG (the plan has landed as a graph)
 const T_TILT_START = 0.44 // the DAG stays FLAT (comprehend) until here, then tips
 const T_DAG_END = 0.54 // DAG → corridor (the tilt completes, the run begins)
+const T_RUN_END = 0.85 // corridor run → the verdict (the result + enforce payoff)
 
 /** map the master t (0..1) onto the EXECUTION sub-progress (0..1 across the run).
-    The run executes during the CORRIDOR phase (after the DAG comprehension beat). */
+    The run executes during the CORRIDOR phase, completing by the verdict beat. */
 function runProgress(t: number): number {
   if (t <= T_DAG_END) return 0
-  return Math.min(1, (t - T_DAG_END) / (1 - T_DAG_END))
+  return Math.min(1, (t - T_DAG_END) / (T_RUN_END - T_DAG_END))
 }
 
 /** how "detached from the file → landed as a graph" the morph is (0..1). */
@@ -445,12 +446,51 @@ function PlanFlow() {
   )
 }
 
-/* ── beat caption · the one-line "where you are" register (the 4 control beats) */
+/* ── the verdict · the control narrative's PUNCHLINE (its own beat) ───────────
+   After the corridor flies the run, the payoff lands as one clear contrast: it
+   ran WITHIN the permits (exit 0 · the brief written · replayable), AND a write
+   OUT of bounds would be denied before it runs (NIKA-SEC-004). The seatbelt, made
+   explicit — not buried in a log. */
+function VerdictBeat({ run }: { run: RunState }) {
+  const code = run.exitCode ?? 0
+  return (
+    <div className="lf-verdict">
+      <p className="lf-verdict-cap mono" aria-hidden>
+        FIG 1.4 <span className="lf-cap-dash">—</span> the result · the seatbelt held
+      </p>
+      <div className="lf-verdict-grid">
+        <div className="lf-verdict-card lf-verdict-card--ok">
+          <span className="lf-verdict-glyph" aria-hidden>
+            {CLI_GLYPH.done}
+          </span>
+          <p className="lf-verdict-h">Ran within the permits</p>
+          <p className="lf-verdict-sub">
+            exit {code} · wrote the shortlist brief · every effect logged — the
+            whole run replays from the trace.
+          </p>
+        </div>
+        <div className="lf-verdict-card lf-verdict-card--deny">
+          <span className="lf-verdict-glyph lf-verdict-glyph--deny" aria-hidden>
+            {CLI_GLYPH.fail}
+          </span>
+          <p className="lf-verdict-h">Out of bounds → denied</p>
+          <p className="lf-verdict-sub">
+            a write outside <span className="lf-verdict-key">permits:</span> is blocked
+            before it runs — <span className="lf-verdict-code">NIKA-SEC-004</span>.
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── beat caption · the one-line "where you are" register (the control beats) */
 function beatLabel(t: number): { fig: string; title: string } {
   if (t < T_FILE_END) return { fig: 'FIG 1.0', title: 'Write — the agent declares its plan' }
   if (t < T_MORPH_END) return { fig: 'FIG 1.1', title: 'Review — what it’s allowed to touch' }
   if (t < T_DAG_END) return { fig: 'FIG 1.2', title: 'The plan — the pipeline, step by step' }
-  return { fig: 'FIG 1.3', title: 'Run — within the permits' }
+  if (t < T_RUN_END) return { fig: 'FIG 1.3', title: 'Run — within the permits' }
+  return { fig: 'FIG 1.4', title: 'The result — within bounds, enforced' }
 }
 
 export default function LivingFile() {
@@ -590,7 +630,15 @@ export default function LivingFile() {
      (the flat plan · comprehension) → run (the corridor · the flat plan tilts
      into depth and executes). */
   const stageBeat =
-    t < T_FILE_END ? 'file' : t < T_MORPH_END ? 'morph' : t < T_DAG_END ? 'dag' : 'run'
+    t < T_FILE_END
+      ? 'file'
+      : t < T_MORPH_END
+        ? 'morph'
+        : t < T_DAG_END
+          ? 'dag'
+          : t < T_RUN_END
+            ? 'run'
+            : 'verdict'
 
   return (
     <section
@@ -689,6 +737,10 @@ export default function LivingFile() {
                     {/* the immersive run · the 3D corridor the plan flies through */}
                     <div className="lf-corridor-layer">
                       <Corridor dag={DAG} run={run} runP={runP} />
+                    </div>
+                    {/* the verdict · the result + the seatbelt, the payoff beat */}
+                    <div className="lf-verdict-layer">
+                      <VerdictBeat run={run} />
                     </div>
                   </>
                 ) : (

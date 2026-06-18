@@ -168,9 +168,11 @@
 .lf-stage[data-beat='morph'] .lf-lede,
 .lf-stage[data-beat='dag'] .lf-lede,
 .lf-stage[data-beat='run'] .lf-lede,
+.lf-stage[data-beat='verdict'] .lf-lede,
 .lf-stage[data-beat='morph'] .lf-dim,
 .lf-stage[data-beat='dag'] .lf-dim,
-.lf-stage[data-beat='run'] .lf-dim {
+.lf-stage[data-beat='run'] .lf-dim,
+.lf-stage[data-beat='verdict'] .lf-dim {
   opacity: 0;
   max-height: 0;
   margin-top: 0;
@@ -178,7 +180,8 @@
 }
 .lf-stage[data-beat='morph'] .lf-title,
 .lf-stage[data-beat='dag'] .lf-title,
-.lf-stage[data-beat='run'] .lf-title {
+.lf-stage[data-beat='run'] .lf-title,
+.lf-stage[data-beat='verdict'] .lf-title {
   font-size: clamp(1.35rem, 0.9rem + 1.4vw, 1.9rem);
   margin-top: 0.4rem;
 }
@@ -212,7 +215,8 @@
 }
 .lf-stage[data-beat='morph'] .lf-file,
 .lf-stage[data-beat='dag'] .lf-file,
-.lf-stage[data-beat='run'] .lf-file {
+.lf-stage[data-beat='run'] .lf-file,
+.lf-stage[data-beat='verdict'] .lf-file {
   opacity: 0;
   transform: translateY(-10px) scale(0.985);
   pointer-events: none;
@@ -233,7 +237,8 @@
 }
 .lf-stage[data-beat='morph'] .lf-run,
 .lf-stage[data-beat='dag'] .lf-run,
-.lf-stage[data-beat='run'] .lf-run {
+.lf-stage[data-beat='run'] .lf-run,
+.lf-stage[data-beat='verdict'] .lf-run {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -385,8 +390,104 @@
 }
 /* at the flat comprehension beat the corridor's "in depth" panel caption is
    redundant (the header + the pipeline's own hint carry it) — withhold it */
-.lf-stage[data-beat='dag'] .lf-graph > .lf-panel-cap {
+.lf-stage[data-beat='dag'] .lf-graph > .lf-panel-cap,
+.lf-stage[data-beat='verdict'] .lf-graph > .lf-panel-cap {
   display: none;
+}
+
+/* ── the verdict beat · the payoff · its own layer over a dimmed corridor ──────*/
+.lf-verdict-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.lf-stage[data-beat='verdict'] .lf-verdict-layer {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* the completed corridor recedes to a faint backdrop behind the verdict */
+.lf-stage[data-beat='verdict'] .lf-corridor-layer {
+  opacity: 0.16;
+}
+/* the minimal log is withheld at the verdict (the cards state the result) */
+.lf-stage[data-beat='verdict'] .lf-obs {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s ease, max-height 0.4s ease;
+}
+.lf-verdict {
+  width: min(860px, 94%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  align-items: center;
+}
+.lf-verdict-cap {
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.lf-verdict-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+}
+.lf-verdict-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 22px 24px;
+  border: 1px solid var(--v4-line);
+  border-radius: 14px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.lf-verdict-card--deny {
+  border-color: color-mix(in oklch, var(--verb-exec) 38%, transparent);
+}
+.lf-verdict-glyph {
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--v4-text);
+}
+.lf-verdict-glyph--deny {
+  color: var(--verb-exec);
+}
+.lf-verdict-h {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--v4-text);
+}
+.lf-verdict-sub {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+}
+.lf-verdict-key,
+.lf-verdict-code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  color: var(--v4-text);
+}
+.lf-verdict-code {
+  color: var(--verb-exec);
+}
+@media (max-width: 720px) {
+  .lf-verdict-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* the panel captions (engineering-manual register) */
