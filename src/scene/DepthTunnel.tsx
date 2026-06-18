@@ -101,25 +101,6 @@ function buildTunnel(): THREE.BufferGeometry {
   return g
 }
 
-/** the soft blue glow at the vanishing point (the tache) — an additive radial
-    sprite sitting deep in the tunnel. Drawn from a canvas gradient (client-only). */
-function useGlowTexture(): THREE.Texture {
-  return useMemo(() => {
-    const s = 128
-    const cv = document.createElement('canvas')
-    cv.width = cv.height = s
-    const ctx = cv.getContext('2d')!
-    const grd = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2)
-    grd.addColorStop(0, 'rgba(120,165,255,0.95)')
-    grd.addColorStop(0.4, 'rgba(80,120,255,0.35)')
-    grd.addColorStop(1, 'rgba(40,70,200,0)')
-    ctx.fillStyle = grd
-    ctx.fillRect(0, 0, s, s)
-    const tex = new THREE.CanvasTexture(cv)
-    return tex
-  }, [])
-}
-
 function Tunnel({
   scroll,
   reduced,
@@ -133,32 +114,32 @@ function Tunnel({
       new THREE.LineBasicMaterial({
         vertexColors: true,
         transparent: true,
-        opacity: 0.92,
+        opacity: 0.72,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       }),
     [],
   )
-  const glowTex = useGlowTexture()
   const flow = useRef<THREE.Group>(null!) // carries the seamless dive (z + twist)
   const mouse = useRef({ x: 0, y: 0 })
 
   useFrame((state, dt) => {
-    // ambient flow toward the camera (a seamless ring-cycle) → rest life
-    const o = (state.clock.elapsedTime * (reduced ? 0.03 : 0.08)) % 1
+    // the tunnel RUSHES toward the camera — ambient drift + the scroll drives the
+    // dive. We move the WORLD (not the camera), so the camera stays INSIDE the
+    // tunnel and it fills the whole screen. Seamless ring-cycle (recycle %1: ring
+    // i takes ring i-1's place exactly, so it's an endless dive).
+    const offset = state.clock.elapsedTime * (reduced ? 0.05 : 0.14) + scroll.current * 9
+    const o = offset % 1
     if (flow.current) {
       flow.current.position.z = o * DZ
       flow.current.rotation.z = -o * TWIST
     }
-    const k = 1 - Math.exp(-6 * dt)
-    // THE DIVE · scroll drives the camera DEEP into the tunnel (selon le scroll)
-    const targetZ = 2.4 - scroll.current * 26 // mouth (2.4) → deep near the glow
+    const k = 1 - Math.exp(-5 * dt)
     const mx = reduced ? 0 : mouse.current.x
     const my = reduced ? 0 : mouse.current.y
-    state.camera.position.z += (targetZ - state.camera.position.z) * k
-    state.camera.position.x += (mx * 0.3 - state.camera.position.x) * k
-    state.camera.position.y += (-my * 0.3 - state.camera.position.y) * k
-    state.camera.lookAt(0, 0, state.camera.position.z - 10)
+    state.camera.position.x += (mx * 0.22 - state.camera.position.x) * k
+    state.camera.position.y += (-my * 0.22 - state.camera.position.y) * k
+    state.camera.lookAt(0, 0, -12)
   })
 
   useEffect(() => {
@@ -174,16 +155,6 @@ function Tunnel({
   return (
     <group ref={flow}>
       <lineSegments geometry={geom} material={mat} frustumCulled={false} />
-      {/* the blue tache at the vanishing point */}
-      <sprite position={[0, 0, -RINGS * DZ * 0.78]} scale={[5.5, 5.5, 1]}>
-        <spriteMaterial
-          map={glowTex}
-          transparent
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-          opacity={0.9}
-        />
-      </sprite>
     </group>
   )
 }
@@ -228,10 +199,12 @@ export default function DepthTunnel() {
         aria-hidden
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         dpr={[1, 1.5]}
-        camera={{ position: [0, 0, 2.4], fov: 78 }}
+        camera={{ position: [0, 0, 0.3], fov: 80 }}
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
         frameloop={active ? 'always' : 'never'}
       >
+        {/* fog → the far rings dissolve into a dark blur at the vanishing point */}
+        <fog attach="fog" args={['#05060a', 3, 15]} />
         <Tunnel scroll={scroll} reduced={reduced} />
       </Canvas>
     </div>
