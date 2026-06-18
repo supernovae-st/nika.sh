@@ -21,6 +21,19 @@
   z-index: 30;
 }
 
+/* dev/test · ?lf=<t> pins the section as a fixed full-viewport overlay so a
+   headless capture (which can't scroll) can see any frozen beat directly. Inert
+   in normal use — the attr is only set by the ?lf= debug param. */
+.lf-section[data-frozen='true'] {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: auto;
+}
+.lf-section[data-frozen='true'] .lf-stage {
+  min-height: 100vh;
+}
+
 /* the track. DEFAULT (no-JS / SSR / reduced-motion): auto height · the stage
    sits in normal flow as a single full section showing the static end-state.
    SCRUB (JS, motion allowed): the track grows to ~280vh and the stage is absolutely

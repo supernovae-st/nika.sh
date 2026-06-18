@@ -415,6 +415,9 @@ export default function LivingFile() {
      true on mount, only when motion is allowed AND the device isn't coarse +
      narrow (a cheap low-end heuristic), so the corridor stays an enhancement. */
   const [corridor3d, setCorridor3d] = useState(false)
+  /* dev/test only · ?lf=<t> freezes a beat as a fixed full-viewport overlay so a
+     headless capture (which can't scroll) can see any scroll state. */
+  const [frozen, setFrozen] = useState(false)
 
   /* refs the rAF loop reads/writes WITHOUT re-rendering every frame. We only
      setState (re-render) when the DISCRETIZED state actually changes — the
@@ -426,6 +429,23 @@ export default function LivingFile() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
+    // dev/test freeze · ?lf=<0..1> renders a FIXED beat (a headless capture of a
+    // scroll state, the way ?it=N freezes the intro). When present we set the
+    // frozen run + corridor, scroll it into view, and skip the scrub entirely.
+    // No effect on normal visits (param absent). */
+    const lfParam = new URLSearchParams(window.location.search).get('lf')
+    if (lfParam !== null) {
+      const v = Math.min(1, Math.max(0, parseFloat(lfParam) || 0))
+      // defer the state set off the effect body (cascading-render lint + the
+      // codebase's own mount pattern) — set the frozen beat on the next frame.
+      const fr = requestAnimationFrame(() => {
+        setCorridor3d(true)
+        setFrozen(true)
+        setRun(runStateAt(DAG, v))
+        setT(v)
+      })
+      return () => cancelAnimationFrame(fr)
+    }
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) return // keep the static end-state frame · no scrub
 
@@ -513,6 +533,7 @@ export default function LivingFile() {
       aria-labelledby="living-file-title"
       className="theme-dark lf-section scroll-mt-24"
       data-scrub={scrub}
+      data-frozen={frozen || undefined}
     >
       {/* the tall scroll track — its height defines the scrub distance */}
       <div ref={trackRef} className="lf-track">
