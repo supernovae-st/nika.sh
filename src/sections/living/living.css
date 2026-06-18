@@ -148,6 +148,38 @@
   color: color-mix(in oklch, var(--v4-text) 20%, transparent);
 }
 
+/* ── digest · once the plan is RUNNING the header recedes so the corridor owns
+   the stage (espace · "prend tout l'écran"). The big title + lede are the
+   file-beat intro; during the run the thin FIG beat-caption is context enough.
+   A smooth opacity + height collapse so the scroll transition never pops. ── */
+.lf-lede {
+  max-height: 12rem;
+}
+.lf-dim {
+  max-height: 2rem;
+}
+.lf-title,
+.lf-lede,
+.lf-dim {
+  transition: opacity 0.45s ease, max-height 0.45s ease, margin 0.45s ease,
+    font-size 0.45s ease;
+  overflow: hidden;
+}
+.lf-stage[data-beat='morph'] .lf-lede,
+.lf-stage[data-beat='run'] .lf-lede,
+.lf-stage[data-beat='morph'] .lf-dim,
+.lf-stage[data-beat='run'] .lf-dim {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0;
+  pointer-events: none;
+}
+.lf-stage[data-beat='morph'] .lf-title,
+.lf-stage[data-beat='run'] .lf-title {
+  font-size: clamp(1.35rem, 0.9rem + 1.4vw, 1.9rem);
+  margin-top: 0.4rem;
+}
+
 /* ─── the stage body · the file / graph / observability surfaces ─────────────
    The file panel and the run panel occupy the SAME grid cell and cross-fade as
    the beats advance (one strong thing at a time · design doc P5). */
@@ -191,12 +223,54 @@
   opacity: 0;
   transform: translateY(14px);
   pointer-events: none;
+  /* hard-hidden at the file beat so the (now full-width) corridor never bleeds
+     around the centered file panel — opacity alone left a faint ghost. */
+  visibility: hidden;
 }
 .lf-stage[data-beat='morph'] .lf-run,
 .lf-stage[data-beat='run'] .lf-run {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+  visibility: visible;
+}
+
+/* ── corridor mode · the corridor takes the FULL width (design doc §4 · "prend
+   tout l'écran · plus digest"). The corridor's OWN HUD (verb legend · done/total
+   readout · the "you are here" caption · the permits boundary plane) narrates the
+   run, so the dense outputs + enforce panels are withheld here (the boundary is
+   shown spatially in the corridor). The live CLI log survives as ONE compact
+   strip ABOVE the corridor — the minimal log, not a cramped side rail. ── */
+.lf-run[data-corridor='true'] {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.4vh, 0.9rem);
+}
+.lf-run[data-corridor='true'] .lf-graph {
+  order: 2;
+  width: 100%;
+}
+.lf-run[data-corridor='true'] .cor-stage {
+  height: clamp(460px, 72vh, 780px);
+}
+.lf-run[data-corridor='true'] .lf-obs {
+  order: 1;
+  display: block;
+}
+.lf-run[data-corridor='true'] .lf-outputs,
+.lf-run[data-corridor='true'] .lf-enforce {
+  display: none;
+}
+.lf-run[data-corridor='true'] .lf-stream {
+  background: color-mix(in oklch, var(--v4-bg-raised) 66%, transparent);
+  border: 1px solid var(--v4-line);
+  border-radius: 10px;
+  padding: 0.4rem 0.65rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.lf-run[data-corridor='true'] .lf-stream-scroll {
+  max-height: 74px;
 }
 
 /* the panel captions (engineering-manual register) */

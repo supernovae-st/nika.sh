@@ -474,13 +474,10 @@ export default function Corridor({ dag, run, runP }: CorridorProps) {
           </div>
         ) : null}
 
-        {/* bottom corners · the blueprint instrument marks */}
-        <span className="cor-hud-vp">✦ SEC 1.2 · vanishing point</span>
-        <svg className="cor-hud-dim" width="120" height="10" viewBox="0 0 120 10" fill="none">
-          <path d="M1 1v8M119 1v8M1 5h118" stroke="currentColor" strokeWidth="0.8" />
-          <path d="M1 5l5-2M1 5l5 2M119 5l-5-2M119 5l-5 2" stroke="currentColor" strokeWidth="0.8" opacity="0.5" />
-        </svg>
-        <span className="cor-hud-z">Z+{Math.round(cam.z)}</span>
+        {/* decorative instrument marks (Z-counter · vanishing-point tick · the
+            dimension line) were removed — they added density without aiding
+            comprehension (digest pass). The legend, the progress readout and the
+            "you are here" caption stay: they EXPLAIN the run. */}
       </div>
     </div>
   )
