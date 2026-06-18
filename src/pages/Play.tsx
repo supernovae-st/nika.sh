@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState, useSyncExternalStore } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
@@ -10,6 +10,37 @@ import { VERB_COLOR } from '../sections/transform-data'
    only, so it never rides the shared main bundle that every route eager-loads.
    The prerendered /play already has zero .cm-editor DOM, so this is a pure win. */
 const PlayEditor = lazy(() => import('./PlayEditor'))
+
+/* the placeholder shown while the editor chunk loads. It is ALSO what the
+   prerenderer and the client's first paint render (the lazy/Suspense subtree is
+   gated behind `mounted` below), so SSR HTML === first client render exactly —
+   no Suspense boundary is emitted at build time. Without this gate, renderToString
+   can't resolve the lazy import and ships a FAILED boundary (<!--$!-->), which
+   the client then can't reconcile → React #419. Mounting the editor only after
+   the hydrating render (via useHydrated below) keeps hydration byte-identical. */
+const EditorFallback = (
+  <div
+    className="mono flex items-center px-4 py-3 text-[13px] text-[var(--fg-ghost)]"
+    style={{ minHeight: 480 }}
+    aria-hidden="true"
+  >
+    <span className="opacity-70">loading editor…</span>
+  </div>
+)
+
+/* hydration-safe client detector · the canonical React 19 pattern (no
+   setState-in-effect). getServerSnapshot returns false → SSR + the client's
+   FIRST render agree (editor absent, fallback shown), so hydration is
+   byte-identical; subscribe never re-fires but getSnapshot returns true on the
+   client, so the post-hydration render mounts the editor. */
+const subscribeNoop = () => () => {}
+function useHydrated() {
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false,
+  )
+}
 
 /* ─── /play · the playground ────────────────────────────────────────────────
    Edit real Nika in the browser · the validator's own NIKA codes appear
@@ -24,6 +55,10 @@ export function Component() {
   const [seed, setSeed] = useState('chain')
   const [code, setCode] = useState(TEMPLATES_YAML['chain'] ?? '')
   const [diags, setDiags] = useState<LintDiag[]>(() => lintNika(TEMPLATES_YAML['chain'] ?? ''))
+  /* false on the server AND on the client's first (hydrating) render → the lazy
+     editor is never in the tree during hydration, so SSR HTML matches the first
+     client paint exactly. Flips true on the next client render → editor mounts. */
+  const mounted = useHydrated()
 
   useHead({
     title: 'Playground · Nika',
@@ -125,19 +160,16 @@ export function Component() {
               {valid ? '✓ valid' : `${diags.length} issue${diags.length > 1 ? 's' : ''}`}
             </span>
           </div>
-          <Suspense
-            fallback={
-              <div
-                className="mono flex items-center px-4 py-3 text-[13px] text-[var(--fg-ghost)]"
-                style={{ minHeight: 480 }}
-                aria-hidden="true"
-              >
-                <span className="opacity-70">loading editor…</span>
-              </div>
-            }
-          >
-            <PlayEditor value={code} onChange={setCode} onDiags={setDiags} />
-          </Suspense>
+          {/* SSR + first client paint render EditorFallback directly (no Suspense
+              boundary → no #419). After hydration `mounted` flips and the lazy
+              editor loads, its own Suspense fallback bridging the chunk fetch. */}
+          {mounted ? (
+            <Suspense fallback={EditorFallback}>
+              <PlayEditor value={code} onChange={setCode} onDiags={setDiags} />
+            </Suspense>
+          ) : (
+            EditorFallback
+          )}
         </div>
 
         {/* ── the verdict panel · error → fix ── */}
