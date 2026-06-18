@@ -1,36 +1,35 @@
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
+import { useRevealOnce } from '../sections/use-reveal-once'
 import { REPO, SPEC, routeHead } from '../content'
 import { CANON } from '../canon.generated'
+import { CodeFile } from '../components/CodeFile'
+import '../sections/v4-home.css'
+import './page-chrome.css'
+import './blog-page.css'
 
-/* ─── /blog · the journal — pedagogy in long form ───────────────────────────
-   Routed at /blog (React Router) · no 3D (fast, readable) · one REAL flagship
-   article + upcoming teasers. Same cosmos palette, print rhythm. */
+/* ─── /blog · the journal (theme-dark · blueprint register) ──────────────────
+   Long-form pedagogy on Intent as Code, brought up to the home + /spec register:
+   the near-black blueprint plate, a FIG-numbered masthead, hairline-ruled
+   articles (each a register entry), the premium CodeFile for any worked YAML, a
+   HUD registration frame on the reading column, and a hairline grid of upcoming
+   teasers. Same content as before — the divergent v3 cosmic chrome (.skeuo /
+   .glass / cyan) is retired so the journal reads as the same product as the rest
+   of the site.
 
-const POSTS = [
-  {
-    slug: 'intent-as-code',
-    tag: 'Manifesto',
-    date: '2026-06',
-    title: 'Intent as Code: why your AI work should be a file',
-    teaser: 'Chat windows eat your best work. Here is the case for writing intent down, and what changes when you do.',
-    live: true,
-  },
-  {
-    slug: 'four-verbs',
-    tag: 'Language',
-    date: '2026-06',
-    title: 'Four verbs are enough',
-    teaser: 'infer, exec, invoke, agent: why the operation space is closed, and why that is a feature.',
-    live: true,
-  },
+   SSR-safe: pure DOM (the whole journal lives in the prerendered HTML for SEO +
+   an instant paint); the reveal is one IntersectionObserver on mount, content
+   fully visible by default (no-JS / reduced-motion). Per-route <head> via
+   useHead → prerendered into dist/blog/index.html. */
+
+/* the upcoming teasers · dated stubs of coming articles (unchanged content). */
+const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
     slug: 'dag-for-free',
     tag: 'Engine',
     date: 'soon',
     title: 'The DAG you get for free',
     teaser: 'depends_on is all you write. Parallelism, ordering and retries fall out of the graph.',
-    live: false,
   },
   {
     slug: 'own-your-stack',
@@ -38,11 +37,32 @@ const POSTS = [
     date: 'soon',
     title: 'No cloud needed',
     teaser: 'One Rust binary, your models, your files. What local-first actually buys you.',
-    live: false,
   },
 ]
 
+/* the worked fragment for the "four verbs" article · a tiny readable DAG that
+   exercises three verbs (spec-correct shapes, never hand-waved). */
+const FOUR_VERBS_YAML = `nika: v1
+workflow: morning-brief
+
+tasks:
+  - id: fetch_news
+    invoke:
+      tool: "nika:fetch"          # a tool, not a verb
+
+  - id: build
+    exec:
+      command: "cargo build --release"
+
+  - id: digest
+    depends_on: [fetch_news, build]
+    infer:
+      prompt: "Summarize what changed"
+`
+
 export function Component() {
+  const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
+
   useHead({
     title: 'Blog · Nika',
     link: routeHead('/blog').link,
@@ -65,161 +85,199 @@ export function Component() {
       },
     ],
   })
+
   return (
-    <main className="relative z-20 mx-auto max-w-3xl px-6 pt-32 pb-24">
-      <p className="mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-        § The journal
-      </p>
-      <h1
-        className="mb-12 font-semibold tracking-tight"
-        style={{ fontSize: 'clamp(2.2rem, 1rem + 4vw, 3.8rem)', lineHeight: 1.02 }}
-      >
-        Notes from the source.
-      </h1>
+    <main className="theme-dark v4page">
+      <section ref={ref} aria-labelledby="blog-title" className="v4sec">
+        {/* the HUD registration frame on the reading column (decorative) */}
+        <div className="v4hud" aria-hidden>
+          <span className="v4hud-mark v4hud-mark--tl" />
+          <span className="v4hud-mark v4hud-mark--tr" />
+          <span className="v4hud-mark v4hud-mark--bl" />
+          <span className="v4hud-mark v4hud-mark--br" />
+          <span className="v4hud-tick v4hud-tick--l" />
+          <span className="v4hud-tick v4hud-tick--r" />
+        </div>
 
-      {/* flagship article — full read */}
-      <article className="skeuo mb-10 rounded-2xl px-8 py-8 md:px-10 md:py-10">
-        <p className="mono mb-3 text-[11px] tracking-[0.2em] text-[var(--cyan)] uppercase">
-          Manifesto · 2026-06
-        </p>
-        <h2
-          className="mb-6 font-semibold tracking-tight"
-          style={{ fontSize: 'clamp(1.6rem, 1rem + 2vw, 2.4rem)', lineHeight: 1.08 }}
-        >
-          Intent as Code: why your AI work should be a file
-        </h2>
-        <div className="space-y-5 text-[15.5px] leading-relaxed text-[var(--fg-mute)]">
-          <p>
-            Think about the best thing you did with an AI last month. The careful prompt, the
-            back-and-forth, the result that finally clicked.{' '}
-            <span className="text-[var(--fg)]">Where is it now?</span> For most people the honest
-            answer is: gone. Buried in a chat history you will never scroll back through, on a
-            server you don&apos;t control.
+        <div className="v4sec-wrap">
+          {/* the masthead */}
+          <p className="v4sec-fig" data-rise>
+            FIG J · the journal
           </p>
-          <p>
-            We&apos;ve accepted a strange deal: the more useful the work, the more disposable the
-            container. Nobody would write software in a text box that forgets everything. Yet
-            that&apos;s exactly how most AI work happens today.
+          <h1
+            id="blog-title"
+            className="v4sec-title blog-title"
+            data-rise
+            style={{ ['--rise-delay' as string]: '60ms' }}
+          >
+            Notes from the source.
+          </h1>
+          <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+            Long-form pedagogy on <b>Intent as Code</b> — why useful AI work belongs in a file,
+            why the language locks at four verbs, and what local-first actually buys you. Two
+            flagship reads live; more are on the way.
           </p>
-          <p>
-            <span className="text-[var(--fg)]">Nika&apos;s bet is simple: useful AI work is worth
-            writing down.</span> Not as a transcript, as <em>source</em>. A small YAML file that
-            says what you want: fetch this, think about that, run this command, save the result.
-            The file is the workflow. Run it again tomorrow and it does the same thing. Change a
-            line and <code className="mono text-[13px] text-[var(--cyan)]">git diff</code> shows
-            exactly what changed.
+          <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+            2 live · 2 upcoming
           </p>
-          <p>
-            Four verbs cover the whole space: <span className="text-[var(--fg)]">infer</span>{' '}
-            (call a model), <span className="text-[var(--fg)]">exec</span> (run a process),{' '}
-            <span className="text-[var(--fg)]">invoke</span> (use a tool),{' '}
-            <span className="text-[var(--fg)]">agent</span> (let it work a loop). Everything else
-            is data flowing between tasks. The order falls out of the dependencies. Write{' '}
-            <code className="mono text-[13px] text-[var(--cyan)]">depends_on</code> and
-            independent branches run in parallel, for free.
-          </p>
-          <p>
-            And it runs on <span className="text-[var(--fg)]">your machine</span>. One Rust
-            binary. Your model keys, your files, your git history. No cloud between you and your
-            own work, and a license (AGPL) that guarantees it stays that way.
-          </p>
-          <p>
-            Chat is a great place to <em>figure out</em> what you want. It is a terrible place to{' '}
-            <em>keep</em> it. Explore in chat. Then write the intent down, and own it forever.
-          </p>
-        </div>
-        <div className="mono mt-8 flex flex-wrap gap-5 border-t pt-5 text-[12.5px]" style={{ borderColor: 'var(--hair)' }}>
-          <a href={SPEC} target="_blank" rel="noreferrer" className="text-[var(--cyan)] transition-colors hover:text-[var(--fg)]">
-            Read the spec →
-          </a>
-          <a href={REPO} target="_blank" rel="noreferrer" className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]">
-            Star on GitHub →
-          </a>
-        </div>
-      </article>
 
-      {/* second article · the language doctrine */}
-      <article id="four-verbs" className="skeuo mb-10 rounded-2xl px-8 py-8 md:px-10 md:py-10">
-        <p className="mono mb-3 text-[11px] tracking-[0.2em] text-[var(--cyan)] uppercase">
-          Language · 2026-06
-        </p>
-        <h2
-          className="mb-6 font-semibold tracking-tight"
-          style={{ fontSize: 'clamp(1.6rem, 1rem + 2vw, 2.4rem)', lineHeight: 1.08 }}
-        >
-          Four verbs are enough
-        </h2>
-        <div className="space-y-5 text-[15.5px] leading-relaxed text-[var(--fg-mute)]">
-          <p>
-            Every workflow language faces the same temptation: keep adding verbs. A verb for HTTP.
-            A verb for files. A verb for email, for SQL, for whatever last week&apos;s integration
-            needed. Ten years later the language is a catalog nobody can hold in their head, and
-            every file is written in a different dialect of it.
-          </p>
-          <p>
-            Nika locks the count at four, forever. The rule that makes this possible is strict:{' '}
-            <span className="text-[var(--fg)]">a verb is a distinct execution model</span>, not a
-            feature. <span className="text-[var(--fg)]">infer</span> generates with a model.{' '}
-            <span className="text-[var(--fg)]">exec</span> runs a process.{' '}
-            <span className="text-[var(--fg)]">invoke</span> calls a tool and returns.{' '}
-            <span className="text-[var(--fg)]">agent</span> loops with tools until the job is done.
-            Four genuinely different ways for a machine to act. There is no fifth.
-          </p>
-          <p>
-            The test case was fetch. Surely getting a web page deserves its own verb? It does not,
-            and the reason is the whole design:{' '}
-            <span className="text-[var(--fg)]">fetching is not a distinct execution model.</span>{' '}
-            It is a tool call. So <code className="mono text-[13px] text-[var(--cyan)]">
-            nika:fetch</code> lives in the standard library, reached through invoke, next to read,
-            write, jq and the other {CANON.builtins - 4} builtins. Everything callable is a tool. Everything about
-            ordering is the graph.
-          </p>
-          <p>
-            A closed language is a feature you can feel. You can finish learning it: four words
-            and the file reads like prose. Your files never rot into an old dialect, because there
-            is no new dialect coming. And tools keep growing where growth belongs, in the library:
-            a new builtin, a new MCP server, a new provider. The language holds still while the
-            toolbelt expands.
-          </p>
-          <p>
-            That stillness is the promise. The file you write today is the file you run in ten
-            years. Languages that stop moving are the ones you can build on.
-          </p>
-        </div>
-        <div className="mono mt-8 flex flex-wrap gap-5 border-t pt-5 text-[12.5px]" style={{ borderColor: 'var(--hair)' }}>
-          <a href={SPEC} target="_blank" rel="noreferrer" className="text-[var(--cyan)] transition-colors hover:text-[var(--fg)]">
-            Read the spec →
-          </a>
-          <Link to="/learn" className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]">
-            Learn the file, line by line →
-          </Link>
-        </div>
-      </article>
+          {/* ══ FIG J.1 · Intent as Code ════════════════════════════════════ */}
+          <article id="intent-as-code" className="v4block" data-rise>
+            <div className="v4block-head-line">
+              <span className="v4block-fig">FIG J.1</span>
+              <h2 className="v4block-name">Intent as Code: why your AI work should be a file</h2>
+              <span className="v4block-count">Manifesto · 2026-06</span>
+            </div>
 
-      {/* upcoming */}
-      <div className="grid gap-4 sm:grid-cols-3">
-        {POSTS.filter((p) => !p.live).map((p) => (
-          <div key={p.slug} className="glass rounded-2xl px-6 py-6 opacity-80">
-            <p className="mono mb-2 text-[10.5px] tracking-[0.2em] text-[var(--fg-dim)] uppercase">
-              {p.tag} · {p.date}
-            </p>
-            <p className="mb-2 text-[15px] leading-snug font-semibold text-[var(--fg)]">
-              {p.title}
-            </p>
-            <p className="text-[13px] leading-relaxed text-[var(--fg-mute)]">{p.teaser}</p>
+            <div className="blog-art-body">
+              <p>
+                Think about the best thing you did with an AI last month. The careful prompt, the
+                back-and-forth, the result that finally clicked. <b>Where is it now?</b> For most
+                people the honest answer is: gone. Buried in a chat history you will never scroll
+                back through, on a server you don&apos;t control.
+              </p>
+              <p>
+                We&apos;ve accepted a strange deal: the more useful the work, the more disposable
+                the container. Nobody would write software in a text box that forgets everything.
+                Yet that&apos;s exactly how most AI work happens today.
+              </p>
+              <p>
+                <b>Nika&apos;s bet is simple: useful AI work is worth writing down.</b> Not as a
+                transcript, as <em>source</em>. A small YAML file that says what you want: fetch
+                this, think about that, run this command, save the result. The file is the
+                workflow. Run it again tomorrow and it does the same thing. Change a line and{' '}
+                <code>git diff</code> shows exactly what changed.
+              </p>
+              <p>
+                Four verbs cover the whole space: <b>infer</b> (call a model), <b>exec</b> (run a
+                process), <b>invoke</b> (use a tool), <b>agent</b> (let it work a loop). Everything
+                else is data flowing between tasks. The order falls out of the dependencies. Write{' '}
+                <code>depends_on</code> and independent branches run in parallel, for free.
+              </p>
+              <p>
+                And it runs on <b>your machine</b>. One Rust binary. Your model keys, your files,
+                your git history. No cloud between you and your own work, and a license (AGPL) that
+                guarantees it stays that way.
+              </p>
+              <p>
+                Chat is a great place to <em>figure out</em> what you want. It is a terrible place
+                to <em>keep</em> it. Explore in chat. Then write the intent down, and own it
+                forever.
+              </p>
+            </div>
+
+            <div className="blog-art-foot">
+              <a href={SPEC} target="_blank" rel="noreferrer" className="blog-art-foot-link">
+                Read the spec ↗
+              </a>
+              <a
+                href={REPO}
+                target="_blank"
+                rel="noreferrer"
+                className="blog-art-foot-link blog-art-foot-link--dim"
+              >
+                Star on GitHub ↗
+              </a>
+            </div>
+          </article>
+
+          {/* ══ FIG J.2 · Four verbs are enough ═════════════════════════════ */}
+          <article id="four-verbs" className="v4block" data-rise>
+            <div className="v4block-head-line">
+              <span className="v4block-fig">FIG J.2</span>
+              <h2 className="v4block-name">Four verbs are enough</h2>
+              <span className="v4block-count">Language · 2026-06</span>
+            </div>
+
+            <div className="blog-art-body">
+              <p>
+                Every workflow language faces the same temptation: keep adding verbs. A verb for
+                HTTP. A verb for files. A verb for email, for SQL, for whatever last week&apos;s
+                integration needed. Ten years later the language is a catalog nobody can hold in
+                their head, and every file is written in a different dialect of it.
+              </p>
+              <p>
+                Nika locks the count at four, forever. The rule that makes this possible is strict:{' '}
+                <b>a verb is a distinct execution model</b>, not a feature. <b>infer</b> generates
+                with a model. <b>exec</b> runs a process. <b>invoke</b> calls a tool and returns.{' '}
+                <b>agent</b> loops with tools until the job is done. Four genuinely different ways
+                for a machine to act. There is no fifth.
+              </p>
+            </div>
+
+            <div className="blog-art-code">
+              <p className="blog-art-code-cap">Three verbs in one tiny DAG</p>
+              <CodeFile yaml={FOUR_VERBS_YAML} filename="morning-brief.nika.yaml" />
+            </div>
+
+            <div className="blog-art-body">
+              <p>
+                The test case was fetch. Surely getting a web page deserves its own verb? It does
+                not, and the reason is the whole design: <b>fetching is not a distinct execution
+                model.</b> It is a tool call. So <code>nika:fetch</code> lives in the standard
+                library, reached through invoke, next to read, write, jq and the other{' '}
+                {CANON.builtins - 4} builtins. Everything callable is a tool. Everything about
+                ordering is the graph.
+              </p>
+              <p>
+                A closed language is a feature you can feel. You can finish learning it: four words
+                and the file reads like prose. Your files never rot into an old dialect, because
+                there is no new dialect coming. And tools keep growing where growth belongs, in the
+                library: a new builtin, a new MCP server, a new provider. The language holds still
+                while the toolbelt expands.
+              </p>
+              <p>
+                That stillness is the promise. The file you write today is the file you run in ten
+                years. Languages that stop moving are the ones you can build on.
+              </p>
+            </div>
+
+            <div className="blog-art-foot">
+              <a href={SPEC} target="_blank" rel="noreferrer" className="blog-art-foot-link">
+                Read the spec ↗
+              </a>
+              <Link to="/learn" className="blog-art-foot-link blog-art-foot-link--dim">
+                Learn the file, line by line →
+              </Link>
+            </div>
+          </article>
+
+          {/* ══ the upcoming register ═══════════════════════════════════════ */}
+          <div className="blog-soon" data-rise>
+            <div className="blog-soon-head">
+              <span className="blog-soon-fig">FIG J.3 · in the pipeline</span>
+              <span className="blog-soon-count">{SOON.length} upcoming</span>
+            </div>
+            <div className="blog-soon-grid">
+              {SOON.map((p) => (
+                <div key={p.slug} className="blog-soon-tile">
+                  <p className="blog-soon-meta">
+                    <span className="blog-soon-tag">{p.tag}</span>
+                    <span aria-hidden>·</span>
+                    <span>{p.date}</span>
+                  </p>
+                  <p className="blog-soon-title">{p.title}</p>
+                  <p className="blog-soon-teaser">{p.teaser}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
 
-      <footer className="mono mt-20 flex items-center justify-between border-t pt-6 text-[12px] text-[var(--fg-ghost)]" style={{ borderColor: 'var(--hair)' }}>
-        <span className="flex items-center gap-2">
-          <img src="/nika.svg" alt="" width={13} height={13} style={{ opacity: 0.7 }} />
-          nika · free software · AGPL-3.0-or-later
-        </span>
-        <Link to="/" className="transition-colors hover:text-[var(--fg-mute)]">
-          ← supernovae
-        </Link>
-      </footer>
+          {/* the close · the doc dimension line + the page footer */}
+          <p className="v4docnote" data-rise>
+            Intent as Code · {CANON.verbs} verbs · {CANON.builtins} builtins ·{' '}
+            {CANON.providers} providers — written down, replayable, yours
+          </p>
+
+          <footer className="v4docfoot">
+            <span className="v4docfoot-brand">
+              <img src="/nika.svg" alt="" width={13} height={13} />
+              nika · free software · AGPL-3.0-or-later
+            </span>
+            <Link to="/">← supernovae</Link>
+          </footer>
+        </div>
+      </section>
     </main>
   )
 }

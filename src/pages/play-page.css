@@ -1,0 +1,339 @@
+/* ─── /play page · the playground · the blueprint register ───────────────────
+   The interactive editor, brought up to the home + /spec register and — crucially
+   — its editor chrome themed to MATCH the premium static CodeFile (the same dark
+   #0d0e12 surface, traffic-light dots, filename tab, line-number gutter divider,
+   teal "live-wiring" accent). So the playground reads like the same editor the
+   rest of the site shows, except this one is live (CodeMirror + NIKA validation).
+
+   The page itself is theme-dark blueprint: FIG masthead, hairline rules, the
+   seed picker as hairline pills, and a verdict rail in the same register as the
+   spec permits-denials card. Reads off the v4 theme tokens. The CodeMirror body
+   surface (.cm-*) is themed in PlayEditor via EditorView.theme to the --cf-*
+   palette. SSR-safe: pure CSS (the editor is a client-only chunk). */
+
+.play-title {
+  max-width: 18ch;
+}
+
+/* ── the seed picker · templates (pills) then showcase (a mono select) ────────*/
+.play-seeds {
+  margin-top: clamp(28px, 4vh, 44px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.play-seeds-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.play-seeds-label + .play-seeds-label {
+  margin-left: 10px;
+}
+.play-seed {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 12px;
+  border: 1px solid var(--v4-line);
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+}
+.play-seed:hover {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+}
+.play-seed[aria-pressed='true'] {
+  color: var(--v4-bg);
+  background: var(--v4-text);
+  border-color: var(--v4-text);
+}
+.play-seed-select {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--v4-line);
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--v4-text-dim);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.play-seed-select:hover {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+}
+
+/* ── the stage · the editor (left) + the verdict rail (right) ─────────────────*/
+.play-stage {
+  margin-top: clamp(22px, 3vh, 32px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  align-items: start;
+}
+@media (min-width: 1000px) {
+  .play-stage {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 22px;
+  }
+}
+
+/* ── the live editor · wrapped in the SAME chrome as the static CodeFile ──────
+   .play-editor reuses the .cf-panel surface (dark editor base, hairline border,
+   the skeuo depth shadow) so the live editor reads identical to the product
+   replica; .cf-chrome / .cf-lights / .cf-tab are reused verbatim from codefile
+   .css for the titlebar. A status pill sits at the chrome's right. */
+.play-editor.cf-panel {
+  /* the panel owns its dark editor surface from codefile.css; here we just let
+     the CodeMirror body fill it (no extra padding). */
+  min-width: 0;
+}
+.play-editor-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  padding: 2px 9px;
+  border-radius: 6px;
+  border: 1px solid var(--cf-line, rgb(255 255 255 / 0.07));
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.play-editor-status[data-valid='true'] {
+  color: #71e08a; /* the CodeFile traffic-light green · the "valid" tone */
+  border-color: color-mix(in srgb, #71e08a 40%, transparent);
+}
+.play-editor-status[data-valid='false'] {
+  color: var(--verb-exec); /* the run/error amber from the verb palette */
+  border-color: color-mix(in srgb, var(--verb-exec) 42%, transparent);
+}
+.play-editor-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+/* the CodeMirror well · clamp its height + own scroll, inside the chrome */
+.play-editor-body {
+  position: relative;
+  background: var(--cf-bg, #0d0e12);
+}
+.play-editor-body .cm-editor {
+  max-height: 540px;
+}
+.play-editor-fallback {
+  display: flex;
+  align-items: center;
+  min-height: 480px;
+  padding: 12px 16px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--cf-gutter-ink, #555b67);
+  background: var(--cf-bg, #0d0e12);
+}
+
+/* ── the verdict rail · the validator read-out + the verb legend ──────────────
+   The validator panel mirrors the spec permits-denials card: a hairline-bordered
+   inset on the raised surface, a mono head, then either the green pass note or
+   the list of L· code · message · fix rows (the engine's own NIKA codes). */
+.play-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+@media (min-width: 1000px) {
+  .play-rail {
+    position: sticky;
+    top: 88px;
+  }
+}
+.play-panel {
+  padding: 18px;
+  border: 1px solid var(--v4-line);
+  border-radius: 12px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
+}
+.play-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.play-panel-head-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
+}
+.play-panel-head[data-valid='true'] .play-panel-head-dot {
+  background: #71e08a;
+  box-shadow: 0 0 8px color-mix(in srgb, #71e08a 60%, transparent);
+}
+.play-panel-head[data-valid='false'] .play-panel-head-dot {
+  background: var(--verb-exec);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--verb-exec) 55%, transparent);
+}
+
+/* the green pass note */
+.play-pass {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.play-pass-line {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.play-pass-line b {
+  color: var(--v4-text);
+  font-weight: 560;
+}
+.play-pass-line code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  color: var(--v4-text);
+}
+.play-pass-experiment {
+  padding-top: 12px;
+  border-top: 1px solid var(--v4-line);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--v4-text-faint);
+  text-wrap: pretty;
+}
+.play-pass-experiment code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--v4-text-dim);
+}
+
+/* the diagnostics list · L· code · message · fix (the typed NIKA read-out) */
+.play-diags {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.play-diag {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 13px 0;
+  border-top: 1px solid var(--v4-line);
+}
+.play-diag:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.play-diag-id {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: var(--verb-exec); /* the error/amber tone from the verb palette */
+  font-variant-numeric: tabular-nums;
+}
+.play-diag-msg {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.play-diag-fix {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--v4-text);
+}
+.play-diag-fix::before {
+  content: '→ ';
+  color: var(--v4-text-faint);
+}
+.play-diag-more {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--v4-text-faint);
+}
+
+/* the verb legend · the 4 verbs in their canonical hues + a glyph (CodeFile-ish) */
+.play-verbs-head {
+  margin: 0 0 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.play-verbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.play-verb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--v4-line);
+  border-radius: 7px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+  background: color-mix(in oklch, var(--v4-bg-raised) 50%, transparent);
+}
+.play-verb-glyph {
+  color: var(--vh, var(--v4-text-faint));
+  user-select: none;
+  font-size: 12px;
+  line-height: 1;
+}
+.play-verb-name {
+  color: var(--v4-text);
+}
+.play-verbs-note {
+  margin-top: 13px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--v4-text-faint);
+  text-wrap: pretty;
+}
+.play-verbs-note code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--v4-text-dim);
+}
+.play-verbs-note a {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  transition: color 0.18s ease;
+}
+.play-verbs-note a:hover {
+  color: var(--v4-text);
+}

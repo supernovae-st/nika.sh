@@ -4,7 +4,11 @@ import { useHead } from '@unhead/react'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
 import { routeHead } from '../content'
 import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
-import { VERB_COLOR } from '../sections/transform-data'
+import { NIKA_VERBS, verbGlyph, type NikaVerb } from '../components/codefile-highlight'
+import '../sections/v4-home.css'
+import '../components/codefile.css'
+import './page-chrome.css'
+import './play-page.css'
 
 /* the editor (CodeMirror + @codemirror/*) is its own chunk · loaded client-side
    only, so it never rides the shared main bundle that every route eager-loads.
@@ -19,12 +23,8 @@ const PlayEditor = lazy(() => import('./PlayEditor'))
    the client then can't reconcile → React #419. Mounting the editor only after
    the hydrating render (via useHydrated below) keeps hydration byte-identical. */
 const EditorFallback = (
-  <div
-    className="mono flex items-center px-4 py-3 text-[13px] text-[var(--fg-ghost)]"
-    style={{ minHeight: 480 }}
-    aria-hidden="true"
-  >
-    <span className="opacity-70">loading editor…</span>
+  <div className="play-editor-fallback" aria-hidden="true">
+    loading editor…
   </div>
 )
 
@@ -42,14 +42,26 @@ function useHydrated() {
   )
 }
 
-/* ─── /play · the playground ────────────────────────────────────────────────
-   Edit real Nika in the browser · the validator's own NIKA codes appear
-   live (the TS port of the conformance cross-refs + the eight hard
-   rules). Client-only — nothing leaves the tab. Seeds = the 6 templates
-   (slot-marked skeletons) + the 20 showcase workflows, all projected
-   from the spec. */
+/* ─── /play · the playground (theme-dark · blueprint register) ────────────────
+   Edit real Nika in the browser · the validator's own NIKA codes appear live
+   (the TS port of the conformance cross-refs + the eight hard rules). Client-
+   only — nothing leaves the tab. Seeds = the 6 templates (slot-marked skeletons)
+   + the 20 showcase workflows, all projected from the spec.
+
+   The editor is dressed in the SAME chrome as the static CodeFile (the .cf-*
+   window dressing · traffic-light dots · filename tab · gutter divider · teal
+   accent) so the playground reads as the same editor the rest of the site shows
+   — only this one is live. The page is the v4 blueprint register: a FIG masthead,
+   hairline-pill seeds, and a verdict rail in the spec permits-denials register. */
 
 const TEMPLATE_ORDER = ['chain', 'gate-and-act', 'fanout', 'etl-state', 'agent-loop', 'human-gated-ship']
+
+const VERB_HUE: Record<NikaVerb, string> = {
+  infer: 'var(--verb-infer)',
+  exec: 'var(--verb-exec)',
+  invoke: 'var(--verb-invoke)',
+  agent: 'var(--verb-agent)',
+}
 
 export function Component() {
   const [seed, setSeed] = useState('chain')
@@ -97,150 +109,193 @@ export function Component() {
   const valid = diags.length === 0
 
   return (
-    <div className="relative z-10 mx-auto max-w-7xl px-6 pt-24 pb-28">
-      <header className="mb-8">
-        <Link to="/" className="mono text-[12px] text-[var(--fg-dim)] transition-colors hover:text-[var(--fg)]">
-          ← nika.sh
-        </Link>
-        <h1 className="mt-4 mb-2 font-semibold tracking-tight" style={{ fontSize: 'clamp(2rem, 1rem + 3vw, 3rem)' }}>
-          Playground
-        </h1>
-        <p className="max-w-[44rem] text-[15.5px] leading-relaxed text-[var(--fg-mute)]">
-          Real Nika, validated as you type — the same <span className="mono text-[13.5px]">NIKA</span> codes
-          the engine raises, with their fixes. Everything runs in this tab; nothing is sent anywhere.
-        </p>
-      </header>
+    <main className="theme-dark v4page">
+      <section className="v4sec">
+        <div className="v4sec-wrap">
+          {/* the masthead */}
+          <p className="v4sec-fig">FIG P · the playground</p>
+          <h1 id="play-title" className="v4sec-title play-title">
+            Write Nika, checked live.
+          </h1>
+          <p className="v4sec-lede">
+            Real Nika, validated as you type — the same <code className="mono">NIKA</code> codes
+            the engine raises, with their fixes. Everything runs in this tab; <b>nothing is sent
+            anywhere</b>.
+          </p>
 
-      {/* ── seed picker · templates then showcase ── */}
-      <div className="mb-5 flex flex-wrap items-center gap-1.5">
-        <span className="mono mr-1 text-[10.5px] tracking-[0.2em] text-[var(--fg-ghost)] uppercase">Templates</span>
-        {TEMPLATE_ORDER.filter((t) => t in TEMPLATES_YAML).map((t) => (
-          <button
-            key={t}
-            onClick={() => pick(t)}
-            className={`mono rounded-md border px-2.5 py-1 text-[11.5px] transition-colors ${
-              seed === t ? 'border-[var(--cyan)] text-[var(--cyan)]' : 'text-[var(--fg-mute)] hover:text-[var(--fg)]'
-            }`}
-            style={{ borderColor: seed === t ? undefined : 'var(--hair)' }}
-          >
-            {t}
-          </button>
-        ))}
-        <span className="mono mr-1 ml-3 text-[10.5px] tracking-[0.2em] text-[var(--fg-ghost)] uppercase">Showcase</span>
-        <select
-          value={seed in SHOWCASE_YAML ? seed : ''}
-          onChange={(e) => e.target.value && pick(e.target.value)}
-          className="mono rounded-md border bg-transparent px-2 py-1 text-[11.5px] text-[var(--fg-mute)]"
-          style={{ borderColor: 'var(--hair)' }}
-        >
-          <option value="">pick a real job…</option>
-          {Object.keys(SHOWCASE_YAML).map((s) => (
-            <option key={s} value={s} style={{ background: 'var(--bg)' }}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="grid items-start gap-5 lg:grid-cols-[1.5fr_1fr]">
-        {/* ── the editor ── */}
-        <div className="skeuo overflow-hidden rounded-2xl">
-          <div className="flex items-center gap-2 border-b px-4 py-2.5" style={{ borderColor: 'var(--hair)' }}>
-            <span className="h-3 w-3 rounded-full" style={{ background: '#ff5f57' }} />
-            <span className="h-3 w-3 rounded-full" style={{ background: '#febc2e' }} />
-            <span className="h-3 w-3 rounded-full" style={{ background: '#28c840' }} />
-            <span className="mono ml-3 text-[12px] text-[var(--fg-dim)]">{seed}.nika.yaml</span>
-            <span
-              className="mono ml-auto rounded-md border px-2 py-0.5 text-[10.5px]"
-              style={{
-                color: valid ? '#22d3ee' : '#ff7a3c',
-                borderColor: `color-mix(in srgb, ${valid ? '#22d3ee' : '#ff7a3c'} 40%, transparent)`,
-              }}
+          {/* ── the seed picker · templates (pills) then showcase (a select) ── */}
+          <div className="play-seeds">
+            <span className="play-seeds-label">Templates</span>
+            {TEMPLATE_ORDER.filter((t) => t in TEMPLATES_YAML).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => pick(t)}
+                className="play-seed"
+                aria-pressed={seed === t}
+              >
+                {t}
+              </button>
+            ))}
+            <span className="play-seeds-label">Showcase</span>
+            <select
+              value={seed in SHOWCASE_YAML ? seed : ''}
+              onChange={(e) => e.target.value && pick(e.target.value)}
+              className="play-seed-select"
+              aria-label="Pick a showcase workflow"
             >
-              {valid ? '✓ valid' : `${diags.length} issue${diags.length > 1 ? 's' : ''}`}
-            </span>
+              <option value="">pick a real job…</option>
+              {Object.keys(SHOWCASE_YAML).map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
           </div>
-          {/* SSR + first client paint render EditorFallback directly (no Suspense
-              boundary → no #419). After hydration `mounted` flips and the lazy
-              editor loads, its own Suspense fallback bridging the chunk fetch. */}
-          {mounted ? (
-            <Suspense fallback={EditorFallback}>
-              <PlayEditor value={code} onChange={setCode} onDiags={setDiags} />
-            </Suspense>
-          ) : (
-            EditorFallback
-          )}
-        </div>
 
-        {/* ── the verdict panel · error → fix ── */}
-        <aside className="flex flex-col gap-3">
-          <div className="skeuo rounded-2xl px-5 py-4">
-            <p className="mono mb-3 text-[11px] tracking-[0.24em] text-[var(--fg-dim)] uppercase">
-              Validator · {valid ? 'green' : 'speaking'}
-            </p>
-            {valid ? (
-              <div className="flex flex-col gap-2.5">
-                <p className="text-[13.5px] leading-relaxed text-[var(--cyan)]">
-                  ✓ This file passes the playground's static checks — envelope, verbs, edges,
-                  namespaces, providers, expressions. The engine's <code className="mono text-[12px]">nika check</code> runs the full oracle. Ship it with{' '}
-                  <code className="mono text-[12px]">nika run {seed}.nika.yaml</code>.
-                </p>
-                {(seed === 'human-gated-ship' || seed === 'resume-screener') && (
-                  <p className="text-[12.5px] leading-relaxed text-[var(--fg-mute)]">
-                    Experiment · this file declares <code className="mono text-[11.5px]">permits:</code> —
-                    its whole blast radius, in-file. Remove an entry from{' '}
-                    <code className="mono text-[11.5px]">permits.tools</code> and watch{' '}
-                    <code className="mono text-[11.5px]">NIKA-SEC-004</code> fire: once the boundary is
-                    declared, the body must fit it.
-                  </p>
+          {/* ── the stage · the live editor + the verdict rail ── */}
+          <div className="play-stage">
+            {/* the editor · wrapped in the CodeFile chrome (the .cf-* titlebar) */}
+            <div className="play-editor cf-panel">
+              <div className="cf-chrome">
+                <span className="cf-lights" aria-hidden>
+                  <span className="cf-light cf-light--r" />
+                  <span className="cf-light cf-light--y" />
+                  <span className="cf-light cf-light--g" />
+                </span>
+                <span className="cf-tab" title={`${seed}.nika.yaml`}>
+                  <span className="cf-tab-prompt" aria-hidden>
+                    ❯
+                  </span>
+                  <span className="cf-tab-name">{seed}.nika.yaml</span>
+                </span>
+                <span
+                  className="play-editor-status"
+                  data-valid={valid}
+                  aria-live="polite"
+                >
+                  <span className="play-editor-status-dot" aria-hidden />
+                  {valid ? 'valid' : `${diags.length} issue${diags.length > 1 ? 's' : ''}`}
+                </span>
+              </div>
+              <div className="play-editor-body">
+                {/* SSR + first client paint render EditorFallback directly (no
+                    Suspense boundary → no #419). After hydration `mounted` flips
+                    and the lazy editor loads, its own Suspense fallback bridges
+                    the chunk fetch. */}
+                {mounted ? (
+                  <Suspense fallback={EditorFallback}>
+                    <PlayEditor value={code} onChange={setCode} onDiags={setDiags} />
+                  </Suspense>
+                ) : (
+                  EditorFallback
                 )}
               </div>
-            ) : (
-              <ul className="flex flex-col gap-3">
-                {diags.slice(0, 8).map((d, i) => (
-                  <li key={i} className="text-[13px] leading-relaxed">
-                    <span className="mono text-[11.5px] text-[var(--ember,#ff7a3c)]" style={{ color: '#ff7a3c' }}>
-                      L{d.line} · {d.code}
-                    </span>
-                    <span className="block text-[var(--fg-mute)]">{d.message}</span>
-                    <span className="block text-[var(--cyan)]">→ {d.fix}</span>
-                  </li>
-                ))}
-                {diags.length > 8 && (
-                  <li className="mono text-[11px] text-[var(--fg-ghost)]">+{diags.length - 8} more…</li>
+            </div>
+
+            {/* the verdict rail · the validator read-out + the verb legend */}
+            <aside className="play-rail">
+              <div className="play-panel">
+                <p className="play-panel-head" data-valid={valid}>
+                  <span className="play-panel-head-dot" aria-hidden />
+                  Validator · {valid ? 'green' : 'speaking'}
+                </p>
+                {valid ? (
+                  <div className="play-pass">
+                    <p className="play-pass-line">
+                      <b>✓ This file passes</b> the playground&apos;s static checks — envelope,
+                      verbs, edges, namespaces, providers, expressions. The engine&apos;s{' '}
+                      <code>nika check</code> runs the full oracle. Ship it with{' '}
+                      <code>nika run {seed}.nika.yaml</code>.
+                    </p>
+                    {(seed === 'human-gated-ship' || seed === 'resume-screener') && (
+                      <p className="play-pass-experiment">
+                        Experiment · this file declares <code>permits:</code> — its whole blast
+                        radius, in-file. Remove an entry from <code>permits.tools</code> and watch{' '}
+                        <code>NIKA-SEC-004</code> fire: once the boundary is declared, the body must
+                        fit it.
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <ul className="play-diags">
+                    {diags.slice(0, 8).map((d, i) => (
+                      <li key={i} className="play-diag">
+                        <span className="play-diag-id">
+                          L{d.line} · {d.code}
+                        </span>
+                        <span className="play-diag-msg">{d.message}</span>
+                        <span className="play-diag-fix">{d.fix}</span>
+                      </li>
+                    ))}
+                    {diags.length > 8 && (
+                      <li className="play-diag-more">+{diags.length - 8} more…</li>
+                    )}
+                  </ul>
                 )}
-              </ul>
-            )}
+              </div>
+
+              <div className="play-panel">
+                <p className="play-verbs-head">The four verbs</p>
+                <div className="play-verbs">
+                  {NIKA_VERBS.map((v) => (
+                    <span key={v} className="play-verb" style={{ ['--vh' as string]: VERB_HUE[v] }}>
+                      <span className="play-verb-glyph" aria-hidden>
+                        {verbGlyph(v)}
+                      </span>
+                      <span className="play-verb-name">{v}</span>
+                    </span>
+                  ))}
+                </div>
+                <p className="play-verbs-note">
+                  Fill the <code># SLOT:</code> lines — structure is instantiated, never invented.
+                  The{' '}
+                  <a
+                    href="https://docs.nika.sh/guides/agent-authoring"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    protocol
+                  </a>{' '}
+                  and the{' '}
+                  <a href="https://docs.nika.sh/guides/patterns" target="_blank" rel="noreferrer">
+                    twelve patterns
+                  </a>{' '}
+                  are the long form.
+                </p>
+              </div>
+            </aside>
           </div>
 
-          <div className="glass rounded-2xl px-5 py-4">
-            <p className="mono mb-2.5 text-[11px] tracking-[0.24em] text-[var(--fg-dim)] uppercase">The four verbs</p>
-            <div className="mono flex flex-wrap gap-1.5 text-[11px]">
-              {(Object.keys(VERB_COLOR) as Array<keyof typeof VERB_COLOR>).map((v) => (
-                <span
-                  key={v}
-                  className="rounded-md border px-2 py-0.5"
-                  style={{ color: VERB_COLOR[v], borderColor: `color-mix(in srgb, ${VERB_COLOR[v]} 35%, transparent)` }}
-                >
-                  {v}
-                </span>
-              ))}
-            </div>
-            <p className="mt-3 text-[12.5px] leading-relaxed text-[var(--fg-mute)]">
-              Fill the <span className="mono text-[11.5px]"># SLOT:</span> lines — structure is
-              instantiated, never invented. The{' '}
-              <a className="text-[var(--cyan)]" href="https://docs.nika.sh/guides/agent-authoring" target="_blank" rel="noreferrer">
-                protocol
-              </a>{' '}
-              and the{' '}
-              <a className="text-[var(--cyan)]" href="https://docs.nika.sh/guides/patterns" target="_blank" rel="noreferrer">
-                twelve patterns
-              </a>{' '}
-              are the long form.
-            </p>
+          {/* the close · the doc dimension line + forward links */}
+          <p className="v4docnote">
+            client-only · nothing leaves the tab · the engine&apos;s own NIKA codes, live
+          </p>
+          <div className="v4doclinks">
+            <Link to="/learn" className="v4doclink">
+              Learn the file, line by line
+              <span aria-hidden className="v4doclink-arrow">
+                {' '}
+                →
+              </span>
+            </Link>
+            <Link to="/use-cases" className="v4doclink v4doclink--dim">
+              See real workflows
+              <span aria-hidden className="v4doclink-arrow">
+                {' '}
+                →
+              </span>
+            </Link>
+            <Link to="/spec" className="v4doclink v4doclink--dim">
+              Read the spec
+              <span aria-hidden className="v4doclink-arrow">
+                {' '}
+                →
+              </span>
+            </Link>
           </div>
-        </aside>
-      </div>
-    </div>
+        </div>
+      </section>
+    </main>
   )
 }

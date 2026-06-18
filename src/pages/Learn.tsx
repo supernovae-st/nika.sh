@@ -1,36 +1,56 @@
-import { useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
+import { useRevealOnce } from '../sections/use-reveal-once'
 import { REPO, SPEC, DOCS, routeHead } from '../content'
+import { CodeFile } from '../components/CodeFile'
+import '../sections/v4-home.css'
+import '../shell/shell.css'
+import './page-chrome.css'
+import './learn-page.css'
 
-/* ─── /learn · one file, line by line ───────────────────────────────────────
-   Routed at /learn (React Router) · the 5-minute annotated walkthrough. Every
-   YAML fragment is spec-correct (nika-spec 01-envelope · 03-dag · 05-errors).
-   Each step: the code on one side, the plain-words story on the other. */
+/* ─── /learn · one file, line by line (theme-dark · blueprint register) ───────
+   The five-minute annotated walkthrough, brought up to the home + /spec
+   register: a near-black blueprint plate, a FIG-numbered masthead, a hairline-
+   ruled step register (each step = a numbered head + the plain-words story +
+   the premium CodeFile of its real YAML), a HUD frame on the reading column,
+   and the typed-error block (the differentiator) rendered in the CodeFile too.
+
+   Every YAML/JSON fragment is spec-correct (nika-spec 01-envelope · 03-dag ·
+   05-errors) and now reads through the SAME editor surface as the rest of the
+   site. The divergent v3 cosmic chrome (cyan eyebrows · .code-well <pre> ·
+   .skeuo CTA) is retired.
+
+   SSR-safe: pure DOM (CodeFile is server-rendered · every fragment lives in the
+   prerendered HTML); the reveal is one IntersectionObserver on mount, content
+   visible by default. Per-route <head> via useHead → dist/learn/index.html. */
 
 interface Step {
   n: string
   title: string
   plain: string
   yaml: string
+  file: string
   note?: string
 }
 
 const STEPS: Step[] = [
   {
-    n: '01',
+    n: 'L.1',
     title: 'Two lines make it real',
     plain:
       'Every workflow starts by naming the language and itself. That header is the whole ceremony: no project setup, no boilerplate, no config files.',
+    file: 'weekly-radar.nika.yaml',
     yaml: `nika: v1
 workflow: weekly-radar`,
     note: 'nika: v1 pins the language contract. Additions are additive; the value never churns.',
   },
   {
-    n: '02',
+    n: 'L.2',
     title: 'Declare what can change',
     plain:
       'Inputs live in vars. A bare value is a default you can override from the command line; a typed var documents itself and gets validated before anything runs.',
+    file: 'vars',
     yaml: `vars:
   output_dir: "./radar"
   topic:
@@ -40,10 +60,11 @@ workflow: weekly-radar`,
     note: 'Use it anywhere as ${{ vars.topic }}. Change the input, not the file.',
   },
   {
-    n: '03',
+    n: 'L.3',
     title: 'Pick a brain. Any brain.',
     plain:
       'One line chooses the default model. Local or cloud, same file. Start on your own machine — no key, no cloud — and swap to any cloud provider when you want; nothing else changes.',
+    file: 'model',
     yaml: `# fully local · no cloud needed
 model: ollama/llama3.1
 
@@ -51,10 +72,11 @@ model: ollama/llama3.1
 model: mistral/mistral-large`,
   },
   {
-    n: '04',
+    n: 'L.4',
     title: 'A task is a verb',
     plain:
       'Each task does exactly one thing, with one of the four verbs. This one thinks: it sends a prompt to the model and keeps the answer as its output.',
+    file: 'tasks',
     yaml: `tasks:
   - id: digest
     infer:
@@ -62,10 +84,11 @@ model: mistral/mistral-large`,
     note: 'infer thinks · exec runs a command · invoke uses a tool · agent works on its own.',
   },
   {
-    n: '05',
+    n: 'L.5',
     title: 'Order is one word. The graph is free.',
     plain:
       'depends_on is all you write. Tasks with no dependency between them run in parallel automatically. You never schedule anything; the graph falls out of the file.',
+    file: 'depends_on',
     yaml: `- id: fetch_news
   invoke:
     tool: "nika:fetch"
@@ -81,10 +104,11 @@ model: mistral/mistral-large`,
     note: 'fetch_news and repo_log run at the same time. digest waits for both.',
   },
   {
-    n: '06',
+    n: 'L.6',
     title: 'Branch like an adult',
     plain:
       'when: makes a task conditional: a boolean over what already happened. Success-gating is free (depends_on already does it) — when: is for conditions BEYOND it, like a value check.',
+    file: 'when',
     yaml: `- id: alert
   depends_on: [check]
   when: \${{ tasks.check.output.errors > 0 }}
@@ -92,10 +116,11 @@ model: mistral/mistral-large`,
     tool: "nika:notify"`,
   },
   {
-    n: '07',
+    n: 'L.7',
     title: 'When things fail, you get data',
     plain:
       'Errors are typed structures: a stable code, a category, and whether retrying could help. Tasks declare their own retry policy and a fallback. No stack-trace archaeology.',
+    file: 'retry · on_error',
     yaml: `- id: research
   retry:
     max_attempts: 3
@@ -107,10 +132,11 @@ model: mistral/mistral-large`,
     note: 'A failed call retries with backoff; if it still fails, the cached result steps in.',
   },
   {
-    n: '08',
+    n: 'L.8',
     title: 'Name what comes out',
     plain:
       'output: binds pieces of a task result to names; the workflow declares what it returns. Downstream tasks (and you) read clean names, not raw API responses.',
+    file: 'output · outputs',
     yaml: `- id: digest
   infer:
     prompt: "…"
@@ -125,10 +151,10 @@ outputs:
 const ERROR_JSON = `{
   "code": "NIKA-INFER-001",
   "category": "provider_error",
-  "message": "Anthropic API returned 503",
+  "message": "the model call failed",
   "transient": true,
   "details": {
-    "provider": "anthropic",
+    "provider": "ollama",
     "status_code": 503,
     "retry_after_secs": 30
   },
@@ -136,7 +162,74 @@ const ERROR_JSON = `{
   "attempt": 2
 }`
 
+const ERROR_FIELDS: { key: string; gloss: React.ReactNode }[] = [
+  {
+    key: 'code',
+    gloss: 'a stable, greppable identifier. The same failure always has the same name.',
+  },
+  {
+    key: 'transient',
+    gloss: 'true means retry might work. The engine retries with backoff before giving up.',
+  },
+  {
+    key: 'details',
+    gloss: (
+      <>
+        structured fields, not prose. Your <code>on_error:</code> can act on them.
+      </>
+    ),
+  },
+]
+
+const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
+
+/* the monochrome install affordance · the hero's .v4install pattern (shell.css) */
+function InstallRow() {
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard?.writeText(INSTALL_CMD)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1600)
+  }
+  return (
+    <div className="v4install" style={{ marginTop: 18 }}>
+      <span className="v4install-cmd">
+        <span className="v4install-dollar" aria-hidden>
+          ❯
+        </span>
+        {INSTALL_CMD}
+      </span>
+      <button
+        type="button"
+        onClick={copy}
+        className="v4install-copy"
+        data-copied={copied}
+        aria-label={copied ? 'Copied: install command' : 'Copy install command'}
+      >
+        {copied ? (
+          <>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            Copied
+          </>
+        ) : (
+          <>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+              <rect x="9" y="9" width="11" height="11" rx="2" />
+              <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+            </svg>
+            Copy
+          </>
+        )}
+      </button>
+    </div>
+  )
+}
+
 export function Component() {
+  const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
+
   useHead({
     title: 'Learn · Nika',
     link: routeHead('/learn').link,
@@ -160,148 +253,139 @@ export function Component() {
     ],
   })
 
-  /* gentle rise-in as steps cross the fold */
-  useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>('.lrn')
-    const io = new IntersectionObserver(
-      (es) => {
-        for (const e of es) if (e.isIntersecting) e.target.classList.add('in')
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -6% 0px' },
-    )
-    els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
-  }, [])
-
   return (
-    <main className="relative z-20 mx-auto max-w-5xl px-6 pt-32 pb-24">
-      <p className="mono mb-4 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-        Learn · 5 minutes
-      </p>
-      <h1
-        className="mb-4 font-semibold tracking-tight"
-        style={{ fontSize: 'clamp(2.3rem, 1rem + 4vw, 4rem)', lineHeight: 1.03 }}
-      >
-        One file, line by line.
-      </h1>
-      <p className="mb-16 max-w-[40rem] text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-        Eight small ideas and you can read and write any Nika workflow. Every fragment below
-        is real, spec-correct YAML.
-      </p>
+    <main className="theme-dark v4page">
+      <section ref={ref} aria-labelledby="lrn-title" className="v4sec">
+        {/* the HUD registration frame on the reading column (decorative) */}
+        <div className="v4hud" aria-hidden>
+          <span className="v4hud-mark v4hud-mark--tl" />
+          <span className="v4hud-mark v4hud-mark--tr" />
+          <span className="v4hud-mark v4hud-mark--bl" />
+          <span className="v4hud-mark v4hud-mark--br" />
+          <span className="v4hud-tick v4hud-tick--l" />
+          <span className="v4hud-tick v4hud-tick--r" />
+        </div>
 
-      {/* the walkthrough */}
-      <ol className="space-y-14">
-        {STEPS.map((s) => (
-          <li key={s.n} className="lrn grid items-start gap-6 md:grid-cols-[1fr_1.1fr]">
-            <div className="pt-1">
-              <p className="mono mb-2 text-[12px] tracking-[0.3em] text-[var(--fg-ghost)]">
-                {s.n}
-              </p>
-              <h2 className="mb-3 text-[22px] leading-snug font-semibold tracking-tight">
-                {s.title}
-              </h2>
-              <p className="text-[15.5px] leading-relaxed text-[var(--fg-mute)]">{s.plain}</p>
-              {s.note && (
-                <p className="mono mt-4 rounded-lg border border-[var(--hair)] bg-[rgba(127,233,255,0.04)] px-3.5 py-2.5 text-[12px] leading-relaxed text-[var(--cyan)]">
-                  {s.note}
-                </p>
-              )}
-            </div>
-            <div className="code-well px-5 py-4">
-              <pre className="code text-[13px] leading-[1.7]">{s.yaml}</pre>
-            </div>
-          </li>
-        ))}
-      </ol>
+        <div className="v4sec-wrap">
+          {/* the masthead */}
+          <p className="v4sec-fig" data-rise>
+            FIG L · learn · 5 minutes
+          </p>
+          <h1
+            id="lrn-title"
+            className="v4sec-title lrn-title"
+            data-rise
+            style={{ ['--rise-delay' as string]: '60ms' }}
+          >
+            One file, line by line.
+          </h1>
+          <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+            Eight small ideas and you can read and write any Nika workflow. Every fragment below
+            is <b>real</b>, spec-correct YAML — read through the same editor surface you&apos;ll
+            use in the playground.
+          </p>
+          <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+            8 steps · spec-correct
+          </p>
 
-      {/* errors are data — the differentiator */}
-      <section className="lrn mt-24">
-        <p className="mono mb-3 text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-          § When it breaks
-        </p>
-        <h2
-          className="mb-3 font-semibold tracking-tight"
-          style={{ fontSize: 'clamp(1.6rem, 0.9rem + 2.2vw, 2.5rem)', lineHeight: 1.05 }}
-        >
-          Errors are data, not noise.
-        </h2>
-        <p className="mb-8 max-w-[40rem] text-[15.5px] leading-relaxed text-[var(--fg-mute)]">
-          Every failure is a typed structure with a stable code, a category, and a{' '}
-          <code className="mono text-[13px] text-[var(--cyan)]">transient</code> flag that says
-          whether retrying could help. Your workflow can read errors the same way it reads any
-          other value, and recover.
-        </p>
-        <div className="grid items-start gap-6 md:grid-cols-2">
-          <div className="code-well px-5 py-4">
-            <pre className="code text-[12.5px] leading-[1.65]">{ERROR_JSON}</pre>
+          {/* the walkthrough · a hairline-ruled step register */}
+          <ol className="lrn-steps" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
+            {STEPS.map((s) => (
+              <li key={s.n} className="lrn-step">
+                <div>
+                  <div className="lrn-step-head">
+                    <span className="lrn-step-n">{s.n}</span>
+                    <h2 className="lrn-step-title">{s.title}</h2>
+                  </div>
+                  <p className="lrn-step-plain">{s.plain}</p>
+                  {s.note && <p className="lrn-step-note">{s.note}</p>}
+                </div>
+                <div className="lrn-step-code">
+                  <CodeFile yaml={s.yaml} filename={s.file} />
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* errors are data · the differentiator (a FIG block) */}
+          <div className="v4block" data-rise>
+            <div className="v4block-head-line">
+              <span className="v4block-fig">FIG L.9</span>
+              <h2 className="v4block-name">Errors are data, not noise.</h2>
+              <span className="v4block-count">typed · greppable</span>
+            </div>
+            <p className="v4block-cap">
+              Every failure is a typed structure with a stable code, a category, and a{' '}
+              <code>transient</code> flag that says whether retrying could help. Your workflow can
+              read errors the same way it reads any other value, and recover.
+            </p>
+            <div className="lrn-err-grid">
+              <div className="lrn-err-code">
+                <CodeFile yaml={ERROR_JSON} filename="error.json" lang="json" />
+              </div>
+              <ul className="lrn-err-fields">
+                {ERROR_FIELDS.map((f) => (
+                  <li className="lrn-err-field" key={f.key}>
+                    <code className="lrn-err-field-key">{f.key}</code>
+                    <span className="lrn-err-field-gloss">{f.gloss}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <ul className="space-y-3 pt-1 text-[14.5px] leading-relaxed text-[var(--fg-mute)]">
-            <li className="flex items-baseline gap-3">
-              <span className="mono shrink-0 text-[12px] text-[var(--cyan)]">code</span>
-              <span>
-                a stable, greppable identifier. The same failure always has the same name.
-              </span>
-            </li>
-            <li className="flex items-baseline gap-3">
-              <span className="mono shrink-0 text-[12px] text-[var(--cyan)]">transient</span>
-              <span>
-                true means retry might work. The engine retries with backoff before giving up.
-              </span>
-            </li>
-            <li className="flex items-baseline gap-3">
-              <span className="mono shrink-0 text-[12px] text-[var(--cyan)]">details</span>
-              <span>
-                structured fields, not prose. Your{' '}
-                <code className="mono text-[12px]">on_error:</code> can act on them.
-              </span>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      {/* CTA */}
-      <section className="lrn mt-24 text-center">
-        <h2 className="mb-6 text-[26px] font-semibold tracking-tight">
-          That&apos;s the whole language.
-        </h2>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Link
-            to="/#install"
-            className="skeuo-brand rounded-full px-6 py-3 text-[15px] font-semibold"
-          >
-            Install Nika
-          </Link>
-          <a
-            href={REPO}
-            target="_blank"
-            rel="noreferrer"
-            className="skeuo flex items-center gap-2.5 rounded-full px-5 py-3 text-[14.5px] font-medium"
-          >
-            <span className="star-spark" aria-hidden>
-              ★
+          {/* the close · the on-ramp (blueprint, not the .skeuo-brand pill) */}
+          <div className="lrn-cta" data-rise>
+            <h2 className="lrn-cta-title">That&apos;s the whole language.</h2>
+            <p className="lrn-cta-body">
+              Eight ideas, four verbs, one file. Install it, write one, run it — or open the
+              playground and validate as you type.
+            </p>
+            <InstallRow />
+            <div className="v4doclinks">
+              <Link to="/play" className="v4doclink">
+                Open the playground
+                <span aria-hidden className="v4doclink-arrow">
+                  {' '}
+                  →
+                </span>
+              </Link>
+              <a href={SPEC} target="_blank" rel="noreferrer" className="v4doclink v4doclink--dim">
+                Read the full spec
+                <span aria-hidden className="v4doclink-arrow">
+                  {' '}
+                  ↗
+                </span>
+              </a>
+              <a href={DOCS} target="_blank" rel="noreferrer" className="v4doclink v4doclink--dim">
+                Full docs
+                <span aria-hidden className="v4doclink-arrow">
+                  {' '}
+                  ↗
+                </span>
+              </a>
+              <a href={REPO} target="_blank" rel="noreferrer" className="v4doclink v4doclink--dim">
+                <span aria-hidden className="v4doclink-glyph">
+                  ★
+                </span>
+                Star on GitHub
+              </a>
+            </div>
+          </div>
+
+          {/* the doc dimension line + the page footer */}
+          <p className="v4docnote" data-rise>
+            8 steps · 4 verbs · every fragment spec-correct — projected, never hand-waved
+          </p>
+          <footer className="v4docfoot">
+            <span className="v4docfoot-brand">
+              <img src="/nika.svg" alt="" width={13} height={13} />
+              nika · by SuperNovae · AGPL forever
             </span>
-            Star on GitHub
-          </a>
-          <a
-            href={SPEC} target="_blank" rel="noreferrer"
-            className="text-[15px] text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
-          >
-            Read the full spec ↗
-          </a>
-          <a
-            href={DOCS} target="_blank" rel="noreferrer"
-            className="text-[15px] text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
-          >
-            Full docs ↗
-          </a>
+            <Link to="/">← supernovae</Link>
+          </footer>
         </div>
       </section>
-
-      <footer className="mt-24 border-t pt-8 text-center" style={{ borderColor: 'var(--hair)' }}>
-        <p className="mono text-[11px] tracking-[0.2em] text-[var(--fg-ghost)] uppercase">
-          Nika · by Supernovae · AGPL forever
-        </p>
-      </footer>
     </main>
   )
 }

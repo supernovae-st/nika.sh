@@ -1,0 +1,180 @@
+/* ─── /learn page · one file, line by line · the blueprint register ──────────
+   The five-minute annotated walkthrough, brought up to the home + /spec
+   register: a theme-dark blueprint plate, a FIG-numbered masthead, a hairline-
+   ruled step register (each step = a numbered head + the plain-words story +
+   the premium CodeFile of its real YAML), a HUD frame, and the typed-error
+   block. The divergent v3 cosmic chrome (cyan eyebrows · .code-well <pre> ·
+   .skeuo CTA) is retired. Reads off the v4 theme tokens. SSR-safe: pure CSS. */
+
+.lrn-title {
+  max-width: 16ch;
+}
+
+/* ── the step register · a hairline-ruled list of annotated steps ─────────────
+   Mirrors the home FIG 7.5 GET STARTED register (.v4start): a left rail (the
+   step number + title + plain-words story + an optional note) and the worked
+   CodeFile to its right on wide screens. */
+.lrn-steps {
+  margin: clamp(28px, 4vh, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.lrn-step {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px 36px;
+  padding: clamp(28px, 4vh, 44px) 2px;
+  border-bottom: 1px solid var(--v4-line);
+  align-items: start;
+}
+@media (min-width: 880px) {
+  .lrn-step {
+    grid-template-columns: 1fr 1.08fr;
+  }
+}
+/* the left rail · step fig + title + the plain-words story + the note */
+.lrn-step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+.lrn-step-n {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+.lrn-step-title {
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  color: var(--v4-text);
+  text-wrap: balance;
+}
+.lrn-step-plain {
+  margin-top: 13px;
+  max-width: 40rem;
+  font-size: 15px;
+  line-height: 1.62;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.lrn-step-plain code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  color: var(--v4-text);
+  white-space: nowrap;
+}
+/* the note · a hairline-bordered aside (the "remember this" line), mono */
+.lrn-step-note {
+  margin-top: 16px;
+  display: flex;
+  gap: 11px;
+  padding: 12px 14px;
+  border: 1px solid var(--v4-line);
+  border-radius: 10px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.lrn-step-note::before {
+  content: '›';
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  color: var(--v4-text-faint);
+}
+.lrn-step-note code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--v4-text);
+}
+/* the right rail · the worked CodeFile, sticky alongside on wide screens */
+.lrn-step-code {
+  min-width: 0;
+}
+
+/* ── the typed-error block · the differentiator (a FIG block) ─────────────────
+   The JSON error rendered in the premium CodeFile (json lang) on the left + a
+   hairline-ruled field ledger on the right. */
+.lrn-err-grid {
+  margin-top: clamp(26px, 4vh, 40px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  align-items: start;
+}
+@media (min-width: 880px) {
+  .lrn-err-grid {
+    grid-template-columns: 1fr 0.9fr;
+    gap: 36px;
+  }
+}
+.lrn-err-code {
+  min-width: 0;
+}
+.lrn-err-fields {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.lrn-err-field {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 14px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.lrn-err-field-key {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 560;
+  color: var(--v4-text);
+  letter-spacing: 0.01em;
+}
+.lrn-err-field-gloss {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.lrn-err-field-gloss code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--v4-text);
+}
+
+/* ── the close · the CTA on-ramp (blueprint, not the .skeuo-brand pill) ───────
+   Mirrors the home FINAL CTA / GetStarted close: a left-aligned statement +
+   the install affordance + the doc forward links. */
+.lrn-cta {
+  margin-top: clamp(40px, 6vh, 72px);
+  padding-top: clamp(32px, 4.5vh, 52px);
+  border-top: 1px solid var(--v4-line);
+}
+.lrn-cta-title {
+  max-width: 22ch;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.05;
+  font-size: clamp(1.6rem, 1rem + 2.4vw, 2.4rem);
+  color: var(--v4-text);
+  text-wrap: balance;
+}
+.lrn-cta-body {
+  margin-top: 16px;
+  max-width: 40rem;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
