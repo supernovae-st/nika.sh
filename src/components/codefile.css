@@ -1,0 +1,292 @@
+/* ─── CodeFile · the premium IDE panel · chrome · gutter · syntax ─────────────
+   The shared .nika.yaml editor surface, dressed to read like a real code editor
+   window. SSR-static (real DOM text), theme-aware syntax hues (tokens.css).
+
+   The panel pins to a DARK editor surface even inside a light section — an IDE
+   reads dark, and it keeps the product replica consistent everywhere it appears.
+   The syntax palette lives in tokens.css (--cf-*); this file owns layout +
+   chrome + density + polish. */
+
+.cf-panel {
+  /* the editor's own dark surface — independent of the section theme so the
+     "product window" reads the same on a light section as on a dark one. */
+  --cf-bg: #0d0e12;
+  --cf-bg-chrome: #131419;
+  --cf-line: rgb(255 255 255 / 0.07);
+  --cf-line-strong: rgb(255 255 255 / 0.1);
+  --cf-gutter-ink: #555b67;
+  --cf-radius: 13px;
+
+  /* defensive layout · the panel owns its own block flow even when a call-site
+     className (e.g. .v4permits-code, which is also used on a flex list elsewhere)
+     would otherwise impose display:flex/row on it. */
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--cf-radius);
+  background: var(--cf-bg);
+  border: 1px solid var(--cf-line-strong);
+  /* depth · a hairline top highlight + ambient + direct shadow (skeuo recipe,
+     monochrome — no blue tech-glow). */
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.05),
+    0 1px 0 rgb(0 0 0 / 0.5),
+    0 18px 50px -22px rgb(0 0 0 / 0.7),
+    0 6px 18px -12px rgb(0 0 0 / 0.6);
+  font-family: var(--mono);
+  /* contain a long line's horizontal scroll inside the panel — never the page. */
+  min-width: 0;
+}
+
+/* ── window chrome · the titlebar ───────────────────────────────────────────── */
+.cf-chrome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 10px 0 13px;
+  background: linear-gradient(180deg, #16171c 0%, var(--cf-bg-chrome) 100%);
+  border-bottom: 1px solid var(--cf-line);
+  /* a faint top sheen so the bar reads like brushed chrome, not flat fill. */
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+/* the macOS traffic-lights — small, recessed, with a soft inner highlight. */
+.cf-lights {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+}
+.cf-light {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 1px 0.5px rgb(255 255 255 / 0.45),
+    inset 0 -1px 1px rgb(0 0 0 / 0.3),
+    0 0 0 0.5px rgb(0 0 0 / 0.35);
+}
+.cf-light--r { background: radial-gradient(120% 120% at 32% 28%, #ff7b73, #ec5f55); }
+.cf-light--y { background: radial-gradient(120% 120% at 32% 28%, #ffd479, #f3b32a); }
+.cf-light--g { background: radial-gradient(120% 120% at 32% 28%, #71e08a, #2bbb46); }
+
+/* the filename tab — the active editor tab, sitting in the bar. */
+.cf-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  height: 26px;
+  padding: 0 11px;
+  border-radius: 7px 7px 0 0;
+  background: var(--cf-bg);
+  border: 1px solid var(--cf-line);
+  border-bottom-color: transparent;
+  margin-bottom: -1px; /* the tab "sits on" the chrome's bottom border */
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text, #f4f5f7);
+}
+.cf-tab--anon {
+  /* no filename · the lang label fills the tab, lowercased & tracked */
+  text-transform: lowercase;
+}
+.cf-tab-prompt {
+  color: #5fd3d1;
+  opacity: 0.85;
+  font-size: 11px;
+}
+.cf-tab-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-chrome-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+/* a tiny lang badge — the "yaml" pill, tracked & faint */
+.cf-lang {
+  display: none;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgb(255 255 255 / 0.04);
+  border: 1px solid var(--cf-line);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #828995;
+}
+@media (min-width: 480px) {
+  .cf-lang { display: inline-block; }
+}
+
+/* the copy button — icon + label, contrast rises on hover/focus (a11y). */
+.cf-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 0 9px;
+  border-radius: 7px;
+  color: #828995;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  touch-action: manipulation;
+  transition:
+    color var(--dur-ui, 140ms) var(--ease-ui, ease),
+    background-color var(--dur-ui, 140ms) var(--ease-ui, ease);
+}
+.cf-copy:hover,
+.cf-copy:focus-visible {
+  color: var(--v4-text, #f4f5f7);
+  background: rgb(255 255 255 / 0.06);
+}
+.cf-copy[data-copied] {
+  color: #71e08a;
+}
+.cf-copy-label {
+  display: none;
+}
+@media (min-width: 560px) {
+  .cf-copy-label { display: inline; }
+}
+
+/* ── the editor body · one horizontal scroll well (gutter + code) ───────────── */
+.cf-body {
+  position: relative;
+  /* a faint scanline-free inner shade at the very top so the code "sinks" under
+     the chrome — depth without a hard line. */
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 0.18) 0%, transparent 14px),
+    var(--cf-bg);
+}
+.cf-pre {
+  margin: 0;
+  padding: 11px 0 13px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  /* a thin, unobtrusive scrollbar when a line overflows. */
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.14) transparent;
+  font-size: 12.5px;
+  line-height: 1.5;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+}
+.cf-pre::-webkit-scrollbar { height: 9px; }
+.cf-pre::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 0.13);
+  border-radius: 9px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.cf-pre::-webkit-scrollbar-thumb:hover { background: rgb(255 255 255 / 0.22); }
+.cf-pre::-webkit-scrollbar-track { background: transparent; }
+
+.cf-code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* each source line · a flex row of [gutter number][code text]; the lit-line
+   band + gutter divider span the full panel width regardless of scroll. */
+.cf-line {
+  display: flex;
+  align-items: baseline;
+  min-height: 1.5em;
+  /* the hairline gutter divider — drawn as a fixed-position background on the
+     line so it stays put when the code scrolls horizontally. */
+  background-image: linear-gradient(var(--cf-line) 0 0);
+  background-size: 1px 100%;
+  background-position: calc(13px + var(--cf-gutter, 2ch) + 11px) 0;
+  background-repeat: no-repeat;
+  background-attachment: local;
+}
+
+/* the line-number gutter cell · dimmed, right-aligned, tabular, select-none. */
+.cf-ln {
+  flex: 0 0 auto;
+  width: var(--cf-gutter, 2ch);
+  padding-left: 13px;
+  padding-right: 11px;
+  text-align: right;
+  color: var(--cf-gutter-ink);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  -webkit-user-select: none;
+  opacity: 0.7;
+  transition: opacity var(--dur-ui, 140ms) var(--ease-ui, ease);
+}
+
+.cf-line-text {
+  flex: 1 1 auto;
+  padding-left: 14px;
+  padding-right: 18px;
+  white-space: pre;
+  color: var(--cf-plain);
+}
+
+/* the emphasized line(s) · a soft band + a left accent tick, brighter gutter.
+   This is the real editor "active line / highlight range" treatment. */
+.cf-line--lit {
+  background-image:
+    linear-gradient(var(--cf-line) 0 0),
+    linear-gradient(90deg, rgb(95 211 209 / 0.06), rgb(255 255 255 / 0.045) 30%);
+  background-size:
+    1px 100%,
+    100% 100%;
+  background-position:
+    calc(13px + var(--cf-gutter, 2ch) + 11px) 0,
+    0 0;
+  background-repeat: no-repeat;
+  background-attachment: local, local;
+  box-shadow: inset 2px 0 0 rgb(95 211 209 / 0.55);
+}
+.cf-line--lit .cf-ln {
+  color: #9aa1ad;
+  opacity: 1;
+}
+
+/* ── the syntax theme · the product replica (color allowed) ──────────────────
+   Hues resolve from tokens.css --cf-* (theme-aware). */
+.cf-comment {
+  color: var(--cf-comment);
+  font-style: italic;
+}
+.cf-key { color: var(--cf-key); font-weight: 500; }
+.cf-str { color: var(--cf-str); }
+.cf-num { color: var(--cf-num); font-variant-numeric: tabular-nums; }
+.cf-bool { color: var(--cf-bool); font-weight: 500; }
+.cf-ref { color: var(--cf-ref); }
+.cf-punct { color: var(--cf-punct); }
+.cf-plain { color: var(--cf-plain); }
+
+/* the 4 verbs · each in its canonical verb-hue + a leading glyph. */
+.cf-verb {
+  font-weight: 600;
+}
+.cf-verb-glyph {
+  margin-right: 0.45em;
+  font-size: 0.92em;
+  opacity: 0.95;
+}
+.cf-verb--infer { color: var(--verb-infer); }
+.cf-verb--exec { color: var(--verb-exec); }
+.cf-verb--invoke { color: var(--verb-invoke); }
+.cf-verb--agent { color: var(--verb-agent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-copy,
+  .cf-ln {
+    transition: none;
+  }
+}

@@ -1247,13 +1247,13 @@
 }
 /* the CodeFile sits in a max-height scroll well so long files stay contained */
 .v4uc-panel-code {
-  max-height: 460px;
-  overflow: hidden;
-  border-radius: 12px;
+  border-radius: 13px;
 }
-.v4uc-panel-code .v4uc-scroll {
-  max-height: 460px;
+/* the chrome stays pinned · the editor body scrolls (new CodeFile structure). */
+.v4uc-panel-code .v4uc-scroll .cf-body {
+  max-height: 420px;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 /* the outcome footer under the open file */
 .v4uc-panel-outcome {

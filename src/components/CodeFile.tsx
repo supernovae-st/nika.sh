@@ -1,53 +1,61 @@
 import { useMemo, useState } from 'react'
 import { tokenize, verbGlyph, type Token, type TokenKind } from './codefile-highlight'
 import '../shell/shell.css'
+import './codefile.css'
 
-/* ─── CodeFile · static, monochrome, syntax-highlighted .nika.yaml panel ──────
-   Design doc §4 (hero) + §5.1 (Living File). A pure, SERVER-RENDERED panel:
-   real <pre>/<code> DOM text (NOT a CodeMirror editor) so the YAML lives in the
-   prerendered HTML (SEO) and paints instantly. The interactive editor stays on
-   /play only.
+/* ─── CodeFile · the premium, dense, SSR-static .nika.yaml editor panel ───────
+   The shared code surface across the site (hero · Living File · Permits ·
+   GetStarted · Spec · UseCases). It is the PRODUCT replica — a real editor view
+   of a plan file — so it reads like an IDE window: skeuo window chrome (a
+   filename tab · traffic-light dots · a lang badge · a copy button), a real
+   dimmed line-number gutter with a hairline divider, and a restrained-but-real
+   YAML syntax theme (color is allowed HERE — this is the product).
 
-   Monochrome: keys = text-text · strings/values = text-dim · comments &
-   punctuation = text-faint. The 4 Nika verbs get a small leading GLYPH
-   (verbGlyph) — grayscale by default; the verb-hue "whisper" is reserved for
-   the LIVE run, not this static panel (§3.4).
+   It stays SERVER-RENDERED: real <pre>/<code> DOM text, NOT a CodeMirror editor.
+   The YAML lives verbatim in the prerendered HTML (crawlable · paints instantly).
+   The interactive editor stays on /play only.
 
-   Uses the v4 tokens (bg-bg-raised, border-line, text-*) so it adapts to the
-   section theme (theme-dark / theme-light) automatically. SSR-safe: no window/
-   document at render time; the copy handler reads navigator.clipboard inside
-   the click callback only. */
+   The syntax hues are theme-aware CSS vars (codefile.css), so the panel adapts to
+   theme-dark / theme-light automatically. SSR-safe: no window/document at render;
+   the copy handler reads navigator.clipboard inside the click callback only. */
 
 export interface CodeFileProps {
   /** the raw YAML to render (also what the copy button copies, verbatim) */
   yaml: string
   /** optional inclusive 1-based line range to emphasize, e.g. [5, 9] */
   highlight?: [number, number]
-  /** optional filename — renders a chrome bar above the code */
+  /** optional filename — renders a window-chrome tab above the code */
   filename?: string
+  /** optional language badge in the chrome (defaults to "yaml") */
+  lang?: string
+  /** render the line-number gutter (default: true) */
+  lineNumbers?: boolean
   /** optional extra classes on the outer panel */
   className?: string
 }
 
-/* token kind → monochrome ink class (resolves per section theme via tokens) */
+/* token kind → syntax class (the literal hue resolves per theme via codefile.css) */
 const KIND_CLASS: Record<TokenKind, string> = {
-  comment: 'text-faint',
-  key: 'text-text',
-  verb: 'text-text',
-  string: 'text-dim',
-  number: 'text-dim',
-  punct: 'text-faint',
-  plain: 'text-dim',
+  comment: 'cf-comment',
+  key: 'cf-key',
+  verb: 'cf-verb',
+  string: 'cf-str',
+  number: 'cf-num',
+  boolean: 'cf-bool',
+  tref: 'cf-ref',
+  punct: 'cf-punct',
+  plain: 'cf-plain',
 }
 
 function TokenSpan({ token }: { token: Token }) {
   if (token.kind === 'verb') {
-    // verb keyword stays bright (text-text); the leading glyph reads CLEARLY
-    // (text-dim, not faint) so the ◇▷◆✦ marks are legible — still grayscale.
+    const verb = token.verb ?? token.text
+    // the verb keyword + its leading glyph both carry the verb-hue (the product
+    // replica's one place where the 4 verbs read in their canonical colours).
     return (
-      <span className="font-medium text-text">
-        <span className="mr-1 text-dim select-none" aria-hidden>
-          {verbGlyph(token.verb ?? token.text)}
+      <span className={`cf-verb cf-verb--${verb}`}>
+        <span className="cf-verb-glyph select-none" aria-hidden>
+          {verbGlyph(verb)}
         </span>
         {token.text}
       </span>
@@ -80,66 +88,102 @@ function CopyButton({ value }: { value: string }) {
       type="button"
       onClick={copy}
       aria-label={copied ? 'Copied' : 'Copy'}
-      title="Copy"
-      className="rounded-md p-1.5 text-faint transition-colors hover:text-text"
+      title={copied ? 'Copied' : 'Copy'}
+      data-copied={copied || undefined}
+      className="cf-copy"
     >
       {copied ? (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
           <path d="M20 6 9 17l-5-5" />
         </svg>
       ) : (
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
           <rect x="9" y="9" width="11" height="11" rx="2" />
           <path d="M5 15V5a2 2 0 0 1 2-2h10" />
         </svg>
       )}
+      <span className="cf-copy-label" aria-hidden>
+        {copied ? 'Copied' : 'Copy'}
+      </span>
     </button>
   )
 }
 
-export function CodeFile({ yaml, highlight, filename, className }: CodeFileProps) {
+export function CodeFile({
+  yaml,
+  highlight,
+  filename,
+  lang = 'yaml',
+  lineNumbers = true,
+  className,
+}: CodeFileProps) {
   const lines = useMemo(() => tokenize(yaml), [yaml])
   const [hStart, hEnd] = highlight ?? [0, -1]
+  // the gutter is as wide as the largest line number needs (min 2 cols).
+  const gutterCh = Math.max(2, String(lines.length).length)
 
   return (
-    <div
-      className={`overflow-hidden rounded-xl border border-line bg-bg-raised ${className ?? ''}`}
-    >
-      {filename ? (
-        <div className="flex items-center justify-between gap-3 border-b border-line px-3 py-2">
-          <div className="mono flex items-center gap-2 text-[12px] text-dim">
-            <span aria-hidden className="text-faint">
+    <div className={`cf-panel ${className ?? ''}`}>
+      {/* ── window chrome · a real editor titlebar ───────────────────────────── */}
+      <div className="cf-chrome">
+        <span className="cf-lights" aria-hidden>
+          <span className="cf-light cf-light--r" />
+          <span className="cf-light cf-light--y" />
+          <span className="cf-light cf-light--g" />
+        </span>
+        {filename ? (
+          <span className="cf-tab" title={filename}>
+            <span className="cf-tab-prompt" aria-hidden>
               ❯
             </span>
-            <span>{filename}</span>
-          </div>
-          <CopyButton value={yaml} />
-        </div>
-      ) : null}
-
-      <div className="relative">
-        {filename ? null : (
-          <div className="absolute top-2 right-2 z-10">
-            <CopyButton value={yaml} />
-          </div>
+            <span className="cf-tab-name">{filename}</span>
+          </span>
+        ) : (
+          <span className="cf-tab cf-tab--anon">
+            <span className="cf-tab-prompt" aria-hidden>
+              ❯
+            </span>
+            <span className="cf-tab-name">{lang}</span>
+          </span>
         )}
-        <pre className="mono overflow-x-auto px-4 py-3 text-[12.5px] leading-[1.65] whitespace-pre">
-          <code className="block">
+        <span className="cf-chrome-right">
+          {filename ? (
+            <span className="cf-lang" aria-hidden>
+              {lang}
+            </span>
+          ) : null}
+          <CopyButton value={yaml} />
+        </span>
+      </div>
+
+      {/* ── the editor body · gutter + code, one horizontal scroll well ──────── */}
+      <div className="cf-body">
+        <pre className="cf-pre" style={{ ['--cf-gutter' as string]: `${gutterCh}ch` }}>
+          <code className="cf-code">
             {lines.map((line, i) => {
               const n = i + 1
               const lit = n >= hStart && n <= hEnd
               return (
                 <span
                   key={i}
-                  className={`block min-h-[1.65em] ${lit ? 'v4code-lit' : ''}`}
+                  className={`cf-line ${lit ? 'cf-line--lit' : ''}`}
+                  data-ln={n}
                 >
-                  {line.tokens.length === 0 ? (
-                    /* empty line · the zero-width filler is wrapped in an ELEMENT (not
-                       a bare text node) so the line stays tall and hydrates cleanly. */
-                    <span aria-hidden>{'​'}</span>
-                  ) : (
-                    line.tokens.map((t, j) => <TokenSpan key={j} token={t} />)
-                  )}
+                  {lineNumbers ? (
+                    <span className="cf-ln" aria-hidden>
+                      {n}
+                    </span>
+                  ) : null}
+                  <span className="cf-line-text">
+                    {line.tokens.length === 0 ? (
+                      /* empty line · the zero-width filler is wrapped in an ELEMENT
+                         (not a bare text node) so the line stays tall and hydrates
+                         cleanly. */
+                      <span aria-hidden>{'​'}</span>
+                    ) : (
+                      line.tokens.map((t, j) => <TokenSpan key={j} token={t} />)
+                    )}
+                  </span>
                 </span>
               )
             })}

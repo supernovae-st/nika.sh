@@ -220,9 +220,12 @@
   text-transform: uppercase;
   color: var(--v4-text-faint);
 }
-.spec-code {
-  max-height: 460px;
+/* the spec aside file sits in a bounded well · the chrome stays pinned and the
+   editor body scrolls (new CodeFile structure: .cf-panel > .cf-chrome + .cf-body). */
+.spec-code .cf-body {
+  max-height: 420px;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 /* ── FIG S.1 · the four verbs · glyph + name + one-line model ────────────────

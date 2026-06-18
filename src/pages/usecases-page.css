@@ -257,15 +257,12 @@
   color: var(--v4-text);
   text-decoration-color: var(--v4-text);
 }
-/* the CodeFile sits in a bounded scroll well so long files stay contained */
-.ucp-wf-code {
-  max-height: 340px;
-  overflow: hidden;
-  border-radius: 12px;
-}
-.ucp-wf-code > div {
-  max-height: 340px;
+/* the CodeFile sits in a bounded scroll well so long files stay contained ·
+   the chrome stays pinned, the editor body scrolls (new CodeFile structure). */
+.ucp-wf-code .cf-body {
+  max-height: 320px;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 /* the outcome footer under the open file */

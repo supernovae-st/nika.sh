@@ -66,7 +66,7 @@ describe('CodeFile (static render)', () => {
     expect(container.textContent).toContain(verbGlyph('invoke'))
   })
 
-  it('renders an optional filename chrome bar', () => {
+  it('renders an optional filename chrome tab', () => {
     const { getByText } = render(<CodeFile yaml={yaml} filename="morning-brief.nika.yaml" />)
     expect(getByText('morning-brief.nika.yaml')).toBeTruthy()
   })
@@ -74,6 +74,55 @@ describe('CodeFile (static render)', () => {
   it('exposes a copy button that carries the raw yaml', () => {
     const { getByRole } = render(<CodeFile yaml={yaml} />)
     expect(getByRole('button', { name: /copy/i })).toBeTruthy()
+  })
+
+  /* ── the premium editor chrome · window dressing ──
+     The panel reads like a real editor window: traffic-light dots, a lang badge,
+     a copy button — always present so every call-site gets the IDE treatment. */
+  it('renders the 3 traffic-light window dots', () => {
+    const { container } = render(<CodeFile yaml={yaml} />)
+    expect(container.querySelectorAll('.cf-light').length).toBe(3)
+  })
+
+  it('shows a lang badge (defaults to yaml, overridable)', () => {
+    // with a filename, the lang badge sits to the right of the tab
+    const withName = render(<CodeFile yaml={yaml} filename="a.nika.yaml" lang="nika" />)
+    expect(withName.container.querySelector('.cf-lang')?.textContent).toBe('nika')
+    // without a filename, the lang labels the tab itself
+    const anon = render(<CodeFile yaml={yaml} />)
+    expect(anon.container.querySelector('.cf-tab-name')?.textContent).toBe('yaml')
+  })
+
+  /* ── the line-number gutter · real, dimmed, right-aligned, opt-out-able ── */
+  it('renders a line-number gutter (one number per source line)', () => {
+    const { container } = render(<CodeFile yaml={yaml} />)
+    const gutter = container.querySelectorAll('.cf-ln')
+    expect(gutter.length).toBe(yaml.split('\n').length)
+    // numbered from 1 (first line) and present on the last line
+    expect(gutter[0].textContent).toBe('1')
+    expect(gutter[gutter.length - 1].textContent).toBe(String(yaml.split('\n').length))
+  })
+
+  it('omits the gutter when lineNumbers={false}', () => {
+    const { container } = render(<CodeFile yaml={yaml} lineNumbers={false} />)
+    expect(container.querySelectorAll('.cf-ln').length).toBe(0)
+    // the code text is still fully present
+    expect(container.textContent).toContain('max_steps: 8')
+  })
+
+  /* ── rich syntax · keys/strings/numbers/comments/verbs get distinct classes ── */
+  it('classifies tokens into distinct syntax spans (key/string/number/comment/verb)', () => {
+    const { container } = render(<CodeFile yaml={yaml} />)
+    expect(container.querySelector('.cf-key')).not.toBeNull() // e.g. workflow
+    expect(container.querySelector('.cf-num')).not.toBeNull() // 8 in max_steps: 8
+    expect(container.querySelector('.cf-comment')).not.toBeNull() // # a comment
+    expect(container.querySelector('.cf-verb')).not.toBeNull() // invoke
+  })
+
+  it('highlights the emphasized line range as a real editor active-line band', () => {
+    const { container } = render(<CodeFile yaml={yaml} highlight={[1, 2]} />)
+    const lit = container.querySelectorAll('.cf-line--lit')
+    expect(lit.length).toBe(2) // exactly the 2 highlighted source lines
   })
 
   /* ── hydration parity (React #418 regression) ──
@@ -88,15 +137,15 @@ describe('CodeFile (static render)', () => {
   const yamlWithBlank = ['nika: v1', '', 'tasks:', '  - id: a'].join('\n')
 
   it('renders empty lines without a bare text-node child (hydration-safe)', () => {
-    const { container } = render(<CodeFile yaml={yamlWithBlank} />)
-    const lineSpans = container.querySelectorAll('code > span')
+    const { container } = render(<CodeFile yaml={yamlWithBlank} lineNumbers={false} />)
+    const lineSpans = container.querySelectorAll('code > .cf-line')
     expect(lineSpans.length).toBe(4) // one wrapper span per source line
-    const blank = lineSpans[1] // the empty 2nd line
+    const blankText = lineSpans[1].querySelector('.cf-line-text')! // the empty 2nd line's text cell
     // the blank line's filler is an ELEMENT child, not a bare text node
-    expect(blank.childElementCount).toBeGreaterThanOrEqual(1)
-    expect(blank.firstChild?.nodeType).toBe(Node.ELEMENT_NODE)
-    // still reserves visual height (the line stays tall)
-    expect(blank.className).toContain('min-h-')
+    expect(blankText.childElementCount).toBeGreaterThanOrEqual(1)
+    expect(blankText.firstChild?.nodeType).toBe(Node.ELEMENT_NODE)
+    // the line wrapper is the editor line (reserves visual height via .cf-line)
+    expect(lineSpans[1].className).toContain('cf-line')
   })
 
   it('marks quoted-scalar token spans suppressHydrationWarning (server &quot; ≠ client ")', () => {

@@ -43,6 +43,22 @@
   --verb-exec: #ff7a3c;
   --verb-invoke: #22d3ee;
   --verb-agent: #b07bff;
+
+  /* ── the CodeFile editor syntax theme · the PRODUCT replica ────────────────
+     The static code panel is the product surface, so color is allowed HERE (and
+     only here). A restrained, muted, premium dark-editor palette — distinct
+     tasteful hues, never neon: keys bright · strings a soft sage · numbers a
+     soft amber · booleans/null a soft mauve · comments dim · template refs &
+     anchors a teal "live-wiring" tone · the 4 verbs keep their canonical hues.
+     These are the DARK-base values; theme-light re-scopes them below. */
+  --cf-key: #e7eaf0;        /* keys · brightest ink                            */
+  --cf-str: #9bd29a;        /* strings · soft sage green                       */
+  --cf-num: #e6b873;        /* numbers · soft amber                            */
+  --cf-bool: #c79bf2;       /* booleans / null · soft mauve                    */
+  --cf-ref: #5fd3d1;        /* ${{ }} refs · &anchors · teal live-wiring       */
+  --cf-comment: #6a7280;    /* comments · dim, recede                          */
+  --cf-punct: #707784;      /* : - [ ] { } , colons & structure · faint        */
+  --cf-plain: #aab0bb;      /* residual scalar runs                            */
 }
 
 /* ─── section themes · alternation (light ⇄ dark) ────────────────────────────
@@ -80,6 +96,18 @@
   /* near-black focus ring · cyan sinks to ~1.7:1 on the off-white, this clears
      WCAG 1.4.11 — #0a0b0d reads 18:1 on #f7f7f5 / 19:1 on the white cards */
   --v4-focus-ring: #0a0b0d;
+  /* the CodeFile editor stays a DARK editor surface even inside a light section
+     (codefile.css pins the panel bg to the dark base — an IDE reads dark), so the
+     syntax hues keep their dark-base values. Re-stated for clarity / future
+     light-editor opt-in: */
+  --cf-key: #e7eaf0;
+  --cf-str: #9bd29a;
+  --cf-num: #e6b873;
+  --cf-bool: #c79bf2;
+  --cf-ref: #5fd3d1;
+  --cf-comment: #6a7280;
+  --cf-punct: #707784;
+  --cf-plain: #aab0bb;
 }
 .theme-dark,
 .theme-light,

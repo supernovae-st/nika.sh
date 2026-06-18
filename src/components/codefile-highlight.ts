@@ -1,9 +1,13 @@
 /* ─── CodeFile · pure highlighting helpers (no React, no DOM) ─────────────────
    A small, dependency-light YAML tokenizer for the v4 trust-landing CodeFile
    panel. Line/regex based on PURPOSE — we do NOT pull a heavy highlighter
-   (Shiki/Prism) into the bundle. Monochrome by design: color is reserved for
-   the live run + the aurora (design doc §3.2/§3.4), so the static panel paints
-   in grayscale and the 4 verbs are told apart by a LEADING GLYPH, not a hue.
+   (Shiki/Prism) into the bundle. The panel is the PRODUCT replica (a real
+   editor view of a .nika.yaml file), so the static highlighter ships a
+   restrained-but-real YAML editor theme: distinct, muted hues for keys ·
+   strings · numbers · booleans/null · comments · the 4 verb keywords (their
+   canonical verb-hue) · anchors & ${{ }} template refs · punctuation. The hues
+   are CSS vars (theme-aware) resolved by the component — this file only
+   CLASSIFIES tokens; it never picks a literal colour.
 
    This file is React-free so the component module (`CodeFile.tsx`) stays a
    clean component-only export (react-refresh / fast-refresh friendly) and the
@@ -45,6 +49,8 @@ export type TokenKind =
   | 'verb' // a key/list-item that is one of the 4 Nika verbs
   | 'string' // quoted or bare scalar value
   | 'number' // numeric scalar
+  | 'boolean' // true / false / null / yes / no / on / off / ~
+  | 'tref' // a ${{ … }} template ref or a &anchor / *alias
   | 'punct' // : - [ ] { } , and indentation/leading dashes
   | 'plain' // anything else (whitespace, residual)
 
@@ -64,12 +70,32 @@ const KEY_RE = /^(\s*)(?:(-)(\s+))?([A-Za-z0-9_.$-]+)(\s*:)(\s*)(.*)$/
 // a bare list item that is just a word (e.g. "- agent" or "- infer") with no colon.
 const BARE_ITEM_RE = /^(\s*)(-)(\s+)([A-Za-z0-9_.$-]+)\s*$/
 const NUMBER_RE = /^-?\d+(?:\.\d+)?$/
+// YAML truthy/null scalars (lowercase canonical + the common YAML 1.1 forms).
+const BOOL_RE = /^(?:true|false|null|~|yes|no|on|off)$/
+// a ${{ … }} template ref or a &anchor / *alias — the "live wiring" of a plan.
+const TREF_RE = /(\$\{\{[^}]*\}\}|[&*][A-Za-z0-9_-]+)/
 
+/* Split a scalar value into spans so inline ${{ refs }} / &anchors light up
+   distinctly from the surrounding string. A bare boolean/null/number value is
+   typed precisely; everything else is a string, with embedded template refs
+   carved out as `tref` tokens. */
 function classifyValue(value: string): Token[] {
   const v = value.trim()
   if (v === '') return []
   if (NUMBER_RE.test(v)) return [{ kind: 'number', text: value }]
-  // quoted, bracketed, or any bare scalar → dim "value" ink
+  if (BOOL_RE.test(v)) return [{ kind: 'boolean', text: value }]
+
+  // carve inline ${{ … }} / &anchor / *alias refs out of the string run.
+  if (TREF_RE.test(value)) {
+    const tokens: Token[] = []
+    const parts = value.split(new RegExp(`(${TREF_RE.source})`, 'g'))
+    for (const part of parts) {
+      if (part === '') continue
+      tokens.push({ kind: TREF_RE.test(part) ? 'tref' : 'string', text: part })
+    }
+    return tokens
+  }
+  // quoted, bracketed, or any bare scalar → "value" ink
   return [{ kind: 'string', text: value }]
 }
 
