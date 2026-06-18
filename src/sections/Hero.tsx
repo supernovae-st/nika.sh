@@ -1,64 +1,76 @@
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { CodeFile } from '../components/CodeFile'
 import { REPO, SPEC } from '../content'
-import { SHOWCASE_YAML } from './usecases-yaml.generated'
-import { sliceExcerpt } from './living/excerpt'
 import '../shell/shell.css'
 import './hero.css'
 
-/* ─── Hero · the v4.1 control-narrative first surface (plan §4 · FIG 0.0) ──────
-   Register: a sovereign engineering instrument / technical blueprint. Austere,
-   monochrome, hairline rules, FIG numbering. PURE DOM — ZERO WebGL. The SEO win:
-   the headline is a REAL <h1> in the prerendered HTML.
+/* ─── Hero · the v4.3 BLUE control-narrative · two-column composition ──────────
+   Register: a deep, refined blue lab (Maxime Heckel · Linear/Raycast restraint).
+   A premium navy→azure gradient fills the surface, a faint blue perspective grid
+   recedes below, faint HUD registration marks sit at the corners, and a 3D
+   particle NIKA BUTTERFLY spins continuously as a focal accent behind the editor.
 
-   The pitch is CONTROL: "See what your AI will do. Before it does it." The agent
-   writes its plan as a file — steps, tools, PERMISSIONS, outputs — you review
-   it, the runtime enforces it, then it runs. The file on the right is the
-   control example: a real slice of `t3-resume-screener` (the only projected
-   showcase with a real `permits:` block) — a LOCAL model screens CVs and the
-   `permits:` block is the visual focus (the seatbelt: PII can't leave the box).
+   The composition is the classic operator layout: the HEADLINE + pitch + install
+   + CTAs sit LEFT, and the premium CodeFile editor (the product replica · a real
+   .nika.yaml plan) sits RIGHT — KEPT, given room, balanced. Lots of whitespace;
+   the two columns breathe (the previous hero felt crammed).
 
-   Atmosphere WITHOUT color: a fine grain tile + a faint radial vignette + a
-   barely-there blueprint grid pin depth onto the near-black surface so it never
-   reads as flat black. The only color anywhere is the global EdgeAurora at the
-   frame. The verb-hue whisper is reserved for live runs, NOT this static screen.
-
-   Layout: asymmetric — copy left, the real .nika.yaml right (stacks on mobile),
-   on a 1fr/1.08fr grid (not centered-symmetric). The file is a TRUE slice of a
-   projected showcase workflow (`sliceExcerpt`), never hand-typed.
+   The pitch stays CONTROL: "See what your AI will do. Before it does it." — the
+   agent writes its plan as a reviewable file; the runtime enforces it; then it
+   runs. The headline is a REAL <h1> in the prerendered HTML (the SEO win); the
+   editor is real <pre>/<code> DOM text (crawlable, instant). The blue gradient +
+   grid + HUD are PURE CSS (instant first paint). The WebGL butterfly is a lazy,
+   client-only, aria-hidden ENHANCEMENT — it never blocks first paint, and it
+   spins gently under prefers-reduced-motion.
 
    Entrance: ONE orchestrated staggered reveal (motion-safe only). Everything is
    visible by DEFAULT (SSR / no-JS / reduced-motion) — the `.v4-enter` opt-in is
    added on mount and only animates when motion is allowed. */
 
-/* The control example — a FOCUSED, true slice of the real projected file:
-   header + model + the `permits:` block · the local-infer scoring task with its
-   typed schema · the conditional `when:` gate. `…` marks where lines were
-   trimmed. The permits span is auto-located for emphasis (never re-counted by
-   hand). See plan §5 (LOCKED fil-rouge = t3-resume-screener). */
-const FULL_YAML = SHOWCASE_YAML['t3-resume-screener']
-const { text: HERO_YAML, highlight: PERMITS_HL } = sliceExcerpt(
-  FULL_YAML,
-  [
-    [1, 11], // nika:v1 · workflow · description · model · the permits block
-    [43, 45], // - id: screened · depends_on · for_each (the local infer task head)
-    [52, 53], // infer: · prompt: |
-    [60, 68], // schema head · the fit enum (typed output)
-    [86, 88], // - id: brief · depends_on · the when: gate
-  ],
-  /^permits:|^\s{2,}(fs|read|write|tools):/,
-)
 const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
 
-/* per-element entrance delay → the `--rise-delay` custom prop the stagger reads.
-   Cast to CSSProperties (custom props aren't in the typed surface) — matches the
-   existing `{ '--i': i } as React.CSSProperties` convention in the v3 home. */
-const rise = (ms: number): React.CSSProperties => ({ '--rise-delay': `${ms}ms` }) as React.CSSProperties
+/* the hero editor plan · a compact, spec-correct slice of the resume-screener
+   showcase (src/sections/usecases-yaml.generated.ts · t3-resume-screener). The
+   control story is visible at a glance: the `permits:` block IS the blast radius,
+   and the first task is a deterministic `invoke`. Verbatim spec shapes only —
+   `nika: v1` envelope · `permits:` fs+tools · `invoke`/`infer` verbs. */
+const HERO_PLAN = `nika: v1
+workflow: resume-screener
 
-/* the monochrome install affordance — replaces the v3 blue-glass pill.
-   A bordered mono row + a copy button with a real, non-color-only copied state
-   (icon + text both flip). SSR-safe: navigator is only read inside the handler. */
+model: ollama/llama3.1   # PII stays on the machine
+
+permits:                 # the file IS the blast radius
+  fs:
+    read:  ["./hiring/inbox/**"]
+    write: ["./hiring/out/**"]
+  tools: ["nika:glob", "nika:read", "nika:jq"]
+
+vars:
+  role: "Senior Rust engineer"
+
+tasks:
+  - id: pool
+    invoke:
+      tool: "nika:glob"
+      args: { pattern: "./hiring/inbox/*.md" }
+
+  - id: screen
+    depends_on: [pool]
+    infer:
+      prompt: "Score each CV against \${{ vars.role }}"
+`
+
+/* the heavy three.js butterfly canvas — code-split so it never enters the
+   first-paint bundle (the hero ships as instant prerendered DOM + CSS). */
+const HeroButterfly = lazy(() => import('../scene/HeroButterfly'))
+
+/* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
+const rise = (ms: number): React.CSSProperties =>
+  ({ '--rise-delay': `${ms}ms` }) as React.CSSProperties
+
+/* the monochrome install affordance — a bordered mono row + a copy button with a
+   real, non-color-only copied state (icon + text both flip). SSR-safe. */
 function InstallLine() {
   const [copied, setCopied] = useState(false)
   const copy = () => {
@@ -102,70 +114,70 @@ function InstallLine() {
   )
 }
 
-/* ─── the blueprint chrome · depth grid + technical HUD ───────────────────────
-   PURE DOM. Two decorative layers (aria-hidden, pointer-events:none) that frame
-   the hero like an aerospace instrument readout: a 3D perspective floor grid
-   receding to a vanishing point, plus a sparse set of registration marks. The
-   values are ABSTRACT registration marks (FIG / SEC / EVT / coord pairs) — not
-   fake metrics dressed as real claims. The SVG strokes inherit currentColor so
-   the whole thing stays grayscale (the only colour is the global EdgeAurora). */
-function HeroChrome() {
+/* ─── the blue atmosphere · gradient + perspective grid + HUD + butterfly canvas ─
+   PURE-CSS layers (instant) PLUS the lazy WebGL canvas (client-only, mounted
+   after first paint). All decorative — aria-hidden, pointer-events:none. The
+   butterfly canvas anchors to the RIGHT column band (behind the editor) so it
+   reads as a focal accent, not a busy centerpiece. */
+function HeroAtmosphere() {
+  const [mountCanvas, setMountCanvas] = useState(false)
+  const [shown, setShown] = useState(false)
+
+  /* mount the heavy canvas only AFTER the DOM has painted. We defer to an
+     idle/next-frame so the hero's first paint (blue + grid + copy + editor) is
+     never blocked by WebGL init. */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    let raf = 0
+    const idle =
+      (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
+        .requestIdleCallback
+    const arm = () => setMountCanvas(true)
+    if (idle) idle(arm)
+    else raf = window.setTimeout(arm, 200) as unknown as number
+    return () => {
+      if (raf) clearTimeout(raf)
+    }
+  }, [])
+
+  /* a one-tick flag → the canvas fades/scales in once it's actually in the tree */
+  useEffect(() => {
+    if (!mountCanvas) return
+    const id = requestAnimationFrame(() => setShown(true))
+    return () => cancelAnimationFrame(id)
+  }, [mountCanvas])
+
   return (
     <>
-      {/* 1 · the 3D perspective depth grid — a floor receding to a vanishing
-            point + a fainter back-wall grid it recedes into. CSS-only. */}
-      <div className="v4depth" aria-hidden>
-        <div className="v4depth-wall" />
-        <div className="v4depth-plane" />
+      {/* 1 · the deep blue gradient — instant CSS */}
+      <div className="v4hero-blue" aria-hidden />
+
+      {/* 2 · the faint blue perspective grid receding below — instant CSS */}
+      <div className="v4bluegrid" aria-hidden>
+        <div className="v4bluegrid-plane" />
       </div>
 
-      {/* 2 · the technical HUD — sparse marks in the margins / negative space */}
+      {/* 3 · the spinning particle butterfly — lazy WebGL, client-only, RIGHT band */}
+      <div className="v4bfly-stage" aria-hidden>
+        <div className="v4bfly-canvas" data-mounted={shown}>
+          {mountCanvas && (
+            <Suspense fallback={null}>
+              <HeroButterfly />
+            </Suspense>
+          )}
+        </div>
+      </div>
+
+      {/* 4 · faint HUD registration marks · the four corner ticks (decorative) */}
       <div className="v4hud" aria-hidden>
-        {/* upper-left · a register crosshair + section code (anchors the plate) */}
-        <div className="v4hud-mark v4hud-register">
-          <svg className="v4hud-svg" width="34" height="34" viewBox="0 0 34 34" fill="none" style={{ position: 'static', display: 'block', marginBottom: 6 }}>
-            <path d="M17 2v30M2 17h30" stroke="currentColor" strokeWidth="1" />
-            <circle cx="17" cy="17" r="4.5" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2.6" data-faint />
-          </svg>
-          SEC_00 · ORIGIN
-        </div>
-
-        {/* upper-right · a coordinate pair (frame register) */}
-        <div className="v4hud-mark v4hud-mark--coord v4hud-coord-tr">
-          x 1185 · y 414
-        </div>
-
-        {/* center-right negative space · the dashed crosshair reticle —
-            a quiet focal mark with a slow opacity pulse (motion-safe). */}
-        <div className="v4hud-reticle">
-          <svg className="v4hud-svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
-            {/* outer dashed ring */}
-            <circle cx="60" cy="60" r="46" stroke="currentColor" strokeWidth="1" strokeDasharray="2 7" data-faint />
-            {/* inner solid ring */}
-            <circle cx="60" cy="60" r="18" stroke="currentColor" strokeWidth="1" />
-            {/* crosshair ticks (broken at center so the dot reads clean) */}
-            <path d="M60 6v26M60 88v26M6 60h26M88 60h26" stroke="currentColor" strokeWidth="1" />
-            {/* the live center dot */}
-            <circle className="v4hud-reticle-dot" cx="60" cy="60" r="2.4" fill="currentColor" />
-            {/* a small bearing tick on the ring */}
-            <path d="M60 14v6" stroke="currentColor" strokeWidth="1" />
-          </svg>
-        </div>
-
-        {/* lower-left · a dimension line with a Φ measure label (the engine's
-            register — abstract, not a claim). */}
-        <svg className="v4hud-svg v4hud-dim" width="118" height="14" viewBox="0 0 118 14" fill="none">
-          {/* end ticks + the span line, with arrowheads */}
-          <path d="M3 2v10M115 2v10M3 7h112" stroke="currentColor" strokeWidth="1" />
-          <path d="M3 7l7-3.2M3 7l7 3.2M115 7l-7-3.2M115 7l-7 3.2" stroke="currentColor" strokeWidth="1" data-faint />
-        </svg>
-        <div className="v4hud-mark v4hud-dim-label">Φ 218</div>
-
-        {/* lower-right · an event code register */}
-        <div className="v4hud-mark v4hud-mark--code v4hud-evt">
-          EVT_36 ·{' '}STABLE
-        </div>
+        <span className="v4hud-tick v4hud-tick--tl" />
+        <span className="v4hud-tick v4hud-tick--tr" />
+        <span className="v4hud-tick v4hud-tick--bl" />
+        <span className="v4hud-tick v4hud-tick--br" />
       </div>
+
+      {/* a soft readability vignette so the copy clears contrast over the blue */}
+      <div className="v4hero-readscrim" aria-hidden />
     </>
   )
 }
@@ -188,146 +200,128 @@ export default function Hero() {
       id="hero"
       className="theme-dark relative isolate flex min-h-screen flex-col justify-center overflow-hidden"
     >
-      {/* atmosphere · vignette + 3D depth grid + technical HUD + grain.
-          (pointer-events:none, aria-hidden — pure background/chrome). The flat
-          blueprint plate is superseded by the perspective depth grid below. */}
-      <div className="v4hero-vignette" aria-hidden />
-      <HeroChrome />
-      <div className="v4hero-grain" aria-hidden />
+      {/* the blue gradient + grid + HUD + the spinning particle butterfly (lazy) */}
+      <HeroAtmosphere />
 
-      {/* generous gutters + top padding clears the fixed nav. px clamps with the
-          safe-area inset so nothing rides under a notch in landscape. */}
-      <div className="v4hero-wrap relative z-[1] mx-auto w-full max-w-6xl pt-28 pb-20 md:pt-32">
-        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.08fr] lg:gap-16">
-          {/* ── left · the copy ── (min-w-0 so a long token never blows the grid) */}
-          <div className="flex min-w-0 flex-col">
-            {/* FIG 0.0 · the blueprint numbering with its hairline tick */}
-            <p className="v4fig mb-7" data-rise style={rise(0)}>
-              FIG 0.0
-            </p>
+      {/* the two-column composition · copy LEFT · editor RIGHT · generous space.
+          Stacks to one column under 1024px (editor below the copy). */}
+      <div className="v4hero-grid relative z-[1] mx-auto w-full max-w-6xl">
+        {/* ── LEFT · the control narrative ─────────────────────────────────── */}
+        <div className="v4hero-copy flex max-w-2xl flex-col">
+          {/* FIG 0.0 · the blueprint numbering with its hairline tick */}
+          <p className="v4fig mb-6" data-rise style={rise(0)}>
+            FIG 0.0
+          </p>
 
-            {/* the brand kicker · "Intent as Code" survives only as a small mark,
-                never the explainer (plan §2). Keeps the permanent phrase on-page. */}
-            <p data-rise style={rise(40)} className="v4kicker mb-4">
-              <span aria-hidden>✦</span> Intent as Code
-            </p>
+          {/* the brand kicker · "Intent as Code" survives as a small mark */}
+          <p data-rise style={rise(40)} className="v4kicker mb-5">
+            <span aria-hidden>✦</span> Intent as Code
+          </p>
 
-            {/* the REAL <h1> · the control hook (plan §4 · FIG 0.0) · the SEO win.
-                Two clauses on their own lines so the cadence reads as a promise. */}
-            <h1
-              data-rise
-              style={{
-                ...rise(70),
-                fontFamily: 'var(--display)',
-                /* floor kept low so both clauses are fully contained at 390px;
-                   still scales up big on wider screens. */
-                fontSize: 'clamp(1.95rem, 0.7rem + 5vw, 4.6rem)',
-                lineHeight: 0.99,
-                letterSpacing: '-0.025em',
-                fontWeight: 600,
-              }}
-              className="text-text text-pretty"
-            >
-              See what your AI will do.
-              <br />
-              <span className="text-dim">Before it does it.</span>
-            </h1>
+          {/* the REAL <h1> · the control hook · the SEO win. Two clauses on
+              their own lines so the cadence reads as a promise. */}
+          <h1
+            data-rise
+            style={{
+              ...rise(80),
+              fontFamily: 'var(--headline)',
+              fontSize: 'clamp(1.45rem, 0.45rem + 4.6vw, 3.9rem)',
+              lineHeight: 1.0,
+              letterSpacing: '-0.025em',
+              fontWeight: 600,
+            }}
+            className="text-text"
+          >
+            See what your AI will do.
+            <br />
+            <span className="text-dim">Before it does it.</span>
+          </h1>
 
-            <p
-              data-rise
-              style={rise(140)}
-              className="mt-6 max-w-[35rem] text-[17px] leading-relaxed text-dim"
-            >
-              Agents are starting to touch real systems&nbsp;— your code, your
-              APIs, production. Nika makes an agent write its plan as a file
-              first: every step, tool, <b className="font-semibold text-text">permission</b>{' '}
-              and output. You review it. The runtime enforces it. Then it runs.
-            </p>
+          <p
+            data-rise
+            style={rise(150)}
+            className="mt-7 max-w-[34rem] text-[17px] leading-relaxed text-dim"
+          >
+            Agents are starting to touch real systems&nbsp;— your code, your APIs,
+            production. Nika makes an agent write its plan as a file first: every
+            step, tool, <b className="font-semibold text-text">permission</b> and
+            output. You review it. The runtime enforces it. Then it runs.
+          </p>
 
-            {/* the monochrome install line · #install is the nav CTA's target */}
-            <div id="install" className="mt-9 scroll-mt-28" data-rise style={rise(210)}>
-              <InstallLine />
-            </div>
-
-            {/* one row of flat B/W CTAs · they WRAP on narrow screens (flex-wrap)
-                so every link stays fully visible. Each is a ≥44px mobile hit
-                target (min-h-11). :focus-visible rings come from the global rule. */}
-            <div
-              data-rise
-              style={rise(280)}
-              className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-[14.5px] sm:mt-7 sm:gap-x-7"
-            >
-              <a
-                href={SPEC}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-text transition-colors"
-              >
-                Read the spec
-                <span className="transition-transform group-hover:translate-x-0.5">→</span>
-              </a>
-              <a
-                href="#living-file"
-                className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-dim transition-colors hover:text-text"
-              >
-                <span aria-hidden className="text-dim transition-transform group-hover:translate-y-0.5">
-                  ↓
-                </span>
-                see it run
-              </a>
-              <a
-                href={REPO}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex min-h-11 items-center gap-2 rounded-md text-dim transition-colors hover:text-text"
-              >
-                <span aria-hidden className="text-faint transition-colors group-hover:text-text">
-                  ★
-                </span>
-                Star on GitHub
-              </a>
-            </div>
-
-            {/* the trust line · the control guarantee (plan §4) · mono, faint */}
-            <p data-rise style={rise(350)} className="v4trust mt-9">
-              Reviewable<span className="px-2 text-faint">·</span>
-              enforced<span className="px-2 text-faint">·</span>
-              replayable<span className="px-2 text-faint">·</span>
-              one Rust binary<span className="px-2 text-faint">·</span>
-              any model<span className="px-2 text-faint">·</span>
-              <b>AGPL</b> forever
-            </p>
+          {/* the install line · #install is the nav CTA's target */}
+          <div id="install" className="mt-9 scroll-mt-28" data-rise style={rise(220)}>
+            <InstallLine />
           </div>
 
-          {/* ── right · the real file (SEO-crawlable DOM text) ──
-              min-w-0 lets the <pre>'s own overflow-x:auto contain the long YAML
-              instead of the grid track stretching the whole page wider than the
-              viewport (the mobile-clipping root cause). */}
-          <div className="w-full min-w-0" data-rise style={rise(180)}>
-            {/* a FIG caption above the panel — the engineering-manual register */}
-            <p className="mono mb-3 flex items-center gap-2 text-[11px] tracking-[0.22em] text-faint uppercase">
-              <span aria-hidden>FIG 0.1</span>
-              <span aria-hidden className="text-faint/60">
-                —
+          {/* one row of flat CTAs · they WRAP on narrow screens so every link
+              stays visible. Each is a ≥44px mobile hit target. */}
+          <div
+            data-rise
+            style={rise(290)}
+            className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-1 text-[14.5px]"
+          >
+            <a
+              href={SPEC}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-text transition-colors"
+            >
+              Read the spec
+              <span className="transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+            <a
+              href="#living-file"
+              className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-dim transition-colors hover:text-text"
+            >
+              <span aria-hidden className="text-dim transition-transform group-hover:translate-y-0.5">
+                ↓
               </span>
-              the plan, before it acts
-            </p>
-            <CodeFile filename="screen-cvs.nika.yaml" yaml={HERO_YAML} highlight={PERMITS_HL} />
-            {/* the permits block is the focus — a one-line gloss + the full-file link */}
-            <p className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[12.5px] text-dim">
-              <span>
-                <b className="font-semibold text-text">permits:</b> everything it
-                can touch&nbsp;— and nothing&nbsp;else.
+              see it run
+            </a>
+            <a
+              href={REPO}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex min-h-11 items-center gap-2 rounded-md text-dim transition-colors hover:text-text"
+            >
+              <span aria-hidden className="text-faint transition-colors group-hover:text-text">
+                ★
               </span>
-              <Link
-                to="/use-cases"
-                className="group inline-flex min-h-11 items-center gap-1.5 text-faint transition-colors hover:text-text"
-              >
-                view the full file
-                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-              </Link>
-            </p>
+              Star on GitHub
+            </a>
           </div>
+
+          {/* the trust line · the control guarantee · mono, faint */}
+          <p data-rise style={rise(360)} className="v4trust mt-9">
+            Reviewable<span className="px-2 text-faint">·</span>
+            enforced<span className="px-2 text-faint">·</span>
+            replayable<span className="px-2 text-faint">·</span>
+            one Rust binary<span className="px-2 text-faint">·</span>
+            any model<span className="px-2 text-faint">·</span>
+            <b>AGPL</b> forever
+          </p>
+        </div>
+
+        {/* ── RIGHT · the premium editor panel · the product replica ────────── */}
+        <div className="v4hero-editor" data-rise style={rise(180)}>
+          <CodeFile
+            yaml={HERO_PLAN}
+            filename="screen-cvs.nika.yaml"
+            highlight={[5, 9]}
+            className="v4hero-code"
+          />
+          {/* a compact reference chip · "the plan, before it acts" · links to the
+              full living-file run (so the editor isn't a dead end). */}
+          <Link to="/use-cases" className="v4hint mt-4 w-fit">
+            <span className="v4hint-file">screen-cvs.nika.yaml</span>
+            <span className="text-faint" aria-hidden>
+              ·
+            </span>
+            <span>the plan, before it acts</span>
+            <span className="v4hint-arrow" aria-hidden>
+              →
+            </span>
+          </Link>
         </div>
       </div>
     </section>

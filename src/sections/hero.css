@@ -1,227 +1,401 @@
-/* ─── hero · depth + HUD chrome (aerospace-blueprint enrichment) ──────────────
-   Pushes the "sovereign engineering instrument" register FAR without a single
-   WebGL byte. Two pure-DOM layers sit BEHIND / AROUND the real hero content:
+/* ─── hero · the BLUE atmosphere + two-column composition ─────────────────────
+   The v4.3 hero leaves the monochrome v4 base for ONE surface: a deep, refined
+   BLUE lab (register: Maxime Heckel · Linear/Raycast restraint). NOT a garish
+   blue→purple, NOT a neon cyan tech-glow — a dark navy field lifting to a single
+   cool azure bloom, layered radial+linear so it never reads as a flat fill or a
+   banded ramp.
 
-     1. .v4depth   — a CSS-only 3D perspective floor grid that recedes to a
-                     vanishing point and fades into the dark. Reads as physical
-                     depth, not a flat plate. Compositor-only (transform/opacity).
-     2. .v4hud-*   — a sparse technical HUD: registration marks, a dimension
-                     line, coordinate pairs, an event code, and one dashed
-                     crosshair reticle floating in negative space.
+   This file owns:
+     1 · .v4hero-blue   — the premium navy→azure gradient (PURE CSS · instant).
+     2 · .v4bluegrid    — a faint blue perspective floor grid receding below.
+     3 · .v4bfly-stage  — the lazy butterfly canvas frame, anchored to the RIGHT
+                          band (a focal accent behind the editor · not a busy
+                          centerpiece), with a soft lamp behind it.
+     4 · .v4hud         — faint corner registration ticks (the blueprint HUD).
+     5 · .v4hero-grid   — the two-column layout (copy LEFT · editor RIGHT), with
+                          generous space; stacks to one column on narrow screens.
 
-   Everything here is grayscale (the only colour anywhere is the global
-   EdgeAurora at the frame), aria-hidden, pointer-events:none, and SSR-safe
-   (pure CSS / static SVG — no window at render). Reduced-motion → fully static.
-   Small screens → the HUD simplifies to a couple of marks so it never crowds
-   the readable column or reintroduces horizontal overflow. */
+   Everything decorative is pointer-events:none + aria-hidden, SSR-safe (pure CSS
+   / no window at render), and reduced-motion-aware (the grid stops drifting; the
+   canvas spins gently). The blue tokens are documented in tokens.css and only
+   re-aliased here, scoped to #hero so the rest of the monochrome v4 site is
+   untouched. */
 
-/* ── 1 · the 3D perspective depth grid ──────────────────────────────────────
-   A plane laid into the floor: perspective() gives the receding lines, rotateX
-   tips it away from the camera, the repeating-linear-gradients draw the mesh,
-   and the mask fades the whole thing into the dark toward the horizon + edges.
-   Held in a fixed-height stage anchored to the bottom so the vanishing point
-   lands just below the content baseline. */
-.v4depth {
-  position: absolute;
-  inset: auto 0 0 0;
-  z-index: 0;
-  height: 74%;
-  pointer-events: none;
-  overflow: hidden;
-  /* the camera — depth of the receding projection */
-  perspective: 720px;
-  perspective-origin: 50% 0%;
-  /* fade the stage itself into the dark at top (horizon) and sides */
-  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 86%);
-  mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 86%);
-}
-.v4depth-plane {
-  position: absolute;
-  /* oversize the plane so the rotation never exposes a hard edge */
-  inset: -60% -40% -40% -40%;
-  transform-origin: 50% 100%;
-  transform: rotateX(64deg);
-  background-image:
-    /* depth lines (running toward the vanishing point) */
-    repeating-linear-gradient(
-      to right,
-      color-mix(in oklch, var(--v4-text) 100%, transparent) 0,
-      color-mix(in oklch, var(--v4-text) 100%, transparent) 1px,
-      transparent 1px,
-      transparent 56px
-    ),
-    /* cross lines (the rungs, compressing with distance via the mask) */
-    repeating-linear-gradient(
-      to bottom,
-      color-mix(in oklch, var(--v4-text) 100%, transparent) 0,
-      color-mix(in oklch, var(--v4-text) 100%, transparent) 1px,
-      transparent 1px,
-      transparent 56px
-    );
-  opacity: 0.05;
-  /* radial fade so the lines dissolve toward the vanishing point + the rim,
-     leaving only a soft floor near the camera */
-  -webkit-mask-image: radial-gradient(120% 88% at 50% 100%, #000 0%, rgba(0, 0, 0, 0.55) 42%, transparent 78%);
-  mask-image: radial-gradient(120% 88% at 50% 100%, #000 0%, rgba(0, 0, 0, 0.55) 42%, transparent 78%);
-  will-change: transform;
+/* the hero's own blue palette — aliased from the documented tokens.css source,
+   scoped so the global v4 tokens stay monochrome. */
+#hero {
+  --v4-blue-deep: var(--hero-blue-deep);
+  --v4-blue-rich: var(--hero-blue-rich);
+  --v4-blue-lift: var(--hero-blue-lift);
+  --v4-blue-line: var(--hero-blue-line);
+  --v4-blue-glow: var(--hero-blue-glow);
 }
 
-/* a faint back-wall grid standing at the horizon — gives the floor a room to
-   recede INTO (depth cue), even fainter than the floor. */
-.v4depth-wall {
-  position: absolute;
-  inset: 0 0 36% 0;
-  background-image:
-    linear-gradient(to right, color-mix(in oklch, var(--v4-text) 100%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklch, var(--v4-text) 100%, transparent) 1px, transparent 1px);
-  background-size: 88px 88px;
-  opacity: 0.022;
-  -webkit-mask-image: radial-gradient(90% 120% at 50% 100%, #000 0%, transparent 70%);
-  mask-image: radial-gradient(90% 120% at 50% 100%, #000 0%, transparent 70%);
-}
-
-/* the slow drift — ONLY when motion is welcome. A 1px/56px-period grid drifting
-   one full cell pushes the floor gently toward the camera. transform-only, so
-   it stays on the compositor; 38s makes it ambient, never distracting. */
-@media (prefers-reduced-motion: no-preference) {
-  .v4-enter .v4depth-plane {
-    animation: v4depth-drift 38s linear infinite;
-  }
-}
-@keyframes v4depth-drift {
-  to {
-    /* translate by exactly one 56px cell along the plane's local Y so it loops
-       seamlessly; rotateX is preserved so the perspective holds. */
-    transform: rotateX(64deg) translate3d(0, 56px, 0);
-  }
-}
-
-/* ── 2 · the technical HUD layer ─────────────────────────────────────────────
-   Absolutely-positioned registration marks framing the hero like an instrument
-   readout. Mono, faint, abstract (registration marks — never fake metrics that
-   read as real claims). Lives in the margins so it never touches the readable
-   column. Hidden below the lg breakpoint except for two corner marks. */
-.v4hud {
+/* ── 1 · the premium blue gradient ───────────────────────────────────────────
+   Layered, asymmetric, mask-softened so there is no banding and no flat fill:
+   • a single cool azure bloom high on the RIGHT (where the butterfly + editor
+     sit) — the one bright note, off-axis (never centered/symmetric).
+   • a faint cool side-light, lower-left, to balance the diagonal.
+   • the body wash · rich navy at the top → a near-black pool at the lower edge.
+   Reads as deep atmosphere with depth — Maxime's lab, not a tech banner. */
+.v4hero-blue {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  font-family: var(--mono);
-  color: var(--v4-text-faint);
-  /* default: only the lightest marks show; richer set unlocks at ≥lg */
-}
-.v4hud-mark {
-  position: absolute;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  line-height: 1.5;
-  color: color-mix(in oklch, var(--v4-text) 26%, transparent);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.v4hud-mark--coord {
-  letter-spacing: 0.1em;
-}
-.v4hud-mark--code {
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+  background:
+    /* the azure bloom · high-right · the single bright note */
+    radial-gradient(86% 72% at 72% 16%, var(--v4-blue-lift) 0%, transparent 56%),
+    /* a soft cool wash · lower-left · balances the diagonal (off-axis) */
+    radial-gradient(70% 64% at 12% 86%, color-mix(in oklch, var(--v4-blue-glow) 22%, transparent) 0%, transparent 58%),
+    /* the body · rich navy top → deep pool at the bottom edge */
+    linear-gradient(174deg, var(--v4-blue-rich) 0%, #081132 50%, var(--v4-blue-deep) 100%);
 }
 
-/* the SVG vector marks (reticle, dimension line, register crosshairs) — crisp
-   1px hairlines, dashed arcs. Stroke inherits currentColor → grayscale only. */
-.v4hud-svg {
+/* a very sparse cosmic star-dust over the blue (a quiet depth cue · the v3
+   'star' nod) so the field never reads as a banded gradient. Static, mask-faded
+   at the rim so it dissolves into the dark corners. */
+.v4hero-blue::after {
+  content: '';
   position: absolute;
-  color: color-mix(in oklch, var(--v4-text) 22%, transparent);
-  overflow: visible;
-}
-.v4hud-svg [data-faint] {
-  color: color-mix(in oklch, var(--v4-text) 14%, transparent);
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 16% 22%, rgba(200, 225, 255, 0.42), transparent),
+    radial-gradient(1px 1px at 72% 14%, rgba(190, 215, 255, 0.36), transparent),
+    radial-gradient(1.2px 1.2px at 41% 62%, rgba(180, 210, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 88% 52%, rgba(210, 230, 255, 0.34), transparent),
+    radial-gradient(1px 1px at 9% 74%, rgba(190, 215, 255, 0.28), transparent),
+    radial-gradient(1.1px 1.1px at 60% 84%, rgba(200, 222, 255, 0.3), transparent);
+  background-repeat: no-repeat;
+  -webkit-mask-image: radial-gradient(120% 100% at 60% 24%, #000 28%, transparent 86%);
+  mask-image: radial-gradient(120% 100% at 60% 24%, #000 28%, transparent 86%);
 }
 
-/* placement — top register mark (upper-left margin, above the FIG column) */
-.v4hud-register {
-  top: clamp(88px, 13vh, 132px);
-  left: max(20px, env(safe-area-inset-left));
-}
-/* a coordinate pair pinned to the upper-right margin */
-.v4hud-coord-tr {
-  top: clamp(88px, 13vh, 128px);
-  right: max(20px, env(safe-area-inset-right));
-  text-align: right;
-}
-/* the dashed crosshair reticle — quiet focal mark dropped into the lower
-   negative space between the left copy column and the file panel (the empty
-   band on the asymmetric grid), so it never overlaps the readable text.
-   Explicitly sized to its SVG so the -50% centring resolves correctly. */
-.v4hud-reticle {
+/* ── 2 · the faint blue perspective grid ─────────────────────────────────────
+   A floor laid into perspective, receding to a vanishing point below the
+   content — blue-tinted hairlines on the dark navy, masked to dissolve toward
+   the horizon + the sides. Drifts gently toward the camera (motion-safe only).
+   Restrained: opacity is low, so it reads as a blueprint hint, not a wireframe. */
+.v4bluegrid {
   position: absolute;
-  top: 70%;
-  left: 46%;
-  width: 120px;
-  height: 120px;
-  transform: translate(-50%, -50%);
+  inset: auto 0 0 0;
+  z-index: 0;
+  height: 66%;
+  pointer-events: none;
+  overflow: hidden;
+  perspective: 760px;
+  perspective-origin: 50% 0%;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 24%, transparent 84%);
+  mask-image: linear-gradient(to top, #000 0%, #000 24%, transparent 84%);
 }
-.v4hud-reticle .v4hud-svg {
-  position: static;
-  display: block;
+.v4bluegrid-plane {
+  position: absolute;
+  inset: -60% -40% -40% -40%;
+  transform-origin: 50% 100%;
+  transform: rotateX(66deg);
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      var(--v4-blue-line) 0,
+      var(--v4-blue-line) 1px,
+      transparent 1px,
+      transparent 60px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--v4-blue-line) 0,
+      var(--v4-blue-line) 1px,
+      transparent 1px,
+      transparent 60px
+    );
+  opacity: 0.1;
+  -webkit-mask-image: radial-gradient(120% 86% at 50% 100%, #000 0%, rgba(0, 0, 0, 0.5) 40%, transparent 76%);
+  mask-image: radial-gradient(120% 86% at 50% 100%, #000 0%, rgba(0, 0, 0, 0.5) 40%, transparent 76%);
+  will-change: transform;
 }
-@media (min-width: 1280px) {
-  /* a touch further into the gap on very wide screens */
-  .v4hud-reticle {
-    left: 48%;
-  }
-}
-/* the dimension line + Φ label, lower-left margin near the install row */
-.v4hud-dim {
-  bottom: clamp(96px, 17vh, 168px);
-  left: max(20px, env(safe-area-inset-left));
-}
-.v4hud-dim-label {
-  bottom: calc(clamp(96px, 17vh, 168px) + 12px);
-  left: calc(max(20px, env(safe-area-inset-left)) + 70px);
-}
-/* an event code in the lower-right margin */
-.v4hud-evt {
-  bottom: clamp(40px, 7vh, 74px);
-  right: max(20px, env(safe-area-inset-right));
-  text-align: right;
-}
-
-/* a barely-there pulse on the reticle dot — motion-safe only, opacity-only so
-   it's compositor-cheap and reads as a "live" register tick. */
 @media (prefers-reduced-motion: no-preference) {
-  .v4-enter .v4hud-reticle-dot {
-    animation: v4reticle-pulse 4.2s ease-in-out infinite;
+  .v4-enter .v4bluegrid-plane {
+    animation: v4bluegrid-drift 40s linear infinite;
   }
 }
-@keyframes v4reticle-pulse {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.9; }
+@keyframes v4bluegrid-drift {
+  to {
+    transform: rotateX(66deg) translate3d(0, 60px, 0);
+  }
 }
 
-/* ── responsive · keep it sparse and overflow-proof on small screens ──────────
-   Below lg the two-column grid stacks, so the between-columns reticle and the
-   margin marks would crowd the content. Hide the dense set; keep ONLY the two
-   top corner marks (register + coord) which sit safely in the top gutter. */
+/* a faint horizon seam where the floor recedes — a single bright hairline that
+   reads as the vanishing edge (Maxime's grid has this glowing seam). */
+.v4bluegrid::before {
+  content: '';
+  position: absolute;
+  inset: 24% 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklch, var(--v4-blue-line) 48%, transparent) 50%, transparent);
+  opacity: 0.45;
+}
+
+/* ── 3 · the butterfly canvas stage (the focal ACCENT, not the centerpiece) ───
+   The lazy r3f canvas fills this stage. On desktop it anchors to the RIGHT band
+   (behind / beside the editor) so it reads as a focal mark, with a soft lamp
+   behind it so the particles sit in light. On mobile it sits low + dim as a
+   calm atmospheric layer. Fades + scales in once mounted (motion-safe). */
+.v4bfly-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+.v4bfly-stage::before {
+  content: '';
+  position: absolute;
+  width: min(58vmin, 560px);
+  height: min(58vmin, 560px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklch, var(--v4-blue-glow) 24%, transparent) 0%,
+    color-mix(in oklch, var(--v4-blue-glow) 8%, transparent) 40%,
+    transparent 66%
+  );
+  filter: blur(10px);
+}
+/* the canvas mount frame — sized to the figure. Fades/scales in on mount. */
+.v4bfly-canvas {
+  position: relative;
+  width: min(64vmin, 600px);
+  height: min(64vmin, 600px);
+  max-width: 100%;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.9s ease, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v4bfly-canvas[data-mounted='true'] {
+  opacity: 1;
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .v4bfly-canvas {
+    transition: opacity 0.4s ease;
+    transform: none;
+  }
+}
+
+/* on desktop the figure anchors to the RIGHT band (behind/beside the editor),
+   sitting slightly above center so the editor reads cleanly over it. */
+@media (min-width: 1024px) {
+  .v4bfly-stage {
+    justify-items: end;
+    align-items: center;
+  }
+  .v4bfly-canvas {
+    width: min(52vw, 640px);
+    height: min(72vh, 640px);
+    /* nudge it into the right third, slightly up — the focal accent */
+    margin-right: clamp(-40px, -2vw, -10px);
+    margin-top: clamp(-60px, -6vh, -20px);
+    opacity: 0;
+  }
+  .v4bfly-canvas[data-mounted='true'] {
+    opacity: 0.92;
+  }
+  .v4bfly-stage::before {
+    width: min(46vw, 560px);
+    height: min(46vw, 560px);
+    margin-right: clamp(0px, 6vw, 110px);
+    margin-top: clamp(-40px, -4vh, -10px);
+  }
+}
 @media (max-width: 1023px) {
-  .v4hud-reticle,
-  .v4hud-dim,
-  .v4hud-dim-label,
-  .v4hud-evt {
-    display: none;
+  /* dim + lower the figure on mobile so the stacked copy + editor stay legible */
+  .v4bfly-stage {
+    align-items: start;
+    padding-top: 6vh;
   }
-  /* pull the floor's vanishing point a touch lower so it stays behind the
-     stacked column rather than rising into the text. */
-  .v4depth {
-    height: 62%;
-    opacity: 0.85;
+  .v4bfly-canvas {
+    width: min(110vmin, 520px);
+    height: min(110vmin, 520px);
+    opacity: 0;
   }
-}
-@media (max-width: 639px) {
-  /* on the smallest screens, even the top marks go — pure calm, zero risk of
-     a long mono token nudging the viewport wider than 390px. */
-  .v4hud-register,
-  .v4hud-coord-tr {
-    display: none;
+  .v4bfly-canvas[data-mounted='true'] {
+    opacity: 0.5;
+  }
+  .v4bfly-stage::before {
+    opacity: 0.7;
   }
 }
+
+/* ── 4 · the HUD registration marks · the blueprint corner ticks ──────────────
+   Four faint L-shaped ticks at the hero's corners (a survey/registration mark
+   register · Maxime + technical-drawing nod). DECORATIVE only — aria-hidden,
+   drawn from --v4-blue-line at low alpha so they read as a quiet HUD, never as
+   chrome that competes with the copy. */
+.v4hud {
+  position: absolute;
+  inset: clamp(16px, 3vw, 40px);
+  z-index: 0;
+  pointer-events: none;
+}
+.v4hud-tick {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  opacity: 0.34;
+}
+.v4hud-tick::before,
+.v4hud-tick::after {
+  content: '';
+  position: absolute;
+  background: color-mix(in oklch, var(--v4-blue-line) 60%, transparent);
+}
+.v4hud-tick::before { /* horizontal arm */
+  width: 14px;
+  height: 1px;
+  top: 0;
+}
+.v4hud-tick::after { /* vertical arm */
+  width: 1px;
+  height: 14px;
+  left: 0;
+}
+.v4hud-tick--tl { top: 0; left: 0; }
+.v4hud-tick--tr { top: 0; right: 0; }
+.v4hud-tick--tr::before { right: 0; }
+.v4hud-tick--tr::after { left: auto; right: 0; }
+.v4hud-tick--bl { bottom: 0; left: 0; }
+.v4hud-tick--bl::before { top: auto; bottom: 0; }
+.v4hud-tick--bl::after { top: auto; bottom: 0; }
+.v4hud-tick--br { bottom: 0; right: 0; }
+.v4hud-tick--br::before { top: auto; bottom: 0; right: 0; }
+.v4hud-tick--br::after { top: auto; bottom: 0; left: auto; right: 0; }
+
+/* the readability scrim · a soft vignette so the copy column clears contrast
+   over the blue without dimming the figure too far. Darker toward the lower
+   edge + the LEFT (where the headline sits). */
+.v4hero-readscrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    /* the LEFT vignette · keeps dim/faint copy ≥4.5:1 even if the right-anchored
+       azure bloom reaches across on a wide viewport (the scrim wins the margin) */
+    linear-gradient(
+      100deg,
+      color-mix(in oklch, var(--v4-blue-deep) 66%, transparent) 0%,
+      color-mix(in oklch, var(--v4-blue-deep) 30%, transparent) 40%,
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 50%,
+      color-mix(in oklch, var(--v4-blue-deep) 46%, transparent) 100%
+    );
+}
+
+/* ── 5 · the two-column composition · copy LEFT · editor RIGHT ────────────────
+   Generous gutters + a wide gap so the columns breathe (the aeration ask). The
+   copy column is capped so lines stay readable; the editor column is given real
+   room. Stacks to one column under 1024px (editor BELOW the copy). */
+.v4hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+  padding-inline: clamp(20px, 5vw, 56px);
+  padding-block: clamp(96px, 14vh, 160px);
+}
+@media (min-width: 1024px) {
+  .v4hero-grid {
+    /* copy gets ~1.05fr, editor ~0.95fr — balanced, copy a touch wider */
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: center;
+  }
+}
+
+.v4hero-copy {
+  /* on mobile the copy sits first; nothing extra needed */
+  min-width: 0;
+}
+
+/* the editor column · the premium CodeFile panel, given room + a soft lift. */
+.v4hero-editor {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 1024px) {
+  .v4hero-editor {
+    /* let the editor read at a comfortable, generous width in its column */
+    max-width: 560px;
+    margin-left: auto;
+  }
+}
+/* a faint lift on the editor panel so it floats over the blue (its own dark
+   surface is already pinned by codefile.css — we only add ambient depth). */
+.v4hero-code {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 1px 0 rgb(0 0 0 / 0.5),
+    0 26px 70px -28px rgb(0 0 0 / 0.78),
+    0 10px 28px -16px color-mix(in oklch, var(--v4-blue-deep) 80%, black);
+}
+
+/* ── blue-scoped overrides for the shared hero chrome ─────────────────────────
+   The install line, kicker, trust line + FIG eyebrow are shared (shell.css) and
+   read --v4-text* (near-white). On the blue they already clear contrast; we only
+   warm the install panel surface + hairlines toward the blue so they belong. */
+#hero .v4install {
+  background: color-mix(in oklch, #0c1838 80%, transparent);
+  border-color: color-mix(in oklch, var(--v4-blue-line) 24%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+#hero .v4install-copy {
+  border-left-color: color-mix(in oklch, var(--v4-blue-line) 24%, transparent);
+  background: color-mix(in oklch, var(--v4-blue-line) 8%, transparent);
+}
+#hero .v4fig::before {
+  background: color-mix(in oklch, var(--v4-blue-line) 46%, transparent);
+}
+
+/* the small reference chip below the editor · a compact mono row that POINTS to
+   the full run (so the editor isn't a dead end). */
+.v4hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in oklch, var(--v4-blue-line) 22%, transparent);
+  background: color-mix(in oklch, #0c1838 66%, transparent);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--v4-text-dim);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+.v4hint:hover {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-blue-line) 44%, transparent);
+}
+.v4hint-file {
+  color: color-mix(in oklch, var(--v4-blue-line) 88%, white);
+  font-variant-ligatures: none;
+}
+.v4hint-arrow {
+  color: var(--v4-text-faint);
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+.v4hint:hover .v4hint-arrow {
+  transform: translateY(2px);
+  color: var(--v4-text-dim);
+}
+
+/* keep the entrance choreography tokens (.v4-enter [data-rise]) from shell.css —
+   they already drive the orchestrated reveal of the copy + editor. */
