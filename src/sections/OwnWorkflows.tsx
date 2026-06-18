@@ -94,9 +94,8 @@ export default function OwnWorkflows() {
         <p className="v4own-body" data-rise style={{ ['--rise-delay' as string]: '130ms' }}>
           <b>Reviewable before it acts.</b> Portable off any platform, versioned like
           code, runs on your machine. Nothing leaves unless you say so, nothing meters
-          your runs, nothing rots when a vendor pivots. The spec is open and the license
-          is <b>AGPL, forever</b> — the file outlives the vendor, still running the day
-          the company that made it is gone.
+          your runs, nothing rots when a vendor pivots. The spec is open and the
+          license is <b>AGPL, forever</b>.
         </p>
 
         {/* the facts ledger · hairline-ruled · counts from CANON (tabular-nums) */}

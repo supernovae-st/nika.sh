@@ -20,6 +20,10 @@
   --v4-text-faint: #838995;  /* captions · WCAG AA 5.28:1 on #121317        */
   --v4-hud-faint: #5a606b;   /* DECORATIVE only · aria-hidden HUD marks      */
   --v4-seam-nod: rgb(255 255 255 / 0.022); /* seam fade fallback (dark base) */
+  /* keyboard focus ring · theme-aware so the indicator clears WCAG 1.4.11 (≥3:1)
+     on BOTH surfaces. Cyan reads 10.9:1 on the near-black base; on the warm
+     off-white it sinks to ~1.7:1, so the light scope swaps to a near-black ring. */
+  --v4-focus-ring: #22d3ee; /* dark base · cyan, 10.9:1 on #0a0b0d */
 
   /* ── the micro-interaction language · ONE system ──────────────────────────
      Every interactive surface (nav · CTAs · copy buttons · cards · tabs · FAQ ·
@@ -60,6 +64,7 @@
   --v4-hud-faint: #5a606b;   /* DECORATIVE only · aria-hidden HUD marks      */
   /* seam nod · a dark section's neighbour is light → a faint light wash at top */
   --v4-seam-nod: rgb(255 255 255 / 0.022);
+  --v4-focus-ring: #22d3ee;  /* cyan · 10.9:1 on the dark base */
 }
 .theme-light,
 [data-theme='light'] {
@@ -72,6 +77,9 @@
   --v4-hud-faint: #8a8f98;   /* DECORATIVE only · aria-hidden HUD marks      */
   /* seam nod · a light section's neighbour is dark → a faint dark wash at top */
   --v4-seam-nod: rgb(10 11 13 / 0.04);
+  /* near-black focus ring · cyan sinks to ~1.7:1 on the off-white, this clears
+     WCAG 1.4.11 — #0a0b0d reads 18:1 on #f7f7f5 / 19:1 on the white cards */
+  --v4-focus-ring: #0a0b0d;
 }
 .theme-dark,
 .theme-light,

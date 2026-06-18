@@ -93,9 +93,12 @@ html { overflow-x: clip; }
 body { background: var(--bg); overflow-x: hidden; }
 ::selection { background: color-mix(in oklch, var(--brand) 40%, transparent); color: #fff; }
 
-/* keyboard focus — visible cyan ring on the dark glass (default ring drowns) */
+/* keyboard focus — theme-aware ring. --v4-focus-ring is re-scoped per section
+   (cyan on the dark base, near-black on the light surfaces) so the indicator
+   clears WCAG 1.4.11 (≥3:1) on BOTH themes; the cyan fallback keeps the v3
+   surfaces (nav, hero, galaxy) exactly as before. */
 :focus-visible {
-  outline: 2px solid color-mix(in oklch, var(--cyan) 80%, transparent);
+  outline: 2px solid color-mix(in oklch, var(--v4-focus-ring, var(--cyan)) 80%, transparent);
   outline-offset: 2px;
   border-radius: 8px;
 }

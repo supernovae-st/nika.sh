@@ -71,7 +71,7 @@ export default function FinalCTA() {
   return (
     <section
       ref={ref}
-      id="get-started"
+      id="start"
       aria-labelledby="cta-title"
       className="theme-dark v4sec v4-flip scroll-mt-24"
     >
