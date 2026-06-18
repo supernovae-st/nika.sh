@@ -6,12 +6,16 @@ import LivingFile from '../sections/living/LivingFile'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import Permits from '../sections/Permits'
+import WhereItFits from '../sections/WhereItFits'
 import HumanInTheLoop from '../sections/HumanInTheLoop'
 import OwnWorkflows from '../sections/OwnWorkflows'
 import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
+import GetStarted from '../sections/GetStarted'
 import ChangelogPreview from '../sections/ChangelogPreview'
 import Proof from '../sections/Proof'
+import Faq from '../sections/Faq'
+import { FAQ_ITEMS } from '../sections/faq-data'
 import FinalCTA from '../sections/FinalCTA'
 
 /* ─── / · the v4 trust landing ───────────────────────────────────────────────
@@ -66,6 +70,18 @@ const HOME_JSONLD = {
       programmingLanguage: 'Rust',
       license: 'https://www.gnu.org/licenses/agpl-3.0.html',
       about: { '@id': `${SITE}/#nika` },
+    },
+    /* the FAQ · structured-data eligible (rich result). The Q&A text comes
+       VERBATIM from the FAQ section's FAQ_ITEMS export (the single source of
+       truth) so the structured data can never drift from the rendered page. */
+    {
+      '@type': 'FAQPage',
+      '@id': `${SITE}/#faq`,
+      mainEntity: FAQ_ITEMS.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
     },
   ],
 }
@@ -175,6 +191,9 @@ export function Component() {
         {/* FIG 3.5 · the seatbelt — what it's ALLOWED to do (permits:) */}
         <Permits />
 
+        {/* FIG 3.6 · where Nika fits — the orthogonal layer underneath (light) */}
+        <WhereItFits />
+
         {/* FIG 4.0 · be the human in the loop — the interactive permits demo:
              review the plan, toggle what it can touch, watch the runtime obey
              (a real NIKA-SEC-004 denial when a load-bearing permit is removed) */}
@@ -189,11 +208,17 @@ export function Component() {
         {/* FIG 7.0 · Use cases — the editorial gallery (real spec workflows) */}
         <UseCasesV4 />
 
+        {/* FIG 7.5 · Get started — install · write a file · run it (the on-ramp) */}
+        <GetStarted />
+
         {/* FIG 8.0 · Changelog — the ship log (latest milestones) */}
         <ChangelogPreview />
 
         {/* FIG 9.0 · Proof — the control guarantees + CANON counts */}
         <Proof />
+
+        {/* FIG 9.5 · FAQ — disarm the real objections (honest, light) */}
+        <Faq />
 
         {/* FIG 10.0 · Final CTA + SUPERNOVAE footer (kept intact) */}
         <FinalCTA />

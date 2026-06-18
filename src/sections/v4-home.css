@@ -1596,3 +1596,309 @@
 .v4cta-link:hover .v4cta-link-arrow {
   transform: translateX(2px);
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FIG 3.6 · WHERE NIKA FITS  (theme-light · the positioning beat)
+   A concise "they do X · Nika does Y" register — a one-line thesis (the .v4sec
+   title), three hairline-ruled contrasts, then the punch line. Fair + complementary
+   by construction; tight, not a huge section.
+   ════════════════════════════════════════════════════════════════════════════ */
+.v4fits-rows {
+  margin: clamp(40px, 6vh, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.v4fits-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px 32px;
+  padding: 24px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+@media (min-width: 760px) {
+  .v4fits-row {
+    grid-template-columns: 1.05fr 1fr;
+    align-items: baseline;
+  }
+}
+/* the left rail · what the other layer is (name + what it's good at) */
+.v4fits-them {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  column-gap: 12px;
+  row-gap: 6px;
+  min-width: 0;
+}
+.v4fits-fig {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.v4fits-them-name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v4-text);
+}
+.v4fits-them-does {
+  grid-column: 2;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+/* the right · what Nika adds underneath (the orthogonal layer) */
+.v4fits-nika {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.v4fits-nika img {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  opacity: 0.85;
+  transform: translateY(2px);
+}
+.v4fits-nika b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.v4fits-punch {
+  margin-top: clamp(28px, 4vh, 44px);
+  max-width: 44rem;
+  font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.35rem);
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  color: var(--v4-text-dim);
+  text-wrap: balance;
+}
+.v4fits-punch b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FIG 7.5 · GET STARTED  (theme-dark · the on-ramp)
+   Three numbered steps in the blueprint register: ① install · ② write a file ·
+   ③ run it. A hairline-ruled list; each step = a numbered head + a body (desc +
+   install line / code panel / run line). Mirrors the .v4log register.
+   ════════════════════════════════════════════════════════════════════════════ */
+.v4start {
+  margin: clamp(40px, 6vh, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.v4start-step {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px 32px;
+  padding: 26px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+@media (min-width: 760px) {
+  .v4start-step {
+    grid-template-columns: 13rem 1fr;
+    gap: 0 32px;
+    align-items: start;
+  }
+}
+/* the left rail · the step number + its title */
+.v4start-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+.v4start-num {
+  font-size: 19px;
+  line-height: 1;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.v4start-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v4-text);
+}
+.v4start-body {
+  min-width: 0;
+}
+.v4start-desc {
+  max-width: 42rem;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.v4start-desc b {
+  color: var(--v4-text);
+  font-weight: 560;
+}
+/* ① the two install affordances · brew, then the curl alt, with an "or" seam */
+.v4start-installs {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.v4start-or {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+/* ② the code panel · a touch of top gap from the desc */
+.v4start-code {
+  margin-top: 14px;
+}
+.v4start-readonly {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}
+.v4start-readonly::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 26px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+/* ③ the run line gets the same top gap as the install affordances */
+.v4start-body .v4install {
+  margin-top: 14px;
+}
+.v4start-installs .v4install {
+  margin-top: 0;
+}
+/* the close · learn it in 5 minutes (mirrors .v4log-more) */
+.v4start-more {
+  margin-top: clamp(28px, 4vh, 44px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+.v4start-more-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
+  transition: text-decoration-color 0.18s ease;
+}
+.v4start-more-link:hover {
+  text-decoration-color: var(--v4-text);
+}
+.v4start-more-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FIG 9.5 · FAQ  (theme-light · the honest disclosures)
+   Native <details>/<summary> accordion (keyboard + a11y for free), hairline-ruled
+   in the blueprint register. The summary marker (a +) rotates to × when open.
+   ════════════════════════════════════════════════════════════════════════════ */
+.v4faq {
+  margin: clamp(40px, 6vh, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.v4faq-item {
+  border-bottom: 1px solid var(--v4-line);
+}
+.v4faq-details {
+  padding: 4px 2px;
+}
+.v4faq-summary {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  column-gap: 14px;
+  padding: 20px 2px;
+  cursor: pointer;
+  list-style: none; /* drop the native disclosure triangle (we draw our own) */
+}
+.v4faq-summary::-webkit-details-marker {
+  display: none;
+}
+.v4faq-summary:hover .v4faq-q {
+  color: var(--v4-text);
+}
+.v4faq-fig {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.v4faq-q {
+  font-size: clamp(0.98rem, 0.92rem + 0.3vw, 1.12rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--v4-text);
+  text-wrap: balance;
+  transition: color 0.16s ease;
+}
+.v4faq-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--v4-text-dim);
+  transform: translateY(2px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v4faq-mark {
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), color 0.16s ease;
+  }
+}
+.v4faq-details[open] .v4faq-mark {
+  transform: translateY(2px) rotate(45deg); /* the + becomes a × when open */
+  color: var(--v4-text);
+}
+.v4faq-a {
+  grid-column: 2 / 3;
+  margin: 0 0 4px;
+  padding: 0 0 22px;
+  max-width: 46rem;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+/* the answer aligns under the question (skip the fig gutter) on wider screens */
+@media (min-width: 520px) {
+  .v4faq-a {
+    margin-left: calc(11px + 14px); /* fig width + column gap */
+  }
+}
