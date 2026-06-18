@@ -90,7 +90,7 @@ export function Component() {
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             A workflow language earns trust by <b>moving</b> — and by not breaking what you
             wrote. Every public milestone, dated and tagged: the spec opened, the verbs locked,
-            the standard library and the provider catalog landed.
+            the <code>permits:</code> model, the standard library and the playground landed.
           </p>
 
           {/* the full register · grouped by year, hairline-ruled, newest-first */}

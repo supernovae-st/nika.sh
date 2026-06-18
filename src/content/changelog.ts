@@ -15,7 +15,14 @@
 
 import { CANON } from '../canon.generated'
 
-export type ChangelogTag = 'spec' | 'language' | 'stdlib' | 'providers' | 'site'
+export type ChangelogTag =
+  | 'spec'
+  | 'language'
+  | 'stdlib'
+  | 'providers'
+  | 'security'
+  | 'tooling'
+  | 'site'
 
 export interface ChangelogEntry {
   /** ISO date · used for the <time> + the displayed register date. */
@@ -38,6 +45,24 @@ export const CHANGELOG: ChangelogEntry[] = [
     body: 'The site rebuilt around one idea: a real .nika.yaml file, instant and crawlable, with the spec as the single source of truth.',
   },
   {
+    date: '2026-06-12',
+    tag: 'tooling',
+    title: 'The playground — validate Nika in the browser',
+    body: 'Edit a real workflow at nika.sh/play and watch it check as you type, with the engine’s own NIKA error codes. No install to try it.',
+  },
+  {
+    date: '2026-06-02',
+    tag: 'security',
+    title: 'permits: — the declared blast radius',
+    body: 'Every plan can state exactly what it may touch — files, hosts, programs, tools. Once permits: is present, every category is default-deny.',
+  },
+  {
+    date: '2026-05-28',
+    tag: 'security',
+    title: 'Enforced before it runs — NIKA-SEC codes',
+    body: 'Out-of-bounds is denied, not logged after the fact: an effect past the permits: boundary fails with NIKA-SEC-004 before the action happens.',
+  },
+  {
     date: '2026-05-22',
     tag: 'providers',
     title: `${CANON.providers} model providers — local-first`,
@@ -50,10 +75,34 @@ export const CHANGELOG: ChangelogEntry[] = [
     body: 'infer · exec · invoke · agent — a verb is a distinct native execution model. No fifth verb, ever (D-2026-05-22-N18).',
   },
   {
+    date: '2026-05-18',
+    tag: 'tooling',
+    title: 'MCP, native — any server through invoke',
+    body: 'Reach a Model Context Protocol server the same way as a builtin: invoke a mcp: tool id. Default-deny — the file whitelists what an agent may call.',
+  },
+  {
+    date: '2026-05-14',
+    tag: 'stdlib',
+    title: `fetch — ${CANON.extractModes} extract modes`,
+    body: `One builtin turns a page into typed output ${CANON.extractModes} ways: article, markdown, text, links, metadata, selector, sitemap, feed and jq. Read-only by design.`,
+  },
+  {
     date: '2026-05-10',
     tag: 'stdlib',
     title: `Standard library v0.1 — ${CANON.builtins} builtins`,
     body: `${CANON.builtins} builtin tools across files, data, web and flow — all reached the same way, with invoke:. Nothing to install.`,
+  },
+  {
+    date: '2026-05-04',
+    tag: 'spec',
+    title: `The error catalog — ${CANON.errorCodes} typed codes`,
+    body: `Every failure has a stable NIKA-* code across ${CANON.errorNamespaces} namespaces — published, machine-readable, the same in a CLI run and the validator.`,
+  },
+  {
+    date: '2026-05-01',
+    tag: 'spec',
+    title: 'The JSON Schema — one workflow contract',
+    body: 'workflow.json describes a valid plan end to end: the nika: v1 envelope, the four verbs, the permits: block — your editor checks it as you write.',
   },
   {
     date: '2026-04-29',
@@ -69,6 +118,8 @@ export const TAG_LABEL: Record<ChangelogTag, string> = {
   language: 'language',
   stdlib: 'stdlib',
   providers: 'providers',
+  security: 'security',
+  tooling: 'tooling',
   site: 'site',
 }
 
