@@ -59,11 +59,18 @@ export function Component() {
         property: 'og:description',
         content: 'The drum of liberation — sovereign AI workflows, owned by you.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-manifesto.png' },
+      {
+        property: 'og:image:alt',
+        content:
+          'Nika manifesto — the drum of liberation. Any model, your memory, owned by you.',
+      },
       { name: 'twitter:title', content: 'Manifesto · Nika' },
       {
         name: 'twitter:description',
         content: 'The drum of liberation — sovereign AI workflows, owned by you.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-manifesto.png' },
     ],
   })
 

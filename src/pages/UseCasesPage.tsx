@@ -149,12 +149,19 @@ export function Component() {
         content:
           'Real Nika workflows across five métiers, each with the exact spec-valid YAML that runs it.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-use-cases.png' },
+      {
+        property: 'og:image:alt',
+        content:
+          'Nika use cases — real plans you would review, across builders, research, content, ops and business.',
+      },
       { name: 'twitter:title', content: 'Use cases · Nika' },
       {
         name: 'twitter:description',
         content:
           'Real Nika workflows across five métiers, each with the exact spec-valid YAML that runs it.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-use-cases.png' },
     ],
   })
 

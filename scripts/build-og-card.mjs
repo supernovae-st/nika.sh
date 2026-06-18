@@ -1,18 +1,26 @@
-// build-og-card.mjs — generate the on-brand OG social card for nika.sh (v4).
+// build-og-card.mjs — generate the on-brand OG social cards for nika.sh (v4).
 //
-// Renders a 1200×630 PNG `public/og.png` that matches the v4 "sovereign
+// Renders the 1200×630 PNG share cards that match the v4 "sovereign
 // engineering / blueprint" register: near-black #0a0b0d, real Martian
 // Grotesk display + Martian Mono register, 1px hairlines, a faint perspective
 // depth-grid, the EdgeAurora cyan→violet ring at the frame (the lone colour),
-// and the nika butterfly mark. The control pitch is the headline.
+// and the nika butterfly mark. Each route carries THAT page's message.
 //
-// Pipeline (dependency-free):
+// Cards (one card spec → one PNG · all in CARDS below):
+//   public/og.png            home      "See what your AI will do."          (control)
+//   public/og-spec.png       /spec     "The contract an agent must satisfy…" (reference)
+//   public/og-use-cases.png  /use-cases "Real plans you'd review."           (gallery)
+//   public/og-manifesto.png  /manifesto "The drum of liberation."           (sovereignty)
+//
+// Pipeline (dependency-free), per card:
 //   1. this script inlines the real woff2 fonts + the nika mark into a
-//      self-contained scripts/og-card.html (committed, inspectable)
+//      self-contained scripts/og-card.html (committed, inspectable — the LAST
+//      card rendered stays on disk so the template is always reviewable)
 //   2. headless Chrome screenshots it at 2400×1260 (DSF 2 for crisp type)
-//   3. ImageMagick downscales to 1200×630, pngquant quantises (< 150 KB)
+//   3. ImageMagick downscales to 1200×630, pngquant quantises (< 100 KB)
 //
-// Usage: node scripts/build-og-card.mjs   (run from the repo root)
+// Reproducible: `node scripts/build-og-card.mjs` regenerates ALL cards.
+// Single card while iterating: `node scripts/build-og-card.mjs spec`.
 
 import { readFileSync, writeFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -32,8 +40,57 @@ const mono = b64(resolve(pub, 'fonts/martian-mono-variable.woff2'));
 const nikaSvg = readFileSync(resolve(pub, 'nika.svg'), 'utf8');
 const nikaPath = nikaSvg.match(/<path d="([^"]+)"/)[1];
 
-// ── the card template ───────────────────────────────────────────────────────
-const html = `<!doctype html>
+// ─────────────────────────────────────────────────────────────────────────────
+// The card specs. Each one drives the SAME v4 instrument template, carrying the
+// route's own message. `headline` may carry one <span class="b"> dim emphasis;
+// `detail` is the blueprint hint row (mono); `aurora` lets the manifesto echo
+// the cosmic register a touch stronger. All cards stay dark for share
+// legibility. Footer holds the licence/stack ticks (the studio signature).
+// ─────────────────────────────────────────────────────────────────────────────
+const CARDS = [
+  {
+    // HOME — the control pitch (UNCHANGED · the existing card, byte-identical).
+    out: 'og.png',
+    fig: 'FIG 0.0',
+    headline: 'See what your AI will do.<br><span class="b">Before it does it.</span>',
+    sub: 'The control layer for AI agents&nbsp;— a reviewable, enforceable plan before it acts.',
+    detail:
+      '<span class="arrow">▸</span><span><b>permits:</b> everything it can touch&nbsp;— and nothing&nbsp;else.</span>',
+  },
+  {
+    // /spec — the language reference. The contract a plan must satisfy.
+    out: 'og-spec.png',
+    fig: 'FIG S.0',
+    size: 62, // a longer headline · a touch smaller so 3 lines clear the brand row
+    headline:
+      'The contract an agent<br>must satisfy<br><span class="b">before it acts.</span>',
+    sub: 'The nika language reference&nbsp;— the envelope, the four verbs, the task shape, the standard&nbsp;library.',
+    detail:
+      '<span class="arrow">▸</span><span><b>permits:</b> &nbsp;infer&nbsp;<span class="sep">·</span>&nbsp;exec&nbsp;<span class="sep">·</span>&nbsp;invoke&nbsp;<span class="sep">·</span>&nbsp;agent</span>',
+  },
+  {
+    // /use-cases — the gallery. Real plans you'd actually review.
+    out: 'og-use-cases.png',
+    fig: 'FIG 6.0',
+    headline: 'Real plans<br><span class="b">you&rsquo;d review.</span>',
+    sub: 'The full showcase&nbsp;— every métier, every workflow, each with the exact spec-valid YAML that runs&nbsp;it.',
+    detail:
+      '<span class="arrow">▸</span><span><b>builders</b><span class="sep">·</span>research<span class="sep">·</span>content<span class="sep">·</span>ops<span class="sep">·</span>business</span>',
+  },
+  {
+    // /manifesto — the sovereignty line. Echo the cosmic register a touch.
+    out: 'og-manifesto.png',
+    fig: 'FIG ∞',
+    cosmic: true, // a touch more aurora · the manifesto's cosmic register
+    headline: 'The drum<br><span class="b">of liberation.</span>',
+    sub: 'Sovereign AI workflows that run on your machine, with any model, and are never switched off by anyone but&nbsp;you.',
+    detail:
+      '<span class="arrow">▸</span><span>any&nbsp;model<span class="sep">·</span>your&nbsp;memory<span class="sep">·</span><b>owned&nbsp;by&nbsp;you</b></span>',
+  },
+];
+
+// ── the card template (a function of one card spec) ─────────────────────────
+const cardHtml = (c) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -79,7 +136,7 @@ const html = `<!doctype html>
     -webkit-mask: radial-gradient(ellipse 70% 76% at 50% 50%,
       transparent 50%, #000 92%);
     filter: blur(86px);
-    opacity: 0.26;
+    opacity: ${c.cosmic ? 0.34 : 0.26};
   }
   /* a hard 1px inner frame line over the aurora — the instrument bezel */
   .bezel {
@@ -130,7 +187,7 @@ const html = `<!doctype html>
     flex-direction: column;
   }
 
-  /* top register row — mark + wordmark · left; FIG 0.0 · right */
+  /* top register row — mark + wordmark · left; FIG · right */
   .top { display: flex; align-items: center; justify-content: space-between; }
   .brand { display: flex; align-items: center; gap: 20px; }
   .brand svg { width: 56px; height: 56px; display: block; }
@@ -150,7 +207,7 @@ const html = `<!doctype html>
     margin-top: auto;
     font-family: 'Martian Grotesk', sans-serif;
     font-weight: 600;
-    font-size: 72px;
+    font-size: ${c.size ?? 72}px;
     line-height: 1.0;
     letter-spacing: -0.03em;
     color: var(--ink);
@@ -178,6 +235,7 @@ const html = `<!doctype html>
   }
   .permits b { color: var(--ink); font-weight: 600; }
   .permits .arrow { color: var(--dim); }
+  .permits .sep { color: var(--line); }
 
   /* footer ticks — domain · stack */
   .foot {
@@ -214,12 +272,12 @@ const html = `<!doctype html>
         </svg>
         <span class="wordmark">nika</span>
       </div>
-      <div class="fig"><span class="rule"></span>FIG 0.0</div>
+      <div class="fig"><span class="rule"></span>${c.fig}</div>
     </div>
 
-    <h1 class="headline">See what your AI will do.<br><span class="b">Before it does it.</span></h1>
-    <p class="sub">The control layer for AI agents&nbsp;— a reviewable, enforceable plan before it acts.</p>
-    <p class="permits"><span class="arrow">▸</span><span><b>permits:</b> everything it can touch&nbsp;— and nothing&nbsp;else.</span></p>
+    <h1 class="headline">${c.headline}</h1>
+    <p class="sub">${c.sub}</p>
+    <p class="permits">${c.detail}</p>
 
     <div class="foot">
       <span class="domain">nika.sh</span>
@@ -229,11 +287,7 @@ const html = `<!doctype html>
 </body>
 </html>`;
 
-const htmlOut = resolve(__dirname, 'og-card.html');
-writeFileSync(htmlOut, html);
-console.log(`wrote ${htmlOut} (${(html.length / 1024).toFixed(0)} KB self-contained)`);
-
-// ── render → downscale → quantise ────────────────────────────────────────────
+// ── render → downscale → quantise (per card) ─────────────────────────────────
 // Headless Chrome screenshots at DSF 2 (2400×1260) for crisp glyph edges, then
 // ImageMagick downscales to 1200×630, then pngquant quantises (256-color palette
 // keeps the soft cyan→violet aurora gradient banding-free while staying small).
@@ -241,32 +295,51 @@ const sh = (cmd, args) => execFileSync(cmd, args, { stdio: 'inherit' });
 const CHROME =
   process.env.CHROME ||
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const htmlOut = resolve(__dirname, 'og-card.html');
 const raw = '/tmp/og-raw.png';
 const down = '/tmp/og-down.png';
-const out = resolve(pub, 'og.png');
 
-sh(CHROME, [
-  '--headless',
-  '--disable-gpu',
-  '--hide-scrollbars',
-  '--force-device-scale-factor=2',
-  '--default-background-color=00000000',
-  `--screenshot=${raw}`,
-  '--window-size=1200,630',
-  `file://${htmlOut}`,
-]);
-sh('magick', [raw, '-resize', '1200x630', '-strip', down]);
-sh('pngquant', [
-  '--force',
-  '--quality=80-100',
-  '--strip',
-  '--speed',
-  '1',
-  '--output',
-  out,
-  '256',
-  down,
-]);
+// optional single-card filter: `node build-og-card.mjs spec` matches og-spec.png
+const only = process.argv[2];
+const cards = only
+  ? CARDS.filter((c) => c.out === `og-${only}.png` || c.out === `${only}.png`)
+  : CARDS;
+if (cards.length === 0) {
+  console.error(`no card matches "${only}" — known: ${CARDS.map((c) => c.out).join(', ')}`);
+  process.exit(1);
+}
 
-const kb = (statSync(out).size / 1024).toFixed(0);
-console.log(`wrote ${out} (${kb} KB · 1200×630)`);
+for (const c of cards) {
+  const html = cardHtml(c);
+  // the committed, inspectable template stays the last card rendered on disk
+  writeFileSync(htmlOut, html);
+
+  const out = resolve(pub, c.out);
+  sh(CHROME, [
+    '--headless',
+    '--disable-gpu',
+    '--hide-scrollbars',
+    '--force-device-scale-factor=2',
+    '--default-background-color=00000000',
+    `--screenshot=${raw}`,
+    '--window-size=1200,630',
+    `file://${htmlOut}`,
+  ]);
+  sh('magick', [raw, '-resize', '1200x630', '-strip', down]);
+  sh('pngquant', [
+    '--force',
+    '--quality=80-100',
+    '--strip',
+    '--speed',
+    '1',
+    '--output',
+    out,
+    '256',
+    down,
+  ]);
+
+  const kb = (statSync(out).size / 1024).toFixed(0);
+  console.log(`wrote ${out} (${kb} KB · 1200×630)`);
+}
+
+console.log(`template on disk: ${htmlOut} (${(cardHtml(cards[cards.length - 1]).length / 1024).toFixed(0)} KB self-contained · last card)`);

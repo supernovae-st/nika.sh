@@ -197,12 +197,19 @@ export function Component() {
         content:
           'The nika language reference — the v1 envelope, the four verbs, the task shape, the standard library, providers, extract modes and error namespaces.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-spec.png' },
+      {
+        property: 'og:image:alt',
+        content:
+          'Nika spec — the contract an agent must satisfy before it acts. permits: infer · exec · invoke · agent.',
+      },
       { name: 'twitter:title', content: 'Spec · Nika' },
       {
         name: 'twitter:description',
         content:
           'The nika language reference — envelope, verbs, task shape, stdlib, providers, errors.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-spec.png' },
     ],
   })
 

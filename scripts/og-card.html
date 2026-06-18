@@ -44,7 +44,7 @@
     -webkit-mask: radial-gradient(ellipse 70% 76% at 50% 50%,
       transparent 50%, #000 92%);
     filter: blur(86px);
-    opacity: 0.26;
+    opacity: 0.34;
   }
   /* a hard 1px inner frame line over the aurora — the instrument bezel */
   .bezel {
@@ -95,7 +95,7 @@
     flex-direction: column;
   }
 
-  /* top register row — mark + wordmark · left; FIG 0.0 · right */
+  /* top register row — mark + wordmark · left; FIG · right */
   .top { display: flex; align-items: center; justify-content: space-between; }
   .brand { display: flex; align-items: center; gap: 20px; }
   .brand svg { width: 56px; height: 56px; display: block; }
@@ -143,6 +143,7 @@
   }
   .permits b { color: var(--ink); font-weight: 600; }
   .permits .arrow { color: var(--dim); }
+  .permits .sep { color: var(--line); }
 
   /* footer ticks — domain · stack */
   .foot {
@@ -179,12 +180,12 @@
         </svg>
         <span class="wordmark">nika</span>
       </div>
-      <div class="fig"><span class="rule"></span>FIG 0.0</div>
+      <div class="fig"><span class="rule"></span>FIG ∞</div>
     </div>
 
-    <h1 class="headline">See what your AI will do.<br><span class="b">Before it does it.</span></h1>
-    <p class="sub">The control layer for AI agents&nbsp;— a reviewable, enforceable plan before it acts.</p>
-    <p class="permits"><span class="arrow">▸</span><span><b>permits:</b> everything it can touch&nbsp;— and nothing&nbsp;else.</span></p>
+    <h1 class="headline">The drum<br><span class="b">of liberation.</span></h1>
+    <p class="sub">Sovereign AI workflows that run on your machine, with any model, and are never switched off by anyone but&nbsp;you.</p>
+    <p class="permits"><span class="arrow">▸</span><span>any&nbsp;model<span class="sep">·</span>your&nbsp;memory<span class="sep">·</span><b>owned&nbsp;by&nbsp;you</b></span></p>
 
     <div class="foot">
       <span class="domain">nika.sh</span>
