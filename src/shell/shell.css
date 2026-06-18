@@ -20,6 +20,35 @@
     border-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     backdrop-filter 0.32s ease;
 }
+/* the legibility scrim · the nav rides FIXED at the document root (outside any
+   themed section), so its near-white brand + links read fine over a dark hero
+   but wash out over a LIGHT section's top (e.g. /use-cases, the light home
+   beats) while the nav is still transparent. A top-down dark scrim sits BEHIND
+   the row (z-index:-1, pointer-events:none) and stays dark across the full
+   60px row band (then fades), so the near-white ink clears contrast (≈6:1 over
+   the light off-white) against whatever scrolls under it. It is present only
+   while transparent and fades to nothing once the solid bg takes over (no
+   double-darkening); over a dark hero it is imperceptible (dark on dark). */
+.v4nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(10 11 13 / 0.66) 0%,
+    rgb(10 11 13 / 0.62) 60px,
+    rgb(10 11 13 / 0.18) 78px,
+    rgb(10 11 13 / 0) 100%
+  );
+  opacity: 1;
+  transition: opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v4nav[data-scrolled='true']::before {
+  /* the solid surface now carries the contrast; drop the scrim to avoid stacking */
+  opacity: 0;
+}
 .v4nav[data-scrolled='true'] {
   background: color-mix(in oklch, var(--v4-bg) 78%, transparent);
   border-bottom-color: var(--v4-line);
@@ -97,6 +126,19 @@
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
 }
 .v4nav-link[aria-current='true'] {
+  color: var(--v4-text);
+}
+/* while transparent (over a hero / light section top), the dim gray sinks into
+   the scrim — lift the rail ink to a high-opacity near-white so every link
+   clears contrast (≈5:1 on the scrim). Once solid, the dim/text hierarchy
+   returns. Brand + ghost + caret follow the same lift. */
+.v4nav:not([data-scrolled='true']) .v4nav-link,
+.v4nav:not([data-scrolled='true']) .v4nav-ghost {
+  color: color-mix(in oklch, var(--v4-text) 88%, transparent);
+}
+.v4nav:not([data-scrolled='true']) .v4nav-link:hover,
+.v4nav:not([data-scrolled='true']) .v4nav-ghost:hover,
+.v4nav:not([data-scrolled='true']) .v4nav-link[aria-current='true'] {
   color: var(--v4-text);
 }
 /* the engineering-blueprint underline tick — a hairline that draws on hover */

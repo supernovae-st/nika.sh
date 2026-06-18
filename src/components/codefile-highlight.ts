@@ -88,7 +88,11 @@ function classifyValue(value: string): Token[] {
   // carve inline ${{ … }} / &anchor / *alias refs out of the string run.
   if (TREF_RE.test(value)) {
     const tokens: Token[] = []
-    const parts = value.split(new RegExp(`(${TREF_RE.source})`, 'g'))
+    // TREF_RE.source ALREADY contains exactly one capture group, so splitting on
+    // it retains each matched ref as a delimiter in the result. Wrapping it in a
+    // SECOND `(…)` would make String.split interleave BOTH captured groups,
+    // emitting every ref twice (`${{x}}${{x}}`). Split on the single group.
+    const parts = value.split(new RegExp(TREF_RE.source, 'g'))
     for (const part of parts) {
       if (part === '') continue
       tokens.push({ kind: TREF_RE.test(part) ? 'tref' : 'string', text: part })

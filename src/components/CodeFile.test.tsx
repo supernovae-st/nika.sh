@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { CodeFile } from './CodeFile'
-import { verbGlyph } from './codefile-highlight'
+import { tokenizeLine, verbGlyph } from './codefile-highlight'
 
 /* ── verbGlyph: the 4 Nika verbs → distinct monospace-safe glyphs ──
    Written FIRST (TDD). Each verb maps to ONE clean, monochrome glyph;
@@ -28,6 +28,76 @@ describe('verbGlyph', () => {
     const glyphs = ['infer', 'exec', 'invoke', 'agent'].map(verbGlyph)
     expect(new Set(glyphs).size).toBe(4)
     expect(glyphs).not.toContain('·')
+  })
+})
+
+/* ── template refs (${{ … }}) + &anchors / *aliases are carved out ONCE ──
+   Regression guard for the doubled-ref bug: classifyValue split the value on a
+   DOUBLY-wrapped capture group, so String.split interleaved both groups and
+   every ref was emitted twice (`${{ vars.x }}${{ vars.x }}`). The split now
+   uses TREF_RE's single capture group, so each ref appears exactly once. */
+describe('tokenizeLine · template refs / anchors', () => {
+  it('emits a ${{ … }} ref exactly ONCE (no doubling)', () => {
+    const { tokens } = tokenizeLine('  files: ${{ vars.cv_glob }}')
+    const refs = tokens.filter((t) => t.kind === 'tref')
+    expect(refs).toHaveLength(1)
+    expect(refs[0].text).toBe('${{ vars.cv_glob }}')
+    // and the whole line text round-trips with the ref present exactly once
+    const text = tokens.map((t) => t.text).join('')
+    expect(text).toBe('  files: ${{ vars.cv_glob }}')
+    expect(text).not.toContain('}}${{')
+  })
+
+  it('emits MULTIPLE refs on one line each exactly once', () => {
+    const { tokens } = tokenizeLine('msg: ${{ tasks.a.output }} then ${{ tasks.b.output }}')
+    const refs = tokens.filter((t) => t.kind === 'tref').map((t) => t.text)
+    expect(refs).toEqual(['${{ tasks.a.output }}', '${{ tasks.b.output }}'])
+    const text = tokens.map((t) => t.text).join('')
+    expect(text).not.toContain('}}${{')
+    expect(text).toContain('then')
+  })
+
+  it('carves a &anchor and a *alias as single tref tokens', () => {
+    const anchor = tokenizeLine('base: &shared')
+    expect(anchor.tokens.filter((t) => t.kind === 'tref').map((t) => t.text)).toEqual(['&shared'])
+    const alias = tokenizeLine('use: *shared')
+    expect(alias.tokens.filter((t) => t.kind === 'tref').map((t) => t.text)).toEqual(['*shared'])
+  })
+})
+
+/* ── the rendered DOM carries each ${{ ref }} once (the prod-visible bug) ── */
+describe('CodeFile · template ref rendering', () => {
+  const yamlRefs = [
+    'tasks:',
+    '  - id: pool',
+    '    invoke:',
+    '      args:',
+    '        files: ${{ vars.cv_glob }}',
+    '  - id: pick',
+    '    infer:',
+    '      prompt: ${{ tasks.pool.output }}',
+    'merge: &base',
+    'ref: *base',
+  ].join('\n')
+
+  it('renders ${{ refs }} exactly once (no doubled refs in the DOM)', () => {
+    const { container } = render(<CodeFile yaml={yamlRefs} />)
+    const text = container.textContent ?? ''
+    // the doubled-ref signature must be absent everywhere
+    expect(text).not.toContain('}}${{')
+    expect(text).not.toContain('${{ vars.cv_glob }}${{ vars.cv_glob }}')
+    expect(text).not.toContain('${{ tasks.pool.output }}${{ tasks.pool.output }}')
+    // and each ref still appears (exactly once)
+    const once = (hay: string, needle: string) => hay.split(needle).length - 1
+    expect(once(text, '${{ vars.cv_glob }}')).toBe(1)
+    expect(once(text, '${{ tasks.pool.output }}')).toBe(1)
+  })
+
+  it('marks the ref text with a .cf-ref span', () => {
+    const { container } = render(<CodeFile yaml="files: ${{ vars.cv_glob }}" lineNumbers={false} />)
+    const refSpans = container.querySelectorAll('.cf-ref')
+    expect(refSpans.length).toBe(1)
+    expect(refSpans[0].textContent).toBe('${{ vars.cv_glob }}')
   })
 })
 
