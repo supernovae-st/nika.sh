@@ -402,6 +402,49 @@ function EnforceCallout() {
   )
 }
 
+/* ── the plain-words pipeline · the COMPREHENSION layer ───────────────────────
+   The flat DAG's ids (pool · cvs · screened …) are cryptic. This shows what each
+   step DOES, in order, as a clean numbered flow — you grok the whole plan at a
+   glance before the corridor flies you through it. Business glosses keyed to the
+   fil-rouge (t3-resume-screener); a verb-based fallback keeps any other DAG
+   legible. The 4 verb hues tint only the verb tag (diegetic · everything else is
+   grayscale ink). */
+const STEP_GLOSS: Record<string, string> = {
+  pool: 'list every CV in the inbox',
+  cvs: 'read each CV · 8 at once',
+  pairs: 'pair each path with its text',
+  screened: 'score each candidate · local model',
+  ranked: 'drop the weak fits · rank the rest',
+  shortlist: 'keep the top 5',
+  brief: 'write the shortlist brief',
+  save: 'save the brief — within permits',
+}
+function stepGloss(task: ShowcaseTask): string {
+  return STEP_GLOSS[task.id] ?? task.gloss
+}
+
+function PlanFlow() {
+  return (
+    <ol className="lf-flow" aria-label="The plan, step by step">
+      {ORDERED_TASKS.map((task, i) => (
+        <li
+          key={task.id}
+          className="lf-flow-step"
+          style={{ ['--lf-hue' as string]: VERB_VAR[task.verb] }}
+        >
+          <span className="lf-flow-n" aria-hidden>
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <span className="lf-flow-gloss">{stepGloss(task)}</span>
+          <span className="lf-flow-verb" aria-hidden>
+            {task.verb}
+          </span>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
 /* ── beat caption · the one-line "where you are" register (the 4 control beats) */
 function beatLabel(t: number): { fig: string; title: string } {
   if (t < T_FILE_END) return { fig: 'FIG 1.0', title: 'Write — the agent declares its plan' }
@@ -638,11 +681,9 @@ export default function LivingFile() {
                         plan's shape here; then it tilts back into depth (--lf-tilt)
                         as the corridor takes over — the design-doc ③→④ handoff. */}
                     <div className="lf-dag-layer">
-                      <div className="lf-dag-wrap lf-dag-wrap--big">
-                        <Dag run={run} morph={1} />
-                      </div>
+                      <PlanFlow />
                       <p className="lf-dag-hint mono" aria-hidden>
-                        each step feeds the next · arrows are dependencies
+                        each step feeds the next · the plan, before it runs
                       </p>
                     </div>
                     {/* the immersive run · the 3D corridor the plan flies through */}

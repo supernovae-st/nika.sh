@@ -338,6 +338,57 @@
   transition: opacity 0.4s ease, max-height 0.4s ease;
 }
 
+/* the plain-words pipeline · a clean numbered flow of step cards (the
+   comprehension layer · what each step DOES, before the corridor flies it) */
+.lf-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 10px;
+  max-width: min(980px, 96%);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lf-flow-step {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 200px;
+  min-width: 180px;
+  max-width: 232px;
+  padding: 13px 15px;
+  border: 1px solid var(--v4-line);
+  border-radius: 11px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 58%, transparent);
+  text-align: left;
+}
+.lf-flow-n {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--v4-text-faint);
+}
+.lf-flow-gloss {
+  font-size: 13.5px;
+  line-height: 1.32;
+  color: var(--v4-text);
+}
+.lf-flow-verb {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lf-hue, var(--v4-text-dim));
+}
+/* at the flat comprehension beat the corridor's "in depth" panel caption is
+   redundant (the header + the pipeline's own hint carry it) — withhold it */
+.lf-stage[data-beat='dag'] .lf-graph > .lf-panel-cap {
+  display: none;
+}
+
 /* the panel captions (engineering-manual register) */
 .lf-panel-cap {
   display: flex;
