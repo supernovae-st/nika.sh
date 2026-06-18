@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { CodeFile } from '../components/CodeFile'
 import { REPO, SPEC } from '../content'
@@ -62,10 +62,6 @@ tasks:
       prompt: "Score each CV against \${{ vars.role }}"
 `
 
-/* the full-bleed three.js depth tunnel — code-split so it never enters the
-   first-paint bundle (the hero ships as instant prerendered DOM + CSS). */
-const DepthTunnel = lazy(() => import('../scene/DepthTunnel'))
-
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
 const rise = (ms: number): React.CSSProperties =>
   ({ '--rise-delay': `${ms}ms` }) as React.CSSProperties
@@ -115,38 +111,13 @@ function InstallLine() {
   )
 }
 
-/* ─── the depth atmosphere · the full-bleed Three.js tunnel + HUD ──────────────
-   The header background is ONE Three.js layer now: a wireframe SQUARE tunnel that
-   recedes + TWISTS into a centre vanishing point (the operator's reference), dark
-   + a blue tache. Mounted after first paint (idle) so the prerendered DOM (copy +
-   editor) paints instantly; aria-hidden + pointer-events:none (decorative). */
+/* ─── the hero chrome · faint HUD ticks + a readability vignette ───────────────
+   The depth tunnel now lives at the PAGE level (Home · fixed behind everything);
+   the hero is transparent so it shows through. This is just the decorative HUD +
+   a left vignette so the copy clears contrast over the tunnel. */
 function HeroAtmosphere() {
-  const [mount, setMount] = useState(false)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    let raf = 0
-    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
-      .requestIdleCallback
-    const arm = () => setMount(true)
-    if (idle) idle(arm)
-    else raf = window.setTimeout(arm, 200) as unknown as number
-    return () => {
-      if (raf) clearTimeout(raf)
-    }
-  }, [])
-
   return (
     <>
-      {/* the full-bleed depth tunnel (lazy WebGL · dark + blue tache) */}
-      <div className="v4hero-tunnel" aria-hidden>
-        {mount && (
-          <Suspense fallback={null}>
-            <DepthTunnel />
-          </Suspense>
-        )}
-      </div>
-
       {/* faint HUD registration marks · the four corner ticks (decorative) */}
       <div className="v4hud" aria-hidden>
         <span className="v4hud-tick v4hud-tick--tl" />

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -29,6 +29,12 @@ const RINGS = 46 // depth rings
 const DZ = 0.6 // depth between consecutive rings
 const TWIST = (Math.PI * 1.15) / RINGS // radians of twist per ring (~207° total)
 const P = CELLS * 4 // perimeter point count
+
+/** smoothstep(a,b,x) ∈ [0,1] — eased ramp (used for the scroll fade). */
+function smoothstep(a: number, b: number, x: number): number {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)))
+  return t * t * (3 - 2 * t)
+}
 
 /** a point on the (unrotated) square perimeter, parametrised by p ∈ [0, 4·CELLS). */
 function squarePerim(p: number): [number, number] {
@@ -114,7 +120,13 @@ function useGlowTexture(): THREE.Texture {
   }, [])
 }
 
-function Tunnel({ reduced }: { reduced: boolean }) {
+function Tunnel({
+  scroll,
+  reduced,
+}: {
+  scroll: React.MutableRefObject<number>
+  reduced: boolean
+}) {
   const geom = useMemo(buildTunnel, [])
   const mat = useMemo(
     () =>
@@ -132,18 +144,21 @@ function Tunnel({ reduced }: { reduced: boolean }) {
   const mouse = useRef({ x: 0, y: 0 })
 
   useFrame((state, dt) => {
-    const o = ((state.clock.elapsedTime * (reduced ? 0.04 : 0.13)) % 1) // 0..1 per ring-cycle
+    // ambient flow toward the camera (a seamless ring-cycle) → rest life
+    const o = (state.clock.elapsedTime * (reduced ? 0.03 : 0.08)) % 1
     if (flow.current) {
-      flow.current.position.z = o * DZ // dive forward by one ring…
-      flow.current.rotation.z = -o * TWIST // …counter-rotated so the loop is seamless
+      flow.current.position.z = o * DZ
+      flow.current.rotation.z = -o * TWIST
     }
-    // subtle mouse parallax on the camera (rest life)
+    const k = 1 - Math.exp(-6 * dt)
+    // THE DIVE · scroll drives the camera DEEP into the tunnel (selon le scroll)
+    const targetZ = 2.4 - scroll.current * 26 // mouth (2.4) → deep near the glow
     const mx = reduced ? 0 : mouse.current.x
     const my = reduced ? 0 : mouse.current.y
-    const k = 1 - Math.exp(-4 * dt)
-    state.camera.position.x += (mx * 0.32 - state.camera.position.x) * k
-    state.camera.position.y += (-my * 0.32 - state.camera.position.y) * k
-    state.camera.lookAt(0, 0, -8)
+    state.camera.position.z += (targetZ - state.camera.position.z) * k
+    state.camera.position.x += (mx * 0.3 - state.camera.position.x) * k
+    state.camera.position.y += (-my * 0.3 - state.camera.position.y) * k
+    state.camera.lookAt(0, 0, state.camera.position.z - 10)
   })
 
   useEffect(() => {
@@ -177,17 +192,48 @@ export default function DepthTunnel() {
   const reduced =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const wrap = useRef<HTMLDivElement>(null)
+  const scroll = useRef(0)
+  const [active, setActive] = useState(true)
+
+  /* the scene is FIXED + full-screen and CHANGES WITH SCROLL: window scroll over
+     the first ~1.3 screens drives `scroll` 0→1 (the camera dive), and the canvas
+     fades out as it ends so the opaque sections below take over (the loop pauses
+     off-screen for perf). */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    let on = true
+    const onScroll = () => {
+      const p = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 1.3)))
+      scroll.current = p
+      if (wrap.current) wrap.current.style.opacity = `${1 - smoothstep(0.72, 1, p)}`
+      const a = p < 1
+      if (a !== on) {
+        on = a
+        setActive(a)
+      }
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
 
   return (
-    <Canvas
-      aria-hidden
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 2.4], fov: 78 }}
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
-      frameloop="always"
-    >
-      <Tunnel reduced={reduced} />
-    </Canvas>
+    <div ref={wrap} className="depth-fixed" aria-hidden>
+      <Canvas
+        aria-hidden
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, 2.4], fov: 78 }}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
+        frameloop={active ? 'always' : 'never'}
+      >
+        <Tunnel scroll={scroll} reduced={reduced} />
+      </Canvas>
+    </div>
   )
 }

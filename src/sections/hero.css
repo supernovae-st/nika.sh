@@ -24,6 +24,8 @@
    so the global v4 tokens stay monochrome. --base-* is the dark field (dominant);
    --blue-* is the localized accent (the pointe). */
 #hero {
+  /* transparent — the page-level depth tunnel (Home · fixed) shows through */
+  background-color: transparent;
   --v4-base-deep: var(--hero-base-deep);
   --v4-base-body: var(--hero-base-body);
   --v4-base-lift: var(--hero-base-lift);
@@ -41,10 +43,12 @@
      (very faint — it must NOT read as a second light source).
    • layer 3: the body · the dark field · a barely-there top lift → deep pool at
      the bottom, so it has depth without ever lifting into "blue". */
-/* the full-bleed depth tunnel canvas (Three.js) — fills the hero behind the
-   content (z-0); the r3f <Canvas> inside is itself absolute inset:0. */
-.v4hero-tunnel {
-  position: absolute;
+/* the full-bleed depth tunnel canvas (Three.js) — FIXED + full-screen behind the
+   content (z-0); the camera DIVES as you scroll (DepthTunnel.tsx drives it). The
+   r3f <Canvas> inside is absolute inset:0 within this fixed box, which fades out
+   as the experience ends so the opaque sections below take over. */
+.depth-fixed {
+  position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
