@@ -62,21 +62,36 @@ const DENIED_CLI_ROW =
   DENIED_STATE.cli.find((l) => l.includes(SEC_004.code)) ??
   `${CLI_GLYPH.fail} ${DENY_NODE}   ${SEC_004.code}`
 
-/* ── beat boundaries on the master t-timeline ──────────────────────────────── */
-const T_FILE_END = 0.25 // beat 1 → 2
-const T_MORPH_END = 0.5 // beat 2 → 3 (execution begins)
+/* ── beat boundaries on the master t-timeline ──────────────────────────────────
+   file (write) → morph → DAG (comprehend · the flat plan · parallel waves) →
+   corridor (run · the flat DAG tilts into depth and executes). Splitting the old
+   single "run" half into a COMPREHENSION beat (2D DAG) THEN the immersive run is
+   the design-doc ③→④ order — you understand the plan's shape before you fly it. */
+const T_FILE_END = 0.18 // file → morph
+const T_MORPH_END = 0.3 // morph → DAG (the plan has landed as a graph)
+const T_TILT_START = 0.44 // the DAG stays FLAT (comprehend) until here, then tips
+const T_DAG_END = 0.54 // DAG → corridor (the tilt completes, the run begins)
 
-/** map the master t (0..1) onto the EXECUTION sub-progress (0..1 across run). */
+/** map the master t (0..1) onto the EXECUTION sub-progress (0..1 across the run).
+    The run executes during the CORRIDOR phase (after the DAG comprehension beat). */
 function runProgress(t: number): number {
-  if (t <= T_MORPH_END) return 0
-  return Math.min(1, (t - T_MORPH_END) / (1 - T_MORPH_END))
+  if (t <= T_DAG_END) return 0
+  return Math.min(1, (t - T_DAG_END) / (1 - T_DAG_END))
 }
 
-/** how "detached from the file → landed as a graph" beat 2 is (0..1). */
+/** how "detached from the file → landed as a graph" the morph is (0..1). */
 function morphProgress(t: number): number {
   if (t <= T_FILE_END) return 0
   if (t >= T_MORPH_END) return 1
   return (t - T_FILE_END) / (T_MORPH_END - T_FILE_END)
+}
+
+/** how tilted from the flat 2D DAG (0) into the 3D corridor (1) — drives the
+    signature "the plan tips into depth" transition between the two layers. */
+function tiltProgress(t: number): number {
+  if (t <= T_TILT_START) return 0
+  if (t >= T_DAG_END) return 1
+  return (t - T_TILT_START) / (T_DAG_END - T_TILT_START)
 }
 
 /* ── 2D DAG layout · column = wave · row = index within wave (RunSim's math) ── */
@@ -391,7 +406,8 @@ function EnforceCallout() {
 function beatLabel(t: number): { fig: string; title: string } {
   if (t < T_FILE_END) return { fig: 'FIG 1.0', title: 'Write — the agent declares its plan' }
   if (t < T_MORPH_END) return { fig: 'FIG 1.1', title: 'Review — what it’s allowed to touch' }
-  return { fig: 'FIG 1.2', title: 'Enforce, then run — within bounds' }
+  if (t < T_DAG_END) return { fig: 'FIG 1.2', title: 'The plan — the pipeline, step by step' }
+  return { fig: 'FIG 1.3', title: 'Run — within the permits' }
 }
 
 export default function LivingFile() {
@@ -441,7 +457,7 @@ export default function LivingFile() {
       const fr = requestAnimationFrame(() => {
         setCorridor3d(true)
         setFrozen(true)
-        setRun(runStateAt(DAG, v))
+        setRun(runStateAt(DAG, runProgress(v)))
         setT(v)
       })
       return () => cancelAnimationFrame(fr)
@@ -493,7 +509,10 @@ export default function LivingFile() {
 
         // coarse t step (1/120) gates beat-caption + progress re-renders
         const step = Math.round(p * 120)
-        const next = runStateAt(DAG, p)
+        // the run EXECUTES during the corridor phase (runProgress) — so the flat
+        // DAG comprehension beat shows the plan STRUCTURE (all pending) and the
+        // corridor camera (also runP-driven) stays in sync with the execution.
+        const next = runStateAt(DAG, runProgress(p))
 
         // signature = status of every node + revealed line count. Cheap to diff.
         let sig = `${next.cli.length}|`
@@ -522,10 +541,13 @@ export default function LivingFile() {
 
   const morph = useMemo(() => morphProgress(t), [t])
   const runP = useMemo(() => runProgress(t), [t])
+  const tilt = useMemo(() => tiltProgress(t), [t])
   const beat = beatLabel(t)
-  /* which beat owns the stage (drives the CSS cross-fades). The execution beat
-     is "active" as soon as the run has begun so the graph/stream are present. */
-  const stageBeat = t < T_FILE_END ? 'file' : t < T_MORPH_END ? 'morph' : 'run'
+  /* which beat owns the stage (drives the CSS cross-fades): file → morph → dag
+     (the flat plan · comprehension) → run (the corridor · the flat plan tilts
+     into depth and executes). */
+  const stageBeat =
+    t < T_FILE_END ? 'file' : t < T_MORPH_END ? 'morph' : t < T_DAG_END ? 'dag' : 'run'
 
   return (
     <section
@@ -593,7 +615,11 @@ export default function LivingFile() {
             {/* BEAT 2+3 · the graph + (during execution) the stream & outputs.
                 In 3D-corridor mode the graph is the MAIN stage and the stream
                 becomes a right rail; the flat <Dag> stays the fallback. */}
-            <div className="lf-run" data-corridor={corridor3d}>
+            <div
+              className="lf-run"
+              data-corridor={corridor3d}
+              style={{ ['--lf-tilt' as string]: tilt }}
+            >
               <div className="lf-graph">
                 <p className="lf-panel-cap">
                   <span aria-hidden>FIG 1.1</span>
@@ -607,7 +633,22 @@ export default function LivingFile() {
                     {/* the corridor is an aria-hidden visual · this sr-only
                         summary is its textual equivalent (always alongside it) */}
                     <RunSummarySR />
-                    <Corridor dag={DAG} run={run} runP={runP} />
+                    {/* the COMPREHENSION layer · the FLAT 2D DAG (columns are
+                        parallel waves · arrows are dependencies). You read the
+                        plan's shape here; then it tilts back into depth (--lf-tilt)
+                        as the corridor takes over — the design-doc ③→④ handoff. */}
+                    <div className="lf-dag-layer">
+                      <div className="lf-dag-wrap lf-dag-wrap--big">
+                        <Dag run={run} morph={1} />
+                      </div>
+                      <p className="lf-dag-hint mono" aria-hidden>
+                        each step feeds the next · arrows are dependencies
+                      </p>
+                    </div>
+                    {/* the immersive run · the 3D corridor the plan flies through */}
+                    <div className="lf-corridor-layer">
+                      <Corridor dag={DAG} run={run} runP={runP} />
+                    </div>
                   </>
                 ) : (
                   <div className="lf-dag-wrap">

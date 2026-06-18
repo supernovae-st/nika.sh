@@ -166,8 +166,10 @@
   overflow: hidden;
 }
 .lf-stage[data-beat='morph'] .lf-lede,
+.lf-stage[data-beat='dag'] .lf-lede,
 .lf-stage[data-beat='run'] .lf-lede,
 .lf-stage[data-beat='morph'] .lf-dim,
+.lf-stage[data-beat='dag'] .lf-dim,
 .lf-stage[data-beat='run'] .lf-dim {
   opacity: 0;
   max-height: 0;
@@ -175,6 +177,7 @@
   pointer-events: none;
 }
 .lf-stage[data-beat='morph'] .lf-title,
+.lf-stage[data-beat='dag'] .lf-title,
 .lf-stage[data-beat='run'] .lf-title {
   font-size: clamp(1.35rem, 0.9rem + 1.4vw, 1.9rem);
   margin-top: 0.4rem;
@@ -208,6 +211,7 @@
   pointer-events: auto;
 }
 .lf-stage[data-beat='morph'] .lf-file,
+.lf-stage[data-beat='dag'] .lf-file,
 .lf-stage[data-beat='run'] .lf-file {
   opacity: 0;
   transform: translateY(-10px) scale(0.985);
@@ -228,6 +232,7 @@
   visibility: hidden;
 }
 .lf-stage[data-beat='morph'] .lf-run,
+.lf-stage[data-beat='dag'] .lf-run,
 .lf-stage[data-beat='run'] .lf-run {
   opacity: 1;
   transform: translateY(0);
@@ -271,6 +276,66 @@
 }
 .lf-run[data-corridor='true'] .lf-stream-scroll {
   max-height: 74px;
+}
+
+/* ── the two run-beat layers (corridor mode) · the FLAT 2D DAG comprehension
+   layer and the 3D corridor stack in the same well and cross-fade as the plan
+   tips from flat into depth (--lf-tilt 0→1, set on .lf-run). You read the plan's
+   shape (columns = parallel waves) before you fly it. ── */
+.lf-run[data-corridor='true'] .lf-graph {
+  position: relative;
+  min-height: clamp(460px, 72vh, 780px);
+}
+.lf-dag-layer,
+.lf-corridor-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+/* the flat plan · tips back into depth + recedes + fades as --lf-tilt → 1 */
+.lf-dag-layer {
+  gap: 1rem;
+  transform-origin: 50% 22%;
+  transform: perspective(1300px) rotateX(calc(var(--lf-tilt, 0) * 64deg))
+    translateY(calc(var(--lf-tilt, 0) * -36px)) scale(calc(1 - var(--lf-tilt, 0) * 0.12));
+  opacity: calc(1 - var(--lf-tilt, 0));
+  pointer-events: none;
+}
+/* the corridor · fades in as the plan tips into it */
+.lf-corridor-layer {
+  opacity: var(--lf-tilt, 0);
+}
+.lf-stage[data-beat='run'] .lf-corridor-layer {
+  opacity: 1;
+}
+/* a bigger, centered DAG for the comprehension beat (it's the focus here) */
+.lf-dag-wrap--big {
+  width: min(880px, 96%);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+}
+.lf-dag-wrap--big .lf-dag {
+  max-height: min(56vh, 460px);
+}
+.lf-dag-hint {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+/* during the flat DAG comprehension beat the minimal log is withheld (the run
+   hasn't started) so the plan is the clean, centered focus */
+.lf-stage[data-beat='dag'] .lf-obs {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s ease, max-height 0.4s ease;
 }
 
 /* the panel captions (engineering-manual register) */
