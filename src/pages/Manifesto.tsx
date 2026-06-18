@@ -255,7 +255,14 @@ export function Component() {
                 className="rv mf-promise skeuo rounded-2xl px-7 py-7"
                 style={{ transitionDelay: `${i * 70}ms` }}
               >
-                <p className="mf-pn mb-4">{p.n}</p>
+                <span className="mf-promise-hud" aria-hidden />
+                <div className="mf-promise-reg">
+                  <p className="mf-pn">{p.n}</p>
+                  <span className="mf-promise-rule" aria-hidden />
+                  <span className="mf-promise-tag" aria-hidden>
+                    promise
+                  </span>
+                </div>
                 <h3 className="mb-2.5 text-[18px] font-semibold text-[var(--fg)]">{p.t}</h3>
                 <p className="text-[14.5px] leading-relaxed text-[var(--fg-mute)]">{p.d}</p>
               </div>

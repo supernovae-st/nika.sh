@@ -13,7 +13,7 @@ import {
   type UC,
   type UCTab,
 } from '../sections/usecases-data'
-import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
+import { SHOWCASE_YAML, SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
 import { REPO, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './usecases-page.css'
@@ -47,12 +47,89 @@ const VERB_HUE: Record<NikaVerb, string> = {
   agent: 'var(--verb-agent)',
 }
 
+/* ─── the DAG strip · the run model, drawn ───────────────────────────────────
+   Reads the projected SHOWCASE_DAG (tasks · verb · deps · wave · gate) for a
+   slug and lays the tasks out by topological WAVE — each column is "what runs
+   together". Every node is a verb-hued dot with the canonical glyph; a `when`
+   gate gets a hollow ring, an `always` gate a dashed one. Pure SVG-free CSS
+   grid — SSR-static, no measurement, no JS. The truth (verb · wave · gate) is
+   projected; only the layout is craft. Falls back to null if a slug has no DAG. */
+function WorkflowDag({ slug }: { slug: string }) {
+  const dag = SHOWCASE_DAG[slug]
+  if (!dag || dag.tasks.length === 0) return null
+
+  // bucket tasks by wave, preserving declared order within a wave.
+  const columns: (typeof dag.tasks)[] = Array.from({ length: dag.waves }, () => [])
+  for (const t of dag.tasks) {
+    ;(columns[t.wave] ?? columns[columns.length - 1]).push(t)
+  }
+  const verbsUsed = Array.from(new Set(dag.tasks.map((t) => t.verb))) as NikaVerb[]
+
+  return (
+    <figure className="ucp-dag" aria-label={`${dag.tasks.length} tasks across ${dag.waves} waves`}>
+      <figcaption className="ucp-dag-cap">
+        <span className="ucp-dag-cap-label mono">run model</span>
+        <span className="ucp-dag-cap-dims mono" aria-hidden>
+          {dag.tasks.length} tasks · {dag.waves} {dag.waves === 1 ? 'wave' : 'waves'}
+        </span>
+      </figcaption>
+      <div className="ucp-dag-flow" role="presentation">
+        {columns.map((col, ci) => (
+          <div className="ucp-dag-wave" key={ci}>
+            <span className="ucp-dag-wave-n mono" aria-hidden>
+              {ci}
+            </span>
+            <div className="ucp-dag-nodes">
+              {col.map((t) => (
+                <span
+                  key={t.id}
+                  className={`ucp-dag-node ucp-dag-node--${t.gate}`}
+                  style={{ ['--vh' as string]: VERB_HUE[t.verb as NikaVerb] }}
+                  title={`${t.id} · ${t.verb}${t.gate !== 'default' ? ` · ${t.gate}` : ''}`}
+                >
+                  <span className="ucp-dag-node-glyph" aria-hidden>
+                    {verbGlyph(t.verb)}
+                  </span>
+                  <span className="ucp-dag-node-id">{t.id}</span>
+                </span>
+              ))}
+            </div>
+            {ci < columns.length - 1 ? (
+              <span className="ucp-dag-arrow" aria-hidden>
+                ›
+              </span>
+            ) : null}
+          </div>
+        ))}
+      </div>
+      <div className="ucp-dag-legend" aria-hidden>
+        {verbsUsed.map((v) => (
+          <span key={v} className="ucp-dag-legend-item" style={{ ['--vh' as string]: VERB_HUE[v] }}>
+            <span className="ucp-dag-legend-dot" />
+            {v}
+          </span>
+        ))}
+        {dag.tasks.some((t) => t.gate === 'when') ? (
+          <span className="ucp-dag-legend-item ucp-dag-legend-item--gate">
+            <span className="ucp-dag-legend-ring" />
+            conditional
+          </span>
+        ) : null}
+      </div>
+    </figure>
+  )
+}
+
 /* a single workflow · its title, outcome, verb chips, and its real open YAML. */
 function WorkflowCard({ uc, fig }: { uc: UC; fig: string }) {
   const cardVerbs = verbsFor(uc) as NikaVerb[]
   const yaml = yamlFor(uc)
   return (
     <article className="ucp-wf">
+      <span className="ucp-wf-hud" aria-hidden>
+        <span className="ucp-wf-hud-mark ucp-wf-hud-mark--tl" />
+        <span className="ucp-wf-hud-mark ucp-wf-hud-mark--br" />
+      </span>
       <header className="ucp-wf-head">
         <span className="ucp-wf-fig">{fig}</span>
         <h3 className="ucp-wf-title">{uc.title}</h3>
@@ -73,6 +150,9 @@ function WorkflowCard({ uc, fig }: { uc: UC; fig: string }) {
           </span>
         ))}
       </span>
+
+      {/* the run model · the DAG laid out by wave (projected · never hand-drawn) */}
+      <WorkflowDag slug={uc.slug} />
 
       <div className="ucp-wf-file">
         <div className="ucp-wf-filemeta">
@@ -185,6 +265,8 @@ export function Component() {
   }, [])
 
   const total = Object.keys(SHOWCASE_YAML).length
+  /* total projected tasks across the whole showcase — derived, never hand-typed */
+  const totalTasks = Object.values(SHOWCASE_DAG).reduce((n, d) => n + d.tasks.length, 0)
 
   return (
     <main className="theme-light ucp-page">
@@ -208,6 +290,25 @@ export function Component() {
             the conformance gate. Five métiers, {total} workflows, each with the exact YAML that
             runs it.
           </p>
+
+          {/* the gallery register · the showcase dimensions, at a glance. */}
+          <dl className="ucp-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+            {[
+              { n: total, label: 'workflows', sub: 'spec-valid' },
+              { n: UC_TABS.length, label: 'métiers', sub: 'real plans' },
+              { n: 4, label: 'tiers', sub: 'T1 → T4' },
+              { n: totalTasks, label: 'tasks', sub: 'projected DAG' },
+            ].map((s, i) => (
+              <div className="ucp-stamp-cell" key={s.label}>
+                <span className="ucp-stamp-fig" aria-hidden>
+                  {String(i).padStart(2, '0')}
+                </span>
+                <dd className="ucp-stamp-n">{s.n}</dd>
+                <dt className="ucp-stamp-label">{s.label}</dt>
+                <span className="ucp-stamp-sub">{s.sub}</span>
+              </div>
+            ))}
+          </dl>
 
           {/* the métier rail · sticky anchor jumps (scroll-spy highlights the
               section in view). Plain in-page anchors → no JS needed to navigate. */}

@@ -41,6 +41,21 @@ function groupByYear(entries: ChangelogEntry[]): YearGroup[] {
   return groups
 }
 
+/* per-tag register hue — the changelog's only colour, whispered on the timeline
+   node + the tag chip seam. Maps the ship-log classes onto the v4 hue vocabulary
+   (the 4 verb hues + the teal "live-wiring" ref tone), so a security ship reads
+   in the exec-orange "effect" tone, a language ship in the infer-blue, etc. */
+const TAG_HUE: Record<string, string> = {
+  spec: 'var(--cf-ref)', // teal · the contract / live-wiring
+  language: 'var(--verb-infer)', // blue · the model verb
+  stdlib: 'var(--verb-invoke)', // cyan · the tool verb
+  providers: 'var(--verb-agent)', // violet · the catalog
+  security: 'var(--verb-exec)', // orange · enforcement / effect
+  tooling: 'var(--cf-ref)', // teal · playground / mcp
+  site: 'var(--v4-text-dim)', // neutral · the site itself
+}
+const tagHue = (tag: string) => TAG_HUE[tag] ?? 'var(--v4-text-dim)'
+
 export function Component() {
   /* reveal the section once, on first intersection (motion-safe; default visible;
      safety-net timer reveals anyway if the observer misfires) */
@@ -71,6 +86,13 @@ export function Component() {
   })
 
   const total = CHANGELOG.length
+  const tagCount = new Set(CHANGELOG.map((e) => e.tag)).size
+  /* the newest ship date, compact (e.g. "06·17") — derived, never hand-typed */
+  const latestDate = useMemo(() => {
+    const top = CHANGELOG[0]?.date ?? ''
+    const [, m, d] = top.split('-')
+    return m && d ? `${m}·${d}` : '—'
+  }, [])
 
   return (
     <main className="theme-dark cl-page">
@@ -93,13 +115,43 @@ export function Component() {
             the <code>permits:</code> model, the standard library and the playground landed.
           </p>
 
-          {/* the full register · grouped by year, hairline-ruled, newest-first */}
+          {/* the ship-log register · the log's dimensions, at a glance */}
+          <dl className="cl-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+            {[
+              { n: total, label: 'releases', sub: 'shipped' },
+              { n: groups.length, label: groups.length === 1 ? 'year' : 'years', sub: 'so far' },
+              { n: tagCount, label: 'registers', sub: 'tags' },
+              { n: latestDate, label: 'latest', sub: 'this site', mono: true },
+            ].map((s, i) => (
+              <div className="cl-stamp-cell" key={s.label}>
+                <span className="cl-stamp-fig" aria-hidden>
+                  {String(i).padStart(2, '0')}
+                </span>
+                <dd className={`cl-stamp-n${s.mono ? ' cl-stamp-n--mono' : ''}`}>{s.n}</dd>
+                <dt className="cl-stamp-label">{s.label}</dt>
+                <span className="cl-stamp-sub">{s.sub}</span>
+              </div>
+            ))}
+          </dl>
+
+          {/* the register legend · the tag vocabulary with its hue */}
+          <ul className="cl-legend" data-rise style={{ ['--rise-delay' as string]: '160ms' }} aria-hidden>
+            {Object.keys(TAG_LABEL).map((t) => (
+              <li className="cl-legend-item" key={t} style={{ ['--th' as string]: tagHue(t) }}>
+                <span className="cl-legend-dot" />
+                {TAG_LABEL[t as keyof typeof TAG_LABEL]}
+              </li>
+            ))}
+          </ul>
+
+          {/* the full register · a hairline timeline, grouped by year, newest-first.
+              Each entry is a timeline node (its register hue) + a register card. */}
           {groups.map((group, gi) => (
             <div
               className="cl-year"
               key={group.year}
               data-rise
-              style={{ ['--rise-delay' as string]: `${160 + gi * 40}ms` }}
+              style={{ ['--rise-delay' as string]: `${180 + gi * 40}ms` }}
             >
               <div className="cl-year-head">
                 <span className="cl-year-n">{group.year}</span>
@@ -110,18 +162,25 @@ export function Component() {
                 </span>
               </div>
 
-              <ol className="v4log cl-log">
+              <ol className="cl-timeline">
                 {group.entries.map((e) => (
-                  <li className="v4log-row" key={`${e.date}-${e.title}`}>
-                    <div className="v4log-meta">
-                      <time className="v4log-date" dateTime={e.date}>
+                  <li
+                    className="cl-tl-row"
+                    key={`${e.date}-${e.title}`}
+                    style={{ ['--th' as string]: tagHue(e.tag) }}
+                  >
+                    <span className="cl-tl-spine" aria-hidden>
+                      <span className="cl-tl-node" />
+                    </span>
+                    <div className="cl-tl-meta">
+                      <time className="cl-tl-date" dateTime={e.date}>
                         {fmtDate(e.date)}
                       </time>
-                      <span className="v4log-tag">{TAG_LABEL[e.tag]}</span>
+                      <span className="cl-tl-tag">{TAG_LABEL[e.tag]}</span>
                     </div>
-                    <div className="v4log-body">
-                      <h2 className="v4log-title">{e.title}</h2>
-                      <p className="v4log-desc">{e.body}</p>
+                    <div className="cl-tl-body">
+                      <h2 className="cl-tl-title">{e.title}</h2>
+                      <p className="cl-tl-desc">{e.body}</p>
                     </div>
                   </li>
                 ))}

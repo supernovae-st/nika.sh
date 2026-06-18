@@ -906,6 +906,28 @@ h1, h2 { font-family: var(--headline); }
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
+/* two faint static guide rings — the "instrument dial" the live ripples beat
+   through. Measured, intentional depth behind the animated beat (drum face). */
+.mf-drum::before,
+.mf-drum::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in srgb, var(--cyan) 9%, transparent);
+  pointer-events: none;
+}
+.mf-drum::before {
+  width: 47%;
+  height: 47%;
+}
+.mf-drum::after {
+  width: 74%;
+  height: 74%;
+  border-color: color-mix(in srgb, var(--cyan) 6%, transparent);
+}
 .mf-ring {
   position: absolute;
   inset: 0;
@@ -1010,15 +1032,68 @@ h1, h2 { font-family: var(--headline); }
     box-shadow 0.35s ease,
     border-color 0.35s ease;
 }
+.mf-promise {
+  position: relative;
+  overflow: hidden;
+}
 .mf-promise:hover {
   transform: translateY(-5px);
   border-color: color-mix(in srgb, var(--cyan) 45%, transparent);
+}
+/* the card register · the mono number · a hairline rule · a tag — the "spec
+   sheet" read that ties the manifesto's promises to the rest of the site. */
+.mf-promise-reg {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 .mf-pn {
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.2em;
   color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+}
+.mf-promise-rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: color-mix(in srgb, var(--cyan) 16%, transparent);
+}
+.mf-promise-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+/* a single HUD crop-mark in the top-right corner — the registered read */
+.mf-promise-hud {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 9px;
+  height: 9px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.mf-promise-hud::before,
+.mf-promise-hud::after {
+  content: '';
+  position: absolute;
+  background: color-mix(in srgb, var(--cyan) 40%, transparent);
+}
+.mf-promise-hud::before {
+  top: 0;
+  right: 0;
+  width: 9px;
+  height: 1px;
+}
+.mf-promise-hud::after {
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 9px;
 }
 
 /* ─── « enter the galaxy » egg · the close affordance ─────────────────────────

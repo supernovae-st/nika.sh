@@ -349,3 +349,273 @@
 .ucp-link:hover .ucp-link-arrow {
   transform: translateX(2px);
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   v4.1 · the RICHER gallery layer — the showcase register · the DAG strip · the
+   card HUD marks. The verb hues whisper ONLY inside the DAG nodes + the chips;
+   everything else stays the light blueprint register.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── the gallery register · the showcase dimensions, at a glance ────────────────*/
+.ucp-stamp {
+  margin: clamp(28px, 4vh, 44px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  border: 1px solid var(--v4-line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--v4-line);
+}
+@media (min-width: 620px) {
+  .ucp-stamp {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.ucp-stamp-cell {
+  position: relative;
+  padding: 16px 16px 15px;
+  background: var(--v4-bg-raised);
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.2s ease;
+}
+.ucp-stamp-cell:hover {
+  background: color-mix(in oklch, var(--v4-bg-raised) 92%, var(--v4-text));
+}
+.ucp-stamp-fig {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ucp-stamp-n {
+  margin: 8px 0 0;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+}
+.ucp-stamp-label {
+  margin-top: 7px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.ucp-stamp-sub {
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── the workflow card · two HUD crop-marks (TL + BR), the "registered" read ────*/
+.ucp-wf {
+  position: relative;
+}
+.ucp-wf-hud {
+  position: absolute;
+  inset: 9px;
+  z-index: 1;
+  pointer-events: none;
+}
+.ucp-wf-hud-mark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.ucp-wf:hover .ucp-wf-hud-mark {
+  opacity: 0.8;
+}
+.ucp-wf-hud-mark::before,
+.ucp-wf-hud-mark::after {
+  content: '';
+  position: absolute;
+  background: color-mix(in oklch, var(--v4-hud-faint) 80%, transparent);
+}
+.ucp-wf-hud-mark::before {
+  width: 8px;
+  height: 1px;
+}
+.ucp-wf-hud-mark::after {
+  width: 1px;
+  height: 8px;
+}
+.ucp-wf-hud-mark--tl {
+  top: 0;
+  left: 0;
+}
+.ucp-wf-hud-mark--br {
+  bottom: 0;
+  right: 0;
+}
+.ucp-wf-hud-mark--br::before {
+  bottom: 0;
+  right: 0;
+}
+.ucp-wf-hud-mark--br::after {
+  bottom: 0;
+  right: 0;
+}
+
+/* ── the DAG strip · the run model, drawn by wave ──────────────────────────────
+   A horizontal scroll well of wave-columns; each node is a verb-hued capsule
+   with the canonical glyph + the task id. Conditional nodes get a dashed ring. */
+.ucp-dag {
+  margin: 16px 0 0;
+  padding: 14px 14px 12px;
+  border: 1px solid var(--v4-line);
+  border-radius: 13px;
+  background: color-mix(in oklch, var(--v4-bg) 55%, transparent);
+}
+.ucp-dag-cap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.ucp-dag-cap-label {
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.ucp-dag-cap-dims {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ucp-dag-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklch, var(--v4-text) 14%, transparent) transparent;
+}
+.ucp-dag-flow::-webkit-scrollbar {
+  height: 6px;
+}
+.ucp-dag-flow::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--v4-text) 14%, transparent);
+  border-radius: 6px;
+}
+.ucp-dag-wave {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 0 0 auto;
+}
+.ucp-dag-wave-n {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ucp-dag-nodes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 6px 2px;
+}
+.ucp-dag-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px 4px 6px;
+  border: 1px solid color-mix(in oklch, var(--vh) 28%, var(--v4-line));
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--vh) 7%, var(--v4-bg-raised));
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: -0.005em;
+  color: var(--v4-text);
+  white-space: nowrap;
+}
+.ucp-dag-node--when {
+  border-style: dashed;
+}
+.ucp-dag-node--always {
+  border-style: dotted;
+}
+.ucp-dag-node-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--vh) 18%, transparent);
+  color: var(--vh);
+  font-size: 9.5px;
+  line-height: 1;
+}
+.ucp-dag-node-id {
+  color: var(--v4-text-dim);
+}
+.ucp-dag-arrow {
+  flex: 0 0 auto;
+  align-self: center;
+  margin-top: 10px;
+  padding: 0 4px;
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--v4-text-faint);
+}
+.ucp-dag-legend {
+  margin-top: 11px;
+  padding-top: 10px;
+  border-top: 1px solid var(--v4-line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-dim);
+}
+.ucp-dag-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ucp-dag-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vh);
+}
+.ucp-dag-legend-ring {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px dashed var(--v4-text-dim);
+}
+.ucp-dag-legend-item--gate {
+  color: var(--v4-text-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucp-stamp-cell,
+  .ucp-wf-hud-mark {
+    transition: none;
+  }
+}

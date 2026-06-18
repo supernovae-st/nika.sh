@@ -2,12 +2,25 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CANON } from '../canon.generated'
-import { SPEC, REPO, routeHead } from '../content'
+import { SPEC, REPO, routeHead, VERBS as VERB_CARDS } from '../content'
 import { CodeFile } from '../components/CodeFile'
 import { verbGlyph } from '../components/codefile-highlight'
 import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import '../sections/v4-home.css'
+import '../pages/page-chrome.css'
 import './spec-page.css'
+
+/* the 4 decorative corner crop-marks — the HUD registration on a content well. */
+function HudMarks() {
+  return (
+    <span className="spec-hud" aria-hidden>
+      <span className="spec-hud-mark spec-hud-mark--tl" />
+      <span className="spec-hud-mark spec-hud-mark--tr" />
+      <span className="spec-hud-mark spec-hud-mark--bl" />
+      <span className="spec-hud-mark spec-hud-mark--br" />
+    </span>
+  )
+}
 
 /* ─── /spec · the language reference (theme-dark · blueprint register) ─────────
    Design doc §7 (Routes · /spec) — the FRIENDLY INDEX into the nika language: the
@@ -46,13 +59,23 @@ const ENVELOPE_KEYS: { key: string; req: boolean; gloss: string }[] = [
   { key: 'outputs', req: false, gloss: 'the return value · ${{ tasks.X.output }} · symmetric to vars' },
 ]
 
-/* ── FIG S.1 · the four verbs · "a distinct native execution model" each ────── */
-const VERBS: { verb: string; line: string }[] = [
-  { verb: 'infer', line: 'Call a model. Any of the 14 providers; structured output when you give it a schema.' },
-  { verb: 'exec', line: 'Run a real process. stdout becomes the output; a non-zero exit becomes an error.' },
-  { verb: 'invoke', line: 'Call a tool — a nika: builtin or an mcp: server. Default-deny, args schema-checked.' },
-  { verb: 'agent', line: 'Drive an autonomous tool-use loop, bounded by max_turns and a whitelist of tools.' },
-]
+/* ── FIG S.1 · the four verbs · "a distinct native execution model" each ──────
+   Each verb is a RICH CARD: its canonical hue (the --vh prop drives the glyph +
+   the accent seam), a one-line execution model, and a real 2-line spec example
+   in the premium CodeFile (sliced from content.ts VERBS · spec-valid, never
+   hand-typed here). The card titles + examples are the single source (content). */
+const VERB_HUE: Record<string, string> = {
+  infer: 'var(--verb-infer)',
+  exec: 'var(--verb-exec)',
+  invoke: 'var(--verb-invoke)',
+  agent: 'var(--verb-agent)',
+}
+const VERB_MODEL: Record<string, string> = {
+  infer: 'Call a model. Any of the providers; structured output when you give it a schema.',
+  exec: 'Run a real process. stdout becomes the output; a non-zero exit becomes an error.',
+  invoke: 'Call a tool — a nika: builtin or an mcp: server. Default-deny, args schema-checked.',
+  agent: 'Drive an autonomous tool-use loop, bounded by max_turns and a whitelist of tools.',
+}
 
 /* ── FIG S.2 · the task shape (from the JSON schema $defs.task) ──────────────
    id is the only required field; exactly one verb binds. The rest are optional
@@ -74,24 +97,32 @@ const TASK_FIELDS: { name: string; req: boolean; gloss: string }[] = [
    The capability boundary an agent must satisfy before it acts. Once `permits:`
    is present, every category is DEFAULT-DENY — anything not declared is refused
    BEFORE the effect runs (not logged after). Worded straight off the JSON schema. */
-const PERMIT_CATS: { cap: string; gloss: string; shape: string }[] = [
+const PERMIT_CATS: { key: string; cap: string; glyph: string; gloss: string; shape: string }[] = [
   {
+    key: 'fs',
     cap: 'fs.read / fs.write',
+    glyph: '▤',
     gloss: 'which files it can read, which it can write — read XOR write, by glob.',
     shape: 'read: [globs] · write: [globs]',
   },
   {
+    key: 'net',
     cap: 'net.http',
+    glyph: '◈',
     gloss: 'which hosts it can reach. Omit the category and the plan cannot touch the network at all.',
     shape: 'http: [host allowlist]',
   },
   {
+    key: 'exec',
     cap: 'exec',
+    glyph: '▷',
     gloss: 'which programs it can run — none, any (blocklist-gated), or a named allowlist.',
     shape: 'false · true · [program names]',
   },
   {
+    key: 'tools',
     cap: 'tools',
+    glyph: '◆',
     gloss: 'which nika:/mcp: tools it may call. Anything off the list is unreachable.',
     shape: 'tools: [allowed tool ids]',
   },
@@ -240,6 +271,27 @@ export function Component() {
             is the canonical, normative source.
           </p>
 
+          {/* the spec-sheet register · the contract's key dimensions, at a glance.
+              Every number derives from CANON (the spec SSOT), never hand-typed. */}
+          <dl className="spec-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+            {[
+              { n: CANON.verbs, label: 'verbs', sub: 'locked' },
+              { n: CANON.builtins, label: 'builtins', sub: '4 families' },
+              { n: CANON.providers, label: 'providers', sub: `${CANON.providersLocal} local` },
+              { n: CANON.extractModes, label: 'extract', sub: 'on fetch' },
+              { n: CANON.errorNamespaces, label: 'namespaces', sub: `${CANON.errorCodes} codes` },
+            ].map((s, i) => (
+              <div className="spec-stamp-cell" key={s.label}>
+                <span className="spec-stamp-fig" aria-hidden>
+                  {String(i).padStart(2, '0')}
+                </span>
+                <dd className="spec-stamp-n">{s.n}</dd>
+                <dt className="spec-stamp-label">{s.label}</dt>
+                <span className="spec-stamp-sub">{s.sub}</span>
+              </div>
+            ))}
+          </dl>
+
           {/* a quick contents rail · jump links to each FIG */}
           <nav className="spec-toc" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
             {[
@@ -290,43 +342,112 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.1 · the four verbs ════════════════════════════════════ */}
+          {/* ══ FIG S.1 · the four verbs ════════════════════════════════════
+              Rich cards · each verb in its canonical hue, with a real 2-line
+              example open in the premium CodeFile. The hue lights ONLY here (the
+              card seam + glyph) — the rest of the reference stays monochrome. */}
           <div id="s1" className="spec-block" data-rise>
-            <SpecHead fig="FIG S.1" name="The four verbs" count="4 · locked forever">
+            <SpecHead fig="FIG S.1" name="The four verbs" count={`${CANON.verbs} · locked forever`}>
               A verb is a <b>distinct native execution model</b>. A task binds exactly one. That is
               the whole operation space — <code>fetch</code>, recall, db and files are <em>tools</em>{' '}
               reached under <code>invoke:</code>, not verbs.
             </SpecHead>
-            <ul className="spec-verbs">
-              {VERBS.map((v) => (
-                <li className="spec-verb" key={v.verb}>
-                  <span className="spec-verb-glyph" aria-hidden>
-                    {verbGlyph(v.verb)}
-                  </span>
-                  <code className="spec-verb-name">{v.verb}</code>
-                  <span className="spec-verb-line">{v.line}</span>
-                </li>
+            <div className="spec-verbcards">
+              {VERB_CARDS.map((v, i) => (
+                <article
+                  className="spec-verbcard"
+                  key={v.verb}
+                  style={{ ['--vh' as string]: VERB_HUE[v.verb] }}
+                >
+                  <HudMarks />
+                  <header className="spec-verbcard-head">
+                    <span className="spec-verbcard-glyph" aria-hidden>
+                      {verbGlyph(v.verb)}
+                    </span>
+                    <code className="spec-verbcard-name">{v.verb}</code>
+                    <span className="spec-verbcard-tag">{v.tagline}</span>
+                    <span className="spec-verbcard-fig" aria-hidden>
+                      {`S.1.${i + 1}`}
+                    </span>
+                  </header>
+                  <p className="spec-verbcard-model">{VERB_MODEL[v.verb]}</p>
+                  <div className="spec-verbcard-code">
+                    <CodeFile yaml={v.code} lang="yaml" lineNumbers={false} />
+                  </div>
+                </article>
               ))}
-            </ul>
+            </div>
           </div>
 
-          {/* ══ FIG S.2 · the task shape ════════════════════════════════════ */}
+          {/* ══ FIG S.2 · the task shape ════════════════════════════════════
+              An anatomy diagram (a labelled node · the required core lit, the
+              optional controls dimmed) beside the full field ledger. */}
           <div id="s2" className="spec-block" data-rise>
             <SpecHead fig="FIG S.2" name="The task shape" count="1 required field · 1 verb">
               A task is a DAG node. <code>id</code> is the only required field and exactly one verb
               binds; everything else is an optional structural control.
             </SpecHead>
-            <ul className="spec-fields">
-              {TASK_FIELDS.map((f) => (
-                <li className="spec-field" key={f.name}>
-                  <code className="spec-field-name">{f.name}</code>
-                  <span className={`spec-field-req${f.req ? '' : ' spec-field-req--opt'}`}>
-                    {f.req ? 'req' : 'opt'}
+            <div className="spec-tasksplit">
+              {/* the anatomy · a labelled task node */}
+              <figure className="spec-anatomy">
+                <HudMarks />
+                <figcaption className="spec-anatomy-cap mono">anatomy of a task node</figcaption>
+                <div className="spec-anatomy-node">
+                  <span className="spec-anatomy-line">
+                    <span className="spec-anatomy-punct" aria-hidden>
+                      -{' '}
+                    </span>
+                    <span className="spec-anatomy-k spec-anatomy-k--req">id</span>
+                    <span className="spec-anatomy-punct">: </span>
+                    <span className="spec-anatomy-v">summarize</span>
+                    <span className="spec-anatomy-mark spec-anatomy-mark--req">required</span>
                   </span>
-                  <span className="spec-field-gloss">{f.gloss}</span>
-                </li>
-              ))}
-            </ul>
+                  <span className="spec-anatomy-line spec-anatomy-line--verb">
+                    <span className="spec-anatomy-k spec-anatomy-k--verb">infer</span>
+                    <span className="spec-anatomy-punct">:</span>
+                    <span className="spec-anatomy-mark spec-anatomy-mark--verb">
+                      1 of {CANON.verbs} verbs
+                    </span>
+                  </span>
+                  <span className="spec-anatomy-line spec-anatomy-line--nest">
+                    <span className="spec-anatomy-punct">  prompt: </span>
+                    <span className="spec-anatomy-v">&quot;…&quot;</span>
+                  </span>
+                  <span className="spec-anatomy-line">
+                    <span className="spec-anatomy-k spec-anatomy-k--opt">depends_on</span>
+                    <span className="spec-anatomy-punct">: [extract]</span>
+                    <span className="spec-anatomy-mark">the edges</span>
+                  </span>
+                  <span className="spec-anatomy-line">
+                    <span className="spec-anatomy-k spec-anatomy-k--opt">when</span>
+                    <span className="spec-anatomy-punct">: </span>
+                    <span className="spec-anatomy-v">${'{{'} … {'}}'}</span>
+                    <span className="spec-anatomy-mark">a CEL gate</span>
+                  </span>
+                </div>
+                <p className="spec-anatomy-legend">
+                  <span className="spec-anatomy-legend-item spec-anatomy-legend-item--req">
+                    required core
+                  </span>
+                  <span className="spec-anatomy-legend-item spec-anatomy-legend-item--opt">
+                    optional controls
+                  </span>
+                </p>
+              </figure>
+
+              {/* the full ledger · name · req · gloss */}
+              <ul className="spec-fields">
+                {TASK_FIELDS.map((f) => (
+                  <li className="spec-field" key={f.name}>
+                    <code className="spec-field-name">{f.name}</code>
+                    <span className={`spec-field-req${f.req ? '' : ' spec-field-req--opt'}`}>
+                      {f.req ? 'req' : 'opt'}
+                    </span>
+                    <span className="spec-field-gloss">{f.gloss}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* ══ FIG S.3 · the permits — the enforcement model (the seatbelt) ══ */}
@@ -343,14 +464,49 @@ export function Component() {
               call. The runtime <em>enforces</em> it — out of bounds is <b>denied</b>, not
               logged after the fact.
             </SpecHead>
+            {/* the boundary diagram · the plan sits at the centre; every effect
+                must pass through one of the four declared gates before it runs.
+                Anything off the list is denied at the gate — a refusal, not a log. */}
+            <div className="spec-boundary" data-rise>
+              <HudMarks />
+              <span className="spec-boundary-ring" aria-hidden />
+              <span className="spec-boundary-ring spec-boundary-ring--2" aria-hidden />
+              <div className="spec-boundary-core">
+                <span className="spec-boundary-core-glyph" aria-hidden>
+                  ❯
+                </span>
+                <span className="spec-boundary-core-label">the plan</span>
+                <span className="spec-boundary-core-sub mono">default-deny</span>
+              </div>
+              <ul className="spec-boundary-gates">
+                {PERMIT_CATS.map((c, i) => (
+                  <li className={`spec-boundary-gate spec-boundary-gate--${c.key}`} key={c.key}>
+                    <span className="spec-boundary-gate-glyph" aria-hidden>
+                      {c.glyph}
+                    </span>
+                    <code className="spec-boundary-gate-cap">{c.cap}</code>
+                    <span className="spec-boundary-gate-shape mono" aria-hidden>
+                      {c.shape}
+                    </span>
+                    <span className="spec-boundary-gate-fig mono" aria-hidden>
+                      {['i', 'ii', 'iii', 'iv'][i]}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             <div className="spec-permits-grid">
-              {/* the four declarable categories */}
+              {/* the four declarable categories · the gloss ledger */}
               <dl className="spec-permits-cats">
                 {PERMIT_CATS.map((c, i) => (
                   <div className="spec-permits-cat" key={c.cap}>
                     <dt className="spec-permits-cat-key">
                       <span className="spec-permits-cat-fig" aria-hidden>
                         {['i', 'ii', 'iii', 'iv'][i]}
+                      </span>
+                      <span className="spec-permits-cat-glyph" aria-hidden>
+                        {c.glyph}
                       </span>
                       <code>{c.cap}</code>
                     </dt>
@@ -366,7 +522,10 @@ export function Component() {
 
               {/* the enforcement codes · denied, before it runs */}
               <div className="spec-permits-denials">
-                <p className="spec-permits-denials-head mono">denied, before it runs</p>
+                <p className="spec-permits-denials-head mono">
+                  <span className="spec-permits-denials-dot" aria-hidden />
+                  denied, before it runs
+                </p>
                 <ul className="spec-permits-codes">
                   {PERMIT_DENIALS.map((d) => (
                     <li className="spec-permits-code" key={d.code}>
