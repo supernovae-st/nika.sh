@@ -396,7 +396,9 @@
    the hero leaves the viewport — the visual bridge INTO the Living File below.
    transform-origin at the top so the panel tips forward as it falls. */
 .v4hero-aspirate {
-  transform-origin: 50% 0%;
+  /* centre origin · the file shrinks toward its own centre as it's drawn into
+     the tunnel's vanishing point */
+  transform-origin: 50% 50%;
   will-change: transform, opacity;
 }
 .v4hero-copy {
