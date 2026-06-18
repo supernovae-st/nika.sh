@@ -377,6 +377,19 @@
     0 12px 34px -18px color-mix(in oklch, var(--v4-blue-glow) 26%, black);
 }
 
+/* ── the aspiration · the editor is pulled into the machine on scroll-out ──────
+   Hero.tsx's rAF scrub drives the transform (translateY down + tilt into depth +
+   scale down + fade) on .v4hero-aspirate, plus a fade/drift on .v4hero-copy, as
+   the hero leaves the viewport — the visual bridge INTO the Living File below.
+   transform-origin at the top so the panel tips forward as it falls. */
+.v4hero-aspirate {
+  transform-origin: 50% 0%;
+  will-change: transform, opacity;
+}
+.v4hero-copy {
+  will-change: transform, opacity;
+}
+
 /* ── dark-scoped overrides for the shared hero chrome ─────────────────────────
    The install line, kicker, trust line + FIG eyebrow are shared (shell.css) and
    read --v4-text* (near-white) — they already clear contrast on the dark base.

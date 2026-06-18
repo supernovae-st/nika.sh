@@ -185,6 +185,8 @@ function HeroAtmosphere() {
 
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null)
+  const copyRef = useRef<HTMLDivElement>(null)
+  const editorRef = useRef<HTMLDivElement>(null)
 
   /* opt the hero into the orchestrated entrance — only when motion is allowed.
      Adding the class in an effect (post-paint) guarantees the prerendered HTML
@@ -195,20 +197,55 @@ export default function Hero() {
     rootRef.current?.classList.add('v4-enter')
   }, [])
 
+  /* ── the ASPIRATION · the hero is drawn DOWN into the machine ────────────────
+     As the hero scrolls out, the editor (the plan) is pulled downward + tilts
+     into depth + dissolves — "sucked into the machine" — while the copy fades up.
+     This is the visual bridge to the Living File below (the SAME file, now
+     running): the two stop reading as disjoint blocks. A motion-safe rAF scroll
+     scrub (transform/opacity only · compositor-cheap); SSR / no-JS / reduced get
+     the static hero (no transform applied). */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const section = rootRef.current
+    if (!section) return
+    let raf = 0
+    const tick = () => {
+      const rect = section.getBoundingClientRect()
+      const h = rect.height || 1
+      // 0 while the hero fills the view → 1 as it scrolls out (the pull window)
+      const ap = Math.min(1, Math.max(0, -rect.top / (h * 0.82)))
+      const editor = editorRef.current
+      const copy = copyRef.current
+      if (editor) {
+        const e = ap * ap // ease-in · the pull accelerates as it leaves
+        editor.style.transform = `translateY(${e * 132}px) perspective(1200px) rotateX(${e * 26}deg) scale(${1 - e * 0.16})`
+        editor.style.opacity = `${Math.max(0, 1 - e * 1.04)}`
+      }
+      if (copy) {
+        copy.style.transform = `translateY(${ap * -26}px)`
+        copy.style.opacity = `${Math.max(0, 1 - ap * 1.08)}`
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
   return (
     <section
       ref={rootRef}
       id="hero"
       className="theme-dark relative isolate flex min-h-screen flex-col justify-center overflow-hidden"
     >
-      {/* the blue gradient + grid + HUD + the spinning particle butterfly (lazy) */}
+      {/* the dark field + blue pointe + grid + HUD + the particle butterfly (lazy) */}
       <HeroAtmosphere />
 
       {/* the two-column composition · copy LEFT · editor RIGHT · generous space.
           Stacks to one column under 1024px (editor below the copy). */}
       <div className="v4hero-grid relative z-[1] mx-auto w-full max-w-6xl">
         {/* ── LEFT · the control narrative ─────────────────────────────────── */}
-        <div className="v4hero-copy flex max-w-2xl flex-col">
+        <div ref={copyRef} className="v4hero-copy flex max-w-2xl flex-col">
           {/* FIG 0.0 · the blueprint numbering with its hairline tick */}
           <p className="v4fig mb-6" data-rise style={rise(0)}>
             FIG 0.0
@@ -306,24 +343,27 @@ export default function Hero() {
 
         {/* ── RIGHT · the premium editor panel · the product replica ────────── */}
         <div className="v4hero-editor" data-rise style={rise(180)}>
-          <CodeFile
-            yaml={HERO_PLAN}
-            filename="screen-cvs.nika.yaml"
-            highlight={[5, 9]}
-            className="v4hero-code"
-          />
-          {/* a compact reference chip · "the plan, before it acts" · links to the
-              full living-file run (so the editor isn't a dead end). */}
-          <Link to="/use-cases" className="v4hint mt-4 w-fit">
-            <span className="v4hint-file">screen-cvs.nika.yaml</span>
-            <span className="text-faint" aria-hidden>
-              ·
-            </span>
-            <span>the plan, before it acts</span>
-            <span className="v4hint-arrow" aria-hidden>
-              →
-            </span>
-          </Link>
+          {/* the aspiration wrapper · pulled into the machine on scroll-out */}
+          <div ref={editorRef} className="v4hero-aspirate">
+            <CodeFile
+              yaml={HERO_PLAN}
+              filename="screen-cvs.nika.yaml"
+              highlight={[5, 9]}
+              className="v4hero-code"
+            />
+            {/* a compact reference chip · "the plan, before it acts" · links to the
+                full living-file run (so the editor isn't a dead end). */}
+            <Link to="/use-cases" className="v4hint mt-4 w-fit">
+              <span className="v4hint-file">screen-cvs.nika.yaml</span>
+              <span className="text-faint" aria-hidden>
+                ·
+              </span>
+              <span>the plan, before it acts</span>
+              <span className="v4hint-arrow" aria-hidden>
+                →
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>
