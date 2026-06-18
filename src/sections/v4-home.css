@@ -137,7 +137,8 @@
   background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
   /* the hairline verb-hue accent rides the LEFT edge · 0-width until hover */
   box-shadow: inset 0 0 0 0 transparent;
-  transition: border-color 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+  transition: border-color var(--dur-ui) var(--ease-ui), box-shadow var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
 }
 .v4verb::before {
   /* a corner registration tick — the blueprint vocabulary */
@@ -173,7 +174,7 @@
   font-size: 20px;
   line-height: 1;
   color: var(--v4-text-dim);
-  transition: color 0.22s ease;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .v4verb:hover .v4verb-glyph,
 .v4verb:focus-within .v4verb-glyph {
@@ -772,7 +773,7 @@
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 30%, transparent);
-  transition: text-decoration-color 0.18s ease;
+  transition: text-decoration-color var(--dur-ui) var(--ease-ui);
 }
 .v4own-license a:hover {
   text-decoration-color: var(--v4-text);
@@ -949,7 +950,7 @@
   font-family: var(--mono);
   font-size: 12.5px;
   color: var(--v4-text);
-  transition: border-color 0.18s ease, background-color 0.18s ease;
+  transition: border-color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
 .v4belt-chip:hover {
   border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
@@ -1044,7 +1045,8 @@
   letter-spacing: 0.02em;
   color: var(--v4-text-dim);
   cursor: pointer;
-  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+  transition: border-color var(--dur-ui) var(--ease-ui), color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
   /* generous hit target on touch */
   min-height: 40px;
 }
@@ -1109,7 +1111,7 @@
   border-radius: 14px;
   background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  transition: border-color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
 .v4uc-card:hover {
   border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
@@ -1236,7 +1238,7 @@
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
-  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui), text-decoration-color var(--dur-ui) var(--ease-ui);
   white-space: nowrap;
 }
 .v4uc-panel-link:hover {
@@ -1293,7 +1295,7 @@
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
-  transition: color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .v4uc-note a:hover {
   color: var(--v4-text);
@@ -1410,7 +1412,7 @@
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
-  transition: text-decoration-color 0.18s ease;
+  transition: text-decoration-color var(--dur-ui) var(--ease-ui);
 }
 .v4log-more-link:hover {
   text-decoration-color: var(--v4-text);
@@ -1575,7 +1577,7 @@
   font-size: 14.5px;
   color: var(--v4-text);
   border-radius: 7px;
-  transition: color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .v4cta-link--dim {
   color: var(--v4-text-dim);
@@ -1585,13 +1587,13 @@
 }
 .v4cta-link-glyph {
   color: var(--v4-text-dim);
-  transition: color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .v4cta-link:hover .v4cta-link-glyph {
   color: var(--v4-text);
 }
 .v4cta-link-arrow {
-  transition: transform 0.18s ease;
+  transition: transform var(--dur-ui) var(--ease-ui);
 }
 .v4cta-link:hover .v4cta-link-arrow {
   transform: translateX(2px);
@@ -1809,7 +1811,7 @@
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
-  transition: text-decoration-color 0.18s ease;
+  transition: text-decoration-color var(--dur-ui) var(--ease-ui);
 }
 .v4start-more-link:hover {
   text-decoration-color: var(--v4-text);
@@ -1868,7 +1870,7 @@
   line-height: 1.35;
   color: var(--v4-text);
   text-wrap: balance;
-  transition: color 0.16s ease;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .v4faq-mark {
   display: inline-flex;
@@ -1879,7 +1881,7 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .v4faq-mark {
-    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), color 0.16s ease;
+    transition: transform var(--dur-ui) var(--ease-ui), color var(--dur-ui) var(--ease-ui);
   }
 }
 .v4faq-details[open] .v4faq-mark {

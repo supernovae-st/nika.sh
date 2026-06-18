@@ -73,7 +73,7 @@ export default function FinalCTA() {
       ref={ref}
       id="get-started"
       aria-labelledby="cta-title"
-      className="theme-dark v4sec scroll-mt-24"
+      className="theme-dark v4sec v4-flip scroll-mt-24"
     >
       <div className="v4sec-wrap v4cta-wrap">
         {/* the close · the install affordance + two flat CTAs, blueprint register */}

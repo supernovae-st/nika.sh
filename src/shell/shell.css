@@ -90,7 +90,7 @@
   letter-spacing: -0.005em;
   color: var(--v4-text-dim);
   white-space: nowrap;
-  transition: color 0.18s ease, background-color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
 .v4nav-link:hover {
   color: var(--v4-text);
@@ -111,7 +111,7 @@
   opacity: 0;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.24s ease;
+  transition: transform var(--dur-ui) var(--ease-ui), opacity var(--dur-ui) var(--ease-ui);
 }
 .v4nav-link:hover::after,
 .v4nav-link[data-open='true']::after {
@@ -120,7 +120,7 @@
 }
 
 .v4nav-caret {
-  transition: transform 0.2s ease;
+  transition: transform var(--dur-ui) var(--ease-ui);
 }
 .v4nav-link[data-open='true'] .v4nav-caret {
   transform: rotate(180deg);
@@ -148,7 +148,7 @@
   border-radius: 7px;
   font-size: 13.5px;
   color: var(--v4-text-dim);
-  transition: color 0.18s ease, background-color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
 .v4nav-ghost:hover {
   color: var(--v4-text);
@@ -180,7 +180,8 @@
   background: var(--v4-text);
   border: 1px solid var(--v4-text);
   box-shadow: 0 1px 0 color-mix(in oklch, var(--v4-text) 30%, transparent);
-  transition: background-color 0.18s ease, transform 0.12s ease;
+  transition: background-color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
+    transform var(--dur-press) var(--ease-ui);
 }
 .v4nav-cta:hover {
   background: #ffffff;
@@ -205,6 +206,7 @@
   border-radius: 8px;
   color: var(--v4-text);
   touch-action: manipulation;
+  transition: background-color var(--dur-ui) var(--ease-ui);
 }
 .v4nav-burger:hover {
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
@@ -269,7 +271,7 @@
   padding: 10px 12px;
   border-radius: 10px;
   color: var(--v4-text);
-  transition: background-color 0.16s ease;
+  transition: background-color var(--dur-ui) var(--ease-ui);
 }
 .v4mega-item:hover,
 .v4mega-item:focus-visible {
@@ -282,6 +284,7 @@
   font-size: 13px;
   line-height: 1.3;
   color: var(--v4-text-faint);
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .v4mega-item:hover .v4mega-glyph,
 .v4mega-item:focus-visible .v4mega-glyph {
@@ -355,6 +358,7 @@
   margin-right: -10px;
   border-radius: 9px;
   color: var(--v4-text);
+  transition: background-color var(--dur-ui) var(--ease-ui);
 }
 .v4sheet-close:hover {
   background: color-mix(in oklch, var(--v4-text) 8%, transparent);
@@ -376,6 +380,7 @@
   border-radius: 10px;
   font-size: 16px; /* ≥16px so iOS never zooms */
   color: var(--v4-text);
+  transition: background-color var(--dur-ui) var(--ease-ui);
 }
 .v4sheet-link:hover {
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
@@ -514,7 +519,7 @@
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.02em;
-  transition: color 0.16s ease, background-color 0.16s ease;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
 .v4install-copy:hover {
   color: var(--v4-text);
@@ -593,5 +598,7 @@
   content: '';
   width: 30px;
   height: 1px;
-  background: var(--v4-line);
+  /* match the section FIG eyebrow tick (.v4sec-fig::before · 30% ink) so the
+     hero's blueprint eyebrow reads at the same weight as every section's. */
+  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
 }

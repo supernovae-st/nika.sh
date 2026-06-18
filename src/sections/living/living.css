@@ -361,7 +361,7 @@
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
 .lf-toggle-btn:hover {
   color: var(--v4-text-dim);
@@ -479,35 +479,50 @@
    non-color-only cue. A left hairline tick (the v4 emphasis register) marks it
    as the load-bearing control moment, not decoration. */
 .lf-enforce {
-  border: 1px solid var(--v4-line);
+  /* the money moment · the runtime REFUSING. It must read as the consequential
+     beat, not a peer of the OUTPUTS panel — so it carries a hair more surface
+     presence (a brighter border + a faint top-inset highlight, monochrome) and a
+     load-bearing left tick. Still grayscale: the ✗ + the real code are the
+     non-colour cue (design doc · colour stays the aurora + verb whisper). */
+  border: 1px solid color-mix(in oklch, var(--v4-text) 16%, var(--v4-line));
   border-radius: 12px;
   background: var(--v4-bg-raised);
-  padding: 0.7rem 0.85rem 0.8rem;
+  box-shadow: inset 0 1px 0 color-mix(in oklch, var(--v4-text) 8%, transparent);
+  padding: 0.75rem 0.9rem 0.85rem;
   position: relative;
   overflow: hidden;
 }
 .lf-enforce::before {
+  /* the load-bearing left tick · stronger than a peer panel's hairline */
   content: '';
   position: absolute;
   inset: 0 auto 0 0;
-  width: 2px;
-  background: color-mix(in oklch, var(--v4-text) 34%, transparent);
+  width: 3px;
+  background: color-mix(in oklch, var(--v4-text) 60%, transparent);
 }
+/* the denied row · the HERO line. Bigger + brighter mono than a peer panel, so
+   the ✗ + NIKA-SEC-004 are the first thing the eye lands on. Sits in a faint
+   inset well that separates it from the note. */
 .lf-enforce-row {
-  margin: 0.15rem 0 0.5rem;
+  margin: 0.3rem 0 0.55rem;
   display: flex;
   align-items: baseline;
-  gap: 0.5ch;
-  font-size: 11.5px;
+  gap: 0.6ch;
+  padding: 0.4rem 0.55rem;
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+  font-size: 12.5px;
   line-height: 1.5;
   letter-spacing: 0.01em;
   white-space: pre-wrap;
   word-break: break-word;
-  color: color-mix(in oklch, var(--v4-text) 90%, transparent);
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
 }
 .lf-enforce-glyph {
   color: var(--v4-text);
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 13px;
 }
 .lf-enforce-note {
   font-size: 11px;
@@ -517,6 +532,25 @@
 .lf-enforce-key {
   font-family: var(--mono);
   color: var(--v4-text-dim);
+}
+/* the DENIED status chip in the caption · names the outcome at a glance (the
+   redundant, non-colour-only cue that this beat is a REFUSAL) */
+.lf-enforce-cap-deny {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  border: 1px solid color-mix(in oklch, var(--v4-text) 28%, transparent);
+  border-radius: 5px;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--v4-text);
+}
+.lf-enforce-cap-deny::before {
+  content: '✗';
+  font-size: 9px;
+  line-height: 1;
 }
 
 /* ─── the run progress rail (stage foot) ─────────────────────────────────────*/

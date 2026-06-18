@@ -19,6 +19,19 @@
   --v4-text-dim: #8a8f98;    /* secondary / labels / FIG numbers            */
   --v4-text-faint: #838995;  /* captions · WCAG AA 5.28:1 on #121317        */
   --v4-hud-faint: #5a606b;   /* DECORATIVE only · aria-hidden HUD marks      */
+  --v4-seam-nod: rgb(255 255 255 / 0.022); /* seam fade fallback (dark base) */
+
+  /* ── the micro-interaction language · ONE system ──────────────────────────
+     Every interactive surface (nav · CTAs · copy buttons · cards · tabs · FAQ ·
+     switches · links) animates on hover/active/focus with the SAME timing +
+     easing, so the whole site feels like one instrument. Fast (~140ms),
+     transform/opacity/color ONLY (never width/height/`transition: all`),
+     and hover always RAISES contrast. Slower orchestrated motion (section
+     reveals · the corridor fly-through · the acid warp) is a separate register
+     and keeps its own longer timings. */
+  --ease-ui: cubic-bezier(0.22, 1, 0.36, 1); /* the signature ease-out */
+  --dur-ui: 140ms;   /* hover / focus / state — the standard micro-interaction */
+  --dur-press: 90ms; /* active / press — snappier than hover */
 
   /* the 4 verb hues — used ONLY inside a live run (design doc §3.4),
      never as static UI color */
@@ -45,6 +58,8 @@
   --v4-text-dim: #8a8f98;
   --v4-text-faint: #838995;  /* WCAG AA 5.28:1 on #121317 · 5.60:1 on #0a0b0d */
   --v4-hud-faint: #5a606b;   /* DECORATIVE only · aria-hidden HUD marks      */
+  /* seam nod · a dark section's neighbour is light → a faint light wash at top */
+  --v4-seam-nod: rgb(255 255 255 / 0.022);
 }
 .theme-light,
 [data-theme='light'] {
@@ -55,10 +70,63 @@
   --v4-text-dim: #565b66;
   --v4-text-faint: #696d76;  /* WCAG AA 4.83:1 on #f7f7f5 · 5.19:1 on #fff   */
   --v4-hud-faint: #8a8f98;   /* DECORATIVE only · aria-hidden HUD marks      */
+  /* seam nod · a light section's neighbour is dark → a faint dark wash at top */
+  --v4-seam-nod: rgb(10 11 13 / 0.04);
 }
 .theme-dark,
 .theme-light,
 [data-theme] {
   background-color: var(--v4-bg);
   color: var(--v4-text);
+}
+
+/* ─── section-boundary seam · the alternation reads DESIGNED ──────────────────
+   Every alternating theme section butts up against the previous one. Left raw,
+   the dark⇄light flips read as hard cuts. The seam makes each boundary feel
+   intentional and consistent across ALL seams.
+
+   Two layers, both compositor-cheap, NO layout shift (pointer-events:none
+   pseudo-elements behind the z-index:1 content wrap, fully WITHIN the section so
+   `.v4sec { overflow: clip }` is respected):
+
+   • ::before — a 1px hairline pinned exactly ON the cut line, tinted from the
+     section's OWN ink. EVERY `.v4sec` carries it, so the structural rhythm is
+     consistent at every boundary (same-register or flip).
+   • ::after  — a short (~80px) gradient fade just under the seam introducing a
+     faint NOD toward the neighbouring register, so a dark⇄light flip eases in
+     instead of snapping. This fires ONLY on a register flip — `.v4-flip` is set
+     on the section that opens each flip (deterministic from the static order),
+     and each theme sets `--v4-seam-nod` to its opposite-register tone.
+
+   The hero (first paint · no section above) and the Living File (its own pinned
+   scroll register) don't carry `.v4sec`, so they opt out for free; `.v4-noseam`
+   is a manual hook for any future exception. */
+.v4sec {
+  position: relative;
+}
+.v4sec::before {
+  /* the hairline · register-tinted, exactly on the seam */
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  z-index: 0;
+  pointer-events: none;
+  background: color-mix(in oklch, var(--v4-text) 9%, transparent);
+}
+.v4sec.v4-flip::after {
+  /* the soft nod · only on a register flip · the opposite register's tone fades
+     out over ~80px from the seam, so the dark⇄light flip eases in. */
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 80px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--v4-seam-nod) 0%, transparent 100%);
+}
+/* opt-out · sections that own their own top treatment. */
+.v4sec.v4-noseam::before,
+.v4sec.v4-noseam::after {
+  display: none;
 }

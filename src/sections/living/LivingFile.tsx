@@ -366,7 +366,10 @@ function EnforceCallout() {
         <span aria-hidden className="lf-cap-dash">
           —
         </span>
-        enforce — out of bounds is denied
+        enforce — out of bounds
+        <span className="lf-enforce-cap-deny" aria-hidden>
+          denied
+        </span>
       </p>
       {/* the denied write, as the engine prints it (✗ <id>  NIKA-SEC-004) */}
       <pre className="lf-enforce-row mono" aria-label="A denied action — NIKA-SEC-004">

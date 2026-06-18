@@ -160,7 +160,7 @@
   background: transparent;
   color: inherit;
   text-align: left;
-  transition: background-color 0.18s ease;
+  transition: background-color var(--dur-ui) var(--ease-ui);
 }
 .hitl-permit:first-child {
   border-top: none;
@@ -322,7 +322,8 @@
   font-size: 14px;
   font-weight: 560;
   letter-spacing: -0.01em;
-  transition: transform 0.12s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  transition: transform var(--dur-press) var(--ease-ui), box-shadow var(--dur-ui) var(--ease-ui),
+    opacity var(--dur-ui) var(--ease-ui);
 }
 .hitl-run:hover {
   box-shadow: 0 2px 0 color-mix(in oklch, var(--v4-text) 28%, transparent);

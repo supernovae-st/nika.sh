@@ -328,20 +328,24 @@
   opacity: 0.6;
 }
 
-/* the focal-plane node — emphasised (slightly larger, brighter mark) */
+/* the focal-plane node — the "you are HERE" read. Emphasised so the eye always
+   knows which plate the run is travelling through right now: a brighter rim +
+   a wider ambient halo than a peer plate. Compositor-cheap (box-shadow only). */
 .cor-node--focal .cor-plate {
+  border-color: color-mix(in oklch, var(--cor-ink) 78%, transparent);
   box-shadow:
-    inset 0 0 0 1px color-mix(in oklch, var(--cor-ink) 14%, transparent),
-    0 0 28px color-mix(in oklch, var(--cor-ink) 16%, transparent);
+    inset 0 0 0 1px color-mix(in oklch, var(--cor-ink) 22%, transparent),
+    0 0 34px color-mix(in oklch, var(--cor-ink) 22%, transparent);
 }
 
-/* the focal crosshair reticle — sits behind the plate, centered on the slot */
+/* the focal crosshair reticle — sits behind the plate, centered on the slot.
+   Brighter on the focal node so the "travelling the plan" read is legible. */
 .cor-reticle {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: color-mix(in oklch, var(--cor-ink) 60%, transparent);
+  color: color-mix(in oklch, var(--cor-ink) 75%, transparent);
   pointer-events: none;
 }
 

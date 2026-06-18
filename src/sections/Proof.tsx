@@ -78,7 +78,7 @@ export default function Proof() {
   const ref = useRevealOnce<HTMLElement>()
 
   return (
-    <section ref={ref} id="proof" aria-labelledby="proof-title" className="theme-light v4sec scroll-mt-24">
+    <section ref={ref} id="proof" aria-labelledby="proof-title" className="theme-light v4sec v4-flip scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
           FIG 9.0
