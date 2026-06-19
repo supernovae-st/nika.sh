@@ -240,6 +240,194 @@ function Dag({ run, morph }: { run: RunState; morph: number }) {
   )
 }
 
+/* ── the VERTICAL DAG · the stage hero (corridor mode) ────────────────────────
+   The fil-rouge pipeline is linear (8 sequential waves) — drawn as ONE row it's
+   a thin strip lost in the stage. Here it flows TOP→BOTTOM (== the scroll
+   direction) and FANS OUT in width at the parallel steps (cvs ×8 · screened ×2):
+   the fan-out IS the parallelism, made literal. Scatter/gather ribs split the
+   flow into the shard lanes and merge it back. Drives off the same run-model. */
+const VG = { W: 460, NODE_W: 156, NODE_H: 44, LEVEL_H: 92, SHARD: 30, GAP: 12, CAP: 6, PAD: 28 }
+const VG_H = VG.PAD * 2 + DAG.waves * VG.LEVEL_H
+const VG_CX = VG.W / 2
+const vLevelCY = (wave: number) => VG.PAD + wave * VG.LEVEL_H + VG.LEVEL_H / 2
+
+function fanCount(task: ShowcaseTask): number | null {
+  const f = task.flags.find((x) => x.startsWith('fan-out'))
+  const m = f?.match(/(\d+)/)
+  return m ? parseInt(m[1], 10) : null
+}
+
+interface VNode {
+  task: ShowcaseTask
+  cy: number
+  fanN: number | null
+  top: Pt
+  bottom: Pt
+  shards: Pt[]
+}
+
+function buildVNodes(): Record<string, VNode> {
+  const out: Record<string, VNode> = {}
+  for (const task of DAG.tasks) {
+    const cy = vLevelCY(task.wave)
+    const fanN = fanCount(task)
+    if (fanN) {
+      const k = Math.min(fanN, VG.CAP)
+      const rowW = k * VG.SHARD + (k - 1) * VG.GAP
+      const startX = VG_CX - rowW / 2
+      const shards = Array.from({ length: k }, (_, i) => ({
+        x: startX + i * (VG.SHARD + VG.GAP),
+        y: cy - VG.SHARD / 2,
+      }))
+      out[task.id] = {
+        task,
+        cy,
+        fanN,
+        top: { x: VG_CX, y: cy - VG.SHARD / 2 - 7 },
+        bottom: { x: VG_CX, y: cy + VG.SHARD / 2 + 7 },
+        shards,
+      }
+    } else {
+      out[task.id] = {
+        task,
+        cy,
+        fanN: null,
+        top: { x: VG_CX, y: cy - VG.NODE_H / 2 },
+        bottom: { x: VG_CX, y: cy + VG.NODE_H / 2 },
+        shards: [],
+      }
+    }
+  }
+  return out
+}
+const VNODES = buildVNodes()
+
+/** a soft vertical S-curve between two anchors. */
+function vEdge(a: Pt, b: Pt): string {
+  const dy = (b.y - a.y) * 0.45
+  return `M ${a.x} ${a.y} C ${a.x} ${a.y + dy}, ${b.x} ${b.y - dy}, ${b.x} ${b.y}`
+}
+/** a skip edge (dep > 1 wave above) bows out to the LEFT, around the fan. */
+function vBow(a: Pt, b: Pt): string {
+  const bow = VG.W * 0.42
+  return `M ${a.x} ${a.y} C ${a.x - bow} ${a.y + 10}, ${b.x - bow} ${b.y - 10}, ${b.x} ${b.y}`
+}
+
+function DagVertical({ run }: { run: RunState }) {
+  return (
+    <svg
+      className="lf-dag lf-dag--v"
+      viewBox={`0 0 ${VG.W} ${VG_H}`}
+      role="img"
+      aria-label="Workflow DAG · the plan flows top to bottom · parallel steps fan out wide · nodes light as the run reaches them"
+    >
+      {/* dependency edges (under everything) · flow once the source completes */}
+      {DAG.tasks.flatMap((task) =>
+        task.deps.map((dep) => {
+          const src = VNODES[dep]
+          const dst = VNODES[task.id]
+          if (!src || !dst) return null
+          const skip = task.wave - src.task.wave > 1
+          const flowing =
+            run.nodes[dep]?.status === 'success' && run.nodes[task.id]?.status !== 'pending'
+          return (
+            <path
+              key={`${dep}->${task.id}`}
+              className={`lf-edge ${flowing ? 'lf-edge--flow' : ''}`}
+              d={skip ? vBow(src.bottom, dst.top) : vEdge(src.bottom, dst.top)}
+              fill="none"
+            />
+          )
+        }),
+      )}
+
+      {/* scatter / gather ribs · split the flow into the fan lanes and merge back */}
+      {DAG.tasks
+        .filter((t) => VNODES[t.id].fanN)
+        .flatMap((task) => {
+          const vn = VNODES[task.id]
+          const st = run.nodes[task.id]?.status
+          const on = st === 'running' || st === 'success'
+          return vn.shards.flatMap((s, i) => [
+            <path
+              key={`rt-${task.id}-${i}`}
+              className={`lf-rib ${on ? 'lf-rib--on' : ''}`}
+              d={vEdge(vn.top, { x: s.x + VG.SHARD / 2, y: s.y })}
+              fill="none"
+            />,
+            <path
+              key={`rb-${task.id}-${i}`}
+              className={`lf-rib ${on ? 'lf-rib--on' : ''}`}
+              d={vEdge({ x: s.x + VG.SHARD / 2, y: s.y + VG.SHARD }, vn.bottom)}
+              fill="none"
+            />,
+          ])
+        })}
+
+      {/* nodes · single box, or a fan of shard chips + a side label */}
+      {DAG.tasks.map((task) => {
+        const vn = VNODES[task.id]
+        const status = run.nodes[task.id]?.status ?? 'pending'
+        const running = status === 'running'
+        const hue = running ? VERB_VAR[task.verb] : undefined
+        const mark =
+          status === 'success'
+            ? CLI_GLYPH.done
+            : status === 'failure'
+              ? CLI_GLYPH.fail
+              : status === 'cancelled' || status === 'skipped'
+                ? CLI_GLYPH.cancel
+                : ''
+        const style = {
+          ['--lf-vhue' as string]: VERB_VAR[task.verb],
+          ...(hue ? { ['--lf-hue' as string]: hue } : {}),
+        }
+        if (vn.fanN) {
+          const lastX = vn.shards[vn.shards.length - 1].x + VG.SHARD + 12
+          return (
+            <g key={task.id} className={nodeClass(status)} style={style}>
+              <title>{`${task.id} · ${task.gloss} · ×${vn.fanN} in parallel`}</title>
+              {vn.shards.map((s, i) => (
+                <rect
+                  key={i}
+                  className="lf-shard"
+                  x={s.x}
+                  y={s.y}
+                  width={VG.SHARD}
+                  height={VG.SHARD}
+                  rx={7}
+                />
+              ))}
+              <text className="lf-vlabel" x={lastX} y={vn.cy - 2}>
+                {task.id}
+              </text>
+              <text className="lf-vlabel-sub" x={lastX} y={vn.cy + 12}>
+                {mark ? `${mark} ` : ''}
+                {task.verb} ×{vn.fanN}
+              </text>
+            </g>
+          )
+        }
+        const bx = VG_CX - VG.NODE_W / 2
+        const by = vn.cy - VG.NODE_H / 2
+        return (
+          <g key={task.id} className={nodeClass(status)} style={style}>
+            <title>{`${task.id} · ${task.gloss}`}</title>
+            <rect className="lf-node-box" x={bx} y={by} width={VG.NODE_W} height={VG.NODE_H} rx={10} />
+            <circle className="lf-node-dot" cx={bx + 14} cy={vn.cy} r={3.4} />
+            <text className="lf-node-id" x={bx + 26} y={vn.cy + 3.5}>
+              {task.id}
+            </text>
+            <text className="lf-node-verb" x={bx + VG.NODE_W - 13} y={vn.cy + 3.5} textAnchor="end">
+              {mark || task.verb}
+            </text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
 /* ── the screen-reader run summary · the corridor's accessible equivalent ─────
    The 3D corridor is an aria-hidden decorative visual, and the role="img" <Dag>
    only renders in the 2D fallback — so corridor users would get NO textual
@@ -714,7 +902,7 @@ export default function LivingFile() {
                         as the corridor takes over — the design-doc ③→④ handoff. */}
                     <div className="lf-dag-layer">
                       <div className="lf-dag-wrap lf-dag-wrap--stage">
-                        <Dag run={run} morph={morph} />
+                        <DagVertical run={run} />
                       </div>
                       <p className="lf-dag-hint mono" aria-hidden>
                         nodes are tasks · arrows are dependencies · the run lights them as it reaches them

@@ -733,14 +733,60 @@
    transparent shell, bigger canvas, and a solid node backing so the graph reads
    over the busy depth grid. The plan materialises (file → DAG) on the dag beat. */
 .lf-dag-wrap--stage {
-  width: min(960px, 96%);
+  width: min(560px, 94%);
   background: transparent;
   border: 0;
   padding: 0;
   overflow: visible;
 }
 .lf-dag-wrap--stage .lf-dag {
-  max-height: min(60vh, 520px);
+  max-height: min(68vh, 600px);
+}
+/* the vertical DAG fills the tall stage (portrait); centred in the well */
+.lf-dag--v {
+  display: block;
+  margin: 0 auto;
+}
+
+/* fan-out shards · the N parallel instances of a fan-out task (cvs ×8 · screened
+   ×2). A small chip per lane, tinted by the verb; brightens with the run. */
+.lf-shard {
+  fill: color-mix(in oklch, var(--lf-vhue, var(--v4-text)) 14%, #070b14);
+  stroke: color-mix(in oklch, var(--lf-vhue, var(--v4-text)) 55%, transparent);
+  stroke-width: 1.2;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+.lf-node--running .lf-shard {
+  fill: color-mix(in oklch, var(--lf-hue, var(--v4-text)) 30%, #070b14);
+  stroke: var(--lf-hue, var(--v4-text));
+}
+.lf-node--success .lf-shard {
+  fill: color-mix(in oklch, var(--v4-text) 16%, #070b14);
+  stroke: color-mix(in oklch, var(--v4-text) 58%, transparent);
+}
+/* the scatter/gather ribs · split the flow into the lanes and merge it back */
+.lf-rib {
+  stroke: color-mix(in oklch, var(--v4-text) 20%, transparent);
+  stroke-width: 1;
+  opacity: 0.5;
+  transition: stroke 0.3s ease, opacity 0.3s ease;
+}
+.lf-rib--on {
+  stroke: color-mix(in oklch, #9fd8ff 58%, var(--v4-text));
+  opacity: 0.85;
+}
+/* the fan's side label · the task id + verb + ×N tally */
+.lf-vlabel {
+  font-family: var(--mono);
+  font-size: 12px;
+  fill: var(--lf-ink);
+}
+.lf-vlabel-sub {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.05em;
+  fill: var(--lf-vhue, var(--v4-text-dim));
+  opacity: 0.92;
 }
 .lf-dag-wrap--stage .lf-node-box {
   fill: color-mix(in oklch, #070b14 86%, transparent);
