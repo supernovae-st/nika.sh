@@ -148,21 +148,27 @@ function NodeCard({
   )
 }
 
-/* the edges (dep → task) as faint lines in the scene */
-function edgesGeometry(): THREE.BufferGeometry {
+/* the edges (dep → task) as lines in the scene · per-edge vertex colours so an
+   edge LIGHTS once its source completes (the output flowing downstream). */
+function buildEdges(): { geom: THREE.BufferGeometry; deps: string[] } {
   const pts: number[] = []
+  const cols: number[] = []
+  const deps: string[] = []
   for (const t of DAG.tasks) {
     const b = LAYOUT[t.id]
     for (const d of t.deps) {
       const a = LAYOUT[d]
       if (a && b) {
         pts.push(a[0], a[1], a[2], b[0], b[1], b[2])
+        cols.push(0.28, 0.4, 0.72, 0.28, 0.4, 0.72)
+        deps.push(d)
       }
     }
   }
   const g = new THREE.BufferGeometry()
   g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3))
-  return g
+  g.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3))
+  return { geom: g, deps }
 }
 
 export default function TunnelDag({
@@ -172,13 +178,13 @@ export default function TunnelDag({
 }) {
   const group = useRef<THREE.Group>(null!)
   const statusRef = useRef<Record<string, Status>>({})
-  const edges = useMemo(edgesGeometry, [])
+  const { geom: edges, deps: edgeDeps } = useMemo(buildEdges, [])
   const edgeMat = useMemo(
     () =>
       new THREE.LineBasicMaterial({
-        color: '#4f6dc0',
+        vertexColors: true,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.72,
         depthWrite: false,
       }),
     [],
@@ -195,6 +201,14 @@ export default function TunnelDag({
     // execution progress from the deterministic run-model
     const run = runStateAt(DAG, local)
     for (const t of DAG.tasks) statusRef.current[t.id] = run.nodes[t.id]?.status ?? 'pending'
+    // light the edges whose source has completed (the output flowing downstream)
+    const col = edges.getAttribute('color') as THREE.BufferAttribute
+    for (let i = 0; i < edgeDeps.length; i++) {
+      const on = statusRef.current[edgeDeps[i]] === 'success'
+      col.setXYZ(i * 2, on ? 0.72 : 0.28, on ? 0.86 : 0.4, on ? 1 : 0.72)
+      col.setXYZ(i * 2 + 1, on ? 0.72 : 0.28, on ? 0.86 : 0.4, on ? 1 : 0.72)
+    }
+    col.needsUpdate = true
     if (group.current) {
       // travel the graph toward the camera as the run advances (dive INTO it)
       group.current.position.z = 1.5 + local * (TOTAL_DEPTH + 2)
