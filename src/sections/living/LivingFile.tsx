@@ -246,7 +246,7 @@ function Dag({ run, morph }: { run: RunState; morph: number }) {
    direction) and FANS OUT in width at the parallel steps (cvs ×8 · screened ×2):
    the fan-out IS the parallelism, made literal. Scatter/gather ribs split the
    flow into the shard lanes and merge it back. Drives off the same run-model. */
-const VG = { W: 460, NODE_W: 156, NODE_H: 44, LEVEL_H: 92, SHARD: 30, GAP: 12, CAP: 6, PAD: 28 }
+const VG = { W: 540, NODE_W: 150, NODE_H: 44, LEVEL_H: 94, SHARD: 30, GAP: 12, CAP: 6, PAD: 30 }
 const VG_H = VG.PAD * 2 + DAG.waves * VG.LEVEL_H
 const VG_CX = VG.W / 2
 const vLevelCY = (wave: number) => VG.PAD + wave * VG.LEVEL_H + VG.LEVEL_H / 2
@@ -256,6 +256,20 @@ function fanCount(task: ShowcaseTask): number | null {
   const m = f?.match(/(\d+)/)
   return m ? parseInt(m[1], 10) : null
 }
+
+/* plain-words gloss per step · the comprehension layer (the ids are cryptic).
+   Keyed to the fil-rouge; falls back to the task's own gloss for any other DAG. */
+const STEP_GLOSS: Record<string, string> = {
+  pool: 'list every CV in the inbox',
+  cvs: 'read each CV · in parallel',
+  pairs: 'pair each path with its text',
+  screened: 'score each · local model',
+  ranked: 'drop weak fits · rank the rest',
+  shortlist: 'keep the top 5',
+  brief: 'write the shortlist brief',
+  save: 'save it — within permits',
+}
+const stepGloss = (t: ShowcaseTask) => STEP_GLOSS[t.id] ?? t.gloss
 
 interface VNode {
   task: ShowcaseTask
@@ -391,6 +405,7 @@ function DagVertical({ run }: { run: RunState }) {
                 <rect
                   key={i}
                   className="lf-shard"
+                  style={{ ['--i' as string]: i }}
                   x={s.x}
                   y={s.y}
                   width={VG.SHARD}
@@ -398,12 +413,15 @@ function DagVertical({ run }: { run: RunState }) {
                   rx={7}
                 />
               ))}
-              <text className="lf-vlabel" x={lastX} y={vn.cy - 2}>
+              <text className="lf-vlabel" x={lastX} y={vn.cy - 7}>
                 {task.id}
               </text>
-              <text className="lf-vlabel-sub" x={lastX} y={vn.cy + 12}>
+              <text className="lf-vlabel-sub" x={lastX} y={vn.cy + 6}>
                 {mark ? `${mark} ` : ''}
-                {task.verb} ×{vn.fanN}
+                {task.verb} ×{vn.fanN} · parallel
+              </text>
+              <text className="lf-vgloss" x={lastX} y={vn.cy + 19}>
+                {stepGloss(task)}
               </text>
             </g>
           )
@@ -420,6 +438,9 @@ function DagVertical({ run }: { run: RunState }) {
             </text>
             <text className="lf-node-verb" x={bx + VG.NODE_W - 13} y={vn.cy + 3.5} textAnchor="end">
               {mark || task.verb}
+            </text>
+            <text className="lf-vgloss" x={bx + VG.NODE_W + 12} y={vn.cy + 3.5}>
+              {stepGloss(task)}
             </text>
           </g>
         )

@@ -169,10 +169,12 @@ export default function Hero() {
       if (editor) {
         const e = ap * ap // ease-in · the pull accelerates
         const vw = window.innerWidth
-        // the file is drawn to the CENTRE + shrinks + dissolves — the 2D DAG then
-        // explodes in there. « se déplace au centre et éclate en dag 2D. »
-        editor.style.transform = `translate(${-e * vw * 0.22}px, ${e * 28}px) scale(${1 - e * 0.62}) perspective(1000px) rotateX(${e * 12}deg)`
-        editor.style.opacity = `${Math.max(0, 1 - e * 1.15)}`
+        // the file is pulled to the CENTRE and DOWN — sucked toward the Living
+        // File below, where the SAME file lands and morphs into the DAG. The big
+        // downward travel sells « le bloc de code attiré par le bas ». It stays
+        // the same block: it doesn't shrink to nothing, it travels.
+        editor.style.transform = `translate(${-e * vw * 0.22}px, ${e * 96}px) scale(${1 - e * 0.5}) perspective(1000px) rotateX(${e * 10}deg)`
+        editor.style.opacity = `${Math.max(0, 1 - e * 1.05)}`
       }
       if (copy) {
         copy.style.transform = `translateY(${ap * -26}px)`

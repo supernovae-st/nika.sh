@@ -228,12 +228,15 @@
   transform: translateY(0) scale(1);
   pointer-events: auto;
 }
+/* morph · the file COLLAPSES down + shrinks toward the centre — the same point
+   the DAG then explodes out from (lf-dag-in) — so the code visibly BECOMES the
+   graph (one block · « le même bloc de code »), not a cross-fade of two panels. */
 .lf-stage[data-beat='morph'] .lf-file,
 .lf-stage[data-beat='dag'] .lf-file,
 .lf-stage[data-beat='run'] .lf-file,
 .lf-stage[data-beat='verdict'] .lf-file {
   opacity: 0;
-  transform: translateY(-10px) scale(0.985);
+  transform: translateY(26px) scale(0.5);
   pointer-events: none;
 }
 
@@ -763,6 +766,37 @@
 .lf-node--success .lf-shard {
   fill: color-mix(in oklch, var(--v4-text) 16%, #070b14);
   stroke: color-mix(in oklch, var(--v4-text) 58%, transparent);
+}
+/* the shards run IN PARALLEL · a staggered pulse (per-lane --i delay) so you SEE
+   N tasks alive at the same time, not one flat block flipping at once. */
+@media (prefers-reduced-motion: no-preference) {
+  .lf-node--running .lf-shard {
+    animation: lf-shard-pulse 0.9s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.11s);
+  }
+}
+@keyframes lf-shard-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+/* the plain-words gloss · what each step DOES (comprehension · the ids are terse) */
+.lf-vgloss {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  fill: var(--v4-text-faint);
+  transition: fill 0.3s ease;
+}
+.lf-node--running .lf-vgloss {
+  fill: color-mix(in oklch, var(--lf-hue, var(--v4-text)) 70%, var(--v4-text));
+}
+.lf-node--success .lf-vgloss {
+  fill: var(--v4-text-dim);
 }
 /* the scatter/gather ribs · split the flow into the lanes and merge it back */
 .lf-rib {
