@@ -49,6 +49,8 @@
    black, masked to dissolve into the dark at the far end. Present — the grid IS
    the corridor, not a faint hint. */
 .cor-grid {
+  /* HIDDEN — the page-level depth tunnel IS the depth now (no double grid) */
+  display: none;
   position: absolute;
   /* the grid's reference frame matches the world origin (slightly-above-center)
      so the floor sits below wave 0 and the ceiling above it, receding back/up,
@@ -139,6 +141,8 @@
    (it doesn't travel with the world) — it marks WHERE the corridor recedes to,
    so the eye reads depth even where plates are sparse. */
 .cor-vp {
+  /* HIDDEN — the tunnel already gives the vanishing-point read */
+  display: none;
   position: absolute;
   inset: 0;
   width: 100%;

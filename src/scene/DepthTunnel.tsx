@@ -175,9 +175,11 @@ export default function DepthTunnel() {
     if (typeof window === 'undefined') return
     let on = true
     const onScroll = () => {
-      const p = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 1.3)))
+      // persist across the whole experience region (hero → DAG → run → verdict),
+      // then fade just before the B&W sections take over
+      const p = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 3.4)))
       scroll.current = p
-      if (wrap.current) wrap.current.style.opacity = `${1 - smoothstep(0.72, 1, p)}`
+      if (wrap.current) wrap.current.style.opacity = `${1 - smoothstep(0.82, 1, p)}`
       const a = p < 1
       if (a !== on) {
         on = a

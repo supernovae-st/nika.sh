@@ -13,6 +13,11 @@
   position: relative;
   /* self-paints its theme-dark surface (the .theme-dark class also sets bg/ink) */
 }
+/* transparent — the page-level depth tunnel shows through the whole experience
+   (the soft veil on the stage pad keeps the content readable over it). */
+#living-file {
+  background-color: transparent;
+}
 /* in scrub mode the pinned stage translates DOWN over the v3 sections that follow
    in <main>. Raise the whole section into its own stacking context above them so
    the opaque pinned run fully occludes their scroll region while it owns the
@@ -74,7 +79,7 @@
   height: 100vh;
   min-height: 640px;
   margin-inline: auto;
-  background: var(--v4-bg);
+  background: transparent;
   /* pin the content to the TOP (below the nav-clearing pad) rather than
      vertically centering — with the tall 3D corridor, centering would push the
      FIG lede up under the fixed nav. flex-start keeps the header clear and lets
@@ -96,7 +101,8 @@
   left: 50%;
   width: 100vw;
   transform: translateX(-50%);
-  background: var(--v4-bg);
+  /* a soft dark veil so the content reads over the tunnel (which shows through) */
+  background: color-mix(in oklch, var(--v4-bg) 42%, transparent);
   z-index: -1;
 }
 
