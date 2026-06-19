@@ -73,6 +73,17 @@ const T_TILT_START = 0.44 // the DAG stays FLAT (comprehend) until here, then ti
 const T_DAG_END = 0.54 // DAG → corridor (the tilt completes, the run begins)
 const T_RUN_END = 0.85 // corridor run → the verdict (the result + enforce payoff)
 
+/* the whole flow's scroll length, in viewport heights. The SAME code-block
+   element starts in the hero header (p=0), travels to centre + morphs into the
+   DAG, runs, then the verdict — one continuous scroll, one element. */
+const FLOW_VH = 3.2
+
+/** smoothstep(a,b,x) ∈ [0,1] — eased ramp (the tail fade as the run ends). */
+function smoothstep(a: number, b: number, x: number): number {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)))
+  return t * t * (3 - 2 * t)
+}
+
 /** map the master t (0..1) onto the EXECUTION sub-progress (0..1 across the run).
     The run executes during the CORRIDOR phase, completing by the verdict beat. */
 function runProgress(t: number): number {
@@ -764,24 +775,19 @@ export default function LivingFile() {
         setScrub(true)
         if (enable3d) setCorridor3d(true)
       }
-      const track = trackRef.current
       const stage = stageRef.current
-      if (track && stage) {
-        const rect = track.getBoundingClientRect()
+      if (stage) {
         const vh = window.innerHeight
-        // progress = how far the stage has travelled through the track.
-        // 0 when the track top hits the viewport top; 1 when its bottom is one
-        // viewport-height from the top (the stage's full travel).
-        const travel = rect.height - vh
-        const p = travel > 0 ? Math.min(1, Math.max(0, -rect.top / travel)) : 0
+        // ONE element, global scroll. The stage is CSS-fixed (full viewport); the
+        // GLOBAL scroll drives the whole flow: p=0 → the code block sits in the
+        // hero header (right); it travels to centre over the 'file' beat, morphs
+        // into the DAG, runs, then the verdict. No per-section track math.
+        const p = Math.min(1, Math.max(0, window.scrollY / (vh * FLOW_VH)))
 
-        // PIN the stage ourselves (CSS position:sticky is dead here because an
-        // ancestor — body — has overflow-x:hidden, which silently turns it into a
-        // scroll container and disables sticky for descendants). We translate the
-        // absolutely-positioned stage so it tracks the viewport across the track's
-        // travel, then releases at the ends. transform-only → stays compositor-cheap.
-        const pinned = Math.min(Math.max(-rect.top, 0), travel)
-        stage.style.transform = `translate3d(0, ${pinned}px, 0)`
+        // --lf-travel (0→1 across the 'file' beat) drives the header→centre travel
+        // in CSS; the tail fade hands off to the opaque B&W sections below.
+        stage.style.setProperty('--lf-travel', String(Math.min(1, p / T_FILE_END)))
+        stage.style.opacity = String(1 - smoothstep(0.92, 1, p))
 
         // coarse t step (1/120) gates beat-caption + progress re-renders
         const step = Math.round(p * 120)

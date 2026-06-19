@@ -47,7 +47,10 @@
   position: relative;
 }
 .lf-section[data-scrub='true'] .lf-track {
-  height: 280vh;
+  /* the scroll length of the whole flow (must clear FLOW_VH so the run + verdict
+     complete before the B&W sections take over): hero(100vh) + 340vh - 100vh ≈
+     3.4 screens of scroll → p reaches 1 with headroom for the tail fade. */
+  height: 340vh;
 }
 
 /* the inner stage. The top padding ALWAYS clears the fixed 60px nav (plus
@@ -74,23 +77,25 @@
    scrolls behind it (the v3 sections below) while pinned — the pin overlaps them
    by design. A full-bleed background pad sits behind the max-width stage content. */
 .lf-section[data-scrub='true'] .lf-stage {
-  position: absolute;
-  inset: 0 0 auto 0;
+  /* ONE element, page-level: the stage is FIXED to the viewport and the GLOBAL
+     scroll drives the flow (see the rAF). The same code block sits in the hero
+     header at scroll 0 and travels → DAG → run as you scroll. */
+  position: fixed;
+  inset: 0;
   height: 100vh;
   min-height: 640px;
   margin-inline: auto;
   background: transparent;
-  /* pin the content to the TOP (below the nav-clearing pad) rather than
-     vertically centering — with the tall 3D corridor, centering would push the
-     FIG lede up under the fixed nav. flex-start keeps the header clear and lets
-     the corridor flow beneath it. */
+  /* pin the content to the TOP (below the nav-clearing pad). */
   justify-content: flex-start;
-  /* lift above the v3 sections that FOLLOW this one in <main> — the pinned stage
-     translates DOWN over their scroll region, and an absolute z:auto box would be
-     painted under later positioned siblings (source order). A high z keeps the
-     pinned run fully opaque over them while it owns the viewport. */
   z-index: 30;
-  will-change: transform;
+  will-change: opacity;
+  /* the fixed overlay must NOT block the hero copy / CTAs underneath it */
+  pointer-events: none;
+}
+/* re-enable interaction only where it's actually needed (the run's format toggle) */
+.lf-section[data-scrub='true'] .lf-toggle {
+  pointer-events: auto;
 }
 /* the stage is max-width:1180px + centered, so its own bg leaves side gutters
    transparent. A wider pseudo-pad paints the full viewport width behind it. */
@@ -104,6 +109,30 @@
   /* a soft dark veil so the content reads over the tunnel (which shows through) */
   background: color-mix(in oklch, var(--v4-bg) 42%, transparent);
   z-index: -1;
+  transition: opacity 0.5s ease;
+}
+/* ── the ONE element in the header (the 'file' beat) ──────────────────────────
+   while the code block is still the hero's file (travelling in), keep the stage
+   transparent + title-less so the hero copy reads clean — the veil + the section
+   title arrive once the file has landed as the DAG. */
+.lf-section[data-scrub='true'] .lf-stage[data-beat='file']::before {
+  opacity: 0;
+}
+.lf-section[data-scrub='true'] .lf-stage[data-beat='file'] .lf-head {
+  opacity: 0;
+  pointer-events: none;
+}
+/* the file's header-right → centre travel, driven by --lf-travel (0 = parked in
+   the header-right at scroll 0 · 1 = centred, ready to morph). Tracks scroll
+   tightly (no transition lag) — it IS the same block the hero shows. */
+.lf-section[data-scrub='true'] .lf-stage[data-beat='file'] .lf-file {
+  transition: none;
+  opacity: 1;
+  transform: translate(
+      calc((1 - var(--lf-travel, 1)) * 22vw),
+      calc((1 - var(--lf-travel, 1)) * -7vh)
+    )
+    scale(calc(0.82 + var(--lf-travel, 1) * 0.18));
 }
 
 /* ─── header · FIG register + title + lede + dimension line ──────────────────*/

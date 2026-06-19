@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
-import { CodeFile } from '../components/CodeFile'
 import { REPO, SPEC } from '../content'
 import '../shell/shell.css'
 import './hero.css'
@@ -30,37 +28,6 @@ import './hero.css'
    added on mount and only animates when motion is allowed. */
 
 const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
-
-/* the hero editor plan · a compact, spec-correct slice of the resume-screener
-   showcase (src/sections/usecases-yaml.generated.ts · t3-resume-screener). The
-   control story is visible at a glance: the `permits:` block IS the blast radius,
-   and the first task is a deterministic `invoke`. Verbatim spec shapes only —
-   `nika: v1` envelope · `permits:` fs+tools · `invoke`/`infer` verbs. */
-const HERO_PLAN = `nika: v1
-workflow: resume-screener
-
-model: ollama/llama3.1   # PII stays on the machine
-
-permits:                 # the file IS the blast radius
-  fs:
-    read:  ["./hiring/inbox/**"]
-    write: ["./hiring/out/**"]
-  tools: ["nika:glob", "nika:read", "nika:jq"]
-
-vars:
-  role: "Senior Rust engineer"
-
-tasks:
-  - id: pool
-    invoke:
-      tool: "nika:glob"
-      args: { pattern: "./hiring/inbox/*.md" }
-
-  - id: screen
-    depends_on: [pool]
-    infer:
-      prompt: "Score each CV against \${{ vars.role }}"
-`
 
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
 const rise = (ms: number): React.CSSProperties =>
@@ -135,7 +102,6 @@ function HeroAtmosphere() {
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null)
   const copyRef = useRef<HTMLDivElement>(null)
-  const editorRef = useRef<HTMLDivElement>(null)
 
   /* opt the hero into the orchestrated entrance — only when motion is allowed.
      Adding the class in an effect (post-paint) guarantees the prerendered HTML
@@ -164,18 +130,10 @@ export default function Hero() {
       const h = rect.height || 1
       // 0 while the hero fills the view → 1 as it scrolls out (the pull window)
       const ap = Math.min(1, Math.max(0, -rect.top / (h * 0.82)))
-      const editor = editorRef.current
+      // the copy fades up as the hero scrolls out — the ONE code block (the page-
+      // level Living File element) is what stays + travels into the DAG; the hero
+      // no longer holds its own editor (that was the duplicate).
       const copy = copyRef.current
-      if (editor) {
-        const e = ap * ap // ease-in · the pull accelerates
-        const vw = window.innerWidth
-        // the file is pulled to the CENTRE and DOWN — sucked toward the Living
-        // File below, where the SAME file lands and morphs into the DAG. The big
-        // downward travel sells « le bloc de code attiré par le bas ». It stays
-        // the same block: it doesn't shrink to nothing, it travels.
-        editor.style.transform = `translate(${-e * vw * 0.22}px, ${e * 96}px) scale(${1 - e * 0.5}) perspective(1000px) rotateX(${e * 10}deg)`
-        editor.style.opacity = `${Math.max(0, 1 - e * 1.05)}`
-      }
       if (copy) {
         copy.style.transform = `translateY(${ap * -26}px)`
         copy.style.opacity = `${Math.max(0, 1 - ap * 1.08)}`
@@ -295,30 +253,12 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* ── RIGHT · the premium editor panel · the product replica ────────── */}
-        <div className="v4hero-editor" data-rise style={rise(180)}>
-          {/* the aspiration wrapper · pulled into the machine on scroll-out */}
-          <div ref={editorRef} className="v4hero-aspirate">
-            <CodeFile
-              yaml={HERO_PLAN}
-              filename="screen-cvs.nika.yaml"
-              highlight={[5, 9]}
-              className="v4hero-code"
-            />
-            {/* a compact reference chip · "the plan, before it acts" · links to the
-                full living-file run (so the editor isn't a dead end). */}
-            <Link to="/use-cases" className="v4hint mt-4 w-fit">
-              <span className="v4hint-file">screen-cvs.nika.yaml</span>
-              <span className="text-faint" aria-hidden>
-                ·
-              </span>
-              <span>the plan, before it acts</span>
-              <span className="v4hint-arrow" aria-hidden>
-                →
-              </span>
-            </Link>
-          </div>
-        </div>
+        {/* ── RIGHT · reserved for the ONE code block ───────────────────────────
+            The `.nika` file is no longer a separate hero editor (that was the
+            duplicate). It's the page-level Living File element (Home), which sits
+            HERE in the header at scroll 0 and travels into the DAG as you scroll.
+            This empty column just holds the two-column layout (copy stays left). */}
+        <div className="v4hero-editor" aria-hidden />
       </div>
     </section>
   )
