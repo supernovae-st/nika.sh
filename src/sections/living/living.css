@@ -394,6 +394,50 @@
   text-transform: uppercase;
   color: var(--lf-hue, var(--v4-text-dim));
 }
+/* the plan EXPLODES into the nodes — each card materialises from a collapsed
+   centre with a stagger when the comprehension beat lands (the file → nodes). */
+.lf-stage[data-beat='dag'] .lf-flow-step {
+  animation: lf-explode 0.52s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.lf-stage[data-beat='dag'] .lf-flow-step:nth-child(1) {
+  animation-delay: 0.03s;
+}
+.lf-stage[data-beat='dag'] .lf-flow-step:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.lf-stage[data-beat='dag'] .lf-flow-step:nth-child(3) {
+  animation-delay: 0.13s;
+}
+.lf-stage[data-beat='dag'] .lf-flow-step:nth-child(4) {
+  animation-delay: 0.18s;
+}
+.lf-stage[data-beat='dag'] .lf-flow-step:nth-child(5) {
+  animation-delay: 0.23s;
+}
+.lf-stage[data-beat='dag'] .lf-flow-step:nth-child(6) {
+  animation-delay: 0.28s;
+}
+.lf-stage[data-beat='dag'] .lf-flow-step:nth-child(7) {
+  animation-delay: 0.33s;
+}
+.lf-stage[data-beat='dag'] .lf-flow-step:nth-child(8) {
+  animation-delay: 0.38s;
+}
+@keyframes lf-explode {
+  from {
+    opacity: 0;
+    transform: scale(0.35) translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lf-stage[data-beat='dag'] .lf-flow-step {
+    animation: none;
+  }
+}
 /* at the flat comprehension beat the corridor's "in depth" panel caption is
    redundant (the header + the pipeline's own hint carry it) — withhold it */
 .lf-stage[data-beat='dag'] .lf-graph > .lf-panel-cap,
