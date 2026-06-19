@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import TunnelDag from './TunnelDag'
 
 /* ─── The depth tunnel · the full-bleed Three.js background ─────────────────────
    A wireframe SQUARE tunnel that recedes into −Z toward a centre vanishing point
@@ -216,8 +215,6 @@ export default function DepthTunnel() {
         {/* fog → the far rings dissolve into a dark blur at the vanishing point */}
         <fog attach="fog" args={['#05060a', 3, 15]} />
         <Tunnel scroll={scroll} reduced={reduced} />
-        {/* the DAG · 3D node cards in the SAME scene (not HTML over the tunnel) */}
-        <TunnelDag scroll={scroll} />
       </Canvas>
     </div>
   )

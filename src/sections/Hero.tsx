@@ -168,11 +168,11 @@ export default function Hero() {
       const copy = copyRef.current
       if (editor) {
         const e = ap * ap // ease-in · the pull accelerates
-        // the code block is drawn DOWNWARD (toward the DAG below) + sinks into the
-        // tunnel's depth: it falls, tilts, shrinks + dissolves — then it becomes
-        // the DAG (next phase). "attiré par le bas et se transforme en dag."
-        editor.style.transform = `translateY(${e * 150}px) perspective(1200px) rotateX(${e * 26}deg) scale(${1 - e * 0.55})`
-        editor.style.opacity = `${Math.max(0, 1 - e * 1.12)}`
+        const vw = window.innerWidth
+        // the file is drawn to the CENTRE + shrinks + dissolves — the 2D DAG then
+        // explodes in there. « se déplace au centre et éclate en dag 2D. »
+        editor.style.transform = `translate(${-e * vw * 0.22}px, ${e * 28}px) scale(${1 - e * 0.62}) perspective(1000px) rotateX(${e * 12}deg)`
+        editor.style.opacity = `${Math.max(0, 1 - e * 1.15)}`
       }
       if (copy) {
         copy.style.transform = `translateY(${ap * -26}px)`

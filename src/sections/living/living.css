@@ -360,12 +360,23 @@
 
 /* the plain-words pipeline · a clean numbered flow of step cards (the
    comprehension layer · what each step DOES, before the corridor flies it) */
-/* the DAG is rendered IN the tunnel canvas now (TunnelDag · 3D nodes) — hide the
-   old CSS corridor + the 2D pipeline cards (the double). The file / log / verdict
-   stay as readable HTML over the tunnel until they move in-scene too. */
-.lf-corridor-layer,
-.lf-dag-layer {
+/* forget the 3D corridor for now (operator) — hide it. The 2D DAG (PlanFlow) is
+   the run visual: kept FLAT (no tilt), shown at the dag + run beats over the
+   tunnel, hidden at file / morph / verdict. */
+.lf-corridor-layer {
   display: none !important;
+}
+.lf-dag-layer {
+  transform: none !important;
+}
+.lf-stage[data-beat='dag'] .lf-dag-layer,
+.lf-stage[data-beat='run'] .lf-dag-layer {
+  opacity: 1 !important;
+}
+.lf-stage[data-beat='file'] .lf-dag-layer,
+.lf-stage[data-beat='morph'] .lf-dag-layer,
+.lf-stage[data-beat='verdict'] .lf-dag-layer {
+  opacity: 0 !important;
 }
 
 .lf-flow {
