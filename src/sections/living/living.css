@@ -360,6 +360,14 @@
 
 /* the plain-words pipeline · a clean numbered flow of step cards (the
    comprehension layer · what each step DOES, before the corridor flies it) */
+/* the DAG is rendered IN the tunnel canvas now (TunnelDag · 3D nodes) — hide the
+   old CSS corridor + the 2D pipeline cards (the double). The file / log / verdict
+   stay as readable HTML over the tunnel until they move in-scene too. */
+.lf-corridor-layer,
+.lf-dag-layer {
+  display: none !important;
+}
+
 .lf-flow {
   display: flex;
   flex-wrap: wrap;
