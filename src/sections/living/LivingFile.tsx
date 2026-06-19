@@ -200,16 +200,39 @@ function Dag({ run, morph }: { run: RunState; morph: number }) {
               : status === 'cancelled' || status === 'skipped'
                 ? CLI_GLYPH.cancel
                 : ''
+        // fan-out tasks (cvs ≤8 · screened ≤2) spawn many in parallel — show the
+        // parallelism as a ghost stack behind the node + a ×N tally.
+        const fanFlag = task.flags.find((f) => f.startsWith('fan-out'))
+        const fanN = fanFlag?.match(/(\d+)/)?.[1]
         return (
-          <g key={task.id} className={nodeClass(status)} style={hue ? { ['--lf-hue' as string]: hue } : undefined}>
+          <g
+            key={task.id}
+            className={nodeClass(status)}
+            style={{
+              ['--lf-vhue' as string]: VERB_VAR[task.verb],
+              ...(hue ? { ['--lf-hue' as string]: hue } : {}),
+            }}
+          >
             <title>{`${task.id} · ${task.gloss}`}</title>
+            {fanN ? (
+              <>
+                <rect className="lf-node-stack" x={p.x + 5} y={p.y - 5} width={NODE_W} height={NODE_H} rx={9} />
+                <rect className="lf-node-stack" x={p.x + 2.5} y={p.y - 2.5} width={NODE_W} height={NODE_H} rx={9} />
+              </>
+            ) : null}
             <rect className="lf-node-box" x={p.x} y={p.y} width={NODE_W} height={NODE_H} rx={9} />
-            <text className="lf-node-id" x={p.x + 12} y={p.y + NODE_H / 2 + 3.5}>
+            <circle className="lf-node-dot" cx={p.x + 13} cy={p.y + NODE_H / 2} r={3.2} />
+            <text className="lf-node-id" x={p.x + 24} y={p.y + NODE_H / 2 + 3.5}>
               {task.id}
             </text>
             <text className="lf-node-verb" x={p.x + NODE_W - 12} y={p.y + NODE_H / 2 + 3.5} textAnchor="end">
               {mark || task.verb}
             </text>
+            {fanN ? (
+              <text className="lf-node-fan" x={p.x + NODE_W - 12} y={p.y - 7} textAnchor="end" aria-hidden>
+                ×{fanN}
+              </text>
+            ) : null}
           </g>
         )
       })}
@@ -403,48 +426,9 @@ function EnforceCallout() {
   )
 }
 
-/* ── the plain-words pipeline · the COMPREHENSION layer ───────────────────────
-   The flat DAG's ids (pool · cvs · screened …) are cryptic. This shows what each
-   step DOES, in order, as a clean numbered flow — you grok the whole plan at a
-   glance before the corridor flies you through it. Business glosses keyed to the
-   fil-rouge (t3-resume-screener); a verb-based fallback keeps any other DAG
-   legible. The 4 verb hues tint only the verb tag (diegetic · everything else is
-   grayscale ink). */
-const STEP_GLOSS: Record<string, string> = {
-  pool: 'list every CV in the inbox',
-  cvs: 'read each CV · 8 at once',
-  pairs: 'pair each path with its text',
-  screened: 'score each candidate · local model',
-  ranked: 'drop the weak fits · rank the rest',
-  shortlist: 'keep the top 5',
-  brief: 'write the shortlist brief',
-  save: 'save the brief — within permits',
-}
-function stepGloss(task: ShowcaseTask): string {
-  return STEP_GLOSS[task.id] ?? task.gloss
-}
-
-function PlanFlow() {
-  return (
-    <ol className="lf-flow" aria-label="The plan, step by step">
-      {ORDERED_TASKS.map((task, i) => (
-        <li
-          key={task.id}
-          className="lf-flow-step"
-          style={{ ['--lf-hue' as string]: VERB_VAR[task.verb] }}
-        >
-          <span className="lf-flow-n" aria-hidden>
-            {String(i + 1).padStart(2, '0')}
-          </span>
-          <span className="lf-flow-gloss">{stepGloss(task)}</span>
-          <span className="lf-flow-verb" aria-hidden>
-            {task.verb}
-          </span>
-        </li>
-      ))}
-    </ol>
-  )
-}
+/* The comprehension layer IS the real 2D <Dag> now (nodes + dependency edges,
+   rendered big over the tunnel at the `dag` + `run` beats). The old numbered
+   plain-words PlanFlow was dropped — a row of cards is not a DAG. */
 
 /* ── the verdict · the control narrative's PUNCHLINE (its own beat) ───────────
    After the corridor flies the run, the payoff lands as one clear contrast: it
@@ -729,9 +713,11 @@ export default function LivingFile() {
                         plan's shape here; then it tilts back into depth (--lf-tilt)
                         as the corridor takes over — the design-doc ③→④ handoff. */}
                     <div className="lf-dag-layer">
-                      <PlanFlow />
+                      <div className="lf-dag-wrap lf-dag-wrap--stage">
+                        <Dag run={run} morph={morph} />
+                      </div>
                       <p className="lf-dag-hint mono" aria-hidden>
-                        each step feeds the next · the plan, before it runs
+                        nodes are tasks · arrows are dependencies · the run lights them as it reaches them
                       </p>
                     </div>
                     {/* the immersive run · the 3D corridor the plan flies through */}

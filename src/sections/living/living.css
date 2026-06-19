@@ -358,11 +358,9 @@
   transition: opacity 0.4s ease, max-height 0.4s ease;
 }
 
-/* the plain-words pipeline · a clean numbered flow of step cards (the
-   comprehension layer · what each step DOES, before the corridor flies it) */
-/* forget the 3D corridor for now (operator) — hide it. The 2D DAG (PlanFlow) is
-   the run visual: kept FLAT (no tilt), shown at the dag + run beats over the
-   tunnel, hidden at file / morph / verdict. */
+/* forget the 3D corridor for now (operator) — hide it. The real 2D <Dag> (nodes
+   + dependency edges) is the run visual: kept FLAT (no tilt), shown at the dag +
+   run beats over the tunnel, hidden at file / morph / verdict. */
 .lf-corridor-layer {
   display: none !important;
 }
@@ -612,9 +610,22 @@
   transition: stroke 0.35s ease, stroke-width 0.35s ease, opacity 0.35s ease;
 }
 .lf-edge--flow {
-  stroke: color-mix(in oklch, var(--v4-text) 46%, transparent);
-  stroke-width: 1.6;
-  opacity: 0.9;
+  stroke: color-mix(in oklch, #9fd8ff 72%, var(--v4-text));
+  stroke-width: 1.7;
+  opacity: 0.95;
+}
+/* the data flowing downstream · animated dashes along the lit edge (the v3
+   flow-particles, adapted to SVG · motion-safe) */
+@media (prefers-reduced-motion: no-preference) {
+  .lf-edge--flow {
+    stroke-dasharray: 5 7;
+    animation: lf-edge-flow 0.8s linear infinite;
+  }
+}
+@keyframes lf-edge-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
 }
 
 /* nodes · grayscale ink; the box brightens by status; the verb-hue whisper
@@ -694,6 +705,79 @@
   }
   50% {
     opacity: 1;
+  }
+}
+
+/* the verb dot · a quiet always-on legend of the execution model (infer · exec ·
+   invoke · agent), adapted from the v3 node card. The box stays grayscale ink. */
+.lf-node-dot {
+  fill: var(--lf-vhue, var(--v4-text-dim));
+  opacity: 0.85;
+}
+/* fan-out · the task spawns many in parallel (cvs ×8 · screened ×2) — a ghost
+   stack behind the node + a ×N tally make the parallelism visible. */
+.lf-node-stack {
+  fill: color-mix(in oklch, var(--lf-ink) 6%, transparent);
+  stroke: color-mix(in oklch, var(--lf-ink) 26%, transparent);
+  stroke-width: 1;
+}
+.lf-node-fan {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  fill: var(--lf-vhue, var(--v4-text-dim));
+  opacity: 0.92;
+}
+
+/* ─── the DAG rendered OVER the tunnel (corridor mode) ────────────────────────
+   transparent shell, bigger canvas, and a solid node backing so the graph reads
+   over the busy depth grid. The plan materialises (file → DAG) on the dag beat. */
+.lf-dag-wrap--stage {
+  width: min(960px, 96%);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+}
+.lf-dag-wrap--stage .lf-dag {
+  max-height: min(60vh, 520px);
+}
+.lf-dag-wrap--stage .lf-node-box {
+  fill: color-mix(in oklch, #070b14 86%, transparent);
+  stroke: color-mix(in oklch, var(--lf-ink) 60%, transparent);
+}
+.lf-dag-wrap--stage .lf-node-stack {
+  fill: color-mix(in oklch, #070b14 64%, transparent);
+  stroke: color-mix(in oklch, var(--lf-ink) 34%, transparent);
+}
+.lf-dag-wrap--stage .lf-node--running .lf-node-box {
+  fill: color-mix(in oklch, var(--lf-hue, var(--v4-text)) 22%, #070b14);
+}
+.lf-dag-wrap--stage .lf-node--success .lf-node-box {
+  fill: color-mix(in oklch, var(--v4-text) 16%, #070b14);
+}
+/* the running / done node glows (the v3 radial glow, as an SVG drop-shadow) */
+.lf-dag-wrap--stage .lf-node--running {
+  filter: drop-shadow(0 0 7px color-mix(in oklch, var(--lf-hue, #9fd8ff) 65%, transparent));
+}
+.lf-dag-wrap--stage .lf-node--success {
+  filter: drop-shadow(0 0 4px color-mix(in oklch, #9fd8ff 32%, transparent));
+}
+/* file → DAG · the plan explodes out from a collapsed centre when the
+   comprehension beat lands (motion-safe; the SVG scales from its centre) */
+@media (prefers-reduced-motion: no-preference) {
+  .lf-stage[data-beat='dag'] .lf-dag-wrap--stage .lf-dag {
+    animation: lf-dag-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+}
+@keyframes lf-dag-in {
+  from {
+    opacity: 0;
+    transform: scale(0.62);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

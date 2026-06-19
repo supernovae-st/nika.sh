@@ -163,6 +163,13 @@ export default function DepthTunnel() {
   const reduced =
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  // dev/capture · ?notunnel disables the WebGL background so the DOM sections
+  // (e.g. the Living File DAG) can be screenshotted headless — the tunnel's
+  // continuous rAF otherwise blocks virtual-time from ever settling.
+  const disabled = useMemo(
+    () => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('notunnel'),
+    [],
+  )
   const wrap = useRef<HTMLDivElement>(null)
   const scroll = useRef(0)
   const [active, setActive] = useState(true)
@@ -201,6 +208,8 @@ export default function DepthTunnel() {
       window.removeEventListener('resize', onScroll)
     }
   }, [])
+
+  if (disabled) return null
 
   return (
     <div ref={wrap} className="depth-fixed" aria-hidden>
