@@ -154,6 +154,15 @@
   color: color-mix(in oklch, var(--v4-text) 20%, transparent);
 }
 
+/* the HERO is the intro now (it aspirates its file down into this experience) —
+   so the Living File no longer re-introduces itself. The big title + lede are
+   gone; only the thin FIG beat-caption stays (the "where you are" register). */
+.lf-title,
+.lf-lede,
+.lf-dim {
+  display: none;
+}
+
 /* ── digest · once the plan is RUNNING the header recedes so the corridor owns
    the stage (espace · "prend tout l'écran"). The big title + lede are the
    file-beat intro; during the run the thin FIG beat-caption is context enough.
