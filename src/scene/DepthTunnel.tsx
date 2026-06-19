@@ -114,7 +114,7 @@ function Tunnel({
       new THREE.LineBasicMaterial({
         vertexColors: true,
         transparent: true,
-        opacity: 0.72,
+        opacity: 0.58,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       }),
