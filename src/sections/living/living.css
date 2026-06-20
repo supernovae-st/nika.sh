@@ -77,11 +77,11 @@
    scrolls behind it (the v3 sections below) while pinned — the pin overlaps them
    by design. A full-bleed background pad sits behind the max-width stage content. */
 .lf-section[data-scrub='true'] .lf-stage {
-  /* ONE element, page-level: the stage is FIXED to the viewport and the GLOBAL
-     scroll drives the flow (see the rAF). The same code block sits in the hero
-     header at scroll 0 and travels → DAG → run as you scroll. */
-  position: fixed;
-  inset: 0;
+  /* ROBUST pinned section: absolute within the track, JS-translated each frame to
+     track the viewport (see the rAF). The page-level position:fixed experiment was
+     fragile (dead zones mid-scroll) — reverted to this. */
+  position: absolute;
+  inset: 0 0 auto 0;
   height: 100vh;
   min-height: 640px;
   margin-inline: auto;
@@ -89,13 +89,7 @@
   /* pin the content to the TOP (below the nav-clearing pad). */
   justify-content: flex-start;
   z-index: 30;
-  will-change: opacity;
-  /* the fixed overlay must NOT block the hero copy / CTAs underneath it */
-  pointer-events: none;
-}
-/* re-enable interaction only where it's actually needed (the run's format toggle) */
-.lf-section[data-scrub='true'] .lf-toggle {
-  pointer-events: auto;
+  will-change: transform;
 }
 /* the stage is max-width:1180px + centered, so its own bg leaves side gutters
    transparent. A wider pseudo-pad paints the full viewport width behind it. */
@@ -117,29 +111,6 @@
   z-index: -1;
   transition: opacity 0.5s ease;
 }
-/* ── the ONE element in the header (the 'file' beat) ──────────────────────────
-   while the code block is still the hero's file (travelling in), keep the stage
-   transparent + title-less so the hero copy reads clean — the veil + the section
-   title arrive once the file has landed as the DAG. */
-.lf-section[data-scrub='true'] .lf-stage[data-beat='file']::before {
-  opacity: 0;
-}
-.lf-section[data-scrub='true'] .lf-stage[data-beat='file'] .lf-head {
-  opacity: 0;
-  pointer-events: none;
-}
-/* the file's header-right → centre travel, driven by --lf-travel (0 = parked in
-   the header-right at scroll 0 · 1 = centred, ready to morph into the DAG). It IS
-   the same block — the FileDag at morph=0 is the YAML file. */
-.lf-section[data-scrub='true'] .lf-stage[data-beat='file'] .lf-dag-wrap--stage {
-  transition: none;
-  transform: translate(
-      calc((1 - var(--lf-travel, 1)) * 22vw),
-      calc((1 - var(--lf-travel, 1)) * -7vh)
-    )
-    scale(calc(0.84 + var(--lf-travel, 1) * 0.16));
-}
-
 /* ─── header · FIG register + title + lede + dimension line ──────────────────*/
 .lf-head {
   max-width: 44rem;
