@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useAuroraPulse } from '../../fx/aurora-context'
-import { SHOWCASE_DAG, type ShowcaseTask } from '../usecases-yaml.generated'
+import { type ShowcaseDag, type ShowcaseTask } from '../usecases-yaml.generated'
 import { runStateAt, CLI_GLYPH, type RunState, type TaskStatus } from './run-model'
 import Corridor from './Corridor'
 import './living.css'
@@ -35,8 +35,25 @@ import './corridor.css'
    coherent with zero scroll animation. The rAF scroll-scrub + 3D corridor are
    prefers-reduced-motion: no-preference enhancements added on mount. */
 
-const DAG = SHOWCASE_DAG['t3-resume-screener']
-const FILENAME = 'screen-cvs.nika.yaml'
+/* the fil-rouge · a DAILY BRIEF everyone gets — five things gathered AT ONCE
+   (inbox · calendar · weather · news · todos · all in parallel), then a LOCAL
+   model writes the brief, then it's saved. Relatable + genuinely parallel (one
+   wave of 5), and it still shows the control story (a local model · scoped net ·
+   the write stays within `permits:`). Spec-shaped nika YAML. */
+const DAG: ShowcaseDag = {
+  waves: 3,
+  outputs: ['brief'],
+  tasks: [
+    { id: 'inbox', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'read unread email', flags: [], line0: 12, line1: 13 },
+    { id: 'calendar', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: "today's events", flags: [], line0: 14, line1: 15 },
+    { id: 'weather', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'the forecast', flags: [], line0: 16, line1: 17 },
+    { id: 'news', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'top headlines', flags: [], line0: 18, line1: 19 },
+    { id: 'todos', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'your task list', flags: [], line0: 20, line1: 21 },
+    { id: 'brief', verb: 'infer', deps: ['inbox', 'calendar', 'weather', 'news', 'todos'], wave: 1, gate: 'default', gloss: 'write your morning brief', flags: ['typed output'], line0: 23, line1: 30 },
+    { id: 'save', verb: 'invoke', deps: ['brief'], wave: 2, gate: 'default', gloss: 'save brief.md — within permits', flags: [], line0: 32, line1: 33 },
+  ],
+}
+const FILENAME = 'daily-brief.nika.yaml'
 /** the static frame used for SSR / no-JS / reduced-motion (fully executed). */
 const END_STATE: RunState = runStateAt(DAG, 1)
 
@@ -249,77 +266,52 @@ function Dag({ run, morph }: { run: RunState; morph: number }) {
   )
 }
 
-/* ── the VERTICAL DAG · the stage hero (corridor mode) ────────────────────────
-   The fil-rouge pipeline is linear (8 sequential waves) — drawn as ONE row it's
-   a thin strip lost in the stage. Here it flows TOP→BOTTOM (== the scroll
-   direction) and FANS OUT in width at the parallel steps (cvs ×8 · screened ×2):
-   the fan-out IS the parallelism, made literal. Scatter/gather ribs split the
-   flow into the shard lanes and merge it back. Drives off the same run-model. */
-const VG = { W: 540, NODE_W: 150, NODE_H: 44, LEVEL_H: 94, SHARD: 30, GAP: 12, CAP: 6, PAD: 30 }
-const VG_H = VG.PAD * 2 + DAG.waves * VG.LEVEL_H
+/* ── the VERTICAL DAG · the stage hero ─────────────────────────────────────────
+   The plan flows TOP→BOTTOM (== the scroll). A wave with several tasks SPREADS
+   them across a row — so a parallel wave is literally a ROW of nodes running at
+   once (daily-brief: 5 gathers side by side). Dependencies are the edges that
+   converge them. Drives off the same deterministic run-model. */
+const VG = { W: 700, NODE_W: 116, NODE_H: 40, LEVEL_H: 108, COL_GAP: 16, PAD: 32 }
 const VG_CX = VG.W / 2
+// the viewBox must fit BOTH the DAG (waves × level) and the file (header + rows)
+const VG_H = Math.max(VG.PAD * 2 + DAG.waves * VG.LEVEL_H, 156 + DAG.tasks.length * 30 + 24)
 const vLevelCY = (wave: number) => VG.PAD + wave * VG.LEVEL_H + VG.LEVEL_H / 2
 
-function fanCount(task: ShowcaseTask): number | null {
-  const f = task.flags.find((x) => x.startsWith('fan-out'))
-  const m = f?.match(/(\d+)/)
-  return m ? parseInt(m[1], 10) : null
-}
-
-/* plain-words gloss per step · the comprehension layer (the ids are cryptic).
-   Keyed to the fil-rouge; falls back to the task's own gloss for any other DAG. */
-const STEP_GLOSS: Record<string, string> = {
-  pool: 'list every CV in the inbox',
-  cvs: 'read each CV · in parallel',
-  pairs: 'pair each path with its text',
-  screened: 'score each · local model',
-  ranked: 'drop weak fits · rank the rest',
-  shortlist: 'keep the top 5',
-  brief: 'write the shortlist brief',
-  save: 'save it — within permits',
-}
-const stepGloss = (t: ShowcaseTask) => STEP_GLOSS[t.id] ?? t.gloss
+/* the relatable example's ids ARE the gloss (inbox · weather · …) — so the gloss
+   is just the task's own one-liner. */
+const stepGloss = (t: ShowcaseTask) => t.gloss
 
 interface VNode {
   task: ShowcaseTask
-  cy: number
-  fanN: number | null
+  cx: number // its column centre within the wave (parallel siblings spread out)
+  cy: number // its wave's vertical level
   top: Pt
   bottom: Pt
-  shards: Pt[]
 }
 
+/* lay each wave out as a ROW: a single task is centred; N siblings spread across
+   the width — so a parallel wave reads as N nodes running side by side. */
 function buildVNodes(): Record<string, VNode> {
+  const byWave: ShowcaseTask[][] = Array.from({ length: DAG.waves }, () => [])
+  for (const task of DAG.tasks) byWave[task.wave].push(task)
+  byWave.forEach((col) => col.sort((a, b) => a.line0 - b.line0 || (a.id < b.id ? -1 : 1)))
   const out: Record<string, VNode> = {}
-  for (const task of DAG.tasks) {
-    const cy = vLevelCY(task.wave)
-    const fanN = fanCount(task)
-    if (fanN) {
-      const k = Math.min(fanN, VG.CAP)
-      const rowW = k * VG.SHARD + (k - 1) * VG.GAP
-      const startX = VG_CX - rowW / 2
-      const shards = Array.from({ length: k }, (_, i) => ({
-        x: startX + i * (VG.SHARD + VG.GAP),
-        y: cy - VG.SHARD / 2,
-      }))
+  for (let w = 0; w < DAG.waves; w++) {
+    const col = byWave[w]
+    const k = col.length
+    const rowW = k * VG.NODE_W + (k - 1) * VG.COL_GAP
+    const startX = VG_CX - rowW / 2
+    const cy = vLevelCY(w)
+    col.forEach((task, j) => {
+      const cx = startX + j * (VG.NODE_W + VG.COL_GAP) + VG.NODE_W / 2
       out[task.id] = {
         task,
+        cx,
         cy,
-        fanN,
-        top: { x: VG_CX, y: cy - VG.SHARD / 2 - 7 },
-        bottom: { x: VG_CX, y: cy + VG.SHARD / 2 + 7 },
-        shards,
+        top: { x: cx, y: cy - VG.NODE_H / 2 },
+        bottom: { x: cx, y: cy + VG.NODE_H / 2 },
       }
-    } else {
-      out[task.id] = {
-        task,
-        cy,
-        fanN: null,
-        top: { x: VG_CX, y: cy - VG.NODE_H / 2 },
-        bottom: { x: VG_CX, y: cy + VG.NODE_H / 2 },
-        shards: [],
-      }
-    }
+    })
   }
   return out
 }
@@ -353,12 +345,11 @@ const FILE_HEAD_TOP = 36
 const FILE_HEAD_LH = 15
 const YAML_HEAD = [
   'nika: v1',
-  'workflow: resume-screener',
-  'model: ollama/llama3.1      # PII stays on the machine',
-  'permits:                    # the file IS the blast radius',
-  '  fs.read:  ./hiring/inbox/**',
-  '  fs.write: ./hiring/out/**',
-  '  tools: [ glob · read · jq ]',
+  'workflow: daily-brief',
+  'model: ollama/llama3.1      # local · your data stays home',
+  'permits:                    # only what it needs, nothing else',
+  '  net: [ gmail · calendar · weather · news ]',
+  '  fs.write: ./brief.md',
 ]
 const FILE_ORDER: Record<string, number> = {}
 DAG.tasks.forEach((t, i) => {
@@ -368,20 +359,19 @@ DAG.tasks.forEach((t, i) => {
 function FileDag({ run, morph }: { run: RunState; morph: number }) {
   const m = clamp01(morph)
   const headO = 1 - clamp01(m / 0.5) // the YAML context fades as the tasks lift out
-  const edgeO = clamp01((m - 0.5) / 0.4) // the dependency edges draw in
-  const shardO = clamp01((m - 0.55) / 0.4) // the fan shards appear as the node forms
+  const edgeO = clamp01((m - 0.5) / 0.4) // the dependency edges draw in (converge)
 
   return (
     <svg
       className="lf-dag lf-dag--v"
       viewBox={`0 0 ${VG.W} ${VG_H}`}
       role="img"
-      aria-label="The plan — the YAML's task blocks fan out into the DAG and execute top to bottom"
+      aria-label="The plan — the YAML's task blocks spread into the DAG; parallel tasks run side by side"
     >
       {/* the YAML header context — fades as the task rows lift into the graph */}
       <g className="lf-yhead" style={{ opacity: headO }} aria-hidden>
         <text className="lf-yfile" x={FILE_HEAD_X} y={FILE_HEAD_TOP - 16}>
-          ❯ screen-cvs.nika.yaml
+          ❯ {FILENAME}
         </text>
         {YAML_HEAD.map((ln, i) => (
           <text key={i} className="lf-yline" x={FILE_HEAD_X} y={FILE_HEAD_TOP + i * FILE_HEAD_LH}>
@@ -393,7 +383,7 @@ function FileDag({ run, morph }: { run: RunState; morph: number }) {
         </text>
       </g>
 
-      {/* dependency edges + scatter/gather ribs — draw in as the DAG forms */}
+      {/* dependency edges — draw in as the DAG forms (the parallel wave converges) */}
       <g style={{ opacity: edgeO }}>
         {DAG.tasks.flatMap((task) =>
           task.deps.map((dep) => {
@@ -413,34 +403,13 @@ function FileDag({ run, morph }: { run: RunState; morph: number }) {
             )
           }),
         )}
-        {DAG.tasks
-          .filter((t) => VNODES[t.id].fanN)
-          .flatMap((task) => {
-            const vn = VNODES[task.id]
-            const st = run.nodes[task.id]?.status
-            const on = st === 'running' || st === 'success'
-            return vn.shards.flatMap((s, i) => [
-              <path
-                key={`rt-${task.id}-${i}`}
-                className={`lf-rib ${on ? 'lf-rib--on' : ''}`}
-                d={vEdge(vn.top, { x: s.x + VG.SHARD / 2, y: s.y })}
-                fill="none"
-              />,
-              <path
-                key={`rb-${task.id}-${i}`}
-                className={`lf-rib ${on ? 'lf-rib--on' : ''}`}
-                d={vEdge({ x: s.x + VG.SHARD / 2, y: s.y + VG.SHARD }, vn.bottom)}
-                fill="none"
-              />,
-            ])
-          })}
       </g>
 
-      {/* the TASK BLOCKS · each lerps from its file row → its DAG node */}
+      {/* the TASK BLOCKS · each lerps from its file row → its DAG node (its column
+          in the wave's row — parallel siblings land side by side) */}
       {DAG.tasks.map((task) => {
         const vn = VNODES[task.id]
         const di = FILE_ORDER[task.id]
-        const isFan = !!vn.fanN
         const status = run.nodes[task.id]?.status ?? 'pending'
         const running = status === 'running'
         const hue = running ? VERB_VAR[task.verb] : undefined
@@ -456,80 +425,48 @@ function FileDag({ run, morph }: { run: RunState; morph: number }) {
           ['--lf-vhue' as string]: VERB_VAR[task.verb],
           ...(hue ? { ['--lf-hue' as string]: hue } : {}),
         }
-        // FILE row anchors (left-aligned stack) → DAG node anchors (centre spine)
+        // FILE row (left-aligned stack) → DAG node (its column in the wave row)
         const fcy = FILE_TOP + di * FILE_ROW_H + FILE_ROW_H / 2
-        const dagLeft = VG_CX - VG.NODE_W / 2
+        const dagLeft = vn.cx - VG.NODE_W / 2
         const left = lerp(FILE_LEFT, dagLeft, m)
         const w = lerp(FILE_ROW_W, VG.NODE_W, m)
         const cy = lerp(fcy, vn.cy, m)
         const h = lerp(23, VG.NODE_H, m)
-        const idX = lerp(FILE_LEFT + 22, dagLeft + 26, m)
-        const verbX = lerp(FILE_LEFT + FILE_ROW_W - 12, dagLeft + VG.NODE_W - 13, m)
-        const glossX = lerp(FILE_LEFT + 150, dagLeft + VG.NODE_W + 12, m)
-        // fan nodes dissolve their box into the shard cluster as it forms
-        const boxO = isFan ? 1 - shardO : 1
+        const idX = lerp(FILE_LEFT + 22, dagLeft + 24, m)
+        const verbX = lerp(FILE_LEFT + FILE_ROW_W - 12, dagLeft + VG.NODE_W - 12, m)
+        // the gloss reads in the FILE row; in the compact DAG node the id speaks
+        // for itself (inbox · weather · …), so it fades out as the node forms
+        const glossO = 1 - clamp01((m - 0.15) / 0.45)
         return (
           <g key={task.id} className={nodeClass(status)} style={style}>
-            <title>{`${task.id} · ${task.gloss}${isFan ? ` · ×${vn.fanN} in parallel` : ''}`}</title>
+            <title>{`${task.id} · ${task.gloss}`}</title>
             <rect
               className="lf-fd-box"
               x={left}
               y={cy - h / 2}
               width={w}
               height={h}
-              rx={lerp(5, 10, m)}
-              style={{ opacity: boxO, strokeOpacity: 0.22 + 0.78 * m }}
+              rx={lerp(5, 9, m)}
+              style={{ strokeOpacity: 0.22 + 0.78 * m }}
             />
-            <circle className="lf-node-dot" cx={left + 12} cy={cy} r={3.2} style={{ opacity: boxO }} />
-            <text className="lf-node-id" x={idX} y={cy + 3.5} style={{ opacity: boxO }}>
+            <circle className="lf-node-dot" cx={left + 12} cy={cy} r={3.2} />
+            <text className="lf-node-id" x={idX} y={cy + 3.5}>
               {task.id}
             </text>
-            <text
-              className="lf-node-verb"
-              x={verbX}
-              y={cy + 3.5}
-              textAnchor="end"
-              style={{ opacity: boxO }}
-            >
-              {mark || task.verb}
+            <text className="lf-node-verb" x={verbX} y={cy + 3.5} textAnchor="end">
+              {m > 0.6 ? mark : task.verb}
             </text>
-            <text className="lf-vgloss" x={glossX} y={cy + 3.5}>
-              {isFan ? `${stepGloss(task)} · ×${vn.fanN}` : stepGloss(task)}
+            <text
+              className="lf-vgloss"
+              x={lerp(FILE_LEFT + 150, dagLeft + 24, m)}
+              y={cy + 3.5}
+              style={{ opacity: glossO }}
+            >
+              {stepGloss(task)}
             </text>
           </g>
         )
       })}
-
-      {/* the fan shards · appear at each fan node as the DAG resolves (parallel) */}
-      {DAG.tasks
-        .filter((t) => VNODES[t.id].fanN)
-        .map((task) => {
-          const vn = VNODES[task.id]
-          const status = run.nodes[task.id]?.status ?? 'pending'
-          const running = status === 'running'
-          const hue = running ? VERB_VAR[task.verb] : undefined
-          const style = {
-            ['--lf-vhue' as string]: VERB_VAR[task.verb],
-            ...(hue ? { ['--lf-hue' as string]: hue } : {}),
-            opacity: shardO,
-          }
-          return (
-            <g key={`fan-${task.id}`} className={nodeClass(status)} style={style} aria-hidden>
-              {vn.shards.map((s, i) => (
-                <rect
-                  key={i}
-                  className="lf-shard"
-                  style={{ ['--i' as string]: i }}
-                  x={s.x}
-                  y={s.y}
-                  width={VG.SHARD}
-                  height={VG.SHARD}
-                  rx={7}
-                />
-              ))}
-            </g>
-          )
-        })}
     </svg>
   )
 }
@@ -563,11 +500,11 @@ function RunSummarySR() {
         ))}
       </ol>
       <p>
-        It declares a <code>permits:</code> block: a local model with no network
-        access at all, so the CVs cannot leave this machine even if one hijacks
-        the model. The runtime enforces those permits on every action — an effect
-        outside the declared boundary is denied with {SEC_004.code} before it
-        runs, not logged after the fact.
+        It declares a <code>permits:</code> block: a local model and a scoped
+        network (only the brief’s sources), so your email and data never leave
+        this machine. The runtime enforces those permits on every action — an
+        effect outside the declared boundary is denied with {SEC_004.code} before
+        it runs, not logged after the fact.
       </p>
     </div>
   )
@@ -743,8 +680,8 @@ function VerdictBeat({ run }: { run: RunState }) {
           </span>
           <p className="lf-verdict-h">Ran within the permits</p>
           <p className="lf-verdict-sub">
-            exit {code} · wrote the shortlist brief · every effect logged — the
-            whole run replays from the trace.
+            exit {code} · wrote brief.md · every effect logged — the whole run
+            replays from the trace.
           </p>
         </div>
         <div className="lf-verdict-card lf-verdict-card--deny">

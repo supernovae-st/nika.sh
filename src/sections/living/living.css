@@ -799,14 +799,14 @@
    transparent shell, bigger canvas, and a solid node backing so the graph reads
    over the busy depth grid. The plan materialises (file → DAG) on the dag beat. */
 .lf-dag-wrap--stage {
-  width: min(560px, 94%);
+  width: min(720px, 95%);
   background: transparent;
   border: 0;
   padding: 0;
   overflow: visible;
 }
 .lf-dag-wrap--stage .lf-dag {
-  max-height: min(68vh, 600px);
+  max-height: min(64vh, 560px);
 }
 /* the vertical DAG fills the tall stage (portrait); centred in the well */
 .lf-dag--v {
