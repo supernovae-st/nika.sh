@@ -129,16 +129,15 @@
   pointer-events: none;
 }
 /* the file's header-right → centre travel, driven by --lf-travel (0 = parked in
-   the header-right at scroll 0 · 1 = centred, ready to morph). Tracks scroll
-   tightly (no transition lag) — it IS the same block the hero shows. */
-.lf-section[data-scrub='true'] .lf-stage[data-beat='file'] .lf-file {
+   the header-right at scroll 0 · 1 = centred, ready to morph into the DAG). It IS
+   the same block — the FileDag at morph=0 is the YAML file. */
+.lf-section[data-scrub='true'] .lf-stage[data-beat='file'] .lf-dag-wrap--stage {
   transition: none;
-  opacity: 1;
   transform: translate(
       calc((1 - var(--lf-travel, 1)) * 22vw),
       calc((1 - var(--lf-travel, 1)) * -7vh)
     )
-    scale(calc(0.82 + var(--lf-travel, 1) * 0.18));
+    scale(calc(0.84 + var(--lf-travel, 1) * 0.16));
 }
 
 /* ─── header · FIG register + title + lede + dimension line ──────────────────*/
@@ -288,6 +287,9 @@
      around the centered file panel — opacity alone left a faint ghost. */
   visibility: hidden;
 }
+/* the run surface (now the ONE FileDag element) is visible from the FILE beat —
+   it IS the file at morph=0, then its task blocks morph into the DAG. */
+.lf-stage[data-beat='file'] .lf-run,
 .lf-stage[data-beat='morph'] .lf-run,
 .lf-stage[data-beat='dag'] .lf-run,
 .lf-stage[data-beat='run'] .lf-run,
@@ -389,8 +391,10 @@
   text-transform: uppercase;
   color: var(--v4-text-faint);
 }
-/* during the flat DAG comprehension beat the minimal log is withheld (the run
-   hasn't started) so the plan is the clean, centered focus */
+/* the live log is withheld until the RUN beat (file / morph / dag show only the
+   one element morphing — the run hasn't started, so no stream yet). */
+.lf-stage[data-beat='file'] .lf-obs,
+.lf-stage[data-beat='morph'] .lf-obs,
 .lf-stage[data-beat='dag'] .lf-obs {
   opacity: 0;
   max-height: 0;
@@ -398,22 +402,27 @@
   pointer-events: none;
   transition: opacity 0.4s ease, max-height 0.4s ease;
 }
+/* the graph caption ("the plan, in depth") is withheld while the block is still
+   the file (the FileDag carries its own filename header at morph=0). */
+.lf-stage[data-beat='file'] .lf-graph > .lf-panel-cap {
+  opacity: 0;
+}
 
-/* forget the 3D corridor for now (operator) — hide it. The real 2D <Dag> (nodes
-   + dependency edges) is the run visual: kept FLAT (no tilt), shown at the dag +
-   run beats over the tunnel, hidden at file / morph / verdict. */
+/* the 3D corridor stays off. The ONE FileDag element (file → DAG morph) is the
+   visual from the FILE beat all the way through the run, hidden only at verdict.
+   No tilt — it stays flat over the tunnel. */
 .lf-corridor-layer {
   display: none !important;
 }
 .lf-dag-layer {
   transform: none !important;
 }
+.lf-stage[data-beat='file'] .lf-dag-layer,
+.lf-stage[data-beat='morph'] .lf-dag-layer,
 .lf-stage[data-beat='dag'] .lf-dag-layer,
 .lf-stage[data-beat='run'] .lf-dag-layer {
   opacity: 1 !important;
 }
-.lf-stage[data-beat='file'] .lf-dag-layer,
-.lf-stage[data-beat='morph'] .lf-dag-layer,
 .lf-stage[data-beat='verdict'] .lf-dag-layer {
   opacity: 0 !important;
 }
@@ -875,6 +884,44 @@
   letter-spacing: 0.05em;
   fill: var(--lf-vhue, var(--v4-text-dim));
   opacity: 0.92;
+}
+
+/* ── the FileDag · the morphing box (file row ↔ DAG node) + the YAML header ────
+   the box is the SAME element in both layouts. A frosted fill (semi-transparent,
+   not a black slab) so the tunnel reads through it; the stroke fades in with the
+   morph (set inline). */
+.lf-fd-box {
+  fill: color-mix(in oklch, #070b14 52%, transparent);
+  stroke: color-mix(in oklch, var(--lf-ink) 60%, transparent);
+  stroke-width: 1.1;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+.lf-node--running .lf-fd-box {
+  fill: color-mix(in oklch, var(--lf-hue, var(--v4-text)) 24%, #070b14);
+  stroke: var(--lf-hue, var(--v4-text));
+}
+.lf-node--success .lf-fd-box {
+  fill: color-mix(in oklch, var(--v4-text) 15%, #070b14);
+  stroke: color-mix(in oklch, var(--v4-text) 58%, transparent);
+}
+.lf-node--failure .lf-fd-box {
+  stroke-dasharray: 3 3;
+}
+/* the YAML header context (filename + the non-task lines) — faint mono, fades
+   out as the task blocks lift into the graph */
+.lf-yfile {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  fill: var(--v4-text-dim);
+}
+.lf-yline {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: var(--v4-text-faint);
+}
+.lf-yline--key {
+  fill: var(--v4-text-dim);
 }
 .lf-dag-wrap--stage .lf-node-box {
   fill: color-mix(in oklch, #070b14 86%, transparent);

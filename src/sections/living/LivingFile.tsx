@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { CodeFile } from '../../components/CodeFile'
 import { useAuroraPulse } from '../../fx/aurora-context'
-import { SHOWCASE_DAG, SHOWCASE_YAML, type ShowcaseTask } from '../usecases-yaml.generated'
+import { SHOWCASE_DAG, type ShowcaseTask } from '../usecases-yaml.generated'
 import { runStateAt, CLI_GLYPH, type RunState, type TaskStatus } from './run-model'
 import Corridor from './Corridor'
 import './living.css'
@@ -37,7 +36,6 @@ import './corridor.css'
    prefers-reduced-motion: no-preference enhancements added on mount. */
 
 const DAG = SHOWCASE_DAG['t3-resume-screener']
-const YAML = SHOWCASE_YAML['t3-resume-screener']
 const FILENAME = 'screen-cvs.nika.yaml'
 /** the static frame used for SSR / no-JS / reduced-motion (fully executed). */
 const END_STATE: RunState = runStateAt(DAG, 1)
@@ -338,60 +336,111 @@ function vBow(a: Pt, b: Pt): string {
   return `M ${a.x} ${a.y} C ${a.x - bow} ${a.y + 10}, ${b.x - bow} ${b.y - 10}, ${b.x} ${b.y}`
 }
 
-function DagVertical({ run }: { run: RunState }) {
+const lerp = (a: number, b: number, m: number) => a + (b - a) * m
+const clamp01 = (x: number) => Math.min(1, Math.max(0, x))
+
+/* ── the file layout · the YAML's task list, BEFORE it spreads into the DAG ────
+   At morph=0 the task rows are stacked like the file's `tasks:` block (under a
+   faded YAML header); at morph=1 each row has TRAVELLED to its DAG node. The SAME
+   element is the file and the graph — « les blocs de code se transforment en
+   node ». */
+const FILE_LEFT = 34
+const FILE_ROW_W = VG.W - 70
+const FILE_TOP = 156
+const FILE_ROW_H = 30
+const FILE_HEAD_X = 36
+const FILE_HEAD_TOP = 36
+const FILE_HEAD_LH = 15
+const YAML_HEAD = [
+  'nika: v1',
+  'workflow: resume-screener',
+  'model: ollama/llama3.1      # PII stays on the machine',
+  'permits:                    # the file IS the blast radius',
+  '  fs.read:  ./hiring/inbox/**',
+  '  fs.write: ./hiring/out/**',
+  '  tools: [ glob · read · jq ]',
+]
+const FILE_ORDER: Record<string, number> = {}
+DAG.tasks.forEach((t, i) => {
+  FILE_ORDER[t.id] = i
+})
+
+function FileDag({ run, morph }: { run: RunState; morph: number }) {
+  const m = clamp01(morph)
+  const headO = 1 - clamp01(m / 0.5) // the YAML context fades as the tasks lift out
+  const edgeO = clamp01((m - 0.5) / 0.4) // the dependency edges draw in
+  const shardO = clamp01((m - 0.55) / 0.4) // the fan shards appear as the node forms
+
   return (
     <svg
       className="lf-dag lf-dag--v"
       viewBox={`0 0 ${VG.W} ${VG_H}`}
       role="img"
-      aria-label="Workflow DAG · the plan flows top to bottom · parallel steps fan out wide · nodes light as the run reaches them"
+      aria-label="The plan — the YAML's task blocks fan out into the DAG and execute top to bottom"
     >
-      {/* dependency edges (under everything) · flow once the source completes */}
-      {DAG.tasks.flatMap((task) =>
-        task.deps.map((dep) => {
-          const src = VNODES[dep]
-          const dst = VNODES[task.id]
-          if (!src || !dst) return null
-          const skip = task.wave - src.task.wave > 1
-          const flowing =
-            run.nodes[dep]?.status === 'success' && run.nodes[task.id]?.status !== 'pending'
-          return (
-            <path
-              key={`${dep}->${task.id}`}
-              className={`lf-edge ${flowing ? 'lf-edge--flow' : ''}`}
-              d={skip ? vBow(src.bottom, dst.top) : vEdge(src.bottom, dst.top)}
-              fill="none"
-            />
-          )
-        }),
-      )}
+      {/* the YAML header context — fades as the task rows lift into the graph */}
+      <g className="lf-yhead" style={{ opacity: headO }} aria-hidden>
+        <text className="lf-yfile" x={FILE_HEAD_X} y={FILE_HEAD_TOP - 16}>
+          ❯ screen-cvs.nika.yaml
+        </text>
+        {YAML_HEAD.map((ln, i) => (
+          <text key={i} className="lf-yline" x={FILE_HEAD_X} y={FILE_HEAD_TOP + i * FILE_HEAD_LH}>
+            {ln}
+          </text>
+        ))}
+        <text className="lf-yline lf-yline--key" x={FILE_HEAD_X} y={FILE_TOP - 20}>
+          tasks:
+        </text>
+      </g>
 
-      {/* scatter / gather ribs · split the flow into the fan lanes and merge back */}
-      {DAG.tasks
-        .filter((t) => VNODES[t.id].fanN)
-        .flatMap((task) => {
-          const vn = VNODES[task.id]
-          const st = run.nodes[task.id]?.status
-          const on = st === 'running' || st === 'success'
-          return vn.shards.flatMap((s, i) => [
-            <path
-              key={`rt-${task.id}-${i}`}
-              className={`lf-rib ${on ? 'lf-rib--on' : ''}`}
-              d={vEdge(vn.top, { x: s.x + VG.SHARD / 2, y: s.y })}
-              fill="none"
-            />,
-            <path
-              key={`rb-${task.id}-${i}`}
-              className={`lf-rib ${on ? 'lf-rib--on' : ''}`}
-              d={vEdge({ x: s.x + VG.SHARD / 2, y: s.y + VG.SHARD }, vn.bottom)}
-              fill="none"
-            />,
-          ])
-        })}
+      {/* dependency edges + scatter/gather ribs — draw in as the DAG forms */}
+      <g style={{ opacity: edgeO }}>
+        {DAG.tasks.flatMap((task) =>
+          task.deps.map((dep) => {
+            const src = VNODES[dep]
+            const dst = VNODES[task.id]
+            if (!src || !dst) return null
+            const skip = task.wave - src.task.wave > 1
+            const flowing =
+              run.nodes[dep]?.status === 'success' && run.nodes[task.id]?.status !== 'pending'
+            return (
+              <path
+                key={`${dep}->${task.id}`}
+                className={`lf-edge ${flowing ? 'lf-edge--flow' : ''}`}
+                d={skip ? vBow(src.bottom, dst.top) : vEdge(src.bottom, dst.top)}
+                fill="none"
+              />
+            )
+          }),
+        )}
+        {DAG.tasks
+          .filter((t) => VNODES[t.id].fanN)
+          .flatMap((task) => {
+            const vn = VNODES[task.id]
+            const st = run.nodes[task.id]?.status
+            const on = st === 'running' || st === 'success'
+            return vn.shards.flatMap((s, i) => [
+              <path
+                key={`rt-${task.id}-${i}`}
+                className={`lf-rib ${on ? 'lf-rib--on' : ''}`}
+                d={vEdge(vn.top, { x: s.x + VG.SHARD / 2, y: s.y })}
+                fill="none"
+              />,
+              <path
+                key={`rb-${task.id}-${i}`}
+                className={`lf-rib ${on ? 'lf-rib--on' : ''}`}
+                d={vEdge({ x: s.x + VG.SHARD / 2, y: s.y + VG.SHARD }, vn.bottom)}
+                fill="none"
+              />,
+            ])
+          })}
+      </g>
 
-      {/* nodes · single box, or a fan of shard chips + a side label */}
+      {/* the TASK BLOCKS · each lerps from its file row → its DAG node */}
       {DAG.tasks.map((task) => {
         const vn = VNODES[task.id]
+        const di = FILE_ORDER[task.id]
+        const isFan = !!vn.fanN
         const status = run.nodes[task.id]?.status ?? 'pending'
         const running = status === 'running'
         const hue = running ? VERB_VAR[task.verb] : undefined
@@ -407,11 +456,65 @@ function DagVertical({ run }: { run: RunState }) {
           ['--lf-vhue' as string]: VERB_VAR[task.verb],
           ...(hue ? { ['--lf-hue' as string]: hue } : {}),
         }
-        if (vn.fanN) {
-          const lastX = vn.shards[vn.shards.length - 1].x + VG.SHARD + 12
+        // FILE row anchors (left-aligned stack) → DAG node anchors (centre spine)
+        const fcy = FILE_TOP + di * FILE_ROW_H + FILE_ROW_H / 2
+        const dagLeft = VG_CX - VG.NODE_W / 2
+        const left = lerp(FILE_LEFT, dagLeft, m)
+        const w = lerp(FILE_ROW_W, VG.NODE_W, m)
+        const cy = lerp(fcy, vn.cy, m)
+        const h = lerp(23, VG.NODE_H, m)
+        const idX = lerp(FILE_LEFT + 22, dagLeft + 26, m)
+        const verbX = lerp(FILE_LEFT + FILE_ROW_W - 12, dagLeft + VG.NODE_W - 13, m)
+        const glossX = lerp(FILE_LEFT + 150, dagLeft + VG.NODE_W + 12, m)
+        // fan nodes dissolve their box into the shard cluster as it forms
+        const boxO = isFan ? 1 - shardO : 1
+        return (
+          <g key={task.id} className={nodeClass(status)} style={style}>
+            <title>{`${task.id} · ${task.gloss}${isFan ? ` · ×${vn.fanN} in parallel` : ''}`}</title>
+            <rect
+              className="lf-fd-box"
+              x={left}
+              y={cy - h / 2}
+              width={w}
+              height={h}
+              rx={lerp(5, 10, m)}
+              style={{ opacity: boxO, strokeOpacity: 0.22 + 0.78 * m }}
+            />
+            <circle className="lf-node-dot" cx={left + 12} cy={cy} r={3.2} style={{ opacity: boxO }} />
+            <text className="lf-node-id" x={idX} y={cy + 3.5} style={{ opacity: boxO }}>
+              {task.id}
+            </text>
+            <text
+              className="lf-node-verb"
+              x={verbX}
+              y={cy + 3.5}
+              textAnchor="end"
+              style={{ opacity: boxO }}
+            >
+              {mark || task.verb}
+            </text>
+            <text className="lf-vgloss" x={glossX} y={cy + 3.5}>
+              {isFan ? `${stepGloss(task)} · ×${vn.fanN}` : stepGloss(task)}
+            </text>
+          </g>
+        )
+      })}
+
+      {/* the fan shards · appear at each fan node as the DAG resolves (parallel) */}
+      {DAG.tasks
+        .filter((t) => VNODES[t.id].fanN)
+        .map((task) => {
+          const vn = VNODES[task.id]
+          const status = run.nodes[task.id]?.status ?? 'pending'
+          const running = status === 'running'
+          const hue = running ? VERB_VAR[task.verb] : undefined
+          const style = {
+            ['--lf-vhue' as string]: VERB_VAR[task.verb],
+            ...(hue ? { ['--lf-hue' as string]: hue } : {}),
+            opacity: shardO,
+          }
           return (
-            <g key={task.id} className={nodeClass(status)} style={style}>
-              <title>{`${task.id} · ${task.gloss} · ×${vn.fanN} in parallel`}</title>
+            <g key={`fan-${task.id}`} className={nodeClass(status)} style={style} aria-hidden>
               {vn.shards.map((s, i) => (
                 <rect
                   key={i}
@@ -424,38 +527,9 @@ function DagVertical({ run }: { run: RunState }) {
                   rx={7}
                 />
               ))}
-              <text className="lf-vlabel" x={lastX} y={vn.cy - 7}>
-                {task.id}
-              </text>
-              <text className="lf-vlabel-sub" x={lastX} y={vn.cy + 6}>
-                {mark ? `${mark} ` : ''}
-                {task.verb} ×{vn.fanN} · parallel
-              </text>
-              <text className="lf-vgloss" x={lastX} y={vn.cy + 19}>
-                {stepGloss(task)}
-              </text>
             </g>
           )
-        }
-        const bx = VG_CX - VG.NODE_W / 2
-        const by = vn.cy - VG.NODE_H / 2
-        return (
-          <g key={task.id} className={nodeClass(status)} style={style}>
-            <title>{`${task.id} · ${task.gloss}`}</title>
-            <rect className="lf-node-box" x={bx} y={by} width={VG.NODE_W} height={VG.NODE_H} rx={10} />
-            <circle className="lf-node-dot" cx={bx + 14} cy={vn.cy} r={3.4} />
-            <text className="lf-node-id" x={bx + 26} y={vn.cy + 3.5}>
-              {task.id}
-            </text>
-            <text className="lf-node-verb" x={bx + VG.NODE_W - 13} y={vn.cy + 3.5} textAnchor="end">
-              {mark || task.verb}
-            </text>
-            <text className="lf-vgloss" x={bx + VG.NODE_W + 12} y={vn.cy + 3.5}>
-              {stepGloss(task)}
-            </text>
-          </g>
-        )
-      })}
+        })}
     </svg>
   )
 }
@@ -885,34 +959,11 @@ export default function LivingFile() {
             </svg>
           </div>
 
-          {/* ── the stage body · the file, the graph, the run surfaces ── */}
+          {/* ── the stage body · the ONE element (file → DAG → run) ── */}
           <div className="lf-body">
-            {/* BEAT 1 · WRITE · the agent's plan, as a file (the permits: block
-                lit — what it's allowed to touch, and nothing else). */}
-            <div className="lf-file" aria-hidden={stageBeat !== 'file'}>
-              <p className="lf-panel-cap">
-                <span aria-hidden>FIG 1.0</span>
-                <span aria-hidden className="lf-cap-dash">
-                  —
-                </span>
-                write — the plan, before it acts
-              </p>
-              <CodeFile filename={FILENAME} yaml={YAML} highlight={[7, 11]} />
-              {/* the REVIEW gloss · the permits: block is the star (plan §4 FIG 1.0) */}
-              <p className="lf-file-note mono">
-                <span aria-hidden className="lf-file-note-mark">
-                  permits:
-                </span>{' '}
-                a LOCAL model · <b>no </b>
-                <span className="lf-file-note-key">net:</span>
-                <b> at all</b> — the CVs cannot leave this machine, even if one
-                hijacks the model.
-              </p>
-            </div>
-
-            {/* BEAT 2+3 · the graph + (during execution) the stream & outputs.
-                In 3D-corridor mode the graph is the MAIN stage and the stream
-                becomes a right rail; the flat <Dag> stays the fallback. */}
+            {/* BEAT 1+2+3 · the SAME block: the YAML file (morph=0) whose task
+                blocks travel out into the DAG (morph=1) and execute. No separate
+                file panel — « les blocs de code se transforment en node ». */}
             <div
               className="lf-run"
               data-corridor={corridor3d}
@@ -931,16 +982,14 @@ export default function LivingFile() {
                     {/* the corridor is an aria-hidden visual · this sr-only
                         summary is its textual equivalent (always alongside it) */}
                     <RunSummarySR />
-                    {/* the COMPREHENSION layer · the FLAT 2D DAG (columns are
-                        parallel waves · arrows are dependencies). You read the
-                        plan's shape here; then it tilts back into depth (--lf-tilt)
-                        as the corridor takes over — the design-doc ③→④ handoff. */}
+                    {/* the ONE element · the YAML file whose task blocks morph
+                        into the DAG nodes (driven by `morph`) then execute. */}
                     <div className="lf-dag-layer">
                       <div className="lf-dag-wrap lf-dag-wrap--stage">
-                        <DagVertical run={run} />
+                        <FileDag run={run} morph={morph} />
                       </div>
                       <p className="lf-dag-hint mono" aria-hidden>
-                        nodes are tasks · arrows are dependencies · the run lights them as it reaches them
+                        the file’s task blocks fan out into the graph · the run lights them as it reaches them
                       </p>
                     </div>
                     {/* the immersive run · the 3D corridor the plan flies through */}
