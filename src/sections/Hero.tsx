@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router'
+import { CodeFile } from '../components/CodeFile'
 import { REPO, SPEC } from '../content'
 import '../shell/shell.css'
 import './hero.css'
@@ -28,6 +30,24 @@ import './hero.css'
    added on mount and only animates when motion is allowed. */
 
 const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
+
+/* the hero editor plan · a COMPACT, spec-correct slice of the daily-brief showcase
+   (the full file + DAG live in the Living File below). The control story reads at
+   a glance: a LOCAL model · a scoped `permits:` block · the verbs in their hue. */
+const HERO_YAML = `nika: v1
+workflow: daily-brief
+model: ollama/llama3.1        # local · your data never leaves
+
+permits:                     # the file IS the blast radius
+  net: [ gmail, gcal, news ]
+  fs: { write: ./brief.md }
+
+tasks:
+  - { id: inbox,    invoke: gmail.unread }
+  - { id: calendar, invoke: gcal.today }
+  - { id: triage,   needs: [inbox], infer: "flag urgent" }
+  - { id: brief,    needs: [triage, calendar], infer: "write the brief" }
+`
 
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
 const rise = (ms: number): React.CSSProperties =>
@@ -102,6 +122,7 @@ function HeroAtmosphere() {
 export default function Hero() {
   const rootRef = useRef<HTMLElement>(null)
   const copyRef = useRef<HTMLDivElement>(null)
+  const editorRef = useRef<HTMLDivElement>(null)
 
   /* opt the hero into the orchestrated entrance — only when motion is allowed.
      Adding the class in an effect (post-paint) guarantees the prerendered HTML
@@ -131,8 +152,14 @@ export default function Hero() {
       // 0 while the hero fills the view → 1 as it scrolls out (the pull window)
       const ap = Math.min(1, Math.max(0, -rect.top / (h * 0.82)))
       // the copy fades up as the hero scrolls out — the ONE code block (the page-
-      // level Living File element) is what stays + travels into the DAG; the hero
-      // no longer holds its own editor (that was the duplicate).
+      // the editor (the plan) sinks down + dissolves as the hero scrolls out, the
+      // copy fades up — a clean exit into the Living File below.
+      const e = ap * ap
+      const editor = editorRef.current
+      if (editor) {
+        editor.style.transform = `translateY(${e * 46}px) scale(${1 - e * 0.07})`
+        editor.style.opacity = `${Math.max(0, 1 - e * 1.18)}`
+      }
       const copy = copyRef.current
       if (copy) {
         copy.style.transform = `translateY(${ap * -26}px)`
@@ -253,12 +280,29 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* ── RIGHT · reserved for the ONE code block ───────────────────────────
-            The `.nika` file is no longer a separate hero editor (that was the
-            duplicate). It's the page-level Living File element (Home), which sits
-            HERE in the header at scroll 0 and travels into the DAG as you scroll.
-            This empty column just holds the two-column layout (copy stays left). */}
-        <div className="v4hero-editor" aria-hidden />
+        {/* ── RIGHT · the premium editor panel · the product replica ────────── */}
+        <div className="v4hero-editor" data-rise style={rise(180)}>
+          <div ref={editorRef} className="v4hero-aspirate">
+            <CodeFile
+              yaml={HERO_YAML}
+              filename="daily-brief.nika.yaml"
+              highlight={[5, 7]}
+              className="v4hero-code"
+            />
+            {/* a compact reference chip · "see it run" links to the full Living
+                File run below (the same plan, as a DAG). */}
+            <Link to="#living-file" className="v4hint mt-4 w-fit">
+              <span className="v4hint-file">daily-brief.nika.yaml</span>
+              <span className="text-faint" aria-hidden>
+                ·
+              </span>
+              <span>see it run</span>
+              <span className="v4hint-arrow" aria-hidden>
+                →
+              </span>
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   )
