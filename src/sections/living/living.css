@@ -907,22 +907,50 @@
 .lf-node--failure .lf-fd-box {
   stroke-dasharray: 3 3;
 }
-/* the YAML header context (filename + the non-task lines) — faint mono, fades
-   out as the task blocks lift into the graph */
-.lf-yfile {
+/* ── the code editor (file beat) · a real panel · traffic lights · syntax colour
+   ─ fades out as the task rows lift into the graph ──────────────────────────── */
+.lf-fd-panel {
+  fill: color-mix(in oklch, #0a0e1a 88%, transparent);
+  stroke: color-mix(in oklch, var(--v4-line) 80%, transparent);
+  stroke-width: 1;
+}
+.lf-fd-sep {
+  stroke: color-mix(in oklch, var(--v4-line) 70%, transparent);
+  stroke-width: 1;
+}
+.lf-fd-dot {
+  stroke: none;
+}
+.lf-fd-dot--r {
+  fill: #ff5f57;
+}
+.lf-fd-dot--y {
+  fill: #febc2e;
+}
+.lf-fd-dot--g {
+  fill: #28c840;
+}
+.lf-fd-name {
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.03em;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
   fill: var(--v4-text-dim);
 }
+/* the YAML lines · mono, syntax-coloured */
 .lf-yline {
   font-family: var(--mono);
   font-size: 11px;
+}
+.lf-y-key {
+  fill: #7fb4f0;
+} /* keys · cyan-blue */
+.lf-y-val {
+  fill: #d7b07a;
+} /* strings / values · warm amber */
+.lf-y-com {
   fill: var(--v4-text-faint);
-}
-.lf-yline--key {
-  fill: var(--v4-text-dim);
-}
+  font-style: italic;
+} /* comments · dim */
 .lf-dag-wrap--stage .lf-node-box {
   fill: color-mix(in oklch, #070b14 86%, transparent);
   stroke: color-mix(in oklch, var(--lf-ink) 60%, transparent);

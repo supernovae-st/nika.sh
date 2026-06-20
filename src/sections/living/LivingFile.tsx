@@ -35,22 +35,29 @@ import './corridor.css'
    coherent with zero scroll animation. The rAF scroll-scrub + 3D corridor are
    prefers-reduced-motion: no-preference enhancements added on mount. */
 
-/* the fil-rouge · a DAILY BRIEF everyone gets — five things gathered AT ONCE
-   (inbox · calendar · weather · news · todos · all in parallel), then a LOCAL
-   model writes the brief, then it's saved. Relatable + genuinely parallel (one
-   wave of 5), and it still shows the control story (a local model · scoped net ·
-   the write stays within `permits:`). Spec-shaped nika YAML. */
+/* the fil-rouge · a DAILY BRIEF everyone gets. FOUR sources gathered AT ONCE,
+   each read by a LOCAL model in parallel, then synthesised into one brief and
+   saved — two parallel waves of 4, a clean diamond. Relatable (the ids ARE the
+   explanation) and it still tells the control story (local model · scoped net ·
+   the write stays within `permits:` · your data never leaves). Spec-shaped. */
 const DAG: ShowcaseDag = {
-  waves: 3,
+  waves: 4,
   outputs: ['brief'],
   tasks: [
-    { id: 'inbox', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'read unread email', flags: [], line0: 12, line1: 13 },
-    { id: 'calendar', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: "today's events", flags: [], line0: 14, line1: 15 },
-    { id: 'weather', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'the forecast', flags: [], line0: 16, line1: 17 },
-    { id: 'news', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'top headlines', flags: [], line0: 18, line1: 19 },
-    { id: 'todos', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'your task list', flags: [], line0: 20, line1: 21 },
-    { id: 'brief', verb: 'infer', deps: ['inbox', 'calendar', 'weather', 'news', 'todos'], wave: 1, gate: 'default', gloss: 'write your morning brief', flags: ['typed output'], line0: 23, line1: 30 },
-    { id: 'save', verb: 'invoke', deps: ['brief'], wave: 2, gate: 'default', gloss: 'save brief.md — within permits', flags: [], line0: 32, line1: 33 },
+    // wave 0 · GATHER everything at once (4 parallel)
+    { id: 'inbox', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'read your email', flags: [], line0: 13, line1: 14 },
+    { id: 'calendar', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: "today's events", flags: [], line0: 15, line1: 16 },
+    { id: 'news', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'top headlines', flags: [], line0: 17, line1: 18 },
+    { id: 'signals', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'PRs & mentions', flags: [], line0: 19, line1: 20 },
+    // wave 1 · the model READS each, in parallel (4 parallel)
+    { id: 'triage', verb: 'infer', deps: ['inbox'], wave: 1, gate: 'default', gloss: 'flag what’s urgent', flags: [], line0: 22, line1: 25 },
+    { id: 'agenda', verb: 'infer', deps: ['calendar'], wave: 1, gate: 'default', gloss: 'plan the day', flags: [], line0: 26, line1: 29 },
+    { id: 'digest', verb: 'infer', deps: ['news'], wave: 1, gate: 'default', gloss: 'summarise the news', flags: [], line0: 30, line1: 33 },
+    { id: 'highlights', verb: 'infer', deps: ['signals'], wave: 1, gate: 'default', gloss: 'what needs you', flags: [], line0: 34, line1: 37 },
+    // wave 2 · WRITE the brief from all of it
+    { id: 'brief', verb: 'infer', deps: ['triage', 'agenda', 'digest', 'highlights'], wave: 2, gate: 'default', gloss: 'write the brief', flags: ['typed output'], line0: 39, line1: 44 },
+    // wave 3 · SAVE — within permits
+    { id: 'save', verb: 'invoke', deps: ['brief'], wave: 3, gate: 'default', gloss: 'save brief.md', flags: [], line0: 46, line1: 47 },
   ],
 }
 const FILENAME = 'daily-brief.nika.yaml'
@@ -271,10 +278,10 @@ function Dag({ run, morph }: { run: RunState; morph: number }) {
    them across a row — so a parallel wave is literally a ROW of nodes running at
    once (daily-brief: 5 gathers side by side). Dependencies are the edges that
    converge them. Drives off the same deterministic run-model. */
-const VG = { W: 700, NODE_W: 116, NODE_H: 40, LEVEL_H: 108, COL_GAP: 16, PAD: 32 }
+const VG = { W: 580, NODE_W: 116, NODE_H: 40, LEVEL_H: 100, COL_GAP: 16, PAD: 34 }
 const VG_CX = VG.W / 2
 // the viewBox must fit BOTH the DAG (waves × level) and the file (header + rows)
-const VG_H = Math.max(VG.PAD * 2 + DAG.waves * VG.LEVEL_H, 156 + DAG.tasks.length * 30 + 24)
+const VG_H = Math.max(VG.PAD * 2 + DAG.waves * VG.LEVEL_H, 146 + DAG.tasks.length * 26 + 24)
 const vLevelCY = (wave: number) => VG.PAD + wave * VG.LEVEL_H + VG.LEVEL_H / 2
 
 /* the relatable example's ids ARE the gloss (inbox · weather · …) — so the gloss
@@ -336,29 +343,31 @@ const clamp01 = (x: number) => Math.min(1, Math.max(0, x))
    faded YAML header); at morph=1 each row has TRAVELLED to its DAG node. The SAME
    element is the file and the graph — « les blocs de code se transforment en
    node ». */
-const FILE_LEFT = 34
-const FILE_ROW_W = VG.W - 70
-const FILE_TOP = 156
-const FILE_ROW_H = 30
-const FILE_HEAD_X = 36
-const FILE_HEAD_TOP = 36
-const FILE_HEAD_LH = 15
-const YAML_HEAD = [
-  'nika: v1',
-  'workflow: daily-brief',
-  'model: ollama/llama3.1      # local · your data stays home',
-  'permits:                    # only what it needs, nothing else',
-  '  net: [ gmail · calendar · weather · news ]',
-  '  fs.write: ./brief.md',
+const FILE_LEFT = 40
+const FILE_ROW_W = VG.W - 80
+const FILE_TOP = 166
+const FILE_ROW_H = 26
+const FILE_HEAD_X = 44
+const FILE_HEAD_TOP = 58
+const FILE_HEAD_LH = 14
+/* the YAML header, split for syntax colour (key · value · comment) */
+const YAML_HEAD: { k: string; v?: string; c?: string }[] = [
+  { k: 'nika:', v: ' v1' },
+  { k: 'workflow:', v: ' daily-brief' },
+  { k: 'model:', v: ' ollama/llama3.1', c: '# local · your data stays home' },
+  { k: 'permits:', c: '# only what it needs, nothing else' },
+  { k: '  net:', v: ' [ gmail, calendar, news, github ]' },
+  { k: '  fs.write:', v: ' ./brief.md' },
 ]
 const FILE_ORDER: Record<string, number> = {}
 DAG.tasks.forEach((t, i) => {
   FILE_ORDER[t.id] = i
 })
+const PANEL_H = FILE_TOP + DAG.tasks.length * FILE_ROW_H - 4
 
 function FileDag({ run, morph }: { run: RunState; morph: number }) {
   const m = clamp01(morph)
-  const headO = 1 - clamp01(m / 0.5) // the YAML context fades as the tasks lift out
+  const headO = 1 - clamp01(m / 0.5) // the editor (panel + header) fades as the rows lift out
   const edgeO = clamp01((m - 0.5) / 0.4) // the dependency edges draw in (converge)
 
   return (
@@ -368,17 +377,25 @@ function FileDag({ run, morph }: { run: RunState; morph: number }) {
       role="img"
       aria-label="The plan — the YAML's task blocks spread into the DAG; parallel tasks run side by side"
     >
-      {/* the YAML header context — fades as the task rows lift into the graph */}
-      <g className="lf-yhead" style={{ opacity: headO }} aria-hidden>
-        <text className="lf-yfile" x={FILE_HEAD_X} y={FILE_HEAD_TOP - 16}>
-          ❯ {FILENAME}
+      {/* the code EDITOR · a real file panel (frosted dark · traffic lights ·
+          syntax colour) that fades as the task rows lift into the graph */}
+      <g className="lf-yhead" style={{ opacity: headO }}>
+        <rect className="lf-fd-panel" x={18} y={16} width={VG.W - 36} height={PANEL_H} rx={12} />
+        <line className="lf-fd-sep" x1={18} y1={42} x2={VG.W - 18} y2={42} />
+        <circle className="lf-fd-dot lf-fd-dot--r" cx={36} cy={29} r={4} />
+        <circle className="lf-fd-dot lf-fd-dot--y" cx={50} cy={29} r={4} />
+        <circle className="lf-fd-dot lf-fd-dot--g" cx={64} cy={29} r={4} />
+        <text className="lf-fd-name" x={VG.W / 2} y={32.5} textAnchor="middle">
+          {FILENAME}
         </text>
         {YAML_HEAD.map((ln, i) => (
           <text key={i} className="lf-yline" x={FILE_HEAD_X} y={FILE_HEAD_TOP + i * FILE_HEAD_LH}>
-            {ln}
+            <tspan className="lf-y-key">{ln.k}</tspan>
+            {ln.v ? <tspan className="lf-y-val">{ln.v}</tspan> : null}
+            {ln.c ? <tspan className="lf-y-com">{`   ${ln.c}`}</tspan> : null}
           </text>
         ))}
-        <text className="lf-yline lf-yline--key" x={FILE_HEAD_X} y={FILE_TOP - 20}>
+        <text className="lf-y-key" x={FILE_HEAD_X} y={FILE_TOP - 16}>
           tasks:
         </text>
       </g>
@@ -437,6 +454,9 @@ function FileDag({ run, morph }: { run: RunState; morph: number }) {
         // the gloss reads in the FILE row; in the compact DAG node the id speaks
         // for itself (inbox · weather · …), so it fades out as the node forms
         const glossO = 1 - clamp01((m - 0.15) / 0.45)
+        // the node BOX only exists once the row lifts off the editor — in the file
+        // it's just a clean coloured text line (no per-row box).
+        const boxFade = clamp01((m - 0.08) / 0.5)
         return (
           <g key={task.id} className={nodeClass(status)} style={style}>
             <title>{`${task.id} · ${task.gloss}`}</title>
@@ -447,13 +467,24 @@ function FileDag({ run, morph }: { run: RunState; morph: number }) {
               width={w}
               height={h}
               rx={lerp(5, 9, m)}
-              style={{ strokeOpacity: 0.22 + 0.78 * m }}
+              style={{ fillOpacity: boxFade, strokeOpacity: boxFade }}
             />
             <circle className="lf-node-dot" cx={left + 12} cy={cy} r={3.2} />
-            <text className="lf-node-id" x={idX} y={cy + 3.5}>
+            <text
+              className="lf-node-id"
+              x={idX}
+              y={cy + 3.5}
+              style={m < 0.5 ? { fill: 'var(--v4-text)' } : undefined}
+            >
               {task.id}
             </text>
-            <text className="lf-node-verb" x={verbX} y={cy + 3.5} textAnchor="end">
+            <text
+              className="lf-node-verb"
+              x={verbX}
+              y={cy + 3.5}
+              textAnchor="end"
+              style={m < 0.5 ? { fill: VERB_VAR[task.verb] } : undefined}
+            >
               {m > 0.6 ? mark : task.verb}
             </text>
             <text
