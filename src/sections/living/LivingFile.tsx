@@ -749,6 +749,14 @@ export default function LivingFile() {
       })
       return () => cancelAnimationFrame(fr)
     }
+    // dev/capture · ?sy=<vh> scrolls to that many viewport-heights after mount so
+    // a headless shot can see a REAL scroll state over the tunnel (the scrub runs
+    // normally — unlike ?lf which freezes). No effect on normal visits.
+    const syParam = new URLSearchParams(window.location.search).get('sy')
+    if (syParam !== null) {
+      const vh = parseFloat(syParam) || 0
+      requestAnimationFrame(() => window.scrollTo(0, vh * window.innerHeight))
+    }
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) return // keep the static end-state frame · no scrub
 

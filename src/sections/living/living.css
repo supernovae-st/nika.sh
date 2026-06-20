@@ -106,8 +106,14 @@
   left: 50%;
   width: 100vw;
   transform: translateX(-50%);
-  /* a soft dark veil so the content reads over the tunnel (which shows through) */
-  background: color-mix(in oklch, var(--v4-bg) 42%, transparent);
+  /* a FEATHERED vignette (not a flat dark slab) — a touch of centre-darkening for
+     legibility that fades to fully transparent at the edges, so the tunnel keeps
+     breathing and there's no hard black block (operator feedback). */
+  background: radial-gradient(
+    ellipse 80% 66% at 50% 44%,
+    color-mix(in oklch, var(--v4-bg) 24%, transparent) 0%,
+    transparent 74%
+  );
   z-index: -1;
   transition: opacity 0.5s ease;
 }
@@ -319,12 +325,15 @@
   display: none;
 }
 .lf-run[data-corridor='true'] .lf-stream {
-  background: color-mix(in oklch, var(--v4-bg-raised) 66%, transparent);
-  border: 1px solid var(--v4-line);
+  /* FROSTED glass, not a black box — the tunnel shows through softly (operator:
+     « les blocs noir par dessus c'est pas bien »). Low-opacity tint + a strong
+     blur keeps the CLI log legible without a hard dark slab over the depth. */
+  background: color-mix(in oklch, var(--v4-bg) 26%, transparent);
+  border: 1px solid color-mix(in oklch, var(--v4-line) 55%, transparent);
   border-radius: 10px;
   padding: 0.4rem 0.65rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(18px) saturate(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
 }
 .lf-run[data-corridor='true'] .lf-stream-scroll {
   max-height: 74px;
@@ -614,6 +623,22 @@
   font-family: var(--mono);
   text-transform: none;
   letter-spacing: 0;
+}
+
+/* ── legibility over the tunnel (the veil is feathered now, not a dark slab) ───
+   a soft ink shadow lets the register text + the DAG labels read over the depth
+   WITHOUT a hard dark backing (operator: « les blocs noir par dessus, pas bien »). */
+.lf-section[data-scrub='true'] .lf-head-fig,
+.lf-section[data-scrub='true'] .lf-head-step,
+.lf-section[data-scrub='true'] .lf-panel-cap,
+.lf-section[data-scrub='true'] .lf-dag-hint,
+.lf-section[data-scrub='true'] .lf-title,
+.lf-section[data-scrub='true'] .lf-lede {
+  text-shadow: 0 1px 12px color-mix(in oklch, var(--v4-bg) 92%, transparent),
+    0 0 2px color-mix(in oklch, var(--v4-bg) 78%, transparent);
+}
+.lf-section[data-scrub='true'] .lf-dag--v {
+  filter: drop-shadow(0 1px 10px color-mix(in oklch, var(--v4-bg) 84%, transparent));
 }
 
 /* ─── the 2D DAG ─────────────────────────────────────────────────────────────*/
