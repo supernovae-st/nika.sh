@@ -674,9 +674,9 @@ export function Component() {
               The contract you can count on — the parts that never change.
             </SpecHead>
             <ul className="spec-invariants">
-              <Invariant fig="S.8a" claim="Forever v0.x">
-                No v1.0 target. The engine matures in place; the language envelope stays{' '}
-                <code>nika: v1</code>.
+              <Invariant fig="S.8a" claim="Real semver toward 1.0">
+                The engine ships on real semver — currently 0.90.0 (release-candidate) toward a
+                1.0 launch. The language envelope stays <code>nika: v1</code>, frozen forever.
               </Invariant>
               <Invariant fig="S.8b" claim="Four verbs, locked">
                 <code>infer · exec · invoke · agent</code> — a closed set, locked forever. New

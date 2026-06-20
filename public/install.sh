@@ -5,7 +5,7 @@
 #
 # Usage:
 #   curl -LsSf https://nika.sh/install.sh | sh
-#   curl -LsSf https://nika.sh/install.sh | sh -s -- --version 0.81.0
+#   curl -LsSf https://nika.sh/install.sh | sh -s -- --version 1.0.0
 #
 # On macOS we try Homebrew first (supernovae-st/tap/nika), then fall back to
 # downloading the release binary from GitHub. On Linux we always use the
@@ -112,18 +112,18 @@ resolve_version() {
     [ -n "$VERSION" ] && [ "$VERSION" != "latest" ] \
       || die 'failed to resolve latest release tag'
   fi
-  # Pre-release coherence (2026-06-11) · anything below 0.81 is the
-  # LEGACY pre-rewrite engine — the first supported release is v0.81
-  # (language v0.1 + vertical slice · summer 2026). Same caveat as the
-  # Homebrew formula · this covers the GitHub-asset path.
+  # Pre-release coherence · anything below 1.0 is a pre-release of the
+  # Diamond rewrite — the first public release is v1.0.0 (language v1 +
+  # vertical slice · 1 Aug 2026). Same caveat as the Homebrew formula ·
+  # this covers the GitHub-asset path.
   case "$VERSION" in
-    v0.7* | 0.7* | v0.80* | 0.80*)
-      warn 'this version predates the Diamond rewrite — LEGACY PREVIEW'
-      warn 'first supported release: v0.81 (summer 2026) · syntax WILL change'
+    v0.* | 0.*)
+      warn 'this version is a pre-1.0 release — LEGACY PREVIEW'
+      warn 'first public release: v1.0.0 (1 Aug 2026) · syntax WILL change'
       warn 'follow the rebuild: https://nika.sh'
       ;;
   esac
-  # Normalize: "v0.81.0" ↔ "0.81.0"
+  # Normalize: "v1.0.0" ↔ "1.0.0"
   case "$VERSION" in
     v*) VERSION_TAG="$VERSION"; VERSION_NUM="${VERSION#v}" ;;
     *)  VERSION_TAG="v$VERSION"; VERSION_NUM="$VERSION" ;;

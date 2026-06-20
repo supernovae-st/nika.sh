@@ -7,7 +7,7 @@ import { CANON } from '../canon.generated'
    (built in Home.tsx) — the structured data can never drift from the page.
 
    Honest by construction: no invented metrics; the maturity answer states
-   forever-v0.x + the dual license plainly. The provider/verb counts come from
+   the real-semver-toward-1.0 status + the dual license plainly. The provider/verb counts come from
    CANON (the spec SSOT projected from nika-spec canon.yaml) — never hand-typed.
 
    Plain-text answers (no JSX) so the same string serialises cleanly into the
@@ -37,6 +37,6 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: 'Is it production-ready? What’s the license?',
-    a: 'Honest answer: Nika is early — forever-v0.x, no v1.0 milestone, shipping in the open. It is one Rust binary you can install and run today. The engine is AGPL-3.0-or-later; the spec is Apache-2.0. We would rather you trust the spec and the binary than a maturity claim we have not earned yet.',
+    a: 'Honest answer: Nika is early — real semver toward a 1.0 launch, currently at 0.90.0 (release-candidate), shipping in the open. It is one Rust binary you can install and run today. The engine is AGPL-3.0-or-later; the spec is Apache-2.0. We would rather you trust the spec and the binary than a maturity claim we have not earned yet.',
   },
 ]
