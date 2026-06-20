@@ -402,10 +402,10 @@
   pointer-events: none;
   transition: opacity 0.4s ease, max-height 0.4s ease;
 }
-/* the graph caption ("the plan, in depth") is withheld while the block is still
-   the file (the FileDag carries its own filename header at morph=0). */
-.lf-stage[data-beat='file'] .lf-graph > .lf-panel-cap {
-  opacity: 0;
+/* the graph caption is redundant with the section head (which already names the
+   beat) — drop it entirely so the captions don't pile up over the tunnel. */
+.lf-graph > .lf-panel-cap {
+  display: none;
 }
 
 /* the 3D corridor stays off. The ONE FileDag element (file → DAG morph) is the
