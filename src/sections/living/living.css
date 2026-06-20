@@ -799,14 +799,33 @@
    transparent shell, bigger canvas, and a solid node backing so the graph reads
    over the busy depth grid. The plan materialises (file → DAG) on the dag beat. */
 .lf-dag-wrap--stage {
-  width: min(720px, 95%);
+  width: min(620px, 95%);
   background: transparent;
   border: 0;
   padding: 0;
   overflow: visible;
 }
-.lf-dag-wrap--stage .lf-dag {
-  max-height: min(64vh, 560px);
+/* the file (real CodeFile) and the DAG share ONE well — the editor sets the
+   height, the graph is an absolute overlay that explodes out of it as it fades */
+.lf-fd-stack {
+  position: relative;
+  width: 100%;
+  min-height: min(62vh, 540px);
+  display: grid;
+  place-items: center;
+}
+.lf-fd-file {
+  width: 100%;
+  transition: opacity 0.35s ease;
+}
+.lf-fd-stack .lf-dag--v {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  overflow: visible;
 }
 /* the vertical DAG fills the tall stage (portrait); centred in the well */
 .lf-dag--v {
@@ -891,9 +910,9 @@
    not a black slab) so the tunnel reads through it; the stroke fades in with the
    morph (set inline). */
 .lf-fd-box {
-  fill: color-mix(in oklch, #070b14 52%, transparent);
-  stroke: color-mix(in oklch, var(--lf-ink) 60%, transparent);
-  stroke-width: 1.1;
+  fill: color-mix(in oklch, #0b1322 78%, transparent);
+  stroke: color-mix(in oklch, var(--lf-ink) 70%, transparent);
+  stroke-width: 1.2;
   transition: fill 0.3s ease, stroke 0.3s ease;
 }
 .lf-node--running .lf-fd-box {
