@@ -52,7 +52,7 @@ src/
                      run simulator (break-it) · diagrams
   pages/             Blog · Learn
 public/
-  install.sh         curl install entry (live URL · warns on pre-0.81 legacy)
+  install.sh         curl install entry (live URL · warns on pre-1.0 legacy)
   llms.txt           LLM-readable site summary (live URL)
   schema/ errors/    workflow JSON schema · error catalog (live URLs · PROJECTED)
 ```
