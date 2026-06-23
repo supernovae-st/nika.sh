@@ -20,7 +20,7 @@ set -eu
 # Configuration
 # ---------------------------------------------------------------------------
 
-GITHUB_REPO="${NIKA_GITHUB_REPO:-SuperNovae-studio/nika}"
+GITHUB_REPO="${NIKA_GITHUB_REPO:-supernovae-st/nika}"
 INSTALL_DIR="${NIKA_INSTALL_DIR:-$HOME/.nika/bin}"
 VERSION="${NIKA_VERSION:-latest}"
 USE_BREW="${NIKA_USE_BREW:-1}"
@@ -73,18 +73,18 @@ detect_platform() {
   arch=$(uname -m)
 
   case "$os" in
-    Darwin) os="apple-darwin" ;;
-    Linux)  os="unknown-linux-gnu" ;;
+    Darwin) os="macos" ;;
+    Linux)  os="linux" ;;
     *)      die "unsupported OS: $os (Nika supports macOS and Linux)" ;;
   esac
 
   case "$arch" in
-    arm64|aarch64) arch="aarch64" ;;
-    x86_64|amd64)  arch="x86_64" ;;
+    arm64|aarch64) arch="arm64" ;;
+    x86_64|amd64)  arch="x64" ;;
     *)             die "unsupported architecture: $arch" ;;
   esac
 
-  printf '%s-%s' "$arch" "$os"
+  printf '%s-%s' "$os" "$arch"
 }
 
 have_brew() {
@@ -118,9 +118,8 @@ resolve_version() {
   # this covers the GitHub-asset path.
   case "$VERSION" in
     v0.* | 0.*)
-      warn 'this version is a pre-1.0 release — LEGACY PREVIEW'
-      warn 'first public release: v1.0.0 (1 Aug 2026) · syntax WILL change'
-      warn 'follow the rebuild: https://nika.sh'
+      warn 'this version is a pre-1.0 engine release candidate'
+      warn 'the language envelope remains nika: v1; engine polish continues toward 1.0'
       ;;
   esac
   # Normalize: "v1.0.0" ↔ "1.0.0"
@@ -131,9 +130,9 @@ resolve_version() {
 }
 
 download_release() {
-  local triple="$1"
+  local platform="$1"
   local tag="$VERSION_TAG"
-  local asset="nika-${VERSION_NUM}-${triple}.tar.gz"
+  local asset="nika-${platform}-${VERSION_NUM}.tar.gz"
   local url="https://github.com/$GITHUB_REPO/releases/download/$tag/$asset"
 
   say "downloading $asset ($tag)"
@@ -180,6 +179,19 @@ EOF
   esac
 }
 
+print_next_steps() {
+  cat <<EOF
+
+  ✓ Nika installed
+    verify: nika --version
+    diagnose: nika doctor
+    scaffold this repo: nika init
+    wire agents/editors: nika wire cursor   # or: nika wire all
+    docs: https://nika.sh
+    source: https://github.com/$GITHUB_REPO
+EOF
+}
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -188,26 +200,20 @@ need curl
 need uname
 need tar
 
-TRIPLE=$(detect_platform)
-say "platform: $TRIPLE"
+PLATFORM=$(detect_platform)
+say "platform: $PLATFORM"
 
 # macOS: prefer brew unless user opted out or version was pinned
 if [ "$USE_BREW" = '1' ] && [ "$VERSION" = "latest" ] \
-   && [ "${TRIPLE#*apple-darwin}" != "$TRIPLE" ] \
+   && [ "${PLATFORM#macos-}" != "$PLATFORM" ] \
    && have_brew; then
   if try_brew_install; then
+    print_next_steps
     exit 0
   fi
 fi
 
 resolve_version
-download_release "$TRIPLE"
+download_release "$PLATFORM"
 print_path_hint
-
-cat <<EOF
-
-  ✓ Nika $VERSION_TAG installed
-    run: nika --version
-    docs: https://nika.sh
-    source: https://github.com/$GITHUB_REPO
-EOF
+print_next_steps

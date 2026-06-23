@@ -309,7 +309,7 @@ sub-event · `T+mm:ss.ms` elapsed:
 { "brief": "./brief.md", "hot": 3 }            exit 0
 ```
 
-**(b) NDJSON event stream** (`nika run --events ndjson`). Real `Event` shape:
+**(b) NDJSON event stream** (`nika run --json`). Real `Event` shape:
 `{ id(ULID), run_id(ULID), trace_id?, kind, timestamp_ms, payload }`. Real
 kinds: `workflow.started|completed|skipped` · `task.started|completed|failed|
 skipped|cancelled|retry` · `infer.delta|usage|done` · `exec.output` ·
