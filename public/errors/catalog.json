@@ -347,6 +347,12 @@
    "failure": "effect outside the declared permits: capability boundary (fs/net/exec/tool)"
   },
   {
+   "code": "NIKA-SEC-005",
+   "category": "security_error",
+   "transient": "false",
+   "failure": "SSRF block — a nika:fetch/nika:notify URL resolves to a loopback/private/link-local/metadata target (always-on engine floor · independent of permits:)"
+  },
+  {
    "code": "NIKA-TIMEOUT-001",
    "category": "timeout_error",
    "transient": "false",
