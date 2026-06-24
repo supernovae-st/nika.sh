@@ -179,14 +179,38 @@ EOF
   esac
 }
 
+installed_nika_cmd() {
+  if command -v nika >/dev/null 2>&1; then
+    command -v nika
+    return 0
+  fi
+  if [ -x "$INSTALL_DIR/nika" ]; then
+    printf '%s/nika\n' "$INSTALL_DIR"
+    return 0
+  fi
+  return 1
+}
+
+has_wire_command() {
+  local cmd
+  cmd=$(installed_nika_cmd) || return 1
+  "$cmd" --help 2>/dev/null | grep -Eq '^[[:space:]]+wire([[:space:]]|$)'
+}
+
 print_next_steps() {
+  local wire_line
+  if has_wire_command; then
+    wire_line='    wire agents/editors: nika wire cursor   # or: nika wire all'
+  else
+    wire_line='    agent/editor MCP: use the extension setup, or upgrade when `nika wire` appears in `nika --help`'
+  fi
   cat <<EOF
 
   ✓ Nika installed
     verify: nika --version
     diagnose: nika doctor
     scaffold this repo: nika init
-    wire agents/editors: nika wire cursor   # or: nika wire all
+$wire_line
     docs: https://nika.sh
     source: https://github.com/$GITHUB_REPO
 EOF
