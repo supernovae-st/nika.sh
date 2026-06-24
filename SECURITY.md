@@ -2,7 +2,7 @@
 
 This repository carries the source of **nika.sh** — the public website,
 the served `install.sh`, and the published artifacts under
-`/schema/v1.json` + `/llms.txt`. Security-relevant surface here · the
+`/spec/v1/workflow.schema.json` + `/llms.txt`. Security-relevant surface here · the
 install script piped to shells, and the schema/contract files consumed
 by editors and CI.
 
