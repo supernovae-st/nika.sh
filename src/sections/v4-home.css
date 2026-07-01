@@ -2058,3 +2058,66 @@
   color: var(--v4-text);
   border-color: color-mix(in oklch, var(--v4-text) 45%, transparent);
 }
+
+/* ── FIG 10.0b · the conversion beat (inside FinalCTA · no card) ──────────────
+   A hairline-topped beat under the CTA links: the two-tone ask + ONE bordered
+   link button into the repo's issue chooser. Centered like the rest of the
+   close; sharp — a rule, a sentence, a button. */
+.v4convert {
+  margin-top: clamp(40px, 6vh, 64px);
+  padding-top: clamp(28px, 4vh, 40px);
+  border-top: 1px solid var(--v4-line);
+  width: 100%;
+  max-width: 44rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.v4convert-ask {
+  max-width: 38rem;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.v4convert-ask b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.v4convert-ask code {
+  font-size: 13px;
+  color: var(--v4-text);
+}
+.v4convert-cta {
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--v4-line-strong);
+  border-radius: var(--v4-radius);
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
+  background-image: var(--v4-grain-img);
+  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
+  font-size: 14px;
+  font-weight: 560;
+  color: var(--v4-text);
+  text-decoration: none;
+  transition: border-color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui),
+    transform var(--dur-press) var(--ease-ui);
+}
+.v4convert-cta:hover,
+.v4convert-cta:focus-visible {
+  border-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 92%, transparent);
+}
+.v4convert-cta:active {
+  transform: translateY(1px);
+}
+.v4convert-arrow {
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+.v4convert-cta:hover .v4convert-arrow {
+  transform: translateX(2px);
+}

@@ -119,6 +119,30 @@ export default function FinalCTA() {
           </Link>
         </div>
 
+        {/* ── the conversion beat · send us YOUR repeated task ─────────────────
+             The acquisition hook, as its own hairline-ruled beat (no card): the
+             two-tone ask + one link button into the repo's issue chooser. The
+             offer is real — community workflows become runnable, credited
+             .nika.yaml examples. */}
+        <div className="v4convert" data-rise style={{ ['--rise-delay' as string]: '300ms' }}>
+          <p className="v4convert-ask">
+            Do you repeat an AI task every week — in ChatGPT, Claude, Cursor, Codex,
+            or scripts? <b>Send it.</b> We convert the best ones into runnable{' '}
+            <code className="mono">.nika.yaml</code> examples, credited to you.
+          </p>
+          <a
+            href={`${REPO}/issues/new/choose`}
+            target="_blank"
+            rel="noreferrer"
+            className="v4convert-cta"
+          >
+            Send a workflow
+            <span aria-hidden className="v4convert-arrow">
+              →
+            </span>
+          </a>
+        </div>
+
         {/* ─── SUPERNOVAE · the footer — KEPT INTACT (operator lock). The per-letter
              float wave + hover lift wordmark, the studio line, the founders, and
              the free-software footer rule. Copied verbatim from the v3 close. ─── */}
