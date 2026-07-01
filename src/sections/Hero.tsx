@@ -28,6 +28,11 @@ import './hero.css'
 
 const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
 
+/* the engine release shown on the version plate under the CTAs.
+   TODO: CI-refresh — canon.generated.ts carries spec counts, not the engine
+   version; bump this with each release until a version projection exists. */
+const ENGINE_VERSION = 'v0.91.0'
+
 /* ── the hero editor files · the sharp file-tab strip ─────────────────────────
    Three examples, switchable in the header. Tab 0 (daily-brief) is a COMPACT
    slice of the Living File's own file — same filename · same header lines ·
@@ -140,9 +145,11 @@ tasks:
 const rise = (ms: number): React.CSSProperties =>
   ({ '--rise-delay': `${ms}ms` }) as React.CSSProperties
 
-/* the install affordance — a bordered mono row + a copy button with a real,
-   non-color-only copied state (icon + text both flip). SSR-safe. */
-function InstallLine() {
+/* the install affordance · COMMAND-AS-CTA (Codex/Vercel/Cursor register) —
+   the whole row is ONE button whose label IS the command; clicking anywhere
+   copies it. Equal rank with the primary CTA (same height, outline register).
+   Real, non-color-only copied state (icon + text both flip). SSR-safe. */
+function InstallCommand() {
   const [copied, setCopied] = useState(false)
   const copy = () => {
     navigator.clipboard?.writeText(INSTALL_CMD)
@@ -150,25 +157,22 @@ function InstallLine() {
     setTimeout(() => setCopied(false), 1600)
   }
   return (
-    <div className="v4install">
-      <span className="v4install-cmd">
-        <span className="v4install-dollar" aria-hidden>
-          ❯
-        </span>
-        {/* ONE flex item for the whole command — a flex container trims the
-            boundary whitespace between items, which ate the space after
-            "install" when the dim span was a sibling item. */}
-        <span>
-          brew install <span className="v4install-dim">supernovae-st/tap/</span>nika
-        </span>
+    <button
+      type="button"
+      onClick={copy}
+      className="v4cmd"
+      data-copied={copied}
+      aria-label={copied ? 'Copied to clipboard' : `Copy install command: ${INSTALL_CMD}`}
+    >
+      <span className="v4cmd-dollar" aria-hidden>
+        ❯
       </span>
-      <button
-        type="button"
-        onClick={copy}
-        className="v4install-copy"
-        data-copied={copied}
-        aria-label={copied ? 'Copied to clipboard' : 'Copy install command'}
-      >
+      {/* ONE flex item for the whole command — a flex container trims the
+          boundary whitespace between items. */}
+      <span className="v4cmd-text">
+        brew install <span className="v4cmd-dim">supernovae-st/tap/</span>nika
+      </span>
+      <span className="v4cmd-copy" aria-hidden>
         {copied ? (
           <>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
@@ -185,8 +189,8 @@ function InstallLine() {
             Copy
           </>
         )}
-      </button>
-    </div>
+      </span>
+    </button>
   )
 }
 
@@ -362,17 +366,14 @@ export default function Hero() {
             <b className="font-semibold text-text">enforces</b> it — then it runs.
           </p>
 
-          {/* the install line · #install is the nav CTA's target */}
-          <div id="install" className="mt-9 scroll-mt-28" data-rise style={rise(220)}>
-            <InstallLine />
-          </div>
-
-          {/* one row of CTAs · primary "See it run" button + two flat links.
+          {/* the main CTA row · the primary button + the command-as-CTA install
+              (equal rank · Codex/Vercel register). #install is the nav target.
               They WRAP on narrow screens; each is a ≥44px mobile hit target. */}
           <div
+            id="install"
             data-rise
-            style={rise(290)}
-            className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14.5px]"
+            style={rise(220)}
+            className="mt-9 flex scroll-mt-28 flex-wrap items-center gap-3"
           >
             <a href="#living-file" className="v4cta group">
               <span aria-hidden className="transition-transform group-hover:translate-y-0.5">
@@ -380,6 +381,28 @@ export default function Hero() {
               </span>
               See it run
             </a>
+            <InstallCommand />
+          </div>
+
+          {/* the version plate · mono metadata under the CTAs (Raycast register) */}
+          <p className="v4vplate mt-4" data-rise style={rise(260)}>
+            {ENGINE_VERSION}
+            <span className="v4vplate-pipe" aria-hidden>
+              |
+            </span>
+            macOS · Linux
+            <span className="v4vplate-pipe" aria-hidden>
+              |
+            </span>
+            AGPL-3.0
+          </p>
+
+          {/* the flat links row */}
+          <div
+            data-rise
+            style={rise(300)}
+            className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14.5px]"
+          >
             <a
               href={SPEC}
               target="_blank"

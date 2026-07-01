@@ -310,31 +310,94 @@
   will-change: transform, opacity;
 }
 
-/* ── dark-scoped overrides for the shared hero chrome ─────────────────────────
-   The install line, kicker, trust line + FIG eyebrow are shared (shell.css) and
-   read --v4-text* (near-white) — they already clear contrast on the dark base.
-   The surfaces sit on the raised dark panel with a HAIRLINE of blue (the pointe
-   touch), sharpened to the v5 radius. */
-#hero .v4install {
+/* ── the command-as-CTA · the install row IS one button ───────────────────────
+   Equal rank with .v4cta: same 44px height, outline register — hairline
+   blue-tinted border, raised surface + BRAND-11 grain, mono command label.
+   Clicking anywhere copies; the right "Copy/Copied" affordance flips (icon +
+   text, never color-only). */
+.v4cmd {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 0 14px;
   border-radius: var(--v4-radius);
-  /* the raised surface + the BRAND-11 grain (background-image layer — the #hero
-     scope outguns the shell.css `background:` shorthand in the cascade) */
+  border: 1px solid color-mix(in oklch, var(--hero-blue-line) 26%, transparent);
   background-color: color-mix(in oklch, var(--v4-bg-raised) 84%, transparent);
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
-  border-color: color-mix(in oklch, var(--hero-blue-line) 20%, transparent);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--v4-text);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui),
+    transform var(--dur-press) var(--ease-ui);
 }
-/* the editor panel carries the grain too (BRAND-11 texture without WebGL) —
+.v4cmd:hover {
+  border-color: color-mix(in oklch, var(--hero-blue-line) 48%, transparent);
+}
+.v4cmd:active {
+  transform: translateY(1px);
+}
+.v4cmd-dollar {
+  color: var(--v4-text-faint);
+  user-select: none;
+}
+.v4cmd-text {
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.v4cmd-text::-webkit-scrollbar {
+  display: none;
+}
+.v4cmd-dim {
+  color: var(--v4-text-faint);
+}
+.v4cmd-copy {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  margin-left: 2px;
+  padding-left: 12px;
+  border-left: 1px solid color-mix(in oklch, var(--hero-blue-line) 18%, transparent);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.v4cmd:hover .v4cmd-copy,
+.v4cmd[data-copied='true'] .v4cmd-copy {
+  color: var(--v4-text);
+}
+
+/* ── the version plate · mono metadata under the CTAs (Raycast register) ───── */
+.v4vplate {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--v4-text-faint);
+}
+.v4vplate-pipe {
+  margin-inline: 10px;
+  color: var(--v4-hud-faint);
+}
+
+/* ── dark-scoped overrides for the shared hero chrome ─────────────────────────
+   The kicker, trust line + FIG eyebrow are shared (shell.css) and read
+   --v4-text* (near-white) — they already clear contrast on the dark base. */
+/* the editor panel carries the grain (BRAND-11 texture without WebGL) —
    #hero scope wins over codefile.css's `background:` shorthand on .cf-panel. */
 #hero .v4hero-code {
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
-}
-#hero .v4install-copy {
-  border-left-color: color-mix(in oklch, var(--hero-blue-line) 18%, transparent);
-  background: color-mix(in oklch, var(--hero-blue-line) 6%, transparent);
 }
 #hero .v4fig::before {
   background: color-mix(in oklch, var(--hero-blue-line) 40%, transparent);
