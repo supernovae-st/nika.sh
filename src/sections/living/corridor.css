@@ -291,6 +291,30 @@
   font-size: 9px;
   opacity: 0.85;
 }
+/* the telemetry chip · the node's run-model duration, hung off the plate's
+   bottom-right corner once it finishes ("infer 1.2s" · the instrument read). */
+.cor-plate-tel {
+  position: absolute;
+  right: -1px;
+  bottom: -16px;
+  padding: 1px 6px;
+  border: 1px solid color-mix(in oklch, var(--cor-ink) 30%, transparent);
+  border-radius: var(--v4-radius-sm);
+  background: rgba(8, 10, 13, 0.8);
+  font-size: 8.5px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: color-mix(in oklch, var(--cor-ink) 78%, transparent);
+  animation: cor-tel-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes cor-tel-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
+
 /* the PLAIN-WORDS comprehension gloss — spans the full plate width, the line
    that tells a first-time viewer what this step DOES. Dim, but legible. */
 .cor-plate-hud {

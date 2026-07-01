@@ -381,6 +381,13 @@ export default function Corridor({ dag, run, runP }: CorridorProps) {
                 <span className="cor-plate-hud" aria-hidden>
                   {nodeHud(task)}
                 </span>
+                {/* the telemetry chip (Cursor "Thought 4s" register) — the node's
+                    real run-model duration surfaces once it finishes. */}
+                {node?.durationMs != null ? (
+                  <span className="cor-plate-tel" aria-hidden>
+                    {task.verb} {(node.durationMs / 1000).toFixed(1)}s
+                  </span>
+                ) : null}
                 {/* the focal crosshair reticle (only on the focal-plane node) */}
                 {focal ? (
                   <svg className="cor-reticle" viewBox="0 0 56 56" width="56" height="56" aria-hidden>
