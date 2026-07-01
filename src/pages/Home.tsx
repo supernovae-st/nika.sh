@@ -3,6 +3,7 @@ import { useHead } from '@unhead/react'
 import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
 import LivingFile from '../sections/living/LivingFile'
+import ProofStrip from '../sections/ProofStrip'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import Permits from '../sections/Permits'
@@ -193,6 +194,9 @@ export function Component() {
         {/* FIG 1.0 · « The Living File » — the file becomes a running DAG with
              real CLI/NDJSON logs and a concrete result (THE wow, dosed) */}
         <LivingFile />
+
+        {/* FIG 1.5 · Proof strip — the honest mono numbers band (CANON counts) */}
+        <ProofStrip />
 
         {/* FIG 2.0 · clarity — what an agent can do, declared not hidden */}
         <Verbs />
