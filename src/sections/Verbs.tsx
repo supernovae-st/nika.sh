@@ -1,23 +1,31 @@
+import { Link } from 'react-router'
 import { useRevealOnce } from './use-reveal-once'
-import { VERBS } from '../content'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
+import { CodeFile } from '../components/CodeFile'
 import './v4-home.css'
 
-/* ─── FIG 2.0 · The four verbs (theme-dark) ───────────────────────────────────
-   Design doc §6 (FIG 2.0) — clarity. A COMPOSED, asymmetric grid (not a plain
-   centered 2×2): the lead verb (infer) is a tall left plate, the other three
-   stack in a right rail. Each verb = its glyph (verbGlyph · monochrome ◇▷◆✦) +
-   name + a one-line gloss (reused from content.ts VERBS) + a 2-line real spec
-   snippet. FIG 2.1–2.4 sub-labels. Hairline borders. The verb HUE appears only
-   as a hairline accent on hover/focus (left rule + glyph), never as a fill —
-   per §3.4 (static site grayscale, the verb-hue whisper is earned).
+/* ─── FIG 2.0 · The four verbs (theme-dark · the numbered spec chapters) ───────
+   Linear's signature register applied to the one thing that deserves it: a
+   LANGUAGE gets a numbered spec, not a bento. Four chapter blocks — 1.0 infer ·
+   2.0 exec · 3.0 invoke · 4.0 agent — each: a mono chapter kicker, the verb's
+   job as a two-tone sentence (white claim + dim elaboration · Raycast pattern),
+   a SMALL complete workflow in the shared CodeFile product surface, and a mono
+   sub-index line (1.1 / 1.2 / 1.3) linking deeper into /spec — only anchors
+   that exist; entries without a real anchor stay plain text.
 
    Framing: "A verb is a distinct native execution model." (D-2026-05-22-N18)
+
+   HONESTY: every YAML block is a COMPLETE minimal workflow, valid against
+   public/schema/workflow.json (nika + workflow + tasks, one verb each) — never
+   a floating fragment. Verb hue lights ONLY inside the CodeFile frames (the
+   verb keyword's canonical colour + a hue seam on the frame edge); the page
+   chrome around them stays monochrome.
 
    SSR-safe: pure DOM, no window at render. The reveal is an IntersectionObserver
    added on mount; content is fully visible by default (no-JS / reduced-motion). */
 
-/* the 4 verb hues → the per-card --vh custom prop (drives the hover accent). */
+/* the 4 verb hues → the per-chapter --vh custom prop (drives the FRAME seam —
+   the only place the hue is allowed outside the syntax colours). */
 const VERB_HUE: Record<NikaVerb, string> = {
   infer: 'var(--verb-infer)',
   exec: 'var(--verb-exec)',
@@ -25,82 +33,177 @@ const VERB_HUE: Record<NikaVerb, string> = {
   agent: 'var(--verb-agent)',
 }
 
-/* the one-line "what kind of execution" gloss per verb — the native-model framing
-   (kept short; the longer copy from content.ts VERBS.body is the gloss line). */
-const VERB_MODEL: Record<NikaVerb, string> = {
-  infer: 'a model call',
-  exec: 'a process',
-  invoke: 'a tool call',
-  agent: 'a tool-use loop',
+/* one sub-index entry · `to` links a REAL route (+anchor) from routes.tsx /
+   a real in-page section id; entries without one render as plain text. */
+type SubEntry = { n: string; label: string; to?: string }
+
+type Chapter = {
+  verb: NikaVerb
+  /** the chapter number · '1.0' */
+  n: string
+  /** the white claim (the job, one word-ish) */
+  claim: string
+  /** the dim elaboration (the rest of the two-tone sentence) */
+  gloss: string
+  filename: string
+  /** a COMPLETE minimal workflow · schema-valid · 6-8 lines */
+  yaml: string
+  sub: SubEntry[]
 }
 
-/* a 2-line spec snippet per verb · the verb keyword gets its glyph + bright ink,
-   everything else stays dim. Taken verbatim from the spec shapes in content.ts. */
-const VERB_SNIPPET: Record<NikaVerb, string[]> = {
-  infer: ['- id: research', '  infer:'],
-  exec: ['- id: build', '  exec:'],
-  invoke: ['- id: read_config', '  invoke:'],
-  agent: ['- id: research', '  agent:'],
-}
+const CHAPTERS: Chapter[] = [
+  {
+    verb: 'infer',
+    n: '1.0',
+    claim: 'Think.',
+    gloss: 'Ask any model — local or cloud.',
+    filename: 'think.nika.yaml',
+    yaml: `nika: v1
+workflow: think
+model: ollama/llama3.1
+tasks:
+  - id: summarize
+    infer:
+      prompt: "Three risks in this release, ranked"
+`,
+    sub: [
+      { n: '1.1', label: 'providers', to: '/spec#s4' },
+      { n: '1.2', label: 'structured output', to: '/spec#s1' },
+      { n: '1.3', label: 'local models', to: '/spec#s4' },
+    ],
+  },
+  {
+    verb: 'exec',
+    n: '2.0',
+    claim: 'Run.',
+    gloss: 'A shell command, captured and typed.',
+    filename: 'run.nika.yaml',
+    yaml: `nika: v1
+workflow: run
+tasks:
+  - id: build
+    exec:
+      command: "cargo build --release"
+`,
+    sub: [
+      { n: '2.1', label: 'capture & exit codes' },
+      { n: '2.2', label: 'retry · timeout', to: '/spec#s2' },
+      { n: '2.3', label: 'permitted programs', to: '/spec#permits' },
+    ],
+  },
+  {
+    verb: 'invoke',
+    n: '3.0',
+    claim: 'Use a tool.',
+    gloss: 'Fetch a page, write a file, call GitHub — every tool explicit.',
+    filename: 'use-a-tool.nika.yaml',
+    yaml: `nika: v1
+workflow: use-a-tool
+tasks:
+  - id: page
+    invoke:
+      tool: "nika:fetch"
+      args: { url: "https://nika.sh" }
+`,
+    sub: [
+      { n: '3.1', label: 'builtins', to: '/spec#s3' },
+      { n: '3.2', label: 'extract modes', to: '/spec#s5' },
+      { n: '3.3', label: 'MCP servers' },
+    ],
+  },
+  {
+    verb: 'agent',
+    n: '4.0',
+    claim: 'Delegate.',
+    gloss: 'An autonomous loop, on a leash you can read.',
+    filename: 'delegate.nika.yaml',
+    yaml: `nika: v1
+workflow: delegate
+model: ollama/llama3.1
+tasks:
+  - id: audit
+    agent:
+      prompt: "Find every dead link in ./docs"
+      tools: ["nika:read", "nika:fetch"]
+`,
+    sub: [
+      { n: '4.1', label: 'tool allow-list', to: '/spec#permits' },
+      { n: '4.2', label: 'max turns' },
+      { n: '4.3', label: 'the human gate', to: '#human-in-the-loop' },
+    ],
+  },
+]
 
-/* render one snippet line, tinting only the verb keyword (with its glyph). */
-function SnippetLine({ line }: { line: string }) {
-  // match a bare verb keyword at the end of a "  <verb>:" line
-  const m = line.match(/^(\s*)(infer|exec|invoke|agent)(:)$/)
-  if (m) {
-    const verb = m[2] as NikaVerb
+/* one sub-index entry · a route link (react-router · ScrollRestoration scrolls
+   the anchor), an in-page anchor (native hash scroll), or plain text. */
+function SubIndex({ entry }: { entry: SubEntry }) {
+  const body = (
+    <>
+      <span className="v4chap-subn">{entry.n}</span> {entry.label}
+    </>
+  )
+  if (!entry.to) return <span className="v4chap-subentry">{body}</span>
+  if (entry.to.startsWith('#')) {
     return (
-      <span>
-        {m[1]}
-        <span className="v4snip-glyph" aria-hidden>
-          {verbGlyph(verb)}{' '}
-        </span>
-        <span className="v4snip-verb">{verb}</span>
-        {m[3]}
-      </span>
+      <a href={entry.to} className="v4chap-subentry v4chap-subentry--link">
+        {body}
+      </a>
     )
   }
-  return <span>{line}</span>
+  return (
+    <Link to={entry.to} className="v4chap-subentry v4chap-subentry--link">
+      {body}
+    </Link>
+  )
 }
 
-function VerbCard({
-  verb,
-  tagline,
-  gloss,
-  index,
-  lead,
-}: {
-  verb: NikaVerb
-  tagline: string
-  gloss: string
-  index: number
-  lead: boolean
-}) {
+function ChapterBlock({ chapter, index }: { chapter: Chapter; index: number }) {
+  const c = chapter
   return (
     <article
-      className={`v4verb ${lead ? 'v4verb--lead' : 'v4verb--rail'}`}
-      style={{ ['--vh' as string]: VERB_HUE[verb], ['--rise-delay' as string]: `${index * 70}ms` }}
+      className="v4chap"
+      style={{ ['--vh' as string]: VERB_HUE[c.verb], ['--rise-delay' as string]: `${index * 60}ms` }}
       data-rise
+      aria-labelledby={`v4chap-${c.verb}`}
     >
-      <div className="v4verb-head">
-        <span className="v4verb-glyph" aria-hidden>
-          {verbGlyph(verb)}
-        </span>
-        <h3 className="v4verb-name">{verb}</h3>
-        <span className="v4verb-tag">{tagline}</span>
-      </div>
+      {/* LEFT · the chapter text column */}
+      <div className="v4chap-copy">
+        {/* the mono chapter kicker · `1.0 infer →` */}
+        <p className="v4chap-kicker" id={`v4chap-${c.verb}`}>
+          <span className="v4chap-n">{c.n}</span>
+          <span className="v4chap-glyph" aria-hidden>
+            {verbGlyph(c.verb)}
+          </span>
+          <span className="v4chap-verb">{c.verb}</span>
+          <span className="v4chap-arrow" aria-hidden>
+            →
+          </span>
+        </p>
 
-      <p className="v4verb-sub">FIG 2.{index + 1} · {VERB_MODEL[verb]}</p>
-      <p className="v4verb-gloss">{gloss}</p>
+        {/* the two-tone sentence · white claim + dim elaboration */}
+        <p className="v4chap-sentence">
+          <b>{c.claim}</b> {c.gloss}
+        </p>
 
-      <div className="v4verb-snip">
-        <pre aria-label={`${verb} task · spec shape`}>
-          {VERB_SNIPPET[verb].map((l, i) => (
-            <span key={i} style={{ display: 'block' }}>
-              <SnippetLine line={l} />
+        {/* the mono sub-index · deeper chapters (real anchors only) */}
+        <p className="v4chap-sub">
+          {c.sub.map((s, i) => (
+            <span key={s.n}>
+              {i > 0 && (
+                <span className="v4chap-subdot" aria-hidden>
+                  {' '}
+                  ·{' '}
+                </span>
+              )}
+              <SubIndex entry={s} />
             </span>
           ))}
-        </pre>
+        </p>
+      </div>
+
+      {/* RIGHT · the verb's task in the product surface (hue lives HERE only) */}
+      <div className="v4chap-frame">
+        <CodeFile yaml={c.yaml} filename={c.filename} className="v4chap-code" />
       </div>
     </article>
   )
@@ -110,8 +213,6 @@ export default function Verbs() {
   /* reveal the rows once, on first intersection (motion-safe; default visible;
      safety-net timer reveals anyway if the observer misfires) */
   const ref = useRevealOnce<HTMLElement>()
-
-  const verbs = VERBS as { verb: NikaVerb; tagline: string; body: string }[]
 
   return (
     <section ref={ref} id="verbs" aria-labelledby="verbs-title" className="theme-dark v4sec scroll-mt-24">
@@ -129,16 +230,10 @@ export default function Verbs() {
           <b>allow-listed</b>. Everything about <i>ordering</i> is the DAG. No fifth verb, ever.
         </p>
 
-        <div className="v4verbs-grid">
-          {verbs.map((v, i) => (
-            <VerbCard
-              key={v.verb}
-              verb={v.verb}
-              tagline={v.tagline}
-              gloss={v.body}
-              index={i}
-              lead={i === 0}
-            />
+        {/* the numbered chapters · 1.0 → 4.0 · hairline-ruled spec register */}
+        <div className="v4chap-list">
+          {CHAPTERS.map((c, i) => (
+            <ChapterBlock key={c.verb} chapter={c} index={i} />
           ))}
         </div>
 
