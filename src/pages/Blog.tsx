@@ -64,24 +64,24 @@ export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
   useHead({
-    title: 'Blog · Nika',
+    title: 'Blog — Nika',
     link: routeHead('/blog').link,
     meta: [
       ...routeHead('/blog').meta,
       {
         name: 'description',
         content:
-          'Notes from the source. Long-form pedagogy on Intent as Code, the four verbs, and building sovereign AI workflows with Nika.',
+          'Notes from the source — why useful AI work belongs in a file you can run, review and keep. Long reads on Intent as Code and the four verbs.',
       },
-      { property: 'og:title', content: 'Blog · Nika' },
+      { property: 'og:title', content: 'Blog — Nika' },
       {
         property: 'og:description',
-        content: 'Notes from the source — long-form pedagogy on Intent as Code.',
+        content: 'Why useful AI work belongs in a file you can run, review and keep.',
       },
-      { name: 'twitter:title', content: 'Blog · Nika' },
+      { name: 'twitter:title', content: 'Blog — Nika' },
       {
         name: 'twitter:description',
-        content: 'Notes from the source — long-form pedagogy on Intent as Code.',
+        content: 'Why useful AI work belongs in a file you can run, review and keep.',
       },
     ],
   })

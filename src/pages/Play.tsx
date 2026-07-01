@@ -74,24 +74,24 @@ export function Component() {
   const mounted = useHydrated()
 
   useHead({
-    title: 'Playground · Nika',
+    title: 'Playground — Nika',
     link: routeHead('/play').link,
     meta: [
       ...routeHead('/play').meta,
       {
         name: 'description',
         content:
-          'Edit real Nika in the browser. The validator runs live with the engine’s own NIKA error codes — write a workflow, see it check in place.',
+          'Write a workflow in the browser and watch it get checked as you type. Nothing leaves the tab — then run the same file on your machine.',
       },
-      { property: 'og:title', content: 'Playground · Nika' },
+      { property: 'og:title', content: 'Playground — Nika' },
       {
         property: 'og:description',
-        content: 'Edit real Nika in the browser — live validation with the engine’s NIKA codes.',
+        content: 'Write a workflow in the browser — checked as you type, nothing leaves the tab.',
       },
-      { name: 'twitter:title', content: 'Playground · Nika' },
+      { name: 'twitter:title', content: 'Playground — Nika' },
       {
         name: 'twitter:description',
-        content: 'Edit real Nika in the browser — live validation with the engine’s NIKA codes.',
+        content: 'Write a workflow in the browser — checked as you type, nothing leaves the tab.',
       },
     ],
   })

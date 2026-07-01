@@ -391,7 +391,7 @@ export function Component() {
       ...routeHead('/use-cases').meta,
       {
         name: 'description',
-        content: `Pick the thing you keep doing. ${total} real workflows for everyone, founders and developers — each one a file you can read before it runs, with the plan and the exact YAML.`,
+        content: `Pick the thing you keep doing. ${total} real workflows for everyone, founders and developers — each a file you can read before it runs.`,
       },
       { property: 'og:title', content: 'Use cases — Nika' },
       {

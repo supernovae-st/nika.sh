@@ -51,24 +51,24 @@ export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
   useHead({
-    title: 'Learn · Nika',
+    title: 'Learn — Nika',
     link: routeHead('/learn').link,
     meta: [
       ...routeHead('/learn').meta,
       {
         name: 'description',
         content:
-          'One file, line by line. A five-minute annotated walkthrough of a real Nika workflow — every YAML fragment is spec-correct.',
+          'A workflow is a file you can read. Eight small ideas, five minutes — learn to read and write any Nika workflow, one line at a time.',
       },
-      { property: 'og:title', content: 'Learn · Nika' },
+      { property: 'og:title', content: 'Learn — Nika' },
       {
         property: 'og:description',
-        content: 'One file, line by line — the five-minute Nika walkthrough.',
+        content: 'A workflow is a file you can read — the five-minute walkthrough.',
       },
-      { name: 'twitter:title', content: 'Learn · Nika' },
+      { name: 'twitter:title', content: 'Learn — Nika' },
       {
         name: 'twitter:description',
-        content: 'One file, line by line — the five-minute Nika walkthrough.',
+        content: 'A workflow is a file you can read — the five-minute walkthrough.',
       },
     ],
   })
