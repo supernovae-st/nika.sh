@@ -1223,3 +1223,109 @@
     transition: none;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   the consumer TL;DR · the 5 pillars glance-table (museum-plate register).
+   Sits between the masthead and the technical reference: plate rows
+   (`01 · the envelope` …), a two-tone sentence each, and the mono token.
+   ════════════════════════════════════════════════════════════════════════════ */
+.spec-tldr {
+  margin-top: clamp(28px, 4vh, 44px);
+  padding: 20px 22px 16px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+}
+.spec-tldr-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.spec-tldr-title {
+  margin-top: 10px;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.08;
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.7rem);
+  color: var(--v4-text);
+  text-wrap: balance;
+}
+.spec-tldr-table {
+  margin: 16px 0 0;
+  border-top: 1px solid var(--v4-line);
+}
+.spec-tldr-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px 18px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--v4-line);
+  align-items: baseline;
+}
+@media (min-width: 820px) {
+  .spec-tldr-row {
+    grid-template-columns: 12rem 1fr auto;
+  }
+}
+.spec-tldr-plate {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.spec-tldr-gloss {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.spec-tldr-gloss b {
+  color: var(--v4-text);
+  font-weight: 560;
+}
+.spec-tldr-token {
+  margin: 0;
+  justify-self: start;
+}
+@media (min-width: 820px) {
+  .spec-tldr-token {
+    justify-self: end;
+  }
+}
+.spec-tldr-token code {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius-sm);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+  background: color-mix(in oklch, var(--v4-bg) 55%, transparent);
+  white-space: nowrap;
+}
+.spec-tldr-link {
+  margin-top: 13px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--v4-text-faint);
+}
+.spec-tldr-link a {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  transition: color 0.18s ease;
+}
+.spec-tldr-link a:hover {
+  color: var(--v4-text);
+}

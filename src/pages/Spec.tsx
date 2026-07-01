@@ -45,6 +45,44 @@ function HudMarks() {
    fully visible by default (no-JS / reduced-motion). Per-route <head> via
    useHead → prerendered into dist/spec/index.html. */
 
+/* ── the consumer TL;DR · the 5 pillars in one glance-table ───────────────────
+   Plain-words register ABOVE the technical reference (jargon may deepen below,
+   never gate here). Pillar identity + order come from the spec SSOT
+   (canon.yaml `pillars.items` · envelope → verbs → dag → variables → errors ·
+   CANON.pillars pins the count); the consumer glosses are craft. */
+const TLDR_PILLARS: { name: string; token: string; claim: string; gloss: string }[] = [
+  {
+    name: 'the envelope',
+    token: 'nika: v1',
+    claim: 'The format is frozen.',
+    gloss: 'One version marker, forever — files you write today won’t break.',
+  },
+  {
+    name: 'the verbs',
+    token: 'infer · exec · invoke · agent',
+    claim: 'Four moves cover everything.',
+    gloss: 'Think · run a command · use a tool · delegate.',
+  },
+  {
+    name: 'the plan (dag)',
+    token: 'depends_on',
+    claim: 'Tasks, and what they wait on.',
+    gloss: 'Independent tasks run at the same time, automatically.',
+  },
+  {
+    name: 'variables',
+    token: '${{ }}',
+    claim: 'Answers thread by name.',
+    gloss: 'One task’s output becomes the next task’s input.',
+  },
+  {
+    name: 'errors',
+    token: 'NIKA-*',
+    claim: 'Failures come back typed.',
+    gloss: 'A stable code, plus whether retrying could help.',
+  },
+]
+
 /* ── FIG S.0 · the envelope · the top-level keys (from the JSON schema) ─────── */
 const ENVELOPE_KEYS: { key: string; req: boolean; gloss: string }[] = [
   { key: 'nika', req: true, gloss: 'the version marker · exactly v1, forever' },
@@ -270,6 +308,47 @@ export function Component() {
             </a>{' '}
             is the canonical, normative source.
           </p>
+
+          {/* ── the consumer TL;DR · the whole language in one glance-table ──
+              Museum-plate rows (01 · the envelope → 05 · errors), each a
+              two-tone sentence + its mono token. The technical reference
+              (FIG S.0+) deepens every row below. */}
+          <section
+            className="spec-tldr"
+            aria-labelledby="spec-tldr-title"
+            data-rise
+            style={{ ['--rise-delay' as string]: '130ms' }}
+          >
+            <p className="spec-tldr-kicker">tl;dr · {CANON.pillars} pillars</p>
+            <h2 id="spec-tldr-title" className="spec-tldr-title">
+              The whole language, at a glance.
+            </h2>
+            <dl className="spec-tldr-table">
+              {TLDR_PILLARS.map((p, i) => (
+                <div className="spec-tldr-row" key={p.name}>
+                  <dt className="spec-tldr-plate">
+                    {String(i + 1).padStart(2, '0')} · {p.name}
+                  </dt>
+                  <dd className="spec-tldr-gloss">
+                    <b>{p.claim}</b> {p.gloss}
+                  </dd>
+                  <dd className="spec-tldr-token">
+                    <code>{p.token}</code>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="spec-tldr-link">
+              full text:{' '}
+              <a href={SPEC} target="_blank" rel="noreferrer">
+                github.com/supernovae-st/nika-spec
+              </a>{' '}
+              ↗ · machine contract:{' '}
+              <a href="/schema/workflow.json" target="_blank" rel="noreferrer">
+                workflow.json
+              </a>
+            </p>
+          </section>
 
           {/* the spec-sheet register · the contract's key dimensions, at a glance.
               Every number derives from CANON (the spec SSOT), never hand-typed. */}
