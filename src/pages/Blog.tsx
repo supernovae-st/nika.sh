@@ -28,7 +28,7 @@ const SOON: { slug: string; tag: string; date: string; title: string; teaser: st
     slug: 'dag-for-free',
     tag: 'Engine',
     date: 'soon',
-    title: 'The DAG you get for free',
+    title: 'The plan you get for free',
     teaser: 'depends_on is all you write. Parallelism, ordering and retries fall out of the graph.',
   },
   {
@@ -206,7 +206,7 @@ export function Component() {
             </div>
 
             <div className="blog-art-code">
-              <p className="blog-art-code-cap">Three verbs in one tiny DAG</p>
+              <p className="blog-art-code-cap">Three verbs in one tiny plan</p>
               <CodeFile yaml={FOUR_VERBS_YAML} filename="morning-brief.nika.yaml" />
             </div>
 
@@ -223,7 +223,8 @@ export function Component() {
                 A closed language is a feature you can feel. You can finish learning it: four words
                 and the file reads like prose. Your files never rot into an old dialect, because
                 there is no new dialect coming. And tools keep growing where growth belongs, in the
-                library: a new builtin, a new MCP server, a new provider. The language holds still
+                library: a new builtin, a new tool server (MCP), a new provider. The language
+                holds still
                 while the toolbelt expands.
               </p>
               <p>
