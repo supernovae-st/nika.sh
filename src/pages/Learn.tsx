@@ -1,166 +1,32 @@
-import { useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { REPO, SPEC, DOCS, routeHead } from '../content'
 import { CodeFile } from '../components/CodeFile'
+import { STEPS, ERROR_JSON } from '../content/learn'
+import { InstallCommand } from '../components/InstallCommand'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
 import './page-chrome.css'
 import './learn-page.css'
 
 /* ─── /learn · one file, line by line (theme-dark · blueprint register) ───────
-   The five-minute annotated walkthrough, brought up to the home + /spec
-   register: a near-black blueprint plate, a FIG-numbered masthead, a hairline-
-   ruled step register (each step = a numbered head + the plain-words story +
-   the premium CodeFile of its real YAML), a HUD frame on the reading column,
-   and the typed-error block (the differentiator) rendered in the CodeFile too.
+   The five-minute annotated walkthrough in the consumer register: it starts
+   from « a workflow is a file you can read », every concept is glossed in
+   plain words BEFORE its term is used (per the consumer glossary — verbs
+   always glossed · the DAG is « the plan »), and each step carries a
+   museum-plate number (`01 · the file`, `05 · the plan` …).
 
    Every YAML/JSON fragment is spec-correct (nika-spec 01-envelope · 03-dag ·
-   05-errors) and now reads through the SAME editor surface as the rest of the
-   site. The divergent v3 cosmic chrome (cyan eyebrows · .code-well <pre> ·
-   .skeuo CTA) is retired.
+   05-errors) AND parses as standalone YAML/JSON (validated in
+   src/test — fragments are shown through the same editor surface as the
+   playground). The divergent v3 cosmic chrome is retired.
 
    SSR-safe: pure DOM (CodeFile is server-rendered · every fragment lives in the
    prerendered HTML); the reveal is one IntersectionObserver on mount, content
    visible by default. Per-route <head> via useHead → dist/learn/index.html. */
 
-interface Step {
-  n: string
-  title: string
-  plain: string
-  yaml: string
-  file: string
-  note?: string
-}
 
-const STEPS: Step[] = [
-  {
-    n: 'L.1',
-    title: 'Two lines make it real',
-    plain:
-      'Every workflow starts by naming the language and itself. That header is the whole ceremony: no project setup, no boilerplate, no config files.',
-    file: 'weekly-radar.nika.yaml',
-    yaml: `nika: v1
-workflow: weekly-radar`,
-    note: 'nika: v1 pins the language contract. Additions are additive; the value never churns.',
-  },
-  {
-    n: 'L.2',
-    title: 'Declare what can change',
-    plain:
-      'Inputs live in vars. A bare value is a default you can override from the command line; a typed var documents itself and gets validated before anything runs.',
-    file: 'vars',
-    yaml: `vars:
-  output_dir: "./radar"
-  topic:
-    type: string
-    required: true
-    description: "Subject to research"`,
-    note: 'Use it anywhere as ${{ vars.topic }}. Change the input, not the file.',
-  },
-  {
-    n: 'L.3',
-    title: 'Pick a brain. Any brain.',
-    plain:
-      'One line chooses the default model. Local or cloud, same file. Start on your own machine — no key, no cloud — and swap to any cloud provider when you want; nothing else changes.',
-    file: 'model',
-    yaml: `# fully local · no cloud needed
-model: ollama/llama3.1
-
-# or swap to any cloud provider
-model: mistral/mistral-large`,
-  },
-  {
-    n: 'L.4',
-    title: 'A task is a verb',
-    plain:
-      'Each task does exactly one thing, with one of the four verbs. This one thinks: it sends a prompt to the model and keeps the answer as its output.',
-    file: 'tasks',
-    yaml: `tasks:
-  - id: digest
-    infer:
-      prompt: "Summarize in 5 bullets: \${{ tasks.fetch_news.output }}"`,
-    note: 'infer thinks · exec runs a command · invoke uses a tool · agent works on its own.',
-  },
-  {
-    n: 'L.5',
-    title: 'Order is one word. The graph is free.',
-    plain:
-      'depends_on is all you write. Tasks with no dependency between them run in parallel automatically. You never schedule anything; the graph falls out of the file.',
-    file: 'depends_on',
-    yaml: `- id: fetch_news
-  invoke:
-    tool: "nika:fetch"
-
-- id: repo_log
-  exec:
-    command: "git log --since='1 week'"
-
-- id: digest
-  depends_on: [fetch_news, repo_log]   # waits for BOTH
-  infer:
-    prompt: "Cross-reference news with our work…"`,
-    note: 'fetch_news and repo_log run at the same time. digest waits for both.',
-  },
-  {
-    n: 'L.6',
-    title: 'Branch like an adult',
-    plain:
-      'when: makes a task conditional: a boolean over what already happened. Success-gating is free (depends_on already does it) — when: is for conditions BEYOND it, like a value check.',
-    file: 'when',
-    yaml: `- id: alert
-  depends_on: [check]
-  when: \${{ tasks.check.output.errors > 0 }}
-  invoke:
-    tool: "nika:notify"`,
-  },
-  {
-    n: 'L.7',
-    title: 'When things fail, you get data',
-    plain:
-      'Errors are typed structures: a stable code, a category, and whether retrying could help. Tasks declare their own retry policy and a fallback. No stack-trace archaeology.',
-    file: 'retry · on_error',
-    yaml: `- id: research
-  retry:
-    max_attempts: 3
-    backoff_ms: 1000
-  on_error:
-    recover: \${{ tasks.cache.output }}
-  infer:
-    prompt: "…"`,
-    note: 'A failed call retries with backoff; if it still fails, the cached result steps in.',
-  },
-  {
-    n: 'L.8',
-    title: 'Name what comes out',
-    plain:
-      'output: binds pieces of a task result to names; the workflow declares what it returns. Downstream tasks (and you) read clean names, not raw API responses.',
-    file: 'output · outputs',
-    yaml: `- id: digest
-  infer:
-    prompt: "…"
-  output:
-    result: ".choices[0].message.content"
-
-outputs:
-  brief: \${{ tasks.digest.output.result }}`,
-  },
-]
-
-const ERROR_JSON = `{
-  "code": "NIKA-INFER-001",
-  "category": "provider_error",
-  "message": "the model call failed",
-  "transient": true,
-  "details": {
-    "provider": "ollama",
-    "status_code": 503,
-    "retry_after_secs": 30
-  },
-  "task_id": "research",
-  "attempt": 2
-}`
 
 const ERROR_FIELDS: { key: string; gloss: React.ReactNode }[] = [
   {
@@ -180,52 +46,6 @@ const ERROR_FIELDS: { key: string; gloss: React.ReactNode }[] = [
     ),
   },
 ]
-
-const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
-
-/* the monochrome install affordance · the hero's .v4install pattern (shell.css) */
-function InstallRow() {
-  const [copied, setCopied] = useState(false)
-  const copy = () => {
-    navigator.clipboard?.writeText(INSTALL_CMD)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1600)
-  }
-  return (
-    <div className="v4install" style={{ marginTop: 18 }}>
-      <span className="v4install-cmd">
-        <span className="v4install-dollar" aria-hidden>
-          ❯
-        </span>
-        {INSTALL_CMD}
-      </span>
-      <button
-        type="button"
-        onClick={copy}
-        className="v4install-copy"
-        data-copied={copied}
-        aria-label={copied ? 'Copied: install command' : 'Copy install command'}
-      >
-        {copied ? (
-          <>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-            Copied
-          </>
-        ) : (
-          <>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-              <rect x="9" y="9" width="11" height="11" rx="2" />
-              <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-            </svg>
-            Copy
-          </>
-        )}
-      </button>
-    </div>
-  )
-}
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
@@ -280,9 +100,9 @@ export function Component() {
             One file, line by line.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Eight small ideas and you can read and write any Nika workflow. Every fragment below
-            is <b>real</b>, spec-correct YAML — read through the same editor surface you&apos;ll
-            use in the playground.
+            A workflow is <b>a file you can read</b> — and eight small ideas make you fluent in
+            it. Every fragment below is <b>real</b>, spec-correct YAML, read through the same
+            editor surface you&apos;ll use in the playground.
           </p>
           <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
             8 steps · spec-correct
@@ -294,7 +114,9 @@ export function Component() {
               <li key={s.n} className="lrn-step">
                 <div>
                   <div className="lrn-step-head">
-                    <span className="lrn-step-n">{s.n}</span>
+                    <span className="lrn-step-n">
+                      {s.n} · {s.topic}
+                    </span>
                     <h2 className="lrn-step-title">{s.title}</h2>
                   </div>
                   <p className="lrn-step-plain">{s.plain}</p>
@@ -310,7 +132,7 @@ export function Component() {
           {/* errors are data · the differentiator (a FIG block) */}
           <div className="v4block" data-rise>
             <div className="v4block-head-line">
-              <span className="v4block-fig">FIG L.9</span>
+              <span className="v4block-fig">09 · the failure object</span>
               <h2 className="v4block-name">Errors are data, not noise.</h2>
               <span className="v4block-count">typed · greppable</span>
             </div>
@@ -339,9 +161,11 @@ export function Component() {
             <h2 className="lrn-cta-title">That&apos;s the whole language.</h2>
             <p className="lrn-cta-body">
               Eight ideas, four verbs, one file. Install it, write one, run it — or open the
-              playground and validate as you type.
+              playground and check your file as you type.
             </p>
-            <InstallRow />
+            <div style={{ marginTop: 18 }}>
+              <InstallCommand />
+            </div>
             <div className="v4doclinks">
               <Link to="/play" className="v4doclink">
                 Open the playground
@@ -375,7 +199,7 @@ export function Component() {
 
           {/* the doc dimension line + the page footer */}
           <p className="v4docnote" data-rise>
-            8 steps · 4 verbs · every fragment spec-correct — projected, never hand-waved
+            8 steps · 4 verbs · every fragment spec-correct — real YAML, never pseudo-code
           </p>
           <footer className="v4docfoot">
             <span className="v4docfoot-brand">
