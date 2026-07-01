@@ -1,29 +1,58 @@
-/* ─── v4 trust-landing palette — black & white ──────────────────────────────
-   Color is rare (only the live run + the reactive aurora). Design doc §3.1.
+/* ─── v5 dither black/blue palette — engineered black · ONE blue accent ──────
+   The dither black/blue system (brand canon BRAND-11 grain / Ditherpunk).
+   Blacks are an ENGINEERED ladder (#050507 → #0a0b0d), never slate. Blue is
+   the SINGLE accent (the #2f6bff family) — the 4 verb hues survive ONLY inside
+   live-run visualizations (semantic coloring, never static UI). Texture is
+   ordered dither (Bayer) — see the grain tokens + .v4-grain utility below and
+   the DitherField WebGL background.
 
-   PURELY ADDITIVE. The v3 cinematic site (home + pages) keeps its own
-   vocabulary (`--fg`, `--cyan`, `--hair`, the cosmic `--bg: #050a1c` …) which
-   lives in `index.css :root` and is NOT touched here. To avoid clobbering the
-   v3-owned `--bg`/`--cyan` (still consumed by the galaxy body + Play.tsx), the
-   v4 monochrome base is exposed to Tailwind through the `--color-*` theme vars
-   below (see index.css `@theme`), not by redefining v3's raw `--bg`.
-
-   The v4 raw tokens that DON'T collide with v3 are declared here so future v4
-   sections can read them directly via var(). */
+   PURELY ADDITIVE vs the v3 cinematic vocabulary (`--fg`, `--cyan`, `--hair`,
+   the cosmic `--bg: #050a1c` …) which lives in `index.css :root` and is still
+   consumed by the galaxy egg + Play.tsx. The v4 sections read these tokens via
+   the `--color-*` theme mapping in index.css `@theme`. The `--v4-*` NAMES are
+   the stable API sections consume — v5 retunes their VALUES. */
 :root {
-  /* v4 surfaces / ink — used by future v4 trust-landing sections only */
-  --v4-bg: #0a0b0d;          /* near-black base (Linear/Cursor register)   */
-  --v4-bg-raised: #121317;   /* panels, code surfaces                       */
-  --v4-line: rgb(255 255 255 / 0.08); /* 1px hairline borders               */
+  /* v5 surfaces / ink — the engineered black ladder */
+  --v4-bg-deep: #050507;     /* the darkest pool · page edges, hero base    */
+  --v4-bg: #08090b;          /* the near-black base (deeper than Linear)    */
+  --v4-bg-raised: #101114;   /* charcoal raised panels, code surfaces       */
+  --v4-line: rgb(255 255 255 / 0.09);  /* 1px hairline borders              */
+  --v4-line-strong: rgb(255 255 255 / 0.13); /* hover / active hairlines    */
   --v4-text: #f4f5f7;        /* primary ink                                 */
   --v4-text-dim: #8a8f98;    /* secondary / labels / FIG numbers            */
-  --v4-text-faint: #838995;  /* captions · WCAG AA 5.28:1 on #121317        */
+  --v4-text-faint: #838995;  /* captions · WCAG AA ≥5:1 on the ladder       */
   --v4-hud-faint: #5a606b;   /* DECORATIVE only · aria-hidden HUD marks      */
   --v4-seam-nod: rgb(255 255 255 / 0.022); /* seam fade fallback (dark base) */
+
+  /* ── the ONE accent · BLUE (the #2f6bff seed family) ──────────────────────
+     Single accent per surface. -strong is the saturated core (fills, glows),
+     -accent is text/icon-capable on the dark ladder (5.8:1 on #08090b),
+     -bright is the hover/highlight note, -soft is the low-alpha wash for
+     tints + tinted borders. theme-light re-scopes them for contrast. */
+  --v4-accent: #4f86ff;
+  --v4-accent-strong: #2f6bff;
+  --v4-accent-bright: #8db4ff;
+  --v4-accent-soft: rgb(79 134 255 / 0.12);
+
+  /* ── sharpness ("carré") · radii 0–4px on structural elements ─────────────
+     Hairline 1px borders + the 8px spacing grid do the hierarchy work;
+     rounded-xl blanket is forbidden (brand ANTI list). */
+  --v4-radius: 4px;          /* panels · cards · buttons                    */
+  --v4-radius-sm: 2px;       /* chips · small controls · code gutters       */
+
+  /* ── the dither grain · ordered Bayer 4×4 texture (BRAND-11) ──────────────
+     A tiny inline-SVG Bayer tile (the 6 lowest matrix cells as dots, alpha
+     graded by threshold order) repeated at --v4-grain-size. Reads as premium
+     print-grain, NOT noise static. White dots on the dark ladder; theme-light
+     swaps to dark dots (paper grain). Consumed by the .v4-grain utility. */
+  --v4-grain-size: 4px;
+  --v4-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='0' y='0' width='1' height='1' fill-opacity='.07'/%3E%3Crect x='2' y='2' width='1' height='1' fill-opacity='.06'/%3E%3Crect x='2' y='0' width='1' height='1' fill-opacity='.05'/%3E%3Crect x='0' y='2' width='1' height='1' fill-opacity='.045'/%3E%3Crect x='1' y='1' width='1' height='1' fill-opacity='.04'/%3E%3Crect x='3' y='3' width='1' height='1' fill-opacity='.03'/%3E%3C/g%3E%3C/svg%3E");
+
   /* keyboard focus ring · theme-aware so the indicator clears WCAG 1.4.11 (≥3:1)
-     on BOTH surfaces. Cyan reads 10.9:1 on the near-black base; on the warm
-     off-white it sinks to ~1.7:1, so the light scope swaps to a near-black ring. */
-  --v4-focus-ring: #22d3ee; /* dark base · cyan, 10.9:1 on #0a0b0d */
+     on BOTH surfaces. The blue family replaces the old cyan (single-accent rule):
+     #6f9dff reads 7.5:1 on the dark ladder; on the warm off-white it sinks, so
+     the light scope swaps to a near-black ring. */
+  --v4-focus-ring: #6f9dff; /* dark base · accent-blue, 7.5:1 on #08090b */
 
   /* ── the micro-interaction language · ONE system ──────────────────────────
      Every interactive surface (nav · CTAs · copy buttons · cards · tabs · FAQ ·
@@ -48,13 +77,13 @@
      --hero-base-*: the dark field (this is what the page reads as).
      --hero-blue-*: the POINTE — used ONLY in the localized accent bloom + the
                     faint grid hairlines + the HUD ink (all at low alpha). */
-  --hero-base-deep: #060708;  /* the darkest pool · corners + lower edge        */
-  --hero-base-body: #0a0b0d;  /* the dominant near-black field (Linear/Cursor)  */
-  --hero-base-lift: #0e1014;  /* a barely-there top lift (keeps it from flat)   */
+  --hero-base-deep: var(--v4-bg-deep); /* the darkest pool · corners + lower edge */
+  --hero-base-body: var(--v4-bg);      /* the dominant engineered-black field     */
+  --hero-base-lift: #0d0e12;           /* a barely-there top lift (never flat)    */
 
-  --hero-blue-core: #2f6bff;  /* the accent bloom CORE · the single bright note */
-  --hero-blue-glow: #4f86ff;  /* the soft lamp directly behind the butterfly    */
-  --hero-blue-line: #5f86d8;  /* the grid hairline + HUD ink (used at low alpha) */
+  --hero-blue-core: var(--v4-accent-strong); /* the accent bloom CORE · ONE note  */
+  --hero-blue-glow: var(--v4-accent);        /* the soft lamp behind the figure   */
+  --hero-blue-line: #5c85e6;  /* the grid hairline + HUD ink (used at low alpha) */
 
   /* the 4 verb hues — used ONLY inside a live run (design doc §3.4),
      never as static UI color */
@@ -90,31 +119,47 @@
    flips between modes. */
 .theme-dark,
 [data-theme='dark'] {
-  --v4-bg: #0a0b0d;          /* near-black base                             */
-  --v4-bg-raised: #121317;
-  --v4-line: rgb(255 255 255 / 0.08);
+  --v4-bg-deep: #050507;     /* the engineered ladder                       */
+  --v4-bg: #08090b;
+  --v4-bg-raised: #101114;
+  --v4-line: rgb(255 255 255 / 0.09);
+  --v4-line-strong: rgb(255 255 255 / 0.13);
   --v4-text: #f4f5f7;
   --v4-text-dim: #8a8f98;
-  --v4-text-faint: #838995;  /* WCAG AA 5.28:1 on #121317 · 5.60:1 on #0a0b0d */
+  --v4-text-faint: #838995;  /* WCAG AA ≥5:1 across the dark ladder          */
   --v4-hud-faint: #5a606b;   /* DECORATIVE only · aria-hidden HUD marks      */
+  --v4-accent: #4f86ff;      /* 5.8:1 on #08090b · text-capable             */
+  --v4-accent-strong: #2f6bff;
+  --v4-accent-bright: #8db4ff;
+  --v4-accent-soft: rgb(79 134 255 / 0.12);
   /* seam nod · a dark section's neighbour is light → a faint light wash at top */
   --v4-seam-nod: rgb(255 255 255 / 0.022);
-  --v4-focus-ring: #22d3ee;  /* cyan · 10.9:1 on the dark base */
+  --v4-focus-ring: #6f9dff;  /* accent-blue · 7.5:1 on the dark base */
+  /* grain · white dots on the engineered black */
+  --v4-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='0' y='0' width='1' height='1' fill-opacity='.07'/%3E%3Crect x='2' y='2' width='1' height='1' fill-opacity='.06'/%3E%3Crect x='2' y='0' width='1' height='1' fill-opacity='.05'/%3E%3Crect x='0' y='2' width='1' height='1' fill-opacity='.045'/%3E%3Crect x='1' y='1' width='1' height='1' fill-opacity='.04'/%3E%3Crect x='3' y='3' width='1' height='1' fill-opacity='.03'/%3E%3C/g%3E%3C/svg%3E");
 }
 .theme-light,
 [data-theme='light'] {
-  --v4-bg: #f7f7f5;          /* warm off-white (Cursor register)            */
+  --v4-bg-deep: #efefec;     /* the light ladder's deep end                 */
+  --v4-bg: #f7f7f5;          /* warm off-white (paper register)             */
   --v4-bg-raised: #ffffff;   /* cards on light sit pure white               */
   --v4-line: rgb(10 11 13 / 0.10);
+  --v4-line-strong: rgb(10 11 13 / 0.16);
   --v4-text: #0a0b0d;        /* near-black ink                              */
   --v4-text-dim: #565b66;
   --v4-text-faint: #696d76;  /* WCAG AA 4.83:1 on #f7f7f5 · 5.19:1 on #fff   */
   --v4-hud-faint: #8a8f98;   /* DECORATIVE only · aria-hidden HUD marks      */
+  --v4-accent: #2456d6;      /* 5.9:1 on #f7f7f5 · text-capable             */
+  --v4-accent-strong: #1e4ec8;
+  --v4-accent-bright: #2f6bff;
+  --v4-accent-soft: rgb(36 86 214 / 0.10);
   /* seam nod · a light section's neighbour is dark → a faint dark wash at top */
   --v4-seam-nod: rgb(10 11 13 / 0.04);
-  /* near-black focus ring · cyan sinks to ~1.7:1 on the off-white, this clears
+  /* near-black focus ring · the accent blue sinks on the off-white, this clears
      WCAG 1.4.11 — #0a0b0d reads 18:1 on #f7f7f5 / 19:1 on the white cards */
   --v4-focus-ring: #0a0b0d;
+  /* grain · dark dots on the paper (the paper-grain variant) */
+  --v4-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cg fill='%23000'%3E%3Crect x='0' y='0' width='1' height='1' fill-opacity='.06'/%3E%3Crect x='2' y='2' width='1' height='1' fill-opacity='.05'/%3E%3Crect x='2' y='0' width='1' height='1' fill-opacity='.045'/%3E%3Crect x='0' y='2' width='1' height='1' fill-opacity='.04'/%3E%3Crect x='1' y='1' width='1' height='1' fill-opacity='.035'/%3E%3Crect x='3' y='3' width='1' height='1' fill-opacity='.03'/%3E%3C/g%3E%3C/svg%3E");
   /* the CodeFile editor stays a DARK editor surface even inside a light section
      (codefile.css pins the panel bg to the dark base — an IDE reads dark), so the
      syntax hues keep their dark-base values. Re-stated for clarity / future
@@ -184,4 +229,21 @@
 .v4sec.v4-noseam::before,
 .v4sec.v4-noseam::after {
   display: none;
+}
+
+/* ─── .v4-grain · the CSS-only static dither texture (BRAND-11) ───────────────
+   Lays the ordered Bayer tile over the element's own background as an extra
+   background-image layer (composes with the theme background-color — no pseudo
+   element, so it never fights .v4sec's ::before/::after seams). Theme-scoped:
+   white dots on the dark ladder, dark dots on the paper sections. Exists even
+   without WebGL — the DitherField canvas is the animated sibling. */
+.v4-grain {
+  background-image: var(--v4-grain-img);
+  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
+}
+/* the coarser variant · 2× cell, for large quiet surfaces (hero panel, seams) */
+.v4-grain-lg {
+  background-image: var(--v4-grain-img);
+  background-size: calc(var(--v4-grain-size, 4px) * 2) calc(var(--v4-grain-size, 4px) * 2);
+  image-rendering: pixelated;
 }

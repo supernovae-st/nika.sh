@@ -9,11 +9,18 @@
    re-emitted here, so v3's own `--bg`/`--cyan` stay untouched. Additive. */
 @theme inline {
   --color-bg: var(--v4-bg);
+  --color-bg-deep: var(--v4-bg-deep);
   --color-bg-raised: var(--v4-bg-raised);
   --color-line: var(--v4-line);
+  --color-line-strong: var(--v4-line-strong);
   --color-text: var(--v4-text);
   --color-dim: var(--v4-text-dim);
   --color-faint: var(--v4-text-faint);
+
+  /* the ONE accent · blue (theme-scoped values, see tokens.css) */
+  --color-accent: var(--v4-accent);
+  --color-accent-strong: var(--v4-accent-strong);
+  --color-accent-bright: var(--v4-accent-bright);
 
   --color-verb-infer: var(--verb-infer);
   --color-verb-exec: var(--verb-exec);
@@ -100,7 +107,7 @@ body { background: var(--bg); overflow-x: hidden; }
 :focus-visible {
   outline: 2px solid color-mix(in oklch, var(--v4-focus-ring, var(--cyan)) 80%, transparent);
   outline-offset: 2px;
-  border-radius: 8px;
+  border-radius: var(--v4-radius, 4px);
 }
 
 /* ─── Raycast skeuomorphic glass — the tactile recipe (top highlight +
