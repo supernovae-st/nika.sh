@@ -337,3 +337,26 @@
 .play-verbs-note a:hover {
   color: var(--v4-text);
 }
+
+/* ── the local-run hint · mono machine-truth line + the install pill ──────────
+   « runs locally: [brew install …] → nika run <seed>.nika.yaml » — the bridge
+   from the in-tab check to the same file running on the reader's machine. */
+.play-local {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.play-local-label,
+.play-local-then {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.play-local-then {
+  color: var(--v4-text-dim);
+}

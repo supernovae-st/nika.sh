@@ -5,6 +5,7 @@ import { lintNika, type LintDiag } from '../lib/nika-lint'
 import { routeHead } from '../content'
 import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import { NIKA_VERBS, verbGlyph, type NikaVerb } from '../components/codefile-highlight'
+import { InstallCommand } from '../components/InstallCommand'
 import '../sections/v4-home.css'
 import '../components/codefile.css'
 import './page-chrome.css'
@@ -265,6 +266,14 @@ export function Component() {
                 </p>
               </div>
             </aside>
+          </div>
+
+          {/* the local-run hint · mono machine truth + the copyable install pill.
+              The same file you just checked runs on your machine, offline. */}
+          <div className="play-local">
+            <span className="play-local-label">runs locally:</span>
+            <InstallCommand />
+            <span className="play-local-then">→ nika run {seed}.nika.yaml</span>
           </div>
 
           {/* the close · the doc dimension line + forward links */}
