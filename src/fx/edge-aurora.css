@@ -1,9 +1,11 @@
-/* ─── EdgeAurora · the v4 signature ──────────────────────────────────────────
-   A reactive multicolor halo that hugs the screen frame while the center stays
-   transparent (the "Siri / Oryzo" effect · design doc §3.2). It is THE DRUM:
-   it pulses on workflow events. Center black & readable; a blurred cyan→violet
-   →cyan ring lives at the edges only. Intensity is driven by the
-   `--aurora-intensity` custom property (rest ≈ 0.06) — pulses mutate it on the
+/* ─── EdgeAurora · the reactive frame halo (v5 · ONE blue) ────────────────────
+   A reactive halo that hugs the screen frame while the center stays transparent.
+   It is THE DRUM: it pulses on workflow events. Center black & readable; a
+   blurred ring lives at the edges only. v5 retune: the cyan→violet dual-hue is
+   KILLED — the ring sweeps within the ONE blue accent family (accent-strong ↔
+   deep wire blue), dimmer at rest, sharper (tighter blur + mask) so it reads as
+   a hairline of light, not a wash. Intensity is driven by the
+   `--aurora-intensity` custom property (rest ≈ 0.04) — pulses mutate it on the
    element directly (no React re-render). At rest it breathes slowly via CSS.
 
    Pure CSS so it renders during the Node prerender (vite-plugin-react-ssg)
@@ -13,8 +15,8 @@
    sections because the rest intensity is subtle and the hues are additive. */
 
 .edge-aurora {
-  /* rest intensity · pulses raise this toward ~1 then decay back (design §3.2) */
-  --aurora-intensity: 0.06;
+  /* rest intensity · pulses raise this toward ~1 then decay back */
+  --aurora-intensity: 0.04;
 
   position: fixed;
   inset: 0;
@@ -34,38 +36,39 @@
 
 /* The visible ring · a blurred conic sweep masked to the frame edges only.
    `mask` punches a transparent rectangle out of the center so only the rim
-   glows. The conic gradient gives the multicolor cyan→violet→cyan sweep. */
+   glows. The conic sweep stays INSIDE the blue family — tonal movement
+   (core ↔ deep), never a second hue. */
 .edge-aurora::before {
   content: '';
   position: absolute;
-  inset: -20%; /* bleed past the frame so the blur falls off the screen edges  */
+  inset: -16%; /* bleed past the frame so the blur falls off the screen edges  */
   background:
     conic-gradient(
       from 0deg,
-      #22d3ee 0%,
-      #b07bff 25%,
-      #22d3ee 50%,
-      #b07bff 75%,
-      #22d3ee 100%
+      #2f6bff 0%,
+      #16307a 25%,
+      #2f6bff 50%,
+      #16307a 75%,
+      #2f6bff 100%
     );
 
-  /* keep the GLOW at the rim only — fade the inner area to transparent so the
-     center stays black & readable (the Siri/Oryzo look) */
+  /* keep the GLOW at the rim only — a TIGHTER center punch than v4 so the ring
+     hugs the frame (sharper), the center stays black & readable */
   mask: radial-gradient(
-    ellipse 78% 78% at 50% 50%,
-    transparent 58%,
+    ellipse 82% 82% at 50% 50%,
+    transparent 66%,
     #000 100%
   );
   -webkit-mask: radial-gradient(
-    ellipse 78% 78% at 50% 50%,
-    transparent 58%,
+    ellipse 82% 82% at 50% 50%,
+    transparent 66%,
     #000 100%
   );
 
-  filter: blur(64px);
+  filter: blur(44px);
   opacity: var(--aurora-intensity);
 
-  /* slow hue drift makes the rim feel alive even between pulses */
+  /* slow tonal drift keeps the rim alive between pulses (blue-on-blue only) */
   animation: edge-aurora-rotate 26s linear infinite;
 }
 

@@ -2,16 +2,17 @@ import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
 import { AuroraContext, type AuroraContextValue } from './aurora-context'
 import './edge-aurora.css'
 
-/* ─── EdgeAurora · the v4 signature (the reactive frame halo) ─────────────────
-   A blurred cyan→violet→cyan ring that hugs the screen frame while the center
-   stays transparent (the "Siri / Oryzo" effect · design doc §3.2). It is THE
-   DRUM of the manifesto: every run = a beat of the frame.
+/* ─── EdgeAurora · the reactive frame halo (v5 · ONE blue) ────────────────────
+   A blurred blue ring that hugs the screen frame while the center stays
+   transparent (the "Siri / Oryzo" effect). It is THE DRUM of the manifesto:
+   every run = a beat of the frame. v5 retune: single accent (the blue family
+   only — the cyan→violet dual-hue is gone), dimmer at rest, sharper pulse.
 
    - At rest (~99% of the time) the halo is almost extinguished and breathes
-     slowly (CSS keyframes · §3.2). Under prefers-reduced-motion it is static.
+     slowly (CSS keyframes). Under prefers-reduced-motion it is static.
    - On a workflow event, `pulse()` briefly intensifies the halo then lets it
-     decay back to rest (~700ms). Future code wires pulse() to run-node
-     completion; this task only exposes it.
+     decay back to rest (~450ms · the sharp beat). Future code wires pulse()
+     to run-node completion; this component only exposes it.
 
    pulse() mutates the `--aurora-intensity` CSS custom property on the aurora
    element DIRECTLY (via a ref) — there is NO React re-render per pulse, so it
@@ -21,11 +22,11 @@ import './edge-aurora.css'
    (vite-plugin-react-ssg) untouched. The only browser access (matchMedia, the
    rAF decay loop) lives in useEffect / event-time callbacks, never at render. */
 
-const REST_INTENSITY = 0.06
+const REST_INTENSITY = 0.04
 /** Peak the halo jumps to on a pulse before it decays. */
-const PULSE_INTENSITY = 0.85
-/** Decay back to rest takes ~700ms (design §3.2). */
-const DECAY_MS = 700
+const PULSE_INTENSITY = 0.75
+/** Decay back to rest takes ~450ms (the sharper v5 beat). */
+const DECAY_MS = 450
 
 export function AuroraProvider({ children }: { children: ReactNode }) {
   const elRef = useRef<HTMLDivElement | null>(null)
