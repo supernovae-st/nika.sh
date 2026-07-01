@@ -251,6 +251,18 @@ h1, h2 { font-family: var(--headline); }
    spotlight, and the site's own .rv reveal (a local observer in Manifesto.tsx
    drives it). The global reduced-motion rule above already neutralises animations. */
 
+/* v5 alignment (light touch · 2026-07-02) · the .mf-scope wrapper re-seats the
+   page's accent from the v3 cyan onto the v5 blue family (dither black/blue ·
+   single accent per surface) and deepens the backdrop pool to the engineered-
+   black ladder. Every mf-* rule reads the accent through --cyan, so the whole
+   cinematic register (drum · rings · tokens · promise cards) follows in one
+   move — the drum just beats blue now. Copy: not a word changed. :root --cyan
+   itself stays untouched (Home's FinalCTA still reads it). */
+.mf-scope {
+  --cyan: var(--v4-accent);
+  --bg: var(--v4-bg-deep);
+}
+
 /* cosmic backdrop — depth without the 3D galaxy scene */
 .mf-cosmos {
   position: fixed;
@@ -258,9 +270,9 @@ h1, h2 { font-family: var(--headline); }
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(82% 52% at 50% -8%, rgba(34, 211, 238, 0.1), transparent 60%),
-    radial-gradient(68% 60% at 82% 16%, rgba(70, 98, 200, 0.13), transparent 64%),
-    radial-gradient(92% 70% at 10% 90%, rgba(34, 211, 238, 0.06), transparent 62%),
+    radial-gradient(82% 52% at 50% -8%, rgb(79 134 255 / 0.1), transparent 60%),
+    radial-gradient(68% 60% at 82% 16%, rgb(47 107 255 / 0.12), transparent 64%),
+    radial-gradient(92% 70% at 10% 90%, rgb(79 134 255 / 0.06), transparent 62%),
     var(--bg);
 }
 .mf-stars {
@@ -353,15 +365,15 @@ h1, h2 { font-family: var(--headline); }
 .mf-grad {
   background: linear-gradient(
     176deg,
-    #eaf7ff 0%,
-    #9fefff 38%,
+    #eaf1ff 0%,
+    #9fc3ff 38%,
     var(--cyan) 70%,
     color-mix(in srgb, var(--cyan) 45%, transparent) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 2px 30px rgba(34, 211, 238, 0.3));
+  filter: drop-shadow(0 2px 30px rgb(79 134 255 / 0.3));
 }
 .mf-title {
   font-family: var(--headline);
@@ -387,8 +399,8 @@ h1, h2 { font-family: var(--headline); }
 }
 .mf-close-mark { animation: mfGlowPulse 3.2s ease-in-out infinite; }
 @keyframes mfGlowPulse {
-  0%, 100% { filter: drop-shadow(0 0 13px rgba(34, 211, 238, 0.4)); }
-  50% { filter: drop-shadow(0 0 26px rgba(34, 211, 238, 0.72)); }
+  0%, 100% { filter: drop-shadow(0 0 13px rgb(79 134 255 / 0.4)); }
+  50% { filter: drop-shadow(0 0 26px rgb(79 134 255 / 0.72)); }
 }
 
 /* cognitive-stack tokens — glowing pills */

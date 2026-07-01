@@ -125,7 +125,10 @@ export function Component() {
   }, [])
 
   return (
-    <>
+    /* .mf-scope · style scope only (v5 light-touch): re-seats the page accent
+       from the v3 cyan onto the v5 blue family + deepens the backdrop to the
+       engineered-black ladder (see index.css). Zero copy changes. */
+    <div className="mf-scope">
       <div className="mf-cosmos" aria-hidden />
       <div className="mf-stars" aria-hidden />
       <div id="cursor-glow" aria-hidden />
@@ -334,6 +337,6 @@ export function Component() {
           </Link>
         </footer>
       </main>
-    </>
+    </div>
   )
 }
