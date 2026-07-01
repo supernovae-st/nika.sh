@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import { useRevealOnce } from './use-reveal-once'
 import { CodeFile } from '../components/CodeFile'
+import { InstallCommand } from '../components/InstallCommand'
+import { DOCS } from '../content'
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
 import { sliceExcerpt } from './living/excerpt'
 import './v4-home.css'
@@ -33,6 +35,12 @@ import './v4-home.css'
 const BREW_CMD = 'brew install supernovae-st/tap/nika'
 const CURL_CMD = 'curl -LsSf https://nika.sh/install.sh | sh'
 const RUN_CMD = 'nika run standup-digest.nika.yaml'
+
+/* the REAL extension listings (engine README · supernovae.nika-lang) — the
+   nika-lang language support for every VS Code-compatible editor. */
+const VSCODE_MARKETPLACE =
+  'https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang'
+const OPENVSX = 'https://open-vsx.org/extension/supernovae/nika-lang'
 
 /* a SHORT, TRUE slice of the smallest real multi-verb showcase file: the header
    (nika: v1 · workflow · description · model) + two representative tasks (the
@@ -177,6 +185,71 @@ export default function GetStarted() {
             </div>
           </li>
         </ol>
+
+        {/* ── RUNS EVERYWHERE · the three surfaces (Codex pattern) ────────────
+             Terminal / editor / agent — sharp hairline cards, mono kickers.
+             The terminal card's CTA IS the copyable command pill (the shared
+             hero affordance); the editor card links the REAL nika-lang
+             listings; the agent card states the REAL wiring verbs (nika init
+             scaffolds AGENTS.md · nika wire adds the read-only MCP oracle —
+             nika_check · nika_explain — into Claude/Cursor/VS Code/Windsurf). */}
+        <div className="v4every" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+          <p className="v4every-eyebrow" aria-hidden>
+            runs everywhere — same file, same result
+          </p>
+          <div className="v4every-row">
+            <article className="v4every-card" aria-labelledby="v4every-terminal">
+              <h3 className="v4every-kicker" id="v4every-terminal">
+                <span className="v4every-n">01</span> In your terminal
+              </h3>
+              <p className="v4every-body">
+                One Rust binary. The command is the button — click it, paste it, run.
+              </p>
+              <div className="v4every-cta">
+                <InstallCommand />
+              </div>
+            </article>
+
+            <article className="v4every-card" aria-labelledby="v4every-editor">
+              <h3 className="v4every-kicker" id="v4every-editor">
+                <span className="v4every-n">02</span> In your editor
+              </h3>
+              <p className="v4every-body">
+                The <code className="mono">nika-lang</code> extension — diagnostics,
+                schema-derived completions and the DAG view, in VS Code, Cursor and
+                Windsurf.
+              </p>
+              <div className="v4every-cta v4every-links">
+                <a href={VSCODE_MARKETPLACE} target="_blank" rel="noreferrer" className="v4every-link">
+                  VS Code Marketplace
+                  <span aria-hidden> ↗</span>
+                </a>
+                <a href={OPENVSX} target="_blank" rel="noreferrer" className="v4every-link">
+                  Open VSX · Cursor / Windsurf
+                  <span aria-hidden> ↗</span>
+                </a>
+              </div>
+            </article>
+
+            <article className="v4every-card" aria-labelledby="v4every-agent">
+              <h3 className="v4every-kicker" id="v4every-agent">
+                <span className="v4every-n">03</span> With your agent
+              </h3>
+              <p className="v4every-body">
+                <code className="mono">nika init</code> writes AGENTS.md ·{' '}
+                <code className="mono">nika wire claude|cursor</code> adds the
+                read-only oracle (<code className="mono">nika_check</code> ·{' '}
+                <code className="mono">nika_explain</code>).
+              </p>
+              <div className="v4every-cta v4every-links">
+                <a href={DOCS} target="_blank" rel="noreferrer" className="v4every-link">
+                  docs.nika.sh
+                  <span aria-hidden> ↗</span>
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
 
         {/* the close · learn it in 5 minutes */}
         <p className="v4start-more" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>

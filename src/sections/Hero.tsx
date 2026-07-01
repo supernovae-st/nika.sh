@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { CodeFile } from '../components/CodeFile'
+import { InstallCommand } from '../components/InstallCommand'
 import { REPO, SPEC } from '../content'
 import '../shell/shell.css'
 import './hero.css'
@@ -25,8 +26,6 @@ import './hero.css'
    Entrance: ONE orchestrated staggered reveal (motion-safe only). Everything is
    visible by DEFAULT (SSR / no-JS / reduced-motion) — the `.v4-enter` opt-in is
    added on mount and only animates when motion is allowed. */
-
-const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
 
 /* the engine release shown on the version plate under the CTAs.
    TODO: CI-refresh — canon.generated.ts carries spec counts, not the engine
@@ -145,54 +144,9 @@ tasks:
 const rise = (ms: number): React.CSSProperties =>
   ({ '--rise-delay': `${ms}ms` }) as React.CSSProperties
 
-/* the install affordance · COMMAND-AS-CTA (Codex/Vercel/Cursor register) —
-   the whole row is ONE button whose label IS the command; clicking anywhere
-   copies it. Equal rank with the primary CTA (same height, outline register).
-   Real, non-color-only copied state (icon + text both flip). SSR-safe. */
-function InstallCommand() {
-  const [copied, setCopied] = useState(false)
-  const copy = () => {
-    navigator.clipboard?.writeText(INSTALL_CMD)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1600)
-  }
-  return (
-    <button
-      type="button"
-      onClick={copy}
-      className="v4cmd"
-      data-copied={copied}
-      aria-label={copied ? 'Copied to clipboard' : `Copy install command: ${INSTALL_CMD}`}
-    >
-      <span className="v4cmd-dollar" aria-hidden>
-        ❯
-      </span>
-      {/* ONE flex item for the whole command — a flex container trims the
-          boundary whitespace between items. */}
-      <span className="v4cmd-text">
-        brew install <span className="v4cmd-dim">supernovae-st/tap/</span>nika
-      </span>
-      <span className="v4cmd-copy" aria-hidden>
-        {copied ? (
-          <>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-            Copied
-          </>
-        ) : (
-          <>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-              <rect x="9" y="9" width="11" height="11" rx="2" />
-              <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-            </svg>
-            Copy
-          </>
-        )}
-      </span>
-    </button>
-  )
-}
+/* the install affordance · COMMAND-AS-CTA — the shared pill (extracted to
+   src/components/InstallCommand.tsx so GetStarted's runs-everywhere terminal
+   card renders the exact same affordance). */
 
 /* ─── the hero chrome · faint HUD ticks + a readability vignette ───────────────
    The WebGL background lives at the PAGE level (Home · fixed behind everything);

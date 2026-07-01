@@ -1956,3 +1956,105 @@
 .v4strip-link:hover .v4strip-arrow {
   transform: translate(1px, -1px);
 }
+
+/* ── FIG 7.5b · RUNS EVERYWHERE · the three surfaces row (Codex pattern) ──────
+   Inside GetStarted, under the numbered steps: terminal / editor / agent as
+   three sharp hairline cards (4px radii · raised surface + grain · mono
+   kickers). The terminal card's CTA is the shared command pill (.v4cmd). */
+.v4every {
+  margin-top: clamp(44px, 6vh, 72px);
+}
+.v4every-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.v4every-eyebrow::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 42px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+.v4every-row {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 880px) {
+  .v4every-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+.v4every-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 20px 20px 18px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
+  background-image: var(--v4-grain-img);
+  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
+}
+.v4every-kicker {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+}
+.v4every-n {
+  color: var(--v4-text-faint);
+  font-weight: 500;
+  margin-right: 6px;
+}
+.v4every-body {
+  margin-top: 10px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.v4every-body code {
+  font-size: 12px;
+  color: var(--v4-text);
+}
+.v4every-cta {
+  margin-top: auto;
+  padding-top: 16px;
+}
+.v4every-cta .v4cmd {
+  max-width: 100%;
+}
+.v4every-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.v4every-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  width: fit-content;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklch, var(--v4-text) 20%, transparent);
+  transition: color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui);
+}
+.v4every-link:hover,
+.v4every-link:focus-visible {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-text) 45%, transparent);
+}
