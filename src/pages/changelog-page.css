@@ -373,6 +373,12 @@
   color: var(--v4-text);
   text-wrap: balance;
 }
+/* the two-tone seam · the elaboration after the « — » recedes to grey
+   (white claim + grey elaboration, same line — the Raycast register). */
+.cl-tl-title-dim {
+  color: var(--v4-text-dim);
+  font-weight: 500;
+}
 .cl-tl-desc {
   margin-top: 7px;
   max-width: 44rem;

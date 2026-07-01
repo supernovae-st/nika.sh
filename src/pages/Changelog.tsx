@@ -56,6 +56,20 @@ const TAG_HUE: Record<string, string> = {
 }
 const tagHue = (tag: string) => TAG_HUE[tag] ?? 'var(--v4-text-dim)'
 
+/* two-tone title · the Raycast sentence register (white claim + grey
+   elaboration on the same line). Presentation-only: entries whose title
+   carries a « — » split at the FIRST one; single-clause titles stay whole. */
+function TwoToneTitle({ title }: { title: string }) {
+  const i = title.indexOf(' — ')
+  if (i === -1) return <>{title}</>
+  return (
+    <>
+      {title.slice(0, i)}
+      <span className="cl-tl-title-dim"> — {title.slice(i + 3)}</span>
+    </>
+  )
+}
+
 export function Component() {
   /* reveal the section once, on first intersection (motion-safe; default visible;
      safety-net timer reveals anyway if the observer misfires) */
@@ -179,7 +193,9 @@ export function Component() {
                       <span className="cl-tl-tag">{TAG_LABEL[e.tag]}</span>
                     </div>
                     <div className="cl-tl-body">
-                      <h2 className="cl-tl-title">{e.title}</h2>
+                      <h2 className="cl-tl-title">
+                        <TwoToneTitle title={e.title} />
+                      </h2>
                       <p className="cl-tl-desc">{e.body}</p>
                     </div>
                   </li>
