@@ -139,7 +139,7 @@
   min-width: 0;
   padding: 22px 22px 20px;
   border: 1px solid var(--v4-line);
-  border-radius: 16px;
+  border-radius: var(--v4-radius); /* v5 sharp — the 0-4px system */
   background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
@@ -185,6 +185,19 @@
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
+}
+/* the one-line two-tone gloss · white claim (b) + grey elaboration (rest) —
+   the Raycast two-tone sentence register (claim raises contrast, gloss recedes) */
+.ucp-wf-gloss {
+  margin-top: 11px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.ucp-wf-gloss b {
+  color: var(--v4-text);
+  font-weight: 500;
 }
 
 /* the verb chips · glyph + name, hairline-bordered, monochrome (hue whisper on
