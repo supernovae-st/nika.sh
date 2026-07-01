@@ -35,10 +35,11 @@ import FinalCTA from '../sections/FinalCTA'
    trigger, so it never enters the default home bundle (design doc §8). */
 const GalaxyEgg = lazy(() => import('../scene/GalaxyEgg'))
 
-/* the full-bleed depth tunnel · FIXED full-screen behind the WHOLE page (z-0) ·
-   the camera dives as you scroll, then it fades out so the opaque sections take
-   over. Lazy + client-only (the prerendered DOM paints first). */
-const DepthTunnel = lazy(() => import('../scene/DepthTunnel'))
+/* the full-bleed dither field · FIXED full-screen behind the WHOLE page (z-0) ·
+   the Bayer-dithered blue-on-black field (square-tunnel motif) dives as you
+   scroll, then fades out so the opaque sections take over. Lazy + client-only
+   (the prerendered DOM paints first). */
+const DitherField = lazy(() => import('../scene/DitherField'))
 
 /* ─── home structured data · SoftwareApplication + SoftwareSourceCode ─────────
    Honest only — describes what ships (free, AGPL, one binary, any model). NO
@@ -179,11 +180,11 @@ export function Component() {
 
   return (
     <>
-      {/* the full-bleed depth tunnel · fixed behind the whole page (z-0). The
+      {/* the full-bleed dither field · fixed behind the whole page (z-0). The
           transparent hero reveals it; the opaque sections below cover it as you
-          scroll past. The camera dives with the page scroll (DepthTunnel.tsx). */}
+          scroll past. The field dives with the page scroll (DitherField.tsx). */}
       <Suspense fallback={null}>
-        <DepthTunnel />
+        <DitherField />
       </Suspense>
       <main className="relative z-[1]">
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
