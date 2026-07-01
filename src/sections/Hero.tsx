@@ -5,25 +5,22 @@ import { REPO, SPEC } from '../content'
 import '../shell/shell.css'
 import './hero.css'
 
-/* ─── Hero · the v4.3 BLUE control-narrative · two-column composition ──────────
-   Register: a DARK lab (Linear/Cursor near-black) with ONE pointe of blue — the
-   Maxime-Heckel / Raycast restraint. A near-black field dominates, a localized
-   blue bloom + a faint perspective grid + corner HUD ticks add depth, and a 3D
-   particle NIKA BUTTERFLY (a FIXED shape whose particles stream fast, tilting to
-   the pointer) presides as a large atmospheric figure the content floats inside.
+/* ─── Hero · the v5 dither black/blue header · two-column composition ──────────
+   Register: an engineered-black field (the v5 ladder) with ONE pointe of blue —
+   Linear/Codex/Raycast restraint, sharp ("carré"): hairline borders, 0–4px
+   radii, ordered-dither grain (BRAND-11), museum-plate mono captions.
 
-   The composition is the classic operator layout: the HEADLINE + pitch + install
-   + CTAs sit LEFT, and the premium CodeFile editor (the product replica · a real
-   .nika.yaml plan) sits RIGHT — KEPT, given room, balanced. Lots of whitespace;
-   the two columns breathe over the centred particle field.
+   The composition is the classic operator layout: the HEADLINE + one sentence +
+   install + CTAs sit LEFT, and the premium CodeFile editor (the product replica)
+   sits RIGHT — now with a sharp mono FILE-TAB strip above it (2026-07 operator
+   ask): 3 switchable spec-true examples the visitor can flip through in the
+   header. daily-brief.nika.yaml is the DEFAULT tab because it is THE file the
+   Living File below plays — the hero editor and the run read as the same object
+   (docs/plans/2026-06-18 §2 continuity).
 
-   The pitch stays CONTROL: "See what your AI will do. Before it does it." — the
-   agent writes its plan as a reviewable file; the runtime enforces it; then it
-   runs. The headline is a REAL <h1> in the prerendered HTML (the SEO win); the
-   editor is real <pre>/<code> DOM text (crawlable, instant). The dark field +
-   blue bloom + grid + HUD are PURE CSS (instant first paint). The WebGL butterfly
-   is a lazy, client-only, aria-hidden ENHANCEMENT — it never blocks first paint,
-   and its flow eases + parallax drops under prefers-reduced-motion.
+   The H1 is a REAL <h1> in the prerendered HTML (the SEO win); the editor is
+   real <pre>/<code> DOM text (crawlable, instant). The WebGL background (the
+   dither field / tunnel) mounts at the PAGE level — the hero stays transparent.
 
    Entrance: ONE orchestrated staggered reveal (motion-safe only). Everything is
    visible by DEFAULT (SSR / no-JS / reduced-motion) — the `.v4-enter` opt-in is
@@ -31,30 +28,114 @@ import './hero.css'
 
 const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
 
-/* the hero editor plan · a COMPACT, spec-correct slice of the daily-brief showcase
-   (the full file + DAG live in the Living File below). The control story reads at
-   a glance: a LOCAL model · a scoped `permits:` block · the verbs in their hue. */
-const HERO_YAML = `nika: v1
+/* ── the hero editor files · the sharp file-tab strip ─────────────────────────
+   Three examples, switchable in the header. Tab 0 (daily-brief) is a COMPACT
+   slice of the Living File's own file — same filename · same header lines ·
+   same task ids — so the scroll into the run below reads as ONE object (the
+   run-model is keyed to daily-brief; keeping it the default preserves the
+   file→DAG continuity). Tabs 1-2 are spec-register examples (schema-true keys:
+   depends_on · when · invoke.tool — public/schema/workflow.json) showing the
+   signature beats: the when:-gated agent probe and the typed-output contract. */
+type HeroFile = {
+  id: string
+  filename: string
+  yaml: string
+  highlight: [number, number]
+  /** what the highlighted lines demonstrate (the tab's one-line story) */
+  gloss: string
+}
+
+const HERO_FILES: HeroFile[] = [
+  {
+    id: 'daily_brief',
+    filename: 'daily-brief.nika.yaml',
+    gloss: 'permits: · the file IS the blast radius',
+    highlight: [5, 7],
+    yaml: `nika: v1
 workflow: daily-brief
 model: ollama/llama3.1        # local · your data never leaves
 
-permits:                     # the file IS the blast radius
-  net: [ gmail, gcal, news ]
+permits:                      # the file IS the blast radius
+  net: [ gmail, gcal, news, github ]
   fs: { write: ./brief.md }
 
 tasks:
   - { id: inbox,    invoke: gmail.unread }
   - { id: calendar, invoke: gcal.today }
-  - { id: triage,   needs: [inbox], infer: "flag urgent" }
-  - { id: brief,    needs: [triage, calendar], infer: "write the brief" }
-`
+  - { id: triage,   needs: [inbox],            infer: "flag what's urgent" }
+  - { id: draft,    needs: [triage, calendar], infer: "write the brief" }
+  - { id: save,     needs: [draft],            invoke: fs.write }
+`,
+  },
+  {
+    id: 'pr_risk_review',
+    filename: 'pr-risk-review.nika.yaml',
+    gloss: 'when: · the agent probe only fires on real risk',
+    highlight: [15, 18],
+    yaml: `nika: v1
+workflow: pr-risk-review
+model: ollama/llama3.1        # local · the diff never leaves
+
+permits:                      # the file IS the blast radius
+  exec: [ gh ]
+  fs: { write: [ ./review.md ] }
+
+tasks:
+  - id: diff
+    exec: { command: "gh pr diff 482" }
+  - id: risk
+    depends_on: [diff]
+    infer: { prompt: "Score the blast radius · \${{ tasks.diff.output }}" }
+  - id: probe
+    depends_on: [risk]
+    when: \${{ tasks.risk.output.score >= 7 }}
+    agent: { prompt: "Trace the risky call paths", tools: [ "nika:read" ] }
+  - id: report
+    depends_on: [risk, probe]
+    invoke:
+      tool: "nika:write"
+      args: { path: ./review.md, content: "\${{ tasks.risk.output }}" }
+`,
+  },
+  {
+    id: 'meeting_actions',
+    filename: 'meeting-actions.nika.yaml',
+    gloss: 'schema: · the output is a contract, not prose',
+    highlight: [16, 17],
+    yaml: `nika: v1
+workflow: meeting-actions
+model: ollama/llama3.1        # local · the recording stays yours
+
+permits:                      # the file IS the blast radius
+  fs: { read: [ ./transcript.txt ], write: [ ./action-items.json ] }
+
+tasks:
+  - id: transcript
+    invoke:
+      tool: "nika:read"
+      args: { path: ./transcript.txt }
+  - id: extract
+    depends_on: [transcript]
+    infer:
+      prompt: "Every action item · \${{ tasks.transcript.output }}"
+      schema: { type: object, required: [actions] }
+  - id: save
+    depends_on: [extract]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./action-items.json
+        content: "\${{ tasks.extract.output.actions }}"
+`,
+  },
+]
 
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
 const rise = (ms: number): React.CSSProperties =>
   ({ '--rise-delay': `${ms}ms` }) as React.CSSProperties
 
-/* the monochrome install affordance — a bordered mono row + a copy button with a
-   real, non-color-only copied state (icon + text both flip). SSR-safe. */
+/* the install affordance — a bordered mono row + a copy button with a real,
+   non-color-only copied state (icon + text both flip). SSR-safe. */
 function InstallLine() {
   const [copied, setCopied] = useState(false)
   const copy = () => {
@@ -99,9 +180,9 @@ function InstallLine() {
 }
 
 /* ─── the hero chrome · faint HUD ticks + a readability vignette ───────────────
-   The depth tunnel now lives at the PAGE level (Home · fixed behind everything);
+   The WebGL background lives at the PAGE level (Home · fixed behind everything);
    the hero is transparent so it shows through. This is just the decorative HUD +
-   a left vignette so the copy clears contrast over the tunnel. */
+   a left vignette so the copy clears contrast over the field. */
 function HeroAtmosphere() {
   return (
     <>
@@ -113,9 +194,52 @@ function HeroAtmosphere() {
         <span className="v4hud-tick v4hud-tick--br" />
       </div>
 
-      {/* a soft readability vignette so the LEFT copy clears contrast over the tunnel */}
+      {/* a soft readability vignette so the LEFT copy clears contrast over the field */}
       <div className="v4hero-readscrim" aria-hidden />
     </>
+  )
+}
+
+/* ── the sharp file-tab strip · mono, hairline, no pills ──────────────────────
+   role=tablist with roving tabIndex + arrow-key switching. The DEFAULT tab
+   (daily-brief) is prerendered, so crawlers / no-JS get the continuity file. */
+function FileTabs({
+  active,
+  onSelect,
+}: {
+  active: number
+  onSelect: (i: number) => void
+}) {
+  const refs = useRef<(HTMLButtonElement | null)[]>([])
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
+    if (!dir) return
+    e.preventDefault()
+    const next = (active + dir + HERO_FILES.length) % HERO_FILES.length
+    onSelect(next)
+    refs.current[next]?.focus()
+  }
+  return (
+    <div className="v4ftabs" role="tablist" aria-label="Example workflow files" onKeyDown={onKeyDown}>
+      {HERO_FILES.map((f, i) => (
+        <button
+          key={f.id}
+          ref={(el) => {
+            refs.current[i] = el
+          }}
+          type="button"
+          role="tab"
+          id={`v4ftab-${f.id}`}
+          aria-selected={i === active}
+          aria-controls="v4ftab-panel"
+          tabIndex={i === active ? 0 : -1}
+          className="v4ftab"
+          onClick={() => onSelect(i)}
+        >
+          {f.filename}
+        </button>
+      ))}
+    </div>
   )
 }
 
@@ -123,6 +247,8 @@ export default function Hero() {
   const rootRef = useRef<HTMLElement>(null)
   const copyRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<HTMLDivElement>(null)
+  const [tab, setTab] = useState(0)
+  const file = HERO_FILES[tab]
 
   /* opt the hero into the orchestrated entrance — only when motion is allowed.
      Adding the class in an effect (post-paint) guarantees the prerendered HTML
@@ -151,7 +277,6 @@ export default function Hero() {
       const h = rect.height || 1
       // 0 while the hero fills the view → 1 as it scrolls out (the pull window)
       const ap = Math.min(1, Math.max(0, -rect.top / (h * 0.82)))
-      // the copy fades up as the hero scrolls out — the ONE code block (the page-
       // the editor (the plan) sinks down + dissolves as the hero scrolls out, the
       // copy fades up — a clean exit into the Living File below.
       const e = ap * ap
@@ -177,13 +302,13 @@ export default function Hero() {
       id="hero"
       className="theme-dark relative isolate flex min-h-screen flex-col justify-center overflow-hidden"
     >
-      {/* the dark field + blue pointe + grid + HUD + the particle butterfly (lazy) */}
+      {/* the HUD ticks + the readability scrim (the WebGL field is page-level) */}
       <HeroAtmosphere />
 
       {/* the two-column composition · copy LEFT · editor RIGHT · generous space.
           Stacks to one column under 1024px (editor below the copy). */}
       <div className="v4hero-grid relative z-[1] mx-auto w-full max-w-6xl">
-        {/* ── LEFT · the control narrative ─────────────────────────────────── */}
+        {/* ── LEFT · the wedge ─────────────────────────────────────────────── */}
         <div ref={copyRef} className="v4hero-copy flex max-w-2xl flex-col">
           {/* FIG 0.0 · the blueprint numbering with its hairline tick */}
           <p className="v4fig mb-6" data-rise style={rise(0)}>
@@ -195,24 +320,21 @@ export default function Hero() {
             <span aria-hidden>✦</span> Intent as Code
           </p>
 
-          {/* the REAL <h1> · the control hook · the SEO win. Two clauses on
-              their own lines so the cadence reads as a promise. */}
+          {/* the REAL <h1> · the wedge · the SEO win. */}
           <h1
             data-rise
             style={{
               ...rise(80),
               fontFamily: 'var(--headline)',
-              fontSize: 'clamp(1.5rem, 0.5rem + 4.7vw, 4.05rem)',
-              lineHeight: 1.02,
-              letterSpacing: '-0.025em',
+              fontSize: 'clamp(1.9rem, 0.9rem + 3.6vw, 3.55rem)',
+              lineHeight: 1.04,
+              letterSpacing: '-0.022em',
               fontWeight: 600,
               textWrap: 'balance',
             }}
             className="text-text"
           >
-            See what your AI will do.
-            <br />
-            <span className="text-dim">Before it does it.</span>
+            Useful AI work shouldn&rsquo;t disappear into chats.
           </h1>
 
           <p
@@ -220,10 +342,10 @@ export default function Hero() {
             style={rise(150)}
             className="mt-7 max-w-[34rem] text-[17px] leading-relaxed text-dim"
           >
-            Agents are starting to touch real systems&nbsp;— your code, your APIs,
-            production. Nika makes an agent write its plan as a file first: every
-            step, tool, <b className="font-semibold text-text">permission</b> and
-            output. You review it. The runtime enforces it. Then it runs.
+            Nika turns repeatable AI work into files you can run, review, diff and
+            share. One file&nbsp;· 4&nbsp;verbs&nbsp;· one Rust binary. The agent
+            writes the plan, you review it, the runtime{' '}
+            <b className="font-semibold text-text">enforces</b> it — then it runs.
           </p>
 
           {/* the install line · #install is the nav CTA's target */}
@@ -231,36 +353,33 @@ export default function Hero() {
             <InstallLine />
           </div>
 
-          {/* one row of flat CTAs · they WRAP on narrow screens so every link
-              stays visible. Each is a ≥44px mobile hit target. */}
+          {/* one row of CTAs · primary "See it run" button + two flat links.
+              They WRAP on narrow screens; each is a ≥44px mobile hit target. */}
           <div
             data-rise
             style={rise(290)}
-            className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-1 text-[14.5px]"
+            className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14.5px]"
           >
+            <a href="#living-file" className="v4cta group">
+              <span aria-hidden className="transition-transform group-hover:translate-y-0.5">
+                ↓
+              </span>
+              See it run
+            </a>
             <a
               href={SPEC}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-text transition-colors"
+              className="group inline-flex min-h-11 items-center gap-1.5 text-dim transition-colors hover:text-text"
             >
               Read the spec
               <span className="transition-transform group-hover:translate-x-0.5">→</span>
             </a>
             <a
-              href="#living-file"
-              className="group inline-flex min-h-11 items-center gap-1.5 rounded-md text-dim transition-colors hover:text-text"
-            >
-              <span aria-hidden className="text-dim transition-transform group-hover:translate-y-0.5">
-                ↓
-              </span>
-              see it run
-            </a>
-            <a
               href={REPO}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex min-h-11 items-center gap-2 rounded-md text-dim transition-colors hover:text-text"
+              className="group inline-flex min-h-11 items-center gap-2 text-dim transition-colors hover:text-text"
             >
               <span aria-hidden className="text-faint transition-colors group-hover:text-text">
                 ★
@@ -280,27 +399,34 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* ── RIGHT · the premium editor panel · the product replica ────────── */}
+        {/* ── RIGHT · the premium editor panel · switchable product replica ── */}
         <div className="v4hero-editor" data-rise style={rise(180)}>
           <div ref={editorRef} className="v4hero-aspirate">
-            <CodeFile
-              yaml={HERO_YAML}
-              filename="daily-brief.nika.yaml"
-              highlight={[5, 7]}
-              className="v4hero-code"
-            />
-            {/* a compact reference chip · "see it run" links to the full Living
-                File run below (the same plan, as a DAG). */}
-            <Link to="#living-file" className="v4hint mt-4 w-fit">
-              <span className="v4hint-file">daily-brief.nika.yaml</span>
-              <span className="text-faint" aria-hidden>
-                ·
-              </span>
-              <span>see it run</span>
-              <span className="v4hint-arrow" aria-hidden>
-                →
-              </span>
-            </Link>
+            <FileTabs active={tab} onSelect={setTab} />
+            <div id="v4ftab-panel" role="tabpanel" aria-labelledby={`v4ftab-${file.id}`}>
+              <CodeFile
+                yaml={file.yaml}
+                filename={file.filename}
+                highlight={file.highlight}
+                className="v4hero-code"
+              />
+            </div>
+            {/* the tab's one-line story + the handoff chip: the DEFAULT file is
+                the one the Living File below actually runs — "see it run" is the
+                continuity link into that choreography. */}
+            <div className="v4hero-editorfoot mt-4">
+              <span className="v4gloss">{file.gloss}</span>
+              <Link to="#living-file" className="v4hint w-fit">
+                <span className="v4hint-file">daily-brief.nika.yaml</span>
+                <span className="text-faint" aria-hidden>
+                  ·
+                </span>
+                <span>see it run</span>
+                <span className="v4hint-arrow" aria-hidden>
+                  ↓
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

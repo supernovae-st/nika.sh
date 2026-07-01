@@ -33,6 +33,7 @@
   --v4-accent-strong: #2f6bff;
   --v4-accent-bright: #8db4ff;
   --v4-accent-soft: rgb(79 134 255 / 0.12);
+  --v4-accent-cta: #2b62ea;  /* solid CTA fill · white ink reads 5.2:1        */
 
   /* ── sharpness ("carré") · radii 0–4px on structural elements ─────────────
      Hairline 1px borders + the 8px spacing grid do the hierarchy work;
@@ -132,6 +133,7 @@
   --v4-accent-strong: #2f6bff;
   --v4-accent-bright: #8db4ff;
   --v4-accent-soft: rgb(79 134 255 / 0.12);
+  --v4-accent-cta: #2b62ea;
   /* seam nod · a dark section's neighbour is light → a faint light wash at top */
   --v4-seam-nod: rgb(255 255 255 / 0.022);
   --v4-focus-ring: #6f9dff;  /* accent-blue · 7.5:1 on the dark base */
@@ -153,6 +155,7 @@
   --v4-accent-strong: #1e4ec8;
   --v4-accent-bright: #2f6bff;
   --v4-accent-soft: rgb(36 86 214 / 0.10);
+  --v4-accent-cta: #1e4ec8;  /* white ink reads 7.1:1                        */
   /* seam nod · a light section's neighbour is dark → a faint dark wash at top */
   --v4-seam-nod: rgb(10 11 13 / 0.04);
   /* near-black focus ring · the accent blue sinks on the off-white, this clears
