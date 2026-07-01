@@ -303,7 +303,7 @@
      blur keeps the CLI log legible without a hard dark slab over the depth. */
   background: color-mix(in oklch, var(--v4-bg) 26%, transparent);
   border: 1px solid color-mix(in oklch, var(--v4-line) 55%, transparent);
-  border-radius: 10px;
+  border-radius: var(--v4-radius);
   padding: 0.4rem 0.65rem;
   backdrop-filter: blur(18px) saturate(1.1);
   -webkit-backdrop-filter: blur(18px) saturate(1.1);
@@ -418,7 +418,7 @@
   max-width: 232px;
   padding: 13px 15px;
   border: 1px solid var(--v4-line);
-  border-radius: 11px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 58%, transparent);
   text-align: left;
 }
@@ -544,7 +544,7 @@
   gap: 9px;
   padding: 22px 24px;
   border: 1px solid var(--v4-line);
-  border-radius: 14px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -627,7 +627,7 @@
 }
 .lf-dag-wrap {
   border: 1px solid var(--v4-line);
-  border-radius: 12px;
+  border-radius: var(--v4-radius);
   background: var(--v4-bg-raised);
   padding: 0.5rem;
   overflow-x: auto;
@@ -647,7 +647,7 @@
   transition: stroke 0.35s ease, stroke-width 0.35s ease, opacity 0.35s ease;
 }
 .lf-edge--flow {
-  stroke: color-mix(in oklch, #9fd8ff 72%, var(--v4-text));
+  stroke: color-mix(in oklch, #8db4ff 72%, var(--v4-text));
   stroke-width: 1.7;
   opacity: 0.95;
 }
@@ -859,7 +859,7 @@
   transition: stroke 0.3s ease, opacity 0.3s ease;
 }
 .lf-rib--on {
-  stroke: color-mix(in oklch, #9fd8ff 58%, var(--v4-text));
+  stroke: color-mix(in oklch, #8db4ff 58%, var(--v4-text));
   opacity: 0.85;
 }
 /* the fan's side label · the task id + verb + ×N tally */
@@ -932,7 +932,7 @@
   font-size: 11px;
 }
 .lf-y-key {
-  fill: #7fb4f0;
+  fill: #8db4ff;
 } /* keys · cyan-blue */
 .lf-y-val {
   fill: #d7b07a;
@@ -957,10 +957,10 @@
 }
 /* the running / done node glows (the v3 radial glow, as an SVG drop-shadow) */
 .lf-dag-wrap--stage .lf-node--running {
-  filter: drop-shadow(0 0 7px color-mix(in oklch, var(--lf-hue, #9fd8ff) 65%, transparent));
+  filter: drop-shadow(0 0 7px color-mix(in oklch, var(--lf-hue, #8db4ff) 65%, transparent));
 }
 .lf-dag-wrap--stage .lf-node--success {
-  filter: drop-shadow(0 0 4px color-mix(in oklch, #9fd8ff 32%, transparent));
+  filter: drop-shadow(0 0 4px color-mix(in oklch, #8db4ff 32%, transparent));
 }
 /* file → DAG · the plan explodes out from a collapsed centre when the
    comprehension beat lands (motion-safe; the SVG scales from its centre) */
@@ -992,7 +992,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid var(--v4-line);
-  border-radius: 12px;
+  border-radius: var(--v4-radius);
   background: var(--v4-bg-raised);
   overflow: hidden;
 }
@@ -1012,7 +1012,7 @@
 .lf-toggle {
   display: inline-flex;
   border: 1px solid var(--v4-line);
-  border-radius: 8px;
+  border-radius: var(--v4-radius);
   overflow: hidden;
 }
 .lf-toggle-btn {
@@ -1094,7 +1094,7 @@
 /* ─── the outputs panel ──────────────────────────────────────────────────────*/
 .lf-outputs {
   border: 1px solid var(--v4-line);
-  border-radius: 12px;
+  border-radius: var(--v4-radius);
   background: var(--v4-bg-raised);
   padding: 0.7rem 0.85rem 0.85rem;
 }
@@ -1150,7 +1150,7 @@
      load-bearing left tick. Still grayscale: the ✗ + the real code are the
      non-colour cue (design doc · colour stays the aurora + verb whisper). */
   border: 1px solid color-mix(in oklch, var(--v4-text) 16%, var(--v4-line));
-  border-radius: 12px;
+  border-radius: var(--v4-radius);
   background: var(--v4-bg-raised);
   box-shadow: inset 0 1px 0 color-mix(in oklch, var(--v4-text) 8%, transparent);
   padding: 0.75rem 0.9rem 0.85rem;
@@ -1174,7 +1174,7 @@
   align-items: baseline;
   gap: 0.6ch;
   padding: 0.4rem 0.55rem;
-  border-radius: 8px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-text) 5%, transparent);
   font-size: 12.5px;
   line-height: 1.5;
@@ -1207,7 +1207,7 @@
   gap: 5px;
   padding: 2px 7px;
   border: 1px solid color-mix(in oklch, var(--v4-text) 28%, transparent);
-  border-radius: 5px;
+  border-radius: var(--v4-radius-sm);
   font-size: 9px;
   letter-spacing: 0.18em;
   color: var(--v4-text);

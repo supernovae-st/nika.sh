@@ -135,7 +135,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid var(--v4-line);
-  border-radius: 12px;
+  border-radius: var(--v4-radius);
   overflow: hidden;
   background: color-mix(in oklch, var(--v4-text) 1.5%, transparent);
 }
@@ -275,7 +275,7 @@
   margin-top: 13px;
   padding: 10px 13px;
   border: 1px solid color-mix(in oklch, var(--hitl-warn) 30%, var(--v4-line));
-  border-radius: 9px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--hitl-warn) 5%, transparent);
   font-size: 12.5px;
   line-height: 1.5;
@@ -293,7 +293,7 @@
   font-family: var(--mono);
   font-size: 0.9em;
   padding: 1px 5px;
-  border-radius: 5px;
+  border-radius: var(--v4-radius-sm);
   background: color-mix(in oklch, var(--hitl-warn) 12%, transparent);
   color: color-mix(in oklch, var(--hitl-warn) 60%, var(--v4-text));
 }
@@ -314,7 +314,7 @@
   gap: 9px;
   min-height: 44px;
   padding: 0 20px;
-  border-radius: 10px;
+  border-radius: var(--v4-radius);
   border: 1px solid var(--v4-text);
   background: var(--v4-text);
   color: var(--v4-bg);
@@ -353,7 +353,7 @@
   min-width: 0;
   position: relative;
   border: 1px solid var(--v4-line);
-  border-radius: 14px;
+  border-radius: var(--v4-radius);
   padding: clamp(18px, 2.4vw, 26px);
   background: var(--v4-bg-raised);
   /* a top hairline in the current accent — the seam that recolours per verdict */
@@ -416,7 +416,7 @@
 .hitl-cli {
   margin: 18px 0 0;
   padding: 14px 16px;
-  border-radius: 10px;
+  border-radius: var(--v4-radius);
   border: 1px solid var(--v4-line);
   background: color-mix(in oklch, var(--v4-text) 4%, transparent);
   font-size: 12px;
@@ -465,7 +465,7 @@
   font-family: var(--mono);
   font-size: 0.92em;
   padding: 1px 5px;
-  border-radius: 5px;
+  border-radius: var(--v4-radius-sm);
   background: color-mix(in oklch, var(--v4-text) 7%, transparent);
   color: var(--v4-text-dim);
 }

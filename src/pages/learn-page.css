@@ -78,7 +78,7 @@
   gap: 11px;
   padding: 12px 14px;
   border: 1px solid var(--v4-line);
-  border-radius: 10px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
   font-size: 12.5px;
   line-height: 1.55;

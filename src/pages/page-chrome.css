@@ -232,7 +232,7 @@
   min-height: 44px;
   font-size: 14.5px;
   color: var(--v4-text);
-  border-radius: 7px;
+  border-radius: var(--v4-radius);
   transition: color 0.18s ease;
 }
 .v4doclink--dim {

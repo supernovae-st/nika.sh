@@ -39,7 +39,7 @@
   min-height: 34px;
   padding: 6px 12px;
   border: 1px solid var(--v4-line);
-  border-radius: 8px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
   font-family: var(--mono);
   font-size: 11.5px;
@@ -61,7 +61,7 @@
   min-height: 34px;
   padding: 6px 10px;
   border: 1px solid var(--v4-line);
-  border-radius: 8px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
   font-family: var(--mono);
   font-size: 11.5px;
@@ -105,7 +105,7 @@
   gap: 7px;
   margin-left: auto;
   padding: 2px 9px;
-  border-radius: 6px;
+  border-radius: var(--v4-radius);
   border: 1px solid var(--cf-line, rgb(255 255 255 / 0.07));
   font-family: var(--mono);
   font-size: 10px;
@@ -166,7 +166,7 @@
 .play-panel {
   padding: 18px;
   border: 1px solid var(--v4-line);
-  border-radius: 12px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
 }
 .play-panel-head {
@@ -299,7 +299,7 @@
   gap: 6px;
   padding: 4px 10px;
   border: 1px solid var(--v4-line);
-  border-radius: 7px;
+  border-radius: var(--v4-radius);
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.01em;

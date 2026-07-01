@@ -182,6 +182,15 @@
   background-color: var(--v4-bg);
   color: var(--v4-text);
 }
+/* the alternating SECTIONS carry the BRAND-11 grain: white dots on the dark
+   register, dark "paper grain" dots on the light one (both theme-scoped via
+   --v4-grain-img). Scoped to .v4sec so transparent surfaces (the hero · the
+   Living File's pinned register) and small themed panels stay untouched. */
+.v4sec.theme-dark,
+.v4sec.theme-light {
+  background-image: var(--v4-grain-img);
+  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
+}
 
 /* ─── section-boundary seam · the alternation reads DESIGNED ──────────────────
    Every alternating theme section butts up against the previous one. Left raw,

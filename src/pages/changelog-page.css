@@ -105,7 +105,7 @@
   min-height: 44px;
   font-size: 14.5px;
   color: var(--v4-text);
-  border-radius: 7px;
+  border-radius: var(--v4-radius);
   transition: color 0.18s ease;
 }
 .cl-link--dim {
@@ -141,7 +141,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   border: 1px solid var(--v4-line);
-  border-radius: 14px;
+  border-radius: var(--v4-radius);
   overflow: hidden;
   background: var(--v4-line);
 }
@@ -288,7 +288,7 @@
   align-items: center;
   padding: 2px 8px 2px 10px;
   border: 1px solid color-mix(in oklch, var(--th) 26%, var(--v4-line));
-  border-radius: 6px;
+  border-radius: var(--v4-radius);
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.14em;

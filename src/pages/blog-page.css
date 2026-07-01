@@ -42,7 +42,7 @@
   color: var(--v4-text);
   padding: 1px 5px;
   border: 1px solid var(--v4-line);
-  border-radius: 5px;
+  border-radius: var(--v4-radius-sm);
   background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
   white-space: nowrap;
 }
@@ -148,7 +148,7 @@
   min-width: 0;
   padding: 20px 20px 18px;
   border: 1px solid var(--v4-line);
-  border-radius: 14px;
+  border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
