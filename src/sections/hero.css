@@ -192,6 +192,15 @@
 .v4ftab:hover {
   color: var(--v4-text);
 }
+/* the dim ".nika.yaml" extension — only the ACTIVE tab spells the full
+   filename (IDE register); inactive tabs keep the basename so three tabs
+   always fit the 560px column without clipping. */
+.v4ftab-ext {
+  color: var(--v4-hud-faint);
+}
+.v4ftab:not([aria-selected='true']) .v4ftab-ext {
+  display: none;
+}
 .v4ftab[aria-selected='true'] {
   color: var(--v4-text);
   background: var(--v4-bg-raised);

@@ -39,6 +39,9 @@ const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
 type HeroFile = {
   id: string
   filename: string
+  /** the short tab label (the basename — the full filename lives in the
+      editor's window chrome right below; three full names don't fit the strip) */
+  label: string
   yaml: string
   highlight: [number, number]
   /** what the highlighted lines demonstrate (the tab's one-line story) */
@@ -49,6 +52,7 @@ const HERO_FILES: HeroFile[] = [
   {
     id: 'daily_brief',
     filename: 'daily-brief.nika.yaml',
+    label: 'daily-brief',
     gloss: 'permits: · the file IS the blast radius',
     highlight: [5, 7],
     yaml: `nika: v1
@@ -70,6 +74,7 @@ tasks:
   {
     id: 'pr_risk_review',
     filename: 'pr-risk-review.nika.yaml',
+    label: 'pr-risk-review',
     gloss: 'when: · the agent probe only fires on real risk',
     highlight: [15, 18],
     yaml: `nika: v1
@@ -100,6 +105,7 @@ tasks:
   {
     id: 'meeting_actions',
     filename: 'meeting-actions.nika.yaml',
+    label: 'meeting-actions',
     gloss: 'schema: · the output is a contract, not prose',
     highlight: [16, 17],
     yaml: `nika: v1
@@ -149,7 +155,12 @@ function InstallLine() {
         <span className="v4install-dollar" aria-hidden>
           ❯
         </span>
-        brew install <span className="v4install-dim">supernovae-st/tap/</span>nika
+        {/* ONE flex item for the whole command — a flex container trims the
+            boundary whitespace between items, which ate the space after
+            "install" when the dim span was a sibling item. */}
+        <span>
+          brew install <span className="v4install-dim">supernovae-st/tap/</span>nika
+        </span>
       </span>
       <button
         type="button"
@@ -236,7 +247,10 @@ function FileTabs({
           className="v4ftab"
           onClick={() => onSelect(i)}
         >
-          {f.filename}
+          {f.label}
+          <span className="v4ftab-ext" aria-hidden>
+            .nika.yaml
+          </span>
         </button>
       ))}
     </div>
@@ -326,7 +340,7 @@ export default function Hero() {
             style={{
               ...rise(80),
               fontFamily: 'var(--headline)',
-              fontSize: 'clamp(1.9rem, 0.9rem + 3.6vw, 3.55rem)',
+              fontSize: 'clamp(1.9rem, 1.05rem + 3vw, 3.1rem)',
               lineHeight: 1.04,
               letterSpacing: '-0.022em',
               fontWeight: 600,
