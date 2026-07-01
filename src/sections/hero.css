@@ -405,3 +405,31 @@
 
 /* keep the entrance choreography tokens (.v4-enter [data-rise]) from shell.css —
    they already drive the orchestrated reveal of the copy + editor. */
+
+/* ── the rotating mono audience line (Vercel register) ────────────────────────
+   All three lines always render (zero layout shift); the rotation is a
+   color-only crossfade — the active line lifts to full contrast, the rest
+   stay faint. The first line ships active; SSR / no-JS / reduced-motion keep
+   the stack static (the interval never arms). */
+.v4aud {
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  line-height: 1.4;
+  color: var(--v4-text-faint);
+}
+.v4aud-line {
+  color: var(--v4-text-faint);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v4aud-line {
+    transition: color 0.9s ease;
+  }
+}
+.v4aud-line[data-active='true'] {
+  color: var(--v4-text);
+}

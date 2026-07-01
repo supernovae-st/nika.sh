@@ -148,6 +148,43 @@ const rise = (ms: number): React.CSSProperties =>
    src/components/InstallCommand.tsx so GetStarted's runs-everywhere terminal
    card renders the exact same affordance). */
 
+/* ── the rotating mono audience line (Vercel register) ────────────────────────
+   Three all-caps mono lines under the hero sub-line, ALL always rendered (zero
+   layout shift — the rotation is color-only): the active one reads full-
+   contrast, the others stay dim, crossfading every ~4s. Small and quiet — it
+   must never compete with the H1. The FIRST line ships active in the
+   prerendered HTML (SSR = client initial state · no hydration drift); the
+   interval only arms after mount when motion is allowed, so reduced-motion /
+   no-JS get the static three-line stack. Screen readers get ONE sentence via
+   the container label; the visual lines are aria-hidden. */
+const AUDIENCE = [
+  'FOR HUMANS WHO WRITE IT',
+  'FOR AGENTS THAT RUN IT',
+  'FOR TEAMS THAT AUDIT IT',
+]
+
+function AudienceLines() {
+  const [active, setActive] = useState(0)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const id = setInterval(() => setActive((a) => (a + 1) % AUDIENCE.length), 4000)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <p
+      className="v4aud"
+      aria-label="For humans who write it, for agents that run it, for teams that audit it"
+    >
+      {AUDIENCE.map((line, i) => (
+        <span key={line} className="v4aud-line" data-active={i === active} aria-hidden>
+          {line}
+        </span>
+      ))}
+    </p>
+  )
+}
+
 /* ─── the hero chrome · faint HUD ticks + a readability vignette ───────────────
    The WebGL background lives at the PAGE level (Home · fixed behind everything);
    the hero is transparent so it shows through. This is just the decorative HUD +
@@ -319,6 +356,11 @@ export default function Hero() {
             writes the plan, you review it, the runtime{' '}
             <b className="font-semibold text-text">enforces</b> it — then it runs.
           </p>
+
+          {/* the rotating mono audience line · quiet, color-only, zero shift */}
+          <div data-rise style={rise(190)}>
+            <AudienceLines />
+          </div>
 
           {/* the main CTA row · the primary button + the command-as-CTA install
               (equal rank · Codex/Vercel register). #install is the nav target.
