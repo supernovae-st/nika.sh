@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { CANON } from './canon.generated'
 
 /* ─── all copy + code on the page · verified against nika-spec (spec/02-verbs.md ·
@@ -34,52 +33,6 @@ export function routeHead(path: string): {
     meta: [{ property: 'og:url', content: url }],
   }
 }
-
-/* §1 · the language — one real workflow */
-export const WF = `nika: v1
-workflow: research-pipeline
-
-model: ollama/llama3.1
-vars:
-  topic:
-    type: string
-    required: true
-
-tasks:
-  - id: research
-    infer:
-      prompt: "Research \${{ vars.topic }} in 5 paragraphs"
-
-  - id: write
-    depends_on: [research]
-    invoke:
-      tool: nika:write
-      args:
-        path: ./brief.md
-        content: \${{ tasks.research.output }}
-
-outputs:
-  brief: \${{ tasks.write.output }}
-`
-
-export const NOTES: { token: string; body: ReactNode }[] = [
-  {
-    token: 'nika: v1',
-    body: 'The contract. One version marker, pinned forever. No framework churn, no v2 migration.',
-  },
-  {
-    token: 'infer · exec · invoke · agent',
-    body: 'Four verbs. Call a model, run a process, call a tool, drive an agent. That is the whole operation space.',
-  },
-  {
-    token: '${{ tasks.research.output }}',
-    body: "Bindings thread one task's output into the next. The DAG is written as data, not glued in code.",
-  },
-  {
-    token: 'tool: nika:write',
-    body: `Tools live behind invoke:, either nika: builtins or mcp: servers. ${CANON.builtins} builtins, ${CANON.providers} providers, nothing to install.`,
-  },
-]
 
 /* §2 · the four verbs — snippets are verbatim spec shapes (02-verbs.md) */
 export const VERBS: { verb: string; tagline: string; body: string; code: string }[] = [
@@ -121,78 +74,10 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
 ]
 
 /* §3 · the method — the two-tier wedge */
-export const WEDGE = {
-  eyebrow: '§ The method',
-  title: 'Chat is where work happens. Source is where it lives.',
-  body: 'Explore in any chat, any agent, any IDE. Then the work that matters compiles down to a .nika.yaml you keep. Run it again tomorrow. Diff it next week. Own it forever.',
-  chat: {
-    label: 'The chat tier · ephemeral',
-    lines: [
-      '“Can you research X and write a brief?”',
-      '“Now do it again but for Y…”',
-      '“Wait, what prompt did we use last month?”',
-    ],
-    verdict: 'Gone when the tab closes.',
-  },
-  source: {
-    label: 'The source tier · durable',
-    code: `$ nika run research-pipeline.nika.yaml \\
-    --var topic="Rust async runtimes"
-
-$ git diff research-pipeline.nika.yaml`,
-    verdict: 'Readable. Runnable. Diffable. Yours.',
-  },
-}
 
 /* ─── §use-cases · concrete workflows anyone can picture ───────────────────
    Each card: what it does in plain words + the verbs it uses. The site-audit
    one is REAL (supernovae-st/nika-site-audit ships today). */
-export interface UseCase {
-  icon: string
-  title: string
-  body: string
-  verbs: ('infer' | 'exec' | 'invoke' | 'agent')[]
-}
-
-export const USECASES: UseCase[] = [
-  {
-    icon: '📡',
-    title: 'Weekly competitive radar',
-    body: 'Every Monday: fetch what competitors shipped, summarize the signal, write a one-page brief.',
-    verbs: ['invoke', 'infer', 'agent'],
-  },
-  {
-    icon: '🔍',
-    title: 'Site audit',
-    body: 'Crawl a website, find broken links and SEO issues, file a clean report. Ships today as nika-site-audit.',
-    verbs: ['invoke', 'infer'],
-  },
-  {
-    icon: '🚀',
-    title: 'Release notes',
-    body: 'Read the git log since the last tag, write the changelog in your tone, save it next to the code.',
-    verbs: ['exec', 'infer'],
-  },
-  {
-    icon: '🌍',
-    title: 'Docs translation',
-    body: 'Every new doc gets translated to three languages. Same glossary, same voice, every time.',
-    verbs: ['invoke', 'infer'],
-  },
-  {
-    icon: '🧾',
-    title: 'Data extraction',
-    body: 'Turn messy web pages or PDFs into clean JSON your other tools can actually use.',
-    verbs: ['invoke', 'infer'],
-  },
-  {
-    icon: '🛠️',
-    title: 'Code review prep',
-    body: 'Summarize the diff, flag the risky changes, draft review notes before a human even looks.',
-    verbs: ['exec', 'infer', 'agent'],
-  },
-]
-
 /* ─── §versus · why a file beats the alternatives (direct, no jargon) ─── */
 export interface Versus {
   them: string

@@ -104,7 +104,7 @@ export default function UseCasesV4() {
           >
             {t.cases.map((u, i) => {
               const selected = i === Math.min(sel, t.cases.length - 1)
-              const cardVerbs = verbsFor(u) as NikaVerb[]
+              const cardVerbs = verbsFor(u)
               return (
                 <button
                   key={u.slug}

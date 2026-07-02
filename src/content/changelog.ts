@@ -129,17 +129,18 @@ export const CHANGELOG: ChangelogEntry[] = [
   },
 ]
 
-/* a human-readable label per tag (the mono register chip on each entry). */
-export const TAG_LABEL: Record<ChangelogTag, string> = {
-  release: 'release',
-  spec: 'spec',
-  language: 'language',
-  stdlib: 'stdlib',
-  providers: 'providers',
-  security: 'security',
-  tooling: 'tooling',
-  site: 'site',
-}
+/* the closed tag vocabulary, in legend order. The rendered chip label IS the
+   tag id (the old TAG_LABEL was an identity map — a dead abstraction). */
+export const TAGS: readonly ChangelogTag[] = [
+  'release',
+  'spec',
+  'language',
+  'stdlib',
+  'providers',
+  'security',
+  'tooling',
+  'site',
+]
 
 /* format an ISO date as a compact register date (e.g. "2026 · 06 · 17"),
    tabular and locale-stable (no Intl drift between SSR + client). */

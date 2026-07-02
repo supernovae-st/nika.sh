@@ -617,13 +617,6 @@
   }
 }
 
-/* the emphasized code line — a subtle band + a left hairline tick (the one
-   representative line in the hero file). Stays grayscale (no accent fill). */
-.v4code-lit {
-  position: relative;
-  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
-  box-shadow: inset 2px 0 0 color-mix(in oklch, var(--v4-text) 32%, transparent);
-}
 
 /* the FIG label rule — a hairline tick that anchors the blueprint number.
 

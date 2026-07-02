@@ -1,6 +1,6 @@
 import { useRevealOnce } from './use-reveal-once'
 import { Link } from 'react-router'
-import { CHANGELOG, TAG_LABEL, entryDate, entryDateTime } from '../content/changelog'
+import { CHANGELOG, entryDate, entryDateTime } from '../content/changelog'
 import './v4-home.css'
 import { SectionHead } from '../components/SectionHead'
 
@@ -49,7 +49,7 @@ export default function ChangelogPreview() {
                 <time className="v4log-date" dateTime={entryDateTime(e)}>
                   {entryDate(e)}
                 </time>
-                <span className="v4log-tag">{TAG_LABEL[e.tag]}</span>
+                <span className="v4log-tag">{e.tag}</span>
               </div>
               <div className="v4log-body">
                 <h3 className="v4log-title">{e.title}</h3>

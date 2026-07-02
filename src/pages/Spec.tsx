@@ -210,7 +210,7 @@ const PROVIDERS_LOCAL = CANON.providerIdsLocal.map(display)
 const PROVIDERS_CLOUD = CANON.providerIdsCloud.map(display)
 const PROVIDERS_TEST = CANON.providerIdsTest.map(display)
 
-/* ── FIG S.6 · error namespaces (from public/errors/catalog.json · CANON) ──────
+/* ── FIG S.7 · error namespaces (from public/errors/catalog.json · CANON) ──────
    The 14 NIKA-XXX namespaces + a one-line scope each. CANON.errorNamespaceNames
    is the SSOT for the list + count; the scope glosses are craft (an un-glossed
    namespace renders with a fallback, so the list can never under-render). */
@@ -643,7 +643,7 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.4 · providers ═════════════════════════════════════════ */}
+          {/* ══ FIG S.5 · providers ═════════════════════════════════════════ */}
           <div id="s4" className="spec-block" data-rise>
             <SpecHead
               fig="FIG S.5"
@@ -696,7 +696,7 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.5 · extract modes ═════════════════════════════════════ */}
+          {/* ══ FIG S.6 · extract modes ═════════════════════════════════════ */}
           <div id="s5" className="spec-block" data-rise>
             <SpecHead
               fig="FIG S.6"
@@ -716,7 +716,7 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.6 · error namespaces ══════════════════════════════════ */}
+          {/* ══ FIG S.7 · error namespaces ══════════════════════════════════ */}
           <div id="s6" className="spec-block" data-rise>
             <SpecHead
               fig="FIG S.7"
@@ -737,7 +737,7 @@ export function Component() {
             </ul>
           </div>
 
-          {/* ══ FIG S.7 · license + invariants ══════════════════════════════ */}
+          {/* ══ FIG S.8 · license + invariants ══════════════════════════════ */}
           <div id="s7" className="spec-block spec-block--last" data-rise>
             <SpecHead fig="FIG S.8" name="License + invariants" count="locked, forever">
               The contract you can count on — the parts that never change.

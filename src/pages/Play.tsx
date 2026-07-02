@@ -257,9 +257,9 @@ export function Component() {
                   </a>{' '}
                   and the{' '}
                   <a href="https://docs.nika.sh/guides/patterns" target="_blank" rel="noreferrer">
-                    twelve patterns
+                    patterns guide
                   </a>{' '}
-                  are the long form.
+                  is the long form.
                 </p>
               </div>
             </aside>

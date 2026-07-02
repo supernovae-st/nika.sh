@@ -326,9 +326,3 @@
     linear-gradient(180deg, #0a0d14 0%, #060709 100%);
 }
 
-/* the coarser variant · 2× cell, for large quiet surfaces (hero panel, seams) */
-.v4-grain-lg {
-  background-image: var(--v4-grain-img);
-  background-size: calc(var(--v4-grain-size, 4px) * 2) calc(var(--v4-grain-size, 4px) * 2);
-  image-rendering: pixelated;
-}

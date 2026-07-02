@@ -249,7 +249,7 @@ export function Component() {
             className="rv mb-12 text-center font-semibold tracking-tight"
             style={{ fontSize: 'clamp(1.7rem, 1rem + 2.4vw, 2.8rem)', lineHeight: 1.06 }}
           >
-            Built for the day the robinet closes.
+            Built for the day the tap closes.
           </h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {PROMISES.map((p, i) => (

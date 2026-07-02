@@ -136,7 +136,8 @@ function nodeDurationMs(runId: string, task: ShowcaseTask): number {
 function verbTarget(task: ShowcaseTask, dag: ShowcaseDag): string {
   switch (task.verb) {
     case 'infer': {
-      // prefer a real model id if the gloss hints typed output, else local-first default
+      // the sim's one local-first model id (constant by design — the run sim
+      // doesn't parse model ids out of glosses)
       return 'ollama/qwen2.5'
     }
     case 'exec': {
@@ -405,13 +406,14 @@ export function runStateAt(
 
     if (node.status === 'running') continue // mid-flight · no terminal event yet
 
-    if (node.status === 'failure') {
-      // sub-events still streamed before the failure surfaces
+    if (node.status === 'failure' && node.error) {
+      // sub-events still streamed before the failure surfaces (a failure node
+      // always carries its TypedError — the && narrows instead of a lone `!`)
       for (const se of subEvents(task)) {
         cli.push(`  ${CLI_GLYPH.sub} ${se.kind} …`)
         emit(se.kind, mid, 1, se.payload)
       }
-      const err = node.error!
+      const err = node.error
       emit('task.failed', end, 2, {
         task_id: task.id,
         code: err.code,

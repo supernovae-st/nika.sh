@@ -4,7 +4,8 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { useHead } from '@unhead/react'
 import {
   CHANGELOG,
-  TAG_LABEL,
+  TAGS,
+  type ChangelogTag,
   entryDate,
   entryDateTime,
   isRelease,
@@ -53,7 +54,7 @@ function groupByYear(entries: ChangelogEntry[]): YearGroup[] {
    node + the tag chip seam. Maps the ship-log classes onto the v4 hue vocabulary
    (the 4 verb hues + the teal "live-wiring" ref tone), so a security ship reads
    in the exec-orange "effect" tone, a language ship in the infer-blue, etc. */
-const TAG_HUE: Record<string, string> = {
+const TAG_HUE: Record<ChangelogTag, string> = {
   release: 'var(--v4-accent)', // the ONE blue accent · the engine itself ships
   spec: 'var(--cf-ref)', // teal · the contract / live-wiring
   language: 'var(--verb-infer)', // blue · the model verb
@@ -63,7 +64,7 @@ const TAG_HUE: Record<string, string> = {
   tooling: 'var(--cf-ref)', // teal · playground / mcp
   site: 'var(--v4-text-dim)', // neutral · the site itself
 }
-const tagHue = (tag: string) => TAG_HUE[tag] ?? 'var(--v4-text-dim)'
+const tagHue = (tag: ChangelogTag) => TAG_HUE[tag]
 
 /* two-tone title · the Raycast sentence register (white claim + grey
    elaboration on the same line). Presentation-only: entries whose title
@@ -146,7 +147,7 @@ export function Component() {
               { n: releases, label: releases === 1 ? 'release' : 'releases', sub: 'shipped' },
               { n: total, label: 'milestones', sub: 'logged' },
               { n: tagCount, label: 'registers', sub: 'tags' },
-              { n: latestDate, label: 'latest', sub: TAG_LABEL[CHANGELOG[0].tag], mono: true },
+              { n: latestDate, label: 'latest', sub: CHANGELOG[0].tag, mono: true },
             ].map((s, i) => (
               <div className="cl-stamp-cell" key={s.label}>
                 <span className="cl-stamp-fig" aria-hidden>
@@ -161,10 +162,10 @@ export function Component() {
 
           {/* the register legend · the tag vocabulary with its hue */}
           <ul className="cl-legend" data-rise style={{ ['--rise-delay' as string]: '160ms' }} aria-hidden>
-            {Object.keys(TAG_LABEL).map((t) => (
+            {TAGS.map((t) => (
               <li className="cl-legend-item" key={t} style={{ ['--th' as string]: tagHue(t) }}>
                 <span className="cl-legend-dot" />
-                {TAG_LABEL[t as keyof typeof TAG_LABEL]}
+                {t}
               </li>
             ))}
           </ul>
@@ -203,7 +204,7 @@ export function Component() {
                       <time className="cl-tl-date" dateTime={entryDateTime(e)}>
                         {entryDate(e)}
                       </time>
-                      <span className="cl-tl-tag">{TAG_LABEL[e.tag]}</span>
+                      <span className="cl-tl-tag">{e.tag}</span>
                     </div>
                     <div className="cl-tl-body">
                       <h2 className="cl-tl-title">

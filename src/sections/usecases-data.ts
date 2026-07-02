@@ -5,7 +5,7 @@
    nika-spec/examples/showcase/*.nika.yaml — each file passes the spec's
    conformance gate (schema + DAG cross-refs + stdlib surface).
    Hand-curated craft = icons, copy, outcomes. Truth = projected. */
-import type { Verb } from './transform-data'
+import type { NikaVerb } from '../components/codefile-highlight'
 import { SHOWCASE_DAG, SHOWCASE_YAML } from './usecases-yaml.generated'
 
 export type Tier = 'T1' | 'T2' | 'T3' | 'T4'
@@ -31,8 +31,8 @@ export const DOCS_EXAMPLES_BASE = 'https://docs.nika.sh/examples'
 
 export const yamlFor = (uc: UC): string => SHOWCASE_YAML[uc.slug] ?? ''
 /** verb chips DERIVE from the projected DAG model — never hand-typed */
-export const verbsFor = (uc: UC): Verb[] => {
-  const seen: Verb[] = []
+export const verbsFor = (uc: UC): NikaVerb[] => {
+  const seen: NikaVerb[] = []
   for (const t of SHOWCASE_DAG[uc.slug]?.tasks ?? []) {
     if (!seen.includes(t.verb)) seen.push(t.verb)
   }
@@ -118,7 +118,7 @@ export const UC_TABS: UCTab[] = [
         title: 'CEO Monday brief',
         body: 'Market + repo pulse + KPI sheet gathered in parallel, jq sums the revenue, thinking model writes.',
         tier: 'T4',
-        outcome: 'The ping ends with “run cost $0.14”. The workflow reports its own bill.',
+        outcome: 'The ping ends with the run’s own cost line. The workflow reports its own bill.',
       },
     ],
   },
