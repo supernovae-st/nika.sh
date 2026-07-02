@@ -104,11 +104,9 @@ export default function GetStarted() {
                 A plan is plain YAML: the steps, the verbs, the wiring. Here a local
                 model reads yesterday&apos;s commits and writes today&apos;s standup note.
               </p>
-              <CodeFile
-                yaml={WRITE_YAML}
-                filename="standup-digest.nika.yaml"
-                className="v4start-code"
-              />
+              <div className="v4start-frame v4-frame-canvas">
+                <CodeFile yaml={WRITE_YAML} filename="standup-digest.nika.yaml" />
+              </div>
               <p className="v4start-readonly">
                 real lines, sliced from a projected showcase — read-only
               </p>

@@ -292,6 +292,11 @@
 .lf-run[data-corridor='true'] .lf-obs {
   order: 1;
   display: block;
+  /* corridor mode · the compact overlay strip owns its own register — the
+     frame canvas is nulled here. */
+  padding: 0;
+  border: 0;
+  background: none;
 }
 .lf-run[data-corridor='true'] .lf-outputs,
 .lf-run[data-corridor='true'] .lf-enforce {
@@ -987,6 +992,10 @@
   flex-direction: column;
   gap: clamp(0.75rem, 1.5vh, 1.1rem);
   min-width: 0;
+  /* this section's canvas tuning (.v4-frame-canvas · tokens.css) */
+  --canvas-x: 50%;
+  --canvas-y: -20%;
+  --canvas-glow: 0.08;
 }
 
 .lf-stream {

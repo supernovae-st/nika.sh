@@ -115,34 +115,25 @@ export function CodeFile({
 
   return (
     <div className={`cf-panel ${className ?? ''}`}>
-      {/* ── window chrome · a real editor titlebar ───────────────────────────── */}
+      {/* ── window chrome · the minimal titlebar register (product-frame recipe):
+           3 square ticks (the affordance — never macOS traffic lights) + the
+           filename in dim mono + ONE functional chip (copy). */}
       <div className="cf-chrome">
-        <span className="cf-lights" aria-hidden>
-          <span className="cf-light cf-light--r" />
-          <span className="cf-light cf-light--y" />
-          <span className="cf-light cf-light--g" />
+        <span className="cf-ticks" aria-hidden>
+          <span className="cf-tick" />
+          <span className="cf-tick" />
+          <span className="cf-tick" />
         </span>
         {filename ? (
           <span className="cf-tab" title={filename}>
-            <span className="cf-tab-prompt" aria-hidden>
-              ❯
-            </span>
             <span className="cf-tab-name">{filename}</span>
           </span>
         ) : (
           <span className="cf-tab cf-tab--anon">
-            <span className="cf-tab-prompt" aria-hidden>
-              ❯
-            </span>
             <span className="cf-tab-name">{lang}</span>
           </span>
         )}
         <span className="cf-chrome-right">
-          {filename ? (
-            <span className="cf-lang" aria-hidden>
-              {lang}
-            </span>
-          ) : null}
           <CopyButton value={yaml} />
         </span>
       </div>

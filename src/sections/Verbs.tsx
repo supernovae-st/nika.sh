@@ -103,7 +103,7 @@ function ChapterBlock({ chapter, index }: { chapter: Chapter; index: number }) {
       </div>
 
       {/* RIGHT · the verb's task in the product surface (hue lives HERE only) */}
-      <div className="v4chap-frame">
+      <div className="v4chap-frame v4-frame-canvas">
         <CodeFile yaml={c.yaml} filename={c.filename} className="v4chap-code" />
       </div>
     </article>

@@ -159,15 +159,12 @@ export function Component() {
             {/* the editor · wrapped in the CodeFile chrome (the .cf-* titlebar) */}
             <div className="play-editor cf-panel">
               <div className="cf-chrome">
-                <span className="cf-lights" aria-hidden>
-                  <span className="cf-light cf-light--r" />
-                  <span className="cf-light cf-light--y" />
-                  <span className="cf-light cf-light--g" />
+                <span className="cf-ticks" aria-hidden>
+                  <span className="cf-tick" />
+                  <span className="cf-tick" />
+                  <span className="cf-tick" />
                 </span>
                 <span className="cf-tab" title={`${seed}.nika.yaml`}>
-                  <span className="cf-tab-prompt" aria-hidden>
-                    ❯
-                  </span>
                   <span className="cf-tab-name">{seed}.nika.yaml</span>
                 </span>
                 <span

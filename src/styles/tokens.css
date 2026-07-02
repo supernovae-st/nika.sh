@@ -305,6 +305,27 @@
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
 }
+/* ─── .v4-frame-canvas · the per-section canvas behind a product frame ────────
+   Layer 1 of the product-frame recipe (research round 2 · the Codex pattern):
+   a subtle blue-into-black gradient panel the frame sits ON. Each major
+   section tunes its own canvas via --canvas-x / --canvas-y / --canvas-glow so
+   no two canvases are identical. Always the dark register (the frame is a
+   dark surface even inside a light section). Compositor-cheap: one gradient
+   pair, no filters, no runtime cost. */
+.v4-frame-canvas {
+  position: relative;
+  padding: clamp(14px, 2.2vw, 24px);
+  border-radius: calc(var(--v4-radius) + 2px);
+  border: 1px solid rgb(140 170 255 / 0.08);
+  background:
+    radial-gradient(
+      120% 100% at var(--canvas-x, 70%) var(--canvas-y, 0%),
+      rgb(47 107 255 / var(--canvas-glow, 0.07)),
+      transparent 62%
+    ),
+    linear-gradient(180deg, #0a0d14 0%, #060709 100%);
+}
+
 /* the coarser variant · 2× cell, for large quiet surfaces (hero panel, seams) */
 .v4-grain-lg {
   background-image: var(--v4-grain-img);

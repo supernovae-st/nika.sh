@@ -146,19 +146,20 @@ describe('CodeFile (static render)', () => {
     expect(getByRole('button', { name: /copy/i })).toBeTruthy()
   })
 
-  /* ── the premium editor chrome · window dressing ──
-     The panel reads like a real editor window: traffic-light dots, a lang badge,
-     a copy button — always present so every call-site gets the IDE treatment. */
-  it('renders the 3 traffic-light window dots', () => {
+  /* ── the minimal titlebar register (product-frame recipe) ──
+     The panel reads like a product frame, not a faked macOS window: 3 square
+     ticks (never traffic lights), the filename in dim mono, ONE functional
+     chip (copy) — always present so every call-site gets the same register. */
+  it('renders the 3 square window ticks (no macOS traffic lights)', () => {
     const { container } = render(<CodeFile yaml={yaml} />)
-    expect(container.querySelectorAll('.cf-light').length).toBe(3)
+    expect(container.querySelectorAll('.cf-tick').length).toBe(3)
+    expect(container.querySelectorAll('.cf-light').length).toBe(0)
   })
 
-  it('shows a lang badge (defaults to yaml, overridable)', () => {
-    // with a filename, the lang badge sits to the right of the tab
+  it('carries no decorative lang badge — the copy chip is the one functional chip', () => {
     const withName = render(<CodeFile yaml={yaml} filename="a.nika.yaml" lang="nika" />)
-    expect(withName.container.querySelector('.cf-lang')?.textContent).toBe('nika')
-    // without a filename, the lang labels the tab itself
+    expect(withName.container.querySelector('.cf-lang')).toBeNull()
+    // without a filename, the lang still labels the tab slot itself
     const anon = render(<CodeFile yaml={yaml} />)
     expect(anon.container.querySelector('.cf-tab-name')?.textContent).toBe('yaml')
   })

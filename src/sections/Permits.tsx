@@ -103,12 +103,14 @@ export default function Permits() {
                 local model · no <code>net:</code> at all — the CVs physically cannot leave the machine
               </span>
             </figcaption>
-            <CodeFile
-              yaml={EXCERPT}
-              filename="resume-screener.nika.yaml"
-              highlight={[PERMITS_FROM, PERMITS_TO]}
-              className="v4permits-code"
-            />
+            <div className="v4permits-frame v4-frame-canvas">
+              <CodeFile
+                yaml={EXCERPT}
+                filename="resume-screener.nika.yaml"
+                highlight={[PERMITS_FROM, PERMITS_TO]}
+                className="v4permits-code"
+              />
+            </div>
             <p className="v4permits-readonly" aria-hidden>
               real lines, sliced from the projected file — read-only
             </p>

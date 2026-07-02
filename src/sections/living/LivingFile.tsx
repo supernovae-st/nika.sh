@@ -883,8 +883,9 @@ export default function LivingFile() {
                 )}
               </div>
 
-              {/* the observability column · live stream + outputs (execution beat) */}
-              <div className="lf-obs">
+              {/* the observability column · live stream + outputs (execution beat)
+                  — sits on its own frame canvas (nulled in corridor mode) */}
+              <div className="lf-obs v4-frame-canvas">
                 <div className="lf-stream">
                   <div className="lf-stream-head">
                     <p className="lf-panel-cap lf-panel-cap--inline">
