@@ -8,6 +8,7 @@ import {
   clamp01,
   easeInOut,
   flightAt,
+  phaseAt,
   runFracAt,
   shellAt,
   termAt,
@@ -59,6 +60,10 @@ function nodeChip(entry: FlagshipEntry, task: FlagshipTask): { text: string; ski
 const whenLabel = (when: string): string =>
   when.replace(/^\$\{\{\s*/, '').replace(/\s*\}\}$/, '')
 
+/* the narration counts in words (honest per flagship: the widest wave) */
+const COUNT_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six'] as const
+const countWord = (n: number): string => COUNT_WORDS[n] ?? String(n)
+
 /* the traveling card is ~500 spans — a timeline setState (which fires ~25×
    across the run window) must NEVER reconcile it. Its props are stable per
    flagship, so memo skips the whole subtree (longtask budget, F2). */
@@ -67,6 +72,11 @@ const MemoCodeFile = memo(CodeFile)
 export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const script = useMemo(() => buildScript(flagship), [flagship])
   const plan = flagship.plan
+  /* the widest wave — the narration's honest "N run together" */
+  const maxTogether = useMemo(
+    () => plan.waves.reduce((m, w) => Math.max(m, w.length), 0),
+    [plan],
+  )
 
   /* SSR / no-JS / reduced-motion truth: the finished scene */
   const [armed, setArmed] = useState(false)
@@ -191,8 +201,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const term = termRef.current
       if (!stage || !card || !term) return
 
-      /* phase flag → caption crossfade (morph.css) */
-      stage.dataset.phase = p < PH.burst0 ? 'file' : p < PH.run0 ? 'burst' : 'run'
+      /* phase flag → caption + narration crossfade (morph.css) */
+      stage.dataset.phase = phaseAt(p)
 
       /* the file card travels in, then its shell dissolves through the burst */
       const shell = shellAt(p)
@@ -395,7 +405,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       aria-labelledby="the-morph-title"
       data-armed={armed || undefined}
     >
-      <div className="morph-stage" ref={stageRef} data-phase={armed ? 'file' : 'run'}>
+      <div className="morph-stage" ref={stageRef} data-phase={armed ? 'file' : 'done'}>
         <div className="morph-wrap">
           <header className="morph-head">
             <p className="v4fig">FIG 1.0</p>
@@ -417,6 +427,26 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           </header>
 
           <div className="morph-scene">
+            {/* THE NARRATION · plain anyone-words, one line per phase — the
+                empty left column at 1440 becomes the narration rail (H2 ·
+                morph.css places, fades, and clears the DAG). Decorative: the
+                head captions + the scene itself carry the meaning for AT. */}
+            <div className="morph-say" aria-hidden="true">
+              <p className="morph-say-line" data-for="file">
+                one file · the whole plan, readable
+              </p>
+              <p className="morph-say-line" data-for="burst">
+                each task takes its place
+              </p>
+              <p className="morph-say-line" data-for="run">
+                steps light up in order
+                {maxTogether > 1 ? ` · ${countWord(maxTogether)} run together` : ''}
+              </p>
+              <p className="morph-say-line" data-for="done">
+                the run is a file too · replay it anytime
+              </p>
+            </div>
+
             {/* THE FILE · the traveling card (same chrome + filename as the hero) */}
             <div className="morph-file" ref={cardRef}>
               <MemoCodeFile

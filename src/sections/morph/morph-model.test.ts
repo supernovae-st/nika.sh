@@ -4,6 +4,7 @@ import { buildScript } from '../run/replay-model'
 import {
   PH,
   flightAt,
+  phaseAt,
   runFracAt,
   shellAt,
   taskInterval,
@@ -54,6 +55,25 @@ describe('phase windows', () => {
     expect(termAt(PH.run0)).toBe(1)
     expect(runFracAt(PH.run0)).toBe(0)
     expect(runFracAt(PH.run1)).toBe(1)
+  })
+
+  it('phaseAt walks file → burst → run → done and never regresses', () => {
+    expect(phaseAt(0)).toBe('file')
+    expect(phaseAt(PH.burst0 - 0.001)).toBe('file')
+    expect(phaseAt(PH.burst0)).toBe('burst')
+    expect(phaseAt(PH.run0 - 0.001)).toBe('burst')
+    expect(phaseAt(PH.run0)).toBe('run')
+    expect(phaseAt((PH.run0 + PH.run1) / 2)).toBe('run')
+    expect(phaseAt(PH.run1)).toBe('done')
+    expect(phaseAt(1)).toBe('done')
+    /* monotone: scrubbing forward can only advance the phase */
+    const order = { file: 0, burst: 1, run: 2, done: 3 }
+    let prev = 0
+    for (let p = 0; p <= 1.0001; p += 0.005) {
+      const rank = order[phaseAt(p)]
+      expect(rank).toBeGreaterThanOrEqual(prev)
+      prev = rank
+    }
   })
 })
 
