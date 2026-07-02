@@ -98,3 +98,120 @@
     animation: none;
   }
 }
+
+/* ─── E7 · RUN MODE · the frame IS run visualization ──────────────────────────
+   Canon: the 4 verb hues are sanctioned HERE and only here (design doc §3.4 ·
+   live-run visualization). Idle chrome stays single-blue — everything below is
+   gated on [data-run] / [data-flash] so the rest state is byte-identical.
+   Two-ring composition (oryzo §E0.1, rebuilt in CSS): the 4-verb wheel is the
+   WIDE HAZE (::before · blur 44px), the active verb rides a SHARPER rim
+   (::after · tighter punch · blur 22px) so the current hue visibly leads. */
+
+/* registered props · the verb handoff INTERPOLATES (no hue snap) */
+@property --aurora-verb {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #2f6bff;
+}
+@property --aurora-progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+.edge-aurora[data-run]::before {
+  background: conic-gradient(
+    from 0deg,
+    var(--verb-infer) 0turn,
+    var(--verb-exec) 0.25turn,
+    var(--verb-invoke) 0.5turn,
+    var(--verb-agent) 0.75turn,
+    var(--verb-infer) 1turn
+  );
+  /* breathe with the RUN, not a timer: recorded progress drives the swell */
+  opacity: calc(var(--aurora-intensity) + var(--aurora-progress) * 0.15);
+}
+
+/* the active-verb lead · a narrow bright arc in the current verb's hue */
+.edge-aurora[data-run]::after {
+  content: '';
+  position: absolute;
+  inset: -16%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0turn,
+    var(--aurora-verb) 0.06turn,
+    transparent 0.16turn
+  );
+  mask: radial-gradient(ellipse 82% 82% at 50% 50%, transparent 72%, #000 100%);
+  -webkit-mask: radial-gradient(ellipse 82% 82% at 50% 50%, transparent 72%, #000 100%);
+  filter: blur(22px);
+  opacity: calc(var(--aurora-intensity) * 1.6);
+  transition: --aurora-verb 320ms var(--ease-ui);
+  animation: edge-aurora-rotate 9s linear infinite; /* faster than the base 26s */
+}
+
+/* the permits-wall beat · one danger flash (600ms) then back */
+.edge-aurora[data-flash='danger']::after {
+  content: '';
+  position: absolute;
+  inset: -16%;
+  mask: radial-gradient(ellipse 82% 82% at 50% 50%, transparent 72%, #000 100%);
+  -webkit-mask: radial-gradient(ellipse 82% 82% at 50% 50%, transparent 72%, #000 100%);
+  filter: blur(22px);
+  animation: aurora-danger 600ms var(--ease-ui) 1;
+}
+@keyframes aurora-danger {
+  0% {
+    opacity: 0;
+    background: conic-gradient(from 0deg, #ff5d5d, #7a1622 50%, #ff5d5d);
+  }
+  30% {
+    opacity: 0.55;
+    background: conic-gradient(from 0deg, #ff5d5d, #7a1622 50%, #ff5d5d);
+  }
+  100% {
+    opacity: 0;
+    background: conic-gradient(from 0deg, #ff5d5d, #7a1622 50%, #ff5d5d);
+  }
+}
+
+/* the verdict sweep · ONE bright accent arc travels the frame, then decays */
+.edge-aurora[data-run='sweep']::after {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0turn,
+    var(--v4-accent-bright, #8db4ff) 0.05turn,
+    transparent 0.18turn
+  );
+  animation: aurora-sweep 900ms cubic-bezier(0.4, 0, 0.2, 1) 1;
+  opacity: 0.7;
+}
+@keyframes aurora-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* mobile · thinner edge, still present (the oryzo thickness law: the ring
+   scales down with the viewport instead of disappearing) */
+@media (max-width: 767px) {
+  .edge-aurora::before,
+  .edge-aurora[data-run]::after {
+    mask: radial-gradient(ellipse 88% 90% at 50% 50%, transparent 76%, #000 100%);
+    -webkit-mask: radial-gradient(ellipse 88% 90% at 50% 50%, transparent 76%, #000 100%);
+    filter: blur(26px);
+  }
+}
+
+/* reduced-motion · static soft multicolor frame at low intensity while
+   running; no rotation, no sweep (verdict = intensity step) */
+@media (prefers-reduced-motion: reduce) {
+  .edge-aurora[data-run]::before {
+    opacity: 0.12;
+  }
+  .edge-aurora[data-run]::after,
+  .edge-aurora[data-flash='danger']::after {
+    animation: none;
+  }
+}
