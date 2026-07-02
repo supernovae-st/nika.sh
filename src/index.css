@@ -408,7 +408,7 @@ h1, h2 { font-family: var(--headline); }
   display: inline-flex;
   align-items: center;
   padding: 7px 15px;
-  border-radius: 999px;
+  border-radius: var(--v4-radius, 4px); /* v5 register · sharp, not a pill */
   font-family: var(--mono);
   font-size: 13px;
   letter-spacing: 0.01em;
