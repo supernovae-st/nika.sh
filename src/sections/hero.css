@@ -448,3 +448,73 @@
 .v4aud-line[data-active='true'] {
   color: var(--v4-text);
 }
+
+/* ── MOBILE (≤767px) · the pitch lives in the FIRST viewport ──────────────────
+   Two moves (desktop untouched — this block sits LAST in the file so it wins
+   the same-specificity cascade against the desktop base rules above):
+   1 · kill the dead top space — the hero starts right under the fixed 60px nav
+       with tight padding (no min-h-screen centering).
+   2 · REORDER the stack for comprehension: H1 → sub → CTAs → the editor
+       (peeking into the first viewport) → plate / links / trust BELOW it.
+       `display: contents` dissolves the two grid columns so their children
+       become flex items of the grid itself; `order` does the rest. The
+       audience rotator drops below the editor (and hides ≤430px). */
+@media (max-width: 767px) {
+  #hero {
+    min-height: 0;
+    justify-content: flex-start;
+  }
+  .v4hero-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding-block: calc(60px + 20px) 56px;
+  }
+  .v4hero-copy,
+  .v4hero-editor {
+    display: contents;
+  }
+  .v4hero-grid .v4fig {
+    order: 0;
+    margin-bottom: 14px;
+  }
+  .v4hero-grid .v4kicker {
+    order: 1;
+    margin-bottom: 12px;
+  }
+  .v4hero-h1 {
+    order: 2;
+  }
+  .v4hero-sub {
+    order: 3;
+  }
+  .v4hero-ctas {
+    order: 4;
+    margin-top: 24px;
+  }
+  .v4hero-aspirate {
+    order: 5;
+    margin-top: 34px;
+    min-width: 0;
+  }
+  .v4aud-wrap {
+    order: 6;
+  }
+  .v4hero-grid .v4vplate {
+    order: 7;
+    margin-top: 24px;
+  }
+  .v4hero-links {
+    order: 8;
+  }
+  .v4hero-grid .v4trust {
+    order: 9;
+    margin-top: 28px;
+  }
+}
+@media (max-width: 430px) {
+  .v4aud-wrap {
+    display: none;
+  }
+}

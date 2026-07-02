@@ -176,6 +176,9 @@ export default function Hero() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    // mobile: the editor sits mid-stack (hero.css reorder), so the scroll-out
+    // dissolve would dim it while the reader is still on it — desktop-only.
+    if (window.matchMedia('(max-width: 767px)').matches) return
     const section = rootRef.current
     if (!section) return
     let raf = 0
@@ -246,7 +249,7 @@ export default function Hero() {
               fontWeight: 600,
               textWrap: 'balance',
             }}
-            className="text-text"
+            className="v4hero-h1 text-text"
           >
             Useful AI work shouldn&rsquo;t disappear into chats.
           </h1>
@@ -254,7 +257,7 @@ export default function Hero() {
           <p
             data-rise
             style={rise(150)}
-            className="mt-7 max-w-[34rem] text-[17px] leading-relaxed text-dim"
+            className="v4hero-sub mt-7 max-w-[34rem] text-[17px] leading-relaxed text-dim"
           >
             Nika turns repeatable AI work into files you can run, review, diff and
             share. One file&nbsp;· 4&nbsp;verbs&nbsp;· one Rust binary. The agent
@@ -263,7 +266,7 @@ export default function Hero() {
           </p>
 
           {/* the rotating mono audience line · quiet, color-only, zero shift */}
-          <div data-rise style={rise(190)}>
+          <div className="v4aud-wrap" data-rise style={rise(190)}>
             <AudienceLines />
           </div>
 
@@ -274,7 +277,7 @@ export default function Hero() {
             id="install"
             data-rise
             style={rise(220)}
-            className="mt-9 flex scroll-mt-28 flex-wrap items-center gap-3"
+            className="v4hero-ctas mt-9 flex scroll-mt-28 flex-wrap items-center gap-3"
           >
             <a href="#living-file" className="v4cta group">
               <span aria-hidden className="transition-transform group-hover:translate-y-0.5">
@@ -302,7 +305,7 @@ export default function Hero() {
           <div
             data-rise
             style={rise(300)}
-            className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14.5px]"
+            className="v4hero-links mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14.5px]"
           >
             <a
               href={SPEC}
