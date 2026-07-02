@@ -102,7 +102,7 @@ export const UC_TABS: UCTab[] = [
         title: 'Release train',
         body: 'Tests, lint and audit run in parallel. Only if all three are green does a human sign the GO; then it holds for the window, ships, and verifies prod reports the new version.',
         tier: 'T4',
-        outcome: 'No green gates, no departure. No human GO, no departure. It ships on time or not at all — and the journal records which.',
+        outcome: 'No green gates, no departure. No human GO, no departure. It ships on time or not at all, and the journal records which.',
       },
       {
         slug: 't4-deep-research-brief',
@@ -170,7 +170,7 @@ export const UC_TABS: UCTab[] = [
         slug: 't3-config-drift-sentinel',
         icon: '🛡️',
         title: 'Config drift sentinel',
-        body: 'Builds the sanctioned baseline (RFC 7396 merge), diffs it against live prod (RFC 6902), and pages on-call only for the drift nobody approved — with a model explaining what changed.',
+        body: 'Builds the sanctioned baseline (RFC 7396 merge), diffs it against live prod (RFC 6902), and pages on-call only for the drift nobody approved, with a model explaining what changed.',
         tier: 'T3',
         outcome: 'Silence means prod matches exactly what was signed off. That is the whole alert policy.',
       },
@@ -195,7 +195,7 @@ export const UC_TABS: UCTab[] = [
   {
     id: 'business',
     label: 'Business',
-    hook: 'Finance, legal, meetings — typed outputs, human gates.',
+    hook: 'Finance, legal, meetings: typed outputs, human gates.',
     cases: [
       {
         slug: 't1-meeting-actions',

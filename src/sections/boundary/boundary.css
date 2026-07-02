@@ -6,6 +6,13 @@
 .v5bnd-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+/* grid items shrink below content width (the 390px overflow class) */
+.v5bnd-file,
+.v5bnd-read {
+  min-width: 0;
+}
+.v5bnd-grid {
   gap: clamp(28px, 4vw, 56px);
   align-items: start;
   margin-top: var(--gap-cta);

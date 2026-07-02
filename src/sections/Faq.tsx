@@ -32,7 +32,7 @@ export default function Faq() {
     <section ref={ref} id="faq" aria-labelledby="faq-title" className="theme-light v4sec v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
         <SectionHead fig="FIG 9.5" id="faq-title" title={<>Questions, answered straight.</>}>
-          The real objections — and honest answers. No overclaiming, no dunking on the
+          The real objections, and honest answers. No overclaiming, no dunking on the
           tools you already use.
         </SectionHead>
 

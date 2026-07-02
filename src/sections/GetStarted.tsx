@@ -145,7 +145,7 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                 <span className="v4every-n">6.0.4</span> In your terminal
               </h3>
               <p className="v4every-body">
-                One Rust binary. The command is the button — click it, paste it, run.
+                One Rust binary. The command is the button: click it, paste it, run.
               </p>
               <div className="v4every-cta">
                 <InstallCommand />
@@ -157,7 +157,7 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                 <span className="v4every-n">6.0.5</span> In your editor
               </h3>
               <p className="v4every-body">
-                The <code className="mono">nika-lang</code> extension — diagnostics,
+                The <code className="mono">nika-lang</code> extension: diagnostics,
                 schema-derived completions and a view of the plan, in VS Code, Cursor
                 and Windsurf.
               </p>

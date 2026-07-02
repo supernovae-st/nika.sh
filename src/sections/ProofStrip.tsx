@@ -21,7 +21,7 @@ import './v4-home.css'
 type Plate = { key: string; gloss?: string }
 
 const PLATES: Plate[] = [
-  { key: String(CANON.verbs), gloss: 'verbs — locked forever' },
+  { key: String(CANON.verbs), gloss: 'verbs · locked forever' },
   { key: String(CANON.builtins), gloss: 'builtins' },
   { key: String(CANON.providers), gloss: 'providers · local-first' },
   { key: 'one', gloss: 'Rust binary' },

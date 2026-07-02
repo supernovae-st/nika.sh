@@ -62,7 +62,7 @@ const HOME_JSONLD = {
       downloadUrl: `${SITE}/install.sh`,
       license: 'https://www.gnu.org/licenses/agpl-3.0.html',
       description:
-        'The control layer for AI agents. Nika makes an agent write its plan as a readable file first — every step, tool and permission. You review it, the runtime enforces it, then it runs: traced and replayable. One Rust binary, any model, AGPL forever.',
+        'The control layer for AI agents. Nika makes an agent write its plan as a readable file first: every step, tool and permission. You review it, the runtime enforces it, then it runs: traced and replayable. One Rust binary, any model, AGPL forever.',
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -126,7 +126,7 @@ export function Component() {
       {
         name: 'description',
         content:
-          'The control layer for AI agents — the plan is a file you review before it runs, permissions enforced, every run replayable. One binary, any model, AGPL.',
+          'The control layer for AI agents: the plan is a file you review before it runs, permissions enforced, every run replayable. One binary, any model, AGPL.',
       },
       { property: 'og:title', content: 'Nika · Intent as Code' },
       {

@@ -92,7 +92,7 @@ export default function FinalCTA() {
              community workflows become runnable, credited .nika.yaml examples. */}
         <div className="v4convert" data-rise style={{ ['--rise-delay' as string]: '300ms' }}>
           <p className="v4convert-ask">
-            Do you repeat an AI task every week — in ChatGPT, Claude, Cursor, Codex,
+            Do you repeat an AI task every week, in ChatGPT, Claude, Cursor, Codex,
             or scripts? <b>Send it.</b> We convert the best ones into runnable{' '}
             <code className="mono">.nika.yaml</code> examples, credited to you.
           </p>
