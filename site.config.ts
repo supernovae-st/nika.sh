@@ -12,4 +12,4 @@
 export const ORIGIN = 'https://nika.sh'
 
 /* which static paths exist · drives the prerender AND the sitemap. */
-export const PATHS = ['/', '/blog', '/learn', '/play', '/manifesto', '/changelog', '/use-cases', '/spec', '/install']
+export const PATHS = ['/', '/blog', '/learn', '/play', '/manifesto', '/changelog', '/use-cases', '/spec', '/install', '/convert']
