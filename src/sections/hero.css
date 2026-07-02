@@ -40,36 +40,48 @@
   --hero-glow-y: -14%;
   --hero-grid-gap: 72px;
   --hero-grid-ink: rgb(122 163 255 / 0.07);
+  /* the ordered-dither MASK tile · 50% coverage at 2px cells (Bayer4 < 8 is
+     exactly this checker) — full-alpha dots, unlike the faint grain tile,
+     so the ::after half-step bands actually read through it */
+  --hero-dither-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' shape-rendering='crispEdges'%3E%3Cg fill='%23000'%3E%3Crect x='0' y='0' width='2' height='2'/%3E%3Crect x='4' y='0' width='2' height='2'/%3E%3Crect x='2' y='2' width='2' height='2'/%3E%3Crect x='6' y='2' width='2' height='2'/%3E%3Crect x='0' y='4' width='2' height='2'/%3E%3Crect x='4' y='4' width='2' height='2'/%3E%3Crect x='2' y='6' width='2' height='2'/%3E%3Crect x='6' y='6' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E");
 }
 .v5-header-field {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(
-    130% 96% at var(--hero-glow-x) var(--hero-glow-y),
-    rgb(47 107 255 / 0.6) 0%,
-    rgb(47 107 255 / 0.6) 8%,
-    rgb(31 95 219 / 0.64) 8%,
-    rgb(31 95 219 / 0.64) 16%,
-    rgb(15 83 183 / 0.72) 16%,
-    rgb(15 83 183 / 0.72) 25%,
-    rgb(15 83 183 / 0.58) 25%,
-    rgb(15 83 183 / 0.58) 33%,
-    rgb(16 62 145 / 0.48) 33%,
-    rgb(16 62 145 / 0.48) 41%,
-    rgb(16 62 145 / 0.36) 41%,
-    rgb(16 62 145 / 0.36) 48%,
-    rgb(15 41 96 / 0.28) 48%,
-    rgb(15 41 96 / 0.28) 55%,
-    rgb(15 41 96 / 0.18) 55%,
-    rgb(15 41 96 / 0.18) 62%,
-    rgb(11 24 56 / 0.11) 62%,
-    rgb(11 24 56 / 0.11) 68%,
-    rgb(11 24 56 / 0.05) 68%,
-    rgb(11 24 56 / 0.05) 74%,
-    transparent 74%
-  );
+  /* the grain rides ON TOP of the bands (first layer paints last) — the
+     global texture the old ::after carried, now that ::after owns the
+     dither mixing zone */
+  background-image:
+    var(--v4-grain-img),
+    radial-gradient(
+      130% 96% at var(--hero-glow-x) var(--hero-glow-y),
+      rgb(47 107 255 / 0.6) 0%,
+      rgb(47 107 255 / 0.6) 8%,
+      rgb(31 95 219 / 0.64) 8%,
+      rgb(31 95 219 / 0.64) 16%,
+      rgb(15 83 183 / 0.72) 16%,
+      rgb(15 83 183 / 0.72) 25%,
+      rgb(15 83 183 / 0.58) 25%,
+      rgb(15 83 183 / 0.58) 33%,
+      rgb(16 62 145 / 0.48) 33%,
+      rgb(16 62 145 / 0.48) 41%,
+      rgb(16 62 145 / 0.36) 41%,
+      rgb(16 62 145 / 0.36) 48%,
+      rgb(15 41 96 / 0.28) 48%,
+      rgb(15 41 96 / 0.28) 55%,
+      rgb(15 41 96 / 0.18) 55%,
+      rgb(15 41 96 / 0.18) 62%,
+      rgb(11 24 56 / 0.11) 62%,
+      rgb(11 24 56 / 0.11) 68%,
+      rgb(11 24 56 / 0.05) 68%,
+      rgb(11 24 56 / 0.05) 74%,
+      transparent 74%
+    );
+  background-size:
+    var(--v4-grain-size) var(--v4-grain-size),
+    auto;
 }
 .v5-header-field::before {
   /* the faint grid · masked INSIDE the glow zone (never appears outside it) */
@@ -94,12 +106,39 @@
   );
 }
 .v5-header-field::after {
-  /* the Bayer tooth · breaks the hard band edges into the dither signature */
+  /* the dither MIXING ZONE (review P1) · the SAME field, half a band ahead,
+     visible only through the 50% ordered-dither mask — every hard band edge
+     becomes an interleaved strip instead of a crisp poster line. This is the
+     shader-parity trick: two quantized levels mixing per Bayer threshold. */
   content: '';
   position: absolute;
   inset: 0;
-  background-image: var(--v4-grain-img);
-  background-size: var(--v4-grain-size) var(--v4-grain-size);
+  background: radial-gradient(
+    130% 96% at var(--hero-glow-x) var(--hero-glow-y),
+    rgb(31 95 219 / 0.64) 0%,
+    rgb(31 95 219 / 0.64) 12%,
+    rgb(15 83 183 / 0.72) 12%,
+    rgb(15 83 183 / 0.72) 20%,
+    rgb(15 83 183 / 0.58) 20%,
+    rgb(15 83 183 / 0.58) 29%,
+    rgb(16 62 145 / 0.48) 29%,
+    rgb(16 62 145 / 0.48) 37%,
+    rgb(16 62 145 / 0.36) 37%,
+    rgb(16 62 145 / 0.36) 44%,
+    rgb(15 41 96 / 0.28) 44%,
+    rgb(15 41 96 / 0.28) 51%,
+    rgb(15 41 96 / 0.18) 51%,
+    rgb(15 41 96 / 0.18) 58%,
+    rgb(11 24 56 / 0.11) 58%,
+    rgb(11 24 56 / 0.11) 65%,
+    rgb(11 24 56 / 0.05) 65%,
+    rgb(11 24 56 / 0.05) 71%,
+    transparent 71%
+  );
+  -webkit-mask-image: var(--hero-dither-mask);
+  -webkit-mask-size: 8px 8px;
+  mask-image: var(--hero-dither-mask);
+  mask-size: 8px 8px;
 }
 @media (max-width: 767px) {
   :root {
@@ -109,27 +148,54 @@
     --hero-grid-gap: 56px;
   }
   .v5-header-field {
+    /* review P2-11 · the phone field must still tell the « LARGE saturated
+       blue » story: alphas +0.08 and the vertical radius up to 75% (the old
+       62% arc read as a faint halo) */
+    background-image:
+      var(--v4-grain-img),
+      radial-gradient(
+        120% 75% at var(--hero-glow-x) var(--hero-glow-y),
+        rgb(47 107 255 / 0.66) 0%,
+        rgb(47 107 255 / 0.66) 9%,
+        rgb(31 95 219 / 0.7) 9%,
+        rgb(31 95 219 / 0.7) 18%,
+        rgb(15 83 183 / 0.76) 18%,
+        rgb(15 83 183 / 0.76) 28%,
+        rgb(15 83 183 / 0.62) 28%,
+        rgb(15 83 183 / 0.62) 37%,
+        rgb(16 62 145 / 0.52) 37%,
+        rgb(16 62 145 / 0.52) 46%,
+        rgb(16 62 145 / 0.4) 46%,
+        rgb(16 62 145 / 0.4) 53%,
+        rgb(15 41 96 / 0.32) 53%,
+        rgb(15 41 96 / 0.32) 60%,
+        rgb(15 41 96 / 0.22) 60%,
+        rgb(15 41 96 / 0.22) 66%,
+        rgb(11 24 56 / 0.13) 66%,
+        rgb(11 24 56 / 0.13) 72%,
+        transparent 72%
+      );
+  }
+  .v5-header-field::after {
     background: radial-gradient(
-      120% 62% at var(--hero-glow-x) var(--hero-glow-y),
-      rgb(47 107 255 / 0.58) 0%,
-      rgb(47 107 255 / 0.58) 9%,
-      rgb(31 95 219 / 0.62) 9%,
-      rgb(31 95 219 / 0.62) 18%,
-      rgb(15 83 183 / 0.68) 18%,
-      rgb(15 83 183 / 0.68) 28%,
-      rgb(15 83 183 / 0.54) 28%,
-      rgb(15 83 183 / 0.54) 37%,
-      rgb(16 62 145 / 0.44) 37%,
-      rgb(16 62 145 / 0.44) 46%,
-      rgb(16 62 145 / 0.32) 46%,
-      rgb(16 62 145 / 0.32) 53%,
-      rgb(15 41 96 / 0.24) 53%,
-      rgb(15 41 96 / 0.24) 60%,
-      rgb(15 41 96 / 0.14) 60%,
-      rgb(15 41 96 / 0.14) 66%,
-      rgb(11 24 56 / 0.07) 66%,
-      rgb(11 24 56 / 0.07) 72%,
-      transparent 72%
+      120% 75% at var(--hero-glow-x) var(--hero-glow-y),
+      rgb(31 95 219 / 0.7) 0%,
+      rgb(31 95 219 / 0.7) 13%,
+      rgb(15 83 183 / 0.76) 13%,
+      rgb(15 83 183 / 0.76) 23%,
+      rgb(15 83 183 / 0.62) 23%,
+      rgb(15 83 183 / 0.62) 32%,
+      rgb(16 62 145 / 0.52) 32%,
+      rgb(16 62 145 / 0.52) 41%,
+      rgb(16 62 145 / 0.4) 41%,
+      rgb(16 62 145 / 0.4) 49%,
+      rgb(15 41 96 / 0.32) 49%,
+      rgb(15 41 96 / 0.32) 56%,
+      rgb(15 41 96 / 0.22) 56%,
+      rgb(15 41 96 / 0.22) 63%,
+      rgb(11 24 56 / 0.13) 63%,
+      rgb(11 24 56 / 0.13) 69%,
+      transparent 69%
     );
   }
 }
