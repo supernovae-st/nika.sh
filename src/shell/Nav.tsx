@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { REPO, DOCS } from '../content'
-import './shell.css'
+import './nav.css'
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
    ONE nav for every route (mounted in RootLayout). Replaces the v3 glass pill.
@@ -10,11 +10,25 @@ import './shell.css'
    FIG/blueprint feel. Grayscale only; the lone color is the global EdgeAurora.
 
    Behaviour
-   - sticky/fixed · transparent OVER the hero · solid (bg-bg/78 + 1px border +
-     blur) once a hero sentinel scrolls out of view (IntersectionObserver).
+   - a FLOATING CAPSULE (wave-h): the nav detaches from the top edge on desktop
+     (12px gutter · 72rem max · 12px radius · near-opaque floor + the seam kit).
+     Two orthogonal states drive it — `data-solid` (transparent riding the hero
+     field → capsule floor, via a 24px scroll sentinel + IntersectionObserver)
+     and `data-scrolled` (the capsule compresses 64→56px and its shadow
+     tightens once the page is in motion). Below 720px it is a full-width bar
+     with the same depth kit.
+   - the rail carries ONE shared hover pill — a single absolutely-positioned
+     highlight that SLIDES between items on hover/keyboard-focus (transform +
+     width · ~180ms), fades in on first entry and out on leave. rAF-batched
+     reads/writes, zero per-item hover backgrounds. The active route keeps its
+     own persistent dim pill (aria-current, pure CSS).
    - `Product ▾` is a real grouped mega-menu (WAI-ARIA disclosure): full keyboard
-     (Esc closes + returns focus, ↓/↑ move through items, Home/End jump), focus
-     trapped to the panel while open, closes on outside click / route change.
+     (Esc closes + returns focus, ↓/↑ move through items, Home/End jump, Tab
+     parks focus back on the trigger before closing — no focus drop), closes on
+     outside click / route change. Semantics: role=menu/menuitem is used WITH
+     the full APG keyboard contract implemented below — a plain list of links
+     would also be a11y-correct, but the roving-focus behaviour is already here,
+     so the roles are honest.
    - one emphasized CTA (`Install`) — near-white on dark, NOT a blue pill.
    - mobile: the rail collapses to a burger → a right-side sheet (disclosure),
      with generous ≥44px touch targets and ≥16px text (no iOS zoom).
@@ -135,8 +149,11 @@ function ItemLink({
 
 export default function Nav() {
   const location = useLocation()
-  /* field-less routes prerender SOLID (no transparent flash · P2-12) */
-  const [scrolled, setScrolled] = useState(() => !FIELD_ROUTES.has(location.pathname))
+  /* `scrolled` = the page is in motion (>24px) — drives the capsule COMPRESSION.
+     The FLOOR is the derived `solid` below: field-less routes prerender solid
+     from scroll 0 (no transparent flash · P2-12), field routes ride transparent
+     until the sentinel scrolls out. */
+  const [scrolled, setScrolled] = useState(false)
   const [megaOpen, setMegaOpen] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
 
@@ -146,19 +163,26 @@ export default function Nav() {
   const sheetRef = useRef<HTMLDivElement>(null)
   const burgerRef = useRef<HTMLButtonElement>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
+  const railRef = useRef<HTMLDivElement>(null)
+  const pillRef = useRef<HTMLSpanElement>(null)
+  const capsuleRef = useRef<HTMLDivElement>(null)
+  const megaPanelRef = useRef<HTMLDivElement>(null)
 
   const megaId = useId()
   const sheetId = useId()
 
-  /* ── nav solidifies once the top-of-page sentinel scrolls past ──
-     The sentinel is a 1px marker at the top of the document; while it is in
-     view the nav stays transparent, once it leaves the nav goes solid.
-     Transparent-at-top applies ONLY on FIELD_ROUTES (the nav floats on the
-     blue field, F5) — field-less routes are solid from scroll 0 (P2-12). */
+  /* ── the 24px scroll sentinel ──
+     A 1px marker parked 24px down the document; while it is in view the page
+     counts as "at the top" (capsule relaxed), once it leaves the capsule
+     compresses (and, on field routes, gains its floor). The observer runs on
+     EVERY route so compression works everywhere; the FLOOR is the derived
+     `solid` — transparent-at-top applies ONLY on FIELD_ROUTES (the nav floats
+     on the hero field, F5), field-less routes are solid from scroll 0 (P2-12). */
   const hasField = FIELD_ROUTES.has(location.pathname)
+  const solid = scrolled || !hasField
   useEffect(() => {
     const el = sentinelRef.current
-    if (!hasField || !el || typeof IntersectionObserver === 'undefined') {
+    if (!el || typeof IntersectionObserver === 'undefined') {
       setScrolled(true)
       return
     }
@@ -168,7 +192,55 @@ export default function Nav() {
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [location.pathname, hasField])
+  }, [])
+
+  /* ── the sliding hover pill ──
+     ONE shared highlight <span> parked in the rail; hover or keyboard focus on
+     a rail item makes it the "hot" target and the pill SLIDES there (transform
+     + width). Two sources (hover · focus) are tracked separately so mousing
+     away doesn't strand a keyboard user, and vice-versa. rAF-batched: all
+     rect reads and style writes happen inside one frame, and repeated
+     triggers coalesce into the latest — zero layout thrash. Measurement is
+     rect-based against the CAPSULE (the pill's containing block — the rail is
+     deliberately unpositioned so the mega panel can anchor to the capsule
+     too). First entry: the position commits while the pill is HIDDEN (the
+     hidden state transitions opacity only, so the write is silent), then it
+     fades in on the next frame — no cross-rail streak. */
+  const pillRaf = useRef(0)
+  const pillHot = useRef<{ hover: HTMLElement | null; focus: HTMLElement | null }>({
+    hover: null,
+    focus: null,
+  })
+  const syncPill = useCallback(() => {
+    cancelAnimationFrame(pillRaf.current)
+    pillRaf.current = requestAnimationFrame(() => {
+      const capsule = capsuleRef.current
+      const pill = pillRef.current
+      if (!capsule || !pill) return
+      const hot = pillHot.current.hover ?? pillHot.current.focus
+      if (!hot) {
+        pill.dataset.on = 'false' // fade out in place (opacity-only when hidden)
+        return
+      }
+      const capBox = capsule.getBoundingClientRect()
+      const box = hot.getBoundingClientRect()
+      /* clientLeft/Top: absolute children offset from the PADDING box (the
+         capsule wears a 1px border) */
+      const x = box.left - capBox.left - capsule.clientLeft
+      const y = box.top - capBox.top - capsule.clientTop
+      pill.style.transform = `translate(${x}px, ${y}px)`
+      pill.style.width = `${box.width}px`
+      pill.style.height = `${box.height}px`
+      if (pill.dataset.on !== 'true') {
+        pillRaf.current = requestAnimationFrame(() => {
+          pill.dataset.on = 'true'
+        })
+      }
+    })
+  }, [])
+  useEffect(() => () => cancelAnimationFrame(pillRaf.current), [])
+  const railItemOf = (t: EventTarget | null): HTMLElement | null =>
+    t instanceof Element ? t.closest<HTMLElement>('.v4nav-link') : null
 
   /* ── close everything on a real route change (back/forward + cross-route nav).
      Guarded by a ref so setState only fires when the location actually changed —
@@ -182,6 +254,27 @@ export default function Nav() {
       setSheetOpen(false)
     }
   }, [location.pathname, location.hash])
+
+  /* ── mega panel placement · align the capsule-anchored panel under its
+     trigger. The panel's containing block is the CAPSULE (so its 8px
+     bottom gap survives the 64→56 compression — pure CSS), but its LEFT must
+     track the trigger, whose x depends on the brand width. Measured once per
+     open (+ on resize), before paint — one read, one write, no flash. */
+  useLayoutEffect(() => {
+    if (!megaOpen) return
+    const place = () => {
+      const capsule = capsuleRef.current
+      const wrap = megaWrapRef.current
+      const panel = megaPanelRef.current
+      if (!capsule || !wrap || !panel) return
+      const x =
+        wrap.getBoundingClientRect().left - capsule.getBoundingClientRect().left - capsule.clientLeft
+      panel.style.left = `${x}px`
+    }
+    place()
+    window.addEventListener('resize', place)
+    return () => window.removeEventListener('resize', place)
+  }, [megaOpen])
 
   /* ── mega-menu: outside-click + Escape (returns focus to the trigger) ── */
   useEffect(() => {
@@ -231,7 +324,12 @@ export default function Nav() {
       e.preventDefault()
       items[items.length - 1]?.focus()
     } else if (e.key === 'Tab') {
-      // let Tab fall through but close the panel so focus continues in the bar
+      /* Tab leaves the menu. Without intervention the panel unmounts with
+         focus still inside it and the browser restarts tabbing from <body>
+         (focus drop). Park focus back on the trigger FIRST, then close — the
+         default Tab action then continues naturally from the trigger
+         (forward: the link after Product · Shift+Tab: the brand). */
+      megaBtnRef.current?.focus()
       setMegaOpen(false)
     }
   }, [])
@@ -287,7 +385,8 @@ export default function Nav() {
 
   return (
     <>
-      <header className="v4nav" data-scrolled={scrolled} data-mega={megaOpen}>
+      <header className="v4nav" data-solid={solid} data-scrolled={scrolled} data-mega={megaOpen}>
+        <div className="v4nav-capsule" ref={capsuleRef}>
         <nav className="v4nav-row" aria-label="Primary">
           {/* brand · the butterfly mark + wordmark */}
           <Link to="/" className="v4nav-brand" aria-label="Nika — home">
@@ -295,8 +394,40 @@ export default function Nav() {
             nika
           </Link>
 
-          {/* desktop rail */}
-          <div className="v4nav-rail">
+          {/* desktop rail · owns the ONE sliding hover pill */}
+          <div
+            className="v4nav-rail"
+            ref={railRef}
+            onPointerOver={(e) => {
+              const el = railItemOf(e.target)
+              if (el) {
+                pillHot.current.hover = el
+                syncPill()
+              }
+            }}
+            onPointerLeave={() => {
+              pillHot.current.hover = null
+              syncPill()
+            }}
+            onFocus={(e) => {
+              /* keyboard only — pointer clicks already carry the hover pill;
+                 :focus-visible keeps a mouse press from double-driving it */
+              const el = railItemOf(e.target)
+              if (el && e.target instanceof Element && e.target.matches(':focus-visible')) {
+                pillHot.current.focus = el
+                syncPill()
+              }
+            }}
+            onBlur={(e) => {
+              if (!railRef.current?.contains(e.relatedTarget as Node)) {
+                pillHot.current.focus = null
+                syncPill()
+              }
+            }}
+          >
+            {/* the shared sliding highlight — purely decorative */}
+            <span ref={pillRef} className="v4nav-pill" data-on="false" aria-hidden />
+
             {/* Product ▾ — the mega-menu disclosure */}
             <div className="v4mega-wrap" ref={megaWrapRef}>
               <button
@@ -327,6 +458,7 @@ export default function Nav() {
               {megaOpen ? (
                 <div
                   id={megaId}
+                  ref={megaPanelRef}
                   className="v4mega"
                   role="menu"
                   aria-label="Product"
@@ -374,7 +506,18 @@ export default function Nav() {
                   ) : null}
                 </a>
               ) : (
-                <Link key={l.label} to={l.href} className="v4nav-link">
+                <Link
+                  key={l.label}
+                  to={l.href}
+                  className="v4nav-link"
+                  /* the active route keeps a persistent dim pill (pure CSS on
+                     aria-current) under the sliding hover pill */
+                  aria-current={
+                    location.pathname === l.href || location.pathname.startsWith(`${l.href}/`)
+                      ? 'page'
+                      : undefined
+                  }
+                >
                   {l.label}
                 </Link>
               ),
@@ -423,14 +566,16 @@ export default function Nav() {
             </button>
           </div>
         </nav>
+        </div>
       </header>
 
-      {/* the hero sentinel · fixed just under the nav; toggles solidification.
-          A 1px, pointer-events:none marker at the top of the document flow. */}
+      {/* the scroll sentinel · a 1px, pointer-events:none marker parked 24px
+          down the document flow; leaving the viewport = "the page is in
+          motion" (capsule compression + field-route solidification). */}
       <div
         ref={sentinelRef}
         aria-hidden
-        style={{ position: 'absolute', top: 1, left: 0, height: 1, width: 1, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: 24, left: 0, height: 1, width: 1, pointerEvents: 'none' }}
       />
 
       {/* ── the mobile sheet ── */}

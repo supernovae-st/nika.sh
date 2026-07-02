@@ -1,0 +1,561 @@
+/* ─── v4 shell · the nav (capsule + mega-menu + mobile sheet) ─────────────────
+   Extracted verbatim from shell.css (2026-07-02) so the nav owns its stylesheet
+   (Nav.tsx imports THIS file; shell.css keeps the hero atmosphere + shared
+   plates). Same register: engineered dark ladder, hairline 1px rules, the seam
+   kit (--seam-highlight / --seam-hairline / --elev-*), grayscale ink with the
+   ONE blue accent family. SSR-safe: pure CSS, no JS at render. */
+
+/* ─── the nav · a floating instrument capsule ─────────────────────────────────
+   The <header> is a fixed, pointer-events:none POSITIONING shell (full-bleed,
+   a 12px top gutter on desktop); the CAPSULE inside it is the instrument —
+   detached from the top edge, near-opaque #0a0d12-family floor, the seam kit
+   (inner-top light catch + hairline + one tight float shadow), radius 12px.
+   (The capsule is a floating instrument, not a panel — the one sanctioned
+   break from the 0-4px structural radii.) Two orthogonal states:
+     data-solid     the FLOOR · transparent riding the hero field → capsule
+     data-scrolled  the COMPRESSION · 64px → 56px + the shadow tightens (>24px)
+   The old full-width legibility scrim (::before) is GONE: since P2-12 made
+   field-less routes solid from scroll 0, the transparent nav only ever rides
+   the DARK hero field ('/' + '/manifesto') — the ink-lift below is all the
+   legibility work needed, and a gradient band behind a floating capsule would
+   read as a smudge. Below 720px the capsule becomes a full-width bar (radius 0,
+   bottom hairline) with the same depth kit. */
+.v4nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50; /* above content, below the aurora frame (z-60) and any sheet */
+  pointer-events: none; /* the capsule re-arms hits; the gutter stays inert */
+}
+@media (min-width: 720px) {
+  .v4nav {
+    padding: 12px 16px 0;
+  }
+}
+
+.v4nav-capsule {
+  pointer-events: auto;
+  position: relative;
+  max-width: 72rem;
+  margin: 0 auto;
+  /* transparent at the top of the hero field · the floor arrives with data-solid */
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  transition:
+    background-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 0.32s ease;
+}
+@media (min-width: 720px) {
+  .v4nav-capsule {
+    border-radius: 12px;
+  }
+}
+.v4nav[data-solid='true'] .v4nav-capsule {
+  /* the near-opaque floor · dark enough to occlude anything scrolling under,
+     translucent enough that the blur reads as machined glass, not paint */
+  background: rgb(10 13 18 / 0.92);
+  border-color: var(--seam-hairline);
+  backdrop-filter: blur(14px) saturate(1.35);
+  -webkit-backdrop-filter: blur(14px) saturate(1.35);
+  box-shadow:
+    var(--seam-highlight),
+    0 1px 2px rgb(0 0 0 / 0.32),
+    0 16px 40px -20px rgb(0 0 0 / 0.55);
+}
+/* compression · once the page is in motion the float shadow pulls in tight
+   (the capsule sits closer to the content it now shares the viewport with) */
+.v4nav[data-scrolled='true'][data-solid='true'] .v4nav-capsule {
+  box-shadow:
+    var(--seam-highlight),
+    0 1px 2px rgb(0 0 0 / 0.36),
+    0 8px 24px -16px rgb(0 0 0 / 0.5);
+}
+/* below 720px · a full-width bar (no float) — same depth kit, bottom hairline */
+@media (max-width: 719.98px) {
+  .v4nav[data-solid='true'] .v4nav-capsule,
+  .v4nav[data-scrolled='true'][data-solid='true'] .v4nav-capsule {
+    border-color: transparent;
+    border-bottom-color: var(--v4-line);
+    box-shadow:
+      var(--seam-highlight),
+      0 8px 24px -18px rgb(0 0 0 / 0.5);
+  }
+}
+
+.v4nav-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 64px;
+  width: 100%;
+  /* fold the safe-area inset into the gutter so the burger/CTA never ride under
+     a notch in landscape, and the row always fits a 390px viewport. */
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+  transition: height 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v4nav[data-scrolled='true'] .v4nav-row {
+  height: 56px;
+}
+/* the mobile bar keeps a steady 60px (no compression choreography on a bar) */
+@media (max-width: 719.98px) {
+  .v4nav-row,
+  .v4nav[data-scrolled='true'] .v4nav-row {
+    height: 60px;
+  }
+}
+
+/* the brand lockup · butterfly mark + wordmark */
+.v4nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 6px;
+  margin-left: -6px;
+  color: var(--v4-text);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  border-radius: var(--v4-radius);
+}
+.v4nav-brand img {
+  width: 19px;
+  height: 19px;
+  /* the butterfly is full-color art; in the monochrome shell we keep it but let
+     it read as a precise instrument mark — a hairline-soft glow, never a tech-blue
+     halo. (grayscale would kill the brand; a soft luminance lift is the seam.) */
+  opacity: 0.96;
+}
+
+/* the desktop link rail — deliberately NOT position:relative: the CAPSULE is
+   the one positioning context up here, so both the sliding pill and the mega
+   panel anchor to it (the panel's 8px capsule-bottom gap must survive the
+   64→56 compression; a rail-anchored panel drifts into the capsule). */
+.v4nav-rail {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  margin-left: 6px;
+}
+@media (min-width: 900px) {
+  .v4nav-rail {
+    display: flex;
+  }
+}
+
+/* ── the ONE sliding hover pill ──
+   A single shared highlight behind the rail items, absolutely positioned in
+   the CAPSULE (its offsetParent). JS (Nav.tsx) measures the hot item and
+   drives transform/width; this sheet owns the motion. Two states: hidden
+   transitions OPACITY ONLY — so the first position write lands silently and
+   the pill FADES IN in place; once visible, transform/width slide between
+   items on the signature snappy curve. Fades out in place on leave. */
+.v4nav-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 36px;
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-text) 7%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, width;
+  transition: opacity 0.16s ease;
+}
+.v4nav-pill[data-on='true'] {
+  opacity: 1;
+  transition:
+    transform 0.18s cubic-bezier(0.3, 0.7, 0.3, 1),
+    width 0.18s cubic-bezier(0.3, 0.7, 0.3, 1),
+    opacity 0.16s ease;
+}
+
+.v4nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px; /* ≥24px hit target, comfortably */
+  padding: 7px 11px;
+  border-radius: var(--v4-radius);
+  font-size: 14px;
+  font-weight: 450;
+  letter-spacing: -0.005em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  /* NO per-item hover background — the shared sliding pill carries the
+     highlight; the item only shifts ink. Press physics: a half-pixel settle. */
+  transition: color var(--dur-ui) var(--ease-ui), transform 0.12s var(--ease-ui);
+}
+.v4nav-link:hover {
+  color: var(--v4-text);
+}
+.v4nav-link:active {
+  transform: translateY(0.5px);
+}
+/* the active route · a persistent dim pill (one step quieter than hover) */
+.v4nav-link[aria-current='page'] {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+}
+/* while transparent (riding the dark hero field), the dim gray sinks into the
+   field — lift the rail ink to a high-opacity near-white so every link clears
+   contrast. Once the floor arrives, the dim/text hierarchy returns. Brand +
+   ghost + caret follow the same lift. */
+.v4nav[data-solid='false'] .v4nav-link,
+.v4nav[data-solid='false'] .v4nav-ghost {
+  color: color-mix(in oklch, var(--v4-text) 88%, transparent);
+}
+.v4nav[data-solid='false'] .v4nav-link:hover,
+.v4nav[data-solid='false'] .v4nav-ghost:hover,
+.v4nav[data-solid='false'] .v4nav-link[aria-current='true'] {
+  color: var(--v4-text);
+}
+/* the engineering-blueprint underline tick — a hairline that draws on hover */
+.v4nav-link::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-ui) var(--ease-ui), opacity var(--dur-ui) var(--ease-ui);
+}
+.v4nav-link:hover::after,
+.v4nav-link[data-open='true']::after {
+  opacity: 0.4;
+  transform: scaleX(1);
+}
+
+.v4nav-caret {
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+.v4nav-link[data-open='true'] .v4nav-caret {
+  transform: rotate(180deg);
+}
+
+.v4nav-ext-arrow {
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+/* the right cluster */
+.v4nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.v4nav-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 7px 11px;
+  border-radius: var(--v4-radius);
+  font-size: 13.5px;
+  color: var(--v4-text-dim);
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui),
+    transform 0.12s var(--ease-ui);
+}
+.v4nav-ghost:hover {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4nav-ghost:active {
+  transform: translateY(0.5px);
+}
+.v4nav-ghost-label {
+  display: none;
+}
+@media (min-width: 560px) {
+  .v4nav-ghost-label {
+    display: inline;
+  }
+}
+
+/* the ONE solid CTA — near-white on the dark shell (bg-text/text-bg register).
+   No pill, no hover-lift cliché: a crisp rectangle with a hairline base shadow
+   and a contrast bump on hover (per a11y: contrast must rise on hover/focus). */
+.v4nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 8px 15px;
+  border-radius: var(--v4-radius);
+  font-size: 13.5px;
+  font-weight: 560;
+  letter-spacing: -0.005em;
+  color: var(--v4-bg);
+  background: var(--v4-text);
+  border: 1px solid var(--v4-text);
+  box-shadow: 0 1px 0 color-mix(in oklch, var(--v4-text) 30%, transparent);
+  transition: background-color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
+    transform 0.12s var(--ease-ui), box-shadow 0.12s var(--ease-ui);
+}
+.v4nav-cta:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+/* press physics · the button settles half a pixel and its base shadow pulls in */
+.v4nav-cta:active {
+  transform: translateY(0.5px);
+  box-shadow: 0 0.5px 0 color-mix(in oklch, var(--v4-text) 18%, transparent);
+}
+.v4nav-cta-glyph {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* the mobile menu button — collapses the rail · full ≥44px touch target */
+.v4nav-burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border-radius: var(--v4-radius);
+  color: var(--v4-text);
+  touch-action: manipulation;
+  transition: background-color var(--dur-ui) var(--ease-ui);
+}
+.v4nav-burger:hover {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+@media (min-width: 900px) {
+  .v4nav-burger {
+    display: none;
+  }
+}
+
+/* ─── the Product ▾ mega-menu (WAI-ARIA disclosure) ───────────────────────────
+   The wrap is intentionally NOT position:relative — the panel's containing
+   block is the CAPSULE, so `top: calc(100% + 8px)` hangs the panel off the
+   capsule's bottom edge with a constant 8px gap (it stays put through the
+   64→56 compression; anchored to the button it would drift 4px). The LEFT
+   is set inline by Nav.tsx at open time (aligned under the trigger — the
+   brand width can't be hardcoded); 10px is the SSR/no-JS fallback. Radius
+   and depth kit match the capsule — the panel reads as shed
+   instrumentation. */
+.v4mega {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 10px;
+  width: 640px;
+  max-width: calc(100vw - 40px);
+  padding: 14px;
+  border-radius: 12px; /* matches the capsule, not the 4px structural radii */
+  /* F6 · NEAR-OPAQUE floor — the panel fully occludes what's behind it (the
+     translucent+blur version let the field bleed through and muddied the
+     type). Seam kit: hairline + inner-top catch + ONE tight float shadow. */
+  background: #0b0e13;
+  border: 1px solid var(--seam-hairline);
+  box-shadow:
+    var(--seam-highlight),
+    0 16px 40px -16px rgb(0 0 0 / 0.6);
+  /* two GROUP COLUMNS side by side (Linear register) — each column owns its
+     eyebrow + its stacked items; groups never interleave. */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  align-items: start;
+  /* entrance · a short, motion-safe drop-in (opacity + 4px settle · 160ms) */
+  animation: v4mega-in 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes v4mega-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.v4mega-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.v4mega-col-title {
+  margin: 6px 12px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+/* the items — text hierarchy ONLY (F6: no bullet glyphs), 8px-grid padding,
+   flat token-swap hover (140ms). The keyboard ring comes from the global
+   :focus-visible rule — thin, keyboard-only, never a selection box (pointer
+   opens no longer auto-focus the first item). */
+.v4mega-item {
+  display: block;
+  padding: 10px 12px;
+  border-radius: var(--v4-radius);
+  color: var(--v4-text);
+  transition: background-color var(--dur-ui) var(--ease-ui), transform 0.12s var(--ease-ui);
+}
+.v4mega-item:hover,
+.v4mega-item:focus-visible {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4mega-item:active {
+  transform: translateY(0.5px);
+}
+.v4mega-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 560;
+  line-height: 1.3;
+}
+.v4mega-desc {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--v4-text-dim);
+}
+
+/* ─── the mobile sheet ──────────────────────────────────────────────────────── */
+.v4sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  background: color-mix(in oklch, var(--v4-bg) 60%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: v4scrim-in 0.2s ease both;
+}
+@keyframes v4scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.v4sheet {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 50;
+  width: min(86vw, 360px);
+  padding: 18px 18px calc(24px + env(safe-area-inset-bottom));
+  background: var(--v4-bg-raised);
+  border-left: 1px solid var(--seam-hairline);
+  /* seam kit · inner-top catch + the directional float shadow (overlay) */
+  box-shadow: var(--seam-highlight), -24px 0 60px -20px rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: v4sheet-in 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes v4sheet-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.v4sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.v4sheet-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border-radius: var(--v4-radius);
+  color: var(--v4-text);
+  transition: background-color var(--dur-ui) var(--ease-ui);
+}
+.v4sheet-close:hover {
+  background: color-mix(in oklch, var(--v4-text) 8%, transparent);
+}
+.v4sheet-sectitle {
+  margin: 16px 8px 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.v4sheet-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px; /* generous touch target */
+  padding: 8px 8px;
+  border-radius: var(--v4-radius);
+  font-size: 16px; /* ≥16px so iOS never zooms */
+  color: var(--v4-text);
+  transition: background-color var(--dur-ui) var(--ease-ui);
+}
+.v4sheet-link:hover {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4sheet-link:active {
+  transform: translateY(0.5px);
+}
+/* sheet product items carry the same two-line register as the mega panel */
+.v4sheet-link .v4mega-label {
+  font-size: 16px; /* ≥16px so iOS never zooms */
+}
+.v4sheet-link .v4mega-desc {
+  font-size: 13px;
+}
+.v4sheet-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  margin-top: 18px;
+  border-radius: var(--v4-radius);
+  font-size: 16px;
+  font-weight: 560;
+  color: var(--v4-bg);
+  background: var(--v4-text);
+}
+.v4sheet-rule {
+  height: 1px;
+  margin: 14px 0 2px;
+  background: var(--v4-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v4mega,
+  .v4sheet,
+  .v4sheet-scrim {
+    animation: none;
+  }
+  .v4nav-link::after,
+  .v4nav-caret {
+    transition: none;
+  }
+  /* the pill may still FADE but never streak across the rail */
+  .v4nav-pill,
+  .v4nav-pill[data-on='true'] {
+    transition: opacity 0.16s ease;
+  }
+  .v4nav-row,
+  .v4nav[data-scrolled='true'] .v4nav-row {
+    transition: none;
+  }
+}
