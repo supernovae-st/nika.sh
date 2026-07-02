@@ -88,6 +88,10 @@ export function sampleGlyphPoints(
     img.onerror = () => reject(new Error(`failed to load ${svgUrl}`))
     img.src = svgUrl
   })
+  /* a rejection must NOT stay cached — one transient SVG fetch failure would
+     otherwise kill the signature until a full reload. Drop the entry so the
+     next in-view attempt can retry. */
+  p.catch(() => cache.delete(key))
   cache.set(key, p)
   return p
 }

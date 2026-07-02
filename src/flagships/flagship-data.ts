@@ -42,7 +42,9 @@ export const FLAGSHIPS: Flagship[] = [
     id: 'daily_brief',
     filename: 'daily-brief.nika.yaml',
     label: 'daily-brief',
-    gloss: 'permits: the file IS the blast radius',
+    /* consumer-first: « blast radius » is earned 3 beats later by TheBoundary —
+       the default tab must not open on unexplained jargon (P2-13a) */
+    gloss: 'permits: the file says what it may touch',
     highlight: [5, 7],
     artifact: 'wrote brief.md',
     traceNdjson: dailyBriefTrace,
