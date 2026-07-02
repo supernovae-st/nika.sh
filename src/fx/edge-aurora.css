@@ -34,6 +34,14 @@
   will-change: opacity;
 }
 
+/* settled at the quiet rest floor (decay loop parked · EdgeAurora.tsx sets
+   data-idle) — freeze the infinite breathe/rotate so the layer stops
+   compositing for a near-invisible 0.04 ring. Any pulse/run clears the flag. */
+.edge-aurora[data-idle='on'],
+.edge-aurora[data-idle='on']::before {
+  animation-play-state: paused;
+}
+
 /* The visible ring · a blurred conic sweep masked to the frame edges only.
    `mask` punches a transparent rectangle out of the center so only the rim
    glows. The conic sweep stays INSIDE the blue family — tonal movement

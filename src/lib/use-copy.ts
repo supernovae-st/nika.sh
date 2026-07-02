@@ -19,10 +19,16 @@ export function useCopy(value: string): { copied: boolean; copy: () => void } {
   useEffect(() => () => clearTimeout(timer.current), [])
 
   const copy = () => {
-    navigator.clipboard?.writeText(value)
-    setCopied(true)
-    clearTimeout(timer.current)
-    timer.current = setTimeout(() => setCopied(false), COPY_RESET_MS)
+    // Copied only flips once the write RESOLVES: a denied permission or an
+    // insecure context must never show a false « Copied » state.
+    navigator.clipboard
+      ?.writeText(value)
+      .then(() => {
+        setCopied(true)
+        clearTimeout(timer.current)
+        timer.current = setTimeout(() => setCopied(false), COPY_RESET_MS)
+      })
+      .catch(() => {})
   }
   return { copied, copy }
 }

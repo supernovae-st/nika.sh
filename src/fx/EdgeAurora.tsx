@@ -70,10 +70,15 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
 
       if (Math.abs(intensityRef.current - rest) > 0.002) {
         rafRef.current = requestAnimationFrame(tickRef.current)
+        if (el) delete el.dataset.idle
       } else {
         if (el) el.style.setProperty('--aurora-intensity', String(rest))
         rafRef.current = null
         lastTsRef.current = 0
+        // settled at the quiet rest floor: park the infinite rotate/breathe
+        // animations (a permanently-composited layer buys nothing at 0.04) —
+        // any pulse/run re-arms and clears the flag on the next frame.
+        if (el && rest <= REST_INTENSITY) el.dataset.idle = 'on'
       }
     }
     tickRef.current = tick
