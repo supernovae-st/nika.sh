@@ -3,7 +3,7 @@ import { useHead } from '@unhead/react'
 import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
 import { FLAGSHIP_ENTRIES } from '../flagships'
-import LivingFile from '../sections/living/LivingFile'
+import TheRun from '../sections/run/TheRun'
 import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
 import Verbs from '../sections/Verbs'
@@ -221,9 +221,9 @@ export function Component() {
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
         <Hero flagship={flagship} index={flagshipIdx} onSelect={setFlagshipIdx} />
 
-        {/* FIG 1.0 · « The Living File » — the file becomes a running DAG with
-             real CLI/NDJSON logs and a concrete result (THE wow, dosed) */}
-        <LivingFile />
+        {/* FIG 1.0 · THE RUN — the selected file executes as a recorded real-run
+             event stream (trace replay · verb-hued frame · real verdict) */}
+        <TheRun flagship={flagship} />
 
         {/* FIG 1.5 · Proof strip — the honest mono numbers band (CANON counts) */}
         <ProofStrip />

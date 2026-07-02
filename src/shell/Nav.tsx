@@ -43,7 +43,7 @@ const PRODUCT_GROUPS: MegaGroup[] = [
   {
     title: 'The control layer',
     items: [
-      { label: 'See it run', desc: 'The plan, reviewed and enforced', glyph: '❯', href: '/#living-file' },
+      { label: 'See it run', desc: 'The plan, reviewed and enforced', glyph: '❯', href: '/#the-run' },
       { label: 'The four verbs', desc: 'infer · exec · invoke · agent', glyph: '◆', href: '/#verbs' },
       { label: 'What it can touch', desc: 'The permits enforcement model', glyph: '◈', href: '/#permits' },
       { label: 'Use cases', desc: 'Real plans, reviewable and bound', glyph: '◇', to: '/use-cases' },
