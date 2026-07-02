@@ -26,7 +26,13 @@ export default defineConfig([
        Math.random() inside useMemo is one-shot procedural generation.
        The React-Compiler lint rules (purity / immutability / use-memo)
        are structurally wrong for this layer — disabled HERE ONLY. */
-    files: ['src/scene/**/*.{ts,tsx}'],
+    files: [
+      'src/scene/**/*.{ts,tsx}',
+      /* wave H · the morph's 3D DAG layer is r3f scene code living next to
+         its DOM story (same-dir doctrine) — same carve-out, same reason */
+      'src/sections/morph/ThePlanScene.tsx',
+      'src/sections/morph/plan-scene-three.ts',
+    ],
     rules: {
       'react-hooks/purity': 'off',
       'react-hooks/immutability': 'off',

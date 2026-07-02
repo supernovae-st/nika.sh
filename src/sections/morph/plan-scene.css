@@ -1,0 +1,187 @@
+/* ─── ThePlanScene · the 3D DAG layer over the morph (wave H) ─────────────────
+   The layer exists ONLY while ThePlanScene is mounted (it sets [data-plan3d]
+   on the stage itself) — every other configuration keeps the DOM DAG story
+   pixel-identical. Billboards + tooltip are real DOM over the canvas. */
+
+/* the DOM node cards step aside but KEEP LAYOUT — the burst still measures
+   its flight targets from them (visibility, never display) */
+.morph-stage[data-plan3d] .morph-dag {
+  visibility: hidden;
+}
+
+.ps-layer {
+  position: absolute;
+  /* the same safe area the DOM DAG reserves above the terminal strip */
+  inset: 0 0 calc(clamp(80px, 11vh, 140px) + 96px) 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.morphsec:not([data-armed]) .ps-layer {
+  display: none; /* the static scene stays the DOM truth */
+}
+.ps-canvas {
+  position: absolute;
+  inset: 0;
+}
+/* the tooltip's twin box · same geometry, ABOVE the traveling card */
+.ps-tiplayer {
+  z-index: 4;
+}
+
+/* the YAML card accepts hover ONLY in the file beat (H6) — everywhere else it
+   stays decorative exactly as before */
+.morph-stage[data-plan3d][data-phase='file'] .morph-file,
+.morph-stage[data-plan3d][data-phase='file'] .morph-file .morph-code {
+  pointer-events: auto;
+}
+
+/* the hovered task's lines light up in the file (H6 cross-highlight) */
+.morph-code .cf-line.ps-hi {
+  background: rgb(79 134 255 / 0.13);
+  box-shadow: inset 2px 0 0 var(--v4-accent);
+}
+
+/* ── billboards · mono task-id plates projected onto the slabs ─────────────── */
+.ps-bills {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.ps-bill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 3px 8px 4px;
+  border: 0;
+  background: transparent;
+  font-family: var(--mono);
+  pointer-events: auto;
+  cursor: default;
+  will-change: transform, opacity;
+}
+.ps-bill[data-vis='0'] {
+  visibility: hidden; /* also drops it from the tab order */
+}
+.ps-bill-id {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgb(141 180 255 / 0.78);
+  text-shadow: 0 1px 6px rgb(5 5 7 / 0.9);
+}
+.ps-bill-chip {
+  min-height: 13px;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--cf-str);
+  text-shadow: 0 1px 6px rgb(5 5 7 / 0.9);
+  white-space: nowrap;
+}
+.ps-bill[data-state='running'] .ps-bill-id {
+  color: var(--v4-text);
+}
+.ps-bill[data-verb='infer'][data-state='running'] .ps-bill-chip { color: var(--verb-infer); }
+.ps-bill[data-verb='exec'][data-state='running'] .ps-bill-chip { color: var(--verb-exec); }
+.ps-bill[data-verb='invoke'][data-state='running'] .ps-bill-chip { color: var(--verb-invoke); }
+.ps-bill[data-verb='agent'][data-state='running'] .ps-bill-chip { color: var(--verb-agent); }
+.ps-bill[data-state='skipped'] .ps-bill-id,
+.ps-bill[data-state='skipped'] .ps-bill-chip {
+  color: var(--cf-num);
+}
+.ps-bill:focus-visible {
+  outline: 1px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--v4-radius-sm);
+}
+
+/* ── the tooltip · plain words + the verbatim YAML excerpt (H6) ────────────── */
+.ps-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -100%);
+  max-width: 340px;
+  min-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid var(--seam-hairline);
+  border-radius: var(--v4-radius);
+  background: color-mix(in srgb, var(--v4-bg-raised) 94%, transparent);
+  box-shadow: var(--seam-highlight), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.14s var(--ease-ui, ease);
+  pointer-events: none;
+  z-index: 4;
+}
+.ps-tip[data-on='1'] {
+  opacity: 1;
+  visibility: visible;
+}
+.ps-tip[data-flip='1'] {
+  transform: translate(-50%, 0); /* below its anchor near the top edge */
+}
+.ps-tip-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--mono);
+}
+.ps-tip-id {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--v4-text);
+}
+.ps-tip-verb {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+}
+.ps-tip-verb[data-verb='infer'] { color: var(--verb-infer); }
+.ps-tip-verb[data-verb='exec'] { color: var(--verb-exec); }
+.ps-tip-verb[data-verb='invoke'] { color: var(--verb-invoke); }
+.ps-tip-verb[data-verb='agent'] { color: var(--verb-agent); }
+.ps-tip-words {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: var(--v4-text-dim);
+}
+.ps-tip-row {
+  margin: 5px 0 0;
+  font-size: 11.5px;
+  color: var(--v4-text-faint);
+}
+.ps-tip-key {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--v4-accent);
+}
+.ps-tip-fact {
+  margin: 6px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--cf-str);
+}
+.ps-tip-fact[data-state='skipped'] {
+  color: var(--cf-num);
+}
+.ps-tip-rec {
+  color: var(--v4-text-faint);
+}
+.ps-tip-yaml {
+  margin: 8px 0 0;
+  padding: 7px 9px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius-sm);
+  background: var(--v4-bg);
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  white-space: pre;
+  overflow: hidden;
+}
