@@ -25,8 +25,11 @@ import { PH, clamp01, easeInOut, flightAt, runFracAt, taskInterval } from './mor
 export const SLAB = { w: 2.05, h: 1.12, d: 0.16 } as const
 export const X_GAP = 2.55
 export const WAVE_GAP = 3.7
-export const FOCUS_DIST = 4.9
-export const FOCUS_HEIGHT = 1.45
+/** each deeper wave rises — the amphitheater read: the road ahead is visible
+    OVER the nearer waves, and the advance feels like ascending */
+export const Y_STEP = 0.62
+export const FOCUS_DIST = 8.2
+export const FOCUS_HEIGHT = 2.5
 export const EDGE_SEGS = 24
 
 export interface PlanSlab {
@@ -78,7 +81,7 @@ export function buildPlanScene(entry: FlagshipEntry): PlanSceneModel {
       slabs.push({
         task: wave[i],
         x: (i - (wave.length - 1) / 2) * X_GAP,
-        y: 0,
+        y: w * Y_STEP,
         z: waveZ[w],
       })
     }
@@ -92,11 +95,14 @@ export function buildPlanScene(entry: FlagshipEntry): PlanSceneModel {
     for (const d of s.task.deps) {
       const from = byId.get(d)
       if (!from) continue
+      /* leave the upstream slab's top-back edge, land on the downstream
+         slab's lower-front edge — the trace enters from below, never
+         crossing the face it lights */
       const ax = from.x
-      const ay = from.y
+      const ay = from.y + SLAB.h * 0.24
       const az = from.z - SLAB.d / 2
       const bx = s.x
-      const by = s.y
+      const by = s.y - SLAB.h * 0.32
       const bz = s.z + SLAB.d / 2
       const mx = (ax + bx) / 2
       const my = (ay + by) / 2 + 0.42 // the arc lifts a touch
@@ -126,7 +132,7 @@ export function buildPlanScene(entry: FlagshipEntry): PlanSceneModel {
      The camera must still GLIDE — so each wave holds a minimum share of the
      run window. Forward pass enforces the min gap, backward pass keeps the
      tail inside 1. Recorded order is untouched. */
-  const minGap = Math.min(0.18, 0.9 / plan.waveCount)
+  const minGap = Math.min(0.22, 0.9 / plan.waveCount)
   const knots = anchors.map((a) => a / Math.max(1, trace.totalMs))
   for (let w = 1; w < knots.length; w++) knots[w] = Math.max(knots[w], knots[w - 1] + minGap)
   knots[knots.length - 1] = Math.min(knots[knots.length - 1], 1)
@@ -173,24 +179,26 @@ const lerp = (a: number, b: number, k: number): number => a + (b - a) * k
     recorded run, a small pull-back as the verdict settles */
 export function camAt(model: PlanSceneModel, p: number): CamPose {
   const depth = (model.waveCount - 1) * WAVE_GAP
-  /* overview · pulled back + elevated, the whole plan ahead */
+  const rise = (model.waveCount - 1) * Y_STEP
+  /* overview · pulled back + elevated, the whole plan rising ahead */
   const ov = {
     px: 0,
-    py: 2.7,
-    pz: 8.4,
+    py: 3.6,
+    pz: 12,
     tx: 0,
-    ty: 0.1,
-    tz: -depth * 0.42,
+    ty: rise * 0.42 - 0.1,
+    tz: -depth * 0.45,
   }
   const f = focusAt(model, runFracAt(p))
   const fz = -f * WAVE_GAP
+  const fy = f * Y_STEP
   const fo = {
     px: 0,
-    py: FOCUS_HEIGHT,
+    py: FOCUS_HEIGHT + fy,
     pz: fz + FOCUS_DIST,
     tx: 0,
-    ty: 0.05,
-    tz: fz - WAVE_GAP * 0.55,
+    ty: fy - 0.15,
+    tz: fz - WAVE_GAP * 0.5,
   }
 
   if (p <= PH.burstEnd) return { ...ov, f: -0.4 }
@@ -209,12 +217,12 @@ export function camAt(model: PlanSceneModel, p: number): CamPose {
   }
   if (p <= PH.run1) return { ...fo, f }
 
-  /* the hold · recede a touch, the settled structure in view */
+  /* the hold · recede, the settled structure back in view for the verdict */
   const k = easeInOut(clamp01((p - PH.run1) / (1 - PH.run1)))
   return {
     px: fo.px,
-    py: lerp(fo.py, fo.py + 1.3, k),
-    pz: lerp(fo.pz, fo.pz + 2.6, k),
+    py: lerp(fo.py, fo.py + 1.9, k),
+    pz: lerp(fo.pz, fo.pz + 4.2, k),
     tx: fo.tx,
     ty: fo.ty,
     tz: fo.tz,

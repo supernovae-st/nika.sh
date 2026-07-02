@@ -11,6 +11,7 @@ import {
   SLAB,
   VERB_HUE,
   WAVE_GAP,
+  Y_STEP,
   buildPlanScene,
   camAt,
   chipAt,
@@ -134,12 +135,13 @@ function Advance({
 
     /* the fond profond follows the current wave */
     const focalZ = -cam.f * WAVE_GAP
+    const focalY = cam.f * Y_STEP
     layers.field.uniforms.uTime.value = state.clock.elapsedTime
-    layers.field.uniforms.uFocal.value.set(0, 0.1, focalZ)
-    layers.field.uniforms.uAmp.value = gFade * (0.3 + 0.7 * runEnv)
-    layers.glow.mesh.position.set(0, -0.5, focalZ - 1.6)
+    layers.field.uniforms.uFocal.value.set(0, focalY + 0.1, focalZ)
+    layers.field.uniforms.uAmp.value = gFade * (0.55 + 0.45 * runEnv)
+    layers.glow.mesh.position.set(0, focalY - 0.4, focalZ - 1.6)
     layers.glow.mesh.quaternion.copy(camera.quaternion)
-    layers.glow.uniforms.uOpacity.value = 0.16 * gFade * (0.4 + 0.6 * runEnv)
+    layers.glow.uniforms.uOpacity.value = 0.2 * gFade * (0.4 + 0.6 * runEnv)
 
     /* ── slabs ── */
     const fT = layers.fills.tint.array as Float32Array
@@ -280,10 +282,10 @@ function Advance({
         const on = clamp01((draw * 1.05 - tv) / 0.05)
         const g = pulse.strength * Math.exp(-Math.pow((tv - pulse.pos) * 7.0, 2))
         const k = e * vpe + vi
-        dC[k * 3] = EDGE_BLUE[0] * (0.4 + 0.25 * lit) + hue[0] * g
-        dC[k * 3 + 1] = EDGE_BLUE[1] * (0.4 + 0.25 * lit) + hue[1] * g
-        dC[k * 3 + 2] = EDGE_BLUE[2] * (0.4 + 0.25 * lit) + hue[2] * g
-        dA[k] = eVis * on * (0.16 + 0.16 * lit + g * 0.85)
+        dC[k * 3] = EDGE_BLUE[0] * (0.5 + 0.3 * lit) + hue[0] * g
+        dC[k * 3 + 1] = EDGE_BLUE[1] * (0.5 + 0.3 * lit) + hue[1] * g
+        dC[k * 3 + 2] = EDGE_BLUE[2] * (0.5 + 0.3 * lit) + hue[2] * g
+        dA[k] = eVis * on * (0.24 + 0.2 * lit + g * 0.9)
       }
     }
     layers.deps.color.needsUpdate = true
@@ -305,7 +307,7 @@ function Advance({
         if (vis) {
           const bx = (V.x * 0.5 + 0.5) * w
           const by = (-V.y * 0.5 + 0.5) * h
-          const k = Math.min(1.15, Math.max(0.55, 5.2 / c[3]))
+          const k = Math.min(1.15, Math.max(0.6, 8.6 / c[3]))
           el.style.transform = `translate(-50%, -100%) translate3d(${bx.toFixed(1)}px, ${by.toFixed(1)}px, 0) scale(${k.toFixed(3)})`
           el.style.opacity = Math.min(1, alphas[id] * 1.6).toFixed(3)
           /* the tooltip rides its billboard */

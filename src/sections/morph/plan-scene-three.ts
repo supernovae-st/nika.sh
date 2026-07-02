@@ -53,6 +53,9 @@ const vec3 PS_HI = ${v3(RAMP_HI)};`,
         '#include <dithering_fragment>',
         `{
   float psLuma = dot(gl_FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+  /* the ignite lift · a tinted slab (running) pushes more cells onto the hi
+     plateau, so the verb hue visibly takes the face */
+  psLuma += vTint.a * 0.22;
   /* stable ~2-device-px dither cells (the DitherField convention) */
   float psTh = psB8(floor(gl_FragCoord.xy / 2.0));
   /* 3 plateaus · lo / mid / hi — flat print facets, never gloss */
@@ -332,7 +335,11 @@ void main() {
   float dist = length(uFocal - p);
   float near = 1.0 - smoothstep(1.5, 8.0, dist);
   vC = mix(${v3(RAMP_MID)}, ${v3(RAMP_HI)}, near * 0.75);
-  vA = sin(3.14159 * life) * uAmp * (0.16 + 0.3 * near);
+  /* vignette toward the canvas bounds — the additive haze must never draw the
+     canvas rectangle over the page black */
+  vec2 ndc = gl_Position.xy / max(1e-4, gl_Position.w);
+  float edgeK = 1.0 - smoothstep(0.62, 0.96, max(abs(ndc.x), abs(ndc.y)));
+  vA = sin(3.14159 * life) * uAmp * (0.22 + 0.38 * near) * edgeK;
   gl_PointSize = clamp(uSize / max(1.0, -mv.z), 1.0, 3.0);
 }
 `
