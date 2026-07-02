@@ -78,8 +78,12 @@ function CopyRow({ cmd, label }: { cmd: string; label: string }) {
         onClick={copy}
         className="v4install-copy"
         data-copied={copied}
-        aria-label={copied ? `Copied: ${label}` : `Copy ${label} command`}
+        aria-label={`Copy ${label} command`}
       >
+        {/* polite live region — an aria-label swap alone is not reliably announced */}
+        <span role="status" className="sr-only">
+          {copied ? 'Copied to clipboard' : ''}
+        </span>
         {copied ? (
           <>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>

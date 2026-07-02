@@ -314,6 +314,14 @@
     transform: translateY(2px);
   }
 }
+/* reduced motion · the chip lands in its final state (belt-and-braces — the
+   corridor itself is withheld under reduced motion, but the chip must never
+   depend on that structural gate alone). */
+@media (prefers-reduced-motion: reduce) {
+  .cor-plate-tel {
+    animation: none;
+  }
+}
 
 /* the PLAIN-WORDS comprehension gloss — spans the full plate width, the line
    that tells a first-time viewer what this step DOES. Dim, but legible. */

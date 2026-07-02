@@ -172,10 +172,12 @@ function AudienceLines() {
     return () => clearInterval(id)
   }, [])
   return (
-    <p
-      className="v4aud"
-      aria-label="For humans who write it, for agents that run it, for teams that audit it"
-    >
+    <p className="v4aud">
+      {/* the SR sentence · real text (aria-label on a <p> is name-prohibited and
+          dropped by most screen readers) — the rotating visual lines stay hidden */}
+      <span className="sr-only">
+        For humans who write it, for agents that run it, for teams that audit it.
+      </span>
       {AUDIENCE.map((line, i) => (
         <span key={line} className="v4aud-line" data-active={i === active} aria-hidden>
           {line}
@@ -218,10 +220,14 @@ function FileTabs({
 }) {
   const refs = useRef<(HTMLButtonElement | null)[]>([])
   const onKeyDown = (e: React.KeyboardEvent) => {
-    const dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
-    if (!dir) return
+    // APG tablist keys · arrows cycle, Home/End jump to the edges
+    let next: number
+    if (e.key === 'ArrowRight') next = (active + 1) % HERO_FILES.length
+    else if (e.key === 'ArrowLeft') next = (active - 1 + HERO_FILES.length) % HERO_FILES.length
+    else if (e.key === 'Home') next = 0
+    else if (e.key === 'End') next = HERO_FILES.length - 1
+    else return
     e.preventDefault()
-    const next = (active + dir + HERO_FILES.length) % HERO_FILES.length
     onSelect(next)
     refs.current[next]?.focus()
   }

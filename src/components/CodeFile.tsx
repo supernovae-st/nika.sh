@@ -87,11 +87,15 @@ function CopyButton({ value }: { value: string }) {
     <button
       type="button"
       onClick={copy}
-      aria-label={copied ? 'Copied' : 'Copy'}
+      aria-label="Copy file contents"
       title={copied ? 'Copied' : 'Copy'}
       data-copied={copied || undefined}
       className="cf-copy"
     >
+      {/* polite live region — an aria-label swap alone is not reliably announced */}
+      <span role="status" className="sr-only">
+        {copied ? 'Copied to clipboard' : ''}
+      </span>
       {copied ? (
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
           <path d="M20 6 9 17l-5-5" />

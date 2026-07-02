@@ -105,8 +105,8 @@
   --cf-num: #e6b873;        /* numbers · soft amber                            */
   --cf-bool: #c79bf2;       /* booleans / null · soft mauve                    */
   --cf-ref: #5fd3d1;        /* ${{ }} refs · &anchors · teal live-wiring       */
-  --cf-comment: #6a7280;    /* comments · dim, recede                          */
-  --cf-punct: #707784;      /* : - [ ] { } , colons & structure · faint        */
+  --cf-comment: #757c8a;    /* comments · dim, recede · 4.6:1 on --cf-bg (AA)  */
+  --cf-punct: #78808e;      /* : - [ ] { } , colons & structure · 4.9:1 (AA)   */
   --cf-plain: #aab0bb;      /* residual scalar runs                            */
 }
 
@@ -172,8 +172,8 @@
   --cf-num: #e6b873;
   --cf-bool: #c79bf2;
   --cf-ref: #5fd3d1;
-  --cf-comment: #6a7280;
-  --cf-punct: #707784;
+  --cf-comment: #757c8a;
+  --cf-punct: #78808e;
   --cf-plain: #aab0bb;
 }
 .theme-dark,

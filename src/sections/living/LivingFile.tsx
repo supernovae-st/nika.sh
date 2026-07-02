@@ -854,7 +854,10 @@ export default function LivingFile() {
               <span aria-hidden className="lf-cap-dash">
                 —
               </span>
-              <span className="lf-head-step" aria-live="polite">
+              {/* aria-live=off · the beat caption is scroll-driven choreography;
+                  announcing every transition would chatter — the sr-only
+                  RunSummarySR is the screen-reader equivalent of the run. */}
+              <span className="lf-head-step" aria-live="off">
                 {beat.title}
               </span>
             </p>

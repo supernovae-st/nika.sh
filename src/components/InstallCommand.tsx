@@ -24,8 +24,14 @@ export function InstallCommand() {
       onClick={copy}
       className="v4cmd"
       data-copied={copied}
-      aria-label={copied ? 'Copied to clipboard' : `Copy install command: ${INSTALL_CMD}`}
+      aria-label={`Copy install command: ${INSTALL_CMD}`}
     >
+      {/* the SR announcement · a polite live region flips to "Copied" (an
+          aria-label swap alone is not reliably announced) — the visible
+          Copy/Copied affordance stays aria-hidden. */}
+      <span role="status" className="sr-only">
+        {copied ? 'Copied to clipboard' : ''}
+      </span>
       <span className="v4cmd-dollar" aria-hidden>
         ❯
       </span>

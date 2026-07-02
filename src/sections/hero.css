@@ -196,7 +196,9 @@
    filename (IDE register); inactive tabs keep the basename so three tabs
    always fit the 560px column without clipping. */
 .v4ftab-ext {
-  color: var(--v4-hud-faint);
+  /* visible text on the ACTIVE tab (raised surface) — text-faint clears AA
+     (5.4:1 on --v4-bg-raised); --v4-hud-faint (3:1) is decorative-only ink. */
+  color: var(--v4-text-faint);
 }
 .v4ftab:not([aria-selected='true']) .v4ftab-ext {
   display: none;
