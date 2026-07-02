@@ -1,0 +1,104 @@
+/* ─── the client-side 404 · the same register as public/404.html ──────────────
+   public/404.html is the ZERO-JS static page DigitalOcean serves on a HARD miss
+   (.do/app.yaml error_document) — untouched, still the contract. THIS is its
+   client-side twin: React Router's catch-all renders it for an in-app
+   navigation to a bad path, so the visitor never meets the default error
+   boundary. Same composition (tag · 404 headline · the not-found file plan ·
+   two recover buttons), expressed in the site's own tokens. */
+
+.nf-page {
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  gap: 24px;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vh, 5rem) 24px;
+}
+.nf-tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  margin: 0;
+}
+.nf-title {
+  font-family: var(--display);
+  font-weight: 650;
+  font-size: clamp(2.25rem, 1.4rem + 4vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--v4-text);
+}
+.nf-four {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--v4-text-dim);
+}
+.nf-lede {
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  max-width: 34rem;
+  margin: 0;
+  text-wrap: pretty;
+}
+.nf-file {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--v4-text-faint);
+  background: var(--v4-bg-raised);
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  padding: 0.9rem 1.1rem;
+  overflow-x: auto;
+  margin: 0;
+}
+.nf-file .nf-key {
+  color: var(--v4-text-dim);
+}
+.nf-file .nf-val {
+  color: var(--v4-text);
+}
+.nf-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+.nf-btn {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: var(--v4-radius);
+  border: 1px solid var(--v4-line);
+  color: var(--v4-text);
+  background: var(--v4-bg-raised);
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+.nf-btn--primary {
+  background: var(--v4-text);
+  color: var(--v4-bg);
+  border-color: var(--v4-text);
+  font-weight: 600;
+}
+.nf-btn:hover,
+.nf-btn:focus-visible {
+  border-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nf-btn {
+    transition: none;
+  }
+}

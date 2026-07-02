@@ -22,6 +22,9 @@ describe('smoke · module graph imports without throwing', () => {
     expect(root.children!.length).toBeGreaterThan(0)
     // the index (Home) route exists
     expect(root.children!.some((c) => 'index' in c && c.index === true)).toBe(true)
+    // the SPA catch-all exists — a client-side navigation to a bad path must
+    // render the crafted 404, never React Router's default error boundary
+    expect(root.children!.some((c) => c.path === '*')).toBe(true)
   })
 
   it('CANON (spec-derived) imports with the 4 canonical verbs', () => {
