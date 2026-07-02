@@ -103,6 +103,75 @@ function classifyValue(value: string): Token[] {
   return [{ kind: 'string', text: value }]
 }
 
+/* ── flow-mapping lines · `- { id: notes, invoke: { tool: "nika:read" } }` ────
+   KEY_RE cannot match them (the `{` breaks the key charset), so they used to
+   fall through as ONE unstyled `plain` blob — invisible in the hero and, worse,
+   a colorless block the moment the F2 morph flies a task line into its DAG
+   node. This scanner walks the flow content and emits real tokens: braces /
+   brackets / commas as punct, `key:` heads (verb-aware), quoted strings with
+   ${{ refs }} carved out, numbers/booleans typed, bare scalars as string. */
+const FLOW_LINE_RE = /^(\s*)(?:(-)(\s+))?(\{.*)$/
+const FLOW_KEY_HEAD_RE = /^([A-Za-z0-9_.$-]+)(\s*:)(?=\s|$|[,}\]])/
+
+function tokenizeFlow(content: string): Token[] {
+  const tokens: Token[] = []
+  let rest = content
+  const push = (kind: TokenKind, text: string, verb?: NikaVerb) => {
+    if (text === '') return
+    tokens.push(verb ? { kind, text, verb } : { kind, text })
+  }
+  while (rest.length > 0) {
+    const ws = rest.match(/^\s+/)
+    if (ws) {
+      push('plain', ws[0])
+      rest = rest.slice(ws[0].length)
+      continue
+    }
+    const punct = rest.match(/^[{}[\],]+/)
+    if (punct) {
+      push('punct', punct[0])
+      rest = rest.slice(punct[0].length)
+      continue
+    }
+    const tref = rest.match(/^\$\{\{[^}]*\}\}/)
+    if (tref) {
+      push('tref', tref[0])
+      rest = rest.slice(tref[0].length)
+      continue
+    }
+    const quoted = rest.match(/^"[^"]*"/)
+    if (quoted) {
+      /* carve inline ${{ refs }} out of the quoted run (same rule as block style) */
+      for (const part of quoted[0].split(new RegExp(TREF_RE.source, 'g'))) {
+        if (part !== '') push(TREF_RE.test(part) ? 'tref' : 'string', part)
+      }
+      rest = rest.slice(quoted[0].length)
+      continue
+    }
+    const keyHead = FLOW_KEY_HEAD_RE.exec(rest)
+    if (keyHead) {
+      const [, key, colon] = keyHead
+      if (isNikaVerb(key)) push('verb', key, key)
+      else push('key', key)
+      push('punct', colon)
+      rest = rest.slice(key.length + colon.length)
+      continue
+    }
+    /* a bare scalar run — up to the next flow delimiter */
+    const scalar = rest.match(/^[^\s{}[\],]+/)
+    if (scalar) {
+      const v = scalar[0]
+      push(NUMBER_RE.test(v) ? 'number' : BOOL_RE.test(v) ? 'boolean' : 'string', v)
+      rest = rest.slice(v.length)
+      continue
+    }
+    /* unreachable guard — consume one char so the scan always terminates */
+    push('plain', rest[0])
+    rest = rest.slice(1)
+  }
+  return tokens
+}
+
 /** Tokenize a single YAML line into monochrome spans. */
 export function tokenizeLine(line: string): CodeLine {
   // whole-line / trailing comment
@@ -114,6 +183,17 @@ export function tokenizeLine(line: string): CodeLine {
     const comment = line.slice(hash)
     const head = before.length ? tokenizeLine(before).tokens : []
     return { tokens: [...head, { kind: 'comment', text: comment }] }
+  }
+
+  /* a flow-mapping line (`- { … }` or `{ … }`) — KEY_RE can't see into it */
+  const flow = FLOW_LINE_RE.exec(line)
+  if (flow) {
+    const [, indent, dash, dashSp, content] = flow
+    const tokens: Token[] = []
+    if (indent) tokens.push({ kind: 'punct', text: indent })
+    if (dash) tokens.push({ kind: 'punct', text: `${dash}${dashSp}` })
+    tokens.push(...tokenizeFlow(content))
+    return { tokens }
   }
 
   const bare = BARE_ITEM_RE.exec(line)

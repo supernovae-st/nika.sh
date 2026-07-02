@@ -65,6 +65,57 @@ describe('tokenizeLine · template refs / anchors', () => {
   })
 })
 
+/* ── flow-mapping task lines are real tokens, never one plain blob ──
+   Regression guard: KEY_RE cannot see into `- { … }` (the `{` breaks the key
+   charset), so flow-style task lines rendered as ONE unstyled span — and the
+   F2 morph would fly a colorless block into its DAG node. */
+describe('tokenizeLine · flow-mapping task lines (the F2 burst carriers)', () => {
+  const flow =
+    '  - { id: notes,    invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }'
+
+  it('never emits a whole-line plain blob for a `- { … }` line', () => {
+    const { tokens } = tokenizeLine(flow)
+    expect(tokens.length).toBeGreaterThan(5)
+    expect(tokens.some((t) => t.kind === 'plain' && t.text.trim() !== '')).toBe(false)
+  })
+
+  it('classifies keys, the verb (glyph-bearing) and quoted strings inside the flow', () => {
+    const { tokens } = tokenizeLine(flow)
+    expect(tokens.filter((t) => t.kind === 'key').map((t) => t.text)).toEqual([
+      'id',
+      'tool',
+      'args',
+      'path',
+    ])
+    const verbs = tokens.filter((t) => t.kind === 'verb')
+    expect(verbs).toHaveLength(1)
+    expect(verbs[0].verb).toBe('invoke')
+    expect(tokens.filter((t) => t.kind === 'string').map((t) => t.text)).toContain('"nika:read"')
+  })
+
+  it('round-trips the exact line text (the editor is a product replica)', () => {
+    for (const line of [
+      flow,
+      '  - { id: transcript, invoke: { tool: "nika:read", args: { path: ./transcript.txt } } }',
+      '{ score: 7, ok: true }',
+    ]) {
+      expect(
+        tokenizeLine(line)
+          .tokens.map((t) => t.text)
+          .join(''),
+      ).toBe(line)
+    }
+  })
+
+  it('carves ${{ refs }} inside flow quoted values exactly once', () => {
+    const { tokens } = tokenizeLine(
+      '  - { id: save, invoke: { args: { content: "${{ tasks.draft.output }}" } } }',
+    )
+    const refs = tokens.filter((t) => t.kind === 'tref').map((t) => t.text)
+    expect(refs).toEqual(['${{ tasks.draft.output }}'])
+  })
+})
+
 /* ── the rendered DOM carries each ${{ ref }} once (the prod-visible bug) ── */
 describe('CodeFile · template ref rendering', () => {
   const yamlRefs = [
