@@ -21,17 +21,17 @@ import './v4-home.css'
 /* the headline stats · the real, verifiable CANON counts (tabular-nums). */
 const STATS: { fig: string; n: React.ReactNode; label: React.ReactNode }[] = [
   {
-    fig: '9.A',
+    fig: '9.1',
     n: <>{CANON.verbs}</>,
     label: <>verbs · every action explicit, declared not hidden</>,
   },
   {
-    fig: '9.B',
+    fig: '9.2',
     n: <>{CANON.builtins}</>,
     label: <>builtin tools · allow-listed, nothing to install</>,
   },
   {
-    fig: '9.C',
+    fig: '9.3',
     n: (
       <>
         {CANON.providers}
@@ -41,7 +41,7 @@ const STATS: { fig: string; n: React.ReactNode; label: React.ReactNode }[] = [
     label: <>model providers · any model, cloud or fully offline</>,
   },
   {
-    fig: '9.D',
+    fig: '9.4',
     n: <>1</>,
     label: <>Rust binary · zero daemons, zero background services</>,
   },
@@ -51,22 +51,22 @@ const STATS: { fig: string; n: React.ReactNode; label: React.ReactNode }[] = [
    plain-English promise the architecture actually keeps. Lead with control. */
 const GUARANTEES: { fig: string; claim: string; detail: string }[] = [
   {
-    fig: 'I',
+    fig: '9.5',
     claim: 'Review before it acts.',
     detail: 'The agent writes its plan as a file first — every step, tool and permission. A human reads it before a single action runs.',
   },
   {
-    fig: 'II',
+    fig: '9.6',
     claim: 'Enforced permissions.',
     detail: `The file's permits: block is the blast radius — files, hosts, programs, tools. The runtime denies anything outside it (${CANON.providersLocal} local providers mean PII never has to leave).`,
   },
   {
-    fig: 'III',
+    fig: '9.7',
     claim: 'Replayable trace.',
     detail: 'Every run leaves a replayable record — the audit trail. Same file, same steps, same order: run it again and diff it like code.',
   },
   {
-    fig: 'IV',
+    fig: '9.8',
     claim: 'Portable off any platform.',
     detail: `One binary, ${CANON.providers} model providers, AGPL-3.0 forever. The file outlives the vendor — it still runs the day the company that made it is gone.`,
   },
@@ -115,7 +115,7 @@ export default function Proof() {
             <div className="v4proof-row" key={g.fig}>
               <dt className="v4proof-claim">
                 <span className="v4proof-fig" aria-hidden>
-                  9.{g.fig}
+                  {g.fig}
                 </span>
                 {g.claim}
               </dt>

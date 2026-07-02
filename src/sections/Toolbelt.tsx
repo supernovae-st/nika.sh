@@ -152,26 +152,26 @@ export default function Toolbelt() {
         {/* the headline-count banner · big tabular numbers, hairline-separated */}
         <div className="v4belt-counts" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">6.A</span>
+            <span className="v4belt-count-fig">6.1</span>
             <span className="v4belt-count-n">{CANON.builtins}</span>
             <span className="v4belt-count-label">builtin tools · nothing to install</span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">6.B</span>
+            <span className="v4belt-count-fig">6.2</span>
             <span className="v4belt-count-n">{CANON.providers}</span>
             <span className="v4belt-count-label">
               model providers · {CANON.providersLocal} local, {CANON.providersCloud} cloud, 1 mock
             </span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">6.C</span>
+            <span className="v4belt-count-fig">6.3</span>
             <span className="v4belt-count-n">{CANON.extractModes}</span>
             <span className="v4belt-count-label">
               extract modes on <code className="mono">fetch</code>
             </span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">6.D</span>
+            <span className="v4belt-count-fig">6.4</span>
             <span className="v4belt-count-n">
               MCP<span className="v4belt-count-unit">native</span>
             </span>
@@ -187,7 +187,7 @@ export default function Toolbelt() {
           data-rise
           style={{ ['--rise-delay' as string]: '200ms' }}
         >
-          {/* 5.1 · builtins — 4 families */}
+          {/* 6.5 · builtins — 4 families */}
           <div className="v4belt-reg">
             <div className="v4belt-reg-head">
               <span className="v4belt-reg-fig">
@@ -196,7 +196,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[0] }}
                 />
-                FIG 6.1 · Builtins
+                FIG 6.5 · Builtins
               </span>
               <span className="v4belt-reg-cap">
                 The everyday tools. All called with <code>invoke:</code>.
@@ -221,7 +221,7 @@ export default function Toolbelt() {
             </div>
           </div>
 
-          {/* 5.2 · providers — local-first, then Mistral/cloud, then mock */}
+          {/* 6.6 · providers — local-first, then Mistral/cloud, then mock */}
           <div className="v4belt-reg">
             <div className="v4belt-reg-head">
               <span className="v4belt-reg-fig">
@@ -230,7 +230,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[1] }}
                 />
-                FIG 6.2 · Providers
+                FIG 6.6 · Providers
               </span>
               <span className="v4belt-reg-cap">
                 Pick per task or per file. <code>provider: ollama</code> runs offline.
@@ -279,7 +279,7 @@ export default function Toolbelt() {
             </div>
           </div>
 
-          {/* 5.3 · extract modes — on fetch */}
+          {/* 6.7 · extract modes — on fetch */}
           <div className="v4belt-reg">
             <div className="v4belt-reg-head">
               <span className="v4belt-reg-fig">
@@ -288,7 +288,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[2] }}
                 />
-                FIG 6.3 · Extract modes
+                FIG 6.7 · Extract modes
               </span>
               <span className="v4belt-reg-cap">
                 How <code>fetch</code> turns a page into typed output.
@@ -302,7 +302,7 @@ export default function Toolbelt() {
             </div>
           </div>
 
-          {/* 5.4 · MCP — the open surface */}
+          {/* 6.8 · MCP — the open surface */}
           <div className="v4belt-reg">
             <div className="v4belt-reg-head">
               <span className="v4belt-reg-fig">
@@ -311,7 +311,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[3] }}
                 />
-                FIG 6.4 · MCP
+                FIG 6.8 · MCP
               </span>
               <span className="v4belt-reg-cap">
                 Any of your agent tools (MCP servers), reached as <code>mcp:</code>.

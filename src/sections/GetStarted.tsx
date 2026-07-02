@@ -11,17 +11,17 @@ import './v4-home.css'
 /* ─── FIG 7.5 · Get started (theme-dark · the on-ramp) ─────────────────────────
    v4.1 control narrative · a convinced visitor needs a concrete "how do I start?".
    Three numbered steps in the blueprint register (FIG step numbers, hairline
-   rules, monochrome): ① install · ② write a file · ③ run it. Tight, scannable —
+   rules, monochrome): 7.5.1 install · 7.5.2 write a file · 7.5.3 run it. Tight, scannable —
    it earns its place by being the bridge from "I believe it" to "I ran it".
 
-     ① INSTALL — the REAL affordances: brew (primary) + a curl | sh alt (the
+     7.5.1 INSTALL — the REAL affordances: brew (primary) + a curl | sh alt (the
        real public/install.sh URL), each with a copy button (the hero's monochrome
        install pattern, .v4install).
-     ② WRITE A FILE — a SHORT, TRUE slice of a real projected showcase
+     7.5.2 WRITE A FILE — a SHORT, TRUE slice of a real projected showcase
        (`SHOWCASE_YAML['t1-standup-digest']`, the smallest real multi-verb file):
        header + a couple of representative tasks, rendered by <CodeFile/>. READ-
        ONLY — sliced from the projected source by line range, never hand-typed.
-     ③ RUN IT — `nika run` → it prints the plan, checks the permits, runs within
+     7.5.3 RUN IT — `nika run` → it prints the plan, checks the permits, runs within
        bounds. The one canonical run line + the three-beat guarantee.
 
    Closes on a "Learn it in 5 minutes →" link to /learn.
@@ -126,11 +126,11 @@ export default function GetStarted() {
 
         {/* the three numbered steps · a hairline-ruled blueprint register */}
         <ol className="v4start" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
-          {/* ① INSTALL */}
+          {/* 7.5.1 · INSTALL */}
           <li className="v4start-step">
             <div className="v4start-head">
               <span className="v4start-num" aria-hidden>
-                ①
+                7.5.1
               </span>
               <h3 className="v4start-title">Install</h3>
             </div>
@@ -148,11 +148,11 @@ export default function GetStarted() {
             </div>
           </li>
 
-          {/* ② WRITE A FILE */}
+          {/* 7.5.2 · WRITE A FILE */}
           <li className="v4start-step">
             <div className="v4start-head">
               <span className="v4start-num" aria-hidden>
-                ②
+                7.5.2
               </span>
               <h3 className="v4start-title">Write a file</h3>
             </div>
@@ -172,11 +172,11 @@ export default function GetStarted() {
             </div>
           </li>
 
-          {/* ③ RUN IT */}
+          {/* 7.5.3 · RUN IT */}
           <li className="v4start-step">
             <div className="v4start-head">
               <span className="v4start-num" aria-hidden>
-                ③
+                7.5.3
               </span>
               <h3 className="v4start-title">Run it</h3>
             </div>
@@ -204,7 +204,7 @@ export default function GetStarted() {
           <div className="v4every-row">
             <article className="v4every-card" aria-labelledby="v4every-terminal">
               <h3 className="v4every-kicker" id="v4every-terminal">
-                <span className="v4every-n">01</span> In your terminal
+                <span className="v4every-n">7.5.4</span> In your terminal
               </h3>
               <p className="v4every-body">
                 One Rust binary. The command is the button — click it, paste it, run.
@@ -216,7 +216,7 @@ export default function GetStarted() {
 
             <article className="v4every-card" aria-labelledby="v4every-editor">
               <h3 className="v4every-kicker" id="v4every-editor">
-                <span className="v4every-n">02</span> In your editor
+                <span className="v4every-n">7.5.5</span> In your editor
               </h3>
               <p className="v4every-body">
                 The <code className="mono">nika-lang</code> extension — diagnostics,
@@ -237,7 +237,7 @@ export default function GetStarted() {
 
             <article className="v4every-card" aria-labelledby="v4every-agent">
               <h3 className="v4every-kicker" id="v4every-agent">
-                <span className="v4every-n">03</span> With your agent
+                <span className="v4every-n">7.5.6</span> With your agent
               </h3>
               <p className="v4every-body">
                 <code className="mono">nika init</code> writes AGENTS.md ·{' '}

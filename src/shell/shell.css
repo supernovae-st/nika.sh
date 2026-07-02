@@ -625,7 +625,17 @@
   box-shadow: inset 2px 0 0 color-mix(in oklch, var(--v4-text) 32%, transparent);
 }
 
-/* the FIG label rule — a hairline tick that anchors the blueprint number */
+/* the FIG label rule — a hairline tick that anchors the blueprint number.
+
+   THE PLATE GRAMMAR (site-wide · Linear register · locked 2026-07-02):
+   · sections/plates  →  FIG N.n, one page-scoped reading-order sequence
+                         (half-steps like 3.5/7.5 are ordinary N.n plates)
+   · sub-plates/cards →  FIG N.n.m, continuing inside their section
+                         (use-case cards 7.1.1 · verb chapters 2.1-2.4 ·
+                          get-started steps 7.5.1-7.5.6 · proof rows 9.1-9.8)
+   · routed pages     →  a LETTER masthead (FIG J journal · L learn · C changelog)
+   NOTHING else: no Roman numerals, no letter suffixes (9.A), no circled
+   glyphs, no bare chapter decimals colliding with the section number. */
 .v4fig {
   display: inline-flex;
   align-items: center;

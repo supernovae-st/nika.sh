@@ -367,7 +367,7 @@ function PersonaSection({ persona, index }: { persona: Persona; index: number })
 
       <div className="ucp-grid">
         {persona.cards.map((card, i) => (
-          <WorkflowCard key={card.slug} card={card} fig={`6.${index + 1}.${i + 1}`} />
+          <WorkflowCard key={card.slug} card={card} fig={`7.${index + 1}.${i + 1}`} />
         ))}
       </div>
     </section>

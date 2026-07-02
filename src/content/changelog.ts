@@ -1,4 +1,4 @@
-/* ─── changelog · the ship log (FIG 7.0) ─────────────────────────────────────
+/* ─── changelog · the ship log (home preview FIG 8.0 · /changelog page FIG C) ─
    A SEED changelog of REAL project milestones — honest, no invented features,
    no fabricated metrics. Each entry is a dated, tagged, one-line record of
    something that actually happened (the spec license, the four-verb lock, the
@@ -6,7 +6,7 @@
    the copy come from CANON (the spec single source of truth), never hand-typed.
 
    Exported as a flat, newest-first list so BOTH surfaces reuse it:
-     · the HOME section <ChangelogPreview/> shows the latest few (FIG 7.0)
+     · the HOME section <ChangelogPreview/> shows the latest few (FIG 8.0)
      · the /changelog page (Phase 4) renders the full register.
 
    Dates are plausible 2026 ship dates (the project's real timeline lives in the

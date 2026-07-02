@@ -8,7 +8,8 @@ import '../sections/v4-home.css'
 import './changelog-page.css'
 
 /* ─── /changelog · the full ship log (theme-dark · blueprint register) ─────────
-   Design doc §7 (Routes · /changelog) + FIG 7.0. The HOME shows the latest few
+   Design doc §7 (Routes · /changelog) · masthead FIG C (the letter-masthead
+   convention of every routed page · J/L/C…). The HOME shows the latest few
    (ChangelogPreview); THIS page shows the WHOLE register: every dated entry,
    newest-first, grouped by year, in the same hairline-ruled ship-log register as
    the home preview (FIG numbering, mono register dates, 1px rules, theme-dark).
@@ -114,7 +115,7 @@ export function Component() {
       <section ref={ref} aria-labelledby="cl-title" className="v4sec">
         <div className="v4sec-wrap">
           <p className="v4sec-fig" data-rise>
-            FIG 7.0 · the ship log
+            FIG C · the ship log
           </p>
           <h1
             id="cl-title"

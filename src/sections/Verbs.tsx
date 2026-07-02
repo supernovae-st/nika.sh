@@ -7,11 +7,11 @@ import './v4-home.css'
 
 /* ─── FIG 2.0 · The four verbs (theme-dark · the numbered spec chapters) ───────
    Linear's signature register applied to the one thing that deserves it: a
-   LANGUAGE gets a numbered spec, not a bento. Four chapter blocks — 1.0 infer ·
-   2.0 exec · 3.0 invoke · 4.0 agent — each: a mono chapter kicker, the verb's
+   LANGUAGE gets a numbered spec, not a bento. Four chapter blocks — 2.1 infer ·
+   2.2 exec · 2.3 invoke · 2.4 agent (the FIG N.n.m grammar under the FIG 2.0 plate) — each: a mono chapter kicker, the verb's
    job as a two-tone sentence (white claim + dim elaboration · Raycast pattern),
    a SMALL complete workflow in the shared CodeFile product surface, and a mono
-   sub-index line (1.1 / 1.2 / 1.3) linking deeper into /spec — only anchors
+   sub-index line (2.1.1 / 2.1.2 / 2.1.3) linking deeper into /spec — only anchors
    that exist; entries without a real anchor stay plain text.
 
    Framing: "A verb is a distinct native execution model." (D-2026-05-22-N18)
@@ -68,7 +68,7 @@ function ChapterBlock({ chapter, index }: { chapter: Chapter; index: number }) {
     >
       {/* LEFT · the chapter text column */}
       <div className="v4chap-copy">
-        {/* the mono chapter kicker · `1.0 infer →` */}
+        {/* the mono chapter kicker · `2.1 infer →` */}
         <p className="v4chap-kicker" id={`v4chap-${c.verb}`}>
           <span className="v4chap-n">{c.n}</span>
           <span className="v4chap-glyph" aria-hidden>
@@ -131,7 +131,7 @@ export default function Verbs() {
           wait on which. No fifth verb, ever.
         </p>
 
-        {/* the numbered chapters · 1.0 → 4.0 · hairline-ruled spec register */}
+        {/* the numbered chapters · 2.1 → 2.4 · hairline-ruled spec register */}
         <div className="v4chap-list">
           {CHAPTERS.map((c, i) => (
             <ChapterBlock key={c.verb} chapter={c} index={i} />
