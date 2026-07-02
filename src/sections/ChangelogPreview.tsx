@@ -1,6 +1,6 @@
 import { useRevealOnce } from './use-reveal-once'
 import { Link } from 'react-router'
-import { CHANGELOG, TAG_LABEL, fmtDate } from '../content/changelog'
+import { CHANGELOG, TAG_LABEL, entryDate, entryDateTime } from '../content/changelog'
 import './v4-home.css'
 
 /* ─── FIG 8.0 · Changelog (theme-dark · the ship log) ──────────────────────────
@@ -55,8 +55,9 @@ export default function ChangelogPreview() {
           {ENTRIES.map((e) => (
             <li className="v4log-row" key={`${e.date}-${e.title}`}>
               <div className="v4log-meta">
-                <time className="v4log-date" dateTime={e.date}>
-                  {fmtDate(e.date)}
+                {/* releases day-true · milestones month-true (see changelog.ts) */}
+                <time className="v4log-date" dateTime={entryDateTime(e)}>
+                  {entryDate(e)}
                 </time>
                 <span className="v4log-tag">{TAG_LABEL[e.tag]}</span>
               </div>
@@ -75,7 +76,7 @@ export default function ChangelogPreview() {
             <span aria-hidden> →</span>
           </Link>
           <span className="v4log-more-note" aria-hidden>
-            every release, dated
+            every release and milestone, dated
           </span>
         </p>
       </div>

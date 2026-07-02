@@ -2,7 +2,14 @@ import { useMemo } from 'react'
 import { Link } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { useHead } from '@unhead/react'
-import { CHANGELOG, TAG_LABEL, fmtDate, type ChangelogEntry } from '../content/changelog'
+import {
+  CHANGELOG,
+  TAG_LABEL,
+  entryDate,
+  entryDateTime,
+  isRelease,
+  type ChangelogEntry,
+} from '../content/changelog'
 import { REPO, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './changelog-page.css'
@@ -86,22 +93,23 @@ export function Component() {
       {
         name: 'description',
         content:
-          'Every dated Nika release, tagged and described — the spec opened, the four verbs locked, the tools and the model providers landed.',
+          'Every Nika release and public milestone, dated and tagged — the spec opened, the four verbs locked, the tools and the model providers landed.',
       },
       { property: 'og:title', content: 'Changelog — Nika' },
       {
         property: 'og:description',
-        content: 'The Nika ship log — every dated release, tagged and described.',
+        content: 'The Nika ship log — every release and public milestone, dated and tagged.',
       },
       { name: 'twitter:title', content: 'Changelog — Nika' },
       {
         name: 'twitter:description',
-        content: 'The Nika ship log — every dated release, tagged and described.',
+        content: 'The Nika ship log — every release and public milestone, dated and tagged.',
       },
     ],
   })
 
   const total = CHANGELOG.length
+  const releases = CHANGELOG.filter(isRelease).length
   const tagCount = new Set(CHANGELOG.map((e) => e.tag)).size
   /* the newest ship date, compact (e.g. "06·17") — derived, never hand-typed */
   const latestDate = useMemo(() => {
@@ -135,8 +143,8 @@ export function Component() {
           {/* the ship-log register · the log's dimensions, at a glance */}
           <dl className="cl-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
             {[
-              { n: total, label: 'releases', sub: 'shipped' },
-              { n: groups.length, label: groups.length === 1 ? 'year' : 'years', sub: 'so far' },
+              { n: releases, label: releases === 1 ? 'release' : 'releases', sub: 'shipped' },
+              { n: total, label: 'milestones', sub: 'logged' },
               { n: tagCount, label: 'registers', sub: 'tags' },
               { n: latestDate, label: 'latest', sub: TAG_LABEL[CHANGELOG[0].tag], mono: true },
             ].map((s, i) => (
@@ -175,7 +183,7 @@ export function Component() {
                 <span className="cl-year-rule" aria-hidden />
                 <span className="cl-year-count">
                   {group.entries.length}{' '}
-                  {group.entries.length === 1 ? 'release' : 'releases'}
+                  {group.entries.length === 1 ? 'entry' : 'entries'}
                 </span>
               </div>
 
@@ -190,8 +198,10 @@ export function Component() {
                       <span className="cl-tl-node" />
                     </span>
                     <div className="cl-tl-meta">
-                      <time className="cl-tl-date" dateTime={e.date}>
-                        {fmtDate(e.date)}
+                      {/* releases are day-true (GitHub dates); milestones render
+                          at month precision — honest recall, never an invented day */}
+                      <time className="cl-tl-date" dateTime={entryDateTime(e)}>
+                        {entryDate(e)}
                       </time>
                       <span className="cl-tl-tag">{TAG_LABEL[e.tag]}</span>
                     </div>
@@ -213,8 +223,8 @@ export function Component() {
             data-rise
             style={{ ['--rise-delay' as string]: '120ms' }}
           >
-            {total} dated {total === 1 ? 'release' : 'releases'} · counts derive from{' '}
-            <code>nika-spec</code> canon — never hand-typed
+            {releases} {releases === 1 ? 'release' : 'releases'} · {total - releases} public
+            milestones · spec counts derive from <code>nika-spec</code> canon
           </p>
 
           <div className="cl-links" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>

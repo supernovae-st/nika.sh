@@ -9,11 +9,12 @@
      · the HOME section <ChangelogPreview/> shows the latest few (FIG 8.0)
      · the /changelog page (Phase 4) renders the full register.
 
-   Dates are plausible 2026 ship dates (the project's real timeline lives in the
-   engine; these mark public milestones) — except `release` entries, which carry
-   the REAL GitHub release dates (github.com/supernovae-st/nika/releases). Tags
-   are a small closed vocabulary so the register reads like a real ship log, not
-   marketing. */
+   DATE HONESTY: `release` entries carry the REAL GitHub release dates
+   (github.com/supernovae-st/nika/releases) and render day-true. Everything
+   else is a public MILESTONE — its ISO date orders the register, but only the
+   month is recorded fact, so milestones RENDER at month precision (entryDate /
+   entryDateTime below) and never claim a day we did not log. Tags are a small
+   closed vocabulary so the register reads like a real ship log, not marketing. */
 
 import { CANON } from '../canon.generated'
 import { ENGINE_VERSION } from '../content'
@@ -145,4 +146,20 @@ export const TAG_LABEL: Record<ChangelogTag, string> = {
 export function fmtDate(iso: string): string {
   const [y, m, d] = iso.split('-')
   return `${y} · ${m} · ${d}`
+}
+
+/* a release ships on a day; a milestone is honest at month precision. Both
+   surfaces (home preview + /changelog) render through these two so the
+   register can never over-claim a date. */
+export const isRelease = (e: ChangelogEntry): boolean => e.tag === 'release'
+
+export function entryDate(e: ChangelogEntry): string {
+  if (isRelease(e)) return fmtDate(e.date)
+  const [y, m] = e.date.split('-')
+  return `${y} · ${m}`
+}
+
+/** the <time dateTime> value · YYYY-MM-DD for releases, YYYY-MM for milestones */
+export function entryDateTime(e: ChangelogEntry): string {
+  return isRelease(e) ? e.date : e.date.slice(0, 7)
 }
