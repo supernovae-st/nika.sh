@@ -4,6 +4,7 @@ import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
 import LivingFile from '../sections/living/LivingFile'
 import ProofStrip from '../sections/ProofStrip'
+import Wedge from '../sections/Wedge'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import Permits from '../sections/Permits'
@@ -216,6 +217,10 @@ export function Component() {
 
         {/* FIG 1.5 · Proof strip — the honest mono numbers band (CANON counts) */}
         <ProofStrip />
+
+        {/* FIG 1.7 · the wedge — the manifesto beat: the session ends, the
+             file stays (the two-tone thesis + THE CAPTURE split) */}
+        <Wedge />
 
         {/* FIG 2.0 · clarity — what an agent can do, declared not hidden */}
         <Verbs />
