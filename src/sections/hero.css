@@ -403,6 +403,14 @@
 .v4hero-code .cf-body {
   position: relative;
 }
+/* the right-edge dissolve (H2) · a long YAML line used to hit the panel edge
+   as a hard cut. The mask fades the CODE ITSELF over the last ~28px so the
+   line dissolves into the panel — static CSS, SSG-safe (the measurer-driven
+   scroll cue on .cf-body::after still layers on top when a line overflows). */
+.v4hero-code .cf-pre {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+}
 .v4hero-code .cf-body::before {
   content: '';
   position: absolute;

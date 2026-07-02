@@ -167,6 +167,13 @@
   overflow: hidden; /* at rest: truncate long lines, never a scrollbar */
   width: 100%;
 }
+/* the right-edge dissolve (H2, same treatment as the hero panel) — ONLY while
+   the card is whole (file beat): once the burst begins the lines FLY past the
+   card edge and a mask would amputate every flight. */
+.morph-stage[data-phase='file'] .morph-code .cf-pre {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+}
 .morph-code .cf-line {
   will-change: transform, opacity;
   background-image: none; /* the gutter hairline must not fly with the line */
