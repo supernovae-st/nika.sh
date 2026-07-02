@@ -10,12 +10,15 @@
      · the /changelog page (Phase 4) renders the full register.
 
    Dates are plausible 2026 ship dates (the project's real timeline lives in the
-   engine; these mark public milestones). Tags are a small closed vocabulary so
-   the register reads like a real ship log, not marketing. */
+   engine; these mark public milestones) — except `release` entries, which carry
+   the REAL GitHub release dates (github.com/supernovae-st/nika/releases). Tags
+   are a small closed vocabulary so the register reads like a real ship log, not
+   marketing. */
 
 import { CANON } from '../canon.generated'
 
 export type ChangelogTag =
+  | 'release'
   | 'spec'
   | 'language'
   | 'stdlib'
@@ -38,6 +41,18 @@ export interface ChangelogEntry {
 /* newest-first. Counts interpolate from CANON so they can never drift from the
    spec (4 verbs · 23 builtins · 14 providers / 5 local). */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    date: '2026-06-25',
+    tag: 'release',
+    title: 'v0.91.0 — smoother first fifteen minutes',
+    body: 'nika examples run --model previews any embedded workflow offline — no key, no model server; nika init and nika wire handle onboarding; headless Linux builds compile clean.',
+  },
+  {
+    date: '2026-06-21',
+    tag: 'release',
+    title: 'v0.90.0 — first public release',
+    body: `One brew-installable binary for macOS and Linux: the ${CANON.verbs} verbs end to end, the nika check static audit, and an embedded examples pack.`,
+  },
   {
     date: '2026-06-17',
     tag: 'site',
@@ -114,6 +129,7 @@ export const CHANGELOG: ChangelogEntry[] = [
 
 /* a human-readable label per tag (the mono register chip on each entry). */
 export const TAG_LABEL: Record<ChangelogTag, string> = {
+  release: 'release',
   spec: 'spec',
   language: 'language',
   stdlib: 'stdlib',

@@ -46,6 +46,7 @@ function groupByYear(entries: ChangelogEntry[]): YearGroup[] {
    (the 4 verb hues + the teal "live-wiring" ref tone), so a security ship reads
    in the exec-orange "effect" tone, a language ship in the infer-blue, etc. */
 const TAG_HUE: Record<string, string> = {
+  release: 'var(--v4-accent)', // the ONE blue accent · the engine itself ships
   spec: 'var(--cf-ref)', // teal · the contract / live-wiring
   language: 'var(--verb-infer)', // blue · the model verb
   stdlib: 'var(--verb-invoke)', // cyan · the tool verb
@@ -136,7 +137,7 @@ export function Component() {
               { n: total, label: 'releases', sub: 'shipped' },
               { n: groups.length, label: groups.length === 1 ? 'year' : 'years', sub: 'so far' },
               { n: tagCount, label: 'registers', sub: 'tags' },
-              { n: latestDate, label: 'latest', sub: 'this site', mono: true },
+              { n: latestDate, label: 'latest', sub: TAG_LABEL[CHANGELOG[0].tag], mono: true },
             ].map((s, i) => (
               <div className="cl-stamp-cell" key={s.label}>
                 <span className="cl-stamp-fig" aria-hidden>

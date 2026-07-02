@@ -46,8 +46,8 @@ export default function ChangelogPreview() {
         </h2>
         <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
           A workflow language earns trust by <b>moving</b> — and by not breaking what
-          you wrote. Here is the recent ship log: the spec opened, the verbs locked,
-          the <code className="mono">permits:</code> model and the playground landed.
+          you wrote. Here is the recent ship log: the spec opened, the verbs locked —
+          and the engine shipped, one <code className="mono">brew install</code> away.
         </p>
 
         {/* the ship-log register · a dated, hairline-ruled list (newest first) */}
