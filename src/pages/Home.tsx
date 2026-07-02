@@ -4,6 +4,7 @@ import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
 import { FLAGSHIP_ENTRIES } from '../flagships'
 import TheRun from '../sections/run/TheRun'
+import ThePlan from '../sections/plan/ThePlan'
 import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
 import Verbs from '../sections/Verbs'
@@ -224,6 +225,9 @@ export function Component() {
         {/* FIG 1.0 · THE RUN — the selected file executes as a recorded real-run
              event stream (trace replay · verb-hued frame · real verdict) */}
         <TheRun flagship={flagship} />
+
+        {/* FIG 2.0 · THE PLAN — the same file as wave columns + real wires */}
+        <ThePlan flagship={flagship} />
 
         {/* FIG 1.5 · Proof strip — the honest mono numbers band (CANON counts) */}
         <ProofStrip />
