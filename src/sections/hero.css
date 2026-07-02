@@ -23,19 +23,23 @@
   background-color: transparent;
 }
 
-/* ── E1 · the header field · blue→black QUANTIZED radial + grid ───────────────
-   The Maxime register through our Bayer signature: one deep blue radial from
-   the upper-right (over the editor column — the product is the lit object),
-   quantized into 4 hard-stop bands (shader parity), with a faint survey grid
-   that exists ONLY inside the glow zone. A fixed alpha-only overlay (no base
-   fill) so it reads at first paint AND composes with the animated field once
-   it mounts. The ::after Bayer tooth breaks the band edges into dither — the
-   dissolve is ours, never a smooth falloff. Zero JS, zero per-frame cost. */
+/* ── F1 · the header field · blue→black QUANTIZED radial + grid · LEFT ────────
+   Operator override (wave F): the Maxime register — ONE LARGE saturated blue
+   radial ANCHORED LEFT (« le bleu sur la gauche qui diffuse »), its deep
+   #0F53B7-family core under the H1 (white type on blue · AAA-large),
+   dissolving into the engineered black toward the right and bottom. Quantized
+   hard-stop bands = shader parity; the ::after Bayer tooth breaks the band
+   edges into dither — the dissolve is ours, never a smooth falloff.
+
+   This layer is the FIRST PAINT + the no-WebGL fallback: it renders before
+   the canvas mounts and sits UNDER it in DOM order (the opaque canvas owns
+   the animated version once up — same color family, no visible seam).
+   Zero JS, zero per-frame cost. */
 :root {
-  --hero-glow-x: 68%;
-  --hero-glow-y: -10%;
+  --hero-glow-x: 18%;
+  --hero-glow-y: -14%;
   --hero-grid-gap: 72px;
-  --hero-grid-ink: rgb(92 133 230 / 0.05);
+  --hero-grid-ink: rgb(122 163 255 / 0.07);
 }
 .v5-header-field {
   position: fixed;
@@ -43,16 +47,28 @@
   z-index: 0;
   pointer-events: none;
   background: radial-gradient(
-    110% 90% at var(--hero-glow-x) var(--hero-glow-y),
-    rgb(47 107 255 / 0.28) 0%,
-    rgb(47 107 255 / 0.28) 18%,
-    rgb(35 80 200 / 0.18) 18%,
-    rgb(35 80 200 / 0.18) 34%,
-    rgb(22 48 122 / 0.11) 34%,
-    rgb(22 48 122 / 0.11) 50%,
-    rgb(13 27 68 / 0.05) 50%,
-    rgb(13 27 68 / 0.05) 64%,
-    transparent 64%
+    130% 96% at var(--hero-glow-x) var(--hero-glow-y),
+    rgb(47 107 255 / 0.6) 0%,
+    rgb(47 107 255 / 0.6) 8%,
+    rgb(31 95 219 / 0.64) 8%,
+    rgb(31 95 219 / 0.64) 16%,
+    rgb(15 83 183 / 0.72) 16%,
+    rgb(15 83 183 / 0.72) 25%,
+    rgb(15 83 183 / 0.58) 25%,
+    rgb(15 83 183 / 0.58) 33%,
+    rgb(16 62 145 / 0.48) 33%,
+    rgb(16 62 145 / 0.48) 41%,
+    rgb(16 62 145 / 0.36) 41%,
+    rgb(16 62 145 / 0.36) 48%,
+    rgb(15 41 96 / 0.28) 48%,
+    rgb(15 41 96 / 0.28) 55%,
+    rgb(15 41 96 / 0.18) 55%,
+    rgb(15 41 96 / 0.18) 62%,
+    rgb(11 24 56 / 0.11) 62%,
+    rgb(11 24 56 / 0.11) 68%,
+    rgb(11 24 56 / 0.05) 68%,
+    rgb(11 24 56 / 0.05) 74%,
+    transparent 74%
   );
 }
 .v5-header-field::before {
@@ -65,13 +81,13 @@
     linear-gradient(180deg, var(--hero-grid-ink) 1px, transparent 1px);
   background-size: var(--hero-grid-gap) var(--hero-grid-gap);
   -webkit-mask-image: radial-gradient(
-    110% 90% at var(--hero-glow-x) var(--hero-glow-y),
+    130% 96% at var(--hero-glow-x) var(--hero-glow-y),
     #000 0%,
     #000 40%,
     transparent 64%
   );
   mask-image: radial-gradient(
-    110% 90% at var(--hero-glow-x) var(--hero-glow-y),
+    130% 96% at var(--hero-glow-x) var(--hero-glow-y),
     #000 0%,
     #000 40%,
     transparent 64%
@@ -87,10 +103,34 @@
 }
 @media (max-width: 767px) {
   :root {
-    /* the glow re-centres ABOVE the stacked type — never behind body text */
-    --hero-glow-x: 62%;
-    --hero-glow-y: -16%;
+    /* the field re-centres ABOVE the stacked type · smaller radius */
+    --hero-glow-x: 50%;
+    --hero-glow-y: -22%;
     --hero-grid-gap: 56px;
+  }
+  .v5-header-field {
+    background: radial-gradient(
+      120% 62% at var(--hero-glow-x) var(--hero-glow-y),
+      rgb(47 107 255 / 0.58) 0%,
+      rgb(47 107 255 / 0.58) 9%,
+      rgb(31 95 219 / 0.62) 9%,
+      rgb(31 95 219 / 0.62) 18%,
+      rgb(15 83 183 / 0.68) 18%,
+      rgb(15 83 183 / 0.68) 28%,
+      rgb(15 83 183 / 0.54) 28%,
+      rgb(15 83 183 / 0.54) 37%,
+      rgb(16 62 145 / 0.44) 37%,
+      rgb(16 62 145 / 0.44) 46%,
+      rgb(16 62 145 / 0.32) 46%,
+      rgb(16 62 145 / 0.32) 53%,
+      rgb(15 41 96 / 0.24) 53%,
+      rgb(15 41 96 / 0.24) 60%,
+      rgb(15 41 96 / 0.14) 60%,
+      rgb(15 41 96 / 0.14) 66%,
+      rgb(11 24 56 / 0.07) 66%,
+      rgb(11 24 56 / 0.07) 72%,
+      transparent 72%
+    );
   }
 }
 
@@ -110,7 +150,10 @@
   max-width: 34rem;
   font-size: var(--type-body);
   line-height: var(--lh-body);
-  color: var(--v4-text-dim);
+  /* brighter than --v4-text-dim: the sub sits in the blue field's lower
+     falloff (F1 · blue on the LEFT) — this ink clears AA on the deepest
+     band it can meet (#113c8a family) and reads calm on the black. */
+  color: #bfc6d4;
 }
 .v4hero-sub b {
   font-weight: 600;
@@ -208,27 +251,22 @@
 .v4hud-tick--br::before { top: auto; bottom: 0; right: 0; }
 .v4hud-tick--br::after { top: auto; bottom: 0; left: auto; right: 0; }
 
-/* ── 3 · the readability scrim · the LEFT copy column always clears contrast ──
-   A deep-base wash on the left + lower edge, pulling the headline margin back
-   to the engineered black even where the field's blue pointe reaches across. */
+/* ── 3 · the readability scrim · bottom-edge only (wave F) ────────────────────
+   The blue field now OWNS the left (F1: white type on the deep blue core, the
+   Maxime move) — the old left dark wash is gone, it fought the field. What
+   stays is a soft lower-edge pull so the trust line + links settle onto the
+   engineered black as the field tapers out. */
 .v4hero-readscrim {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background:
-    linear-gradient(
-      100deg,
-      color-mix(in oklch, var(--hero-base-deep) 78%, transparent) 0%,
-      color-mix(in oklch, var(--hero-base-deep) 34%, transparent) 38%,
-      transparent 60%
-    ),
-    linear-gradient(
-      180deg,
-      transparent 0%,
-      transparent 54%,
-      color-mix(in oklch, var(--hero-base-deep) 40%, transparent) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 58%,
+    color-mix(in oklch, var(--hero-base-deep) 36%, transparent) 100%
+  );
 }
 
 /* ── 4 · the two-column composition · copy LEFT · editor RIGHT ────────────────
@@ -593,6 +631,13 @@
 }
 #hero .v4fig::before {
   background: color-mix(in oklch, var(--hero-blue-line) 40%, transparent);
+}
+/* the mono plates sit ON the blue field now (F1 · blue on the LEFT) — their
+   ink goes near-white (the Maxime move: type over blue is white), the
+   museum-caption voice survives through size + tracking, not through gray. */
+#hero .v4fig,
+#hero .v4beyebrow {
+  color: #eef2f9;
 }
 
 /* keep the entrance choreography tokens (.v4-enter [data-rise]) from shell.css —

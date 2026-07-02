@@ -4,31 +4,35 @@ import * as THREE from 'three'
 
 /* ─── The dither field · the full-bleed WebGL background (BRAND-11) ────────────
    ONE fullscreen quad + an ordered-dither fragment shader — the v5 signature
-   texture. A slow-moving blue-on-black luminance field (the square-tunnel depth
-   motif + one off-axis radial pointe) is QUANTIZED through a Bayer 8×8 matrix
-   into visible dither dots: premium print-grain, never noise static.
+   texture. WAVE F (operator override F1): the square-tunnel rings are GONE
+   from Home — the depth motif belongs to frames now, not the page. The field
+   is the Maxime register: ONE LARGE saturated blue radial ANCHORED LEFT,
+   diffusing into the engineered black toward the right and bottom, with the
+   faint survey grid living ONLY inside the glow. The Bayer 8×8 quantizer
+   turns the falloff into the dithered dissolve — the signature move.
 
    THE FIELD (composed in the shader, then dithered):
-   • the square tunnel — concentric SQUARE rings (Chebyshev distance metric ·
-     the "carré" echo of the old wireframe tunnel) receding toward a vanishing
-     point, log-spaced so they compress with perspective, twisting slightly
-     with depth. Scroll drives the dive (the rings flow outward), exactly on
-     the old DepthTunnel scroll model.
-   • the pointe — ONE localized radial blue bloom, off-axis upper-right (the
-     v3 cinematic accent). Never a full wash.
-   • an edge vignette so the field recedes under the content.
+   • the glow — a deep saturated radial (#0F53B7 family) anchored at the
+     upper-LEFT (« le bleu sur la gauche qui diffuse »), its hot heart mostly
+     off-canvas above the nav so the on-page core stays deep enough for the
+     white H1 (AAA-large). A wider low-alpha lobe diffuses it toward the
+     top-centre; a vertical taper dissolves it before the body-text zone.
+   • the grid — faint survey hairlines that ride the glow term (they exist
+     only inside the blue, never on the black).
+   • the wake — the pointer drags a faint lit trail through the field (the
+     quantizer dithers it like everything else). Zero under reduced motion.
 
    Colors are the v5 tokens (tokens.css) baked as shader constants — keep in
-   sync by hand: #050507 (bg-deep) · #08090b (bg) · #2f6bff (accent-strong) ·
-   #8db4ff (accent-bright).
+   sync by hand: #050507 (bg-deep) · #08090b (bg) · #16307a (dim) · #0F53B7
+   (deep core) · #2f6bff (accent-strong) · #8db4ff (accent-bright).
 
-   MOUNT (unchanged from DepthTunnel): fixed + full-screen behind the page
-   (z-0 · .depth-fixed), lazy client-only, aria-hidden. Window scroll over the
-   first ~3.4 screens drives the dive and fades the canvas out so the opaque
-   sections take over (the loop pauses off-screen for perf). Reduced-motion →
-   a STATIC dithered frame (time frozen, no dive, no parallax). Dev params kept:
-   `?notunnel` disables the canvas (headless capture), `?dag=<0..1>` freezes
-   the scroll beat. */
+   MOUNT: fixed + full-screen behind the page (z-0 · .depth-fixed), lazy
+   client-only, aria-hidden. The glow belongs to the HEADER: window scroll
+   over the first ~1.9 screens eases it out and fades the canvas so the
+   opaque sections take over (the loop pauses off-screen for perf).
+   Reduced-motion → a STATIC dithered frame (glow at full, no wake). Dev
+   params kept: `?notunnel` disables the canvas (headless capture),
+   `?dag=<0..1>` freezes the scroll beat. */
 
 /** smoothstep(a,b,x) ∈ [0,1] — eased ramp (used for the scroll fade). */
 function smoothstep(a: number, b: number, x: number): number {
@@ -58,7 +62,8 @@ float bayer2(vec2 a) { a = floor(a); return fract(a.x / 2.0 + a.y * a.y * 0.75);
 /* the v5 palette (tokens.css) · black ladder → blue accent family */
 const vec3 BG_DEEP = vec3(0.020, 0.020, 0.027); // #050507
 const vec3 BG_BODY = vec3(0.031, 0.035, 0.043); // #08090b
-const vec3 BLUE_DIM = vec3(0.086, 0.188, 0.478); // deep wire blue
+const vec3 BLUE_DIM = vec3(0.086, 0.188, 0.478); // #16307a deep wire blue
+const vec3 BLUE_DEEP = vec3(0.059, 0.325, 0.718); // #0F53B7 · the Maxime core
 const vec3 BLUE_CORE = vec3(0.184, 0.420, 1.0);  // #2f6bff accent-strong
 const vec3 BLUE_BRIGHT = vec3(0.553, 0.706, 1.0); // #8db4ff accent-bright
 
@@ -70,53 +75,70 @@ void main() {
   vec2 cell = floor(gl_FragCoord.xy / cellPx);
   vec2 uv = (cell * cellPx + cellPx * 0.5) / uRes; // cell-centre uv (0..1)
 
-  /* centred, aspect-true coordinates · the tunnel sits a touch below centre
-     and leans with the pointer (subtle parallax). */
-  vec2 p = uv - vec2(0.5, 0.46);
-  p.x *= uRes.x / uRes.y;
-  p -= uMouse * 0.03;
+  /* design space · y grows DOWNWARD from the top (gl_FragCoord is bottom-up) */
+  vec2 st = vec2(uv.x, 1.0 - uv.y);
+  float aspect = uRes.x / uRes.y;
+  float portrait = step(aspect, 1.0);
 
-  /* ── the square tunnel · Chebyshev rings receding to the vanishing point ──
-     log-spaced square rings; scroll + time drive the dive (rings flow toward
-     the camera). A slight twist with depth echoes the old tunnel's spiral. */
-  float dive = uTime * 0.05 + uScroll * 2.6;
-  float twist = -0.35 * uScroll - 0.06 * uTime * 0.05;
-  float ca = cos(twist), sa = sin(twist);
-  vec2 q = mat2(ca, -sa, sa, ca) * p;
-  float d = max(abs(q.x), abs(q.y));          // square (carré) distance
-  float depth = log(max(d, 1e-4)) * 2.2 - dive; // ring phase · log = perspective
-  float ring = fract(depth);
-  // a thin bright edge per ring, easing off toward the ring body
-  float line = smoothstep(0.0, 0.08, ring) * (1.0 - smoothstep(0.08, 0.55, ring));
-  // fog: rings dissolve toward the vanishing point + fade past the mid-field
-  float fog = smoothstep(0.015, 0.16, d) * (1.0 - smoothstep(0.35, 1.05, d));
-  float tunnel = line * fog * 0.22;   // quiet field: the bg modulates, never carries
+  /* the header glow eases out as the page dives (scroll hands the field back
+     to the sections) — the pointer lean stays a whisper. */
+  float glowAmp = 1.0 - smoothstep(0.35, 0.95, uScroll);
 
-  /* the vanishing-point glow · the tunnel mouth breathes faintly */
-  float mouth = exp(-d * d * 90.0) * (0.13 + 0.03 * sin(uTime * 0.5));
+  /* ── F1 · THE GLOW · one deep saturated radial anchored LEFT ──────────────
+     Hot heart off-canvas above the nav; the visible core is the #0F53B7
+     family (white H1 = AAA-large on it). On phones the field re-centres
+     ABOVE the stacked type, tighter. */
+  vec2 ctr = mix(vec2(0.16, -0.10), vec2(0.50, -0.14), portrait);
+  vec2 g = st - ctr;
+  g -= uMouse * 0.02;
+  g.x *= mix(aspect * 0.72, aspect * 1.05, portrait); // spread across the left 2/3
+  float core = exp(-dot(g, g) * mix(2.6, 3.4, portrait));
 
-  /* ── the pointe · ONE off-axis blue bloom (upper-right band) ── */
-  vec2 b = uv - vec2(0.62, 0.38);
-  b.x *= uRes.x / uRes.y;
-  float pointe = exp(-dot(b, b) * 7.5) * 0.18;
+  /* the diffusion lobe · wider, dimmer, pushed toward the top-centre — the
+     smooth hand-off from the core into the black */
+  vec2 s = st - mix(vec2(0.44, 0.02), vec2(0.52, 0.02), portrait);
+  s.x *= mix(aspect * 0.9, aspect * 1.1, portrait);
+  float spread = exp(-dot(s, s) * 1.5) * 0.30;
 
-  /* compose the luminance field + edge vignette */
-  float luma = tunnel + mouth + pointe;
-  vec2 e = uv - 0.5;
-  luma *= 1.0 - smoothstep(0.35, 0.75, dot(e, e) * 2.0);
+  float glow = (core * mix(0.94, 0.90, portrait) + spread) * glowAmp;
+
+  /* the vertical taper · the field belongs to the HEADER — it dissolves
+     before the body-text zone so prose always sits on the black. */
+  glow *= 1.0 - smoothstep(0.34, 0.72, st.y) * 0.82;
+
+  /* ── the survey grid · FAINT · exists ONLY inside the glow core (glow²
+     masking keeps it out of the dissolve zone — Maxime runs his at 2%) ── */
+  vec2 gridUv = gl_FragCoord.xy / (uRes.y * 0.072); // ~7% viewport-height pitch
+  vec2 gl2 = abs(fract(gridUv) - 0.5);
+  float gridLine = 1.0 - smoothstep(0.0, 0.022, min(gl2.x, gl2.y));
+  glow += gridLine * glow * glow * 0.055;
+
+  /* ── the pointer wake · a faint lit trail dragged through the field ── */
+  vec2 pu = st - (vec2(uMouse.x, -uMouse.y) * 0.5 + 0.5);
+  pu.x *= aspect;
+  float wake = exp(-dot(pu, pu) * 38.0) * 0.09;
+
+  /* a slow breath so the static-looking field is never dead (±2%) */
+  float breath = 1.0 + 0.02 * sin(uTime * 0.35);
+
+  /* CONTRAST CLAMP · the ramp may never overdrive past the CORE family —
+     white nav/H1 ink needs ≥4.5:1 on the brightest on-canvas band. */
+  float luma = min(glow * breath + wake, 1.0);
 
   /* ── ORDERED DITHER · quantize the field through Bayer 8×8 ──
-     4 tone levels; the Bayer threshold decides each cell's step → the visible
-     dot lattice. The result maps onto the black→blue ramp. */
+     5 tone levels; the Bayer threshold decides each cell's step → the visible
+     dot lattice at every band edge. The result maps onto the black→blue ramp;
+     the ramp tops out in the DEEP family — the bright notes stay tiny. */
   float threshold = bayer8(cell);
-  float levels = 4.0;
-  float qz = floor(luma * levels + threshold) / levels;
+  float levels = 5.0;
+  float qz = min(floor(luma * levels + threshold) / levels, 1.0);
 
   vec3 col = BG_DEEP;
   col = mix(col, BG_BODY, smoothstep(0.0, 0.10, uv.y));      // barely-there lift
-  col = mix(col, BLUE_DIM, clamp(qz * 1.0, 0.0, 1.0));
-  col = mix(col, BLUE_CORE, clamp((qz - 0.55) * 1.1, 0.0, 1.0));
-  col = mix(col, BLUE_BRIGHT, clamp((qz - 0.93) * 1.2, 0.0, 1.0));
+  col = mix(col, BLUE_DIM, clamp(qz * 1.35, 0.0, 1.0));
+  col = mix(col, BLUE_DEEP, clamp((qz - 0.30) * 1.7, 0.0, 1.0));
+  col = mix(col, BLUE_CORE, clamp((qz - 0.78) * 1.8, 0.0, 1.0));
+  col = mix(col, BLUE_BRIGHT, clamp((qz - 0.96) * 2.2, 0.0, 1.0));
 
   gl_FragColor = vec4(col, 1.0);
 }
@@ -237,9 +259,9 @@ export default function DitherField() {
   const [active, setActive] = useState(true)
 
   /* the scene is FIXED + full-screen and CHANGES WITH SCROLL: window scroll over
-     the first ~3.4 screens drives `scroll` 0→1 (the dive), and the canvas fades
-     out as it ends so the opaque sections below take over (the loop pauses
-     off-screen for perf). Identical scroll model to the old DepthTunnel. */
+     the first ~1.9 screens eases the header glow out and fades the canvas so
+     the opaque sections below take over (the loop pauses off-screen for perf).
+     The glow belongs to the header — past the hero the page is the sections'. */
   useEffect(() => {
     if (typeof window === 'undefined') return
     // dev/test · ?dag=<0..1> freezes the scroll so a headless capture can see the
@@ -251,9 +273,8 @@ export default function DitherField() {
     }
     let on = true
     const onScroll = () => {
-      // persist across the whole experience region (hero → DAG → run → verdict),
-      // then fade just before the B&W sections take over
-      const p = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 3.4)))
+      // the glow eases off across the hero, then the canvas fades entirely
+      const p = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 1.9)))
       scroll.current = p
       if (wrap.current) wrap.current.style.opacity = `${1 - smoothstep(0.82, 1, p)}`
       const a = p < 1

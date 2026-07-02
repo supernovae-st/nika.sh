@@ -205,18 +205,20 @@ export function Component() {
 
   return (
     <>
+      {/* F1 · the header field · the quantized blue→black radial + survey grid,
+          ANCHORED LEFT (the Maxime register). Pure CSS — it IS the first paint
+          and the no-WebGL fallback; the opaque canvas below mounts ABOVE it in
+          paint order and takes over the animated version (same family → no
+          visible seam at the fade-in). */}
+      <div className="v5-header-field" aria-hidden />
       {/* the full-bleed dither field · fixed behind the whole page (z-0). The
           transparent hero reveals it; the opaque sections below cover it as you
-          scroll past. The field dives with the page scroll (DitherField.tsx). */}
+          scroll past. The header glow eases out with scroll (DitherField.tsx). */}
       {fieldReady && (
         <Suspense fallback={null}>
           <DitherField />
         </Suspense>
       )}
-      {/* E1 · the header field · the quantized blue→black radial + survey grid.
-          Pure CSS, alpha-only, painted ABOVE the canvas (DOM order) so the glow
-          reads at first paint AND once the animated field mounts. */}
-      <div className="v5-header-field" aria-hidden />
       <main className="relative z-[1]">
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
         <Hero flagship={flagship} index={flagshipIdx} onSelect={setFlagshipIdx} />
