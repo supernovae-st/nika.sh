@@ -298,15 +298,14 @@
   display: none;
 }
 .lf-run[data-corridor='true'] .lf-stream {
-  /* FROSTED glass, not a black box — the tunnel shows through softly (operator:
-     « les blocs noir par dessus c'est pas bien »). Low-opacity tint + a strong
-     blur keeps the CLI log legible without a hard dark slab over the depth. */
-  background: color-mix(in oklch, var(--v4-bg) 26%, transparent);
+  /* FLAT panel, not glass (v5 register · no backdrop blur) — and not a hard
+     black slab either (operator: « les blocs noir par dessus c'est pas bien »):
+     a translucent ink tint + hairline keeps the CLI legible while the depth
+     still reads through. */
+  background: color-mix(in oklch, var(--v4-bg) 78%, transparent);
   border: 1px solid color-mix(in oklch, var(--v4-line) 55%, transparent);
   border-radius: var(--v4-radius);
   padding: 0.4rem 0.65rem;
-  backdrop-filter: blur(18px) saturate(1.1);
-  -webkit-backdrop-filter: blur(18px) saturate(1.1);
 }
 .lf-run[data-corridor='true'] .lf-stream-scroll {
   max-height: 74px;
@@ -545,9 +544,8 @@
   padding: 22px 24px;
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* flat (v5) · translucent raised ink, no backdrop blur */
+  background: color-mix(in oklch, var(--v4-bg-raised) 92%, transparent);
 }
 .lf-verdict-card--deny {
   border-color: color-mix(in oklch, var(--verb-exec) 38%, transparent);

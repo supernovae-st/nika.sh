@@ -98,16 +98,10 @@ const ENVELOPE_KEYS: { key: string; req: boolean; gloss: string }[] = [
 ]
 
 /* ── FIG S.1 · the four verbs · "a distinct native execution model" each ──────
-   Each verb is a RICH CARD: its canonical hue (the --vh prop drives the glyph +
-   the accent seam), a one-line execution model, and a real 2-line spec example
-   in the premium CodeFile (sliced from content.ts VERBS · spec-valid, never
-   hand-typed here). The card titles + examples are the single source (content). */
-const VERB_HUE: Record<string, string> = {
-  infer: 'var(--verb-infer)',
-  exec: 'var(--verb-exec)',
-  invoke: 'var(--verb-invoke)',
-  agent: 'var(--verb-agent)',
-}
+   Each verb is a RICH CARD: a one-line execution model + a real 2-line spec
+   example in the premium CodeFile (sliced from content.ts VERBS · spec-valid,
+   never hand-typed here). MONOCHROME chrome — the verb hue lights only inside
+   the CodeFile frame. The card titles + examples are the single source. */
 const VERB_MODEL: Record<string, string> = {
   infer: 'Call a model. Any of the providers; structured output when you give it a schema.',
   exec: 'Run a real process. stdout becomes the output; a non-zero exit becomes an error.',
@@ -422,9 +416,9 @@ export function Component() {
           </div>
 
           {/* ══ FIG S.1 · the four verbs ════════════════════════════════════
-              Rich cards · each verb in its canonical hue, with a real 2-line
-              example open in the premium CodeFile. The hue lights ONLY here (the
-              card seam + glyph) — the rest of the reference stays monochrome. */}
+              Rich cards · a real 2-line example open in the premium CodeFile.
+              The verb hue lights ONLY inside the code frame — the card chrome
+              and the rest of the reference stay monochrome. */}
           <div id="s1" className="spec-block" data-rise>
             <SpecHead fig="FIG S.1" name="The four verbs" count={`${CANON.verbs} · locked forever`}>
               A verb is a <b>distinct native execution model</b>. A task binds exactly one. That is
@@ -433,11 +427,7 @@ export function Component() {
             </SpecHead>
             <div className="spec-verbcards">
               {VERB_CARDS.map((v, i) => (
-                <article
-                  className="spec-verbcard"
-                  key={v.verb}
-                  style={{ ['--vh' as string]: VERB_HUE[v.verb] }}
-                >
+                <article className="spec-verbcard" key={v.verb}>
                   <HudMarks />
                   <header className="spec-verbcard-head">
                     <span className="spec-verbcard-glyph" aria-hidden>

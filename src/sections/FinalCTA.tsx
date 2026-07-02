@@ -128,7 +128,7 @@ export default function FinalCTA() {
             href="https://x.com/ThibautMelen"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--cyan)]"
+            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
           >
             𝕏 @ThibautMelen
           </a>
@@ -137,7 +137,7 @@ export default function FinalCTA() {
             href="https://x.com/niccela"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--cyan)]"
+            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
           >
             𝕏 @niccela
           </a>

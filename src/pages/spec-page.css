@@ -803,7 +803,8 @@
 }
 
 /* ── FIG S.1 · the rich verb cards · hue + glyph + a real example ───────────────
-   Each card carries its verb's canonical hue via --vh: a left accent seam, the
+   MONOCHROME plates (2026-07-02 accent discipline): the verb hue lives ONLY
+   inside the CodeFile frames — the card chrome (seam · glyph tile) stays ink.
    glyph, and a faint top wash. The example sits in the premium CodeFile. */
 .spec-verbcards {
   margin-top: clamp(26px, 4vh, 40px);
@@ -837,7 +838,7 @@
   left: 0;
   bottom: 0;
   width: 2px;
-  background: color-mix(in oklch, var(--vh) 80%, transparent);
+  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
 }
 .spec-verbcard::after {
   content: '';
@@ -846,13 +847,13 @@
   height: 60px;
   background: linear-gradient(
     to bottom,
-    color-mix(in oklch, var(--vh) 9%, transparent),
+    color-mix(in oklch, var(--v4-text) 5%, transparent),
     transparent
   );
   pointer-events: none;
 }
 .spec-verbcard:hover {
-  border-color: color-mix(in oklch, var(--vh) 38%, var(--v4-line));
+  border-color: color-mix(in oklch, var(--v4-text) 30%, var(--v4-line));
   background: var(--v4-bg-raised);
 }
 .spec-verbcard-head {
@@ -869,9 +870,9 @@
   width: 30px;
   height: 30px;
   border-radius: var(--v4-radius);
-  border: 1px solid color-mix(in oklch, var(--vh) 32%, var(--v4-line));
-  background: color-mix(in oklch, var(--vh) 12%, transparent);
-  color: var(--vh);
+  border: 1px solid var(--v4-line);
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+  color: var(--v4-text-dim);
   font-family: var(--mono);
   font-size: 15px;
   line-height: 1;
@@ -1033,7 +1034,7 @@
 
 /* ── FIG S.3 · the permits boundary diagram · the plan ringed by 4 gates ────────
    The plan sits at the centre; every effect passes a declared gate before it
-   runs. The four gates carry the verb-adjacent hues (fs/net/exec/tools). */
+   runs. Monochrome plate — the gates read in ink, not verb hues. */
 .spec-boundary {
   position: relative;
   margin-top: clamp(26px, 4vh, 40px);
@@ -1147,18 +1148,9 @@
   border-color: color-mix(in oklch, var(--gh) 36%, var(--v4-line));
   transform: translateY(-1px);
 }
-.spec-boundary-gate--fs {
-  --gh: var(--verb-infer);
-}
-.spec-boundary-gate--net {
-  --gh: var(--verb-invoke);
-}
-.spec-boundary-gate--exec {
-  --gh: var(--verb-exec);
-}
-.spec-boundary-gate--tools {
-  --gh: var(--verb-agent);
-}
+/* the per-gate verb hues were static chrome on a FIG diagram — removed
+   2026-07-02 (accent discipline: hue only inside code/run frames). --gh
+   stays the ink default declared on .spec-boundary-gate. */
 .spec-boundary-gate-glyph {
   display: inline-flex;
   align-items: center;
