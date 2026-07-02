@@ -81,7 +81,7 @@ export default function OwnWorkflows() {
   const ref = useRevealOnce<HTMLElement>()
 
   return (
-    <section ref={ref} id="own" aria-labelledby="own-title" className="theme-light v4sec scroll-mt-24">
+    <section ref={ref} id="own" aria-labelledby="own-title" className="theme-light v4sec v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
           FIG 5.0

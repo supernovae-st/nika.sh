@@ -127,7 +127,7 @@ export default function Toolbelt() {
       ref={ref}
       id="toolbelt"
       aria-labelledby="toolbelt-title"
-      className="theme-dark v4sec v4-flip scroll-mt-24"
+      className="theme-dark v4sec v4-flip v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>

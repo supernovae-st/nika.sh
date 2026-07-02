@@ -231,7 +231,7 @@ export default function HumanInTheLoop() {
       ref={ref}
       id="human-in-the-loop"
       aria-labelledby="hitl-title"
-      className="theme-light v4sec scroll-mt-24"
+      className="theme-light v4sec v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>

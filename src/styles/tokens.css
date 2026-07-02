@@ -243,6 +243,18 @@
   display: none;
 }
 
+/* ─── .v4-cv · below-fold render skip (content-visibility) ────────────────────
+   Applied ONLY to deep home sections BELOW the deepest in-page anchor target
+   (#permits — see Nav's mega-menu), so fragment navigation always lands exactly
+   while far-off-screen sections skip layout + paint until approached.
+   `auto` intrinsic keeps the last rendered size once painted (stable scroll
+   restoration); the px is only the pre-first-render estimate. Never apply to
+   the hero, the Living File scrub track, or any anchor-targeted section. */
+.v4-cv {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+}
+
 /* ─── .v4-grain · the CSS-only static dither texture (BRAND-11) ───────────────
    Lays the ordered Bayer tile over the element's own background as an extra
    background-image layer (composes with the theme background-color — no pseudo

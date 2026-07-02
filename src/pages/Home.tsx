@@ -95,6 +95,13 @@ const HOME_JSONLD = {
 
 export function Component() {
   const [eggOpen, setEggOpen] = useState(false)
+  /* idle-mount the dither field · React.lazy alone still FETCHES the chunk at
+     hydration, and its three/r3f dependency chain (~880 kB pre-gzip) would
+     compete with the text-LCP window. Deferring the mount to the first idle
+     period keeps first paint pure DOM; the 2s timeout guarantees the field
+     still arrives on busy devices. The hero is transparent over the page base
+     either way, so the late canvas is a fade-in, never a layout shift. */
+  const [fieldReady, setFieldReady] = useState(false)
 
   /* per-route <head> · prerendered into dist/index.html by @unhead/react */
   useHead({
@@ -128,6 +135,16 @@ export function Component() {
       },
     ],
   })
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(() => setFieldReady(true), { timeout: 2000 })
+      return () => window.cancelIdleCallback(id)
+    }
+    const t = setTimeout(() => setFieldReady(true), 350) // Safari fallback
+    return () => clearTimeout(t)
+  }, [])
 
   /* easter egg · console lore + type « nika » → enter the galaxy (the v3
      cinematic). The keystroke buffer matches the last 4 keys; on « nika » we
@@ -184,9 +201,11 @@ export function Component() {
       {/* the full-bleed dither field · fixed behind the whole page (z-0). The
           transparent hero reveals it; the opaque sections below cover it as you
           scroll past. The field dives with the page scroll (DitherField.tsx). */}
-      <Suspense fallback={null}>
-        <DitherField />
-      </Suspense>
+      {fieldReady && (
+        <Suspense fallback={null}>
+          <DitherField />
+        </Suspense>
+      )}
       <main className="relative z-[1]">
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
         <Hero />

@@ -32,6 +32,19 @@
   z-index: 0;
   pointer-events: none;
 }
+/* the field is idle-mounted (Home.tsx) — ease the late canvas in rather than
+   popping it. Animations beat the inline scroll-fade opacity while running,
+   then hand back to it (`both` + a lone `from` resolves `to` = inline value). */
+@media (prefers-reduced-motion: no-preference) {
+  .depth-fixed {
+    animation: depth-fade-in 0.8s ease-out both;
+  }
+  @keyframes depth-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
 
 /* ── 2 · the HUD registration marks · the blueprint corner ticks ──────────────
    Four faint L-shaped ticks at the hero's corners (a survey/registration mark

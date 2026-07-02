@@ -111,7 +111,7 @@ export default function GetStarted() {
   const ref = useRevealOnce<HTMLElement>()
 
   return (
-    <section ref={ref} id="get-started" aria-labelledby="get-started-title" className="theme-dark v4sec v4-flip scroll-mt-24">
+    <section ref={ref} id="get-started" aria-labelledby="get-started-title" className="theme-dark v4sec v4-flip v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
           FIG 7.5

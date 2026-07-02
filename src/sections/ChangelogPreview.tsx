@@ -30,7 +30,7 @@ export default function ChangelogPreview() {
       ref={ref}
       id="changelog"
       aria-labelledby="changelog-title"
-      className="theme-dark v4sec scroll-mt-24"
+      className="theme-dark v4sec v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
