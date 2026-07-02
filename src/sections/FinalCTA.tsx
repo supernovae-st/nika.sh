@@ -104,13 +104,15 @@ export default function FinalCTA() {
           </Link>
         </div>
 
-        {/* FIG 10.5 · THE SIGNATURE · the dither swarm converges into the
-             butterfly (once, in view · tap replays · reduced-motion static).
-             Inserted ABOVE the locked SUPERNOVAE block — additive only. */}
+        {/* FIG 10.5 · THE SIGNATURE · the continuous living butterfly (F3):
+             particles perpetually stream along the glyph while on screen ·
+             pointer/touch repels locally · reduced-motion/no-JS = the
+             assembled static mark. Inserted ABOVE the locked SUPERNOVAE
+             block — additive only. */}
         <Suspense
           fallback={
             <div className="fsig">
-              <img src="/nika.svg" alt="" width={150} height={150} loading="lazy" />
+              <img src="/nika.svg" alt="" width={170} height={170} loading="lazy" />
               <p className="fsig-caption">the noise becomes the file.</p>
             </div>
           }
