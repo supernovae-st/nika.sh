@@ -145,9 +145,18 @@
   font-size: 12.5px;
   line-height: 1.75;
   color: var(--v4-text-dim);
-  /* the evaporation · the panel (border included) fades toward the bottom */
-  mask-image: linear-gradient(180deg, #000 52%, transparent 97%);
-  -webkit-mask-image: linear-gradient(180deg, #000 52%, transparent 97%);
+  /* the evaporation · the ONE dithered edge-fade on the site (T8): the top of
+     the panel is solid; the bottom 120px dissolve through the ordered Bayer
+     tile (--v4-dither-fade · tokens.css) instead of a smooth gradient — the
+     session literally dithers away. Two mask layers, default additive. */
+  mask-image: linear-gradient(#000, #000), var(--v4-dither-fade);
+  mask-repeat: no-repeat, repeat-x;
+  mask-position: 0 0, 0 100%;
+  mask-size: 100% calc(100% - 120px), 4px 120px;
+  -webkit-mask-image: linear-gradient(#000, #000), var(--v4-dither-fade);
+  -webkit-mask-repeat: no-repeat, repeat-x;
+  -webkit-mask-position: 0 0, 0 100%;
+  -webkit-mask-size: 100% calc(100% - 120px), 4px 120px;
 }
 .v4wedge-chat-kicker {
   margin-bottom: 12px;
