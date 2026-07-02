@@ -1709,7 +1709,7 @@ export const TEMPLATES_YAML: Record<string, string> = {
 workflow: agent-loop-template       # SLOT: kebab-case workflow id
 description: "plan → budgeted agent → typed result"   # SLOT
 
-model: mock/echo                    # SLOT: agents want a tool-calling model
+model: ollama/llama3.2:3b           # SLOT: a tool-calling model · local by default
 
 vars:
   goal:
@@ -1761,7 +1761,7 @@ outputs:
 workflow: chain-template            # SLOT: kebab-case workflow id
 description: "gather → think → persist"   # SLOT: one honest sentence
 
-model: mock/echo                    # SLOT: provider/model (mock/echo = CI-safe)
+model: ollama/llama3.2:3b           # SLOT: provider/model · local · zero key
 
 vars:
   source: "./input.txt"             # SLOT: your inputs · typed where required
@@ -1858,7 +1858,7 @@ outputs:
 workflow: fanout-template           # SLOT: kebab-case workflow id
 description: "discover N items · process in parallel · merge"   # SLOT
 
-model: mock/echo                    # SLOT: provider/model
+model: ollama/llama3.2:3b           # SLOT: provider/model · local · zero key
 
 vars:
   collection_source: "./items"      # SLOT: where the collection comes from

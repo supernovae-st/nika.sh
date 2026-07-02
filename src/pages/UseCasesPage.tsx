@@ -451,7 +451,7 @@ export function Component() {
   }, [])
 
   return (
-    <main className="theme-light ucp-page">
+    <main className="theme-dark ucp-page">
       <section ref={ref} aria-labelledby="ucp-title" className="v4sec">
         <div className="v4sec-wrap">
           <p className="v4sec-fig" data-rise>
