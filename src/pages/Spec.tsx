@@ -2,7 +2,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CANON } from '../canon.generated'
-import { SPEC, REPO, routeHead, VERBS as VERB_CARDS } from '../content'
+import { ENGINE_VERSION, SPEC, REPO, routeHead, VERBS as VERB_CARDS } from '../content'
 import { CodeFile } from '../components/CodeFile'
 import { verbGlyph } from '../components/codefile-highlight'
 import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
@@ -754,7 +754,7 @@ export function Component() {
             </SpecHead>
             <ul className="spec-invariants">
               <Invariant fig="S.8a" claim="Real semver toward 1.0">
-                The engine ships on real semver — currently 0.90.0 (release-candidate) toward a
+                The engine ships on real semver — currently {ENGINE_VERSION} toward a
                 1.0 launch. The language envelope stays <code>nika: v1</code>, frozen forever.
               </Invariant>
               <Invariant fig="S.8b" claim="Four verbs, locked">

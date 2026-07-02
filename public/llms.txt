@@ -16,10 +16,9 @@ Four verbs, locked forever: `infer` (LLM call), `exec` (subprocess),
 a verb is a distinct native execution model.
 
 The language envelope is `nika: v1` — frozen forever. The engine versions
-independently on real semver toward a 1.0 launch — currently 0.90.0
-(release-candidate grade).
+independently on real semver toward a 1.0 launch — currently v0.91.0.
 
-Stdlib v0.1: 22 builtins · 14 providers (Anthropic, OpenAI, Gemini,
+Stdlib v0.1: 23 builtins · 14 providers (Anthropic, OpenAI, Gemini,
 Mistral, Groq, DeepSeek, xAI, OpenRouter, Ollama, LM Studio, llama.cpp,
 LocalAI, vLLM, mock) · 9 extract modes. Bring your own keys — every key
 stays yours. Local-first. Runs on your laptop, no daemon.
@@ -60,7 +59,7 @@ data language (jq) · workflows are callable · mock-first.
 
 ## Status
 
-Release-candidate (0.90.0). The 42-organ skeleton is admitted crate by crate (the repo README carries the live count) — each passes
+Shipping in the open (v0.91.0, real semver toward 1.0). The 42-organ skeleton is admitted crate by crate (the repo README carries the live count) — each passes
 a 12-gate admission (TDD, mutation testing ≥90%, zero `.unwrap()` in src).
 Language v0.1 public spec + the first public release (1.0.0): summer 2026.
 Building in public.

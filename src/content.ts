@@ -8,6 +8,13 @@ export const REPO = 'https://github.com/supernovae-st/nika'
 export const SPEC = 'https://github.com/supernovae-st/nika-spec'
 export const DOCS = 'https://docs.nika.sh'
 
+/* the CURRENT engine release · the ONE hand-maintained version string on the
+   site (hero plate · FAQ · changelog head · /spec invariant all interpolate it).
+   TODO: CI-refresh — canon.generated.ts carries spec counts, not the engine
+   version; bump this ONE const with each release until a version projection
+   exists. public/llms.txt is static — update it in the same commit. */
+export const ENGINE_VERSION = 'v0.91.0'
+
 /* the canonical site origin (matches react-ssg.config.ts `origin`). */
 export const SITE = 'https://nika.sh'
 

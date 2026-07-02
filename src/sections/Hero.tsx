@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { CodeFile } from '../components/CodeFile'
 import { InstallCommand } from '../components/InstallCommand'
-import { REPO, SPEC } from '../content'
+import { ENGINE_VERSION, REPO, SPEC } from '../content'
 import { HERO_FILES } from './hero-files'
 import '../shell/shell.css'
 import './hero.css'
@@ -27,11 +27,6 @@ import './hero.css'
    Entrance: ONE orchestrated staggered reveal (motion-safe only). Everything is
    visible by DEFAULT (SSR / no-JS / reduced-motion) — the `.v4-enter` opt-in is
    added on mount and only animates when motion is allowed. */
-
-/* the engine release shown on the version plate under the CTAs.
-   TODO: CI-refresh — canon.generated.ts carries spec counts, not the engine
-   version; bump this with each release until a version projection exists. */
-const ENGINE_VERSION = 'v0.91.0'
 
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
 const rise = (ms: number): React.CSSProperties =>

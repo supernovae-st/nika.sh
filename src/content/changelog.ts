@@ -16,6 +16,7 @@
    marketing. */
 
 import { CANON } from '../canon.generated'
+import { ENGINE_VERSION } from '../content'
 
 export type ChangelogTag =
   | 'release'
@@ -44,7 +45,7 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-06-25',
     tag: 'release',
-    title: 'v0.91.0 — smoother first fifteen minutes',
+    title: `${ENGINE_VERSION} — smoother first fifteen minutes`,
     body: 'nika examples run --model previews any embedded workflow offline — no key, no model server; nika init and nika wire handle onboarding; headless Linux builds compile clean.',
   },
   {
