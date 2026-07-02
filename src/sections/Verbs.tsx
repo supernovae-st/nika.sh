@@ -127,7 +127,8 @@ export default function Verbs() {
           Four verbs are the <b>only</b> native execution models — every action
           explicit and typed, never improvised from a hidden prompt. Everything{' '}
           <i>callable</i> is a tool under <code className="mono">invoke</code> — and tools are{' '}
-          <b>allow-listed</b>. Everything about <i>ordering</i> is the DAG. No fifth verb, ever.
+          <b>allow-listed</b>. Everything about <i>ordering</i> is the plan — which tasks
+          wait on which. No fifth verb, ever.
         </p>
 
         {/* the numbered chapters · 1.0 → 4.0 · hairline-ruled spec register */}

@@ -157,7 +157,7 @@ function Dag({ run, morph }: { run: RunState; morph: number }) {
       className="lf-dag"
       viewBox={`0 0 ${width} ${height}`}
       role="img"
-      aria-label="Workflow DAG · columns are parallel waves · nodes light as the run reaches them"
+      aria-label="The plan — columns are parallel waves · nodes light as the run reaches them"
       style={{ ['--lf-morph' as string]: morph }}
     >
       {/* edges first (under nodes) · flow when the source completes */}
@@ -467,7 +467,7 @@ function Stream({ run, mode }: { run: RunState; mode: StreamMode }) {
   if (mode === 'ndjson') {
     return (
       <div className="lf-stream-scroll" ref={scrollRef}>
-        <pre className="lf-ndjson" aria-label="Raw NDJSON event stream">
+        <pre className="lf-ndjson" aria-label="Raw event log (NDJSON)">
           {run.events.length === 0 ? (
             <span className="lf-ndjson-idle">{'// nika run --events ndjson · waiting for the run…'}</span>
           ) : (
@@ -910,7 +910,7 @@ export default function LivingFile() {
                         aria-pressed={mode === 'ndjson'}
                         onClick={() => setMode('ndjson')}
                       >
-                        NDJSON
+                        raw log
                       </button>
                     </div>
                   </div>

@@ -143,8 +143,8 @@ export default function Toolbelt() {
         </h2>
         <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
           The language stays four verbs. The standard library does the rest —{' '}
-          <b>{CANON.builtins} builtins</b>, <b>{CANON.providers} model providers</b>, and any{' '}
-          <b>MCP</b> server your editor already uses. All reached the same way:{' '}
+          <b>{CANON.builtins} builtins</b>, <b>{CANON.providers} model providers</b>, and any of
+          your <b>agent tools</b> (MCP servers) your editor already uses. All reached the same way:{' '}
           <code className="mono">invoke:</code> — and none of it runs unless the file&apos;s{' '}
           <code className="mono">permits:</code> allows it.
         </p>
@@ -175,7 +175,9 @@ export default function Toolbelt() {
             <span className="v4belt-count-n">
               MCP<span className="v4belt-count-unit">native</span>
             </span>
-            <span className="v4belt-count-label">any server, via the same verb</span>
+            <span className="v4belt-count-label">
+              your agent tools (MCP) · any server, via the same verb
+            </span>
           </div>
         </div>
 
@@ -312,7 +314,7 @@ export default function Toolbelt() {
                 FIG 6.4 · MCP
               </span>
               <span className="v4belt-reg-cap">
-                Any Model Context Protocol server, reached as <code>mcp:</code>.
+                Any of your agent tools (MCP servers), reached as <code>mcp:</code>.
               </span>
               <span className="v4belt-reg-count">native · unbounded</span>
             </div>

@@ -206,7 +206,7 @@ export function Component() {
                     <p className="play-pass-line">
                       <b>✓ This file passes</b> the playground&apos;s static checks — envelope,
                       verbs, edges, namespaces, providers, expressions. The engine&apos;s{' '}
-                      <code>nika check</code> runs the full oracle. Ship it with{' '}
+                      <code>nika check</code> runs the full audit. Ship it with{' '}
                       <code>nika run {seed}.nika.yaml</code>.
                     </p>
                     {(seed === 'human-gated-ship' || seed === 'resume-screener') && (

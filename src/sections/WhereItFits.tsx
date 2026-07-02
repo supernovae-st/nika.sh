@@ -36,7 +36,7 @@ const ROWS: { fig: string; them: string; themDoes: string; nika: string }[] = [
   {
     fig: 'iii',
     them: 'Protocols & tools',
-    themDoes: 'MCP servers expose capabilities an agent can call.',
+    themDoes: 'Your agent tools (MCP servers) expose capabilities an agent can call.',
     nika: 'runs them through invoke — allow-listed, permission-bound, traced.',
   },
 ]

@@ -70,8 +70,9 @@ export default function UseCasesV4() {
         </h2>
         <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
           Anything you&apos;d ask an AI to do more than once belongs in a file. Every workflow
-          below is <b>real</b> — projected from <code className="mono">nika-spec</code>, passing
-          the conformance gate. Pick your métier, open a card, read the exact YAML that runs it.
+          below is <b>real</b> — projected from <code className="mono">nika-spec</code>, audited
+          before it runs: plan, cost, secrets. Pick your métier, open a card, read the exact
+          YAML that runs it.
         </p>
 
         {/* the métier filter bar · plain toggle buttons (aria-pressed), not a
@@ -188,7 +189,7 @@ export default function UseCasesV4() {
           >
             nika-spec/examples/showcase
           </a>{' '}
-          — schema, DAG cross-refs and stdlib surface all gated
+          — the plan, the typed answers and the tools all checked before it runs
         </p>
       </div>
     </section>

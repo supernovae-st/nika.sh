@@ -220,8 +220,8 @@ export default function GetStarted() {
               </h3>
               <p className="v4every-body">
                 The <code className="mono">nika-lang</code> extension — diagnostics,
-                schema-derived completions and the DAG view, in VS Code, Cursor and
-                Windsurf.
+                schema-derived completions and a view of the plan, in VS Code, Cursor
+                and Windsurf.
               </p>
               <div className="v4every-cta v4every-links">
                 <a href={VSCODE_MARKETPLACE} target="_blank" rel="noreferrer" className="v4every-link">

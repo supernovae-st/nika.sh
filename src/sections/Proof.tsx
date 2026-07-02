@@ -63,7 +63,7 @@ const GUARANTEES: { fig: string; claim: string; detail: string }[] = [
   {
     fig: 'III',
     claim: 'Replayable trace.',
-    detail: 'Every run emits a typed NDJSON stream — the audit trail. Same file, same steps, same order, run again and diff it like code.',
+    detail: 'Every run leaves a replayable record — the audit trail. Same file, same steps, same order: run it again and diff it like code.',
   },
   {
     fig: 'IV',

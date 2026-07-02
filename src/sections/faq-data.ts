@@ -29,12 +29,12 @@ export const FAQ_ITEMS: FaqItem[] = [
     a: `The syntax is plain YAML, but the point is not the syntax — it is the reviewable, enforced plan. The ${CANON.verbs} verbs (infer · exec · invoke · agent) are native execution models, each one explicit and typed, with a permits: block the runtime enforces before anything runs. The file is the control surface, not the formatting.`,
   },
   {
-    q: 'Why not LangGraph, n8n, or MCP?',
+    q: 'Why not LangGraph, n8n, or MCP (agent tools)?',
     a: 'They live at a different layer. Frameworks help you orchestrate and assistants help an agent act; MCP exposes tools to call. Nika is the contract-and-control layer underneath: it makes the plan reviewable and enforceable, and it runs their tools through invoke — allow-listed and traced. It complements them rather than replacing them.',
   },
   {
     q: 'Does my data leave my machine?',
-    a: `Local-first and provider-agnostic. Run a fully local model and nothing leaves at all. Every plan declares its network egress in its permits: block, and it is default-deny — omit the hosts and the workflow physically cannot reach the network. The file states exactly what can leave, and the runtime enforces it. ${CANON.providersLocal} of the ${CANON.providers} providers are local.`,
+    a: `Local-first, any model — fully local, or any API. Run a local model and nothing leaves at all. Every plan declares its network egress in its permits: block, and it is default-deny — omit the hosts and the workflow physically cannot reach the network. The file states exactly what can leave, and the runtime enforces it. ${CANON.providersLocal} of the ${CANON.providers} providers are local.`,
   },
   {
     q: 'Is it production-ready? What’s the license?',
