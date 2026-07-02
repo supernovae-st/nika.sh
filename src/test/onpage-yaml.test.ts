@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
 import Ajv2020 from 'ajv/dist/2020'
 import { HERO_FILES } from '../sections/hero-files'
+import { FLAGSHIPS } from '../flagships/flagship-data'
 import { CHAPTERS } from '../sections/verbs-data'
 import { DAG, FILENAME, YAML as LIVING_YAML } from '../sections/living/living-data'
 import { FOUR_VERBS_YAML } from '../pages/Blog'
@@ -52,6 +53,11 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
   it('the Living File flagship validates', () => {
     expectValid(FILENAME, LIVING_YAML)
   })
+
+  it.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
+    'flagship %s validates',
+    (label, yaml) => expectValid(label, yaml),
+  )
 
   it.each(CHAPTERS.map((c) => [c.filename, c.yaml] as const))(
     'verbs chapter %s validates',
