@@ -54,7 +54,7 @@ export function buildScript(entry: FlagshipEntry): {
     lines.push({
       kind: 'scheduled',
       glyph: '·',
-      text: `scheduled ${scheduled.length} task${scheduled.length > 1 ? 's' : ''} — ${scheduled.join(' ')}`,
+      text: `scheduled ${scheduled.length} task${scheduled.length > 1 ? 's' : ''} · ${scheduled.join(' ')}`,
       delayMs: 140,
       progress: 0,
     })

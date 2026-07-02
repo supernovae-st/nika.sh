@@ -5,13 +5,12 @@ import Hero from '../sections/Hero'
 import { FLAGSHIP_ENTRIES } from '../flagships'
 import TheRun from '../sections/run/TheRun'
 import ThePlan from '../sections/plan/ThePlan'
+import TheBoundary from '../sections/boundary/TheBoundary'
 import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
-import Permits from '../sections/Permits'
 import WhereItFits from '../sections/WhereItFits'
-import HumanInTheLoop from '../sections/HumanInTheLoop'
 import OwnWorkflows from '../sections/OwnWorkflows'
 import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
@@ -229,6 +228,10 @@ export function Component() {
         {/* FIG 2.0 · THE PLAN — the same file as wave columns + real wires */}
         <ThePlan flagship={flagship} />
 
+        {/* FIG 3.0 · THE BOUNDARY — the same file's permits: read as the
+             consumer feature + the denial beat (one card, one flash) */}
+        <TheBoundary flagship={flagship} />
+
         {/* FIG 1.5 · Proof strip — the honest mono numbers band (CANON counts) */}
         <ProofStrip />
 
@@ -242,16 +245,8 @@ export function Component() {
         {/* FIG 3.0 · the acid moment — beyond the black box (file vs chat/API) */}
         <BeyondChat />
 
-        {/* FIG 3.5 · the seatbelt — what it's ALLOWED to do (permits:) */}
-        <Permits />
-
         {/* FIG 3.6 · where Nika fits — the orthogonal layer underneath (light) */}
         <WhereItFits />
-
-        {/* FIG 4.0 · be the human in the loop — the interactive permits demo:
-             review the plan, toggle what it can touch, watch the runtime obey
-             (a real NIKA-SEC-004 denial when a load-bearing permit is removed) */}
-        <HumanInTheLoop />
 
         {/* FIG 5.0 · sovereignty — the procedure is yours (theme-light) */}
         <OwnWorkflows />

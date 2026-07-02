@@ -32,6 +32,9 @@ export interface CodeFileProps {
   lang?: string
   /** render the line-number gutter (default: true) */
   lineNumbers?: boolean
+  /** 1-based number of the FIRST line — an excerpt keeps its real file lines
+      (the same body, partially shown · never a second version of the file) */
+  firstLine?: number
   /** optional extra classes on the outer panel */
   className?: string
 }
@@ -106,12 +109,13 @@ export function CodeFile({
   filename,
   lang = 'yaml',
   lineNumbers = true,
+  firstLine = 1,
   className,
 }: CodeFileProps) {
   const lines = useMemo(() => tokenize(yaml), [yaml])
   const [hStart, hEnd] = highlight ?? [0, -1]
   // the gutter is as wide as the largest line number needs (min 2 cols).
-  const gutterCh = Math.max(2, String(lines.length).length)
+  const gutterCh = Math.max(2, String(firstLine + lines.length - 1).length)
 
   /* ── the horizontal-scroll affordance (mobile P0) ──────────────────────────
      When a long line overflows the panel, the page must NEVER widen — the code
@@ -173,7 +177,7 @@ export function CodeFile({
         <pre ref={preRef} className="cf-pre" style={{ ['--cf-gutter' as string]: `${gutterCh}ch` }}>
           <code className="cf-code">
             {lines.map((line, i) => {
-              const n = i + 1
+              const n = i + firstLine
               const lit = n >= hStart && n <= hEnd
               return (
                 <span
