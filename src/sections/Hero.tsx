@@ -168,7 +168,11 @@ export default function Hero() {
      This is the visual bridge to the Living File below (the SAME file, now
      running): the two stop reading as disjoint blocks. A motion-safe rAF scroll
      scrub (transform/opacity only · compositor-cheap); SSR / no-JS / reduced get
-     the static hero (no transform applied). */
+     the static hero (no transform applied).
+
+     PERF: the loop reads layout (getBoundingClientRect) every frame, so it runs
+     ONLY while the hero intersects the viewport — an IntersectionObserver arms
+     and disarms the rAF; once the hero is long off-screen the page pays zero. */
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -195,8 +199,15 @@ export default function Hero() {
       }
       raf = requestAnimationFrame(tick)
     }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+    const io = new IntersectionObserver(([entry]) => {
+      cancelAnimationFrame(raf)
+      raf = entry?.isIntersecting ? requestAnimationFrame(tick) : 0
+    })
+    io.observe(section)
+    return () => {
+      io.disconnect()
+      cancelAnimationFrame(raf)
+    }
   }, [])
 
   return (
