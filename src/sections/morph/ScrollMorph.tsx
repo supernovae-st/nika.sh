@@ -1,5 +1,6 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CodeFile } from '../../components/CodeFile'
+import { usePlan3D } from './use-plan3d'
 import { useAurora } from '../../fx/aurora-context'
 import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships'
 import { buildScript } from '../run/replay-model'
@@ -64,6 +65,12 @@ const whenLabel = (when: string): string =>
    flagship, so memo skips the whole subtree (longtask budget, F2). */
 const MemoCodeFile = memo(CodeFile)
 
+/* wave H · the 3D DAG layer (desktop ≥1024px + WebGL + motion, lazy chunk).
+   It reads the SAME scroll progress apply() computes (progressRef) and hides
+   the DOM DAG only once actually mounted ([data-plan3d], set by the layer
+   itself) — the DOM story below stays the fallback truth everywhere else. */
+const ThePlanScene = lazy(() => import('./ThePlanScene'))
+
 export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const script = useMemo(() => buildScript(flagship), [flagship])
   const plan = flagship.plan
@@ -97,6 +104,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     running: '',
   })
   const aurora = useAurora()
+  const progressRef = useRef(0)
+  const plan3d = usePlan3D(sectionRef)
 
   /* ── measure · file line blocks → node targets (stage coordinates) ──────────
      Transforms are cleared first so a mid-scroll (re)measure — reload, tab
@@ -190,6 +199,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const card = cardRef.current
       const term = termRef.current
       if (!stage || !card || !term) return
+      progressRef.current = p
 
       /* phase flag → caption crossfade (morph.css) */
       stage.dataset.phase = p < PH.burst0 ? 'file' : p < PH.run0 ? 'burst' : 'run'
@@ -479,6 +489,19 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 </div>
               ))}
             </div>
+
+            {/* THE 3D MOMENT · wave H (desktop) — the DAG as dither-lit slabs,
+                 the camera advancing through the waves with the recorded run */}
+            {armed && plan3d ? (
+              <Suspense fallback={null}>
+                <ThePlanScene
+                  flagship={flagship}
+                  progressRef={progressRef}
+                  stageRef={stageRef}
+                  cardRef={cardRef}
+                />
+              </Suspense>
+            ) : null}
           </div>
 
           {/* THE TERMINAL · the recorded event stream, driven by the scroll */}
