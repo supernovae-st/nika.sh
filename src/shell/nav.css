@@ -130,7 +130,10 @@
   opacity: 0.96;
 }
 
-/* the desktop link rail */
+/* the desktop link rail — deliberately NOT position:relative: the CAPSULE is
+   the one positioning context up here, so both the sliding pill and the mega
+   panel anchor to it (the panel's 8px capsule-bottom gap must survive the
+   64→56 compression; a rail-anchored panel drifts into the capsule). */
 .v4nav-rail {
   display: none;
   align-items: center;
@@ -141,6 +144,34 @@
   .v4nav-rail {
     display: flex;
   }
+}
+
+/* ── the ONE sliding hover pill ──
+   A single shared highlight behind the rail items, absolutely positioned in
+   the CAPSULE (its offsetParent). JS (Nav.tsx) measures the hot item and
+   drives transform/width; this sheet owns the motion. Two states: hidden
+   transitions OPACITY ONLY — so the first position write lands silently and
+   the pill FADES IN in place; once visible, transform/width slide between
+   items on the signature snappy curve. Fades out in place on leave. */
+.v4nav-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 36px;
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-text) 7%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, width;
+  transition: opacity 0.16s ease;
+}
+.v4nav-pill[data-on='true'] {
+  opacity: 1;
+  transition:
+    transform 0.18s cubic-bezier(0.3, 0.7, 0.3, 1),
+    width 0.18s cubic-bezier(0.3, 0.7, 0.3, 1),
+    opacity 0.16s ease;
 }
 
 .v4nav-link {
@@ -156,14 +187,20 @@
   letter-spacing: -0.005em;
   color: var(--v4-text-dim);
   white-space: nowrap;
-  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
+  /* NO per-item hover background — the shared sliding pill carries the
+     highlight; the item only shifts ink. Press physics: a half-pixel settle. */
+  transition: color var(--dur-ui) var(--ease-ui), transform 0.12s var(--ease-ui);
 }
 .v4nav-link:hover {
   color: var(--v4-text);
-  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
 }
-.v4nav-link[aria-current='true'] {
+.v4nav-link:active {
+  transform: translateY(0.5px);
+}
+/* the active route · a persistent dim pill (one step quieter than hover) */
+.v4nav-link[aria-current='page'] {
   color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
 }
 /* while transparent (riding the dark hero field), the dim gray sinks into the
    field — lift the rail ink to a high-opacity near-white so every link clears
@@ -227,11 +264,15 @@
   border-radius: var(--v4-radius);
   font-size: 13.5px;
   color: var(--v4-text-dim);
-  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui),
+    transform 0.12s var(--ease-ui);
 }
 .v4nav-ghost:hover {
   color: var(--v4-text);
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4nav-ghost:active {
+  transform: translateY(0.5px);
 }
 .v4nav-ghost-label {
   display: none;
@@ -260,14 +301,16 @@
   border: 1px solid var(--v4-text);
   box-shadow: 0 1px 0 color-mix(in oklch, var(--v4-text) 30%, transparent);
   transition: background-color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
-    transform var(--dur-press) var(--ease-ui);
+    transform 0.12s var(--ease-ui), box-shadow 0.12s var(--ease-ui);
 }
 .v4nav-cta:hover {
   background: #ffffff;
   border-color: #ffffff;
 }
+/* press physics · the button settles half a pixel and its base shadow pulls in */
 .v4nav-cta:active {
   transform: translateY(0.5px);
+  box-shadow: 0 0.5px 0 color-mix(in oklch, var(--v4-text) 18%, transparent);
 }
 .v4nav-cta-glyph {
   font-size: 13px;
@@ -296,18 +339,23 @@
   }
 }
 
-/* ─── the Product ▾ mega-menu (WAI-ARIA disclosure) ─────────────────────────── */
-.v4mega-wrap {
-  position: relative;
-}
+/* ─── the Product ▾ mega-menu (WAI-ARIA disclosure) ───────────────────────────
+   The wrap is intentionally NOT position:relative — the panel's containing
+   block is the CAPSULE, so `top: calc(100% + 8px)` hangs the panel off the
+   capsule's bottom edge with a constant 8px gap (it stays put through the
+   64→56 compression; anchored to the button it would drift 4px). The LEFT
+   is set inline by Nav.tsx at open time (aligned under the trigger — the
+   brand width can't be hardcoded); 10px is the SSR/no-JS fallback. Radius
+   and depth kit match the capsule — the panel reads as shed
+   instrumentation. */
 .v4mega {
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
+  left: 10px;
   width: 640px;
   max-width: calc(100vw - 40px);
   padding: 14px;
-  border-radius: var(--v4-radius);
+  border-radius: 12px; /* matches the capsule, not the 4px structural radii */
   /* F6 · NEAR-OPAQUE floor — the panel fully occludes what's behind it (the
      translucent+blur version let the field bleed through and muddied the
      type). Seam kit: hairline + inner-top catch + ONE tight float shadow. */
@@ -322,18 +370,17 @@
   grid-template-columns: 1fr 1fr;
   gap: 4px 12px;
   align-items: start;
-  /* entrance · a short, motion-safe drop-in */
-  transform-origin: top left;
-  animation: v4mega-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* entrance · a short, motion-safe drop-in (opacity + 4px settle · 160ms) */
+  animation: v4mega-in 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes v4mega-in {
   from {
     opacity: 0;
-    transform: translateY(-6px) scale(0.985);
+    transform: translateY(-4px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 .v4mega-col {
@@ -358,11 +405,14 @@
   padding: 10px 12px;
   border-radius: var(--v4-radius);
   color: var(--v4-text);
-  transition: background-color var(--dur-ui) var(--ease-ui);
+  transition: background-color var(--dur-ui) var(--ease-ui), transform 0.12s var(--ease-ui);
 }
 .v4mega-item:hover,
 .v4mega-item:focus-visible {
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4mega-item:active {
+  transform: translateY(0.5px);
 }
 .v4mega-label {
   display: block;
@@ -460,6 +510,9 @@
 .v4sheet-link:hover {
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
 }
+.v4sheet-link:active {
+  transform: translateY(0.5px);
+}
 /* sheet product items carry the same two-line register as the mega panel */
 .v4sheet-link .v4mega-label {
   font-size: 16px; /* ≥16px so iOS never zooms */
@@ -494,6 +547,15 @@
   }
   .v4nav-link::after,
   .v4nav-caret {
+    transition: none;
+  }
+  /* the pill may still FADE but never streak across the rail */
+  .v4nav-pill,
+  .v4nav-pill[data-on='true'] {
+    transition: opacity 0.16s ease;
+  }
+  .v4nav-row,
+  .v4nav[data-scrolled='true'] .v4nav-row {
     transition: none;
   }
 }
