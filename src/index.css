@@ -136,9 +136,23 @@ main > section { overflow-x: clip; }
   line-height: 1;
   user-select: none;
 }
+/* H2 · the print screen — an ordered-dither tile (Bayer 8×8 · the 22/64
+   lowest-threshold cells as ink at 0.45) layered ON TOP of the gradient
+   inside the same background-clip:text, so the plain vertical gradient
+   reads dithered/risograph instead of airbrushed (BRAND-11 grain family —
+   the wordmark joins the butterfly signature's register). Purely
+   decorative: a background layer clipped to the glyphs, never in the a11y
+   tree. NOTE: a mix-blend ::after overlay was tried first and composited
+   as a visible slab across the full-width anchor at 390 — the in-clip
+   layer is structurally immune, the ink exists only where letters do. */
 .supernovae-type span {
   display: inline-block;
-  background: linear-gradient(180deg, #b9d2f4 0%, #4662c8 58%, rgba(40, 50, 120, 0) 96%);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' shape-rendering='crispEdges'%3E%3Cg fill='%23000' fill-opacity='0.45'%3E%3Crect x='0' y='0' width='1' height='1'/%3E%3Crect x='2' y='0' width='1' height='1'/%3E%3Crect x='4' y='0' width='1' height='1'/%3E%3Crect x='6' y='0' width='1' height='1'/%3E%3Crect x='1' y='1' width='1' height='1'/%3E%3Crect x='5' y='1' width='1' height='1'/%3E%3Crect x='0' y='2' width='1' height='1'/%3E%3Crect x='2' y='2' width='1' height='1'/%3E%3Crect x='4' y='2' width='1' height='1'/%3E%3Crect x='6' y='2' width='1' height='1'/%3E%3Crect x='3' y='3' width='1' height='1'/%3E%3Crect x='0' y='4' width='1' height='1'/%3E%3Crect x='2' y='4' width='1' height='1'/%3E%3Crect x='4' y='4' width='1' height='1'/%3E%3Crect x='6' y='4' width='1' height='1'/%3E%3Crect x='1' y='5' width='1' height='1'/%3E%3Crect x='5' y='5' width='1' height='1'/%3E%3Crect x='0' y='6' width='1' height='1'/%3E%3Crect x='2' y='6' width='1' height='1'/%3E%3Crect x='4' y='6' width='1' height='1'/%3E%3Crect x='6' y='6' width='1' height='1'/%3E%3Crect x='7' y='7' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(180deg, #b9d2f4 0%, #4662c8 58%, rgba(40, 50, 120, 0) 96%);
+  background-size:
+    8px 8px,
+    100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
