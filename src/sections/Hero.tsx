@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { CodeFile } from '../components/CodeFile'
 import { InstallCommand } from '../components/InstallCommand'
 import { REPO, SPEC } from '../content'
+import { HERO_FILES } from './hero-files'
 import '../shell/shell.css'
 import './hero.css'
 
@@ -31,114 +32,6 @@ import './hero.css'
    TODO: CI-refresh — canon.generated.ts carries spec counts, not the engine
    version; bump this with each release until a version projection exists. */
 const ENGINE_VERSION = 'v0.91.0'
-
-/* ── the hero editor files · the sharp file-tab strip ─────────────────────────
-   Three examples, switchable in the header. Tab 0 (daily-brief) is a COMPACT
-   slice of the Living File's own file — same filename · same header lines ·
-   same task ids — so the scroll into the run below reads as ONE object (the
-   run-model is keyed to daily-brief; keeping it the default preserves the
-   file→DAG continuity). Tabs 1-2 are spec-register examples (schema-true keys:
-   depends_on · when · invoke.tool — public/schema/workflow.json) showing the
-   signature beats: the when:-gated agent probe and the typed-output contract. */
-type HeroFile = {
-  id: string
-  filename: string
-  /** the short tab label (the basename — the full filename lives in the
-      editor's window chrome right below; three full names don't fit the strip) */
-  label: string
-  yaml: string
-  highlight: [number, number]
-  /** what the highlighted lines demonstrate (the tab's one-line story) */
-  gloss: string
-}
-
-const HERO_FILES: HeroFile[] = [
-  {
-    id: 'daily_brief',
-    filename: 'daily-brief.nika.yaml',
-    label: 'daily-brief',
-    gloss: 'permits: · the file IS the blast radius',
-    highlight: [5, 7],
-    yaml: `nika: v1
-workflow: daily-brief
-model: ollama/llama3.1        # local · your data never leaves
-
-permits:                      # the file IS the blast radius
-  net: [ gmail, gcal, news, github ]
-  fs: { write: ./brief.md }
-
-tasks:
-  - { id: inbox,    invoke: gmail.unread }
-  - { id: calendar, invoke: gcal.today }
-  - { id: triage,   needs: [inbox],            infer: "flag what's urgent" }
-  - { id: draft,    needs: [triage, calendar], infer: "write the brief" }
-  - { id: save,     needs: [draft],            invoke: fs.write }
-`,
-  },
-  {
-    id: 'pr_risk_review',
-    filename: 'pr-risk-review.nika.yaml',
-    label: 'pr-risk-review',
-    gloss: 'when: · the agent probe only fires on real risk',
-    highlight: [15, 18],
-    yaml: `nika: v1
-workflow: pr-risk-review
-model: ollama/llama3.1        # local · the diff never leaves
-
-permits:                      # the file IS the blast radius
-  exec: [ gh ]
-  fs: { write: [ ./review.md ] }
-
-tasks:
-  - id: diff
-    exec: { command: "gh pr diff 482" }
-  - id: risk
-    depends_on: [diff]
-    infer: { prompt: "Score the blast radius · \${{ tasks.diff.output }}" }
-  - id: probe
-    depends_on: [risk]
-    when: \${{ tasks.risk.output.score >= 7 }}
-    agent: { prompt: "Trace the risky call paths", tools: [ "nika:read" ] }
-  - id: report
-    depends_on: [risk, probe]
-    invoke:
-      tool: "nika:write"
-      args: { path: ./review.md, content: "\${{ tasks.risk.output }}" }
-`,
-  },
-  {
-    id: 'meeting_actions',
-    filename: 'meeting-actions.nika.yaml',
-    label: 'meeting-actions',
-    gloss: 'schema: · the output is a contract, not prose',
-    highlight: [16, 17],
-    yaml: `nika: v1
-workflow: meeting-actions
-model: ollama/llama3.1        # local · the recording stays yours
-
-permits:                      # the file IS the blast radius
-  fs: { read: [ ./transcript.txt ], write: [ ./action-items.json ] }
-
-tasks:
-  - id: transcript
-    invoke:
-      tool: "nika:read"
-      args: { path: ./transcript.txt }
-  - id: extract
-    depends_on: [transcript]
-    infer:
-      prompt: "Every action item · \${{ tasks.transcript.output }}"
-      schema: { type: object, required: [actions] }
-  - id: save
-    depends_on: [extract]
-    invoke:
-      tool: "nika:write"
-      args:
-        path: ./action-items.json
-        content: "\${{ tasks.extract.output.actions }}"
-`,
-  },
-]
 
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
 const rise = (ms: number): React.CSSProperties =>

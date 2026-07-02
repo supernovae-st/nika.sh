@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CodeFile } from '../../components/CodeFile'
 import { useAuroraPulse } from '../../fx/aurora-context'
-import { type ShowcaseDag, type ShowcaseTask } from '../usecases-yaml.generated'
+import { type ShowcaseTask } from '../usecases-yaml.generated'
+import { DAG, FILENAME, YAML } from './living-data'
 import { runStateAt, CLI_GLYPH, type RunState, type TaskStatus } from './run-model'
 import Corridor from './Corridor'
 import './living.css'
@@ -36,59 +37,6 @@ import './corridor.css'
    coherent with zero scroll animation. The rAF scroll-scrub + 3D corridor are
    prefers-reduced-motion: no-preference enhancements added on mount. */
 
-/* the fil-rouge · a DAILY BRIEF everyone gets. FOUR sources gathered AT ONCE,
-   each read by a LOCAL model in parallel, THEN a sequential chain writes ·
-   critiques · polishes · saves. Two parallel waves of 4 + a 4-step pipeline —
-   parallel AND « à la suite ». Relatable + the control story (local model ·
-   scoped net · the write stays within permits · your data never leaves). */
-const DAG: ShowcaseDag = {
-  waves: 6,
-  outputs: ['brief'],
-  tasks: [
-    // wave 0 · GATHER everything at once (4 parallel)
-    { id: 'inbox', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'read your email', flags: [], line0: 12, line1: 12 },
-    { id: 'calendar', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: "today's events", flags: [], line0: 13, line1: 13 },
-    { id: 'news', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'top headlines', flags: [], line0: 14, line1: 14 },
-    { id: 'signals', verb: 'invoke', deps: [], wave: 0, gate: 'default', gloss: 'PRs & mentions', flags: [], line0: 15, line1: 15 },
-    // wave 1 · the model READS each, in parallel (4 parallel)
-    { id: 'triage', verb: 'infer', deps: ['inbox'], wave: 1, gate: 'default', gloss: 'flag what’s urgent', flags: [], line0: 17, line1: 17 },
-    { id: 'agenda', verb: 'infer', deps: ['calendar'], wave: 1, gate: 'default', gloss: 'plan the day', flags: [], line0: 18, line1: 18 },
-    { id: 'digest', verb: 'infer', deps: ['news'], wave: 1, gate: 'default', gloss: 'summarise', flags: [], line0: 19, line1: 19 },
-    { id: 'highlights', verb: 'infer', deps: ['signals'], wave: 1, gate: 'default', gloss: 'what needs you', flags: [], line0: 20, line1: 20 },
-    // waves 2-5 · the SEQUENTIAL chain (draft → review → polish → save)
-    { id: 'draft', verb: 'infer', deps: ['triage', 'agenda', 'digest', 'highlights'], wave: 2, gate: 'default', gloss: 'write the brief', flags: ['typed output'], line0: 22, line1: 22 },
-    { id: 'review', verb: 'infer', deps: ['draft'], wave: 3, gate: 'default', gloss: 'critique it', flags: [], line0: 23, line1: 23 },
-    { id: 'polish', verb: 'infer', deps: ['review'], wave: 4, gate: 'default', gloss: 'apply the edits', flags: [], line0: 24, line1: 24 },
-    { id: 'save', verb: 'invoke', deps: ['polish'], wave: 5, gate: 'default', gloss: 'save brief.md', flags: [], line0: 25, line1: 25 },
-  ],
-}
-const FILENAME = 'daily-brief.nika.yaml'
-/* the REAL .nika file the editor renders (the CodeFile tokenises + colours it).
-   Flow-style tasks keep one task per line so each block maps to one DAG node. */
-const YAML = `nika: v1
-workflow: daily-brief
-model: ollama/llama3.1        # local · your data never leaves
-
-permits:                     # the file IS the blast radius
-  net: [ gmail, gcal, news, github ]
-  fs: { write: ./brief.md }
-
-tasks:
-  - { id: inbox,      invoke: gmail.unread }
-  - { id: calendar,   invoke: gcal.today }
-  - { id: news,       invoke: news.top }
-  - { id: signals,    invoke: github.inbox }
-
-  - { id: triage,     needs: [inbox],    infer: "flag what's urgent" }
-  - { id: agenda,     needs: [calendar], infer: "plan the day" }
-  - { id: digest,     needs: [news],     infer: "summarise" }
-  - { id: highlights, needs: [signals],  infer: "what needs you" }
-
-  - { id: draft,      needs: [triage, agenda, digest, highlights], infer: "write the brief" }
-  - { id: review,     needs: [draft],    infer: "critique it" }
-  - { id: polish,     needs: [review],   infer: "apply the edits" }
-  - { id: save,       needs: [polish],   invoke: fs.write }
-`
 /** the static frame used for SSR / no-JS / reduced-motion (fully executed). */
 const END_STATE: RunState = runStateAt(DAG, 1)
 
@@ -909,7 +857,7 @@ export default function LivingFile() {
                             style={{ opacity: 1 - Math.min(1, Math.max(0, morph / 0.55)) }}
                             aria-hidden={morph > 0.5}
                           >
-                            <CodeFile yaml={YAML} filename={FILENAME} highlight={[5, 7]} />
+                            <CodeFile yaml={YAML} filename={FILENAME} highlight={[5, 8]} />
                           </div>
                           {/* the DAG · explodes out of the file as it fades */}
                           <DagGraph run={run} morph={morph} />

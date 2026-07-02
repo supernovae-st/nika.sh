@@ -42,7 +42,7 @@ const SOON: { slug: string; tag: string; date: string; title: string; teaser: st
 
 /* the worked fragment for the "four verbs" article · a tiny readable DAG that
    exercises three verbs (spec-correct shapes, never hand-waved). */
-const FOUR_VERBS_YAML = `nika: v1
+export const FOUR_VERBS_YAML = `nika: v1
 workflow: morning-brief
 
 tasks:
