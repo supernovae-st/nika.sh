@@ -68,12 +68,13 @@ function FileTabs({
     refs.current[next]?.focus()
   }
   return (
-    <div
-      className="v4ftabs"
-      role="tablist"
-      aria-label="Flagship workflow files"
-      onKeyDown={onKeyDown}
-    >
+    <div className="v4ftabs-clip">
+      <div
+        className="v4ftabs"
+        role="tablist"
+        aria-label="Flagship workflow files"
+        onKeyDown={onKeyDown}
+      >
       {FLAGSHIP_ENTRIES.map((f, i) => (
         <button
           key={f.id}
@@ -95,6 +96,7 @@ function FileTabs({
           </span>
         </button>
       ))}
+      </div>
     </div>
   )
 }
@@ -151,9 +153,8 @@ export default function Hero({
               get the short register (the 7-line sub wall is a defect class). */}
           <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--full">
             Nika turns repeatable AI work into files you can run, review, diff and
-            share. One file&nbsp;· 4&nbsp;verbs&nbsp;· one Rust binary. The agent
-            writes the plan, you review it, the runtime{' '}
-            <b>enforces</b> it. Then it runs.
+            share. One file, four verbs, one Rust binary. The agent writes the
+            plan, you review it, the runtime <b>enforces</b> it. Then it runs.
           </p>
           <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--short">
             Repeatable AI work as a file you run, review and share. The agent

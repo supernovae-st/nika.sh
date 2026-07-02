@@ -289,7 +289,9 @@
    the Bayer fade tile (the ONE sanctioned dither-fade device) — the file
    visibly continues; scrolling is the invitation. */
 .v4hero-code .cf-pre {
-  max-height: clamp(380px, 52vh, 560px);
+  /* whole lines only: 11px top pad + 24 × 18.75px line boxes — a frame that
+     cuts a line in half reads as broken (coordinator punch #1) */
+  max-height: calc(11px + 24 * 18.75px);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -301,14 +303,14 @@
   content: '';
   position: absolute;
   inset: auto 0 0 0;
-  height: 56px;
+  height: 72px;
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(to bottom, transparent, var(--v4-bg-raised) 92%);
+  background: linear-gradient(to bottom, transparent, var(--v4-bg-raised) 82%);
   -webkit-mask-image: var(--v4-dither-fade);
   mask-image: var(--v4-dither-fade);
-  -webkit-mask-size: 4px 56px;
-  mask-size: 4px 56px;
+  -webkit-mask-size: 4px 72px;
+  mask-size: 4px 72px;
   -webkit-mask-position: bottom;
   mask-position: bottom;
   transform: scaleY(-1); /* the tile fades downward · flip it to fade upward */
@@ -372,8 +374,33 @@
   height: 2px;
   background: var(--v4-accent-strong);
 }
+/* the tab-strip clip · the non-scrolling wrapper carries the right edge-fade
+   cue on narrow screens, so a cut tab reads as scrollable, never broken
+   (coordinator punch #4). */
+.v4ftabs-clip {
+  position: relative;
+}
+.v4ftabs-clip::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 36px;
+  pointer-events: none;
+  border-radius: 0 var(--v4-radius) 0 0;
+  background: linear-gradient(to right, transparent, var(--v4-bg-deep) 82%);
+  opacity: 0;
+}
+@media (max-width: 560px) {
+  .v4ftabs-clip::after {
+    opacity: 1;
+  }
+}
+
 /* the strip hands off to the editor panel below it — flatten the panel's top
    corners so tab strip + window chrome read as ONE sharp object. */
+.v4ftabs-clip + [role='tabpanel'] .v4hero-code,
 .v4ftabs + [role='tabpanel'] .v4hero-code {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -663,8 +690,8 @@
     order: 8;
     margin-top: 28px;
   }
-  /* the file cap relaxes a touch on phones (the editor is mid-stack) */
+  /* the file cap on phones · whole lines only (21 × the line box) */
   .v4hero-code .cf-pre {
-    max-height: 420px;
+    max-height: calc(11px + 21 * 18.75px);
   }
 }

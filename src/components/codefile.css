@@ -143,11 +143,12 @@
   content: '';
   position: absolute;
   inset: 0 0 0 auto;
-  width: 32px;
+  width: 56px;
   pointer-events: none;
   background: linear-gradient(
     to right,
     color-mix(in srgb, var(--cf-bg) 0%, transparent),
+    color-mix(in srgb, var(--cf-bg) 82%, transparent) 60%,
     var(--cf-bg)
   );
   opacity: 0;
