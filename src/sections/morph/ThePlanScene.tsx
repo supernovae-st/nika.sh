@@ -310,10 +310,13 @@ function Advance({
           const k = Math.min(1.15, Math.max(0.6, 8.6 / c[3]))
           el.style.transform = `translate(-50%, -100%) translate3d(${bx.toFixed(1)}px, ${by.toFixed(1)}px, 0) scale(${k.toFixed(3)})`
           el.style.opacity = Math.min(1, alphas[id] * 1.6).toFixed(3)
-          /* the tooltip rides its billboard */
+          /* the tooltip rides its billboard (flipping below near the top edge
+             so it never covers the section title) */
           if (ui.hoverRef.current === id && ui.sourceRef.current === 'bill' && ui.tipRef.current) {
-            ui.tipRef.current.style.left = `${Math.round(bx)}px`
-            ui.tipRef.current.style.top = `${Math.round(by - 34 * k)}px`
+            const flip = by < Math.min(400, h * 0.58)
+            ui.tipRef.current.dataset.flip = flip ? '1' : '0'
+            ui.tipRef.current.style.left = `${Math.round(Math.min(Math.max(bx, 180), w - 180))}px`
+            ui.tipRef.current.style.top = `${Math.round(flip ? by + 10 : by - 40 * k)}px`
           }
         }
         const st = slabStateAt(entry, id, p)
@@ -417,6 +420,7 @@ export default function ThePlanScene({ flagship, progressRef, stageRef, cardRef 
   }, [])
 
   const setHover = (id: string | null, source: 'bill' | 'yaml') => {
+    if (hoverRef.current === id && sourceRef.current === source) return
     hoverRef.current = id
     sourceRef.current = source
     setTipId(id)
@@ -458,8 +462,12 @@ export default function ThePlanScene({ flagship, progressRef, stageRef, cardRef 
       if (id !== cur) setHover((cur = id), 'yaml')
       if (id && tipRef.current) {
         const r = layer.getBoundingClientRect()
-        tipRef.current.style.left = `${Math.round(e.clientX - r.left)}px`
-        tipRef.current.style.top = `${Math.round(e.clientY - r.top - 16)}px`
+        const x = e.clientX - r.left
+        const y = e.clientY - r.top
+        const flip = y < Math.min(400, r.height * 0.58)
+        tipRef.current.dataset.flip = flip ? '1' : '0'
+        tipRef.current.style.left = `${Math.round(Math.min(Math.max(x, 180), r.width - 180))}px`
+        tipRef.current.style.top = `${Math.round(flip ? y + 22 : y - 16)}px`
       }
     }
     const onLeave = () => {
@@ -478,53 +486,60 @@ export default function ThePlanScene({ flagship, progressRef, stageRef, cardRef 
   const tipTask = tipId ? flagship.plan.tasks.find((t) => t.id === tipId) : undefined
 
   return (
-    <div className="ps-layer" ref={layerRef}>
-      <Canvas
-        className="ps-canvas"
-        frameloop={inView && !docHidden ? 'always' : 'never'}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', stencil: false }}
-        camera={{ fov: 35, near: 0.1, far: 90, position: [0, 2.7, 8.4] }}
-        onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
-      >
-        <Advance
-          key={flagship.id}
-          entry={flagship}
-          model={model}
-          progressRef={progressRef}
-          ui={ui}
-        />
-      </Canvas>
+    <>
+      <div className="ps-layer" ref={layerRef}>
+        <Canvas
+          className="ps-canvas"
+          frameloop={inView && !docHidden ? 'always' : 'never'}
+          dpr={[1, 1.5]}
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', stencil: false }}
+          camera={{ fov: 35, near: 0.1, far: 90, position: [0, 2.7, 8.4] }}
+          onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
+        >
+          <Advance
+            key={flagship.id}
+            entry={flagship}
+            model={model}
+            progressRef={progressRef}
+            ui={ui}
+          />
+        </Canvas>
 
-      {/* task billboards · real DOM (hover + keyboard focus drive the same
-          highlights), projected onto the slabs by the frame loop */}
-      <div className="ps-bills">
-        {model.slabs.map((s) => (
-          <button
-            key={s.task.id}
-            type="button"
-            ref={(el) => {
-              billRefs.current.set(s.task.id, el)
-            }}
-            className="ps-bill"
-            data-verb={s.task.verb}
-            data-vis="0"
-            aria-label={`task ${s.task.id} · ${s.task.verb} · ${s.task.target}`}
-            onPointerEnter={() => setHover(s.task.id, 'bill')}
-            onPointerLeave={() => setHover(null, 'bill')}
-            onFocus={() => setHover(s.task.id, 'bill')}
-            onBlur={() => setHover(null, 'bill')}
-          >
-            <span className="ps-bill-id">{s.task.id}</span>
-            <span className="ps-bill-chip" />
-          </button>
-        ))}
+        {/* task billboards · real DOM (hover + keyboard focus drive the same
+            highlights), projected onto the slabs by the frame loop */}
+        <div className="ps-bills">
+          {model.slabs.map((s) => (
+            <button
+              key={s.task.id}
+              type="button"
+              ref={(el) => {
+                billRefs.current.set(s.task.id, el)
+              }}
+              className="ps-bill"
+              data-verb={s.task.verb}
+              data-vis="0"
+              aria-label={`task ${s.task.id} · ${s.task.verb} · ${s.task.target}`}
+              onPointerOver={() => setHover(s.task.id, 'bill')}
+              onPointerOut={() => setHover(null, 'bill')}
+              onFocus={() => setHover(s.task.id, 'bill')}
+              onBlur={() => setHover(null, 'bill')}
+            >
+              <span className="ps-bill-id">{s.task.id}</span>
+              <span className="ps-bill-chip" />
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* one tooltip · plain words + the task's verbatim YAML lines */}
-      <div className="ps-tip" ref={tipRef} data-on={tipTask ? '1' : '0'} role="status">
-        {tipTask && <TipCard entry={flagship} task={tipTask} />}
+      {/* one tooltip · plain words + the task's verbatim YAML lines. A SIBLING
+          layer above the traveling card: .ps-layer sits at z-1 BELOW the card
+          (z-2), so a child tooltip could never rise above the YAML it
+          annotates — this twin box (same geometry) carries z-4. */}
+      <div className="ps-layer ps-tiplayer" aria-hidden={tipTask ? undefined : true}>
+        <div className="ps-tip" ref={tipRef} data-on={tipTask ? '1' : '0'} role="status">
+          {tipTask && <TipCard entry={flagship} task={tipTask} />}
+        </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -7,12 +7,12 @@
 import type { NikaVerb } from '../../flagships'
 
 export const VERB_WORDS: Record<NikaVerb, string> = {
-  infer: 'the step that thinks — it asks the model',
+  infer: 'the step that thinks · it asks the model',
   exec: 'runs a real command on your machine',
   invoke: 'uses a tool the file permits',
   agent: 'delegates to an agent, capped in turns',
 }
 
 export const DEPENDS_WORDS = 'waits for these steps'
-export const WHEN_WORDS = 'a gate — this step runs only if it’s true'
+export const WHEN_WORDS = 'a gate · this step runs only if it’s true'
 export const PERMITS_WORDS = 'what the file may touch'

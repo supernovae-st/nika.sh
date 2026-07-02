@@ -23,6 +23,10 @@
   position: absolute;
   inset: 0;
 }
+/* the tooltip's twin box · same geometry, ABOVE the traveling card */
+.ps-tiplayer {
+  z-index: 4;
+}
 
 /* the YAML card accepts hover ONLY in the file beat (H6) — everywhere else it
    stays decorative exactly as before */
@@ -117,6 +121,9 @@
 .ps-tip[data-on='1'] {
   opacity: 1;
   visibility: visible;
+}
+.ps-tip[data-flip='1'] {
+  transform: translate(-50%, 0); /* below its anchor near the top edge */
 }
 .ps-tip-title {
   display: flex;
