@@ -272,11 +272,10 @@
   padding: 16px;
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 96%, transparent);
-  border: 1px solid var(--v4-line);
-  box-shadow:
-    0 1px 0 color-mix(in oklch, #ffffff 6%, transparent) inset,
-    0 24px 60px -18px rgba(0, 0, 0, 0.7),
-    0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  /* seam kit · blue hairline + inner-top seam + the frame elevation stack
+     (a floating layer legitimately spends the depth budget). */
+  border: 1px solid var(--seam-hairline);
+  box-shadow: var(--elev-frame);
   backdrop-filter: blur(20px) saturate(1.2);
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
   display: grid;
@@ -371,8 +370,9 @@
   width: min(86vw, 360px);
   padding: 18px 18px calc(24px + env(safe-area-inset-bottom));
   background: var(--v4-bg-raised);
-  border-left: 1px solid var(--v4-line);
-  box-shadow: -24px 0 60px -20px rgba(0, 0, 0, 0.7);
+  border-left: 1px solid var(--seam-hairline);
+  /* seam kit · inner-top catch + the directional float shadow (overlay) */
+  box-shadow: var(--seam-highlight), -24px 0 60px -20px rgba(0, 0, 0, 0.7);
   overflow-y: auto;
   overscroll-behavior: contain;
   animation: v4sheet-in 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;

@@ -147,9 +147,10 @@
   flex-direction: column;
   min-width: 0;
   padding: 20px 20px 18px;
-  border: 1px solid var(--v4-line);
+  border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  box-shadow: var(--seam-panel); /* seam kit */
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 .blog-soon-tile:hover {

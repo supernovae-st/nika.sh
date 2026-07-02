@@ -16,6 +16,14 @@
   --cf-line-strong: rgb(255 255 255 / 0.1);
   --cf-gutter-ink: #555b67;
   --cf-radius: var(--v4-radius, 4px);
+  /* pin the DARK seam-kit values — the editor stays a dark surface even inside
+     a light section, so the theme-light re-scope must not reach this frame. */
+  --seam-highlight: inset 0 1px 0 rgb(255 255 255 / 0.06);
+  --seam-hairline: rgb(140 170 255 / 0.1);
+  --seam-hairline-soft: rgb(140 170 255 / 0.08);
+  --elev-tight: 0 1px 3px rgb(0 0 0 / 0.35), 0 1px 2px -1px rgb(0 0 0 / 0.35);
+  --elev-ambient: 0 24px 48px -24px rgb(0 20 60 / 0.5);
+  --elev-frame: var(--seam-highlight), var(--elev-tight), var(--elev-ambient);
 
   /* defensive layout · the panel owns its own block flow even when a call-site
      className (e.g. .v4permits-code, which is also used on a flex list elsewhere)
@@ -25,14 +33,11 @@
   overflow: hidden;
   border-radius: var(--cf-radius);
   background: var(--cf-bg);
-  border: 1px solid var(--cf-line-strong);
-  /* depth · a hairline top highlight + ambient + direct shadow (skeuo recipe,
-     monochrome — no blue tech-glow). */
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.05),
-    0 1px 0 rgb(0 0 0 / 0.5),
-    0 18px 50px -22px rgb(0 0 0 / 0.7),
-    0 6px 18px -12px rgb(0 0 0 / 0.6);
+  /* the product frame (seam kit · tokens.css): blue-tinted hairline + inner-top
+     seam + the resend tight pair + ONE deep blue ambient. The depth budget is
+     spent HERE (frames only) — cards/chips/buttons stay flat. */
+  border: 1px solid var(--seam-hairline, rgb(140 170 255 / 0.1));
+  box-shadow: var(--elev-frame);
   font-family: var(--mono);
   /* contain a long line's horizontal scroll inside the panel — never the page. */
   min-width: 0;

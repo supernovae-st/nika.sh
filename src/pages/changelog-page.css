@@ -140,10 +140,11 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  border: 1px solid var(--v4-line);
+  border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   overflow: hidden;
-  background: var(--v4-line);
+  background: var(--seam-hairline-soft);
+  box-shadow: var(--seam-panel); /* seam kit */
 }
 @media (min-width: 620px) {
   .cl-stamp {

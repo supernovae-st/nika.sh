@@ -165,9 +165,10 @@
 }
 .play-panel {
   padding: 18px;
-  border: 1px solid var(--v4-line);
+  border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
+  box-shadow: var(--seam-panel); /* seam kit */
 }
 .play-panel-head {
   display: flex;

@@ -279,9 +279,10 @@
   flex-direction: column;
   min-width: 0;
   padding: 20px 20px 16px;
-  border: 1px solid var(--v4-line);
+  border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
+  box-shadow: var(--seam-panel); /* seam kit · inner-top catch, no elevation */
 }
 /* the "fate" stamp · a faint mono ghost in the corner */
 .v4versus-fate {
@@ -754,9 +755,10 @@
   margin-top: clamp(40px, 6vh, 72px);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  border: 1px solid var(--v4-line);
+  border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   overflow: hidden;
+  box-shadow: var(--seam-panel); /* seam kit */
 }
 @media (min-width: 760px) {
   .v4belt-counts {
@@ -1057,9 +1059,10 @@
   width: 100%;
   text-align: left;
   padding: 16px 20px 16px;
-  border: 1px solid var(--v4-line);
+  border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
+  box-shadow: var(--seam-panel); /* seam kit */
   cursor: pointer;
   transition: border-color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
@@ -1856,8 +1859,8 @@
   background-color: var(--v4-bg);
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
-  border-top: 1px solid var(--v4-line);
-  border-bottom: 1px solid var(--v4-line);
+  border-top: 1px solid var(--seam-hairline);
+  border-bottom: 1px solid var(--seam-hairline);
 }
 .v4strip-row {
   max-width: 72rem;
@@ -1865,9 +1868,9 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  background: var(--v4-line); /* the hairline lattice shows through the gap */
-  border-left: 1px solid var(--v4-line);
-  border-right: 1px solid var(--v4-line);
+  background: var(--seam-hairline-soft); /* the hairline lattice shows through the gap */
+  border-left: 1px solid var(--seam-hairline-soft);
+  border-right: 1px solid var(--seam-hairline-soft);
   list-style: none;
   padding: 0;
 }
@@ -1883,6 +1886,7 @@
 }
 .v4strip-plate {
   /* each plate repaints the section surface so only the 1px gap reads as line */
+  box-shadow: var(--seam-panel); /* seam kit · the inner-top catch per plate */
   background-color: var(--v4-bg);
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
@@ -1960,8 +1964,9 @@
   flex-direction: column;
   min-width: 0;
   padding: 20px 20px 16px;
-  border: 1px solid var(--v4-line);
+  border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
+  box-shadow: var(--seam-panel); /* seam kit */
   background-color: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);

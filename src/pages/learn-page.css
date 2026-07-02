@@ -79,9 +79,10 @@
   display: flex;
   gap: 11px;
   padding: 12px 14px;
-  border: 1px solid var(--v4-line);
+  border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  box-shadow: var(--seam-panel); /* seam kit */
   font-size: 12.5px;
   line-height: 1.55;
   color: var(--v4-text-dim);
