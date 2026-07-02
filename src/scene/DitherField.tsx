@@ -90,15 +90,15 @@ void main() {
   float line = smoothstep(0.0, 0.08, ring) * (1.0 - smoothstep(0.08, 0.55, ring));
   // fog: rings dissolve toward the vanishing point + fade past the mid-field
   float fog = smoothstep(0.015, 0.16, d) * (1.0 - smoothstep(0.35, 1.05, d));
-  float tunnel = line * fog * 0.5;
+  float tunnel = line * fog * 0.22;   // quiet field: the bg modulates, never carries
 
   /* the vanishing-point glow · the tunnel mouth breathes faintly */
-  float mouth = exp(-d * d * 90.0) * (0.30 + 0.06 * sin(uTime * 0.5));
+  float mouth = exp(-d * d * 90.0) * (0.13 + 0.03 * sin(uTime * 0.5));
 
   /* ── the pointe · ONE off-axis blue bloom (upper-right band) ── */
   vec2 b = uv - vec2(0.62, 0.38);
   b.x *= uRes.x / uRes.y;
-  float pointe = exp(-dot(b, b) * 7.5) * 0.32;
+  float pointe = exp(-dot(b, b) * 7.5) * 0.18;
 
   /* compose the luminance field + edge vignette */
   float luma = tunnel + mouth + pointe;
@@ -114,9 +114,9 @@ void main() {
 
   vec3 col = BG_DEEP;
   col = mix(col, BG_BODY, smoothstep(0.0, 0.10, uv.y));      // barely-there lift
-  col = mix(col, BLUE_DIM, clamp(qz * 1.4, 0.0, 1.0));
-  col = mix(col, BLUE_CORE, clamp((qz - 0.4) * 1.8, 0.0, 1.0));
-  col = mix(col, BLUE_BRIGHT, clamp((qz - 0.8) * 2.2, 0.0, 1.0));
+  col = mix(col, BLUE_DIM, clamp(qz * 1.0, 0.0, 1.0));
+  col = mix(col, BLUE_CORE, clamp((qz - 0.55) * 1.1, 0.0, 1.0));
+  col = mix(col, BLUE_BRIGHT, clamp((qz - 0.93) * 1.2, 0.0, 1.0));
 
   gl_FragColor = vec4(col, 1.0);
 }
