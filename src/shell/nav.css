@@ -1,0 +1,460 @@
+/* ─── v4 shell · the nav (capsule + mega-menu + mobile sheet) ─────────────────
+   Extracted verbatim from shell.css (2026-07-02) so the nav owns its stylesheet
+   (Nav.tsx imports THIS file; shell.css keeps the hero atmosphere + shared
+   plates). Same register: engineered dark ladder, hairline 1px rules, the seam
+   kit (--seam-highlight / --seam-hairline / --elev-*), grayscale ink with the
+   ONE blue accent family. SSR-safe: pure CSS, no JS at render. */
+
+/* ─── the nav ─────────────────────────────────────────────────────────────── */
+.v4nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50; /* above content, below the aurora frame (z-60) and any sheet */
+  /* transparent at the top of the hero · solid once scrolled */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 0.32s ease;
+}
+/* the legibility scrim · the nav rides FIXED at the document root (outside any
+   themed section), so its near-white brand + links read fine over a dark hero
+   but wash out over a LIGHT section's top (e.g. /use-cases, the light home
+   beats) while the nav is still transparent. A top-down dark scrim sits BEHIND
+   the row (z-index:-1, pointer-events:none) and stays dark across the full
+   60px row band (then fades), so the near-white ink clears contrast (≈6:1 over
+   the light off-white) against whatever scrolls under it. It is present only
+   while transparent and fades to nothing once the solid bg takes over (no
+   double-darkening); over a dark hero it is imperceptible (dark on dark). */
+.v4nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(10 11 13 / 0.66) 0%,
+    rgb(10 11 13 / 0.62) 60px,
+    rgb(10 11 13 / 0.18) 78px,
+    rgb(10 11 13 / 0) 100%
+  );
+  opacity: 1;
+  transition: opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v4nav[data-scrolled='true']::before {
+  /* the solid surface now carries the contrast; drop the scrim to avoid stacking */
+  opacity: 0;
+}
+.v4nav[data-scrolled='true'] {
+  background: color-mix(in oklch, var(--v4-bg) 78%, transparent);
+  border-bottom-color: var(--v4-line);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.v4nav-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 60px;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  /* fold the safe-area inset into the gutter so the burger/CTA never ride under
+     a notch in landscape, and the row always fits a 390px viewport. */
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+}
+
+/* the brand lockup · butterfly mark + wordmark */
+.v4nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 6px;
+  margin-left: -6px;
+  color: var(--v4-text);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  border-radius: var(--v4-radius);
+}
+.v4nav-brand img {
+  width: 19px;
+  height: 19px;
+  /* the butterfly is full-color art; in the monochrome shell we keep it but let
+     it read as a precise instrument mark — a hairline-soft glow, never a tech-blue
+     halo. (grayscale would kill the brand; a soft luminance lift is the seam.) */
+  opacity: 0.96;
+}
+
+/* the desktop link rail */
+.v4nav-rail {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  margin-left: 6px;
+}
+@media (min-width: 900px) {
+  .v4nav-rail {
+    display: flex;
+  }
+}
+
+.v4nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px; /* ≥24px hit target, comfortably */
+  padding: 7px 11px;
+  border-radius: var(--v4-radius);
+  font-size: 14px;
+  font-weight: 450;
+  letter-spacing: -0.005em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
+}
+.v4nav-link:hover {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4nav-link[aria-current='true'] {
+  color: var(--v4-text);
+}
+/* while transparent (over a hero / light section top), the dim gray sinks into
+   the scrim — lift the rail ink to a high-opacity near-white so every link
+   clears contrast (≈5:1 on the scrim). Once solid, the dim/text hierarchy
+   returns. Brand + ghost + caret follow the same lift. */
+.v4nav:not([data-scrolled='true']) .v4nav-link,
+.v4nav:not([data-scrolled='true']) .v4nav-ghost {
+  color: color-mix(in oklch, var(--v4-text) 88%, transparent);
+}
+.v4nav:not([data-scrolled='true']) .v4nav-link:hover,
+.v4nav:not([data-scrolled='true']) .v4nav-ghost:hover,
+.v4nav:not([data-scrolled='true']) .v4nav-link[aria-current='true'] {
+  color: var(--v4-text);
+}
+/* the engineering-blueprint underline tick — a hairline that draws on hover */
+.v4nav-link::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-ui) var(--ease-ui), opacity var(--dur-ui) var(--ease-ui);
+}
+.v4nav-link:hover::after,
+.v4nav-link[data-open='true']::after {
+  opacity: 0.4;
+  transform: scaleX(1);
+}
+
+.v4nav-caret {
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+.v4nav-link[data-open='true'] .v4nav-caret {
+  transform: rotate(180deg);
+}
+
+.v4nav-ext-arrow {
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+/* the right cluster */
+.v4nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.v4nav-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 7px 11px;
+  border-radius: var(--v4-radius);
+  font-size: 13.5px;
+  color: var(--v4-text-dim);
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
+}
+.v4nav-ghost:hover {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4nav-ghost-label {
+  display: none;
+}
+@media (min-width: 560px) {
+  .v4nav-ghost-label {
+    display: inline;
+  }
+}
+
+/* the ONE solid CTA — near-white on the dark shell (bg-text/text-bg register).
+   No pill, no hover-lift cliché: a crisp rectangle with a hairline base shadow
+   and a contrast bump on hover (per a11y: contrast must rise on hover/focus). */
+.v4nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 8px 15px;
+  border-radius: var(--v4-radius);
+  font-size: 13.5px;
+  font-weight: 560;
+  letter-spacing: -0.005em;
+  color: var(--v4-bg);
+  background: var(--v4-text);
+  border: 1px solid var(--v4-text);
+  box-shadow: 0 1px 0 color-mix(in oklch, var(--v4-text) 30%, transparent);
+  transition: background-color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
+    transform var(--dur-press) var(--ease-ui);
+}
+.v4nav-cta:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+.v4nav-cta:active {
+  transform: translateY(0.5px);
+}
+.v4nav-cta-glyph {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* the mobile menu button — collapses the rail · full ≥44px touch target */
+.v4nav-burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border-radius: var(--v4-radius);
+  color: var(--v4-text);
+  touch-action: manipulation;
+  transition: background-color var(--dur-ui) var(--ease-ui);
+}
+.v4nav-burger:hover {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+@media (min-width: 900px) {
+  .v4nav-burger {
+    display: none;
+  }
+}
+
+/* ─── the Product ▾ mega-menu (WAI-ARIA disclosure) ─────────────────────────── */
+.v4mega-wrap {
+  position: relative;
+}
+.v4mega {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 640px;
+  max-width: calc(100vw - 40px);
+  padding: 14px;
+  border-radius: var(--v4-radius);
+  /* F6 · NEAR-OPAQUE floor — the panel fully occludes what's behind it (the
+     translucent+blur version let the field bleed through and muddied the
+     type). Seam kit: hairline + inner-top catch + ONE tight float shadow. */
+  background: #0b0e13;
+  border: 1px solid var(--seam-hairline);
+  box-shadow:
+    var(--seam-highlight),
+    0 16px 40px -16px rgb(0 0 0 / 0.6);
+  /* two GROUP COLUMNS side by side (Linear register) — each column owns its
+     eyebrow + its stacked items; groups never interleave. */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  align-items: start;
+  /* entrance · a short, motion-safe drop-in */
+  transform-origin: top left;
+  animation: v4mega-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes v4mega-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.v4mega-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.v4mega-col-title {
+  margin: 6px 12px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+/* the items — text hierarchy ONLY (F6: no bullet glyphs), 8px-grid padding,
+   flat token-swap hover (140ms). The keyboard ring comes from the global
+   :focus-visible rule — thin, keyboard-only, never a selection box (pointer
+   opens no longer auto-focus the first item). */
+.v4mega-item {
+  display: block;
+  padding: 10px 12px;
+  border-radius: var(--v4-radius);
+  color: var(--v4-text);
+  transition: background-color var(--dur-ui) var(--ease-ui);
+}
+.v4mega-item:hover,
+.v4mega-item:focus-visible {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+.v4mega-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 560;
+  line-height: 1.3;
+}
+.v4mega-desc {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--v4-text-dim);
+}
+
+/* ─── the mobile sheet ──────────────────────────────────────────────────────── */
+.v4sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  background: color-mix(in oklch, var(--v4-bg) 60%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: v4scrim-in 0.2s ease both;
+}
+@keyframes v4scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.v4sheet {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 50;
+  width: min(86vw, 360px);
+  padding: 18px 18px calc(24px + env(safe-area-inset-bottom));
+  background: var(--v4-bg-raised);
+  border-left: 1px solid var(--seam-hairline);
+  /* seam kit · inner-top catch + the directional float shadow (overlay) */
+  box-shadow: var(--seam-highlight), -24px 0 60px -20px rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: v4sheet-in 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes v4sheet-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.v4sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.v4sheet-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border-radius: var(--v4-radius);
+  color: var(--v4-text);
+  transition: background-color var(--dur-ui) var(--ease-ui);
+}
+.v4sheet-close:hover {
+  background: color-mix(in oklch, var(--v4-text) 8%, transparent);
+}
+.v4sheet-sectitle {
+  margin: 16px 8px 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.v4sheet-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px; /* generous touch target */
+  padding: 8px 8px;
+  border-radius: var(--v4-radius);
+  font-size: 16px; /* ≥16px so iOS never zooms */
+  color: var(--v4-text);
+  transition: background-color var(--dur-ui) var(--ease-ui);
+}
+.v4sheet-link:hover {
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
+/* sheet product items carry the same two-line register as the mega panel */
+.v4sheet-link .v4mega-label {
+  font-size: 16px; /* ≥16px so iOS never zooms */
+}
+.v4sheet-link .v4mega-desc {
+  font-size: 13px;
+}
+.v4sheet-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  margin-top: 18px;
+  border-radius: var(--v4-radius);
+  font-size: 16px;
+  font-weight: 560;
+  color: var(--v4-bg);
+  background: var(--v4-text);
+}
+.v4sheet-rule {
+  height: 1px;
+  margin: 14px 0 2px;
+  background: var(--v4-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v4mega,
+  .v4sheet,
+  .v4sheet-scrim {
+    animation: none;
+  }
+  .v4nav-link::after,
+  .v4nav-caret {
+    transition: none;
+  }
+}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { REPO, DOCS } from '../content'
-import './shell.css'
+import './nav.css'
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
    ONE nav for every route (mounted in RootLayout). Replaces the v3 glass pill.
