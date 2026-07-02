@@ -109,7 +109,7 @@ export default function GetStarted() {
                 filename="standup-digest.nika.yaml"
                 className="v4start-code"
               />
-              <p className="v4start-readonly" aria-hidden>
+              <p className="v4start-readonly">
                 real lines, sliced from a projected showcase — read-only
               </p>
             </div>
@@ -141,7 +141,7 @@ export default function GetStarted() {
              scaffolds AGENTS.md · nika wire adds the read-only MCP oracle —
              nika_check · nika_explain — into Claude/Cursor/VS Code/Windsurf). */}
         <div className="v4every" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
-          <p className="v4every-eyebrow" aria-hidden>
+          <p className="v4every-eyebrow">
             runs everywhere — same file, same result
           </p>
           <div className="v4every-row">

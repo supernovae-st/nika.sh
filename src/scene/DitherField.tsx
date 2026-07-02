@@ -130,6 +130,7 @@ function FieldQuad({
   reduced: boolean
 }) {
   const gl = useThree((s) => s.gl)
+  const invalidate = useThree((s) => s.invalidate)
   const uniforms = useMemo(
     () => ({
       uRes: { value: new THREE.Vector2(1, 1) },
@@ -143,10 +144,34 @@ function FieldQuad({
   const bufSize = useMemo(() => new THREE.Vector2(), [])
 
   /* seed the resolution before the first paint (the 'demand' static frame under
-     reduced motion renders once — it must not draw at the 1×1 default). */
+     reduced motion renders once — it must not draw at the 1×1 default), then
+     request a frame so demand mode repaints AFTER the seed (without the
+     invalidate, the one-and-only demand frame can land pre-seed at 1×1). */
   useEffect(() => {
     uniforms.uRes.value.copy(gl.getDrawingBufferSize(bufSize))
-  }, [gl, uniforms, bufSize])
+    invalidate()
+  }, [gl, uniforms, bufSize, invalidate])
+
+  /* GPU context loss: preventDefault on `lost` so the browser is ALLOWED to
+     restore (three re-inits its GL state on `restored`); the invalidate then
+     repaints — otherwise a demand/paused canvas stays blank after a GPU reset. */
+  useEffect(() => {
+    const canvas = gl.domElement
+    const onLost = (e: Event) => e.preventDefault()
+    const onRestored = () => invalidate()
+    canvas.addEventListener('webglcontextlost', onLost)
+    canvas.addEventListener('webglcontextrestored', onRestored)
+    return () => {
+      canvas.removeEventListener('webglcontextlost', onLost)
+      canvas.removeEventListener('webglcontextrestored', onRestored)
+    }
+  }, [gl, invalidate])
+
+  /* reduced-motion flips at runtime (OS toggle) swap the frameloop — request
+     one frame so the new mode paints its state immediately. */
+  useEffect(() => {
+    invalidate()
+  }, [reduced, invalidate])
 
   useFrame((state) => {
     uniforms.uRes.value.copy(gl.getDrawingBufferSize(bufSize))
@@ -185,9 +210,21 @@ function FieldQuad({
 }
 
 export default function DitherField() {
-  const reduced =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  /* reduced-motion as STATE with a change listener — the old one-shot read
+     meant toggling the OS setting mid-visit kept the previous behaviour until
+     a full reload. Client-only component (lazy) → window exists at init. */
+  const [reduced, setReduced] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
   // dev/capture · ?notunnel disables the WebGL background so the DOM sections
   // (e.g. the Living File DAG) can be screenshotted headless — a continuous rAF
   // otherwise blocks virtual-time from ever settling.
