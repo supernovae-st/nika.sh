@@ -200,9 +200,9 @@ h1, h2 { font-family: var(--headline); }
 .mf-scope {
   --cyan: var(--v4-accent);
   --bg: var(--v4-bg-deep);
-  /* the shared .v5-header-field reads these — centre the field over the drum */
-  --hero-glow-x: 50%;
-  --hero-glow-y: -18%;
+  /* the field keeps the site-wide LEFT anchor (one geometry everywhere): a
+     centered field turned the quantized bands into full-width arcs that read
+     as a different page. The drum owns the centre; the field owns the left. */
 }
 
 /* the drum — concentric ripples from a glowing, beating core */
