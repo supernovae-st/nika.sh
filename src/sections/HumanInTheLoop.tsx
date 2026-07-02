@@ -13,6 +13,7 @@ import {
   type Outcome,
 } from './hitl/hitl-model'
 import './hitl/hitl.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 4.0 · Be the human in the loop (theme-LIGHT · the interaction) ───────
    Design doc §4 (FIG 4.0) — the hands-on "aha" that makes CONTROL felt, not told.
@@ -234,26 +235,11 @@ export default function HumanInTheLoop() {
       className="theme-light v4sec v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 4.0
-        </p>
-        <h2
-          id="hitl-title"
-          className="v4sec-title"
-          data-rise
-          style={{ ['--rise-delay' as string]: '60ms' }}
-        >
-          Be the human in the&nbsp;loop.
-        </h2>
-        <p
-          className="v4sec-lede"
-          data-rise
-          style={{ ['--rise-delay' as string]: '120ms' }}
-        >
+        <SectionHead fig="FIG 4.0" id="hitl-title" title={<>Be the human in the&nbsp;loop.</>}>
           Here&apos;s a plan an agent wrote. Read it. Toggle what it&apos;s allowed
           to touch. <b>Approve</b> a step — or <b>block</b> it — and watch the
           runtime obey.
-        </p>
+        </SectionHead>
 
         {/* the interactive stage · plan + permits (left) · the verdict (right) */}
         <div

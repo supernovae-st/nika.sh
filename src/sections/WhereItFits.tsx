@@ -1,5 +1,6 @@
 import { useRevealOnce } from './use-reveal-once'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 3.6 · Where Nika fits (theme-LIGHT · the positioning beat) ───────────
    v4.1 control narrative · a cold visitor with LangGraph / n8n / Cursor / Claude
@@ -22,19 +23,19 @@ import './v4-home.css'
    Fair: the "them" line credits the other tools; "nika" states the orthogonal add. */
 const ROWS: { fig: string; them: string; themDoes: string; nika: string }[] = [
   {
-    fig: 'i',
+    fig: '3.6.1',
     them: 'Frameworks',
     themDoes: 'LangGraph, n8n — help you wire and orchestrate the steps.',
     nika: 'makes the wired steps a reviewable, enforceable file — not glue code.',
   },
   {
-    fig: 'ii',
+    fig: '3.6.2',
     them: 'Assistants',
     themDoes: 'Cursor, Claude Code — help an agent decide and act in the moment.',
     nika: 'turns that intent into a plan you review and the runtime enforces.',
   },
   {
-    fig: 'iii',
+    fig: '3.6.3',
     them: 'Protocols & tools',
     themDoes: 'Your agent tools (MCP servers) expose capabilities an agent can call.',
     nika: 'runs them through invoke — allow-listed, permission-bound, traced.',
@@ -49,17 +50,11 @@ export default function WhereItFits() {
   return (
     <section ref={ref} id="where-it-fits" aria-labelledby="where-it-fits-title" className="theme-light v4sec v4-flip v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 3.6
-        </p>
-        <h2 id="where-it-fits-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          Not another agent framework. The layer underneath.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 3.6" id="where-it-fits-title" title={<>Not another agent framework. The layer underneath.</>}>
           Frameworks and assistants help an agent <b>decide</b> and <b>act</b>. Nika is
           orthogonal: it makes what the agent does <b>reviewable</b> and <b>enforceable</b>{' '}
           — the layer between <i>the model wants to act</i> and <i>the system lets it act</i>.
-        </p>
+        </SectionHead>
 
         {/* the 3-row register · "they do X · Nika does Y", hairline-ruled */}
         <dl className="v4fits-rows" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>

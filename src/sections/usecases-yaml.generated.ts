@@ -1916,6 +1916,9 @@ secrets:
   webhook:
     source: env
     key: ALERTS_WEBHOOK_URL         # SLOT: where the act lands
+    egress:
+      - to: "nika:notify"
+        host_from_self: true        # the secret value IS the destination URL
 
 tasks:
   - id: check
@@ -1955,6 +1958,9 @@ secrets:
   webhook:
     source: env
     key: TEAM_WEBHOOK_URL           # SLOT: where the record lands
+    egress:
+      - to: "nika:notify"
+        host_from_self: true        # the secret value IS the destination URL
 
 tasks:
   # ── the verification wave · all checks run in parallel ──

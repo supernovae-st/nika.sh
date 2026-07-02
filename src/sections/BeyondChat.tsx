@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRevealOnce } from './use-reveal-once'
 import { VERSUS } from '../content'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 3.0 · Beyond the black box (theme-dark · THE ACID MOMENT) ────────────
    Design doc §3.3 + §6 (FIG 3.0). The "file vs chat / API / platform" comparison
@@ -122,18 +123,12 @@ export default function BeyondChat() {
       </svg>
 
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 3.0
-        </p>
-        <h2 id="beyond-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          Beyond the black box.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 3.0" id="beyond-title" title={<>Beyond the black box.</>}>
           A prompt or a chat shows you intent — then hopes. A Nika file <i>is</i> the
           procedure: <b>reviewable</b>, <b>permission-bound</b>, <b>replayable</b>.{' '}
           <b>Seeing the steps is not the same as enforcing them.</b> Here is what
           each black box trades away.
-        </p>
+        </SectionHead>
 
         <div className="v4beyond-stage">
           {/* the warp layer wraps the comparison grid · `--acid` rides the warp */}

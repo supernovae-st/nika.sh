@@ -2,6 +2,7 @@ import { useRevealOnce } from './use-reveal-once'
 import { CodeFile } from '../components/CodeFile'
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 3.5 · What it's allowed to do (theme-dark · the seatbelt) ────────────
    Design doc §4 (FIG 3.5) + §5 — the `permits:` block, the control narrative's
@@ -85,18 +86,12 @@ export default function Permits() {
   return (
     <section ref={ref} id="permits" aria-labelledby="permits-title" className="theme-dark v4sec scroll-mt-24">
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 3.5
-        </p>
-        <h2 id="permits-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          What it&apos;s allowed to&nbsp;do.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 3.5" id="permits-title" title={<>What it&apos;s allowed to&nbsp;do.</>}>
           Every plan declares its <b>blast radius</b> up front — which files it can{' '}
           <b>read</b>, which it can <b>write</b> (read XOR write), which hosts it can
           reach, which programs it can run, which tools it may call. The runtime{' '}
           <b>enforces</b> it. Out of bounds is <b>denied</b>, not logged after the fact.
-        </p>
+        </SectionHead>
 
         {/* the two-column stage · the real slice (left) + the model & denials (right) */}
         <div className="v4permits-stage" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>

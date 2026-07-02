@@ -1,6 +1,7 @@
 import { useRevealOnce } from './use-reveal-once'
 import { CANON } from '../canon.generated'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 9.0 · Proof (theme-LIGHT · the control close) ────────────────────────
    Design doc §6 (FIG 9.0). We have NO quotable users yet, so we do NOT fabricate
@@ -80,23 +81,12 @@ export default function Proof() {
   return (
     <section ref={ref} id="proof" aria-labelledby="proof-title" className="theme-light v4sec v4-flip v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 9.0
-        </p>
-        <h2
-          id="proof-title"
-          className="v4sec-title"
-          data-rise
-          style={{ ['--rise-delay' as string]: '60ms' }}
-        >
-          The control is the proof.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 9.0" id="proof-title" title={<>The control is the proof.</>}>
           No logos to borrow, no quotes to dress up. Just what the engine{' '}
           <b>guarantees</b>: review before it acts · enforced permissions ·
           replayable trace · portable off any platform · versioned like code —
           verifiable in the open spec and the one binary you install.
-        </p>
+        </SectionHead>
 
         {/* the headline stats banner · big tabular numbers, hairline-separated */}
         <div className="v4belt-counts" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>

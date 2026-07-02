@@ -2,6 +2,7 @@ import { useRevealOnce } from './use-reveal-once'
 import { Link } from 'react-router'
 import { CHANGELOG, TAG_LABEL, entryDate, entryDateTime } from '../content/changelog'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 8.0 · Changelog (theme-dark · the ship log) ──────────────────────────
    Design doc §6 (FIG 8.0) — "alive / shipping" (Cursor/Linear steal). A dated,
@@ -33,22 +34,11 @@ export default function ChangelogPreview() {
       className="theme-dark v4sec v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 8.0
-        </p>
-        <h2
-          id="changelog-title"
-          className="v4sec-title"
-          data-rise
-          style={{ ['--rise-delay' as string]: '60ms' }}
-        >
-          Shipping in the open.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 8.0" id="changelog-title" title={<>Shipping in the open.</>}>
           A workflow language earns trust by <b>moving</b> — and by not breaking what
           you wrote. Here is the recent ship log: the spec opened, the verbs locked —
           and the engine shipped, one <code className="mono">brew install</code> away.
-        </p>
+        </SectionHead>
 
         {/* the ship-log register · a dated, hairline-ruled list (newest first) */}
         <ol className="v4log" data-rise style={{ ['--rise-delay' as string]: '170ms' }}>

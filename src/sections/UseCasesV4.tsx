@@ -5,6 +5,7 @@ import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from './usecases-data'
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 7.0 · Use cases (theme-LIGHT · the editorial gallery) ────────────────
    Design doc §6 (FIG 7.0) — proof. A clean GALLERY of real showcase workflows,
@@ -57,23 +58,12 @@ export default function UseCasesV4() {
       className="theme-light v4sec v4-flip v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 7.0
-        </p>
-        <h2
-          id="usecases-title"
-          className="v4sec-title"
-          data-rise
-          style={{ ['--rise-delay' as string]: '60ms' }}
-        >
-          Real files you&apos;d write.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 7.0" id="usecases-title" title={<>Real files you&apos;d write.</>}>
           Anything you&apos;d ask an AI to do more than once belongs in a file. Every workflow
           below is <b>real</b> — projected from <code className="mono">nika-spec</code>, audited
           before it runs: plan, cost, secrets. Pick your métier, open a card, read the exact
           YAML that runs it.
-        </p>
+        </SectionHead>
 
         {/* the métier filter bar · plain toggle buttons (aria-pressed), not a
             tablist — switching a métier filters the gallery below, it isn't an

@@ -7,6 +7,7 @@ import { DOCS } from '../content'
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
 import { sliceExcerpt } from './living/excerpt'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 7.5 · Get started (theme-dark · the on-ramp) ─────────────────────────
    v4.1 control narrative · a convinced visitor needs a concrete "how do I start?".
@@ -61,16 +62,10 @@ export default function GetStarted() {
   return (
     <section ref={ref} id="get-started" aria-labelledby="get-started-title" className="theme-dark v4sec v4-flip v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 7.5
-        </p>
-        <h2 id="get-started-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          Get started.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 7.5" id="get-started-title" title={<>Get started.</>}>
           One binary, one file, one command. Install it, write a plan, run it — and
           watch it <b>print the plan, check the permits, and stay within bounds</b>.
-        </p>
+        </SectionHead>
 
         {/* the three numbered steps · a hairline-ruled blueprint register */}
         <ol className="v4start" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>

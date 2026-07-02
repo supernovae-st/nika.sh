@@ -1,6 +1,7 @@
 import { useRevealOnce } from './use-reveal-once'
 import { CANON } from '../canon.generated'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 6.0 · The toolbelt (theme-dark · what you can permit) ────────────────
    Design doc §6 (FIG 6.0) — "what an agent can be permitted to use." The engine's
@@ -130,24 +131,13 @@ export default function Toolbelt() {
       className="theme-dark v4sec v4-flip v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 6.0
-        </p>
-        <h2
-          id="toolbelt-title"
-          className="v4sec-title"
-          data-rise
-          style={{ ['--rise-delay' as string]: '60ms' }}
-        >
-          What an agent can be permitted to&nbsp;use.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 6.0" id="toolbelt-title" title={<>What an agent can be permitted to&nbsp;use.</>}>
           The language stays four verbs. The standard library does the rest —{' '}
           <b>{CANON.builtins} builtins</b>, <b>{CANON.providers} model providers</b>, and any of
           your <b>agent tools</b> (MCP servers) your editor already uses. All reached the same way:{' '}
           <code className="mono">invoke:</code> — and none of it runs unless the file&apos;s{' '}
           <code className="mono">permits:</code> allows it.
-        </p>
+        </SectionHead>
 
         {/* the headline-count banner · big tabular numbers, hairline-separated */}
         <div className="v4belt-counts" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>

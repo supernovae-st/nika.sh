@@ -1,6 +1,7 @@
 import { useRevealOnce } from './use-reveal-once'
 import { FAQ_ITEMS } from './faq-data'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 9.5 · FAQ (theme-LIGHT · disarm the real objections) ─────────────────
    v4.1 control narrative · the honest Q&A that answers the rebuttals a sharp
@@ -30,16 +31,10 @@ export default function Faq() {
   return (
     <section ref={ref} id="faq" aria-labelledby="faq-title" className="theme-light v4sec v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 9.5
-        </p>
-        <h2 id="faq-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          Questions, answered straight.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 9.5" id="faq-title" title={<>Questions, answered straight.</>}>
           The real objections — and honest answers. No overclaiming, no dunking on the
           tools you already use.
-        </p>
+        </SectionHead>
 
         {/* the disclosures · native <details>/<summary> (keyboard + a11y for free) */}
         <ul className="v4faq" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>

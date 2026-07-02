@@ -36,23 +36,24 @@
   }
 }
 
-/* the FIG number — same hairline-tick register as the hero's .v4fig */
-.v4sec-fig {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--v4-text-dim);
-}
-.v4sec-fig::before {
+/* the FIG number — .v4sec-fig shares the .v4fig recipe (shell.css · one source) */
+
+/* the 42px dimension-line tick — ONE recipe for every mono footnote row
+   (verbs · permits · toolbelt · use-cases · proof notes + the runs-everywhere
+   eyebrow). Was pasted per section before 2026-07-02. */
+.v4verbs-note::before,
+.v4permits-note::before,
+.v4belt-note::before,
+.v4uc-note::before,
+.v4proof-note::before,
+.v4every-eyebrow::before {
   content: '';
-  width: 30px;
+  flex: 0 0 auto;
+  width: 42px;
   height: 1px;
-  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
 }
+
 
 .v4sec-title {
   margin-top: 26px;
@@ -227,13 +228,6 @@
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
-}
-.v4verbs-note::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 42px;
-  height: 1px;
-  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -614,13 +608,6 @@
   color: var(--v4-text-faint);
   flex-wrap: wrap;
 }
-.v4permits-note::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 42px;
-  height: 1px;
-  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
-}
 .v4permits-note code {
   font-family: var(--mono);
   color: var(--v4-text-dim);
@@ -976,13 +963,6 @@
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
 }
-.v4belt-note::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 42px;
-  height: 1px;
-  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
-}
 .v4belt-note code {
   color: var(--v4-text-dim);
 }
@@ -1253,13 +1233,6 @@
   font-variant-numeric: tabular-nums;
   flex-wrap: wrap;
 }
-.v4uc-note::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 42px;
-  height: 1px;
-  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
-}
 .v4uc-note a {
   color: var(--v4-text-dim);
   text-decoration: underline;
@@ -1479,13 +1452,6 @@
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
   flex-wrap: wrap;
-}
-.v4proof-note::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 42px;
-  height: 1px;
-  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
 }
 .v4proof-note code {
   font-family: var(--mono);
@@ -1976,13 +1942,6 @@
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
-}
-.v4every-eyebrow::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 42px;
-  height: 1px;
-  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
 }
 .v4every-row {
   margin-top: 18px;

@@ -4,6 +4,7 @@ import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { CHAPTERS, type Chapter, type SubEntry } from './verbs-data'
 import { CodeFile } from '../components/CodeFile'
 import './v4-home.css'
+import { SectionHead } from '../components/SectionHead'
 
 /* ─── FIG 2.0 · The four verbs (theme-dark · the numbered spec chapters) ───────
    Linear's signature register applied to the one thing that deserves it: a
@@ -117,19 +118,13 @@ export default function Verbs() {
   return (
     <section ref={ref} id="verbs" aria-labelledby="verbs-title" className="theme-dark v4sec scroll-mt-24">
       <div className="v4sec-wrap">
-        <p className="v4sec-fig" data-rise>
-          FIG 2.0
-        </p>
-        <h2 id="verbs-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          What an agent can&nbsp;do — declared, not&nbsp;hidden.
-        </h2>
-        <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+        <SectionHead fig="FIG 2.0" id="verbs-title" title={<>What an agent can&nbsp;do — declared, not&nbsp;hidden.</>}>
           Four verbs are the <b>only</b> native execution models — every action
           explicit and typed, never improvised from a hidden prompt. Everything{' '}
           <i>callable</i> is a tool under <code className="mono">invoke</code> — and tools are{' '}
           <b>allow-listed</b>. Everything about <i>ordering</i> is the plan — which tasks
           wait on which. No fifth verb, ever.
-        </p>
+        </SectionHead>
 
         {/* the numbered chapters · 2.1 → 2.4 · hairline-ruled spec register */}
         <div className="v4chap-list">
