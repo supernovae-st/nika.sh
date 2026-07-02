@@ -30,6 +30,19 @@ export const DAG: ShowcaseDag = {
   ],
 }
 export const FILENAME = 'daily-brief.nika.yaml'
+
+/* ── the ENFORCE beat data · shared by BOTH renderings (desktop choreography +
+   the mobile vertical flow). The runtime checks every effect against the
+   declared `permits:`; an out-of-bounds WRITE on the terminal `save` node is
+   DENIED with `NIKA-SEC-004` (effect outside the permits capability boundary).
+   Real catalog row (public/errors/catalog.json). */
+export const DENY_NODE = 'save'
+export const SEC_004 = {
+  code: 'NIKA-SEC-004',
+  category: 'security_error',
+  transient: false,
+  message: 'effect outside the declared permits: capability boundary (fs/net/exec/tool)',
+} as const
 /* the REAL .nika file the editor renders (the CodeFile tokenises + colours it).
    Schema-TRUE against public/schema/workflow.json (depends_on · object verbs ·
    namespaced invoke.tool · array permits) — enforced by

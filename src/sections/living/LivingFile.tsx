@@ -2,9 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { CodeFile } from '../../components/CodeFile'
 import { useAuroraPulse } from '../../fx/aurora-context'
 import { type ShowcaseTask } from '../usecases-yaml.generated'
-import { DAG, FILENAME, YAML } from './living-data'
+import { DAG, DENY_NODE, FILENAME, SEC_004, YAML } from './living-data'
 import { runStateAt, CLI_GLYPH, type RunState, type TaskStatus } from './run-model'
 import Corridor from './Corridor'
+import LivingFileMobile from './LivingFileMobile'
 import './living.css'
 import './corridor.css'
 
@@ -41,19 +42,11 @@ import './corridor.css'
 const END_STATE: RunState = runStateAt(DAG, 1)
 
 /* ── the ENFORCE beat · a real `permits:`-boundary denial ─────────────────────
-   The runtime checks every effect against the declared `permits:`. We model an
-   out-of-bounds WRITE on the terminal `save` node: it tries to write outside the
-   declared paths → the engine DENIES it with `NIKA-SEC-004` (effect outside the
-   permits capability boundary). Real catalog row (public/errors/catalog.json).
-   This is scroll-INDEPENDENT — it's the "what the seatbelt does" proof, shown as
-   a fixed callout, while the main timeline stays the happy within-bounds run. */
-const DENY_NODE = 'save'
-const SEC_004 = {
-  code: 'NIKA-SEC-004',
-  category: 'security_error',
-  transient: false,
-  message: 'effect outside the declared permits: capability boundary (fs/net/exec/tool)',
-} as const
+   The runtime checks every effect against the declared `permits:` — the
+   DENY_NODE + SEC_004 catalog row live in living-data.ts (shared with the
+   mobile vertical flow). This is scroll-INDEPENDENT — it's the "what the
+   seatbelt does" proof, shown as a fixed callout, while the main timeline
+   stays the happy within-bounds run. */
 const DENIED_STATE: RunState = runStateAt(DAG, 1, { failAt: DENY_NODE, deny: SEC_004 })
 /** the single pretty-CLI row that shows the denied write (✗ <id> NIKA-SEC-004). */
 const DENIED_CLI_ROW =
@@ -653,6 +646,20 @@ export default function LivingFile() {
   /* dev/test only · ?lf=<t> freezes a beat as a fixed full-viewport overlay so a
      headless capture (which can't scroll) can see any scroll state. */
   const [frozen, setFrozen] = useState(false)
+  /* ≤768px swaps the whole pinned choreography for the normal-flow vertical
+     story (LivingFileMobile) — the stage never fit a phone. SSR + first client
+     render stay the desktop static frame (hydration-safe); the flip happens
+     post-mount and tracks orientation changes. */
+  const [mobileFlow, setMobileFlow] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mq = window.matchMedia('(max-width: 768px)')
+    const apply = () => setMobileFlow(mq.matches)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
 
   /* refs the rAF loop reads/writes WITHOUT re-rendering every frame. We only
      setState (re-render) when the DISCRETIZED state actually changes — the
@@ -664,6 +671,9 @@ export default function LivingFile() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
+    // ≤768px renders LivingFileMobile (plain flow + in-view reveals) — never
+    // arm the pinned scrub there; the stage this loop pins is not in the DOM.
+    if (window.matchMedia('(max-width: 768px)').matches) return
     // dev/test freeze · ?lf=<0..1> renders a FIXED beat (a headless capture of a
     // scroll state, the way ?it=N freezes the intro). When present we set the
     // frozen run + corridor, scroll it into view, and skip the scrub entirely.
@@ -781,6 +791,9 @@ export default function LivingFile() {
           : t < T_RUN_END
             ? 'run'
             : 'verdict'
+
+  /* the phone rendering · same story, normal flow (after every hook above) */
+  if (mobileFlow) return <LivingFileMobile />
 
   return (
     <section
