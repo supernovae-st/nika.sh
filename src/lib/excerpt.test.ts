@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { SHOWCASE_YAML } from '../usecases-yaml.generated'
+import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import { sliceExcerpt, TRIM } from './excerpt'
 
 /* ── sliceExcerpt · the hero is a TRUE slice of the real projected YAML ──

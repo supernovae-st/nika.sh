@@ -1,0 +1,212 @@
+/* ─── THE RUN · the trace-replay device (beat 2) ──────────────────────────────
+   The frame reuses the CodeFile window-chrome classes (cf-panel / cf-chrome /
+   cf-tab) so the hero editor and the replay read as the SAME object — only
+   the body differs: a terminal log instead of an editor. DEMO chrome: no line
+   numbers, no copy button (this is a recording, not an artifact to take).
+   Colors: glyph column only — verb hues on ▶ start rows (sanctioned: this IS
+   live-run visualization), sage ✓, amber ⊘, the text stays ink. */
+
+.v5run-stage {
+  margin-top: var(--gap-cta);
+  max-width: 860px;
+}
+
+.v5run-panel {
+  /* the panel base comes from codefile.css (.cf-panel) — dark editor surface */
+  display: flex;
+  flex-direction: column;
+}
+
+/* the ● recorded chip · right side of the chrome row */
+.v5run-rec {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+}
+.v5run-rec-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--v4-text-faint);
+}
+.v5run-rec-dot[data-live='true'] {
+  background: #ff5d5d;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v5run-rec-dot[data-live='true'] {
+    animation: v5run-blink 1.1s steps(2, jump-none) infinite;
+  }
+}
+@keyframes v5run-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* the log body · fixed height (zero layout shift across tabs + replay) */
+.v5run-body {
+  height: clamp(300px, 38vh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.9;
+  color: var(--v4-text-dim);
+  scrollbar-width: thin;
+}
+@media (max-width: 767px) {
+  .v5run-body {
+    height: 320px;
+    font-size: 11.5px;
+  }
+}
+
+.v5run-line {
+  display: flex;
+  gap: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.v5run-glyph {
+  flex: 0 0 14px;
+  text-align: center;
+  color: var(--v4-hud-faint);
+  user-select: none;
+}
+
+/* glyph semantics · color carries state, text stays ink */
+.v5run-line[data-kind='cmd'] {
+  color: var(--v4-text);
+}
+.v5run-line[data-kind='cmd'] .v5run-glyph {
+  color: var(--v4-text-faint);
+}
+.v5run-line[data-kind='workflow'] {
+  color: var(--v4-text);
+}
+.v5run-line[data-kind='start'] .v5run-glyph {
+  color: var(--run-vhue, var(--v4-accent));
+}
+.v5run-line[data-verb='infer'] {
+  --run-vhue: var(--verb-infer);
+}
+.v5run-line[data-verb='exec'] {
+  --run-vhue: var(--verb-exec);
+}
+.v5run-line[data-verb='invoke'] {
+  --run-vhue: var(--verb-invoke);
+}
+.v5run-line[data-verb='agent'] {
+  --run-vhue: var(--verb-agent);
+}
+.v5run-line[data-kind='done'] .v5run-glyph {
+  color: var(--cf-str);
+}
+.v5run-line[data-kind='skip'] {
+  color: var(--v4-text-faint);
+}
+.v5run-line[data-kind='skip'] .v5run-glyph {
+  color: var(--cf-num);
+}
+.v5run-line[data-kind='exit'] {
+  color: var(--v4-text);
+}
+
+/* word-level streaming reveal (Cursor register · 80ms opacity fade) */
+@media (prefers-reduced-motion: no-preference) {
+  .v5run-word {
+    opacity: 0.35;
+    animation: v5run-word 80ms linear forwards;
+    animation-delay: var(--wd, 0ms);
+  }
+  @keyframes v5run-word {
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.v5run-cursor {
+  display: inline-block;
+  margin-left: 24px;
+  color: var(--v4-accent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v5run-cursor {
+    animation: v5run-blink 1s steps(2, jump-none) infinite;
+  }
+}
+
+/* the verdict bar · reserved height either way (zero shift) */
+.v5run-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--v4-line);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.v5run-verdict-exit {
+  color: var(--cf-str);
+  font-weight: 600;
+}
+.v5run-verdict-exit[data-exit='1'] {
+  color: #ff5d5d;
+}
+.v5run-verdict-sep {
+  color: var(--v4-hud-faint);
+}
+.v5run-verdict-art {
+  color: var(--v4-text);
+}
+.v5run-verdict-wait {
+  color: var(--v4-text-faint);
+}
+
+/* the foot · replay + the honesty caption */
+.v5run-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+.v5run-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--seam-hairline);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 84%, transparent);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--v4-text-dim);
+  cursor: pointer;
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    border-color var(--dur-ui) var(--ease-ui);
+}
+.v5run-replay:hover {
+  color: var(--v4-text);
+  border-color: var(--seam-hairline-strong);
+}
+.v5run-caption {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}

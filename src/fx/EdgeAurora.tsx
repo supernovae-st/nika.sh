@@ -1,47 +1,52 @@
 import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
-import { AuroraContext, type AuroraContextValue } from './aurora-context'
+import { AuroraContext, type AuroraContextValue, type AuroraVerb } from './aurora-context'
 import './edge-aurora.css'
 
-/* ─── EdgeAurora · the reactive frame halo (v5 · ONE blue) ────────────────────
+/* ─── EdgeAurora · the reactive frame halo (v5 · ONE blue · E7 run mode) ──────
    A blurred blue ring that hugs the screen frame while the center stays
-   transparent (the "Siri / Oryzo" effect). It is THE DRUM of the manifesto:
-   every run = a beat of the frame. v5 retune: single accent (the blue family
-   only — the cyan→violet dual-hue is gone), dimmer at rest, sharper pulse.
+   transparent. It is THE DRUM of the manifesto: every run = a beat of the
+   frame. At rest it is almost extinguished (single blue family · CSS breath).
 
-   - At rest (~99% of the time) the halo is almost extinguished and breathes
-     slowly (CSS keyframes). Under prefers-reduced-motion it is static.
-   - On a workflow event, `pulse()` briefly intensifies the halo then lets it
-     decay back to rest (~450ms · the sharp beat). Future code wires pulse()
-     to run-node completion; this component only exposes it.
+   E7 · RUN MODE: while a run replays, the frame becomes run visualization —
+   the ::before conic turns into the 4-verb wheel and a sharper ::after arc
+   carries the ACTIVE verb's hue (the one sanctioned verb-hue surface, design
+   doc §3.4 · the oryzo two-ring composition: wide haze + crisp rim). The
+   verdict sweeps one bright arc (success) or flashes danger (failure /
+   permits denial), then the frame decays back to the idle blue — idle is
+   byte-identical to pre-E7.
 
-   pulse() mutates the `--aurora-intensity` CSS custom property on the aurora
-   element DIRECTLY (via a ref) — there is NO React re-render per pulse, so it
-   stays cheap even when beaten many times per second.
+   Every API call mutates CSS custom properties / data attributes on the
+   aurora element DIRECTLY (via ref) — NO React re-render per event.
 
-   SSR-safe: the visual is pure CSS, so it renders during the Node prerender
-   (vite-plugin-react-ssg) untouched. The only browser access (matchMedia, the
-   rAF decay loop) lives in useEffect / event-time callbacks, never at render. */
+   SSR-safe: the visual is pure CSS; browser access lives in effects and
+   event-time callbacks only. */
 
 const REST_INTENSITY = 0.04
+/** run mode raises the resting floor — the frame is visibly "on" during a run */
+const RUN_REST_INTENSITY = 0.1
 /** Peak the halo jumps to on a pulse before it decays. */
 const PULSE_INTENSITY = 0.75
 /** Decay back to rest takes ~450ms (the sharper v5 beat). */
 const DECAY_MS = 450
+/** the verdict sweep + danger flash animation lengths (edge-aurora.css) */
+const SWEEP_MS = 900
+const DANGER_MS = 650
 
 export function AuroraProvider({ children }: { children: ReactNode }) {
   const elRef = useRef<HTMLDivElement | null>(null)
 
-  /* Live decay state, kept in refs so pulse() mutates the DOM (not React).
-     `intensityRef` is the live intensity; the rAF loop eases it toward REST.
-     `tickRef` holds the frame fn so the loop can re-schedule itself without a
-     useCallback self-reference (which trips react-hooks/immutability). */
+  /* Live decay state, kept in refs so the API mutates the DOM (not React). */
   const intensityRef = useRef(REST_INTENSITY)
+  const restRef = useRef(REST_INTENSITY)
   const rafRef = useRef<number | null>(null)
   const lastTsRef = useRef(0)
   const tickRef = useRef<(ts: number) => void>(() => {})
+  const sweepTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const dangerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  /* the verb hues, read once from the live token surface (tokens.css) */
+  const huesRef = useRef<Record<AuroraVerb, string> | null>(null)
 
-  /* Install the decay-loop frame fn + the stable pulse() once on mount.
-     Browser-only work (rAF, DOM writes) lives here, never at render. */
+  /* Install the decay-loop frame fn once on mount. */
   useEffect(() => {
     const tick = (ts: number) => {
       const el = elRef.current
@@ -49,19 +54,19 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       const dt = ts - last
       lastTsRef.current = ts
 
-      // exponential ease toward rest; reaches ~rest within ~DECAY_MS
+      // exponential ease toward the CURRENT rest floor (idle 0.04 · run 0.10)
+      const rest = restRef.current
       const k = 1 - Math.exp((-dt / DECAY_MS) * 4)
-      intensityRef.current += (REST_INTENSITY - intensityRef.current) * k
+      intensityRef.current += (rest - intensityRef.current) * k
 
       if (el) {
         el.style.setProperty('--aurora-intensity', intensityRef.current.toFixed(4))
       }
 
-      // stop the loop once we've settled back to rest (within a hair)
-      if (Math.abs(intensityRef.current - REST_INTENSITY) > 0.002) {
+      if (Math.abs(intensityRef.current - rest) > 0.002) {
         rafRef.current = requestAnimationFrame(tickRef.current)
       } else {
-        if (el) el.style.setProperty('--aurora-intensity', String(REST_INTENSITY))
+        if (el) el.style.setProperty('--aurora-intensity', String(rest))
         rafRef.current = null
         lastTsRef.current = 0
       }
@@ -70,28 +75,101 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
 
     return () => {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current)
+      if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
+      if (dangerTimerRef.current != null) clearTimeout(dangerTimerRef.current)
     }
   }, [])
 
-  /* The stable pulse(): jump intensity to the peak, (re)start the decay loop.
-     Guards on window so it is inert if ever called during prerender. */
-  const pulse = useCallback(() => {
-    if (typeof window === 'undefined') return
-    intensityRef.current = PULSE_INTENSITY
-    const el = elRef.current
-    if (el) el.style.setProperty('--aurora-intensity', String(PULSE_INTENSITY))
-    // ALWAYS rebase the decay clock on a pulse — whether we cold-start the rAF
-    // loop OR re-pulse mid-decay (loop already running). The tick reads
-    // `lastTsRef.current || ts`, so 0 makes the next frame's dt = 0 instead of a
-    // large gap since the previous frame, keeping the decay smooth under rapid
-    // successive pulses.
+  /* (re)start the decay loop toward the current rest floor */
+  const arm = useCallback(() => {
     lastTsRef.current = 0
     if (rafRef.current == null) {
       rafRef.current = requestAnimationFrame(tickRef.current)
     }
   }, [])
 
-  const value = useMemo<AuroraContextValue>(() => ({ pulse }), [pulse])
+  const pulse = useCallback(() => {
+    if (typeof window === 'undefined') return
+    intensityRef.current = PULSE_INTENSITY
+    const el = elRef.current
+    if (el) el.style.setProperty('--aurora-intensity', String(PULSE_INTENSITY))
+    arm()
+  }, [arm])
+
+  const runStart = useCallback(() => {
+    if (typeof window === 'undefined') return
+    const el = elRef.current
+    if (!el) return
+    if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
+    el.dataset.run = 'on'
+    el.style.setProperty('--aurora-progress', '0')
+    restRef.current = RUN_REST_INTENSITY
+    arm()
+  }, [arm])
+
+  const verbTick = useCallback(
+    (verb: AuroraVerb) => {
+      if (typeof window === 'undefined') return
+      const el = elRef.current
+      if (!el) return
+      if (!huesRef.current) {
+        const cs = getComputedStyle(document.documentElement)
+        huesRef.current = {
+          infer: cs.getPropertyValue('--verb-infer').trim() || '#5b8cff',
+          exec: cs.getPropertyValue('--verb-exec').trim() || '#ff7a3c',
+          invoke: cs.getPropertyValue('--verb-invoke').trim() || '#22d3ee',
+          agent: cs.getPropertyValue('--verb-agent').trim() || '#b07bff',
+        }
+      }
+      el.style.setProperty('--aurora-verb', huesRef.current[verb])
+      pulse()
+    },
+    [pulse],
+  )
+
+  const runProgress = useCallback((p: number) => {
+    const el = elRef.current
+    if (!el) return
+    el.style.setProperty('--aurora-progress', String(Math.min(1, Math.max(0, p))))
+  }, [])
+
+  const flashDanger = useCallback(() => {
+    if (typeof window === 'undefined') return
+    const el = elRef.current
+    if (!el) return
+    el.dataset.flash = 'danger'
+    if (dangerTimerRef.current != null) clearTimeout(dangerTimerRef.current)
+    dangerTimerRef.current = setTimeout(() => {
+      delete el.dataset.flash
+    }, DANGER_MS)
+  }, [])
+
+  const runEnd = useCallback(
+    (verdict: 'success' | 'failure') => {
+      if (typeof window === 'undefined') return
+      const el = elRef.current
+      if (!el) return
+      restRef.current = REST_INTENSITY
+      if (verdict === 'failure') {
+        flashDanger()
+        delete el.dataset.run
+        arm()
+        return
+      }
+      el.dataset.run = 'sweep'
+      if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
+      sweepTimerRef.current = setTimeout(() => {
+        delete el.dataset.run
+        arm()
+      }, SWEEP_MS)
+    },
+    [arm, flashDanger],
+  )
+
+  const value = useMemo<AuroraContextValue>(
+    () => ({ pulse, runStart, verbTick, runProgress, flashDanger, runEnd }),
+    [pulse, runStart, verbTick, runProgress, flashDanger, runEnd],
+  )
 
   return (
     <AuroraContext.Provider value={value}>
@@ -103,9 +181,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
 
 /* ─── the visual element ──────────────────────────────────────────────────────
    A position:fixed; inset:0; pointer-events:none layer (z-index 60: above
-   content, below any modal). The ring + center-mask live in edge-aurora.css.
-   Exported standalone too, so a caller may render it themselves and place the
-   provider elsewhere; AuroraProvider renders one for the common case. */
+   content, below any modal). The ring + center-mask live in edge-aurora.css. */
 export function EdgeAurora({
   ref,
 }: {

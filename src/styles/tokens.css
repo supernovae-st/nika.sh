@@ -129,6 +129,44 @@
   --cf-plain: #aab0bb;      /* residual scalar runs                            */
 }
 
+/* ─── THE TYPE SYSTEM · one scale, zero deviation (V5 operator lock) ──────────
+   « respire mieux · gère mieux la typo » — the documented system every surface
+   reads from. Rules:
+   · DISPLAY carries strong contrast against body (basement register): the hero
+     display clamps 44→76px over a 16-17px body; section titles one step under.
+   · line-heights: display 1.05-1.1 · body 1.6-1.7. letter-spacing: display
+     -0.018em · mono museum plates +0.06/0.08em (never negative on mono).
+   · ink levels: exactly THREE (title --v4-text · body --v4-text-dim · plates
+     --v4-text-faint). Weight via the variable axis (560/600), no blanket bold.
+   · new CSS reads THESE tokens — an orphan font-size hardcode is a defect. */
+:root {
+  /* 44 → 60px · the hero H1 is a long sentence (6 words) — at the 76px end
+     it wraps to 5 lines and buries the CTA below the fold, so the display cap
+     holds H1 + sub + CTA inside the first viewport at 1440×900. */
+  --type-display: clamp(2.75rem, 2rem + 2.1vw, 3.75rem);
+  --type-h2: clamp(2rem, 1.25rem + 2.4vw, 3.25rem);        /* 32 → 52px · section titles */
+  --type-h3: clamp(1.25rem, 1.05rem + 0.6vw, 1.625rem);    /* 20 → 26px · card titles */
+  --type-body: 17px;        /* ledes · section prose (measure ≤ 65ch) */
+  --type-body-sm: 15px;     /* secondary prose · card copy */
+  --type-eyebrow: 13px;     /* mono eyebrows · [ BRACKET ] plates (Cursor register) */
+  --type-plate: 12px;       /* mono metadata plates · version · captions */
+  --lh-display: 1.06;
+  --lh-body: 1.65;
+  --ls-display: -0.018em;
+  --ls-plate: 0.07em;       /* mono museum plates */
+
+  /* ── VERTICAL RHYTHM · air lives BETWEEN elements, one token set ────────────
+     Section padding-block: 120-160px desktop · 64-96px phones — consistent
+     across every beat (a crammed stack and a 300px void are the same defect).
+     Inter-element gaps are 8px-grid multiples: title→lede 24-32 · lede→CTA
+     40-48. Prose measure caps at 65ch. */
+  --rhythm-sec: clamp(120px, 13vh, 160px);
+  --rhythm-sec-m: 88px;
+  --gap-title: 28px;        /* eyebrow/H → title · title → lede */
+  --gap-cta: 44px;          /* lede → CTA row / first content block */
+  --measure: 65ch;
+}
+
 /* ─── section themes · alternation (light ⇄ dark) ────────────────────────────
    v4 alternates light-mode and dark-mode sections (Stripe/Linear rhythm) — it is
    NOT all dark. A section opts in with class="theme-dark" / "theme-light" (or a

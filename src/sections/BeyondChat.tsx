@@ -123,8 +123,8 @@ export default function BeyondChat() {
       </svg>
 
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 3.0" id="beyond-title" title={<>Beyond the black box.</>}>
-          A prompt or a chat shows you intent — then hopes. A Nika file <i>is</i> the
+        <SectionHead fig="FIG 4.5" id="beyond-title" title={<>Beyond the black box.</>}>
+          A prompt or a chat shows you intent, then hopes. A Nika file <i>is</i> the
           procedure: <b>reviewable</b>, <b>permission-bound</b>, <b>replayable</b>.{' '}
           <b>Seeing the steps is not the same as enforcing them.</b> Here is what
           each black box trades away.
@@ -174,7 +174,7 @@ export default function BeyondChat() {
           {/* the acid read-out · shows the warp arming/settling (systemic, not random) */}
           <div ref={readoutRef} className="v4acid-readout" data-live="false" aria-hidden>
             <span className="v4acid-readout-dot" />
-            <span className="v4acid-readout-label">scroll fast — the black box warps, then resolves into the still file</span>
+            <span className="v4acid-readout-label">scroll fast · the black box warps, then resolves into the still file</span>
           </div>
         </div>
       </div>

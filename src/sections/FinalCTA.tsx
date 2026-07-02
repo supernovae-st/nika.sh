@@ -3,7 +3,12 @@ import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
 import { CopyRow } from '../components/CopyRow'
 import { INSTALL_CMD } from '../components/InstallCommand'
 import { useRevealOnce } from './use-reveal-once'
+import { lazy, Suspense } from 'react'
 import './v4-home.css'
+
+/* the signature reveal · lazy so it never enters the home-critical bundle
+   (in-view only; the prerendered fallback below is the no-JS truth) */
+const FooterSignature = lazy(() => import('../fx/FooterSignature'))
 
 /* ─── FIG 10.0 · Final CTA + SUPERNOVAE footer (theme-dark · the close) ─────────
    Design doc §6 (FIG 10.0). The clean v4 close: the install affordance (the
@@ -43,8 +48,8 @@ export default function FinalCTA() {
         </h2>
         <p className="v4cta-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
           Install the binary, write the plan as a file, review what it&apos;s allowed
-          to touch, run it. Same file, same result, enforced on your machine —
-          tomorrow and the day the vendor is gone.
+          to touch, run it. Same file, same result, enforced on your machine.
+          Tomorrow, and the day the vendor is gone.
         </p>
 
         <div className="v4cta-install" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
@@ -87,7 +92,7 @@ export default function FinalCTA() {
              community workflows become runnable, credited .nika.yaml examples. */}
         <div className="v4convert" data-rise style={{ ['--rise-delay' as string]: '300ms' }}>
           <p className="v4convert-ask">
-            Do you repeat an AI task every week — in ChatGPT, Claude, Cursor, Codex,
+            Do you repeat an AI task every week, in ChatGPT, Claude, Cursor, Codex,
             or scripts? <b>Send it.</b> We convert the best ones into runnable{' '}
             <code className="mono">.nika.yaml</code> examples, credited to you.
           </p>
@@ -98,6 +103,20 @@ export default function FinalCTA() {
             </span>
           </Link>
         </div>
+
+        {/* FIG 10.5 · THE SIGNATURE · the dither swarm converges into the
+             butterfly (once, in view · tap replays · reduced-motion static).
+             Inserted ABOVE the locked SUPERNOVAE block — additive only. */}
+        <Suspense
+          fallback={
+            <div className="fsig">
+              <img src="/nika.svg" alt="" width={150} height={150} loading="lazy" />
+              <p className="fsig-caption">the noise becomes the file.</p>
+            </div>
+          }
+        >
+          <FooterSignature />
+        </Suspense>
 
         {/* ─── SUPERNOVAE · the footer — KEPT INTACT (operator lock). The per-letter
              float wave + hover lift wordmark, the studio line, the founders, and

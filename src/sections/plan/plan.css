@@ -1,0 +1,221 @@
+/* ─── THE PLAN · wave columns + real wires (beat 3) ───────────────────────────
+   One gap token governs the whole diagram (a random-gap plan reads broken).
+   Wires are REAL (measured SVG paths) at ≥12% ink — visible structure, raised
+   to ~45% when a step is focused. Verb hues live on the node TICK only. */
+
+.v5plan-wrap {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--plan-gap, 56px);
+  margin-top: var(--gap-cta);
+  padding: 28px;
+  border: 1px solid var(--v4-line);
+  border-radius: calc(var(--v4-radius) + 2px);
+  background:
+    radial-gradient(120% 100% at 70% 0%, rgb(47 107 255 / 0.05), transparent 62%),
+    linear-gradient(180deg, #0a0d14 0%, #060709 100%);
+  overflow-x: auto;
+}
+
+.v5plan-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.v5plan-wires path {
+  fill: none;
+  stroke: rgb(140 170 255 / 0.24); /* the structure must READ (≥12% floor) */
+  stroke-width: 1.4;
+  transition: stroke var(--dur-ui) var(--ease-ui);
+}
+.v5plan-wires path[data-hot='true'] {
+  stroke: rgb(140 170 255 / 0.55);
+  stroke-width: 1.6;
+}
+.v5plan-wires circle {
+  fill: rgb(140 170 255 / 0.4); /* the registration dot at each wire end */
+}
+
+.v5plan-wave {
+  flex: 1 1 0;
+  min-width: 150px;
+}
+.v5plan-wave-cap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+  white-space: nowrap;
+}
+.v5plan-wave-n {
+  color: var(--v4-hud-faint);
+}
+.v5plan-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--plan-gap-y, 18px);
+}
+
+/* the node card · verb hue on the tick only · flat token-swap hover */
+.v5plan-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px 10px 14px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 88%, transparent);
+  box-shadow:
+    inset 2px 0 0 var(--node-vhue, var(--v4-accent)),
+    var(--seam-highlight);
+  cursor: default;
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui),
+    opacity var(--dur-ui) var(--ease-ui);
+}
+.v5plan-node[data-verb='infer'] {
+  --node-vhue: var(--verb-infer);
+}
+.v5plan-node[data-verb='exec'] {
+  --node-vhue: var(--verb-exec);
+}
+.v5plan-node[data-verb='invoke'] {
+  --node-vhue: var(--verb-invoke);
+}
+.v5plan-node[data-verb='agent'] {
+  --node-vhue: var(--verb-agent);
+}
+
+.v5plan-node[data-state='focus'] {
+  border-color: var(--seam-hairline-strong);
+  background: var(--v4-bg-raised);
+}
+.v5plan-node[data-state='dep-up'] {
+  border-color: rgb(140 170 255 / 0.35);
+}
+.v5plan-node[data-state='dep-down'] {
+  border-color: rgb(140 170 255 / 0.2);
+}
+.v5plan-wrap[data-focused] .v5plan-node[data-state='off'] {
+  opacity: 0.45;
+}
+
+.v5plan-node-id {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--v4-text);
+}
+.v5plan-node-verb {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--node-vhue, var(--v4-text-dim));
+}
+.v5plan-node-target {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--v4-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.v5plan-node-when {
+  margin-top: 4px;
+  padding: 2px 6px;
+  align-self: flex-start;
+  border: 1px solid rgb(230 184 115 / 0.35);
+  border-radius: var(--v4-radius-sm);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--cf-num);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.v5plan-node-chip {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--cf-str);
+}
+.v5plan-node-chip[data-skipped] {
+  color: var(--cf-num);
+}
+.v5plan-node[data-skipped] {
+  border-style: dashed;
+}
+
+.v5plan-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}
+.v5plan-note::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 42px;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 22%, transparent);
+}
+
+/* ── MOBILE · the vertical timeline (waves top→down · 2-up parallel rows) ──── */
+@media (max-width: 767px) {
+  .v5plan-wrap {
+    flex-direction: column;
+    gap: 0;
+    padding: 18px 16px;
+    overflow-x: visible;
+  }
+  .v5plan-wave {
+    min-width: 0;
+    width: 100%;
+  }
+  /* the connector · one hairline between waves (the single gap token) */
+  .v5plan-wave + .v5plan-wave {
+    margin-top: 18px;
+    padding-top: 18px;
+    position: relative;
+  }
+  .v5plan-wave + .v5plan-wave::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 22px;
+    width: 1px;
+    height: 18px;
+    transform: translateY(-100%);
+    background: rgb(140 170 255 / 0.28);
+  }
+  .v5plan-wave + .v5plan-wave {
+    border-top: none;
+  }
+  .v5plan-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  /* sequential (single-task) waves span full width */
+  .v5plan-col > .v5plan-node:only-child {
+    grid-column: 1 / -1;
+  }
+  .v5plan-note {
+    font-size: 10px;
+  }
+}

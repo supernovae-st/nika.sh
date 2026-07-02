@@ -1,0 +1,101 @@
+/* ─── THE BOUNDARY · the permits beat (beat 4) ────────────────────────────────
+   Two columns: the verbatim permits excerpt (real line numbers) LEFT, the
+   consumer reading + the denial card RIGHT. The denial is ONE static card +
+   one frame flash — never theater. */
+
+.v5bnd-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+/* grid items shrink below content width (the 390px overflow class) */
+.v5bnd-file,
+.v5bnd-read {
+  min-width: 0;
+}
+.v5bnd-grid {
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+  margin-top: var(--gap-cta);
+}
+@media (max-width: 900px) {
+  .v5bnd-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.v5bnd-filecap {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}
+
+.v5bnd-rows {
+  display: flex;
+  flex-direction: column;
+}
+.v5bnd-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.v5bnd-row:first-child {
+  border-top: 1px solid var(--v4-line);
+}
+.v5bnd-row-key {
+  flex: 0 0 64px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--cf-key);
+}
+.v5bnd-row-gloss {
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+}
+
+/* the denial card · the editor's own amber family for the boundary, the ONE
+   red row for the denial itself */
+.v5bnd-deny {
+  margin-top: 28px;
+  padding: 16px 18px;
+  border: 1px solid rgb(230 184 115 / 0.25);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 90%, transparent);
+  box-shadow: var(--seam-highlight);
+}
+.v5bnd-deny-cap {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}
+.v5bnd-deny-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgb(255 93 93 / 0.28);
+  border-radius: var(--v4-radius-sm);
+  background: rgb(255 93 93 / 0.05);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--v4-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.v5bnd-deny-glyph {
+  color: #ff5d5d;
+}
+.v5bnd-deny-note {
+  margin-top: 12px;
+  font-size: var(--type-body-sm);
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+}
+.v5bnd-deny-note b {
+  color: var(--v4-text);
+}

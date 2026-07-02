@@ -131,11 +131,11 @@ export default function Toolbelt() {
       className="theme-dark v4sec v4-flip v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 6.0" id="toolbelt-title" title={<>What an agent can be permitted to&nbsp;use.</>}>
-          The language stays four verbs. The standard library does the rest —{' '}
+        <SectionHead fig="FIG 6.5" id="toolbelt-title" title={<>What an agent can be permitted to&nbsp;use.</>}>
+          The language stays four verbs. The standard library does the rest:{' '}
           <b>{CANON.builtins} builtins</b>, <b>{CANON.providers} model providers</b>, and any of
           your <b>agent tools</b> (MCP servers) your editor already uses. All reached the same way:{' '}
-          <code className="mono">invoke:</code> — and none of it runs unless the file&apos;s{' '}
+          <code className="mono">invoke:</code>, and none of it runs unless the file&apos;s{' '}
           <code className="mono">permits:</code> allows it.
         </SectionHead>
 
@@ -318,7 +318,7 @@ export default function Toolbelt() {
         </div>
 
         <p className="v4belt-note" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-          every count derives from the spec&apos;s <code>canon.yaml</code> — never hand-typed
+          every count derives from the spec&apos;s <code>canon.yaml</code> · never hand-typed
         </p>
       </div>
     </section>

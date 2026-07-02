@@ -24,13 +24,16 @@
   width: 100%;
   max-width: 72rem;
   margin: 0 auto;
-  padding-top: clamp(96px, 14vh, 168px);
-  padding-bottom: clamp(96px, 14vh, 168px);
+  /* the ONE vertical-rhythm token (tokens.css) — every beat breathes the same */
+  padding-top: var(--rhythm-sec-m);
+  padding-bottom: var(--rhythm-sec-m);
   padding-left: max(20px, env(safe-area-inset-left));
   padding-right: max(20px, env(safe-area-inset-right));
 }
 @media (min-width: 768px) {
   .v4sec-wrap {
+    padding-top: var(--rhythm-sec);
+    padding-bottom: var(--rhythm-sec);
     padding-left: max(28px, env(safe-area-inset-left));
     padding-right: max(28px, env(safe-area-inset-right));
   }
@@ -57,21 +60,21 @@
 
 
 .v4sec-title {
-  margin-top: 24px;
+  margin-top: var(--gap-title);
   max-width: 22ch;
   font-family: var(--display);
   font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.0;
-  font-size: clamp(2rem, 1rem + 3.4vw, 3.4rem);
+  letter-spacing: var(--ls-display);
+  line-height: var(--lh-display);
+  font-size: var(--type-h2);
   color: var(--v4-text);
   text-wrap: balance;
 }
 .v4sec-lede {
-  margin-top: 20px;
-  max-width: 40rem;
-  font-size: 17px;
-  line-height: 1.6;
+  margin-top: 24px;
+  max-width: var(--measure);
+  font-size: var(--type-body);
+  line-height: var(--lh-body);
   color: var(--v4-text-dim);
   text-wrap: pretty;
 }
@@ -872,6 +875,15 @@
   font-variant-numeric: tabular-nums;
   text-align: right;
   white-space: nowrap;
+}
+/* narrow phones · the long mono values ("one Rust binary · zero daemons") would
+   push the row past a 390px viewport — let the value wrap instead of clipping. */
+@media (max-width: 560px) {
+  .v4own-row-value {
+    white-space: normal;
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
 }
 .v4own-row-value b {
   color: var(--v4-text);

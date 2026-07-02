@@ -1,96 +1,43 @@
-import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { useEffect, useRef } from 'react'
 import { CodeFile } from '../components/CodeFile'
 import { InstallCommand } from '../components/InstallCommand'
 import { ENGINE_VERSION, REPO, SPEC } from '../content'
-import { HERO_FILES } from './hero-files'
+import { FLAGSHIP_ENTRIES, type FlagshipEntry } from '../flagships'
 import '../shell/shell.css'
 import './hero.css'
 
-/* ─── Hero · the v5 dither black/blue header · two-column composition ──────────
-   Register: an engineered-black field (the v5 ladder) with ONE pointe of blue —
-   Linear/Codex/Raycast restraint, sharp ("carré"): hairline borders, 0–4px
-   radii, ordered-dither grain (BRAND-11), museum-plate mono captions.
+/* ─── Hero · beat 1 · the file IS the hero ────────────────────────────────────
+   V5: two-column composition — the pitch LEFT, THE FILE right (2-3 switchable
+   flagship tabs). The SELECTED tab drives the ENTIRE story downstream: the run
+   replay (beat 2), the plan (beat 3) and the boundary (beat 4) all re-render
+   from it (law #1 · one story, one file). Selection state lives in Home.
 
-   The composition is the classic operator layout: the HEADLINE + one sentence +
-   install + CTAs sit LEFT, and the premium CodeFile editor (the product replica)
-   sits RIGHT — now with a sharp mono FILE-TAB strip above it (2026-07 operator
-   ask): 3 switchable spec-true examples the visitor can flip through in the
-   header. daily-brief.nika.yaml is the DEFAULT tab because it is THE file the
-   Living File below plays — the hero editor and the run read as the same object
-   (docs/plans/2026-06-18 §2 continuity).
+   Register: engineered-black field + ONE blue pointe (the page-level dither
+   field + the v5 header glow behind the editor column). Type reads the
+   documented system (tokens.css): display 44-76px vs 17px body. Air lives
+   BETWEEN elements (--gap tokens), never in dead voids.
 
-   The H1 is a REAL <h1> in the prerendered HTML (the SEO win); the editor is
-   real <pre>/<code> DOM text (crawlable, instant). The WebGL background (the
-   dither field / tunnel) mounts at the PAGE level — the hero stays transparent.
-
-   Entrance: ONE orchestrated staggered reveal (motion-safe only). Everything is
-   visible by DEFAULT (SSR / no-JS / reduced-motion) — the `.v4-enter` opt-in is
-   added on mount and only animates when motion is allowed. */
+   ZERO-LAG law: no scroll-linked per-frame JS (the v4 "aspiration" scrub is
+   deleted); the entrance is a one-shot staggered reveal, motion-safe only.
+   The H1 is a REAL <h1> in the prerendered HTML; the editor is real <pre>
+   DOM text (crawlable, instant). */
 
 /* per-element entrance delay → the `--rise-delay` custom prop the stagger reads. */
 const rise = (ms: number): React.CSSProperties =>
   ({ '--rise-delay': `${ms}ms` }) as React.CSSProperties
 
-/* the install affordance · COMMAND-AS-CTA — the shared pill (extracted to
-   src/components/InstallCommand.tsx so GetStarted's runs-everywhere terminal
-   card renders the exact same affordance). */
-
-/* ── the rotating mono audience line (Vercel register) ────────────────────────
-   Three all-caps mono lines under the hero sub-line, ALL always rendered (zero
-   layout shift — the rotation is color-only): the active one reads full-
-   contrast, the others stay dim, crossfading every ~4s. Small and quiet — it
-   must never compete with the H1. The FIRST line ships active in the
-   prerendered HTML (SSR = client initial state · no hydration drift); the
-   interval only arms after mount when motion is allowed, so reduced-motion /
-   no-JS get the static three-line stack. Screen readers get ONE sentence via
-   the container label; the visual lines are aria-hidden. */
-const AUDIENCE = [
-  'FOR HUMANS WHO WRITE IT',
-  'FOR AGENTS THAT RUN IT',
-  'FOR TEAMS THAT AUDIT IT',
-]
-
-function AudienceLines() {
-  const [active, setActive] = useState(0)
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const id = setInterval(() => setActive((a) => (a + 1) % AUDIENCE.length), 4000)
-    return () => clearInterval(id)
-  }, [])
-  return (
-    <p className="v4aud">
-      {/* the SR sentence · real text (aria-label on a <p> is name-prohibited and
-          dropped by most screen readers) — the rotating visual lines stay hidden */}
-      <span className="sr-only">
-        For humans who write it, for agents that run it, for teams that audit it.
-      </span>
-      {AUDIENCE.map((line, i) => (
-        <span key={line} className="v4aud-line" data-active={i === active} aria-hidden>
-          {line}
-        </span>
-      ))}
-    </p>
-  )
-}
-
-/* ─── the hero chrome · faint HUD ticks + a readability vignette ───────────────
-   The WebGL background lives at the PAGE level (Home · fixed behind everything);
-   the hero is transparent so it shows through. This is just the decorative HUD +
-   a left vignette so the copy clears contrast over the field. */
+/* ── the hero chrome · the desktop HUD ticks + a readability vignette ─────────
+   The corner ticks are desktop-only (hero.css hides them ≤767px — orphan
+   decorative anchors read as glitches on a phone). */
 function HeroAtmosphere() {
   return (
     <>
-      {/* faint HUD registration marks · the four corner ticks (decorative) */}
       <div className="v4hud" aria-hidden>
         <span className="v4hud-tick v4hud-tick--tl" />
         <span className="v4hud-tick v4hud-tick--tr" />
         <span className="v4hud-tick v4hud-tick--bl" />
         <span className="v4hud-tick v4hud-tick--br" />
       </div>
-
-      {/* a soft readability vignette so the LEFT copy clears contrast over the field */}
       <div className="v4hero-readscrim" aria-hidden />
     </>
   )
@@ -98,7 +45,7 @@ function HeroAtmosphere() {
 
 /* ── the sharp file-tab strip · mono, hairline, no pills ──────────────────────
    role=tablist with roving tabIndex + arrow-key switching. The DEFAULT tab
-   (daily-brief) is prerendered, so crawlers / no-JS get the continuity file. */
+   (daily-brief) is prerendered, so crawlers / no-JS get the default story. */
 function FileTabs({
   active,
   onSelect,
@@ -110,18 +57,25 @@ function FileTabs({
   const onKeyDown = (e: React.KeyboardEvent) => {
     // APG tablist keys · arrows cycle, Home/End jump to the edges
     let next: number
-    if (e.key === 'ArrowRight') next = (active + 1) % HERO_FILES.length
-    else if (e.key === 'ArrowLeft') next = (active - 1 + HERO_FILES.length) % HERO_FILES.length
+    if (e.key === 'ArrowRight') next = (active + 1) % FLAGSHIP_ENTRIES.length
+    else if (e.key === 'ArrowLeft')
+      next = (active - 1 + FLAGSHIP_ENTRIES.length) % FLAGSHIP_ENTRIES.length
     else if (e.key === 'Home') next = 0
-    else if (e.key === 'End') next = HERO_FILES.length - 1
+    else if (e.key === 'End') next = FLAGSHIP_ENTRIES.length - 1
     else return
     e.preventDefault()
     onSelect(next)
     refs.current[next]?.focus()
   }
   return (
-    <div className="v4ftabs" role="tablist" aria-label="Example workflow files" onKeyDown={onKeyDown}>
-      {HERO_FILES.map((f, i) => (
+    <div className="v4ftabs-clip">
+      <div
+        className="v4ftabs"
+        role="tablist"
+        aria-label="Flagship workflow files"
+        onKeyDown={onKeyDown}
+      >
+      {FLAGSHIP_ENTRIES.map((f, i) => (
         <button
           key={f.id}
           ref={(el) => {
@@ -142,16 +96,21 @@ function FileTabs({
           </span>
         </button>
       ))}
+      </div>
     </div>
   )
 }
 
-export default function Hero() {
+export default function Hero({
+  flagship,
+  index,
+  onSelect,
+}: {
+  flagship: FlagshipEntry
+  index: number
+  onSelect: (i: number) => void
+}) {
   const rootRef = useRef<HTMLElement>(null)
-  const copyRef = useRef<HTMLDivElement>(null)
-  const editorRef = useRef<HTMLDivElement>(null)
-  const [tab, setTab] = useState(0)
-  const file = HERO_FILES[tab]
 
   /* opt the hero into the orchestrated entrance — only when motion is allowed.
      Adding the class in an effect (post-paint) guarantees the prerendered HTML
@@ -160,54 +119,6 @@ export default function Hero() {
     if (typeof window === 'undefined') return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     rootRef.current?.classList.add('v4-enter')
-  }, [])
-
-  /* ── the ASPIRATION · the hero is drawn DOWN into the machine ────────────────
-     As the hero scrolls out, the editor (the plan) is pulled downward + tilts
-     into depth + dissolves — "sucked into the machine" — while the copy fades up.
-     This is the visual bridge to the Living File below (the SAME file, now
-     running): the two stop reading as disjoint blocks. A motion-safe rAF scroll
-     scrub (transform/opacity only · compositor-cheap); SSR / no-JS / reduced get
-     the static hero (no transform applied).
-
-     PERF: the loop reads layout (getBoundingClientRect) every frame, so it runs
-     ONLY while the hero intersects the viewport — an IntersectionObserver arms
-     and disarms the rAF; once the hero is long off-screen the page pays zero. */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const section = rootRef.current
-    if (!section) return
-    let raf = 0
-    const tick = () => {
-      const rect = section.getBoundingClientRect()
-      const h = rect.height || 1
-      // 0 while the hero fills the view → 1 as it scrolls out (the pull window)
-      const ap = Math.min(1, Math.max(0, -rect.top / (h * 0.82)))
-      // the editor (the plan) sinks down + dissolves as the hero scrolls out, the
-      // copy fades up — a clean exit into the Living File below.
-      const e = ap * ap
-      const editor = editorRef.current
-      if (editor) {
-        editor.style.transform = `translateY(${e * 46}px) scale(${1 - e * 0.07})`
-        editor.style.opacity = `${Math.max(0, 1 - e * 1.18)}`
-      }
-      const copy = copyRef.current
-      if (copy) {
-        copy.style.transform = `translateY(${ap * -26}px)`
-        copy.style.opacity = `${Math.max(0, 1 - ap * 1.08)}`
-      }
-      raf = requestAnimationFrame(tick)
-    }
-    const io = new IntersectionObserver(([entry]) => {
-      cancelAnimationFrame(raf)
-      raf = entry?.isIntersecting ? requestAnimationFrame(tick) : 0
-    })
-    io.observe(section)
-    return () => {
-      io.disconnect()
-      cancelAnimationFrame(raf)
-    }
   }, [])
 
   return (
@@ -219,64 +130,45 @@ export default function Hero() {
       {/* the HUD ticks + the readability scrim (the WebGL field is page-level) */}
       <HeroAtmosphere />
 
-      {/* the two-column composition · copy LEFT · editor RIGHT · generous space.
-          Stacks to one column under 1024px (editor below the copy). */}
+      {/* the two-column composition · copy LEFT · editor RIGHT · generous air. */}
       <div className="v4hero-grid relative z-[1] mx-auto w-full max-w-6xl">
-        {/* ── LEFT · the wedge ─────────────────────────────────────────────── */}
-        <div ref={copyRef} className="v4hero-copy flex max-w-2xl flex-col">
+        {/* ── LEFT · the pitch ─────────────────────────────────────────────── */}
+        <div className="v4hero-copy flex max-w-2xl flex-col">
           {/* FIG 0.0 · the blueprint numbering with its hairline tick */}
           <p className="v4fig mb-6" data-rise style={rise(0)}>
             FIG 0.0
           </p>
 
-          {/* the brand kicker · "Intent as Code" survives as a small mark */}
-          <p data-rise style={rise(40)} className="v4kicker mb-5">
-            <span aria-hidden>✦</span> Intent as Code
+          {/* the bracket eyebrow · the mono museum-plate register */}
+          <p data-rise style={rise(40)} className="v4beyebrow mb-6">
+            [ INTENT AS CODE ]
           </p>
 
           {/* the REAL <h1> · the wedge · the SEO win. */}
-          <h1
-            data-rise
-            style={{
-              ...rise(80),
-              fontFamily: 'var(--headline)',
-              fontSize: 'clamp(1.9rem, 1.05rem + 3vw, 3.1rem)',
-              lineHeight: 1.04,
-              letterSpacing: '-0.022em',
-              fontWeight: 600,
-              textWrap: 'balance',
-            }}
-            className="text-text"
-          >
+          <h1 data-rise style={rise(80)} className="v4hero-h1">
             Useful AI work shouldn&rsquo;t disappear into chats.
           </h1>
 
-          <p
-            data-rise
-            style={rise(150)}
-            className="mt-7 max-w-[34rem] text-[17px] leading-relaxed text-dim"
-          >
+          {/* the sub · ONE sentence pair. The full version is desktop; phones
+              get the short register (the 7-line sub wall is a defect class). */}
+          <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--full">
             Nika turns repeatable AI work into files you can run, review, diff and
-            share. One file&nbsp;· 4&nbsp;verbs&nbsp;· one Rust binary. The agent
-            writes the plan, you review it, the runtime{' '}
-            <b className="font-semibold text-text">enforces</b> it — then it runs.
+            share. One file, four verbs, one Rust binary. The agent writes the
+            plan, you review it, the runtime <b>enforces</b> it. Then it runs.
+          </p>
+          <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--short">
+            Repeatable AI work as a file you run, review and share. The agent
+            writes the plan. You review it. The runtime <b>enforces</b> it.
           </p>
 
-          {/* the rotating mono audience line · quiet, color-only, zero shift */}
-          <div data-rise style={rise(190)}>
-            <AudienceLines />
-          </div>
-
-          {/* the main CTA row · the primary button + the command-as-CTA install
-              (equal rank · Codex/Vercel register). #install is the nav target.
-              They WRAP on narrow screens; each is a ≥44px mobile hit target. */}
+          {/* the main CTA row · the primary button + the command-as-CTA install */}
           <div
             id="install"
             data-rise
             style={rise(220)}
-            className="mt-9 flex scroll-mt-28 flex-wrap items-center gap-3"
+            className="v4hero-ctas flex scroll-mt-28 flex-wrap items-center gap-3"
           >
-            <a href="#living-file" className="v4cta group">
+            <a href="#the-run" className="v4cta group">
               <span aria-hidden className="transition-transform group-hover:translate-y-0.5">
                 ↓
               </span>
@@ -286,7 +178,7 @@ export default function Hero() {
           </div>
 
           {/* the version plate · mono metadata under the CTAs (Raycast register) */}
-          <p className="v4vplate mt-4" data-rise style={rise(260)}>
+          <p className="v4vplate mt-5" data-rise style={rise(260)}>
             {ENGINE_VERSION}
             <span className="v4vplate-pipe" aria-hidden>
               |
@@ -302,7 +194,7 @@ export default function Hero() {
           <div
             data-rise
             style={rise(300)}
-            className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14.5px]"
+            className="v4hero-links mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14.5px]"
           >
             <a
               href={SPEC}
@@ -327,7 +219,7 @@ export default function Hero() {
           </div>
 
           {/* the trust line · the control guarantee · mono, faint */}
-          <p data-rise style={rise(360)} className="v4trust mt-9">
+          <p data-rise style={rise(360)} className="v4trust mt-10">
             Reviewable<span className="px-2 text-faint">·</span>
             enforced<span className="px-2 text-faint">·</span>
             replayable<span className="px-2 text-faint">·</span>
@@ -337,34 +229,33 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* ── RIGHT · the premium editor panel · switchable product replica ── */}
+        {/* ── RIGHT · THE FILE · the switchable product replica ──────────────
+             The selected tab is the file the whole page runs: it descends into
+             the replay (beat 2), the plan (beat 3), the boundary (beat 4). */}
         <div className="v4hero-editor" data-rise style={rise(180)}>
-          <div ref={editorRef} className="v4hero-aspirate">
-            <FileTabs active={tab} onSelect={setTab} />
-            <div id="v4ftab-panel" role="tabpanel" aria-labelledby={`v4ftab-${file.id}`}>
-              <CodeFile
-                yaml={file.yaml}
-                filename={file.filename}
-                highlight={file.highlight}
-                className="v4hero-code"
-              />
-            </div>
-            {/* the tab's one-line story + the handoff chip: the DEFAULT file is
-                the one the Living File below actually runs — "see it run" is the
-                continuity link into that choreography. */}
-            <div className="v4hero-editorfoot mt-4">
-              <span className="v4gloss">{file.gloss}</span>
-              <Link to="#living-file" className="v4hint w-fit">
-                <span className="v4hint-file">daily-brief.nika.yaml</span>
-                <span className="text-faint" aria-hidden>
-                  ·
-                </span>
-                <span>see it run</span>
-                <span className="v4hint-arrow" aria-hidden>
-                  ↓
-                </span>
-              </Link>
-            </div>
+          <FileTabs active={index} onSelect={onSelect} />
+          <div id="v4ftab-panel" role="tabpanel" aria-labelledby={`v4ftab-${flagship.id}`}>
+            <CodeFile
+              yaml={flagship.yaml}
+              filename={flagship.filename}
+              highlight={flagship.highlight}
+              className="v4hero-code"
+            />
+          </div>
+          {/* the tab's one-line story + the handoff chip · the SELECTED file is
+              the one the run replay below actually plays — filename continuity. */}
+          <div className="v4hero-editorfoot mt-4">
+            <span className="v4gloss">{flagship.gloss}</span>
+            <a href="#the-run" className="v4hint w-fit">
+              <span className="v4hint-file">{flagship.filename}</span>
+              <span className="text-faint" aria-hidden>
+                ·
+              </span>
+              <span>see it run</span>
+              <span className="v4hint-arrow" aria-hidden>
+                ↓
+              </span>
+            </a>
           </div>
         </div>
       </div>

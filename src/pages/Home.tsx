@@ -2,14 +2,15 @@ import { Suspense, lazy, useEffect, useState } from 'react'
 import { useHead } from '@unhead/react'
 import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
-import LivingFile from '../sections/living/LivingFile'
+import { FLAGSHIP_ENTRIES } from '../flagships'
+import TheRun from '../sections/run/TheRun'
+import ThePlan from '../sections/plan/ThePlan'
+import TheBoundary from '../sections/boundary/TheBoundary'
 import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
-import Permits from '../sections/Permits'
 import WhereItFits from '../sections/WhereItFits'
-import HumanInTheLoop from '../sections/HumanInTheLoop'
 import OwnWorkflows from '../sections/OwnWorkflows'
 import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
@@ -61,7 +62,7 @@ const HOME_JSONLD = {
       downloadUrl: `${SITE}/install.sh`,
       license: 'https://www.gnu.org/licenses/agpl-3.0.html',
       description:
-        'The control layer for AI agents. Nika makes an agent write its plan as a readable file first — every step, tool and permission. You review it, the runtime enforces it, then it runs: traced and replayable. One Rust binary, any model, AGPL forever.',
+        'The control layer for AI agents. Nika makes an agent write its plan as a readable file first: every step, tool and permission. You review it, the runtime enforces it, then it runs: traced and replayable. One Rust binary, any model, AGPL forever.',
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -96,6 +97,11 @@ const HOME_JSONLD = {
 
 export function Component() {
   const [eggOpen, setEggOpen] = useState(false)
+  /* V5 law #1 · ONE story, ONE file — the SELECTED one. The hero tabs pick a
+     flagship; the run replay, the plan and the boundary all re-render from it.
+     Selection lives HERE so every beat reads the same object. */
+  const [flagshipIdx, setFlagshipIdx] = useState(0)
+  const flagship = FLAGSHIP_ENTRIES[flagshipIdx]
   /* idle-mount the dither field · React.lazy alone still FETCHES the chunk at
      hydration, and its three/r3f dependency chain (~880 kB pre-gzip) would
      compete with the text-LCP window. Deferring the mount to the first idle
@@ -120,7 +126,7 @@ export function Component() {
       {
         name: 'description',
         content:
-          'The control layer for AI agents — the plan is a file you review before it runs, permissions enforced, every run replayable. One binary, any model, AGPL.',
+          'The control layer for AI agents: the plan is a file you review before it runs, permissions enforced, every run replayable. One binary, any model, AGPL.',
       },
       { property: 'og:title', content: 'Nika · Intent as Code' },
       {
@@ -207,49 +213,52 @@ export function Component() {
           <DitherField />
         </Suspense>
       )}
+      {/* E1 · the header field · the quantized blue→black radial + survey grid.
+          Pure CSS, alpha-only, painted ABOVE the canvas (DOM order) so the glow
+          reads at first paint AND once the animated field mounts. */}
+      <div className="v5-header-field" aria-hidden />
       <main className="relative z-[1]">
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
-        <Hero />
+        <Hero flagship={flagship} index={flagshipIdx} onSelect={setFlagshipIdx} />
 
-        {/* FIG 1.0 · « The Living File » — the file becomes a running DAG with
-             real CLI/NDJSON logs and a concrete result (THE wow, dosed) */}
-        <LivingFile />
+        {/* FIG 1.0 · THE RUN — the selected file executes as a recorded real-run
+             event stream (trace replay · verb-hued frame · real verdict) */}
+        <TheRun flagship={flagship} />
 
-        {/* FIG 1.5 · Proof strip — the honest mono numbers band (CANON counts) */}
+        {/* FIG 2.0 · THE PLAN — the same file as wave columns + real wires */}
+        <ThePlan flagship={flagship} />
+
+        {/* FIG 3.0 · THE BOUNDARY — the same file's permits: read as the
+             consumer feature + the denial beat (one card, one flash) */}
+        <TheBoundary flagship={flagship} />
+
+        {/* FIG 3.5 · Proof strip — the honest mono numbers band (CANON counts) */}
         <ProofStrip />
 
-        {/* FIG 1.7 · the wedge — the manifesto beat: the session ends, the
-             file stays (the two-tone thesis + THE CAPTURE split) */}
-        <Wedge />
+        {/* FIG 4.0 · THE CAPTURE — the manifesto beat: the session ends, the
+             file stays (two-tone thesis + the chat-vs-file split) */}
+        <Wedge flagship={flagship} />
 
-        {/* FIG 2.0 · clarity — what an agent can do, declared not hidden */}
-        <Verbs />
-
-        {/* FIG 3.0 · the acid moment — beyond the black box (file vs chat/API) */}
+        {/* FIG 4.5 · the acid moment — beyond the black box (file vs chat/API) */}
         <BeyondChat />
 
-        {/* FIG 3.5 · the seatbelt — what it's ALLOWED to do (permits:) */}
-        <Permits />
+        {/* FIG 5.0 · verb chapters — what an agent can do, declared not hidden */}
+        <Verbs />
 
-        {/* FIG 3.6 · where Nika fits — the orthogonal layer underneath (light) */}
+        {/* FIG 5.5 · where Nika fits — the orthogonal layer underneath (light) */}
         <WhereItFits />
 
-        {/* FIG 4.0 · be the human in the loop — the interactive permits demo:
-             review the plan, toggle what it can touch, watch the runtime obey
-             (a real NIKA-SEC-004 denial when a load-bearing permit is removed) */}
-        <HumanInTheLoop />
+        {/* FIG 6.0 · Get started + runs everywhere — the on-ramp triptych */}
+        <GetStarted flagship={flagship} />
 
-        {/* FIG 5.0 · sovereignty — the procedure is yours (theme-light) */}
-        <OwnWorkflows />
-
-        {/* FIG 6.0 · Toolbelt — what an agent can be permitted to use (CANON) */}
+        {/* FIG 6.5 · Toolbelt — what an agent can be permitted to use (CANON) */}
         <Toolbelt />
 
-        {/* FIG 7.0 · Use cases — the editorial gallery (real spec workflows) */}
+        {/* FIG 7.0 · Use cases — the gallery (here plurality is the point) */}
         <UseCasesV4 />
 
-        {/* FIG 7.5 · Get started — install · write a file · run it (the on-ramp) */}
-        <GetStarted />
+        {/* FIG 7.5 · sovereignty — the procedure is yours (theme-light) */}
+        <OwnWorkflows />
 
         {/* FIG 8.0 · Changelog — the ship log (latest milestones) */}
         <ChangelogPreview />

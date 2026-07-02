@@ -54,22 +54,22 @@ const GUARANTEES: { fig: string; claim: string; detail: string }[] = [
   {
     fig: '9.5',
     claim: 'Review before it acts.',
-    detail: 'The agent writes its plan as a file first — every step, tool and permission. A human reads it before a single action runs.',
+    detail: 'The agent writes its plan as a file first: every step, tool and permission. A human reads it before a single action runs.',
   },
   {
     fig: '9.6',
     claim: 'Enforced permissions.',
-    detail: `The file's permits: block is the blast radius — files, hosts, programs, tools. The runtime denies anything outside it (${CANON.providersLocal} local providers mean PII never has to leave).`,
+    detail: `The file's permits: block is the blast radius: files, hosts, programs, tools. The runtime denies anything outside it (${CANON.providersLocal} local providers mean PII never has to leave).`,
   },
   {
     fig: '9.7',
     claim: 'Replayable trace.',
-    detail: 'Every run leaves a replayable record — the audit trail. Same file, same steps, same order: run it again and diff it like code.',
+    detail: 'Every run leaves a replayable record, the audit trail. Same file, same steps, same order: run it again and diff it like code.',
   },
   {
     fig: '9.8',
     claim: 'Portable off any platform.',
-    detail: `One binary, ${CANON.providers} model providers, AGPL-3.0 forever. The file outlives the vendor — it still runs the day the company that made it is gone.`,
+    detail: `One binary, ${CANON.providers} model providers, AGPL-3.0 forever. The file outlives the vendor. It still runs the day the company that made it is gone.`,
   },
 ]
 
@@ -84,7 +84,7 @@ export default function Proof() {
         <SectionHead fig="FIG 9.0" id="proof-title" title={<>The control is the proof.</>}>
           No logos to borrow, no quotes to dress up. Just what the engine{' '}
           <b>guarantees</b>: review before it acts · enforced permissions ·
-          replayable trace · portable off any platform · versioned like code —
+          replayable trace · portable off any platform · versioned like code:
           verifiable in the open spec and the one binary you install.
         </SectionHead>
 
@@ -119,7 +119,7 @@ export default function Proof() {
         </p>
 
         <p className="v4proof-note" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-          every number derives from the spec&apos;s <code>canon.yaml</code> — verifiable, never hand-typed
+          every number derives from the spec&apos;s <code>canon.yaml</code> · verifiable, never hand-typed
         </p>
       </div>
     </section>
