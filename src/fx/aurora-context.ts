@@ -30,7 +30,8 @@ export type AuroraContextValue = {
   runProgress: (p: number) => void
   /** The permits-wall beat: one danger flash (600ms), then back. */
   flashDanger: () => void
-  /** Leave run mode: success sweeps one bright arc then decays; failure flashes. */
+  /** Leave run mode: the bloom HOLDS ~1.2s (success sweeps one bright arc ·
+      failure flashes danger inside it), then decays to the quiet blue rest. */
   runEnd: (verdict: 'success' | 'failure') => void
 }
 

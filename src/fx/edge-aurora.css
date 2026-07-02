@@ -128,11 +128,23 @@
     var(--verb-agent) 0.75turn,
     var(--verb-infer) 1turn
   );
+  /* GEOMETRY FIX (H2, verified empirically): on the -16% box the viewport's
+     edge midpoints sit at radius fraction ~0.38 of an `ellipse 100% 100%` —
+     the idle mask's 66% transparent stop keeps its band entirely OFF-screen
+     (corner haze only). The bloom band must OVERLAP the frame: fade 31%→46%
+     puts the edge midpoints at ~half strength, corners full, while the
+     center punch still protects the 72rem content column (its half-width is
+     fraction ~0.30 — inside the transparent zone). */
+  mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, #000 43%);
+  -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, #000 43%);
   /* breathe with the RUN, not a timer: recorded progress drives the swell */
   opacity: calc(var(--aurora-intensity) + var(--aurora-progress) * 0.15);
+  /* the wheel turns — slow, readable (the idle drift is 26s; the run leans in) */
+  animation: edge-aurora-rotate 18s linear infinite;
 }
 
-/* the active-verb lead · a narrow bright arc in the current verb's hue */
+/* the active-verb lead · a narrow bright arc in the current verb's hue
+   (same geometry fix: a tighter band than the wheel, but ON the frame) */
 .edge-aurora[data-run]::after {
   content: '';
   position: absolute;
@@ -143,8 +155,8 @@
     var(--aurora-verb) 0.06turn,
     transparent 0.16turn
   );
-  mask: radial-gradient(ellipse 82% 82% at 50% 50%, transparent 72%, #000 100%);
-  -webkit-mask: radial-gradient(ellipse 82% 82% at 50% 50%, transparent 72%, #000 100%);
+  mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 36%, #000 52%);
+  -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 36%, #000 52%);
   filter: blur(22px);
   opacity: calc(var(--aurora-intensity) * 1.6);
   transition: --aurora-verb 320ms var(--ease-ui);
@@ -156,8 +168,8 @@
   content: '';
   position: absolute;
   inset: -16%;
-  mask: radial-gradient(ellipse 82% 82% at 50% 50%, transparent 72%, #000 100%);
-  -webkit-mask: radial-gradient(ellipse 82% 82% at 50% 50%, transparent 72%, #000 100%);
+  mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 36%, #000 52%);
+  -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 36%, #000 52%);
   filter: blur(22px);
   animation: aurora-danger 600ms var(--ease-ui) 1;
 }
@@ -196,20 +208,30 @@
 /* mobile · thinner edge, still present (the oryzo thickness law: the ring
    scales down with the viewport instead of disappearing) */
 @media (max-width: 767px) {
-  .edge-aurora::before,
-  .edge-aurora[data-run]::after {
+  .edge-aurora::before {
     mask: radial-gradient(ellipse 88% 90% at 50% 50%, transparent 76%, #000 100%);
     -webkit-mask: radial-gradient(ellipse 88% 90% at 50% 50%, transparent 76%, #000 100%);
     filter: blur(26px);
   }
+  /* the run bloom keeps its band ON the small frame (same geometry law),
+     just tighter + softer than desktop */
+  .edge-aurora[data-run]::before {
+    mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 33%, #000 50%);
+    -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 33%, #000 50%);
+    filter: blur(26px);
+  }
+  .edge-aurora[data-run]::after {
+    mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 38%, #000 56%);
+    -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 38%, #000 56%);
+    filter: blur(20px);
+  }
 }
 
-/* reduced-motion · static soft multicolor frame at low intensity while
-   running; no rotation, no sweep (verdict = intensity step) */
+/* reduced-motion · INTENSITY ONLY — the four-hue bloom still rises and decays
+   through --aurora-intensity (a static multicolor frame), but nothing rotates
+   and nothing sweeps (verdict = intensity step) */
 @media (prefers-reduced-motion: reduce) {
-  .edge-aurora[data-run]::before {
-    opacity: 0.12;
-  }
+  .edge-aurora[data-run]::before,
   .edge-aurora[data-run]::after,
   .edge-aurora[data-flash='danger']::after {
     animation: none;

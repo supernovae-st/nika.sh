@@ -274,6 +274,12 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           if (newest) aurora.verbTick(newest.verb)
         }
         as.running = running
+        if (as.ended && rf < 1) {
+          /* scrubbed back INTO the run window after the verdict — the scene is
+             a pure function of p, so the frame re-enters the bloom with it */
+          as.ended = false
+          aurora.runStart()
+        }
         if (rf >= 1 && !as.ended) {
           as.ended = true
           aurora.runEnd(flagship.trace.exit === 0 ? 'success' : 'failure')
