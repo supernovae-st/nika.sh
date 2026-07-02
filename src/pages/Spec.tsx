@@ -89,7 +89,7 @@ const ENVELOPE_KEYS: { key: string; req: boolean; gloss: string }[] = [
   { key: 'workflow', req: true, gloss: 'the workflow id · kebab-case · unique in the file' },
   { key: 'tasks', req: true, gloss: 'the DAG · one or more nodes, each binding one verb' },
   { key: 'description', req: false, gloss: 'a human note · free text' },
-  { key: 'model', req: false, gloss: 'the default model · provider/name (e.g. ollama/llama3.1)' },
+  { key: 'model', req: false, gloss: 'the default model · provider/name (e.g. ollama/llama3.2:3b)' },
   { key: 'vars', req: false, gloss: 'typed inputs · ${{ vars.X }} · with required / default' },
   { key: 'env', req: false, gloss: 'non-sensitive runtime config · ${{ env.X }}' },
   { key: 'secrets', req: false, gloss: 'vault-backed references · never inline literals' },

@@ -2,7 +2,7 @@
    Data lives OUTSIDE the page component (react-refresh: pages export only
    components) so the fragment-validity test suite can import it directly.
    Every YAML fragment is spec-correct (nika-spec 01-envelope · 03-dag ·
-   05-errors) AND parses as standalone YAML — guarded by
+   05-errors) AND parses as standalone YAML · guarded by
    src/test/learn-fragments.test.ts. */
 
 export interface Step {
@@ -21,11 +21,11 @@ export const STEPS: Step[] = [
     topic: 'the file',
     title: 'A workflow is a file you can read',
     plain:
-      'The whole thing is one plain-text file. Two lines make it real: name the language, name the workflow. That header is the whole ceremony — no project setup, no boilerplate, no config.',
+      'The whole thing is one plain-text file. Two lines make it real: name the language, name the workflow. That header is the whole ceremony: no project setup, no boilerplate, no config.',
     file: 'weekly-radar.nika.yaml',
     yaml: `nika: v1
 workflow: weekly-radar`,
-    note: 'nika: v1 means the format is frozen — files you write today won’t break.',
+    note: 'nika: v1 means the format is frozen. Files you write today won’t break.',
   },
   {
     n: '02',
@@ -47,10 +47,10 @@ workflow: weekly-radar`,
     topic: 'the model',
     title: 'Pick a brain. Any brain.',
     plain:
-      'One line chooses the default model — any model: local Ollama, or any API. Start on your own machine (no key, no cloud) and swap providers whenever you want; nothing else changes.',
+      'One line chooses the default model, any model: local Ollama, or any API. Start on your own machine (no key, no cloud) and swap providers whenever you want; nothing else changes.',
     file: 'model',
     yaml: `# fully local · no cloud needed
-model: ollama/llama3.1
+model: ollama/llama3.2:3b
 
 # or swap to any cloud provider:
 # model: mistral/mistral-large`,
@@ -73,7 +73,7 @@ model: ollama/llama3.1
     topic: 'the plan',
     title: 'Order is one word. The plan is free.',
     plain:
-      'depends_on is all you write. Tasks that don’t wait on each other run in parallel automatically. You never schedule anything — the plan (which tasks wait on which) falls out of the file.',
+      'depends_on is all you write. Tasks that don’t wait on each other run in parallel automatically. You never schedule anything. The plan (which tasks wait on which) falls out of the file.',
     file: 'depends_on',
     yaml: `- id: fetch_news
   invoke:
@@ -94,7 +94,7 @@ model: ollama/llama3.1
     topic: 'the branch',
     title: 'Branch like an adult',
     plain:
-      'when: makes a task conditional — a yes/no test over what already happened. Waiting for success is free (depends_on already does it); when: is for conditions beyond it, like a value check.',
+      'when: makes a task conditional, a yes/no test over what already happened. Waiting for success is free (depends_on already does it); when: is for conditions beyond it, like a value check.',
     file: 'when',
     yaml: `- id: alert
   depends_on: [check]

@@ -14,6 +14,7 @@ import {
   VSCODE_REPO,
   INIT_CMD,
   WIRE_CMD,
+  OLLAMA_PULL_CMD,
   EXAMPLES_CMD,
   CHECK_CMD,
   RUN_CMD,
@@ -31,7 +32,8 @@ import './install-page.css'
    /#install, so there was no linkable install page). Six hairline-ruled ways
    in, in the order the engine README teaches them: brew · the install script ·
    manual/air-gapped · the editor extension · agents (`nika init` / `nika
-   wire`) · first run (zero-key mock/echo). Every command and claim mirrors
+   wire`) · first run (a free local model · F4: no mock/echo on the showcase
+   surface). Every command and claim mirrors
    the engine README verbatim-in-substance — no invented flags, no invented
    version numbers (the plate interpolates ENGINE_VERSION).
 
@@ -198,19 +200,19 @@ export function Component() {
             <li className="ins-step" id="first-run">
               <div className="ins-step-copy">
                 <p className="ins-step-n">06 · first run</p>
-                <h2 className="ins-step-title">Zero keys, zero setup</h2>
+                <h2 className="ins-step-title">Zero keys, zero cloud</h2>
                 <p className="ins-step-plain">
                   Your first workflow needs no model and no API key. Save the file, audit it
-                  with <code>nika check</code> (plan · cost · secrets — before anything runs),
-                  then <code>nika run</code>. Adding an AI step? The built-in{' '}
-                  <code>mock/echo</code> model shows the shape offline — swap it for a local
-                  model or any API when ready, and <code>nika doctor</code> tells you exactly
-                  what&apos;s wired.
+                  with <code>nika check</code> (plan · cost · secrets, before anything runs),
+                  then <code>nika run</code>. Adding an AI step? Point it at a{' '}
+                  <b>free local model</b> (one <code>ollama pull</code>, nothing leaves your
+                  machine), and <code>nika doctor</code> tells you exactly what&apos;s wired.
                 </p>
                 <div className="ins-cmds">
                   <CopyRow cmd={CHECK_CMD} label="static audit" />
                   <CopyRow cmd={RUN_CMD} label="run" />
-                  <CopyRow cmd={EXAMPLES_CMD} label="offline example run" />
+                  <CopyRow cmd={OLLAMA_PULL_CMD} label="the free local model" />
+                  <CopyRow cmd={EXAMPLES_CMD} label="example run · local model" />
                   <CopyRow cmd={DOCTOR_CMD} label="environment check" />
                 </div>
               </div>

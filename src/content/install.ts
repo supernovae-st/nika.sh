@@ -24,8 +24,10 @@ export const VSCODE_REPO = 'https://github.com/supernovae-st/nika-vscode'
 export const INIT_CMD = 'nika init'
 export const WIRE_CMD = 'nika wire cursor'
 
-/* first run · zero setup — no model, no API key */
-export const EXAMPLES_CMD = 'nika examples run 01-hello --model mock/echo'
+/* first run · a real local model leads (F4 · operator: no mock/echo on the
+   marketing surface — the zero-key stub path lives in the DOCS only) */
+export const OLLAMA_PULL_CMD = 'ollama pull llama3.2:3b'
+export const EXAMPLES_CMD = 'nika examples run 01-hello --model ollama/llama3.2:3b'
 export const CHECK_CMD = 'nika check hello.nika.yaml'
 export const RUN_CMD = 'nika run hello.nika.yaml'
 export const DOCTOR_CMD = 'nika doctor'
@@ -39,10 +41,10 @@ tasks:
       command: "echo hello from nika"
 `
 
-/* the first AI step — the built-in mock/echo model shows the shape offline */
+/* the first AI step — a free local model, nothing leaves the machine */
 export const HELLO_AI_YAML = `nika: v1
 workflow: hello-ai
-model: mock/echo   # offline · swap for ollama/llama3.1 or any API when ready
+model: ollama/llama3.2:3b   # local · free · swap for any of the 14 providers
 tasks:
   - id: greet
     infer:

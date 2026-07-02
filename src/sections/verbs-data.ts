@@ -30,7 +30,7 @@ export const CHAPTERS: Chapter[] = [
     filename: 'think.nika.yaml',
     yaml: `nika: v1
 workflow: think
-model: ollama/llama3.1
+model: ollama/llama3.2:3b
 tasks:
   - id: summarize
     infer:
@@ -89,7 +89,7 @@ tasks:
     filename: 'delegate.nika.yaml',
     yaml: `nika: v1
 workflow: delegate
-model: ollama/llama3.1
+model: ollama/llama3.2:3b
 tasks:
   - id: audit
     agent:

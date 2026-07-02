@@ -107,7 +107,7 @@ export function lintNika(src: string): LintDiag[] {
     if (typeof model !== 'string' || model.includes('${{')) return
     const [prefix, ...rest] = model.split('/')
     if (rest.length === 0 || rest.join('/') === '')
-      diags.push({ line, code: 'NIKA-PROVIDER', message: `model '${model}' is not <provider>/<name>`, fix: 'the provider is the prefix · e.g. `mock/echo`' })
+      diags.push({ line, code: 'NIKA-PROVIDER', message: `model '${model}' is not <provider>/<name>`, fix: 'the provider is the prefix · e.g. `ollama/llama3.2:3b`' })
     else if (!PROVIDERS.has(prefix))
       diags.push({ line, code: 'NIKA-PROVIDER', message: `unknown provider '${prefix}'`, fix: `one of · ${[...PROVIDERS].join(' · ')}` })
   }
