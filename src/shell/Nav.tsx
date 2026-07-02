@@ -26,7 +26,6 @@ import './shell.css'
 interface MegaItem {
   label: string
   desc: string
-  glyph: string
   to?: string // internal RR route
   href?: string // home anchor (/#x) or external
   external?: boolean
@@ -38,23 +37,26 @@ interface MegaGroup {
 }
 
 /* the Product mega-menu · two grouped columns (Language · Workflows + Learn).
-   Internal routes use RR <Link>; home anchors use /#x; externals open a tab. */
+   Internal routes use RR <Link>; home anchors use /#x; externals open a tab.
+   F6 (operator drop #2): NO bullet glyphs — text hierarchy only (six mixed
+   glyphs read as noise; the Linear/Cursor register is title+desc, nothing
+   else). */
 const PRODUCT_GROUPS: MegaGroup[] = [
   {
     title: 'The control layer',
     items: [
-      { label: 'See it run', desc: 'The plan, reviewed and enforced', glyph: '❯', href: '/#the-run' },
-      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', glyph: '◆', href: '/#verbs' },
-      { label: 'What it can touch', desc: 'The permits enforcement model', glyph: '◈', href: '/#the-boundary' },
-      { label: 'Use cases', desc: 'Real plans, reviewable and bound', glyph: '◇', to: '/use-cases' },
+      { label: 'See it run', desc: 'The plan, reviewed and enforced', href: '/#the-run' },
+      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', href: '/#verbs' },
+      { label: 'What it can touch', desc: 'The permits enforcement model', href: '/#the-boundary' },
+      { label: 'Use cases', desc: 'Real plans, reviewable and bound', to: '/use-cases' },
     ],
   },
   {
     title: 'Build · Learn',
     items: [
-      { label: 'Playground', desc: 'Write & run in the browser', glyph: '▷', to: '/play' },
-      { label: 'Learn it in 5 min', desc: 'The quickstart', glyph: '✦', to: '/learn' },
-      { label: 'Manifesto', desc: 'The drum of liberation', glyph: '∴', to: '/manifesto' },
+      { label: 'Playground', desc: 'Write & run in the browser', to: '/play' },
+      { label: 'Learn it in 5 min', desc: 'The quickstart', to: '/learn' },
+      { label: 'Manifesto', desc: 'The drum of liberation', to: '/manifesto' },
     ],
   },
 ]
@@ -99,15 +101,10 @@ function ItemLink({
   refCb?: (el: HTMLAnchorElement | null) => void
 }) {
   const inner = (
-    <>
-      <span className="v4mega-glyph" aria-hidden>
-        {item.glyph}
-      </span>
-      <span>
-        <span className="v4mega-label">{item.label}</span>
-        <span className="v4mega-desc">{item.desc}</span>
-      </span>
-    </>
+    <span>
+      <span className="v4mega-label">{item.label}</span>
+      <span className="v4mega-desc">{item.desc}</span>
+    </span>
   )
   if (item.to) {
     return (
@@ -197,9 +194,14 @@ export default function Nav() {
     }
   }, [megaOpen])
 
-  /* ── mega-menu: move focus to the first item when it opens ── */
+  /* ── mega-menu: move focus to the first item ONLY on keyboard opens ──
+     Auto-focusing after a mouse click made the first item wear the global
+     :focus-visible ring as a permanent-looking selection box (operator F6
+     screenshot). Pointer opens leave focus on the trigger; keyboard opens
+     (Enter/Space fire click with detail 0 · ArrowDown) move it in. */
+  const kbOpenRef = useRef(false)
   useEffect(() => {
-    if (megaOpen) megaItemRefs.current[0]?.focus()
+    if (megaOpen && kbOpenRef.current) megaItemRefs.current[0]?.focus()
   }, [megaOpen])
 
   /* roving arrow-key navigation across the flattened mega items (APG menu) */
@@ -296,11 +298,16 @@ export default function Nav() {
                 aria-expanded={megaOpen}
                 aria-controls={megaId}
                 aria-haspopup="true"
-                onClick={() => setMegaOpen((v) => !v)}
+                onClick={(e) => {
+                  kbOpenRef.current = e.detail === 0 // keyboard "click"
+                  setMegaOpen((v) => !v)
+                }}
                 onKeyDown={(e) => {
                   if (e.key === 'ArrowDown') {
                     e.preventDefault()
-                    setMegaOpen(true)
+                    kbOpenRef.current = true
+                    if (megaOpen) megaItemRefs.current[0]?.focus()
+                    else setMegaOpen(true)
                   }
                 }}
               >
@@ -317,7 +324,7 @@ export default function Nav() {
                   onKeyDown={onMegaKeyDown}
                 >
                   {PRODUCT_GROUPS.map((group) => (
-                    <div key={group.title} style={{ display: 'contents' }}>
+                    <div key={group.title} className="v4mega-col">
                       <p className="v4mega-col-title" role="presentation">
                         {group.title}
                       </p>
