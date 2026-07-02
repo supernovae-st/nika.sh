@@ -63,12 +63,12 @@ export function Component() {
       { property: 'og:title', content: 'Learn — Nika' },
       {
         property: 'og:description',
-        content: 'A workflow is a file you can read — the five-minute walkthrough.',
+        content: 'A workflow is a file you can read · the five-minute walkthrough.',
       },
       { name: 'twitter:title', content: 'Learn — Nika' },
       {
         name: 'twitter:description',
-        content: 'A workflow is a file you can read — the five-minute walkthrough.',
+        content: 'A workflow is a file you can read · the five-minute walkthrough.',
       },
     ],
   })

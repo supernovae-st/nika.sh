@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
+import { CountUp } from '../components/CountUp'
 import { useHead } from '@unhead/react'
 import {
   CHANGELOG,
@@ -94,17 +95,17 @@ export function Component() {
       {
         name: 'description',
         content:
-          'Every Nika release and public milestone, dated and tagged — the spec opened, the four verbs locked, the tools and the model providers landed.',
+          'Every Nika release and public milestone, dated and tagged: the spec opened, the four verbs locked, the tools and the model providers landed.',
       },
       { property: 'og:title', content: 'Changelog — Nika' },
       {
         property: 'og:description',
-        content: 'The Nika ship log — every release and public milestone, dated and tagged.',
+        content: 'The Nika ship log: every release and public milestone, dated and tagged.',
       },
       { name: 'twitter:title', content: 'Changelog — Nika' },
       {
         name: 'twitter:description',
-        content: 'The Nika ship log — every release and public milestone, dated and tagged.',
+        content: 'The Nika ship log: every release and public milestone, dated and tagged.',
       },
     ],
   })
@@ -135,7 +136,7 @@ export function Component() {
             Changelog.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            A workflow language earns trust by <b>moving</b> — and by not breaking what you
+            A workflow language earns trust by <b>moving</b>, and by not breaking what you
             wrote. Every public milestone, dated and tagged: the spec opened, the verbs locked,
             the <code>permits:</code> boundary (what a plan is allowed to touch), the tool
             library and the playground landed.
@@ -153,7 +154,9 @@ export function Component() {
                 <span className="cl-stamp-fig" aria-hidden>
                   {String(i).padStart(2, '0')}
                 </span>
-                <dd className={`cl-stamp-n${s.mono ? ' cl-stamp-n--mono' : ''}`}>{s.n}</dd>
+                <dd className={`cl-stamp-n${s.mono ? ' cl-stamp-n--mono' : ''}`}>
+                  {typeof s.n === 'number' ? <CountUp n={s.n} /> : s.n}
+                </dd>
                 <dt className="cl-stamp-label">{s.label}</dt>
                 <span className="cl-stamp-sub">{s.sub}</span>
               </div>

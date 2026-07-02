@@ -3,6 +3,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CodeFile } from '../components/CodeFile'
+import { CountUp } from '../components/CountUp'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
 import { SHOWCASE_YAML, SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
@@ -418,38 +419,6 @@ function RotatingOutcome() {
       </span>
     </p>
   )
-}
-
-/* count-up · the stamp figures roll from 0 on first sight (integers only,
-   ~700ms ease-out). Reduced-motion or no IO support: static value. */
-function CountUp({ n }: { n: number }) {
-  const [shown, setShown] = useState(n)
-  const [el, setEl] = useState<HTMLElement | null>(null)
-  useEffect(() => {
-    if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let raf = 0
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e?.isIntersecting) return
-        io.disconnect()
-        const t0 = performance.now()
-        const step = (t: number) => {
-          const p = Math.min(1, (t - t0) / 700)
-          setShown(Math.round(n * (1 - (1 - p) ** 3)))
-          if (p < 1) raf = requestAnimationFrame(step)
-        }
-        raf = requestAnimationFrame(step)
-      },
-      { threshold: 0.4 },
-    )
-    io.observe(el)
-    return () => {
-      io.disconnect()
-      cancelAnimationFrame(raf)
-    }
-  }, [el, n])
-  return <span ref={setEl}>{shown}</span>
 }
 
 export function Component() {

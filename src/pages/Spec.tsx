@@ -534,7 +534,7 @@ export function Component() {
               acts. Once <code>permits:</code> is present, every category is{' '}
               <b>default-deny</b>: which files it can read, which it can write (read XOR
               write), which hosts it can reach, which programs it can run, which tools it may
-              call. The runtime <em>enforces</em> it — out of bounds is <b>denied</b>, not
+              call. The runtime <em>enforces</em> it: out of bounds is <b>denied</b>, not
               logged after the fact.
             </SpecHead>
             {/* the boundary diagram · the plan sits at the centre; every effect
