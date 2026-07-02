@@ -3,10 +3,8 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
 import Ajv2020 from 'ajv/dist/2020'
-import { HERO_FILES } from '../sections/hero-files'
 import { FLAGSHIPS } from '../flagships/flagship-data'
 import { CHAPTERS } from '../sections/verbs-data'
-import { DAG, FILENAME, YAML as LIVING_YAML } from '../sections/living/living-data'
 import { FOUR_VERBS_YAML } from '../pages/Blog'
 import { HELLO_YAML, HELLO_AI_YAML } from '../content/install'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
@@ -45,15 +43,6 @@ function expectValid(label: string, yaml: string) {
 }
 
 describe('on-page YAML · schema-true against public/schema/workflow.json', () => {
-  it.each(HERO_FILES.map((f) => [f.filename, f.yaml] as const))(
-    'hero tab %s validates',
-    (label, yaml) => expectValid(label, yaml),
-  )
-
-  it('the Living File flagship validates', () => {
-    expectValid(FILENAME, LIVING_YAML)
-  })
-
   it.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
     'flagship %s validates',
     (label, yaml) => expectValid(label, yaml),
@@ -82,65 +71,25 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
   )
 })
 
-/* ── the Living File line map · the choreography is pinned to the file ─────── */
-interface TaskDoc {
-  id: string
-  depends_on?: string[]
-}
-
-describe('Living File · DAG ↔ YAML line map', () => {
-  const lines = LIVING_YAML.split('\n')
-  const doc = parse(LIVING_YAML) as { tasks: TaskDoc[]; outputs?: Record<string, string> }
-  const byId = new Map(doc.tasks.map((t) => [t.id, t]))
-
-  it('the hero default tab and the Living File are the same object', () => {
-    expect(HERO_FILES[0].filename).toBe(FILENAME)
-    const heroDoc = parse(HERO_FILES[0].yaml) as { workflow: string; tasks: TaskDoc[] }
-    expect(heroDoc.workflow).toBe('daily-brief')
-    // every hero task id exists in the full Living File plan
-    for (const t of heroDoc.tasks) expect(byId.has(t.id)).toBe(true)
-  })
-
-  it('every DAG task maps to the exact YAML line carrying its id', () => {
-    for (const task of DAG.tasks) {
-      const line = lines[task.line0 - 1] ?? ''
-      expect(line, `${task.id} · line ${task.line0}`).toMatch(
-        new RegExp(`- (\\{ )?id: ${task.id}\\b`),
-      )
-      // flow tasks are one line; a block task spans line0..line1 (still in-file)
-      expect(task.line1).toBeGreaterThanOrEqual(task.line0)
-      expect(lines[task.line1 - 1], `${task.id} · line1 ${task.line1}`).toBeDefined()
-    }
-  })
-
-  it('DAG deps are exactly the file’s depends_on topology', () => {
-    expect(DAG.tasks.map((t) => t.id).sort()).toEqual([...byId.keys()].sort())
-    for (const task of DAG.tasks) {
-      const declared = byId.get(task.id)?.depends_on ?? []
-      expect([...task.deps].sort(), task.id).toEqual([...declared].sort())
-    }
-  })
-
-  it('waves are a valid topological layering of the deps', () => {
-    const waveOf = new Map(DAG.tasks.map((t) => [t.id, t.wave]))
-    for (const task of DAG.tasks) {
-      for (const dep of task.deps) {
-        expect(waveOf.get(dep)!, `${task.id} after ${dep}`).toBeLessThan(task.wave)
-      }
-    }
-    expect(Math.max(...DAG.tasks.map((t) => t.wave)) + 1).toBe(DAG.waves)
-  })
-
-  it('DAG outputs mirror the file’s outputs block', () => {
-    expect(Object.keys(doc.outputs ?? {}).sort()).toEqual([...DAG.outputs].sort())
-  })
-
-  it('the highlighted hero lines are the permits block', () => {
-    const [lo, hi] = HERO_FILES[0].highlight
-    const heroLines = HERO_FILES[0].yaml.split('\n')
-    expect(heroLines[lo - 1]).toMatch(/^permits:/)
+/* ── the hero highlight · the default flagship emphasizes its permits block ── */
+describe('flagships · hero highlight ranges', () => {
+  it('the default tab highlights the permits block', () => {
+    const f = FLAGSHIPS[0]
+    const [lo, hi] = f.highlight
+    const lines = f.yaml.split('\n')
+    expect(lines[lo - 1]).toMatch(/^permits:/)
     for (let n = lo + 1; n <= hi; n++) {
-      expect(heroLines[n - 1], `line ${n} inside the permits block`).toMatch(/^ {2}\S/)
+      expect(lines[n - 1], `line ${n} inside the permits block`).toMatch(/^ {2}\S/)
+    }
+  })
+
+  it('every flagship highlight range points at real lines', () => {
+    for (const f of FLAGSHIPS) {
+      const [lo, hi] = f.highlight
+      const lines = f.yaml.split('\n')
+      expect(lo).toBeGreaterThanOrEqual(1)
+      expect(hi).toBeGreaterThanOrEqual(lo)
+      expect(lines[hi - 1], `${f.filename} line ${hi}`).toBeDefined()
     }
   })
 })

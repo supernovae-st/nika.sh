@@ -4,25 +4,25 @@ import { CodeFile } from '../components/CodeFile'
 import { CopyRow } from '../components/CopyRow'
 import { InstallCommand, INSTALL_CMD } from '../components/InstallCommand'
 import { DOCS } from '../content'
-import { SHOWCASE_YAML } from './usecases-yaml.generated'
-import { sliceExcerpt } from './living/excerpt'
+import type { FlagshipEntry } from '../flagships'
+import { sliceExcerpt } from '../lib/excerpt'
 import './v4-home.css'
 import { SectionHead } from '../components/SectionHead'
 
-/* ─── FIG 7.5 · Get started (theme-dark · the on-ramp) ─────────────────────────
+/* ─── FIG 6.0 · Get started (theme-dark · the on-ramp) ─────────────────────────
    v4.1 control narrative · a convinced visitor needs a concrete "how do I start?".
    Three numbered steps in the blueprint register (FIG step numbers, hairline
-   rules, monochrome): 7.5.1 install · 7.5.2 write a file · 7.5.3 run it. Tight, scannable —
+   rules, monochrome): 6.0.1 install · 6.0.2 write a file · 6.0.3 run it. Tight, scannable —
    it earns its place by being the bridge from "I believe it" to "I ran it".
 
-     7.5.1 INSTALL — the REAL affordances: brew (primary) + a curl | sh alt (the
+     6.0.1 INSTALL — the REAL affordances: brew (primary) + a curl | sh alt (the
        real public/install.sh URL), each with a copy button (the hero's monochrome
        install pattern, .v4install).
-     7.5.2 WRITE A FILE — a SHORT, TRUE slice of a real projected showcase
+     6.0.2 WRITE A FILE — a SHORT, TRUE slice of a real projected showcase
        (`SHOWCASE_YAML['t1-standup-digest']`, the smallest real multi-verb file):
        header + a couple of representative tasks, rendered by <CodeFile/>. READ-
        ONLY — sliced from the projected source by line range, never hand-typed.
-     7.5.3 RUN IT — `nika run` → it prints the plan, checks the permits, runs within
+     6.0.3 RUN IT — `nika run` → it prints the plan, checks the permits, runs within
        bounds. The one canonical run line + the three-beat guarantee.
 
    Closes on a "Learn it in 5 minutes →" link to /learn.
@@ -34,7 +34,6 @@ import { SectionHead } from '../components/SectionHead'
    added on mount with content visible by default (no-JS / reduced-motion). */
 
 const CURL_CMD = 'curl -LsSf https://nika.sh/install.sh | sh'
-const RUN_CMD = 'nika run standup-digest.nika.yaml'
 
 /* the REAL extension listings (engine README · supernovae.nika-lang) — the
    nika-lang language support for every VS Code-compatible editor. */
@@ -42,19 +41,17 @@ const VSCODE_MARKETPLACE =
   'https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang'
 const OPENVSX = 'https://open-vsx.org/extension/supernovae/nika-lang'
 
-/* a SHORT, TRUE slice of the smallest real multi-verb showcase file: the header
-   (nika: v1 · workflow · description · model) + two representative tasks (the
-   exec that reads the git log + the infer that writes the note) + the output —
-   real, contiguous line ranges, never hand-typed. `…` marks the trimmed lines. */
-const FULL_YAML = SHOWCASE_YAML['t1-standup-digest']
-const { text: WRITE_YAML } = sliceExcerpt(FULL_YAML, [
-  [1, 5], // nika: v1 · workflow · description · model
-  [14, 16], // - id: history · exec · git log
-  [18, 24], // - id: digest · depends_on · infer · prompt head
-  [37, 38], // outputs: · note
-])
-
-export default function GetStarted() {
+export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
+  /* a SHORT, TRUE slice of THE selected file (law #1 · one story, one file):
+     the envelope + the permits block + the first task, lifted verbatim by
+     line range from the same body the hero shows. `…` marks trimmed lines. */
+  const firstTask = flagship.plan.tasks[0]
+  const { text: writeYaml } = sliceExcerpt(flagship.yaml, [
+    [1, 3],
+    flagship.plan.permitsRange,
+    [firstTask.line0, firstTask.line1],
+  ])
+  const runCmd = `nika run ${flagship.filename}`
   /* reveal the rows once, on first intersection (motion-safe; default visible;
      safety-net timer reveals anyway if the observer misfires) */
   const ref = useRevealOnce<HTMLElement>()
@@ -62,18 +59,18 @@ export default function GetStarted() {
   return (
     <section ref={ref} id="get-started" aria-labelledby="get-started-title" className="theme-dark v4sec v4-flip v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 7.5" id="get-started-title" title={<>Get started.</>}>
-          One binary, one file, one command. Install it, write a plan, run it — and
+        <SectionHead fig="FIG 6.0" id="get-started-title" title={<>Get started.</>}>
+          One binary, one file, one command. Install it, write a plan, run it, and
           watch it <b>print the plan, check the permits, and stay within bounds</b>.
         </SectionHead>
 
         {/* the three numbered steps · a hairline-ruled blueprint register */}
         <ol className="v4start" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
-          {/* 7.5.1 · INSTALL */}
+          {/* 6.0.1 · INSTALL */}
           <li className="v4start-step">
             <div className="v4start-head">
               <span className="v4start-num" aria-hidden>
-                7.5.1
+                6.0.1
               </span>
               <h3 className="v4start-title">Install</h3>
             </div>
@@ -91,42 +88,42 @@ export default function GetStarted() {
             </div>
           </li>
 
-          {/* 7.5.2 · WRITE A FILE */}
+          {/* 6.0.2 · WRITE A FILE */}
           <li className="v4start-step">
             <div className="v4start-head">
               <span className="v4start-num" aria-hidden>
-                7.5.2
+                6.0.2
               </span>
               <h3 className="v4start-title">Write a file</h3>
             </div>
             <div className="v4start-body">
               <p className="v4start-desc">
-                A plan is plain YAML: the steps, the verbs, the wiring. Here a local
-                model reads yesterday&apos;s commits and writes today&apos;s standup note.
+                A plan is plain YAML: the steps, the verbs, the wiring. This is the same
+                file the page just ran, opened at its first step.
               </p>
               <div className="v4start-frame v4-frame-canvas">
-                <CodeFile yaml={WRITE_YAML} filename="standup-digest.nika.yaml" />
+                <CodeFile yaml={writeYaml} filename={`${flagship.filename} · excerpt`} />
               </div>
               <p className="v4start-readonly">
-                real lines, sliced from a projected showcase — read-only
+                real lines, sliced from the file above · read-only
               </p>
             </div>
           </li>
 
-          {/* 7.5.3 · RUN IT */}
+          {/* 6.0.3 · RUN IT */}
           <li className="v4start-step">
             <div className="v4start-head">
               <span className="v4start-num" aria-hidden>
-                7.5.3
+                6.0.3
               </span>
               <h3 className="v4start-title">Run it</h3>
             </div>
             <div className="v4start-body">
               <p className="v4start-desc">
                 Point the binary at the file. It prints the plan, checks the permits,
-                and runs within bounds — every step traced and replayable.
+                and runs within bounds. Every step traced and replayable.
               </p>
-              <CopyRow cmd={RUN_CMD} label="run" />
+              <CopyRow cmd={runCmd} label="run" />
             </div>
           </li>
         </ol>
@@ -140,12 +137,12 @@ export default function GetStarted() {
              nika_check · nika_explain — into Claude/Cursor/VS Code/Windsurf). */}
         <div className="v4every" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
           <p className="v4every-eyebrow">
-            runs everywhere — same file, same result
+            runs everywhere · same file, same result
           </p>
           <div className="v4every-row">
             <article className="v4every-card" aria-labelledby="v4every-terminal">
               <h3 className="v4every-kicker" id="v4every-terminal">
-                <span className="v4every-n">7.5.4</span> In your terminal
+                <span className="v4every-n">6.0.4</span> In your terminal
               </h3>
               <p className="v4every-body">
                 One Rust binary. The command is the button — click it, paste it, run.
@@ -157,7 +154,7 @@ export default function GetStarted() {
 
             <article className="v4every-card" aria-labelledby="v4every-editor">
               <h3 className="v4every-kicker" id="v4every-editor">
-                <span className="v4every-n">7.5.5</span> In your editor
+                <span className="v4every-n">6.0.5</span> In your editor
               </h3>
               <p className="v4every-body">
                 The <code className="mono">nika-lang</code> extension — diagnostics,
@@ -178,7 +175,7 @@ export default function GetStarted() {
 
             <article className="v4every-card" aria-labelledby="v4every-agent">
               <h3 className="v4every-kicker" id="v4every-agent">
-                <span className="v4every-n">7.5.6</span> With your agent
+                <span className="v4every-n">6.0.6</span> With your agent
               </h3>
               <p className="v4every-body">
                 <code className="mono">nika init</code> writes AGENTS.md ·{' '}

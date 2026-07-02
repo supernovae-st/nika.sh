@@ -232,33 +232,33 @@ export function Component() {
              consumer feature + the denial beat (one card, one flash) */}
         <TheBoundary flagship={flagship} />
 
-        {/* FIG 1.5 · Proof strip — the honest mono numbers band (CANON counts) */}
+        {/* FIG 3.5 · Proof strip — the honest mono numbers band (CANON counts) */}
         <ProofStrip />
 
-        {/* FIG 1.7 · the wedge — the manifesto beat: the session ends, the
-             file stays (the two-tone thesis + THE CAPTURE split) */}
-        <Wedge />
+        {/* FIG 4.0 · THE CAPTURE — the manifesto beat: the session ends, the
+             file stays (two-tone thesis + the chat-vs-file split) */}
+        <Wedge flagship={flagship} />
 
-        {/* FIG 2.0 · clarity — what an agent can do, declared not hidden */}
-        <Verbs />
-
-        {/* FIG 3.0 · the acid moment — beyond the black box (file vs chat/API) */}
+        {/* FIG 4.5 · the acid moment — beyond the black box (file vs chat/API) */}
         <BeyondChat />
 
-        {/* FIG 3.6 · where Nika fits — the orthogonal layer underneath (light) */}
+        {/* FIG 5.0 · verb chapters — what an agent can do, declared not hidden */}
+        <Verbs />
+
+        {/* FIG 5.5 · where Nika fits — the orthogonal layer underneath (light) */}
         <WhereItFits />
 
-        {/* FIG 5.0 · sovereignty — the procedure is yours (theme-light) */}
-        <OwnWorkflows />
+        {/* FIG 6.0 · Get started + runs everywhere — the on-ramp triptych */}
+        <GetStarted flagship={flagship} />
 
-        {/* FIG 6.0 · Toolbelt — what an agent can be permitted to use (CANON) */}
+        {/* FIG 6.5 · Toolbelt — what an agent can be permitted to use (CANON) */}
         <Toolbelt />
 
-        {/* FIG 7.0 · Use cases — the editorial gallery (real spec workflows) */}
+        {/* FIG 7.0 · Use cases — the gallery (here plurality is the point) */}
         <UseCasesV4 />
 
-        {/* FIG 7.5 · Get started — install · write a file · run it (the on-ramp) */}
-        <GetStarted />
+        {/* FIG 7.5 · sovereignty — the procedure is yours (theme-light) */}
+        <OwnWorkflows />
 
         {/* FIG 8.0 · Changelog — the ship log (latest milestones) */}
         <ChangelogPreview />

@@ -1,9 +1,9 @@
 import { CodeFile } from '../components/CodeFile'
-import { HERO_FILES } from './hero-files'
+import type { FlagshipEntry } from '../flagships'
 import { useRevealOnce } from './use-reveal-once'
 import './v4-home.css'
 
-/* ─── FIG 1.7 · The wedge (theme-dark · the manifesto beat) ───────────────────
+/* ─── FIG 4.0 · The wedge (theme-dark · the manifesto beat) ───────────────────
    The missing "why" beat (research section #4): one two-tone thesis paragraph
    (white lead + dim rest · Linear register) over THE CAPTURE — a split showing
    the same morning ritual twice: LEFT as a chat session (dim, dashed,
@@ -20,52 +20,51 @@ import './v4-home.css'
    data-rise reveal. SSR-safe: pure DOM. */
 
 const TRANSCRIPT: { who: 'you' | 'agent'; text: string }[] = [
-  { who: 'you', text: 'check my inbox and calendar — what matters today?' },
+  { who: 'you', text: 'check my inbox and calendar. what matters today?' },
   { who: 'agent', text: 'Scanning… 3 urgent threads, one meeting conflict. Want the brief?' },
-  { who: 'you', text: 'yes — same format as yesterday’s' },
+  { who: 'you', text: 'yes, same format as yesterday’s' },
   { who: 'agent', text: 'I don’t have yesterday’s session. Rebuilding the steps from scratch…' },
 ]
 
 const COLS: { n: string; title: string; body: string }[] = [
   {
-    n: '1.7.1',
+    n: '4.0.1',
     title: 'Written once',
-    body: 'The ritual becomes a file — plain YAML, versioned next to your code.',
+    body: 'The ritual becomes a file: plain YAML, versioned next to your code.',
   },
   {
-    n: '1.7.2',
+    n: '4.0.2',
     title: 'Runs forever',
-    body: 'Same file, same result — tomorrow, on another machine, after the vendor is gone.',
+    body: 'Same file, same result. Tomorrow, on another machine, after the vendor is gone.',
   },
   {
-    n: '1.7.3',
+    n: '4.0.3',
     title: 'Owned',
     body: 'It lives on your disk. Nothing to export, no account to lose.',
   },
 ]
 
-export default function Wedge() {
+export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
   const ref = useRevealOnce<HTMLElement>()
-  const flagship = HERO_FILES[0]
 
   return (
     <section ref={ref} id="wedge" aria-labelledby="wedge-title" className="theme-dark v4sec scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          FIG 1.7
+          FIG 4.0
         </p>
 
         {/* the two-tone thesis · the manifesto, in one paragraph */}
         <h2 id="wedge-title" className="v4wedge-thesis" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
           <b>Useful AI work shouldn’t disappear into chats.</b> The prompts you
-          perfect, the steps an agent improvises — they evaporate with the
+          perfect, the steps an agent improvises: they evaporate with the
           session. Nika turns the work into a file: readable, versioned,
           runnable. Workflows are files, not SaaS state.
         </h2>
 
-        {/* THE CAPTURE · the same work, twice — ephemeral vs permanent */}
+        {/* THE CAPTURE · the same work, twice · ephemeral vs permanent */}
         <div className="v4wedge-split" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
-          <div className="v4wedge-chat" role="img" aria-label="A chat session: the same morning ritual asked again, the assistant rebuilding the steps from scratch — the transcript fades out; the session state is gone.">
+          <div className="v4wedge-chat" role="img" aria-label="A chat session: the same morning ritual asked again, the assistant rebuilding the steps from scratch. The transcript fades out; the session state is gone.">
             <p className="v4wedge-chat-kicker" aria-hidden>
               a chat, every morning
             </p>
@@ -93,7 +92,7 @@ export default function Wedge() {
           the session ends · the file stays
         </p>
 
-        {/* the three promises · FIG 1.7.1–1.7.3 (the N.n.m sub-plate grammar) */}
+        {/* the three promises · FIG 4.0.1–4.0.3 (the N.n.m sub-plate grammar) */}
         <div className="v4wedge-cols" data-rise style={{ ['--rise-delay' as string]: '260ms' }}>
           {COLS.map((c) => (
             <div className="v4wedge-col" key={c.n}>

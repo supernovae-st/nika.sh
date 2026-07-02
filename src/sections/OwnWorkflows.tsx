@@ -84,7 +84,7 @@ export default function OwnWorkflows() {
     <section ref={ref} id="own" aria-labelledby="own-title" className="theme-light v4sec v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          FIG 5.0
+          FIG 7.5
         </p>
 
         <h2 id="own-title" className="v4own-statement" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>

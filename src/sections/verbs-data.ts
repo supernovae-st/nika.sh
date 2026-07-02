@@ -24,9 +24,9 @@ export type Chapter = {
 export const CHAPTERS: Chapter[] = [
   {
     verb: 'infer',
-    n: '2.1',
+    n: '5.1',
     claim: 'Think.',
-    gloss: 'Ask any model — local or cloud.',
+    gloss: 'Ask any model · local or cloud.',
     filename: 'think.nika.yaml',
     yaml: `nika: v1
 workflow: think
@@ -37,14 +37,14 @@ tasks:
       prompt: "Three risks in this release, ranked"
 `,
     sub: [
-      { n: '2.1.1', label: 'providers', to: '/spec#s4' },
-      { n: '2.1.2', label: 'structured output', to: '/spec#s1' },
-      { n: '2.1.3', label: 'local models', to: '/spec#s4' },
+      { n: '5.1.1', label: 'providers', to: '/spec#s4' },
+      { n: '5.1.2', label: 'structured output', to: '/spec#s1' },
+      { n: '5.1.3', label: 'local models', to: '/spec#s4' },
     ],
   },
   {
     verb: 'exec',
-    n: '2.2',
+    n: '5.2',
     claim: 'Run.',
     gloss: 'A shell command, captured and typed.',
     filename: 'run.nika.yaml',
@@ -56,16 +56,16 @@ tasks:
       command: "cargo build --release"
 `,
     sub: [
-      { n: '2.2.1', label: 'capture & exit codes' },
-      { n: '2.2.2', label: 'retry · timeout', to: '/spec#s2' },
-      { n: '2.2.3', label: 'permitted programs', to: '/spec#permits' },
+      { n: '5.2.1', label: 'capture & exit codes' },
+      { n: '5.2.2', label: 'retry · timeout', to: '/spec#s2' },
+      { n: '5.2.3', label: 'permitted programs', to: '/spec#permits' },
     ],
   },
   {
     verb: 'invoke',
-    n: '2.3',
+    n: '5.3',
     claim: 'Use a tool.',
-    gloss: 'Fetch a page, write a file, call GitHub — every tool explicit.',
+    gloss: 'Fetch a page, write a file, call GitHub. Every tool explicit.',
     filename: 'use-a-tool.nika.yaml',
     yaml: `nika: v1
 workflow: use-a-tool
@@ -76,14 +76,14 @@ tasks:
       args: { url: "https://nika.sh" }
 `,
     sub: [
-      { n: '2.3.1', label: 'builtins', to: '/spec#s3' },
-      { n: '2.3.2', label: 'extract modes', to: '/spec#s5' },
-      { n: '2.3.3', label: 'MCP servers' },
+      { n: '5.3.1', label: 'builtins', to: '/spec#s3' },
+      { n: '5.3.2', label: 'extract modes', to: '/spec#s5' },
+      { n: '5.3.3', label: 'MCP servers' },
     ],
   },
   {
     verb: 'agent',
-    n: '2.4',
+    n: '5.4',
     claim: 'Delegate.',
     gloss: 'An autonomous loop, on a leash you can read.',
     filename: 'delegate.nika.yaml',
@@ -97,9 +97,9 @@ tasks:
       tools: ["nika:read", "nika:fetch"]
 `,
     sub: [
-      { n: '2.4.1', label: 'tool allow-list', to: '/spec#permits' },
-      { n: '2.4.2', label: 'max turns' },
-      { n: '2.4.3', label: 'the human gate', to: '#human-in-the-loop' },
+      { n: '5.4.1', label: 'tool allow-list', to: '/spec#permits' },
+      { n: '5.4.2', label: 'max turns' },
+      { n: '5.4.3', label: 'the human gate', to: '#human-in-the-loop' },
     ],
   },
 ]

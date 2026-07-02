@@ -2,7 +2,7 @@ import { CANON } from '../canon.generated'
 import { REPO } from '../content'
 import './v4-home.css'
 
-/* ─── FIG 1.5 · Proof strip (theme-dark · the honest numbers) ──────────────────
+/* ─── FIG 3.5 · Proof strip (theme-dark · the honest numbers) ──────────────────
    A slim, headingless band of mono stat plates right after the Living File —
    the Raycast numbers-as-design / Vercel status register. Every count comes
    from CANON (the spec single source of truth), never hand-typed; the rest are
