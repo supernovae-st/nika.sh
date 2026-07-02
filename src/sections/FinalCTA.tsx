@@ -1,22 +1,17 @@
 import { Link } from 'react-router'
-import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
+import { REPO, SPEC } from '../content'
 import { CopyRow } from '../components/CopyRow'
 import { INSTALL_CMD } from '../components/InstallCommand'
 import { useRevealOnce } from './use-reveal-once'
-import { lazy, Suspense } from 'react'
+import SiteFooter from '../shell/SiteFooter'
 import './v4-home.css'
 
-/* the signature reveal · lazy so it never enters the home-critical bundle
-   (in-view only; the prerendered fallback below is the no-JS truth) */
-const FooterSignature = lazy(() => import('../fx/FooterSignature'))
-
-/* ─── FIG 10.0 · Final CTA + SUPERNOVAE footer (theme-dark · the close) ─────────
+/* ─── FIG 10.0 · Final CTA + the site footer (theme-dark · the close) ─────────
    Design doc §6 (FIG 10.0). The clean v4 close: the install affordance (the
    shared <CopyRow/> · the same monochrome install line as GetStarted), Star on
-   GitHub, Read the spec — in the blueprint register. The SUPERNOVAE footer
-   below is KEPT INTACT (operator lock): the per-letter wordmark float, the
-   studio line, the founders, the free-software footer — copied verbatim from
-   the v3 close, just re-housed here.
+   GitHub, Read the spec — in the blueprint register. The SUPERNOVAE footer +
+   the F3 signature now live in the shared <SiteFooter/> (F7 · one footer on
+   every route); Home renders it here so the close beat keeps its rhythm.
 
    SSR-safe: pure DOM; the reveal is an IntersectionObserver added on mount,
    content fully visible by default (no-JS / reduced-motion). */
@@ -104,109 +99,11 @@ export default function FinalCTA() {
           </Link>
         </div>
 
-        {/* FIG 10.5 · THE SIGNATURE · the continuous living butterfly (F3):
-             particles perpetually stream along the glyph while on screen ·
-             pointer/touch repels locally · reduced-motion/no-JS = the
-             assembled static mark. Inserted ABOVE the locked SUPERNOVAE
-             block — additive only. */}
-        <Suspense
-          fallback={
-            <div className="fsig">
-              <img src="/nika.svg" alt="" width={170} height={170} loading="lazy" />
-              <p className="fsig-caption">the noise becomes the file.</p>
-            </div>
-          }
-        >
-          <FooterSignature />
-        </Suspense>
-
-        {/* ─── SUPERNOVAE · the footer — KEPT INTACT (operator lock). The per-letter
-             float wave + hover lift wordmark, the studio line, the founders, and
-             the free-software footer rule. Copied verbatim from the v3 close. ─── */}
-        <a
-          href="https://supernovae.studio"
-          target="_blank"
-          rel="noreferrer"
-          className="supernovae-type mt-32 block w-full transition-opacity hover:opacity-90"
-          aria-label="SuperNovae Studio"
-        >
-          {'SUPERNOVAE'.split('').map((ch, i) => (
-            <span key={i} style={{ '--i': i } as React.CSSProperties}>
-              {ch}
-            </span>
-          ))}
-        </a>
-        <p className="mono -mt-2 text-[11px] tracking-[0.42em] text-[var(--fg-ghost)] uppercase">
-          a SuperNovae Studio creation
-        </p>
-        <p className="mono mt-5 flex flex-wrap items-center justify-center gap-x-6 text-[12px] text-[var(--fg-dim)]">
-          <a
-            href="https://x.com/ThibautMelen"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
-          >
-            𝕏 @ThibautMelen
-          </a>
-          <span aria-hidden className="text-[var(--fg-ghost)]">·</span>
-          <a
-            href="https://x.com/niccela"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
-          >
-            𝕏 @niccela
-          </a>
-        </p>
-
-        <footer
-          className="mono mt-20 flex w-full flex-wrap items-center justify-between gap-3 border-t pt-6 text-[12px] text-[var(--fg-ghost)]"
-          style={{ borderColor: 'var(--hair)' }}
-        >
-          {/* the exposed-state line (usgraphics register): what's deployed, in
-              mono — the ONE hand-maintained version const + the real license +
-              the ship log. No build SHA: the deploy SHA isn't knowable
-              statically, and we don't fake state. */}
-          <span className="flex items-center gap-2">
-            <img src="/nika.svg" alt="" width={13} height={13} style={{ opacity: 0.7 }} />
-            <span>
-              PROD {ENGINE_VERSION} · AGPL-3.0-or-later ·{' '}
-              <Link
-                to="/changelog"
-                className="underline decoration-1 underline-offset-2 transition-colors hover:text-[var(--fg-mute)]"
-              >
-                changelog
-              </Link>
-            </span>
-          </span>
-          <span className="flex flex-wrap items-center gap-x-5">
-            <a
-              href={REPO}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
-            >
-              GitHub
-            </a>
-            <a
-              href={SPEC}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
-            >
-              Spec
-            </a>
-            <a
-              href={DOCS}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
-            >
-              Docs
-            </a>
-          </span>
-        </footer>
       </div>
+
+      {/* FIG 10.5 · THE SIGNATURE + SUPERNOVAE · the shared site footer (the
+           F3 living butterfly + the operator-locked wordmark + PROD rule) */}
+      <SiteFooter />
     </section>
   )
 }

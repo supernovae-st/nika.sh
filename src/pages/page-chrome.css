@@ -129,6 +129,19 @@
   height: 1px;
 }
 
+/* ── the punch lede (F7) · the catchy one-liner between the H1 and the consumer
+   TL;DR — each inner page opens with its hook (« There's a file for that. »).
+   Theme-aware (reads the v4 tokens), display face, one size everywhere. */
+.v4punch {
+  margin-top: 14px;
+  font-family: var(--headline);
+  font-weight: 600;
+  font-size: clamp(19px, 1.1rem + 0.9vw, 26px);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--v4-accent-bright, var(--v4-accent));
+}
+
 /* ── the page masthead count · a mono register chip beside the FIG eyebrow ─────
    Mirrors .spec-head-count / .v4belt-reg-count: the "spec sheet" read. */
 .v4page-stamp {

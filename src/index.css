@@ -117,35 +117,8 @@ main > section { overflow-x: clip; }
   border-radius: var(--v4-radius, 4px);
 }
 
-/* ─── Raycast skeuomorphic glass — the tactile recipe (top highlight +
-       bottom inset shadow + outer ring + glow halo) ─── */
-.skeuo {
-  background: linear-gradient(
-    180deg,
-    rgba(150, 185, 255, 0.13),
-    rgba(40, 60, 120, 0.1) 38%,
-    rgba(10, 18, 44, 0.32)
-  );
-  border: 1px solid rgba(160, 195, 255, 0.24);
-  box-shadow:
-    inset 0 1px 0 rgba(225, 238, 255, 0.28),
-    inset 0 -10px 18px -12px rgba(0, 2, 14, 0.85),
-    inset 0 0 22px rgba(90, 140, 255, 0.07),
-    0 1px 0 rgba(0, 0, 10, 0.45),
-    0 12px 34px -10px rgba(30, 70, 200, 0.28),
-    0 8px 24px -8px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(16px) saturate(1.5);
-  -webkit-backdrop-filter: blur(16px) saturate(1.5);
-}
-.glass {
-  background: linear-gradient(180deg, rgba(120, 160, 255, 0.06), rgba(8, 14, 36, 0.55));
-  border: 1px solid rgba(150, 185, 255, 0.13);
-  box-shadow:
-    inset 0 1px 0 rgba(210, 230, 255, 0.1),
-    0 10px 30px -10px rgba(4, 10, 32, 0.7);
-  backdrop-filter: blur(20px) saturate(1.35);
-  -webkit-backdrop-filter: blur(20px) saturate(1.35);
-}
+/* the v3 skeuo/glass kit + its cursor-spotlight lived here — retired with the
+   manifesto's v5 restyle (F7 · the last consumer). Git keeps the recipe. */
 
 .mono { font-family: var(--mono); }
 
@@ -216,90 +189,20 @@ main > section { overflow-x: clip; }
 h1, h2 { font-family: var(--headline); }
 
 
-/* ─── spotlight cards · the light follows the cursor on every glass surface ─── */
-.skeuo, .glass { position: relative; }
-.skeuo::after, .glass::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: var(--spot-o, 0);
-  transition: opacity 0.3s ease;
-  background: radial-gradient(
-    240px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(150, 190, 255, 0.13),
-    transparent 65%
-  );
-}
-/* ─── cursor light · soft cyan lamp trailing the pointer ─── */
-#cursor-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 12;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(80, 150, 255, 0.085), rgba(80, 150, 255, 0.03) 45%, transparent 70%);
-  mix-blend-mode: screen;
-  will-change: transform;
-}
-@media (pointer: coarse), (prefers-reduced-motion: reduce) {
-  #cursor-glow { display: none; }
-}
-
-/* ─── /manifesto · the drum of liberation · the "wow" page (mf- prefix) ──────────
-   A no-3D readable page lifted to cinematic: a CSS cosmic backdrop, the DRUM as
-   concentric cyan ripples radiating from a beating core (every workflow run is a
-   beat), gradient hero + statement type, glowing cognitive-stack tokens, skeuo
-   promise cards. Reuses the site tokens (--cyan/--brand), .skeuo/.glass + the
-   spotlight, and the site's own .rv reveal (a local observer in Manifesto.tsx
-   drives it). The global reduced-motion rule above already neutralises animations. */
-
-/* v5 alignment (light touch · 2026-07-02) · the .mf-scope wrapper re-seats the
-   page's accent from the v3 cyan onto the v5 blue family (dither black/blue ·
-   single accent per surface) and deepens the backdrop pool to the engineered-
-   black ladder. Every mf-* rule reads the accent through --cyan, so the whole
-   cinematic register (drum · rings · tokens · promise cards) follows in one
-   move — the drum just beats blue now. Copy: not a word changed. :root --cyan
-   itself stays untouched (Home's FinalCTA still reads it). */
+/* ─── /manifesto · the drum of liberation (mf- prefix · v5 theme) ─────────────
+   The readable manifesto on the ONE v5 system (F7): the shared v5 header field
+   as backdrop (re-centred via the glow vars below), seam-kit promise panels,
+   the DRUM beating in the v5 accent. The v3 cosmic kit (cursor lamp · glass
+   mini-nav · skeuo spotlight cards · star field) is retired with its CSS.
+   Every mf-* rule reads the accent through --cyan, re-seated here onto the v5
+   blue; :root --cyan itself stays untouched (Home's FinalCTA still reads it).
+   Copy: not a word changed. The site .rv reveal drives the entrances. */
 .mf-scope {
   --cyan: var(--v4-accent);
   --bg: var(--v4-bg-deep);
-}
-
-/* cosmic backdrop — depth without the 3D galaxy scene */
-.mf-cosmos {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(82% 52% at 50% -8%, rgb(79 134 255 / 0.1), transparent 60%),
-    radial-gradient(68% 60% at 82% 16%, rgb(47 107 255 / 0.12), transparent 64%),
-    radial-gradient(92% 70% at 10% 90%, rgb(79 134 255 / 0.06), transparent 62%),
-    var(--bg);
-}
-.mf-stars {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    radial-gradient(1px 1px at 18% 28%, rgba(200, 225, 255, 0.7), transparent),
-    radial-gradient(1px 1px at 67% 21%, rgba(190, 215, 255, 0.6), transparent),
-    radial-gradient(1px 1px at 39% 71%, rgba(180, 210, 255, 0.5), transparent),
-    radial-gradient(1.4px 1.4px at 85% 58%, rgba(210, 230, 255, 0.6), transparent),
-    radial-gradient(1px 1px at 11% 82%, rgba(190, 215, 255, 0.5), transparent),
-    radial-gradient(1.2px 1.2px at 92% 88%, rgba(200, 222, 255, 0.55), transparent);
-  background-repeat: no-repeat;
-  animation: mfTwinkle 6.5s ease-in-out infinite;
-}
-@keyframes mfTwinkle {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 0.72; }
+  /* the shared .v5-header-field reads these — centre the field over the drum */
+  --hero-glow-x: 50%;
+  --hero-glow-y: -18%;
 }
 
 /* the drum — concentric ripples from a glowing, beating core */
@@ -431,20 +334,23 @@ h1, h2 { font-family: var(--headline); }
   box-shadow: 0 6px 22px color-mix(in srgb, var(--cyan) 22%, transparent);
 }
 
-/* promise cards — skeuo + lift + cyan edge on hover */
-.mf-promise {
-  transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s ease,
-    border-color 0.35s ease;
-}
+/* promise cards — the v5 seam-kit panel (F7 · was skeuo glass) */
 .mf-promise {
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--v4-line);
+  border-radius: calc(var(--v4-radius, 4px) + 2px);
+  background: color-mix(in oklch, var(--v4-bg-raised) 88%, transparent);
+  box-shadow: var(--seam-highlight);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s ease,
+    border-color 0.35s ease;
 }
 .mf-promise:hover {
-  transform: translateY(-5px);
-  border-color: color-mix(in srgb, var(--cyan) 45%, transparent);
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--cyan) 40%, transparent);
+  background: var(--v4-bg-raised);
 }
 /* the card register · the mono number · a hairline rule · a tag — the "spec
    sheet" read that ties the manifesto's promises to the rest of the site. */

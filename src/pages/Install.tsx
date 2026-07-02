@@ -81,9 +81,13 @@ export function Component() {
           >
             One binary. Your machine.
           </h1>
+          {/* the punch lede (F7) · the catchy line ABOVE the consumer TL;DR */}
+          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
+            Two minutes to your first run.
+          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Nika is <b>one Rust binary</b> — no daemon, no account, no cloud required.
-            Pick a way in below; the first run needs <b>no model and no API key</b>.
+            Nika is <b>one Rust binary</b>: no daemon, no account, no cloud required.
+            Pick a way in below and run your first file with a <b>free local model</b>.
           </p>
           <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
             macOS · Linux · air-gapped OK

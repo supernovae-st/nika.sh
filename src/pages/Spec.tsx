@@ -292,10 +292,14 @@ export function Component() {
           >
             The contract an agent must satisfy before it acts.
           </h1>
+          {/* the punch lede (F7) · the catchy line ABOVE the consumer TL;DR */}
+          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
+            The contract. Frozen forever.
+          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             A <code className="mono">.nika.yaml</code> is the plan, written down: one envelope,{' '}
-            <b>four verbs</b>, a typed task shape, and a <b>permits</b> block that declares —
-            and bounds — everything it&apos;s allowed to touch. You review it, the runtime
+            <b>four verbs</b>, a typed task shape, and a <b>permits</b> block that declares,
+            and bounds, everything it&apos;s allowed to touch. You review it, the runtime
             enforces it, then it runs. This is the friendly map; the{' '}
             <a href={SPEC} target="_blank" rel="noreferrer" className="spec-inline-link">
               nika-spec repository

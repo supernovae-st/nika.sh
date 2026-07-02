@@ -1661,6 +1661,11 @@
   align-items: center;
   text-align: center;
 }
+/* the shared site footer (F7) · its own v4sec-wrap would stack a full section
+   rhythm on top of the page's closing padding — keep the seam tight */
+.sitefoot-wrap {
+  padding-top: 48px;
+}
 .v4cta-title {
   margin-top: 24px;
   max-width: 18ch;

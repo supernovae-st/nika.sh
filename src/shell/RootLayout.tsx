@@ -3,6 +3,7 @@ import { useHead } from '@unhead/react'
 import { AuroraProvider } from '../fx/EdgeAurora'
 import { REPO, SITE } from '../content'
 import Nav from './Nav'
+import SiteFooter from './SiteFooter'
 import './skip-link.css'
 
 /* ─── site-wide JSON-LD · Organization + WebSite (schema.org) ─────────────────
@@ -41,22 +42,18 @@ const SITE_JSONLD = {
 
    <Nav/> is the ONE shared v4 nav (monochrome blueprint) — mounted here so every
    route shares a single nav (no per-page duplicate). It is fixed/sticky and
-   transparent over a hero, solid once scrolled. The Footer stays per-page for
-   now (the SUPERNOVAE wordmark lives inside Home).
+   transparent over a hero, solid once scrolled.
 
-   Exception · /manifesto. The manifesto is a self-contained cinematic page in a
-   different visual register (the cosmic cyan "drum", not the v4 monochrome
-   blueprint) and ships its OWN centered glass mini-nav (brand · "Manifesto" ·
-   ← Back to site) that belongs to that identity. So the shared monochrome Nav is
-   suppressed there — exactly one nav on that route, no overlap. Deriving this
-   from the path (not a route flag) keeps it identical on SSR + client, so it
-   never introduces a hydration branch. */
-
-const BARE_NAV_ROUTES = new Set(['/manifesto'])
+   <SiteFooter/> is the ONE shared footer (F7 · the F3 signature + the locked
+   SUPERNOVAE block + PROD rule) — mounted here on every route EXCEPT Home,
+   where FinalCTA renders it inside the close beat (its rhythm). Deriving both
+   from the path (not route flags) keeps SSR + client identical (no hydration
+   branch). The old /manifesto bare-nav exception is GONE (F7: one nav, one
+   footer, one theme everywhere — the manifesto now rides the shared shell). */
 
 export default function RootLayout() {
   const { pathname } = useLocation()
-  const showNav = !BARE_NAV_ROUTES.has(pathname)
+  const showFooter = pathname !== '/'
 
   /* site-wide structured data · prerendered into every route's <head> */
   useHead({
@@ -79,13 +76,14 @@ export default function RootLayout() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      {showNav ? <Nav /> : null}
+      <Nav />
       {/* the routed content target · the skip link lands here (id="main"); each
           page renders its own <main> landmark inside. tabindex=-1 so the link can
           move focus to it programmatically. */}
       <div id="main" tabIndex={-1} className="skip-target">
         <Outlet />
       </div>
+      {showFooter ? <SiteFooter /> : null}
     </AuroraProvider>
   )
 }

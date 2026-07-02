@@ -118,8 +118,10 @@ export function Component() {
           <h1 id="play-title" className="v4sec-title play-title">
             Write Nika, checked live.
           </h1>
+          {/* the punch lede (F7) · the catchy line ABOVE the consumer TL;DR */}
+          <p className="v4punch">Try it right here.</p>
           <p className="v4sec-lede">
-            Real Nika, validated as you type — the same <code className="mono">NIKA</code> codes
+            Real Nika, validated as you type: the same <code className="mono">NIKA</code> codes
             the engine raises, with their fixes. Everything runs in this tab; <b>nothing is sent
             anywhere</b>.
           </p>

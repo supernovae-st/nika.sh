@@ -3,13 +3,15 @@ import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { REPO, SPEC, routeHead } from '../content'
 
-/* ─── /manifesto · the drum of liberation ───────────────────────────────────
-   Routed at /manifesto (React Router) · no 3D, but cinematic: a CSS cosmic backdrop, the
-   DRUM as concentric cyan ripples radiating from a beating core (every workflow
-   run is a beat), gradient hero + statement type, glowing cognitive-stack tokens,
-   skeuo promise cards. The sovereignty manifesto, written the day a single
-   government letter switched off the most capable model on Earth for most of the
-   planet. Structural + a light drum · universalist · for everyone.
+/* ─── /manifesto · the drum of liberation (v5 theme · F7) ─────────────────────
+   Routed at /manifesto (React Router) · the sovereignty manifesto, written the
+   day a single government letter switched off the most capable model on Earth
+   for most of the planet. Every WORD kept (operator voice) — the SKIN is now
+   the one v5 system: the shared Nav + SiteFooter (RootLayout), the v5 header
+   field as backdrop (centered variant of the hero's quantized blue), seam-kit
+   promise panels. The v3 cosmic kit (cursor-glow lamp · .glass mini-nav ·
+   .skeuo spotlight cards · star backdrop) is GONE with its CSS. The DRUM stays:
+   it is the page's own metaphor, beating in the v5 accent.
    Copy discipline: no em-dash, no vendor named, no fact-checkable number.
    Effects (mf-*) live in index.css · reveal reuses the site's .rv (local observer). */
 
@@ -74,7 +76,8 @@ export function Component() {
     ],
   })
 
-  /* reveal-on-scroll (reuses the site .rv/.in) + the cursor lamp + card spotlight */
+  /* reveal-on-scroll (reuses the site .rv/.in) — the v3 cursor lamp + card
+     spotlight are gone with their DOM (F7) */
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => {
@@ -83,71 +86,17 @@ export function Component() {
       { threshold: 0.16, rootMargin: '0px 0px -8% 0px' },
     )
     document.querySelectorAll<HTMLElement>('.rv').forEach((el) => io.observe(el))
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const coarse = window.matchMedia('(pointer: coarse)').matches
-    const glow = document.getElementById('cursor-glow')
-    let raf = 0
-    let gx = window.innerWidth / 2
-    let gy = window.innerHeight / 2
-    let tx = gx
-    let ty = gy
-    let lastCard: HTMLElement | null = null
-
-    const onMove = (e: PointerEvent) => {
-      tx = e.clientX
-      ty = e.clientY
-      const card = (e.target as HTMLElement).closest?.('.skeuo, .glass') as HTMLElement | null
-      if (lastCard && lastCard !== card) lastCard.style.removeProperty('--spot-o')
-      if (card) {
-        const r = card.getBoundingClientRect()
-        card.style.setProperty('--mx', `${e.clientX - r.left}px`)
-        card.style.setProperty('--my', `${e.clientY - r.top}px`)
-        card.style.setProperty('--spot-o', '1')
-      }
-      lastCard = card
-    }
-    const tick = () => {
-      gx += (tx - gx) * 0.16
-      gy += (ty - gy) * 0.16
-      if (glow) glow.style.transform = `translate(${gx - 190}px, ${gy - 190}px)`
-      raf = requestAnimationFrame(tick)
-    }
-    if (!reduced && !coarse) {
-      window.addEventListener('pointermove', onMove, { passive: true })
-      raf = requestAnimationFrame(tick)
-    }
-    return () => {
-      io.disconnect()
-      window.removeEventListener('pointermove', onMove)
-      cancelAnimationFrame(raf)
-    }
+    return () => io.disconnect()
   }, [])
 
   return (
-    /* .mf-scope · style scope only (v5 light-touch): re-seats the page accent
-       from the v3 cyan onto the v5 blue family + deepens the backdrop to the
-       engineered-black ladder (see index.css). Zero copy changes. */
+    /* .mf-scope · the v5 skin: re-seats the page accent onto the v5 blue and
+       re-centres the shared v5 header field behind the drum (see index.css).
+       The site Nav + SiteFooter come from RootLayout. Zero copy changes. */
     <div className="mf-scope">
-      <div className="mf-cosmos" aria-hidden />
-      <div className="mf-stars" aria-hidden />
-      <div id="cursor-glow" aria-hidden />
-
-      {/* mini nav */}
-      <nav className="glass fixed top-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1 rounded-full px-2 py-1.5 text-[13px]">
-        <Link to="/" className="flex items-center gap-2 px-3 py-1.5 font-semibold tracking-tight">
-          <img src="/nika.svg" alt="" width={17} height={17} />
-          nika
-        </Link>
-        <span className="mx-1 h-4 w-px" style={{ background: 'var(--hair)' }} />
-        <span className="px-3 py-1.5 text-[var(--fg)]">Manifesto</span>
-        <Link
-          to="/"
-          className="rounded-full px-3 py-1.5 whitespace-nowrap text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
-        >
-          ← Back to site
-        </Link>
-      </nav>
+      {/* the v5 field · the hero's quantized blue, re-anchored to the top
+          centre for the drum composition (mf-scope overrides the glow vars) */}
+      <div className="v5-header-field" aria-hidden />
 
       <main className="relative z-20">
         {/* ─── HERO · the drum beats behind the title ─── */}
@@ -255,7 +204,7 @@ export function Component() {
             {PROMISES.map((p, i) => (
               <div
                 key={p.n}
-                className="rv mf-promise skeuo rounded-2xl px-7 py-7"
+                className="rv mf-promise px-7 py-7"
                 style={{ transitionDelay: `${i * 70}ms` }}
               >
                 <span className="mf-promise-hud" aria-hidden />
@@ -324,18 +273,6 @@ export function Component() {
           </div>
         </section>
 
-        <footer
-          className="mono mx-auto flex max-w-5xl items-center justify-between border-t px-6 py-7 text-[12px] text-[var(--fg-ghost)]"
-          style={{ borderColor: 'var(--hair)' }}
-        >
-          <span className="flex items-center gap-2">
-            <img src="/nika.svg" alt="" width={13} height={13} style={{ opacity: 0.7 }} />
-            nika · free software · AGPL-3.0-or-later
-          </span>
-          <Link to="/" className="transition-colors hover:text-[var(--fg-mute)]">
-            ← supernovae
-          </Link>
-        </footer>
       </main>
     </div>
   )

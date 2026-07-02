@@ -99,8 +99,12 @@ export function Component() {
           >
             One file, line by line.
           </h1>
+          {/* the punch lede (F7) · the catchy line ABOVE the consumer TL;DR */}
+          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
+            Read one file. Understand everything.
+          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            A workflow is <b>a file you can read</b> — and eight small ideas make you fluent in
+            A workflow is <b>a file you can read</b>, and eight small ideas make you fluent in
             it. Every fragment below is <b>real</b>, spec-correct YAML, read through the same
             editor surface you&apos;ll use in the playground.
           </p>

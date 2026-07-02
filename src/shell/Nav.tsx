@@ -23,6 +23,12 @@ import './shell.css'
    event handlers. The fixed-position sentinel detection degrades gracefully —
    if the observer never fires (no hero on a page) the nav simply stays solid. */
 
+/* routes that ship the blue field behind the nav — ONLY these earn the
+   transparent-at-top nav (F5). Everywhere else the transparent nav's dark
+   legibility scrim reads as a gray smudge over a plain/light page top
+   (review P2-12), so field-less routes render SOLID from scroll 0. */
+const FIELD_ROUTES = new Set(['/', '/manifesto'])
+
 interface MegaItem {
   label: string
   desc: string
@@ -129,7 +135,8 @@ function ItemLink({
 
 export default function Nav() {
   const location = useLocation()
-  const [scrolled, setScrolled] = useState(false)
+  /* field-less routes prerender SOLID (no transparent flash · P2-12) */
+  const [scrolled, setScrolled] = useState(() => !FIELD_ROUTES.has(location.pathname))
   const [megaOpen, setMegaOpen] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
 
@@ -143,13 +150,15 @@ export default function Nav() {
   const megaId = useId()
   const sheetId = useId()
 
-  /* ── nav solidifies once the hero sentinel scrolls past the top ──
-     The sentinel is a 1px marker placed just under the nav height. While it is
-     in view (top of page over the hero) the nav stays transparent; once it
-     leaves, the nav goes solid. Pages without a hero keep the nav solid. */
+  /* ── nav solidifies once the top-of-page sentinel scrolls past ──
+     The sentinel is a 1px marker at the top of the document; while it is in
+     view the nav stays transparent, once it leaves the nav goes solid.
+     Transparent-at-top applies ONLY on FIELD_ROUTES (the nav floats on the
+     blue field, F5) — field-less routes are solid from scroll 0 (P2-12). */
+  const hasField = FIELD_ROUTES.has(location.pathname)
   useEffect(() => {
     const el = sentinelRef.current
-    if (!el || typeof IntersectionObserver === 'undefined') {
+    if (!hasField || !el || typeof IntersectionObserver === 'undefined') {
       setScrolled(true)
       return
     }
@@ -159,7 +168,7 @@ export default function Nav() {
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [location.pathname])
+  }, [location.pathname, hasField])
 
   /* ── close everything on a real route change (back/forward + cross-route nav).
      Guarded by a ref so setState only fires when the location actually changed —

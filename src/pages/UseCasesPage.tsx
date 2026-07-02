@@ -13,9 +13,11 @@ import './usecases-page.css'
 /* ─── /use-cases · the « I want to… » persona gallery (theme-light) ───────────
    The discourse-kit shape (public-clarity kit §3): the gallery answers « moi
    aussi je fais ça ». Cards are grouped by WHO wants the outcome — Everyone ·
-   Founders & ops · Developers — and every card leads with a plain-language
-   outcome title that completes the « I want to… » stem, then a one-line
-   two-tone gloss (claim + elaboration), then the real projected plan + YAML.
+   Founders & ops · Developers · Creators · Researchers & students (F7: the
+   20 showcase cases RE-SPLIT across 5 audiences, nothing invented) — and every
+   card leads with a plain-language outcome title that completes the « I want
+   to… » stem, then a one-line two-tone gloss (claim + elaboration), then the
+   real projected plan + YAML.
 
    Spec truth is UNCHANGED: every YAML comes from SHOWCASE_YAML (projected from
    nika-spec showcase via the projector · never hand-typed) and the verb chips /
@@ -75,13 +77,7 @@ const PERSONAS: Persona[] = [
         slug: 't1-price-watch',
         title: 'Watch a price and get pinged when it moves',
         claim: 'No AI involved at all.',
-        gloss: 'one fetch, one compare, one ping — a robot you can already trust.',
-      },
-      {
-        slug: 't1-social-repurpose',
-        title: 'Say it once, publish it everywhere',
-        claim: 'One post becomes a thread, a LinkedIn version and a newsletter blurb.',
-        gloss: 'rewritten in parallel, same voice on every channel.',
+        gloss: 'one fetch, one compare, one ping. A robot you can already trust.',
       },
       {
         slug: 't2-invoice-chaser',
@@ -89,11 +85,31 @@ const PERSONAS: Persona[] = [
         claim: 'The reminders get drafted for you.',
         gloss: 'nothing is saved until you read them and type yes.',
       },
+    ],
+  },
+  {
+    id: 'founders-ops',
+    label: 'Founders & ops',
+    kicker: 'for founders & ops',
+    hook: 'The Monday-morning chores, briefs, queues and radars, described once, done every week.',
+    cards: [
       {
-        slug: 't2-contract-guard',
-        title: 'Check a contract without it leaving your machine',
-        claim: 'A local model reads the clauses.',
-        gloss: 'the document never touches the internet, and two checks gate the memo.',
+        slug: 't4-ceo-monday-brief',
+        title: 'Start the week with the numbers already gathered',
+        claim: 'Market, repo pulse and the KPI sheet collected in parallel.',
+        gloss: 'the ping even reports its own cost.',
+      },
+      {
+        slug: 't3-competitor-radar',
+        title: 'Know what competitors shipped, every Monday',
+        claim: 'It reads their sites while you sleep.',
+        gloss: 'one brief on your desk at 8am, with what it signals.',
+      },
+      {
+        slug: 't2-support-triage',
+        title: 'Wake up to a sorted support queue',
+        claim: 'Overnight tickets get tagged, drafted and batched.',
+        gloss: 'humans start at 9am on the hard ones.',
       },
       {
         slug: 't3-resume-screener',
@@ -104,54 +120,10 @@ const PERSONAS: Persona[] = [
     ],
   },
   {
-    id: 'founders-ops',
-    label: 'Founders & ops',
-    kicker: 'for founders & ops',
-    hook: 'The Monday-morning chores — briefs, queues, radars — described once, done every week.',
-    cards: [
-      {
-        slug: 't3-competitor-radar',
-        title: 'Know what competitors shipped, every Monday',
-        claim: 'It reads their sites while you sleep.',
-        gloss: 'one brief on your desk at 8am, with what it signals.',
-      },
-      {
-        slug: 't4-ceo-monday-brief',
-        title: 'Start the week with the numbers already gathered',
-        claim: 'Market, repo pulse and the KPI sheet collected in parallel.',
-        gloss: 'the ping even reports its own cost.',
-      },
-      {
-        slug: 't4-deep-research-brief',
-        title: 'Turn “get me up to speed” into a brief you can audit',
-        claim: 'A fast model plans, an agent digs inside hard budgets, a careful model writes.',
-        gloss: 'every step leaves a record.',
-      },
-      {
-        slug: 't2-support-triage',
-        title: 'Wake up to a sorted support queue',
-        claim: 'Overnight tickets get tagged, drafted and batched.',
-        gloss: 'humans start at 9am on the hard ones.',
-      },
-      {
-        slug: 't2-seo-content-brief',
-        title: 'Turn a rival’s best page into your content brief',
-        claim: 'It reads what actually ranks.',
-        gloss: 'your writer starts from the gaps, not a blank page.',
-      },
-      {
-        slug: 't3-localization-factory',
-        title: 'Get the docs in French by lunch',
-        claim: 'Every file found, translated in parallel, filed back in place.',
-        gloss: 'same folder layout, same voice.',
-      },
-    ],
-  },
-  {
     id: 'developers',
     label: 'Developers',
     kicker: 'for developers',
-    hook: 'The boring parts of shipping run themselves — with a human gate exactly where it counts.',
+    hook: 'The boring parts of shipping run themselves, with a human gate exactly where it counts.',
     cards: [
       {
         slug: 't1-standup-digest',
@@ -179,7 +151,7 @@ const PERSONAS: Persona[] = [
       },
       {
         slug: 't4-release-train',
-        title: 'Ship only when everything is green — and a human says go',
+        title: 'Ship only when everything is green, and a human says go',
         claim: 'Tests, lint and audit run in parallel; a person signs the GO.',
         gloss: 'it ships on time or not at all, and the record shows which.',
       },
@@ -190,16 +162,62 @@ const PERSONAS: Persona[] = [
         gloss: 'silence means prod matches exactly.',
       },
       {
-        slug: 't2-etl-quarantine',
-        title: 'Stop re-running the whole night for three bad rows',
-        claim: 'A checkpoint splits good rows from bad.',
-        gloss: 'rejects land in quarantine, the pipeline keeps going.',
-      },
-      {
         slug: 't4-incident-war-room',
         title: 'Have the postmortem drafted before the retro',
         claim: 'Logs, status history and the runbook gathered in parallel.',
         gloss: 'a typed timeline, verified before any draft.',
+      },
+    ],
+  },
+  {
+    id: 'creators',
+    label: 'Creators',
+    kicker: 'for creators',
+    hook: 'One voice, many surfaces. The publishing chores run themselves; the voice stays yours.',
+    cards: [
+      {
+        slug: 't1-social-repurpose',
+        title: 'Say it once, publish it everywhere',
+        claim: 'One post becomes a thread, a LinkedIn version and a newsletter blurb.',
+        gloss: 'rewritten in parallel, same voice on every channel.',
+      },
+      {
+        slug: 't2-seo-content-brief',
+        title: 'Turn a rival’s best page into your content brief',
+        claim: 'It reads what actually ranks.',
+        gloss: 'your writer starts from the gaps, not a blank page.',
+      },
+      {
+        slug: 't3-localization-factory',
+        title: 'Get the docs in French by lunch',
+        claim: 'Every file found, translated in parallel, filed back in place.',
+        gloss: 'same folder layout, same voice.',
+      },
+    ],
+  },
+  {
+    id: 'researchers-students',
+    label: 'Researchers & students',
+    kicker: 'for researchers & students',
+    hook: 'Reading, digging and cleaning at machine pace, with a record you can check afterwards.',
+    cards: [
+      {
+        slug: 't4-deep-research-brief',
+        title: 'Turn “get me up to speed” into a brief you can audit',
+        claim: 'A fast model plans, an agent digs inside hard budgets, a careful model writes.',
+        gloss: 'every step leaves a record.',
+      },
+      {
+        slug: 't2-contract-guard',
+        title: 'Check a dense document without it leaving your machine',
+        claim: 'A local model reads the clauses.',
+        gloss: 'the document never touches the internet, and two checks gate the memo.',
+      },
+      {
+        slug: 't2-etl-quarantine',
+        title: 'Stop re-running the whole night for three bad rows',
+        claim: 'A checkpoint splits good rows from bad.',
+        gloss: 'rejects land in quarantine, the pipeline keeps going.',
       },
     ],
   },
@@ -447,10 +465,14 @@ export function Component() {
           >
             “I want to…”
           </h1>
+          {/* the punch lede (F7) · the catchy line ABOVE the consumer TL;DR */}
+          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
+            There&rsquo;s a file for that.
+          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Start from the outcome. Anything you ask an AI to do more than once belongs in{' '}
-            <b>a file you can read before it runs</b>. Every card below is a real workflow — pulled
-            from the language’s own test suite, never mocked — with its plan (
+            <b>a file you can read before it runs</b>. Every card below is a real workflow, pulled
+            from the language&rsquo;s own test suite, never mocked, with its plan (
             <em>the tasks and what they wait on</em>) and the exact YAML that runs it.
           </p>
 
@@ -458,9 +480,9 @@ export function Component() {
           <dl className="ucp-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
             {[
               { n: total, label: 'workflows', sub: 'spec-valid' },
-              { n: PERSONAS.length, label: 'audiences', sub: 'everyone → devs' },
+              { n: PERSONAS.length, label: 'audiences', sub: 'everyone → researchers' },
               { n: 4, label: 'tiers', sub: 'T1 → T4' },
-              { n: totalTasks, label: 'tasks', sub: 'projected plans' },
+              { n: totalTasks, label: 'tasks', sub: 'across all workflows' },
             ].map((s, i) => (
               <div className="ucp-stamp-cell" key={s.label}>
                 <span className="ucp-stamp-fig" aria-hidden>
@@ -506,7 +528,7 @@ export function Component() {
             >
               nika-spec/examples/showcase
             </a>{' '}
-            — every file audited before it runs: plan, cost, secrets
+            · every file audited before it runs: plan, cost, secrets
           </p>
 
           <div className="ucp-links">
