@@ -105,7 +105,7 @@ export function buildScript(entry: FlagshipEntry): {
         lines.push({
           kind: 'skip',
           glyph: '⊘',
-          text: `${s.task}  skipped · ${s.detail ?? 'gate closed'}`,
+          text: `${s.task}  skipped · ${s.detail ?? s.note ?? 'gate closed'}`,
           delayMs: delay,
           progress: 0,
         })
