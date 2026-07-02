@@ -1,71 +1,20 @@
-import { useState } from 'react'
 import { Link } from 'react-router'
 import { REPO, SPEC, DOCS } from '../content'
+import { CopyRow } from '../components/CopyRow'
+import { INSTALL_CMD } from '../components/InstallCommand'
 import { useRevealOnce } from './use-reveal-once'
 import './v4-home.css'
 
 /* ─── FIG 10.0 · Final CTA + SUPERNOVAE footer (theme-dark · the close) ─────────
-   Design doc §6 (FIG 10.0). The clean v4 close: the install affordance (the same
-   monochrome install line as the hero, §4), Star on GitHub, Read the spec — in
-   the blueprint register. The SUPERNOVAE footer below is KEPT INTACT (operator
-   lock): the per-letter wordmark float, the studio line, the founders, the
-   free-software footer — copied verbatim from the v3 close, just re-housed here.
+   Design doc §6 (FIG 10.0). The clean v4 close: the install affordance (the
+   shared <CopyRow/> · the same monochrome install line as GetStarted), Star on
+   GitHub, Read the spec — in the blueprint register. The SUPERNOVAE footer
+   below is KEPT INTACT (operator lock): the per-letter wordmark float, the
+   studio line, the founders, the free-software footer — copied verbatim from
+   the v3 close, just re-housed here.
 
    SSR-safe: pure DOM; the reveal is an IntersectionObserver added on mount,
-   content fully visible by default (no-JS / reduced-motion). navigator is only
-   read inside the copy handler. */
-
-const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
-
-/* the monochrome install affordance — identical register to the hero's
-   InstallLine (src/shell/shell.css .v4install). A bordered mono row + a copy
-   button with a non-color-only copied state (icon + text both flip). */
-function InstallLine() {
-  const [copied, setCopied] = useState(false)
-  const copy = () => {
-    navigator.clipboard?.writeText(INSTALL_CMD)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1600)
-  }
-  return (
-    <div className="v4install">
-      <span className="v4install-cmd">
-        <span className="v4install-dollar" aria-hidden>
-          ❯
-        </span>
-        brew install <span className="v4install-dim">supernovae-st/tap/</span>nika
-      </span>
-      <button
-        type="button"
-        onClick={copy}
-        className="v4install-copy"
-        data-copied={copied}
-        aria-label="Copy install command"
-      >
-        {/* polite live region — an aria-label swap alone is not reliably announced */}
-        <span role="status" className="sr-only">
-          {copied ? 'Copied to clipboard' : ''}
-        </span>
-        {copied ? (
-          <>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-            Copied
-          </>
-        ) : (
-          <>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-              <rect x="9" y="9" width="11" height="11" rx="2" />
-              <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-            </svg>
-            Copy
-          </>
-        )}
-      </button>
-    </div>
-  )
-}
+   content fully visible by default (no-JS / reduced-motion). */
 
 export default function FinalCTA() {
   /* reveal the rows once, on first intersection (motion-safe; default visible;
@@ -99,7 +48,15 @@ export default function FinalCTA() {
         </p>
 
         <div className="v4cta-install" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
-          <InstallLine />
+          <CopyRow
+            cmd={INSTALL_CMD}
+            label="install"
+            display={
+              <>
+                brew install <span className="v4install-dim">supernovae-st/tap/</span>nika
+              </>
+            }
+          />
         </div>
 
         <div className="v4cta-links" data-rise style={{ ['--rise-delay' as string]: '240ms' }}>

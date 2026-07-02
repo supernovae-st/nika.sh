@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { tokenize, verbGlyph, type Token, type TokenKind } from './codefile-highlight'
+import { useCopy } from '../lib/use-copy'
+import { CopyIcon } from './CopyRow'
 import '../shell/shell.css'
 import './codefile.css'
 
@@ -76,13 +78,7 @@ function TokenSpan({ token }: { token: Token }) {
 }
 
 function CopyButton({ value }: { value: string }) {
-  const [copied, setCopied] = useState(false)
-  const copy = () => {
-    // navigator is only touched inside the handler → SSR/prerender safe.
-    navigator.clipboard?.writeText(value)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1400)
-  }
+  const { copied, copy } = useCopy(value) // shared state · one reset delay · unmount-safe
   return (
     <button
       type="button"
@@ -96,16 +92,7 @@ function CopyButton({ value }: { value: string }) {
       <span role="status" className="sr-only">
         {copied ? 'Copied to clipboard' : ''}
       </span>
-      {copied ? (
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
-          <path d="M20 6 9 17l-5-5" />
-        </svg>
-      ) : (
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-          <rect x="9" y="9" width="11" height="11" rx="2" />
-          <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-        </svg>
-      )}
+      <CopyIcon copied={copied} />
       <span className="cf-copy-label" aria-hidden>
         {copied ? 'Copied' : 'Copy'}
       </span>

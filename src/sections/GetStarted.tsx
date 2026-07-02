@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import { Link } from 'react-router'
 import { useRevealOnce } from './use-reveal-once'
 import { CodeFile } from '../components/CodeFile'
-import { InstallCommand } from '../components/InstallCommand'
+import { CopyRow } from '../components/CopyRow'
+import { InstallCommand, INSTALL_CMD } from '../components/InstallCommand'
 import { DOCS } from '../content'
 import { SHOWCASE_YAML } from './usecases-yaml.generated'
 import { sliceExcerpt } from './living/excerpt'
@@ -32,7 +32,6 @@ import './v4-home.css'
    (the slice lives in the prerendered HTML); the reveal is an IntersectionObserver
    added on mount with content visible by default (no-JS / reduced-motion). */
 
-const BREW_CMD = 'brew install supernovae-st/tap/nika'
 const CURL_CMD = 'curl -LsSf https://nika.sh/install.sh | sh'
 const RUN_CMD = 'nika run standup-digest.nika.yaml'
 
@@ -53,57 +52,6 @@ const { text: WRITE_YAML } = sliceExcerpt(FULL_YAML, [
   [18, 24], // - id: digest · depends_on · infer · prompt head
   [37, 38], // outputs: · note
 ])
-
-/* the monochrome install affordance — the hero's pattern (.v4install in
-   src/shell/shell.css), parameterised for the two install methods. A bordered
-   mono row + a copy button with a non-color-only copied state (icon + text both
-   flip). SSR-safe: navigator is only read inside the click handler. */
-function CopyRow({ cmd, label }: { cmd: string; label: string }) {
-  const [copied, setCopied] = useState(false)
-  const copy = () => {
-    navigator.clipboard?.writeText(cmd)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1600)
-  }
-  return (
-    <div className="v4install">
-      <span className="v4install-cmd">
-        <span className="v4install-dollar" aria-hidden>
-          ❯
-        </span>
-        {cmd}
-      </span>
-      <button
-        type="button"
-        onClick={copy}
-        className="v4install-copy"
-        data-copied={copied}
-        aria-label={`Copy ${label} command`}
-      >
-        {/* polite live region — an aria-label swap alone is not reliably announced */}
-        <span role="status" className="sr-only">
-          {copied ? 'Copied to clipboard' : ''}
-        </span>
-        {copied ? (
-          <>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden>
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-            Copied
-          </>
-        ) : (
-          <>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-              <rect x="9" y="9" width="11" height="11" rx="2" />
-              <path d="M5 15V5a2 2 0 0 1 2-2h10" />
-            </svg>
-            Copy
-          </>
-        )}
-      </button>
-    </div>
-  )
-}
 
 export default function GetStarted() {
   /* reveal the rows once, on first intersection (motion-safe; default visible;
@@ -139,7 +87,7 @@ export default function GetStarted() {
                 One Rust binary. Homebrew on macOS, or the install script anywhere.
               </p>
               <div className="v4start-installs">
-                <CopyRow cmd={BREW_CMD} label="Homebrew install" />
+                <CopyRow cmd={INSTALL_CMD} label="Homebrew install" />
                 <span className="v4start-or" aria-hidden>
                   or
                 </span>
