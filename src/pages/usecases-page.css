@@ -17,6 +17,43 @@
   max-width: 16ch;
 }
 
+/* ── the rotating outcome · a real card title cycles after « I want to… ».
+   Fixed min-height (2 lines mobile · 1 desktop) so the swap never reflows;
+   leave = fade+lift 260ms, the next line enters through the same rule. */
+.ucp-rota {
+  margin-top: 10px;
+  min-height: 2.5em;
+  font-family: var(--headline);
+  font-weight: 600;
+  font-size: clamp(19px, 1.1rem + 0.9vw, 26px);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--v4-text);
+}
+@media (min-width: 720px) {
+  .ucp-rota {
+    min-height: 1.25em;
+  }
+}
+.ucp-rota-line {
+  display: inline-block;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.26s ease, transform 0.26s ease;
+}
+.ucp-rota-line.is-leaving {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ucp-rota-line,
+  .ucp-rota-line.is-leaving {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ── the métier rail · sticky in-page anchor jumps ───────────────────────────
    Hairline pills; the section in view (scroll-spy) gets the inked-solid state,
    mirroring the home section's active tab. */

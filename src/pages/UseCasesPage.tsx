@@ -392,6 +392,66 @@ function PersonaSection({ persona, index }: { persona: Persona; index: number })
   )
 }
 
+/* ─── the rotating outcome · one REAL card title per persona cycles inside the
+   hero claim (« I want to… <outcome> »). Honesty: every line is the exact
+   title of a card rendered further down this page; nothing is invented.
+   SSG renders the first line statically; reduced-motion never cycles. */
+const ROTA_LINES = PERSONAS.map((p) => p.cards[0]?.title ?? '').filter(Boolean)
+function RotatingOutcome() {
+  const [i, setI] = useState(0)
+  const [leaving, setLeaving] = useState(false)
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const tick = setInterval(() => {
+      setLeaving(true)
+      window.setTimeout(() => {
+        setI((n) => (n + 1) % ROTA_LINES.length)
+        setLeaving(false)
+      }, 260)
+    }, 3000)
+    return () => clearInterval(tick)
+  }, [])
+  return (
+    <p className="ucp-rota" data-rise style={{ ['--rise-delay' as string]: '80ms' }}>
+      <span className={leaving ? 'ucp-rota-line is-leaving' : 'ucp-rota-line'}>
+        …{ROTA_LINES[i]?.charAt(0).toLowerCase()}{ROTA_LINES[i]?.slice(1)}
+      </span>
+    </p>
+  )
+}
+
+/* count-up · the stamp figures roll from 0 on first sight (integers only,
+   ~700ms ease-out). Reduced-motion or no IO support: static value. */
+function CountUp({ n }: { n: number }) {
+  const [shown, setShown] = useState(n)
+  const [el, setEl] = useState<HTMLElement | null>(null)
+  useEffect(() => {
+    if (!el) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let raf = 0
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e?.isIntersecting) return
+        io.disconnect()
+        const t0 = performance.now()
+        const step = (t: number) => {
+          const p = Math.min(1, (t - t0) / 700)
+          setShown(Math.round(n * (1 - (1 - p) ** 3)))
+          if (p < 1) raf = requestAnimationFrame(step)
+        }
+        raf = requestAnimationFrame(step)
+      },
+      { threshold: 0.4 },
+    )
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      cancelAnimationFrame(raf)
+    }
+  }, [el, n])
+  return <span ref={setEl}>{shown}</span>
+}
+
 export function Component() {
   /* reveal the page once, on first intersection (motion-safe; default visible;
      safety-net timer reveals anyway if the observer misfires) */
@@ -465,6 +525,8 @@ export function Component() {
           >
             “I want to…”
           </h1>
+          {/* the rotating outcome · real card titles from below, cycling */}
+          <RotatingOutcome />
           {/* the punch lede (F7) · the catchy line ABOVE the consumer TL;DR */}
           <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
             There&rsquo;s a file for that.
@@ -488,7 +550,9 @@ export function Component() {
                 <span className="ucp-stamp-fig" aria-hidden>
                   {String(i).padStart(2, '0')}
                 </span>
-                <dd className="ucp-stamp-n">{s.n}</dd>
+                <dd className="ucp-stamp-n">
+                  <CountUp n={s.n} />
+                </dd>
                 <dt className="ucp-stamp-label">{s.label}</dt>
                 <span className="ucp-stamp-sub">{s.sub}</span>
               </div>

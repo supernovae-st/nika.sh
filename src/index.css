@@ -107,6 +107,23 @@ body { background: var(--bg); overflow-x: clip; }
 main > section { overflow-x: clip; }
 ::selection { background: color-mix(in oklch, var(--brand) 40%, transparent); color: #fff; }
 
+/* the scrollbar joins the instrument · thin, engineered, blue-on-black. The
+   default chrome scrollbar is the one unstyled element left on the frame.
+   Firefox first (standard properties), then the WebKit long-form. Never on
+   inner scroll wells (scoped to the root scroller only). */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(79 134 255 / 0.28) #08090b;
+}
+html::-webkit-scrollbar { width: 10px; }
+html::-webkit-scrollbar-track { background: #08090b; }
+html::-webkit-scrollbar-thumb {
+  background: rgb(79 134 255 / 0.26);
+  border: 3px solid #08090b; /* inset the thumb to a 4px hairline */
+  border-radius: 5px;
+}
+html::-webkit-scrollbar-thumb:hover { background: rgb(79 134 255 / 0.45); }
+
 /* keyboard focus — theme-aware ring. --v4-focus-ring is re-scoped per section
    (cyan on the dark base, near-black on the light surfaces) so the indicator
    clears WCAG 1.4.11 (≥3:1) on BOTH themes; the cyan fallback keeps the v3
