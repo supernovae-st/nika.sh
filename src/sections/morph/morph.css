@@ -1,0 +1,505 @@
+/* ─── THE MORPH · file → DAG → run · one scroll-linked scene (F2) ─────────────
+   Desktop only (≥768px): the mobile vertical story (run + plan sections)
+   stays — the two variants gate each other here. The armed stage is sticky
+   inside a tall runway; EVERY visual derives from scroll progress in
+   ScrollMorph.tsx (transform/opacity only, one rAF, native scroll physics).
+   Not armed (no-JS · reduced-motion) = the static final scene. */
+
+.morphsec {
+  position: relative;
+  background: var(--v4-bg);
+}
+@media (max-width: 767px) {
+  .morphsec {
+    display: none; /* the vertical story owns ≤767px */
+  }
+}
+@media (min-width: 768px) {
+  .morph-mobile-story {
+    display: none; /* the morph owns the desktop */
+  }
+}
+
+/* the runway · only when the scroll driver is armed */
+.morphsec[data-armed] {
+  height: 340vh;
+}
+.morphsec[data-armed] .morph-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: clip;
+}
+.morph-stage {
+  display: flex;
+  flex-direction: column;
+}
+.morph-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(72px, 10vh, 110px) clamp(20px, 4vw, 48px) 22px;
+}
+/* armed: the terminal + caption are BOTTOM OVERLAYS (they reserve no flow
+   space, so the traveling file gets the whole area under the head) and the
+   DAG stops above the terminal zone */
+.morphsec[data-armed] .morph-wrap {
+  position: relative;
+  height: 100%;
+}
+.morphsec[data-armed] .morph-term {
+  position: absolute;
+  left: clamp(20px, 4vw, 48px);
+  right: clamp(20px, 4vw, 48px);
+  bottom: 44px;
+  z-index: 3;
+}
+.morphsec[data-armed] .morph-caption {
+  position: absolute;
+  left: clamp(20px, 4vw, 48px);
+  bottom: 16px;
+  z-index: 3;
+}
+/* static scene breathes like a normal section */
+.morphsec:not([data-armed]) .morph-wrap {
+  padding-top: var(--rhythm-sec-m, 96px);
+  padding-bottom: var(--rhythm-sec-m, 96px);
+  gap: 28px;
+}
+
+/* ── head · fig + title + phase captions ───────────────────────────────────── */
+.morph-head {
+  position: relative;
+  z-index: 3;
+}
+.morph-title {
+  margin-top: 10px;
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v4-text);
+}
+.morph-captions {
+  position: relative;
+  margin-top: 8px;
+  min-height: 24px;
+}
+.morph-cap {
+  position: absolute;
+  inset: 0 auto auto 0;
+  margin: 0;
+  font-size: 15px;
+  color: var(--v4-text-dim);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.3s var(--ease-ui, ease),
+    transform 0.3s var(--ease-ui, ease);
+  pointer-events: none;
+}
+.morph-cap b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.morph-stage[data-phase='file'] .morph-cap[data-for='file'],
+.morph-stage[data-phase='burst'] .morph-cap[data-for='burst'],
+.morph-stage[data-phase='run'] .morph-cap[data-for='run'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── the scene · card + DAG share the space ────────────────────────────────── */
+.morph-scene {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.morphsec:not([data-armed]) .morph-scene {
+  flex: none;
+}
+
+/* THE FILE · centered in the scene while it travels (armed only) */
+.morph-file {
+  pointer-events: none; /* decorative in the morph — the hero owns interaction */
+}
+.morphsec:not([data-armed]) .morph-file {
+  display: none; /* the static scene is the finished DAG, not the file */
+}
+.morphsec[data-armed] .morph-file {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.morph-code {
+  width: min(620px, 52vw);
+}
+/* the card shell (chrome · gutter · floor) dissolves through the burst via
+   --msh (1→0, written per-frame). The flying lines keep their own opacity.
+   EVERY inner floor must ride --msh — a leftover .cf-body background would
+   paint a dark slab over the landed nodes (found empirically, frame 3). */
+.morph-code.cf-panel {
+  border-color: color-mix(in srgb, var(--v4-line) calc(var(--msh, 1) * 100%), transparent);
+  background: color-mix(in srgb, var(--cf-bg) calc(94% * var(--msh, 1)), transparent);
+  box-shadow: none;
+}
+.morph-code .cf-body {
+  background: color-mix(in srgb, var(--cf-bg) calc(100% * var(--msh, 1)), transparent);
+}
+.morph-code .cf-body::after {
+  display: none; /* no scroll cue — the morph card never scrolls */
+}
+.morph-code .cf-chrome {
+  opacity: var(--msh, 1);
+}
+.morph-code .cf-ln {
+  opacity: var(--msh, 1);
+}
+.morph-code .cf-pre {
+  font-size: clamp(9px, 1.05vh, 12px);
+  line-height: 1.5;
+  overflow: hidden; /* at rest: truncate long lines, never a scrollbar */
+  width: 100%;
+}
+.morph-code .cf-line {
+  will-change: transform, opacity;
+  background-image: none; /* the gutter hairline must not fly with the line */
+}
+/* once the burst begins the lines LEAVE the card — clipping would amputate
+   every flight that targets a node beyond the card edge */
+.morph-stage[data-phase='burst'] .morph-code.cf-panel,
+.morph-stage[data-phase='run'] .morph-code.cf-panel,
+.morph-stage[data-phase='burst'] .morph-code .cf-pre,
+.morph-stage[data-phase='run'] .morph-code .cf-pre {
+  overflow: visible;
+}
+
+/* THE DAG · wave columns, vertically centered in the scene */
+.morph-dag {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 4vw, 64px);
+  z-index: 1;
+}
+.morphsec[data-armed] .morph-dag {
+  position: absolute;
+  /* the bottom offset reserves the terminal zone — a landed node must never
+     hide behind the rising strip (found empirically, frame 4) */
+  inset: 0 0 calc(clamp(80px, 11vh, 140px) + 104px) 0;
+}
+.morph-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.morph-wires path {
+  fill: none;
+  stroke: rgb(140 170 255 / 0.28);
+  stroke-width: 1.4;
+}
+.morphsec[data-armed] .morph-wires path {
+  opacity: 0; /* the driver draws them (dashoffset + opacity per frame) */
+}
+.morph-wires circle {
+  fill: rgb(140 170 255 / 0.4);
+}
+.morphsec[data-armed] .morph-wires circle {
+  opacity: 0;
+  transition: opacity 0.25s var(--ease-ui, ease);
+}
+.morph-stage[data-phase='run'] .morph-wires circle {
+  opacity: 1;
+}
+
+.morph-wave {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.morph-wave-cap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+  white-space: nowrap;
+}
+.morphsec[data-armed] .morph-wave-cap {
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-ui, ease);
+}
+.morph-stage[data-phase='burst'] .morph-wave-cap,
+.morph-stage[data-phase='run'] .morph-wave-cap {
+  opacity: 1;
+}
+.morph-wave-n {
+  color: var(--v4-hud-faint);
+}
+.morph-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* the node card · verb hue on the inset tick · run state on the ring */
+.morph-node {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px 10px 14px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 90%, transparent);
+  box-shadow: inset 2px 0 0 var(--node-vhue, var(--v4-accent));
+  transition: border-color 0.2s var(--ease-ui, ease);
+}
+.morphsec[data-armed] .morph-node {
+  opacity: 0; /* materializes where its lines land (driver-written) */
+  will-change: transform, opacity;
+}
+.morph-node[data-verb='infer'] {
+  --node-vhue: var(--verb-infer);
+}
+.morph-node[data-verb='exec'] {
+  --node-vhue: var(--verb-exec);
+}
+.morph-node[data-verb='invoke'] {
+  --node-vhue: var(--verb-invoke);
+}
+.morph-node[data-verb='agent'] {
+  --node-vhue: var(--verb-agent);
+}
+.morph-node[data-run='running'] {
+  border-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 55%, var(--v4-line));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .morph-node[data-run='running'] {
+    animation: morph-node-pulse 1.4s ease-in-out infinite;
+  }
+}
+@keyframes morph-node-pulse {
+  50% {
+    box-shadow:
+      inset 2px 0 0 var(--node-vhue, var(--v4-accent)),
+      0 0 0 3px color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 14%, transparent);
+  }
+}
+.morph-node[data-run='skipped'] {
+  border-style: dashed;
+  opacity: 1;
+}
+.morphsec[data-armed] .morph-stage[data-phase='run'] .morph-node[data-run='skipped'] {
+  border-style: dashed;
+}
+
+.morph-node-id {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--v4-text);
+}
+.morph-node-verb {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--node-vhue, var(--v4-text-dim));
+}
+.morph-node-target {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--v4-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.morph-node-when {
+  margin-top: 4px;
+  padding: 2px 6px;
+  align-self: flex-start;
+  border: 1px solid rgb(230 184 115 / 0.35);
+  border-radius: var(--v4-radius-sm);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--cf-num);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.morph-node-chip {
+  min-height: 16px;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--cf-str);
+}
+.morph-node[data-run='running'] .morph-node-chip {
+  color: var(--node-vhue, var(--v4-accent));
+}
+.morph-node-chip[data-skipped] {
+  color: var(--cf-num);
+}
+
+/* ── THE TERMINAL · the recorded stream strip (bottom band) ────────────────── */
+.morph-term {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  flex: none;
+}
+.morphsec[data-armed] .morph-term {
+  opacity: 0; /* rises with the driver */
+  will-change: transform, opacity;
+}
+.morph-rec {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+}
+.morph-rec-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--v4-text-faint);
+}
+.morph-rec-dot[data-live='true'] {
+  background: #ff5d5d;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .morph-rec-dot[data-live='true'] {
+    animation: morph-blink 1.1s steps(2, jump-none) infinite;
+  }
+}
+@keyframes morph-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.morph-term-body {
+  height: clamp(80px, 11vh, 140px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--v4-text-dim);
+  scrollbar-width: thin;
+}
+.morphsec:not([data-armed]) .morph-term-body {
+  height: auto;
+  max-height: 340px;
+}
+
+.morph-line {
+  display: flex;
+  gap: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .morphsec[data-armed] .morph-line {
+    animation: morph-line-in 0.18s ease-out;
+  }
+}
+@keyframes morph-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+.morph-line-glyph {
+  flex: 0 0 14px;
+  text-align: center;
+  color: var(--v4-hud-faint);
+  user-select: none;
+}
+.morph-line[data-kind='cmd'],
+.morph-line[data-kind='workflow'],
+.morph-line[data-kind='exit'] {
+  color: var(--v4-text);
+}
+.morph-line[data-kind='start'] .morph-line-glyph {
+  color: var(--run-vhue, var(--v4-accent));
+}
+.morph-line[data-verb='infer'] {
+  --run-vhue: var(--verb-infer);
+}
+.morph-line[data-verb='exec'] {
+  --run-vhue: var(--verb-exec);
+}
+.morph-line[data-verb='invoke'] {
+  --run-vhue: var(--verb-invoke);
+}
+.morph-line[data-verb='agent'] {
+  --run-vhue: var(--verb-agent);
+}
+.morph-line[data-kind='done'] .morph-line-glyph {
+  color: var(--cf-str);
+}
+.morph-line[data-kind='skip'] {
+  color: var(--v4-text-faint);
+}
+.morph-line[data-kind='skip'] .morph-line-glyph {
+  color: var(--cf-num);
+}
+
+/* the verdict bar · reserved height (zero shift) */
+.morph-verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 9px 16px;
+  border-top: 1px solid var(--v4-line);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.morph-verdict-exit {
+  color: var(--cf-str);
+  font-weight: 600;
+}
+.morph-verdict-exit[data-exit='1'] {
+  color: #ff5d5d;
+}
+.morph-verdict-sep {
+  color: var(--v4-hud-faint);
+}
+.morph-verdict-art {
+  color: var(--v4-text);
+}
+.morph-verdict-wait {
+  color: var(--v4-text-faint);
+}
+
+/* the honesty caption */
+.morph-caption {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}

@@ -93,11 +93,13 @@
 html, body, #app { margin: 0; padding: 0; }
 /* Clamp the layout viewport (ICB) to the visual viewport so a rogue wide child
    (e.g. an internally-scrolling code panel) can never inflate the document width
-   or push the fixed nav off-screen. `clip` on <html> contains it without making
-   a scroll container — keeping position:sticky/fixed working. The body keeps the
-   legacy hidden as a belt-and-braces fallback. */
+   or push the fixed nav off-screen. `clip` on BOTH html and body contains it
+   without creating a scroll container — keeping position:sticky/fixed working.
+   NEVER `hidden` on body: it computes to `hidden auto`, which turns the body
+   into a (never-scrolling) scrollport and silently kills every descendant
+   position:sticky (the F2 scroll morph surfaced this empirically). */
 html { overflow-x: clip; }
-body { background: var(--bg); overflow-x: hidden; }
+body { background: var(--bg); overflow-x: clip; }
 /* per-section guard · a rogue wide child (a pinned stage, a wide SVG plan, a
    long mono line outside a scroll well) is clipped at ITS OWN section edge —
    it can never push the page sideways. `clip` (not hidden) keeps the vertical

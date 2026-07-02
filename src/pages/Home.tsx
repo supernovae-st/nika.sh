@@ -3,6 +3,7 @@ import { useHead } from '@unhead/react'
 import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
 import { FLAGSHIP_ENTRIES } from '../flagships'
+import ScrollMorph from '../sections/morph/ScrollMorph'
 import TheRun from '../sections/run/TheRun'
 import ThePlan from '../sections/plan/ThePlan'
 import TheBoundary from '../sections/boundary/TheBoundary'
@@ -223,12 +224,21 @@ export function Component() {
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
         <Hero flagship={flagship} index={flagshipIdx} onSelect={setFlagshipIdx} />
 
-        {/* FIG 1.0 · THE RUN — the selected file executes as a recorded real-run
-             event stream (trace replay · verb-hued frame · real verdict) */}
-        <TheRun flagship={flagship} />
-
-        {/* FIG 2.0 · THE PLAN — the same file as wave columns + real wires */}
-        <ThePlan flagship={flagship} />
+        {/* FIG 1.0 · THE MORPH (desktop) — ONE continuous scroll-linked scene:
+             the selected file travels, BURSTS into its DAG, then the recorded
+             run chains through it while the terminal narrates (F2). Mobile
+             keeps the vertical story below (replay + plan). The wrapper owns
+             the #the-run anchor so the hero CTA lands on whichever variant
+             the viewport shows. */}
+        <div id="the-run" className="scroll-mt-24">
+          <ScrollMorph flagship={flagship} />
+          <div className="morph-mobile-story">
+            {/* FIG 1.0m · THE RUN — the trace replay (tap ▶ / in-view autoplay) */}
+            <TheRun flagship={flagship} />
+            {/* FIG 2.0m · THE PLAN — the same file as a vertical timeline */}
+            <ThePlan flagship={flagship} />
+          </div>
+        </div>
 
         {/* FIG 3.0 · THE BOUNDARY — the same file's permits: read as the
              consumer feature + the denial beat (one card, one flash) */}

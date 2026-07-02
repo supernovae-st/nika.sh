@@ -167,9 +167,8 @@ export default function TheRun({ flagship }: { flagship: FlagshipEntry }) {
   return (
     <section
       ref={rootRef}
-      id="the-run"
       aria-labelledby="the-run-title"
-      className="theme-dark v4sec v4-flip scroll-mt-24"
+      className="theme-dark v4sec v4-flip"
     >
       <div className="v4sec-wrap">
         <SectionHead fig="FIG 1.0" id="the-run-title" title="Press play. It really ran.">
