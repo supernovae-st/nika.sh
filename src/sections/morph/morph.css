@@ -107,7 +107,8 @@
 }
 .morph-stage[data-phase='file'] .morph-cap[data-for='file'],
 .morph-stage[data-phase='burst'] .morph-cap[data-for='burst'],
-.morph-stage[data-phase='run'] .morph-cap[data-for='run'] {
+.morph-stage[data-phase='run'] .morph-cap[data-for='run'],
+.morph-stage[data-phase='done'] .morph-cap[data-for='run'] {
   opacity: 1;
   transform: none;
 }
@@ -167,6 +168,13 @@
   overflow: hidden; /* at rest: truncate long lines, never a scrollbar */
   width: 100%;
 }
+/* the right-edge dissolve (H2, same treatment as the hero panel) — ONLY while
+   the card is whole (file beat): once the burst begins the lines FLY past the
+   card edge and a mask would amputate every flight. */
+.morph-stage[data-phase='file'] .morph-code .cf-pre {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+}
 .morph-code .cf-line {
   will-change: transform, opacity;
   background-image: none; /* the gutter hairline must not fly with the line */
@@ -175,8 +183,10 @@
    every flight that targets a node beyond the card edge */
 .morph-stage[data-phase='burst'] .morph-code.cf-panel,
 .morph-stage[data-phase='run'] .morph-code.cf-panel,
+.morph-stage[data-phase='done'] .morph-code.cf-panel,
 .morph-stage[data-phase='burst'] .morph-code .cf-pre,
-.morph-stage[data-phase='run'] .morph-code .cf-pre {
+.morph-stage[data-phase='run'] .morph-code .cf-pre,
+.morph-stage[data-phase='done'] .morph-code .cf-pre {
   overflow: visible;
 }
 
@@ -216,7 +226,8 @@
   opacity: 0;
   transition: opacity 0.25s var(--ease-ui, ease);
 }
-.morph-stage[data-phase='run'] .morph-wires circle {
+.morph-stage[data-phase='run'] .morph-wires circle,
+.morph-stage[data-phase='done'] .morph-wires circle {
   opacity: 1;
 }
 
@@ -240,7 +251,8 @@
   transition: opacity 0.3s var(--ease-ui, ease);
 }
 .morph-stage[data-phase='burst'] .morph-wave-cap,
-.morph-stage[data-phase='run'] .morph-wave-cap {
+.morph-stage[data-phase='run'] .morph-wave-cap,
+.morph-stage[data-phase='done'] .morph-wave-cap {
   opacity: 1;
 }
 .morph-wave-n {
@@ -299,7 +311,8 @@
   border-style: dashed;
   opacity: 1;
 }
-.morphsec[data-armed] .morph-stage[data-phase='run'] .morph-node[data-run='skipped'] {
+.morphsec[data-armed] .morph-stage[data-phase='run'] .morph-node[data-run='skipped'],
+.morphsec[data-armed] .morph-stage[data-phase='done'] .morph-node[data-run='skipped'] {
   border-style: dashed;
 }
 
@@ -502,4 +515,69 @@
   font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--v4-text-faint);
+}
+
+/* ── THE NARRATION · anyone-words, the left rail (H2) ─────────────────────────
+   Four plain-word lines, one per phase, mono + dim — the empty left column at
+   1440 becomes the narration track. Armed + wide (≥1200px) only: the rail
+   sits sticky with the stage, vertically centered, and the DAG is inset a
+   CONSTANT 218px to clear it (flight targets are measured live, so the burst
+   lands on the shifted nodes — but the inset never changes mid-scene).
+   The active phase's line lifts; the others stay faint (reduced-motion never
+   arms the scene, so the static scene below is its truth). */
+.morph-say {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+}
+.morph-say-line {
+  margin: 0;
+}
+/* static scene (no-JS · reduced-motion) · only the settled line speaks,
+   as a quiet caption above the finished DAG */
+.morphsec:not([data-armed]) .morph-say {
+  margin-bottom: 14px;
+}
+.morphsec:not([data-armed]) .morph-say-line:not([data-for='done']) {
+  display: none;
+}
+/* armed but not wide enough for the rail → the head captions carry it */
+@media (max-width: 1199px) {
+  .morphsec[data-armed] .morph-say {
+    display: none;
+  }
+}
+@media (min-width: 1200px) {
+  .morphsec[data-armed] .morph-say {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 186px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    pointer-events: none;
+  }
+  .morphsec[data-armed] .morph-say-line {
+    opacity: 0.35;
+    transition:
+      opacity 0.3s var(--ease-ui, ease),
+      color 0.3s var(--ease-ui, ease);
+  }
+  .morphsec[data-armed] .morph-stage[data-phase='file'] .morph-say-line[data-for='file'],
+  .morphsec[data-armed] .morph-stage[data-phase='burst'] .morph-say-line[data-for='burst'],
+  .morphsec[data-armed] .morph-stage[data-phase='run'] .morph-say-line[data-for='run'],
+  .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-say-line[data-for='done'] {
+    opacity: 1;
+    color: var(--v4-text-dim);
+  }
+  /* the DAG clears the rail — a constant inset, never phase-conditional
+     (a mid-scene layout shift would invalidate the measured flights) */
+  .morphsec[data-armed] .morph-dag {
+    left: 218px;
+  }
 }

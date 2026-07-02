@@ -67,6 +67,16 @@ export function runFracAt(p: number): number {
   return clamp01((p - PH.run0) / (PH.run1 - PH.run0))
 }
 
+/** the scene's phase — drives the head captions + the narration rail (H2).
+    `done` begins when the run window saturates (the verdict has settled). */
+export type MorphPhase = 'file' | 'burst' | 'run' | 'done'
+
+export function phaseAt(p: number): MorphPhase {
+  if (p < PH.burst0) return 'file'
+  if (p < PH.run0) return 'burst'
+  return runFracAt(p) >= 1 ? 'done' : 'run'
+}
+
 export type MorphNodeState = 'pending' | 'running' | 'done' | 'skipped'
 
 export interface MorphTimeline {

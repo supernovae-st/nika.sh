@@ -7,13 +7,15 @@ import './edge-aurora.css'
    transparent. It is THE DRUM of the manifesto: every run = a beat of the
    frame. At rest it is almost extinguished (single blue family · CSS breath).
 
-   E7 · RUN MODE: while a run replays, the frame becomes run visualization —
-   the ::before conic turns into the 4-verb wheel and a sharper ::after arc
-   carries the ACTIVE verb's hue (the one sanctioned verb-hue surface, design
-   doc §3.4 · the oryzo two-ring composition: wide haze + crisp rim). The
-   verdict sweeps one bright arc (success) or flashes danger (failure /
-   permits denial), then the frame decays back to the idle blue — idle is
-   byte-identical to pre-E7.
+   E7 · RUN MODE · THE VERB BLOOM (H2 retune, oryzo ask): while a run replays,
+   the frame becomes run visualization — `data-run` is the runActive switch
+   that swaps the ::before conic into the 4-verb wheel (slow rotation) and a
+   sharper ::after arc carries the ACTIVE verb's hue (the one sanctioned
+   verb-hue surface, design doc §3.4 · the oryzo two-ring composition: wide
+   haze + crisp rim). Every task_started beats a brighter pulse. The verdict
+   sweeps one bright arc (success) or flashes danger (failure / permits
+   denial) INSIDE a ~1.2s hold, then the frame decays back to the idle blue —
+   idle is byte-identical to pre-E7.
 
    Every API call mutates CSS custom properties / data attributes on the
    aurora element DIRECTLY (via ref) — NO React re-render per event.
@@ -22,14 +24,17 @@ import './edge-aurora.css'
    event-time callbacks only. */
 
 const REST_INTENSITY = 0.04
-/** run mode raises the resting floor — the frame is visibly "on" during a run */
-const RUN_REST_INTENSITY = 0.1
+/** run mode raises the resting floor — the VERB BLOOM. The four-hue frame must
+    be unmistakable at 1440 while a run plays (operator's oryzo ask), so the
+    floor sits at ~0.36 (the run.css mask keeps the center readable). */
+const RUN_REST_INTENSITY = 0.36
 /** Peak the halo jumps to on a pulse before it decays. */
 const PULSE_INTENSITY = 0.75
 /** Decay back to rest takes ~450ms (the sharper v5 beat). */
 const DECAY_MS = 450
-/** the verdict sweep + danger flash animation lengths (edge-aurora.css) */
-const SWEEP_MS = 900
+/** after workflow_completed the bloom HOLDS ~1.2s (the verdict sweep plays
+    inside it), then the frame decays back to the quiet blue rest */
+const RUN_HOLD_MS = 1200
 const DANGER_MS = 650
 
 export function AuroraProvider({ children }: { children: ReactNode }) {
@@ -54,7 +59,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       const dt = ts - last
       lastTsRef.current = ts
 
-      // exponential ease toward the CURRENT rest floor (idle 0.04 · run 0.10)
+      // exponential ease toward the CURRENT rest floor (idle 0.04 · run 0.36)
       const rest = restRef.current
       const k = 1 - Math.exp((-dt / DECAY_MS) * 4)
       intensityRef.current += (rest - intensityRef.current) * k
@@ -149,19 +154,20 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       if (typeof window === 'undefined') return
       const el = elRef.current
       if (!el) return
-      restRef.current = REST_INTENSITY
+      /* the bloom HOLDS through the verdict beat — the four-verb frame stays
+         bright while the sweep (or the danger flash) plays inside it, THEN
+         decays back to the quiet blue rest (~1.2s after workflow_completed) */
       if (verdict === 'failure') {
         flashDanger()
-        delete el.dataset.run
-        arm()
-        return
+      } else {
+        el.dataset.run = 'sweep'
       }
-      el.dataset.run = 'sweep'
       if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
       sweepTimerRef.current = setTimeout(() => {
         delete el.dataset.run
+        restRef.current = REST_INTENSITY
         arm()
-      }, SWEEP_MS)
+      }, RUN_HOLD_MS)
     },
     [arm, flashDanger],
   )
