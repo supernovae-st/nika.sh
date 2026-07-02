@@ -1,0 +1,71 @@
+/* ─── the footer signature · dither swarm → butterfly ────────────────────────
+   Text never inside canvas; the caption is real DOM (mono museum plate). */
+
+.fsig {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 96px;
+}
+.fsig-stage {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  cursor: pointer;
+  touch-action: pan-y; /* vertical scroll stays native; drags still smear */
+}
+.fsig-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-ui);
+}
+.fsig-canvas[data-live='true'] {
+  opacity: 1;
+}
+.fsig-fallback {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: 0.9;
+  transition: opacity 200ms var(--ease-ui);
+}
+.fsig-fallback[data-hidden='true'] {
+  opacity: 0;
+}
+.fsig-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius-sm);
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+  cursor: pointer;
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    border-color var(--dur-ui) var(--ease-ui);
+}
+.fsig-replay:hover {
+  color: var(--v4-text);
+  border-color: var(--v4-line-strong);
+}
+.fsig-caption {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--v4-text-faint);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fsig-replay {
+    display: none; /* no animation to replay · the assembled mark stands */
+  }
+}
