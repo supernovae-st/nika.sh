@@ -33,8 +33,15 @@ export function InstallCommand() {
       </span>
       {/* ONE flex item for the whole command — a flex container trims the
           boundary whitespace between items. */}
+      {/* machine-string rule · when the pill is too narrow the tap path
+          ellipsizes in the MIDDLE (…/) — the start (brew install) and the end
+          (nika) never fall off. Copy always copies the full command. */}
       <span className="v4cmd-text">
-        brew install <span className="v4cmd-dim">supernovae-st/tap/</span>nika
+        brew install <span className="v4cmd-dim v4cmd-mid">supernovae-st/tap/</span>
+        <span className="v4cmd-dim v4cmd-mid-ell" aria-hidden>
+          …/
+        </span>
+        nika
       </span>
       <span className="v4cmd-copy" aria-hidden>
         <CopyIcon copied={copied} />

@@ -140,7 +140,10 @@
      --v4-text-faint). Weight via the variable axis (560/600), no blanket bold.
    · new CSS reads THESE tokens — an orphan font-size hardcode is a defect. */
 :root {
-  --type-display: clamp(2.75rem, 1.7rem + 3.4vw, 4.75rem); /* 44 → 76px · hero H1 */
+  /* 44 → 60px · the hero H1 is a long sentence (6 words) — at the 76px end
+     it wraps to 5 lines and buries the CTA below the fold, so the display cap
+     holds H1 + sub + CTA inside the first viewport at 1440×900. */
+  --type-display: clamp(2.75rem, 2rem + 2.1vw, 3.75rem);
   --type-h2: clamp(2rem, 1.25rem + 2.4vw, 3.25rem);        /* 32 → 52px · section titles */
   --type-h3: clamp(1.25rem, 1.05rem + 0.6vw, 1.625rem);    /* 20 → 26px · card titles */
   --type-body: 17px;        /* ledes · section prose (measure ≤ 65ch) */

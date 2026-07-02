@@ -23,6 +23,125 @@
   background-color: transparent;
 }
 
+/* ── E1 · the header field · blue→black QUANTIZED radial + grid ───────────────
+   The Maxime register through our Bayer signature: one deep blue radial from
+   the upper-right (over the editor column — the product is the lit object),
+   quantized into 4 hard-stop bands (shader parity), with a faint survey grid
+   that exists ONLY inside the glow zone. A fixed alpha-only overlay (no base
+   fill) so it reads at first paint AND composes with the animated field once
+   it mounts. The ::after Bayer tooth breaks the band edges into dither — the
+   dissolve is ours, never a smooth falloff. Zero JS, zero per-frame cost. */
+:root {
+  --hero-glow-x: 68%;
+  --hero-glow-y: -10%;
+  --hero-grid-gap: 72px;
+  --hero-grid-ink: rgb(92 133 230 / 0.05);
+}
+.v5-header-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    110% 90% at var(--hero-glow-x) var(--hero-glow-y),
+    rgb(47 107 255 / 0.28) 0%,
+    rgb(47 107 255 / 0.28) 18%,
+    rgb(35 80 200 / 0.18) 18%,
+    rgb(35 80 200 / 0.18) 34%,
+    rgb(22 48 122 / 0.11) 34%,
+    rgb(22 48 122 / 0.11) 50%,
+    rgb(13 27 68 / 0.05) 50%,
+    rgb(13 27 68 / 0.05) 64%,
+    transparent 64%
+  );
+}
+.v5-header-field::before {
+  /* the faint grid · masked INSIDE the glow zone (never appears outside it) */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, var(--hero-grid-ink) 1px, transparent 1px),
+    linear-gradient(180deg, var(--hero-grid-ink) 1px, transparent 1px);
+  background-size: var(--hero-grid-gap) var(--hero-grid-gap);
+  -webkit-mask-image: radial-gradient(
+    110% 90% at var(--hero-glow-x) var(--hero-glow-y),
+    #000 0%,
+    #000 40%,
+    transparent 64%
+  );
+  mask-image: radial-gradient(
+    110% 90% at var(--hero-glow-x) var(--hero-glow-y),
+    #000 0%,
+    #000 40%,
+    transparent 64%
+  );
+}
+.v5-header-field::after {
+  /* the Bayer tooth · breaks the hard band edges into the dither signature */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--v4-grain-img);
+  background-size: var(--v4-grain-size) var(--v4-grain-size);
+}
+@media (max-width: 767px) {
+  :root {
+    /* the glow re-centres ABOVE the stacked type — never behind body text */
+    --hero-glow-x: 62%;
+    --hero-glow-y: -16%;
+    --hero-grid-gap: 56px;
+  }
+}
+
+/* ── the H1 + sub · the documented type system (tokens.css) ───────────────────
+   Display 44→76px against the 17px body — the basement contrast register. */
+.v4hero-h1 {
+  font-family: var(--headline);
+  font-size: var(--type-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  font-weight: 600;
+  text-wrap: balance;
+  color: var(--v4-text);
+}
+.v4hero-sub {
+  margin-top: var(--gap-title);
+  max-width: 34rem;
+  font-size: var(--type-body);
+  line-height: var(--lh-body);
+  color: var(--v4-text-dim);
+}
+.v4hero-sub b {
+  font-weight: 600;
+  color: var(--v4-text);
+}
+/* phones read the SHORT sub (a 7-line paragraph wall is a defect class) */
+.v4hero-sub--short {
+  display: none;
+}
+@media (max-width: 767px) {
+  .v4hero-sub--full {
+    display: none;
+  }
+  .v4hero-sub--short {
+    display: block;
+  }
+}
+.v4hero-ctas {
+  margin-top: var(--gap-cta);
+}
+
+/* ── the bracket eyebrow · [ INTENT AS CODE ] · mono museum plate ─────────────
+   Literal bracket characters (they read in reader modes too) · our mono
+   caption voice, not Attio's sans. */
+.v4beyebrow {
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  letter-spacing: 0.18em;
+  color: var(--v4-text-faint);
+}
+
 /* ── 1 · the full-bleed WebGL background mount (page-level, fixed, z-0) ───────
    The r3f <Canvas> inside is absolute inset:0 within this fixed box, which fades
    out as the experience ends so the opaque sections below take over. */
@@ -162,12 +281,37 @@
     /* a faint blue spill in the ambient shadow — the pointe reaching the panel */
     0 12px 34px -18px color-mix(in oklch, var(--hero-blue-glow) 26%, black);
 }
-/* keep the editor column from jumping between tabs of different line counts —
-   reserve the tallest file's height on desktop (the panel top stays put). */
-@media (min-width: 1024px) {
-  .v4hero-aspirate {
-    min-height: 560px;
-  }
+/* ── the editor vertical cap · the file is REAL and full-length ───────────────
+   The flagship files are the actual files that ran (35-42 lines) — the panel
+   caps its height and scrolls vertically like a real editor, so (a) the hero
+   composition holds and (b) tab switches never shift layout (every flagship
+   exceeds the cap → identical panel height). The bottom edge dissolves through
+   the Bayer fade tile (the ONE sanctioned dither-fade device) — the file
+   visibly continues; scrolling is the invitation. */
+.v4hero-code .cf-pre {
+  max-height: clamp(380px, 52vh, 560px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.v4hero-code .cf-body {
+  position: relative;
+}
+.v4hero-code .cf-body::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 56px;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent, var(--v4-bg-raised) 92%);
+  -webkit-mask-image: var(--v4-dither-fade);
+  mask-image: var(--v4-dither-fade);
+  -webkit-mask-size: 4px 56px;
+  mask-size: 4px 56px;
+  -webkit-mask-position: bottom;
+  mask-position: bottom;
+  transform: scaleY(-1); /* the tile fades downward · flip it to fade upward */
 }
 
 /* ── 5 · the file-tab strip · sharp, mono, hairline — no pills ────────────────
@@ -314,16 +458,9 @@
   color: var(--v4-text-dim);
 }
 
-/* ── the aspiration · the editor is pulled into the machine on scroll-out ──────
-   Hero.tsx's rAF scrub drives the transform (translateY down + scale down +
-   fade) on .v4hero-aspirate, plus a fade/drift on .v4hero-copy, as the hero
-   leaves the viewport — the visual bridge INTO the Living File below. */
-.v4hero-aspirate {
-  /* centre origin · the file shrinks toward its own centre as it's drawn into
-     the field's vanishing point */
-  transform-origin: 50% 50%;
-  will-change: transform, opacity;
-}
+/* (the v4 "aspiration" scroll-scrub is DELETED — zero-lag law: no scroll-linked
+   per-frame JS on the critical path. The hero→run continuity is carried by the
+   filename + frame chrome instead.) */
 
 /* ── the command-as-CTA · the install row IS one button ───────────────────────
    Equal rank with .v4cta: same 44px height, outline register — hairline
@@ -373,6 +510,19 @@
 }
 .v4cmd-dim {
   color: var(--v4-text-faint);
+}
+/* the middle-ellipsis swap · ≤430px the tap path collapses to …/ so the
+   command never clips at its END (machine-string truncation rule) */
+.v4cmd-mid-ell {
+  display: none;
+}
+@media (max-width: 430px) {
+  .v4cmd-mid {
+    display: none;
+  }
+  .v4cmd-mid-ell {
+    display: inline;
+  }
 }
 .v4cmd-copy {
   display: inline-flex;
@@ -464,24 +614,28 @@
     min-height: 0;
     justify-content: flex-start;
   }
+  /* orphan decorative anchors read as glitches on a phone — the corner ticks
+     are a desktop-composition device only */
+  .v4hud {
+    display: none;
+  }
   .v4hero-grid {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding-block: calc(60px + 20px) 56px;
+    padding-block: calc(60px + 20px) 64px;
   }
-  .v4hero-copy,
-  .v4hero-editor {
+  .v4hero-copy {
     display: contents;
   }
   .v4hero-grid .v4fig {
     order: 0;
     margin-bottom: 14px;
   }
-  .v4hero-grid .v4kicker {
+  .v4hero-grid .v4beyebrow {
     order: 1;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .v4hero-h1 {
     order: 2;
@@ -491,30 +645,26 @@
   }
   .v4hero-ctas {
     order: 4;
-    margin-top: 24px;
-  }
-  .v4hero-aspirate {
-    order: 5;
-    margin-top: 34px;
-    min-width: 0;
-  }
-  .v4aud-wrap {
-    order: 6;
-  }
-  .v4hero-grid .v4vplate {
-    order: 7;
-    margin-top: 24px;
-  }
-  .v4hero-links {
-    order: 8;
-  }
-  .v4hero-grid .v4trust {
-    order: 9;
     margin-top: 28px;
   }
-}
-@media (max-width: 430px) {
-  .v4aud-wrap {
-    display: none;
+  .v4hero-editor {
+    order: 5;
+    margin-top: 40px;
+    min-width: 0;
+  }
+  .v4hero-grid .v4vplate {
+    order: 6;
+    margin-top: 28px;
+  }
+  .v4hero-links {
+    order: 7;
+  }
+  .v4hero-grid .v4trust {
+    order: 8;
+    margin-top: 28px;
+  }
+  /* the file cap relaxes a touch on phones (the editor is mid-stack) */
+  .v4hero-code .cf-pre {
+    max-height: 420px;
   }
 }

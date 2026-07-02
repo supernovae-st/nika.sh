@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from 'react'
 import { useHead } from '@unhead/react'
 import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
+import { FLAGSHIP_ENTRIES } from '../flagships'
 import LivingFile from '../sections/living/LivingFile'
 import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
@@ -96,6 +97,11 @@ const HOME_JSONLD = {
 
 export function Component() {
   const [eggOpen, setEggOpen] = useState(false)
+  /* V5 law #1 · ONE story, ONE file — the SELECTED one. The hero tabs pick a
+     flagship; the run replay, the plan and the boundary all re-render from it.
+     Selection lives HERE so every beat reads the same object. */
+  const [flagshipIdx, setFlagshipIdx] = useState(0)
+  const flagship = FLAGSHIP_ENTRIES[flagshipIdx]
   /* idle-mount the dither field · React.lazy alone still FETCHES the chunk at
      hydration, and its three/r3f dependency chain (~880 kB pre-gzip) would
      compete with the text-LCP window. Deferring the mount to the first idle
@@ -207,9 +213,13 @@ export function Component() {
           <DitherField />
         </Suspense>
       )}
+      {/* E1 · the header field · the quantized blue→black radial + survey grid.
+          Pure CSS, alpha-only, painted ABOVE the canvas (DOM order) so the glow
+          reads at first paint AND once the animated field mounts. */}
+      <div className="v5-header-field" aria-hidden />
       <main className="relative z-[1]">
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
-        <Hero />
+        <Hero flagship={flagship} index={flagshipIdx} onSelect={setFlagshipIdx} />
 
         {/* FIG 1.0 · « The Living File » — the file becomes a running DAG with
              real CLI/NDJSON logs and a concrete result (THE wow, dosed) */}
