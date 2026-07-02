@@ -378,13 +378,10 @@ export default function Nav() {
               <span className="v4nav-ghost-label">GitHub</span>
             </a>
 
-            {/* the ONE solid CTA — always the absolute hash so the rendered href is
-               identical on the server prerender and the client (no isHome branch
-               that could diverge during hydration → React #418). React Router's
-               <ScrollRestoration/> scrolls to #install after the route+hash nav;
-               on home it is a same-page hash scroll. */}
-            <a
-              href="/#install"
+            {/* the ONE solid CTA — the canonical /install deep link (docs/README/
+               social share one stable URL; the old /#install anchor had none). */}
+            <Link
+              to="/install"
               className="v4nav-cta"
               aria-label="Install Nika"
             >
@@ -392,7 +389,7 @@ export default function Nav() {
                 ❯
               </span>
               Install
-            </a>
+            </Link>
 
             {/* mobile burger */}
             <button
@@ -494,14 +491,14 @@ export default function Nav() {
               GitHub
             </a>
 
-            <a
-              href="/#install"
+            <Link
+              to="/install"
               className="v4sheet-cta"
               onClick={() => setSheetOpen(false)}
             >
               <span aria-hidden>❯</span>
               Install Nika
-            </a>
+            </Link>
           </div>
         </>
       ) : null}

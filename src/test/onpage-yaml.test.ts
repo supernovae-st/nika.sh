@@ -7,6 +7,7 @@ import { HERO_FILES } from '../sections/hero-files'
 import { CHAPTERS } from '../sections/verbs-data'
 import { DAG, FILENAME, YAML as LIVING_YAML } from '../sections/living/living-data'
 import { FOUR_VERBS_YAML } from '../pages/Blog'
+import { HELLO_YAML, HELLO_AI_YAML } from '../content/install'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
 
 /* ── on-page YAML · every full workflow shown on the site is SCHEMA-TRUE ─────
@@ -60,6 +61,11 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
   it('the blog four-verbs fragment validates', () => {
     expectValid('blog · morning-brief', FOUR_VERBS_YAML)
   })
+
+  it.each([
+    ['install · hello.nika.yaml', HELLO_YAML],
+    ['install · hello-ai.nika.yaml', HELLO_AI_YAML],
+  ] as const)('%s validates', (label, yaml) => expectValid(label, yaml))
 
   it.each(Object.entries(SHOWCASE_YAML))('showcase %s validates', (slug, yaml) =>
     expectValid(slug, yaml),

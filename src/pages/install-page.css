@@ -1,0 +1,127 @@
+/* ─── /install page · the canonical install register ──────────────────────────
+   The /learn step-register grammar (hairline-ruled rows · mono museum plates ·
+   copy left / worked artifact right) applied to the six ways in. Reads off the
+   v4 theme tokens + the seam kit. SSR-safe: pure CSS. */
+
+.ins-title {
+  max-width: 16ch;
+}
+
+/* ── the step register ── */
+.ins-steps {
+  margin: clamp(28px, 4vh, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.ins-step {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px 36px;
+  padding: clamp(28px, 4vh, 44px) 2px;
+  border-bottom: 1px solid var(--v4-line);
+  align-items: start;
+}
+@media (min-width: 880px) {
+  .ins-step {
+    grid-template-columns: 1fr 1.08fr;
+  }
+}
+
+.ins-step-copy {
+  min-width: 0;
+}
+.ins-step-n {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ins-step-title {
+  margin-top: 9px;
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  color: var(--v4-text);
+  text-wrap: balance;
+}
+.ins-step-plain {
+  margin-top: 13px;
+  max-width: 40rem;
+  font-size: 15px;
+  line-height: 1.62;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.ins-step-plain code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  color: var(--v4-text);
+  white-space: nowrap;
+}
+.ins-step-plain b {
+  color: var(--v4-text);
+  font-weight: 560;
+}
+
+/* the right column · the worked affordance(s) */
+.ins-step-body {
+  min-width: 0;
+}
+.ins-step-body--stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ins-step-body .v4install {
+  margin-top: 0;
+}
+
+/* the command cluster under a step's prose */
+.ins-cmds {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 40rem;
+}
+
+/* the first-run frames · this page's canvas tuning (.v4-frame-canvas) */
+.ins-frame {
+  --canvas-x: 30%;
+  --canvas-y: -12%;
+  --canvas-glow: 0.055;
+}
+
+/* the editor step's ghost caption (decorative) */
+.ins-ghost {
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}
+
+/* inline links · hairline-underlined, contrast rises on hover */
+.ins-link {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  text-underline-offset: 3px;
+  transition: color var(--dur-ui) var(--ease-ui), text-decoration-color var(--dur-ui) var(--ease-ui);
+}
+.ins-link:hover,
+.ins-link:focus-visible {
+  color: var(--v4-text);
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 55%, transparent);
+}
+
+/* the onward pointers */
+.ins-more {
+  margin-top: clamp(24px, 4vh, 40px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--v4-text-dim);
+}
