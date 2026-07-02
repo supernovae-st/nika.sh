@@ -10,8 +10,13 @@ import './nav.css'
    FIG/blueprint feel. Grayscale only; the lone color is the global EdgeAurora.
 
    Behaviour
-   - sticky/fixed · transparent OVER the hero · solid (bg-bg/78 + 1px border +
-     blur) once a hero sentinel scrolls out of view (IntersectionObserver).
+   - a FLOATING CAPSULE (wave-h): the nav detaches from the top edge on desktop
+     (12px gutter · 72rem max · 12px radius · near-opaque floor + the seam kit).
+     Two orthogonal states drive it — `data-solid` (transparent riding the hero
+     field → capsule floor, via a 24px scroll sentinel + IntersectionObserver)
+     and `data-scrolled` (the capsule compresses 64→56px and its shadow
+     tightens once the page is in motion). Below 720px it is a full-width bar
+     with the same depth kit.
    - `Product ▾` is a real grouped mega-menu (WAI-ARIA disclosure): full keyboard
      (Esc closes + returns focus, ↓/↑ move through items, Home/End jump), focus
      trapped to the panel while open, closes on outside click / route change.
@@ -135,8 +140,11 @@ function ItemLink({
 
 export default function Nav() {
   const location = useLocation()
-  /* field-less routes prerender SOLID (no transparent flash · P2-12) */
-  const [scrolled, setScrolled] = useState(() => !FIELD_ROUTES.has(location.pathname))
+  /* `scrolled` = the page is in motion (>24px) — drives the capsule COMPRESSION.
+     The FLOOR is the derived `solid` below: field-less routes prerender solid
+     from scroll 0 (no transparent flash · P2-12), field routes ride transparent
+     until the sentinel scrolls out. */
+  const [scrolled, setScrolled] = useState(false)
   const [megaOpen, setMegaOpen] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
 
@@ -150,15 +158,18 @@ export default function Nav() {
   const megaId = useId()
   const sheetId = useId()
 
-  /* ── nav solidifies once the top-of-page sentinel scrolls past ──
-     The sentinel is a 1px marker at the top of the document; while it is in
-     view the nav stays transparent, once it leaves the nav goes solid.
-     Transparent-at-top applies ONLY on FIELD_ROUTES (the nav floats on the
-     blue field, F5) — field-less routes are solid from scroll 0 (P2-12). */
+  /* ── the 24px scroll sentinel ──
+     A 1px marker parked 24px down the document; while it is in view the page
+     counts as "at the top" (capsule relaxed), once it leaves the capsule
+     compresses (and, on field routes, gains its floor). The observer runs on
+     EVERY route so compression works everywhere; the FLOOR is the derived
+     `solid` — transparent-at-top applies ONLY on FIELD_ROUTES (the nav floats
+     on the hero field, F5), field-less routes are solid from scroll 0 (P2-12). */
   const hasField = FIELD_ROUTES.has(location.pathname)
+  const solid = scrolled || !hasField
   useEffect(() => {
     const el = sentinelRef.current
-    if (!hasField || !el || typeof IntersectionObserver === 'undefined') {
+    if (!el || typeof IntersectionObserver === 'undefined') {
       setScrolled(true)
       return
     }
@@ -168,7 +179,7 @@ export default function Nav() {
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [location.pathname, hasField])
+  }, [])
 
   /* ── close everything on a real route change (back/forward + cross-route nav).
      Guarded by a ref so setState only fires when the location actually changed —
@@ -287,7 +298,8 @@ export default function Nav() {
 
   return (
     <>
-      <header className="v4nav" data-scrolled={scrolled} data-mega={megaOpen}>
+      <header className="v4nav" data-solid={solid} data-scrolled={scrolled} data-mega={megaOpen}>
+        <div className="v4nav-capsule">
         <nav className="v4nav-row" aria-label="Primary">
           {/* brand · the butterfly mark + wordmark */}
           <Link to="/" className="v4nav-brand" aria-label="Nika — home">
@@ -423,14 +435,16 @@ export default function Nav() {
             </button>
           </div>
         </nav>
+        </div>
       </header>
 
-      {/* the hero sentinel · fixed just under the nav; toggles solidification.
-          A 1px, pointer-events:none marker at the top of the document flow. */}
+      {/* the scroll sentinel · a 1px, pointer-events:none marker parked 24px
+          down the document flow; leaving the viewport = "the page is in
+          motion" (capsule compression + field-route solidification). */}
       <div
         ref={sentinelRef}
         aria-hidden
-        style={{ position: 'absolute', top: 1, left: 0, height: 1, width: 1, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: 24, left: 0, height: 1, width: 1, pointerEvents: 'none' }}
       />
 
       {/* ── the mobile sheet ── */}

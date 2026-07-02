@@ -5,67 +5,106 @@
    kit (--seam-highlight / --seam-hairline / --elev-*), grayscale ink with the
    ONE blue accent family. SSR-safe: pure CSS, no JS at render. */
 
-/* ─── the nav ─────────────────────────────────────────────────────────────── */
+/* ─── the nav · a floating instrument capsule ─────────────────────────────────
+   The <header> is a fixed, pointer-events:none POSITIONING shell (full-bleed,
+   a 12px top gutter on desktop); the CAPSULE inside it is the instrument —
+   detached from the top edge, near-opaque #0a0d12-family floor, the seam kit
+   (inner-top light catch + hairline + one tight float shadow), radius 12px.
+   (The capsule is a floating instrument, not a panel — the one sanctioned
+   break from the 0-4px structural radii.) Two orthogonal states:
+     data-solid     the FLOOR · transparent riding the hero field → capsule
+     data-scrolled  the COMPRESSION · 64px → 56px + the shadow tightens (>24px)
+   The old full-width legibility scrim (::before) is GONE: since P2-12 made
+   field-less routes solid from scroll 0, the transparent nav only ever rides
+   the DARK hero field ('/' + '/manifesto') — the ink-lift below is all the
+   legibility work needed, and a gradient band behind a floating capsule would
+   read as a smudge. Below 720px the capsule becomes a full-width bar (radius 0,
+   bottom hairline) with the same depth kit. */
 .v4nav {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 50; /* above content, below the aurora frame (z-60) and any sheet */
-  /* transparent at the top of the hero · solid once scrolled */
+  pointer-events: none; /* the capsule re-arms hits; the gutter stays inert */
+}
+@media (min-width: 720px) {
+  .v4nav {
+    padding: 12px 16px 0;
+  }
+}
+
+.v4nav-capsule {
+  pointer-events: auto;
+  position: relative;
+  max-width: 72rem;
+  margin: 0 auto;
+  /* transparent at the top of the hero field · the floor arrives with data-solid */
   background: transparent;
-  border-bottom: 1px solid transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
   transition:
     background-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     border-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     backdrop-filter 0.32s ease;
 }
-/* the legibility scrim · the nav rides FIXED at the document root (outside any
-   themed section), so its near-white brand + links read fine over a dark hero
-   but wash out over a LIGHT section's top (e.g. /use-cases, the light home
-   beats) while the nav is still transparent. A top-down dark scrim sits BEHIND
-   the row (z-index:-1, pointer-events:none) and stays dark across the full
-   60px row band (then fades), so the near-white ink clears contrast (≈6:1 over
-   the light off-white) against whatever scrolls under it. It is present only
-   while transparent and fades to nothing once the solid bg takes over (no
-   double-darkening); over a dark hero it is imperceptible (dark on dark). */
-.v4nav::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgb(10 11 13 / 0.66) 0%,
-    rgb(10 11 13 / 0.62) 60px,
-    rgb(10 11 13 / 0.18) 78px,
-    rgb(10 11 13 / 0) 100%
-  );
-  opacity: 1;
-  transition: opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+@media (min-width: 720px) {
+  .v4nav-capsule {
+    border-radius: 12px;
+  }
 }
-.v4nav[data-scrolled='true']::before {
-  /* the solid surface now carries the contrast; drop the scrim to avoid stacking */
-  opacity: 0;
+.v4nav[data-solid='true'] .v4nav-capsule {
+  /* the near-opaque floor · dark enough to occlude anything scrolling under,
+     translucent enough that the blur reads as machined glass, not paint */
+  background: rgb(10 13 18 / 0.92);
+  border-color: var(--seam-hairline);
+  backdrop-filter: blur(14px) saturate(1.35);
+  -webkit-backdrop-filter: blur(14px) saturate(1.35);
+  box-shadow:
+    var(--seam-highlight),
+    0 1px 2px rgb(0 0 0 / 0.32),
+    0 16px 40px -20px rgb(0 0 0 / 0.55);
 }
-.v4nav[data-scrolled='true'] {
-  background: color-mix(in oklch, var(--v4-bg) 78%, transparent);
-  border-bottom-color: var(--v4-line);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+/* compression · once the page is in motion the float shadow pulls in tight
+   (the capsule sits closer to the content it now shares the viewport with) */
+.v4nav[data-scrolled='true'][data-solid='true'] .v4nav-capsule {
+  box-shadow:
+    var(--seam-highlight),
+    0 1px 2px rgb(0 0 0 / 0.36),
+    0 8px 24px -16px rgb(0 0 0 / 0.5);
+}
+/* below 720px · a full-width bar (no float) — same depth kit, bottom hairline */
+@media (max-width: 719.98px) {
+  .v4nav[data-solid='true'] .v4nav-capsule,
+  .v4nav[data-scrolled='true'][data-solid='true'] .v4nav-capsule {
+    border-color: transparent;
+    border-bottom-color: var(--v4-line);
+    box-shadow:
+      var(--seam-highlight),
+      0 8px 24px -18px rgb(0 0 0 / 0.5);
+  }
 }
 
 .v4nav-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 60px;
+  height: 64px;
   width: 100%;
-  max-width: 72rem;
-  margin: 0 auto;
   /* fold the safe-area inset into the gutter so the burger/CTA never ride under
      a notch in landscape, and the row always fits a 390px viewport. */
   padding-left: max(20px, env(safe-area-inset-left));
   padding-right: max(20px, env(safe-area-inset-right));
+  transition: height 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v4nav[data-scrolled='true'] .v4nav-row {
+  height: 56px;
+}
+/* the mobile bar keeps a steady 60px (no compression choreography on a bar) */
+@media (max-width: 719.98px) {
+  .v4nav-row,
+  .v4nav[data-scrolled='true'] .v4nav-row {
+    height: 60px;
+  }
 }
 
 /* the brand lockup · butterfly mark + wordmark */
@@ -126,17 +165,17 @@
 .v4nav-link[aria-current='true'] {
   color: var(--v4-text);
 }
-/* while transparent (over a hero / light section top), the dim gray sinks into
-   the scrim — lift the rail ink to a high-opacity near-white so every link
-   clears contrast (≈5:1 on the scrim). Once solid, the dim/text hierarchy
-   returns. Brand + ghost + caret follow the same lift. */
-.v4nav:not([data-scrolled='true']) .v4nav-link,
-.v4nav:not([data-scrolled='true']) .v4nav-ghost {
+/* while transparent (riding the dark hero field), the dim gray sinks into the
+   field — lift the rail ink to a high-opacity near-white so every link clears
+   contrast. Once the floor arrives, the dim/text hierarchy returns. Brand +
+   ghost + caret follow the same lift. */
+.v4nav[data-solid='false'] .v4nav-link,
+.v4nav[data-solid='false'] .v4nav-ghost {
   color: color-mix(in oklch, var(--v4-text) 88%, transparent);
 }
-.v4nav:not([data-scrolled='true']) .v4nav-link:hover,
-.v4nav:not([data-scrolled='true']) .v4nav-ghost:hover,
-.v4nav:not([data-scrolled='true']) .v4nav-link[aria-current='true'] {
+.v4nav[data-solid='false'] .v4nav-link:hover,
+.v4nav[data-solid='false'] .v4nav-ghost:hover,
+.v4nav[data-solid='false'] .v4nav-link[aria-current='true'] {
   color: var(--v4-text);
 }
 /* the engineering-blueprint underline tick — a hairline that draws on hover */
