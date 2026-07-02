@@ -98,6 +98,11 @@ html, body, #app { margin: 0; padding: 0; }
    legacy hidden as a belt-and-braces fallback. */
 html { overflow-x: clip; }
 body { background: var(--bg); overflow-x: hidden; }
+/* per-section guard · a rogue wide child (a pinned stage, a wide SVG plan, a
+   long mono line outside a scroll well) is clipped at ITS OWN section edge —
+   it can never push the page sideways. `clip` (not hidden) keeps the vertical
+   axis visible and position:sticky/fixed descendants working. */
+main > section { overflow-x: clip; }
 ::selection { background: color-mix(in oklch, var(--brand) 40%, transparent); color: #fff; }
 
 /* keyboard focus — theme-aware ring. --v4-focus-ring is re-scoped per section

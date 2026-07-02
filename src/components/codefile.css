@@ -136,6 +136,26 @@
     linear-gradient(180deg, rgb(0 0 0 / 0.18) 0%, transparent 14px),
     var(--cf-bg);
 }
+/* the right-edge scroll cue · when a long line overflows the well the fade says
+   "there's more" — it clears once the reader scrolls the line to its end. The
+   data attributes are set by CodeFile's measurer on mount (SSR ships no fade). */
+.cf-body::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 32px;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--cf-bg) 0%, transparent),
+    var(--cf-bg)
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.cf-body[data-overflowing='true']:not([data-at-end='true'])::after {
+  opacity: 1;
+}
 .cf-pre {
   margin: 0;
   padding: 11px 0 13px;
@@ -253,9 +273,21 @@
 .cf-verb--invoke { color: var(--verb-invoke); }
 .cf-verb--agent { color: var(--verb-agent); }
 
+/* ── mobile density · step the mono down a notch so more of each line fits the
+   viewport before the scroll well takes over (the frame itself never widens). */
+@media (max-width: 480px) {
+  .cf-pre {
+    font-size: 11.5px;
+  }
+  .cf-ln {
+    font-size: 10.5px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cf-copy,
-  .cf-ln {
+  .cf-ln,
+  .cf-body::after {
     transition: none;
   }
 }

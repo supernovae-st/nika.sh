@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { tokenize, verbGlyph, type Token, type TokenKind } from './codefile-highlight'
 import { useCopy } from '../lib/use-copy'
 import { CopyIcon } from './CopyRow'
@@ -113,6 +113,36 @@ export function CodeFile({
   // the gutter is as wide as the largest line number needs (min 2 cols).
   const gutterCh = Math.max(2, String(lines.length).length)
 
+  /* ── the horizontal-scroll affordance (mobile P0) ──────────────────────────
+     When a long line overflows the panel, the page must NEVER widen — the code
+     scrolls inside .cf-pre. But an invisible scroll well reads as CLIPPED text
+     on touch, so we surface the cue: `data-overflowing` on .cf-body lights the
+     right-edge fade (codefile.css), and `data-at-end` clears it once the reader
+     has scrolled the line to its end. SSR ships no attribute (no fade) — the
+     measurer runs on mount and tracks scroll + resize from there. */
+  const preRef = useRef<HTMLPreElement>(null)
+  useEffect(() => {
+    const pre = preRef.current
+    const body = pre?.parentElement
+    if (!pre || !body) return
+    const update = () => {
+      const overflowing = pre.scrollWidth - pre.clientWidth > 1
+      const atEnd = pre.scrollLeft + pre.clientWidth >= pre.scrollWidth - 2
+      body.dataset.overflowing = String(overflowing)
+      body.dataset.atEnd = String(atEnd)
+    }
+    update()
+    pre.addEventListener('scroll', update, { passive: true })
+    // jsdom (tests) has no ResizeObserver — the scroll cue degrades to
+    // measure-on-mount + on-scroll there, which is all the tests render anyway.
+    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
+    ro?.observe(pre)
+    return () => {
+      pre.removeEventListener('scroll', update)
+      ro?.disconnect()
+    }
+  }, [yaml])
+
   return (
     <div className={`cf-panel ${className ?? ''}`}>
       {/* ── window chrome · the minimal titlebar register (product-frame recipe):
@@ -140,7 +170,7 @@ export function CodeFile({
 
       {/* ── the editor body · gutter + code, one horizontal scroll well ──────── */}
       <div className="cf-body">
-        <pre className="cf-pre" style={{ ['--cf-gutter' as string]: `${gutterCh}ch` }}>
+        <pre ref={preRef} className="cf-pre" style={{ ['--cf-gutter' as string]: `${gutterCh}ch` }}>
           <code className="cf-code">
             {lines.map((line, i) => {
               const n = i + 1

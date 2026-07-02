@@ -873,6 +873,15 @@
   text-align: right;
   white-space: nowrap;
 }
+/* narrow phones · the long mono values ("one Rust binary · zero daemons") would
+   push the row past a 390px viewport — let the value wrap instead of clipping. */
+@media (max-width: 560px) {
+  .v4own-row-value {
+    white-space: normal;
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+}
 .v4own-row-value b {
   color: var(--v4-text);
   font-weight: 600;
