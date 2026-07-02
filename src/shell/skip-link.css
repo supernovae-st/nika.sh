@@ -5,16 +5,16 @@
    Near-black ink on white = 19.7:1 (well past WCAG AA). */
 .skip-link {
   position: fixed;
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  left: 8px;
   z-index: 100; /* above the nav (z-50) and the aurora frame (z-60) */
   /* off-screen until focused — keeps it out of the visual layout */
   transform: translateY(-150%);
-  padding: 10px 16px;
+  padding: 8px 16px;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-  border-radius: 8px;
+  border-radius: var(--v4-radius, 4px);
   background: #ffffff;
   color: #0a0b0d;
   font-family: var(--mono, ui-monospace, monospace);

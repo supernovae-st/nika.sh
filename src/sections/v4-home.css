@@ -56,7 +56,7 @@
 
 
 .v4sec-title {
-  margin-top: 26px;
+  margin-top: 24px;
   max-width: 22ch;
   font-family: var(--display);
   font-weight: 600;
@@ -116,7 +116,7 @@
   --vh: var(--v4-text);
   display: grid;
   grid-template-columns: 1fr;
-  gap: 22px;
+  gap: 20px;
   padding: clamp(28px, 4vh, 44px) 0;
   border-top: 1px solid var(--v4-line);
 }
@@ -139,7 +139,7 @@
 .v4chap-kicker {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 13px;
   letter-spacing: 0.02em;
@@ -177,7 +177,7 @@
 
 /* the mono sub-index · `1.1 providers · 1.2 structured output · …` */
 .v4chap-sub {
-  margin-top: 18px;
+  margin-top: 16px;
   font-family: var(--mono);
   font-size: 12px;
   line-height: 2;
@@ -222,7 +222,7 @@
   margin-top: 28px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.04em;
@@ -265,7 +265,7 @@
 .v4versus-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 12px;
 }
 @media (min-width: 760px) {
   .v4versus-grid {
@@ -278,7 +278,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 20px 20px 18px;
+  padding: 20px 20px 16px;
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
@@ -286,7 +286,7 @@
 /* the "fate" stamp · a faint mono ghost in the corner */
 .v4versus-fate {
   position: absolute;
-  top: 14px;
+  top: 12px;
   right: 16px;
   font-family: var(--mono);
   font-size: 9.5px;
@@ -302,7 +302,7 @@
   color: var(--v4-text-dim);
 }
 .v4versus-themlist {
-  margin: 14px 0 18px;
+  margin: 12px 0 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -363,7 +363,7 @@
 /* the acid read-out · a tiny live HUD that shows the warp arming/settling so the
    effect feels SYSTEMIC (an instrument reacting), not random. Pure status text. */
 .v4acid-readout {
-  margin-top: 22px;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -418,7 +418,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 .v4permits-cap-fig {
   font-family: var(--mono);
@@ -506,7 +506,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 4px;
-  padding: 14px 2px;
+  padding: 12px 2px;
   border-top: 1px solid var(--v4-line);
 }
 .v4permits-cat:last-child {
@@ -515,7 +515,7 @@
 @media (min-width: 480px) {
   .v4permits-cat {
     grid-template-columns: 11rem 1fr;
-    gap: 18px;
+    gap: 16px;
     align-items: baseline;
   }
 }
@@ -598,10 +598,10 @@
 
 /* the closing dimension line · same register as the other section notes */
 .v4permits-note {
-  margin-top: clamp(30px, 4vh, 48px);
+  margin-top: clamp(28px, 4vh, 48px);
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.03em;
@@ -667,7 +667,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 20px;
-  padding: 18px 2px;
+  padding: 16px 2px;
   border-bottom: 1px solid var(--v4-line);
 }
 .v4own-row-label {
@@ -709,7 +709,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.02em;
@@ -767,7 +767,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 22px 22px 20px;
+  padding: 20px 20px 20px;
   border-top: 1px solid var(--v4-line);
   border-left: 1px solid var(--v4-line);
 }
@@ -853,7 +853,7 @@
 .v4belt-reg-fig {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.22em;
@@ -953,10 +953,10 @@
 
 /* the closing dimension line · same register as .v4verbs-note */
 .v4belt-note {
-  margin-top: 30px;
+  margin-top: 28px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.04em;
@@ -1031,10 +1031,10 @@
 
 /* the gallery layout · the card rail (left) + the open YAML panel (right) */
 .v4uc-stage {
-  margin-top: 26px;
+  margin-top: 24px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 18px;
+  gap: 16px;
   align-items: start;
 }
 @media (min-width: 940px) {
@@ -1056,7 +1056,7 @@
   display: block;
   width: 100%;
   text-align: left;
-  padding: 18px 20px 16px;
+  padding: 16px 20px 16px;
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
@@ -1076,8 +1076,8 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 14px;
-  bottom: 14px;
+  top: 12px;
+  bottom: 12px;
   width: 2px;
   border-radius: 2px;
   background: var(--v4-text);
@@ -1085,7 +1085,7 @@
 .v4uc-card-head {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .v4uc-card-fig {
@@ -1167,7 +1167,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .v4uc-panel-file {
   font-family: var(--mono);
@@ -1207,9 +1207,9 @@
 }
 /* the outcome footer under the open file */
 .v4uc-panel-outcome {
-  margin-top: 14px;
+  margin-top: 12px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   font-size: 13.5px;
   line-height: 1.55;
   color: var(--v4-text);
@@ -1225,7 +1225,7 @@
   margin-top: clamp(28px, 4vh, 44px);
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.03em;
@@ -1278,7 +1278,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 8px 28px;
-  padding: 22px 2px;
+  padding: 20px 2px;
   border-bottom: 1px solid var(--v4-line);
 }
 @media (min-width: 760px) {
@@ -1442,10 +1442,10 @@
 }
 
 .v4proof-note {
-  margin-top: clamp(30px, 4vh, 48px);
+  margin-top: clamp(28px, 4vh, 48px);
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.03em;
@@ -1484,7 +1484,7 @@
   text-wrap: balance;
 }
 .v4cta-lede {
-  margin-top: 18px;
+  margin-top: 16px;
   max-width: 34rem;
   font-size: 16.5px;
   line-height: 1.6;
@@ -1498,7 +1498,7 @@
   max-width: 100%;
 }
 .v4cta-links {
-  margin-top: 22px;
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1593,7 +1593,7 @@
 .v4fits-nika {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
   font-size: 14.5px;
   line-height: 1.55;
@@ -1641,8 +1641,8 @@
 .v4start-step {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px 32px;
-  padding: 26px 2px;
+  gap: 12px 32px;
+  padding: 24px 2px;
   border-bottom: 1px solid var(--v4-line);
 }
 @media (min-width: 760px) {
@@ -1690,11 +1690,11 @@
 }
 /* ① the two install affordances · brew, then the curl alt, with an "or" seam */
 .v4start-installs {
-  margin-top: 14px;
+  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 14px;
+  gap: 8px 12px;
 }
 .v4start-or {
   font-family: var(--mono);
@@ -1705,7 +1705,7 @@
 }
 /* ② the code panel · a touch of top gap from the desc */
 .v4start-code {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 .v4start-readonly {
   margin-top: 12px;
@@ -1726,7 +1726,7 @@
 }
 /* ③ the run line gets the same top gap as the install affordances */
 .v4start-body .v4install {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 .v4start-installs .v4install {
   margin-top: 0;
@@ -1784,7 +1784,7 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: baseline;
-  column-gap: 14px;
+  column-gap: 12px;
   padding: 20px 2px;
   cursor: pointer;
   list-style: none; /* drop the native disclosure triangle (we draw our own) */
@@ -1830,7 +1830,7 @@
 .v4faq-a {
   grid-column: 2 / 3;
   margin: 0 0 4px;
-  padding: 0 0 22px;
+  padding: 0 0 20px;
   max-width: 46rem;
   font-size: 14.5px;
   line-height: 1.6;
@@ -1840,7 +1840,7 @@
 /* the answer aligns under the question (skip the fig gutter) on wider screens */
 @media (min-width: 520px) {
   .v4faq-a {
-    margin-left: calc(11px + 14px); /* fig width + column gap */
+    margin-left: calc(11px + 12px); /* fig width + column gap */
   }
 }
 
@@ -1886,7 +1886,7 @@
   background-color: var(--v4-bg);
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
-  padding: 18px 16px 17px;
+  padding: 16px 16px 17px;
   font-family: var(--mono);
   font-size: 12.5px;
   line-height: 1.45;
@@ -1909,7 +1909,7 @@
   width: 100%;
   height: 100%;
   min-height: 44px;
-  padding: 18px 16px 17px;
+  padding: 16px 16px 17px;
   color: var(--v4-text-dim);
   text-decoration: none;
   transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
@@ -1936,7 +1936,7 @@
 .v4every-eyebrow {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.24em;
@@ -1944,10 +1944,10 @@
   color: var(--v4-text-faint);
 }
 .v4every-row {
-  margin-top: 18px;
+  margin-top: 16px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 12px;
 }
 @media (min-width: 880px) {
   .v4every-row {
@@ -1959,7 +1959,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 20px 20px 18px;
+  padding: 20px 20px 16px;
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
   background-color: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
@@ -1980,7 +1980,7 @@
   margin-right: 6px;
 }
 .v4every-body {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 13.5px;
   line-height: 1.55;
   color: var(--v4-text-dim);
@@ -2051,12 +2051,12 @@
   color: var(--v4-text);
 }
 .v4convert-cta {
-  margin-top: 22px;
+  margin-top: 20px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 0 18px;
+  padding: 0 16px;
   border: 1px solid var(--v4-line-strong);
   border-radius: var(--v4-radius);
   background-color: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);

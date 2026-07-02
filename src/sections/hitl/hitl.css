@@ -31,7 +31,7 @@
 @media (max-width: 880px) {
   .hitl-stage {
     grid-template-columns: minmax(0, 1fr);
-    gap: 22px;
+    gap: 20px;
   }
 }
 
@@ -47,14 +47,14 @@
   min-width: 0;
 }
 .hitl-block-cap {
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   font-size: 10.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 .hitl-block-cap::before {
   content: '';
@@ -78,7 +78,7 @@
   grid-template-columns: auto auto minmax(0, 1fr);
   align-items: start;
   gap: 12px;
-  padding: 14px 4px;
+  padding: 12px 4px;
   border-top: 1px solid var(--v4-line);
   transition: opacity 0.3s ease;
 }
@@ -150,7 +150,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
   min-height: 56px;
   padding: 12px 16px;
@@ -202,7 +202,7 @@
 .hitl-switch {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex: none;
 }
 .hitl-switch-track {
@@ -273,7 +273,7 @@
   gap: 9px;
   align-items: flex-start;
   margin-top: 13px;
-  padding: 10px 13px;
+  padding: 8px 13px;
   border: 1px solid color-mix(in oklch, var(--hitl-warn) 30%, var(--v4-line));
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--hitl-warn) 5%, transparent);
@@ -308,7 +308,7 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   cursor: pointer;
-  margin-top: 18px;
+  margin-top: 16px;
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -354,7 +354,7 @@
   position: relative;
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
-  padding: clamp(18px, 2.4vw, 26px);
+  padding: clamp(16px, 2.4vw, 24px);
   background: var(--v4-bg-raised);
   /* a top hairline in the current accent — the seam that recolours per verdict */
   box-shadow: inset 0 2px 0 -1px color-mix(in oklch, var(--hitl-line, var(--hitl-accent)) 70%, transparent);
@@ -370,7 +370,7 @@
 }
 
 .hitl-outcome-cap {
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   font-size: 10.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -380,7 +380,7 @@
   margin: 0;
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px;
   font-family: var(--display);
   font-size: clamp(1.25rem, 1rem + 1.2vw, 1.7rem);
   font-weight: 600;
@@ -414,8 +414,8 @@
 
 /* the real CLI tail · monochrome surface, the denied row carries the accent */
 .hitl-cli {
-  margin: 18px 0 0;
-  padding: 14px 16px;
+  margin: 16px 0 0;
+  padding: 12px 16px;
   border-radius: var(--v4-radius);
   border: 1px solid var(--v4-line);
   background: color-mix(in oklch, var(--v4-text) 4%, transparent);
