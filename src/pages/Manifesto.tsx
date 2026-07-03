@@ -86,7 +86,36 @@ export function Component() {
   /* the drum-sphere capability gate · desktop + motion + WebGL + hero-near */
   const heroRef = useRef<HTMLElement>(null)
   const drumRef = useRef<HTMLDivElement>(null)
+  const fieldRef = useRef<HTMLDivElement>(null)
   const sphere = usePlan3D(heroRef)
+
+  /* the field's scroll depth · the 150vh fixed backdrop slides up at ~0.14 of
+     the scroll rate (pure rAF + transform, compositor-only, no scroll-jack),
+     so the quantized arcs + grid recede as the reader descends. Clamped to
+     the field's own overflow so an edge never enters the viewport; skipped
+     entirely under prefers-reduced-motion. */
+  useEffect(() => {
+    const el = fieldRef.current
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let raf = 0
+    const apply = () => {
+      raf = 0
+      const max = Math.max(0, el.offsetHeight - window.innerHeight)
+      const y = Math.min(window.scrollY * 0.14, max)
+      el.style.transform = `translate3d(0, ${-y}px, 0)`
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(apply)
+    }
+    apply()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
 
   /* reveal-on-scroll (reuses the site .rv/.in) — the v3 cursor lamp + card
      spotlight are gone with their DOM (F7) */
@@ -106,9 +135,10 @@ export function Component() {
        re-centres the shared v5 header field behind the drum (see index.css).
        The site Nav + SiteFooter come from RootLayout. Zero copy changes. */
     <div className="mf-scope">
-      {/* the v5 field · the hero's quantized blue, re-anchored to the top
-          centre for the drum composition (mf-scope overrides the glow vars) */}
-      <div className="v5-header-field" aria-hidden />
+      {/* the v5 field · the hero's quantized blue, deepened for the manifesto
+          (denser 16-step ladder + page grid + 150vh scroll depth · the
+          mf-scope overrides in index.css) and slid by the parallax above */}
+      <div className="v5-header-field" aria-hidden ref={fieldRef} />
 
       <main className="relative z-20">
         {/* ─── HERO · the drum beats behind the title ─── */}
@@ -118,7 +148,11 @@ export function Component() {
         >
           {/* THE THOLOS SPHERE · wave I (desktop) — the drum of liberation as a
               breathing shell of wireframe blocks; the CSS rings just below stay
-              the fallback truth, the .mf-core heart beats ON TOP (DOM order) */}
+              the fallback truth. The sphere's own strike core-glow carries the
+              heartbeat: once mounted ([data-drum3d]) the CSS .mf-core heart is
+              retired entirely so no DOM dot ever lands inside the title. In the
+              fallback the heart survives as a soft wide glow (never a hard
+              disc), so it can never read as a stray period over the words. */}
           {sphere ? (
             <Suspense fallback={null}>
               <TheDrumSphere drumRef={drumRef} />
@@ -156,8 +190,29 @@ export function Component() {
           </span>
         </section>
 
+        {/* ─── the drum · the lore beat (operator pacing: the drum metaphor
+            lands FIRST, right after the hero, before the story · the words
+            are untouched, only the beat moved up) ─── */}
+        <section className="mf-prose mx-auto px-6 pt-20 pb-10 text-center">
+          <div className="rv mf-secreg" aria-hidden>
+            <span className="mf-secno">01</span>
+            <span className="mf-secrule" />
+          </div>
+          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
+            Nika is named for the sun god of liberation: the drum that turns fear into laughter and
+            frees the ones who were locked out.
+          </p>
+          <p className="rv mt-5 text-[19px] font-medium text-[var(--fg)]">
+            Every workflow run is a beat of that drum.
+          </p>
+        </section>
+
         {/* ─── the movements · scroll-revealed prose + big statements ─── */}
-        <div className="mx-auto max-w-3xl px-6 pt-10 pb-8">
+        <div className="mf-prose mx-auto px-6 pt-14 pb-16">
+          <div className="rv mf-secreg" aria-hidden>
+            <span className="mf-secno">02</span>
+            <span className="mf-secrule" />
+          </div>
           <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
             On a Friday afternoon, by a single letter, the most capable intelligence on Earth was
             switched off for most of the people on Earth.{' '}
@@ -166,7 +221,7 @@ export function Component() {
             locked out of a tool we had been building our lives on.
           </p>
 
-          <p className="rv mf-statement mf-grad my-16 text-center">This is the moment the argument ended.</p>
+          <p className="rv mf-statement mf-grad mf-pull my-20">This is the moment the argument ended.</p>
 
           <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
             The real problem was never <em>which</em> lab is ahead. It is{' '}
@@ -187,7 +242,7 @@ export function Component() {
             priced out, locked down, or turned off, by a board, a court, a border, a letter.
           </p>
 
-          <p className="rv mf-statement mf-grad my-16 text-center">
+          <p className="rv mf-statement mf-grad mf-pull my-20">
             We refuse the subscription economy for cognition.
           </p>
 
@@ -201,7 +256,7 @@ export function Component() {
             acts. Power you cannot see is power you do not control.
           </p>
 
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
+          <p className="rv mt-8 text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
             <span className="text-[var(--fg)]">
               There is no US open source AI. There is no French open source AI.
             </span>{' '}
@@ -209,11 +264,15 @@ export function Component() {
             modify, and own intelligence. Don&apos;t fight the cage by repainting it. Leave it.
           </p>
 
-          <p className="rv mf-statement mf-grad my-16 text-center">Sovereignty for everyone, or for no one.</p>
+          <p className="rv mf-statement mf-grad mf-pull my-20">Sovereignty for everyone, or for no one.</p>
         </div>
 
-        {/* ─── the 5 promises · skeuo cards ─── */}
-        <section className="mx-auto max-w-5xl px-6 py-16">
+        {/* ─── the 5 promises · seam-kit panels ─── */}
+        <section className="mx-auto max-w-5xl px-6 pt-20 pb-24">
+          <div className="rv mf-secreg" aria-hidden>
+            <span className="mf-secno">03</span>
+            <span className="mf-secrule" />
+          </div>
           <p className="rv mono mb-3 text-center text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
             § What we promise
           </p>
@@ -245,32 +304,21 @@ export function Component() {
           </div>
         </section>
 
-        {/* ─── the drum · the lore beat ─── */}
-        <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-            Nika is named for the sun god of liberation: the drum that turns fear into laughter and
-            frees the ones who were locked out.
-          </p>
-          <p className="rv mt-5 text-[19px] font-medium text-[var(--fg)]">
-            Every workflow run is a beat of that drum.
-          </p>
-        </section>
-
         {/* ─── the close ─── */}
-        <section className="mx-auto flex max-w-3xl flex-col items-center px-6 pt-6 pb-24 text-center">
-          <p className="rv mf-statement mf-grad mb-12">
+        <section className="mf-prose mx-auto flex flex-col items-center px-6 pt-20 pb-28 text-center">
+          <div className="rv mf-secreg w-full" aria-hidden>
+            <span className="mf-secno">04</span>
+            <span className="mf-secrule" />
+          </div>
+          {/* the close keeps its words and links but carries NO butterfly of its
+              own: the shared SiteFooter's living particle butterfly right below
+              is THE mark (one signature, one close · the double-footer fix) */}
+          <p className="rv mf-statement mf-grad mb-10">
             Open source AI must win.
             <br />
             Not for a nation. For everyone.
           </p>
-          <img
-            src="/nika.svg"
-            alt="Nika"
-            width={48}
-            height={48}
-            className="rv mf-close-mark"
-          />
-          <p className="rv mono mt-6 text-[13px] tracking-[0.04em] text-[var(--cyan)]">
+          <p className="rv mono mt-2 text-[13px] tracking-[0.04em] text-[var(--cyan)]">
             The drum of liberation is getting louder.
           </p>
           <div className="rv mono mt-10 flex flex-wrap items-center justify-center gap-6 text-[12.5px]">

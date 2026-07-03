@@ -239,6 +239,128 @@ h1, h2 { font-family: var(--headline); }
      as a different page. The drum owns the centre; the field owns the left. */
 }
 
+/* ── the manifesto field · deeper ladder + page grid + scroll depth ──────────
+   Scoped override of the shared v5 header field, this page only (Home keeps
+   the hero.css original untouched):
+   · DENSER quantized ladder · 16 half-alpha steps instead of 10, so the arcs
+     keep the print/dither register but the step edges stop reading as poster
+     bands; the ladder also descends deeper before handing to the engineered
+     black (no more "arcs then flat" cliff).
+   · the ::after dither MIXING ZONE is re-cut to the same 16-step ladder,
+     half a band ahead (the shader-parity interleave, as hero.css does).
+   · the site grid (--hero-grid-ink) extends down the whole field under a
+     vertical depth falloff instead of living only inside the glow zone.
+   · the field grows to 150vh and Manifesto.tsx slides it up with a slow
+     rAF scroll parallax (transform only, ~0.14 rate, reduced-motion gated):
+     the arcs recede as the reader descends. Geometry keys on the same
+     --hero-glow-x/y anchors, so the phone re-centre keeps working. */
+.mf-scope .v5-header-field {
+  bottom: auto;
+  height: 150vh;
+  will-change: transform;
+  background-image:
+    var(--v4-grain-img),
+    radial-gradient(
+      130% 96% at var(--hero-glow-x) var(--hero-glow-y),
+      rgb(47 107 255 / 0.6) 0%,
+      rgb(47 107 255 / 0.6) 5.5%,
+      rgb(39 101 237 / 0.62) 5.5%,
+      rgb(39 101 237 / 0.62) 11%,
+      rgb(23 89 201 / 0.66) 11%,
+      rgb(23 89 201 / 0.66) 16.5%,
+      rgb(15 83 183 / 0.7) 16.5%,
+      rgb(15 83 183 / 0.7) 22%,
+      rgb(15 83 183 / 0.64) 22%,
+      rgb(15 83 183 / 0.64) 27.5%,
+      rgb(15 80 172 / 0.56) 27.5%,
+      rgb(15 80 172 / 0.56) 33%,
+      rgb(16 71 158 / 0.48) 33%,
+      rgb(16 71 158 / 0.48) 38.5%,
+      rgb(16 66 150 / 0.42) 38.5%,
+      rgb(16 66 150 / 0.42) 44%,
+      rgb(16 62 145 / 0.36) 44%,
+      rgb(16 62 145 / 0.36) 49.5%,
+      rgb(15 52 121 / 0.3) 49.5%,
+      rgb(15 52 121 / 0.3) 55%,
+      rgb(15 46 107 / 0.25) 55%,
+      rgb(15 46 107 / 0.25) 60.5%,
+      rgb(15 41 96 / 0.2) 60.5%,
+      rgb(15 41 96 / 0.2) 66%,
+      rgb(13 34 78 / 0.15) 66%,
+      rgb(13 34 78 / 0.15) 71.5%,
+      rgb(12 29 66 / 0.11) 71.5%,
+      rgb(12 29 66 / 0.11) 77%,
+      rgb(11 24 56 / 0.07) 77%,
+      rgb(11 24 56 / 0.07) 82.5%,
+      rgb(10 21 50 / 0.04) 82.5%,
+      rgb(10 21 50 / 0.04) 88%,
+      transparent 88%
+    );
+  background-size:
+    var(--v4-grain-size) var(--v4-grain-size),
+    auto;
+}
+.mf-scope .v5-header-field::after {
+  /* the mixing zone · the SAME 16-step ladder, half a band ahead, through
+     the 50% Bayer mask (inherited from hero.css): every step edge becomes
+     an interleaved strip, never a crisp poster line */
+  background: radial-gradient(
+    130% 96% at var(--hero-glow-x) var(--hero-glow-y),
+    rgb(39 101 237 / 0.62) 0%,
+    rgb(39 101 237 / 0.62) 8.25%,
+    rgb(23 89 201 / 0.66) 8.25%,
+    rgb(23 89 201 / 0.66) 13.75%,
+    rgb(15 83 183 / 0.7) 13.75%,
+    rgb(15 83 183 / 0.7) 19.25%,
+    rgb(15 83 183 / 0.64) 19.25%,
+    rgb(15 83 183 / 0.64) 24.75%,
+    rgb(15 80 172 / 0.56) 24.75%,
+    rgb(15 80 172 / 0.56) 30.25%,
+    rgb(16 71 158 / 0.48) 30.25%,
+    rgb(16 71 158 / 0.48) 35.75%,
+    rgb(16 66 150 / 0.42) 35.75%,
+    rgb(16 66 150 / 0.42) 41.25%,
+    rgb(16 62 145 / 0.36) 41.25%,
+    rgb(16 62 145 / 0.36) 46.75%,
+    rgb(15 52 121 / 0.3) 46.75%,
+    rgb(15 52 121 / 0.3) 52.25%,
+    rgb(15 46 107 / 0.25) 52.25%,
+    rgb(15 46 107 / 0.25) 57.75%,
+    rgb(15 41 96 / 0.2) 57.75%,
+    rgb(15 41 96 / 0.2) 63.25%,
+    rgb(13 34 78 / 0.15) 63.25%,
+    rgb(13 34 78 / 0.15) 68.75%,
+    rgb(12 29 66 / 0.11) 68.75%,
+    rgb(12 29 66 / 0.11) 74.25%,
+    rgb(11 24 56 / 0.07) 74.25%,
+    rgb(11 24 56 / 0.07) 79.75%,
+    rgb(10 21 50 / 0.04) 79.75%,
+    rgb(10 21 50 / 0.04) 85.25%,
+    transparent 85.25%
+  );
+}
+.mf-scope .v5-header-field::before {
+  /* the grid leaves the glow cage · it runs down the whole field under a
+     vertical depth falloff, so the page keeps its engineered graph paper
+     whisper long after the blue has handed over to black */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.85) 0%,
+    rgb(0 0 0 / 0.5) 32%,
+    rgb(0 0 0 / 0.2) 58%,
+    rgb(0 0 0 / 0.07) 80%,
+    transparent 97%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.85) 0%,
+    rgb(0 0 0 / 0.5) 32%,
+    rgb(0 0 0 / 0.2) 58%,
+    rgb(0 0 0 / 0.07) 80%,
+    transparent 97%
+  );
+}
+
 /* the drum — concentric ripples from a glowing, beating core */
 .mf-drum {
   position: absolute;
@@ -288,21 +410,32 @@ h1, h2 { font-family: var(--headline); }
   14% { opacity: 0.55; }
   100% { transform: scale(1); opacity: 0; }
 }
+/* the fallback heart · a SOFT wide glow, never a hard disc. The old 13px
+   solid dot landed exactly inside the title's second line and read as a
+   stray period ("liberation·"), so the fallback heart is now a low-opacity
+   radial bloom BEHIND the title ink; on WebGL desktops the sphere's own
+   strike core-glow is the heartbeat and this element is display:none
+   entirely (drum-sphere.css · [data-drum3d]). */
 .mf-core {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 13px;
-  height: 13px;
+  width: 84px;
+  height: 84px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 26px 7px color-mix(in srgb, var(--cyan) 55%, transparent);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--cyan) 46%, transparent),
+    color-mix(in srgb, var(--cyan) 16%, transparent) 46%,
+    transparent 74%
+  );
+  opacity: 0.34;
   animation: mfBeat 2.4s ease-in-out infinite;
 }
 @keyframes mfBeat {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-  50% { transform: translate(-50%, -50%) scale(1.55); opacity: 1; }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.26; }
+  50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.44; }
 }
 
 /* gradient hero + statement type (the .supernovae-type recipe · cyan key) */
@@ -335,16 +468,51 @@ h1, h2 { font-family: var(--headline); }
   text-wrap: balance;
 }
 
-/* scroll cue + closing mark */
+/* ── the editorial kit (wave I polish · print register, dark adaptation) ─────
+   The body column reads at a generous ~65ch measure; each section opens on a
+   mono dim number over a hairline rule (the editorial spine); the manifesto's
+   strongest lines become PULL-QUOTES: large Clash Display on the accent
+   gradient behind a hairline left rule, left-set against the justified-left
+   prose. Strong hierarchy, restrained color, generous air. */
+.mf-prose {
+  font-size: 17.5px;
+  max-width: calc(65ch + 3rem); /* the measure + the px-6 gutters */
+}
+.mf-secreg {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 44px;
+}
+.mf-secno {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: var(--fg-dim);
+  font-variant-numeric: tabular-nums;
+}
+.mf-secrule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--cyan) 26%, transparent),
+    var(--hair) 55%,
+    transparent
+  );
+}
+.mf-pull {
+  padding-left: clamp(22px, 4vw, 44px);
+  border-left: 1px solid color-mix(in srgb, var(--cyan) 48%, transparent);
+  text-align: left;
+}
+
+/* scroll cue (the close's own butterfly glyph is gone with its glow-pulse:
+   the shared SiteFooter's living butterfly right below is THE one mark) */
 .mf-cue { animation: mfBounce 1.9s ease-in-out infinite; }
 @keyframes mfBounce {
   0%, 100% { transform: translateY(0); opacity: 0.55; }
   50% { transform: translateY(8px); opacity: 1; }
-}
-.mf-close-mark { animation: mfGlowPulse 3.2s ease-in-out infinite; }
-@keyframes mfGlowPulse {
-  0%, 100% { filter: drop-shadow(0 0 13px rgb(79 134 255 / 0.4)); }
-  50% { filter: drop-shadow(0 0 26px rgb(79 134 255 / 0.72)); }
 }
 
 /* cognitive-stack tokens — glowing pills */

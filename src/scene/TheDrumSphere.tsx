@@ -17,8 +17,9 @@ import './drum-sphere.css'
    ≥1024px + motion + WebGL + hero-near, lazy chunk); the CSS drum rings in
    index.css stay the untouched mobile / reduced-motion / no-WebGL truth.
    They step aside ONLY once this layer actually mounted ([data-drum3d] on
-   .mf-drum, the ThePlanScene pattern) — the .mf-core glow stays ON TOP as
-   the beating heart. ONE canvas, TWO draw calls (instanced fills + instanced
+   .mf-drum, the ThePlanScene pattern), and the .mf-core heart retires with
+   them: the strike core-glow below is the heartbeat, so no DOM dot ever
+   overlaps the title. ONE canvas, TWO draw calls (instanced fills + instanced
    edge lines), zero per-frame attribute uploads (the breath is in-shader),
    frameloop only while the hero is in view and the tab visible.
    THE DRUM BEATS WITH THE READING (wave I·2): the manifesto's top-level
