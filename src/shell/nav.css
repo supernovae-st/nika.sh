@@ -408,11 +408,42 @@
    :focus-visible rule — thin, keyboard-only, never a selection box (pointer
    opens no longer auto-focus the first item). */
 .v4mega-item {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
   padding: 10px 12px;
   border-radius: var(--v4-radius);
   color: var(--v4-text);
   transition: background-color var(--dur-ui) var(--ease-ui), transform 0.12s var(--ease-ui);
+}
+/* the icon tile · a 26px hairline plate that holds the outlined glyph — dim
+   ink at rest; the row hover inks the GLYPH to the accent and firms the
+   hairline (the tile is the affordance the bare-text rows were missing) */
+.v4mega-icobox {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-top: 1px; /* optical align with the 15px label line */
+  border-radius: var(--v4-radius);
+  border: 1px solid var(--v4-line);
+  background: color-mix(in oklch, var(--v4-text) 3%, transparent);
+  color: var(--v4-text-dim);
+  transition: color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+.v4mega-item:hover .v4mega-icobox,
+.v4mega-item:focus-visible .v4mega-icobox {
+  color: var(--v4-accent);
+  border-color: var(--v4-line-strong);
+  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+}
+.v4mega-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 .v4mega-item:hover,
 .v4mega-item:focus-visible {

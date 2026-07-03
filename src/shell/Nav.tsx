@@ -51,9 +51,12 @@ import './nav.css'
    (review P2-12), so field-less routes render SOLID from scroll 0. */
 const FIELD_ROUTES = new Set(['/', '/manifesto'])
 
+type MegaIconName = 'run' | 'verbs' | 'shield' | 'tiles' | 'terminal' | 'book' | 'butterfly'
+
 interface MegaItem {
   label: string
   desc: string
+  icon: MegaIconName
   to?: string // internal RR route
   href?: string // home anchor (/#x) or external
   external?: boolean
@@ -73,21 +76,93 @@ const PRODUCT_GROUPS: MegaGroup[] = [
   {
     title: 'The control layer',
     items: [
-      { label: 'See it run', desc: 'The plan, reviewed and enforced', href: '/#the-run' },
-      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', href: '/#verbs' },
-      { label: 'What it can touch', desc: 'The permits enforcement model', href: '/#the-boundary' },
-      { label: 'Use cases', desc: 'Real plans, reviewable and bound', to: '/use-cases' },
+      { label: 'See it run', desc: 'The plan, reviewed and enforced', icon: 'run', href: '/#the-run' },
+      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', icon: 'verbs', href: '/#verbs' },
+      { label: 'What it can touch', desc: 'The permits enforcement model', icon: 'shield', href: '/#the-boundary' },
+      { label: 'Use cases', desc: 'Real plans, reviewable and bound', icon: 'tiles', to: '/use-cases' },
     ],
   },
   {
     title: 'Build · Learn',
     items: [
-      { label: 'Playground', desc: 'Write & run in the browser', to: '/play' },
-      { label: 'Learn it in 5 min', desc: 'The quickstart', to: '/learn' },
-      { label: 'Manifesto', desc: 'The drum of liberation', to: '/manifesto' },
+      { label: 'Playground', desc: 'Write & run in the browser', icon: 'terminal', to: '/play' },
+      { label: 'Learn it in 5 min', desc: 'The quickstart', icon: 'book', to: '/learn' },
+      { label: 'Manifesto', desc: 'The drum of liberation', icon: 'butterfly', to: '/manifesto' },
     ],
   },
 ]
+
+/* ── the mega icon set · ONE hand-drawn outlined family (16px grid · stroke
+   1.5 · round joins · monochrome dim, inked+accent on row hover via CSS).
+   The butterfly is the nika mark reduced to a 4-lobe glyph — the full-color
+   public/nika.svg art doesn't survive 16px, so the wings are re-traced as
+   stroke teardrops off a short body line. */
+const MEGA_ICON_PATHS: Record<MegaIconName, React.ReactNode> = {
+  run: (
+    <>
+      <circle cx="8" cy="8" r="6.3" />
+      <path d="M6.8 5.7v4.6L10.6 8Z" />
+    </>
+  ),
+  verbs: (
+    <>
+      <circle cx="5.1" cy="5.1" r="1.7" />
+      <circle cx="10.9" cy="5.1" r="1.7" />
+      <circle cx="5.1" cy="10.9" r="1.7" />
+      <circle cx="10.9" cy="10.9" r="1.7" />
+    </>
+  ),
+  shield: (
+    <path d="M8 1.9 13.1 3.9v4c0 3.2-2.2 5.2-5.1 6.4-2.9-1.2-5.1-3.2-5.1-6.4v-4Z" />
+  ),
+  tiles: (
+    <>
+      <rect x="2.2" y="2.4" width="11.6" height="4.6" rx="1.2" />
+      <rect x="2.2" y="9" width="5.1" height="4.6" rx="1.2" />
+      <rect x="8.7" y="9" width="5.1" height="4.6" rx="1.2" />
+    </>
+  ),
+  terminal: (
+    <>
+      <rect x="1.8" y="2.7" width="12.4" height="10.6" rx="1.6" />
+      <path d="m4.6 6.5 2.3 1.9-2.3 1.9" />
+      <path d="M8.7 10.3h2.7" />
+    </>
+  ),
+  book: (
+    <>
+      <path d="M8 4.3C6.9 3.1 4.9 2.8 2.4 3v9.7c2.5-.2 4.5.1 5.6 1.3 1.1-1.2 3.1-1.5 5.6-1.3V3c-2.5-.2-4.5.1-5.6 1.3Z" />
+      <path d="M8 4.3v9.7" />
+    </>
+  ),
+  butterfly: (
+    <>
+      <path d="M8 6.6v4.8" />
+      <path d="M7.6 7.3C5.7 4.4 2.7 3.9 2.2 5.5c-.4 1.7 2.2 3.3 5.4 3.4Z" />
+      <path d="M8.4 7.3c1.9-2.9 4.9-3.4 5.4-1.8.4 1.7-2.2 3.3-5.4 3.4Z" />
+      <path d="M7.7 9.7c-2.3.2-4 1.4-3.6 2.7.4 1.2 2.4.8 3.6-1Z" />
+      <path d="M8.3 9.7c2.3.2 4 1.4 3.6 2.7-.4 1.2-2.4.8-3.6-1Z" />
+    </>
+  ),
+}
+
+function MegaIcon({ name }: { name: MegaIconName }) {
+  return (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      {MEGA_ICON_PATHS[name]}
+    </svg>
+  )
+}
 
 /* the flat top-level links after Product */
 const TOP_LINKS: { label: string; href: string; external?: boolean; newTab?: boolean }[] = [
@@ -129,10 +204,15 @@ function ItemLink({
   refCb?: (el: HTMLAnchorElement | null) => void
 }) {
   const inner = (
-    <span>
-      <span className="v4mega-label">{item.label}</span>
-      <span className="v4mega-desc">{item.desc}</span>
-    </span>
+    <>
+      <span className="v4mega-icobox" aria-hidden>
+        <MegaIcon name={item.icon} />
+      </span>
+      <span className="v4mega-text">
+        <span className="v4mega-label">{item.label}</span>
+        <span className="v4mega-desc">{item.desc}</span>
+      </span>
+    </>
   )
   if (item.to) {
     return (
