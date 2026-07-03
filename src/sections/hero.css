@@ -799,6 +799,36 @@
   color: var(--v4-text-faint);
 }
 
+/* ── 5c · the mini-DAG placements (wave K) ─────────────────────────────────────
+   ≥1440 · a 180px side rail in the free right margin (time falls) — the
+   max-w-6xl composition holds exactly 200px of air there, so the rail lives
+   beside the file without moving one calibrated pixel of the grid.
+   1024-1439 · the band under the editor stack (time flows right, /learn
+   direction) — a true side column at 1280 would squeeze the H1 column to
+   ~400px (composition defect), so the band placement carries that window.
+   <1024 · hidden (the editor is the phone's whole story). */
+.v4hero-dag {
+  display: none;
+}
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .v4hero-dag--band {
+    display: block;
+    margin-top: 20px;
+  }
+}
+@media (min-width: 1440px) {
+  .v4hero-editor {
+    position: relative;
+  }
+  .v4hero-dag--rail {
+    display: block;
+    position: absolute;
+    left: calc(100% + 16px);
+    top: 42px;
+    width: 180px;
+  }
+}
+
 /* ── 6 · the one solid accent button · See it run ─────────────────────────────
    The single filled CTA on the page top — accent-cta fill (white ink ≥5:1),
    sharp radius, hairline top-light. Hover raises to accent-strong; press dips. */

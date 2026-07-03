@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
 import { verbGlyph } from '../components/codefile-highlight'
+import { MiniDag } from '../components/MiniDag'
 import { InstallCommand } from '../components/InstallCommand'
 import { useMagnetic } from '../fx/use-magnetic'
 import { ENGINE_VERSION, REPO, SPEC } from '../content'
@@ -350,6 +351,28 @@ export default function Hero({
     pre.scrollTo({ top: snapped, behavior: reduce ? 'auto' : 'smooth' })
   }, [item.id])
 
+  /* ── the bidirectional pairing (wave K) · one shared state, two mirrors ─────
+     Hover/focus a mini-DAG node → the editor lights that task's exact lines;
+     hover a task block in the YAML → its node lights. The pair resets on file
+     switch. The caption highlight returns the instant the pair clears. */
+  const [pairTask, setPairTask] = useState<string | null>(null)
+  /* file switch clears the pair · the render-time adjustment (not an effect):
+     the stale pair never paints, and no cascading second render fires. */
+  const [pairFile, setPairFile] = useState(item.id)
+  if (pairFile !== item.id) {
+    setPairFile(item.id)
+    setPairTask(null)
+  }
+  const paired = pairTask ? item.plan.tasks.find((t) => t.id === pairTask) : undefined
+  const onLineHover = (ln: number | null) => {
+    if (ln == null) {
+      setPairTask(null)
+      return
+    }
+    const t = item.plan.tasks.find((t) => ln >= t.line0 && ln <= t.line1)
+    setPairTask(t ? t.id : null)
+  }
+
   return (
     <section
       ref={rootRef}
@@ -468,9 +491,10 @@ export default function Hero({
             <CodeFile
               yaml={item.yaml}
               filename={item.filename}
-              highlight={item.highlight}
+              highlight={paired ? [paired.line0, paired.line1] : item.highlight}
               className="v4hero-code"
               wrap
+              onLineHover={onLineHover}
             />
           </div>
           {/* the switcher sits UNDER the file (operator wave I) — the panel
@@ -511,6 +535,27 @@ export default function Hero({
               </a>
             )}
           </div>
+          {/* THE MINI-DAG · the same plan, drawn — derived from the selected
+              file so every library pick gets its diagram for free. Two
+              placements, CSS picks one: the ≥1440 side rail (time falls) or
+              the 1024-1439 band under the editor stack (time flows right);
+              phones keep the editor alone. */}
+          <MiniDag
+            plan={item.plan}
+            orientation="rail"
+            fileId={item.id}
+            pairTask={pairTask}
+            onPair={setPairTask}
+            className="v4hero-dag v4hero-dag--rail"
+          />
+          <MiniDag
+            plan={item.plan}
+            orientation="band"
+            fileId={item.id}
+            pairTask={pairTask}
+            onPair={setPairTask}
+            className="v4hero-dag v4hero-dag--band"
+          />
         </div>
       </div>
     </section>

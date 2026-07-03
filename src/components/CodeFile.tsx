@@ -44,6 +44,9 @@ export interface CodeFileProps {
   wrap?: boolean
   /** optional extra classes on the outer panel */
   className?: string
+  /** a pointer entered a code line (1-based) · null on leave — the mini-DAG
+      pairing surface (hero). Delegated on the body: zero cost when absent. */
+  onLineHover?: (line: number | null) => void
 }
 
 /* token kind → syntax class (the literal hue resolves per theme via codefile.css) */
@@ -126,6 +129,7 @@ export function CodeFile({
   firstLine = 1,
   wrap = false,
   className,
+  onLineHover,
 }: CodeFileProps) {
   const lines = useMemo(() => tokenize(yaml), [yaml])
   /* the title-bar sheen (panel-sheen.css) parks when the tab hides — arm the
@@ -203,8 +207,23 @@ export function CodeFile({
         </span>
       </div>
 
-      {/* ── the editor body · gutter + code, one horizontal scroll well ──────── */}
-      <div className="cf-body">
+      {/* ── the editor body · gutter + code, one horizontal scroll well ────────
+           onLineHover: delegated pairing surface — pointerover only fires on
+           element boundaries (never per-move) and resolves the 1-based line
+           from the row's data-ln. Absent prop = zero listeners. */}
+      <div
+        className="cf-body"
+        onPointerOver={
+          onLineHover
+            ? (e) => {
+                const row = (e.target as HTMLElement).closest('.cf-line')
+                const ln = row ? Number((row as HTMLElement).dataset.ln) : NaN
+                onLineHover(Number.isFinite(ln) ? ln : null)
+              }
+            : undefined
+        }
+        onPointerLeave={onLineHover ? () => onLineHover(null) : undefined}
+      >
         <pre ref={preRef} className="cf-pre" style={{ ['--cf-gutter' as string]: `${gutterCh}ch` }}>
           <code className="cf-code">
             {lines.map((line, i) => {

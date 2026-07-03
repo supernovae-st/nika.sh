@@ -1,0 +1,123 @@
+import { useMemo } from 'react'
+import { layoutMiniDag, type MiniDagOrientation } from './mini-dag-layout'
+import type { FlagshipPlanModel } from '../flagships/derive'
+import { VERB_WORDS } from '../sections/morph/plain-words'
+import './mini-dag.css'
+
+/* ─── MiniDag · the compact plan diagram beside the hero editor (wave K) ──────
+   A comprehension instrument, not decoration: the SELECTED file's task graph,
+   derived (mini-dag-layout.ts ← derive.ts, the one derivation) so every
+   library file gets its drawing for free. Same visual vocabulary as the
+   /learn static plate and the morph's flat plan: verb-hued dots, mono ids,
+   thin dependency curves, parallel waves sharing one start line. When-gated
+   tasks carry the seal (◈), fan-outs the sheaf (⧉).
+
+   SSR-static: pure layout, real DOM buttons over one SVG underlay (the
+   buttons give focus/hover to every node — the bidirectional pairing with
+   the editor wires through pairTask/onPair). The stage remounts per file
+   (key) — a 200ms rise-in reads as the relayout beat; reduced-motion is
+   instant (mini-dag.css gates the animation). */
+
+export interface MiniDagProps {
+  plan: FlagshipPlanModel
+  orientation: MiniDagOrientation
+  /** keys the stage remount (the file-switch transition) */
+  fileId: string
+  /** the paired task to mirror (editor-side hover drives it) */
+  pairTask?: string | null
+  /** a node took hover/focus (null on leave) — the editor lights its lines */
+  onPair?: (id: string | null) => void
+  className?: string
+}
+
+/** the plain sentence a screen reader gets instead of the drawing */
+function planSentence(plan: FlagshipPlanModel): string {
+  return plan.waves
+    .map((wave, w) => {
+      const names = wave.map((t) => t.id).join(', ')
+      if (w === 0) return wave.length > 1 ? `${names} start together` : `${names} starts`
+      return wave.length > 1 ? `then ${names} run together` : `then ${names}`
+    })
+    .join(' · ')
+}
+
+export function MiniDag({
+  plan,
+  orientation,
+  fileId,
+  pairTask,
+  onPair,
+  className,
+}: MiniDagProps) {
+  const lay = useMemo(() => layoutMiniDag(plan, orientation), [plan, orientation])
+  /* the caption doubles as the gloss line: while a node is paired it speaks
+     that task in plain words (the shared VERB_WORDS · zero drift with the 3D
+     tips and the /learn dictionary), then returns to the steps count. */
+  const pairedNode = pairTask ? lay.nodes.find((n) => n.id === pairTask) : undefined
+  return (
+    <figure className={`mdag mdag--${orientation} ${className ?? ''}`}>
+      <p className="mdag-cap" aria-hidden>
+        {pairedNode ? (
+          <>
+            <span className="mdag-cap-name mdag-cap-name--pair">{pairedNode.id}</span>
+            <span className="mdag-cap-meta">{VERB_WORDS[pairedNode.verb]}</span>
+          </>
+        ) : (
+          <>
+            <span className="mdag-cap-name">the plan</span>
+            <span className="mdag-cap-meta">
+              {plan.tasks.length} steps · time {orientation === 'rail' ? '↓' : '→'}
+            </span>
+          </>
+        )}
+      </p>
+      <div className="mdag-scroll">
+        <div
+          className="mdag-stage"
+          key={fileId}
+          style={{ width: lay.w, height: lay.h }}
+          role="group"
+          aria-label={`the plan of this file · ${planSentence(plan)}`}
+        >
+          <svg className="mdag-wires" viewBox={`0 0 ${lay.w} ${lay.h}`} aria-hidden>
+            {lay.edges.map((e) => (
+              <path key={`${e.from}-${e.to}`} d={e.d} />
+            ))}
+          </svg>
+          {lay.nodes.map((n) => (
+            <button
+              key={n.id}
+              type="button"
+              className="mdag-node"
+              data-verb={n.verb}
+              data-hi={pairTask === n.id || undefined}
+              style={{ left: n.x, top: n.y }}
+              aria-label={`${n.id} · ${n.verb}${n.gated ? ' · when-gated' : ''}${
+                n.fanout ? ' · fans out per item' : ''
+              }`}
+              onPointerEnter={onPair ? () => onPair(n.id) : undefined}
+              onPointerLeave={onPair ? () => onPair(null) : undefined}
+              onFocus={onPair ? () => onPair(n.id) : undefined}
+              onBlur={onPair ? () => onPair(null) : undefined}
+            >
+              <span className="mdag-dot" aria-hidden />
+              <span className="mdag-id" aria-hidden>
+                {n.id}
+                {n.gated ? (
+                  <span className="mdag-seal" title="when-gated">
+                    ◈
+                  </span>
+                ) : null}
+                {n.fanout ? (
+                  <span className="mdag-fan" title="fans out per item">
+                    ⧉
+                  </span>
+                ) : null}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </figure>
+  )
+}
