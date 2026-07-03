@@ -28,18 +28,23 @@ const REST_INTENSITY = 0.055 /* the resting WHISPER · the frame is mostly absen
 /** run mode raises the resting floor — the frame must clearly speak while a
     run plays (the drum), yet stay a diffuse glow, never a hard border: the
     presence comes from opacity on a 16px-blurred rim, not from sharpness. */
-const RUN_REST_INTENSITY = 0.34
+const RUN_REST_INTENSITY = 0.26
 /** Peak the halo jumps to on a pulse before it decays. Calibrated for wide-
     gamut displays: P3 renders these hues far more vivid than headless
     captures — every ceiling here deliberately undershoots what sRGB
     screenshots suggest. */
-const PULSE_INTENSITY = 0.45
+const PULSE_INTENSITY = 0.38
 /** Decay back to rest takes ~450ms (the sharper v5 beat). */
 const DECAY_MS = 450
 /** after workflow_completed the bloom HOLDS ~1.2s (the verdict sweep plays
     inside it), then the frame decays back to the quiet blue rest */
 const RUN_HOLD_MS = 1200
 const DANGER_MS = 650
+/** the HELLO · one soft spectral breath on first paint, then the frame goes
+    quiet — « pas tout le temps là » : it announces itself once and only
+    returns when events speak. */
+const HELLO_INTENSITY = 0.32
+const HELLO_DELAY_MS = 400
 
 export function AuroraProvider({ children }: { children: ReactNode }) {
   const elRef = useRef<HTMLDivElement | null>(null)
@@ -52,6 +57,21 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
   const tickRef = useRef<(ts: number) => void>(() => {})
   const sweepTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const dangerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  /* the HELLO breath · once per mount, motion-gated */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
+    const t = setTimeout(() => {
+      const el = elRef.current
+      if (!el) return
+      intensityRef.current = HELLO_INTENSITY
+      el.style.setProperty('--aurora-intensity', String(HELLO_INTENSITY))
+      lastTsRef.current = 0
+      if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickRef.current)
+    }, HELLO_DELAY_MS)
+    return () => clearTimeout(t)
+  }, [])
 
   /* Tab hidden → park the ambient animations (data-idle). The ring's slow
      drift is a feature while WATCHED; it composits for nobody when hidden. */

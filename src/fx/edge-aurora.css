@@ -114,15 +114,16 @@
 /* THE BAND · crisp saturated rim */
 .edge-aurora::before {
   padding: var(--aurora-band);
-  filter: blur(16px) saturate(1.2);
+  /* blur ≈ 2× the band: the line melts into a gradient fog · no inner edge */
+  filter: blur(26px) saturate(1.1);
   opacity: min(1, calc(var(--aurora-intensity) * 1.6));
 }
 
 /* THE BLOOM · the same ring, fat and soft — the inward falloff */
 .edge-aurora::after {
   padding: var(--aurora-bloom);
-  filter: blur(40px) saturate(1.05);
-  opacity: calc(var(--aurora-intensity) * 0.9);
+  filter: blur(52px) saturate(1);
+  opacity: calc(var(--aurora-intensity) * 0.85);
 }
 
 @keyframes edge-aurora-spin {
@@ -153,7 +154,7 @@
 .edge-aurora[data-run]::before {
   opacity: min(
     1,
-    calc(var(--aurora-intensity) * 1.6 + var(--aurora-progress) * 0.08)
+    calc(var(--aurora-intensity) * 1.6 + var(--aurora-progress) * 0.06)
   );
   animation-duration: 16s;
 }
@@ -223,10 +224,10 @@
     --aurora-radius: 12px;
   }
   .edge-aurora::before {
-    filter: blur(10px) saturate(1.2);
+    filter: blur(16px) saturate(1.1);
   }
   .edge-aurora::after {
-    filter: blur(24px) saturate(1.1);
+    filter: blur(30px) saturate(1);
   }
 }
 
