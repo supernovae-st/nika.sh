@@ -192,7 +192,7 @@ outputs:
     id: 'price_watch',
     filename: 'price-watch.nika.yaml',
     label: 'price-watch',
-    /* the zero-model tab: not every workflow needs an LLM — the DAG, two
+    /* the zero-model tab: not every workflow needs an LLM · the DAG, two
        builtins and one CEL compare do the whole job deterministically. */
     gloss: 'when: zero model · plain data opens the gate',
     highlight: [22, 24],
@@ -239,7 +239,9 @@ outputs:
     /* the parallelism tab: one read fans out into three rewrites (no deps
        between them → the engine runs them concurrently) and one merge. */
     gloss: 'depends_on: three parallel rewrites, one merge',
-    highlight: [29, 30],
+    /* the lit band = the caption's evidence: the bundle head + the fan-in
+       depends_on line that literally lists the three parallel rewrites. */
+    highlight: [26, 27],
     artifact: 'wrote social-bundle.md',
     traceNdjson: socialRepurposeTrace,
     yaml: `nika: v1
