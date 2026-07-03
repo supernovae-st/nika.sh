@@ -47,6 +47,29 @@
   outline: none;
 }
 
+/* route entrance · one 240ms fade on every navigation (the wrapper is keyed
+   on the pathname, so a remount replays it). OPACITY ONLY — a transform here
+   would make #main a containing block and re-anchor position:fixed children
+   (the hero field canvas) for the animation's duration. The per-section
+   data-rise entrances supply the vertical settle; this layer just removes
+   the hard cut. First SSR paint plays it too — a soft settle, not a flash. */
+.route-enter {
+  animation: route-enter 0.24s ease-out both;
+}
+@keyframes route-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-enter {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .skip-link {
     transition: none;

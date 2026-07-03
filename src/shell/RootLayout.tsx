@@ -80,7 +80,11 @@ export default function RootLayout() {
       {/* the routed content target · the skip link lands here (id="main"); each
           page renders its own <main> landmark inside. tabindex=-1 so the link can
           move focus to it programmatically. */}
-      <div id="main" tabIndex={-1} className="skip-target">
+      {/* route entrance · keying the wrapper on the pathname remounts it per
+          navigation, replaying a single 240ms fade+rise (CSS, compositor-only,
+          reduced-motion gated). SSR-safe: the animation is a plain CSS entrance
+          on the prerendered markup — no JS timing, no exit phase to desync. */}
+      <div id="main" tabIndex={-1} className="skip-target route-enter" key={pathname}>
         <Outlet />
       </div>
       {showFooter ? <SiteFooter /> : null}

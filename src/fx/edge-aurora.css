@@ -15,8 +15,9 @@
    sections because the rest intensity is subtle and the hues are additive. */
 
 .edge-aurora {
-  /* rest intensity · pulses raise this toward ~1 then decay back */
-  --aurora-intensity: 0.04;
+  /* rest intensity · pulses raise this toward ~1 then decay back. 0.09: the
+     ambient spectral frame must be FELT at rest (subtle, never loud). */
+  --aurora-intensity: 0.09;
 
   position: fixed;
   inset: 0;
@@ -34,9 +35,9 @@
   will-change: opacity;
 }
 
-/* settled at the quiet rest floor (decay loop parked · EdgeAurora.tsx sets
-   data-idle) — freeze the infinite breathe/rotate so the layer stops
-   compositing for a near-invisible 0.04 ring. Any pulse/run clears the flag. */
+/* tab hidden (EdgeAurora.tsx sets data-idle on visibilitychange) — freeze the
+   infinite breathe/rotate; nobody is watching the compositor work. The ambient
+   ring itself stays ALIVE while visible: its slow drift is now the feature. */
 .edge-aurora[data-idle='on'],
 .edge-aurora[data-idle='on']::before {
   animation-play-state: paused;
@@ -44,8 +45,11 @@
 
 /* The visible ring · a blurred conic sweep masked to the frame edges only.
    `mask` punches a transparent rectangle out of the center so only the rim
-   glows. The conic sweep stays INSIDE the blue family — tonal movement
-   (core ↔ deep), never a second hue. */
+   glows. AMBIENT MULTICOLOR (operator override 2026-07-03 · the oryzo ask):
+   the rest ring carries the four verb hues as a WHISPER — each hue folded
+   60% into the deep wire blue so the frame reads as one instrument with a
+   faint spectral drift, never a rainbow. The run state (below) is the same
+   wheel at full voice. */
 .edge-aurora::before {
   content: '';
   position: absolute;
@@ -53,24 +57,27 @@
   background:
     conic-gradient(
       from 0deg,
-      #2f6bff 0%,
-      #16307a 25%,
-      #2f6bff 50%,
-      #16307a 75%,
-      #2f6bff 100%
+      color-mix(in oklch, var(--verb-infer) 46%, #16307a) 0turn,
+      color-mix(in oklch, var(--verb-exec) 34%, #16307a) 0.25turn,
+      color-mix(in oklch, var(--verb-invoke) 38%, #16307a) 0.5turn,
+      color-mix(in oklch, var(--verb-agent) 40%, #16307a) 0.75turn,
+      color-mix(in oklch, var(--verb-infer) 46%, #16307a) 1turn
     );
 
-  /* keep the GLOW at the rim only — a TIGHTER center punch than v4 so the ring
-     hugs the frame (sharper), the center stays black & readable */
+  /* keep the GLOW at the rim only. Same geometry fix as the run state (the
+     old 82%/66% mask parked the band entirely OFF-viewport — corner haze
+     only): the band lands ON the frame edges, the 30% center punch still
+     protects the content column. The ambient is carried by intensity (0.09),
+     not by hiding the band. */
   mask: radial-gradient(
-    ellipse 82% 82% at 50% 50%,
-    transparent 66%,
-    #000 100%
+    ellipse 100% 100% at 50% 50%,
+    transparent 32%,
+    #000 47%
   );
   -webkit-mask: radial-gradient(
-    ellipse 82% 82% at 50% 50%,
-    transparent 66%,
-    #000 100%
+    ellipse 100% 100% at 50% 50%,
+    transparent 32%,
+    #000 47%
   );
 
   filter: blur(44px);

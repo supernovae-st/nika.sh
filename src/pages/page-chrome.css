@@ -142,6 +142,41 @@
   color: var(--v4-accent-bright, var(--v4-accent));
 }
 
+/* the electric whisper (v3 headline lineage, restrained) · a slow light sweep
+   INSIDE the blue family travels the punch line. background-clip:text over an
+   oversized gradient, position-only animation; the plain color above stays the
+   layout+fallback truth (and the reduced-motion state). */
+@supports (-webkit-background-clip: text) {
+  @media (prefers-reduced-motion: no-preference) {
+    .v4punch {
+      background-image: linear-gradient(
+        100deg,
+        var(--v4-accent-bright) 0%,
+        var(--v4-accent-bright) 42%,
+        #b8cffc 50%,
+        var(--v4-accent-bright) 58%,
+        var(--v4-accent-bright) 100%
+      );
+      background-size: 240% 100%;
+      background-position: 120% 0;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: v4punch-sweep 7s ease-in-out infinite;
+    }
+  }
+}
+@keyframes v4punch-sweep {
+  0%,
+  55%,
+  100% {
+    background-position: 120% 0;
+  }
+  75% {
+    background-position: -20% 0;
+  }
+}
+
 /* ── the page masthead count · a mono register chip beside the FIG eyebrow ─────
    Mirrors .spec-head-count / .v4belt-reg-count: the "spec sheet" read. */
 .v4page-stamp {

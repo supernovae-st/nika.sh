@@ -201,6 +201,28 @@
   background-attachment: local;
 }
 
+/* the editor-row hover · the whole line washes faint blue and its number inks
+   up: the read-along affordance of a real editor. Hover-capable pointers only
+   (no sticky wash on touch); background+color swap, zero reflow. */
+@media (hover: hover) {
+  .cf-line:hover {
+    background-image:
+      linear-gradient(rgb(79 134 255 / 0.055) 0 0),
+      linear-gradient(var(--cf-line-strong) 0 0);
+    background-size:
+      100% 100%,
+      1px 100%;
+    background-position:
+      0 0,
+      calc(13px + var(--cf-gutter, 2ch) + 11px) 0;
+    background-repeat: no-repeat;
+    background-attachment: local, local;
+  }
+  .cf-line:hover .cf-ln {
+    opacity: 1;
+  }
+}
+
 /* the line-number gutter cell · dimmed, right-aligned, tabular, select-none. */
 .cf-ln {
   flex: 0 0 auto;

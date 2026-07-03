@@ -23,7 +23,7 @@ import './edge-aurora.css'
    SSR-safe: the visual is pure CSS; browser access lives in effects and
    event-time callbacks only. */
 
-const REST_INTENSITY = 0.04
+const REST_INTENSITY = 0.09 /* the ambient spectral frame · felt, never loud */
 /** run mode raises the resting floor — the VERB BLOOM. The four-hue frame must
     be unmistakable at 1440 while a run plays (operator's oryzo ask), so the
     floor sits at ~0.36 (the run.css mask keeps the center readable). */
@@ -51,6 +51,19 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
   /* the verb hues, read once from the live token surface (tokens.css) */
   const huesRef = useRef<Record<AuroraVerb, string> | null>(null)
 
+  /* Tab hidden → park the ambient animations (data-idle). The ring's slow
+     drift is a feature while WATCHED; it composits for nobody when hidden. */
+  useEffect(() => {
+    const onVis = () => {
+      const el = elRef.current
+      if (!el) return
+      if (document.hidden) el.dataset.idle = 'on'
+      else delete el.dataset.idle
+    }
+    document.addEventListener('visibilitychange', onVis)
+    return () => document.removeEventListener('visibilitychange', onVis)
+  }, [])
+
   /* Install the decay-loop frame fn once on mount. */
   useEffect(() => {
     const tick = (ts: number) => {
@@ -70,15 +83,10 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
 
       if (Math.abs(intensityRef.current - rest) > 0.002) {
         rafRef.current = requestAnimationFrame(tickRef.current)
-        if (el) delete el.dataset.idle
       } else {
         if (el) el.style.setProperty('--aurora-intensity', String(rest))
         rafRef.current = null
         lastTsRef.current = 0
-        // settled at the quiet rest floor: park the infinite rotate/breathe
-        // animations (a permanently-composited layer buys nothing at 0.04) —
-        // any pulse/run re-arms and clears the flag on the next frame.
-        if (el && rest <= REST_INTENSITY) el.dataset.idle = 'on'
       }
     }
     tickRef.current = tick
