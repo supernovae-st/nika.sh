@@ -23,7 +23,7 @@ export function Component() {
         <span className="nf-four">404</span> · this page doesn&rsquo;t exist
       </h1>
       <p className="nf-lede">
-        This file doesn&rsquo;t parse &mdash; there&rsquo;s nothing at this path. Head
+        This file doesn&rsquo;t parse: there&rsquo;s nothing at this path. Head
         back to a file that runs.
       </p>
       <pre className="nf-file" aria-hidden>
