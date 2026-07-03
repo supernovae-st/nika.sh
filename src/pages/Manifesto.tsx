@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { REPO, SPEC, routeHead } from '../content'
+import { usePlan3D } from '../sections/morph/use-plan3d'
 
 /* ─── /manifesto · the drum of liberation (v5 theme · F7) ─────────────────────
    Routed at /manifesto (React Router) · the sovereignty manifesto, written the
@@ -14,6 +15,12 @@ import { REPO, SPEC, routeHead } from '../content'
    it is the page's own metaphor, beating in the v5 accent.
    Copy discipline: no em-dash, no vendor named, no fact-checkable number.
    Effects (mf-*) live in index.css · reveal reuses the site's .rv (local observer). */
+
+/* wave I · the hero drum as a tholos sphere (desktop ≥1024px + WebGL + motion,
+   lazy chunk — three itself is already the shared vendor chunk). It hides the
+   CSS drum rings only once actually mounted ([data-drum3d], set by the layer
+   itself) — the rings below stay the mobile / reduced-motion / no-WebGL truth. */
+const TheDrumSphere = lazy(() => import('../scene/TheDrumSphere'))
 
 const STACK = ['models', 'memory', 'context', 'workflows', 'agents', 'tools']
 
@@ -76,6 +83,11 @@ export function Component() {
     ],
   })
 
+  /* the drum-sphere capability gate · desktop + motion + WebGL + hero-near */
+  const heroRef = useRef<HTMLElement>(null)
+  const drumRef = useRef<HTMLDivElement>(null)
+  const sphere = usePlan3D(heroRef)
+
   /* reveal-on-scroll (reuses the site .rv/.in) — the v3 cursor lamp + card
      spotlight are gone with their DOM (F7) */
   useEffect(() => {
@@ -100,8 +112,19 @@ export function Component() {
 
       <main className="relative z-20">
         {/* ─── HERO · the drum beats behind the title ─── */}
-        <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center">
-          <div className="mf-drum" aria-hidden>
+        <section
+          ref={heroRef}
+          className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
+        >
+          {/* THE THOLOS SPHERE · wave I (desktop) — the drum of liberation as a
+              breathing shell of wireframe blocks; the CSS rings just below stay
+              the fallback truth, the .mf-core heart beats ON TOP (DOM order) */}
+          {sphere ? (
+            <Suspense fallback={null}>
+              <TheDrumSphere drumRef={drumRef} />
+            </Suspense>
+          ) : null}
+          <div className="mf-drum" aria-hidden ref={drumRef}>
             <span className="mf-ring" />
             <span className="mf-ring" />
             <span className="mf-ring" />

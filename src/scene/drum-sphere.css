@@ -1,0 +1,62 @@
+/* ─── the drum sphere · manifesto hero 3D layer (mfd- · wave I) ───────────────
+   Ships with the lazy TheDrumSphere chunk — desktop/WebGL/motion only, so
+   none of this CSS ever loads for the fallback audience. The CSS drum rings
+   in index.css stay untouched; [data-drum3d] (set on .mf-drum by the layer
+   itself once mounted, the ThePlanScene pattern) retires the rings + dial
+   guides while the .mf-core heart keeps beating ON TOP of the sphere. */
+.mfd {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(88vmin, 760px);
+  height: min(88vmin, 760px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.mfd-canvas {
+  position: absolute;
+  inset: 0;
+}
+/* a soft radial dimming between the sphere and the title ink — the lines are
+   dim by design, this keeps the headline AAA over the busiest band */
+.mfd::after {
+  content: '';
+  position: absolute;
+  inset: 16%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgb(5 6 10 / 0.52),
+    rgb(5 6 10 / 0.3) 55%,
+    transparent 78%
+  );
+}
+/* HUD whisper · the tholos label register, pinned at the scene edges */
+.mfd-hud {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: color-mix(in srgb, var(--cyan) 52%, transparent);
+  user-select: none;
+}
+.mfd-hud-tl {
+  top: 6%;
+  left: 3%;
+}
+.mfd-hud-bl {
+  bottom: 6%;
+  left: 3%;
+}
+.mfd-hud-br {
+  bottom: 6%;
+  right: 3%;
+}
+/* the beating CSS rings + the static dial guides step aside for the sphere */
+.mf-drum[data-drum3d] .mf-ring {
+  display: none;
+}
+.mf-drum[data-drum3d]::before,
+.mf-drum[data-drum3d]::after {
+  content: none;
+}
