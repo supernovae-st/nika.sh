@@ -73,6 +73,7 @@ export default function BeyondChat() {
       readoutRef.current?.setAttribute('data-live', String(live))
     }
 
+    let wasStill = false // last frame wrote the warp=0 values → skip identical writes
     const tick = () => {
       const y = window.scrollY
       const vel = Math.abs(y - lastY)
@@ -82,16 +83,23 @@ export default function BeyondChat() {
       warp = Math.max(target, warp * DECAY) // attack fast, release on DECAY
       if (warp < 0.004) warp = 0
 
-      const disp = dispRef.current
-      const turb = turbRef.current
-      if (disp) disp.setAttribute('scale', (warp * MAX_SCALE).toFixed(2))
-      if (turb) {
-        const f = (BASE_FREQ_REST + (BASE_FREQ_PEAK - BASE_FREQ_REST) * warp).toFixed(4)
-        turb.setAttribute('baseFrequency', `${f} ${f}`)
+      /* at rest ON-screen the loop must keep sampling velocity, but rewriting
+         scale="0.00" + baseFrequency every frame invalidates the SVG filter
+         for nothing — write the still values ONCE, then only on change. */
+      const still = warp === 0
+      if (!(still && wasStill)) {
+        const disp = dispRef.current
+        const turb = turbRef.current
+        if (disp) disp.setAttribute('scale', (warp * MAX_SCALE).toFixed(2))
+        if (turb) {
+          const f = (BASE_FREQ_REST + (BASE_FREQ_PEAK - BASE_FREQ_REST) * warp).toFixed(4)
+          turb.setAttribute('baseFrequency', `${f} ${f}`)
+        }
+        // a faint chromatic split rides the warp (diegetic colour, earned by motion)
+        acidRef.current?.style.setProperty('--acid', warp.toFixed(3))
+        setReadout(warp > 0.08)
       }
-      // a faint chromatic split rides the warp (diegetic colour, earned by motion)
-      acidRef.current?.style.setProperty('--acid', warp.toFixed(3))
-      setReadout(warp > 0.08)
+      wasStill = still
 
       // keep ticking while on-screen OR while still settling back to still
       if (onScreen || warp > 0) {

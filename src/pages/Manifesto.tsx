@@ -98,10 +98,13 @@ export function Component() {
     const el = fieldRef.current
     if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let raf = 0
+    let lastY = -1
     const apply = () => {
       raf = 0
       const max = Math.max(0, el.offsetHeight - window.innerHeight)
       const y = Math.min(window.scrollY * 0.14, max)
+      if (y === lastY) return // clamped (deep scroll) → identical write, skip
+      lastY = y
       el.style.transform = `translate3d(0, ${-y}px, 0)`
     }
     const onScroll = () => {
