@@ -86,7 +86,36 @@ export function Component() {
   /* the drum-sphere capability gate · desktop + motion + WebGL + hero-near */
   const heroRef = useRef<HTMLElement>(null)
   const drumRef = useRef<HTMLDivElement>(null)
+  const fieldRef = useRef<HTMLDivElement>(null)
   const sphere = usePlan3D(heroRef)
+
+  /* the field's scroll depth · the 150vh fixed backdrop slides up at ~0.14 of
+     the scroll rate (pure rAF + transform, compositor-only, no scroll-jack),
+     so the quantized arcs + grid recede as the reader descends. Clamped to
+     the field's own overflow so an edge never enters the viewport; skipped
+     entirely under prefers-reduced-motion. */
+  useEffect(() => {
+    const el = fieldRef.current
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let raf = 0
+    const apply = () => {
+      raf = 0
+      const max = Math.max(0, el.offsetHeight - window.innerHeight)
+      const y = Math.min(window.scrollY * 0.14, max)
+      el.style.transform = `translate3d(0, ${-y}px, 0)`
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(apply)
+    }
+    apply()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
 
   /* reveal-on-scroll (reuses the site .rv/.in) — the v3 cursor lamp + card
      spotlight are gone with their DOM (F7) */
@@ -106,9 +135,10 @@ export function Component() {
        re-centres the shared v5 header field behind the drum (see index.css).
        The site Nav + SiteFooter come from RootLayout. Zero copy changes. */
     <div className="mf-scope">
-      {/* the v5 field · the hero's quantized blue, re-anchored to the top
-          centre for the drum composition (mf-scope overrides the glow vars) */}
-      <div className="v5-header-field" aria-hidden />
+      {/* the v5 field · the hero's quantized blue, deepened for the manifesto
+          (denser 16-step ladder + page grid + 150vh scroll depth · the
+          mf-scope overrides in index.css) and slid by the parallax above */}
+      <div className="v5-header-field" aria-hidden ref={fieldRef} />
 
       <main className="relative z-20">
         {/* ─── HERO · the drum beats behind the title ─── */}

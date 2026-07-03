@@ -239,6 +239,128 @@ h1, h2 { font-family: var(--headline); }
      as a different page. The drum owns the centre; the field owns the left. */
 }
 
+/* ── the manifesto field · deeper ladder + page grid + scroll depth ──────────
+   Scoped override of the shared v5 header field, this page only (Home keeps
+   the hero.css original untouched):
+   · DENSER quantized ladder · 16 half-alpha steps instead of 10, so the arcs
+     keep the print/dither register but the step edges stop reading as poster
+     bands; the ladder also descends deeper before handing to the engineered
+     black (no more "arcs then flat" cliff).
+   · the ::after dither MIXING ZONE is re-cut to the same 16-step ladder,
+     half a band ahead (the shader-parity interleave, as hero.css does).
+   · the site grid (--hero-grid-ink) extends down the whole field under a
+     vertical depth falloff instead of living only inside the glow zone.
+   · the field grows to 150vh and Manifesto.tsx slides it up with a slow
+     rAF scroll parallax (transform only, ~0.14 rate, reduced-motion gated):
+     the arcs recede as the reader descends. Geometry keys on the same
+     --hero-glow-x/y anchors, so the phone re-centre keeps working. */
+.mf-scope .v5-header-field {
+  bottom: auto;
+  height: 150vh;
+  will-change: transform;
+  background-image:
+    var(--v4-grain-img),
+    radial-gradient(
+      130% 96% at var(--hero-glow-x) var(--hero-glow-y),
+      rgb(47 107 255 / 0.6) 0%,
+      rgb(47 107 255 / 0.6) 5.5%,
+      rgb(39 101 237 / 0.62) 5.5%,
+      rgb(39 101 237 / 0.62) 11%,
+      rgb(23 89 201 / 0.66) 11%,
+      rgb(23 89 201 / 0.66) 16.5%,
+      rgb(15 83 183 / 0.7) 16.5%,
+      rgb(15 83 183 / 0.7) 22%,
+      rgb(15 83 183 / 0.64) 22%,
+      rgb(15 83 183 / 0.64) 27.5%,
+      rgb(15 80 172 / 0.56) 27.5%,
+      rgb(15 80 172 / 0.56) 33%,
+      rgb(16 71 158 / 0.48) 33%,
+      rgb(16 71 158 / 0.48) 38.5%,
+      rgb(16 66 150 / 0.42) 38.5%,
+      rgb(16 66 150 / 0.42) 44%,
+      rgb(16 62 145 / 0.36) 44%,
+      rgb(16 62 145 / 0.36) 49.5%,
+      rgb(15 52 121 / 0.3) 49.5%,
+      rgb(15 52 121 / 0.3) 55%,
+      rgb(15 46 107 / 0.25) 55%,
+      rgb(15 46 107 / 0.25) 60.5%,
+      rgb(15 41 96 / 0.2) 60.5%,
+      rgb(15 41 96 / 0.2) 66%,
+      rgb(13 34 78 / 0.15) 66%,
+      rgb(13 34 78 / 0.15) 71.5%,
+      rgb(12 29 66 / 0.11) 71.5%,
+      rgb(12 29 66 / 0.11) 77%,
+      rgb(11 24 56 / 0.07) 77%,
+      rgb(11 24 56 / 0.07) 82.5%,
+      rgb(10 21 50 / 0.04) 82.5%,
+      rgb(10 21 50 / 0.04) 88%,
+      transparent 88%
+    );
+  background-size:
+    var(--v4-grain-size) var(--v4-grain-size),
+    auto;
+}
+.mf-scope .v5-header-field::after {
+  /* the mixing zone · the SAME 16-step ladder, half a band ahead, through
+     the 50% Bayer mask (inherited from hero.css) — every step edge becomes
+     an interleaved strip, never a crisp poster line */
+  background: radial-gradient(
+    130% 96% at var(--hero-glow-x) var(--hero-glow-y),
+    rgb(39 101 237 / 0.62) 0%,
+    rgb(39 101 237 / 0.62) 8.25%,
+    rgb(23 89 201 / 0.66) 8.25%,
+    rgb(23 89 201 / 0.66) 13.75%,
+    rgb(15 83 183 / 0.7) 13.75%,
+    rgb(15 83 183 / 0.7) 19.25%,
+    rgb(15 83 183 / 0.64) 19.25%,
+    rgb(15 83 183 / 0.64) 24.75%,
+    rgb(15 80 172 / 0.56) 24.75%,
+    rgb(15 80 172 / 0.56) 30.25%,
+    rgb(16 71 158 / 0.48) 30.25%,
+    rgb(16 71 158 / 0.48) 35.75%,
+    rgb(16 66 150 / 0.42) 35.75%,
+    rgb(16 66 150 / 0.42) 41.25%,
+    rgb(16 62 145 / 0.36) 41.25%,
+    rgb(16 62 145 / 0.36) 46.75%,
+    rgb(15 52 121 / 0.3) 46.75%,
+    rgb(15 52 121 / 0.3) 52.25%,
+    rgb(15 46 107 / 0.25) 52.25%,
+    rgb(15 46 107 / 0.25) 57.75%,
+    rgb(15 41 96 / 0.2) 57.75%,
+    rgb(15 41 96 / 0.2) 63.25%,
+    rgb(13 34 78 / 0.15) 63.25%,
+    rgb(13 34 78 / 0.15) 68.75%,
+    rgb(12 29 66 / 0.11) 68.75%,
+    rgb(12 29 66 / 0.11) 74.25%,
+    rgb(11 24 56 / 0.07) 74.25%,
+    rgb(11 24 56 / 0.07) 79.75%,
+    rgb(10 21 50 / 0.04) 79.75%,
+    rgb(10 21 50 / 0.04) 85.25%,
+    transparent 85.25%
+  );
+}
+.mf-scope .v5-header-field::before {
+  /* the grid leaves the glow cage · it runs down the whole field under a
+     vertical depth falloff, so the page keeps its engineered graph paper
+     whisper long after the blue has handed over to black */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.85) 0%,
+    rgb(0 0 0 / 0.5) 32%,
+    rgb(0 0 0 / 0.2) 58%,
+    rgb(0 0 0 / 0.07) 80%,
+    transparent 97%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.85) 0%,
+    rgb(0 0 0 / 0.5) 32%,
+    rgb(0 0 0 / 0.2) 58%,
+    rgb(0 0 0 / 0.07) 80%,
+    transparent 97%
+  );
+}
+
 /* the drum — concentric ripples from a glowing, beating core */
 .mf-drum {
   position: absolute;
