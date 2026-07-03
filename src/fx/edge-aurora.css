@@ -15,9 +15,10 @@
    sections because the rest intensity is subtle and the hues are additive. */
 
 .edge-aurora {
-  /* rest intensity · pulses raise this toward ~1 then decay back. 0.09: the
-     ambient spectral frame must be FELT at rest (subtle, never loud). */
-  --aurora-intensity: 0.09;
+  /* rest intensity · pulses raise this toward ~1 then decay back. 0.13: the
+     ambient spectral frame must be FELT at rest (operator asked twice), the
+     box-mask rim makes higher presence safe (no interior washes). */
+  --aurora-intensity: 0.13;
 
   position: fixed;
   inset: 0;
@@ -113,11 +114,11 @@
     color-mix(in oklch, var(--verb-infer) 40%, #16307a) 1turn
   );
   mask:
-    linear-gradient(to right, #000 0, transparent 9%, transparent 91%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 9%, transparent 91%, #000 100%);
+    linear-gradient(to right, #000 0, transparent 11%, transparent 89%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 11%, transparent 89%, #000 100%);
   -webkit-mask:
-    linear-gradient(to right, #000 0, transparent 9%, transparent 91%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 9%, transparent 91%, #000 100%);
+    linear-gradient(to right, #000 0, transparent 11%, transparent 89%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 11%, transparent 89%, #000 100%);
   mask-composite: add;
   -webkit-mask-composite: source-over;
   filter: blur(26px);
