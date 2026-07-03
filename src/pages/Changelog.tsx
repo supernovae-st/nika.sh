@@ -69,14 +69,14 @@ const tagHue = (tag: ChangelogTag) => TAG_HUE[tag]
 
 /* two-tone title · the Raycast sentence register (white claim + grey
    elaboration on the same line). Presentation-only: entries whose title
-   carries a « — » split at the FIRST one; single-clause titles stay whole. */
+   carries a « · » split at the FIRST one; single-clause titles stay whole. */
 function TwoToneTitle({ title }: { title: string }) {
-  const i = title.indexOf(' — ')
+  const i = title.indexOf(' · ')
   if (i === -1) return <>{title}</>
   return (
     <>
       {title.slice(0, i)}
-      <span className="cl-tl-title-dim"> — {title.slice(i + 3)}</span>
+      <span className="cl-tl-title-dim"> · {title.slice(i + 3)}</span>
     </>
   )
 }
@@ -117,7 +117,7 @@ export function Component() {
   const latestDate = useMemo(() => {
     const top = CHANGELOG[0]?.date ?? ''
     const [, m, d] = top.split('-')
-    return m && d ? `${m}·${d}` : '—'
+    return m && d ? `${m}·${d}` : '·'
   }, [])
 
   return (

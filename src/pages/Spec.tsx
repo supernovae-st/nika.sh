@@ -55,7 +55,7 @@ const TLDR_PILLARS: { name: string; token: string; claim: string; gloss: string 
     name: 'the envelope',
     token: 'nika: v1',
     claim: 'The format is frozen.',
-    gloss: 'One version marker, forever — files you write today won’t break.',
+    gloss: 'One version marker, forever: files you write today won’t break.',
   },
   {
     name: 'the verbs',
@@ -105,7 +105,7 @@ const ENVELOPE_KEYS: { key: string; req: boolean; gloss: string }[] = [
 const VERB_MODEL: Record<string, string> = {
   infer: 'Call a model. Any of the providers; structured output when you give it a schema.',
   exec: 'Run a real process. stdout becomes the output; a non-zero exit becomes an error.',
-  invoke: 'Call a tool — a nika: builtin or an mcp: server. Default-deny, args schema-checked.',
+  invoke: 'Call a tool · a nika: builtin or an mcp: server. Default-deny, args schema-checked.',
   agent: 'Drive an autonomous tool-use loop, bounded by max_turns and a whitelist of tools.',
 }
 
@@ -116,7 +116,7 @@ const TASK_FIELDS: { name: string; req: boolean; gloss: string }[] = [
   { name: 'id', req: true, gloss: 'snake_case · CEL-safe · unique in the workflow' },
   { name: '‹verb›', req: true, gloss: 'exactly one of infer · exec · invoke · agent' },
   { name: 'depends_on', req: false, gloss: 'the edges · ids this task waits on' },
-  { name: 'when', req: false, gloss: 'a CEL boolean gate (or true/false) — replaces the success gate' },
+  { name: 'when', req: false, gloss: 'a CEL boolean gate (or true/false) · replaces the success gate' },
   { name: 'for_each', req: false, gloss: 'map the task over a collection' },
   { name: 'max_parallel', req: false, gloss: 'cap concurrent for_each iterations · 1 = sequential' },
   { name: 'timeout', req: false, gloss: 'a quoted Go-duration · e.g. "30s" "5m" "1h30m" · max 24h' },
@@ -134,7 +134,7 @@ const PERMIT_CATS: { key: string; cap: string; glyph: string; gloss: string; sha
     key: 'fs',
     cap: 'fs.read / fs.write',
     glyph: '▤',
-    gloss: 'which files it can read, which it can write — read XOR write, by glob.',
+    gloss: 'which files it can read, which it can write: read XOR write, by glob.',
     shape: 'read: [globs] · write: [globs]',
   },
   {
@@ -148,7 +148,7 @@ const PERMIT_CATS: { key: string; cap: string; glyph: string; gloss: string; sha
     key: 'exec',
     cap: 'exec',
     glyph: '▷',
-    gloss: 'which programs it can run — none, any (blocklist-gated), or a named allowlist.',
+    gloss: 'which programs it can run: none, any (blocklist-gated), or a named allowlist.',
     shape: 'false · true · [program names]',
   },
   {
@@ -252,25 +252,25 @@ export function Component() {
       {
         name: 'description',
         content:
-          'The whole language at a glance: a frozen format, four verbs — think, run a command, use a tool, delegate — the plan, variables and typed errors.',
+          'The whole language at a glance: a frozen format, four verbs (think, run a command, use a tool, delegate), the plan, variables and typed errors.',
       },
       { property: 'og:title', content: 'Spec — Nika' },
       {
         property: 'og:description',
         content:
-          'The nika language reference — the v1 envelope, the four verbs, the task shape, the standard library, providers, extract modes and error namespaces.',
+          'The nika language reference: the v1 envelope, the four verbs, the task shape, the standard library, providers, extract modes and error namespaces.',
       },
       { property: 'og:image', content: 'https://nika.sh/og-spec.png' },
       {
         property: 'og:image:alt',
         content:
-          'Nika spec — the contract an agent must satisfy before it acts. permits: infer · exec · invoke · agent.',
+          'Nika spec: the contract an agent must satisfy before it acts. permits: infer · exec · invoke · agent.',
       },
       { name: 'twitter:title', content: 'Spec — Nika' },
       {
         name: 'twitter:description',
         content:
-          'The nika language reference — envelope, verbs, task shape, stdlib, providers, errors.',
+          'The nika language reference: envelope, verbs, task shape, stdlib, providers, errors.',
       },
       { name: 'twitter:image', content: 'https://nika.sh/og-spec.png' },
     ],
@@ -392,7 +392,7 @@ export function Component() {
           {/* ══ S.0 · the envelope ══════════════════════════════════════ */}
           <div id="s0" className="spec-block" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             <SpecHead fig="S.0" name="The envelope" count={`${ENVELOPE_KEYS.length} top-level keys`}>
-              Every file opens with <code>nika: v1</code> — one version marker, pinned for the v1
+              Every file opens with <code>nika: v1</code>, one version marker, pinned for the v1
               lifetime. No <code>v1.0</code>, no <code>v2</code> migration. Three keys are required;
               the rest are optional.
             </SpecHead>
@@ -426,7 +426,7 @@ export function Component() {
           <div id="s1" className="spec-block" data-rise>
             <SpecHead fig="S.1" name="The four verbs" count={`${CANON.verbs} · locked forever`}>
               A verb is a <b>distinct native execution model</b>. A task binds exactly one. That is
-              the whole operation space — <code>fetch</code>, recall, db and files are <em>tools</em>{' '}
+              the whole operation space: <code>fetch</code>, recall, db and files are <em>tools</em>{' '}
               reached under <code>invoke:</code>, not verbs.
             </SpecHead>
             <div className="spec-verbcards">
@@ -530,7 +530,7 @@ export function Component() {
               name="The permits"
               count="default-deny once present"
             >
-              The <b>capability boundary</b> — the contract an agent must satisfy before it
+              The <b>capability boundary</b>: the contract an agent must satisfy before it
               acts. Once <code>permits:</code> is present, every category is{' '}
               <b>default-deny</b>: which files it can read, which it can write (read XOR
               write), which hosts it can reach, which programs it can run, which tools it may
@@ -608,7 +608,7 @@ export function Component() {
                   ))}
                 </ul>
                 <p className="spec-permits-foot">
-                  See it felt, not told —{' '}
+                  See it felt, not told:{' '}
                   <Link to="/#human-in-the-loop" className="spec-inline-link">
                     toggle a permit and watch the runtime obey
                   </Link>
@@ -625,7 +625,7 @@ export function Component() {
               name="The standard library"
               count={`${CANON.builtins} builtins · 4 families`}
             >
-              <b>{CANON.builtins}</b> builtin tools, all reached with <code>invoke:</code> — nothing
+              <b>{CANON.builtins}</b> builtin tools, all reached with <code>invoke:</code> · nothing
               to install. Grouped by what they touch.
             </SpecHead>
             <div className="spec-fams">
@@ -707,7 +707,7 @@ export function Component() {
               name="Extract modes"
               count={`${CANON.extractModes} modes on fetch`}
             >
-              How <code>nika:fetch</code> turns a page into typed output — from raw{' '}
+              How <code>nika:fetch</code> turns a page into typed output: from raw{' '}
               <code>text</code> to a parsed <code>article</code>, <code>feed</code> or{' '}
               <code>jq</code> projection.
             </SpecHead>
@@ -727,7 +727,7 @@ export function Component() {
               name="Error namespaces"
               count={`${CANON.errorNamespaces} namespaces · ${CANON.errorCodes} codes`}
             >
-              Every failure carries a typed code — <code>NIKA-‹NS›-NNN</code> — across{' '}
+              Every failure carries a typed code (<code>NIKA-‹NS›-NNN</code>) across{' '}
               <b>{CANON.errorNamespaces}</b> namespaces, with a category and a transient flag. The
               full registry lives in <code>errors/catalog.json</code>.
             </SpecHead>
@@ -744,23 +744,23 @@ export function Component() {
           {/* ══ S.8 · license + invariants ══════════════════════════════ */}
           <div id="s7" className="spec-block spec-block--last" data-rise>
             <SpecHead fig="S.8" name="License + invariants" count="locked, forever">
-              The contract you can count on — the parts that never change.
+              The contract you can count on: the parts that never change.
             </SpecHead>
             <ul className="spec-invariants">
               <Invariant fig="S.8a" claim="Real semver toward 1.0">
-                The engine ships on real semver — currently {ENGINE_VERSION} toward a
+                The engine ships on real semver: currently {ENGINE_VERSION}, toward a
                 1.0 launch. The language envelope stays <code>nika: v1</code>, frozen forever.
               </Invariant>
               <Invariant fig="S.8b" claim="Four verbs, locked">
-                <code>infer · exec · invoke · agent</code> — a closed set, locked forever. New
+                <code>infer · exec · invoke · agent</code>: a closed set, locked forever. New
                 capability arrives as a tool, never a fifth verb.
               </Invariant>
               <Invariant fig="S.8c" claim="The spec is Apache-2.0">
-                The language spec is permissive — adopt it, build a runtime against it, with a
+                The language spec is permissive: adopt it, build a runtime against it, with a
                 patent grant. The standard for the workflow file.
               </Invariant>
               <Invariant fig="S.8d" claim="The engine is AGPL-3.0-or-later">
-                Copyleft on the engine — a hosted fork shares its source. Anti-extraction by
+                Copyleft on the engine: a hosted fork shares its source. Anti-extraction by
                 construction.
               </Invariant>
             </ul>
@@ -768,7 +768,7 @@ export function Component() {
             {/* the close · the dimension line + the forward links */}
             <p className="spec-note">
               {CANON.verbs} verbs · {CANON.builtins} builtins · {CANON.providers} providers ·{' '}
-              {CANON.extractModes} extract modes · {CANON.errorNamespaces} error namespaces — every
+              {CANON.extractModes} extract modes · {CANON.errorNamespaces} error namespaces · every
               count derives from the spec&apos;s <code>canon.yaml</code>, never hand-typed
             </p>
 

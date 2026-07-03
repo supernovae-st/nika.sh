@@ -82,7 +82,7 @@ export function lintNika(src: string): LintDiag[] {
       line: mark ? Number(mark[1]) : 1,
       code: 'NIKA-PARSE',
       message: `YAML does not parse · ${String(e).split('\n')[0].slice(0, 110)}`,
-      fix: 'fix the YAML syntax first — nothing else can be checked',
+      fix: 'fix the YAML syntax first · nothing else can be checked',
     }]
   }
   if (!doc || typeof doc !== 'object') {
@@ -91,7 +91,7 @@ export function lintNika(src: string): LintDiag[] {
 
   // ── envelope ──
   if (doc.nika !== 'v1')
-    diags.push({ line: 1, code: 'NIKA-PARSE', message: '`nika: v1` is required — the exact value, first line', fix: 'add `nika: v1` at the top' })
+    diags.push({ line: 1, code: 'NIKA-PARSE', message: '`nika: v1` is required · the exact value, first line', fix: 'add `nika: v1` at the top' })
   if (typeof doc.workflow !== 'string' || !/^[a-z][a-z0-9-]*$/.test(doc.workflow))
     diags.push({ line: keyLine(src, 'workflow'), code: 'NIKA-PARSE', message: '`workflow:` must be kebab-case', fix: 'e.g. `workflow: my-job`' })
 
@@ -121,7 +121,7 @@ export function lintNika(src: string): LintDiag[] {
 
     // ids · snake_case + unique
     if (!id || !/^[a-z][a-z0-9_]*$/.test(id))
-      diags.push({ line, code: 'NIKA-PARSE', message: `task id ${JSON.stringify(t.id)} must be snake_case`, fix: 'a hyphen is CEL subtraction — use _' })
+      diags.push({ line, code: 'NIKA-PARSE', message: `task id ${JSON.stringify(t.id)} must be snake_case`, fix: 'a hyphen is CEL subtraction · use _' })
     if (id) {
       if (seen.has(id)) diags.push({ line, code: 'NIKA-PARSE', message: `duplicate task id '${id}'`, fix: 'rename one of them' })
       seen.add(id)
@@ -130,7 +130,7 @@ export function lintNika(src: string): LintDiag[] {
     // timeout: quoted Go-duration (used by task · wait · on_finally rules below)
     const checkDuration = (v: unknown, whereFix: string) => {
       if (typeof v === 'number')
-        diags.push({ line, code: 'NIKA-PARSE', message: `timeout ${v} is a number — must be a quoted duration`, fix: `write "${v}s" (${whereFix})` })
+        diags.push({ line, code: 'NIKA-PARSE', message: `timeout ${v} is a number · must be a quoted duration`, fix: `write "${v}s" (${whereFix})` })
       else if (typeof v === 'string' && !v.includes('${{') && !DURATION.test(v))
         diags.push({ line, code: 'NIKA-PARSE', message: `timeout '${v}' is not a Go-duration`, fix: `e.g. "30s" · "5m" · "1h30m" (${whereFix})` })
     }
@@ -175,7 +175,7 @@ export function lintNika(src: string): LintDiag[] {
         if (CEL_BUILTINS.has(root)) continue
         if (LOOP_LOCALS.has(root)) {
           if (!inForEach)
-            diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}' is a for_each loop-local — no for_each on '${id}'`, fix: 'add for_each: or use a namespace' })
+            diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}' is a for_each loop-local · no for_each on '${id}'`, fix: 'add for_each: or use a namespace' })
         } else if (root === 'vars' && seg && !vars.has(seg))
           diags.push({ line, code: 'NIKA-VAR-001', message: `vars.${seg} is not declared`, fix: `declare it under vars:` })
         else if (root === 'env' && seg && !env.has(seg))
@@ -215,13 +215,13 @@ export function lintNika(src: string): LintDiag[] {
 
     // hard rule 7 · done only in agent.tools
     if (inv && typeof inv === 'object' && inv.tool === 'nika:done')
-      diags.push({ line, code: 'NIKA-BUILTIN-DONE-001', message: 'nika:done outside an agent loop', fix: 'it is the loop sentinel — grant it in agent.tools instead' })
+      diags.push({ line, code: 'NIKA-BUILTIN-DONE-001', message: 'nika:done outside an agent loop', fix: 'it is the loop sentinel · grant it in agent.tools instead' })
 
     // hard rule 4 · when: is a ${{ }} CEL boolean OR a YAML boolean literal
     if (typeof t.when === 'string') {
       const body = [...t.when.matchAll(EXPR_BODY)].map((m) => m[1]).join(' ')
       if (!body)
-        diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is a bare string — never evaluated`, fix: 'wrap it · when: ${{ … }} · or use the literal true/false' })
+        diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is a bare string · never evaluated`, fix: 'wrap it · when: ${{ … }} · or use the literal true/false' })
       else if (!/[=!<>?]|&&|\|\||\bin\b|\b(size|has)\s*\(|\.(contains|startsWith|endsWith)\s*\(|^\s*!/.test(body))
         diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is not boolean-shaped`, fix: 'compare something · e.g. ${{ vars.x > 0 }} · has(vars.x) · x.contains("…")' })
     }
@@ -232,7 +232,7 @@ export function lintNika(src: string): LintDiag[] {
       for (const [name, expr] of Object.entries(out as Record<string, unknown>))
         if (typeof expr === 'string' && EXPR_BODY.test(expr)) {
           EXPR_BODY.lastIndex = 0
-          diags.push({ line, code: 'NIKA-VAR-005', message: `output.${name} on '${id}' contains \${{ }}`, fix: 'bindings are pure jq over the task output — shape the verb INPUT with ${{ }} instead' })
+          diags.push({ line, code: 'NIKA-VAR-005', message: `output.${name} on '${id}' contains \${{ }}`, fix: 'bindings are pure jq over the task output · shape the verb INPUT with ${{ }} instead' })
         }
 
 
@@ -252,7 +252,7 @@ export function lintNika(src: string): LintDiag[] {
         while (stack.length) {
           const n = stack.pop() as string
           if (n === id) {
-            diags.push({ line, code: 'NIKA-DAG-004', message: `recover: on '${id}' reads tasks.${target} — downstream of '${id}'`, fix: 'a recovery source must be upstream or independent (the await would deadlock)' })
+            diags.push({ line, code: 'NIKA-DAG-004', message: `recover: on '${id}' reads tasks.${target} · downstream of '${id}'`, fix: 'a recovery source must be upstream or independent (the await would deadlock)' })
             break
           }
           if (seenD.has(n)) continue
@@ -269,7 +269,7 @@ export function lintNika(src: string): LintDiag[] {
     const closed = [...l.matchAll(EXPR_BODY)].length
     EXPR_BODY.lastIndex = 0
     if (opens > closed)
-      diags.push({ line: i + 1, code: 'NIKA-VAR-008', message: 'unclosed ${{ — the opener never closes', fix: 'close the expression with }}' })
+      diags.push({ line: i + 1, code: 'NIKA-VAR-008', message: 'unclosed ${{ · the opener never closes', fix: 'close the expression with }}' })
   })
 
   // PERMITS-FIT · once permits: is present the body must fit it (01 §permits)
@@ -302,14 +302,14 @@ export function lintNika(src: string): LintDiag[] {
         const body = t.exec as Record<string, unknown> | undefined
         const cmd = body && typeof body === 'object' ? body.command : undefined
         if (execRule === false || execRule === undefined || execRule === null)
-          diags.push({ line, code: 'NIKA-SEC-004', message: `task '${id}' uses exec: but permits.exec is false/omitted`, fix: 'permits is default-deny once present — allow exec or drop the task' })
+          diags.push({ line, code: 'NIKA-SEC-004', message: `task '${id}' uses exec: but permits.exec is false/omitted`, fix: 'permits is default-deny once present · allow exec or drop the task' })
         else if (Array.isArray(execRule) && Array.isArray(cmd) && typeof cmd[0] === 'string' && !cmd[0].includes('${{') && !execRule.includes(cmd[0]))
           diags.push({ line, code: 'NIKA-SEC-004', message: `argv program '${cmd[0]}' not in permits.exec`, fix: `allowed: ${execRule.join(' · ')}` })
       }
       const pinv = t.invoke as Record<string, unknown> | undefined
       if (pinv && typeof pinv === 'object' && typeof pinv.tool === 'string') {
         if (!toolOk(pinv.tool))
-          diags.push({ line, code: 'NIKA-SEC-004', message: `invoke ${pinv.tool} outside permits.tools`, fix: 'the file IS the blast radius — permit the tool or drop the call' })
+          diags.push({ line, code: 'NIKA-SEC-004', message: `invoke ${pinv.tool} outside permits.tools`, fix: 'the file IS the blast radius · permit the tool or drop the call' })
         if (pinv.tool === 'nika:fetch' && hosts) {
           const url = ((pinv.args as Record<string, unknown>) || {}).url
           if (typeof url === 'string' && !url.includes('${{')) {
@@ -341,7 +341,7 @@ export function lintNika(src: string): LintDiag[] {
   }
   for (const n of graph.keys())
     if (!color.has(n) && dfs(n)) {
-      diags.push({ line: at(n), code: 'NIKA-DAG-001', message: 'cycle in depends_on', fix: 'remove the back-edge — a DAG has no loops' })
+      diags.push({ line: at(n), code: 'NIKA-DAG-001', message: 'cycle in depends_on', fix: 'remove the back-edge · a DAG has no loops' })
       break
     }
 

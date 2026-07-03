@@ -57,7 +57,7 @@ export function Component() {
       {
         property: 'og:description',
         content:
-          'One binary, on your machine — brew, curl, or air-gapped tarball. First run needs no model and no API key.',
+          'One binary, on your machine: brew, curl, or air-gapped tarball. First run needs no model and no API key.',
       },
       { name: 'twitter:title', content: 'Install — Nika' },
       {
@@ -102,7 +102,7 @@ export function Component() {
                 <p className="ins-step-n">01 · homebrew</p>
                 <h2 className="ins-step-title">The one-liner</h2>
                 <p className="ins-step-plain">
-                  macOS or Linux with Homebrew — on your <code>PATH</code> immediately.
+                  macOS or Linux with Homebrew: on your <code>PATH</code> immediately.
                   Check it with <code>nika --version</code>.
                 </p>
               </div>
@@ -118,8 +118,8 @@ export function Component() {
                 <h2 className="ins-step-title">Without Homebrew</h2>
                 <p className="ins-step-plain">
                   Downloads the <b>verified release binary</b> into <code>~/.nika/bin</code> and
-                  prints the single <code>PATH</code> line to add to your shell profile —
-                  reopen the terminal and <code>nika --version</code> works.
+                  prints the single <code>PATH</code> line to add to your shell profile.
+                  Reopen the terminal and <code>nika --version</code> works.
                 </p>
               </div>
               <div className="ins-step-body">
@@ -152,7 +152,7 @@ export function Component() {
                 <p className="ins-step-n">04 · editor</p>
                 <h2 className="ins-step-title">The editor extension</h2>
                 <p className="ins-step-plain">
-                  <code>supernovae.nika-lang</code> — on the{' '}
+                  <code>supernovae.nika-lang</code> · on the{' '}
                   <a href={VSCODE_EXT_URL} target="_blank" rel="noreferrer" className="ins-link">
                     VS Code Marketplace
                   </a>{' '}
@@ -163,7 +163,7 @@ export function Component() {
                   (Cursor · Windsurf · VSCodium). It auto-downloads the matching{' '}
                   <code>nika</code> release binary on first use, or reuses the one already on
                   your <code>PATH</code>. Any other editor: <code>nika lsp</code> speaks LSP
-                  over stdio —{' '}
+                  over stdio ·{' '}
                   <a href={VSCODE_REPO} target="_blank" rel="noreferrer" className="ins-link">
                     source + issues
                   </a>
@@ -172,7 +172,7 @@ export function Component() {
               </div>
               <div className="ins-step-body" aria-hidden>
                 <p className="ins-ghost mono">
-                  completions · diagnostics · a view of the plan — in your editor
+                  completions · diagnostics · a view of the plan · in your editor
                 </p>
               </div>
             </li>

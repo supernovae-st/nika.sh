@@ -92,7 +92,7 @@ export default function GalaxyEgg({ onClose }: { onClose: () => void }) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Enter the galaxy — the Nika cinematic"
+      aria-label="Enter the galaxy · the Nika cinematic"
       className="fixed inset-0 z-[90]"
     >
       <Galaxy3D />

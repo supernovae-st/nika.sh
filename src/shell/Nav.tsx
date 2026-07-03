@@ -389,7 +389,7 @@ export default function Nav() {
         <div className="v4nav-capsule" ref={capsuleRef}>
         <nav className="v4nav-row" aria-label="Primary">
           {/* brand · the butterfly mark + wordmark */}
-          <Link to="/" className="v4nav-brand" aria-label="Nika — home">
+          <Link to="/" className="v4nav-brand" aria-label="Nika · home">
             <img src="/nika.svg" alt="" width={19} height={19} />
             nika
           </Link>
@@ -591,7 +591,7 @@ export default function Nav() {
             aria-label="Menu"
           >
             <div className="v4sheet-head">
-              <Link to="/" className="v4nav-brand" aria-label="Nika — home">
+              <Link to="/" className="v4nav-brand" aria-label="Nika · home">
                 <img src="/nika.svg" alt="" width={19} height={19} />
                 nika
               </Link>

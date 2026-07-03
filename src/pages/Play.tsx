@@ -81,17 +81,17 @@ export function Component() {
       {
         name: 'description',
         content:
-          'Write a workflow in the browser and watch it get checked as you type. Nothing leaves the tab — then run the same file on your machine.',
+          'Write a workflow in the browser and watch it get checked as you type. Nothing leaves the tab. Then run the same file on your machine.',
       },
       { property: 'og:title', content: 'Playground — Nika' },
       {
         property: 'og:description',
-        content: 'Write a workflow in the browser — checked as you type, nothing leaves the tab.',
+        content: 'Write a workflow in the browser: checked as you type, nothing leaves the tab.',
       },
       { name: 'twitter:title', content: 'Playground — Nika' },
       {
         name: 'twitter:description',
-        content: 'Write a workflow in the browser — checked as you type, nothing leaves the tab.',
+        content: 'Write a workflow in the browser: checked as you type, nothing leaves the tab.',
       },
     ],
   })
@@ -203,14 +203,14 @@ export function Component() {
                 {valid ? (
                   <div className="play-pass">
                     <p className="play-pass-line">
-                      <b>✓ This file passes</b> the playground&apos;s static checks — envelope,
+                      <b>✓ This file passes</b> the playground&apos;s static checks: envelope,
                       verbs, edges, namespaces, providers, expressions. The engine&apos;s{' '}
                       <code>nika check</code> runs the full audit. Ship it with{' '}
                       <code>nika run {seed}.nika.yaml</code>.
                     </p>
                     {(seed === 'human-gated-ship' || seed === 'resume-screener') && (
                       <p className="play-pass-experiment">
-                        Experiment · this file declares <code>permits:</code> — its whole blast
+                        Experiment · this file declares <code>permits:</code> · its whole blast
                         radius, in-file. Remove an entry from <code>permits.tools</code> and watch{' '}
                         <code>NIKA-SEC-004</code> fire: once the boundary is declared, the body must
                         fit it.
@@ -248,7 +248,7 @@ export function Component() {
                   ))}
                 </div>
                 <p className="play-verbs-note">
-                  Fill the <code># SLOT:</code> lines — structure is instantiated, never invented.
+                  Fill the <code># SLOT:</code> lines: structure is instantiated, never invented.
                   The{' '}
                   <a
                     href="https://docs.nika.sh/guides/agent-authoring"

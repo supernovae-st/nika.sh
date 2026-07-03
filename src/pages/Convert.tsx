@@ -23,17 +23,17 @@ const STEPS: { n: string; title: string; body: string }[] = [
   {
     n: '01 · you describe',
     title: 'Tell us the task',
-    body: 'One AI task you repeat — in ChatGPT, Claude, Cursor, Codex, or scripts. Plain words are enough: what goes in, what should come out, what it may touch.',
+    body: 'One AI task you repeat, in ChatGPT, Claude, Cursor, Codex, or scripts. Plain words are enough: what goes in, what should come out, what it may touch.',
   },
   {
     n: '02 · we craft',
     title: 'We convert and check it clean',
-    body: 'We write it as a runnable .nika.yaml — schema-true, audited before it runs (plan, cost, secrets), tested against the real engine.',
+    body: 'We write it as a runnable .nika.yaml: schema-true, audited before it runs (plan, cost, secrets), tested against the real engine.',
   },
   {
     n: '03 · it ships',
     title: 'It lands in the gallery, credited to you',
-    body: 'The best conversions ship as public examples — your name on the file. Your ritual becomes something anyone can run.',
+    body: 'The best conversions ship as public examples, your name on the file. Your ritual becomes something anyone can run.',
   },
 ]
 
@@ -48,7 +48,7 @@ export function Component() {
       {
         name: 'description',
         content:
-          'Describe one AI task you repeat — in ChatGPT, Claude, Cursor, Codex, or scripts. We convert the best ones into runnable .nika.yaml examples, credited to you.',
+          'Describe one AI task you repeat, in ChatGPT, Claude, Cursor, Codex, or scripts. We convert the best ones into runnable .nika.yaml examples, credited to you.',
       },
       { property: 'og:title', content: 'Send us a workflow — Nika' },
       {
@@ -82,7 +82,7 @@ export function Component() {
             Send us a workflow.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Describe <b>one AI task you repeat</b> — in ChatGPT, Claude, Cursor, Codex, or
+            Describe <b>one AI task you repeat</b>, in ChatGPT, Claude, Cursor, Codex, or
             scripts. We convert the best ones into runnable{' '}
             <code className="mono">.nika.yaml</code> examples, <b>credited to you</b>.
           </p>
@@ -126,7 +126,7 @@ export function Component() {
 
           {/* the honesty plate · why there is no form here */}
           <p className="cv-note" data-rise style={{ ['--rise-delay' as string]: '300ms' }}>
-            no form here — the funnel is public, on the repo · a GitHub account is the only
+            no form here · the funnel is public, on the repo · a GitHub account is the only
             thing we ask for
           </p>
         </div>

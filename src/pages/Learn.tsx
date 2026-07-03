@@ -58,7 +58,7 @@ export function Component() {
       {
         name: 'description',
         content:
-          'A workflow is a file you can read. Eight small ideas, five minutes — learn to read and write any Nika workflow, one line at a time.',
+          'A workflow is a file you can read. Eight small ideas, five minutes: learn to read and write any Nika workflow, one line at a time.',
       },
       { property: 'og:title', content: 'Learn — Nika' },
       {
@@ -164,7 +164,7 @@ export function Component() {
           <div className="lrn-cta" data-rise>
             <h2 className="lrn-cta-title">That&apos;s the whole language.</h2>
             <p className="lrn-cta-body">
-              Eight ideas, four verbs, one file. Install it, write one, run it — or open the
+              Eight ideas, four verbs, one file. Install it, write one, run it, or open the
               playground and check your file as you type.
             </p>
             <div style={{ marginTop: 18 }}>
@@ -203,7 +203,7 @@ export function Component() {
 
           {/* the doc dimension line + the page footer */}
           <p className="v4docnote" data-rise>
-            8 steps · 4 verbs · every fragment spec-correct — real YAML, never pseudo-code
+            8 steps · 4 verbs · every fragment spec-correct · real YAML, never pseudo-code
           </p>
           <footer className="v4docfoot">
             <span className="v4docfoot-brand">

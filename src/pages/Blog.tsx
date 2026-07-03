@@ -71,7 +71,7 @@ export function Component() {
       {
         name: 'description',
         content:
-          'Notes from the source — why useful AI work belongs in a file you can run, review and keep. Long reads on Intent as Code and the four verbs.',
+          'Notes from the source: why useful AI work belongs in a file you can run, review and keep. Long reads on Intent as Code and the four verbs.',
       },
       { property: 'og:title', content: 'Blog — Nika' },
       {
@@ -113,7 +113,7 @@ export function Component() {
             Notes from the source.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Long-form pedagogy on <b>Intent as Code</b> — why useful AI work belongs in a file,
+            Long-form pedagogy on <b>Intent as Code</b>: why useful AI work belongs in a file,
             why the language locks at four verbs, and what local-first actually buys you. Two
             flagship reads live; more are on the way.
           </p>
@@ -267,7 +267,7 @@ export function Component() {
           {/* the close · the doc dimension line + the page footer */}
           <p className="v4docnote" data-rise>
             Intent as Code · {CANON.verbs} verbs · {CANON.builtins} builtins ·{' '}
-            {CANON.providers} providers — written down, replayable, yours
+            {CANON.providers} providers · written down, replayable, yours
           </p>
 
           <footer className="v4docfoot">

@@ -438,23 +438,23 @@ export function Component() {
       ...routeHead('/use-cases').meta,
       {
         name: 'description',
-        content: `Pick the thing you keep doing. ${total} real workflows for everyone, founders and developers — each a file you can read before it runs.`,
+        content: `Pick the thing you keep doing. ${total} real workflows for everyone, founders and developers, each a file you can read before it runs.`,
       },
       { property: 'og:title', content: 'Use cases — Nika' },
       {
         property: 'og:description',
-        content: `${total} real workflows — each one a file you can read before it runs, shown with the plan and the exact YAML.`,
+        content: `${total} real workflows, each one a file you can read before it runs, shown with the plan and the exact YAML.`,
       },
       { property: 'og:image', content: 'https://nika.sh/og-use-cases.png' },
       {
         property: 'og:image:alt',
         content:
-          'Nika use cases — real workflows for everyone, founders & ops, and developers.',
+          'Nika use cases: real workflows for everyone, founders & ops, and developers.',
       },
       { name: 'twitter:title', content: 'Use cases — Nika' },
       {
         name: 'twitter:description',
-        content: `${total} real workflows — each one a file you can read before it runs, shown with the plan and the exact YAML.`,
+        content: `${total} real workflows, each one a file you can read before it runs, shown with the plan and the exact YAML.`,
       },
       { name: 'twitter:image', content: 'https://nika.sh/og-use-cases.png' },
     ],
