@@ -160,6 +160,19 @@ export function Component() {
           </span>
         </section>
 
+        {/* ─── the drum · the lore beat (operator pacing: the drum metaphor
+            lands FIRST, right after the hero, before the story — the words
+            are untouched, only the beat moved up) ─── */}
+        <section className="mx-auto max-w-3xl px-6 pt-16 pb-6 text-center">
+          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
+            Nika is named for the sun god of liberation: the drum that turns fear into laughter and
+            frees the ones who were locked out.
+          </p>
+          <p className="rv mt-5 text-[19px] font-medium text-[var(--fg)]">
+            Every workflow run is a beat of that drum.
+          </p>
+        </section>
+
         {/* ─── the movements · scroll-revealed prose + big statements ─── */}
         <div className="mx-auto max-w-3xl px-6 pt-10 pb-8">
           <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
@@ -249,19 +262,8 @@ export function Component() {
           </div>
         </section>
 
-        {/* ─── the drum · the lore beat ─── */}
-        <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-            Nika is named for the sun god of liberation: the drum that turns fear into laughter and
-            frees the ones who were locked out.
-          </p>
-          <p className="rv mt-5 text-[19px] font-medium text-[var(--fg)]">
-            Every workflow run is a beat of that drum.
-          </p>
-        </section>
-
         {/* ─── the close ─── */}
-        <section className="mx-auto flex max-w-3xl flex-col items-center px-6 pt-6 pb-24 text-center">
+        <section className="mx-auto flex max-w-3xl flex-col items-center px-6 pt-16 pb-24 text-center">
           {/* the close keeps its words and links but carries NO butterfly of its
               own: the shared SiteFooter's living particle butterfly right below
               is THE mark (one signature, one close — the double-footer fix) */}
