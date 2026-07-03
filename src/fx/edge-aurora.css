@@ -69,40 +69,44 @@
       color-mix(in oklch, var(--verb-infer) 44%, #16307a) 1turn
     );
 
-  /* CORNER HAZE ONLY (rotation-safe radial mask): a wide radial band here
-     floods the interior as diagonal washes (empirical, 2026-07-03 live
-     screenshot) — the frame's uniform rim is the ::after below. This layer
-     is the moving life at the corners. */
+  /* AT REST THIS WHEEL IS OFF. Three rounds of live screenshots proved every
+     radial-band mask floods the interior as diagonal washes (a rotating
+     square can never hug a rectangle). The ambient frame is the ::after box
+     band ALONE; the run state re-enables this wheel with its own tight mask. */
   mask: radial-gradient(
-    ellipse 82% 82% at 50% 50%,
-    transparent 62%,
-    #000 100%
+    ellipse 100% 100% at 50% 50%,
+    transparent 30%,
+    #000 43%
   );
   -webkit-mask: radial-gradient(
-    ellipse 82% 82% at 50% 50%,
-    transparent 62%,
-    #000 100%
+    ellipse 100% 100% at 50% 50%,
+    transparent 30%,
+    #000 43%
   );
 
   filter: blur(44px);
-  opacity: var(--aurora-intensity);
+  opacity: 0;
 
-  /* slow spectral drift · the corner hues travel the frame */
   animation: edge-aurora-rotate 26s linear infinite;
 }
 
-/* THE FRAME RIM · a STATIC box-shaped band hugging all four edges uniformly
-   (two crossed linear-gradient masks, composited as a union — a radial mask
-   can never follow a rectangle: midpoints and corners sit at different radii,
-   which is exactly why the single-band version smeared). Rotation lives on
-   the ::before; this band holds the frame. Gated :not([data-run]) — the run
-   state owns ::after as the verb lead arc. */
+/* THE FRAME RIM · a box-shaped band hugging all four edges uniformly (two
+   crossed linear-gradient masks, union-composited — a rotating square can
+   never hug a rectangle, which is why every radial attempt smeared). THE
+   spectral life: the conic's from-angle animates through a registered
+   property, so the hues TRAVEL the frame while the band itself never moves.
+   Gated :not([data-run]) — the run state owns ::after as the verb lead arc. */
+@property --aurora-spin {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
 .edge-aurora:not([data-run])::after {
   content: '';
   position: absolute;
   inset: -2%;
   background: conic-gradient(
-    from 0deg,
+    from var(--aurora-spin),
     color-mix(in oklch, var(--verb-infer) 40%, #16307a) 0turn,
     color-mix(in oklch, var(--verb-invoke) 32%, #16307a) 0.125turn,
     color-mix(in oklch, var(--verb-exec) 28%, #16307a) 0.25turn,
@@ -124,6 +128,12 @@
   filter: blur(26px);
   opacity: calc(var(--aurora-intensity) * 1.15);
   pointer-events: none;
+  animation: edge-aurora-spin 48s linear infinite;
+}
+@keyframes edge-aurora-spin {
+  to {
+    --aurora-spin: 360deg;
+  }
 }
 
 /* breathing · gently swells the whole ring's opacity around its rest value.
@@ -148,7 +158,8 @@
 /* reduced-motion · no breathing, no hue drift · static low intensity. */
 @media (prefers-reduced-motion: reduce) {
   .edge-aurora,
-  .edge-aurora::before {
+  .edge-aurora::before,
+  .edge-aurora::after {
     animation: none;
   }
 }
