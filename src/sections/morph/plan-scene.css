@@ -65,11 +65,15 @@
   z-index: 4;
 }
 
-/* the closing frame's legend · appears with the flat DAG */
+/* the closing frame's legend · appears with the flat DAG. Anchored BELOW the
+   measured DAG content (--morph-nodes-b · the max node bottom, DAG-box
+   coords, written by ScrollMorph.measure) — the caption band is reserved
+   under the bounding box, so it can never overlap a node at any viewport
+   (operator, wave I: it rendered through the calendar node's ✓ 1ms) */
 .ps-flat-note {
   position: absolute;
   left: 50%;
-  bottom: calc(clamp(80px, 11vh, 140px) + 128px);
+  top: calc(var(--morph-nodes-b, 58vh) + 20px);
   transform: translate(-50%, 8px);
   margin: 0;
   font-family: var(--mono);
@@ -95,10 +99,21 @@
     transform 0.55s var(--ease-ui, ease) 0.25s,
     visibility 0s;
 }
-/* center the legend under the DAG's own band (the rail insets it 218px) */
-@media (min-width: 1200px) {
+/* center the legend under the DAG's own band — at `done` (the only time the
+   note shows) the DAG is inset by the settled file panel (≥1024), so the
+   note centers in what remains: (panel + gap + 100%) / 2 */
+@media (min-width: 1024px) {
   .ps-flat-note {
-    left: calc(50% + 109px);
+    left: calc((clamp(300px, 27vw, 372px) + 28px + 100%) / 2);
+  }
+}
+/* short laptops: the tallest wave column can overflow the DAG box and the
+   note would trail it into the terminal band — the legend is decorative
+   (aria-hidden, the head caption carries the meaning), so it stands down
+   rather than colliding */
+@media (max-height: 779px) {
+  .ps-flat-note {
+    display: none;
   }
 }
 

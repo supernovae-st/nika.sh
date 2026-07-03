@@ -223,6 +223,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const taskLines = new Set<number>()
     let firstTaskLn = Infinity
     let lastTaskLn = -Infinity
+    /* the DAG content's lowest edge (viewport px) — anchors the flat-note
+       caption BELOW the bounding box (plan-scene.css · --morph-nodes-b) */
+    let nodesBottom = -Infinity
     for (const t of plan.tasks) {
       firstTaskLn = Math.min(firstTaskLn, t.line0)
       lastTaskLn = Math.max(lastTaskLn, t.line1)
@@ -249,6 +252,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       nodeEl.style.opacity = ''
       nodeEl.style.transform = ''
       const nr = nodeEl.getBoundingClientRect()
+      if (nr.bottom > nodesBottom) nodesBottom = nr.bottom
       const cy = (top + bottom) / 2
       blocks.set(t.id, {
         els,
@@ -280,6 +284,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
 
     /* the wires · measured node-edge to node-edge, in DAG-local coordinates */
     const dr = dag.getBoundingClientRect()
+    /* the DAG box top IS the scene top (inset 0) — the note var lands in the
+       flat-note's own containing-block coords */
+    if (Number.isFinite(nodesBottom)) {
+      stage.style.setProperty('--morph-nodes-b', `${(nodesBottom - dr.top).toFixed(1)}px`)
+    }
     const next: Edge[] = []
     for (const t of plan.tasks) {
       const toEl = nodeRefs.current.get(t.id)
@@ -506,6 +515,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const stage = stageRef.current
     if (!stage) return
     stage.style.removeProperty('--msh')
+    stage.style.removeProperty('--morph-nodes-b')
     delete stage.dataset.phase
     delete stage.dataset.entry
     for (const el of stage.querySelectorAll<HTMLElement>(
