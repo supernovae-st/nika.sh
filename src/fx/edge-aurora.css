@@ -24,11 +24,12 @@
    never intercepts clicks. */
 
 .edge-aurora {
-  /* rest intensity · pulses raise this toward ~1 then decay back (tsx). */
-  --aurora-intensity: 0.2;
+  /* rest intensity · A WHISPER: the frame is mostly absent at rest and only
+     speaks when something happens (pulses / runs raise it, then it decays). */
+  --aurora-intensity: 0.055;
   /* ring geometry · the band/bloom thickness in px (the run state widens) */
-  --aurora-band: 12px;
-  --aurora-bloom: 46px;
+  --aurora-band: 14px;
+  --aurora-bloom: 56px;
   --aurora-radius: 20px;
 
   position: fixed;
@@ -106,21 +107,21 @@
       linear-gradient(#000 0 0) content-box exclude,
       linear-gradient(#000 0 0);
     pointer-events: none;
-    animation: edge-aurora-spin 56s linear infinite;
+    animation: edge-aurora-spin 84s linear infinite;
   }
 }
 
 /* THE BAND · crisp saturated rim */
 .edge-aurora::before {
   padding: var(--aurora-band);
-  filter: blur(9px) saturate(1.35);
-  opacity: min(1, calc(var(--aurora-intensity) * 2));
+  filter: blur(16px) saturate(1.2);
+  opacity: min(1, calc(var(--aurora-intensity) * 1.6));
 }
 
 /* THE BLOOM · the same ring, fat and soft — the inward falloff */
 .edge-aurora::after {
   padding: var(--aurora-bloom);
-  filter: blur(38px) saturate(1.15);
+  filter: blur(46px) saturate(1.1);
   opacity: calc(var(--aurora-intensity) * 1.15);
 }
 
@@ -147,13 +148,13 @@
    wider band, faster travel, and the recorded progress swells the rim.
    Idle chrome is byte-identical when data-run is absent. */
 .edge-aurora[data-run] {
-  --aurora-band: 16px;
-  --aurora-bloom: 64px;
+  --aurora-band: 18px;
+  --aurora-bloom: 76px;
 }
 .edge-aurora[data-run]::before {
   opacity: min(
     1,
-    calc(var(--aurora-intensity) * 2 + var(--aurora-progress) * 0.2)
+    calc(var(--aurora-intensity) * 1.6 + var(--aurora-progress) * 0.18)
   );
   animation-duration: 16s;
 }
@@ -218,15 +219,15 @@
 /* mobile · the ring scales down with the viewport instead of disappearing */
 @media (max-width: 767px) {
   .edge-aurora {
-    --aurora-band: 7px;
-    --aurora-bloom: 26px;
+    --aurora-band: 9px;
+    --aurora-bloom: 32px;
     --aurora-radius: 12px;
   }
   .edge-aurora::before {
-    filter: blur(6px) saturate(1.35);
+    filter: blur(10px) saturate(1.2);
   }
   .edge-aurora::after {
-    filter: blur(20px) saturate(1.15);
+    filter: blur(24px) saturate(1.1);
   }
 }
 

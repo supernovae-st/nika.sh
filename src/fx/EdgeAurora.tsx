@@ -21,15 +21,16 @@ import './edge-aurora.css'
    SSR-safe: the visual is pure CSS; browser access lives in effects and
    event-time callbacks only. */
 
-const REST_INTENSITY = 0.2 /* the ambient spectrum frame · clearly present at rest
-    (v6 ring law · matches the CSS fallback so post-pulse decay lands where
-    the prerender started — the frame never fades below its resting voice) */
-/** run mode raises the resting floor — the VERB BLOOM. The four-hue frame must
-    be unmistakable at 1440 while a run plays (operator's oryzo ask), so the
-    floor sits at ~0.36 (the run.css mask keeps the center readable). */
-const RUN_REST_INTENSITY = 0.36
+const REST_INTENSITY = 0.055 /* the resting WHISPER · the frame is mostly absent
+    at rest (operator: « pas tout le temps là ») and only speaks on events;
+    matches the CSS fallback so post-pulse decay lands where the prerender
+    started */
+/** run mode raises the resting floor — the frame must clearly speak while a
+    run plays (the drum), yet stay a diffuse glow, never a hard border: the
+    presence comes from opacity on a 16px-blurred rim, not from sharpness. */
+const RUN_REST_INTENSITY = 0.42
 /** Peak the halo jumps to on a pulse before it decays. */
-const PULSE_INTENSITY = 0.75
+const PULSE_INTENSITY = 0.62
 /** Decay back to rest takes ~450ms (the sharper v5 beat). */
 const DECAY_MS = 450
 /** after workflow_completed the bloom HOLDS ~1.2s (the verdict sweep plays
