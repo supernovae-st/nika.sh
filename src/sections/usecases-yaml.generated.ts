@@ -263,7 +263,7 @@ tasks:
       tool: "nika:assert"
       args:
         condition: "\${{ tasks.check.output.valid == true }}"
-        message: "Clause extraction failed the schema gate — refusing to write the memo"
+        message: "Clause extraction failed the schema gate: refusing to write the memo"
 
   - id: memo
     depends_on: [clauses, gate]
@@ -865,7 +865,7 @@ tasks:
     depends_on: [drift]
     when: \${{ size(tasks.drift.output) > 0 }}
     on_error:
-      recover: "(explanation unavailable — model call failed · the raw patch is attached)"
+      recover: "(explanation unavailable · model call failed · the raw patch is attached)"
     infer:
       prompt: |
         This RFC 6902 patch is UNSANCTIONED config drift in production ·
@@ -1069,7 +1069,7 @@ description: "glob CVs → local-model rubric per candidate → deterministic sh
 
 model: ollama/llama3.2:3b   # PII stays on the machine · the whole screen is offline
 
-permits:                    # the file IS the blast radius · no net category at all —
+permits:                    # the file IS the blast radius · no net category at all:
   fs:                       # CVs cannot leave this machine even if a prompt is hijacked
     read: ["./hiring/inbox/**"]
     write: ["./hiring/out/**", "./hiring/shortlist-brief.md"]
@@ -1121,7 +1121,7 @@ tasks:
         CV ·
         \${{ item.text }}
         Score this candidate against the role. Quote evidence from the
-        CV for every rating — no rating without a quote.
+        CV for every rating: no rating without a quote.
       schema:
         type: object
         required: [file, fit, strengths, concerns]
@@ -1460,7 +1460,7 @@ tasks:
       tool: "nika:assert"
       args:
         condition: "\${{ tasks.recheck.output == 'operational' }}"
-        message: "Service is NOT back to operational — postmortem draft blocked"
+        message: "Service is NOT back to operational: postmortem draft blocked"
 
   # ── the draft · only after recovery is proven ──
   - id: postmortem
@@ -1484,7 +1484,7 @@ tasks:
         content: "\${{ tasks.postmortem.output }}"
         create_dirs: true
 
-  # the always-pattern · the on-call ping fires on EVERY outcome —
+  # the always-pattern · the on-call ping fires on EVERY outcome:
   # including the designed failure path (recovery NOT confirmed → the
   # assert fails → save never starts → this still runs · when: true
   # replaces the default gate · 03 §Task states).
@@ -1566,7 +1566,7 @@ tasks:
       tool: "nika:assert"
       args:
         condition: "\${{ tasks.tests.output.exit_code == 0 && tasks.lint.output.exit_code == 0 && tasks.audit.output.exit_code == 0 }}"
-        message: "A release gate is RED — the train does not depart"
+        message: "A release gate is RED: the train does not depart"
 
   - id: gate_time
     depends_on: [t0, gates_green]
@@ -1593,7 +1593,7 @@ tasks:
       tool: "nika:assert"
       args:
         condition: "\${{ tasks.conductor.output == true }}"
-        message: "Departure not signed — train cancelled"
+        message: "Departure not signed: train cancelled"
 
   # ── hold until the window · absolute time, not a sleep ──
   - id: hold
@@ -1630,11 +1630,11 @@ tasks:
       tool: "nika:assert"
       args:
         condition: "\${{ tasks.verify.output == vars.version }}"
-        message: "Prod does not report the shipped version — investigate before announcing"
+        message: "Prod does not report the shipped version: investigate before announcing"
 
   # the always-pattern · \`when: true\` replaces the default success-gate ·
   # this task runs whether \`live\` succeeded, failed, or never started
-  # (upstream abort) — a record that must land on EVERY outcome is a
+  # (upstream abort) · a record that must land on EVERY outcome is a
   # terminal task, not a cleanup hook (03 §Task states).
   - id: record
     depends_on: [live]
