@@ -105,6 +105,21 @@ const MemoCodeFile = memo(CodeFile)
    it, never linger behind it (operator: the YAML rows hid behind the nav) */
 const NAV_SAFE = 92
 
+/* ENTRY YIELD · geometric, never timed (operator, wave I: the lede rendered
+   through the panel's title bar). The heading + narration hide while the
+   traveling panel's top edge is within these margins of the caption band's
+   measured bottom — a pure function of the two rects, so the window holds at
+   any scroll speed, in both directions. Hysteresis kills boundary flicker. */
+const YIELD_ON = 10
+const YIELD_OFF = 14
+const yieldEntry = (stage: HTMLElement, clearance: number): void => {
+  if (stage.dataset.entry) {
+    if (clearance >= YIELD_OFF) delete stage.dataset.entry
+  } else if (clearance < YIELD_ON) {
+    stage.dataset.entry = '1'
+  }
+}
+
 /* wave H · the 3D DAG layer (desktop ≥1024px + WebGL + motion, lazy chunk).
    It reads the SAME scroll progress apply() computes (progressRef) and hides
    the DOM DAG only once actually mounted ([data-plan3d], set by the layer
@@ -158,6 +173,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const psOffRef = useRef<{ x: number; y: number } | null>(null)
   /** the morph panel's identity rect, section-relative (seam handoff base) */
   const seamBaseRef = useRef<{ left: number; top: number; w: number; h: number } | null>(null)
+  /** the caption band's bottom edge, stage-relative (the yield gate's line) */
+  const capBotRef = useRef(0)
   const rafRef = useRef<number | null>(null)
   const scheduleRef = useRef<(() => void) | null>(null)
   const timelineSigRef = useRef(timelineAt(flagship, script.lines, 1).sig)
@@ -199,6 +216,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         w: cr.width,
         h: cr.height,
       }
+      /* the caption band the entry yield protects (+3 · the caps bleed a
+         couple px past their row) — measured, never guessed (wave I) */
+      const caps = stage.querySelector<HTMLElement>('.morph-captions')
+      if (caps) capBotRef.current = caps.getBoundingClientRect().bottom - sr.top + 3
     }
 
     const slr = seedLayer.getBoundingClientRect()
@@ -334,6 +355,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const settle = easeInOut(clamp01(p / PH.settleEnd))
       stage.style.setProperty('--msh', shell.toFixed(3))
       card.style.transform = `translateY(${((1 - settle) * 26).toFixed(2)}px)`
+      /* the entry yield at rest · the docked card's top edge vs the caption
+         band (seam() re-evaluates with the in-flight rect while it owns the
+         card — same gate, same frame, its verdict lands last) */
+      const base = seamBaseRef.current
+      if (base) yieldEntry(stage, base.top + (1 - settle) * 26 - capBotRef.current)
       /* once every seed has landed AND the outputs line has left, the empty
          card stops painting (the condensing lines live INSIDE it) */
       card.style.visibility = p >= PH.wire1 && blocksRef.current.size > 0 ? 'hidden' : ''
@@ -573,11 +599,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       /* the stage un-clips ONLY while the card travels outside its box */
       if (inWindow) stage.dataset.seam = '1'
       else delete stage.dataset.seam
-      /* the ENTRY window (q < 1 · the stage not yet docked): the section
-         heading stays out of the card's flight path and fades in only once
-         the card has landed in its slot (morph.css · [data-entry]) */
-      if (q < 1) stage.dataset.entry = '1'
-      else delete stage.dataset.entry
+      /* the ENTRY yield window is GEOMETRIC (wave I): computed below from the
+         panel's actual travel rect vs the caption band — never from q alone
+         (the old q<1 window let the lede overlap the diving title bar) */
       if (q >= 1) {
         /* past the seam · the hero is above the viewport; hand everything
            back so an upward scrub finds it intact */
@@ -585,7 +609,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         return
       }
       if (!inWindow) {
-        /* before the takeover · the hero editor IS the file; no second copy */
+        /* before the takeover · the hero editor IS the file; no second copy —
+           and the heading stands aside (the hero still owns this scroll) */
+        stage.dataset.entry = '1'
         handBack()
         card.style.visibility = 'hidden'
         return
@@ -595,6 +621,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       if (!base || base.w <= 0 || hr.width <= 0) {
         /* no geometry yet (first frame · zero-width edge) — the hero stays
            the ONE visible file until the projection can take over */
+        stage.dataset.entry = '1'
         handBack()
         card.style.visibility = 'hidden'
         return
@@ -616,6 +643,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const top = slotCy + dy + 26 * k - (base.h * s) / 2
       const lift = Math.max(0, NAV_SAFE - top) * Math.min(1, q * 5)
       dy += lift
+      /* the yield gate, from the panel's LIVE top edge — the heading/lede is
+         gone before the title bar can reach its band, and comes back the
+         moment the flight clears it (scrub-up reverses it the same way) */
+      yieldEntry(stage, top + lift - (capBotRef.current + sr.top))
       /* the glide ENDS on the settle pose (translateY 26px) — apply() then
          eases 26→0 across the file beat, zero teleport at the boundary */
       card.style.visibility = ''
