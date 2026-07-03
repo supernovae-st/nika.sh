@@ -16,6 +16,7 @@ import {
   camAt,
   chipAt,
   edgePulseAt,
+  faceChipAt,
   materializeAt,
   sealAt,
   slabStateAt,
@@ -27,6 +28,7 @@ import {
   makeFieldLayer,
   makeFillLayer,
   makeGlowLayer,
+  makeLabelAtlas,
 } from './plan-scene-three'
 import { DEPENDS_WORDS, VERB_WORDS, WHEN_WORDS } from './plain-words'
 import './plan-scene.css'
@@ -38,14 +40,20 @@ import './plan-scene.css'
    morph computes (progressRef — scroll is time, nothing hijacked) and dollies
    head-on through the waves as the recorded run plays: pulses travel the
    dependency edges, slabs ignite in their verb hue, the honestly-closed
-   when: gate seals. The DOM node cards stay in layout underneath
-   (visibility:hidden via [data-plan3d], set HERE so the swap can only happen
-   once this layer actually mounted) — they remain the mobile / reduced-motion
-   / no-WebGL truth, pixel-identical.
+   when: gate seals. At `done` the 3D advance recedes and the DOM DAG (the
+   mobile / reduced-motion / no-WebGL truth, kept in layout underneath via
+   [data-plan3d], set HERE) fades back in as the closing frame: the same plan,
+   flat, so the structure reads as a DAG.
+
+   IDENTITY LIVES ON THE SLAB: each face carries its task id + verb word (in
+   the verb hue) + a status zone (▸ running · ✓ recorded ms · ⊘ skipped) via
+   a per-task label-atlas tile, repainted only on status change — a label can
+   never detach from its block. The DOM buttons over the canvas are invisible
+   hit-rects (hover + keyboard focus + AT names), re-projected every frame.
 
    HONESTY: everything derives from the flagship corpus + recorded traces via
-   plan-scene-model (pure, tested). Labels are DOM billboards (task id + the
-   recorded chip), never canvas text. */
+   plan-scene-model (pure, tested); the face status zone shows the same
+   recorded facts the DOM chips show. */
 
 interface Props {
   flagship: FlagshipEntry
@@ -73,8 +81,22 @@ const smoothstep = (a: number, b: number, x: number): number => {
 /* scratch objects — zero per-frame allocation */
 const M = new THREE.Matrix4()
 const V = new THREE.Vector3()
+const W = new THREE.Vector3()
+const SCL = new THREE.Vector3()
 
 const GREY: [number, number, number] = [0.36, 0.4, 0.48]
+
+/* the pass-by window (world units of camera-to-slab distance): a wave is
+   fully lit through its OWN beat (prox ≥ 7.6), half-quiet already while the
+   camera glides to the next one, and a ≤0.25-alpha ghost exiting via the
+   sides before it can crowd the frame's bottom — past = quieter, the
+   focused wave owns the air */
+const PASS_NEAR = 5.0
+const PASS_FAR = 7.6
+/* passing slabs lean their face up toward the elevated camera (X-pitch, up
+   to ~26°) — the just-done wave must stay READABLE (id · verb · ✓ ms) while
+   it recedes, never a foreshortened anonymous sliver */
+const PITCH_MAX = 0.46
 
 /* ── the frame loop · every visual is a pure function of progressRef ───────── */
 function Advance({
@@ -91,9 +113,11 @@ function Advance({
   const camera = useThree((s) => s.camera)
   const layers = useMemo(() => {
     const n = model.slabs.length
+    const atlas = makeLabelAtlas(model.slabs.map((s) => s.task))
     return {
-      fills: makeFillLayer(n),
-      edges: makeEdgeLayer(n * 2),
+      atlas,
+      fills: makeFillLayer(n, atlas),
+      edges: makeEdgeLayer(n * 3),
       deps: makeDepLayer(model),
       field: makeFieldLayer(),
       glow: makeGlowLayer(),
@@ -101,6 +125,7 @@ function Advance({
   }, [model])
   useEffect(
     () => () => {
+      layers.atlas.dispose()
       layers.fills.dispose()
       layers.edges.dispose()
       layers.deps.dispose()
@@ -109,6 +134,24 @@ function Advance({
     },
     [layers],
   )
+
+  /* the label tiles are painted lazily by the frame loop (chipSig misses) —
+     once the real mono font lands, void the signatures so every tile repaints
+     with the face it was designed for */
+  const chipSig = useRef<Record<string, string>>({})
+  useEffect(() => {
+    let live = true
+    if (typeof document !== 'undefined' && document.fonts?.ready) {
+      document.fonts.ready
+        .then(() => {
+          if (live) chipSig.current = {}
+        })
+        .catch(() => {})
+    }
+    return () => {
+      live = false
+    }
+  }, [])
 
   /* per-vertex t params along each dependency edge (static) */
   const depT = useMemo(() => {
@@ -119,9 +162,6 @@ function Advance({
     }
     return t
   }, [])
-
-  const chipSig = useRef<Record<string, string>>({})
-  const frame = useRef(0)
 
   useFrame((state) => {
     const p = progressRef.current
@@ -150,9 +190,10 @@ function Advance({
     const eS = layers.edges.scale.array as Float32Array
     const eC = layers.edges.color.array as Float32Array
     const eA = layers.edges.alpha.array as Float32Array
+    const eR = layers.edges.rot.array as Float32Array
 
     const alphas: Record<string, number> = {}
-    const centers: Record<string, [number, number, number, number]> = {}
+    const centers: Record<string, [number, number, number, number, number]> = {}
 
     for (let i = 0; i < model.slabs.length; i++) {
       const slab = model.slabs[i]
@@ -162,7 +203,7 @@ function Advance({
       const seal = sealAt(entry, id, p)
       const ignite = edgePulseAt(entry, id, p).strength
       const prox = cam.pz - slab.z
-      const passedK = smoothstep(1.1, 3.1, prox)
+      const passedK = smoothstep(PASS_NEAR, PASS_FAR, prox)
       const farK = Math.min(
         1,
         Math.max(0.25, 1 - (Math.max(0, prox - (FOCUS_DIST + WAVE_GAP * 0.8)) / (WAVE_GAP * 2.4)) * 0.75),
@@ -174,20 +215,32 @@ function Advance({
       const alpha = gFade * mat * passedK * farK * Math.min(1, stateA + ignite * 0.5)
       alphas[id] = alpha
 
-      /* position · burst rise-in + the sideways pass-by drift */
+      /* the on-slab label · repaint ONLY when the recorded state changes */
+      if (chipSig.current[id] !== st) {
+        chipSig.current[id] = st
+        layers.atlas.draw(i, slab.task, st, faceChipAt(entry, slab.task, st))
+      }
+
+      /* position · burst rise-in + the pass-by exit (sideways + a lift AWAY
+         from the terminal band, never down into it) */
       const drift = 1 - passedK
-      const px = slab.x + drift * Math.sign(slab.x || 0.6) * 1.1
-      const py = slab.y - (1 - mat) * 0.5 + drift * 0.3
+      const px = slab.x + drift * Math.sign(slab.x || 0.6) * 2.2
+      const py = slab.y - (1 - mat) * 0.5 + drift * 0.55
       const pz = slab.z
 
-      /* scale · grow-in, the gate seal flattens, the pass-by shrinks */
-      const grow = (0.7 + 0.3 * mat) * (0.4 + 0.6 * passedK)
+      /* scale · grow-in, the gate seal flattens, the pass-by shrinks hard */
+      const grow = (0.7 + 0.3 * mat) * (0.3 + 0.7 * passedK)
       const sx = SLAB.w * grow
-      const sy = SLAB.h * grow * (1 - 0.55 * seal)
+      const sy = SLAB.h * grow * (1 - 0.45 * seal)
       const sz = SLAB.d * (1 - 0.4 * seal)
-      centers[id] = [px, py + sy / 2 + 0.34, pz, prox]
+      centers[id] = [px, py, pz, sx, sy]
 
-      M.makeScale(sx, sy, sz)
+      /* the pass pitch · 0 at focus distance, full lean by PASS_NEAR */
+      const pitch =
+        -PITCH_MAX *
+        Math.min(1, Math.max(0, (FOCUS_DIST - prox) / (FOCUS_DIST - PASS_NEAR)))
+      M.makeRotationX(pitch)
+      M.scale(SCL.set(sx, sy, sz))
       M.setPosition(px, py, pz)
       layers.fills.mesh.setMatrixAt(i, M)
 
@@ -197,7 +250,7 @@ function Advance({
       let tg = 0
       let tb = 0
       let ta = 0
-      if (st === 'running') [tr, tg, tb, ta] = [hue[0], hue[1], hue[2], 0.85]
+      if (st === 'running') [tr, tg, tb, ta] = [hue[0], hue[1], hue[2], 0.95]
       else if (st === 'done') [tr, tg, tb, ta] = [RAMP_HI[0], RAMP_HI[1], RAMP_HI[2], 0.3]
       else if (st === 'skipped') [tr, tg, tb, ta] = [GREY[0], GREY[1], GREY[2], 0.6]
       if (ignite > 0 && st !== 'skipped') {
@@ -229,8 +282,10 @@ function Advance({
         eb = Math.min(1, eb * 1.25)
       }
 
-      /* outer frame + inset die detail (two instances per slab) */
-      const o = i * 2
+      /* three instances per slab: outer frame · inset die detail (framing the
+         face label, quiet) · the running-state glow cage in the verb hue —
+         a screenshot mid-run shows WHICH block works without any motion */
+      const o = i * 3
       eP[o * 3] = px
       eP[o * 3 + 1] = py
       eP[o * 3 + 2] = pz
@@ -241,17 +296,31 @@ function Advance({
       eC[o * 3 + 1] = eg
       eC[o * 3 + 2] = eb
       eA[o] = alpha
+      eR[o] = pitch
       const n = o + 1
       eP[n * 3] = px
       eP[n * 3 + 1] = py
       eP[n * 3 + 2] = pz + sz * 0.22
-      eS[n * 3] = sx * 0.8
-      eS[n * 3 + 1] = sy * 0.58
+      eS[n * 3] = sx * 0.9
+      eS[n * 3 + 1] = sy * 0.74
       eS[n * 3 + 2] = sz * 0.6
       eC[n * 3] = er
       eC[n * 3 + 1] = eg
       eC[n * 3 + 2] = eb
-      eA[n] = alpha * 0.45
+      eA[n] = alpha * 0.28
+      eR[n] = pitch
+      const g = o + 2
+      eP[g * 3] = px
+      eP[g * 3 + 1] = py
+      eP[g * 3 + 2] = pz
+      eS[g * 3] = sx * 1.1
+      eS[g * 3 + 1] = sy * 1.2
+      eS[g * 3 + 2] = sz * 2.0
+      eC[g * 3] = hue[0]
+      eC[g * 3 + 1] = hue[1]
+      eC[g * 3 + 2] = hue[2]
+      eA[g] = alpha * (st === 'running' ? 0.55 : ignite * 0.3)
+      eR[g] = pitch
     }
     layers.fills.mesh.instanceMatrix.needsUpdate = true
     layers.fills.tint.needsUpdate = true
@@ -260,6 +329,7 @@ function Advance({
     layers.edges.scale.needsUpdate = true
     layers.edges.color.needsUpdate = true
     layers.edges.alpha.needsUpdate = true
+    layers.edges.rot.needsUpdate = true
 
     /* ── dependency edges · draw-on + state + the traveling ignite pulse ── */
     const draw = wireAt(p)
@@ -291,9 +361,10 @@ function Advance({
     layers.deps.color.needsUpdate = true
     layers.deps.alpha.needsUpdate = true
 
-    /* ── billboards · projected task-id labels + recorded chips (DOM) ── */
-    frame.current++
-    if (frame.current % 2 === 0) {
+    /* ── hit-rects · invisible DOM buttons glued to the projected slab rect
+       (hover + keyboard focus + AT names — the visible identity lives ON the
+       slab face). Re-projected EVERY frame: they can never trail the camera. */
+    {
       const w = state.size.width
       const h = state.size.height
       for (const slab of model.slabs) {
@@ -302,30 +373,26 @@ function Advance({
         if (!el) continue
         const c = centers[id]
         V.set(c[0], c[1], c[2]).project(camera)
-        const vis = alphas[id] > 0.12 && V.z < 1
+        const vis = alphas[id] > 0.3 && V.z < 1
         el.dataset.vis = vis ? '1' : '0'
         if (vis) {
           const bx = (V.x * 0.5 + 0.5) * w
           const by = (-V.y * 0.5 + 0.5) * h
-          const k = Math.min(1.15, Math.max(0.6, 8.6 / c[3]))
-          el.style.transform = `translate(-50%, -100%) translate3d(${bx.toFixed(1)}px, ${by.toFixed(1)}px, 0) scale(${k.toFixed(3)})`
-          el.style.opacity = Math.min(1, alphas[id] * 1.6).toFixed(3)
-          /* the tooltip rides its billboard (flipping below near the top edge
-             so it never covers the section title) */
+          W.set(c[0] + c[3] / 2, c[1] + c[4] / 2, c[2]).project(camera)
+          const hw = Math.abs((W.x * 0.5 + 0.5) * w - bx)
+          const hh = Math.abs((-W.y * 0.5 + 0.5) * h - by)
+          el.style.transform = `translate3d(${(bx - hw).toFixed(1)}px, ${(by - hh).toFixed(1)}px, 0)`
+          el.style.width = `${(hw * 2).toFixed(1)}px`
+          el.style.height = `${(hh * 2).toFixed(1)}px`
+          /* the tooltip rides the slab's top edge (flipping below near the
+             top of the section so it never covers the title) */
           if (ui.hoverRef.current === id && ui.sourceRef.current === 'bill' && ui.tipRef.current) {
-            const flip = by < Math.min(400, h * 0.58)
+            const topY = by - hh
+            const flip = topY < Math.min(400, h * 0.58)
             ui.tipRef.current.dataset.flip = flip ? '1' : '0'
             ui.tipRef.current.style.left = `${Math.round(Math.min(Math.max(bx, 180), w - 180))}px`
-            ui.tipRef.current.style.top = `${Math.round(flip ? by + 10 : by - 40 * k)}px`
+            ui.tipRef.current.style.top = `${Math.round(flip ? by + hh + 10 : topY - 8)}px`
           }
-        }
-        const st = slabStateAt(entry, id, p)
-        const sig = `${st}`
-        if (chipSig.current[id] !== sig) {
-          chipSig.current[id] = sig
-          el.dataset.state = st
-          const chip = el.querySelector<HTMLElement>('.ps-bill-chip')
-          if (chip) chip.textContent = chipAt(entry, slab.task, st)
         }
       }
     }
@@ -505,8 +572,9 @@ export default function ThePlanScene({ flagship, progressRef, stageRef, cardRef 
           />
         </Canvas>
 
-        {/* task billboards · real DOM (hover + keyboard focus drive the same
-            highlights), projected onto the slabs by the frame loop */}
+        {/* invisible hit-rects glued to the projected slabs · hover + keyboard
+            focus drive the same highlights; the visible label lives ON the
+            slab face (label atlas) so it can never float away from its block */}
         <div className="ps-bills">
           {model.slabs.map((s) => (
             <button
@@ -515,21 +583,24 @@ export default function ThePlanScene({ flagship, progressRef, stageRef, cardRef 
               ref={(el) => {
                 billRefs.current.set(s.task.id, el)
               }}
-              className="ps-bill"
-              data-verb={s.task.verb}
+              className="ps-hit"
               data-vis="0"
               aria-label={`task ${s.task.id} · ${s.task.verb} · ${s.task.target}`}
               onPointerOver={() => setHover(s.task.id, 'bill')}
               onPointerOut={() => setHover(null, 'bill')}
               onFocus={() => setHover(s.task.id, 'bill')}
               onBlur={() => setHover(null, 'bill')}
-            >
-              <span className="ps-bill-id">{s.task.id}</span>
-              <span className="ps-bill-chip" />
-            </button>
+            />
           ))}
         </div>
       </div>
+
+      {/* the closing frame's legend · at `done` the 3D advance recedes, the
+          flat DOM DAG returns, and this line names what the reader sees
+          (decorative: the head captions carry the meaning for AT) */}
+      <p className="ps-flat-note" aria-hidden="true">
+        the same plan, flat · every arrow is a wait
+      </p>
 
       {/* one tooltip · plain words + the task's verbatim YAML lines. A SIBLING
           layer above the traveling card: .ps-layer sits at z-1 BELOW the card

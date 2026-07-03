@@ -1,23 +1,60 @@
 /* ─── ThePlanScene · the 3D DAG layer over the morph (wave H) ─────────────────
    The layer exists ONLY while ThePlanScene is mounted (it sets [data-plan3d]
    on the stage itself) — every other configuration keeps the DOM DAG story
-   pixel-identical. Billboards + tooltip are real DOM over the canvas. */
+   pixel-identical. The slab identity is painted on the slab faces (label
+   atlas); the DOM over the canvas is invisible hit-rects + one tooltip.
+   At `done` the 3D recedes and the flat DOM DAG returns as the closing
+   frame. */
 
 /* the DOM node cards step aside but KEEP LAYOUT — the burst still measures
-   its flight targets from them (visibility, never display) */
+   its flight targets from them (visibility, never display). At `done` they
+   RETURN: the same plan, flat, is the closing frame (the 2D DAG everyone can
+   read) — and scrubbing back reverses the crossfade. */
 .morph-stage[data-plan3d] .morph-dag {
   visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.5s var(--ease-ui, ease),
+    visibility 0s linear 0.5s;
+}
+.morph-stage[data-plan3d][data-phase='done'] .morph-dag {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 0.55s var(--ease-ui, ease) 0.12s,
+    visibility 0s;
 }
 
 .ps-layer {
   position: absolute;
-  /* the same safe area the DOM DAG reserves above the terminal strip */
-  inset: 0 0 calc(clamp(80px, 11vh, 140px) + 96px) 0;
+  /* the safe area above the terminal strip — the canvas hard edge must stay
+     CLEAR of the terminal panel (measured: the old +96px left it 6px short) */
+  inset: 0 0 calc(clamp(80px, 11vh, 140px) + 120px) 0;
   z-index: 1;
   pointer-events: none;
 }
 .morphsec:not([data-armed]) .ps-layer {
   display: none; /* the static scene stays the DOM truth */
+}
+/* the narration rail's x-band is SACRED (H2 · morph.css insets .morph-dag a
+   constant 218px at ≥1200px) — the 3D layer honors the same inset, so no
+   slab can ever cover the anyone-words. The camera recenters in what's left. */
+@media (min-width: 1200px) {
+  .ps-layer {
+    left: 218px;
+  }
+}
+/* the 3D advance recedes behind the flat map at `done` (visibility also
+   drops the hit-rects from hover + tab order) */
+.ps-layer:not(.ps-tiplayer) {
+  transition: opacity 0.4s var(--ease-ui, ease);
+}
+.morph-stage[data-plan3d][data-phase='done'] .ps-layer:not(.ps-tiplayer) {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.4s var(--ease-ui, ease),
+    visibility 0s linear 0.4s;
 }
 .ps-canvas {
   position: absolute;
@@ -26,6 +63,43 @@
 /* the tooltip's twin box · same geometry, ABOVE the traveling card */
 .ps-tiplayer {
   z-index: 4;
+}
+
+/* the closing frame's legend · appears with the flat DAG */
+.ps-flat-note {
+  position: absolute;
+  left: 50%;
+  bottom: calc(clamp(80px, 11vh, 140px) + 128px);
+  transform: translate(-50%, 8px);
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s var(--ease-ui, ease),
+    transform 0.5s var(--ease-ui, ease),
+    visibility 0s linear 0.5s;
+  pointer-events: none;
+  z-index: 2;
+}
+.morph-stage[data-plan3d][data-phase='done'] .ps-flat-note {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 0.55s var(--ease-ui, ease) 0.25s,
+    transform 0.55s var(--ease-ui, ease) 0.25s,
+    visibility 0s;
+}
+/* center the legend under the DAG's own band (the rail insets it 218px) */
+@media (min-width: 1200px) {
+  .ps-flat-note {
+    left: calc(50% + 109px);
+  }
 }
 
 /* the YAML card accepts hover ONLY in the file beat (H6) — everywhere else it
@@ -41,61 +115,32 @@
   box-shadow: inset 2px 0 0 var(--v4-accent);
 }
 
-/* ── billboards · mono task-id plates projected onto the slabs ─────────────── */
+/* ── hit-rects · invisible buttons glued to the projected slabs ──────────────
+   The visible identity (task id + verb + status) is painted ON the slab face
+   by the label atlas — these rects only carry hover, keyboard focus and the
+   AT name, re-projected every frame by the loop. */
 .ps-bills {
   position: absolute;
   inset: 0;
   overflow: hidden;
 }
-.ps-bill {
+.ps-hit {
   position: absolute;
   top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-  padding: 3px 8px 4px;
+  padding: 0;
   border: 0;
   background: transparent;
-  font-family: var(--mono);
   pointer-events: auto;
   cursor: default;
-  will-change: transform, opacity;
+  will-change: transform;
 }
-.ps-bill[data-vis='0'] {
-  visibility: hidden; /* also drops it from the tab order */
+.ps-hit[data-vis='0'] {
+  visibility: hidden; /* also drops it from hover + the tab order */
 }
-.ps-bill-id {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: rgb(141 180 255 / 0.78);
-  text-shadow: 0 1px 6px rgb(5 5 7 / 0.9);
-}
-.ps-bill-chip {
-  min-height: 13px;
-  font-size: 10px;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
-  color: var(--cf-str);
-  text-shadow: 0 1px 6px rgb(5 5 7 / 0.9);
-  white-space: nowrap;
-}
-.ps-bill[data-state='running'] .ps-bill-id {
-  color: var(--v4-text);
-}
-.ps-bill[data-verb='infer'][data-state='running'] .ps-bill-chip { color: var(--verb-infer); }
-.ps-bill[data-verb='exec'][data-state='running'] .ps-bill-chip { color: var(--verb-exec); }
-.ps-bill[data-verb='invoke'][data-state='running'] .ps-bill-chip { color: var(--verb-invoke); }
-.ps-bill[data-verb='agent'][data-state='running'] .ps-bill-chip { color: var(--verb-agent); }
-.ps-bill[data-state='skipped'] .ps-bill-id,
-.ps-bill[data-state='skipped'] .ps-bill-chip {
-  color: var(--cf-num);
-}
-.ps-bill:focus-visible {
-  outline: 1px solid var(--v4-focus-ring);
-  outline-offset: 2px;
+.ps-hit:focus-visible {
+  outline: 1.5px solid var(--v4-focus-ring);
+  outline-offset: 3px;
   border-radius: var(--v4-radius-sm);
 }
 

@@ -30,6 +30,14 @@
   height: 100vh;
   overflow: clip;
 }
+/* H-CONTINUITY · across the hero→morph seam the ONE file panel travels from
+   the hero's slot down into the scene — the traveling card must leave the
+   stage box, so the stage un-clips for THAT window only ([data-seam], set
+   per-frame by ScrollMorph while p=0 · the card is whole · nothing else can
+   spill). */
+.morphsec[data-armed] .morph-stage[data-seam] {
+  overflow: visible;
+}
 .morph-stage {
   display: flex;
   flex-direction: column;

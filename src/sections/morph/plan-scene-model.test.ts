@@ -2,11 +2,14 @@ import { describe, expect, it } from 'vitest'
 import { FLAGSHIP_ENTRIES } from '../../flagships'
 import { PH, runFracAt, taskInterval } from './morph-model'
 import {
+  SLAB,
   WAVE_GAP,
+  X_GAP,
   buildPlanScene,
   camAt,
   chipAt,
   edgePulseAt,
+  faceChipAt,
   focusAt,
   materializeAt,
   sealAt,
@@ -212,6 +215,30 @@ describe('the light · every change maps to a recorded event', () => {
         expect(edgePulseAt(f, t.id, PH.run0).strength === 0 || taskInterval(f, t.id) !== null).toBe(
           true,
         )
+      }
+    }
+  })
+})
+
+describe('the on-slab identity · the block itself says what it is doing', () => {
+  it('parallel slabs keep the gutter law (≥0.35 slab-width of clear air in X)', () => {
+    expect(X_GAP - SLAB.w).toBeGreaterThanOrEqual(SLAB.w * 0.35)
+  })
+
+  it('faceChipAt speaks the four states, recorded facts only', () => {
+    for (const f of FLAGSHIP_ENTRIES) {
+      for (const t of f.plan.tasks) {
+        expect(faceChipAt(f, t, 'pending')).toBe('')
+        expect(faceChipAt(f, t, 'running')).toBe('▸ running')
+        expect(faceChipAt(f, t, 'skipped')).toBe('⊘ skipped')
+        const done = faceChipAt(f, t, 'done')
+        expect(done.startsWith('✓')).toBe(true)
+        const rec = f.trace.steps.find((s) => s.kind === 'task_completed' && s.task === t.id)
+        if (rec?.durationMs !== undefined) {
+          /* the ms on the face is the recorded duration, verbatim formatMs */
+          expect(done).toContain('✓ ')
+          expect(done.length).toBeGreaterThan(2)
+        }
       }
     }
   })

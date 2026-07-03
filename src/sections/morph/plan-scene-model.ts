@@ -23,12 +23,16 @@ import { PH, clamp01, easeInOut, flightAt, runFracAt, taskInterval } from './mor
    Waves recede along -Z; the camera looks down -Z slightly elevated so depth
    reads as a road ahead. */
 export const SLAB = { w: 2.05, h: 1.12, d: 0.16 } as const
-export const X_GAP = 2.55
+/** the gutter law · parallel slabs keep ≥0.35 slab-width of clear air in X —
+    abreast must never read as touching */
+export const X_GAP = 2.9
 export const WAVE_GAP = 3.7
 /** each deeper wave rises — the amphitheater read: the road ahead is visible
     OVER the nearer waves, and the advance feels like ascending */
 export const Y_STEP = 0.62
-export const FOCUS_DIST = 8.2
+/** the camera keeps MORE distance on the focused wave (operator: « on doit
+    moins étouffer ») — smaller slabs, more void, the register breathes */
+export const FOCUS_DIST = 10
 export const FOCUS_HEIGHT = 2.5
 export const EDGE_SEGS = 24
 
@@ -290,10 +294,25 @@ export function edgePulseAt(entry: FlagshipEntry, toTaskId: string, p: number): 
   return { pos, strength: Math.sin((Math.PI / 2) * clamp01(tail)) }
 }
 
-/* ── the chips · recorded facts on the billboards (mirrors the DOM nodes) ──── */
+/* ── the chips · recorded facts on the tooltip card (mirrors the DOM nodes) ── */
 export function chipAt(entry: FlagshipEntry, task: FlagshipTask, state: SlabRunState): string {
   if (state === 'running') return '● running'
   if (state === 'skipped') return '⊘ skipped · gate closed'
+  if (state === 'done') {
+    const done = entry.trace.steps.find(
+      (st) => st.kind === 'task_completed' && st.task === task.id,
+    )
+    return done?.durationMs !== undefined ? `✓ ${formatMs(done.durationMs)}` : '✓ done'
+  }
+  return ''
+}
+
+/** the ON-SLAB status line (the face-compact form of chipAt) — the block
+    itself says what the recorded run did to it: '' idle · ▸ running ·
+    ✓ done + recorded ms · ⊘ skipped. Same recorded facts, never invented. */
+export function faceChipAt(entry: FlagshipEntry, task: FlagshipTask, state: SlabRunState): string {
+  if (state === 'running') return '▸ running'
+  if (state === 'skipped') return '⊘ skipped'
   if (state === 'done') {
     const done = entry.trace.steps.find(
       (st) => st.kind === 'task_completed' && st.task === task.id,
@@ -309,6 +328,14 @@ export const VERB_HUE: Record<NikaVerb, [number, number, number]> = {
   exec: [1.0, 0.478, 0.235], // #ff7a3c
   invoke: [0.133, 0.827, 0.933], // #22d3ee
   agent: [0.69, 0.482, 1.0], // #b07bff
+}
+/** the same verb hues as hex — canvas-label ink (the label atlas draws with
+    2D canvas, which wants CSS colors) */
+export const VERB_HEX: Record<NikaVerb, string> = {
+  infer: '#5b8cff',
+  exec: '#ff7a3c',
+  invoke: '#22d3ee',
+  agent: '#b07bff',
 }
 export const RAMP_LO: [number, number, number] = [0.031, 0.035, 0.043] // #08090b
 export const RAMP_MID: [number, number, number] = [0.086, 0.137, 0.247] // #16233f
