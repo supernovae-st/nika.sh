@@ -1,178 +1,61 @@
-/* ─── EdgeAurora · the reactive frame halo (v5 · ONE blue) ────────────────────
-   A reactive halo that hugs the screen frame while the center stays transparent.
-   It is THE DRUM: it pulses on workflow events. Center black & readable; a
-   blurred ring lives at the edges only. v5 retune: the cyan→violet dual-hue is
-   KILLED — the ring sweeps within the ONE blue accent family (accent-strong ↔
-   deep wire blue), dimmer at rest, sharper (tighter blur + mask) so it reads as
-   a hairline of light, not a wash. Intensity is driven by the
-   `--aurora-intensity` custom property (rest ≈ 0.04) — pulses mutate it on the
-   element directly (no React re-render). At rest it breathes slowly via CSS.
+/* ─── EdgeAurora · the spectrum frame (v6 · the ring law) ─────────────────────
+   The Apple-Intelligence / oryzo register: a thin FULL-SPECTRUM band hugging
+   all four viewport edges with rounded corners, blooming softly inward. It is
+   THE DRUM: it beats on workflow events (intensity pulses via the
+   `--aurora-intensity` custom property, mutated on the element directly — no
+   React re-render).
 
-   Pure CSS so it renders during the Node prerender (vite-plugin-react-ssg)
-   without touching window/document — the component only reads matchMedia in an
-   effect. The center is fully transparent (pointer-events:none) so it never
-   intercepts clicks or obscures content; it reads over BOTH light- and dark-mode
-   sections because the rest intensity is subtle and the hues are additive. */
+   THE RING LAW (v6, definitive — supersedes every earlier geometry):
+   the band is a rounded-rect RING carved by the canonical gradient-border
+   mask (two layers, content-box vs border-box, composite exclude/xor). The
+   band thickness is the element's PADDING in px — nothing is expressed in
+   mask percentages, so nothing can land off-viewport ever again (rounds 1-5
+   all died to exactly that). The element never moves, never rotates: the
+   hues travel by animating the registered conic from-angle --aurora-spin.
+
+   Two layers share one geometry:
+     ::before — THE BAND · thin, saturated, the crisp rim
+     ::after  — THE BLOOM · same ring, fatter padding + heavy blur · the soft
+                inward falloff (and the surface the danger flash / verdict
+                sweep repaint)
+
+   Pure CSS so it renders during the Node prerender (vite-plugin-react-ssg);
+   the component only touches the DOM in effects. pointer-events:none — it
+   never intercepts clicks. */
 
 .edge-aurora {
-  /* rest intensity · pulses raise this toward ~1 then decay back. 0.13: the
-     ambient spectral frame must be FELT at rest (operator asked twice), the
-     box-mask rim makes higher presence safe (no interior washes). */
-  --aurora-intensity: 0.13;
+  /* rest intensity · pulses raise this toward ~1 then decay back (tsx). */
+  --aurora-intensity: 0.2;
+  /* ring geometry · the band/bloom thickness in px (the run state widens) */
+  --aurora-band: 12px;
+  --aurora-bloom: 46px;
+  --aurora-radius: 20px;
 
   position: fixed;
   inset: 0;
   z-index: 60; /* above content, below any modal */
   pointer-events: none;
-
-  /* The glow itself is the ::before ring; the layer is otherwise transparent. */
   background: transparent;
 
-  /* gate the breath via the custom-property pipeline, not opacity-on-layer, so
-     reduced-motion can freeze it without affecting the pulse intensity var */
+  /* the slow ambient breath · composes multiplicatively with intensity */
   animation: edge-aurora-breathe 10s ease-in-out infinite;
-
-  /* Hint the compositor: only the ring's opacity/blur animates. */
   will-change: opacity;
 }
 
 /* tab hidden (EdgeAurora.tsx sets data-idle on visibilitychange) — freeze the
-   infinite breathe/rotate; nobody is watching the compositor work. The ambient
-   ring itself stays ALIVE while visible: its slow drift is now the feature. */
+   infinite animations; they composit for nobody. */
 .edge-aurora[data-idle='on'],
-.edge-aurora[data-idle='on']::before {
+.edge-aurora[data-idle='on']::before,
+.edge-aurora[data-idle='on']::after {
   animation-play-state: paused;
 }
 
-/* The visible ring · a blurred conic sweep masked to the frame edges only.
-   `mask` punches a transparent rectangle out of the center so only the rim
-   glows. AMBIENT MULTICOLOR (operator override 2026-07-03 · the oryzo ask):
-   the rest ring carries the four verb hues as a WHISPER — each hue folded
-   60% into the deep wire blue so the frame reads as one instrument with a
-   faint spectral drift, never a rainbow. The run state (below) is the same
-   wheel at full voice. */
-.edge-aurora::before {
-  content: '';
-  position: absolute;
-  inset: -16%; /* bleed past the frame so the blur falls off the screen edges  */
-  background:
-    conic-gradient(
-      from 0deg,
-      color-mix(in oklch, var(--verb-infer) 44%, #16307a) 0turn,
-      color-mix(in oklch, var(--verb-invoke) 34%, #16307a) 0.125turn,
-      color-mix(in oklch, var(--verb-exec) 30%, #16307a) 0.25turn,
-      color-mix(in oklch, var(--verb-agent) 36%, #16307a) 0.375turn,
-      color-mix(in oklch, var(--verb-infer) 44%, #16307a) 0.5turn,
-      color-mix(in oklch, var(--verb-invoke) 34%, #16307a) 0.625turn,
-      color-mix(in oklch, var(--verb-exec) 30%, #16307a) 0.75turn,
-      color-mix(in oklch, var(--verb-agent) 36%, #16307a) 0.875turn,
-      color-mix(in oklch, var(--verb-infer) 44%, #16307a) 1turn
-    );
-
-  /* AT REST THIS WHEEL IS OFF. Three rounds of live screenshots proved every
-     radial-band mask floods the interior as diagonal washes (a rotating
-     square can never hug a rectangle). The ambient frame is the ::after box
-     band ALONE; the run state re-enables this wheel with its own tight mask. */
-  mask: radial-gradient(
-    ellipse 100% 100% at 50% 50%,
-    transparent 30%,
-    #000 43%
-  );
-  -webkit-mask: radial-gradient(
-    ellipse 100% 100% at 50% 50%,
-    transparent 30%,
-    #000 43%
-  );
-
-  filter: blur(44px);
-  opacity: 0;
-
-  animation: edge-aurora-rotate 26s linear infinite;
-}
-
-/* THE FRAME RIM · a box-shaped band hugging all four edges uniformly (two
-   crossed linear-gradient masks, union-composited — a rotating square can
-   never hug a rectangle, which is why every radial attempt smeared). THE
-   spectral life: the conic's from-angle animates through a registered
-   property, so the hues TRAVEL the frame while the band itself never moves.
-   Gated :not([data-run]) — the run state owns ::after as the verb lead arc. */
+/* the travelling hue angle · registered so it interpolates as a real angle */
 @property --aurora-spin {
   syntax: '<angle>';
   inherits: true;
   initial-value: 0deg;
 }
-.edge-aurora:not([data-run])::after {
-  content: '';
-  position: absolute;
-  inset: -2%;
-  background: conic-gradient(
-    from var(--aurora-spin),
-    color-mix(in oklch, var(--verb-infer) 40%, #16307a) 0turn,
-    color-mix(in oklch, var(--verb-invoke) 32%, #16307a) 0.125turn,
-    color-mix(in oklch, var(--verb-exec) 28%, #16307a) 0.25turn,
-    color-mix(in oklch, var(--verb-agent) 34%, #16307a) 0.375turn,
-    color-mix(in oklch, var(--verb-infer) 40%, #16307a) 0.5turn,
-    color-mix(in oklch, var(--verb-invoke) 32%, #16307a) 0.625turn,
-    color-mix(in oklch, var(--verb-exec) 28%, #16307a) 0.75turn,
-    color-mix(in oklch, var(--verb-agent) 34%, #16307a) 0.875turn,
-    color-mix(in oklch, var(--verb-infer) 40%, #16307a) 1turn
-  );
-  mask:
-    linear-gradient(to right, #000 0, transparent 11%, transparent 89%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 11%, transparent 89%, #000 100%);
-  -webkit-mask:
-    linear-gradient(to right, #000 0, transparent 11%, transparent 89%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 11%, transparent 89%, #000 100%);
-  mask-composite: add;
-  -webkit-mask-composite: source-over;
-  filter: blur(26px);
-  opacity: calc(var(--aurora-intensity) * 1.15);
-  pointer-events: none;
-  animation: edge-aurora-spin 48s linear infinite;
-}
-@keyframes edge-aurora-spin {
-  to {
-    --aurora-spin: 360deg;
-  }
-}
-
-/* breathing · gently swells the whole ring's opacity around its rest value.
-   Drives a multiplier through the layer opacity so it composes with the
-   per-element --aurora-intensity that pulse() mutates. */
-@keyframes edge-aurora-breathe {
-  0%,
-  100% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-@keyframes edge-aurora-rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* reduced-motion · no breathing, no hue drift · static low intensity. */
-@media (prefers-reduced-motion: reduce) {
-  .edge-aurora,
-  .edge-aurora::before,
-  .edge-aurora::after {
-    animation: none;
-  }
-}
-
-/* ─── E7 · RUN MODE · the frame IS run visualization ──────────────────────────
-   Canon: the 4 verb hues are sanctioned HERE and only here (design doc §3.4 ·
-   live-run visualization). Idle chrome stays single-blue — everything below is
-   gated on [data-run] / [data-flash] so the rest state is byte-identical.
-   Two-ring composition (oryzo §E0.1, rebuilt in CSS): the 4-verb wheel is the
-   WIDE HAZE (::before · blur 44px), the active verb rides a SHARPER rim
-   (::after · tighter punch · blur 22px) so the current hue visibly leads. */
-
-/* registered props · the verb handoff INTERPOLATES (no hue snap) */
 @property --aurora-verb {
   syntax: '<color>';
   inherits: true;
@@ -184,91 +67,114 @@
   initial-value: 0;
 }
 
+/* the one spectrum · the full wheel (Apple system hues — red→orange→yellow→
+   green→teal→cyan→blue→indigo→purple→pink→red) painted from the CENTER so
+   the ring shows the wheel travelling the perimeter as the from-angle spins */
+.edge-aurora::before,
+.edge-aurora::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--aurora-radius);
+  background: conic-gradient(
+    from var(--aurora-spin),
+    #ff3b30,
+    #ff9500,
+    #ffcc00,
+    #34c759,
+    #00c7be,
+    #32ade6,
+    #007aff,
+    #5856d6,
+    #af52de,
+    #ff2d55,
+    #ff3b30
+  );
+  /* the canonical ring mask · keep only the padding frame of the element */
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  animation: edge-aurora-spin 56s linear infinite;
+}
+
+/* THE BAND · crisp saturated rim */
+.edge-aurora::before {
+  padding: var(--aurora-band);
+  filter: blur(9px) saturate(1.35);
+  opacity: min(1, calc(var(--aurora-intensity) * 2));
+}
+
+/* THE BLOOM · the same ring, fat and soft — the inward falloff */
+.edge-aurora::after {
+  padding: var(--aurora-bloom);
+  filter: blur(38px) saturate(1.15);
+  opacity: calc(var(--aurora-intensity) * 1.15);
+}
+
+@keyframes edge-aurora-spin {
+  to {
+    --aurora-spin: 360deg;
+  }
+}
+
+/* breathing · gently swells the layer opacity around its rest value; the
+   per-event pulses ride --aurora-intensity underneath. */
+@keyframes edge-aurora-breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ─── RUN MODE · the frame IS run visualization ───────────────────────────────
+   While a run replays (data-run), the same spectrum simply speaks louder:
+   wider band, faster travel, and the recorded progress swells the rim.
+   Idle chrome is byte-identical when data-run is absent. */
+.edge-aurora[data-run] {
+  --aurora-band: 16px;
+  --aurora-bloom: 64px;
+}
 .edge-aurora[data-run]::before {
-  background: conic-gradient(
-    from var(--aurora-spin),
-    var(--verb-infer) 0turn,
-    var(--verb-exec) 0.25turn,
-    var(--verb-invoke) 0.5turn,
-    var(--verb-agent) 0.75turn,
-    var(--verb-infer) 1turn
+  opacity: min(
+    1,
+    calc(var(--aurora-intensity) * 2 + var(--aurora-progress) * 0.2)
   );
-  /* THE BOX LAW (round 4, definitive): every radial mask smeared as diagonal
-     washes, and transform-rotation rotates the MASK with the element. So:
-     the band is a crossed-linear BOX hugging all four edges, the element
-     never moves, and the hues travel via the conic from-angle alone. */
-  mask:
-    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
-  -webkit-mask:
-    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
-  mask-composite: add;
-  -webkit-mask-composite: source-over;
-  /* breathe with the RUN, not a timer: recorded progress drives the swell */
-  opacity: calc(var(--aurora-intensity) + var(--aurora-progress) * 0.15);
-  /* the wheel turns · full-voice verb hues circle the frame */
-  animation: edge-aurora-spin 18s linear infinite;
+  animation-duration: 16s;
 }
-
-/* the active-verb lead · a narrow bright arc in the current verb's hue
-   (same geometry fix: a tighter band than the wheel, but ON the frame) */
 .edge-aurora[data-run]::after {
-  content: '';
-  position: absolute;
-  inset: -2%;
-  background: conic-gradient(
-    from var(--aurora-spin),
-    transparent 0turn,
-    var(--aurora-verb) 0.06turn,
-    transparent 0.16turn
-  );
-  mask:
-    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
-  -webkit-mask:
-    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
-  mask-composite: add;
-  -webkit-mask-composite: source-over;
-  filter: blur(22px);
-  opacity: calc(var(--aurora-intensity) * 1.6);
-  transition: --aurora-verb 320ms var(--ease-ui);
-  animation: edge-aurora-spin 9s linear infinite; /* the lead runs ahead */
+  animation-duration: 16s; /* band + bloom stay hue-aligned */
 }
 
-/* the permits-wall beat · one danger flash (600ms) then back */
+/* the permits-wall beat · one danger flash (600ms) on the bloom, then back */
 .edge-aurora[data-flash='danger']::after {
-  content: '';
-  position: absolute;
-  inset: -2%;
-  mask:
-    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
-  -webkit-mask:
-    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
-    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
-  mask-composite: add;
-  -webkit-mask-composite: source-over;
-  filter: blur(22px);
-  animation: aurora-danger 600ms var(--ease-ui) 1;
+  background: conic-gradient(from 0deg, #ff5d5d, #7a1622 50%, #ff5d5d);
+  animation:
+    edge-aurora-spin 16s linear infinite,
+    aurora-danger 600ms var(--ease-ui) 1;
 }
 @keyframes aurora-danger {
   0% {
     opacity: 0;
-    background: conic-gradient(from 0deg, #ff5d5d, #7a1622 50%, #ff5d5d);
   }
   30% {
-    opacity: 0.55;
-    background: conic-gradient(from 0deg, #ff5d5d, #7a1622 50%, #ff5d5d);
+    opacity: 0.65;
   }
   100% {
     opacity: 0;
-    background: conic-gradient(from 0deg, #ff5d5d, #7a1622 50%, #ff5d5d);
   }
 }
 
-/* the verdict sweep · ONE bright accent arc travels the frame, then decays */
+/* the verdict sweep · ONE bright arc travels the full frame once, then decays
+   (the spin var is driven through a single fast revolution) */
 .edge-aurora[data-run='sweep']::after {
   background: conic-gradient(
     from var(--aurora-spin),
@@ -277,7 +183,7 @@
     transparent 0.18turn
   );
   animation: aurora-sweep 900ms cubic-bezier(0.4, 0, 0.2, 1) 1;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 @keyframes aurora-sweep {
   to {
@@ -285,32 +191,27 @@
   }
 }
 
-/* mobile · thinner edge, still present (the oryzo thickness law: the ring
-   scales down with the viewport instead of disappearing) */
+/* mobile · the ring scales down with the viewport instead of disappearing */
 @media (max-width: 767px) {
-  /* the small frame keeps the same box law, thinner band + softer blur */
-  .edge-aurora:not([data-run])::after,
-  .edge-aurora[data-run]::before,
-  .edge-aurora[data-run]::after {
-    mask:
-      linear-gradient(to right, #000 0, transparent 8%, transparent 92%, #000 100%),
-      linear-gradient(to bottom, #000 0, transparent 8%, transparent 92%, #000 100%);
-    -webkit-mask:
-      linear-gradient(to right, #000 0, transparent 8%, transparent 92%, #000 100%),
-      linear-gradient(to bottom, #000 0, transparent 8%, transparent 92%, #000 100%);
-    mask-composite: add;
-    -webkit-mask-composite: source-over;
-    filter: blur(22px);
+  .edge-aurora {
+    --aurora-band: 7px;
+    --aurora-bloom: 26px;
+    --aurora-radius: 12px;
+  }
+  .edge-aurora::before {
+    filter: blur(6px) saturate(1.35);
+  }
+  .edge-aurora::after {
+    filter: blur(20px) saturate(1.15);
   }
 }
 
-/* reduced-motion · INTENSITY ONLY — the four-hue bloom still rises and decays
-   through --aurora-intensity (a static multicolor frame), but nothing rotates
-   and nothing sweeps (verdict = intensity step) */
+/* reduced-motion · a static spectrum frame — nothing travels, nothing breathes;
+   intensity (event pulses) still rises and decays. */
 @media (prefers-reduced-motion: reduce) {
-  .edge-aurora[data-run]::before,
-  .edge-aurora[data-run]::after,
-  .edge-aurora[data-flash='danger']::after {
+  .edge-aurora,
+  .edge-aurora::before,
+  .edge-aurora::after {
     animation: none;
   }
 }

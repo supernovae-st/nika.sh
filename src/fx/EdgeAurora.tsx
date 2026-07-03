@@ -23,7 +23,9 @@ import './edge-aurora.css'
    SSR-safe: the visual is pure CSS; browser access lives in effects and
    event-time callbacks only. */
 
-const REST_INTENSITY = 0.09 /* the ambient spectral frame · felt, never loud */
+const REST_INTENSITY = 0.2 /* the ambient spectrum frame · clearly present at rest
+    (v6 ring law · matches the CSS fallback so post-pulse decay lands where
+    the prerender started — the frame never fades below its resting voice) */
 /** run mode raises the resting floor — the VERB BLOOM. The four-hue frame must
     be unmistakable at 1440 while a run plays (operator's oryzo ask), so the
     floor sits at ~0.36 (the run.css mask keeps the center readable). */
