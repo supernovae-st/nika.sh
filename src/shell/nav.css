@@ -202,6 +202,13 @@
   color: var(--v4-text);
   background: color-mix(in oklch, var(--v4-text) 5%, transparent);
 }
+/* the trigger HOLDS its active state while the mega is open — the sliding
+   hover pill leaves with the pointer (it rides into the panel), so the
+   data-open wash is what keeps the trigger↔panel pairing legible */
+.v4nav-link[data-open='true'] {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
 /* while transparent (riding the dark hero field), the dim gray sinks into the
    field — lift the rail ink to a high-opacity near-white so every link clears
    contrast. Once the floor arrives, the dim/text hierarchy returns. Brand +
@@ -354,7 +361,7 @@
   left: 10px;
   width: 640px;
   max-width: calc(100vw - 40px);
-  padding: 14px;
+  padding: 10px;
   border-radius: 12px; /* matches the capsule, not the 4px structural radii */
   /* F6 · NEAR-OPAQUE floor — the panel fully occludes what's behind it (the
      translucent+blur version let the field bleed through and muddied the
@@ -370,17 +377,19 @@
   grid-template-columns: 1fr 1fr;
   gap: 4px 12px;
   align-items: start;
-  /* entrance · a short, motion-safe drop-in (opacity + 4px settle · 160ms) */
+  /* entrance · a short, motion-safe drop-in (opacity + 4px settle + a whisper
+     of scale growing from the top-left corner nearest the trigger · 160ms) */
+  transform-origin: top left;
   animation: v4mega-in 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes v4mega-in {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(-4px) scale(0.985);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 .v4mega-col {
@@ -389,7 +398,7 @@
   gap: 2px;
 }
 .v4mega-col-title {
-  margin: 6px 12px 8px;
+  margin: 6px 10px 6px;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -401,11 +410,63 @@
    :focus-visible rule — thin, keyboard-only, never a selection box (pointer
    opens no longer auto-focus the first item). */
 .v4mega-item {
-  display: block;
-  padding: 10px 12px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 9px 10px;
   border-radius: var(--v4-radius);
   color: var(--v4-text);
   transition: background-color var(--dur-ui) var(--ease-ui), transform 0.12s var(--ease-ui);
+}
+/* the accent hairline · a 2px blue edge that scales in from the row's middle
+   on hover (120ms) — the panel's one chromatic hover note beside the icon */
+.v4mega-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--v4-accent);
+  opacity: 0;
+  transform: scaleY(0);
+  transition: transform 0.12s var(--ease-ui), opacity 0.12s var(--ease-ui);
+}
+.v4mega-item:hover::before,
+.v4mega-item:focus-visible::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+/* the icon tile · a 26px hairline plate that holds the outlined glyph — dim
+   ink at rest; the row hover inks the GLYPH to the accent and firms the
+   hairline (the tile is the affordance the bare-text rows were missing) */
+.v4mega-icobox {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-top: 1px; /* optical align with the 15px label line */
+  border-radius: var(--v4-radius);
+  border: 1px solid var(--v4-line);
+  background: color-mix(in oklch, var(--v4-text) 3%, transparent);
+  color: var(--v4-text-dim);
+  transition: color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+.v4mega-item:hover .v4mega-icobox,
+.v4mega-item:focus-visible .v4mega-icobox {
+  color: var(--v4-accent);
+  border-color: var(--v4-line-strong);
+  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+}
+.v4mega-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 .v4mega-item:hover,
 .v4mega-item:focus-visible {
@@ -418,14 +479,84 @@
   display: block;
   font-size: 15px;
   font-weight: 560;
-  line-height: 1.3;
+  line-height: 1.25;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.v4mega-item:hover .v4mega-label,
+.v4mega-item:focus-visible .v4mega-label {
+  color: #fff; /* the panel floor is hard-coded dark — safe in both themes */
 }
 .v4mega-desc {
   display: block;
-  margin-top: 3px;
+  margin-top: 2px;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--v4-text-dim);
+}
+
+/* ── the bottom rail · one slim hairline-separated row spanning both columns.
+   Left: the version truth (mono dim · links /changelog) · right: Install →
+   (accent). The rail bleeds to the panel edge (the -10px margins undo the
+   panel padding); link padding re-lands the text on the 20px eyebrow line
+   while buying each link its own generous hit area. */
+.v4mega-rail {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px -10px -10px;
+  padding: 5px 12px;
+  border-top: 1px solid var(--v4-line);
+}
+.v4mega-rail-version {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 8px;
+  border-radius: var(--v4-radius);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui),
+    transform 0.12s var(--ease-ui);
+}
+.v4mega-rail-version:hover,
+.v4mega-rail-version:focus-visible {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+}
+.v4mega-rail-install {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 4px 8px;
+  border-radius: var(--v4-radius);
+  font-size: 13px;
+  font-weight: 560;
+  letter-spacing: -0.005em;
+  color: var(--v4-accent);
+  white-space: nowrap;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui),
+    transform 0.12s var(--ease-ui);
+}
+.v4mega-rail-install:hover,
+.v4mega-rail-install:focus-visible {
+  color: var(--v4-accent-bright);
+  background: color-mix(in oklch, var(--v4-accent) 10%, transparent);
+}
+.v4mega-rail-arrow {
+  transition: transform 0.12s var(--ease-ui);
+}
+.v4mega-rail-install:hover .v4mega-rail-arrow {
+  transform: translateX(2px);
+}
+.v4mega-rail-version:active,
+.v4mega-rail-install:active {
+  transform: translateY(0.5px);
 }
 
 /* ─── the mobile sheet ──────────────────────────────────────────────────────── */
@@ -539,6 +670,28 @@
   background: var(--v4-line);
 }
 
+/* ── pointer detail · every interactive nav element reads as clickable
+   (buttons don't inherit the link cursor) and presses with the same
+   half-pixel settle physics */
+.v4nav-brand,
+.v4nav-link,
+.v4nav-ghost,
+.v4nav-cta,
+.v4nav-burger,
+.v4mega-item,
+.v4mega-rail-version,
+.v4mega-rail-install,
+.v4sheet-close,
+.v4sheet-link,
+.v4sheet-cta {
+  cursor: pointer;
+}
+.v4nav-burger:active,
+.v4sheet-close:active,
+.v4sheet-cta:active {
+  transform: translateY(0.5px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .v4mega,
   .v4sheet,
@@ -546,7 +699,9 @@
     animation: none;
   }
   .v4nav-link::after,
-  .v4nav-caret {
+  .v4nav-caret,
+  .v4mega-item::before,
+  .v4mega-rail-arrow {
     transition: none;
   }
   /* the pill may still FADE but never streak across the rail */

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
-import { REPO, DOCS } from '../content'
+import { REPO, DOCS, ENGINE_VERSION } from '../content'
 import './nav.css'
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
@@ -25,7 +25,15 @@ import './nav.css'
    - `Product ▾` is a real grouped mega-menu (WAI-ARIA disclosure): full keyboard
      (Esc closes + returns focus, ↓/↑ move through items, Home/End jump, Tab
      parks focus back on the trigger before closing — no focus drop), closes on
-     outside click / route change. Semantics: role=menu/menuitem is used WITH
+     outside click / route change. On MOUSE it opens on HOVER with intent
+     timing (~70ms in, so flybys never flash it · ~250ms grace out) and a
+     SAFE TRIANGLE — while the pointer keeps moving inside the triangle from
+     its exit point to the panel's top corners (i.e. traveling toward the
+     panel) the grace deadline keeps extending, so the diagonal path to the
+     far corner never slams the menu shut; parking anywhere else (another
+     rail link) lets the grace expire. Touch/pen never hover-open (per-event
+     pointerType gate); click still toggles; keyboard is untouched.
+     Semantics: role=menu/menuitem is used WITH
      the full APG keyboard contract implemented below — a plain list of links
      would also be a11y-correct, but the roving-focus behaviour is already here,
      so the roles are honest.
@@ -43,9 +51,12 @@ import './nav.css'
    (review P2-12), so field-less routes render SOLID from scroll 0. */
 const FIELD_ROUTES = new Set(['/', '/manifesto'])
 
+type MegaIconName = 'run' | 'verbs' | 'shield' | 'tiles' | 'terminal' | 'book' | 'butterfly'
+
 interface MegaItem {
   label: string
   desc: string
+  icon: MegaIconName
   to?: string // internal RR route
   href?: string // home anchor (/#x) or external
   external?: boolean
@@ -65,21 +76,93 @@ const PRODUCT_GROUPS: MegaGroup[] = [
   {
     title: 'The control layer',
     items: [
-      { label: 'See it run', desc: 'The plan, reviewed and enforced', href: '/#the-run' },
-      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', href: '/#verbs' },
-      { label: 'What it can touch', desc: 'The permits enforcement model', href: '/#the-boundary' },
-      { label: 'Use cases', desc: 'Real plans, reviewable and bound', to: '/use-cases' },
+      { label: 'See it run', desc: 'The plan, reviewed and enforced', icon: 'run', href: '/#the-run' },
+      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', icon: 'verbs', href: '/#verbs' },
+      { label: 'What it can touch', desc: 'The permits enforcement model', icon: 'shield', href: '/#the-boundary' },
+      { label: 'Use cases', desc: 'Real plans, reviewable and bound', icon: 'tiles', to: '/use-cases' },
     ],
   },
   {
     title: 'Build · Learn',
     items: [
-      { label: 'Playground', desc: 'Write & run in the browser', to: '/play' },
-      { label: 'Learn it in 5 min', desc: 'The quickstart', to: '/learn' },
-      { label: 'Manifesto', desc: 'The drum of liberation', to: '/manifesto' },
+      { label: 'Playground', desc: 'Write & run in the browser', icon: 'terminal', to: '/play' },
+      { label: 'Learn it in 5 min', desc: 'The quickstart', icon: 'book', to: '/learn' },
+      { label: 'Manifesto', desc: 'The drum of liberation', icon: 'butterfly', to: '/manifesto' },
     ],
   },
 ]
+
+/* ── the mega icon set · ONE hand-drawn outlined family (16px grid · stroke
+   1.5 · round joins · monochrome dim, inked+accent on row hover via CSS).
+   The butterfly is the nika mark reduced to a 4-lobe glyph — the full-color
+   public/nika.svg art doesn't survive 16px, so the wings are re-traced as
+   stroke teardrops off a short body line. */
+const MEGA_ICON_PATHS: Record<MegaIconName, React.ReactNode> = {
+  run: (
+    <>
+      <circle cx="8" cy="8" r="6.3" />
+      <path d="M6.8 5.7v4.6L10.6 8Z" />
+    </>
+  ),
+  verbs: (
+    <>
+      <circle cx="5.1" cy="5.1" r="1.7" />
+      <circle cx="10.9" cy="5.1" r="1.7" />
+      <circle cx="5.1" cy="10.9" r="1.7" />
+      <circle cx="10.9" cy="10.9" r="1.7" />
+    </>
+  ),
+  shield: (
+    <path d="M8 1.9 13.1 3.9v4c0 3.2-2.2 5.2-5.1 6.4-2.9-1.2-5.1-3.2-5.1-6.4v-4Z" />
+  ),
+  tiles: (
+    <>
+      <rect x="2.2" y="2.4" width="11.6" height="4.6" rx="1.2" />
+      <rect x="2.2" y="9" width="5.1" height="4.6" rx="1.2" />
+      <rect x="8.7" y="9" width="5.1" height="4.6" rx="1.2" />
+    </>
+  ),
+  terminal: (
+    <>
+      <rect x="1.8" y="2.7" width="12.4" height="10.6" rx="1.6" />
+      <path d="m4.6 6.5 2.3 1.9-2.3 1.9" />
+      <path d="M8.7 10.3h2.7" />
+    </>
+  ),
+  book: (
+    <>
+      <path d="M8 4.3C6.9 3.1 4.9 2.8 2.4 3v9.7c2.5-.2 4.5.1 5.6 1.3 1.1-1.2 3.1-1.5 5.6-1.3V3c-2.5-.2-4.5.1-5.6 1.3Z" />
+      <path d="M8 4.3v9.7" />
+    </>
+  ),
+  butterfly: (
+    <>
+      <path d="M8 6.4v4.9" />
+      <path d="M7.5 7.4C6.8 4.7 4.3 2.4 2.8 3.5 1.4 4.6 3.3 7.9 7.5 8.7Z" />
+      <path d="M8.5 7.4c.7-2.7 3.2-5 4.7-3.9 1.4 1.1-.5 4.4-4.7 5.2Z" />
+      <path d="M7.6 10c-1.9-.3-3.6.6-3.3 1.9.3 1.2 2.2.8 3.3-.8Z" />
+      <path d="M8.4 10c1.9-.3 3.6.6 3.3 1.9-.3 1.2-2.2.8-3.3-.8Z" />
+    </>
+  ),
+}
+
+function MegaIcon({ name }: { name: MegaIconName }) {
+  return (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      {MEGA_ICON_PATHS[name]}
+    </svg>
+  )
+}
 
 /* the flat top-level links after Product */
 const TOP_LINKS: { label: string; href: string; external?: boolean; newTab?: boolean }[] = [
@@ -121,10 +204,15 @@ function ItemLink({
   refCb?: (el: HTMLAnchorElement | null) => void
 }) {
   const inner = (
-    <span>
-      <span className="v4mega-label">{item.label}</span>
-      <span className="v4mega-desc">{item.desc}</span>
-    </span>
+    <>
+      <span className="v4mega-icobox" aria-hidden>
+        <MegaIcon name={item.icon} />
+      </span>
+      <span className="v4mega-text">
+        <span className="v4mega-label">{item.label}</span>
+        <span className="v4mega-desc">{item.desc}</span>
+      </span>
+    </>
   )
   if (item.to) {
     return (
@@ -306,6 +394,111 @@ export default function Nav() {
     if (megaOpen && kbOpenRef.current) megaItemRefs.current[0]?.focus()
   }, [megaOpen])
 
+  /* ── hover-intent (mouse only) · open ~70ms in · ~250ms grace out ──
+     The wrap is the hover surface: the panel is a DOM CHILD of the wrap (even
+     though it positions against the capsule), so pointerenter/leave on the
+     wrap already treat trigger+panel as ONE region — leaving the trigger for
+     the panel fires leave (the gap is rail territory) then enter, and the
+     grace timer bridges the crossing. SAFE TRIANGLE: while a close is
+     pending, a document-level pointermove keeps extending the deadline as
+     long as the pointer moves INSIDE the triangle {exit point → panel top
+     corners} (traveling toward the panel), capped at ~1.2s so parking inside
+     the triangle (e.g. on Docs) still lets it expire. All timers/listeners
+     are refs — zero re-renders until the open/close state actually flips. */
+  const hoverRef = useRef({ openT: 0, closeT: 0, deadline: 0, maxDeadline: 0 })
+  const graceMoveRef = useRef<((e: PointerEvent) => void) | null>(null)
+  const stopGraceTracking = useCallback(() => {
+    if (graceMoveRef.current) {
+      document.removeEventListener('pointermove', graceMoveRef.current)
+      graceMoveRef.current = null
+    }
+  }, [])
+  const cancelHoverTimers = useCallback(() => {
+    const h = hoverRef.current
+    window.clearTimeout(h.openT)
+    window.clearTimeout(h.closeT)
+    h.openT = 0
+    h.closeT = 0
+    stopGraceTracking()
+  }, [stopGraceTracking])
+  /* any non-hover close (Esc · outside click · route · click-toggle) must not
+     leave a stale open/close timer or a dangling pointermove listener */
+  useEffect(() => {
+    if (!megaOpen) cancelHoverTimers()
+  }, [megaOpen, cancelHoverTimers])
+  useEffect(() => cancelHoverTimers, [cancelHoverTimers])
+
+  const onMegaPointerEnter = useCallback(
+    (e: React.PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
+      const h = hoverRef.current
+      // re-entering trigger or panel: a pending grace close is void
+      window.clearTimeout(h.closeT)
+      h.closeT = 0
+      stopGraceTracking()
+      if (!megaOpen && !h.openT) {
+        h.openT = window.setTimeout(() => {
+          h.openT = 0
+          kbOpenRef.current = false
+          setMegaOpen(true)
+        }, 70)
+      }
+    },
+    [megaOpen, stopGraceTracking],
+  )
+  const onMegaPointerLeave = useCallback(
+    (e: React.PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
+      const h = hoverRef.current
+      window.clearTimeout(h.openT)
+      h.openT = 0
+      if (!megaOpen) return
+      // grace close + safe-triangle tracking toward the panel's top edge
+      const now = performance.now()
+      h.deadline = now + 250
+      h.maxDeadline = now + 1200
+      const panel = megaPanelRef.current
+      if (panel) {
+        const box = panel.getBoundingClientRect()
+        const ax = e.clientX
+        const ay = e.clientY
+        const bx = box.left - 12
+        const cx = box.right + 12
+        const ty = box.top
+        const onMove = (ev: PointerEvent) => {
+          /* sign-of-cross-product point-in-triangle {A exit · B top-left ·
+             C top-right}; the panel hangs BELOW the exit point so the test
+             degenerates safely (never true) if layout ever flips */
+          const px = ev.clientX
+          const py = ev.clientY
+          const d1 = (px - bx) * (ay - ty) - (ax - bx) * (py - ty)
+          const d2 = (cx - bx) * (py - ty) // B→C edge is horizontal (both at ty)
+          const d3 = (px - ax) * (ty - ay) - (cx - ax) * (py - ay)
+          const neg = d1 < 0 || d2 < 0 || d3 < 0
+          const pos = d1 > 0 || d2 > 0 || d3 > 0
+          if (!(neg && pos)) {
+            hoverRef.current.deadline = Math.min(performance.now() + 250, hoverRef.current.maxDeadline)
+          }
+        }
+        graceMoveRef.current = onMove
+        document.addEventListener('pointermove', onMove)
+      }
+      const tick = () => {
+        const left = hoverRef.current.deadline - performance.now()
+        if (left > 0) {
+          hoverRef.current.closeT = window.setTimeout(tick, left)
+          return
+        }
+        hoverRef.current.closeT = 0
+        stopGraceTracking()
+        setMegaOpen(false)
+      }
+      window.clearTimeout(h.closeT)
+      h.closeT = window.setTimeout(tick, 250)
+    },
+    [megaOpen, stopGraceTracking],
+  )
+
   /* roving arrow-key navigation across the flattened mega items (APG menu) */
   const onMegaKeyDown = useCallback((e: React.KeyboardEvent) => {
     const items = megaItemRefs.current.filter(Boolean) as HTMLAnchorElement[]
@@ -428,8 +621,14 @@ export default function Nav() {
             {/* the shared sliding highlight — purely decorative */}
             <span ref={pillRef} className="v4nav-pill" data-on="false" aria-hidden />
 
-            {/* Product ▾ — the mega-menu disclosure */}
-            <div className="v4mega-wrap" ref={megaWrapRef}>
+            {/* Product ▾ — the mega-menu disclosure. The wrap is the hover
+                surface (trigger + panel are both inside it, DOM-wise) */}
+            <div
+              className="v4mega-wrap"
+              ref={megaWrapRef}
+              onPointerEnter={onMegaPointerEnter}
+              onPointerLeave={onMegaPointerLeave}
+            >
               <button
                 ref={megaBtnRef}
                 type="button"
@@ -485,6 +684,38 @@ export default function Nav() {
                       })}
                     </div>
                   ))}
+
+                  {/* the bottom rail · version truth (left · links /changelog)
+                      + the one conversion CTA (right). Both are honest
+                      menuitems: they join the roving arrow order after the
+                      grouped items, and Tab still parks on the trigger. */}
+                  <div className="v4mega-rail">
+                    <Link
+                      to="/changelog"
+                      role="menuitem"
+                      className="v4mega-rail-version"
+                      onClick={() => setMegaOpen(false)}
+                      ref={(el) => {
+                        megaItemRefs.current[FLAT_PRODUCT_ITEMS.length] = el
+                      }}
+                    >
+                      {ENGINE_VERSION} · shipping in the open
+                    </Link>
+                    <Link
+                      to="/install"
+                      role="menuitem"
+                      className="v4mega-rail-install"
+                      onClick={() => setMegaOpen(false)}
+                      ref={(el) => {
+                        megaItemRefs.current[FLAT_PRODUCT_ITEMS.length + 1] = el
+                      }}
+                    >
+                      Install
+                      <span className="v4mega-rail-arrow" aria-hidden>
+                        →
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               ) : null}
             </div>
