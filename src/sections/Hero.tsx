@@ -134,11 +134,6 @@ export default function Hero({
       <div className="v4hero-grid relative z-[1] mx-auto w-full max-w-6xl">
         {/* ── LEFT · the pitch ─────────────────────────────────────────────── */}
         <div className="v4hero-copy flex max-w-2xl flex-col">
-          {/* FIG 0.0 · the blueprint numbering with its hairline tick */}
-          <p className="v4fig mb-6" data-rise style={rise(0)}>
-            FIG 0.0
-          </p>
-
           {/* the bracket eyebrow · the mono museum-plate register */}
           <p data-rise style={rise(40)} className="v4beyebrow mb-6">
             [ INTENT AS CODE ]

@@ -34,7 +34,7 @@ export default function ChangelogPreview() {
       className="theme-dark v4sec v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 8.0" id="changelog-title" title={<>Shipping in the open.</>}>
+        <SectionHead fig="12" id="changelog-title" title={<>Shipping in the open.</>}>
           A workflow language earns trust by <b>moving</b>, and by not breaking what
           you wrote. Here is the recent ship log: the spec opened, the verbs locked:
           and the engine shipped, one <code className="mono">brew install</code> away.

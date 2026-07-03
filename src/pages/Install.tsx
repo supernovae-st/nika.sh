@@ -73,7 +73,7 @@ export function Component() {
         <div className="v4sec-wrap">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
-            FIG I · install · {ENGINE_VERSION}
+            install · {ENGINE_VERSION}
           </p>
           <h1
             id="ins-title"

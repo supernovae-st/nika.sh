@@ -484,7 +484,7 @@ export function Component() {
       <section ref={ref} aria-labelledby="ucp-title" className="v4sec">
         <div className="v4sec-wrap">
           <p className="v4sec-fig" data-rise>
-            FIG 6.0 · pick a workflow
+            pick a workflow
           </p>
           <h1
             id="ucp-title"

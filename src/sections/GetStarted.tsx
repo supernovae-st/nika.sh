@@ -59,7 +59,7 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
   return (
     <section ref={ref} id="get-started" aria-labelledby="get-started-title" className="theme-dark v4sec v4-flip v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 6.0" id="get-started-title" title={<>Get started.</>}>
+        <SectionHead fig="08" id="get-started-title" title={<>Get started.</>}>
           One binary, one file, one command. Install it, write a plan, run it, and
           watch it <b>print the plan, check the permits, and stay within bounds</b>.
         </SectionHead>

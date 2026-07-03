@@ -131,7 +131,7 @@ export default function Toolbelt() {
       className="theme-dark v4sec v4-flip v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 6.5" id="toolbelt-title" title={<>What an agent can be permitted to&nbsp;use.</>}>
+        <SectionHead fig="09" id="toolbelt-title" title={<>What an agent can be permitted to&nbsp;use.</>}>
           The language stays four verbs. The standard library does the rest:{' '}
           <b>{CANON.builtins} builtins</b>, <b>{CANON.providers} model providers</b>, and any of
           your <b>agent tools</b> (MCP servers) your editor already uses. All reached the same way:{' '}
@@ -186,7 +186,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[0] }}
                 />
-                FIG 6.5 · Builtins
+                Builtins
               </span>
               <span className="v4belt-reg-cap">
                 The everyday tools. All called with <code>invoke:</code>.
@@ -220,7 +220,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[1] }}
                 />
-                FIG 6.6 · Providers
+                Providers
               </span>
               <span className="v4belt-reg-cap">
                 Pick per task or per file. <code>provider: ollama</code> runs offline.
@@ -278,7 +278,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[2] }}
                 />
-                FIG 6.7 · Extract modes
+                Extract modes
               </span>
               <span className="v4belt-reg-cap">
                 How <code>fetch</code> turns a page into typed output.
@@ -301,7 +301,7 @@ export default function Toolbelt() {
                   aria-hidden
                   style={{ ['--vh' as string]: REG_HUE[3] }}
                 />
-                FIG 6.8 · MCP
+                MCP
               </span>
               <span className="v4belt-reg-cap">
                 Any of your agent tools (MCP servers), reached as <code>mcp:</code>.

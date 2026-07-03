@@ -89,7 +89,7 @@ export function Component() {
         <div className="v4sec-wrap">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
-            FIG L · learn · 5 minutes
+            learn · 5 minutes
           </p>
           <h1
             id="lrn-title"

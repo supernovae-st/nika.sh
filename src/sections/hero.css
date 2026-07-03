@@ -695,21 +695,17 @@
 }
 
 /* ── dark-scoped overrides for the shared hero chrome ─────────────────────────
-   The kicker, trust line + FIG eyebrow are shared (shell.css) and read
-   --v4-text* (near-white) — they already clear contrast on the dark base. */
+   The kicker + trust line are shared (shell.css) and read --v4-text*
+   (near-white) — they already clear contrast on the dark base. */
 /* the editor panel carries the grain (BRAND-11 texture without WebGL) —
    #hero scope wins over codefile.css's `background:` shorthand on .cf-panel. */
 #hero .v4hero-code {
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
 }
-#hero .v4fig::before {
-  background: color-mix(in oklch, var(--hero-blue-line) 40%, transparent);
-}
-/* the mono plates sit ON the blue field now (F1 · blue on the LEFT) — their
+/* the mono plate sits ON the blue field now (F1 · blue on the LEFT) — its
    ink goes near-white (the Maxime move: type over blue is white), the
    museum-caption voice survives through size + tracking, not through gray. */
-#hero .v4fig,
 #hero .v4beyebrow {
   color: #eef2f9;
 }
@@ -774,10 +770,6 @@
   }
   .v4hero-copy {
     display: contents;
-  }
-  .v4hero-grid .v4fig {
-    order: 0;
-    margin-bottom: 14px;
   }
   .v4hero-grid .v4beyebrow {
     order: 1;

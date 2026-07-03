@@ -102,7 +102,7 @@ export function Component() {
         <div className="v4sec-wrap">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
-            FIG J · the journal
+            the journal
           </p>
           <h1
             id="blog-title"
@@ -121,10 +121,10 @@ export function Component() {
             2 live · 2 upcoming
           </p>
 
-          {/* ══ FIG J.1 · Intent as Code ════════════════════════════════════ */}
+          {/* ══ 01 · Intent as Code ═════════════════════════════════════════ */}
           <article id="intent-as-code" className="v4block" data-rise>
             <div className="v4block-head-line">
-              <span className="v4block-fig">FIG J.1</span>
+              <span className="v4block-fig">01</span>
               <h2 className="v4block-name">Intent as Code: why your AI work should be a file</h2>
               <span className="v4block-count">Manifesto · 2026-06</span>
             </div>
@@ -181,10 +181,10 @@ export function Component() {
             </div>
           </article>
 
-          {/* ══ FIG J.2 · Four verbs are enough ═════════════════════════════ */}
+          {/* ══ 02 · Four verbs are enough ══════════════════════════════════ */}
           <article id="four-verbs" className="v4block" data-rise>
             <div className="v4block-head-line">
-              <span className="v4block-fig">FIG J.2</span>
+              <span className="v4block-fig">02</span>
               <h2 className="v4block-name">Four verbs are enough</h2>
               <span className="v4block-count">Language · 2026-06</span>
             </div>
@@ -246,7 +246,7 @@ export function Component() {
           {/* ══ the upcoming register ═══════════════════════════════════════ */}
           <div className="blog-soon" data-rise>
             <div className="blog-soon-head">
-              <span className="blog-soon-fig">FIG J.3 · in the pipeline</span>
+              <span className="blog-soon-fig">03 · in the pipeline</span>
               <span className="blog-soon-count">{SOON.length} upcoming</span>
             </div>
             <div className="blog-soon-grid">

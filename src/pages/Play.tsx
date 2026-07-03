@@ -114,7 +114,7 @@ export function Component() {
       <section className="v4sec">
         <div className="v4sec-wrap">
           {/* the masthead */}
-          <p className="v4sec-fig">FIG P · the playground</p>
+          <p className="v4sec-fig">the playground</p>
           <h1 id="play-title" className="v4sec-title play-title">
             Write Nika, checked live.
           </h1>

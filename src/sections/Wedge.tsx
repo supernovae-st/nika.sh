@@ -28,17 +28,17 @@ const TRANSCRIPT: { who: 'you' | 'agent'; text: string }[] = [
 
 const COLS: { n: string; title: string; body: string }[] = [
   {
-    n: '4.0.1',
+    n: '04.1',
     title: 'Written once',
     body: 'The ritual becomes a file: plain YAML, versioned next to your code.',
   },
   {
-    n: '4.0.2',
+    n: '04.2',
     title: 'Runs forever',
     body: 'Same file, same result. Tomorrow, on another machine, after the vendor is gone.',
   },
   {
-    n: '4.0.3',
+    n: '04.3',
     title: 'Owned',
     body: 'It lives on your disk. Nothing to export, no account to lose.',
   },
@@ -51,7 +51,7 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
     <section ref={ref} id="wedge" aria-labelledby="wedge-title" className="theme-dark v4sec scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          FIG 4.0
+          04
         </p>
 
         {/* the two-tone thesis · the manifesto, in one paragraph */}
@@ -92,12 +92,12 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
           the session ends · the file stays
         </p>
 
-        {/* the three promises · FIG 4.0.1–4.0.3 (the N.n.m sub-plate grammar) */}
+        {/* the three promises · 04.1–04.3 (the NN.m sub-plate grammar) */}
         <div className="v4wedge-cols" data-rise style={{ ['--rise-delay' as string]: '260ms' }}>
           {COLS.map((c) => (
             <div className="v4wedge-col" key={c.n}>
               <p className="v4wedge-col-fig" aria-hidden>
-                FIG {c.n}
+                {c.n}
               </p>
               <h3 className="v4wedge-col-title">{c.title}</h3>
               <p className="v4wedge-col-body">{c.body}</p>

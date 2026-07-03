@@ -118,7 +118,7 @@ export default function Verbs() {
   return (
     <section ref={ref} id="verbs" aria-labelledby="verbs-title" className="theme-dark v4sec scroll-mt-24">
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 5.0" id="verbs-title" title={<>What an agent can&nbsp;do. Declared, not&nbsp;hidden.</>}>
+        <SectionHead fig="06" id="verbs-title" title={<>What an agent can&nbsp;do. Declared, not&nbsp;hidden.</>}>
           Four verbs are the <b>only</b> native execution models. Every action
           explicit and typed, never improvised from a hidden prompt. Everything{' '}
           <i>callable</i> is a tool under <code className="mono">invoke</code>, and tools are{' '}

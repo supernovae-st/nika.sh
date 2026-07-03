@@ -123,7 +123,7 @@ export default function BeyondChat() {
       </svg>
 
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 4.5" id="beyond-title" title={<>Beyond the black box.</>}>
+        <SectionHead fig="05" id="beyond-title" title={<>Beyond the black box.</>}>
           A prompt or a chat shows you intent, then hopes. A Nika file <i>is</i> the
           procedure: <b>reviewable</b>, <b>permission-bound</b>, <b>replayable</b>.{' '}
           <b>Seeing the steps is not the same as enforcing them.</b> Here is what

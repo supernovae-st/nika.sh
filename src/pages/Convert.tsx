@@ -71,7 +71,7 @@ export function Component() {
         <div className="v4sec-wrap">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
-            FIG W · send a workflow · the offer
+            send a workflow · the offer
           </p>
           <h1
             id="cv-title"

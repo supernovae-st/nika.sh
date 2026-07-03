@@ -81,7 +81,7 @@ export default function Proof() {
   return (
     <section ref={ref} id="proof" aria-labelledby="proof-title" className="theme-light v4sec v4-flip v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 9.0" id="proof-title" title={<>The control is the proof.</>}>
+        <SectionHead fig="13" id="proof-title" title={<>The control is the proof.</>}>
           No logos to borrow, no quotes to dress up. Just what the engine{' '}
           <b>guarantees</b>: review before it acts · enforced permissions ·
           replayable trace · portable off any platform · versioned like code:

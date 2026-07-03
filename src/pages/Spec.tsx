@@ -282,7 +282,7 @@ export function Component() {
         <div className="v4sec-wrap">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
-            FIG S · the language reference
+            the language reference
           </p>
           <h1
             id="spec-title"
@@ -310,7 +310,7 @@ export function Component() {
           {/* ── the consumer TL;DR · the whole language in one glance-table ──
               Museum-plate rows (01 · the envelope → 05 · errors), each a
               two-tone sentence + its mono token. The technical reference
-              (FIG S.0+) deepens every row below. */}
+              (S.0+) deepens every row below. */}
           <section
             className="spec-tldr"
             aria-labelledby="spec-tldr-title"
@@ -369,7 +369,7 @@ export function Component() {
             ))}
           </dl>
 
-          {/* a quick contents rail · jump links to each FIG */}
+          {/* a quick contents rail · jump links to each section */}
           <nav className="spec-toc" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
             {[
               ['S.0', 'Envelope', '#s0'],
@@ -389,9 +389,9 @@ export function Component() {
             ))}
           </nav>
 
-          {/* ══ FIG S.0 · the envelope ══════════════════════════════════════ */}
+          {/* ══ S.0 · the envelope ══════════════════════════════════════ */}
           <div id="s0" className="spec-block" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            <SpecHead fig="FIG S.0" name="The envelope" count={`${ENVELOPE_KEYS.length} top-level keys`}>
+            <SpecHead fig="S.0" name="The envelope" count={`${ENVELOPE_KEYS.length} top-level keys`}>
               Every file opens with <code>nika: v1</code> — one version marker, pinned for the v1
               lifetime. No <code>v1.0</code>, no <code>v2</code> migration. Three keys are required;
               the rest are optional.
@@ -419,12 +419,12 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.1 · the four verbs ════════════════════════════════════
+          {/* ══ S.1 · the four verbs ════════════════════════════════════
               Rich cards · a real 2-line example open in the premium CodeFile.
               The verb hue lights ONLY inside the code frame — the card chrome
               and the rest of the reference stay monochrome. */}
           <div id="s1" className="spec-block" data-rise>
-            <SpecHead fig="FIG S.1" name="The four verbs" count={`${CANON.verbs} · locked forever`}>
+            <SpecHead fig="S.1" name="The four verbs" count={`${CANON.verbs} · locked forever`}>
               A verb is a <b>distinct native execution model</b>. A task binds exactly one. That is
               the whole operation space — <code>fetch</code>, recall, db and files are <em>tools</em>{' '}
               reached under <code>invoke:</code>, not verbs.
@@ -452,11 +452,11 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.2 · the task shape ════════════════════════════════════
+          {/* ══ S.2 · the task shape ════════════════════════════════════
               An anatomy diagram (a labelled node · the required core lit, the
               optional controls dimmed) beside the full field ledger. */}
           <div id="s2" className="spec-block" data-rise>
-            <SpecHead fig="FIG S.2" name="The task shape" count="1 required field · 1 verb">
+            <SpecHead fig="S.2" name="The task shape" count="1 required field · 1 verb">
               A task is a DAG node. <code>id</code> is the only required field and exactly one verb
               binds; everything else is an optional structural control.
             </SpecHead>
@@ -523,10 +523,10 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.3 · the permits — the enforcement model (the seatbelt) ══ */}
+          {/* ══ S.3 · the permits — the enforcement model (the seatbelt) ══ */}
           <div id="permits" className="spec-block spec-block--permits" data-rise>
             <SpecHead
-              fig="FIG S.3"
+              fig="S.3"
               name="The permits"
               count="default-deny once present"
             >
@@ -618,10 +618,10 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.4 · the stdlib ════════════════════════════════════════ */}
+          {/* ══ S.4 · the stdlib ════════════════════════════════════════ */}
           <div id="s3" className="spec-block" data-rise>
             <SpecHead
-              fig="FIG S.4"
+              fig="S.4"
               name="The standard library"
               count={`${CANON.builtins} builtins · 4 families`}
             >
@@ -647,10 +647,10 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.5 · providers ═════════════════════════════════════════ */}
+          {/* ══ S.5 · providers ═════════════════════════════════════════ */}
           <div id="s4" className="spec-block" data-rise>
             <SpecHead
-              fig="FIG S.5"
+              fig="S.5"
               name="Providers"
               count={`${CANON.providers} · ${CANON.providersLocal} local · ${CANON.providersCloud} cloud · ${CANON.providersTest} mock`}
             >
@@ -700,10 +700,10 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.6 · extract modes ═════════════════════════════════════ */}
+          {/* ══ S.6 · extract modes ═════════════════════════════════════ */}
           <div id="s5" className="spec-block" data-rise>
             <SpecHead
-              fig="FIG S.6"
+              fig="S.6"
               name="Extract modes"
               count={`${CANON.extractModes} modes on fetch`}
             >
@@ -720,10 +720,10 @@ export function Component() {
             </div>
           </div>
 
-          {/* ══ FIG S.7 · error namespaces ══════════════════════════════════ */}
+          {/* ══ S.7 · error namespaces ══════════════════════════════════ */}
           <div id="s6" className="spec-block" data-rise>
             <SpecHead
-              fig="FIG S.7"
+              fig="S.7"
               name="Error namespaces"
               count={`${CANON.errorNamespaces} namespaces · ${CANON.errorCodes} codes`}
             >
@@ -741,9 +741,9 @@ export function Component() {
             </ul>
           </div>
 
-          {/* ══ FIG S.8 · license + invariants ══════════════════════════════ */}
+          {/* ══ S.8 · license + invariants ══════════════════════════════ */}
           <div id="s7" className="spec-block spec-block--last" data-rise>
-            <SpecHead fig="FIG S.8" name="License + invariants" count="locked, forever">
+            <SpecHead fig="S.8" name="License + invariants" count="locked, forever">
               The contract you can count on — the parts that never change.
             </SpecHead>
             <ul className="spec-invariants">
@@ -801,7 +801,7 @@ export function Component() {
   )
 }
 
-/* ── a shared FIG sub-head · the figure number, the name, an optional count,
+/* ── a shared sub-head · the section index, the name, an optional count,
    and a one-line caption — the register used at the top of every spec block. */
 function SpecHead({
   fig,

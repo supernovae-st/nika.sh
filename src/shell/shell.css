@@ -167,15 +167,15 @@
 
 /* the FIG label rule — a hairline tick that anchors the blueprint number.
 
-   THE PLATE GRAMMAR (site-wide · Linear register · locked 2026-07-02):
-   · sections/plates  →  FIG N.n, one page-scoped reading-order sequence
-                         (half-steps like 3.5/7.5 are ordinary N.n plates)
-   · sub-plates/cards →  FIG N.n.m, continuing inside their section
-                         (use-case cards 7.1.1 · verb chapters 2.1-2.4 ·
-                          get-started steps 7.5.1-7.5.6 · proof rows 9.1-9.8)
-   · routed pages     →  a LETTER masthead (FIG J journal · L learn · C changelog)
-   NOTHING else: no Roman numerals, no letter suffixes (9.A), no circled
-   glyphs, no bare chapter decimals colliding with the section number.
+   THE PLATE GRAMMAR (site-wide · Linear register · "FIG" retired 2026-07-03):
+   · sections/plates  →  NN, one page-scoped two-digit reading-order sequence
+                         (home 01-15 · the stamp-cell grammar)
+   · sub-plates/cards →  NN.m (wedge 04.1-04.3) or plain chapter indices
+                         (verb chapters 2.1-2.4 · use-case cards 7.1.1)
+   · routed pages     →  a WORD masthead ("the journal" · "learn · 5 minutes"
+                         · "the ship log"), never a bare figure number
+   NOTHING else: no "FIG" prefix, no Roman numerals, no letter suffixes,
+   no circled glyphs.
 
    .v4sec-fig (the section masthead · SectionHead.tsx) shares this recipe —
    it was a byte-identical copy in v4-home.css before 2026-07-02. */

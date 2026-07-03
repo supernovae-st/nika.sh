@@ -171,7 +171,7 @@ export default function TheRun({ flagship }: { flagship: FlagshipEntry }) {
       className="theme-dark v4sec v4-flip"
     >
       <div className="v4sec-wrap">
-        <SectionHead fig="FIG 1.0" id="the-run-title" title="Press play. It really ran.">
+        <SectionHead fig="01" id="the-run-title" title="Press play. It really ran.">
           The same file, executed by the engine with a <b>local model</b> on a real
           machine. What you watch is the recorded event stream.
         </SectionHead>

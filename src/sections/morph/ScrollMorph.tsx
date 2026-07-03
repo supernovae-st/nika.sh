@@ -418,7 +418,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       <div className="morph-stage" ref={stageRef} data-phase={armed ? 'file' : 'done'}>
         <div className="morph-wrap">
           <header className="morph-head">
-            <p className="v4fig">FIG 1.0</p>
+            <p className="v4fig">01</p>
             <h2 id="the-morph-title" className="morph-title">
               Watch the file become the run.
             </h2>

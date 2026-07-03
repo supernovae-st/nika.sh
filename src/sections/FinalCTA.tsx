@@ -31,7 +31,7 @@ export default function FinalCTA() {
       <div className="v4sec-wrap v4cta-wrap">
         {/* the close · the install affordance + two flat CTAs, blueprint register */}
         <p className="v4sec-fig" data-rise>
-          FIG 10.0
+          15
         </p>
         <h2
           id="cta-title"
