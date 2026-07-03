@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
-import { REPO, DOCS } from '../content'
+import { REPO, DOCS, ENGINE_VERSION } from '../content'
 import './nav.css'
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
@@ -684,6 +684,38 @@ export default function Nav() {
                       })}
                     </div>
                   ))}
+
+                  {/* the bottom rail · version truth (left · links /changelog)
+                      + the one conversion CTA (right). Both are honest
+                      menuitems: they join the roving arrow order after the
+                      grouped items, and Tab still parks on the trigger. */}
+                  <div className="v4mega-rail">
+                    <Link
+                      to="/changelog"
+                      role="menuitem"
+                      className="v4mega-rail-version"
+                      onClick={() => setMegaOpen(false)}
+                      ref={(el) => {
+                        megaItemRefs.current[FLAT_PRODUCT_ITEMS.length] = el
+                      }}
+                    >
+                      {ENGINE_VERSION} · shipping in the open
+                    </Link>
+                    <Link
+                      to="/install"
+                      role="menuitem"
+                      className="v4mega-rail-install"
+                      onClick={() => setMegaOpen(false)}
+                      ref={(el) => {
+                        megaItemRefs.current[FLAT_PRODUCT_ITEMS.length + 1] = el
+                      }}
+                    >
+                      Install
+                      <span className="v4mega-rail-arrow" aria-hidden>
+                        →
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               ) : null}
             </div>

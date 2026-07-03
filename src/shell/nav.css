@@ -494,6 +494,71 @@
   color: var(--v4-text-dim);
 }
 
+/* ── the bottom rail · one slim hairline-separated row spanning both columns.
+   Left: the version truth (mono dim · links /changelog) · right: Install →
+   (accent). The rail bleeds to the panel edge (the -10px margins undo the
+   panel padding); link padding re-lands the text on the 20px eyebrow line
+   while buying each link its own generous hit area. */
+.v4mega-rail {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px -10px -10px;
+  padding: 5px 12px;
+  border-top: 1px solid var(--v4-line);
+}
+.v4mega-rail-version {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 8px;
+  border-radius: var(--v4-radius);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui),
+    transform 0.12s var(--ease-ui);
+}
+.v4mega-rail-version:hover,
+.v4mega-rail-version:focus-visible {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+}
+.v4mega-rail-install {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 4px 8px;
+  border-radius: var(--v4-radius);
+  font-size: 13px;
+  font-weight: 560;
+  letter-spacing: -0.005em;
+  color: var(--v4-accent);
+  white-space: nowrap;
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui),
+    transform 0.12s var(--ease-ui);
+}
+.v4mega-rail-install:hover,
+.v4mega-rail-install:focus-visible {
+  color: var(--v4-accent-bright);
+  background: color-mix(in oklch, var(--v4-accent) 10%, transparent);
+}
+.v4mega-rail-arrow {
+  transition: transform 0.12s var(--ease-ui);
+}
+.v4mega-rail-install:hover .v4mega-rail-arrow {
+  transform: translateX(2px);
+}
+.v4mega-rail-version:active,
+.v4mega-rail-install:active {
+  transform: translateY(0.5px);
+}
+
 /* ─── the mobile sheet ──────────────────────────────────────────────────────── */
 .v4sheet-scrim {
   position: fixed;
@@ -605,6 +670,28 @@
   background: var(--v4-line);
 }
 
+/* ── pointer detail · every interactive nav element reads as clickable
+   (buttons don't inherit the link cursor) and presses with the same
+   half-pixel settle physics */
+.v4nav-brand,
+.v4nav-link,
+.v4nav-ghost,
+.v4nav-cta,
+.v4nav-burger,
+.v4mega-item,
+.v4mega-rail-version,
+.v4mega-rail-install,
+.v4sheet-close,
+.v4sheet-link,
+.v4sheet-cta {
+  cursor: pointer;
+}
+.v4nav-burger:active,
+.v4sheet-close:active,
+.v4sheet-cta:active {
+  transform: translateY(0.5px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .v4mega,
   .v4sheet,
@@ -612,7 +699,9 @@
     animation: none;
   }
   .v4nav-link::after,
-  .v4nav-caret {
+  .v4nav-caret,
+  .v4mega-item::before,
+  .v4mega-rail-arrow {
     transition: none;
   }
   /* the pill may still FADE but never streak across the rail */
