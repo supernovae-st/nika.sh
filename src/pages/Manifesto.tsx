@@ -191,7 +191,7 @@ export function Component() {
         </section>
 
         {/* ─── the drum · the lore beat (operator pacing: the drum metaphor
-            lands FIRST, right after the hero, before the story — the words
+            lands FIRST, right after the hero, before the story · the words
             are untouched, only the beat moved up) ─── */}
         <section className="mf-prose mx-auto px-6 pt-20 pb-10 text-center">
           <div className="rv mf-secreg" aria-hidden>
@@ -312,7 +312,7 @@ export function Component() {
           </div>
           {/* the close keeps its words and links but carries NO butterfly of its
               own: the shared SiteFooter's living particle butterfly right below
-              is THE mark (one signature, one close — the double-footer fix) */}
+              is THE mark (one signature, one close · the double-footer fix) */}
           <p className="rv mf-statement mf-grad mb-10">
             Open source AI must win.
             <br />

@@ -302,7 +302,7 @@ h1, h2 { font-family: var(--headline); }
 }
 .mf-scope .v5-header-field::after {
   /* the mixing zone · the SAME 16-step ladder, half a band ahead, through
-     the 50% Bayer mask (inherited from hero.css) — every step edge becomes
+     the 50% Bayer mask (inherited from hero.css): every step edge becomes
      an interleaved strip, never a crisp poster line */
   background: radial-gradient(
     130% 96% at var(--hero-glow-x) var(--hero-glow-y),
