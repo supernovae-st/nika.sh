@@ -56,9 +56,15 @@ function onMove(e: PointerEvent) {
       write(el, st, 0, 0) /* spring home (no-op when already home) */
       continue
     }
+    /* clamped-delta pull · NEVER a normalized direction: with the spring
+       transition the rect lags the written target, so the compensated anchor
+       carries a transient ±px error — a unit vector amplifies that noise to
+       the full 6px at dead-center (probed live: -6.00px at rest). The clamp
+       is proportional near zero (error in → at most error out · contraction)
+       and identical to the old profile at every verified field point. */
     const k = (1 - dist / FIELD) ** 2
-    const len = Math.hypot(dx, dy) || 1
-    write(el, st, (dx / len) * PULL * k, (dy / len) * PULL * k)
+    const cap = (v: number) => Math.max(-PULL, Math.min(PULL, v))
+    write(el, st, cap(dx) * k, cap(dy) * k)
   }
 }
 
