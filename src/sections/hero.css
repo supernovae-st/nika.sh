@@ -39,7 +39,12 @@
   --hero-glow-x: 18%;
   --hero-glow-y: -14%;
   --hero-grid-gap: 72px;
-  --hero-grid-ink: rgb(122 163 255 / 0.07);
+  --hero-grid-ink: rgb(122 163 255 / 0.085);
+  /* the FAR grid plane (wave I · « profondeur grid ») · larger gap · lower
+     alpha · half-cell offset — atmospheric perspective: two survey planes
+     read as depth where one read as wallpaper. */
+  --hero-grid-gap-far: 126px;
+  --hero-grid-ink-far: rgb(122 163 255 / 0.04);
   /* the ordered-dither MASK tile · 50% coverage at 2px cells (Bayer4 < 8 is
      exactly this checker) — full-alpha dots, unlike the faint grain tile,
      so the ::after half-step bands actually read through it */
@@ -50,10 +55,12 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  /* the grain rides ON TOP of the bands (first layer paints last) — the
-     global texture the old ::after carried, now that ::after owns the
-     dither mixing zone */
+  /* the grain rides ON TOP of the bands (first layer paints last). TWO grain
+     passes (wave I noise): the 4px brand tile + the same tile at 3px, phase-
+     offset — the scales interfere, so the repeating pattern (and the band
+     edges underneath) stop reading as clean geometry on large areas. */
   background-image:
+    var(--v4-grain-img),
     var(--v4-grain-img),
     radial-gradient(
       130% 96% at var(--hero-glow-x) var(--hero-glow-y),
@@ -74,24 +81,49 @@
       rgb(15 41 96 / 0.18) 55%,
       rgb(15 41 96 / 0.18) 62%,
       rgb(11 24 56 / 0.11) 62%,
-      rgb(11 24 56 / 0.11) 68%,
-      rgb(11 24 56 / 0.05) 68%,
-      rgb(11 24 56 / 0.05) 74%,
-      transparent 74%
+      rgb(11 24 56 / 0.11) 67%,
+      rgb(11 24 56 / 0.08) 67%,
+      rgb(11 24 56 / 0.08) 71%,
+      rgb(11 24 56 / 0.05) 71%,
+      rgb(11 24 56 / 0.05) 75%,
+      rgb(11 24 56 / 0.025) 75%,
+      rgb(11 24 56 / 0.025) 79%,
+      transparent 79%
     );
   background-size:
     var(--v4-grain-size) var(--v4-grain-size),
+    3px 3px,
     auto;
+  background-position:
+    0 0,
+    1px 2px,
+    0 0;
 }
 .v5-header-field::before {
-  /* the faint grid · masked INSIDE the glow zone (never appears outside it) */
+  /* the survey grid · masked INSIDE the glow zone (never appears outside it).
+     TWO planes (wave I · grid depth): the near 72px grid + a FAR plane at
+     126px, dimmer and half-cell offset — atmospheric perspective, the same
+     device as a blueprint's major/minor rules. The far plane's ink fades
+     harder through the shared mask (lower alpha = it dies into the glow
+     earlier), which is what reads as depth. */
   content: '';
   position: absolute;
   inset: 0;
   background-image:
     linear-gradient(90deg, var(--hero-grid-ink) 1px, transparent 1px),
-    linear-gradient(180deg, var(--hero-grid-ink) 1px, transparent 1px);
-  background-size: var(--hero-grid-gap) var(--hero-grid-gap);
+    linear-gradient(180deg, var(--hero-grid-ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-grid-ink-far) 1px, transparent 1px),
+    linear-gradient(180deg, var(--hero-grid-ink-far) 1px, transparent 1px);
+  background-size:
+    var(--hero-grid-gap) var(--hero-grid-gap),
+    var(--hero-grid-gap) var(--hero-grid-gap),
+    var(--hero-grid-gap-far) var(--hero-grid-gap-far),
+    var(--hero-grid-gap-far) var(--hero-grid-gap-far);
+  background-position:
+    0 0,
+    0 0,
+    calc(var(--hero-grid-gap-far) / 2) calc(var(--hero-grid-gap-far) / 3),
+    calc(var(--hero-grid-gap-far) / 2) calc(var(--hero-grid-gap-far) / 3);
   -webkit-mask-image: radial-gradient(
     130% 96% at var(--hero-glow-x) var(--hero-glow-y),
     #000 0%,
@@ -109,7 +141,9 @@
   /* the dither MIXING ZONE (review P1) · the SAME field, half a band ahead,
      visible only through the 50% ordered-dither mask — every hard band edge
      becomes an interleaved strip instead of a crisp poster line. This is the
-     shader-parity trick: two quantized levels mixing per Bayer threshold. */
+     shader-parity trick: two quantized levels mixing per Bayer threshold.
+     Wave I: the mask renders at 4px (1px cells) — double the interleave
+     frequency, so the mix reads as texture, not as a second set of rings. */
   content: '';
   position: absolute;
   inset: 0;
@@ -130,15 +164,19 @@
     rgb(15 41 96 / 0.18) 51%,
     rgb(15 41 96 / 0.18) 58%,
     rgb(11 24 56 / 0.11) 58%,
-    rgb(11 24 56 / 0.11) 65%,
-    rgb(11 24 56 / 0.05) 65%,
-    rgb(11 24 56 / 0.05) 71%,
-    transparent 71%
+    rgb(11 24 56 / 0.11) 64.5%,
+    rgb(11 24 56 / 0.08) 64.5%,
+    rgb(11 24 56 / 0.08) 69%,
+    rgb(11 24 56 / 0.05) 69%,
+    rgb(11 24 56 / 0.05) 73%,
+    rgb(11 24 56 / 0.025) 73%,
+    rgb(11 24 56 / 0.025) 77%,
+    transparent 77%
   );
   -webkit-mask-image: var(--hero-dither-mask);
-  -webkit-mask-size: 8px 8px;
+  -webkit-mask-size: 4px 4px;
   mask-image: var(--hero-dither-mask);
-  mask-size: 8px 8px;
+  mask-size: 4px 4px;
 }
 @media (max-width: 767px) {
   :root {
@@ -150,8 +188,10 @@
   .v5-header-field {
     /* review P2-11 · the phone field must still tell the « LARGE saturated
        blue » story: alphas +0.08 and the vertical radius up to 75% (the old
-       62% arc read as a faint halo) */
+       62% arc read as a faint halo). Wave I: same dual-grain + softened
+       outer steps as the desktop field. */
     background-image:
+      var(--v4-grain-img),
       var(--v4-grain-img),
       radial-gradient(
         120% 75% at var(--hero-glow-x) var(--hero-glow-y),
@@ -172,9 +212,21 @@
         rgb(15 41 96 / 0.22) 60%,
         rgb(15 41 96 / 0.22) 66%,
         rgb(11 24 56 / 0.13) 66%,
-        rgb(11 24 56 / 0.13) 72%,
-        transparent 72%
+        rgb(11 24 56 / 0.13) 70%,
+        rgb(11 24 56 / 0.09) 70%,
+        rgb(11 24 56 / 0.09) 74%,
+        rgb(11 24 56 / 0.05) 74%,
+        rgb(11 24 56 / 0.05) 78%,
+        transparent 78%
       );
+    background-size:
+      var(--v4-grain-size) var(--v4-grain-size),
+      3px 3px,
+      auto;
+    background-position:
+      0 0,
+      1px 2px,
+      0 0;
   }
   .v5-header-field::after {
     background: radial-gradient(
@@ -194,8 +246,12 @@
       rgb(15 41 96 / 0.22) 56%,
       rgb(15 41 96 / 0.22) 63%,
       rgb(11 24 56 / 0.13) 63%,
-      rgb(11 24 56 / 0.13) 69%,
-      transparent 69%
+      rgb(11 24 56 / 0.13) 68%,
+      rgb(11 24 56 / 0.09) 68%,
+      rgb(11 24 56 / 0.09) 72%,
+      rgb(11 24 56 / 0.05) 72%,
+      rgb(11 24 56 / 0.05) 76%,
+      transparent 76%
     );
   }
 }
