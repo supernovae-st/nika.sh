@@ -572,8 +572,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         el.style.transform = dy === 0 ? '' : `translateY(${dy.toFixed(2)}px)`
       }
 
-      /* wires draw once the nodes have landed (lengths pre-cached) */
+      /* wires draw once the nodes have landed (lengths pre-cached) — the
+         wave caps read the eased progress from CSS (--morph-wired): DAG
+         anatomy appears WITH the structure it annotates, never before */
       const wd = wireAt(p)
+      stage.style.setProperty('--morph-wired', easeInOut(wd).toFixed(3))
       for (let i = 0; i < wireRefs.current.length; i++) {
         const path = wireRefs.current[i]
         const len = wireLenRef.current[i]
@@ -1344,6 +1347,28 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               <span aria-hidden>{playing ? '❚❚' : '▶'}</span>
               <span className="sr-only">{playing ? 'pause the replay' : 'play the replay'}</span>
             </button>
+            {/* THE NARRATOR (wave M) · the one ambient voice, anchored in the
+                transport — plain anyone-words, one line per phase (CSS
+                crossfade on [data-phase]). The old mid-left floating rail is
+                gone; the static scene keeps its own quiet caption. */}
+            <span className="morph-console-say" aria-hidden>
+              <span className="morph-csay-line" data-for="file">
+                one file · the whole plan
+              </span>
+              <span className="morph-csay-line" data-for="burst">
+                each task takes its place
+              </span>
+              <span className="morph-csay-line" data-for="run">
+                steps light up in order
+                {maxTogether > 1 ? ` · ${countWord(maxTogether)} run together` : ''}
+              </span>
+              <span className="morph-csay-line" data-for="flat">
+                the whole run · laid out flat
+              </span>
+              <span className="morph-csay-line" data-for="done">
+                the run is a file too · replay it anytime
+              </span>
+            </span>
             <div
               className="morph-track"
               ref={trackRef}

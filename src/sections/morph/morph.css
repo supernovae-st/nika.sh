@@ -183,11 +183,6 @@
   opacity: 0;
   transform: translateY(6px);
 }
-/* the narration rail yields the same way — the traveling panel crosses its
-   band mid-seam and two texts must never interleave (operator, wave I) */
-.morphsec[data-armed] .morph-stage[data-entry] .morph-say {
-  opacity: 0;
-}
 .morph-title {
   margin-top: 10px;
   font-size: clamp(22px, 2.4vw, 30px);
@@ -353,6 +348,9 @@
   position: relative;
   display: flex;
   align-items: center;
+  /* the DAG owns the CENTER of the section spine (wave M — the old ≥1200
+     narration rail reserved 218px of left inset and biased the graph right) */
+  justify-content: center;
   /* wide gutters — abreast columns must read as separate lanes, never as a
      packed grid (operator, wave I: « on étouffe ») */
   gap: clamp(36px, 5vw, 80px);
@@ -409,15 +407,11 @@
   color: var(--v4-text-faint);
   white-space: nowrap;
 }
+/* the wave caps appear WITH the wires (wave M · they are DAG anatomy — the
+   driver writes --morph-wired = eased wireAt, so the caps can never precede
+   the structure they annotate; keyed on p, scrub-reversible, no transition) */
 .morphsec[data-armed] .morph-wave-cap {
-  opacity: 0;
-  transition: opacity 0.3s var(--ease-ui, ease);
-}
-.morph-stage[data-phase='burst'] .morph-wave-cap,
-.morph-stage[data-phase='run'] .morph-wave-cap,
-.morph-stage[data-phase='flat'] .morph-wave-cap,
-.morph-stage[data-phase='done'] .morph-wave-cap {
-  opacity: 1;
+  opacity: var(--morph-wired, 1);
 }
 .morph-wave-n {
   color: var(--v4-hud-faint);
@@ -841,51 +835,11 @@
 .morphsec:not([data-armed]) .morph-say-line:not([data-for='done']) {
   display: none;
 }
-/* armed but not wide enough for the rail → the head captions carry it */
-@media (max-width: 1199px) {
-  .morphsec[data-armed] .morph-say {
-    display: none;
-  }
-}
-@media (min-width: 1200px) {
-  .morphsec[data-armed] .morph-say {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    z-index: 2;
-    width: 186px;
-    /* ONE evolving sentence (wave L · the operator: too much text) — the
-       lines stack in a single grid cell and crossfade; only the active
-       phase speaks, the rest are silent. */
-    display: grid;
-    pointer-events: none;
-  }
-  .morphsec[data-armed] .morph-say-line {
-    grid-area: 1 / 1;
-    opacity: 0;
-    transform: translateY(6px);
-    transition:
-      opacity 0.3s var(--ease-ui, ease),
-      transform 0.3s var(--ease-ui, ease),
-      color 0.3s var(--ease-ui, ease);
-  }
-  .morphsec[data-armed] .morph-stage[data-phase='file'] .morph-say-line[data-for='file'],
-  .morphsec[data-armed] .morph-stage[data-phase='burst'] .morph-say-line[data-for='burst'],
-  .morphsec[data-armed] .morph-stage[data-phase='run'] .morph-say-line[data-for='run'],
-  .morphsec[data-armed] .morph-stage[data-phase='flat'] .morph-say-line[data-for='flat'],
-  .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-say-line[data-for='done'] {
-    opacity: 1;
-    transform: none;
-    color: var(--v4-text-dim);
-  }
-  /* the DAG clears the rail — a constant inset through the animated phases
-     (a mid-scene layout shift would invalidate the measured flights); the
-     DONE frame is the one sanctioned exception below (the run is over, the
-     measure loop re-reads the shifted layout). */
-  .morphsec[data-armed] .morph-dag {
-    left: 218px;
-  }
+/* armed → the narrator lives in the CONSOLE (wave M · « pas du texte
+   partout ») — the old mid-left floating rail is gone at every width; the
+   static scene keeps its quiet caption above the finished DAG. */
+.morphsec[data-armed] .morph-say {
+  display: none;
 }
 
 /* ── THE DONE FRAME · the file settles BESIDE its flat plan (≥1024 · armed) ───
@@ -935,16 +889,6 @@
   }
   .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-dag {
     left: calc(clamp(300px, 27vw, 372px) + 28px);
-  }
-}
-/* the narration rail hands its band to the panel at `done` (≥1200 only —
-   the rail doesn't exist below) */
-@media (min-width: 1200px) {
-  .morphsec[data-armed] .morph-say {
-    transition: opacity 0.3s var(--ease-ui, ease);
-  }
-  .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-say {
-    opacity: 0;
   }
 }
 
@@ -1027,6 +971,31 @@
 .morph-play:hover {
   color: var(--v4-text);
   border-color: color-mix(in oklch, var(--v4-accent) 45%, var(--v4-line));
+}
+/* the console narrator · ONE evolving sentence in the transport (wave M) —
+   the lines stack in a single grid cell and crossfade; only the active phase
+   speaks. Ellipsis guard: the track always keeps its room. */
+.morph-console-say {
+  flex: 0 1 auto;
+  display: grid;
+  min-width: 0;
+  max-width: clamp(150px, 22vw, 300px);
+}
+.morph-csay-line {
+  grid-area: 1 / 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-ui, ease);
+}
+.morph-stage[data-phase='file'] .morph-csay-line[data-for='file'],
+.morph-stage[data-phase='burst'] .morph-csay-line[data-for='burst'],
+.morph-stage[data-phase='run'] .morph-csay-line[data-for='run'],
+.morph-stage[data-phase='flat'] .morph-csay-line[data-for='flat'],
+.morph-stage[data-phase='done'] .morph-csay-line[data-for='done'] {
+  opacity: 1;
+  color: var(--v4-text-dim);
 }
 .morph-track {
   position: relative;
