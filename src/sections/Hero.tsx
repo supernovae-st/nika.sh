@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { CodeFile } from '../components/CodeFile'
 import { InstallCommand } from '../components/InstallCommand'
+import { useMagnetic } from '../fx/use-magnetic'
 import { ENGINE_VERSION, REPO, SPEC } from '../content'
 import { FLAGSHIP_ENTRIES, type FlagshipEntry } from '../flagships'
 import '../shell/shell.css'
@@ -135,6 +136,9 @@ export default function Hero({
 }) {
   const rootRef = useRef<HTMLElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  /* the primary CTA leans toward the hand (wave-I VFX · fine pointers only) */
+  const ctaRef = useRef<HTMLAnchorElement>(null)
+  useMagnetic(ctaRef)
 
   /* opt the hero into the orchestrated entrance — only when motion is allowed.
      Adding the class in an effect (post-paint) guarantees the prerendered HTML
@@ -215,7 +219,7 @@ export default function Hero({
             style={rise(220)}
             className="v4hero-ctas flex scroll-mt-28 flex-wrap items-center gap-3"
           >
-            <a href="#the-run" className="v4cta group">
+            <a ref={ctaRef} href="#the-run" className="v4cta vfx-mag group">
               <span aria-hidden className="transition-transform group-hover:translate-y-0.5">
                 ↓
               </span>

@@ -1,4 +1,6 @@
+import { useRef } from 'react'
 import { useCopy } from '../lib/use-copy'
+import { useMagnetic } from '../fx/use-magnetic'
 import { CopyIcon } from './CopyRow'
 import '../sections/hero.css'
 
@@ -14,11 +16,15 @@ export const INSTALL_CMD = 'brew install supernovae-st/tap/nika'
 
 export function InstallCommand() {
   const { copied, copy } = useCopy(INSTALL_CMD)
+  /* the copy pill leans toward the hand (wave-I VFX · fine pointers only) */
+  const magRef = useRef<HTMLButtonElement>(null)
+  useMagnetic(magRef)
   return (
     <button
+      ref={magRef}
       type="button"
       onClick={copy}
-      className="v4cmd"
+      className="v4cmd vfx-mag"
       data-copied={copied}
       aria-label={`Copy install command: ${INSTALL_CMD}`}
     >

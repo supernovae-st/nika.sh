@@ -1,0 +1,64 @@
+/* ─── magnetic CTA · lean + orbit ring (wave-I VFX · see use-magnetic.ts) ─────
+   The pull rides the CSS `translate` LONGHAND — an independent channel that
+   composes under each button's existing `transform` press physics (the
+   :active dips in hero.css / nav.css are untouched). The spring-back is the
+   translate transition alone: clear the props and the bezier overshoots home.
+
+   The orbit ring · while hovered, a faint conic highlight circles the border
+   once every ~3.6s — a lamp orbiting machined metal, not a glow. It lives on
+   a masked 1px ::after band (none of the three targets own a pseudo), paint
+   area is the ring only, and the animation runs solely while hovered.
+
+   Gates · (hover:hover) + (pointer:fine) + no-preference. Coarse pointers,
+   phones and reduced motion get neither the channel nor the pseudo.
+   Focus-visible is untouched — the ring answers :hover only, and the
+   outline ring travels with the ≤6px lean. */
+
+@property --vfx-mag-a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .vfx-mag {
+    position: relative;
+    translate: var(--mag-x, 0px) var(--mag-y, 0px);
+    transition: translate 260ms cubic-bezier(0.3, 1.35, 0.5, 1);
+  }
+  .vfx-mag::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: calc(var(--v4-radius) + 2px);
+    padding: 1px;
+    /* P3 calibration law · the sRGB capture undershoots — keep the crest low */
+    background: conic-gradient(
+      from var(--vfx-mag-a),
+      transparent 0deg,
+      rgb(141 180 255 / 0.22) 40deg,
+      transparent 110deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-ui);
+    pointer-events: none;
+  }
+  .vfx-mag:hover::after {
+    opacity: 1;
+    animation: vfx-mag-orbit 3.6s linear infinite;
+  }
+}
+
+@keyframes vfx-mag-orbit {
+  to {
+    --vfx-mag-a: 360deg;
+  }
+}
