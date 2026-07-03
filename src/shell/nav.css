@@ -202,6 +202,13 @@
   color: var(--v4-text);
   background: color-mix(in oklch, var(--v4-text) 5%, transparent);
 }
+/* the trigger HOLDS its active state while the mega is open — the sliding
+   hover pill leaves with the pointer (it rides into the panel), so the
+   data-open wash is what keeps the trigger↔panel pairing legible */
+.v4nav-link[data-open='true'] {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 6%, transparent);
+}
 /* while transparent (riding the dark hero field), the dim gray sinks into the
    field — lift the rail ink to a high-opacity near-white so every link clears
    contrast. Once the floor arrives, the dim/text hierarchy returns. Brand +

@@ -25,7 +25,15 @@ import './nav.css'
    - `Product ▾` is a real grouped mega-menu (WAI-ARIA disclosure): full keyboard
      (Esc closes + returns focus, ↓/↑ move through items, Home/End jump, Tab
      parks focus back on the trigger before closing — no focus drop), closes on
-     outside click / route change. Semantics: role=menu/menuitem is used WITH
+     outside click / route change. On MOUSE it opens on HOVER with intent
+     timing (~70ms in, so flybys never flash it · ~250ms grace out) and a
+     SAFE TRIANGLE — while the pointer keeps moving inside the triangle from
+     its exit point to the panel's top corners (i.e. traveling toward the
+     panel) the grace deadline keeps extending, so the diagonal path to the
+     far corner never slams the menu shut; parking anywhere else (another
+     rail link) lets the grace expire. Touch/pen never hover-open (per-event
+     pointerType gate); click still toggles; keyboard is untouched.
+     Semantics: role=menu/menuitem is used WITH
      the full APG keyboard contract implemented below — a plain list of links
      would also be a11y-correct, but the roving-focus behaviour is already here,
      so the roles are honest.
@@ -306,6 +314,111 @@ export default function Nav() {
     if (megaOpen && kbOpenRef.current) megaItemRefs.current[0]?.focus()
   }, [megaOpen])
 
+  /* ── hover-intent (mouse only) · open ~70ms in · ~250ms grace out ──
+     The wrap is the hover surface: the panel is a DOM CHILD of the wrap (even
+     though it positions against the capsule), so pointerenter/leave on the
+     wrap already treat trigger+panel as ONE region — leaving the trigger for
+     the panel fires leave (the gap is rail territory) then enter, and the
+     grace timer bridges the crossing. SAFE TRIANGLE: while a close is
+     pending, a document-level pointermove keeps extending the deadline as
+     long as the pointer moves INSIDE the triangle {exit point → panel top
+     corners} (traveling toward the panel), capped at ~1.2s so parking inside
+     the triangle (e.g. on Docs) still lets it expire. All timers/listeners
+     are refs — zero re-renders until the open/close state actually flips. */
+  const hoverRef = useRef({ openT: 0, closeT: 0, deadline: 0, maxDeadline: 0 })
+  const graceMoveRef = useRef<((e: PointerEvent) => void) | null>(null)
+  const stopGraceTracking = useCallback(() => {
+    if (graceMoveRef.current) {
+      document.removeEventListener('pointermove', graceMoveRef.current)
+      graceMoveRef.current = null
+    }
+  }, [])
+  const cancelHoverTimers = useCallback(() => {
+    const h = hoverRef.current
+    window.clearTimeout(h.openT)
+    window.clearTimeout(h.closeT)
+    h.openT = 0
+    h.closeT = 0
+    stopGraceTracking()
+  }, [stopGraceTracking])
+  /* any non-hover close (Esc · outside click · route · click-toggle) must not
+     leave a stale open/close timer or a dangling pointermove listener */
+  useEffect(() => {
+    if (!megaOpen) cancelHoverTimers()
+  }, [megaOpen, cancelHoverTimers])
+  useEffect(() => cancelHoverTimers, [cancelHoverTimers])
+
+  const onMegaPointerEnter = useCallback(
+    (e: React.PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
+      const h = hoverRef.current
+      // re-entering trigger or panel: a pending grace close is void
+      window.clearTimeout(h.closeT)
+      h.closeT = 0
+      stopGraceTracking()
+      if (!megaOpen && !h.openT) {
+        h.openT = window.setTimeout(() => {
+          h.openT = 0
+          kbOpenRef.current = false
+          setMegaOpen(true)
+        }, 70)
+      }
+    },
+    [megaOpen, stopGraceTracking],
+  )
+  const onMegaPointerLeave = useCallback(
+    (e: React.PointerEvent) => {
+      if (e.pointerType !== 'mouse') return
+      const h = hoverRef.current
+      window.clearTimeout(h.openT)
+      h.openT = 0
+      if (!megaOpen) return
+      // grace close + safe-triangle tracking toward the panel's top edge
+      const now = performance.now()
+      h.deadline = now + 250
+      h.maxDeadline = now + 1200
+      const panel = megaPanelRef.current
+      if (panel) {
+        const box = panel.getBoundingClientRect()
+        const ax = e.clientX
+        const ay = e.clientY
+        const bx = box.left - 12
+        const cx = box.right + 12
+        const ty = box.top
+        const onMove = (ev: PointerEvent) => {
+          /* sign-of-cross-product point-in-triangle {A exit · B top-left ·
+             C top-right}; the panel hangs BELOW the exit point so the test
+             degenerates safely (never true) if layout ever flips */
+          const px = ev.clientX
+          const py = ev.clientY
+          const d1 = (px - bx) * (ay - ty) - (ax - bx) * (py - ty)
+          const d2 = (cx - bx) * (py - ty) // B→C edge is horizontal (both at ty)
+          const d3 = (px - ax) * (ty - ay) - (cx - ax) * (py - ay)
+          const neg = d1 < 0 || d2 < 0 || d3 < 0
+          const pos = d1 > 0 || d2 > 0 || d3 > 0
+          if (!(neg && pos)) {
+            hoverRef.current.deadline = Math.min(performance.now() + 250, hoverRef.current.maxDeadline)
+          }
+        }
+        graceMoveRef.current = onMove
+        document.addEventListener('pointermove', onMove)
+      }
+      const tick = () => {
+        const left = hoverRef.current.deadline - performance.now()
+        if (left > 0) {
+          hoverRef.current.closeT = window.setTimeout(tick, left)
+          return
+        }
+        hoverRef.current.closeT = 0
+        stopGraceTracking()
+        setMegaOpen(false)
+      }
+      window.clearTimeout(h.closeT)
+      h.closeT = window.setTimeout(tick, 250)
+    },
+    [megaOpen, stopGraceTracking],
+  )
+
   /* roving arrow-key navigation across the flattened mega items (APG menu) */
   const onMegaKeyDown = useCallback((e: React.KeyboardEvent) => {
     const items = megaItemRefs.current.filter(Boolean) as HTMLAnchorElement[]
@@ -428,8 +541,14 @@ export default function Nav() {
             {/* the shared sliding highlight — purely decorative */}
             <span ref={pillRef} className="v4nav-pill" data-on="false" aria-hidden />
 
-            {/* Product ▾ — the mega-menu disclosure */}
-            <div className="v4mega-wrap" ref={megaWrapRef}>
+            {/* Product ▾ — the mega-menu disclosure. The wrap is the hover
+                surface (trigger + panel are both inside it, DOM-wise) */}
+            <div
+              className="v4mega-wrap"
+              ref={megaWrapRef}
+              onPointerEnter={onMegaPointerEnter}
+              onPointerLeave={onMegaPointerLeave}
+            >
               <button
                 ref={megaBtnRef}
                 type="button"
