@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
 import { AuroraContext, type AuroraContextValue } from './aurora-context'
 import './edge-aurora.css'
 
-/* ─── EdgeAurora · the reactive frame halo (v5 · ONE blue · E7 run mode) ──────
-   A blurred blue ring that hugs the screen frame while the center stays
-   transparent. It is THE DRUM of the manifesto: every run = a beat of the
-   frame. At rest it is almost extinguished (single blue family · CSS breath).
+/* ─── EdgeAurora · the spectrum frame (v6 · the ring law) ─────────────────────
+   A full-spectrum rounded ring that hugs the screen frame while the center
+   stays transparent. It is THE DRUM of the manifesto: every run = a beat of
+   the frame. At rest it is clearly present at its quiet floor (CSS breath).
 
    E7 · RUN MODE (v6 ring law): while a run replays, `data-run` widens the band
    + bloom, speeds the spectrum's travel, and the recorded progress swells the
