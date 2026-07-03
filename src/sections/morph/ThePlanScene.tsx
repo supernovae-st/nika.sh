@@ -87,12 +87,12 @@ const SCL = new THREE.Vector3()
 const GREY: [number, number, number] = [0.36, 0.4, 0.48]
 
 /* the pass-by window (world units of camera-to-slab distance): a wave is
-   fully lit through its OWN beat and the glide toward the next one (prox
-   ≥ 6.4), then dissolves fast — by the time the camera has arrived on the
-   next wave (the passed row sits low, near the terminal's band) it is a
-   ≤0.25-alpha ghost exiting via the sides, never a cropped giant */
-const PASS_NEAR = 4.0
-const PASS_FAR = 6.4
+   fully lit through its OWN beat (prox ≥ 7.6), half-quiet already while the
+   camera glides to the next one, and a ≤0.25-alpha ghost exiting via the
+   sides before it can crowd the frame's bottom — past = quieter, the
+   focused wave owns the air */
+const PASS_NEAR = 5.0
+const PASS_FAR = 7.6
 /* passing slabs lean their face up toward the elevated camera (X-pitch, up
    to ~26°) — the just-done wave must stay READABLE (id · verb · ✓ ms) while
    it recedes, never a foreshortened anonymous sliver */

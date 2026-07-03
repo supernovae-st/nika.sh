@@ -30,7 +30,9 @@ export const WAVE_GAP = 3.7
 /** each deeper wave rises — the amphitheater read: the road ahead is visible
     OVER the nearer waves, and the advance feels like ascending */
 export const Y_STEP = 0.62
-export const FOCUS_DIST = 8.2
+/** the camera keeps MORE distance on the focused wave (operator: « on doit
+    moins étouffer ») — smaller slabs, more void, the register breathes */
+export const FOCUS_DIST = 10
 export const FOCUS_HEIGHT = 2.5
 export const EDGE_SEGS = 24
 

@@ -36,6 +36,14 @@
 .morphsec:not([data-armed]) .ps-layer {
   display: none; /* the static scene stays the DOM truth */
 }
+/* the narration rail's x-band is SACRED (H2 · morph.css insets .morph-dag a
+   constant 218px at ≥1200px) — the 3D layer honors the same inset, so no
+   slab can ever cover the anyone-words. The camera recenters in what's left. */
+@media (min-width: 1200px) {
+  .ps-layer {
+    left: 218px;
+  }
+}
 /* the 3D advance recedes behind the flat map at `done` (visibility also
    drops the hit-rects from hover + tab order) */
 .ps-layer:not(.ps-tiplayer) {
@@ -86,6 +94,12 @@
     opacity 0.55s var(--ease-ui, ease) 0.25s,
     transform 0.55s var(--ease-ui, ease) 0.25s,
     visibility 0s;
+}
+/* center the legend under the DAG's own band (the rail insets it 218px) */
+@media (min-width: 1200px) {
+  .ps-flat-note {
+    left: calc(50% + 109px);
+  }
 }
 
 /* the YAML card accepts hover ONLY in the file beat (H6) — everywhere else it
