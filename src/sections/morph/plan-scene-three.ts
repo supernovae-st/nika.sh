@@ -15,7 +15,12 @@
      5 · the FOCAL GLOW — one billboarded radial quad under the current wave.
 
    No drei — this chunk stays lean; three itself ships in the shared vendor
-   chunk the DitherField already pays for. */
+   chunk the DitherField already pays for.
+
+   THEME DOCTRINE · this scene speaks the shared tholos register (wireframe
+   blocks · facing-alpha lines · black occluder fills · HUD mono whispers) —
+   the canonical statement lives in src/scene/drum-sphere-three.ts; new
+   nika.sh 3D scenes reuse that register rather than inventing one. */
 
 import * as THREE from 'three'
 import { EDGE_SEGS, RAMP_HI, RAMP_LO, RAMP_MID, SLAB, type PlanSceneModel } from './plan-scene-model'

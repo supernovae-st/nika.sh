@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { RING_COUNT, SHELL_R, buildDrumSphere } from './drum-sphere-model'
+import {
+  RING_COUNT,
+  SHELL_R,
+  STRUCK_SOFT,
+  buildDrumSphere,
+  struckPhaseThreshold,
+} from './drum-sphere-model'
 
 /* ─── drum-sphere-model · the tholos shell is pure, deterministic data ────────
    16 latitude rings, blocks ∝ ring circumference (the tol.is signature),
@@ -74,5 +80,29 @@ describe('drum-sphere-model · the shell distribution', () => {
     expect(n.pos).toEqual(m.pos)
     expect(n.quat).toEqual(m.quat)
     expect(n.seed).toEqual(m.seed)
+  })
+})
+
+describe('struckPhaseThreshold · the reading spreads the liberation', () => {
+  it('nothing struck (or no sections) · below every ripple phase', () => {
+    expect(struckPhaseThreshold(0, 5)).toBeLessThan(0)
+    expect(struckPhaseThreshold(-1, 5)).toBeLessThan(0)
+    expect(struckPhaseThreshold(3, 0)).toBeLessThan(0)
+  })
+
+  it('all sections struck · clears the pole phase (1) plus the soft edge', () => {
+    const m = buildDrumSphere()
+    const maxPhase = Math.max(...Array.from({ length: m.count }, (_, k) => m.seed[k * 2]))
+    expect(struckPhaseThreshold(5, 5)).toBeGreaterThan(maxPhase + STRUCK_SOFT)
+  })
+
+  it('monotonic per strike · clamped past total', () => {
+    let prev = struckPhaseThreshold(0, 5)
+    for (let n = 1; n <= 5; n++) {
+      const t = struckPhaseThreshold(n, 5)
+      expect(t).toBeGreaterThan(prev)
+      prev = t
+    }
+    expect(struckPhaseThreshold(9, 5)).toBe(struckPhaseThreshold(5, 5))
   })
 })

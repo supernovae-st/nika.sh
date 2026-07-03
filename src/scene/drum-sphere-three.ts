@@ -1,17 +1,37 @@
 /* ─── drum-sphere-three · the GPU side of the manifesto drum sphere (wave I) ──
-   Two draw calls over the tholos shell model (wave-H recipe §1):
-     1 · block FILLS — one instanced box mesh in the page near-black
-         (#0a0c10), polygonOffset pushed back: the self-occlusion layer that
-         hides the far hemisphere's lines behind the near blocks.
+
+   ★ THEME DOCTRINE · THE THOLOS REGISTER ★
+   This scene and src/sections/morph/plan-scene-three.ts (the /plan DAG
+   slabs) speak ONE shared geometric language, and future nika.sh 3D scenes
+   reuse it rather than inventing a new one:
+     · WIREFRAME BLOCKS       instanced boxes, the tol.is block signature
+     · FACING-ALPHA LINES     edge ink whose alpha follows how squarely a
+                              block faces the camera (the tol.is line law)
+     · BLACK OCCLUDER FILLS   opaque near-black box fills, polygonOffset
+                              pushed back: the theme's black, and the
+                              self-occlusion that keeps the read legible
+     · HUD MONO WHISPERS      dot-leader mono labels pinned at scene edges
+   The ink is the site's blue-and-black: deep wire blue in shadow, the
+   #4f86ff accent family on the lit side, black fills between.
+
+   Two instanced draw calls over the tholos shell model (wave-H recipe §1):
+     1 · block FILLS — the black occluder layer (see register above).
      2 · block EDGES — one InstancedBufferGeometry over the unit-box
-         EdgesGeometry, alpha from facing (0.12 + 0.74·facing, the tol.is
-         line law), near-white ink with the blue accent on the lit side.
+         EdgesGeometry · alpha 0.12 + 0.74·facing · shadow side deep wire
+         blue #16307a → lit side #4f86ff → struck bands #8db4ff.
    THE DRUM BEHAVIOR lives in the shared vertex chunk: a 2.4s heartbeat
    (the CSS mfBeat period) whose front washes from the equator to the poles
    (per-instance phase from the ring index) — radial extrusion + a subtle
    shell swell, computed in-shader from iSeed + uTime, zero per-frame
    attribute uploads. Both layers share the SAME instance attributes and the
-   SAME uniforms object, so breath can never desync fills from lines. */
+   SAME uniforms object, so breath can never desync fills from lines.
+   THE READING drives two more uniforms (wave I·2, TheDrumSphere.tsx):
+     · uStruck — the struck-front threshold (struckPhaseThreshold in the
+       model): each manifesto section crossed strikes the drum once and one
+       latitude band ignites to the bright blue AND STAYS LIT — liberation
+       spreading through the shell as you read.
+     · uStrike — the uTime of the last strike: a harder swell + a core
+       flash on the moment itself, over the idle heartbeat. */
 
 import * as THREE from 'three'
 import type { DrumSphereModel } from './drum-sphere-model'
@@ -24,7 +44,10 @@ attribute vec3 iScale;
 attribute vec2 iSeed;
 uniform float uTime;
 uniform float uAmp;
+uniform float uStruck;
+uniform float uStrike;
 varying float vPulse;
+varying float vStruck;
 
 vec3 qrot(vec4 q, vec3 v) { return v + 2.0 * cross(q.xyz, cross(q.xyz, v) + q.w * v); }
 
@@ -35,12 +58,23 @@ float drumEnv() {
   return smoothstep(0.0, 0.05, w) * exp(-w * 5.0) * uAmp;
 }
 
+/* the section strike · ONE harder hit when the reading crosses a boundary,
+   riding over the idle heartbeat (uStrike = uTime of the last strike) */
+float strikeEnv() {
+  float t = max(uTime - uStrike, 0.0);
+  return smoothstep(0.0, 0.04, t) * exp(-t * 3.0);
+}
+
 vec3 shellVertex(vec3 p) {
   float env = drumEnv();
-  vPulse = env;
+  float hit = strikeEnv();
+  /* the struck front · bands with ripple phase below uStruck are lit and
+     stay lit (0.14 = STRUCK_SOFT, the model's soft leading edge) */
+  vStruck = 1.0 - smoothstep(uStruck - 0.14, uStruck, iSeed.x);
+  vPulse = env + hit * (0.5 + 0.5 * vStruck);
   vec3 s = iScale;
-  s.z *= 1.0 + env * 1.4;                              /* extrusion breath */
-  return qrot(iQuat, p * s) + iPos * (1.0 + env * 0.045); /* radial swell */
+  s.z *= 1.0 + env * 1.4 + hit * 0.9;                  /* extrusion breath */
+  return qrot(iQuat, p * s) + iPos * (1.0 + (env + hit * 0.8) * 0.045);
 }
 `
 
@@ -51,12 +85,15 @@ void main() {
 }
 `
 
-/* the occluder ink · the page near-black, a whisper of lift on the pulse */
+/* the occluder ink · the page near-black stays the theme's black — struck
+   bands deepen toward a blue-black whisper, the pulse lifts it a touch */
 const FILL_FRAG = /* glsl */ `
 precision mediump float;
 varying float vPulse;
+varying float vStruck;
 void main() {
-  vec3 col = mix(vec3(0.039, 0.047, 0.063), vec3(0.075, 0.10, 0.16), vPulse * 0.5);
+  vec3 col = mix(vec3(0.039, 0.047, 0.063), vec3(0.043, 0.075, 0.18), vStruck * 0.55);
+  col = mix(col, vec3(0.075, 0.12, 0.24), vPulse * 0.5);
   gl_FragColor = vec4(col, 1.0);
 }
 `
@@ -81,13 +118,18 @@ precision mediump float;
 varying float vPulse;
 varying float vFacing;
 varying float vLit;
+varying float vStruck;
 uniform float uFade;
 void main() {
-  /* the tol.is line law · alpha from facing, the beat brightens the front */
-  float a = (0.12 + 0.74 * vFacing) * (0.82 + 0.55 * vPulse) * uFade;
+  /* the tol.is line law · alpha from facing, the beat brightens the front,
+     a struck band reads brighter through both hemispheres */
+  float a = (0.12 + 0.74 * vFacing) * (0.82 + 0.55 * vPulse) * (1.0 + 0.4 * vStruck) * uFade;
   if (a < 0.01) discard;
-  vec3 col = mix(vec3(0.87, 0.91, 0.98), vec3(0.553, 0.706, 1.0), vLit * 0.6);
-  col = mix(col, vec3(0.31, 0.525, 1.0), vPulse * 0.6);
+  /* the blue-and-black ink · shadow side deep wire blue #16307a, lit side
+     the accent #4f86ff, struck bands the brightest blue #8db4ff */
+  vec3 col = mix(vec3(0.086, 0.188, 0.478), vec3(0.31, 0.525, 1.0), vLit);
+  col = mix(col, vec3(0.553, 0.706, 1.0), vStruck * (0.6 + 0.3 * vLit));
+  col += vec3(0.09, 0.15, 0.28) * vPulse;
   gl_FragColor = vec4(col, min(a, 1.0));
 }
 `
@@ -106,12 +148,16 @@ const GLOW_FRAG = /* glsl */ `
 precision mediump float;
 uniform float uTime;
 uniform float uFade;
+uniform float uStrike;
 varying vec2 vUv;
 void main() {
   float w = fract(uTime / 2.4);
   float beat = smoothstep(0.0, 0.05, w) * exp(-w * 5.0);
+  /* the section strike flashes the core harder than the idle beat */
+  float t = max(uTime - uStrike, 0.0);
+  float hit = smoothstep(0.0, 0.04, t) * exp(-t * 3.0);
   float d = length(vUv - 0.5) * 2.0;
-  float g = exp(-d * d * 4.5) * (0.10 + 0.30 * beat) * uFade;
+  float g = exp(-d * d * 4.5) * (0.10 + 0.30 * beat + 0.55 * hit) * uFade;
   if (g < 0.004) discard;
   gl_FragColor = vec4(vec3(0.36, 0.56, 1.0), g);
 }
@@ -125,6 +171,10 @@ export interface ShellLayers {
     uTime: { value: number }
     uAmp: { value: number }
     uFade: { value: number }
+    /** struck-front threshold · struckPhaseThreshold(struck, total) */
+    uStruck: { value: number }
+    /** uTime of the last section strike · drives the harder hit + core flash */
+    uStrike: { value: number }
   }
   dispose: () => void
 }
@@ -159,6 +209,8 @@ export function makeShellLayers(m: DrumSphereModel): ShellLayers {
     uTime: { value: 0 },
     uAmp: { value: 1 },
     uFade: { value: 0 },
+    uStruck: { value: -0.25 },
+    uStrike: { value: -1e3 },
   }
 
   const fillMat = new THREE.ShaderMaterial({
