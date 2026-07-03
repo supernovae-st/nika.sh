@@ -22,6 +22,8 @@ import prRiskReviewTrace from './traces/pr-risk-review.ndjson?raw'
 import meetingActionsTrace from './traces/meeting-actions.ndjson?raw'
 import priceWatchTrace from './traces/price-watch.ndjson?raw'
 import socialRepurposeTrace from './traces/social-repurpose.ndjson?raw'
+import standupDigestTrace from './traces/standup-digest.ndjson?raw'
+import etlQuarantineTrace from './traces/etl-quarantine.ndjson?raw'
 
 export interface Flagship {
   id: string
@@ -279,6 +281,145 @@ tasks:
 
 outputs:
   bundle: "\${{ tasks.bundle.output }}"
+`,
+  },
+  /* ── the library wing · recorded in the same trace lab (wave K) ─────────────
+     Hand-shaped from their embedded-pack cousins (nika-pack examples/showcase
+     t1-standup-digest · t2-etl-quarantine) exactly like the five above were:
+     permits added, model pinned local, then RUN — the yaml below is the byte
+     file that ran, the trace is the verbatim stream. They live in the library
+     panel (not the 5-tab strip) and carry the full recorded story. */
+  {
+    id: 'standup_digest',
+    filename: 'standup-digest.nika.yaml',
+    label: 'standup-digest',
+    /* the grounding tab: the note starts from `git log`, not from what a
+       model remembers — the lit lines are the exec task that fetched truth. */
+    gloss: 'exec: the note starts from real commits, not memory',
+    highlight: [15, 16],
+    artifact: 'wrote standup-note.md',
+    traceNdjson: standupDigestTrace,
+    yaml: `nika: v1
+workflow: standup-digest
+model: ollama/llama3.2:3b     # local · your commits never leave
+
+permits:                      # the file IS the blast radius
+  exec: [ git ]
+  fs: { write: [ ./standup-note.md ] }
+  tools: [ "nika:date", "nika:write" ]
+
+tasks:
+  # no dependency between these two · the engine runs them together
+  - id: today
+    invoke: { tool: "nika:date", args: { op: now } }
+
+  - id: history
+    exec: { command: [ git, log, --since=yesterday, --oneline, --no-merges ] }
+
+  - id: digest
+    depends_on: [today, history]
+    infer:
+      prompt: |
+        Date: \${{ tasks.today.output }}
+        Commits since yesterday:
+        \${{ tasks.history.output }}
+
+        Write my standup note, 3 bullets: done / doing / blocked.
+        Plain words, no fluff.
+      max_tokens: 300
+
+  - id: save
+    depends_on: [digest]
+    invoke:
+      tool: "nika:write"
+      args: { path: ./standup-note.md, content: "\${{ tasks.digest.output }}" }
+
+outputs:
+  note: "\${{ tasks.digest.output }}"
+`,
+  },
+  {
+    id: 'etl_quarantine',
+    filename: 'etl-quarantine.nika.yaml',
+    label: 'etl-quarantine',
+    /* the resilience tab: zero model · a validate gate splits the batch and
+       the lit lines are the on_error recover that keeps the pipeline alive. */
+    gloss: 'on_error: a bad batch degrades, the run survives',
+    highlight: [22, 23],
+    artifact: 'wrote daily-totals.json',
+    traceNdjson: etlQuarantineTrace,
+    yaml: `nika: v1
+workflow: etl-quarantine
+
+# zero model · a schema gate splits the batch · bad rows quarantine, the night survives
+permits:                      # the file IS the blast radius
+  fs: { read: [ ./data/incoming/* ], write: [ ./data/* ] }
+  tools: [ "nika:read", "nika:convert", "nika:validate", "nika:jq", "nika:write" ]
+
+tasks:
+  # a deterministic empty fallback · the recover target if parsing dies
+  - id: empty_batch
+    invoke: { tool: "nika:jq", args: { input: [], expression: "." } }
+
+  - id: raw
+    invoke: { tool: "nika:read", args: { path: ./data/incoming/orders.csv } }
+
+  - id: rows
+    depends_on: [raw]
+    invoke:
+      tool: "nika:convert"
+      args: { input: "\${{ tasks.raw.output }}", from: csv, to: json, has_header: true }
+    on_error:
+      recover: \${{ tasks.empty_batch.output }}   # malformed CSV → empty batch · the pipeline lives
+
+  - id: check
+    depends_on: [rows]
+    invoke:
+      tool: "nika:validate"
+      args:
+        data: "\${{ tasks.rows.output }}"
+        format: json
+        schema:
+          type: array
+          items:
+            type: object
+            required: [order_id, amount, currency]
+            properties:
+              order_id: { type: string }
+              amount: { type: string }
+              currency: { type: string, enum: [EUR, USD, GBP] }
+
+  - id: good
+    depends_on: [rows, check]
+    when: \${{ tasks.check.output.valid == true }}
+    invoke:
+      tool: "nika:jq"
+      args:
+        input: "\${{ tasks.rows.output }}"
+        expression: 'group_by(.currency) | map({currency: .[0].currency, orders: length, total: (map(.amount | tonumber) | add)})'
+
+  - id: quarantine
+    depends_on: [rows, check]
+    when: \${{ tasks.check.output.valid == false }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./data/quarantine/rejected.json
+        content: "\${{ tasks.check.output.errors }}"
+        create_dirs: true
+
+  - id: report
+    depends_on: [good]
+    when: \${{ tasks.good.output != null && size(tasks.good.output) > 0 }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./data/daily-totals.json
+        content: "\${{ tasks.good.output }}"
+        create_dirs: true
+
+outputs:
+  totals: "\${{ tasks.good.output }}"
 `,
   },
 ]

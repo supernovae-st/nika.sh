@@ -1,9 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
+import { verbGlyph } from '../components/codefile-highlight'
+import { MiniDag } from '../components/MiniDag'
 import { InstallCommand } from '../components/InstallCommand'
 import { useMagnetic } from '../fx/use-magnetic'
 import { ENGINE_VERSION, REPO, SPEC } from '../content'
-import { FLAGSHIP_ENTRIES, type FlagshipEntry } from '../flagships'
+import { type FlagshipEntry } from '../flagships'
+import { HERO_TAB_COUNT, LIBRARY, verbsOf, type LibraryItem } from '../flagships/library'
 import '../shell/shell.css'
 import './hero.css'
 
@@ -48,7 +51,14 @@ function HeroAtmosphere() {
    role=tablist with roving tabIndex + arrow-key switching. Sits BELOW the
    editor panel (operator wave I): the panel chrome above carries the full
    filename; the strip is the compact switcher. The DEFAULT tab (daily-brief)
-   is prerendered, so crawlers / no-JS get the default story. */
+   is prerendered, so crawlers / no-JS get the default story.
+
+   Wave K: the strip keeps the ORIGINAL five (the flagship buffer row); the
+   full ten-file corpus lives behind the library picker at the strip's right
+   edge. `active` is a LIBRARY index — when it points past the strip, no tab
+   is selected (the picker trigger carries the active filename instead). */
+const TABS = LIBRARY.slice(0, HERO_TAB_COUNT)
+
 function FileTabs({
   active,
   onSelect,
@@ -78,13 +88,15 @@ function FileTabs({
     }
   }, [])
   const onKeyDown = (e: React.KeyboardEvent) => {
-    // APG tablist keys · arrows cycle, Home/End jump to the edges
+    // APG tablist keys · arrows cycle, Home/End jump to the edges. When the
+    // active file lives off-strip (library pick), arrows re-enter at the edge.
+    const onStrip = active >= 0 && active < TABS.length
     let next: number
-    if (e.key === 'ArrowRight') next = (active + 1) % FLAGSHIP_ENTRIES.length
+    if (e.key === 'ArrowRight') next = onStrip ? (active + 1) % TABS.length : 0
     else if (e.key === 'ArrowLeft')
-      next = (active - 1 + FLAGSHIP_ENTRIES.length) % FLAGSHIP_ENTRIES.length
+      next = onStrip ? (active - 1 + TABS.length) % TABS.length : TABS.length - 1
     else if (e.key === 'Home') next = 0
-    else if (e.key === 'End') next = FLAGSHIP_ENTRIES.length - 1
+    else if (e.key === 'End') next = TABS.length - 1
     else return
     e.preventDefault()
     onSelect(next)
@@ -99,7 +111,7 @@ function FileTabs({
         aria-label="Flagship workflow files"
         onKeyDown={onKeyDown}
       >
-      {FLAGSHIP_ENTRIES.map((f, i) => (
+      {TABS.map((f, i) => (
         <button
           key={f.id}
           ref={(el) => {
@@ -110,7 +122,7 @@ function FileTabs({
           id={`v4ftab-${f.id}`}
           aria-selected={i === active}
           aria-controls="v4ftab-panel"
-          tabIndex={i === active ? 0 : -1}
+          tabIndex={i === active || (i === 0 && active >= TABS.length) ? 0 : -1}
           className="v4ftab"
           onClick={() => onSelect(i)}
         >
@@ -125,14 +137,176 @@ function FileTabs({
   )
 }
 
-export default function Hero({
-  flagship,
-  index,
+/* ── the library picker · the « other files » quick-open (wave K) ─────────────
+   A compact popover listing the WHOLE ten-file corpus: verb glyphs (derived
+   from each plan, hued), filename, one honest phrase, task count, and the
+   recorded dot when a real trace backs the file. APG listbox: the trigger is
+   a button (aria-haspopup/expanded); options take real focus, arrows walk,
+   Enter/Space picks, Escape returns to the trigger; outside-pointerdown
+   closes. SSR renders the trigger only (closed) — byte-stable. */
+function LibraryPicker({
+  active,
   onSelect,
 }: {
-  flagship: FlagshipEntry
+  active: number
+  onSelect: (i: number) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const optRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const offStrip = active >= HERO_TAB_COUNT
+
+  /* outside-click + Escape · armed only while open (costs nothing at rest) */
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: PointerEvent) => {
+      const t = e.target as Node
+      if (panelRef.current?.contains(t) || triggerRef.current?.contains(t)) return
+      setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setOpen(false)
+      triggerRef.current?.focus()
+    }
+    document.addEventListener('pointerdown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  /* opening lands focus on the active file's row (the quick-open register) */
+  useEffect(() => {
+    if (open) optRefs.current[active]?.focus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- snapshot on open only
+  }, [open])
+
+  const walk = (e: React.KeyboardEvent) => {
+    const idx = optRefs.current.findIndex((el) => el === document.activeElement)
+    let next: number
+    if (e.key === 'ArrowDown') next = Math.min(LIBRARY.length - 1, idx + 1)
+    else if (e.key === 'ArrowUp') next = Math.max(0, idx - 1)
+    else if (e.key === 'Home') next = 0
+    else if (e.key === 'End') next = LIBRARY.length - 1
+    else return
+    e.preventDefault()
+    optRefs.current[next]?.focus()
+  }
+
+  const pick = (i: number) => {
+    onSelect(i)
+    setOpen(false)
+    triggerRef.current?.focus()
+  }
+
+  return (
+    <div className="v4lib">
+      <button
+        ref={triggerRef}
+        type="button"
+        id="v4lib-trigger"
+        className="v4lib-trigger"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls="v4lib-panel"
+        data-active={offStrip || undefined}
+        onClick={() => setOpen((o) => !o)}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowDown' && !open) {
+            e.preventDefault()
+            setOpen(true)
+          }
+        }}
+      >
+        {offStrip ? (
+          <>
+            {LIBRARY[active].label}
+            <span className="v4ftab-ext" aria-hidden>
+              .nika.yaml
+            </span>
+          </>
+        ) : (
+          'library'
+        )}
+        <span className="v4lib-trigger-glyph" aria-hidden>
+          ⋯
+        </span>
+      </button>
+      {open && (
+        <div ref={panelRef} className="v4lib-panel" id="v4lib-panel">
+          <p className="v4lib-head" aria-hidden>
+            the workflow library · {LIBRARY.length} files
+          </p>
+          <div
+            role="listbox"
+            aria-label="Workflow library"
+            className="v4lib-list"
+            onKeyDown={walk}
+          >
+            {LIBRARY.map((f, i) => (
+              <button
+                key={f.id}
+                ref={(el) => {
+                  optRefs.current[i] = el
+                }}
+                type="button"
+                role="option"
+                aria-selected={i === active}
+                className="v4lib-row"
+                onClick={() => pick(i)}
+              >
+                <span className="v4lib-line">
+                  <span className="v4lib-glyphs" aria-hidden>
+                    {verbsOf(f.plan).map((v) => (
+                      <span key={v} data-v={v}>
+                        {verbGlyph(v)}
+                      </span>
+                    ))}
+                  </span>
+                  <span className="v4lib-name">
+                    {f.label}
+                    <span className="v4lib-ext" aria-hidden>
+                      .nika.yaml
+                    </span>
+                  </span>
+                  <span className="v4lib-meta">
+                    {f.plan.tasks.length} tasks
+                    {f.flagship ? (
+                      <span className="v4lib-rec"> · ● recorded</span>
+                    ) : null}
+                  </span>
+                </span>
+                <span className="v4lib-blurb">{f.blurb}</span>
+              </button>
+            ))}
+          </div>
+          <p className="v4lib-legend">
+            ● recorded from a real nika run · the rest browse from the embedded
+            pack (<code>nika examples</code>)
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function Hero({
+  item,
+  index,
+  onSelect,
+  flagship,
+}: {
+  /** the SELECTED library file — what the editor shows */
+  item: LibraryItem
+  /** LIBRARY index of the selection */
   index: number
   onSelect: (i: number) => void
+  /** the recorded flagship the story below plays (item’s own when recorded,
+      the last recorded pick when the selection is browse-only) */
+  flagship: FlagshipEntry
 }) {
   const rootRef = useRef<HTMLElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -175,7 +349,29 @@ export default function Hero({
     const snapped = Math.max(0, pad + Math.round((raw - pad) / box) * box)
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     pre.scrollTo({ top: snapped, behavior: reduce ? 'auto' : 'smooth' })
-  }, [flagship.id])
+  }, [item.id])
+
+  /* ── the bidirectional pairing (wave K) · one shared state, two mirrors ─────
+     Hover/focus a mini-DAG node → the editor lights that task's exact lines;
+     hover a task block in the YAML → its node lights. The pair resets on file
+     switch. The caption highlight returns the instant the pair clears. */
+  const [pairTask, setPairTask] = useState<string | null>(null)
+  /* file switch clears the pair · the render-time adjustment (not an effect):
+     the stale pair never paints, and no cascading second render fires. */
+  const [pairFile, setPairFile] = useState(item.id)
+  if (pairFile !== item.id) {
+    setPairFile(item.id)
+    setPairTask(null)
+  }
+  const paired = pairTask ? item.plan.tasks.find((t) => t.id === pairTask) : undefined
+  const onLineHover = (ln: number | null) => {
+    if (ln == null) {
+      setPairTask(null)
+      return
+    }
+    const t = item.plan.tasks.find((t) => ln >= t.line0 && ln <= t.line1)
+    setPairTask(t ? t.id : null)
+  }
 
   return (
     <section
@@ -288,37 +484,78 @@ export default function Hero({
             ref={panelRef}
             id="v4ftab-panel"
             role="tabpanel"
-            aria-labelledby={`v4ftab-${flagship.id}`}
+            aria-labelledby={index < HERO_TAB_COUNT ? `v4ftab-${item.id}` : 'v4lib-trigger'}
           >
             {/* wrap: the hero is the READING surface — long flow lines soft-wrap
                 with a hanging indent (no right-edge clip, no hidden content). */}
             <CodeFile
-              yaml={flagship.yaml}
-              filename={flagship.filename}
-              highlight={flagship.highlight}
+              yaml={item.yaml}
+              filename={item.filename}
+              highlight={paired ? [paired.line0, paired.line1] : item.highlight}
               className="v4hero-code"
               wrap
+              onLineHover={onLineHover}
             />
           </div>
           {/* the switcher sits UNDER the file (operator wave I) — the panel
-              chrome above already names the open file; this strip is the
-              compact "other files" row, flush on the panel's bottom edge. */}
-          <FileTabs active={index} onSelect={onSelect} />
-          {/* the tab's one-line story + the handoff chip · the SELECTED file is
-              the one the run replay below actually plays — filename continuity. */}
-          <div className="v4hero-editorfoot mt-4">
-            <span className="v4gloss">{flagship.gloss}</span>
-            <a href="#the-run" className="v4hint w-fit">
-              <span className="v4hint-file">{flagship.filename}</span>
-              <span className="text-faint" aria-hidden>
-                ·
-              </span>
-              <span>see it run</span>
-              <span className="v4hint-arrow" aria-hidden>
-                ↓
-              </span>
-            </a>
+              chrome above already names the open file; the strip keeps the
+              five flagships, the library picker opens the whole corpus. */}
+          <div className="v4ftabs-row">
+            <FileTabs active={index} onSelect={onSelect} />
+            <LibraryPicker active={index} onSelect={onSelect} />
           </div>
+          {/* the file's one-line story + the handoff chip. Recorded files
+              descend into the run story below; a browse-only pick says so
+              honestly — the replay stays on the last recorded file. */}
+          <div className="v4hero-editorfoot mt-4">
+            <span className="v4gloss">{item.gloss}</span>
+            {item.flagship ? (
+              <a href="#the-run" className="v4hint w-fit">
+                <span className="v4hint-file">{item.filename}</span>
+                <span className="text-faint" aria-hidden>
+                  ·
+                </span>
+                <span>see it run</span>
+                <span className="v4hint-arrow" aria-hidden>
+                  ↓
+                </span>
+              </a>
+            ) : (
+              <a href="#the-run" className="v4hint v4hint--browse w-fit">
+                <span>no recorded run for this one</span>
+                <span className="text-faint" aria-hidden>
+                  ·
+                </span>
+                <span>
+                  below replays <span className="v4hint-file">{flagship.filename}</span>
+                </span>
+                <span className="v4hint-arrow" aria-hidden>
+                  ↓
+                </span>
+              </a>
+            )}
+          </div>
+          {/* THE MINI-DAG · the same plan, drawn — derived from the selected
+              file so every library pick gets its diagram for free. Two
+              placements, CSS picks one: the ≥1440 side rail (time falls) or
+              the 1024-1439 band under the editor stack (time flows right);
+              phones keep the editor alone. */}
+          <MiniDag
+            plan={item.plan}
+            orientation="rail"
+            fileId={item.id}
+            pairTask={pairTask}
+            onPair={setPairTask}
+            className="v4hero-dag v4hero-dag--rail"
+          />
+          <MiniDag
+            plan={item.plan}
+            orientation="band"
+            fileId={item.id}
+            pairTask={pairTask}
+            onPair={setPairTask}
+            className="v4hero-dag v4hero-dag--band"
+          />
         </div>
       </div>
     </section>

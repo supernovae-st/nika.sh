@@ -1,0 +1,149 @@
+/* ─── mini-dag · the compact plan diagram (wave K) ────────────────────────────
+   Same drawing vocabulary as the /learn plate (lrn-dag) + the morph flat
+   plan: verb-hued dots, mono ids, thin accent dependency curves. The hues
+   are the sanctioned verb tokens; everything else stays hairline + faint
+   (P3 law: the diagram whispers, the editor speaks). */
+
+.mdag {
+  margin: 0;
+  font-family: var(--mono);
+}
+
+/* the micro caption · museum-plate voice */
+.mdag-cap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 2px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+}
+.mdag-cap-name {
+  text-transform: uppercase;
+}
+
+/* the stage scrolls sideways in its well if a wide band overflows (the
+   /learn plate's honest device) — the rail never overflows */
+.mdag-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+.mdag-stage {
+  position: relative;
+  /* the file-switch relayout beat · a 200ms settle-in on remount */
+  animation: mdag-in 200ms var(--ease-ui) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mdag-stage {
+    animation: none;
+  }
+}
+@keyframes mdag-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+}
+
+.mdag-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.mdag-wires path {
+  fill: none;
+  stroke: color-mix(in oklch, var(--v4-accent) 46%, transparent);
+  stroke-width: 1.1;
+}
+
+/* ── a node · verb dot + mono id, one real button (focus + hover) ──────────── */
+.mdag-node {
+  appearance: none;
+  border: none;
+  background: transparent;
+  position: absolute;
+  transform: translate(-50%, -8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 4px 3px 2px;
+  cursor: default;
+  border-radius: var(--v4-radius-sm);
+  color: var(--v4-text-dim);
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+.mdag-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--v4-text-faint);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35);
+}
+.mdag-node[data-verb='infer'] .mdag-dot {
+  background: var(--verb-infer);
+}
+.mdag-node[data-verb='exec'] .mdag-dot {
+  background: var(--verb-exec);
+}
+.mdag-node[data-verb='invoke'] .mdag-dot {
+  background: var(--verb-invoke);
+}
+.mdag-node[data-verb='agent'] .mdag-dot {
+  background: var(--verb-agent);
+}
+.mdag-id {
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  max-width: 76px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* the gate seal + the fan-out sheaf · tiny, faint, right of the id */
+.mdag-seal,
+.mdag-fan {
+  margin-left: 3px;
+  font-size: 8.5px;
+  color: var(--v4-text-faint);
+}
+
+/* the paired state · hover/focus here or in the editor lights BOTH sides */
+.mdag-node:hover,
+.mdag-node:focus-visible,
+.mdag-node[data-hi] {
+  color: var(--v4-text);
+  background: rgb(255 255 255 / 0.05);
+}
+.mdag-node[data-hi] .mdag-dot {
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.35),
+    0 0 7px 0 currentColor;
+}
+
+/* keyboard ring · the shared focus token */
+.mdag-node:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 1px;
+}
+
+/* ── band variant · tighter labels (columns are 82px) ──────────────────────── */
+.mdag--band .mdag-id {
+  max-width: 72px;
+}
+
+/* the paired caption · the task id takes the accent voice while its plain
+   words occupy the meta slot (same line box · zero reflow on swap) */
+.mdag-cap-name--pair {
+  color: var(--v4-accent-bright, #8db4ff);
+}

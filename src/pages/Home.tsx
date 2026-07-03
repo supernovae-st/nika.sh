@@ -3,6 +3,7 @@ import { useHead } from '@unhead/react'
 import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
 import { FLAGSHIP_ENTRIES } from '../flagships'
+import { LIBRARY } from '../flagships/library'
 import ScrollMorph from '../sections/morph/ScrollMorph'
 import TheRun from '../sections/run/TheRun'
 import ThePlan from '../sections/plan/ThePlan'
@@ -98,11 +99,20 @@ const HOME_JSONLD = {
 
 export function Component() {
   const [eggOpen, setEggOpen] = useState(false)
-  /* V5 law #1 · ONE story, ONE file — the SELECTED one. The hero tabs pick a
-     flagship; the run replay, the plan and the boundary all re-render from it.
-     Selection lives HERE so every beat reads the same object. */
-  const [flagshipIdx, setFlagshipIdx] = useState(0)
-  const flagship = FLAGSHIP_ENTRIES[flagshipIdx]
+  /* V5 law #1 · ONE story, ONE file — the SELECTED one. The hero picks from
+     the LIBRARY (wave K: 5 tabs + the picker); the run replay, the plan and
+     the boundary all re-render from the selection's RECORDED flagship. A
+     browse-only pick (no trace) keeps the story on the last recorded file —
+     the hero affordance says so honestly (never a fabricated replay). */
+  const [libIdx, setLibIdx] = useState(0)
+  const [storyIdx, setStoryIdx] = useState(0)
+  const item = LIBRARY[libIdx]
+  const flagship = FLAGSHIP_ENTRIES[storyIdx]
+  const onPick = (i: number) => {
+    setLibIdx(i)
+    const rec = LIBRARY[i].flagship
+    if (rec) setStoryIdx(FLAGSHIP_ENTRIES.indexOf(rec))
+  }
   /* idle-mount the dither field · React.lazy alone still FETCHES the chunk at
      hydration, and its three/r3f dependency chain (~880 kB pre-gzip) would
      compete with the text-LCP window. Deferring the mount to the first idle
@@ -222,7 +232,7 @@ export function Component() {
       )}
       <main className="relative z-[1]">
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
-        <Hero flagship={flagship} index={flagshipIdx} onSelect={setFlagshipIdx} />
+        <Hero item={item} index={libIdx} onSelect={onPick} flagship={flagship} />
 
         {/* FIG 1.0 · THE MORPH (desktop) — ONE continuous scroll-linked scene:
              the selected file travels, BURSTS into its DAG, then the recorded

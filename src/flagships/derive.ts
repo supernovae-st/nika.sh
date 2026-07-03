@@ -18,6 +18,8 @@ export interface FlagshipTask {
   deps: string[]
   /** the raw when: expression when the task is gated (display verbatim) */
   when?: string
+  /** the task fans out per item (declares for_each) */
+  fanout?: boolean
   /** topological wave · deps always live in strictly-earlier waves */
   wave: number
   /** 1-based line of the task head (`- id:` / `- { id:`) in the file */
@@ -176,11 +178,13 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
     const verb = VERBS.find((v) => new RegExp(`(?:^|[\\s{])${v}:`, 'm').test(block))
     if (!verb) throw new Error(`flagship task "${raw.id}" declares no verb`)
     const whenM = block.match(/when:\s*(.+?)\s*$/m)
+    const fanout = /^\s*for_each:/m.test(block)
     return {
       id: raw.id,
       verb,
       deps,
       ...(whenM ? { when: whenM[1] } : {}),
+      ...(fanout ? { fanout: true } : {}),
       wave: -1,
       line0: raw.line0,
       line1: raw.line1,
