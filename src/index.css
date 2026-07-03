@@ -288,21 +288,32 @@ h1, h2 { font-family: var(--headline); }
   14% { opacity: 0.55; }
   100% { transform: scale(1); opacity: 0; }
 }
+/* the fallback heart · a SOFT wide glow, never a hard disc. The old 13px
+   solid dot landed exactly inside the title's second line and read as a
+   stray period ("liberation·"), so the fallback heart is now a low-opacity
+   radial bloom BEHIND the title ink; on WebGL desktops the sphere's own
+   strike core-glow is the heartbeat and this element is display:none
+   entirely (drum-sphere.css · [data-drum3d]). */
 .mf-core {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 13px;
-  height: 13px;
+  width: 84px;
+  height: 84px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 26px 7px color-mix(in srgb, var(--cyan) 55%, transparent);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--cyan) 46%, transparent),
+    color-mix(in srgb, var(--cyan) 16%, transparent) 46%,
+    transparent 74%
+  );
+  opacity: 0.34;
   animation: mfBeat 2.4s ease-in-out infinite;
 }
 @keyframes mfBeat {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-  50% { transform: translate(-50%, -50%) scale(1.55); opacity: 1; }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.26; }
+  50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.44; }
 }
 
 /* gradient hero + statement type (the .supernovae-type recipe · cyan key) */
@@ -335,16 +346,12 @@ h1, h2 { font-family: var(--headline); }
   text-wrap: balance;
 }
 
-/* scroll cue + closing mark */
+/* scroll cue (the close's own butterfly glyph is gone with its glow-pulse:
+   the shared SiteFooter's living butterfly right below is THE one mark) */
 .mf-cue { animation: mfBounce 1.9s ease-in-out infinite; }
 @keyframes mfBounce {
   0%, 100% { transform: translateY(0); opacity: 0.55; }
   50% { transform: translateY(8px); opacity: 1; }
-}
-.mf-close-mark { animation: mfGlowPulse 3.2s ease-in-out infinite; }
-@keyframes mfGlowPulse {
-  0%, 100% { filter: drop-shadow(0 0 13px rgb(79 134 255 / 0.4)); }
-  50% { filter: drop-shadow(0 0 26px rgb(79 134 255 / 0.72)); }
 }
 
 /* cognitive-stack tokens — glowing pills */

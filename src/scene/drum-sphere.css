@@ -3,7 +3,8 @@
    none of this CSS ever loads for the fallback audience. The CSS drum rings
    in index.css stay untouched; [data-drum3d] (set on .mf-drum by the layer
    itself once mounted, the ThePlanScene pattern) retires the rings + dial
-   guides while the .mf-core heart keeps beating ON TOP of the sphere. */
+   guides AND the .mf-core heart: the sphere's strike core-glow is the
+   heartbeat here, no DOM dot over the title. */
 .mfd {
   position: absolute;
   left: 50%;
@@ -62,8 +63,11 @@
   right: 3%;
   transform: translateY(-50%);
 }
-/* the beating CSS rings + the static dial guides step aside for the sphere */
-.mf-drum[data-drum3d] .mf-ring {
+/* the beating CSS rings + the static dial guides step aside for the sphere,
+   and so does the CSS heart: the sphere's own strike core-glow carries the
+   heartbeat, so no DOM dot ever sits over the title on WebGL desktops */
+.mf-drum[data-drum3d] .mf-ring,
+.mf-drum[data-drum3d] .mf-core {
   display: none;
 }
 .mf-drum[data-drum3d]::before,

@@ -118,7 +118,11 @@ export function Component() {
         >
           {/* THE THOLOS SPHERE · wave I (desktop) — the drum of liberation as a
               breathing shell of wireframe blocks; the CSS rings just below stay
-              the fallback truth, the .mf-core heart beats ON TOP (DOM order) */}
+              the fallback truth. The sphere's own strike core-glow carries the
+              heartbeat: once mounted ([data-drum3d]) the CSS .mf-core heart is
+              retired entirely so no DOM dot ever lands inside the title. In the
+              fallback the heart survives as a soft wide glow (never a hard
+              disc), so it can never read as a stray period over the words. */}
           {sphere ? (
             <Suspense fallback={null}>
               <TheDrumSphere drumRef={drumRef} />
@@ -258,19 +262,15 @@ export function Component() {
 
         {/* ─── the close ─── */}
         <section className="mx-auto flex max-w-3xl flex-col items-center px-6 pt-6 pb-24 text-center">
-          <p className="rv mf-statement mf-grad mb-12">
+          {/* the close keeps its words and links but carries NO butterfly of its
+              own: the shared SiteFooter's living particle butterfly right below
+              is THE mark (one signature, one close — the double-footer fix) */}
+          <p className="rv mf-statement mf-grad mb-10">
             Open source AI must win.
             <br />
             Not for a nation. For everyone.
           </p>
-          <img
-            src="/nika.svg"
-            alt="Nika"
-            width={48}
-            height={48}
-            className="rv mf-close-mark"
-          />
-          <p className="rv mono mt-6 text-[13px] tracking-[0.04em] text-[var(--cyan)]">
+          <p className="rv mono mt-2 text-[13px] tracking-[0.04em] text-[var(--cyan)]">
             The drum of liberation is getting louder.
           </p>
           <div className="rv mono mt-10 flex flex-wrap items-center justify-center gap-6 text-[12.5px]">
