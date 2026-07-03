@@ -3,6 +3,7 @@ import { useRevealOnce } from './use-reveal-once'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { CHAPTERS, type Chapter, type SubEntry } from './verbs-data'
 import { CodeFile } from '../components/CodeFile'
+import { VerbGlyphTile } from '../scene/verb-glyphs-mount'
 import './v4-home.css'
 import { SectionHead } from '../components/SectionHead'
 
@@ -20,8 +21,13 @@ import { SectionHead } from '../components/SectionHead'
    HONESTY: every YAML block is a COMPLETE minimal workflow, valid against
    public/schema/workflow.json (nika + workflow + tasks, one verb each) — never
    a floating fragment. Verb hue lights ONLY inside the CodeFile frames (the
-   verb keyword's canonical colour + a hue seam on the frame edge); the page
-   chrome around them stays monochrome.
+   verb keyword's canonical colour + a hue seam on the frame edge) and inside
+   the glyph specimen plate (the sanctioned second surface: each chapter
+   carries a small 3D object in the tholos register — verb-glyphs-mount /
+   verb-glyphs-three — that MOVES the verb's meaning: infer breathes · exec
+   ticks a shard · invoke orbits two satellites · agent spawns a child that
+   returns. Desktop + motion + WebGL only; the kicker's static glyph char is
+   the floor everywhere else); the page chrome around them stays monochrome.
 
    SSR-safe: pure DOM, no window at render. The reveal is an IntersectionObserver
    added on mount; content is fully visible by default (no-JS / reduced-motion). */
@@ -100,6 +106,10 @@ function ChapterBlock({ chapter, index }: { chapter: Chapter; index: number }) {
             </span>
           ))}
         </p>
+
+        {/* the glyph specimen · the verb's execution model as a small moving
+            3D object (decorative — the claim above carries the meaning) */}
+        <VerbGlyphTile verb={c.verb} />
       </div>
 
       {/* RIGHT · the verb's task in the product surface (hue lives HERE only) */}

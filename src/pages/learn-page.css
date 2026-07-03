@@ -104,6 +104,167 @@
   min-width: 0;
 }
 
+/* ── the plain-words hover dictionary · /learn-scoped (LearnFile) ─────────────
+   Hovering a known key/verb token in the panel (or hovering/focusing its term
+   chip below) shows a one-line anyone-words gloss in a seam-kit micro-panel:
+   mono · dim · 13px, riding above the token it explains. */
+.lrn-file {
+  position: relative;
+}
+.lrn-file :is(.cf-key, .cf-verb) {
+  cursor: help;
+}
+/* the term chips · the keyboard/touch door into the same glosses */
+.lrn-dict {
+  margin: 9px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 6px;
+}
+.lrn-dict::before {
+  content: 'plain words';
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  margin-right: 5px;
+}
+.lrn-dict-item {
+  display: contents;
+}
+.lrn-dict-chip {
+  appearance: none;
+  background: none;
+  border: 1px solid var(--v4-line);
+  border-radius: 3px;
+  padding: 2.5px 7px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--v4-text-dim);
+  cursor: help;
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    border-color var(--dur-ui) var(--ease-ui);
+}
+.lrn-dict-chip:hover,
+.lrn-dict-chip:focus-visible {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
+}
+/* the micro-panel · seam kit, mono, dim, 13px · pointer-transparent */
+.lrn-tip {
+  position: absolute;
+  z-index: 6;
+  transform: translate(-50%, calc(-100% - 9px));
+  max-width: min(300px, 100%);
+  padding: 8px 11px;
+  border: 1px solid var(--seam-hairline);
+  border-radius: var(--v4-radius);
+  background: var(--v4-bg-raised);
+  box-shadow: var(--seam-panel); /* seam kit */
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.lrn-tip[data-on='1'] {
+  opacity: 1;
+}
+.lrn-tip b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+
+/* ── the mini-DAG plate · step 06's 2D comprehension anchor ───────────────────
+   A hand-authored static SVG spanning the full step row under the text + file
+   pair: the weekly-radar plan drawn node-for-node from the YAML above it.
+   Real SVG text (crisp at 1x/2x), theme-token inks, verb-hued node dots. On
+   narrow screens the plate keeps its legible size and scrolls sideways inside
+   its own well (the CodeFile overflow convention). */
+.lrn-dag {
+  grid-column: 1 / -1;
+  margin: 6px 0 0;
+}
+.lrn-dag-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--seam-hairline);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 40%, transparent);
+  box-shadow: var(--seam-panel); /* seam kit */
+  padding: clamp(10px, 2vw, 18px) clamp(12px, 2.5vw, 22px);
+}
+.lrn-dag-scroll:focus-visible {
+  outline: 2px solid var(--v4-accent);
+  outline-offset: 2px;
+}
+.lrn-dag-svg {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+  margin: 0 auto;
+  max-width: 760px;
+}
+.lrn-dag-node {
+  fill: color-mix(in oklch, var(--v4-bg-raised) 78%, transparent);
+  stroke: var(--v4-line);
+  stroke-width: 1;
+}
+.lrn-dag-id {
+  fill: var(--v4-text);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.lrn-dag-verb {
+  fill: var(--v4-text-faint);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+.lrn-dag-cap {
+  fill: var(--v4-text-faint);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.lrn-dag-bracket {
+  fill: none;
+  stroke: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  stroke-width: 1;
+}
+.lrn-dag-arrow {
+  fill: none;
+  stroke: color-mix(in oklch, var(--v4-accent) 62%, transparent);
+  stroke-width: 1.25;
+}
+.lrn-dag-headink {
+  fill: none;
+  stroke: color-mix(in oklch, var(--v4-accent) 80%, transparent);
+  stroke-width: 1.2;
+}
+.lrn-dag-capline {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-faint);
+  text-wrap: pretty;
+}
+
 /* ── the typed-error block · the differentiator (a FIG block) ─────────────────
    The JSON error rendered in the premium CodeFile (json lang) on the left + a
    hairline-ruled field ledger on the right. */
