@@ -10,13 +10,13 @@
    · the LIGHT — slab states, ignite pulses on incoming edges and the when:
      gate seal all read the recorded intervals (morph-model.taskInterval)
 
-   Shares PH / flightAt / runFracAt with the DOM morph so the 3D layer and the
+   Shares PH / aspireAt / runFracAt with the DOM morph so the 3D layer and the
    DOM story can never disagree about timing. HONESTY: every state change maps
    to a recorded event; nothing here invents data. */
 
 import type { FlagshipEntry, FlagshipTask, NikaVerb } from '../../flagships'
 import { formatMs } from '../../flagships'
-import { PH, clamp01, easeInOut, flightAt, runFracAt, taskInterval } from './morph-model'
+import { PH, aspireAt, clamp01, easeInOut, igniteAt, runFracAt, taskInterval } from './morph-model'
 
 /* ── layout constants (world units) ──────────────────────────────────────────
    A slab is a wide flat plate facing the camera — the engineering-die look.
@@ -249,10 +249,11 @@ export function slabStateAt(entry: FlagshipEntry, taskId: string, p: number): Sl
   return 'pending'
 }
 
-/** the slab's materialize amount 0..1 — the same timing the DOM nodes use
-    (they appear where their file lines land, at 55% of the wave's flight) */
-export function materializeAt(p: number, wave: number, waveCount: number): number {
-  return clamp01((flightAt(p, wave, waveCount) - 0.55) / 0.4)
+/** the slab's materialize amount 0..1 — the same timing the DOM nodes use:
+    the slab is BORN when its seed chip lands (per-task aspiration, reading
+    order — `index` is the task's file-order index, not its wave) */
+export function materializeAt(p: number, index: number, count: number): number {
+  return igniteAt(aspireAt(p, index, count))
 }
 
 /** the scroll progress at which a recorded clock (ms) lands in the run window */

@@ -6,24 +6,31 @@ import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships
 import { buildScript } from '../run/replay-model'
 import {
   PH,
+  aspireAt,
   clamp01,
+  condenseAt,
   easeInOut,
-  flightAt,
+  igniteAt,
   phaseAt,
   runFracAt,
   shellAt,
   termAt,
   timelineAt,
+  travelAt,
   wireAt,
   type MorphTimeline,
 } from './morph-model'
+import { VERB_WORDS } from './plain-words'
 import './morph.css'
 
 /* ─── ScrollMorph · F2 · the one continuous scroll-linked scene ───────────────
    Desktop (≥768px, motion-allowed) replaces the separate run/plan beats:
-   the SELECTED flagship file travels with scroll, BURSTS into its DAG (the
-   real task blocks fly to their node positions), then the recorded run
-   chains through the DAG while a terminal strip narrates the same events.
+   the SELECTED flagship file travels with scroll, each task block CONDENSES
+   into a seed chip and is DRAWN along a curve into its DAG slot (per-task
+   aspiration, reading order — the causality IS the animation), then the
+   recorded run chains through the DAG while a terminal strip narrates the
+   same events. At `done` the settled file returns BESIDE the flat 2D DAG and
+   hovering either side lights the other (the comprehension frame).
 
    CONTRACT (the operator's law):
    · scroll-LINKED, never wheel-hijacked — sticky stage + transforms derived
@@ -32,14 +39,32 @@ import './morph.css'
    · reduced-motion / no-JS / mobile: this section renders the STATIC final
      state (assembled DAG + the full terminal + verdict) or stays hidden
      (≤767px keeps the vertical run+plan story — morph.css gates both)
-   · HONESTY: the flying blocks are the file's real lines; node intervals and
+   · HONESTY: a seed chip is the task's real id + verb; node intervals and
      terminal lines come verbatim from the recorded trace (morph-model). */
 
-interface FlightGeom {
+interface BlockGeom {
+  /** the task block's own file lines */
   els: HTMLElement[]
-  dx: number
-  dy: number
+  /** per line · distance to the block's center (the condensation vector) */
+  lineDy: number[]
+  /** per line · drain factor 1 (file top) → 0 (file bottom) */
+  lineF: number[]
+  /** the block's drain factor (its lines' mean) — offsets the seed origin */
+  f: number
+  /** the block's center — the seed's origin (seed-layer coords) */
+  p0: { x: number; y: number }
+  /** the DOM node's center — the seed's landing (seed-layer coords) */
+  p2: { x: number; y: number }
 }
+
+/* THE DRAIN · as the file is consumed top-first, the remaining lines sag
+   DOWNWARD (top lines most, the outputs line pinned) so the text clears the
+   slab band where the consumed tasks land — un-read YAML and a landed slab
+   may never interleave (operator, wave I). Analytic (a pure function of p),
+   so the seed origins ride the same offset and scrubbing reverses it. */
+const DRAIN_MAX = 150
+const drainAt = (p: number): number =>
+  DRAIN_MAX * easeInOut(clamp01((p - (PH.burst0 + 0.06)) / 0.1))
 
 interface Edge {
   from: string
@@ -65,10 +90,20 @@ const whenLabel = (when: string): string =>
 const COUNT_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six'] as const
 const countWord = (n: number): string => COUNT_WORDS[n] ?? String(n)
 
+/* one quadratic bezier axis — the seed's curved aspiration path */
+const qbez = (a: number, c: number, b: number, t: number): number => {
+  const v = 1 - t
+  return v * v * a + 2 * v * t * c + t * t * b
+}
+
 /* the traveling card is ~500 spans — a timeline setState (which fires ~25×
    across the run window) must NEVER reconcile it. Its props are stable per
    flagship, so memo skips the whole subtree (longtask budget, F2). */
 const MemoCodeFile = memo(CodeFile)
+
+/* the fixed nav floats over the stage — the traveling card must dive UNDER
+   it, never linger behind it (operator: the YAML rows hid behind the nav) */
+const NAV_SAFE = 92
 
 /* wave H · the 3D DAG layer (desktop ≥1024px + WebGL + motion, lazy chunk).
    It reads the SAME scroll progress apply() computes (progressRef) and hides
@@ -91,6 +126,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     timelineAt(flagship, script.lines, 1),
   )
   const [edges, setEdges] = useState<Edge[]>([])
+  /* the done-frame pairing · hovered/focused task (node ⟷ YAML both drive) */
+  const [hoverTask, setHoverTask] = useState<string | null>(null)
+  const hoverSrcRef = useRef<'node' | 'yaml'>('node')
 
   const sectionRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
@@ -98,13 +136,26 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const dagRef = useRef<HTMLDivElement>(null)
   const termRef = useRef<HTMLDivElement>(null)
   const termBodyRef = useRef<HTMLDivElement>(null)
+  const donePanelRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef(new Map<string, HTMLDivElement | null>())
   const wireRefs = useRef<(SVGPathElement | null)[]>([])
   /* path lengths cached at edge-commit — getTotalLength() in the frame loop
      would force a reflow per path per frame (longtask budget, F2) */
   const wireLenRef = useRef<number[]>([])
-  const flightsRef = useRef<Map<string, FlightGeom>>(new Map())
-  const nonTaskRef = useRef<HTMLElement[]>([])
+  const blocksRef = useRef<Map<string, BlockGeom>>(new Map())
+  /* non-task lines · header whispers UP, separators just dissolve, the
+     outputs block lands LAST toward the run footer */
+  const headLinesRef = useRef<HTMLElement[]>([])
+  const midLinesRef = useRef<HTMLElement[]>([])
+  const tailLinesRef = useRef<HTMLElement[]>([])
+  /* the seed chips · one per task, driven along their bezier by apply() */
+  const seedLayerRef = useRef<HTMLDivElement>(null)
+  const seedRefs = useRef(new Map<string, HTMLSpanElement | null>())
+  /* live slab landing targets (ps-layer px), written by the 3D loop when the
+     slabs are the visible DAG — [x, y, projectedWidth] */
+  const slabTargetsRef = useRef(new Map<string, [number, number, number]>())
+  const psLayerRef = useRef<HTMLElement | null>(null)
+  const psOffRef = useRef<{ x: number; y: number } | null>(null)
   /** the morph panel's identity rect, section-relative (seam handoff base) */
   const seamBaseRef = useRef<{ left: number; top: number; w: number; h: number } | null>(null)
   const rafRef = useRef<number | null>(null)
@@ -119,7 +170,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const progressRef = useRef(0)
   const plan3d = usePlan3D(sectionRef)
 
-  /* ── measure · file line blocks → node targets (stage coordinates) ──────────
+  /* ── measure · task blocks + seed paths + node targets (live layout) ────────
      Transforms are cleared first so a mid-scroll (re)measure — reload, tab
      switch, font swap, resize — reads the true layout, then the same frame
      re-applies p. No flash: clear + measure + apply happen in one rAF. */
@@ -127,7 +178,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const card = cardRef.current
     const dag = dagRef.current
     const stage = stageRef.current
-    if (!card || !dag || !stage) return
+    const seedLayer = seedLayerRef.current
+    if (!card || !dag || !stage || !seedLayer) return
 
     /* the card-level transform (seam handoff · settle drift) must not skew
        the line/node geometry this pass reads — clear, measure, re-apply
@@ -149,20 +201,33 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       }
     }
 
-    const flights = new Map<string, FlightGeom>()
-    const nonTask: HTMLElement[] = []
+    const slr = seedLayer.getBoundingClientRect()
+    const blocks = new Map<string, BlockGeom>()
 
     const lineEls = new Map<number, HTMLElement>()
+    let fileTop = Infinity
+    let fileBottom = -Infinity
     for (const el of card.querySelectorAll<HTMLElement>('.cf-line')) {
       el.style.transform = ''
       el.style.opacity = ''
       const ln = Number(el.dataset.ln)
-      if (!Number.isNaN(ln)) lineEls.set(ln, el)
+      if (Number.isNaN(ln)) continue
+      lineEls.set(ln, el)
+      const r = el.getBoundingClientRect()
+      fileTop = Math.min(fileTop, r.top)
+      fileBottom = Math.max(fileBottom, r.bottom)
     }
+    const fileSpan = Math.max(1, fileBottom - fileTop)
+    const drainF = (y: number): number => clamp01((fileBottom - y) / fileSpan)
 
     const taskLines = new Set<number>()
+    let firstTaskLn = Infinity
+    let lastTaskLn = -Infinity
     for (const t of plan.tasks) {
+      firstTaskLn = Math.min(firstTaskLn, t.line0)
+      lastTaskLn = Math.max(lastTaskLn, t.line1)
       const els: HTMLElement[] = []
+      const centers: number[] = []
       let top = Infinity
       let bottom = -Infinity
       let left = Infinity
@@ -173,6 +238,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         if (!el) continue
         els.push(el)
         const r = el.getBoundingClientRect()
+        centers.push(r.top + r.height / 2)
         top = Math.min(top, r.top)
         bottom = Math.max(bottom, r.bottom)
         left = Math.min(left, r.left)
@@ -183,16 +249,34 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       nodeEl.style.opacity = ''
       nodeEl.style.transform = ''
       const nr = nodeEl.getBoundingClientRect()
-      flights.set(t.id, {
+      const cy = (top + bottom) / 2
+      blocks.set(t.id, {
         els,
-        dx: nr.left + nr.width / 2 - (left + right) / 2,
-        dy: nr.top + nr.height / 2 - (top + bottom) / 2,
+        lineDy: centers.map((c) => cy - c),
+        lineF: centers.map((c) => drainF(c)),
+        f: drainF(cy),
+        p0: { x: (left + right) / 2 - slr.left, y: cy - slr.top },
+        p2: {
+          x: nr.left + nr.width / 2 - slr.left,
+          y: nr.top + nr.height / 2 - slr.top,
+        },
       })
     }
-    for (const [ln, el] of lineEls) if (!taskLines.has(ln)) nonTask.push(el)
 
-    flightsRef.current = flights
-    nonTaskRef.current = nonTask
+    const head: HTMLElement[] = []
+    const mid: HTMLElement[] = []
+    const tail: HTMLElement[] = []
+    for (const [ln, el] of lineEls) {
+      if (taskLines.has(ln)) continue
+      if (ln < firstTaskLn) head.push(el)
+      else if (ln > lastTaskLn) tail.push(el)
+      else mid.push(el)
+    }
+
+    blocksRef.current = blocks
+    headLinesRef.current = head
+    midLinesRef.current = mid
+    tailLinesRef.current = tail
 
     /* the wires · measured node-edge to node-edge, in DAG-local coordinates */
     const dr = dag.getBoundingClientRect()
@@ -236,41 +320,101 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       /* phase flag → caption + narration crossfade (morph.css) */
       stage.dataset.phase = phaseAt(p)
 
-      /* the file card travels in, then its shell dissolves through the burst */
+      /* the file card travels in, then its shell steps aside for the burst */
       const shell = shellAt(p)
       const settle = easeInOut(clamp01(p / PH.settleEnd))
       stage.style.setProperty('--msh', shell.toFixed(3))
       card.style.transform = `translateY(${((1 - settle) * 26).toFixed(2)}px)`
-      /* once every flight has landed AND faded, the empty card stops painting
-         (the flying lines live INSIDE it — never hide before burstEnd) */
-      card.style.visibility = p >= PH.burstEnd && flightsRef.current.size > 0 ? 'hidden' : ''
+      /* once every seed has landed AND the outputs line has left, the empty
+         card stops painting (the condensing lines live INSIDE it) */
+      card.style.visibility = p >= PH.wire1 && blocksRef.current.size > 0 ? 'hidden' : ''
 
-      /* task blocks fly · wave order · slight per-line trail (comet feel) */
-      for (const t of plan.tasks) {
-        const geom = flightsRef.current.get(t.id)
-        if (!geom) continue
-        const e = flightAt(p, t.wave, plan.waveCount)
-        for (let i = 0; i < geom.els.length; i++) {
-          const le = clamp01(e * 1.18 - i * 0.035)
-          const el = geom.els[i]
-          const k = easeInOut(le)
-          el.style.transform = le === 0 ? '' : `translate(${geom.dx * k}px, ${geom.dy * k}px)`
-          el.style.opacity = le < 0.55 ? '1' : String(Math.max(0, 1 - (le - 0.55) / 0.4))
+      /* ── the aspiration · one task at a time, reading order ──────────────────
+         Each block CONDENSES in place into its seed chip, the chip rides a
+         curve INTO its DAG slot, the slot ignites on arrival. In 3D mode the
+         landing follows the LIVE projected slab; the DOM node is the truth
+         everywhere else. */
+      const use3d = !!stage.dataset.plan3d
+      const psOff = psOffRef.current
+      const drain = drainAt(p)
+      const n = plan.tasks.length
+      for (let i = 0; i < n; i++) {
+        const t = plan.tasks[i]
+        const g = blocksRef.current.get(t.id)
+        if (!g) continue
+        const e = aspireAt(p, i, n)
+        const ce = easeInOut(condenseAt(e))
+        const te = travelAt(e)
+
+        /* the block's lines drain downward, TIGHTEN toward their center
+           (0.55 damp — a squeeze, never a cross-over) and hand over */
+        for (let j = 0; j < g.els.length; j++) {
+          const el = g.els[j]
+          const dy = g.lineDy[j] * ce * 0.55 + drain * g.lineF[j]
+          el.style.transform = dy === 0 ? '' : `translateY(${dy.toFixed(2)}px)`
+          el.style.opacity =
+            ce <= 0.25 ? '1' : String(Math.max(0, 1 - (ce - 0.25) / 0.5))
         }
-        /* the node materializes where its lines land */
+
+        /* the seed chip · born from the condensation, drawn along its curve */
+        const seed = seedRefs.current.get(t.id)
+        if (seed) {
+          const seedIn = clamp01((ce - 0.55) / 0.45)
+          const seedOut = 1 - clamp01((te - 0.85) / 0.15)
+          const o = seedIn * seedOut
+          if (o <= 0.001) {
+            seed.style.opacity = '0'
+            seed.style.visibility = 'hidden'
+          } else {
+            const t3 = use3d && psOff ? slabTargetsRef.current.get(t.id) : undefined
+            const tx = t3 ? t3[0] + psOff!.x : g.p2.x
+            const ty = t3 ? t3[1] + psOff!.y : g.p2.y
+            /* landing size follows the projected slab into depth (3D mode) */
+            const scale = t3 ? Math.max(0.55, Math.min(1, t3[2])) : 1
+            const k = easeInOut(te)
+            /* the seed is born where its DRAINED block sits */
+            const y0 = g.p0.y + drain * g.f
+            const dist = Math.hypot(tx - g.p0.x, ty - y0)
+            const cx = (g.p0.x + tx) / 2
+            const cy = (y0 + ty) / 2 - Math.min(90, Math.max(24, dist * 0.22))
+            const x = qbez(g.p0.x, cx, tx, k)
+            const y = qbez(y0, cy, ty, k)
+            seed.style.opacity = o.toFixed(3)
+            /* the base class ships hidden — an empty inline write would fall
+               back to the stylesheet and never show (found empirically) */
+            seed.style.visibility = 'visible'
+            seed.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(-50%, -50%) scale(${(1 - (1 - scale) * k).toFixed(3)})`
+          }
+        }
+
+        /* the node is BORN as its seed lands (2D truth; the 3D slab mirrors
+           this same ignition via plan-scene-model.materializeAt) */
         const nodeEl = nodeRefs.current.get(t.id)
         if (nodeEl) {
-          const o = clamp01((e - 0.55) / 0.4)
+          const o = easeInOut(igniteAt(e))
           nodeEl.style.opacity = o.toFixed(3)
           nodeEl.style.transform = o >= 1 ? '' : `translateY(${((1 - o) * 10).toFixed(2)}px)`
         }
       }
-      /* non-task lines dissolve with the shell (a touch of drift) */
-      for (let i = 0; i < nonTaskRef.current.length; i++) {
-        const el = nonTaskRef.current[i]
+
+      /* header lines whisper UP and out with the shell; separators dissolve
+         in place; the outputs block holds, then lands LAST toward the run
+         footer as the terminal rises (its landing = the footer being born) */
+      for (let i = 0; i < headLinesRef.current.length; i++) {
+        const el = headLinesRef.current[i]
         el.style.opacity = shell.toFixed(3)
-        el.style.transform =
-          shell >= 1 ? '' : `translateY(${((1 - shell) * (i % 2 === 0 ? 8 : -6)).toFixed(2)}px)`
+        el.style.transform = shell >= 1 ? '' : `translateY(${(-(1 - shell) * 14).toFixed(2)}px)`
+      }
+      for (let i = 0; i < midLinesRef.current.length; i++) {
+        const el = midLinesRef.current[i]
+        el.style.opacity = shell.toFixed(3)
+        el.style.transform = ''
+      }
+      const oe = easeInOut(clamp01((p - (PH.burstEnd - 0.05)) / 0.1))
+      for (let i = 0; i < tailLinesRef.current.length; i++) {
+        const el = tailLinesRef.current[i]
+        el.style.opacity = (1 - oe).toFixed(3)
+        el.style.transform = oe <= 0 ? '' : `translateY(${(oe * 26).toFixed(2)}px)`
       }
 
       /* wires draw once the nodes have landed (lengths pre-cached) */
@@ -357,9 +501,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     if (!stage) return
     stage.style.removeProperty('--msh')
     delete stage.dataset.phase
-    for (const el of stage.querySelectorAll<HTMLElement>('.cf-line, .morph-node, .morph-term')) {
+    delete stage.dataset.entry
+    for (const el of stage.querySelectorAll<HTMLElement>(
+      '.cf-line, .morph-node, .morph-term, .morph-seed',
+    )) {
       el.style.transform = ''
       el.style.opacity = ''
+      el.style.visibility = ''
     }
     setTimeline(timelineAt(flagship, script.lines, 1))
     timelineSigRef.current = timelineAt(flagship, script.lines, 1).sig
@@ -369,51 +517,94 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   useEffect(() => {
     if (!armed || typeof window === 'undefined') return
     const section = sectionRef.current
+    /* pinned for the cleanup — the refs may be cleared by unmount order */
+    const stageEl = stageRef.current
+    const cardEl = cardRef.current
     if (!section) return
 
     /* H-CONTINUITY · the hero's file panel and this scene's file are ONE
        object. Across the hero→morph seam (section top traveling viewport
        bottom → top, q 0→1) the morph card takes over AT the hero panel's
        live projected rect (same CodeFile, same flagship — pixel-equivalent
-       content) while the hero panel steps aside, then glides DOWN into its
-       sticky slot. Pure function of scroll: scrub up, it hands back. */
+       content) while the hero editor steps aside, then dives DOWN into its
+       sticky slot. Pure function of scroll: scrub up, it hands back.
+
+       THE HANDOFF IS HARD (operator verdict, wave I): at every scroll
+       position exactly ONE copy of the file paints. The WHOLE hero editor
+       column steps aside (visibility, never opacity) — hiding only the
+       panel left its tab strip + footer chip doubling the filename under
+       the traveling card (the "interleaved mush" bug). The panel keeps
+       layout, so its rect still drives the projection. The hero COPY column
+       fades as the file is drawn away (the page is being pulled toward the
+       DAG), and the card's path clears the fixed nav early (NAV_SAFE). */
     const heroPanel = document.querySelector<HTMLElement>('.v4hero-code')
+    const heroBox = heroPanel?.closest<HTMLElement>('.v4hero-editor') ?? heroPanel
+    const heroCopy = document.querySelector<HTMLElement>('.v4hero-copy')
     const SEAM_TAKE = 0.04
+    const handBack = () => {
+      if (heroBox) heroBox.style.visibility = ''
+      if (heroCopy) heroCopy.style.opacity = ''
+    }
     const seam = (rect: DOMRect, vh: number) => {
       const card = cardRef.current
       const stage = stageRef.current
-      if (!heroPanel || !card || !stage) return
+      if (!heroPanel || !heroBox || !card || !stage) return
       const q = 1 - rect.top / vh
       const inWindow = q >= SEAM_TAKE && q < 1
       /* the stage un-clips ONLY while the card travels outside its box */
       if (inWindow) stage.dataset.seam = '1'
       else delete stage.dataset.seam
+      /* the ENTRY window (q < 1 · the stage not yet docked): the section
+         heading stays out of the card's flight path and fades in only once
+         the card has landed in its slot (morph.css · [data-entry]) */
+      if (q < 1) stage.dataset.entry = '1'
+      else delete stage.dataset.entry
       if (q >= 1) {
-        /* past the seam · the hero panel is above the viewport; hand its
-           visibility back so an upward scrub finds it intact */
-        heroPanel.style.visibility = ''
+        /* past the seam · the hero is above the viewport; hand everything
+           back so an upward scrub finds it intact */
+        handBack()
         return
       }
       if (!inWindow) {
-        /* before the takeover · the hero panel IS the file; no second copy */
-        heroPanel.style.visibility = ''
+        /* before the takeover · the hero editor IS the file; no second copy */
+        handBack()
         card.style.visibility = 'hidden'
         return
       }
       const base = seamBaseRef.current
       const hr = heroPanel.getBoundingClientRect()
-      if (!base || base.w <= 0 || hr.width <= 0) return
+      if (!base || base.w <= 0 || hr.width <= 0) {
+        /* no geometry yet (first frame · zero-width edge) — the hero stays
+           the ONE visible file until the projection can take over */
+        handBack()
+        card.style.visibility = 'hidden'
+        return
+      }
       const sr = stage.getBoundingClientRect()
       const k = easeInOut(clamp01((q - SEAM_TAKE) / (1 - SEAM_TAKE)))
       const inv = 1 - k
-      const dx = (hr.left + hr.width / 2 - (sr.left + base.left + base.w / 2)) * inv
-      const dy = (hr.top + hr.height / 2 - (sr.top + base.top + base.h / 2)) * inv
+      /* the vertical component eases faster — the card DIVES out of the
+         nav band instead of lingering behind it */
+      const invY = Math.pow(inv, 1.5)
+      const slotCx = sr.left + base.left + base.w / 2
+      const slotCy = sr.top + base.top + base.h / 2
+      const dx = (hr.left + hr.width / 2 - slotCx) * inv
+      let dy = (hr.top + hr.height / 2 - slotCy) * invY
       const s = 1 + (hr.width / base.w - 1) * inv
+      /* nav clearance · blended in across the seam's first fifth so the
+         takeover instant stays pixel-continuous with the hero panel while
+         the card clears the fixed nav EARLY (never lingers behind it) */
+      const top = slotCy + dy + 26 * k - (base.h * s) / 2
+      const lift = Math.max(0, NAV_SAFE - top) * Math.min(1, q * 5)
+      dy += lift
       /* the glide ENDS on the settle pose (translateY 26px) — apply() then
          eases 26→0 across the file beat, zero teleport at the boundary */
       card.style.visibility = ''
       card.style.transform = `translate3d(${dx.toFixed(1)}px, ${(dy + 26 * k).toFixed(1)}px, 0) scale(${s.toFixed(4)})`
-      heroPanel.style.visibility = 'hidden'
+      heroBox.style.visibility = 'hidden'
+      /* the pitch fades as its file is drawn away (restored on scrub-up) —
+         q-based so the dimming is felt from the seam's first third */
+      if (heroCopy) heroCopy.style.opacity = (1 - easeInOut(clamp01(q * 1.8))).toFixed(3)
     }
 
     let needMeasure = true
@@ -426,6 +617,25 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       if (needMeasure) {
         needMeasure = false
         measure()
+      }
+      /* the seed→slab coordinate bridge (3D mode) · read while the frame is
+         still in its read phase */
+      const stage = stageRef.current
+      const seedLayer = seedLayerRef.current
+      if (stage?.dataset.plan3d && seedLayer) {
+        const ps =
+          psLayerRef.current ??
+          (psLayerRef.current = stage.querySelector<HTMLElement>(
+            '.ps-layer:not(.ps-tiplayer)',
+          ))
+        if (ps) {
+          const a = ps.getBoundingClientRect()
+          const b = seedLayer.getBoundingClientRect()
+          psOffRef.current = { x: a.left - b.left, y: a.top - b.top }
+        }
+      } else {
+        psLayerRef.current = null
+        psOffRef.current = null
       }
       const runway = rect.height - vh
       apply(runway > 0 ? clamp01(-rect.top / runway) : 1)
@@ -457,11 +667,14 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current)
       rafRef.current = null
       /* hand the file back to the hero (disarm · unmount) */
-      heroPanel?.style.removeProperty('visibility')
-      if (stageRef.current) delete stageRef.current.dataset.seam
-      if (cardRef.current) {
-        cardRef.current.style.visibility = ''
-        cardRef.current.style.transform = ''
+      handBack()
+      if (stageEl) {
+        delete stageEl.dataset.seam
+        delete stageEl.dataset.entry
+      }
+      if (cardEl) {
+        cardEl.style.visibility = ''
+        cardEl.style.transform = ''
       }
     }
   }, [armed, measure, apply])
@@ -480,6 +693,56 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const body = termBodyRef.current
     if (body) body.scrollTop = body.scrollHeight
   }, [timeline.reveal])
+
+  /* ── the done frame · node ⟷ YAML cross-highlight ──────────────────────────
+     The hovered/focused task's lines light in the settled file panel; when
+     the DAG side drives, the panel keeps the lit lines in view (its own
+     scroll only — never the page's). DOM class sweep, no reconciliation.
+     The pairing is DERIVED from the phase — leaving `done` clears it without
+     any state write. */
+  const done = timeline.verdictOn
+  const pairTask = done ? hoverTask : null
+  useEffect(() => {
+    const panel = donePanelRef.current
+    if (!panel) return
+    for (const el of panel.querySelectorAll<HTMLElement>('.cf-line.morph-hi')) {
+      el.classList.remove('morph-hi')
+    }
+    if (!pairTask) return
+    const t = plan.tasks.find((x) => x.id === pairTask)
+    if (!t) return
+    const lit: HTMLElement[] = []
+    for (const el of panel.querySelectorAll<HTMLElement>('.cf-line')) {
+      const ln = Number(el.dataset.ln)
+      if (ln >= t.line0 && ln <= t.line1) {
+        el.classList.add('morph-hi')
+        lit.push(el)
+      }
+    }
+    const pre = panel.querySelector<HTMLElement>('.cf-pre')
+    if (!pre || lit.length === 0 || hoverSrcRef.current !== 'node') return
+    const pr = pre.getBoundingClientRect()
+    const fr = lit[0].getBoundingClientRect()
+    const lr = lit[lit.length - 1].getBoundingClientRect()
+    if (fr.top < pr.top) pre.scrollTop += fr.top - pr.top - 12
+    else if (lr.bottom > pr.bottom) {
+      pre.scrollTop += Math.min(lr.bottom - pr.bottom + 12, Math.max(0, fr.top - pr.top - 12))
+    }
+  }, [pairTask, plan])
+
+  const onYamlMove = useCallback(
+    (e: React.PointerEvent) => {
+      const line = (e.target as HTMLElement).closest<HTMLElement>('.cf-line')
+      const ln = line ? Number(line.dataset.ln) : NaN
+      const task = Number.isNaN(ln)
+        ? undefined
+        : plan.tasks.find((t) => ln >= t.line0 && ln <= t.line1)
+      hoverSrcRef.current = 'yaml'
+      setHoverTask(task?.id ?? null)
+    },
+    [plan],
+  )
+  const onYamlLeave = useCallback(() => setHoverTask(null), [])
 
   const { verdict } = script
 
@@ -503,10 +766,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 The same file you just read. Keep scrolling.
               </p>
               <p className="morph-cap" data-for="burst">
-                It bursts into its plan. Steps with no dependency <b>run together</b>.
+                One task at a time is <b>drawn into its place</b> in the plan.
               </p>
               <p className="morph-cap" data-for="run">
                 The recorded run chains through it, step by step.
+              </p>
+              <p className="morph-cap" data-for="done">
+                Hover any step to see its exact lines in the file.
               </p>
             </div>
           </header>
@@ -542,7 +808,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               />
             </div>
 
-            {/* THE DAG · wave columns + measured wires (the burst's target) */}
+            {/* THE DAG · wave columns + measured wires (the aspiration's target) */}
             <div className="morph-dag" ref={dagRef}>
               <svg className="morph-wires" aria-hidden>
                 {edges.map((e, i) => (
@@ -577,6 +843,26 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                           className="morph-node"
                           data-verb={task.verb}
                           data-run={state}
+                          data-hi={pairTask === task.id ? '1' : undefined}
+                          tabIndex={done ? 0 : undefined}
+                          onPointerEnter={
+                            done
+                              ? () => {
+                                  hoverSrcRef.current = 'node'
+                                  setHoverTask(task.id)
+                                }
+                              : undefined
+                          }
+                          onPointerLeave={done ? () => setHoverTask(null) : undefined}
+                          onFocus={
+                            done
+                              ? () => {
+                                  hoverSrcRef.current = 'node'
+                                  setHoverTask(task.id)
+                                }
+                              : undefined
+                          }
+                          onBlur={done ? () => setHoverTask(null) : undefined}
                         >
                           <span className="morph-node-id">{task.id}</span>
                           <span className="morph-node-verb">{task.verb}</span>
@@ -592,6 +878,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                             {state === 'done' && chip.text && !chip.skipped ? `✓ ${chip.text}` : ''}
                             {state === 'skipped' ? `⊘ ${chip.text || 'skipped'}` : ''}
                             {state === 'running' ? '● running' : ''}
+                          </span>
+                          {/* the plain-words whisper (H6 dictionary) · done frame */}
+                          <span className="morph-node-tip" aria-hidden>
+                            {VERB_WORDS[task.verb]}
                           </span>
                         </div>
                       )
@@ -610,8 +900,46 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   progressRef={progressRef}
                   stageRef={stageRef}
                   cardRef={cardRef}
+                  slabTargetsRef={slabTargetsRef}
                 />
               </Suspense>
+            ) : null}
+
+            {/* THE SEEDS · one chip per task, driven along their curves by
+                apply() — the condensed block traveling INTO its slot */}
+            <div className="morph-seeds" aria-hidden ref={seedLayerRef}>
+              {plan.tasks.map((t) => (
+                <span
+                  key={t.id}
+                  className="morph-seed"
+                  data-verb={t.verb}
+                  ref={(el) => {
+                    seedRefs.current.set(t.id, el)
+                  }}
+                >
+                  <span className="morph-seed-id">{t.id}</span>
+                  <span className="morph-seed-verb">{t.verb}</span>
+                </span>
+              ))}
+            </div>
+
+            {/* THE SETTLED FILE · the done frame's left panel (≥1024) — the
+                same file, back at rest BESIDE its flat plan; hover pairs it
+                with the DAG both ways */}
+            {armed ? (
+              <div
+                className="morph-done-file"
+                ref={donePanelRef}
+                onPointerMove={done ? onYamlMove : undefined}
+                onPointerLeave={done ? onYamlLeave : undefined}
+              >
+                <MemoCodeFile
+                  yaml={flagship.yaml}
+                  filename={flagship.filename}
+                  highlight={flagship.highlight}
+                  className="morph-done-code"
+                />
+              </div>
             ) : null}
           </div>
 
