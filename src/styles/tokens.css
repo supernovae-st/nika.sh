@@ -45,7 +45,7 @@
      A tiny inline-SVG Bayer tile (the 6 lowest matrix cells as dots, alpha
      graded by threshold order) repeated at --v4-grain-size. Reads as premium
      print-grain, NOT noise static. White dots on the dark ladder; theme-light
-     swaps to dark dots (paper grain). Consumed by the .v4-grain utility. */
+     swaps to dark dots (paper grain). Consumed by .v4sec + the hero panel. */
   --v4-grain-size: 4px;
   --v4-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Cg fill='%23fff'%3E%3Crect x='0' y='0' width='1' height='1' fill-opacity='.07'/%3E%3Crect x='2' y='2' width='1' height='1' fill-opacity='.06'/%3E%3Crect x='2' y='0' width='1' height='1' fill-opacity='.05'/%3E%3Crect x='0' y='2' width='1' height='1' fill-opacity='.045'/%3E%3Crect x='1' y='1' width='1' height='1' fill-opacity='.04'/%3E%3Crect x='3' y='3' width='1' height='1' fill-opacity='.03'/%3E%3C/g%3E%3C/svg%3E");
 
@@ -289,8 +289,7 @@
      and each theme sets `--v4-seam-nod` to its opposite-register tone.
 
    The hero (first paint · no section above) and the Living File (its own pinned
-   scroll register) don't carry `.v4sec`, so they opt out for free; `.v4-noseam`
-   is a manual hook for any future exception. */
+   scroll register) don't carry `.v4sec`, so they opt out for free. */
 .v4sec {
   position: relative;
 }
@@ -315,12 +314,6 @@
   pointer-events: none;
   background: linear-gradient(to bottom, var(--v4-seam-nod) 0%, transparent 100%);
 }
-/* opt-out · sections that own their own top treatment. */
-.v4sec.v4-noseam::before,
-.v4sec.v4-noseam::after {
-  display: none;
-}
-
 /* ─── .v4-cv · below-fold render skip (content-visibility) ────────────────────
    Applied ONLY to deep home sections BELOW the deepest in-page anchor target
    (#permits — see Nav's mega-menu), so fragment navigation always lands exactly
@@ -333,16 +326,6 @@
   contain-intrinsic-size: auto 1000px;
 }
 
-/* ─── .v4-grain · the CSS-only static dither texture (BRAND-11) ───────────────
-   Lays the ordered Bayer tile over the element's own background as an extra
-   background-image layer (composes with the theme background-color — no pseudo
-   element, so it never fights .v4sec's ::before/::after seams). Theme-scoped:
-   white dots on the dark ladder, dark dots on the paper sections. Exists even
-   without WebGL — the DitherField canvas is the animated sibling. */
-.v4-grain {
-  background-image: var(--v4-grain-img);
-  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
-}
 /* ─── .v4-frame-canvas · the per-section canvas behind a product frame ────────
    Layer 1 of the product-frame recipe (research round 2 · the Codex pattern):
    a subtle blue-into-black gradient panel the frame sits ON. Each major
@@ -383,20 +366,12 @@
 :root {
   --v4-noise-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
   --v4-noise-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-  --v4-noise-c: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' seed='41' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
   --v4-dither-fade: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='120' shape-rendering='crispEdges'%3E%3Cg fill='%23000'%3E%3Crect x='1' y='0' width='3' height='1'/%3E%3Crect x='0' y='1' width='4' height='1'/%3E%3Crect x='0' y='2' width='4' height='1'/%3E%3Crect x='0' y='3' width='4' height='1'/%3E%3Crect x='1' y='4' width='3' height='1'/%3E%3Crect x='0' y='5' width='4' height='1'/%3E%3Crect x='0' y='6' width='2' height='1'/%3E%3Crect x='3' y='6' width='1' height='1'/%3E%3Crect x='0' y='7' width='4' height='1'/%3E%3Crect x='1' y='8' width='3' height='1'/%3E%3Crect x='0' y='9' width='4' height='1'/%3E%3Crect x='0' y='10' width='2' height='1'/%3E%3Crect x='3' y='10' width='1' height='1'/%3E%3Crect x='0' y='11' width='4' height='1'/%3E%3Crect x='1' y='12' width='1' height='1'/%3E%3Crect x='3' y='12' width='1' height='1'/%3E%3Crect x='0' y='13' width='4' height='1'/%3E%3Crect x='0' y='14' width='2' height='1'/%3E%3Crect x='3' y='14' width='1' height='1'/%3E%3Crect x='0' y='15' width='4' height='1'/%3E%3Crect x='1' y='16' width='1' height='1'/%3E%3Crect x='3' y='16' width='1' height='1'/%3E%3Crect x='0' y='17' width='4' height='1'/%3E%3Crect x='0' y='18' width='2' height='1'/%3E%3Crect x='3' y='18' width='1' height='1'/%3E%3Crect x='0' y='19' width='4' height='1'/%3E%3Crect x='1' y='20' width='1' height='1'/%3E%3Crect x='3' y='20' width='1' height='1'/%3E%3Crect x='0' y='21' width='4' height='1'/%3E%3Crect x='1' y='22' width='1' height='1'/%3E%3Crect x='3' y='22' width='1' height='1'/%3E%3Crect x='0' y='23' width='4' height='1'/%3E%3Crect x='1' y='24' width='1' height='1'/%3E%3Crect x='3' y='24' width='1' height='1'/%3E%3Crect x='0' y='25' width='4' height='1'/%3E%3Crect x='1' y='26' width='1' height='1'/%3E%3Crect x='3' y='26' width='1' height='1'/%3E%3Crect x='0' y='27' width='4' height='1'/%3E%3Crect x='1' y='28' width='1' height='1'/%3E%3Crect x='3' y='28' width='1' height='1'/%3E%3Crect x='0' y='29' width='1' height='1'/%3E%3Crect x='2' y='29' width='2' height='1'/%3E%3Crect x='1' y='30' width='1' height='1'/%3E%3Crect x='3' y='30' width='1' height='1'/%3E%3Crect x='0' y='31' width='4' height='1'/%3E%3Crect x='1' y='32' width='1' height='1'/%3E%3Crect x='3' y='32' width='1' height='1'/%3E%3Crect x='0' y='33' width='1' height='1'/%3E%3Crect x='2' y='33' width='2' height='1'/%3E%3Crect x='1' y='34' width='1' height='1'/%3E%3Crect x='3' y='34' width='1' height='1'/%3E%3Crect x='0' y='35' width='4' height='1'/%3E%3Crect x='1' y='36' width='1' height='1'/%3E%3Crect x='3' y='36' width='1' height='1'/%3E%3Crect x='0' y='37' width='1' height='1'/%3E%3Crect x='2' y='37' width='2' height='1'/%3E%3Crect x='1' y='38' width='1' height='1'/%3E%3Crect x='3' y='38' width='1' height='1'/%3E%3Crect x='0' y='39' width='3' height='1'/%3E%3Crect x='1' y='40' width='1' height='1'/%3E%3Crect x='3' y='40' width='1' height='1'/%3E%3Crect x='0' y='41' width='1' height='1'/%3E%3Crect x='2' y='41' width='2' height='1'/%3E%3Crect x='1' y='42' width='1' height='1'/%3E%3Crect x='3' y='42' width='1' height='1'/%3E%3Crect x='0' y='43' width='3' height='1'/%3E%3Crect x='1' y='44' width='1' height='1'/%3E%3Crect x='3' y='44' width='1' height='1'/%3E%3Crect x='0' y='45' width='1' height='1'/%3E%3Crect x='2' y='45' width='1' height='1'/%3E%3Crect x='1' y='46' width='1' height='1'/%3E%3Crect x='3' y='46' width='1' height='1'/%3E%3Crect x='0' y='47' width='3' height='1'/%3E%3Crect x='1' y='48' width='1' height='1'/%3E%3Crect x='3' y='48' width='1' height='1'/%3E%3Crect x='0' y='49' width='1' height='1'/%3E%3Crect x='2' y='49' width='1' height='1'/%3E%3Crect x='1' y='50' width='1' height='1'/%3E%3Crect x='3' y='50' width='1' height='1'/%3E%3Crect x='0' y='51' width='3' height='1'/%3E%3Crect x='1' y='52' width='1' height='1'/%3E%3Crect x='3' y='52' width='1' height='1'/%3E%3Crect x='0' y='53' width='1' height='1'/%3E%3Crect x='2' y='53' width='1' height='1'/%3E%3Crect x='1' y='54' width='1' height='1'/%3E%3Crect x='3' y='54' width='1' height='1'/%3E%3Crect x='0' y='55' width='1' height='1'/%3E%3Crect x='2' y='55' width='1' height='1'/%3E%3Crect x='1' y='56' width='1' height='1'/%3E%3Crect x='3' y='56' width='1' height='1'/%3E%3Crect x='0' y='57' width='1' height='1'/%3E%3Crect x='2' y='57' width='1' height='1'/%3E%3Crect x='1' y='58' width='1' height='1'/%3E%3Crect x='3' y='58' width='1' height='1'/%3E%3Crect x='0' y='59' width='1' height='1'/%3E%3Crect x='2' y='59' width='1' height='1'/%3E%3Crect x='3' y='60' width='1' height='1'/%3E%3Crect x='0' y='61' width='1' height='1'/%3E%3Crect x='2' y='61' width='1' height='1'/%3E%3Crect x='1' y='62' width='1' height='1'/%3E%3Crect x='3' y='62' width='1' height='1'/%3E%3Crect x='0' y='63' width='1' height='1'/%3E%3Crect x='2' y='63' width='1' height='1'/%3E%3Crect x='3' y='64' width='1' height='1'/%3E%3Crect x='0' y='65' width='1' height='1'/%3E%3Crect x='2' y='65' width='1' height='1'/%3E%3Crect x='1' y='66' width='1' height='1'/%3E%3Crect x='3' y='66' width='1' height='1'/%3E%3Crect x='0' y='67' width='1' height='1'/%3E%3Crect x='2' y='67' width='1' height='1'/%3E%3Crect x='3' y='68' width='1' height='1'/%3E%3Crect x='0' y='69' width='1' height='1'/%3E%3Crect x='2' y='69' width='1' height='1'/%3E%3Crect x='1' y='70' width='1' height='1'/%3E%3Crect x='0' y='71' width='1' height='1'/%3E%3Crect x='2' y='71' width='1' height='1'/%3E%3Crect x='3' y='72' width='1' height='1'/%3E%3Crect x='0' y='73' width='1' height='1'/%3E%3Crect x='2' y='73' width='1' height='1'/%3E%3Crect x='1' y='74' width='1' height='1'/%3E%3Crect x='0' y='75' width='1' height='1'/%3E%3Crect x='2' y='75' width='1' height='1'/%3E%3Crect x='0' y='77' width='1' height='1'/%3E%3Crect x='2' y='77' width='1' height='1'/%3E%3Crect x='1' y='78' width='1' height='1'/%3E%3Crect x='0' y='79' width='1' height='1'/%3E%3Crect x='2' y='79' width='1' height='1'/%3E%3Crect x='0' y='81' width='1' height='1'/%3E%3Crect x='2' y='81' width='1' height='1'/%3E%3Crect x='1' y='82' width='1' height='1'/%3E%3Crect x='0' y='83' width='1' height='1'/%3E%3Crect x='2' y='83' width='1' height='1'/%3E%3Crect x='0' y='85' width='1' height='1'/%3E%3Crect x='2' y='85' width='1' height='1'/%3E%3Crect x='0' y='87' width='1' height='1'/%3E%3Crect x='2' y='87' width='1' height='1'/%3E%3Crect x='0' y='89' width='1' height='1'/%3E%3Crect x='2' y='89' width='1' height='1'/%3E%3Crect x='0' y='91' width='1' height='1'/%3E%3Crect x='2' y='91' width='1' height='1'/%3E%3Crect x='2' y='93' width='1' height='1'/%3E%3Crect x='0' y='95' width='1' height='1'/%3E%3Crect x='2' y='95' width='1' height='1'/%3E%3Crect x='2' y='97' width='1' height='1'/%3E%3Crect x='0' y='99' width='1' height='1'/%3E%3Crect x='2' y='99' width='1' height='1'/%3E%3Crect x='2' y='101' width='1' height='1'/%3E%3Crect x='0' y='103' width='1' height='1'/%3E%3Crect x='2' y='105' width='1' height='1'/%3E%3Crect x='0' y='107' width='1' height='1'/%3E%3Crect x='0' y='111' width='1' height='1'/%3E%3Crect x='0' y='115' width='1' height='1'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* the grain map · seed + slope per surface class */
-.lf-stream,
-.lf-outputs {
-  position: relative; /* anchor the grain overlay (harmless on these panels) */
-}
 .cf-panel::after,
-.v4-frame-canvas::after,
-.lf-stream::after,
-.lf-outputs::after,
-.hitl-outcome::after {
+.v4-frame-canvas::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -410,16 +385,4 @@
 .v4-frame-canvas::after {
   background-image: var(--v4-noise-b);
   opacity: 0.08; /* canvases carry a touch more tooth */
-}
-.lf-stream::after,
-.lf-outputs::after,
-.hitl-outcome::after {
-  background-image: var(--v4-noise-c);
-  opacity: 0.045;
-}
-/* paper-grain variant · light panels blend dark (overlay reads as smudge on
-   paper — multiply at a lower slope is the print register) */
-.theme-light .hitl-outcome::after {
-  mix-blend-mode: multiply;
-  opacity: 0.035;
 }

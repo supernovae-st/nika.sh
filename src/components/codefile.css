@@ -25,8 +25,8 @@
   --elev-frame: var(--seam-highlight), var(--elev-tight), var(--elev-ambient);
 
   /* defensive layout · the panel owns its own block flow even when a call-site
-     className (e.g. .v4permits-code, which is also used on a flex list elsewhere)
-     would otherwise impose display:flex/row on it. */
+     className is shared with a flex layout elsewhere (a class collision must
+     never impose display:flex/row on the editor window). */
   display: block;
   position: relative;
   overflow: hidden;

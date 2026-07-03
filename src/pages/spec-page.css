@@ -228,53 +228,8 @@
   overscroll-behavior-y: contain;
 }
 
-/* ── FIG S.1 · the four verbs · glyph + name + one-line model ────────────────
-   A hairline-ruled register; the verb glyph is grayscale (the verb-hue whisper
-   is reserved for the live run, never the static reference). */
-.spec-verbs {
-  margin: clamp(24px, 3.5vh, 36px) 0 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--v4-line);
-}
-.spec-verb {
-  display: grid;
-  grid-template-columns: 1.4rem 6rem 1fr;
-  align-items: baseline;
-  gap: 6px 12px;
-  padding: 16px 2px;
-  border-bottom: 1px solid var(--v4-line);
-}
-@media (max-width: 560px) {
-  .spec-verb {
-    grid-template-columns: 1.4rem 1fr;
-  }
-}
-.spec-verb-glyph {
-  font-family: var(--mono);
-  font-size: 16px;
-  line-height: 1;
-  color: var(--v4-text-dim);
-  user-select: none;
-}
-.spec-verb-name {
-  font-family: var(--mono);
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--v4-text);
-}
-.spec-verb-line {
-  font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--v4-text-dim);
-  text-wrap: pretty;
-}
-@media (max-width: 560px) {
-  .spec-verb-line {
-    grid-column: 2 / -1;
-  }
-}
+/* (the FIG S.1 hairline verb-row register is gone — the .spec-verbcards grid
+   is the four-verbs surface now.) */
 
 /* ── FIG S.2 · the task shape · name + req tag + gloss ledger ────────────────── */
 .spec-fields {

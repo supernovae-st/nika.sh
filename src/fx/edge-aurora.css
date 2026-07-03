@@ -56,11 +56,6 @@
   inherits: true;
   initial-value: 0deg;
 }
-@property --aurora-verb {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #2f6bff;
-}
 @property --aurora-progress {
   syntax: '<number>';
   inherits: true;

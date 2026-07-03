@@ -24,7 +24,8 @@ export type AuroraContextValue = {
   pulse: () => void
   /** Enter run mode: the frame becomes the 4-verb wheel, rest floor rises. */
   runStart: () => void
-  /** The active verb changed — the highlight arc takes its hue (+ a pulse). */
+  /** A task started — the frame beats a brighter pulse (v6 spectrum: no
+      per-verb tint; the verb argument is kept for a future tinted surface). */
   verbTick: (verb: AuroraVerb) => void
   /** 0..1 · the frame breathes with the RUN, not a timer. */
   runProgress: (p: number) => void

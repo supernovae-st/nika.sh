@@ -216,13 +216,6 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.ucp-wf-body {
-  margin-top: 11px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--v4-text-dim);
-  text-wrap: pretty;
-}
 /* the one-line two-tone gloss · white claim (b) + grey elaboration (rest) —
    the Raycast two-tone sentence register (claim raises contrast, gloss recedes) */
 .ucp-wf-gloss {

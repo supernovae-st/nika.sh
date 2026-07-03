@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
-import { AuroraContext, type AuroraContextValue, type AuroraVerb } from './aurora-context'
+import { AuroraContext, type AuroraContextValue } from './aurora-context'
 import './edge-aurora.css'
 
 /* ─── EdgeAurora · the reactive frame halo (v5 · ONE blue · E7 run mode) ──────
@@ -7,15 +7,13 @@ import './edge-aurora.css'
    transparent. It is THE DRUM of the manifesto: every run = a beat of the
    frame. At rest it is almost extinguished (single blue family · CSS breath).
 
-   E7 · RUN MODE · THE VERB BLOOM (H2 retune, oryzo ask): while a run replays,
-   the frame becomes run visualization — `data-run` is the runActive switch
-   that swaps the ::before conic into the 4-verb wheel (slow rotation) and a
-   sharper ::after arc carries the ACTIVE verb's hue (the one sanctioned
-   verb-hue surface, design doc §3.4 · the oryzo two-ring composition: wide
-   haze + crisp rim). Every task_started beats a brighter pulse. The verdict
-   sweeps one bright arc (success) or flashes danger (failure / permits
-   denial) INSIDE a ~1.2s hold, then the frame decays back to the idle blue —
-   idle is byte-identical to pre-E7.
+   E7 · RUN MODE (v6 ring law): while a run replays, `data-run` widens the band
+   + bloom, speeds the spectrum's travel, and the recorded progress swells the
+   rim — the frame IS run visualization. Every task_started beats a brighter
+   pulse (the per-verb tint of v5 was retired by the v6 full-spectrum ring).
+   The verdict sweeps one bright arc (success) or flashes danger (failure /
+   permits denial) INSIDE a ~1.2s hold, then the frame decays back to the
+   idle spectrum — idle is byte-identical to pre-E7.
 
    Every API call mutates CSS custom properties / data attributes on the
    aurora element DIRECTLY (via ref) — NO React re-render per event.
@@ -50,8 +48,6 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
   const tickRef = useRef<(ts: number) => void>(() => {})
   const sweepTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const dangerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  /* the verb hues, read once from the live token surface (tokens.css) */
-  const huesRef = useRef<Record<AuroraVerb, string> | null>(null)
 
   /* Tab hidden → park the ambient animations (data-idle). The ring's slow
      drift is a feature while WATCHED; it composits for nobody when hidden. */
@@ -127,25 +123,13 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     arm()
   }, [arm])
 
-  const verbTick = useCallback(
-    (verb: AuroraVerb) => {
-      if (typeof window === 'undefined') return
-      const el = elRef.current
-      if (!el) return
-      if (!huesRef.current) {
-        const cs = getComputedStyle(document.documentElement)
-        huesRef.current = {
-          infer: cs.getPropertyValue('--verb-infer').trim() || '#5b8cff',
-          exec: cs.getPropertyValue('--verb-exec').trim() || '#ff7a3c',
-          invoke: cs.getPropertyValue('--verb-invoke').trim() || '#22d3ee',
-          agent: cs.getPropertyValue('--verb-agent').trim() || '#b07bff',
-        }
-      }
-      el.style.setProperty('--aurora-verb', huesRef.current[verb])
-      pulse()
-    },
-    [pulse],
-  )
+  /* v6 ring law: the spectrum frame carries no per-verb tint — a verb tick IS
+     the pulse (the beat still lands per task_started; the `verb` argument
+     stays in the API so a verb-tinted surface can return without changing
+     every caller). */
+  const verbTick = useCallback<AuroraContextValue['verbTick']>(() => {
+    pulse()
+  }, [pulse])
 
   const runProgress = useCallback((p: number) => {
     const el = elRef.current

@@ -371,15 +371,3 @@
 .v4docfoot a:hover {
   color: var(--v4-text);
 }
-
-/* a shared inline link in body prose · the underlined, ink-rising treatment */
-.v4inline-link {
-  color: var(--v4-text);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
-  transition: text-decoration-color 0.18s ease;
-}
-.v4inline-link:hover {
-  text-decoration-color: var(--v4-text);
-}

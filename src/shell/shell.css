@@ -8,55 +8,9 @@
    imports it directly; this file keeps the hero + install + FIG plates that
    Hero / CodeFile / Install / Learn / Convert consume. */
 
-/* ─── the hero · atmosphere without color ───────────────────────────────────
-   Fine grain (an SVG-noise data-URI tile) + a faint radial vignette pin depth
-   onto the near-black surface so it never reads as flat black. Both layers are
-   pointer-events:none and compositor-cheap (no per-frame work). */
-
-/* hero content gutters · clamp horizontal padding and fold in the safe-area
-   inset so nothing rides under a notch (landscape) and the column always fits
-   within a 390px viewport with comfortable margins. */
-.v4hero-wrap {
-  padding-left: max(20px, env(safe-area-inset-left));
-  padding-right: max(20px, env(safe-area-inset-right));
-}
-@media (min-width: 768px) {
-  .v4hero-wrap {
-    padding-left: max(24px, env(safe-area-inset-left));
-    padding-right: max(24px, env(safe-area-inset-right));
-  }
-}
-
-.v4hero-grain {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  /* a tiled fractal-noise tile · ~3% opacity · the "fine grain" of a printed plate */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 160px 160px;
-  opacity: 0.035;
-  mix-blend-mode: screen;
-}
-.v4hero-vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      120% 90% at 50% 18%,
-      color-mix(in oklch, var(--v4-text) 4%, transparent) 0%,
-      transparent 46%
-    ),
-    radial-gradient(
-      130% 100% at 50% 110%,
-      rgba(0, 0, 0, 0.5) 0%,
-      transparent 60%
-    );
-}
-/* (the flat blueprint plate moved to the 3D perspective depth grid in
-   src/sections/hero.css — .v4depth supersedes the static .v4hero-plate) */
+/* (the v3 hero atmosphere — .v4hero-wrap gutters · grain · vignette — is gone:
+   the v5 hero owns its field in src/sections/hero.css; the flat blueprint
+   plate moved to the 3D perspective depth grid there too.) */
 
 /* the install affordance · monochrome (replaces the v3 blue-glass pill).
    max-width:100% + min-width:0 keeps it inside the column on mobile; the command
@@ -129,20 +83,6 @@
 .v4trust b {
   font-weight: 500;
   color: var(--v4-text-dim);
-}
-
-/* the brand kicker · "Intent as Code" as a small mark above the hook (plan §2).
-   Mono, tracked, faint — the blueprint register, never the explainer. */
-.v4kicker {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--v4-text-dim);
-}
-.v4kicker span {
-  margin-right: 0.5em;
-  color: var(--v4-text-faint);
 }
 
 /* ─── hero entrance · ONE orchestrated staggered reveal (motion-safe only) ────

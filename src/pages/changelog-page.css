@@ -59,12 +59,6 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-/* the list sits tight under its year header (the shared .v4log has a big top
-   margin meant for in-section use — collapse it here). */
-.cl-log.v4log {
-  margin-top: 20px;
-}
-
 /* ── the close · dimension line + forward links ──────────────────────────────
    Same register as the shared .v4uc-note / .v4belt-note dimension lines. */
 .cl-note {
