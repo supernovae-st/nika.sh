@@ -1,0 +1,69 @@
+/* ─── verb-glyphs-tile · the specimen plate under each verb chapter ───────────
+   A small hairline-framed square in the chapter's copy column. Floor state
+   (mobile · reduced-motion · no-WebGL · SSR): the verb's mono glyph char at
+   specimen size, in a whisper of the chapter hue (--vh, set by Verbs.tsx).
+   Live state: the lazy 3D glyph canvas covers it (verb-glyphs-three). Hidden
+   below 880px — the kicker's inline glyph char is the phone truth. */
+
+.vg-tile {
+  position: relative;
+  display: none;
+  width: 136px;
+  height: 136px;
+  margin-top: 22px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  overflow: hidden;
+}
+@media (min-width: 880px) {
+  .vg-tile {
+    display: block;
+  }
+}
+
+/* the corner registration ticks · the HUD whisper on the specimen plate */
+.vg-tile::before,
+.vg-tile::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border: 0 solid color-mix(in oklch, var(--v4-text) 30%, transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+.vg-tile::before {
+  top: 3px;
+  left: 3px;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+.vg-tile::after {
+  right: 3px;
+  bottom: 3px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+/* the floor · the verb's mono char at specimen size, chapter-hued whisper */
+.vg-char {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 42px;
+  line-height: 1;
+  color: color-mix(in oklch, var(--vh, var(--v4-text)) 42%, transparent);
+  user-select: none;
+  transition: opacity 320ms ease;
+}
+.vg-tile[data-live='1'] .vg-char {
+  opacity: 0;
+}
+
+/* the live canvas · covers the plate (r3f injects an inner wrapper div) */
+.vg-canvas {
+  position: absolute !important;
+  inset: 0;
+}
