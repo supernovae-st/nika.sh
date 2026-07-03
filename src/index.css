@@ -61,8 +61,11 @@
 }
 
 :root {
-  /* cosmic dark · Raycast/Linear near-black + Nika BRAND-05 blue */
-  --bg: #050a1c;
+  /* engineered dark · the v4 base. The old v3 navy (#050a1c) leaked as side
+     and bottom bands under every short page (404 audit 2026-07-03) because
+     the BODY is what shows beyond a page's own painted sections. One ladder
+     everywhere: the body floor IS the v4 deep end. */
+  --bg: #08090b;
   --bg-2: #0a1226;
   --fg: #f3f5fb;
   --fg-mute: #bac9ec;
