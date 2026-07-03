@@ -12,6 +12,81 @@
      · done panel · flat note) derives from it so the bands can never drift
      apart. Slimmer than the v1 (11vh→9.5vh): the scene breathes (wave I). */
   --morph-term-h: clamp(72px, 9.5vh, 124px);
+  /* the stage survey grid, dark register (wave M) · the hero's two planes
+     carried into the dark room at a fraction of the ink — the scene stops
+     being a void and the objects stop floating */
+  --morph-grid-ink: rgb(122 163 255 / 0.045);
+  --morph-grid-ink-far: rgb(122 163 255 / 0.022);
+}
+
+/* ── THE ROOM (wave M) · grid + grain + table — the stage has a floor ─────────
+   The hero teaches a spatial grammar (survey grid · BRAND-11 dither · quantized
+   radial); the morph scene inherits it in the dark register. One static layer
+   on the sticky stage — zero per-frame writes, transform/opacity law untouched.
+   Armed only: the static scene is a quiet normal section. */
+.morphsec[data-armed] .morph-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    var(--v4-grain-img),
+    /* the table · a quantized pool of light under the DAG — the slabs rest ON
+       something (hard steps, never an airbrush falloff · BRAND-11). The pool
+       overshoots the vignette mask so its outer step dies INSIDE the fade —
+       the eye never finds the ellipse's drawn edge (wave M review). */
+    radial-gradient(
+      120% 92% at 50% 62%,
+      rgb(79 134 255 / 0.038) 0%,
+      rgb(79 134 255 / 0.038) 30%,
+      rgb(66 114 224 / 0.02) 30%,
+      rgb(66 114 224 / 0.02) 56%,
+      transparent 56%
+    ),
+    linear-gradient(90deg, var(--morph-grid-ink) 1px, transparent 1px),
+    linear-gradient(180deg, var(--morph-grid-ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--morph-grid-ink-far) 1px, transparent 1px),
+    linear-gradient(180deg, var(--morph-grid-ink-far) 1px, transparent 1px);
+  background-size:
+    var(--v4-grain-size, 4px) var(--v4-grain-size, 4px),
+    100% 100%,
+    72px 72px,
+    72px 72px,
+    126px 126px,
+    126px 126px;
+  background-position:
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    63px 42px,
+    63px 42px;
+  /* the room dies toward the edges — grid, table and grain share one vignette
+     so nothing reads as wallpaper */
+  -webkit-mask-image: radial-gradient(130% 105% at 50% 56%, #000 0%, #000 46%, transparent 82%);
+  mask-image: radial-gradient(130% 105% at 50% 56%, #000 0%, #000 46%, transparent 82%);
+}
+
+/* the hero→morph weld (wave M) · the hero field's floor tone dissolves INTO
+   the dark room through the ordered-dither ramp — the section edge stops
+   reading as a horizontal cut (the dissolve is ours, never a smooth falloff) */
+@media (min-width: 768px) {
+  .morphsec::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 240px;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgb(17 34 82 / 0.5), rgb(13 24 58 / 0.28) 55%, rgb(11 18 42 / 0.12) 100%);
+    -webkit-mask-image: var(--v4-dither-fade);
+    -webkit-mask-size: 4px 240px;
+    -webkit-mask-repeat: repeat-x;
+    mask-image: var(--v4-dither-fade);
+    mask-size: 4px 240px;
+    mask-repeat: repeat-x;
+  }
 }
 @media (max-width: 767px) {
   .morphsec {
@@ -345,7 +420,11 @@
   padding: clamp(7px, 1.1vh, 10px) 12px clamp(7px, 1.1vh, 10px) 14px;
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-raised) 90%, transparent);
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 90%, transparent);
+  /* the print grain the 3D slabs wear — the flat card is the SAME object
+     after the flatten, so it keeps the texture (wave M identity) */
+  background-image: var(--v4-grain-img);
+  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
   box-shadow: inset 2px 0 0 var(--node-vhue, var(--v4-accent));
   transition: border-color 0.2s var(--ease-ui, ease);
 }
@@ -454,7 +533,7 @@
 .morph-stage[data-phase='done'] .morph-node[data-hi] {
   transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 55%, var(--v4-line));
-  background: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 10%, var(--v4-bg-raised));
+  background-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 10%, var(--v4-bg-raised));
 }
 .morph-node:focus-visible {
   outline: 1.5px solid var(--v4-focus-ring);
@@ -895,10 +974,16 @@
     display: flex;
     align-items: center;
     gap: 14px;
+    padding: 7px 12px;
     font-family: var(--mono);
     font-size: 10.5px;
     letter-spacing: 0.08em;
     color: var(--v4-text-faint);
+    /* the transport's floor (wave M) · a quiet shelf, not a floating strip */
+    border-top: 1px solid color-mix(in oklch, var(--v4-line) 70%, transparent);
+    background-color: color-mix(in oklch, var(--v4-bg, #08090b) 78%, transparent);
+    background-image: var(--v4-grain-img);
+    background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
   }
 }
 .morph-play {
