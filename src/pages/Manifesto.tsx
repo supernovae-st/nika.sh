@@ -193,7 +193,11 @@ export function Component() {
         {/* ─── the drum · the lore beat (operator pacing: the drum metaphor
             lands FIRST, right after the hero, before the story — the words
             are untouched, only the beat moved up) ─── */}
-        <section className="mx-auto max-w-3xl px-6 pt-16 pb-6 text-center">
+        <section className="mf-prose mx-auto px-6 pt-20 pb-10 text-center">
+          <div className="rv mf-secreg" aria-hidden>
+            <span className="mf-secno">01</span>
+            <span className="mf-secrule" />
+          </div>
           <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
             Nika is named for the sun god of liberation: the drum that turns fear into laughter and
             frees the ones who were locked out.
@@ -204,7 +208,11 @@ export function Component() {
         </section>
 
         {/* ─── the movements · scroll-revealed prose + big statements ─── */}
-        <div className="mx-auto max-w-3xl px-6 pt-10 pb-8">
+        <div className="mf-prose mx-auto px-6 pt-14 pb-16">
+          <div className="rv mf-secreg" aria-hidden>
+            <span className="mf-secno">02</span>
+            <span className="mf-secrule" />
+          </div>
           <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
             On a Friday afternoon, by a single letter, the most capable intelligence on Earth was
             switched off for most of the people on Earth.{' '}
@@ -213,7 +221,7 @@ export function Component() {
             locked out of a tool we had been building our lives on.
           </p>
 
-          <p className="rv mf-statement mf-grad my-16 text-center">This is the moment the argument ended.</p>
+          <p className="rv mf-statement mf-grad mf-pull my-20">This is the moment the argument ended.</p>
 
           <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
             The real problem was never <em>which</em> lab is ahead. It is{' '}
@@ -234,7 +242,7 @@ export function Component() {
             priced out, locked down, or turned off, by a board, a court, a border, a letter.
           </p>
 
-          <p className="rv mf-statement mf-grad my-16 text-center">
+          <p className="rv mf-statement mf-grad mf-pull my-20">
             We refuse the subscription economy for cognition.
           </p>
 
@@ -248,7 +256,7 @@ export function Component() {
             acts. Power you cannot see is power you do not control.
           </p>
 
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
+          <p className="rv mt-8 text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
             <span className="text-[var(--fg)]">
               There is no US open source AI. There is no French open source AI.
             </span>{' '}
@@ -256,11 +264,15 @@ export function Component() {
             modify, and own intelligence. Don&apos;t fight the cage by repainting it. Leave it.
           </p>
 
-          <p className="rv mf-statement mf-grad my-16 text-center">Sovereignty for everyone, or for no one.</p>
+          <p className="rv mf-statement mf-grad mf-pull my-20">Sovereignty for everyone, or for no one.</p>
         </div>
 
-        {/* ─── the 5 promises · skeuo cards ─── */}
-        <section className="mx-auto max-w-5xl px-6 py-16">
+        {/* ─── the 5 promises · seam-kit panels ─── */}
+        <section className="mx-auto max-w-5xl px-6 pt-20 pb-24">
+          <div className="rv mf-secreg" aria-hidden>
+            <span className="mf-secno">03</span>
+            <span className="mf-secrule" />
+          </div>
           <p className="rv mono mb-3 text-center text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
             § What we promise
           </p>
@@ -293,7 +305,11 @@ export function Component() {
         </section>
 
         {/* ─── the close ─── */}
-        <section className="mx-auto flex max-w-3xl flex-col items-center px-6 pt-16 pb-24 text-center">
+        <section className="mf-prose mx-auto flex flex-col items-center px-6 pt-20 pb-28 text-center">
+          <div className="rv mf-secreg w-full" aria-hidden>
+            <span className="mf-secno">04</span>
+            <span className="mf-secrule" />
+          </div>
           {/* the close keeps its words and links but carries NO butterfly of its
               own: the shared SiteFooter's living particle butterfly right below
               is THE mark (one signature, one close — the double-footer fix) */}

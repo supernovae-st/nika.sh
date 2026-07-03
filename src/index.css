@@ -468,6 +468,45 @@ h1, h2 { font-family: var(--headline); }
   text-wrap: balance;
 }
 
+/* ── the editorial kit (wave I polish · print register, dark adaptation) ─────
+   The body column reads at a generous ~65ch measure; each section opens on a
+   mono dim number over a hairline rule (the editorial spine); the manifesto's
+   strongest lines become PULL-QUOTES: large Clash Display on the accent
+   gradient behind a hairline left rule, left-set against the justified-left
+   prose. Strong hierarchy, restrained color, generous air. */
+.mf-prose {
+  font-size: 17.5px;
+  max-width: calc(65ch + 3rem); /* the measure + the px-6 gutters */
+}
+.mf-secreg {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 44px;
+}
+.mf-secno {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: var(--fg-dim);
+  font-variant-numeric: tabular-nums;
+}
+.mf-secrule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--cyan) 26%, transparent),
+    var(--hair) 55%,
+    transparent
+  );
+}
+.mf-pull {
+  padding-left: clamp(22px, 4vw, 44px);
+  border-left: 1px solid color-mix(in srgb, var(--cyan) 48%, transparent);
+  text-align: left;
+}
+
 /* scroll cue (the close's own butterfly glyph is gone with its glow-pulse:
    the shared SiteFooter's living butterfly right below is THE one mark) */
 .mf-cue { animation: mfBounce 1.9s ease-in-out infinite; }
