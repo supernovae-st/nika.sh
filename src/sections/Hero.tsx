@@ -44,8 +44,10 @@ function HeroAtmosphere() {
 }
 
 /* ── the sharp file-tab strip · mono, hairline, no pills ──────────────────────
-   role=tablist with roving tabIndex + arrow-key switching. The DEFAULT tab
-   (daily-brief) is prerendered, so crawlers / no-JS get the default story. */
+   role=tablist with roving tabIndex + arrow-key switching. Sits BELOW the
+   editor panel (operator wave I): the panel chrome above carries the full
+   filename; the strip is the compact switcher. The DEFAULT tab (daily-brief)
+   is prerendered, so crawlers / no-JS get the default story. */
 function FileTabs({
   active,
   onSelect,
@@ -54,6 +56,26 @@ function FileTabs({
   onSelect: (i: number) => void
 }) {
   const refs = useRef<(HTMLButtonElement | null)[]>([])
+  const stripRef = useRef<HTMLDivElement>(null)
+  /* 5 tabs can overflow the strip — surface the same honest scroll cue as the
+     code panel: fade only while there IS hidden content to the right. */
+  useEffect(() => {
+    const strip = stripRef.current
+    const clip = strip?.parentElement
+    if (!strip || !clip) return
+    const update = () => {
+      clip.dataset.overflowing = String(strip.scrollWidth - strip.clientWidth > 1)
+      clip.dataset.atEnd = String(strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 2)
+    }
+    update()
+    strip.addEventListener('scroll', update, { passive: true })
+    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
+    ro?.observe(strip)
+    return () => {
+      strip.removeEventListener('scroll', update)
+      ro?.disconnect()
+    }
+  }, [])
   const onKeyDown = (e: React.KeyboardEvent) => {
     // APG tablist keys · arrows cycle, Home/End jump to the edges
     let next: number
@@ -70,6 +92,7 @@ function FileTabs({
   return (
     <div className="v4ftabs-clip">
       <div
+        ref={stripRef}
         className="v4ftabs"
         role="tablist"
         aria-label="Flagship workflow files"
@@ -111,6 +134,7 @@ export default function Hero({
   onSelect: (i: number) => void
 }) {
   const rootRef = useRef<HTMLElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   /* opt the hero into the orchestrated entrance — only when motion is allowed.
      Adding the class in an effect (post-paint) guarantees the prerendered HTML
@@ -120,6 +144,34 @@ export default function Hero({
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     rootRef.current?.classList.add('v4-enter')
   }, [])
+
+  /* reveal the lit range on tab switch — a real editor's "go to range". Some
+     flagships carry their caption's evidence below the panel's line cap (the
+     pr-risk when: gate · the meeting-actions schema); when the selected tab's
+     lit lines are out of view, scroll the editor well so they land ~30% down.
+     No-op when already visible (the default tab renders unscrolled for SSR). */
+  useEffect(() => {
+    const pre = panelRef.current?.querySelector<HTMLElement>('.cf-pre')
+    if (!pre) return
+    const lit = pre.querySelector<HTMLElement>('.cf-line--lit')
+    if (!lit) {
+      pre.scrollTop = 0
+      return
+    }
+    const top = lit.offsetTop
+    const bottom = top + lit.offsetHeight
+    if (top >= pre.scrollTop && bottom <= pre.scrollTop + pre.clientHeight) return
+    /* snap the target to whole line boxes (pad-top + n × line-box) so the
+       scrolled frame never cuts a line mid-height — same whole-lines law as
+       the panel cap. Both metrics come from the computed style, not constants. */
+    const cs = window.getComputedStyle(pre)
+    const box = parseFloat(cs.lineHeight) || 23
+    const pad = parseFloat(cs.paddingTop) || 0
+    const raw = top - Math.round(pre.clientHeight * 0.3)
+    const snapped = Math.max(0, pad + Math.round((raw - pad) / box) * box)
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    pre.scrollTo({ top: snapped, behavior: reduce ? 'auto' : 'smooth' })
+  }, [flagship.id])
 
   return (
     <section
@@ -228,15 +280,26 @@ export default function Hero({
              The selected tab is the file the whole page runs: it descends into
              the replay (beat 2), the plan (beat 3), the boundary (beat 4). */}
         <div className="v4hero-editor" data-rise style={rise(180)}>
-          <FileTabs active={index} onSelect={onSelect} />
-          <div id="v4ftab-panel" role="tabpanel" aria-labelledby={`v4ftab-${flagship.id}`}>
+          <div
+            ref={panelRef}
+            id="v4ftab-panel"
+            role="tabpanel"
+            aria-labelledby={`v4ftab-${flagship.id}`}
+          >
+            {/* wrap: the hero is the READING surface — long flow lines soft-wrap
+                with a hanging indent (no right-edge clip, no hidden content). */}
             <CodeFile
               yaml={flagship.yaml}
               filename={flagship.filename}
               highlight={flagship.highlight}
               className="v4hero-code"
+              wrap
             />
           </div>
+          {/* the switcher sits UNDER the file (operator wave I) — the panel
+              chrome above already names the open file; this strip is the
+              compact "other files" row, flush on the panel's bottom edge. */}
+          <FileTabs active={index} onSelect={onSelect} />
           {/* the tab's one-line story + the handoff chip · the SELECTED file is
               the one the run replay below actually plays — filename continuity. */}
           <div className="v4hero-editorfoot mt-4">

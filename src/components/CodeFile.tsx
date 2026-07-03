@@ -35,6 +35,11 @@ export interface CodeFileProps {
   /** 1-based number of the FIRST line — an excerpt keeps its real file lines
       (the same body, partially shown · never a second version of the file) */
   firstLine?: number
+  /** density variant: soft-wrap long lines INSIDE the panel with a hanging
+      indent (aligned 2ch past each line's own indentation) instead of the
+      horizontal scroll well. Opt-in (the hero reading surface) — every other
+      call-site keeps the default pre + scroll register. */
+  wrap?: boolean
   /** optional extra classes on the outer panel */
   className?: string
 }
@@ -53,12 +58,19 @@ const KIND_CLASS: Record<TokenKind, string> = {
 }
 
 function TokenSpan({ token }: { token: Token }) {
+  /* space-less tokens are ATOMIC machine strings (paths · filenames · slugs ·
+     model ids) — under the wrap variant they must never break mid-token (CSS
+     treats a hyphen as a break opportunity: "./action-items.json" would split
+     at the "-"). The class is inert outside .cf-panel--wrap (white-space: pre
+     never wraps anyway). Prose strings / comments keep their internal spaces
+     and wrap freely. */
+  const atom = token.text.includes(' ') ? '' : ' cf-atom'
   if (token.kind === 'verb') {
     const verb = token.verb ?? token.text
     // the verb keyword + its leading glyph both carry the verb-hue (the product
     // replica's one place where the 4 verbs read in their canonical colours).
     return (
-      <span className={`cf-verb cf-verb--${verb}`}>
+      <span className={`cf-verb cf-verb--${verb}${atom}`}>
         <span className="cf-verb-glyph select-none" aria-hidden>
           {verbGlyph(verb)}
         </span>
@@ -74,7 +86,7 @@ function TokenSpan({ token }: { token: Token }) {
      is the lowest element carrying the quote, so the suppression is scoped tight;
      the server text is correct, so React keeps it instead of regenerating. */
   return (
-    <span className={KIND_CLASS[token.kind]} suppressHydrationWarning>
+    <span className={`${KIND_CLASS[token.kind]}${atom}`} suppressHydrationWarning>
       {token.text}
     </span>
   )
@@ -110,9 +122,23 @@ export function CodeFile({
   lang = 'yaml',
   lineNumbers = true,
   firstLine = 1,
+  wrap = false,
   className,
 }: CodeFileProps) {
   const lines = useMemo(() => tokenize(yaml), [yaml])
+  /* wrap variant only: each line's leading-space count, in ch — codefile.css
+     turns it into the hanging indent (a wrapped continuation lands 2ch past
+     the line's own indentation, like a real editor's wrap guide). */
+  const indents = useMemo(
+    () =>
+      wrap
+        ? yaml
+            .replace(/\r\n/g, '\n')
+            .split('\n')
+            .map((l) => l.length - l.trimStart().length)
+        : null,
+    [yaml, wrap],
+  )
   const [hStart, hEnd] = highlight ?? [0, -1]
   // the gutter is as wide as the largest line number needs (min 2 cols).
   const gutterCh = Math.max(2, String(firstLine + lines.length - 1).length)
@@ -148,7 +174,7 @@ export function CodeFile({
   }, [yaml])
 
   return (
-    <div className={`cf-panel ${className ?? ''}`}>
+    <div className={`cf-panel ${wrap ? 'cf-panel--wrap' : ''} ${className ?? ''}`}>
       {/* ── window chrome · the minimal titlebar register (product-frame recipe):
            3 square ticks (the affordance — never macOS traffic lights) + the
            filename in dim mono + ONE functional chip (copy). */}
@@ -190,7 +216,14 @@ export function CodeFile({
                       {n}
                     </span>
                   ) : null}
-                  <span className="cf-line-text">
+                  <span
+                    className="cf-line-text"
+                    style={
+                      indents && indents[i]
+                        ? ({ '--cf-indent': `${indents[i]}ch` } as React.CSSProperties)
+                        : undefined
+                    }
+                  >
                     {line.tokens.length === 0 ? (
                       /* empty line · the zero-width filler is wrapped in an ELEMENT
                          (not a bare text node) so the line stays tall and hydrates

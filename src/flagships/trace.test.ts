@@ -52,9 +52,13 @@ describe.each(FLAGSHIP_ENTRIES.map((f) => [f.filename, f] as const))(
       }
     })
 
-    it('real work happened (an infer with tokens · a completed effect)', () => {
+    it('real work happened (tokens where the file infers · completed effects)', () => {
       expect(trace.completed).toBeGreaterThanOrEqual(3)
-      expect(trace.steps.some((s) => (s.tokens ?? 0) > 0)).toBe(true)
+      // token counts are the honesty signal of a model call — required exactly
+      // when the file declares inference. A zero-model flagship (price-watch)
+      // honestly records NO tokens: its real work is the completed effects.
+      const infers = plan.tasks.some((t) => t.verb === 'infer' || t.verb === 'agent')
+      expect(trace.steps.some((s) => (s.tokens ?? 0) > 0)).toBe(infers)
     })
   },
 )

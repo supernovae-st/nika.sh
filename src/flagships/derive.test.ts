@@ -19,7 +19,8 @@ interface YamlTask {
 }
 interface YamlDoc {
   workflow: string
-  model: string
+  /** absent on a zero-model flagship (price-watch runs no inference) */
+  model?: string
   permits: Record<string, unknown>
   tasks: YamlTask[]
   outputs?: Record<string, string>
@@ -92,7 +93,8 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
 
     it('derives workflow name, model and outputs', () => {
       expect(plan.workflow).toBe(truth.workflow)
-      expect(plan.model).toBe(truth.model)
+      // a zero-model flagship (price-watch) declares NO model: derive yields ''
+      expect(plan.model).toBe(truth.model ?? '')
       expect(plan.outputs).toEqual(Object.keys(truth.outputs ?? {}))
     })
   },
