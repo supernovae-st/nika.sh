@@ -1,9 +1,11 @@
+import { useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { REPO, SPEC, DOCS, routeHead } from '../content'
 import { CodeFile } from '../components/CodeFile'
-import { STEPS, ERROR_JSON } from '../content/learn'
+import { tokenize } from '../components/codefile-highlight'
+import { STEPS, ERROR_JSON, DICT } from '../content/learn'
 import { InstallCommand } from '../components/InstallCommand'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -32,6 +34,96 @@ import './learn-page.css'
    visible by default. Per-route <head> via useHead → dist/learn/index.html. */
 
 
+
+/* ── LearnFile · the /learn-scoped plain-words hover dictionary ───────────────
+   A Learn-only wrapper around CodeFile (the component defaults stay
+   untouched): hovering any known key or verb token inside the panel shows a
+   one-line anyone-words gloss in a seam-kit micro-panel, and a row of
+   focusable term chips under the panel carries the SAME glosses to keyboard
+   and touch readers (focus a chip · the tooltip is a polite live region, so
+   the gloss is announced). Terms come from the tokenizer itself — a chip
+   exists only for a key that really appears in the fragment. */
+function LearnFile({ yaml, filename }: { yaml: string; filename?: string }) {
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [tip, setTip] = useState<{ term: string; x: number; y: number } | null>(null)
+
+  /* the terms this fragment actually contains (tokenizer truth, not regex) */
+  const terms = useMemo(() => {
+    const seen = new Set<string>()
+    for (const line of tokenize(yaml))
+      for (const t of line.tokens)
+        if ((t.kind === 'key' || t.kind === 'verb') && DICT[t.text]) seen.add(t.text)
+    return [...seen]
+  }, [yaml])
+
+  const show = (term: string, el: Element) => {
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const wr = wrap.getBoundingClientRect()
+    const r = el.getBoundingClientRect()
+    const half = Math.min(150, wr.width / 2 - 4)
+    const x = Math.min(Math.max(r.left - wr.left + r.width / 2, half), wr.width - half)
+    setTip({ term, x, y: r.top - wr.top })
+  }
+
+  /* pointer over a known key/verb token inside the panel lights the gloss */
+  const onMove = (e: React.PointerEvent) => {
+    const target = e.target as HTMLElement
+    if (target.closest('.lrn-dict')) return // the chips drive their own tip
+    const tok = target.closest('.cf-key, .cf-verb')
+    const term = tok?.textContent?.replace(/[^a-z_]/g, '') ?? ''
+    if (tok && DICT[term]) {
+      if (tip?.term !== term) show(term, tok)
+    } else if (tip) {
+      setTip(null)
+    }
+  }
+
+  return (
+    <div
+      ref={wrapRef}
+      className="lrn-file"
+      onPointerMove={onMove}
+      onPointerLeave={() => setTip(null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') setTip(null)
+      }}
+    >
+      <CodeFile yaml={yaml} filename={filename} />
+      {terms.length > 0 && (
+        <ul className="lrn-dict" aria-label="plain words for the keys in this file">
+          {terms.map((term) => (
+            <li key={term} className="lrn-dict-item">
+              <button
+                type="button"
+                className="lrn-dict-chip"
+                onPointerEnter={(e) => show(term, e.currentTarget)}
+                onPointerLeave={() => setTip(null)}
+                onFocus={(e) => show(term, e.currentTarget)}
+                onBlur={() => setTip(null)}
+              >
+                {term}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {/* the micro-panel · a polite live region (focus announces the gloss) */}
+      <div
+        className="lrn-tip"
+        role="status"
+        data-on={tip ? '1' : '0'}
+        style={tip ? { left: tip.x, top: tip.y } : undefined}
+      >
+        {tip && (
+          <>
+            <b>{tip.term}</b> · {DICT[tip.term]}
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
 
 /* ── the weekly-radar mini-DAG · the 2D comprehension anchor (step 06) ────────
    HONEST: node-for-node the YAML fragment beside it — five tasks, the three
@@ -237,7 +329,7 @@ export function Component() {
                   {s.note && <p className="lrn-step-note">{s.note}</p>}
                 </div>
                 <div className="lrn-step-code">
-                  <CodeFile yaml={s.yaml} filename={s.file} />
+                  <LearnFile yaml={s.yaml} filename={s.file} />
                 </div>
                 {s.dag && <WeeklyRadarDag />}
               </li>

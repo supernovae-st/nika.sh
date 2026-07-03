@@ -5,6 +5,44 @@
    05-errors) AND parses as standalone YAML · guarded by
    src/test/learn-fragments.test.ts. */
 
+import { VERB_WORDS, DEPENDS_WORDS, WHEN_WORDS, PERMITS_WORDS } from '../sections/morph/plain-words'
+
+/* ── the plain-words dictionary · one line per key, anyone-register ───────────
+   The hover/focus glossary for every YAML panel on /learn (Learn.tsx wraps
+   CodeFile in LearnFile — the component defaults stay untouched). The four
+   verbs + depends_on + when + permits REUSE the site-wide plain-words module
+   (the morph 3D tooltips read the same strings — the two surfaces can never
+   explain the same key differently). Keys are the token texts the CodeFile
+   tokenizer emits (no trailing colon). */
+export const DICT: Record<string, string> = {
+  nika: 'the format marker · v1 is frozen, files you write today keep working',
+  workflow: 'the file’s name · what you call when you run it',
+  model: 'which brain to ask · local or any cloud, one line to swap',
+  vars: 'the inputs · change them from the command line, not the file',
+  permits: PERMITS_WORDS,
+  tasks: 'the to-do list · each item does exactly one thing',
+  id: 'the step’s name · other steps point at it',
+  depends_on: `this step ${DEPENDS_WORDS}`,
+  when: WHEN_WORDS,
+  infer: VERB_WORDS.infer,
+  exec: VERB_WORDS.exec,
+  invoke: VERB_WORDS.invoke,
+  agent: VERB_WORDS.agent,
+  retry: 'try again on failure, with a pause between tries',
+  max_attempts: 'how many tries before giving up',
+  backoff_ms: 'the pause between tries, in milliseconds',
+  on_error: 'the plan B · what steps in when retries run out',
+  recover: 'the value that stands in when the step still fails',
+  output: 'picks pieces of this step’s result and names them',
+  outputs: 'what the whole workflow hands back, by name',
+  prompt: 'the question sent to the model',
+  tool: 'which tool to use · always named, never guessed',
+  command: 'the shell command to run · captured, with its exit code',
+  type: 'what kind of value this input is',
+  required: 'the run refuses to start without it',
+  description: 'a human note about this input',
+}
+
 export interface Step {
   n: string
   topic: string
