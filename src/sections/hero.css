@@ -599,6 +599,206 @@
   border-bottom-right-radius: 0;
 }
 
+/* ── 5b · the tabs row · the strip + the library picker share one rail ────────
+   Wave K: the buffer row keeps the five flagships; the picker trigger sits
+   flush on the rail's right end (same hairline frame · the strip yields its
+   right corner). The popover below is the quick-open: the whole ten-file
+   corpus, one column, mono register. */
+.v4ftabs-row {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.v4ftabs-row .v4ftabs-clip {
+  flex: 1;
+  min-width: 0;
+}
+.v4ftabs-row .v4ftabs {
+  border-right: none;
+  border-bottom-right-radius: 0;
+}
+.v4ftabs-row .v4ftabs-clip::after {
+  border-radius: 0;
+}
+.v4lib {
+  display: flex;
+  align-items: stretch;
+}
+.v4lib-trigger {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--v4-line);
+  border-top: none;
+  border-radius: 0 0 var(--v4-radius) 0;
+  background: color-mix(in oklch, var(--v4-bg-deep) 72%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 9px 11px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--v4-text-faint);
+  cursor: pointer;
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+.v4lib-trigger:hover,
+.v4lib-trigger[aria-expanded='true'] {
+  color: var(--v4-text);
+}
+.v4lib-trigger-glyph {
+  color: var(--v4-text-faint);
+  letter-spacing: 0.08em;
+}
+/* a library pick is active → the trigger IS the selected tab (raised + seam) */
+.v4lib-trigger[data-active] {
+  color: var(--v4-text);
+  background: var(--v4-bg-raised);
+}
+.v4lib-trigger[data-active]::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--v4-accent-strong);
+}
+
+/* the popover · a raised quick-open sheet — opens UPWARD over the editor
+   (the rail sits low in the viewport; downward would clip off-screen) */
+.v4lib-panel {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  border: 1px solid var(--v4-line-strong);
+  border-radius: var(--v4-radius);
+  background: color-mix(in srgb, var(--v4-bg-raised) 97%, white 3%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.05),
+    0 1px 0 rgb(0 0 0 / 0.5),
+    0 28px 70px -24px rgb(0 0 0 / 0.85);
+  padding: 6px;
+}
+.v4lib-head,
+.v4lib-legend {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+  padding: 6px 10px 4px;
+  margin: 0;
+}
+.v4lib-legend {
+  border-top: 1px solid var(--v4-line);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+.v4lib-legend code {
+  font-size: 10px;
+  color: var(--v4-text-dim);
+}
+.v4lib-list {
+  /* 7.5 × the 52px row box — the half-cut row IS the scroll invitation
+     (the same whole-lines honesty law as the editor cap, inverted) */
+  max-height: min(46vh, 390px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.v4lib-row {
+  appearance: none;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  border-radius: var(--v4-radius-sm);
+  padding: 7px 10px 8px;
+  cursor: pointer;
+  transition: background-color var(--dur-ui) var(--ease-ui);
+}
+.v4lib-row:hover,
+.v4lib-row:focus-visible {
+  background: rgb(255 255 255 / 0.045);
+}
+.v4lib-row[aria-selected='true'] {
+  background: rgb(255 255 255 / 0.06);
+  box-shadow: inset 2px 0 0 var(--v4-accent-strong);
+}
+.v4lib-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+.v4lib-glyphs {
+  display: inline-flex;
+  gap: 3px;
+  font-size: 10px;
+  min-width: 34px;
+}
+.v4lib-glyphs [data-v='infer'] {
+  color: var(--verb-infer);
+}
+.v4lib-glyphs [data-v='exec'] {
+  color: var(--verb-exec);
+}
+.v4lib-glyphs [data-v='invoke'] {
+  color: var(--verb-invoke);
+}
+.v4lib-glyphs [data-v='agent'] {
+  color: var(--verb-agent);
+}
+.v4lib-name {
+  color: var(--v4-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.v4lib-ext {
+  color: var(--v4-text-faint);
+}
+.v4lib-meta {
+  margin-left: auto;
+  font-size: 10.5px;
+  color: var(--v4-text-faint);
+  white-space: nowrap;
+}
+.v4lib-rec {
+  color: color-mix(in oklch, var(--v4-accent-bright) 78%, white 22%);
+}
+.v4lib-blurb {
+  display: block;
+  margin-top: 2px;
+  padding-left: 42px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--v4-text-dim);
+}
+@media (max-width: 480px) {
+  .v4lib-blurb {
+    padding-left: 0;
+  }
+  .v4lib-glyphs {
+    min-width: 0;
+  }
+  .v4lib-meta {
+    display: none;
+  }
+}
+
+/* the browse-only footer hint · same chip register, dimmer voice */
+.v4hint--browse {
+  color: var(--v4-text-faint);
+}
+
 /* ── 6 · the one solid accent button · See it run ─────────────────────────────
    The single filled CTA on the page top — accent-cta fill (white ink ≥5:1),
    sharp radius, hairline top-light. Hover raises to accent-strong; press dips. */
