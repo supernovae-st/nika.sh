@@ -1,4 +1,4 @@
-/* ─── /learn content · the eight-step walkthrough data ───────────────────────
+/* ─── /learn content · the nine-step walkthrough data ─────────────────────────
    Data lives OUTSIDE the page component (react-refresh: pages export only
    components) so the fragment-validity test suite can import it directly.
    Every YAML fragment is spec-correct (nika-spec 01-envelope · 03-dag ·
@@ -13,6 +13,8 @@ export interface Step {
   yaml: string
   file: string
   note?: string
+  /** step 06 renders the 2D mini-DAG plate under the text + file pair */
+  dag?: boolean
 }
 
 export const STEPS: Step[] = [
@@ -91,6 +93,34 @@ model: ollama/llama3.2:3b
   },
   {
     n: '06',
+    topic: 'the waves',
+    title: 'Steps that wait, steps that run together',
+    plain:
+      'A workflow is a to-do list where some steps wait for others. Steps that wait on nothing all start at the same time, automatically; you never schedule anything. Before anything runs, the runtime reads every depends_on and draws the plan: here, three sources start together, the digest waits for all three, and the save waits for the digest.',
+    file: 'tasks · the whole plan',
+    yaml: `tasks:
+  - id: fetch_news
+    invoke:
+      tool: "nika:fetch"
+  - id: repo_log
+    exec:
+      command: "git log --since='1 week'"
+  - id: read_notes
+    invoke:
+      tool: "nika:read"
+  - id: digest
+    depends_on: [fetch_news, repo_log, read_notes]
+    infer:
+      prompt: "One weekly radar, five bullets"
+  - id: save
+    depends_on: [digest]
+    invoke:
+      tool: "nika:write"`,
+    note: 'Nothing in this file says parallel. The picture below is the plan drawn from these five steps: follow the arrows, not the line order.',
+    dag: true,
+  },
+  {
+    n: '07',
     topic: 'the branch',
     title: 'Branch like an adult',
     plain:
@@ -103,7 +133,7 @@ model: ollama/llama3.2:3b
     tool: "nika:notify"`,
   },
   {
-    n: '07',
+    n: '08',
     topic: 'the failure',
     title: 'When things fail, you get data',
     plain:
@@ -120,7 +150,7 @@ model: ollama/llama3.2:3b
     note: 'A failed call retries with backoff; if it still fails, the cached result steps in.',
   },
   {
-    n: '08',
+    n: '09',
     topic: 'the outputs',
     title: 'Name what comes out',
     plain:
