@@ -1,4 +1,4 @@
-import { Suspense, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, Suspense, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CodeFile } from '../../components/CodeFile'
 import { usePlan3D } from './use-plan3d'
 import { useAurora } from '../../fx/aurora-context'
@@ -9,10 +9,12 @@ import {
   aspireAt,
   clamp01,
   condenseAt,
+  drainRampAt,
   easeInOut,
   igniteAt,
   phaseAt,
   runFracAt,
+  seedInAt,
   shellAt,
   taskInterval,
   termAt,
@@ -49,24 +51,22 @@ interface BlockGeom {
   els: HTMLElement[]
   /** per line · distance to the block's center (the condensation vector) */
   lineDy: number[]
-  /** per line · drain factor 1 (file top) → 0 (file bottom) */
-  lineF: number[]
-  /** the block's drain factor (its lines' mean) — offsets the seed origin */
-  f: number
   /** the block's center — the seed's origin (seed-layer coords) */
   p0: { x: number; y: number }
   /** the DOM node's center — the seed's landing (seed-layer coords) */
   p2: { x: number; y: number }
 }
 
-/* THE DRAIN · as the file is consumed top-first, the remaining lines sag
-   DOWNWARD (top lines most, the outputs line pinned) so the text clears the
-   slab band where the consumed tasks land — un-read YAML and a landed slab
-   may never interleave (operator, wave I). Analytic (a pure function of p),
-   so the seed origins ride the same offset and scrubbing reverses it. */
-const DRAIN_MAX = 150
-const drainAt = (p: number): number =>
-  DRAIN_MAX * easeInOut(clamp01((p - (PH.burst0 + 0.06)) / 0.1))
+/** the drain's measured geometry — block tops + the band edge (viewport px):
+    apply() lerps remTop(p) from these and slides the remainder as ONE unit */
+interface DrainGeom {
+  tops: number[]
+  end: number
+  band: number
+}
+
+/* THE DRAIN lives in morph-model (wave M): the clearance is MEASURED per
+   layout (drainNeedRef, computed in measure()) — never a magic constant. */
 
 interface Edge {
   from: string
@@ -167,6 +167,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
      would force a reflow per path per frame (longtask budget, F2) */
   const wireLenRef = useRef<number[]>([])
   const blocksRef = useRef<Map<string, BlockGeom>>(new Map())
+  /** the drain's measured geometry — see measure() · morph-model */
+  const drainGeomRef = useRef<DrainGeom | null>(null)
   /* non-task lines · header whispers UP, separators just dissolve, the
      outputs block lands LAST toward the run footer */
   const headLinesRef = useRef<HTMLElement[]>([])
@@ -175,6 +177,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   /* the seed chips · one per task, driven along their bezier by apply() */
   const seedLayerRef = useRef<HTMLDivElement>(null)
   const seedRefs = useRef(new Map<string, HTMLSpanElement | null>())
+  /* the trail afterimages · two per seed (keys `${id}·0` / `${id}·1`) */
+  const ghostRefs = useRef(new Map<string, HTMLSpanElement | null>())
   /* live slab landing targets (ps-layer px), written by the 3D loop when the
      slabs are the visible DAG — [x, y, projectedWidth] */
   const slabTargetsRef = useRef(new Map<string, [number, number, number]>())
@@ -280,10 +284,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       fileTop = Math.min(fileTop, r.top)
       fileBottom = Math.max(fileBottom, r.bottom)
     }
-    const fileSpan = Math.max(1, fileBottom - fileTop)
-    const drainF = (y: number): number => clamp01((fileBottom - y) / fileSpan)
 
     const taskLines = new Set<number>()
+    const blockTops: number[] = []
     let firstTaskLn = Infinity
     let lastTaskLn = -Infinity
     /* the DAG content's lowest edge (viewport px) — anchors the flat-note
@@ -317,11 +320,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const nr = nodeEl.getBoundingClientRect()
       if (nr.bottom > nodesBottom) nodesBottom = nr.bottom
       const cy = (top + bottom) / 2
+      blockTops.push(top)
       blocks.set(t.id, {
         els,
         lineDy: centers.map((c) => cy - c),
-        lineF: centers.map((c) => drainF(c)),
-        f: drainF(cy),
         p0: { x: (left + right) / 2 - slr.left, y: cy - slr.top },
         p2: {
           x: nr.left + nr.width / 2 - slr.left,
@@ -344,6 +346,17 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     headLinesRef.current = head
     midLinesRef.current = mid
     tailLinesRef.current = tail
+
+    /* THE DRAIN GEOMETRY (wave M) · block tops + the band's lowest edge —
+       apply() slides the un-consumed remainder below the band as ONE unit
+       (order-preserving, layout intact: the queue stays readable), the
+       offset lerped from these tops so it's continuous in p. Replaces the
+       old 150px weighted sag that let un-read YAML and landed slabs
+       interleave (operator: « des choses qui buggent »). */
+    drainGeomRef.current =
+      blockTops.length > 0 && Number.isFinite(nodesBottom)
+        ? { tops: blockTops, end: fileBottom, band: nodesBottom }
+        : null
 
     /* the wires · measured node-edge to node-edge, in DAG-local coordinates */
     const dr = dag.getBoundingClientRect()
@@ -420,8 +433,27 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
          everywhere else. */
       const use3d = !!stage.dataset.plan3d
       const psOff = psOffRef.current
-      const drain = drainAt(p)
       const n = plan.tasks.length
+
+      /* THE DRAIN (wave M) · the un-consumed remainder slides below the slab
+         band as ONE unit — layout intact, the queue readable, no cross-over.
+         remTop lerps between successive block tops as each block condenses,
+         so D is continuous in p; the ramp completes before first ignition. */
+      let D = 0
+      const dg = drainGeomRef.current
+      if (dg) {
+        let remTop = dg.end
+        for (let i = 0; i < n && i < dg.tops.length; i++) {
+          const ceI = condenseAt(aspireAt(p, i, n))
+          if (ceI < 1) {
+            const next = i + 1 < dg.tops.length ? dg.tops[i + 1] : dg.end
+            remTop = dg.tops[i] + (next - dg.tops[i]) * ceI
+            break
+          }
+        }
+        D = Math.max(0, dg.band + 24 - remTop) * drainRampAt(p)
+      }
+
       for (let i = 0; i < n; i++) {
         const t = plan.tasks[i]
         const g = blocksRef.current.get(t.id)
@@ -430,25 +462,35 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         const ce = easeInOut(condenseAt(e))
         const te = travelAt(e)
 
-        /* the block's lines drain downward, TIGHTEN toward their center
-           (0.55 damp — a squeeze, never a cross-over) and hand over */
+        /* the block's lines ride the queue-slide and TIGHTEN toward their
+           center (0.55 damp — a squeeze, never a cross-over), then hand over */
         for (let j = 0; j < g.els.length; j++) {
           const el = g.els[j]
-          const dy = g.lineDy[j] * ce * 0.55 + drain * g.lineF[j]
+          const dy = g.lineDy[j] * ce * 0.55 + D
           el.style.transform = dy === 0 ? '' : `translateY(${dy.toFixed(2)}px)`
           el.style.opacity =
             ce <= 0.25 ? '1' : String(Math.max(0, 1 - (ce - 0.25) / 0.5))
         }
 
-        /* the seed chip · born from the condensation, drawn along its curve */
+        /* the seed chip · born from the condensation, drawn along its curve.
+           Birth OVERLAPS the block (seedInAt · wave M): the chip exists while
+           its lines are still readable — visibly born FROM them. */
         const seed = seedRefs.current.get(t.id)
         if (seed) {
-          const seedIn = clamp01((ce - 0.55) / 0.45)
+          const seedIn = seedInAt(ce)
           const seedOut = 1 - clamp01((te - 0.85) / 0.15)
           const o = seedIn * seedOut
+          const g0 = ghostRefs.current.get(`${t.id}·0`)
+          const g1 = ghostRefs.current.get(`${t.id}·1`)
           if (o <= 0.001) {
             seed.style.opacity = '0'
             seed.style.visibility = 'hidden'
+            for (const gh of [g0, g1]) {
+              if (gh) {
+                gh.style.opacity = '0'
+                gh.style.visibility = 'hidden'
+              }
+            }
           } else {
             const t3 = use3d && psOff ? slabTargetsRef.current.get(t.id) : undefined
             const tx = t3 ? t3[0] + psOff!.x : g.p2.x
@@ -456,8 +498,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             /* landing size follows the projected slab into depth (3D mode) */
             const scale = t3 ? Math.max(0.55, Math.min(1, t3[2])) : 1
             const k = easeInOut(te)
-            /* the seed is born where its DRAINED block sits */
-            const y0 = g.p0.y + drain * g.f
+            /* the seed is born where its DRAINED block sits (the queue-slide) */
+            const y0 = g.p0.y + D
             const dist = Math.hypot(tx - g.p0.x, ty - y0)
             const cx = (g.p0.x + tx) / 2
             const cy = (y0 + ty) / 2 - Math.min(90, Math.max(24, dist * 0.22))
@@ -468,6 +510,29 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                back to the stylesheet and never show (found empirically) */
             seed.style.visibility = 'visible'
             seed.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(-50%, -50%) scale(${(1 - (1 - scale) * k).toFixed(3)})`
+            /* THE TRAIL (wave M) · two afterimages ride the same bezier a
+               step behind — the flight reads as MOTION in a still glance,
+               and the trail collapses into the chip at landing (eased-k
+               offsets bunch at the ends). Pure function of p. */
+            const ghosts: [HTMLSpanElement | null | undefined, number, number][] = [
+              [g0, 0.07, 0.26],
+              [g1, 0.14, 0.12],
+            ]
+            for (const [gh, back, alpha] of ghosts) {
+              if (!gh) continue
+              const gk = k - back
+              const go = gk > 0.001 && k < 0.995 ? o * alpha : 0
+              if (go <= 0.003) {
+                gh.style.opacity = '0'
+                gh.style.visibility = 'hidden'
+              } else {
+                const gx = qbez(g.p0.x, cx, tx, gk)
+                const gy = qbez(y0, cy, ty, gk)
+                gh.style.opacity = go.toFixed(3)
+                gh.style.visibility = 'visible'
+                gh.style.transform = `translate3d(${gx.toFixed(1)}px, ${gy.toFixed(1)}px, 0) translate(-50%, -50%) scale(${(1 - (1 - scale) * gk).toFixed(3)})`
+              }
+            }
           }
         }
 
@@ -492,13 +557,19 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       for (let i = 0; i < midLinesRef.current.length; i++) {
         const el = midLinesRef.current[i]
         el.style.opacity = shell.toFixed(3)
-        el.style.transform = ''
+        /* separators ride the queue-slide WITH the blocks around them */
+        el.style.transform = D === 0 ? '' : `translateY(${D.toFixed(2)}px)`
       }
-      const oe = easeInOut(clamp01((p - (PH.burstEnd - 0.05)) / 0.1))
+      /* the outputs tail rides the queue-slide WITH the document (D) — it
+         re-enters from below as the queue empties — then exits INTO the
+         terminal's birth, done by the time the strip is half-risen, so YAML
+         never reads through its chrome (wave M · the p060 mush) */
+      const oe = easeInOut(clamp01((p - (PH.burstEnd - 0.09)) / 0.06))
       for (let i = 0; i < tailLinesRef.current.length; i++) {
         const el = tailLinesRef.current[i]
         el.style.opacity = (1 - oe).toFixed(3)
-        el.style.transform = oe <= 0 ? '' : `translateY(${(oe * 26).toFixed(2)}px)`
+        const dy = D + oe * 34
+        el.style.transform = dy === 0 ? '' : `translateY(${dy.toFixed(2)}px)`
       }
 
       /* wires draw once the nodes have landed (lengths pre-cached) */
@@ -1143,20 +1214,36 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             ) : null}
 
             {/* THE SEEDS · one chip per task, driven along their curves by
-                apply() — the condensed block traveling INTO its slot */}
+                apply() — the condensed block traveling INTO its slot. The two
+                ghosts BEFORE each seed (paint order: trail under chip) are its
+                afterimages — the flight's motion, readable in a still glance. */}
             <div className="morph-seeds" aria-hidden ref={seedLayerRef}>
               {plan.tasks.map((t) => (
-                <span
-                  key={t.id}
-                  className="morph-seed"
-                  data-verb={t.verb}
-                  ref={(el) => {
-                    seedRefs.current.set(t.id, el)
-                  }}
-                >
-                  <span className="morph-seed-id">{t.id}</span>
-                  <span className="morph-seed-verb">{t.verb}</span>
-                </span>
+                <Fragment key={t.id}>
+                  {[0, 1].map((gI) => (
+                    <span
+                      key={gI}
+                      className="morph-seed morph-seed-ghost"
+                      data-verb={t.verb}
+                      ref={(el) => {
+                        ghostRefs.current.set(`${t.id}·${gI}`, el)
+                      }}
+                    >
+                      <span className="morph-seed-id">{t.id}</span>
+                      <span className="morph-seed-verb">{t.verb}</span>
+                    </span>
+                  ))}
+                  <span
+                    className="morph-seed"
+                    data-verb={t.verb}
+                    ref={(el) => {
+                      seedRefs.current.set(t.id, el)
+                    }}
+                  >
+                    <span className="morph-seed-id">{t.id}</span>
+                    <span className="morph-seed-verb">{t.verb}</span>
+                  </span>
+                </Fragment>
               ))}
             </div>
 

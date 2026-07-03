@@ -79,6 +79,29 @@ export const travelAt = (e: number): number => snap01(clamp01((e - 0.45) / 0.55)
 /** IGNITION 0..1 — the slot is BORN as its seed lands (the causality beat) */
 export const igniteAt = (e: number): number => snap01(clamp01((travelAt(e) - 0.78) / 0.22))
 
+/* ── THE DRAIN · a uniform queue-slide, geometric, order-preserving (wave M) ──
+   The un-consumed remainder of the file slides DOWN as ONE block — its own
+   layout intact (a per-line weighted sag at clearance amplitude made lines
+   cross into an unreadable pile — found empirically, wave M sweep) — so the
+   next task always reads at the top of the queue, below the slab band.
+   The driver computes the offset D = (bandBottom + margin − remTop(p)) from
+   MEASURED block tops; remTop lerps between successive tops as each block
+   condenses, so D is continuous in p. This ramp gates D's onset: it
+   saturates at burst0 + 0.085, BEFORE the first slot can ignite — ignition
+   onset is 0.879 × beat past burst0 (travelAt 0.78 · condense 0.45), and
+   the widest corpus beat (n = 7) puts that at burst0 + 0.0879. The model
+   test sweeps the REAL corpus and fails if a future flagship's task count
+   ever breaks this bound. Pure function of p — scrubbing reverses it. */
+export const DRAIN_END = 0.085
+export function drainRampAt(p: number): number {
+  return easeInOut(clamp01((p - (PH.burst0 + 0.02)) / (DRAIN_END - 0.02)))
+}
+
+/** the seed chip's birth 0..1 — starts while the block is still readable
+    (ce 0.35 → block opacity ≈ 0.8): the chip is visibly born FROM its block,
+    never popping in a void after it (wave M causality) */
+export const seedInAt = (ce: number): number => clamp01((ce - 0.35) / 0.4)
+
 /** wire draw progress 0..1 */
 export function wireAt(p: number): number {
   return clamp01((p - PH.wire0) / (PH.wire1 - PH.wire0))

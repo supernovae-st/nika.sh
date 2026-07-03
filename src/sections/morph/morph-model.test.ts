@@ -2,12 +2,15 @@ import { describe, expect, it } from 'vitest'
 import { FLAGSHIP_ENTRIES } from '../../flagships'
 import { buildScript } from '../run/replay-model'
 import {
+  DRAIN_END,
   PH,
   aspireAt,
   condenseAt,
+  drainRampAt,
   igniteAt,
   phaseAt,
   runFracAt,
+  seedInAt,
   shellAt,
   taskInterval,
   termAt,
@@ -191,5 +194,42 @@ describe('timelineAt · endpoints', () => {
         prev = s.reveal
       }
     }
+  })
+
+  describe('drainRampAt · the queue-slide completes before ANY first landing', () => {
+    it('zero before its window, saturated at DRAIN_END, monotone inside', () => {
+      expect(drainRampAt(PH.burst0)).toBe(0)
+      expect(drainRampAt(PH.burst0 + DRAIN_END)).toBeCloseTo(1, 6)
+      let prev = -1
+      for (let p = PH.burst0; p <= PH.burst0 + DRAIN_END + 0.001; p += 0.005) {
+        const d = drainRampAt(p)
+        expect(d).toBeGreaterThanOrEqual(prev)
+        prev = d
+      }
+    })
+
+    it('for every flagship the ramp saturates before task 0 can ignite', () => {
+      for (const f of FLAGSHIP_ENTRIES) {
+        const n = f.plan.tasks.length
+        /* first landing = task 0's ignition onset (travel ≈ done) */
+        let pLand = PH.burst0
+        while (pLand < PH.burstEnd && igniteAt(aspireAt(pLand, 0, n)) <= 0) {
+          pLand += 0.001
+        }
+        expect(drainRampAt(pLand)).toBeCloseTo(1, 3)
+      }
+    })
+  })
+
+  describe('seedInAt · the chip is born FROM a still-readable block', () => {
+    it('starts at ce 0.35 (block ≈ 0.8 opacity) and saturates by 0.75', () => {
+      expect(seedInAt(0.34)).toBe(0)
+      expect(seedInAt(0.35)).toBe(0)
+      expect(seedInAt(0.55)).toBeCloseTo(0.5, 6)
+      expect(seedInAt(0.75)).toBe(1)
+      /* the block's line opacity at birth: 1 − (0.35−0.25)/0.5 = 0.8 —
+         the overlap the causality needs */
+      expect(1 - (0.35 - 0.25) / 0.5).toBeCloseTo(0.8, 6)
+    })
   })
 })

@@ -155,6 +155,10 @@ export function makeLabelAtlas(tasks: readonly FlagshipTask[]): LabelAtlas {
 /* ── 1b · slab fills · Lambert + Bayer-8 quantized lighting + label decal ──── */
 export function makeFillMaterial(label: LabelAtlas): THREE.MeshLambertMaterial {
   const mat = new THREE.MeshLambertMaterial({ color: new THREE.Color('#8195c2') })
+  /* un-materialized slabs must be INVISIBLE, not page-black boxes — the
+     stage floor is a textured room now (wave M grid + pool), so an opaque
+     PS_LO box reads as a hole. True alpha dissolve + discard at zero. */
+  mat.transparent = true
   /* the edges layer draws coplanar over the fills — push the fill back */
   mat.polygonOffset = true
   mat.polygonOffsetFactor = 2
@@ -189,6 +193,8 @@ const vec3 PS_HI = ${v3(RAMP_HI)};`,
       .replace(
         '#include <dithering_fragment>',
         `{
+  /* invisible until materialized — never an opaque page-black box (wave M) */
+  if (vFade < 0.004) discard;
   float psLuma = dot(gl_FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
   /* the ignite lift · a tinted slab (running) pushes more cells onto the hi
      plateau, so the verb hue visibly takes the face */
@@ -204,8 +210,10 @@ const vec3 PS_HI = ${v3(RAMP_HI)};`,
      it rides psCol so it dissolves WITH its slab, never orphaned */
   vec4 psLbl = texture2D(uLabels, vLbl.xy);
   psCol = mix(psCol, psLbl.rgb, psLbl.a * vLbl.z);
-  /* passing/materializing slabs dissolve toward the page black */
+  /* materializing slabs dissolve from a dark ghost AND from transparency —
+     the room behind stays visible through the birth (wave M) */
   gl_FragColor.rgb = mix(PS_LO, psCol, vFade);
+  gl_FragColor.a *= clamp(vFade * 1.6, 0.0, 1.0);
 }
 #include <dithering_fragment>`,
       )
