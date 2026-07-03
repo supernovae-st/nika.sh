@@ -90,14 +90,19 @@
   position: relative;
   z-index: 3;
 }
-/* ENTRY · while the seam carries the file down through the head's zone
-   ([data-entry] · q < 1, set per-frame by the driver) the heading stands
-   aside; it fades in the moment the card lands in its slot — the collision
-   is gone AND the reading is sequenced: file first, then the title. */
+/* ENTRY · while the traveling panel's top edge is inside the caption band
+   ([data-entry] · a GEOMETRIC window the driver computes from the two
+   measured rects, wave I) the heading stands aside; it fades in the moment
+   the flight clears the band — the collision is gone AND the reading is
+   sequenced: file first, then the title. The fade is short (the gate is
+   spatial; a long fade would lag it) and the armed head sits UNDER the
+   traveling card (z), so even a violent scrub can only ever be occluded by
+   the panel — the lede can never render THROUGH the title bar. */
 .morphsec[data-armed] .morph-head {
+  z-index: 1;
   transition:
-    opacity 0.45s var(--ease-ui, ease),
-    transform 0.45s var(--ease-ui, ease);
+    opacity 0.22s var(--ease-ui, ease),
+    transform 0.22s var(--ease-ui, ease);
 }
 .morphsec[data-armed] .morph-stage[data-entry] .morph-head {
   opacity: 0;
@@ -178,8 +183,13 @@
   position: absolute;
   inset: 0;
   z-index: 2;
+  /* the slot starts BELOW the caption band — at rest the title bar keeps
+     ~24px+ of clear air under the lede at ANY viewport; when the card is
+     taller than the slot, `safe` pushes the overflow DOWN (the terminal
+     band is empty through the file beat), never up into the heading */
+  padding-top: 26px;
   display: flex;
-  align-items: center;
+  align-items: safe center;
   justify-content: center;
 }
 .morph-code {
@@ -207,7 +217,9 @@
   opacity: var(--msh, 1);
 }
 .morph-code .cf-pre {
-  font-size: clamp(9px, 1.05vh, 12px);
+  /* slightly under the v1 (1.05vh/12px) — the whole file must fit its slot
+     WITH the caption clearance above it (wave I air) */
+  font-size: clamp(9px, 1vh, 11px);
   line-height: 1.5;
   overflow: hidden; /* at rest: truncate long lines, never a scrollbar */
   width: 100%;
@@ -239,14 +251,18 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: clamp(28px, 4vw, 64px);
+  /* wide gutters — abreast columns must read as separate lanes, never as a
+     packed grid (operator, wave I: « on étouffe ») */
+  gap: clamp(36px, 5vw, 80px);
   z-index: 1;
 }
 .morphsec[data-armed] .morph-dag {
   position: absolute;
-  /* the bottom offset reserves the terminal zone — a landed node must never
-     hide behind the rising strip (found empirically, frame 4) */
-  inset: 0 0 calc(var(--morph-term-h) + 104px) 0;
+  /* the bottom offset reserves the terminal zone PLUS the flat-note caption
+     band (18px note + 20px clear air + 8px above the strip) — a landed node
+     must never hide behind the rising strip (found empirically, frame 4) and
+     the closing caption must never overlap a node (operator, wave I air) */
+  inset: 0 0 calc(var(--morph-term-h) + 150px) 0;
 }
 .morph-wires {
   position: absolute;
@@ -283,7 +299,7 @@
   display: flex;
   align-items: baseline;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: clamp(8px, 1.4vh, 14px);
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -305,7 +321,9 @@
 .morph-col {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  /* vh-adaptive · a 3-node column keeps clear intra-column air on tall
+     screens and still fits the DAG box on short laptops */
+  gap: clamp(12px, 2vh, 18px);
 }
 
 /* the node card · verb hue on the inset tick · run state on the ring */
@@ -314,7 +332,9 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding: 10px 12px 10px 14px;
+  /* vertical padding follows the viewport so tall columns never overflow
+     the DAG box on short screens (the caption band math relies on it) */
+  padding: clamp(7px, 1.1vh, 10px) 12px clamp(7px, 1.1vh, 10px) 14px;
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 90%, transparent);
@@ -666,13 +686,23 @@
   color: var(--v4-text-faint);
 }
 
-/* the honesty caption */
+/* the honesty caption · armed, it belongs to the TERMINAL's story — while
+   the file (taller than its slot on short screens) holds the lower stage,
+   the caption stays out of its way and arrives with the run it annotates */
 .morph-caption {
   margin-top: 10px;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--v4-text-faint);
+}
+.morphsec[data-armed] .morph-caption {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-ui, ease);
+}
+.morphsec[data-armed] .morph-stage[data-phase='run'] .morph-caption,
+.morphsec[data-armed] .morph-stage[data-phase='done'] .morph-caption {
+  opacity: 1;
 }
 
 /* ── THE NARRATION · anyone-words, the left rail (H2) ─────────────────────────
@@ -755,7 +785,9 @@
   .morphsec[data-armed] .morph-done-file {
     position: absolute;
     top: 0;
-    bottom: calc(var(--morph-term-h) + 104px);
+    /* +28px of clear air over the terminal band — the settled file's floor
+       must never sit ON the rising strip (operator, wave I air) */
+    bottom: calc(var(--morph-term-h) + 132px);
     left: 0;
     width: clamp(300px, 27vw, 372px);
     z-index: 2;

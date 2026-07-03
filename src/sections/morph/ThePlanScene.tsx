@@ -27,7 +27,9 @@ import {
   makeEdgeLayer,
   makeFieldLayer,
   makeFillLayer,
+  makeFloorLayer,
   makeGlowLayer,
+  makeHorizonLayer,
   makeLabelAtlas,
 } from './plan-scene-three'
 import { DEPENDS_WORDS, VERB_WORDS, WHEN_WORDS } from './plain-words'
@@ -132,6 +134,8 @@ function Advance({
       deps: makeDepLayer(model),
       field: makeFieldLayer(),
       glow: makeGlowLayer(),
+      floor: makeFloorLayer(model.waveCount),
+      horizon: makeHorizonLayer(model.waveCount),
     }
   }, [model])
   useEffect(
@@ -142,6 +146,8 @@ function Advance({
       layers.deps.dispose()
       layers.field.dispose()
       layers.glow.dispose()
+      layers.floor.dispose()
+      layers.horizon.dispose()
     },
     [layers],
   )
@@ -193,6 +199,10 @@ function Advance({
     layers.glow.mesh.position.set(0, focalY - 0.4, focalZ - 1.6)
     layers.glow.mesh.quaternion.copy(camera.quaternion)
     layers.glow.uniforms.uOpacity.value = 0.2 * gFade * (0.4 + 0.6 * runEnv)
+    /* the room · grid + horizon ground the dolly (world-fixed — the camera's
+       advance is what moves; they brighten a touch as the run plays) */
+    layers.floor.uniforms.uFade.value = gFade * (0.55 + 0.45 * runEnv)
+    layers.horizon.uniforms.uFade.value = gFade * (0.45 + 0.55 * runEnv)
 
     /* ── slabs ── */
     const fT = layers.fills.tint.array as Float32Array
@@ -431,6 +441,8 @@ function Advance({
 
   return (
     <group>
+      <primitive object={layers.floor.mesh} />
+      <primitive object={layers.horizon.mesh} />
       <primitive object={layers.field.points} />
       <primitive object={layers.glow.mesh} />
       <primitive object={layers.fills.mesh} />

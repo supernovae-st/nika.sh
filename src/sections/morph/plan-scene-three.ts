@@ -16,6 +16,12 @@
          Chosen tier: the dossier's FALLBACK (per-point alpha fade, no
          accumulation FBO) — SwiftShader-safe and cheap; noted in the plan.
      5 · the FOCAL GLOW — one billboarded radial quad under the current wave.
+     6 · the FLOOR GRID — one world-fixed plane under the amphitheater whose
+         hairlines dissolve into Bayer dither dots with distance (wave I ·
+         the shopify.design wireframe-room register, spoken in tholos): the
+         camera's dolly reads against it — lines sweeping past ARE the speed.
+     7 · the HORIZON HINT — one faint additive rule far behind the last wave,
+         the room's vanishing anchor.
 
    No drei — this chunk stays lean; three itself ships in the shared vendor
    chunk the DitherField already pays for.
@@ -34,6 +40,8 @@ import {
   RAMP_MID,
   SLAB,
   VERB_HEX,
+  WAVE_GAP,
+  Y_STEP,
   type PlanSceneModel,
   type SlabRunState,
 } from './plan-scene-model'
@@ -599,6 +607,143 @@ export function makeGlowLayer(): GlowLayer {
     blending: THREE.AdditiveBlending,
   })
   const mesh = new THREE.Mesh(geo, mat)
+  mesh.frustumCulled = false
+  mesh.renderOrder = 0
+  return {
+    mesh,
+    uniforms,
+    dispose: () => {
+      geo.dispose()
+      mat.dispose()
+    },
+  }
+}
+
+/* ── 6 · the floor grid · the wireframe room's ground (wave I) ────────────────
+   One world-fixed plane under the slab amphitheater. Hairlines in the wire
+   blue; the DISTANCE fade is quantized through the same Bayer-8 threshold
+   the slab faces use, so a receding line dissolves into dither dots (the
+   drum-sphere doctrine) instead of greying out — and it is GONE past
+   mid-distance. The camera dollies over it: the lines sweeping past are the
+   speed cue. Quiet by law: alpha ceiling 0.13 (≤0.16 operator cap · P3
+   displays render hotter than headless sRGB), an NDC vignette keeps the
+   canvas rectangle invisible (the field layer's own convention). */
+const FLOOR_Y = -1.1
+const FLOOR_CELL = 2.05 // one slab-width per tile — the room rhymes with its blocks
+
+const FLOOR_VERT = /* glsl */ `
+varying vec3 vWorld;
+varying vec2 vNdc;
+void main() {
+  vec4 w = modelMatrix * vec4(position, 1.0);
+  vWorld = w.xyz;
+  gl_Position = projectionMatrix * viewMatrix * w;
+  vNdc = gl_Position.xy / max(1e-4, gl_Position.w);
+}
+`
+const FLOOR_FRAG = /* glsl */ `
+precision mediump float;
+uniform float uFade;
+varying vec3 vWorld;
+varying vec2 vNdc;
+float psB2(vec2 a) { a = floor(a); return fract(a.x / 2.0 + a.y * a.y * 0.75); }
+#define psB4(a) (psB2(0.5 * (a)) * 0.25 + psB2(a))
+#define psB8(a) (psB4(0.5 * (a)) * 0.25 + psB2(a))
+void main() {
+  /* hairline grid · fwidth-normalized so the line stays ~1px at any depth.
+     The CROSSING lines (constant z) carry the dolly's speed — they read a
+     touch stronger than the receding ones */
+  vec2 cell = vWorld.xz / ${FLOOR_CELL.toFixed(2)};
+  vec2 fw = max(fwidth(cell), vec2(1e-5));
+  vec2 d = abs(fract(cell) - 0.5) / fw;
+  float lineX = 1.0 - min(d.x * 1.1, 1.0); /* receding, along the road */
+  float lineZ = 1.0 - min(d.y * 0.9, 1.0); /* crossing — the speed cue */
+  float line = max(lineZ, lineX * 0.72);
+  if (line <= 0.0) discard;
+  /* the distance envelope · full only near the camera's ground, NOTHING past
+     mid-distance — quantized by the Bayer threshold: the fade IS the dissolve
+     (2-device-px cells, the DitherField convention) */
+  float dist = length(vWorld.xz - cameraPosition.xz);
+  float fadeK = (1.0 - smoothstep(7.0, 18.0, dist)) * smoothstep(2.0, 4.2, dist);
+  float gate = step(psB8(floor(gl_FragCoord.xy / 2.0)), fadeK);
+  /* the canvas edge must never print its rectangle — a NARROW feather (the
+     grid may run to the frame's lower corners; only the cut line hides) */
+  float edgeK = 1.0 - smoothstep(0.78, 0.97, max(abs(vNdc.x), abs(vNdc.y)));
+  float a = line * gate * edgeK * uFade * 0.15;
+  if (a < 0.004) discard;
+  vec3 col = mix(${v3(RAMP_MID)}, ${v3(RAMP_HI)}, 0.42);
+  gl_FragColor = vec4(col, a);
+}
+`
+
+export interface FloorLayer {
+  mesh: THREE.Mesh
+  uniforms: { uFade: { value: number } }
+  dispose: () => void
+}
+
+export function makeFloorLayer(waveCount: number): FloorLayer {
+  /* the ground spans the whole dolly: ahead of the overview camera down to
+     well past the last wave (the far half dissolves anyway) */
+  const depth = waveCount * WAVE_GAP + 56
+  const geo = new THREE.PlaneGeometry(76, depth)
+  const uniforms = { uFade: { value: 0 } }
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: FLOOR_VERT,
+    fragmentShader: FLOOR_FRAG,
+    uniforms,
+    transparent: true,
+    depthWrite: false,
+  })
+  const mesh = new THREE.Mesh(geo, mat)
+  mesh.rotation.x = -Math.PI / 2
+  mesh.position.set(0, FLOOR_Y, 16 - depth / 2)
+  mesh.frustumCulled = false
+  mesh.renderOrder = 0
+  return {
+    mesh,
+    uniforms,
+    dispose: () => {
+      geo.dispose()
+      mat.dispose()
+    },
+  }
+}
+
+/* ── 7 · the horizon hint · the room's vanishing anchor ──────────────────────
+   One faint additive rule far behind the last wave, at the amphitheater's
+   mid-rise — the fixed point the dolly advances toward. */
+const HORIZON_FRAG = /* glsl */ `
+precision mediump float;
+uniform float uFade;
+varying vec2 vUv;
+void main() {
+  vec2 c = (vUv - 0.5) * 2.0;
+  float g = exp(-c.x * c.x * 2.6) * exp(-c.y * c.y * 3.0) * uFade * 0.07;
+  if (g < 0.004) discard;
+  gl_FragColor = vec4(mix(${v3(RAMP_MID)}, ${v3(RAMP_HI)}, 0.5), g);
+}
+`
+
+export interface HorizonLayer {
+  mesh: THREE.Mesh
+  uniforms: { uFade: { value: number } }
+  dispose: () => void
+}
+
+export function makeHorizonLayer(waveCount: number): HorizonLayer {
+  const geo = new THREE.PlaneGeometry(58, 2.6)
+  const uniforms = { uFade: { value: 0 } }
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: GLOW_VERT,
+    fragmentShader: HORIZON_FRAG,
+    uniforms,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+  const mesh = new THREE.Mesh(geo, mat)
+  mesh.position.set(0, ((waveCount - 1) * Y_STEP) / 2, -(waveCount - 1) * WAVE_GAP - 10)
   mesh.frustumCulled = false
   mesh.renderOrder = 0
   return {
