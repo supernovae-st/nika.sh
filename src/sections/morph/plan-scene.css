@@ -28,8 +28,8 @@
 .ps-layer {
   position: absolute;
   /* the safe area above the terminal strip — the canvas hard edge must stay
-     CLEAR of the terminal panel (measured: the old +96px left it 6px short) */
-  inset: 0 0 calc(clamp(80px, 11vh, 140px) + 120px) 0;
+     CLEAR of the terminal panel (the shared --morph-term-h band, morph.css) */
+  inset: 0 0 calc(var(--morph-term-h, clamp(72px, 9.5vh, 124px)) + 120px) 0;
   z-index: 1;
   pointer-events: none;
 }

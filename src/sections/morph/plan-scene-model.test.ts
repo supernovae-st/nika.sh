@@ -180,11 +180,18 @@ describe('the light · every change maps to a recorded event', () => {
     }
   })
 
-  it('materialize matches the DOM node timing (lands by burst end)', () => {
+  it('materialize matches the DOM node timing (born per aspiration beat, lands by burst end)', () => {
     for (const f of FLAGSHIP_ENTRIES) {
-      for (let w = 0; w < f.plan.waveCount; w++) {
-        expect(materializeAt(PH.burst0, w, f.plan.waveCount)).toBe(0)
-        expect(materializeAt(PH.burstEnd, w, f.plan.waveCount)).toBe(1)
+      const n = f.plan.tasks.length
+      for (let i = 0; i < n; i++) {
+        expect(materializeAt(PH.burst0, i, n)).toBe(0)
+        expect(materializeAt(PH.burstEnd, i, n)).toBe(1)
+      }
+      /* reading order: an earlier task's slab is never behind a later one */
+      for (let p = PH.burst0; p <= PH.burstEnd; p += 0.02) {
+        for (let i = 1; i < n; i++) {
+          expect(materializeAt(p, i - 1, n)).toBeGreaterThanOrEqual(materializeAt(p, i, n))
+        }
       }
     }
   })

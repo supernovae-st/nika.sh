@@ -1,9 +1,10 @@
 /* ─── morph-model · scroll progress → the morph's whole state ─────────────────
    PURE LOGIC, no UI. The scroll morph (F2) is a pure function of
-   (flagship, p): the phase windows, each task's burst flight, and the run
-   timeline (node states + terminal reveal) all derive from the one scroll
-   progress. No timers, no accumulated state — scrubbing backward replays
-   the scene in reverse for free and nothing can ever teleport.
+   (flagship, p): the phase windows, each task's aspiration beat (condense →
+   travel → ignite), and the run timeline (node states + terminal reveal) all
+   derive from the one scroll progress. No timers, no accumulated state —
+   scrubbing backward replays the scene in reverse for free and nothing can
+   ever teleport.
 
    HONESTY: node intervals come from the RECORDED trace. The engine flushes
    task_started/task_completed together at completion time, so a task's real
@@ -15,21 +16,23 @@ import type { FlagshipEntry } from '../../flagships'
 import type { ReplayLine } from '../run/replay-model'
 
 /* ── the phase windows (fractions of the section's scroll runway) ──────────────
-   FILE   0.00–0.22  the selected file travels in and holds (sticky)
-   BURST  0.22–0.55  task blocks fly to their DAG positions, wave-staggered
-   WIRES  0.50–0.60  dependency wires draw between the landed nodes
-   RUN    0.60–0.97  the recorded trace chains through the DAG + terminal
+   FILE   0.00–0.20  the selected file travels in and holds (sticky)
+   BURST  0.20–0.60  one task at a time (reading order) CONDENSES into its
+                     seed chip, then the chip is drawn along a curve INTO its
+                     DAG slot — the slot ignites on arrival (per-task
+                     aspiration, wave I; the per-line scatter is gone)
+   WIRES  0.56–0.66  dependency wires draw between the landed nodes
+   RUN    0.66–0.97  the recorded trace chains through the DAG + terminal
    HOLD   0.97–1.00  verdict settles before the stage unsticks              */
 export const PH = {
-  settleEnd: 0.08,
-  burst0: 0.22,
-  burstFlight: 0.17,
-  burstEnd: 0.55,
-  wire0: 0.5,
-  wire1: 0.6,
-  term0: 0.5,
-  term1: 0.58,
-  run0: 0.6,
+  settleEnd: 0.07,
+  burst0: 0.2,
+  burstEnd: 0.6,
+  wire0: 0.56,
+  wire1: 0.66,
+  term0: 0.56,
+  term1: 0.63,
+  run0: 0.66,
   run1: 0.97,
 } as const
 
@@ -38,19 +41,38 @@ export const clamp01 = (v: number): number => Math.min(1, Math.max(0, v))
 export const easeInOut = (k: number): number =>
   k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2
 
-/** the file card's shell (chrome · gutter · non-task lines) 1→0 across the
-    burst window — the file dissolves while its tasks fly */
+/** the file card's shell (chrome · gutter · panel floor) 1→0 quickly at the
+    top of the burst — the frame steps aside, the task blocks stay readable */
 export function shellAt(p: number): number {
-  return 1 - clamp01((p - PH.burst0) / 0.14)
+  return 1 - clamp01((p - PH.burst0) / 0.1)
 }
 
-/** a task's burst flight 0..1 (raw, un-eased) — waves lift off in dependency
-    order so the DAG assembles the way it will run */
-export function flightAt(p: number, wave: number, waveCount: number): number {
-  const stagger = (PH.burstEnd - PH.burstFlight - PH.burst0) / Math.max(1, waveCount - 1)
-  const start = PH.burst0 + wave * stagger
-  return clamp01((p - start) / PH.burstFlight)
+/* ── the aspiration · one beat per task, reading order ─────────────────────────
+   File order IS topological order (deps live strictly earlier in the file),
+   so the plan assembles the way the file reads: transcript → extract → save.
+   Beats overlap 50% (a readable relay: at most two seeds in the air), and the
+   LAST beat lands exactly at burstEnd. */
+
+/* saturation must be EXACT at the beat boundaries (the DOM clears inline
+   transforms at 1) — snap the float dust the divisions leave behind */
+const snap01 = (v: number): number => (v >= 1 - 1e-9 ? 1 : v <= 1e-9 ? 0 : v)
+
+/** a task's aspiration beat 0..1 (raw, un-eased) — index in file order */
+export function aspireAt(p: number, index: number, count: number): number {
+  const window = PH.burstEnd - PH.burst0
+  const beat = window / (1 + 0.5 * Math.max(0, count - 1))
+  const start = PH.burst0 + index * beat * 0.5
+  return snap01(clamp01((p - start) / beat))
 }
+
+/** CONDENSE sub-phase 0..1 — the block's lines converge into the seed chip */
+export const condenseAt = (e: number): number => snap01(clamp01(e / 0.45))
+
+/** TRAVEL sub-phase 0..1 — the seed rides its curve into the DAG slot */
+export const travelAt = (e: number): number => snap01(clamp01((e - 0.45) / 0.55))
+
+/** IGNITION 0..1 — the slot is BORN as its seed lands (the causality beat) */
+export const igniteAt = (e: number): number => snap01(clamp01((travelAt(e) - 0.78) / 0.22))
 
 /** wire draw progress 0..1 */
 export function wireAt(p: number): number {

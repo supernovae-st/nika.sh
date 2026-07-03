@@ -3,19 +3,23 @@ import { FLAGSHIP_ENTRIES } from '../../flagships'
 import { buildScript } from '../run/replay-model'
 import {
   PH,
-  flightAt,
+  aspireAt,
+  condenseAt,
+  igniteAt,
   phaseAt,
   runFracAt,
   shellAt,
   taskInterval,
   termAt,
   timelineAt,
+  travelAt,
   wireAt,
 } from './morph-model'
 
 /* ─── morph-model · the scroll morph is a pure function of p ──────────────────
-   Every flagship must scrub cleanly: phases monotone, flights complete inside
-   the burst window, and the run timeline honest against the recorded trace. */
+   Every flagship must scrub cleanly: phases monotone, every aspiration beat
+   completes inside the burst window, and the run timeline honest against the
+   recorded trace. */
 
 describe('phase windows', () => {
   it('shell holds at 1 through the file phase, reaches 0 before the burst ends', () => {
@@ -31,20 +35,43 @@ describe('phase windows', () => {
     }
   })
 
-  it('every wave flight starts at 0 and lands by burstEnd', () => {
+  it('every aspiration beat starts at 0 and lands by burstEnd', () => {
     for (const f of FLAGSHIP_ENTRIES) {
-      for (let w = 0; w < f.plan.waveCount; w++) {
-        expect(flightAt(PH.burst0 - 0.001, w, f.plan.waveCount)).toBe(0)
-        expect(flightAt(PH.burstEnd, w, f.plan.waveCount)).toBe(1)
+      const n = f.plan.tasks.length
+      for (let i = 0; i < n; i++) {
+        expect(aspireAt(PH.burst0 - 0.001, i, n)).toBe(0)
+        expect(aspireAt(PH.burstEnd, i, n)).toBe(1)
+        expect(igniteAt(aspireAt(PH.burstEnd, i, n))).toBe(1)
       }
-      /* wave order: an earlier wave is never behind a later one */
+      /* reading order: an earlier task is never behind a later one */
       for (let p = PH.burst0; p <= PH.burstEnd; p += 0.01) {
-        for (let w = 1; w < f.plan.waveCount; w++) {
-          expect(flightAt(p, w - 1, f.plan.waveCount)).toBeGreaterThanOrEqual(
-            flightAt(p, w, f.plan.waveCount),
-          )
+        for (let i = 1; i < n; i++) {
+          expect(aspireAt(p, i - 1, n)).toBeGreaterThanOrEqual(aspireAt(p, i, n))
         }
       }
+    }
+  })
+
+  it('a beat condenses fully before its seed lands, and ignition is the landing', () => {
+    /* sub-phase contract: condense saturates at e=0.45 where travel begins;
+       ignition opens only in the travel's final approach */
+    expect(condenseAt(0.45)).toBe(1)
+    expect(travelAt(0.45)).toBe(0)
+    expect(travelAt(1)).toBe(1)
+    expect(igniteAt(0.45)).toBe(0)
+    expect(igniteAt(0.45 + 0.55 * 0.78)).toBe(0)
+    expect(igniteAt(1)).toBe(1)
+    /* monotone in e */
+    let prevC = 0
+    let prevT = 0
+    let prevI = 0
+    for (let e = 0; e <= 1.0001; e += 0.01) {
+      expect(condenseAt(e)).toBeGreaterThanOrEqual(prevC)
+      expect(travelAt(e)).toBeGreaterThanOrEqual(prevT)
+      expect(igniteAt(e)).toBeGreaterThanOrEqual(prevI)
+      prevC = condenseAt(e)
+      prevT = travelAt(e)
+      prevI = igniteAt(e)
     }
   })
 

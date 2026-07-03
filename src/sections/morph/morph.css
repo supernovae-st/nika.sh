@@ -8,6 +8,10 @@
 .morphsec {
   position: relative;
   background: var(--v4-bg);
+  /* the ONE terminal-band height — every reserve (DAG bottom · 3D canvas edge
+     · done panel · flat note) derives from it so the bands can never drift
+     apart. Slimmer than the v1 (11vh→9.5vh): the scene breathes (wave I). */
+  --morph-term-h: clamp(72px, 9.5vh, 124px);
 }
 @media (max-width: 767px) {
   .morphsec {
@@ -20,9 +24,11 @@
   }
 }
 
-/* the runway · only when the scroll driver is armed */
+/* the runway · only when the scroll driver is armed. 400vh: the per-task
+   aspiration (wave I) reads one beat at a time — each task gets real scroll
+   room to condense + travel instead of the old all-at-once scatter. */
 .morphsec[data-armed] {
-  height: 340vh;
+  height: 400vh;
 }
 .morphsec[data-armed] .morph-stage {
   position: sticky;
@@ -84,6 +90,24 @@
   position: relative;
   z-index: 3;
 }
+/* ENTRY · while the seam carries the file down through the head's zone
+   ([data-entry] · q < 1, set per-frame by the driver) the heading stands
+   aside; it fades in the moment the card lands in its slot — the collision
+   is gone AND the reading is sequenced: file first, then the title. */
+.morphsec[data-armed] .morph-head {
+  transition:
+    opacity 0.45s var(--ease-ui, ease),
+    transform 0.45s var(--ease-ui, ease);
+}
+.morphsec[data-armed] .morph-stage[data-entry] .morph-head {
+  opacity: 0;
+  transform: translateY(6px);
+}
+/* the narration rail yields the same way — the traveling panel crosses its
+   band mid-seam and two texts must never interleave (operator, wave I) */
+.morphsec[data-armed] .morph-stage[data-entry] .morph-say {
+  opacity: 0;
+}
 .morph-title {
   margin-top: 10px;
   font-size: clamp(22px, 2.4vw, 30px);
@@ -119,6 +143,18 @@
 .morph-stage[data-phase='done'] .morph-cap[data-for='run'] {
   opacity: 1;
   transform: none;
+}
+/* ≥1024 the done frame is interactive (file beside the flat DAG) — the
+   caption teaches the hover instead of repeating the run line */
+@media (min-width: 1024px) {
+  .morph-stage[data-phase='done'] .morph-cap[data-for='run'] {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  .morph-stage[data-phase='done'] .morph-cap[data-for='done'] {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ── the scene · card + DAG share the space ────────────────────────────────── */
@@ -210,7 +246,7 @@
   position: absolute;
   /* the bottom offset reserves the terminal zone — a landed node must never
      hide behind the rising strip (found empirically, frame 4) */
-  inset: 0 0 calc(clamp(80px, 11vh, 140px) + 104px) 0;
+  inset: 0 0 calc(var(--morph-term-h) + 104px) 0;
 }
 .morph-wires {
   position: absolute;
@@ -274,6 +310,7 @@
 
 /* the node card · verb hue on the inset tick · run state on the ring */
 .morph-node {
+  position: relative; /* anchors the plain-words tip (done frame) */
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -373,6 +410,119 @@
   color: var(--cf-num);
 }
 
+/* ── the done frame · node ⟷ YAML pairing (≥1024 · armed) ────────────────────
+   At `done` the nodes become hover/focus targets: the paired node lifts with
+   a verb-hue wash while its exact YAML lines light in the settled file panel
+   (driver-set [data-hi] · both directions share it). The transform transition
+   is scoped to `done` ONLY — during the burst the driver writes transforms
+   per frame and a transition would lag the aspiration. */
+.morph-stage[data-phase='done'] .morph-node {
+  transition:
+    border-color 0.2s var(--ease-ui, ease),
+    background-color 0.18s var(--ease-ui, ease),
+    transform 0.18s var(--ease-ui, ease);
+}
+.morph-stage[data-phase='done'] .morph-node[data-hi] {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 55%, var(--v4-line));
+  background: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 10%, var(--v4-bg-raised));
+}
+.morph-node:focus-visible {
+  outline: 1.5px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+}
+
+/* the plain-words whisper · the H6 dictionary line riding the node's top edge */
+.morph-node-tip {
+  position: absolute;
+  left: -1px;
+  bottom: calc(100% + 10px);
+  padding: 6px 9px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius-sm);
+  background: color-mix(in srgb, var(--v4-bg-raised) 96%, transparent);
+  box-shadow: 0 10px 26px -12px rgb(0 0 0 / 0.6);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(3px);
+  transition:
+    opacity 0.16s var(--ease-ui, ease),
+    transform 0.16s var(--ease-ui, ease),
+    visibility 0s linear 0.16s;
+  pointer-events: none;
+  z-index: 3;
+}
+.morph-stage[data-phase='done'] .morph-node[data-hi] .morph-node-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.16s var(--ease-ui, ease),
+    transform 0.16s var(--ease-ui, ease),
+    visibility 0s;
+}
+
+/* ── THE SEEDS · the condensed task chips riding their curves ────────────────
+   Driver-positioned (translate3d per frame). A seed is the task's honest
+   identity — id + verb — in the node register, so the landing reads as the
+   same object arriving. */
+.morph-seeds {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.morphsec:not([data-armed]) .morph-seeds {
+  display: none; /* the static scene is the finished DAG */
+}
+.morph-seed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 5px 10px 5px 12px;
+  border: 1px solid color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 45%, var(--v4-line));
+  border-radius: var(--v4-radius-sm);
+  background: color-mix(in srgb, var(--v4-bg-raised) 94%, transparent);
+  box-shadow:
+    inset 2px 0 0 var(--node-vhue, var(--v4-accent)),
+    0 6px 22px -8px color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 35%, transparent);
+  font-family: var(--mono);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+.morph-seed[data-verb='infer'] {
+  --node-vhue: var(--verb-infer);
+}
+.morph-seed[data-verb='exec'] {
+  --node-vhue: var(--verb-exec);
+}
+.morph-seed[data-verb='invoke'] {
+  --node-vhue: var(--verb-invoke);
+}
+.morph-seed[data-verb='agent'] {
+  --node-vhue: var(--verb-agent);
+}
+.morph-seed-id {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--v4-text);
+}
+.morph-seed-verb {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--node-vhue, var(--v4-text-dim));
+}
+
 /* ── THE TERMINAL · the recorded stream strip (bottom band) ────────────────── */
 .morph-term {
   position: relative;
@@ -416,7 +566,7 @@
 }
 
 .morph-term-body {
-  height: clamp(80px, 11vh, 140px);
+  height: var(--morph-term-h, clamp(72px, 9.5vh, 124px));
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 10px 16px;
@@ -583,9 +733,97 @@
     opacity: 1;
     color: var(--v4-text-dim);
   }
-  /* the DAG clears the rail — a constant inset, never phase-conditional
-     (a mid-scene layout shift would invalidate the measured flights) */
+  /* the DAG clears the rail — a constant inset through the animated phases
+     (a mid-scene layout shift would invalidate the measured flights); the
+     DONE frame is the one sanctioned exception below (the run is over, the
+     measure loop re-reads the shifted layout). */
   .morphsec[data-armed] .morph-dag {
     left: 218px;
   }
+}
+
+/* ── THE DONE FRAME · the file settles BESIDE its flat plan (≥1024 · armed) ───
+   The operator's comprehension beat: at `done` the 2D DAG is the closing
+   frame — the settled file panel returns in the left band, the DAG slides
+   right to make room, and hovering either side lights the other (the node
+   lifts · its exact YAML lines wash blue). Below 1024 the DAG-only closing
+   frame stays; ≤767 the section is the mobile story's, untouched. */
+.morph-done-file {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .morphsec[data-armed] .morph-done-file {
+    position: absolute;
+    top: 0;
+    bottom: calc(var(--morph-term-h) + 104px);
+    left: 0;
+    width: clamp(300px, 27vw, 372px);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition:
+      opacity 0.4s var(--ease-ui, ease),
+      transform 0.4s var(--ease-ui, ease),
+      visibility 0s linear 0.4s;
+  }
+  .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-done-file {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    transition:
+      opacity 0.5s var(--ease-ui, ease) 0.15s,
+      transform 0.5s var(--ease-ui, ease) 0.15s,
+      visibility 0s;
+  }
+  /* the DAG slides right for the panel (transition scoped here — during the
+     animated phases `left` is constant, so nothing else ever eases) */
+  .morphsec[data-armed] .morph-dag {
+    transition: left 0.5s var(--ease-ui, ease);
+  }
+  .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-dag {
+    left: calc(clamp(300px, 27vw, 372px) + 28px);
+  }
+}
+/* the narration rail hands its band to the panel at `done` (≥1200 only —
+   the rail doesn't exist below) */
+@media (min-width: 1200px) {
+  .morphsec[data-armed] .morph-say {
+    transition: opacity 0.3s var(--ease-ui, ease);
+  }
+  .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-say {
+    opacity: 0;
+  }
+}
+
+/* the settled panel · the same CodeFile, compact register, own scroll well */
+.morph-done-code {
+  width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.morph-done-code .cf-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.morph-done-code .cf-pre {
+  flex: 1 1 auto;
+  min-height: 0;
+  font-size: 10px;
+  line-height: 1.55;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+/* the paired task's lines · the same wash both hover directions share */
+.morph-done-code .cf-line.morph-hi {
+  background: rgb(79 134 255 / 0.13);
+  box-shadow: inset 2px 0 0 var(--v4-accent);
 }

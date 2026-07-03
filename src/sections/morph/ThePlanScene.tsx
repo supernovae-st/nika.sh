@@ -61,6 +61,10 @@ interface Props {
   progressRef: React.MutableRefObject<number>
   stageRef: React.RefObject<HTMLDivElement | null>
   cardRef: React.RefObject<HTMLDivElement | null>
+  /** OUT · per-task slab REST-pose screen centers + relative projected width
+      (ps-layer px) — the seed chips' landing targets while the slabs are the
+      visible DAG (written every frame; the camera never leaves them stale) */
+  slabTargetsRef?: React.MutableRefObject<Map<string, [number, number, number]>>
 }
 
 interface HoverUi {
@@ -104,13 +108,20 @@ function Advance({
   model,
   progressRef,
   ui,
+  slabTargetsRef,
 }: {
   entry: FlagshipEntry
   model: PlanSceneModel
   progressRef: React.MutableRefObject<number>
   ui: HoverUi
+  slabTargetsRef?: React.MutableRefObject<Map<string, [number, number, number]>>
 }) {
   const camera = useThree((s) => s.camera)
+  /* file-order index per task — the aspiration beat (reading order) */
+  const order = useMemo(
+    () => new Map(entry.plan.tasks.map((t, i) => [t.id, i])),
+    [entry],
+  )
   const layers = useMemo(() => {
     const n = model.slabs.length
     const atlas = makeLabelAtlas(model.slabs.map((s) => s.task))
@@ -195,11 +206,31 @@ function Advance({
     const alphas: Record<string, number> = {}
     const centers: Record<string, [number, number, number, number, number]> = {}
 
+    /* the seed→slab landing targets · REST-pose projection (mat = 1, no
+       drift) so a chip can aim at a slab that hasn't materialized yet —
+       width vs the front wave gives the chip its depth scale */
+    if (slabTargetsRef) {
+      const w = state.size.width
+      const h = state.size.height
+      let w0 = 0
+      for (const slab of model.slabs) {
+        V.set(slab.x, slab.y, slab.z).project(camera)
+        const bx = (V.x * 0.5 + 0.5) * w
+        const by = (-V.y * 0.5 + 0.5) * h
+        W.set(slab.x + SLAB.w / 2, slab.y, slab.z).project(camera)
+        const hw = Math.abs((W.x * 0.5 + 0.5) * w - bx)
+        if (w0 === 0) w0 = Math.max(1, hw)
+        slabTargetsRef.current.set(slab.task.id, [bx, by, hw / w0])
+      }
+    }
+
     for (let i = 0; i < model.slabs.length; i++) {
       const slab = model.slabs[i]
       const id = slab.task.id
       const st = slabStateAt(entry, id, p)
-      const mat = easeInOut(materializeAt(p, slab.task.wave, model.waveCount))
+      const mat = easeInOut(
+        materializeAt(p, order.get(id) ?? 0, entry.plan.tasks.length),
+      )
       const seal = sealAt(entry, id, p)
       const ignite = edgePulseAt(entry, id, p).strength
       const prox = cam.pz - slab.z
@@ -447,7 +478,13 @@ function TipCard({ entry, task }: { entry: FlagshipEntry; task: FlagshipTask }) 
   )
 }
 
-export default function ThePlanScene({ flagship, progressRef, stageRef, cardRef }: Props) {
+export default function ThePlanScene({
+  flagship,
+  progressRef,
+  stageRef,
+  cardRef,
+  slabTargetsRef,
+}: Props) {
   const model = useMemo(() => buildPlanScene(flagship), [flagship])
   const layerRef = useRef<HTMLDivElement>(null)
   const tipRef = useRef<HTMLDivElement>(null)
@@ -569,6 +606,7 @@ export default function ThePlanScene({ flagship, progressRef, stageRef, cardRef 
             model={model}
             progressRef={progressRef}
             ui={ui}
+            slabTargetsRef={slabTargetsRef}
           />
         </Canvas>
 
