@@ -1,0 +1,8 @@
+# nika · security contact (RFC 9116)
+# The engine enforces permits before an agent acts; if you found a way
+# around that boundary, we want to know quietly first.
+Contact: https://github.com/supernovae-st/nika/security/advisories/new
+Policy: https://github.com/supernovae-st/nika/blob/main/SECURITY.md
+Preferred-Languages: en, fr
+Canonical: https://nika.sh/.well-known/security.txt
+Expires: 2027-07-03T00:00:00.000Z
