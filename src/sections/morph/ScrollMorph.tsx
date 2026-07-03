@@ -105,6 +105,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const wireLenRef = useRef<number[]>([])
   const flightsRef = useRef<Map<string, FlightGeom>>(new Map())
   const nonTaskRef = useRef<HTMLElement[]>([])
+  /** the morph panel's identity rect, section-relative (seam handoff base) */
+  const seamBaseRef = useRef<{ left: number; top: number; w: number; h: number } | null>(null)
   const rafRef = useRef<number | null>(null)
   const scheduleRef = useRef<(() => void) | null>(null)
   const timelineSigRef = useRef(timelineAt(flagship, script.lines, 1).sig)
@@ -126,6 +128,26 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const dag = dagRef.current
     const stage = stageRef.current
     if (!card || !dag || !stage) return
+
+    /* the card-level transform (seam handoff · settle drift) must not skew
+       the line/node geometry this pass reads — clear, measure, re-apply
+       (all inside the same rAF, no flash) */
+    card.style.transform = ''
+
+    /* the traveling panel's IDENTITY rect, STAGE-relative (the stage is the
+       card's static ancestor — sticky offsets never skew this base): the
+       hero→morph seam projects the hero panel onto this slot (H-continuity) */
+    const code = card.querySelector<HTMLElement>('.morph-code')
+    if (code) {
+      const sr = stage.getBoundingClientRect()
+      const cr = code.getBoundingClientRect()
+      seamBaseRef.current = {
+        left: cr.left - sr.left,
+        top: cr.top - sr.top,
+        w: cr.width,
+        h: cr.height,
+      }
+    }
 
     const flights = new Map<string, FlightGeom>()
     const nonTask: HTMLElement[] = []
@@ -349,6 +371,51 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const section = sectionRef.current
     if (!section) return
 
+    /* H-CONTINUITY · the hero's file panel and this scene's file are ONE
+       object. Across the hero→morph seam (section top traveling viewport
+       bottom → top, q 0→1) the morph card takes over AT the hero panel's
+       live projected rect (same CodeFile, same flagship — pixel-equivalent
+       content) while the hero panel steps aside, then glides DOWN into its
+       sticky slot. Pure function of scroll: scrub up, it hands back. */
+    const heroPanel = document.querySelector<HTMLElement>('.v4hero-code')
+    const SEAM_TAKE = 0.04
+    const seam = (rect: DOMRect, vh: number) => {
+      const card = cardRef.current
+      const stage = stageRef.current
+      if (!heroPanel || !card || !stage) return
+      const q = 1 - rect.top / vh
+      const inWindow = q >= SEAM_TAKE && q < 1
+      /* the stage un-clips ONLY while the card travels outside its box */
+      if (inWindow) stage.dataset.seam = '1'
+      else delete stage.dataset.seam
+      if (q >= 1) {
+        /* past the seam · the hero panel is above the viewport; hand its
+           visibility back so an upward scrub finds it intact */
+        heroPanel.style.visibility = ''
+        return
+      }
+      if (!inWindow) {
+        /* before the takeover · the hero panel IS the file; no second copy */
+        heroPanel.style.visibility = ''
+        card.style.visibility = 'hidden'
+        return
+      }
+      const base = seamBaseRef.current
+      const hr = heroPanel.getBoundingClientRect()
+      if (!base || base.w <= 0 || hr.width <= 0) return
+      const sr = stage.getBoundingClientRect()
+      const k = easeInOut(clamp01((q - SEAM_TAKE) / (1 - SEAM_TAKE)))
+      const inv = 1 - k
+      const dx = (hr.left + hr.width / 2 - (sr.left + base.left + base.w / 2)) * inv
+      const dy = (hr.top + hr.height / 2 - (sr.top + base.top + base.h / 2)) * inv
+      const s = 1 + (hr.width / base.w - 1) * inv
+      /* the glide ENDS on the settle pose (translateY 26px) — apply() then
+         eases 26→0 across the file beat, zero teleport at the boundary */
+      card.style.visibility = ''
+      card.style.transform = `translate3d(${dx.toFixed(1)}px, ${(dy + 26 * k).toFixed(1)}px, 0) scale(${s.toFixed(4)})`
+      heroPanel.style.visibility = 'hidden'
+    }
+
     let needMeasure = true
     const frame = () => {
       rafRef.current = null
@@ -362,6 +429,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       }
       const runway = rect.height - vh
       apply(runway > 0 ? clamp01(-rect.top / runway) : 1)
+      seam(rect, vh)
     }
     const schedule = () => {
       if (rafRef.current == null) rafRef.current = requestAnimationFrame(frame)
@@ -388,6 +456,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       ro?.disconnect()
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current)
       rafRef.current = null
+      /* hand the file back to the hero (disarm · unmount) */
+      heroPanel?.style.removeProperty('visibility')
+      if (stageRef.current) delete stageRef.current.dataset.seam
+      if (cardRef.current) {
+        cardRef.current.style.visibility = ''
+        cardRef.current.style.transform = ''
+      }
     }
   }, [armed, measure, apply])
 
