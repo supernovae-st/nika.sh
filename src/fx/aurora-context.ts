@@ -34,6 +34,11 @@ export type AuroraContextValue = {
   /** Leave run mode: the bloom HOLDS ~1.2s (success sweeps one bright arc ·
       failure flashes danger inside it), then decays to the quiet blue rest. */
   runEnd: (verdict: 'success' | 'failure') => void
+  /** ABORT run mode with no verdict beat — the replay was interrupted (scrubbed
+      back above the run window · surface unmounted · route change). The frame
+      decays straight back to the idle rest; without this the loud run frame
+      would outlive the run it visualized. */
+  runStop: () => void
 }
 
 const NOOP_VALUE: AuroraContextValue = {
@@ -43,6 +48,7 @@ const NOOP_VALUE: AuroraContextValue = {
   runProgress: noop,
   flashDanger: noop,
   runEnd: noop,
+  runStop: noop,
 }
 
 export const AuroraContext = createContext<AuroraContextValue>(NOOP_VALUE)

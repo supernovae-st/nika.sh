@@ -171,9 +171,25 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     [arm, flashDanger],
   )
 
+  /* ABORT · leave run mode with NO verdict beat (scrub-back out of the run
+     window · unmount mid-replay · route change). Only run-mode state resets —
+     an in-flight danger flash keeps its own timer (TheBoundary's beat is not
+     run-scoped and must not be cut). */
+  const runStop = useCallback(() => {
+    if (typeof window === 'undefined') return
+    const el = elRef.current
+    if (!el) return
+    if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
+    sweepTimerRef.current = null
+    delete el.dataset.run
+    el.style.setProperty('--aurora-progress', '0')
+    restRef.current = REST_INTENSITY
+    arm()
+  }, [arm])
+
   const value = useMemo<AuroraContextValue>(
-    () => ({ pulse, runStart, verbTick, runProgress, flashDanger, runEnd }),
-    [pulse, runStart, verbTick, runProgress, flashDanger, runEnd],
+    () => ({ pulse, runStart, verbTick, runProgress, flashDanger, runEnd, runStop }),
+    [pulse, runStart, verbTick, runProgress, flashDanger, runEnd, runStop],
   )
 
   return (

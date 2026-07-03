@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -79,15 +79,25 @@ function LearnFile({ yaml, filename }: { yaml: string; filename?: string }) {
     }
   }
 
+  /* Escape dismisses the gloss WITHOUT moving the pointer (WCAG 1.4.13
+     dismissable) — the wrapper's own onKeyDown only fires while focus sits
+     inside it, which a hover-only reader never grants. Document-level and
+     armed only while a tip is open, so the listener costs nothing at rest. */
+  useEffect(() => {
+    if (!tip) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setTip(null)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [tip])
+
   return (
     <div
       ref={wrapRef}
       className="lrn-file"
       onPointerMove={onMove}
       onPointerLeave={() => setTip(null)}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') setTip(null)
-      }}
     >
       <CodeFile yaml={yaml} filename={filename} />
       {terms.length > 0 && (

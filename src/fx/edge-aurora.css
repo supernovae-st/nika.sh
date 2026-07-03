@@ -149,12 +149,16 @@
   animation-duration: 16s; /* band + bloom stay hue-aligned */
 }
 
-/* the permits-wall beat · one danger flash (600ms) on the bloom, then back */
+/* the permits-wall beat · one danger flash (600ms) on the bloom, then back.
+   `forwards` holds the final opacity:0 — the data-flash attribute outlives the
+   animation by ~50ms (DANGER_MS 650 vs 600), and without the fill the bloom
+   snapped back to the red conic at full intensity for those frames (a hard
+   red pop AFTER the fade — found in the wave-I sweep). */
 .edge-aurora[data-flash='danger']::after {
   background: conic-gradient(from 0deg, #ff5d5d, #7a1622 50%, #ff5d5d);
   animation:
     edge-aurora-spin 16s linear infinite,
-    aurora-danger 600ms var(--ease-ui) 1;
+    aurora-danger 600ms var(--ease-ui) 1 forwards;
 }
 @keyframes aurora-danger {
   0% {
@@ -168,8 +172,13 @@
   }
 }
 
-/* the verdict sweep · ONE bright arc travels the full frame once, then decays
-   (the spin var is driven through a single fast revolution) */
+/* the verdict sweep · ONE bright arc travels the full frame once, then
+   DISSOLVES in place (the spin var is driven through a single revolution;
+   the arc holds through ~78% and fades out by the end). `forwards` pins the
+   final transparent frame — the data-run='sweep' attribute outlives the
+   900ms animation by ~300ms (RUN_HOLD_MS 1200), and without the fill the
+   finished arc froze at 12 o'clock for those 300ms, then vanished on the
+   attribute drop (found in the wave-I sweep). */
 .edge-aurora[data-run='sweep']::after {
   background: conic-gradient(
     from var(--aurora-spin),
@@ -177,12 +186,20 @@
     var(--v4-accent-bright, #8db4ff) 0.05turn,
     transparent 0.18turn
   );
-  animation: aurora-sweep 900ms cubic-bezier(0.4, 0, 0.2, 1) 1;
+  animation: aurora-sweep 900ms cubic-bezier(0.4, 0, 0.2, 1) 1 forwards;
   opacity: 0.8;
 }
 @keyframes aurora-sweep {
-  to {
+  0% {
+    --aurora-spin: 0deg;
+    opacity: 0.8;
+  }
+  78% {
+    opacity: 0.8;
+  }
+  100% {
     --aurora-spin: 360deg;
+    opacity: 0;
   }
 }
 
@@ -202,11 +219,37 @@
 }
 
 /* reduced-motion · a static spectrum frame — nothing travels, nothing breathes;
-   intensity (event pulses) still rises and decays. */
+   intensity (event pulses) still rises and decays. The sweep/danger rules
+   above carry higher specificity than the plain ::after kill-switch, so they
+   are re-neutralized here explicitly (today every runEnd/flashDanger caller
+   is motion-gated — this is the structural belt if one ever isn't): danger
+   keeps its brief opacity-only flash (feedback, not travel); the sweep's
+   traveling arc is replaced by the plain held bloom. */
 @media (prefers-reduced-motion: reduce) {
   .edge-aurora,
   .edge-aurora::before,
   .edge-aurora::after {
     animation: none;
+  }
+  .edge-aurora[data-flash='danger']::after {
+    animation: aurora-danger 600ms var(--ease-ui) 1 forwards;
+  }
+  .edge-aurora[data-run='sweep']::after {
+    background: conic-gradient(
+      from var(--aurora-spin),
+      #ff3b30,
+      #ff9500,
+      #ffcc00,
+      #34c759,
+      #00c7be,
+      #32ade6,
+      #007aff,
+      #5856d6,
+      #af52de,
+      #ff2d55,
+      #ff3b30
+    );
+    animation: none;
+    opacity: calc(var(--aurora-intensity) * 1.15);
   }
 }

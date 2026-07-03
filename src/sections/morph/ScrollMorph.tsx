@@ -460,7 +460,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           if (newest) aurora.verbTick(newest.verb)
         }
         as.running = running
-        if (as.ended && rf < 1) {
+        if (as.ended && rf > 0 && rf < 1) {
           /* scrubbed back INTO the run window after the verdict — the scene is
              a pure function of p, so the frame re-enters the bloom with it */
           as.ended = false
@@ -471,8 +471,14 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           aurora.runEnd(flagship.trace.exit === 0 ? 'success' : 'failure')
         }
         if (rf <= 0) {
+          /* scrubbed back ABOVE the run window — the scene is a pure function
+             of p, so the frame must leave run mode WITH it (no verdict beat ·
+             without this the loud run frame outlives the run · found in the
+             wave-I sweep) */
           as.inRun = false
+          as.ended = false
           as.running = ''
+          aurora.runStop()
         }
       }
     },
@@ -517,9 +523,12 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   useEffect(() => {
     if (!armed || typeof window === 'undefined') return
     const section = sectionRef.current
-    /* pinned for the cleanup — the refs may be cleared by unmount order */
+    /* pinned for the cleanup — the refs may be cleared by unmount order
+       (auroraState is a stable plain object, same instance for the
+       component's whole life — pinning it just makes that explicit) */
     const stageEl = stageRef.current
     const cardEl = cardRef.current
+    const auroraState = auroraStateRef.current
     if (!section) return
 
     /* H-CONTINUITY · the hero's file panel and this scene's file are ONE
@@ -676,8 +685,18 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         cardEl.style.visibility = ''
         cardEl.style.transform = ''
       }
+      /* the driver dies mid-run (route change · disarm · flagship switch) →
+         the global frame must not stay in run mode. A flagship switch re-arms
+         next frame and runStart()s again — one 16ms dip, never a stuck loud
+         frame. */
+      if (auroraState.inRun) {
+        auroraState.inRun = false
+        auroraState.ended = false
+        auroraState.running = ''
+        aurora.runStop()
+      }
     }
-  }, [armed, measure, apply])
+  }, [armed, measure, apply, aurora])
 
   /* freshly committed wire paths carry no dash style until the next frame —
      cache their lengths ONCE (never in the frame loop) and re-apply as soon

@@ -155,12 +155,17 @@ export default function TheRun({ flagship }: { flagship: FlagshipEntry }) {
     body.scrollTop = body.scrollHeight
   }, [revealed])
 
-  /* unmount mid-run → hand the frame back to idle */
+  /* unmount mid-run → hand the frame back to idle. stopTimers alone only
+     silences the replay — the aurora entered run mode at play() and would
+     stay loud on whatever page comes next; runStop() actually hands the
+     frame back (the comment used to promise this without doing it). */
   useEffect(() => {
     return () => {
+      const wasPlaying = playingRef.current
       stopTimers()
+      if (wasPlaying) aurora.runStop()
     }
-  }, [stopTimers])
+  }, [stopTimers, aurora])
 
   const { verdict } = script
 

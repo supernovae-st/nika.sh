@@ -473,9 +473,12 @@
    the Bayer fade tile (the ONE sanctioned dither-fade device) — the file
    visibly continues; scrolling is the invitation. */
 .v4hero-code .cf-pre {
-  /* whole lines only: 16px top pad + 20 × 23px line boxes — a frame that
-     cuts a line in half reads as broken (coordinator punch #1) */
-  max-height: calc(16px + 20 * 23px);
+  /* whole lines only: 16px top pad + 20 × 23px line boxes + 18px bottom pad —
+     a frame that cuts a line in half reads as broken (coordinator punch #1).
+     The cap is border-box (Tailwind preflight), so BOTH paddings must be in
+     the calc: without the +18px the content box was 442px = 19.2 line boxes
+     and the 20th line peeked as a 5px sliver under the fade (wave-I sweep). */
+  max-height: calc(16px + 20 * 23px + 18px);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -850,13 +853,14 @@
     order: 8;
     margin-top: 28px;
   }
-  /* the file cap on phones · whole lines only (18 × the 21px line box) —
+  /* the file cap on phones · whole lines only (18 × the 21px line box +
+     both paddings — the cap is border-box, same law as the desktop cap) —
      the phone steps the reading type down a notch (12.5px/21px) so wrapped
      flow lines stay 2 visual lines, not 3. */
   .v4hero-code .cf-pre {
     font-size: 12.5px;
     line-height: 21px;
     padding: 14px 0 16px;
-    max-height: calc(14px + 18 * 21px);
+    max-height: calc(14px + 18 * 21px + 16px);
   }
 }
