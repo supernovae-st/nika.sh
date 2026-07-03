@@ -272,7 +272,35 @@
   justify-content: center;
 }
 .morph-code {
-  width: min(620px, 52vw);
+  /* the driver derives BOTH from the LIVE hero panel at measure time: the
+     font fits the whole file to the stage slot (rows are width-invariant —
+     the ch measure is locked), and width = heroW × F_m/F_h keeps the seam
+     projection a pure uniform scale (wave M). Fallbacks only paint before
+     the first measure. */
+  width: var(--morph-code-w, min(620px, 52vw));
+  font-size: var(--morph-code-fs, clamp(9px, 1vh, 11px));
+}
+/* the bottom dissolve (the hero's own device) — when a tall corpus flooring
+   the fit-font still crops, the file visibly CONTINUES instead of cutting;
+   rides the shell so the burst (lines flying) is never masked */
+.morph-code .cf-body::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 64px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--msh, 1);
+  background: linear-gradient(to bottom, transparent, var(--cf-bg) 82%);
+  -webkit-mask-image: var(--v4-dither-fade);
+  -webkit-mask-size: 4px 64px;
+  -webkit-mask-position: bottom;
+  mask-image: var(--v4-dither-fade);
+  mask-size: 4px 64px;
+  mask-position: bottom;
+}
+.morph-code .cf-body {
+  position: relative;
 }
 /* the card shell (chrome · gutter · floor) dissolves through the burst via
    --msh (1→0, written per-frame). The flying lines keep their own opacity.
@@ -296,20 +324,13 @@
   opacity: var(--msh, 1);
 }
 .morph-code .cf-pre {
-  /* slightly under the v1 (1.05vh/12px) — the whole file must fit its slot
-     WITH the caption clearance above it (wave I air) */
-  font-size: clamp(9px, 1vh, 11px);
-  line-height: 1.5;
-  overflow: hidden; /* at rest: truncate long lines, never a scrollbar */
+  /* font + line metrics come from the seam variant (codefile.css) — this
+     panel and the hero's are ONE layout at two sizes (wave M) */
+  overflow: hidden; /* at rest: contain the tall corpus, never a scrollbar */
   width: 100%;
 }
-/* the right-edge dissolve (H2, same treatment as the hero panel) — ONLY while
-   the card is whole (file beat): once the burst begins the lines FLY past the
-   card edge and a mask would amputate every flight. */
-.morph-stage[data-phase='file'] .morph-code .cf-pre {
-  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
-  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
-}
+/* (the right-edge dissolve is DELETED — the seam wrap variant soft-wraps every
+   long line exactly like the hero, so nothing ever reaches the right edge.) */
 .morph-code .cf-line {
   will-change: transform, opacity;
   background-image: none; /* the gutter hairline must not fly with the line */

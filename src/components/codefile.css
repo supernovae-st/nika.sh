@@ -332,6 +332,51 @@
   white-space: nowrap;
 }
 
+/* ── the seam variant · ONE layout truth at any font-size (wave M) ────────────
+   The hero panel and the morph's traveling card are the SAME object across
+   the hero→morph seam — a projection can only be pixel-continuous if the two
+   render the SAME text layout, differing by a uniform scale. Every metric
+   that shapes the glyph grid goes font-relative here (em/ch), the call-site
+   sets ONE font-size on the panel, and the wrap column follows the panel
+   width, which the morph driver derives from the hero's (width × F_m/F_h).
+   The ratios reproduce the hero reading register exactly (base 13.5px):
+   36px chrome → 2.667em · 16/18px pre pads → 1.185/1.333em · 23px line box
+   → 1.7037 · 11.5px gutter type → 0.852em · 18/20px inline air → 1.333/
+   1.481em. Scoped: only the two seam call-sites carry this class. */
+.cf-panel--seam .cf-pre {
+  font-size: inherit;
+  line-height: 1.7037;
+  padding: 1.185em 0 1.333em;
+}
+.cf-panel--seam .cf-chrome {
+  height: 2.667em;
+  gap: 0.741em;
+  padding: 0 0.741em 0 0.963em;
+}
+.cf-panel--seam .cf-tab {
+  font-size: 0.889em;
+}
+.cf-panel--seam .cf-ticks {
+  gap: 0.37em;
+}
+.cf-panel--seam .cf-tick {
+  width: 0.444em;
+  height: 0.444em;
+}
+.cf-panel--seam .cf-ln {
+  font-size: 0.852em;
+  padding-left: 0.963em;
+  padding-right: 0.815em;
+  opacity: 0.5; /* the hero reading register — the code owns the eye */
+}
+.cf-panel--seam .cf-line {
+  background-position: calc(0.963em + var(--cf-gutter, 2ch) + 0.815em) 0;
+}
+.cf-panel--seam.cf-panel--wrap {
+  --cf-text-pad-l: 1.333em;
+  --cf-text-pad-r: 1.481em;
+}
+
 /* ── mobile density · step the mono down a notch so more of each line fits the
    viewport before the scroll well takes over (the frame itself never widens). */
 @media (max-width: 480px) {

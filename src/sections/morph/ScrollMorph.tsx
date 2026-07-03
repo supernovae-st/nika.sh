@@ -212,6 +212,39 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
        (all inside the same rAF, no flash) */
     card.style.transform = ''
 
+    /* ONE LAYOUT TRUTH (wave M) · the card renders the hero panel's EXACT
+       text layout at its own size: width = heroW × F_m/F_h locks the ch
+       measure (wraps included — the seam projection is a pure uniform
+       scale), and the font FITS the whole file to the stage slot. Wrapped
+       row count is width-INVARIANT (the measure is locked), so the fit is
+       a closed form, not an iteration. Set BEFORE the rect reads below
+       (the gBCR flushes the new layout). Em constants mirror the seam
+       variant (codefile.css): 1.7037 line box · 2.518 pre pads · 2.667
+       chrome. */
+    const heroCode = document.querySelector<HTMLElement>('.v4hero-code')
+    const codeEl = card.querySelector<HTMLElement>('.morph-code')
+    const preEl = codeEl?.querySelector<HTMLElement>('.cf-pre')
+    if (heroCode && codeEl && preEl) {
+      /* baseline: clear prior overrides so the clamp() truth is re-read */
+      stage.style.removeProperty('--morph-code-fs')
+      stage.style.removeProperty('--morph-code-w')
+      const fH = parseFloat(getComputedStyle(heroCode).fontSize)
+      const f0 = parseFloat(getComputedStyle(codeEl).fontSize)
+      const heroW = heroCode.getBoundingClientRect().width
+      if (fH > 0 && f0 > 0 && heroW > 0) {
+        stage.style.setProperty('--morph-code-w', `${((heroW * f0) / fH).toFixed(2)}px`)
+        const rows = Math.max(
+          1,
+          Math.round((preEl.scrollHeight - 2.518 * f0) / (1.7037 * f0)),
+        )
+        const slotH = card.clientHeight - 26 - 44 /* pad-top · console guard */
+        const fit = (slotH - 2) / (rows * 1.7037 + 2.518 + 2.667)
+        const fM = Math.max(7.5, Math.min(f0, fit))
+        stage.style.setProperty('--morph-code-fs', `${fM.toFixed(2)}px`)
+        stage.style.setProperty('--morph-code-w', `${((heroW * fM) / fH).toFixed(2)}px`)
+      }
+    }
+
     /* the traveling panel's IDENTITY rect, STAGE-relative (the stage is the
        card's static ancestor — sticky offsets never skew this base): the
        hero→morph seam projects the hero panel onto this slot (H-continuity) */
@@ -601,10 +634,14 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const heroPanel = document.querySelector<HTMLElement>('.v4hero-code')
     const heroBox = heroPanel?.closest<HTMLElement>('.v4hero-editor') ?? heroPanel
     const heroCopy = document.querySelector<HTMLElement>('.v4hero-copy')
+    /* the hero's peripheral mini-DAG fades WITH the copy — no orphan
+       micro-text hanging beside the flight (wave M) */
+    const heroDags = Array.from(document.querySelectorAll<HTMLElement>('.v4hero-dag'))
     const SEAM_TAKE = 0.04
     const handBack = () => {
       if (heroBox) heroBox.style.visibility = ''
       if (heroCopy) heroCopy.style.opacity = ''
+      for (const d of heroDags) d.style.opacity = ''
     }
     const seam = (rect: DOMRect, vh: number) => {
       const card = cardRef.current
@@ -620,8 +657,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
          (the old q<1 window let the lede overlap the diving title bar) */
       if (q >= 1) {
         /* past the seam · the hero is above the viewport; hand everything
-           back so an upward scrub finds it intact */
+           back so an upward scrub finds it intact (and the unroll clip must
+           not survive a fast scrub past the window) */
         handBack()
+        card.style.clipPath = ''
         return
       }
       if (!inWindow) {
@@ -630,6 +669,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         stage.dataset.entry = '1'
         handBack()
         card.style.visibility = 'hidden'
+        card.style.clipPath = ''
         return
       }
       const base = seamBaseRef.current
@@ -640,6 +680,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         stage.dataset.entry = '1'
         handBack()
         card.style.visibility = 'hidden'
+        card.style.clipPath = ''
         return
       }
       const sr = stage.getBoundingClientRect()
@@ -663,6 +704,14 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
          gone before the title bar can reach its band, and comes back the
          moment the flight clears it (scrub-up reverses it the same way) */
       yieldEntry(stage, top + lift - (capBotRef.current + sr.top))
+      /* THE UNROLL (wave M) · the hero caps its file at ~20 lines; the card
+         carries the WHOLE file. At takeover the card clips to the hero
+         panel's projected height (the shared top region is pixel-identical),
+         then the clip releases with k — the rest of the file REVEALS below
+         the fold instead of popping in. Pure function of q. */
+      const visH = Math.min(base.h, hr.height / Math.max(s, 0.0001))
+      const clipB = Math.max(0, (base.h - visH) * (1 - k))
+      card.style.clipPath = clipB > 0.5 ? `inset(-1px -1px ${clipB.toFixed(1)}px -1px)` : ''
       /* the glide ENDS on the settle pose (translateY 26px) — apply() then
          eases 26→0 across the file beat, zero teleport at the boundary */
       card.style.visibility = ''
@@ -670,7 +719,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       heroBox.style.visibility = 'hidden'
       /* the pitch fades as its file is drawn away (restored on scrub-up) —
          q-based so the dimming is felt from the seam's first third */
-      if (heroCopy) heroCopy.style.opacity = (1 - easeInOut(clamp01(q * 1.8))).toFixed(3)
+      const peel = (1 - easeInOut(clamp01(q * 1.8))).toFixed(3)
+      if (heroCopy) heroCopy.style.opacity = peel
+      for (const d of heroDags) d.style.opacity = peel
     }
 
     let needMeasure = true
@@ -741,6 +792,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       if (cardEl) {
         cardEl.style.visibility = ''
         cardEl.style.transform = ''
+        cardEl.style.clipPath = ''
       }
       /* the driver dies mid-run (route change · disarm · flagship switch) →
          the global frame must not stay in run mode. A flagship switch re-arms
@@ -980,13 +1032,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               </p>
             </div>
 
-            {/* THE FILE · the traveling card (same chrome + filename as the hero) */}
+            {/* THE FILE · the traveling card — the hero panel's OTHER size.
+                Same seam variant + wrap, so the two render ONE text layout
+                differing by a uniform scale (the projection can't teleport). */}
             <div className="morph-file" ref={cardRef}>
               <MemoCodeFile
                 yaml={flagship.yaml}
                 filename={flagship.filename}
                 highlight={flagship.highlight}
-                className="morph-code"
+                className="morph-code cf-panel--seam"
+                wrap
               />
             </div>
 
@@ -1119,6 +1174,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   yaml={flagship.yaml}
                   filename={flagship.filename}
                   highlight={flagship.highlight}
+                  wrap
                   className="morph-done-code"
                 />
               </div>

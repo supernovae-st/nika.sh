@@ -453,16 +453,15 @@
    further so the code pops. Scoped to .v4hero-code — every other CodeFile
    surface keeps the shared density. */
 .v4hero-code {
-  --cf-text-pad-l: 18px;
-  --cf-text-pad-r: 20px;
-}
-.v4hero-code .cf-pre {
+  /* the reading register lives on the PANEL — the seam variant (codefile.css)
+     derives every layout metric from it in em/ch, so the morph's traveling
+     card reproduces this exact layout at its own size (wave M seam law) */
   font-size: 13.5px;
-  line-height: 23px; /* ≈1.7 · the reading rhythm */
-  padding: 16px 0 18px;
 }
-.v4hero-code .cf-ln {
-  opacity: 0.5; /* dimmer than the shared 0.7 — the code owns the eye */
+@media (max-width: 480px) {
+  .v4hero-code {
+    font-size: 11.5px; /* the mobile density step, panel-level now */
+  }
 }
 
 /* ── the editor vertical cap · the file is REAL and full-length ───────────────
