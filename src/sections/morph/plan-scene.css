@@ -12,6 +12,17 @@
    read) — and scrubbing back reverses the crossfade. */
 .morph-stage[data-plan3d] .morph-dag {
   visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.5s var(--ease-ui, ease),
+    visibility 0s linear 0.5s;
+}
+.morph-stage[data-plan3d][data-phase='done'] .morph-dag {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 0.55s var(--ease-ui, ease) 0.12s,
+    visibility 0s;
 }
 
 .ps-layer {
@@ -25,6 +36,18 @@
 .morphsec:not([data-armed]) .ps-layer {
   display: none; /* the static scene stays the DOM truth */
 }
+/* the 3D advance recedes behind the flat map at `done` (visibility also
+   drops the hit-rects from hover + tab order) */
+.ps-layer:not(.ps-tiplayer) {
+  transition: opacity 0.4s var(--ease-ui, ease);
+}
+.morph-stage[data-plan3d][data-phase='done'] .ps-layer:not(.ps-tiplayer) {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.4s var(--ease-ui, ease),
+    visibility 0s linear 0.4s;
+}
 .ps-canvas {
   position: absolute;
   inset: 0;
@@ -32,6 +55,37 @@
 /* the tooltip's twin box · same geometry, ABOVE the traveling card */
 .ps-tiplayer {
   z-index: 4;
+}
+
+/* the closing frame's legend · appears with the flat DAG */
+.ps-flat-note {
+  position: absolute;
+  left: 50%;
+  bottom: calc(clamp(80px, 11vh, 140px) + 128px);
+  transform: translate(-50%, 8px);
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s var(--ease-ui, ease),
+    transform 0.5s var(--ease-ui, ease),
+    visibility 0s linear 0.5s;
+  pointer-events: none;
+  z-index: 2;
+}
+.morph-stage[data-plan3d][data-phase='done'] .ps-flat-note {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 0.55s var(--ease-ui, ease) 0.25s,
+    transform 0.55s var(--ease-ui, ease) 0.25s,
+    visibility 0s;
 }
 
 /* the YAML card accepts hover ONLY in the file beat (H6) — everywhere else it

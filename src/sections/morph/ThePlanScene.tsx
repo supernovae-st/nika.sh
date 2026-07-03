@@ -595,6 +595,13 @@ export default function ThePlanScene({ flagship, progressRef, stageRef, cardRef 
         </div>
       </div>
 
+      {/* the closing frame's legend · at `done` the 3D advance recedes, the
+          flat DOM DAG returns, and this line names what the reader sees
+          (decorative: the head captions carry the meaning for AT) */}
+      <p className="ps-flat-note" aria-hidden="true">
+        the same plan, flat · every arrow is a wait
+      </p>
+
       {/* one tooltip · plain words + the task's verbatim YAML lines. A SIBLING
           layer above the traveling card: .ps-layer sits at z-1 BELOW the card
           (z-2), so a child tooltip could never rise above the YAML it
