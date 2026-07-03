@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { DecodeText } from '../fx/DecodeText'
 
 /* ─── SectionHead · the ONE section masthead (index plate + title + lede) ─────
    The v4sec-fig / v4sec-title / v4sec-lede triple with its 0/60/120ms rise
@@ -28,7 +29,9 @@ export function SectionHead({
   return (
     <>
       <p className="v4sec-fig" data-rise>
-        {fig}
+        {/* the plate decodes from Bayer noise on first view (mono register
+            only · titles stay static by design · see DecodeText.tsx) */}
+        <DecodeText text={fig} />
       </p>
       <h2
         id={id}

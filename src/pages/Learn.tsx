@@ -4,6 +4,7 @@ import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { REPO, SPEC, DOCS, routeHead } from '../content'
 import { CodeFile } from '../components/CodeFile'
+import { DecodeText } from '../fx/DecodeText'
 import { tokenize } from '../components/codefile-highlight'
 import { STEPS, ERROR_JSON, DICT } from '../content/learn'
 import { InstallCommand } from '../components/InstallCommand'
@@ -349,7 +350,7 @@ export function Component() {
           {/* errors are data · the differentiator (a FIG block) */}
           <div className="v4block" data-rise>
             <div className="v4block-head-line">
-              <span className="v4block-fig">10 · the failure object</span>
+              <span className="v4block-fig"><DecodeText text="10 · the failure object" /></span>
               <h2 className="v4block-name">Errors are data, not noise.</h2>
               <span className="v4block-count">typed · greppable</span>
             </div>

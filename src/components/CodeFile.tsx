@@ -2,8 +2,10 @@ import { useEffect, useMemo, useRef } from 'react'
 import { tokenize, verbGlyph, type Token, type TokenKind } from './codefile-highlight'
 import { useCopy } from '../lib/use-copy'
 import { CopyIcon } from './CopyRow'
+import { armIdleFlag } from '../fx/idle-flag'
 import '../shell/shell.css'
 import './codefile.css'
+import '../fx/panel-sheen.css'
 
 /* ─── CodeFile · the premium, dense, SSR-static .nika.yaml editor panel ───────
    The shared code surface across the site (hero · Living File · Permits ·
@@ -126,6 +128,9 @@ export function CodeFile({
   className,
 }: CodeFileProps) {
   const lines = useMemo(() => tokenize(yaml), [yaml])
+  /* the title-bar sheen (panel-sheen.css) parks when the tab hides — arm the
+     shared root [data-idle] flag (idempotent · one listener for all panels) */
+  useEffect(armIdleFlag, [])
   /* wrap variant only: each line's leading-space count, in ch — codefile.css
      turns it into the hanging indent (a wrapped continuation lands 2ch past
      the line's own indentation, like a real editor's wrap guide). */

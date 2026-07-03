@@ -1,0 +1,73 @@
+/* ─── slab lamp-pass + tilt · wave-I VFX (fine hover pointers only) ───────────
+   The DAG node cards are the site's 2D slabs (the tholos register's blocks
+   flattened to DOM). Two instrument behaviors, composed OVER the existing
+   hover highlights (morph-hi / data-state token swaps) — never replacing:
+
+   · THE LAMP PASS — picking a slab up (hover-focus / paired highlight) sends
+     ONE thin specular line diagonally across its glass (350ms, once per
+     pick-up), like a lamp passing over a blueprint sheet. The line lives on
+     ::after (pointer-events none) and parks off-canvas when idle. The only
+     animated property is background-position on a card-sized pseudo — a
+     one-shot micro-repaint, no layout, no loops.
+   · THE TILT (2D DAG only · .v5plan-node) — the slab answers the hand:
+     ≤2.5deg toward the cursor (use-slab-tilt.ts writes --vfx-tx/--vfx-ty),
+     springing flat on release. Transform-only. The morph nodes are excluded
+     BY DESIGN: their driver writes transforms per frame during the burst.
+
+   Gates · (hover:hover) + (pointer:fine) + no-preference — coarse pointers,
+   phones and reduced motion never even get the pseudo-element. */
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .v5plan-node::after,
+  .morph-node::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+        115deg,
+        transparent 44%,
+        rgb(141 180 255 / 0.05) 48%,
+        rgb(225 235 255 / 0.16) 50%,
+        rgb(141 180 255 / 0.05) 52%,
+        transparent 56%
+      )
+      no-repeat;
+    /* image 3x the box · at the 0% base the line sits parked past the right
+       edge (invisible) — the keyframes' end value equals the base, so the
+       one-shot never snaps on completion */
+    background-size: 300% 100%;
+    background-position: 0% 0;
+  }
+  .v5plan-node[data-state='focus']::after,
+  .morph-stage[data-phase='done'] .morph-node[data-hi]::after {
+    /* symmetric ease, NOT the 140ms micro-interaction ease-out: a lamp pass
+       reads by its even transit — ease-out would burn the travel in ~100ms */
+    animation: vfx-lamp-pass 350ms cubic-bezier(0.4, 0, 0.6, 1) 1;
+  }
+
+  /* the slab tilt · perspective + the hook's two custom props; the spring
+     back is the same transition that makes the follow read rubbery-physical.
+     `.v5plan-wrap` ancestor = ORDER-IMMUNE specificity (0,2,0): the built
+     bundle concatenates plan.css AFTER this file, and the base .v5plan-node
+     transition (equal specificity) was silently winning in prod — the spring
+     died while dev import order hid it. */
+  .v5plan-wrap .v5plan-node {
+    transform: perspective(720px) rotateX(var(--vfx-tx, 0deg)) rotateY(var(--vfx-ty, 0deg));
+    transition:
+      border-color var(--dur-ui) var(--ease-ui),
+      background-color var(--dur-ui) var(--ease-ui),
+      opacity var(--dur-ui) var(--ease-ui),
+      transform 260ms cubic-bezier(0.34, 1.3, 0.55, 1);
+  }
+}
+
+@keyframes vfx-lamp-pass {
+  from {
+    background-position: 100% 0; /* line off the LEFT edge */
+  }
+  to {
+    background-position: 0% 0; /* line exits past the RIGHT edge (= base) */
+  }
+}

@@ -4,6 +4,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { REPO, SPEC, routeHead } from '../content'
 import { CANON } from '../canon.generated'
 import { CodeFile } from '../components/CodeFile'
+import { DecodeText } from '../fx/DecodeText'
 import '../sections/v4-home.css'
 import './page-chrome.css'
 import './blog-page.css'
@@ -124,7 +125,7 @@ export function Component() {
           {/* ══ 01 · Intent as Code ═════════════════════════════════════════ */}
           <article id="intent-as-code" className="v4block" data-rise>
             <div className="v4block-head-line">
-              <span className="v4block-fig">01</span>
+              <span className="v4block-fig"><DecodeText text="01" /></span>
               <h2 className="v4block-name">Intent as Code: why your AI work should be a file</h2>
               <span className="v4block-count">Manifesto · 2026-06</span>
             </div>
@@ -184,7 +185,7 @@ export function Component() {
           {/* ══ 02 · Four verbs are enough ══════════════════════════════════ */}
           <article id="four-verbs" className="v4block" data-rise>
             <div className="v4block-head-line">
-              <span className="v4block-fig">02</span>
+              <span className="v4block-fig"><DecodeText text="02" /></span>
               <h2 className="v4block-name">Four verbs are enough</h2>
               <span className="v4block-count">Language · 2026-06</span>
             </div>

@@ -1,0 +1,42 @@
+/* ─── panel sheen · machined metal under studio light (wave-I VFX) ────────────
+   Every code panel title bar (.cf-chrome · the shared editor chrome) carries
+   a ~30%-wide soft highlight that glides across once every ~9s. Peak alpha
+   0.05 (P3 calibration law · the sRGB capture undershoots what the operator's
+   display renders) — at rest you should DOUBT you saw it.
+
+   Perf contract · the band is a fixed-gradient pseudo TRANSLATED across the
+   bar (transform-only · compositor), never an animated background-position
+   (paint-per-frame). Paused when the tab is hidden via the shared root
+   [data-idle] flag (src/fx/idle-flag.ts · the aurora's convention) and never
+   declared at all under reduced motion. pointer-events: none · the copy
+   button, tab and ticks stay fully interactive above it. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .cf-chrome {
+    position: relative;
+    overflow: hidden;
+  }
+  .cf-chrome::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 30%;
+    background: linear-gradient(105deg, transparent, rgb(225 235 255 / 0.05), transparent);
+    transform: translateX(-100%);
+    animation: vfx-sheen 9s linear infinite;
+    pointer-events: none;
+  }
+  html[data-idle='on'] .cf-chrome::after {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes vfx-sheen {
+  to {
+    /* own-width units · -100% → 433% carries the 30%-wide band from fully
+       off the LEFT edge to fully past the RIGHT edge (100/30 ≈ 3.33 widths) */
+    transform: translateX(433%);
+  }
+}

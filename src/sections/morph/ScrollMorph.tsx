@@ -22,6 +22,7 @@ import {
 } from './morph-model'
 import { VERB_WORDS } from './plain-words'
 import './morph.css'
+import '../../fx/slab-sweep.css'
 
 /* ─── ScrollMorph · F2 · the one continuous scroll-linked scene ───────────────
    Desktop (≥768px, motion-allowed) replaces the separate run/plan beats:

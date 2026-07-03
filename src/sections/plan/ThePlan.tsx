@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { SectionHead } from '../../components/SectionHead'
 import { useRevealOnce } from '../use-reveal-once'
+import { useSlabTilt } from '../../fx/use-slab-tilt'
 import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships'
 import './plan.css'
+import '../../fx/slab-sweep.css'
 
 /* ─── THE PLAN · beat 3 · the same file, rendered as its plan ─────────────────
    The SELECTED flagship's derivation (derive.ts — the ONE derivation, pinned
@@ -47,6 +49,8 @@ export default function ThePlan({ flagship }: { flagship: FlagshipEntry }) {
   const nodeRefs = useRef(new Map<string, HTMLDivElement | null>())
   const [edges, setEdges] = useState<Edge[]>([])
   const [focus, setFocus] = useState<string | null>(null)
+  /* the slab answers the hand · ≤2.5deg toward the cursor (slab-sweep.css) */
+  useSlabTilt(wrapRef, '.v5plan-node')
   const plan = flagship.plan
 
   /* dependency closure for the hover states (direct edges — the files are

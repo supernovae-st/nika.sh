@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { REPO, DOCS, ENGINE_VERSION } from '../content'
+import { useMagnetic } from '../fx/use-magnetic'
 import './nav.css'
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
@@ -251,6 +252,9 @@ export default function Nav() {
   const sheetRef = useRef<HTMLDivElement>(null)
   const burgerRef = useRef<HTMLButtonElement>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
+  /* the nav CTA leans toward the hand (wave-I VFX · fine pointers only) */
+  const installRef = useRef<HTMLAnchorElement>(null)
+  useMagnetic(installRef)
   const railRef = useRef<HTMLDivElement>(null)
   const pillRef = useRef<HTMLSpanElement>(null)
   const capsuleRef = useRef<HTMLDivElement>(null)
@@ -771,8 +775,9 @@ export default function Nav() {
             {/* the ONE solid CTA — the canonical /install deep link (docs/README/
                social share one stable URL; the old /#install anchor had none). */}
             <Link
+              ref={installRef}
               to="/install"
-              className="v4nav-cta"
+              className="v4nav-cta vfx-mag"
               aria-label="Install Nika"
             >
               <span className="v4nav-cta-glyph" aria-hidden>

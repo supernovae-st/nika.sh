@@ -308,7 +308,9 @@
   border: 1px solid var(--v4-text);
   box-shadow: 0 1px 0 color-mix(in oklch, var(--v4-text) 30%, transparent);
   transition: background-color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
-    transform 0.12s var(--ease-ui), box-shadow 0.12s var(--ease-ui);
+    transform 0.12s var(--ease-ui), box-shadow 0.12s var(--ease-ui),
+    /* the magnetic lean's spring channel (fx/magnetic.css) */
+    translate 260ms cubic-bezier(0.3, 1.35, 0.5, 1);
 }
 .v4nav-cta:hover {
   background: #ffffff;

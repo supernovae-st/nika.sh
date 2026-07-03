@@ -21,6 +21,11 @@ import * as THREE from 'three'
      only inside the blue, never on the black).
    • the wake — the pointer drags a faint lit trail through the field (the
      quantizer dithers it like everything else). Zero under reduced motion.
+   • the loupe — the field RESOLVES under the pointer: inside a ~180px
+     falloff the Bayer threshold bias shifts up (max +12%) so cells fire one
+     tone level earlier — the drawing reads finer/brighter under the glass,
+     never a spotlight. Desktop fine-pointer only; amp eases in/out on the
+     EXISTING frame loop (no new loops); zero under reduced motion.
 
    Colors are the v5 tokens (tokens.css) baked as shader constants — keep in
    sync by hand: #050507 (bg-deep) · #08090b (bg) · #16307a (dim) · #0F53B7
@@ -53,6 +58,7 @@ uniform vec2 uRes;      // drawing buffer size (device px)
 uniform float uTime;    // seconds · frozen at 0 under reduced motion
 uniform float uScroll;  // 0..1 · the page dive
 uniform vec2 uMouse;    // -1..1 pointer parallax (0 under reduced motion)
+uniform vec4 uLens;     // the loupe · xy pointer (-1..1, y down) · z radius (device px) · w amp
 
 /* ── Bayer ordered-dither thresholds (2→4→8 recursion · values in [0,1)) ── */
 float bayer2(vec2 a) { a = floor(a); return fract(a.x / 2.0 + a.y * a.y * 0.75); }
@@ -130,6 +136,12 @@ void main() {
      dot lattice at every band edge. The result maps onto the black→blue ramp;
      the ramp tops out in the DEEP family — the bright notes stay tiny. */
   float threshold = bayer8(cell);
+
+  /* ── the LOUPE · the field resolves under the reader's pointer ──
+     Inside the falloff the threshold bias shifts UP (max +12%) so cells step
+     one tone level earlier — held glass over the drawing, not a spotlight. */
+  vec2 lpx = (st - (uLens.xy * 0.5 + 0.5)) * uRes;
+  threshold += (1.0 - smoothstep(0.0, uLens.z, length(lpx))) * uLens.w * 0.12;
   float levels = 5.0;
   float qz = min(floor(luma * levels + threshold) / levels, 1.0);
 
@@ -159,10 +171,16 @@ function FieldQuad({
       uTime: { value: 0 },
       uScroll: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
+      /* z (radius px) seeds >0 — smoothstep(0,0,x) is undefined GLSL and a
+         frame could theoretically draw before the first useFrame writes it */
+      uLens: { value: new THREE.Vector4(0, 0, 180, 0) },
     }),
     [],
   )
   const mouse = useRef({ x: 0, y: 0 })
+  /* the loupe's target amp · 1 only for a fine hover pointer at desktop width
+     (set by the pointer listener below) · eased on the existing frame loop */
+  const lensAmp = useRef(0)
   const bufSize = useMemo(() => new THREE.Vector2(), [])
 
   /* seed the resolution before the first paint (the 'demand' static frame under
@@ -205,16 +223,40 @@ function FieldQuad({
     const my = reduced ? 0 : mouse.current.y
     uniforms.uMouse.value.x += (mx - uniforms.uMouse.value.x) * k
     uniforms.uMouse.value.y += (-my - uniforms.uMouse.value.y) * k
+    /* the loupe · faster follow than the parallax (a lens tracks the hand),
+       amp eases so the emulsion develops rather than snapping. All on THIS
+       loop — the lens adds zero listeners and zero frames of its own. */
+    const lens = uniforms.uLens.value
+    lens.x += (mouse.current.x - lens.x) * 0.25
+    lens.y += (mouse.current.y - lens.y) * 0.25
+    lens.z = 180 * (uniforms.uRes.value.x / Math.max(1, window.innerWidth))
+    /* reduced motion SNAPS to zero (never eases): the demand loop renders ONE
+       frame on the OS toggle — an eased w would bake a ~92%-amp lens circle
+       into that static frame. Exact zero, always. */
+    if (reduced) lens.w = 0
+    else lens.w += (lensAmp.current - lens.w) * 0.08
   })
 
   useEffect(() => {
     if (typeof window === 'undefined') return
+    /* the loupe's gate · a real hover cursor at desktop width (matches the
+       CSS cursor-effect gates) — coarse pointers and phones never see it */
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
     const onMove = (e: PointerEvent) => {
       mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1
       mouse.current.y = (e.clientY / window.innerHeight) * 2 - 1
+      lensAmp.current = fine.matches && window.innerWidth >= 1024 ? 1 : 0
+    }
+    /* pointer leaves the page → the loupe sets down (amp eases to 0) */
+    const onOut = (e: PointerEvent) => {
+      if (e.relatedTarget === null) lensAmp.current = 0
     }
     window.addEventListener('pointermove', onMove, { passive: true })
-    return () => window.removeEventListener('pointermove', onMove)
+    window.addEventListener('pointerout', onOut, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerout', onOut)
+    }
   }, [])
 
   return (
