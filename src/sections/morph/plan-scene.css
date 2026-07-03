@@ -9,20 +9,16 @@
 /* the DOM node cards step aside but KEEP LAYOUT — the burst still measures
    its flight targets from them (visibility, never display). At `done` they
    RETURN: the same plan, flat, is the closing frame (the 2D DAG everyone can
-   read) — and scrubbing back reverses the crossfade. */
+   read). The crossfade is KEYED ON p (wave M · W5): a timed 0.5s fade in a
+   scrubbed scene double-framed on fast scrubs — now both layers are pure
+   functions of --morph-p and reverse exactly. */
 .morph-stage[data-plan3d] .morph-dag {
   visibility: hidden;
-  opacity: 0;
-  transition:
-    opacity 0.5s var(--ease-ui, ease),
-    visibility 0s linear 0.5s;
+  opacity: clamp(0, (var(--morph-p, 1) - 0.985) / 0.015, 1);
+  transition: none;
 }
 .morph-stage[data-plan3d][data-phase='done'] .morph-dag {
   visibility: visible;
-  opacity: 1;
-  transition:
-    opacity 0.55s var(--ease-ui, ease) 0.12s,
-    visibility 0s;
 }
 
 .ps-layer {
@@ -36,25 +32,20 @@
 .morphsec:not([data-armed]) .ps-layer {
   display: none; /* the static scene stays the DOM truth */
 }
-/* the narration rail's x-band is SACRED (H2 · morph.css insets .morph-dag a
-   constant 218px at ≥1200px) — the 3D layer honors the same inset, so no
-   slab can ever cover the anyone-words. The camera recenters in what's left. */
-@media (min-width: 1200px) {
-  .ps-layer {
-    left: 218px;
-  }
-}
-/* the 3D advance recedes behind the flat map at `done` (visibility also
-   drops the hit-rects from hover + tab order) */
+/* (the ≥1200 left:218px inset is DELETED with the narration rail (wave M) —
+   the 3D layer spans the stage and its camera centers on the section spine,
+   same as the DOM DAG.) */
+/* the 3D advance recedes behind the flat map — p-keyed (wave M · W5): the
+   mirror ramp of the DOM DAG's return, so the two layers crossfade as one
+   object at any scrub speed. The driver drops [data-psgone] at p ≥ 0.997
+   (visibility clears the hit-rects from hover + tab order — also a pure
+   function of p, never a timer). */
 .ps-layer:not(.ps-tiplayer) {
-  transition: opacity 0.4s var(--ease-ui, ease);
+  opacity: clamp(0, (0.997 - var(--morph-p, 1)) / 0.012, 1);
+  transition: none;
 }
-.morph-stage[data-plan3d][data-phase='done'] .ps-layer:not(.ps-tiplayer) {
-  opacity: 0;
+.morph-stage[data-psgone] .ps-layer:not(.ps-tiplayer) {
   visibility: hidden;
-  transition:
-    opacity 0.4s var(--ease-ui, ease),
-    visibility 0s linear 0.4s;
 }
 .ps-canvas {
   position: absolute;
@@ -81,23 +72,17 @@
   letter-spacing: 0.05em;
   color: var(--v4-text-dim);
   white-space: nowrap;
-  opacity: 0;
+  /* p-keyed entrance (wave M · W5) — the legend rises with the last 0.8% of
+     the runway; scrubbing back sinks it the same way, never a lingering fade */
+  opacity: clamp(0, (var(--morph-p, 1) - 0.992) / 0.008, 1);
   visibility: hidden;
-  transition:
-    opacity 0.5s var(--ease-ui, ease),
-    transform 0.5s var(--ease-ui, ease),
-    visibility 0s linear 0.5s;
+  transform: translate(-50%, calc(8px * clamp(0, (0.999 - var(--morph-p, 1)) / 0.007, 1)));
+  transition: none;
   pointer-events: none;
   z-index: 2;
 }
 .morph-stage[data-plan3d][data-phase='done'] .ps-flat-note {
-  opacity: 1;
   visibility: visible;
-  transform: translate(-50%, 0);
-  transition:
-    opacity 0.55s var(--ease-ui, ease) 0.25s,
-    transform 0.55s var(--ease-ui, ease) 0.25s,
-    visibility 0s;
 }
 /* center the legend under the DAG's own band — at `done` (the only time the
    note shows) the DAG is inset by the settled file panel (≥1024), so the

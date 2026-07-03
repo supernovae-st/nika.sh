@@ -411,6 +411,12 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
 
       /* phase flag → caption + narration crossfade (morph.css) */
       stage.dataset.phase = phaseAt(p)
+      /* the 3D layer's END-OF-RUNWAY visibility gate (plan-scene.css · W5):
+         p-keyed like its opacity ramp — the hit-rects leave hover/tab order
+         exactly when the layer has fully receded, and scrub-back restores
+         them the same frame (never a timer) */
+      if (p >= 0.997) stage.dataset.psgone = '1'
+      else delete stage.dataset.psgone
 
       /* the file card travels in, then its shell steps aside for the burst */
       const shell = shellAt(p)
@@ -665,8 +671,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     if (!stage) return
     stage.style.removeProperty('--msh')
     stage.style.removeProperty('--morph-nodes-b')
+    stage.style.removeProperty('--morph-wired')
     delete stage.dataset.phase
     delete stage.dataset.entry
+    delete stage.dataset.psgone
     for (const el of stage.querySelectorAll<HTMLElement>(
       '.cf-line, .morph-node, .morph-term, .morph-seed',
     )) {
