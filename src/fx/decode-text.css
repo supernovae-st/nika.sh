@@ -1,0 +1,22 @@
+/* ─── DecodeText · plate decode overlay (wave-I VFX · see DecodeText.tsx) ─────
+   The real text owns the geometry forever; while [data-decoding] it turns
+   color:transparent (still in the AT tree · still find-in-page-able) and the
+   aria-hidden face paints the Bayer noise over the exact same box. The face
+   inherits the register's font/color/letter-spacing, so the noise reads as
+   the SAME stamp, unresolved. Overflow clips glyph-advance drift (the Bayer
+   glyphs come from a fallback face and may run slightly wide). */
+.vfx-decode {
+  position: relative;
+  display: inline-block;
+}
+.vfx-decode[data-decoding] .vfx-decode-real {
+  color: transparent;
+}
+.vfx-decode-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  white-space: pre;
+  pointer-events: none;
+  user-select: none;
+}
