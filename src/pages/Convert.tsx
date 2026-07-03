@@ -41,7 +41,7 @@ export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
   useHead({
-    title: 'Send us a workflow — Nika',
+    title: 'Send us a workflow · Nika',
     link: routeHead('/convert').link,
     meta: [
       ...routeHead('/convert').meta,
@@ -50,13 +50,13 @@ export function Component() {
         content:
           'Describe one AI task you repeat, in ChatGPT, Claude, Cursor, Codex, or scripts. We convert the best ones into runnable .nika.yaml examples, credited to you.',
       },
-      { property: 'og:title', content: 'Send us a workflow — Nika' },
+      { property: 'og:title', content: 'Send us a workflow · Nika' },
       {
         property: 'og:description',
         content:
           'Your repeated AI task, converted into a runnable, credited .nika.yaml example.',
       },
-      { name: 'twitter:title', content: 'Send us a workflow — Nika' },
+      { name: 'twitter:title', content: 'Send us a workflow · Nika' },
       {
         name: 'twitter:description',
         content:

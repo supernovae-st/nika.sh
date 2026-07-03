@@ -432,7 +432,7 @@ export function Component() {
   const totalTasks = Object.values(SHOWCASE_DAG).reduce((n, d) => n + d.tasks.length, 0)
 
   useHead({
-    title: 'Use cases — Nika',
+    title: 'Use cases · Nika',
     link: routeHead('/use-cases').link,
     meta: [
       ...routeHead('/use-cases').meta,
@@ -440,7 +440,7 @@ export function Component() {
         name: 'description',
         content: `Pick the thing you keep doing. ${total} real workflows for everyone, founders and developers, each a file you can read before it runs.`,
       },
-      { property: 'og:title', content: 'Use cases — Nika' },
+      { property: 'og:title', content: 'Use cases · Nika' },
       {
         property: 'og:description',
         content: `${total} real workflows, each one a file you can read before it runs, shown with the plan and the exact YAML.`,
@@ -451,7 +451,7 @@ export function Component() {
         content:
           'Nika use cases: real workflows for everyone, founders & ops, and developers.',
       },
-      { name: 'twitter:title', content: 'Use cases — Nika' },
+      { name: 'twitter:title', content: 'Use cases · Nika' },
       {
         name: 'twitter:description',
         content: `${total} real workflows, each one a file you can read before it runs, shown with the plan and the exact YAML.`,

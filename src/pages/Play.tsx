@@ -74,7 +74,7 @@ export function Component() {
   const mounted = useHydrated()
 
   useHead({
-    title: 'Playground — Nika',
+    title: 'Playground · Nika',
     link: routeHead('/play').link,
     meta: [
       ...routeHead('/play').meta,
@@ -83,12 +83,12 @@ export function Component() {
         content:
           'Write a workflow in the browser and watch it get checked as you type. Nothing leaves the tab. Then run the same file on your machine.',
       },
-      { property: 'og:title', content: 'Playground — Nika' },
+      { property: 'og:title', content: 'Playground · Nika' },
       {
         property: 'og:description',
         content: 'Write a workflow in the browser: checked as you type, nothing leaves the tab.',
       },
-      { name: 'twitter:title', content: 'Playground — Nika' },
+      { name: 'twitter:title', content: 'Playground · Nika' },
       {
         name: 'twitter:description',
         content: 'Write a workflow in the browser: checked as you type, nothing leaves the tab.',

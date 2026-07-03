@@ -592,8 +592,11 @@ export default function ThePlanScene({
   return (
     <>
       <div className="ps-layer" ref={layerRef}>
+        {/* the canvas is decorative for AT — the ps-bills hit-rects (siblings,
+            never inside the hidden subtree) carry the names + keyboard focus */}
         <Canvas
           className="ps-canvas"
+          aria-hidden
           frameloop={inView && !docHidden ? 'always' : 'never'}
           dpr={[1, 1.5]}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', stencil: false }}

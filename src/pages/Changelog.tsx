@@ -88,7 +88,7 @@ export function Component() {
   const groups = useMemo(() => groupByYear(CHANGELOG), [])
 
   useHead({
-    title: 'Changelog — Nika',
+    title: 'Changelog · Nika',
     link: routeHead('/changelog').link,
     meta: [
       ...routeHead('/changelog').meta,
@@ -97,12 +97,12 @@ export function Component() {
         content:
           'Every Nika release and public milestone, dated and tagged: the spec opened, the four verbs locked, the tools and the model providers landed.',
       },
-      { property: 'og:title', content: 'Changelog — Nika' },
+      { property: 'og:title', content: 'Changelog · Nika' },
       {
         property: 'og:description',
         content: 'The Nika ship log: every release and public milestone, dated and tagged.',
       },
-      { name: 'twitter:title', content: 'Changelog — Nika' },
+      { name: 'twitter:title', content: 'Changelog · Nika' },
       {
         name: 'twitter:description',
         content: 'The Nika ship log: every release and public milestone, dated and tagged.',

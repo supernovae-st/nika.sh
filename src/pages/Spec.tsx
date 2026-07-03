@@ -245,7 +245,7 @@ export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
   useHead({
-    title: 'Spec — Nika',
+    title: 'Spec · Nika',
     link: routeHead('/spec').link,
     meta: [
       ...routeHead('/spec').meta,
@@ -254,7 +254,7 @@ export function Component() {
         content:
           'The whole language at a glance: a frozen format, four verbs (think, run a command, use a tool, delegate), the plan, variables and typed errors.',
       },
-      { property: 'og:title', content: 'Spec — Nika' },
+      { property: 'og:title', content: 'Spec · Nika' },
       {
         property: 'og:description',
         content:
@@ -266,7 +266,7 @@ export function Component() {
         content:
           'Nika spec: the contract an agent must satisfy before it acts. permits: infer · exec · invoke · agent.',
       },
-      { name: 'twitter:title', content: 'Spec — Nika' },
+      { name: 'twitter:title', content: 'Spec · Nika' },
       {
         name: 'twitter:description',
         content:

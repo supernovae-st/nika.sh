@@ -171,6 +171,10 @@ export default function ThePlan({ flagship }: { flagship: FlagshipEntry }) {
                 {wave.map((task) => {
                   const chip = chipFor(flagship, task)
                   return (
+                    /* tap-toggle on coarse pointers, hover on fine — and the
+                       SAME toggle from the keyboard (role=button + Enter/Space
+                       + the global :focus-visible ring): the wire-tracing
+                       intelligence must not be pointer-only. */
                     <div
                       key={task.id}
                       ref={(el) => {
@@ -180,10 +184,20 @@ export default function ThePlan({ flagship }: { flagship: FlagshipEntry }) {
                       data-verb={task.verb}
                       data-state={stateOf(task.id)}
                       data-skipped={chip.skipped || undefined}
+                      role="button"
+                      tabIndex={0}
+                      aria-pressed={focus === task.id}
+                      aria-label={`trace ${task.id} · ${task.verb}`}
                       onPointerEnter={(e) => {
                         if (e.pointerType === 'mouse') setFocus(task.id)
                       }}
                       onClick={() => setFocus((f) => (f === task.id ? null : task.id))}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          setFocus((f) => (f === task.id ? null : task.id))
+                        }
+                      }}
                     >
                       <span className="v5plan-node-id">{task.id}</span>
                       <span className="v5plan-node-verb">{task.verb}</span>

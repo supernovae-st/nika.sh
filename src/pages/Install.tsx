@@ -44,7 +44,7 @@ export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
   useHead({
-    title: 'Install — Nika',
+    title: 'Install · Nika',
     link: routeHead('/install').link,
     meta: [
       ...routeHead('/install').meta,
@@ -53,13 +53,13 @@ export function Component() {
         content:
           'Install Nika: one Rust binary via Homebrew, the install script, or a verified tarball. Editor extension, agent wiring, and a zero-key first run.',
       },
-      { property: 'og:title', content: 'Install — Nika' },
+      { property: 'og:title', content: 'Install · Nika' },
       {
         property: 'og:description',
         content:
           'One binary, on your machine: brew, curl, or air-gapped tarball. First run needs no model and no API key.',
       },
-      { name: 'twitter:title', content: 'Install — Nika' },
+      { name: 'twitter:title', content: 'Install · Nika' },
       {
         name: 'twitter:description',
         content: 'One binary, on your machine. First run needs no model and no API key.',

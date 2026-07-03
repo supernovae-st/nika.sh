@@ -54,7 +54,7 @@ const PROMISES = [
 
 export function Component() {
   useHead({
-    title: 'Manifesto — Nika',
+    title: 'Manifesto · Nika',
     link: routeHead('/manifesto').link,
     meta: [
       ...routeHead('/manifesto').meta,
@@ -63,21 +63,21 @@ export function Component() {
         content:
           'The drum of liberation. Why your workflows should run on your machine, with any model, and never be switched off by anyone but you.',
       },
-      { property: 'og:title', content: 'Manifesto — Nika' },
+      { property: 'og:title', content: 'Manifesto · Nika' },
       {
         property: 'og:description',
-        content: 'The drum of liberation — sovereign AI workflows, owned by you.',
+        content: 'The drum of liberation · sovereign AI workflows, owned by you.',
       },
       { property: 'og:image', content: 'https://nika.sh/og-manifesto.png' },
       {
         property: 'og:image:alt',
         content:
-          'Nika manifesto — the drum of liberation. Any model, your memory, owned by you.',
+          'Nika manifesto · the drum of liberation. Any model, your memory, owned by you.',
       },
-      { name: 'twitter:title', content: 'Manifesto — Nika' },
+      { name: 'twitter:title', content: 'Manifesto · Nika' },
       {
         name: 'twitter:description',
-        content: 'The drum of liberation — sovereign AI workflows, owned by you.',
+        content: 'The drum of liberation · sovereign AI workflows, owned by you.',
       },
       { name: 'twitter:image', content: 'https://nika.sh/og-manifesto.png' },
     ],

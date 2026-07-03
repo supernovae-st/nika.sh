@@ -12,7 +12,7 @@ import './not-found.css'
 
 export function Component() {
   useHead({
-    title: '404 · This file doesn’t parse — Nika',
+    title: '404 · This file doesn’t parse · Nika',
     meta: [{ name: 'robots', content: 'noindex' }],
   })
 
