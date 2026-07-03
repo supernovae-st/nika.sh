@@ -43,3 +43,7 @@ auto-deploys on push to `main` (DigitalOcean App Platform, `.do/app.yaml`).
   text in the scene is CanvasTexture or extruded TextGeometry.
 - Verify visually headless: build, serve `dist/`, screenshot with
   swiftshader Chromium (`?it=N` freezes the film deterministically).
+- Scroll-linked scenes (ScrollMorph) verify with the sweep driver:
+  `node scripts/shoot-scroll.mjs --url http://127.0.0.1:<port>/?it=99`
+  (CDP scrolls the real page and captures seam + progress frames;
+  `--reverse` replays backward for scrub-down truth).
