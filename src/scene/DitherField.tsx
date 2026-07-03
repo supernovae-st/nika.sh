@@ -230,7 +230,11 @@ function FieldQuad({
     lens.x += (mouse.current.x - lens.x) * 0.25
     lens.y += (mouse.current.y - lens.y) * 0.25
     lens.z = 180 * (uniforms.uRes.value.x / Math.max(1, window.innerWidth))
-    lens.w += ((reduced ? 0 : lensAmp.current) - lens.w) * 0.08
+    /* reduced motion SNAPS to zero (never eases): the demand loop renders ONE
+       frame on the OS toggle — an eased w would bake a ~92%-amp lens circle
+       into that static frame. Exact zero, always. */
+    if (reduced) lens.w = 0
+    else lens.w += (lensAmp.current - lens.w) * 0.08
   })
 
   useEffect(() => {
