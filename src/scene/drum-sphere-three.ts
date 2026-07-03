@@ -84,17 +84,43 @@ varying float vLit;
 uniform float uFade;
 void main() {
   /* the tol.is line law · alpha from facing, the beat brightens the front */
-  float a = (0.12 + 0.74 * vFacing) * (0.72 + 0.5 * vPulse) * uFade;
+  float a = (0.12 + 0.74 * vFacing) * (0.82 + 0.55 * vPulse) * uFade;
   if (a < 0.01) discard;
   vec3 col = mix(vec3(0.87, 0.91, 0.98), vec3(0.553, 0.706, 1.0), vLit * 0.6);
-  col = mix(col, vec3(0.31, 0.525, 1.0), vPulse * 0.5);
+  col = mix(col, vec3(0.31, 0.525, 1.0), vPulse * 0.6);
   gl_FragColor = vec4(col, min(a, 1.0));
+}
+`
+
+/* the strike glow · a faint blue core INSIDE the shell that flashes on the
+   beat — drawn after the fills (depth-tested), so the near hemisphere's
+   blocks occlude it and it washes over the far ones: light from within */
+const GLOW_VERT = /* glsl */ `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`
+const GLOW_FRAG = /* glsl */ `
+precision mediump float;
+uniform float uTime;
+uniform float uFade;
+varying vec2 vUv;
+void main() {
+  float w = fract(uTime / 2.4);
+  float beat = smoothstep(0.0, 0.05, w) * exp(-w * 5.0);
+  float d = length(vUv - 0.5) * 2.0;
+  float g = exp(-d * d * 4.5) * (0.10 + 0.30 * beat) * uFade;
+  if (g < 0.004) discard;
+  gl_FragColor = vec4(vec3(0.36, 0.56, 1.0), g);
 }
 `
 
 export interface ShellLayers {
   fills: THREE.Mesh
   lines: THREE.LineSegments
+  glow: THREE.Mesh
   uniforms: {
     uTime: { value: number }
     uAmp: { value: number }
@@ -153,24 +179,40 @@ export function makeShellLayers(m: DrumSphereModel): ShellLayers {
     depthWrite: false,
   })
 
+  const glowGeo = new THREE.PlaneGeometry(1.7, 1.7)
+  const glowMat = new THREE.ShaderMaterial({
+    vertexShader: GLOW_VERT,
+    fragmentShader: GLOW_FRAG,
+    uniforms,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+
   const fills = new THREE.Mesh(fillGeo, fillMat)
   fills.frustumCulled = false
   fills.renderOrder = 1
+  const glow = new THREE.Mesh(glowGeo, glowMat)
+  glow.frustumCulled = false
+  glow.renderOrder = 2
   const lines = new THREE.LineSegments(lineGeo, lineMat)
   lines.frustumCulled = false
-  lines.renderOrder = 2
+  lines.renderOrder = 3
 
   return {
     fills,
     lines,
+    glow,
     uniforms,
     dispose: () => {
       box.dispose()
       edges.dispose()
       fillGeo.dispose()
       lineGeo.dispose()
+      glowGeo.dispose()
       fillMat.dispose()
       lineMat.dispose()
+      glowMat.dispose()
     },
   }
 }

@@ -44,6 +44,10 @@
   top: 6%;
   left: 3%;
 }
+.mfd-hud-tr {
+  top: 6%;
+  right: 3%;
+}
 .mfd-hud-bl {
   bottom: 6%;
   left: 3%;

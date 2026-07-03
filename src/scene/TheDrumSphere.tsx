@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { RING_COUNT, buildDrumSphere } from './drum-sphere-model'
+import { RING_COUNT, buildDrumSphere, type DrumSphereModel } from './drum-sphere-model'
 import { makeShellLayers } from './drum-sphere-three'
 import './drum-sphere.css'
 
@@ -22,8 +22,13 @@ interface Pointer {
   y: number
 }
 
-function Shell({ pointer }: { pointer: React.MutableRefObject<Pointer> }) {
-  const model = useMemo(() => buildDrumSphere(), [])
+function Shell({
+  model,
+  pointer,
+}: {
+  model: DrumSphereModel
+  pointer: React.MutableRefObject<Pointer>
+}) {
   const layers = useMemo(() => makeShellLayers(model), [model])
   useEffect(() => () => layers.dispose(), [layers])
 
@@ -47,10 +52,14 @@ function Shell({ pointer }: { pointer: React.MutableRefObject<Pointer> }) {
   })
 
   return (
-    <group ref={group} rotation={[0.26, 0, 0]}>
-      <primitive object={layers.fills} />
-      <primitive object={layers.lines} />
-    </group>
+    <>
+      <group ref={group} rotation={[0.26, 0, 0]}>
+        <primitive object={layers.fills} />
+        <primitive object={layers.lines} />
+      </group>
+      {/* the strike glow stays camera-facing OUTSIDE the spinning group */}
+      <primitive object={layers.glow} />
+    </>
   )
 }
 
@@ -63,6 +72,7 @@ export default function TheDrumSphere({
   const pointer = useRef<Pointer>({ x: 0, y: 0 })
   const [inView, setInView] = useState(false)
   const [hidden, setHidden] = useState(false)
+  const model = useMemo(() => buildDrumSphere(), [])
 
   /* the CSS rings step aside ONLY once this layer is really mounted */
   useEffect(() => {
@@ -104,11 +114,12 @@ export default function TheDrumSphere({
         camera={{ fov: 38, near: 0.1, far: 20, position: [0, 0, 3.9] }}
         onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       >
-        <Shell pointer={pointer} />
+        <Shell model={model} pointer={pointer} />
       </Canvas>
       {/* HUD whisper · the tholos register (pure decoration, wrapper is
           aria-hidden; the dot leaders are the tol.is label grammar) */}
       <span className="mfd-hud mfd-hud-tl">RINGS·····{RING_COUNT}</span>
+      <span className="mfd-hud mfd-hud-tr">BLOCKS·····{model.count}</span>
       <span className="mfd-hud mfd-hud-bl">BEAT·····2.4s</span>
       <span className="mfd-hud mfd-hud-br">AGPL·····forever</span>
     </div>

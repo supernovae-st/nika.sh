@@ -15,8 +15,8 @@ export const SHELL_R = 1
 
 /* box dims · a ring band is π/16 ≈ 0.196 tall; blocks fill ~47% of it and
    ~66% of their arc — the GAPS between blocks are the tholos read */
-const BLOCK_H = 0.092
-const WIDTH_FILL = 0.66
+const BLOCK_H = 0.084
+const WIDTH_FILL = 0.72
 /** radial thickness at rest — the breathing extrusion scales this in-shader */
 export const BLOCK_D = 0.075
 
