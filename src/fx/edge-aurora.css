@@ -186,26 +186,29 @@
 
 .edge-aurora[data-run]::before {
   background: conic-gradient(
-    from 0deg,
+    from var(--aurora-spin),
     var(--verb-infer) 0turn,
     var(--verb-exec) 0.25turn,
     var(--verb-invoke) 0.5turn,
     var(--verb-agent) 0.75turn,
     var(--verb-infer) 1turn
   );
-  /* GEOMETRY FIX (H2, verified empirically): on the -16% box the viewport's
-     edge midpoints sit at radius fraction ~0.38 of an `ellipse 100% 100%` —
-     the idle mask's 66% transparent stop keeps its band entirely OFF-screen
-     (corner haze only). The bloom band must OVERLAP the frame: fade 31%→46%
-     puts the edge midpoints at ~half strength, corners full, while the
-     center punch still protects the 72rem content column (its half-width is
-     fraction ~0.30 — inside the transparent zone). */
-  mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, #000 43%);
-  -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, #000 43%);
+  /* THE BOX LAW (round 4, definitive): every radial mask smeared as diagonal
+     washes, and transform-rotation rotates the MASK with the element. So:
+     the band is a crossed-linear BOX hugging all four edges, the element
+     never moves, and the hues travel via the conic from-angle alone. */
+  mask:
+    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
+  -webkit-mask:
+    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
+  mask-composite: add;
+  -webkit-mask-composite: source-over;
   /* breathe with the RUN, not a timer: recorded progress drives the swell */
   opacity: calc(var(--aurora-intensity) + var(--aurora-progress) * 0.15);
-  /* the wheel turns — slow, readable (the idle drift is 26s; the run leans in) */
-  animation: edge-aurora-rotate 18s linear infinite;
+  /* the wheel turns · full-voice verb hues circle the frame */
+  animation: edge-aurora-spin 18s linear infinite;
 }
 
 /* the active-verb lead · a narrow bright arc in the current verb's hue
@@ -213,28 +216,40 @@
 .edge-aurora[data-run]::after {
   content: '';
   position: absolute;
-  inset: -16%;
+  inset: -2%;
   background: conic-gradient(
-    from 0deg,
+    from var(--aurora-spin),
     transparent 0turn,
     var(--aurora-verb) 0.06turn,
     transparent 0.16turn
   );
-  mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 36%, #000 52%);
-  -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 36%, #000 52%);
+  mask:
+    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
+  -webkit-mask:
+    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
+  mask-composite: add;
+  -webkit-mask-composite: source-over;
   filter: blur(22px);
   opacity: calc(var(--aurora-intensity) * 1.6);
   transition: --aurora-verb 320ms var(--ease-ui);
-  animation: edge-aurora-rotate 9s linear infinite; /* faster than the base 26s */
+  animation: edge-aurora-spin 9s linear infinite; /* the lead runs ahead */
 }
 
 /* the permits-wall beat · one danger flash (600ms) then back */
 .edge-aurora[data-flash='danger']::after {
   content: '';
   position: absolute;
-  inset: -16%;
-  mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 36%, #000 52%);
-  -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 36%, #000 52%);
+  inset: -2%;
+  mask:
+    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
+  -webkit-mask:
+    linear-gradient(to right, #000 0, transparent 13%, transparent 87%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 13%, transparent 87%, #000 100%);
+  mask-composite: add;
+  -webkit-mask-composite: source-over;
   filter: blur(22px);
   animation: aurora-danger 600ms var(--ease-ui) 1;
 }
@@ -256,7 +271,7 @@
 /* the verdict sweep · ONE bright accent arc travels the frame, then decays */
 .edge-aurora[data-run='sweep']::after {
   background: conic-gradient(
-    from 0deg,
+    from var(--aurora-spin),
     transparent 0turn,
     var(--v4-accent-bright, #8db4ff) 0.05turn,
     transparent 0.18turn
@@ -266,29 +281,26 @@
 }
 @keyframes aurora-sweep {
   to {
-    transform: rotate(360deg);
+    --aurora-spin: 360deg;
   }
 }
 
 /* mobile · thinner edge, still present (the oryzo thickness law: the ring
    scales down with the viewport instead of disappearing) */
 @media (max-width: 767px) {
-  .edge-aurora::before {
-    mask: radial-gradient(ellipse 88% 90% at 50% 50%, transparent 76%, #000 100%);
-    -webkit-mask: radial-gradient(ellipse 88% 90% at 50% 50%, transparent 76%, #000 100%);
-    filter: blur(26px);
-  }
-  /* the run bloom keeps its band ON the small frame (same geometry law),
-     just tighter + softer than desktop */
-  .edge-aurora[data-run]::before {
-    mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 33%, #000 50%);
-    -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 33%, #000 50%);
-    filter: blur(26px);
-  }
+  /* the small frame keeps the same box law, thinner band + softer blur */
+  .edge-aurora:not([data-run])::after,
+  .edge-aurora[data-run]::before,
   .edge-aurora[data-run]::after {
-    mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 38%, #000 56%);
-    -webkit-mask: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 38%, #000 56%);
-    filter: blur(20px);
+    mask:
+      linear-gradient(to right, #000 0, transparent 8%, transparent 92%, #000 100%),
+      linear-gradient(to bottom, #000 0, transparent 8%, transparent 92%, #000 100%);
+    -webkit-mask:
+      linear-gradient(to right, #000 0, transparent 8%, transparent 92%, #000 100%),
+      linear-gradient(to bottom, #000 0, transparent 8%, transparent 92%, #000 100%);
+    mask-composite: add;
+    -webkit-mask-composite: source-over;
+    filter: blur(22px);
   }
 }
 
