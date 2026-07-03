@@ -24,7 +24,12 @@
   .vfx-mag {
     position: relative;
     translate: var(--mag-x, 0px) var(--mag-y, 0px);
-    transition: translate 260ms cubic-bezier(0.3, 1.35, 0.5, 1);
+    /* NO transition here · the shorthand would duel each register's own
+       transition at equal specificity and the BUNDLE order decides who wins
+       (hero.css landed after this file and silently killed the spring — the
+       tilt hit the same class). Each magnetized register appends
+       `translate 260ms cubic-bezier(0.3, 1.35, 0.5, 1)` to its own list
+       (hero.css .v4cta + .v4cmd · nav.css .v4nav-cta). */
   }
   .vfx-mag::after {
     content: '';

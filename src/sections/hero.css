@@ -618,7 +618,9 @@
     0 8px 24px -10px color-mix(in oklch, var(--v4-accent-strong) 55%, transparent);
   transition:
     background-color var(--dur-ui) var(--ease-ui),
-    transform var(--dur-press) var(--ease-ui);
+    transform var(--dur-press) var(--ease-ui),
+    /* the magnetic lean's spring channel (fx/magnetic.css) */
+    translate 260ms cubic-bezier(0.3, 1.35, 0.5, 1);
 }
 .v4cta:hover {
   background: var(--v4-accent-strong);
@@ -708,7 +710,10 @@
   transition:
     border-color var(--dur-ui) var(--ease-ui),
     background-color var(--dur-ui) var(--ease-ui),
-    transform var(--dur-press) var(--ease-ui);
+    transform var(--dur-press) var(--ease-ui),
+    /* the magnetic lean's spring channel (fx/magnetic.css) — the register owns
+       its transition list, the fx contributes the `translate` writes only */
+    translate 260ms cubic-bezier(0.3, 1.35, 0.5, 1);
 }
 .v4cmd:hover {
   border-color: color-mix(in oklch, var(--hero-blue-line) 48%, transparent);
