@@ -20,6 +20,8 @@
 import dailyBriefTrace from './traces/daily-brief.ndjson?raw'
 import prRiskReviewTrace from './traces/pr-risk-review.ndjson?raw'
 import meetingActionsTrace from './traces/meeting-actions.ndjson?raw'
+import priceWatchTrace from './traces/price-watch.ndjson?raw'
+import socialRepurposeTrace from './traces/social-repurpose.ndjson?raw'
 
 export interface Flagship {
   id: string
@@ -89,7 +91,9 @@ outputs:
     filename: 'pr-risk-review.nika.yaml',
     label: 'pr-risk-review',
     gloss: 'when: the probe only fires on real risk',
-    highlight: [23, 30],
+    /* the lit band is the caption's EVIDENCE, nothing more: the probe task's
+       head + its when: gate (the schema block above is a different story). */
+    highlight: [27, 29],
     artifact: 'wrote review.md',
     traceNdjson: prRiskReviewTrace,
     yaml: `nika: v1
@@ -182,6 +186,97 @@ tasks:
 
 outputs:
   actions: "\${{ tasks.extract.output }}"
+`,
+  },
+  {
+    id: 'price_watch',
+    filename: 'price-watch.nika.yaml',
+    label: 'price-watch',
+    /* the zero-model tab: not every workflow needs an LLM — the DAG, two
+       builtins and one CEL compare do the whole job deterministically. */
+    gloss: 'when: zero model · plain data opens the gate',
+    highlight: [22, 24],
+    artifact: 'wrote price-alert.md',
+    traceNdjson: priceWatchTrace,
+    yaml: `nika: v1
+workflow: price-watch
+
+# zero model · two tools and one CEL compare do the whole job
+permits:                      # the file IS the blast radius
+  fs: { read: [ ./price.json ], write: [ ./price-alert.md ] }
+  tools: [ "nika:read", "nika:jq", "nika:write" ]
+
+vars:
+  alert_below: 899            # your threshold · plain data
+
+tasks:
+  - id: snapshot
+    invoke: { tool: "nika:read", args: { path: ./price.json } }
+
+  - id: price
+    depends_on: [snapshot]
+    invoke:
+      tool: "nika:jq"
+      args: { input: "\${{ tasks.snapshot.output }}", expression: "fromjson | .price" }
+
+  - id: alert
+    depends_on: [price]
+    when: \${{ tasks.price.output < vars.alert_below }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./price-alert.md
+        content: "Price drop: now \${{ tasks.price.output }} (target \${{ vars.alert_below }})"
+
+outputs:
+  price: "\${{ tasks.price.output }}"
+`,
+  },
+  {
+    id: 'social_repurpose',
+    filename: 'social-repurpose.nika.yaml',
+    label: 'social-repurpose',
+    /* the parallelism tab: one read fans out into three rewrites (no deps
+       between them → the engine runs them concurrently) and one merge. */
+    gloss: 'depends_on: three parallel rewrites, one merge',
+    highlight: [29, 30],
+    artifact: 'wrote social-bundle.md',
+    traceNdjson: socialRepurposeTrace,
+    yaml: `nika: v1
+workflow: social-repurpose
+model: ollama/llama3.2:3b     # local · your draft never leaves
+
+permits:                      # the file IS the blast radius
+  fs: { read: [ ./post.md ], write: [ ./social-bundle.md ] }
+  tools: [ "nika:read", "nika:write" ]
+
+tasks:
+  # one read · three parallel rewrites · one merge
+  - id: post
+    invoke: { tool: "nika:read", args: { path: ./post.md } }
+
+  - id: thread
+    depends_on: [post]
+    infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: \${{ tasks.post.output }}", max_tokens: 400 }
+
+  - id: linkedin
+    depends_on: [post]
+    infer: { prompt: "Rewrite this post for LinkedIn, hook first: \${{ tasks.post.output }}", max_tokens: 400 }
+
+  - id: newsletter
+    depends_on: [post]
+    infer: { prompt: "Write a 3-sentence newsletter blurb for this post: \${{ tasks.post.output }}", max_tokens: 300 }
+
+  - id: bundle
+    depends_on: [thread, linkedin, newsletter]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./social-bundle.md
+        content: "\${{ tasks.thread.output }}\\n\\n---\\n\\n\${{ tasks.linkedin.output }}\\n\\n---\\n\\n\${{ tasks.newsletter.output }}"
+
+outputs:
+  bundle: "\${{ tasks.bundle.output }}"
 `,
   },
 ]
