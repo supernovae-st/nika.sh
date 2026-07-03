@@ -218,7 +218,16 @@ export function tokenizeLine(line: string): CodeLine {
     else tokens.push({ kind: 'key', text: key })
     tokens.push({ kind: 'punct', text: colon })
     if (valSp) tokens.push({ kind: 'plain', text: valSp })
-    tokens.push(...classifyValue(value))
+    /* a flow-mapping / flow-sequence VALUE (`fs: { read: [ … ] }` ·
+       `tools: [ "nika:read" ]`) gets the same real tokens as a `- { … }`
+       line — classifyValue would emit it as ONE untyped string blob (no
+       key ink inside it, and a path like ./action-items.json couldn't be
+       carved out as an atomic machine-string). */
+    if (value.startsWith('{') || value.startsWith('[')) {
+      tokens.push(...tokenizeFlow(value))
+    } else {
+      tokens.push(...classifyValue(value))
+    }
     return { tokens }
   }
 

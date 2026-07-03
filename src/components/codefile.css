@@ -296,6 +296,42 @@
 .cf-verb--invoke { color: var(--verb-invoke); }
 .cf-verb--agent { color: var(--verb-agent); }
 
+/* ── the wrap variant · the reading register (opt-in via <CodeFile wrap>) ─────
+   Long lines soft-wrap INSIDE the panel with a hanging indent: a wrapped
+   continuation lands 2ch past the line's OWN indentation (--cf-indent, set per
+   line by the component) — the honest full line, no right-edge cut, no hidden
+   content. The scroll-well measurer simply never fires (scrollWidth ==
+   clientWidth), so the overflow fade stays dark. Every other call-site keeps
+   the default pre + horizontal-scroll register — this block is variant-scoped
+   and changes NOTHING outside it. */
+.cf-panel--wrap {
+  /* the inline text padding as knobs — a call-site (the hero) can open the
+     inline air without re-stating the hanging-indent calc. */
+  --cf-text-pad-l: 14px;
+  --cf-text-pad-r: 18px;
+}
+.cf-panel--wrap .cf-code {
+  /* wrap at the panel edge — never grow a horizontal well */
+  width: 100%;
+}
+.cf-panel--wrap .cf-line-text {
+  min-width: 0; /* let the flex item shrink so text wraps instead of overflowing */
+  white-space: pre-wrap;
+  overflow-wrap: break-word; /* a single over-long token still breaks, never clips */
+  padding-left: calc(var(--cf-text-pad-l) + var(--cf-indent, 0ch) + 2ch);
+  padding-right: var(--cf-text-pad-r);
+  /* the hanging indent: the FIRST visual line pulls back to the base pad (its
+     own leading spaces then indent it as authored); continuations stay at the
+     padded edge = the line's indentation + 2ch. */
+  text-indent: calc(-1 * (var(--cf-indent, 0ch) + 2ch));
+}
+/* atomic machine strings (space-less tokens: paths · slugs · model ids) never
+   break mid-token — CSS would otherwise split "./action-items.json" at its
+   hyphen. The wrap point moves to the surrounding whitespace instead. */
+.cf-panel--wrap .cf-atom {
+  white-space: nowrap;
+}
+
 /* ── mobile density · step the mono down a notch so more of each line fits the
    viewport before the scroll well takes over (the frame itself never widens). */
 @media (max-width: 480px) {

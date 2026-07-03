@@ -114,6 +114,23 @@ describe('tokenizeLine · flow-mapping task lines (the F2 burst carriers)', () =
     const refs = tokens.filter((t) => t.kind === 'tref').map((t) => t.text)
     expect(refs).toEqual(['${{ tasks.draft.output }}'])
   })
+
+  /* a flow value on a KEY line (`fs: { … }` · `tools: [ … ]`) gets the same
+     real tokens — not one untyped string blob. Load-bearing for the hero wrap
+     variant: `./action-items.json` must be its own space-less token so the
+     cf-atom rule can forbid a mid-token hyphen break. */
+  it('tokenizes a flow value on a key line (keys inside · atomic paths carved out)', () => {
+    const line = '  fs: { read: [ ./transcript.txt ], write: [ ./action-items.json ] }'
+    const { tokens } = tokenizeLine(line)
+    expect(tokens.filter((t) => t.kind === 'key').map((t) => t.text)).toEqual([
+      'fs',
+      'read',
+      'write',
+    ])
+    const strings = tokens.filter((t) => t.kind === 'string').map((t) => t.text)
+    expect(strings).toContain('./action-items.json') // its OWN token, space-less
+    expect(tokens.map((t) => t.text).join('')).toBe(line) // exact round-trip
+  })
 })
 
 /* ── the rendered DOM carries each ${{ ref }} once (the prod-visible bug) ── */
@@ -245,6 +262,38 @@ describe('CodeFile (static render)', () => {
     const { container } = render(<CodeFile yaml={yaml} highlight={[1, 2]} />)
     const lit = container.querySelectorAll('.cf-line--lit')
     expect(lit.length).toBe(2) // exactly the 2 highlighted source lines
+  })
+
+  /* ── the wrap variant (the hero reading register) ──
+     Opt-in soft-wrap: the panel gains the variant class and each indented line
+     carries its leading-space count as --cf-indent (the CSS hanging indent).
+     The DEFAULT stays the pre + horizontal-scroll register — no variant class,
+     no inline indent vars — so every other call-site is untouched. */
+  it('wrap: adds the variant class and per-line --cf-indent for indented lines', () => {
+    const { container } = render(<CodeFile yaml={yaml} wrap />)
+    expect(container.querySelector('.cf-panel--wrap')).not.toBeNull()
+    const texts = Array.from(container.querySelectorAll<HTMLElement>('.cf-line-text'))
+    yaml.split('\n').forEach((raw, i) => {
+      const lead = raw.length - raw.trimStart().length
+      const got = texts[i].style.getPropertyValue('--cf-indent')
+      // unindented lines carry NO inline var (they fall back to 0ch in CSS)
+      expect(got).toBe(lead > 0 ? `${lead}ch` : '')
+    })
+    // e.g. "    invoke:" (4 leading spaces) → a real 4ch hanging indent
+    expect(texts[5].style.getPropertyValue('--cf-indent')).toBe('4ch')
+  })
+
+  it('default (no wrap): no variant class, no inline indent vars', () => {
+    const { container } = render(<CodeFile yaml={yaml} />)
+    expect(container.querySelector('.cf-panel--wrap')).toBeNull()
+    const texts = Array.from(container.querySelectorAll<HTMLElement>('.cf-line-text'))
+    for (const t of texts) expect(t.style.getPropertyValue('--cf-indent')).toBe('')
+  })
+
+  it('wrap: the raw yaml text still renders verbatim (the copy stays honest)', () => {
+    const { container, getByRole } = render(<CodeFile yaml={yaml} wrap />)
+    expect(container.textContent).toContain('workflow: morning-brief')
+    expect(getByRole('button', { name: /copy/i })).toBeTruthy()
   })
 
   /* ── hydration parity (React #418 regression) ──
