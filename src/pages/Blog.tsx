@@ -276,6 +276,7 @@ export function Component() {
               <img src="/nika.svg" alt="" width={13} height={13} />
               nika · free software · AGPL-3.0-or-later
             </span>
+            <a href="/rss.xml">rss</a>
             <Link to="/">← supernovae</Link>
           </footer>
         </div>

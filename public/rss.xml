@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nika · Notes from the source</title>
+    <link>https://nika.sh/blog</link>
+    <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
+    <language>en</language>
+    <atom:link href="https://nika.sh/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Intent as Code: why your AI work should be a file</title>
+      <link>https://nika.sh/blog#intent-as-code</link>
+      <guid isPermaLink="true">https://nika.sh/blog#intent-as-code</guid>
+      <pubDate>Mon, 15 Jun 2026 09:00:00 GMT</pubDate>
+      <description>Useful AI work shouldn't disappear into chats. Nika's bet is simple: useful AI work is worth writing down. Not as a transcript, as source: a small YAML file that says what you want. The file is the workflow; run it again tomorrow and it does the same thing, and git diff shows exactly what changed.</description>
+    </item>
+    <item>
+      <title>Four verbs are enough</title>
+      <link>https://nika.sh/blog#four-verbs</link>
+      <guid isPermaLink="true">https://nika.sh/blog#four-verbs</guid>
+      <pubDate>Mon, 22 Jun 2026 09:00:00 GMT</pubDate>
+      <description>Every workflow language faces the same temptation: keep adding verbs. Nika locks at four (infer, exec, invoke, agent) because a verb is a distinct native execution model, and everything callable is a tool. Why the small language stays reviewable.</description>
+    </item>
+  </channel>
+</rss>
