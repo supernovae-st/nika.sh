@@ -142,26 +142,26 @@ export default function Toolbelt() {
         {/* the headline-count banner · big tabular numbers, hairline-separated */}
         <div className="v4belt-counts" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">6.1</span>
+            <span className="v4belt-count-fig">01</span>
             <span className="v4belt-count-n">{CANON.builtins}</span>
             <span className="v4belt-count-label">builtin tools · nothing to install</span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">6.2</span>
+            <span className="v4belt-count-fig">02</span>
             <span className="v4belt-count-n">{CANON.providers}</span>
             <span className="v4belt-count-label">
               model providers · {CANON.providersLocal} local, {CANON.providersCloud} cloud, 1 mock
             </span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">6.3</span>
+            <span className="v4belt-count-fig">03</span>
             <span className="v4belt-count-n">{CANON.extractModes}</span>
             <span className="v4belt-count-label">
               extract modes on <code className="mono">fetch</code>
             </span>
           </div>
           <div className="v4belt-count">
-            <span className="v4belt-count-fig">6.4</span>
+            <span className="v4belt-count-fig">04</span>
             <span className="v4belt-count-n">
               MCP<span className="v4belt-count-unit">native</span>
             </span>

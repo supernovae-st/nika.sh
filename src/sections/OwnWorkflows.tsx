@@ -23,7 +23,7 @@ import './v4-home.css'
    value carries a <b> for the bold number so the ledger reads tabular + ranked. */
 const LEDGER: { fig: string; name: string; value: React.ReactNode }[] = [
   {
-    fig: 'A',
+    fig: '01',
     name: 'The runtime',
     value: (
       <>
@@ -32,7 +32,7 @@ const LEDGER: { fig: string; name: string; value: React.ReactNode }[] = [
     ),
   },
   {
-    fig: 'B',
+    fig: '02',
     name: 'The verbs',
     value: (
       <>
@@ -41,7 +41,7 @@ const LEDGER: { fig: string; name: string; value: React.ReactNode }[] = [
     ),
   },
   {
-    fig: 'C',
+    fig: '03',
     name: 'The builtins',
     value: (
       <>
@@ -50,7 +50,7 @@ const LEDGER: { fig: string; name: string; value: React.ReactNode }[] = [
     ),
   },
   {
-    fig: 'D',
+    fig: '04',
     name: 'The models',
     value: (
       <>
@@ -60,12 +60,12 @@ const LEDGER: { fig: string; name: string; value: React.ReactNode }[] = [
     ),
   },
   {
-    fig: 'E',
+    fig: '05',
     name: 'Your data',
     value: <>stays on your machine</>,
   },
   {
-    fig: 'F',
+    fig: '06',
     name: 'The license',
     value: (
       <>
@@ -104,7 +104,7 @@ export default function OwnWorkflows() {
             <div className="v4own-row" key={row.fig}>
               <dt className="v4own-row-label">
                 <span className="v4own-row-fig" aria-hidden>
-                  5.{row.fig}
+                  {row.fig}
                 </span>
                 <span className="v4own-row-name">{row.name}</span>
               </dt>
