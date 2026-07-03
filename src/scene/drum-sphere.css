@@ -56,6 +56,12 @@
   bottom: 6%;
   right: 3%;
 }
+/* the live reading tally · mid-right, clear of the four corner whispers */
+.mfd-hud-mr {
+  top: 50%;
+  right: 3%;
+  transform: translateY(-50%);
+}
 /* the beating CSS rings + the static dial guides step aside for the sphere */
 .mf-drum[data-drum3d] .mf-ring {
   display: none;
