@@ -76,10 +76,7 @@
   z-index: 3;
 }
 .morphsec[data-armed] .morph-caption {
-  position: absolute;
-  left: clamp(20px, 4vw, 48px);
-  bottom: 16px;
-  z-index: 3;
+  display: none; /* the console (below) is the armed footer · less text */
 }
 /* static scene breathes like a normal section */
 .morphsec:not([data-armed]) .morph-wrap {
@@ -758,15 +755,19 @@
     transform: translateY(-50%);
     z-index: 2;
     width: 186px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    /* ONE evolving sentence (wave L · the operator: too much text) — the
+       lines stack in a single grid cell and crossfade; only the active
+       phase speaks, the rest are silent. */
+    display: grid;
     pointer-events: none;
   }
   .morphsec[data-armed] .morph-say-line {
-    opacity: 0.35;
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(6px);
     transition:
       opacity 0.3s var(--ease-ui, ease),
+      transform 0.3s var(--ease-ui, ease),
       color 0.3s var(--ease-ui, ease);
   }
   .morphsec[data-armed] .morph-stage[data-phase='file'] .morph-say-line[data-for='file'],
@@ -775,6 +776,7 @@
   .morphsec[data-armed] .morph-stage[data-phase='flat'] .morph-say-line[data-for='flat'],
   .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-say-line[data-for='done'] {
     opacity: 1;
+    transform: none;
     color: var(--v4-text-dim);
   }
   /* the DAG clears the rail — a constant inset through the animated phases
@@ -872,4 +874,116 @@
 .morph-done-code .cf-line.morph-hi {
   background: rgb(79 134 255 / 0.13);
   box-shadow: inset 2px 0 0 var(--v4-accent);
+}
+
+
+/* ── THE CONSOLE · the run's transport (wave L) ───────────────────────────────
+   A slim instrument strip on the pinned stage floor: play/pause, the scrub
+   track (phase notches + verb-hued RECORDED task-start ticks + playhead
+   riding --morph-p), and the honesty chip. Scroll, scrub and play all drive
+   the one scroll position. Hidden on the mobile story + the static scene. */
+.morph-console {
+  display: none;
+}
+@media (min-width: 768px) {
+  .morphsec[data-armed] .morph-console {
+    position: absolute;
+    left: clamp(20px, 4vw, 48px);
+    right: clamp(20px, 4vw, 48px);
+    bottom: 8px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    color: var(--v4-text-faint);
+  }
+}
+.morph-play {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--v4-text-dim);
+  border: 1px solid var(--v4-line);
+  border-radius: 5px;
+  background: color-mix(in oklch, var(--v4-bg, #08090b) 72%, transparent);
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+.morph-play:hover {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-accent) 45%, var(--v4-line));
+}
+.morph-track {
+  position: relative;
+  flex: 1;
+  height: 20px;
+  cursor: pointer;
+  touch-action: none;
+  border-radius: 4px;
+}
+.morph-track-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-text) 20%, transparent);
+}
+.morph-notch {
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: 9px;
+  transform: translateY(-50%);
+  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
+}
+.morph-tick {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 7px;
+  transform: translate(-50%, -50%);
+  border-radius: 1px;
+  opacity: 0.85;
+}
+.morph-tick[data-verb='infer'] {
+  background: var(--verb-infer);
+}
+.morph-tick[data-verb='exec'] {
+  background: var(--verb-exec);
+}
+.morph-tick[data-verb='invoke'] {
+  background: var(--verb-invoke);
+}
+.morph-tick[data-verb='agent'] {
+  background: var(--verb-agent);
+}
+.morph-playhead {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: calc(var(--morph-p, 0) * 100%);
+  width: 2px;
+  transform: translateX(-50%);
+  border-radius: 1px;
+  background: var(--v4-accent-bright, #8db4ff);
+  box-shadow: 0 0 8px color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 60%, transparent);
+}
+.morph-console-truth {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+@media (max-width: 1023px) {
+  .morph-console-truth {
+    display: none; /* narrow: the transport keeps the room */
+  }
 }

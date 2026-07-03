@@ -14,6 +14,7 @@ import {
   phaseAt,
   runFracAt,
   shellAt,
+  taskInterval,
   termAt,
   timelineAt,
   travelAt,
@@ -144,6 +145,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const [edges, setEdges] = useState<Edge[]>([])
   /* the done-frame pairing · hovered/focused task (node ⟷ YAML both drive) */
   const [hoverTask, setHoverTask] = useState<string | null>(null)
+  /* THE CONSOLE (wave L) · play state + track refs — all three inputs (scroll,
+     scrub, play) drive the ONE scroll position, so p stays a pure function
+     of scroll and every phase remains scrub-reversible. */
+  const [playing, setPlaying] = useState(false)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const trackDragRef = useRef(false)
+  const ariaPctRef = useRef(-1)
   const hoverSrcRef = useRef<'node' | 'yaml'>('node')
 
   const sectionRef = useRef<HTMLElement>(null)
@@ -347,6 +355,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const term = termRef.current
       if (!stage || !card || !term) return
       progressRef.current = p
+      /* the console reads p straight from CSS (playhead) + integer aria */
+      stage.style.setProperty('--morph-p', p.toFixed(4))
+      const pct = Math.round(p * 100)
+      if (pct !== ariaPctRef.current) {
+        ariaPctRef.current = pct
+        trackRef.current?.setAttribute('aria-valuenow', String(pct))
+      }
 
       /* phase flag → caption + narration crossfade (morph.css) */
       stage.dataset.phase = phaseAt(p)
@@ -805,6 +820,106 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   )
   const onYamlLeave = useCallback(() => setHoverTask(null), [])
 
+  /* ── THE CONSOLE · ticks, seek, scrub, play ─────────────────────────────────
+     Ticks are the RECORDED task starts mapped into the run window of p —
+     the timeline shows where each step truly began (verb-hued), plus the
+     phase notches (burst · run · flat). */
+  const ticks = useMemo(() => {
+    const total = flagship.trace.totalMs || 1
+    return flagship.plan.tasks.flatMap((task) => {
+      const iv = taskInterval(flagship, task.id)
+      if (!iv || 'skipAt' in iv) return []
+      return [
+        {
+          id: task.id,
+          verb: task.verb,
+          at: PH.run0 + (iv.start / total) * (PH.run1 - PH.run0),
+        },
+      ]
+    })
+  }, [flagship])
+
+  /* seek: scroll IS the store — a fraction maps to one scroll offset */
+  const seek = useCallback((frac: number) => {
+    const section = sectionRef.current
+    if (!section) return
+    const rect = section.getBoundingClientRect()
+    const runway = rect.height - window.innerHeight
+    if (runway <= 0) return
+    window.scrollTo({ top: window.scrollY + rect.top + clamp01(frac) * runway })
+  }, [])
+
+  const trackFrac = (e: { clientX: number }) => {
+    const r = trackRef.current?.getBoundingClientRect()
+    return r ? clamp01((e.clientX - r.left) / r.width) : 0
+  }
+  const onTrackDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    setPlaying(false)
+    trackDragRef.current = true
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId)
+    } catch {
+      /* inactive pointer id (synthetic dispatch) · the drag works un-captured */
+    }
+    seek(trackFrac(e))
+  }
+  const onTrackMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (trackDragRef.current) seek(trackFrac(e))
+  }
+  const onTrackUp = () => {
+    trackDragRef.current = false
+  }
+  const onTrackKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const cur = progressRef.current
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') seek(cur + 0.02)
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') seek(cur - 0.02)
+    else if (e.key === 'Home') seek(0)
+    else if (e.key === 'End') seek(1)
+    else return
+    e.preventDefault()
+  }
+  const onPlayClick = () => {
+    if (!playing && progressRef.current >= 0.999) seek(0) /* replay from the top */
+    setPlaying((v) => !v)
+  }
+
+  /* the play loop · advances the SCROLL (~26s full story) — any manual wheel
+     or touch takes the wheel back (transport etiquette) */
+  useEffect(() => {
+    if (!playing) return
+    let raf = 0
+    let last = 0
+    const PLAY_MS = 26000
+    const step = (ts: number) => {
+      if (!last) last = ts
+      const dt = ts - last
+      last = ts
+      const section = sectionRef.current
+      if (!section) {
+        setPlaying(false)
+        return
+      }
+      const rect = section.getBoundingClientRect()
+      const runway = rect.height - window.innerHeight
+      const p = runway > 0 ? clamp01(-rect.top / runway) : 1
+      if (p >= 1) {
+        setPlaying(false)
+        return
+      }
+      window.scrollBy(0, Math.max(1, (runway / PLAY_MS) * dt))
+      raf = requestAnimationFrame(step)
+    }
+    raf = requestAnimationFrame(step)
+    const stop = () => setPlaying(false)
+    window.addEventListener('wheel', stop, { passive: true })
+    window.addEventListener('touchstart', stop, { passive: true })
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('wheel', stop)
+      window.removeEventListener('touchstart', stop)
+    }
+  }, [playing])
+
   const { verdict } = script
 
   return (
@@ -1071,6 +1186,52 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 <span className="morph-verdict-wait">running…</span>
               )}
             </div>
+          </div>
+
+          {/* THE CONSOLE · the run's transport (wave L): play it, scrub it, or
+              scroll — three inputs, one scroll position. The strip absorbs the
+              honesty line: recorded ticks ARE the timeline. */}
+          <div className="morph-console">
+            <button
+              type="button"
+              className="morph-play"
+              aria-pressed={playing}
+              onClick={onPlayClick}
+            >
+              <span aria-hidden>{playing ? '❚❚' : '▶'}</span>
+              <span className="sr-only">{playing ? 'pause the replay' : 'play the replay'}</span>
+            </button>
+            <div
+              className="morph-track"
+              ref={trackRef}
+              role="slider"
+              tabIndex={0}
+              aria-label="replay timeline"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={0}
+              onPointerDown={onTrackDown}
+              onPointerMove={onTrackMove}
+              onPointerUp={onTrackUp}
+              onPointerCancel={onTrackUp}
+              onKeyDown={onTrackKey}
+            >
+              <span className="morph-track-rail" aria-hidden />
+              {[PH.burst0, PH.run0, PH.run1].map((b) => (
+                <span key={b} className="morph-notch" style={{ left: `${b * 100}%` }} aria-hidden />
+              ))}
+              {ticks.map((t) => (
+                <span
+                  key={t.id}
+                  className="morph-tick"
+                  data-verb={t.verb}
+                  style={{ left: `${t.at * 100}%` }}
+                  aria-hidden
+                />
+              ))}
+              <span className="morph-playhead" aria-hidden />
+            </div>
+            <span className="morph-console-truth">recorded · nothing staged</span>
           </div>
 
           <p className="morph-caption">
