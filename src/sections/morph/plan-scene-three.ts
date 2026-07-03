@@ -3,7 +3,10 @@
      1 · instanced slab FILLS — Lambert + Bayer-8 quantized lighting injected
          via onBeforeCompile: 3 luma plateaus mapped onto the nika ramp
          (lo #08090b · mid #16233f · hi #4f86ff), verb tint riding the hi
-         plateau. Opaque; fade = mix toward the page black (zero sorting).
+         plateau, and the LABEL-ATLAS decal (task id · verb word · status
+         zone) composited crisp over the dithered front face — the slab's
+         identity is part of the slab. Opaque; fade = mix toward the page
+         black (zero sorting).
      2 · instanced slab EDGES — one InstancedBufferGeometry over the unit-box
          EdgesGeometry (outer + inset detail instance per slab), per-instance
          pos/scale/color/alpha. The engineering-drawing line work.
@@ -18,30 +21,151 @@
    chunk the DitherField already pays for. */
 
 import * as THREE from 'three'
-import { EDGE_SEGS, RAMP_HI, RAMP_LO, RAMP_MID, SLAB, type PlanSceneModel } from './plan-scene-model'
+import type { FlagshipTask } from '../../flagships'
+import {
+  EDGE_SEGS,
+  RAMP_HI,
+  RAMP_LO,
+  RAMP_MID,
+  SLAB,
+  VERB_HEX,
+  type PlanSceneModel,
+  type SlabRunState,
+} from './plan-scene-model'
 
 const v3 = (c: readonly [number, number, number]) => `vec3(${c[0]}, ${c[1]}, ${c[2]})`
 
-/* ── 1 · slab fills · Lambert + Bayer-8 quantized lighting ─────────────────── */
-export function makeFillMaterial(): THREE.MeshLambertMaterial {
+/* ── 1a · the label atlas · on-slab identity (task id + verb + status) ────────
+   One shared CanvasTexture; each task owns a tile painted on its slab's FRONT
+   face by the fill shader. The block itself says WHICH task, WHICH verb and
+   WHAT the recorded run did to it — an identity that can never detach from
+   its geometry. Tiles redraw ONLY on a status change (never per frame); the
+   Bayer-quantized lighting keeps dithering the face around the crisp glyphs. */
+const TILE_W = 384
+const TILE_H = 208
+
+const FACE_INK = '#e2eaff'
+const FACE_DIM = '#89909f'
+const CHIP_INK: Record<SlabRunState, string> = {
+  pending: 'rgb(226 234 255 / 0.4)',
+  running: FACE_INK, // overridden by the verb hue at draw time
+  done: '#9bd29a', // --cf-str · same green the DOM chips use
+  skipped: '#e6b873', // --cf-num · same amber the DOM chips use
+}
+
+function monoStack(): string {
+  const v =
+    typeof window === 'undefined'
+      ? ''
+      : getComputedStyle(document.documentElement).getPropertyValue('--mono').trim()
+  return v || "'Martian Mono', ui-monospace, monospace"
+}
+
+export interface LabelAtlas {
+  texture: THREE.CanvasTexture
+  uvScale: [number, number]
+  /** uv offset of task i's tile (flipY-aware: lower-left corner) */
+  uvOffset: (i: number) => [number, number]
+  /** repaint task i's tile — call ONLY when its run state changes */
+  draw: (i: number, task: FlagshipTask, state: SlabRunState, chip: string) => void
+  dispose: () => void
+}
+
+export function makeLabelAtlas(tasks: readonly FlagshipTask[]): LabelAtlas {
+  const cols = Math.min(4, Math.max(1, tasks.length))
+  const rows = Math.max(1, Math.ceil(tasks.length / cols))
+  const canvas = document.createElement('canvas')
+  canvas.width = cols * TILE_W
+  canvas.height = rows * TILE_H
+  const ctx = canvas.getContext('2d')
+  const texture = new THREE.CanvasTexture(canvas)
+  /* no mipmaps: tiles must not bleed into neighbors at minification, and a
+     status repaint must not pay a mip chain rebuild */
+  texture.generateMipmaps = false
+  texture.minFilter = THREE.LinearFilter
+  const mono = monoStack()
+  /* every glyph gets a soft dark halo so it separates from ANY face plateau —
+     a running face is nearly the verb hue itself, so its verb + status lines
+     switch to white ink (the face already carries the hue, loudly) */
+  const ink = (text: string, cx: number, cy: number, font: string, fill: string): void => {
+    if (!ctx) return
+    ctx.font = font
+    ctx.shadowColor = 'rgb(4 6 10 / 0.9)'
+    ctx.shadowBlur = 9
+    ctx.fillStyle = fill
+    ctx.fillText(text, cx, cy)
+    ctx.shadowBlur = 0
+    ctx.fillText(text, cx, cy)
+  }
+  const draw = (i: number, task: FlagshipTask, state: SlabRunState, chip: string): void => {
+    if (!ctx) return
+    const x = (i % cols) * TILE_W
+    const y = Math.floor(i / cols) * TILE_H
+    ctx.clearRect(x, y, TILE_W, TILE_H)
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'alphabetic'
+    const cx = x + TILE_W / 2
+    const dim = state === 'skipped'
+    const lit = state === 'running'
+    /* task id · mono 600 · shrink-to-fit the tile */
+    let px = 52
+    ctx.font = `600 ${px}px ${mono}`
+    const maxW = TILE_W - 44
+    const w = ctx.measureText(task.id).width
+    if (w > maxW) {
+      px = Math.max(24, Math.floor((px * maxW) / w))
+    }
+    ink(task.id, cx, y + 82, `600 ${px}px ${mono}`, dim ? FACE_DIM : FACE_INK)
+    /* the verb word · its hue IS the identity (white while the face is lit) */
+    ink(
+      task.verb,
+      cx,
+      y + 128,
+      `500 30px ${mono}`,
+      dim ? FACE_DIM : lit ? FACE_INK : VERB_HEX[task.verb],
+    )
+    /* status zone · '' idle · ▸ running · ✓ done ms · ⊘ skipped */
+    if (chip) {
+      ink(chip, cx, y + 184, `600 33px ${mono}`, lit ? '#ffffff' : CHIP_INK[state])
+    }
+    texture.needsUpdate = true
+  }
+  return {
+    texture,
+    uvScale: [1 / cols, 1 / rows],
+    uvOffset: (i) => [(i % cols) / cols, 1 - (Math.floor(i / cols) + 1) / rows],
+    draw,
+    dispose: () => texture.dispose(),
+  }
+}
+
+/* ── 1b · slab fills · Lambert + Bayer-8 quantized lighting + label decal ──── */
+export function makeFillMaterial(label: LabelAtlas): THREE.MeshLambertMaterial {
   const mat = new THREE.MeshLambertMaterial({ color: new THREE.Color('#8195c2') })
   /* the edges layer draws coplanar over the fills — push the fill back */
   mat.polygonOffset = true
   mat.polygonOffsetFactor = 2
   mat.polygonOffsetUnits = 2
   mat.onBeforeCompile = (shader) => {
+    shader.uniforms.uLabels = { value: label.texture }
+    shader.uniforms.uUvScale = { value: new THREE.Vector2(label.uvScale[0], label.uvScale[1]) }
     shader.vertexShader = shader.vertexShader
       .replace(
         '#include <common>',
-        '#include <common>\nattribute vec4 iTint;\nattribute float iFade;\nvarying vec4 vTint;\nvarying float vFade;',
+        '#include <common>\nattribute vec4 iTint;\nattribute float iFade;\nattribute vec2 iUvOff;\nuniform vec2 uUvScale;\nvarying vec4 vTint;\nvarying float vFade;\nvarying vec3 vLbl;',
       )
-      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvTint = iTint;\nvFade = iFade;')
+      .replace(
+        '#include <begin_vertex>',
+        '#include <begin_vertex>\nvTint = iTint;\nvFade = iFade;\n/* label uv (atlas tile) + front-face gate (unit box: z = +0.5) */\nvLbl = vec3(iUvOff + uv * uUvScale, step(0.499, position.z));',
+      )
     shader.fragmentShader = shader.fragmentShader
       .replace(
         '#include <common>',
         `#include <common>
+uniform sampler2D uLabels;
 varying vec4 vTint;
 varying float vFade;
+varying vec3 vLbl;
 float psB2(vec2 a) { a = floor(a); return fract(a.x / 2.0 + a.y * a.y * 0.75); }
 #define psB4(a) (psB2(0.5 * (a)) * 0.25 + psB2(a))
 #define psB8(a) (psB4(0.5 * (a)) * 0.25 + psB2(a))
@@ -63,6 +187,10 @@ const vec3 PS_HI = ${v3(RAMP_HI)};`,
   vec3 psHi = mix(PS_HI, vTint.rgb, vTint.a);
   vec3 psCol = mix(PS_LO, PS_MID, clamp(psQ * 2.0, 0.0, 1.0));
   psCol = mix(psCol, psHi, clamp(psQ * 2.0 - 1.0, 0.0, 1.0));
+  /* the on-slab label (crisp over the dithered face, front face only) —
+     it rides psCol so it dissolves WITH its slab, never orphaned */
+  vec4 psLbl = texture2D(uLabels, vLbl.xy);
+  psCol = mix(psCol, psLbl.rgb, psLbl.a * vLbl.z);
   /* passing/materializing slabs dissolve toward the page black */
   gl_FragColor.rgb = mix(PS_LO, psCol, vFade);
 }
@@ -79,7 +207,7 @@ export interface FillLayer {
   dispose: () => void
 }
 
-export function makeFillLayer(count: number): FillLayer {
+export function makeFillLayer(count: number, label: LabelAtlas): FillLayer {
   const geo = new THREE.BoxGeometry(1, 1, 1)
   const tint = new THREE.InstancedBufferAttribute(new Float32Array(count * 4), 4)
   const fade = new THREE.InstancedBufferAttribute(new Float32Array(count), 1)
@@ -87,7 +215,15 @@ export function makeFillLayer(count: number): FillLayer {
   fade.setUsage(THREE.DynamicDrawUsage)
   geo.setAttribute('iTint', tint)
   geo.setAttribute('iFade', fade)
-  const mat = makeFillMaterial()
+  /* static per-instance atlas tile (instance i = task i, model order) */
+  const uvOff = new Float32Array(count * 2)
+  for (let i = 0; i < count; i++) {
+    const [ox, oy] = label.uvOffset(i)
+    uvOff[i * 2] = ox
+    uvOff[i * 2 + 1] = oy
+  }
+  geo.setAttribute('iUvOff', new THREE.InstancedBufferAttribute(uvOff, 2))
+  const mat = makeFillMaterial(label)
   const mesh = new THREE.InstancedMesh(geo, mat, count)
   mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
   mesh.frustumCulled = false
@@ -103,18 +239,26 @@ export function makeFillLayer(count: number): FillLayer {
   }
 }
 
-/* ── 2 · slab edges · instanced unit-box wireframe ─────────────────────────── */
+/* ── 2 · slab edges · instanced unit-box wireframe ───────────────────────────
+   iRot = the slab's X-pitch (radians, same signed angle the fill matrix
+   uses): passing slabs lean their face toward the elevated camera, and the
+   line cage must lean WITH the face it frames. */
 const EDGE_VERT = /* glsl */ `
 attribute vec3 iPos;
 attribute vec3 iScale;
 attribute vec3 iColor;
 attribute float iAlpha;
+attribute float iRot;
 varying vec3 vColor;
 varying float vAlpha;
 void main() {
   vColor = iColor;
   vAlpha = iAlpha;
-  vec3 p = position * iScale + iPos;
+  vec3 p = position * iScale;
+  float rc = cos(iRot);
+  float rs = sin(iRot);
+  p.yz = vec2(rc * p.y - rs * p.z, rs * p.y + rc * p.z);
+  p += iPos;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
 }
 `
@@ -134,10 +278,12 @@ export interface EdgeLayer {
   scale: THREE.InstancedBufferAttribute
   color: THREE.InstancedBufferAttribute
   alpha: THREE.InstancedBufferAttribute
+  rot: THREE.InstancedBufferAttribute
   dispose: () => void
 }
 
-/** count = instances (2 per slab: the outer frame + the inset die detail) */
+/** count = instances (3 per slab: the outer frame + the inset die detail +
+    the running-state verb-hue glow cage) */
 export function makeEdgeLayer(count: number): EdgeLayer {
   const box = new THREE.BoxGeometry(1, 1, 1)
   const base = new THREE.EdgesGeometry(box)
@@ -154,10 +300,12 @@ export function makeEdgeLayer(count: number): EdgeLayer {
   const scale = mk(3)
   const color = mk(3)
   const alpha = mk(1)
+  const rot = mk(1)
   geo.setAttribute('iPos', pos)
   geo.setAttribute('iScale', scale)
   geo.setAttribute('iColor', color)
   geo.setAttribute('iAlpha', alpha)
+  geo.setAttribute('iRot', rot)
   const mat = new THREE.ShaderMaterial({
     vertexShader: EDGE_VERT,
     fragmentShader: EDGE_FRAG,
@@ -173,6 +321,7 @@ export function makeEdgeLayer(count: number): EdgeLayer {
     scale,
     color,
     alpha,
+    rot,
     dispose: () => {
       base.dispose()
       geo.dispose()
