@@ -20,6 +20,10 @@ import {
   edgePulseAt,
   faceChipAt,
   failFlashAt,
+  flatPitch,
+  flatYaw,
+  flattenLeadAt,
+  flattenRollAt,
   materializeAt,
   ringAt,
   sealAt,
@@ -50,10 +54,12 @@ import './plan-scene.css'
    morph computes (progressRef — scroll is time, nothing hijacked) and dollies
    head-on through the waves as the recorded run plays: pulses travel the
    dependency edges, slabs ignite in their verb hue, the honestly-closed
-   when: gate seals. At `done` the 3D advance recedes and the DOM DAG (the
-   mobile / reduced-motion / no-WebGL truth, kept in layout underneath via
-   [data-plan3d], set HERE) fades back in as the closing frame: the same plan,
-   flat, so the structure reads as a DAG.
+   when: gate seals. Through the `flat` phase (wave K) the camera rises and
+   rolls to top-down while every slab lies face-up — the 3D plan is WATCHED
+   lying down into the flat map — and at `done` the DOM DAG (the mobile /
+   reduced-motion / no-WebGL truth, kept in layout underneath via
+   [data-plan3d], set HERE) crossfades in as the closing frame: the same
+   plan, flat, now literally so.
 
    IDENTITY LIVES ON THE SLAB: each face carries its task id + verb word (in
    the verb hue) + a status zone (▸ running · ✓ recorded ms · ⊘ skipped) via
@@ -94,6 +100,7 @@ const smoothstep = (a: number, b: number, x: number): number => {
 
 /* scratch objects — zero per-frame allocation */
 const M = new THREE.Matrix4()
+const MY = new THREE.Matrix4()
 const V = new THREE.Vector3()
 const W = new THREE.Vector3()
 const SCL = new THREE.Vector3()
@@ -198,6 +205,7 @@ function Advance({
   useFrame((state) => {
     const p = progressRef.current
     const cam = camAt(model, p)
+    camera.up.set(cam.ux, cam.uy, cam.uz)
     camera.position.set(cam.px, cam.py, cam.pz)
     camera.lookAt(cam.tx, cam.ty, cam.tz)
 
@@ -206,11 +214,18 @@ function Advance({
     const hovered = ui.hoverRef.current
 
     /* ── the shared beats (computed once per frame, scratch out-params) ── */
-    /* the run-together chord · the whole scene takes one breath when a wave
-       starts (weighed by its width) — the rings below carry the WHERE */
+    /* the run-together chord · the whole scene takes one breath when tasks
+       start together on the recorded clock — the rings carry the WHERE */
     const chord = chordAt(entry, model, p)
     /* the exit-0 sweep · one light front crossing the graph front-to-back */
     const sweep = sweepAt(entry, p, SWEEP)
+    /* the flatten · slabs lie face-up + the whole graph relights on the
+       LEAD track (ahead of the crane — the lie-down is watched, the sweep
+       crosses a lit map) while the room stands down (floor grid · horizon ·
+       glow read wrong from above). The slab YAW rides the camera's ROLL
+       curve — face and lens turn together, labels stay upright. */
+    const flat = flattenLeadAt(p)
+    const yaw = flatYaw(flattenRollAt(p))
     const depth = (model.waveCount - 1) * WAVE_GAP
     /* the front starts a slab ahead of wave 0 and exits past the last wave —
        every slab sees the full rise AND fall of the passing light */
@@ -221,14 +236,17 @@ function Advance({
     const focalY = cam.f * Y_STEP
     layers.field.uniforms.uTime.value = state.clock.elapsedTime
     layers.field.uniforms.uFocal.value.set(0, focalY + 0.1, focalZ)
-    layers.field.uniforms.uAmp.value = gFade * (0.55 + 0.45 * runEnv + 0.22 * chord)
+    layers.field.uniforms.uAmp.value =
+      gFade * (0.55 + 0.45 * runEnv + 0.22 * chord) * (1 - 0.75 * flat)
     layers.glow.mesh.position.set(0, focalY - 0.4, focalZ - 1.6)
     layers.glow.mesh.quaternion.copy(camera.quaternion)
-    layers.glow.uniforms.uOpacity.value = gFade * (0.2 * (0.4 + 0.6 * runEnv) + 0.14 * chord)
+    layers.glow.uniforms.uOpacity.value =
+      gFade * (0.2 * (0.4 + 0.6 * runEnv) + 0.14 * chord) * (1 - flat)
     /* the room · grid + horizon ground the dolly (world-fixed — the camera's
-       advance is what moves; they brighten a touch as the run plays) */
-    layers.floor.uniforms.uFade.value = gFade * (0.55 + 0.45 * runEnv)
-    layers.horizon.uniforms.uFade.value = gFade * (0.45 + 0.55 * runEnv)
+       advance is what moves; they brighten a touch as the run plays) and
+       stand down through the flatten (a room makes no sense on a map) */
+    layers.floor.uniforms.uFade.value = gFade * (0.55 + 0.45 * runEnv) * (1 - flat)
+    layers.horizon.uniforms.uFade.value = gFade * (0.45 + 0.55 * runEnv) * (1 - flat)
 
     /* ── slabs ── */
     const fT = layers.fills.tint.array as Float32Array
@@ -238,6 +256,7 @@ function Advance({
     const eC = layers.edges.color.array as Float32Array
     const eA = layers.edges.alpha.array as Float32Array
     const eR = layers.edges.rot.array as Float32Array
+    const eY = layers.edges.yaw.array as Float32Array
 
     const alphas: Record<string, number> = {}
     const centers: Record<string, [number, number, number, number, number]> = {}
@@ -278,11 +297,14 @@ function Advance({
       const swD = (sweepZ - slab.z) / 2.4
       const swB = sweep.s * Math.exp(-swD * swD)
       const prox = cam.pz - slab.z
-      const passedK = smoothstep(PASS_NEAR, PASS_FAR, prox)
-      const farK = Math.min(
+      /* the flatten relights every slab evenly — pass-by dimming and the
+         depth fade belong to the road view, not the map */
+      const passedK = Math.max(smoothstep(PASS_NEAR, PASS_FAR, prox), flat)
+      const farBase = Math.min(
         1,
         Math.max(0.25, 1 - (Math.max(0, prox - (FOCUS_DIST + WAVE_GAP * 0.8)) / (WAVE_GAP * 2.4)) * 0.75),
       )
+      const farK = farBase + (1 - farBase) * flat
       const isHover = hovered === id
 
       let stateA = st === 'running' ? 1 : st === 'done' ? 0.82 : st === 'skipped' ? 0.42 : 0.55
@@ -312,11 +334,17 @@ function Advance({
       const sz = SLAB.d * (1 - 0.4 * seal)
       centers[id] = [px, py, pz, sx, sy]
 
-      /* the pass pitch · 0 at focus distance, full lean by PASS_NEAR */
-      const pitch =
+      /* the pass pitch · 0 at focus distance, full lean by PASS_NEAR — and
+         through the flatten every slab lies face-up (pitch → -90°) while it
+         quarter-turns (yaw) so its label reads upright under the rolled
+         camera: Ry(yaw)·Rx(pitch), the edge shader composes the same */
+      const pitch = flatPitch(
         -PITCH_MAX *
-        Math.min(1, Math.max(0, (FOCUS_DIST - prox) / (FOCUS_DIST - PASS_NEAR)))
+          Math.min(1, Math.max(0, (FOCUS_DIST - prox) / (FOCUS_DIST - PASS_NEAR))),
+        flat,
+      )
       M.makeRotationX(pitch)
+      if (yaw > 0) M.premultiply(MY.makeRotationY(yaw))
       M.scale(SCL.set(sx, sy, sz))
       M.setPosition(px, py, pz)
       layers.fills.mesh.setMatrixAt(i, M)
@@ -410,6 +438,7 @@ function Advance({
       eC[o * 3 + 2] = eb
       eA[o] = Math.min(1, alpha + swB * 0.35)
       eR[o] = pitch
+      eY[o] = yaw
       const n = o + 1
       eP[n * 3] = px
       eP[n * 3 + 1] = py
@@ -422,6 +451,7 @@ function Advance({
       eC[n * 3 + 2] = eb
       eA[n] = alpha * 0.28
       eR[n] = pitch
+      eY[n] = yaw
       const g = o + 2
       eP[g * 3] = px
       eP[g * 3 + 1] = py
@@ -434,6 +464,7 @@ function Advance({
       eC[g * 3 + 2] = hue[2]
       eA[g] = alpha * (st === 'running' ? 0.55 : ignite * 0.3)
       eR[g] = pitch
+      eY[g] = yaw
       const r4 = o + 3
       const ringGrow = 1 + 0.6 * ring.k
       eP[r4 * 3] = px
@@ -447,6 +478,7 @@ function Advance({
       eC[r4 * 3 + 2] = fail > 0 ? FAIL_RED[2] : hue[2]
       eA[r4] = gFade * mat * passedK * ring.a * 0.85
       eR[r4] = pitch
+      eY[r4] = yaw
     }
     layers.fills.mesh.instanceMatrix.needsUpdate = true
     layers.fills.tint.needsUpdate = true
@@ -456,6 +488,7 @@ function Advance({
     layers.edges.color.needsUpdate = true
     layers.edges.alpha.needsUpdate = true
     layers.edges.rot.needsUpdate = true
+    layers.edges.yaw.needsUpdate = true
 
     /* ── dependency edges · draw-on + state + the traveling ignite pulse ── */
     const draw = wireAt(p)
@@ -503,7 +536,9 @@ function Advance({
         if (!el) continue
         const c = centers[id]
         V.set(c[0], c[1], c[2]).project(camera)
-        const vis = alphas[id] > 0.3 && V.z < 1
+        /* the flatten retires the hit-rects (their extents no longer track a
+           lying slab; the flat DOM DAG takes the interaction over at done) */
+        const vis = alphas[id] > 0.3 && V.z < 1 && flat < 0.15
         el.dataset.vis = vis ? '1' : '0'
         if (vis) {
           const bx = (V.x * 0.5 + 0.5) * w

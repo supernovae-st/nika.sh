@@ -832,6 +832,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               <p className="morph-cap" data-for="run">
                 The recorded run chains through it, step by step.
               </p>
+              <p className="morph-cap" data-for="flat">
+                The run is done. The plan <b>lies down flat</b>.
+              </p>
               <p className="morph-cap" data-for="done">
                 Hover any step to see its exact lines in the file.
               </p>
@@ -853,6 +856,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               <p className="morph-say-line" data-for="run">
                 steps light up in order
                 {maxTogether > 1 ? ` · ${countWord(maxTogether)} run together` : ''}
+              </p>
+              <p className="morph-say-line" data-for="flat">
+                the whole run · laid out flat
               </p>
               <p className="morph-say-line" data-for="done">
                 the run is a file too · replay it anytime

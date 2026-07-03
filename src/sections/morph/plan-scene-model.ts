@@ -62,6 +62,8 @@ export interface PlanSceneModel {
       PACING is presentational (a 20ms wave must not teleport the camera),
       the ORDER and every event stay verbatim (the terminal's byPace law) */
   knots: number[]
+  /** widest |x| across the slabs — the flatten camera's vertical fit */
+  spanX: number
   totalMs: number
   waveCount: number
 }
@@ -149,6 +151,7 @@ export function buildPlanScene(entry: FlagshipEntry): PlanSceneModel {
     waveZ,
     anchors,
     knots,
+    spanX: slabs.reduce((m, s) => Math.max(m, Math.abs(s.x)), 0),
     totalMs: trace.totalMs,
     waveCount: plan.waveCount,
   }
@@ -172,15 +175,62 @@ export interface CamPose {
   tx: number
   ty: number
   tz: number
+  /** the camera's up vector — (0,1,0) everywhere except the flatten, where
+      it rolls to (-1,0,0) so the flat map reads left→right like the 2D DAG */
+  ux: number
+  uy: number
+  uz: number
   /** the continuous focus wave index driving fades + the field focal */
   f: number
 }
 
 const lerp = (a: number, b: number, k: number): number => a + (b - a) * k
 
+/* ── the flatten · the 3D plan lies down into the 2D map (wave K) ─────────────
+   As the verdict settles the camera RISES to top-down while it ROLLS a
+   quarter turn (up → -X), so the flattened plan reads exactly like the flat
+   DOM DAG that crossfades in at PH.flat1: waves left→right, parallel tasks
+   stacked. The slabs lie face-up in place (ThePlanScene drives their pitch +
+   yaw from the same flattenAt), so "the same plan, flat" is WATCHED
+   happening — and scrubbing back stands the whole room up again. */
+
+/** the flatten's apex — the crane's two beats join here: pull-back BELOW,
+    dive-and-roll ABOVE (fraction of the flat window) */
+export const FLAT_APEX = 0.55
+
+export function flattenAt(p: number): number {
+  return easeInOut(clamp01((p - PH.run1) / (PH.flat1 - PH.run1)))
+}
+
+/** the flatten's LEAD track — the slab lie-down and the whole-graph relight
+    run ~1.5× ahead of the crane, so the plan lies down WATCHED from the
+    rising camera's best seat and the exit-0 sweep crosses a lit map */
+export function flattenLeadAt(p: number): number {
+  return easeInOut(clamp01(((p - PH.run1) / (PH.flat1 - PH.run1)) * 1.5))
+}
+
+/** the flatten's ROLL track — 0 through the pull-back, turning only during
+    the dive. The slabs' yaw rides this SAME curve, so a face and the camera
+    roll together and the labels stay upright through the whole turn. */
+export function flattenRollAt(p: number): number {
+  const kr = clamp01((p - PH.run1) / (PH.flat1 - PH.run1))
+  return easeInOut(clamp01((kr - FLAT_APEX) / (1 - FLAT_APEX)))
+}
+
+/** a slab's X-pitch through the flatten: its pass-by lean k→0, face-up at 1 */
+export const flatPitch = (base: number, k: number): number =>
+  base + (-Math.PI / 2 - base) * k
+
+/** a slab's Y-yaw through the flatten: a quarter turn so the face's reading
+    direction matches the rolled camera (labels stay upright on screen) */
+export const flatYaw = (k: number): number => (k * Math.PI) / 2
+
+const TAN_HALF_FOV = Math.tan((35 / 2) * (Math.PI / 180))
+
 /** the camera as a pure function of scroll progress — overview through the
     burst, glide onto wave 0 while the wires draw, dolly forward with the
-    recorded run, a small pull-back as the verdict settles */
+    recorded run, then the flatten: rise + roll to top-down over the plan
+    center for the verdict (the 3D→2D metaphor made literal) */
 export function camAt(model: PlanSceneModel, p: number): CamPose {
   const depth = (model.waveCount - 1) * WAVE_GAP
   const rise = (model.waveCount - 1) * Y_STEP
@@ -205,7 +255,7 @@ export function camAt(model: PlanSceneModel, p: number): CamPose {
     tz: fz - WAVE_GAP * 0.5,
   }
 
-  if (p <= PH.burstEnd) return { ...ov, f: -0.4 }
+  if (p <= PH.burstEnd) return { ...ov, ux: 0, uy: 1, uz: 0, f: -0.4 }
   if (p < PH.run0) {
     /* the glide · overview → wave-0 focus while the wires draw */
     const k = easeInOut(clamp01((p - PH.burstEnd) / (PH.run0 - PH.burstEnd)))
@@ -216,20 +266,64 @@ export function camAt(model: PlanSceneModel, p: number): CamPose {
       tx: lerp(ov.tx, fo.tx, k),
       ty: lerp(ov.ty, fo.ty, k),
       tz: lerp(ov.tz, fo.tz, k),
+      ux: 0,
+      uy: 1,
+      uz: 0,
       f: lerp(-0.4, 0, k),
     }
   }
-  if (p <= PH.run1) return { ...fo, f }
+  if (p <= PH.run1) return { ...fo, ux: 0, uy: 1, uz: 0, f }
 
-  /* the hold · recede, the settled structure back in view for the verdict */
-  const k = easeInOut(clamp01((p - PH.run1) / (1 - PH.run1)))
+  /* the flatten · a CRANE in two beats, joined at the apex (film grammar:
+     one idea per move).
+       BEAT 1 · the pull-back — up and BACK to a high overview behind the
+       front wave, gaze settling on the plan center: the whole amphitheater
+       swings into frame ("behold the plan") and the exit-0 sweep crosses it
+       in full view while the slabs lie face-up on the lead track.
+       BEAT 2 · the dive — from the apex straight over the plan center,
+       rolling a quarter turn (up → -X) so the lying map reads left→right
+       like the 2D DAG about to crossfade in. The slabs' yaw rides the SAME
+       roll curve, so labels stay upright through the whole turn.
+     The top height fits the rolled frame: screen-vertical = the X span,
+     screen-horizontal = the Z span (the wave road, aspect-assisted). */
+  const kr = clamp01((p - PH.run1) / (PH.flat1 - PH.run1))
+  const cz = -depth / 2
+  const halfV = model.spanX + SLAB.h / 2 + 0.9
+  const halfZ = depth / 2 + SLAB.w / 2 + 1.2
+  const top = Math.max(halfV, halfZ * 0.62) / TAN_HALF_FOV
+  /* the apex pose · high + far enough back that the whole graph sits inside
+     the vertical fov with the gaze on center */
+  const apexY = Math.max(fo.py + 4.2, top * 0.62)
+  const apexZ = 11.5
+  if (kr <= FLAT_APEX) {
+    const kA = easeInOut(kr / FLAT_APEX)
+    return {
+      px: fo.px,
+      py: lerp(fo.py, apexY, kA),
+      pz: lerp(fo.pz, apexZ, kA),
+      tx: fo.tx,
+      ty: lerp(fo.ty, 0.5, kA),
+      tz: lerp(fo.tz, cz, kA),
+      ux: 0,
+      uy: 1,
+      uz: 0,
+      f,
+    }
+  }
+  const kB = easeInOut((kr - FLAT_APEX) / (1 - FLAT_APEX))
+  const ux = -kB
+  const uy = 1 - kB
+  const ul = Math.hypot(ux, uy) || 1
   return {
-    px: fo.px,
-    py: lerp(fo.py, fo.py + 1.9, k),
-    pz: lerp(fo.pz, fo.pz + 4.2, k),
-    tx: fo.tx,
-    ty: fo.ty,
-    tz: fo.tz,
+    px: 0,
+    py: lerp(apexY, top, kB),
+    pz: lerp(apexZ, cz, kB),
+    tx: 0,
+    ty: lerp(0.5, 0.4, kB),
+    tz: cz,
+    ux: ux / ul,
+    uy: uy / ul,
+    uz: 0,
     f,
   }
 }
@@ -268,8 +362,8 @@ export function sealAt(entry: FlagshipEntry, taskId: string, p: number): number 
   const iv = taskInterval(entry, taskId)
   if (!iv || !('skipAt' in iv)) return 0
   if (runFracAt(p) <= 0) return 0
-  /* 0.03 = the widest window that still completes when the gate closes on
-     the run's final recorded ms (run1 → 1 leaves 0.03 of scroll) */
+  /* 0.03 of scroll: even a gate closing on the run's final recorded ms
+     finishes sealing well inside the flat window (run1 → flat1 = 0.07) */
   return easeInOut(clamp01((p - pOfClock(entry, iv.skipAt)) / 0.03))
 }
 
@@ -286,7 +380,7 @@ const PULSE_WIN = 0.035
 const RING_WIN = 0.03
 const SETTLE_WIN = 0.028
 const CHORD_WIN = 0.035
-const SWEEP_WIN = 0.04
+const SWEEP_WIN = 0.024
 const FAIL_WIN = 0.04
 
 /** sin-π bell · the beat family's accent envelope (zero at both ends) */
@@ -382,14 +476,15 @@ export interface SweepBeat {
 
 /** workflow_completed, exit 0 · ONE light wave travels the whole graph
     front-to-back — the run finished clean, recapped in the direction it
-    flowed. Opens a breath after the recorded completion instant (the rising
-    verdict camera must see the whole graph); silent on a failed run.
+    flowed. Opens as the verdict crane nears its apex (a beat after the
+    recorded completion instant — the whole graph must be IN FRAME when the
+    light crosses it); silent on a failed run.
     `out` is a caller-owned scratch — the frame loop must not allocate. */
 export function sweepAt(entry: FlagshipEntry, p: number, out: SweepBeat): SweepBeat {
   out.front = 0
   out.s = 0
   if (entry.trace.exit !== 0 || runFracAt(p) <= 0) return out
-  const open = pOfClock(entry, entry.trace.totalMs) + 0.012
+  const open = pOfClock(entry, entry.trace.totalMs) + 0.028
   const t = (p - open) / SWEEP_WIN
   if (t <= 0 || t >= 1) {
     out.front = clamp01(t)
