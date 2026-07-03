@@ -230,11 +230,14 @@ export default function Hero({
         <div className="v4hero-editor" data-rise style={rise(180)}>
           <FileTabs active={index} onSelect={onSelect} />
           <div id="v4ftab-panel" role="tabpanel" aria-labelledby={`v4ftab-${flagship.id}`}>
+            {/* wrap: the hero is the READING surface — long flow lines soft-wrap
+                with a hanging indent (no right-edge clip, no hidden content). */}
             <CodeFile
               yaml={flagship.yaml}
               filename={flagship.filename}
               highlight={flagship.highlight}
               className="v4hero-code"
+              wrap
             />
           </div>
           {/* the tab's one-line story + the handoff chip · the SELECTED file is

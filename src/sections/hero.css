@@ -342,15 +342,19 @@
 .v4hero-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(40px, 6vw, 80px);
+  gap: clamp(36px, 4.5vw, 64px);
   align-items: center;
   padding-inline: clamp(20px, 5vw, 56px);
   padding-block: clamp(96px, 14vh, 160px);
 }
 @media (min-width: 1024px) {
   .v4hero-grid {
-    /* copy gets ~1.05fr, editor ~0.95fr — balanced, copy a touch wider */
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    /* the editor takes the slightly wider track (wave I) — the file IS the
+       hero, and with soft-wrap every ch of column width is one fewer wrap
+       (at 1440 this puts the well at ~55ch: daily-brief's fs permits line
+       fits whole — no orphan `}` tail). The copy keeps its own max-width
+       caps and the H1 still sets in 4 lines. */
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
     align-items: center;
   }
 }
@@ -385,6 +389,26 @@
     /* a faint blue spill in the ambient shadow — the pointe reaching the panel */
     0 12px 34px -18px color-mix(in oklch, var(--hero-blue-glow) 26%, black);
 }
+/* ── the hero reading register · type comfort (operator verdict wave I) ───────
+   The hero editor is the FIRST code anyone reads — it must read like a premium
+   editor, effortless, never dense. Type steps UP from the shared 12.5px/1.5
+   default to 13.5px on a 23px line box (≈1.7), the block padding opens, the
+   inline air opens via the wrap-variant knobs, and the gutter numbers recede
+   further so the code pops. Scoped to .v4hero-code — every other CodeFile
+   surface keeps the shared density. */
+.v4hero-code {
+  --cf-text-pad-l: 18px;
+  --cf-text-pad-r: 20px;
+}
+.v4hero-code .cf-pre {
+  font-size: 13.5px;
+  line-height: 23px; /* ≈1.7 · the reading rhythm */
+  padding: 16px 0 18px;
+}
+.v4hero-code .cf-ln {
+  opacity: 0.5; /* dimmer than the shared 0.7 — the code owns the eye */
+}
+
 /* ── the editor vertical cap · the file is REAL and full-length ───────────────
    The flagship files are the actual files that ran (35-42 lines) — the panel
    caps its height and scrolls vertically like a real editor, so (a) the hero
@@ -393,9 +417,9 @@
    the Bayer fade tile (the ONE sanctioned dither-fade device) — the file
    visibly continues; scrolling is the invitation. */
 .v4hero-code .cf-pre {
-  /* whole lines only: 11px top pad + 24 × 18.75px line boxes — a frame that
+  /* whole lines only: 16px top pad + 20 × 23px line boxes — a frame that
      cuts a line in half reads as broken (coordinator punch #1) */
-  max-height: calc(11px + 24 * 18.75px);
+  max-height: calc(16px + 20 * 23px);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -403,14 +427,10 @@
 .v4hero-code .cf-body {
   position: relative;
 }
-/* the right-edge dissolve (H2) · a long YAML line used to hit the panel edge
-   as a hard cut. The mask fades the CODE ITSELF over the last ~28px so the
-   line dissolves into the panel — static CSS, SSG-safe (the measurer-driven
-   scroll cue on .cf-body::after still layers on top when a line overflows). */
-.v4hero-code .cf-pre {
-  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
-  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
-}
+/* (the v-wave right-edge mask is DELETED — the wrap variant soft-wraps every
+   long line with a hanging indent, so nothing ever reaches the right edge;
+   the measurer-driven scroll cue on .cf-body::after stays as the safety net
+   and simply never fires.) */
 .v4hero-code .cf-body::before {
   content: '';
   position: absolute;
@@ -801,8 +821,13 @@
     order: 8;
     margin-top: 28px;
   }
-  /* the file cap on phones · whole lines only (21 × the line box) */
+  /* the file cap on phones · whole lines only (18 × the 21px line box) —
+     the phone steps the reading type down a notch (12.5px/21px) so wrapped
+     flow lines stay 2 visual lines, not 3. */
   .v4hero-code .cf-pre {
-    max-height: calc(11px + 21 * 18.75px);
+    font-size: 12.5px;
+    line-height: 21px;
+    padding: 14px 0 16px;
+    max-height: calc(14px + 18 * 21px);
   }
 }
