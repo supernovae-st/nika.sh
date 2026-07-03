@@ -28,9 +28,12 @@ const REST_INTENSITY = 0.055 /* the resting WHISPER · the frame is mostly absen
 /** run mode raises the resting floor — the frame must clearly speak while a
     run plays (the drum), yet stay a diffuse glow, never a hard border: the
     presence comes from opacity on a 16px-blurred rim, not from sharpness. */
-const RUN_REST_INTENSITY = 0.42
-/** Peak the halo jumps to on a pulse before it decays. */
-const PULSE_INTENSITY = 0.62
+const RUN_REST_INTENSITY = 0.34
+/** Peak the halo jumps to on a pulse before it decays. Calibrated for wide-
+    gamut displays: P3 renders these hues far more vivid than headless
+    captures — every ceiling here deliberately undershoots what sRGB
+    screenshots suggest. */
+const PULSE_INTENSITY = 0.45
 /** Decay back to rest takes ~450ms (the sharper v5 beat). */
 const DECAY_MS = 450
 /** after workflow_completed the bloom HOLDS ~1.2s (the verdict sweep plays

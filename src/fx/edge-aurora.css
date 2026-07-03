@@ -29,7 +29,7 @@
   --aurora-intensity: 0.055;
   /* ring geometry · the band/bloom thickness in px (the run state widens) */
   --aurora-band: 14px;
-  --aurora-bloom: 56px;
+  --aurora-bloom: 36px;
   --aurora-radius: 20px;
 
   position: fixed;
@@ -121,8 +121,8 @@
 /* THE BLOOM · the same ring, fat and soft — the inward falloff */
 .edge-aurora::after {
   padding: var(--aurora-bloom);
-  filter: blur(46px) saturate(1.1);
-  opacity: calc(var(--aurora-intensity) * 1.15);
+  filter: blur(40px) saturate(1.05);
+  opacity: calc(var(--aurora-intensity) * 0.9);
 }
 
 @keyframes edge-aurora-spin {
@@ -148,13 +148,12 @@
    wider band, faster travel, and the recorded progress swells the rim.
    Idle chrome is byte-identical when data-run is absent. */
 .edge-aurora[data-run] {
-  --aurora-band: 18px;
-  --aurora-bloom: 76px;
+  --aurora-bloom: 44px;
 }
 .edge-aurora[data-run]::before {
   opacity: min(
     1,
-    calc(var(--aurora-intensity) * 1.6 + var(--aurora-progress) * 0.18)
+    calc(var(--aurora-intensity) * 1.6 + var(--aurora-progress) * 0.08)
   );
   animation-duration: 16s;
 }
@@ -220,7 +219,7 @@
 @media (max-width: 767px) {
   .edge-aurora {
     --aurora-band: 9px;
-    --aurora-bloom: 32px;
+    --aurora-bloom: 22px;
     --aurora-radius: 12px;
   }
   .edge-aurora::before {
