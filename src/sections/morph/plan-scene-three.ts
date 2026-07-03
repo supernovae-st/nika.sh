@@ -295,8 +295,8 @@ export interface EdgeLayer {
   dispose: () => void
 }
 
-/** count = instances (3 per slab: the outer frame + the inset die detail +
-    the running-state verb-hue glow cage) */
+/** count = instances (4 per slab: the outer frame + the inset die detail +
+    the running-state verb-hue glow cage + the task_started ring flash) */
 export function makeEdgeLayer(count: number): EdgeLayer {
   const box = new THREE.BoxGeometry(1, 1, 1)
   const base = new THREE.EdgesGeometry(box)

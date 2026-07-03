@@ -273,11 +273,37 @@ export function sealAt(entry: FlagshipEntry, taskId: string, p: number): number 
   return easeInOut(clamp01((p - pOfClock(entry, iv.skipAt)) / 0.03))
 }
 
+/* ── the beats · each recorded event, one distinct legible accent ─────────────
+   Every beat OPENS at a recorded clock mapped into the run window (pOfClock)
+   and plays across a short SCROLL window — the same presentational-pacing law
+   the camera knots follow: the INSTANT and the ORDER are recorded fact, the
+   window is the reading time. A clock at ms≈0 is clamped so its beat still
+   gets its full window inside the run (the knots' min-gap law, per beat).
+   All envelopes are pure functions of p — scrubbing back replays every beat
+   in reverse and nothing can teleport. */
+
+const PULSE_WIN = 0.035
+const RING_WIN = 0.03
+const SETTLE_WIN = 0.028
+const CHORD_WIN = 0.035
+const SWEEP_WIN = 0.04
+const FAIL_WIN = 0.04
+
+/** sin-π bell · the beat family's accent envelope (zero at both ends) */
+const bell = (t: number): number => (t <= 0 || t >= 1 ? 0 : Math.sin(Math.PI * t))
+
 export interface EdgePulse {
   /** pulse head position along the edge 0..1 */
   pos: number
   /** 0..1 envelope (0 = no pulse visible) */
   strength: number
+}
+
+/** the scroll instant a task's start beat lands — its recorded first-activity
+    clock, clamped so the pulse's whole travel fits inside the run window
+    (parallel tasks share clocks → their beats stay simultaneous) */
+export function pulseArriveP(entry: FlagshipEntry, taskId: string): number {
+  return Math.max(pOfClock(entry, startOf(entry, taskId)), PH.run0 + PULSE_WIN)
 }
 
 /** the ignite pulse traveling an incoming edge — it ARRIVES at the scroll
@@ -286,13 +312,103 @@ export interface EdgePulse {
     window, so scrubbing back replays it in reverse */
 export function edgePulseAt(entry: FlagshipEntry, toTaskId: string, p: number): EdgePulse {
   if (runFracAt(p) <= 0) return { pos: 0, strength: 0 }
-  const arriveP = pOfClock(entry, startOf(entry, toTaskId))
-  const win = 0.035
-  const phase = (p - (arriveP - win)) / win
+  const arriveP = pulseArriveP(entry, toTaskId)
+  const phase = (p - (arriveP - PULSE_WIN)) / PULSE_WIN
   if (phase <= 0 || phase >= 1.6) return { pos: clamp01(phase), strength: 0 }
   const pos = clamp01(phase)
   const tail = phase <= 1 ? phase : 1 - (phase - 1) / 0.6
   return { pos, strength: Math.sin((Math.PI / 2) * clamp01(tail)) }
+}
+
+export interface RingBeat {
+  /** expansion 0..1 (easeOut — the flash is an energy release) */
+  k: number
+  /** alpha envelope 0..1 */
+  a: number
+}
+
+/** task_started, ON the slab · a verb-hued frame flash expanding off the slab
+    the instant its pulse arrives (wave-0 tasks have no incoming edge — the
+    ring alone announces their start). For a skipped task the same beat fires
+    at the recorded gate-close instant: the when: acted HERE.
+    `out` is a caller-owned scratch — the frame loop must not allocate. */
+export function ringAt(entry: FlagshipEntry, taskId: string, p: number, out: RingBeat): RingBeat {
+  out.k = 0
+  out.a = 0
+  if (runFracAt(p) <= 0) return out
+  const t = (p - pulseArriveP(entry, taskId)) / RING_WIN
+  if (t <= 0 || t >= 1) return out
+  const inv = 1 - t
+  out.k = 1 - inv * inv * inv
+  out.a = inv * inv
+  return out
+}
+
+/** task_completed · the ✓ + recorded ms land WITH a body beat (a soft
+    press-in on the slab, a brief lift of its settled light) — never a bare
+    texture swap. Bell envelope at the recorded completion clock. */
+export function settleAt(entry: FlagshipEntry, taskId: string, p: number): number {
+  if (runFracAt(p) <= 0) return 0
+  const iv = taskInterval(entry, taskId)
+  if (!iv || 'skipAt' in iv) return 0
+  const open = Math.max(pOfClock(entry, iv.end), PH.run0 + 0.01)
+  return bell(clamp01((p - open) / SETTLE_WIN))
+}
+
+/** the run-together chord · one shared breath of the scene per task start,
+    STACKING when recorded starts share a clock — N tasks that really started
+    together breathe N× as deep (the run-together moment, unmistakable), a
+    solo start stays quiet. Honest by construction: the plan may declare a
+    wave parallel, but the chord only deepens when the RECORDED clocks agree
+    (social-repurpose's trio really started seconds apart — it gets three
+    quiet breaths, not one deep one). */
+export function chordAt(entry: FlagshipEntry, model: PlanSceneModel, p: number): number {
+  if (runFracAt(p) <= 0) return 0
+  let sum = 0
+  for (const s of model.slabs) {
+    const t = (p - pulseArriveP(entry, s.task.id)) / CHORD_WIN
+    if (t <= 0 || t >= 1) continue
+    sum += bell(t)
+  }
+  return clamp01(sum * 0.4)
+}
+
+export interface SweepBeat {
+  /** the light front's travel 0..1 (front of the graph → back) */
+  front: number
+  /** 0..1 strength envelope */
+  s: number
+}
+
+/** workflow_completed, exit 0 · ONE light wave travels the whole graph
+    front-to-back — the run finished clean, recapped in the direction it
+    flowed. Opens a breath after the recorded completion instant (the rising
+    verdict camera must see the whole graph); silent on a failed run.
+    `out` is a caller-owned scratch — the frame loop must not allocate. */
+export function sweepAt(entry: FlagshipEntry, p: number, out: SweepBeat): SweepBeat {
+  out.front = 0
+  out.s = 0
+  if (entry.trace.exit !== 0 || runFracAt(p) <= 0) return out
+  const open = pOfClock(entry, entry.trace.totalMs) + 0.012
+  const t = (p - open) / SWEEP_WIN
+  if (t <= 0 || t >= 1) {
+    out.front = clamp01(t)
+    return out
+  }
+  out.front = t
+  out.s = bell(t)
+  return out
+}
+
+/** task_failed · a red flash on the failing slab only, at its recorded
+    failure clock. Dormant for every current flagship (all five traces exit
+    0) — the beat exists so a future recorded failure needs zero new code. */
+export function failFlashAt(entry: FlagshipEntry, taskId: string, p: number): number {
+  if (runFracAt(p) <= 0) return 0
+  const rec = entry.trace.steps.find((s) => s.kind === 'task_failed' && s.task === taskId)
+  if (!rec) return 0
+  const open = Math.max(pOfClock(entry, rec.atMs), PH.run0 + 0.01)
+  return bell(clamp01((p - open) / FAIL_WIN))
 }
 
 /* ── the chips · recorded facts on the tooltip card (mirrors the DOM nodes) ── */
@@ -342,3 +458,5 @@ export const RAMP_LO: [number, number, number] = [0.031, 0.035, 0.043] // #08090
 export const RAMP_MID: [number, number, number] = [0.086, 0.137, 0.247] // #16233f
 export const RAMP_HI: [number, number, number] = [0.31, 0.525, 1.0] // #4f86ff
 export const EDGE_BLUE: [number, number, number] = [0.553, 0.706, 1.0] // #8db4ff
+/** the failure red — same ink the verdict line's `✗ exit 1` uses (#ff5d5d) */
+export const FAIL_RED: [number, number, number] = [1.0, 0.365, 0.365]

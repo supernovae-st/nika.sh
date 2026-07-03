@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { FLAGSHIP_ENTRIES } from '../../flagships'
+import { FLAGSHIP_ENTRIES, type FlagshipEntry } from '../../flagships'
 import { PH, runFracAt, taskInterval } from './morph-model'
 import {
   SLAB,
@@ -8,12 +8,20 @@ import {
   buildPlanScene,
   camAt,
   chipAt,
+  chordAt,
   edgePulseAt,
   faceChipAt,
+  failFlashAt,
   focusAt,
   materializeAt,
+  pulseArriveP,
+  ringAt,
   sealAt,
+  settleAt,
   slabStateAt,
+  sweepAt,
+  type RingBeat,
+  type SweepBeat,
 } from './plan-scene-model'
 
 /* ─── plan-scene-model · the 3D DAG moment is a pure function of p ────────────
@@ -163,19 +171,24 @@ describe('the light · every change maps to a recorded event', () => {
     }
   })
 
-  it('the ignite pulse arrives at the scroll instant of the recorded start', () => {
+  it('the ignite pulse arrives at the recorded start, clamped so its whole travel fits', () => {
     for (const f of FLAGSHIP_ENTRIES) {
       const m = buildPlanScene(f)
       for (const e of m.edges) {
         const iv = taskInterval(f, e.to)!
         const s = 'skipAt' in iv ? iv.skipAt : iv.start
         const pAtStart = PH.run0 + (s / f.trace.totalMs) * (PH.run1 - PH.run0)
-        const pulse = edgePulseAt(f, e.to, pAtStart)
+        const arrive = pulseArriveP(f, e.to)
+        /* the clamp is the knots' min-gap law per beat: never EARLIER than
+           the recorded instant, at most one travel-window later */
+        expect(arrive).toBeGreaterThanOrEqual(pAtStart - 1e-9)
+        expect(arrive).toBeLessThanOrEqual(Math.max(pAtStart, PH.run0 + 0.0351))
+        const pulse = edgePulseAt(f, e.to, arrive)
         expect(pulse.pos).toBeCloseTo(1, 5)
         expect(pulse.strength).toBeGreaterThan(0.9)
         /* before the run: silent; long before the window: silent */
         expect(edgePulseAt(f, e.to, 0).strength).toBe(0)
-        expect(edgePulseAt(f, e.to, pAtStart - 0.06).strength).toBe(0)
+        expect(edgePulseAt(f, e.to, arrive - 0.06).strength).toBe(0)
       }
     }
   })
@@ -224,6 +237,151 @@ describe('the light · every change maps to a recorded event', () => {
         )
       }
     }
+  })
+})
+
+/* a minimal synthetic failed run — no flagship trace records a failure, and
+   the failure beat must stay dormant until one honestly does */
+const FAILED_RUN = {
+  trace: {
+    steps: [
+      { kind: 'workflow_started', atMs: 0 },
+      { kind: 'task_scheduled', task: 'boom', atMs: 0 },
+      { kind: 'task_started', task: 'boom', atMs: 10 },
+      { kind: 'task_failed', task: 'boom', atMs: 640 },
+      { kind: 'workflow_failed', atMs: 640 },
+    ],
+    totalMs: 640,
+    exit: 1,
+    taskIds: ['boom'],
+    completed: 0,
+    skipped: 0,
+  },
+} as unknown as FlagshipEntry
+
+describe('the beats · every accent maps to one recorded event', () => {
+  const ring: RingBeat = { k: 0, a: 0 }
+  const sweep: SweepBeat = { front: 0, s: 0 }
+
+  it('the ring flashes at the pulse arrival, silent outside its window', () => {
+    for (const f of FLAGSHIP_ENTRIES) {
+      for (const t of f.plan.tasks) {
+        const arrive = pulseArriveP(f, t.id)
+        expect(ringAt(f, t.id, 0, ring).a).toBe(0)
+        expect(ringAt(f, t.id, arrive - 0.001, ring).a).toBe(0)
+        const mid = ringAt(f, t.id, arrive + 0.015, ring)
+        expect(mid.a).toBeGreaterThan(0)
+        expect(mid.k).toBeGreaterThan(0)
+        const after = ringAt(f, t.id, arrive + 0.031, ring)
+        expect(after.a).toBe(0)
+      }
+    }
+  })
+
+  it('recorded-together siblings beat together; a recorded stagger keeps its order', () => {
+    for (const f of FLAGSHIP_ENTRIES) {
+      const startClock = (id: string): number => {
+        const iv = taskInterval(f, id)!
+        return 'skipAt' in iv ? iv.skipAt : iv.start
+      }
+      for (const wave of f.plan.waves) {
+        if (wave.length < 2) continue
+        for (let a = 0; a < wave.length; a++) {
+          for (let b = a + 1; b < wave.length; b++) {
+            const dClock = startClock(wave[a].id) - startClock(wave[b].id)
+            const dP = pulseArriveP(f, wave[a].id) - pulseArriveP(f, wave[b].id)
+            if (Math.abs(dClock) <= 80) {
+              /* started together on the recorded clock (≤80ms) → their beats
+                 are simultaneous on scroll (never sequential-looking) */
+              expect(Math.abs(dP)).toBeLessThanOrEqual(
+                (80 / f.trace.totalMs) * (PH.run1 - PH.run0) + 1e-9,
+              )
+            } else {
+              /* a real recorded stagger (social-repurpose's trio started
+                 seconds apart) may compress under the min-window clamp but
+                 must NEVER invert the recorded order */
+              expect(Math.sign(dP) * Math.sign(dClock)).toBeGreaterThanOrEqual(0)
+            }
+          }
+        }
+      }
+    }
+  })
+
+  it('the settle beat opens at the recorded completion clock, bell-shaped', () => {
+    for (const f of FLAGSHIP_ENTRIES) {
+      for (const t of f.plan.tasks) {
+        const iv = taskInterval(f, t.id)!
+        if ('skipAt' in iv) {
+          /* a skipped task never completed — no settle, ever */
+          for (let p = 0; p <= 1.0001; p += 0.01) expect(settleAt(f, t.id, p)).toBe(0)
+          continue
+        }
+        const open = Math.max(
+          PH.run0 + (iv.end / f.trace.totalMs) * (PH.run1 - PH.run0),
+          PH.run0 + 0.01,
+        )
+        expect(settleAt(f, t.id, open)).toBe(0)
+        expect(settleAt(f, t.id, open + 0.014)).toBeGreaterThan(0.9)
+        expect(settleAt(f, t.id, open + 0.029)).toBe(0)
+        expect(settleAt(f, t.id, 0)).toBe(0)
+      }
+    }
+  })
+
+  it('the chord stacks ONLY for recorded-together starts, quiet for a solo', () => {
+    const brief = FLAGSHIP_ENTRIES.find((f) => f.id === 'daily_brief')!
+    const m = buildPlanScene(brief)
+    /* wave 0's trio really started together (recorded ms 1/3/3) — the chord
+       at their shared beat midpoint is a full breath */
+    const w0 = brief.plan.waves[0]
+    expect(w0.length).toBeGreaterThan(1)
+    const together = chordAt(brief, m, pulseArriveP(brief, w0[0].id) + 0.0175)
+    expect(together).toBeGreaterThan(0.9)
+    /* draft started alone (recorded 29159ms, no other start within the
+       window) — a quiet solo accent, never a full breath */
+    const solo = chordAt(brief, m, pulseArriveP(brief, 'draft') + 0.0175)
+    expect(solo).toBeGreaterThan(0.2)
+    expect(solo).toBeLessThan(0.5)
+    expect(chordAt(brief, m, 0)).toBe(0)
+    expect(chordAt(brief, m, PH.run0)).toBe(0)
+  })
+
+  it('the exit-0 sweep travels front-to-back once, after the recorded completion', () => {
+    for (const f of FLAGSHIP_ENTRIES) {
+      expect(f.trace.exit).toBe(0)
+      const open = PH.run1 + 0.012
+      expect(sweepAt(f, open, sweep).s).toBe(0)
+      /* monotone travel across the window (probed past the page bound —
+         the function is pure; the flatten re-timing gives it page room) */
+      let prev = -1
+      for (let t = 0.05; t < 1; t += 0.05) {
+        const b = sweepAt(f, open + t * 0.04, sweep)
+        expect(b.front).toBeGreaterThan(prev)
+        expect(b.s).toBeGreaterThan(0)
+        prev = b.front
+      }
+      expect(sweepAt(f, open + 0.041, sweep).s).toBe(0)
+      expect(sweepAt(f, 0, sweep).s).toBe(0)
+    }
+    /* a failed run gets NO victory sweep */
+    expect(sweepAt(FAILED_RUN, PH.run1 + 0.02, sweep).s).toBe(0)
+  })
+
+  it('the failure flash fires only for a recorded task_failed, red on that slab only', () => {
+    /* dormant across every real flagship (all five traces exit 0) */
+    for (const f of FLAGSHIP_ENTRIES) {
+      for (const t of f.plan.tasks) {
+        for (let p = 0; p <= 1.0001; p += 0.02) expect(failFlashAt(f, t.id, p)).toBe(0)
+      }
+    }
+    /* the synthetic failed run: a bell at the recorded failure clock */
+    const open = Math.max(PH.run0 + (640 / 640) * (PH.run1 - PH.run0), PH.run0 + 0.01)
+    expect(failFlashAt(FAILED_RUN, 'boom', open)).toBe(0)
+    expect(failFlashAt(FAILED_RUN, 'boom', open + 0.02)).toBeGreaterThan(0.9)
+    expect(failFlashAt(FAILED_RUN, 'boom', open + 0.041)).toBe(0)
+    expect(failFlashAt(FAILED_RUN, 'other', open + 0.02)).toBe(0)
+    expect(failFlashAt(FAILED_RUN, 'boom', 0)).toBe(0)
   })
 })
 

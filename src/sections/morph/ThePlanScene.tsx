@@ -6,6 +6,7 @@ import { PH, clamp01, easeInOut, wireAt } from './morph-model'
 import {
   EDGE_BLUE,
   EDGE_SEGS,
+  FAIL_RED,
   FOCUS_DIST,
   RAMP_HI,
   SLAB,
@@ -15,12 +16,19 @@ import {
   buildPlanScene,
   camAt,
   chipAt,
+  chordAt,
   edgePulseAt,
   faceChipAt,
+  failFlashAt,
   materializeAt,
+  ringAt,
   sealAt,
+  settleAt,
   slabStateAt,
+  sweepAt,
   type PlanSceneModel,
+  type RingBeat,
+  type SweepBeat,
 } from './plan-scene-model'
 import {
   makeDepLayer,
@@ -89,6 +97,8 @@ const M = new THREE.Matrix4()
 const V = new THREE.Vector3()
 const W = new THREE.Vector3()
 const SCL = new THREE.Vector3()
+const RING: RingBeat = { k: 0, a: 0 }
+const SWEEP: SweepBeat = { front: 0, s: 0 }
 
 const GREY: [number, number, number] = [0.36, 0.4, 0.48]
 
@@ -130,7 +140,7 @@ function Advance({
     return {
       atlas,
       fills: makeFillLayer(n, atlas),
-      edges: makeEdgeLayer(n * 3),
+      edges: makeEdgeLayer(n * 4),
       deps: makeDepLayer(model),
       field: makeFieldLayer(),
       glow: makeGlowLayer(),
@@ -179,6 +189,11 @@ function Advance({
     }
     return t
   }, [])
+  /* per-edge midpoint z (static) — the exit-0 sweep's distance to each wire */
+  const depMidZ = useMemo(
+    () => Float32Array.from(model.edges, (e) => e.pts[Math.floor(EDGE_SEGS / 2) * 3 + 2]),
+    [model],
+  )
 
   useFrame((state) => {
     const p = progressRef.current
@@ -190,15 +205,26 @@ function Advance({
     const runEnv = clamp01((p - PH.term0) / 0.1)
     const hovered = ui.hoverRef.current
 
+    /* ── the shared beats (computed once per frame, scratch out-params) ── */
+    /* the run-together chord · the whole scene takes one breath when a wave
+       starts (weighed by its width) — the rings below carry the WHERE */
+    const chord = chordAt(entry, model, p)
+    /* the exit-0 sweep · one light front crossing the graph front-to-back */
+    const sweep = sweepAt(entry, p, SWEEP)
+    const depth = (model.waveCount - 1) * WAVE_GAP
+    /* the front starts a slab ahead of wave 0 and exits past the last wave —
+       every slab sees the full rise AND fall of the passing light */
+    const sweepZ = 2.2 - sweep.front * (depth + 4.4)
+
     /* the fond profond follows the current wave */
     const focalZ = -cam.f * WAVE_GAP
     const focalY = cam.f * Y_STEP
     layers.field.uniforms.uTime.value = state.clock.elapsedTime
     layers.field.uniforms.uFocal.value.set(0, focalY + 0.1, focalZ)
-    layers.field.uniforms.uAmp.value = gFade * (0.55 + 0.45 * runEnv)
+    layers.field.uniforms.uAmp.value = gFade * (0.55 + 0.45 * runEnv + 0.22 * chord)
     layers.glow.mesh.position.set(0, focalY - 0.4, focalZ - 1.6)
     layers.glow.mesh.quaternion.copy(camera.quaternion)
-    layers.glow.uniforms.uOpacity.value = 0.2 * gFade * (0.4 + 0.6 * runEnv)
+    layers.glow.uniforms.uOpacity.value = gFade * (0.2 * (0.4 + 0.6 * runEnv) + 0.14 * chord)
     /* the room · grid + horizon ground the dolly (world-fixed — the camera's
        advance is what moves; they brighten a touch as the run plays) */
     layers.floor.uniforms.uFade.value = gFade * (0.55 + 0.45 * runEnv)
@@ -243,6 +269,14 @@ function Advance({
       )
       const seal = sealAt(entry, id, p)
       const ignite = edgePulseAt(entry, id, p).strength
+      /* the per-event beats · task_started ring, task_completed settle,
+         task_failed flash (dormant — no flagship trace records one), and
+         this slab's share of the exit-0 sweep as the front passes its wave */
+      const ring = ringAt(entry, id, p, RING)
+      const settle = settleAt(entry, id, p)
+      const fail = failFlashAt(entry, id, p)
+      const swD = (sweepZ - slab.z) / 2.4
+      const swB = sweep.s * Math.exp(-swD * swD)
       const prox = cam.pz - slab.z
       const passedK = smoothstep(PASS_NEAR, PASS_FAR, prox)
       const farK = Math.min(
@@ -269,8 +303,10 @@ function Advance({
       const py = slab.y - (1 - mat) * 0.5 + drift * 0.55
       const pz = slab.z
 
-      /* scale · grow-in, the gate seal flattens, the pass-by shrinks hard */
-      const grow = (0.7 + 0.3 * mat) * (0.3 + 0.7 * passedK)
+      /* scale · grow-in, the gate seal flattens, the pass-by shrinks hard,
+         the completion settle presses the slab in for one beat (the ✓ lands
+         WITH a body movement, never a bare texture swap) */
+      const grow = (0.7 + 0.3 * mat) * (0.3 + 0.7 * passedK) * (1 - 0.045 * settle)
       const sx = SLAB.w * grow
       const sy = SLAB.h * grow * (1 - 0.45 * seal)
       const sz = SLAB.d * (1 - 0.4 * seal)
@@ -285,7 +321,9 @@ function Advance({
       M.setPosition(px, py, pz)
       layers.fills.mesh.setMatrixAt(i, M)
 
-      /* fill tint · verb hue while running, settled blue when done */
+      /* fill tint · verb hue while running, settled blue when done; the
+         settle beat lifts the fresh ✓ for one breath; the sweep front adds
+         its passing light; a recorded failure overrides in the verdict red */
       const hue = VERB_HUE[slab.task.verb]
       let tr = 0
       let tg = 0
@@ -298,6 +336,19 @@ function Advance({
         ;[tr, tg, tb] = [hue[0], hue[1], hue[2]]
         ta = Math.max(ta, ignite * 0.85)
       }
+      if (settle > 0) ta = Math.max(ta, 0.3 + 0.35 * settle)
+      if (swB > 0) {
+        tr += (RAMP_HI[0] - tr) * swB * 0.5
+        tg += (RAMP_HI[1] - tg) * swB * 0.5
+        tb += (RAMP_HI[2] - tb) * swB * 0.5
+        ta = Math.max(ta, 0.45 * swB)
+      }
+      if (fail > 0) {
+        tr += (FAIL_RED[0] - tr) * fail
+        tg += (FAIL_RED[1] - tg) * fail
+        tb += (FAIL_RED[2] - tb) * fail
+        ta = Math.max(ta, 0.9 * fail)
+      }
       if (isHover) ta = Math.max(ta, 0.35)
       fT[i * 4] = tr
       fT[i * 4 + 1] = tg
@@ -305,7 +356,9 @@ function Advance({
       fT[i * 4 + 3] = ta
       fF[i] = gFade * mat * passedK * (0.35 + 0.65 * farK)
 
-      /* edge color per state */
+      /* edge color per state · the sealing gate flashes its verb hue for one
+         beat (the when: acted on data HERE) then settles to the skipped grey;
+         the sweep brightens each cage as its light passes; failure goes red */
       let er = EDGE_BLUE[0] * 0.62
       let eg = EDGE_BLUE[1] * 0.62
       let eb = EDGE_BLUE[2] * 0.62
@@ -317,16 +370,35 @@ function Advance({
         eg += (hue[1] - eg) * ignite
         eb += (hue[2] - eb) * ignite
       }
+      const gateK = seal > 0 && seal < 1 ? Math.sin(Math.PI * seal) : 0
+      if (gateK > 0) {
+        er += (hue[0] - er) * gateK
+        eg += (hue[1] - eg) * gateK
+        eb += (hue[2] - eb) * gateK
+      }
+      if (swB > 0) {
+        er += (RAMP_HI[0] * 1.2 - er) * swB * 0.6
+        eg += (RAMP_HI[1] * 1.2 - eg) * swB * 0.6
+        eb += (RAMP_HI[2] * 1.2 - eb) * swB * 0.6
+      }
+      if (fail > 0) {
+        er += (FAIL_RED[0] - er) * fail
+        eg += (FAIL_RED[1] - eg) * fail
+        eb += (FAIL_RED[2] - eb) * fail
+      }
       if (isHover) {
         er = Math.min(1, er * 1.25)
         eg = Math.min(1, eg * 1.25)
         eb = Math.min(1, eb * 1.25)
       }
 
-      /* three instances per slab: outer frame · inset die detail (framing the
+      /* four instances per slab: outer frame · inset die detail (framing the
          face label, quiet) · the running-state glow cage in the verb hue —
-         a screenshot mid-run shows WHICH block works without any motion */
-      const o = i * 3
+         a screenshot mid-run shows WHICH block works without any motion —
+         · the task_started RING: a verb-hued frame flash expanding off the
+         slab the instant its recorded start lands, settling into the lit
+         cage (the ignition has an attack, not just a color change) */
+      const o = i * 4
       eP[o * 3] = px
       eP[o * 3 + 1] = py
       eP[o * 3 + 2] = pz
@@ -336,7 +408,7 @@ function Advance({
       eC[o * 3] = er
       eC[o * 3 + 1] = eg
       eC[o * 3 + 2] = eb
-      eA[o] = alpha
+      eA[o] = Math.min(1, alpha + swB * 0.35)
       eR[o] = pitch
       const n = o + 1
       eP[n * 3] = px
@@ -362,6 +434,19 @@ function Advance({
       eC[g * 3 + 2] = hue[2]
       eA[g] = alpha * (st === 'running' ? 0.55 : ignite * 0.3)
       eR[g] = pitch
+      const r4 = o + 3
+      const ringGrow = 1 + 0.6 * ring.k
+      eP[r4 * 3] = px
+      eP[r4 * 3 + 1] = py
+      eP[r4 * 3 + 2] = pz
+      eS[r4 * 3] = sx * ringGrow
+      eS[r4 * 3 + 1] = sy * ringGrow
+      eS[r4 * 3 + 2] = sz
+      eC[r4 * 3] = fail > 0 ? FAIL_RED[0] : hue[0]
+      eC[r4 * 3 + 1] = fail > 0 ? FAIL_RED[1] : hue[1]
+      eC[r4 * 3 + 2] = fail > 0 ? FAIL_RED[2] : hue[2]
+      eA[r4] = gFade * mat * passedK * ring.a * 0.85
+      eR[r4] = pitch
     }
     layers.fills.mesh.instanceMatrix.needsUpdate = true
     layers.fills.tint.needsUpdate = true
@@ -387,16 +472,20 @@ function Advance({
       const aFrom = alphas[edge.from] ?? 0
       const aTo = alphas[edge.to] ?? 0
       const eVis = gFade * Math.min(1, (aFrom + aTo) * 1.2) * (1 - 0.6 * seal)
+      /* the exit-0 sweep crosses the wires too — the light travels the
+         GRAPH, not just its blocks */
+      const swE = (sweepZ - depMidZ[e]) / 2.6
+      const swW = sweep.s * Math.exp(-swE * swE)
       for (let vi = 0; vi < vpe; vi++) {
         const tv = depT[vi]
         /* draw-on with a soft head (fully on once the wires finish) */
         const on = clamp01((draw * 1.05 - tv) / 0.05)
         const g = pulse.strength * Math.exp(-Math.pow((tv - pulse.pos) * 7.0, 2))
         const k = e * vpe + vi
-        dC[k * 3] = EDGE_BLUE[0] * (0.5 + 0.3 * lit) + hue[0] * g
-        dC[k * 3 + 1] = EDGE_BLUE[1] * (0.5 + 0.3 * lit) + hue[1] * g
-        dC[k * 3 + 2] = EDGE_BLUE[2] * (0.5 + 0.3 * lit) + hue[2] * g
-        dA[k] = eVis * on * (0.24 + 0.2 * lit + g * 0.9)
+        dC[k * 3] = EDGE_BLUE[0] * (0.5 + 0.3 * lit + 0.4 * swW) + hue[0] * g
+        dC[k * 3 + 1] = EDGE_BLUE[1] * (0.5 + 0.3 * lit + 0.4 * swW) + hue[1] * g
+        dC[k * 3 + 2] = EDGE_BLUE[2] * (0.5 + 0.3 * lit + 0.4 * swW) + hue[2] * g
+        dA[k] = eVis * on * (0.24 + 0.2 * lit + g * 0.9 + swW * 0.45)
       }
     }
     layers.deps.color.needsUpdate = true
