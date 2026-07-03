@@ -22,8 +22,12 @@ import type { ReplayLine } from '../run/replay-model'
                      DAG slot — the slot ignites on arrival (per-task
                      aspiration, wave I; the per-line scatter is gone)
    WIRES  0.56–0.66  dependency wires draw between the landed nodes
-   RUN    0.66–0.97  the recorded trace chains through the DAG + terminal
-   HOLD   0.97–1.00  verdict settles before the stage unsticks              */
+   RUN    0.66–0.92  the recorded trace chains through the DAG + terminal
+   FLAT   0.92–0.99  the verdict beat: the exit-0 sweep crosses the graph,
+                     then the camera rises to top-down while the slabs lie
+                     face-up — the 3D plan WATCHED lying down into the map
+                     (wave K; scrub back and it stands up again)
+   DONE   0.99–1.00  the flat 2D DAG takes over as the closing frame        */
 export const PH = {
   settleEnd: 0.07,
   burst0: 0.2,
@@ -33,7 +37,8 @@ export const PH = {
   term0: 0.56,
   term1: 0.63,
   run0: 0.66,
-  run1: 0.97,
+  run1: 0.92,
+  flat1: 0.99,
 } as const
 
 export const clamp01 = (v: number): number => Math.min(1, Math.max(0, v))
@@ -90,13 +95,16 @@ export function runFracAt(p: number): number {
 }
 
 /** the scene's phase — drives the head captions + the narration rail (H2).
-    `done` begins when the run window saturates (the verdict has settled). */
-export type MorphPhase = 'file' | 'burst' | 'run' | 'done'
+    `flat` opens as the run window saturates: the verdict beat (exit-0 sweep
+    + the 3D flatten) plays there; `done` at flat1, when the flat 2D map is
+    the closing frame (the ps-layer ⇄ DOM DAG crossfade keys on it). */
+export type MorphPhase = 'file' | 'burst' | 'run' | 'flat' | 'done'
 
 export function phaseAt(p: number): MorphPhase {
   if (p < PH.burst0) return 'file'
   if (p < PH.run0) return 'burst'
-  return runFracAt(p) >= 1 ? 'done' : 'run'
+  if (runFracAt(p) < 1) return 'run'
+  return p < PH.flat1 ? 'flat' : 'done'
 }
 
 export type MorphNodeState = 'pending' | 'running' | 'done' | 'skipped'

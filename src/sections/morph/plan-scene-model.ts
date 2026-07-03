@@ -62,6 +62,8 @@ export interface PlanSceneModel {
       PACING is presentational (a 20ms wave must not teleport the camera),
       the ORDER and every event stay verbatim (the terminal's byPace law) */
   knots: number[]
+  /** widest |x| across the slabs — the flatten camera's vertical fit */
+  spanX: number
   totalMs: number
   waveCount: number
 }
@@ -149,6 +151,7 @@ export function buildPlanScene(entry: FlagshipEntry): PlanSceneModel {
     waveZ,
     anchors,
     knots,
+    spanX: slabs.reduce((m, s) => Math.max(m, Math.abs(s.x)), 0),
     totalMs: trace.totalMs,
     waveCount: plan.waveCount,
   }
@@ -172,15 +175,62 @@ export interface CamPose {
   tx: number
   ty: number
   tz: number
+  /** the camera's up vector — (0,1,0) everywhere except the flatten, where
+      it rolls to (-1,0,0) so the flat map reads left→right like the 2D DAG */
+  ux: number
+  uy: number
+  uz: number
   /** the continuous focus wave index driving fades + the field focal */
   f: number
 }
 
 const lerp = (a: number, b: number, k: number): number => a + (b - a) * k
 
+/* ── the flatten · the 3D plan lies down into the 2D map (wave K) ─────────────
+   As the verdict settles the camera RISES to top-down while it ROLLS a
+   quarter turn (up → -X), so the flattened plan reads exactly like the flat
+   DOM DAG that crossfades in at PH.flat1: waves left→right, parallel tasks
+   stacked. The slabs lie face-up in place (ThePlanScene drives their pitch +
+   yaw from the same flattenAt), so "the same plan, flat" is WATCHED
+   happening — and scrubbing back stands the whole room up again. */
+
+/** the flatten's apex — the crane's two beats join here: pull-back BELOW,
+    dive-and-roll ABOVE (fraction of the flat window) */
+export const FLAT_APEX = 0.55
+
+export function flattenAt(p: number): number {
+  return easeInOut(clamp01((p - PH.run1) / (PH.flat1 - PH.run1)))
+}
+
+/** the flatten's LEAD track — the slab lie-down and the whole-graph relight
+    run ~1.5× ahead of the crane, so the plan lies down WATCHED from the
+    rising camera's best seat and the exit-0 sweep crosses a lit map */
+export function flattenLeadAt(p: number): number {
+  return easeInOut(clamp01(((p - PH.run1) / (PH.flat1 - PH.run1)) * 1.5))
+}
+
+/** the flatten's ROLL track — 0 through the pull-back, turning only during
+    the dive. The slabs' yaw rides this SAME curve, so a face and the camera
+    roll together and the labels stay upright through the whole turn. */
+export function flattenRollAt(p: number): number {
+  const kr = clamp01((p - PH.run1) / (PH.flat1 - PH.run1))
+  return easeInOut(clamp01((kr - FLAT_APEX) / (1 - FLAT_APEX)))
+}
+
+/** a slab's X-pitch through the flatten: its pass-by lean k→0, face-up at 1 */
+export const flatPitch = (base: number, k: number): number =>
+  base + (-Math.PI / 2 - base) * k
+
+/** a slab's Y-yaw through the flatten: a quarter turn so the face's reading
+    direction matches the rolled camera (labels stay upright on screen) */
+export const flatYaw = (k: number): number => (k * Math.PI) / 2
+
+const TAN_HALF_FOV = Math.tan((35 / 2) * (Math.PI / 180))
+
 /** the camera as a pure function of scroll progress — overview through the
     burst, glide onto wave 0 while the wires draw, dolly forward with the
-    recorded run, a small pull-back as the verdict settles */
+    recorded run, then the flatten: rise + roll to top-down over the plan
+    center for the verdict (the 3D→2D metaphor made literal) */
 export function camAt(model: PlanSceneModel, p: number): CamPose {
   const depth = (model.waveCount - 1) * WAVE_GAP
   const rise = (model.waveCount - 1) * Y_STEP
@@ -205,7 +255,7 @@ export function camAt(model: PlanSceneModel, p: number): CamPose {
     tz: fz - WAVE_GAP * 0.5,
   }
 
-  if (p <= PH.burstEnd) return { ...ov, f: -0.4 }
+  if (p <= PH.burstEnd) return { ...ov, ux: 0, uy: 1, uz: 0, f: -0.4 }
   if (p < PH.run0) {
     /* the glide · overview → wave-0 focus while the wires draw */
     const k = easeInOut(clamp01((p - PH.burstEnd) / (PH.run0 - PH.burstEnd)))
@@ -216,20 +266,64 @@ export function camAt(model: PlanSceneModel, p: number): CamPose {
       tx: lerp(ov.tx, fo.tx, k),
       ty: lerp(ov.ty, fo.ty, k),
       tz: lerp(ov.tz, fo.tz, k),
+      ux: 0,
+      uy: 1,
+      uz: 0,
       f: lerp(-0.4, 0, k),
     }
   }
-  if (p <= PH.run1) return { ...fo, f }
+  if (p <= PH.run1) return { ...fo, ux: 0, uy: 1, uz: 0, f }
 
-  /* the hold · recede, the settled structure back in view for the verdict */
-  const k = easeInOut(clamp01((p - PH.run1) / (1 - PH.run1)))
+  /* the flatten · a CRANE in two beats, joined at the apex (film grammar:
+     one idea per move).
+       BEAT 1 · the pull-back — up and BACK to a high overview behind the
+       front wave, gaze settling on the plan center: the whole amphitheater
+       swings into frame ("behold the plan") and the exit-0 sweep crosses it
+       in full view while the slabs lie face-up on the lead track.
+       BEAT 2 · the dive — from the apex straight over the plan center,
+       rolling a quarter turn (up → -X) so the lying map reads left→right
+       like the 2D DAG about to crossfade in. The slabs' yaw rides the SAME
+       roll curve, so labels stay upright through the whole turn.
+     The top height fits the rolled frame: screen-vertical = the X span,
+     screen-horizontal = the Z span (the wave road, aspect-assisted). */
+  const kr = clamp01((p - PH.run1) / (PH.flat1 - PH.run1))
+  const cz = -depth / 2
+  const halfV = model.spanX + SLAB.h / 2 + 0.9
+  const halfZ = depth / 2 + SLAB.w / 2 + 1.2
+  const top = Math.max(halfV, halfZ * 0.62) / TAN_HALF_FOV
+  /* the apex pose · high + far enough back that the whole graph sits inside
+     the vertical fov with the gaze on center */
+  const apexY = Math.max(fo.py + 4.2, top * 0.62)
+  const apexZ = 11.5
+  if (kr <= FLAT_APEX) {
+    const kA = easeInOut(kr / FLAT_APEX)
+    return {
+      px: fo.px,
+      py: lerp(fo.py, apexY, kA),
+      pz: lerp(fo.pz, apexZ, kA),
+      tx: fo.tx,
+      ty: lerp(fo.ty, 0.5, kA),
+      tz: lerp(fo.tz, cz, kA),
+      ux: 0,
+      uy: 1,
+      uz: 0,
+      f,
+    }
+  }
+  const kB = easeInOut((kr - FLAT_APEX) / (1 - FLAT_APEX))
+  const ux = -kB
+  const uy = 1 - kB
+  const ul = Math.hypot(ux, uy) || 1
   return {
-    px: fo.px,
-    py: lerp(fo.py, fo.py + 1.9, k),
-    pz: lerp(fo.pz, fo.pz + 4.2, k),
-    tx: fo.tx,
-    ty: fo.ty,
-    tz: fo.tz,
+    px: 0,
+    py: lerp(apexY, top, kB),
+    pz: lerp(apexZ, cz, kB),
+    tx: 0,
+    ty: lerp(0.5, 0.4, kB),
+    tz: cz,
+    ux: ux / ul,
+    uy: uy / ul,
+    uz: 0,
     f,
   }
 }
@@ -268,10 +362,29 @@ export function sealAt(entry: FlagshipEntry, taskId: string, p: number): number 
   const iv = taskInterval(entry, taskId)
   if (!iv || !('skipAt' in iv)) return 0
   if (runFracAt(p) <= 0) return 0
-  /* 0.03 = the widest window that still completes when the gate closes on
-     the run's final recorded ms (run1 → 1 leaves 0.03 of scroll) */
+  /* 0.03 of scroll: even a gate closing on the run's final recorded ms
+     finishes sealing well inside the flat window (run1 → flat1 = 0.07) */
   return easeInOut(clamp01((p - pOfClock(entry, iv.skipAt)) / 0.03))
 }
+
+/* ── the beats · each recorded event, one distinct legible accent ─────────────
+   Every beat OPENS at a recorded clock mapped into the run window (pOfClock)
+   and plays across a short SCROLL window — the same presentational-pacing law
+   the camera knots follow: the INSTANT and the ORDER are recorded fact, the
+   window is the reading time. A clock at ms≈0 is clamped so its beat still
+   gets its full window inside the run (the knots' min-gap law, per beat).
+   All envelopes are pure functions of p — scrubbing back replays every beat
+   in reverse and nothing can teleport. */
+
+const PULSE_WIN = 0.035
+const RING_WIN = 0.03
+const SETTLE_WIN = 0.028
+const CHORD_WIN = 0.035
+const SWEEP_WIN = 0.024
+const FAIL_WIN = 0.04
+
+/** sin-π bell · the beat family's accent envelope (zero at both ends) */
+const bell = (t: number): number => (t <= 0 || t >= 1 ? 0 : Math.sin(Math.PI * t))
 
 export interface EdgePulse {
   /** pulse head position along the edge 0..1 */
@@ -280,19 +393,117 @@ export interface EdgePulse {
   strength: number
 }
 
+/** the scroll instant a task's start beat lands — its recorded first-activity
+    clock, clamped so the pulse's whole travel fits inside the run window
+    (parallel tasks share clocks → their beats stay simultaneous) */
+export function pulseArriveP(entry: FlagshipEntry, taskId: string): number {
+  return Math.max(pOfClock(entry, startOf(entry, taskId)), PH.run0 + PULSE_WIN)
+}
+
 /** the ignite pulse traveling an incoming edge — it ARRIVES at the scroll
     instant of the downstream task's recorded start (parallel tasks share
     clocks, so their pulses travel together); the travel is a short scroll
     window, so scrubbing back replays it in reverse */
 export function edgePulseAt(entry: FlagshipEntry, toTaskId: string, p: number): EdgePulse {
   if (runFracAt(p) <= 0) return { pos: 0, strength: 0 }
-  const arriveP = pOfClock(entry, startOf(entry, toTaskId))
-  const win = 0.035
-  const phase = (p - (arriveP - win)) / win
+  const arriveP = pulseArriveP(entry, toTaskId)
+  const phase = (p - (arriveP - PULSE_WIN)) / PULSE_WIN
   if (phase <= 0 || phase >= 1.6) return { pos: clamp01(phase), strength: 0 }
   const pos = clamp01(phase)
   const tail = phase <= 1 ? phase : 1 - (phase - 1) / 0.6
   return { pos, strength: Math.sin((Math.PI / 2) * clamp01(tail)) }
+}
+
+export interface RingBeat {
+  /** expansion 0..1 (easeOut — the flash is an energy release) */
+  k: number
+  /** alpha envelope 0..1 */
+  a: number
+}
+
+/** task_started, ON the slab · a verb-hued frame flash expanding off the slab
+    the instant its pulse arrives (wave-0 tasks have no incoming edge — the
+    ring alone announces their start). For a skipped task the same beat fires
+    at the recorded gate-close instant: the when: acted HERE.
+    `out` is a caller-owned scratch — the frame loop must not allocate. */
+export function ringAt(entry: FlagshipEntry, taskId: string, p: number, out: RingBeat): RingBeat {
+  out.k = 0
+  out.a = 0
+  if (runFracAt(p) <= 0) return out
+  const t = (p - pulseArriveP(entry, taskId)) / RING_WIN
+  if (t <= 0 || t >= 1) return out
+  const inv = 1 - t
+  out.k = 1 - inv * inv * inv
+  out.a = inv * inv
+  return out
+}
+
+/** task_completed · the ✓ + recorded ms land WITH a body beat (a soft
+    press-in on the slab, a brief lift of its settled light) — never a bare
+    texture swap. Bell envelope at the recorded completion clock. */
+export function settleAt(entry: FlagshipEntry, taskId: string, p: number): number {
+  if (runFracAt(p) <= 0) return 0
+  const iv = taskInterval(entry, taskId)
+  if (!iv || 'skipAt' in iv) return 0
+  const open = Math.max(pOfClock(entry, iv.end), PH.run0 + 0.01)
+  return bell(clamp01((p - open) / SETTLE_WIN))
+}
+
+/** the run-together chord · one shared breath of the scene per task start,
+    STACKING when recorded starts share a clock — N tasks that really started
+    together breathe N× as deep (the run-together moment, unmistakable), a
+    solo start stays quiet. Honest by construction: the plan may declare a
+    wave parallel, but the chord only deepens when the RECORDED clocks agree
+    (social-repurpose's trio really started seconds apart — it gets three
+    quiet breaths, not one deep one). */
+export function chordAt(entry: FlagshipEntry, model: PlanSceneModel, p: number): number {
+  if (runFracAt(p) <= 0) return 0
+  let sum = 0
+  for (const s of model.slabs) {
+    const t = (p - pulseArriveP(entry, s.task.id)) / CHORD_WIN
+    if (t <= 0 || t >= 1) continue
+    sum += bell(t)
+  }
+  return clamp01(sum * 0.4)
+}
+
+export interface SweepBeat {
+  /** the light front's travel 0..1 (front of the graph → back) */
+  front: number
+  /** 0..1 strength envelope */
+  s: number
+}
+
+/** workflow_completed, exit 0 · ONE light wave travels the whole graph
+    front-to-back — the run finished clean, recapped in the direction it
+    flowed. Opens as the verdict crane nears its apex (a beat after the
+    recorded completion instant — the whole graph must be IN FRAME when the
+    light crosses it); silent on a failed run.
+    `out` is a caller-owned scratch — the frame loop must not allocate. */
+export function sweepAt(entry: FlagshipEntry, p: number, out: SweepBeat): SweepBeat {
+  out.front = 0
+  out.s = 0
+  if (entry.trace.exit !== 0 || runFracAt(p) <= 0) return out
+  const open = pOfClock(entry, entry.trace.totalMs) + 0.028
+  const t = (p - open) / SWEEP_WIN
+  if (t <= 0 || t >= 1) {
+    out.front = clamp01(t)
+    return out
+  }
+  out.front = t
+  out.s = bell(t)
+  return out
+}
+
+/** task_failed · a red flash on the failing slab only, at its recorded
+    failure clock. Dormant for every current flagship (all five traces exit
+    0) — the beat exists so a future recorded failure needs zero new code. */
+export function failFlashAt(entry: FlagshipEntry, taskId: string, p: number): number {
+  if (runFracAt(p) <= 0) return 0
+  const rec = entry.trace.steps.find((s) => s.kind === 'task_failed' && s.task === taskId)
+  if (!rec) return 0
+  const open = Math.max(pOfClock(entry, rec.atMs), PH.run0 + 0.01)
+  return bell(clamp01((p - open) / FAIL_WIN))
 }
 
 /* ── the chips · recorded facts on the tooltip card (mirrors the DOM nodes) ── */
@@ -342,3 +553,5 @@ export const RAMP_LO: [number, number, number] = [0.031, 0.035, 0.043] // #08090
 export const RAMP_MID: [number, number, number] = [0.086, 0.137, 0.247] // #16233f
 export const RAMP_HI: [number, number, number] = [0.31, 0.525, 1.0] // #4f86ff
 export const EDGE_BLUE: [number, number, number] = [0.553, 0.706, 1.0] // #8db4ff
+/** the failure red — same ink the verdict line's `✗ exit 1` uses (#ff5d5d) */
+export const FAIL_RED: [number, number, number] = [1.0, 0.365, 0.365]

@@ -84,17 +84,21 @@ describe('phase windows', () => {
     expect(runFracAt(PH.run1)).toBe(1)
   })
 
-  it('phaseAt walks file → burst → run → done and never regresses', () => {
+  it('phaseAt walks file → burst → run → flat → done and never regresses', () => {
     expect(phaseAt(0)).toBe('file')
     expect(phaseAt(PH.burst0 - 0.001)).toBe('file')
     expect(phaseAt(PH.burst0)).toBe('burst')
     expect(phaseAt(PH.run0 - 0.001)).toBe('burst')
     expect(phaseAt(PH.run0)).toBe('run')
     expect(phaseAt((PH.run0 + PH.run1) / 2)).toBe('run')
-    expect(phaseAt(PH.run1)).toBe('done')
+    /* the verdict window: the run saturates INTO the flat beat (the exit-0
+       sweep + the 3D flatten live there), the crossfade lands at flat1 */
+    expect(phaseAt(PH.run1)).toBe('flat')
+    expect(phaseAt((PH.run1 + PH.flat1) / 2)).toBe('flat')
+    expect(phaseAt(PH.flat1)).toBe('done')
     expect(phaseAt(1)).toBe('done')
     /* monotone: scrubbing forward can only advance the phase */
-    const order = { file: 0, burst: 1, run: 2, done: 3 }
+    const order = { file: 0, burst: 1, run: 2, flat: 3, done: 4 }
     let prev = 0
     for (let p = 0; p <= 1.0001; p += 0.005) {
       const rank = order[phaseAt(p)]

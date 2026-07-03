@@ -24,11 +24,14 @@
   }
 }
 
-/* the runway · only when the scroll driver is armed. 400vh: the per-task
+/* the runway · only when the scroll driver is armed. 440vh: the per-task
    aspiration (wave I) reads one beat at a time — each task gets real scroll
-   room to condense + travel instead of the old all-at-once scatter. */
+   room to condense + travel instead of the old all-at-once scatter — and
+   the verdict gets a real window (wave K): the run keeps its former scroll
+   length while the exit-0 sweep + the 3D→2D flatten play across ~7% of the
+   runway instead of a cut. */
 .morphsec[data-armed] {
-  height: 400vh;
+  height: 440vh;
 }
 .morphsec[data-armed] .morph-stage {
   position: sticky;
@@ -145,17 +148,21 @@
 .morph-stage[data-phase='file'] .morph-cap[data-for='file'],
 .morph-stage[data-phase='burst'] .morph-cap[data-for='burst'],
 .morph-stage[data-phase='run'] .morph-cap[data-for='run'],
+.morph-stage[data-phase='flat'] .morph-cap[data-for='run'],
 .morph-stage[data-phase='done'] .morph-cap[data-for='run'] {
   opacity: 1;
   transform: none;
 }
-/* ≥1024 the done frame is interactive (file beside the flat DAG) — the
-   caption teaches the hover instead of repeating the run line */
+/* ≥1024 the flat beat narrates the lie-down (the 3D layer lives there) and
+   the done frame is interactive (file beside the flat DAG) — the captions
+   teach those beats instead of repeating the run line */
 @media (min-width: 1024px) {
+  .morph-stage[data-phase='flat'] .morph-cap[data-for='run'],
   .morph-stage[data-phase='done'] .morph-cap[data-for='run'] {
     opacity: 0;
     transform: translateY(4px);
   }
+  .morph-stage[data-phase='flat'] .morph-cap[data-for='flat'],
   .morph-stage[data-phase='done'] .morph-cap[data-for='done'] {
     opacity: 1;
     transform: none;
@@ -239,9 +246,11 @@
    every flight that targets a node beyond the card edge */
 .morph-stage[data-phase='burst'] .morph-code.cf-panel,
 .morph-stage[data-phase='run'] .morph-code.cf-panel,
+.morph-stage[data-phase='flat'] .morph-code.cf-panel,
 .morph-stage[data-phase='done'] .morph-code.cf-panel,
 .morph-stage[data-phase='burst'] .morph-code .cf-pre,
 .morph-stage[data-phase='run'] .morph-code .cf-pre,
+.morph-stage[data-phase='flat'] .morph-code .cf-pre,
 .morph-stage[data-phase='done'] .morph-code .cf-pre {
   overflow: visible;
 }
@@ -287,6 +296,7 @@
   transition: opacity 0.25s var(--ease-ui, ease);
 }
 .morph-stage[data-phase='run'] .morph-wires circle,
+.morph-stage[data-phase='flat'] .morph-wires circle,
 .morph-stage[data-phase='done'] .morph-wires circle {
   opacity: 1;
 }
@@ -312,6 +322,7 @@
 }
 .morph-stage[data-phase='burst'] .morph-wave-cap,
 .morph-stage[data-phase='run'] .morph-wave-cap,
+.morph-stage[data-phase='flat'] .morph-wave-cap,
 .morph-stage[data-phase='done'] .morph-wave-cap {
   opacity: 1;
 }
@@ -377,6 +388,7 @@
   opacity: 1;
 }
 .morphsec[data-armed] .morph-stage[data-phase='run'] .morph-node[data-run='skipped'],
+.morphsec[data-armed] .morph-stage[data-phase='flat'] .morph-node[data-run='skipped'],
 .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-node[data-run='skipped'] {
   border-style: dashed;
 }
@@ -701,6 +713,7 @@
   transition: opacity 0.4s var(--ease-ui, ease);
 }
 .morphsec[data-armed] .morph-stage[data-phase='run'] .morph-caption,
+.morphsec[data-armed] .morph-stage[data-phase='flat'] .morph-caption,
 .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-caption {
   opacity: 1;
 }
@@ -759,6 +772,7 @@
   .morphsec[data-armed] .morph-stage[data-phase='file'] .morph-say-line[data-for='file'],
   .morphsec[data-armed] .morph-stage[data-phase='burst'] .morph-say-line[data-for='burst'],
   .morphsec[data-armed] .morph-stage[data-phase='run'] .morph-say-line[data-for='run'],
+  .morphsec[data-armed] .morph-stage[data-phase='flat'] .morph-say-line[data-for='flat'],
   .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-say-line[data-for='done'] {
     opacity: 1;
     color: var(--v4-text-dim);

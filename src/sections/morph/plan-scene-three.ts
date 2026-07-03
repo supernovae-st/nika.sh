@@ -255,13 +255,17 @@ export function makeFillLayer(count: number, label: LabelAtlas): FillLayer {
 /* ── 2 · slab edges · instanced unit-box wireframe ───────────────────────────
    iRot = the slab's X-pitch (radians, same signed angle the fill matrix
    uses): passing slabs lean their face toward the elevated camera, and the
-   line cage must lean WITH the face it frames. */
+   line cage must lean WITH the face it frames. iYaw = the flatten's Y-yaw
+   (wave K): the lying-down slab quarter-turns so its face reads upright
+   under the rolled top-down camera — composed Ry(yaw)·Rx(pitch), the same
+   order the fill matrices use. */
 const EDGE_VERT = /* glsl */ `
 attribute vec3 iPos;
 attribute vec3 iScale;
 attribute vec3 iColor;
 attribute float iAlpha;
 attribute float iRot;
+attribute float iYaw;
 varying vec3 vColor;
 varying float vAlpha;
 void main() {
@@ -271,6 +275,9 @@ void main() {
   float rc = cos(iRot);
   float rs = sin(iRot);
   p.yz = vec2(rc * p.y - rs * p.z, rs * p.y + rc * p.z);
+  float yc = cos(iYaw);
+  float ys = sin(iYaw);
+  p.xz = vec2(yc * p.x + ys * p.z, yc * p.z - ys * p.x);
   p += iPos;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
 }
@@ -292,11 +299,12 @@ export interface EdgeLayer {
   color: THREE.InstancedBufferAttribute
   alpha: THREE.InstancedBufferAttribute
   rot: THREE.InstancedBufferAttribute
+  yaw: THREE.InstancedBufferAttribute
   dispose: () => void
 }
 
-/** count = instances (3 per slab: the outer frame + the inset die detail +
-    the running-state verb-hue glow cage) */
+/** count = instances (4 per slab: the outer frame + the inset die detail +
+    the running-state verb-hue glow cage + the task_started ring flash) */
 export function makeEdgeLayer(count: number): EdgeLayer {
   const box = new THREE.BoxGeometry(1, 1, 1)
   const base = new THREE.EdgesGeometry(box)
@@ -314,11 +322,13 @@ export function makeEdgeLayer(count: number): EdgeLayer {
   const color = mk(3)
   const alpha = mk(1)
   const rot = mk(1)
+  const yaw = mk(1)
   geo.setAttribute('iPos', pos)
   geo.setAttribute('iScale', scale)
   geo.setAttribute('iColor', color)
   geo.setAttribute('iAlpha', alpha)
   geo.setAttribute('iRot', rot)
+  geo.setAttribute('iYaw', yaw)
   const mat = new THREE.ShaderMaterial({
     vertexShader: EDGE_VERT,
     fragmentShader: EDGE_FRAG,
@@ -335,6 +345,7 @@ export function makeEdgeLayer(count: number): EdgeLayer {
     color,
     alpha,
     rot,
+    yaw,
     dispose: () => {
       base.dispose()
       geo.dispose()
