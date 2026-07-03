@@ -57,34 +57,72 @@
   background:
     conic-gradient(
       from 0deg,
-      color-mix(in oklch, var(--verb-infer) 46%, #16307a) 0turn,
-      color-mix(in oklch, var(--verb-exec) 34%, #16307a) 0.25turn,
-      color-mix(in oklch, var(--verb-invoke) 38%, #16307a) 0.5turn,
-      color-mix(in oklch, var(--verb-agent) 40%, #16307a) 0.75turn,
-      color-mix(in oklch, var(--verb-infer) 46%, #16307a) 1turn
+      color-mix(in oklch, var(--verb-infer) 44%, #16307a) 0turn,
+      color-mix(in oklch, var(--verb-invoke) 34%, #16307a) 0.125turn,
+      color-mix(in oklch, var(--verb-exec) 30%, #16307a) 0.25turn,
+      color-mix(in oklch, var(--verb-agent) 36%, #16307a) 0.375turn,
+      color-mix(in oklch, var(--verb-infer) 44%, #16307a) 0.5turn,
+      color-mix(in oklch, var(--verb-invoke) 34%, #16307a) 0.625turn,
+      color-mix(in oklch, var(--verb-exec) 30%, #16307a) 0.75turn,
+      color-mix(in oklch, var(--verb-agent) 36%, #16307a) 0.875turn,
+      color-mix(in oklch, var(--verb-infer) 44%, #16307a) 1turn
     );
 
-  /* keep the GLOW at the rim only. Same geometry fix as the run state (the
-     old 82%/66% mask parked the band entirely OFF-viewport — corner haze
-     only): the band lands ON the frame edges, the 30% center punch still
-     protects the content column. The ambient is carried by intensity (0.09),
-     not by hiding the band. */
+  /* CORNER HAZE ONLY (rotation-safe radial mask): a wide radial band here
+     floods the interior as diagonal washes (empirical, 2026-07-03 live
+     screenshot) — the frame's uniform rim is the ::after below. This layer
+     is the moving life at the corners. */
   mask: radial-gradient(
-    ellipse 100% 100% at 50% 50%,
-    transparent 32%,
-    #000 47%
+    ellipse 82% 82% at 50% 50%,
+    transparent 62%,
+    #000 100%
   );
   -webkit-mask: radial-gradient(
-    ellipse 100% 100% at 50% 50%,
-    transparent 32%,
-    #000 47%
+    ellipse 82% 82% at 50% 50%,
+    transparent 62%,
+    #000 100%
   );
 
   filter: blur(44px);
   opacity: var(--aurora-intensity);
 
-  /* slow tonal drift keeps the rim alive between pulses (blue-on-blue only) */
+  /* slow spectral drift · the corner hues travel the frame */
   animation: edge-aurora-rotate 26s linear infinite;
+}
+
+/* THE FRAME RIM · a STATIC box-shaped band hugging all four edges uniformly
+   (two crossed linear-gradient masks, composited as a union — a radial mask
+   can never follow a rectangle: midpoints and corners sit at different radii,
+   which is exactly why the single-band version smeared). Rotation lives on
+   the ::before; this band holds the frame. Gated :not([data-run]) — the run
+   state owns ::after as the verb lead arc. */
+.edge-aurora:not([data-run])::after {
+  content: '';
+  position: absolute;
+  inset: -2%;
+  background: conic-gradient(
+    from 0deg,
+    color-mix(in oklch, var(--verb-infer) 40%, #16307a) 0turn,
+    color-mix(in oklch, var(--verb-invoke) 32%, #16307a) 0.125turn,
+    color-mix(in oklch, var(--verb-exec) 28%, #16307a) 0.25turn,
+    color-mix(in oklch, var(--verb-agent) 34%, #16307a) 0.375turn,
+    color-mix(in oklch, var(--verb-infer) 40%, #16307a) 0.5turn,
+    color-mix(in oklch, var(--verb-invoke) 32%, #16307a) 0.625turn,
+    color-mix(in oklch, var(--verb-exec) 28%, #16307a) 0.75turn,
+    color-mix(in oklch, var(--verb-agent) 34%, #16307a) 0.875turn,
+    color-mix(in oklch, var(--verb-infer) 40%, #16307a) 1turn
+  );
+  mask:
+    linear-gradient(to right, #000 0, transparent 9%, transparent 91%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 9%, transparent 91%, #000 100%);
+  -webkit-mask:
+    linear-gradient(to right, #000 0, transparent 9%, transparent 91%, #000 100%),
+    linear-gradient(to bottom, #000 0, transparent 9%, transparent 91%, #000 100%);
+  mask-composite: add;
+  -webkit-mask-composite: source-over;
+  filter: blur(26px);
+  opacity: calc(var(--aurora-intensity) * 1.15);
+  pointer-events: none;
 }
 
 /* breathing · gently swells the whole ring's opacity around its rest value.
