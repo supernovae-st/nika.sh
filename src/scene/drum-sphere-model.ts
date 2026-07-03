@@ -20,6 +20,23 @@ const WIDTH_FILL = 0.72
 /** radial thickness at rest — the breathing extrusion scales this in-shader */
 export const BLOCK_D = 0.075
 
+/** the soft leading edge of the struck front, in ripple-phase units — the
+    shader ignites a band over this width instead of a hard step */
+export const STRUCK_SOFT = 0.14
+
+/** band threshold for `uStruck` · struck sections → ripple-phase reach.
+    The manifesto reading drives this: each section boundary crossed strikes
+    the drum once, and the struck front spreads from the equator (phase 0,
+    where the drum is hit) toward the poles (phase 1). Blocks whose ripple
+    phase sits below the returned threshold are lit, and stay lit.
+    · struck ≤ 0 (or no sections) → below every phase, nothing lit
+    · struck ≥ total → above pole phase 1 + STRUCK_SOFT, the whole shell lit
+    · monotonic in struck, clamped past total */
+export function struckPhaseThreshold(struck: number, total: number): number {
+  if (total <= 0 || struck <= 0) return -0.25
+  return Math.min(struck / total, 1) + STRUCK_SOFT + 0.02
+}
+
 export interface DrumSphereModel {
   count: number
   /** blocks per latitude ring, pole → pole */
