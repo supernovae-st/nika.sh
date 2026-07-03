@@ -137,9 +137,12 @@ download_release() {
 
   say "downloading $asset ($tag)"
 
-  local tmp
+  # NOT `local`: the EXIT trap fires after this function returns, and under
+  # `sh` (dash) a local is gone by then — with `set -u` the trap itself dies
+  # with "tmp: parameter not set" AFTER a successful install, turning the
+  # happy path into a non-zero exit (caught by the cold-VM e2e).
   tmp=$(mktemp -d 2>/dev/null || mktemp -d -t nika)
-  trap 'rm -rf "$tmp"' EXIT
+  trap 'rm -rf "${tmp:-}"' EXIT
 
   if ! curl -fsSL "$url" -o "$tmp/$asset"; then
     die "download failed: $url
