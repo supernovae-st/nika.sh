@@ -1,4 +1,5 @@
-import { Suspense, lazy, useEffect, useState, useSyncExternalStore } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
+import { useHydrated } from '../lib/use-hydrated'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
@@ -29,19 +30,7 @@ const EditorFallback = (
   </div>
 )
 
-/* hydration-safe client detector · the canonical React 19 pattern (no
-   setState-in-effect). getServerSnapshot returns false → SSR + the client's
-   FIRST render agree (editor absent, fallback shown), so hydration is
-   byte-identical; subscribe never re-fires but getSnapshot returns true on the
-   client, so the post-hydration render mounts the editor. */
-const subscribeNoop = () => () => {}
-function useHydrated() {
-  return useSyncExternalStore(
-    subscribeNoop,
-    () => true,
-    () => false,
-  )
-}
+/* hydration-safe client detector → shared src/lib/use-hydrated (W12a) */
 
 /* ─── /play · the playground (theme-dark · blueprint register) ────────────────
    Edit real Nika in the browser · the validator's own NIKA codes appear live

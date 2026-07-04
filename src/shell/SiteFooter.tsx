@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { lazy, Suspense } from 'react'
+import { useHydrated } from '../lib/use-hydrated'
 import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
 import '../sections/v4-home.css'
 
@@ -55,20 +56,29 @@ const COLS: {
 ]
 
 export default function SiteFooter() {
+  /* the lazy signature mounts POST-hydration only (W12a · the #419 fix):
+     with renderToString SSG, a <Suspense> in the server tree throws React
+     #419 on the client. The static butterfly below is the SSG/no-JS truth;
+     the living particles take over right after hydration (the shared
+     useHydrated gate — Play's editor pattern). */
+  const fxReady = useHydrated()
+  const staticSig = (
+    <div className="fsig">
+      <img src="/nika.svg" alt="" width={170} height={170} loading="lazy" />
+      <p className="fsig-caption">the noise becomes the file.</p>
+    </div>
+  )
   return (
     <footer className="theme-dark v4sec" aria-label="Site footer">
       <div className="v4sec-wrap v4cta-wrap sitefoot-wrap">
         {/* THE SIGNATURE · the continuous living butterfly (F3) */}
-        <Suspense
-          fallback={
-            <div className="fsig">
-              <img src="/nika.svg" alt="" width={170} height={170} loading="lazy" />
-              <p className="fsig-caption">the noise becomes the file.</p>
-            </div>
-          }
-        >
-          <FooterSignature />
-        </Suspense>
+        {fxReady ? (
+          <Suspense fallback={staticSig}>
+            <FooterSignature />
+          </Suspense>
+        ) : (
+          staticSig
+        )}
 
         {/* THE COLUMNS · the wayfinding band (W8) — left-aligned survey grid
             over the centered altar below; every label is a real surface */}
