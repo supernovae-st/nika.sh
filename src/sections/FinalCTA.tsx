@@ -4,6 +4,7 @@ import { CopyRow } from '../components/CopyRow'
 import { INSTALL_CMD } from '../components/InstallCommand'
 import { useRevealOnce } from './use-reveal-once'
 import SiteFooter from '../shell/SiteFooter'
+import { CTA_MARK } from './cta-mark.generated'
 import './v4-home.css'
 
 /* ─── FIG 10.0 · Final CTA + the site footer (theme-dark · the close) ─────────
@@ -29,6 +30,13 @@ export default function FinalCTA() {
       className="theme-dark v4sec v4-flip scroll-mt-24"
     >
       <div className="v4sec-wrap v4cta-wrap">
+        {/* THE MARK · the butterfly as a blue ordered-dither character field
+            (cta-mark.generated · baked from nika.svg, the Cursor-CLI close
+            idiom in the nika register). Decorative — the title speaks. */}
+        <pre className="v4cta-mark" aria-hidden data-rise>
+          {CTA_MARK}
+        </pre>
+
         {/* the close · the install affordance + two flat CTAs, blueprint register */}
         <p className="v4sec-fig" data-rise>
           15

@@ -14,10 +14,79 @@ import '../sections/v4-home.css'
    (in-view only; the prerendered fallback below is the no-JS truth) */
 const FooterSignature = lazy(() => import('../fx/FooterSignature'))
 
+/* the link columns (W8 · the Cursor/ElevenLabs footer grammar, sized honestly
+   for one OSS product) — every route the site actually has + the canonical
+   external surfaces. Internal = <Link>, external = <a ↗>. */
+const COLS: {
+  kick: string
+  links: { label: string; to?: string; href?: string }[]
+}[] = [
+  {
+    kick: 'product',
+    links: [
+      { label: 'Install', to: '/install' },
+      { label: 'Playground', to: '/play' },
+      { label: 'Learn', to: '/learn' },
+      { label: 'Use cases', to: '/use-cases' },
+      { label: 'Changelog', to: '/changelog' },
+      { label: 'Blog', to: '/blog' },
+    ],
+  },
+  {
+    kick: 'resources',
+    links: [
+      { label: 'Docs', href: DOCS },
+      { label: 'Spec', to: '/spec' },
+      { label: 'GitHub', href: REPO },
+      { label: 'VS Code extension', href: 'https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang' },
+      { label: 'Homebrew tap', href: 'https://github.com/supernovae-st/homebrew-tap' },
+    ],
+  },
+  {
+    kick: 'project',
+    links: [
+      { label: 'Manifesto', to: '/manifesto' },
+      { label: 'Send a workflow', to: '/convert' },
+      { label: 'SuperNovae', href: 'https://supernovae.studio' },
+      { label: 'License · AGPL-3.0', href: `${REPO}/blob/main/LICENSE` },
+      { label: 'security.txt', href: '/.well-known/security.txt' },
+    ],
+  },
+]
+
 export default function SiteFooter() {
   return (
     <footer className="theme-dark v4sec" aria-label="Site footer">
       <div className="v4sec-wrap v4cta-wrap sitefoot-wrap">
+        {/* THE COLUMNS · the wayfinding band (W8) — left-aligned survey grid
+            over the centered altar below; every label is a real surface */}
+        <nav className="sitefoot-cols" aria-label="Site map">
+          {COLS.map((col) => (
+            <div className="sitefoot-col" key={col.kick}>
+              <p className="sitefoot-kick">{col.kick}</p>
+              <ul className="sitefoot-list">
+                {col.links.map((l) => (
+                  <li key={l.label}>
+                    {l.to ? (
+                      <Link to={l.to} className="sitefoot-link">
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <a href={l.href} target="_blank" rel="noreferrer" className="sitefoot-link">
+                        {l.label}
+                        <span aria-hidden className="sitefoot-ext">
+                          {' '}
+                          ↗
+                        </span>
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+
         {/* THE SIGNATURE · the continuous living butterfly (F3) */}
         <Suspense
           fallback={

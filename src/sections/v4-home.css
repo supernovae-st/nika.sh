@@ -1572,6 +1572,95 @@
 .sitefoot-wrap {
   padding-top: 48px;
 }
+
+/* ── the footer columns (W8) · the wayfinding band ───────────────────────────
+   Left-aligned link columns over the centered signature altar — the
+   Cursor/ElevenLabs grammar sized honestly: three tight columns, mono
+   kickers, 32px hit rows. */
+.sitefoot-cols {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 20px;
+  padding: 28px 0 8px;
+  margin-bottom: 40px;
+  border-top: 1px solid var(--v4-line);
+  text-align: left;
+}
+@media (max-width: 640px) {
+  .sitefoot-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.sitefoot-kick {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.sitefoot-list {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.sitefoot-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  font-size: 13.5px;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.sitefoot-link:hover {
+  color: var(--v4-text);
+}
+.sitefoot-ext {
+  margin-left: 4px;
+  color: var(--v4-text-faint);
+  font-size: 11px;
+}
+/* THE MARK · the blue ASCII butterfly (cta-mark.generated). The ink is a
+   radial gradient clipped INTO the characters — bright core, deep accent
+   edges — over a soft quantized bloom behind (BRAND-11 stepped stops).
+   line-height 1.2 is load-bearing: the bake assumes cell aspect 0.5
+   (mono advance ~0.6em / 1.2). */
+.v4cta-mark {
+  position: relative;
+  margin: 0 0 30px;
+  font-family: var(--mono);
+  font-size: clamp(6.5px, 1.05vw, 10.5px);
+  line-height: 1.2;
+  letter-spacing: 0;
+  white-space: pre;
+  text-align: left;
+  user-select: none;
+  background: radial-gradient(
+    closest-side at 50% 44%,
+    #d7e4ff 0%,
+    #8db4ff 36%,
+    rgb(79 134 255 / 0.8) 64%,
+    rgb(47 107 255 / 0.34) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.v4cta-mark::before {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  z-index: -1;
+  background: radial-gradient(
+    closest-side,
+    rgb(79 134 255 / 0.11) 0 34%,
+    rgb(79 134 255 / 0.05) 34% 60%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
 .v4cta-title {
   margin-top: 24px;
   max-width: 18ch;
