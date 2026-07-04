@@ -2,6 +2,11 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
 import { parsePlan, type ParsedPlan } from '../lib/parse-plan'
 import { DagView } from '../components/DagView'
+/* lz-string is CJS — named ESM imports break the Node prerender (SSG);
+   the default-import + destructure form works in both worlds */
+import lz from 'lz-string'
+const { compressToEncodedURIComponent, decompressFromEncodedURIComponent } = lz
+import { track } from '../lib/track'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
@@ -65,7 +70,63 @@ export function Component() {
   const [plan, setPlan] = useState<ParsedPlan | null>(() => parsePlan(TEMPLATES_YAML['chain'] ?? ''))
   const [stale, setStale] = useState(false)
   const planTimer = useRef(0)
+  /* THE RUN-SIM (E2) · a user-triggered replay of the ORDER — wave by wave,
+     pending → running → ✓ done. Honesty law: order and parallelism are TRUE
+     (derived from the real DAG); no fabricated durations are ever shown.
+     Editing or switching seeds cancels the sim (the plan changed). */
+  const [simWave, setSimWave] = useState<number | undefined>(undefined)
+  const simTimer = useRef(0)
+  const stopSim = () => {
+    window.clearInterval(simTimer.current)
+    setSimWave(undefined)
+  }
+  const runSim = () => {
+    if (!plan || stale) return
+    track('play-run')
+    window.clearInterval(simTimer.current)
+    setSimWave(0)
+    let w = 0
+    simTimer.current = window.setInterval(() => {
+      w += 1
+      if (w > plan.waves.length) {
+        window.clearInterval(simTimer.current)
+        return
+      }
+      setSimWave(w)
+    }, 850)
+  }
+  useEffect(() => () => window.clearInterval(simTimer.current), [])
+
+  /* SHARE (E2) · the file as a link — ?y= carries the yaml (lz-string), so
+     a playground state is one URL. Loaded post-hydration (SSG stays the
+     template truth); Share copies the canonical link. */
+  const [shared, setShared] = useState(false)
+  useEffect(() => {
+    /* deferred one frame — the effect body only wires the external read
+       (the repo lint bans synchronous setState in effects) */
+    const raf = requestAnimationFrame(() => {
+      const y = new URLSearchParams(window.location.search).get('y')
+      if (!y) return
+      const src = decompressFromEncodedURIComponent(y)
+      if (!src) return
+      setSeed('shared')
+      setCode(src)
+      setDiags(lintNika(src))
+      setPlan(parsePlan(src))
+      setStale(false)
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [])
+  const share = () => {
+    const url = `${window.location.origin}/play?y=${compressToEncodedURIComponent(code)}`
+    window.history.replaceState(null, '', url)
+    void navigator.clipboard?.writeText(url).then(() => {
+      setShared(true)
+      window.setTimeout(() => setShared(false), 1600)
+    })
+  }
   const onCode = (v: string) => {
+    stopSim()
     setCode(v)
     window.clearTimeout(planTimer.current)
     planTimer.current = window.setTimeout(() => {
@@ -111,6 +172,7 @@ export function Component() {
   }, [])
 
   const pick = (slug: string) => {
+    stopSim()
     const src = TEMPLATES_YAML[slug] ?? SHOWCASE_YAML[slug] ?? ''
     setSeed(slug)
     setCode(src)
@@ -181,6 +243,17 @@ export function Component() {
                 <span className="cf-tab" title={`${seed}.nika.yaml`}>
                   <span className="cf-tab-name">{seed}.nika.yaml</span>
                 </span>
+                <button
+                  type="button"
+                  className="play-share-btn"
+                  onClick={share}
+                  aria-label="Copy a shareable link to this file"
+                >
+                  {shared ? 'link copied' : 'share'}
+                  <span role="status" className="sr-only">
+                    {shared ? 'Link copied to clipboard' : ''}
+                  </span>
+                </button>
                 <span
                   className="play-editor-status"
                   data-valid={valid}
@@ -212,13 +285,36 @@ export function Component() {
                 <span className="play-dag-live" aria-hidden />
                 The plan · live
                 <span className="play-dag-state" aria-live="polite">
-                  {stale ? 'waiting for valid yaml…' : plan ? `${plan.tasks.length} task${plan.tasks.length > 1 ? 's' : ''} · ${plan.waves.length} wave${plan.waves.length > 1 ? 's' : ''}` : '—'}
+                  {simWave !== undefined && plan
+                    ? simWave >= plan.waves.length
+                      ? 'order verified · simulated'
+                      : `wave ${String(simWave + 1).padStart(2, '0')}/${String(plan.waves.length).padStart(2, '0')}`
+                    : stale
+                      ? 'waiting for valid yaml…'
+                      : plan
+                        ? `${plan.tasks.length} task${plan.tasks.length > 1 ? 's' : ''} · ${plan.waves.length} wave${plan.waves.length > 1 ? 's' : ''}`
+                        : '—'}
                 </span>
+                <button
+                  type="button"
+                  className="play-sim-btn"
+                  onClick={simWave !== undefined ? stopSim : runSim}
+                  disabled={!plan || stale}
+                  aria-label={simWave !== undefined ? 'Stop the run-order simulation' : 'Simulate the run order'}
+                >
+                  {simWave !== undefined ? '■ stop' : '▶ simulate'}
+                </button>
               </p>
               {plan ? (
-                <DagView plan={plan} stale={stale} />
+                <DagView plan={plan} stale={stale} simWave={simWave} />
               ) : (
                 <p className="play-dag-empty">add a `tasks:` list and the plan draws itself</p>
+              )}
+              {simWave !== undefined && plan && simWave >= plan.waves.length && (
+                <p className="play-sim-note">
+                  order + parallelism are real · timings are not simulated —{' '}
+                  <code>nika run</code> records the truth
+                </p>
               )}
             </div>
 

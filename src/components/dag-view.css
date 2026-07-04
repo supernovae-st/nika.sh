@@ -177,3 +177,49 @@
   color: var(--cf-num);
   white-space: nowrap;
 }
+
+/* ── the run-sim states (W12b · E2) · pending / running / done ────────────────
+   HONESTY: the sim shows what is TRUE of the file — order and parallelism,
+   derived from the real DAG. No fabricated durations, ever: a card runs,
+   then it is done. Pulse is motion-gated; reduced-motion still steps
+   through the states (content, not decoration). */
+.dv-node[data-run='pending'] {
+  opacity: 0.5;
+}
+.dv-node[data-run='running'] {
+  border-color: color-mix(in srgb, var(--dv-vhue, var(--v4-accent)) 65%, rgb(96 141 255 / 0.42));
+  box-shadow:
+    inset 2px 0 0 var(--dv-vhue, var(--v4-accent)),
+    inset 0 1px 0 rgb(180 205 255 / 0.2),
+    inset 0 0 26px rgb(79 134 255 / 0.2),
+    0 0 0 3px color-mix(in srgb, var(--dv-vhue, var(--v4-accent)) 16%, transparent),
+    0 12px 26px -14px rgb(20 50 160 / 0.55);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dv-node[data-run='running'] {
+    animation: dv-run-pulse 1.2s ease-in-out infinite;
+  }
+}
+@keyframes dv-run-pulse {
+  50% {
+    box-shadow:
+      inset 2px 0 0 var(--dv-vhue, var(--v4-accent)),
+      inset 0 1px 0 rgb(180 205 255 / 0.2),
+      inset 0 0 26px rgb(79 134 255 / 0.26),
+      0 0 0 5px color-mix(in srgb, var(--dv-vhue, var(--v4-accent)) 10%, transparent),
+      0 12px 26px -14px rgb(20 50 160 / 0.55);
+  }
+}
+.dv-node-run {
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}
+.dv-node[data-run='running'] .dv-node-run {
+  color: var(--dv-vhue, var(--v4-accent));
+}
+.dv-node[data-run='done'] .dv-node-run {
+  color: var(--cf-str);
+}

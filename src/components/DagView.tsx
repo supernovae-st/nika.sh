@@ -16,7 +16,17 @@ import './dag-view.css'
    glued through container resizes. Node keys are task ids, so an edit that
    ADDS a task pops only the new card in (motion-safe). */
 
-export function DagView({ plan, stale }: { plan: ParsedPlan; stale?: boolean }) {
+/** simWave · undefined = idle; N = wave N running (earlier waves done);
+    >= waves.length = the whole order verified */
+export function DagView({
+  plan,
+  stale,
+  simWave,
+}: {
+  plan: ParsedPlan
+  stale?: boolean
+  simWave?: number
+}) {
   const boxRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef(new Map<string, HTMLDivElement | null>())
   const wireRefs = useRef<(SVGPathElement | null)[]>([])
@@ -109,6 +119,15 @@ export function DagView({ plan, stale }: { plan: ParsedPlan; stale?: boolean }) 
                 }}
                 className="dv-node"
                 data-verb={t.verb ?? undefined}
+                data-run={
+                  simWave === undefined
+                    ? undefined
+                    : w < simWave
+                      ? 'done'
+                      : w === simWave
+                        ? 'running'
+                        : 'pending'
+                }
               >
                 <span className="dv-node-id">{t.id}</span>
                 <span className="dv-node-verb">
@@ -127,6 +146,11 @@ export function DagView({ plan, stale }: { plan: ParsedPlan; stale?: boolean }) 
                 {t.gated && (
                   <span className="dv-node-when" aria-label="gated by when:">
                     when:
+                  </span>
+                )}
+                {simWave !== undefined && (
+                  <span className="dv-node-run" aria-hidden>
+                    {w < simWave ? '✓ done' : w === simWave ? '● running' : '· queued'}
                   </span>
                 )}
               </div>
