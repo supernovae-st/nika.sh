@@ -305,13 +305,6 @@
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
 }
 
-/* the PURE-WHITE variant (W9) · a theme-light section lifted off the warm
-   paper to plain white — the light counterpart of the blue section in the
-   page's rhythm. Ink tokens hold: faint reads 5.19:1 on #fff (see above). */
-.v4sec.theme-light--pure {
-  --v4-bg-deep: #f2f2f0;
-  --v4-bg: #ffffff;
-}
 
 /* ─── section-boundary seam · the alternation reads DESIGNED ──────────────────
    Every alternating theme section butts up against the previous one. Left raw,
