@@ -171,6 +171,14 @@
 .edge-aurora-depth {
   display: none;
 }
+/* the depth sheet is a WIDE-viewport instrument: at phone width its 2.6×
+   reach (135px per edge) swallows most of the frame — it stands down and
+   the rim + bloom carry the aurora alone (found on the 390px sweep) */
+@media (max-width: 767px) {
+  .edge-aurora-depth {
+    display: none !important;
+  }
+}
 @supports (mask: linear-gradient(#000 0 0) exclude, linear-gradient(#000 0 0)) {
   .edge-aurora-depth {
     content: '';
