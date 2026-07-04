@@ -1146,18 +1146,39 @@
   padding: 16px 20px 16px;
   border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
-  box-shadow: var(--seam-panel); /* seam kit */
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 78%, transparent);
+  /* the device face (W11) · grain + a whisper of halftone + machined top
+     light — the gallery cards join the pledge/node family on the blue field */
+  background-image:
+    var(--v4-grain-img),
+    radial-gradient(rgb(223 233 255 / 0.045) 1px, transparent 1px);
+  background-size:
+    var(--v4-grain-size, 4px) var(--v4-grain-size, 4px),
+    7px 7px;
+  box-shadow:
+    var(--seam-panel),
+    inset 0 -2px 0 rgb(0 0 0 / 0.22),
+    0 10px 24px -16px rgb(4 10 34 / 0.55);
   cursor: pointer;
-  transition: border-color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui),
+    transform var(--dur-ui) var(--ease-ui),
+    box-shadow var(--dur-ui) var(--ease-ui);
 }
 .v4uc-card:hover {
   border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
-  background: var(--v4-bg-raised);
+  background-color: var(--v4-bg-raised);
+  transform: translateY(-1px);
 }
 .v4uc-card[aria-pressed='true'] {
   border-color: color-mix(in oklch, var(--v4-text) 42%, transparent);
-  background: var(--v4-bg-raised);
+  background-color: var(--v4-bg-raised);
+  box-shadow:
+    var(--seam-panel),
+    inset 0 -2px 0 rgb(0 0 0 / 0.22),
+    0 0 0 3px var(--v4-accent-soft),
+    0 14px 28px -16px rgb(4 10 34 / 0.6);
 }
 /* the selected card grows a left rule (blueprint marker, monochrome) */
 .v4uc-card[aria-pressed='true']::before {

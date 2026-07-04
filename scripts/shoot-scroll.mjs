@@ -136,24 +136,34 @@ if (!geo) {
 console.log(SECTION, geo)
 const runway = geo.height - geo.vh
 
+/* frames carry the FORMULA, not a baked y: content-visibility sections
+   above the target re-layout as they render, so the section's top/height
+   at load time can be stale by whole viewports. Each frame re-measures the
+   live rect right before its scroll (found on the use-cases sweep: three
+   frames "inside" the section all showed the section above it). */
 const frames = []
-frames.push({ name: '00-rest', y: 0 })
+frames.push({ name: '00-rest', q: null, p: null })
 for (const q of SEAM_QS) {
-  frames.push({
-    name: `01-seam-q${String(q).replace('.', '')}`,
-    y: geo.top - (1 - q) * geo.vh,
-  })
+  frames.push({ name: `01-seam-q${String(q).replace('.', '')}`, q, p: null })
 }
 for (const p of PS) {
-  frames.push({
-    name: `02-p${p.toFixed(2).replace('.', '')}`,
-    y: geo.top + p * runway,
-  })
+  frames.push({ name: `02-p${p.toFixed(2).replace('.', '')}`, q: null, p })
 }
 if (REVERSE) frames.reverse()
 
 for (const f of frames) {
-  await evaluate(`window.scrollTo(0, ${f.y})`)
+  const calcY = async () =>
+    f.q === null && f.p === null
+      ? 0
+      : await evaluate(`(() => {
+          const s = document.querySelector(${JSON.stringify(SECTION)})
+          const r = s.getBoundingClientRect()
+          const top = r.top + window.scrollY
+          return ${f.q !== null ? `top - (1 - ${f.q}) * innerHeight` : `top + ${f.p} * (r.height - innerHeight)`}
+        })()`)
+  await evaluate(`window.scrollTo(0, ${await calcY()})`)
+  await sleep(400) /* let content-visibility render + layout settle… */
+  await evaluate(`window.scrollTo(0, ${await calcY()})`) /* …re-aim on the settled layout */
   await sleep(800) /* rAF applies + 3D settles */
   await shot(REVERSE ? `r-${f.name}` : f.name)
 }
