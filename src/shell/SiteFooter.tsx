@@ -58,6 +58,18 @@ export default function SiteFooter() {
   return (
     <footer className="theme-dark v4sec" aria-label="Site footer">
       <div className="v4sec-wrap v4cta-wrap sitefoot-wrap">
+        {/* THE SIGNATURE · the continuous living butterfly (F3) */}
+        <Suspense
+          fallback={
+            <div className="fsig">
+              <img src="/nika.svg" alt="" width={170} height={170} loading="lazy" />
+              <p className="fsig-caption">the noise becomes the file.</p>
+            </div>
+          }
+        >
+          <FooterSignature />
+        </Suspense>
+
         {/* THE COLUMNS · the wayfinding band (W8) — left-aligned survey grid
             over the centered altar below; every label is a real surface */}
         <nav className="sitefoot-cols" aria-label="Site map">
@@ -86,18 +98,6 @@ export default function SiteFooter() {
             </div>
           ))}
         </nav>
-
-        {/* THE SIGNATURE · the continuous living butterfly (F3) */}
-        <Suspense
-          fallback={
-            <div className="fsig">
-              <img src="/nika.svg" alt="" width={170} height={170} loading="lazy" />
-              <p className="fsig-caption">the noise becomes the file.</p>
-            </div>
-          }
-        >
-          <FooterSignature />
-        </Suspense>
 
         {/* ─── SUPERNOVAE · the footer — KEPT INTACT (operator lock). The per-letter
              float wave + hover lift wordmark, the studio line, the founders, and
