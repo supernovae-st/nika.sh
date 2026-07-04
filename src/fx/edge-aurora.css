@@ -47,7 +47,8 @@
    infinite animations; they composit for nobody. */
 .edge-aurora[data-idle='on'],
 .edge-aurora[data-idle='on']::before,
-.edge-aurora[data-idle='on']::after {
+.edge-aurora[data-idle='on']::after,
+.edge-aurora[data-idle='on'] .edge-aurora-depth {
   animation-play-state: paused;
 }
 
@@ -159,6 +160,42 @@
   padding: var(--aurora-bloom);
   filter: blur(64px) saturate(1);
   opacity: calc(var(--aurora-intensity) * 0.95);
+}
+
+/* THE DEPTH SHEET (v8) · a third ring far behind the bloom — the aurora
+   gains a BODY: a very deep, slow, counter-drifting halo reaching well into
+   the frame. Same canonical atomic ring mask (never split the compositing —
+   see the post-mortem above), 2.6× the bloom's reach, heavier blur, a
+   fraction of the intensity. It only exists where the mask survives (the
+   same @supports gate law: degradation = absent, never flood). */
+.edge-aurora-depth {
+  display: none;
+}
+@supports (mask: linear-gradient(#000 0 0) exclude, linear-gradient(#000 0 0)) {
+  .edge-aurora-depth {
+    content: '';
+    display: block;
+    position: absolute;
+    inset: 0;
+    border-radius: var(--aurora-radius);
+    padding: calc(var(--aurora-bloom) * 2.6);
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--aurora-spin2),
+      rgb(0 122 255 / 0.75),
+      transparent 30%,
+      rgb(88 86 214 / 0.7) 52%,
+      transparent 72%,
+      rgb(0 199 190 / 0.7) 88%,
+      rgb(0 122 255 / 0.75)
+    );
+    filter: blur(110px) saturate(1.1);
+    opacity: calc(var(--aurora-intensity) * 0.6);
+    animation: edge-aurora-drift 84s linear infinite;
+  }
 }
 
 @keyframes edge-aurora-drift {

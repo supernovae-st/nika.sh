@@ -232,5 +232,13 @@ export function EdgeAurora({
 }: {
   ref?: React.Ref<HTMLDivElement>
 }) {
-  return <div ref={ref} className="edge-aurora" aria-hidden="true" data-edge-aurora />
+  return (
+    <div ref={ref} className="edge-aurora" aria-hidden="true" data-edge-aurora>
+      {/* v8 · THE DEPTH SHEET — a third, much deeper ring behind the bloom:
+          same canonical atomic ring mask, huge padding + heavy blur, counter-
+          spinning slowly. It reads as the aurora having a body BEHIND the
+          viewport edge, not just a rim ON it. Same intensity law (CSS var). */}
+      <span className="edge-aurora-depth" />
+    </div>
+  )
 }
