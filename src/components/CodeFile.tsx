@@ -266,8 +266,12 @@ export function CodeFile({
                 const b = (e.currentTarget as HTMLElement).getBoundingClientRect()
                 const r = span.getBoundingClientRect()
                 /* anchor above the span (below when the span sits under the
-                   chrome) · center clamped so the box never leaves the panel */
-                const cx = Math.min(Math.max(r.left - b.left + r.width / 2, 76), b.width - 76)
+                   chrome). The panel clips at its own bounds (overflow:hidden)
+                   — clamp the translateX(-50%) center by the box's MEASURED
+                   half-width (content was just set, so this reads the real
+                   layout), never a guessed constant. */
+                const half = box.offsetWidth / 2 + 8
+                const cx = Math.min(Math.max(r.left - b.left + r.width / 2, half), b.width - half)
                 const above = r.top - b.top > 44
                 box.style.left = `${Math.round(cx)}px`
                 box.style.top = above

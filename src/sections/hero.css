@@ -817,7 +817,9 @@
   align-items: baseline;
   gap: 4px;
   padding: 8px 6px;
-  margin: -8px -6px;
+  /* the negative box gives the hit-area padding back to the layout; the 10px
+     left margin keeps clear air between the steps meta and the link */
+  margin: -8px -6px -8px 10px;
   border-radius: var(--v4-radius-sm);
   font-family: var(--mono);
   font-size: 10.5px;

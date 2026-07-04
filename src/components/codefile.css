@@ -419,7 +419,7 @@
   position: absolute;
   z-index: 2;
   width: max-content;
-  max-width: 260px;
+  max-width: 300px;
   padding: 6px 10px;
   border: 1px solid rgb(140 170 255 / 0.24);
   border-radius: var(--v4-radius-sm, 3px);
