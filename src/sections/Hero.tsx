@@ -491,7 +491,7 @@ export default function Hero({
             <CodeFile
               yaml={item.yaml}
               filename={item.filename}
-              highlight={paired ? [paired.line0, paired.line1] : item.highlight}
+              highlight={paired ? [paired.line0, paired.line1] : undefined}
               className="v4hero-code cf-panel--seam cf-panel--fadebottom"
               wrap
               onLineHover={onLineHover}

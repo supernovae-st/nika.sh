@@ -1183,7 +1183,6 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               <MemoCodeFile
                 yaml={flagship.yaml}
                 filename={flagship.filename}
-                highlight={flagship.highlight}
                 className="morph-code cf-panel--seam cf-panel--fadebottom"
                 wrap
               />
@@ -1200,6 +1199,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                       }}
                       d={e.d}
                     />
+                    {/* the circulation (W10) · a dash flow riding the same
+                        curve — the flat plan visibly LIVES: data moves along
+                        every wait. Motion-safe; phase-gated in morph.css. */}
+                    <path className="morph-wire-flow" d={e.d} />
                     <circle cx={e.x1} cy={e.y1} r={2} />
                     <circle cx={e.x2} cy={e.y2} r={2} />
                   </g>
@@ -1222,6 +1225,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                             nodeRefs.current.set(task.id, el)
                           }}
                           className="morph-node"
+                          data-task={task.id}
                           data-verb={task.verb}
                           data-run={state}
                           data-hi={pairTask === task.id ? '1' : undefined}
@@ -1333,8 +1337,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 <MemoCodeFile
                   yaml={flagship.yaml}
                   filename={flagship.filename}
-                  highlight={flagship.highlight}
-                  wrap
+                    wrap
                   className="morph-done-code"
                 />
               </div>

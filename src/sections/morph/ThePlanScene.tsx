@@ -10,6 +10,7 @@ import {
   FOCUS_DIST,
   RAMP_HI,
   SLAB,
+  TAN_HALF_FOV,
   VERB_HUE,
   WAVE_GAP,
   Y_STEP,
@@ -20,6 +21,7 @@ import {
   edgePulseAt,
   faceChipAt,
   failFlashAt,
+  flatFrame,
   flatPitch,
   flatYaw,
   flattenLeadAt,
@@ -128,14 +130,26 @@ function Advance({
   progressRef,
   ui,
   slabTargetsRef,
+  stageRef,
 }: {
   entry: FlagshipEntry
   model: PlanSceneModel
   progressRef: React.MutableRefObject<number>
   ui: HoverUi
   slabTargetsRef?: React.MutableRefObject<Map<string, [number, number, number]>>
+  stageRef: React.RefObject<HTMLDivElement | null>
 }) {
   const camera = useThree((s) => s.camera)
+  /* the landing map (W10) · for each task, the world pose that projects
+     EXACTLY onto its DOM card through the flatten's final camera (flatFrame)
+     — measured lazily from the real `.morph-node` rects (they keep layout
+     under [data-plan3d]) and re-derived when the canvas resizes. The dive
+     lerps every slab toward these targets, so at roll=1 the flat 3D map is
+     pixel-aligned with the 2D DAG and the crossfade never teleports. */
+  const flatMapRef = useRef<{
+    key: string
+    map: Map<string, { x: number; z: number; w: number; h: number }>
+  } | null>(null)
   /* file-order index per task — the aspiration beat (reading order) */
   const order = useMemo(
     () => new Map(entry.plan.tasks.map((t, i) => [t.id, i])),
@@ -225,8 +239,43 @@ function Advance({
        glow read wrong from above). The slab YAW rides the camera's ROLL
        curve — face and lens turn together, labels stay upright. */
     const flat = flattenLeadAt(p)
-    const yaw = flatYaw(flattenRollAt(p))
+    const roll = flattenRollAt(p)
+    const yaw = flatYaw(roll)
     const depth = (model.waveCount - 1) * WAVE_GAP
+
+    /* the landing map · measured on first dive frame (or after a resize) */
+    let landing: Map<string, { x: number; z: number; w: number; h: number }> | null = null
+    if (roll > 0) {
+      const cr = state.gl.domElement.getBoundingClientRect()
+      const key = `${Math.round(cr.width)}x${Math.round(cr.height)}`
+      if ((!flatMapRef.current || flatMapRef.current.key !== key) && cr.width > 0) {
+        const stage = stageRef.current
+        if (stage) {
+          const { top, cz } = flatFrame(model)
+          const worldPerPx = (2 * top * TAN_HALF_FOV) / cr.height
+          const aspect = cr.width / cr.height
+          const map = new Map<string, { x: number; z: number; w: number; h: number }>()
+          for (const el of stage.querySelectorAll<HTMLElement>('.morph-node[data-task]')) {
+            const id = el.dataset.task
+            if (!id) continue
+            const r = el.getBoundingClientRect()
+            /* inverse-project the card center through the FINAL pose: the
+               rolled top-down camera maps screen-right → world −Z and
+               screen-down → world +X (see plan-scene-model camAt) */
+            const ndcX = ((r.left + r.width / 2 - cr.left) / cr.width) * 2 - 1
+            const ndcY = 1 - ((r.top + r.height / 2 - cr.top) / cr.height) * 2
+            map.set(id, {
+              x: -ndcY * top * TAN_HALF_FOV,
+              z: cz - ndcX * top * TAN_HALF_FOV * aspect,
+              w: r.width * worldPerPx,
+              h: r.height * worldPerPx,
+            })
+          }
+          if (map.size > 0) flatMapRef.current = { key, map }
+        }
+      }
+      landing = flatMapRef.current?.map ?? null
+    }
     /* the front starts a slab ahead of wave 0 and exits past the last wave —
        every slab sees the full rise AND fall of the passing light */
     const sweepZ = 2.2 - sweep.front * (depth + 4.4)
@@ -321,17 +370,29 @@ function Advance({
       /* position · burst rise-in + the pass-by exit (sideways + a lift AWAY
          from the terminal band, never down into it) */
       const drift = 1 - passedK
-      const px = slab.x + drift * Math.sign(slab.x || 0.6) * 2.2
-      const py = slab.y - (1 - mat) * 0.5 + drift * 0.55
-      const pz = slab.z
+      let px = slab.x + drift * Math.sign(slab.x || 0.6) * 2.2
+      let py = slab.y - (1 - mat) * 0.5 + drift * 0.55
+      let pz = slab.z
 
       /* scale · grow-in, the gate seal flattens, the pass-by shrinks hard,
          the completion settle presses the slab in for one beat (the ✓ lands
          WITH a body movement, never a bare texture swap) */
       const grow = (0.7 + 0.3 * mat) * (0.3 + 0.7 * passedK) * (1 - 0.045 * settle)
-      const sx = SLAB.w * grow
-      const sy = SLAB.h * grow * (1 - 0.45 * seal)
+      let sx = SLAB.w * grow
+      let sy = SLAB.h * grow * (1 - 0.45 * seal)
       const sz = SLAB.d * (1 - 0.4 * seal)
+
+      /* the dive's landing (W10) · every slab migrates to the world pose
+         that projects onto ITS DOM card at the final frame — position AND
+         footprint — so the 2D map it becomes is the 2D map that fades in */
+      const land = landing ? landing.get(id) : undefined
+      if (land) {
+        px += (land.x - px) * roll
+        py += (0 - py) * roll
+        pz += (land.z - pz) * roll
+        sx += (land.w - sx) * roll
+        sy += (land.h - sy) * roll
+      }
       centers[id] = [px, py, pz, sx, sy]
 
       /* the pass pitch · 0 at focus distance, full lean by PASS_NEAR — and
@@ -504,7 +565,10 @@ function Advance({
       const hue = VERB_HUE[model.byId.get(edge.to)!.task.verb]
       const aFrom = alphas[edge.from] ?? 0
       const aTo = alphas[edge.to] ?? 0
-      const eVis = gFade * Math.min(1, (aFrom + aTo) * 1.2) * (1 - 0.6 * seal)
+      /* the dive retires the baked wires (their endpoints stay at the DAG
+         rest pose while the slabs migrate to the landing map) — the flat
+         DOM wires ink in with the crossfade right after (W10) */
+      const eVis = gFade * Math.min(1, (aFrom + aTo) * 1.2) * (1 - 0.6 * seal) * (1 - roll)
       /* the exit-0 sweep crosses the wires too — the light travels the
          GRAPH, not just its blocks */
       const swE = (sweepZ - depMidZ[e]) / 2.6
@@ -746,6 +810,7 @@ export default function ThePlanScene({
             progressRef={progressRef}
             ui={ui}
             slabTargetsRef={slabTargetsRef}
+            stageRef={stageRef}
           />
         </Canvas>
 
@@ -784,7 +849,13 @@ export default function ThePlanScene({
           (z-2), so a child tooltip could never rise above the YAML it
           annotates — this twin box (same geometry) carries z-4. */}
       <div className="ps-layer ps-tiplayer" aria-hidden={tipTask ? undefined : true}>
-        <div className="ps-tip" ref={tipRef} data-on={tipTask ? '1' : '0'} role="status">
+        <div
+          className="ps-tip"
+          ref={tipRef}
+          data-on={tipTask ? '1' : '0'}
+          data-verb={tipTask?.verb}
+          role="status"
+        >
           {tipTask && <TipCard entry={flagship} task={tipTask} />}
         </div>
       </div>

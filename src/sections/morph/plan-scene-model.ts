@@ -198,6 +198,11 @@ const lerp = (a: number, b: number, k: number): number => a + (b - a) * k
     dive-and-roll ABOVE (fraction of the flat window) */
 export const FLAT_APEX = 0.55
 
+/** the dive LANDS here (fraction of the flat window) — before the window
+    ends, so the aligned flat map holds STILL through the whole 3D⇄DOM
+    crossfade (W10: the dissolve happens on a static frame, never mid-move) */
+export const FLAT_LAND = 0.86
+
 export function flattenAt(p: number): number {
   return easeInOut(clamp01((p - PH.run1) / (PH.flat1 - PH.run1)))
 }
@@ -214,7 +219,7 @@ export function flattenLeadAt(p: number): number {
     roll together and the labels stay upright through the whole turn. */
 export function flattenRollAt(p: number): number {
   const kr = clamp01((p - PH.run1) / (PH.flat1 - PH.run1))
-  return easeInOut(clamp01((kr - FLAT_APEX) / (1 - FLAT_APEX)))
+  return easeInOut(clamp01((kr - FLAT_APEX) / (FLAT_LAND - FLAT_APEX)))
 }
 
 /** a slab's X-pitch through the flatten: its pass-by lean k→0, face-up at 1 */
@@ -225,7 +230,19 @@ export const flatPitch = (base: number, k: number): number =>
     direction matches the rolled camera (labels stay upright on screen) */
 export const flatYaw = (k: number): number => (k * Math.PI) / 2
 
-const TAN_HALF_FOV = Math.tan((35 / 2) * (Math.PI / 180))
+export const TAN_HALF_FOV = Math.tan((35 / 2) * (Math.PI / 180))
+
+/** the flatten's FINAL frame · camera height + plan center. Shared by camAt
+    (the dive's destination) and ThePlanScene's landing math (W10): the slabs
+    migrate to the world points that inverse-project onto their DOM cards
+    through THIS pose, so the flat 3D map lands pixel-aligned on the 2D DAG
+    and the crossfade is a material dissolve, never a teleport. */
+export function flatFrame(model: PlanSceneModel): { top: number; cz: number } {
+  const depth = (model.waveCount - 1) * WAVE_GAP
+  const halfV = model.spanX + SLAB.h / 2 + 0.9
+  const halfZ = depth / 2 + SLAB.w / 2 + 1.2
+  return { top: Math.max(halfV, halfZ * 0.62) / TAN_HALF_FOV, cz: -depth / 2 }
+}
 
 /** the camera as a pure function of scroll progress — overview through the
     burst, glide onto wave 0 while the wires draw, dolly forward with the
@@ -287,10 +304,7 @@ export function camAt(model: PlanSceneModel, p: number): CamPose {
      The top height fits the rolled frame: screen-vertical = the X span,
      screen-horizontal = the Z span (the wave road, aspect-assisted). */
   const kr = clamp01((p - PH.run1) / (PH.flat1 - PH.run1))
-  const cz = -depth / 2
-  const halfV = model.spanX + SLAB.h / 2 + 0.9
-  const halfZ = depth / 2 + SLAB.w / 2 + 1.2
-  const top = Math.max(halfV, halfZ * 0.62) / TAN_HALF_FOV
+  const { top, cz } = flatFrame(model)
   /* the apex pose · high + far enough back that the whole graph sits inside
      the vertical fov with the gaze on center */
   const apexY = Math.max(fo.py + 4.2, top * 0.62)
@@ -310,7 +324,9 @@ export function camAt(model: PlanSceneModel, p: number): CamPose {
       f,
     }
   }
-  const kB = easeInOut((kr - FLAT_APEX) / (1 - FLAT_APEX))
+  /* the dive eases to its landing BEFORE the window ends (FLAT_LAND) — the
+     final stretch of the flat window is a HELD frame for the crossfade */
+  const kB = easeInOut(clamp01((kr - FLAT_APEX) / (FLAT_LAND - FLAT_APEX)))
   const ux = -kB
   const uy = 1 - kB
   const ul = Math.hypot(ux, uy) || 1
