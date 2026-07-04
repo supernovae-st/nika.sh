@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "axe-core": "^4.11.0",
     "@tailwindcss/vite": "^4.3.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -43,11 +42,13 @@
     "@unhead/react": "3.1.4",
     "@vitejs/plugin-react": "^6.0.1",
     "ajv": "^8.20.0",
+    "axe-core": "^4.11.0",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
+    "marked": "^16.4.1",
     "pixelmatch": "^7.2.0",
     "pngjs": "^7.0.0",
     "tailwindcss": "^4.3.0",
@@ -57,7 +58,7 @@
     "vite-plugin-react-ssg": "0.2.0",
     "vitest": "^2.1.9"
   },
-  "description": "nika.sh — Intent as Code. The public site for the Nika workflow language. Vite + React 19 + react-three-fiber cinematic 3D, Tailwind v4, static output, deployed to DigitalOcean App Platform.",
+  "description": "nika.sh \u2014 Intent as Code. The public site for the Nika workflow language. Vite + React 19 + react-three-fiber cinematic 3D, Tailwind v4, static output, deployed to DigitalOcean App Platform.",
   "license": "AGPL-3.0-or-later",
   "packageManager": "pnpm@10.32.1",
   "engines": {

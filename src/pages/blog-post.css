@@ -1,0 +1,147 @@
+/* ─── /blog/<slug> · the reading register ─────────────────────────────────────
+   One measured column (the 65ch law), the site's type ramp, CodeFile panels
+   full-bleed inside it. Everything else stays page-chrome. */
+
+.bp-wrap {
+  max-width: 760px;
+}
+
+.bp-crumb {
+  margin-bottom: clamp(18px, 3vh, 30px);
+}
+.bp-crumb-link {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-dim);
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.bp-crumb-link:hover,
+.bp-crumb-link:focus-visible {
+  color: var(--v4-text);
+}
+
+.bp-fig {
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.bp-title {
+  margin-top: 10px;
+  max-width: 18ch;
+}
+.bp-lede {
+  margin-top: 14px;
+  max-width: 52ch;
+  font-size: clamp(15.5px, 1.6vw, 17.5px);
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+}
+
+/* ── the article column · the reading ramp ─────────────────────────────────── */
+.bp-body {
+  margin-top: clamp(30px, 5vh, 52px);
+  max-width: 65ch;
+}
+.bp-body p {
+  margin: 0 0 1.35em;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--v4-text-dim);
+}
+.bp-body p b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.bp-body p em {
+  font-style: italic;
+}
+.bp-body p code,
+.bp-body li code {
+  padding: 1px 6px;
+  border: 1px solid var(--seam-hairline-soft);
+  border-radius: var(--v4-radius);
+  background: rgb(17 30 68 / 0.35);
+  font-family: var(--mono);
+  font-size: 0.82em;
+  color: var(--v4-text);
+  white-space: nowrap;
+}
+.bp-h {
+  margin: 1.9em 0 0.7em;
+  font-size: clamp(19px, 2.2vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--v4-text);
+  scroll-margin-top: 96px;
+}
+.bp-body blockquote {
+  margin: 0 0 1.35em;
+  padding: 2px 0 2px 18px;
+  border-left: 2px solid rgb(96 141 255 / 0.4);
+  color: var(--v4-text-dim);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.bp-body ul,
+.bp-body ol {
+  margin: 0 0 1.35em;
+  padding-left: 22px;
+}
+.bp-body li {
+  margin-bottom: 0.45em;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--v4-text-dim);
+}
+.bp-body hr {
+  margin: 2em 0;
+  border: 0;
+  border-top: 1px solid var(--seam-hairline-soft);
+}
+.bp-code {
+  margin: 1.7em 0;
+}
+
+/* ── the foot · source + walk ──────────────────────────────────────────────── */
+.bp-foot {
+  margin-top: clamp(36px, 6vh, 60px);
+  border-top: 1px solid var(--seam-hairline);
+  padding-top: 20px;
+}
+.bp-foot-src {
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+}
+.bp-foot-link {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
+  text-underline-offset: 3px;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.bp-foot-link:hover,
+.bp-foot-link:focus-visible {
+  color: var(--v4-text);
+}
+.bp-walk {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.bp-walk-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--v4-text-dim);
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.bp-walk-link:hover,
+.bp-walk-link:focus-visible {
+  color: var(--v4-text);
+}

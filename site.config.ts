@@ -11,5 +11,9 @@
 /* the canonical site origin (matches src/content.ts SITE). */
 export const ORIGIN = 'https://nika.sh'
 
-/* which static paths exist · drives the prerender AND the sitemap. */
-export const PATHS = ['/', '/blog', '/learn', '/play', '/manifesto', '/changelog', '/use-cases', '/spec', '/install', '/convert']
+/* which static paths exist · drives the prerender AND the sitemap.
+   BLOG_PATHS mirrors content/blog/*.md slugs — kept literal (this file stays
+   import-free); the vitest drift gate (blog.test.ts) fails when a post and
+   this list disagree. */
+export const BLOG_PATHS = ['/blog/four-verbs', '/blog/intent-as-code']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', '/changelog', '/use-cases', '/spec', '/install', '/convert']

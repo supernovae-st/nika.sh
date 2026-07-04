@@ -238,12 +238,21 @@ export function CodeFile({
       const atEnd = pre.scrollLeft + pre.clientWidth >= pre.scrollWidth - 2
       body.dataset.overflowing = String(overflowing)
       body.dataset.atEnd = String(atEnd)
-      /* keyboard law · a scroll well must be reachable to be scrolled — the
-         pre earns a tab stop exactly when it can scroll (either axis, zero
-         tolerance: axe's judgment) and gives it back when it can't. */
+      /* keyboard law · a scroll well must be reachable to be scrolled — each
+         element earns a tab stop exactly while IT can scroll (zero tolerance:
+         axe's judgment) and gives it back when it can't. Two distinct wells
+         can coexist: the pre scrolls X (long lines), and a height-capped
+         call-site (fadebottom / spec wells) makes the BODY scroll Y. */
       if (pre.scrollWidth > pre.clientWidth || pre.scrollHeight > pre.clientHeight)
         pre.tabIndex = 0
       else pre.removeAttribute('tabindex')
+      const bodyScrolls =
+        body.scrollHeight > body.clientHeight || body.scrollWidth > body.clientWidth
+      if (bodyScrolls && /auto|scroll/.test(getComputedStyle(body).overflowY)) {
+        body.tabIndex = 0
+        if (!body.getAttribute('aria-label')) body.setAttribute('aria-label', pre.getAttribute('aria-label') ?? 'code')
+        if (!body.getAttribute('role')) body.setAttribute('role', 'group')
+      } else body.removeAttribute('tabindex')
       /* any scroll/resize stales the tip's measured anchor — drop it */
       const box = tipRef.current
       if (box) delete box.dataset.on

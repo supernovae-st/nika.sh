@@ -390,3 +390,22 @@
     transition: none;
   }
 }
+
+/* the release's GitHub pointer · one voice, two surfaces */
+.cl-tl-gh {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 22%, transparent);
+  text-underline-offset: 3px;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.cl-tl-gh:hover,
+.cl-tl-gh:focus-visible {
+  color: var(--v4-text);
+}

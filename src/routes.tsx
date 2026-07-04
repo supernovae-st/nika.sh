@@ -2,6 +2,7 @@ import type { RouteObject } from 'react-router'
 import RootLayout from './shell/RootLayout'
 import { Component as Home } from './pages/Home'
 import { Component as Blog } from './pages/Blog'
+import { Component as BlogPost } from './pages/BlogPost'
 import { Component as Learn } from './pages/Learn'
 import { Component as Play } from './pages/Play'
 import { Component as Manifesto } from './pages/Manifesto'
@@ -33,6 +34,7 @@ export const routes: RouteObject[] = [
     children: [
       { index: true, Component: Home },
       { path: 'blog', Component: Blog },
+      { path: 'blog/:slug', Component: BlogPost },
       { path: 'learn', Component: Learn },
       { path: 'play', Component: Play },
       { path: 'manifesto', Component: Manifesto },

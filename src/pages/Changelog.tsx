@@ -220,6 +220,16 @@ export function Component() {
                         <TwoToneTitle title={e.title} />
                       </h2>
                       <p className="cl-tl-desc">{e.body}</p>
+                      {e.gh ? (
+                        <a
+                          href={e.gh}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="cl-tl-gh mono"
+                        >
+                          release notes on GitHub ↗
+                        </a>
+                      ) : null}
                     </div>
                   </li>
                 ))}

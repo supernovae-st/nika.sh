@@ -1,10 +1,9 @@
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
-import { REPO, SPEC, routeHead } from '../content'
+import { routeHead } from '../content'
+import { BLOG_POSTS } from '../content/blog.generated'
 import { CANON } from '../canon.generated'
-import { CodeFile } from '../components/CodeFile'
-import { DecodeText } from '../fx/DecodeText'
 import '../sections/v4-home.css'
 import './page-chrome.css'
 import './blog-page.css'
@@ -40,26 +39,6 @@ const SOON: { slug: string; tag: string; date: string; title: string; teaser: st
     teaser: 'One Rust binary, your models, your files. What local-first actually buys you.',
   },
 ]
-
-/* the worked fragment for the "four verbs" article · a tiny readable DAG that
-   exercises three verbs (spec-correct shapes, never hand-waved). */
-export const FOUR_VERBS_YAML = `nika: v1
-workflow: morning-brief
-
-tasks:
-  - id: fetch_news
-    invoke:
-      tool: "nika:fetch"          # a tool, not a verb
-
-  - id: build
-    exec:
-      command: "cargo build --release"
-
-  - id: digest
-    depends_on: [fetch_news, build]
-    infer:
-      prompt: "Summarize what changed"
-`
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
@@ -128,127 +107,43 @@ export function Component() {
             2 live · 2 upcoming
           </p>
 
-          {/* ══ 01 · Intent as Code ═════════════════════════════════════════ */}
-          <article id="intent-as-code" className="v4block" data-rise>
-            <div className="v4block-head-line">
-              <span className="v4block-fig"><DecodeText text="01" /></span>
-              <h2 className="v4block-name">Intent as Code: why your AI work should be a file</h2>
-              <span className="v4block-count">Manifesto · 2026-06</span>
-            </div>
-
-            <div className="blog-art-body">
-              <p>
-                Think about the best thing you did with an AI last month. The careful prompt, the
-                back-and-forth, the result that finally clicked. <b>Where is it now?</b> For most
-                people the honest answer is: gone. Buried in a chat history you will never scroll
-                back through, on a server you don&apos;t control.
-              </p>
-              <p>
-                We&apos;ve accepted a strange deal: the more useful the work, the more disposable
-                the container. Nobody would write software in a text box that forgets everything.
-                Yet that&apos;s exactly how most AI work happens today.
-              </p>
-              <p>
-                <b>Nika&apos;s bet is simple: useful AI work is worth writing down.</b> Not as a
-                transcript, as <em>source</em>. A small YAML file that says what you want: fetch
-                this, think about that, run this command, save the result. The file is the
-                workflow. Run it again tomorrow and it does the same thing. Change a line and{' '}
-                <code>git diff</code> shows exactly what changed.
-              </p>
-              <p>
-                Four verbs cover the whole space: <b>infer</b> (call a model), <b>exec</b> (run a
-                process), <b>invoke</b> (use a tool), <b>agent</b> (let it work a loop). Everything
-                else is data flowing between tasks. The order falls out of the dependencies. Write{' '}
-                <code>depends_on</code> and independent branches run in parallel, for free.
-              </p>
-              <p>
-                And it runs on <b>your machine</b>. One Rust binary. Your model keys, your files,
-                your git history. No cloud between you and your own work, and a license (AGPL) that
-                guarantees it stays that way.
-              </p>
-              <p>
-                Chat is a great place to <em>figure out</em> what you want. It is a terrible place
-                to <em>keep</em> it. Explore in chat. Then write the intent down, and own it
-                forever.
-              </p>
-            </div>
-
-            <div className="blog-art-foot">
-              <a href={SPEC} target="_blank" rel="noreferrer" className="blog-art-foot-link">
-                Read the spec ↗
-              </a>
-              <a
-                href={REPO}
-                target="_blank"
-                rel="noreferrer"
-                className="blog-art-foot-link blog-art-foot-link--dim"
-              >
-                Star on GitHub ↗
-              </a>
-            </div>
-          </article>
-
-          {/* ══ 02 · Four verbs are enough ══════════════════════════════════ */}
-          <article id="four-verbs" className="v4block" data-rise>
-            <div className="v4block-head-line">
-              <span className="v4block-fig"><DecodeText text="02" /></span>
-              <h2 className="v4block-name">Four verbs are enough</h2>
-              <span className="v4block-count">Language · 2026-06</span>
-            </div>
-
-            <div className="blog-art-body">
-              <p>
-                Every workflow language faces the same temptation: keep adding verbs. A verb for
-                HTTP. A verb for files. A verb for email, for SQL, for whatever last week&apos;s
-                integration needed. Ten years later the language is a catalog nobody can hold in
-                their head, and every file is written in a different dialect of it.
-              </p>
-              <p>
-                Nika locks the count at four, forever. The rule that makes this possible is strict:{' '}
-                <b>a verb is a distinct execution model</b>, not a feature. <b>infer</b> generates
-                with a model. <b>exec</b> runs a process. <b>invoke</b> calls a tool and returns.{' '}
-                <b>agent</b> loops with tools until the job is done. Four genuinely different ways
-                for a machine to act. There is no fifth.
-              </p>
-            </div>
-
-            <div className="blog-art-code">
-              <p className="blog-art-code-cap">Three verbs in one tiny plan</p>
-              <CodeFile yaml={FOUR_VERBS_YAML} filename="morning-brief.nika.yaml" wrap />
-            </div>
-
-            <div className="blog-art-body">
-              <p>
-                The test case was fetch. Surely getting a web page deserves its own verb? It does
-                not, and the reason is the whole design: <b>fetching is not a distinct execution
-                model.</b> It is a tool call. So <code>nika:fetch</code> lives in the standard
-                library, reached through invoke, next to read, write, jq and the other{' '}
-                {CANON.builtins - 4} builtins. Everything callable is a tool. Everything about
-                ordering is the graph.
-              </p>
-              <p>
-                A closed language is a feature you can feel. You can finish learning it: four words
-                and the file reads like prose. Your files never rot into an old dialect, because
-                there is no new dialect coming. And tools keep growing where growth belongs, in the
-                library: a new builtin, a new tool server (MCP), a new provider. The language
-                holds still
-                while the toolbelt expands.
-              </p>
-              <p>
-                That stillness is the promise. The file you write today is the file you run in ten
-                years. Languages that stop moving are the ones you can build on.
-              </p>
-            </div>
-
-            <div className="blog-art-foot">
-              <a href={SPEC} target="_blank" rel="noreferrer" className="blog-art-foot-link">
-                Read the spec ↗
-              </a>
-              <Link to="/learn" className="blog-art-foot-link blog-art-foot-link--dim">
-                Learn the file, line by line →
+          {/* ══ the shelf · one card per post (content/blog — compiled) ══════ */}
+          <div className="blog-shelf" data-rise>
+            {BLOG_POSTS.map((p, i) => (
+              <Link key={p.slug} id={p.slug} to={`/blog/${p.slug}`} className="blog-card">
+                <span className="blog-card-fig mono">
+                  {String(BLOG_POSTS.length - i).padStart(2, '0')} · {p.tag} ·{' '}
+                  <time dateTime={p.date}>{p.date}</time>
+                </span>
+                <span className="blog-card-title">{p.title}</span>
+                <span className="blog-card-teaser">{p.description}</span>
+                <span className="blog-card-foot mono">
+                  {p.readingMin} min read
+                  <span className="blog-card-arrow" aria-hidden>
+                    {' '}
+                    →
+                  </span>
+                </span>
               </Link>
-            </div>
-          </article>
+            ))}
+          </div>
+
+          {/* the folder truth · the blog IS markdown in the public repo */}
+          <p className="blog-folder mono" data-rise>
+            this blog is a folder ·{' '}
+            <a
+              href="https://github.com/supernovae-st/nika.sh/tree/main/content/blog"
+              target="_blank"
+              rel="noreferrer"
+              className="blog-folder-link"
+            >
+              content/blog on GitHub ↗
+            </a>{' '}
+            · PRs welcome ·{' '}
+            <a href="/rss.xml" className="blog-folder-link">
+              rss
+            </a>
+          </p>
 
           {/* ══ the upcoming register ═══════════════════════════════════════ */}
           <div className="blog-soon" data-rise>

@@ -37,6 +37,8 @@ export interface ChangelogEntry {
   title: string
   /** the one-line description · the body register line. */
   body: string
+  /** the GitHub release URL — release-tagged entries carry their notes (one voice) */
+  gh?: string
 }
 
 /* newest-first. Counts interpolate from CANON so they can never drift from the
@@ -47,6 +49,7 @@ export const CHANGELOG: ChangelogEntry[] = [
     tag: 'release',
     title: 'v0.92.0 · the agent-native release',
     body: 'Agents learn the language from the binary: MCP tools serve the schema, examples and canon; nika init scaffolds AGENTS.md; nika wire reaches Codex and the Claude Code plugin marketplace. macOS binaries ship signed and notarized.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.92.0',
   },
   {
     /* a dated entry NEVER carries the live version variable — this one once
@@ -55,12 +58,14 @@ export const CHANGELOG: ChangelogEntry[] = [
     tag: 'release',
     title: 'v0.91.0 · smoother first fifteen minutes',
     body: 'nika examples run --model previews any embedded workflow offline: no key, no model server; nika init and nika wire handle onboarding; headless Linux builds compile clean.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.91.0',
   },
   {
     date: '2026-06-21',
     tag: 'release',
     title: 'v0.90.0 · first public release',
     body: `One brew-installable binary for macOS and Linux: the ${CANON.verbs} verbs end to end, the nika check static audit, and an embedded examples pack.`,
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.90.0',
   },
   {
     date: '2026-06-17',

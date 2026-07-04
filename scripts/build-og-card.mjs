@@ -133,6 +133,25 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/intent-as-code — the founding post's own card.
+    out: 'og-blog-intent-as-code.png',
+    fig: 'FIG B.1',
+    size: 62,
+    headline: 'Intent as Code:<br><span class="b">your AI work, as a file.</span>',
+    sub: 'Chats evaporate, files compound&nbsp;— the case for writing AI work down as source you&nbsp;own.',
+    detail:
+      '<span class="arrow">▸</span><span>write&nbsp;it&nbsp;down<span class="sep">·</span>diff&nbsp;it<span class="sep">·</span><b>own&nbsp;it&nbsp;forever</b></span>',
+  },
+  {
+    // /blog/four-verbs — the language post's own card.
+    out: 'og-blog-four-verbs.png',
+    fig: 'FIG B.2',
+    headline: 'Four verbs<br><span class="b">are enough.</span>',
+    sub: 'A verb is a distinct execution model, not a feature&nbsp;— why the language locks at four, forever.',
+    detail:
+      '<span class="arrow">▸</span><span>infer<span class="sep">·</span>exec<span class="sep">·</span>invoke<span class="sep">·</span>agent<span class="sep">·</span><b>no&nbsp;fifth,&nbsp;ever</b></span>',
+  },
+  {
     // /convert — the exchange. Your repeated task becomes a file you own.
     out: 'og-convert.png',
     fig: 'FIG →',
