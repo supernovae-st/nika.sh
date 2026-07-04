@@ -15,3 +15,7 @@ node_modules/
 .idea/
 .DS_Store
 *.log
+
+# visual regression working dirs (goldens ARE committed, per-OS)
+tests/visual/out/
+tests/visual/diff/

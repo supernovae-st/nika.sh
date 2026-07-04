@@ -1,0 +1,96 @@
+name: visual
+
+# Visual regression (W12a·D1) — the shoot harness graduated to CI.
+# Compares a canonical 10-frame sweep of the home page against committed
+# Linux goldens (tests/visual/golden/linux). Goldens are per-OS: refresh
+# them with the manual update-goldens job below (never from a Mac).
+# Determinism: frames shoot under emulated prefers-reduced-motion (the
+# site's motion discipline makes that register still + reproducible).
+# No untrusted event input is interpolated anywhere in this workflow.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      update_goldens:
+        description: 'Re-bake the Linux goldens and commit them'
+        type: boolean
+        default: false
+
+jobs:
+  compare:
+    if: ${{ github.event_name != 'workflow_dispatch' || !inputs.update_goldens }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: browser-actions/setup-chrome@v2
+        id: chrome
+      - name: enable corepack (pnpm pinned via packageManager)
+        run: corepack enable
+      - name: install
+        run: pnpm install --frozen-lockfile
+      - name: build
+        run: pnpm build
+      - name: goldens present?
+        id: goldens
+        run: |
+          if [ -d tests/visual/golden/linux ] && [ -n "$(ls -A tests/visual/golden/linux 2>/dev/null)" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::no Linux goldens yet — run the update-goldens dispatch once to arm this gate"
+          fi
+      - name: visual compare
+        if: steps.goldens.outputs.present == 'true'
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+        run: node scripts/visual-regress.mjs
+      - name: upload diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: |
+            tests/visual/out
+            tests/visual/diff
+          retention-days: 7
+
+  update-goldens:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.update_goldens }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: browser-actions/setup-chrome@v2
+        id: chrome
+      - name: enable corepack (pnpm pinned via packageManager)
+        run: corepack enable
+      - name: install
+        run: pnpm install --frozen-lockfile
+      - name: build
+        run: pnpm build
+      - name: bake goldens
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+        run: node scripts/visual-regress.mjs --update
+      - name: commit goldens
+        run: |
+          git config user.name "nika-visual-bot"
+          git config user.email "nika@supernovae.studio"
+          git add tests/visual/golden/linux
+          git diff --cached --quiet && { echo "goldens unchanged"; exit 0; }
+          git commit -m "chore(visual): re-bake linux goldens
+
+          Co-Authored-By: Nika 🦋 <nika@supernovae.studio>"
+          git push

@@ -1,0 +1,237 @@
+/* visual-regress · the shoot harness graduates to CI (W12a · D1).
+   Serves dist, loads the site headless under EMULATED prefers-reduced-motion
+   (the site's motion discipline makes reduced = deterministic: no aurora
+   drift, no wire flow, static morph truth — the layout/theme/section
+   regressions W7–W11 kept catching are all visible in this register), shoots
+   a canonical frame set, and pixel-compares against committed goldens.
+
+   Goldens are PER-OS (font rasterization differs macOS↔Linux): CI compares
+   against tests/visual/golden/<platform>/ — refresh them with --update on
+   the same OS (the update-goldens workflow does it for CI).
+
+   Usage:
+     node scripts/visual-regress.mjs            # compare (exit 1 on diff)
+     node scripts/visual-regress.mjs --update   # (re)write goldens
+   Env: CHROME_BIN overrides the browser binary (CI: setup-chrome exports it).
+
+   Flake armor (the swiftshader lesson, twice-struck): a frame whose 3D/page
+   region reads near-black where the golden isn't is re-shot once before
+   counting as a diff. */
+import { execFile } from 'node:child_process'
+import { createServer } from 'node:http'
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs'
+import { extname, join } from 'node:path'
+import { PNG } from 'pngjs'
+import pixelmatch from 'pixelmatch'
+
+const UPDATE = process.argv.includes('--update')
+const PORT_HTTP = 4519
+const PORT_CDP = 9242
+const W = 1600
+const H = 1000
+const PLATFORM = process.platform === 'darwin' ? 'darwin' : 'linux'
+const GOLDEN_DIR = `tests/visual/golden/${PLATFORM}`
+const OUT_DIR = 'tests/visual/out'
+const DIFF_DIR = 'tests/visual/diff'
+/* fail thresholds · per-pixel sensitivity + allowed differing-pixel ratio */
+const PX_THRESHOLD = 0.16
+const MAX_DIFF_RATIO = 0.015
+
+/* the canonical set · body-progress frames sweep every section register
+   (hero, morph static truth, wedge+blue promises, verbs, toolbelt, blue
+   gallery, light sections, changelog, close+footer) */
+const FRAMES = [
+  { name: 'home-hero', p: 0 },
+  { name: 'home-p012', p: 0.12 },
+  { name: 'home-p024', p: 0.24 },
+  { name: 'home-p036', p: 0.36 },
+  { name: 'home-p048', p: 0.48 },
+  { name: 'home-p060', p: 0.6 },
+  { name: 'home-p072', p: 0.72 },
+  { name: 'home-p084', p: 0.84 },
+  { name: 'home-p096', p: 0.96 },
+  { name: 'home-footer', p: 1 },
+]
+
+/* ── static file server (no python dependency in CI) ─────────────────────── */
+const MIME = {
+  '.html': 'text/html',
+  '.js': 'text/javascript',
+  '.css': 'text/css',
+  '.png': 'image/png',
+  '.svg': 'image/svg+xml',
+  '.json': 'application/json',
+  '.woff2': 'font/woff2',
+  '.txt': 'text/plain',
+  '.xml': 'application/xml',
+  '.webmanifest': 'application/manifest+json',
+}
+const server = createServer((req, res) => {
+  const path = (req.url ?? '/').split('?')[0]
+  let file = join('dist', path === '/' ? 'index.html' : path)
+  if (!existsSync(file)) file = 'dist/index.html' /* SPA fallback */
+  try {
+    const body = readFileSync(file)
+    res.writeHead(200, { 'content-type': MIME[extname(file)] ?? 'application/octet-stream' })
+    res.end(body)
+  } catch {
+    res.writeHead(404)
+    res.end()
+  }
+})
+server.listen(PORT_HTTP)
+
+/* ── chrome under CDP ────────────────────────────────────────────────────── */
+const CHROME =
+  process.env.CHROME_BIN ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+const chrome = execFile(
+  CHROME,
+  [
+    '--headless=new',
+    `--remote-debugging-port=${PORT_CDP}`,
+    '--use-angle=swiftshader',
+    '--enable-unsafe-swiftshader',
+    '--hide-scrollbars',
+    `--window-size=${W},${H}`,
+    '--force-device-scale-factor=1',
+    '--no-first-run',
+    '--no-default-browser-check',
+    '--no-sandbox' /* CI containers */,
+    `--user-data-dir=/tmp/visual-regress-${PORT_CDP}`,
+    'about:blank',
+  ],
+  () => {},
+)
+const cleanup = () => {
+  chrome.kill()
+  server.close()
+}
+process.on('exit', cleanup)
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+async function getWsUrl() {
+  for (let i = 0; i < 60; i++) {
+    try {
+      const res = await fetch(`http://127.0.0.1:${PORT_CDP}/json/list`)
+      const page = (await res.json()).find((t) => t.type === 'page')
+      if (page) return page.webSocketDebuggerUrl
+    } catch {
+      /* not up yet */
+    }
+    await sleep(250)
+  }
+  throw new Error('chrome did not come up')
+}
+
+const ws = new WebSocket(await getWsUrl())
+await new Promise((r) => (ws.onopen = r))
+let mid = 0
+const pending = new Map()
+ws.onmessage = (ev) => {
+  const msg = JSON.parse(ev.data)
+  if (msg.id && pending.has(msg.id)) {
+    const { resolve, reject } = pending.get(msg.id)
+    pending.delete(msg.id)
+    msg.error ? reject(new Error(msg.error.message)) : resolve(msg.result)
+  }
+}
+const send = (method, params = {}) =>
+  new Promise((resolve, reject) => {
+    const id = ++mid
+    pending.set(id, { resolve, reject })
+    ws.send(JSON.stringify({ id, method, params }))
+  })
+const evaluate = async (expr) => {
+  const r = await send('Runtime.evaluate', { expression: expr, returnByValue: true, awaitPromise: true })
+  if (r.exceptionDetails) throw new Error(JSON.stringify(r.exceptionDetails))
+  return r.result.value
+}
+
+await send('Page.enable')
+await send('Runtime.enable')
+await send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false })
+/* the determinism switch · the site is motion-safe disciplined, so reduced
+   motion = a still, reproducible register (aurora silent, flows still) */
+await send('Emulation.setEmulatedMedia', {
+  features: [{ name: 'prefers-reduced-motion', value: 'reduce' }],
+})
+await send('Page.navigate', { url: `http://127.0.0.1:${PORT_HTTP}/?it=99` })
+await sleep(7000) /* load + fonts + settle */
+
+async function shootFrame(p) {
+  /* body-progress scroll with the c-v re-aim (the W11 harness lesson) */
+  const aim = `(() => { const d = document.documentElement; return ${p} * (d.scrollHeight - innerHeight) })()`
+  await evaluate(`window.scrollTo(0, ${aim})`)
+  await sleep(350)
+  await evaluate(`window.scrollTo(0, ${aim})`)
+  await sleep(650)
+  const r = await send('Page.captureScreenshot', { format: 'png' })
+  return Buffer.from(r.data, 'base64')
+}
+
+/* near-black detector · the swiftshader blank-3D flake signature */
+function meanLuma(png) {
+  let acc = 0
+  const n = png.width * png.height
+  for (let i = 0; i < n; i++) acc += 0.2126 * png.data[i * 4] + 0.7152 * png.data[i * 4 + 1] + 0.0722 * png.data[i * 4 + 2]
+  return acc / n
+}
+
+mkdirSync(GOLDEN_DIR, { recursive: true })
+mkdirSync(OUT_DIR, { recursive: true })
+mkdirSync(DIFF_DIR, { recursive: true })
+
+let failures = 0
+for (const f of FRAMES) {
+  let buf = await shootFrame(f.p)
+  let png = PNG.sync.read(buf)
+  const goldenPath = join(GOLDEN_DIR, `${f.name}.png`)
+
+  if (UPDATE) {
+    writeFileSync(goldenPath, buf)
+    console.log(`golden updated · ${f.name}`)
+    continue
+  }
+  if (!existsSync(goldenPath)) {
+    console.error(`MISSING GOLDEN · ${goldenPath} — run --update on ${PLATFORM}`)
+    failures++
+    continue
+  }
+  const golden = PNG.sync.read(readFileSync(goldenPath))
+
+  /* flake armor · if the shot is near-black but the golden isn't, re-shoot once */
+  if (meanLuma(png) < 4 && meanLuma(golden) >= 4) {
+    console.warn(`flake suspected on ${f.name} (near-black) — re-shooting`)
+    buf = await shootFrame(f.p)
+    png = PNG.sync.read(buf)
+  }
+
+  if (png.width !== golden.width || png.height !== golden.height) {
+    console.error(`SIZE MISMATCH · ${f.name} ${png.width}×${png.height} vs golden ${golden.width}×${golden.height}`)
+    writeFileSync(join(OUT_DIR, `${f.name}.png`), buf)
+    failures++
+    continue
+  }
+  const diff = new PNG({ width: png.width, height: png.height })
+  const differing = pixelmatch(png.data, golden.data, diff.data, png.width, png.height, {
+    threshold: PX_THRESHOLD,
+  })
+  const ratio = differing / (png.width * png.height)
+  if (ratio > MAX_DIFF_RATIO) {
+    console.error(`DIFF · ${f.name} · ${(ratio * 100).toFixed(2)}% pixels differ (max ${MAX_DIFF_RATIO * 100}%)`)
+    writeFileSync(join(OUT_DIR, `${f.name}.png`), buf)
+    writeFileSync(join(DIFF_DIR, `${f.name}.png`), PNG.sync.write(diff))
+    failures++
+  } else {
+    console.log(`ok · ${f.name} · ${(ratio * 100).toFixed(3)}%`)
+  }
+}
+
+if (UPDATE) {
+  const count = readdirSync(GOLDEN_DIR).length
+  console.log(`DONE · ${count} goldens in ${GOLDEN_DIR}`)
+} else {
+  console.log(failures ? `FAIL · ${failures} frame(s) differ` : 'PASS · all frames match')
+}
+cleanup()
+process.exit(failures ? 1 : 0)
