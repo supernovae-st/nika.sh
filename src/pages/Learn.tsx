@@ -100,7 +100,7 @@ function LearnFile({ yaml, filename }: { yaml: string; filename?: string }) {
       onPointerMove={onMove}
       onPointerLeave={() => setTip(null)}
     >
-      <CodeFile yaml={yaml} filename={filename} />
+      <CodeFile yaml={yaml} filename={filename} wrap />
       {terms.length > 0 && (
         <ul className="lrn-dict" aria-label="plain words for the keys in this file">
           {terms.map((term) => (
@@ -367,7 +367,7 @@ export function Component() {
             </p>
             <div className="lrn-err-grid">
               <div className="lrn-err-code">
-                <CodeFile yaml={ERROR_JSON} filename="error.json" lang="json" />
+                <CodeFile yaml={ERROR_JSON} filename="error.json" lang="json" wrap />
               </div>
               <ul className="lrn-err-fields">
                 {ERROR_FIELDS.map((f) => (

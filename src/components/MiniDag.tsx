@@ -71,90 +71,96 @@ export function MiniDag({
   const pairedNode = pairTask ? lay.nodes.find((n) => n.id === pairTask) : undefined
   return (
     <figure className={`mdag mdag--${orientation} ${className ?? ''}`}>
-      {/* the caption row · museum plate left, steps meta right, then the
-          call-site's action slot (a REAL link — only the decorative text is
-          aria-hidden; the group below carries the plan for AT). */}
-      <p className="mdag-cap">
-        {pairedNode ? (
-          <>
-            <span className="mdag-cap-name mdag-cap-name--pair" aria-hidden>
-              {pairedNode.id}
-            </span>
-            <span className="mdag-cap-meta" aria-hidden>
-              {VERB_WORDS[pairedNode.verb]}
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="mdag-cap-name" aria-hidden>
-              the plan
-            </span>
-            <span className="mdag-cap-meta" aria-hidden>
-              {plan.tasks.length} steps · time {orientation === 'rail' ? '↓' : '→'}
-            </span>
-          </>
-        )}
-        {action}
-      </p>
-      <div className="mdag-scroll">
-        <div
-          className="mdag-stage"
-          key={fileId}
-          style={{ width: lay.w, height: lay.h }}
-          role="group"
-          aria-label={`the plan of this file · ${planSentence(plan)}`}
-        >
-          <svg className="mdag-wires" viewBox={`0 0 ${lay.w} ${lay.h}`} aria-hidden>
-            {lay.edges.map((e) => (
-              <path
-                key={`${e.from}-${e.to}`}
-                d={e.d}
-                pathLength={1}
+      {/* ONE row (wave Q): the drawing LEFT · a hairline tie · the side plate
+          RIGHT (name over meta over the call-site action). The tie extends the
+          dag's own wire vocabulary toward the plate — the plan flows into
+          « see it run » — and gives the two a real visual link instead of two
+          anchors floating apart (operator annotation). Only the decorative
+          text is aria-hidden; the group below carries the plan for AT. */}
+      <div className="mdag-row">
+        <div className="mdag-scroll">
+          <div
+            className="mdag-stage"
+            key={fileId}
+            style={{ width: lay.w, height: lay.h }}
+            role="group"
+            aria-label={`the plan of this file · ${planSentence(plan)}`}
+          >
+            <svg className="mdag-wires" viewBox={`0 0 ${lay.w} ${lay.h}`} aria-hidden>
+              {lay.edges.map((e) => (
+                <path
+                  key={`${e.from}-${e.to}`}
+                  d={e.d}
+                  pathLength={1}
+                  style={
+                    { '--mdag-d': `${wireDelay(waveOf.get(e.to) ?? 1)}ms` } as React.CSSProperties
+                  }
+                />
+              ))}
+            </svg>
+            {lay.nodes.map((n) => (
+              <button
+                key={n.id}
+                type="button"
+                className="mdag-node"
+                data-verb={n.verb}
+                data-hi={pairTask === n.id || undefined}
                 style={
-                  { '--mdag-d': `${wireDelay(waveOf.get(e.to) ?? 1)}ms` } as React.CSSProperties
+                  {
+                    left: n.x,
+                    top: n.y,
+                    '--mdag-d': `${nodeDelay(n.wave)}ms`,
+                  } as React.CSSProperties
                 }
-              />
+                aria-label={`${n.id} · ${n.verb}${n.gated ? ' · when-gated' : ''}${
+                  n.fanout ? ' · fans out per item' : ''
+                }`}
+                onPointerEnter={onPair ? () => onPair(n.id) : undefined}
+                onPointerLeave={onPair ? () => onPair(null) : undefined}
+                onFocus={onPair ? () => onPair(n.id) : undefined}
+                onBlur={onPair ? () => onPair(null) : undefined}
+              >
+                <span className="mdag-dot" aria-hidden />
+                <span className="mdag-id" aria-hidden>
+                  {n.id}
+                  {n.gated ? (
+                    <span className="mdag-seal" title="when-gated">
+                      ◈
+                    </span>
+                  ) : null}
+                  {n.fanout ? (
+                    <span className="mdag-fan" title="fans out per item">
+                      ⧉
+                    </span>
+                  ) : null}
+                </span>
+              </button>
             ))}
-          </svg>
-          {lay.nodes.map((n) => (
-            <button
-              key={n.id}
-              type="button"
-              className="mdag-node"
-              data-verb={n.verb}
-              data-hi={pairTask === n.id || undefined}
-              style={
-                {
-                  left: n.x,
-                  top: n.y,
-                  '--mdag-d': `${nodeDelay(n.wave)}ms`,
-                } as React.CSSProperties
-              }
-              aria-label={`${n.id} · ${n.verb}${n.gated ? ' · when-gated' : ''}${
-                n.fanout ? ' · fans out per item' : ''
-              }`}
-              onPointerEnter={onPair ? () => onPair(n.id) : undefined}
-              onPointerLeave={onPair ? () => onPair(null) : undefined}
-              onFocus={onPair ? () => onPair(n.id) : undefined}
-              onBlur={onPair ? () => onPair(null) : undefined}
-            >
-              <span className="mdag-dot" aria-hidden />
-              <span className="mdag-id" aria-hidden>
-                {n.id}
-                {n.gated ? (
-                  <span className="mdag-seal" title="when-gated">
-                    ◈
-                  </span>
-                ) : null}
-                {n.fanout ? (
-                  <span className="mdag-fan" title="fans out per item">
-                    ⧉
-                  </span>
-                ) : null}
-              </span>
-            </button>
-          ))}
+          </div>
         </div>
+        <span className="mdag-tie" aria-hidden />
+        <p className="mdag-side">
+          {pairedNode ? (
+            <>
+              <span className="mdag-cap-name mdag-cap-name--pair" aria-hidden>
+                {pairedNode.id}
+              </span>
+              <span className="mdag-cap-meta" aria-hidden>
+                {VERB_WORDS[pairedNode.verb]}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="mdag-cap-name" aria-hidden>
+                the plan
+              </span>
+              <span className="mdag-cap-meta" aria-hidden>
+                {plan.tasks.length} steps · time {orientation === 'rail' ? '↓' : '→'}
+              </span>
+            </>
+          )}
+          {action}
+        </p>
       </div>
     </figure>
   )

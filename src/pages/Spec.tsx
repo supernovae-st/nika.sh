@@ -413,8 +413,7 @@ export function Component() {
                 <CodeFile
                   yaml={SAMPLE_YAML}
                   filename="standup-digest.nika.yaml"
-                  className="spec-code"
-                />
+                  className="spec-code" wrap />
               </div>
             </div>
           </div>
@@ -445,7 +444,7 @@ export function Component() {
                   </header>
                   <p className="spec-verbcard-model">{VERB_MODEL[v.verb]}</p>
                   <div className="spec-verbcard-code">
-                    <CodeFile yaml={v.code} lang="yaml" lineNumbers={false} />
+                    <CodeFile yaml={v.code} lang="yaml" lineNumbers={false} wrap />
                   </div>
                 </article>
               ))}

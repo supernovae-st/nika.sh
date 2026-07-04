@@ -5,7 +5,7 @@ import { verbGlyph } from '../components/codefile-highlight'
 import { MiniDag } from '../components/MiniDag'
 import { InstallCommand } from '../components/InstallCommand'
 import { useMagnetic } from '../fx/use-magnetic'
-import { ENGINE_VERSION, REPO, SPEC } from '../content'
+import { ENGINE_VERSION } from '../content'
 import { type FlagshipEntry } from '../flagships'
 import { HERO_TAB_COUNT, LIBRARY, verbsOf, type LibraryItem } from '../flagships/library'
 import '../shell/shell.css'
@@ -356,21 +356,22 @@ export default function Hero({
     rootRef.current?.classList.add('v4-enter')
   }, [])
 
-  /* reveal the lit range on tab switch — a real editor's "go to range". Some
-     flagships carry their caption's evidence below the panel's line cap (the
-     pr-risk when: gate · the meeting-actions schema); when the selected tab's
-     lit lines are out of view, scroll the editor well so they land ~30% down.
-     No-op when already visible (the default tab renders unscrolled for SSR). */
+  /* reveal the evidence on tab switch — a real editor's "go to range". Some
+     flagships carry their evidence below the panel's line cap (the pr-risk
+     when: gate · the meeting-actions schema); when the selected tab's range
+     is out of view, scroll the editor well so it lands ~30% down. Anchored by
+     data-ln (wave Q: the band only LIGHTS on hover now — nothing is lit at
+     rest, so the anchor is the line number, not a lit class). */
   useEffect(() => {
     const pre = panelRef.current?.querySelector<HTMLElement>('.cf-pre')
     if (!pre) return
-    const lit = pre.querySelector<HTMLElement>('.cf-line--lit')
-    if (!lit) {
+    const row = pre.querySelector<HTMLElement>(`.cf-line[data-ln="${item.highlight[0]}"]`)
+    if (!row) {
       pre.scrollTop = 0
       return
     }
-    const top = lit.offsetTop
-    const bottom = top + lit.offsetHeight
+    const top = row.offsetTop
+    const bottom = top + row.offsetHeight
     if (top >= pre.scrollTop && bottom <= pre.scrollTop + pre.clientHeight) return
     /* snap the target to whole line boxes (pad-top + n × line-box) so the
        scrolled frame never cuts a line mid-height — same whole-lines law as
@@ -382,28 +383,34 @@ export default function Hero({
     const snapped = Math.max(0, pad + Math.round((raw - pad) / box) * box)
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     pre.scrollTo({ top: snapped, behavior: reduce ? 'auto' : 'smooth' })
-  }, [item.id])
+  }, [item.id, item.highlight])
 
   /* ── the bidirectional pairing (wave K) · one shared state, two mirrors ─────
      Hover/focus a mini-DAG node → the editor lights that task's exact lines;
-     hover a task block in the YAML → its node lights. The pair resets on file
-     switch. The caption highlight returns the instant the pair clears. */
+     hover a task block in the YAML → its node lights. Hovering the evidence
+     range lights ITS band (wave Q: nothing stays lit at rest — a permanent
+     band read as a stuck selection, operator bug report). The pair resets on
+     file switch. */
   const [pairTask, setPairTask] = useState<string | null>(null)
+  const [overEvidence, setOverEvidence] = useState(false)
   /* file switch clears the pair · the render-time adjustment (not an effect):
      the stale pair never paints, and no cascading second render fires. */
   const [pairFile, setPairFile] = useState(item.id)
   if (pairFile !== item.id) {
     setPairFile(item.id)
     setPairTask(null)
+    setOverEvidence(false)
   }
   const paired = pairTask ? item.plan.tasks.find((t) => t.id === pairTask) : undefined
   const onLineHover = (ln: number | null) => {
     if (ln == null) {
       setPairTask(null)
+      setOverEvidence(false)
       return
     }
     const t = item.plan.tasks.find((t) => ln >= t.line0 && ln <= t.line1)
     setPairTask(t ? t.id : null)
+    setOverEvidence(!t && ln >= item.highlight[0] && ln <= item.highlight[1])
   }
 
   /* the evidence range's hover card (wave P) · the tab's gloss is 'key: words'
@@ -497,7 +504,10 @@ export default function Hero({
             </Link>
           </div>
 
-          {/* the version plate · mono metadata under the CTAs (Raycast register) */}
+          {/* the version plate · the ONE metadata line under the CTAs. (Wave Q
+              diet: the spec/GitHub links row duplicated the nav, the trust
+              litany repeated the sub — five quiet elements now, not eight;
+              the trust story lives downstream where it's earned.) */}
           <p className="v4vplate mt-5" data-rise style={rise(260)}>
             {ENGINE_VERSION}
             <span className="v4vplate-pipe" aria-hidden>
@@ -508,44 +518,6 @@ export default function Hero({
               |
             </span>
             AGPL-3.0
-          </p>
-
-          {/* the flat links row */}
-          <div
-            data-rise
-            style={rise(300)}
-            className="v4hero-links mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14.5px]"
-          >
-            <a
-              href={SPEC}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex min-h-11 items-center gap-1.5 text-dim transition-colors hover:text-text"
-            >
-              Read the spec
-              <span className="transition-transform group-hover:translate-x-0.5">→</span>
-            </a>
-            <a
-              href={REPO}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex min-h-11 items-center gap-2 text-dim transition-colors hover:text-text"
-            >
-              <span aria-hidden className="text-faint transition-colors group-hover:text-text">
-                ★
-              </span>
-              Star on GitHub
-            </a>
-          </div>
-
-          {/* the trust line · the control guarantee · mono, faint */}
-          <p data-rise style={rise(360)} className="v4trust mt-10">
-            Reviewable<span className="px-2 text-faint">·</span>
-            enforced<span className="px-2 text-faint">·</span>
-            replayable<span className="px-2 text-faint">·</span>
-            one Rust binary<span className="px-2 text-faint">·</span>
-            any model<span className="px-2 text-faint">·</span>
-            <b>AGPL</b> forever
           </p>
         </div>
 
@@ -573,13 +545,20 @@ export default function Hero({
             {/* wrap: the hero is the READING surface — long flow lines soft-wrap
                 with a hanging indent (no right-edge clip, no hidden content).
                 tips + rangeTip: the smart-hover layer (plain-words glossary +
-                the tab's gloss over its whole lit band). The lit band is the
-                tab's EVIDENCE by default; hovering a plan node or a task block
-                swaps it to that task's exact lines (the pairing). bodyProps
-                marks the CODE area as the tabpanel the chrome tabs control. */}
+                the tab's gloss over its whole evidence band). NOTHING is lit
+                at rest (wave Q): hovering the evidence lights its band + card;
+                hovering a plan node or a task block lights that task's exact
+                lines (the pairing). bodyProps marks the CODE area as the
+                tabpanel the chrome tabs control. */}
             <CodeFile
               yaml={item.yaml}
-              highlight={paired ? [paired.line0, paired.line1] : item.highlight}
+              highlight={
+                paired
+                  ? [paired.line0, paired.line1]
+                  : overEvidence
+                    ? item.highlight
+                    : undefined
+              }
               className="v4hero-code cf-panel--seam cf-panel--fadebottom"
               wrap
               tips

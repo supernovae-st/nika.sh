@@ -285,7 +285,7 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
           </span>
 
           <div className="v4wedge-file v4-frame-canvas">
-            <CodeFile yaml={flagship.yaml} filename={flagship.filename} />
+            <CodeFile yaml={flagship.yaml} filename={flagship.filename} wrap />
           </div>
         </div>
 

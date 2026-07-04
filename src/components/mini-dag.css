@@ -9,21 +9,60 @@
   font-family: var(--mono);
 }
 
-/* the micro caption · museum-plate voice — ONE left-hung breath (wave P:
-   « aligné à gauche, la composition… ça va dans tous les sens »): the name
-   and the steps meta read together on the left; only the call-site action
-   (the hero's run handoff) holds the right end. */
-.mdag-cap {
+/* ── the one row (wave Q) · drawing LEFT · tie · side plate RIGHT ─────────────
+   The plate (THE PLAN / steps meta / the run action) stacks on the right,
+   right-aligned over the window's right edge; the tie is a hairline in the
+   dag's own wire ink, flowing from the drawing INTO the plate — one linked
+   composition instead of a caption floating over a centered drawing. */
+.mdag-row {
   display: flex;
-  align-items: baseline;
-  gap: 14px;
-  margin: 0 0 8px;
+  align-items: center;
+  gap: 18px;
+}
+.mdag-scroll {
+  flex: 0 1 auto;
+}
+.mdag-tie {
+  position: relative;
+  flex: 1 1 28px;
+  min-width: 28px;
+  height: 1px;
+  align-self: center;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklch, var(--v4-accent) 38%, transparent)
+  );
+}
+.mdag-tie::after {
+  /* the tie lands on a dot — the same node vocabulary as the drawing */
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--v4-accent) 55%, transparent);
+}
+.mdag-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex: 0 0 auto;
+  max-width: 230px;
+  margin: 0;
   font-size: 10px;
   letter-spacing: 0.08em;
+  text-align: right;
   color: var(--v4-text-faint);
 }
 .mdag-cap-name {
   text-transform: uppercase;
+}
+.mdag-cap-meta {
+  line-height: 1.5;
 }
 
 /* the stage scrolls sideways in its well if a wide band overflows (the
@@ -32,6 +71,7 @@
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: thin;
+  min-width: 0;
 }
 
 .mdag-stage {

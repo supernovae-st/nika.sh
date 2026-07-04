@@ -214,7 +214,7 @@ export function Component() {
 
             <div className="blog-art-code">
               <p className="blog-art-code-cap">Three verbs in one tiny plan</p>
-              <CodeFile yaml={FOUR_VERBS_YAML} filename="morning-brief.nika.yaml" />
+              <CodeFile yaml={FOUR_VERBS_YAML} filename="morning-brief.nika.yaml" wrap />
             </div>
 
             <div className="blog-art-body">

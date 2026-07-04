@@ -357,7 +357,7 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
           </a>
         </div>
         <div className="ucp-wf-code">
-          <CodeFile yaml={yaml} />
+          <CodeFile yaml={yaml} wrap />
         </div>
       </div>
 

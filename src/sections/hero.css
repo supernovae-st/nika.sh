@@ -810,11 +810,9 @@
   align-items: baseline;
   gap: 4px;
   padding: 8px 6px;
-  /* auto pushes the link to the caption row's right end (the caption text is
-     one left-hung breath · wave P); the negative box gives the hit-area
-     padding back to the layout */
+  /* the side plate right-aligns the stack (wave Q); the negative box gives
+     the hit-area padding back to the layout */
   margin: -8px -6px;
-  margin-left: auto;
   border-radius: var(--v4-radius-sm);
   font-family: var(--mono);
   font-size: 10.5px;
@@ -1059,13 +1057,6 @@
   }
   .v4hero-grid .v4vplate {
     order: 6;
-    margin-top: 28px;
-  }
-  .v4hero-links {
-    order: 7;
-  }
-  .v4hero-grid .v4trust {
-    order: 8;
     margin-top: 28px;
   }
   /* the file cap on phones · whole lines only (18 × the 21px line box +
