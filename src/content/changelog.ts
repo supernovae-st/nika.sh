@@ -45,6 +45,20 @@ export interface ChangelogEntry {
    spec (4 verbs · 23 builtins · 14 providers / 5 local). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-05',
+    tag: 'site',
+    title: 'The blog is a folder',
+    body: 'content/blog in the site repo IS the blog: PR-able markdown compiled to real pages with the product’s editor panels. The archive backfills the journey, one post per milestone, at its real date.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.3.0',
+  },
+  {
+    date: '2026-07-04',
+    tag: 'tooling',
+    title: 'The playground draws the plan',
+    body: 'nika.sh/play renders the live DAG of your file as you type, simulates the run order over the real topology (no fabricated timings), and reads the declared blast radius back to you.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.2.0',
+  },
+  {
     date: '2026-07-03',
     tag: 'release',
     title: 'v0.92.0 · the agent-native release',
@@ -72,12 +86,14 @@ export const CHANGELOG: ChangelogEntry[] = [
     tag: 'site',
     title: 'nika.sh v4 · Intent as Code',
     body: 'The site rebuilt around one idea: a real .nika.yaml file, instant and crawlable, with the spec as the single source of truth.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.0.0',
   },
   {
     date: '2026-06-12',
     tag: 'tooling',
     title: 'The playground · validate Nika in the browser',
     body: 'Edit a real workflow at nika.sh/play and watch it check as you type, with the engine’s own NIKA error codes. No install to try it.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v3-playground',
   },
   {
     date: '2026-06-02',
