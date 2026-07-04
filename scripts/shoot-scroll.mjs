@@ -34,6 +34,8 @@ const PS = arg('ps', '0.02,0.1,0.18,0.24,0.3,0.38,0.46,0.54,0.6,0.66,0.74,0.84,0
   .map(Number)
 const SEAM_QS = arg('seam', '0.15,0.35,0.55,0.8').split(',').filter(Boolean).map(Number)
 const REVERSE = has('reverse')
+const WIDTH = Number(arg('width', '1600'))
+const HEIGHT = Number(arg('height', '1000'))
 const PORT = Number(arg('port', '9223'))
 const CHROME = arg(
   'chrome',
@@ -49,7 +51,7 @@ const chrome = execFile(
     '--use-angle=swiftshader',
     '--enable-unsafe-swiftshader',
     '--hide-scrollbars',
-    '--window-size=1600,1000',
+    `--window-size=${WIDTH},${HEIGHT}`,
     '--no-first-run',
     '--no-default-browser-check',
     `--user-data-dir=/tmp/shoot-scroll-profile-${PORT}`,
@@ -113,10 +115,10 @@ async function shot(name) {
 await send('Page.enable')
 await send('Runtime.enable')
 await send('Emulation.setDeviceMetricsOverride', {
-  width: 1600,
-  height: 1000,
+  width: WIDTH,
+  height: HEIGHT,
   deviceScaleFactor: 1,
-  mobile: false,
+  mobile: WIDTH < 700,
 })
 await send('Page.navigate', { url: URL_BASE })
 await sleep(6000) /* load + fonts + lazy 3D chunk */

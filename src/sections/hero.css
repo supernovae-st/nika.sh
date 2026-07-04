@@ -951,12 +951,23 @@
 .v4cmd-dim {
   color: var(--v4-text-faint);
 }
-/* the middle-ellipsis swap · ≤430px the tap path collapses to …/ so the
-   command never clips at its END (machine-string truncation rule) */
+/* the middle-ellipsis swap · when the pill is narrow the tap path collapses
+   to …/ so the command never clips at its END (machine-string truncation
+   rule). Two triggers for the same swap: a narrow VIEWPORT (the hero pill)
+   and a narrow CONTAINER (the pill inside a card column — GetStarted's
+   terminal card is ~330px at desktop and used to clip mid-word). */
 .v4cmd-mid-ell {
   display: none;
 }
 @media (max-width: 430px) {
+  .v4cmd-mid {
+    display: none;
+  }
+  .v4cmd-mid-ell {
+    display: inline;
+  }
+}
+@container (max-width: 430px) {
   .v4cmd-mid {
     display: none;
   }

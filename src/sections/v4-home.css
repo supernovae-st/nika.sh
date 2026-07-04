@@ -2063,6 +2063,9 @@
 .v4every-cta {
   margin-top: auto;
   padding-top: 16px;
+  /* the card column is a size container → the install pill's mid-ellipsis
+     swap (hero.css @container rule) fires on CARD width, not viewport */
+  container-type: inline-size;
 }
 .v4every-cta .v4cmd {
   max-width: 100%;
