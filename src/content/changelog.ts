@@ -17,7 +17,6 @@
    closed vocabulary so the register reads like a real ship log, not marketing. */
 
 import { CANON } from '../canon.generated'
-import { ENGINE_VERSION } from '../content'
 
 export type ChangelogTag =
   | 'release'
@@ -44,9 +43,17 @@ export interface ChangelogEntry {
    spec (4 verbs · 23 builtins · 14 providers / 5 local). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-03',
+    tag: 'release',
+    title: 'v0.92.0 · the agent-native release',
+    body: 'Agents learn the language from the binary: MCP tools serve the schema, examples and canon; nika init scaffolds AGENTS.md; nika wire reaches Codex and the Claude Code plugin marketplace. macOS binaries ship signed and notarized.',
+  },
+  {
+    /* a dated entry NEVER carries the live version variable — this one once
+       interpolated ENGINE_VERSION and silently rewrote itself at each bump. */
     date: '2026-06-25',
     tag: 'release',
-    title: `${ENGINE_VERSION} · smoother first fifteen minutes`,
+    title: 'v0.91.0 · smoother first fifteen minutes',
     body: 'nika examples run --model previews any embedded workflow offline: no key, no model server; nika init and nika wire handle onboarding; headless Linux builds compile clean.',
   },
   {

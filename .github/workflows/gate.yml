@@ -30,6 +30,8 @@ jobs:
         run: pnpm lint
       - name: build
         run: pnpm build
+      - name: size budget (initial JS ≤ 350 KB gz · three-stack stays lazy)
+        run: node scripts/size-budget.mjs
       - name: live-URL contracts present in dist
         run: |
           for f in install.sh llms.txt schema/workflow.json errors/catalog.json 404.html sitemap.xml robots.txt; do
