@@ -49,14 +49,22 @@ export const FLAGSHIPS: Flagship[] = [
     /* consumer-first: « blast radius » is earned 3 beats later by TheBoundary —
        the default tab must not open on unexplained jargon (P2-13a) */
     gloss: 'permits: the file says what it may touch',
-    highlight: [5, 7],
+    highlight: [8, 10],
     artifact: 'wrote brief.md',
     traceNdjson: dailyBriefTrace,
+    /* comment discipline (all 7 files): section comments live on their OWN
+       line and stay ≤54ch — a trailing comment past the hero's wrap column
+       soft-wraps into a one-word orphan (« leave » · « radius »), which reads
+       broken. Comments are display prose; ids/paths/structure stay byte-true
+       to the recorded run. */
     yaml: `nika: v1
 workflow: daily-brief
-model: ollama/llama3.2:3b     # local · your notes never leave
 
-permits:                      # the file IS the blast radius
+# local model · your notes never leave
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
   fs: { read: [ ./notes/* ], write: [ ./brief.md ] }
   tools: [ "nika:read", "nika:write" ]
 
@@ -95,14 +103,17 @@ outputs:
     gloss: 'when: the probe only fires on real risk',
     /* the lit band is the caption's EVIDENCE, nothing more: the probe task's
        head + its when: gate (the schema block above is a different story). */
-    highlight: [27, 29],
+    highlight: [30, 32],
     artifact: 'wrote review.md',
     traceNdjson: prRiskReviewTrace,
     yaml: `nika: v1
 workflow: pr-risk-review
-model: ollama/llama3.2:3b     # local · the diff never leaves
 
-permits:                      # the file IS the blast radius
+# local model · the diff never leaves
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
   exec: [ git ]
   fs: { write: [ ./review.md ] }
   tools: [ "nika:read", "nika:write" ]
@@ -147,14 +158,17 @@ outputs:
     filename: 'meeting-actions.nika.yaml',
     label: 'meeting-actions',
     gloss: 'schema: the output is a contract, not prose',
-    highlight: [17, 28],
+    highlight: [20, 31],
     artifact: 'wrote action-items.json',
     traceNdjson: meetingActionsTrace,
     yaml: `nika: v1
 workflow: meeting-actions
-model: ollama/llama3.2:3b     # local · the recording stays yours
 
-permits:                      # the file IS the blast radius
+# local model · the recording stays yours
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
   fs: { read: [ ./transcript.txt ], write: [ ./action-items.json ] }
   tools: [ "nika:read", "nika:write" ]
 
@@ -197,19 +211,20 @@ outputs:
     /* the zero-model tab: not every workflow needs an LLM · the DAG, two
        builtins and one CEL compare do the whole job deterministically. */
     gloss: 'when: zero model · plain data opens the gate',
-    highlight: [22, 24],
+    highlight: [23, 25],
     artifact: 'wrote price-alert.md',
     traceNdjson: priceWatchTrace,
     yaml: `nika: v1
 workflow: price-watch
+# zero model · two tools and one CEL compare
 
-# zero model · two tools and one CEL compare do the whole job
-permits:                      # the file IS the blast radius
+# the file IS the blast radius
+permits:
   fs: { read: [ ./price.json ], write: [ ./price-alert.md ] }
   tools: [ "nika:read", "nika:jq", "nika:write" ]
 
 vars:
-  alert_below: 899            # your threshold · plain data
+  alert_below: 899  # your threshold · plain data
 
 tasks:
   - id: snapshot
@@ -243,14 +258,17 @@ outputs:
     gloss: 'depends_on: three parallel rewrites, one merge',
     /* the lit band = the caption's evidence: the bundle head + the fan-in
        depends_on line that literally lists the three parallel rewrites. */
-    highlight: [26, 27],
+    highlight: [29, 30],
     artifact: 'wrote social-bundle.md',
     traceNdjson: socialRepurposeTrace,
     yaml: `nika: v1
 workflow: social-repurpose
-model: ollama/llama3.2:3b     # local · your draft never leaves
 
-permits:                      # the file IS the blast radius
+# local model · your draft never leaves
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
   fs: { read: [ ./post.md ], write: [ ./social-bundle.md ] }
   tools: [ "nika:read", "nika:write" ]
 
@@ -296,20 +314,23 @@ outputs:
     /* the grounding tab: the note starts from `git log`, not from what a
        model remembers — the lit lines are the exec task that fetched truth. */
     gloss: 'exec: the note starts from real commits, not memory',
-    highlight: [15, 16],
+    highlight: [18, 19],
     artifact: 'wrote standup-note.md',
     traceNdjson: standupDigestTrace,
     yaml: `nika: v1
 workflow: standup-digest
-model: ollama/llama3.2:3b     # local · your commits never leave
 
-permits:                      # the file IS the blast radius
+# local model · your commits never leave
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
   exec: [ git ]
   fs: { write: [ ./standup-note.md ] }
   tools: [ "nika:date", "nika:write" ]
 
 tasks:
-  # no dependency between these two · the engine runs them together
+  # no dependency · the engine runs them together
   - id: today
     invoke: { tool: "nika:date", args: { op: now } }
 
@@ -345,19 +366,20 @@ outputs:
     /* the resilience tab: zero model · a validate gate splits the batch and
        the lit lines are the on_error recover that keeps the pipeline alive. */
     gloss: 'on_error: a bad batch degrades, the run survives',
-    highlight: [22, 23],
+    highlight: [23, 25],
     artifact: 'wrote daily-totals.json',
     traceNdjson: etlQuarantineTrace,
     yaml: `nika: v1
 workflow: etl-quarantine
+# zero model · a schema gate splits the batch
 
-# zero model · a schema gate splits the batch · bad rows quarantine, the night survives
-permits:                      # the file IS the blast radius
+# the file IS the blast radius
+permits:
   fs: { read: [ ./data/incoming/* ], write: [ ./data/* ] }
   tools: [ "nika:read", "nika:convert", "nika:validate", "nika:jq", "nika:write" ]
 
 tasks:
-  # a deterministic empty fallback · the recover target if parsing dies
+  # the deterministic fallback if parsing dies
   - id: empty_batch
     invoke: { tool: "nika:jq", args: { input: [], expression: "." } }
 
@@ -369,8 +391,9 @@ tasks:
     invoke:
       tool: "nika:convert"
       args: { input: "\${{ tasks.raw.output }}", from: csv, to: json, has_header: true }
+    # malformed CSV → empty batch · the run survives
     on_error:
-      recover: \${{ tasks.empty_batch.output }}   # malformed CSV → empty batch · the pipeline lives
+      recover: \${{ tasks.empty_batch.output }}
 
   - id: check
     depends_on: [rows]

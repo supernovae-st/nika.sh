@@ -15,8 +15,17 @@ import './mini-dag.css'
    SSR-static: pure layout, real DOM buttons over one SVG underlay (the
    buttons give focus/hover to every node — the bidirectional pairing with
    the editor wires through pairTask/onPair). The stage remounts per file
-   (key) — a 200ms rise-in reads as the relayout beat; reduced-motion is
-   instant (mini-dag.css gates the animation). */
+   (key) and the plan ASSEMBLES in time order (wave N): each wave's nodes
+   rise on a staggered delay and every wire draws INTO its target as that
+   wave lands (pathLength dash trick — deterministic, no measuring). The
+   choreography is the comprehension device: parallel work appears together,
+   dependent work after. Reduced-motion is instant (mini-dag.css gates). */
+
+/* the wave beat · node w rises at w×STEP; its incoming wire starts drawing a
+   touch earlier so the line arrives as the node lands */
+const STEP_MS = 110
+const nodeDelay = (wave: number): number => wave * STEP_MS
+const wireDelay = (toWave: number): number => Math.max(40, toWave * STEP_MS - 70)
 
 export interface MiniDagProps {
   plan: FlagshipPlanModel
@@ -50,6 +59,8 @@ export function MiniDag({
   className,
 }: MiniDagProps) {
   const lay = useMemo(() => layoutMiniDag(plan, orientation), [plan, orientation])
+  /* wave lookup for the wire choreography (an edge draws on its TARGET's beat) */
+  const waveOf = useMemo(() => new Map(lay.nodes.map((n) => [n.id, n.wave])), [lay])
   /* the caption doubles as the gloss line: while a node is paired it speaks
      that task in plain words (the shared VERB_WORDS · zero drift with the 3D
      tips and the /learn dictionary), then returns to the steps count. */
@@ -81,7 +92,14 @@ export function MiniDag({
         >
           <svg className="mdag-wires" viewBox={`0 0 ${lay.w} ${lay.h}`} aria-hidden>
             {lay.edges.map((e) => (
-              <path key={`${e.from}-${e.to}`} d={e.d} />
+              <path
+                key={`${e.from}-${e.to}`}
+                d={e.d}
+                pathLength={1}
+                style={
+                  { '--mdag-d': `${wireDelay(waveOf.get(e.to) ?? 1)}ms` } as React.CSSProperties
+                }
+              />
             ))}
           </svg>
           {lay.nodes.map((n) => (
@@ -91,7 +109,13 @@ export function MiniDag({
               className="mdag-node"
               data-verb={n.verb}
               data-hi={pairTask === n.id || undefined}
-              style={{ left: n.x, top: n.y }}
+              style={
+                {
+                  left: n.x,
+                  top: n.y,
+                  '--mdag-d': `${nodeDelay(n.wave)}ms`,
+                } as React.CSSProperties
+              }
               aria-label={`${n.id} · ${n.verb}${n.gated ? ' · when-gated' : ''}${
                 n.fanout ? ' · fans out per item' : ''
               }`}

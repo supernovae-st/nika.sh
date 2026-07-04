@@ -361,3 +361,61 @@
 .play-local-then {
   color: var(--v4-text-dim);
 }
+
+/* ── the right column · the live plan over the verdict rail (W12b · E1) ──────
+   The flagship moment: type → the plan REARRANGES. The dag panel wears the
+   device family; its header carries the honest live state. */
+.play-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+.play-dag {
+  overflow: hidden;
+}
+.play-dag-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.play-dag-live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  align-self: center;
+  background: var(--v4-accent);
+  box-shadow: 0 0 8px rgb(79 134 255 / 0.7);
+}
+.play-dag[data-stale] .play-dag-live {
+  background: var(--cf-num);
+  box-shadow: none;
+}
+.play-dag-state {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.play-dag-empty {
+  margin: 18px 0 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--v4-text-faint);
+}
+/* phones · the dag panel stacks under the editor, waves stay readable by
+   letting the map scroll sideways instead of crushing the cards */
+@media (max-width: 999px) {
+  .play-dag .dv {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .play-dag .dv::-webkit-scrollbar {
+    display: none;
+  }
+  .play-dag .dv-wave {
+    flex: 0 0 132px;
+  }
+}

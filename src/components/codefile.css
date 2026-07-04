@@ -394,7 +394,13 @@
   pointer-events: none;
   z-index: 1;
   opacity: var(--cf-fade-o, 1);
-  background: linear-gradient(to bottom, transparent, var(--cf-fade-bg, var(--v4-bg-raised)) 82%);
+  /* the flip below inverts the PAINT too — author the gradient upside-down
+     (dense at the top) so the flipped render is dense at the BOTTOM. The old
+     `to bottom` authoring rendered the dissolve inverted: the band's heaviest
+     cover landed a line ABOVE the edge and half-ate glyphs mid-panel (a list
+     dash read as a broken dotted mark) while the true bottom line stayed
+     crisp — wave N find. */
+  background: linear-gradient(to top, transparent, var(--cf-fade-bg, var(--v4-bg-raised)) 82%);
   -webkit-mask-image: var(--v4-dither-fade);
   mask-image: var(--v4-dither-fade);
   -webkit-mask-size: 4px var(--cf-fade-h, 72px);

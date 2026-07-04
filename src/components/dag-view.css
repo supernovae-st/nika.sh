@@ -1,0 +1,179 @@
+/* ─── dag-view · the standalone live plan (W12b · E1) ─────────────────────────
+   The W11 blue slab-card register, decoupled from the morph: deep blue
+   glass, halftone print, slab-cage border, verb LED — plus the dash
+   circulation on the wires. `[data-stale]` dims the whole map while the
+   editor's yaml is mid-edit (the last VALID plan stays on screen). */
+.dv {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 3%, 28px);
+  min-height: 220px;
+  padding: 18px 6px;
+  transition: opacity 0.2s var(--ease-ui, ease);
+}
+.dv[data-stale] {
+  opacity: 0.4;
+}
+
+.dv-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.dv-wire {
+  fill: none;
+  stroke: rgb(140 170 255 / 0.3);
+  stroke-width: 1.4;
+}
+.dv-wires circle {
+  fill: rgb(140 170 255 / 0.45);
+}
+.dv-wire-flow {
+  fill: none;
+  stroke: rgb(141 180 255 / 0.6);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 3 15;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dv-wire-flow {
+    animation: dv-flow 1.5s linear infinite;
+  }
+}
+@keyframes dv-flow {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+.dv-wave {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+.dv-cap {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 0 0 10px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+  white-space: nowrap;
+}
+.dv-cap-n {
+  color: var(--v4-hud-faint);
+}
+.dv-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* the card · the W11 device recipe (morph.css .morph-node), standalone */
+.dv-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 12px 10px 14px;
+  border: 1px solid rgb(96 141 255 / 0.42);
+  border-radius: calc(var(--v4-radius) + 1px);
+  background-color: rgb(17 30 68 / 0.58);
+  background-image:
+    radial-gradient(rgb(141 180 255 / 0.14) 1px, transparent 1px),
+    var(--v4-grain-img),
+    linear-gradient(180deg, rgb(141 180 255 / 0.07), rgb(0 0 0 / 0.2) 85%);
+  background-size:
+    5px 5px,
+    var(--v4-grain-size, 4px) var(--v4-grain-size, 4px),
+    auto;
+  box-shadow:
+    inset 2px 0 0 var(--dv-vhue, var(--v4-accent)),
+    inset 0 1px 0 rgb(180 205 255 / 0.16),
+    inset 0 -2px 0 rgb(0 0 0 / 0.35),
+    inset 0 0 22px rgb(47 107 255 / 0.12),
+    0 2px 0 rgb(2 6 20 / 0.55),
+    0 12px 26px -14px rgb(20 50 160 / 0.45);
+}
+.dv-node[data-verb='infer'] {
+  --dv-vhue: var(--verb-infer);
+}
+.dv-node[data-verb='exec'] {
+  --dv-vhue: var(--verb-exec);
+}
+.dv-node[data-verb='invoke'] {
+  --dv-vhue: var(--verb-invoke);
+}
+.dv-node[data-verb='agent'] {
+  --dv-vhue: var(--verb-agent);
+}
+/* a task still being written · dashed shell until its verb lands */
+.dv-node:not([data-verb]) {
+  border-style: dashed;
+  --dv-vhue: var(--v4-text-faint);
+}
+/* a NEW card pops in (keys are task ids — edits replay nothing) */
+@media (prefers-reduced-motion: no-preference) {
+  .dv-node {
+    animation: dv-node-in 0.24s var(--ease-ui, ease);
+  }
+}
+@keyframes dv-node-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+}
+
+.dv-node-id {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--v4-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dv-node-verb {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--dv-vhue, var(--v4-text-dim));
+}
+.dv-node-target {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--v4-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dv-node-when {
+  margin-top: 3px;
+  padding: 1px 5px;
+  align-self: flex-start;
+  border: 1px solid rgb(230 184 115 / 0.35);
+  border-radius: var(--v4-radius-sm);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--cf-num);
+}
+
+.dv-note {
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--cf-num);
+  white-space: nowrap;
+}

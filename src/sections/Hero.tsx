@@ -53,10 +53,12 @@ function HeroAtmosphere() {
    filename; the strip is the compact switcher. The DEFAULT tab (daily-brief)
    is prerendered, so crawlers / no-JS get the default story.
 
-   Wave K: the strip keeps the ORIGINAL five (the flagship buffer row); the
-   full ten-file corpus lives behind the library picker at the strip's right
-   edge. `active` is a LIBRARY index — when it points past the strip, no tab
-   is selected (the picker trigger carries the active filename instead). */
+   Wave N: the strip keeps the first THREE (permits · when-gate · schema — the
+   pedagogy row; three + the picker fit the panel whole at every desktop
+   width, five cut a tab mid-word); the full ten-file corpus lives behind the
+   library picker at the strip's right edge. `active` is a LIBRARY index —
+   when it points past the strip, no tab is selected (the picker trigger
+   carries the active filename instead). */
 const TABS = LIBRARY.slice(0, HERO_TAB_COUNT)
 
 function FileTabs({
@@ -68,8 +70,9 @@ function FileTabs({
 }) {
   const refs = useRef<(HTMLButtonElement | null)[]>([])
   const stripRef = useRef<HTMLDivElement>(null)
-  /* 5 tabs can overflow the strip — surface the same honest scroll cue as the
-     code panel: fade only while there IS hidden content to the right. */
+  /* the strip can still overflow on a narrow phone — surface the same honest
+     scroll cue as the code panel: fade only while there IS hidden content to
+     the right. */
   useEffect(() => {
     const strip = stripRef.current
     const clip = strip?.parentElement
@@ -504,11 +507,24 @@ export default function Hero({
             <FileTabs active={index} onSelect={onSelect} />
             <LibraryPicker active={index} onSelect={onSelect} />
           </div>
-          {/* the file's one-line story + the handoff chip. Recorded files
+          {/* THE PLAN · the same file, drawn — derived from the selection so
+              every library pick gets its diagram for free. ONE placement: the
+              band under the editor stack, ≥1024 (the old ≥1440 side rail sat
+              glued against the ScrollRail HUD in the right margin — operator
+              punch: « pas collé serré »); phones keep the editor alone. */}
+          <MiniDag
+            plan={item.plan}
+            orientation="band"
+            fileId={item.id}
+            pairTask={pairTask}
+            onPair={setPairTask}
+            className="v4hero-dag"
+          />
+          {/* the handoff chip alone — one quiet row (the per-file gloss line
+              was one phrase too many · operator wave N). Recorded files
               descend into the run story below; a browse-only pick says so
               honestly — the replay stays on the last recorded file. */}
-          <div className="v4hero-editorfoot mt-4">
-            <span className="v4gloss">{item.gloss}</span>
+          <div className="v4hero-editorfoot">
             {item.flagship ? (
               <a href="#the-run" className="v4hint w-fit">
                 <span className="v4hint-file">{item.filename}</span>
@@ -535,27 +551,6 @@ export default function Hero({
               </a>
             )}
           </div>
-          {/* THE MINI-DAG · the same plan, drawn — derived from the selected
-              file so every library pick gets its diagram for free. Two
-              placements, CSS picks one: the ≥1440 side rail (time falls) or
-              the 1024-1439 band under the editor stack (time flows right);
-              phones keep the editor alone. */}
-          <MiniDag
-            plan={item.plan}
-            orientation="rail"
-            fileId={item.id}
-            pairTask={pairTask}
-            onPair={setPairTask}
-            className="v4hero-dag v4hero-dag--rail"
-          />
-          <MiniDag
-            plan={item.plan}
-            orientation="band"
-            fileId={item.id}
-            pairTask={pairTask}
-            onPair={setPairTask}
-            className="v4hero-dag v4hero-dag--band"
-          />
         </div>
       </div>
     </section>

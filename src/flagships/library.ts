@@ -112,6 +112,8 @@ export const LIBRARY: LibraryItem[] = [
   })),
 ]
 
-/** how many tabs the hero strip shows — the original five keep the buffer row;
-    the rest live behind the library panel */
-export const HERO_TAB_COUNT = 5
+/** how many tabs the hero strip shows — the first THREE (permits · when-gate ·
+    schema, the pedagogy row) keep the buffer row; the rest live behind the
+    library picker. Three + the trigger fit the panel width whole at every
+    desktop width — five overflowed and cut a tab mid-word (wave N). */
+export const HERO_TAB_COUNT = 3

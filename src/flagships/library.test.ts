@@ -31,8 +31,8 @@ describe('library · corpus shape', () => {
     }
   })
 
-  it('the first HERO_TAB_COUNT items are the original five tabs, recorded', () => {
-    expect(HERO_TAB_COUNT).toBe(5)
+  it('the first HERO_TAB_COUNT items are the strip tabs, recorded', () => {
+    expect(HERO_TAB_COUNT).toBe(3)
     for (const item of LIBRARY.slice(0, HERO_TAB_COUNT)) {
       expect(item.flagship).toBeDefined()
     }

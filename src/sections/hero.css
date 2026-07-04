@@ -13,7 +13,7 @@
      4 · .v4hero-grid       — the two-column layout (copy LEFT · editor RIGHT).
      5 · .v4ftabs / .v4ftab — the sharp mono file-tab strip above the editor.
      6 · .v4cta             — the one solid accent button (See it run).
-     7 · .v4hint / .v4gloss — the editor footer (story line + run handoff chip).
+     7 · .v4hint            — the editor footer (the run handoff chip).
 
    Everything decorative is pointer-events:none + aria-hidden, SSR-safe (pure CSS
    / no window at render), and reduced-motion-aware. */
@@ -489,8 +489,13 @@
    long line with a hanging indent, so nothing ever reaches the right edge;
    the measurer-driven scroll cue on .cf-body::after stays as the safety net
    and simply never fires.) */
-/* (the bottom dissolve moved to the shared .cf-panel--fadebottom device in
-   codefile.css — the hero call-site opts in with defaults · wave M dedup) */
+/* the bottom dissolve (shared .cf-panel--fadebottom device · codefile.css) —
+   the hero tightens the band to ~2 line boxes: the default 72px reached three
+   lines up and half-dissolved glyphs mid-panel (a thin list dash under the
+   Bayer mask read as a broken dotted mark · operator wave N). */
+.v4hero-code {
+  --cf-fade-h: 44px;
+}
 
 /* ── 5 · the file-tab strip · sharp, mono, hairline — no pills ────────────────
    Reads as an IDE buffer row flush UNDER the editor panel (operator wave I:
@@ -535,6 +540,12 @@
 }
 .v4ftab:hover {
   color: var(--v4-text);
+}
+/* keyboard ring · drawn INSET so the strip's clip + hairline frame never cut
+   it (the global offset ring painted a fat halo over the sharp tab register) */
+.v4ftab:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: -3px;
 }
 /* the ".nika.yaml" extension is dropped on the compact below-strip — the full
    filename already reads twice above it (panel chrome tab + the hint chip). */
@@ -784,33 +795,20 @@
   color: var(--v4-text-faint);
 }
 
-/* ── 5c · the mini-DAG placements (wave K) ─────────────────────────────────────
-   ≥1440 · a 180px side rail in the free right margin (time falls) — the
-   max-w-6xl composition holds exactly 200px of air there, so the rail lives
-   beside the file without moving one calibrated pixel of the grid.
-   1024-1439 · the band under the editor stack (time flows right, /learn
-   direction) — a true side column at 1280 would squeeze the H1 column to
-   ~400px (composition defect), so the band placement carries that window.
+/* ── 5c · the mini-DAG placement (wave N · one home) ──────────────────────────
+   ONE placement at every desktop width: the band under the editor stack
+   (time flows right, /learn direction), inside the calibrated grid. The old
+   ≥1440 side rail is DELETED — 180px could not hold the drawing (caption
+   wrapped, labels ellipsised) and it sat squeezed against the fixed
+   ScrollRail HUD in the right margin (operator punch: « pas collé serré »).
    <1024 · hidden (the editor is the phone's whole story). */
 .v4hero-dag {
   display: none;
 }
-@media (min-width: 1024px) and (max-width: 1439px) {
-  .v4hero-dag--band {
+@media (min-width: 1024px) {
+  .v4hero-dag {
     display: block;
-    margin-top: 20px;
-  }
-}
-@media (min-width: 1440px) {
-  .v4hero-editor {
-    position: relative;
-  }
-  .v4hero-dag--rail {
-    display: block;
-    position: absolute;
-    left: calc(100% + 16px);
-    top: 42px;
-    width: 180px;
+    margin-top: 18px;
   }
 }
 
@@ -844,21 +842,14 @@
   transform: translateY(1px);
 }
 
-/* ── 7 · the editor footer · the tab's story line + the run handoff chip ──────
-   .v4gloss narrates what the highlighted lines demonstrate (mono, faint).
-   .v4hint is the continuity link INTO the Living File run below. */
+/* ── 7 · the editor footer · the run handoff chip, one quiet row ──────────────
+   .v4hint is the continuity link INTO the Living File run below. (The per-file
+   gloss line that used to share this row was one phrase too many — it wrapped
+   the foot into two ragged rows · operator wave N.) */
 .v4hero-editorfoot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.v4gloss {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.02em;
-  color: var(--v4-text-faint);
+  margin-top: 14px;
 }
 .v4hint {
   display: inline-flex;

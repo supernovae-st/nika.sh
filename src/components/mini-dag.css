@@ -34,21 +34,14 @@
 
 .mdag-stage {
   position: relative;
-  /* the file-switch relayout beat · a 200ms settle-in on remount */
-  animation: mdag-in 200ms var(--ease-ui) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  .mdag-stage {
-    animation: none;
-  }
-}
-@keyframes mdag-in {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
 }
 
+/* ── the assembly beat (wave N) · the plan builds in TIME ORDER ───────────────
+   The stage remounts per file (key), so the choreography replays on every
+   tab switch: wave-w nodes rise at w×110ms (--mdag-d inline, derived), each
+   wire draws INTO its target on that wave's beat (pathLength:1 dash trick —
+   no measuring, SSR-deterministic). Comprehension, not decoration: parallel
+   steps appear together, dependent steps after their inputs. */
 .mdag-wires {
   position: absolute;
   inset: 0;
@@ -59,6 +52,31 @@
   fill: none;
   stroke: color-mix(in oklch, var(--v4-accent) 46%, transparent);
   stroke-width: 1.1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mdag-node {
+    animation: mdag-node-in 240ms var(--ease-ui) both;
+    animation-delay: var(--mdag-d, 0ms);
+  }
+  .mdag-wires path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: mdag-wire-in 300ms var(--ease-ui) both;
+    animation-delay: var(--mdag-d, 0ms);
+  }
+}
+@keyframes mdag-node-in {
+  from {
+    opacity: 0;
+    /* the base transform is translate(-50%, -8px) — the from-frame starts
+       4px lower so the node RISES onto its dot as it fades in */
+    transform: translate(-50%, -4px);
+  }
+}
+@keyframes mdag-wire-in {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* ── a node · verb dot + mono id, one real button (focus + hover) ──────────── */
@@ -140,6 +158,12 @@
 /* ── band variant · tighter labels (columns are 82px) ──────────────────────── */
 .mdag--band .mdag-id {
   max-width: 72px;
+}
+/* the band's drawing centers under its caption (short plans left a dead right
+   half); a wide plan still overflows honestly — auto margins collapse to 0
+   and the scroll well takes over from the left. */
+.mdag--band .mdag-stage {
+  margin-inline: auto;
 }
 
 /* the paired caption · the task id takes the accent voice while its plain

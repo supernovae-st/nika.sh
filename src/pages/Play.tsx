@@ -1,5 +1,7 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
+import { parsePlan, type ParsedPlan } from '../lib/parse-plan'
+import { DagView } from '../components/DagView'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
@@ -57,6 +59,25 @@ export function Component() {
   const [seed, setSeed] = useState('chain')
   const [code, setCode] = useState(TEMPLATES_YAML['chain'] ?? '')
   const [diags, setDiags] = useState<LintDiag[]>(() => lintNika(TEMPLATES_YAML['chain'] ?? ''))
+  /* the LIVE PLAN (W12b·E1) · parsePlan on a 150ms debounce; an unparseable
+     mid-edit source keeps the LAST VALID plan on screen, dimmed ([data-stale])
+     — the picture never flickers while you type */
+  const [plan, setPlan] = useState<ParsedPlan | null>(() => parsePlan(TEMPLATES_YAML['chain'] ?? ''))
+  const [stale, setStale] = useState(false)
+  const planTimer = useRef(0)
+  const onCode = (v: string) => {
+    setCode(v)
+    window.clearTimeout(planTimer.current)
+    planTimer.current = window.setTimeout(() => {
+      const next = parsePlan(v)
+      if (next) {
+        setPlan(next)
+        setStale(false)
+      } else {
+        setStale(true)
+      }
+    }, 150)
+  }
   /* false on the server AND on the client's first (hydrating) render → the lazy
      editor is never in the tree during hydration, so SSR HTML matches the first
      client paint exactly. Flips true on the next client render → editor mounts. */
@@ -94,6 +115,8 @@ export function Component() {
     setSeed(slug)
     setCode(src)
     setDiags(lintNika(src))
+    setPlan(parsePlan(src))
+    setStale(false)
   }
 
   const valid = diags.length === 0
@@ -174,12 +197,29 @@ export function Component() {
                     the chunk fetch. */}
                 {mounted ? (
                   <Suspense fallback={EditorFallback}>
-                    <PlayEditor value={code} onChange={setCode} onDiags={setDiags} />
+                    <PlayEditor value={code} onChange={onCode} onDiags={setDiags} />
                   </Suspense>
                 ) : (
                   EditorFallback
                 )}
               </div>
+            </div>
+
+            {/* the right column · THE LIVE PLAN over the verdict rail (E1) */}
+            <div className="play-right">
+            <div className="play-panel play-dag" data-stale={stale || undefined}>
+              <p className="play-panel-head play-dag-head">
+                <span className="play-dag-live" aria-hidden />
+                The plan · live
+                <span className="play-dag-state" aria-live="polite">
+                  {stale ? 'waiting for valid yaml…' : plan ? `${plan.tasks.length} task${plan.tasks.length > 1 ? 's' : ''} · ${plan.waves.length} wave${plan.waves.length > 1 ? 's' : ''}` : '—'}
+                </span>
+              </p>
+              {plan ? (
+                <DagView plan={plan} stale={stale} />
+              ) : (
+                <p className="play-dag-empty">add a `tasks:` list and the plan draws itself</p>
+              )}
             </div>
 
             {/* the verdict rail · the validator read-out + the verb legend */}
@@ -254,6 +294,7 @@ export function Component() {
                 </p>
               </div>
             </aside>
+            </div>
           </div>
 
           {/* the local-run hint · mono machine truth + the copyable install pill.
