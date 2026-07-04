@@ -492,7 +492,7 @@ export default function Hero({
               yaml={item.yaml}
               filename={item.filename}
               highlight={paired ? [paired.line0, paired.line1] : item.highlight}
-              className="v4hero-code cf-panel--seam"
+              className="v4hero-code cf-panel--seam cf-panel--fadebottom"
               wrap
               onLineHover={onLineHover}
             />

@@ -377,6 +377,33 @@
   --cf-text-pad-r: 1.481em;
 }
 
+/* ── the bottom dissolve · the ONE sanctioned dither-fade device (BRAND-11) ───
+   Opt-in via .cf-panel--fadebottom — a cropped panel's file visibly CONTINUES
+   instead of cutting. Knobs: --cf-fade-h (band height) · --cf-fade-bg (the
+   panel's floor tone) · --cf-fade-o (ride an external dissolve, e.g. the
+   morph's --msh). One source: the hero and the morph card carried two
+   hand-synced copies of this exact device (wave M review). */
+.cf-panel--fadebottom .cf-body {
+  position: relative;
+}
+.cf-panel--fadebottom .cf-body::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: var(--cf-fade-h, 72px);
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--cf-fade-o, 1);
+  background: linear-gradient(to bottom, transparent, var(--cf-fade-bg, var(--v4-bg-raised)) 82%);
+  -webkit-mask-image: var(--v4-dither-fade);
+  mask-image: var(--v4-dither-fade);
+  -webkit-mask-size: 4px var(--cf-fade-h, 72px);
+  mask-size: 4px var(--cf-fade-h, 72px);
+  -webkit-mask-position: bottom;
+  mask-position: bottom;
+  transform: scaleY(-1); /* the tile fades downward · flip it to fade upward */
+}
+
 /* ── mobile density · step the mono down a notch so more of each line fits the
    viewport before the scroll well takes over (the frame itself never widens). */
 @media (max-width: 480px) {

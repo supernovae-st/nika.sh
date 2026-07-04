@@ -157,7 +157,11 @@ export function makeFillMaterial(label: LabelAtlas): THREE.MeshLambertMaterial {
   const mat = new THREE.MeshLambertMaterial({ color: new THREE.Color('#8195c2') })
   /* un-materialized slabs must be INVISIBLE, not page-black boxes — the
      stage floor is a textured room now (wave M grid + pool), so an opaque
-     PS_LO box reads as a hole. True alpha dissolve + discard at zero. */
+     PS_LO box reads as a hole. True alpha dissolve + discard near zero.
+     depthWrite stays TRUE deliberately: alpha saturates at vFade ≥ 0.625,
+     so landed slabs occlude correctly (the common case); a birthing slab
+     briefly writes depth at partial alpha — acceptable, its region IS
+     claimed space (verified across the burst/flatten sweeps). */
   mat.transparent = true
   /* the edges layer draws coplanar over the fills — push the fill back */
   mat.polygonOffset = true
@@ -193,8 +197,9 @@ const vec3 PS_HI = ${v3(RAMP_HI)};`,
       .replace(
         '#include <dithering_fragment>',
         `{
-  /* invisible until materialized — never an opaque page-black box (wave M) */
-  if (vFade < 0.004) discard;
+  /* invisible until materialized — never an opaque page-black box, and a
+     near-invisible fragment must not claim depth either (wave M) */
+  if (vFade < 0.02) discard;
   float psLuma = dot(gl_FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
   /* the ignite lift · a tinted slab (running) pushes more cells onto the hi
      plateau, so the verb hue visibly takes the face */

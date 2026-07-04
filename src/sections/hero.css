@@ -489,22 +489,8 @@
    long line with a hanging indent, so nothing ever reaches the right edge;
    the measurer-driven scroll cue on .cf-body::after stays as the safety net
    and simply never fires.) */
-.v4hero-code .cf-body::before {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 72px;
-  pointer-events: none;
-  z-index: 1;
-  background: linear-gradient(to bottom, transparent, var(--v4-bg-raised) 82%);
-  -webkit-mask-image: var(--v4-dither-fade);
-  mask-image: var(--v4-dither-fade);
-  -webkit-mask-size: 4px 72px;
-  mask-size: 4px 72px;
-  -webkit-mask-position: bottom;
-  mask-position: bottom;
-  transform: scaleY(-1); /* the tile fades downward · flip it to fade upward */
-}
+/* (the bottom dissolve moved to the shared .cf-panel--fadebottom device in
+   codefile.css — the hero call-site opts in with defaults · wave M dedup) */
 
 /* ── 5 · the file-tab strip · sharp, mono, hairline — no pills ────────────────
    Reads as an IDE buffer row flush UNDER the editor panel (operator wave I:
@@ -1090,8 +1076,10 @@
   /* the file cap on phones · whole lines only (18 × the 21px line box +
      both paddings — the cap is border-box, same law as the desktop cap) —
      the phone steps the reading type down a notch (12.5px/21px) so wrapped
-     flow lines stay 2 visual lines, not 3. */
-  .v4hero-code .cf-pre {
+     flow lines stay 2 visual lines, not 3. Doubled class: this px math must
+     beat the em-based .cf-panel--seam .cf-pre at ANY bundle order (the two
+     tied at (0,2,0) and import order decided · review find). */
+  .v4hero-code.v4hero-code .cf-pre {
     font-size: 12.5px;
     line-height: 21px;
     padding: 14px 0 16px;

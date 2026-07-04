@@ -275,27 +275,14 @@
   width: var(--morph-code-w, min(620px, 52vw));
   font-size: var(--morph-code-fs, clamp(9px, 1vh, 11px));
 }
-/* the bottom dissolve (the hero's own device) — when a tall corpus flooring
-   the fit-font still crops, the file visibly CONTINUES instead of cutting;
-   rides the shell so the burst (lines flying) is never masked */
-.morph-code .cf-body::before {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 64px;
-  pointer-events: none;
-  z-index: 1;
-  opacity: var(--msh, 1);
-  background: linear-gradient(to bottom, transparent, var(--cf-bg) 82%);
-  -webkit-mask-image: var(--v4-dither-fade);
-  -webkit-mask-size: 4px 64px;
-  -webkit-mask-position: bottom;
-  mask-image: var(--v4-dither-fade);
-  mask-size: 4px 64px;
-  mask-position: bottom;
-}
-.morph-code .cf-body {
-  position: relative;
+/* the bottom dissolve · the shared .cf-panel--fadebottom device
+   (codefile.css) — when a tall corpus flooring the fit-font still crops,
+   the file visibly CONTINUES instead of cutting; rides the shell (--msh)
+   so the burst (lines flying) is never masked */
+.morph-code {
+  --cf-fade-h: 64px;
+  --cf-fade-bg: var(--cf-bg);
+  --cf-fade-o: var(--msh, 1);
 }
 /* the card shell (chrome · gutter · floor) dissolves through the burst via
    --msh (1→0, written per-frame). The flying lines keep their own opacity.
@@ -979,7 +966,10 @@
   flex: 0 1 auto;
   display: grid;
   min-width: 0;
-  max-width: clamp(150px, 22vw, 300px);
+  /* sized for the longest voice line (~330px at 10.5px mono + tracking) —
+     the narrator must NEVER ellipsize on desktop (a truncated ambient voice
+     reads broken); the clamp only bites on narrow armed widths */
+  max-width: clamp(150px, 26vw, 360px);
 }
 .morph-csay-line {
   grid-area: 1 / 1;

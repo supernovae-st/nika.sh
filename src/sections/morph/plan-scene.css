@@ -14,7 +14,10 @@
    functions of --morph-p and reverse exactly. */
 .morph-stage[data-plan3d] .morph-dag {
   visibility: hidden;
-  opacity: clamp(0, (var(--morph-p, 1) - 0.985) / 0.015, 1);
+  /* the ramp STARTS at the done boundary (phaseAt flips visibility at
+     p = 0.99) — starting earlier popped the DAG in at ~33% the frame
+     visibility arrived (review find) */
+  opacity: clamp(0, (var(--morph-p, 1) - 0.99) / 0.01, 1);
   transition: none;
 }
 .morph-stage[data-plan3d][data-phase='done'] .morph-dag {

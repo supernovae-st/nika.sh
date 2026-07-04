@@ -21,6 +21,7 @@ import {
   timelineAt,
   travelAt,
   wireAt,
+  type MorphPhase,
   type MorphTimeline,
 } from './morph-model'
 import { VERB_WORDS } from './plain-words'
@@ -91,6 +92,27 @@ const whenLabel = (when: string): string =>
 /* the narration counts in words (honest per flagship: the widest wave) */
 const COUNT_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six'] as const
 const countWord = (n: number): string => COUNT_WORDS[n] ?? String(n)
+
+/* THE ONE VOICE · plain anyone-words, one line per phase — the SINGLE source
+   both narrator surfaces render (the armed console + the static caption):
+   a copy edit can never fork the two (wave M review) */
+const sayLines = (maxTogether: number): { phase: MorphPhase; text: string }[] => [
+  { phase: 'file', text: 'one file · the whole plan' },
+  { phase: 'burst', text: 'each task takes its place' },
+  {
+    phase: 'run',
+    text: `steps light up in order${maxTogether > 1 ? ` · ${countWord(maxTogether)} together` : ''}`,
+  },
+  { phase: 'flat', text: 'the whole run · laid out flat' },
+  { phase: 'done', text: 'the run is a file too · replay anytime' },
+]
+
+/* the seed trail params · [k-offset, alpha] per afterimage — module-level so
+   the rAF path never allocates (longtask budget, F2) */
+const GHOST_TRAIL = [
+  [0.07, 0.26],
+  [0.14, 0.12],
+] as const
 
 /* one quadratic bezier axis — the seed's curved aspiration path */
 const qbez = (a: number, c: number, b: number, t: number): number => {
@@ -179,6 +201,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const seedRefs = useRef(new Map<string, HTMLSpanElement | null>())
   /* the trail afterimages · two per seed (keys `${id}·0` / `${id}·1`) */
   const ghostRefs = useRef(new Map<string, HTMLSpanElement | null>())
+  /* --morph-wired's last written value (write-on-change · F2 budget) */
+  const wiredRef = useRef('')
   /* live slab landing targets (ps-layer px), written by the 3D loop when the
      slabs are the visible DAG — [x, y, projectedWidth] */
   const slabTargetsRef = useRef(new Map<string, [number, number, number]>())
@@ -186,6 +210,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const psOffRef = useRef<{ x: number; y: number } | null>(null)
   /** the morph panel's identity rect, section-relative (seam handoff base) */
   const seamBaseRef = useRef<{ left: number; top: number; w: number; h: number } | null>(null)
+  /** the card's line grid (final font) — the unroll clip snaps to whole rows */
+  const seamClipRef = useRef<{ lineH: number; headH: number } | null>(null)
   /** the caption band's bottom edge, stage-relative (the yield gate's line) */
   const capBotRef = useRef(0)
   const rafRef = useRef<number | null>(null)
@@ -219,16 +245,15 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     /* ONE LAYOUT TRUTH (wave M) · the card renders the hero panel's EXACT
        text layout at its own size: width = heroW × F_m/F_h locks the ch
        measure (wraps included — the seam projection is a pure uniform
-       scale), and the font FITS the whole file to the stage slot. Wrapped
-       row count is width-INVARIANT (the measure is locked), so the fit is
-       a closed form, not an iteration. Set BEFORE the rect reads below
-       (the gBCR flushes the new layout). Em constants mirror the seam
-       variant (codefile.css): 1.7037 line box · 2.518 pre pads · 2.667
-       chrome. */
+       scale), and the font FITS the whole file to the stage slot. The seam
+       variant (codefile.css) makes EVERY panel metric font-relative, so the
+       whole card scales ∝ font-size — the fit is one homothety ratio
+       (fM = f0 × slotH / H0), measured, zero mirrored constants (the CSS is
+       the single source of the glyph grid). Set BEFORE the rect reads below
+       (the gBCR flushes each new layout). */
     const heroCode = document.querySelector<HTMLElement>('.v4hero-code')
     const codeEl = card.querySelector<HTMLElement>('.morph-code')
-    const preEl = codeEl?.querySelector<HTMLElement>('.cf-pre')
-    if (heroCode && codeEl && preEl) {
+    if (heroCode && codeEl) {
       /* baseline: clear prior overrides so the clamp() truth is re-read */
       stage.style.removeProperty('--morph-code-fs')
       stage.style.removeProperty('--morph-code-w')
@@ -236,16 +261,25 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const f0 = parseFloat(getComputedStyle(codeEl).fontSize)
       const heroW = heroCode.getBoundingClientRect().width
       if (fH > 0 && f0 > 0 && heroW > 0) {
+        /* pass 1 · the ch measure at the baseline font (wrap truth) */
         stage.style.setProperty('--morph-code-w', `${((heroW * f0) / fH).toFixed(2)}px`)
-        const rows = Math.max(
-          1,
-          Math.round((preEl.scrollHeight - 2.518 * f0) / (1.7037 * f0)),
-        )
-        const slotH = card.clientHeight - 26 - 44 /* pad-top · console guard */
-        const fit = (slotH - 2) / (rows * 1.7037 + 2.518 + 2.667)
-        const fM = Math.max(7.5, Math.min(f0, fit))
-        stage.style.setProperty('--morph-code-fs', `${fM.toFixed(2)}px`)
-        stage.style.setProperty('--morph-code-w', `${((heroW * fM) / fH).toFixed(2)}px`)
+        /* the slot: from the card's own measured padding to the console's
+           top edge — every guard is a live rect, never a tuned literal */
+        const padTop = parseFloat(getComputedStyle(card).paddingTop) || 0
+        const consoleEl = stage.querySelector<HTMLElement>('.morph-console')
+        const cardTop = card.getBoundingClientRect().top + padTop
+        const slotBottom = consoleEl
+          ? consoleEl.getBoundingClientRect().top - 10
+          : card.getBoundingClientRect().bottom
+        const slotH = Math.max(160, slotBottom - cardTop) /* short-vh guard */
+        /* pass 2 · scrollHeight is the un-cropped panel height at f0 (the
+           pre crops via overflow, the panel doesn't lie) */
+        const H0 = codeEl.scrollHeight
+        if (H0 > 0 && slotH > 0) {
+          const fM = Math.max(7.5, Math.min(f0, (f0 * slotH) / H0))
+          stage.style.setProperty('--morph-code-fs', `${fM.toFixed(2)}px`)
+          stage.style.setProperty('--morph-code-w', `${((heroW * fM) / fH).toFixed(2)}px`)
+        }
       }
     }
 
@@ -261,6 +295,22 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         top: cr.top - sr.top,
         w: cr.width,
         h: cr.height,
+      }
+      /* the card's line grid at its FINAL font — the seam unroll clip snaps
+         to whole rows (the hero's whole-lines law: a frame that cuts a line
+         in half reads as broken) */
+      const pre = code.querySelector<HTMLElement>('.cf-pre')
+      if (pre) {
+        const pcs = getComputedStyle(pre)
+        const lineH = parseFloat(pcs.lineHeight)
+        seamClipRef.current =
+          Number.isFinite(lineH) && lineH > 0
+            ? {
+                lineH,
+                headH:
+                  pre.getBoundingClientRect().top - cr.top + (parseFloat(pcs.paddingTop) || 0),
+              }
+            : null
       }
       /* the caption band the entry yield protects (+3 · the caps bleed a
          couple px past their row) — measured, never guessed (wave I) */
@@ -314,13 +364,18 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         right = Math.max(right, r.right)
       }
       const nodeEl = nodeRefs.current.get(t.id)
+      /* the drain lerps dg.tops[i] by TASK index — every task must land an
+         entry even when its block can't be measured (else the queue-slide
+         reads a later task's top and D jumps · review find) */
+      blockTops.push(
+        Number.isFinite(top) ? top : (blockTops[blockTops.length - 1] ?? fileTop),
+      )
       if (els.length === 0 || !nodeEl) continue
       nodeEl.style.opacity = ''
       nodeEl.style.transform = ''
       const nr = nodeEl.getBoundingClientRect()
       if (nr.bottom > nodesBottom) nodesBottom = nr.bottom
       const cy = (top + bottom) / 2
-      blockTops.push(top)
       blocks.set(t.id, {
         els,
         lineDy: centers.map((c) => cy - c),
@@ -491,11 +546,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           if (o <= 0.001) {
             seed.style.opacity = '0'
             seed.style.visibility = 'hidden'
-            for (const gh of [g0, g1]) {
-              if (gh) {
-                gh.style.opacity = '0'
-                gh.style.visibility = 'hidden'
-              }
+            if (g0) {
+              g0.style.opacity = '0'
+              g0.style.visibility = 'hidden'
+            }
+            if (g1) {
+              g1.style.opacity = '0'
+              g1.style.visibility = 'hidden'
             }
           } else {
             const t3 = use3d && psOff ? slabTargetsRef.current.get(t.id) : undefined
@@ -519,15 +576,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             /* THE TRAIL (wave M) · two afterimages ride the same bezier a
                step behind — the flight reads as MOTION in a still glance,
                and the trail collapses into the chip at landing (eased-k
-               offsets bunch at the ends). Pure function of p. */
-            const ghosts: [HTMLSpanElement | null | undefined, number, number][] = [
-              [g0, 0.07, 0.26],
-              [g1, 0.14, 0.12],
-            ]
-            for (const [gh, back, alpha] of ghosts) {
+               offsets bunch at the ends). Pure function of p; params live at
+               module scope so this hot path never allocates (F2 budget). */
+            for (let gI = 0; gI < 2; gI++) {
+              const gh = gI === 0 ? g0 : g1
               if (!gh) continue
-              const gk = k - back
-              const go = gk > 0.001 && k < 0.995 ? o * alpha : 0
+              const gk = k - GHOST_TRAIL[gI][0]
+              const go = gk > 0.001 && k < 0.995 ? o * GHOST_TRAIL[gI][1] : 0
               if (go <= 0.003) {
                 gh.style.opacity = '0'
                 gh.style.visibility = 'hidden'
@@ -580,9 +635,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
 
       /* wires draw once the nodes have landed (lengths pre-cached) — the
          wave caps read the eased progress from CSS (--morph-wired): DAG
-         anatomy appears WITH the structure it annotates, never before */
+         anatomy appears WITH the structure it annotates, never before.
+         Write-on-change only: outside the wire window the value is a
+         constant 0/1 and a per-frame setProperty would invalidate style
+         for nothing (F2 budget). */
       const wd = wireAt(p)
-      stage.style.setProperty('--morph-wired', easeInOut(wd).toFixed(3))
+      const wired = easeInOut(wd).toFixed(3)
+      if (wired !== wiredRef.current) {
+        wiredRef.current = wired
+        stage.style.setProperty('--morph-wired', wired)
+      }
       for (let i = 0; i < wireRefs.current.length; i++) {
         const path = wireRefs.current[i]
         const len = wireLenRef.current[i]
@@ -672,6 +734,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     stage.style.removeProperty('--msh')
     stage.style.removeProperty('--morph-nodes-b')
     stage.style.removeProperty('--morph-wired')
+    stage.style.removeProperty('--morph-p')
+    stage.style.removeProperty('--morph-code-w')
+    stage.style.removeProperty('--morph-code-fs')
     delete stage.dataset.phase
     delete stage.dataset.entry
     delete stage.dataset.psgone
@@ -792,7 +857,15 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
          then the clip releases with k — the rest of the file REVEALS below
          the fold instead of popping in. Pure function of q. */
       const visH = Math.min(base.h, hr.height / Math.max(s, 0.0001))
-      const clipB = Math.max(0, (base.h - visH) * (1 - k))
+      let clipB = Math.max(0, (base.h - visH) * (1 - k))
+      /* snap the cut to the line grid — whole rows only (the hero's law);
+         the release then steps line by line, terminal-like */
+      const sc = seamClipRef.current
+      if (sc && clipB > 0.5) {
+        const cut = Math.max(sc.headH + sc.lineH, base.h - clipB)
+        const rows = Math.round((cut - sc.headH) / sc.lineH)
+        clipB = Math.max(0, base.h - (sc.headH + rows * sc.lineH))
+      }
       card.style.clipPath = clipB > 0.5 ? `inset(-1px -1px ${clipB.toFixed(1)}px -1px)` : ''
       /* the glide ENDS on the settle pose (translateY 26px) — apply() then
          eases 26→0 across the file beat, zero teleport at the boundary */
@@ -1091,27 +1164,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           </header>
 
           <div className="morph-scene">
-            {/* THE NARRATION · plain anyone-words, one line per phase — the
-                empty left column at 1440 becomes the narration rail (H2 ·
-                morph.css places, fades, and clears the DAG). Decorative: the
-                head captions + the scene itself carry the meaning for AT. */}
+            {/* THE NARRATION · the STATIC scene's quiet caption above the
+                finished DAG (armed hides this — the console narrator below
+                is the armed voice; both render the ONE sayLines source).
+                Decorative: the head captions carry the meaning for AT. */}
             <div className="morph-say" aria-hidden="true">
-              <p className="morph-say-line" data-for="file">
-                one file · the whole plan, readable
-              </p>
-              <p className="morph-say-line" data-for="burst">
-                each task takes its place
-              </p>
-              <p className="morph-say-line" data-for="run">
-                steps light up in order
-                {maxTogether > 1 ? ` · ${countWord(maxTogether)} run together` : ''}
-              </p>
-              <p className="morph-say-line" data-for="flat">
-                the whole run · laid out flat
-              </p>
-              <p className="morph-say-line" data-for="done">
-                the run is a file too · replay it anytime
-              </p>
+              {sayLines(maxTogether).map((l) => (
+                <p key={l.phase} className="morph-say-line" data-for={l.phase}>
+                  {l.text}
+                </p>
+              ))}
             </div>
 
             {/* THE FILE · the traveling card — the hero panel's OTHER size.
@@ -1122,7 +1184,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 yaml={flagship.yaml}
                 filename={flagship.filename}
                 highlight={flagship.highlight}
-                className="morph-code cf-panel--seam"
+                className="morph-code cf-panel--seam cf-panel--fadebottom"
                 wrap
               />
             </div>
@@ -1356,26 +1418,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               <span className="sr-only">{playing ? 'pause the replay' : 'play the replay'}</span>
             </button>
             {/* THE NARRATOR (wave M) · the one ambient voice, anchored in the
-                transport — plain anyone-words, one line per phase (CSS
-                crossfade on [data-phase]). The old mid-left floating rail is
-                gone; the static scene keeps its own quiet caption. */}
+                transport — the SAME sayLines source as the static caption
+                (a copy edit can never fork the two). The 0.3s text crossfade
+                is deliberate: same register as the head captions — a TEXT
+                swap, not a spatial film beat (those are all p-keyed). */}
             <span className="morph-console-say" aria-hidden>
-              <span className="morph-csay-line" data-for="file">
-                one file · the whole plan
-              </span>
-              <span className="morph-csay-line" data-for="burst">
-                each task takes its place
-              </span>
-              <span className="morph-csay-line" data-for="run">
-                steps light up in order
-                {maxTogether > 1 ? ` · ${countWord(maxTogether)} run together` : ''}
-              </span>
-              <span className="morph-csay-line" data-for="flat">
-                the whole run · laid out flat
-              </span>
-              <span className="morph-csay-line" data-for="done">
-                the run is a file too · replay it anytime
-              </span>
+              {sayLines(maxTogether).map((l) => (
+                <span key={l.phase} className="morph-csay-line" data-for={l.phase}>
+                  {l.text}
+                </span>
+              ))}
             </span>
             <div
               className="morph-track"
