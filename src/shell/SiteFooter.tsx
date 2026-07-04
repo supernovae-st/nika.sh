@@ -20,7 +20,7 @@ const FooterSignature = lazy(() => import('../fx/FooterSignature'))
    external surfaces. Internal = <Link>, external = <a ↗>. */
 const COLS: {
   kick: string
-  links: { label: string; to?: string; href?: string }[]
+  links: { label: string; to?: string; href?: string; track?: string }[]
 }[] = [
   {
     kick: 'product',
@@ -47,7 +47,7 @@ const COLS: {
     kick: 'project',
     links: [
       { label: 'Manifesto', to: '/manifesto' },
-      { label: 'Send a workflow', to: '/convert' },
+      { label: 'Send a workflow', to: '/convert', track: 'convert-open' },
       { label: 'SuperNovae', href: 'https://supernovae.studio' },
       { label: 'License · AGPL-3.0', href: `${REPO}/blob/main/LICENSE` },
       { label: 'security.txt', href: '/.well-known/security.txt' },
@@ -90,7 +90,7 @@ export default function SiteFooter() {
                 {col.links.map((l) => (
                   <li key={l.label}>
                     {l.to ? (
-                      <Link to={l.to} className="sitefoot-link">
+                      <Link to={l.to} className="sitefoot-link" data-track={l.track}>
                         {l.label}
                       </Link>
                     ) : (

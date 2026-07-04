@@ -8,7 +8,7 @@ import './v4-home.css'
 
 /* ─── FIG 10.0 · Final CTA + the site footer (theme-dark · the close) ─────────
    Design doc §6 (FIG 10.0). The clean v4 close: the install affordance (the
-   shared <CopyRow/> · the same monochrome install line as GetStarted), Star on
+   shared <CopyRow track="install-copy"/> · the same monochrome install line as GetStarted), Star on
    GitHub, Read the spec — in the blueprint register. The SUPERNOVAE footer +
    the F3 signature now live in the shared <SiteFooter/> (F7 · one footer on
    every route); Home renders it here so the close beat keeps its rhythm.
@@ -50,7 +50,7 @@ export default function FinalCTA() {
         </p>
 
         <div className="v4cta-install" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
-          <CopyRow
+          <CopyRow track="install-copy"
             cmd={INSTALL_CMD}
             label="install"
             display={
@@ -93,7 +93,7 @@ export default function FinalCTA() {
             or scripts? <b>Send it.</b> We convert the best ones into runnable{' '}
             <code className="mono">.nika.yaml</code> examples, credited to you.
           </p>
-          <Link to="/convert" className="v4convert-cta">
+          <Link to="/convert" className="v4convert-cta" data-track="convert-open">
             Send a workflow
             <span aria-hidden className="v4convert-arrow">
               →

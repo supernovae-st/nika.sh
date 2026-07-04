@@ -79,11 +79,11 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                 One Rust binary. Homebrew on macOS, or the install script anywhere.
               </p>
               <div className="v4start-installs">
-                <CopyRow cmd={INSTALL_CMD} label="Homebrew install" />
+                <CopyRow track="install-copy" cmd={INSTALL_CMD} label="Homebrew install" />
                 <span className="v4start-or" aria-hidden>
                   or
                 </span>
-                <CopyRow cmd={CURL_CMD} label="curl install" />
+                <CopyRow track="install-copy" cmd={CURL_CMD} label="curl install" />
               </div>
             </div>
           </li>
@@ -123,7 +123,7 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                 Point the binary at the file. It prints the plan, checks the permits,
                 and runs within bounds. Every step traced and replayable.
               </p>
-              <CopyRow cmd={runCmd} label="run" />
+              <CopyRow track="install-copy" cmd={runCmd} label="run" />
             </div>
           </li>
         </ol>

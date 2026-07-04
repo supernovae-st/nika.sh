@@ -23,12 +23,15 @@ export function CopyIcon({ copied }: { copied: boolean }) {
 }
 
 export function CopyRow({
+  track,
   cmd,
   label,
   display,
 }: {
   /** the command copied to the clipboard, verbatim */
   cmd: string
+  /** optional funnel event fired via the RootLayout delegate */
+  track?: string
   /** the accessible name of the copy action, e.g. "Homebrew install" */
   label: string
   /** optional styled rendering of the command (defaults to the plain cmd) */
@@ -48,6 +51,7 @@ export function CopyRow({
         onClick={copy}
         className="v4install-copy"
         data-copied={copied}
+        data-track={track}
         aria-label={`Copy ${label} command`}
       >
         {/* polite live region — an aria-label swap alone is not reliably announced */}

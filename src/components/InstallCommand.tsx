@@ -26,6 +26,8 @@ export function InstallCommand() {
       onClick={copy}
       className="v4cmd vfx-mag"
       data-copied={copied}
+      data-track="install-copy"
+
       aria-label={`Copy install command: ${INSTALL_CMD}`}
     >
       {/* the SR announcement · a polite live region flips to "Copied" (an

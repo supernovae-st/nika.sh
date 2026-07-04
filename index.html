@@ -66,6 +66,21 @@
       type="font/woff2"
       crossorigin
     />
+    <!-- sovereign analytics (W12a · FRONT F) · self-hosted umami, cookieless,
+         IP-anonymized (telemetry canon: no vendor, no PII). INERT until the
+         instance exists: loads ONLY on the prod hostname AND once the website
+         id below is configured — dev/previews/blocked = zero requests. -->
+    <script>
+      ;(function () {
+        var UMAMI_ID = 'TODO' /* set when stats.nika.sh is live (W12a·F) */
+        if (location.hostname !== 'nika.sh' || UMAMI_ID === 'TODO') return
+        var s = document.createElement('script')
+        s.defer = true
+        s.src = 'https://stats.nika.sh/script.js'
+        s.setAttribute('data-website-id', UMAMI_ID)
+        document.head.appendChild(s)
+      })()
+    </script>
   </head>
   <body>
     <div id="app"></div>

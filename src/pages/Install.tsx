@@ -123,7 +123,7 @@ export function Component() {
                 </p>
               </div>
               <div className="ins-step-body">
-                <CopyRow cmd={INSTALL_SH_CMD} label="install script" />
+                <CopyRow track="install-copy" cmd={INSTALL_SH_CMD} label="install script" />
               </div>
             </li>
 
@@ -142,7 +142,7 @@ export function Component() {
                 </p>
               </div>
               <div className="ins-step-body">
-                <CopyRow cmd={VERIFY_CMD} label="checksum verification" />
+                <CopyRow track="install-copy" cmd={VERIFY_CMD} label="checksum verification" />
               </div>
             </li>
 
@@ -191,8 +191,8 @@ export function Component() {
                 </p>
               </div>
               <div className="ins-step-body ins-step-body--stack">
-                <CopyRow cmd={INIT_CMD} label="repo wiring" />
-                <CopyRow cmd={WIRE_CMD} label="Cursor agent wiring" />
+                <CopyRow track="install-copy" cmd={INIT_CMD} label="repo wiring" />
+                <CopyRow track="install-copy" cmd={WIRE_CMD} label="Cursor agent wiring" />
               </div>
             </li>
 
@@ -209,11 +209,11 @@ export function Component() {
                   machine), and <code>nika doctor</code> tells you exactly what&apos;s wired.
                 </p>
                 <div className="ins-cmds">
-                  <CopyRow cmd={CHECK_CMD} label="static audit" />
-                  <CopyRow cmd={RUN_CMD} label="run" />
-                  <CopyRow cmd={OLLAMA_PULL_CMD} label="the free local model" />
-                  <CopyRow cmd={EXAMPLES_CMD} label="example run · local model" />
-                  <CopyRow cmd={DOCTOR_CMD} label="environment check" />
+                  <CopyRow track="install-copy" cmd={CHECK_CMD} label="static audit" />
+                  <CopyRow track="install-copy" cmd={RUN_CMD} label="run" />
+                  <CopyRow track="install-copy" cmd={OLLAMA_PULL_CMD} label="the free local model" />
+                  <CopyRow track="install-copy" cmd={EXAMPLES_CMD} label="example run · local model" />
+                  <CopyRow track="install-copy" cmd={DOCTOR_CMD} label="environment check" />
                 </div>
               </div>
               <div className="ins-step-body ins-step-body--stack">

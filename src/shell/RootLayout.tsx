@@ -1,7 +1,9 @@
+import { useEffect } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { AuroraProvider } from '../fx/EdgeAurora'
 import { REPO, SITE } from '../content'
+import { track, type FunnelEvent } from '../lib/track'
 import Nav from './Nav'
 import SiteFooter from './SiteFooter'
 import './skip-link.css'
@@ -54,6 +56,21 @@ const SITE_JSONLD = {
 export default function RootLayout() {
   const { pathname } = useLocation()
   const showFooter = pathname !== '/'
+
+  /* the funnel listener (W12a · FRONT F) · ONE delegated click handler for
+     the whole site: any element carrying data-track fires its event, and
+     outbound GitHub links count as github-out without per-link handlers.
+     No-op while the analytics loader is inert (track() guards). */
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement).closest<HTMLElement>('[data-track], a[href*="github.com/supernovae-st"]')
+      if (!el) return
+      const named = el.dataset.track as FunnelEvent | undefined
+      track(named ?? 'github-out')
+    }
+    document.addEventListener('click', onClick, { passive: true })
+    return () => document.removeEventListener('click', onClick)
+  }, [])
 
   /* site-wide structured data · prerendered into every route's <head> */
   useHead({
