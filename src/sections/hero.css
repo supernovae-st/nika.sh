@@ -497,26 +497,35 @@
   --cf-fade-h: 44px;
 }
 
-/* ── 5 · the file-tab strip · sharp, mono, hairline — no pills ────────────────
-   Reads as an IDE buffer row flush UNDER the editor panel (operator wave I:
-   « le switch en dessous du yaml »): hairline frame, 0 radius on the seam
-   edge, the active tab lifts to the raised surface with a 2px accent seam on
-   its TOP edge — the seam points at the file it opened. Buttons are real
-   <button role=tab>; hover raises contrast. With 5 flagships the strip can
-   overflow: it scrolls, and the clip wrapper's fade cue lights only while
-   there IS hidden content to the right (measured, honest — same law as the
-   code panel's scroll cue). */
+/* ── 5 · the file tabs · IN the window chrome (wave P · a real tab bar) ───────
+   The switcher lives in the titlebar now (operator annotation: « place le tab
+   au-dessus · mélange les deux ») — the active tab IS the open file's name,
+   nothing repeats. Register: transparent buttons on the chrome, hairline
+   separators, the active tab raised with a 2px accent seam on its TOP edge.
+   All metrics are FONT-RELATIVE (em) — the morph's traveling card renders the
+   same bar at its own scale (FileTabsGhost · the wave-M seam law). The strip
+   still scrolls on narrow panels; the clip wrapper's fade cue lights only
+   while there IS hidden content to the right (measured, honest). */
+.v4chrometabs {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  align-self: stretch;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: 0.15em;
+  border-left: 1px solid var(--seam-hairline-soft, rgb(140 170 255 / 0.08));
+}
+.v4chrometabs--ghost {
+  pointer-events: none;
+}
 .v4ftabs {
   display: flex;
   align-items: stretch;
   overflow-x: auto;
   scrollbar-width: none; /* the fade cue is the affordance — no second chrome */
-  border: 1px solid var(--v4-line);
-  border-top: none;
-  border-radius: 0 0 var(--v4-radius) var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-deep) 72%, transparent);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  min-width: 0;
+  flex: 1 1 auto;
 }
 .v4ftabs::-webkit-scrollbar {
   display: none;
@@ -524,15 +533,17 @@
 .v4ftab {
   position: relative;
   appearance: none;
+  display: inline-flex;
+  align-items: center;
   border: none;
-  border-right: 1px solid var(--v4-line);
+  border-right: 1px solid var(--seam-hairline-soft, rgb(140 170 255 / 0.08));
   background: transparent;
-  padding: 9px 11px;
+  padding: 0 0.815em;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.815em;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  color: var(--v4-text-faint);
+  color: rgb(230 235 245 / 0.45);
   cursor: pointer;
   transition:
     color var(--dur-ui) var(--ease-ui),
@@ -541,24 +552,24 @@
 .v4ftab:hover {
   color: var(--v4-text);
 }
-/* keyboard ring · drawn INSET so the strip's clip + hairline frame never cut
-   it (the global offset ring painted a fat halo over the sharp tab register) */
+/* keyboard ring · drawn INSET so the chrome's frame never cuts it */
 .v4ftab:focus-visible {
   outline: 2px solid var(--v4-focus-ring);
   outline-offset: -3px;
 }
-/* the ".nika.yaml" extension is dropped on the compact below-strip — the full
-   filename already reads twice above it (panel chrome tab + the hint chip). */
+/* the ".nika.yaml" extension stays off the compact tabs — the basename IS the
+   title; the extension is a given in a .nika.yaml editor. */
 .v4ftab-ext {
   display: none;
 }
-.v4ftab[aria-selected='true'] {
+.v4ftab[aria-selected='true'],
+.v4ftab[data-sel] {
   color: var(--v4-text);
-  background: var(--v4-bg-raised);
+  background: rgb(255 255 255 / 0.055);
 }
-/* the 2px accent seam · the ONE blue note on the strip · top edge = the seam
-   the active tab shares with the panel above it. */
-.v4ftab[aria-selected='true']::before {
+/* the 2px accent seam · the ONE blue note on the bar · top edge of the chrome */
+.v4ftab[aria-selected='true']::before,
+.v4ftab[data-sel]::before {
   content: '';
   position: absolute;
   inset: 0 0 auto 0;
@@ -570,17 +581,19 @@
    so a cut tab reads as scrollable, never broken (coordinator punch #4). */
 .v4ftabs-clip {
   position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .v4ftabs-clip::after {
   content: '';
   position: absolute;
   top: 0;
-  right: 1px;
-  bottom: 1px;
+  right: 0;
+  bottom: 0;
   width: 36px;
   pointer-events: none;
-  border-radius: 0 0 var(--v4-radius) 0;
-  background: linear-gradient(to right, transparent, var(--v4-bg-deep) 82%);
+  background: linear-gradient(to right, transparent, var(--cf-bg, #0a0d12) 82%);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -588,35 +601,12 @@
   opacity: 1;
 }
 
-/* the panel hands off to the strip below it — flatten the panel's bottom
-   corners so window chrome + code + tab strip read as ONE sharp object. */
-.v4hero-editor [role='tabpanel'] .v4hero-code {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-/* ── 5b · the tabs row · the strip + the library picker share one rail ────────
-   Wave K: the buffer row keeps the five flagships; the picker trigger sits
-   flush on the rail's right end (same hairline frame · the strip yields its
-   right corner). The popover below is the quick-open: the whole ten-file
-   corpus, one column, mono register. */
-.v4ftabs-row {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-}
-.v4ftabs-row .v4ftabs-clip {
-  flex: 1;
-  min-width: 0;
-}
-.v4ftabs-row .v4ftabs {
-  border-right: none;
-  border-bottom-right-radius: 0;
-}
-.v4ftabs-row .v4ftabs-clip::after {
-  border-radius: 0;
-}
+/* ── 5b · the library picker · the « other files » quick-open in the chrome ───
+   The trigger sits at the bar's right end; the popover drops BELOW the
+   titlebar, over the code (the chrome stays overflow-visible for exactly
+   this — codefile.css wave P). */
 .v4lib {
+  position: relative;
   display: flex;
   align-items: stretch;
 }
@@ -625,19 +615,16 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  border: 1px solid var(--v4-line);
-  border-top: none;
-  border-radius: 0 0 var(--v4-radius) 0;
-  background: color-mix(in oklch, var(--v4-bg-deep) 72%, transparent);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  padding: 9px 11px;
+  gap: 0.5em;
+  border: none;
+  border-left: 1px solid var(--seam-hairline-soft, rgb(140 170 255 / 0.08));
+  background: transparent;
+  padding: 0 0.815em;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.815em;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  color: var(--v4-text-faint);
+  color: rgb(230 235 245 / 0.45);
   cursor: pointer;
   transition:
     color var(--dur-ui) var(--ease-ui),
@@ -647,6 +634,10 @@
 .v4lib-trigger[aria-expanded='true'] {
   color: var(--v4-text);
 }
+.v4lib-trigger:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: -3px;
+}
 .v4lib-trigger-glyph {
   color: var(--v4-text-faint);
   letter-spacing: 0.08em;
@@ -654,7 +645,7 @@
 /* a library pick is active → the trigger IS the selected tab (raised + seam) */
 .v4lib-trigger[data-active] {
   color: var(--v4-text);
-  background: var(--v4-bg-raised);
+  background: rgb(255 255 255 / 0.055);
 }
 .v4lib-trigger[data-active]::before {
   content: '';
@@ -664,14 +655,15 @@
   background: var(--v4-accent-strong);
 }
 
-/* the popover · a raised quick-open sheet — opens UPWARD over the editor
-   (the rail sits low in the viewport; downward would clip off-screen) */
+/* the popover · a raised quick-open sheet — drops DOWN from the titlebar over
+   the code, anchored to the bar's right end. */
 .v4lib-panel {
   position: absolute;
-  bottom: calc(100% + 8px);
-  left: 0;
+  top: calc(100% + 8px);
   right: 0;
-  z-index: 30;
+  left: auto;
+  width: min(440px, calc(100vw - 40px));
+  z-index: 40;
   border: 1px solid var(--v4-line-strong);
   border-radius: var(--v4-radius);
   background: color-mix(in srgb, var(--v4-bg-raised) 97%, white 3%);
@@ -680,6 +672,7 @@
     0 1px 0 rgb(0 0 0 / 0.5),
     0 28px 70px -24px rgb(0 0 0 / 0.85);
   padding: 6px;
+  font-size: 12px; /* the popover keeps the UI scale — never the chrome's em */
 }
 .v4lib-head,
 .v4lib-legend {
@@ -817,9 +810,11 @@
   align-items: baseline;
   gap: 4px;
   padding: 8px 6px;
-  /* the negative box gives the hit-area padding back to the layout; the 10px
-     left margin keeps clear air between the steps meta and the link */
-  margin: -8px -6px -8px 10px;
+  /* auto pushes the link to the caption row's right end (the caption text is
+     one left-hung breath · wave P); the negative box gives the hit-area
+     padding back to the layout */
+  margin: -8px -6px;
+  margin-left: auto;
   border-radius: var(--v4-radius-sm);
   font-family: var(--mono);
   font-size: 10.5px;

@@ -209,6 +209,37 @@ describe('CodeFile (static render)', () => {
     expect(getByText('morning-brief.nika.yaml')).toBeTruthy()
   })
 
+  /* ── the chrome slot (wave P) · the hero's tab bar replaces the filename ── */
+  it('chromeSlot replaces the filename tab (nothing repeats)', () => {
+    const { container, queryByText } = render(
+      <CodeFile
+        yaml={yaml}
+        filename="morning-brief.nika.yaml"
+        chromeSlot={<span data-testid="slot">tabs live here</span>}
+      />,
+    )
+    expect(container.querySelector('[data-testid="slot"]')).not.toBeNull()
+    expect(container.querySelector('.cf-tab')).toBeNull()
+    expect(queryByText('morning-brief.nika.yaml')).toBeNull()
+  })
+
+  it('copyInBody floats the copy chip in the code well (chrome slot stays free)', () => {
+    const { container, getByRole } = render(<CodeFile yaml={yaml} copyInBody />)
+    expect(container.querySelector('.cf-copy-float .cf-copy')).not.toBeNull()
+    expect(container.querySelector('.cf-chrome-right')).toBeNull()
+    // still ONE copy button, still carrying the raw yaml contract
+    expect(getByRole('button', { name: /copy/i })).toBeTruthy()
+  })
+
+  it('bodyProps land on the code area (the hero marks it as the tabpanel)', () => {
+    const { container } = render(
+      <CodeFile yaml={yaml} bodyProps={{ id: 'x-panel', role: 'tabpanel' }} />,
+    )
+    const body = container.querySelector('.cf-body')
+    expect(body?.id).toBe('x-panel')
+    expect(body?.getAttribute('role')).toBe('tabpanel')
+  })
+
   it('exposes a copy button that carries the raw yaml', () => {
     const { getByRole } = render(<CodeFile yaml={yaml} />)
     expect(getByRole('button', { name: /copy/i })).toBeTruthy()

@@ -9,22 +9,21 @@
   font-family: var(--mono);
 }
 
-/* the micro caption · museum-plate voice — name left, meta pushed right, the
-   call-site action (the hero's run handoff) at the row's right end. */
+/* the micro caption · museum-plate voice — ONE left-hung breath (wave P:
+   « aligné à gauche, la composition… ça va dans tous les sens »): the name
+   and the steps meta read together on the left; only the call-site action
+   (the hero's run handoff) holds the right end. */
 .mdag-cap {
   display: flex;
   align-items: baseline;
-  gap: 8px;
-  margin: 0 0 2px;
+  gap: 14px;
+  margin: 0 0 8px;
   font-size: 10px;
   letter-spacing: 0.08em;
   color: var(--v4-text-faint);
 }
 .mdag-cap-name {
   text-transform: uppercase;
-}
-.mdag-cap-meta {
-  margin-left: auto;
 }
 
 /* the stage scrolls sideways in its well if a wide band overflows (the
@@ -162,12 +161,8 @@
 .mdag--band .mdag-id {
   max-width: 72px;
 }
-/* the band's drawing centers under its caption (short plans left a dead right
-   half); a wide plan still overflows honestly — auto margins collapse to 0
-   and the scroll well takes over from the left. */
-.mdag--band .mdag-stage {
-  margin-inline: auto;
-}
+/* the band's drawing hangs LEFT with the caption + the window below it (wave
+   P — centering floated it away from every other anchor on the column). */
 
 /* the paired caption · the task id takes the accent voice while its plain
    words occupy the meta slot (same line box · zero reflow on swap) */

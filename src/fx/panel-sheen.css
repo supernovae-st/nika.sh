@@ -12,11 +12,10 @@
    button, tab and ticks stay fully interactive above it. */
 
 @media (prefers-reduced-motion: no-preference) {
-  .cf-chrome {
-    position: relative;
-    overflow: hidden;
-  }
-  .cf-chrome::after {
+  /* the band animates inside .cf-sheen — the chrome's dedicated clipped layer
+     (codefile.css) — because the chrome ITSELF must stay overflow-visible:
+     the hero's library popover drops below the titlebar un-clipped (wave P). */
+  .cf-sheen::after {
     content: '';
     position: absolute;
     top: 0;
@@ -28,7 +27,7 @@
     animation: vfx-sheen 9s linear infinite;
     pointer-events: none;
   }
-  html[data-idle='on'] .cf-chrome::after {
+  html[data-idle='on'] .cf-sheen::after {
     animation-play-state: paused;
   }
 }

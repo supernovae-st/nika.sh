@@ -29,7 +29,9 @@
      never impose display:flex/row on the editor window). */
   display: block;
   position: relative;
-  overflow: hidden;
+  /* overflow ownership lives on the CHILDREN (wave P): the body clips its own
+     content (fade · lit bands · scroll well) while the chrome stays open so
+     the hero's library popover can drop below the titlebar un-clipped. */
   border-radius: var(--cf-radius);
   background: var(--cf-bg);
   /* the product frame (seam kit · tokens.css): blue-tinted hairline + inner-top
@@ -46,12 +48,25 @@
    36px · flat (no brushed gradient, no sheen) · a blue-tinted hairline under it
    · filename in dim mono · the copy chip is the ONE functional affordance. */
 .cf-chrome {
+  position: relative; /* anchors the sheen layer + stacks over the body so a
+                         chrome popover (hero tabs) paints above the code */
+  z-index: 4;
   display: flex;
   align-items: center;
   gap: 10px;
   height: 36px;
   padding: 0 10px 0 13px;
   border-bottom: 1px solid var(--seam-hairline-soft);
+  border-radius: calc(var(--cf-radius) - 1px) calc(var(--cf-radius) - 1px) 0 0;
+}
+/* the sheen's own clipped layer (panel-sheen.css animates its ::after) — the
+   chrome itself must NOT clip, or it would cut the popover. */
+.cf-sheen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 /* the 3 square ticks — the window affordance (never macOS traffic lights). */
@@ -130,6 +145,8 @@
 /* ── the editor body · one horizontal scroll well (gutter + code) ───────────── */
 .cf-body {
   position: relative;
+  overflow: hidden; /* the body owns its clipping (fade · lit bands · tip) */
+  border-radius: 0 0 calc(var(--cf-radius) - 1px) calc(var(--cf-radius) - 1px);
   /* a faint scanline-free inner shade at the very top so the code "sinks" under
      the chrome — depth without a hard line. */
   background:
@@ -169,6 +186,11 @@
   line-height: 1.5;
   font-variant-ligatures: none;
   -webkit-font-smoothing: antialiased;
+}
+/* keyboard scroll well (tab stop only while overflowing — CodeFile.tsx) */
+.cf-pre:focus-visible {
+  outline: 1px solid rgb(96 141 255 / 0.55);
+  outline-offset: -1px;
 }
 .cf-pre::-webkit-scrollbar { height: 9px; }
 .cf-pre::-webkit-scrollbar-thumb {
@@ -410,17 +432,21 @@
   transform: scaleY(-1); /* the tile fades downward · flip it to fade upward */
 }
 
-/* ── the smart-hover tip (wave O) · the IDE hover-docs register ───────────────
-   One floating box per panel (opt-in via <CodeFile tips>), moved imperatively
+/* ── the smart-hover card (wave O·P) · the IDE hover-docs register ────────────
+   One floating card per panel (opt-in via <CodeFile tips>), moved imperatively
    by the component — term in the ink of its token (verbs keep their hue),
-   plain words after it. The 160ms show delay is the IDE patience: the tip
-   never flickers while the eye just travels across the code. */
+   plain words after it, and a link into the /spec block that OWNS the term.
+   The 160ms show delay is the IDE patience: the card never flickers while the
+   eye just travels across the code. While open it is hoverable (the link is
+   clickable); the ::after bridge spans the gap back to the anchor so crossing
+   it never drops the card. */
 .cf-tipbox {
   position: absolute;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
   width: max-content;
-  max-width: 300px;
-  padding: 6px 10px;
+  max-width: 320px;
   border: 1px solid rgb(140 170 255 / 0.24);
   border-radius: var(--v4-radius-sm, 3px);
   background: color-mix(in srgb, #0d1219 94%, #4f86ff 6%);
@@ -447,11 +473,30 @@
 }
 .cf-tipbox[data-on] {
   opacity: 1;
+  pointer-events: auto;
   transform: translate(-50%, -100%) translateY(0);
   transition-delay: 160ms;
 }
 .cf-tipbox[data-on][data-pos='bottom'] {
   transform: translate(-50%, 0) translateY(0);
+}
+/* the invisible bridge across the 7px gap to the anchor — leaving the token
+   toward the card must never cross "empty" panel and drop it */
+.cf-tipbox::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 12px;
+}
+.cf-tipbox[data-pos='bottom']::after {
+  top: auto;
+  bottom: 100%;
+}
+.cf-tipbox-main {
+  display: block;
+  padding: 6px 10px;
 }
 .cf-tipbox-term {
   font-weight: 600;
@@ -466,12 +511,58 @@
 .cf-tipbox[data-verb='exec'] .cf-tipbox-term { color: var(--verb-exec); }
 .cf-tipbox[data-verb='invoke'] .cf-tipbox-term { color: var(--verb-invoke); }
 .cf-tipbox[data-verb='agent'] .cf-tipbox-term { color: var(--verb-agent); }
-/* a hover tip is a fine-pointer courtesy — touch reads the /learn + boundary
+/* the spec link row · hairline-divided footer, accent voice (tabIndex -1 —
+   pointer courtesy; the same anchors are keyboard-reachable on /spec) */
+.cf-tipbox-link {
+  display: none;
+  padding: 5px 10px 6px;
+  border-top: 1px solid rgb(140 170 255 / 0.14);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 85%, white 15%);
+  text-decoration: none;
+  transition: color var(--dur-ui, 140ms) var(--ease-ui, ease);
+}
+.cf-tipbox[data-link='1'] .cf-tipbox-link {
+  display: block;
+}
+.cf-tipbox-link:hover {
+  color: #fff;
+}
+.cf-tipbox-link-arrow {
+  color: var(--v4-text-faint, #6b7280);
+}
+.cf-tipbox-link:hover .cf-tipbox-link-arrow {
+  color: currentColor;
+}
+/* a hover card is a fine-pointer courtesy — touch reads the /learn + boundary
    pedagogy instead (no sticky boxes under a tap) */
 @media (hover: none) {
   .cf-tipbox {
     display: none;
   }
+}
+
+/* ── the floating copy (wave P) · the titlebar belongs to the tabs ────────────
+   A quiet chip in the code well's top-right (GitHub register): raised on the
+   code, hairline border, contrast rises on hover. Above the fade + lit bands,
+   below the hover card. */
+.cf-copy-float {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 1;
+}
+.cf-copy-float .cf-copy {
+  border: 1px solid rgb(140 170 255 / 0.16);
+  background: color-mix(in srgb, var(--cf-bg) 82%, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.cf-copy-float .cf-copy:hover,
+.cf-copy-float .cf-copy:focus-visible {
+  border-color: rgb(140 170 255 / 0.34);
+  background: color-mix(in srgb, var(--cf-bg) 92%, #4f86ff 8%);
 }
 
 /* ── mobile density · step the mono down a notch so more of each line fits the

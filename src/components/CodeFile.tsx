@@ -1,6 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { tokenize, verbGlyph, type Token, type TokenKind } from './codefile-highlight'
-import { tipFor } from './codefile-tips'
+import {
+  NIKA_VERBS,
+  tokenize,
+  verbGlyph,
+  type NikaVerb,
+  type Token,
+  type TokenKind,
+} from './codefile-highlight'
+import { tipFor, tipHref, type CodeTip } from './codefile-tips'
 import { useCopy } from '../lib/use-copy'
 import { CopyIcon } from './CopyRow'
 import { armIdleFlag } from '../fx/idle-flag'
@@ -49,10 +56,25 @@ export interface CodeFileProps {
       pairing surface (hero). Delegated on the body: zero cost when absent. */
   onLineHover?: (line: number | null) => void
   /** smart hover layer (wave O): hovering a curated key / verb / `${{ … }}`
-      ref floats its plain-words line in an IDE-hover tip. Opt-in (the hero
-      reading surface); positioned imperatively — zero re-renders per hover,
-      fine pointers only (codefile.css gates hover:none). */
+      ref floats its plain-words line in an IDE-hover card (term · words · a
+      link into the /spec block that owns the term). Opt-in (the hero reading
+      surface); positioned imperatively — zero re-renders per hover, fine
+      pointers only (codefile.css gates hover:none). */
   tips?: boolean
+  /** the evidence range's hover card (wave P): hovering ANYWHERE on these
+      lit lines — not just a curated token — floats the range's own card
+      (the tab's gloss, back where it belongs). Requires `tips`. */
+  rangeTip?: { lines: [number, number]; term: string; words: string }
+  /** replaces the chrome's filename tab with call-site content (wave P: the
+      hero's file tabs live IN the titlebar — a real editor's tab bar). */
+  chromeSlot?: React.ReactNode
+  /** moves the copy button from the chrome into a floating chip at the code
+      well's top-right (GitHub register) — frees the titlebar for the tabs. */
+  copyInBody?: boolean
+  /** attributes for the .cf-body element — the hero marks the CODE area as
+      the tabpanel its chrome tabs control (correct APG topology: the tablist
+      must not live inside the panel it labels). */
+  bodyProps?: React.HTMLAttributes<HTMLDivElement>
 }
 
 /* token kind → syntax class (the literal hue resolves per theme via codefile.css) */
@@ -137,6 +159,10 @@ export function CodeFile({
   className,
   onLineHover,
   tips = false,
+  rangeTip,
+  chromeSlot,
+  copyInBody = false,
+  bodyProps,
 }: CodeFileProps) {
   const lines = useMemo(() => tokenize(yaml), [yaml])
   /* the title-bar sheen (panel-sheen.css) parks when the tab hides — arm the
@@ -167,14 +193,41 @@ export function CodeFile({
      has scrolled the line to its end. SSR ships no attribute (no fade) — the
      measurer runs on mount and tracks scroll + resize from there. */
   const preRef = useRef<HTMLPreElement>(null)
-  /* the smart-hover tip (wave O) · one floating box, moved imperatively —
+  /* the smart-hover card (wave O·P) · one floating box, moved imperatively —
      React never re-renders on hover (zero-lag law). */
   const tipRef = useRef<HTMLSpanElement>(null)
   const tipTermRef = useRef<HTMLElement>(null)
   const tipWordsRef = useRef<HTMLSpanElement>(null)
+  const tipLinkRef = useRef<HTMLAnchorElement>(null)
   const hideTip = () => {
     const box = tipRef.current
     if (box) delete box.dataset.on
+  }
+  /* fill + place the card over an anchor rect (a token span or a lit row) */
+  const showTip = (tip: CodeTip, anchor: DOMRect, body: HTMLElement) => {
+    const box = tipRef.current
+    if (!box) return
+    if (tipTermRef.current) tipTermRef.current.textContent = tip.term
+    if (tipWordsRef.current) tipWordsRef.current.textContent = tip.words
+    if (tip.verb) box.dataset.verb = tip.verb
+    else delete box.dataset.verb
+    const href = tipHref(tip.term)
+    if (tipLinkRef.current && href) tipLinkRef.current.setAttribute('href', href)
+    box.dataset.link = href ? '1' : ''
+    const b = body.getBoundingClientRect()
+    /* the body clips at its own bounds (overflow) — clamp the
+       translateX(-50%) center by the box's MEASURED half-width (content was
+       just set, so this reads the real layout), never a guessed constant.
+       Same for the flip: above only when the WHOLE box fits over the anchor. */
+    const half = box.offsetWidth / 2 + 8
+    const cx = Math.min(Math.max(anchor.left - b.left + anchor.width / 2, half), b.width - half)
+    const above = anchor.top - b.top > box.offsetHeight + 14
+    box.style.left = `${Math.round(cx)}px`
+    box.style.top = above
+      ? `${Math.round(anchor.top - b.top - 7)}px`
+      : `${Math.round(anchor.bottom - b.top + 7)}px`
+    box.dataset.pos = above ? 'top' : 'bottom'
+    box.dataset.on = '1'
   }
   useEffect(() => {
     const pre = preRef.current
@@ -185,6 +238,12 @@ export function CodeFile({
       const atEnd = pre.scrollLeft + pre.clientWidth >= pre.scrollWidth - 2
       body.dataset.overflowing = String(overflowing)
       body.dataset.atEnd = String(atEnd)
+      /* keyboard law · a scroll well must be reachable to be scrolled — the
+         pre earns a tab stop exactly when it can scroll (either axis, zero
+         tolerance: axe's judgment) and gives it back when it can't. */
+      if (pre.scrollWidth > pre.clientWidth || pre.scrollHeight > pre.clientHeight)
+        pre.tabIndex = 0
+      else pre.removeAttribute('tabindex')
       /* any scroll/resize stales the tip's measured anchor — drop it */
       const box = tipRef.current
       if (box) delete box.dataset.on
@@ -205,47 +264,56 @@ export function CodeFile({
     <div className={`cf-panel ${wrap ? 'cf-panel--wrap' : ''} ${className ?? ''}`}>
       {/* ── window chrome · the minimal titlebar register (product-frame recipe):
            3 square ticks (the affordance — never macOS traffic lights) + the
-           filename in dim mono + ONE functional chip (copy). */}
+           filename in dim mono (or the call-site's chromeSlot — the hero puts
+           its file TABS here, a real editor's tab bar) + the copy chip unless
+           it floats in the body. The sheen (panel-sheen.css) rides its own
+           clipped layer so the chrome can let a popover escape downward. */}
       <div className="cf-chrome">
+        <span className="cf-sheen" aria-hidden />
         <span className="cf-ticks" aria-hidden>
           <span className="cf-tick" />
           <span className="cf-tick" />
           <span className="cf-tick" />
         </span>
-        {filename ? (
-          <span className="cf-tab" title={filename}>
-            <span className="cf-tab-name">{filename}</span>
-          </span>
-        ) : (
-          <span className="cf-tab cf-tab--anon">
-            <span className="cf-tab-name">{lang}</span>
+        {chromeSlot ??
+          (filename ? (
+            <span className="cf-tab" title={filename}>
+              <span className="cf-tab-name">{filename}</span>
+            </span>
+          ) : (
+            <span className="cf-tab cf-tab--anon">
+              <span className="cf-tab-name">{lang}</span>
+            </span>
+          ))}
+        {copyInBody ? null : (
+          <span className="cf-chrome-right">
+            <CopyButton value={yaml} />
           </span>
         )}
-        <span className="cf-chrome-right">
-          <CopyButton value={yaml} />
-        </span>
       </div>
 
       {/* ── the editor body · gutter + code, one horizontal scroll well ────────
            One delegated pointerover serves BOTH hover layers (only fires on
            element boundaries, never per-move): the line pairing resolves the
-           1-based line from the row's data-ln; the smart tip resolves the
-           hovered key/verb/ref span against the plain-words glossary and is
-           positioned imperatively. Neither prop = zero listeners. */}
+           1-based line from the row's data-ln; the smart card resolves the
+           hovered key/verb/ref span — or, anywhere on the lit evidence lines,
+           the range's own card (wave P) — and is positioned imperatively.
+           Hovering the card itself keeps it open (its link is clickable).
+           Neither prop = zero listeners. */}
       <div
+        {...bodyProps}
         className="cf-body"
         onPointerOver={
           onLineHover || tips
             ? (e) => {
                 const target = e.target as HTMLElement
-                if (onLineHover) {
-                  const row = target.closest('.cf-line')
-                  const ln = row ? Number((row as HTMLElement).dataset.ln) : NaN
-                  onLineHover(Number.isFinite(ln) ? ln : null)
-                }
-                if (!tips) return
                 const box = tipRef.current
-                if (!box) return
+                /* over the card (or its bridge) — keep it, touch nothing */
+                if (box?.contains(target)) return
+                const row = target.closest<HTMLElement>('.cf-line')
+                const ln = row ? Number(row.dataset.ln) : NaN
+                if (onLineHover) onLineHover(Number.isFinite(ln) ? ln : null)
+                if (!tips || !box) return
                 const span = target.closest<HTMLElement>('.cf-key, .cf-verb, .cf-ref')
                 const kind = !span
                   ? ''
@@ -254,31 +322,37 @@ export function CodeFile({
                     : span.classList.contains('cf-key')
                       ? 'key'
                       : 'tref'
-                const tip = span ? tipFor(kind, span.textContent ?? '') : null
-                if (!span || !tip) {
-                  delete box.dataset.on
+                const tokenTip = span ? tipFor(kind, span.textContent ?? '') : null
+                const body = e.currentTarget as HTMLElement
+                if (span && tokenTip) {
+                  showTip(tokenTip, span.getBoundingClientRect(), body)
                   return
                 }
-                if (tipTermRef.current) tipTermRef.current.textContent = tip.term
-                if (tipWordsRef.current) tipWordsRef.current.textContent = tip.words
-                if (tip.verb) box.dataset.verb = tip.verb
-                else delete box.dataset.verb
-                const b = (e.currentTarget as HTMLElement).getBoundingClientRect()
-                const r = span.getBoundingClientRect()
-                /* anchor above the span (below when the span sits under the
-                   chrome). The panel clips at its own bounds (overflow:hidden)
-                   — clamp the translateX(-50%) center by the box's MEASURED
-                   half-width (content was just set, so this reads the real
-                   layout), never a guessed constant. */
-                const half = box.offsetWidth / 2 + 8
-                const cx = Math.min(Math.max(r.left - b.left + r.width / 2, half), b.width - half)
-                const above = r.top - b.top > 44
-                box.style.left = `${Math.round(cx)}px`
-                box.style.top = above
-                  ? `${Math.round(r.top - b.top - 7)}px`
-                  : `${Math.round(r.bottom - b.top + 7)}px`
-                box.dataset.pos = above ? 'top' : 'bottom'
-                box.dataset.on = '1'
+                /* no curated token under the pointer — the lit evidence range
+                   speaks for its whole band (operator wave P: « sur toute la
+                   sélection, pas que sur les mots ») */
+                if (
+                  rangeTip &&
+                  row &&
+                  Number.isFinite(ln) &&
+                  ln >= rangeTip.lines[0] &&
+                  ln <= rangeTip.lines[1]
+                ) {
+                  const verb = rangeTip.term
+                  showTip(
+                    {
+                      term: rangeTip.term,
+                      words: rangeTip.words,
+                      verb: (NIKA_VERBS as readonly string[]).includes(verb)
+                        ? (verb as NikaVerb)
+                        : undefined,
+                    },
+                    row.getBoundingClientRect(),
+                    body,
+                  )
+                  return
+                }
+                delete box.dataset.on
               }
             : undefined
         }
@@ -291,7 +365,13 @@ export function CodeFile({
             : undefined
         }
       >
-        <pre ref={preRef} className="cf-pre" style={{ ['--cf-gutter' as string]: `${gutterCh}ch` }}>
+        <pre
+          ref={preRef}
+          className="cf-pre"
+          role="group"
+          aria-label={filename ?? lang}
+          style={{ ['--cf-gutter' as string]: `${gutterCh}ch` }}
+        >
           <code className="cf-code">
             {lines.map((line, i) => {
               const n = i + firstLine
@@ -329,13 +409,29 @@ export function CodeFile({
             })}
           </code>
         </pre>
-        {/* the smart-hover tip · decorative twin of the /learn + boundary
+        {/* the smart-hover card · decorative twin of the /learn + boundary
             pedagogy (same plain-words source) — pointer courtesy only, so it
-            stays out of the accessibility tree; hover:none displays none. */}
+            stays out of the accessibility tree (the link is tabIndex -1: the
+            same anchors are keyboard-reachable on /spec itself); hover:none
+            displays none. Hovering the card keeps it open — the spec link is
+            clickable (the ::after bridge spans the gap to the anchor). */}
         {tips ? (
           <span ref={tipRef} className="cf-tipbox" aria-hidden>
-            <b ref={tipTermRef} className="cf-tipbox-term" />
-            <span ref={tipWordsRef} className="cf-tipbox-words" />
+            <span className="cf-tipbox-main">
+              <b ref={tipTermRef} className="cf-tipbox-term" />
+              <span ref={tipWordsRef} className="cf-tipbox-words" />
+            </span>
+            <a ref={tipLinkRef} className="cf-tipbox-link" tabIndex={-1}>
+              read it in the spec
+              <span className="cf-tipbox-link-arrow"> →</span>
+            </a>
+          </span>
+        ) : null}
+        {/* the floating copy (wave P) · the titlebar belongs to the tabs — the
+            copy chip moves into the code well's corner, GitHub register. */}
+        {copyInBody ? (
+          <span className="cf-copy-float">
+            <CopyButton value={yaml} />
           </span>
         ) : null}
       </div>

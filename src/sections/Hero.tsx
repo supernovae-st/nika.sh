@@ -141,6 +141,35 @@ function FileTabs({
   )
 }
 
+/* ── the ghost tab bar · the morph card's inert chrome twin (wave P) ──────────
+   The traveling card must render the SAME titlebar as the hero window at the
+   seam (chrome = tabs now) — this is that bar as decoration: same classes,
+   same layout, zero interaction. When the recorded flagship lives off-strip
+   (a library pick), the trigger slot carries its name, exactly like the live
+   picker does. */
+export function FileTabsGhost({ active }: { active: string }) {
+  const onStrip = TABS.some((f) => f.label === active)
+  return (
+    <span className="v4chrometabs v4chrometabs--ghost" aria-hidden>
+      <span className="v4ftabs-clip">
+        <span className="v4ftabs">
+          {TABS.map((f) => (
+            <span key={f.id} className="v4ftab" data-sel={f.label === active || undefined}>
+              {f.label}
+            </span>
+          ))}
+        </span>
+      </span>
+      <span className="v4lib">
+        <span className="v4lib-trigger" data-active={!onStrip || undefined}>
+          {onStrip ? 'library' : active}
+          <span className="v4lib-trigger-glyph">⋯</span>
+        </span>
+      </span>
+    </span>
+  )
+}
+
 /* ── the library picker · the « other files » quick-open (wave K) ─────────────
    A compact popover listing the WHOLE ten-file corpus: verb glyphs (derived
    from each plan, hued), filename, one honest phrase, task count, and the
@@ -377,6 +406,19 @@ export default function Hero({
     setPairTask(t ? t.id : null)
   }
 
+  /* the evidence range's hover card (wave P) · the tab's gloss is 'key: words'
+     — hovering ANYWHERE on the lit band floats it, with the /spec link the
+     resolver derives from the key. */
+  const gi = item.gloss.indexOf(':')
+  const rangeTip =
+    gi > 0
+      ? {
+          lines: item.highlight,
+          term: item.gloss.slice(0, gi),
+          words: item.gloss.slice(gi + 1).trim(),
+        }
+      : undefined
+
   /* the run handoff · lives at TITLE LEVEL, on the plan's caption row (wave O
      — the old bottom chip repeated the filename the chrome already shows).
      Recorded files link into the run story below; a browse-only pick says so
@@ -510,10 +552,10 @@ export default function Hero({
         {/* ── RIGHT · THE FILE · the switchable product replica ──────────────
              The selected tab is the file the whole page runs: it descends into
              the replay (beat 2), the plan (beat 3), the boundary (beat 4).
-             Reading order (wave O): THE PLAN first (what happens, assembling
-             in time order), then the file (the source of truth), then the
-             switcher — the plan's caption row sits at title level and carries
-             the run handoff. */}
+             Reading order (wave O·P): THE PLAN first (what happens, assembling
+             in time order), then the file. The switcher lives IN the window's
+             titlebar (wave P: a real editor's tab bar — the active tab IS the
+             filename, no repeat), the copy chip floats in the code corner. */}
         <div className="v4hero-editor" data-rise style={rise(180)}>
           {/* THE PLAN · derived from the selection, so every library pick gets
               its diagram for free · ≥1024 only (the editor is the phone's
@@ -527,33 +569,36 @@ export default function Hero({
             action={planAction}
             className="v4hero-dag"
           />
-          <div
-            ref={panelRef}
-            id="v4ftab-panel"
-            role="tabpanel"
-            aria-labelledby={index < HERO_TAB_COUNT ? `v4ftab-${item.id}` : 'v4lib-trigger'}
-          >
+          <div ref={panelRef}>
             {/* wrap: the hero is the READING surface — long flow lines soft-wrap
                 with a hanging indent (no right-edge clip, no hidden content).
-                tips: the smart-hover layer (plain-words glossary). The lit band
-                is the tab's EVIDENCE by default; hovering a plan node or a task
-                block swaps it to that task's exact lines (the pairing). */}
+                tips + rangeTip: the smart-hover layer (plain-words glossary +
+                the tab's gloss over its whole lit band). The lit band is the
+                tab's EVIDENCE by default; hovering a plan node or a task block
+                swaps it to that task's exact lines (the pairing). bodyProps
+                marks the CODE area as the tabpanel the chrome tabs control. */}
             <CodeFile
               yaml={item.yaml}
-              filename={item.filename}
               highlight={paired ? [paired.line0, paired.line1] : item.highlight}
               className="v4hero-code cf-panel--seam cf-panel--fadebottom"
               wrap
               tips
+              rangeTip={rangeTip}
               onLineHover={onLineHover}
+              copyInBody
+              chromeSlot={
+                <div className="v4chrometabs">
+                  <FileTabs active={index} onSelect={onSelect} />
+                  <LibraryPicker active={index} onSelect={onSelect} />
+                </div>
+              }
+              bodyProps={{
+                id: 'v4ftab-panel',
+                role: 'tabpanel',
+                'aria-labelledby':
+                  index < HERO_TAB_COUNT ? `v4ftab-${item.id}` : 'v4lib-trigger',
+              }}
             />
-          </div>
-          {/* the switcher sits UNDER the file (operator wave I) — the panel
-              chrome above already names the open file; the strip keeps the
-              pedagogy row, the library picker opens the whole corpus. */}
-          <div className="v4ftabs-row">
-            <FileTabs active={index} onSelect={onSelect} />
-            <LibraryPicker active={index} onSelect={onSelect} />
           </div>
         </div>
       </div>

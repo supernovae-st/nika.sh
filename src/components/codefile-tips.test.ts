@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { tipFor } from './codefile-tips'
+import { tipFor, tipHref } from './codefile-tips'
 import { KEY_WORDS, VERB_WORDS, WHEN_WORDS } from '../sections/morph/plain-words'
 
 /* ── the smart-hover resolver · curated, one vocabulary source ──
@@ -38,5 +38,29 @@ describe('tipFor', () => {
     expect(tipFor('string', 'permits')).toBeNull() // wrong kind
     expect(tipFor('verb', 'INFER')).toBeNull() // case-sensitive canon
     expect(tipFor('key', '')).toBeNull()
+  })
+})
+
+/* ── the spec links · every curated term points at ITS /spec block ── */
+describe('tipHref', () => {
+  it('routes concepts to the /spec blocks that own them', () => {
+    expect(tipHref('permits')).toBe('/spec#permits')
+    expect(tipHref('when')).toBe('/spec#s2')
+    expect(tipHref('invoke')).toBe('/spec#s1')
+    expect(tipHref('model')).toBe('/spec#s4')
+    expect(tipHref('${{ … }}')).toBe('/spec#s0')
+  })
+
+  it('every curated tip term carries a link (the card never dead-ends)', () => {
+    for (const key of Object.keys(KEY_WORDS)) {
+      expect(tipHref(key), key).not.toBeNull()
+    }
+    for (const verb of ['infer', 'exec', 'invoke', 'agent']) {
+      expect(tipHref(verb), verb).toBe('/spec#s1')
+    }
+  })
+
+  it('returns null for unknown terms', () => {
+    expect(tipHref('nope')).toBeNull()
   })
 })

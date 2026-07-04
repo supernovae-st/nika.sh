@@ -23,6 +23,45 @@ export interface CodeTip {
   verb?: NikaVerb
 }
 
+/* ── where each concept is SPECIFIED on this site (wave P) ────────────────────
+   Every tip card links to the /spec block that owns its term — real anchors
+   on the prerendered /spec page (S.0 envelope · S.1 verbs · S.2 task shape ·
+   the permits block · S.3 builtins · S.4 models), never guessed deep URLs
+   into the external repo. */
+const SPEC_AT: Record<string, string> = {
+  nika: '/spec#s0',
+  workflow: '/spec#s0',
+  vars: '/spec#s0',
+  outputs: '/spec#s0',
+  '${{ … }}': '/spec#s0',
+  model: '/spec#s4',
+  permits: '/spec#permits',
+  fs: '/spec#permits',
+  tools: '/spec#permits',
+  tasks: '/spec#s2',
+  depends_on: '/spec#s2',
+  when: '/spec#s2',
+  for_each: '/spec#s2',
+  timeout: '/spec#s2',
+  on_error: '/spec#s2',
+  recover: '/spec#s2',
+  infer: '/spec#s1',
+  exec: '/spec#s1',
+  invoke: '/spec#s1',
+  agent: '/spec#s1',
+  prompt: '/spec#s1',
+  schema: '/spec#s1',
+  max_tokens: '/spec#s1',
+  max_turns: '/spec#s1',
+  command: '/spec#s1',
+  tool: '/spec#s3',
+}
+
+/** the spec anchor for a tip term — null when the term has no owned block */
+export function tipHref(term: string): string | null {
+  return SPEC_AT[term] ?? null
+}
+
 /**
  * Resolve the tip for a hovered token span.
  * `kind` is the span's token class surface: 'key' | 'verb' | 'tref'

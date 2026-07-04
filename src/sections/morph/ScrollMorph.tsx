@@ -1,5 +1,6 @@
 import { Fragment, Suspense, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CodeFile } from '../../components/CodeFile'
+import { FileTabsGhost } from '../Hero'
 import { usePlan3D } from './use-plan3d'
 import { useAurora } from '../../fx/aurora-context'
 import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships'
@@ -152,6 +153,10 @@ const ThePlanScene = lazy(() => import('./ThePlanScene'))
 
 export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const script = useMemo(() => buildScript(flagship), [flagship])
+  /* the card's inert titlebar twin — memoized so MemoCodeFile's memo holds
+     (a fresh element per render would re-tokenize the file on every state
+     tick of this scroll-driven section) */
+  const ghostChrome = useMemo(() => <FileTabsGhost active={flagship.label} />, [flagship.label])
   const plan = flagship.plan
   /* the widest wave — the narration's honest "N run together" */
   const maxTogether = useMemo(
@@ -1178,9 +1183,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
 
             {/* THE FILE · the traveling card — the hero panel's OTHER size.
                 Same seam variant + wrap + the same default evidence highlight
-                (wave O: the hero lights its lit band again — the card must
-                carry it too or the band pops at the seam crossfade), so the
-                two render ONE text layout differing by a uniform scale (the
+                + the same TITLEBAR (wave P: the hero chrome carries the file
+                tabs now — the card renders their inert ghost + the floating
+                copy, or the bar would swap content at the seam crossfade), so
+                the two render ONE layout differing by a uniform scale (the
                 projection can't teleport). */}
             <div className="morph-file" ref={cardRef}>
               <MemoCodeFile
@@ -1189,6 +1195,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 highlight={flagship.highlight}
                 className="morph-code cf-panel--seam cf-panel--fadebottom"
                 wrap
+                copyInBody
+                chromeSlot={ghostChrome}
               />
             </div>
 
