@@ -92,6 +92,16 @@ export default function TheBoundary({ flagship }: { flagship: FlagshipEntry }) {
             <p className="v5bnd-filecap">
               the same file as above · the permits block, verbatim
             </p>
+            {/* the generator beat · you don't have to hand-write the list —
+                the checker derives the tightest one (real flag · nika check) */}
+            <p className="v5bnd-infer">
+              <span className="v5bnd-infer-label">don&apos;t write it by hand —</span>
+              <code className="v5bnd-infer-cmd">nika check --infer-permits</code>
+              <span className="v5bnd-infer-words">
+                prints the tightest boundary the plan needs. Paste it in, loosen it
+                yourself, or leave it strict.
+              </span>
+            </p>
           </div>
 
           {/* RIGHT · the consumer reading + the denial beat */}

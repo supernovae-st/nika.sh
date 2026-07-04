@@ -45,18 +45,22 @@
   border-bottom-width: 1px;
 }
 
-/* the floor · the verb's mono char at specimen size, chapter-hued whisper */
+/* the floor · the verb glyph printed as a dither pictogram (W9 recipe:
+   solid core + Bayer edge halo), chapter-hued whisper — the same ink the
+   live 3D field replaces, so the swap reads as the print waking up */
 .vg-char {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  font-family: var(--mono);
-  font-size: 42px;
-  line-height: 1;
-  color: color-mix(in oklch, var(--vh, var(--v4-text)) 42%, transparent);
+  color: color-mix(in oklch, var(--vh, var(--v4-text)) 52%, transparent);
   user-select: none;
   transition: opacity 320ms ease;
+}
+.vg-picto {
+  width: 76px;
+  height: 76px;
+  display: block;
 }
 .vg-tile[data-live='1'] .vg-char {
   opacity: 0;
