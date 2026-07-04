@@ -933,15 +933,17 @@
     color: var(--v4-text-faint);
     /* the transport's floor (wave M) · a quiet shelf, not a floating strip */
     border-top: 1px solid color-mix(in oklch, var(--v4-line) 70%, transparent);
-    background-color: color-mix(in oklch, var(--v4-bg, #08090b) 78%, transparent);
+    /* near-opaque: the queue-slide sends draining YAML BEHIND this shelf —
+       a translucent floor let it read through (wave M review) */
+    background-color: color-mix(in oklch, var(--v4-bg, #08090b) 92%, transparent);
     background-image: var(--v4-grain-img);
     background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
   }
 }
 .morph-play {
   flex: 0 0 auto;
-  width: 30px;
-  height: 22px;
+  width: 32px;
+  height: 24px; /* ≥24px hit target (pointer a11y) */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -990,7 +992,7 @@
 .morph-track {
   position: relative;
   flex: 1;
-  height: 20px;
+  height: 24px; /* ≥24px hit target — the rail stays a 1px hairline */
   cursor: pointer;
   touch-action: none;
   border-radius: 4px;
