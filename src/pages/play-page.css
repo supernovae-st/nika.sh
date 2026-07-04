@@ -58,16 +58,22 @@
   border-color: var(--v4-text);
 }
 .play-seed-select {
-  min-height: 34px;
-  padding: 6px 10px;
+  min-height: 30px;
+  padding: 3px 26px 3px 10px;
   border: 1px solid var(--v4-line);
-  border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  border-radius: var(--v4-radius-sm);
+  background-color: rgb(17 30 68 / 0.4);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M1 1l3 3 3-3' fill='none' stroke='%23838995' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  appearance: none;
   font-family: var(--mono);
   font-size: 11.5px;
+  letter-spacing: 0.02em;
   color: var(--v4-text-dim);
-  cursor: pointer;
-  transition: border-color 0.18s ease, color 0.18s ease;
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    border-color var(--dur-ui) var(--ease-ui);
 }
 .play-seed-select:hover {
   color: var(--v4-text);
@@ -373,6 +379,25 @@
 }
 .play-dag {
   overflow: hidden;
+  /* the primary instrument (W12b polish) · the plan floats on a quiet
+     survey field — the morph room grammar at panel scale */
+  background-image:
+    var(--v4-grain-img),
+    linear-gradient(rgb(140 170 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(140 170 255 / 0.045) 1px, transparent 1px);
+  background-size:
+    var(--v4-grain-size, 4px) var(--v4-grain-size, 4px),
+    100% 40px,
+    40px 100%;
+}
+.play-dag-head {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--v4-line);
+}
+/* secondary instruments speak lower · the plan leads the column */
+.play-permits .play-panel-head,
+.play-rail .play-panel-head {
+  opacity: 0.92;
 }
 .play-dag-head {
   display: flex;
@@ -407,17 +432,22 @@
 }
 /* phones · the dag panel stacks under the editor, waves stay readable by
    letting the map scroll sideways instead of crushing the cards */
-@media (max-width: 999px) {
-  .play-dag .dv {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .play-dag .dv::-webkit-scrollbar {
-    display: none;
-  }
-  .play-dag .dv-wave {
-    flex: 0 0 132px;
-  }
+/* the map top-aligns and SCROLLS when the file outgrows the panel — at
+   any viewport (a 5-wave plan must never crush its cards; the scroll is
+   the affordance, the fade says it continues) */
+.play-dag .dv {
+  align-items: flex-start;
+  min-height: 150px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, #000 calc(100% - 18px), transparent);
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 18px), transparent);
+}
+.play-dag .dv::-webkit-scrollbar {
+  display: none;
+}
+.play-dag .dv-wave {
+  flex: 1 0 118px;
 }
 
 /* the sim + share controls (E2) · device keys in the panel/chrome registers */
@@ -499,10 +529,11 @@
   gap: 10px;
 }
 .play-permits-row dt {
-  flex: 0 0 64px;
+  flex: 0 0 72px;
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: 0.08em;
+  white-space: nowrap;
   color: var(--v4-text-faint);
 }
 .play-permits-row dd {
@@ -538,4 +569,17 @@
   font-size: 12.5px;
   line-height: 1.55;
   color: var(--v4-text-dim);
+}
+
+/* ── masthead compression (W12b polish) · THE TOOL IS THE HERO ────────────────
+   The playground's first screen shows the instrument, not four levels of
+   prose: the title/punch/lede tighten so editor + plan enter the fold. */
+.play-title {
+  margin-bottom: 2px;
+}
+.v4page .play-title + .v4punch {
+  margin: 6px 0 4px;
+}
+.v4page .play-seeds {
+  margin-top: 16px;
 }
