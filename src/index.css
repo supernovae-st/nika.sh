@@ -635,3 +635,10 @@ h1, h2 { font-family: var(--headline); }
   outline: 2px solid var(--cyan);
   outline-offset: 2px;
 }
+
+/* the manifesto's acid movements (W10c) · the filter is referenced ONLY once
+   the effect arms (data-acid=live · motion-gated) — reduced-motion never
+   loads it, and at rest the displacement scale is 0 (pixel-still). */
+.mf-acid[data-acid='live'] {
+  filter: url(#mf-acid-warp);
+}
