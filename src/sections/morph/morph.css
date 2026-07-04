@@ -385,7 +385,7 @@
 /* armed: the flow inks in WITH the DOM DAG's return ramp (p-keyed, the
    wave-M crossfade convention — scrub-reversible, no timers) */
 .morphsec[data-armed] .morph-wire-flow {
-  opacity: clamp(0, (var(--morph-p, 1) - 0.99) / 0.01, 1);
+  opacity: clamp(0, (var(--morph-p, 1) - 0.94) / 0.03, 1);
 }
 @media (prefers-reduced-motion: no-preference) {
   .morph-wire-flow {
@@ -1020,24 +1020,29 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 7px 12px;
+    padding: 9px 12px;
     font-family: var(--mono);
     font-size: 10.5px;
     letter-spacing: 0.08em;
     color: var(--v4-text-faint);
-    /* the transport's floor (wave M) · a quiet shelf, not a floating strip */
-    border-top: 1px solid color-mix(in oklch, var(--v4-line) 70%, transparent);
+    /* the transport's floor (wave S · skeuo pass) · a MACHINED deck: hairline
+       top seam, inner top-light + bottom shade — a physical shelf the tape
+       runs on, not a translucent strip */
+    border-top: 1px solid color-mix(in oklch, var(--v4-line) 80%, transparent);
     /* near-opaque: the queue-slide sends draining YAML BEHIND this shelf —
        a translucent floor let it read through (wave M review) */
-    background-color: color-mix(in oklch, var(--v4-bg, #08090b) 92%, transparent);
+    background-color: color-mix(in oklch, var(--v4-bg, #08090b) 94%, transparent);
     background-image: var(--v4-grain-img);
     background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.045),
+      inset 0 -1px 0 rgb(0 0 0 / 0.5);
   }
 }
 .morph-play {
   flex: 0 0 auto;
-  width: 32px;
-  height: 24px; /* ≥24px hit target (pointer a11y) */
+  width: 34px;
+  height: 26px; /* ≥24px hit target (pointer a11y) */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1045,15 +1050,36 @@
   color: var(--v4-text-dim);
   border: 1px solid var(--v4-line);
   border-radius: 5px;
-  background: color-mix(in oklch, var(--v4-bg, #08090b) 72%, transparent);
+  /* a beveled hardware key (wave S): raised face, top-light, seats down a
+     pixel when pressed — the one button on the deck that feels like a button */
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.05), transparent 55%),
+    color-mix(in oklch, var(--v4-bg-raised, #11141b) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.07),
+    0 1px 0 rgb(0 0 0 / 0.55),
+    0 2px 5px -2px rgb(0 0 0 / 0.6);
   cursor: pointer;
   transition:
     color 0.18s ease,
-    border-color 0.18s ease;
+    border-color 0.18s ease,
+    transform 0.09s ease,
+    box-shadow 0.09s ease;
 }
 .morph-play:hover {
   color: var(--v4-text);
   border-color: color-mix(in oklch, var(--v4-accent) 45%, var(--v4-line));
+}
+.morph-play:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 3px rgb(0 0 0 / 0.55),
+    0 0 0 rgb(0 0 0 / 0);
+}
+/* playing → the key holds an accent charge (state you can read at a glance) */
+.morph-play[aria-pressed='true'] {
+  color: var(--v4-accent-bright, #8db4ff);
+  border-color: color-mix(in oklch, var(--v4-accent) 50%, var(--v4-line));
 }
 /* the console narrator · ONE evolving sentence in the transport (wave M) —
    the lines stack in a single grid cell and crossfade; only the active phase
@@ -1096,8 +1122,22 @@
   left: 0;
   right: 0;
   top: 50%;
-  height: 1px;
-  background: color-mix(in oklch, var(--v4-text) 20%, transparent);
+  height: 5px;
+  transform: translateY(-50%);
+  border-radius: 3px;
+  /* the groove (wave S) · sunk INTO the deck: dark well + bottom lip catch-
+     light, the played span filling with a quiet accent charge up to the head */
+  background:
+    linear-gradient(
+      to right,
+      color-mix(in oklch, var(--v4-accent) 26%, transparent) 0%,
+      color-mix(in oklch, var(--v4-accent) 26%, transparent) calc(var(--morph-p, 0) * 100%),
+      transparent calc(var(--morph-p, 0) * 100%)
+    ),
+    rgb(0 0 0 / 0.42);
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / 0.6),
+    0 1px 0 rgb(255 255 255 / 0.04);
 }
 .morph-notch {
   position: absolute;
@@ -1130,18 +1170,42 @@
 }
 .morph-playhead {
   position: absolute;
-  top: 2px;
-  bottom: 2px;
+  top: 3px;
+  bottom: 3px;
   left: calc(var(--morph-p, 0) * 100%);
-  width: 2px;
+  width: 3px;
   transform: translateX(-50%);
-  border-radius: 1px;
-  background: var(--v4-accent-bright, #8db4ff);
-  box-shadow: 0 0 8px color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 60%, transparent);
+  border-radius: 2px;
+  /* the caret handle (wave S) · a lit head you could pinch: bright core,
+     hairline sides, a halo that says « this is the live position » */
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    var(--v4-accent-bright, #8db4ff) 45%,
+    color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 80%, black) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.45),
+    0 0 10px color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 70%, transparent);
 }
 .morph-console-truth {
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   white-space: nowrap;
+}
+/* the REC lamp (wave S) · a physical indicator, lit steady — the recording
+   already happened; nothing here is being staged */
+.morph-console-truth::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 80%, white);
+  box-shadow:
+    inset 0 -1px 1px rgb(0 0 0 / 0.4),
+    0 0 6px color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 65%, transparent);
 }
 @media (max-width: 1023px) {
   .morph-console-truth {

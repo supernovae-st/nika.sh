@@ -71,33 +71,27 @@ export function MiniDag({
   const pairedNode = pairTask ? lay.nodes.find((n) => n.id === pairTask) : undefined
   return (
     <figure className={`mdag mdag--${orientation} ${className ?? ''}`}>
-      {/* ONE row (wave R): the plate LEFT (title · meta · action, a real type
-          hierarchy) · a hairline tie flowing INTO the drawing RIGHT — reading
-          order is title → plan, time then falls off the right edge where the
-          run story continues. The tie extends the dag's own wire vocabulary,
-          landing on a node dot at the drawing's side. Only the decorative
+      {/* THE SURVEY FRAME (wave S · operator reference) — the block reads as
+          one INSTRUMENT: the title sits IN the top rule (dots terminate the
+          rules, the drawing vocabulary), the content hugs inside, a base rule
+          closes the frame against the window below. Reading order: title →
+          plate (meta · action) → the tie flowing INTO the drawing — time
+          falls off the right edge where the run story continues. Decorative
           text is aria-hidden; the group carries the plan for AT. */}
+      <p className="mdag-title" aria-hidden>
+        <i className="mdag-rule mdag-rule--lead" />
+        <span className={`mdag-title-text${pairedNode ? ' mdag-title-text--pair' : ''}`}>
+          {pairedNode ? pairedNode.id : 'the plan'}
+        </span>
+        <i className="mdag-rule mdag-rule--trail" />
+      </p>
       <div className="mdag-row">
         <p className="mdag-side">
-          {pairedNode ? (
-            <>
-              <span className="mdag-cap-name mdag-cap-name--pair" aria-hidden>
-                {pairedNode.id}
-              </span>
-              <span className="mdag-cap-meta" aria-hidden>
-                {VERB_WORDS[pairedNode.verb]}
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="mdag-cap-name" aria-hidden>
-                the plan
-              </span>
-              <span className="mdag-cap-meta" aria-hidden>
-                {plan.tasks.length} steps · time {orientation === 'rail' ? '↓' : '→'}
-              </span>
-            </>
-          )}
+          <span className="mdag-cap-meta" aria-hidden>
+            {pairedNode
+              ? VERB_WORDS[pairedNode.verb]
+              : `${plan.tasks.length} steps · time ${orientation === 'rail' ? '↓' : '→'}`}
+          </span>
           {action}
         </p>
         <span className="mdag-tie" aria-hidden />
@@ -162,6 +156,7 @@ export function MiniDag({
           </div>
         </div>
       </div>
+      <span className="mdag-base" aria-hidden />
     </figure>
   )
 }

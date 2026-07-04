@@ -475,7 +475,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
          p-keyed like its opacity ramp — the hit-rects leave hover/tab order
          exactly when the layer has fully receded, and scrub-back restores
          them the same frame (never a timer) */
-      if (p >= 0.997) stage.dataset.psgone = '1'
+      if (p >= 0.97) stage.dataset.psgone = '1'
       else delete stage.dataset.psgone
 
       /* the file card travels in, then its shell steps aside for the burst */

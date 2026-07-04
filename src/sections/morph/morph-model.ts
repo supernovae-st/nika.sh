@@ -22,12 +22,12 @@ import type { ReplayLine } from '../run/replay-model'
                      DAG slot — the slot ignites on arrival (per-task
                      aspiration, wave I; the per-line scatter is gone)
    WIRES  0.56–0.66  dependency wires draw between the landed nodes
-   RUN    0.66–0.92  the recorded trace chains through the DAG + terminal
-   FLAT   0.92–0.99  the verdict beat: the exit-0 sweep crosses the graph,
+   RUN    0.66–0.86  the recorded trace chains through the DAG + terminal
+   FLAT   0.86–0.94  the verdict beat: the exit-0 sweep crosses the graph,
                      then the camera rises to top-down while the slabs lie
                      face-up — the 3D plan WATCHED lying down into the map
                      (wave K; scrub back and it stands up again)
-   DONE   0.99–1.00  the flat 2D DAG takes over as the closing frame        */
+   DONE   0.94–1.00  the flat 2D DAG takes over as the closing frame        */
 export const PH = {
   settleEnd: 0.07,
   burst0: 0.2,
@@ -37,8 +37,8 @@ export const PH = {
   term0: 0.56,
   term1: 0.63,
   run0: 0.66,
-  run1: 0.92,
-  flat1: 0.99,
+  run1: 0.86,
+  flat1: 0.94,
 } as const
 
 export const clamp01 = (v: number): number => Math.min(1, Math.max(0, v))

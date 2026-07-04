@@ -15,9 +15,9 @@
 .morph-stage[data-plan3d] .morph-dag {
   visibility: hidden;
   /* the ramp STARTS at the done boundary (phaseAt flips visibility at
-     p = 0.99) — starting earlier popped the DAG in at ~33% the frame
+     p = 0.94 · wave S widened the endgame) — starting earlier popped the DAG in at ~33% the frame
      visibility arrived (review find) */
-  opacity: clamp(0, (var(--morph-p, 1) - 0.99) / 0.01, 1);
+  opacity: clamp(0, (var(--morph-p, 1) - 0.94) / 0.03, 1);
   transition: none;
 }
 .morph-stage[data-plan3d][data-phase='done'] .morph-dag {
@@ -40,11 +40,11 @@
    same as the DOM DAG.) */
 /* the 3D advance recedes behind the flat map — p-keyed (wave M · W5): the
    mirror ramp of the DOM DAG's return, so the two layers crossfade as one
-   object at any scrub speed. The driver drops [data-psgone] at p ≥ 0.997
+   object at any scrub speed. The driver drops [data-psgone] at p ≥ 0.97
    (visibility clears the hit-rects from hover + tab order — also a pure
    function of p, never a timer). */
 .ps-layer:not(.ps-tiplayer) {
-  opacity: clamp(0, (0.997 - var(--morph-p, 1)) / 0.012, 1);
+  opacity: clamp(0, (0.968 - var(--morph-p, 1)) / 0.025, 1);
   transition: none;
 }
 .morph-stage[data-psgone] .ps-layer:not(.ps-tiplayer) {
@@ -77,9 +77,9 @@
   white-space: nowrap;
   /* p-keyed entrance (wave M · W5) — the legend rises with the last 0.8% of
      the runway; scrubbing back sinks it the same way, never a lingering fade */
-  opacity: clamp(0, (var(--morph-p, 1) - 0.992) / 0.008, 1);
+  opacity: clamp(0, (var(--morph-p, 1) - 0.955) / 0.02, 1);
   visibility: hidden;
-  transform: translate(-50%, calc(8px * clamp(0, (0.999 - var(--morph-p, 1)) / 0.007, 1)));
+  transform: translate(-50%, calc(8px * clamp(0, (0.985 - var(--morph-p, 1)) / 0.02, 1)));
   transition: none;
   pointer-events: none;
   z-index: 2;
