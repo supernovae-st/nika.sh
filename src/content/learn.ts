@@ -125,7 +125,7 @@ model: ollama/llama3.2:3b
     command: "git log --since='1 week'"
 
 - id: digest
-  depends_on: [fetch_news, repo_log]   # waits for BOTH
+  depends_on: [ fetch_news, repo_log ]   # waits for BOTH
   infer:
     prompt: "Cross-reference news with our work…"`,
     note: 'fetch_news and repo_log run at the same time. digest waits for both.',
@@ -148,11 +148,11 @@ model: ollama/llama3.2:3b
     invoke:
       tool: "nika:read"
   - id: digest
-    depends_on: [fetch_news, repo_log, read_notes]
+    depends_on: [ fetch_news, repo_log, read_notes ]
     infer:
       prompt: "One weekly radar, five bullets"
   - id: save
-    depends_on: [digest]
+    depends_on: [ digest ]
     invoke:
       tool: "nika:write"`,
     note: 'Nothing in this file says parallel. The picture below is the plan drawn from these five steps: follow the arrows, not the line order.',
@@ -166,7 +166,7 @@ model: ollama/llama3.2:3b
       'when: makes a task conditional, a yes/no test over what already happened. Waiting for success is free (depends_on already does it); when: is for conditions beyond it, like a value check.',
     file: 'when',
     yaml: `- id: alert
-  depends_on: [check]
+  depends_on: [ check ]
   when: \${{ tasks.check.output.errors > 0 }}
   invoke:
     tool: "nika:notify"`,
@@ -242,7 +242,7 @@ tasks:
         path: "./notes.md"
 
   - id: digest
-    depends_on: [fetch_news, repo_log, read_notes]
+    depends_on: [ fetch_news, repo_log, read_notes ]
     retry:
       max_attempts: 3
       backoff_ms: 1000
@@ -250,7 +250,7 @@ tasks:
       prompt: "One weekly radar on \${{ vars.topic }}, five bullets: \${{ tasks.fetch_news.output }} \${{ tasks.repo_log.output }} \${{ tasks.read_notes.output }}"
 
   - id: save
-    depends_on: [digest]
+    depends_on: [ digest ]
     invoke:
       tool: "nika:write"
       args:

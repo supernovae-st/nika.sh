@@ -94,7 +94,7 @@ tasks:
   - id: audit
     agent:
       prompt: "Find every dead link in ./docs"
-      tools: ["nika:read", "nika:fetch"]
+      tools: [ "nika:read", "nika:fetch" ]
 `,
     sub: [
       { n: '5.4.1', label: 'tool allow-list', to: '/spec#permits' },
