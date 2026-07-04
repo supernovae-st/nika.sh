@@ -131,6 +131,8 @@
 /* ── the ship-log register · the log's dimensions, at a glance ──────────────────*/
 .cl-stamp {
   margin: clamp(28px, 4vh, 44px) 0 0;
+  padding: 0;
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;

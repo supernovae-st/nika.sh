@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRevealOnce } from '../sections/use-reveal-once'
+import { useScrollWellTab } from '../lib/use-scroll-well'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CodeFile } from '../components/CodeFile'
@@ -233,6 +234,9 @@ const PERSONAS: Persona[] = [
    projected; only the layout is craft. Falls back to null if a slug has no DAG. */
 function WorkflowDag({ slug }: { slug: string }) {
   const dag = SHOWCASE_DAG[slug]
+  /* long chains (T3/T4) overflow the card — the well earns its tab stop */
+  const flowRef = useRef<HTMLDivElement>(null)
+  useScrollWellTab(flowRef, slug)
   if (!dag || dag.tasks.length === 0) return null
 
   // bucket tasks by wave, preserving declared order within a wave.
@@ -253,7 +257,7 @@ function WorkflowDag({ slug }: { slug: string }) {
           {dag.tasks.length} tasks · {dag.waves} {dag.waves === 1 ? 'step' : 'steps'}
         </span>
       </figcaption>
-      <div className="ucp-dag-flow" role="presentation">
+      <div ref={flowRef} className="ucp-dag-flow" role="group" aria-label="plan diagram">
         {columns.map((col, ci) => (
           <div className="ucp-dag-wave" key={ci}>
             <span className="ucp-dag-wave-n mono" aria-hidden>
@@ -508,25 +512,25 @@ export function Component() {
           </p>
 
           {/* the gallery register · the showcase dimensions, at a glance. */}
-          <dl className="ucp-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+          <ul className="ucp-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
             {[
               { n: total, label: 'workflows', sub: 'spec-valid' },
               { n: PERSONAS.length, label: 'audiences', sub: 'everyone → researchers' },
               { n: 4, label: 'tiers', sub: 'T1 → T4' },
               { n: totalTasks, label: 'tasks', sub: 'across all workflows' },
             ].map((s, i) => (
-              <div className="ucp-stamp-cell" key={s.label}>
+              <li className="ucp-stamp-cell" key={s.label}>
                 <span className="ucp-stamp-fig" aria-hidden>
                   {String(i).padStart(2, '0')}
                 </span>
-                <dd className="ucp-stamp-n">
+                <span className="ucp-stamp-n">
                   <CountUp n={s.n} />
-                </dd>
-                <dt className="ucp-stamp-label">{s.label}</dt>
+                </span>
+                <span className="ucp-stamp-label">{s.label}</span>
                 <span className="ucp-stamp-sub">{s.sub}</span>
-              </div>
+              </li>
             ))}
-          </dl>
+          </ul>
 
           {/* the persona rail · sticky anchor jumps (scroll-spy highlights the
               section in view). Plain in-page anchors → no JS needed to navigate. */}

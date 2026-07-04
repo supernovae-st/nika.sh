@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
 import { useCopy } from '../lib/use-copy'
+import { useScrollWellTab } from '../lib/use-scroll-well'
 
 /* ─── the monochrome install/command row · the ONE .v4install affordance ──────
    A bordered mono row + a copy button with a non-color-only copied state
@@ -38,9 +39,13 @@ export function CopyRow({
   display?: ReactNode
 }) {
   const { copied, copy } = useCopy(cmd)
+  /* keyboard law · when the command overflows its row (narrow cards), the
+     scroll well earns a tab stop so keyboard users can scroll it (use-scroll-well). */
+  const cmdRef = useRef<HTMLSpanElement>(null)
+  useScrollWellTab(cmdRef, cmd)
   return (
     <div className="v4install">
-      <span className="v4install-cmd">
+      <span ref={cmdRef} className="v4install-cmd" role="group" aria-label={label}>
         <span className="v4install-dollar" aria-hidden>
           ❯
         </span>

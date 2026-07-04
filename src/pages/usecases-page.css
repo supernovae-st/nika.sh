@@ -402,6 +402,8 @@
 /* ── the gallery register · the showcase dimensions, at a glance ────────────────*/
 .ucp-stamp {
   margin: clamp(28px, 4vh, 44px) 0 0;
+  padding: 0;
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
@@ -551,6 +553,11 @@
   padding-bottom: 4px;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in oklch, var(--v4-text) 14%, transparent) transparent;
+}
+/* keyboard scroll well (tab stop only while overflowing — use-scroll-well) */
+.ucp-dag-flow:focus-visible {
+  outline: 1px solid rgb(96 141 255 / 0.55);
+  outline-offset: -1px;
 }
 .ucp-dag-flow::-webkit-scrollbar {
   height: 6px;

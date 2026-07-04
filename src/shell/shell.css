@@ -42,6 +42,11 @@
 .v4install-cmd::-webkit-scrollbar {
   display: none;
 }
+/* keyboard scroll well (tab stop only while overflowing — CopyRow.tsx) */
+.v4install-cmd:focus-visible {
+  outline: 1px solid rgb(96 141 255 / 0.55);
+  outline-offset: -1px;
+}
 /* phones: the command usually overflows — a right-edge fade SAYS "it
    continues" (the scroll affordance made visible; the full string is one
    swipe away, never cut · W11 mobile pass) */

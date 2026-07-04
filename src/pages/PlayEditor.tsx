@@ -30,6 +30,14 @@ const CF_LINE = 'rgb(255 255 255 / 0.07)'
 const CF_GUTTER_INK = '#555b67'
 const CF_REF = '#5fd3d1' /* the teal live-wiring accent (= --cf-ref) */
 
+/* a11y · name the textbox + make the content explicitly tabbable so the
+   scroller's well has a reachable child in every checker's book (bare
+   contenteditable is focusable natively but not counted by axe). */
+const cmA11y = EditorView.contentAttributes.of({
+  'aria-label': 'workflow YAML editor',
+  tabindex: '0',
+})
+
 /* the editor surface · matches .cf-body / .cf-pre / .cf-line / .cf-ln in
    components/codefile.css. Token COLOURS stay on CodeMirror's own dark highlight
    (a muted premium palette); this theme owns the surface, gutter, caret,
@@ -115,7 +123,7 @@ export default function PlayEditor({ value, onChange, onDiags }: PlayEditorProps
       value={value}
       onChange={onChange}
       theme="dark"
-      extensions={[yamlLang(), cmLinter, lintGutter(), cfTheme]}
+      extensions={[yamlLang(), cmLinter, lintGutter(), cmA11y, cfTheme]}
       basicSetup={{ foldGutter: false, autocompletion: false, highlightActiveLine: true }}
       style={{ minHeight: 480 }}
     />

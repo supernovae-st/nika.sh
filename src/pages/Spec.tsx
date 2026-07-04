@@ -350,7 +350,7 @@ export function Component() {
 
           {/* the spec-sheet register · the contract's key dimensions, at a glance.
               Every number derives from CANON (the spec SSOT), never hand-typed. */}
-          <dl className="spec-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+          <ul className="spec-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
             {[
               { n: CANON.verbs, label: 'verbs', sub: 'locked' },
               { n: CANON.builtins, label: 'builtins', sub: '4 families' },
@@ -358,16 +358,16 @@ export function Component() {
               { n: CANON.extractModes, label: 'extract', sub: 'on fetch' },
               { n: CANON.errorNamespaces, label: 'namespaces', sub: `${CANON.errorCodes} codes` },
             ].map((s, i) => (
-              <div className="spec-stamp-cell" key={s.label}>
+              <li className="spec-stamp-cell" key={s.label}>
                 <span className="spec-stamp-fig" aria-hidden>
                   {String(i).padStart(2, '0')}
                 </span>
-                <dd className="spec-stamp-n">{s.n}</dd>
-                <dt className="spec-stamp-label">{s.label}</dt>
+                <span className="spec-stamp-n">{s.n}</span>
+                <span className="spec-stamp-label">{s.label}</span>
                 <span className="spec-stamp-sub">{s.sub}</span>
-              </div>
+              </li>
             ))}
-          </dl>
+          </ul>
 
           {/* a quick contents rail · jump links to each section */}
           <nav className="spec-toc" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
