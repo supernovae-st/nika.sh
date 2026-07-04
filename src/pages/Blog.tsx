@@ -79,11 +79,17 @@ export function Component() {
         property: 'og:description',
         content: 'Why useful AI work belongs in a file you can run, review and keep.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-blog.png' },
+      {
+        property: 'og:image:alt',
+        content: 'Nika blog · notes from the source. Long-form pedagogy on Intent as Code.',
+      },
       { name: 'twitter:title', content: 'Blog · Nika' },
       {
         name: 'twitter:description',
         content: 'Why useful AI work belongs in a file you can run, review and keep.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-blog.png' },
     ],
   })
 

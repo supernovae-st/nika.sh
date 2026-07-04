@@ -159,11 +159,18 @@ export function Component() {
         property: 'og:description',
         content: 'Write a workflow in the browser: checked as you type, nothing leaves the tab.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-play.png' },
+      {
+        property: 'og:image:alt',
+        content:
+          'Nika playground · write Nika, checked live. Edit, watch the plan, simulate the order.',
+      },
       { name: 'twitter:title', content: 'Playground · Nika' },
       {
         name: 'twitter:description',
         content: 'Write a workflow in the browser: checked as you type, nothing leaves the tab.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-play.png' },
     ],
   })
 

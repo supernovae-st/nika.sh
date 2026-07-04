@@ -56,12 +56,18 @@ export function Component() {
         content:
           'Your repeated AI task, converted into a runnable, credited .nika.yaml example.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-convert.png' },
+      {
+        property: 'og:image:alt',
+        content: 'Send Nika a workflow · your repeated AI task becomes a runnable file you own, credited to you.',
+      },
       { name: 'twitter:title', content: 'Send us a workflow · Nika' },
       {
         name: 'twitter:description',
         content:
           'Your repeated AI task, converted into a runnable, credited .nika.yaml example.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-convert.png' },
     ],
   })
 

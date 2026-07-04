@@ -278,11 +278,17 @@ export function Component() {
         property: 'og:description',
         content: 'A workflow is a file you can read · the five-minute walkthrough.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-learn.png' },
+      {
+        property: 'og:image:alt',
+        content: 'Learn Nika · one file, line by line. Nine small ideas make you fluent in real, spec-correct YAML.',
+      },
       { name: 'twitter:title', content: 'Learn · Nika' },
       {
         name: 'twitter:description',
         content: 'A workflow is a file you can read · the five-minute walkthrough.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-learn.png' },
     ],
   })
 

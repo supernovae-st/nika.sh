@@ -87,6 +87,60 @@ const CARDS = [
     detail:
       '<span class="arrow">▸</span><span>any&nbsp;model<span class="sep">·</span>your&nbsp;memory<span class="sep">·</span><b>owned&nbsp;by&nbsp;you</b></span>',
   },
+  {
+    // /play — the flagship demo. The page's own claim, verbatim register.
+    out: 'og-play.png',
+    fig: 'FIG P.0',
+    headline: 'Write Nika,<br><span class="b">checked live.</span>',
+    sub: 'Real Nika, validated as you type&nbsp;— the same NIKA codes the engine raises. Everything runs in your tab; nothing is sent&nbsp;anywhere.',
+    detail:
+      '<span class="arrow">▸</span><span>edit<span class="sep">·</span>watch&nbsp;the&nbsp;plan<span class="sep">·</span><b>simulate&nbsp;the&nbsp;order</b></span>',
+  },
+  {
+    // /install — one binary, your machine. Step 1 of the funnel.
+    out: 'og-install.png',
+    fig: 'FIG 1.0',
+    headline: 'One binary.<br><span class="b">Your machine.</span>',
+    sub: 'No daemon, no account, no cloud required. Two minutes to your first run with a free local&nbsp;model.',
+    detail:
+      '<span class="arrow">▸</span><span><b>brew</b>&nbsp;install&nbsp;supernovae-st/tap/nika</span>',
+  },
+  {
+    // /learn — fluency in one file. The reading path.
+    out: 'og-learn.png',
+    fig: 'FIG L.0',
+    headline: 'One file,<br><span class="b">line by line.</span>',
+    sub: 'A workflow is a file you can read&nbsp;— nine small ideas make you fluent. Every fragment is real, spec-correct&nbsp;YAML.',
+    detail:
+      '<span class="arrow">▸</span><span>read<span class="sep">·</span>hover<span class="sep">·</span><b>run&nbsp;it&nbsp;in&nbsp;the&nbsp;playground</b></span>',
+  },
+  {
+    // /blog — the long-form pedagogy shelf.
+    out: 'og-blog.png',
+    fig: 'FIG B.0',
+    headline: 'Notes from<br><span class="b">the source.</span>',
+    sub: 'Long-form pedagogy on Intent as Code&nbsp;— why useful AI work belongs in a file, and what local-first actually buys&nbsp;you.',
+    detail:
+      '<span class="arrow">▸</span><span>intent&nbsp;as&nbsp;code<span class="sep">·</span>four&nbsp;verbs<span class="sep">·</span><b>local-first</b></span>',
+  },
+  {
+    // /changelog — trust by moving, dated and tagged.
+    out: 'og-changelog.png',
+    fig: 'FIG C.0',
+    headline: 'Moving,<br><span class="b">without breaking.</span>',
+    sub: 'Every public milestone, dated and tagged&nbsp;— the spec opened, the verbs locked, the boundary&nbsp;shipped.',
+    detail:
+      '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
+  },
+  {
+    // /convert — the exchange. Your repeated task becomes a file you own.
+    out: 'og-convert.png',
+    fig: 'FIG →',
+    headline: 'Send us<br><span class="b">a workflow.</span>',
+    sub: 'Describe one AI task you repeat&nbsp;— we convert the best into runnable .nika.yaml examples, credited to&nbsp;you.',
+    detail:
+      '<span class="arrow">▸</span><span>your&nbsp;task<span class="sep">·</span>a&nbsp;file&nbsp;you&nbsp;<b>own</b></span>',
+  },
 ];
 
 // ── the card template (a function of one card spec) ─────────────────────────
@@ -235,7 +289,7 @@ const cardHtml = (c) => `<!doctype html>
   }
   .permits b { color: var(--ink); font-weight: 600; }
   .permits .arrow { color: var(--dim); }
-  .permits .sep { color: var(--line); }
+  .permits .sep { color: var(--faint); padding: 0 10px; }
 
   /* footer ticks — domain · stack */
   .foot {

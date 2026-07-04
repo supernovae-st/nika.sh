@@ -102,11 +102,17 @@ export function Component() {
         property: 'og:description',
         content: 'The Nika ship log: every release and public milestone, dated and tagged.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-changelog.png' },
+      {
+        property: 'og:image:alt',
+        content: 'Nika changelog · moving without breaking. Every public milestone, dated and tagged.',
+      },
       { name: 'twitter:title', content: 'Changelog · Nika' },
       {
         name: 'twitter:description',
         content: 'The Nika ship log: every release and public milestone, dated and tagged.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-changelog.png' },
     ],
   })
 

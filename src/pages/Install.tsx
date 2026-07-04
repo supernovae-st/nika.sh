@@ -59,11 +59,17 @@ export function Component() {
         content:
           'One binary, on your machine: brew, curl, or air-gapped tarball. First run needs no model and no API key.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-install.png' },
+      {
+        property: 'og:image:alt',
+        content: 'Nika install · one binary, your machine. Two minutes to your first run with a free local model.',
+      },
       { name: 'twitter:title', content: 'Install · Nika' },
       {
         name: 'twitter:description',
         content: 'One binary, on your machine. First run needs no model and no API key.',
       },
+      { name: 'twitter:image', content: 'https://nika.sh/og-install.png' },
     ],
   })
 
