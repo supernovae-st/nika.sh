@@ -58,29 +58,38 @@ const COLS: { n: string; title: string; body: string; glyph: 'bars' | 'ring' | '
 function PledgeGlyph({ kind }: { kind: 'bars' | 'ring' | 'dots' }) {
   if (kind === 'bars') {
     return (
-      <svg className="v4pledge-glyph" viewBox="0 0 64 64" aria-hidden focusable="false" shapeRendering="crispEdges">
+      <svg
+        className="v4pledge-glyph"
+        data-glyph="bars"
+        viewBox="0 0 64 64"
+        aria-hidden
+        focusable="false"
+        shapeRendering="crispEdges"
+      >
         <g fill="currentColor">
           <rect x="10" y="14" width="44" height="3" />
           <rect x="10" y="25" width="44" height="3" />
           <rect x="10" y="36" width="44" height="3" />
           <rect x="10" y="47" width="20" height="3" />
         </g>
-        {/* the cursor · the file is being written */}
+        {/* the cursor · the file is being written (blinks on card hover) */}
         <rect className="v4pledge-glyph-hot" x="34" y="44" width="9" height="9" />
       </svg>
     )
   }
   if (kind === 'ring') {
     return (
-      <svg className="v4pledge-glyph" viewBox="0 0 64 64" aria-hidden focusable="false">
+      <svg className="v4pledge-glyph" data-glyph="ring" viewBox="0 0 64 64" aria-hidden focusable="false">
         <circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" strokeWidth="3" />
-        {/* the runner · the same lap, again */}
-        <circle className="v4pledge-glyph-hot" cx="44.02" cy="19.98" r="5" />
+        {/* the runner · the same lap, again (orbits on card hover) */}
+        <g className="v4pledge-orbit">
+          <circle className="v4pledge-glyph-hot" cx="44.02" cy="19.98" r="5" />
+        </g>
       </svg>
     )
   }
   return (
-    <svg className="v4pledge-glyph" viewBox="0 0 64 64" aria-hidden focusable="false">
+    <svg className="v4pledge-glyph" data-glyph="dots" viewBox="0 0 64 64" aria-hidden focusable="false">
       <g fill="currentColor">
         {[13, 32, 51].map((cy) =>
           [13, 32, 51].map((cx) =>
@@ -88,7 +97,7 @@ function PledgeGlyph({ kind }: { kind: 'bars' | 'ring' | 'dots' }) {
           ),
         )}
       </g>
-      {/* the held cell · yours, on your disk */}
+      {/* the held cell · yours, on your disk (settles-pulse on card hover) */}
       <circle className="v4pledge-glyph-hot" cx="32" cy="32" r="6.5" />
     </svg>
   )

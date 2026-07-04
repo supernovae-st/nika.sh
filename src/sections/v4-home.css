@@ -337,6 +337,41 @@
 .v4pledge-glyph-hot {
   fill: rgb(9 18 48 / 0.95); /* the plate ink · the HOT detail reads punched-in */
 }
+
+/* the glyphs come alive on card hover (motion-safe · input-driven · transform/
+   opacity only) — each hot detail performs its OWN meaning: the cursor blinks
+   (still writing), the runner orbits (the same lap, again), the held cell
+   settles (claimed). Mechanical timing — steps and linear, never bouncy. */
+@media (prefers-reduced-motion: no-preference) {
+  .v4pledge-card:hover .v4pledge-glyph[data-glyph='bars'] .v4pledge-glyph-hot {
+    animation: v4pledge-caret 1.1s steps(1) infinite;
+  }
+  .v4pledge-card:hover .v4pledge-glyph[data-glyph='ring'] .v4pledge-orbit {
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+    animation: v4pledge-orbit 2.8s linear infinite;
+  }
+  .v4pledge-card:hover .v4pledge-glyph[data-glyph='dots'] .v4pledge-glyph-hot {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: v4pledge-cell 1.9s ease-in-out infinite;
+  }
+}
+@keyframes v4pledge-caret {
+  50% {
+    opacity: 0.12;
+  }
+}
+@keyframes v4pledge-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes v4pledge-cell {
+  50% {
+    transform: scale(1.28);
+  }
+}
 .v4pledge-fig {
   margin-top: 18px;
   font-family: var(--mono);
