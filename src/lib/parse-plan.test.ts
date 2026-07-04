@@ -21,6 +21,27 @@ tasks:
 `
 
 describe('parsePlan', () => {
+  it('extracts the declared boundary (permits) · null when absent', () => {
+    const withP = parsePlan(`permits:
+  fs: { read: [ ./notes/* ], write: [ ./brief.md ] }
+  tools: [ "nika:read", "nika:write" ]
+  exec: [ git ]
+  net: { http: [ api.github.com ] }
+tasks:
+  - id: a
+    exec: { command: "git log" }
+`)
+    expect(withP!.permits).toEqual({
+      fsRead: ['./notes/*'],
+      fsWrite: ['./brief.md'],
+      tools: ['nika:read', 'nika:write'],
+      exec: ['git'],
+      hosts: ['api.github.com'],
+    })
+    const noP = parsePlan('tasks:\n  - id: a\n    infer: { prompt: "x" }')
+    expect(noP!.permits).toBeNull()
+  })
+
   it('layers a real flagship-shaped file into waves', () => {
     const plan = parsePlan(FLAGSHIP_LIKE)
     expect(plan).not.toBeNull()

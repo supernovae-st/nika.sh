@@ -25,12 +25,41 @@ export interface PlanTask {
   gated: boolean
 }
 
+export interface PlanPermits {
+  fsRead: string[]
+  fsWrite: string[]
+  tools: string[]
+  /** argv allow-list, or the blanket boolean */
+  exec: string[] | boolean
+  hosts: string[]
+}
+
 export interface ParsedPlan {
   tasks: PlanTask[]
   /** Kahn layers (parallel tasks share a wave) · file order when cyclic */
   waves: PlanTask[][]
   edges: { from: string; to: string }[]
   cyclic: boolean
+  /** the declared boundary · null when the file declares none */
+  permits: PlanPermits | null
+}
+
+const strs = (v: unknown): string[] =>
+  Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []
+
+function permitsOf(doc: Record<string, unknown>): PlanPermits | null {
+  const p = doc.permits
+  if (!p || typeof p !== 'object') return null
+  const pm = p as Record<string, unknown>
+  const fs = (pm.fs ?? {}) as Record<string, unknown>
+  const net = (pm.net ?? {}) as Record<string, unknown>
+  return {
+    fsRead: strs(fs.read),
+    fsWrite: strs(fs.write),
+    tools: strs(pm.tools),
+    exec: pm.exec === true ? true : Array.isArray(pm.exec) ? strs(pm.exec) : false,
+    hosts: strs(net.http),
+  }
 }
 
 function targetOf(t: Record<string, unknown>, verb: PlanVerb | null): string {
@@ -106,5 +135,5 @@ export function parsePlan(src: string): ParsedPlan | null {
     waves = Array.from({ length: count }, () => [])
     for (const t of tasks) waves[waveOf.get(t.id) ?? 0].push(t)
   }
-  return { tasks, waves, edges, cyclic }
+  return { tasks, waves, edges, cyclic, permits: permitsOf(doc as Record<string, unknown>) }
 }

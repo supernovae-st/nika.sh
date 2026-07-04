@@ -13,7 +13,7 @@
      4 · .v4hero-grid       — the two-column layout (copy LEFT · editor RIGHT).
      5 · .v4ftabs / .v4ftab — the sharp mono file-tab strip above the editor.
      6 · .v4cta             — the one solid accent button (See it run).
-     7 · .v4hint            — the editor footer (the run handoff chip).
+     7 · .v4plan-run        — the run handoff on the plan's caption row.
 
    Everything decorative is pointer-events:none + aria-hidden, SSR-safe (pure CSS
    / no window at render), and reduced-motion-aware. */
@@ -790,17 +790,14 @@
   }
 }
 
-/* the browse-only footer hint · same chip register, dimmer voice */
-.v4hint--browse {
-  color: var(--v4-text-faint);
-}
 
-/* ── 5c · the mini-DAG placement (wave N · one home) ──────────────────────────
-   ONE placement at every desktop width: the band under the editor stack
-   (time flows right, /learn direction), inside the calibrated grid. The old
-   ≥1440 side rail is DELETED — 180px could not hold the drawing (caption
-   wrapped, labels ellipsised) and it sat squeezed against the fixed
-   ScrollRail HUD in the right margin (operator punch: « pas collé serré »).
+/* ── 5c · the mini-DAG placement (wave O · above the file, title level) ───────
+   ONE placement at every desktop width: the band ABOVE the editor window
+   (time flows right, /learn direction) — the reading order is plan → file →
+   switcher, and the plan's caption row sits at title level, carrying the run
+   handoff at its right end. (History: the ≥1440 side rail died in wave N —
+   180px truncated labels and sat squeezed against the ScrollRail HUD; wave O
+   lifted the band from below the stack to above it, operator annotation.)
    <1024 · hidden (the editor is the phone's whole story). */
 .v4hero-dag {
   display: none;
@@ -808,8 +805,47 @@
 @media (min-width: 1024px) {
   .v4hero-dag {
     display: block;
-    margin-top: 18px;
+    margin-bottom: 12px;
   }
+}
+
+/* the run handoff on the plan's caption row · accent voice, real link. The
+   visual is caption-sized; the hit target is not (padding expands the box to
+   ≥24px and the negative margin gives the air back to the layout). */
+.v4plan-run {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 8px 6px;
+  margin: -8px -6px;
+  border-radius: var(--v4-radius-sm);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 88%, white 12%);
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.v4plan-run:hover {
+  color: #fff;
+}
+.v4plan-run:hover .v4plan-run-arrow {
+  transform: translateY(2px);
+}
+.v4plan-run-arrow {
+  display: inline-block;
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+/* the browse voice · dimmer, the honest note — only the replayed file's name
+   keeps the accent ink */
+.v4plan-run--browse {
+  color: var(--v4-text-faint);
+  letter-spacing: 0.03em;
+}
+.v4plan-run--browse:hover {
+  color: var(--v4-text-dim);
+}
+.v4plan-run-file {
+  color: color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 88%, white 12%);
 }
 
 /* ── 6 · the one solid accent button · See it run ─────────────────────────────
@@ -842,49 +878,9 @@
   transform: translateY(1px);
 }
 
-/* ── 7 · the editor footer · the run handoff chip, one quiet row ──────────────
-   .v4hint is the continuity link INTO the Living File run below. (The per-file
-   gloss line that used to share this row was one phrase too many — it wrapped
-   the foot into two ragged rows · operator wave N.) */
-.v4hero-editorfoot {
-  display: flex;
-  align-items: center;
-  margin-top: 14px;
-}
-.v4hint {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: var(--v4-radius-sm);
-  border: 1px solid color-mix(in oklch, var(--hero-blue-line) 22%, transparent);
-  background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--v4-text-dim);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition:
-    color var(--dur-ui) var(--ease-ui),
-    border-color var(--dur-ui) var(--ease-ui),
-    background-color var(--dur-ui) var(--ease-ui);
-}
-.v4hint:hover {
-  color: var(--v4-text);
-  border-color: color-mix(in oklch, var(--hero-blue-line) 48%, transparent);
-}
-.v4hint-file {
-  color: var(--v4-accent);
-  font-variant-ligatures: none;
-}
-.v4hint-arrow {
-  color: var(--v4-text-faint);
-  transition: transform var(--dur-ui) var(--ease-ui);
-}
-.v4hint:hover .v4hint-arrow {
-  transform: translateY(2px);
-  color: var(--v4-text-dim);
-}
+/* (7 · the editor-foot chip is DELETED — wave O: the run handoff lives on the
+   plan's caption row (.v4plan-run above); the filename reads once, in the
+   window chrome.) */
 
 /* (the v4 "aspiration" scroll-scrub is DELETED — zero-lag law: no scroll-linked
    per-frame JS on the critical path. The hero→run continuity is carried by the
@@ -1087,4 +1083,25 @@
     padding: 14px 0 16px;
     max-height: calc(14px + 18 * 21px + 16px);
   }
+}
+
+/* the browser escape hatch (W12b·A2) · quiet text link after the pill —
+   the playground is one click from the first screen, hierarchy intact */
+.v4hero-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: 13.5px;
+  color: var(--v4-text-dim);
+  border-radius: var(--v4-radius);
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.v4hero-play:hover {
+  color: var(--v4-text);
+}
+.v4hero-play:focus-visible {
+  outline: 1.5px solid var(--v4-focus-ring);
+  outline-offset: 2px;
 }

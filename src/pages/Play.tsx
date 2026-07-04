@@ -318,6 +318,48 @@ export function Component() {
               )}
             </div>
 
+            {/* THE BLAST RADIUS (E3) · the file's declared boundary, live —
+                the Boundary section's grammar on YOUR yaml. Default-deny is
+                the headline; absence is an honest empty state, not silence. */}
+            <div className="play-panel play-permits" data-stale={stale || undefined}>
+              <p className="play-panel-head">
+                <span className="play-permits-glyph" aria-hidden>⌗</span>
+                The blast radius
+              </p>
+              {plan?.permits ? (
+                <>
+                  <dl className="play-permits-rows">
+                    <div className="play-permits-row">
+                      <dt>fs read</dt>
+                      <dd>{plan.permits.fsRead.length ? plan.permits.fsRead.map((g) => <code key={g}>{g}</code>) : <span className="play-permits-none">nothing</span>}</dd>
+                    </div>
+                    <div className="play-permits-row">
+                      <dt>fs write</dt>
+                      <dd>{plan.permits.fsWrite.length ? plan.permits.fsWrite.map((g) => <code key={g}>{g}</code>) : <span className="play-permits-none">nothing</span>}</dd>
+                    </div>
+                    <div className="play-permits-row">
+                      <dt>tools</dt>
+                      <dd>{plan.permits.tools.length ? plan.permits.tools.map((g) => <code key={g}>{g}</code>) : <span className="play-permits-none">none</span>}</dd>
+                    </div>
+                    <div className="play-permits-row">
+                      <dt>exec</dt>
+                      <dd>{plan.permits.exec === true ? <code>any program</code> : Array.isArray(plan.permits.exec) && plan.permits.exec.length ? plan.permits.exec.map((g) => <code key={g}>{g}</code>) : <span className="play-permits-none">denied</span>}</dd>
+                    </div>
+                    <div className="play-permits-row">
+                      <dt>net.http</dt>
+                      <dd>{plan.permits.hosts.length ? plan.permits.hosts.map((g) => <code key={g}>{g}</code>) : <span className="play-permits-none">no hosts</span>}</dd>
+                    </div>
+                  </dl>
+                  <p className="play-permits-law">everything not listed is denied · before it runs</p>
+                </>
+              ) : (
+                <p className="play-permits-empty">
+                  no <code>permits:</code> declared — add one and the file becomes its own
+                  blast radius (try the <b>human-gated-ship</b> template)
+                </p>
+              )}
+            </div>
+
             {/* the verdict rail · the validator read-out + the verb legend */}
             <aside className="play-rail">
               <div className="play-panel">

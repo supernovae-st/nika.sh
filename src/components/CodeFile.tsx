@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { tokenize, verbGlyph, type Token, type TokenKind } from './codefile-highlight'
+import { tipFor } from './codefile-tips'
 import { useCopy } from '../lib/use-copy'
 import { CopyIcon } from './CopyRow'
 import { armIdleFlag } from '../fx/idle-flag'
@@ -47,6 +48,11 @@ export interface CodeFileProps {
   /** a pointer entered a code line (1-based) · null on leave — the mini-DAG
       pairing surface (hero). Delegated on the body: zero cost when absent. */
   onLineHover?: (line: number | null) => void
+  /** smart hover layer (wave O): hovering a curated key / verb / `${{ … }}`
+      ref floats its plain-words line in an IDE-hover tip. Opt-in (the hero
+      reading surface); positioned imperatively — zero re-renders per hover,
+      fine pointers only (codefile.css gates hover:none). */
+  tips?: boolean
 }
 
 /* token kind → syntax class (the literal hue resolves per theme via codefile.css) */
@@ -130,6 +136,7 @@ export function CodeFile({
   wrap = false,
   className,
   onLineHover,
+  tips = false,
 }: CodeFileProps) {
   const lines = useMemo(() => tokenize(yaml), [yaml])
   /* the title-bar sheen (panel-sheen.css) parks when the tab hides — arm the
@@ -160,6 +167,15 @@ export function CodeFile({
      has scrolled the line to its end. SSR ships no attribute (no fade) — the
      measurer runs on mount and tracks scroll + resize from there. */
   const preRef = useRef<HTMLPreElement>(null)
+  /* the smart-hover tip (wave O) · one floating box, moved imperatively —
+     React never re-renders on hover (zero-lag law). */
+  const tipRef = useRef<HTMLSpanElement>(null)
+  const tipTermRef = useRef<HTMLElement>(null)
+  const tipWordsRef = useRef<HTMLSpanElement>(null)
+  const hideTip = () => {
+    const box = tipRef.current
+    if (box) delete box.dataset.on
+  }
   useEffect(() => {
     const pre = preRef.current
     const body = pre?.parentElement
@@ -169,6 +185,9 @@ export function CodeFile({
       const atEnd = pre.scrollLeft + pre.clientWidth >= pre.scrollWidth - 2
       body.dataset.overflowing = String(overflowing)
       body.dataset.atEnd = String(atEnd)
+      /* any scroll/resize stales the tip's measured anchor — drop it */
+      const box = tipRef.current
+      if (box) delete box.dataset.on
     }
     update()
     pre.addEventListener('scroll', update, { passive: true })
@@ -208,21 +227,65 @@ export function CodeFile({
       </div>
 
       {/* ── the editor body · gutter + code, one horizontal scroll well ────────
-           onLineHover: delegated pairing surface — pointerover only fires on
-           element boundaries (never per-move) and resolves the 1-based line
-           from the row's data-ln. Absent prop = zero listeners. */}
+           One delegated pointerover serves BOTH hover layers (only fires on
+           element boundaries, never per-move): the line pairing resolves the
+           1-based line from the row's data-ln; the smart tip resolves the
+           hovered key/verb/ref span against the plain-words glossary and is
+           positioned imperatively. Neither prop = zero listeners. */}
       <div
         className="cf-body"
         onPointerOver={
-          onLineHover
+          onLineHover || tips
             ? (e) => {
-                const row = (e.target as HTMLElement).closest('.cf-line')
-                const ln = row ? Number((row as HTMLElement).dataset.ln) : NaN
-                onLineHover(Number.isFinite(ln) ? ln : null)
+                const target = e.target as HTMLElement
+                if (onLineHover) {
+                  const row = target.closest('.cf-line')
+                  const ln = row ? Number((row as HTMLElement).dataset.ln) : NaN
+                  onLineHover(Number.isFinite(ln) ? ln : null)
+                }
+                if (!tips) return
+                const box = tipRef.current
+                if (!box) return
+                const span = target.closest<HTMLElement>('.cf-key, .cf-verb, .cf-ref')
+                const kind = !span
+                  ? ''
+                  : span.classList.contains('cf-verb')
+                    ? 'verb'
+                    : span.classList.contains('cf-key')
+                      ? 'key'
+                      : 'tref'
+                const tip = span ? tipFor(kind, span.textContent ?? '') : null
+                if (!span || !tip) {
+                  delete box.dataset.on
+                  return
+                }
+                if (tipTermRef.current) tipTermRef.current.textContent = tip.term
+                if (tipWordsRef.current) tipWordsRef.current.textContent = tip.words
+                if (tip.verb) box.dataset.verb = tip.verb
+                else delete box.dataset.verb
+                const b = (e.currentTarget as HTMLElement).getBoundingClientRect()
+                const r = span.getBoundingClientRect()
+                /* anchor above the span (below when the span sits under the
+                   chrome) · center clamped so the box never leaves the panel */
+                const cx = Math.min(Math.max(r.left - b.left + r.width / 2, 76), b.width - 76)
+                const above = r.top - b.top > 44
+                box.style.left = `${Math.round(cx)}px`
+                box.style.top = above
+                  ? `${Math.round(r.top - b.top - 7)}px`
+                  : `${Math.round(r.bottom - b.top + 7)}px`
+                box.dataset.pos = above ? 'top' : 'bottom'
+                box.dataset.on = '1'
               }
             : undefined
         }
-        onPointerLeave={onLineHover ? () => onLineHover(null) : undefined}
+        onPointerLeave={
+          onLineHover || tips
+            ? () => {
+                onLineHover?.(null)
+                hideTip()
+              }
+            : undefined
+        }
       >
         <pre ref={preRef} className="cf-pre" style={{ ['--cf-gutter' as string]: `${gutterCh}ch` }}>
           <code className="cf-code">
@@ -262,6 +325,15 @@ export function CodeFile({
             })}
           </code>
         </pre>
+        {/* the smart-hover tip · decorative twin of the /learn + boundary
+            pedagogy (same plain-words source) — pointer courtesy only, so it
+            stays out of the accessibility tree; hover:none displays none. */}
+        {tips ? (
+          <span ref={tipRef} className="cf-tipbox" aria-hidden>
+            <b ref={tipTermRef} className="cf-tipbox-term" />
+            <span ref={tipWordsRef} className="cf-tipbox-words" />
+          </span>
+        ) : null}
       </div>
     </div>
   )

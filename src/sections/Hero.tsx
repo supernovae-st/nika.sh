@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
 import { verbGlyph } from '../components/codefile-highlight'
@@ -376,6 +377,27 @@ export default function Hero({
     setPairTask(t ? t.id : null)
   }
 
+  /* the run handoff · lives at TITLE LEVEL, on the plan's caption row (wave O
+     — the old bottom chip repeated the filename the chrome already shows).
+     Recorded files link into the run story below; a browse-only pick says so
+     honestly — the replay stays on the last recorded file. */
+  const planAction = item.flagship ? (
+    <a href="#the-run" className="v4plan-run">
+      see it run{' '}
+      <span className="v4plan-run-arrow" aria-hidden>
+        ↓
+      </span>
+    </a>
+  ) : (
+    <a href="#the-run" className="v4plan-run v4plan-run--browse">
+      no recorded run · below replays{' '}
+      <span className="v4plan-run-file">{flagship.label}</span>{' '}
+      <span className="v4plan-run-arrow" aria-hidden>
+        ↓
+      </span>
+    </a>
+  )
+
   return (
     <section
       ref={rootRef}
@@ -425,6 +447,12 @@ export default function Hero({
               See it run
             </a>
             <InstallCommand />
+            {/* the browser escape hatch (W12b·A2) · the playground is the
+                flagship proof — no install, nothing leaves the tab */}
+            <Link to="/play" className="v4hero-play">
+              or try it in your browser
+              <span aria-hidden> →</span>
+            </Link>
           </div>
 
           {/* the version plate · mono metadata under the CTAs (Raycast register) */}
@@ -481,8 +509,24 @@ export default function Hero({
 
         {/* ── RIGHT · THE FILE · the switchable product replica ──────────────
              The selected tab is the file the whole page runs: it descends into
-             the replay (beat 2), the plan (beat 3), the boundary (beat 4). */}
+             the replay (beat 2), the plan (beat 3), the boundary (beat 4).
+             Reading order (wave O): THE PLAN first (what happens, assembling
+             in time order), then the file (the source of truth), then the
+             switcher — the plan's caption row sits at title level and carries
+             the run handoff. */}
         <div className="v4hero-editor" data-rise style={rise(180)}>
+          {/* THE PLAN · derived from the selection, so every library pick gets
+              its diagram for free · ≥1024 only (the editor is the phone's
+              whole story — phones keep the big See-it-run CTA). */}
+          <MiniDag
+            plan={item.plan}
+            orientation="band"
+            fileId={item.id}
+            pairTask={pairTask}
+            onPair={setPairTask}
+            action={planAction}
+            className="v4hero-dag"
+          />
           <div
             ref={panelRef}
             id="v4ftab-panel"
@@ -490,66 +534,26 @@ export default function Hero({
             aria-labelledby={index < HERO_TAB_COUNT ? `v4ftab-${item.id}` : 'v4lib-trigger'}
           >
             {/* wrap: the hero is the READING surface — long flow lines soft-wrap
-                with a hanging indent (no right-edge clip, no hidden content). */}
+                with a hanging indent (no right-edge clip, no hidden content).
+                tips: the smart-hover layer (plain-words glossary). The lit band
+                is the tab's EVIDENCE by default; hovering a plan node or a task
+                block swaps it to that task's exact lines (the pairing). */}
             <CodeFile
               yaml={item.yaml}
               filename={item.filename}
-              highlight={paired ? [paired.line0, paired.line1] : undefined}
+              highlight={paired ? [paired.line0, paired.line1] : item.highlight}
               className="v4hero-code cf-panel--seam cf-panel--fadebottom"
               wrap
+              tips
               onLineHover={onLineHover}
             />
           </div>
           {/* the switcher sits UNDER the file (operator wave I) — the panel
               chrome above already names the open file; the strip keeps the
-              five flagships, the library picker opens the whole corpus. */}
+              pedagogy row, the library picker opens the whole corpus. */}
           <div className="v4ftabs-row">
             <FileTabs active={index} onSelect={onSelect} />
             <LibraryPicker active={index} onSelect={onSelect} />
-          </div>
-          {/* THE PLAN · the same file, drawn — derived from the selection so
-              every library pick gets its diagram for free. ONE placement: the
-              band under the editor stack, ≥1024 (the old ≥1440 side rail sat
-              glued against the ScrollRail HUD in the right margin — operator
-              punch: « pas collé serré »); phones keep the editor alone. */}
-          <MiniDag
-            plan={item.plan}
-            orientation="band"
-            fileId={item.id}
-            pairTask={pairTask}
-            onPair={setPairTask}
-            className="v4hero-dag"
-          />
-          {/* the handoff chip alone — one quiet row (the per-file gloss line
-              was one phrase too many · operator wave N). Recorded files
-              descend into the run story below; a browse-only pick says so
-              honestly — the replay stays on the last recorded file. */}
-          <div className="v4hero-editorfoot">
-            {item.flagship ? (
-              <a href="#the-run" className="v4hint w-fit">
-                <span className="v4hint-file">{item.filename}</span>
-                <span className="text-faint" aria-hidden>
-                  ·
-                </span>
-                <span>see it run</span>
-                <span className="v4hint-arrow" aria-hidden>
-                  ↓
-                </span>
-              </a>
-            ) : (
-              <a href="#the-run" className="v4hint v4hint--browse w-fit">
-                <span>no recorded run for this one</span>
-                <span className="text-faint" aria-hidden>
-                  ·
-                </span>
-                <span>
-                  below replays <span className="v4hint-file">{flagship.filename}</span>
-                </span>
-                <span className="v4hint-arrow" aria-hidden>
-                  ↓
-                </span>
-              </a>
-            )}
           </div>
         </div>
       </div>

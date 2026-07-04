@@ -9,11 +9,11 @@
   font-family: var(--mono);
 }
 
-/* the micro caption · museum-plate voice */
+/* the micro caption · museum-plate voice — name left, meta pushed right, the
+   call-site action (the hero's run handoff) at the row's right end. */
 .mdag-cap {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
   gap: 8px;
   margin: 0 0 2px;
   font-size: 10px;
@@ -22,6 +22,9 @@
 }
 .mdag-cap-name {
   text-transform: uppercase;
+}
+.mdag-cap-meta {
+  margin-left: auto;
 }
 
 /* the stage scrolls sideways in its well if a wide band overflows (the

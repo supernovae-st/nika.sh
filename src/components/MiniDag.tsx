@@ -36,6 +36,9 @@ export interface MiniDagProps {
   pairTask?: string | null
   /** a node took hover/focus (null on leave) — the editor lights its lines */
   onPair?: (id: string | null) => void
+  /** an interactive slot at the caption row's right end (wave O · the hero's
+      run handoff lives at title level, beside the steps meta) */
+  action?: React.ReactNode
   className?: string
 }
 
@@ -56,6 +59,7 @@ export function MiniDag({
   fileId,
   pairTask,
   onPair,
+  action,
   className,
 }: MiniDagProps) {
   const lay = useMemo(() => layoutMiniDag(plan, orientation), [plan, orientation])
@@ -67,20 +71,30 @@ export function MiniDag({
   const pairedNode = pairTask ? lay.nodes.find((n) => n.id === pairTask) : undefined
   return (
     <figure className={`mdag mdag--${orientation} ${className ?? ''}`}>
-      <p className="mdag-cap" aria-hidden>
+      {/* the caption row · museum plate left, steps meta right, then the
+          call-site's action slot (a REAL link — only the decorative text is
+          aria-hidden; the group below carries the plan for AT). */}
+      <p className="mdag-cap">
         {pairedNode ? (
           <>
-            <span className="mdag-cap-name mdag-cap-name--pair">{pairedNode.id}</span>
-            <span className="mdag-cap-meta">{VERB_WORDS[pairedNode.verb]}</span>
+            <span className="mdag-cap-name mdag-cap-name--pair" aria-hidden>
+              {pairedNode.id}
+            </span>
+            <span className="mdag-cap-meta" aria-hidden>
+              {VERB_WORDS[pairedNode.verb]}
+            </span>
           </>
         ) : (
           <>
-            <span className="mdag-cap-name">the plan</span>
-            <span className="mdag-cap-meta">
+            <span className="mdag-cap-name" aria-hidden>
+              the plan
+            </span>
+            <span className="mdag-cap-meta" aria-hidden>
               {plan.tasks.length} steps · time {orientation === 'rail' ? '↓' : '→'}
             </span>
           </>
         )}
+        {action}
       </p>
       <div className="mdag-scroll">
         <div

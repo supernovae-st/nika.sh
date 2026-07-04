@@ -1177,12 +1177,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             </div>
 
             {/* THE FILE · the traveling card — the hero panel's OTHER size.
-                Same seam variant + wrap, so the two render ONE text layout
-                differing by a uniform scale (the projection can't teleport). */}
+                Same seam variant + wrap + the same default evidence highlight
+                (wave O: the hero lights its lit band again — the card must
+                carry it too or the band pops at the seam crossfade), so the
+                two render ONE text layout differing by a uniform scale (the
+                projection can't teleport). */}
             <div className="morph-file" ref={cardRef}>
               <MemoCodeFile
                 yaml={flagship.yaml}
                 filename={flagship.filename}
+                highlight={flagship.highlight}
                 className="morph-code cf-panel--seam cf-panel--fadebottom"
                 wrap
               />
