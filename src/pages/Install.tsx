@@ -5,6 +5,7 @@ import { routeHead, ENGINE_VERSION, DOCS } from '../content'
 import { CodeFile } from '../components/CodeFile'
 import { CopyRow } from '../components/CopyRow'
 import { InstallCommand } from '../components/InstallCommand'
+import { TermFrame } from '../components/TermFrame'
 import {
   INSTALL_SH_CMD,
   VERIFY_CMD,
@@ -21,6 +22,9 @@ import {
   DOCTOR_CMD,
   HELLO_YAML,
   HELLO_AI_YAML,
+  VERSION_TRANSCRIPT,
+  FIRST_RUN_TRANSCRIPT,
+  TROUBLE,
 } from '../content/install'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -112,8 +116,10 @@ export function Component() {
                   Check it with <code>nika --version</code>.
                 </p>
               </div>
-              <div className="ins-step-body">
+              <div className="ins-step-body ins-step-body--stack">
                 <InstallCommand />
+                {/* the anti-anxiety beat · what a good install answers (verbatim) */}
+                <TermFrame title="what you should see" lines={VERSION_TRANSCRIPT} />
               </div>
             </li>
 
@@ -224,14 +230,33 @@ export function Component() {
               </div>
               <div className="ins-step-body ins-step-body--stack">
                 <div className="ins-frame v4-frame-canvas">
-                  <CodeFile yaml={HELLO_YAML} filename="hello.nika.yaml" />
+                  <CodeFile yaml={HELLO_YAML} filename="hello.nika.yaml" wrap />
                 </div>
+                {/* the verdicts this exact file earns · captured from the real
+                    binary (content/install.ts · the honesty law) */}
+                <TermFrame title="what you should see" lines={FIRST_RUN_TRANSCRIPT} />
                 <div className="ins-frame v4-frame-canvas">
-                  <CodeFile yaml={HELLO_AI_YAML} filename="hello-ai.nika.yaml" />
+                  <CodeFile yaml={HELLO_AI_YAML} filename="hello-ai.nika.yaml" wrap />
                 </div>
               </div>
             </li>
           </ol>
+
+          {/* the honest snags · native accordions, mono register, each ≤4 lines */}
+          <section className="ins-trouble" aria-labelledby="ins-trouble-title" data-rise>
+            <h2 id="ins-trouble-title" className="ins-trouble-title mono">
+              if something catches
+            </h2>
+            {TROUBLE.map((t) => (
+              <details key={t.q} className="ins-trouble-item">
+                <summary className="ins-trouble-q">{t.q}</summary>
+                <div className="ins-trouble-a">
+                  <p>{t.a}</p>
+                  {t.cmd ? <code className="ins-trouble-cmd">{t.cmd}</code> : null}
+                </div>
+              </details>
+            ))}
+          </section>
 
           {/* the onward pointers */}
           <p className="ins-more" data-rise>

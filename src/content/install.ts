@@ -5,6 +5,7 @@
    src/test/onpage-yaml.test.ts. */
 
 import { REPO } from '../content'
+import type { TermLine } from '../components/TermFrame'
 
 /* the install script — downloads the verified release binary into ~/.nika/bin
    and prints the one PATH line to add to your shell profile. */
@@ -50,3 +51,57 @@ tasks:
     infer:
       prompt: "Say hello in one sentence."
 `
+
+/* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
+   Captured 2026-07-04 against nika 0.92.0 (brew) running the exact HELLO_YAML
+   above. The honesty law: these frames render REAL output — re-capture when
+   the CLI's voice changes, never hand-edit. */
+export const VERSION_TRANSCRIPT: TermLine[] = [
+  { kind: 'cmd', text: 'nika --version' },
+  { kind: 'out', text: 'nika 0.92.0' },
+]
+
+export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
+  { kind: 'cmd', text: 'nika check hello.nika.yaml' },
+  { kind: 'out', text: 'nika check · hello.nika.yaml' },
+  { kind: 'ok', text: ' ✔ PLAN     1 wave(s) · 1 task(s) · max parallelism 1' },
+  { kind: 'ok', text: ' ✔ COST     no inference tasks · $0.00' },
+  { kind: 'ok', text: ' ✔ SECRETS  no information-flow escapes' },
+  { kind: 'ok', text: ' ✔ TYPES    every deep output reference fits its declared shape' },
+  { kind: 'ok', text: ' ✔ TOOLS    every nika: tool names a canonical builtin' },
+  { kind: 'ok', text: ' ✔ ARGS     every invoke arg key is declared + every required arg is present' },
+  { kind: 'ok', text: ' ✔ SCHEMA   every authored schema: is satisfiable' },
+  { kind: 'soft', text: ' ○ PERMITS  no boundary declared (engine floor only) · `--infer-permits` writes one' },
+  { kind: 'ok', text: ' ✔ clean — audited before a single token was spent' },
+  { kind: 'out', text: '' },
+  { kind: 'cmd', text: 'nika run hello.nika.yaml' },
+  { kind: 'out', text: '  🦋 nika · hello · 1 tasks' },
+  { kind: 'dim', text: '     permits ✓ engine floor (no boundary declared)' },
+  { kind: 'out', text: '' },
+  { kind: 'ok', text: '  ✔  greet  exec · echo' },
+  { kind: 'dim', text: '  ── 1/1 done · $0.000 · elapsed 0.0s ──' },
+]
+
+/* ── troubleshooting · the four honest snags (each fix is verifiable) ────────── */
+export const TROUBLE: { q: string; a: string; cmd?: string }[] = [
+  {
+    q: 'command not found: nika (after the install script)',
+    a: 'The script installs to ~/.nika/bin and prints the exact PATH line to add to your shell profile (~/.zshrc, ~/.bashrc). Add it, reopen the terminal, and nika --version answers.',
+    cmd: 'export PATH="$HOME/.nika/bin:$PATH"',
+  },
+  {
+    q: 'macOS blocks the binary (manual tarball only)',
+    a: 'A hand-downloaded binary carries the quarantine flag; brew and the install script don’t. Clear it once, or right-click → Open.',
+    cmd: 'xattr -d com.apple.quarantine ./nika',
+  },
+  {
+    q: 'behind a corporate proxy',
+    a: 'The install script is plain curl — it honors the standard proxy variables for the download. The binary itself phones nothing home.',
+    cmd: 'HTTPS_PROXY=http://proxy:8080 curl -LsSf https://nika.sh/install.sh | sh',
+  },
+  {
+    q: 'checksum mismatch on the tarball',
+    a: 'A mismatch means a corrupted or tampered download — don’t run it. Re-download both the tarball and SHA256SUMS from the release page and verify again.',
+    cmd: 'sha256sum -c SHA256SUMS --ignore-missing',
+  },
+]
