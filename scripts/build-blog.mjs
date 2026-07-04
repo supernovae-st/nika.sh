@@ -39,6 +39,8 @@ function canonValues() {
     builtins: num('builtins'),
     providers: num('providers'),
     providersLocal: num('providersLocal'),
+    providersCloud: num('providersCloud'),
+    extractModes: num('extractModes'),
   }
   return { ...base, 'builtins-4': base.builtins - 4 }
 }

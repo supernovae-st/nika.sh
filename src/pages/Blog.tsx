@@ -25,18 +25,18 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'dag-for-free',
+    slug: 'replayable-trace',
     tag: 'Engine',
     date: 'soon',
-    title: 'The plan you get for free',
-    teaser: 'depends_on is all you write. Parallelism, ordering and retries fall out of the graph.',
+    title: 'The trace you can replay',
+    teaser: 'Every run leaves a record: same file, same steps, same order. Run it again and diff it like code.',
   },
   {
-    slug: 'own-your-stack',
-    tag: 'Sovereignty',
+    slug: 'written-by-agents',
+    tag: 'Agents',
     date: 'soon',
-    title: 'No cloud needed',
-    teaser: 'One Rust binary, your models, your files. What local-first actually buys you.',
+    title: 'Written by agents, reviewed by you',
+    teaser: 'nika init teaches your agent the language; the plan it writes is a file you read before it runs.',
   },
 ]
 
@@ -100,11 +100,11 @@ export function Component() {
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Long-form pedagogy on <b>Intent as Code</b>: why useful AI work belongs in a file,
-            why the language locks at four verbs, and what local-first actually buys you. Two
-            flagship reads live; more are on the way.
+            why the language locks at four verbs, and what local-first actually buys you. The
+            archive runs from the spec opening to today.
           </p>
           <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
-            2 live · 2 upcoming
+            {BLOG_POSTS.length} live · {SOON.length} upcoming
           </p>
 
           {/* ══ the shelf · one card per post (content/blog — compiled) ══════ */}

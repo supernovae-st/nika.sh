@@ -7,6 +7,22 @@
     <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
     <language>en</language>
     <item>
+      <title>No cloud needed</title>
+      <link>https://nika.sh/blog/own-your-stack</link>
+      <guid isPermaLink="true">https://nika.sh/blog/own-your-stack</guid>
+      <pubDate>Thu, 02 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Sovereignty</category>
+      <description>One Rust binary, your models, your files. What local-first actually buys you.</description>
+    </item>
+    <item>
+      <title>The plan you get for free</title>
+      <link>https://nika.sh/blog/dag-for-free</link>
+      <guid isPermaLink="true">https://nika.sh/blog/dag-for-free</guid>
+      <pubDate>Mon, 29 Jun 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>depends_on is all you write. Parallelism and ordering fall out of the graph, drawn before anything runs.</description>
+    </item>
+    <item>
       <title>Four verbs are enough</title>
       <link>https://nika.sh/blog/four-verbs</link>
       <guid isPermaLink="true">https://nika.sh/blog/four-verbs</guid>
@@ -21,6 +37,30 @@
       <pubDate>Mon, 15 Jun 2026 09:00:00 GMT</pubDate>
       <category>Manifesto</category>
       <description>Chats evaporate, files compound. The case for writing AI work down as source you own.</description>
+    </item>
+    <item>
+      <title>The blast radius is part of the file</title>
+      <link>https://nika.sh/blog/blast-radius-in-the-file</link>
+      <guid isPermaLink="true">https://nika.sh/blog/blast-radius-in-the-file</guid>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 GMT</pubDate>
+      <category>Security</category>
+      <description>permits: is the whole list. Everything not on it is denied before it runs, with a named error.</description>
+    </item>
+    <item>
+      <title>A standard library, not a plugin store</title>
+      <link>https://nika.sh/blog/standard-library-not-plugin-store</link>
+      <guid isPermaLink="true">https://nika.sh/blog/standard-library-not-plugin-store</guid>
+      <pubDate>Thu, 14 May 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>23 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.</description>
+    </item>
+    <item>
+      <title>An open spec, a copyleft engine</title>
+      <link>https://nika.sh/blog/open-spec-copyleft-engine</link>
+      <guid isPermaLink="true">https://nika.sh/blog/open-spec-copyleft-engine</guid>
+      <pubDate>Fri, 01 May 2026 09:00:00 GMT</pubDate>
+      <category>Sovereignty</category>
+      <description>Two licenses, one argument: the file must outlive every vendor, including us.</description>
     </item>
   </channel>
 </rss>

@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const PORT = 9251
-const ROUTES = ['/', '/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/changelog', '/convert']
+const ROUTES = ['/', '/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/blog/own-your-stack', '/blog/dag-for-free', '/blog/blast-radius-in-the-file', '/blog/standard-library-not-plugin-store', '/blog/open-spec-copyleft-engine', '/changelog', '/convert']
 const AXE_SRC = readFileSync(join(ROOT, 'node_modules/axe-core/axe.min.js'), 'utf8')
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.woff2': 'font/woff2', '.webp': 'image/webp', '.txt': 'text/plain', '.xml': 'application/xml' }

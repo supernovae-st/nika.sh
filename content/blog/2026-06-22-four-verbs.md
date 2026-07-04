@@ -18,6 +18,8 @@ tasks:
   - id: fetch_news
     invoke:
       tool: "nika:fetch"          # a tool, not a verb
+      args:
+        url: "https://hnrss.org/frontpage"
 
   - id: build
     exec:
@@ -27,6 +29,9 @@ tasks:
     depends_on: [fetch_news, build]
     infer:
       prompt: "Summarize what changed"
+
+outputs:
+  brief: ${{ tasks.digest.output }}
 ```
 
 The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other <!-- canon:builtins-4 -->19<!-- /canon --> builtins. Everything callable is a tool. Everything about ordering is the graph.

@@ -15,5 +15,13 @@ export const ORIGIN = 'https://nika.sh'
    BLOG_PATHS mirrors content/blog/*.md slugs — kept literal (this file stays
    import-free); the vitest drift gate (blog.test.ts) fails when a post and
    this list disagree. */
-export const BLOG_PATHS = ['/blog/four-verbs', '/blog/intent-as-code']
+export const BLOG_PATHS = [
+  '/blog/own-your-stack',
+  '/blog/dag-for-free',
+  '/blog/four-verbs',
+  '/blog/intent-as-code',
+  '/blog/blast-radius-in-the-file',
+  '/blog/standard-library-not-plugin-store',
+  '/blog/open-spec-copyleft-engine',
+]
 export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', '/changelog', '/use-cases', '/spec', '/install', '/convert']

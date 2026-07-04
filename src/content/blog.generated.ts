@@ -30,6 +30,245 @@ export interface BlogPost {
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "own-your-stack",
+    "file": "2026-07-02-own-your-stack.md",
+    "title": "No cloud needed",
+    "tag": "Sovereignty",
+    "date": "2026-07-02",
+    "description": "One Rust binary, your models, your files. What local-first actually buys you.",
+    "readingMin": 1,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Local-first gets said a lot, and it means anything from \"we cache\" to \"we sync, eventually\". Here is what it means in Nika, concretely."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The engine is one Rust binary."
+          },
+          {
+            "k": "text",
+            "text": " No daemon, no account, no telemetry phoning home. Brew or curl, and the whole runtime is on your disk. Air-gapped is a supported install path, not an afterthought."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "5 of the 14 model providers are local runtimes"
+          },
+          {
+            "k": "text",
+            "text": ": Ollama, LM Studio, llama.cpp, LocalAI, vLLM. The model is one line of the file; swap it and nothing else changes."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "hello-ai.nika.yaml",
+        "text": "nika: v1\nworkflow: hello-ai\nmodel: ollama/llama3.2:3b\n\ntasks:\n  - id: greet\n    infer:\n      prompt: \"Say hello in one sentence.\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "What that buys, concretely. "
+          },
+          {
+            "k": "strong",
+            "text": "Privacy that is structural, not contractual"
+          },
+          {
+            "k": "text",
+            "text": ": with a local model the data path never leaves the machine, so there is nothing to trust and nothing to audit. "
+          },
+          {
+            "k": "strong",
+            "text": "A free drafting loop"
+          },
+          {
+            "k": "text",
+            "text": ": iterate on prompts and plans at zero marginal cost, then point the same file at a bigger model only when the task earns it. "
+          },
+          {
+            "k": "strong",
+            "text": "Custody"
+          },
+          {
+            "k": "text",
+            "text": ": a provider deprecating a model is a one-line edit to your file, not a rewrite of your workflow."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Cloud stays a real choice: 8 cloud providers, bring your own keys, and every key stays yours. The point was never no-cloud. The point is that cloud is "
+          },
+          {
+            "k": "strong",
+            "text": "optional"
+          },
+          {
+            "k": "text",
+            "text": ": per file, per task, visible in the diff."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Your first run needs no key at all. That is not a trial mode. That is the architecture."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "dag-for-free",
+    "file": "2026-06-29-dag-for-free.md",
+    "title": "The plan you get for free",
+    "tag": "Engine",
+    "date": "2026-06-29",
+    "description": "depends_on is all you write. Parallelism and ordering fall out of the graph, drawn before anything runs.",
+    "readingMin": 1,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every orchestration tool eventually grows a scheduler dialect: stages, barriers, fan-in nodes, retry graphs. You learn its vocabulary, you maintain its diagrams, and one day the diagram and the code disagree."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Nika has one word: depends_on."
+          },
+          {
+            "k": "text",
+            "text": " A task lists what it waits for. That is the entire scheduling surface. Everything else is derived: tasks whose dependencies are met run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "release-radar.nika.yaml",
+        "text": "nika: v1\nworkflow: release-radar\n\ntasks:\n  - id: changelog\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh/changelog\"\n\n  - id: repo_log\n    exec:\n      command: \"git log --since='1 week'\"\n\n  - id: digest\n    depends_on: [changelog, repo_log]\n    infer:\n      prompt: \"What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Nothing in that file says parallel. "
+          },
+          {
+            "k": "code",
+            "text": "changelog"
+          },
+          {
+            "k": "text",
+            "text": " and "
+          },
+          {
+            "k": "code",
+            "text": "repo_log"
+          },
+          {
+            "k": "text",
+            "text": " start together because nothing orders them; "
+          },
+          {
+            "k": "code",
+            "text": "digest"
+          },
+          {
+            "k": "text",
+            "text": " waits because it says so. Add a third source tomorrow and the plan redraws itself: no stage to renumber, no barrier to move."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The plan is also drawn "
+          },
+          {
+            "k": "strong",
+            "text": "before anything runs"
+          },
+          {
+            "k": "text",
+            "text": ". It is the first verdict "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " prints for that exact file:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": " ✔ PLAN     2 wave(s) · 3 task(s) · max parallelism 2"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "A cycle is not a hang, it is a typed error naming its members. A ghost name in "
+          },
+          {
+            "k": "code",
+            "text": "depends_on"
+          },
+          {
+            "k": "text",
+            "text": " is caught in the same pass. The graph the engine runs is the graph you read, and both come from three verbs and a list."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "You never scheduled anything. The plan was in the file all along."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "four-verbs",
     "file": "2026-06-22-four-verbs.md",
     "title": "Four verbs are enough",
@@ -100,7 +339,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "morning-brief.nika.yaml",
-        "text": "nika: v1\nworkflow: morning-brief\n\ntasks:\n  - id: fetch_news\n    invoke:\n      tool: \"nika:fetch\"          # a tool, not a verb\n\n  - id: build\n    exec:\n      command: \"cargo build --release\"\n\n  - id: digest\n    depends_on: [fetch_news, build]\n    infer:\n      prompt: \"Summarize what changed\""
+        "text": "nika: v1\nworkflow: morning-brief\n\ntasks:\n  - id: fetch_news\n    invoke:\n      tool: \"nika:fetch\"          # a tool, not a verb\n      args:\n        url: \"https://hnrss.org/frontpage\"\n\n  - id: build\n    exec:\n      command: \"cargo build --release\"\n\n  - id: digest\n    depends_on: [fetch_news, build]\n    infer:\n      prompt: \"Summarize what changed\"\n\noutputs:\n  brief: ${{ tasks.digest.output }}"
       },
       {
         "k": "p",
@@ -299,6 +538,271 @@ export const BLOG_POSTS: BlogPost[] = [
           {
             "k": "text",
             "text": " it. Explore in chat. Then write the intent down, and own it forever."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "blast-radius-in-the-file",
+    "file": "2026-06-04-blast-radius-in-the-file.md",
+    "title": "The blast radius is part of the file",
+    "tag": "Security",
+    "date": "2026-06-04",
+    "description": "permits: is the whole list. Everything not on it is denied before it runs, with a named error.",
+    "readingMin": 1,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Ask an agent framework what its agent may touch, and the honest answer is usually: whatever the process may touch. The permission model is the operating system's, the audit is a log file, and the log is written after the damage."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "In Nika, the boundary is a block in the file you review:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "daily-brief.nika.yaml",
+        "text": "nika: v1\nworkflow: daily-brief\n\npermits:\n  fs:\n    read: [ ./notes/* ]\n    write: [ ./brief.md ]\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  - id: notes\n    invoke:\n      tool: \"nika:read\"\n      args:\n        path: ./notes/today.md\n\n  - id: save\n    depends_on: [notes]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: ./brief.md\n        content: \"${{ tasks.notes.output }}\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "permits: is the whole list."
+          },
+          {
+            "k": "text",
+            "text": " Not a suggestion, not a default profile. Once the block is present, every category is default-deny: which files it may read and write, which tools it may call, which programs, which hosts. A reviewer reads the blast radius in the diff, right next to the logic it serves."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Denied means before."
+          },
+          {
+            "k": "text",
+            "text": " A step that reaches outside the list fails with a typed error, "
+          },
+          {
+            "k": "code",
+            "text": "NIKA-SEC-004"
+          },
+          {
+            "k": "text",
+            "text": ", before the effect happens. Not logged after the fact, not flagged for Monday's incident review: the write to "
+          },
+          {
+            "k": "code",
+            "text": "~/.ssh/config"
+          },
+          {
+            "k": "text",
+            "text": " simply never runs."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "And you do not hand-write the list. "
+          },
+          {
+            "k": "code",
+            "text": "nika check --infer-permits"
+          },
+          {
+            "k": "text",
+            "text": " reads the plan and prints the tightest boundary it needs. You loosen it deliberately, line by line, in review, which is where loosening belongs."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Capability declarations next to intent. It is one of the oldest ideas in security, applied to the newest way of doing work."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "standard-library-not-plugin-store",
+    "file": "2026-05-14-standard-library-not-plugin-store.md",
+    "title": "A standard library, not a plugin store",
+    "tag": "Language",
+    "date": "2026-05-14",
+    "description": "23 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.",
+    "readingMin": 1,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "23 builtins ride the binary"
+          },
+          {
+            "k": "text",
+            "text": ", across four families: files, data, web, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with "
+          },
+          {
+            "k": "code",
+            "text": "invoke:"
+          },
+          {
+            "k": "text",
+            "text": ", they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "One builtin, 9 honest shapes."
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "code",
+            "text": "nika:fetch"
+          },
+          {
+            "k": "text",
+            "text": " turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "headlines.nika.yaml",
+        "text": "nika: v1\nworkflow: headlines\n\ntasks:\n  - id: page\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh\"\n\n  - id: save\n    depends_on: [page]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./page.md\"\n        content: \"${{ tasks.page.output }}\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Everything beyond the library arrives through MCP: name a "
+          },
+          {
+            "k": "code",
+            "text": "mcp:"
+          },
+          {
+            "k": "text",
+            "text": " tool id and any server you already run is reachable, but only if the file allow-lists it. Growth belongs in the toolbelt, not in the grammar."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The library grows. The language holds still. That trade is the design."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "open-spec-copyleft-engine",
+    "file": "2026-05-01-open-spec-copyleft-engine.md",
+    "title": "An open spec, a copyleft engine",
+    "tag": "Sovereignty",
+    "date": "2026-05-01",
+    "description": "Two licenses, one argument: the file must outlive every vendor, including us.",
+    "readingMin": 2,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The nika-spec repository went public this week, under Apache-2.0. The engine that runs it is AGPL-3.0-or-later. Two licenses for one project is a choice you should be able to interrogate, so here is the whole argument."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The spec is the part you adopt."
+          },
+          {
+            "k": "text",
+            "text": " The envelope, the four verbs, the task shape, the JSON schema, the conformance suite: all Apache-2.0, with a patent grant. Any team can build a competing runtime on it, and nothing we do later can revoke that. A language you might write hundreds of files in should not have a single implementation as its ceiling. This is the GraphQL shape: an open contract, many possible engines."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The engine is the part someone would take."
+          },
+          {
+            "k": "text",
+            "text": " The recent history of open agent tooling is a history of extraction: a permissively-licensed runtime gets wrapped, hosted, improved in private, and the improvements never come home. AGPL closes that door. Run our engine as a service, fork it, build a business next to it: all fine. But the changes ship back. The protection this buys is not ours, it is yours: no fork of the engine can quietly become a closed thing your files depend on."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Your exit is cp -r."
+          },
+          {
+            "k": "text",
+            "text": " The workflows are plain text in your repo. The spec is Apache. The engine is copyleft. Take the three together and the cost of leaving Nika is copying a folder. Compare that with the cost of leaving wherever your prompts live today."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Licenses are boring until the Friday they are not. We picked ours so the file you write today still runs the day the company that made the runner is gone. That includes us."
           }
         ]
       }

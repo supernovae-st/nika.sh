@@ -152,6 +152,54 @@ const CARDS = [
       '<span class="arrow">▸</span><span>infer<span class="sep">·</span>exec<span class="sep">·</span>invoke<span class="sep">·</span>agent<span class="sep">·</span><b>no&nbsp;fifth,&nbsp;ever</b></span>',
   },
   {
+    // /blog/open-spec-copyleft-engine — the licensing argument.
+    out: 'og-blog-open-spec-copyleft-engine.png',
+    fig: 'FIG B.3',
+    size: 62,
+    headline: 'An open spec,<br><span class="b">a copyleft engine.</span>',
+    sub: 'Apache-2.0 spec anyone can build on. AGPL engine nobody can take closed. The exit is cp&nbsp;-r.',
+    detail:
+      '<span class="arrow">▸</span><span>spec&nbsp;Apache-2.0<span class="sep">·</span>engine&nbsp;AGPL-3.0<span class="sep">·</span><b>files&nbsp;yours</b></span>',
+  },
+  {
+    // /blog/standard-library-not-plugin-store — the stdlib argument.
+    out: 'og-blog-standard-library-not-plugin-store.png',
+    fig: 'FIG B.4',
+    size: 62,
+    headline: 'A standard library,<br><span class="b">not a plugin store.</span>',
+    sub: '23 builtins in the binary, allow-listed, nothing to install&nbsp;— the library grows, the language holds&nbsp;still.',
+    detail:
+      '<span class="arrow">▸</span><span>files<span class="sep">·</span>data<span class="sep">·</span>web<span class="sep">·</span>flow<span class="sep">·</span><b>nothing&nbsp;to&nbsp;install</b></span>',
+  },
+  {
+    // /blog/blast-radius-in-the-file — the permits argument.
+    out: 'og-blog-blast-radius-in-the-file.png',
+    fig: 'FIG B.5',
+    size: 62,
+    headline: 'The blast radius<br><span class="b">is part of the file.</span>',
+    sub: 'permits: is the whole list&nbsp;— everything not on it is denied before it runs, with a named&nbsp;error.',
+    detail:
+      '<span class="arrow">▸</span><span><b>permits:</b>&nbsp;default-deny<span class="sep">·</span>NIKA-SEC-004<span class="sep">·</span>before&nbsp;it&nbsp;runs</span>',
+  },
+  {
+    // /blog/dag-for-free — the plan argument.
+    out: 'og-blog-dag-for-free.png',
+    fig: 'FIG B.6',
+    headline: 'The plan<br><span class="b">you get for free.</span>',
+    sub: 'depends_on is all you write. Parallelism and ordering fall out of the graph, drawn before anything&nbsp;runs.',
+    detail:
+      '<span class="arrow">▸</span><span><b>depends_on</b><span class="sep">·</span>waves<span class="sep">·</span>max&nbsp;parallelism,&nbsp;computed</span>',
+  },
+  {
+    // /blog/own-your-stack — the local-first argument.
+    out: 'og-blog-own-your-stack.png',
+    fig: 'FIG B.7',
+    headline: 'No cloud<br><span class="b">needed.</span>',
+    sub: 'One Rust binary, your models, your files&nbsp;— 5 of the 14 providers run fully&nbsp;local.',
+    detail:
+      '<span class="arrow">▸</span><span>ollama<span class="sep">·</span>lm&nbsp;studio<span class="sep">·</span>llama.cpp<span class="sep">·</span>localai<span class="sep">·</span>vllm</span>',
+  },
+  {
     // /convert — the exchange. Your repeated task becomes a file you own.
     out: 'og-convert.png',
     fig: 'FIG →',
