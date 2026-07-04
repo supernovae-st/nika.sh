@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { STEPS, ERROR_JSON } from '../content/learn'
+import { STEPS, ERROR_JSON, FULL_FILE } from '../content/learn'
 
 /* ── /learn fragment validity · every code block on the page parses ──────────
    The walkthrough shows YAML fragments (not always full workflows), but each
@@ -59,5 +59,41 @@ describe('/learn · every teaching fragment parses', () => {
     expect(err.code).toMatch(/^NIKA-[A-Z]+-\d{3}$/)
     expect(typeof err.transient).toBe('boolean')
     expect(err.details).toBeTypeOf('object')
+  })
+it('the assembled whole file composes every taught idea and stays coherent', () => {
+    interface Task {
+      id: string
+      depends_on?: string[]
+    }
+    const doc = parse(FULL_FILE) as {
+      nika: string
+      workflow: string
+      vars: Record<string, unknown>
+      model: string
+      tasks: Task[]
+      outputs: Record<string, unknown>
+    }
+    /* the envelope (01) · the inputs (02) · the model (03) */
+    expect(doc.nika).toBe('v1')
+    expect(doc.workflow).toBe('weekly-radar')
+    expect(Object.keys(doc.vars)).toEqual(['output_dir', 'topic'])
+    expect(doc.model).toBe('ollama/llama3.2:3b')
+    /* the plan (05/06) · same five tasks, same wave shape as the drawn DAG */
+    expect(doc.tasks.map((t) => t.id)).toEqual([
+      'fetch_news',
+      'repo_log',
+      'read_notes',
+      'digest',
+      'save',
+    ])
+    const deps = Object.fromEntries(doc.tasks.map((t) => [t.id, t.depends_on ?? []]))
+    expect(deps.digest).toEqual(['fetch_news', 'repo_log', 'read_notes'])
+    expect(deps.save).toEqual(['digest'])
+    /* the failure policy (08) rides the digest · the outputs (09) are named */
+    const digest = doc.tasks.find((t) => t.id === 'digest') as Task & {
+      retry?: { max_attempts: number }
+    }
+    expect(digest.retry?.max_attempts).toBe(3)
+    expect(Object.keys(doc.outputs)).toEqual(['brief'])
   })
 })

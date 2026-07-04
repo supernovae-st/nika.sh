@@ -342,3 +342,42 @@
   color: var(--v4-text-dim);
   text-wrap: pretty;
 }
+
+/* ─── 10 · the whole file · the assembled workflow + the engine's verdict ──── */
+.lrn-full {
+  margin-top: clamp(48px, 8vh, 84px);
+  border-top: 1px solid var(--seam-hairline);
+  padding-top: clamp(24px, 4vh, 40px);
+}
+.lrn-full-fig {
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.lrn-full-title {
+  margin-top: 8px;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--v4-text);
+}
+.lrn-full-body {
+  margin-top: 10px;
+  max-width: 58ch;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--v4-text-dim);
+}
+.lrn-full-pair {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 980px) {
+  .lrn-full-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

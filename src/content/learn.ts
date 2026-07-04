@@ -6,6 +6,7 @@
    src/test/learn-fragments.test.ts. */
 
 import { VERB_WORDS, DEPENDS_WORDS, WHEN_WORDS, PERMITS_WORDS } from '../sections/morph/plain-words'
+import type { TermLine } from '../components/TermFrame'
 
 /* ── the plain-words dictionary · one line per key, anyone-register ───────────
    The hover/focus glossary for every YAML panel on /learn (Learn.tsx wraps
@@ -204,6 +205,78 @@ model: ollama/llama3.2:3b
 outputs:
   brief: \${{ tasks.digest.output.result }}`,
   },
+]
+
+/* ── the whole file · the nine fragments, assembled ───────────────────────────
+   Every idea above, composed into the ONE workflow the page teaches. This
+   exact text passes `nika check` on the shipping binary — the transcript
+   below is that run, VERBATIM (captured 2026-07-04 · nika 0.92.0). The
+   honesty law: re-capture when the CLI's voice changes, never hand-edit. */
+export const FULL_FILE = `nika: v1
+workflow: weekly-radar
+
+vars:
+  output_dir: "./radar"
+  topic:
+    type: string
+    required: true
+    description: "Subject to research"
+
+model: ollama/llama3.2:3b
+
+tasks:
+  - id: fetch_news
+    invoke:
+      tool: "nika:fetch"
+      args:
+        url: "https://hnrss.org/frontpage"
+
+  - id: repo_log
+    exec:
+      command: "git log --since='1 week'"
+
+  - id: read_notes
+    invoke:
+      tool: "nika:read"
+      args:
+        path: "./notes.md"
+
+  - id: digest
+    depends_on: [fetch_news, repo_log, read_notes]
+    retry:
+      max_attempts: 3
+      backoff_ms: 1000
+    infer:
+      prompt: "One weekly radar on \${{ vars.topic }}, five bullets: \${{ tasks.fetch_news.output }} \${{ tasks.repo_log.output }} \${{ tasks.read_notes.output }}"
+
+  - id: save
+    depends_on: [digest]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "\${{ vars.output_dir }}/radar.md"
+        content: "\${{ tasks.digest.output }}"
+
+outputs:
+  brief: \${{ tasks.digest.output }}
+`
+
+export const FULL_FILE_TRANSCRIPT: TermLine[] = [
+  { kind: 'cmd', text: 'nika check weekly-radar.nika.yaml' },
+  { kind: 'out', text: 'nika check · weekly-radar.nika.yaml' },
+  { kind: 'ok', text: ' ✔ PLAN     3 wave(s) · 5 task(s) · max parallelism 3' },
+  { kind: 'warn', text: ' ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)' },
+  { kind: 'dim', text: '   digest  ollama/llama3.2:3b  UNBOUNDED — no max_tokens declared' },
+  { kind: 'ok', text: ' ✔ SECRETS  no information-flow escapes' },
+  { kind: 'ok', text: ' ✔ TYPES    every deep output reference fits its declared shape' },
+  { kind: 'ok', text: ' ✔ TOOLS    every nika: tool names a canonical builtin' },
+  { kind: 'ok', text: ' ✔ ARGS     every invoke arg key is declared + every required arg is present' },
+  { kind: 'ok', text: ' ✔ SCHEMA   every authored schema: is satisfiable' },
+  { kind: 'soft', text: ' ○ PERMITS  no boundary declared (engine floor only) · `--infer-permits` writes one' },
+  { kind: 'soft', text: ' ↳ HINT     [cost] declare `max_tokens` on `digest` — the cost report becomes a hard ceiling instead of UNBOUNDED' },
+  { kind: 'soft', text: ' ↳ HINT     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)' },
+  { kind: 'soft', text: ' ↳ HINT     [inputs] required input(s) with no default · pass at run time: --var topic=…' },
+  { kind: 'ok', text: ' ✔ clean — audited before a single token was spent' },
 ]
 
 export const ERROR_JSON = `{

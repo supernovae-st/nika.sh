@@ -90,9 +90,12 @@
 .tf-line--ok {
   color: #9fb1c9;
 }
-/* the verdict glyph carries the CLI's green — the lone colour */
+/* the verdict glyphs carry the CLI's own colours — nothing else does */
 .tf-check {
   color: #71e08a;
+}
+.tf-warn {
+  color: #e0b071;
 }
 .tf-line--soft,
 .tf-line--dim {

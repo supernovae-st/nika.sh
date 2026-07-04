@@ -17,7 +17,7 @@ import './term-frame.css'
      dim   secondary narration (faint)
    SSR-static, zero measurement except the shared scroll-well tab law. */
 
-export type TermLine = { kind: 'cmd' | 'ok' | 'soft' | 'out' | 'dim'; text: string }
+export type TermLine = { kind: 'cmd' | 'ok' | 'warn' | 'soft' | 'out' | 'dim'; text: string }
 
 export function TermFrame({ title, lines }: { title: string; lines: TermLine[] }) {
   const preRef = useRef<HTMLPreElement>(null)
@@ -47,6 +47,12 @@ export function TermFrame({ title, lines }: { title: string; lines: TermLine[] }
               {l.text.slice(0, l.text.indexOf('✔'))}
               <span className="tf-check">✔</span>
               {l.text.slice(l.text.indexOf('✔') + 1)}
+            </span>
+          ) : l.kind === 'warn' && l.text.includes('⚠') ? (
+            <span key={i} className="tf-line tf-line--ok">
+              {l.text.slice(0, l.text.indexOf('⚠'))}
+              <span className="tf-warn">⚠</span>
+              {l.text.slice(l.text.indexOf('⚠') + 1)}
             </span>
           ) : (
             <span key={i} className={`tf-line tf-line--${l.kind}`}>

@@ -6,8 +6,10 @@ import { REPO, SPEC, DOCS, routeHead } from '../content'
 import { CodeFile } from '../components/CodeFile'
 import { DecodeText } from '../fx/DecodeText'
 import { tokenize } from '../components/codefile-highlight'
-import { STEPS, ERROR_JSON, DICT } from '../content/learn'
+import { STEPS, ERROR_JSON, DICT, FULL_FILE, FULL_FILE_TRANSCRIPT } from '../content/learn'
 import { InstallCommand } from '../components/InstallCommand'
+import { TermFrame } from '../components/TermFrame'
+import { track } from '../lib/track'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
 import './page-chrome.css'
@@ -263,6 +265,25 @@ const ERROR_FIELDS: { key: string; gloss: React.ReactNode }[] = [
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
+  /* the funnel beat · reaching the close = the walk was completed (A6:
+     learn-done). Fires once; track() no-ops when analytics is absent. */
+  const ctaRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ctaRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          track('learn-done')
+          io.disconnect()
+        }
+      },
+      { threshold: 0.4 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   useHead({
     title: 'Learn · Nika',
     link: routeHead('/learn').link,
@@ -380,12 +401,32 @@ export function Component() {
             </div>
           </div>
 
+          {/* the whole file · the nine fragments assembled, checked by the engine.
+              The transcript is VERBATIM binary output (content/learn.ts). */}
+          <div className="lrn-full" data-rise>
+            <p className="lrn-full-fig mono">10 · the whole file</p>
+            <h2 className="lrn-full-title">Every idea above, in one file</h2>
+            <p className="lrn-full-body">
+              The nine fragments compose into the workflow this page has been teaching. This
+              exact text passes the engine&apos;s audit — the verdict below is{' '}
+              <code className="mono">nika check</code>&apos;s real answer, and its hints are
+              your next three lessons.
+            </p>
+            <div className="lrn-full-pair">
+              <div className="lrn-frame v4-frame-canvas">
+                <LearnFile yaml={FULL_FILE} filename="weekly-radar.nika.yaml" />
+              </div>
+              <TermFrame title="what the engine says" lines={FULL_FILE_TRANSCRIPT} />
+            </div>
+          </div>
+
           {/* the close · the on-ramp (blueprint, not the .skeuo-brand pill) */}
-          <div className="lrn-cta" data-rise>
+          <div ref={ctaRef} className="lrn-cta" data-rise>
             <h2 className="lrn-cta-title">That&apos;s the whole language.</h2>
             <p className="lrn-cta-body">
               Nine ideas, four verbs, one file. Install it, write one, run it, or open the
-              playground and check your file as you type.
+              playground and check your file as you type — or send us the task you repeat and
+              get it back as a file.
             </p>
             <div style={{ marginTop: 18 }}>
               <InstallCommand />
@@ -393,6 +434,13 @@ export function Component() {
             <div className="v4doclinks">
               <Link to="/play" className="v4doclink">
                 Open the playground
+                <span aria-hidden className="v4doclink-arrow">
+                  {' '}
+                  →
+                </span>
+              </Link>
+              <Link to="/convert" className="v4doclink" data-track="convert-open">
+                Send us a workflow
                 <span aria-hidden className="v4doclink-arrow">
                   {' '}
                   →
