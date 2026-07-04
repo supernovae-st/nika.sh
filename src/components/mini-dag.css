@@ -9,11 +9,11 @@
   font-family: var(--mono);
 }
 
-/* ── the one row (wave Q) · drawing LEFT · tie · side plate RIGHT ─────────────
-   The plate (THE PLAN / steps meta / the run action) stacks on the right,
-   right-aligned over the window's right edge; the tie is a hairline in the
-   dag's own wire ink, flowing from the drawing INTO the plate — one linked
-   composition instead of a caption floating over a centered drawing. */
+/* ── the one row (wave R) · plate LEFT · tie · drawing RIGHT ──────────────────
+   Reading order: the TITLE first (a real museum plate with a type hierarchy —
+   title speaks, meta whispers, the action glows), then the tie — a hairline
+   in the dag's own wire ink — flows INTO the drawing, landing on a node dot.
+   The drawing hugs the right edge, where time falls off toward the run story. */
 .mdag-row {
   display: flex;
   align-items: center;
@@ -30,8 +30,9 @@
   align-self: center;
   background: linear-gradient(
     to right,
-    transparent,
-    color-mix(in oklch, var(--v4-accent) 38%, transparent)
+    transparent 0%,
+    color-mix(in oklch, var(--v4-accent) 14%, transparent) 20%,
+    color-mix(in oklch, var(--v4-accent) 40%, transparent) 100%
   );
 }
 .mdag-tie::after {
@@ -45,24 +46,29 @@
   border-radius: 50%;
   background: color-mix(in oklch, var(--v4-accent) 55%, transparent);
 }
+/* the plate · three voices, one column (wave R typo pass) */
 .mdag-side {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+  align-items: flex-start;
+  gap: 7px;
   flex: 0 0 auto;
-  max-width: 230px;
+  max-width: 240px;
   margin: 0;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-align: right;
-  color: var(--v4-text-faint);
+  text-align: left;
 }
 .mdag-cap-name {
   text-transform: uppercase;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--v4-text);
 }
 .mdag-cap-meta {
+  font-size: 10px;
+  letter-spacing: 0.08em;
   line-height: 1.5;
+  color: var(--v4-text-faint);
 }
 
 /* the stage scrolls sideways in its well if a wide band overflows (the
@@ -162,9 +168,9 @@
   background: var(--verb-agent);
 }
 .mdag-id {
-  font-size: 10px;
+  font-size: 10.5px;
   line-height: 1.2;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.03em;
   max-width: 76px;
   overflow: hidden;
   text-overflow: ellipsis;

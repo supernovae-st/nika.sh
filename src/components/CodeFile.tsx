@@ -352,6 +352,25 @@ export function CodeFile({
                   )
                   return
                 }
+                /* line fallback (wave R): hovering ANYWHERE on a line — the
+                   empty air right of the text included — speaks the line's
+                   own concept: its verb if it binds one, else its leading
+                   key. The card still anchors on the token it explains. */
+                if (row) {
+                  const lineEl =
+                    row.querySelector<HTMLElement>('.cf-verb') ??
+                    row.querySelector<HTMLElement>('.cf-key')
+                  const lineTip = lineEl
+                    ? tipFor(
+                        lineEl.classList.contains('cf-verb') ? 'verb' : 'key',
+                        lineEl.textContent ?? '',
+                      )
+                    : null
+                  if (lineEl && lineTip) {
+                    showTip(lineTip, lineEl.getBoundingClientRect(), body)
+                    return
+                  }
+                }
                 delete box.dataset.on
               }
             : undefined

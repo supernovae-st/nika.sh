@@ -815,7 +815,7 @@
   margin: -8px -6px;
   border-radius: var(--v4-radius-sm);
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0.05em;
   color: color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 88%, white 12%);
   transition: color var(--dur-ui) var(--ease-ui);

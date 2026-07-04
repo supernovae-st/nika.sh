@@ -69,25 +69,25 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - { id: notes,    invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
-  - { id: inbox,    invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
+  - { id: notes, invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
+  - { id: inbox, invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
   - { id: calendar, invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
 
   - id: triage
-    depends_on: [inbox]
+    depends_on: [ inbox ]
     infer: { prompt: "Flag what is urgent: \${{ tasks.inbox.output }}", max_tokens: 300 }
   - id: agenda
-    depends_on: [calendar]
+    depends_on: [ calendar ]
     infer: { prompt: "Plan the day around: \${{ tasks.calendar.output }}", max_tokens: 300 }
 
   - id: draft
-    depends_on: [notes, triage, agenda]
+    depends_on: [ notes, triage, agenda ]
     infer:
       prompt: "Write the morning brief. Notes: \${{ tasks.notes.output }} Urgent: \${{ tasks.triage.output }} Plan: \${{ tasks.agenda.output }}"
       max_tokens: 500
 
   - id: save
-    depends_on: [draft]
+    depends_on: [ draft ]
     invoke:
       tool: "nika:write"
       args: { path: ./brief.md, content: "\${{ tasks.draft.output }}" }
@@ -123,20 +123,20 @@ tasks:
     exec: { command: [ git, diff, main ] }
 
   - id: risk
-    depends_on: [diff]
+    depends_on: [ diff ]
     timeout: "120s"
     infer:
       prompt: "Score this diff's blast radius from 0 to 10: \${{ tasks.diff.output }}"
       schema:
         type: object
-        required: [score, reasons]
+        required: [ score, reasons ]
         properties:
           score: { type: number }
           reasons: { type: array, items: { type: string } }
       max_tokens: 400
 
   - id: probe
-    depends_on: [risk]
+    depends_on: [ risk ]
     when: \${{ tasks.risk.output.score >= 7 }}
     agent:
       prompt: "Trace the risky call paths behind: \${{ tasks.risk.output.reasons }}"
@@ -144,7 +144,7 @@ tasks:
       max_turns: 3
 
   - id: report
-    depends_on: [risk]
+    depends_on: [ risk ]
     invoke:
       tool: "nika:write"
       args: { path: ./review.md, content: "\${{ tasks.risk.output }}" }
@@ -177,25 +177,25 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./transcript.txt } }
 
   - id: extract
-    depends_on: [transcript]
+    depends_on: [ transcript ]
     infer:
       prompt: "Extract every action item with its owner: \${{ tasks.transcript.output }}"
       schema:
         type: object
-        required: [actions]
+        required: [ actions ]
         properties:
           actions:
             type: array
             items:
               type: object
-              required: [owner, task]
+              required: [ owner, task ]
               properties:
                 owner: { type: string }
                 task: { type: string }
       max_tokens: 400
 
   - id: save
-    depends_on: [extract]
+    depends_on: [ extract ]
     invoke:
       tool: "nika:write"
       args: { path: ./action-items.json, content: "\${{ tasks.extract.output }}" }
@@ -231,13 +231,13 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./price.json } }
 
   - id: price
-    depends_on: [snapshot]
+    depends_on: [ snapshot ]
     invoke:
       tool: "nika:jq"
       args: { input: "\${{ tasks.snapshot.output }}", expression: "fromjson | .price" }
 
   - id: alert
-    depends_on: [price]
+    depends_on: [ price ]
     when: \${{ tasks.price.output < vars.alert_below }}
     invoke:
       tool: "nika:write"
@@ -278,19 +278,19 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./post.md } }
 
   - id: thread
-    depends_on: [post]
+    depends_on: [ post ]
     infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: \${{ tasks.post.output }}", max_tokens: 400 }
 
   - id: linkedin
-    depends_on: [post]
+    depends_on: [ post ]
     infer: { prompt: "Rewrite this post for LinkedIn, hook first: \${{ tasks.post.output }}", max_tokens: 400 }
 
   - id: newsletter
-    depends_on: [post]
+    depends_on: [ post ]
     infer: { prompt: "Write a 3-sentence newsletter blurb for this post: \${{ tasks.post.output }}", max_tokens: 300 }
 
   - id: bundle
-    depends_on: [thread, linkedin, newsletter]
+    depends_on: [ thread, linkedin, newsletter ]
     invoke:
       tool: "nika:write"
       args:
@@ -338,7 +338,7 @@ tasks:
     exec: { command: [ git, log, --since=yesterday, --oneline, --no-merges ] }
 
   - id: digest
-    depends_on: [today, history]
+    depends_on: [ today, history ]
     infer:
       prompt: |
         Date: \${{ tasks.today.output }}
@@ -350,7 +350,7 @@ tasks:
       max_tokens: 300
 
   - id: save
-    depends_on: [digest]
+    depends_on: [ digest ]
     invoke:
       tool: "nika:write"
       args: { path: ./standup-note.md, content: "\${{ tasks.digest.output }}" }
@@ -387,7 +387,7 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./data/incoming/orders.csv } }
 
   - id: rows
-    depends_on: [raw]
+    depends_on: [ raw ]
     invoke:
       tool: "nika:convert"
       args: { input: "\${{ tasks.raw.output }}", from: csv, to: json, has_header: true }
@@ -396,7 +396,7 @@ tasks:
       recover: \${{ tasks.empty_batch.output }}
 
   - id: check
-    depends_on: [rows]
+    depends_on: [ rows ]
     invoke:
       tool: "nika:validate"
       args:
@@ -406,14 +406,14 @@ tasks:
           type: array
           items:
             type: object
-            required: [order_id, amount, currency]
+            required: [ order_id, amount, currency ]
             properties:
               order_id: { type: string }
               amount: { type: string }
-              currency: { type: string, enum: [EUR, USD, GBP] }
+              currency: { type: string, enum: [ EUR, USD, GBP ] }
 
   - id: good
-    depends_on: [rows, check]
+    depends_on: [ rows, check ]
     when: \${{ tasks.check.output.valid == true }}
     invoke:
       tool: "nika:jq"
@@ -422,7 +422,7 @@ tasks:
         expression: 'group_by(.currency) | map({currency: .[0].currency, orders: length, total: (map(.amount | tonumber) | add)})'
 
   - id: quarantine
-    depends_on: [rows, check]
+    depends_on: [ rows, check ]
     when: \${{ tasks.check.output.valid == false }}
     invoke:
       tool: "nika:write"
@@ -432,7 +432,7 @@ tasks:
         create_dirs: true
 
   - id: report
-    depends_on: [good]
+    depends_on: [ good ]
     when: \${{ tasks.good.output != null && size(tasks.good.output) > 0 }}
     invoke:
       tool: "nika:write"
