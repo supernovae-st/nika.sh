@@ -802,6 +802,58 @@
   }
 }
 
+/* ── the frame draws itself (loop wave T) · one orchestrated entrance ─────────
+   Under the hero's motion-safe .v4-enter gate (added post-paint, so SSR and
+   reduced-motion ship the finished frame): the rules EXTEND from their title,
+   the base closes, the terminal dots pop once their rule lands, the plate
+   text settles — and the plan's existing node/wire assembly (mini-dag.css)
+   reads as the payoff inside a frame that just built itself. Pure CSS,
+   transform/opacity only, plays once (the frame is the instrument — only the
+   drawing remounts on tab switch). */
+.v4-enter .v4hero-dag .mdag-rule {
+  transform-origin: left center;
+  animation: v4dag-rule-draw 380ms var(--ease-ui) both;
+}
+.v4-enter .v4hero-dag .mdag-rule--lead {
+  animation-delay: 420ms;
+}
+.v4-enter .v4hero-dag .mdag-rule--trail {
+  animation-delay: 540ms;
+  animation-duration: 480ms;
+}
+.v4-enter .v4hero-dag .mdag-base {
+  transform-origin: left center;
+  animation: v4dag-rule-draw 520ms var(--ease-ui) both 520ms;
+}
+.v4-enter .v4hero-dag .mdag-title-text {
+  animation: v4dag-fade 260ms var(--ease-ui) both 500ms;
+}
+.v4-enter .v4hero-dag .mdag-rule::before,
+.v4-enter .v4hero-dag .mdag-base::before,
+.v4-enter .v4hero-dag .mdag-base::after {
+  animation: v4dag-fade 220ms var(--ease-ui) both 980ms;
+}
+.v4-enter .v4hero-dag .mdag-side {
+  animation: v4dag-fade 300ms var(--ease-ui) both 640ms;
+}
+.v4-enter .v4hero-dag .mdag-tie {
+  transform-origin: left center;
+  animation: v4dag-rule-draw 340ms var(--ease-ui) both 760ms;
+}
+.v4-enter .v4hero-dag .mdag-tie::after {
+  animation: v4dag-fade 200ms var(--ease-ui) both 1040ms;
+}
+@keyframes v4dag-rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes v4dag-fade {
+  from {
+    opacity: 0;
+  }
+}
+
 /* the run handoff on the plan's caption row · accent voice, real link. The
    visual is caption-sized; the hit target is not (padding expands the box to
    ≥24px and the negative margin gives the air back to the layout). */
