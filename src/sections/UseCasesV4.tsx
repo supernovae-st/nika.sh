@@ -55,7 +55,7 @@ export default function UseCasesV4() {
       ref={ref}
       id="use-cases"
       aria-labelledby="usecases-title"
-      className="theme-light v4sec v4-flip v4-cv scroll-mt-24"
+      className="theme-light theme-light--pure v4sec v4-flip v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
         <SectionHead fig="10" id="usecases-title" title={<>Real files you&apos;d write.</>}>

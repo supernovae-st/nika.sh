@@ -218,49 +218,41 @@
   color: var(--v4-text-faint);
 }
 
-/* ── the three promises · THE BLUE PLATE (wave W7) ────────────────────────────
-   The page's ONE saturated field — the accent itself as a surface, built in
-   the survey register: quantized bloom (BRAND-11 stepped stops, never a smooth
-   airbrush), a 72px survey grid in near-white hairlines, the Bayer grain, and
-   a deep plate-ink border. Three textured cards ride it, each glyph → fig →
-   title → body. White ink on --v4-accent-cta reads 5.2:1 (tokens.css). */
+/* ── the three promises · THE BLUE SECTION (W9 · was the W7 plate) ────────────
+   A full-bleed section in the page's alternation — theme-blue (tokens.css)
+   paints the base + re-scopes the whole ink ladder; this block adds the
+   survey field: quantized bloom (BRAND-11 stepped stops, never a smooth
+   airbrush), a 72px grid in near-white hairlines, the Bayer grain. Three
+   textured cards ride the field, each glyph → fig → title → body. */
 .v4pledge {
-  position: relative;
-  isolation: isolate;
-  margin-top: clamp(40px, 6vh, 64px);
-  padding: clamp(22px, 3.4vw, 40px);
-  border-radius: calc(var(--v4-radius) + 2px);
-  border: 1px solid rgb(15 30 88 / 0.85);
-  background-color: var(--v4-accent-cta);
   background-image:
     var(--v4-grain-img),
     radial-gradient(
-      150% 130% at 16% -6%,
-      rgb(141 180 255 / 0.2) 0 16%,
-      rgb(141 180 255 / 0.12) 16% 32%,
+      130% 110% at 16% -8%,
+      rgb(141 180 255 / 0.18) 0 16%,
+      rgb(141 180 255 / 0.11) 16% 32%,
       rgb(141 180 255 / 0.05) 32% 50%,
       rgb(141 180 255 / 0) 50%
     ),
-    linear-gradient(rgb(223 233 255 / 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(223 233 255 / 0.07) 1px, transparent 1px);
+    linear-gradient(rgb(223 233 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(223 233 255 / 0.06) 1px, transparent 1px);
   background-size:
     auto,
     auto,
     100% 72px,
     72px 100%;
-  box-shadow:
-    inset 0 1px 0 rgb(223 233 255 / 0.3),
-    0 28px 72px -36px rgb(43 98 234 / 0.6);
 }
 .v4pledge-kick {
+  margin: 0;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 11.5px;
+  font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgb(223 233 255 / 0.85);
+  color: var(--v4-text-faint);
 }
 .v4pledge-grid {
-  margin-top: 18px;
+  margin-top: 26px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
@@ -270,7 +262,7 @@
 @media (min-width: 760px) {
   .v4pledge-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    gap: 18px;
   }
 }
 
@@ -279,10 +271,10 @@
    (--prx/--pry) — flat and crisp whenever [data-tilt] is absent. */
 .v4pledge-card {
   position: relative;
-  padding: 22px 22px 24px;
+  padding: 26px 24px 28px;
   border-radius: var(--v4-radius);
-  border: 1px solid rgb(223 233 255 / 0.26);
-  background-color: rgb(10 24 74 / 0.54);
+  border: 1px solid var(--v4-line-strong);
+  background-color: var(--v4-bg-raised);
   /* the texture · Bayer grain + a coarse halftone (the dither register at card
      scale — the reference's heavy paper, in our idiom) */
   background-image:
@@ -297,7 +289,7 @@
   transform: rotateX(var(--prx, 0deg)) rotateY(var(--pry, 0deg));
   transform-style: preserve-3d;
 }
-.v4pledge[data-tilt] .v4pledge-card {
+.v4pledge [data-tilt] .v4pledge-card {
   will-change: transform;
 }
 /* the glare · a soft light tracking the pointer over the grain — earned by
@@ -316,26 +308,27 @@
 }
 
 /* the depth layers · glyph rides highest, head next, body lowest — only when
-   the driver arms the plate (touch / reduced-motion / SSR stay flat + crisp) */
-.v4pledge[data-tilt] .v4pledge-lift--glyph {
+   the driver arms the field (touch / reduced-motion / SSR stay flat + crisp) */
+.v4pledge [data-tilt] .v4pledge-lift--glyph {
   transform: translateZ(34px);
 }
-.v4pledge[data-tilt] .v4pledge-lift--head {
+.v4pledge [data-tilt] .v4pledge-lift--head {
   transform: translateZ(20px);
 }
-.v4pledge[data-tilt] .v4pledge-body {
+.v4pledge [data-tilt] .v4pledge-body {
   transform: translateZ(10px);
 }
 
-/* glyph → fig → title → body (the reference hierarchy) */
+/* glyph → fig → title → body (the reference hierarchy) · the pictograms are
+   printed in the ordered-dither register (cells baked in Wedge.tsx) */
 .v4pledge-glyph {
   display: block;
-  width: 76px;
-  height: 76px;
-  color: #eef3ff;
+  width: 88px;
+  height: 88px;
+  color: var(--v4-text);
 }
 .v4pledge-glyph-hot {
-  fill: rgb(9 18 48 / 0.95); /* the plate ink · the HOT detail reads punched-in */
+  fill: var(--v4-accent-cta); /* the plate ink · the HOT detail reads punched-in */
 }
 
 /* the glyphs come alive on card hover (motion-safe · input-driven · transform/
@@ -373,25 +366,25 @@
   }
 }
 .v4pledge-fig {
-  margin-top: 18px;
+  margin-top: 20px;
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: 0.14em;
-  color: rgb(184 204 255 / 0.9);
+  color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
 }
 .v4pledge-title {
   margin-top: 6px;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 650;
   letter-spacing: -0.01em;
-  color: #fff;
+  color: var(--v4-text);
 }
 .v4pledge-body {
   margin-top: 7px;
   font-size: 13.5px;
   line-height: 1.55;
-  color: rgb(223 233 255 / 0.92);
+  color: var(--v4-text-dim);
   text-wrap: pretty;
 }
 

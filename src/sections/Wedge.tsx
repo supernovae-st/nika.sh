@@ -52,53 +52,104 @@ const COLS: { n: string; title: string; body: string; glyph: 'bars' | 'ring' | '
   },
 ]
 
-/* the glyphs · crisp geometry, no icon library — near-white strokes, one HOT
-   detail in the deep plate ink (the reference hierarchy: glyph carries the
-   card, words explain it) */
+/* ── the glyphs · ordered-dither pictograms (W9) ──────────────────────────────
+   Each pictogram is PRINTED in the site's dither register: a coverage field
+   (solid geometric core, feathered edge) quantized through the canonical
+   Bayer-8 table — the same construction as the CTA's ASCII butterfly and the
+   3D slabs' lighting, at icon scale. The HOT detail stays a solid punched-in
+   shape so the meaning reads instantly: the cursor (still writing), the
+   runner (the same lap, again), the held cell (claimed). Cells are baked at
+   module scope — zero per-render work. */
+const BAYER8 = [
+  0, 48, 12, 60, 3, 51, 15, 63, 32, 16, 44, 28, 35, 19, 47, 31, 8, 56, 4, 52, 11, 59, 7, 55, 40,
+  24, 36, 20, 43, 27, 39, 23, 2, 50, 14, 62, 1, 49, 13, 61, 34, 18, 46, 30, 33, 17, 45, 29, 10, 58,
+  6, 54, 9, 57, 5, 53, 42, 26, 38, 22, 41, 25, 37, 21,
+]
+const G_N = 27 /* cells per side — fine enough that the SOLID core carries the
+                  shape and the dither only dresses a ~1-cell edge halo */
+const G_PITCH = 76 / G_N
+
+/* coverage 1 inside the shape, feathering to 0 over `f` outside `half` */
+const cov = (d: number, half: number, f: number) =>
+  Math.max(0, Math.min(1, (half + f - d) / f))
+
+function pledgeCells(kind: 'bars' | 'ring' | 'dots') {
+  const cells: { x: number; y: number; o: number }[] = []
+  for (let cy = 0; cy < G_N; cy++) {
+    for (let cx = 0; cx < G_N; cx++) {
+      const x = (cx + 0.5) / G_N
+      const y = (cy + 0.5) / G_N
+      let c = 0
+      if (kind === 'bars') {
+        /* four text lines · the last one short (the cursor writes after it) */
+        const rows = [0.13, 0.37, 0.61, 0.85]
+        for (let i = 0; i < rows.length; i++) {
+          const end = i === 3 ? 0.48 : 0.97
+          if (x > 0.03 && x < end) c = Math.max(c, cov(Math.abs(y - rows[i]), 0.055, 0.03))
+        }
+      } else if (kind === 'ring') {
+        /* the loop · an annulus */
+        c = cov(Math.abs(Math.hypot(x - 0.5, y - 0.5) - 0.34), 0.08, 0.03)
+      } else {
+        /* the grid · eight cells around the held one */
+        for (const gy of [0.16, 0.5, 0.84]) {
+          for (const gx of [0.16, 0.5, 0.84]) {
+            if (gx === 0.5 && gy === 0.5) continue
+            c = Math.max(c, cov(Math.hypot(x - gx, y - gy), 0.08, 0.03))
+          }
+        }
+      }
+      if (c <= 0.03) continue
+      const t = (BAYER8[(cy % 8) * 8 + (cx % 8)] + 0.5) / 64
+      if (c < 1 && c < t) continue /* the ordered-dither edge halo */
+      /* the core prints SOLID (readability first) · only the halo is dithered */
+      cells.push({ x: cx, y: cy, o: c >= 1 ? 1 : 0.42 })
+    }
+  }
+  return cells
+}
+const PLEDGE_CELLS = {
+  bars: pledgeCells('bars'),
+  ring: pledgeCells('ring'),
+  dots: pledgeCells('dots'),
+} as const
+
 function PledgeGlyph({ kind }: { kind: 'bars' | 'ring' | 'dots' }) {
-  if (kind === 'bars') {
-    return (
-      <svg
-        className="v4pledge-glyph"
-        data-glyph="bars"
-        viewBox="0 0 64 64"
-        aria-hidden
-        focusable="false"
-        shapeRendering="crispEdges"
-      >
-        <g fill="currentColor">
-          <rect x="10" y="14" width="44" height="3" />
-          <rect x="10" y="25" width="44" height="3" />
-          <rect x="10" y="36" width="44" height="3" />
-          <rect x="10" y="47" width="20" height="3" />
-        </g>
-        {/* the cursor · the file is being written (blinks on card hover) */}
-        <rect className="v4pledge-glyph-hot" x="34" y="44" width="9" height="9" />
-      </svg>
-    )
-  }
-  if (kind === 'ring') {
-    return (
-      <svg className="v4pledge-glyph" data-glyph="ring" viewBox="0 0 64 64" aria-hidden focusable="false">
-        <circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" strokeWidth="3" />
-        {/* the runner · the same lap, again (orbits on card hover) */}
-        <g className="v4pledge-orbit">
-          <circle className="v4pledge-glyph-hot" cx="44.02" cy="19.98" r="5" />
-        </g>
-      </svg>
-    )
-  }
   return (
-    <svg className="v4pledge-glyph" data-glyph="dots" viewBox="0 0 64 64" aria-hidden focusable="false">
+    <svg
+      className="v4pledge-glyph"
+      data-glyph={kind}
+      viewBox="0 0 76 76"
+      aria-hidden
+      focusable="false"
+      shapeRendering="crispEdges"
+    >
       <g fill="currentColor">
-        {[13, 32, 51].map((cy) =>
-          [13, 32, 51].map((cx) =>
-            cx === 32 && cy === 32 ? null : <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="2.6" />,
-          ),
-        )}
+        {PLEDGE_CELLS[kind].map((c) => (
+          <rect
+            key={`${c.x}-${c.y}`}
+            x={c.x * G_PITCH + 0.45}
+            y={c.y * G_PITCH + 0.45}
+            width={G_PITCH - 0.9}
+            height={G_PITCH - 0.9}
+            opacity={c.o}
+          />
+        ))}
       </g>
-      {/* the held cell · yours, on your disk (settles-pulse on card hover) */}
-      <circle className="v4pledge-glyph-hot" cx="32" cy="32" r="6.5" />
+      {kind === 'bars' && (
+        /* the cursor · the file is being written (blinks on card hover) */
+        <rect className="v4pledge-glyph-hot" x="44" y="60" width="10" height="10" />
+      )}
+      {kind === 'ring' && (
+        /* the runner · the same lap, again (orbits on card hover) */
+        <g className="v4pledge-orbit">
+          <circle className="v4pledge-glyph-hot" cx="55.7" cy="20.3" r="5.5" />
+        </g>
+      )}
+      {kind === 'dots' && (
+        /* the held cell · yours, on your disk (settles-pulse on card hover) */
+        <circle className="v4pledge-glyph-hot" cx="38" cy="38" r="7" />
+      )}
     </svg>
   )
 }
@@ -112,6 +163,7 @@ const LERP = 0.16
 
 export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
   const ref = useRevealOnce<HTMLElement>()
+  const pledgeRef = useRevealOnce<HTMLElement>()
   const plateRef = useRef<HTMLDivElement>(null)
 
   /* the 3D hover · pointer-tracked tilt, rAF-lerped (site driver idiom: zero
@@ -196,6 +248,7 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
   }, [])
 
   return (
+    <>
     <section ref={ref} id="wedge" aria-labelledby="wedge-title" className="theme-dark v4sec scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
@@ -240,38 +293,43 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
           the session ends · the file stays
         </p>
 
-        {/* the three promises · 04.1–04.3 · THE BLUE PLATE (wave W7). The page's
-            one saturated field: the accent, quantized + gridded + grained (the
-            survey register in blue), carrying three textured glyph cards. The
-            hierarchy is the reference's: glyph → fig → title → body. */}
-        <div
-          ref={plateRef}
-          className="v4pledge"
-          data-rise
-          style={{ ['--rise-delay' as string]: '260ms' }}
-        >
-          <p className="v4pledge-kick" aria-hidden>
-            what the file buys you
-          </p>
-          <div className="v4pledge-grid">
-            {COLS.map((c) => (
-              <article className="v4pledge-card" key={c.n}>
-                <span className="v4pledge-glare" aria-hidden />
-                <div className="v4pledge-lift v4pledge-lift--glyph">
-                  <PledgeGlyph kind={c.glyph} />
-                </div>
-                <div className="v4pledge-lift v4pledge-lift--head">
-                  <p className="v4pledge-fig" aria-hidden>
-                    {c.n}
-                  </p>
-                  <h3 className="v4pledge-title">{c.title}</h3>
-                </div>
-                <p className="v4pledge-lift v4pledge-body">{c.body}</p>
-              </article>
-            ))}
-          </div>
+      </div>
+    </section>
+
+    {/* the three promises · 04.1–04.3 · THE BLUE SECTION (W9). A full-bleed
+        section in the page's alternation (theme-blue re-scopes the whole
+        ladder) — the accent as a section surface, edge to edge, survey grid +
+        quantized bloom + grain. Three textured cards ride the field, each
+        glyph → fig → title → body, the glyphs printed in the ordered-dither
+        register. */}
+    <section
+      ref={pledgeRef}
+      className="theme-blue v4sec v4pledge scroll-mt-24"
+      aria-labelledby="pledge-title"
+    >
+      <div className="v4sec-wrap" ref={plateRef}>
+        <h2 id="pledge-title" className="v4pledge-kick" data-rise>
+          what the file buys you
+        </h2>
+        <div className="v4pledge-grid" data-rise style={{ ['--rise-delay' as string]: '100ms' }}>
+          {COLS.map((c) => (
+            <article className="v4pledge-card" key={c.n}>
+              <span className="v4pledge-glare" aria-hidden />
+              <div className="v4pledge-lift v4pledge-lift--glyph">
+                <PledgeGlyph kind={c.glyph} />
+              </div>
+              <div className="v4pledge-lift v4pledge-lift--head">
+                <p className="v4pledge-fig" aria-hidden>
+                  {c.n}
+                </p>
+                <h3 className="v4pledge-title">{c.title}</h3>
+              </div>
+              <p className="v4pledge-lift v4pledge-body">{c.body}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>
+    </>
   )
 }
