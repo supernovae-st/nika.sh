@@ -168,7 +168,7 @@ const PERMIT_DENIALS: { code: string; failure: string }[] = [
   { code: 'NIKA-SEC-001', failure: 'exec: blocklist hit' },
 ]
 
-/* ── FIG S.4 · the stdlib · 23 builtins, grouped into 4 families ──────────────
+/* ── FIG S.4 · the stdlib builtins, grouped into 5 families (count from CANON) ─
    The chips DERIVE from CANON.builtinNames; the family grouping is craft. A
    canon builtin not assigned to a family lands in Flow (structural guard), so
    the rendered chip count can never drop below CANON.builtins. */
@@ -176,6 +176,7 @@ const BUILTIN_FAMILIES: { label: string; names: string[] }[] = [
   { label: 'Files', names: ['read', 'write', 'edit', 'glob', 'grep'] },
   { label: 'Data', names: ['jq', 'convert', 'validate', 'json_diff', 'json_merge_patch', 'compose', 'hash', 'uuid', 'date'] },
   { label: 'Web', names: ['fetch'] },
+  { label: 'Media', names: ['image_generate', 'tts_generate'] },
   { label: 'Flow', names: ['assert', 'done', 'wait', 'emit', 'log', 'notify', 'prompt', 'inspect'] },
 ]
 const FAMILIED = new Set(BUILTIN_FAMILIES.flatMap((f) => f.names))
