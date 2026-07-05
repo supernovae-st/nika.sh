@@ -17,6 +17,11 @@ export function useScrollWellTab(ref: RefObject<HTMLElement | null>, dep?: unkno
     update()
     const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
     ro?.observe(el)
+    /* the mono swap changes scrollWidth WITHOUT changing the element's own
+       box — the RO never fires for it, and a line that starts fitting can
+       overflow once the real glyphs land (axe caught .tf-body exactly
+       there). The fonts signal is the missing edge. */
+    document.fonts?.ready.then(update).catch(() => {})
     return () => ro?.disconnect()
   }, [ref, dep])
 }
