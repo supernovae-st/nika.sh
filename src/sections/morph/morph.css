@@ -1392,6 +1392,100 @@
   }
 }
 
+/* ─── landscape phones (W20b · ≥768 wide × ≤520 tall) ─────────────────────────
+   The desktop morph in a 390px-tall stage: the DAG box is absolute inset:0
+   and IGNORES the in-flow head, so the title painted straight through the
+   node cards (844×390 sweep). Reserve the head's band explicitly, compact
+   every voice one notch, and let anatomy yield the way the short-portrait
+   frame does. Desktop ≥521px tall is untouched. */
+@media (min-width: 768px) and (max-height: 520px) {
+  .morphsec {
+    --morph-term-h: 40px;
+  }
+  .morphsec[data-armed] .morph-wrap {
+    padding-top: 54px;
+  }
+  .morph-title {
+    margin-top: 4px;
+    font-size: 15px;
+  }
+  .morph-captions {
+    margin-top: 2px;
+    min-height: 18px;
+  }
+  .morph-cap {
+    font-size: 12px;
+  }
+  /* the wave COLUMNS become ROWS: a 3-node column is ~195px tall and the
+     stage only has ~140px of dag air at 390 — no compaction saves it —
+     while 844px of WIDTH absorbs all seven nodes as one horizontal frieze.
+     The desktop wire anchors (right edge → left edge) read perfectly
+     across it, and measure() re-reads the real rects so the flights land
+     unchanged. The box anchors at the SCENE's top (the scene already sits
+     below the in-flow head — an extra top inset here crushed the box to
+     ~36px and align-items:center burst the nodes under the terminal, the
+     original overlap's true mechanism) with a slim bottom reserve. */
+  .morphsec[data-armed] .morph-dag {
+    inset: 0 0 calc(var(--morph-term-h) + 64px) 0;
+    gap: clamp(14px, 2.5vw, 28px);
+  }
+  .morph-wave {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .morph-col {
+    flex-direction: row;
+    gap: 7px;
+  }
+  .morph-node {
+    padding: 3px 9px 3px 11px;
+    gap: 1px;
+    min-width: 0;
+  }
+  .morph-node-id {
+    font-size: 11px;
+  }
+  .morph-node-target {
+    display: none;
+  }
+  .morph-node-verb {
+    font-size: 9.5px;
+  }
+  .morph-node-chip {
+    min-height: 13px;
+    margin-top: 1px;
+    font-size: 9.5px;
+    line-height: 12px;
+  }
+  /* the caps yield here too (short-portrait law) — the frieze + wires
+     already SAY « run together » */
+  .morph-wave-cap {
+    display: none;
+  }
+  .morphsec[data-armed] .morph-term {
+    bottom: 46px;
+  }
+  .morph-term-body {
+    padding: 6px 12px;
+    font-size: 10.5px;
+    line-height: 1.55;
+  }
+  .morph-verdict {
+    min-height: 28px;
+    padding: 5px 12px;
+    font-size: 10px;
+    gap: 5px;
+  }
+  .morph-verdict-art,
+  .morph-verdict-art + .morph-verdict-sep {
+    display: none;
+  }
+  .morphsec[data-armed] .morph-console {
+    bottom: 6px;
+    padding: 6px 10px;
+  }
+}
+
 /* short phones (SE class) · anatomy yields so the whole plan still fits the
    stage: the wave caps go (the wires + 2-up rows already SHOW parallelism),
    the target line goes (id + verb + readout keep the story honest), the

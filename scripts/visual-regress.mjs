@@ -156,7 +156,18 @@ await send('Emulation.setEmulatedMedia', {
   features: [{ name: 'prefers-reduced-motion', value: 'reduce' }],
 })
 await send('Page.navigate', { url: `http://127.0.0.1:${PORT_HTTP}/?it=99` })
-await sleep(7000) /* load + fonts + settle */
+await sleep(7000) /* load + settle */
+/* fonts are a HARD gate, not a sleep: a cold disk cache occasionally kept
+   Clash/Martian loading past the 7s and the hero frame shot with fallback
+   glyphs — a 15% text-area diff that alternated run to run (the a11y sweep
+   had the same class · same fix) */
+for (let i = 0; i < 40; i++) {
+  const ready = await evaluate(
+    `document.readyState === 'complete' && document.fonts.status === 'loaded'`,
+  ).catch(() => false)
+  if (ready) break
+  await sleep(250)
+}
 
 async function shootFrame(p) {
   /* body-progress scroll with the c-v re-aim (the W11 harness lesson) */
