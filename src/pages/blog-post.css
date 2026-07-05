@@ -76,6 +76,29 @@
   color: var(--v4-text);
   scroll-margin-top: 96px;
 }
+/* the permalink `#` · docs-anchor register: invisible at rest, inked on
+   heading hover or its own keyboard focus. Absolutely no layout shift —
+   the glyph rides the heading's trailing space. */
+.bp-h-anchor {
+  font-size: 0.82em;
+  font-weight: 500;
+  color: var(--v4-text-faint);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--dur-ui) var(--ease-ui);
+}
+.bp-h:hover .bp-h-anchor,
+.bp-h-anchor:focus-visible {
+  opacity: 1;
+}
+.bp-h-anchor:hover {
+  color: var(--v4-text);
+}
+@media (hover: none) {
+  .bp-h-anchor {
+    opacity: 0.55; /* touch has no hover · the affordance stays visible */
+  }
+}
 .bp-body blockquote {
   margin: 0 0 1.35em;
   padding: 2px 0 2px 18px;

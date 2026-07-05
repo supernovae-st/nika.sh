@@ -38,7 +38,12 @@ export function BlogBody({ tokens }: { tokens: BlogToken[] }) {
           const H = t.depth <= 2 ? 'h2' : 'h3'
           return (
             <H key={i} id={t.id} className="bp-h">
-              {t.text}
+              {t.text}{' '}
+              {/* the permalink affordance · pure HTML (SSG-exact, zero JS):
+                  hidden at rest, revealed on heading hover or its own focus */}
+              <a href={`#${t.id}`} className="bp-h-anchor mono" aria-label={`Link to “${t.text}”`}>
+                #
+              </a>
             </H>
           )
         }
