@@ -60,6 +60,11 @@
   color: var(--v4-text-dim);
   scrollbar-width: thin;
 }
+/* keyboard scroll well (the CodeFile law · codefile.css twin recipe) */
+.v5run-body:focus-visible {
+  outline: 1px solid var(--focus-ring);
+  outline-offset: -1px;
+}
 @media (max-width: 767px) {
   .v5run-body {
     height: 320px;

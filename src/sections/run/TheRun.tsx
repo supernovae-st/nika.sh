@@ -200,7 +200,18 @@ export default function TheRun({ flagship }: { flagship: FlagshipEntry }) {
               </span>
             </div>
 
-            <div className="v5run-body" ref={bodyRef} role="log" aria-live="off">
+            {/* the CodeFile keyboard law applies HERE too: a fixed-height
+                scrollable well must be keyboard-reachable — the log earns
+                tabindex + an accessible name (the ring is the global
+                --focus-ring seam) */}
+            <div
+              className="v5run-body"
+              ref={bodyRef}
+              role="log"
+              aria-live="off"
+              tabIndex={0}
+              aria-label={`recorded run of ${flagship.filename} — scrollable log`}
+            >
               {script.lines.slice(0, revealed).map((line, i) => (
                 <Line line={line} key={`${flagship.id}-${i}`} />
               ))}
@@ -211,8 +222,12 @@ export default function TheRun({ flagship }: { flagship: FlagshipEntry }) {
               ) : null}
             </div>
 
-            {/* the verdict bar · reserved height (zero shift) · real numbers */}
-            <div className="v5run-verdict" data-done={done}>
+            {/* the verdict bar · reserved height (zero shift) · real numbers.
+                role=status: the settled verdict announces ONCE to assistive
+                tech when the replay lands it (the SSR / reduced-motion render
+                is born settled — aria-live only speaks on change, so those
+                registers stay silent). */}
+            <div className="v5run-verdict" data-done={done} role="status">
               {done ? (
                 <>
                   <span className="v5run-verdict-exit" data-exit={verdict.exit}>
