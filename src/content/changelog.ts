@@ -53,6 +53,20 @@ export const CHANGELOG: ChangelogEntry[] = [
   },
   {
     date: '2026-07-05',
+    tag: 'release',
+    title: 'v0.93.1 · the pack teaches 2026 models',
+    body: 'The embedded teaching pack vendors the current spec cascade, so nika init hands a 2026 local model the language on day one; the README gains the daily-commands loop.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.93.1',
+  },
+  {
+    date: '2026-07-05',
+    tag: 'release',
+    title: 'v0.93.0 · the run becomes durable',
+    body: 'Kill a run mid-flight and --resume banks the finished work as visible cache hits; a nika:prompt gate pauses durably for a human answer; nika test joins the CLI and local models get honest timeouts.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.93.0',
+  },
+  {
+    date: '2026-07-05',
     tag: 'site',
     title: 'The blog is a folder',
     body: 'content/blog in the site repo IS the blog: PR-able markdown compiled to real pages with the product’s editor panels. The archive backfills the journey, one post per milestone, at its real date.',
