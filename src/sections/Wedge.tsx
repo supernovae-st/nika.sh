@@ -41,11 +41,13 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
         </p>
 
         {/* the two-tone thesis · the manifesto, in one paragraph */}
+        {/* the thesis · SHORT and in the blog/OG voice — the hero's H1 must
+            never repeat here (W15 re-arc: the reader just watched the film;
+            three lines carry the beat, six read as a wall) */}
         <h2 id="wedge-title" className="v4wedge-thesis" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-          <b>Useful AI work shouldn’t disappear into chats.</b> The prompts you
-          perfect, the steps an agent improvises: they evaporate with the
-          session. Nika turns the work into a file: readable, versioned,
-          runnable. Workflows are files, not SaaS state.
+          <b>Chats evaporate. Files compound.</b> The prompts you perfect, the
+          steps an agent improvises: gone with the session. Nika turns that
+          work into a file: readable, versioned, runnable.
         </h2>
 
         {/* THE CAPTURE · the same work, twice · ephemeral vs permanent */}

@@ -50,7 +50,7 @@ export default function WhereItFits() {
   return (
     <section ref={ref} id="where-it-fits" aria-labelledby="where-it-fits-title" className="theme-light v4sec v4-flip v4-cv scroll-mt-24">
       <div className="v4sec-wrap">
-        <SectionHead fig="07" id="where-it-fits-title" title={<>Not another agent framework. The layer underneath.</>}>
+        <SectionHead fig="08" id="where-it-fits-title" title={<>Not another agent framework. The layer underneath.</>}>
           Frameworks and assistants help an agent <b>decide</b> and <b>act</b>. Nika is
           orthogonal: it makes what the agent does <b>reviewable</b> and <b>enforceable</b>{' '}
           the layer between <i>the model wants to act</i> and <i>the system lets it act</i>.

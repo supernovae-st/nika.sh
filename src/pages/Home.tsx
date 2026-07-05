@@ -13,7 +13,6 @@ import Wedge from '../sections/Wedge'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import WhereItFits from '../sections/WhereItFits'
-import OwnWorkflows from '../sections/OwnWorkflows'
 import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
 import GetStarted from '../sections/GetStarted'
@@ -26,7 +25,7 @@ import ScrollRail from '../shell/ScrollRail'
 
 /* ─── / · the v4 trust landing ───────────────────────────────────────────────
    Renders PURELY the v4 sections (design doc §6), in order:
-     Hero → LivingFile → Verbs → BeyondChat → OwnWorkflows → Toolbelt →
+     Hero → LivingFile → Verbs → BeyondChat → Toolbelt →
      UseCasesV4 → ChangelogPreview → Proof → FinalCTA (→ footer in FinalCTA).
    Zero WebGL on first load — the hero is prerendered DOM, instant + crawlable.
 
@@ -265,34 +264,34 @@ export function Component() {
         {/* FIG 4.5 · the acid moment — beyond the black box (file vs chat/API) */}
         <BeyondChat />
 
-        {/* FIG 5.0 · verb chapters — what an agent can do, declared not hidden */}
+        {/* FIG 06 · verb chapters — what an agent can do, declared not hidden */}
         <Verbs />
 
-        {/* FIG 5.5 · where Nika fits — the orthogonal layer underneath (light) */}
-        <WhereItFits />
-
-        {/* FIG 6.0 · Get started + runs everywhere — the on-ramp triptych */}
-        <GetStarted flagship={flagship} />
-
-        {/* FIG 6.5 · Toolbelt — what an agent can be permitted to use (CANON) */}
+        {/* FIG 07 · Toolbelt — the language's reach: what those verbs may use */}
         <Toolbelt />
 
-        {/* FIG 7.0 · Use cases — the gallery (here plurality is the point) */}
+        {/* FIG 08 · where Nika fits — the orthogonal layer underneath (light) */}
+        <WhereItFits />
+
+        {/* FIG 09 · Use cases — the gallery (here plurality is the point) */}
         <UseCasesV4 />
 
-        {/* FIG 7.5 · sovereignty — the procedure is yours (theme-light) */}
-        <OwnWorkflows />
-
-        {/* FIG 8.0 · Changelog — the ship log (latest milestones) */}
+        {/* FIG 10 · Changelog — the ship log (latest milestones) */}
         <ChangelogPreview />
 
-        {/* FIG 9.0 · Proof — the control guarantees + CANON counts */}
+        {/* FIG 11 · Proof — the control guarantees + CANON counts (the ONE
+             sovereignty section — OwnWorkflows said the same claims with the
+             same numbers two sections apart and left Home in the W15 re-arc) */}
         <Proof />
 
-        {/* FIG 9.5 · FAQ — disarm the real objections (honest, light) */}
+        {/* FIG 12 · Get started — the on-ramp, AFTER the case is made (the
+             hero already carries the early CTA; the ask belongs post-proof) */}
+        <GetStarted flagship={flagship} />
+
+        {/* FIG 13 · FAQ — disarm the real objections (honest, light) */}
         <Faq />
 
-        {/* FIG 10.0 · Final CTA + SUPERNOVAE footer (kept intact) */}
+        {/* FIG 14 · Final CTA + SUPERNOVAE footer (kept intact) */}
         <FinalCTA />
       </main>
 

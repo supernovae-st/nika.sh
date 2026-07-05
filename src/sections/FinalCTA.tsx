@@ -33,7 +33,7 @@ export default function FinalCTA() {
             particle butterfly is THE mark of the close; one signature.) */}
         {/* the close · the install affordance + two flat CTAs, blueprint register */}
         <p className="v4sec-fig" data-rise>
-          15
+          14
         </p>
         <h2
           id="cta-title"

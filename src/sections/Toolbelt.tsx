@@ -131,7 +131,7 @@ export default function Toolbelt() {
       className="theme-dark v4sec v4-flip v4-cv scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <SectionHead fig="09" id="toolbelt-title" title={<>What an agent can be permitted to&nbsp;use.</>}>
+        <SectionHead fig="07" id="toolbelt-title" title={<>What an agent can be permitted to&nbsp;use.</>}>
           The language stays four verbs. The standard library does the rest:{' '}
           <b>{CANON.builtins} builtins</b>, <b>{CANON.providers} model providers</b>, and any of
           your <b>agent tools</b> (MCP servers) your editor already uses. All reached the same way:{' '}
