@@ -45,7 +45,7 @@ tasks:
 /* the first AI step — a free local model, nothing leaves the machine */
 export const HELLO_AI_YAML = `nika: v1
 workflow: hello-ai
-model: ollama/llama3.2:3b   # local · free · swap for any of the 14 providers
+model: ollama/llama3.2:3b   # local · free · swap for any provider in the catalog
 tasks:
   - id: greet
     infer:

@@ -41,8 +41,9 @@ export interface ChangelogEntry {
   gh?: string
 }
 
-/* newest-first. Counts interpolate from CANON so they can never drift from the
-   spec (4 verbs · 23 builtins · 14 providers / 5 local). */
+/* newest-first. LIVE counts interpolate from CANON so they can never drift
+   from the spec; DATED milestones never carry live counts (they'd rewrite
+   their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-07-05',

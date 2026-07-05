@@ -10,7 +10,7 @@ export const SHOWCASE_YAML: Record<string, string> = {
 workflow: meeting-actions
 description: "Transcript → typed action items {owner, task, due}"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for openai/gpt-5.2 or any provider in the catalog
+model: ollama/qwen3.5:4b   # local · zero key · swap for openai/gpt-5.2 or any provider in the catalog
 
 vars:
   transcript_path:
@@ -112,7 +112,7 @@ outputs:
 workflow: social-repurpose
 description: "One post → thread + LinkedIn + newsletter, in parallel"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for mistral/mistral-large or any provider
+model: ollama/qwen3.5:4b   # local · zero key · swap for mistral/mistral-large or any provider
 
 vars:
   post_path: "./blog/launch-post.md"
@@ -168,7 +168,7 @@ outputs:
 workflow: standup-digest
 description: "Read yesterday's commits, write today's standup note"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for anthropic/claude-haiku-4-5 (fast one-liner job)
+model: ollama/qwen3.5:4b   # local · zero key · swap for anthropic/claude-haiku-4-5 (fast one-liner job)
 
 tasks:
   # No deps between these two → the engine runs them in parallel.
@@ -207,7 +207,7 @@ outputs:
 workflow: contract-guard
 description: "Local-model clause extraction → schema gate → risk memo"
 
-model: ollama/llama3.2:3b   # the whole review runs offline · zero cloud
+model: ollama/qwen3.5:4b   # the whole review runs offline · zero cloud
 
 vars:
   contract_path:
@@ -376,7 +376,7 @@ outputs:
 workflow: invoice-chaser
 description: "Ledger CSV → overdue filter → drafted reminders → human gate → drafts file"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for groq/llama-3.3-70b (drafting is a fast-model job)
+model: ollama/qwen3.5:4b   # local · zero key · swap for groq/llama-3.3-70b (drafting is a fast-model job)
 
 vars:
   ledger_csv: "./finance/invoices.csv"
@@ -442,7 +442,7 @@ outputs:
 workflow: release-notes
 description: "git log → typed release notes → CHANGELOG insert → team ping"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for mistral/mistral-large
+model: ollama/qwen3.5:4b   # local · zero key · swap for mistral/mistral-large
 
 vars:
   since_tag: "v0.80.0"
@@ -507,7 +507,7 @@ outputs:
 workflow: release-radar
 description: "dependency release feed → diff vs last run → only the NEW ships"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for any of the 14 providers
+model: ollama/qwen3.5:4b   # local · zero key · swap for any provider in the catalog
 
 vars:
   releases_feed: "https://github.com/tokio-rs/tokio/releases.atom"
@@ -577,7 +577,7 @@ outputs:
 workflow: seo-content-brief
 description: "Competitor sitemap → top page → gap analysis → typed brief"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for openai/gpt-5.2
+model: ollama/qwen3.5:4b   # local · zero key · swap for openai/gpt-5.2
 
 vars:
   competitor_sitemap: "https://competitor.example.com/sitemap.xml"
@@ -594,7 +594,7 @@ tasks:
         url: "\${{ vars.competitor_sitemap }}"
         mode: sitemap
     output:
-      top: ".urls[:5]"
+      top: ".[:5] | map(.loc)"
 
   - id: top_page
     depends_on: [map]
@@ -643,7 +643,7 @@ outputs:
 workflow: support-triage
 description: "Ticket queue → typed triage → urgent escalation → triage board"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for groq/llama-3.3-70b (triage wants speed)
+model: ollama/qwen3.5:4b   # local · zero key · swap for groq/llama-3.3-70b (triage wants speed)
 
 vars:
   queue_path: "./support/overnight-queue.json"
@@ -726,7 +726,7 @@ outputs:
 workflow: competitor-radar
 description: "Sitemap → parallel page reads → one competitive brief + ping"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for anthropic/claude-sonnet-4-6
+model: ollama/qwen3.5:4b   # local · zero key · swap for anthropic/claude-sonnet-4-6
 
 vars:
   competitor_sitemap: "https://competitor.example.com/sitemap.xml"
@@ -747,7 +747,7 @@ tasks:
         url: "\${{ vars.competitor_sitemap }}"
         mode: sitemap
     output:
-      recent: ".urls[:8]"             # cap the radar at the 8 freshest pages
+      recent: ".[:8] | map(.loc)"     # sitemap = the root array of {loc, …} · cap at 8, keep the URLs
 
   - id: pages
     depends_on: [map]
@@ -802,7 +802,7 @@ outputs:
 workflow: config-drift-sentinel
 description: "live config vs sanctioned baseline → typed drift → explained alert"
 
-model: ollama/llama3.2:3b   # local · zero key · swap for anthropic/claude-haiku-4-5 (explain is cheap)
+model: ollama/qwen3.5:4b   # local · zero key · swap for anthropic/claude-haiku-4-5 (explain is cheap)
 
 vars:
   config_url: "https://api.internal.example.com/v1/config"
@@ -903,7 +903,7 @@ outputs:
 workflow: localization-factory
 description: "glob docs → parallel read → parallel translate → mirror tree"
 
-model: ollama/llama3.2:3b   # local default · swap for mistral/mistral-large (EU model for EU locales)
+model: ollama/qwen3.5:4b   # local default · swap for mistral/mistral-large (EU model for EU locales)
 
 vars:
   lang: "fr"
@@ -975,7 +975,7 @@ outputs:
 workflow: pr-review-fanout
 description: "changed files → one read-only review agent each → merged REVIEW.md"
 
-model: ollama/llama3.2:3b   # local tool-calling model · swap for anthropic/claude-sonnet-4-6 for depth
+model: ollama/qwen3.5:4b   # local tool-calling model · swap for anthropic/claude-sonnet-4-6 for depth
 
 vars:
   base_ref: "main"
@@ -1067,7 +1067,7 @@ outputs:
 workflow: resume-screener
 description: "glob CVs → local-model rubric per candidate → deterministic shortlist"
 
-model: ollama/llama3.2:3b   # PII stays on the machine · the whole screen is offline
+model: ollama/qwen3.5:4b   # PII stays on the machine · the whole screen is offline
 
 permits:                    # the file IS the blast radius · no net category at all:
   fs:                       # CVs cannot leave this machine even if a prompt is hijacked
@@ -1178,7 +1178,7 @@ outputs:
 workflow: ceo-monday-brief
 description: "news + repo pulse + KPIs → thinking synthesis → dated brief + cost ping"
 
-model: ollama/llama3.2:3b   # local default · the synthesis task below overrides to a stronger model
+model: ollama/qwen3.5:4b   # local default · the synthesis task below overrides to a stronger model
 
 vars:
   watch_query: "AI workflow engines"
@@ -1296,7 +1296,7 @@ outputs:
 workflow: deep-research-brief
 description: "plan → budgeted research agent → thinking synthesis → brief on disk"
 
-model: ollama/llama3.2:3b   # local default · per-task overrides below pick stronger models
+model: ollama/qwen3.5:4b   # local default · per-task overrides below pick stronger models
 
 vars:
   topic:
@@ -1374,7 +1374,7 @@ outputs:
 workflow: incident-war-room
 description: "parallel evidence → typed timeline → settle + recheck → postmortem draft"
 
-model: ollama/llama3.2:3b   # local default · the synthesis task below overrides to a stronger model
+model: ollama/qwen3.5:4b   # local default · the synthesis task below overrides to a stronger model
 
 vars:
   service: "checkout-api"
@@ -1709,7 +1709,7 @@ export const TEMPLATES_YAML: Record<string, string> = {
 workflow: agent-loop-template       # SLOT: kebab-case workflow id
 description: "plan → budgeted agent → typed result"   # SLOT
 
-model: ollama/llama3.2:3b           # SLOT: a tool-calling model · local by default
+model: ollama/qwen3.5:4b           # SLOT: a tool-calling model · local by default
 
 vars:
   goal:
@@ -1761,7 +1761,7 @@ outputs:
 workflow: chain-template            # SLOT: kebab-case workflow id
 description: "gather → think → persist"   # SLOT: one honest sentence
 
-model: ollama/llama3.2:3b           # SLOT: provider/model · local · zero key
+model: ollama/qwen3.5:4b           # SLOT: provider/model · local · zero key
 
 vars:
   source: "./input.txt"             # SLOT: your inputs · typed where required
@@ -1858,7 +1858,7 @@ outputs:
 workflow: fanout-template           # SLOT: kebab-case workflow id
 description: "discover N items · process in parallel · merge"   # SLOT
 
-model: ollama/llama3.2:3b           # SLOT: provider/model · local · zero key
+model: ollama/qwen3.5:4b           # SLOT: provider/model · local · zero key
 
 vars:
   collection_source: "./items"      # SLOT: where the collection comes from
