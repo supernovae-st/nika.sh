@@ -1,0 +1,46 @@
+/* terminal.css — run-explains scene layer on top of tokens.css.
+ *
+ * The .t body renders MECHANICALLY converted CLI output (ansi2html.mjs):
+ * the class vocabulary below maps the nika CLI's own SGR roles 1:1 —
+ * b(1) dim(2) err(31) ok(32) warn(33) acc(36) + inline truecolor.
+ * .lnk marks text the real terminal hyperlinked (OSC-8). */
+
+.head { position: absolute; left: 48px; top: 46px; }
+.head .headline { margin-top: 12px; font-size: 40px; }
+
+.panel { overflow: hidden; }
+
+.t {
+  font-family: var(--font-mono);
+  line-height: 1.45;
+  padding: 18px 26px;
+  color: var(--fg);
+}
+.t .ln { display: block; min-height: 1.45em; white-space: pre-wrap; }
+
+.t .prompt { color: var(--fg-faint); }
+.t .cmd { color: var(--fg); font-variation-settings: "wght" 560; }
+
+.t .b { font-variation-settings: "wght" 640; }
+.t .dim { color: var(--fg-muted); }
+.t .ok { color: var(--accent); }
+.t .err { color: var(--err); }
+.t .warn { color: var(--warn); }
+.t .acc { color: var(--cyan); }
+.t .lnk {
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+  text-underline-offset: 3px;
+}
+
+/* combined roles keep the color, bold only bumps weight */
+.t .b.ok { color: var(--accent); }
+.t .b.err { color: var(--err); }
+.t .b.warn { color: var(--warn); }
+
+:root {
+  --cyan: #6ecbe8;
+}
+
+/* motion scene: exactly one frame visible at a time */
+#frames .fr { display: none; }

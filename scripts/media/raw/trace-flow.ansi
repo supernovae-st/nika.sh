@@ -1,0 +1,12 @@
+  discover  [2m─101B→[0m digest
+  discover  [2m─101B→[0m stats
+  digest    [2m─324B→[0m draft
+  draft     [2m─389B→[0m translate
+  translate [2m─1.8KB→[0m survivors
+  survivors [2m─1.8KB→[0m verify
+  survivors [2m─1.8KB→[0m publish
+  verify    [2m─2.0KB→[0m publish
+  publish   [2m─32B→[0m report
+  stats     [2m─11B→[0m report
+  report    [2m─107B→[0m outputs.notes
+[2m  11 edge(s) · widest: verify→publish · derived from plan bindings × trace sizes[0m

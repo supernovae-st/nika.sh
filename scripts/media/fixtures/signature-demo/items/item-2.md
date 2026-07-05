@@ -1,0 +1,1 @@
+- feat: nika run --resume — the trace is the checkpoint

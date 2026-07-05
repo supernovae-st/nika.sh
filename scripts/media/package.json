@@ -1,0 +1,9 @@
+{
+  "name": "nika-site-media",
+  "private": true,
+  "type": "module",
+  "description": "nika.sh run-explains media pipeline — real TTY captures rendered to site assets (playwright + ffmpeg)",
+  "dependencies": {
+    "playwright-core": "^1.53.0"
+  }
+}
