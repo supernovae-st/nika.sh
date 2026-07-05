@@ -78,6 +78,36 @@
   descent-override: 20%;
   line-gap-override: 0%;
 }
+/* the display faces get the same treatment — the mono fallback alone left
+   CLS 0.109 on fast-FCP runs: the H1 (Clash) and the body (Grotesk) swap
+   re-wrapped and everything below them moved (the code panel was just the
+   biggest displaced element, not the cause). Ratios are frequency-weighted
+   advance averages vs Arial, computed from the actual hmtx tables (Clash600
+   0.4823 · Grotesk 0.5761 · Arial 0.4395); verticals pin each face's own
+   used metrics (Clash typo 0.89/0.25/0.09 · Grotesk 1.0/0.2/0). Measured
+   result: home CLS 0.109 → 0.011 across three fast-FCP runs. */
+@font-face {
+  font-family: 'Clash Display Fallback';
+  src:
+    local('Arial'),
+    local('Helvetica Neue'),
+    local('Helvetica');
+  size-adjust: 109.7%;
+  ascent-override: 89%;
+  descent-override: 25%;
+  line-gap-override: 9%;
+}
+@font-face {
+  font-family: 'Martian Grotesk Fallback';
+  src:
+    local('Arial'),
+    local('Helvetica Neue'),
+    local('Helvetica');
+  size-adjust: 131.1%;
+  ascent-override: 100%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
 
 :root {
   /* engineered dark · the v4 base. The old v3 navy (#050a1c) leaked as side
@@ -97,8 +127,8 @@
   --hair: rgba(160, 190, 255, 0.1);
   --hair-bright: rgba(170, 200, 255, 0.17);
 
-  --display: 'Martian Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --headline: 'Clash Display', 'Martian Grotesk', ui-sans-serif, sans-serif;
+  --display: 'Martian Grotesk', 'Martian Grotesk Fallback', ui-sans-serif, system-ui, sans-serif;
+  --headline: 'Clash Display', 'Clash Display Fallback', ui-sans-serif, sans-serif;
   --mono: 'Martian Mono', 'Martian Mono Fallback', ui-monospace, 'SF Mono', monospace;
 
   color-scheme: dark;
