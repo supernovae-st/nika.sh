@@ -38,6 +38,11 @@ export const routes: RouteObject[] = [
       { path: 'learn', Component: Learn },
       { path: 'play', Component: Play },
       { path: 'manifesto', Component: Manifesto },
+      /* the manifesto's BCP 47 cluster · explicit locale routes, same page
+         (the component reads the pathname; hreflang wires the family) */
+      { path: 'fr/manifesto', Component: Manifesto },
+      { path: 'es/manifesto', Component: Manifesto },
+      { path: 'zh-hans/manifesto', Component: Manifesto },
       { path: 'changelog', Component: Changelog },
       { path: 'use-cases', Component: UseCasesPage },
       { path: 'spec', Component: Spec },

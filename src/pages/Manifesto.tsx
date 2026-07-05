@@ -1,7 +1,8 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
-import { REPO, SPEC, routeHead } from '../content'
+import { REPO, SPEC, SITE } from '../content'
+import { MANIFESTO_LOCALES, manifestoCopyFor, type MfSeg } from '../content/manifesto-copy'
 import { usePlan3D } from '../sections/morph/use-plan3d'
 
 /* ─── /manifesto · the drum of liberation (v5 theme · F7) ─────────────────────
@@ -22,63 +23,53 @@ import { usePlan3D } from '../sections/morph/use-plan3d'
    itself) — the rings below stay the mobile / reduced-motion / no-WebGL truth. */
 const TheDrumSphere = lazy(() => import('../scene/TheDrumSphere'))
 
-const STACK = ['models', 'memory', 'context', 'workflows', 'agents', 'tools']
-
-const PROMISES = [
-  {
-    n: '01',
-    t: 'Cognitive liberty',
-    d: 'Bring any model. Local, open-weight, or frontier. Swappable at will. No lab is the load-bearing wall, so if one disappears tomorrow, your work does not.',
-  },
-  {
-    n: '02',
-    t: 'Sovereign memory',
-    d: 'Your context, your taste, your habits live on your hardware. Readable, exportable, deletable, without asking anyone. Never hosted, never for rent.',
-  },
-  {
-    n: '03',
-    t: 'Work that survives',
-    d: 'Useful work becomes source. Plain text, versioned, replayable. Still yours in ten years, on a machine that never phones home.',
-  },
-  {
-    n: '04',
-    t: 'Craft over capture',
-    d: 'Quality over volume. Less, but better. The license makes the freedom structural, not a favour we could quietly take back.',
-  },
-  {
-    n: '05',
-    t: 'A galaxy, not a monolith',
-    d: 'No single point that anyone can switch off. Composable, plural, sovereign by design.',
-  },
-]
+/* inline emphasis renderer · the copy module's segment idiom ({fg} bright,
+   {em} italic) — the manifesto's whole formatting vocabulary. */
+const seg = (segs: MfSeg[]) =>
+  segs.map((x, i) =>
+    typeof x === 'string' ? (
+      x
+    ) : 'fg' in x ? (
+      <span key={i} className="text-[var(--fg)]">{x.fg}</span>
+    ) : (
+      <em key={i}>{x.em}</em>
+    ),
+  )
 
 export function Component() {
+  /* the locale rides the pathname (/manifesto · /fr/… · /es/… · /zh-hans/…) —
+     explicit routes only, EN is the x-default. */
+  const { pathname } = useLocation()
+  const c = manifestoCopyFor(pathname)
+
   useHead({
-    title: 'Manifesto · Nika',
-    link: routeHead('/manifesto').link,
+    title: c.htmlTitle,
+    /* <html lang> per variant (BCP 47) · unhead swaps it back on route change */
+    htmlAttrs: { lang: c.bcp47 },
+    link: [
+      { rel: 'canonical', href: `${SITE}${c.path}` },
+      /* the hreflang cluster · every variant lists every sibling + x-default */
+      ...MANIFESTO_LOCALES.map((l) => ({
+        rel: 'alternate' as const,
+        hreflang: l.bcp47,
+        href: `${SITE}${l.path}`,
+      })),
+      { rel: 'alternate', hreflang: 'x-default', href: `${SITE}/manifesto` },
+    ],
     meta: [
-      ...routeHead('/manifesto').meta,
-      {
-        name: 'description',
-        content:
-          'The drum of liberation. Why your workflows should run on your machine, with any model, and never be switched off by anyone but you.',
-      },
-      { property: 'og:title', content: 'Manifesto · Nika' },
-      {
-        property: 'og:description',
-        content: 'The drum of liberation · sovereign AI workflows, owned by you.',
-      },
+      { property: 'og:url', content: `${SITE}${c.path}` },
+      { name: 'description', content: c.metaDescription },
+      { property: 'og:title', content: c.htmlTitle },
+      { property: 'og:description', content: c.ogDescription },
+      { property: 'og:locale', content: c.ogLocale },
+      ...MANIFESTO_LOCALES.filter((l) => l.path !== c.path).map((l) => ({
+        property: 'og:locale:alternate',
+        content: l.ogLocale,
+      })),
       { property: 'og:image', content: 'https://nika.sh/og-manifesto.png' },
-      {
-        property: 'og:image:alt',
-        content:
-          'Nika manifesto · the drum of liberation. Any model, your memory, owned by you.',
-      },
-      { name: 'twitter:title', content: 'Manifesto · Nika' },
-      {
-        name: 'twitter:description',
-        content: 'The drum of liberation · sovereign AI workflows, owned by you.',
-      },
+      { property: 'og:image:alt', content: c.ogAlt },
+      { name: 'twitter:title', content: c.htmlTitle },
+      { name: 'twitter:description', content: c.ogDescription },
       { name: 'twitter:image', content: 'https://nika.sh/og-manifesto.png' },
     ],
   })
@@ -223,19 +214,37 @@ export function Component() {
 
           <div className="relative z-10 flex flex-col items-center">
             <p className="mono mb-7 text-[12px] tracking-[0.34em] text-[var(--cyan)] uppercase">
-              § The manifesto · 2026
+              {c.kicker}
             </p>
             <h1 className="mf-title mf-grad mb-6">
-              The drum
+              {c.title[0]}
               <br />
-              of liberation.
+              {c.title[1]}
             </h1>
             <p className="mb-3 max-w-[34rem] text-[19px] leading-relaxed text-[var(--fg-mute)]">
-              Intelligence you can&apos;t be locked out of.
+              {c.sub}
             </p>
             <p className="mono text-[12px] tracking-[0.04em] text-[var(--fg-dim)]">
-              Written the day intelligence got a kill switch.
+              {c.stamp}
             </p>
+            {/* the language rail · real crawlable links, BCP 47 cluster */}
+            <nav className="mf-langs mono mt-7 flex items-center gap-4 text-[12px] tracking-[0.08em]" aria-label="Languages">
+              {MANIFESTO_LOCALES.map((l) => (
+                <Link
+                  key={l.bcp47}
+                  to={l.path}
+                  lang={l.bcp47}
+                  aria-current={l.path === c.path ? 'page' : undefined}
+                  className={
+                    l.path === c.path
+                      ? 'text-[var(--fg)] underline underline-offset-4 decoration-[var(--cyan)]'
+                      : 'text-[var(--fg-dim)] transition-colors hover:text-[var(--fg)]'
+                  }
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
           </div>
 
           <span className="mf-cue absolute bottom-9 text-[var(--fg-dim)]" aria-hidden>
@@ -253,13 +262,8 @@ export function Component() {
             <span className="mf-secno">01</span>
             <span className="mf-secrule" />
           </div>
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-            Nika is named for the sun god of liberation: the drum that turns fear into laughter and
-            frees the ones who were locked out.
-          </p>
-          <p className="rv mt-5 text-[19px] font-medium text-[var(--fg)]">
-            Every workflow run is a beat of that drum.
-          </p>
+          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{c.lore1}</p>
+          <p className="rv mt-5 text-[19px] font-medium text-[var(--fg)]">{c.lore2}</p>
         </section>
 
         {/* the acid filter · inert until data-acid=live (motion-gated above) */}
@@ -277,58 +281,29 @@ export function Component() {
             <span className="mf-secno">02</span>
             <span className="mf-secrule" />
           </div>
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-            On a Friday afternoon, by a single letter, the most capable intelligence on Earth was
-            switched off for most of the people on Earth.{' '}
-            <span className="text-[var(--fg)]">Not deleted. Not broken. Revoked.</span> One
-            government decided who was allowed to think with it, and overnight, the rest of us were
-            locked out of a tool we had been building our lives on.
-          </p>
+          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.friday)}</p>
 
-          <p className="rv mf-statement mf-grad mf-pull my-20">This is the moment the argument ended.</p>
+          <p className="rv mf-statement mf-grad mf-pull my-20">{c.statement1}</p>
 
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-            The real problem was never <em>which</em> lab is ahead. It is{' '}
-            <span className="text-[var(--fg)]">who controls access to intelligence</span>:
-          </p>
+          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.realProblem)}</p>
 
           <div className="rv my-8 flex flex-wrap justify-center gap-2.5">
-            {STACK.map((s) => (
+            {c.stack.map((s) => (
               <span key={s} className="mf-token">
                 {s}
               </span>
             ))}
           </div>
 
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-            Your entire cognitive stack. If all of it lives behind closed providers, it is not
-            yours. It is <span className="text-[var(--fg)]">rented</span>. And what is rented can be
-            priced out, locked down, or turned off, by a board, a court, a border, a letter.
-          </p>
+          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.rented)}</p>
 
-          <p className="rv mf-statement mf-grad mf-pull my-20">
-            We refuse the subscription economy for cognition.
-          </p>
+          <p className="rv mf-statement mf-grad mf-pull my-20">{c.statement2}</p>
 
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-            And as these tools start to act on the world, the same rule holds for what they
-            do, not just where they run.{' '}
-            <span className="text-[var(--fg)]">
-              An agent should never act from a hidden prompt.
-            </span>{' '}
-            The plan it intends to run should be a file you can read, and reviewable before it
-            acts. Power you cannot see is power you do not control.
-          </p>
+          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.agent)}</p>
 
-          <p className="rv mt-8 text-[17.5px] leading-relaxed text-[var(--fg-mute)]">
-            <span className="text-[var(--fg)]">
-              There is no US open source AI. There is no French open source AI.
-            </span>{' '}
-            Open source is open knowledge, shared infrastructure, and the right to run, study,
-            modify, and own intelligence. Don&apos;t fight the cage by repainting it. Leave it.
-          </p>
+          <p className="rv mt-8 text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.openSource)}</p>
 
-          <p className="rv mf-statement mf-grad mf-pull my-20">Sovereignty for everyone, or for no one.</p>
+          <p className="rv mf-statement mf-grad mf-pull my-20">{c.statement3}</p>
         </div>
 
         {/* ─── the 5 promises · seam-kit panels ─── */}
@@ -338,16 +313,16 @@ export function Component() {
             <span className="mf-secrule" />
           </div>
           <p className="rv mono mb-3 text-center text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-            § What we promise
+            {c.promisesKicker}
           </p>
           <h2
             className="rv mb-12 text-center font-semibold tracking-tight"
             style={{ fontSize: 'clamp(1.7rem, 1rem + 2.4vw, 2.8rem)', lineHeight: 1.06 }}
           >
-            Built for the day the tap closes.
+            {c.promisesTitle}
           </h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {PROMISES.map((p, i) => (
+            {c.promises.map((p, i) => (
               <div
                 key={p.n}
                 className="rv mf-promise px-7 py-7"
@@ -378,12 +353,12 @@ export function Component() {
               own: the shared SiteFooter's living particle butterfly right below
               is THE mark (one signature, one close · the double-footer fix) */}
           <p className="rv mf-statement mf-grad mb-10">
-            Open source AI must win.
+            {c.close[0]}
             <br />
-            Not for a nation. For everyone.
+            {c.close[1]}
           </p>
           <p className="rv mono mt-2 text-[13px] tracking-[0.04em] text-[var(--cyan)]">
-            The drum of liberation is getting louder.
+            {c.drumline}
           </p>
           <div className="rv mono mt-10 flex flex-wrap items-center justify-center gap-6 text-[12.5px]">
             <a
@@ -392,7 +367,7 @@ export function Component() {
               rel="noreferrer"
               className="text-[var(--cyan)] transition-colors hover:text-[var(--fg)]"
             >
-              Read the spec →
+              {c.linkSpec}
             </a>
             <a
               href={REPO}
@@ -400,10 +375,10 @@ export function Component() {
               rel="noreferrer"
               className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
             >
-              Star on GitHub →
+              {c.linkGithub}
             </a>
             <Link to="/" className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]">
-              ← Back to site
+              {c.linkBack}
             </Link>
           </div>
         </section>

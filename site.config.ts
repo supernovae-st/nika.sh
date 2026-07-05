@@ -24,4 +24,6 @@ export const BLOG_PATHS = [
   '/blog/standard-library-not-plugin-store',
   '/blog/open-spec-copyleft-engine',
 ]
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', '/changelog', '/use-cases', '/spec', '/install', '/convert']
+/* the manifesto's translated variants (BCP 47 slugs · hreflang cluster) */
+export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/zh-hans/manifesto']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/use-cases', '/spec', '/install', '/convert']
