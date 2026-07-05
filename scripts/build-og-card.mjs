@@ -143,6 +143,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>spec&nbsp;first<span class="sep">·</span>gates<span class="sep">·</span><b>the&nbsp;draft&nbsp;is&nbsp;not&nbsp;the&nbsp;product</b></span>',
   },
   {
+    // /blog/the-trace-you-can-replay — the flight recorder.
+    out: 'og-blog-the-trace-you-can-replay.png',
+    fig: 'FIG B.8',
+    size: 62,
+    headline: 'The trace<br><span class="b">you can replay.</span>',
+    sub: 'Every run leaves a flight recorder: a deterministic audit trail you replay like a film, never re-execute by&nbsp;accident.',
+    detail:
+      '<span class="arrow">▸</span><span>run&nbsp;--json<span class="sep">·</span>trace&nbsp;replay<span class="sep">·</span><b>re-render,&nbsp;never&nbsp;re-execute</b></span>',
+  },
+  {
     // /blog/the-note-that-started-it — the origin note (Oct 2025).
     out: 'og-blog-the-note-that-started-it.png',
     fig: 'FIG 0.1',

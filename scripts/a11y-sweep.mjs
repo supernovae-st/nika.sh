@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const PORT = 9251
-const ROUTES = ['/', '/manifesto', '/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/blog/own-your-stack', '/blog/dag-for-free', '/blog/blast-radius-in-the-file', '/blog/standard-library-not-plugin-store', '/blog/open-spec-copyleft-engine', '/blog/the-note-that-started-it', '/blog/naming-the-drum', '/blog/starting-over-on-purpose', '/changelog', '/convert']
+const ROUTES = ['/', '/manifesto', '/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/blog/own-your-stack', '/blog/dag-for-free', '/blog/blast-radius-in-the-file', '/blog/standard-library-not-plugin-store', '/blog/open-spec-copyleft-engine', '/blog/the-note-that-started-it', '/blog/naming-the-drum', '/blog/starting-over-on-purpose', '/blog/the-trace-you-can-replay', '/changelog', '/convert']
 const AXE_SRC = readFileSync(join(ROOT, 'node_modules/axe-core/axe.min.js'), 'utf8')
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.woff2': 'font/woff2', '.webp': 'image/webp', '.txt': 'text/plain', '.xml': 'application/xml' }
@@ -72,7 +72,19 @@ await send('Runtime.enable')
 let gate = 0
 for (const route of ROUTES) {
   await send('Page.navigate', { url: `http://127.0.0.1:${PORT}${route}` })
-  await sleep(3500)
+  /* deterministic settle — the old blind 3500ms sometimes ran axe against a
+     document still mid-navigation (axe then reported html-has-lang/
+     document-title on the BLANK doc · flake). Poll the loaded app + fonts,
+     then one short settle for late reveals. */
+  for (let i = 0; i < 40; i++) {
+    const ready = await evaluate(
+      `document.readyState === 'complete' && !!document.querySelector('#app')?.children.length`,
+    ).catch(() => false)
+    if (ready) break
+    await sleep(250)
+  }
+  await evaluate(`document.fonts ? document.fonts.ready.then(() => true) : true`).catch(() => {})
+  await sleep(800)
   await evaluate(AXE_SRC + '; true')
   const result = await evaluate(`axe.run(document, { resultTypes: ['violations'] }).then(r => r.violations.map(v => ({ id: v.id, impact: v.impact, count: v.nodes.length, sample: v.nodes[0]?.target?.[0] ?? '' })))`)
   const bad = result.filter((v) => v.impact === 'critical' || v.impact === 'serious')

@@ -25,11 +25,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'replayable-trace',
-    tag: 'Engine',
+    slug: 'four-verbs-deep',
+    tag: 'Language',
     date: 'soon',
-    title: 'The trace you can replay',
-    teaser: 'Every run leaves a record: same file, same steps, same order. Run it again and diff it like code.',
+    title: 'Anatomy of a verb',
+    teaser: 'What makes infer, exec, invoke and agent genuinely different execution models — and why that is the whole design.',
   },
   {
     slug: 'written-by-agents',

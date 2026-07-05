@@ -7,6 +7,14 @@
     <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
     <language>en</language>
     <item>
+      <title>The trace you can replay</title>
+      <link>https://nika.sh/blog/the-trace-you-can-replay</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-trace-you-can-replay</guid>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>Every run leaves a flight recorder: a deterministic AI audit trail you can replay like a film, never re-execute by accident.</description>
+    </item>
+    <item>
       <title>No cloud needed</title>
       <link>https://nika.sh/blog/own-your-stack</link>
       <guid isPermaLink="true">https://nika.sh/blog/own-your-stack</guid>
