@@ -3,7 +3,19 @@ import CodeMirror from '@uiw/react-codemirror'
 import { yaml as yamlLang } from '@codemirror/lang-yaml'
 import { linter, lintGutter, type Diagnostic } from '@codemirror/lint'
 import { EditorView } from '@codemirror/view'
+import { syntaxHighlighting } from '@codemirror/language'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
+import {
+  CF_BG,
+  CF_GUTTER_INK,
+  CF_LINE,
+  CF_NUM,
+  CF_BOOL,
+  CF_PLAIN,
+  CF_REF,
+  cfHighlight,
+  nikaMarks,
+} from './play-editor-voice'
 
 /* ─── /play · the editor · lazy chunk ────────────────────────────────────────
    CodeMirror + its YAML language + the lint plumbing live ONLY here. Play.tsx
@@ -13,22 +25,11 @@ import { lintNika, type LintDiag } from '../lib/nika-lint'
    widget) so deferring it changes nothing about the static page — it mounts on
    hydration just as before.
 
-   THEME · the editor is dressed to MATCH the premium static CodeFile (the shared
-   product replica · components/codefile.css). It reuses the same dark #0d0e12
-   editor surface, the same hairline gutter divider + dim ink, the same teal
-   "live-wiring" caret/selection/active-line accent (--cf-ref), and a thin
-   scrollbar. The token hues ride CodeMirror's built-in dark highlight (a
-   restrained, premium dark-editor palette in the same family as the CodeFile
-   --cf-* tones); the chrome around it (traffic-lights tab, filename, status) is
-   the .cf-* chrome reused verbatim in Play.tsx. So the live playground reads as
-   the SAME editor the rest of the site shows — only this one validates as you
-   type. The CodeMirror surface MUST come last in the extension list so it wins
-   over the built-in dark theme's background/gutter/selection. */
-
-const CF_BG = '#0d0e12'
-const CF_LINE = 'rgb(255 255 255 / 0.07)'
-const CF_GUTTER_INK = '#555b67'
-const CF_REF = '#5fd3d1' /* the teal live-wiring accent (= --cf-ref) */
+   THEME · the editor speaks the SAME yaml dialect as the static CodeFile — the
+   token voice (highlight + nika marks) lives in play-editor-voice.ts; this
+   theme owns the surface, gutter, caret, selection, active line, scrollbar,
+   the mark colours and the lint tooltip register. With theme="none" nothing
+   else competes; { dark: true } keeps the base dark variants for the rest. */
 
 /* a11y · name the textbox + make the content explicitly tabbable so the
    scroller's well has a reachable child in every checker's book (bare
@@ -39,9 +40,7 @@ const cmA11y = EditorView.contentAttributes.of({
 })
 
 /* the editor surface · matches .cf-body / .cf-pre / .cf-line / .cf-ln in
-   components/codefile.css. Token COLOURS stay on CodeMirror's own dark highlight
-   (a muted premium palette); this theme owns the surface, gutter, caret,
-   selection, active line and scrollbar so the chrome reads as the same editor. */
+   components/codefile.css. */
 const cfTheme = EditorView.theme(
   {
     '&': {
@@ -51,6 +50,7 @@ const cfTheme = EditorView.theme(
     '.cm-content': {
       fontFamily: 'var(--mono)',
       caretColor: CF_REF,
+      color: CF_PLAIN,
       padding: '11px 0 13px',
     },
     '.cm-line': { padding: '0 18px 0 14px', lineHeight: '1.5' },
@@ -78,6 +78,31 @@ const cfTheme = EditorView.theme(
       fontSize: '11.5px',
       opacity: '0.8',
     },
+    /* the nika marks · the 4 verbs in their canonical hues (the CodeFile
+       signature — type `infer:` and it lights up like everywhere on the site),
+       refs in teal live-wiring, number/bool values amber/mauve. */
+    '.cm-nika-verb': { fontWeight: '500' },
+    '.cm-nika-verb--infer': { color: 'var(--verb-infer, #5b8cff)' },
+    '.cm-nika-verb--exec': { color: 'var(--verb-exec, #ff7a3c)' },
+    '.cm-nika-verb--invoke': { color: 'var(--verb-invoke, #22d3ee)' },
+    '.cm-nika-verb--agent': { color: 'var(--verb-agent, #b07bff)' },
+    '.cm-nika-ref': { color: CF_REF },
+    '.cm-nika-num': { color: CF_NUM, fontVariantNumeric: 'tabular-nums' },
+    '.cm-nika-bool': { color: CF_BOOL, fontWeight: '500' },
+    /* the lint hover card · the site panel register (hairline, mono, the
+       error accent riding the exec amber like the validator panel). */
+    '.cm-tooltip': {
+      backgroundColor: '#12141b',
+      border: `1px solid rgb(255 255 255 / 0.1)`,
+      borderRadius: '8px',
+      color: '#c8cdd8',
+      fontFamily: 'var(--mono)',
+      fontSize: '11.5px',
+      overflow: 'hidden',
+    },
+    '.cm-tooltip.cm-tooltip-lint': { padding: '2px 0' },
+    '.cm-diagnostic': { padding: '6px 10px', whiteSpace: 'pre-wrap' },
+    '.cm-diagnostic-error': { borderLeft: '3px solid var(--verb-exec, #ff7a3c)' },
     /* a thin, unobtrusive scrollbar (matches .cf-pre) */
     '.cm-scroller': {
       scrollbarWidth: 'thin',
@@ -122,8 +147,17 @@ export default function PlayEditor({ value, onChange, onDiags }: PlayEditorProps
     <CodeMirror
       value={value}
       onChange={onChange}
-      theme="dark"
-      extensions={[yamlLang(), cmLinter, lintGutter(), cmA11y, cfTheme]}
+      theme="none"
+      extensions={[
+        yamlLang(),
+        cmLinter,
+        lintGutter(),
+        cmA11y,
+        syntaxHighlighting(cfHighlight),
+        nikaMarks,
+        EditorView.lineWrapping /* long SLOT comments fade into wrap, never clip */,
+        cfTheme,
+      ]}
       basicSetup={{ foldGutter: false, autocompletion: false, highlightActiveLine: true }}
       style={{ minHeight: 480 }}
     />
