@@ -107,12 +107,44 @@ export function Component() {
             {BLOG_POSTS.length} live · {SOON.length} upcoming
           </p>
 
-          {/* ══ the shelf · one card per post (content/blog — compiled) ══════ */}
+          {/* ══ the lead · the latest entry as the issue front page ══════════
+              Editorial hierarchy (the register every serious journal keeps):
+              the newest post reads FIRST-class — full-width plate, its issue
+              number as a giant watermark stamp — and the archive files below.
+              Same Link semantics as a card; only the rendering is promoted. */}
+          {BLOG_POSTS.length > 0 && (
+            <Link
+              id={BLOG_POSTS[0].slug}
+              to={`/blog/${BLOG_POSTS[0].slug}`}
+              viewTransition
+              className="blog-lead"
+              data-rise
+            >
+              <span className="blog-lead-no mono" aria-hidden>
+                {String(BLOG_POSTS.length).padStart(2, '0')}
+              </span>
+              <span className="blog-card-fig mono">
+                latest · {BLOG_POSTS[0].tag} ·{' '}
+                <time dateTime={BLOG_POSTS[0].date}>{BLOG_POSTS[0].date}</time>
+              </span>
+              <span className="blog-lead-title">{BLOG_POSTS[0].title}</span>
+              <span className="blog-lead-teaser">{BLOG_POSTS[0].description}</span>
+              <span className="blog-card-foot mono">
+                {BLOG_POSTS[0].readingMin} min read
+                <span className="blog-card-arrow" aria-hidden>
+                  {' '}
+                  →
+                </span>
+              </span>
+            </Link>
+          )}
+
+          {/* ══ the shelf · one card per archived post (content/blog) ════════ */}
           <div className="blog-shelf" data-rise>
-            {BLOG_POSTS.map((p, i) => (
+            {BLOG_POSTS.slice(1).map((p, i) => (
               <Link key={p.slug} id={p.slug} to={`/blog/${p.slug}`} viewTransition className="blog-card">
                 <span className="blog-card-fig mono">
-                  {String(BLOG_POSTS.length - i).padStart(2, '0')} · {p.tag} ·{' '}
+                  {String(BLOG_POSTS.length - 1 - i).padStart(2, '0')} · {p.tag} ·{' '}
                   <time dateTime={p.date}>{p.date}</time>
                 </span>
                 <span className="blog-card-title">{p.title}</span>

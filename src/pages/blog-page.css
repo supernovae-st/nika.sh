@@ -199,12 +199,87 @@
   text-wrap: pretty;
 }
 
+/* ─── the lead · the latest entry as the issue front page ─────────────────────
+   One full-width plate above the shelf: the issue number as a giant mono
+   watermark on the right (the blueprint stamp — same vocabulary as the
+   changelog's big digits), title at display size, the full standfirst on a
+   longer measure. Hover speaks the existing card language (border lift +
+   arrow slide) — nothing new is invented, the lead just speaks it louder. */
+.blog-lead {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: clamp(28px, 5vh, 46px);
+  padding: clamp(24px, 3.2vw, 40px);
+  padding-right: clamp(96px, 16vw, 240px); /* air for the watermark stamp */
+  border: 1px solid var(--seam-hairline);
+  border-radius: var(--v4-radius);
+  background: rgb(10 13 18 / 0.55);
+  overflow: hidden; /* the watermark bleeds off the plate, never the page */
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+.blog-lead:hover,
+.blog-lead:focus-visible {
+  border-color: rgb(96 141 255 / 0.45);
+  background: rgb(14 19 30 / 0.7);
+}
+.blog-lead:focus-visible {
+  outline: 1px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+/* the issue stamp · tabular mono, cut by the plate edge, sub-hairline ink */
+.blog-lead-no {
+  position: absolute;
+  top: 50%;
+  right: clamp(-28px, -2vw, -12px);
+  transform: translateY(-50%);
+  font-size: clamp(96px, 14vw, 200px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: color-mix(in oklch, var(--v4-text) 7%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+.blog-lead-title {
+  font-size: clamp(24px, 3.2vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.16;
+  color: var(--v4-text);
+  text-wrap: balance;
+  max-width: 22ch;
+}
+.blog-lead-teaser {
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  line-height: 1.62;
+  color: var(--v4-text-dim);
+  max-width: 58ch;
+  text-wrap: pretty;
+}
+@media (max-width: 720px) {
+  .blog-lead {
+    padding-right: clamp(24px, 6vw, 40px); /* the stamp stands down · air returns */
+  }
+  .blog-lead-no {
+    display: none;
+  }
+}
+
 /* ─── the shelf · one card per compiled post (W13 · the real blog) ──────────── */
 .blog-shelf {
   margin-top: clamp(28px, 5vh, 46px);
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+}
+/* filed under the lead · the shelf sits at grid rhythm, not section rhythm */
+.blog-lead + .blog-shelf {
+  margin-top: 14px;
 }
 @media (max-width: 860px) {
   .blog-shelf {
