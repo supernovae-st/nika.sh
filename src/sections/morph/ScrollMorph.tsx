@@ -1,6 +1,8 @@
 import { Fragment, Suspense, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CodeFile } from '../../components/CodeFile'
 import { FileTabsGhost } from '../Hero'
+import TheRun from '../run/TheRun'
+import ThePlan from '../plan/ThePlan'
 import { usePlan3D } from './use-plan3d'
 import { useAurora } from '../../fx/aurora-context'
 import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships'
@@ -30,21 +32,30 @@ import './morph.css'
 import '../../fx/slab-sweep.css'
 
 /* ─── ScrollMorph · F2 · the one continuous scroll-linked scene ───────────────
-   Desktop (≥768px, motion-allowed) replaces the separate run/plan beats:
-   the SELECTED flagship file travels with scroll, each task block CONDENSES
-   into a seed chip and is DRAWN along a curve into its DAG slot (per-task
-   aspiration, reading order — the causality IS the animation), then the
-   recorded run chains through the DAG while a terminal strip narrates the
-   same events. At `done` the settled file returns BESIDE the flat 2D DAG and
-   hovering either side lights the other (the comprehension frame).
+   EVERY width (motion-allowed · W20): the SELECTED flagship file travels
+   with scroll, each task block CONDENSES into a seed chip and is DRAWN along
+   a curve into its DAG slot (per-task aspiration, reading order — the
+   causality IS the animation), then the recorded run chains through the DAG
+   while a terminal strip narrates the same events. At `done` the settled
+   file returns BESIDE the flat 2D DAG (≥1024) and hovering either side
+   lights the other (the comprehension frame).
+
+   PHONES (≤767px · W20): the same scene, portrait grammar — the DAG waves
+   stack top→down (parallel waves 2-up), the wires re-anchor bottom→top, the
+   file keeps the HERO'S OWN SIZE (scale-1 seam: the panel dives, it never
+   shrinks to a map) and the drain parks the un-read queue below the fold.
+   All of it falls out of the measured geometry — the flight engine reads
+   rects, so the portrait layout needs zero new motion code.
 
    CONTRACT (the operator's law):
    · scroll-LINKED, never wheel-hijacked — sticky stage + transforms derived
      from native scroll progress, one rAF, no Lenis, no teleports (every
      visual is a continuous pure function of p — scrub back, it reverses)
-   · reduced-motion / no-JS / mobile: this section renders the STATIC final
-     state (assembled DAG + the full terminal + verdict) or stays hidden
-     (≤767px keeps the vertical run+plan story — morph.css gates both)
+   · reduced-motion / no-JS: ≥768px this section renders the STATIC final
+     state (assembled DAG + the full terminal + verdict); ≤767px it renders
+     the vertical run+plan story instead (the fallback children below —
+     exactly ONE variant is ever mounted; morph.css hides the un-armed
+     morphsec on phones)
    · HONESTY: a seed chip is the task's real id + verb; node intervals and
      terminal lines come verbatim from the recorded trace (morph-model). */
 
@@ -247,6 +258,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
        (all inside the same rAF, no flash) */
     card.style.transform = ''
 
+    /* portrait truth (W20) · phones re-anchor the wires and skip the fit-font
+       — read ONCE per measure (resize/orientation re-measures) */
+    const vertical = window.matchMedia('(max-width: 767px)').matches
+
     /* ONE LAYOUT TRUTH (wave M) · the card renders the hero panel's EXACT
        text layout at its own size: width = heroW × F_m/F_h locks the ch
        measure (wraps included — the seam projection is a pure uniform
@@ -266,24 +281,35 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const f0 = parseFloat(getComputedStyle(codeEl).fontSize)
       const heroW = heroCode.getBoundingClientRect().width
       if (fH > 0 && f0 > 0 && heroW > 0) {
-        /* pass 1 · the ch measure at the baseline font (wrap truth) */
-        stage.style.setProperty('--morph-code-w', `${((heroW * f0) / fH).toFixed(2)}px`)
-        /* the slot: from the card's own measured padding to the console's
-           top edge — every guard is a live rect, never a tuned literal */
-        const padTop = parseFloat(getComputedStyle(card).paddingTop) || 0
-        const consoleEl = stage.querySelector<HTMLElement>('.morph-console')
-        const cardTop = card.getBoundingClientRect().top + padTop
-        const slotBottom = consoleEl
-          ? consoleEl.getBoundingClientRect().top - 10
-          : card.getBoundingClientRect().bottom
-        const slotH = Math.max(160, slotBottom - cardTop) /* short-vh guard */
-        /* pass 2 · scrollHeight is the un-cropped panel height at f0 (the
-           pre crops via overflow, the panel doesn't lie) */
-        const H0 = codeEl.scrollHeight
-        if (H0 > 0 && slotH > 0) {
-          const fM = Math.max(7.5, Math.min(f0, (f0 * slotH) / H0))
-          stage.style.setProperty('--morph-code-fs', `${fM.toFixed(2)}px`)
-          stage.style.setProperty('--morph-code-w', `${((heroW * fM) / fH).toFixed(2)}px`)
+        if (vertical) {
+          /* PHONE · scale 1 (W20): the card IS the hero panel's size — the
+             seam becomes a pure translation and the yaml stays at reading
+             size (the desktop fit-font would floor at 7.5px here, a map
+             nobody can read). The tail past the fold is the fold's problem:
+             the drain parks the un-read queue below the slab band and each
+             block is drawn UP into view as its beat arrives. */
+          stage.style.setProperty('--morph-code-fs', `${fH.toFixed(2)}px`)
+          stage.style.setProperty('--morph-code-w', `${heroW.toFixed(2)}px`)
+        } else {
+          /* pass 1 · the ch measure at the baseline font (wrap truth) */
+          stage.style.setProperty('--morph-code-w', `${((heroW * f0) / fH).toFixed(2)}px`)
+          /* the slot: from the card's own measured padding to the console's
+             top edge — every guard is a live rect, never a tuned literal */
+          const padTop = parseFloat(getComputedStyle(card).paddingTop) || 0
+          const consoleEl = stage.querySelector<HTMLElement>('.morph-console')
+          const cardTop = card.getBoundingClientRect().top + padTop
+          const slotBottom = consoleEl
+            ? consoleEl.getBoundingClientRect().top - 10
+            : card.getBoundingClientRect().bottom
+          const slotH = Math.max(160, slotBottom - cardTop) /* short-vh guard */
+          /* pass 2 · scrollHeight is the un-cropped panel height at f0 (the
+             pre crops via overflow, the panel doesn't lie) */
+          const H0 = codeEl.scrollHeight
+          if (H0 > 0 && slotH > 0) {
+            const fM = Math.max(7.5, Math.min(f0, (f0 * slotH) / H0))
+            stage.style.setProperty('--morph-code-fs', `${fM.toFixed(2)}px`)
+            stage.style.setProperty('--morph-code-w', `${((heroW * fM) / fH).toFixed(2)}px`)
+          }
         }
       }
     }
@@ -434,6 +460,27 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         const fromEl = nodeRefs.current.get(d)
         if (!fromEl) continue
         const fr = fromEl.getBoundingClientRect()
+        if (vertical) {
+          /* portrait wires (W20) · waves stack top→down, so the wire leaves
+             the dep's BOTTOM edge and enters the task's TOP edge — the
+             desktop right→left anchors would draw sideways S-loops through
+             the column */
+          const x1 = fr.left + fr.width / 2 - dr.left
+          const y1 = fr.bottom - dr.top
+          const x2 = tr.left + tr.width / 2 - dr.left
+          const y2 = tr.top - dr.top
+          const my = (y2 - y1) / 2
+          next.push({
+            from: d,
+            to: t.id,
+            d: `M ${x1} ${y1} C ${x1} ${y1 + my}, ${x2} ${y2 - my}, ${x2} ${y2}`,
+            x1,
+            y1,
+            x2,
+            y2,
+          })
+          continue
+        }
         const x1 = fr.right - dr.left
         const y1 = fr.top + fr.height / 2 - dr.top
         const x2 = tr.left - dr.left
@@ -716,17 +763,15 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     [aurora, flagship, plan, script],
   )
 
-  /* ── arm · desktop + motion only (the static final scene is the default) ──── */
+  /* ── arm · motion only (W20: every width — the static scene / the vertical
+     story are the un-armed truths, per the CONTRACT above) ─────────────────── */
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const wide = window.matchMedia('(min-width: 768px)')
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const decide = () => setArmed(wide.matches && !reduced.matches)
+    const decide = () => setArmed(!reduced.matches)
     decide()
-    wide.addEventListener('change', decide)
     reduced.addEventListener('change', decide)
     return () => {
-      wide.removeEventListener('change', decide)
       reduced.removeEventListener('change', decide)
     }
   }, [])
@@ -914,7 +959,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         psLayerRef.current = null
         psOffRef.current = null
       }
-      const runway = rect.height - vh
+      /* runway from the STAGE's own height, not innerHeight (W20): the stage
+         is 100svh on phones — innerHeight grows when the URL bar collapses
+         and would let p hit 1 before the sticky actually detaches. Desktop
+         stage is 100vh = innerHeight, so this changes nothing there. */
+      const runway = rect.height - (stageRef.current?.offsetHeight ?? vh)
       apply(runway > 0 ? clamp01(-rect.top / runway) : 1)
       seam(rect, vh)
     }
@@ -1051,12 +1100,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     })
   }, [flagship])
 
-  /* seek: scroll IS the store — a fraction maps to one scroll offset */
+  /* seek: scroll IS the store — a fraction maps to one scroll offset (the
+     stage height is the runway's anchor, same law as the frame loop) */
   const seek = useCallback((frac: number) => {
     const section = sectionRef.current
     if (!section) return
     const rect = section.getBoundingClientRect()
-    const runway = rect.height - window.innerHeight
+    const runway = rect.height - (stageRef.current?.offsetHeight ?? window.innerHeight)
     if (runway <= 0) return
     window.scrollTo({ top: window.scrollY + rect.top + clamp01(frac) * runway })
   }, [])
@@ -1112,7 +1162,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         return
       }
       const rect = section.getBoundingClientRect()
-      const runway = rect.height - window.innerHeight
+      const runway = rect.height - (stageRef.current?.offsetHeight ?? window.innerHeight)
       const p = runway > 0 ? clamp01(-rect.top / runway) : 1
       if (p >= 1) {
         setPlaying(false)
@@ -1135,6 +1185,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const { verdict } = script
 
   return (
+    <>
     <section
       ref={sectionRef}
       className="morphsec theme-dark"
@@ -1164,6 +1215,12 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               </p>
               <p className="morph-cap" data-for="done">
                 Hover any step to see its exact lines in the file.
+              </p>
+              {/* the phone's done voice (W20) · no settled file panel <1024,
+                  so the hover wording would lie — the touch line closes the
+                  story instead (morph.css gates which one speaks) */}
+              <p className="morph-cap" data-for="done-touch">
+                Tap any step to read it. The run is a file too — replay it anytime.
               </p>
             </div>
           </header>
@@ -1396,14 +1453,18 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   <span className="morph-verdict-sep" aria-hidden>
                     ·
                   </span>
-                  <span>
+                  {/* classed so the short-phone frame can yield it — the DAG
+                      on screen IS the task count there */}
+                  <span className="morph-verdict-tasks">
                     {verdict.completed} task{verdict.completed > 1 ? 's' : ''} ran
                     {verdict.skipped > 0 ? ` · ${verdict.skipped} skipped by its when: gate` : ''}
                   </span>
                   <span className="morph-verdict-sep" aria-hidden>
                     ·
                   </span>
-                  <span>{formatMs(verdict.totalMs)}</span>
+                  {/* classed so the short-phone frame can yield it — the same
+                      figure already reads in the body's « run complete » line */}
+                  <span className="morph-verdict-ms">{formatMs(verdict.totalMs)}</span>
                   <span className="morph-verdict-sep" aria-hidden>
                     ·
                   </span>
@@ -1483,5 +1544,20 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         </div>
       </div>
     </section>
+
+      {/* ── the un-armed phone story (W20) · exactly ONE variant ever mounts ──
+          SSR/no-JS keeps this vertical run+plan story in the HTML (morph.css
+          hides the un-armed morphsec ≤767px and this story ≥768px); the arm
+          effect unmounts it everywhere else, so an armed phone never carries
+          a hidden duplicate of the tale. */}
+      {!armed && (
+        <div className="morph-mobile-story">
+          {/* FIG 1.0m · THE RUN — the trace replay (tap ▶ / in-view autoplay) */}
+          <TheRun flagship={flagship} />
+          {/* FIG 2.0m · THE PLAN — the same file as a vertical timeline */}
+          <ThePlan flagship={flagship} />
+        </div>
+      )}
+    </>
   )
 }

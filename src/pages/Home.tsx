@@ -5,8 +5,6 @@ import Hero from '../sections/Hero'
 import { FLAGSHIP_ENTRIES } from '../flagships'
 import { LIBRARY } from '../flagships/library'
 import ScrollMorph from '../sections/morph/ScrollMorph'
-import TheRun from '../sections/run/TheRun'
-import ThePlan from '../sections/plan/ThePlan'
 import TheBoundary from '../sections/boundary/TheBoundary'
 import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
@@ -234,20 +232,15 @@ export function Component() {
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
         <Hero item={item} index={libIdx} onSelect={onPick} flagship={flagship} />
 
-        {/* FIG 1.0 · THE MORPH (desktop) — ONE continuous scroll-linked scene:
-             the selected file travels, BURSTS into its DAG, then the recorded
-             run chains through it while the terminal narrates (F2). Mobile
-             keeps the vertical story below (replay + plan). The wrapper owns
-             the #the-run anchor so the hero CTA lands on whichever variant
-             the viewport shows. */}
+        {/* FIG 1.0 · THE MORPH — ONE continuous scroll-linked scene at every
+             width (W20): the selected file travels, BURSTS into its DAG, then
+             the recorded run chains through it while the terminal narrates
+             (F2). Un-armed phones (reduced-motion · no-JS) get the vertical
+             story instead — ScrollMorph owns both variants and mounts exactly
+             one. The wrapper owns the #the-run anchor so the hero CTA lands
+             on whichever variant renders. */}
         <div id="the-run" className="scroll-mt-24">
           <ScrollMorph flagship={flagship} />
-          <div className="morph-mobile-story">
-            {/* FIG 1.0m · THE RUN — the trace replay (tap ▶ / in-view autoplay) */}
-            <TheRun flagship={flagship} />
-            {/* FIG 2.0m · THE PLAN — the same file as a vertical timeline */}
-            <ThePlan flagship={flagship} />
-          </div>
         </div>
 
         {/* FIG 3.0 · THE BOUNDARY — the same file's permits: read as the

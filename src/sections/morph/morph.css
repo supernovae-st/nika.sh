@@ -67,35 +67,38 @@
   mask-image: radial-gradient(130% 105% at 50% 56%, #000 0%, #000 46%, transparent 82%);
 }
 
-/* the hero→morph weld (wave M) · the hero field's floor tone dissolves INTO
-   the dark room through the ordered-dither ramp — the section edge stops
-   reading as a horizontal cut (the dissolve is ours, never a smooth falloff) */
-@media (min-width: 768px) {
-  .morphsec::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 240px;
-    pointer-events: none;
-    background: linear-gradient(180deg, rgb(17 34 82 / 0.5), rgb(13 24 58 / 0.28) 55%, rgb(11 18 42 / 0.12) 100%);
-    -webkit-mask-image: var(--v4-dither-fade);
-    -webkit-mask-size: 4px 240px;
-    -webkit-mask-repeat: repeat-x;
-    mask-image: var(--v4-dither-fade);
-    mask-size: 4px 240px;
-    mask-repeat: repeat-x;
-  }
+/* the hero→morph weld (wave M · every width since W20) · the hero field's
+   floor tone dissolves INTO the dark room through the ordered-dither ramp —
+   the section edge stops reading as a horizontal cut (the dissolve is ours,
+   never a smooth falloff) */
+.morphsec::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 240px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(17 34 82 / 0.5), rgb(13 24 58 / 0.28) 55%, rgb(11 18 42 / 0.12) 100%);
+  -webkit-mask-image: var(--v4-dither-fade);
+  -webkit-mask-size: 4px 240px;
+  -webkit-mask-repeat: repeat-x;
+  mask-image: var(--v4-dither-fade);
+  mask-size: 4px 240px;
+  mask-repeat: repeat-x;
 }
+/* W20 · phones run the FULL morph when armed; the vertical story is the
+   un-armed truth (reduced-motion · no-JS — ScrollMorph mounts exactly one).
+   The un-armed morphsec stays a desktop object: its static final scene is
+   composed for width, the story is composed for the phone. */
 @media (max-width: 767px) {
-  .morphsec {
-    display: none; /* the vertical story owns ≤767px */
+  .morphsec:not([data-armed]) {
+    display: none; /* the vertical story owns the un-armed phone */
   }
 }
 @media (min-width: 768px) {
   .morph-mobile-story {
-    display: none; /* the morph owns the desktop */
+    display: none; /* the morph owns the desktop (SSR ships both) */
   }
 }
 
@@ -303,6 +306,13 @@
   opacity: var(--msh, 1);
 }
 .morph-code .cf-ln {
+  opacity: var(--msh, 1);
+}
+/* the floating copy affordance is CHROME too — it lives in the body (wave P)
+   so it must ride the shell dissolve explicitly, or it survives the burst as
+   an orphan icon floating over the landed nodes (found on the 390 reverse
+   sweep; inert anyway — the whole card is pointer-events:none here) */
+.morph-code .cf-copy-float {
   opacity: var(--msh, 1);
 }
 .morph-code .cf-pre {
@@ -1010,34 +1020,34 @@
 .morph-console {
   display: none;
 }
-@media (min-width: 768px) {
-  .morphsec[data-armed] .morph-console {
-    position: absolute;
-    left: clamp(20px, 4vw, 48px);
-    right: clamp(20px, 4vw, 48px);
-    bottom: 8px;
-    z-index: 4;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 9px 12px;
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
-    color: var(--v4-text-faint);
-    /* the transport's floor (wave S · skeuo pass) · a MACHINED deck: hairline
-       top seam, inner top-light + bottom shade — a physical shelf the tape
-       runs on, not a translucent strip */
-    border-top: 1px solid color-mix(in oklch, var(--v4-line) 80%, transparent);
-    /* near-opaque: the queue-slide sends draining YAML BEHIND this shelf —
-       a translucent floor let it read through (wave M review) */
-    background-color: color-mix(in oklch, var(--v4-bg, #08090b) 94%, transparent);
-    background-image: var(--v4-grain-img);
-    background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.045),
-      inset 0 -1px 0 rgb(0 0 0 / 0.5);
-  }
+/* armed at any width since W20 (the transport IS the run's instrument —
+   phones scrub it with a thumb); un-armed scenes keep it hidden */
+.morphsec[data-armed] .morph-console {
+  position: absolute;
+  left: clamp(20px, 4vw, 48px);
+  right: clamp(20px, 4vw, 48px);
+  bottom: 8px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+  /* the transport's floor (wave S · skeuo pass) · a MACHINED deck: hairline
+     top seam, inner top-light + bottom shade — a physical shelf the tape
+     runs on, not a translucent strip */
+  border-top: 1px solid color-mix(in oklch, var(--v4-line) 80%, transparent);
+  /* near-opaque: the queue-slide sends draining YAML BEHIND this shelf —
+     a translucent floor let it read through (wave M review) */
+  background-color: color-mix(in oklch, var(--v4-bg, #08090b) 94%, transparent);
+  background-image: var(--v4-grain-img);
+  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.045),
+    inset 0 -1px 0 rgb(0 0 0 / 0.5);
 }
 .morph-play {
   flex: 0 0 auto;
@@ -1210,5 +1220,233 @@
 @media (max-width: 1023px) {
   .morph-console-truth {
     display: none; /* narrow: the transport keeps the room */
+  }
+}
+
+/* ─── W20 · THE PHONE MORPH · the same film, portrait grammar ─────────────────
+   The scene arms at every width now; these rules re-compose the stage for a
+   thumb: svh units (the URL bar can't stretch the film), the DAG waves stack
+   top→down with parallel waves 2-up (ThePlan's timeline grammar — the driver
+   re-anchors the wires bottom→top), the file keeps the hero's exact size
+   (scale-1 seam, measure()), the terminal slims to one honest line and the
+   transport grows to thumb size. Everything below is ≤767px-scoped — desktop
+   pixels are untouched (goldens law). */
+@media (max-width: 767px) {
+  .morphsec {
+    /* the slim phone terminal-band token — every reserve derives from it
+       (the body auto-follows its newest line, so a 2-3 line window loses
+       no truth) */
+    --morph-term-h: clamp(40px, 6svh, 52px);
+  }
+  .morphsec[data-armed] {
+    height: 400svh; /* the runway breathes in svh — no URL-bar stretch */
+  }
+  .morphsec[data-armed] .morph-stage {
+    height: 100svh;
+  }
+  .morphsec[data-armed] .morph-wrap {
+    padding: 68px 16px 10px;
+  }
+  .morph-title {
+    font-size: 21px;
+  }
+  .morph-captions {
+    margin-top: 6px;
+    min-height: 42px; /* two 13.5px lines — a wrapped caption never bleeds into the scene */
+  }
+  .morph-cap {
+    font-size: 13.5px;
+  }
+  /* the phone caption arc mirrors ≥1024 (flat narrates the lie-down, done
+     closes) — with the TOUCH voice at done: there is no settled file panel
+     on this stage, so « hover…in the file » would lie */
+  .morph-stage[data-phase='flat'] .morph-cap[data-for='run'],
+  .morph-stage[data-phase='done'] .morph-cap[data-for='run'] {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  .morph-stage[data-phase='flat'] .morph-cap[data-for='flat'],
+  .morph-stage[data-phase='done'] .morph-cap[data-for='done-touch'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* the file card · top-anchored at the hero's own size — the seam is a pure
+     dive; the tail past the fold is the fold's (the drain parks the un-read
+     queue below the slab band as the burst consumes it). The base 26px
+     padding STAYS: it is the head's yield clearance — a tighter dock parks
+     the card inside the caption band and the narration never comes back
+     (found on the first 390 sweep). */
+  .morphsec[data-armed] .morph-file {
+    align-items: flex-start;
+  }
+  .morph-code {
+    width: var(--morph-code-w, 100%);
+  }
+
+  /* THE DAG · portrait — waves top→down, parallel waves 2-up. The whole
+     4-wave plan must fit the stage above the terminal (the save node hid
+     behind the strip on the first sweep): each node compacts to three rows —
+     id · verb+target on ONE line (grid) · the run readout. */
+  .morph-dag {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: safe center;
+    gap: 10px;
+  }
+  .morphsec[data-armed] .morph-dag {
+    inset: 0 0 calc(var(--morph-term-h) + 124px) 0;
+  }
+  .morph-wave {
+    flex: none;
+    width: 100%;
+  }
+  .morph-wave-cap {
+    margin-bottom: 4px;
+    font-size: 10px;
+  }
+  .morph-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .morph-col > .morph-node:only-child {
+    grid-column: 1 / -1;
+  }
+  .morph-node {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    column-gap: 6px;
+    row-gap: 2px;
+    padding: 6px 10px 6px 12px;
+  }
+  .morph-node-id,
+  .morph-node-when,
+  .morph-node-chip {
+    grid-column: 1 / -1;
+  }
+  .morph-node-id {
+    font-size: 12px;
+  }
+  .morph-node-verb {
+    font-size: 9.5px;
+  }
+  .morph-node-target {
+    font-size: 10px;
+  }
+  .morph-node-when {
+    font-size: 9.5px;
+  }
+  .morph-node-chip {
+    min-height: 16px;
+    margin-top: 2px;
+    font-size: 10px;
+    line-height: 13px;
+  }
+
+  /* the terminal · slim body, one-line verdict (the artifact name yields;
+     exit · tasks · time · cost · model keep the honesty) */
+  .morphsec[data-armed] .morph-term {
+    left: 16px;
+    right: 16px;
+    bottom: calc(54px + env(safe-area-inset-bottom));
+  }
+  .morph-term-body {
+    padding: 8px 12px;
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  .morph-verdict {
+    min-height: 32px;
+    padding: 7px 12px;
+    gap: 5px;
+    font-size: 10.5px;
+  }
+  /* the artifact name yields WITH its separator — hiding the span alone left
+     a stray « · · » double dot in the verdict line (first 390 sweep) */
+  .morph-verdict-art,
+  .morph-verdict-art + .morph-verdict-sep {
+    display: none;
+  }
+
+  /* the transport · thumb-sized: 44px play key, 34px track; the narrator
+     yields to the head captions (one voice per surface) */
+  .morphsec[data-armed] .morph-console {
+    left: 16px;
+    right: 16px;
+    bottom: calc(6px + env(safe-area-inset-bottom));
+    gap: 10px;
+    padding: 7px 10px;
+  }
+  .morph-play {
+    width: 44px;
+    height: 36px;
+    font-size: 10px;
+  }
+  .morph-console-say {
+    display: none;
+  }
+  .morph-track {
+    height: 34px;
+  }
+}
+
+/* short phones (SE class) · anatomy yields so the whole plan still fits the
+   stage: the wave caps go (the wires + 2-up rows already SHOW parallelism),
+   the target line goes (id + verb + readout keep the story honest), the
+   node tightens one more notch */
+@media (max-width: 767px) and (max-height: 700px) {
+  .morph-wave-cap {
+    display: none;
+  }
+  .morph-node-target {
+    display: none;
+  }
+  .morphsec[data-armed] .morph-wrap {
+    padding-top: 62px;
+  }
+  .morph-title {
+    font-size: 18px;
+  }
+  .morph-captions {
+    margin-top: 4px;
+    min-height: 38px;
+  }
+  .morph-cap {
+    font-size: 12.5px;
+  }
+  .morph-node {
+    padding: 4px 10px 4px 12px;
+    row-gap: 1px;
+  }
+  .morph-node-id {
+    font-size: 11.5px;
+  }
+  .morph-node-chip {
+    margin-top: 1px;
+    min-height: 13px;
+    line-height: 12px;
+    font-size: 9.5px;
+  }
+  .morph-dag {
+    gap: 6px;
+  }
+  .morph-col {
+    gap: 6px;
+  }
+  /* the verdict must hold ONE line here — wrapped it grows the bottom-anchored
+     strip upward and eats the last node (found on the 375×667 sweep). The
+     total time yields WITH its separator: the body's « run complete » line
+     right above already carries the same figure — nothing is lost. */
+  .morph-verdict {
+    font-size: 10px;
+    gap: 4px;
+  }
+  .morph-verdict-ms,
+  .morph-verdict-ms + .morph-verdict-sep,
+  .morph-verdict-tasks,
+  .morph-verdict-tasks + .morph-verdict-sep {
+    display: none;
   }
 }
