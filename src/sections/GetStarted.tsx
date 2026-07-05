@@ -157,9 +157,10 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                 <span className="v4every-n">6.0.5</span> In your editor
               </h3>
               <p className="v4every-body">
-                The <code className="mono">nika-lang</code> extension: diagnostics,
-                schema-derived completions and a view of the plan, in VS Code, Cursor
-                and Windsurf.
+                The <code className="mono">nika-lang</code> extension: the file as
+                a content-first canvas — run it live, replay it, audit it before a
+                token is spent — plus engine-true diagnostics and completions, in
+                VS Code, Cursor and Windsurf.
               </p>
               <div className="v4every-cta v4every-links">
                 <a href={VSCODE_MARKETPLACE} target="_blank" rel="noreferrer" className="v4every-link">

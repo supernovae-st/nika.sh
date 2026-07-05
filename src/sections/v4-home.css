@@ -2105,3 +2105,192 @@
 .v4convert-cta:hover .v4convert-arrow {
   transform: translateX(2px);
 }
+
+/* ─── FIG 9.5 · EditorCanvas (.v4ed*) — the extension beat ────────────────────
+   A DOM vignette of the nika-lang canvas: 3 content-first cards with verb
+   LED spines (the ONLY place the verb hues appear here — it depicts a run,
+   per the tokens.css rule), a connector rail, the ▶ Run pill. Restraint:
+   the site's mono register, no bitmap, motion-safe pulse on the running LED
+   only. */
+
+.v4ed-frame {
+  max-width: 560px;
+  margin: 40px auto 0;
+  padding: 18px 20px 16px;
+}
+
+.v4ed-tab {
+  margin: 0 0 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-dim);
+}
+
+.v4ed-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.v4ed-card {
+  position: relative;
+  padding: 10px 12px 10px 16px;
+  border: 1px solid var(--v4-line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--v4-text) 3%, transparent);
+}
+
+/* the verb LED spine — the canvas's signature, one hue per verb */
+.v4ed-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--v4ed-hue, var(--v4-text-dim));
+}
+
+.v4ed-card--invoke { --v4ed-hue: var(--verb-invoke); }
+.v4ed-card--infer { --v4ed-hue: var(--verb-infer); }
+.v4ed-card--exec { --v4ed-hue: var(--verb-exec); }
+
+/* the connector rail between cards (the edge, abstracted) */
+.v4ed-card + .v4ed-card {
+  margin-top: 18px;
+}
+
+.v4ed-card + .v4ed-card::after {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: -19px;
+  height: 18px;
+  width: 1px;
+  background: var(--v4-line);
+}
+
+.v4ed-card--queued {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .v4ed-card--running::before {
+    animation: v4ed-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes v4ed-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.v4ed-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+
+.v4ed-glyph {
+  color: var(--v4ed-hue, var(--v4-text-dim));
+}
+
+.v4ed-id {
+  font-weight: 600;
+  color: var(--v4-text);
+}
+
+.v4ed-status {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--v4-text-dim);
+}
+
+.v4ed-status--done { color: #34d399; }
+.v4ed-status--running { color: var(--verb-infer); }
+
+.v4ed-card-body {
+  margin: 5px 0 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--v4-text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v4ed-chip {
+  display: inline-block;
+  margin: 7px 0 0;
+  padding: 1px 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--v4-text-dim);
+  border: 1px solid var(--v4-line);
+  border-radius: 4px;
+}
+
+.v4ed-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.v4ed-run {
+  padding: 4px 12px;
+  border-radius: 6px;
+  color: #f4f5f7;
+  background: #2b62ea;
+}
+
+.v4ed-cost {
+  color: var(--v4-text-dim);
+}
+
+.v4ed-claims {
+  max-width: 640px;
+  margin: 36px auto 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.v4ed-claims li {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--v4-text-dim);
+}
+
+.v4ed-claims b {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+
+.v4ed-ctas {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+@media (max-width: 640px) {
+  .v4ed-frame {
+    margin-top: 28px;
+    padding: 14px 14px 12px;
+  }
+
+  .v4ed-claims {
+    margin-top: 28px;
+  }
+}

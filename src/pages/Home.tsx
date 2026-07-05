@@ -13,6 +13,7 @@ import BeyondChat from '../sections/BeyondChat'
 import WhereItFits from '../sections/WhereItFits'
 import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
+import EditorCanvas from '../sections/EditorCanvas'
 import GetStarted from '../sections/GetStarted'
 import ChangelogPreview from '../sections/ChangelogPreview'
 import Proof from '../sections/Proof'
@@ -268,6 +269,11 @@ export function Component() {
 
         {/* FIG 09 · Use cases — the gallery (here plurality is the point) */}
         <UseCasesV4 />
+
+        {/* FIG 9.5 · In your editor — the file becomes a canvas (the
+             extension beat: content-first cards · live run · audit-before-
+             run, with the two store CTAs) */}
+        <EditorCanvas />
 
         {/* FIG 10 · Changelog — the ship log (latest milestones) */}
         <ChangelogPreview />
