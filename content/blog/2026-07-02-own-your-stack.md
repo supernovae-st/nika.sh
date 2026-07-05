@@ -3,7 +3,7 @@ slug: own-your-stack
 title: "No cloud needed"
 tag: Sovereignty
 date: 2026-07-02
-description: "One Rust binary, your models, your files. What local-first actually buys you."
+description: "One Rust binary, your models, your files. Run LLMs locally and see what local-first actually buys you."
 ---
 
 Local-first gets said a lot, and it means anything from "we cache" to "we sync, eventually". Here is what it means in Nika, concretely.

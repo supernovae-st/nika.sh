@@ -35,7 +35,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "No cloud needed",
     "tag": "Sovereignty",
     "date": "2026-07-02",
-    "description": "One Rust binary, your models, your files. What local-first actually buys you.",
+    "description": "One Rust binary, your models, your files. Run LLMs locally and see what local-first actually buys you.",
     "readingMin": 1,
     "tokens": [
       {
@@ -146,7 +146,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The plan you get for free",
     "tag": "Engine",
     "date": "2026-06-29",
-    "description": "depends_on is all you write. Parallelism and ordering fall out of the graph, drawn before anything runs.",
+    "description": "depends_on is all you write. The orchestration falls out of the graph: parallel waves, drawn before anything runs.",
     "readingMin": 1,
     "tokens": [
       {
@@ -392,7 +392,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Intent as Code: why your AI work should be a file",
     "tag": "Manifesto",
     "date": "2026-06-15",
-    "description": "Chats evaporate, files compound. The case for writing AI work down as source you own.",
+    "description": "Chats evaporate, files compound. The case for writing AI work down as source you own — your best prompts, versioned like code.",
     "readingMin": 2,
     "tokens": [
       {
@@ -549,7 +549,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The blast radius is part of the file",
     "tag": "Security",
     "date": "2026-06-04",
-    "description": "permits: is the whole list. Everything not on it is denied before it runs, with a named error.",
+    "description": "permits: is the whole list — guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.",
     "readingMin": 1,
     "tokens": [
       {

@@ -51,7 +51,7 @@ export function Component() {
       {
         name: 'description',
         content:
-          'Notes from the source: why useful AI work belongs in a file you can run, review and keep. Long reads on Intent as Code and the four verbs.',
+          'Notes from the source: why agentic workflows belong in files you can run, review and keep. Intent as Code, the four verbs, guardrails and local-first.',
       },
       { property: 'og:title', content: 'Blog · Nika' },
       {

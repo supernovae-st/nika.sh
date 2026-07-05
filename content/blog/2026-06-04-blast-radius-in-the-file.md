@@ -3,7 +3,7 @@ slug: blast-radius-in-the-file
 title: "The blast radius is part of the file"
 tag: Security
 date: 2026-06-04
-description: "permits: is the whole list. Everything not on it is denied before it runs, with a named error."
+description: "permits: is the whole list — guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error."
 ---
 
 Ask an agent framework what its agent may touch, and the honest answer is usually: whatever the process may touch. The permission model is the operating system's, the audit is a log file, and the log is written after the damage.

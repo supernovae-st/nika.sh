@@ -30,11 +30,58 @@ export function Component() {
 
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
+  /* structured data · BlogPosting + the breadcrumb — honest fields only
+     (real dates, the baked OG image, the org as author; no fabricated
+     ratings/reviews). Prerendered into each post's static HTML. */
+  const jsonld = post
+    ? {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'BlogPosting',
+            '@id': `https://nika.sh/blog/${post.slug}#post`,
+            headline: post.title,
+            description: post.description,
+            datePublished: post.date,
+            inLanguage: 'en',
+            image: `https://nika.sh/og-blog-${post.slug}.png`,
+            url: `https://nika.sh/blog/${post.slug}`,
+            mainEntityOfPage: `https://nika.sh/blog/${post.slug}`,
+            author: {
+              '@type': 'Organization',
+              name: 'SuperNovae Studio',
+              url: 'https://supernovae.studio',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'Nika',
+              url: 'https://nika.sh',
+              logo: { '@type': 'ImageObject', url: 'https://nika.sh/icon-512.png' },
+            },
+          },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://nika.sh/blog' },
+              { '@type': 'ListItem', position: 2, name: post.title, item: `https://nika.sh/blog/${post.slug}` },
+            ],
+          },
+        ],
+      }
+    : null
+
   useHead(
     post
       ? {
           title: `${post.title} · Nika`,
           link: routeHead(`/blog/${post.slug}`).link,
+          script: [
+            {
+              type: 'application/ld+json',
+              innerHTML: JSON.stringify(jsonld),
+              processTemplateParams: false,
+            },
+          ],
           meta: [
             ...routeHead(`/blog/${post.slug}`).meta,
             { name: 'description', content: post.description },

@@ -3,7 +3,7 @@ slug: dag-for-free
 title: "The plan you get for free"
 tag: Engine
 date: 2026-06-29
-description: "depends_on is all you write. Parallelism and ordering fall out of the graph, drawn before anything runs."
+description: "depends_on is all you write. The orchestration falls out of the graph: parallel waves, drawn before anything runs."
 ---
 
 Every orchestration tool eventually grows a scheduler dialect: stages, barriers, fan-in nodes, retry graphs. You learn its vocabulary, you maintain its diagrams, and one day the diagram and the code disagree.

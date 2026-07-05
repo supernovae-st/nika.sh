@@ -3,7 +3,7 @@ slug: intent-as-code
 title: "Intent as Code: why your AI work should be a file"
 tag: Manifesto
 date: 2026-06-15
-description: "Chats evaporate, files compound. The case for writing AI work down as source you own."
+description: "Chats evaporate, files compound. The case for writing AI work down as source you own — your best prompts, versioned like code."
 ---
 
 Think about the best thing you did with an AI last month. The careful prompt, the back-and-forth, the result that finally clicked. **Where is it now?** For most people the honest answer is: gone. Buried in a chat history you will never scroll back through, on a server you don't control.

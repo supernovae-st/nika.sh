@@ -12,7 +12,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/own-your-stack</guid>
       <pubDate>Thu, 02 Jul 2026 09:00:00 GMT</pubDate>
       <category>Sovereignty</category>
-      <description>One Rust binary, your models, your files. What local-first actually buys you.</description>
+      <description>One Rust binary, your models, your files. Run LLMs locally and see what local-first actually buys you.</description>
     </item>
     <item>
       <title>The plan you get for free</title>
@@ -20,7 +20,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/dag-for-free</guid>
       <pubDate>Mon, 29 Jun 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
-      <description>depends_on is all you write. Parallelism and ordering fall out of the graph, drawn before anything runs.</description>
+      <description>depends_on is all you write. The orchestration falls out of the graph: parallel waves, drawn before anything runs.</description>
     </item>
     <item>
       <title>Four verbs are enough</title>
@@ -36,7 +36,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/intent-as-code</guid>
       <pubDate>Mon, 15 Jun 2026 09:00:00 GMT</pubDate>
       <category>Manifesto</category>
-      <description>Chats evaporate, files compound. The case for writing AI work down as source you own.</description>
+      <description>Chats evaporate, files compound. The case for writing AI work down as source you own — your best prompts, versioned like code.</description>
     </item>
     <item>
       <title>The blast radius is part of the file</title>
@@ -44,7 +44,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/blast-radius-in-the-file</guid>
       <pubDate>Thu, 04 Jun 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
-      <description>permits: is the whole list. Everything not on it is denied before it runs, with a named error.</description>
+      <description>permits: is the whole list — guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.</description>
     </item>
     <item>
       <title>A standard library, not a plugin store</title>
