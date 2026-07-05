@@ -157,7 +157,7 @@ export default function UseCasesV4() {
 
             <div className="v4uc-panel-code">
               <div className="v4uc-scroll">
-                <CodeFile yaml={yaml} wrap />
+                <CodeFile yaml={yaml} wrap tips />
               </div>
             </div>
 

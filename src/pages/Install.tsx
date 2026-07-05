@@ -230,13 +230,13 @@ export function Component() {
               </div>
               <div className="ins-step-body ins-step-body--stack">
                 <div className="ins-frame v4-frame-canvas">
-                  <CodeFile yaml={HELLO_YAML} filename="hello.nika.yaml" wrap />
+                  <CodeFile yaml={HELLO_YAML} filename="hello.nika.yaml" wrap tips />
                 </div>
                 {/* the verdicts this exact file earns · captured from the real
                     binary (content/install.ts · the honesty law) */}
                 <TermFrame title="what you should see" lines={FIRST_RUN_TRANSCRIPT} />
                 <div className="ins-frame v4-frame-canvas">
-                  <CodeFile yaml={HELLO_AI_YAML} filename="hello-ai.nika.yaml" wrap />
+                  <CodeFile yaml={HELLO_AI_YAML} filename="hello-ai.nika.yaml" wrap tips />
                 </div>
               </div>
             </li>

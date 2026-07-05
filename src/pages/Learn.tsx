@@ -102,7 +102,7 @@ function LearnFile({ yaml, filename }: { yaml: string; filename?: string }) {
       onPointerMove={onMove}
       onPointerLeave={() => setTip(null)}
     >
-      <CodeFile yaml={yaml} filename={filename} wrap />
+      <CodeFile yaml={yaml} filename={filename} wrap tips />
       {terms.length > 0 && (
         <ul className="lrn-dict" aria-label="plain words for the keys in this file">
           {terms.map((term) => (

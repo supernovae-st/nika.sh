@@ -20,7 +20,7 @@ import { SectionHead } from '../components/SectionHead'
        install pattern, .v4install).
      6.0.2 WRITE A FILE — a SHORT, TRUE slice of a real projected showcase
        (`SHOWCASE_YAML['t1-standup-digest']`, the smallest real multi-verb file):
-       header + a couple of representative tasks, rendered by <CodeFile wrap />. READ-
+       header + a couple of representative tasks, rendered by <CodeFile wrap tips />. READ-
        ONLY — sliced from the projected source by line range, never hand-typed.
      6.0.3 RUN IT — `nika run` → it prints the plan, checks the permits, runs within
        bounds. The one canonical run line + the three-beat guarantee.
@@ -29,7 +29,7 @@ import { SectionHead } from '../components/SectionHead'
 
    Spec-true BY CONSTRUCTION: the YAML excerpt is sliced from the generated
    showcase (the SSOT projector); the install commands are the real brew formula +
-   the real install.sh URL. SSR-safe: pure DOM; <CodeFile wrap /> is server-rendered
+   the real install.sh URL. SSR-safe: pure DOM; <CodeFile wrap tips /> is server-rendered
    (the slice lives in the prerendered HTML); the reveal is an IntersectionObserver
    added on mount with content visible by default (no-JS / reduced-motion). */
 
@@ -102,7 +102,7 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                 file the page just ran, opened at its first step.
               </p>
               <div className="v4start-frame v4-frame-canvas">
-                <CodeFile yaml={writeYaml} filename={`${flagship.filename} · excerpt`} wrap />
+                <CodeFile yaml={writeYaml} filename={`${flagship.filename} · excerpt`} wrap tips />
               </div>
               <p className="v4start-readonly">
                 real lines, sliced from the file above · read-only

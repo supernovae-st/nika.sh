@@ -88,7 +88,7 @@ export default function TheBoundary({ flagship }: { flagship: FlagshipEntry }) {
               yaml={excerpt}
               filename={`${flagship.filename} · lines ${lo}–${hi}`}
               firstLine={lo}
-              className="v5bnd-code" wrap />
+              className="v5bnd-code" wrap tips />
             <p className="v5bnd-filecap">
               the same file as above · the permits block, verbatim
             </p>

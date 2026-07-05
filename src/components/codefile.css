@@ -566,6 +566,29 @@
   background: color-mix(in srgb, var(--cf-bg) 92%, #4f86ff 8%);
 }
 
+/* ── the go-to-range pulse (loop T3) · one breath, then nothing ──────────────
+   Right after a tab switch scrolls the evidence into view, its lines take ONE
+   soft breath — the eye lands where the story points — and the wash decays to
+   zero (nothing lit at rest · wave Q law). background-color composites under
+   the background-image devices (gutter divider · lit bands), so the pulse
+   never repaints them. Motion-safe only; the class is inert under reduce. */
+@media (prefers-reduced-motion: no-preference) {
+  .cf-line--goto {
+    animation: cf-goto-pulse 850ms var(--ease-ui, ease) both;
+  }
+}
+@keyframes cf-goto-pulse {
+  0% {
+    background-color: rgb(79 134 255 / 0);
+  }
+  30% {
+    background-color: rgb(79 134 255 / 0.14);
+  }
+  100% {
+    background-color: rgb(79 134 255 / 0);
+  }
+}
+
 /* ── mobile density · step the mono down a notch so more of each line fits the
    viewport before the scroll well takes over (the frame itself never widens). */
 @media (max-width: 480px) {

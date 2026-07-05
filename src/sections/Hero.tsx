@@ -361,10 +361,16 @@ export default function Hero({
      when: gate · the meeting-actions schema); when the selected tab's range
      is out of view, scroll the editor well so it lands ~30% down. Anchored by
      data-ln (wave Q: the band only LIGHTS on hover now — nothing is lit at
-     rest, so the anchor is the line number, not a lit class). */
+     rest, so the anchor is the line number, not a lit class). The landing
+     takes ONE breath (loop T3): the evidence rows pulse once and decay to
+     zero — a guide, never a resting state. First render stays calm (the
+     entrance choreography owns that moment). */
+  const gotoSeenRef = useRef(false)
   useEffect(() => {
     const pre = panelRef.current?.querySelector<HTMLElement>('.cf-pre')
     if (!pre) return
+    const first = !gotoSeenRef.current
+    gotoSeenRef.current = true
     const row = pre.querySelector<HTMLElement>(`.cf-line[data-ln="${item.highlight[0]}"]`)
     if (!row) {
       pre.scrollTop = 0
@@ -372,17 +378,36 @@ export default function Hero({
     }
     const top = row.offsetTop
     const bottom = top + row.offsetHeight
-    if (top >= pre.scrollTop && bottom <= pre.scrollTop + pre.clientHeight) return
-    /* snap the target to whole line boxes (pad-top + n × line-box) so the
-       scrolled frame never cuts a line mid-height — same whole-lines law as
-       the panel cap. Both metrics come from the computed style, not constants. */
-    const cs = window.getComputedStyle(pre)
-    const box = parseFloat(cs.lineHeight) || 23
-    const pad = parseFloat(cs.paddingTop) || 0
-    const raw = top - Math.round(pre.clientHeight * 0.3)
-    const snapped = Math.max(0, pad + Math.round((raw - pad) / box) * box)
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    pre.scrollTo({ top: snapped, behavior: reduce ? 'auto' : 'smooth' })
+    const visible = top >= pre.scrollTop && bottom <= pre.scrollTop + pre.clientHeight
+    if (!visible) {
+      /* snap the target to whole line boxes (pad-top + n × line-box) so the
+         scrolled frame never cuts a line mid-height — same whole-lines law as
+         the panel cap. Both metrics come from the computed style, not
+         constants. */
+      const cs = window.getComputedStyle(pre)
+      const box = parseFloat(cs.lineHeight) || 23
+      const pad = parseFloat(cs.paddingTop) || 0
+      const raw = top - Math.round(pre.clientHeight * 0.3)
+      const snapped = Math.max(0, pad + Math.round((raw - pad) / box) * box)
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      pre.scrollTo({ top: snapped, behavior: reduce ? 'auto' : 'smooth' })
+    }
+    if (first) return
+    const rows: HTMLElement[] = []
+    for (let n = item.highlight[0]; n <= item.highlight[1]; n++) {
+      const el = pre.querySelector<HTMLElement>(`.cf-line[data-ln="${n}"]`)
+      if (el) {
+        el.classList.add('cf-line--goto')
+        rows.push(el)
+      }
+    }
+    const t = window.setTimeout(() => {
+      for (const el of rows) el.classList.remove('cf-line--goto')
+    }, 950)
+    return () => {
+      window.clearTimeout(t)
+      for (const el of rows) el.classList.remove('cf-line--goto')
+    }
   }, [item.id, item.highlight])
 
   /* ── the bidirectional pairing (wave K) · one shared state, two mirrors ─────
