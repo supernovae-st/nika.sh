@@ -22,7 +22,9 @@
     bottom: 0;
     left: 0;
     width: 30%;
-    background: linear-gradient(105deg, transparent, rgb(225 235 255 / 0.05), transparent);
+    /* the highlight leans periwinkle — the v10 aurora register — so chrome
+       light and frame light are one voice (alpha keeps the 0.05 P3 law) */
+    background: linear-gradient(105deg, transparent, rgb(229 227 255 / 0.05), transparent);
     transform: translateX(-100%);
     animation: vfx-sheen 9s linear infinite;
     pointer-events: none;
