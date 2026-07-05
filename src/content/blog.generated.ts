@@ -114,7 +114,7 @@ export const BLOG_POSTS: BlogPost[] = [
           },
           {
             "k": "text",
-            "text": "…) and typed fields. It is greppable, diffable, versionable — the same properties the workflow file itself has, extended to what the workflow "
+            "text": "…) and typed fields. It is greppable, diffable, versionable: the same properties the workflow file itself has, extended to what the workflow "
           },
           {
             "k": "em",
@@ -225,7 +225,7 @@ export const BLOG_POSTS: BlogPost[] = [
           },
           {
             "k": "text",
-            "text": " to happen — the blast radius and the actions, in one artifact."
+            "text": " to happen: the blast radius and the actions, in one artifact."
           }
         ]
       },
