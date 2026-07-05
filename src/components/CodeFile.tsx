@@ -31,6 +31,24 @@ import '../fx/panel-sheen.css'
    theme-dark / theme-light automatically. SSR-safe: no window/document at render;
    the copy handler reads navigator.clipboard inside the click callback only. */
 
+/* the token cache · module-level, keyed by the raw yaml string. tokenize is
+   pure and costs ~13ms per 40-line file — the home mounts the SAME flagship
+   yaml in up to six panels (hero · morph card · done panel · boundary ·
+   wedge · get-started), so hydration paid it six times, and every hero tab
+   RETURN paid it again across all of them (~300ms of main thread under a
+   4× mobile CPU). The site's yamls are a finite static set (flagships ·
+   learn · spec · showcase — /play and /convert never render CodeFile from
+   user input), so an unbounded Map is a bounded cache in practice. */
+const TOKEN_CACHE = new Map<string, ReturnType<typeof tokenize>>()
+function tokenizeCached(yaml: string): ReturnType<typeof tokenize> {
+  let lines = TOKEN_CACHE.get(yaml)
+  if (!lines) {
+    lines = tokenize(yaml)
+    TOKEN_CACHE.set(yaml, lines)
+  }
+  return lines
+}
+
 export interface CodeFileProps {
   /** the raw YAML to render (also what the copy button copies, verbatim) */
   yaml: string
@@ -164,7 +182,7 @@ export function CodeFile({
   copyInBody = false,
   bodyProps,
 }: CodeFileProps) {
-  const lines = useMemo(() => tokenize(yaml), [yaml])
+  const lines = useMemo(() => tokenizeCached(yaml), [yaml])
   /* the title-bar sheen (panel-sheen.css) parks when the tab hides — arm the
      shared root [data-idle] flag (idempotent · one listener for all panels) */
   useEffect(armIdleFlag, [])
