@@ -45,6 +45,7 @@ export const routes: RouteObject[] = [
       { path: 'de/manifesto', Component: Manifesto },
       { path: 'pt-br/manifesto', Component: Manifesto },
       { path: 'ja/manifesto', Component: Manifesto },
+      { path: 'ko/manifesto', Component: Manifesto },
       { path: 'zh-hans/manifesto', Component: Manifesto },
       { path: 'changelog', Component: Changelog },
       { path: 'use-cases', Component: UseCasesPage },

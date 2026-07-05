@@ -12,6 +12,9 @@
    the `--color-*` theme mapping in index.css `@theme`. The `--v4-*` NAMES are
    the stable API sections consume — v5 retunes their VALUES. */
 :root {
+  /* the ONE keyboard focus seam · every scroll-well / custom focusable reads
+     this (W18 DS pass — six hand-typed copies of the same rgb existed) */
+  --focus-ring: rgb(96 141 255 / 0.55);
   /* v5 surfaces / ink — the engineered black ladder */
   --v4-bg-deep: #050507;     /* the darkest pool · page edges, hero base    */
   --v4-bg: #08090b;          /* the near-black base (deeper than Linear)    */

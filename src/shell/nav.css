@@ -716,3 +716,23 @@
     transition: none;
   }
 }
+
+/* the manifesto's language shortcuts · under its mega item (mouse/crawler
+   affordance; tabIndex -1 keeps the roving arrow order intact) */
+.v4mega-langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  margin: -4px 0 6px;
+  padding-left: 44px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+.v4mega-langs a {
+  color: var(--v4-text-faint);
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.v4mega-langs a:hover {
+  color: var(--v4-text);
+}

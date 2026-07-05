@@ -133,6 +133,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/starting-over-on-purpose — the rebuild decision.
+    out: 'og-blog-starting-over-on-purpose.png',
+    fig: 'FIG 0.3',
+    size: 62,
+    headline: 'Starting over,<br><span class="b">on purpose.</span>',
+    sub: 'We had a working prototype. We rebuilt from scratch anyway: craft, not extraction, one gate at a&nbsp;time.',
+    detail:
+      '<span class="arrow">▸</span><span>spec&nbsp;first<span class="sep">·</span>gates<span class="sep">·</span><b>the&nbsp;draft&nbsp;is&nbsp;not&nbsp;the&nbsp;product</b></span>',
+  },
+  {
     // /blog/the-note-that-started-it — the origin note (Oct 2025).
     out: 'og-blog-the-note-that-started-it.png',
     fig: 'FIG 0.1',

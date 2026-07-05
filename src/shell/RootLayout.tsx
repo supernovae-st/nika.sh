@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { AuroraProvider } from '../fx/EdgeAurora'
@@ -72,6 +72,32 @@ export default function RootLayout() {
     return () => document.removeEventListener('click', onClick)
   }, [])
 
+  /* the license egg · type « agpl » anywhere: a quiet mono toast answers
+     « forever. » (the same input guards as the drum egg — never inside a
+     field; auto-dismiss; polite live region so it is announced once). */
+  const [agplToast, setAgplToast] = useState(false)
+  useEffect(() => {
+    let buffer = ''
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      const t = e.target as HTMLElement | null
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      buffer = (buffer + e.key.toLowerCase()).slice(-4)
+      if (buffer === 'agpl') {
+        console.log('%c🦋 AGPL-3.0-or-later · forever.', 'color:#608dff')
+        setAgplToast(true)
+        clearTimeout(timer)
+        timer = setTimeout(() => setAgplToast(false), 3200)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      clearTimeout(timer)
+    }
+  }, [])
+
   /* site-wide structured data · prerendered into every route's <head> */
   useHead({
     script: [
@@ -94,6 +120,10 @@ export default function RootLayout() {
         Skip to content
       </a>
       <Nav />
+      {/* the agpl egg toast · aria-live polite (announced), pointer-inert */}
+      <div className="agpl-toast" role="status" data-on={agplToast || undefined}>
+        AGPL-3.0-or-later · forever.
+      </div>
       {/* the routed content target · the skip link lands here (id="main"); each
           page renders its own <main> landmark inside. tabindex=-1 so the link can
           move focus to it programmatically. */}

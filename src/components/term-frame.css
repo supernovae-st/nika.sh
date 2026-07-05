@@ -62,7 +62,7 @@
   -webkit-font-smoothing: antialiased;
 }
 .tf-body:focus-visible {
-  outline: 1px solid rgb(96 141 255 / 0.55);
+  outline: 1px solid var(--focus-ring);
   outline-offset: -1px;
 }
 .tf-body::-webkit-scrollbar {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { REPO, DOCS, ENGINE_VERSION } from '../content'
+import { MANIFESTO_LOCALES } from '../content/manifesto-copy'
 import { useMagnetic } from '../fx/use-magnetic'
 import './nav.css'
 
@@ -584,7 +585,12 @@ export default function Nav() {
     <>
       <header className="v4nav" data-solid={solid} data-scrolled={scrolled} data-mega={megaOpen}>
         <div className="v4nav-capsule" ref={capsuleRef}>
-        <nav className="v4nav-row" aria-label="Primary">
+        <nav
+          className="v4nav-row"
+          aria-label="Primary"
+          itemScope
+          itemType="https://schema.org/SiteNavigationElement"
+        >
           {/* brand · the butterfly mark + wordmark */}
           <Link to="/" className="v4nav-brand" aria-label="Nika · home">
             <img src="/nika.svg" alt="" width={19} height={19} />
@@ -675,15 +681,35 @@ export default function Nav() {
                       {group.items.map((item) => {
                         const flatIdx = FLAT_PRODUCT_ITEMS.indexOf(item)
                         return (
-                          <ItemLink
-                            key={item.label}
-                            item={item}
-                            className="v4mega-item"
-                            onSelect={() => setMegaOpen(false)}
-                            refCb={(el) => {
-                              megaItemRefs.current[flatIdx] = el
-                            }}
-                          />
+                          <div key={item.label} className="v4mega-cell">
+                            <ItemLink
+                              item={item}
+                              className="v4mega-item"
+                              onSelect={() => setMegaOpen(false)}
+                              refCb={(el) => {
+                                megaItemRefs.current[flatIdx] = el
+                              }}
+                            />
+                            {item.to === '/manifesto' ? (
+                              /* the manifesto speaks 8 languages · crawlable
+                                 shortcuts (tabIndex -1: the roving arrow order
+                                 stays intact; keyboard reaches the switcher on
+                                 the page itself) */
+                              <p className="v4mega-langs" aria-label="Manifesto languages">
+                                {MANIFESTO_LOCALES.map((l) => (
+                                  <Link
+                                    key={l.bcp47}
+                                    to={l.path}
+                                    lang={l.bcp47}
+                                    tabIndex={-1}
+                                    onClick={() => setMegaOpen(false)}
+                                  >
+                                    {l.label}
+                                  </Link>
+                                ))}
+                              </p>
+                            ) : null}
+                          </div>
                         )
                       })}
                     </div>
@@ -731,9 +757,10 @@ export default function Nav() {
                   key={l.label}
                   href={l.href}
                   className="v4nav-link"
+                  itemProp="url"
                   {...(l.newTab ? { target: '_blank', rel: 'noreferrer' } : {})}
                 >
-                  {l.label}
+                  <span itemProp="name">{l.label}</span>
                   {l.newTab ? (
                     <span className="v4nav-ext-arrow" aria-hidden>
                       ↗
@@ -745,6 +772,7 @@ export default function Nav() {
                   key={l.label}
                   to={l.href}
                   className="v4nav-link"
+                  itemProp="url"
                   /* the active route keeps a persistent dim pill (pure CSS on
                      aria-current) under the sliding hover pill */
                   aria-current={
@@ -753,7 +781,7 @@ export default function Nav() {
                       : undefined
                   }
                 >
-                  {l.label}
+                  <span itemProp="name">{l.label}</span>
                 </Link>
               ),
             )}

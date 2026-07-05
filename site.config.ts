@@ -17,6 +17,7 @@ export const ORIGIN = 'https://nika.sh'
    this list disagree. */
 export const BLOG_PATHS = [
   '/blog/own-your-stack',
+  '/blog/starting-over-on-purpose',
   '/blog/naming-the-drum',
   '/blog/the-note-that-started-it',
   '/blog/dag-for-free',
@@ -27,5 +28,5 @@ export const BLOG_PATHS = [
   '/blog/open-spec-copyleft-engine',
 ]
 /* the manifesto's translated variants (BCP 47 slugs · hreflang cluster) */
-export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/zh-hans/manifesto']
+export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto']
 export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/use-cases', '/spec', '/install', '/convert']

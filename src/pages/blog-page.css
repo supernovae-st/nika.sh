@@ -229,7 +229,7 @@
   background: rgb(14 19 30 / 0.7);
 }
 .blog-card:focus-visible {
-  outline: 1px solid rgb(96 141 255 / 0.55);
+  outline: 1px solid var(--focus-ring);
   outline-offset: 2px;
 }
 .blog-card-fig {

@@ -190,7 +190,7 @@
 /* keyboard scroll wells (tab stop only while overflowing — CodeFile.tsx) */
 .cf-body:focus-visible,
 .cf-pre:focus-visible {
-  outline: 1px solid rgb(96 141 255 / 0.55);
+  outline: 1px solid var(--focus-ring);
   outline-offset: -1px;
 }
 .cf-pre::-webkit-scrollbar { height: 9px; }
