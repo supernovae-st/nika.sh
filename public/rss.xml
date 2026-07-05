@@ -15,6 +15,14 @@
       <description>Every run leaves a flight recorder: a deterministic AI audit trail you can replay like a film, never re-execute by accident.</description>
     </item>
     <item>
+      <title>Anatomy of a verb</title>
+      <link>https://nika.sh/blog/anatomy-of-a-verb</link>
+      <guid isPermaLink="true">https://nika.sh/blog/anatomy-of-a-verb</guid>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>infer, exec, invoke, agent: what makes the four verbs genuinely different execution models, in the engine's own verdicts.</description>
+    </item>
+    <item>
       <title>No cloud needed</title>
       <link>https://nika.sh/blog/own-your-stack</link>
       <guid isPermaLink="true">https://nika.sh/blog/own-your-stack</guid>

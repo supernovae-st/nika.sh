@@ -25,11 +25,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'four-verbs-deep',
-    tag: 'Language',
+    slug: 'the-cost-line',
+    tag: 'Engine',
     date: 'soon',
-    title: 'Anatomy of a verb',
-    teaser: 'What makes infer, exec, invoke and agent genuinely different execution models — and why that is the whole design.',
+    title: 'The cost line',
+    teaser: 'The audit prices every token before it is spent: ceilings on generations, budgets on loops, and a $0.00 that means it.',
   },
   {
     slug: 'written-by-agents',

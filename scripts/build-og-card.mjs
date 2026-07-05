@@ -143,6 +143,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>spec&nbsp;first<span class="sep">·</span>gates<span class="sep">·</span><b>the&nbsp;draft&nbsp;is&nbsp;not&nbsp;the&nbsp;product</b></span>',
   },
   {
+    // /blog/anatomy-of-a-verb — the four execution models, dissected.
+    out: 'og-blog-anatomy-of-a-verb.png',
+    fig: 'FIG B.9',
+    size: 62,
+    headline: 'Anatomy<br><span class="b">of a verb.</span>',
+    sub: 'What makes infer, exec, invoke and agent genuinely different execution models&nbsp;— in the engine\'s own verdicts.',
+    detail:
+      '<span class="arrow">▸</span><span>four&nbsp;verbs<span class="sep">·</span>four&nbsp;budgets<span class="sep">·</span><b>four&nbsp;blast&nbsp;radii</b></span>',
+  },
+  {
     // /blog/the-trace-you-can-replay — the flight recorder.
     out: 'og-blog-the-trace-you-can-replay.png',
     fig: 'FIG B.8',

@@ -90,7 +90,7 @@ export function Component() {
             { property: 'og:title', content: `${post.title} · Nika` },
             { property: 'og:description', content: post.description },
             { property: 'og:image', content: `https://nika.sh/og-blog-${post.slug}.png` },
-            { property: 'og:image:alt', content: `${post.title} — the Nika blog.` },
+            { property: 'og:image:alt', content: `${post.title} · the Nika blog.` },
             { name: 'twitter:title', content: `${post.title} · Nika` },
             { name: 'twitter:description', content: post.description },
             { name: 'twitter:image', content: `https://nika.sh/og-blog-${post.slug}.png` },

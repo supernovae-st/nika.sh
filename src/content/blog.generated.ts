@@ -254,6 +254,253 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
+    "slug": "anatomy-of-a-verb",
+    "file": "2026-07-05-anatomy-of-a-verb.md",
+    "title": "Anatomy of a verb",
+    "tag": "Language",
+    "date": "2026-07-05",
+    "description": "infer, exec, invoke, agent: what makes the four verbs genuinely different execution models, in the engine's own verdicts.",
+    "readingMin": 2,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The language locks at four verbs, and the "
+          },
+          {
+            "k": "link",
+            "text": "earlier post",
+            "href": "/blog/four-verbs"
+          },
+          {
+            "k": "text",
+            "text": " made the case for why. This one is about the "
+          },
+          {
+            "k": "em",
+            "text": "what"
+          },
+          {
+            "k": "text",
+            "text": ": the rule says a verb is a distinct execution model, so it should be possible to point at the engine and show the distinction. Here is one file that uses all four, and what the audit actually says about each."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "verbs-probe.nika.yaml",
+        "text": "nika: v1\nworkflow: verbs-probe\nmodel: ollama/llama3.2:3b\n\ntasks:\n  - id: think\n    infer: { prompt: \"one word\", max_tokens: 8 }\n\n  - id: run\n    exec: { command: [\"echo\", \"ok\"] }\n\n  - id: use\n    depends_on: [run]\n    invoke: { tool: \"nika:read\", args: { path: ./notes.md } }\n\n  - id: loop\n    depends_on: [think]\n    agent: { prompt: \"say done\", tools: [\"nika:read\"], max_turns: 2 }\n\noutputs:\n  a: ${{ tasks.use.output }}\n  b: ${{ tasks.loop.output }}"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "infer generates."
+          },
+          {
+            "k": "text",
+            "text": " Its execution model is a single model call: prompt in, text out. Because it spends tokens, it lives on the audit's COST line, and its budget knob is "
+          },
+          {
+            "k": "code",
+            "text": "max_tokens"
+          },
+          {
+            "k": "text",
+            "text": " — a ceiling on one generation. The audit even notices "
+          },
+          {
+            "k": "em",
+            "text": "wasted"
+          },
+          {
+            "k": "text",
+            "text": " generation: leave an infer's output unread and "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " raises a dead-spend hint, because a generation nothing consumes is money by definition."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "exec runs a process."
+          },
+          {
+            "k": "text",
+            "text": " Its model is the operating system's: a program, arguments, an exit code. The honest form is the argv array — "
+          },
+          {
+            "k": "code",
+            "text": "[\"echo\", \"ok\"]"
+          },
+          {
+            "k": "text",
+            "text": " — the program and its arguments as data, not a shell string to quote-escape. It costs $0.00 on the COST line, and its permit is the "
+          },
+          {
+            "k": "code",
+            "text": "exec:"
+          },
+          {
+            "k": "text",
+            "text": " allow-list: which "
+          },
+          {
+            "k": "em",
+            "text": "programs"
+          },
+          {
+            "k": "text",
+            "text": " may start."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "invoke calls a tool and returns."
+          },
+          {
+            "k": "text",
+            "text": " One request, one typed response: a builtin ("
+          },
+          {
+            "k": "code",
+            "text": "nika:read"
+          },
+          {
+            "k": "text",
+            "text": ") or any "
+          },
+          {
+            "k": "code",
+            "text": "mcp:"
+          },
+          {
+            "k": "text",
+            "text": " server, with declared args the audit checks key by key (the ARGS line). Its permit is the "
+          },
+          {
+            "k": "code",
+            "text": "tools:"
+          },
+          {
+            "k": "text",
+            "text": " allow-list, and when the tool touches the filesystem, the file pattern itself lands in "
+          },
+          {
+            "k": "code",
+            "text": "fs:"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "agent loops."
+          },
+          {
+            "k": "text",
+            "text": " The model "
+          },
+          {
+            "k": "em",
+            "text": "drives"
+          },
+          {
+            "k": "text",
+            "text": ": it thinks, picks a tool from its allow-list, reads the result, and goes again until the job is done or the leash ends. Two leashes, both in the file: "
+          },
+          {
+            "k": "code",
+            "text": "tools:"
+          },
+          {
+            "k": "text",
+            "text": " (what it may reach) and "
+          },
+          {
+            "k": "code",
+            "text": "max_turns"
+          },
+          {
+            "k": "text",
+            "text": " (how long it may drive). And its budget knob is different from infer's in exactly the way the semantics differ — "
+          },
+          {
+            "k": "code",
+            "text": "max_tokens_total"
+          },
+          {
+            "k": "text",
+            "text": ", a ceiling on the "
+          },
+          {
+            "k": "em",
+            "text": "whole loop"
+          },
+          {
+            "k": "text",
+            "text": ", because an agent that budgets per-call could still run forever."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The proof that these are four models and not four flavors is in the permits. Ask the checker to derive the boundary for the file above and it answers in three registers:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "permits:\n  fs:\n    read: [\"./notes.md\"]\n  exec: [\"echo\"]\n  tools: [\"nika:read\"]"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Programs for exec. Tools for invoke and agent. Files for whatever touches disk. Each verb's blast radius has its own shape, which is precisely why the language needs them to be distinct words — a permission system can only be this legible when the execution models it guards are this separate."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Four verbs, four failure surfaces, four budget shapes, one readable file. That is the anatomy."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "own-your-stack",
     "file": "2026-07-02-own-your-stack.md",
     "title": "No cloud needed",

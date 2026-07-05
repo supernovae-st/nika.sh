@@ -6,6 +6,7 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 
 | date | post | file |
 |---|---|---|
+| 2026-07-05 | Anatomy of a verb | [`2026-07-05-anatomy-of-a-verb.md`](./2026-07-05-anatomy-of-a-verb.md) |
 | 2026-07-05 | The trace you can replay | [`2026-07-05-the-trace-you-can-replay.md`](./2026-07-05-the-trace-you-can-replay.md) |
 | 2026-07-02 | No cloud needed | [`2026-07-02-own-your-stack.md`](./2026-07-02-own-your-stack.md) |
 | 2026-06-29 | The plan you get for free | [`2026-06-29-dag-for-free.md`](./2026-06-29-dag-for-free.md) |
