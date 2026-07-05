@@ -214,6 +214,14 @@ export const UC_TABS: UCTab[] = [
         outcome: 'Not everything needs an LLM. The engine alone is a robot you can already trust.',
       },
       {
+        slug: 't1-og-images',
+        icon: '🖼️',
+        title: 'OG images',
+        body: 'Brief in, OG variants on disk + a provenance manifest out. Mock provider renders real PNGs offline — flip one line for gemini/openai.',
+        tier: 'T1',
+        outcome: 'Image generation becomes a pipeline step with hashes and permits, not a chat artifact.',
+      },
+      {
         slug: 't2-invoice-chaser',
         icon: '🧾',
         title: 'Invoice chaser',

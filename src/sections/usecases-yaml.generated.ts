@@ -66,6 +66,31 @@ outputs:
     type: array
     description: "Typed action items, tracker-ready"
 `,
+  't1-og-images': `nika: v1
+workflow: og-images
+description: "Generate the launch OG hero image set into ./assets/og"
+
+permits:
+  fs: { write: ["./assets/og/**"] }   # the ONLY place assets may land
+  tools: ["nika:image_generate"]
+
+tasks:
+  - id: hero
+    invoke:
+      tool: "nika:image_generate"
+      args:
+        provider: mock                # offline + deterministic · flip to gemini/openai to render for real
+        prompt: "OG hero — a monarch butterfly over a deep-blue nebula, editorial photo, negative space left"
+        aspect_ratio: "16:9"          # exact WxH is an openai gpt-image-2 feature · gemini folds to a size class
+        n: 2                          # two variants to A/B
+        output_dir: "./assets/og"
+        filename_prefix: "launch-hero"
+        metadata: { campaign: "launch", page_slug: "home" }
+
+outputs:
+  paths: \${{ tasks.hero.output.images }}
+  manifest: \${{ tasks.hero.output.manifest_path }}
+`,
   't1-price-watch': `nika: v1
 workflow: price-watch
 description: "Watch a product price, ping me when it drops below my target"
@@ -1681,6 +1706,7 @@ export interface ShowcaseDag {
 
 export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
   't1-meeting-actions': {"tasks": [{"id": "transcript", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 13, "line1": 16}, {"id": "extract", "verb": "infer", "deps": ["transcript"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 18, "line1": 36}, {"id": "save", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 38, "line1": 44}, {"id": "trace", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:log`", "flags": [], "line0": 46, "line1": 52}], "outputs": ["actions"], "waves": 3},
+  't1-og-images': {"tasks": [{"id": "hero", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:image_generate`", "flags": [], "line0": 9, "line1": 19}], "outputs": ["paths", "manifest"], "waves": 1},
   't1-price-watch': {"tasks": [{"id": "check", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 17, "line1": 26}, {"id": "alert", "verb": "invoke", "deps": ["check"], "wave": 1, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 28, "line1": 37}], "outputs": ["price"], "waves": 2},
   't1-social-repurpose': {"tasks": [{"id": "post", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 10, "line1": 15}, {"id": "thread", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 16, "line1": 19}, {"id": "linkedin", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 21, "line1": 24}, {"id": "newsletter", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 26, "line1": 29}, {"id": "bundle", "verb": "invoke", "deps": ["thread", "linkedin", "newsletter"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 31, "line1": 51}], "outputs": ["bundle_path"], "waves": 3},
   't1-standup-digest': {"tasks": [{"id": "today", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 8, "line1": 11}, {"id": "history", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 13, "line1": 15}, {"id": "digest", "verb": "infer", "deps": ["today", "history"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 17, "line1": 26}, {"id": "save", "verb": "invoke", "deps": ["digest"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 28, "line1": 34}], "outputs": ["note"], "waves": 3},
