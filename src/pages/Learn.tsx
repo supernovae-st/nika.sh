@@ -374,10 +374,12 @@ export function Component() {
             ))}
           </ol>
 
-          {/* errors are data · the differentiator (a FIG block) */}
+          {/* errors are data · the differentiator (a FIG block). Unnumbered on
+              purpose: it deepens idea 08, it is not a tenth idea — the count
+              stays « nine ideas + one file » (the whole-file below is 10). */}
           <div className="v4block" data-rise>
             <div className="v4block-head-line">
-              <span className="v4block-fig"><DecodeText text="10 · the failure object" /></span>
+              <span className="v4block-fig"><DecodeText text="aside · the failure object" /></span>
               <h2 className="v4block-name">Errors are data, not noise.</h2>
               <span className="v4block-count">typed · greppable</span>
             </div>
