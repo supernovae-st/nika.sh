@@ -1,0 +1,75 @@
+/* ─── THE RUN EXPLAINS ITSELF · fig 04 ─────────────────────────────────────────
+   A media chapter: the recorded hero loop + a chapter strip swapping one
+   still. Assets are 1600x900 terminal scenes (scripts/media/) — the frame
+   here is a thin hairline card so the scene's own chrome does the talking. */
+
+.v5rx-hero {
+  margin: 40px 0 0;
+}
+
+.v5rx-video,
+.v5rx-still {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9; /* reserved box — zero shift while lazy bits arrive */
+  border: 1px solid var(--hair);
+  border-radius: 14px;
+  background: #0a0a0a; /* the scenes' own stage black */
+}
+
+.v5rx-caption {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--fg-ghost);
+}
+.v5rx-caption code {
+  color: var(--fg-dim);
+}
+
+/* the chapter strip — mono register tabs, hairline underline on the live one */
+.v5rx-beats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 44px 0 18px;
+}
+
+.v5rx-beat {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 8px 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--fg-dim);
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: color 140ms ease;
+}
+.v5rx-beat:hover {
+  color: var(--fg-mute);
+}
+.v5rx-beat[aria-selected='true'] {
+  color: var(--fg);
+  border-bottom-color: var(--brand-bright);
+}
+.v5rx-beat:focus-visible {
+  outline: 2px solid var(--brand-bright);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.v5rx-stage {
+  margin: 0;
+}
+
+
+@media (max-width: 720px) {
+  .v5rx-beats {
+    gap: 2px 12px;
+  }
+}

@@ -8,6 +8,7 @@ import ScrollMorph from '../sections/morph/ScrollMorph'
 import TheBoundary from '../sections/boundary/TheBoundary'
 import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
+import RunExplains from '../sections/run-explains/RunExplains'
 import Verbs from '../sections/Verbs'
 import BeyondChat from '../sections/BeyondChat'
 import WhereItFits from '../sections/WhereItFits'
@@ -254,6 +255,11 @@ export function Component() {
         {/* FIG 4.0 · THE CAPTURE — the manifesto beat: the session ends, the
              file stays (two-tone thesis + the chat-vs-file split) */}
         <Wedge flagship={flagship} />
+
+        {/* FIG 04 (plate) · THE RUN EXPLAINS ITSELF — the observability chapter:
+             real terminal captures of the signature workflow (check · inspect ·
+             the live run · trace · kill→resume · the human gate) */}
+        <RunExplains />
 
         {/* FIG 4.5 · the acid moment — beyond the black box (file vs chat/API) */}
         <BeyondChat />
