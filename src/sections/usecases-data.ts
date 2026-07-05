@@ -217,7 +217,7 @@ export const UC_TABS: UCTab[] = [
         slug: 't1-og-images',
         icon: '🖼️',
         title: 'OG images',
-        body: 'Brief in, OG variants on disk + a provenance manifest out. Mock provider renders real PNGs offline — flip one line for gemini/openai.',
+        body: 'Brief in, OG variants on disk + a provenance manifest out. Mock renders real PNGs offline — flip one line for your local server (sovereign), gemini, openai or xai.',
         tier: 'T1',
         outcome: 'Image generation becomes a pipeline step with hashes and permits, not a chat artifact.',
       },
