@@ -2,10 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
 import { AuroraContext, type AuroraContextValue } from './aurora-context'
 import './edge-aurora.css'
 
-/* ─── EdgeAurora · the spectrum frame (v6 · the ring law) ─────────────────────
-   A full-spectrum rounded ring that hugs the screen frame while the center
-   stays transparent. It is THE DRUM of the manifesto: every run = a beat of
-   the frame. At rest it is clearly present at its quiet floor (CSS breath).
+/* ─── EdgeAurora · the intelligence weather (v9 · the soft law) ───────────────
+   A soft iridescent light (the Siri-glow palette — violet · pink · periwinkle
+   · coral · peach, anchored on the site blue) that hugs the screen frame
+   while the center stays transparent. It is THE DRUM of the manifesto: every
+   run = a beat of the frame. At rest it is a whisper (CSS breath).
 
    E7 · RUN MODE (v6 ring law): while a run replays, `data-run` widens the band
    + bloom, speeds the spectrum's travel, and the recorded progress swells the
@@ -27,7 +28,7 @@ const REST_INTENSITY = 0.055 /* the resting WHISPER · the frame is mostly absen
     started */
 /** run mode raises the resting floor — the frame must clearly speak while a
     run plays (the drum), yet stay a diffuse glow, never a hard border: the
-    presence comes from opacity on a 16px-blurred rim, not from sharpness. */
+    presence comes from opacity on a blur-melted rim, not from sharpness. */
 const RUN_REST_INTENSITY = 0.26
 /** Peak the halo jumps to on a pulse before it decays. Calibrated for wide-
     gamut displays: P3 renders these hues far more vivid than headless
@@ -236,9 +237,13 @@ export function EdgeAurora({
     <div ref={ref} className="edge-aurora" aria-hidden="true" data-edge-aurora>
       {/* v8 · THE DEPTH SHEET — a third, much deeper ring behind the bloom:
           same canonical atomic ring mask, huge padding + heavy blur, counter-
-          spinning slowly. It reads as the aurora having a body BEHIND the
+          sloshing slowly. It reads as the aurora having a body BEHIND the
           viewport edge, not just a rim ON it. Same intensity law (CSS var). */}
       <span className="edge-aurora-depth" />
+      {/* v10 · THE LINING — the one near-crisp element (the Apple read: the
+          colours stay diffuse, a faint WHITE line owns the definition). Same
+          canonical atomic ring mask, hairline padding, tiny blur. */}
+      <span className="edge-aurora-lining" />
     </div>
   )
 }
