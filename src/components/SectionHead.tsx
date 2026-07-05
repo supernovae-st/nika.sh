@@ -9,8 +9,8 @@ import { DecodeText } from '../fx/DecodeText'
    routed pages) is documented at the .v4fig block in src/shell/shell.css.
 
    `children` is the lede paragraph content. Sections with a bespoke masthead
-   register (OwnWorkflows' statement · FinalCTA's centered close) keep their
-   own markup on purpose — this is the standard head only. */
+   register (FinalCTA's centered close) keep their own markup on purpose —
+   this is the standard head only. */
 export function SectionHead({
   fig,
   id,

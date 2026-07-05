@@ -30,7 +30,7 @@ function HudMarks() {
 
    Register: the same "sovereign engineering instrument" used across the home
    sections (src/sections/v4-home.css) — monochrome surfaces, FIG numbering, 1px
-   hairline rules, tabular-nums, the .v4belt-* / .v4log / .v4own-row ledgers. An
+   hairline rules, tabular-nums, the .v4belt-* / .v4log ledgers. An
    instrument manual, not a marketing page.
 
    Spec truth BY CONSTRUCTION: every count + list comes from canon.generated.ts
