@@ -30,6 +30,1014 @@ export interface BlogPost {
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "the-credentials-your-pipeline-breaks",
+    "file": "2026-07-06-the-credentials-your-pipeline-breaks.md",
+    "title": "The credentials your pipeline was breaking",
+    "tag": "Security",
+    "date": "2026-07-06",
+    "description": "OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering — including, until this week, ours.",
+    "readingMin": 4,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Ask an image API for a render in mid-2026 and you get back more than pixels. OpenAI's image models and Google's media models embed "
+          },
+          {
+            "k": "strong",
+            "text": "C2PA Content Credentials"
+          },
+          {
+            "k": "text",
+            "text": " in the bytes they return — a cryptographically signed manifest saying "
+          },
+          {
+            "k": "em",
+            "text": "this came from us, generated, on this date"
+          },
+          {
+            "k": "text",
+            "text": ". We verified it the direct way: a "
+          },
+          {
+            "k": "code",
+            "text": "gpt-image-2"
+          },
+          {
+            "k": "text",
+            "text": " render requested through the plain API carries a "
+          },
+          {
+            "k": "code",
+            "text": "caBX"
+          },
+          {
+            "k": "text",
+            "text": " chunk, right there between "
+          },
+          {
+            "k": "code",
+            "text": "IHDR"
+          },
+          {
+            "k": "text",
+            "text": " and the pixel data."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Here is the part nobody tells you: "
+          },
+          {
+            "k": "strong",
+            "text": "that signature hashes the file's byte ranges."
+          },
+          {
+            "k": "text",
+            "text": " The manifest records exclusion ranges for itself and signs everything else. Which means "
+          },
+          {
+            "k": "em",
+            "text": "any"
+          },
+          {
+            "k": "text",
+            "text": " tool that writes into the file afterward — a metadata tagger, an optimizer, a workflow engine adding its own note — doesn't strip the credentials. It does something worse. The manifest stays present and parseable, and validation now fails. "
+          },
+          {
+            "k": "em",
+            "text": "\"Present but tampered\""
+          },
+          {
+            "k": "text",
+            "text": " is the verdict a checker renders. An asset with no credentials is merely unattributed; an asset with broken credentials looks forged."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "We know because we did it. Nika saves every generated PNG with a small "
+          },
+          {
+            "k": "code",
+            "text": "nika"
+          },
+          {
+            "k": "text",
+            "text": " tEXt chunk — tool, engine version, provider, prompt, seed — so provenance survives a "
+          },
+          {
+            "k": "code",
+            "text": "cp"
+          },
+          {
+            "k": "text",
+            "text": " away from its sidecar manifest. Good practice, borrowed from ComfyUI and InvokeAI. Applied to a signed OpenAI render, that same chunk invalidated the upstream signature. Our provenance feature was destroying better provenance than it added."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The fix is a rule worth stating generally, because as of this week it is normative in the "
+          },
+          {
+            "k": "link",
+            "text": "spec",
+            "href": "https://github.com/supernovae-st/nika-spec"
+          },
+          {
+            "k": "text",
+            "text": ":"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Detect before you write. If it's signed, stand down."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The engine now scans every returned payload for credential carriage before any in-file write — a "
+          },
+          {
+            "k": "code",
+            "text": "caBX"
+          },
+          {
+            "k": "text",
+            "text": " chunk in PNG, an APP11 JUMBF segment in JPEG, a "
+          },
+          {
+            "k": "code",
+            "text": "C2PA"
+          },
+          {
+            "k": "text",
+            "text": " RIFF chunk in WebP "
+          },
+          {
+            "k": "em",
+            "text": "and WAV"
+          },
+          {
+            "k": "text",
+            "text": ", a "
+          },
+          {
+            "k": "code",
+            "text": "GEOB"
+          },
+          {
+            "k": "text",
+            "text": " frame naming "
+          },
+          {
+            "k": "code",
+            "text": "application/c2pa"
+          },
+          {
+            "k": "text",
+            "text": " in MP3 (audio credentials are real: Google's Lyria and ElevenLabs ship them). Exact byte signatures, zero dependencies, total on adversarial input. When credentials are present, the "
+          },
+          {
+            "k": "code",
+            "text": "nika"
+          },
+          {
+            "k": "text",
+            "text": " chunk is not embedded — their signed manifest outranks our informal one — and the run says so out loud:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "content_credentials_preserved: upstream c2pa manifest detected —\nthe `nika` tEXt chunk was NOT embedded (it would invalidate the signature)"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The output and the sidecar manifest both carry the fact:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "json",
+        "text": "\"content_credentials\": \"c2pa\",\n\"watermark_declared\": \"synthid (provider-declared · not byte-verified)\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Read those two fields carefully, because their wording is the honest part. "
+          },
+          {
+            "k": "code",
+            "text": "content_credentials: \"c2pa\""
+          },
+          {
+            "k": "text",
+            "text": " means "
+          },
+          {
+            "k": "em",
+            "text": "detected"
+          },
+          {
+            "k": "text",
+            "text": " — we found the carriage, we did not cryptographically validate the chain. An engine that hasn't verified must never say \"verified\"; a recent formal analysis of C2PA (arXiv:2604.24890) is blunt about how much weight the ecosystem's claims can bear, and we'd rather under-claim. And "
+          },
+          {
+            "k": "code",
+            "text": "watermark_declared"
+          },
+          {
+            "k": "text",
+            "text": " is a provider "
+          },
+          {
+            "k": "em",
+            "text": "fact"
+          },
+          {
+            "k": "text",
+            "text": ", not a detection: SynthID's image and audio detectors are closed — only Google can check. Anyone who tells you their pipeline \"detects SynthID\" is selling something."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Why now? Because the calendar says so. "
+          },
+          {
+            "k": "strong",
+            "text": "EU AI Act, Article 50, applies from August 2, 2026"
+          },
+          {
+            "k": "text",
+            "text": " — four weeks from this post. Providers of generative systems must ensure outputs are \"marked in a machine-readable format and detectable as artificially generated,\" and the marking must be "
+          },
+          {
+            "k": "em",
+            "text": "robust"
+          },
+          {
+            "k": "text",
+            "text": ". A pipeline that silently breaks upstream marks degrades exactly the property the law names. A pipeline that detects, preserves, and surfaces them gives its operator evidence."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "No other workflow engine looks at these octets. n8n saves the binary; Make hands the file down the pipe; the agent frameworks paste result URLs into context. None of them will tell you the asset was signed, none of them will notice when a step breaks the signature. Nika's whole media design — assets on disk, sha256-named, manifest beside them, bytes never in workflow state — exists so that questions like "
+          },
+          {
+            "k": "em",
+            "text": "\"what happened to this file between generation and publication?\""
+          },
+          {
+            "k": "text",
+            "text": " have an answer. Preserving the generator's own cryptographic answer is the obvious next brick."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The roadmap from here is deliberate: "
+          },
+          {
+            "k": "strong",
+            "text": "detect"
+          },
+          {
+            "k": "text",
+            "text": " (shipped, this post) → "
+          },
+          {
+            "k": "strong",
+            "text": "verify offline"
+          },
+          {
+            "k": "text",
+            "text": " (a reserved crate, pure-Rust crypto, bundled trust lists, no network — the sovereignty rules apply to verification too) → "
+          },
+          {
+            "k": "strong",
+            "text": "sign our own"
+          },
+          {
+            "k": "text",
+            "text": ", with the operator's key, so a generate → edit → publish chain carries one auditable provenance line from end to end."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Your assets are already signed. The least your tooling can do is stop breaking them."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "one-wire-five-servers",
+    "file": "2026-07-06-one-wire-five-servers.md",
+    "title": "One wire, five servers",
+    "tag": "Sovereignty",
+    "date": "2026-07-06",
+    "description": "The self-hosted media world quietly standardized on OpenAI's wire shapes. That accident of history is the best sovereignty news in years — and Nika's media builtins are built on it.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "When we added image generation to the stdlib, the obvious move was a third cloud provider. The review said no: the engine already spoke to five "
+          },
+          {
+            "k": "em",
+            "text": "local"
+          },
+          {
+            "k": "text",
+            "text": " LLM runtimes, and the image path had zero. Sovereignty isn't a footnote in our doctrine — local-first is the presentation order, the default example, the first provider in every table. So we went looking for the local image wire."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "What we found is the quiet standardization nobody announced: "
+          },
+          {
+            "k": "strong",
+            "text": "the entire self-hosted media landscape converged on OpenAI's wire shapes."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "For images, "
+          },
+          {
+            "k": "code",
+            "text": "POST {base}/v1/images/generations"
+          },
+          {
+            "k": "text",
+            "text": " returning "
+          },
+          {
+            "k": "code",
+            "text": "data[].b64_json"
+          },
+          {
+            "k": "text",
+            "text": " is spoken by LocalAI (first-party, spec-complete), Ollama, stable-diffusion.cpp's "
+          },
+          {
+            "k": "code",
+            "text": "sd-server"
+          },
+          {
+            "k": "text",
+            "text": ", SGLang Diffusion and vLLM-Omni. Five independent server projects, five different model runtimes, one wire. For speech, "
+          },
+          {
+            "k": "code",
+            "text": "POST {base}/v1/audio/speech"
+          },
+          {
+            "k": "text",
+            "text": " returning raw audio bytes is spoken by LocalAI, Kokoro-FastAPI, Speaches and openedai-speech. And for video — coming later, but the research is done — vLLM-Omni mirrors the Sora job lifecycle byte for byte, down to the "
+          },
+          {
+            "k": "code",
+            "text": "/content"
+          },
+          {
+            "k": "text",
+            "text": " endpoint that returns the MP4."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "So Nika's "
+          },
+          {
+            "k": "code",
+            "text": "local"
+          },
+          {
+            "k": "text",
+            "text": " provider is one adapter per media type, and it covers "
+          },
+          {
+            "k": "em",
+            "text": "everything you can run on your own metal"
+          },
+          {
+            "k": "text",
+            "text": ":"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "bash",
+        "text": "export NIKA_IMAGE_LOCAL_URL=http://localhost:8080   # LocalAI — or :1234 sd-server, :11434 Ollama\nexport NIKA_TTS_LOCAL_URL=http://localhost:8880     # Kokoro — or LocalAI, Speaches"
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "text": "provider: local        # the sovereign path — first in every table, on purpose"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Three design decisions make this more than a convenience:"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The base URL is engine config, never workflow data."
+          },
+          {
+            "k": "text",
+            "text": " Nika's provider calls ride a dedicated HTTP plane with SSRF protection "
+          },
+          {
+            "k": "em",
+            "text": "disabled"
+          },
+          {
+            "k": "text",
+            "text": " — safe only because endpoints are engine-fixed constants. A configurable endpoint could have broken that reasoning, so it doesn't enter through the workflow: "
+          },
+          {
+            "k": "code",
+            "text": "NIKA_IMAGE_LOCAL_URL"
+          },
+          {
+            "k": "text",
+            "text": " resolves once, at the composition root, exactly where API keys do. No "
+          },
+          {
+            "k": "code",
+            "text": "provider_options"
+          },
+          {
+            "k": "text",
+            "text": " key reaches the URL. A workflow cannot steer the engine's sockets, period — we had an adversarial reviewer try."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The wire's defaults are not your defaults."
+          },
+          {
+            "k": "text",
+            "text": " LocalAI defaults to "
+          },
+          {
+            "k": "em",
+            "text": "URL mode"
+          },
+          {
+            "k": "text",
+            "text": " — it answers with a link to the render. Nika forces "
+          },
+          {
+            "k": "code",
+            "text": "response_format: b64_json"
+          },
+          {
+            "k": "text",
+            "text": " on every url-capable wire and hard-refuses url-only responses, because fetching a provider-supplied URL would reopen the exact network boundary the fixed-endpoint design closed. Result URLs are never fetched; that's normative spec language now, not a preference."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Honesty about what a self-hosted server is."
+          },
+          {
+            "k": "text",
+            "text": " A local server is "
+          },
+          {
+            "k": "em",
+            "text": "less vetted"
+          },
+          {
+            "k": "text",
+            "text": " than api.openai.com by definition — that's the point of running your own. So the trust seams assume it: a verbose server that reflects your "
+          },
+          {
+            "k": "code",
+            "text": "Authorization"
+          },
+          {
+            "k": "text",
+            "text": " header into an error body gets scrubbed before the message can reach workflow outputs or an agent's context. Local renders get a 300-second default timeout because CPU diffusion takes minutes, and the timeout error tells you which three ports to check. The provenance manifest records "
+          },
+          {
+            "k": "code",
+            "text": "endpoint_host"
+          },
+          {
+            "k": "text",
+            "text": " — "
+          },
+          {
+            "k": "em",
+            "text": "which"
+          },
+          {
+            "k": "text",
+            "text": " server rendered this asset — because once the endpoint is configurable, that fact is load-bearing."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "There's also what the "
+          },
+          {
+            "k": "code",
+            "text": "local"
+          },
+          {
+            "k": "text",
+            "text": " provider deliberately isn't: inferred. "
+          },
+          {
+            "k": "code",
+            "text": "provider: openai"
+          },
+          {
+            "k": "text",
+            "text": " can be guessed from "
+          },
+          {
+            "k": "code",
+            "text": "model: gpt-image-2"
+          },
+          {
+            "k": "text",
+            "text": "; model names on self-hosted servers mean whatever your server says they mean, so "
+          },
+          {
+            "k": "code",
+            "text": "local"
+          },
+          {
+            "k": "text",
+            "text": " is always explicit. And its "
+          },
+          {
+            "k": "code",
+            "text": "model:"
+          },
+          {
+            "k": "text",
+            "text": " default follows LocalAI's convention while the docs tell you plainly: set it to match "
+          },
+          {
+            "k": "em",
+            "text": "your"
+          },
+          {
+            "k": "text",
+            "text": " server."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The deeper reason this matters is the one in our alignment doctrine. Cloud media APIs are wonderful and we wire them happily — with attribution, exact cost metering, and their signatures preserved. But a workflow you can only run against someone else's datacenter is a workflow someone else can turn off, reprice, or subpoena. The one-wire accident means the sovereign path costs us one adapter — and costs you one environment variable."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Five servers today. The wire will outlive all of them. That's what a standard looks like when nobody had to vote on it."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "media-are-workflow-citizens",
+    "file": "2026-07-06-media-are-workflow-citizens.md",
+    "title": "Media are workflow citizens",
+    "tag": "Engine",
+    "date": "2026-07-06",
+    "description": "Images and speech now render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger — and the sovereign path first.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every automation platform bolted image generation on the same way: a node that calls one cloud API and drops base64 into your flow state. The file handling is your problem. The provenance is nobody's problem. The cost shows up on an invoice three weeks later."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Nika's stdlib grew two Media builtins this week — "
+          },
+          {
+            "k": "code",
+            "text": "nika:image_generate"
+          },
+          {
+            "k": "text",
+            "text": " and "
+          },
+          {
+            "k": "code",
+            "text": "nika:tts_generate"
+          },
+          {
+            "k": "text",
+            "text": " — and the point is not that they exist. It's that they had to pass the same bar as "
+          },
+          {
+            "k": "code",
+            "text": "read"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "fetch"
+          },
+          {
+            "k": "text",
+            "text": " and "
+          },
+          {
+            "k": "code",
+            "text": "exec"
+          },
+          {
+            "k": "text",
+            "text": " before they could:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "text": "permits:\n  fs: { write: [\"./assets/**\"] }     # saves are boundary-gated, per final path\n  tools: [\"nika:image_generate\"]\n\ntasks:\n  - id: hero\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: local              # your server — or openai · gemini · xai · mock\n        prompt: \"OG hero — a monarch butterfly over a nebula\"\n        aspect_ratio: \"16:9\"\n        output_dir: \"./assets/og\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Assets, not blobs."
+          },
+          {
+            "k": "text",
+            "text": " The render lands on disk, sha256-named, with a provenance manifest beside it — resolved request, dimensions, hashes, timing, which server actually answered ("
+          },
+          {
+            "k": "code",
+            "text": "endpoint_host"
+          },
+          {
+            "k": "text",
+            "text": "), your metadata. What flows through the workflow is a "
+          },
+          {
+            "k": "em",
+            "text": "path and a hash"
+          },
+          {
+            "k": "text",
+            "text": ", never megabytes of base64 clogging task outputs and agent context. PNG renders additionally carry provenance inside the file itself, and when the provider already signed the bytes, "
+          },
+          {
+            "k": "link",
+            "text": "we preserve their signature instead",
+            "href": "/blog/the-credentials-your-pipeline-breaks"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Magic bytes are the authority."
+          },
+          {
+            "k": "text",
+            "text": " The engine reads what the payload "
+          },
+          {
+            "k": "em",
+            "text": "is"
+          },
+          {
+            "k": "text",
+            "text": " — PNG header, JPEG SOF, WAV "
+          },
+          {
+            "k": "code",
+            "text": "RIFF…WAVE"
+          },
+          {
+            "k": "text",
+            "text": ", MP3 frame sync — and the saved extension follows the bytes, not the provider's label. A WAV's duration is exact header math; an MP3's duration is honestly "
+          },
+          {
+            "k": "code",
+            "text": "null"
+          },
+          {
+            "k": "text",
+            "text": " rather than a guess. A non-media payload is a hard error, not a corrupt file on your disk."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Degradation is loud or it doesn't happen."
+          },
+          {
+            "k": "text",
+            "text": " Providers differ: one has no seed, another ignores "
+          },
+          {
+            "k": "code",
+            "text": "n"
+          },
+          {
+            "k": "text",
+            "text": ", a third only does size "
+          },
+          {
+            "k": "em",
+            "text": "classes"
+          },
+          {
+            "k": "text",
+            "text": ". Every lossy mapping is a stable, visible warning — "
+          },
+          {
+            "k": "code",
+            "text": "seed_unsupported:"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "count_shortfall:"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "xai_size_class:"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "format_mismatch:"
+          },
+          {
+            "k": "text",
+            "text": " — and the spec says silent degradation is non-conformant. The one place we invert the pattern: an argument whose silent drop would make the "
+          },
+          {
+            "k": "em",
+            "text": "output wrong"
+          },
+          {
+            "k": "text",
+            "text": " (not just less controlled) is refused outright."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Real spend rides the ledger."
+          },
+          {
+            "k": "text",
+            "text": " xAI bills images in cost ticks; the engine converts them exactly and the run shows it:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "✔  render  invoke · nika:image_generate  5.6s · $0.02\n── 1/1 done · $0.02 · elapsed 5.6s ──────────────────"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Providers that don't report exact cost show "
+          },
+          {
+            "k": "code",
+            "text": "null"
+          },
+          {
+            "k": "text",
+            "text": " — never an estimate dressed as truth. Any tool that reports a top-level "
+          },
+          {
+            "k": "code",
+            "text": "cost_usd"
+          },
+          {
+            "k": "text",
+            "text": " is metered through the same channel "
+          },
+          {
+            "k": "code",
+            "text": "infer:"
+          },
+          {
+            "k": "text",
+            "text": " uses."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Offline is a first-class provider."
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "code",
+            "text": "provider: mock"
+          },
+          {
+            "k": "text",
+            "text": " renders real, decodable, deterministic files — an actual PNG, an actual playable WAV — with zero network and zero keys. Your media pipeline runs in CI as-is; production is a one-line flip."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "And the flip goes to "
+          },
+          {
+            "k": "em",
+            "text": "your"
+          },
+          {
+            "k": "text",
+            "text": " hardware first. Both builtins speak one OpenAI-compatible wire that the entire self-hosted landscape converged on — LocalAI, Ollama, stable-diffusion.cpp, SGLang, vLLM-Omni for images; LocalAI, Kokoro-FastAPI, Speaches for speech. The base URL is engine config, never workflow data, so the security model holds. That story deserves its own post: "
+          },
+          {
+            "k": "link",
+            "text": "one wire, five servers",
+            "href": "/blog/one-wire-five-servers"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Proven the only way that counts: live renders through every cloud provider, a real MP3 spoken by "
+          },
+          {
+            "k": "code",
+            "text": "gpt-4o-mini-tts"
+          },
+          {
+            "k": "text",
+            "text": " from a script another model wrote inside the same workflow, fan-outs racing into one directory without a collision, and a local compat server asserting — server-side — that the engine sent exactly the wire it promised."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Brief in. Assets, hashes, manifests and an exact bill out. That's what a workflow citizen looks like."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-trace-you-can-replay",
     "file": "2026-07-05-the-trace-you-can-replay.md",
     "title": "The trace you can replay",
@@ -1335,7 +2343,7 @@ export const BLOG_POSTS: BlogPost[] = [
           },
           {
             "k": "text",
-            "text": " lives in the standard library, reached through invoke, next to read, write, jq and the other 19 builtins. Everything callable is a tool. Everything about ordering is the graph."
+            "text": " lives in the standard library, reached through invoke, next to read, write, jq and the other 21 builtins. Everything callable is a tool. Everything about ordering is the graph."
           }
         ]
       },
@@ -1642,11 +2650,11 @@ export const BLOG_POSTS: BlogPost[] = [
         "inline": [
           {
             "k": "strong",
-            "text": "23 builtins ride the binary"
+            "text": "25 builtins ride the binary"
           },
           {
             "k": "text",
-            "text": ", across four families: files, data, web, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with "
+            "text": ", across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with "
           },
           {
             "k": "code",
