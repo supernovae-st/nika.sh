@@ -254,6 +254,272 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
+    "slug": "the-secrets-line",
+    "file": "2026-07-05-the-secrets-line.md",
+    "title": "The secrets line",
+    "tag": "Security",
+    "date": "2026-07-05",
+    "description": "Information-flow, audited before it flows: how the checker proves a secret cannot leak into a prompt, a file, or a host.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every leaked credential has the same timeline: the key ends up in a log, a prompt, or a third-party host, and the grep that finds it runs after it is already there. The standard tooling answer is a scanner that hunts for strings shaped like keys, post hoc, best effort."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Nika asks the question before the run exists. The third verdict "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " prints, right under the cost line, is the secrets line:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": " ✔ SECRETS  no information-flow escapes"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "For that line to be provable, a secret has to be something the language can see:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "billing-brief.nika.yaml",
+        "text": "nika: v1\nworkflow: billing-brief\nmodel: ollama/llama3.2:3b\n\n# a secret is a reference to a store, never a value\nsecrets:\n  stripe_key:\n    source: env\n    key: STRIPE_KEY\n    # the complete flow policy: where this key may go\n    egress:\n      - to: \"nika:fetch\"\n        host: \"api.stripe.com\"\n      # the response stays tainted until its sink is sanctioned\n      - to: \"infer\"\n\npermits:\n  net: { http: [ \"api.stripe.com\" ] }\n  tools: [ \"nika:fetch\" ]\n\ntasks:\n  - id: charges\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://api.stripe.com/v1/charges?limit=20\"\n        headers:\n          Authorization: \"Bearer ${{ secrets.stripe_key }}\"\n\n  - id: brief\n    depends_on: [ charges ]\n    infer:\n      prompt: \"One short paragraph: what moved in these charges? ${{ tasks.charges.output }}\"\n      max_tokens: 300\n\noutputs:\n  brief: ${{ tasks.brief.output }}"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The "
+          },
+          {
+            "k": "code",
+            "text": "secrets:"
+          },
+          {
+            "k": "text",
+            "text": " block is not a place to hide strings. A literal value there is a parse error; the reference is the point. And "
+          },
+          {
+            "k": "code",
+            "text": "egress"
+          },
+          {
+            "k": "text",
+            "text": " is the key's complete flow policy: "
+          },
+          {
+            "k": "code",
+            "text": "stripe_key"
+          },
+          {
+            "k": "text",
+            "text": " may ride one tool to one host, and the model may see what comes back. Write it anywhere else, a prompt, a shell argv, a file write, an agent brief, and the audit refuses the workflow with one grammar: "
+          },
+          {
+            "k": "code",
+            "text": "leak into infer"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "leak into exec"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "leak into invoke"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "leak into agent"
+          },
+          {
+            "k": "text",
+            "text": ", each naming its task and its secret. Exit code 2; nothing ran."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Three details make the line proof rather than pattern-matching:"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The audit follows the data, not the variable."
+          },
+          {
+            "k": "text",
+            "text": " Delete the "
+          },
+          {
+            "k": "code",
+            "text": "- to: \"infer\""
+          },
+          {
+            "k": "text",
+            "text": " sanction from the file above and the checker does not just refuse, it prints the path the secret would have walked:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": " ✖ SECRETS  leak into infer (task `brief`) — secrets.stripe_key → tasks.charges.output"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The key was only ever typed in the fetch header, but the response of a call that carried a secret is tainted until its destination is sanctioned too. Laundering it through a capture, a downstream task, or a workflow "
+          },
+          {
+            "k": "code",
+            "text": "outputs:"
+          },
+          {
+            "k": "text",
+            "text": " does not wash it; the arrow in the verdict is the taint trace."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Declassification only narrows."
+          },
+          {
+            "k": "text",
+            "text": " The sanction is per-sink and per-host: same key against a different host refuses, same key in a different tool refuses. And "
+          },
+          {
+            "k": "code",
+            "text": "egress"
+          },
+          {
+            "k": "text",
+            "text": " can never widen the boundary. Sanction a host that "
+          },
+          {
+            "k": "code",
+            "text": "permits.net.http"
+          },
+          {
+            "k": "text",
+            "text": " does not list and both lines go red at once, the secrets line and the permits line, each printing its own fix."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The audit never holds the key."
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "code",
+            "text": "source: env"
+          },
+          {
+            "k": "text",
+            "text": " resolves at run time, so "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " passes with the variable unset: a reviewer can audit the flow policy without possessing the secret. And once the run does hold it, the value never surfaces: not in the task lines, not in the "
+          },
+          {
+            "k": "code",
+            "text": "--json"
+          },
+          {
+            "k": "text",
+            "text": " events, not in the trace a "
+          },
+          {
+            "k": "code",
+            "text": "--resume"
+          },
+          {
+            "k": "text",
+            "text": " replays. We probed with a marker token and grepped every surface: zero occurrences."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The "
+          },
+          {
+            "k": "link",
+            "text": "cost line",
+            "href": "/blog/the-cost-line"
+          },
+          {
+            "k": "text",
+            "text": " bounded the spend before the meter started. The secrets line does the same for information: where a key may go is written in the file, reviewable in the diff, and proven before a single byte moves. The postmortem grep becomes a pre-flight verdict."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-cost-line",
     "file": "2026-07-05-the-cost-line.md",
     "title": "The cost line",

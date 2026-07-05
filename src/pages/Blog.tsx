@@ -25,11 +25,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-secrets-line',
-    tag: 'Security',
+    slug: 'the-resume-story',
+    tag: 'Engine',
     date: 'soon',
-    title: 'The secrets line',
-    teaser: 'Information-flow, audited before it flows: how the checker proves a secret cannot leak into a prompt, a file, or a host.',
+    title: 'The resume story',
+    teaser: 'kill -9 a run mid-fanout, then resume it: finished work never runs twice. Durability as a file property, shown from the real traces.',
   },
   {
     slug: 'written-by-agents',

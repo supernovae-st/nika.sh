@@ -15,6 +15,14 @@
       <description>Every run leaves a flight recorder: a deterministic AI audit trail you can replay like a film, never re-execute by accident.</description>
     </item>
     <item>
+      <title>The secrets line</title>
+      <link>https://nika.sh/blog/the-secrets-line</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-secrets-line</guid>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Security</category>
+      <description>Information-flow, audited before it flows: how the checker proves a secret cannot leak into a prompt, a file, or a host.</description>
+    </item>
+    <item>
       <title>The cost line</title>
       <link>https://nika.sh/blog/the-cost-line</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-cost-line</guid>

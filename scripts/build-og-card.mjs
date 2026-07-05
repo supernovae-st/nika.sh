@@ -143,6 +143,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>spec&nbsp;first<span class="sep">·</span>gates<span class="sep">·</span><b>the&nbsp;draft&nbsp;is&nbsp;not&nbsp;the&nbsp;product</b></span>',
   },
   {
+    // /blog/the-secrets-line — information-flow, audited before it flows.
+    out: 'og-blog-the-secrets-line.png',
+    fig: 'FIG B.11',
+    size: 62,
+    headline: 'The secrets<br><span class="b">line.</span>',
+    sub: 'Information-flow, audited before it flows: the checker proves a secret cannot leak into a prompt, a file, or a&nbsp;host.',
+    detail:
+      '<span class="arrow">▸</span><span>flow&nbsp;policy<span class="sep">·</span>taint&nbsp;traced<span class="sep">·</span><b>proven&nbsp;before&nbsp;it&nbsp;flows</b></span>',
+  },
+  {
     // /blog/the-cost-line — the bill you can read first.
     out: 'og-blog-the-cost-line.png',
     fig: 'FIG B.10',

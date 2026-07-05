@@ -126,7 +126,10 @@ export function compileAll(dir = SRC_DIR) {
   const canon = canonValues()
   const files = readdirSync(dir).filter((f) => f.endsWith('.md') && f !== 'README.md').sort()
   const posts = files.map((f) => compilePost(readFileSync(join(dir, f), 'utf8'), f, canon))
-  posts.sort((a, b) => (a.date < b.date ? 1 : -1))
+  /* newest-first; same-day posts by filename DESC — a comparator that never
+     returns 0 is engine-defined order, and this one shipped that way (the
+     tiebreak below pins the order it happened to produce). */
+  posts.sort((a, b) => (a.date !== b.date ? (a.date < b.date ? 1 : -1) : a.file < b.file ? 1 : -1))
   const slugs = new Set()
   for (const p of posts) {
     if (slugs.has(p.slug)) throw new Error(`duplicate slug: ${p.slug}`)
