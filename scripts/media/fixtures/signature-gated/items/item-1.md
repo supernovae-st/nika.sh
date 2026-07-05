@@ -1,0 +1,1 @@
+- feat: nika test — golden testing under the deterministic mock

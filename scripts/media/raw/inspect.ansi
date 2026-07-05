@@ -1,0 +1,24 @@
+release-notes-i18n · 9 tasks · 8 waves · ≥ $0.0000 (floor — unbounded tasks)
+  ◆ discover   invoke · nika:glob
+    ↓
+  ╭ wave 2 ── 2 in parallel ──────╮
+  │ ◆ digest     exec             │
+  │ ◆ stats      invoke · nika:jq │
+  ╰───────────────────────────────╯
+    ↓
+  ◆ draft      infer · mock/echo
+    ↓
+  ◆ translate  infer · mock/echo · for_each ×?
+    ↓
+  ◆ survivors  invoke · nika:jq
+    ↓
+  ◆ verify     agent · mock/echo
+    ↓
+  ◆ publish    exec · when: ${{ tasks.survivors.output.size() > 0 }}
+    ↓
+  ◆ report     infer · mock/echo
+  (no orphans · DAG check NIKA-DAG-001 clean)
+
+parallelism  width 2 · can run together: stats · publish
+pinch        discover · report · nothing else runs while these run
+blast        discover blocks 8 · digest blocks 6 · draft blocks 5 · +5 more

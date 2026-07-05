@@ -1,0 +1,2 @@
+# raw TTY captures are byte streams (pty CRLF · ANSI escapes) — never normalize
+scripts/media/raw/*.ansi -text

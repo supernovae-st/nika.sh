@@ -1,0 +1,15 @@
+[1mnika check[0m [2m· signature-demo.nika.yaml[0m
+ [32m✔[0m [1mPLAN[0m     8 wave(s) · 9 task(s) · max parallelism 2
+ [33m⚠ [0m [1mCOST[0m     [1m$0.0000 – $0.0000[0m [33mFLOOR (unbounded tasks present)[0m
+   draft  [2mmock/echo[0m  [33mUNBOUNDED[0m [2m— no catalog price (local/unknown model)[0m
+   translate  [2mmock/echo[0m  [33mUNBOUNDED[0m [2m— no catalog price (local/unknown model)[0m
+   verify  [2mmock/echo[0m  [33mUNBOUNDED[0m [2m— no catalog price (local/unknown model)[0m
+   report  [2mmock/echo[0m  [33mUNBOUNDED[0m [2m— no catalog price (local/unknown model)[0m
+ [32m✔[0m [1mSECRETS [0m [2mno information-flow escapes[0m
+ [32m✔[0m [1mTYPES   [0m [2mevery deep output reference fits its declared shape[0m
+ [32m✔[0m [1mTOOLS   [0m [2mevery nika: tool names a canonical builtin[0m
+ [32m✔[0m [1mARGS    [0m [2mevery invoke arg key is declared + every required arg is present[0m
+ [32m✔[0m [1mSCHEMA  [0m [2mevery authored schema: is satisfiable[0m
+ [2m○[0m [1mPERMITS[0m  [2mno boundary declared (engine floor only) · `--infer-permits` writes one[0m
+ [36m↳[0m [1mHINT[0m     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)
+ [32m✔ audited · 9 task(s) · 8 wave(s) · permits none · est ≥$0.0000 · 1 hint[0m

@@ -1,0 +1,1 @@
+- fix: local models get a real provider deadline (300s classes)

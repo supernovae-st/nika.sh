@@ -1,0 +1,181 @@
+  🦋 nika · [1mrelease-notes-i18n-gated[0m · 0 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m── 0/0 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026h[4A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 1 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m○ [0m discover  [2m[0m
+  [2m── 0/1 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[5A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 2 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m○ [0m discover  [2m[0m
+  [2m○ [0m digest    [2m[0m
+  [2m── 0/2 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[6A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 3 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m○ [0m discover  [2m[0m
+  [2m○ [0m digest    [2m[0m
+  [2m○ [0m draft     [2m[0m
+  [2m── 0/3 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[7A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 4 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m○ [0m discover   [2m[0m
+  [2m○ [0m digest     [2m[0m
+  [2m○ [0m draft      [2m[0m
+  [2m○ [0m translate  [2m[0m
+  [2m── 0/4 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[8A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 5 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m○ [0m discover   [2m[0m
+  [2m○ [0m digest     [2m[0m
+  [2m○ [0m draft      [2m[0m
+  [2m○ [0m translate  [2m[0m
+  [2m○ [0m verify     [2m[0m
+  [2m── 0/5 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[9A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 6 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m○ [0m discover   [2m[0m
+  [2m○ [0m digest     [2m[0m
+  [2m○ [0m draft      [2m[0m
+  [2m○ [0m translate  [2m[0m
+  [2m○ [0m verify     [2m[0m
+  [2m○ [0m approve    [2m[0m
+  [2m── 0/6 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[10A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m○ [0m discover   [2m[0m
+  [2m○ [0m digest     [2m[0m
+  [2m○ [0m draft      [2m[0m
+  [2m○ [0m translate  [2m[0m
+  [2m○ [0m verify     [2m[0m
+  [2m○ [0m approve    [2m[0m
+  [2m○ [0m publish    [2m[0m
+  [2m── 0/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m○ [0m digest     [2m[0m
+  [2m○ [0m draft      [2m[0m
+  [2m○ [0m translate  [2m[0m
+  [2m○ [0m verify     [2m[0m
+  [2m○ [0m approve    [2m[0m
+  [2m○ [0m publish    [2m[0m
+  [2m── 1/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m○ [0m draft      [2m[0m
+  [2m○ [0m translate  [2m[0m
+  [2m○ [0m verify     [2m[0m
+  [2m○ [0m approve    [2m[0m
+  [2m○ [0m publish    [2m[0m
+  [2m── 2/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m○ [0m translate  [2m[0m
+  [2m○ [0m verify     [2m[0m
+  [2m○ [0m approve    [2m[0m
+  [2m○ [0m publish    [2m[0m
+  [2m── 3/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m↷ [0m translate  [2mcache hit (resume)[0m  [2m[0m  [2m→ [4] · 1.8KB[0m
+  [2m○ [0m verify     [2m[0m
+  [2m○ [0m approve    [2m[0m
+  [2m○ [0m publish    [2m[0m
+  [2m── 4/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m↷ [0m translate  [2mcache hit (resume)[0m  [2m[0m  [2m→ [4] · 1.8KB[0m
+  [2m↷ [0m verify     [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Review t…" · 2.0KB[0m
+  [2m○ [0m approve    [2m[0m
+  [2m○ [0m publish    [2m[0m
+  [2m── 5/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m    [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m    [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m draft      [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m↷ [0m translate  [2mcache hit (resume)[0m    [2m[0m  [2m→ [4] · 1.8KB[0m
+  [2m↷ [0m verify     [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Review t…" · 2.0KB[0m
+  [36m◐ [0m approve    [2minvoke · nika:prompt[0m  [2m[0ms][0m
+  [2m○ [0m publish    [2m[0m
+  [2m── 5/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m    [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m    [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m draft      [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m↷ [0m translate  [2mcache hit (resume)[0m    [2m[0m  [2m→ [4] · 1.8KB[0m
+  [2m↷ [0m verify     [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Review t…" · 2.0KB[0m
+  [32m✔ [0m approve    [2minvoke · nika:prompt[0m  [2m[0ms][0m  [2m→ true · 4B[0m
+  [2m○ [0m publish    [2m[0m
+  [2m── 6/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m    [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m    [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m draft      [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m↷ [0m translate  [2mcache hit (resume)[0m    [2m[0m  [2m→ [4] · 1.8KB[0m
+  [2m↷ [0m verify     [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Review t…" · 2.0KB[0m
+  [32m✔ [0m approve    [2minvoke · nika:prompt[0m  [2m[0ms][0m  [2m→ true · 4B[0m
+  [36m◐ [0m publish    [2mexec · printf[0m         [2m[0ms][0m
+  [2m── 6/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m    [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m    [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m draft      [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m↷ [0m translate  [2mcache hit (resume)[0m    [2m[0m  [2m→ [4] · 1.8KB[0m
+  [2m↷ [0m verify     [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Review t…" · 2.0KB[0m
+  [32m✔ [0m approve    [2minvoke · nika:prompt[0m  [2m[ 0ms][0m  [2m→ true · 4B[0m
+  [32m✔ [0m publish    [2mexec · printf[0m         [2m[18ms][0m  [2m→ "published: release no…" · 32B[0m
+  [2m── 7/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-gated[0m · 7 tasks
+     permits [32m✓[0m [2mengine floor (no boundary declared)[0m
+
+  [2m↷ [0m discover   [2mcache hit (resume)[0m    [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m digest     [2mcache hit (resume)[0m    [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m draft      [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m↷ [0m translate  [2mcache hit (resume)[0m    [2m[0m  [2m→ [4] · 1.8KB[0m
+  [2m↷ [0m verify     [2mcache hit (resume)[0m    [2m[0m  [2m→ "mock(echo) · Review t…" · 2.0KB[0m
+  [32m✔ [0m approve    [2minvoke · nika:prompt[0m  [2m[ 0ms][0m  [2m→ true · 4B[0m
+  [32m✔ [0m publish    [2mexec · printf[0m         [2m[18ms][0m  [2m→ "published: release no…" · 32B[0m
+  [2m── 7/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
+[?2026l  approve  ▕[38;2;96;125;139m█[0m▏                                   [2m 0ms[0m
+  publish  ▕   [38;2;38;205;247m███████████████████████████████[0m▏  [2m18ms[0m
+[2m  0s ····································· 20ms[0m
+  ╭─ nika [32m✓[0m [1mrelease-notes-i18n-gated[0m ────────────────────────╮
+  │  ◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ …    7 tasks · 7 waves · 0 re…  │
+  │  48ms · $0.00                                            │
+  │  outputs → receipt (string)                              │
+  ╰──────────────────────────────────────────────────────────╯
+  [2mexplore: nika run ]8;;file:///private/tmp/demo-assets/gate/signature-gated.nika.yaml\signature-gated.nika.yaml]8;;\ --json > run.ndjson · nika trace outputs run.ndjson[0m
+
+  resumed · 5 skipped (cache hit) · 2 ran live

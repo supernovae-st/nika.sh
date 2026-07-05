@@ -1,0 +1,108 @@
+{
+ "binary": "nika 0.93.1 (engine main da282b057 · dev target name nika-cli — the same crate brew ships as nika)",
+ "model": "mock/echo — offline · deterministic · zero key",
+ "captures": {
+  "check": {
+   "commands": [
+    "nika check signature-demo.nika.yaml"
+   ],
+   "fixture": "fixtures/signature-demo",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 1439
+  },
+  "inspect": {
+   "commands": [
+    "nika inspect signature-demo.nika.yaml"
+   ],
+   "fixture": "fixtures/signature-demo",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 966
+  },
+  "run": {
+   "commands": [
+    "nika run signature-demo.nika.yaml"
+   ],
+   "fixture": "fixtures/signature-demo",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 27790
+  },
+  "trace-outputs": {
+   "commands": [
+    "nika trace outputs run.ndjson"
+   ],
+   "fixture": "fixtures/signature-demo",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 1017
+  },
+  "trace-flow": {
+   "commands": [
+    "nika trace flow run.ndjson signature-demo.nika.yaml"
+   ],
+   "fixture": "fixtures/signature-demo",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 539
+  },
+  "kill-session": {
+   "commands": [
+    "nika run signature-paced.nika.yaml --json > run.ndjson &",
+    "sleep 2.5; kill -KILL $!",
+    "wait $!; echo \"exit=$?\""
+   ],
+   "fixture": "fixtures/signature-paced",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 10
+  },
+  "kill-forensics": {
+   "commands": [
+    "nika trace outputs run.ndjson"
+   ],
+   "fixture": "fixtures/signature-paced",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 811
+  },
+  "resume": {
+   "commands": [
+    "nika run signature-paced.nika.yaml --resume run.ndjson"
+   ],
+   "fixture": "fixtures/signature-paced",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 17398
+  },
+  "gate-pause": {
+   "commands": [
+    "nika run signature-gated.nika.yaml --json > gate.ndjson",
+    "echo \"exit=$?\""
+   ],
+   "fixture": "fixtures/signature-gated",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 8
+  },
+  "gate-note": {
+   "commands": [
+    "tail -1 gate.ndjson | jq -r '.kind, (.fields[] | select(.key==\"note\").value)'"
+   ],
+   "fixture": "fixtures/signature-gated",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 109
+  },
+  "gate-resume": {
+   "commands": [
+    "nika run signature-gated.nika.yaml --resume gate.ndjson --answer approve=true"
+   ],
+   "fixture": "fixtures/signature-gated",
+   "exit": 0,
+   "pty": "100x34",
+   "bytes": 13219
+  }
+ }
+}
