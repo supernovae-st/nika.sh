@@ -205,6 +205,20 @@ html::-webkit-scrollbar-thumb:hover { background: rgb(79 134 255 / 0.45); }
   transform: translateY(0);
   filter: blur(0);
 }
+/* reduced motion ships the SETTLED frame from the parse (loop T5) — the
+   blanket 0.001ms rule above only made the snap instant; the opacity:0
+   initial state still hid content until each observer fired (a scroll could
+   land on an invisible wall, and the golden harness — which emulates reduce —
+   inherited that timing as flakiness). will-change stays IDENTICAL so the
+   containing block for fixed descendants never differs between the two
+   worlds (the W19b law). */
+@media (prefers-reduced-motion: reduce) {
+  .rv {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
 
 /* ─── cinematic opening · initial states only ───────────────────────────────
    The whole film (cards, burst, nav/hero rise AND the canvas phases) is
