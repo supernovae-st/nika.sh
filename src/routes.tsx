@@ -42,6 +42,9 @@ export const routes: RouteObject[] = [
          (the component reads the pathname; hreflang wires the family) */
       { path: 'fr/manifesto', Component: Manifesto },
       { path: 'es/manifesto', Component: Manifesto },
+      { path: 'de/manifesto', Component: Manifesto },
+      { path: 'pt-br/manifesto', Component: Manifesto },
+      { path: 'ja/manifesto', Component: Manifesto },
       { path: 'zh-hans/manifesto', Component: Manifesto },
       { path: 'changelog', Component: Changelog },
       { path: 'use-cases', Component: UseCasesPage },

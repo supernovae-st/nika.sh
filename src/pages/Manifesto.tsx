@@ -74,6 +74,33 @@ export function Component() {
     ],
   })
 
+  /* the drum egg · type « drum » anywhere on the page and the rings answer
+     with a 4s brighter beat ([data-egg] · CSS, motion-gated). Console lore
+     speaks the locale's own drumline — the site's quiet second voice. */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    console.log('%c🥁 ' + c.drumline, 'color:#22d3ee')
+    let buffer = ''
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      const t = e.target as HTMLElement | null
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      buffer = (buffer + e.key.toLowerCase()).slice(-4)
+      if (buffer === 'drum') {
+        drumRef.current?.setAttribute('data-egg', '1')
+        console.log('%c🥁 · 🥁 · 🥁', 'color:#22d3ee')
+        clearTimeout(timer)
+        timer = setTimeout(() => drumRef.current?.removeAttribute('data-egg'), 4000)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      clearTimeout(timer)
+    }
+  }, [c.drumline])
+
   /* the drum-sphere capability gate · desktop + motion + WebGL + hero-near */
   const heroRef = useRef<HTMLElement>(null)
   const drumRef = useRef<HTMLDivElement>(null)

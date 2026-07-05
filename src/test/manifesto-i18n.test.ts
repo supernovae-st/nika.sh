@@ -13,7 +13,7 @@ const [EN, ...ALTS] = MANIFESTO_LOCALES
 
 describe('/manifesto · the BCP 47 cluster holds parity', () => {
   it('ships EN + fr + es + zh-Hans with canonical tags', () => {
-    expect(MANIFESTO_LOCALES.map((l) => l.bcp47)).toEqual(['en', 'fr', 'es', 'zh-Hans'])
+    expect(MANIFESTO_LOCALES.map((l) => l.bcp47)).toEqual(['en', 'fr', 'es', 'de', 'pt-BR', 'ja', 'zh-Hans'])
     for (const l of MANIFESTO_LOCALES)
       expect(l.bcp47).toMatch(/^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2})?$/)
   })
@@ -50,6 +50,9 @@ describe('/manifesto · the BCP 47 cluster holds parity', () => {
     expect(manifestoCopyFor('/fr/manifesto').bcp47).toBe('fr')
     expect(manifestoCopyFor('/es/manifesto/').bcp47).toBe('es')
     expect(manifestoCopyFor('/zh-hans/manifesto').bcp47).toBe('zh-Hans')
-    expect(manifestoCopyFor('/de/manifesto').bcp47).toBe('en')
+    expect(manifestoCopyFor('/pt-br/manifesto').bcp47).toBe('pt-BR')
+    expect(manifestoCopyFor('/ja/manifesto').bcp47).toBe('ja')
+    expect(manifestoCopyFor('/de/manifesto').bcp47).toBe('de')
+    expect(manifestoCopyFor('/it/manifesto').bcp47).toBe('en')
   })
 })

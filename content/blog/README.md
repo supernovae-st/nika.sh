@@ -13,6 +13,8 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 | 2026-06-04 | The blast radius is part of the file | [`2026-06-04-blast-radius-in-the-file.md`](./2026-06-04-blast-radius-in-the-file.md) |
 | 2026-05-14 | A standard library, not a plugin store | [`2026-05-14-standard-library-not-plugin-store.md`](./2026-05-14-standard-library-not-plugin-store.md) |
 | 2026-05-01 | An open spec, a copyleft engine | [`2026-05-01-open-spec-copyleft-engine.md`](./2026-05-01-open-spec-copyleft-engine.md) |
+| 2026-03-21 | Naming the drum | [`2026-03-21-naming-the-drum.md`](./2026-03-21-naming-the-drum.md) |
+| 2025-10-17 | The note that started it | [`2025-10-17-the-note-that-started-it.md`](./2025-10-17-the-note-that-started-it.md) |
 
 Feed: [nika.sh/rss.xml](https://nika.sh/rss.xml)
 
@@ -22,7 +24,7 @@ Feed: [nika.sh/rss.xml](https://nika.sh/rss.xml)
 ---
 slug: url-slug            # /blog/<slug>
 title: "The title"
-tag: Manifesto | Language | Engine | Sovereignty | Security
+tag: Origins | Manifesto | Language | Engine | Sovereignty | Security
 date: 2026-01-01
 description: "One honest sentence for the card + the feed."
 ---

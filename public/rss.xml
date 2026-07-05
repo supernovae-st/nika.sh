@@ -36,7 +36,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/intent-as-code</guid>
       <pubDate>Mon, 15 Jun 2026 09:00:00 GMT</pubDate>
       <category>Manifesto</category>
-      <description>Chats evaporate, files compound. The case for writing AI work down as source you own — your best prompts, versioned like code.</description>
+      <description>Chats evaporate, files compound. The case for writing AI work down as source you own: your best prompts, versioned like code.</description>
     </item>
     <item>
       <title>The blast radius is part of the file</title>
@@ -44,7 +44,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/blast-radius-in-the-file</guid>
       <pubDate>Thu, 04 Jun 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
-      <description>permits: is the whole list — guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.</description>
+      <description>permits: is the whole list, guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.</description>
     </item>
     <item>
       <title>A standard library, not a plugin store</title>
@@ -61,6 +61,22 @@
       <pubDate>Fri, 01 May 2026 09:00:00 GMT</pubDate>
       <category>Sovereignty</category>
       <description>Two licenses, one argument: the file must outlive every vendor, including us.</description>
+    </item>
+    <item>
+      <title>Naming the drum</title>
+      <link>https://nika.sh/blog/naming-the-drum</link>
+      <guid isPermaLink="true">https://nika.sh/blog/naming-the-drum</guid>
+      <pubDate>Sat, 21 Mar 2026 09:00:00 GMT</pubDate>
+      <category>Origins</category>
+      <description>Why a workflow engine carries the name of a liberation god, and a butterfly on every commit.</description>
+    </item>
+    <item>
+      <title>The note that started it</title>
+      <link>https://nika.sh/blog/the-note-that-started-it</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-note-that-started-it</guid>
+      <pubDate>Fri, 17 Oct 2025 09:00:00 GMT</pubDate>
+      <category>Origins</category>
+      <description>Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared.</description>
     </item>
   </channel>
 </rss>

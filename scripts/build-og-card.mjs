@@ -133,6 +133,25 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/the-note-that-started-it — the origin note (Oct 2025).
+    out: 'og-blog-the-note-that-started-it.png',
+    fig: 'FIG 0.1',
+    size: 62,
+    headline: 'The note<br><span class="b">that started it.</span>',
+    sub: 'October 2025, one evening note: the best AI work of the month had just disappeared&nbsp;— write it down, own it forever.',
+    detail:
+      '<span class="arrow">▸</span><span>the&nbsp;work&nbsp;is&nbsp;real<span class="sep">·</span><b>the&nbsp;container&nbsp;is&nbsp;fake</b></span>',
+  },
+  {
+    // /blog/naming-the-drum — the name and the lore.
+    out: 'og-blog-naming-the-drum.png',
+    fig: 'FIG 0.2',
+    headline: 'Naming<br><span class="b">the drum.</span>',
+    sub: 'Why a workflow engine carries the name of a liberation god&nbsp;— and a butterfly on every&nbsp;commit.',
+    detail:
+      '<span class="arrow">▸</span><span>the&nbsp;sun&nbsp;god<span class="sep">·</span>the&nbsp;beat<span class="sep">·</span><b>the&nbsp;butterfly</b></span>',
+  },
+  {
     // /blog/intent-as-code — the founding post's own card.
     out: 'og-blog-intent-as-code.png',
     fig: 'FIG B.1',

@@ -392,7 +392,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Intent as Code: why your AI work should be a file",
     "tag": "Manifesto",
     "date": "2026-06-15",
-    "description": "Chats evaporate, files compound. The case for writing AI work down as source you own — your best prompts, versioned like code.",
+    "description": "Chats evaporate, files compound. The case for writing AI work down as source you own: your best prompts, versioned like code.",
     "readingMin": 2,
     "tokens": [
       {
@@ -549,7 +549,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The blast radius is part of the file",
     "tag": "Security",
     "date": "2026-06-04",
-    "description": "permits: is the whole list — guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.",
+    "description": "permits: is the whole list, guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.",
     "readingMin": 1,
     "tokens": [
       {
@@ -803,6 +803,263 @@ export const BLOG_POSTS: BlogPost[] = [
           {
             "k": "text",
             "text": "Licenses are boring until the Friday they are not. We picked ours so the file you write today still runs the day the company that made the runner is gone. That includes us."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "naming-the-drum",
+    "file": "2026-03-21-naming-the-drum.md",
+    "title": "Naming the drum",
+    "tag": "Origins",
+    "date": "2026-03-21",
+    "description": "Why a workflow engine carries the name of a liberation god, and a butterfly on every commit.",
+    "readingMin": 2,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "For months the project had no name. It was \"the file thing\": a note from October, a growing conviction, some early Rust. Then the question stopped being avoidable, because naming a thing is deciding what it is for."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The technical description was easy: a workflow language, four verbs, files you own. But the description missed the "
+          },
+          {
+            "k": "em",
+            "text": "reason"
+          },
+          {
+            "k": "text",
+            "text": ". We were not building a scheduler. We were building a way out of a trap: the trap where your best work, your context, your habits of thought all live behind someone else's login, priced monthly, revocable by letter."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "There is an old story about that trap. "
+          },
+          {
+            "k": "strong",
+            "text": "Nika is named for the sun god of liberation: the drum that turns fear into laughter and frees the ones who were locked out."
+          },
+          {
+            "k": "text",
+            "text": " A warrior of liberation whose weapon is not a sword but a "
+          },
+          {
+            "k": "em",
+            "text": "rhythm"
+          },
+          {
+            "k": "text",
+            "text": ": joy, repetition, the beat that makes the cage ridiculous. That is exactly the energy a workflow engine should have. Not conquest: release. Not a louder lock-in with better branding: the drum that plays until the door opens."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "So the name is a promise with lore attached:"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Every workflow run is a beat of that drum."
+          },
+          {
+            "k": "text",
+            "text": " Each time a file runs on your machine, with your model, under your permits, the argument for owned intelligence gets one beat louder. Small, repeated, unstoppable: that is how rhythms win."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The butterfly signs the work."
+          },
+          {
+            "k": "text",
+            "text": " Every commit in the project carries a small butterfly. It is the signature of the craft: light, alive, impossible to cage. If you have scrolled to the bottom of this site, you have met it in particles."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The liberation is structural, not rhetorical."
+          },
+          {
+            "k": "text",
+            "text": " A god of freedom would be a terrible mascot for a proprietary tool. The name only works because the license (AGPL, forever), the local-first engine, and the plain-text files make the freedom mechanical. Delete our company tomorrow and the drum keeps beating on your machine."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The full argument, what happened the day intelligence got a kill switch, what we promise, why sovereignty is for everyone or for no one, lives in "
+          },
+          {
+            "k": "link",
+            "text": "the manifesto",
+            "href": "/manifesto"
+          },
+          {
+            "k": "text",
+            "text": ". It now speaks several languages, because liberation that only speaks English is not liberation."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The note asked for a file. The name asked for a fight worth having. The rest is shipping."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "the-note-that-started-it",
+    "file": "2025-10-17-the-note-that-started-it.md",
+    "title": "The note that started it",
+    "tag": "Origins",
+    "date": "2025-10-17",
+    "description": "Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared.",
+    "readingMin": 2,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Before the spec, before the engine, before the name, there was a note. October 2025, one evening, after losing an afternoon's work to a closed tab."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The work was good. A careful chain of prompts that turned a messy pile of notes into a clean weekly brief: gather, think, write, save. It had taken a week of small refinements to get right. And it lived nowhere. It was a scroll position in a chat window, on someone else's server, in a format no tool could read back."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The note said, roughly:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "the work is real. the container is fake.\nif it's worth doing twice, it's worth writing down.\nnot a transcript. the INTENT.\nwhat to fetch, what to think about, what to run, where it lands.\na file. plain text. mine."
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "That was the whole idea. Not a product, not an architecture: an objection. Software had spent fifty years learning to keep work: source control, reviews, diffs, the entire craft of making thought durable. And the newest, most powerful way of working had quietly dropped all of it. The more useful the AI work, the more disposable its container. Nobody had decided this. It was just the default."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Defaults can be refused."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Everything that came later unpacks that note. Write the intent down, and the work survives the session: that became "
+          },
+          {
+            "k": "strong",
+            "text": "the file"
+          },
+          {
+            "k": "text",
+            "text": ". Say what it may touch, and you can let it act: that became "
+          },
+          {
+            "k": "strong",
+            "text": "permits"
+          },
+          {
+            "k": "text",
+            "text": ". Name the four ways a machine can act, and the whole thing stays readable: that became "
+          },
+          {
+            "k": "strong",
+            "text": "the verbs"
+          },
+          {
+            "k": "text",
+            "text": ". Keep it on your machine, under a license nobody can revoke: that became the local-first engine and the AGPL."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "None of those words existed yet in October. There was only the feeling every builder knows: the tools were getting smarter and the work was getting "
+          },
+          {
+            "k": "em",
+            "text": "less"
+          },
+          {
+            "k": "text",
+            "text": " durable, and those two lines should never cross."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "If you have felt that too, the good session that evaporated, the prompt you rebuilt from memory for the third time: the rest of this site is for you. It starts where the note ended: write it down, and own it forever."
           }
         ]
       }

@@ -384,8 +384,258 @@ const ZH_HANS: ManifestoCopy = {
   linkBack: '← 返回主站',
 }
 
+
+const DE: ManifestoCopy = {
+  path: '/de/manifesto',
+  bcp47: 'de',
+  ogLocale: 'de_DE',
+  label: 'DE',
+  htmlTitle: 'Manifest · Nika',
+  metaDescription:
+    'Die Trommel der Befreiung. Warum deine Workflows auf deiner Maschine laufen sollten, mit jedem Modell, und niemand außer dir sie abschalten kann.',
+  ogDescription: 'Die Trommel der Befreiung · souveräne KI-Workflows, die dir gehören.',
+  ogAlt: 'Nika-Manifest · die Trommel der Befreiung. Jedes Modell, dein Gedächtnis, deins.',
+  kicker: '§ Das Manifest · 2026',
+  title: ['Die Trommel', 'der Befreiung.'],
+  sub: 'Intelligenz, von der dich niemand aussperren kann.',
+  stamp: 'Geschrieben an dem Tag, an dem die Intelligenz einen Aus-Schalter bekam.',
+  lore1:
+    'Nika trägt den Namen des Sonnengottes der Befreiung: der Trommel, die Angst in Lachen verwandelt und die befreit, die ausgesperrt waren.',
+  lore2: 'Jeder Workflow-Lauf ist ein Schlag dieser Trommel.',
+  friday: [
+    'An einem Freitagnachmittag, durch einen einzigen Brief, wurde die fähigste Intelligenz der Erde für die meisten Menschen der Erde abgeschaltet. ',
+    { fg: 'Nicht gelöscht. Nicht kaputt. Widerrufen.' },
+    ' Eine Regierung entschied, wer mit ihr denken durfte, und über Nacht standen wir Übrigen vor der Tür eines Werkzeugs, auf dem wir unser Leben aufgebaut hatten.',
+  ],
+  statement1: 'Das ist der Moment, in dem die Debatte endete.',
+  realProblem: [
+    'Das eigentliche Problem war nie, ',
+    { em: 'welches' },
+    ' Labor vorne liegt. Sondern ',
+    { fg: 'wer den Zugang zur Intelligenz kontrolliert' },
+    ':',
+  ],
+  stack: ['Modelle', 'Gedächtnis', 'Kontext', 'Workflows', 'Agenten', 'Werkzeuge'],
+  rented: [
+    'Dein gesamter kognitiver Stack. Wenn all das hinter geschlossenen Anbietern lebt, gehört es nicht dir. Es ist ',
+    { fg: 'gemietet' },
+    '. Und was gemietet ist, kann verteuert, gesperrt oder abgeschaltet werden: durch einen Vorstand, ein Gericht, eine Grenze, einen Brief.',
+  ],
+  statement2: 'Wir verweigern uns der Abo-Ökonomie für Kognition.',
+  agent: [
+    'Und während diese Werkzeuge beginnen, auf die Welt zu wirken, gilt dieselbe Regel für das, was sie tun, nicht nur dafür, wo sie laufen. ',
+    { fg: 'Ein Agent sollte niemals aus einem versteckten Prompt heraus handeln.' },
+    ' Der Plan, den er ausführen will, sollte eine Datei sein, die du lesen kannst, prüfbar, bevor er handelt. Macht, die du nicht sehen kannst, ist Macht, die du nicht kontrollierst.',
+  ],
+  openSource: [
+    { fg: 'Es gibt keine amerikanische Open-Source-KI. Es gibt keine französische Open-Source-KI.' },
+    ' Open Source ist offenes Wissen, geteilte Infrastruktur und das Recht, Intelligenz auszuführen, zu studieren, zu verändern und zu besitzen. Bekämpfe den Käfig nicht, indem du ihn neu streichst. Verlass ihn.',
+  ],
+  statement3: 'Souveränität für alle, oder für niemanden.',
+  promisesKicker: '§ Was wir versprechen',
+  promisesTitle: 'Gebaut für den Tag, an dem der Hahn zugedreht wird.',
+  promises: [
+    {
+      n: '01',
+      t: 'Kognitive Freiheit',
+      d: 'Bring jedes Modell mit. Lokal, open-weight oder frontier. Jederzeit austauschbar. Kein Labor ist die tragende Wand: Verschwindet morgen eines, bleibt deine Arbeit.',
+    },
+    {
+      n: '02',
+      t: 'Souveränes Gedächtnis',
+      d: 'Dein Kontext, dein Geschmack, deine Gewohnheiten leben auf deiner Hardware. Lesbar, exportierbar, löschbar, ohne jemanden zu fragen. Nie gehostet, nie zur Miete.',
+    },
+    {
+      n: '03',
+      t: 'Arbeit, die bleibt',
+      d: 'Nützliche Arbeit wird zu Quelltext. Klartext, versioniert, wiederholbar. In zehn Jahren noch deine, auf einer Maschine, die nie nach Hause telefoniert.',
+    },
+    {
+      n: '04',
+      t: 'Handwerk statt Vereinnahmung',
+      d: 'Qualität vor Menge. Weniger, aber besser. Die Lizenz macht die Freiheit strukturell, nicht zu einem Gefallen, den man leise zurücknehmen könnte.',
+    },
+    {
+      n: '05',
+      t: 'Eine Galaxie, kein Monolith',
+      d: 'Kein einzelner Punkt, den irgendjemand abschalten kann. Komponierbar, plural, souverän von Grund auf.',
+    },
+  ],
+  close: ['Open-Source-KI muss gewinnen.', 'Nicht für eine Nation. Für alle.'],
+  drumline: 'Die Trommel der Befreiung wird lauter.',
+  linkSpec: 'Spec lesen →',
+  linkGithub: 'Star auf GitHub →',
+  linkBack: '← Zurück zur Seite',
+}
+
+const PT_BR: ManifestoCopy = {
+  path: '/pt-br/manifesto',
+  bcp47: 'pt-BR',
+  ogLocale: 'pt_BR',
+  label: 'PT',
+  htmlTitle: 'Manifesto · Nika',
+  metaDescription:
+    'O tambor da libertação. Por que seus workflows devem rodar na sua máquina, com qualquer modelo, sem que ninguém além de você possa desligá-los.',
+  ogDescription: 'O tambor da libertação · workflows de IA soberanos, seus.',
+  ogAlt: 'Manifesto da Nika · o tambor da libertação. Qualquer modelo, sua memória, seu.',
+  kicker: '§ O manifesto · 2026',
+  title: ['O tambor', 'da libertação.'],
+  sub: 'Inteligência da qual ninguém pode te trancar do lado de fora.',
+  stamp: 'Escrito no dia em que a inteligência ganhou um botão de desligar.',
+  lore1:
+    'Nika leva o nome do deus-sol da libertação: o tambor que transforma medo em riso e liberta os que ficaram do lado de fora.',
+  lore2: 'Cada execução de um workflow é uma batida desse tambor.',
+  friday: [
+    'Numa sexta-feira à tarde, com uma única carta, a inteligência mais capaz da Terra foi desligada para a maioria das pessoas da Terra. ',
+    { fg: 'Não apagada. Não quebrada. Revogada.' },
+    ' Um governo decidiu quem podia pensar com ela e, da noite para o dia, o resto de nós ficou trancado fora de uma ferramenta sobre a qual vínhamos construindo nossas vidas.',
+  ],
+  statement1: 'Este é o momento em que a discussão acabou.',
+  realProblem: [
+    'O problema real nunca foi ',
+    { em: 'qual' },
+    ' laboratório está na frente. É ',
+    { fg: 'quem controla o acesso à inteligência' },
+    ':',
+  ],
+  stack: ['modelos', 'memória', 'contexto', 'workflows', 'agentes', 'ferramentas'],
+  rented: [
+    'Toda a sua pilha cognitiva. Se tudo isso vive atrás de fornecedores fechados, não é seu. É ',
+    { fg: 'alugado' },
+    '. E o que é alugado pode ficar mais caro, ser travado ou desligado: por um conselho, um tribunal, uma fronteira, uma carta.',
+  ],
+  statement2: 'Recusamos a economia de assinatura para a cognição.',
+  agent: [
+    'E à medida que essas ferramentas começam a agir sobre o mundo, a mesma regra vale para o que elas fazem, não só para onde rodam. ',
+    { fg: 'Um agente nunca deveria agir a partir de um prompt oculto.' },
+    ' O plano que ele pretende executar deveria ser um arquivo que você consegue ler, revisável antes de agir. Poder que você não vê é poder que você não controla.',
+  ],
+  openSource: [
+    { fg: 'Não existe IA open source americana. Não existe IA open source francesa.' },
+    ' Open source é conhecimento aberto, infraestrutura compartilhada e o direito de executar, estudar, modificar e possuir inteligência. Não lute contra a jaula repintando-a. Saia dela.',
+  ],
+  statement3: 'Soberania para todos, ou para ninguém.',
+  promisesKicker: '§ O que prometemos',
+  promisesTitle: 'Feito para o dia em que a torneira fechar.',
+  promises: [
+    {
+      n: '01',
+      t: 'Liberdade cognitiva',
+      d: 'Traga qualquer modelo. Local, open-weight ou frontier. Trocável à vontade. Nenhum laboratório é a parede-mestra: se um sumir amanhã, o seu trabalho não some.',
+    },
+    {
+      n: '02',
+      t: 'Memória soberana',
+      d: 'Seu contexto, seu gosto, seus hábitos vivem no seu hardware. Legíveis, exportáveis, apagáveis, sem pedir a ninguém. Nunca hospedados, nunca para alugar.',
+    },
+    {
+      n: '03',
+      t: 'Trabalho que sobrevive',
+      d: 'Trabalho útil vira código-fonte. Texto puro, versionado, reproduzível. Ainda seu daqui a dez anos, numa máquina que nunca liga para casa.',
+    },
+    {
+      n: '04',
+      t: 'Ofício acima de captura',
+      d: 'Qualidade acima de volume. Menos, porém melhor. A licença torna a liberdade estrutural, não um favor que poderíamos retirar em silêncio.',
+    },
+    {
+      n: '05',
+      t: 'Uma galáxia, não um monólito',
+      d: 'Nenhum ponto único que alguém possa desligar. Componível, plural, soberana por construção.',
+    },
+  ],
+  close: ['A IA open source precisa vencer.', 'Não por uma nação. Por todos.'],
+  drumline: 'O tambor da libertação está batendo cada vez mais alto.',
+  linkSpec: 'Ler a spec →',
+  linkGithub: 'Star no GitHub →',
+  linkBack: '← Voltar ao site',
+}
+
+const JA: ManifestoCopy = {
+  path: '/ja/manifesto',
+  bcp47: 'ja',
+  ogLocale: 'ja_JP',
+  label: '日本語',
+  htmlTitle: 'マニフェスト · Nika',
+  metaDescription:
+    '解放の太鼓。あなたの workflows があなたのマシンで、任意のモデルで動くべき理由。そして、あなた以外の誰にも止められないべき理由。',
+  ogDescription: '解放の太鼓 · 主権ある AI workflows を、あなたの手に。',
+  ogAlt: 'Nika マニフェスト · 解放の太鼓。任意のモデル、あなたの記憶、あなたのもの。',
+  kicker: '§ マニフェスト · 2026',
+  title: ['解放の', '太鼓。'],
+  sub: '誰にも締め出されることのない知能。',
+  stamp: '知能にキルスイッチが付いた日に書かれた。',
+  lore1:
+    'Nika の名は、解放を司る太陽神に由来する。恐怖を笑いに変え、締め出された者たちを解き放つ太鼓だ。',
+  lore2: 'workflow が走るたび、その太鼓がひとつ鳴る。',
+  friday: [
+    'ある金曜日の午後、たった一通の書簡で、地球上で最も優れた知能が、地球上のほとんどの人々に対して停止された。',
+    { fg: '消されたのではない。壊れたのでもない。取り消されたのだ。' },
+    'ひとつの政府が、誰がそれで考えてよいかを決めた。一夜にして、残された私たちは、生活を築いてきた道具から締め出された。',
+  ],
+  statement1: 'この瞬間、議論は終わった。',
+  realProblem: [
+    '本当の問題は、',
+    { em: 'どの' },
+    'ラボが先頭にいるかではない。',
+    { fg: '誰が知能への入口を握っているか' },
+    'だ：',
+  ],
+  stack: ['モデル', '記憶', 'コンテキスト', 'workflows', 'エージェント', 'ツール'],
+  rented: [
+    'あなたの認知スタックのすべて。それが閉じたプロバイダーの向こうにあるなら、それはあなたのものではない。',
+    { fg: '借り物' },
+    'だ。借り物は、値上げされ、締め付けられ、止められる。取締役会、法廷、国境、一通の手紙で。',
+  ],
+  statement2: '私たちは、認知のサブスクリプション経済を拒む。',
+  agent: [
+    'そして道具が世界に働きかけ始めた今、同じ原則は、どこで動くかだけでなく、何をするかにも及ぶ。',
+    { fg: 'エージェントは、隠されたプロンプトから行動してはならない。' },
+    '実行しようとする計画は、読める形のファイルであるべきで、動く前に確認できるべきだ。見えない力は、制御できない力だ。',
+  ],
+  openSource: [
+    { fg: 'アメリカのオープンソースAIも、フランスのオープンソースAIも存在しない。' },
+    'オープンソースとは、開かれた知、共有されるインフラ、そして知能を動かし、調べ、改変し、所有する権利のことだ。檻を塗り替えて戦うな。檻を出ろ。',
+  ],
+  statement3: '主権はすべての人のものか、さもなくば誰のものでもない。',
+  promisesKicker: '§ 私たちの約束',
+  promisesTitle: '蛇口が閉まる日のために。',
+  promises: [
+    {
+      n: '01',
+      t: '認知の自由',
+      d: 'どんなモデルでも持ち込める。ローカルでも、open-weight でも、フロンティアでも。いつでも差し替えられる。どのラボも耐力壁ではない。明日ひとつ消えても、あなたの仕事は消えない。',
+    },
+    {
+      n: '02',
+      t: '主権のある記憶',
+      d: 'あなたのコンテキストも、好みも、習慣も、あなたのハードウェアに住む。読めて、書き出せて、消せる。誰にも許可を求めずに。ホストされず、貸し出されもしない。',
+    },
+    {
+      n: '03',
+      t: '生き残る仕事',
+      d: '有用な仕事はソースになる。プレーンテキストで、バージョン管理され、再実行できる。十年後もあなたのもので、外に何も報告しないマシンの上で動く。',
+    },
+    {
+      n: '04',
+      t: '囲い込みより職人技',
+      d: '量より質。少なく、しかし良く。ライセンスが自由を構造にする。静かに取り上げられる恩恵にはしない。',
+    },
+    {
+      n: '05',
+      t: 'モノリスではなく銀河',
+      d: '誰かが止められる単一障害点は存在しない。組み合わせ可能で、多様で、設計から主権的だ。',
+    },
+  ],
+  close: ['オープンソースAIが勝たねばならない。', 'ひとつの国のためではなく、すべての人のために。'],
+  drumline: '解放の太鼓は、鳴り止むどころか大きくなっていく。',
+  linkSpec: '仕様を読む →',
+  linkGithub: 'GitHub でスターを →',
+  linkBack: '← サイトに戻る',
+}
+
 /** EN first (x-default), then the alternates in switcher order. */
-export const MANIFESTO_LOCALES: ManifestoCopy[] = [EN, FR, ES, ZH_HANS]
+export const MANIFESTO_LOCALES: ManifestoCopy[] = [EN, FR, ES, DE, PT_BR, JA, ZH_HANS]
 
 export function manifestoCopyFor(pathname: string): ManifestoCopy {
   const clean = pathname.replace(/\/+$/, '') || '/'

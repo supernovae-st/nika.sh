@@ -410,6 +410,18 @@ h1, h2 { font-family: var(--headline); }
   14% { opacity: 0.55; }
   100% { transform: scale(1); opacity: 0; }
 }
+/* the drum egg · type « drum » on the page: four faster, brighter beats
+   (Manifesto.tsx sets [data-egg] for 4s). Motion-reduce never sees it —
+   the base rings are already animation:none under the global gate. */
+@media (prefers-reduced-motion: no-preference) {
+  .mf-drum[data-egg] .mf-ring {
+    animation-duration: 1.2s;
+    border-color: color-mix(in srgb, var(--cyan) 85%, transparent);
+  }
+  .mf-drum[data-egg] .mf-ring:nth-child(2) { animation-delay: 0.3s; }
+  .mf-drum[data-egg] .mf-ring:nth-child(3) { animation-delay: 0.6s; }
+  .mf-drum[data-egg] .mf-ring:nth-child(4) { animation-delay: 0.9s; }
+}
 /* the fallback heart · a SOFT wide glow, never a hard disc. The old 13px
    solid dot landed exactly inside the title's second line and read as a
    stray period ("liberation·"), so the fallback heart is now a low-opacity
