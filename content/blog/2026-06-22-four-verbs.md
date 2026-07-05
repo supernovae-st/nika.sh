@@ -34,7 +34,7 @@ outputs:
   brief: ${{ tasks.digest.output }}
 ```
 
-The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other <!-- canon:builtins-4 -->19<!-- /canon --> builtins. Everything callable is a tool. Everything about ordering is the graph.
+The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other <!-- canon:builtins-4 -->21<!-- /canon --> builtins. Everything callable is a tool. Everything about ordering is the graph.
 
 A closed language is a feature you can feel. You can finish learning it: four words and the file reads like prose. Your files never rot into an old dialect, because there is no new dialect coming. And tools keep growing where growth belongs, in the library: a new builtin, a new tool server (MCP), a new provider. The language holds still while the toolbelt expands.
 

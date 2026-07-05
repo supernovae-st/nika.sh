@@ -7,6 +7,30 @@
     <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
     <language>en</language>
     <item>
+      <title>The credentials your pipeline was breaking</title>
+      <link>https://nika.sh/blog/the-credentials-your-pipeline-breaks</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-credentials-your-pipeline-breaks</guid>
+      <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Security</category>
+      <description>OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering — including, until this week, ours.</description>
+    </item>
+    <item>
+      <title>One wire, five servers</title>
+      <link>https://nika.sh/blog/one-wire-five-servers</link>
+      <guid isPermaLink="true">https://nika.sh/blog/one-wire-five-servers</guid>
+      <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Sovereignty</category>
+      <description>The self-hosted media world quietly standardized on OpenAI's wire shapes. That accident of history is the best sovereignty news in years — and Nika's media builtins are built on it.</description>
+    </item>
+    <item>
+      <title>Media are workflow citizens</title>
+      <link>https://nika.sh/blog/media-are-workflow-citizens</link>
+      <guid isPermaLink="true">https://nika.sh/blog/media-are-workflow-citizens</guid>
+      <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>Images and speech now render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger — and the sovereign path first.</description>
+    </item>
+    <item>
       <title>The trace you can replay</title>
       <link>https://nika.sh/blog/the-trace-you-can-replay</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-trace-you-can-replay</guid>
