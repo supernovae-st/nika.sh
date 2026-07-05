@@ -46,6 +46,12 @@ export interface ChangelogEntry {
 export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-07-05',
+    tag: 'providers',
+    title: `${CANON.providers} model providers · Hugging Face and NVIDIA join`,
+    body: `Two more ways to bring your own model: Hugging Face and NVIDIA endpoints join the catalog (${CANON.providersLocal} local runtimes unchanged — the sovereign path stays the default).`,
+  },
+  {
+    date: '2026-07-05',
     tag: 'site',
     title: 'The blog is a folder',
     body: 'content/blog in the site repo IS the blog: PR-able markdown compiled to real pages with the product’s editor panels. The archive backfills the journey, one post per milestone, at its real date.',
@@ -108,10 +114,14 @@ export const CHANGELOG: ChangelogEntry[] = [
     body: 'Out-of-bounds is denied, not logged after the fact: an effect past the permits: boundary fails with NIKA-SEC-004 before the action happens.',
   },
   {
+    /* count-free on purpose: this DATED milestone once interpolated the live
+       CANON counts and silently rewrote itself at every catalog change (the
+       same self-rewriting class as the ENGINE_VERSION entry, fixed 2026-07-04).
+       The catalog's CURRENT size lives in dated entries of its own. */
     date: '2026-05-22',
     tag: 'providers',
-    title: `${CANON.providers} model providers · local-first`,
-    body: `One verb, any model: ${CANON.providersLocal} local runtimes (Ollama, LM Studio, llama.cpp, LocalAI, vLLM) and ${CANON.providersCloud} cloud, led by open-weight. Your machine, your choice.`,
+    title: 'The provider catalog goes local-first',
+    body: 'One verb, any model: five local runtimes (Ollama, LM Studio, llama.cpp, LocalAI, vLLM) and a cloud catalog led by open-weight. Your machine, your choice.',
   },
   {
     date: '2026-05-22',

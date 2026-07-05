@@ -18,9 +18,9 @@ a verb is a distinct native execution model.
 The language envelope is `nika: v1` — frozen forever. The engine versions
 independently on real semver toward a 1.0 launch — currently v0.92.0.
 
-Stdlib v0.1: 23 builtins · 14 providers (Anthropic, OpenAI, Gemini,
-Mistral, Groq, DeepSeek, xAI, OpenRouter, Ollama, LM Studio, llama.cpp,
-LocalAI, vLLM, mock) · 9 extract modes. Bring your own keys — every key
+Stdlib v0.1: 23 builtins · 16 providers (Ollama, LM Studio, llama.cpp,
+LocalAI, vLLM, Mistral, Anthropic, OpenAI, Gemini, Groq, DeepSeek, xAI,
+OpenRouter, Hugging Face, NVIDIA, mock) · 9 extract modes. Bring your own keys — every key
 stays yours. Local-first. Runs on your laptop, no daemon.
 
 ## Examples (canonical · conformance-gated)
