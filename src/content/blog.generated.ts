@@ -289,7 +289,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "inline": [
           {
             "k": "strong",
-            "text": "5 of the 14 model providers are local runtimes"
+            "text": "5 of the 16 model providers are local runtimes"
           },
           {
             "k": "text",
@@ -341,7 +341,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "inline": [
           {
             "k": "text",
-            "text": "Cloud stays a real choice: 8 cloud providers, bring your own keys, and every key stays yours. The point was never no-cloud. The point is that cloud is "
+            "text": "Cloud stays a real choice: 10 cloud providers, bring your own keys, and every key stays yours. The point was never no-cloud. The point is that cloud is "
           },
           {
             "k": "strong",
