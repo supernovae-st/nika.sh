@@ -59,6 +59,25 @@
   font-weight: 100 800;
   font-display: swap;
 }
+/* the metric-compatible stand-in · Martian Mono's advance is 0.75em where
+   every system mono sits near 0.60 (Menlo 0.6023 · Courier New 0.6027 ·
+   Roboto Mono 0.60), so the swap re-wrapped the hero code panel ~25% and
+   moved the whole page under it (LH: home CLS 0.109, all of it on this one
+   panel). size-adjust widens the stand-in to the same advance → identical
+   wrap geometry before and after the swap; the overrides pin Martian's own
+   verticals (metrics read from the woff2 hhea/hmtx: ascent 1.0 · descent
+   0.2 · gap 0 — measured, not guessed). */
+@font-face {
+  font-family: 'Martian Mono Fallback';
+  src:
+    local('Menlo'),
+    local('Courier New'),
+    local('Roboto Mono');
+  size-adjust: 124.5%;
+  ascent-override: 100%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
 
 :root {
   /* engineered dark · the v4 base. The old v3 navy (#050a1c) leaked as side
@@ -80,7 +99,7 @@
 
   --display: 'Martian Grotesk', ui-sans-serif, system-ui, sans-serif;
   --headline: 'Clash Display', 'Martian Grotesk', ui-sans-serif, sans-serif;
-  --mono: 'Martian Mono', ui-monospace, 'SF Mono', monospace;
+  --mono: 'Martian Mono', 'Martian Mono Fallback', ui-monospace, 'SF Mono', monospace;
 
   color-scheme: dark;
   background: var(--bg);

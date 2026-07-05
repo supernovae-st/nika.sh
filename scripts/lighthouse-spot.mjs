@@ -12,6 +12,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { join, extname, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFile } from 'node:child_process'
+import { gzipSync } from 'node:zlib'
 import lighthouse from 'lighthouse'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -22,12 +23,23 @@ const DEBUG_PORT = 9281
 const ROUTES = process.argv.slice(2).length ? process.argv.slice(2) : ['/', '/play', '/blog/four-verbs']
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.woff2': 'font/woff2', '.webp': 'image/webp', '.txt': 'text/plain', '.xml': 'application/xml' }
+/* gzip text responses — production (DigitalOcean/CDN) always compresses;
+   serving raw bytes made the throttled numbers a fiction (the 240KB home
+   HTML "cost" 4.6s of simulated 4G when the wire reality is ~45KB — FCP
+   read 7.4s for what production delivers far earlier). Measure the truth. */
+const COMPRESS = new Set(['.html', '.js', '.css', '.svg', '.json', '.txt', '.xml'])
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x').pathname
   for (const t of [url, url.replace(/\/$/, '') + '/index.html', url + '/index.html', '/index.html']) {
     try {
-      const body = await readFile(join(DIST, t))
-      res.writeHead(200, { 'content-type': MIME[extname(t)] ?? 'application/octet-stream' })
+      let body = await readFile(join(DIST, t))
+      const ext = extname(t)
+      const headers = { 'content-type': MIME[ext] ?? 'application/octet-stream' }
+      if (COMPRESS.has(ext) && /\bgzip\b/.test(req.headers['accept-encoding'] ?? '')) {
+        body = gzipSync(body)
+        headers['content-encoding'] = 'gzip'
+      }
+      res.writeHead(200, headers)
       return res.end(body)
     } catch {}
   }
