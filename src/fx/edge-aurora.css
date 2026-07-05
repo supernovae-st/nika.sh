@@ -42,9 +42,16 @@
   /* rest intensity · A WHISPER: the frame is mostly absent at rest and only
      speaks when something happens (pulses / runs raise it, then it decays). */
   --aurora-intensity: 0.055;
-  /* ring geometry · the band/bloom thickness in px (the run state widens) */
+  /* rim geometry · the band thickness in px */
   --aurora-band: 16px;
-  --aurora-bloom: 68px;
+  /* THE FIELD LAW (v11) · how deep the soft field reaches from each edge.
+     The falloff lives in eased mask-gradient stops — NEVER in a mega
+     filter:blur. Real GPUs clamp large blur radii (the requested 88/130px
+     rendered far smaller at dsf 2), which re-exposed the binary ring mask's
+     inner edge as nested rectangular steps in the contours (operator
+     screenshot 2026-07-05 · reproduced headless on real GPU at dsf 2 —
+     swiftshader applies the exact blur, which is why CI shots stayed soft). */
+  --aurora-reach: 190px;
   /* generous, continuous-curvature read — device-screen corners, never a
      rounded rectangle drawn on the page (48px ≈ the lock-screen register) */
   --aurora-radius: 48px;
@@ -102,8 +109,7 @@
   content: none;
 }
 @supports (mask: linear-gradient(#000 0 0) exclude, linear-gradient(#000 0 0)) {
-  .edge-aurora::before,
-  .edge-aurora::after {
+  .edge-aurora::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -182,11 +188,62 @@
       );
   }
 
-  /* THE BLOOM · two counter-sloshing feathered sheets (where they overlap the
-     hues BLEND) + four anchored pools — left coral, right peach, top violet
-     crown, bottom quiet blue floor — so the falloff is weather, not a ring.
-     Radial mid-stops fake an eased falloff (anti-banding). */
+}
+
+/* THE BLOOM (v11 · the field law) · a full-bleed sheet of pre-soft light —
+   two counter-sloshing feathered conics (where they overlap the hues BLEND)
+   + four anchored pools (left coral · right peach · top violet crown ·
+   bottom quiet blue floor) — revealed at the edges by a SOFT mask: one
+   eased alpha ramp per side, union-added, so the corners (where two ramps
+   overlap) naturally run hottest. No filter blur anywhere on this layer —
+   eased gradient stops ARE the softness, at any dpr, on any GPU.
+
+   The mask stays ONE atomic declaration (the 2026-07-03 law): four plain
+   alpha layers, default add compositing — there is no standalone
+   mask-composite for a minifier to drop or re-order. The @supports gate
+   keeps the only degradation "no bloom at all", never "flood". */
+@supports (mask: linear-gradient(#000, #0000)) {
   .edge-aurora::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mask:
+      linear-gradient(
+          to bottom,
+          rgb(0 0 0 / 0.92),
+          rgb(0 0 0 / 0.5) 34%,
+          rgb(0 0 0 / 0.16) 64%,
+          transparent
+        )
+        top / 100% var(--aurora-reach) no-repeat,
+      linear-gradient(
+          to top,
+          rgb(0 0 0 / 0.92),
+          rgb(0 0 0 / 0.5) 34%,
+          rgb(0 0 0 / 0.16) 64%,
+          transparent
+        )
+        bottom / 100% var(--aurora-reach) no-repeat,
+      linear-gradient(
+          to right,
+          rgb(0 0 0 / 0.92),
+          rgb(0 0 0 / 0.5) 34%,
+          rgb(0 0 0 / 0.16) 64%,
+          transparent
+        )
+        left / var(--aurora-reach) 100% no-repeat,
+      linear-gradient(
+          to left,
+          rgb(0 0 0 / 0.92),
+          rgb(0 0 0 / 0.5) 34%,
+          rgb(0 0 0 / 0.16) 64%,
+          transparent
+        )
+        right / var(--aurora-reach) 100% no-repeat;
+    animation:
+      aurora-slosh-a 26s ease-in-out infinite alternate,
+      aurora-slosh-b 19s ease-in-out infinite alternate;
     background:
       conic-gradient(
         from var(--aurora-spin),
@@ -242,19 +299,19 @@
    overlap (the corners go hot — the lock-screen read). plus-lighter where
    supported, screen everywhere else; the parent's opacity animation isolates
    the group, so the accumulation stays INSIDE the aurora and composites over
-   the page as plain alpha. */
+   the page as plain alpha. NO blur (the field law) — saturate only. */
 .edge-aurora::after {
-  padding: var(--aurora-bloom);
-  filter: blur(88px) saturate(1.05);
+  filter: saturate(1.05);
   opacity: calc(var(--aurora-intensity) * 0.95);
   mix-blend-mode: screen;
   mix-blend-mode: plus-lighter;
 }
 
 /* THE DEPTH SHEET · the aurora's BODY behind the viewport edge: cool tones
-   only (periwinkle · indigo · violet — warmth stays on the rim), far reach,
-   heavy blur, a fraction of the intensity, sloshing on its own slow period
-   (the deep layer lags the bloom — parallax, not sync). */
+   only (periwinkle · indigo · violet — warmth stays on the rim), twice the
+   bloom's reach, a fraction of the intensity, sloshing on its own slow
+   period (the deep layer lags the bloom — parallax, not sync). Same field
+   law as the bloom: eased mask ramps, no blur. */
 .edge-aurora-depth {
   display: none;
 }
@@ -266,17 +323,45 @@
     display: none !important;
   }
 }
-@supports (mask: linear-gradient(#000 0 0) exclude, linear-gradient(#000 0 0)) {
+@supports (mask: linear-gradient(#000, #0000)) {
   .edge-aurora-depth {
     display: block;
     position: absolute;
     inset: 0;
-    border-radius: var(--aurora-radius);
-    padding: calc(var(--aurora-bloom) * 2.2);
-    mask:
-      linear-gradient(#000 0 0) content-box exclude,
-      linear-gradient(#000 0 0);
     pointer-events: none;
+    mask:
+      linear-gradient(
+          to bottom,
+          rgb(0 0 0 / 0.85),
+          rgb(0 0 0 / 0.4) 36%,
+          rgb(0 0 0 / 0.12) 66%,
+          transparent
+        )
+        top / 100% calc(var(--aurora-reach) * 2) no-repeat,
+      linear-gradient(
+          to top,
+          rgb(0 0 0 / 0.85),
+          rgb(0 0 0 / 0.4) 36%,
+          rgb(0 0 0 / 0.12) 66%,
+          transparent
+        )
+        bottom / 100% calc(var(--aurora-reach) * 2) no-repeat,
+      linear-gradient(
+          to right,
+          rgb(0 0 0 / 0.85),
+          rgb(0 0 0 / 0.4) 36%,
+          rgb(0 0 0 / 0.12) 66%,
+          transparent
+        )
+        left / calc(var(--aurora-reach) * 2) 100% no-repeat,
+      linear-gradient(
+          to left,
+          rgb(0 0 0 / 0.85),
+          rgb(0 0 0 / 0.4) 36%,
+          rgb(0 0 0 / 0.12) 66%,
+          transparent
+        )
+        right / calc(var(--aurora-reach) * 2) 100% no-repeat;
     background: conic-gradient(
       from var(--aurora-spin2),
       rgb(10 132 255 / 0.7),
@@ -295,7 +380,7 @@
       rgb(188 130 243 / 0.5) 82%,
       rgb(10 132 255 / 0.7)
     );
-    filter: blur(130px) saturate(1.1);
+    filter: saturate(1.1);
     /* a BODY, not a veil: past ~0.4 the depth reads as milk over the page
        (found on the v9 run sweep) */
     opacity: calc(var(--aurora-intensity) * 0.35);
@@ -388,7 +473,7 @@
    wider bloom, faster slosh, and the recorded progress swells the rim.
    Idle chrome is byte-identical when data-run is absent. */
 .edge-aurora[data-run] {
-  --aurora-bloom: 84px;
+  --aurora-reach: 240px;
 }
 .edge-aurora[data-run]::before {
   opacity: min(
@@ -467,14 +552,11 @@
 @media (max-width: 767px) {
   .edge-aurora {
     --aurora-band: 10px;
-    --aurora-bloom: 30px;
+    --aurora-reach: 90px;
     --aurora-radius: 28px;
   }
   .edge-aurora::before {
     filter: blur(22px) saturate(1.15);
-  }
-  .edge-aurora::after {
-    filter: blur(44px) saturate(1.05);
   }
 }
 
