@@ -143,6 +143,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>spec&nbsp;first<span class="sep">·</span>gates<span class="sep">·</span><b>the&nbsp;draft&nbsp;is&nbsp;not&nbsp;the&nbsp;product</b></span>',
   },
   {
+    // /blog/the-cost-line — the bill you can read first.
+    out: 'og-blog-the-cost-line.png',
+    fig: 'FIG B.10',
+    size: 62,
+    headline: 'The cost<br><span class="b">line.</span>',
+    sub: 'The audit prices every token before it is spent: ceilings on generations, budgets on loops, and a $0.00 that means&nbsp;it.',
+    detail:
+      '<span class="arrow">▸</span><span>worst-case&nbsp;ceiling<span class="sep">·</span>per&nbsp;task<span class="sep">·</span><b>before&nbsp;a&nbsp;token&nbsp;moves</b></span>',
+  },
+  {
     // /blog/anatomy-of-a-verb — the four execution models, dissected.
     out: 'og-blog-anatomy-of-a-verb.png',
     fig: 'FIG B.9',

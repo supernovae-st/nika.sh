@@ -25,11 +25,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-cost-line',
-    tag: 'Engine',
+    slug: 'the-secrets-line',
+    tag: 'Security',
     date: 'soon',
-    title: 'The cost line',
-    teaser: 'The audit prices every token before it is spent: ceilings on generations, budgets on loops, and a $0.00 that means it.',
+    title: 'The secrets line',
+    teaser: 'Information-flow, audited before it flows: how the checker proves a secret cannot leak into a prompt, a file, or a host.',
   },
   {
     slug: 'written-by-agents',

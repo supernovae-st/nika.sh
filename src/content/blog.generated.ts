@@ -254,6 +254,242 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
+    "slug": "the-cost-line",
+    "file": "2026-07-05-the-cost-line.md",
+    "title": "The cost line",
+    "tag": "Engine",
+    "date": "2026-07-05",
+    "description": "The audit prices every token before it is spent: ceilings on generations, budgets on loops, and a $0.00 that means it.",
+    "readingMin": 2,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every AI bill has the same shape: you find out what it cost after it cost it. The meter runs during the work, the invoice explains it later, and the only budget control is the sinking feeling."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Nika moves the question to before. The second verdict "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " prints, right under the plan, is the cost line:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "cost-probe.nika.yaml",
+        "text": "nika: v1\nworkflow: cost-probe\nmodel: mistral/mistral-small\n\ntasks:\n  - id: bounded\n    infer: { prompt: \"one word\", max_tokens: 200 }\n\n  - id: loop\n    depends_on: [bounded]\n    agent: { prompt: \"say done\", tools: [\"nika:read\"], max_turns: 3, max_tokens_total: 4000 }\n\noutputs:\n  out: ${{ tasks.loop.output }}"
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": " ✔ COST     $0.0025 – $0.0025 worst-case ceiling\n   bounded  mistral/mistral-small  ≤200 tk   $0.0001\n   loop     mistral/mistral-small  ≤4000 tk  $0.0024"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "That is not an estimate of what the run "
+          },
+          {
+            "k": "em",
+            "text": "will probably"
+          },
+          {
+            "k": "text",
+            "text": " cost. It is a "
+          },
+          {
+            "k": "strong",
+            "text": "worst-case ceiling"
+          },
+          {
+            "k": "text",
+            "text": ", computed from the declared budgets and the provider's catalog price, per task, before a single token moves. The file caps the spend; the audit does the multiplication."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Three details make the line honest rather than decorative:"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Each verb budgets in its own shape."
+          },
+          {
+            "k": "text",
+            "text": " An "
+          },
+          {
+            "k": "code",
+            "text": "infer"
+          },
+          {
+            "k": "text",
+            "text": " caps one generation: "
+          },
+          {
+            "k": "code",
+            "text": "max_tokens"
+          },
+          {
+            "k": "text",
+            "text": ". An "
+          },
+          {
+            "k": "code",
+            "text": "agent"
+          },
+          {
+            "k": "text",
+            "text": " caps the "
+          },
+          {
+            "k": "em",
+            "text": "whole loop"
+          },
+          {
+            "k": "text",
+            "text": ": "
+          },
+          {
+            "k": "code",
+            "text": "max_tokens_total"
+          },
+          {
+            "k": "text",
+            "text": ", because a loop that budgets per-call could still run forever on your card. The two knobs differ exactly where the execution models differ ("
+          },
+          {
+            "k": "link",
+            "text": "the anatomy post",
+            "href": "/blog/anatomy-of-a-verb"
+          },
+          {
+            "k": "text",
+            "text": " walks all four)."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Unbounded is a named state, not a silence."
+          },
+          {
+            "k": "text",
+            "text": " Drop the budgets and the line does not guess: it prints "
+          },
+          {
+            "k": "code",
+            "text": "UNBOUNDED"
+          },
+          {
+            "k": "text",
+            "text": ", names the missing knob, and hints the fix, task by task. Same for a local model with no catalog price. The audit refuses to invent a number it cannot stand behind; it tells you which number is missing instead."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Waste is caught before it is spent."
+          },
+          {
+            "k": "text",
+            "text": " Leave an "
+          },
+          {
+            "k": "code",
+            "text": "infer"
+          },
+          {
+            "k": "text",
+            "text": " whose output nothing reads and the audit raises a dead-spend hint: every token that generation would burn is unread by construction. It is a strange kind of luxury, being told about the pointless spend while it is still zero dollars."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "And when a workflow has no inference at all, pure "
+          },
+          {
+            "k": "code",
+            "text": "exec"
+          },
+          {
+            "k": "text",
+            "text": " and "
+          },
+          {
+            "k": "code",
+            "text": "invoke"
+          },
+          {
+            "k": "text",
+            "text": ", the line says "
+          },
+          {
+            "k": "code",
+            "text": "$0.00"
+          },
+          {
+            "k": "text",
+            "text": " and means it, because the only things that cost tokens are the verbs that think."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The pattern is the site's whole thesis applied to money. The plan is reviewable before it runs; the permissions are enforced before the effect; and the spend is bounded before the meter starts. A file you can read, with a bill you can read "
+          },
+          {
+            "k": "em",
+            "text": "first"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "anatomy-of-a-verb",
     "file": "2026-07-05-anatomy-of-a-verb.md",
     "title": "Anatomy of a verb",

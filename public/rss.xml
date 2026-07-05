@@ -15,6 +15,14 @@
       <description>Every run leaves a flight recorder: a deterministic AI audit trail you can replay like a film, never re-execute by accident.</description>
     </item>
     <item>
+      <title>The cost line</title>
+      <link>https://nika.sh/blog/the-cost-line</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-cost-line</guid>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>The audit prices every token before it is spent: ceilings on generations, budgets on loops, and a $0.00 that means it.</description>
+    </item>
+    <item>
       <title>Anatomy of a verb</title>
       <link>https://nika.sh/blog/anatomy-of-a-verb</link>
       <guid isPermaLink="true">https://nika.sh/blog/anatomy-of-a-verb</guid>
