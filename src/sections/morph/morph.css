@@ -1392,13 +1392,15 @@
   }
 }
 
-/* ─── landscape phones (W20b · ≥768 wide × ≤520 tall) ─────────────────────────
-   The desktop morph in a 390px-tall stage: the DAG box is absolute inset:0
-   and IGNORES the in-flow head, so the title painted straight through the
-   node cards (844×390 sweep). Reserve the head's band explicitly, compact
-   every voice one notch, and let anatomy yield the way the short-portrait
-   frame does. Desktop ≥521px tall is untouched. */
-@media (min-width: 768px) and (max-height: 520px) {
+/* ─── landscape phones (W20b · ≥640 wide × ≤520 tall) ─────────────────────────
+   A ≤520px-tall stage can never stack a wave column (3 nodes ≈ 195px vs
+   ~140px of dag air — no compaction saves it); ≥640px of width absorbs the
+   whole plan as ONE horizontal frieze instead. ≥640 (not ≥768): an SE-class
+   landscape (667×375) routes through the ≤767 portrait rules, so this block
+   must out-cascade them — it sits after the big portrait block and states
+   the frieze geometry EXPLICITLY (row dag · flex cols · auto wave width).
+   Desktop ≥521px tall is untouched. */
+@media (min-width: 640px) and (max-height: 520px) {
   .morphsec {
     --morph-term-h: 40px;
   }
@@ -1429,15 +1431,26 @@
     inset: 0 0 calc(var(--morph-term-h) + 64px) 0;
     gap: clamp(14px, 2.5vw, 28px);
   }
+  /* explicit frieze geometry — the ≤767 portrait block also matches an
+     SE-class landscape and must lose every one of these */
+  .morph-dag {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
   .morph-wave {
     flex: 0 1 auto;
+    width: auto;
     min-width: 0;
   }
   .morph-col {
+    display: flex;
     flex-direction: row;
     gap: 7px;
   }
   .morph-node {
+    display: flex;
+    flex-direction: column;
     padding: 3px 9px 3px 11px;
     gap: 1px;
     min-width: 0;
@@ -1489,8 +1502,10 @@
 /* short phones (SE class) · anatomy yields so the whole plan still fits the
    stage: the wave caps go (the wires + 2-up rows already SHOW parallelism),
    the target line goes (id + verb + readout keep the story honest), the
-   node tightens one more notch */
-@media (max-width: 767px) and (max-height: 700px) {
+   node tightens one more notch. ≤639 wide: a short PORTRAIT phone — a
+   640+×≤520 viewport is the frieze's (above), and this block coming later
+   must not re-tighten it. */
+@media (max-width: 639px) and (max-height: 700px) {
   .morph-wave-cap {
     display: none;
   }

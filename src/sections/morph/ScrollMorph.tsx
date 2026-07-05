@@ -460,11 +460,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         const fromEl = nodeRefs.current.get(d)
         if (!fromEl) continue
         const fr = fromEl.getBoundingClientRect()
-        if (vertical) {
-          /* portrait wires (W20) · waves stack top→down, so the wire leaves
-             the dep's BOTTOM edge and enters the task's TOP edge — the
-             desktop right→left anchors would draw sideways S-loops through
-             the column */
+        /* the anchoring follows the MEASURED flow, per edge (W20b): a dep
+           mostly ABOVE its task (portrait column) wires bottom edge → top
+           edge; mostly LEFT (desktop columns · the short-viewport frieze)
+           wires right edge → left edge. Geometry decides — a width test
+           here would just mirror morph.css and drift (the SE-landscape
+           sweep caught exactly that: 667px is ≤767 so the old flag said
+           « portrait » while the CSS laid the frieze out in a row). */
+        const dxc = tr.left + tr.width / 2 - (fr.left + fr.width / 2)
+        const dyc = tr.top + tr.height / 2 - (fr.top + fr.height / 2)
+        if (Math.abs(dyc) > Math.abs(dxc)) {
           const x1 = fr.left + fr.width / 2 - dr.left
           const y1 = fr.bottom - dr.top
           const x2 = tr.left + tr.width / 2 - dr.left
