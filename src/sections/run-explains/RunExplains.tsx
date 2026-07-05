@@ -3,7 +3,7 @@ import { SectionHead } from '../../components/SectionHead'
 import { useRevealOnce } from '../use-reveal-once'
 import './run-explains.css'
 
-/* ─── THE RUN EXPLAINS ITSELF · fig 04 · the observability chapter ──────────
+/* ─── THE RUN EXPLAINS ITSELF · fig 4.5 · the observability chapter ─────────
    One signature workflow (9 tasks · all four verbs · a diamond fanout),
    watched from every side: audited before it starts, storyboarded while it
    runs, replayable after it ends, durable through a kill and a human gate.
@@ -93,6 +93,7 @@ const BEATS: Beat[] = [
 export default function RunExplains() {
   const rootRef = useRevealOnce<HTMLElement>()
   const videoRef = useRef<HTMLVideoElement>(null)
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
   const [beat, setBeat] = useState(0)
   const active = BEATS[beat]
 
@@ -121,6 +122,21 @@ export default function RunExplains() {
     img.src = BEATS[i].img
   }, [])
 
+  /* APG tablist keys · arrows cycle, Home/End jump — selection follows focus
+     (the Hero FileTabs contract, one keyboard voice for every tab strip) */
+  const onTabKeyDown = (e: React.KeyboardEvent) => {
+    let next: number
+    if (e.key === 'ArrowRight') next = (beat + 1) % BEATS.length
+    else if (e.key === 'ArrowLeft') next = (beat - 1 + BEATS.length) % BEATS.length
+    else if (e.key === 'Home') next = 0
+    else if (e.key === 'End') next = BEATS.length - 1
+    else return
+    e.preventDefault()
+    setBeat(next)
+    prefetch(next)
+    tabRefs.current[next]?.focus()
+  }
+
   return (
     <section
       ref={rootRef}
@@ -129,7 +145,7 @@ export default function RunExplains() {
       className="theme-dark v4sec scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <SectionHead fig="04" id="run-explains-title" title="The run explains itself.">
+        <SectionHead fig="4.5" id="run-explains-title" title="The run explains itself.">
           One file ran once: audited before it started, storyboarded while it ran,
           replayable after it ended. Every frame below is real output of the real
           binary, captured on a terminal against committed fixtures. Offline, on the
@@ -160,14 +176,26 @@ export default function RunExplains() {
         </figure>
 
         {/* the chapter strip · one still, seven surfaces */}
-        <div className="v5rx-beats" data-rise role="tablist" aria-label="The run's surfaces">
+        <div
+          className="v5rx-beats"
+          data-rise
+          role="tablist"
+          aria-label="The run's surfaces"
+          onKeyDown={onTabKeyDown}
+        >
           {BEATS.map((b, i) => (
             <button
               key={b.id}
+              ref={(el) => {
+                tabRefs.current[i] = el
+              }}
               type="button"
               role="tab"
+              id={`v5rx-tab-${b.id}`}
               aria-selected={i === beat}
-              aria-label={`${b.label} — ${b.claim}`}
+              aria-controls="v5rx-panel"
+              aria-label={`${b.label} · ${b.claim}`}
+              tabIndex={i === beat ? 0 : -1}
               className="v5rx-beat"
               onClick={() => setBeat(i)}
               onMouseEnter={() => prefetch(i)}
@@ -178,7 +206,13 @@ export default function RunExplains() {
           ))}
         </div>
 
-        <figure className="v5rx-stage" data-rise>
+        <figure
+          className="v5rx-stage"
+          data-rise
+          role="tabpanel"
+          id="v5rx-panel"
+          aria-labelledby={`v5rx-tab-${active.id}`}
+        >
           <img
             className="v5rx-still"
             src={active.img}

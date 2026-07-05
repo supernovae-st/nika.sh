@@ -256,12 +256,12 @@ export function Component() {
              file stays (two-tone thesis + the chat-vs-file split) */}
         <Wedge flagship={flagship} />
 
-        {/* FIG 04 (plate) · THE RUN EXPLAINS ITSELF — the observability chapter:
+        {/* FIG 4.5 (plate) · THE RUN EXPLAINS ITSELF — the observability chapter:
              real terminal captures of the signature workflow (check · inspect ·
              the live run · trace · kill→resume · the human gate) */}
         <RunExplains />
 
-        {/* FIG 4.5 · the acid moment — beyond the black box (file vs chat/API) */}
+        {/* FIG 05 · the acid moment — beyond the black box (file vs chat/API) */}
         <BeyondChat />
 
         {/* FIG 06 · verb chapters — what an agent can do, declared not hidden */}
