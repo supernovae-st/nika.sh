@@ -14,7 +14,9 @@ import {
   CF_PLAIN,
   CF_REF,
   cfHighlight,
+  nikaHoverTips,
   nikaMarks,
+  wrapHang,
 } from './play-editor-voice'
 
 /* ─── /play · the editor · lazy chunk ────────────────────────────────────────
@@ -103,6 +105,13 @@ const cfTheme = EditorView.theme(
     '.cm-tooltip.cm-tooltip-lint': { padding: '2px 0' },
     '.cm-diagnostic': { padding: '6px 10px', whiteSpace: 'pre-wrap' },
     '.cm-diagnostic-error': { borderLeft: '3px solid var(--verb-exec, #ff7a3c)' },
+    /* the smart-hover card rides a CM tooltip — the card (codefile.css twin)
+       owns the chrome, so the lint-tooltip shell steps aside for it */
+    '.cm-tooltip:has(> .cm-nika-tipcard)': {
+      backgroundColor: 'transparent',
+      border: 'none',
+      overflow: 'visible',
+    },
     /* a thin, unobtrusive scrollbar (matches .cf-pre) */
     '.cm-scroller': {
       scrollbarWidth: 'thin',
@@ -155,7 +164,9 @@ export default function PlayEditor({ value, onChange, onDiags }: PlayEditorProps
         cmA11y,
         syntaxHighlighting(cfHighlight),
         nikaMarks,
+        nikaHoverTips /* the static panels' curated hover glossary, live */,
         EditorView.lineWrapping /* long SLOT comments fade into wrap, never clip */,
+        wrapHang /* …and continuations hang at the line's indent (static law) */,
         cfTheme,
       ]}
       basicSetup={{ foldGutter: false, autocompletion: false, highlightActiveLine: true }}

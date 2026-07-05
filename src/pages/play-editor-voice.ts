@@ -3,11 +3,14 @@ import {
   EditorView,
   MatchDecorator,
   ViewPlugin,
+  hoverTooltip,
   type DecorationSet,
   type ViewUpdate,
 } from '@codemirror/view'
+import { RangeSetBuilder } from '@codemirror/state'
 import { HighlightStyle } from '@codemirror/language'
 import { tags as t } from '@lezer/highlight'
+import { tipFor, tipHref, type CodeTip } from '../components/codefile-tips'
 
 /* ─── /play · the editor's yaml voice (loop T6 · one-voice law) ──────────────
    The live editor must speak the SAME dialect as the static CodeFile
@@ -95,4 +98,128 @@ export const nikaMarks = ViewPlugin.fromClass(
     }
   },
   { decorations: (v) => v.deco },
+)
+
+/* ─── the hanging indent · the static panel's wrap law, live ─────────────────
+   Under lineWrapping a continuation row falls back to the panel's left edge —
+   the static CodeFile never does that (wrapped rows hang at the line's own
+   indent). One line decoration per indented line: pull the first row back by
+   the leading-space width, pad the whole line by the same amount. ch units on
+   the mono font = exact columns; the 14px matches the theme's .cm-line base. */
+function buildHang(view: EditorView): DecorationSet {
+  const b = new RangeSetBuilder<Decoration>()
+  for (const { from, to } of view.visibleRanges) {
+    let pos = from
+    while (pos <= to) {
+      const line = view.state.doc.lineAt(pos)
+      const ws = (line.text.match(/^ */) as RegExpMatchArray)[0].length
+      if (ws > 0 && ws < line.text.length)
+        b.add(
+          line.from,
+          line.from,
+          Decoration.line({
+            attributes: { style: `text-indent:-${ws}ch;padding-left:calc(14px + ${ws}ch)` },
+          }),
+        )
+      pos = line.to + 1
+    }
+  }
+  return b.finish()
+}
+
+export const wrapHang = ViewPlugin.fromClass(
+  class {
+    deco: DecorationSet
+    constructor(view: EditorView) {
+      this.deco = buildHang(view)
+    }
+    update(u: ViewUpdate) {
+      if (u.docChanged || u.viewportChanged) this.deco = buildHang(u.view)
+    }
+  },
+  { decorations: (v) => v.deco },
+)
+
+/* ─── the smart hover · the same card the static panels speak ────────────────
+   The static CodeFile's curated glossary (plain-words → codefile-tips) rides
+   a CodeMirror hoverTooltip here: hover a KEY, a VERB key or a ${{ ref }} and
+   the same term · plain-words card appears, with the same "read it in the
+   spec" footer. Curation is tipFor's: plumbing keys stay silent. */
+const ANY_KEY_RE = /^(\s*(?:-\s+)?)([A-Za-z_][\w.-]*)(?=:)/
+const VERB_KEY_RE = /^\s*(?:-\s+)?(agent|exec|infer|invoke)(?=:)/
+const REF_RE = /\$\{\{[^}]*\}\}/g
+
+/** the tip target at a column of a line — pure, testable */
+export function cmTipAt(
+  text: string,
+  col: number,
+): { from: number; to: number; tip: CodeTip } | null {
+  for (const m of text.matchAll(REF_RE)) {
+    const s = m.index
+    const e = s + m[0].length
+    if (col >= s && col < e) {
+      const tip = tipFor('tref', m[0])
+      return tip ? { from: s, to: e, tip } : null
+    }
+  }
+  const key = text.match(ANY_KEY_RE)
+  if (key) {
+    const s = key[1].length
+    const e = s + key[2].length
+    if (col >= s && col < e) {
+      const verb = text.match(VERB_KEY_RE)
+      const tip = verb ? tipFor('verb', verb[1]) : tipFor('key', key[2])
+      return tip ? { from: s, to: e, tip } : null
+    }
+  }
+  return null
+}
+
+/* the card DOM · the exact structure the static tipbox renders (codefile.css
+   owns both looks via the .cm-nika-tipcard twin block) */
+function tipCard(tip: CodeTip): HTMLElement {
+  const dom = document.createElement('div')
+  dom.className = 'cm-nika-tipcard'
+  dom.setAttribute('aria-hidden', 'true')
+  if (tip.verb) dom.dataset.verb = tip.verb
+  const main = document.createElement('span')
+  main.className = 'cf-tipbox-main'
+  const term = document.createElement('b')
+  term.className = 'cf-tipbox-term'
+  term.textContent = tip.term
+  const words = document.createElement('span')
+  words.className = 'cf-tipbox-words'
+  words.textContent = tip.words
+  main.append(term, words)
+  dom.append(main)
+  const href = tipHref(tip.term)
+  if (href) {
+    dom.dataset.link = '1'
+    const a = document.createElement('a')
+    a.className = 'cf-tipbox-link'
+    a.href = href
+    a.tabIndex = -1
+    a.append('read it in the spec')
+    const arrow = document.createElement('span')
+    arrow.className = 'cf-tipbox-link-arrow'
+    arrow.textContent = ' →'
+    a.append(arrow)
+    dom.append(a)
+  }
+  return dom
+}
+
+export const nikaHoverTips = hoverTooltip(
+  (view, pos) => {
+    const line = view.state.doc.lineAt(pos)
+    const hit = cmTipAt(line.text, pos - line.from)
+    if (!hit) return null
+    return {
+      pos: line.from + hit.from,
+      end: line.from + hit.to,
+      above: true,
+      create: () => ({ dom: tipCard(hit.tip) }),
+    }
+  },
+  { hoverTime: 160 } /* the IDE patience — same delay as the static card */,
 )

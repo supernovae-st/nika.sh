@@ -3,7 +3,7 @@ import { EditorState } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
 import { yaml as yamlLang } from '@codemirror/lang-yaml'
 import { syntaxHighlighting } from '@codemirror/language'
-import { NIKA_MARK_RE, cfHighlight, nikaMarks } from './play-editor-voice'
+import { NIKA_MARK_RE, cfHighlight, cmTipAt, nikaMarks, wrapHang } from './play-editor-voice'
 
 /* ─── /play editor · one-voice law (loop T6) ─────────────────────────────────
    The live playground editor must speak the SAME yaml dialect as the static
@@ -53,6 +53,35 @@ describe('the mark regex · classification', () => {
   })
 })
 
+describe('the hover resolver · cmTipAt (the static glossary, live)', () => {
+  it('tips a curated key when the column sits on it', () => {
+    const line = '  depends_on: [gather]'
+    const hit = cmTipAt(line, 4) /* inside "depends_on" */
+    expect(hit?.tip.term).toBe('depends_on')
+    expect(line.slice(hit!.from, hit!.to)).toBe('depends_on')
+  })
+
+  it('tips a verb key with its verb hue', () => {
+    const hit = cmTipAt('    infer:', 6)
+    expect(hit?.tip.term).toBe('infer')
+    expect(hit?.tip.verb).toBe('infer')
+  })
+
+  it('tips a ${{ ref }} anywhere in the line, span-exact', () => {
+    const line = '      args: { path: "${{ vars.source }}" }'
+    const s = line.indexOf('${{')
+    const hit = cmTipAt(line, s + 5)
+    expect(hit?.tip.term).toBe('${{ … }}')
+    expect(line.slice(hit!.from, hit!.to)).toBe('${{ vars.source }}')
+  })
+
+  it('stays silent on plumbing keys, values and empty air', () => {
+    expect(cmTipAt('      id: gather', 7)).toBeNull() /* id = plumbing */
+    expect(cmTipAt('  depends_on: [gather]', 16)).toBeNull() /* the value */
+    expect(cmTipAt('    infer:', 0)).toBeNull() /* the indent */
+  })
+})
+
 describe('the live editor · rendered voice', () => {
   const DOC = [
     'nika: v1',
@@ -83,6 +112,32 @@ describe('the live editor · rendered voice', () => {
       expect(cls('.cm-nika-verb--infer')).toEqual(['infer'])
       expect(cls('.cm-nika-ref')).toEqual(['${{ vars.source }}'])
       expect(cls('.cm-nika-num')).toEqual(['0.2'])
+    } finally {
+      view.destroy()
+    }
+  })
+
+  it('hangs wrapped continuations at the line indent (the static wrap law)', () => {
+    const view = new EditorView({
+      state: EditorState.create({ doc: DOC, extensions: [wrapHang] }),
+      parent: document.body,
+    })
+    try {
+      /* "    invoke:" (4 spaces) → first row pulled back 4ch, line padded 4ch */
+      const hung = Array.from(
+        view.dom.querySelectorAll<HTMLElement>('.cm-line[style*="text-indent"]'),
+      )
+      expect(hung.length).toBeGreaterThan(0)
+      const invoke = hung.find((el) => el.textContent?.includes('invoke:'))
+      expect(invoke?.style.textIndent).toBe('-4ch')
+      /* jsdom may reorder calc() operands — pin both terms, not the order */
+      expect(invoke?.style.paddingLeft).toContain('4ch')
+      expect(invoke?.style.paddingLeft).toContain('14px')
+      /* flush-left lines carry no device */
+      const first = Array.from(view.dom.querySelectorAll<HTMLElement>('.cm-line')).find(
+        (el) => el.textContent === 'nika: v1',
+      )
+      expect(first?.style.textIndent).toBe('')
     } finally {
       view.destroy()
     }

@@ -583,3 +583,27 @@
 .v4page .play-seeds {
   margin-top: 16px;
 }
+
+/* ── phones (loop T7 · mobile-first tail wins the cascade) ────────────────────
+   Two truths at 390px: (1) the plan panel's one header row can't hold title +
+   live state + key — the STATE takes its own full row under the title, right-
+   aligned like an instrument read-out; (2) the editor must not eat the whole
+   viewport — the live plan (type → it rearranges) is the page's wow, so the
+   well clamps to roughly half the small screen and scrolls inside its chrome. */
+@media (max-width: 560px) {
+  .play-dag-head {
+    flex-wrap: wrap;
+    row-gap: 7px;
+  }
+  .play-dag-state {
+    order: 4;
+    flex: 1 0 100%;
+    margin-left: 0;
+    text-align: right;
+  }
+}
+@media (max-width: 999px) {
+  .play-editor-body .cm-editor {
+    max-height: min(480px, 56svh);
+  }
+}
