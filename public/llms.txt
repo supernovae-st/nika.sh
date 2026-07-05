@@ -38,7 +38,7 @@ files.
 - Showcase source: https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase
 - Walkthroughs: https://docs.nika.sh/examples/overview
 - Interactive explorer: https://nika.sh/#use-cases
-- Blog (markdown source: content/blog in the site repo): https://nika.sh/blog · feed https://nika.sh/rss.xml
+- Blog (markdown source: content/blog in the site repo): https://nika.sh/blog · feed https://nika.sh/rss.xml · full text https://nika.sh/llms-full.txt
 
 ## How to write Nika (the 12 patterns)
 

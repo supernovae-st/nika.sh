@@ -1,10 +1,10 @@
-import { existsSync, writeFileSync } from 'node:fs'
+import { existsSync, writeFileSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import reactSsg from 'vite-plugin-react-ssg'
-import { ORIGIN, PATHS } from './site.config'
+import { ORIGIN, PATHS, MANIFESTO_PATHS } from './site.config'
 
 /* ─── preview clean-URL resolver ─────────────────────────────────────────────
    `vite preview` serves the SPA fallback (dist/index.html) for an extension-less
@@ -55,20 +55,44 @@ function sitemap(): Plugin {
       outDir = config.build.outDir
     },
     closeBundle() {
-      const lastmod = new Date().toISOString().slice(0, 10)
+      const buildDate = new Date().toISOString().slice(0, 10)
+      /* posts carry their REAL date (content truth beats build date); the
+         generated module is the source (regex, not import — vite.config must
+         not join the app graph). */
+      const gen = readFileSync('src/content/blog.generated.ts', 'utf8')
+      const postDates = new Map(
+        [...gen.matchAll(/"slug": "([^"]+)"[\s\S]*?"date": "([^"]+)"/g)].map((m) => [m[1], m[2]]),
+      )
+      /* the manifesto's hreflang cluster · sitemap-level alternates (Google's
+         recommended complement to the in-page <link> tags). URL slug → BCP 47. */
+      const mfTag = (p: string) => {
+        const seg = p.split('/')[1]
+        return seg === 'pt-br' ? 'pt-BR' : seg === 'zh-hans' ? 'zh-Hans' : seg
+      }
+      const MF_ALL = ['/manifesto', ...MANIFESTO_PATHS]
+      const mfLinks = [
+        ...MF_ALL.map((mp) => {
+          const tag = mp === '/manifesto' ? 'en' : mfTag(mp)
+          return `    <xhtml:link rel="alternate" hreflang="${tag}" href="${ORIGIN}${mp}" />`
+        }),
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}/manifesto" />`,
+      ].join('\n')
       const urls = PATHS.map((p) => {
         const loc = p === '/' ? `${ORIGIN}/` : `${ORIGIN}${p}`
         const priority = p === '/' ? '1.0' : '0.7'
+        const slug = p.startsWith('/blog/') ? p.slice('/blog/'.length) : null
+        const lastmod = (slug && postDates.get(slug)) || buildDate
+        const alternates = MF_ALL.includes(p) ? `\n${mfLinks}` : ''
         return (
           `  <url>\n` +
           `    <loc>${loc}</loc>\n` +
           `    <lastmod>${lastmod}</lastmod>\n` +
           `    <changefreq>weekly</changefreq>\n` +
-          `    <priority>${priority}</priority>\n` +
+          `    <priority>${priority}</priority>${alternates}\n` +
           `  </url>`
         )
       }).join('\n')
-      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`
       writeFileSync(join(outDir, 'sitemap.xml'), xml)
     },
   }

@@ -110,7 +110,7 @@ export function Component() {
           {/* ══ the shelf · one card per post (content/blog — compiled) ══════ */}
           <div className="blog-shelf" data-rise>
             {BLOG_POSTS.map((p, i) => (
-              <Link key={p.slug} id={p.slug} to={`/blog/${p.slug}`} className="blog-card">
+              <Link key={p.slug} id={p.slug} to={`/blog/${p.slug}`} viewTransition className="blog-card">
                 <span className="blog-card-fig mono">
                   {String(BLOG_POSTS.length - i).padStart(2, '0')} · {p.tag} ·{' '}
                   <time dateTime={p.date}>{p.date}</time>

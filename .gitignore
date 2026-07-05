@@ -19,3 +19,4 @@ node_modules/
 # visual regression working dirs (goldens ARE committed, per-OS)
 tests/visual/out/
 tests/visual/diff/
+.lighthouse/

@@ -113,7 +113,7 @@ export function Component() {
         <div className="v4sec-wrap bp-wrap">
           {/* the way back + the register row */}
           <nav className="bp-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/blog" className="bp-crumb-link">
+            <Link to="/blog" viewTransition className="bp-crumb-link">
               ← blog
             </Link>
           </nav>
@@ -160,14 +160,14 @@ export function Component() {
             </p>
             <nav className="bp-walk" aria-label="More posts">
               {prev ? (
-                <Link to={`/blog/${prev.slug}`} className="bp-walk-link">
+                <Link to={`/blog/${prev.slug}`} viewTransition className="bp-walk-link">
                   ← {prev.title}
                 </Link>
               ) : (
                 <span />
               )}
               {next ? (
-                <Link to={`/blog/${next.slug}`} className="bp-walk-link bp-walk-link--next">
+                <Link to={`/blog/${next.slug}`} viewTransition className="bp-walk-link bp-walk-link--next">
                   {next.title} →
                 </Link>
               ) : (

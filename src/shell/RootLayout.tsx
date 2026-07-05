@@ -72,6 +72,13 @@ export default function RootLayout() {
     return () => document.removeEventListener('click', onClick)
   }, [])
 
+  /* boot-guard handshake · tells the index.html watchdog that hydration
+     landed, so the entrance choreography keeps its slow-device fallback
+     without ever firing on fast ones. */
+  useEffect(() => {
+    document.documentElement.setAttribute('data-hydrated', '')
+  }, [])
+
   /* the license egg · type « agpl » anywhere: a quiet mono toast answers
      « forever. » (the same input guards as the drum egg — never inside a
      field; auto-dismiss; polite live region so it is announced once). */

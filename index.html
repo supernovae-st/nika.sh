@@ -83,6 +83,23 @@
     </script>
   </head>
   <body>
+    <script>
+      /* reveal watchdog (W19b) · the entrance choreography hides prerendered
+         content until each section's observer arms it — correct on fast
+         devices, a blank wall when hydration is slow (LH mobile measured the
+         hero LCP at 9.5s · 95% render delay). If hydration hasn't landed in
+         1.6s, force every reveal to its SETTLED state using the same classes
+         the observers add — CSS semantics (containing blocks, will-change)
+         stay byte-identical, so fixed-position descendants never re-anchor.
+         React sets data-hydrated in RootLayout; no-JS UAs never run the
+         hiding path at all. Lives in <body>, NOT <head>: the SSG head rewrite
+         mangles inline scripts there (the JS leaked as visible text). */
+      setTimeout(function () {
+        if (document.documentElement.hasAttribute('data-hydrated')) return
+        document.querySelectorAll('.v4sec').forEach(function (s) { s.classList.add('v4-in') })
+        document.querySelectorAll('.rv').forEach(function (r) { r.classList.add('in') })
+      }, 1600)
+    </script>
     <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

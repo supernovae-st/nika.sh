@@ -1,0 +1,305 @@
+# nika.sh · llms-full.txt
+# The complete blog, newest first, as raw markdown (source: content/blog in the site repo).
+# Companion to https://nika.sh/llms.txt · spec: https://llmstxt.org/
+
+---
+
+## No cloud needed
+url: https://nika.sh/blog/own-your-stack
+date: 2026-07-02 · tag: Sovereignty
+
+Local-first gets said a lot, and it means anything from "we cache" to "we sync, eventually". Here is what it means in Nika, concretely.
+
+**The engine is one Rust binary.** No daemon, no account, no telemetry phoning home. Brew or curl, and the whole runtime is on your disk. Air-gapped is a supported install path, not an afterthought.
+
+**5 of the 14 model providers are local runtimes**: Ollama, LM Studio, llama.cpp, LocalAI, vLLM. The model is one line of the file; swap it and nothing else changes.
+
+```yaml hello-ai.nika.yaml
+nika: v1
+workflow: hello-ai
+model: ollama/llama3.2:3b
+
+tasks:
+  - id: greet
+    infer:
+      prompt: "Say hello in one sentence."
+```
+
+What that buys, concretely. **Privacy that is structural, not contractual**: with a local model the data path never leaves the machine, so there is nothing to trust and nothing to audit. **A free drafting loop**: iterate on prompts and plans at zero marginal cost, then point the same file at a bigger model only when the task earns it. **Custody**: a provider deprecating a model is a one-line edit to your file, not a rewrite of your workflow.
+
+Cloud stays a real choice: 8 cloud providers, bring your own keys, and every key stays yours. The point was never no-cloud. The point is that cloud is **optional**: per file, per task, visible in the diff.
+
+Your first run needs no key at all. That is not a trial mode. That is the architecture.
+
+---
+
+## The plan you get for free
+url: https://nika.sh/blog/dag-for-free
+date: 2026-06-29 · tag: Engine
+
+Every orchestration tool eventually grows a scheduler dialect: stages, barriers, fan-in nodes, retry graphs. You learn its vocabulary, you maintain its diagrams, and one day the diagram and the code disagree.
+
+**Nika has one word: `depends_on`.** A task lists what it waits for. That is the entire scheduling surface. Everything else is derived: tasks whose dependencies are met run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune.
+
+```yaml release-radar.nika.yaml
+nika: v1
+workflow: release-radar
+
+tasks:
+  - id: changelog
+    invoke:
+      tool: "nika:fetch"
+      args:
+        url: "https://nika.sh/changelog"
+
+  - id: repo_log
+    exec:
+      command: "git log --since='1 week'"
+
+  - id: digest
+    depends_on: [changelog, repo_log]
+    infer:
+      prompt: "What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}"
+```
+
+Nothing in that file says parallel. `changelog` and `repo_log` start together because nothing orders them; `digest` waits because it says so. Add a third source tomorrow and the plan redraws itself: no stage to renumber, no barrier to move.
+
+The plan is also drawn **before anything runs**. It is the first verdict `nika check` prints for that exact file:
+
+```text
+ ✔ PLAN     2 wave(s) · 3 task(s) · max parallelism 2
+```
+
+A cycle is not a hang, it is a typed error naming its members. A ghost name in `depends_on` is caught in the same pass. The graph the engine runs is the graph you read, and both come from three verbs and a list.
+
+You never scheduled anything. The plan was in the file all along.
+
+---
+
+## Four verbs are enough
+url: https://nika.sh/blog/four-verbs
+date: 2026-06-22 · tag: Language
+
+Every workflow language faces the same temptation: keep adding verbs. A verb for HTTP. A verb for files. A verb for email, for SQL, for whatever last week's integration needed. Ten years later the language is a catalog nobody can hold in their head, and every file is written in a different dialect of it.
+
+Nika locks the count at four, forever. The rule that makes this possible is strict: **a verb is a distinct execution model**, not a feature. **infer** generates with a model. **exec** runs a process. **invoke** calls a tool and returns. **agent** loops with tools until the job is done. Four genuinely different ways for a machine to act. There is no fifth.
+
+```yaml morning-brief.nika.yaml
+nika: v1
+workflow: morning-brief
+
+tasks:
+  - id: fetch_news
+    invoke:
+      tool: "nika:fetch"          # a tool, not a verb
+      args:
+        url: "https://hnrss.org/frontpage"
+
+  - id: build
+    exec:
+      command: "cargo build --release"
+
+  - id: digest
+    depends_on: [fetch_news, build]
+    infer:
+      prompt: "Summarize what changed"
+
+outputs:
+  brief: ${{ tasks.digest.output }}
+```
+
+The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other 19 builtins. Everything callable is a tool. Everything about ordering is the graph.
+
+A closed language is a feature you can feel. You can finish learning it: four words and the file reads like prose. Your files never rot into an old dialect, because there is no new dialect coming. And tools keep growing where growth belongs, in the library: a new builtin, a new tool server (MCP), a new provider. The language holds still while the toolbelt expands.
+
+That stillness is the promise. The file you write today is the file you run in ten years. Languages that stop moving are the ones you can build on.
+
+---
+
+## Intent as Code: why your AI work should be a file
+url: https://nika.sh/blog/intent-as-code
+date: 2026-06-15 · tag: Manifesto
+
+Think about the best thing you did with an AI last month. The careful prompt, the back-and-forth, the result that finally clicked. **Where is it now?** For most people the honest answer is: gone. Buried in a chat history you will never scroll back through, on a server you don't control.
+
+We've accepted a strange deal: the more useful the work, the more disposable the container. Nobody would write software in a text box that forgets everything. Yet that's exactly how most AI work happens today.
+
+**Nika's bet is simple: useful AI work is worth writing down.** Not as a transcript, as *source*. A small YAML file that says what you want: fetch this, think about that, run this command, save the result. The file is the workflow. Run it again tomorrow and it does the same thing. Change a line and `git diff` shows exactly what changed.
+
+Four verbs cover the whole space: **infer** (call a model), **exec** (run a process), **invoke** (use a tool), **agent** (let it work a loop). Everything else is data flowing between tasks. The order falls out of the dependencies. Write `depends_on` and independent branches run in parallel, for free.
+
+And it runs on **your machine**. One Rust binary. Your model keys, your files, your git history. No cloud between you and your own work, and a license (AGPL) that guarantees it stays that way.
+
+Chat is a great place to *figure out* what you want. It is a terrible place to *keep* it. Explore in chat. Then write the intent down, and own it forever.
+
+---
+
+## The blast radius is part of the file
+url: https://nika.sh/blog/blast-radius-in-the-file
+date: 2026-06-04 · tag: Security
+
+Ask an agent framework what its agent may touch, and the honest answer is usually: whatever the process may touch. The permission model is the operating system's, the audit is a log file, and the log is written after the damage.
+
+In Nika, the boundary is a block in the file you review:
+
+```yaml daily-brief.nika.yaml
+nika: v1
+workflow: daily-brief
+
+permits:
+  fs:
+    read: [ ./notes/* ]
+    write: [ ./brief.md ]
+  tools: [ "nika:read", "nika:write" ]
+
+tasks:
+  - id: notes
+    invoke:
+      tool: "nika:read"
+      args:
+        path: ./notes/today.md
+
+  - id: save
+    depends_on: [notes]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./brief.md
+        content: "${{ tasks.notes.output }}"
+```
+
+**`permits:` is the whole list.** Not a suggestion, not a default profile. Once the block is present, every category is default-deny: which files it may read and write, which tools it may call, which programs, which hosts. A reviewer reads the blast radius in the diff, right next to the logic it serves.
+
+**Denied means before.** A step that reaches outside the list fails with a typed error, `NIKA-SEC-004`, before the effect happens. Not logged after the fact, not flagged for Monday's incident review: the write to `~/.ssh/config` simply never runs.
+
+And you do not hand-write the list. `nika check --infer-permits` reads the plan and prints the tightest boundary it needs. You loosen it deliberately, line by line, in review, which is where loosening belongs.
+
+Capability declarations next to intent. It is one of the oldest ideas in security, applied to the newest way of doing work.
+
+---
+
+## A standard library, not a plugin store
+url: https://nika.sh/blog/standard-library-not-plugin-store
+date: 2026-05-14 · tag: Language
+
+A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead.
+
+**23 builtins ride the binary**, across four families: files, data, web, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with `invoke:`, they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday.
+
+**One builtin, 9 honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
+
+```yaml headlines.nika.yaml
+nika: v1
+workflow: headlines
+
+tasks:
+  - id: page
+    invoke:
+      tool: "nika:fetch"
+      args:
+        url: "https://nika.sh"
+
+  - id: save
+    depends_on: [page]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./page.md"
+        content: "${{ tasks.page.output }}"
+```
+
+Everything beyond the library arrives through MCP: name a `mcp:` tool id and any server you already run is reachable, but only if the file allow-lists it. Growth belongs in the toolbelt, not in the grammar.
+
+The library grows. The language holds still. That trade is the design.
+
+---
+
+## An open spec, a copyleft engine
+url: https://nika.sh/blog/open-spec-copyleft-engine
+date: 2026-05-01 · tag: Sovereignty
+
+The nika-spec repository went public this week, under Apache-2.0. The engine that runs it is AGPL-3.0-or-later. Two licenses for one project is a choice you should be able to interrogate, so here is the whole argument.
+
+**The spec is the part you adopt.** The envelope, the four verbs, the task shape, the JSON schema, the conformance suite: all Apache-2.0, with a patent grant. Any team can build a competing runtime on it, and nothing we do later can revoke that. A language you might write hundreds of files in should not have a single implementation as its ceiling. This is the GraphQL shape: an open contract, many possible engines.
+
+**The engine is the part someone would take.** The recent history of open agent tooling is a history of extraction: a permissively-licensed runtime gets wrapped, hosted, improved in private, and the improvements never come home. AGPL closes that door. Run our engine as a service, fork it, build a business next to it: all fine. But the changes ship back. The protection this buys is not ours, it is yours: no fork of the engine can quietly become a closed thing your files depend on.
+
+**Your exit is `cp -r`.** The workflows are plain text in your repo. The spec is Apache. The engine is copyleft. Take the three together and the cost of leaving Nika is copying a folder. Compare that with the cost of leaving wherever your prompts live today.
+
+Licenses are boring until the Friday they are not. We picked ours so the file you write today still runs the day the company that made the runner is gone. That includes us.
+
+---
+
+## Starting over, on purpose
+url: https://nika.sh/blog/starting-over-on-purpose
+date: 2026-04-14 · tag: Origins
+
+By spring 2026 there was a working prototype. The note from October had become a real engine: files ran, models answered, tools fired. The fastest path from there was obvious: refactor what worked, extract the good parts, ship.
+
+We did the opposite. The first architecture decision record of the current engine says it plainly: **rebuild from scratch, never copy-paste the prototype.** Craft, not extraction.
+
+That sounds romantic. It was actually the cold option.
+
+**A prototype answers a different question.** The prototype existed to learn whether the idea held: can intent live in a file, can a plan be drawn before it runs, can permissions be enforced rather than logged. It answered yes. But code written to *find out* is shaped by the finding-out: shortcuts where the idea was still fuzzy, generosity where discipline was needed later. Extracting it would have meant carrying every one of those youthful decisions into the thing people would trust with their machines.
+
+**Trust infrastructure has a different bar.** An engine that enforces a permission boundary cannot itself be casual about correctness. So the rebuild came with rules the prototype never had: every crate passes a fixed set of admission gates before it enters the workspace; hard caps on file and function size; no unchecked failure paths in source. The gates are boring on purpose. Boring is what you want from the layer that decides whether a write to your disk is allowed to happen.
+
+**The language was frozen before the engine was grown.** Rebuilding gave us the order most projects never get: spec first, engine second. The envelope (`nika: v1`), the four verbs, the permits model were locked as a contract, and then the engine was built *to* the contract, gate by gate. It is why the spec could open under Apache while the engine carries the AGPL: they were separate artifacts from the first day of the rebuild.
+
+The prototype is not disowned; it was the necessary first draft, and drafts are how honest writing works. But you do not ship the draft. You keep what it taught you and write the real sentence.
+
+Starting over cost months. It bought a foundation that will not need to apologize later. In a tool whose whole promise is *the file you write today still runs in ten years*, that trade is not a luxury. It is the product.
+
+---
+
+## Naming the drum
+url: https://nika.sh/blog/naming-the-drum
+date: 2026-03-21 · tag: Origins
+
+For months the project had no name. It was "the file thing": a note from October, a growing conviction, some early Rust. Then the question stopped being avoidable, because naming a thing is deciding what it is for.
+
+The technical description was easy: a workflow language, four verbs, files you own. But the description missed the *reason*. We were not building a scheduler. We were building a way out of a trap: the trap where your best work, your context, your habits of thought all live behind someone else's login, priced monthly, revocable by letter.
+
+There is an old story about that trap. **Nika is named for the sun god of liberation: the drum that turns fear into laughter and frees the ones who were locked out.** A warrior of liberation whose weapon is not a sword but a *rhythm*: joy, repetition, the beat that makes the cage ridiculous. That is exactly the energy a workflow engine should have. Not conquest: release. Not a louder lock-in with better branding: the drum that plays until the door opens.
+
+So the name is a promise with lore attached:
+
+**Every workflow run is a beat of that drum.** Each time a file runs on your machine, with your model, under your permits, the argument for owned intelligence gets one beat louder. Small, repeated, unstoppable: that is how rhythms win.
+
+**The butterfly signs the work.** Every commit in the project carries a small butterfly. It is the signature of the craft: light, alive, impossible to cage. If you have scrolled to the bottom of this site, you have met it in particles.
+
+**The liberation is structural, not rhetorical.** A god of freedom would be a terrible mascot for a proprietary tool. The name only works because the license (AGPL, forever), the local-first engine, and the plain-text files make the freedom mechanical. Delete our company tomorrow and the drum keeps beating on your machine.
+
+The full argument, what happened the day intelligence got a kill switch, what we promise, why sovereignty is for everyone or for no one, lives in [the manifesto](/manifesto). It now speaks several languages, because liberation that only speaks English is not liberation.
+
+The note asked for a file. The name asked for a fight worth having. The rest is shipping.
+
+---
+
+## The note that started it
+url: https://nika.sh/blog/the-note-that-started-it
+date: 2025-10-17 · tag: Origins
+
+Before the spec, before the engine, before the name, there was a note. October 2025, one evening, after losing an afternoon's work to a closed tab.
+
+The work was good. A careful chain of prompts that turned a messy pile of notes into a clean weekly brief: gather, think, write, save. It had taken a week of small refinements to get right. And it lived nowhere. It was a scroll position in a chat window, on someone else's server, in a format no tool could read back.
+
+The note said, roughly:
+
+```text
+the work is real. the container is fake.
+if it's worth doing twice, it's worth writing down.
+not a transcript. the INTENT.
+what to fetch, what to think about, what to run, where it lands.
+a file. plain text. mine.
+```
+
+That was the whole idea. Not a product, not an architecture: an objection. Software had spent fifty years learning to keep work: source control, reviews, diffs, the entire craft of making thought durable. And the newest, most powerful way of working had quietly dropped all of it. The more useful the AI work, the more disposable its container. Nobody had decided this. It was just the default.
+
+Defaults can be refused.
+
+Everything that came later unpacks that note. Write the intent down, and the work survives the session: that became **the file**. Say what it may touch, and you can let it act: that became **permits**. Name the four ways a machine can act, and the whole thing stays readable: that became **the verbs**. Keep it on your machine, under a license nobody can revoke: that became the local-first engine and the AGPL.
+
+None of those words existed yet in October. There was only the feeling every builder knows: the tools were getting smarter and the work was getting *less* durable, and those two lines should never cross.
+
+If you have felt that too, the good session that evaporated, the prompt you rebuilt from memory for the third time: the rest of this site is for you. It starts where the note ended: write it down, and own it forever.

@@ -219,6 +219,27 @@ html::-webkit-scrollbar-thumb:hover { background: rgb(79 134 255 / 0.45); }
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
 
+/* ─── view transitions · the soft cut between routes (W19a) ───────────────────
+   RR7 <Link viewTransition> wraps client navs in document.startViewTransition;
+   the default UA crossfade is ~250ms with a scale — we pin a plain 160ms fade
+   (the site's cuts should feel like an edit, not an effect). Browsers without
+   the API keep the instant swap; reduced-motion sees no animation at all. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 160ms;
+    animation-timing-function: ease;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+
 /* ─── display typography · Clash Display for headlines (designer face) ─── */
 h1, h2 { font-family: var(--headline); }
 
@@ -653,4 +674,24 @@ h1, h2 { font-family: var(--headline); }
    loads it, and at rest the displacement scale is 0 (pixel-still). */
 .mf-acid[data-acid='live'] {
   filter: url(#mf-acid-warp);
+}
+
+/* ─── forced colors (Windows High Contrast) · the background-only surfaces ────
+   forced-colors: active flattens backgrounds, so states that read through a
+   background tint alone vanish. The three that carry MEANING get a border in
+   the system palette (Highlight); decorative fields are left to the UA. */
+@media (forced-colors: active) {
+  .v4nav-pill,
+  .cf-line--lit,
+  .play-seed[aria-pressed='true'],
+  .blog-card:hover,
+  .dv-node[data-run='running'] {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
+  /* the toast + tooltips keep a visible frame */
+  .agpl-toast,
+  .cf-tipbox {
+    border: 1px solid CanvasText;
+  }
 }

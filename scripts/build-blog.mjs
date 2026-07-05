@@ -187,5 +187,25 @@ export const BLOG_POSTS: BlogPost[] = ${JSON.stringify(posts, null, 2)}
   writeFileSync(OUT_TS, ts)
   mkdirSync(dirname(OUT_RSS), { recursive: true })
   writeFileSync(OUT_RSS, rssOf(posts))
+  /* llms-full.txt · the llmstxt.org companion: the whole blog as raw
+     markdown for agents (the posts ALREADY are markdown — serve the source).
+     Canon markers are resolved (applyCanonMarkers ran), frontmatter kept as
+     a simple header per post. Deterministic: no build stamps. */
+  const canon = canonValues()
+  const files = readdirSync(SRC_DIR).filter((f) => f.endsWith('.md') && f !== 'README.md').sort().reverse()
+  const full = [
+    '# nika.sh · llms-full.txt',
+    '# The complete blog, newest first, as raw markdown (source: content/blog in the site repo).',
+    '# Companion to https://nika.sh/llms.txt · spec: https://llmstxt.org/',
+    '',
+    ...files.map((f) => {
+      const raw = readFileSync(join(SRC_DIR, f), 'utf8')
+      const m = raw.match(/^---\n([\s\S]*?)\n---\n/)
+      const meta = parseYaml(m[1])
+      const body = applyCanonMarkers(raw.slice(m[0].length), canon, f).trim()
+      return `---\n\n## ${meta.title}\nurl: https://nika.sh/blog/${meta.slug}\ndate: ${meta.date} · tag: ${meta.tag}\n\n${body}\n`
+    }),
+  ].join('\n')
+  writeFileSync(join(ROOT, 'public', 'llms-full.txt'), full)
   console.log(`wrote ${OUT_TS.replace(ROOT + '/', '')} (${posts.length} posts) + ${OUT_RSS.replace(ROOT + '/', '')}`)
 }

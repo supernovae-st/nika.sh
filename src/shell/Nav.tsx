@@ -592,7 +592,7 @@ export default function Nav() {
           itemType="https://schema.org/SiteNavigationElement"
         >
           {/* brand · the butterfly mark + wordmark */}
-          <Link to="/" className="v4nav-brand" aria-label="Nika · home">
+          <Link to="/" viewTransition className="v4nav-brand" aria-label="Nika · home">
             <img src="/nika.svg" alt="" width={19} height={19} />
             nika
           </Link>
@@ -771,6 +771,7 @@ export default function Nav() {
                 <Link
                   key={l.label}
                   to={l.href}
+                  viewTransition
                   className="v4nav-link"
                   itemProp="url"
                   /* the active route keeps a persistent dim pill (pure CSS on
