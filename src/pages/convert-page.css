@@ -6,6 +6,92 @@
   max-width: 14ch;
 }
 
+/* ── the proof pair · the ask (words) → the file (yaml) ───────────────────────
+   The page's show-don't-tell beat: the sender's plain words on the left, the
+   engine-checked file that ships back on the right, one mono tie between.
+   Desktop = ask · → · file on one survey row; phones stack and the tie turns
+   down. The file column is the wider voice (it IS the product). */
+.cv-proof {
+  margin-top: clamp(30px, 4.5vh, 48px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: start; /* labels sit on one survey line · the tie pins itself */
+}
+@media (min-width: 960px) {
+  .cv-proof {
+    grid-template-columns: minmax(0, 0.72fr) auto minmax(0, 1.28fr);
+    gap: 22px;
+  }
+}
+.cv-proof-label {
+  margin-bottom: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.cv-proof-ask {
+  align-self: start;
+}
+.cv-proof-quote {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--seam-hairline, var(--v4-line));
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
+  box-shadow: var(--seam-panel, none);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.cv-proof-quote::before {
+  content: '“';
+}
+.cv-proof-quote::after {
+  content: '”';
+}
+.cv-proof-hint {
+  margin-top: 9px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--v4-text-faint);
+}
+.cv-proof-tie {
+  justify-self: center;
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--v4-text-faint);
+  user-select: none;
+  transform: rotate(90deg); /* stacked → the tie points down the flow */
+}
+@media (min-width: 960px) {
+  .cv-proof-tie {
+    transform: none;
+    /* the tie speaks between the QUOTE and the file's chrome — pinned to the
+       ask plate's mid-height (label 20px + ~half the 4-line plate), not the
+       tall file's center (it floated into dead air there) */
+    align-self: start;
+    margin-top: 76px;
+  }
+}
+.cv-proof-file {
+  min-width: 0;
+}
+.cv-proof-verdict {
+  margin-top: 9px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--v4-text-faint);
+}
+.cv-proof-check {
+  color: #71e08a; /* the traffic-light green · the checker's own verdict tone */
+}
+
 /* ── the three-step register ── */
 .cv-steps {
   margin: clamp(32px, 5vh, 56px) 0 0;

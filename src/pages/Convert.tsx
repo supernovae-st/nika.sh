@@ -1,6 +1,7 @@
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, REPO } from '../content'
+import { CodeFile } from '../components/CodeFile'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
 import './page-chrome.css'
@@ -18,6 +19,45 @@ import './convert-page.css'
    testimonials, no invented counts.
 
    SSR-safe: pure DOM; the reveal is the shared motion-safe data-rise. */
+
+/* the proof pair · a real conversion, shown not told. The yaml is engine-true:
+   `nika check` verdict ✔ clean (argv-form exec · bounded max_tokens · complete
+   permits) — re-run the check if you ever edit it. Local model first, per the
+   presentation-order rule. */
+const PROOF_ASK =
+  'Every Friday I paste the week’s merged PRs into a chat and ask for a changelog draft. It can read git log; it may only write CHANGELOG.draft.md.'
+
+const PROOF_YAML = `# from @your-handle's friday ritual · converted + checked
+nika: v1
+workflow: friday-changelog
+description: "the week's merged PRs become a changelog draft"
+
+model: ollama/llama3.2
+
+permits:
+  exec: ["git"]
+  tools: ["nika:write"]
+  fs: { write: ["./CHANGELOG.draft.md"] }
+
+tasks:
+  - id: collect
+    exec:
+      command: ["git", "log", "--merges", "--since=7 days ago", "--oneline"]
+
+  - id: draft
+    depends_on: [collect]
+    infer:
+      max_tokens: 900
+      prompt: |
+        Group these merges by area and write a changelog draft.
+        \${{ tasks.collect.output }}
+
+  - id: save
+    depends_on: [draft]
+    invoke:
+      tool: "nika:write"
+      args: { path: "./CHANGELOG.draft.md", content: "\${{ tasks.draft.output }}" }
+`
 
 const STEPS: { n: string; title: string; body: string }[] = [
   {
@@ -93,8 +133,33 @@ export function Component() {
             <code className="mono">.nika.yaml</code> examples, <b>credited to you</b>.
           </p>
 
+          {/* the proof pair · a real conversion, shown not told (the site's one
+              law: every page proves with THE FILE). Left, the ask in the
+              sender's plain words; right, the file that ships back — engine-
+              checked, credit comment on line one. */}
+          <div className="cv-proof" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
+            <div className="cv-proof-ask">
+              <p className="cv-proof-label">what you send</p>
+              <blockquote className="cv-proof-quote">{PROOF_ASK}</blockquote>
+              <p className="cv-proof-hint">plain words are enough</p>
+            </div>
+            <span className="cv-proof-tie" aria-hidden>
+              →
+            </span>
+            <div className="cv-proof-file">
+              <p className="cv-proof-label">what ships back</p>
+              <CodeFile yaml={PROOF_YAML} filename="friday-changelog.nika.yaml" wrap tips />
+              <p className="cv-proof-verdict">
+                <span className="cv-proof-check" aria-hidden>
+                  ✔
+                </span>{' '}
+                clean — the engine&rsquo;s checker, before a single token is spent
+              </p>
+            </div>
+          </div>
+
           {/* what happens next · the three-step register */}
-          <ol className="cv-steps" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
+          <ol className="cv-steps" data-rise style={{ ['--rise-delay' as string]: '240ms' }}>
             {STEPS.map((s) => (
               <li className="cv-step" key={s.n}>
                 <p className="cv-step-n">{s.n}</p>
@@ -105,7 +170,7 @@ export function Component() {
           </ol>
 
           {/* the routing out · primary → the issue chooser · secondary → discussions */}
-          <div className="cv-ctas" data-rise style={{ ['--rise-delay' as string]: '240ms' }}>
+          <div className="cv-ctas" data-rise style={{ ['--rise-delay' as string]: '300ms' }}>
             <a
               href={`${REPO}/issues/new/choose`}
               target="_blank"
@@ -131,7 +196,7 @@ export function Component() {
           </div>
 
           {/* the honesty plate · why there is no form here */}
-          <p className="cv-note" data-rise style={{ ['--rise-delay' as string]: '300ms' }}>
+          <p className="cv-note" data-rise style={{ ['--rise-delay' as string]: '360ms' }}>
             no form here · the funnel is public, on the repo · a GitHub account is the only
             thing we ask for
           </p>
