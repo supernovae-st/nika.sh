@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
+import { CodeFile } from '../components/CodeFile'
 import './not-found.css'
 
 /* ─── the SPA catch-all 404 (client-side twin of public/404.html) ─────────────
@@ -26,14 +27,15 @@ export function Component() {
         This file doesn&rsquo;t parse: there&rsquo;s nothing at this path. Head
         back to a file that runs.
       </p>
-      <pre className="nf-file" aria-hidden>
-        <span className="nf-key">nika:</span> <span className="nf-val">v1</span>
-        {'\n'}
-        <span className="nf-key">workflow:</span> <span className="nf-val">not-found</span>
-        {'\n'}
-        <span className="nf-key">description:</span>{' '}
-        <span className="nf-val">&quot;404 · nothing at this path parses&quot;</span>
-      </pre>
+      {/* the joke file wears the SAME editor register as every yaml on the
+          site (loop T4 · one voice law) — real chrome, gutter, syntax. */}
+      <div className="nf-file" aria-hidden>
+        <CodeFile
+          yaml={'nika: v1\nworkflow: not-found\ndescription: "404 · nothing at this path parses"\n'}
+          filename="not-found.nika.yaml"
+          wrap
+        />
+      </div>
       <nav className="nf-nav" aria-label="Recover">
         <Link className="nf-btn nf-btn--primary" to="/">
           Back to nika.sh

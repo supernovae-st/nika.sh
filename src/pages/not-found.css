@@ -46,23 +46,9 @@
   text-wrap: pretty;
 }
 .nf-file {
-  font-family: var(--mono);
-  font-size: 13.5px;
-  line-height: 1.7;
-  color: var(--v4-text-faint);
-  background: var(--v4-bg-raised);
-  border: 1px solid var(--seam-hairline);
-  border-radius: var(--v4-radius);
-  box-shadow: var(--seam-panel); /* seam kit */
-  padding: 0.9rem 1.1rem;
-  overflow-x: auto;
-  margin: 0;
-}
-.nf-file .nf-key {
-  color: var(--v4-text-dim);
-}
-.nf-file .nf-val {
-  color: var(--v4-text);
+  /* the register moved INTO CodeFile (T4 · one yaml voice) — this wrapper
+     only bounds the panel's width on wide screens */
+  max-width: 560px;
 }
 .nf-nav {
   display: flex;
