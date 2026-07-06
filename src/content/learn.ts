@@ -210,7 +210,7 @@ outputs:
 /* ── the whole file · the nine fragments, assembled ───────────────────────────
    Every idea above, composed into the ONE workflow the page teaches. This
    exact text passes `nika check` on the shipping binary — the transcript
-   below is that run, VERBATIM (captured 2026-07-04 · nika 0.92.0). The
+   below is that run, VERBATIM (captured 2026-07-06 · nika 0.95.0). The
    honesty law: re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
 workflow: weekly-radar
@@ -276,7 +276,7 @@ export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'soft', text: ' ↳ HINT     [cost] declare `max_tokens` on `digest` — the cost report becomes a hard ceiling instead of UNBOUNDED' },
   { kind: 'soft', text: ' ↳ HINT     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)' },
   { kind: 'soft', text: ' ↳ HINT     [inputs] required input(s) with no default · pass at run time: --var topic=…' },
-  { kind: 'ok', text: ' ✔ clean — audited before a single token was spent' },
+  { kind: 'ok', text: ' ✔ audited · 5 task(s) · 3 wave(s) · permits none · est ≥$0.0000 · 3 hints' },
 ]
 
 export const ERROR_JSON = `{
