@@ -108,7 +108,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/standard-library-not-plugin-store</guid>
       <pubDate>Thu, 14 May 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
-      <description>23 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.</description>
+      <description>25 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.</description>
     </item>
     <item>
       <title>An open spec, a copyleft engine</title>

@@ -2633,7 +2633,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "A standard library, not a plugin store",
     "tag": "Language",
     "date": "2026-05-14",
-    "description": "23 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.",
+    "description": "25 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.",
     "readingMin": 1,
     "tokens": [
       {
