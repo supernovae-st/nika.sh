@@ -48,6 +48,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-07-06',
     tag: 'release',
+    title: 'v0.96.0 · the run becomes a place',
+    body: 'nika dap brings time-travel replay debugging over the run journal (breakpoints in your YAML, step forward AND backward — the VS Code F5 integration lights up on this tag); trace export projects any journal to OTLP for Jaeger/Grafana/Langfuse; check --json states the caller contract (requirements: models, keys, secrets, env) before any token; a typo\'d field teaches (did you mean `infer`?); runs record their source sha and skips say why.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.96.0',
+  },
+  {
+    date: '2026-07-06',
+    tag: 'release',
     title: 'v0.95.0 · the catalog practices local-first',
     body: 'The 5 local servers (Ollama, LM Studio, llama.cpp, LocalAI, vLLM) join the catalog with descriptions, tags and seed models — keyless by construction, sovereign models stay unpriced, never « free ». A bare nika suggests the next command; write honors create_dirs: false loudly, date resolves timezones from the bundled db, log neutralizes control sequences, and the MCP stdio transport bounds its reads.',
     gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.95.0',
