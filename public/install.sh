@@ -149,6 +149,29 @@ download_release() {
       (check that release $tag exists on https://github.com/$GITHUB_REPO/releases)"
   fi
 
+  # Integrity: every release publishes SHA256SUMS — the tarball MUST match
+  # before anything is extracted. The same digest-pinning the Homebrew
+  # formula and the registry enforce; curl|sh is not exempt. A missing
+  # sums file (releases predating it) warns; a MISMATCH always dies.
+  sums_url="https://github.com/$GITHUB_REPO/releases/download/$tag/SHA256SUMS"
+  if curl -fsSL "$sums_url" -o "$tmp/SHA256SUMS"; then
+    expected=$(awk -v a="$asset" '$2 == a { print $1 }' "$tmp/SHA256SUMS")
+    [ -n "${expected:-}" ] || die "SHA256SUMS carries no entry for $asset"
+    if command -v sha256sum >/dev/null 2>&1; then
+      actual=$(sha256sum "$tmp/$asset" | awk '{ print $1 }')
+    else
+      actual=$(shasum -a 256 "$tmp/$asset" | awk '{ print $1 }')
+    fi
+    [ "$actual" = "$expected" ] \
+      || die "checksum mismatch for $asset
+      expected: $expected
+      actual:   $actual
+      refusing to install — the artifact does not match the release manifest"
+    say "sha256 verified ($(printf %.16s "$expected")…)"
+  else
+    say "warning: SHA256SUMS not found for $tag — integrity not verified (older release?)"
+  fi
+
   tar -xzf "$tmp/$asset" -C "$tmp" \
     || die "failed to extract $asset"
 
