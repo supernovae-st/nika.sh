@@ -53,12 +53,12 @@ tasks:
 `
 
 /* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
-   Captured 2026-07-05 against nika 0.93.1 (the verified release tarball)
+   Captured 2026-07-06 against nika 0.95.0 (the verified release tarball)
    running the exact HELLO_YAML above. The honesty law: these frames render
    REAL output — re-capture when the CLI's voice changes, never hand-edit. */
 export const VERSION_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika --version' },
-  { kind: 'out', text: 'nika 0.93.1' },
+  { kind: 'out', text: 'nika 0.95.0' },
 ]
 
 export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
@@ -73,14 +73,15 @@ export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
   { kind: 'ok', text: ' ✔ SCHEMA   every authored schema: is satisfiable' },
   { kind: 'soft', text: ' ○ PERMITS  no boundary declared (engine floor only) · `--infer-permits` writes one' },
   { kind: 'dim', text: ' ↳ HINT     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)' },
-  { kind: 'ok', text: ' ✔ clean — audited before a single token was spent' },
+  { kind: 'ok', text: ' ✔ audited · 1 task(s) · 1 wave(s) · permits none · est ≥$0.0000 · 1 hint' },
   { kind: 'out', text: '' },
   { kind: 'cmd', text: 'nika run hello.nika.yaml' },
   { kind: 'out', text: '  🦋 nika · hello · 1 tasks' },
   { kind: 'dim', text: '     permits ✓ engine floor (no boundary declared)' },
   { kind: 'out', text: '' },
   { kind: 'ok', text: '  ✔  greet  exec · echo  5ms' },
-  { kind: 'dim', text: '  ── 1/1 done · $0.000 · elapsed 0.0s ────────────────────────────' },
+  { kind: 'dim', text: '  ── 1/1 done · $0.00 · elapsed 0.0s ─────────────────────────────' },
+  { kind: 'dim', text: '    trace: .nika/traces/2026-07-06T16-40-09Z-69ab.ndjson' },
 ]
 
 /* ── troubleshooting · the four honest snags (each fix is verifiable) ────────── */
