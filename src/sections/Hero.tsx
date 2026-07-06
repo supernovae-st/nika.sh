@@ -521,12 +521,24 @@ export default function Hero({
               See it run
             </a>
             <InstallCommand />
-            {/* the browser escape hatch (W12b·A2) · the playground is the
-                flagship proof — no install, nothing leaves the tab */}
-            <Link to="/play" className="v4hero-play">
-              or try it in your browser
-              <span aria-hidden> →</span>
-            </Link>
+            {/* the two escape hatches, one quiet row: the browser playground
+                (W12b·A2 · no install, nothing leaves the tab) and the editor
+                extension (the surface most readers already live in — the
+                anchor scrolls to the working miniature, which sells it
+                better than any store page). */}
+            <span className="v4hero-hatches">
+              <Link to="/play" className="v4hero-play">
+                try it in your browser
+                <span aria-hidden> →</span>
+              </Link>
+              <span className="v4hero-hatch-sep" aria-hidden>
+                ·
+              </span>
+              <a href="#editor" className="v4hero-play">
+                or in VS Code / Cursor
+                <span aria-hidden> ↓</span>
+              </a>
+            </span>
           </div>
 
           {/* the version plate · the ONE metadata line under the CTAs. (Wave Q

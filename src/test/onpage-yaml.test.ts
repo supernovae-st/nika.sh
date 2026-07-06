@@ -7,6 +7,7 @@ import { FLAGSHIPS } from '../flagships/flagship-data'
 import { CHAPTERS } from '../sections/verbs-data'
 import { BLOG_POSTS } from '../content/blog.generated'
 import { HELLO_YAML, HELLO_AI_YAML } from '../content/install'
+import { EXTENSION_SHOWCASE_YAML } from '../sections/EditorCanvas'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
 
 /* ── on-page YAML · every full workflow shown on the site is SCHEMA-TRUE ─────
@@ -64,6 +65,7 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
   it.each([
     ['install · hello.nika.yaml', HELLO_YAML],
     ['install · hello-ai.nika.yaml', HELLO_AI_YAML],
+    ['editor miniature · release-notes.nika.yaml', EXTENSION_SHOWCASE_YAML],
   ] as const)('%s validates', (label, yaml) => expectValid(label, yaml))
 
   it.each(Object.entries(SHOWCASE_YAML))('showcase %s validates', (slug, yaml) =>
