@@ -3,7 +3,7 @@ slug: standard-library-not-plugin-store
 title: "A standard library, not a plugin store"
 tag: Language
 date: 2026-05-14
-description: "23 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still."
+description: "25 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still."
 ---
 
 A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead.
