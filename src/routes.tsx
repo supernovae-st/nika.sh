@@ -12,6 +12,7 @@ import { Component as Spec } from './pages/Spec'
 import { Component as Install } from './pages/Install'
 import { Component as Convert } from './pages/Convert'
 import { Component as NotFound } from './pages/NotFound'
+import { Component as Errors } from './pages/Errors'
 
 /* ─── central route table · React Router v7 data router ──────────────────────
    Replaces the old hand-rolled hash navigation (#/blog, #/manifesto …) with
@@ -48,6 +49,12 @@ export const routes: RouteObject[] = [
       { path: 'ko/manifesto', Component: Manifesto },
       { path: 'zh-hans/manifesto', Component: Manifesto },
       { path: 'changelog', Component: Changelog },
+      /* the error register · the human twin of /errors/catalog.json. The
+         engine's check findings stamp docs_url = /errors/<CODE>; the :code
+         deep-link rides the SPA catchall (only /errors is prerendered) and
+         scrolls to its anchored row. */
+      { path: 'errors', Component: Errors },
+      { path: 'errors/:code', Component: Errors },
       { path: 'use-cases', Component: UseCasesPage },
       { path: 'spec', Component: Spec },
       { path: 'install', Component: Install },

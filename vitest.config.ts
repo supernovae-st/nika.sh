@@ -7,8 +7,10 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     globals: true,
-    /* concurrent-session worktrees live under .claude/worktrees/ — without
-       this the runner collects their whole test tree a second time. */
-    exclude: [...configDefaults.exclude, '**/.claude/**'],
+    /* concurrent-session worktrees live under .claude/worktrees/ AND as
+       sibling wt-* checkouts in the repo root — without these the runner
+       collects their whole test tree a second time (and fails on THEIR
+       branch state, not ours). */
+    exclude: [...configDefaults.exclude, '**/.claude/**', '**/wt-*/**'],
   },
 })
