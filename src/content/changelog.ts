@@ -48,6 +48,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-07-06',
     tag: 'release',
+    title: 'v0.95.0 · the catalog practices local-first',
+    body: 'The 5 local servers (Ollama, LM Studio, llama.cpp, LocalAI, vLLM) join the catalog with descriptions, tags and seed models — keyless by construction, sovereign models stay unpriced, never « free ». A bare nika suggests the next command; write honors create_dirs: false loudly, date resolves timezones from the bundled db, log neutralizes control sequences, and the MCP stdio transport bounds its reads.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.95.0',
+  },
+  {
+    date: '2026-07-06',
+    tag: 'release',
     title: 'v0.94.0 · the media suite · every run leaves a journal',
     body: 'Two media builtins take the stdlib to 25 — image generation and editing plus speech synthesis, sovereign-first with provenance manifests; every run now writes .nika/traces by default, --task scopes execution to one cone, the catalog rides the wire (catalog/tools --json + an 8-tool MCP oracle on 2026-07-28), cost_usd never lies, and doctor --ping actually probes the local ports.',
     gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.94.0',
