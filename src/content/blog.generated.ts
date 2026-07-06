@@ -30,6 +30,266 @@ export interface BlogPost {
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "the-editor-tells-the-truth",
+    "file": "2026-07-06-the-editor-tells-the-truth.md",
+    "title": "The editor tells the truth",
+    "tag": "Engine",
+    "date": "2026-07-06",
+    "description": "A green badge is a claim. We audited the editor extension against the engine the way you'd audit a client against a server — and found the badge lying. Here is the contract that keeps it honest now.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The Nika extension paints "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " verdicts in the margin as you type: a green badge on the file tree, audit chips on the canvas cards, squiggles under the exact byte span. All of it is a projection of one JSON report the binary emits. Which raises the only question that matters about any projection: "
+          },
+          {
+            "k": "strong",
+            "text": "what happens when the source grows a field the projection doesn't know?"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "We found out this week, the honest way — by auditing our own client against our own server."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The badge lied by omission."
+          },
+          {
+            "k": "text",
+            "text": " The engine's check report carries finding families: secret leaks, permits escapes, unknown tools, schema defects. The extension folded seven of them. But the engine had grown three more — a required tool arg that's missing, an arg key that's a typo ("
+          },
+          {
+            "k": "code",
+            "text": "data:"
+          },
+          {
+            "k": "text",
+            "text": " where "
+          },
+          {
+            "k": "code",
+            "text": "nika:jq"
+          },
+          {
+            "k": "text",
+            "text": " wants "
+          },
+          {
+            "k": "code",
+            "text": "input:"
+          },
+          {
+            "k": "text",
+            "text": "), a "
+          },
+          {
+            "k": "code",
+            "text": "when:"
+          },
+          {
+            "k": "text",
+            "text": " gate that is provably dead. All three fail "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": ": exit code 2, "
+          },
+          {
+            "k": "code",
+            "text": "clean: false"
+          },
+          {
+            "k": "text",
+            "text": ". The extension read none of them. So a workflow calling "
+          },
+          {
+            "k": "code",
+            "text": "nika:log"
+          },
+          {
+            "k": "text",
+            "text": " without its "
+          },
+          {
+            "k": "code",
+            "text": "message"
+          },
+          {
+            "k": "text",
+            "text": " showed a "
+          },
+          {
+            "k": "strong",
+            "text": "green badge, a clean canvas, and a quiet Problems panel"
+          },
+          {
+            "k": "text",
+            "text": " — while the CLI, on the same file, refused it."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Worse: our AI-generate loop uses "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " as its oracle — draft, check, repair, until clean. Its definition of "
+          },
+          {
+            "k": "em",
+            "text": "clean"
+          },
+          {
+            "k": "text",
+            "text": " was «zero findings I can count». Three families it couldn't count meant it could ship a draft the binary rejects, and call it done."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The fix is a contract, not a patch."
+          },
+          {
+            "k": "text",
+            "text": " The three families now fold into every surface — with the engine's own "
+          },
+          {
+            "k": "code",
+            "text": "did you mean"
+          },
+          {
+            "k": "text",
+            "text": " suggestions and byte spans riding along. But the load-bearing change is smaller and harder-won:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "clean  =  parsed  ∧  zero findings  ∧  exit code 0"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The last clause is the belt. The client's count mirrors the engine's "
+          },
+          {
+            "k": "code",
+            "text": "is_clean"
+          },
+          {
+            "k": "text",
+            "text": " list "
+          },
+          {
+            "k": "em",
+            "text": "today"
+          },
+          {
+            "k": "text",
+            "text": "; the exit code guarantees the verdict stays honest even when the engine grows a family the client hasn't learned yet. A future finding class can make the editor's count wrong — it can no longer make the editor's "
+          },
+          {
+            "k": "strong",
+            "text": "verdict"
+          },
+          {
+            "k": "text",
+            "text": " wrong. The binary's exit outranks anything the client believes."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The same audit killed the tmp-file dance."
+          },
+          {
+            "k": "text",
+            "text": " Every keystroke-fresh check used to write your dirty buffer to a temp file, spawn the binary against it, and unlink. The engine now reads the Unix dash — "
+          },
+          {
+            "k": "code",
+            "text": "nika check - --json"
+          },
+          {
+            "k": "text",
+            "text": " — so unsaved work pipes straight to stdin and never touches the disk. And the extension doesn't gate that on a version number: it reads the binary's own "
+          },
+          {
+            "k": "code",
+            "text": "check --help"
+          },
+          {
+            "k": "text",
+            "text": " for the "
+          },
+          {
+            "k": "code",
+            "text": "-"
+          },
+          {
+            "k": "text",
+            "text": " line, because a dev build from main carries the feature while still reporting last week's version. "
+          },
+          {
+            "k": "strong",
+            "text": "Probe what the binary does, never what it says it is."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "None of this is editor-specific. It's the discipline for any client of any audited system: mirror the server's definition of clean, carry its evidence (codes, spans, fixes) instead of paraphrasing it, and when the server gives you a verdict bit — trust it over your own bookkeeping. The margin paint is nice. The exit code is the truth."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-credentials-your-pipeline-breaks",
     "file": "2026-07-06-the-credentials-your-pipeline-breaks.md",
     "title": "The credentials your pipeline was breaking",
