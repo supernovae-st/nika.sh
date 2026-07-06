@@ -2159,3 +2159,305 @@
     margin-top: 28px;
   }
 }
+
+/* ─── 9.5x · the INTERACTIVE canvas miniature (v4edx) ─────────────────────────
+   Extends the v4ed register: same field, same mono voice, same verb hues —
+   but a real 2D diamond with SVG wires, a mock run that lights wave by
+   wave, lineage-on-hover and click-to-YAML. The geometry is deterministic
+   (stage is a fixed-ratio box, cards at % offsets, wires in the same
+   coordinate space) — zero DOM measuring, SSR-identical. */
+
+.v4edx-duo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 18px;
+  max-width: 980px;
+  margin: 40px auto 0;
+  align-items: stretch;
+}
+
+.v4edx-stage-frame {
+  max-width: none;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.v4edx-tab-hint {
+  float: right;
+  color: var(--v4-text-faint);
+  font-size: 10px;
+}
+
+.v4edx-stage {
+  position: relative;
+  aspect-ratio: 560 / 400;
+  /* the extension's canvas field: the «+» grid, faint, 40px pitch */
+  background-image:
+    radial-gradient(circle 1px at 20px 20px, color-mix(in srgb, var(--v4-text) 9%, transparent) 1px, transparent 1.5px);
+  background-size: 40px 40px;
+  border-radius: 6px;
+}
+
+.v4edx-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.v4edx-wire {
+  fill: none;
+  stroke: var(--v4-line);
+  stroke-width: 1.25;
+  transition: opacity 160ms ease, stroke 160ms ease;
+}
+
+.v4edx-wire--dep {
+  stroke-dasharray: 4 4;
+}
+
+.v4edx-wire--data {
+  stroke: color-mix(in srgb, var(--v4-text) 34%, transparent);
+  stroke-width: 1.5;
+}
+
+.v4edx-wire--active {
+  stroke: #2b62ea;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .v4edx-wire--active.v4edx-wire--dep {
+    animation: v4edx-beads 0.9s linear infinite;
+  }
+}
+
+@keyframes v4edx-beads {
+  to { stroke-dashoffset: -16; }
+}
+
+.v4edx-wire--dim {
+  opacity: 0.22;
+}
+
+/* ── the card · the extension's 2-zone anatomy: verb tile + body + dot ──── */
+.v4edx-card {
+  position: absolute;
+  width: 40%;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  border: 1px solid var(--v4-line);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--v4-text) 4%, #0d0d0e);
+  cursor: pointer;
+  transition: opacity 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.v4edx-card:focus-visible {
+  outline: 2px solid #2b62ea;
+  outline-offset: 2px;
+}
+
+.v4edx-card--dim {
+  opacity: 0.35;
+}
+
+.v4edx-card--selected {
+  border-color: color-mix(in srgb, var(--v4edx-hue, #2b62ea) 60%, var(--v4-line));
+}
+
+.v4edx-card--invoke { --v4edx-hue: var(--verb-invoke); }
+.v4edx-card--infer { --v4edx-hue: var(--verb-infer); }
+.v4edx-card--exec { --v4edx-hue: var(--verb-exec); }
+
+.v4edx-tile {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  border-radius: 8px 0 0 8px;
+  border-right: 1px solid var(--v4-line);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--v4edx-hue);
+  background: color-mix(in srgb, var(--v4edx-hue) 9%, transparent);
+}
+
+.v4edx-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 52px 8px 10px;
+  min-width: 0;
+}
+
+.v4edx-id {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--v4-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.v4edx-fact {
+  display: flex;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  min-width: 0;
+}
+
+.v4edx-fact-k {
+  color: var(--v4-text-faint);
+  flex: none;
+}
+
+.v4edx-fact-v {
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.v4edx-dot {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--v4-text-faint);
+}
+
+.v4edx-dot--done { color: #34d399; }
+.v4edx-dot--running { color: #2b62ea; }
+
+.v4edx-meta {
+  font-style: normal;
+  color: var(--v4-text-dim);
+}
+
+/* the run ring — the extension's 1.5s pulse, motion-safe only */
+@media (prefers-reduced-motion: no-preference) {
+  .v4edx-card--running {
+    animation: v4edx-ring 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes v4edx-ring {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, #2b62ea 45%, transparent); }
+  50% { box-shadow: 0 0 0 4px color-mix(in srgb, #2b62ea 14%, transparent); }
+}
+
+.v4edx-card--pending {
+  opacity: 0.62;
+}
+
+.v4edx-card--pending.v4edx-card--dim {
+  opacity: 0.28;
+}
+
+/* the verdict — one aurora breath on the frame when the run closes */
+@media (prefers-reduced-motion: no-preference) {
+  .v4edx-frame--verdict {
+    animation: v4edx-verdict 1.2s ease-out 1;
+  }
+}
+
+@keyframes v4edx-verdict {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, #34d399 35%, transparent); }
+  40% { box-shadow: 0 0 24px 2px color-mix(in srgb, #34d399 18%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.v4edx-pill {
+  margin-top: 12px;
+}
+
+.v4edx-runbtn {
+  border: 0;
+  font: inherit;
+  font-family: var(--mono);
+  cursor: pointer;
+  white-space: nowrap;
+  flex: none;
+}
+
+.v4edx-runbtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.v4edx-runbtn--again {
+  background: color-mix(in srgb, var(--v4-text) 12%, transparent);
+  color: var(--v4-text);
+}
+
+/* ── the YAML panel · the same file, as the text it really is ───────────── */
+.v4edx-yaml {
+  border: 1px solid var(--v4-line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: color-mix(in srgb, var(--v4-text) 2%, transparent);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.v4edx-pre {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  overflow-x: auto;
+  flex: 1;
+}
+
+.v4edx-pre span {
+  display: block;
+  transition: opacity 160ms ease;
+  border-left: 2px solid transparent;
+  margin-left: -8px;
+  padding-left: 6px;
+}
+
+.v4edx-yaml-hl {
+  color: var(--v4-text);
+  background: color-mix(in srgb, #2b62ea 8%, transparent);
+  border-left-color: #2b62ea !important;
+}
+
+.v4edx-yaml-dim {
+  opacity: 0.4;
+}
+
+/* ── responsive · the duo stacks, the stage keeps its ratio ─────────────── */
+@media (max-width: 900px) {
+  .v4edx-duo {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 620px;
+  }
+
+  .v4edx-yaml {
+    max-height: 340px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .v4edx-id { font-size: 10.5px; }
+  .v4edx-fact { font-size: 9px; }
+  .v4edx-tile { width: 26px; font-size: 11px; }
+  .v4edx-body { padding: 6px 20px 6px 8px; }
+  .v4edx-tab-hint { display: none; }
+  /* the duration meta needs air a 40%-wide card doesn't have — the ✓ dot
+     carries the story alone on a phone */
+  .v4edx-meta { display: none; }
+}
