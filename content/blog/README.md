@@ -6,6 +6,7 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 
 | date | post | file |
 |---|---|---|
+| 2026-07-06 | The editor tells the truth | [`2026-07-06-the-editor-tells-the-truth.md`](./2026-07-06-the-editor-tells-the-truth.md) |
 | 2026-07-06 | The credentials your pipeline was breaking | [`2026-07-06-the-credentials-your-pipeline-breaks.md`](./2026-07-06-the-credentials-your-pipeline-breaks.md) |
 | 2026-07-06 | Media are workflow citizens | [`2026-07-06-media-are-workflow-citizens.md`](./2026-07-06-media-are-workflow-citizens.md) |
 | 2026-07-06 | One wire, five servers | [`2026-07-06-one-wire-five-servers.md`](./2026-07-06-one-wire-five-servers.md) |
