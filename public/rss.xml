@@ -7,6 +7,14 @@
     <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
     <language>en</language>
     <item>
+      <title>Time travel, for real</title>
+      <link>https://nika.sh/blog/time-travel-for-real</link>
+      <guid isPermaLink="true">https://nika.sh/blog/time-travel-for-real</guid>
+      <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>Every debugger replays the past by re-running it. Nika's past is a file — so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.</description>
+    </item>
+    <item>
       <title>The editor tells the truth</title>
       <link>https://nika.sh/blog/the-editor-tells-the-truth</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-editor-tells-the-truth</guid>
