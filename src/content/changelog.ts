@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-06',
+    tag: 'release',
+    title: 'v0.94.0 · the media suite · every run leaves a journal',
+    body: 'Two media builtins take the stdlib to 25 — image generation and editing plus speech synthesis, sovereign-first with provenance manifests; every run now writes .nika/traces by default, --task scopes execution to one cone, the catalog rides the wire (catalog/tools --json + an 8-tool MCP oracle on 2026-07-28), cost_usd never lies, and doctor --ping actually probes the local ports.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.94.0',
+  },
+  {
     date: '2026-07-05',
     tag: 'providers',
     title: `${CANON.providers} model providers · Hugging Face and NVIDIA join`,
