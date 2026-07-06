@@ -4,6 +4,135 @@
 
 ---
 
+## The credentials your pipeline was breaking
+url: https://nika.sh/blog/the-credentials-your-pipeline-breaks
+date: 2026-07-06 · tag: Security
+
+Ask an image API for a render in mid-2026 and you get back more than pixels. OpenAI's image models and Google's media models embed **C2PA Content Credentials** in the bytes they return — a cryptographically signed manifest saying *this came from us, generated, on this date*. We verified it the direct way: a `gpt-image-2` render requested through the plain API carries a `caBX` chunk, right there between `IHDR` and the pixel data.
+
+Here is the part nobody tells you: **that signature hashes the file's byte ranges.** The manifest records exclusion ranges for itself and signs everything else. Which means *any* tool that writes into the file afterward — a metadata tagger, an optimizer, a workflow engine adding its own note — doesn't strip the credentials. It does something worse. The manifest stays present and parseable, and validation now fails. *"Present but tampered"* is the verdict a checker renders. An asset with no credentials is merely unattributed; an asset with broken credentials looks forged.
+
+We know because we did it. Nika saves every generated PNG with a small `nika` tEXt chunk — tool, engine version, provider, prompt, seed — so provenance survives a `cp` away from its sidecar manifest. Good practice, borrowed from ComfyUI and InvokeAI. Applied to a signed OpenAI render, that same chunk invalidated the upstream signature. Our provenance feature was destroying better provenance than it added.
+
+The fix is a rule worth stating generally, because as of this week it is normative in the [spec](https://github.com/supernovae-st/nika-spec):
+
+**Detect before you write. If it's signed, stand down.**
+
+The engine now scans every returned payload for credential carriage before any in-file write — a `caBX` chunk in PNG, an APP11 JUMBF segment in JPEG, a `C2PA` RIFF chunk in WebP *and WAV*, a `GEOB` frame naming `application/c2pa` in MP3 (audio credentials are real: Google's Lyria and ElevenLabs ship them). Exact byte signatures, zero dependencies, total on adversarial input. When credentials are present, the `nika` chunk is not embedded — their signed manifest outranks our informal one — and the run says so out loud:
+
+```text
+content_credentials_preserved: upstream c2pa manifest detected —
+the `nika` tEXt chunk was NOT embedded (it would invalidate the signature)
+```
+
+The output and the sidecar manifest both carry the fact:
+
+```json
+"content_credentials": "c2pa",
+"watermark_declared": "synthid (provider-declared · not byte-verified)"
+```
+
+Read those two fields carefully, because their wording is the honest part. `content_credentials: "c2pa"` means *detected* — we found the carriage, we did not cryptographically validate the chain. An engine that hasn't verified must never say "verified"; a recent formal analysis of C2PA (arXiv:2604.24890) is blunt about how much weight the ecosystem's claims can bear, and we'd rather under-claim. And `watermark_declared` is a provider *fact*, not a detection: SynthID's image and audio detectors are closed — only Google can check. Anyone who tells you their pipeline "detects SynthID" is selling something.
+
+Why now? Because the calendar says so. **EU AI Act, Article 50, applies from August 2, 2026** — four weeks from this post. Providers of generative systems must ensure outputs are "marked in a machine-readable format and detectable as artificially generated," and the marking must be *robust*. A pipeline that silently breaks upstream marks degrades exactly the property the law names. A pipeline that detects, preserves, and surfaces them gives its operator evidence.
+
+No other workflow engine looks at these octets. n8n saves the binary; Make hands the file down the pipe; the agent frameworks paste result URLs into context. None of them will tell you the asset was signed, none of them will notice when a step breaks the signature. Nika's whole media design — assets on disk, sha256-named, manifest beside them, bytes never in workflow state — exists so that questions like *"what happened to this file between generation and publication?"* have an answer. Preserving the generator's own cryptographic answer is the obvious next brick.
+
+The roadmap from here is deliberate: **detect** (shipped, this post) → **verify offline** (a reserved crate, pure-Rust crypto, bundled trust lists, no network — the sovereignty rules apply to verification too) → **sign our own**, with the operator's key, so a generate → edit → publish chain carries one auditable provenance line from end to end.
+
+Your assets are already signed. The least your tooling can do is stop breaking them.
+
+---
+
+## One wire, five servers
+url: https://nika.sh/blog/one-wire-five-servers
+date: 2026-07-06 · tag: Sovereignty
+
+When we added image generation to the stdlib, the obvious move was a third cloud provider. The review said no: the engine already spoke to five *local* LLM runtimes, and the image path had zero. Sovereignty isn't a footnote in our doctrine — local-first is the presentation order, the default example, the first provider in every table. So we went looking for the local image wire.
+
+What we found is the quiet standardization nobody announced: **the entire self-hosted media landscape converged on OpenAI's wire shapes.**
+
+For images, `POST {base}/v1/images/generations` returning `data[].b64_json` is spoken by LocalAI (first-party, spec-complete), Ollama, stable-diffusion.cpp's `sd-server`, SGLang Diffusion and vLLM-Omni. Five independent server projects, five different model runtimes, one wire. For speech, `POST {base}/v1/audio/speech` returning raw audio bytes is spoken by LocalAI, Kokoro-FastAPI, Speaches and openedai-speech. And for video — coming later, but the research is done — vLLM-Omni mirrors the Sora job lifecycle byte for byte, down to the `/content` endpoint that returns the MP4.
+
+So Nika's `local` provider is one adapter per media type, and it covers *everything you can run on your own metal*:
+
+```bash
+export NIKA_IMAGE_LOCAL_URL=http://localhost:8080   # LocalAI — or :1234 sd-server, :11434 Ollama
+export NIKA_TTS_LOCAL_URL=http://localhost:8880     # Kokoro — or LocalAI, Speaches
+```
+
+```text
+provider: local        # the sovereign path — first in every table, on purpose
+```
+
+Three design decisions make this more than a convenience:
+
+**The base URL is engine config, never workflow data.** Nika's provider calls ride a dedicated HTTP plane with SSRF protection *disabled* — safe only because endpoints are engine-fixed constants. A configurable endpoint could have broken that reasoning, so it doesn't enter through the workflow: `NIKA_IMAGE_LOCAL_URL` resolves once, at the composition root, exactly where API keys do. No `provider_options` key reaches the URL. A workflow cannot steer the engine's sockets, period — we had an adversarial reviewer try.
+
+**The wire's defaults are not your defaults.** LocalAI defaults to *URL mode* — it answers with a link to the render. Nika forces `response_format: b64_json` on every url-capable wire and hard-refuses url-only responses, because fetching a provider-supplied URL would reopen the exact network boundary the fixed-endpoint design closed. Result URLs are never fetched; that's normative spec language now, not a preference.
+
+**Honesty about what a self-hosted server is.** A local server is *less vetted* than api.openai.com by definition — that's the point of running your own. So the trust seams assume it: a verbose server that reflects your `Authorization` header into an error body gets scrubbed before the message can reach workflow outputs or an agent's context. Local renders get a 300-second default timeout because CPU diffusion takes minutes, and the timeout error tells you which three ports to check. The provenance manifest records `endpoint_host` — *which* server rendered this asset — because once the endpoint is configurable, that fact is load-bearing.
+
+There's also what the `local` provider deliberately isn't: inferred. `provider: openai` can be guessed from `model: gpt-image-2`; model names on self-hosted servers mean whatever your server says they mean, so `local` is always explicit. And its `model:` default follows LocalAI's convention while the docs tell you plainly: set it to match *your* server.
+
+The deeper reason this matters is the one in our alignment doctrine. Cloud media APIs are wonderful and we wire them happily — with attribution, exact cost metering, and their signatures preserved. But a workflow you can only run against someone else's datacenter is a workflow someone else can turn off, reprice, or subpoena. The one-wire accident means the sovereign path costs us one adapter — and costs you one environment variable.
+
+Five servers today. The wire will outlive all of them. That's what a standard looks like when nobody had to vote on it.
+
+---
+
+## Media are workflow citizens
+url: https://nika.sh/blog/media-are-workflow-citizens
+date: 2026-07-06 · tag: Engine
+
+Every automation platform bolted image generation on the same way: a node that calls one cloud API and drops base64 into your flow state. The file handling is your problem. The provenance is nobody's problem. The cost shows up on an invoice three weeks later.
+
+Nika's stdlib grew two Media builtins this week — `nika:image_generate` and `nika:tts_generate` — and the point is not that they exist. It's that they had to pass the same bar as `read`, `fetch` and `exec` before they could:
+
+```yaml
+nika: v1
+workflow: og-hero
+
+permits:
+  fs: { write: ["./assets/**"] }     # saves are boundary-gated, per final path
+  tools: ["nika:image_generate"]
+
+tasks:
+  - id: hero
+    invoke:
+      tool: "nika:image_generate"
+      args:
+        provider: local              # your server — or openai · gemini · xai · mock
+        prompt: "OG hero — a monarch butterfly over a nebula"
+        aspect_ratio: "16:9"
+        output_dir: "./assets/og"
+```
+
+**Assets, not blobs.** The render lands on disk, sha256-named, with a provenance manifest beside it — resolved request, dimensions, hashes, timing, which server actually answered (`endpoint_host`), your metadata. What flows through the workflow is a *path and a hash*, never megabytes of base64 clogging task outputs and agent context. PNG renders additionally carry provenance inside the file itself, and when the provider already signed the bytes, [we preserve their signature instead](/blog/the-credentials-your-pipeline-breaks).
+
+**Magic bytes are the authority.** The engine reads what the payload *is* — PNG header, JPEG SOF, WAV `RIFF…WAVE`, MP3 frame sync — and the saved extension follows the bytes, not the provider's label. A WAV's duration is exact header math; an MP3's duration is honestly `null` rather than a guess. A non-media payload is a hard error, not a corrupt file on your disk.
+
+**Degradation is loud or it doesn't happen.** Providers differ: one has no seed, another ignores `n`, a third only does size *classes*. Every lossy mapping is a stable, visible warning — `seed_unsupported:`, `count_shortfall:`, `xai_size_class:`, `format_mismatch:` — and the spec says silent degradation is non-conformant. The one place we invert the pattern: an argument whose silent drop would make the *output wrong* (not just less controlled) is refused outright.
+
+**Real spend rides the ledger.** xAI bills images in cost ticks; the engine converts them exactly and the run shows it:
+
+```text
+✔  render  invoke · nika:image_generate  5.6s · $0.02
+── 1/1 done · $0.02 · elapsed 5.6s ──────────────────
+```
+
+Providers that don't report exact cost show `null` — never an estimate dressed as truth. Any tool that reports a top-level `cost_usd` is metered through the same channel `infer:` uses.
+
+**Offline is a first-class provider.** `provider: mock` renders real, decodable, deterministic files — an actual PNG, an actual playable WAV — with zero network and zero keys. Your media pipeline runs in CI as-is; production is a one-line flip.
+
+And the flip goes to *your* hardware first. Both builtins speak one OpenAI-compatible wire that the entire self-hosted landscape converged on — LocalAI, Ollama, stable-diffusion.cpp, SGLang, vLLM-Omni for images; LocalAI, Kokoro-FastAPI, Speaches for speech. The base URL is engine config, never workflow data, so the security model holds. That story deserves its own post: [one wire, five servers](/blog/one-wire-five-servers).
+
+Proven the only way that counts: live renders through every cloud provider, a real MP3 spoken by `gpt-4o-mini-tts` from a script another model wrote inside the same workflow, fan-outs racing into one directory without a collision, and a local compat server asserting — server-side — that the engine sent exactly the wire it promised.
+
+Brief in. Assets, hashes, manifests and an exact bill out. That's what a workflow citizen looks like.
+
+---
+
 ## The trace you can replay
 url: https://nika.sh/blog/the-trace-you-can-replay
 date: 2026-07-05 · tag: Engine
@@ -320,7 +449,7 @@ outputs:
   brief: ${{ tasks.digest.output }}
 ```
 
-The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other 19 builtins. Everything callable is a tool. Everything about ordering is the graph.
+The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other 21 builtins. Everything callable is a tool. Everything about ordering is the graph.
 
 A closed language is a feature you can feel. You can finish learning it: four words and the file reads like prose. Your files never rot into an old dialect, because there is no new dialect coming. And tools keep growing where growth belongs, in the library: a new builtin, a new tool server (MCP), a new provider. The language holds still while the toolbelt expands.
 
@@ -396,7 +525,7 @@ date: 2026-05-14 · tag: Language
 
 A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead.
 
-**23 builtins ride the binary**, across four families: files, data, web, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with `invoke:`, they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday.
+**25 builtins ride the binary**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with `invoke:`, they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday.
 
 **One builtin, 9 honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
 

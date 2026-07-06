@@ -495,7 +495,7 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         "k": "code",
-        "lang": "yaml",
+        "lang": "text",
         "text": "provider: local        # the sovereign path — first in every table, on purpose"
       },
       {
@@ -765,7 +765,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         "k": "code",
         "lang": "yaml",
-        "text": "permits:\n  fs: { write: [\"./assets/**\"] }     # saves are boundary-gated, per final path\n  tools: [\"nika:image_generate\"]\n\ntasks:\n  - id: hero\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: local              # your server — or openai · gemini · xai · mock\n        prompt: \"OG hero — a monarch butterfly over a nebula\"\n        aspect_ratio: \"16:9\"\n        output_dir: \"./assets/og\""
+        "text": "nika: v1\nworkflow: og-hero\n\npermits:\n  fs: { write: [\"./assets/**\"] }     # saves are boundary-gated, per final path\n  tools: [\"nika:image_generate\"]\n\ntasks:\n  - id: hero\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: local              # your server — or openai · gemini · xai · mock\n        prompt: \"OG hero — a monarch butterfly over a nebula\"\n        aspect_ratio: \"16:9\"\n        output_dir: \"./assets/og\""
       },
       {
         "k": "p",

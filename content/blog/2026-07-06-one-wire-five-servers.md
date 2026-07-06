@@ -19,7 +19,7 @@ export NIKA_IMAGE_LOCAL_URL=http://localhost:8080   # LocalAI — or :1234 sd-se
 export NIKA_TTS_LOCAL_URL=http://localhost:8880     # Kokoro — or LocalAI, Speaches
 ```
 
-```yaml
+```text
 provider: local        # the sovereign path — first in every table, on purpose
 ```
 
