@@ -150,6 +150,10 @@ function Advance({
     key: string
     map: Map<string, { x: number; z: number; w: number; h: number }>
   } | null>(null)
+  /* the hover charge · one smoothed energy per slab, frame-lerped — the
+     glow, cage and scale RISE under the pointer and ebb off it instead of
+     snapping (the binary isHover read as a glitch, not a response) */
+  const hoverERef = useRef(new Float32Array(0))
   /* file-order index per task — the aspiration beat (reading order) */
   const order = useMemo(
     () => new Map(entry.plan.tasks.map((t, i) => [t.id, i])),
@@ -216,9 +220,15 @@ function Advance({
     [model],
   )
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const p = progressRef.current
     const cam = camAt(model, p)
+    /* the hover charge's per-frame catch-up (dt-normalized, tab-back safe) */
+    if (hoverERef.current.length !== model.slabs.length) {
+      hoverERef.current = new Float32Array(model.slabs.length)
+    }
+    const hoverE = hoverERef.current
+    const hoverK = 1 - Math.exp(-Math.min(0.064, delta) * 16)
     camera.up.set(cam.ux, cam.uy, cam.uz)
     camera.position.set(cam.px, cam.py, cam.pz)
     camera.lookAt(cam.tx, cam.ty, cam.tz)
@@ -354,10 +364,11 @@ function Advance({
         Math.max(0.25, 1 - (Math.max(0, prox - (FOCUS_DIST + WAVE_GAP * 0.8)) / (WAVE_GAP * 2.4)) * 0.75),
       )
       const farK = farBase + (1 - farBase) * flat
-      const isHover = hovered === id
+      hoverE[i] += ((hovered === id ? 1 : 0) - hoverE[i]) * hoverK
+      const hv = hoverE[i] < 0.004 ? 0 : hoverE[i]
 
       let stateA = st === 'running' ? 1 : st === 'done' ? 0.82 : st === 'skipped' ? 0.42 : 0.55
-      if (isHover) stateA = 1
+      stateA += (1 - stateA) * hv
       const alpha = gFade * mat * passedK * farK * Math.min(1, stateA + ignite * 0.5)
       alphas[id] = alpha
 
@@ -376,8 +387,10 @@ function Advance({
 
       /* scale · grow-in, the gate seal flattens, the pass-by shrinks hard,
          the completion settle presses the slab in for one beat (the ✓ lands
-         WITH a body movement, never a bare texture swap) */
-      const grow = (0.7 + 0.3 * mat) * (0.3 + 0.7 * passedK) * (1 - 0.045 * settle)
+         WITH a body movement, never a bare texture swap) — and the hover
+         charge lifts the slab a breath toward the hand (smoothed pop) */
+      const grow =
+        (0.7 + 0.3 * mat) * (0.3 + 0.7 * passedK) * (1 - 0.045 * settle) * (1 + 0.035 * hv)
       let sx = SLAB.w * grow
       let sy = SLAB.h * grow * (1 - 0.45 * seal)
       const sz = SLAB.d * (1 - 0.4 * seal)
@@ -438,7 +451,7 @@ function Advance({
         tb += (FAIL_RED[2] - tb) * fail
         ta = Math.max(ta, 0.9 * fail)
       }
-      if (isHover) ta = Math.max(ta, 0.35)
+      if (hv > 0) ta = Math.max(ta, 0.38 * hv)
       fT[i * 4] = tr
       fT[i * 4 + 1] = tg
       fT[i * 4 + 2] = tb
@@ -475,10 +488,10 @@ function Advance({
         eg += (FAIL_RED[1] - eg) * fail
         eb += (FAIL_RED[2] - eb) * fail
       }
-      if (isHover) {
-        er = Math.min(1, er * 1.25)
-        eg = Math.min(1, eg * 1.25)
-        eb = Math.min(1, eb * 1.25)
+      if (hv > 0) {
+        er = Math.min(1, er * (1 + 0.28 * hv))
+        eg = Math.min(1, eg * (1 + 0.28 * hv))
+        eb = Math.min(1, eb * (1 + 0.28 * hv))
       }
 
       /* four instances per slab: outer frame · inset die detail (framing the

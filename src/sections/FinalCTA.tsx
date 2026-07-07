@@ -3,7 +3,7 @@ import { REPO, SPEC } from '../content'
 import { CopyRow } from '../components/CopyRow'
 import { INSTALL_CMD } from '../components/InstallCommand'
 import { useRevealOnce } from './use-reveal-once'
-import SiteFooter from '../shell/SiteFooter'
+import SiteFooter, { SignatureMark } from '../shell/SiteFooter'
 import './v4-home.css'
 
 /* ─── FIG 10.0 · Final CTA + the site footer (theme-dark · the close) ─────────
@@ -29,8 +29,13 @@ export default function FinalCTA() {
       className="theme-dark v4sec v4-flip scroll-mt-24"
     >
       <div className="v4sec-wrap v4cta-wrap">
-        {/* (the W8 ASCII plate is GONE — operator call: the footer's living
-            particle butterfly is THE mark of the close; one signature.) */}
+        {/* THE SIGNATURE OPENS THE CLOSE (operator call): the living particle
+            butterfly lands FIRST — the noise becomes the file — then the ask.
+            Still ONE mark: the footer below hands its copy over
+            (signature={false}). */}
+        <div className="v4cta-sig">
+          <SignatureMark />
+        </div>
         {/* the close · the install affordance + two flat CTAs, blueprint register */}
         <p className="v4sec-fig" data-rise>
           14
@@ -103,9 +108,9 @@ export default function FinalCTA() {
 
       </div>
 
-      {/* FIG 10.5 · THE SIGNATURE + SUPERNOVAE · the shared site footer (the
-           F3 living butterfly + the operator-locked wordmark + PROD rule) */}
-      <SiteFooter />
+      {/* FIG 10.5 · SUPERNOVAE · the shared site footer (the operator-locked
+           wordmark + PROD rule — its butterfly moved ABOVE the CTA, one mark) */}
+      <SiteFooter signature={false} />
     </section>
   )
 }

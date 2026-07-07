@@ -135,7 +135,9 @@
   border: 0;
   background: transparent;
   pointer-events: auto;
-  cursor: default;
+  /* the slabs ANSWER the pointer (glow + tooltip) — the hand must say so;
+     `default` read as a dead zone (operator: « améliore le hover ») */
+  cursor: pointer;
   will-change: transform;
 }
 .ps-hit[data-vis='0'] {

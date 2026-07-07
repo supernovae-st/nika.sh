@@ -189,6 +189,12 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const [playing, setPlaying] = useState(false)
   const trackRef = useRef<HTMLDivElement>(null)
   const trackDragRef = useRef(false)
+  /* the press→drag slop gate · a press GLIDES to its spot; only real motion
+     (>3px) switches the head to 1:1 finger tracking */
+  const trackMovedRef = useRef(false)
+  const trackDownXRef = useRef(0)
+  /* the glide's rAF handle · a clicked seek catches up instead of teleporting */
+  const glideRef = useRef<number | null>(null)
   const ariaPctRef = useRef(-1)
   const hoverSrcRef = useRef<'node' | 'yaml'>('node')
 
@@ -1116,36 +1122,111 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     window.scrollTo({ top: window.scrollY + rect.top + clamp01(frac) * runway })
   }, [])
 
+  const cancelGlide = useCallback(() => {
+    if (glideRef.current != null) cancelAnimationFrame(glideRef.current)
+    glideRef.current = null
+  }, [])
+
+  /* THE GLIDE · a clicked/keyed seek CATCHES UP to its spot instead of
+     teleporting — an exponential ease driven through the one scroll store
+     (scrollBy per frame, same law as the play loop), so every visual stays
+     a pure function of p and the ride reverses mid-flight. Any manual input
+     (drag · wheel · touch) takes the wheel back (transport etiquette). */
+  const glideTo = useCallback(
+    (frac: number) => {
+      cancelGlide()
+      const section = sectionRef.current
+      if (!section) return
+      const rect = section.getBoundingClientRect()
+      const runway = rect.height - (stageRef.current?.offsetHeight ?? window.innerHeight)
+      if (runway <= 0) return
+      const target = window.scrollY + rect.top + clamp01(frac) * runway
+      let last = performance.now()
+      const step = (now: number) => {
+        glideRef.current = null
+        const dt = Math.min(64, now - last)
+        last = now
+        const d = target - window.scrollY
+        if (Math.abs(d) <= 1) {
+          window.scrollTo({ top: target })
+          return
+        }
+        /* halve the remaining distance every ~90ms — quick catch, soft land */
+        window.scrollBy(0, d * (1 - Math.exp((-dt / 90) * Math.LN2)))
+        glideRef.current = requestAnimationFrame(step)
+      }
+      glideRef.current = requestAnimationFrame(step)
+    },
+    [cancelGlide],
+  )
+
+  /* manual scroll input cancels a gliding seek — the finger always wins */
+  useEffect(() => {
+    if (!armed || typeof window === 'undefined') return
+    const cancel = () => cancelGlide()
+    window.addEventListener('wheel', cancel, { passive: true })
+    window.addEventListener('touchstart', cancel, { passive: true })
+    return () => {
+      cancelGlide()
+      window.removeEventListener('wheel', cancel)
+      window.removeEventListener('touchstart', cancel)
+    }
+  }, [armed, cancelGlide])
+
   const trackFrac = (e: { clientX: number }) => {
     const r = trackRef.current?.getBoundingClientRect()
     return r ? clamp01((e.clientX - r.left) / r.width) : 0
   }
+  /* the scrub flag lives on the DOM (grip cursor + rail swell in CSS) —
+     a per-move setState would reconcile the whole section for nothing */
+  const setScrub = (on: boolean) => {
+    const el = trackRef.current
+    if (!el) return
+    if (on) el.dataset.scrub = '1'
+    else delete el.dataset.scrub
+  }
   const onTrackDown = (e: React.PointerEvent<HTMLDivElement>) => {
     setPlaying(false)
     trackDragRef.current = true
+    trackMovedRef.current = false
+    trackDownXRef.current = e.clientX
+    setScrub(true)
     try {
       e.currentTarget.setPointerCapture(e.pointerId)
     } catch {
       /* inactive pointer id (synthetic dispatch) · the drag works un-captured */
     }
-    seek(trackFrac(e))
+    /* the press GLIDES the head under the pointer (no teleport); the first
+       real drag motion below switches to 1:1 tracking */
+    glideTo(trackFrac(e))
   }
   const onTrackMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (trackDragRef.current) seek(trackFrac(e))
+    const frac = trackFrac(e)
+    /* the hover ghost caret reads the pointer straight from CSS — a style
+       write on the track, never a reconcile */
+    trackRef.current?.style.setProperty('--morph-hx', frac.toFixed(4))
+    if (!trackDragRef.current) return
+    if (!trackMovedRef.current && Math.abs(e.clientX - trackDownXRef.current) < 3) return
+    trackMovedRef.current = true
+    cancelGlide()
+    seek(frac)
   }
   const onTrackUp = () => {
     trackDragRef.current = false
+    setScrub(false)
   }
   const onTrackKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const cur = progressRef.current
-    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') seek(cur + 0.02)
-    else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') seek(cur - 0.02)
-    else if (e.key === 'Home') seek(0)
-    else if (e.key === 'End') seek(1)
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') glideTo(cur + 0.02)
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') glideTo(cur - 0.02)
+    else if (e.key === 'Home') glideTo(0)
+    else if (e.key === 'End') glideTo(1)
     else return
+    setPlaying(false)
     e.preventDefault()
   }
   const onPlayClick = () => {
+    cancelGlide()
     if (!playing && progressRef.current >= 0.999) seek(0) /* replay from the top */
     setPlaying((v) => !v)
   }
@@ -1523,9 +1604,14 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               onPointerMove={onTrackMove}
               onPointerUp={onTrackUp}
               onPointerCancel={onTrackUp}
+              onLostPointerCapture={onTrackUp}
               onKeyDown={onTrackKey}
             >
               <span className="morph-track-rail" aria-hidden />
+              {/* the hover ghost · a hairline preview caret under the pointer —
+                  the track answers BEFORE you commit (hidden while the head
+                  itself is in hand) */}
+              <span className="morph-track-ghost" aria-hidden />
               {[PH.burst0, PH.run0, PH.run1].map((b) => (
                 <span key={b} className="morph-notch" style={{ left: `${b * 100}%` }} aria-hidden />
               ))}
