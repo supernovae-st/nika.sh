@@ -12,7 +12,7 @@ export const DOCS = 'https://docs.nika.sh'
    TODO: CI-refresh — canon.generated.ts carries spec counts, not the engine
    version; bump this ONE const with each release until a version projection
    exists. public/llms.txt is static — update it in the same commit. */
-export const ENGINE_VERSION = 'v0.96.0'
+export const ENGINE_VERSION = 'v0.97.0'
 
 /* the canonical site origin (matches react-ssg.config.ts `origin`). */
 export const SITE = 'https://nika.sh'

@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-07',
+    tag: 'release',
+    title: 'v0.97.0 · the run becomes evidence',
+    body: 'Every journal line carries a hash chain — trace verify walks it and names the first broken link; trace reproduce says whether a run is reproducible and WHY not; the journal attests which engine on which platform wrote it. Models are priced before the first run (602 rules from models.dev — the VS Code preflight shows $/1M on this tag); check IS the dry-run (the plan names what dispatches when); doctor speaks JSON; bare init/new converse; and the drift warn tells a re-encode from an edit.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.97.0',
+  },
+  {
     date: '2026-07-06',
     tag: 'release',
     title: 'v0.96.0 · the run becomes a place',
