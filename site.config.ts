@@ -17,6 +17,7 @@ export const ORIGIN = 'https://nika.sh'
    this list disagree. */
 export const BLOG_PATHS = [
   '/blog/time-travel-for-real',
+  '/blog/the-run-becomes-evidence',
   '/blog/the-editor-tells-the-truth',
   '/blog/the-credentials-your-pipeline-breaks',
   '/blog/one-wire-five-servers',
