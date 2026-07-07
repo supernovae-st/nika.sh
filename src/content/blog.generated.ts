@@ -30,6 +30,350 @@ export interface BlogPost {
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "the-run-becomes-evidence",
+    "file": "2026-07-07-the-run-becomes-evidence.md",
+    "title": "The run becomes evidence",
+    "tag": "Engine",
+    "date": "2026-07-07",
+    "description": "Every journal line now carries a hash chain — verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "A workflow journal is a nice story until someone asks the auditor's question: "
+          },
+          {
+            "k": "strong",
+            "text": "how do I know this record is what actually happened?"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Logs get edited. Files get truncated. A colleague \"cleans up\" a trace before attaching it to the incident report. Most systems answer the auditor with process — "
+          },
+          {
+            "k": "em",
+            "text": "nobody would do that here"
+          },
+          {
+            "k": "text",
+            "text": ". As of "
+          },
+          {
+            "k": "code",
+            "text": "nika 0.97.0"
+          },
+          {
+            "k": "text",
+            "text": ", the journal answers for itself."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Every line carries a hash chain."
+          },
+          {
+            "k": "text",
+            "text": " Each journal line records the SHA-256 of the previous line's exact bytes (the first line chains from a fixed genesis). Change one byte anywhere — an output, a timestamp, a status — and every line after it stops adding up. The run's closing line prints the head:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "✔  draft   infer · mock/echo   14ms\n── 2/2 done · $0.00 · elapsed 0.9s ─────────────────────────────\n  trace: .nika/traces/2026-07-07T15-54-48Z-aab5.ndjson · 8 events · chain 941a7616dcbb915b5c507a42f2c3715e"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "nika trace verify walks the chain"
+          },
+          {
+            "k": "text",
+            "text": " and tells you, precisely, where trust ends:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "$ nika trace verify .nika/traces/2026-07-07T15-54-48Z-aab5.ndjson\nOK — 8 events · chain intact · head 941a7616dcbb915b5c507a42f2c3715e365c0ba8beab6ebf3008ab2cd64e2762\n  internally consistent (tamper-evident, not tamper-proof) — compare the head\n  against the one the run printed to close the loop"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "We flipped one byte in a recorded output — "
+          },
+          {
+            "k": "code",
+            "text": "two"
+          },
+          {
+            "k": "text",
+            "text": " became "
+          },
+          {
+            "k": "code",
+            "text": "TWO"
+          },
+          {
+            "k": "text",
+            "text": " — and asked again:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "$ nika trace verify tampered.ndjson\nBROKEN at line 6 — recorded chain bb39ee148c6f8306 · computed 275e80498927009c\n  every line from here on is unverified (edited, inserted, dropped or reordered)\n$ echo $?\n2"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Note the engine's own wording: "
+          },
+          {
+            "k": "strong",
+            "text": "tamper-evident, not tamper-proof"
+          },
+          {
+            "k": "text",
+            "text": ". A hash chain cannot stop someone from rewriting the whole file, chain included — that would take signatures and a trusted clock, and pretending otherwise would be a lie. What it "
+          },
+          {
+            "k": "em",
+            "text": "can"
+          },
+          {
+            "k": "text",
+            "text": " do is make partial edits impossible to hide and give you a four-word head to write down at run time. Honest cryptography beats theatrical cryptography."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "nika trace reproduce answers the second auditor's question:"
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "em",
+            "text": "would this run happen the same way again?"
+          },
+          {
+            "k": "text",
+            "text": " It re-runs nothing by itself — you hand it the recorded journal and a fresh one, and it classifies every task:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "$ nika trace reproduce recorded.ndjson fresh.ndjson\n  reproduced       draft\n  reproduced       gather\n\nREPRODUCED — 2 reproduced\n  engine: 0.97.0/macos/aarch64 (both runs)"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "And when a run is "
+          },
+          {
+            "k": "em",
+            "text": "not"
+          },
+          {
+            "k": "text",
+            "text": " reproducible, it names the exact ingredient instead of shrugging:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "$ nika trace reproduce flaky-1.ndjson flaky-2.ndjson\n  NONDETERMINISTIC stamp — same def, same inputs, different output\n\nDIVERGED — 1 NONDETERMINISTIC\n$ echo $?\n2"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The taxonomy is the point: "
+          },
+          {
+            "k": "strong",
+            "text": "reproduced"
+          },
+          {
+            "k": "text",
+            "text": " · "
+          },
+          {
+            "k": "strong",
+            "text": "nondeterministic"
+          },
+          {
+            "k": "text",
+            "text": " (same definition, same inputs, different output — the model changed its mind) · "
+          },
+          {
+            "k": "strong",
+            "text": "authored"
+          },
+          {
+            "k": "text",
+            "text": " (you edited the workflow between runs) · "
+          },
+          {
+            "k": "strong",
+            "text": "environment"
+          },
+          {
+            "k": "text",
+            "text": " (a var or file differed) · "
+          },
+          {
+            "k": "strong",
+            "text": "status-changed"
+          },
+          {
+            "k": "text",
+            "text": ". \"It's flaky\" becomes a named, classified fact with an exit code CI can gate on."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "That "
+          },
+          {
+            "k": "code",
+            "text": "engine: 0.97.0/macos/aarch64 (both runs)"
+          },
+          {
+            "k": "text",
+            "text": " line is the third piece: "
+          },
+          {
+            "k": "strong",
+            "text": "the journal attests its writer."
+          },
+          {
+            "k": "text",
+            "text": " Every "
+          },
+          {
+            "k": "code",
+            "text": "workflow_started"
+          },
+          {
+            "k": "text",
+            "text": " now records the engine version and platform. A failure report that crosses a team boundary answers \"which binary, where\" before anyone asks."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Two smaller honesty upgrades ride the same release. The journal records the "
+          },
+          {
+            "k": "strong",
+            "text": "content identity"
+          },
+          {
+            "k": "text",
+            "text": " of your workflow — so the drift warning (\"workflow changed since this run\") can finally tell a real edit from your editor re-encoding line endings; a CRLF↔LF save no longer cries wolf. And "
+          },
+          {
+            "k": "code",
+            "text": "nika check --json"
+          },
+          {
+            "k": "text",
+            "text": " now carries "
+          },
+          {
+            "k": "strong",
+            "text": "per-model rates"
+          },
+          {
+            "k": "text",
+            "text": " from a 602-rule catalog refreshed from models.dev — the VS Code extension's preflight shows "
+          },
+          {
+            "k": "code",
+            "text": "$in/$out per 1M"
+          },
+          {
+            "k": "text",
+            "text": " for every model in your workflow "
+          },
+          {
+            "k": "em",
+            "text": "before the first token is spent"
+          },
+          {
+            "k": "text",
+            "text": ". Priced, then run — never the other way around."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every transcript in this post was captured verbatim against the released "
+          },
+          {
+            "k": "code",
+            "text": "nika 0.97.0"
+          },
+          {
+            "k": "text",
+            "text": " tarball — SHA-verified, same binary "
+          },
+          {
+            "k": "code",
+            "text": "brew install supernovae-st/tap/nika"
+          },
+          {
+            "k": "text",
+            "text": " gives you. The journal was already your flight recorder. Now it can testify."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "time-travel-for-real",
     "file": "2026-07-06-time-travel-for-real.md",
     "title": "Time travel, for real",
