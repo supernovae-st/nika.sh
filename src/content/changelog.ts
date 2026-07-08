@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-08',
+    tag: 'site',
+    title: 'nika.sh v4.5 · the film becomes an instrument',
+    body: 'The home film gains a real transport: a docked run monitor with live timecode, seek from any surface (a DAG node, a log line, the file itself), and an ending that lands on the $0.00 · local punchline — then hands the exact file you watched to the playground, one click from editable. The whole site now lives inside a living device frame: a dark skeuomorphic contour whose colour, depth and light read the section and route you are on, igniting while a run plays.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.5.0',
+  },
+  {
     date: '2026-07-07',
     tag: 'release',
     title: 'v0.97.0 · the run becomes evidence',
