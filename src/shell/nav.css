@@ -28,6 +28,24 @@
   z-index: 50; /* above content, below the aurora frame (z-60) and any sheet */
   pointer-events: none; /* the capsule re-arms hits; the gutter stays inert */
 }
+/* THE SCRIM (arc 9i · UX socratic) · scrolled content used to read straight
+   through the gutter above/behind the capsule (clipped text floating over
+   the menu). A progressive blur + faint darkening, masked to fade out —
+   content MELTS before it reaches the nav band, on dark and light sections
+   alike (the blur is theme-proof; a solid scrim would stain the light
+   moments). Behind the capsule (a ::before paints under the children). */
+.v4nav::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 92px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(3 3 6 / 0.38), rgb(3 3 6 / 0.12) 55%, transparent);
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 34%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 34%, transparent 100%);
+}
 @media (min-width: 720px) {
   .v4nav {
     padding: 12px 16px 0;

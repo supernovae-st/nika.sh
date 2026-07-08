@@ -112,7 +112,10 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     const compute = () => {
       raf = null
       const centerY = window.innerHeight / 2
-      let tone = 'cool'
+      /* the fallback is the ROUTE's declared register (arc 9i · RootLayout
+         stamps data-aurora-tone on <html> per pathname) — the contour reads
+         where you are on every page, not just the marked home sections */
+      let tone = document.documentElement.dataset.auroraTone || 'cool'
       for (const el of document.querySelectorAll<HTMLElement>('[data-aurora]')) {
         const r = el.getBoundingClientRect()
         if (r.top <= centerY && r.bottom >= centerY) {
@@ -143,10 +146,13 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     compute()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
+    /* a route change re-tones without waiting for the first scroll */
+    window.addEventListener('aurora:retone', onScroll)
     return () => {
       if (raf != null) cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
+      window.removeEventListener('aurora:retone', onScroll)
       root.style.removeProperty('--aurora-bezel-k')
       root.style.removeProperty('--aurora-tint-hue')
     }
