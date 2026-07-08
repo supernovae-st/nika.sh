@@ -470,9 +470,19 @@
         rgb(255 255 255 / 0.5) 88%,
         transparent
       ),
-      linear-gradient(rgb(255 255 255 / 0.14) 0 0);
-    filter: blur(5px);
-    opacity: min(1, calc(var(--aurora-intensity) * 1.1));
+      /* the always-there base rim · a hairline DEFINITION of the screen edge
+         (the Apple read: the colour stays diffuse, one near-crisp line owns
+         the definition). Present on EVERY page — even the dark content ones,
+         where a dark-on-dark bezel alone reads as nothing (arc 9 review · «
+         fais mieux »). Faintly tinted by the section hue so it's an iridescent
+         physical rim, never a stark white border. */
+      linear-gradient(
+        oklch(0.9 0.03 var(--aurora-tint-hue, 262deg) / 0.16) 0 0
+      );
+    filter: blur(4.5px);
+    /* the rim holds a floor (a defined edge always) and swells with the run —
+       decoupled from the low rest intensity that used to hide it */
+    opacity: clamp(0.34, calc(var(--aurora-intensity) * 1.7), 1);
     animation:
       aurora-slosh-a 26s ease-in-out infinite alternate,
       aurora-slosh-b 19s ease-in-out infinite alternate;
