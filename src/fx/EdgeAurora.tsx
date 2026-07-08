@@ -22,31 +22,31 @@ import './edge-aurora.css'
    SSR-safe: the visual is pure CSS; browser access lives in effects and
    event-time callbacks only. */
 
-const REST_INTENSITY = 0.13 /* the resting PRESENCE (arc 9 · reverses « pas tout
-    le temps là ») · the iridescence is quietly ALWAYS on, living on the dark
-    bezel below it — a physical dark screen-edge that catches light. Still a
-    diffuse glow, never a hard border; the run floor (0.26) + pulses (0.38)
-    clearly rise above it. Matches the CSS fallback so post-pulse decay lands
-    where the prerender started. */
+const REST_INTENSITY = 0.19 /* the DEFAULT presence floor (arc 9d · « faut que
+    ça se voie plus ») · the iridescence is clearly on, living on the dark
+    bezel — a lit physical screen-edge. The per-section 4th dimension raises
+    it further (the film glows brightest · TONES[].i); the run floor (0.40) +
+    pulses (0.52) still rise above every section. Matches the CSS fallback so
+    post-pulse decay lands where the prerender started. */
 /** run mode raises the resting floor — the frame must clearly speak while a
-    run plays (the drum), yet stay a diffuse glow, never a hard border: the
-    presence comes from opacity on a blur-melted rim, not from sharpness. */
-const RUN_REST_INTENSITY = 0.26
+    run plays (the drum), a diffuse bloom, never a hard border. Above every
+    section floor so the run always reads as an event. */
+const RUN_REST_INTENSITY = 0.4
 /** Peak the halo jumps to on a pulse before it decays. Calibrated for wide-
     gamut displays: P3 renders these hues far more vivid than headless
     captures — every ceiling here deliberately undershoots what sRGB
     screenshots suggest. */
-const PULSE_INTENSITY = 0.38
+const PULSE_INTENSITY = 0.52
 /** Decay back to rest takes ~450ms (the sharper v5 beat). */
 const DECAY_MS = 450
 /** after workflow_completed the bloom HOLDS ~1.2s (the verdict sweep plays
     inside it), then the frame decays back to the quiet blue rest */
 const RUN_HOLD_MS = 1200
 const DANGER_MS = 650
-/** the HELLO · one soft spectral breath on first paint, then the frame goes
-    quiet — « pas tout le temps là » : it announces itself once and only
-    returns when events speak. */
-const HELLO_INTENSITY = 0.32
+/** the HELLO · one soft spectral breath on first paint that settles into the
+    resting presence (the frame announces itself, then holds — no longer goes
+    « quiet », arc 9d). */
+const HELLO_INTENSITY = 0.44
 const HELLO_DELAY_MS = 400
 
 export function AuroraProvider({ children }: { children: ReactNode }) {
@@ -55,6 +55,10 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
   /* Live decay state, kept in refs so the API mutates the DOM (not React). */
   const intensityRef = useRef(REST_INTENSITY)
   const restRef = useRef(REST_INTENSITY)
+  /* the 4th dimension (arc 9d) · the current section's iridescence floor. The
+     decay eases to it at rest; the run rises above it and returns to it (not
+     a fixed const). Updated by the section scroll-spy. */
+  const sectionRestRef = useRef(REST_INTENSITY)
   const rafRef = useRef<number | null>(null)
   const lastTsRef = useRef(0)
   const tickRef = useRef<(ts: number) => void>(() => {})
@@ -92,15 +96,17 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     if (typeof window === 'undefined') return
     if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
     const root = document.documentElement
-    /* the tone table · k = bezel depth (presence) · h = tint hue (all in the
-       Siri pool · 246 violet → 264 periwinkle → 372 (=12°) coral) */
-    const TONES: Record<string, { k: number; h: number }> = {
-      film: { k: 1.42, h: 246 },
-      deep: { k: 1.3, h: 250 },
-      cool: { k: 1.18, h: 256 },
-      blue: { k: 1.22, h: 264 },
-      light: { k: 1.0, h: 268 },
-      warm: { k: 1.04, h: 372 },
+    /* the tone table · k = bezel depth · h = tint hue (Siri pool · 246 violet →
+       264 periwinkle → 372 (=12°) coral) · i = the 4th dimension: how bright
+       the iridescence glows in this section (the film burns hottest, the airy
+       light section calms, the close warms). */
+    const TONES: Record<string, { k: number; h: number; i: number }> = {
+      film: { k: 1.46, h: 246, i: 0.32 },
+      deep: { k: 1.34, h: 250, i: 0.23 },
+      cool: { k: 1.2, h: 256, i: 0.19 },
+      blue: { k: 1.28, h: 264, i: 0.27 },
+      light: { k: 1.0, h: 268, i: 0.15 },
+      warm: { k: 1.08, h: 372, i: 0.25 },
     }
     let raf: number | null = null
     let last = ''
@@ -120,6 +126,17 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       const t = TONES[tone] ?? TONES.cool
       root.style.setProperty('--aurora-bezel-k', t.k.toFixed(3))
       root.style.setProperty('--aurora-tint-hue', `${t.h}deg`)
+      /* the 4th dimension · the iridescence floor follows the section. It is
+         the rest target the decay eases to — but the RUN owns the intensity
+         while it plays (don't fight it); when the run ends it returns to this
+         section floor. Kick the decay loop (inline arm · the refs are all in
+         scope · avoids the TDZ on the arm callback defined below). */
+      sectionRestRef.current = t.i
+      if (elRef.current?.dataset.run == null) {
+        restRef.current = t.i
+        lastTsRef.current = 0
+        if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickRef.current)
+      }
     }
     const onScroll = () => {
       if (raf == null) raf = requestAnimationFrame(compute)
@@ -206,7 +223,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
     el.dataset.run = 'on'
     el.style.setProperty('--aurora-progress', '0')
-    restRef.current = RUN_REST_INTENSITY
+    restRef.current = Math.max(RUN_REST_INTENSITY, sectionRestRef.current)
     arm()
   }, [arm])
 
@@ -251,7 +268,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
       sweepTimerRef.current = setTimeout(() => {
         delete el.dataset.run
-        restRef.current = REST_INTENSITY
+        restRef.current = sectionRestRef.current /* back to the section floor */
         arm()
       }, RUN_HOLD_MS)
     },
@@ -270,7 +287,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     sweepTimerRef.current = null
     delete el.dataset.run
     el.style.setProperty('--aurora-progress', '0')
-    restRef.current = REST_INTENSITY
+    restRef.current = sectionRestRef.current /* back to the section floor */
     arm()
   }, [arm])
 
