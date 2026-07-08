@@ -76,6 +76,51 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(t)
   }, [])
 
+  /* ── arc 9 · Phase C · THE SECTION RESPONSE ────────────────────────────────
+     « selon où on est » — the fixed frame reads WHERE you are: a scroll arc
+     drives the bezel's depth + a BOUNDED dark tint hue (never green/yellow —
+     it climbs 250→380° through violet·magenta·coral, the short way that
+     stays in the Siri pool) and the iridescence's tone. Top (hero/film) =
+     deep + cool + brighter; the close = shallower + warm + calmer. Written
+     to :root (both the bezel and the aurora inherit) via rAF, write-on-
+     change, motion-gated — under reduced-motion the frame holds the neutral
+     default (deterministic · goldens unchanged). */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
+    const root = document.documentElement
+    let raf: number | null = null
+    let lastK = ''
+    const compute = () => {
+      raf = null
+      const doc = document.documentElement
+      const max = doc.scrollHeight - window.innerHeight
+      const arc = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
+      /* the eased arc · deep+cool at the top, shallow+warm at the close */
+      const e = arc < 0.5 ? 2 * arc * arc : 1 - Math.pow(-2 * arc + 2, 2) / 2
+      const bezelK = (1.28 - 0.36 * e).toFixed(3) /* depth · deep → shallow */
+      const tintHue = (250 + 130 * e).toFixed(1) /* 250°→380° · violet→coral, in-pool */
+      const sig = `${bezelK}|${tintHue}`
+      if (sig === lastK) return
+      lastK = sig
+      root.style.setProperty('--aurora-bezel-k', bezelK)
+      root.style.setProperty('--aurora-tint-hue', `${tintHue}deg`)
+    }
+    const onScroll = () => {
+      if (raf == null) raf = requestAnimationFrame(compute)
+    }
+    compute()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      if (raf != null) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      root.style.removeProperty('--aurora-bezel-k')
+      root.style.removeProperty('--aurora-tint-hue')
+    }
+  }, [])
+
   /* Tab hidden → park the ambient animations (data-idle). The ring's slow
      drift is a feature while WATCHED; it composits for nobody when hidden. */
   useEffect(() => {

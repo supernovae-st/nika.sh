@@ -52,11 +52,16 @@
   z-index: 59;
   pointer-events: none;
   border-radius: var(--aurora-radius, 48px);
-  /* the tone tracks the section (arc 9 · Phase C sets --aurora-bezel-k;
-     1 = the resting dark, >1 deepens on the film/blue beats) */
+  /* the tone tracks WHERE YOU ARE (arc 9 · Phase C · the scroll arc sets both):
+     --aurora-bezel-k deepens the shadow (presence · deep at the top, shallow
+     at the close) and --aurora-tint-hue casts it (a BOUNDED dark tint · violet
+     250° at the top → coral 380° at the close, the short way through the Siri
+     pool — never green/yellow). The tint colour is near-black (L 0.045, low
+     chroma) so it stays a DARK physical edge, never a glow. Reduced-motion
+     holds the neutral default (the scroll effect is motion-gated). */
   box-shadow:
     inset 0 0 var(--aurora-bezel-reach, 150px) var(--aurora-bezel-spread, -56px)
-      rgb(0 0 0 / calc(0.5 * var(--aurora-bezel-k, 1))),
+      oklch(0.045 0.05 var(--aurora-tint-hue, 262deg) / calc(0.5 * var(--aurora-bezel-k, 1))),
     inset 0 1.5px 0 rgb(255 255 255 / 0.035),
     inset 0 -2px 3px rgb(0 0 0 / 0.4);
 }
