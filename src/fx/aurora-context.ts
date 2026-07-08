@@ -53,6 +53,27 @@ const NOOP_VALUE: AuroraContextValue = {
 
 export const AuroraContext = createContext<AuroraContextValue>(NOOP_VALUE)
 
+/* ── the ROUTE tone (arc 9i · UX socratic) · « selon où on est », site-wide ────
+   Off the home, no [data-aurora] section owns the viewport — the contour used
+   to sit on a static cool default everywhere. Each route now declares the
+   register its contour reads: reading surfaces go light (a quiet frame),
+   the playground goes deep (an app), reference stays cool, the on-ramps go
+   blue, the manifesto warms. Pure — RootLayout stamps it on <html>, the
+   EdgeAurora scroll-spy reads it as the fallback tone. */
+const ROUTE_TONES: [RegExp, string][] = [
+  [/^\/(blog|learn)(\/|$)/, 'light'],
+  [/^\/play(\/|$)/, 'deep'],
+  [/^\/(spec|errors|changelog)(\/|$)/, 'cool'],
+  [/^\/(install|convert|use-cases)(\/|$)/, 'blue'],
+  [/^\/([a-z-]+\/)?manifesto(\/|$)/, 'warm'],
+]
+
+/** the contour tone a route declares (null → the neutral default) */
+export function toneForRoute(pathname: string): string | null {
+  for (const [re, tone] of ROUTE_TONES) if (re.test(pathname)) return tone
+  return null
+}
+
 /** Returns a stable `pulse()` that beats the edge aurora. */
 export function useAuroraPulse(): AuroraContextValue['pulse'] {
   return useContext(AuroraContext).pulse

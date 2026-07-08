@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { AuroraProvider } from '../fx/EdgeAurora'
+import { toneForRoute } from '../fx/aurora-context'
 import { REPO, SITE } from '../content'
 import { track, type FunnelEvent } from '../lib/track'
 import Nav from './Nav'
@@ -56,6 +57,17 @@ const SITE_JSONLD = {
 export default function RootLayout() {
   const { pathname } = useLocation()
   const showFooter = pathname !== '/'
+
+  /* the contour reads WHERE you are, site-wide (arc 9i) · each route stamps
+     its declared register on <html>; the EdgeAurora scroll-spy reads it as
+     the fallback tone (the home's marked sections still win while one owns
+     the viewport). The retone event re-tints without waiting for a scroll. */
+  useEffect(() => {
+    const tone = toneForRoute(pathname)
+    if (tone) document.documentElement.dataset.auroraTone = tone
+    else delete document.documentElement.dataset.auroraTone
+    window.dispatchEvent(new Event('aurora:retone'))
+  }, [pathname])
 
   /* the funnel listener (W12a · FRONT F) · ONE delegated click handler for
      the whole site: any element carrying data-track fires its event, and
