@@ -38,32 +38,51 @@
    the component only touches the DOM in effects. pointer-events:none — it
    never intercepts clicks. */
 
-/* ─── THE BEZEL (arc 9) · the « dark skeuo » material ────────────────────────
+/* the section-response vars are @property-registered so a section change
+   TRANSITIONS the frame (the smoothing is CSS · the JS only sets the target).
+   Under reduced-motion the blanket rule (index.css) snaps the duration to 0 →
+   deterministic (goldens see the default). */
+@property --aurora-bezel-k {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+@property --aurora-tint-hue {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 262deg;
+}
+:root {
+  transition:
+    --aurora-bezel-k 0.7s var(--ease-ui, ease),
+    --aurora-tint-hue 0.7s var(--ease-ui, ease);
+}
+
+/* ─── THE BEZEL (arc 9) · the « dark skeuo » material · deepened ──────────────
    A STATIC dark physical screen-edge, always on, below the iridescence (z-59).
-   Deep inner-shadow body (the bezel's dark mass, pulled in with negative
-   spread so it fades toward the center) + a hairline bevel: a top catch-light
-   and a bottom shade — the frame reads as a raised physical edge the coloured
-   light blooms on. No animation → deterministic under reduced-motion. The
-   center stays clear (the shadow's negative spread keeps it a rim, not a
-   vignette that dims the content). */
+   TWO dark stops make a real physical relief (« plus dark »): a deep inner-
+   shadow BODY (the bezel's mass, pulled in with negative spread so it fades
+   toward the center — a rim, never a content-dimming vignette) + a tighter,
+   near-black EDGE band (the bevel depth right at the perimeter) + a hairline
+   bevel (top catch-light, bottom shade). The tone tracks WHERE YOU ARE (the
+   scroll-spy sets --aurora-bezel-k depth + --aurora-tint-hue · a BOUNDED near-
+   black cast · all in [246,372]° · violet → magenta → coral, never green/
+   yellow). No animation → deterministic under reduced-motion. */
 .edge-bezel {
   position: fixed;
   inset: 0;
   z-index: 59;
   pointer-events: none;
   border-radius: var(--aurora-radius, 48px);
-  /* the tone tracks WHERE YOU ARE (arc 9 · Phase C · the scroll arc sets both):
-     --aurora-bezel-k deepens the shadow (presence · deep at the top, shallow
-     at the close) and --aurora-tint-hue casts it (a BOUNDED dark tint · violet
-     250° at the top → coral 380° at the close, the short way through the Siri
-     pool — never green/yellow). The tint colour is near-black (L 0.045, low
-     chroma) so it stays a DARK physical edge, never a glow. Reduced-motion
-     holds the neutral default (the scroll effect is motion-gated). */
   box-shadow:
-    inset 0 0 var(--aurora-bezel-reach, 150px) var(--aurora-bezel-spread, -56px)
-      oklch(0.045 0.05 var(--aurora-tint-hue, 262deg) / calc(0.5 * var(--aurora-bezel-k, 1))),
-    inset 0 1.5px 0 rgb(255 255 255 / 0.035),
-    inset 0 -2px 3px rgb(0 0 0 / 0.4);
+    /* the deep body · the dark mass */
+    inset 0 0 var(--aurora-bezel-reach, 180px) var(--aurora-bezel-spread, -58px)
+      oklch(0.04 0.05 var(--aurora-tint-hue, 262deg) / calc(0.66 * var(--aurora-bezel-k, 1))),
+    /* the tighter edge band · the physical bevel depth (« plus dark ») */
+    inset 0 0 var(--aurora-bezel-edge, 52px) var(--aurora-bezel-edge-spread, -22px)
+      oklch(0.015 0.04 var(--aurora-tint-hue, 262deg) / calc(0.62 * var(--aurora-bezel-k, 1))),
+    inset 0 1.5px 0 rgb(255 255 255 / 0.04),
+    inset 0 -2px 4px rgb(0 0 0 / 0.5);
 }
 
 .edge-aurora {

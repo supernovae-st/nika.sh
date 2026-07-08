@@ -76,35 +76,50 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(t)
   }, [])
 
-  /* ── arc 9 · Phase C · THE SECTION RESPONSE ────────────────────────────────
-     « selon où on est » — the fixed frame reads WHERE you are: a scroll arc
-     drives the bezel's depth + a BOUNDED dark tint hue (never green/yellow —
-     it climbs 250→380° through violet·magenta·coral, the short way that
-     stays in the Siri pool) and the iridescence's tone. Top (hero/film) =
-     deep + cool + brighter; the close = shallower + warm + calmer. Written
-     to :root (both the bezel and the aurora inherit) via rAF, write-on-
-     change, motion-gated — under reduced-motion the frame holds the neutral
-     default (deterministic · goldens unchanged). */
+  /* ── arc 9 · THE SECTION RESPONSE · « plus intelligent » ───────────────────
+     The frame READS which section owns the viewport center (a scroll-spy over
+     the [data-aurora] sections), not a blind scroll-%: the film is the deep
+     cool centerpiece, the boundary/wedge run deep, the gallery cools to
+     periwinkle, where-it-fits goes airy, the close warms to coral. Content
+     pages (no marked section) hold the calm default. The JS only SETS the
+     target (bezel depth + a BOUNDED tint hue · all in [246,372]° · violet →
+     magenta → coral, the short way, never green/yellow) — the SMOOTHING is
+     CSS: --aurora-bezel-k / --aurora-tint-hue are @property-registered and
+     transition on :root, so a section change eases the frame over ~0.7s.
+     Motion-gated · reduced-motion holds the default (the transition snaps
+     via the blanket rule → deterministic · goldens unchanged). */
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
     const root = document.documentElement
+    /* the tone table · k = bezel depth (presence) · h = tint hue (all in the
+       Siri pool · 246 violet → 264 periwinkle → 372 (=12°) coral) */
+    const TONES: Record<string, { k: number; h: number }> = {
+      film: { k: 1.42, h: 246 },
+      deep: { k: 1.3, h: 250 },
+      cool: { k: 1.18, h: 256 },
+      blue: { k: 1.22, h: 264 },
+      light: { k: 1.0, h: 268 },
+      warm: { k: 1.04, h: 372 },
+    }
     let raf: number | null = null
-    let lastK = ''
+    let last = ''
     const compute = () => {
       raf = null
-      const doc = document.documentElement
-      const max = doc.scrollHeight - window.innerHeight
-      const arc = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0
-      /* the eased arc · deep+cool at the top, shallow+warm at the close */
-      const e = arc < 0.5 ? 2 * arc * arc : 1 - Math.pow(-2 * arc + 2, 2) / 2
-      const bezelK = (1.28 - 0.36 * e).toFixed(3) /* depth · deep → shallow */
-      const tintHue = (250 + 130 * e).toFixed(1) /* 250°→380° · violet→coral, in-pool */
-      const sig = `${bezelK}|${tintHue}`
-      if (sig === lastK) return
-      lastK = sig
-      root.style.setProperty('--aurora-bezel-k', bezelK)
-      root.style.setProperty('--aurora-tint-hue', `${tintHue}deg`)
+      const centerY = window.innerHeight / 2
+      let tone = 'cool'
+      for (const el of document.querySelectorAll<HTMLElement>('[data-aurora]')) {
+        const r = el.getBoundingClientRect()
+        if (r.top <= centerY && r.bottom >= centerY) {
+          tone = el.dataset.aurora || 'cool'
+          break
+        }
+      }
+      if (tone === last) return
+      last = tone
+      const t = TONES[tone] ?? TONES.cool
+      root.style.setProperty('--aurora-bezel-k', t.k.toFixed(3))
+      root.style.setProperty('--aurora-tint-hue', `${t.h}deg`)
     }
     const onScroll = () => {
       if (raf == null) raf = requestAnimationFrame(compute)

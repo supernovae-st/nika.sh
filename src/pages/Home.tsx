@@ -243,7 +243,7 @@ export function Component() {
              story instead — ScrollMorph owns both variants and mounts exactly
              one. The wrapper owns the #the-run anchor so the hero CTA lands
              on whichever variant renders. */}
-        <div id="the-run" className="scroll-mt-24">
+        <div id="the-run" className="scroll-mt-24" data-aurora="film">
           <ScrollMorph flagship={flagship} />
         </div>
 
