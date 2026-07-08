@@ -1133,17 +1133,21 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
      phase notches (burst · run · flat). */
   const ticks = useMemo(() => {
     const total = flagship.trace.totalMs || 1
-    return flagship.plan.tasks.flatMap((task) => {
-      const iv = taskInterval(flagship, task.id)
-      if (!iv || 'skipAt' in iv) return []
-      return [
-        {
-          id: task.id,
-          verb: task.verb,
-          at: PH.run0 + (iv.start / total) * (PH.run1 - PH.run0),
-        },
-      ]
-    })
+    return flagship.plan.tasks
+      .flatMap((task) => {
+        const iv = taskInterval(flagship, task.id)
+        if (!iv || 'skipAt' in iv) return []
+        return [
+          {
+            id: task.id,
+            verb: task.verb,
+            at: PH.run0 + (iv.start / total) * (PH.run1 - PH.run0),
+          },
+        ]
+      })
+      /* rail order (the chapter keys walk this list — file order is
+         topological but parallel siblings can start out of file order) */
+      .sort((a, b) => a.at - b.at)
   }, [flagship])
 
   /* seek: scroll IS the store — a fraction maps to one scroll offset (the
@@ -1264,7 +1268,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   }
   const onTrackKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const cur = progressRef.current
-    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') glideTo(cur + 0.02)
+    /* Shift+←/→ · the chapter keys: jump from task tick to task tick — the
+       rail's recorded starts become keyboard chapters (seek-by-object,
+       operator lock arc 8b); plain arrows keep the fine 0.02 scrub */
+    if (e.shiftKey && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+      const fwd = e.key === 'ArrowRight'
+      const next = fwd
+        ? ticks.find((t) => t.at > cur + 0.001)
+        : [...ticks].reverse().find((t) => t.at < cur - 0.005)
+      glideTo(next ? next.at : fwd ? 1 : 0)
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') glideTo(cur + 0.02)
     else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') glideTo(cur - 0.02)
     else if (e.key === 'Home') glideTo(0)
     else if (e.key === 'End') glideTo(1)
@@ -1326,6 +1339,20 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       return `${(t / 1000).toFixed(1)}s${running.length > 0 ? ` · ${running.join(' · ')}` : ''}`
     },
     [flagship, plan, script],
+  )
+  /* the settled file joins seek-by-object (third surface): click a task's
+     yaml block → replay from that step. A drag-select is not a seek. */
+  const onYamlClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (window.getSelection()?.toString()) return
+      const line = (e.target as HTMLElement).closest<HTMLElement>('.cf-line')
+      const ln = line ? Number(line.dataset.ln) : NaN
+      const task = Number.isNaN(ln)
+        ? undefined
+        : plan.tasks.find((t) => ln >= t.line0 && ln <= t.line1)
+      if (task) seekTask(task.id)
+    },
+    [plan, seekTask],
   )
 
   /* the play loop · advances the SCROLL (~26s full story) — any manual wheel
@@ -1402,13 +1429,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 The run is done. The plan <b>lies down flat</b>.
               </p>
               <p className="morph-cap" data-for="done">
-                Hover any step to see its exact lines in the file.
+                Hover any step to see its lines in the file. Click it to replay from there.
               </p>
               {/* the phone's done voice (W20) · no settled file panel <1024,
-                  so the hover wording would lie — the touch line closes the
-                  story instead (morph.css gates which one speaks) */}
+                  so the hover wording would lie — and a TAP now seeks (the
+                  instrument wave), so « tap to read » would lie too */}
               <p className="morph-cap" data-for="done-touch">
-                Tap any step to read it. The run is a file too — replay it anytime.
+                Tap any step to replay from it. The run is a file too.
               </p>
             </div>
           </header>
@@ -1493,7 +1520,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                               : undefined
                           }
                           tabIndex={done ? 0 : undefined}
-                          onClick={armed ? () => seekTask(task.id) : undefined}
+                          onClick={
+                            armed
+                              ? () => {
+                                  if (!window.getSelection()?.toString()) seekTask(task.id)
+                                }
+                              : undefined
+                          }
                           onKeyDown={
                             done
                               ? (e) => {
@@ -1608,6 +1641,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 ref={donePanelRef}
                 onPointerMove={done ? onYamlMove : undefined}
                 onPointerLeave={done ? onYamlLeave : undefined}
+                onClick={done ? onYamlClick : undefined}
               >
                 <MemoCodeFile
                   yaml={flagship.yaml}
@@ -1650,7 +1684,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   data-task={line.task}
                   data-hi={line.task && pairTask === line.task ? '1' : undefined}
                   title={armed ? 'replay from this moment' : undefined}
-                  onClick={armed ? () => seekMs(line.atMs) : undefined}
+                  onClick={
+                    armed
+                      ? () => {
+                          if (!window.getSelection()?.toString()) seekMs(line.atMs)
+                        }
+                      : undefined
+                  }
                   onPointerEnter={
                     done && line.task
                       ? () => {
@@ -1706,9 +1746,14 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 </span>
               ) : (
                 /* pre-run · the plan's facts stand in the docked window —
-                   the whole shape readable before the tape rolls */
+                   tasks + the permit families (the blast radius IS the
+                   argument · derived verbatim from the file) + the model */
                 <span className="morph-verdict-plan">
-                  {plan.tasks.length} tasks · {verdict.model}
+                  {plan.tasks.length} tasks
+                  {plan.permits.length > 0
+                    ? ` · permits: ${[...new Set(plan.permits.map((p) => p.kind))].join(' + ')}`
+                    : ''}
+                  {` · ${verdict.model}`}
                 </span>
               )}
             </div>
@@ -1745,6 +1790,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               role="slider"
               tabIndex={0}
               aria-label="replay timeline"
+              aria-keyshortcuts="Shift+ArrowRight Shift+ArrowLeft"
               aria-valuemin={0}
               aria-valuemax={100}
               aria-valuenow={0}
