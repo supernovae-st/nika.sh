@@ -55,12 +55,14 @@ const COLS: {
   },
 ]
 
-export default function SiteFooter() {
-  /* the lazy signature mounts POST-hydration only (W12a · the #419 fix):
-     with renderToString SSG, a <Suspense> in the server tree throws React
-     #419 on the client. The static butterfly below is the SSG/no-JS truth;
-     the living particles take over right after hydration (the shared
-     useHydrated gate — Play's editor pattern). */
+/* THE SIGNATURE · the living butterfly + its museum-plate caption (F3).
+   Exported: Home lifts it ABOVE the final CTA (the mark OPENS the close —
+   operator call), every other route keeps it at the footer's top. The lazy
+   mount is POST-hydration only (W12a · the #419 fix): with renderToString
+   SSG, a <Suspense> in the server tree throws React #419 on the client.
+   The static butterfly is the SSG/no-JS truth; the living particles take
+   over right after hydration (the shared useHydrated gate). */
+export function SignatureMark() {
   const fxReady = useHydrated()
   const staticSig = (
     <div className="fsig">
@@ -68,17 +70,22 @@ export default function SiteFooter() {
       <p className="fsig-caption">the noise becomes the file.</p>
     </div>
   )
+  if (!fxReady) return staticSig
+  return (
+    <Suspense fallback={staticSig}>
+      <FooterSignature />
+    </Suspense>
+  )
+}
+
+export default function SiteFooter({ signature = true }: { signature?: boolean }) {
   return (
     <footer className="theme-dark v4sec" aria-label="Site footer">
       <div className="v4sec-wrap v4cta-wrap sitefoot-wrap">
-        {/* THE SIGNATURE · the continuous living butterfly (F3) */}
-        {fxReady ? (
-          <Suspense fallback={staticSig}>
-            <FooterSignature />
-          </Suspense>
-        ) : (
-          staticSig
-        )}
+        {/* THE SIGNATURE · the continuous living butterfly (F3) — Home
+            renders it above the final CTA instead (signature={false}:
+            one mark, one close) */}
+        {signature && <SignatureMark />}
 
         {/* THE COLUMNS · the wayfinding band (W8) — left-aligned survey grid
             over the centered altar below; every label is a real surface */}
@@ -141,12 +148,12 @@ export default function SiteFooter() {
             ·
           </span>
           <a
-            href="https://x.com/niccela"
+            href="https://x.com/ncella_"
             target="_blank"
             rel="noreferrer"
             className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
           >
-            𝕏 @niccela
+            𝕏 @ncella_
           </a>
         </p>
 

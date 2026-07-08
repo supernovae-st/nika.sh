@@ -610,22 +610,29 @@
   color: var(--cf-num);
 }
 
-/* ── the done frame · node ⟷ YAML pairing (≥1024 · armed) ────────────────────
-   At `done` the nodes become hover/focus targets: the paired node lifts with
-   a verb-hue wash while its exact YAML lines light in the settled file panel
+/* ── the settled frame · node ⟷ YAML pairing (armed) ─────────────────────────
+   From `flat` on the nodes are hover/focus targets (the run has ended —
+   verdictOn arms the JSX handlers there; `flat` used to be a dead zone the
+   caption's promise never survived): the paired node lifts with a verb-hue
+   wash, and at `done` its exact YAML lines light in the settled file panel
    (driver-set [data-hi] · both directions share it). The transform transition
-   is scoped to `done` ONLY — during the burst the driver writes transforms
-   per frame and a transition would lag the aspiration. */
+   is scoped to flat/done ONLY — during the burst the driver writes transforms
+   per frame and a transition would lag the aspiration. The lift rides a
+   slightly overshooting ease: the slab ANSWERS the hand, machine-spring. */
+.morph-stage[data-phase='flat'] .morph-node,
 .morph-stage[data-phase='done'] .morph-node {
   transition:
     border-color 0.2s var(--ease-ui, ease),
     background-color 0.18s var(--ease-ui, ease),
-    transform 0.18s var(--ease-ui, ease);
+    transform 0.24s cubic-bezier(0.26, 1.35, 0.42, 1);
 }
+.morph-stage[data-phase='flat'] .morph-node:hover,
+.morph-stage[data-phase='flat'] .morph-node[data-hi],
+.morph-stage[data-phase='done'] .morph-node:hover,
 .morph-stage[data-phase='done'] .morph-node[data-hi] {
   /* the paired slab RISES off the map (W11 wow): lift + verb-hue cage +
      a blue bloom around the device — transform/box-shadow only */
-  transform: translateY(-3px) scale(1.015);
+  transform: translateY(-4px) scale(1.02);
   border-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 70%, var(--v4-line));
   background-color: rgb(24 42 96 / 0.72);
   box-shadow:
@@ -635,6 +642,9 @@
     0 0 0 3px color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 16%, transparent),
     0 18px 34px -14px rgb(30 70 200 / 0.55);
 }
+.morph-stage[data-phase='flat'] .morph-node:hover::after,
+.morph-stage[data-phase='flat'] .morph-node[data-hi]::after,
+.morph-stage[data-phase='done'] .morph-node:hover::after,
 .morph-stage[data-phase='done'] .morph-node[data-hi]::after {
   background-image: radial-gradient(color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 85%, transparent) 1px, transparent 1px);
   opacity: 1;
@@ -669,6 +679,9 @@
   pointer-events: none;
   z-index: 3;
 }
+.morph-stage[data-phase='flat'] .morph-node:hover .morph-node-tip,
+.morph-stage[data-phase='flat'] .morph-node[data-hi] .morph-node-tip,
+.morph-stage[data-phase='done'] .morph-node:hover .morph-node-tip,
 .morph-stage[data-phase='done'] .morph-node[data-hi] .morph-node-tip {
   opacity: 1;
   visibility: visible;
@@ -1079,6 +1092,10 @@
 .morph-play:hover {
   color: var(--v4-text);
   border-color: color-mix(in oklch, var(--v4-accent) 45%, var(--v4-line));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.09),
+    0 1px 0 rgb(0 0 0 / 0.55),
+    0 2px 9px -2px color-mix(in oklch, var(--v4-accent) 40%, transparent);
 }
 .morph-play:active {
   transform: translateY(1px);
@@ -1122,10 +1139,20 @@
 .morph-track {
   position: relative;
   flex: 1;
-  height: 24px; /* ≥24px hit target — the rail stays a 1px hairline */
-  cursor: pointer;
+  height: 30px; /* ≥24px hit target — the rail stays a slim groove */
+  /* a tape you can GRAB, not a link you click — the hand says so */
+  cursor: grab;
   touch-action: none;
   border-radius: 4px;
+  /* the played charge · one var the groove + hover swell both read */
+  --track-fill: 26%;
+}
+.morph-track[data-scrub] {
+  cursor: grabbing;
+}
+.morph-track:focus-visible {
+  outline: 1.5px solid var(--v4-focus-ring);
+  outline-offset: 2px;
 }
 .morph-track-rail {
   position: absolute;
@@ -1140,14 +1167,54 @@
   background:
     linear-gradient(
       to right,
-      color-mix(in oklch, var(--v4-accent) 26%, transparent) 0%,
-      color-mix(in oklch, var(--v4-accent) 26%, transparent) calc(var(--morph-p, 0) * 100%),
+      color-mix(in oklch, var(--v4-accent) var(--track-fill), transparent) 0%,
+      color-mix(in oklch, var(--v4-accent) var(--track-fill), transparent)
+        calc(var(--morph-p, 0) * 100%),
       transparent calc(var(--morph-p, 0) * 100%)
     ),
     rgb(0 0 0 / 0.42);
   box-shadow:
     inset 0 1px 2px rgb(0 0 0 / 0.6),
     0 1px 0 rgb(255 255 255 / 0.04);
+  transition:
+    height 0.16s var(--ease-ui, ease),
+    box-shadow 0.16s var(--ease-ui, ease);
+}
+/* under the hand the groove SWELLS and its charge brightens — the track
+   answers the approach before the press (the grip the deck promised) */
+.morph-track:hover .morph-track-rail,
+.morph-track[data-scrub] .morph-track-rail,
+.morph-track:focus-visible .morph-track-rail {
+  height: 8px;
+  box-shadow:
+    inset 0 1px 3px rgb(0 0 0 / 0.65),
+    0 1px 0 rgb(255 255 255 / 0.06);
+}
+.morph-track:hover,
+.morph-track[data-scrub],
+.morph-track:focus-visible {
+  --track-fill: 38%;
+}
+/* the hover ghost · the hairline preview caret riding --morph-hx (written by
+   the track's pointermove — style-only, zero reconcile) */
+.morph-track-ghost {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: calc(var(--morph-hx, 0) * 100%);
+  width: 1px;
+  transform: translateX(-50%);
+  border-radius: 1px;
+  background: color-mix(in oklch, var(--v4-text) 55%, transparent);
+  opacity: 0;
+  transition: opacity 0.14s var(--ease-ui, ease);
+  pointer-events: none;
+}
+.morph-track:hover .morph-track-ghost {
+  opacity: 0.5;
+}
+.morph-track[data-scrub] .morph-track-ghost {
+  opacity: 0; /* the head itself is in hand — no second caret */
 }
 .morph-notch {
   position: absolute;
@@ -1165,6 +1232,16 @@
   transform: translate(-50%, -50%);
   border-radius: 1px;
   opacity: 0.85;
+  transition:
+    height 0.16s var(--ease-ui, ease),
+    opacity 0.16s var(--ease-ui, ease);
+}
+/* the recorded starts stand up with the groove — the timeline's anatomy
+   presents itself to the approaching hand */
+.morph-track:hover .morph-tick,
+.morph-track[data-scrub] .morph-tick {
+  height: 11px;
+  opacity: 1;
 }
 .morph-tick[data-verb='infer'] {
   background: var(--verb-infer);
@@ -1180,8 +1257,8 @@
 }
 .morph-playhead {
   position: absolute;
-  top: 3px;
-  bottom: 3px;
+  top: 4px;
+  bottom: 4px;
   left: calc(var(--morph-p, 0) * 100%);
   width: 3px;
   transform: translateX(-50%);
@@ -1197,6 +1274,23 @@
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 0.45),
     0 0 10px color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 70%, transparent);
+  transition:
+    top 0.16s var(--ease-ui, ease),
+    bottom 0.16s var(--ease-ui, ease),
+    width 0.16s var(--ease-ui, ease),
+    box-shadow 0.16s var(--ease-ui, ease);
+}
+/* in hand (or hovered) the head GROWS into a pinchable handle — brighter
+   halo, taller core: what you grabbed visibly answers the grip */
+.morph-track:hover .morph-playhead,
+.morph-track[data-scrub] .morph-playhead,
+.morph-track:focus-visible .morph-playhead {
+  top: 1px;
+  bottom: 1px;
+  width: 5px;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.5),
+    0 0 16px color-mix(in oklch, var(--v4-accent-bright, #8db4ff) 85%, transparent);
 }
 .morph-console-truth {
   flex: 0 0 auto;

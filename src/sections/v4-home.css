@@ -1295,6 +1295,15 @@
 .sitefoot-wrap {
   padding-top: 48px;
 }
+/* the signature OPENS the close (operator call) · lifted above the CTA, the
+   butterfly lands first — the section's own padding carries the air above it
+   (the .fsig footer margin would double it) */
+.v4cta-sig .fsig {
+  margin-top: 0;
+}
+.v4cta-sig {
+  margin-bottom: clamp(10px, 2.5vh, 24px);
+}
 
 /* ── the footer columns (W8) · the wayfinding band ───────────────────────────
    Left-aligned link columns over the centered signature altar — the
