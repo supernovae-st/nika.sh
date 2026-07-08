@@ -102,6 +102,12 @@ function nodeChip(entry: FlagshipEntry, task: FlagshipTask): { text: string; ski
 const whenLabel = (when: string): string =>
   when.replace(/^\$\{\{\s*/, '').replace(/\s*\}\}$/, '')
 
+/* the model's provider is a LOCAL runtime → the « local » proof is honest for
+   THIS flagship (never a blanket claim: a cloud model would drop the tag). The
+   catalog's 5 local providers (spec canon · local-first order) */
+const LOCAL_MODEL_RE = /^(ollama|llamacpp|llama\.cpp|vllm|lmstudio|lm-studio|localai)\b/i
+const isLocalModel = (model: string): boolean => LOCAL_MODEL_RE.test(model)
+
 /* the narration counts in words (honest per flagship: the widest wave) */
 const COUNT_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six'] as const
 const countWord = (n: number): string => COUNT_WORDS[n] ?? String(n)
@@ -201,6 +207,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
      zero reconcile per frame/move — textContent + a string cache) */
   const clockRef = useRef<HTMLSpanElement>(null)
   const clockStrRef = useRef('')
+  /* the ending's p-keyed settle — write-on-change (the verdict lands as the
+     run completes; below run1 the content is « running » and land is 0) */
+  const verdictLandRef = useRef('')
   const tipRef = useRef<HTMLSpanElement>(null)
   const tipStrRef = useRef('')
   const hoverSrcRef = useRef<'node' | 'yaml' | 'log'>('node')
@@ -557,6 +566,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           clockStrRef.current = cs
           clockEl.textContent = cs
         }
+      }
+      /* THE ENDING LANDS · the verdict is the film's closing sentence. As the
+         run saturates it SETTLES (p-keyed over [run1, run1+0.05], scrub-
+         reversible — no timed transition in the scrubbed scene): exit-0 gains
+         weight, $0.00 is the punchline. Below run1 the content is « running »
+         and land clamps to 0, so the swap and the ramp stay in lockstep. */
+      const landS = easeInOut(clamp01((p - PH.run1) / 0.05)).toFixed(3)
+      if (landS !== verdictLandRef.current) {
+        verdictLandRef.current = landS
+        stage.style.setProperty('--morph-verdict-land', landS)
       }
 
       /* phase flag → caption + narration crossfade (morph.css) */
@@ -1737,7 +1756,20 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   <span className="morph-verdict-sep" aria-hidden>
                     ·
                   </span>
-                  <span>$0.00 · {verdict.model}</span>
+                  {/* the punchline · the one fact no cloud tool can print —
+                      $0.00, and « local » when the provider is a local runtime
+                      (honest per flagship, never a blanket claim) */}
+                  <span className="morph-verdict-cost">$0.00</span>
+                  <span className="morph-verdict-sep" aria-hidden>
+                    ·
+                  </span>
+                  {isLocalModel(verdict.model) ? (
+                    <span className="morph-verdict-local">local</span>
+                  ) : null}
+                  <span className="morph-verdict-sep morph-verdict-sep--model" aria-hidden>
+                    ·
+                  </span>
+                  <span className="morph-verdict-model">{verdict.model}</span>
                 </>
               ) : timeline.reveal > 0 ? (
                 /* mid-run · the status row names what is truly running */
