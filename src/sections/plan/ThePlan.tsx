@@ -136,7 +136,7 @@ export default function ThePlan({ flagship }: { flagship: FlagshipEntry }) {
       className="theme-dark v4sec scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <SectionHead fig="02" id="the-plan-title" title="One file. A plan you can read.">
+        <SectionHead fig="01.2" id="the-plan-title" title="One file. A plan you can read.">
           The engine derives the order from <code className="mono">depends_on</code>.
           Steps with no dependency between them <b>run together</b>. Nothing runs
           that is not written in the file.

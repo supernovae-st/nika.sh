@@ -123,8 +123,10 @@
 
    THE PLATE GRAMMAR (site-wide · Linear register · "FIG" retired 2026-07-03):
    · sections/plates  →  NN, one page-scoped two-digit reading-order sequence
-                         (home 01-15 · the stamp-cell grammar)
-   · sub-plates/cards →  NN.m (wedge 04.1-04.3) or plain chapter indices
+                         (home 01-14 · the stamp-cell grammar · NO holes, NO
+                         decimals on the armed page — the Q1 renum lock)
+   · sub-plates/cards →  NN.m (the phone story's 01.1 run / 01.2 plan — the
+                         film's two halves) or plain chapter indices
                          (verb chapters 2.1-2.4 · use-case cards 7.1.1)
    · routed pages     →  a WORD masthead ("the journal" · "learn · 5 minutes"
                          · "the ship log"), never a bare figure number
@@ -148,10 +150,20 @@
 .v4sec-fig::before {
   content: '';
   width: 30px;
-  height: 1px;
-  /* match the section FIG eyebrow tick (.v4sec-fig::before · 30% ink) so the
-     hero's blueprint eyebrow reads at the same weight as every section's. */
-  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
+  height: 2px;
+  border-radius: 1px;
+  /* THE THREAD (Q2 lock) · the eyebrow tick carries the 4-verb spectrum on
+     every plate, dark and light — the one static exception to the
+     verbs-only-in-a-live-run law (tokens.css · operator-amended): the color
+     semantics never go quiet between runs. Muted mix so it reads as a
+     hairline instrument marking, never a rainbow. */
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--verb-infer) 62%, transparent),
+    color-mix(in oklch, var(--verb-exec) 62%, transparent),
+    color-mix(in oklch, var(--verb-invoke) 62%, transparent),
+    color-mix(in oklch, var(--verb-agent) 62%, transparent)
+  );
 }
 
 /* ─── the agpl egg toast · quiet mono plate, bottom-center ─────────────────── */

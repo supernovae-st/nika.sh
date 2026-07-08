@@ -108,8 +108,11 @@
   --hero-blue-glow: var(--v4-accent);        /* the soft lamp behind the figure   */
   --hero-blue-line: #5c85e6;  /* the grid hairline + HUD ink (used at low alpha) */
 
-  /* the 4 verb hues — used ONLY inside a live run (design doc §3.4),
-     never as static UI color */
+  /* the 4 verb hues — used inside a live run (design doc §3.4) plus ONE
+     static exception (operator lock · the Q2 « fil » 2026-07-08): the
+     .v4fig/.v4sec-fig eyebrow tick carries the muted 4-hue spectrum on every
+     plate so the verb semantics thread through light sections too. No other
+     static UI color. */
   --verb-infer: #5b8cff;
   --verb-exec: #ff7a3c;
   --verb-invoke: #22d3ee;

@@ -10,7 +10,6 @@ import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
 import RunExplains from '../sections/run-explains/RunExplains'
 import Verbs from '../sections/Verbs'
-import BeyondChat from '../sections/BeyondChat'
 import WhereItFits from '../sections/WhereItFits'
 import Toolbelt from '../sections/Toolbelt'
 import UseCasesV4 from '../sections/UseCasesV4'
@@ -24,9 +23,12 @@ import FinalCTA from '../sections/FinalCTA'
 import ScrollRail from '../shell/ScrollRail'
 
 /* ─── / · the v4 trust landing ───────────────────────────────────────────────
-   Renders PURELY the v4 sections (design doc §6), in order:
-     Hero → LivingFile → Verbs → BeyondChat → Toolbelt →
-     UseCasesV4 → ChangelogPreview → Proof → FinalCTA (→ footer in FinalCTA).
+   Renders PURELY the v4 sections (design doc §6), stamped 01→14 in reading
+   order (the Q1 renum lock · no holes, no decimals on the armed page):
+     Hero → 01 film → 02 boundary → 03 wedge(+ledger) → 04 run-explains →
+     05 verbs → 06 toolbelt → 07 where-it-fits → 08 gallery → 09 editor →
+     10 changelog → 11 proof → 12 get-started → 13 faq → 14 close (→ footer).
+   (BeyondChat was absorbed into the wedge — one anti-chat chapter.)
    Zero WebGL on first load — the hero is prerendered DOM, instant + crawlable.
 
    The whole v3 cinematic (the butterfly→supernova intro film + the Galaxy3D
@@ -245,38 +247,36 @@ export function Component() {
           <ScrollMorph flagship={flagship} />
         </div>
 
-        {/* FIG 3.0 · THE BOUNDARY — the same file's permits: read as the
+        {/* 02 · THE BOUNDARY — the same file's permits: read as the
              consumer feature + the denial beat (one card, one flash) */}
         <TheBoundary flagship={flagship} />
 
-        {/* FIG 3.5 · Proof strip — the honest mono numbers band (CANON counts) */}
+        {/* — · Proof strip — the honest mono numbers band (CANON counts) */}
         <ProofStrip />
 
-        {/* FIG 4.0 · THE CAPTURE — the manifesto beat: the session ends, the
-             file stays (two-tone thesis + the chat-vs-file split) */}
+        {/* 03 · THE WEDGE — the ONE anti-chat chapter: the capture split
+             (emotion) + the black-box ledger (evidence · absorbed from the
+             retired BeyondChat section per the Q1 fusion lock) */}
         <Wedge flagship={flagship} />
 
-        {/* FIG 4.5 (plate) · THE RUN EXPLAINS ITSELF — the observability chapter:
+        {/* 04 · THE RUN EXPLAINS ITSELF — the observability chapter:
              real terminal captures of the signature workflow (check · inspect ·
              the live run · trace · kill→resume · the human gate) */}
         <RunExplains />
 
-        {/* FIG 05 · the acid moment — beyond the black box (file vs chat/API) */}
-        <BeyondChat />
-
-        {/* FIG 06 · verb chapters — what an agent can do, declared not hidden */}
+        {/* 05 · verb chapters — what an agent can do, declared not hidden */}
         <Verbs />
 
-        {/* FIG 07 · Toolbelt — the language's reach: what those verbs may use */}
+        {/* 06 · Toolbelt — the language's reach: what those verbs may use */}
         <Toolbelt />
 
-        {/* FIG 08 · where Nika fits — the orthogonal layer underneath (light) */}
+        {/* 07 · where Nika fits — the orthogonal layer underneath (light) */}
         <WhereItFits />
 
-        {/* FIG 09 · Use cases — the gallery (here plurality is the point) */}
+        {/* 08 · Use cases — the gallery (here plurality is the point) */}
         <UseCasesV4 />
 
-        {/* FIG 9.5 · In your editor — the file becomes a canvas (the
+        {/* 09 · In your editor — the file becomes a canvas (the
              extension beat: content-first cards · live run · audit-before-
              run, with the two store CTAs) */}
         <EditorCanvas />

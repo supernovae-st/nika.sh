@@ -72,7 +72,7 @@ export default function TheBoundary({ flagship }: { flagship: FlagshipEntry }) {
           [ THE BOUNDARY ]
         </p>
         <SectionHead
-          fig="03"
+          fig="02"
           id="the-boundary-title"
           title="What it's allowed to touch."
         >

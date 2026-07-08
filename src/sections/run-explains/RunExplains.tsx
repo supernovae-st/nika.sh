@@ -145,7 +145,7 @@ export default function RunExplains() {
       className="theme-dark v4sec scroll-mt-24"
     >
       <div className="v4sec-wrap">
-        <SectionHead fig="4.5" id="run-explains-title" title="The run explains itself.">
+        <SectionHead fig="04" id="run-explains-title" title="The run explains itself.">
           One file ran once: audited before it started, storyboarded while it ran,
           replayable after it ended. Every frame below is real output of the real
           binary, captured on a terminal against committed fixtures. Offline, on the
