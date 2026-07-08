@@ -33,7 +33,15 @@
   font-family: 'Martian Grotesk';
   src: url('/fonts/martian-grotesk-variable.woff2') format('woff2');
   font-weight: 100 900;
-  font-display: swap;
+  /* optional (was swap · the /play CLS endgame): the body face is preloaded
+     on every route, so it makes first paint on any normal connection — and
+     when it can't, the metric twin below holds the page WITHOUT a late
+     re-wrap (per-string wrap flips survived even 0.2%-matched advances:
+     « nothing is sent anywhere » un-wrapped at grotesk-load · LH 0.125).
+     No swap, no shift — the class dies structurally. Mono + Clash keep
+     swap: the code voice must land even late, and their measured deltas
+     are ≤0.01 CLS. */
+  font-display: optional;
 }
 @font-face {
   font-family: 'Clash Display';
@@ -104,6 +112,29 @@
     local('Helvetica Neue'),
     local('Helvetica');
   size-adjust: 131.1%;
+  ascent-override: 100%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
+/* the SEMIBOLD/BOLD stand-in · the regular-weight ratio (131.1% · vs Arial
+   regular) left <b> spans measuring ~8% too wide in the fallback — a bold
+   phrase wrapped one line early, then UN-wrapped when the real Grotesk
+   landed (the /play lede · LH CLS 0.143 attributed « web font loaded »;
+   probed at 390×844: v4sec-lede 141→112px, the <b> 54→20px). The site's
+   display bolds ride the variable axis at 560/600 (tokens.css · no blanket
+   bold), and font-synthesis is none, so this face's Arial Bold is what
+   actually renders: its own measured ratio (frequency-weighted hmtx ·
+   fontTools · 2026-07-08): Grotesk wght560 0.5839 / wght600 0.5853 vs
+   Arial Bold 0.4762 → 122.6-122.9%, pinned at the midpoint. */
+@font-face {
+  font-family: 'Martian Grotesk Fallback';
+  src:
+    local('Arial Bold'),
+    local('Arial'),
+    local('Helvetica Neue'),
+    local('Helvetica');
+  font-weight: 500 900;
+  size-adjust: 122.8%;
   ascent-override: 100%;
   descent-override: 20%;
   line-gap-override: 0%;
