@@ -827,6 +827,19 @@
   height: auto;
   max-height: 340px;
 }
+/* the idle whisper (operator lock · arc 8b) · a UI affordance in the empty
+   well, never a fake log line — the run's first byte replaces it (:empty
+   dies with the log). The / '' alt keeps it out of the accessibility tree. */
+.morphsec[data-armed] .morph-term-body:empty::before {
+  content: '· press ▶ · or keep scrolling ·' / '';
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--v4-hud-faint, rgb(255 255 255 / 0.28));
+  user-select: none;
+}
 
 .morph-line {
   display: flex;
@@ -1070,6 +1083,7 @@
 }
 /* the paired task's lines · the same wash both hover directions share */
 .morph-done-code .cf-line.morph-hi {
+  cursor: pointer; /* the lit block is clickable — replay from this step */
   background: rgb(79 134 255 / 0.13);
   box-shadow: inset 2px 0 0 var(--v4-accent);
 }
