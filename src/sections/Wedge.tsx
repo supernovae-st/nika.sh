@@ -41,7 +41,7 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
   const ref = useRevealOnce<HTMLElement>()
 
   return (
-    <section ref={ref} id="wedge" aria-labelledby="wedge-title" className="theme-dark v4sec scroll-mt-24">
+    <section ref={ref} id="wedge" aria-labelledby="wedge-title" className="theme-dark v4sec scroll-mt-24" data-aurora="deep">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
           03
