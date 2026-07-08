@@ -200,8 +200,11 @@ export const FLAT_APEX = 0.55
 
 /** the dive LANDS here (fraction of the flat window) — before the window
     ends, so the aligned flat map holds STILL through the whole 3D⇄DOM
-    crossfade (W10: the dissolve happens on a static frame, never mid-move) */
-export const FLAT_LAND = 0.86
+    crossfade (W10: the dissolve happens on a static frame, never mid-move).
+    Tightened 0.86 → 0.80 (arc 8f · resserrer le settle): the tumble finishes
+    sooner so the aligned map holds LONGER before the crossfade — less runway
+    caught mid-lie-down, more on the composed flat plan. */
+export const FLAT_LAND = 0.8
 
 export function flattenAt(p: number): number {
   return easeInOut(clamp01((p - PH.run1) / (PH.flat1 - PH.run1)))
@@ -214,12 +217,31 @@ export function flattenLeadAt(p: number): number {
   return easeInOut(clamp01(((p - PH.run1) / (PH.flat1 - PH.run1)) * 1.5))
 }
 
+/** smootherstep (Perlin · 6t⁵−15t⁴+10t³) · flatter tails + a steeper middle
+    than the quadratic easeInOut — the settle spends LESS scroll in the loose
+    mid-migration and MORE holding the aligned poses at either end */
+const smootherstep = (x: number): number => {
+  const t = clamp01(x)
+  return t * t * t * (t * (t * 6 - 15) + 10)
+}
+
+/** THE DIVE · 0 through the pull-back (kr ≤ FLAT_APEX), then a smootherstep to
+    1 at FLAT_LAND. This is the ONE curve the crane's roll AND every slab's yaw
+    read (camAt.kB · flatYaw), so face and lens turn together and labels stay
+    upright — extracted here so the two can never drift (they were duplicated
+    easeInOut expressions). Smootherstep tightens the lie-down: « the plan lies
+    down flat » reads composed at every scrub, the scatter compressed into a
+    narrower band of runway (operator · arc 8f · resserrer le settle). */
+export function flattenDiveAt(p: number): number {
+  const kr = clamp01((p - PH.run1) / (PH.flat1 - PH.run1))
+  return smootherstep(clamp01((kr - FLAT_APEX) / (FLAT_LAND - FLAT_APEX)))
+}
+
 /** the flatten's ROLL track — 0 through the pull-back, turning only during
     the dive. The slabs' yaw rides this SAME curve, so a face and the camera
     roll together and the labels stay upright through the whole turn. */
 export function flattenRollAt(p: number): number {
-  const kr = clamp01((p - PH.run1) / (PH.flat1 - PH.run1))
-  return easeInOut(clamp01((kr - FLAT_APEX) / (FLAT_LAND - FLAT_APEX)))
+  return flattenDiveAt(p)
 }
 
 /** a slab's X-pitch through the flatten: its pass-by lean k→0, face-up at 1 */
@@ -325,8 +347,10 @@ export function camAt(model: PlanSceneModel, p: number): CamPose {
     }
   }
   /* the dive eases to its landing BEFORE the window ends (FLAT_LAND) — the
-     final stretch of the flat window is a HELD frame for the crossfade */
-  const kB = easeInOut(clamp01((kr - FLAT_APEX) / (FLAT_LAND - FLAT_APEX)))
+     final stretch of the flat window is a HELD frame for the crossfade. The
+     up-roll reads flattenDiveAt · the ONE curve the slabs' yaw reads too
+     (they turn together · labels upright) — never a second easeInOut here */
+  const kB = flattenDiveAt(p)
   const ux = -kB
   const uy = 1 - kB
   const ul = Math.hypot(ux, uy) || 1

@@ -948,6 +948,58 @@
 .morph-verdict-wait {
   color: var(--v4-text-faint);
 }
+
+/* ── THE ENDING BEAT · the verdict is the film's closing sentence ────────────
+   The 3D DAG already gets an exit-0 light sweep (wave K); this gives the
+   VERBAL close the matching energy. As the run completes the two heroes —
+   ✓ exit 0 and the $0.00 punchline — rise one breath and light up, while the
+   middle facts ease in a touch behind them. All keyed on --morph-verdict-land
+   (computed in apply · p-keyed · scrub-reversible · NO timed transition in the
+   scrubbed scene). Un-armed (static scene / reduced-motion / SSR) the var
+   falls back to 1 → the settled ending shows at full strength. */
+.morph-verdict[data-done='true'] {
+  --vl: var(--morph-verdict-land, 1);
+}
+/* the two heroes rise a breath as the run lands, then hold (transform only ·
+   zero layout · the row's min-height already reserves the box) */
+.morph-verdict[data-done='true'] .morph-verdict-exit,
+.morph-verdict[data-done='true'] .morph-verdict-cost {
+  transform: translateY(calc((1 - var(--vl)) * 3px));
+}
+.morph-verdict[data-done='true'] .morph-verdict-exit {
+  text-shadow: 0 0 calc(9px * var(--vl))
+    color-mix(in oklch, var(--cf-str) calc(40% * var(--vl)), transparent);
+}
+/* the cost · the punchline — aurora-bright always, its glow peaks as it lands */
+.morph-verdict-cost {
+  color: var(--v4-accent-bright, #8db4ff);
+  font-weight: 600;
+}
+.morph-verdict[data-done='true'] .morph-verdict-cost {
+  text-shadow: 0 0 calc(13px * var(--vl))
+    color-mix(in oklch, var(--v4-accent-bright, #8db4ff) calc(55% * var(--vl)), transparent);
+}
+.morph-verdict-local {
+  color: var(--v4-accent-bright, #8db4ff);
+  letter-spacing: 0.05em;
+}
+.morph-verdict-model {
+  color: var(--v4-text-dim);
+}
+/* the details settle in behind the two heroes (hierarchy without motion) */
+.morph-verdict[data-done='true'] .morph-verdict-tasks,
+.morph-verdict[data-done='true'] .morph-verdict-ms,
+.morph-verdict[data-done='true'] .morph-verdict-art {
+  opacity: calc(0.5 + 0.5 * var(--vl));
+}
+@media (prefers-reduced-motion: reduce) {
+  /* the scene never arms under reduced-motion (static truth); belt-and-braces
+     so no residual transform lingers if the var is ever set */
+  .morph-verdict[data-done='true'] .morph-verdict-exit,
+  .morph-verdict[data-done='true'] .morph-verdict-cost {
+    transform: none;
+  }
+}
 /* pre-run · the plan's facts hold the status row (the docked window is
    never a dumb box: tasks + model readable before the tape rolls) */
 .morph-verdict-plan {
@@ -1564,6 +1616,14 @@
   .morph-verdict-art + .morph-verdict-sep {
     display: none;
   }
+  /* the ending punchline holds the phone line: ✓ exit 0 · 7 tasks · 58.7s ·
+     $0.00 · local. The exact model string yields (« local » already carries
+     the proof; the model reads in the body log + the pre-run status row) —
+     it wrapped to a loose 2nd line at 390 otherwise */
+  .morph-verdict-model,
+  .morph-verdict-sep--model {
+    display: none;
+  }
   /* the live status line holds ONE row (SE law: a wrapped bottom-anchored
      strip grows upward and eats the last node) — a long running-list
      ellipsizes; the log right above carries the full truth */
@@ -1764,4 +1824,6 @@
   .morph-verdict-tasks + .morph-verdict-sep {
     display: none;
   }
+  /* ✓ exit 0 · $0.00 · local holds one line here (the model already yielded
+     at ≤767 · the pre-run status row + the body « run complete » named it) */
 }
