@@ -133,6 +133,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/prompts-are-code — prompt versioning is just git, plus a witness.
+    out: 'og-blog-prompts-are-code.png',
+    fig: 'FIG B.12',
+    size: 62,
+    headline: 'Prompts are<br><span class="b">code now.</span>',
+    sub: 'The prompt lives in the workflow file: git diffs it, a PR reviews it, and the engine names an edited prompt between two&nbsp;runs.',
+    detail:
+      '<span class="arrow">▸</span><span>one-line&nbsp;diff<span class="sep">·</span>replayable<span class="sep">·</span><b>AUTHORED&nbsp;·&nbsp;the&nbsp;task&nbsp;changed</b></span>',
+  },
+  {
     // /blog/starting-over-on-purpose — the rebuild decision.
     out: 'og-blog-starting-over-on-purpose.png',
     fig: 'FIG 0.3',
