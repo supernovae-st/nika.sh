@@ -22,21 +22,20 @@ import './edge-aurora.css'
    SSR-safe: the visual is pure CSS; browser access lives in effects and
    event-time callbacks only. */
 
-const REST_INTENSITY = 0.19 /* the DEFAULT presence floor (arc 9d · « faut que
-    ça se voie plus ») · the iridescence is clearly on, living on the dark
-    bezel — a lit physical screen-edge. The per-section 4th dimension raises
-    it further (the film glows brightest · TONES[].i); the run floor (0.40) +
-    pulses (0.52) still rise above every section. Matches the CSS fallback so
-    post-pulse decay lands where the prerender started. */
+const REST_INTENSITY = 0.11 /* arc 9f · at rest the frame IS the dark anodized
+    material (the bezel above the glow) — the iridescence is a quiet under-
+    bezel light. The per-section 4th dimension nudges it (TONES[].i); the RUNS
+    own the wow (0.34 floor · 0.46 pulses). Matches the CSS fallback so post-
+    pulse decay lands where the prerender started. */
 /** run mode raises the resting floor — the frame must clearly speak while a
     run plays (the drum), a diffuse bloom, never a hard border. Above every
     section floor so the run always reads as an event. */
-const RUN_REST_INTENSITY = 0.4
+const RUN_REST_INTENSITY = 0.34
 /** Peak the halo jumps to on a pulse before it decays. Calibrated for wide-
     gamut displays: P3 renders these hues far more vivid than headless
     captures — every ceiling here deliberately undershoots what sRGB
     screenshots suggest. */
-const PULSE_INTENSITY = 0.52
+const PULSE_INTENSITY = 0.46
 /** Decay back to rest takes ~450ms (the sharper v5 beat). */
 const DECAY_MS = 450
 /** after workflow_completed the bloom HOLDS ~1.2s (the verdict sweep plays
@@ -46,7 +45,7 @@ const DANGER_MS = 650
 /** the HELLO · one soft spectral breath on first paint that settles into the
     resting presence (the frame announces itself, then holds — no longer goes
     « quiet », arc 9d). */
-const HELLO_INTENSITY = 0.44
+const HELLO_INTENSITY = 0.34
 const HELLO_DELAY_MS = 400
 
 export function AuroraProvider({ children }: { children: ReactNode }) {
@@ -101,12 +100,12 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
        the iridescence glows in this section (the film burns hottest, the airy
        light section calms, the close warms). */
     const TONES: Record<string, { k: number; h: number; i: number }> = {
-      film: { k: 1.46, h: 246, i: 0.32 },
-      deep: { k: 1.34, h: 250, i: 0.23 },
-      cool: { k: 1.2, h: 256, i: 0.19 },
-      blue: { k: 1.28, h: 264, i: 0.27 },
-      light: { k: 1.0, h: 268, i: 0.15 },
-      warm: { k: 1.08, h: 372, i: 0.25 },
+      film: { k: 1.46, h: 246, i: 0.2 },
+      deep: { k: 1.34, h: 250, i: 0.13 },
+      cool: { k: 1.2, h: 256, i: 0.11 },
+      blue: { k: 1.28, h: 264, i: 0.16 },
+      light: { k: 1.0, h: 268, i: 0.09 },
+      warm: { k: 1.08, h: 372, i: 0.14 },
     }
     let raf: number | null = null
     let last = ''

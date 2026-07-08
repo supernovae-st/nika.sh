@@ -67,24 +67,27 @@
   }
 }
 
-/* ─── THE BEZEL (arc 9e) · a REAL device frame — opaque, black, physical ──────
+/* ─── THE BEZEL (arc 9f) · a REAL device frame — opaque, black, ABOVE the glow
    The element is the SCREEN CUTOUT (inset by --frame-w, rounded); the huge
    un-inset spread shadow floods everything OUTSIDE the rounded cutout with
-   OPAQUE near-black — the frame itself, viewport corners included (« en
-   dehors de l'aurora c'est noir » · no more see-through corners). A hairline
-   catch-light sits on the frame right at the lip; the inset shadows keep the
-   section-tinted depth INSIDE the screen. Static → deterministic. */
+   OPAQUE near-black. It sits ABOVE the aurora (z-60 > 59): the glow's blur
+   can never bleed over the frame — the corners stay BLACK, and the light
+   only escapes INWARD onto the screen, like light leaking from under a
+   physical bezel (operator: « bg pas noir · toujours transparent »). The
+   ::before is the frame's MATERIAL: a dark anodized band (vertical raked
+   light + a faint section-tinted sheen) carved by the canonical atomic ring
+   mask. Static → deterministic. */
 .edge-bezel {
   position: fixed;
   inset: var(--frame-w, 14px);
-  z-index: 59;
+  z-index: 60; /* ABOVE the aurora — the frame owns its silhouette */
   pointer-events: none;
   border-radius: var(--aurora-radius, 48px);
   box-shadow:
-    /* THE FRAME · opaque near-black, floods outside the screen cutout */
-    0 0 0 9999px #040408,
+    /* THE FRAME · opaque black, floods outside the screen cutout */
+    0 0 0 9999px #030306,
     /* the lip · a hairline catch-light where the frame meets the screen */
-    0 0 0 1px rgb(255 255 255 / 0.055),
+    0 0 0 1px rgb(255 255 255 / 0.06),
     /* the deep body · the dark mass INSIDE the screen (section-tinted) */
     inset 0 0 var(--aurora-bezel-reach, 180px) var(--aurora-bezel-spread, -58px)
       oklch(0.04 0.05 var(--aurora-tint-hue, 262deg) / calc(0.66 * var(--aurora-bezel-k, 1))),
@@ -96,13 +99,43 @@
     inset 0 -3px 7px rgb(0 0 0 / 0.62),
     inset 0 0 0 1px oklch(0.72 0.06 var(--aurora-tint-hue, 262deg) / 0.05);
 }
+/* the frame's MATERIAL (arc 9f · « pas skeumorphisme » fixed) · the band
+   itself is an anodized dark metal: a raked vertical light (lit top edge,
+   shaded bottom), a near-black body, and a faint STATIC sheen cast by the
+   section hue (dark, low chroma — material, never glow). Carved by the
+   canonical atomic ring mask (content-box exclude · the 2026-07-03 law);
+   outer corners square off against the flood beneath. */
+.edge-bezel::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--frame-w, 14px));
+  padding: var(--frame-w, 14px);
+  border-radius: calc(var(--aurora-radius, 48px) + var(--frame-w, 14px) * 0.6);
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  background:
+    linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.055),
+      transparent 26%,
+      transparent 72%,
+      rgb(0 0 0 / 0.42)
+    ),
+    linear-gradient(
+      180deg,
+      oklch(0.19 0.018 var(--aurora-tint-hue, 262deg)),
+      #050508 52%,
+      oklch(0.13 0.015 var(--aurora-tint-hue, 262deg))
+    );
+}
 
 .edge-aurora {
-  /* rest intensity · PRESENCE (arc 9d · « se voie plus »): the iridescence is
-     clearly on. The per-section 4th dimension raises it (the film glows
-     brightest); pulses / runs raise it further, then it decays to the section
-     floor (mutated by EdgeAurora.tsx · this is the SSR fallback). */
-  --aurora-intensity: 0.19;
+  /* rest intensity (arc 9f) · at rest the frame is the dark MATERIAL — the
+     iridescence is a quiet under-bezel light; the per-section 4th dimension
+     nudges it, the RUNS own the wow (mutated by EdgeAurora.tsx · SSR
+     fallback). */
+  --aurora-intensity: 0.11;
   /* rim geometry · the band thickness in px */
   --aurora-band: 16px;
   /* THE FIELD LAW (v11) · how deep the soft field reaches from each edge.
@@ -119,9 +152,10 @@
 
   position: fixed;
   /* the iridescence lives AT THE SEAM between the black frame and the screen
-     cutout (arc 9e) — it hugs the screen edge, inside the frame */
+     cutout — and BELOW the bezel (z-59 < 60): the frame covers its outward
+     bleed, so the glow only lights the screen, never the frame (arc 9f) */
   inset: var(--frame-w, 14px);
-  z-index: 60; /* above content, below any modal */
+  z-index: 59;
   pointer-events: none;
   background: transparent;
 
@@ -201,10 +235,10 @@
       conic-gradient(
         from var(--aurora-spin2),
         transparent,
-        rgb(245 185 234 / 0.38) 9%,
+        rgb(245 185 234 / 0.22) 9%,
         transparent 22%,
         transparent 36%,
-        rgb(255 186 113 / 0.33) 50%,
+        rgb(255 186 113 / 0.2) 50%,
         transparent 64%,
         transparent 78%,
         rgb(198 134 255 / 0.82) 88%,
@@ -214,12 +248,12 @@
         from var(--aurora-spin),
         rgb(141 159 255 / 0.95),
         rgb(188 130 243 / 0.92) 12%,
-        rgb(255 103 120 / 0.45) 27%,
-        rgb(255 186 113 / 0.4) 40%,
+        rgb(255 103 120 / 0.18) 27%,
+        rgb(255 186 113 / 0.26) 40%,
         rgb(10 132 255 / 0.72) 52%,
         rgb(94 92 230 / 0.78) 62%,
-        rgb(245 185 234 / 0.4) 74%,
-        rgb(255 45 149 / 0.3) 85%,
+        rgb(245 185 234 / 0.24) 74%,
+        rgb(255 45 149 / 0.16) 85%,
         rgb(198 134 255 / 0.9) 93%,
         rgb(141 159 255 / 0.95)
       );
@@ -227,10 +261,10 @@
       conic-gradient(
         from var(--aurora-spin2),
         transparent,
-        rgb(245 185 234 / 0.38) 9%,
+        rgb(245 185 234 / 0.22) 9%,
         transparent 22%,
         transparent 36%,
-        rgb(255 186 113 / 0.33) 50%,
+        rgb(255 186 113 / 0.2) 50%,
         transparent 64%,
         transparent 78%,
         rgb(198 134 255 / 0.82) 88%,
@@ -240,12 +274,12 @@
         from var(--aurora-spin) in oklch,
         rgb(141 159 255 / 0.95),
         rgb(188 130 243 / 0.92) 12%,
-        rgb(255 103 120 / 0.45) 27%,
-        rgb(255 186 113 / 0.4) 40%,
+        rgb(255 103 120 / 0.18) 27%,
+        rgb(255 186 113 / 0.26) 40%,
         rgb(10 132 255 / 0.72) 52%,
         rgb(94 92 230 / 0.78) 62%,
-        rgb(245 185 234 / 0.4) 74%,
-        rgb(255 45 149 / 0.3) 85%,
+        rgb(245 185 234 / 0.24) 74%,
+        rgb(255 45 149 / 0.16) 85%,
         rgb(198 134 255 / 0.9) 93%,
         rgb(141 159 255 / 0.95)
       );
@@ -311,34 +345,34 @@
       conic-gradient(
         from var(--aurora-spin),
         transparent,
-        rgb(255 103 120 / 0.35) 10%,
+        rgb(255 103 120 / 0.22) 10%,
         transparent 26%,
         rgb(188 130 243 / 0.75) 44%,
         transparent 60%,
-        rgb(255 45 149 / 0.25) 76%,
+        rgb(255 45 149 / 0.14) 76%,
         transparent 92%,
         transparent
       ),
       conic-gradient(
         from var(--aurora-spin2),
         transparent,
-        rgb(255 186 113 / 0.28) 14%,
+        rgb(255 186 113 / 0.16) 14%,
         transparent 30%,
         rgb(141 159 255 / 0.75) 48%,
         transparent 66%,
-        rgb(245 185 234 / 0.3) 84%,
+        rgb(245 185 234 / 0.18) 84%,
         transparent
       ),
       radial-gradient(
         75% 60% at 0% 30%,
-        rgb(255 103 120 / 0.3),
-        rgb(255 103 120 / 0.11) 45%,
+        rgb(255 103 120 / 0.18),
+        rgb(255 103 120 / 0.07) 45%,
         transparent 72%
       ),
       radial-gradient(
         70% 60% at 100% 42%,
-        rgb(255 186 113 / 0.3),
-        rgb(255 186 113 / 0.11) 45%,
+        rgb(255 186 113 / 0.18),
+        rgb(255 186 113 / 0.07) 45%,
         transparent 72%
       ),
       radial-gradient(
@@ -497,7 +531,9 @@
     filter: blur(4.5px);
     /* the rim holds a floor (a defined edge always) and swells with the run —
        decoupled from the low rest intensity that used to hide it */
-    opacity: clamp(0.34, calc(var(--aurora-intensity) * 1.7), 1);
+    /* a QUIET defined edge at rest (the white line mixing with violet at a
+       high floor read MAUVE — arc 9f); it swells with the run */
+    opacity: clamp(0.13, calc(var(--aurora-intensity) * 1.4), 1);
     animation:
       aurora-slosh-a 26s ease-in-out infinite alternate,
       aurora-slosh-b 19s ease-in-out infinite alternate;
@@ -656,12 +692,12 @@
       from var(--aurora-spin),
       rgb(141 159 255 / 0.95),
       rgb(188 130 243 / 0.92) 12%,
-      rgb(255 103 120 / 0.45) 27%,
-      rgb(255 186 113 / 0.4) 40%,
+      rgb(255 103 120 / 0.18) 27%,
+      rgb(255 186 113 / 0.26) 40%,
       rgb(10 132 255 / 0.72) 52%,
       rgb(94 92 230 / 0.78) 62%,
-      rgb(245 185 234 / 0.4) 74%,
-      rgb(255 45 149 / 0.3) 85%,
+      rgb(245 185 234 / 0.24) 74%,
+      rgb(255 45 149 / 0.16) 85%,
       rgb(198 134 255 / 0.9) 93%,
       rgb(141 159 255 / 0.95)
     );
