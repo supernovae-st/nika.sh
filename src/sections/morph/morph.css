@@ -152,7 +152,7 @@
   right: clamp(20px, 4vw, 48px);
   /* flush on the deck below — window + transport read as ONE instrument
      (the chassis): the monitor's bottom corners square off onto the shelf */
-  bottom: 54px;
+  bottom: calc(54px + var(--frame-w, 0px));
   z-index: 3;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -1155,7 +1155,7 @@
   position: absolute;
   left: clamp(20px, 4vw, 48px);
   right: clamp(20px, 4vw, 48px);
-  bottom: 8px;
+  bottom: calc(8px + var(--frame-w, 0px));
   z-index: 4;
   display: flex;
   align-items: center;
@@ -1594,7 +1594,7 @@
   .morphsec[data-armed] .morph-term {
     left: 16px;
     right: 16px;
-    bottom: calc(58px + env(safe-area-inset-bottom));
+    bottom: calc(58px + var(--frame-w, 0px) + env(safe-area-inset-bottom));
   }
   .morph-clock {
     display: none; /* narrow chrome: filename + rec lamp keep the room */
@@ -1641,7 +1641,7 @@
   .morphsec[data-armed] .morph-console {
     left: 16px;
     right: 16px;
-    bottom: calc(6px + env(safe-area-inset-bottom));
+    bottom: calc(6px + var(--frame-w, 0px) + env(safe-area-inset-bottom));
     gap: 10px;
     padding: 7px 10px;
   }
@@ -1742,7 +1742,7 @@
     display: none;
   }
   .morphsec[data-armed] .morph-term {
-    bottom: 46px;
+    bottom: calc(46px + var(--frame-w, 0px));
   }
   .morph-term-body {
     padding: 6px 12px;
@@ -1760,7 +1760,7 @@
     display: none;
   }
   .morphsec[data-armed] .morph-console {
-    bottom: 6px;
+    bottom: calc(6px + var(--frame-w, 0px));
     padding: 6px 10px;
   }
 }

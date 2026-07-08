@@ -22,7 +22,9 @@
    bottom hairline) with the same depth kit. */
 .v4nav {
   position: fixed;
-  inset: 0 0 auto 0;
+  /* seated against the device frame (arc 9e) — the header lives INSIDE the
+     screen cutout, never under the black bezel */
+  inset: var(--frame-w, 0px) var(--frame-w, 0px) auto var(--frame-w, 0px);
   z-index: 50; /* above content, below the aurora frame (z-60) and any sheet */
   pointer-events: none; /* the capsule re-arms hits; the gutter stays inert */
 }

@@ -53,38 +53,45 @@
   initial-value: 262deg;
 }
 :root {
+  /* THE FRAME WIDTH (arc 9e) · the device bezel's physical thickness. The
+     screen (the content cutout) lives INSIDE it; the nav, the scroll rail and
+     the morph console all offset by it (« les éléments se calent »). */
+  --frame-w: 14px;
   transition:
     --aurora-bezel-k 0.7s var(--ease-ui, ease),
     --aurora-tint-hue 0.7s var(--ease-ui, ease);
 }
+@media (max-width: 767px) {
+  :root {
+    --frame-w: 8px;
+  }
+}
 
-/* ─── THE BEZEL (arc 9) · the « dark skeuo » material · deepened ──────────────
-   A STATIC dark physical screen-edge, always on, below the iridescence (z-59).
-   TWO dark stops make a real physical relief (« plus dark »): a deep inner-
-   shadow BODY (the bezel's mass, pulled in with negative spread so it fades
-   toward the center — a rim, never a content-dimming vignette) + a tighter,
-   near-black EDGE band (the bevel depth right at the perimeter) + a hairline
-   bevel (top catch-light, bottom shade). The tone tracks WHERE YOU ARE (the
-   scroll-spy sets --aurora-bezel-k depth + --aurora-tint-hue · a BOUNDED near-
-   black cast · all in [246,372]° · violet → magenta → coral, never green/
-   yellow). No animation → deterministic under reduced-motion. */
+/* ─── THE BEZEL (arc 9e) · a REAL device frame — opaque, black, physical ──────
+   The element is the SCREEN CUTOUT (inset by --frame-w, rounded); the huge
+   un-inset spread shadow floods everything OUTSIDE the rounded cutout with
+   OPAQUE near-black — the frame itself, viewport corners included (« en
+   dehors de l'aurora c'est noir » · no more see-through corners). A hairline
+   catch-light sits on the frame right at the lip; the inset shadows keep the
+   section-tinted depth INSIDE the screen. Static → deterministic. */
 .edge-bezel {
   position: fixed;
-  inset: 0;
+  inset: var(--frame-w, 14px);
   z-index: 59;
   pointer-events: none;
   border-radius: var(--aurora-radius, 48px);
   box-shadow:
-    /* the deep body · the dark mass */
+    /* THE FRAME · opaque near-black, floods outside the screen cutout */
+    0 0 0 9999px #040408,
+    /* the lip · a hairline catch-light where the frame meets the screen */
+    0 0 0 1px rgb(255 255 255 / 0.055),
+    /* the deep body · the dark mass INSIDE the screen (section-tinted) */
     inset 0 0 var(--aurora-bezel-reach, 180px) var(--aurora-bezel-spread, -58px)
       oklch(0.04 0.05 var(--aurora-tint-hue, 262deg) / calc(0.66 * var(--aurora-bezel-k, 1))),
-    /* the tighter edge band · the physical bevel depth (« plus dark ») */
+    /* the tighter edge band · the physical bevel depth */
     inset 0 0 var(--aurora-bezel-edge, 52px) var(--aurora-bezel-edge-spread, -22px)
       oklch(0.015 0.04 var(--aurora-tint-hue, 262deg) / calc(0.62 * var(--aurora-bezel-k, 1))),
-    /* THE BEVEL (arc 9d · « plus skeuomorphisme ») · a raised physical edge:
-       a brighter top catch-light, a deeper bottom shade, and a hairline inner
-       ridge faintly lit by the section hue — the screen edge reads as a real
-       bevel the ambient light rakes across. */
+    /* the bevel · top catch-light, bottom shade, hue-lit inner ridge */
     inset 0 2px 0 rgb(255 255 255 / 0.06),
     inset 0 -3px 7px rgb(0 0 0 / 0.62),
     inset 0 0 0 1px oklch(0.72 0.06 var(--aurora-tint-hue, 262deg) / 0.05);
@@ -111,7 +118,9 @@
   --aurora-radius: 48px;
 
   position: fixed;
-  inset: 0;
+  /* the iridescence lives AT THE SEAM between the black frame and the screen
+     cutout (arc 9e) — it hugs the screen edge, inside the frame */
+  inset: var(--frame-w, 14px);
   z-index: 60; /* above content, below any modal */
   pointer-events: none;
   background: transparent;
@@ -192,53 +201,53 @@
       conic-gradient(
         from var(--aurora-spin2),
         transparent,
-        rgb(245 185 234 / 0.8) 9%,
+        rgb(245 185 234 / 0.38) 9%,
         transparent 22%,
         transparent 36%,
-        rgb(255 186 113 / 0.75) 50%,
+        rgb(255 186 113 / 0.33) 50%,
         transparent 64%,
         transparent 78%,
-        rgb(198 134 255 / 0.75) 88%,
+        rgb(198 134 255 / 0.82) 88%,
         transparent
       ),
       conic-gradient(
         from var(--aurora-spin),
-        rgb(141 159 255 / 0.85),
-        rgb(188 130 243 / 0.85) 12%,
-        rgb(255 103 120 / 0.9) 27%,
-        rgb(255 186 113 / 0.9) 40%,
-        rgb(10 132 255 / 0.5) 52%,
-        rgb(94 92 230 / 0.6) 62%,
-        rgb(245 185 234 / 0.85) 74%,
-        rgb(255 45 149 / 0.8) 85%,
-        rgb(198 134 255 / 0.85) 93%,
-        rgb(141 159 255 / 0.85)
+        rgb(141 159 255 / 0.95),
+        rgb(188 130 243 / 0.92) 12%,
+        rgb(255 103 120 / 0.45) 27%,
+        rgb(255 186 113 / 0.4) 40%,
+        rgb(10 132 255 / 0.72) 52%,
+        rgb(94 92 230 / 0.78) 62%,
+        rgb(245 185 234 / 0.4) 74%,
+        rgb(255 45 149 / 0.3) 85%,
+        rgb(198 134 255 / 0.9) 93%,
+        rgb(141 159 255 / 0.95)
       );
     background:
       conic-gradient(
         from var(--aurora-spin2),
         transparent,
-        rgb(245 185 234 / 0.8) 9%,
+        rgb(245 185 234 / 0.38) 9%,
         transparent 22%,
         transparent 36%,
-        rgb(255 186 113 / 0.75) 50%,
+        rgb(255 186 113 / 0.33) 50%,
         transparent 64%,
         transparent 78%,
-        rgb(198 134 255 / 0.75) 88%,
+        rgb(198 134 255 / 0.82) 88%,
         transparent
       ),
       conic-gradient(
         from var(--aurora-spin) in oklch,
-        rgb(141 159 255 / 0.85),
-        rgb(188 130 243 / 0.85) 12%,
-        rgb(255 103 120 / 0.9) 27%,
-        rgb(255 186 113 / 0.9) 40%,
-        rgb(10 132 255 / 0.5) 52%,
-        rgb(94 92 230 / 0.6) 62%,
-        rgb(245 185 234 / 0.85) 74%,
-        rgb(255 45 149 / 0.8) 85%,
-        rgb(198 134 255 / 0.85) 93%,
-        rgb(141 159 255 / 0.85)
+        rgb(141 159 255 / 0.95),
+        rgb(188 130 243 / 0.92) 12%,
+        rgb(255 103 120 / 0.45) 27%,
+        rgb(255 186 113 / 0.4) 40%,
+        rgb(10 132 255 / 0.72) 52%,
+        rgb(94 92 230 / 0.78) 62%,
+        rgb(245 185 234 / 0.4) 74%,
+        rgb(255 45 149 / 0.3) 85%,
+        rgb(198 134 255 / 0.9) 93%,
+        rgb(141 159 255 / 0.95)
       );
   }
 
@@ -302,43 +311,43 @@
       conic-gradient(
         from var(--aurora-spin),
         transparent,
-        rgb(255 103 120 / 0.7) 10%,
+        rgb(255 103 120 / 0.35) 10%,
         transparent 26%,
-        rgb(188 130 243 / 0.65) 44%,
+        rgb(188 130 243 / 0.75) 44%,
         transparent 60%,
-        rgb(255 45 149 / 0.6) 76%,
+        rgb(255 45 149 / 0.25) 76%,
         transparent 92%,
         transparent
       ),
       conic-gradient(
         from var(--aurora-spin2),
         transparent,
-        rgb(255 186 113 / 0.6) 14%,
+        rgb(255 186 113 / 0.28) 14%,
         transparent 30%,
-        rgb(141 159 255 / 0.6) 48%,
+        rgb(141 159 255 / 0.75) 48%,
         transparent 66%,
-        rgb(245 185 234 / 0.6) 84%,
+        rgb(245 185 234 / 0.3) 84%,
         transparent
       ),
       radial-gradient(
         75% 60% at 0% 30%,
-        rgb(255 103 120 / 0.6),
-        rgb(255 103 120 / 0.22) 45%,
+        rgb(255 103 120 / 0.3),
+        rgb(255 103 120 / 0.11) 45%,
         transparent 72%
       ),
       radial-gradient(
         70% 60% at 100% 42%,
-        rgb(255 186 113 / 0.65),
-        rgb(255 186 113 / 0.24) 45%,
+        rgb(255 186 113 / 0.3),
+        rgb(255 186 113 / 0.11) 45%,
         transparent 72%
       ),
       radial-gradient(
         80% 55% at 50% -8%,
-        rgb(188 130 243 / 0.6),
-        rgb(188 130 243 / 0.2) 48%,
+        rgb(188 130 243 / 0.7),
+        rgb(188 130 243 / 0.24) 48%,
         transparent 75%
       ),
-      radial-gradient(85% 55% at 50% 112%, rgb(10 132 255 / 0.45), transparent 68%);
+      radial-gradient(85% 55% at 50% 112%, rgb(10 132 255 / 0.6), transparent 68%);
   }
 }
 
@@ -420,7 +429,7 @@
       from var(--aurora-spin2),
       rgb(10 132 255 / 0.7),
       transparent 26%,
-      rgb(94 92 230 / 0.6) 46%,
+      rgb(94 92 230 / 0.78) 46%,
       transparent 64%,
       rgb(188 130 243 / 0.5) 82%,
       rgb(10 132 255 / 0.7)
@@ -429,7 +438,7 @@
       from var(--aurora-spin2) in oklch,
       rgb(10 132 255 / 0.7),
       transparent 26%,
-      rgb(94 92 230 / 0.6) 46%,
+      rgb(94 92 230 / 0.78) 46%,
       transparent 64%,
       rgb(188 130 243 / 0.5) 82%,
       rgb(10 132 255 / 0.7)
@@ -645,16 +654,16 @@
   .edge-aurora[data-run='sweep']::after {
     background: conic-gradient(
       from var(--aurora-spin),
-      rgb(141 159 255 / 0.85),
-      rgb(188 130 243 / 0.85) 12%,
-      rgb(255 103 120 / 0.9) 27%,
-      rgb(255 186 113 / 0.9) 40%,
-      rgb(10 132 255 / 0.5) 52%,
-      rgb(94 92 230 / 0.6) 62%,
-      rgb(245 185 234 / 0.85) 74%,
-      rgb(255 45 149 / 0.8) 85%,
-      rgb(198 134 255 / 0.85) 93%,
-      rgb(141 159 255 / 0.85)
+      rgb(141 159 255 / 0.95),
+      rgb(188 130 243 / 0.92) 12%,
+      rgb(255 103 120 / 0.45) 27%,
+      rgb(255 186 113 / 0.4) 40%,
+      rgb(10 132 255 / 0.72) 52%,
+      rgb(94 92 230 / 0.78) 62%,
+      rgb(245 185 234 / 0.4) 74%,
+      rgb(255 45 149 / 0.3) 85%,
+      rgb(198 134 255 / 0.9) 93%,
+      rgb(141 159 255 / 0.95)
     );
     animation: none;
     opacity: calc(var(--aurora-intensity) * 1.15);
