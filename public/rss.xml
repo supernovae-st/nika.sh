@@ -7,6 +7,14 @@
     <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
     <language>en</language>
     <item>
+      <title>Prompts are code now</title>
+      <link>https://nika.sh/blog/prompts-are-code</link>
+      <guid isPermaLink="true">https://nika.sh/blog/prompts-are-code</guid>
+      <pubDate>Wed, 08 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it — and the engine itself names an edited prompt when two runs diverge.</description>
+    </item>
+    <item>
       <title>The run becomes evidence</title>
       <link>https://nika.sh/blog/the-run-becomes-evidence</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-run-becomes-evidence</guid>

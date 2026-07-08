@@ -30,6 +30,274 @@ export interface BlogPost {
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "prompts-are-code",
+    "file": "2026-07-08-prompts-are-code.md",
+    "title": "Prompts are code now",
+    "tag": "Language",
+    "date": "2026-07-08",
+    "description": "Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it — and the engine itself names an edited prompt when two runs diverge.",
+    "readingMin": 2,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Ask a team where their prompts live. A chat window. A doc titled "
+          },
+          {
+            "k": "code",
+            "text": "PROMPT_v2_FINAL_really"
+          },
+          {
+            "k": "text",
+            "text": ". An f-string three layers deep in a glue script. Then ask the question that matters during an incident: "
+          },
+          {
+            "k": "strong",
+            "text": "which prompt produced this output?"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The usual answer is a prompt-management platform — another dashboard, another account, another place your logic lives that is not your repo. Nika's answer is shorter: "
+          },
+          {
+            "k": "strong",
+            "text": "the prompt is a line in the workflow file."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "release-notes.nika.yaml",
+        "text": "nika: v1\nworkflow: release-notes\n# local model · nothing leaves this machine\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs: { read: [ ./commits.txt ], write: [ ./notes.md ] }\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  - { id: commits, invoke: { tool: \"nika:read\", args: { path: ./commits.txt } } }\n\n  - id: draft\n    depends_on: [ commits ]\n    infer:\n      prompt: \"Write release notes from these commits: ${{ tasks.commits.output }}\"\n      max_tokens: 200\n\n  - id: save\n    depends_on: [ draft ]\n    invoke: { tool: \"nika:write\", args: { path: ./notes.md, content: \"${{ tasks.draft.output }}\" } }\n\noutputs:\n  notes: \"${{ tasks.draft.output }}\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "One reviewable artifact: the model (a local one here), the permits, the plan, and the prompt. Which means the prompt inherits every tool your code already has, starting with the one you trust most."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Git diffs it."
+          },
+          {
+            "k": "text",
+            "text": " We ran the file once, then tightened the prompt — the kind of change teams make every week and then lose track of forever:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "$ git diff\ndiff --git a/release-notes.nika.yaml b/release-notes.nika.yaml\nindex 06134b3..253fa1e 100644\n--- a/release-notes.nika.yaml\n+++ b/release-notes.nika.yaml\n@@ -13,7 +13,7 @@ tasks:\n   - id: draft\n     depends_on: [ commits ]\n     infer:\n-      prompt: \"Write release notes from these commits: ${{ tasks.commits.output }}\"\n+      prompt: \"Write release notes from these commits. Exactly three bullets, plain words, no hype: ${{ tasks.commits.output }}\"\n       max_tokens: 200\n\n   - id: save"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "A prompt change as a one-line diff. It gets a commit message. It goes through a pull request, a colleague reads it, and someone can "
+          },
+          {
+            "k": "code",
+            "text": "git revert"
+          },
+          {
+            "k": "text",
+            "text": " it at 2am without archaeology."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The diff shows up in the artifact."
+          },
+          {
+            "k": "text",
+            "text": " Same three commits in, first prompt out:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "Release Notes\n\nWe are pleased to announce the availability of our latest release,\nfeaturing several exciting updates and improvements.\n\n**New Features**\n\n* Added support for `--json` output when running the CLI command with\n  the `check` option. This allows users to easily view check results\n  in a JSON format.\n* Expanded coverage of local models in our Quick Start documentation,\n  providing more comprehensive guidance for getting started with\n  [project name]."
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "It keeps going like that — ceremony, section headers, and a helpful placeholder for a project name we never gave it. After the one-line diff:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "Here are the release notes based on the commits:\n\nRelease Notes v0.1\n\n* Resolved an issue with parser where anchors were resolved after merge keys.\n* Added a new command-line option (--json) to output JSON data during check.\n* Updated documentation to include coverage of using local models in the quickstart guide."
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Still a 3B model — it kept its little preamble. But the three bullets are there, plain, and they will be there on every future run, because the constraint lives in the file, not in a chat's short-term memory."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Every run pins the prompt that produced it."
+          },
+          {
+            "k": "text",
+            "text": " The run closes with its trace and the journal records the workflow's content identity:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "  🦋 nika · release-notes · 3 tasks\n     permits ✓ declared boundary · default-deny\n\n  ✔  commits  invoke · nika:read           0ms\n  ✔  draft    infer · ollama/llama3.2:3b  1.5s\n  ✔  save     invoke · nika:write          0ms\n  ── 3/3 done · $0.00 · elapsed 1.5s ─────────────────────────────\n    trace: .nika/traces/2026-07-08T09-52-43Z-22c6.ndjson · 11 events · chain 03ad7a3f2bf1c6a92481b8483b9942ab"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The old run stays exactly as it happened, replayable after the edit — "
+          },
+          {
+            "k": "code",
+            "text": "nika trace replay"
+          },
+          {
+            "k": "text",
+            "text": " re-renders the recorded events, it never re-executes. So \"which prompt produced this output?\" has a literal answer: the one recorded with the run."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "And the engine names an edit."
+          },
+          {
+            "k": "text",
+            "text": " Hand "
+          },
+          {
+            "k": "code",
+            "text": "nika trace reproduce"
+          },
+          {
+            "k": "text",
+            "text": " the runs from before and after the diff:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "$ nika trace reproduce .nika/traces/2026-07-08T09-52-15Z-e90b.ndjson .nika/traces/2026-07-08T09-52-43Z-22c6.ndjson\n  reproduced       commits\n  AUTHORED         draft — the task changed\n  ENVIRONMENT      save — inputs differ\n\nDIVERGED — 1 AUTHORED · 1 ENVIRONMENT · 1 reproduced\n  engine: 0.97.0/macos/aarch64 (both runs)"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "code",
+            "text": "AUTHORED — the task changed"
+          },
+          {
+            "k": "text",
+            "text": ". Not \"the model is being weird today\": a classified, named fact that the divergence came from your edit — and you can watch it propagate, the downstream "
+          },
+          {
+            "k": "code",
+            "text": "save"
+          },
+          {
+            "k": "text",
+            "text": " diverging as "
+          },
+          {
+            "k": "code",
+            "text": "ENVIRONMENT"
+          },
+          {
+            "k": "text",
+            "text": " because its input changed. Prompt versioning is not just storage; it is being able to say, between any two runs, "
+          },
+          {
+            "k": "em",
+            "text": "this changed because we changed it"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "No platform. No prompt registry with its own login. A text file in your repo, the versioning tool you have used for fifteen years, and one binary as the witness."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every transcript in this post was captured verbatim against the released "
+          },
+          {
+            "k": "code",
+            "text": "nika 0.97.0"
+          },
+          {
+            "k": "text",
+            "text": " ("
+          },
+          {
+            "k": "code",
+            "text": "brew install supernovae-st/tap/nika"
+          },
+          {
+            "k": "text",
+            "text": "), on a local model, for $0.00."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-run-becomes-evidence",
     "file": "2026-07-07-the-run-becomes-evidence.md",
     "title": "The run becomes evidence",
