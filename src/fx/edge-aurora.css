@@ -98,8 +98,10 @@
     /* the raked light · a soft catch-light on the frame ABOVE the opening
        (negative y offsets the halo upward; the silhouette covers below) */
     0 -2px 12px -4px rgb(255 255 255 / 0.075),
-    /* THE FRAME · one opaque slab, section-tinted, to the viewport edge */
-    0 0 0 9999px oklch(0.1 0.012 var(--aurora-tint-hue, 262deg)),
+    /* THE FRAME · one opaque slab to the viewport edge — its COLOUR lives
+       (arc 9h): a readable section tint (chroma up from 0.012), so the
+       contour visibly shifts violet → periwinkle → coral as you travel */
+    0 0 0 9999px oklch(0.115 0.032 var(--aurora-tint-hue, 262deg)),
     /* the glass overhang · the frame shades the screen's top edge */
     inset 0 3px 9px -3px rgb(0 0 0 / 0.6),
     /* the deep body · the dark mass INSIDE the screen (section-tinted) */
@@ -131,11 +133,15 @@
   --aurora-radius: 48px;
 
   position: fixed;
-  /* the iridescence lives AT THE SEAM between the black frame and the screen
-     cutout — and BELOW the bezel (z-59 < 60): the frame covers its outward
-     bleed, so the glow only lights the screen, never the frame (arc 9f) */
+  /* ONE aurora (arc 9h · operator: « le contour doit être le contour ») —
+     the glow lives ON the frame, not beside it: ABOVE the bezel (z-61 > 60),
+     anchored at the screen edge, its bloom paints the frame's band OUTWARD
+     and licks the screen edge INWARD. At rest the frame is dark living
+     material (low intensity · section tint); on runs the CONTOUR ITSELF
+     ignites (« aurora défois oui »). The bezel's gasket + raked light stay
+     readable through the quiet floor — the skeuo survives the light. */
   inset: var(--frame-w, 14px);
-  z-index: 59;
+  z-index: 61;
   pointer-events: none;
   background: transparent;
 
