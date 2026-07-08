@@ -223,17 +223,32 @@ has_wire_command() {
   "$cmd" --help 2>/dev/null | grep -Eq '^[[:space:]]+wire([[:space:]]|$)'
 }
 
+has_welcome_command() {
+  local cmd
+  cmd=$(installed_nika_cmd) || return 1
+  "$cmd" --help 2>/dev/null | grep -Eq '^[[:space:]]+welcome([[:space:]]|$)'
+}
+
 print_next_steps() {
-  local wire_line
+  local wire_line first_line
   if has_wire_command; then
     wire_line='    wire agents/editors: nika wire cursor   # or: nika wire all'
   else
     wire_line='    agent/editor MCP: use the extension setup, or upgrade when `nika wire` appears in `nika --help`'
   fi
+  # The mirror is the FIRST step when the installed binary carries it
+  # (0.98+): thirty seconds, offline, ends with the exact next command.
+  # Probed on the binary's own --help — a version pin would lie about
+  # what THIS install can actually do.
+  if has_welcome_command; then
+    first_line='    start here: nika welcome   # what Nika is + what it sees on this machine · offline'
+  else
+    first_line='    verify: nika --version'
+  fi
   cat <<EOF
 
   ✓ Nika installed
-    verify: nika --version
+$first_line
     diagnose: nika doctor
     scaffold this repo: nika init
 $wire_line
