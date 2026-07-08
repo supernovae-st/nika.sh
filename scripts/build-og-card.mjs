@@ -133,6 +133,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/injection-goes-nowhere — the fixed plan + the checked boundary.
+    out: 'og-blog-injection-goes-nowhere.png',
+    fig: 'FIG B.13',
+    size: 60,
+    headline: 'The injection<br><span class="b">that goes nowhere.</span>',
+    sub: 'The plan is authored before the model runs, so a hostile note becomes data, never a new action — and the boundary is checked before a token.',
+    detail:
+      '<span class="arrow">▸</span><span>data,&nbsp;not&nbsp;capability<span class="sep">·</span>refused&nbsp;before&nbsp;the&nbsp;effect<span class="sep">·</span><b>NIKA&nbsp;·&nbsp;PERMITS</b></span>',
+  },
+  {
     // /blog/prompts-are-code — prompt versioning is just git, plus a witness.
     out: 'og-blog-prompts-are-code.png',
     fig: 'FIG B.12',

@@ -15,6 +15,14 @@
       <description>Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it — and the engine itself names an edited prompt when two runs diverge.</description>
     </item>
     <item>
+      <title>The prompt injection that goes nowhere</title>
+      <link>https://nika.sh/blog/injection-goes-nowhere</link>
+      <guid isPermaLink="true">https://nika.sh/blog/injection-goes-nowhere</guid>
+      <pubDate>Wed, 08 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Security</category>
+      <description>AI agent security without a runtime guard: the plan is authored before the model runs, so a hostile note becomes data, never a new action — and the boundary is checked before a token is spent.</description>
+    </item>
+    <item>
       <title>The run becomes evidence</title>
       <link>https://nika.sh/blog/the-run-becomes-evidence</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-run-becomes-evidence</guid>
