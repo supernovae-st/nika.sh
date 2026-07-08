@@ -81,15 +81,21 @@
     /* the tighter edge band · the physical bevel depth (« plus dark ») */
     inset 0 0 var(--aurora-bezel-edge, 52px) var(--aurora-bezel-edge-spread, -22px)
       oklch(0.015 0.04 var(--aurora-tint-hue, 262deg) / calc(0.62 * var(--aurora-bezel-k, 1))),
-    inset 0 1.5px 0 rgb(255 255 255 / 0.04),
-    inset 0 -2px 4px rgb(0 0 0 / 0.5);
+    /* THE BEVEL (arc 9d · « plus skeuomorphisme ») · a raised physical edge:
+       a brighter top catch-light, a deeper bottom shade, and a hairline inner
+       ridge faintly lit by the section hue — the screen edge reads as a real
+       bevel the ambient light rakes across. */
+    inset 0 2px 0 rgb(255 255 255 / 0.06),
+    inset 0 -3px 7px rgb(0 0 0 / 0.62),
+    inset 0 0 0 1px oklch(0.72 0.06 var(--aurora-tint-hue, 262deg) / 0.05);
 }
 
 .edge-aurora {
-  /* rest intensity · PRESENCE (arc 9): the iridescence is quietly always on,
-     living on the dark bezel below. Pulses / runs raise it, then it decays
-     back to this floor (mutated by EdgeAurora.tsx · this is the SSR fallback). */
-  --aurora-intensity: 0.13;
+  /* rest intensity · PRESENCE (arc 9d · « se voie plus »): the iridescence is
+     clearly on. The per-section 4th dimension raises it (the film glows
+     brightest); pulses / runs raise it further, then it decays to the section
+     floor (mutated by EdgeAurora.tsx · this is the SSR fallback). */
+  --aurora-intensity: 0.19;
   /* rim geometry · the band thickness in px */
   --aurora-band: 16px;
   /* THE FIELD LAW (v11) · how deep the soft field reaches from each edge.
