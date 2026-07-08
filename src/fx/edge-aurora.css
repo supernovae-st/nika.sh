@@ -67,16 +67,22 @@
   }
 }
 
-/* ─── THE BEZEL (arc 9f) · a REAL device frame — opaque, black, ABOVE the glow
-   The element is the SCREEN CUTOUT (inset by --frame-w, rounded); the huge
-   un-inset spread shadow floods everything OUTSIDE the rounded cutout with
-   OPAQUE near-black. It sits ABOVE the aurora (z-60 > 59): the glow's blur
-   can never bleed over the frame — the corners stay BLACK, and the light
-   only escapes INWARD onto the screen, like light leaking from under a
-   physical bezel (operator: « bg pas noir · toujours transparent »). The
-   ::before is the frame's MATERIAL: a dark anodized band (vertical raked
-   light + a faint section-tinted sheen) carved by the canonical atomic ring
-   mask. Static → deterministic. */
+/* ─── THE BEZEL (arc 9g) · ONE piece of material, ONE inner edge ──────────────
+   The double-aura / stepped-corner bug (operator corner crop): the previous
+   build STACKED surfaces — a masked material band with its OWN outer radius
+   sitting on a differently-coloured flood (= a corner seam), plus a white
+   lip + an inner ridge + the aurora lining (= three concentric hairlines).
+   A real device bezel is ONE slab of material with ONE rounded inner edge.
+
+   So: the element is the screen cutout; ONE opaque spread shadow paints the
+   whole frame in ONE colour (uniform to the viewport edge — square corners,
+   zero outer radius, zero seams). The skeuo modelling comes from shadows
+   that FOLLOW the cutout's rounded silhouette (smooth corners by
+   construction): a dark gasket where the screen sinks in, the frame's own
+   shading around the opening, a single top catch-light, and the glass
+   overhang shadow INSIDE the screen. The frame colour is section-tinted
+   (opaque oklch — material, never glow). Above the aurora (z-60 > 59): the
+   glow only escapes inward. Static → deterministic. */
 .edge-bezel {
   position: fixed;
   inset: var(--frame-w, 14px);
@@ -84,50 +90,24 @@
   pointer-events: none;
   border-radius: var(--aurora-radius, 48px);
   box-shadow:
-    /* THE FRAME · opaque black, floods outside the screen cutout */
-    0 0 0 9999px #030306,
-    /* the lip · a hairline catch-light where the frame meets the screen */
-    0 0 0 1px rgb(255 255 255 / 0.06),
+    /* the GASKET · a dark seam where the screen sinks into the frame */
+    0 0 0 1.5px rgb(0 0 0 / 0.72),
+    /* the frame's own shading · it dips toward the opening (follows the
+       rounded silhouette — the smooth-corner modelling) */
+    0 0 14px 2px rgb(0 0 0 / 0.5),
+    /* the raked light · a soft catch-light on the frame ABOVE the opening
+       (negative y offsets the halo upward; the silhouette covers below) */
+    0 -2px 12px -4px rgb(255 255 255 / 0.075),
+    /* THE FRAME · one opaque slab, section-tinted, to the viewport edge */
+    0 0 0 9999px oklch(0.1 0.012 var(--aurora-tint-hue, 262deg)),
+    /* the glass overhang · the frame shades the screen's top edge */
+    inset 0 3px 9px -3px rgb(0 0 0 / 0.6),
     /* the deep body · the dark mass INSIDE the screen (section-tinted) */
     inset 0 0 var(--aurora-bezel-reach, 180px) var(--aurora-bezel-spread, -58px)
       oklch(0.04 0.05 var(--aurora-tint-hue, 262deg) / calc(0.66 * var(--aurora-bezel-k, 1))),
-    /* the tighter edge band · the physical bevel depth */
+    /* the tighter edge band · the bevel depth inside the screen */
     inset 0 0 var(--aurora-bezel-edge, 52px) var(--aurora-bezel-edge-spread, -22px)
-      oklch(0.015 0.04 var(--aurora-tint-hue, 262deg) / calc(0.62 * var(--aurora-bezel-k, 1))),
-    /* the bevel · top catch-light, bottom shade, hue-lit inner ridge */
-    inset 0 2px 0 rgb(255 255 255 / 0.06),
-    inset 0 -3px 7px rgb(0 0 0 / 0.62),
-    inset 0 0 0 1px oklch(0.72 0.06 var(--aurora-tint-hue, 262deg) / 0.05);
-}
-/* the frame's MATERIAL (arc 9f · « pas skeumorphisme » fixed) · the band
-   itself is an anodized dark metal: a raked vertical light (lit top edge,
-   shaded bottom), a near-black body, and a faint STATIC sheen cast by the
-   section hue (dark, low chroma — material, never glow). Carved by the
-   canonical atomic ring mask (content-box exclude · the 2026-07-03 law);
-   outer corners square off against the flood beneath. */
-.edge-bezel::before {
-  content: '';
-  position: absolute;
-  inset: calc(-1 * var(--frame-w, 14px));
-  padding: var(--frame-w, 14px);
-  border-radius: calc(var(--aurora-radius, 48px) + var(--frame-w, 14px) * 0.6);
-  mask:
-    linear-gradient(#000 0 0) content-box exclude,
-    linear-gradient(#000 0 0);
-  background:
-    linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0.055),
-      transparent 26%,
-      transparent 72%,
-      rgb(0 0 0 / 0.42)
-    ),
-    linear-gradient(
-      180deg,
-      oklch(0.19 0.018 var(--aurora-tint-hue, 262deg)),
-      #050508 52%,
-      oklch(0.13 0.015 var(--aurora-tint-hue, 262deg))
-    );
+      oklch(0.015 0.04 var(--aurora-tint-hue, 262deg) / calc(0.62 * var(--aurora-bezel-k, 1)));
 }
 
 .edge-aurora {
