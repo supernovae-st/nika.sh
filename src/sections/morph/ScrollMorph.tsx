@@ -17,6 +17,7 @@ import {
   igniteAt,
   phaseAt,
   runFracAt,
+  runMsAt,
   seedInAt,
   shellAt,
   taskInterval,
@@ -196,7 +197,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   /* the glide's rAF handle · a clicked seek catches up instead of teleporting */
   const glideRef = useRef<number | null>(null)
   const ariaPctRef = useRef(-1)
-  const hoverSrcRef = useRef<'node' | 'yaml'>('node')
+  /* the deck's timecode + the scrub tip write DOM-direct (data-scrub law:
+     zero reconcile per frame/move — textContent + a string cache) */
+  const clockRef = useRef<HTMLSpanElement>(null)
+  const clockStrRef = useRef('')
+  const tipRef = useRef<HTMLSpanElement>(null)
+  const tipStrRef = useRef('')
+  const hoverSrcRef = useRef<'node' | 'yaml' | 'log'>('node')
 
   const sectionRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
@@ -263,6 +270,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
        the line/node geometry this pass reads — clear, measure, re-apply
        (all inside the same rAF, no flash) */
     card.style.transform = ''
+    /* the docked monitor's rect anchors the file slot below — clear its
+       entrance transform too (same clear-measure-reapply rAF, no flash) */
+    if (termRef.current) termRef.current.style.transform = ''
 
     /* portrait truth (W20) · phones re-anchor the wires and skip the fit-font
        — read ONCE per measure (resize/orientation re-measures) */
@@ -283,6 +293,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       /* baseline: clear prior overrides so the clamp() truth is re-read */
       stage.style.removeProperty('--morph-code-fs')
       stage.style.removeProperty('--morph-code-w')
+      stage.style.removeProperty('--morph-slot-b')
       const fH = parseFloat(getComputedStyle(heroCode).fontSize)
       const f0 = parseFloat(getComputedStyle(codeEl).fontSize)
       const heroW = heroCode.getBoundingClientRect().width
@@ -299,14 +310,25 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         } else {
           /* pass 1 · the ch measure at the baseline font (wrap truth) */
           stage.style.setProperty('--morph-code-w', `${((heroW * f0) / fH).toFixed(2)}px`)
-          /* the slot: from the card's own measured padding to the console's
-             top edge — every guard is a live rect, never a tuned literal */
+          /* the slot: from the card's own measured padding to the DOCKED
+             monitor's top edge (the run window stands from term0 — the file
+             fits ABOVE the instrument it feeds) — every guard is a live
+             rect, never a tuned literal */
           const padTop = parseFloat(getComputedStyle(card).paddingTop) || 0
-          const consoleEl = stage.querySelector<HTMLElement>('.morph-console')
+          const monitorEl = termRef.current
           const cardTop = card.getBoundingClientRect().top + padTop
-          const slotBottom = consoleEl
-            ? consoleEl.getBoundingClientRect().top - 10
+          const slotBottom = monitorEl
+            ? monitorEl.getBoundingClientRect().top - 10
             : card.getBoundingClientRect().bottom
+          /* the slot's floor, published for the CSS (the flex centering must
+             center the card in the SLOT, not the whole scene — centered in
+             the scene, a fitted card still kissed the docked monitor's
+             chrome) — measured, same clear-measure-reapply rAF */
+          const fileEl = card.getBoundingClientRect()
+          stage.style.setProperty(
+            '--morph-slot-b',
+            `${Math.max(0, fileEl.bottom - slotBottom).toFixed(1)}px`,
+          )
           const slotH = Math.max(160, slotBottom - cardTop) /* short-vh guard */
           /* pass 2 · scrollHeight is the un-cropped panel height at f0 (the
              pre crops via overflow, the panel doesn't lie) */
@@ -525,6 +547,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       if (pct !== ariaPctRef.current) {
         ariaPctRef.current = pct
         trackRef.current?.setAttribute('aria-valuenow', String(pct))
+      }
+      /* the deck timecode · the recorded clock under the playhead — 0.1s
+         steps, write-on-change, textContent only (never a reconcile) */
+      const clockEl = clockRef.current
+      if (clockEl) {
+        const cs = `${(runMsAt(p, flagship.trace.totalMs) / 1000).toFixed(1)}s`
+        if (cs !== clockStrRef.current) {
+          clockStrRef.current = cs
+          clockEl.textContent = cs
+        }
       }
 
       /* phase flag → caption + narration crossfade (morph.css) */
@@ -798,6 +830,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     stage.style.removeProperty('--morph-p')
     stage.style.removeProperty('--morph-code-w')
     stage.style.removeProperty('--morph-code-fs')
+    stage.style.removeProperty('--morph-slot-b')
     delete stage.dataset.phase
     delete stage.dataset.entry
     delete stage.dataset.psgone
@@ -1068,7 +1101,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       }
     }
     const pre = panel.querySelector<HTMLElement>('.cf-pre')
-    if (!pre || lit.length === 0 || hoverSrcRef.current !== 'node') return
+    /* node- and log-driven pairing scrolls the lit lines into view; the
+       yaml side is already under the pointer — scrolling it would fight it */
+    if (!pre || lit.length === 0 || hoverSrcRef.current === 'yaml') return
     const pr = pre.getBoundingClientRect()
     const fr = lit[0].getBoundingClientRect()
     const lr = lit[lit.length - 1].getBoundingClientRect()
@@ -1137,18 +1172,21 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       cancelGlide()
       const section = sectionRef.current
       if (!section) return
-      const rect = section.getBoundingClientRect()
-      const runway = rect.height - (stageRef.current?.offsetHeight ?? window.innerHeight)
-      if (runway <= 0) return
-      const target = window.scrollY + rect.top + clamp01(frac) * runway
       let last = performance.now()
       const step = (now: number) => {
         glideRef.current = null
         const dt = Math.min(64, now - last)
         last = now
-        const d = target - window.scrollY
+        /* RE-AIM every frame from the live rect: content-visibility sections
+           re-layout as they render, so a fixed absolute target drifts by
+           whole viewports (the shoot-scroll re-aim lesson, applied to the
+           glide). Remaining distance = target offset − current offset. */
+        const rect = section.getBoundingClientRect()
+        const runway = rect.height - (stageRef.current?.offsetHeight ?? window.innerHeight)
+        if (runway <= 0) return
+        const d = rect.top + clamp01(frac) * runway
         if (Math.abs(d) <= 1) {
-          window.scrollTo({ top: target })
+          window.scrollBy(0, d)
           return
         }
         /* halve the remaining distance every ~90ms — quick catch, soft land */
@@ -1205,6 +1243,15 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     /* the hover ghost caret reads the pointer straight from CSS — a style
        write on the track, never a reconcile */
     trackRef.current?.style.setProperty('--morph-hx', frac.toFixed(4))
+    /* the scrub tip rides the same var; its words update on-change only */
+    const tipEl = tipRef.current
+    if (tipEl) {
+      const ts = tipAt(frac)
+      if (ts !== tipStrRef.current) {
+        tipStrRef.current = ts
+        tipEl.textContent = ts
+      }
+    }
     if (!trackDragRef.current) return
     if (!trackMovedRef.current && Math.abs(e.clientX - trackDownXRef.current) < 3) return
     trackMovedRef.current = true
@@ -1230,6 +1277,56 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     if (!playing && progressRef.current >= 0.999) seek(0) /* replay from the top */
     setPlaying((v) => !v)
   }
+
+  /* ── seek-by-object · the DAG, the slabs and the log double as the
+     timeline's own nav (real-software law): click a step anywhere and the
+     film GLIDES to its recorded moment — same glide, same one scroll store */
+  const taskP = useCallback(
+    (id: string): number | null => {
+      const iv = taskInterval(flagship, id)
+      if (!iv) return null
+      const total = flagship.trace.totalMs || 1
+      const at = 'skipAt' in iv ? iv.skipAt : iv.start
+      /* +ε lands just INSIDE the step's window — its node reads live at rest */
+      return Math.min(PH.run0 + (at / total) * (PH.run1 - PH.run0) + 0.004, 1)
+    },
+    [flagship],
+  )
+  const seekTask = useCallback(
+    (id: string) => {
+      const p = taskP(id)
+      if (p == null) return
+      setPlaying(false)
+      glideTo(p)
+    },
+    [taskP, glideTo],
+  )
+  const seekMs = useCallback(
+    (atMs: number) => {
+      const total = flagship.trace.totalMs || 1
+      setPlaying(false)
+      glideTo(Math.min(PH.run0 + (atMs / total) * (PH.run1 - PH.run0) + 0.004, 1))
+    },
+    [flagship, glideTo],
+  )
+  /* the scrub tip · what truly lives under the pointer: the recorded clock
+     plus the tasks running there (verbatim intervals) — never a guess */
+  const tipAt = useCallback(
+    (frac: number): string => {
+      if (frac < PH.burst0) return 'the file'
+      const rf = runFracAt(frac)
+      if (rf <= 0) return 'the plan assembles'
+      if (rf >= 1) return `exit ${script.verdict.exit} · ${formatMs(script.verdict.totalMs)}`
+      const t = rf * flagship.trace.totalMs
+      const running: string[] = []
+      for (const task of plan.tasks) {
+        const iv = taskInterval(flagship, task.id)
+        if (iv && 'end' in iv && t >= iv.start && t < iv.end) running.push(task.id)
+      }
+      return `${(t / 1000).toFixed(1)}s${running.length > 0 ? ` · ${running.join(' · ')}` : ''}`
+    },
+    [flagship, plan, script],
+  )
 
   /* the play loop · advances the SCROLL (~26s full story) — any manual wheel
      or touch takes the wheel back (transport etiquette) */
@@ -1269,6 +1366,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   }, [playing])
 
   const { verdict } = script
+  /* the status row's live readout · which steps are truly running (recorded
+     truth — recomputed only when the timeline state actually changes) */
+  const runningIds = plan.tasks
+    .filter((t) => timeline.nodes[t.id] === 'running')
+    .map((t) => t.id)
 
   return (
     <>
@@ -1384,7 +1486,24 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                           data-verb={task.verb}
                           data-run={state}
                           data-hi={pairTask === task.id ? '1' : undefined}
+                          role={done ? 'button' : undefined}
+                          aria-label={
+                            done
+                              ? `${task.id} · ${task.verb} · replay from this step`
+                              : undefined
+                          }
                           tabIndex={done ? 0 : undefined}
+                          onClick={armed ? () => seekTask(task.id) : undefined}
+                          onKeyDown={
+                            done
+                              ? (e) => {
+                                  if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault()
+                                    seekTask(task.id)
+                                  }
+                                }
+                              : undefined
+                          }
                           onPointerEnter={
                             done
                               ? () => {
@@ -1441,6 +1560,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   stageRef={stageRef}
                   cardRef={cardRef}
                   slabTargetsRef={slabTargetsRef}
+                  onSeekTask={seekTask}
                 />
               </Suspense>
             ) : null}
@@ -1510,6 +1630,12 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               <span className="cf-tab" title={flagship.filename}>
                 <span className="cf-tab-name">{flagship.filename}</span>
               </span>
+              {/* the timecode · the recorded clock under the playhead (the
+                  driver writes the moving half; SSR ships the settled truth) */}
+              <span className="morph-clock" aria-hidden>
+                <span ref={clockRef}>{`${(flagship.trace.totalMs / 1000).toFixed(1)}s`}</span>
+                {` / ${(flagship.trace.totalMs / 1000).toFixed(1)}s`}
+              </span>
               <span className="morph-rec" aria-hidden>
                 <span className="morph-rec-dot" data-live={armed && !timeline.verdictOn} />
                 recorded
@@ -1521,6 +1647,19 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   className="morph-line"
                   data-kind={line.kind}
                   data-verb={line.verb}
+                  data-task={line.task}
+                  data-hi={line.task && pairTask === line.task ? '1' : undefined}
+                  title={armed ? 'replay from this moment' : undefined}
+                  onClick={armed ? () => seekMs(line.atMs) : undefined}
+                  onPointerEnter={
+                    done && line.task
+                      ? () => {
+                          hoverSrcRef.current = 'log'
+                          setHoverTask(line.task ?? null)
+                        }
+                      : undefined
+                  }
+                  onPointerLeave={done && line.task ? () => setHoverTask(null) : undefined}
                   key={`${flagship.id}-${i}`}
                 >
                   <span className="morph-line-glyph" aria-hidden>
@@ -1560,8 +1699,17 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   </span>
                   <span>$0.00 · {verdict.model}</span>
                 </>
+              ) : timeline.reveal > 0 ? (
+                /* mid-run · the status row names what is truly running */
+                <span className="morph-verdict-wait">
+                  {runningIds.length > 0 ? `running · ${runningIds.join(' · ')}` : 'running…'}
+                </span>
               ) : (
-                <span className="morph-verdict-wait">running…</span>
+                /* pre-run · the plan's facts stand in the docked window —
+                   the whole shape readable before the tape rolls */
+                <span className="morph-verdict-plan">
+                  {plan.tasks.length} tasks · {verdict.model}
+                </span>
               )}
             </div>
           </div>
@@ -1612,6 +1760,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   the track answers BEFORE you commit (hidden while the head
                   itself is in hand) */}
               <span className="morph-track-ghost" aria-hidden />
+              {/* the scrub tip · the recorded moment under the pointer (clock +
+                  the tasks truly running there) — words written DOM-direct by
+                  onTrackMove, position riding the same --morph-hx var */}
+              <span className="morph-track-tip" aria-hidden ref={tipRef} />
               {[PH.burst0, PH.run0, PH.run1].map((b) => (
                 <span key={b} className="morph-notch" style={{ left: `${b * 100}%` }} aria-hidden />
               ))}

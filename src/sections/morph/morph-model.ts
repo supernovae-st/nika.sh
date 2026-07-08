@@ -34,8 +34,13 @@ export const PH = {
   burstEnd: 0.6,
   wire0: 0.56,
   wire1: 0.66,
-  term0: 0.56,
-  term1: 0.63,
+  /* the run monitor DOCKS with the file's settle — real software shows its
+     instrument panel before the tape rolls: empty log well, plan facts in
+     the status row, the tick map already on the rail. The log then streams
+     into the standing window at run0 (it used to rise at 0.56 — the whole
+     monitor materializing mid-film read as a late prop, operator ask). */
+  term0: 0.04,
+  term1: 0.1,
   run0: 0.66,
   run1: 0.86,
   flat1: 0.94,
@@ -107,9 +112,16 @@ export function wireAt(p: number): number {
   return clamp01((p - PH.wire0) / (PH.wire1 - PH.wire0))
 }
 
-/** terminal strip entrance 0..1 */
+/** the run monitor's dock 0..1 — the window is standing (empty, honest)
+    long before the run streams into it */
 export function termAt(p: number): number {
   return clamp01((p - PH.term0) / (PH.term1 - PH.term0))
+}
+
+/** the recorded clock at a scroll progress (ms, 0 before the run window) —
+    the deck's timecode + the scrub tip both read it */
+export function runMsAt(p: number, totalMs: number): number {
+  return runFracAt(p) * totalMs
 }
 
 /** position inside the run window 0..1 (the recorded trace maps onto this) */

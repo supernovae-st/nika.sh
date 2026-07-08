@@ -26,6 +26,9 @@ export interface ReplayLine {
       start, verbatim from the trace) — the scroll morph maps it to scroll
       progress so the terminal and the DAG can never disagree */
   atMs: number
+  /** the task this line reports (start · done · skip) — the morph pairs the
+      log line with its DAG node + file lines, and a click replays from it */
+  task?: string
 }
 
 export interface ReplayVerdict {
@@ -96,6 +99,7 @@ export function buildScript(entry: FlagshipEntry): {
           delayMs: delay,
           progress: 0,
           atMs: s.atMs,
+          task: s.task,
         })
         break
       case 'task_completed': {
@@ -109,6 +113,7 @@ export function buildScript(entry: FlagshipEntry): {
           delayMs: delay,
           progress: 0,
           atMs: s.atMs,
+          task: s.task,
         })
         break
       }
@@ -121,6 +126,7 @@ export function buildScript(entry: FlagshipEntry): {
           delayMs: delay,
           progress: 0,
           atMs: s.atMs,
+          task: s.task,
         })
         break
       case 'workflow_completed':
