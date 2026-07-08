@@ -1,4 +1,8 @@
 import { Fragment, Suspense, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router'
+/* lz-string is CJS — named ESM imports break the Node prerender (the /play
+   law); the done-frame handoff encodes the flagship into a /play?y= link */
+import lz from 'lz-string'
 import { CodeFile } from '../../components/CodeFile'
 import { FileTabsGhost } from '../Hero'
 import TheRun from '../run/TheRun'
@@ -169,8 +173,18 @@ const yieldEntry = (stage: HTMLElement, clearance: number): void => {
    itself) — the DOM story below stays the fallback truth everywhere else. */
 const ThePlanScene = lazy(() => import('./ThePlanScene'))
 
+const { compressToEncodedURIComponent } = lz
+
 export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const script = useMemo(() => buildScript(flagship), [flagship])
+  /* the see→touch handoff (arc 9j · user-journey pass): the done frame's
+     settled file opens PRE-LOADED in the playground — the exact yaml the
+     visitor just watched run, one click from editable (/play already reads
+     ?y=, the E2 share format) */
+  const playHref = useMemo(
+    () => `/play?y=${compressToEncodedURIComponent(flagship.yaml)}`,
+    [flagship],
+  )
   /* the card's inert titlebar twin — memoized so MemoCodeFile's memo holds
      (a fresh element per render would re-tokenize the file on every state
      tick of this scroll-driven section) */
@@ -1668,6 +1682,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                     wrap
                   className="morph-done-code"
                 />
+                {/* the handoff · watch it run → now touch it (the playground
+                    opens on THIS file) — the loop closes where the film ends */}
+                <Link className="morph-done-open" to={playHref} viewTransition>
+                  edit this file in the playground →
+                </Link>
               </div>
             ) : null}
           </div>
