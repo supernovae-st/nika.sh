@@ -1,9 +1,16 @@
 import { CodeFile } from '../components/CodeFile'
 import type { FlagshipEntry } from '../flagships'
 import { useRevealOnce } from './use-reveal-once'
+import { VERSUS } from '../content'
 import './v4-home.css'
 
-/* ─── FIG 4.0 · The wedge (theme-dark · the manifesto beat) ───────────────────
+/* ─── 03 · The wedge (theme-dark · THE anti-chat chapter) ─────────────────────
+   One chapter, two charges (the Q1 fusion lock): the EMOTION first (chats
+   evaporate · the capture split), then the EVIDENCE (the black-box ledger —
+   the VERSUS grid absorbed from the retired Beyond-the-black-box section).
+   The acid warp died with the merge: the film (01) owns the page's one
+   scroll-driven effect.
+   ────────────────────────────────────────────────────────────────────────────
    The missing "why" beat (research section #4): one two-tone thesis paragraph
    (white lead + dim rest · Linear register) over THE CAPTURE — a split showing
    the same morning ritual twice: LEFT as a chat session (dim, dashed,
@@ -37,7 +44,7 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
     <section ref={ref} id="wedge" aria-labelledby="wedge-title" className="theme-dark v4sec scroll-mt-24">
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          04
+          03
         </p>
 
         {/* the two-tone thesis · the manifesto, in one paragraph */}
@@ -79,6 +86,50 @@ export default function Wedge({ flagship }: { flagship: FlagshipEntry }) {
         <p className="v4wedge-caption" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
           the session ends · the file stays
         </p>
+
+        {/* THE LEDGER · the evidence half of the chapter (absorbed from the
+            retired Beyond-the-black-box beat — emotion above, proof here).
+            Copy verbatim from the old lede's load-bearing sentence. */}
+        <p className="v4wedge-versus-lede" data-rise style={{ ['--rise-delay' as string]: '240ms' }}>
+          <b>Seeing the steps is not the same as enforcing them.</b> Here is what
+          each black box trades away.
+        </p>
+        <div className="v4versus-grid" data-rise style={{ ['--rise-delay' as string]: '280ms' }}>
+          {VERSUS.map((v) => (
+            <article key={v.them} className="v4versus-card">
+              <span className="v4versus-fate" aria-hidden>
+                {v.fate}
+              </span>
+              <p className="v4versus-them">{v.them}</p>
+              <ul className="v4versus-themlist">
+                {v.themLines.map((l) => (
+                  <li key={l}>
+                    <span className="v4versus-dash" aria-hidden>
+                      —
+                    </span>
+                    {l}
+                  </li>
+                ))}
+              </ul>
+              <div className="v4versus-foot">
+                <p className="v4versus-nika">
+                  <img src="/nika.svg" alt="" aria-hidden />
+                  {v.nika}
+                </p>
+                <ul className="v4versus-nikalist">
+                  {v.nikaLines.map((l) => (
+                    <li key={l}>
+                      <span className="v4versus-tick" aria-hidden>
+                        ✓
+                      </span>
+                      {l}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
 
       </div>
     </section>

@@ -133,3 +133,16 @@
 .v5bnd-infer-words {
   display: block;
 }
+
+/* the beat is short (a 3-line excerpt · two gloss rows · one denial card) —
+   the standard section breath left a dead band above the numbers strip
+   (p012 audit · polish wave): this beat exhales earlier, the strip takes
+   the hand-over */
+#the-boundary .v4sec-wrap {
+  padding-bottom: calc(var(--rhythm-sec-m) * 0.55);
+}
+@media (min-width: 768px) {
+  #the-boundary .v4sec-wrap {
+    padding-bottom: calc(var(--rhythm-sec) * 0.55);
+  }
+}

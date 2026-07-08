@@ -376,34 +376,29 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
-   FIG 3.0 · BEYOND THE CHAT  (theme-dark · THE ACID MOMENT)
-   The one place the fluid/chromatic-warp effect lives. The whole comparison
-   layer can be displaced by an SVG turbulence filter whose scale tracks fast
-   scroll, then settles to still. Reduced-motion → the filter is never applied
-   and the layer is plain. The single strong effect, dosed.
+   03 (ledger half) · THE BLACK-BOX LEDGER  (theme-dark · inside the wedge)
+   The VERSUS grid — absorbed into the wedge chapter (Q1 fusion): the capture
+   split carries the emotion, this ledger carries the evidence. The old acid
+   warp died with the merge (the film owns the page's one scroll effect); the
+   cards graduated from flat hairline columns to the site's machined-device
+   register (grain · top light · undercut · the nika foot wears the accent).
    ════════════════════════════════════════════════════════════════════════════ */
-.v4beyond-stage {
-  margin-top: clamp(40px, 6vh, 72px);
+/* the ledger's hand-over line · the wedge caption speaks, then this states
+   the evidence's thesis (mono-adjacent body register, centered like the
+   caption above it) */
+.v4wedge-versus-lede {
+  margin-top: clamp(48px, 7vh, 88px);
+  max-width: 44rem;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--v4-text-dim);
 }
-
-/* the warp wrapper · the filter ref is set in markup; `--acid` (0..1) is driven
-   by the section's rAF on fast scroll. We translate that into the chromatic
-   split + a faint scale wobble. The SVG displacement filter does the fluid part.
-   At rest (--acid:0) everything is identity → pixel-still. */
-.v4acid {
-  position: relative;
-  will-change: filter, transform;
+.v4wedge-versus-lede b {
+  color: var(--v4-text);
+  font-weight: 600;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .v4acid[data-acid='live'] {
-    filter: url(#v4-acid-warp);
-  }
-  /* the chromatic fringe · two offset, blended ghosts that part on fast scroll.
-     Built with drop-shadows in the verb hues (diegetic colour, earned by the
-     motion) — they collapse to 0 offset at rest. */
-  .v4acid[data-acid='live'] .v4versus-grid {
-    transition: filter 0.45s ease;
-  }
+.v4wedge-versus-lede + .v4versus-grid {
+  margin-top: clamp(20px, 3vh, 32px);
 }
 
 /* the comparison grid · file (kept) vs the three alternatives that lose */
@@ -424,10 +419,23 @@
   flex-direction: column;
   min-width: 0;
   padding: 20px 20px 16px;
-  border: 1px solid var(--seam-hairline);
+  border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
-  box-shadow: var(--seam-panel); /* seam kit · inner-top catch, no elevation */
+  /* the machined face (device register) · grain + top light + undercut —
+     the ledger reads as the same object family as the nodes and the deck,
+     not a flat spec column */
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 74%, transparent);
+  background-image:
+    var(--v4-grain-img),
+    linear-gradient(180deg, rgb(255 255 255 / 0.035), rgb(0 0 0 / 0.16) 88%);
+  background-size:
+    var(--v4-grain-size, 4px) var(--v4-grain-size, 4px),
+    auto;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.05),
+    inset 0 -2px 0 rgb(0 0 0 / 0.3),
+    0 2px 0 rgb(0 0 0 / 0.4),
+    0 16px 30px -20px rgb(0 0 0 / 0.6);
 }
 /* the "fate" stamp · a faint mono ghost in the corner */
 .v4versus-fate {
@@ -469,7 +477,8 @@
 .v4versus-foot {
   margin-top: auto;
   padding-top: 16px;
-  border-top: 1px solid var(--v4-line);
+  /* the kept half wears the accent seam — what survives is lit, quietly */
+  border-top: 1px solid color-mix(in oklch, var(--v4-accent) 32%, var(--v4-line));
 }
 .v4versus-nika {
   display: flex;
@@ -503,35 +512,7 @@
 }
 .v4versus-nikalist .v4versus-tick {
   flex: 0 0 auto;
-  color: var(--v4-text-dim);
-}
-
-/* the acid read-out · a tiny live HUD that shows the warp arming/settling so the
-   effect feels SYSTEMIC (an instrument reacting), not random. Pure status text. */
-.v4acid-readout {
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-.v4acid-readout-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: color-mix(in oklch, var(--v4-text) 30%, transparent);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-}
-.v4acid-readout[data-live='true'] .v4acid-readout-dot {
-  background: var(--verb-invoke);
-  box-shadow: 0 0 8px color-mix(in oklch, var(--verb-invoke) 70%, transparent);
-}
-.v4acid-readout[data-live='true'] .v4acid-readout-label {
-  color: var(--v4-text-dim);
+  color: color-mix(in oklch, var(--v4-accent) 62%, var(--v4-text-dim));
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -684,24 +665,27 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* the register body · a wrap of mono chips (tools, providers, modes) */
+/* the register body · a wrap of mono chips (tools, providers, modes).
+   DENSITY PASS (polish wave · operator lock): the inventory is the honesty —
+   nothing hides — but the wall must read as ONE ledger screen, not two:
+   tighter chip mass, tighter family stacking. */
 .v4belt-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
 }
 .v4belt-chip {
   position: relative;
   display: inline-flex;
   align-items: baseline;
-  gap: 7px;
-  padding: 6px 11px;
+  gap: 6px;
+  padding: 4px 9px;
   border: 1px solid var(--v4-line);
-  border-radius: var(--v4-radius);
+  border-radius: var(--v4-radius-sm);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: 11.5px;
   color: var(--v4-text);
   transition: border-color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
@@ -713,7 +697,7 @@
 .v4belt-chip em {
   font-style: normal;
   font-family: var(--display);
-  font-size: 11px;
+  font-size: 10.5px;
   letter-spacing: 0.01em;
   color: var(--v4-text-faint);
   white-space: nowrap;
@@ -731,14 +715,14 @@
 .v4belt-fams {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   min-width: 0;
 }
 .v4belt-fam-label {
   display: flex;
   align-items: center;
   gap: 9px;
-  margin-bottom: 9px;
+  margin-bottom: 7px;
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.2em;

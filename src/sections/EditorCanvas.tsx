@@ -178,7 +178,7 @@ export default function EditorCanvas() {
     >
       <div className="v4sec-wrap">
         <p className="v4sec-fig" data-rise>
-          9.5
+          09
         </p>
 
         <h2 id="editor-title" className="v4wedge-thesis" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
