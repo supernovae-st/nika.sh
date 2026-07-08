@@ -150,8 +150,13 @@
   position: absolute;
   left: clamp(20px, 4vw, 48px);
   right: clamp(20px, 4vw, 48px);
-  bottom: 44px;
+  /* flush on the deck below — window + transport read as ONE instrument
+     (the chassis): the monitor's bottom corners square off onto the shelf */
+  bottom: 54px;
   z-index: 3;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
 }
 .morphsec[data-armed] .morph-caption {
   display: none; /* the console (below) is the armed footer · less text */
@@ -262,9 +267,12 @@
   z-index: 2;
   /* the slot starts BELOW the caption band — at rest the title bar keeps
      ~24px+ of clear air under the lede at ANY viewport; when the card is
-     taller than the slot, `safe` pushes the overflow DOWN (the terminal
-     band is empty through the file beat), never up into the heading */
+     taller than the slot, `safe` pushes the overflow DOWN, never up into
+     the heading. The floor is the DOCKED monitor's top (measured — the
+     driver writes --morph-slot-b): centered in the raw scene, a fitted
+     card still kissed the monitor's chrome. */
   padding-top: 26px;
+  padding-bottom: var(--morph-slot-b, 0px);
   display: flex;
   align-items: safe center;
   justify-content: center;
@@ -760,8 +768,22 @@
   opacity: 0; /* rises with the driver */
   will-change: transform, opacity;
 }
-.morph-rec {
+/* the timecode · the recorded clock under the playhead (tabular: the digits
+   tick without the chrome breathing) — the settled truth pre-hydration */
+.morph-clock {
   margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.morph-clock > span {
+  color: var(--v4-text-dim);
+}
+.morph-rec {
+  margin-left: 14px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -811,6 +833,29 @@
   gap: 10px;
   white-space: pre-wrap;
   word-break: break-word;
+}
+/* the log is a nav surface too (armed): every entry replays from its own
+   recorded moment — the hand says so, the row answers the approach; a task
+   row also lights its DAG node + file lines at the settled frame (data-hi,
+   the same pairing ink the node side wears) */
+.morphsec[data-armed] .morph-line {
+  cursor: pointer;
+  border-radius: 3px;
+  margin-inline: -6px;
+  padding-inline: 6px;
+}
+.morphsec[data-armed] .morph-line:hover {
+  background: rgb(255 255 255 / 0.035);
+  color: var(--v4-text);
+}
+.morph-line[data-hi] {
+  background: color-mix(in oklch, var(--v4-accent) 10%, transparent);
+  color: var(--v4-text);
+}
+/* the DAG nodes carry the same seek (click a step → the film glides to its
+   recorded moment) — the hand announces it at every armed phase */
+.morphsec[data-armed] .morph-node {
+  cursor: pointer;
 }
 @media (prefers-reduced-motion: no-preference) {
   .morphsec[data-armed] .morph-line {
@@ -888,6 +933,11 @@
   color: var(--v4-text);
 }
 .morph-verdict-wait {
+  color: var(--v4-text-faint);
+}
+/* pre-run · the plan's facts hold the status row (the docked window is
+   never a dumb box: tasks + model readable before the tape rolls) */
+.morph-verdict-plan {
   color: var(--v4-text-faint);
 }
 
@@ -1051,8 +1101,12 @@
   color: var(--v4-text-faint);
   /* the transport's floor (wave S · skeuo pass) · a MACHINED deck: hairline
      top seam, inner top-light + bottom shade — a physical shelf the tape
-     runs on, not a translucent strip */
+     runs on, not a translucent strip. It closes the CHASSIS: the monitor
+     window docks flush above (its squared bottom corners meet these side
+     walls), so window + deck read as one piece of hardware. */
+  border: 1px solid var(--v4-line);
   border-top: 1px solid color-mix(in oklch, var(--v4-line) 80%, transparent);
+  border-radius: 0 0 var(--v4-radius, 4px) var(--v4-radius, 4px);
   /* near-opaque: the queue-slide sends draining YAML BEHIND this shelf —
      a translucent floor let it read through (wave M review) */
   background-color: color-mix(in oklch, var(--v4-bg, #08090b) 94%, transparent);
@@ -1215,6 +1269,36 @@
 }
 .morph-track[data-scrub] .morph-track-ghost {
   opacity: 0; /* the head itself is in hand — no second caret */
+}
+/* the scrub tip · the recorded moment under the pointer (clock + the tasks
+   truly running there) — a quiet plate floating over the rail, riding the
+   same --morph-hx the ghost reads; clamped so it never leaves the deck */
+.morph-track-tip {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: clamp(34px, calc(var(--morph-hx, 0) * 100%), calc(100% - 34px));
+  transform: translateX(-50%);
+  padding: 4px 9px;
+  border: 1px solid var(--v4-line);
+  border-radius: 4px;
+  background: color-mix(in oklch, var(--v4-bg, #08090b) 96%, white);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.14s var(--ease-ui, ease);
+  pointer-events: none;
+  box-shadow: 0 6px 18px -8px rgb(0 0 0 / 0.7);
+}
+.morph-track:hover .morph-track-tip,
+.morph-track[data-scrub] .morph-track-tip {
+  opacity: 1;
+}
+/* an empty tip never shows a bare plate (pre-first-move) */
+.morph-track-tip:empty {
+  opacity: 0;
 }
 .morph-notch {
   position: absolute;
@@ -1444,7 +1528,10 @@
   .morphsec[data-armed] .morph-term {
     left: 16px;
     right: 16px;
-    bottom: calc(54px + env(safe-area-inset-bottom));
+    bottom: calc(58px + env(safe-area-inset-bottom));
+  }
+  .morph-clock {
+    display: none; /* narrow chrome: filename + rec lamp keep the room */
   }
   .morph-term-body {
     padding: 8px 12px;
@@ -1462,6 +1549,17 @@
   .morph-verdict-art,
   .morph-verdict-art + .morph-verdict-sep {
     display: none;
+  }
+  /* the live status line holds ONE row (SE law: a wrapped bottom-anchored
+     strip grows upward and eats the last node) — a long running-list
+     ellipsizes; the log right above carries the full truth */
+  .morph-verdict-wait,
+  .morph-verdict-plan {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* the transport · thumb-sized: 44px play key, 34px track; the narrator

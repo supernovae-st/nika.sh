@@ -83,6 +83,9 @@ interface Props {
       (ps-layer px) — the seed chips' landing targets while the slabs are the
       visible DAG (written every frame; the camera never leaves them stale) */
   slabTargetsRef?: React.MutableRefObject<Map<string, [number, number, number]>>
+  /** click a slab → the film glides to that task's recorded moment (the DAG
+      doubles as the timeline's own nav — same seek the DOM nodes carry) */
+  onSeekTask?: (id: string) => void
 }
 
 interface HoverUi {
@@ -697,6 +700,7 @@ export default function ThePlanScene({
   stageRef,
   cardRef,
   slabTargetsRef,
+  onSeekTask,
 }: Props) {
   const model = useMemo(() => buildPlanScene(flagship), [flagship])
   const layerRef = useRef<HTMLDivElement>(null)
@@ -840,7 +844,8 @@ export default function ThePlanScene({
               }}
               className="ps-hit"
               data-vis="0"
-              aria-label={`task ${s.task.id} · ${s.task.verb} · ${s.task.target}`}
+              aria-label={`task ${s.task.id} · ${s.task.verb} · replay from this step`}
+              onClick={onSeekTask ? () => onSeekTask(s.task.id) : undefined}
               onPointerOver={() => setHover(s.task.id, 'bill')}
               onPointerOut={() => setHover(null, 'bill')}
               onFocus={() => setHover(s.task.id, 'bill')}

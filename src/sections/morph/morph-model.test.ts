@@ -78,11 +78,17 @@ describe('phase windows', () => {
     }
   })
 
-  it('wires and terminal are done before the run starts', () => {
+  it('wires are done before the run starts · the monitor docks before the burst', () => {
     expect(wireAt(PH.wire0)).toBe(0)
     expect(wireAt(PH.run0)).toBe(1)
     expect(termAt(PH.term0)).toBe(0)
     expect(termAt(PH.run0)).toBe(1)
+    /* the run monitor is STANDING before the first task condenses — the
+       instrument panel precedes the tape (operator ask, the docked deck) */
+    expect(termAt(PH.burst0)).toBe(1)
+    expect(PH.term1).toBeLessThanOrEqual(PH.burst0)
+    /* and only after the file's settle — never through the hero seam */
+    expect(PH.term0).toBeGreaterThan(0)
     expect(runFracAt(PH.run0)).toBe(0)
     expect(runFracAt(PH.run1)).toBe(1)
   })
@@ -122,6 +128,21 @@ describe('replay lines carry the recorded clock', () => {
         prev = l.atMs
       }
       expect(lines[lines.length - 1].atMs).toBe(f.trace.totalMs)
+    }
+  })
+
+  it('every task line names its task — the log ⇄ node ⇄ file triangle', () => {
+    for (const f of FLAGSHIP_ENTRIES) {
+      const { lines } = buildScript(f)
+      const ids = new Set(f.plan.tasks.map((t) => t.id))
+      for (const l of lines) {
+        if (l.kind === 'start' || l.kind === 'done' || l.kind === 'skip') {
+          expect(l.task).toBeTruthy()
+          expect(ids.has(l.task!)).toBe(true)
+        } else {
+          expect(l.task).toBeUndefined()
+        }
+      }
     }
   })
 })
