@@ -38,10 +38,34 @@
    the component only touches the DOM in effects. pointer-events:none — it
    never intercepts clicks. */
 
+/* ─── THE BEZEL (arc 9) · the « dark skeuo » material ────────────────────────
+   A STATIC dark physical screen-edge, always on, below the iridescence (z-59).
+   Deep inner-shadow body (the bezel's dark mass, pulled in with negative
+   spread so it fades toward the center) + a hairline bevel: a top catch-light
+   and a bottom shade — the frame reads as a raised physical edge the coloured
+   light blooms on. No animation → deterministic under reduced-motion. The
+   center stays clear (the shadow's negative spread keeps it a rim, not a
+   vignette that dims the content). */
+.edge-bezel {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+  border-radius: var(--aurora-radius, 48px);
+  /* the tone tracks the section (arc 9 · Phase C sets --aurora-bezel-k;
+     1 = the resting dark, >1 deepens on the film/blue beats) */
+  box-shadow:
+    inset 0 0 var(--aurora-bezel-reach, 150px) var(--aurora-bezel-spread, -56px)
+      rgb(0 0 0 / calc(0.5 * var(--aurora-bezel-k, 1))),
+    inset 0 1.5px 0 rgb(255 255 255 / 0.035),
+    inset 0 -2px 3px rgb(0 0 0 / 0.4);
+}
+
 .edge-aurora {
-  /* rest intensity · A WHISPER: the frame is mostly absent at rest and only
-     speaks when something happens (pulses / runs raise it, then it decays). */
-  --aurora-intensity: 0.055;
+  /* rest intensity · PRESENCE (arc 9): the iridescence is quietly always on,
+     living on the dark bezel below. Pulses / runs raise it, then it decays
+     back to this floor (mutated by EdgeAurora.tsx · this is the SSR fallback). */
+  --aurora-intensity: 0.13;
   /* rim geometry · the band thickness in px */
   --aurora-band: 16px;
   /* THE FIELD LAW (v11) · how deep the soft field reaches from each edge.

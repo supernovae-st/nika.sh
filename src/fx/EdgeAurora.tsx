@@ -22,10 +22,12 @@ import './edge-aurora.css'
    SSR-safe: the visual is pure CSS; browser access lives in effects and
    event-time callbacks only. */
 
-const REST_INTENSITY = 0.055 /* the resting WHISPER · the frame is mostly absent
-    at rest (operator: « pas tout le temps là ») and only speaks on events;
-    matches the CSS fallback so post-pulse decay lands where the prerender
-    started */
+const REST_INTENSITY = 0.13 /* the resting PRESENCE (arc 9 · reverses « pas tout
+    le temps là ») · the iridescence is quietly ALWAYS on, living on the dark
+    bezel below it — a physical dark screen-edge that catches light. Still a
+    diffuse glow, never a hard border; the run floor (0.26) + pulses (0.38)
+    clearly rise above it. Matches the CSS fallback so post-pulse decay lands
+    where the prerender started. */
 /** run mode raises the resting floor — the frame must clearly speak while a
     run plays (the drum), yet stay a diffuse glow, never a hard border: the
     presence comes from opacity on a blur-melted rim, not from sharpness. */
@@ -234,6 +236,13 @@ export function EdgeAurora({
   ref?: React.Ref<HTMLDivElement>
 }) {
   return (
+    <>
+    {/* arc 9 · THE BEZEL — the « dark skeuo » material: a STATIC dark physical
+        screen-edge (deep inner-shadow body + a hairline bevel: top catch-light,
+        bottom shade) that is ALWAYS on, below the iridescence (z-59 < the
+        aurora's z-60), so the coloured light blooms ON a dark bezel. No
+        animation → deterministic under reduced-motion (goldens). */}
+    <div className="edge-bezel" aria-hidden="true" />
     <div ref={ref} className="edge-aurora" aria-hidden="true" data-edge-aurora>
       {/* v8 · THE DEPTH SHEET — a third, much deeper ring behind the bloom:
           same canonical atomic ring mask, huge padding + heavy blur, counter-
@@ -245,5 +254,6 @@ export function EdgeAurora({
           canonical atomic ring mask, hairline padding, tiny blur. */}
       <span className="edge-aurora-lining" />
     </div>
+    </>
   )
 }
