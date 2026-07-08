@@ -66,6 +66,17 @@
       type="font/woff2"
       crossorigin
     />
+    <!-- 700 paints visible display surfaces too (the manifesto title, the
+         footer word) — unpreloaded it loaded AFTER first paint and its swap
+         was the /play CLS 0.126 class (LH named the grotesk sibling; both
+         die when every display font wins the paint race). 8KB subsetted. -->
+    <link
+      rel="preload"
+      href="/fonts/clash-display-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <!-- sovereign analytics (W12a · FRONT F) · self-hosted umami, cookieless,
          IP-anonymized (telemetry canon: no vendor, no PII). INERT until the
          instance exists: loads ONLY on the prod hostname AND once the website
