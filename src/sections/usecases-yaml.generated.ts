@@ -1865,6 +1865,60 @@ tasks:
 outputs:
   result: \${{ tasks.think.output }}  # SLOT: the callable contract
 `,
+  'docker-report': `nika: v1
+workflow: docker-report-template    # SLOT: kebab-case workflow id
+description: "read the daemon's state · explain it · keep the report"   # SLOT
+
+model: ollama/qwen3.5:4b            # SLOT: local-first · mock/echo for offline rehearsal
+
+permits:
+  exec:
+    - "docker"                      # SLOT: the ONE program the reads may launch
+  tools:
+    - "nika:write"
+  fs:
+    write:
+      - "./docker-health.md"        # SLOT: where the report lands (must match \`keep\`)
+
+tasks:
+  # The reads run IN PARALLEL (no depends_on between them) — the
+  # scheduler proves it from the DAG, nobody orders it.
+  - id: ps
+    exec:
+      # SLOT: argv ARRAY form — one program, exactly these arguments
+      command: ["docker", "ps", "--all", "--format", "{{.Names}}\\t{{.Status}}\\t{{.Image}}"]
+
+  - id: df
+    exec:
+      command: ["docker", "system", "df"]   # SLOT: the second read (drop the task if one suffices)
+
+  - id: diagnose
+    depends_on: [ps, df]
+    infer:
+      # SLOT: what should the model DO with the readings?
+      prompt: |
+        You are reading a Docker host's state. Containers (name·status·image):
+        \${{ tasks.ps.output }}
+
+        Disk usage:
+        \${{ tasks.df.output }}
+
+        Write a short health report: what is running, what exited, what
+        looks unhealthy (restart loops · old exits), and whether disk
+        usage needs attention. Plain prose, no preamble.
+      max_tokens: 600               # SLOT: the spend ceiling for this call
+
+  - id: keep
+    depends_on: [diagnose]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./docker-health.md"  # SLOT: same path as permits.fs.write
+        content: "\${{ tasks.diagnose.output }}"
+
+outputs:
+  report: \${{ tasks.keep.output }}
+`,
   'etl-state': `nika: v1
 workflow: etl-state-template        # SLOT: kebab-case workflow id
 description: "read state · fetch fresh · diff · process the delta · save state"   # SLOT
