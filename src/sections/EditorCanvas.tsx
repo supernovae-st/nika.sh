@@ -282,7 +282,15 @@ export default function EditorCanvas() {
           {/* THE FILE · the same workflow, as the text it really is */}
           <div className="v4edx-yaml" aria-label="The workflow file this canvas renders">
             <p className="v4ed-tab">release-notes.nika.yaml</p>
-            <pre className="v4edx-pre">
+            {/* the CodeFile keyboard law (unconditional): a scrollable well is
+                focusable + named + ringed — the a11y sweep's one serious
+                violation (scrollable-region-focusable) closed here */}
+            <pre
+              className="v4edx-pre"
+              tabIndex={0}
+              role="region"
+              aria-label="release-notes.nika.yaml — the workflow file, scrollable"
+            >
               {splitYamlByTask(EXTENSION_SHOWCASE_YAML).map((seg) => (
                 <span
                   key={seg.key}

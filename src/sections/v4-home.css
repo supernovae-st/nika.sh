@@ -18,6 +18,27 @@
   isolation: isolate;
   overflow: clip; /* contain the decorative HUD; never widen the viewport */
 }
+/* ── the below-the-film render lane (perf wave · the TBT ~900ms finding) ─────
+   Every beat past the wedge skips style/layout/paint until the scroll
+   approaches it (content-visibility) — ~10 heavy sections leave the critical
+   lane at load. auto-CIS memoizes each beat's real height after its first
+   render; the 1100px estimate only guides the scrollbar before that.
+   The film, the boundary and the close stay OUT: the morph measures live
+   geometry across the hero seam, and the close owns the signature canvas. */
+#wedge,
+#run-explains,
+#verbs,
+#toolbelt,
+#where-it-fits,
+#use-cases,
+#editor,
+#changelog,
+#proof,
+#get-started,
+#faq {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1100px;
+}
 .v4sec-wrap {
   position: relative;
   z-index: 1;
@@ -1136,6 +1157,23 @@
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
+  /* the preview is a LOG, not a reading (detail wave · operator lock):
+     three lines per release — the « Full changelog → » link below carries
+     the long form. -webkit-line-clamp still needs the -box display pair. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* the ship-log beat exhales earlier too (the boundary's law): the black
+   band before the light Proof beat was dead air, not breath */
+#changelog .v4sec-wrap {
+  padding-bottom: calc(var(--rhythm-sec-m) * 0.6);
+}
+@media (min-width: 768px) {
+  #changelog .v4sec-wrap {
+    padding-bottom: calc(var(--rhythm-sec) * 0.6);
+  }
 }
 
 /* the close · the forward link to the full register */
@@ -2411,6 +2449,12 @@
   color: var(--v4-text-dim);
   overflow-x: auto;
   flex: 1;
+}
+/* the CodeFile keyboard law's ring — the well is a tab stop now */
+.v4edx-pre:focus-visible {
+  outline: 1.5px solid var(--v4-focus-ring);
+  outline-offset: -1.5px;
+  border-radius: var(--v4-radius-sm);
 }
 
 .v4edx-pre span {
