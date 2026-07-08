@@ -68,8 +68,9 @@ const SCENES = [
   },
   {
     name: "run-live",
+    /* kicker-only (operator lock · detail wave): the section H2 says
+       « The run explains itself. » — the card must not repeat it */
     kicker: "nika run · recorded live",
-    headline: "The run explains itself.",
     motion: { capture: "run", cmd: "nika run signature-demo.nika.yaml" },
     panels: [
       {
@@ -225,10 +226,11 @@ ${p.lines.join("\n")}
 }
 
 function sceneHtml(s) {
+  /* headline is optional (kicker-only scenes · the run-live card must not
+     repeat the section H2 it sits under) */
   const head = `
   <div class="head">
-    <div class="kicker">${esc(s.kicker)}</div>
-    <div class="headline">${esc(s.headline)}</div>
+    <div class="kicker">${esc(s.kicker)}</div>${s.headline ? `\n    <div class="headline">${esc(s.headline)}</div>` : ''}
   </div>`;
 
   let body = "";
