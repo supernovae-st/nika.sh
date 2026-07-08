@@ -237,7 +237,8 @@ print_next_steps() {
     diagnose: nika doctor
     scaffold this repo: nika init
 $wire_line
-    docs: https://nika.sh
+    learn: https://nika.sh
+    docs: https://docs.nika.sh
     source: https://github.com/$GITHUB_REPO
 EOF
 }
