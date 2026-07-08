@@ -4,7 +4,8 @@
    (<1280px it stands down; the nav owns mobile wayfinding). */
 .srail {
   position: fixed;
-  right: 18px;
+  /* seated against the device frame (arc 9e) */
+  right: calc(18px + var(--frame-w, 0px));
   top: 50%;
   transform: translateY(-50%);
   z-index: 40;
