@@ -2498,3 +2498,31 @@
      carries the story alone on a phone */
   .v4edx-meta { display: none; }
 }
+
+/* ─── THE SHEET (arc 10a) · the stage-and-sheets colour law ───────────────────
+   The home's colour logic, made structural: DARK is the STAGE — the one
+   continuous device world (near-black, the arc-9j verdict). Every light/blue
+   section is a SHEET — a document laid on the stage, the site's own metaphor
+   (the file IS the product · the device frame holds the screen). The inset +
+   radius + cast shadow turn each theme flip from an arbitrary hard cut into a
+   composed object, and the stage breathing between sheets IS the rhythm
+   between chapters. The blue gallery is the same grammar (the sky plate),
+   not a different rule.
+
+   Radius stays below the device frame's 48px (nested radii · child < parent).
+   NO overflow property here — .v4sec already clips (and an extra overflow
+   ancestor would re-scope the use-cases sticky panel); overflow:clip follows
+   border-radius, so the grain + HUD clip to the rounded sheet for free. The
+   catch-light reuses the theme-scoped --seam-highlight (white line on paper ·
+   softer on the blue plate). */
+.v4-sheet {
+  --sheet-inset: clamp(12px, 2.5vw, 32px);
+  margin-inline: var(--sheet-inset);
+  margin-block: clamp(18px, 3.5vh, 44px);
+  border-radius: clamp(20px, 2.2vw, 30px);
+  box-shadow:
+    var(--seam-highlight),
+    0 0 0 1px rgb(0 0 0 / 0.42),
+    0 30px 70px -30px rgb(0 0 0 / 0.85),
+    0 8px 24px -12px rgb(0 0 0 / 0.6);
+}

@@ -55,7 +55,7 @@ export default function UseCasesV4() {
       ref={ref}
       id="use-cases"
       aria-labelledby="usecases-title"
-      className="theme-blue v4sec v4-flip v4-cv scroll-mt-24"
+      className="theme-blue v4sec v4-flip v4-cv v4-sheet scroll-mt-24"
       data-aurora="blue"
     >
       <div className="v4sec-wrap">
