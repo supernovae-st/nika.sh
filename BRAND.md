@@ -23,6 +23,7 @@ is the lockup you put ON a dark surface.
 | `nika-tile-{128,256,512}.png` | rasters of the tile | store listings, avatars, social |
 | [`nika-logo-dark.svg`](public/brand/nika-logo-dark.svg) | mark + `nika` wordmark + dot | logo lockup on dark |
 | [`nika-logo-light.svg`](public/brand/nika-logo-light.svg) | mark + `nika` wordmark + dot | logo lockup on light |
+| `nika-logo-{dark,light}.png` | the lockups rendered with the real Martian Mono (1000×256 · transparent) | SVG-hostile surfaces — e.g. VS Code Marketplace READMEs (vsce rejects SVG images) |
 
 README embed (theme-aware):
 
