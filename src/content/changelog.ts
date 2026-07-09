@@ -53,6 +53,13 @@ export const CHANGELOG: ChangelogEntry[] = [
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.5.0',
   },
   {
+    date: '2026-07-08',
+    tag: 'release',
+    title: 'v0.98.0 · native answers, one lexer',
+    body: 'Structured output rides each provider\u2019s own grammar (Anthropic output_config, Gemini responseJsonSchema, OpenAI strict-mode honesty) with a coercion ladder that repairs before any paid retry; the checker closes run-fail gaps (the block-sequence bomb dies as NIKA-PARSE-001, env: binds at run exactly as checked); the ${{ }} scanner becomes one shared crate for checker AND runtime — parity by construction; and the first 30 seconds learn to speak: nika welcome mirrors your machine, nika explain narrates a file, init briefs six agent surfaces, --max-cost-usd refuses to start past the static floor.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.98.0',
+  },
+  {
     date: '2026-07-07',
     tag: 'release',
     title: 'v0.97.0 · the run becomes evidence',

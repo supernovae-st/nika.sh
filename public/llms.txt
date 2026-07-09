@@ -25,14 +25,14 @@ stays yours. Local-first. Runs on your laptop, no daemon.
 
 ## Examples (canonical · conformance-gated)
 
-Every spec version ships a versioned examples pack — 27 workflows
-(7 foundation teaching the constructs + 20 showcase real jobs, T1
-starter → T4 epic), each a complete validated file. The manifest
+Every spec version ships a versioned examples pack — foundation
+workflows teaching the constructs plus tiered showcase real jobs
+(T1 starter → T4 epic), each a complete validated file. The manifest
 (pack_version · constructs · sha256 per file) makes the pack
 verifiable end-to-end; docs and site render projections of the same
 files.
 
-- Templates (instantiate, never invent — 6 valid skeletons with SLOT markers): https://github.com/supernovae-st/nika-spec/tree/main/templates
+- Templates (instantiate, never invent — SLOT-marked skeletons): https://github.com/supernovae-st/nika-spec/tree/main/templates
 - Agent authoring protocol: https://docs.nika.sh/guides/agent-authoring
 - Pack manifest: https://github.com/supernovae-st/nika-spec/blob/main/examples/manifest.yaml
 - Showcase source: https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase
