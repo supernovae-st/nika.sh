@@ -536,6 +536,31 @@
       linear-gradient(
         oklch(0.88 0.06 var(--aurora-tint-hue, 262deg) / 0.2) 0 0
       );
+    /* ONE tint system (arc 9j qw2) · the lining's richness follows the
+       section like the edge-light does (×0.5 → 0.06 at the default, richer
+       in the film, calmer on light pages). Declared as a SECOND full pass —
+       if calc-in-oklch ever fails to parse, the cascade keeps the fixed-
+       chroma declaration above (never « no lining at all »). */
+    background:
+      conic-gradient(
+        from var(--aurora-spin2),
+        transparent,
+        rgb(255 255 255 / 0.55) 9%,
+        transparent 22%,
+        transparent 36%,
+        rgb(255 255 255 / 0.5) 50%,
+        transparent 64%,
+        transparent 78%,
+        rgb(255 255 255 / 0.5) 88%,
+        transparent
+      ),
+      linear-gradient(
+        oklch(
+          0.88 calc(var(--aurora-tint-c, 0.12) * 0.5)
+            var(--aurora-tint-hue, 262deg) / 0.2
+        )
+        0 0
+      );
     filter: blur(4.5px);
     /* the rim holds a floor (a defined edge always) and swells with the run —
        decoupled from the low rest intensity that used to hide it */
@@ -661,6 +686,17 @@
   100% {
     --aurora-spin: 360deg;
     opacity: 0;
+  }
+}
+
+/* print · the frame is SCREEN chrome: both overlays are position:fixed (they
+   would repeat on every printed page) and the bezel's opaque 9999px flood
+   inks the whole sheet black when print-backgrounds are on. The paper gets
+   the content, never the device. */
+@media print {
+  .edge-bezel,
+  .edge-aurora {
+    display: none;
   }
 }
 
