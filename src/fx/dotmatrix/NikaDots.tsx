@@ -43,6 +43,7 @@ export function NikaDots({ id, size = 72, live = false, step = 110, title, class
       style={rootStyle}
       data-nkdm={def.pattern}
       data-alt={def.alternate ? '' : undefined}
+      data-live={live && def.hue ? '' : undefined}
       role={title ? 'img' : undefined}
       aria-label={title}
       aria-hidden={title ? undefined : true}

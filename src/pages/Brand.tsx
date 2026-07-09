@@ -27,13 +27,20 @@ const MARKS: { src: string; label: string; light?: boolean }[] = [
   { src: '/brand/nika-logo-light.svg', label: 'lockup · light', light: true },
 ]
 
-const MOTION_ORDER: NikaAnimId[] = [
+/* curated order first (the verbs · the brand beat · the neutral register);
+   any anim/* entity added to the ontology later APPENDS instead of hiding —
+   the page can't silently under-show the system. */
+const MOTION_CURATED: NikaAnimId[] = [
   'anim/infer',
   'anim/exec',
   'anim/invoke',
   'anim/agent',
   'anim/butterfly',
   'anim/loading',
+]
+const MOTION_ORDER: NikaAnimId[] = [
+  ...MOTION_CURATED,
+  ...(Object.keys(NK_ANIMS) as NikaAnimId[]).filter((id) => !MOTION_CURATED.includes(id)),
 ]
 
 export function Component() {
