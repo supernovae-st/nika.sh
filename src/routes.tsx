@@ -51,9 +51,10 @@ export const routes: RouteObject[] = [
       { path: 'zh-hans/manifesto', Component: Manifesto },
       { path: 'changelog', Component: Changelog },
       /* the error register · the human twin of /errors/catalog.json. The
-         engine's check findings stamp docs_url = /errors/<CODE>; the :code
-         deep-link rides the SPA catchall (only /errors is prerendered) and
-         scrolls to its anchored row. */
+         engine's check findings stamp docs_url = /errors/<CODE>; every code
+         page prerenders to its own static landing (ERROR_PATHS in
+         site.config.ts — deep links land on a real 200) and scrolls to its
+         anchored row. */
       { path: 'errors', Component: Errors },
       { path: 'errors/:code', Component: Errors },
       { path: 'use-cases', Component: UseCasesPage },
