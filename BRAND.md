@@ -18,7 +18,7 @@ is the lockup you put ON a dark surface.
 | [`nika-mark-dark.svg`](public/brand/nika-mark-dark.svg) | bare mark · ice `#9fd0ff` | the mark on dark surfaces (identity tone) |
 | [`nika-mark-light.svg`](public/brand/nika-mark-light.svg) | bare mark · ink `#04050d` | the mark on light surfaces |
 | [`nika-mark-glow.svg`](public/brand/nika-mark-glow.svg) | bare mark · glow `#cfe6ff` | small sizes (≈19–24 px) and dark in-scene use |
-| [`nika-glyph-16.svg`](public/brand/nika-glyph-16.svg) | 16 px stroke glyph · `currentColor` | editor file icons, dense UI rows — the full mark doesn't survive 16 px |
+| [`nika-glyph-16.svg`](public/brand/nika-glyph-16.svg) | 16 px stroke glyph · `currentColor` | the site's stroke UI family only (nav) — NEVER the logo: editor/file icons carry the real mark |
 | [`nika-tile.svg`](public/brand/nika-tile.svg) | rounded tile `#04050d` + ice mark | favicon, app icons, marketplace tiles |
 | `nika-tile-{128,256,512}.png` | rasters of the tile | store listings, avatars, social |
 | [`nika-logo-dark.svg`](public/brand/nika-logo-dark.svg) | mark + `nika` wordmark + dot | logo lockup on dark |
