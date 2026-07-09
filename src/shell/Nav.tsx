@@ -4,6 +4,7 @@ import { REPO, DOCS, ENGINE_VERSION } from '../content'
 import { MANIFESTO_LOCALES } from '../content/manifesto-copy'
 import { useMagnetic } from '../fx/use-magnetic'
 import './nav.css'
+import { NK_ICONS } from '../icons/manifest'
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
    ONE nav for every route (mounted in RootLayout). Replaces the v3 glass pill.
@@ -94,58 +95,20 @@ const PRODUCT_GROUPS: MegaGroup[] = [
   },
 ]
 
-/* ── the mega icon set · ONE hand-drawn outlined family (16px grid · stroke
-   1.5 · round joins · monochrome dim, inked+accent on row hover via CSS).
-   The butterfly is the nika mark reduced to a 4-lobe glyph — the full-color
-   public/nika.svg art doesn't survive 16px, so the wings are re-traced as
-   stroke teardrops off a short body line. */
-const MEGA_ICON_PATHS: Record<MegaIconName, React.ReactNode> = {
-  run: (
-    <>
-      <circle cx="8" cy="8" r="6.3" />
-      <path d="M6.8 5.7v4.6L10.6 8Z" />
-    </>
-  ),
-  verbs: (
-    <>
-      <circle cx="5.1" cy="5.1" r="1.7" />
-      <circle cx="10.9" cy="5.1" r="1.7" />
-      <circle cx="5.1" cy="10.9" r="1.7" />
-      <circle cx="10.9" cy="10.9" r="1.7" />
-    </>
-  ),
-  shield: (
-    <path d="M8 1.9 13.1 3.9v4c0 3.2-2.2 5.2-5.1 6.4-2.9-1.2-5.1-3.2-5.1-6.4v-4Z" />
-  ),
-  tiles: (
-    <>
-      <rect x="2.2" y="2.4" width="11.6" height="4.6" rx="1.2" />
-      <rect x="2.2" y="9" width="5.1" height="4.6" rx="1.2" />
-      <rect x="8.7" y="9" width="5.1" height="4.6" rx="1.2" />
-    </>
-  ),
-  terminal: (
-    <>
-      <rect x="1.8" y="2.7" width="12.4" height="10.6" rx="1.6" />
-      <path d="m4.6 6.5 2.3 1.9-2.3 1.9" />
-      <path d="M8.7 10.3h2.7" />
-    </>
-  ),
-  book: (
-    <>
-      <path d="M8 4.3C6.9 3.1 4.9 2.8 2.4 3v9.7c2.5-.2 4.5.1 5.6 1.3 1.1-1.2 3.1-1.5 5.6-1.3V3c-2.5-.2-4.5.1-5.6 1.3Z" />
-      <path d="M8 4.3v9.7" />
-    </>
-  ),
-  butterfly: (
-    <>
-      <path d="M8 6.4v4.9" />
-      <path d="M7.5 7.4C6.8 4.7 4.3 2.4 2.8 3.5 1.4 4.6 3.3 7.9 7.5 8.7Z" />
-      <path d="M8.5 7.4c.7-2.7 3.2-5 4.7-3.9 1.4 1.1-.5 4.4-4.7 5.2Z" />
-      <path d="M7.6 10c-1.9-.3-3.6.6-3.3 1.9.3 1.2 2.2.8 3.3-.8Z" />
-      <path d="M8.4 10c1.9-.3 3.6.6 3.3 1.9-.3 1.2-2.2.8-3.3-.8Z" />
-    </>
-  ),
+/* ── the mega icon set · the icon library's hand-drawn ui/* family (16px
+   grid · stroke 1.5 · round joins · monochrome dim, inked+accent on row
+   hover via CSS). Bodies come from the generated manifest (design/icons.yaml
+   → src/icons/manifest.ts) — the same artwork as before, now owned by the
+   icon ontology. The butterfly is the nika mark reduced to a 4-lobe glyph —
+   the full-color public/nika.svg art doesn't survive 16px. */
+const MEGA_ICON_BODY: Record<MegaIconName, string> = {
+  run: NK_ICONS['ui/run'].body,
+  verbs: NK_ICONS['ui/verbs'].body,
+  shield: NK_ICONS['ui/shield'].body,
+  tiles: NK_ICONS['ui/tiles'].body,
+  terminal: NK_ICONS['ui/terminal'].body,
+  book: NK_ICONS['ui/book'].body,
+  butterfly: NK_ICONS['ui/butterfly'].body,
 }
 
 function MegaIcon({ name }: { name: MegaIconName }) {
@@ -160,9 +123,10 @@ function MegaIcon({ name }: { name: MegaIconName }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden
-    >
-      {MEGA_ICON_PATHS[name]}
-    </svg>
+      // safe sink: static build-time bodies from our own committed SVGs
+      // (design/build.mjs) — no user input reaches this innerHTML
+      dangerouslySetInnerHTML={{ __html: MEGA_ICON_BODY[name] }}
+    />
   )
 }
 

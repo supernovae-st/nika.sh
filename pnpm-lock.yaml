@@ -56,9 +56,6 @@ importers:
       three:
         specifier: ^0.184.0
         version: 0.184.0
-      yaml:
-        specifier: ^2.9.0
-        version: 2.9.0
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -114,6 +111,9 @@ importers:
       lighthouse:
         specifier: ^12.8.2
         version: 12.8.2
+      lucide-static:
+        specifier: ^1.23.0
+        version: 1.23.0
       marked:
         specifier: ^16.4.1
         version: 16.4.2
@@ -141,6 +141,9 @@ importers:
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@24.13.1)(jsdom@29.1.1)(lightningcss@1.32.0)
+      yaml:
+        specifier: ^2.9.0
+        version: 2.9.0
 
 packages:
 
@@ -2532,6 +2535,9 @@ packages:
   lru-cache@7.18.3:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
+
+  lucide-static@1.23.0:
+    resolution: {integrity: sha512-V4tqLEHfvsptGaAZMD8sFJKeGsz2nTAU0+ctxTX3afao/5bs+mhrvvGDmvQmyI7YhQwpIFodZmnkPTMYyGzH4Q==}
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -5764,6 +5770,8 @@ snapshots:
       yallist: 3.1.1
 
   lru-cache@7.18.3: {}
+
+  lucide-static@1.23.0: {}
 
   lz-string@1.5.0: {}
 
