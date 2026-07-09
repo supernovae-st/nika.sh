@@ -99,7 +99,7 @@ tasks:
     sub: [
       { n: '5.4.1', label: 'tool allow-list', to: '/spec#permits' },
       { n: '5.4.2', label: 'max turns' },
-      { n: '5.4.3', label: 'the human gate', to: '#human-in-the-loop' },
+      { n: '5.4.3', label: 'the human gate', to: '#run-explains' },
     ],
   },
 ]

@@ -609,7 +609,7 @@ export function Component() {
                 </ul>
                 <p className="spec-permits-foot">
                   See it felt, not told:{' '}
-                  <Link to="/#human-in-the-loop" className="spec-inline-link">
+                  <Link to="/#the-boundary" className="spec-inline-link">
                     toggle a permit and watch the runtime obey
                   </Link>
                   .
