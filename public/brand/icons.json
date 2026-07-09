@@ -55,7 +55,7 @@
     },
     "anim/butterfly": {
       "label": "The butterfly beats",
-      "semantic": "the brand glyph in dots — wings unfold from the body and fold back",
+      "semantic": "the brand mark in dots — wings unfold from the body and fold back",
       "svg": null,
       "set": "motion",
       "glyph": null,

@@ -23,7 +23,7 @@ nkd:fx-dim a nkd:Effect .
 
 <https://nika.sh/ontology/design#anim-butterfly> a nkd:Animation ;
   rdfs:label "The butterfly beats" ;
-  nkd:semantic "the brand glyph in dots — wings unfold from the body and fold back" ;
+  nkd:semantic "the brand mark in dots — wings unfold from the body and fold back" ;
   nkd:pattern "emerge" ;
   nkd:grid 9 ;
   nkd:alternate true .

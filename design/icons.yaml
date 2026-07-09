@@ -371,7 +371,7 @@ entities:
   ui/tiles: { label: Use cases, local: ui/tiles, grid: 16 }
   ui/terminal: { label: Playground, local: ui/terminal, grid: 16 }
   ui/book: { label: Learn, local: ui/book, grid: 16 }
-  ui/butterfly: { label: Manifesto, local: ui/butterfly, grid: 16, note: "the brand glyph — kit nika-glyph-16" }
+  ui/butterfly: { label: Manifesto, local: ui/butterfly, grid: 16, note: "nav stroke-family artwork (kit nika-glyph-16) — NEVER the logo: logo surfaces carry the real mark (operator lock 2026-07-09)" }
 
   # ── social · the footer marks (house tracings · absorbed from the sprite) ─
   # public/icons.svg stays byte-frozen this cycle (visual goldens); these are
@@ -415,7 +415,7 @@ entities:
     fx: [run-glow]
   anim/butterfly:
     label: The butterfly beats
-    semantic: "the brand glyph in dots — wings unfold from the body and fold back"
+    semantic: "the brand mark in dots — wings unfold from the body and fold back"
     pattern: emerge
     alternate: true
   anim/loading:
