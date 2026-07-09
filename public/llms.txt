@@ -40,6 +40,18 @@ files.
 - Interactive explorer: https://nika.sh/#use-cases
 - Blog (markdown source: content/blog in the site repo): https://nika.sh/blog · feed https://nika.sh/rss.xml · full text https://nika.sh/llms-full.txt
 
+## Design system (machine-readable)
+
+Every Nika verb, builtin, feature and run-state has a canonical icon,
+color role and motion pattern — declared once in an ontology and served
+as data. Verb hues (infer blue · exec orange · invoke cyan · agent
+violet) appear ONLY on live-run surfaces; static UI keeps the text ink.
+
+- Icon ontology (JSON · 79 entities · labels, semantics, hue tokens, links): https://nika.sh/brand/icons.json
+- RDF projection (Turtle · SPARQL-ready · namespace https://nika.sh/ontology/design#): https://nika.sh/brand/icons.ttl
+- Served icon catalog: https://nika.sh/brand/icons/<namespace>-<name>.svg (e.g. verb-infer, builtin-fetch, state-recovered)
+- Brand kit + usage rules: https://nika.sh/brand · https://github.com/supernovae-st/nika.sh/blob/main/BRAND.md
+
 ## How to write Nika (the 12 patterns)
 
 Deterministic core, model at the edges · parallelism is the default ·
