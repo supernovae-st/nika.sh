@@ -41,4 +41,4 @@ export const BLOG_PATHS = [
 ]
 /* the manifesto's translated variants (BCP 47 slugs · hreflang cluster) */
 export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto']
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', '/use-cases', '/spec', '/install', '/convert']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', '/use-cases', '/spec', '/install', '/convert', '/brand']

@@ -8,9 +8,56 @@ nkd:Feature a rdfs:Class .
 nkd:RunState a rdfs:Class .
 nkd:UiGlyph a rdfs:Class .
 nkd:SocialMark a rdfs:Class .
+nkd:Animation a rdfs:Class .
 nkd:fx-run-glow a nkd:Effect .
 nkd:fx-pulse a nkd:Effect .
 nkd:fx-dim a nkd:Effect .
+
+<https://nika.sh/ontology/design#anim-agent> a nkd:Animation ;
+  rdfs:label "Agent · orbit" ;
+  nkd:semantic "the bounded loop — a tail orbits the perimeter, the core ticks each lap" ;
+  nkd:pattern "orbit" ;
+  nkd:grid 9 ;
+  nkd:fx nkd:fx-run-glow ;
+  nkd:parent <https://nika.sh/ontology/design#verb-agent> .
+
+<https://nika.sh/ontology/design#anim-butterfly> a nkd:Animation ;
+  rdfs:label "The butterfly beats" ;
+  nkd:semantic "the brand glyph in dots — wings unfold from the body and fold back" ;
+  nkd:pattern "emerge" ;
+  nkd:grid 9 ;
+  nkd:alternate true .
+
+<https://nika.sh/ontology/design#anim-exec> a nkd:Animation ;
+  rdfs:label "Exec · scanline" ;
+  nkd:semantic "stdout marches — rows light top to bottom, carriage-return quick" ;
+  nkd:pattern "scanline" ;
+  nkd:grid 9 ;
+  nkd:fx nkd:fx-run-glow ;
+  nkd:parent <https://nika.sh/ontology/design#verb-exec> .
+
+<https://nika.sh/ontology/design#anim-infer> a nkd:Animation ;
+  rdfs:label "Infer · sampling" ;
+  nkd:semantic "the model samples — the sparkle figure emerges from seeded noise" ;
+  nkd:pattern "sample" ;
+  nkd:grid 9 ;
+  nkd:fx nkd:fx-run-glow ;
+  nkd:parent <https://nika.sh/ontology/design#verb-infer> .
+
+<https://nika.sh/ontology/design#anim-invoke> a nkd:Animation ;
+  rdfs:label "Invoke · roundtrip" ;
+  nkd:semantic "request/response — a radial pulse leaves the center and comes back" ;
+  nkd:pattern "roundtrip" ;
+  nkd:grid 9 ;
+  nkd:alternate true ;
+  nkd:fx nkd:fx-run-glow ;
+  nkd:parent <https://nika.sh/ontology/design#verb-invoke> .
+
+<https://nika.sh/ontology/design#anim-loading> a nkd:Animation ;
+  rdfs:label "Loading · wave" ;
+  nkd:semantic "the neutral register — a diagonal wave" ;
+  nkd:pattern "wave" ;
+  nkd:grid 9 .
 
 <https://nika.sh/ontology/design#builtin-assert> a nkd:Builtin ;
   rdfs:label "assert" ;
