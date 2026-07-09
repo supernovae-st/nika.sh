@@ -455,6 +455,20 @@ export function Component() {
                   ↗
                 </span>
               </a>
+              <a href={`${DOCS}/guides/cost-honesty`} target="_blank" rel="noreferrer" className="v4doclink v4doclink--dim">
+                What a run costs, before you run it
+                <span aria-hidden className="v4doclink-arrow">
+                  {' '}
+                  ↗
+                </span>
+              </a>
+              <a href={`${DOCS}/examples/model-bench`} target="_blank" rel="noreferrer" className="v4doclink v4doclink--dim">
+                Pick a local model on measured facts
+                <span aria-hidden className="v4doclink-arrow">
+                  {' '}
+                  ↗
+                </span>
+              </a>
               <a href={DOCS} target="_blank" rel="noreferrer" className="v4doclink v4doclink--dim">
                 Full docs
                 <span aria-hidden className="v4doclink-arrow">
