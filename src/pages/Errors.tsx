@@ -20,8 +20,10 @@ import './errors-page.css'
    canon.yaml). The machine reads the JSON; humans read this register. Same
    artifact, two renderings — the page can never drift from the wire.
 
-   SSR-safe: /errors is prerendered (PATHS); /errors/:code rides the SPA
-   catchall (index.html → router → scroll). Highlight is a client effect. */
+   SSR-safe: /errors AND every /errors/<CODE> page prerender (PATHS +
+   ERROR_PATHS in site.config.ts — the engine's docs_url lands on a real
+   200, never the SPA fallback's 404 status). Highlight + the deep-link
+   scroll stay client effects. */
 
 const CATEGORY_GLOSS: Record<string, string> = {
   parse_error: 'the YAML itself is malformed',

@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ERROR_CODES, ERROR_INDEX, ERROR_NAMESPACES } from '../content/errors.generated'
-import { PATHS } from '../../site.config'
+import { ERROR_PATHS, PATHS } from '../../site.config'
 
 /* ── the error-register drift gates ───────────────────────────────────────────
    public/errors/catalog.json is the source (projected from the spec's
@@ -44,5 +44,12 @@ describe('/errors · the compiled projection matches the served catalog', () => 
 
   it('/errors prerenders (PATHS carries the register page)', () => {
     expect(PATHS).toContain('/errors')
+  })
+
+  it('every code page prerenders (ERROR_PATHS mirrors the catalog · docs_url lands on a 200)', () => {
+    expect(ERROR_PATHS).toEqual(ERROR_CODES.map((e) => `/errors/${e.code}`))
+    for (const p of ERROR_PATHS) {
+      expect(PATHS, p).toContain(p)
+    }
   })
 })
