@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-09',
+    tag: 'site',
+    title: 'nika.sh v4.6 · the black frame, and the page learns its colour law',
+    body: 'The device contour is rebuilt around one rule: the material is black, the colour is light. A near-black frame carries a static edge-light whose hue and richness read the section under it (blue over the hero, coral at the close, calm on reading pages), the screen recesses into the frame on all four edges, and the ambient loop that breathes the iridescence is finally alive at rest — a mount-order race had silenced it since the frame was born. The home composition gains the same clarity: dark is the stage, every light or blue chapter is a sheet laid on it. And a dark-only site learns to print: white paper, black ink, whole code panels.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.6.0',
+  },
+  {
     date: '2026-07-08',
     tag: 'site',
     title: 'nika.sh v4.5 · the film becomes an instrument',
