@@ -12,6 +12,9 @@
    Usage:
      node scripts/visual-regress.mjs            # compare (exit 1 on diff)
      node scripts/visual-regress.mjs --update   # (re)write goldens
+     node scripts/visual-regress.mjs --update --only home-p072   # scoped
+                                     # re-bake (only the frame that diffed —
+                                     # a full --update re-encodes ALL pngs)
    Env: CHROME_BIN overrides the browser binary (CI: setup-chrome exports it).
 
    Flake armor (the swiftshader lesson, twice-struck): a frame whose 3D/page
@@ -25,6 +28,22 @@ import { PNG } from 'pngjs'
 import pixelmatch from 'pixelmatch'
 
 const UPDATE = process.argv.includes('--update')
+/* --only <name[,name…]> · scope the OUTPUT (compare / golden writes) to
+   specific frames. The reason it exists: a full --update REWRITES all
+   goldens as fresh PNG encodes even when a single frame changed in pixels —
+   nine byte-only re-encodes that must then be hand-restored before commit
+   (the W20b law: never commit a byte-only re-bake · paid again on the
+   v4.6.0 release, arc 10). Scoping the update to the frame that actually
+   diffed makes the clean commit the default.
+
+   ⚠ EVERY frame still SHOOTS, in the canonical order — only the write /
+   compare is skipped. The frames share one page session and the earlier
+   scrolls warm the layout (content-visibility reveals, font settle): a
+   frame shot cold lands at a DIFFERENT scroll geometry (found on day one:
+   `--only home-p072` alone diffed 62.87% while the full sweep was
+   byte-stable — the sequence IS the measurement condition). */
+const onlyIdx = process.argv.indexOf('--only')
+const ONLY = onlyIdx === -1 ? null : new Set(process.argv[onlyIdx + 1]?.split(',') ?? [])
 const PORT_HTTP = 4519
 const PORT_CDP = 9242
 const W = 1600
@@ -192,9 +211,21 @@ mkdirSync(GOLDEN_DIR, { recursive: true })
 mkdirSync(OUT_DIR, { recursive: true })
 mkdirSync(DIFF_DIR, { recursive: true })
 
+if (ONLY) {
+  const known = new Set(FRAMES.map((f) => f.name))
+  const unknown = [...ONLY].filter((n) => !known.has(n))
+  if (unknown.length) {
+    console.error(`unknown frame(s) in --only: ${unknown.join(', ')} · known: ${[...known].join(', ')}`)
+    process.exit(2)
+  }
+}
+
 let failures = 0
 for (const f of FRAMES) {
+  /* shoot FIRST, skip after — the sequential scroll warm-up is part of the
+     measurement (see the --only note above) */
   let buf = await shootFrame(f.p)
+  if (ONLY && !ONLY.has(f.name)) continue
   let png = PNG.sync.read(buf)
   const goldenPath = join(GOLDEN_DIR, `${f.name}.png`)
 
