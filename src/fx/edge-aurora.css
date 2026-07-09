@@ -52,6 +52,14 @@
   inherits: true;
   initial-value: 262deg;
 }
+/* the 5th dimension (arc 9j) · how RICH the section's light is — the chroma
+   of the static edge-light on the black frame (the film runs jewel-deep, the
+   airy light section calms). Registered so a section change eases it. */
+@property --aurora-tint-c {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0.12;
+}
 :root {
   /* THE FRAME WIDTH (arc 9e) · the device bezel's physical thickness. The
      screen (the content cutout) lives INSIDE it; the nav, the scroll rail and
@@ -59,7 +67,8 @@
   --frame-w: 14px;
   transition:
     --aurora-bezel-k 0.7s var(--ease-ui, ease),
-    --aurora-tint-hue 0.7s var(--ease-ui, ease);
+    --aurora-tint-hue 0.7s var(--ease-ui, ease),
+    --aurora-tint-c 0.7s var(--ease-ui, ease);
 }
 @media (max-width: 767px) {
   :root {
@@ -78,11 +87,17 @@
    whole frame in ONE colour (uniform to the viewport edge — square corners,
    zero outer radius, zero seams). The skeuo modelling comes from shadows
    that FOLLOW the cutout's rounded silhouette (smooth corners by
-   construction): a dark gasket where the screen sinks in, the frame's own
-   shading around the opening, a single top catch-light, and the glass
-   overhang shadow INSIDE the screen. The frame colour is section-tinted
-   (opaque oklch — material, never glow). Above the aurora (z-60 > 59): the
-   glow only escapes inward. Static → deterministic. */
+   construction): a dark gasket where the screen sinks in, a single top
+   catch-light, and the glass overhang shadow INSIDE the screen.
+
+   THE BLACK-FRAME LAW (arc 9j · operator on P3: « plus noir/dark gris · le
+   fond derrière doit VRAIMENT faire noir · coloré mais moins transformé »):
+   the slab is NEAR-BLACK NEUTRAL — the section hue survives only as a
+   whisper of temperature (chroma 0.006 · felt, never seen). The section's
+   COLOUR moved into the LIGHT: a static two-halo EDGE-LIGHT hugging the
+   cutout, painted onto the black slab, its richness per-section via
+   --aurora-tint-c. The material is never dyed again. Above the aurora
+   (z-60 > 59): the glow only escapes inward. Static → deterministic. */
 .edge-bezel {
   position: fixed;
   inset: var(--frame-w, 14px);
@@ -91,25 +106,29 @@
   border-radius: var(--aurora-radius, 48px);
   box-shadow:
     /* the GASKET · a dark seam where the screen sinks into the frame */
-    0 0 0 1.5px rgb(0 0 0 / 0.72),
-    /* the frame's own shading · it dips toward the opening (follows the
-       rounded silhouette — the smooth-corner modelling) */
-    0 0 14px 2px rgb(0 0 0 / 0.5),
+    0 0 0 1.5px rgb(0 0 0 / 0.78),
     /* the raked light · a soft catch-light on the frame ABOVE the opening
-       (negative y offsets the halo upward; the silhouette covers below) */
-    0 -2px 12px -4px rgb(255 255 255 / 0.075),
-    /* THE FRAME · one opaque slab to the viewport edge — its COLOUR lives
-       (arc 9h): a readable section tint (chroma up from 0.012), so the
-       contour visibly shifts violet → periwinkle → coral as you travel */
-    0 0 0 9999px oklch(0.115 0.032 var(--aurora-tint-hue, 262deg)),
+       (negative y offsets the halo upward; the silhouette covers below) —
+       ambient light licking anodized black, faintly hue-tinted */
+    0 -2px 12px -4px oklch(0.85 0.045 var(--aurora-tint-hue, 262deg) / 0.11),
+    /* THE EDGE-LIGHT (arc 9j) · the section's colour AS LIGHT: two halos
+       (tight seam glow + wide falloff) leaking from under the screen edge
+       onto the black slab — the colour lives here, not in the material.
+       Chroma follows the section (--aurora-tint-c · the 5th dimension). */
+    0 0 9px 0 oklch(0.62 var(--aurora-tint-c, 0.12) var(--aurora-tint-hue, 262deg) / 0.33),
+    0 0 30px 2px oklch(0.55 var(--aurora-tint-c, 0.12) var(--aurora-tint-hue, 262deg) / 0.22),
+    /* THE FRAME · one opaque slab to the viewport edge — near-black neutral
+       (the black-frame law above) */
+    0 0 0 9999px oklch(0.045 0.006 var(--aurora-tint-hue, 262deg)),
     /* the glass overhang · the frame shades the screen's top edge */
     inset 0 3px 9px -3px rgb(0 0 0 / 0.6),
-    /* the deep body · the dark mass INSIDE the screen (section-tinted) */
+    /* the deep body · the dark mass INSIDE the screen — neutral dark (the
+       tint no longer washes the content edge · « moins transformé ») */
     inset 0 0 var(--aurora-bezel-reach, 180px) var(--aurora-bezel-spread, -58px)
-      oklch(0.04 0.05 var(--aurora-tint-hue, 262deg) / calc(0.66 * var(--aurora-bezel-k, 1))),
+      oklch(0.04 0.018 var(--aurora-tint-hue, 262deg) / calc(0.66 * var(--aurora-bezel-k, 1))),
     /* the tighter edge band · the bevel depth inside the screen */
     inset 0 0 var(--aurora-bezel-edge, 52px) var(--aurora-bezel-edge-spread, -22px)
-      oklch(0.015 0.04 var(--aurora-tint-hue, 262deg) / calc(0.62 * var(--aurora-bezel-k, 1)));
+      oklch(0.015 0.015 var(--aurora-tint-hue, 262deg) / calc(0.62 * var(--aurora-bezel-k, 1)));
 }
 
 .edge-aurora {
@@ -512,7 +531,7 @@
          fais mieux »). Faintly tinted by the section hue so it's an iridescent
          physical rim, never a stark white border. */
       linear-gradient(
-        oklch(0.9 0.03 var(--aurora-tint-hue, 262deg) / 0.16) 0 0
+        oklch(0.88 0.06 var(--aurora-tint-hue, 262deg) / 0.2) 0 0
       );
     filter: blur(4.5px);
     /* the rim holds a floor (a defined edge always) and swells with the run —
