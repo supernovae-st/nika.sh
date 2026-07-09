@@ -10,7 +10,7 @@ Thanks for considering a contribution. This is the marketing/docs surface of Nik
 - Meta-artifacts (`/llms.txt`, `/design.md`, etc.)
 
 If you want to contribute to the engine itself, see [supernovae-st/nika](https://github.com/supernovae-st/nika).
-If you want to contribute to the design system, see [supernovae-st/nika-design-skill](https://github.com/supernovae-st/nika-design-skill).
+If you want to contribute to the design system, it lives IN this repo: [`BRAND.md`](BRAND.md) (identity + rules) and [`design/`](design/README.md) (the icon ontology — `icons.yaml` is the SSOT, `pnpm icons` projects it).
 
 ## Quick contributions (PR welcome, no issue needed)
 
