@@ -11,6 +11,7 @@ import { Component as UseCasesPage } from './pages/UseCasesPage'
 import { Component as Spec } from './pages/Spec'
 import { Component as Install } from './pages/Install'
 import { Component as Convert } from './pages/Convert'
+import { Component as Brand } from './pages/Brand'
 import { Component as NotFound } from './pages/NotFound'
 import { Component as Errors } from './pages/Errors'
 
@@ -59,6 +60,7 @@ export const routes: RouteObject[] = [
       { path: 'spec', Component: Spec },
       { path: 'install', Component: Install },
       { path: 'convert', Component: Convert },
+      { path: 'brand', Component: Brand },
       /* the SPA catch-all — client-side navigations to a bad path render the
          crafted 404 register instead of React Router's default error boundary.
          Hard misses keep the static public/404.html (.do/app.yaml · unchanged);

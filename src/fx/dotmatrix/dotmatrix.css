@@ -1,0 +1,50 @@
+/* ─── nika dot-matrix · the motion engine ─────────────────────────────────
+   One keyframe, many figures: every dot runs the same opacity pulse; the
+   PATTERN lives entirely in per-dot negative delays (--d) and resting
+   opacities (--rest) computed by patterns.ts. Square-ish dots (22% radius)
+   — the BRAND-11 Bayer-grain register, never neon circles. Opacity-only:
+   compositor-cheap, zero layout, zero paint storms. */
+
+.nkdm {
+  display: grid;
+  grid-template-columns: repeat(var(--nkdm-n), 1fr);
+  gap: calc(var(--nkdm-size) * 0.045);
+  width: var(--nkdm-size);
+  height: var(--nkdm-size);
+  color: var(--v4-text-dim);
+}
+
+.nkdm-dot {
+  border-radius: 22%;
+  background: currentColor;
+  opacity: var(--rest, 0.08);
+  animation: nkdm-fire var(--nkdm-loop, 2400ms) linear infinite;
+  animation-delay: var(--d, 0ms);
+}
+
+/* request/response + wing-beat figures play forward then back */
+.nkdm[data-alt] .nkdm-dot {
+  animation-direction: alternate;
+}
+
+@keyframes nkdm-fire {
+  0% {
+    opacity: var(--rest);
+  }
+  4% {
+    opacity: 1;
+  }
+  16% {
+    opacity: calc(var(--rest) + 0.22);
+  }
+  100% {
+    opacity: var(--rest);
+  }
+}
+
+/* the figure without the motion — still says what it is */
+@media (prefers-reduced-motion: reduce) {
+  .nkdm-dot {
+    animation: none;
+  }
+}

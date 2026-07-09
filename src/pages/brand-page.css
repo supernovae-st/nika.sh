@@ -1,0 +1,148 @@
+/* ─── /brand · the design-system showcase (v4 register) ─────────────────── */
+
+.brand-page {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: clamp(96px, 12vh, 140px) 24px 120px;
+}
+
+.brand-head {
+  margin-bottom: var(--rhythm-sec-m);
+}
+
+.brand-eyebrow {
+  font-family: 'Martian Mono', ui-monospace, monospace;
+  font-size: var(--type-eyebrow);
+  letter-spacing: var(--ls-plate);
+  color: var(--v4-text-faint);
+}
+
+.brand-title {
+  font-size: var(--type-h2);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  margin-top: var(--gap-title);
+}
+
+.brand-lede {
+  margin-top: var(--gap-title);
+  max-width: var(--measure);
+  font-size: var(--type-body);
+  line-height: var(--lh-body);
+  color: var(--v4-text-dim);
+}
+
+.brand-lede a {
+  color: var(--v4-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.brand-sec {
+  margin-top: 72px;
+  border-top: 1px solid var(--v4-line);
+  padding-top: 40px;
+}
+
+.brand-h2 {
+  font-size: var(--type-h3);
+  letter-spacing: -0.01em;
+}
+
+.brand-blurb {
+  margin-top: 10px;
+  max-width: var(--measure);
+  font-size: var(--type-body-sm);
+  line-height: var(--lh-body);
+  color: var(--v4-text-dim);
+}
+
+/* marks */
+.brand-marks {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.brand-markcard {
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background: var(--v4-bg-raised);
+  box-shadow: var(--seam-panel);
+  padding: 22px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-markcard img {
+  height: 44px;
+  max-width: 100%;
+}
+
+.brand-markcard--light {
+  background: #f7f7f5;
+}
+
+.brand-markcard figcaption,
+.brand-cell-label {
+  font-family: 'Martian Mono', ui-monospace, monospace;
+  font-size: var(--type-plate);
+  letter-spacing: var(--ls-plate);
+  color: var(--v4-text-faint);
+}
+
+.brand-markcard--light figcaption {
+  color: #696d76;
+}
+
+/* icon grid */
+.brand-grid {
+  margin-top: 28px;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 8px;
+}
+
+.brand-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius-sm);
+  padding: 10px 12px;
+  color: var(--v4-text-dim);
+  min-width: 0;
+}
+
+.brand-cell-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* motion */
+.brand-motion {
+  margin-top: 28px;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.brand-motioncard {
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background: var(--v4-bg-raised);
+  box-shadow: var(--seam-panel);
+  padding: 24px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}

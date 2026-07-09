@@ -382,3 +382,43 @@ entities:
   social/x: { label: X, local: social/x, mode: fill }
   social/documentation: { label: Documentation, local: social/documentation, mode: stroke, stroke_width: 1.35, legacy_ink: "#aa3bff" }
   social/community: { label: Community, local: social/community, mode: stroke, stroke_width: 1.35, legacy_ink: "#aa3bff" }
+
+  # ── anim · the dot-matrix motion language (patterns ARE the semantics) ────
+  # 9×9 grid figures rendered by src/fx/dotmatrix (NikaDots). Each verb's
+  # pattern is its execution model — not decoration. `alternate` figures play
+  # forward then back (request/response · wing-beat). Hue rides the parent
+  # verb and speaks only on live surfaces (ink law).
+  anim/infer:
+    label: Infer · sampling
+    semantic: "the model samples — the sparkle figure emerges from seeded noise"
+    pattern: sample
+    parent: verb/infer
+    fx: [run-glow]
+  anim/exec:
+    label: Exec · scanline
+    semantic: "stdout marches — rows light top to bottom, carriage-return quick"
+    pattern: scanline
+    parent: verb/exec
+    fx: [run-glow]
+  anim/invoke:
+    label: Invoke · roundtrip
+    semantic: "request/response — a radial pulse leaves the center and comes back"
+    pattern: roundtrip
+    alternate: true
+    parent: verb/invoke
+    fx: [run-glow]
+  anim/agent:
+    label: Agent · orbit
+    semantic: "the bounded loop — a tail orbits the perimeter, the core ticks each lap"
+    pattern: orbit
+    parent: verb/agent
+    fx: [run-glow]
+  anim/butterfly:
+    label: The butterfly beats
+    semantic: "the brand glyph in dots — wings unfold from the body and fold back"
+    pattern: emerge
+    alternate: true
+  anim/loading:
+    label: Loading · wave
+    semantic: "the neutral register — a diagonal wave"
+    pattern: wave
