@@ -68,10 +68,11 @@ has a canonical icon, color role and effect — declared once in
 - **[`icons.ttl`](public/brand/icons.ttl)** — the RDF projection
   (`https://nika.sh/ontology/design#`)
 
-Laws: entities derive from the spec canon (builtins parity-gated); public
-glyphs are Lucide (ISC — see `THIRD_PARTY_NOTICES.md`); house artwork covers
-`ui/*` + `social/*`; **verb hues render only on live-run surfaces** — static
-UI keeps the text ink. Full contract: [`design/README.md`](design/README.md).
+Laws: entities derive from the spec canon (builtins parity-gated); glyphs
+are the **SuperNovae house icon set** (24-grid · stroke-2 · studio-owned);
+site artwork covers `ui/*` + `social/*`; **verb hues render only on live-run
+surfaces** — static UI keeps the text ink. Full contract:
+[`design/README.md`](design/README.md).
 
 ## Rules
 

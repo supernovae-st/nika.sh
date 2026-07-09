@@ -15,8 +15,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-assert> a nkd:Builtin ;
   rdfs:label "assert" ;
   nkd:semantic "Fail-fast guard: fail the task when condition is false" ;
-  nkd:lucideGlyph "shield-alert" ;
-  nkd:centralGlyph "security/shield-2" ;
+  nkd:glyph "security/shield-2" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "core" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-assert.svg> .
@@ -24,8 +24,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-compose> a nkd:Builtin ;
   rdfs:label "compose" ;
   nkd:semantic "Statically check a workflow draft — the check oracle inside agent loops" ;
-  nkd:lucideGlyph "shield-check" ;
-  nkd:centralGlyph "security/shield-code" ;
+  nkd:glyph "security/shield-code" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:sharesGlyphWith <https://nika.sh/ontology/design#feature-check> ;
   nkd:category "introspection" ;
@@ -34,8 +34,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-convert> a nkd:Builtin ;
   rdfs:label "convert" ;
   nkd:semantic "Convert between json · yaml · toml · csv" ;
-  nkd:lucideGlyph "arrow-right-left" ;
-  nkd:centralGlyph "arrows/arrow-right-left" ;
+  nkd:glyph "arrows/arrow-right-left" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-convert.svg> .
@@ -43,8 +43,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-date> a nkd:Builtin ;
   rdfs:label "date" ;
   nkd:semantic "Timestamp arithmetic (now|add|subtract|format|parse|diff)" ;
-  nkd:lucideGlyph "calendar-clock" ;
-  nkd:centralGlyph "time-date/calendar-clock" ;
+  nkd:glyph "time-date/calendar-clock" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-date.svg> .
@@ -52,8 +52,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-done> a nkd:Builtin ;
   rdfs:label "done" ;
   nkd:semantic "The loop-completion sentinel (agent loops only)" ;
-  nkd:lucideGlyph "flag" ;
-  nkd:centralGlyph "things/racing-flag" ;
+  nkd:glyph "things/racing-flag" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "core" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-done.svg> .
@@ -61,8 +61,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-edit> a nkd:Builtin ;
   rdfs:label "edit" ;
   nkd:semantic "In-place literal find/replace (not regex)" ;
-  nkd:lucideGlyph "file-pen" ;
-  nkd:centralGlyph "folders-files/page-edit" ;
+  nkd:glyph "folders-files/page-edit" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "file" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-edit.svg> .
@@ -70,8 +70,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-emit> a nkd:Builtin ;
   rdfs:label "emit" ;
   nkd:semantic "Emit a custom machine event for subscribers/journal" ;
-  nkd:lucideGlyph "radio" ;
-  nkd:centralGlyph "devices-signals/signal-tower" ;
+  nkd:glyph "devices-signals/signal-tower" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "core" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-emit.svg> .
@@ -79,8 +79,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-fetch> a nkd:Builtin ;
   rdfs:label "fetch" ;
   nkd:semantic "HTTP request + content extraction · SSRF-defended" ;
-  nkd:lucideGlyph "globe" ;
-  nkd:centralGlyph "location/globe" ;
+  nkd:glyph "location/globe" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "network" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-fetch.svg> .
@@ -88,8 +88,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-glob> a nkd:Builtin ;
   rdfs:label "glob" ;
   nkd:semantic "Glob match · paths sorted lexicographically" ;
-  nkd:lucideGlyph "asterisk" ;
-  nkd:centralGlyph "security/asterisk" ;
+  nkd:glyph "security/asterisk" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "file" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-glob.svg> .
@@ -97,8 +97,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-grep> a nkd:Builtin ;
   rdfs:label "grep" ;
   nkd:semantic "Recursive regex search over files" ;
-  nkd:lucideGlyph "file-search" ;
-  nkd:centralGlyph "folders-files/page-search-lines" ;
+  nkd:glyph "folders-files/page-search-lines" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "file" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-grep.svg> .
@@ -106,8 +106,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-hash> a nkd:Builtin ;
   rdfs:label "hash" ;
   nkd:semantic "Content hashing · blake3 | sha256 | sha512" ;
-  nkd:lucideGlyph "fingerprint" ;
-  nkd:centralGlyph "security/finger-print-1" ;
+  nkd:glyph "security/finger-print-1" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-hash.svg> .
@@ -115,8 +115,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-image_generate> a nkd:Builtin ;
   rdfs:label "image_generate" ;
   nkd:semantic "Generate image assets — files land on disk, never inline" ;
-  nkd:lucideGlyph "image-plus" ;
-  nkd:centralGlyph "ai-magic/image-sparkle" ;
+  nkd:glyph "ai-magic/image-sparkle" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "media" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-image_generate.svg> .
@@ -124,8 +124,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-inspect> a nkd:Builtin ;
   rdfs:label "inspect" ;
   nkd:semantic "Introspect the running workflow (cost | records | dag_info | threads)" ;
-  nkd:lucideGlyph "scan-search" ;
-  nkd:centralGlyph "interface-general/deep-search" ;
+  nkd:glyph "interface-general/deep-search" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "introspection" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-inspect.svg> .
@@ -133,8 +133,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-jq> a nkd:Builtin ;
   rdfs:label "jq" ;
   nkd:semantic "THE data-transform language · emits exactly one value" ;
-  nkd:lucideGlyph "filter" ;
-  nkd:centralGlyph "filter-settings/filter-1" ;
+  nkd:glyph "filter-settings/filter-1" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-jq.svg> .
@@ -142,8 +142,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-json_diff> a nkd:Builtin ;
   rdfs:label "json_diff" ;
   nkd:semantic "JSON diff · returns an RFC 6902 JSON Patch" ;
-  nkd:lucideGlyph "file-diff" ;
-  nkd:centralGlyph "code/difference-modified" ;
+  nkd:glyph "code/difference-modified" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-json_diff.svg> .
@@ -151,8 +151,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-json_merge_patch> a nkd:Builtin ;
   rdfs:label "json_merge_patch" ;
   nkd:semantic "RFC 7396 merge patch (null deletes a key)" ;
-  nkd:lucideGlyph "git-merge" ;
-  nkd:centralGlyph "code/merged" ;
+  nkd:glyph "code/merged" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-json_merge_patch.svg> .
@@ -160,8 +160,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-log> a nkd:Builtin ;
   rdfs:label "log" ;
   nkd:semantic "Human-readable diagnostic line to the run stream" ;
-  nkd:lucideGlyph "scroll-text" ;
-  nkd:centralGlyph "folders-files/script" ;
+  nkd:glyph "folders-files/script" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "core" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-log.svg> .
@@ -169,8 +169,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-notify> a nkd:Builtin ;
   rdfs:label "notify" ;
   nkd:semantic "Send a notification (webhook channel in v0.1)" ;
-  nkd:lucideGlyph "bell-ring" ;
-  nkd:centralGlyph "interface-general/bell" ;
+  nkd:glyph "interface-general/bell" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "network" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-notify.svg> .
@@ -178,8 +178,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-prompt> a nkd:Builtin ;
   rdfs:label "prompt" ;
   nkd:semantic "Ask a HUMAN (confirm | input | choice) · blocks until answered" ;
-  nkd:lucideGlyph "message-circle-question" ;
-  nkd:centralGlyph "communication/bubble-question" ;
+  nkd:glyph "communication/bubble-question" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "core" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-prompt.svg> .
@@ -187,8 +187,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-read> a nkd:Builtin ;
   rdfs:label "read" ;
   nkd:semantic "Read a file · text or opaque bytes" ;
-  nkd:lucideGlyph "file-text" ;
-  nkd:centralGlyph "folders-files/page-text" ;
+  nkd:glyph "folders-files/page-text" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "file" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-read.svg> .
@@ -196,8 +196,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-tts_generate> a nkd:Builtin ;
   rdfs:label "tts_generate" ;
   nkd:semantic "Synthesize speech audio · sovereign-first providers" ;
-  nkd:lucideGlyph "audio-lines" ;
-  nkd:centralGlyph "ai-magic/text-to-speach" ;
+  nkd:glyph "ai-magic/text-to-speach" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "media" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-tts_generate.svg> .
@@ -205,8 +205,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-uuid> a nkd:Builtin ;
   rdfs:label "uuid" ;
   nkd:semantic "Generate a UUID · v7 sortable (default) or v4" ;
-  nkd:lucideGlyph "barcode" ;
-  nkd:centralGlyph "interface-general/barcode" ;
+  nkd:glyph "interface-general/barcode" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-uuid.svg> .
@@ -214,8 +214,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-validate> a nkd:Builtin ;
   rdfs:label "validate" ;
   nkd:semantic "Validate data against a JSON Schema · a report, not a failure" ;
-  nkd:lucideGlyph "list-checks" ;
-  nkd:centralGlyph "interface-general/checklist" ;
+  nkd:glyph "interface-general/checklist" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-validate.svg> .
@@ -223,8 +223,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-wait> a nkd:Builtin ;
   rdfs:label "wait" ;
   nkd:semantic "Pause · relative duration XOR absolute until" ;
-  nkd:lucideGlyph "hourglass" ;
-  nkd:centralGlyph "time-date/hourglass" ;
+  nkd:glyph "time-date/hourglass" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "core" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-wait.svg> .
@@ -232,8 +232,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#builtin-write> a nkd:Builtin ;
   rdfs:label "write" ;
   nkd:semantic "Write a file · returns the path" ;
-  nkd:lucideGlyph "file-plus" ;
-  nkd:centralGlyph "folders-files/page-add" ;
+  nkd:glyph "folders-files/page-add" ;
+  nkd:glyphSet "supernovae" ;
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "file" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-write.svg> .
@@ -241,8 +241,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#feature-check> a nkd:Feature ;
   rdfs:label "Check" ;
   nkd:semantic "The static audit — conformance · secret-flow · permits · cost, before any token" ;
-  nkd:lucideGlyph "shield-check" ;
-  nkd:centralGlyph "security/shield-code" ;
+  nkd:glyph "security/shield-code" ;
+  nkd:glyphSet "supernovae" ;
   nkd:hueToken "--v4-accent" ;
   nkd:hueHex "#4f86ff" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-check.svg> .
@@ -250,209 +250,221 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#feature-cost> a nkd:Feature ;
   rdfs:label "Cost" ;
   nkd:semantic "The static cost interval + the ceiling, priced before running" ;
-  nkd:lucideGlyph "coins" ;
-  nkd:centralGlyph "shopping-payment/receipt-bill" ;
+  nkd:glyph "shopping-payment/receipt-bill" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-cost.svg> .
 
 <https://nika.sh/ontology/design#feature-dag> a nkd:Feature ;
   rdfs:label "DAG" ;
   nkd:semantic "The content-first canvas — tasks and the wires between them" ;
-  nkd:lucideGlyph "waypoints" ;
-  nkd:centralGlyph "code/code-tree" ;
+  nkd:glyph "code/code-tree" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-dag.svg> .
 
 <https://nika.sh/ontology/design#feature-diff-runs> a nkd:Feature ;
   rdfs:label "Diff runs" ;
   nkd:semantic "Two runs compared on the DAG" ;
-  nkd:lucideGlyph "git-compare" ;
-  nkd:centralGlyph "code/difference-modified" ;
+  nkd:glyph "code/difference-modified" ;
+  nkd:glyphSet "supernovae" ;
   nkd:sharesGlyphWith <https://nika.sh/ontology/design#builtin-json_diff> ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-diff-runs.svg> .
 
 <https://nika.sh/ontology/design#feature-doctor> a nkd:Feature ;
   rdfs:label "Doctor" ;
   nkd:semantic "Diagnose the environment · ping local providers" ;
-  nkd:lucideGlyph "activity" ;
-  nkd:centralGlyph "interface-general/electrocardiogram" ;
+  nkd:glyph "interface-general/electrocardiogram" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-doctor.svg> .
 
 <https://nika.sh/ontology/design#feature-dry-run> a nkd:Feature ;
   rdfs:label "Dry-run" ;
   nkd:semantic "Show the plan · zero effects" ;
-  nkd:lucideGlyph "circle-dashed" ;
-  nkd:centralGlyph "interface-general/circle-dashed" ;
+  nkd:glyph "interface-general/circle-dashed" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-dry-run.svg> .
 
 <https://nika.sh/ontology/design#feature-examples> a nkd:Feature ;
   rdfs:label "Examples" ;
   nkd:semantic "The embedded example pack" ;
-  nkd:lucideGlyph "library" ;
-  nkd:centralGlyph "folders-files/library" ;
+  nkd:glyph "folders-files/library" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-examples.svg> .
 
 <https://nika.sh/ontology/design#feature-explain> a nkd:Feature ;
   rdfs:label "Explain" ;
   nkd:semantic "The engine narrates the workflow · deterministic · offline" ;
-  nkd:lucideGlyph "book-open" ;
-  nkd:centralGlyph "communication/book-simple" ;
+  nkd:glyph "communication/book-simple" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-explain.svg> .
 
 <https://nika.sh/ontology/design#feature-export-otel> a nkd:Feature ;
   rdfs:label "Export OTel" ;
   nkd:semantic "Ship the trace to Jaeger · Grafana · Langfuse" ;
-  nkd:lucideGlyph "send" ;
-  nkd:centralGlyph "interface-general/arrow-out-of-box" ;
+  nkd:glyph "interface-general/arrow-out-of-box" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-export-otel.svg> .
 
 <https://nika.sh/ontology/design#feature-fork> a nkd:Feature ;
   rdfs:label "Fork from task" ;
   nkd:semantic "Re-execute downstream · upstream rehydrates from the trace" ;
-  nkd:lucideGlyph "git-fork" ;
-  nkd:centralGlyph "code/fork-simple" ;
+  nkd:glyph "code/fork-simple" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-fork.svg> .
 
 <https://nika.sh/ontology/design#feature-generate> a nkd:Feature ;
   rdfs:label "Generate" ;
   nkd:semantic "Describe → generate a workflow (oracle-checked)" ;
-  nkd:lucideGlyph "wand-sparkles" ;
-  nkd:centralGlyph "ai-magic/magic-wand" ;
+  nkd:glyph "ai-magic/magic-wand" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-generate.svg> .
 
 <https://nika.sh/ontology/design#feature-history> a nkd:Feature ;
   rdfs:label "Run history" ;
   nkd:semantic "Cross-run grid · flaky · trends" ;
-  nkd:lucideGlyph "chart-column" ;
-  nkd:centralGlyph "statistics-charts/leaderboard" ;
+  nkd:glyph "statistics-charts/leaderboard" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-history.svg> .
 
 <https://nika.sh/ontology/design#feature-lsp> a nkd:Feature ;
   rdfs:label "LSP" ;
   nkd:semantic "The language server — one brain, every editor" ;
-  nkd:lucideGlyph "code" ;
-  nkd:centralGlyph "code/code-assistant" ;
+  nkd:glyph "code/code-assistant" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-lsp.svg> .
 
 <https://nika.sh/ontology/design#feature-mcp> a nkd:Feature ;
   rdfs:label "MCP" ;
   nkd:semantic "The read-only oracle surface (8 tools)" ;
-  nkd:lucideGlyph "plug" ;
-  nkd:centralGlyph "social-media-brands/modelcontextprotocol" ;
+  nkd:glyph "code/api-connection" ;
+  nkd:glyphSet "supernovae" ;
   nkd:sharesGlyphWith <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-mcp.svg> .
 
 <https://nika.sh/ontology/design#feature-permits> a nkd:Feature ;
   rdfs:label "Permits" ;
   nkd:semantic "The capability boundary — default-deny once declared" ;
-  nkd:lucideGlyph "shield" ;
-  nkd:centralGlyph "security/shield-access" ;
+  nkd:glyph "security/shield-access" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-permits.svg> .
 
 <https://nika.sh/ontology/design#feature-preflight> a nkd:Feature ;
   rdfs:label "Preflight" ;
   nkd:semantic "The flight plan before any token: models · secrets · permits · cost" ;
-  nkd:lucideGlyph "plane-takeoff" ;
-  nkd:centralGlyph "vehicles-aircrafts/airplane-up" ;
+  nkd:glyph "vehicles-aircrafts/airplane-up" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-preflight.svg> .
 
 <https://nika.sh/ontology/design#feature-replay> a nkd:Feature ;
   rdfs:label "Replay" ;
   nkd:semantic "Time travel over a recorded run — never re-executes" ;
-  nkd:lucideGlyph "rotate-ccw" ;
-  nkd:centralGlyph "sound-music/replay" ;
+  nkd:glyph "sound-music/replay" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-replay.svg> .
 
 <https://nika.sh/ontology/design#feature-report> a nkd:Feature ;
   rdfs:label "Run report" ;
   nkd:semantic "Provable — read from the trace, states its own integrity" ;
-  nkd:lucideGlyph "file-chart-column" ;
-  nkd:centralGlyph "folders-files/file-chart" ;
+  nkd:glyph "folders-files/file-chart" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-report.svg> .
 
 <https://nika.sh/ontology/design#feature-reproduce> a nkd:Feature ;
   rdfs:label "Reproduce" ;
   nkd:semantic "Determinism check — classifies WHY two runs diverge" ;
-  nkd:lucideGlyph "repeat" ;
-  nkd:centralGlyph "arrows/arrows-repeat" ;
+  nkd:glyph "arrows/arrows-repeat" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-reproduce.svg> .
 
 <https://nika.sh/ontology/design#feature-run> a nkd:Feature ;
   rdfs:label "Run" ;
   nkd:semantic "Execute the workflow (mock needs no key)" ;
-  nkd:lucideGlyph "play" ;
-  nkd:centralGlyph "sound-music/play" ;
+  nkd:glyph "sound-music/play" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-run.svg> .
 
 <https://nika.sh/ontology/design#feature-schema> a nkd:Feature ;
   rdfs:label "Schema" ;
   nkd:semantic "The published JSON Schema — completions read the engine's own" ;
-  nkd:lucideGlyph "braces" ;
-  nkd:centralGlyph "code/brackets-1" ;
+  nkd:glyph "code/brackets-1" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-schema.svg> .
 
 <https://nika.sh/ontology/design#feature-secrets> a nkd:Feature ;
   rdfs:label "Secrets" ;
   nkd:semantic "Store references only — literals never enter the file" ;
-  nkd:lucideGlyph "key-round" ;
-  nkd:centralGlyph "security/key-1" ;
+  nkd:glyph "security/key-1" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-secrets.svg> .
 
 <https://nika.sh/ontology/design#feature-trace> a nkd:Feature ;
   rdfs:label "Trace" ;
   nkd:semantic "The flight recorder — every run journaled, replayable" ;
-  nkd:lucideGlyph "history" ;
-  nkd:centralGlyph "time-date/history" ;
+  nkd:glyph "time-date/history" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-trace.svg> .
 
 <https://nika.sh/ontology/design#feature-verify-chain> a nkd:Feature ;
   rdfs:label "Verify chain" ;
   nkd:semantic "Tamper-evidence — the journal hash-chains itself" ;
-  nkd:lucideGlyph "link" ;
-  nkd:centralGlyph "interface-general/chain-link-1" ;
+  nkd:glyph "interface-general/chain-link-1" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/feature-verify-chain.svg> .
 
 <https://nika.sh/ontology/design#social-bluesky> a nkd:SocialMark ;
   rdfs:label "Bluesky" ;
+  nkd:glyph "social/bluesky" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/social-bluesky.svg> .
 
 <https://nika.sh/ontology/design#social-community> a nkd:SocialMark ;
   rdfs:label "Community" ;
+  nkd:glyph "social/community" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/social-community.svg> .
 
 <https://nika.sh/ontology/design#social-discord> a nkd:SocialMark ;
   rdfs:label "Discord" ;
+  nkd:glyph "social/discord" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/social-discord.svg> .
 
 <https://nika.sh/ontology/design#social-documentation> a nkd:SocialMark ;
   rdfs:label "Documentation" ;
+  nkd:glyph "social/documentation" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/social-documentation.svg> .
 
 <https://nika.sh/ontology/design#social-github> a nkd:SocialMark ;
   rdfs:label "GitHub" ;
+  nkd:glyph "social/github" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/social-github.svg> .
 
 <https://nika.sh/ontology/design#social-x> a nkd:SocialMark ;
   rdfs:label "X" ;
+  nkd:glyph "social/x" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/social-x.svg> .
 
 <https://nika.sh/ontology/design#state-cancelled> a nkd:RunState ;
   rdfs:label "Cancelled" ;
   nkd:semantic "The failure gate or the user stopped it" ;
-  nkd:lucideGlyph "ban" ;
-  nkd:centralGlyph "interface-general/circle-ban-sign" ;
+  nkd:glyph "interface-general/circle-ban-sign" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/state-cancelled.svg> .
 
 <https://nika.sh/ontology/design#state-failed> a nkd:RunState ;
   rdfs:label "Failed" ;
   nkd:semantic "Settled failed" ;
-  nkd:lucideGlyph "circle-x" ;
-  nkd:centralGlyph "interface-general/circle-x" ;
+  nkd:glyph "interface-general/circle-x" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/state-failed.svg> .
 
 <https://nika.sh/ontology/design#state-pending> a nkd:RunState ;
   rdfs:label "Pending" ;
   nkd:semantic "Waiting on upstream" ;
-  nkd:lucideGlyph "circle-dashed" ;
-  nkd:centralGlyph "interface-general/circle-dashed" ;
+  nkd:glyph "interface-general/circle-dashed" ;
+  nkd:glyphSet "supernovae" ;
   nkd:fx nkd:fx-dim ;
   nkd:sharesGlyphWith <https://nika.sh/ontology/design#feature-dry-run> ;
   nkd:servedAt <https://nika.sh/brand/icons/state-pending.svg> .
@@ -460,65 +472,79 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#state-recovered> a nkd:RunState ;
   rdfs:label "Recovered" ;
   nkd:semantic "A repaired success — it keeps its ✓ but says so" ;
-  nkd:lucideGlyph "bandage" ;
-  nkd:centralGlyph "interface-general/heart-beat" ;
+  nkd:glyph "interface-general/heart-beat" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/state-recovered.svg> .
 
 <https://nika.sh/ontology/design#state-running> a nkd:RunState ;
   rdfs:label "Running" ;
   nkd:semantic "A task is live" ;
-  nkd:lucideGlyph "loader-circle" ;
-  nkd:centralGlyph "interface-general/loading-circle" ;
+  nkd:glyph "interface-general/loading-circle" ;
+  nkd:glyphSet "supernovae" ;
   nkd:fx nkd:fx-pulse ;
   nkd:servedAt <https://nika.sh/brand/icons/state-running.svg> .
 
 <https://nika.sh/ontology/design#state-skipped> a nkd:RunState ;
   rdfs:label "Skipped" ;
   nkd:semantic "A when: gate held it back" ;
-  nkd:lucideGlyph "circle-slash" ;
-  nkd:centralGlyph "interface-general/circle-minus" ;
+  nkd:glyph "interface-general/circle-minus" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/state-skipped.svg> .
 
 <https://nika.sh/ontology/design#state-success> a nkd:RunState ;
   rdfs:label "Success" ;
   nkd:semantic "Settled clean" ;
-  nkd:lucideGlyph "circle-check" ;
-  nkd:centralGlyph "interface-general/circle-check" ;
+  nkd:glyph "interface-general/circle-check" ;
+  nkd:glyphSet "supernovae" ;
   nkd:servedAt <https://nika.sh/brand/icons/state-success.svg> .
 
 <https://nika.sh/ontology/design#ui-book> a nkd:UiGlyph ;
   rdfs:label "Learn" ;
+  nkd:glyph "ui/book" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/ui-book.svg> .
 
 <https://nika.sh/ontology/design#ui-butterfly> a nkd:UiGlyph ;
   rdfs:label "Manifesto" ;
+  nkd:glyph "ui/butterfly" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/ui-butterfly.svg> .
 
 <https://nika.sh/ontology/design#ui-run> a nkd:UiGlyph ;
   rdfs:label "See it run" ;
+  nkd:glyph "ui/run" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/ui-run.svg> .
 
 <https://nika.sh/ontology/design#ui-shield> a nkd:UiGlyph ;
   rdfs:label "What it can touch" ;
+  nkd:glyph "ui/shield" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/ui-shield.svg> .
 
 <https://nika.sh/ontology/design#ui-terminal> a nkd:UiGlyph ;
   rdfs:label "Playground" ;
+  nkd:glyph "ui/terminal" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/ui-terminal.svg> .
 
 <https://nika.sh/ontology/design#ui-tiles> a nkd:UiGlyph ;
   rdfs:label "Use cases" ;
+  nkd:glyph "ui/tiles" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/ui-tiles.svg> .
 
 <https://nika.sh/ontology/design#ui-verbs> a nkd:UiGlyph ;
   rdfs:label "The four verbs" ;
+  nkd:glyph "ui/verbs" ;
+  nkd:glyphSet "house" ;
   nkd:servedAt <https://nika.sh/brand/icons/ui-verbs.svg> .
 
 <https://nika.sh/ontology/design#verb-agent> a nkd:Verb ;
   rdfs:label "Agent" ;
   nkd:semantic "Multi-turn agentic loop · tool calling · guardrails" ;
-  nkd:lucideGlyph "bot" ;
-  nkd:centralGlyph "code/agent" ;
+  nkd:glyph "code/agent" ;
+  nkd:glyphSet "supernovae" ;
   nkd:hueToken "--verb-agent" ;
   nkd:hueHex "#b07bff" ;
   nkd:fx nkd:fx-run-glow ;
@@ -528,8 +554,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#verb-exec> a nkd:Verb ;
   rdfs:label "Exec" ;
   nkd:semantic "Shell command · blocklist · streaming" ;
-  nkd:lucideGlyph "terminal" ;
-  nkd:centralGlyph "code/console" ;
+  nkd:glyph "code/console" ;
+  nkd:glyphSet "supernovae" ;
   nkd:hueToken "--verb-exec" ;
   nkd:hueHex "#ff7a3c" ;
   nkd:fx nkd:fx-run-glow ;
@@ -539,8 +565,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#verb-infer> a nkd:Verb ;
   rdfs:label "Infer" ;
   nkd:semantic "LLM generation · structured output · vision · thinking" ;
-  nkd:lucideGlyph "sparkles" ;
-  nkd:centralGlyph "ai-magic/sparkle" ;
+  nkd:glyph "ai-magic/sparkle" ;
+  nkd:glyphSet "supernovae" ;
   nkd:hueToken "--verb-infer" ;
   nkd:hueHex "#5b8cff" ;
   nkd:fx nkd:fx-run-glow ;
@@ -550,8 +576,8 @@ nkd:fx-dim a nkd:Effect .
 <https://nika.sh/ontology/design#verb-invoke> a nkd:Verb ;
   rdfs:label "Invoke" ;
   nkd:semantic "MCP tool call OR builtin (incl. nika:fetch)" ;
-  nkd:lucideGlyph "plug" ;
-  nkd:centralGlyph "code/api-connection" ;
+  nkd:glyph "code/api-connection" ;
+  nkd:glyphSet "supernovae" ;
   nkd:hueToken "--verb-invoke" ;
   nkd:hueHex "#22d3ee" ;
   nkd:fx nkd:fx-run-glow ;

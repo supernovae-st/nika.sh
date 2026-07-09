@@ -5,6 +5,8 @@ import { NK_ICONS, type NikaIconId } from './manifest'
    INK LAW (BRAND.md): icons inherit the surrounding text ink (currentColor).
    Verb hues exist on the def (`hue`) but apply ONLY when `live` is set —
    a live-run surface (DAG run · replay) — never in static UI.
+   Modes: stroke (root-inked outlines) · fill (solid marks) · auto
+   (self-contained bodies — each path carries its own stroke/fill).
    The innerHTML sink is safe by construction: bodies are static build-time
    strings projected from our own committed SVGs (design/build.mjs) — no
    user input can reach it. */
@@ -23,6 +25,7 @@ type Props = {
 export function NikaIcon({ id, size = 16, live = false, title, className }: Props) {
   const def = NK_ICONS[id]
   const stroke = def.mode === 'stroke'
+  const fill = def.mode === 'fill' ? 'currentColor' : 'none'
   const html = title ? `<title>${title}</title>${def.body}` : def.body
   return (
     <svg
@@ -31,7 +34,7 @@ export function NikaIcon({ id, size = 16, live = false, title, className }: Prop
       height={size}
       className={className}
       style={live && def.hue ? { color: def.hue } : undefined}
-      fill={stroke ? 'none' : 'currentColor'}
+      fill={fill}
       stroke={stroke ? 'currentColor' : undefined}
       strokeWidth={stroke ? def.strokeWidth : undefined}
       strokeLinecap={stroke ? 'round' : undefined}
