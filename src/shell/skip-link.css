@@ -7,7 +7,7 @@
   position: fixed;
   top: 8px;
   left: 8px;
-  z-index: 100; /* above the nav (z-50) and the aurora frame (z-60) */
+  z-index: 100; /* above the nav (z-50) and the aurora frame (z-60/61) */
   /* off-screen until focused — keeps it out of the visual layout */
   transform: translateY(-150%);
   padding: 8px 16px;

@@ -38,10 +38,11 @@ const SITE_JSONLD = {
 /* ─── the app shell ─────────────────────────────────────────────────────────
    The routed outlet + scroll restoration (restores scroll on back/forward and
    scrolls to a #hash target after a cross-route navigation — e.g. the Learn
-   page's "Install" CTA → /#install), wrapped in the EdgeAurora signature: a
-   reactive cyan→violet halo that hugs the screen frame (design doc §3.2).
+   page's "Install" CTA → /#install), wrapped in the EdgeAurora signature: an
+   iridescent Siri-pool halo living on the black device frame (design doc §3.2).
    AuroraProvider exposes useAuroraPulse().pulse() to the tree AND renders the
-   <EdgeAurora/> visual itself (a fixed, pointer-events:none, z-60 frame layer).
+   <EdgeAurora/> visual itself (fixed, pointer-events:none — bezel z-60 +
+   aurora z-61).
 
    <Nav/> is the ONE shared v4 nav (monochrome blueprint) — mounted here so every
    route shares a single nav (no per-page duplicate). It is fixed/sticky and

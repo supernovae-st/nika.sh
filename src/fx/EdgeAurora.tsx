@@ -23,10 +23,10 @@ import './edge-aurora.css'
    event-time callbacks only. */
 
 const REST_INTENSITY = 0.11 /* arc 9f · at rest the frame IS the dark anodized
-    material (the bezel above the glow) — the iridescence is a quiet under-
-    bezel light. The per-section 4th dimension nudges it (TONES[].i); the RUNS
-    own the wow (0.34 floor · 0.46 pulses). Matches the CSS fallback so post-
-    pulse decay lands where the prerender started. */
+    material — the iridescence is a quiet light on the contour (the aurora
+    rides ABOVE the bezel since arc 9h). The per-section 4th dimension nudges
+    it (TONES[].i); the RUNS own the wow (0.34 floor · 0.46 pulses). Matches
+    the CSS fallback so post-pulse decay lands where the prerender started. */
 /** run mode raises the resting floor — the frame must clearly speak while a
     run plays (the drum), a diffuse bloom, never a hard border. Above every
     section floor so the run always reads as an event. */
@@ -105,7 +105,11 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     const TONES: Record<string, { k: number; h: number; i: number; c: number }> = {
       film: { k: 1.46, h: 246, i: 0.2, c: 0.17 },
       deep: { k: 1.34, h: 250, i: 0.13, c: 0.13 },
-      cool: { k: 1.2, h: 256, i: 0.11, c: 0.12 },
+      /* cool matches the @property initial values (262° · c 0.12) — the
+         default tone IS the pre-JS state, so a content page loads settled
+         instead of drifting 262→256 over the 1.05s colour transition
+         (the load wobble · arc 9j socratic pass) */
+      cool: { k: 1.2, h: 262, i: 0.11, c: 0.12 },
       blue: { k: 1.28, h: 258, i: 0.16, c: 0.155 },
       light: { k: 1.0, h: 268, i: 0.09, c: 0.08 },
       warm: { k: 1.08, h: 372, i: 0.14, c: 0.14 },
@@ -184,7 +188,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       const dt = ts - last
       lastTsRef.current = ts
 
-      // exponential ease toward the CURRENT rest floor (idle 0.04 · run 0.36)
+      // exponential ease toward the CURRENT rest floor (idle 0.11 · run 0.34)
       const rest = restRef.current
       const k = 1 - Math.exp((-dt / DECAY_MS) * 4)
       intensityRef.current += (rest - intensityRef.current) * k
@@ -315,8 +319,9 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
 }
 
 /* ─── the visual element ──────────────────────────────────────────────────────
-   A position:fixed; inset:0; pointer-events:none layer (z-index 60: above
-   content, below any modal). The ring + center-mask live in edge-aurora.css. */
+   A position:fixed; pointer-events:none layer (z-index 61: above the bezel's
+   60, above content, below any modal). The ring + center-mask live in
+   edge-aurora.css. */
 export function EdgeAurora({
   ref,
 }: {
@@ -324,11 +329,12 @@ export function EdgeAurora({
 }) {
   return (
     <>
-    {/* arc 9 · THE BEZEL — the « dark skeuo » material: a STATIC dark physical
-        screen-edge (deep inner-shadow body + a hairline bevel: top catch-light,
-        bottom shade) that is ALWAYS on, below the iridescence (z-59 < the
-        aurora's z-60), so the coloured light blooms ON a dark bezel. No
-        animation → deterministic under reduced-motion (goldens). */}
+    {/* arc 9 · THE BEZEL — the « dark skeuo » material: a STATIC near-black
+        screen-edge (opaque slab + gasket + catch-light) that is ALWAYS on,
+        below the iridescence (z-60 < the aurora's z-61 · arc 9h), so the
+        coloured light blooms ON the dark frame and the contour itself
+        ignites on runs. No animation → deterministic under reduced-motion
+        (goldens). */}
     <div className="edge-bezel" aria-hidden="true" />
     <div ref={ref} className="edge-aurora" aria-hidden="true" data-edge-aurora>
       {/* v8 · THE DEPTH SHEET — a third, much deeper ring behind the bloom:
