@@ -53,6 +53,26 @@ README embed (theme-aware):
 glow wins legibility at tiny sizes and inside the dark WebGL scenes. Don't
 unify them, don't invent a third blue.
 
+## The icon system (functional icons · ontology-driven)
+
+Beyond the identity marks, every Nika **verb, builtin, feature and run-state**
+has a canonical icon, color role and effect — declared once in
+[`design/icons.yaml`](design/icons.yaml) (the ontology) and projected to:
+
+- **`nika.sh/brand/icons/<ns>-<name>.svg`** — the served catalog
+  (e.g. [`verb-infer`](public/brand/icons/verb-infer.svg) ·
+  [`builtin-fetch`](public/brand/icons/builtin-fetch.svg) ·
+  [`feature-preflight`](public/brand/icons/feature-preflight.svg))
+- **[`icons.json`](public/brand/icons.json)** — the machine-readable ontology
+  (labels · semantics · hue tokens · effects · links)
+- **[`icons.ttl`](public/brand/icons.ttl)** — the RDF projection
+  (`https://nika.sh/ontology/design#`)
+
+Laws: entities derive from the spec canon (builtins parity-gated); public
+glyphs are Lucide (ISC — see `THIRD_PARTY_NOTICES.md`); house artwork covers
+`ui/*` + `social/*`; **verb hues render only on live-run surfaces** — static
+UI keeps the text ink. Full contract: [`design/README.md`](design/README.md).
+
 ## Rules
 
 - Never recolor, stretch, outline, add gradients to, or redraw the mark.

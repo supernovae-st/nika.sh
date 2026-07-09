@@ -7,12 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "check": "tsc --noEmit -p tsconfig.app.json",
+    "check": "tsc --noEmit -p tsconfig.app.json && node design/build.mjs --check",
     "lint": "eslint src --max-warnings 0",
     "test": "vitest run",
     "test:watch": "vitest",
     "visual": "node scripts/visual-regress.mjs",
-    "visual:update": "node scripts/visual-regress.mjs --update"
+    "visual:update": "node scripts/visual-regress.mjs --update",
+    "icons": "node design/build.mjs"
   },
   "dependencies": {
     "@codemirror/lang-yaml": "^6.1.3",
@@ -30,8 +31,7 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router": "^7.18.0",
-    "three": "^0.184.0",
-    "yaml": "^2.9.0"
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -52,6 +52,7 @@
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
     "lighthouse": "^12.8.2",
+    "lucide-static": "^1.23.0",
     "marked": "^16.4.1",
     "pixelmatch": "^7.2.0",
     "pngjs": "^7.0.0",
@@ -60,7 +61,8 @@
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
     "vite-plugin-react-ssg": "0.2.0",
-    "vitest": "^2.1.9"
+    "vitest": "^2.1.9",
+    "yaml": "^2.9.0"
   },
   "description": "nika.sh — Intent as Code. The public site for the Nika workflow language. Vite + React 19 + react-three-fiber cinematic 3D, Tailwind v4, static output, deployed to DigitalOcean App Platform.",
   "license": "AGPL-3.0-or-later",
