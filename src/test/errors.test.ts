@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ERROR_CODES, ERROR_INDEX, ERROR_NAMESPACES } from '../content/errors.generated'
-import { PATHS } from '../../site.config'
+import { ERROR_PATHS, PATHS } from '../../site.config'
 
 /* ── the error-register drift gates ───────────────────────────────────────────
    public/errors/catalog.json is the source (projected from the spec's
@@ -44,5 +44,14 @@ describe('/errors · the compiled projection matches the served catalog', () => 
 
   it('/errors prerenders (PATHS carries the register page)', () => {
     expect(PATHS).toContain('/errors')
+  })
+
+  it('every code prerenders its deep page (the engine stamps docs_url on findings)', () => {
+    /* ERROR_PATHS is a literal (site.config stays import-free) — this gate is
+       what keeps it honest: a code added to the catalog without its static
+       landing goes red HERE, never 404 in prod (the e2e-sweep catch: DO's
+       error_document beats catchall_document, so un-prerendered deep links
+       404'd live). Exact-set match: no stale path survives a removal either. */
+    expect(new Set(ERROR_PATHS)).toEqual(new Set(ERROR_CODES.map((e) => `/errors/${e.code}`)))
   })
 })
