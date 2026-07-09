@@ -17,6 +17,7 @@ import { InstallCommand } from '../components/InstallCommand'
 import '../sections/v4-home.css'
 import '../components/codefile.css'
 import './page-chrome.css'
+import { NikaDots } from '../fx/dotmatrix/NikaDots'
 import './play-page.css'
 
 /* the editor (CodeMirror + @codemirror/*) is its own chunk · loaded client-side
@@ -33,6 +34,7 @@ const PlayEditor = lazy(() => import('./PlayEditor'))
    the hydrating render (via useHydrated below) keeps hydration byte-identical. */
 const EditorFallback = (
   <div className="play-editor-fallback" aria-hidden="true">
+    <NikaDots id="anim/loading" size={44} step={90} />
     loading editor…
   </div>
 )

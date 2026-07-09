@@ -65,6 +65,36 @@ for (const [id, e] of Object.entries(entities)) {
     fail(`${id}: no resolution (supernovae:/local: glyph, or pattern: for anim/*)`)
 }
 
+/* ── validation · footer sprite ↔ social/* semantic parity ─────────────────
+   public/icons.svg is BYTE-FROZEN (the visual goldens shoot the footer), so
+   it is not regenerated — instead this gate proves the sprite and the
+   library's social/* artwork carry the SAME path data. Edit one without the
+   other → the check fails. */
+const SPRITE_MAP = {
+  'bluesky-icon': 'bluesky',
+  'discord-icon': 'discord',
+  'documentation-icon': 'documentation',
+  'github-icon': 'github',
+  'social-icon': 'community',
+  'x-icon': 'x',
+}
+{
+  const sprite = readFileSync(join(ROOT, 'public/icons.svg'), 'utf8')
+  const noClip = (svg) => svg.replace(/<clipPath[\s\S]*?<\/clipPath>/g, '')
+  const dSet = (svg) => JSON.stringify([...svg.matchAll(/ d="([^"]+)"/g)].map((m) => m[1]).sort())
+  for (const sym of [...sprite.matchAll(/<symbol id="([^"]+)"[\s\S]*?<\/symbol>/g)]) {
+    const social = SPRITE_MAP[sym[1]]
+    if (!social) {
+      fail(`sprite symbol ${sym[1]} has no social/* twin (extend SPRITE_MAP + design/svg/social/)`)
+      continue
+    }
+    const lib = readFileSync(join(ROOT, `design/svg/social/${social}.svg`), 'utf8')
+    // the sprite's clipPath rect is chrome, not artwork — compare path d= sets
+    if (dSet(noClip(sym[0])) !== dSet(noClip(lib)))
+      fail(`sprite ${sym[1]} drifted from design/svg/social/${social}.svg (same artwork law)`)
+  }
+}
+
 /* ── glyph resolution ──────────────────────────────────────────────────── */
 const innerOf = (svg) =>
   svg

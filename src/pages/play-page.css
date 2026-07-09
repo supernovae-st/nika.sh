@@ -147,6 +147,9 @@
 }
 .play-editor-fallback {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
   align-items: center;
   min-height: 540px; /* matches the mounted well exactly — zero mount shift */
   padding: 12px 16px;
