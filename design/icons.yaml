@@ -1,20 +1,19 @@
 # nika icon ontology · the SSOT for the functional icon system
 #
 # THIS FILE IS THE SOURCE. `design/build.mjs` projects it into:
-#   public/brand/icons/<id>.svg   the served catalog (lucide-derived · ISC)
+#   public/brand/icons/<id>.svg   the served catalog (the SuperNovae house set)
 #   public/brand/icons.json       the machine-readable ontology
 #   public/brand/icons.ttl        the RDF projection (nika design namespace)
 #   src/icons/manifest.ts         the site's typed icon manifest
 # Drift is caught structurally: `pnpm check` runs `build.mjs --check`.
 #
-# DUAL RESOLUTION (the license lock · 2026-07-09):
-#   lucide:  Lucide glyph name (lucide-static npm · ISC) — powers every PUBLIC
-#            surface. Vendorable, redistributable, servable.
-#   central: Central Icon System id (iconists.co · operator-licensed) — powers
-#            PRIVATE/atelier surfaces only. Files live in the PRIVATE pole
-#            (ventures/nika/04-identity/assets/icon-library-v1/); their license
-#            forbids public redistribution, so they never enter this repo.
-#            The id string here is a mapping, not the artwork.
+# GLYPH RESOLUTION:
+#   supernovae:  the studio's own icon set (24-grid · stroke-2 · currentColor ·
+#                operator-owned). Mapped glyphs are vendored under
+#                design/svg/supernovae/<category>/<name>.svg; the private
+#                master lives in the monorepo identity pole.
+#   local:       house artwork drawn for the site itself (design/svg/ui ·
+#                design/svg/social — the Nav 16px family + footer marks).
 #
 # INK LAW (BRAND.md): verb hues never appear in static UI — an entity renders
 # with `inks.static` unless the surface is a LIVE RUN, where `hue` applies.
@@ -28,11 +27,10 @@ meta:
   version: 1
   namespace: "https://nika.sh/ontology/design#"
   grid: 24
-  public_set: { id: lucide, package: lucide-static, license: ISC }
-  private_set:
-    id: central
-    home: "ventures/nika/04-identity/assets/icon-library-v1/ (PRIVATE)"
-    license: "iconists.co/license — end products only · no public redistribution"
+  set:
+    id: supernovae
+    name: "SuperNovae house icon set"
+    home: "design/svg/supernovae/ (vendored) · private master in the studio identity pole"
   tokens_source: src/styles/tokens.css
   canon_source: src/canon.generated.ts
 
@@ -50,32 +48,28 @@ entities:
   verb/infer:
     label: Infer
     semantic: "LLM generation · structured output · vision · thinking"
-    lucide: sparkles
-    central: ai-magic/sparkle
+    supernovae: ai-magic/sparkle
     hue: { token: "--verb-infer", hex: "#5b8cff" }
     fx: [run-glow]
     canon: spec/02-verbs.md
   verb/exec:
     label: Exec
     semantic: "Shell command · blocklist · streaming"
-    lucide: terminal
-    central: code/console
+    supernovae: code/console
     hue: { token: "--verb-exec", hex: "#ff7a3c" }
     fx: [run-glow]
     canon: spec/02-verbs.md
   verb/invoke:
     label: Invoke
     semantic: "MCP tool call OR builtin (incl. nika:fetch)"
-    lucide: plug
-    central: code/api-connection
+    supernovae: code/api-connection
     hue: { token: "--verb-invoke", hex: "#22d3ee" }
     fx: [run-glow]
     canon: spec/02-verbs.md
   verb/agent:
     label: Agent
     semantic: "Multi-turn agentic loop · tool calling · guardrails"
-    lucide: bot
-    central: code/agent
+    supernovae: code/agent
     hue: { token: "--verb-agent", hex: "#b07bff" }
     fx: [run-glow]
     canon: spec/02-verbs.md
@@ -87,343 +81,287 @@ entities:
     label: assert
     semantic: "Fail-fast guard: fail the task when condition is false"
     parent: verb/invoke
-    lucide: shield-alert
-    central: security/shield-2
+    supernovae: security/shield-2
     category: core
   builtin/compose:
     label: compose
     semantic: "Statically check a workflow draft — the check oracle inside agent loops"
     parent: verb/invoke
     shares_glyph_with: feature/check
-    lucide: shield-check
-    central: security/shield-code
+    supernovae: security/shield-code
     category: introspection
   builtin/convert:
     label: convert
     semantic: "Convert between json · yaml · toml · csv"
     parent: verb/invoke
-    lucide: arrow-right-left
-    central: arrows/arrow-right-left
+    supernovae: arrows/arrow-right-left
     category: data
   builtin/date:
     label: date
     semantic: "Timestamp arithmetic (now|add|subtract|format|parse|diff)"
     parent: verb/invoke
-    lucide: calendar-clock
-    central: time-date/calendar-clock
+    supernovae: time-date/calendar-clock
     category: data
   builtin/done:
     label: done
     semantic: "The loop-completion sentinel (agent loops only)"
     parent: verb/invoke
-    lucide: flag
-    central: things/racing-flag
+    supernovae: things/racing-flag
     category: core
   builtin/edit:
     label: edit
     semantic: "In-place literal find/replace (not regex)"
     parent: verb/invoke
-    lucide: file-pen
-    central: folders-files/page-edit
+    supernovae: folders-files/page-edit
     category: file
   builtin/emit:
     label: emit
     semantic: "Emit a custom machine event for subscribers/journal"
     parent: verb/invoke
-    lucide: radio
-    central: devices-signals/signal-tower
+    supernovae: devices-signals/signal-tower
     category: core
   builtin/fetch:
     label: fetch
     semantic: "HTTP request + content extraction · SSRF-defended"
     parent: verb/invoke
-    lucide: globe
-    central: location/globe
+    supernovae: location/globe
     category: network
   builtin/glob:
     label: glob
     semantic: "Glob match · paths sorted lexicographically"
     parent: verb/invoke
-    lucide: asterisk
-    central: security/asterisk
+    supernovae: security/asterisk
     category: file
   builtin/grep:
     label: grep
     semantic: "Recursive regex search over files"
     parent: verb/invoke
-    lucide: file-search
-    central: folders-files/page-search-lines
+    supernovae: folders-files/page-search-lines
     category: file
   builtin/hash:
     label: hash
     semantic: "Content hashing · blake3 | sha256 | sha512"
     parent: verb/invoke
-    lucide: fingerprint
-    central: security/finger-print-1
+    supernovae: security/finger-print-1
     category: data
   builtin/image_generate:
     label: image_generate
     semantic: "Generate image assets — files land on disk, never inline"
     parent: verb/invoke
-    lucide: image-plus
-    central: ai-magic/image-sparkle
+    supernovae: ai-magic/image-sparkle
     category: media
   builtin/inspect:
     label: inspect
     semantic: "Introspect the running workflow (cost | records | dag_info | threads)"
     parent: verb/invoke
-    lucide: scan-search
-    central: interface-general/deep-search
+    supernovae: interface-general/deep-search
     category: introspection
   builtin/jq:
     label: jq
     semantic: "THE data-transform language · emits exactly one value"
     parent: verb/invoke
-    lucide: filter
-    central: filter-settings/filter-1
+    supernovae: filter-settings/filter-1
     category: data
   builtin/json_diff:
     label: json_diff
     semantic: "JSON diff · returns an RFC 6902 JSON Patch"
     parent: verb/invoke
-    lucide: file-diff
-    central: code/difference-modified
+    supernovae: code/difference-modified
     category: data
   builtin/json_merge_patch:
     label: json_merge_patch
     semantic: "RFC 7396 merge patch (null deletes a key)"
     parent: verb/invoke
-    lucide: git-merge
-    central: code/merged
+    supernovae: code/merged
     category: data
   builtin/log:
     label: log
     semantic: "Human-readable diagnostic line to the run stream"
     parent: verb/invoke
-    lucide: scroll-text
-    central: folders-files/script
+    supernovae: folders-files/script
     category: core
   builtin/notify:
     label: notify
     semantic: "Send a notification (webhook channel in v0.1)"
     parent: verb/invoke
-    lucide: bell-ring
-    central: interface-general/bell
+    supernovae: interface-general/bell
     category: network
   builtin/prompt:
     label: prompt
     semantic: "Ask a HUMAN (confirm | input | choice) · blocks until answered"
     parent: verb/invoke
-    lucide: message-circle-question
-    central: communication/bubble-question
+    supernovae: communication/bubble-question
     category: core
   builtin/read:
     label: read
     semantic: "Read a file · text or opaque bytes"
     parent: verb/invoke
-    lucide: file-text
-    central: folders-files/page-text
+    supernovae: folders-files/page-text
     category: file
   builtin/tts_generate:
     label: tts_generate
     semantic: "Synthesize speech audio · sovereign-first providers"
     parent: verb/invoke
-    lucide: audio-lines
-    central: ai-magic/text-to-speach
+    supernovae: ai-magic/text-to-speach
     category: media
   builtin/uuid:
     label: uuid
     semantic: "Generate a UUID · v7 sortable (default) or v4"
     parent: verb/invoke
-    lucide: barcode
-    central: interface-general/barcode
+    supernovae: interface-general/barcode
     category: data
   builtin/validate:
     label: validate
     semantic: "Validate data against a JSON Schema · a report, not a failure"
     parent: verb/invoke
-    lucide: list-checks
-    central: interface-general/checklist
+    supernovae: interface-general/checklist
     category: data
   builtin/wait:
     label: wait
     semantic: "Pause · relative duration XOR absolute until"
     parent: verb/invoke
-    lucide: hourglass
-    central: time-date/hourglass
+    supernovae: time-date/hourglass
     category: core
   builtin/write:
     label: write
     semantic: "Write a file · returns the path"
     parent: verb/invoke
-    lucide: file-plus
-    central: folders-files/page-add
+    supernovae: folders-files/page-add
     category: file
 
   # ── features · the product surfaces (editor · CLI · site) ────────────────
   feature/check:
     label: Check
     semantic: "The static audit — conformance · secret-flow · permits · cost, before any token"
-    lucide: shield-check
-    central: security/shield-code
+    supernovae: security/shield-code
     hue: { token: "--v4-accent", hex: "#4f86ff" }
   feature/run:
     label: Run
     semantic: "Execute the workflow (mock needs no key)"
-    lucide: play
-    central: sound-music/play
+    supernovae: sound-music/play
   feature/dry-run:
     label: Dry-run
     semantic: "Show the plan · zero effects"
-    lucide: circle-dashed
-    central: interface-general/circle-dashed
+    supernovae: interface-general/circle-dashed
   feature/preflight:
     label: Preflight
     semantic: "The flight plan before any token: models · secrets · permits · cost"
-    lucide: plane-takeoff
-    central: vehicles-aircrafts/airplane-up
+    supernovae: vehicles-aircrafts/airplane-up
   feature/dag:
     label: DAG
     semantic: "The content-first canvas — tasks and the wires between them"
-    lucide: waypoints
-    central: code/code-tree
+    supernovae: code/code-tree
   feature/trace:
     label: Trace
     semantic: "The flight recorder — every run journaled, replayable"
-    lucide: history
-    central: time-date/history
+    supernovae: time-date/history
   feature/replay:
     label: Replay
     semantic: "Time travel over a recorded run — never re-executes"
-    lucide: rotate-ccw
-    central: sound-music/replay
+    supernovae: sound-music/replay
   feature/diff-runs:
     label: Diff runs
     semantic: "Two runs compared on the DAG"
     shares_glyph_with: builtin/json_diff
-    lucide: git-compare
-    central: code/difference-modified
+    supernovae: code/difference-modified
   feature/permits:
     label: Permits
     semantic: "The capability boundary — default-deny once declared"
-    lucide: shield
-    central: security/shield-access
+    supernovae: security/shield-access
   feature/secrets:
     label: Secrets
     semantic: "Store references only — literals never enter the file"
-    lucide: key-round
-    central: security/key-1
+    supernovae: security/key-1
   feature/cost:
     label: Cost
     semantic: "The static cost interval + the ceiling, priced before running"
-    lucide: coins
-    central: shopping-payment/receipt-bill
+    supernovae: shopping-payment/receipt-bill
   feature/doctor:
     label: Doctor
     semantic: "Diagnose the environment · ping local providers"
-    lucide: activity
-    central: interface-general/electrocardiogram
+    supernovae: interface-general/electrocardiogram
   feature/fork:
     label: Fork from task
     semantic: "Re-execute downstream · upstream rehydrates from the trace"
-    lucide: git-fork
-    central: code/fork-simple
+    supernovae: code/fork-simple
   feature/reproduce:
     label: Reproduce
     semantic: "Determinism check — classifies WHY two runs diverge"
-    lucide: repeat
-    central: arrows/arrows-repeat
+    supernovae: arrows/arrows-repeat
   feature/verify-chain:
     label: Verify chain
     semantic: "Tamper-evidence — the journal hash-chains itself"
-    lucide: link
-    central: interface-general/chain-link-1
+    supernovae: interface-general/chain-link-1
   feature/export-otel:
     label: Export OTel
     semantic: "Ship the trace to Jaeger · Grafana · Langfuse"
-    lucide: send
-    central: interface-general/arrow-out-of-box
+    supernovae: interface-general/arrow-out-of-box
   feature/report:
     label: Run report
     semantic: "Provable — read from the trace, states its own integrity"
-    lucide: file-chart-column
-    central: folders-files/file-chart
+    supernovae: folders-files/file-chart
   feature/history:
     label: Run history
     semantic: "Cross-run grid · flaky · trends"
-    lucide: chart-column
-    central: statistics-charts/leaderboard
+    supernovae: statistics-charts/leaderboard
   feature/generate:
     label: Generate
     semantic: "Describe → generate a workflow (oracle-checked)"
-    lucide: wand-sparkles
-    central: ai-magic/magic-wand
+    supernovae: ai-magic/magic-wand
   feature/explain:
     label: Explain
     semantic: "The engine narrates the workflow · deterministic · offline"
-    lucide: book-open
-    central: communication/book-simple
+    supernovae: communication/book-simple
   feature/examples:
     label: Examples
     semantic: "The embedded example pack"
-    lucide: library
-    central: folders-files/library
+    supernovae: folders-files/library
   feature/schema:
     label: Schema
     semantic: "The published JSON Schema — completions read the engine's own"
-    lucide: braces
-    central: code/brackets-1
+    supernovae: code/brackets-1
   feature/mcp:
     label: MCP
     semantic: "The read-only oracle surface (8 tools)"
     shares_glyph_with: verb/invoke
-    lucide: plug
-    central: social-media-brands/modelcontextprotocol
+    supernovae: code/api-connection
   feature/lsp:
     label: LSP
     semantic: "The language server — one brain, every editor"
-    lucide: code
-    central: code/code-assistant
+    supernovae: code/code-assistant
 
   # ── states · the run/trace fold (surface-defined colors · no site tokens) ─
   state/running:
     label: Running
     semantic: "A task is live"
-    lucide: loader-circle
-    central: interface-general/loading-circle
+    supernovae: interface-general/loading-circle
     fx: [pulse]
   state/success:
     label: Success
     semantic: "Settled clean"
-    lucide: circle-check
-    central: interface-general/circle-check
+    supernovae: interface-general/circle-check
   state/failed:
     label: Failed
     semantic: "Settled failed"
-    lucide: circle-x
-    central: interface-general/circle-x
+    supernovae: interface-general/circle-x
   state/recovered:
     label: Recovered
     semantic: "A repaired success — it keeps its ✓ but says so"
-    lucide: bandage
-    central: interface-general/heart-beat
+    supernovae: interface-general/heart-beat
   state/skipped:
     label: Skipped
     semantic: "A when: gate held it back"
-    lucide: circle-slash
-    central: interface-general/circle-minus
+    supernovae: interface-general/circle-minus
   state/pending:
     label: Pending
     semantic: "Waiting on upstream"
     shares_glyph_with: feature/dry-run
-    lucide: circle-dashed
-    central: interface-general/circle-dashed
+    supernovae: interface-general/circle-dashed
     fx: [dim]
   state/cancelled:
     label: Cancelled
     semantic: "The failure gate or the user stopped it"
-    lucide: ban
-    central: interface-general/circle-ban-sign
+    supernovae: interface-general/circle-ban-sign
 
   # ── ui · the site's hand-drawn 16px family (house artwork · absorbed) ─────
   # Source files: design/svg/ui/*.svg (stroke 1.5 · 16-grid · ours).

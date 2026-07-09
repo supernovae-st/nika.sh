@@ -52,7 +52,6 @@
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
     "lighthouse": "^12.8.2",
-    "lucide-static": "^1.23.0",
     "marked": "^16.4.1",
     "pixelmatch": "^7.2.0",
     "pngjs": "^7.0.0",

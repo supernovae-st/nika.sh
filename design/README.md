@@ -1,14 +1,15 @@
 # design/ · the nika icon ontology
 
 **`icons.yaml` is the SSOT** for the functional icon system: every verb,
-builtin, feature, run-state, ui glyph and social mark — each with its glyph
-resolution, color role, effects and ontological links (`parent`,
-`shares_glyph_with`). `build.mjs` projects it; drift is impossible to merge
-(`pnpm check` runs `build.mjs --check`).
+builtin, feature, run-state, ui glyph and social mark — each with its glyph,
+color role, effects and ontological links (`parent`, `shares_glyph_with`).
+`build.mjs` projects it; drift is impossible to merge (`pnpm check` runs
+`build.mjs --check`).
 
 ```
 design/icons.yaml            THE SOURCE (edit here)
-design/svg/{ui,social}/      house artwork (ours · absorbed from Nav + the sprite)
+design/svg/supernovae/       the SuperNovae house icon set (vendored, mapped glyphs)
+design/svg/{ui,social}/      site artwork (the Nav 16px family + footer marks)
         │  node design/build.mjs   (pnpm icons)
         ▼
 public/brand/icons/*.svg     the served catalog → nika.sh/brand/icons/<ns>-<name>.svg
@@ -25,16 +26,19 @@ src/icons/manifest.ts        the site's typed manifest (NikaIcon reads it)
 - **Ink law** (BRAND.md): static UI renders icons in the text ink
   (`currentColor`); verb hues speak ONLY on live-run surfaces (`<NikaIcon live>`).
   Hue hexes are drift-checked against `src/styles/tokens.css`.
-- **Dual resolution** (the license lock): `lucide:` (ISC — powers everything
-  public, vendored via `lucide-static`) and `central:` (Central Icon System ·
-  operator-licensed · atelier/private surfaces only — its files live in the
-  PRIVATE monorepo pole, never here). Swapping the public set = changing the
-  resolver, zero re-wiring.
+- **One set, ours** — glyphs come from the SuperNovae house icon set
+  (24-grid · stroke-2 · currentColor · operator-owned; the private master
+  lives in the studio identity pole). Site-drawn artwork (`ui/` · `social/`)
+  covers the Nav family and footer marks. Glyph modes: `stroke` (root-inked),
+  `fill` (solid), `auto` (self-contained bodies — each path carries its own
+  stroke/fill).
 
 ## Adding an entity
 
 1. Add it under `entities:` in `icons.yaml` (pick the namespace: `verb/` ·
-   `builtin/` · `feature/` · `state/` · `ui/` · `social/`).
+   `builtin/` · `feature/` · `state/` · `ui/` · `social/`), point
+   `supernovae:` at a `<category>/<name>` glyph vendored under
+   `design/svg/supernovae/`.
 2. `pnpm icons` → regenerates the four projections.
 3. Use it: `<NikaIcon id="feature/preflight" />` (site) · fetch
    `nika.sh/brand/icons.json` (anyone else).
