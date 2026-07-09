@@ -28,6 +28,8 @@ jobs:
         run: pnpm check
       - name: lint
         run: pnpm lint
+      - name: tests (drift gates — version-truth · llms counts · error catalog · on-page YAML)
+        run: pnpm test
       - name: build
         run: pnpm build
       - name: size budget (initial JS ≤ 350 KB gz · three-stack stays lazy)
