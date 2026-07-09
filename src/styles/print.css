@@ -1,0 +1,77 @@
+/* ─── print · the paper lane ──────────────────────────────────────────────────
+   The site is dark-only SCREEN chrome; paper is the opposite medium. With
+   print-backgrounds off (the browser default) every dark field vanishes and
+   the light ink becomes white-on-white — a printed blog post was blank. So
+   print gets its own register: white sheet, near-black ink, no fixed chrome
+   (fixed elements repeat on every printed page — the aurora frame already
+   hides itself in edge-aurora.css under the same law). The target surface is
+   the reading pages (/blog · /learn); the base makes every route legible. */
+@media print {
+  :root {
+    color-scheme: light;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  /* the legibility reset · every themed surface flattens to ink on paper —
+     print keeps the typography and the layout, drops the dark theme (syntax
+     hues included: paper code is monochrome, the mono face still carries the
+     code voice) */
+  * {
+    background: transparent !important;
+    color: #14161a !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    border-color: #c6c9cf !important;
+  }
+  /* screen chrome · fixed elements repeat per printed sheet; canvases (the
+     WebGL field · the drum) print as dark rasters or nothing */
+  .v4nav,
+  .srail,
+  .skip-link,
+  canvas,
+  video,
+  footer[aria-label='Site footer'] {
+    display: none !important;
+  }
+  a {
+    text-decoration: underline;
+  }
+  /* a post's external references keep their address on paper */
+  .bp-body a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+  /* a code fence split across two sheets is unreadable · the WHOLE panel
+     (chrome + body) moves as one unit — avoiding only on the body left an
+     empty chrome box stranded on the previous sheet (first print proof);
+     the browser still splits any panel taller than a page (avoid is a
+     preference, not a clip) */
+  .cf-panel,
+  pre,
+  blockquote {
+    break-inside: avoid;
+  }
+  /* the settled frame · print never runs the entrance choreography (no
+     observers fire, no animation ticks) — without this every .rv /
+     [data-rise] surface holds its from-state (opacity 0) and the sheet
+     prints BLANK (found on the first print-to-pdf proof). Same law as
+     reduced-motion: paper ships the settled frame. */
+  .rv,
+  [data-rise] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  /* the below-fold render skip must not skip on paper · every sheet renders */
+  .v4-cv {
+    content-visibility: visible !important;
+  }
+  @page {
+    margin: 16mm;
+  }
+}
