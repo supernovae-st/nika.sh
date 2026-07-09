@@ -18,7 +18,8 @@
 # INK LAW (BRAND.md): verb hues never appear in static UI — an entity renders
 # with `inks.static` unless the surface is a LIVE RUN, where `hue` applies.
 # Entity ids: <namespace>/<name> · namespaces: verb · builtin · feature ·
-# state · ui · social. Builtin names MUST equal canon builtinNames (checked).
+# state · ui · social · anim (the dot-matrix motion register — pattern:
+# instead of a glyph). Builtin names MUST equal canon builtinNames (checked).
 
 schema_version: 1
 
