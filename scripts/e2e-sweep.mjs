@@ -147,8 +147,12 @@ const settle = async (maxMs = 15000) => {
   await sleep(300)
 }
 
-/* the aurora route-tone contract (aurora-context toneForRoute) — spot checks */
-const TONE_EXPECT = { '/play': 'deep', '/blog': 'light', '/learn': 'light', '/install': 'blue', '/manifesto': 'warm', '/spec': 'cool' }
+/* the aurora route-tone contract (aurora-context toneForRoute) — spot checks.
+   Deliberately a COPY, not an import: the sweep is the second accountant.
+   Keep in step with ROUTE_TONES (src/fx/aurora-context.ts) — manifesto went
+   warm→blue at the arc-9j socratic pass (the tone follows THE BACKGROUND,
+   not the page's mood: coral edge-light on the blue drum read as a mismatch). */
+const TONE_EXPECT = { '/play': 'deep', '/blog': 'light', '/learn': 'light', '/install': 'blue', '/manifesto': 'blue', '/spec': 'cool' }
 
 /* ── PASS 1 · every route: console/network clean + harvest ids/links ─────────
    The 50 /errors/<code> pages are template-identical — CDP-load a SAMPLE
