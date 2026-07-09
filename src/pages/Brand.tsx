@@ -74,7 +74,8 @@ export function Component() {
         <p className="brand-lede">
           Every Nika verb, builtin, feature and run-state has a canonical glyph, color role and
           motion — declared once in the icon ontology, projected everywhere. Machine-readable:{' '}
-          <a href="/brand/icons.json">icons.json</a> · <a href="/brand/icons.ttl">icons.ttl</a>.
+          <a href="/brand/icons.json">icons.json</a> · <a href="/brand/icons.ttl">icons.ttl</a> ·{' '}
+          <a href="https://docs.nika.sh/reference/design-system">integrator reference</a>.
         </p>
       </header>
 

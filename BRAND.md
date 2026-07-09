@@ -68,11 +68,18 @@ has a canonical icon, color role and effect — declared once in
 - **[`icons.ttl`](public/brand/icons.ttl)** — the RDF projection
   (`https://nika.sh/ontology/design#`)
 
+The `anim/*` namespace declares the dot-matrix motion register — each
+verb's pattern is its execution model (infer samples · exec scans ·
+invoke round-trips · agent orbits · the butterfly beats). Patterns and
+parameters ride `icons.json`; the reference renderer is
+[`src/fx/dotmatrix`](src/fx/dotmatrix/NikaDots.tsx).
+
 Laws: entities derive from the spec canon (builtins parity-gated); glyphs
 are the **SuperNovae house icon set** (24-grid · stroke-2 · studio-owned);
 site artwork covers `ui/*` + `social/*`; **verb hues render only on live-run
 surfaces** — static UI keeps the text ink. Full contract:
-[`design/README.md`](design/README.md).
+[`design/README.md`](design/README.md) · integrator doc:
+[docs.nika.sh/reference/design-system](https://docs.nika.sh/reference/design-system).
 
 ## Rules
 
@@ -87,6 +94,6 @@ surfaces** — static UI keeps the text ink. Full contract:
 | Consumer | Files |
 |---|---|
 | this site (runtime, frozen names) | `public/nika.svg` (mark-glow + size attrs) · `public/favicon.svg` (tile) · `public/icon-*.png` · `apple-touch-icon.png` |
-| VS Code extension ([nika-vscode](https://github.com/supernovae-st/nika-vscode)) | `icons/nika-icon.{svg,png}` (tile) · `icons/nika-dark.svg` (mark-glow) · `icons/nika-light.svg` (mark-light) |
+| VS Code extension ([nika-vscode](https://github.com/supernovae-st/nika-vscode)) | `icons/nika-icon.{svg,png}` (tile) · `icons/nika-dark.svg` (mark-glow) · `icons/nika-light.svg` (mark-light) · `src/webview/verbGlyphs.ts` (the 4 verb glyphs as path data — keycap · cmdk · palette) |
 | Docs ([docs.nika.sh](https://docs.nika.sh)) | `images/logo-{light,dark}.svg` · `images/favicon.svg` (tile) |
 | Everything else (engine · spec · SDK · tap · agents) | hotlinks `https://nika.sh/brand/` — zero local copies |
