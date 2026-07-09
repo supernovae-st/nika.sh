@@ -66,6 +66,14 @@ export const UC_TABS: UCTab[] = [
         outcome: 'Release day: one command, a changelog in your voice, zero copy-paste.',
       },
       {
+        slug: 't2-model-bench',
+        icon: '⚖️',
+        title: 'Model bench',
+        body: 'The same question fanned to three local models in parallel; a jq fan-in tabulates measured latency and length — no judge model, facts only.',
+        tier: 'T2',
+        outcome: 'Pick your default model on a measured table, not vibes — zero keys, zero spend.',
+      },
+      {
         slug: 't2-release-radar',
         icon: '🛰️',
         title: 'Release radar',

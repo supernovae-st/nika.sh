@@ -463,6 +463,74 @@ outputs:
     type: array
     description: "The overdue rows the reminders were drafted for"
 `,
+  't2-model-bench': `nika: v1
+workflow: model-bench
+description: "One question → three local models → a measured comparison table"
+
+model: ollama/qwen3.5:4b # the house default · contenders below pick their own seats
+
+vars:
+  question:
+    type: string
+    default: "Explain, in five lines, why a workflow should be audited before it runs."
+
+tasks:
+  - id: ask_incumbent
+    infer:
+      model: ollama/qwen2.5:14b # the quality bar · the seat to beat
+      prompt: "\${{ vars.question }}"
+      max_tokens: 600
+
+  - id: ask_challenger
+    infer:
+      model: ollama/llama3.2:3b # another family · same size class
+      prompt: "\${{ vars.question }}"
+      max_tokens: 600
+
+  - id: ask_tiny
+    infer:
+      model: ollama/qwen2.5:0.5b # the "is small enough?" probe
+      prompt: "\${{ vars.question }}"
+      max_tokens: 600
+
+  - id: tabulate
+    depends_on: [ask_incumbent, ask_challenger, ask_tiny]
+    invoke:
+      tool: "nika:jq"
+      args:
+        input:
+          - model: "ollama/qwen2.5:14b"
+            ms: "\${{ tasks.ask_incumbent.duration_ms }}"
+            answer: "\${{ tasks.ask_incumbent.output }}"
+          - model: "ollama/llama3.2:3b"
+            ms: "\${{ tasks.ask_challenger.duration_ms }}"
+            answer: "\${{ tasks.ask_challenger.output }}"
+          - model: "ollama/qwen2.5:0.5b"
+            ms: "\${{ tasks.ask_tiny.duration_ms }}"
+            answer: "\${{ tasks.ask_tiny.output }}"
+        expression: >-
+          "| model | latency | chars | answer (first 160) |\\n|---|---|---|---|\\n"
+          + (map("| " + .model + " | "
+               + (if .ms == null then "cached" else (.ms | tostring) + "ms" end) + " | "
+               + (.answer | length | tostring) + " | "
+               + (.answer | gsub("\\n"; " ") | .[0:160]) + " |")
+             | join("\\n"))
+
+  - id: persist
+    depends_on: [tabulate]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./bench/model-bench.md"
+        create_dirs: true
+        content: |
+          # Model bench — same question, measured
+
+          \${{ tasks.tabulate.output }}
+
+          Facts only: latency from the run's clock, length in characters.
+          The answers are side by side — the quality call is yours.
+`,
   't2-release-notes': `nika: v1
 workflow: release-notes
 description: "git log → typed release notes → CHANGELOG insert → team ping"
@@ -1713,6 +1781,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
   't2-contract-guard': {"tasks": [{"id": "contract", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 13, "line1": 16}, {"id": "clauses", "verb": "infer", "deps": ["contract"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 18, "line1": 37}, {"id": "check", "verb": "invoke", "deps": ["clauses"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 39, "line1": 52}, {"id": "gate", "verb": "invoke", "deps": ["check"], "wave": 3, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 54, "line1": 60}, {"id": "memo", "verb": "infer", "deps": ["clauses", "gate"], "wave": 4, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 62, "line1": 68}, {"id": "save", "verb": "invoke", "deps": ["memo"], "wave": 5, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 70, "line1": 77}], "outputs": ["clauses", "memo"], "waves": 6},
   't2-etl-quarantine': {"tasks": [{"id": "empty_batch", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 9, "line1": 12}, {"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 14, "line1": 17}, {"id": "rows", "verb": "invoke", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 19, "line1": 29}, {"id": "check", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 31, "line1": 46}, {"id": "good", "verb": "invoke", "deps": ["rows", "check"], "wave": 3, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 48, "line1": 55}, {"id": "quarantine", "verb": "invoke", "deps": ["rows", "check"], "wave": 3, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 57, "line1": 65}, {"id": "report", "verb": "invoke", "deps": ["good"], "wave": 4, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 67, "line1": 75}], "outputs": ["totals"], "waves": 5},
   't2-invoice-chaser': {"tasks": [{"id": "ledger", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 10, "line1": 13}, {"id": "rows", "verb": "invoke", "deps": ["ledger"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 15, "line1": 23}, {"id": "overdue", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 25, "line1": 31}, {"id": "drafts", "verb": "infer", "deps": ["overdue"], "wave": 3, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 33, "line1": 40}, {"id": "approve", "verb": "invoke", "deps": ["drafts"], "wave": 4, "gate": "when", "gloss": "call `nika:prompt` · only if its condition holds", "flags": ["conditional"], "line0": 42, "line1": 49}, {"id": "save", "verb": "invoke", "deps": ["approve", "drafts"], "wave": 5, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 51, "line1": 58}], "outputs": ["overdue"], "waves": 6},
+  't2-model-bench': {"tasks": [{"id": "ask_incumbent", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 12, "line1": 16}, {"id": "ask_challenger", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 18, "line1": 22}, {"id": "ask_tiny", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 24, "line1": 28}, {"id": "tabulate", "verb": "invoke", "deps": ["ask_incumbent", "ask_challenger", "ask_tiny"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 30, "line1": 51}, {"id": "persist", "verb": "invoke", "deps": ["tabulate"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 53, "line1": 66}], "outputs": [], "waves": 3},
   't2-release-notes': {"tasks": [{"id": "history", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 18, "line1": 20}, {"id": "notes", "verb": "infer", "deps": ["history"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 22, "line1": 35}, {"id": "changelog", "verb": "invoke", "deps": ["notes"], "wave": 2, "gate": "default", "gloss": "call `nika:edit`", "flags": [], "line0": 37, "line1": 49}, {"id": "announce", "verb": "invoke", "deps": ["notes", "changelog"], "wave": 3, "gate": "default", "gloss": "call `nika:notify`", "flags": [], "line0": 51, "line1": 59}], "outputs": ["headline", "body"], "waves": 4},
   't2-release-radar': {"tasks": [{"id": "no_state", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 12, "line1": 15}, {"id": "previous", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 17, "line1": 23}, {"id": "feed", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 25, "line1": 32}, {"id": "fresh", "verb": "invoke", "deps": ["previous", "feed"], "wave": 1, "gate": "default", "gloss": "call `nika:json_diff`", "flags": [], "line0": 34, "line1": 40}, {"id": "digest", "verb": "infer", "deps": ["fresh", "feed"], "wave": 2, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 42, "line1": 52}, {"id": "save_state", "verb": "invoke", "deps": ["feed"], "wave": 1, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 54, "line1": 62}], "outputs": ["new_entries"], "waves": 3},
   't2-seo-content-brief': {"tasks": [{"id": "map", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 14, "line1": 21}, {"id": "top_page", "verb": "invoke", "deps": ["map"], "wave": 1, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 23, "line1": 29}, {"id": "brief", "verb": "infer", "deps": ["map", "top_page"], "wave": 2, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 31, "line1": 49}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 51, "line1": 58}], "outputs": ["brief"], "waves": 4},
