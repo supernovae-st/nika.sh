@@ -5,14 +5,16 @@ import { createContext, useContext } from 'react'
    properties / data attributes on the aurora element directly (via ref) — there
    is NO React re-render per event, so the drum stays cheap under rapid beats.
 
-   v5 run mode (E7): while a run replays, the frame IS run visualization — the
-   one surface where the 4 verb hues are sanctioned (design doc §3.4). Idle
-   chrome stays single-blue and byte-identical to the rest state.
+   Run mode (E7 · v6 ring law): while a run replays, the frame IS run
+   visualization — the full-spectrum Siri ring speaks louder (the v5 per-verb
+   tint was retired; the verb argument stays in the API so a verb-tinted
+   surface can return without changing every caller).
 
    Split out of EdgeAurora.tsx so that file exports only components (keeps the
    react-refresh/only-export-components lint clean under --max-warnings 0). */
 
-/** the 4 canonical verb hues — sanctioned ONLY inside live-run visualization */
+/** the 4 canonical verbs — kept in the API for a future verb-tinted surface
+    (the v6 full-spectrum ring renders no per-verb tint today) */
 export type AuroraVerb = 'infer' | 'exec' | 'invoke' | 'agent'
 
 /** Stable no-op defaults so the hooks are safe outside a provider (e.g. during
