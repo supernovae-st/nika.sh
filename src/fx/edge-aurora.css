@@ -42,6 +42,10 @@
    TRANSITIONS the frame (the smoothing is CSS · the JS only sets the target).
    Under reduced-motion the blanket rule (index.css) snaps the duration to 0 →
    deterministic (goldens see the default). */
+/* initial-value 1 (not cool's 1.2) is DELIBERATE: the no-JS / reduced-motion
+   register holds the calmer, shallower frame — the depth "settles in" to the
+   section value only for motion-on users (the hue/chroma initials DO match
+   the cool tone, so no colour wobbles at load). Goldens bake this state. */
 @property --aurora-bezel-k {
   syntax: '<number>';
   inherits: true;
@@ -590,12 +594,6 @@
   }
   to {
     --aurora-spin2: 128deg;
-  }
-}
-/* the verdict sweep still drives the single angle through one revolution */
-@keyframes edge-aurora-spin {
-  to {
-    --aurora-spin: 360deg;
   }
 }
 

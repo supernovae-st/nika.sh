@@ -61,6 +61,16 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
   const rafRef = useRef<number | null>(null)
   const lastTsRef = useRef(0)
   const tickRef = useRef<(ts: number) => void>(() => {})
+  /* ⚠ ALWAYS schedule THIS wrapper, never `tickRef.current` by value. The
+     section-response effect runs BEFORE the installer effect (declaration
+     order) and computes synchronously on mount — passing `tickRef.current`
+     there captured the initial NO-OP, which never resets `rafRef` → every
+     later `rafRef.current == null` guard stayed false and the decay loop
+     was DEAD for the whole motion-on session (intensity stuck at the last
+     direct write: hello 0.34 · pulses 0.46 — the arc-9d « stuck near
+     hello » probe was THIS, not headless starvation). The wrapper reads
+     the ref at FIRE time: rAF fires after paint, after all mount effects. */
+  const tickNow = useCallback((ts: number) => tickRef.current(ts), [])
   const sweepTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const dangerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -74,10 +84,10 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       intensityRef.current = HELLO_INTENSITY
       el.style.setProperty('--aurora-intensity', String(HELLO_INTENSITY))
       lastTsRef.current = 0
-      if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickRef.current)
+      if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickNow)
     }, HELLO_DELAY_MS)
     return () => clearTimeout(t)
-  }, [])
+  }, [tickNow])
 
   /* ── arc 9 · THE SECTION RESPONSE · « plus intelligent » ───────────────────
      The frame READS which section owns the viewport center (a scroll-spy over
@@ -145,7 +155,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       if (elRef.current?.dataset.run == null) {
         restRef.current = t.i
         lastTsRef.current = 0
-        if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickRef.current)
+        if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickNow)
       }
     }
     const onScroll = () => {
@@ -165,7 +175,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       root.style.removeProperty('--aurora-tint-hue')
       root.style.removeProperty('--aurora-tint-c')
     }
-  }, [])
+  }, [tickNow])
 
   /* Tab hidden → park the ambient animations (data-idle). The ring's slow
      drift is a feature while WATCHED; it composits for nobody when hidden. */
@@ -198,7 +208,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       }
 
       if (Math.abs(intensityRef.current - rest) > 0.002) {
-        rafRef.current = requestAnimationFrame(tickRef.current)
+        rafRef.current = requestAnimationFrame(tickNow)
       } else {
         if (el) el.style.setProperty('--aurora-intensity', String(rest))
         rafRef.current = null
@@ -212,15 +222,15 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
       if (dangerTimerRef.current != null) clearTimeout(dangerTimerRef.current)
     }
-  }, [])
+  }, [tickNow])
 
   /* (re)start the decay loop toward the current rest floor */
   const arm = useCallback(() => {
     lastTsRef.current = 0
     if (rafRef.current == null) {
-      rafRef.current = requestAnimationFrame(tickRef.current)
+      rafRef.current = requestAnimationFrame(tickNow)
     }
-  }, [])
+  }, [tickNow])
 
   const pulse = useCallback(() => {
     if (typeof window === 'undefined') return
