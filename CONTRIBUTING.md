@@ -7,7 +7,7 @@ Thanks for considering a contribution. This is the marketing/docs surface of Nik
 - Landing + method + install pages
 - Weekly changelog + monthly blog (MDX)
 - Error code catalog
-- Meta-artifacts (`/llms.txt`, `/design.md`, etc.)
+- Meta-artifacts (`/llms.txt`, `/brand/icons.json`, `/brand/icons.ttl`, `/rss.xml`)
 
 If you want to contribute to the engine itself, see [supernovae-st/nika](https://github.com/supernovae-st/nika).
 If you want to contribute to the design system, it lives IN this repo: [`BRAND.md`](BRAND.md) (identity + rules) and [`design/`](design/README.md) (the icon ontology — `icons.yaml` is the SSOT, `pnpm icons` projects it).
