@@ -96,16 +96,19 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
     const root = document.documentElement
     /* the tone table · k = bezel depth · h = tint hue (Siri pool · 246 violet →
-       264 periwinkle → 372 (=12°) coral) · i = the 4th dimension: how bright
+       258 site blue → 372 (=12°) coral) · i = the 4th dimension: how bright
        the iridescence glows in this section (the film burns hottest, the airy
-       light section calms, the close warms). */
-    const TONES: Record<string, { k: number; h: number; i: number }> = {
-      film: { k: 1.46, h: 246, i: 0.2 },
-      deep: { k: 1.34, h: 250, i: 0.13 },
-      cool: { k: 1.2, h: 256, i: 0.11 },
-      blue: { k: 1.28, h: 264, i: 0.16 },
-      light: { k: 1.0, h: 268, i: 0.09 },
-      warm: { k: 1.08, h: 372, i: 0.14 },
+       light section calms, the close warms) · c = the 5th (arc 9j): how RICH
+       the static edge-light is on the black frame — the colour lives in the
+       light now, never in the slab (chroma bounded ≤0.17 · the P3 de-pink
+       lesson: the real screen renders more vivid than any headless shot). */
+    const TONES: Record<string, { k: number; h: number; i: number; c: number }> = {
+      film: { k: 1.46, h: 246, i: 0.2, c: 0.17 },
+      deep: { k: 1.34, h: 250, i: 0.13, c: 0.13 },
+      cool: { k: 1.2, h: 256, i: 0.11, c: 0.12 },
+      blue: { k: 1.28, h: 258, i: 0.16, c: 0.155 },
+      light: { k: 1.0, h: 268, i: 0.09, c: 0.08 },
+      warm: { k: 1.08, h: 372, i: 0.14, c: 0.14 },
     }
     let raf: number | null = null
     let last = ''
@@ -128,6 +131,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       const t = TONES[tone] ?? TONES.cool
       root.style.setProperty('--aurora-bezel-k', t.k.toFixed(3))
       root.style.setProperty('--aurora-tint-hue', `${t.h}deg`)
+      root.style.setProperty('--aurora-tint-c', t.c.toFixed(3))
       /* the 4th dimension · the iridescence floor follows the section. It is
          the rest target the decay eases to — but the RUN owns the intensity
          while it plays (don't fight it); when the run ends it returns to this
@@ -155,6 +159,7 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('aurora:retone', onScroll)
       root.style.removeProperty('--aurora-bezel-k')
       root.style.removeProperty('--aurora-tint-hue')
+      root.style.removeProperty('--aurora-tint-c')
     }
   }, [])
 
