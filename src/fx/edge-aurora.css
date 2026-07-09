@@ -99,12 +99,13 @@
    whisper of temperature (chroma 0.006 · felt, never seen). The section's
    COLOUR moved into the LIGHT: a static two-halo EDGE-LIGHT hugging the
    cutout, painted onto the black slab, its richness per-section via
-   --aurora-tint-c. The material is never dyed again. Above the aurora
-   (z-60 > 59): the glow only escapes inward. Static → deterministic. */
+   --aurora-tint-c. The material is never dyed again. The aurora rides
+   ABOVE it (z-61 > 60 · arc 9h): the contour itself ignites on runs.
+   Static → deterministic. */
 .edge-bezel {
   position: fixed;
   inset: var(--frame-w, 14px);
-  z-index: 60; /* ABOVE the aurora — the frame owns its silhouette */
+  z-index: 60; /* below the aurora (61) — one shared edge geometry */
   pointer-events: none;
   border-radius: var(--aurora-radius, 48px);
   box-shadow:
@@ -136,9 +137,9 @@
 
 .edge-aurora {
   /* rest intensity (arc 9f) · at rest the frame is the dark MATERIAL — the
-     iridescence is a quiet under-bezel light; the per-section 4th dimension
-     nudges it, the RUNS own the wow (mutated by EdgeAurora.tsx · SSR
-     fallback). */
+     iridescence is a quiet light living ON the contour (above the bezel
+     since arc 9h); the per-section 4th dimension nudges it, the RUNS own
+     the wow (mutated by EdgeAurora.tsx · SSR fallback). */
   --aurora-intensity: 0.11;
   /* rim geometry · the band thickness in px */
   --aurora-band: 16px;
