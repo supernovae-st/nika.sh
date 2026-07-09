@@ -1,8 +1,9 @@
 # design/ · the nika icon ontology
 
 **`icons.yaml` is the SSOT** for the functional icon system: every verb,
-builtin, feature, run-state, ui glyph and social mark — each with its glyph,
-color role, effects and ontological links (`parent`, `shares_glyph_with`).
+builtin, feature, run-state, ui glyph, social mark and motion pattern —
+each with its glyph (or `pattern:` for `anim/*`), color role, effects and
+ontological links (`parent`, `shares_glyph_with`).
 `build.mjs` projects it; drift is impossible to merge (`pnpm check` runs
 `build.mjs --check`).
 
@@ -36,9 +37,10 @@ src/icons/manifest.ts        the site's typed manifest (NikaIcon reads it)
 ## Adding an entity
 
 1. Add it under `entities:` in `icons.yaml` (pick the namespace: `verb/` ·
-   `builtin/` · `feature/` · `state/` · `ui/` · `social/`), point
+   `builtin/` · `feature/` · `state/` · `ui/` · `social/` · `anim/`), point
    `supernovae:` at a `<category>/<name>` glyph vendored under
-   `design/svg/supernovae/`.
+   `design/svg/supernovae/` — or, for `anim/*`, a `pattern:` from
+   `src/fx/dotmatrix/patterns.ts`.
 2. `pnpm icons` → regenerates the four projections.
 3. Use it: `<NikaIcon id="feature/preflight" />` (site) · fetch
    `nika.sh/brand/icons.json` (anyone else).
