@@ -31,6 +31,7 @@ export const OLLAMA_PULL_CMD = 'ollama pull llama3.2:3b'
 export const EXAMPLES_CMD = 'nika examples run 01-hello --model ollama/llama3.2:3b'
 export const CHECK_CMD = 'nika check hello.nika.yaml'
 export const RUN_CMD = 'nika run hello.nika.yaml'
+export const WELCOME_CMD = 'nika welcome'
 export const DOCTOR_CMD = 'nika doctor'
 
 /* the zero-setup first file — no model, no key (exec only) */

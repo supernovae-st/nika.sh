@@ -20,6 +20,7 @@ import {
   CHECK_CMD,
   RUN_CMD,
   DOCTOR_CMD,
+  WELCOME_CMD,
   HELLO_YAML,
   HELLO_AI_YAML,
   VERSION_TRANSCRIPT,
@@ -214,13 +215,17 @@ export function Component() {
                 <p className="ins-step-n">06 · first run</p>
                 <h2 className="ins-step-title">Zero keys, zero cloud</h2>
                 <p className="ins-step-plain">
-                  Your first workflow needs no model and no API key. Save the file, audit it
-                  with <code>nika check</code> (plan · cost · secrets, before anything runs),
-                  then <code>nika run</code>. Adding an AI step? Point it at a{' '}
-                  <b>free local model</b> (one <code>ollama pull</code>, nothing leaves your
-                  machine), and <code>nika doctor</code> tells you exactly what&apos;s wired.
+                  Start with <code>nika welcome</code> — the mirror: what this machine
+                  already has (editors · local models · key <i>presence</i>, never values)
+                  and where to go next. Your first workflow needs no model and no API key.
+                  Save the file, audit it with <code>nika check</code> (plan · cost ·
+                  secrets, before anything runs), then <code>nika run</code>. Adding an AI
+                  step? Point it at a <b>free local model</b> (one <code>ollama pull</code>,
+                  nothing leaves your machine), and <code>nika doctor</code> tells you
+                  exactly what&apos;s wired.
                 </p>
                 <div className="ins-cmds">
+                  <CopyRow track="install-copy" cmd={WELCOME_CMD} label="the mirror · start here" />
                   <CopyRow track="install-copy" cmd={CHECK_CMD} label="static audit" />
                   <CopyRow track="install-copy" cmd={RUN_CMD} label="run" />
                   <CopyRow track="install-copy" cmd={OLLAMA_PULL_CMD} label="the free local model" />
