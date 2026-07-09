@@ -44,8 +44,9 @@ const EditorFallback = (
 /* ─── /play · the playground (theme-dark · blueprint register) ────────────────
    Edit real Nika in the browser · the validator's own NIKA codes appear live
    (the TS port of the conformance cross-refs + the eight hard rules). Client-
-   only — nothing leaves the tab. Seeds = the 6 templates (slot-marked skeletons)
-   + the 20 showcase workflows, all projected from the spec.
+   only — nothing leaves the tab. Seeds = the spec's templates (slot-marked
+   skeletons) + the showcase workflows, all projected from the spec (counts
+   live in the projector, never here).
 
    The editor is dressed in the SAME chrome as the static CodeFile (the .cf-*
    window dressing · traffic-light dots · filename tab · gutter divider · teal
