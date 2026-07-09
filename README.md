@@ -1,3 +1,12 @@
+<p align="center">
+  <a href="https://nika.sh">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="public/brand/nika-logo-dark.svg">
+      <img src="public/brand/nika-logo-light.svg" alt="Nika" width="220">
+    </picture>
+  </a>
+</p>
+
 # nika.sh — Intent as Code
 
 The public site for [Nika](https://github.com/supernovae-st/nika), the open
@@ -65,6 +74,14 @@ DAGs + the 6 templates), `public/schema/workflow.json` and
 `scripts/showcase-projector.py --write` (drift-gated by `--check` in the
 monorepo audit). Every other YAML fragment in copy is hand-written but
 spec-validated — never invent shapes.
+
+## Brand assets
+
+The canonical public brand kit lives in `public/brand/` (served at
+[nika.sh/brand/](https://nika.sh/brand/nika-logo-dark.svg)) — marks, tile,
+logo lockups, the 16 px glyph. Naming, color roles and usage rules:
+[`BRAND.md`](BRAND.md). Runtime files (`public/nika.svg`, `favicon.svg`,
+`icon-*.png`) keep their frozen names — the visual goldens depend on them.
 
 ## Deploy
 
