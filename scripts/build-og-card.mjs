@@ -115,6 +115,15 @@ const CARDS = [
       '<span class="arrow">▸</span><span>read<span class="sep">·</span>hover<span class="sep">·</span><b>run&nbsp;it&nbsp;in&nbsp;the&nbsp;playground</b></span>',
   },
   {
+    // /brand — the design system, shown by the system itself.
+    out: 'og-brand.png',
+    fig: 'FIG D.0',
+    headline: 'One mark,<br><span class="b">one ontology.</span>',
+    sub: 'Every verb, builtin, feature and run-state carries a canonical glyph, hue and motion&nbsp;— declared once, projected everywhere, machine-readable.',
+    detail:
+      '<span class="arrow">▸</span><span>icons.json<span class="sep">·</span>icons.ttl<span class="sep">·</span><b>hue&nbsp;=&nbsp;alive</b></span>',
+  },
+  {
     // /blog — the long-form pedagogy shelf.
     out: 'og-blog.png',
     fig: 'FIG B.0',

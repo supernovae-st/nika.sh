@@ -54,6 +54,12 @@ export function Component() {
         content:
           'The nika design language: the butterfly-supernova marks, the ontology-driven icon library (every verb, builtin, feature and run-state), and the dot-matrix motion register.',
       },
+      { property: 'og:image', content: 'https://nika.sh/og-brand.png' },
+      {
+        property: 'og:image:alt',
+        content: 'Nika · One mark, one ontology — the machine-readable design system.',
+      },
+      { name: 'twitter:image', content: 'https://nika.sh/og-brand.png' },
       ...head.meta,
     ],
   })
