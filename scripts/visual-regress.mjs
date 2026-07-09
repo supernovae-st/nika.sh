@@ -15,6 +15,9 @@
      node scripts/visual-regress.mjs --update --only home-p072   # scoped
                                      # re-bake (only the frame that diffed —
                                      # a full --update re-encodes ALL pngs)
+     node scripts/visual-regress.mjs --port 9260   # alt ports (CDP 9260 ·
+                                     # http 9261) when a concurrent session
+                                     # holds the defaults
    Env: CHROME_BIN overrides the browser binary (CI: setup-chrome exports it).
 
    Flake armor (the swiftshader lesson, twice-struck): a frame whose 3D/page
@@ -44,8 +47,13 @@ const UPDATE = process.argv.includes('--update')
    byte-stable — the sequence IS the measurement condition). */
 const onlyIdx = process.argv.indexOf('--only')
 const ONLY = onlyIdx === -1 ? null : new Set(process.argv[onlyIdx + 1]?.split(',') ?? [])
-const PORT_HTTP = 4519
-const PORT_CDP = 9242
+/* --port <n> · the CDP port (http server = port+1). The defaults collide
+   when a concurrent session runs its own harness — the historical fix was
+   sed-ing a scratch copy of the script (the « alt-ports » pain, arc 3 /
+   W20c); this makes it a flag. Ports don't affect the shot pixels. */
+const portIdx = process.argv.indexOf('--port')
+const PORT_CDP = portIdx === -1 ? 9242 : Number(process.argv[portIdx + 1]) || 9242
+const PORT_HTTP = portIdx === -1 ? 4519 : PORT_CDP + 1
 const W = 1600
 const H = 1000
 const PLATFORM = process.platform === 'darwin' ? 'darwin' : 'linux'
