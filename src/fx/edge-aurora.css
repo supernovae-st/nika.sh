@@ -65,10 +65,13 @@
      screen (the content cutout) lives INSIDE it; the nav, the scroll rail and
      the morph console all offset by it (« les éléments se calent »). */
   --frame-w: 14px;
+  /* depth answers fast (a physical response); the COLOUR travels slower —
+     the long hue journeys (blue 258° → coral 372° at the close) ease as one
+     luxurious drift, never a snap (arc 9j) */
   transition:
     --aurora-bezel-k 0.7s var(--ease-ui, ease),
-    --aurora-tint-hue 0.7s var(--ease-ui, ease),
-    --aurora-tint-c 0.7s var(--ease-ui, ease);
+    --aurora-tint-hue 1.05s var(--ease-ui, ease),
+    --aurora-tint-c 1.05s var(--ease-ui, ease);
 }
 @media (max-width: 767px) {
   :root {
