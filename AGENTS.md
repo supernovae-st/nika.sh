@@ -47,3 +47,32 @@ auto-deploys on push to `main` (DigitalOcean App Platform, `.do/app.yaml`).
   `node scripts/shoot-scroll.mjs --url http://127.0.0.1:<port>/?it=99`
   (CDP scrolls the real page and captures seam + progress frames;
   `--reverse` replays backward for scrub-down truth).
+
+## The verification toolbelt (scripts/)
+
+All zero-dep Node 22 + CDP against Chrome (headless swiftshader unless
+said otherwise). Each script documents its flags in its own header.
+
+- `visual-regress.mjs` — the pixel-compared goldens (10 home frames,
+  per-OS under `tests/visual/golden/`; CI gate). `--update` re-bakes;
+  `--update --only <frame>` scopes the WRITE (every frame still shoots,
+  in order — the sequential warm-up is part of the measurement);
+  `--port <n>` when a concurrent session holds the defaults.
+- `shoot-routes.mjs` — the design-iteration eye: any route × viewport ×
+  aurora state, `--scroll-to`, `--reduced`.
+- `shoot-scroll.mjs` — the scroll-linked sweep (above).
+- `a11y-sweep.mjs` — axe-core over every prerendered route
+  (critical/serious = gate).
+- `lighthouse-spot.mjs` — perf spots on `/`, `/play`, one post (only TBT
+  is stable under load; cross 2+ runs on a calm machine).
+- `size-budget.mjs` — initial-JS budget (350 KB gz, three-leak detector).
+- `demo-drive.mjs` — HEADED Chrome through the demo storyboard while the
+  operator screen-records; `--dry` is the headless plumbing check. Two of
+  its laws generalize: far-below-fold Y coordinates go stale
+  (content-visibility estimates — resolve selectors at use time) and
+  `html { scroll-behavior: smooth }` hijacks bare programmatic
+  `scrollTo` (drivers must pass `behavior: 'instant'`).
+- `build-blog.mjs` / `build-errors.mjs` / `build-og-card.mjs` — content
+  compilers (blog markdown → generated module + RSS · error register ·
+  OG cards). Run MANUALLY after editing their sources — the vitest
+  drift gates fail when a generated module is stale.
