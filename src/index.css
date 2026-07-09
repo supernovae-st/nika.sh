@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './styles/tokens.css';
+@import './styles/print.css';
 
 /* ─── v4 trust-landing utilities · black & white token system ────────────────
    Maps the monochrome v4 palette (src/styles/tokens.css) onto Tailwind v4
