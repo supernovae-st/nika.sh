@@ -4,16 +4,32 @@
    circulation on the wires. `[data-stale]` dims the whole map while the
    editor's yaml is mid-edit (the last VALID plan stays on screen). */
 .dv {
+  /* the map overflows sideways in its own well on narrow screens (the
+     CodeFile well law · cards stay legible instead of crushing) */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  transition: opacity 0.2s var(--ease-ui, ease);
+}
+.dv:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+}
+.dv[data-stale] {
+  opacity: 0.4;
+}
+/* the track spans the full scrollable content — the wires' SVG lives inside
+   it, so a wire can reach a node beyond the fold */
+.dv-track {
   position: relative;
   display: flex;
   align-items: center;
   gap: clamp(14px, 3%, 28px);
+  /* fill the well when it fits · grow past it (and scroll) when it doesn't */
+  width: 100%;
+  min-width: max-content;
   min-height: 220px;
   padding: 18px 6px;
-  transition: opacity 0.2s var(--ease-ui, ease);
-}
-.dv[data-stale] {
-  opacity: 0.4;
 }
 
 .dv-wires {
@@ -59,7 +75,10 @@
 
 .dv-wave {
   flex: 1 1 0;
-  min-width: 0;
+  /* legible floor per wave — beyond it the WELL scrolls, the cards never
+     crush their ids/tool lines into ellipsis soup (108px keeps the 3-wave
+     template flat in the desktop panel · the phone + long chains scroll) */
+  min-width: 108px;
   position: relative;
   z-index: 1;
 }
