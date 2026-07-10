@@ -33,6 +33,25 @@ const pub = resolve(root, 'public');
 
 // ── inline the real fonts so the card paints in the brand type ──────────────
 const b64 = (p) => readFileSync(p).toString('base64');
+// THE SHIP watermark · the /spec hero elevation, extracted from the SSG dist
+// (dist/spec/index.html · the same drawing the page ships — never hand-drawn).
+// Strata forced lit: the card shows the assembled contract.
+let SHIP_ART = '';
+try {
+  const specHtml = readFileSync(resolve(__dirname, '../dist/spec/index.html'), 'utf8');
+  const m = specHtml.match(/<svg[^>]*class="spec-schematic[^"]*"[\s\S]*?<\/svg>/);
+  if (m) {
+    SHIP_ART = `<div class="art">${m[0].replaceAll(
+      'class="sms-stratum"',
+      'class="sms-stratum" data-lit=""',
+    )}</div>`;
+  } else {
+    console.warn('og-spec: no elevation svg found in dist/spec/index.html — card ships without the ship');
+  }
+} catch {
+  console.warn('og-spec: dist/spec/index.html unreadable (build first) — card ships without the ship');
+}
+
 const grotesk = b64(resolve(pub, 'fonts/martian-grotesk-variable.woff2'));
 const mono = b64(resolve(pub, 'fonts/martian-mono-variable.woff2'));
 
@@ -61,6 +80,7 @@ const CARDS = [
     // /spec — the language reference. The contract a plan must satisfy.
     out: 'og-spec.png',
     fig: 'FIG S.0',
+    ship: true, // the vessel elevation watermark (extracted from the SSG dist)
     size: 62, // a longer headline · a touch smaller so 3 lines clear the brand row
     headline:
       'The contract an agent<br>must satisfy<br><span class="b">before it acts.</span>',
@@ -494,6 +514,19 @@ const cardHtml = (c) => `<!doctype html>
     display: flex; align-items: center; gap: 16px;
   }
   .stack .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--faint); display: inline-block; }
+  /* THE SHIP watermark · wireframe-lit elevation, fading in from the left so
+     the headline column stays clean (spec card only) */
+  .card { position: relative; z-index: 1; }
+  .art {
+    position: absolute; right: -70px; bottom: 26px; width: 780px; z-index: 0;
+    opacity: 0.46;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 320px);
+    mask-image: linear-gradient(to right, transparent 0, #000 320px);
+  }
+  .art svg { width: 100%; height: auto; display: block; }
+  .art [class^='sms'], .art [class*=' sms'] { stroke: #4f86ff; fill: none; }
+  .art .sms-port-tip { fill: #8db4ff; stroke: none; }
+  .art .sms-keel--req, .art .sms-tick--fetch { stroke-width: 1.7; }
 </style>
 </head>
 <body>
@@ -503,6 +536,7 @@ const cardHtml = (c) => `<!doctype html>
   <span class="tick tl"></span><span class="tick tr"></span>
   <span class="tick bl"></span><span class="tick br"></span>
 
+  ${c.ship ? SHIP_ART : ''}
   <div class="card">
     <div class="top">
       <div class="brand">

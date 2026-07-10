@@ -45,6 +45,8 @@ interface HelmState {
   /** user orbit offsets (radians) · decay to 0 when released */
   yaw: number
   pitch: number
+  /** release momentum (rad/frame@60) · coasts then hands off to the spring */
+  vel: number
   dragging: boolean
   /** wheel zoom multiplier on the pose distance · eased, clamped */
   zoom: number
@@ -54,6 +56,7 @@ interface HelmState {
 const helmDefaults = (): HelmState => ({
   yaw: 0,
   pitch: 0,
+  vel: 0,
   dragging: false,
   zoom: 1,
   explode: false,
@@ -160,7 +163,9 @@ function Machine({
           }
         }
         if (orbiting) {
-          helmRef.current.yaw += (e.movementX || 0) * 0.006
+          const dxm = (e.movementX || 0) * 0.006
+          helmRef.current.yaw += dxm
+          helmRef.current.vel = Math.max(-0.045, Math.min(0.045, dxm))
           helmRef.current.pitch = Math.max(
             -0.9,
             Math.min(0.9, helmRef.current.pitch + (e.movementY || 0) * 0.005),
@@ -171,7 +176,8 @@ function Machine({
       const i = pick(e)
       if (i === hiRef.current) return
       hiRef.current = i
-      el.style.cursor = i >= 0 ? 'pointer' : ''
+      /* the empty hull invites the hand — grab at rest, pointer on a node */
+      el.style.cursor = i >= 0 ? 'pointer' : 'grab'
       onHover(i >= 0 ? model.nodeIds[i] : null)
     }
     const onUp = (e: PointerEvent) => {
@@ -179,7 +185,7 @@ function Machine({
       downAt = null
       orbiting = false
       helmRef.current.dragging = false
-      el.style.cursor = hiRef.current >= 0 ? 'pointer' : ''
+      el.style.cursor = hiRef.current >= 0 ? 'pointer' : 'grab'
       if (wasOrbit) return /* an orbit is never a click */
       const i = pick(e)
       if (i < 0) return
@@ -192,7 +198,7 @@ function Machine({
     const onLeave = () => {
       if (hiRef.current < 0) return
       hiRef.current = -1
-      el.style.cursor = ''
+      el.style.cursor = 'grab'
       onHover(null)
     }
     const onWheel = (e: WheelEvent) => {
@@ -251,9 +257,15 @@ function Machine({
        the explode washes in/out like a stratum */
     const helm = helmRef.current
     if (!helm.dragging) {
+      /* the coast · release momentum carries the turn, braking into the
+         spring-return — the drag has weight now */
+      helm.yaw += helm.vel * delta * 60
+      helm.vel *= Math.exp(-delta * 3.2)
       const decay = Math.exp(-delta * 2.4)
       helm.yaw *= decay
       helm.pitch *= decay
+    } else {
+      helm.vel *= Math.exp(-delta * 8) /* a held-still pointer sheds momentum */
     }
     const exT = helm.explode ? 1 : 0
     u.uExplode.value += (exT - u.uExplode.value) * Math.min(1, delta * 2.6)
