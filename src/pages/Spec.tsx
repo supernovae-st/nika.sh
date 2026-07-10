@@ -161,10 +161,13 @@ export function Component() {
   const assembledMax = SPEC_SECTIONS.length - 1 /* license is the close whisper */
   const assembled = [...lit].filter((k) => k !== 'license').length
 
-  /* the machine's capability gate · the canvas mounts over the rail stage
-     only when the moment can be worth its cost */
+  /* the machine's capability gate · the HERO is the near-trigger (the stage
+     itself now sits a runway below the fold — gating on it would mount the
+     chassis late, mid-scroll, with a layout jump); the stage ref stays the
+     [data-machine] handshake target */
+  const heroRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
-  const machine = usePlan3D(stageRef)
+  const machine = usePlan3D(heroRef)
 
   /* THE HELM · the ship's view controls (explode toggle + spring-home) —
      real DOM buttons outside the aria-hidden stage, keyboard-reachable */
@@ -321,14 +324,14 @@ export function Component() {
   })
 
   return (
-    <main className="theme-dark spec-page">
+    <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`}>
       <section ref={ref} aria-labelledby="spec-title" className="v4sec">
         <div className="v4sec-wrap spec-wrap">
           {/* ── THE HERO · a poster: the title column and THE SHIP, nothing
               else. When the machine is live the fixed chassis carries the
               ship (52vw); the SSG elevation holds the same ground for the
               fallback register (mobile · reduced · no-WebGL). */}
-          <header className="spec-hero">
+          <header className="spec-hero" ref={heroRef}>
             <div className="spec-hero-copy">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
