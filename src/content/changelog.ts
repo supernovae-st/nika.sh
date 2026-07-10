@@ -48,6 +48,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-07-10',
     tag: 'site',
+    title: 'nika.sh v4.10 · one plan language',
+    body: 'The film taught the grammar; now every plan on the site speaks it. A shared PlanMap carries the film’s flat map verbatim — the slab card with its verb-hued inset, the wave captions in the film’s own words, the hairline chevron on every wire — and /use-cases, the home gallery and /play’s live plan all draw the same object the film flattens into. Plans that outgrow their column scroll inside their own well, keyboard included, on every surface. The journal earns its register filter: deep-linkable, counts derived from the posts themselves, issue numbers absolute under any view. Two engine-truth posts land from live proof sessions: kill -9 a run and resume it (finished work never runs twice), and the approval gate as a task — fails closed headless, the human’s answer rides the resume, a refusal is a run that worked. And a long-lived ghost dies on the way out: the hero’s background field could lose its GL init for a whole session and composite blank — a watchdog now remounts it until the first frame paints, on the site and in the golden harness both.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.10.0',
+  },
+  {
+    date: '2026-07-10',
+    tag: 'site',
     title: 'nika.sh v4.9 · the spec ship',
     body: 'The spec machine becomes a vessel. The strata leave the disc and take stations along a spine, read bow to stern: the bridge (the plan), the reactor core (four verbs), one great habitat ring braced by four spokes (the permits boundary every outbound run crosses), the hold (the standard library in five family arcs), the antenna array (nine extract ports off fetch), the engine block (five local nozzles docked on the spine, ten cloud outboard, one mock dim) and the shield skirt (fourteen typed-error plates) — and the keel is the envelope itself, its ten keys the spine segments everything mounts on. The drum of liberation lends its heartbeat: a 2.4-second breath sails the hull bow to stern while the reading ignites each station in turn, one exact revolution from opening frame to lit close. The page becomes its engineering plate: the ship rides beside the title from the first paint, labelled by leader lines that carry real counts, over a protocol plate, an honest family microchart and a nine-chip index that tracks the reading. And it answers the hand now: drag to orbit (it springs home), wheel to zoom, one button to explode the drawing apart along the spine — the wires stretch, still connected.',
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.9.0',
