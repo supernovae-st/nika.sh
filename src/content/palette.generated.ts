@@ -99,6 +99,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "The one-task re-run",
+    "href": "/blog/the-one-task-rerun",
+    "hint": "Engine · 2026-07-10"
+  },
+  {
+    "kind": "post",
     "label": "Prompts are code now",
     "href": "/blog/prompts-are-code",
     "hint": "Language · 2026-07-08"

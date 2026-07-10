@@ -710,6 +710,326 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
+    "slug": "the-one-task-rerun",
+    "file": "2026-07-10-the-one-task-rerun.md",
+    "title": "The one-task re-run",
+    "tag": "Engine",
+    "date": "2026-07-10",
+    "description": "Regenerate one block without re-running the world: --task scopes a fresh run to a task and its upstream, --from re-rolls what the hashes cannot see.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every pipeline has this moment: one block is wrong. The page rendered from stale data, one summary came out weird, one artifact needs regenerating. And the tool gives you exactly one lever: run it all again. Every upstream API call re-billed, every finished artifact rewritten, ten minutes of pipeline for one second of fix."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Make solved this for C files in 1976. Nika gives the same move to AI pipelines, with two levers instead of one, because \"re-run one block\" is actually two different requests."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Here is a small build with a diamond in it: fetch feeds render feeds index, and an asset-packing branch that depends on none of them."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "site-build.nika.yaml",
+        "text": "nika: v1\nworkflow: site-build\ndescription: \"Fetch the data, render the page, index it - and pack assets on the side\"\n\npermits:\n  fs:\n    read: [\"./data.txt\", \"./page.txt\", \"./assets.txt\"]\n    write: [\"./data.txt\", \"./page.txt\", \"./index.txt\", \"./assets.gz\"]\n  exec: [\"date\", \"cat\", \"wc\", \"gzip\"]\n\ntasks:\n  - id: fetch_data\n    exec:\n      command: [\"date\", \"-u\", \"+data@%H:%M:%S\"]\n\n  - id: render_page\n    depends_on: [fetch_data]\n    exec:\n      command: [\"cat\", \"./data.txt\"]\n\n  - id: build_index\n    depends_on: [render_page]\n    exec:\n      command: [\"wc\", \"-c\", \"./page.txt\"]\n\n  # independent branch - no deps on the chain above\n  - id: compress_assets\n    exec:\n      command: [\"gzip\", \"-kf\", \"./assets.txt\"]\n\noutputs:\n  index: \"${{ tasks.build_index.output }}\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAZxABcBTAWgCMBXEXAEyUfKIGMMQAHUkNYLABEAMXKl2ACxilJ5GIwikIAGhgZywVhhlyY3CAHNyakFvIAPGGRiUYELfojsw9okXFEYA3fJKshJCRucgwAWzIiKCQYGGwomNj1cghGWABtIQA6AHpFZSzSC1IhNWycg2NC4tKYcoh3T2qSgF1E2JQuCgzy-Ihm2vLK8gGy3LNWC1G63IaPUiIswwAvITbYy3J2HvzyQfYlQZR2QZWeNaDlIjAE2LsQNLjxKQB9PvaYTe2P2PY0MLCDkemV2g0otEGAGo+gABACkAAkoHCALLIgDKF0S90eGnMGBeww+rBCWiILwEGWwz0kbyUEHWSS+0SSST+AKBPQOJTGeXpAza2OsjzoDEYLwmlmJ5FJjHJlJg6Tx2kJRnIjI2Fi2LNZMHZgK0PWOYJOvOGAqCsQAxNZzLLNKQYNQMA4pLYYMA0AoZV4fLJ5FIIGZ7NQ0HByEKHrB2dwNO4XnNPB9mT89f8DcChGduGCcINZo0FhakGhaKRuGXbrbJsIACQAb3rMgaNyyoqYEvMU1L5bLMAAvv2hEA"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Lever one: regenerate this block."
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "code",
+            "text": "--task"
+          },
+          {
+            "k": "text",
+            "text": " scopes a fresh run to one task and its transitive upstream — nothing else exists for this run:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika run site-build.nika.yaml --task render_page\n\n  🦋 nika · site-build · 2 tasks\n     permits ✓ declared boundary · default-deny\n\n  ✔  fetch_data   exec · date  5ms\n  ✔  render_page  exec · cat  3ms\n  ── 2/2 done · $0.00 · elapsed 0.0s ─────────────────────────────"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Read the header: "
+          },
+          {
+            "k": "strong",
+            "text": "2 tasks"
+          },
+          {
+            "k": "text",
+            "text": ". The full file declares four; the scoped plan re-derives to the ancestor sub-DAG — "
+          },
+          {
+            "k": "code",
+            "text": "fetch_data"
+          },
+          {
+            "k": "text",
+            "text": " because "
+          },
+          {
+            "k": "code",
+            "text": "render_page"
+          },
+          {
+            "k": "text",
+            "text": " needs it, and nothing more. "
+          },
+          {
+            "k": "code",
+            "text": "build_index"
+          },
+          {
+            "k": "text",
+            "text": " (downstream) never runs. "
+          },
+          {
+            "k": "code",
+            "text": "compress_assets"
+          },
+          {
+            "k": "text",
+            "text": " (the independent branch) never runs. The cost line re-derives for exactly what will run, and the workflow's "
+          },
+          {
+            "k": "code",
+            "text": "outputs:"
+          },
+          {
+            "k": "text",
+            "text": " are skipped — they may read tasks that are not part of this run, and the engine will not fabricate them."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Lever two: trust nothing from here on."
+          },
+          {
+            "k": "text",
+            "text": " Resume normally skips finished work by identity — "
+          },
+          {
+            "k": "link",
+            "text": "the task as written",
+            "href": "/blog/the-resume-story"
+          },
+          {
+            "k": "text",
+            "text": ". But some changes live outside the hashes: a rotated secret, external state that moved, an inference you want to re-roll. "
+          },
+          {
+            "k": "code",
+            "text": "--from"
+          },
+          {
+            "k": "text",
+            "text": " forces a task "
+          },
+          {
+            "k": "em",
+            "text": "and its transitive downstream"
+          },
+          {
+            "k": "text",
+            "text": " to re-run even on an identity match:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika run site-build.nika.yaml \\\n    --resume full.ndjson --from render_page\n\n  ↷  fetch_data       cache hit (resume)\n  ↷  compress_assets  cache hit (resume)\n  ✔  render_page      exec · cat  3ms\n  ✔  build_index      exec · wc  2ms\n  ── 4/4 done · $0.00 · elapsed 0.0s ─────────────────────────────\n\n  resumed · 2 skipped (cache hit) · 2 ran live"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The mirror image of lever one. Upstream stays cached ("
+          },
+          {
+            "k": "code",
+            "text": "↷"
+          },
+          {
+            "k": "text",
+            "text": ", by name, visibly), the forced task and everything that depends on it runs live. The independent branch stays cached too — "
+          },
+          {
+            "k": "code",
+            "text": "compress_assets"
+          },
+          {
+            "k": "text",
+            "text": " never depended on the render, so distrusting the render says nothing about it. The DAG is the blast radius of your doubt."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Note what "
+          },
+          {
+            "k": "code",
+            "text": "--from"
+          },
+          {
+            "k": "text",
+            "text": " requires: "
+          },
+          {
+            "k": "code",
+            "text": "--resume <trace>"
+          },
+          {
+            "k": "text",
+            "text": ". That is not ceremony — it is the same pairing law the "
+          },
+          {
+            "k": "link",
+            "text": "approval gate",
+            "href": "/blog/the-run-that-waits"
+          },
+          {
+            "k": "text",
+            "text": " rides. A re-roll is always "
+          },
+          {
+            "k": "em",
+            "text": "relative to a specific recorded run"
+          },
+          {
+            "k": "text",
+            "text": "; there is no such thing as \"re-run from here\" of nothing in particular. The trace names what \"here\" means."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "And the two levers are deliberately disjoint — the CLI refuses "
+          },
+          {
+            "k": "code",
+            "text": "--task"
+          },
+          {
+            "k": "text",
+            "text": " with "
+          },
+          {
+            "k": "code",
+            "text": "--resume"
+          },
+          {
+            "k": "text",
+            "text": ". They answer different questions at different moments. "
+          },
+          {
+            "k": "code",
+            "text": "--task"
+          },
+          {
+            "k": "text",
+            "text": " is "
+          },
+          {
+            "k": "em",
+            "text": "before"
+          },
+          {
+            "k": "text",
+            "text": ": build me this block, fresh, minimum footprint. "
+          },
+          {
+            "k": "code",
+            "text": "--from"
+          },
+          {
+            "k": "text",
+            "text": " is "
+          },
+          {
+            "k": "em",
+            "text": "after"
+          },
+          {
+            "k": "text",
+            "text": ": that recorded run is fine up to here, and from here I trust nothing. One is a scalpel for the plan, the other a scalpel for the past."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Both levers read the same file everyone reviewed. Nobody wrote a "
+          },
+          {
+            "k": "code",
+            "text": "--skip-steps 3,4,7"
+          },
+          {
+            "k": "text",
+            "text": " incantation in a runbook; nobody commented out half the pipeline to nurse one block through. The dependency graph you already declared "
+          },
+          {
+            "k": "em",
+            "text": "is"
+          },
+          {
+            "k": "text",
+            "text": " the re-run logic — which is the quiet payoff of intent as code: you stop maintaining two descriptions of the same pipeline, one for the tool and one for the emergencies."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "prompts-are-code",
     "file": "2026-07-08-prompts-are-code.md",
     "title": "Prompts are code now",

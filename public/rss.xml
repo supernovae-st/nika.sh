@@ -23,6 +23,14 @@
       <description>kill -9 a run mid-flight, then resume it: finished work never runs twice. Durability as a file property, shown from the real journal.</description>
     </item>
     <item>
+      <title>The one-task re-run</title>
+      <link>https://nika.sh/blog/the-one-task-rerun</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-one-task-rerun</guid>
+      <pubDate>Fri, 10 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>Regenerate one block without re-running the world: --task scopes a fresh run to a task and its upstream, --from re-rolls what the hashes cannot see.</description>
+    </item>
+    <item>
       <title>Prompts are code now</title>
       <link>https://nika.sh/blog/prompts-are-code</link>
       <guid isPermaLink="true">https://nika.sh/blog/prompts-are-code</guid>

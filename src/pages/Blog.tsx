@@ -26,11 +26,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-one-task-rerun',
+    slug: 'the-local-forecast',
     tag: 'Engine',
     date: 'soon',
-    title: 'The one-task re-run',
-    teaser: 'Regenerate one block without re-running the world: --task scopes execution to a task and its upstream, --from re-rolls what the hashes cannot see.',
+    title: 'The forecast is local',
+    teaser: 'explain --forecast computes duration, cost and risk priors from your own traces: stats over .nika/traces/, earned at n >= 5, never a model call, never the network.',
   },
   {
     slug: 'written-by-agents',
