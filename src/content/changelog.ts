@@ -47,6 +47,13 @@ export interface ChangelogEntry {
 export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-07-10',
+    tag: 'site',
+    title: 'nika.sh v4.8 · the spec machine',
+    body: 'The language reference becomes an instrument you read with. /spec splits into a measured ledger and a sticky rail where the whole language stands as one concentric machine: the four-verb core, the plan ring, the gate collar, the tool belt, the fetch manifold, the provider halo, the containment shell — every block derived from the spec canon, spoken in the site’s wire-blue ink. The reading assembles it: each section you cross ignites its stratum, the TOC ticks fill, and the HUD keeps the tally until the whole contract stands lit, one full revolution later. Every node answers the pointer — hover reads it out, click lands on its row — and every chip, stamp cell and TOC pill lights its block back. Phones, reduced motion and no-WebGL keep a designed 2D floor plan of the same machine, lit by the same reading. The optional envelope keys and task controls fold behind native disclosures, and a counted drift dies: chart and image_fx take their real families, the family count derives forever.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.8.0',
+  },
+  {
+    date: '2026-07-10',
     tag: 'release',
     title: 'v0.99.0 · the audit tells the whole truth, the run narrates its own',
     body: 'The check ladder earns its MODELS rung: every model: must resolve in THIS binary — a bare id or an undriveable provider is a finding with the fix taught in-line, pricing refuses to conjure what it cannot resolve, and the MCP nika_check lane obeys the same law. Two media builtins graduate: nika:image_fx (15 deterministic op families over a hand-rolled PNG codec, recipe in the tEXt chunk) and nika:chart (five chart types compiled to byte-identical SVG, parity proven across architectures) — both zero-dep, both sha256-chained into the trace. Egress to outputs closes the one documented gap: the workflow boundary gets its own sink-only declassification valve, and every embedded template now passes its own audit. explain --forecast computes duration/cost/risk priors from YOUR local traces (p50/p90 earned at n ≥ 5, never a model call); wire covers opencode and hermes (8 targets); and the release tarball itself is funnel-gated — a stranger’s broken first run never uploads.',
