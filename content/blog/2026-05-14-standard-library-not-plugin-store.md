@@ -8,7 +8,7 @@ description: "25 builtins in the binary, allow-listed, nothing to install. The l
 
 A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead.
 
-**<!-- canon:builtins -->25<!-- /canon --> builtins ride the binary**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with `invoke:`, they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday.
+**<!-- canon:builtins -->27<!-- /canon --> builtins ride the binary**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with `invoke:`, they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday.
 
 **One builtin, <!-- canon:extractModes -->9<!-- /canon --> honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
 

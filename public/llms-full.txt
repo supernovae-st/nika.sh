@@ -788,7 +788,7 @@ outputs:
   brief: ${{ tasks.digest.output }}
 ```
 
-The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other 21 builtins. Everything callable is a tool. Everything about ordering is the graph.
+The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other 23 builtins. Everything callable is a tool. Everything about ordering is the graph.
 
 A closed language is a feature you can feel. You can finish learning it: four words and the file reads like prose. Your files never rot into an old dialect, because there is no new dialect coming. And tools keep growing where growth belongs, in the library: a new builtin, a new tool server (MCP), a new provider. The language holds still while the toolbelt expands.
 
@@ -864,7 +864,7 @@ date: 2026-05-14 · tag: Language
 
 A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead.
 
-**25 builtins ride the binary**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with `invoke:`, they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday.
+**27 builtins ride the binary**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with `invoke:`, they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday.
 
 **One builtin, 9 honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
 
