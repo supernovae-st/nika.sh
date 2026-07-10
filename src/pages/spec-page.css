@@ -2005,3 +2005,165 @@
     transition: none;
   }
 }
+
+/* ════ THE FLIGHT (v2.2) · hero poster → fullscreen 360 → dock ═══════════════
+   The hero is a poster: the title column and THE SHIP, nothing else. The
+   takeover runway then hands the whole viewport to the chassis for one
+   revolution + a dive, and the ship docks to the rail as S.0 arrives. */
+
+/* the hero poster · text column left, the ship's ground right */
+.spec-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 24px;
+}
+@media (min-width: 1024px) {
+  .spec-hero {
+    grid-template-columns: minmax(0, 42%) 1fr;
+    min-height: calc(100vh - 220px);
+  }
+}
+.spec-hero-eleva {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .spec-hero-eleva {
+    display: block;
+    padding: 0 2vw;
+  }
+  /* the live chassis covers this ground — the drawing stands down */
+  .spec-page.is-live .spec-hero-eleva {
+    visibility: hidden;
+  }
+}
+.spec-hero-cue {
+  margin-top: clamp(26px, 4vh, 44px);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  color: color-mix(in oklch, var(--sm-ink-lit) 70%, var(--v4-text-dim));
+}
+.spec-hero-cue-tick {
+  width: 26px;
+  height: 1px;
+  background: color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
+}
+.spec-hero-cue span[aria-hidden]:last-child {
+  animation: specCueBob 2.4s ease-in-out infinite;
+}
+@keyframes specCueBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spec-hero-cue span[aria-hidden]:last-child {
+    animation: none;
+  }
+}
+
+/* the takeover runway · scroll room for the revolution (live only) */
+.spec-takeover {
+  height: 175vh;
+}
+
+/* THE CHASSIS · the live rail leaves the flow and stages the viewport:
+   hero (beside the title) → full (the whole screen) → dock (the reading
+   rail) → off (the footer's turn). The grid keeps its phantom column. */
+@media (min-width: 1024px) {
+  .spec-rail.is-live {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    right: max(24px, calc((100vw - 96rem) / 2 + 24px));
+    width: min(46vw, 700px);
+    z-index: 5;
+    pointer-events: none;
+    transition: width 0.7s var(--ease-ui, ease), right 0.7s var(--ease-ui, ease), opacity 0.5s ease;
+  }
+  .spec-rail.is-live .spec-rail-stage {
+    position: static;
+    height: 100%;
+  }
+  .spec-rail.is-live .smw,
+  .spec-rail.is-live .spec-helm {
+    pointer-events: auto;
+  }
+  /* the instruments clear the fixed nav + the viewport floor */
+  .spec-rail.is-live .spec-rail-pos {
+    top: 96px;
+  }
+  .spec-rail.is-live .spec-rail-hud--tl,
+  .spec-rail.is-live .spec-rail-hud--tr {
+    top: 96px;
+  }
+  .spec-rail.is-live .spec-rail-hud--bl,
+  .spec-rail.is-live .spec-rail-hud--br {
+    bottom: 26px;
+  }
+  .spec-rail.is-live .spec-rail-gauge {
+    bottom: 27px;
+  }
+  .spec-rail.is-live .spec-helm {
+    bottom: 22px;
+  }
+  .spec-rail.is-live[data-stage='hero'] {
+    width: min(54vw, 980px);
+    right: 2vw;
+  }
+  .spec-rail.is-live[data-stage='full'] {
+    width: 100vw;
+    right: 0;
+    /* the fullscreen turn rides above the reading chrome (chips z-6),
+       below the site nav */
+    z-index: 30;
+  }
+  .spec-rail.is-live[data-stage='off'] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .spec-rail.is-live[data-stage='off'] .smw,
+  .spec-rail.is-live[data-stage='off'] .spec-helm {
+    pointer-events: none;
+  }
+}
+
+/* the cursor tooltip · the node under the pointer, spoken in full */
+.spec-tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--sm-fill) 94%, transparent);
+  pointer-events: none;
+  will-change: transform;
+}
+.spec-tip b {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--v4-text);
+}
+.spec-tip span {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: color-mix(in oklch, var(--sm-ink-struck) 80%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+.spec-tip i {
+  margin-top: 2px;
+  padding-top: 4px;
+  border-top: 1px solid var(--v4-line);
+  font-style: normal;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  color: var(--v4-text-dim);
+}

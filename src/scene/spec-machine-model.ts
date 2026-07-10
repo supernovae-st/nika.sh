@@ -556,7 +556,7 @@ function buildPoses(): Record<StratumKey, MachinePose> {
   const f = (k: StratumKey): number => stratumIndex(k)
   /* the beauty shot · the WHOLE vessel, bow to stern, with air for the
      callout labels (the canvas is portrait — length is the constraint) */
-  const FRAME: MachinePose = { yaw: 1.12, pitch: 0.2, dist: 6.7, y: -0.02, x: -0.13, focus: -1 }
+  const FRAME: MachinePose = { yaw: 1.12, pitch: 0.2, dist: 6.9, y: -0.02, x: -0.26, focus: -1 }
   return {
     frame: FRAME,
     verbs: { yaw: 1.38, pitch: 0.24, dist: 2.5, y: 0.02, x: X_CORE, focus: f('verbs') },
