@@ -342,14 +342,41 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
      whenever it applies it — poll the position, re-drag per attempt) */
   let last = null
   for (let attempt = 0; attempt < 3; attempt++) {
+    /* RE-ANCHOR per attempt: the drag's own handler re-reads the track
+       rect (trackFrac) — under a content-visibility re-layout that rect
+       can be degenerate for a beat and seek(NaN) is a silent no-op (the
+       {p:1} CI finding: three drags, zero motion). Park the scroll on the
+       done frame, then WAIT until the track rect is real before
+       dispatching; carry the rect in the diagnostics. */
+    await evaluate(`(() => { const s = document.querySelector('.morphsec'); const r = s.getBoundingClientRect(); window.scrollTo(0, r.top + scrollY + (r.height - innerHeight)) })()`)
+    const rect = await until(
+      () =>
+        evaluate(`(() => {
+          const tr = document.querySelector('.morph-track')?.getBoundingClientRect()
+          return (tr && tr.width > 50 && Number.isFinite(tr.left)) || { w: tr?.width ?? null }
+        })()`),
+      6,
+      400,
+    )
+    if (rect !== true) {
+      last = { attempt, trackRect: rect }
+      continue
+    }
+    /* down and move on SEPARATE ticks (separate evaluates) — the same-tick
+       triple worked locally but a starved runner can land the move before
+       the down's state settles */
     await evaluate(`(() => {
       const track = document.querySelector('.morph-track')
-      if (!track) return
       const tr = track.getBoundingClientRect()
-      const base = { clientY: tr.top + tr.height / 2, bubbles: true, pointerId: 7, isPrimary: true, pointerType: 'mouse', button: 0, buttons: 1 }
-      track.dispatchEvent(new PointerEvent('pointerdown', { ...base, clientX: tr.left + tr.width * 0.98 }))
-      track.dispatchEvent(new PointerEvent('pointermove', { ...base, clientX: tr.left + tr.width * 0.3 }))
-      track.dispatchEvent(new PointerEvent('pointerup', { ...base, clientX: tr.left + tr.width * 0.3, buttons: 0 }))
+      window.__e2eBase = { clientY: tr.top + tr.height / 2, bubbles: true, pointerId: 7, isPrimary: true, pointerType: 'mouse', button: 0, buttons: 1 }
+      track.dispatchEvent(new PointerEvent('pointerdown', { ...window.__e2eBase, clientX: tr.left + tr.width * 0.98 }))
+    })()`)
+    await sleep(80)
+    await evaluate(`(() => {
+      const track = document.querySelector('.morph-track')
+      const tr = track.getBoundingClientRect()
+      track.dispatchEvent(new PointerEvent('pointermove', { ...window.__e2eBase, clientX: tr.left + tr.width * 0.3 }))
+      track.dispatchEvent(new PointerEvent('pointerup', { ...window.__e2eBase, clientX: tr.left + tr.width * 0.3, buttons: 0 }))
     })()`)
     last = await until(
       () =>
