@@ -35,6 +35,31 @@ auto-deploys on push to `main` (DigitalOcean App Platform, `.do/app.yaml`).
 6. Commit trailer: `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`
    (never Claude).
 
+## The plan language (one grammar, site-wide)
+
+The home film teaches the site's ONE visual grammar for « a plan »; every
+static surface that draws one speaks it (arc 11):
+
+- **`PlanMap`** (`src/components/PlanMap.tsx` + `plan-map.css` `pm-*`) is
+  the shared component — /use-cases cards and the home teaser render it.
+  Its anatomy values are copied verbatim from the film's flat map
+  (`morph.css` .morph-node / .morph-wave-cap): if the film's register
+  evolves, plan-map.css follows in the same PR.
+- **Captions**: `[ NN ]` + `start` (wave 0 solo) / `then` /
+  `run together ×N` — never « parallel ».
+- **Wires** end in a hairline chevron arrowhead (SVG `<marker
+  orient=auto>`); the marker path carries its OWN class — `<defs>` content
+  is matched by the parent svg's blanket path rules, the class is the
+  exemption.
+- **The well law**: any plan that can overflow scrolls INSIDE its own
+  well (`overflow-x: auto`, thin scrollbar, keyboard tab stop via
+  `useScrollWellTab`, `:focus-visible` ring). A grid ancestor needs
+  `min-width: 0` on the well's column or the track blows to max-content
+  and an outer ancestor clips instead (invisible on screenshots — verify
+  with a clientWidth/scrollWidth chain over the parents).
+- **Exempt**: the hero `MiniDag` (survey register — dots + mono ids; the
+  other SCALE of the same vocabulary) and the film itself (the source).
+
 ## Scene rules (src/scene/)
 
 - ONE clock: the intro film (canvas + DOM titles) is driven from the R3F
@@ -62,7 +87,13 @@ said otherwise). Each script documents its flags in its own header.
   per-OS under `tests/visual/golden/`; CI gate). `--update` re-bakes;
   `--update --only <frame>` scopes the WRITE (every frame still shoots,
   in order — the sequential warm-up is part of the measurement);
-  `--port <n>` when a concurrent session holds the defaults.
+  `--port <n>` when a concurrent session holds the defaults. Two gates
+  guard the shot state: fonts must be APPLIED (width-probed against a
+  foreign fallback — `fonts.status === 'loaded'` alone lies for
+  `font-display: optional`) and the home dither canvas must have PAINTED
+  (`data-painted`, stamped by its first processed frame; the r3f GL init
+  can fail for a whole session — DitherField's own watchdog remounts the
+  Canvas until it paints).
 - `shoot-routes.mjs` — the design-iteration eye: any route × viewport ×
   aurora state, `--scroll-to`, `--reduced`.
 - `shoot-scroll.mjs` — the scroll-linked sweep (above).
