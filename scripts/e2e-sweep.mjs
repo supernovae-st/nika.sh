@@ -264,6 +264,20 @@ const check = async (name, fn) => {
     fail('battery', name, String(e).slice(0, 160))
   }
 }
+/* THE BELT'S LAW, as a helper: on a slow environment every one-shot read
+   races a React commit — poll the assertion until it holds (returns true)
+   or the budget runs out (returns the LAST observation, which becomes the
+   finding's diagnostics). Rounds 1-5 on the CI runner each converted one
+   more fixed-sleep single-read into this shape; new checks start here. */
+const until = async (fn, tries = 12, gap = 400) => {
+  let last = null
+  for (let i = 0; i < tries; i++) {
+    last = await fn()
+    if (last === true) return true
+    await sleep(gap)
+  }
+  return last
+}
 
 /* 3a · the film's done frame: triangle + drag-seek + handoff */
 await send('Page.navigate', { url: `${BASE}/?it=99` })
@@ -281,25 +295,38 @@ await check('film · done frame reached (phase=done)', async () => {
   return last
 })
 await check('film · log hover lights node + file lines (the triangle)', async () => {
-  const r = await evaluate(`(() => {
-    const line = [...document.querySelectorAll('.morph-line[data-task]')].pop()
-    if (!line) return { err: 'no task line' }
-    line.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }))
-    return new Promise((res) => setTimeout(() => {
-      const id = line.dataset.task
-      res({
-        nodeHi: !!document.querySelector('.morph-node[data-task="' + id + '"][data-hi]'),
-        fileLit: document.querySelectorAll('.morph-done-code .cf-line.morph-hi').length > 0,
-      })
-    }, 350))
-  })()`)
+  /* re-dispatch per attempt (the hover handler itself can land late), then
+     poll the lit state — two commits (node + file) may land a beat apart */
+  let last = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await evaluate(`[...document.querySelectorAll('.morph-line[data-task]')].pop()?.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }))`)
+    last = await until(
+      () =>
+        evaluate(`(() => {
+          const line = [...document.querySelectorAll('.morph-line[data-task]')].pop()
+          if (!line) return { err: 'no task line' }
+          const id = line.dataset.task
+          const nodeHi = !!document.querySelector('.morph-node[data-task="' + id + '"][data-hi]')
+          const fileLit = document.querySelectorAll('.morph-done-code .cf-line.morph-hi').length > 0
+          return (nodeHi && fileLit) || { nodeHi, fileLit }
+        })()`),
+      6,
+      350,
+    )
+    if (last === true) break
+  }
   await evaluate(`[...document.querySelectorAll('.morph-line[data-task]')].pop()?.dispatchEvent(new PointerEvent('pointerout', { bubbles: true }))`)
-  return r.nodeHi === true && r.fileLit === true
+  return last
 })
-await check('film · playground handoff href carries the file', async () => {
-  const href = await evaluate(`document.querySelector('.morph-done-open')?.getAttribute('href') ?? ''`)
-  return href.startsWith('/play?y=') && href.length > 200
-})
+await check('film · playground handoff href carries the file', async () =>
+  until(
+    () =>
+      evaluate(
+        `(() => { const h = document.querySelector('.morph-done-open')?.getAttribute('href') ?? ''; return (h.startsWith('/play?y=') && h.length > 200) || h.slice(0, 60) })()`,
+      ),
+    10,
+    400,
+  ))
 await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
   /* isPrimary: true — the constructor default is false and React/our slop
      logic must see a primary pointer; the drag path calls seek() → scrollTo
@@ -309,33 +336,35 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
      attached during hydration and a starved runner can miss the first
      attempt entirely (dy:0 — flipped between two CI runs); a real break
      fails all three. */
-  let r
+  /* the assertion is the POSITION, not the delta: the film sits at p≈1
+     when this check starts, so p∈[0.2,0.4] can ONLY result from the seek
+     landing where the pointer pointed (a slow runner applies the scroll
+     whenever it applies it — poll the position, re-drag per attempt) */
+  let last = null
   for (let attempt = 0; attempt < 3; attempt++) {
-    r = await evaluate(`(() => {
+    await evaluate(`(() => {
       const track = document.querySelector('.morph-track')
+      if (!track) return
       const tr = track.getBoundingClientRect()
-      const y0 = window.scrollY
       const base = { clientY: tr.top + tr.height / 2, bubbles: true, pointerId: 7, isPrimary: true, pointerType: 'mouse', button: 0, buttons: 1 }
       track.dispatchEvent(new PointerEvent('pointerdown', { ...base, clientX: tr.left + tr.width * 0.98 }))
       track.dispatchEvent(new PointerEvent('pointermove', { ...base, clientX: tr.left + tr.width * 0.3 }))
       track.dispatchEvent(new PointerEvent('pointerup', { ...base, clientX: tr.left + tr.width * 0.3, buttons: 0 }))
-      return new Promise((res) => setTimeout(() => {
-        const s = document.querySelector('.morphsec')
-        const r2 = s.getBoundingClientRect()
-        const runway = r2.height - document.querySelector('.morph-stage').offsetHeight
-        const p = -r2.top / runway
-        res({ moved: Math.abs(window.scrollY - y0) > 100, p: +p.toFixed(3), dy: Math.round(window.scrollY - y0) })
-      }, 500))
     })()`)
-    /* the assertion is the POSITION, not the delta: the film sits at p≈1
-       when this check starts, so p∈[0.2,0.4] can ONLY result from the seek
-       landing where the pointer pointed. (`moved` was the old criterion —
-       a slow runner can apply the scroll AFTER the 500ms read, so the next
-       attempt drags to a position it is already at: dy 0, p 0.3, correct.) */
-    if (r.p > 0.2 && r.p < 0.4) return true
-    await sleep(1500)
+    last = await until(
+      () =>
+        evaluate(`(() => {
+          const s = document.querySelector('.morphsec')
+          const runway = s.getBoundingClientRect().height - document.querySelector('.morph-stage').offsetHeight
+          const p = -s.getBoundingClientRect().top / runway
+          return (p > 0.2 && p < 0.4) || { p: +p.toFixed(3) }
+        })()`),
+      6,
+      500,
+    )
+    if (last === true) return true
   }
-  return r
+  return last
 })
 
 /* 3b · the ?y= share round-trip · 3a proved ENCODE (the handoff href);
@@ -361,43 +390,66 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
    own count (no hardcoded totals — the belt survives every future post). */
 await send('Page.navigate', { url: `${BASE}/blog?tag=Engine` })
 await settle()
-await check('blog · ?tag= deep-link filters the shelf to the chip count', async () => {
-  return await evaluate(`(() => {
-    const pressed = document.querySelector('.blog-tag[aria-pressed="true"]')
-    if (!pressed || !pressed.textContent.startsWith('Engine')) return 'chip not pressed'
-    const want = Number(pressed.querySelector('.blog-tag-n')?.textContent)
-    const cards = document.querySelectorAll('.blog-card').length
-    const lead = !!document.querySelector('.blog-lead')
-    return cards === want && !lead ? true : JSON.stringify({ want, cards, lead })
-  })()`)
-})
+await check('blog · ?tag= deep-link filters the shelf to the chip count', async () =>
+  until(
+    () =>
+      evaluate(`(() => {
+        const pressed = document.querySelector('.blog-tag[aria-pressed="true"]')
+        if (!pressed || !pressed.textContent.startsWith('Engine')) return 'chip not pressed'
+        const want = Number(pressed.querySelector('.blog-tag-n')?.textContent)
+        const cards = document.querySelectorAll('.blog-card').length
+        const lead = !!document.querySelector('.blog-lead')
+        return (cards === want && !lead) || JSON.stringify({ want, cards, lead })
+      })()`),
+    10,
+    400,
+  ))
 await check('blog · All restores the lead + the whole shelf', async () => {
-  await evaluate(
-    `[...document.querySelectorAll('.blog-tag')].find((b) => b.textContent.startsWith('All'))?.click()`,
-  )
-  await sleep(400)
-  return await evaluate(`(() => {
-    const all = Number(document.querySelector('.blog-tag .blog-tag-n')?.textContent)
-    const cards = document.querySelectorAll('.blog-card').length
-    const lead = !!document.querySelector('.blog-lead')
-    return lead && cards === all - 1 && location.search === ''
-      ? true
-      : JSON.stringify({ all, cards, lead, search: location.search })
-  })()`)
+  /* re-click per attempt — a click dispatched before the listener hydrates
+     is swallowed whole (idempotent: All is already All) */
+  let last = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await evaluate(
+      `[...document.querySelectorAll('.blog-tag')].find((b) => b.textContent.startsWith('All'))?.click()`,
+    )
+    last = await until(
+      () =>
+        evaluate(`(() => {
+          const all = Number(document.querySelector('.blog-tag .blog-tag-n')?.textContent)
+          const cards = document.querySelectorAll('.blog-card').length
+          const lead = !!document.querySelector('.blog-lead')
+          return (lead && cards === all - 1 && location.search === '') ||
+            JSON.stringify({ all, cards, lead, search: location.search })
+        })()`),
+      6,
+      400,
+    )
+    if (last === true) break
+  }
+  return last
 })
 
-/* 3c · the eggs (global key listeners — synthetic keydown works) */
+/* 3c · the eggs (global key listeners — synthetic keydown works; re-type the
+   word per attempt — keys swallowed pre-hydration never assemble the egg) */
 await check('egg · agpl toast (any page)', async () => {
-  await evaluate(`for (const k of 'agpl') window.dispatchEvent(new KeyboardEvent('keydown', { key: k }))`)
-  await sleep(300)
-  return await evaluate(`!!document.querySelector('.agpl-toast[data-on]')`)
+  let last = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await evaluate(`for (const k of 'agpl') window.dispatchEvent(new KeyboardEvent('keydown', { key: k }))`)
+    last = await until(() => evaluate(`!!document.querySelector('.agpl-toast[data-on]') || false`), 5, 300)
+    if (last === true) break
+  }
+  return last
 })
 await send('Page.navigate', { url: `${BASE}/manifesto` })
 await settle()
 await check('egg · drum (manifesto)', async () => {
-  await evaluate(`for (const k of 'drum') window.dispatchEvent(new KeyboardEvent('keydown', { key: k }))`)
-  await sleep(300)
-  return await evaluate(`!!document.querySelector('[data-egg]')`)
+  let last = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await evaluate(`for (const k of 'drum') window.dispatchEvent(new KeyboardEvent('keydown', { key: k }))`)
+    last = await until(() => evaluate(`!!document.querySelector('[data-egg]') || false`), 5, 300)
+    if (last === true) break
+  }
+  return last
 })
 
 /* ── verdict ───────────────────────────────────────────────────────────────── */
