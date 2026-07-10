@@ -175,6 +175,13 @@
   gap: 14px;
   align-items: start;
 }
+/* grid items must never blow the track to max-content (min-width:auto): at
+   phone width the aside grew to the plan's full content width and an
+   ancestor CLIPPED the tail — constrained, the pm-flow well overflows
+   inside itself and scrolls (+ its keyboard tab stop), the well law */
+.ucp-wf-body > * {
+  min-width: 0;
+}
 @media (min-width: 1024px) {
   .ucp-wf-body {
     grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
