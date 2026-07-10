@@ -142,6 +142,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/the-run-that-waits — the approval gate is a task; the answer rides the resume.
+    out: 'og-blog-the-run-that-waits.png',
+    fig: 'FIG B.15',
+    size: 60,
+    headline: 'The run that<br><span class="b">waits for you.</span>',
+    sub: 'The approval gate is a task in the file: headless it fails closed with the question on record — the human&rsquo;s answer rides the resume.',
+    detail:
+      '<span class="arrow">▸</span><span>fails&nbsp;closed<span class="sep">·</span>--answer&nbsp;rides&nbsp;--resume<span class="sep">·</span><b>a&nbsp;no&nbsp;is&nbsp;not&nbsp;a&nbsp;failure</b></span>',
+  },
+  {
     // /blog/the-resume-story — kill -9 survived by the journal; resume skips done work.
     out: 'og-blog-the-resume-story.png',
     fig: 'FIG B.14',

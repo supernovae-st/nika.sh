@@ -25,11 +25,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-run-that-waits',
+    slug: 'the-one-task-rerun',
     tag: 'Engine',
     date: 'soon',
-    title: 'The run that waits for you',
-    teaser: 'A plan pauses on nika:prompt, a human answers, the run resumes with --answer. The approval gate is a task in the file, not a Slack thread.',
+    title: 'The one-task re-run',
+    teaser: 'Regenerate one block without re-running the world: --task scopes execution to a task and its upstream, --force re-rolls what the hashes cannot see.',
   },
   {
     slug: 'written-by-agents',
