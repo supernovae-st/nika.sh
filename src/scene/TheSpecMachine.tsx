@@ -369,11 +369,13 @@ function Machine({
         const py = ((1 - v.y) / 2) * rect.height
         if (full) {
           const far = v.z > centreZ + 0.0004
-          const dOp = (it.o ?? 0) * (far ? 0.28 : 1)
-          const dops = dOp.toFixed(3)
-          it.label.style.opacity = dops
-          it.line.style.opacity = dops
-          it.dot.style.opacity = dops
+          const base = it.o ?? 0
+          /* the depth cue fades the LEADER (line + dot); the label itself
+             floors at readable — a plate slot must never go illegible */
+          const dLine = (base * (far ? 0.28 : 1)).toFixed(3)
+          it.label.style.opacity = (base * (far ? 0.62 : 1)).toFixed(3)
+          it.line.style.opacity = dLine
+          it.dot.style.opacity = dLine
         }
         const left = it.label.dataset.side === 'l'
         /* the labels hold their PLATE SLOTS (left/right columns) — the
