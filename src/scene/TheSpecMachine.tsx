@@ -307,6 +307,19 @@ function Machine({
     if (st === 'hero' || st === 'finale') {
       spin.current += delta * (st === 'finale' ? 0.17 : 0.11)
       if (st === 'finale') tDist = Math.min(tDist, 5.6) /* the flyover fills */
+      if (st === 'hero') {
+        /* THE FULL-BLEED POSTER (operator pass 2026-07-11) · the ground is
+           the whole viewport, so the hero framing overrides the reading's
+           beauty shot: closer (bigger vessel). The rightward carry rides
+           g.position.x below — SCREEN space; pose.x/lookX would travel the
+           SPINE (the inner group lives in the rotating frame). The
+           APPROACH is scroll-steered — progress adds most of a quarter-
+           turn and a gentle closing dive, so the first scroll visibly
+           turns the ship before the dock takes the wheel. */
+        const p = flight?.progress ?? 0
+        tDist = 6.1 - p * 0.55
+        tYaw += p * 1.2
+      }
     } else {
       const settle = Math.round(spin.current / (Math.PI * 2)) * Math.PI * 2
       spin.current += (settle - spin.current) * Math.min(1, delta * 2.2)
@@ -324,6 +337,10 @@ function Machine({
     g.rotation.y += (tYaw + helm.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
     g.rotation.x += (tPitch + helm.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k
+    /* the poster's rightward carry (SCREEN x — the outer group never turns):
+       the full-bleed hero parks the vessel right of the copy column; every
+       other stage centres the ground it owns */
+    g.position.x += ((st === 'hero' ? 1.35 : 0) - g.position.x) * k
     const exOff = pose.focus >= 0 ? model.explode[pose.focus] * u.uExplode.value : 0
     inn.position.x += (-(lookX + exOff) - inn.position.x) * k
     state.camera.position.z += (tDist * helm.zoom - state.camera.position.z) * k

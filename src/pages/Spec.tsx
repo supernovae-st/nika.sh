@@ -214,6 +214,9 @@ export function Component() {
         s = next
       }
       flightRef.current.state = s
+      /* the approach · at the poster the scroll steers the turn (the frame
+         loop reads progress: most of a quarter-turn + a closing dive) */
+      if (s === 'hero') flightRef.current.progress = Math.min(1, Math.max(0, window.scrollY / (vh * 0.9)))
       setStage((prev) => (prev === s ? prev : s))
     }
     const on = () => {
@@ -384,7 +387,20 @@ export function Component() {
             <span>SCROLL·····READ TO ASSEMBLE</span>
             <span aria-hidden>▾</span>
           </a>
+          {/* the descent · the cue's line keeps going: a hairline runs from
+              under the cue toward S.0 (the reading it announces) — the
+              poster is CONNECTED to the section that follows, not adrift */}
+          <span className="spec-hero-descent" aria-hidden />
             </div>
+            {/* the leader lines · the copy labels the vessel (the full-bleed
+                poster only — the fallback keeps its clean two columns):
+                three hairlines run from the column's edge toward the hull,
+                each landing on a dot (the drawing vocabulary) */}
+            <span className="spec-hero-leads" aria-hidden>
+              <i />
+              <i />
+              <i />
+            </span>
             {/* the fallback poster · the same vessel, drawn (SSG · goldens'
                 truth); the live chassis covers this ground when it mounts */}
             <div className="spec-hero-eleva" aria-hidden>
