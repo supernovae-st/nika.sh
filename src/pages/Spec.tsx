@@ -381,12 +381,17 @@ export function Component() {
           </p>
           {/* the invitation · what the scroll will do (the takeover reads
               as intent, not accident) */}
-          <p className="spec-hero-cue mono" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
+          <a
+            className="spec-hero-cue mono"
+            href="#s0"
+            data-rise
+            style={{ ['--rise-delay' as string]: '180ms' }}
+          >
             <span className="spec-hero-cue-tick" aria-hidden />
             <span className="spec-hero-cue-desk">SCROLL·····BOARD THE SHIP</span>
             <span className="spec-hero-cue-mob">SCROLL·····READ TO ASSEMBLE</span>
             <span aria-hidden>▾</span>
-          </p>
+          </a>
             </div>
             {/* the fallback poster · the same vessel, drawn (SSG · goldens'
                 truth); the live chassis covers this ground when it mounts */}
@@ -1001,7 +1006,10 @@ export function Component() {
                 <SpecSchematic lit={lit} current={current} />
                 {/* THE POSITION PLATE · where you are, said loud: the section
                     fig + its ship station + the derived count */}
-                <div className="spec-rail-pos">
+                <div
+                  className="spec-rail-pos"
+                  key={stage === 'full' ? 'boarding' : (current ?? 'ship')}
+                >
                   <span className="spec-rail-pos-fig mono">
                     {stage === 'full' ? '▸ BOARDING' : cur ? `▸ ${cur.fig}` : '▸ THE SHIP'}
                   </span>
