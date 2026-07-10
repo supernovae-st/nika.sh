@@ -1,0 +1,130 @@
+/* ─── command-k · the palette (arc 13 W2) ─────────────────────────────────────
+   Blueprint register: near-black slab, hairlines, mono voice, verb-adjacent
+   kind glyphs. The scrim is the page dimmed — never a blur transition (the
+   fluid-glass law: no backdrop-filter transitions anywhere). */
+.ck-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: start center;
+  padding-top: clamp(60px, 16vh, 160px);
+  background: rgb(4 5 8 / 0.62);
+  overscroll-behavior: contain;
+}
+.ck {
+  width: min(640px, calc(100vw - 32px));
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background:
+    var(--v4-grain-img),
+    linear-gradient(180deg, color-mix(in oklch, var(--v4-bg-raised) 96%, transparent), var(--v4-bg));
+  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px), auto;
+  box-shadow:
+    inset 0 1px 0 rgb(180 205 255 / 0.08),
+    0 24px 80px -24px rgb(0 0 0 / 0.8);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ck {
+    animation: ck-in 0.16s var(--ease-ui, ease);
+  }
+}
+@keyframes ck-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.ck-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.ck-glyph {
+  color: var(--v4-accent);
+  font-size: 13px;
+}
+.ck-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--v4-text);
+  font-size: 15px;
+  outline: none;
+}
+.ck-input::placeholder {
+  color: var(--v4-text-faint);
+}
+.ck-esc {
+  padding: 2px 7px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius-sm);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+}
+
+.ck-list {
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: min(46vh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ck-opt {
+  display: grid;
+  grid-template-columns: 18px minmax(0, auto) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--v4-radius-sm);
+  cursor: pointer;
+}
+.ck-opt[aria-selected='true'] {
+  background: color-mix(in oklch, var(--v4-accent) 13%, transparent);
+  box-shadow: inset 2px 0 0 var(--v4-accent);
+}
+.ck-opt-glyph {
+  font-size: 11px;
+  color: var(--v4-text-faint);
+  text-align: center;
+}
+.ck-opt[data-kind='page'] .ck-opt-glyph {
+  color: var(--v4-accent);
+}
+.ck-opt[data-kind='error'] .ck-opt-glyph {
+  color: var(--verb-exec, #e6b873);
+}
+.ck-opt-label {
+  font-size: 13.5px;
+  color: var(--v4-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ck-opt-hint {
+  font-size: 10.5px;
+  letter-spacing: 0.03em;
+  color: var(--v4-text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ck-empty {
+  padding: 18px 12px;
+  font-size: 11.5px;
+  color: var(--v4-text-faint);
+}
+.ck-foot {
+  margin: 0;
+  padding: 8px 14px;
+  border-top: 1px solid var(--v4-line);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+}

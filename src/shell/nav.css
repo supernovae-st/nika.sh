@@ -811,3 +811,38 @@
 .v4mega-langs a:hover {
   color: var(--v4-text);
 }
+
+/* ck-trigger · the palette trigger (arc 13 W2) — discreet mono chip, hidden on phones (no hardware ⌘K
+   there; the surfaces stay reachable by nav) */
+.ck-trigger {
+  display: none;
+}
+@media (min-width: 760px) {
+  .ck-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    min-height: 24px;
+    border: 1px solid var(--v4-line);
+    border-radius: var(--v4-radius-sm);
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--v4-text-faint);
+    cursor: pointer;
+    transition:
+      color var(--dur-ui) var(--ease-ui),
+      border-color var(--dur-ui) var(--ease-ui);
+  }
+  .ck-trigger:hover,
+  .ck-trigger:focus-visible {
+    color: var(--v4-text);
+    border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  }
+  .ck-trigger:focus-visible {
+    outline: 2px solid var(--v4-focus-ring);
+    outline-offset: 2px;
+  }
+}

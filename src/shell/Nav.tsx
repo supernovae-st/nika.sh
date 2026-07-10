@@ -755,6 +755,16 @@ export default function Nav() {
 
           {/* right cluster */}
           <div className="v4nav-right">
+            {/* the palette trigger (arc 13 W2) · fires the shell's listener —
+                no prop drilling; hidden on phones (command-k.css) */}
+            <button
+              type="button"
+              className="ck-trigger"
+              aria-label="Search the site (Command K)"
+              onClick={() => window.dispatchEvent(new Event('ck:open'))}
+            >
+              <span aria-hidden>⌘</span>K
+            </button>
             <a
               href={REPO}
               target="_blank"
