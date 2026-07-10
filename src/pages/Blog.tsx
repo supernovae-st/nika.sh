@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -40,8 +41,41 @@ const SOON: { slug: string; tag: string; date: string; title: string; teaser: st
   },
 ]
 
+/* the tag registers · derived from the posts (a pipe-tagged post counts in
+   each of its registers) — counts never hand-typed */
+const TAGS = [...new Set(BLOG_POSTS.flatMap((p) => p.tag.split('|').map((t) => t.trim())))]
+const tagCount = (t: string) => BLOG_POSTS.filter((p) => p.tag.includes(t)).length
+
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
+
+  /* the register filter · URL-reflected (?tag=Engine — deep-linkable, share-
+     safe) without navigation; SSR prerenders the unfiltered archive (no
+     window server-side), so crawlers and no-JS readers always get the whole
+     shelf. Issue numbers are ABSOLUTE (a post keeps its number under any
+     filter — the numbering is the archive's, not the view's). */
+  const [tag, setTag] = useState<string>(() => {
+    if (typeof window === 'undefined') return 'all'
+    const t = new URLSearchParams(window.location.search).get('tag')
+    return t && TAGS.includes(t) ? t : 'all'
+  })
+  const pickTag = (t: string) => {
+    setTag(t)
+    const url = new URL(window.location.href)
+    if (t === 'all') url.searchParams.delete('tag')
+    else url.searchParams.set('tag', t)
+    window.history.replaceState(null, '', url)
+  }
+  const shown = useMemo(
+    () =>
+      BLOG_POSTS.map((p, i) => ({ ...p, issue: BLOG_POSTS.length - i })).filter(
+        (p) => tag === 'all' || p.tag.includes(tag),
+      ),
+    [tag],
+  )
+  /* the lead plate stays the ALL-view front page; a filtered view is the
+     archive drawer — every match as a card, real issue numbers */
+  const leadOn = tag === 'all'
 
   useHead({
     title: 'Blog · Nika',
@@ -107,12 +141,44 @@ export function Component() {
             {BLOG_POSTS.length} live · {SOON.length} upcoming
           </p>
 
+          {/* the register filter · plain toggles (aria-pressed), the /use-cases
+              métier-bar grammar — filtering the shelf isn't a tab/tabpanel
+              relationship */}
+          <div
+            className="blog-tags"
+            role="group"
+            aria-label="Filter posts by register"
+            data-rise
+            style={{ ['--rise-delay' as string]: '200ms' }}
+          >
+            <button
+              type="button"
+              className="blog-tag mono"
+              aria-pressed={tag === 'all'}
+              onClick={() => pickTag('all')}
+            >
+              All<span className="blog-tag-n">{BLOG_POSTS.length}</span>
+            </button>
+            {TAGS.map((t) => (
+              <button
+                key={t}
+                type="button"
+                className="blog-tag mono"
+                aria-pressed={tag === t}
+                onClick={() => pickTag(t)}
+              >
+                {t}
+                <span className="blog-tag-n">{tagCount(t)}</span>
+              </button>
+            ))}
+          </div>
+
           {/* ══ the lead · the latest entry as the issue front page ══════════
               Editorial hierarchy (the register every serious journal keeps):
               the newest post reads FIRST-class — full-width plate, its issue
               number as a giant watermark stamp — and the archive files below.
               Same Link semantics as a card; only the rendering is promoted. */}
-          {BLOG_POSTS.length > 0 && (
+          {leadOn && BLOG_POSTS.length > 0 && (
             <Link
               id={BLOG_POSTS[0].slug}
               to={`/blog/${BLOG_POSTS[0].slug}`}
@@ -141,10 +207,10 @@ export function Component() {
 
           {/* ══ the shelf · one card per archived post (content/blog) ════════ */}
           <div className="blog-shelf" data-rise>
-            {BLOG_POSTS.slice(1).map((p, i) => (
+            {(leadOn ? shown.slice(1) : shown).map((p) => (
               <Link key={p.slug} id={p.slug} to={`/blog/${p.slug}`} viewTransition className="blog-card">
                 <span className="blog-card-fig mono">
-                  {String(BLOG_POSTS.length - 1 - i).padStart(2, '0')} · {p.tag} ·{' '}
+                  {String(p.issue).padStart(2, '0')} · {p.tag} ·{' '}
                   <time dateTime={p.date}>{p.date}</time>
                 </span>
                 <span className="blog-card-title">{p.title}</span>
