@@ -366,10 +366,24 @@ export function Component() {
             The contract. Frozen forever.
           </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            A <code className="mono">.nika.yaml</code> is the plan, written down: one envelope,{' '}
-            <b>four verbs</b>, a typed task shape, and a <b>permits</b> block that declares,
-            and bounds, everything it&apos;s allowed to touch. You review it, the runtime
-            enforces it, then it runs. This is the friendly map; the{' '}
+            {/* the wired terms · each is a REAL link to its section AND the
+                live poster pins a leader line from the word to its ship
+                station (hover/focus makes that wire loud) — the prose
+                itself labels the vessel */}
+            A{' '}
+            <a className="spec-term" data-ship-term="frame" href="#s0">
+              <code className="mono">.nika.yaml</code>
+            </a>{' '}
+            is the plan, written down: one envelope,{' '}
+            <a className="spec-term" data-ship-term="verbs" href="#s1">
+              <b>four verbs</b>
+            </a>
+            , a typed task shape, and a{' '}
+            <a className="spec-term" data-ship-term="permits" href="#permits">
+              <b>permits</b>
+            </a>{' '}
+            block that declares, and bounds, everything it&apos;s allowed to touch. You review
+            it, the runtime enforces it, then it runs. This is the friendly map; the{' '}
             <a href={SPEC} target="_blank" rel="noreferrer" className="spec-inline-link">
               nika-spec repository
             </a>{' '}
@@ -392,15 +406,6 @@ export function Component() {
               poster is CONNECTED to the section that follows, not adrift */}
           <span className="spec-hero-descent" aria-hidden />
             </div>
-            {/* the leader lines · the copy labels the vessel (the full-bleed
-                poster only — the fallback keeps its clean two columns):
-                three hairlines run from the column's edge toward the hull,
-                each landing on a dot (the drawing vocabulary) */}
-            <span className="spec-hero-leads" aria-hidden>
-              <i />
-              <i />
-              <i />
-            </span>
             {/* the fallback poster · the same vessel, drawn (SSG · goldens'
                 truth); the live chassis covers this ground when it mounts */}
             <div className="spec-hero-eleva" aria-hidden>
@@ -1063,6 +1068,24 @@ export function Component() {
                   RESET
                 </button>
               </div>
+              {/* THE TRANSPORT · the spine gauge, made a helm: nine real
+                  links OUTSIDE the aria-hidden stage (the display gauge is
+                  its pointer-inert twin at the poster/finale) — click a
+                  tick, sail to that station's section. ≥24px hits. */}
+              <nav className="spec-transport" aria-label="Ship stations — jump to a section">
+                {SPEC_SECTIONS.map((s) => (
+                  <a
+                    key={s.fig}
+                    href={s.anchor}
+                    className={`spec-transport-tick${
+                      stage === 'finale' || lit.has(s.key) ? ' is-lit' : ''
+                    }${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
+                    aria-label={`${s.fig} · ${s.title} (${s.shipPart})`}
+                  >
+                    <i aria-hidden />
+                  </a>
+                ))}
+              </nav>
             </aside>
           </div>
 

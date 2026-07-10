@@ -2066,12 +2066,9 @@
 /* ── the connected poster (full-bleed live hero only) ─────────────────────────
    The descent: the cue's tick keeps going — a vertical hairline runs from
    under the cue toward S.0, tying the poster to the reading it announces.
-   The leads: three hairlines run from the copy column's edge toward the
-   hull, each landing on a dot (the drawing vocabulary) — the copy labels
-   the vessel. Both live only on the is-live desktop poster: the SSG
-   fallback keeps its clean two-column elevation. */
-.spec-hero-descent,
-.spec-hero-leads {
+   (The leader lines to the hull are LIVE now — the callout rig pins each
+   wire's near end to the copy's own [data-ship-term] links.) */
+.spec-hero-descent {
   display: none;
 }
 @media (min-width: 1024px) {
@@ -2096,54 +2093,28 @@
     );
     pointer-events: none;
   }
-  .spec-page.is-live .spec-hero-leads {
-    display: block;
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .spec-page.is-live .spec-hero-leads i {
-    position: absolute;
-    left: 43%;
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      color-mix(in oklch, var(--sm-ink-lit) 50%, transparent),
-      color-mix(in oklch, var(--sm-ink-lit) 10%, transparent)
-    );
-  }
-  .spec-page.is-live .spec-hero-leads i::after {
-    content: '';
-    position: absolute;
-    right: -2px;
-    top: -2px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: color-mix(in oklch, var(--sm-ink-lit) 60%, transparent);
-  }
-  .spec-page.is-live .spec-hero-leads i:nth-child(1) {
-    top: 33%;
-    width: 12vw;
-  }
-  .spec-page.is-live .spec-hero-leads i:nth-child(2) {
-    top: 51%;
-    width: 8vw;
-  }
-  .spec-page.is-live .spec-hero-leads i:nth-child(3) {
-    top: 65%;
-    width: 10vw;
-  }
 }
-.spec-hero-cue-tick {
-  width: 26px;
-  height: 1px;
-  background: color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
+
+/* the wired terms · real links: quiet dotted hint at rest, ink-lit when the
+   wire is loud (hover/focus) — the prose labels the vessel */
+.spec-term {
+  color: inherit;
+  text-decoration: underline dotted color-mix(in oklch, var(--sm-ink-lit) 38%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
-.spec-hero-cue span[aria-hidden]:last-child {
-  animation: specCueBob 2.4s ease-in-out infinite;
+.spec-term:hover,
+.spec-term:focus-visible {
+  color: color-mix(in oklch, var(--sm-ink-lit) 80%, var(--v4-text));
+  text-decoration-style: solid;
 }
+.spec-term:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 @keyframes specCueBob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(4px); }
@@ -2253,6 +2224,64 @@
   .spec-rail.is-live[data-stage='off'] .smw,
   .spec-rail.is-live[data-stage='off'] .spec-helm {
     pointer-events: none;
+  }
+}
+
+/* THE TRANSPORT · the spine gauge as a helm: nine real links (outside the
+   aria-hidden stage), each a >=24px hit around a gauge-tick visual. Lives
+   at the DOCK only (the display gauge keeps the poster + finale, where the
+   reading hasn't started / is done); hidden with the fallback register. */
+.spec-transport {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .spec-page.is-live .spec-rail.is-live .spec-transport {
+    display: flex;
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 1px;
+    z-index: 2;
+  }
+  .spec-transport-tick {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 28px;
+  }
+  .spec-transport-tick i {
+    width: 16px;
+    height: 3px;
+    border-radius: 2px;
+    background: color-mix(in oklch, var(--sm-ink-struck) 30%, transparent);
+    transition: background var(--dur-ui) var(--ease-ui), height var(--dur-ui) var(--ease-ui);
+  }
+  .spec-transport-tick.is-lit i {
+    background: color-mix(in oklch, var(--sm-ink-lit) 72%, transparent);
+  }
+  .spec-transport-tick.is-cur i {
+    height: 7px;
+    background: var(--sm-ink-lit);
+  }
+  .spec-transport-tick:hover i,
+  .spec-transport-tick:focus-visible i {
+    background: var(--sm-ink-lit);
+  }
+  .spec-transport-tick:focus-visible {
+    outline: 2px solid var(--v4-focus-ring);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+  /* the DOCK hands the spine to the transport — the display gauge yields
+     (it keeps the poster + the finale, pointer-inert) */
+  .spec-rail.is-live:not([data-stage='hero']):not([data-stage='finale']) .spec-rail-gauge {
+    display: none;
+  }
+  .spec-rail.is-live[data-stage='hero'] .spec-transport,
+  .spec-rail.is-live[data-stage='finale'] .spec-transport,
+  .spec-rail.is-live[data-stage='off'] .spec-transport {
+    display: none;
   }
 }
 
