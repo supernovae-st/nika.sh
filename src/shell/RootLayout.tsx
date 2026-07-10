@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { AuroraProvider } from '../fx/EdgeAurora'
@@ -8,6 +8,10 @@ import { track, type FunnelEvent } from '../lib/track'
 import Nav from './Nav'
 import SiteFooter from './SiteFooter'
 import './skip-link.css'
+
+/* the palette is a lazy chunk — the initial bundle carries only the ⌘K
+   listener below; the chunk (component + corpus) loads on first open */
+const CommandK = lazy(() => import('./CommandK'))
 
 /* ─── site-wide JSON-LD · Organization + WebSite (schema.org) ─────────────────
    Build-time / zero-runtime: @unhead/react flushes this <script> into every
@@ -92,6 +96,27 @@ export default function RootLayout() {
     document.documentElement.setAttribute('data-hydrated', '')
   }, [])
 
+  /* ⌘K / Ctrl+K · the palette (arc 13 W2) — the shell owns only this
+     listener; the dialog + corpus live in the lazy chunk. The nav's own
+     trigger button drives the same state (window event, no prop drilling
+     through Nav). */
+  const [paletteOpen, setPaletteOpen] = useState(false)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setPaletteOpen((v) => !v)
+      }
+    }
+    const onOpen = () => setPaletteOpen(true)
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('ck:open', onOpen)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('ck:open', onOpen)
+    }
+  }, [])
+
   /* the license egg · type « agpl » anywhere: a quiet mono toast answers
      « forever. » (the same input guards as the drum egg — never inside a
      field; auto-dismiss; polite live region so it is announced once). */
@@ -140,6 +165,12 @@ export default function RootLayout() {
         Skip to content
       </a>
       <Nav />
+      {/* the palette · mounts only while open (the chunk loads on first use) */}
+      {paletteOpen ? (
+        <Suspense fallback={null}>
+          <CommandK onClose={() => setPaletteOpen(false)} />
+        </Suspense>
+      ) : null}
       {/* the agpl egg toast · aria-live polite (announced), pointer-inert */}
       <div className="agpl-toast" role="status" data-on={agplToast || undefined}>
         AGPL-3.0-or-later · forever.

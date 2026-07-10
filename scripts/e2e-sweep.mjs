@@ -457,6 +457,37 @@ await check('blog · All restores the lead + the whole shelf', async () => {
   }
 }
 
+/* 3b-quater · the ⌘K palette (arc 13 W2): open with the nav trigger (the
+   shell listens for ck:open — same path as the button), type, Enter →
+   navigation. The lazy chunk + React commits each get their poll. */
+await check('palette · ⌘K opens, types, Enter navigates', async () => {
+  let last = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await evaluate(`window.dispatchEvent(new Event('ck:open'))`)
+    last = await until(() => evaluate(`!!document.querySelector('.ck-input') || false`), 8, 400)
+    if (last === true) break
+  }
+  if (last !== true) return 'palette never opened'
+  /* type via the native setter so React's onChange sees it */
+  await evaluate(`(() => {
+    const input = document.querySelector('.ck-input')
+    const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set
+    set.call(input, 'resume story')
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+  })()`)
+  last = await until(
+    () =>
+      evaluate(
+        `(document.querySelector('.ck-opt[aria-selected="true"] .ck-opt-label')?.textContent ?? '').includes('resume') || (document.querySelector('.ck-opt-label')?.textContent ?? 'none')`,
+      ),
+    8,
+    400,
+  )
+  if (last !== true) return last
+  await evaluate(`document.querySelector('.ck-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))`)
+  return until(() => evaluate(`location.pathname === '/blog/the-resume-story' || location.pathname`), 10, 400)
+})
+
 /* 3c · the eggs (global key listeners — synthetic keydown works; re-type the
    word per attempt — keys swallowed pre-hydration never assemble the egg) */
 await check('egg · agpl toast (any page)', async () => {
