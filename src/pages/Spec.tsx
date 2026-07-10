@@ -126,34 +126,12 @@ const PROVIDERS_LOCAL = CANON.providerIdsLocal.map(displayProvider)
 const PROVIDERS_CLOUD = CANON.providerIdsCloud.map(displayProvider)
 const PROVIDERS_TEST = CANON.providerIdsTest.map(displayProvider)
 
-/* the stamp legend · each stat cell is a real link into its section — the
-   machine's legend (counts derive via the strata module; subs are craft) */
 const bySection = Object.fromEntries(SPEC_SECTIONS.map((s) => [s.key, s]))
-const STAMP_CELLS: { n: number; label: string; sub: string; anchor: string; stratum: string }[] = [
-  { n: CANON.verbs, label: 'verbs', sub: 'locked', anchor: bySection.verbs.anchor, stratum: 'verbs' },
-  {
-    n: CANON.builtins,
-    label: 'builtins',
-    sub: `${BUILTIN_GROUPS.length} families`,
-    anchor: bySection.stdlib.anchor,
-    stratum: 'stdlib',
-  },
-  {
-    n: CANON.providers,
-    label: 'providers',
-    sub: `${CANON.providersLocal} local`,
-    anchor: bySection.providers.anchor,
-    stratum: 'providers',
-  },
-  { n: CANON.extractModes, label: 'extract', sub: 'on fetch', anchor: bySection.extract.anchor, stratum: 'extract' },
-  {
-    n: CANON.errorNamespaces,
-    label: 'namespaces',
-    sub: `${CANON.errorCodes} codes`,
-    anchor: bySection.errors.anchor,
-    stratum: 'errors',
-  },
-]
+
+/* THE PROTOCOL PLATE · the contract's data plate (every value real: canon,
+   licenses, the family bars) — the instrument-plate register (v2 mockups) */
+const FAMILY_BARS = BUILTIN_GROUPS.map((f) => ({ label: f.label, n: f.names.length }))
+const FAMILY_MAX = Math.max(...FAMILY_BARS.map((b) => b.n))
 
 /* the worked fragment · sliced from a REAL showcase workflow (never hand-typed).
    standup-digest exercises 3 of the 4 verbs (invoke · exec · infer) in a tiny
@@ -289,6 +267,12 @@ export function Component() {
     <main className="theme-dark spec-page">
       <section ref={ref} aria-labelledby="spec-title" className="v4sec">
         <div className="v4sec-wrap spec-wrap">
+          {/* ── the split stage · THE PLATE (v2): the grid opens at the masthead
+              so the ship rides beside the hero from the first paint — the
+              poster IS the page. Below 1024px the rail retires and the
+              elevation strip carries the shape. */}
+          <div className="spec-stage">
+            <div className="spec-flow">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
             the language reference
@@ -315,6 +299,59 @@ export function Component() {
             </a>{' '}
             is the canonical, normative source.
           </p>
+
+          {/* THE PROTOCOL PLATE · the data plate: protocol, type, licenses,
+              status, and the honest microchart (builtins per family — bars
+              derive from the craft map, the sum is the canon count). */}
+          <section
+            className="spec-plate"
+            aria-labelledby="spec-plate-title"
+            data-rise
+            style={{ ['--rise-delay' as string]: '140ms' }}
+          >
+            <p id="spec-plate-title" className="spec-plate-kicker mono">
+              PROTOCOL
+            </p>
+            <dl className="spec-plate-rows mono">
+              <div className="spec-plate-row">
+                <dt>PROTOCOL</dt>
+                <dd>nika: v1</dd>
+              </div>
+              <div className="spec-plate-row">
+                <dt>TYPE</dt>
+                <dd>workflow language</dd>
+              </div>
+              <div className="spec-plate-row">
+                <dt>SPEC</dt>
+                <dd>Apache-2.0</dd>
+              </div>
+              <div className="spec-plate-row">
+                <dt>ENGINE</dt>
+                <dd>AGPL-3.0 · forever</dd>
+              </div>
+              <div className="spec-plate-row">
+                <dt>STATUS</dt>
+                <dd>
+                  <span className="spec-plate-dot" aria-hidden /> FROZEN
+                </dd>
+              </div>
+            </dl>
+            <p className="spec-plate-chartcap mono">
+              BUILTINS BY FAMILY
+              <span>{FAMILY_BARS.map((b) => b.n).join('·')}</span>
+            </p>
+            <div className="spec-chart" role="img" aria-label={`Builtins by family: ${FAMILY_BARS.map((b) => `${b.label} ${b.n}`).join(', ')}`}>
+              {FAMILY_BARS.map((b) => (
+                <div className="spec-chart-col" key={b.label}>
+                  <span
+                    className="spec-chart-bar"
+                    style={{ ['--bar' as string]: `${(b.n / FAMILY_MAX) * 100}%` }}
+                  />
+                  <span className="spec-chart-n mono">{b.n}</span>
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* ── the consumer TL;DR · the whole language in one glance-table ──
               Museum-plate rows (01 · the envelope → 05 · errors), each a
@@ -357,46 +394,27 @@ export function Component() {
             </p>
           </section>
 
-          {/* the spec-sheet register · the contract's key dimensions, at a glance —
-              now the machine's LEGEND: every cell is a real link into its section
-              (W2 wires hover/focus to the matching stratum). Counts derive from
-              CANON via the strata module, never hand-typed. */}
-          <ul className="spec-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
-            {STAMP_CELLS.map((s, i) => (
-              <li className="spec-stamp-cell" key={s.label}>
-                <a className="spec-stamp-link" href={s.anchor} data-node={s.stratum}>
-                  <span className="spec-stamp-fig" aria-hidden>
-                    {String(i).padStart(2, '0')}
-                  </span>
-                  <span className="spec-stamp-n">{s.n}</span>
-                  <span className="spec-stamp-label">{s.label}</span>
-                  <span className="spec-stamp-sub">{s.sub}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
 
-          {/* ── the split stage · the ledger column + the machine rail ─────────
-              Desktop ≥1024px: the reference reads in a measured column while the
-              sticky rail keeps the whole language in the eye. Below 1024px the
-              rail retires and the schematic strip after the TOC carries the
-              shape (the designed fallback truth — never a canvas). */}
-          <div className="spec-stage">
-            <div className="spec-flow">
-              {/* a quick contents rail · jump links + lit reading ticks (the DOM
-                  mirror of the machine tally — sticky under the nav) */}
-              <nav className="spec-toc" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+
+              {/* THE INDEX · the S-chips band — fig · title · gloss · derived
+                  count · reading tick. Absorbs the old stamp band AND the TOC
+                  pills: one instrument, sticky under the nav on desktop. */}
+              <nav className="spec-chips" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
                 {SPEC_SECTIONS.map((s) => (
                   <a
                     key={s.fig}
                     href={s.anchor}
-                    className={`spec-toc-link${lit.has(s.key) ? ' is-lit' : ''}`}
+                    className={`spec-chip2${lit.has(s.key) ? ' is-lit' : ''}`}
                     aria-current={current === s.key ? 'true' : undefined}
                     data-node={s.key}
                   >
-                    <span className="spec-toc-tick" aria-hidden />
-                    <span className="spec-toc-n">{s.fig}</span>
-                    {s.title}
+                    <span className="spec-chip2-head mono">
+                      <span className="spec-chip2-tick" aria-hidden />
+                      {s.fig}
+                      <span className="spec-chip2-count">{s.count}</span>
+                    </span>
+                    <span className="spec-chip2-title">{s.title}</span>
+                    <span className="spec-chip2-gloss">{s.chipGloss}</span>
                   </a>
                 ))}
               </nav>

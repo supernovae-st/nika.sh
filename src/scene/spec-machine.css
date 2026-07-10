@@ -18,3 +18,63 @@
 .spec-rail-stage[data-machine] .spec-schematic {
   display: none;
 }
+
+/* ── THE CALLOUTS · the labelled-drawing layer (smc-) ─────────────────────────
+   Fixed label slots left/right, hairline leaders with dot terminals sailing
+   with the projection. Pointer-only decoration inside the aria-hidden stage
+   (the INDEX chips are the accessible twin); labels still ride the hover
+   bus (data-node) and click through to their section (data-anchor). */
+.smc {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.smc-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.smc-line {
+  stroke: color-mix(in oklch, #4f86ff 42%, transparent);
+  stroke-width: 1;
+}
+.smc-dot {
+  fill: #8db4ff;
+}
+.smc-label {
+  position: absolute;
+  top: var(--slot);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 10px;
+  border: 1px solid color-mix(in oklch, #4f86ff 30%, transparent);
+  border-radius: 4px;
+  background: color-mix(in oklch, #0a0c10 88%, transparent);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: color-mix(in oklch, #8db4ff 78%, transparent);
+  font-variant-numeric: tabular-nums;
+  pointer-events: auto;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.smc-label b {
+  font-weight: 600;
+  color: #c9dbff;
+  letter-spacing: 0.12em;
+}
+.smc-label[data-side='l'] {
+  left: 2%;
+}
+.smc-label[data-side='r'] {
+  right: 2%;
+}
+.smc-label:hover,
+.smc-label.is-node-hot {
+  border-color: #4f86ff;
+  color: #c9dbff;
+}
