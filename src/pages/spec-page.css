@@ -2147,9 +2147,24 @@
   }
   .spec-rail.is-live[data-stage='hero'] {
     /* the copy column ends ≈43vw on every width — the ship owns the rest,
-       never overlapping the title (the text-collision bug) */
+       never overlapping the title (the text-collision bug). The ground
+       rides 2.5vw past the edge: the vessel advances right, tightening
+       the dead water between the copy and the hull (operator pass
+       2026-07-11) — nothing of the vessel crops (it spans ~70% of the
+       canvas, centered). */
     width: 56vw;
-    right: 0;
+    right: -2.5vw;
+  }
+  /* the position plate at the POSTER is the drawing's title block — top
+     right of the ground, clear of the fixed rail's hairline (~34px), never
+     the stranded float mid-gap it was at left 2% (the chassis starts near
+     the page's middle, so stage-left = page-center). Dock keeps top-left:
+     there the plate tracks the reading beside the copy. */
+  .spec-rail.is-live[data-stage='hero'] .spec-rail-pos {
+    left: auto;
+    right: calc(2.5vw + 56px);
+    align-items: flex-end;
+    text-align: right;
   }
   .spec-rail.is-live[data-stage='finale'] {
     width: 100vw;
