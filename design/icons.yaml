@@ -84,6 +84,12 @@ entities:
     parent: verb/invoke
     supernovae: security/shield-2
     category: core
+  builtin/chart:
+    label: chart
+    semantic: "Deterministic chart renderer — byte-identical SVG, sha256 into the trace chain"
+    parent: verb/invoke
+    supernovae: statistics-charts/leaderboard
+    category: media
   builtin/compose:
     label: compose
     semantic: "Statically check a workflow draft — the check oracle inside agent loops"
@@ -145,6 +151,12 @@ entities:
     parent: verb/invoke
     supernovae: security/finger-print-1
     category: data
+  builtin/image_fx:
+    label: image_fx
+    semantic: "Deterministic artistic effects — byte-identical artifacts, the recipe in the chunk"
+    parent: verb/invoke
+    supernovae: ai-magic/magic-wand
+    category: media
   builtin/image_generate:
     label: image_generate
     semantic: "Generate image assets — files land on disk, never inline"

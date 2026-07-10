@@ -68,6 +68,15 @@ nkd:fx-dim a nkd:Effect .
   nkd:category "core" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-assert.svg> .
 
+<https://nika.sh/ontology/design#builtin-chart> a nkd:Builtin ;
+  rdfs:label "chart" ;
+  nkd:semantic "Deterministic chart renderer — byte-identical SVG, sha256 into the trace chain" ;
+  nkd:glyph "statistics-charts/leaderboard" ;
+  nkd:glyphSet "supernovae" ;
+  nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
+  nkd:category "media" ;
+  nkd:servedAt <https://nika.sh/brand/icons/builtin-chart.svg> .
+
 <https://nika.sh/ontology/design#builtin-compose> a nkd:Builtin ;
   rdfs:label "compose" ;
   nkd:semantic "Statically check a workflow draft — the check oracle inside agent loops" ;
@@ -158,6 +167,15 @@ nkd:fx-dim a nkd:Effect .
   nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-hash.svg> .
+
+<https://nika.sh/ontology/design#builtin-image_fx> a nkd:Builtin ;
+  rdfs:label "image_fx" ;
+  nkd:semantic "Deterministic artistic effects — byte-identical artifacts, the recipe in the chunk" ;
+  nkd:glyph "ai-magic/magic-wand" ;
+  nkd:glyphSet "supernovae" ;
+  nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
+  nkd:category "media" ;
+  nkd:servedAt <https://nika.sh/brand/icons/builtin-image_fx.svg> .
 
 <https://nika.sh/ontology/design#builtin-image_generate> a nkd:Builtin ;
   rdfs:label "image_generate" ;

@@ -3764,7 +3764,7 @@ export const BLOG_POSTS: BlogPost[] = [
           },
           {
             "k": "text",
-            "text": " lives in the standard library, reached through invoke, next to read, write, jq and the other 21 builtins. Everything callable is a tool. Everything about ordering is the graph."
+            "text": " lives in the standard library, reached through invoke, next to read, write, jq and the other 23 builtins. Everything callable is a tool. Everything about ordering is the graph."
           }
         ]
       },
@@ -4071,7 +4071,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "inline": [
           {
             "k": "strong",
-            "text": "25 builtins ride the binary"
+            "text": "27 builtins ride the binary"
           },
           {
             "k": "text",

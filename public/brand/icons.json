@@ -155,6 +155,22 @@
       "category": "core",
       "canon": null
     },
+    "builtin/chart": {
+      "label": "chart",
+      "semantic": "Deterministic chart renderer — byte-identical SVG, sha256 into the trace chain",
+      "svg": "https://nika.sh/brand/icons/builtin-chart.svg",
+      "set": "supernovae",
+      "glyph": "statistics-charts/leaderboard",
+      "pattern": null,
+      "grid": null,
+      "alternate": null,
+      "hue": null,
+      "fx": [],
+      "parent": "verb/invoke",
+      "shares_glyph_with": null,
+      "category": "media",
+      "canon": null
+    },
     "builtin/compose": {
       "label": "compose",
       "semantic": "Statically check a workflow draft — the check oracle inside agent loops",
@@ -313,6 +329,22 @@
       "parent": "verb/invoke",
       "shares_glyph_with": null,
       "category": "data",
+      "canon": null
+    },
+    "builtin/image_fx": {
+      "label": "image_fx",
+      "semantic": "Deterministic artistic effects — byte-identical artifacts, the recipe in the chunk",
+      "svg": "https://nika.sh/brand/icons/builtin-image_fx.svg",
+      "set": "supernovae",
+      "glyph": "ai-magic/magic-wand",
+      "pattern": null,
+      "grid": null,
+      "alternate": null,
+      "hue": null,
+      "fx": [],
+      "parent": "verb/invoke",
+      "shares_glyph_with": null,
+      "category": "media",
       "canon": null
     },
     "builtin/image_generate": {
