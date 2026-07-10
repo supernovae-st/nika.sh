@@ -745,6 +745,22 @@
 .morph-seed[data-verb='agent'] {
   --node-vhue: var(--verb-agent);
 }
+/* THE LANDING RETICLE (arc 10h) · the seed's destination, announced while
+   the chip is in flight. Same layout metrics as the seed (its box IS the
+   chip's landing footprint — the inner spans size it with transparent ink),
+   painted as a dashed docking target in the task's hue, no fill weight:
+   an outline waiting to be filled. The ignition consumes it (driver). */
+.morph-seed-target {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 52%, transparent);
+  background: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 5%, transparent);
+  box-shadow: 0 0 20px -6px color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 40%, transparent);
+}
+.morph-seed-target .morph-seed-id,
+.morph-seed-target .morph-seed-verb {
+  color: transparent;
+}
+
 .morph-seed-id {
   font-size: 12px;
   font-weight: 600;
