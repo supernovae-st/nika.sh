@@ -142,6 +142,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/the-resume-story — kill -9 survived by the journal; resume skips done work.
+    out: 'og-blog-the-resume-story.png',
+    fig: 'FIG B.14',
+    size: 60,
+    headline: 'Finished work<br><span class="b">never runs twice.</span>',
+    sub: 'kill -9 a run mid-flight: the journal already holds every settled task — resume skips them by name and only the interrupted work runs.',
+    detail:
+      '<span class="arrow">▸</span><span>↷&nbsp;cache&nbsp;hit&nbsp;(resume)<span class="sep">·</span>append-only&nbsp;journal<span class="sep">·</span><b>2&nbsp;skipped&nbsp;·&nbsp;2&nbsp;ran&nbsp;live</b></span>',
+  },
+  {
     // /blog/injection-goes-nowhere — the fixed plan + the checked boundary.
     out: 'og-blog-injection-goes-nowhere.png',
     fig: 'FIG B.13',

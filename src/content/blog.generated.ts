@@ -30,6 +30,330 @@ export interface BlogPost {
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "the-resume-story",
+    "file": "2026-07-10-the-resume-story.md",
+    "title": "The resume story",
+    "tag": "Engine",
+    "date": "2026-07-10",
+    "description": "kill -9 a run mid-flight, then resume it: finished work never runs twice. Durability as a file property, shown from the real journal.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every long pipeline eventually meets a hard death. The laptop lid closes, the CI runner is reaped, someone trips over "
+          },
+          {
+            "k": "code",
+            "text": "Ctrl-C"
+          },
+          {
+            "k": "text",
+            "text": " twice. The question that decides whether that hurts is not "
+          },
+          {
+            "k": "em",
+            "text": "did it crash"
+          },
+          {
+            "k": "text",
+            "text": " — everything crashes — it is "
+          },
+          {
+            "k": "strong",
+            "text": "what happens to the work that already finished?"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "In a glue script, the answer is: it re-runs. The API calls you already paid for fire again, the files you already wrote get written again, and if any step is not perfectly idempotent you now have a second problem. In a chat agent, the answer is worse: the plan lived in a context window, and the context window is gone."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Here is a workflow with real work in it — checksum the day's notes, count them, pack a 300 MB asset archive, write a manifest:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "nightly-archive.nika.yaml",
+        "text": "nika: v1\nworkflow: nightly-archive\ndescription: \"Hash, count and pack the day's notes into one manifest\"\n\npermits:\n  fs:\n    read: [\"./notes/*\", \"./assets.bin\"]\n    write: [\"./assets.bin.gz\"]\n  exec: [\"shasum\", \"wc\", \"gzip\", \"echo\"]\n\ntasks:\n  # No deps between these two → the engine runs them in parallel.\n  - id: hash_notes\n    exec:\n      command: [\"shasum\", \"-a\", \"256\", \"notes/monday.md\", \"notes/tuesday.md\", \"notes/wednesday.md\"]\n\n  - id: count_notes\n    exec:\n      command: [\"wc\", \"-w\", \"notes/monday.md\", \"notes/tuesday.md\", \"notes/wednesday.md\"]\n\n  # Pack only once the notes are verified — the checksums gate the archive.\n  - id: pack_assets\n    depends_on: [hash_notes, count_notes]\n    exec:\n      command: [\"gzip\", \"-kf9\", \"assets.bin\"]\n\n  - id: manifest\n    depends_on: [pack_assets]\n    exec:\n      command: [\"echo\", \"archive ok\"]\n\noutputs:\n  checksums: \"${{ tasks.hash_notes.output }}\"\n  words: \"${{ tasks.count_notes.output }}\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Run it, and five seconds in — while "
+          },
+          {
+            "k": "code",
+            "text": "gzip"
+          },
+          {
+            "k": "text",
+            "text": " is grinding through the archive — kill it the rude way. Not "
+          },
+          {
+            "k": "code",
+            "text": "Ctrl-C"
+          },
+          {
+            "k": "text",
+            "text": ", not a graceful shutdown hook: "
+          },
+          {
+            "k": "code",
+            "text": "SIGKILL"
+          },
+          {
+            "k": "text",
+            "text": ", the signal a process never gets to handle."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika run nightly-archive.nika.yaml &\n❯ sleep 5 && kill -9 $!\n\n  🦋 nika · nightly-archive · 4 tasks\n     permits ✓ declared boundary · default-deny\n\n  ✔  hash_notes   exec · shasum  27ms\n  ✔  count_notes  exec · wc  3ms ∥"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "That is the whole console. The two checksums finished in milliseconds; the pack was mid-flight when the process died. No cleanup ran, no state was saved on the way down — the engine never saw the signal coming."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "But the run was never keeping its state in memory. Every run writes a "
+          },
+          {
+            "k": "strong",
+            "text": "journal"
+          },
+          {
+            "k": "text",
+            "text": " as it goes: an append-only NDJSON file in "
+          },
+          {
+            "k": "code",
+            "text": ".nika/traces/"
+          },
+          {
+            "k": "text",
+            "text": " beside your workflow, one typed event per line. Read the journal the crash left behind:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ grep -o '\"kind\":\"[a-z_]*\"' .nika/traces/2026-07-10T10-41-21Z-0672.ndjson | sort | uniq -c\n   1 workflow_started\n   4 task_scheduled\n   2 task_started\n   2 task_completed"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Two "
+          },
+          {
+            "k": "code",
+            "text": "task_completed"
+          },
+          {
+            "k": "text",
+            "text": " events survived the kill, because they were written the moment the work settled — not at the end of the run, not on shutdown. The journal does not need the process to die politely."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Now the whole point:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika run nightly-archive.nika.yaml --resume .nika/traces/2026-07-10T10-41-21Z-0672.ndjson\n\n  🦋 nika · nightly-archive · 4 tasks\n     permits ✓ declared boundary · default-deny\n\n  ↷  hash_notes   cache hit (resume)\n  ↷  count_notes  cache hit (resume)\n  ✔  pack_assets  exec · gzip  13.2s\n  ✔  manifest     exec · echo  8ms\n  ── 4/4 done · $0.00 · elapsed 13.2s ────────────────────────────\n\n  resumed · 2 skipped (cache hit) · 2 ran live"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "code",
+            "text": "↷"
+          },
+          {
+            "k": "text",
+            "text": " is the engine's glyph for "
+          },
+          {
+            "k": "em",
+            "text": "not doing"
+          },
+          {
+            "k": "text",
+            "text": ". The two tasks whose completion the journal recorded are skipped — visibly, by name, as "
+          },
+          {
+            "k": "code",
+            "text": "cache hit (resume)"
+          },
+          {
+            "k": "text",
+            "text": " — and only the interrupted pack and everything downstream of it run. "
+          },
+          {
+            "k": "strong",
+            "text": "Finished work never runs twice."
+          },
+          {
+            "k": "text",
+            "text": " Had "
+          },
+          {
+            "k": "code",
+            "text": "hash_notes"
+          },
+          {
+            "k": "text",
+            "text": " been an LLM call, those are tokens you do not pay for a second time; had it written a file, that file is not touched again."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The skip is not a guess, and this is the part worth being precise about. A task is skipped only when its "
+          },
+          {
+            "k": "strong",
+            "text": "identity"
+          },
+          {
+            "k": "text",
+            "text": " matches a journaled success — and its identity is the task as written: the command, the resolved inputs, the shape of the thing you can read in the file. Edit the task and the match breaks. Change one flag — "
+          },
+          {
+            "k": "code",
+            "text": "shasum -a 256"
+          },
+          {
+            "k": "text",
+            "text": " to "
+          },
+          {
+            "k": "code",
+            "text": "shasum -a 512"
+          },
+          {
+            "k": "text",
+            "text": " — and resume again:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "  ✔  hash_notes   exec · shasum  67ms\n  ↷  count_notes  cache hit (resume)\n\n  resumed · 1 skipped (cache hit) · 3 ran live"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The edited task re-runs; its untouched sibling still skips. You cannot accidentally resume yourself into stale results from a plan you have since changed. And a trace with no resumable successes in it is a notice, never an error — the run simply happens live."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Notice what is "
+          },
+          {
+            "k": "em",
+            "text": "absent"
+          },
+          {
+            "k": "text",
+            "text": " from this story: a workflow cluster. A database. A coordinator service that has to stay up so your work can survive. Durable execution is usually sold as infrastructure — stand up a server, keep it healthy, and it will remember your workflows for you. Here, durability is a property of two files sitting in your repo: the plan and the journal. "
+          },
+          {
+            "k": "code",
+            "text": "kill -9"
+          },
+          {
+            "k": "text",
+            "text": " the engine, lose the machine, come back tomorrow on a different one — the pair still knows exactly what is done and what is not."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The same journal is the "
+          },
+          {
+            "k": "link",
+            "text": "flight recorder you can replay",
+            "href": "/blog/the-trace-you-can-replay"
+          },
+          {
+            "k": "text",
+            "text": " and the substrate the "
+          },
+          {
+            "k": "link",
+            "text": "time-travel debugger",
+            "href": "/blog/time-travel-for-real"
+          },
+          {
+            "k": "text",
+            "text": " steps through. One artifact, three jobs: evidence, replay, resume. Chats evaporate; files compound — and it turns out the "
+          },
+          {
+            "k": "em",
+            "text": "crash recovery"
+          },
+          {
+            "k": "text",
+            "text": " compounds too."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "prompts-are-code",
     "file": "2026-07-08-prompts-are-code.md",
     "title": "Prompts are code now",

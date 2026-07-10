@@ -7,6 +7,14 @@
     <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
     <language>en</language>
     <item>
+      <title>The resume story</title>
+      <link>https://nika.sh/blog/the-resume-story</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-resume-story</guid>
+      <pubDate>Fri, 10 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>kill -9 a run mid-flight, then resume it: finished work never runs twice. Durability as a file property, shown from the real journal.</description>
+    </item>
+    <item>
       <title>Prompts are code now</title>
       <link>https://nika.sh/blog/prompts-are-code</link>
       <guid isPermaLink="true">https://nika.sh/blog/prompts-are-code</guid>
