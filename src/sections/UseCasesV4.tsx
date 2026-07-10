@@ -3,7 +3,8 @@ import { CodeFile } from '../components/CodeFile'
 import { useRevealOnce } from './use-reveal-once'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from './usecases-data'
-import { SHOWCASE_YAML } from './usecases-yaml.generated'
+import { SHOWCASE_YAML, SHOWCASE_DAG } from './usecases-yaml.generated'
+import { PlanMap } from '../components/PlanMap'
 import './v4-home.css'
 import { SectionHead } from '../components/SectionHead'
 
@@ -155,6 +156,19 @@ export default function UseCasesV4() {
                 walkthrough ↗
               </a>
             </div>
+
+            {/* the plan · the file's shape in THE plan language (arc 11 W3) —
+                the same grammar the film teaches and /use-cases speaks; the
+                yaml and its plan never travel apart again */}
+            {SHOWCASE_DAG[active.slug] && SHOWCASE_DAG[active.slug].tasks.length > 0 ? (
+              <div className="v4uc-panel-plan">
+                <PlanMap
+                  tasks={SHOWCASE_DAG[active.slug].tasks}
+                  waves={SHOWCASE_DAG[active.slug].waves}
+                  well={`uc-teaser-${active.slug}`}
+                />
+              </div>
+            ) : null}
 
             <div className="v4uc-panel-code">
               <div className="v4uc-scroll">

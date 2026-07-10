@@ -75,6 +75,23 @@ export function DagView({
       aria-label={`The plan: ${plan.waves.map((w) => w.map((t) => t.id).join(' + ')).join(', then ')}${plan.cyclic ? ' (cycle detected)' : ''}`}
     >
       <svg className="dv-wires" aria-hidden>
+        {/* the arrowhead (arc 11 · the film's grammar, W2) — « every arrow is
+            a wait » holds here too: a hairline chevron on each wire's end
+            tangent, replacing the target socket dot (the flat-map convention
+            since arc 10h). Marker content is exempt from any path blanket
+            rule by its own class. */}
+        <defs>
+          <marker
+            id="dv-arrow"
+            markerWidth="7"
+            markerHeight="7"
+            refX="5.4"
+            refY="3"
+            orient="auto"
+          >
+            <path className="dv-arrow-head" d="M1,0.4 L5.6,3 L1,5.6" />
+          </marker>
+        </defs>
         {plan.edges.map((e, i) => (
           <g key={`${e.from}->${e.to}`}>
             <path
@@ -88,16 +105,11 @@ export function DagView({
                 flowRefs.current[i] = el
               }}
               className="dv-wire-flow"
+              markerEnd="url(#dv-arrow)"
             />
             <circle
               ref={(el) => {
                 dotRefs.current[i * 2] = el
-              }}
-              r={2}
-            />
-            <circle
-              ref={(el) => {
-                dotRefs.current[i * 2 + 1] = el
               }}
               r={2}
             />
@@ -108,7 +120,7 @@ export function DagView({
         <div className="dv-wave" key={w}>
           <p className="dv-cap" aria-hidden>
             <span className="dv-cap-n">[ {String(w + 1).padStart(2, '0')} ]</span>
-            {wave.length > 1 ? `×${wave.length}` : w === 0 ? 'start' : 'then'}
+            {wave.length > 1 ? `run together ×${wave.length}` : w === 0 ? 'start' : 'then'}
           </p>
           <div className="dv-col">
             {wave.map((t) => (
