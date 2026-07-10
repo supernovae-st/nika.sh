@@ -192,6 +192,27 @@ function FieldQuad({
     invalidate()
   }, [gl, uniforms, bufSize, invalidate])
 
+  /* THE PAINT WATCHDOG · in demand mode the field gets ONE frame — under a
+     starved GPU init (heavy load · slow swiftshader) that frame can be
+     dropped and nothing ever re-requests it: the canvas stays BLANK for the
+     whole session (a real reduced-motion user bug — and the goldens' exact
+     13.66% hero bistable, isolated by the no-canvas probe). useFrame marks
+     the first PROCESSED frame on the canvas (`data-painted` — the harness
+     gates on it); until it lands, staggered invalidates re-request the
+     demand frame. Idempotent: the rest frame is pure (uTime 0), extra
+     paints change nothing. */
+  const paintedRef = useRef(false)
+  useEffect(() => {
+    gl.domElement.dataset.paints = '1'
+    if (paintedRef.current) return
+    const timers = [500, 1500, 3000, 6000].map((ms) =>
+      setTimeout(() => {
+        if (!paintedRef.current) invalidate()
+      }, ms),
+    )
+    return () => timers.forEach(clearTimeout)
+  }, [gl, invalidate])
+
   /* GPU context loss: preventDefault on `lost` so the browser is ALLOWED to
      restore (three re-inits its GL state on `restored`); the invalidate then
      repaints — otherwise a demand/paused canvas stays blank after a GPU reset. */
@@ -214,6 +235,10 @@ function FieldQuad({
   }, [reduced, invalidate])
 
   useFrame((state) => {
+    if (!paintedRef.current) {
+      paintedRef.current = true
+      gl.domElement.dataset.painted = '1'
+    }
     uniforms.uRes.value.copy(gl.getDrawingBufferSize(bufSize))
     uniforms.uTime.value = reduced ? 0 : state.clock.elapsedTime
     // reduced motion: no dive — the beat stays a static frame
@@ -297,6 +322,29 @@ export default function DitherField() {
     [],
   )
   const wrap = useRef<HTMLDivElement>(null)
+
+  /* THE INIT WATCHDOG · under a starved GPU (heavy load · slow swiftshader)
+     the r3f <Canvas> can fail to initialize AT ALL — the element stays at
+     the 300×150 default for the whole session and the field is a blank
+     rectangle (a real reduced-motion/slow-GPU user bug, and the goldens'
+     13.66% hero bistable: probe sessions showed the flake state IS the
+     uninitialized canvas). The inner demand watchdog can't fire there (its
+     component never mounts), so the recovery lives OUTSIDE: if the canvas
+     hasn't marked `data-painted` after a grace, remount the whole Canvas
+     (a fresh context attempt) — 3 tries with backoff, then leave it be
+     (no WebGL → the page's own background carries the register). */
+  const [glTry, setGlTry] = useState(0)
+  useEffect(() => {
+    if (disabled || glTry >= 3) return
+    const t = setTimeout(
+      () => {
+        const c = wrap.current?.querySelector('canvas')
+        if (c && !c.dataset.painted) setGlTry((n) => n + 1)
+      },
+      2500 * (glTry + 1),
+    )
+    return () => clearTimeout(t)
+  }, [disabled, glTry])
   const scroll = useRef(0)
   const [active, setActive] = useState(true)
 
@@ -339,6 +387,7 @@ export default function DitherField() {
   return (
     <div ref={wrap} className="depth-fixed" aria-hidden>
       <Canvas
+        key={glTry}
         aria-hidden
         gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
         dpr={[1, 1.5]}
