@@ -20,7 +20,6 @@ import Proof from '../sections/Proof'
 import Faq from '../sections/Faq'
 import { FAQ_ITEMS } from '../sections/faq-data'
 import FinalCTA from '../sections/FinalCTA'
-import ScrollRail from '../shell/ScrollRail'
 
 /* ─── / · the v4 trust landing ───────────────────────────────────────────────
    Renders PURELY the v4 sections (design doc §6), stamped 01→14 in reading
@@ -302,7 +301,6 @@ export function Component() {
 
       {/* the wayfinding rail (W10b) · scroll-spy ticks + FIG readout + page
            progress — wide desktop only, discovered from the sections above */}
-      <ScrollRail />
 
       {/* ─── the easter egg · « enter the galaxy » · lazy chunk, on trigger only.
            Esc / the close button unmounts it → frees the WebGL context. ─── */}

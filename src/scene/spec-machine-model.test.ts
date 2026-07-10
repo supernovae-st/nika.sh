@@ -136,6 +136,16 @@ describe('buildSpecMachine v2 · the hull', () => {
     }
   })
 
+  /* the hull hues · every station wears the hue of the verb it serves */
+  const HULL_HUE: Record<string, string> = {
+    frame: '#8db4ff',
+    permits: '#ff7a3c',
+    stdlib: '#22d3ee',
+    extract: '#22d3ee',
+    providers: '#5b8cff',
+    errors: '#b07bff',
+  }
+
   it('seeds carry the stratum index · verb tint on tetrad + bridge slabs', () => {
     for (let k = 0; k < m.nodeCount; k++) {
       const node = MACHINE_NODES[k]
@@ -148,8 +158,13 @@ describe('buildSpecMachine v2 · the hull', () => {
         expect(t[0]).toBeCloseTo(r, 2)
         expect(t[1]).toBeCloseTo(g, 2)
         expect(t[2]).toBeCloseTo(b, 2)
+      } else if (node.family === 'test') {
+        expect(t[2]).toBeGreaterThan(t[0]) /* the mock stays dim blue */
       } else {
-        expect(t[2]).toBeGreaterThan(t[0]) /* the wire-blue family */
+        const [r, g, b] = hex(HULL_HUE[node.stratum])
+        expect(t[0]).toBeCloseTo(r, 2)
+        expect(t[1]).toBeCloseTo(g, 2)
+        expect(t[2]).toBeCloseTo(b, 2)
       }
     }
     /* the structure lights with real strata only: THE RING (permits) · the

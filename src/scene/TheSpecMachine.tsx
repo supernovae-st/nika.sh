@@ -70,9 +70,6 @@ interface CalloutRig {
     label: HTMLSpanElement | null
     /** per-item eased opacity — the CURRENT section's callout stays lit */
     o?: number
-    /** eased label offset from its slot (0 at hero/dock · to-anchor at full) */
-    dx?: number
-    dy?: number
   }[]
 }
 
@@ -106,6 +103,7 @@ function Machine({
      camera always revolves around the section it is reading */
   const group = useRef<THREE.Group>(null)
   const inner = useRef<THREE.Group>(null)
+  const spin = useRef(0)
   const { camera, gl } = useThree()
 
   /* ── the pick bus + THE HELM's drag — one pointer state machine ───────────
@@ -202,6 +200,10 @@ function Machine({
       onHover(null)
     }
     const onWheel = (e: WheelEvent) => {
+      /* THE SCROLL LAW · a bare wheel over the canvas SCROLLS THE PAGE
+         (half the viewport is ship — capturing it hijacked the read);
+         zoom is deliberate: ctrl/cmd + wheel (the maps convention) */
+      if (!e.ctrlKey && !e.metaKey) return
       e.preventDefault()
       helmRef.current.zoom = Math.max(
         0.55,
@@ -231,6 +233,8 @@ function Machine({
     u.uFade.value = Math.min(1, u.uFade.value + delta * 0.7)
     /* the hover bus · either side of the page may have written it */
     u.uHi.value = hiRef.current
+
+    const flight = flightRef?.current
 
     /* a pending ignition stamped by the prop effect plays from now
        (-1 = idle · 0..8 = one stratum · -2 = the ASSEMBLED full-ship surge) */
@@ -269,8 +273,13 @@ function Machine({
     }
     const exT = helm.explode ? 1 : 0
     u.uExplode.value += (exT - u.uExplode.value) * Math.min(1, delta * 2.6)
-
-    const flight = flightRef?.current
+    /* THE SHOWCASE ease · hero + finale wear the full hull hues, the mass
+       plate light and the blooming starfield; the dock reads by ignition.
+       (Regression #119: the flight rewrite dropped this write — uHero sat
+       at 0 forever and the whole colour pass was dead.) */
+    const st0 = flight?.state
+    const heroT = st0 === 'hero' || st0 === 'finale' ? 1 : 0
+    u.uHero.value += (heroT - u.uHero.value) * Math.min(1, delta * 2.4)
 
     /* the pose glide · one eased move per section boundary: the ship sails
        under the camera (inner x → -pose.x, explode-compensated so the
@@ -290,17 +299,19 @@ function Machine({
     let tPitch = pose.pitch
     let tDist = pose.dist
     let lookX = pose.x
-    if (flight && flight.state === 'full') {
-      const p = flight.progress
-      const f = POSES.frame
-      tYaw = f.yaw + p * Math.PI * 2
-      tPitch = f.pitch + 0.14 * Math.sin(p * Math.PI)
-      tDist = f.dist - 2.6 * Math.sin(p * Math.PI)
-      /* the flyby · the camera SAILS the spine while the hull revolves:
-         toward the bow on the first quarter, past the waist at the dive,
-         toward the stern on the third — home at both ends (sin 2πp = 0) */
-      lookX = f.x + 0.85 * Math.sin(p * Math.PI * 2)
+    /* THE TURN · at the hero the whole vessel revolves on its own (the
+       showcase idle); the FINALE spins a touch faster — the assembled
+       flyover. Between them the accumulated turn eases to the nearest
+       full revolution so every dock pose lands on its exact framing. */
+    const st = flight?.state
+    if (st === 'hero' || st === 'finale') {
+      spin.current += delta * (st === 'finale' ? 0.17 : 0.11)
+      if (st === 'finale') tDist = Math.min(tDist, 5.6) /* the flyover fills */
+    } else {
+      const settle = Math.round(spin.current / (Math.PI * 2)) * Math.PI * 2
+      spin.current += (settle - spin.current) * Math.min(1, delta * 2.2)
     }
+    tYaw += spin.current
     /* THE EXPLODED DRAWING must FIT · while the strata stand apart the
        camera pulls back to the overview and centres the spine — zooming
        into one station of an exploded ship showed only fragments */
@@ -326,7 +337,9 @@ function Machine({
       const el = gl.domElement
       const rect = el.getBoundingClientRect()
       const v = new THREE.Vector3()
-      const full = flight?.state === 'full'
+      const st2 = flight?.state
+      const hero = st2 === 'hero'
+      const full = st2 === 'finale'
       /* depth cue during the turn · far-side stations whisper (project the
          hull centre once; anchors deeper than it are behind the ship) */
       let centreZ = 0.5
@@ -337,7 +350,7 @@ function Machine({
       for (let si = 0; si < rig.items.length; si++) {
         const it = rig.items[si]
         if (!it?.line || !it.dot || !it.label) continue
-        const target = helm.dragging ? 0 : pose.focus < 0 || pose.focus === si ? 1 : 0
+        const target = helm.dragging || hero ? 0 : full || pose.focus === si ? 1 : pose.focus < 0 ? 0 : 0
         it.o = (it.o ?? 0) + (target - (it.o ?? 0)) * Math.min(1, delta * 3)
         const op = it.o.toFixed(3)
         it.label.style.opacity = op
@@ -363,20 +376,13 @@ function Machine({
           it.dot.style.opacity = dops
         }
         const left = it.label.dataset.side === 'l'
-        /* DURING THE BOARDING the labels leave their plate slots and RIDE
-           the ship — a short tick beside each station instead of a leader
-           crossing the screen (the spider-web killer). Eased morph both
-           ways: the same chips fly out to the plate as the hero returns. */
+        /* the labels hold their PLATE SLOTS (left/right columns) — the
+           engineering-plate read at the finale, one clean leader at the
+           dock; only the line's far end sails with the hull */
         const lw = it.label.offsetWidth
         const lh = it.label.offsetHeight
-        const tx = full ? px + (left ? 18 : -lw - 18) - it.label.offsetLeft : 0
-        const ty = full ? py - lh / 2 - it.label.offsetTop : 0
-        const kM = Math.min(1, delta * 6)
-        it.dx = (it.dx ?? 0) + (tx - (it.dx ?? 0)) * kM
-        it.dy = (it.dy ?? 0) + (ty - (it.dy ?? 0)) * kM
-        it.label.style.transform = `translate(${it.dx.toFixed(1)}px, ${it.dy.toFixed(1)}px)`
-        const x1 = it.label.offsetLeft + it.dx + (left ? lw + 6 : -6)
-        const y1 = it.label.offsetTop + it.dy + lh / 2
+        const x1 = it.label.offsetLeft + (left ? lw + 6 : -6)
+        const y1 = it.label.offsetTop + lh / 2
         it.line.setAttribute('x1', x1.toFixed(1))
         it.line.setAttribute('y1', y1.toFixed(1))
         it.line.setAttribute('x2', px.toFixed(1))

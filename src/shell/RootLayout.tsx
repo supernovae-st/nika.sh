@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
+import ScrollRail from './ScrollRail'
 import { useHead } from '@unhead/react'
 import { AuroraProvider } from '../fx/EdgeAurora'
 import { toneForRoute } from '../fx/aurora-context'
@@ -153,6 +154,9 @@ export default function RootLayout() {
           on the prerendered markup — no JS timing, no exit phase to desync. */}
       <div id="main" tabIndex={-1} className="skip-target route-enter" key={pathname}>
         <Outlet />
+        {/* the wayfinding rail · site-wide (keyed by route: each page
+            re-discovers its own section marks; <3 marks = no rail) */}
+        <ScrollRail key={pathname} />
       </div>
       {showFooter ? <SiteFooter /> : null}
     </AuroraProvider>

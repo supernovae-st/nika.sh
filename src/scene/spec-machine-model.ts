@@ -127,6 +127,20 @@ const hexRgb = (h: string): [number, number, number] => [
 const LIT_BLUE = hexRgb('#4f86ff')
 const DIM_BLUE = hexRgb('#2a4470')
 
+/* THE HULL HUES · every station wears the hue of the verb it serves (the
+   site's own 4-hue family — never an invented colour): the hold + array
+   are invoke's tools (cyan) · the engines serve infer (blue) · THE RING
+   bounds exec-and-everything (the boundary orange) · the shield speaks
+   agent's typed failures (violet) · the keel is the struck structure. */
+const HUE: Record<string, [number, number, number]> = {
+  frame: hexRgb('#8db4ff'),
+  permits: hexRgb('#ff7a3c'),
+  stdlib: hexRgb('#22d3ee'),
+  extract: hexRgb('#22d3ee'),
+  providers: hexRgb('#5b8cff'),
+  errors: hexRgb('#b07bff'),
+}
+
 /** quaternion from orthonormal basis columns (e · n · r), e×n = r */
 function quatFromBasis(
   e: readonly number[],
@@ -337,7 +351,7 @@ export function buildSpecMachine(): SpecMachineModel {
            the 3 required keys lead, drawn heavier */
         const x = BOW_X - 0.12 - keelSeg * (i + 0.5)
         const req = node.family === 'required'
-        put(k, 'frame', [x, 0, 0], [keelSeg * 0.74, req ? 0.075 : 0.05, req ? 0.075 : 0.05], LIT_BLUE, 7)
+        put(k, 'frame', [x, 0, 0], [keelSeg * 0.74, req ? 0.075 : 0.05, req ? 0.075 : 0.05], HUE.frame, 7)
         quat.set(IDENTITY_Q, k * 4)
         centers.set(node.id, [x, 0, 0])
         break
@@ -372,7 +386,7 @@ export function buildSpecMachine(): SpecMachineModel {
         /* THE RING's 4 gate stations at the cardinals — the spokes' feet */
         const a = -Math.PI / 2 + (2 * Math.PI * i) / 4
         const p: [number, number, number] = [X_RING, Math.cos(a) * R_RING, Math.sin(a) * R_RING]
-        put(k, 'permits', p, [0.16, 0.2, 0.09], LIT_BLUE, 37)
+        put(k, 'permits', p, [0.16, 0.2, 0.09], HUE.permits, 37)
         yzRadialQuat(a, quat, k * 4)
         centers.set(node.id, p)
         break
@@ -386,7 +400,7 @@ export function buildSpecMachine(): SpecMachineModel {
           Math.cos(a) * R_HOLD,
           Math.sin(a) * R_HOLD,
         ]
-        put(k, 'stdlib', p, fetch ? [0.1, 0.09, 0.08] : [0.068, 0.06, 0.052], LIT_BLUE, 41)
+        put(k, 'stdlib', p, fetch ? [0.1, 0.09, 0.08] : [0.068, 0.06, 0.052], HUE.stdlib, 41)
         yzRadialQuat(a, quat, k * 4)
         centers.set(node.id, p)
         break
@@ -408,7 +422,7 @@ export function buildSpecMachine(): SpecMachineModel {
           'providers',
           p,
           local ? [0.085, 0.085, 0.13] : mock ? [0.05, 0.05, 0.07] : [0.062, 0.062, 0.1],
-          mock ? DIM_BLUE : LIT_BLUE,
+          mock ? DIM_BLUE : HUE.providers,
           53,
         )
         sternQuat(a, quat, k * 4)
@@ -421,7 +435,7 @@ export function buildSpecMachine(): SpecMachineModel {
         const a = fetchA - ARRAY_SPREAD / 2 + spread
         const r = R_ARRAY - 0.1 * Math.abs(i - (CANON.extractModes - 1) / 2) * 0.4
         const p: [number, number, number] = [X_HOLD - 0.12 - 0.03 * (i % 3), Math.cos(a) * r, Math.sin(a) * r]
-        put(k, 'extract', p, [0.036, 0.036, 0.05], LIT_BLUE, 67)
+        put(k, 'extract', p, [0.036, 0.036, 0.05], HUE.extract, 67)
         yzRadialQuat(a, quat, k * 4)
         centers.set(node.id, p)
         break
@@ -431,7 +445,7 @@ export function buildSpecMachine(): SpecMachineModel {
         const a = -Math.PI / 2 + (2 * Math.PI * i) / CANON.errorNamespaces
         const arc = ((2 * Math.PI * R_SKIRT) / CANON.errorNamespaces) * 0.68
         const p: [number, number, number] = [X_SKIRT, Math.cos(a) * R_SKIRT, Math.sin(a) * R_SKIRT]
-        put(k, 'errors', p, [arc, 0.2, 0.03], LIT_BLUE, 79)
+        put(k, 'errors', p, [arc, 0.2, 0.03], HUE.errors, 79)
         coneQuat(a, SKIRT_TILT, quat, k * 4)
         centers.set(node.id, p)
         break
@@ -450,7 +464,7 @@ export function buildSpecMachine(): SpecMachineModel {
     const k = nodeCount + j
     const stratum: StratumKey =
       j < ringStructs ? 'permits' : j < ringStructs + TRUSS_SEGS ? 'frame' : 'providers'
-    put(k, stratum, st.p, st.s, LIT_BLUE, 101)
+    put(k, stratum, st.p, st.s, HUE[stratum] ?? LIT_BLUE, 101)
     st.q(quat, k * 4)
   })
 
