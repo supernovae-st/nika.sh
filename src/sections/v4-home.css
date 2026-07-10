@@ -2526,3 +2526,11 @@
     0 30px 70px -30px rgb(0 0 0 / 0.85),
     0 8px 24px -12px rgb(0 0 0 / 0.6);
 }
+
+/* the teaser panel's plan strip (arc 11 W3) · the selected file's shape in
+   THE plan language, seated between the filename bar and the code well —
+   compact (single row scrolls on long chains via the pm-flow well) */
+.v4uc-panel-plan {
+  padding: 12px 14px 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
