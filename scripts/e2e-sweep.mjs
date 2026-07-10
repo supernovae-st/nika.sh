@@ -316,7 +316,12 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
         res({ moved: Math.abs(window.scrollY - y0) > 100, p: +p.toFixed(3), dy: Math.round(window.scrollY - y0) })
       }, 500))
     })()`)
-    if (r.moved && r.p > 0.2 && r.p < 0.4) return true
+    /* the assertion is the POSITION, not the delta: the film sits at p≈1
+       when this check starts, so p∈[0.2,0.4] can ONLY result from the seek
+       landing where the pointer pointed. (`moved` was the old criterion —
+       a slow runner can apply the scroll AFTER the 500ms read, so the next
+       attempt drags to a position it is already at: dy 0, p 0.3, correct.) */
+    if (r.p > 0.2 && r.p < 0.4) return true
     await sleep(1500)
   }
   return r
