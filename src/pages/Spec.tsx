@@ -1,6 +1,8 @@
+import { Suspense, lazy, useRef } from 'react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
+import { usePlan3D } from '../sections/morph/use-plan3d'
 import { CANON } from '../canon.generated'
 import { ENGINE_VERSION, SPEC, REPO, routeHead, VERBS as VERB_CARDS } from '../content'
 import { CodeFile } from '../components/CodeFile'
@@ -159,6 +161,13 @@ const STAMP_CELLS: { n: number; label: string; sub: string; anchor: string; stra
 const SAMPLE_YAML =
   SHOWCASE_YAML['t1-standup-digest'] ?? Object.values(SHOWCASE_YAML)[0] ?? 'nika: v1\n'
 
+/* W1 · THE SPEC MACHINE · the rail 3D layer (desktop ≥1024px + motion + WebGL
+   + rail-near, lazy chunk — three itself is already the shared vendor chunk).
+   It retires the 2D schematic only once actually mounted ([data-machine], set
+   by the layer itself — the drum-rings pattern), so the schematic stays the
+   mobile / reduced-motion / no-WebGL truth. */
+const TheSpecMachine = lazy(() => import('../scene/TheSpecMachine'))
+
 export function Component() {
   /* reveal the section once, on first intersection (motion-safe; default visible;
      safety-net timer reveals anyway if the observer misfires) */
@@ -171,6 +180,11 @@ export function Component() {
   const cur = current ? bySection[current] : null
   const assembledMax = SPEC_SECTIONS.length - 1 /* license is the close whisper */
   const assembled = [...lit].filter((k) => k !== 'license').length
+
+  /* the machine's capability gate · the canvas mounts over the rail stage
+     only when the moment can be worth its cost */
+  const stageRef = useRef<HTMLDivElement>(null)
+  const machine = usePlan3D(stageRef)
 
   useHead({
     title: 'Spec · Nika',
@@ -782,8 +796,13 @@ export function Component() {
                 the truth). W0: the 2D schematic + the reading HUD; W1 mounts the
                 canvas over the same stage ([data-machine] retires the SVG). */}
             <aside className="spec-rail" aria-hidden>
-              <div className="spec-rail-stage">
+              <div className="spec-rail-stage" ref={stageRef}>
                 <HudMarks />
+                {machine ? (
+                  <Suspense fallback={null}>
+                    <TheSpecMachine stageRef={stageRef} lit={lit} current={current} />
+                  </Suspense>
+                ) : null}
                 <SpecSchematic lit={lit} current={current} />
                 <span className="spec-rail-hud spec-rail-hud--tl">
                   {cur ? `${cur.fig}·····${cur.title.toUpperCase()}` : 'SPEC·····NIKA: V1'}

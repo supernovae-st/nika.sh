@@ -1,0 +1,20 @@
+/* ─── the spec machine · /spec rail 3D layer (smw- · W1) ──────────────────────
+   Ships with the lazy TheSpecMachine chunk — desktop/WebGL/motion only, so
+   none of this CSS ever loads for the fallback audience. The 2D schematic in
+   the rail stays the untouched fallback truth; [data-machine] (set on
+   .spec-rail-stage by the layer itself once mounted — the drum-rings /
+   ThePlanScene pattern) retires it while the canvas holds the stage. The
+   rail HUD whispers + corner crop-marks are page DOM and stay: the machine
+   renders under the same instruments. */
+.smw {
+  position: absolute;
+  inset: 0;
+}
+.smw canvas {
+  display: block;
+}
+/* the canvas takes the stage — the schematic steps aside ONLY once the layer
+   is really mounted */
+.spec-rail-stage[data-machine] .spec-schematic {
+  display: none;
+}
