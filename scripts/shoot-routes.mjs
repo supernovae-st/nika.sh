@@ -231,10 +231,18 @@ for (const route of ROUTES) {
     await sleep(400)
     if (wantsAuroraFreeze) await evaluate(FREEZE)
     if (SCROLL_TO) {
-      const hit = await evaluate(
-        `(() => { const el = document.querySelector(${JSON.stringify(SCROLL_TO)}); if (!el) return 'NO-TARGET'; el.scrollIntoView({ block: 'center' }); return 'ok' })()`,
-      )
+      /* the demo-drive law, applied to the harness itself: html
+         { scroll-behavior: smooth } hijacks a bare scrollIntoView, and a
+         long main-thread task mid-flight (a lazy scene chunk mounting)
+         strands the animation short — drivers pass behavior:'instant'.
+         Scroll TWICE: content-visibility sections materialize after the
+         first jump and shift the target's Y (the stale-Y law); the second
+         jump lands on the settled layout (idempotent when already stable). */
+      const SCROLL = `(() => { const el = document.querySelector(${JSON.stringify(SCROLL_TO)}); if (!el) return 'NO-TARGET'; el.scrollIntoView({ block: 'center', behavior: 'instant' }); return 'ok' })()`
+      const hit = await evaluate(SCROLL)
       if (hit !== 'ok') console.warn(`scroll-to · ${SCROLL_TO} · ${hit}`)
+      await sleep(350)
+      await evaluate(SCROLL)
       /* sticky-runway caveat: a target inside a pinned section (ScrollMorph)
          scrolls to its DOCUMENT offset — the stage shows whatever that scroll
          progress renders, not necessarily the target's settled face. Sweep
