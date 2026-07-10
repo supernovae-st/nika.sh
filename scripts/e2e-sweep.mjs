@@ -179,12 +179,23 @@ for (const route of NAV_ROUTES) {
   failedReqs.length = 0
   await send('Page.navigate', { url: `${BASE}${route}` })
   await sleep(route === '/' ? 3500 : 1800) /* home mounts the lazy 3D field */
-  const harvest = await evaluate(`(() => {
-    const ids = [...document.querySelectorAll('[id]')].map((el) => el.id)
-    const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'))
-      .filter((h) => h && (h.startsWith('/') || h.startsWith('#')) && !h.startsWith('//'))
-    return { ids, hrefs, tone: document.documentElement.dataset.auroraTone ?? '' }
-  })()`)
+  /* a transient page-context exception racing the evaluate must be a ROUTE
+     finding, never a process crash (round 4 died in 57s on an "Uncaught
+     object" mid-harvest — one flaky context invalidation killed the belt) */
+  let harvest = null
+  for (let attempt = 0; attempt < 3 && !harvest; attempt++) {
+    harvest = await evaluate(`(() => {
+      const ids = [...document.querySelectorAll('[id]')].map((el) => el.id)
+      const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'))
+        .filter((h) => h && (h.startsWith('/') || h.startsWith('#')) && !h.startsWith('//'))
+      return { ids, hrefs, tone: document.documentElement.dataset.auroraTone ?? '' }
+    })()`).catch(() => null)
+    if (!harvest) await sleep(1000)
+  }
+  if (!harvest) {
+    fail(route, 'harvest', 'evaluate failed 3× (page context)')
+    continue
+  }
   idsByRoute.set(route, new Set(harvest.ids))
   for (const h of harvest.hrefs) {
     const abs = h.startsWith('#') ? `${route}${h}` : h
