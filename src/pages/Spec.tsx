@@ -898,14 +898,31 @@ export function Component() {
                   </Suspense>
                 ) : null}
                 <SpecSchematic lit={lit} current={current} />
-                <span className="spec-rail-hud spec-rail-hud--tl">
-                  {cur ? `${cur.fig}·····${cur.title.toUpperCase()}` : 'SPEC·····NIKA: V1'}
-                </span>
-                <span className="spec-rail-hud spec-rail-hud--tr">
-                  {cur ? `${cur.countLabel}·····${cur.count}` : `SECTIONS·····${SPEC_SECTIONS.length}`}
-                </span>
+                {/* THE POSITION PLATE · where you are, said loud: the section
+                    fig + its ship station + the derived count */}
+                <div className="spec-rail-pos">
+                  <span className="spec-rail-pos-fig mono">
+                    {cur ? `▸ ${cur.fig}` : '▸ THE SHIP'}
+                  </span>
+                  <span className="spec-rail-pos-part">
+                    {cur ? cur.shipPart.toUpperCase() : 'NIKA: V1'}
+                  </span>
+                  <span className="spec-rail-pos-sub mono">
+                    {cur
+                      ? `${cur.title.toUpperCase()} · ${cur.countLabel}·····${cur.count}`
+                      : `SECTIONS·····${SPEC_SECTIONS.length} · READ TO ASSEMBLE`}
+                  </span>
+                </div>
                 <span className="spec-rail-hud spec-rail-hud--bl">
                   ASSEMBLED·····{assembled}/{assembledMax}
+                </span>
+                <span className="spec-rail-gauge">
+                  {SPEC_SECTIONS.map((s) => (
+                    <i
+                      key={s.fig}
+                      className={`${lit.has(s.key) ? 'is-lit' : ''}${current === s.key ? ' is-cur' : ''}`}
+                    />
+                  ))}
                 </span>
                 <span className="spec-rail-hud spec-rail-hud--br">
                   {current === 'license' ? 'AGPL·····FOREVER' : 'NIKA: V1·····FROZEN'}

@@ -98,11 +98,15 @@ varying float vLit;
 varying float vFocusA;
 varying vec3 vTint;
 varying float vPulse;
+uniform float uHero;
 void main() {
   vec3 deep = mix(vec3(0.043, 0.075, 0.18), vTint * 0.26, 0.4);
   vec3 col = mix(vec3(0.039, 0.047, 0.063), deep, vLit * (0.18 + 0.2 * vFocusA));
-  /* the breath lifts a lit face a whisper (the drum's fill law) */
-  col += vec3(0.02, 0.034, 0.075) * vPulse * (0.3 + 0.7 * vLit);
+  /* the breath lifts a lit face a whisper (the drum's fill law); at the
+     OVERVIEW the faces carry the night-blue plate light — mass reads at a
+     distance where hairlines cannot (the engineering-plate look) */
+  col = mix(col, vec3(0.082, 0.142, 0.325), uHero * (0.62 + 0.2 * vLit));
+  col += vec3(0.02, 0.034, 0.075) * vPulse * (0.3 + 0.7 * vLit) * (1.0 + uHero * 0.8);
   gl_FragColor = vec4(col, 1.0);
 }
 `
@@ -137,20 +141,26 @@ varying float vNear;
 varying float vHi;
 varying float vPulse;
 uniform float uFade;
+uniform float uHero;
 /* highp: the vertex stage declares uTime highp (its default) — a shared
    uniform must agree across stages or the program fails to validate */
 uniform highp float uTime;
 void main() {
   /* the tol.is line law · alpha from facing; a ghost stratum whispers, an
      ignited one reads, the focused one carries the frame; the breath
-     brightens the front as it sails past (the drum's line law) */
+     brightens the front as it sails past (the drum's line law). At the
+     OVERVIEW poses (uHero) the ghost hull glows up and the heartbeat
+     becomes a visible sweep — the beauty idle. */
   float a = (0.34 + 0.52 * vFacing) * (0.52 + 0.48 * vLit) * (0.3 + 0.7 * vFocusA)
-    * (0.86 + 0.5 * vPulse) * uFade * vNear;
+    * (0.86 + (0.5 + 1.15 * uHero) * vPulse) * uFade * vNear
+    * (1.0 + uHero * 0.7 * (1.0 - vLit));
   /* the hovered node pulses over everything (the W2 bus highlight) */
   a = min(a * (1.0 + vHi * 1.4) + vHi * 0.22, 1.0);
   if (a < 0.01) discard;
-  /* shadow wire blue → the instance's lit tint (verb hue on tetrad + slabs) */
+  /* shadow wire blue → the instance's lit tint (verb hue on tetrad + slabs);
+     the hero showcase lifts the ghost ink toward the lit family */
   vec3 col = mix(vec3(0.086, 0.188, 0.478), vTint, vLit * (0.45 + 0.55 * vKey));
+  col = mix(col, vec3(0.31, 0.525, 1.0), uHero * 0.3 * (1.0 - vLit));
   col += vec3(0.06, 0.1, 0.2) * vPulse * vLit;
   col = mix(col, vec3(0.553, 0.706, 1.0), vHi * (0.55 + 0.35 * sin(uTime * 7.0)));
   gl_FragColor = vec4(col, a);
@@ -186,8 +196,11 @@ varying float vLit;
 varying float vFocusA;
 varying float vNear;
 uniform float uFade;
+uniform float uHero;
 void main() {
-  float a = (0.06 + 0.3 * vLit) * (0.18 + 0.82 * vFocusA) * uFade * vNear;
+  /* the full-wire ghost: at the overview the whole harness reads */
+  float a = (0.06 + 0.3 * vLit) * (0.18 + 0.82 * vFocusA) * uFade * vNear
+    * (1.0 + uHero * 1.0);
   if (a < 0.008) discard;
   vec3 col = mix(vec3(0.086, 0.188, 0.478), vec3(0.31, 0.525, 1.0), vLit);
   gl_FragColor = vec4(col, min(a, 1.0));
@@ -259,6 +272,8 @@ export interface MachineLayers {
     uHi: { value: number }
     /** the axial explode 0..1 (CPU-eased toward the toggle) */
     uExplode: { value: number }
+    /** the overview showcase 0..1 (1 at frame/license poses) */
+    uHero: { value: number }
     /** per-stratum ignition level · CPU-eased toward 0/1 (~1s wash) */
     uLit: { value: Float32Array }
     /** per-stratum x-ray alpha · CPU-eased (focused 1 · others 0.3) */
@@ -313,6 +328,8 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     uHi: { value: -1 },
     /** the axial explode 0..1 · strata separate along the spine */
     uExplode: { value: 0 },
+    /** the overview showcase 0..1 · ghost glow-up + amplified breath sweep */
+    uHero: { value: 0 },
     uLit: { value: new Float32Array(N_STRATA) },
     uFocusA: { value: new Float32Array(N_STRATA).fill(1) },
     uExplodeOff: { value: m.explode },

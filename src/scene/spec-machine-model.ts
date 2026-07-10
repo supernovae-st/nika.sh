@@ -554,11 +554,13 @@ export function buildSpecMachine(): SpecMachineModel {
    array face-on). */
 function buildPoses(): Record<StratumKey, MachinePose> {
   const f = (k: StratumKey): number => stratumIndex(k)
-  const FRAME: MachinePose = { yaw: 0.55, pitch: 0.3, dist: 4.6, y: 0, x: -0.1, focus: -1 }
+  /* the beauty shot · the WHOLE vessel, bow to stern, with air for the
+     callout labels (the canvas is portrait — length is the constraint) */
+  const FRAME: MachinePose = { yaw: 1.12, pitch: 0.2, dist: 6.7, y: -0.02, x: -0.13, focus: -1 }
   return {
     frame: FRAME,
-    verbs: { yaw: 1.05, pitch: 0.24, dist: 2.5, y: 0.02, x: X_CORE, focus: f('verbs') },
-    plan: { yaw: 1.62, pitch: 0.12, dist: 2.9, y: 0, x: X_BRIDGE - 0.15, focus: f('plan') },
+    verbs: { yaw: 1.38, pitch: 0.24, dist: 2.5, y: 0.02, x: X_CORE, focus: f('verbs') },
+    plan: { yaw: 1.78, pitch: 0.12, dist: 2.9, y: 0, x: X_BRIDGE - 0.15, focus: f('plan') },
     permits: { yaw: 2.45, pitch: 0.12, dist: 4.3, y: 0.05, x: X_RING, focus: f('permits') },
     stdlib: { yaw: 3.2, pitch: 0.34, dist: 2.9, y: 0, x: X_HOLD, focus: f('stdlib') },
     providers: { yaw: 4.05, pitch: 0.2, dist: 3.4, y: 0, x: X_ENGINES + 0.1, focus: f('providers') },
