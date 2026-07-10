@@ -1,0 +1,124 @@
+/* ─── plan-map · THE plan language, shared (arc 11) ───────────────────────────
+   The pm-* anatomy is the film's flat map, verbatim (morph.css .morph-node /
+   .morph-wave-cap values copied at extraction time — if the film's register
+   evolves, this file follows in the same PR). Consumers: /use-cases (W1),
+   /play (W2). Static · SSR-safe · dark-register (the slab card carries its
+   own floor, it reads on any section theme). */
+
+.pm-flow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  scrollbar-width: thin;
+}
+.pm-wave {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: none;
+}
+/* the film's caption grammar · 11px mono letterspaced faint (morph-wave-cap) */
+.pm-wave-cap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+  white-space: nowrap;
+}
+.pm-wave-n {
+  color: var(--v4-hud-faint);
+}
+.pm-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* the slab card · the film's node, verbatim (morph-node) — the flat card IS
+   the slab after the flatten (wave M identity); /use-cases shows the same
+   object, so it wears the same face */
+.pm-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 118px;
+  padding: 8px 12px 8px 14px;
+  border: 1px solid rgb(96 141 255 / 0.42);
+  border-radius: calc(var(--v4-radius) + 1px);
+  background-color: rgb(17 30 68 / 0.58);
+  background-image:
+    radial-gradient(rgb(141 180 255 / 0.14) 1px, transparent 1px),
+    var(--v4-grain-img),
+    linear-gradient(180deg, rgb(141 180 255 / 0.07), rgb(0 0 0 / 0.2) 85%);
+  background-size:
+    5px 5px,
+    var(--v4-grain-size, 4px) var(--v4-grain-size, 4px),
+    auto;
+  box-shadow:
+    inset 2px 0 0 var(--node-vhue, var(--v4-accent)),
+    inset 0 1px 0 rgb(180 205 255 / 0.16),
+    inset 0 -2px 0 rgb(0 0 0 / 0.35),
+    inset 0 0 22px rgb(47 107 255 / 0.12),
+    0 2px 0 rgb(2 6 20 / 0.55),
+    0 12px 26px -14px rgb(20 50 160 / 0.45);
+}
+/* gates · the projected truth (when = conditional · always = runs regardless) */
+.pm-node[data-gate='when'] {
+  border-style: dashed;
+}
+.pm-node[data-gate='always'] {
+  border-style: dotted;
+}
+.pm-node-id {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--v4-text);
+}
+.pm-node-verb {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--node-vhue, var(--v4-text-dim));
+}
+/* the tool line · the film's face chip register (dim mono, the honest call) */
+.pm-node-tool {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 17ch;
+}
+/* the direction · one chevron in the wire register (the flat map's ink),
+   seated on the first row of cards */
+.pm-arrow {
+  position: absolute;
+  right: -13px;
+  top: 44px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgb(141 180 255 / 0.72);
+  pointer-events: none;
+}
+.pm-gate-note {
+  margin: 6px 0 0 2px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--v4-text-faint);
+}
+/* keyboard overflow well (long T3/T4 chains) · the CodeFile well law */
+.pm-flow:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+}
