@@ -2,361 +2,147 @@ import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
 import { AuroraContext, type AuroraContextValue } from './aurora-context'
 import './edge-aurora.css'
 
-/* ─── EdgeAurora · the intelligence weather (v9 · the soft law) ───────────────
-   A soft iridescent light (the Siri-glow palette — violet · pink · periwinkle
-   · coral · peach, anchored on the site blue) that hugs the screen frame
-   while the center stays transparent. It is THE DRUM of the manifesto: every
-   run = a beat of the frame. At rest it is a whisper (CSS breath).
+/* ─── THE MACHINED FRAME · provider (v10 · the nuke) ──────────────────────────
+   The frame is static hardware (edge-aurora.css); this provider keeps the
+   SAME 7-method drum API the run surfaces already speak (TheRun ·
+   ScrollMorph · TheBoundary — zero caller changes) and drives exactly TWO
+   custom properties + one data attribute on the frame element, via ref:
 
-   E7 · RUN MODE (v6 ring law): while a run replays, `data-run` widens the band
-   + bloom, speeds the spectrum's travel, and the recorded progress swells the
-   rim — the frame IS run visualization. Every task_started beats a brighter
-   pulse (the per-verb tint of v5 was retired by the v6 full-spectrum ring).
-   The verdict sweeps one bright arc (success) or flashes danger (failure /
-   permits denial) INSIDE a ~1.2s hold, then the frame decays back to the
-   idle spectrum — idle is byte-identical to pre-E7.
+     --run-glow  0..1 · the lining's presence (0 at rest — no lining)
+     --run-p     0..1 · how far around the frame the ring has drawn
+     data-danger       · flips the ring to the danger coral while set
 
-   Every API call mutates CSS custom properties / data attributes on the
-   aurora element DIRECTLY (via ref) — NO React re-render per event.
+   One rAF decay loop eases the glow toward its floor (run: 0.8 · idle: 0).
+   ⚠ the loop is ALWAYS scheduled through the fire-time wrapper `tickNow`,
+   never `tickRef.current` by value — the arc-10a law: scheduling the value
+   captures the initial no-op forever and the decay dies for the session.
 
-   SSR-safe: the visual is pure CSS; browser access lives in effects and
-   event-time callbacks only. */
+   Every API call mutates the DOM directly — NO React re-render per event.
+   SSR-safe: browser access lives in callbacks only. */
 
-const REST_INTENSITY = 0.11 /* arc 9f · at rest the frame IS the dark anodized
-    material — the iridescence is a quiet light on the contour (the aurora
-    rides ABOVE the bezel since arc 9h). The per-section 4th dimension nudges
-    it (TONES[].i); the RUNS own the wow (0.34 floor · 0.46 pulses). Matches
-    the CSS fallback so post-pulse decay lands where the prerender started. */
-/** run mode raises the resting floor — the frame must clearly speak while a
-    run plays (the drum), a diffuse bloom, never a hard border. Above every
-    section floor so the run always reads as an event. */
-const RUN_REST_INTENSITY = 0.34
-/** Peak the halo jumps to on a pulse before it decays. Calibrated for wide-
-    gamut displays: P3 renders these hues far more vivid than headless
-    captures — every ceiling here deliberately undershoots what sRGB
-    screenshots suggest. */
-const PULSE_INTENSITY = 0.46
-/** Decay back to rest takes ~450ms (the sharper v5 beat). */
-const DECAY_MS = 450
-/** after workflow_completed the bloom HOLDS ~1.2s (the verdict sweep plays
-    inside it), then the frame decays back to the quiet blue rest */
-const RUN_HOLD_MS = 1200
+/** run mode's resting glow — the ring clearly present while a run plays */
+const RUN_FLOOR = 0.8
+/** a task beat kicks the glow above the floor, then it decays back */
+const BEAT_GLOW = 1
+/** decay back toward the floor takes ~380ms (the drum's sharp beat) */
+const DECAY_MS = 380
+/** after runEnd the full ring HOLDS ~1.2s (the verdict reads), then fades */
+const HOLD_MS = 1200
 const DANGER_MS = 650
-/** the HELLO · one soft spectral breath on first paint that settles into the
-    resting presence (the frame announces itself, then holds — no longer goes
-    « quiet », arc 9d). */
-const HELLO_INTENSITY = 0.34
-const HELLO_DELAY_MS = 400
 
 export function AuroraProvider({ children }: { children: ReactNode }) {
   const elRef = useRef<HTMLDivElement | null>(null)
 
-  /* Live decay state, kept in refs so the API mutates the DOM (not React). */
-  const intensityRef = useRef(REST_INTENSITY)
-  const restRef = useRef(REST_INTENSITY)
-  /* the 4th dimension (arc 9d) · the current section's iridescence floor. The
-     decay eases to it at rest; the run rises above it and returns to it (not
-     a fixed const). Updated by the section scroll-spy. */
-  const sectionRestRef = useRef(REST_INTENSITY)
+  const glowRef = useRef(0)
+  const floorRef = useRef(0)
   const rafRef = useRef<number | null>(null)
   const lastTsRef = useRef(0)
-  const tickRef = useRef<(ts: number) => void>(() => {})
-  /* ⚠ ALWAYS schedule THIS wrapper, never `tickRef.current` by value. The
-     section-response effect runs BEFORE the installer effect (declaration
-     order) and computes synchronously on mount — passing `tickRef.current`
-     there captured the initial NO-OP, which never resets `rafRef` → every
-     later `rafRef.current == null` guard stayed false and the decay loop
-     was DEAD for the whole motion-on session (intensity stuck at the last
-     direct write: hello 0.34 · pulses 0.46 — the arc-9d « stuck near
-     hello » probe was THIS, not headless starvation). The wrapper reads
-     the ref at FIRE time: rAF fires after paint, after all mount effects. */
-  const tickNow = useCallback((ts: number) => tickRef.current(ts), [])
-  const sweepTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const dangerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  /* the HELLO breath · once per mount, motion-gated */
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
-    const t = setTimeout(() => {
-      const el = elRef.current
-      if (!el) return
-      intensityRef.current = HELLO_INTENSITY
-      el.style.setProperty('--aurora-intensity', String(HELLO_INTENSITY))
-      lastTsRef.current = 0
-      if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickNow)
-    }, HELLO_DELAY_MS)
-    return () => clearTimeout(t)
-  }, [tickNow])
+  const tickRef = useRef<(ts: number) => void>(() => {})
+  const tickNow = useCallback((ts: number) => tickRef.current(ts), [])
 
-  /* ── arc 9 · THE SECTION RESPONSE · « plus intelligent » ───────────────────
-     The frame READS which section owns the viewport center (a scroll-spy over
-     the [data-aurora] sections), not a blind scroll-%: the film is the deep
-     cool centerpiece, the boundary/wedge run deep, the gallery cools to
-     periwinkle, where-it-fits goes airy, the close warms to coral. Content
-     pages (no marked section) hold the calm default. The JS only SETS the
-     target (bezel depth + a BOUNDED tint hue · all in [246,372]° · violet →
-     magenta → coral, the short way, never green/yellow) — the SMOOTHING is
-     CSS: --aurora-bezel-k / --aurora-tint-hue are @property-registered and
-     transition on :root, so a section change eases the frame over ~0.7s.
-     Motion-gated · reduced-motion holds the default (the transition snaps
-     via the blanket rule → deterministic · goldens unchanged). */
+  /* the decay body installs in an effect (assigning a ref during render
+     trips the compiler rule; the wrapper reads it at fire time anyway) */
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return
-    const root = document.documentElement
-    /* the tone table · k = bezel depth · h = tint hue (Siri pool · 246 violet →
-       258 site blue → 372 (=12°) coral) · i = the 4th dimension: how bright
-       the iridescence glows in this section (the film burns hottest, the airy
-       light section calms, the close warms) · c = the 5th (arc 9j): how RICH
-       the static edge-light is on the black frame — the colour lives in the
-       light now, never in the slab (chroma bounded ≤0.17 · the P3 de-pink
-       lesson: the real screen renders more vivid than any headless shot). */
-    const TONES: Record<string, { k: number; h: number; i: number; c: number }> = {
-      film: { k: 1.46, h: 246, i: 0.2, c: 0.17 },
-      deep: { k: 1.34, h: 250, i: 0.13, c: 0.13 },
-      /* cool matches the @property initial values (262° · c 0.12) — the
-         default tone IS the pre-JS state, so a content page loads settled
-         instead of drifting 262→256 over the 1.05s colour transition
-         (the load wobble · arc 9j socratic pass) */
-      cool: { k: 1.2, h: 262, i: 0.11, c: 0.12 },
-      blue: { k: 1.28, h: 258, i: 0.16, c: 0.155 },
-      light: { k: 1.0, h: 268, i: 0.09, c: 0.08 },
-      warm: { k: 1.08, h: 372, i: 0.14, c: 0.14 },
-    }
-    let raf: number | null = null
-    let last = ''
-    const compute = () => {
-      raf = null
-      const centerY = window.innerHeight / 2
-      /* the fallback is the ROUTE's declared register (arc 9i · RootLayout
-         stamps data-aurora-tone on <html> per pathname) — the contour reads
-         where you are on every page, not just the marked home sections */
-      let tone = document.documentElement.dataset.auroraTone || 'cool'
-      for (const el of document.querySelectorAll<HTMLElement>('[data-aurora]')) {
-        const r = el.getBoundingClientRect()
-        if (r.top <= centerY && r.bottom >= centerY) {
-          tone = el.dataset.aurora || 'cool'
-          break
-        }
+    tickRef.current = (ts: number) => {
+      const el = elRef.current
+      if (!el) {
+        rafRef.current = null
+        return
       }
-      if (tone === last) return
-      last = tone
-      const t = TONES[tone] ?? TONES.cool
-      root.style.setProperty('--aurora-bezel-k', t.k.toFixed(3))
-      root.style.setProperty('--aurora-tint-hue', `${t.h}deg`)
-      root.style.setProperty('--aurora-tint-c', t.c.toFixed(3))
-      /* the 4th dimension · the iridescence floor follows the section. It is
-         the rest target the decay eases to — but the RUN owns the intensity
-         while it plays (don't fight it); when the run ends it returns to this
-         section floor. Kick the decay loop (inline arm · the refs are all in
-         scope · avoids the TDZ on the arm callback defined below). */
-      sectionRestRef.current = t.i
-      if (elRef.current?.dataset.run == null) {
-        restRef.current = t.i
-        lastTsRef.current = 0
-        if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickNow)
-      }
-    }
-    const onScroll = () => {
-      if (raf == null) raf = requestAnimationFrame(compute)
-    }
-    compute()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    /* a route change re-tones without waiting for the first scroll */
-    window.addEventListener('aurora:retone', onScroll)
-    return () => {
-      if (raf != null) cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      window.removeEventListener('aurora:retone', onScroll)
-      root.style.removeProperty('--aurora-bezel-k')
-      root.style.removeProperty('--aurora-tint-hue')
-      root.style.removeProperty('--aurora-tint-c')
-    }
-  }, [tickNow])
-
-  /* Tab hidden → park the ambient animations (data-idle). The ring's slow
-     drift is a feature while WATCHED; it composits for nobody when hidden. */
-  useEffect(() => {
-    const onVis = () => {
-      const el = elRef.current
-      if (!el) return
-      if (document.hidden) el.dataset.idle = 'on'
-      else delete el.dataset.idle
-    }
-    document.addEventListener('visibilitychange', onVis)
-    return () => document.removeEventListener('visibilitychange', onVis)
-  }, [])
-
-  /* Install the decay-loop frame fn once on mount. */
-  useEffect(() => {
-    const tick = (ts: number) => {
-      const el = elRef.current
-      const last = lastTsRef.current || ts
-      const dt = ts - last
+      const dt = lastTsRef.current ? ts - lastTsRef.current : 16
       lastTsRef.current = ts
-
-      // exponential ease toward the CURRENT rest floor (idle 0.11 · run 0.34)
-      const rest = restRef.current
-      const k = 1 - Math.exp((-dt / DECAY_MS) * 4)
-      intensityRef.current += (rest - intensityRef.current) * k
-
-      if (el) {
-        el.style.setProperty('--aurora-intensity', intensityRef.current.toFixed(4))
-      }
-
-      if (Math.abs(intensityRef.current - rest) > 0.002) {
+      const floor = floorRef.current
+      const g = glowRef.current
+      const next = floor + (g - floor) * Math.exp(-dt / (DECAY_MS / 3))
+      glowRef.current = Math.abs(next - floor) < 0.005 ? floor : next
+      el.style.setProperty('--run-glow', glowRef.current.toFixed(3))
+      if (glowRef.current !== floor) {
         rafRef.current = requestAnimationFrame(tickNow)
       } else {
-        if (el) el.style.setProperty('--aurora-intensity', String(rest))
         rafRef.current = null
         lastTsRef.current = 0
       }
     }
-    tickRef.current = tick
-
-    return () => {
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current)
-      if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
-      if (dangerTimerRef.current != null) clearTimeout(dangerTimerRef.current)
-    }
   }, [tickNow])
 
-  /* (re)start the decay loop toward the current rest floor */
-  const arm = useCallback(() => {
-    lastTsRef.current = 0
-    if (rafRef.current == null) {
-      rafRef.current = requestAnimationFrame(tickNow)
-    }
-  }, [tickNow])
-
-  const pulse = useCallback(() => {
-    if (typeof window === 'undefined') return
-    intensityRef.current = PULSE_INTENSITY
-    const el = elRef.current
-    if (el) el.style.setProperty('--aurora-intensity', String(PULSE_INTENSITY))
-    arm()
-  }, [arm])
-
-  const runStart = useCallback(() => {
-    if (typeof window === 'undefined') return
-    const el = elRef.current
-    if (!el) return
-    if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
-    el.dataset.run = 'on'
-    el.style.setProperty('--aurora-progress', '0')
-    restRef.current = Math.max(RUN_REST_INTENSITY, sectionRestRef.current)
-    arm()
-  }, [arm])
-
-  /* v6 ring law: the spectrum frame carries no per-verb tint — a verb tick IS
-     the pulse (the beat still lands per task_started; the `verb` argument
-     stays in the API so a verb-tinted surface can return without changing
-     every caller). */
-  const verbTick = useCallback<AuroraContextValue['verbTick']>(() => {
-    pulse()
-  }, [pulse])
-
-  const runProgress = useCallback((p: number) => {
-    const el = elRef.current
-    if (!el) return
-    el.style.setProperty('--aurora-progress', String(Math.min(1, Math.max(0, p))))
-  }, [])
-
-  const flashDanger = useCallback(() => {
-    if (typeof window === 'undefined') return
-    const el = elRef.current
-    if (!el) return
-    el.dataset.flash = 'danger'
-    if (dangerTimerRef.current != null) clearTimeout(dangerTimerRef.current)
-    dangerTimerRef.current = setTimeout(() => {
-      delete el.dataset.flash
-    }, DANGER_MS)
-  }, [])
-
-  const runEnd = useCallback(
-    (verdict: 'success' | 'failure') => {
-      if (typeof window === 'undefined') return
-      const el = elRef.current
-      if (!el) return
-      /* the bloom HOLDS through the verdict beat — the four-verb frame stays
-         bright while the sweep (or the danger flash) plays inside it, THEN
-         decays back to the quiet blue rest (~1.2s after workflow_completed) */
-      if (verdict === 'failure') {
-        flashDanger()
-      } else {
-        el.dataset.run = 'sweep'
-      }
-      if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
-      sweepTimerRef.current = setTimeout(() => {
-        delete el.dataset.run
-        restRef.current = sectionRestRef.current /* back to the section floor */
-        arm()
-      }, RUN_HOLD_MS)
+  const kick = useCallback(
+    (to: number) => {
+      glowRef.current = Math.max(glowRef.current, to)
+      elRef.current?.style.setProperty('--run-glow', glowRef.current.toFixed(3))
+      lastTsRef.current = 0
+      if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickNow)
     },
-    [arm, flashDanger],
+    [tickNow],
   )
 
-  /* ABORT · leave run mode with NO verdict beat (scrub-back out of the run
-     window · unmount mid-replay · route change). Only run-mode state resets —
-     an in-flight danger flash keeps its own timer (TheBoundary's beat is not
-     run-scoped and must not be cut). */
-  const runStop = useCallback(() => {
-    if (typeof window === 'undefined') return
-    const el = elRef.current
-    if (!el) return
-    if (sweepTimerRef.current != null) clearTimeout(sweepTimerRef.current)
-    sweepTimerRef.current = null
-    delete el.dataset.run
-    el.style.setProperty('--aurora-progress', '0')
-    restRef.current = sectionRestRef.current /* back to the section floor */
-    arm()
-  }, [arm])
-
-  const value = useMemo<AuroraContextValue>(
-    () => ({ pulse, runStart, verbTick, runProgress, flashDanger, runEnd, runStop }),
-    [pulse, runStart, verbTick, runProgress, flashDanger, runEnd, runStop],
-  )
+  const api = useMemo<AuroraContextValue>(() => {
+    const setP = (p: number) =>
+      elRef.current?.style.setProperty('--run-p', Math.min(1, Math.max(0, p)).toFixed(4))
+    const clearHold = () => {
+      if (holdTimerRef.current) clearTimeout(holdTimerRef.current)
+      holdTimerRef.current = null
+    }
+    const fadeOut = () => {
+      floorRef.current = 0
+      kick(glowRef.current) /* arm the loop; it decays to the new floor */
+      /* reset the ring AFTER the fade so the next run draws from zero */
+      holdTimerRef.current = setTimeout(() => setP(0), 400)
+    }
+    return {
+      pulse: () => kick(0.5),
+      runStart: () => {
+        clearHold()
+        floorRef.current = RUN_FLOOR
+        setP(0)
+        elRef.current?.setAttribute('data-run', 'on')
+        kick(RUN_FLOOR)
+      },
+      verbTick: () => kick(BEAT_GLOW),
+      runProgress: (p: number) => setP(p),
+      flashDanger: () => {
+        const el = elRef.current
+        if (!el) return
+        el.setAttribute('data-danger', 'on')
+        kick(BEAT_GLOW)
+        if (dangerTimerRef.current) clearTimeout(dangerTimerRef.current)
+        dangerTimerRef.current = setTimeout(() => el.removeAttribute('data-danger'), DANGER_MS)
+      },
+      runEnd: (verdict: 'success' | 'failure') => {
+        clearHold()
+        const el = elRef.current
+        if (!el) return
+        /* the verdict · the ring completes (success sweeps it full; failure
+           flashes danger on whatever drew), holds a beat, then fades */
+        if (verdict === 'success') setP(1)
+        else {
+          el.setAttribute('data-danger', 'on')
+          if (dangerTimerRef.current) clearTimeout(dangerTimerRef.current)
+          dangerTimerRef.current = setTimeout(() => el.removeAttribute('data-danger'), DANGER_MS)
+        }
+        kick(BEAT_GLOW)
+        el.removeAttribute('data-run')
+        holdTimerRef.current = setTimeout(fadeOut, HOLD_MS)
+      },
+      runStop: () => {
+        clearHold()
+        elRef.current?.removeAttribute('data-run')
+        elRef.current?.removeAttribute('data-danger')
+        fadeOut()
+      },
+    }
+  }, [kick])
 
   return (
-    <AuroraContext.Provider value={value}>
+    <AuroraContext.Provider value={api}>
       {children}
-      <EdgeAurora ref={elRef} />
+      {/* the frame · fixed hardware (the slab floods to the viewport edge);
+          [data-edge-aurora] is the harness hook (shoot-routes run states) */}
+      <div ref={elRef} className="frame" data-edge-aurora aria-hidden>
+        <span className="frame-lining" />
+      </div>
     </AuroraContext.Provider>
-  )
-}
-
-/* ─── the visual element ──────────────────────────────────────────────────────
-   A position:fixed; pointer-events:none layer (z-index 61: above the bezel's
-   60, above content, below any modal). The ring + center-mask live in
-   edge-aurora.css. */
-export function EdgeAurora({
-  ref,
-}: {
-  ref?: React.Ref<HTMLDivElement>
-}) {
-  return (
-    <>
-    {/* arc 9 · THE BEZEL — the « dark skeuo » material: a STATIC near-black
-        screen-edge (opaque slab + gasket + catch-light) that is ALWAYS on,
-        below the iridescence (z-60 < the aurora's z-61 · arc 9h), so the
-        coloured light blooms ON the dark frame and the contour itself
-        ignites on runs. No animation → deterministic under reduced-motion
-        (goldens). */}
-    <div className="edge-bezel" aria-hidden="true" />
-    <div ref={ref} className="edge-aurora" aria-hidden="true" data-edge-aurora>
-      {/* v8 · THE DEPTH SHEET — a third, much deeper ring behind the bloom:
-          same canonical atomic ring mask, huge padding + heavy blur, counter-
-          sloshing slowly. It reads as the aurora having a body BEHIND the
-          viewport edge, not just a rim ON it. Same intensity law (CSS var). */}
-      <span className="edge-aurora-depth" />
-      {/* v10 · THE LINING — the one near-crisp element (the Apple read: the
-          colours stay diffuse, a faint WHITE line owns the definition). Same
-          canonical atomic ring mask, hairline padding, tiny blur. */}
-      <span className="edge-aurora-lining" />
-    </div>
-    </>
   )
 }

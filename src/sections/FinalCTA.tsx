@@ -27,7 +27,6 @@ export default function FinalCTA() {
       id="start"
       aria-labelledby="cta-title"
       className="theme-dark v4sec v4-flip scroll-mt-24"
-      data-aurora="warm"
     >
       <div className="v4sec-wrap v4cta-wrap">
         {/* THE SIGNATURE OPENS THE CLOSE (operator call): the living particle

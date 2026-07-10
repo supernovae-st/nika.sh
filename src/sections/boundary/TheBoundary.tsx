@@ -66,7 +66,6 @@ export default function TheBoundary({ flagship }: { flagship: FlagshipEntry }) {
       id="the-boundary"
       aria-labelledby="the-boundary-title"
       className="theme-dark v4sec scroll-mt-24"
-      data-aurora="deep"
     >
       <div className="v4sec-wrap">
         <p className="v4beyebrow" data-rise>

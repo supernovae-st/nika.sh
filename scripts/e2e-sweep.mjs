@@ -11,7 +11,7 @@
          the film's done-frame triangle (log hover lights the node + the
          file lines), the drag-seek (the 1:1 pointer path — rAF-free, so it
          works headless), the playground handoff href, the /play ?y= share
-         round-trip, the route tones on <html>, and the agpl + drum eggs.
+         round-trip, the machined frame mount, and the agpl + drum eggs.
 
    Headless laws (learned the hard way — arc 8): self-chaining rAF loops
    STARVE under swiftshader (never assert on glide/play motion); React 19
@@ -149,13 +149,6 @@ const settle = async (maxMs = 15000) => {
   await sleep(300)
 }
 
-/* the aurora route-tone contract (aurora-context toneForRoute) — spot checks.
-   Deliberately a COPY, not an import: the sweep is the second accountant.
-   Keep in step with ROUTE_TONES (src/fx/aurora-context.ts) — manifesto went
-   warm→blue at the arc-9j socratic pass (the tone follows THE BACKGROUND,
-   not the page's mood: coral edge-light on the blue drum read as a mismatch). */
-const TONE_EXPECT = { '/play': 'deep', '/blog': 'light', '/learn': 'light', '/install': 'blue', '/manifesto': 'blue', '/spec': 'cool' }
-
 /* ── PASS 1 · every route: console/network clean + harvest ids/links ─────────
    The 50 /errors/<code> pages are template-identical — CDP-load a SAMPLE
    (first per namespace) for console/network; link integrity (pass 2) still
@@ -188,7 +181,7 @@ for (const route of NAV_ROUTES) {
       const ids = [...document.querySelectorAll('[id]')].map((el) => el.id)
       const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'))
         .filter((h) => h && (h.startsWith('/') || h.startsWith('#')) && !h.startsWith('//'))
-      return { ids, hrefs, tone: document.documentElement.dataset.auroraTone ?? '' }
+      return { ids, hrefs, frames: document.querySelectorAll('[data-edge-aurora]').length }
     })()`).catch(() => null)
     if (!harvest) await sleep(1000)
   }
@@ -205,18 +198,16 @@ for (const route of NAV_ROUTES) {
   for (const e of consoleErrs) fail(route, 'console.error', e)
   for (const e of pageErrs) fail(route, 'page error', e)
   for (const e of failedReqs) fail(route, 'request', e)
-  const expected = TONE_EXPECT[route]
-  if (expected) {
-    /* the tone is stamped by HYDRATION — one read races it on a slow env
-       (the "" finding reproduced on a 2-core CI runner: a race, not a bug).
-       Poll, never fixed-sleep (the belt's own law). */
-    let tone = harvest.tone
-    for (let i = 0; i < 20 && tone !== expected; i++) {
-      await sleep(400)
-      tone = await evaluate(`document.documentElement.dataset.auroraTone ?? ''`)
-    }
-    if (tone !== expected) fail(route, 'route tone', `expected ${expected}, got "${tone}"`)
+  /* the machined frame contract (post frame-nuke): ONE fixed frame element,
+     site-wide, on every route. The frame mounts with the shell — but a slow
+     env can race the read (the old tone check's lesson). Poll, never
+     fixed-sleep (the belt's own law). */
+  let frames = harvest.frames
+  for (let i = 0; i < 20 && frames !== 1; i++) {
+    await sleep(400)
+    frames = await evaluate(`document.querySelectorAll('[data-edge-aurora]').length`)
   }
+  if (frames !== 1) fail(route, 'machined frame', `expected 1 frame element, got ${frames}`)
   if (consoleErrs.length + pageErrs.length + failedReqs.length === 0) console.log(`  ✓ ${route}`)
 }
 

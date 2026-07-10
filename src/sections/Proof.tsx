@@ -79,7 +79,7 @@ export default function Proof() {
   const ref = useRevealOnce<HTMLElement>()
 
   return (
-    <section ref={ref} id="proof" aria-labelledby="proof-title" className="theme-light v4sec v4-flip v4-cv v4-sheet scroll-mt-24" data-aurora="light">
+    <section ref={ref} id="proof" aria-labelledby="proof-title" className="theme-light v4sec v4-flip v4-cv v4-sheet scroll-mt-24">
       <div className="v4sec-wrap">
         <SectionHead fig="11" id="proof-title" title={<>The control is the proof.</>}>
           No logos to borrow, no quotes to dress up. Just what the engine{' '}
