@@ -1536,6 +1536,24 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             {/* THE DAG · wave columns + measured wires (the aspiration's target) */}
             <div className="morph-dag" ref={dagRef}>
               <svg className="morph-wires" aria-hidden>
+                {/* the arrowhead (arc 10h) · « every arrow is a wait » made
+                    literal — a hairline chevron oriented by the wire's own
+                    end tangent. It rides the FLOW path, so it inks in WITH
+                    the flat map (the 0.94 crossfade ramp) and lives on the
+                    static scene — never mid-draw (the base wire draws by
+                    dashoffset; a marker there would pop before the ink). */}
+                <defs>
+                  <marker
+                    id="morph-arrow"
+                    markerWidth="7"
+                    markerHeight="7"
+                    refX="5.4"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <path className="morph-arrow-head" d="M1,0.4 L5.6,3 L1,5.6" />
+                  </marker>
+                </defs>
                 {edges.map((e, i) => (
                   <g key={`${e.from}-${e.to}`}>
                     <path
@@ -1546,10 +1564,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                     />
                     {/* the circulation (W10) · a dash flow riding the same
                         curve — the flat plan visibly LIVES: data moves along
-                        every wait. Motion-safe; phase-gated in morph.css. */}
-                    <path className="morph-wire-flow" d={e.d} />
+                        every wait. Motion-safe; phase-gated in morph.css.
+                        The chevron replaces the target socket dot (an arrow
+                        arriving INTO a dot read as clutter). */}
+                    <path className="morph-wire-flow" d={e.d} markerEnd="url(#morph-arrow)" />
                     <circle cx={e.x1} cy={e.y1} r={2} />
-                    <circle cx={e.x2} cy={e.y2} r={2} />
                   </g>
                 ))}
               </svg>
