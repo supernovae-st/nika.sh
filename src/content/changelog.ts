@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-10',
+    tag: 'release',
+    title: 'v0.99.0 · the audit tells the whole truth, the run narrates its own',
+    body: 'The check ladder earns its MODELS rung: every model: must resolve in THIS binary — a bare id or an undriveable provider is a finding with the fix taught in-line, pricing refuses to conjure what it cannot resolve, and the MCP nika_check lane obeys the same law. Two media builtins graduate: nika:image_fx (15 deterministic op families over a hand-rolled PNG codec, recipe in the tEXt chunk) and nika:chart (five chart types compiled to byte-identical SVG, parity proven across architectures) — both zero-dep, both sha256-chained into the trace. Egress to outputs closes the one documented gap: the workflow boundary gets its own sink-only declassification valve, and every embedded template now passes its own audit. explain --forecast computes duration/cost/risk priors from YOUR local traces (p50/p90 earned at n ≥ 5, never a model call); wire covers opencode and hermes (8 targets); and the release tarball itself is funnel-gated — a stranger’s broken first run never uploads.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.99.0',
+  },
+  {
     date: '2026-07-09',
     tag: 'site',
     title: 'nika.sh v4.6 · the black frame, and the page learns its colour law',
