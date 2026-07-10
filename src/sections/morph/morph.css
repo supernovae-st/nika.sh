@@ -378,11 +378,24 @@
 }
 .morph-wires path {
   fill: none;
-  stroke: rgb(140 170 255 / 0.28);
+  /* presence up from 0.28 (arc 10h) — the connections ARE the map's meaning;
+     still whisper-class (the P3 eye owns the number) */
+  stroke: rgb(140 170 255 / 0.38);
   stroke-width: 1.4;
 }
-.morphsec[data-armed] .morph-wires path:not(.morph-wire-flow) {
-  opacity: 0; /* the driver draws them (dashoffset + opacity per frame) */
+/* the arrowhead · a hairline chevron in the flow's own register (it inherits
+   the flow path's opacity gates — static scene + the 0.94 ink-in ramp) */
+.morph-arrow-head {
+  fill: none;
+  stroke: rgb(141 180 255 / 0.8);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+.morphsec[data-armed] .morph-wires path:not(.morph-wire-flow):not(.morph-arrow-head) {
+  opacity: 0; /* the driver draws them (dashoffset + opacity per frame) —
+     the arrowhead is EXEMPT: it lives inside the <marker> subtree (this
+     blanket matched it and silently killed every chevron in armed mode ·
+     found by DOM probe, arc 10h) and already rides the flow path's gates */
 }
 /* the circulation (W10) · a sparse dash train rides each wire — the flat
    plan visibly lives (data moving along every wait). Gated to the frames
@@ -391,7 +404,7 @@
    seamless loop (dasharray sums to the offset step). */
 .morph-wire-flow {
   fill: none;
-  stroke: rgb(141 180 255 / 0.6);
+  stroke: rgb(141 180 255 / 0.72);
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-dasharray: 3 15;
