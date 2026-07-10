@@ -210,7 +210,7 @@ outputs:
 /* ── the whole file · the nine fragments, assembled ───────────────────────────
    Every idea above, composed into the ONE workflow the page teaches. This
    exact text passes `nika check` on the shipping binary — the transcript
-   below is that run, VERBATIM (captured 2026-07-08 · nika 0.98.0). The
+   below is that run, VERBATIM (captured 2026-07-10 · nika 0.99.0). The
    honesty law: re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
 workflow: weekly-radar
@@ -268,6 +268,7 @@ export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'dim', text: '      wave 1 fetch_news (invoke · nika:fetch) · repo_log (exec · sh -c) · read_notes (invoke · nika:read)' },
   { kind: 'dim', text: '      wave 2 digest (infer · ollama/llama3.2:3b)' },
   { kind: 'dim', text: '      wave 3 save (invoke · nika:write)' },
+  { kind: 'ok', text: ' ✔ MODELS   1 model resolves in this binary' },
   { kind: 'warn', text: ' ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)' },
   { kind: 'dim', text: '   digest  ollama/llama3.2:3b  UNBOUNDED — no max_tokens declared' },
   { kind: 'ok', text: ' ✔ SECRETS  no information-flow escapes' },
@@ -278,8 +279,9 @@ export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'soft', text: ' ○ PERMITS  no boundary declared (engine floor only) · `--infer-permits` writes one' },
   { kind: 'soft', text: ' ↳ HINT     [cost] declare `max_tokens` on `digest` — the cost report becomes a hard ceiling instead of UNBOUNDED' },
   { kind: 'soft', text: ' ↳ HINT     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)' },
+  { kind: 'soft', text: ' ↳ HINT     [inputs] `read_notes` reads `./notes.md` which does not exist here — create it (or point its var elsewhere) · the run would fail at that wave' },
   { kind: 'soft', text: ' ↳ HINT     [inputs] required input(s) with no default · pass at run time: --var topic=…' },
-  { kind: 'ok', text: ' ✔ audited · 5 task(s) · 3 wave(s) · permits none · est ≥$0.0000 · 3 hints' },
+  { kind: 'ok', text: ' ✔ audited · 5 task(s) · 3 wave(s) · permits none · est ≥$0.0000 · 4 hints' },
 ]
 
 export const ERROR_JSON = `{

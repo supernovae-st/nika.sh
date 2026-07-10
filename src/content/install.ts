@@ -54,12 +54,12 @@ tasks:
 `
 
 /* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
-   Captured 2026-07-08 against nika 0.98.0 (the verified release binary)
+   Captured 2026-07-10 against nika 0.99.0 (the verified release binary)
    running the exact HELLO_YAML above. The honesty law: these frames render
    REAL output — re-capture when the CLI's voice changes, never hand-edit. */
 export const VERSION_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika --version' },
-  { kind: 'out', text: 'nika 0.98.0' },
+  { kind: 'out', text: 'nika 0.99.0' },
 ]
 
 export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
@@ -81,9 +81,9 @@ export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
   { kind: 'out', text: '  🦋 nika · hello · 1 tasks' },
   { kind: 'dim', text: '     permits ✓ engine floor (no boundary declared)' },
   { kind: 'out', text: '' },
-  { kind: 'ok', text: '  ✔  greet  exec · echo  4ms' },
+  { kind: 'ok', text: '  ✔  greet  exec · echo  15ms' },
   { kind: 'dim', text: '  ── 1/1 done · $0.00 · elapsed 0.0s ─────────────────────────────' },
-  { kind: 'dim', text: '    trace: .nika/traces/2026-07-08T21-32-56Z-159a.ndjson · 5 events · chain 4b6e4f393cc93c5b535988adad9dceb6' },
+  { kind: 'dim', text: '    trace: .nika/traces/2026-07-10T08-20-33Z-f3ff.ndjson · 5 events · chain 202fd3b1a0501118265e09485183acb0b577e49fde3b6638e27e03dbf4a7d106' },
 ]
 
 /* ── troubleshooting · the four honest snags (each fix is verifiable) ────────── */
