@@ -289,6 +289,15 @@ function Machine({
          toward the stern on the third — home at both ends (sin 2πp = 0) */
       lookX = f.x + 0.85 * Math.sin(p * Math.PI * 2)
     }
+    /* THE EXPLODED DRAWING must FIT · while the strata stand apart the
+       camera pulls back to the overview and centres the spine — zooming
+       into one station of an exploded ship showed only fragments */
+    const ex = u.uExplode.value
+    if (ex > 0.02) {
+      tDist = tDist + (Math.max(tDist, 7.2) - tDist) * ex
+      lookX = lookX + (-0.15 - lookX) * ex
+      tPitch = tPitch + (0.24 - tPitch) * ex
+    }
     g.rotation.y += (tYaw + helm.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
     g.rotation.x += (tPitch + helm.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k

@@ -1701,9 +1701,8 @@
 .spec-helm {
   display: none;
   position: absolute;
-  left: 50%;
+  right: 3%;
   bottom: 0;
-  transform: translateX(-50%);
   gap: 8px;
   z-index: 2;
 }
@@ -1913,6 +1912,21 @@
    THE POSITION PLATE (top-left, loud) + the 9-tick spine gauge (bottom-centre):
    the current section's fig, its ship station and its derived count — always
    in the eye while reading. Page DOM: also the reduced-motion truth. */
+@media (prefers-reduced-motion: no-preference) {
+  .spec-rail-pos {
+    animation: specPosLand 0.45s var(--ease-ui, ease) both;
+  }
+}
+@keyframes specPosLand {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .spec-rail-pos {
   position: absolute;
   top: 3%;
@@ -2119,7 +2133,7 @@
     bottom: 27px;
   }
   .spec-rail.is-live .spec-helm {
-    bottom: 22px;
+    bottom: 58px;
   }
   .spec-rail.is-live[data-stage='hero'] {
     /* the copy column ends ≈43vw on every width — the ship owns the rest,
