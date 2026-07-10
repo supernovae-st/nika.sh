@@ -48,6 +48,17 @@ export type RecEntry = {
 
 export const RECORD: RecEntry[] = [
   {
+    id: 'linux-just-a-hobby',
+    date: '1991-08-25',
+    strand: 'drum',
+    title: 'Just a hobby',
+    line: 'A student posts a free operating system to a Usenet group: nothing big or professional, he says. The commons that carries the sovereign stack begins here.',
+    src: {
+      label: 'comp.os.minix · the announcement',
+      href: 'https://groups.google.com/g/comp.os.minix/c/dlNtH7RRrGA',
+    },
+  },
+  {
     id: 'the-clipper-chip',
     date: '1993',
     strand: 'cage',
@@ -284,8 +295,5 @@ export const RECORD: RecEntry[] = [
   },
 ]
 
-/* ─── THE BENCH · facts waiting on a verified primary source ───────────────────
-   Pin, move up, keep the sort. Remaining:
-
-   linux-just-a-hobby   1991-08-25 · drum · Torvalds announces Linux ("just a
-                        hobby") · pin: a stable comp.os.minix archive URL */
+/* ─── THE BENCH · empty. Future facts enter through the laws above:
+   dated · one primary source · sorted · slugs forever · bump RECORD_UPDATED. */

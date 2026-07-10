@@ -1,0 +1,28 @@
+name: record-links
+
+# The manifesto record's law, enforced: every entry carries a primary
+# source and that source must answer. Probes weekly (link rot is slow)
+# and on any PR that touches the record. Dependency-free script — no
+# install step needed. 404/DNS/5xx fail; bot walls are tolerated.
+# No untrusted event input is interpolated anywhere in this workflow.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  pull_request:
+    paths:
+      - 'src/content/manifesto-record.ts'
+      - 'scripts/check-record-links.mjs'
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: probe every record source
+        run: node scripts/check-record-links.mjs

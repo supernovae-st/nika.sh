@@ -76,7 +76,7 @@ export function TheRecord({ c }: { c: ManifestoCopy }) {
           ))}
         </div>
         <div className="mono flex justify-between text-[11px] text-[var(--fg-dim)]">
-          <span>1993</span>
+          <span>{RECORD[0].date.slice(0, 4)}</span>
           <span>now</span>
         </div>
       </div>
