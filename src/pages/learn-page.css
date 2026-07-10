@@ -21,6 +21,8 @@
   border-top: 1px solid var(--v4-line);
 }
 .lrn-step {
+  /* anchor landings clear the fixed nav (the steps are rail targets now) */
+  scroll-margin-top: 104px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 18px 36px;

@@ -355,7 +355,10 @@ export function Component() {
           {/* the walkthrough · a hairline-ruled step register */}
           <ol className="lrn-steps" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {STEPS.map((s) => (
-              <li key={s.n} className="lrn-step">
+              /* id + data-sec: each step is an anchor target AND a wayfinding
+                 mark — the site rail reads the list as [ 01 ]…[ 09 ] (the
+                 fig falls back to the index; the name comes from the h2) */
+              <li key={s.n} className="lrn-step" id={`step-${s.n}`} data-sec="">
                 <div>
                   <div className="lrn-step-head">
                     <span className="lrn-step-n">
