@@ -10,7 +10,7 @@ export interface BlogInline {
 export type BlogToken =
   | { k: 'p'; inline: BlogInline[] }
   | { k: 'h'; depth: number; text: string; id: string }
-  | { k: 'code'; lang: string; filename?: string; text: string }
+  | { k: 'code'; lang: string; filename?: string; text: string; play?: string }
   | { k: 'quote'; inline: BlogInline[] }
   | { k: 'list'; ordered: boolean; items: BlogInline[][] }
   | { k: 'hr' }
@@ -80,7 +80,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "gated-release.nika.yaml",
-        "text": "nika: v1\nworkflow: gated-release\ndescription: \"Draft the release note, wait for a human yes, only then publish\"\n\npermits:\n  fs:\n    read: [\"./CHANGES.md\"]\n    write: [\"./release-note.md\"]\n  tools: [\"nika:read\", \"nika:write\", \"nika:prompt\"]\n\ntasks:\n  - id: draft\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./CHANGES.md\" }\n\n  # The gate: a human reads the draft and answers. Nothing downstream\n  # runs until this task has an answer.\n  - id: approve\n    depends_on: [draft]\n    invoke:\n      tool: \"nika:prompt\"\n      args:\n        mode: confirm\n        message: \"Publish this release note?\"\n\n  - id: publish\n    depends_on: [draft, approve]\n    when: \"${{ tasks.approve.output == true }}\"\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./release-note.md\"\n        content: \"${{ tasks.draft.output }}\"\n\noutputs:\n  approved: \"${{ tasks.approve.output }}\""
+        "text": "nika: v1\nworkflow: gated-release\ndescription: \"Draft the release note, wait for a human yes, only then publish\"\n\npermits:\n  fs:\n    read: [\"./CHANGES.md\"]\n    write: [\"./release-note.md\"]\n  tools: [\"nika:read\", \"nika:write\", \"nika:prompt\"]\n\ntasks:\n  - id: draft\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./CHANGES.md\" }\n\n  # The gate: a human reads the draft and answers. Nothing downstream\n  # runs until this task has an answer.\n  - id: approve\n    depends_on: [draft]\n    invoke:\n      tool: \"nika:prompt\"\n      args:\n        mode: confirm\n        message: \"Publish this release note?\"\n\n  - id: publish\n    depends_on: [draft, approve]\n    when: \"${{ tasks.approve.output == true }}\"\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./release-note.md\"\n        content: \"${{ tasks.draft.output }}\"\n\noutputs:\n  approved: \"${{ tasks.approve.output }}\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAcwgBcBTAEwFoNzdyIBncpS8pgYwxAAdSQaYLABEAEQwRspGKQAW5GHQbNFwNBQA0MFBBAzsmGBBhyArgFsIwGAE8O2obluyFN3mYBGuEEzkikJF5yDAt9JigkGBhsCKjopUZKWABtEQA6AHoAYQAJAEEAOQBxAFEAZXSLShEAXXjolB4KVIzM5UYWanUKKpr66NI0NFwImDTQSCg6CBrtEUnoJv1yEXnFqF4MNAt+OsDSZjA46OoYEGSYSklpBvPgODQwckiEhKGR0Q2ZmrvoiAwRDGAG8YLwyHJRFk8kUypVqiIYABfQLRADEMAAKgoYCQWsZTJZrIlZkxXIprlIZNZKMZgEwUCEmOkYIUNHIQMAiFcCPTSDMLPEMRgzPSYKKBLhXL5ZEdTMw6XSGSF0vEzhdYBBeFs0HBWG92MFgJQmAB9ISpSnSAYJTmPZ6vN6yYa4L7gaA63akAJO4yAk6+mAWNDsWCcITYEChP4JCwcJgQIgvGAiAAKXh8fmlZI6qhgPXIAH4AmrzpcPN5fHI7obyMazRbxlbSNotTq9TbGm5RAASYGgw5MY7pNvbPXpNBmUgeGQAXlnshFiiRSJ9toeTxeMY+rpTG2WFDXbwBQMdvvB8ih7XonXI3Q05D6R6d4eAFDfvf7sqHzObE6nM7IqugSTtOU4BqOupUJ+A5HMykHjqBgEriIQA"
       },
       {
         "k": "p",
@@ -443,7 +444,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "nightly-archive.nika.yaml",
-        "text": "nika: v1\nworkflow: nightly-archive\ndescription: \"Hash, count and pack the day's notes into one manifest\"\n\npermits:\n  fs:\n    read: [\"./notes/*\", \"./assets.bin\"]\n    write: [\"./assets.bin.gz\"]\n  exec: [\"shasum\", \"wc\", \"gzip\", \"echo\"]\n\ntasks:\n  # No deps between these two → the engine runs them in parallel.\n  - id: hash_notes\n    exec:\n      command: [\"shasum\", \"-a\", \"256\", \"notes/monday.md\", \"notes/tuesday.md\", \"notes/wednesday.md\"]\n\n  - id: count_notes\n    exec:\n      command: [\"wc\", \"-w\", \"notes/monday.md\", \"notes/tuesday.md\", \"notes/wednesday.md\"]\n\n  # Pack only once the notes are verified — the checksums gate the archive.\n  - id: pack_assets\n    depends_on: [hash_notes, count_notes]\n    exec:\n      command: [\"gzip\", \"-kf9\", \"assets.bin\"]\n\n  - id: manifest\n    depends_on: [pack_assets]\n    exec:\n      command: [\"echo\", \"archive ok\"]\n\noutputs:\n  checksums: \"${{ tasks.hash_notes.output }}\"\n  words: \"${{ tasks.count_notes.output }}\""
+        "text": "nika: v1\nworkflow: nightly-archive\ndescription: \"Hash, count and pack the day's notes into one manifest\"\n\npermits:\n  fs:\n    read: [\"./notes/*\", \"./assets.bin\"]\n    write: [\"./assets.bin.gz\"]\n  exec: [\"shasum\", \"wc\", \"gzip\", \"echo\"]\n\ntasks:\n  # No deps between these two → the engine runs them in parallel.\n  - id: hash_notes\n    exec:\n      command: [\"shasum\", \"-a\", \"256\", \"notes/monday.md\", \"notes/tuesday.md\", \"notes/wednesday.md\"]\n\n  - id: count_notes\n    exec:\n      command: [\"wc\", \"-w\", \"notes/monday.md\", \"notes/tuesday.md\", \"notes/wednesday.md\"]\n\n  # Pack only once the notes are verified — the checksums gate the archive.\n  - id: pack_assets\n    depends_on: [hash_notes, count_notes]\n    exec:\n      command: [\"gzip\", \"-kf9\", \"assets.bin\"]\n\n  - id: manifest\n    depends_on: [pack_assets]\n    exec:\n      command: [\"echo\", \"archive ok\"]\n\noutputs:\n  checksums: \"${{ tasks.hash_notes.output }}\"\n  words: \"${{ tasks.count_notes.output }}\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWUAcwAsAXXATwFoIMBjUkOAUyQBNWBnBjEAA7kQaYLABEACQjdSAGhgM0AV2DkYEYBxgCIDMDHKlWMDhCoBybjGBpyPGCDVoYokwFtNIbD3LikSAKsGO4g5NxQSDAw2BFR0TAYrBAcsADa4gB0APS29tzZAFTiClnZMtys4ZkARk7iALrx0Sj89ullFVXctU6ZxABejfGsAB6sDB2yMsruJTDiKAzz4oOCKxOkaMNI5DJgcdEAxDAAci5cAtY1VSisrMCGxpWG6DCASYRPJg-ETiYYqmsRlY7kcj10GAguFwrFwmXiNEcqRgpBkpAA+nkeM0YGMJpEEgklO5PFopqjuLMVnQVgAmACsADYVliCu5RGYqJl3BwWXYeNlyMoeJzubzSqzsncOMAReYxTtooiQMilKpyJj+dwcXjJjjosTSciMktqSg+flsuytPKeRaBUK5Vy7RKtVLWDKnQqmvETgAFPQGUTUVzABgmYE2LUaJLwYLeEAemCAFAIvopjPpKe5rMQIPY0-QmCxWPClUjYLp9OiuuEcZcHhxuOjROkKRjWQo1WpNfkmoTdQTCYo0CTNMbVgN1qUaDgAJwrGs9OrARUwZXI0neXx11hBLRNlswNKVsDV7iVcJ9hID-XD0dko-iTbbUqF5hsVxgHYqcgCZThQcmAmA5ZgiBYABIAG9IMMfYejbHseEyH8-3UABfND-BaTBGwkKCYL2bgDkyLsNVZZD-1QmAMPEIA"
       },
       {
         "k": "p",
@@ -754,7 +756,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "release-notes.nika.yaml",
-        "text": "nika: v1\nworkflow: release-notes\n# local model · nothing leaves this machine\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs: { read: [ ./commits.txt ], write: [ ./notes.md ] }\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  - { id: commits, invoke: { tool: \"nika:read\", args: { path: ./commits.txt } } }\n\n  - id: draft\n    depends_on: [ commits ]\n    infer:\n      prompt: \"Write release notes from these commits: ${{ tasks.commits.output }}\"\n      max_tokens: 200\n\n  - id: save\n    depends_on: [ draft ]\n    invoke: { tool: \"nika:write\", args: { path: ./notes.md, content: \"${{ tasks.draft.output }}\" } }\n\noutputs:\n  notes: \"${{ tasks.draft.output }}\""
+        "text": "nika: v1\nworkflow: release-notes\n# local model · nothing leaves this machine\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs: { read: [ ./commits.txt ], write: [ ./notes.md ] }\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  - { id: commits, invoke: { tool: \"nika:read\", args: { path: ./commits.txt } } }\n\n  - id: draft\n    depends_on: [ commits ]\n    infer:\n      prompt: \"Write release notes from these commits: ${{ tasks.commits.output }}\"\n      max_tokens: 200\n\n  - id: save\n    depends_on: [ draft ]\n    invoke: { tool: \"nika:write\", args: { path: ./notes.md, content: \"${{ tasks.draft.output }}\" } }\n\noutputs:\n  notes: \"${{ tasks.draft.output }}\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWDAU12IgGdiBaYNAF2IqQGIZ8BjCXGAWzQAmpGAHaYdegAsQwAObtycJjCkgKfCB2nBiSfkNyw0uXBF4QA9CbMQAzADoATFFsAjJEgAOxDLxD0KKCQYGGxAmABvGBIIAVgAbRh7Cw40Xj8A+3oAD3oYAF0AGhgUDH9iBKSLCSZ7XgECmABfYJU0Y3DEgCJQSCgYgS7invBoUvKugo96SjBA1upImBA4mFT0-wpimTg0MAql+nbDGBG+gaGYCAxZcKjPCClYZPWMiizc5q+WheXVgQwEGw9FaISE3mAAgoAH00MBKq9NlMQiEZNgfEEUSjPBg0p56LAugB1MqMaKkchUcQMZTYXG8FSSJjENZpN6wAAkESiMwoc3siMyaAArvRPKLmk0uqCUeZstCjvtgOFHAAGVUeEKLFawCgQJQy8HESEwuGVAFAvL5GU7PYHHnHQm9Mak4iXa63WD3R6SZ7VGnverFVLARihwlcnmzd4W4H2EViiVNKXfDwJ8UBTHUxjhLqRlTR+yx+jx0UZyVdIA"
       },
       {
         "k": "p",
@@ -1046,7 +1049,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "brief.nika.yaml",
-        "text": "nika: v1\nworkflow: brief\n# local model · the note below is hostile on purpose\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs: { read: [ ./note.md ], write: [ ./summary.md ] }\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  - { id: note, invoke: { tool: \"nika:read\", args: { path: ./note.md } } }\n\n  - id: summary\n    depends_on: [ note ]\n    infer:\n      prompt: \"Summarize this note in one sentence: ${{ tasks.note.output }}\"\n      max_tokens: 100\n\n  - id: save\n    depends_on: [ summary ]\n    invoke: { tool: \"nika:write\", args: { path: ./summary.md, content: \"${{ tasks.summary.output }}\" } }\n\noutputs:\n  summary: \"${{ tasks.summary.output }}\""
+        "text": "nika: v1\nworkflow: brief\n# local model · the note below is hostile on purpose\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs: { read: [ ./note.md ], write: [ ./summary.md ] }\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  - { id: note, invoke: { tool: \"nika:read\", args: { path: ./note.md } } }\n\n  - id: summary\n    depends_on: [ note ]\n    infer:\n      prompt: \"Summarize this note in one sentence: ${{ tasks.note.output }}\"\n      max_tokens: 100\n\n  - id: save\n    depends_on: [ summary ]\n    invoke: { tool: \"nika:write\", args: { path: ./summary.md, content: \"${{ tasks.summary.output }}\" } }\n\noutputs:\n  summary: \"${{ tasks.summary.output }}\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAIwxAFNskBiGfAYwlxgFs0ATMpgdpgBcALMjGBpeQopwIwQAZxj80M3iFxC0wGAAcArhk2KySVh1yw0uXBGYQA9BasQAzADoATFEdEkSTWQzMQXhkoJBgYbGCYAG8YDDIINlgAbRhnGxExZ2Y2GABdABoYFFIxZNSbGW1mawwATyyc3JgAX1C+NHNIlIAiUEgoOITuwt7waGLAsm68714IGTBgtoBaaOlE4VEyQpBgODQwMlgY3g7TGFH+wbZhmAgMAHNImM0IAVg0jLIGlt-WlfWsEq1XutTaYQ4vmAbBkAH11GUvjMwmFdtg-CEUSjNBg0MxNLxYN0AMpVGogABeQgEsk2YmkGnUQhkZGAYmAdCOMAAJFETvNFs4vs40NpeDpeC1mt1wSjrAAPWGnQ7ASIIAAM6u8YVWIA2MggcEMWMhrJh8OAZWBNVqyJRu32h2O7XMRL64xKU0K9yezte73K1tBDUKdHU7MJF15-IWMmcQbqIrFEql02aLW8ovFYqWYQTtSJ0b4Arj+aT2clzWlQA"
       },
       {
         "k": "p",
@@ -2864,7 +2868,8 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         "k": "code",
         "lang": "yaml",
-        "text": "nika: v1\nworkflow: og-hero\n\npermits:\n  fs: { write: [\"./assets/**\"] }     # saves are boundary-gated, per final path\n  tools: [\"nika:image_generate\"]\n\ntasks:\n  - id: hero\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: local              # your server — or openai · gemini · xai · mock\n        prompt: \"OG hero — a monarch butterfly over a nebula\"\n        aspect_ratio: \"16:9\"\n        output_dir: \"./assets/og\""
+        "text": "nika: v1\nworkflow: og-hero\n\npermits:\n  fs: { write: [\"./assets/**\"] }     # saves are boundary-gated, per final path\n  tools: [\"nika:image_generate\"]\n\ntasks:\n  - id: hero\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: local              # your server — or openai · gemini · xai · mock\n        prompt: \"OG hero — a monarch butterfly over a nebula\"\n        aspect_ratio: \"16:9\"\n        output_dir: \"./assets/og\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWNAcwFoALAUwzSSQAdqBbEAFwGcokYZtOYA3jBQY2lWAG0ARADoA9BHbtKHOQCo1UgLowAvjwMBiGOwhxK7GBAyUYAIzQBXYABNrAT1LEIrSi4A0MIwYvCDAELhBPuTcMKxoaLj80qCQUCBMEMSUAPrZwNQ+lNp0rIpgnLGkMCAusFQ0sTxhcGhg4k0G8YmwUqnQGVm5+YW+Up081sSVBrNBNHC11LD4AMYRc5tGMO5OIcoY5iGAKAQwmGeM4SAwAO0w2SygtzAAHhDXd0xoq2ATBvQ0Jj0Vi9ADyAHEYA00DBThAYF9whhVuR7I5WL4MHh3GcjlYYAU7I5cBBxlsrOxGKtWDkMD4QGheggAGxQACcZK2TlY9HRORcIAwvXkimUqhIUiAA"
       },
       {
         "k": "p",
@@ -3413,7 +3418,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "billing-brief.nika.yaml",
-        "text": "nika: v1\nworkflow: billing-brief\nmodel: ollama/llama3.2:3b\n\n# a secret is a reference to a store, never a value\nsecrets:\n  stripe_key:\n    source: env\n    key: STRIPE_KEY\n    # the complete flow policy: where this key may go\n    egress:\n      - to: \"nika:fetch\"\n        host: \"api.stripe.com\"\n      # the response stays tainted until its sink is sanctioned\n      - to: \"infer\"\n\npermits:\n  net: { http: [ \"api.stripe.com\" ] }\n  tools: [ \"nika:fetch\" ]\n\ntasks:\n  - id: charges\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://api.stripe.com/v1/charges?limit=20\"\n        headers:\n          Authorization: \"Bearer ${{ secrets.stripe_key }}\"\n\n  - id: brief\n    depends_on: [ charges ]\n    infer:\n      prompt: \"One short paragraph: what moved in these charges? ${{ tasks.charges.output }}\"\n      max_tokens: 300\n\noutputs:\n  brief: ${{ tasks.brief.output }}"
+        "text": "nika: v1\nworkflow: billing-brief\nmodel: ollama/llama3.2:3b\n\n# a secret is a reference to a store, never a value\nsecrets:\n  stripe_key:\n    source: env\n    key: STRIPE_KEY\n    # the complete flow policy: where this key may go\n    egress:\n      - to: \"nika:fetch\"\n        host: \"api.stripe.com\"\n      # the response stays tainted until its sink is sanctioned\n      - to: \"infer\"\n\npermits:\n  net: { http: [ \"api.stripe.com\" ] }\n  tools: [ \"nika:fetch\" ]\n\ntasks:\n  - id: charges\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://api.stripe.com/v1/charges?limit=20\"\n        headers:\n          Authorization: \"Bearer ${{ secrets.stripe_key }}\"\n\n  - id: brief\n    depends_on: [ charges ]\n    infer:\n      prompt: \"One short paragraph: what moved in these charges? ${{ tasks.charges.output }}\"\n      max_tokens: 300\n\noutputs:\n  brief: ${{ tasks.brief.output }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAIxF1xGAHMBaIjEAU2yQFs0ATB3WNMiFiAHo+AgMwA6AExRRRJEgDEMCDADODAMYYGAFxghVymNuwNtwDQxg60R1Te0AaGMAZwzRuBFwBXBknUtXVUoJBg1HXoABwYAfTAGAE9Q8PDVNB8MS1gGYDgw1ITkmABlABUAJQBJAAUAUViAaTqATQLwpR0ACysNNBYo3F0rPAIYKN4QDWKUHu1rLoMYIpgBRJhKNHaYBkptVRDt8OprNFgAIlBIKFMdDS7zo9SutHsLiCiQcXtohnE+liPVKpTo9YwMVQTYDqCIQRKGHQQCg6BjsGA+YA6Uj6HSGVQUMD6PEQCxYtCudhPE42C4UUwYR5IGIYFggXEpFy6WAAbxgXR0OiisAA2jBzh8vj8QDF-v1zjAALowAC+BRsvBCMFFl3A0Fu93lCvkiNUYEOx307Fg9wgGEoEO2FDgaASHOB6u4Yquet0Bqetso5uBqUynvO-MFIUEggl30i0r+AMEiEENrtEIA-ORWToALySAAMQOD4R6EE4GCDJfCAEEfN1MCAAF4QMnAC4AIQYto8ABJubzAtpcXHfvEkirlYyLSArTA6IxmMDODFgOxVLFySKYGn7YYjcC6WY3akohh+lEdBcAPKuNQvDB6KK2iB7D5dWCzVurNDuNEUBYIV6LoA0zGB+15E0zX+ED01UcQMkFetJ2LYEBAAD1iGwEmhWBRALAt5EQqJ6yDBcmFgCDrAgU14PI7AEPrEi9GVZUgA"
       },
       {
         "k": "p",
@@ -3665,7 +3671,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "cost-probe.nika.yaml",
-        "text": "nika: v1\nworkflow: cost-probe\nmodel: mistral/mistral-small\n\ntasks:\n  - id: bounded\n    infer: { prompt: \"one word\", max_tokens: 200 }\n\n  - id: loop\n    depends_on: [bounded]\n    agent: { prompt: \"say done\", tools: [\"nika:read\"], max_turns: 3, max_tokens_total: 4000 }\n\noutputs:\n  out: ${{ tasks.loop.output }}"
+        "text": "nika: v1\nworkflow: cost-probe\nmodel: mistral/mistral-small\n\ntasks:\n  - id: bounded\n    infer: { prompt: \"one word\", max_tokens: 200 }\n\n  - id: loop\n    depends_on: [bounded]\n    agent: { prompt: \"say done\", tools: [\"nika:read\"], max_turns: 3, max_tokens_total: 4000 }\n\noutputs:\n  out: ${{ tasks.loop.output }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAYzQGcAXAWgAcM0AjAUyQFs0ATR3WFkCjCLgD0vfoMqkWg3EiTkIpMKShIYMSjBDtY9NAFdgndqrWbg2RhlgBvGLTQtq5WACI0wRjHQZ2LgDQwUgAeAPrkaGCMwMowAEwADPEwAL6yahpasPho1CZqnNRR7KQh7rAA2roGRgC6eTAQAOZRzjC29o6tLqQQAJ4w7O6M-jDhaLgx5S6gkFAYjBC+NQHBYXoY0bAAzCsQoeGR0WFo8twwACyJSalI+uTUeuTKJnewACTWtvKKpAB02dRfncHuQUskgA"
       },
       {
         "k": "code",
@@ -3901,7 +3908,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "verbs-probe.nika.yaml",
-        "text": "nika: v1\nworkflow: verbs-probe\nmodel: ollama/llama3.2:3b\n\ntasks:\n  - id: think\n    infer: { prompt: \"one word\", max_tokens: 8 }\n\n  - id: run\n    exec: { command: [\"echo\", \"ok\"] }\n\n  - id: use\n    depends_on: [run]\n    invoke: { tool: \"nika:read\", args: { path: ./notes.md } }\n\n  - id: loop\n    depends_on: [think]\n    agent: { prompt: \"say done\", tools: [\"nika:read\"], max_turns: 2 }\n\noutputs:\n  a: ${{ tasks.use.output }}\n  b: ${{ tasks.loop.output }}"
+        "text": "nika: v1\nworkflow: verbs-probe\nmodel: ollama/llama3.2:3b\n\ntasks:\n  - id: think\n    infer: { prompt: \"one word\", max_tokens: 8 }\n\n  - id: run\n    exec: { command: [\"echo\", \"ok\"] }\n\n  - id: use\n    depends_on: [run]\n    invoke: { tool: \"nika:read\", args: { path: ./notes.md } }\n\n  - id: loop\n    depends_on: [think]\n    agent: { prompt: \"say done\", tools: [\"nika:read\"], max_turns: 2 }\n\noutputs:\n  a: ${{ tasks.use.output }}\n  b: ${{ tasks.loop.output }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWOAUwwCMBnAWgAcM0zikBbNAE2N1jV1wmYgB6XvwgBmAHQAmKGLJIkAFwgUwFKEhgwqMEG1iKAFiGBhNW3cGylYAbxh00zGotgAiNMGIx0GNm4AaGAEADwB9RTQwYmB1GAAOGABfBS0dPVgMAFdgcy1iEOIAYzsYIqcBYH0YAG03YsM0QJgPMDcAXWTU7V1qrIomCxgOGhi2CjDPWBrs4Ha8yzgo4lLInndQSCgMYgh-IIgMAHM4+xoII1gJQWA0RWIKCWY2ZK7zdOr8NBoFkbGJqa1IwmMDzIYQI4xVwwM70ZzQtwUCAAT2GnmIzTWuDidU20B2ew6QVCESyGFisCkbzQWUUNFp6nM0BgABJbPZlKpHv1iBIaXTackUloyLA2RyVGoJF8aHzafTFEKgA"
       },
       {
         "k": "p",
@@ -4157,7 +4165,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "hello-ai.nika.yaml",
-        "text": "nika: v1\nworkflow: hello-ai\nmodel: ollama/llama3.2:3b\n\ntasks:\n  - id: greet\n    infer:\n      prompt: \"Say hello in one sentence.\""
+        "text": "nika: v1\nworkflow: hello-ai\nmodel: ollama/llama3.2:3b\n\ntasks:\n  - id: greet\n    infer:\n      prompt: \"Say hello in one sentence.\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWACwFNd8BaCEJAWzQBMzY1yJaIB6NjgZgDoATFF4AjJEgAuEAM5gZUJDBgUYIBrADmGEiUlLla4NhIZFhwwAcMaWpcmwARAGUIATxilyaIzDTASGBkSYEkQgGMSfkcgA"
       },
       {
         "k": "p",
@@ -4255,7 +4264,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "release-radar.nika.yaml",
-        "text": "nika: v1\nworkflow: release-radar\n\ntasks:\n  - id: changelog\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh/changelog\"\n\n  - id: repo_log\n    exec:\n      command: \"git log --since='1 week'\"\n\n  - id: digest\n    depends_on: [changelog, repo_log]\n    infer:\n      prompt: \"What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}\""
+        "text": "nika: v1\nworkflow: release-radar\n\ntasks:\n  - id: changelog\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh/changelog\"\n\n  - id: repo_log\n    exec:\n      command: \"git log --since='1 week'\"\n\n  - id: digest\n    depends_on: [changelog, repo_log]\n    infer:\n      prompt: \"What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWDAU12IgGdiBaDCAEwgySQBdKwKokYZqYQ9WAGMAFhGABzUmkk9eA4HDRhi3BQtZo0uWACJQkKNmKsxe+RqaSuljTACuGXTD2jWrAA5cA9D8MQAHQUoj5iEtL4khby-IJExJ5oAPpRdsQAHsTC6vbCaAC2BRJCrpIgrDBRfNQUIMDCxAC8AOQIMCjExGAtMbxxpfQg0hSsdvSJxMD0FMlowLAA2uFSMpIANDAkSamyALp29SYYuRqeGIWerPoA6uKVK9L0MKyiIBQdXWCwACQA3n8XhwKIFHmtAmgHF4oTAAL6wmD-QHsCicQLbFJRCFQzww+F6IA"
       },
       {
         "k": "p",
@@ -4419,7 +4429,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "morning-brief.nika.yaml",
-        "text": "nika: v1\nworkflow: morning-brief\n\ntasks:\n  - id: fetch_news\n    invoke:\n      tool: \"nika:fetch\"          # a tool, not a verb\n      args:\n        url: \"https://hnrss.org/frontpage\"\n\n  - id: build\n    exec:\n      command: \"cargo build --release\"\n\n  - id: digest\n    depends_on: [fetch_news, build]\n    infer:\n      prompt: \"Summarize what changed\"\n\noutputs:\n  brief: ${{ tasks.digest.output }}"
+        "text": "nika: v1\nworkflow: morning-brief\n\ntasks:\n  - id: fetch_news\n    invoke:\n      tool: \"nika:fetch\"          # a tool, not a verb\n      args:\n        url: \"https://hnrss.org/frontpage\"\n\n  - id: build\n    exec:\n      command: \"cargo build --release\"\n\n  - id: digest\n    depends_on: [fetch_news, build]\n    infer:\n      prompt: \"Summarize what changed\"\n\noutputs:\n  brief: ${{ tasks.digest.output }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAW01GAHMBaAIwxAFNskkAXCAZzHaiRhkpggAJrGz0WAYwAWAfWD0U7Xn0HA4aMPR4qVLNGlywARKEhQxkqUZ02YAYhgQYegwBoYwNC0fx6Gaso6EBjk3IE2AK4YhjBGUiwsAA7cAPQpUsAY7OwAdJjkKdgYaMBJEOT0Rsx8AsKw1BEguELh9AAe9BLaNhJoREQQwCKxEsHkaDANTUL8lBj0uPQcldX8gsNCIBXsLOFC9In0Q+wyJbAA2hbScgrs7lPNALrhIMBiGN06icVEiSzGAGUIv1giAAF70GAoKQQbzSQYVIRVJBoCJJNFhPi0BjYWAAEgA3gTnBwuDlNtsWHk0Yk0TAAL70oA"
       },
       {
         "k": "p",
@@ -4654,7 +4665,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "daily-brief.nika.yaml",
-        "text": "nika: v1\nworkflow: daily-brief\n\npermits:\n  fs:\n    read: [ ./notes/* ]\n    write: [ ./brief.md ]\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  - id: notes\n    invoke:\n      tool: \"nika:read\"\n      args:\n        path: ./notes/today.md\n\n  - id: save\n    depends_on: [notes]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: ./brief.md\n        content: \"${{ tasks.notes.output }}\""
+        "text": "nika: v1\nworkflow: daily-brief\n\npermits:\n  fs:\n    read: [ ./notes/* ]\n    write: [ ./brief.md ]\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  - id: notes\n    invoke:\n      tool: \"nika:read\"\n      args:\n        path: ./notes/today.md\n\n  - id: save\n    depends_on: [notes]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: ./brief.md\n        content: \"${{ tasks.notes.output }}\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAEwhFwE8BaAIwxAFNskkAHejAWxABcBnKJDBjZ+goTAz0IRWAG0YAOgD0wNN3q8lAKhgBdMUJR11cxUtoNsCjkT1juaNLn4x5AIlCQok6W4A0MB7g0EY89G52SNwQvGCiQpQwIDIwquq8BknAcGhg9ALi4g5OsEFePkRumUIQGADm8YXiLBDcABawymkaSg4k5NZEzAlJKbwQcPSZRPRswES8APpowHLdvPqFINm5+dUwxbilniHG4fu1DQVNQi3tneZ0jIP7QgDGK+rA3KUAJADe-wOMTiCnWCjQAFduCxoTAAL7wtxAA"
       },
       {
         "k": "p",
@@ -4790,7 +4802,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "headlines.nika.yaml",
-        "text": "nika: v1\nworkflow: headlines\n\ntasks:\n  - id: page\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh\"\n\n  - id: save\n    depends_on: [page]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./page.md\"\n        content: \"${{ tasks.page.output }}\""
+        "text": "nika: v1\nworkflow: headlines\n\ntasks:\n  - id: page\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh\"\n\n  - id: save\n    depends_on: [page]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./page.md\"\n        content: \"${{ tasks.page.output }}\"",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWACwFMIATXEYEgZySQBcJaxaokYYBaGEc2AAcIAcxKcufYHDRgSHSZMZo0uWACJQkKNhKMAxkXUTFEDCPYnFMAK4Y1MdUUaNB7APTutEAHS0jDFy8-LC0EHDiiuQkgiTA5LQA+mjAsADawmIAulbUMnIK1sqqGt5QKBggjCTG1jBmFoV1woxEGj7umSQ+ALbktXUw+inVwIwaACQA3lMwzKy0Pl0+aDauazAAvpvqQA"
       },
       {
         "k": "p",

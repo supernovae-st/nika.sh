@@ -50,7 +50,28 @@ export function BlogBody({ tokens }: { tokens: BlogToken[] }) {
         if (t.k === 'code')
           return (
             <div key={i} className="bp-code v4-frame-canvas">
-              <CodeFile yaml={t.text} filename={t.filename} lang={t.lang} wrap />
+              <CodeFile
+                yaml={t.text}
+                filename={t.filename}
+                lang={t.lang}
+                wrap
+                /* a complete workflow fence carries its build-time ?y= handoff
+                   (build-blog.mjs) — « files you can run », literally: the
+                   post's exact yaml lands in the playground editor. chromeSlot
+                   REPLACES the filename tab, so it re-renders the tab + link. */
+                chromeSlot={
+                  t.play ? (
+                    <>
+                      <span className="cf-tab" title={t.filename}>
+                        <span className="cf-tab-name">{t.filename ?? 'workflow.nika.yaml'}</span>
+                      </span>
+                      <a className="bp-open-play mono" href={`/play?y=${t.play}`}>
+                        run it&nbsp;↗
+                      </a>
+                    </>
+                  ) : undefined
+                }
+              />
             </div>
           )
         if (t.k === 'quote') return <blockquote key={i}>{inline(t.inline)}</blockquote>

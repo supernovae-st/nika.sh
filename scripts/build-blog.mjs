@@ -19,6 +19,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parse as parseYaml } from 'yaml'
 import { marked } from 'marked'
+import lz from 'lz-string'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const SRC_DIR = join(ROOT, 'content', 'blog')
@@ -99,7 +100,15 @@ export function compilePost(raw, file, canon) {
       })
     else if (t.type === 'code') {
       const [lang, ...rest] = (t.lang ?? '').split(/\s+/)
-      tokens.push({ k: 'code', lang: lang || 'text', filename: rest.join(' ') || undefined, text: t.text })
+      /* a COMPLETE workflow fence (envelope-first yaml) gets its playground
+         handoff precomputed at build time — the same lz ?y= the film's done
+         frame hands off with, as pure SSG HTML (zero client JS). Console
+         fences (text) and pedagogical yaml fragments carry no link. */
+      const play =
+        (lang || '') === 'yaml' && /^nika:\s*v1\b/.test(t.text.trimStart())
+          ? lz.compressToEncodedURIComponent(t.text)
+          : undefined
+      tokens.push({ k: 'code', lang: lang || 'text', filename: rest.join(' ') || undefined, text: t.text, ...(play ? { play } : {}) })
     } else if (t.type === 'blockquote') {
       const inner = t.tokens.filter((x) => x.type === 'paragraph')
       tokens.push({ k: 'quote', inline: inner.flatMap((p) => inlineOf(p.tokens, file)) })
@@ -167,7 +176,7 @@ export interface BlogInline {
 export type BlogToken =
   | { k: 'p'; inline: BlogInline[] }
   | { k: 'h'; depth: number; text: string; id: string }
-  | { k: 'code'; lang: string; filename?: string; text: string }
+  | { k: 'code'; lang: string; filename?: string; text: string; play?: string }
   | { k: 'quote'; inline: BlogInline[] }
   | { k: 'list'; ordered: boolean; items: BlogInline[][] }
   | { k: 'hr' }
