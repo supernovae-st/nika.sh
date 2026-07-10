@@ -25,11 +25,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-resume-story',
+    slug: 'the-run-that-waits',
     tag: 'Engine',
     date: 'soon',
-    title: 'The resume story',
-    teaser: 'kill -9 a run mid-fanout, then resume it: finished work never runs twice. Durability as a file property, shown from the real traces.',
+    title: 'The run that waits for you',
+    teaser: 'A plan pauses on nika:prompt, a human answers, the run resumes with --answer. The approval gate is a task in the file, not a Slack thread.',
   },
   {
     slug: 'written-by-agents',
