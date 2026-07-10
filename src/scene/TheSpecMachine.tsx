@@ -71,6 +71,14 @@ interface CalloutRig {
     /** per-item eased opacity — the CURRENT section's callout stays lit */
     o?: number
   }[]
+  /** THE LIVE WIRES (the poster) · per-stratum TEXT anchors: the hero
+      copy's own terms (« .nika.yaml » · « four verbs » · « permits »)
+      become the labels — the leader's far end pins to the term's rect,
+      the near end sails with the hull. */
+  terms?: Partial<Record<number, HTMLElement | null>>
+  /** the term under the pointer/focus (stratum index · -1 none) — its
+      wire brightens, the others whisper */
+  hot?: number
 }
 
 function Machine({
@@ -360,14 +368,23 @@ function Machine({
       /* depth cue during the turn · far-side stations whisper (project the
          hull centre once; anchors deeper than it are behind the ship) */
       let centreZ = 0.5
-      if (full) {
+      if (full || hero) {
         v.set(0, 0, 0).applyMatrix4(inner.current.matrixWorld).project(camera)
         centreZ = v.z
       }
       for (let si = 0; si < rig.items.length; si++) {
         const it = rig.items[si]
         if (!it?.line || !it.dot || !it.label) continue
-        const target = helm.dragging || hero ? 0 : full || pose.focus === si ? 1 : pose.focus < 0 ? 0 : 0
+        /* the poster's live wires · a stratum whose TERM is registered keeps
+           its leader at the hero — quiet by default, loud under the hot
+           term, whispering while a sibling is hot */
+        const term = hero ? rig.terms?.[si] : undefined
+        const hot = rig.hot ?? -1
+        const target =
+          helm.dragging ? 0
+          : term ? (hot === -1 ? 0.55 : hot === si ? 1 : 0.18)
+          : hero ? 0
+          : full || pose.focus === si ? 1 : pose.focus < 0 ? 0 : 0
         it.o = (it.o ?? 0) + (target - (it.o ?? 0)) * Math.min(1, delta * 3)
         const op = it.o.toFixed(3)
         it.label.style.opacity = op
@@ -393,6 +410,31 @@ function Machine({
           it.label.style.opacity = (base * (far ? 0.62 : 1)).toFixed(3)
           it.line.style.opacity = dLine
           it.dot.style.opacity = dLine
+        }
+        /* the poster's live wires · the far-side cue rides the same rule as
+           the finale: a station behind the hull whispers its wire */
+        if (term) {
+          const far = v.z > centreZ + 0.0004
+          if (far && hot !== si) {
+            const dim = ((it.o ?? 0) * 0.3).toFixed(3)
+            it.line.style.opacity = dim
+            it.dot.style.opacity = dim
+          }
+          it.label.style.opacity = '0'
+          it.label.style.pointerEvents = 'none'
+          /* the near end rides the TERM's line, but STARTS past the copy
+             column's edge (a wire must never cross the prose): y from the
+             term's FIRST client rect (a wrapped term like « four verbs »
+             pins to its first fragment, not the two-line bounding box),
+             x at the column boundary (~44% of the full-bleed canvas). */
+          const tr = term.getClientRects()[0] ?? term.getBoundingClientRect()
+          it.line.setAttribute('x1', (rect.width * 0.44).toFixed(1))
+          it.line.setAttribute('y1', (tr.top + tr.height / 2 - rect.top).toFixed(1))
+          it.line.setAttribute('x2', px.toFixed(1))
+          it.line.setAttribute('y2', py.toFixed(1))
+          it.dot.setAttribute('cx', px.toFixed(1))
+          it.dot.setAttribute('cy', py.toFixed(1))
+          continue
         }
         const left = it.label.dataset.side === 'l'
         /* the labels hold their PLATE SLOTS (left/right columns) — the
@@ -505,6 +547,45 @@ export default function TheSpecMachine({
         helmRef.current.explode = true
     }
   }, [explode])
+
+  /* THE LIVE WIRES · the hero copy's own terms ([data-ship-term]) register
+     as per-stratum text anchors: the poster wires the PROSE to the hull
+     (the frame loop pins each leader's near end to the term's rect).
+     Hover/focus on a term makes its wire loud, the siblings whisper.
+     Self-contained: the machine queries the page's stable DOM on mount. */
+  useEffect(() => {
+    const rig = calloutRef.current
+    rig.terms = {}
+    rig.hot = -1
+    const els = [...document.querySelectorAll<HTMLElement>('[data-ship-term]')]
+    const offs: (() => void)[] = []
+    for (const el of els) {
+      const si = stratumIndex(el.dataset.shipTerm as StratumKey)
+      if (si < 0) continue
+      rig.terms[si] = el
+      const on = () => {
+        rig.hot = si
+      }
+      const off = () => {
+        rig.hot = -1
+      }
+      el.addEventListener('pointerenter', on)
+      el.addEventListener('pointerleave', off)
+      el.addEventListener('focus', on)
+      el.addEventListener('blur', off)
+      offs.push(() => {
+        el.removeEventListener('pointerenter', on)
+        el.removeEventListener('pointerleave', off)
+        el.removeEventListener('focus', on)
+        el.removeEventListener('blur', off)
+      })
+    }
+    return () => {
+      offs.forEach((f) => f())
+      rig.terms = {}
+      rig.hot = -1
+    }
+  }, [])
   useEffect(() => {
     if (resetSignal === 0) return
     helmRef.current.yaw = 0
