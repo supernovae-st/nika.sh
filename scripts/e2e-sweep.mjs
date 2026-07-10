@@ -195,7 +195,17 @@ for (const route of NAV_ROUTES) {
   for (const e of pageErrs) fail(route, 'page error', e)
   for (const e of failedReqs) fail(route, 'request', e)
   const expected = TONE_EXPECT[route]
-  if (expected && harvest.tone !== expected) fail(route, 'route tone', `expected ${expected}, got "${harvest.tone}"`)
+  if (expected) {
+    /* the tone is stamped by HYDRATION — one read races it on a slow env
+       (the "" finding reproduced on a 2-core CI runner: a race, not a bug).
+       Poll, never fixed-sleep (the belt's own law). */
+    let tone = harvest.tone
+    for (let i = 0; i < 20 && tone !== expected; i++) {
+      await sleep(400)
+      tone = await evaluate(`document.documentElement.dataset.auroraTone ?? ''`)
+    }
+    if (tone !== expected) fail(route, 'route tone', `expected ${expected}, got "${tone}"`)
+  }
   if (consoleErrs.length + pageErrs.length + failedReqs.length === 0) console.log(`  ✓ ${route}`)
 }
 
