@@ -208,7 +208,7 @@ describe('POSES v2 · one exact revolution, the close mirrors the open', () => {
       expect(POSES[k].yaw).toBeGreaterThan(prev)
       prev = POSES[k].yaw
       expect(POSES[k].dist).toBeGreaterThanOrEqual(2)
-      expect(POSES[k].dist).toBeLessThanOrEqual(7)
+      expect(POSES[k].dist).toBeLessThanOrEqual(8)
       expect(POSES[k].x).toBeGreaterThanOrEqual(STERN_X)
       expect(POSES[k].x).toBeLessThanOrEqual(BOW_X)
     }

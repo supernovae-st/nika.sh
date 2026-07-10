@@ -28,6 +28,10 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+.smc-line,
+.smc-dot,
+.smc-label {
   opacity: 0;
 }
 .smc-lines {
@@ -77,4 +81,11 @@
 .smc-label.is-node-hot {
   border-color: #4f86ff;
   color: #c9dbff;
+}
+
+/* the CURRENT section's callout · the you-are-here plate on the ship */
+.smc-label.is-cur {
+  border-color: #4f86ff;
+  color: #c9dbff;
+  background: color-mix(in oklch, #10203f 92%, transparent);
 }

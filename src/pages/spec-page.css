@@ -1323,7 +1323,7 @@
   }
   .spec-stage {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(340px, 42vw, 620px);
+    grid-template-columns: minmax(0, 1fr) clamp(360px, 46vw, 700px);
     gap: clamp(28px, 3.2vw, 56px);
     align-items: start;
   }
@@ -1370,13 +1370,13 @@
   .spec-rail-stage {
     position: sticky;
     top: 84px;
-    height: min(calc(100vh - 104px), 820px);
+    height: min(calc(100vh - 104px), 900px);
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .spec-rail-stage .spec-schematic {
-    width: min(100%, 620px);
+    width: min(100%, 660px);
     height: auto;
   }
 }
@@ -1930,6 +1930,78 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .spec-chip2-tick {
+    transition: none;
+  }
+}
+
+/* ════ the you-are-here layer (beauty polish) ═════════════════════════════════
+   THE POSITION PLATE (top-left, loud) + the 9-tick spine gauge (bottom-centre):
+   the current section's fig, its ship station and its derived count — always
+   in the eye while reading. Page DOM: also the reduced-motion truth. */
+.spec-rail-pos {
+  position: absolute;
+  top: 3%;
+  left: 2%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 14px 9px;
+  border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 30%, transparent);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--sm-fill) 88%, transparent);
+  pointer-events: none;
+}
+.spec-rail-pos-fig {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: color-mix(in oklch, var(--sm-ink-struck) 85%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+.spec-rail-pos-part {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--v4-text);
+}
+.spec-rail-pos-sub {
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: color-mix(in oklch, var(--sm-ink-lit) 62%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* the spine gauge · 9 sections, lit fills, the current one pulses wider */
+.spec-rail-gauge {
+  position: absolute;
+  bottom: 3.2%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  pointer-events: none;
+}
+.spec-rail-gauge i {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in oklch, var(--sm-ink-shadow) 65%, transparent);
+  transition: background-color 0.9s ease, width 0.3s var(--ease-ui, ease);
+}
+.spec-rail-gauge i.is-lit {
+  background: var(--sm-ink-lit);
+}
+.spec-rail-gauge i.is-cur {
+  width: 26px;
+  background: var(--sm-ink-struck);
+}
+
+/* the INDEX chip you are in reads as the current station */
+.spec-chip2[aria-current] {
+  background: color-mix(in oklch, var(--sm-ink-lit) 10%, var(--v4-bg-raised));
+}
+@media (prefers-reduced-motion: reduce) {
+  .spec-rail-gauge i {
     transition: none;
   }
 }
