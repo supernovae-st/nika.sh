@@ -1347,12 +1347,12 @@
   .spec-flow .spec-block {
     scroll-margin-top: 152px;
   }
-  /* the contents rail docks under the nav and keeps its ticks in the eye */
-  .spec-flow .spec-toc {
+  /* THE INDEX docks under the nav and keeps its ticks in the eye */
+  .spec-flow .spec-chips {
     position: sticky;
     top: 84px;
     z-index: 6;
-    padding: 12px 0;
+    padding: 10px 0;
     background: var(--v4-bg);
     box-shadow: 0 1px 0 var(--v4-line);
   }
@@ -1701,12 +1701,8 @@
   border-color: var(--sm-ink-lit);
   background: color-mix(in oklch, var(--sm-ink-lit) 14%, var(--v4-bg-raised));
 }
-.spec-toc-link.is-node-hot {
-  color: var(--v4-text);
+.spec-chip2.is-node-hot {
   border-color: color-mix(in oklch, var(--sm-ink-lit) 60%, var(--v4-line));
-}
-.spec-stamp-link.is-node-hot {
-  background: color-mix(in oklch, var(--sm-ink-lit) 10%, var(--v4-bg-raised));
 }
 .spec-boundary-gate.is-node-hot {
   border-color: color-mix(in oklch, var(--sm-ink-lit) 55%, var(--v4-line));
@@ -1760,4 +1756,180 @@
   color: var(--v4-bg);
   background: var(--sm-ink-lit);
   border-color: var(--sm-ink-lit);
+}
+
+/* ════ THE INSTRUMENT PLATE (v2) · the poster hero + the index band ═══════════
+   The stage grid opens at the masthead: the ship rides beside the hero from
+   the first paint. Left column: kicker · H1 · punch · THE PROTOCOL PLATE
+   (real values only + the family microchart) · TL;DR. THE INDEX (S-chips
+   band) absorbs the old stamp band AND the TOC pills. */
+
+/* the protocol plate · hairline data plate, mono rows, the fault dot */
+.spec-plate {
+  margin-top: clamp(24px, 3.5vh, 38px);
+  max-width: 30rem;
+  padding: 16px 18px 14px;
+  border: 1px solid var(--seam-hairline);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+  box-shadow: var(--seam-panel); /* seam kit */
+}
+.spec-plate-kicker {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--v4-text-dim);
+}
+.spec-plate-rows {
+  margin: 10px 0 0;
+  border-top: 1px solid var(--v4-line);
+}
+.spec-plate-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--v4-line);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.spec-plate-row dt {
+  flex: 0 0 6.2rem;
+  color: var(--v4-text-faint);
+}
+.spec-plate-row dd {
+  margin: 0;
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+}
+.spec-plate-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 1.5px;
+  background: var(--sm-ink-lit);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--sm-ink-lit) 18%, transparent);
+}
+
+/* the honest microchart · bars derive from the family map (sum = canon) */
+.spec-plate-chartcap {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.spec-chart {
+  margin-top: 8px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 52px;
+}
+.spec-chart-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  height: 100%;
+}
+.spec-chart-bar {
+  width: 100%;
+  height: var(--bar);
+  min-height: 3px;
+  border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
+  border-bottom: none;
+  background:
+    linear-gradient(to top, color-mix(in oklch, var(--sm-ink-lit) 26%, transparent), transparent);
+}
+.spec-chart-n {
+  font-size: 9.5px;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* THE INDEX · the S-chips band (9 cells · fig + count + title + gloss + tick) */
+.spec-chips {
+  margin-top: clamp(26px, 4vh, 40px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+@media (min-width: 640px) {
+  .spec-chips {
+    grid-template-columns: repeat(9, 1fr);
+  }
+}
+.spec-chip2 {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-height: 44px;
+  padding: 8px 9px 7px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 45%, transparent);
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+  min-width: 0;
+}
+.spec-chip2:hover {
+  border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  background: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
+}
+.spec-chip2-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.spec-chip2-count {
+  margin-left: auto;
+  color: var(--v4-text-dim);
+}
+.spec-chip2-tick {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 1.5px;
+  border: 1px solid color-mix(in oklch, var(--v4-text) 32%, transparent);
+  transition: background-color 0.9s ease, border-color 0.9s ease;
+}
+.spec-chip2.is-lit .spec-chip2-tick {
+  background: var(--sm-ink-lit);
+  border-color: var(--sm-ink-lit);
+}
+.spec-chip2[aria-current] {
+  border-color: color-mix(in oklch, var(--sm-ink-lit) 55%, var(--v4-line));
+}
+.spec-chip2-title {
+  font-size: 12px;
+  font-weight: 560;
+  letter-spacing: -0.005em;
+  color: var(--v4-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spec-chip2-gloss {
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--v4-text-dim);
+  display: none;
+}
+@media (min-width: 1280px) {
+  .spec-chip2-gloss {
+    display: block;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spec-chip2-tick {
+    transition: none;
+  }
 }

@@ -59,6 +59,12 @@ const helmDefaults = (): HelmState => ({
   explode: false,
 })
 
+interface CalloutRig {
+  wrap: HTMLDivElement | null
+  items: { line: SVGLineElement | null; dot: SVGCircleElement | null; label: HTMLSpanElement | null }[]
+  opacity: number
+}
+
 function Machine({
   pointer,
   litRef,
@@ -66,6 +72,7 @@ function Machine({
   strikeRef,
   hiRef,
   helmRef,
+  calloutRef,
   onHover,
 }: {
   pointer: React.MutableRefObject<Pointer>
@@ -74,6 +81,7 @@ function Machine({
   strikeRef: React.MutableRefObject<number>
   hiRef: React.MutableRefObject<number>
   helmRef: React.MutableRefObject<HelmState>
+  calloutRef: React.MutableRefObject<CalloutRig>
   onHover: (id: string | null) => void
 }) {
   const model = useMemo(() => buildSpecMachine(), [])
@@ -254,6 +262,42 @@ function Machine({
     inn.position.x += (-(pose.x + exOff) - inn.position.x) * k
     state.camera.position.z += (pose.dist * helm.zoom - state.camera.position.z) * k
 
+    /* THE CALLOUTS · leader lines pin the strata while the ship is at an
+       overview pose (frame / license) — the plate's labelled-drawing read.
+       Labels sit at fixed slots; only the line's far end sails. */
+    const rig = calloutRef.current
+    if (rig.wrap) {
+      const show = pose.focus < 0 && !helm.dragging ? 1 : 0
+      rig.opacity += (show - rig.opacity) * Math.min(1, delta * 3)
+      rig.wrap.style.opacity = rig.opacity.toFixed(3)
+      if (rig.opacity > 0.02 && inner.current) {
+        const el = gl.domElement
+        const rect = el.getBoundingClientRect()
+        const v = new THREE.Vector3()
+        for (let si = 0; si < rig.items.length; si++) {
+          const it = rig.items[si]
+          if (!it.line || !it.dot || !it.label) continue
+          v.set(
+            model.anchors[si * 3] + model.explode[si] * u.uExplode.value,
+            model.anchors[si * 3 + 1],
+            model.anchors[si * 3 + 2],
+          )
+          v.applyMatrix4(inner.current.matrixWorld).project(camera)
+          const px = ((v.x + 1) / 2) * rect.width
+          const py = ((1 - v.y) / 2) * rect.height
+          const left = it.label.dataset.side === 'l'
+          const x1 = it.label.offsetLeft + (left ? it.label.offsetWidth + 6 : -6)
+          const y1 = it.label.offsetTop + it.label.offsetHeight / 2
+          it.line.setAttribute('x1', x1.toFixed(1))
+          it.line.setAttribute('y1', y1.toFixed(1))
+          it.line.setAttribute('x2', px.toFixed(1))
+          it.line.setAttribute('y2', py.toFixed(1))
+          it.dot.setAttribute('cx', px.toFixed(1))
+          it.dot.setAttribute('cy', py.toFixed(1))
+        }
+      }
+    }
+
     /* the reactor + engine glows track their spine points through sail +
        explode — inner-local X projected through the outer yaw/pitch */
     const cY = Math.cos(g.rotation.y)
@@ -319,6 +363,21 @@ export default function TheSpecMachine({
 
   /* the helm · page buttons + canvas gestures share this bag */
   const helmRef = useRef<HelmState>(helmDefaults())
+
+  /* THE CALLOUTS · 8 leader lines (S.0…S.7) the frame loop projects; labels
+     are pointer-only decoration (the INDEX chips are the accessible twin) */
+  const calloutRef = useRef<CalloutRig>({ wrap: null, items: [], opacity: 0 })
+  const CALLOUTS = SPEC_SECTIONS.filter((x) => x.key !== 'license')
+  const setCallout = (
+    si: number,
+    part: 'line' | 'dot' | 'label',
+    el: SVGLineElement | SVGCircleElement | HTMLSpanElement | null,
+  ) => {
+    const items = calloutRef.current.items
+    if (!items[si]) items[si] = { line: null, dot: null, label: null }
+    // @ts-expect-error narrow by construction
+    items[si][part] = el
+  }
   useEffect(() => {
     helmRef.current.explode = explode
     if (import.meta.env.DEV && typeof window !== 'undefined') {
@@ -404,9 +463,55 @@ export default function TheSpecMachine({
           strikeRef={strikeRef}
           hiRef={hiRef}
           helmRef={helmRef}
+          calloutRef={calloutRef}
           onHover={onHover}
         />
       </Canvas>
+      {/* THE CALLOUTS · the labelled-drawing layer (overview poses only) —
+          fixed label slots, projected line ends; clicks land on the section */}
+      <div
+        className="smc"
+        ref={(el) => {
+          calloutRef.current.wrap = el
+        }}
+        onClick={(e) => {
+          const t = (e.target as Element).closest?.('[data-anchor]')
+          const a = t?.getAttribute('data-anchor')
+          if (a) window.location.hash = a
+        }}
+      >
+        <svg className="smc-lines">
+          {CALLOUTS.map((c) => {
+            const si = STRATA_ORDER.indexOf(c.key)
+            return (
+              <g key={c.key}>
+                <line ref={(el) => setCallout(si, 'line', el)} className="smc-line" />
+                <circle ref={(el) => setCallout(si, 'dot', el)} className="smc-dot" r="2.2" />
+              </g>
+            )
+          })}
+        </svg>
+        {CALLOUTS.map((c, i) => {
+          const si = STRATA_ORDER.indexOf(c.key)
+          const left = i < 4
+          return (
+            <span
+              key={c.key}
+              ref={(el) => setCallout(si, 'label', el)}
+              className="smc-label mono"
+              data-side={left ? 'l' : 'r'}
+              data-node={c.key}
+              data-anchor={c.anchor}
+              style={{ ['--slot' as string]: `${12 + (i % 4) * 23}%` }}
+            >
+              <b>
+                {c.fig} · {c.title.toUpperCase()}
+              </b>
+              {c.count} {c.countLabel.toLowerCase()}
+            </span>
+          )
+        })}
+      </div>
     </div>
   )
 }
