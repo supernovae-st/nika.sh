@@ -67,6 +67,9 @@ interface CalloutRig {
     label: HTMLSpanElement | null
     /** per-item eased opacity — the CURRENT section's callout stays lit */
     o?: number
+    /** eased label offset from its slot (0 at hero/dock · to-anchor at full) */
+    dx?: number
+    dy?: number
   }[]
 }
 
@@ -254,19 +257,22 @@ function Machine({
     const exT = helm.explode ? 1 : 0
     u.uExplode.value += (exT - u.uExplode.value) * Math.min(1, delta * 2.6)
 
+    const flight = flightRef?.current
+
     /* the pose glide · one eased move per section boundary: the ship sails
        under the camera (inner x → -pose.x, explode-compensated so the
        focused section stays centred) while the outer group orbits it */
     const g = group.current
     const inn = inner.current
     if (!g || !inn) return
-    const k = Math.min(1, delta * 2.2)
+    /* scroll-steered flight tracks tight; poses glide soft */
+    const kBase = flight?.state === 'full' ? 4.6 : 2.2
+    const k = Math.min(1, delta * kBase)
     const breathe = Math.sin(u.uTime.value * 0.11) * 0.02
     /* THE FLIGHT · while the takeover runway crosses the viewport the ship
        owns the screen: its progress steers ONE full revolution, diving
        toward the hull mid-turn and rising out again — landing exactly on
        the opening yaw as S.0 docks (2π ≡ 0: perfect continuity) */
-    const flight = flightRef?.current
     let tYaw = pose.yaw
     let tPitch = pose.pitch
     let tDist = pose.dist
@@ -293,6 +299,14 @@ function Machine({
       const el = gl.domElement
       const rect = el.getBoundingClientRect()
       const v = new THREE.Vector3()
+      const full = flight?.state === 'full'
+      /* depth cue during the turn · far-side stations whisper (project the
+         hull centre once; anchors deeper than it are behind the ship) */
+      let centreZ = 0.5
+      if (full) {
+        v.set(0, 0, 0).applyMatrix4(inner.current.matrixWorld).project(camera)
+        centreZ = v.z
+      }
       for (let si = 0; si < rig.items.length; si++) {
         const it = rig.items[si]
         if (!it?.line || !it.dot || !it.label) continue
@@ -313,9 +327,29 @@ function Machine({
         v.applyMatrix4(inner.current.matrixWorld).project(camera)
         const px = ((v.x + 1) / 2) * rect.width
         const py = ((1 - v.y) / 2) * rect.height
+        if (full) {
+          const far = v.z > centreZ + 0.0004
+          const dOp = (it.o ?? 0) * (far ? 0.28 : 1)
+          const dops = dOp.toFixed(3)
+          it.label.style.opacity = dops
+          it.line.style.opacity = dops
+          it.dot.style.opacity = dops
+        }
         const left = it.label.dataset.side === 'l'
-        const x1 = it.label.offsetLeft + (left ? it.label.offsetWidth + 6 : -6)
-        const y1 = it.label.offsetTop + it.label.offsetHeight / 2
+        /* DURING THE BOARDING the labels leave their plate slots and RIDE
+           the ship — a short tick beside each station instead of a leader
+           crossing the screen (the spider-web killer). Eased morph both
+           ways: the same chips fly out to the plate as the hero returns. */
+        const lw = it.label.offsetWidth
+        const lh = it.label.offsetHeight
+        const tx = full ? px + (left ? 18 : -lw - 18) - it.label.offsetLeft : 0
+        const ty = full ? py - lh / 2 - it.label.offsetTop : 0
+        const kM = Math.min(1, delta * 6)
+        it.dx = (it.dx ?? 0) + (tx - (it.dx ?? 0)) * kM
+        it.dy = (it.dy ?? 0) + (ty - (it.dy ?? 0)) * kM
+        it.label.style.transform = `translate(${it.dx.toFixed(1)}px, ${it.dy.toFixed(1)}px)`
+        const x1 = it.label.offsetLeft + it.dx + (left ? lw + 6 : -6)
+        const y1 = it.label.offsetTop + it.dy + lh / 2
         it.line.setAttribute('x1', x1.toFixed(1))
         it.line.setAttribute('y1', y1.toFixed(1))
         it.line.setAttribute('x2', px.toFixed(1))

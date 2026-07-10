@@ -181,25 +181,45 @@ export function Component() {
      past the last section the chassis stands down. */
   const takeoverEl = useRef<HTMLDivElement>(null)
   const [stage, setStage] = useState<'hero' | 'full' | 'dock' | 'off'>('hero')
+  const [orbitPct, setOrbitPct] = useState(0)
   const flightRef = useRef({ state: 'hero', progress: 0 })
   useEffect(() => {
     if (!machine) return
     let raf = 0
+    type Stage = 'hero' | 'full' | 'dock' | 'off'
     const tick = () => {
       raf = 0
       const vh = window.innerHeight
       const t = takeoverEl.current?.getBoundingClientRect()
       const last = document.querySelector('.spec-block--last')?.getBoundingClientRect()
-      let s: 'hero' | 'full' | 'dock' | 'off' = 'hero'
-      if (t) {
-        if (t.top <= vh * 0.35 && t.bottom >= vh * 0.72) s = 'full'
-        else if (t.bottom < vh * 0.72) s = 'dock'
-        flightRef.current.progress = Math.min(
-          1,
-          Math.max(0, (vh * 0.35 - t.top) / Math.max(1, t.height - vh * 0.37)),
-        )
+      /* hysteresis: enter/exit thresholds differ so a small scroll near a
+         boundary can never thrash the chassis width (the friction bug) */
+      const step = (prev: Stage): Stage => {
+        if (!t) return 'hero'
+        if (last && last.bottom < vh * 0.55) return 'off'
+        switch (prev) {
+          case 'hero':
+            return t.top <= vh * 0.32 ? 'full' : 'hero'
+          case 'full':
+            if (t.top > vh * 0.48) return 'hero'
+            return t.bottom < vh * 0.68 ? 'dock' : 'full'
+          case 'dock':
+            return t.bottom >= vh * 0.8 ? 'full' : 'dock'
+          case 'off':
+            return last && last.bottom >= vh * 0.55 ? 'dock' : 'off'
+        }
       }
-      if (last && last.bottom < vh * 0.55) s = 'off'
+      let s = flightRef.current.state as Stage
+      for (let i = 0; i < 3; i++) {
+        const next = step(s)
+        if (next === s) break
+        s = next
+      }
+      if (t) {
+        const p = Math.min(1, Math.max(0, (vh * 0.32 - t.top) / Math.max(1, t.height - vh * 0.36)))
+        flightRef.current.progress = p
+        if (s === 'full') setOrbitPct(Math.round(p * 20) * 5)
+      }
       flightRef.current.state = s
       setStage((prev) => (prev === s ? prev : s))
     }
@@ -324,7 +344,7 @@ export function Component() {
   })
 
   return (
-    <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`}>
+    <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`} data-stage={stage}>
       <section ref={ref} aria-labelledby="spec-title" className="v4sec">
         <div className="v4sec-wrap spec-wrap">
           {/* ── THE HERO · a poster: the title column and THE SHIP, nothing
@@ -989,16 +1009,14 @@ export function Component() {
                     fig + its ship station + the derived count */}
                 <div className="spec-rail-pos">
                   <span className="spec-rail-pos-fig mono">
-                    {cur ? `▸ ${cur.fig}` : '▸ THE SHIP'}
+                    {stage === 'full' ? '▸ BOARDING' : cur ? `▸ ${cur.fig}` : '▸ THE SHIP'}
                   </span>
                   <span className="spec-rail-pos-part">
-                    {cur ? cur.shipPart.toUpperCase() : 'NIKA: V1'}
+                    {stage === 'full' ? 'THE SHIP' : cur ? cur.shipPart.toUpperCase() : 'NIKA: V1'}
                   </span>
-                  {cur ? null : (
-                    <span className="spec-rail-pos-sub mono">
-                      SECTIONS·····{SPEC_SECTIONS.length} · SCROLL TO BOARD
-                    </span>
-                  )}
+                  {stage === 'full' ? (
+                    <span className="spec-rail-pos-sub mono">ORBIT·····{orbitPct}%</span>
+                  ) : null}
                 </div>
                 <span className="spec-rail-hud spec-rail-hud--bl">
                   ASSEMBLED·····{assembled}/{assembledMax}
