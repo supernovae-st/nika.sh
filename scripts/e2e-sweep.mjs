@@ -63,10 +63,12 @@ if (ROUTES.length < 10) {
   process.exit(1)
 }
 
-/* ── chrome + CDP plumbing (the shoot-scroll family pattern) ───────────────── */
+/* ── chrome + CDP plumbing (the shoot-scroll family pattern) ─────────────────
+   CHROME_BIN overrides the binary (CI · linux); --no-sandbox rides only there
+   (containers), never locally. */
 const chrome = execFile(
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  ['--headless=new', `--remote-debugging-port=${CDP_PORT}`, '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--hide-scrollbars', '--window-size=1600,1000', '--no-first-run', '--no-default-browser-check', `--user-data-dir=/tmp/e2e-sweep-${CDP_PORT}`, 'about:blank'],
+  process.env.CHROME_BIN ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  ['--headless=new', `--remote-debugging-port=${CDP_PORT}`, '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--hide-scrollbars', '--window-size=1600,1000', '--no-first-run', '--no-default-browser-check', ...(process.env.CHROME_BIN ? ['--no-sandbox'] : []), `--user-data-dir=/tmp/e2e-sweep-${CDP_PORT}`, 'about:blank'],
   () => {},
 )
 process.on('exit', () => { chrome.kill(); server?.close() })

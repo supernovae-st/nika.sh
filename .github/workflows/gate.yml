@@ -39,3 +39,34 @@ jobs:
           for f in install.sh llms.txt schema/workflow.json errors/catalog.json 404.html sitemap.xml robots.txt; do
             test -f "dist/$f" || { echo "MISSING live-URL contract: dist/$f"; exit 1; }
           done
+
+  # The deep belts, promoted from on-demand to PR gate (2026-07-10): they
+  # caught this cycle's real regressions (dead anchors · console errors ·
+  # clipped interactions) but only when someone remembered to run them.
+  # A dedicated runner has none of the local load-fiction (findings that
+  # vary run-to-run on a saturated dev machine) — here a red IS a bug.
+  # No untrusted event input is interpolated anywhere in this job.
+  deep-belts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: browser-actions/setup-chrome@v2
+        id: chrome
+      - name: enable corepack (pnpm pinned via packageManager)
+        run: corepack enable
+      - name: install
+        run: pnpm install --frozen-lockfile
+      - name: build
+        run: pnpm build
+      - name: e2e sweep (console/network clean · link integrity · interaction battery)
+        run: node scripts/e2e-sweep.mjs
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+      - name: a11y sweep (axe over every prerendered route · critical/serious gate)
+        run: node scripts/a11y-sweep.mjs
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
