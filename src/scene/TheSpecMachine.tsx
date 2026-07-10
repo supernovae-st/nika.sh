@@ -276,18 +276,23 @@ function Machine({
     let tYaw = pose.yaw
     let tPitch = pose.pitch
     let tDist = pose.dist
+    let lookX = pose.x
     if (flight && flight.state === 'full') {
       const p = flight.progress
       const f = POSES.frame
       tYaw = f.yaw + p * Math.PI * 2
       tPitch = f.pitch + 0.14 * Math.sin(p * Math.PI)
       tDist = f.dist - 2.6 * Math.sin(p * Math.PI)
+      /* the flyby · the camera SAILS the spine while the hull revolves:
+         toward the bow on the first quarter, past the waist at the dive,
+         toward the stern on the third — home at both ends (sin 2πp = 0) */
+      lookX = f.x + 0.85 * Math.sin(p * Math.PI * 2)
     }
     g.rotation.y += (tYaw + helm.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
     g.rotation.x += (tPitch + helm.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k
     const exOff = pose.focus >= 0 ? model.explode[pose.focus] * u.uExplode.value : 0
-    inn.position.x += (-(pose.x + exOff) - inn.position.x) * k
+    inn.position.x += (-(lookX + exOff) - inn.position.x) * k
     state.camera.position.z += (tDist * helm.zoom - state.camera.position.z) * k
 
     /* THE CALLOUTS · per-item leaders: at the overview every stratum is

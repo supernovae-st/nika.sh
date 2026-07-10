@@ -383,7 +383,8 @@ export function Component() {
               as intent, not accident) */}
           <p className="spec-hero-cue mono" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
             <span className="spec-hero-cue-tick" aria-hidden />
-            SCROLL·····BOARD THE SHIP
+            <span className="spec-hero-cue-desk">SCROLL·····BOARD THE SHIP</span>
+            <span className="spec-hero-cue-mob">SCROLL·····READ TO ASSEMBLE</span>
             <span aria-hidden>▾</span>
           </p>
             </div>
@@ -523,14 +524,7 @@ export function Component() {
                 ))}
               </nav>
 
-              {/* the schematic strip · the mobile / narrow expression of the
-                  machine (aria-hidden decoration; the TOC above is the truth) */}
-              <div className="spec-strip" aria-hidden>
-                <SpecSchematic lit={lit} current={current} className="spec-schematic--strip" />
-                <span className="spec-strip-tally mono">
-                  ASSEMBLED·····{assembled}/{assembledMax}
-                </span>
-              </div>
+
 
               {/* ══ S.0 · the envelope ══════════════════════════════════════ */}
               <div
@@ -1022,12 +1016,20 @@ export function Component() {
                   ASSEMBLED·····{assembled}/{assembledMax}
                 </span>
                 <span className="spec-rail-gauge">
-                  {SPEC_SECTIONS.map((s) => (
-                    <i
-                      key={s.fig}
-                      className={`${lit.has(s.key) ? 'is-lit' : ''}${current === s.key ? ' is-cur' : ''}`}
-                    />
-                  ))}
+                  {SPEC_SECTIONS.map((s, i) => {
+                    /* during the boarding the gauge IS the flight bar; at
+                       the dock it converts to the reading's spine */
+                    const flying = stage === 'full'
+                    const litT = flying
+                      ? i < Math.round((orbitPct / 100) * SPEC_SECTIONS.length)
+                      : lit.has(s.key)
+                    const curT = flying
+                      ? i === Math.round((orbitPct / 100) * SPEC_SECTIONS.length) - 1
+                      : current === s.key
+                    return (
+                      <i key={s.fig} className={`${litT ? 'is-lit' : ''}${curT ? ' is-cur' : ''}`} />
+                    )
+                  })}
                 </span>
                 <span className="spec-rail-hud spec-rail-hud--br">
                   {current === 'license' ? 'AGPL·····FOREVER' : 'NIKA: V1·····FROZEN'}

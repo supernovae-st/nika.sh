@@ -1561,31 +1561,6 @@
   fill: var(--sm-ink-struck);
 }
 
-/* ── the schematic strip · the mobile / narrow expression of the machine ────── */
-.spec-strip {
-  position: relative;
-  margin-top: 22px;
-  display: flex;
-  justify-content: center;
-}
-.spec-schematic--strip {
-  width: min(320px, 82vw);
-}
-.spec-strip-tally {
-  position: absolute;
-  right: 2px;
-  bottom: 2px;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  color: color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
-  font-variant-numeric: tabular-nums;
-  user-select: none;
-}
-@media (min-width: 1024px) {
-  .spec-strip {
-    display: none;
-  }
-}
 
 /* ── the lit TOC · reading ticks (the DOM mirror of the machine tally) ──────── */
 .spec-toc-tick {
@@ -2024,12 +1999,19 @@
     min-height: calc(100vh - 220px);
   }
 }
+/* the hero elevation · mobile's ONE ship (a full-width profile poster,
+   SSG, zero JS) and desktop's fallback ground until the chassis mounts */
 .spec-hero-eleva {
-  display: none;
+  display: block;
+  margin-top: 6px;
+}
+.spec-hero-eleva .spec-schematic {
+  width: 100%;
+  height: auto;
 }
 @media (min-width: 1024px) {
   .spec-hero-eleva {
-    display: block;
+    margin-top: 0;
     padding: 0 2vw;
   }
   /* the live chassis covers this ground — the drawing stands down */
@@ -2050,6 +2032,17 @@
   width: 26px;
   height: 1px;
   background: color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
+}
+.spec-hero-cue-desk {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .spec-hero-cue-desk {
+    display: inline;
+  }
+  .spec-hero-cue-mob {
+    display: none;
+  }
 }
 .spec-hero-cue span[aria-hidden]:last-child {
   animation: specCueBob 2.4s ease-in-out infinite;
