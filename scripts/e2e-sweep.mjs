@@ -63,10 +63,12 @@ if (ROUTES.length < 10) {
   process.exit(1)
 }
 
-/* ── chrome + CDP plumbing (the shoot-scroll family pattern) ───────────────── */
+/* ── chrome + CDP plumbing (the shoot-scroll family pattern) ─────────────────
+   CHROME_BIN overrides the binary (CI · linux); --no-sandbox rides only there
+   (containers), never locally. */
 const chrome = execFile(
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  ['--headless=new', `--remote-debugging-port=${CDP_PORT}`, '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--hide-scrollbars', '--window-size=1600,1000', '--no-first-run', '--no-default-browser-check', `--user-data-dir=/tmp/e2e-sweep-${CDP_PORT}`, 'about:blank'],
+  process.env.CHROME_BIN ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  ['--headless=new', `--remote-debugging-port=${CDP_PORT}`, '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--hide-scrollbars', '--window-size=1600,1000', '--no-first-run', '--no-default-browser-check', ...(process.env.CHROME_BIN ? ['--no-sandbox'] : []), `--user-data-dir=/tmp/e2e-sweep-${CDP_PORT}`, 'about:blank'],
   () => {},
 )
 process.on('exit', () => { chrome.kill(); server?.close() })
@@ -177,12 +179,23 @@ for (const route of NAV_ROUTES) {
   failedReqs.length = 0
   await send('Page.navigate', { url: `${BASE}${route}` })
   await sleep(route === '/' ? 3500 : 1800) /* home mounts the lazy 3D field */
-  const harvest = await evaluate(`(() => {
-    const ids = [...document.querySelectorAll('[id]')].map((el) => el.id)
-    const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'))
-      .filter((h) => h && (h.startsWith('/') || h.startsWith('#')) && !h.startsWith('//'))
-    return { ids, hrefs, tone: document.documentElement.dataset.auroraTone ?? '' }
-  })()`)
+  /* a transient page-context exception racing the evaluate must be a ROUTE
+     finding, never a process crash (round 4 died in 57s on an "Uncaught
+     object" mid-harvest — one flaky context invalidation killed the belt) */
+  let harvest = null
+  for (let attempt = 0; attempt < 3 && !harvest; attempt++) {
+    harvest = await evaluate(`(() => {
+      const ids = [...document.querySelectorAll('[id]')].map((el) => el.id)
+      const hrefs = [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href'))
+        .filter((h) => h && (h.startsWith('/') || h.startsWith('#')) && !h.startsWith('//'))
+      return { ids, hrefs, tone: document.documentElement.dataset.auroraTone ?? '' }
+    })()`).catch(() => null)
+    if (!harvest) await sleep(1000)
+  }
+  if (!harvest) {
+    fail(route, 'harvest', 'evaluate failed 3× (page context)')
+    continue
+  }
   idsByRoute.set(route, new Set(harvest.ids))
   for (const h of harvest.hrefs) {
     const abs = h.startsWith('#') ? `${route}${h}` : h
@@ -193,7 +206,17 @@ for (const route of NAV_ROUTES) {
   for (const e of pageErrs) fail(route, 'page error', e)
   for (const e of failedReqs) fail(route, 'request', e)
   const expected = TONE_EXPECT[route]
-  if (expected && harvest.tone !== expected) fail(route, 'route tone', `expected ${expected}, got "${harvest.tone}"`)
+  if (expected) {
+    /* the tone is stamped by HYDRATION — one read races it on a slow env
+       (the "" finding reproduced on a 2-core CI runner: a race, not a bug).
+       Poll, never fixed-sleep (the belt's own law). */
+    let tone = harvest.tone
+    for (let i = 0; i < 20 && tone !== expected; i++) {
+      await sleep(400)
+      tone = await evaluate(`document.documentElement.dataset.auroraTone ?? ''`)
+    }
+    if (tone !== expected) fail(route, 'route tone', `expected ${expected}, got "${tone}"`)
+  }
   if (consoleErrs.length + pageErrs.length + failedReqs.length === 0) console.log(`  ✓ ${route}`)
 }
 
@@ -212,7 +235,20 @@ for (const [href, froms] of links) {
   }
   if (hash) {
     const ids = idsByRoute.get(target)
-    if (ids && !ids.has(hash)) { fail(froms[0], 'dead anchor', `${href} (no #${hash} on ${target})`); linkFails++ }
+    if (ids && !ids.has(hash)) {
+      /* VERIFY before failing: the PASS-1 id harvest is one snapshot and a
+         heavy page (the /spec machine) hydrates its sections late on a slow
+         runner — 6 phantom "dead anchors" on a 2-core CI runner while a fast
+         local run saw them all. Re-visit the target and POLL for the id. */
+      await send('Page.navigate', { url: `${BASE}${target}` })
+      let live = false
+      for (let i = 0; i < 20 && !live; i++) {
+        await sleep(400)
+        live = await evaluate(`!!document.getElementById(${JSON.stringify(hash)})`).catch(() => false)
+      }
+      if (live) { ids.add(hash) /* future hrefs to the same anchor skip the re-visit */ }
+      else { fail(froms[0], 'dead anchor', `${href} (no #${hash} on ${target})`); linkFails++ }
+    }
   }
 }
 if (linkFails === 0) console.log(`  ✓ ${links.size} internal links resolve (anchors included)`)
@@ -269,24 +305,37 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
      logic must see a primary pointer; the drag path calls seek() → scrollTo
      directly (no self-chaining rAF), so it works headless. Assert on the
      SCROLL position (the store) — --morph-p follows via a one-shot rAF that
-     may lag a beat under swiftshader. */
-  const r = await evaluate(`(() => {
-    const track = document.querySelector('.morph-track')
-    const tr = track.getBoundingClientRect()
-    const y0 = window.scrollY
-    const base = { clientY: tr.top + tr.height / 2, bubbles: true, pointerId: 7, isPrimary: true, pointerType: 'mouse', button: 0, buttons: 1 }
-    track.dispatchEvent(new PointerEvent('pointerdown', { ...base, clientX: tr.left + tr.width * 0.98 }))
-    track.dispatchEvent(new PointerEvent('pointermove', { ...base, clientX: tr.left + tr.width * 0.3 }))
-    track.dispatchEvent(new PointerEvent('pointerup', { ...base, clientX: tr.left + tr.width * 0.3, buttons: 0 }))
-    return new Promise((res) => setTimeout(() => {
-      const s = document.querySelector('.morphsec')
-      const r2 = s.getBoundingClientRect()
-      const runway = r2.height - document.querySelector('.morph-stage').offsetHeight
-      const p = -r2.top / runway
-      res({ moved: Math.abs(window.scrollY - y0) > 100, p: +p.toFixed(3), dy: Math.round(window.scrollY - y0) })
-    }, 500))
-  })()`)
-  return (r.moved && r.p > 0.2 && r.p < 0.4) || r
+     may lag a beat under swiftshader. RETRIED ×3: the pointer handler is
+     attached during hydration and a starved runner can miss the first
+     attempt entirely (dy:0 — flipped between two CI runs); a real break
+     fails all three. */
+  let r
+  for (let attempt = 0; attempt < 3; attempt++) {
+    r = await evaluate(`(() => {
+      const track = document.querySelector('.morph-track')
+      const tr = track.getBoundingClientRect()
+      const y0 = window.scrollY
+      const base = { clientY: tr.top + tr.height / 2, bubbles: true, pointerId: 7, isPrimary: true, pointerType: 'mouse', button: 0, buttons: 1 }
+      track.dispatchEvent(new PointerEvent('pointerdown', { ...base, clientX: tr.left + tr.width * 0.98 }))
+      track.dispatchEvent(new PointerEvent('pointermove', { ...base, clientX: tr.left + tr.width * 0.3 }))
+      track.dispatchEvent(new PointerEvent('pointerup', { ...base, clientX: tr.left + tr.width * 0.3, buttons: 0 }))
+      return new Promise((res) => setTimeout(() => {
+        const s = document.querySelector('.morphsec')
+        const r2 = s.getBoundingClientRect()
+        const runway = r2.height - document.querySelector('.morph-stage').offsetHeight
+        const p = -r2.top / runway
+        res({ moved: Math.abs(window.scrollY - y0) > 100, p: +p.toFixed(3), dy: Math.round(window.scrollY - y0) })
+      }, 500))
+    })()`)
+    /* the assertion is the POSITION, not the delta: the film sits at p≈1
+       when this check starts, so p∈[0.2,0.4] can ONLY result from the seek
+       landing where the pointer pointed. (`moved` was the old criterion —
+       a slow runner can apply the scroll AFTER the 500ms read, so the next
+       attempt drags to a position it is already at: dy 0, p 0.3, correct.) */
+    if (r.p > 0.2 && r.p < 0.4) return true
+    await sleep(1500)
+  }
+  return r
 })
 
 /* 3b · the ?y= share round-trip · 3a proved ENCODE (the handoff href);
