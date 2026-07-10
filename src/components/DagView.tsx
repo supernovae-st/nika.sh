@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import type { ParsedPlan } from '../lib/parse-plan'
+import { useScrollWellTab } from '../lib/use-scroll-well'
 import { verbGlyph } from './codefile-highlight'
 import './dag-view.css'
 
@@ -28,13 +29,19 @@ export function DagView({
   simWave?: number
 }) {
   const boxRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef(new Map<string, HTMLDivElement | null>())
   const wireRefs = useRef<(SVGPathElement | null)[]>([])
   const flowRefs = useRef<(SVGPathElement | null)[]>([])
   const dotRefs = useRef<(SVGCircleElement | null)[]>([])
+  /* narrow screens: the map overflows sideways in its own well (the CodeFile
+     well law) — the well is a keyboard tab stop while it actually scrolls */
+  useScrollWellTab(boxRef, plan)
 
   useLayoutEffect(() => {
-    const box = boxRef.current
+    /* wires are projected in TRACK space — the track spans the full
+       scrollable content width, so wires reach nodes beyond the fold */
+    const box = trackRef.current
     if (!box) return
     const measure = () => {
       const br = box.getBoundingClientRect()
@@ -74,6 +81,7 @@ export function DagView({
       role="img"
       aria-label={`The plan: ${plan.waves.map((w) => w.map((t) => t.id).join(' + ')).join(', then ')}${plan.cyclic ? ' (cycle detected)' : ''}`}
     >
+      <div ref={trackRef} className="dv-track">
       <svg className="dv-wires" aria-hidden>
         {/* the arrowhead (arc 11 · the film's grammar, W2) — « every arrow is
             a wait » holds here too: a hairline chevron on each wire's end
@@ -173,6 +181,7 @@ export function DagView({
       {plan.cyclic && (
         <p className="dv-note">cycle in depends_on · showing file order</p>
       )}
+      </div>
     </div>
   )
 }
