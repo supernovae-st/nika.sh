@@ -187,6 +187,11 @@ export function Component() {
   const stageRef = useRef<HTMLDivElement>(null)
   const machine = usePlan3D(stageRef)
 
+  /* THE HELM · the ship's view controls (explode toggle + spring-home) —
+     real DOM buttons outside the aria-hidden stage, keyboard-reachable */
+  const [explode, setExplode] = useState(false)
+  const [resetSignal, setResetSignal] = useState(0)
+
   /* ── W2 · the hover bus — ONE id, both sides write: pointering a 3D node
      reports here (MR readout + the DOM twins light), and hover/focus on any
      [data-node] DOM twin (chips · stamp legend · TOC · gates · ns rows)
@@ -854,11 +859,12 @@ export function Component() {
               </div>
             </div>
 
-            {/* ── the machine rail · sticky, decorative (the TOC + the column are
-                the truth). W0: the 2D schematic + the reading HUD; W1 mounts the
-                canvas over the same stage ([data-machine] retires the SVG). */}
-            <aside className="spec-rail" aria-hidden>
-              <div className="spec-rail-stage" ref={stageRef}>
+            {/* ── the machine rail · sticky. The STAGE is decoration (aria-hidden:
+                the TOC + the column are the truth — the elevation until the
+                canvas mounts, [data-machine] retires it); THE HELM below stays
+                exposed (real buttons, keyboard-reachable). */}
+            <aside className="spec-rail">
+              <div className="spec-rail-stage" ref={stageRef} aria-hidden>
                 <HudMarks />
                 {machine ? (
                   <Suspense fallback={null}>
@@ -867,6 +873,8 @@ export function Component() {
                       lit={lit}
                       current={current}
                       highlight={hoverNode}
+                      explode={explode}
+                      resetSignal={resetSignal}
                       onHover={setHoverNode}
                     />
                   </Suspense>
@@ -887,6 +895,28 @@ export function Component() {
                 {hoverReadout ? (
                   <span className="spec-rail-hud spec-rail-hud--mr">{hoverReadout}</span>
                 ) : null}
+              </div>
+              {/* THE HELM · outside the aria-hidden stage (keyboard-reachable);
+                  CSS shows it only while the canvas holds the stage */}
+              <div className="spec-helm">
+                <button
+                  type="button"
+                  className="spec-helm-btn"
+                  aria-pressed={explode}
+                  onClick={() => setExplode((e) => !e)}
+                >
+                  EXPLODE
+                </button>
+                <button
+                  type="button"
+                  className="spec-helm-btn"
+                  onClick={() => {
+                    setExplode(false)
+                    setResetSignal((n) => n + 1)
+                  }}
+                >
+                  RESET
+                </button>
               </div>
             </aside>
           </div>

@@ -33,13 +33,17 @@ export interface SpecSection {
   count: number
   /** the mono HUD label the count reads under (dot-leader grammar) */
   countLabel: string
+  /** the S-chip one-liner (craft · consumer register, mirrors the TL;DR) */
+  chipGloss: string
+  /** the ship stratum this section IS (the v2 axial read · craft naming) */
+  shipPart: string
 }
 
 export interface MachineNode {
   /** stable id · `kind:name` (the hover/click bus key + test identity) */
   id: string
   label: string
-  kind: 'verb' | 'task' | 'gate' | 'builtin' | 'provider' | 'extract' | 'errns'
+  kind: 'key' | 'verb' | 'task' | 'gate' | 'builtin' | 'provider' | 'extract' | 'errns'
   stratum: StratumKey
   /** the DOM twin · every 3D/2D node points at a real /spec anchor */
   anchor: string
@@ -195,15 +199,15 @@ export const PLAN_WAVES: number = PLAN_DAG.waves
    The TOC, the legend, the schematic, the index rail and the machine's poses
    all read THIS list. The anchor ids are an inbound contract — never renumber. */
 export const SPEC_SECTIONS: SpecSection[] = [
-  { key: 'frame', fig: 'S.0', title: 'Envelope', anchor: '#s0', count: ENVELOPE_KEYS.length, countLabel: 'KEYS' },
-  { key: 'verbs', fig: 'S.1', title: 'Verbs', anchor: '#s1', count: CANON.verbs, countLabel: 'VERBS' },
-  { key: 'plan', fig: 'S.2', title: 'Task shape', anchor: '#s2', count: TASK_FIELDS.length, countLabel: 'FIELDS' },
-  { key: 'permits', fig: 'S.3', title: 'Permits', anchor: '#permits', count: PERMIT_CATS.length, countLabel: 'GATES' },
-  { key: 'stdlib', fig: 'S.4', title: 'Stdlib', anchor: '#s3', count: CANON.builtins, countLabel: 'BUILTINS' },
-  { key: 'providers', fig: 'S.5', title: 'Providers', anchor: '#s4', count: CANON.providers, countLabel: 'PROVIDERS' },
-  { key: 'extract', fig: 'S.6', title: 'Extract', anchor: '#s5', count: CANON.extractModes, countLabel: 'MODES' },
-  { key: 'errors', fig: 'S.7', title: 'Errors', anchor: '#s6', count: CANON.errorNamespaces, countLabel: 'NAMESPACES' },
-  { key: 'license', fig: 'S.8', title: 'License', anchor: '#s7', count: 4, countLabel: 'INVARIANTS' },
+  { key: 'frame', fig: 'S.0', title: 'Envelope', anchor: '#s0', count: ENVELOPE_KEYS.length, countLabel: 'KEYS', chipGloss: 'The container.', shipPart: 'the keel' },
+  { key: 'verbs', fig: 'S.1', title: 'Verbs', anchor: '#s1', count: CANON.verbs, countLabel: 'VERBS', chipGloss: 'Four moves cover everything.', shipPart: 'the core' },
+  { key: 'plan', fig: 'S.2', title: 'Task shape', anchor: '#s2', count: TASK_FIELDS.length, countLabel: 'FIELDS', chipGloss: 'Tasks, and what they wait on.', shipPart: 'the bridge' },
+  { key: 'permits', fig: 'S.3', title: 'Permits', anchor: '#permits', count: PERMIT_CATS.length, countLabel: 'GATES', chipGloss: 'Gates bound what may pass.', shipPart: 'the ring' },
+  { key: 'stdlib', fig: 'S.4', title: 'Stdlib', anchor: '#s3', count: CANON.builtins, countLabel: 'BUILTINS', chipGloss: 'Tools aboard, nothing to install.', shipPart: 'the hold' },
+  { key: 'providers', fig: 'S.5', title: 'Providers', anchor: '#s4', count: CANON.providers, countLabel: 'PROVIDERS', chipGloss: 'Local first, then cloud.', shipPart: 'the engines' },
+  { key: 'extract', fig: 'S.6', title: 'Extract', anchor: '#s5', count: CANON.extractModes, countLabel: 'MODES', chipGloss: 'A page becomes typed output.', shipPart: 'the array' },
+  { key: 'errors', fig: 'S.7', title: 'Errors', anchor: '#s6', count: CANON.errorNamespaces, countLabel: 'NAMESPACES', chipGloss: 'Failures come back typed.', shipPart: 'the shield' },
+  { key: 'license', fig: 'S.8', title: 'License', anchor: '#s7', count: 4, countLabel: 'INVARIANTS', chipGloss: 'Open spec. Copyleft engine.', shipPart: 'the flag' },
 ]
 
 const ANCHOR: Record<StratumKey, string> = Object.fromEntries(
@@ -212,6 +216,17 @@ const ANCHOR: Record<StratumKey, string> = Object.fromEntries(
 
 /* ── the machine nodes · every stratum member, DOM-anchored ─────────────────── */
 export const MACHINE_NODES: MachineNode[] = [
+  /* the keel · S.0 · the envelope's 10 top-level keys ARE the ship's spine
+     (the file's skeleton = the ship's skeleton · required keys lead the bow) */
+  ...ENVELOPE_KEYS.map((k) => ({
+    id: `key:${k.key}`,
+    label: k.key,
+    kind: 'key' as const,
+    stratum: 'frame' as const,
+    anchor: ANCHOR.frame,
+    family: k.req ? 'required' : 'optional',
+    gloss: k.gloss,
+  })),
   /* the core tetrad · S.1 */
   ...CANON.verbNames.map((v) => ({
     id: `verb:${v}`,
@@ -309,6 +324,8 @@ export function nodeReadout(id: string): string | null {
   const n = NODE_BY_ID.get(id)
   if (!n) return null
   switch (n.kind) {
+    case 'key':
+      return `${n.label}·····envelope key · ${n.family}`
     case 'verb':
       return `${n.label}·····verb · locked`
     case 'task': {
