@@ -2062,6 +2062,80 @@
   letter-spacing: 0.22em;
   color: color-mix(in oklch, var(--sm-ink-lit) 70%, var(--v4-text-dim));
 }
+
+/* ── the connected poster (full-bleed live hero only) ─────────────────────────
+   The descent: the cue's tick keeps going — a vertical hairline runs from
+   under the cue toward S.0, tying the poster to the reading it announces.
+   The leads: three hairlines run from the copy column's edge toward the
+   hull, each landing on a dot (the drawing vocabulary) — the copy labels
+   the vessel. Both live only on the is-live desktop poster: the SSG
+   fallback keeps its clean two-column elevation. */
+.spec-hero-descent,
+.spec-hero-leads {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .spec-page.is-live .spec-hero {
+    position: relative;
+  }
+  .spec-page.is-live .spec-hero-copy {
+    position: relative;
+    z-index: 1;
+  }
+  .spec-page.is-live .spec-hero-descent {
+    display: block;
+    position: absolute;
+    left: 13px;
+    bottom: calc(-1 * clamp(48px, 9vh, 110px));
+    width: 1px;
+    height: clamp(70px, 16vh, 170px);
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--sm-ink-lit) 55%, transparent),
+      color-mix(in oklch, var(--sm-ink-lit) 8%, transparent)
+    );
+    pointer-events: none;
+  }
+  .spec-page.is-live .spec-hero-leads {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .spec-page.is-live .spec-hero-leads i {
+    position: absolute;
+    left: 43%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      color-mix(in oklch, var(--sm-ink-lit) 50%, transparent),
+      color-mix(in oklch, var(--sm-ink-lit) 10%, transparent)
+    );
+  }
+  .spec-page.is-live .spec-hero-leads i::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: -2px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: color-mix(in oklch, var(--sm-ink-lit) 60%, transparent);
+  }
+  .spec-page.is-live .spec-hero-leads i:nth-child(1) {
+    top: 33%;
+    width: 12vw;
+  }
+  .spec-page.is-live .spec-hero-leads i:nth-child(2) {
+    top: 51%;
+    width: 8vw;
+  }
+  .spec-page.is-live .spec-hero-leads i:nth-child(3) {
+    top: 65%;
+    width: 10vw;
+  }
+}
 .spec-hero-cue-tick {
   width: 26px;
   height: 1px;
@@ -2146,25 +2220,24 @@
     bottom: 58px;
   }
   .spec-rail.is-live[data-stage='hero'] {
-    /* the copy column ends ≈43vw on every width — the ship owns the rest,
-       never overlapping the title (the text-collision bug). The ground
-       rides 2.5vw past the edge: the vessel advances right, tightening
-       the dead water between the copy and the hull (operator pass
-       2026-07-11) — nothing of the vessel crops (it spans ~70% of the
-       canvas, centered). */
-    width: 56vw;
-    right: -2.5vw;
+    /* THE FULL-BLEED POSTER (operator pass 2026-07-11) · the ground is the
+       whole viewport — the vessel rides bigger and to the right (the scene's
+       hero framing carries it clear of the copy), the copy floats above the
+       canvas (z below + the copy column's own z:1). */
+    width: 100vw;
+    right: 0;
+    z-index: 0;
   }
-  /* the position plate at the POSTER is the drawing's title block — top
-     right of the ground, clear of the fixed rail's hairline (~34px), never
-     the stranded float mid-gap it was at left 2% (the chassis starts near
-     the page's middle, so stage-left = page-center). Dock keeps top-left:
-     there the plate tracks the reading beside the copy. */
+  /* the full-bleed canvas must never eat the copy — no orbit at the poster
+     (the scroll steers the turn; the helm returns at the dock) */
+  .spec-rail.is-live[data-stage='hero'] .smw {
+    pointer-events: none;
+  }
+  /* the position plate stays quiet at the POSTER (operator: the poster
+     speaks through the vessel + the connected lines, not a floating chip);
+     it returns at the dock where it tracks the reading. */
   .spec-rail.is-live[data-stage='hero'] .spec-rail-pos {
-    left: auto;
-    right: calc(2.5vw + 56px);
-    align-items: flex-end;
-    text-align: right;
+    display: none;
   }
   .spec-rail.is-live[data-stage='finale'] {
     width: 100vw;
