@@ -12,30 +12,52 @@ import {
 import { makeMachineLayers } from './spec-machine-three'
 import './spec-machine.css'
 
-/* ─── TheSpecMachine · the /spec rail machine (W1) ────────────────────────────
-   The whole language as one machined instrument, living in the sticky rail
-   the W0 stage reserved: on mount it is a GHOST (all strata faint, idle
-   drift + pointer parallax); each spec section the reader crosses IGNITES
-   its stratum (~1s wash to the lit blue, monotonic for the visit — the
-   drum's accrued-liberation mechanic, state passed down from the page's own
-   useSpecReading so the DOM ticks and the machine can never disagree); and
+/* ─── TheSpecMachine · THE SHIP on the /spec stage (v2) ───────────────────────
+   The whole language as one vessel, sailed by the reading: on mount it is a
+   GHOST breathing on the drum's 2.4s heartbeat (the beat travels bow →
+   stern); each spec section the reader crosses IGNITES its stratum (~1s
+   wash, monotonic for the visit — state passed down from the page's own
+   useSpecReading so the DOM ticks and the ship can never disagree); and
    crossing a section boundary eases the camera to that stratum's POSE — one
-   eased glide on the one clock, other strata dropping to x-ray alpha. By
-   S.8 the whole contract stands assembled, one full revolution made.
-   Desktop-only WebGL layer (gated by usePlan3D in Spec.tsx: ≥1024px +
-   motion + WebGL + rail-near, lazy chunk); the 2D schematic + lit TOC stay
-   the mobile / reduced-motion / no-WebGL truth. Four draw calls, zero
-   per-frame attribute uploads (per-stratum state = two 9-float uniform
-   arrays eased on the CPU). Frameloop only while the rail is in view and
-   the tab visible.
-   Dev capture params (DEV only · the drum's ?struck precedent):
-   /spec?lit=N pins the first N strata lit (page hook) · ?pose=sN pins the
-   camera pose so a headless screenshot can prove any stratum's framing. */
+   eased glide on the one clock: the ship makes ONE exact revolution over
+   the reading (license = frame + 2π) while sailing bow → stern under the
+   camera. By S.8 the whole contract stands assembled, back at the opening
+   frame, now lit.
+   THE HELM (v2): drag = orbit (spring-returns to the pose when released) ·
+   wheel = zoom (clamped) · EXPLODE separates the strata along the spine
+   (wires stretch connected — per-endpoint seeds) · RESET zeroes all three.
+   The helm state lives in refs the page's buttons drive (the buttons are
+   real DOM outside this aria-hidden stage).
+   Desktop-only WebGL layer (gated by usePlan3D: ≥1024px + motion + WebGL +
+   stage-near, lazy chunk); the 2D elevation + lit TOC stay the mobile /
+   reduced-motion / no-WebGL truth. Four draw calls, zero per-frame
+   attribute uploads. Frameloop only while in view and the tab visible.
+   Dev capture params (DEV only): ?lit=N pins strata lit (page hook) ·
+   ?pose=sN pins the camera pose · ?explode=1 pins the exploded drawing. */
 
 interface Pointer {
   x: number
   y: number
 }
+
+/** the helm · one mutable bag both the page buttons and the canvas drive */
+interface HelmState {
+  /** user orbit offsets (radians) · decay to 0 when released */
+  yaw: number
+  pitch: number
+  dragging: boolean
+  /** wheel zoom multiplier on the pose distance · eased, clamped */
+  zoom: number
+  /** the exploded-drawing toggle */
+  explode: boolean
+}
+const helmDefaults = (): HelmState => ({
+  yaw: 0,
+  pitch: 0,
+  dragging: false,
+  zoom: 1,
+  explode: false,
+})
 
 function Machine({
   pointer,
@@ -43,6 +65,7 @@ function Machine({
   poseRef,
   strikeRef,
   hiRef,
+  helmRef,
   onHover,
 }: {
   pointer: React.MutableRefObject<Pointer>
@@ -50,32 +73,42 @@ function Machine({
   poseRef: React.MutableRefObject<MachinePose>
   strikeRef: React.MutableRefObject<number>
   hiRef: React.MutableRefObject<number>
+  helmRef: React.MutableRefObject<HelmState>
   onHover: (id: string | null) => void
 }) {
   const model = useMemo(() => buildSpecMachine(), [])
   const layers = useMemo(() => makeMachineLayers(model), [model])
   useEffect(() => () => layers.dispose(), [layers])
 
+  /* nested groups · the INNER slides the ship along its spine so the read
+     section sits at the origin; the OUTER orbits around that point — the
+     camera always revolves around the section it is reading */
   const group = useRef<THREE.Group>(null)
+  const inner = useRef<THREE.Group>(null)
   const { camera, gl } = useThree()
 
-  /* ── W2 · the pick bus — no raycaster: 78 instance centres projected to
-     screen space, nearest within reach wins (deterministic, trivially cheap).
-     Hover → the node pulses + the page readout/chips light; click → the
-     node's DOM twin via the hash (native :target + the page's smooth law). */
+  /* ── the pick bus + THE HELM's drag — one pointer state machine ───────────
+     No raycaster: node instance centres projected to screen space, nearest
+     within reach wins. pointerdown starts a potential orbit; >4px of travel
+     commits it (click suppressed, cursor grabs); release springs back. */
   useEffect(() => {
     const el = gl.domElement
     const v = new THREE.Vector3()
     const pick = (e: PointerEvent): number => {
-      const g = group.current
+      const g = inner.current /* full transform: outer orbit × inner sail */
       if (!g) return -1
       const rect = el.getBoundingClientRect()
       const px = e.clientX - rect.left
       const py = e.clientY - rect.top
       let best = -1
       let bestD = 26 * 26 /* px² reach */
-      for (let i = 0; i < model.count; i++) {
-        v.set(model.pos[i * 3], model.pos[i * 3 + 1], model.pos[i * 3 + 2])
+      const ex = layers.uniforms.uExplode.value
+      for (let i = 0; i < model.nodeCount; i++) {
+        v.set(
+          model.pos[i * 3] + model.explode[model.seed[i * 2]] * ex,
+          model.pos[i * 3 + 1],
+          model.pos[i * 3 + 2],
+        )
         v.applyMatrix4(g.matrixWorld).project(camera)
         if (v.z > 1) continue
         const sx = ((v.x + 1) / 2) * rect.width
@@ -88,20 +121,48 @@ function Machine({
       }
       return best
     }
+    let downAt: { x: number; y: number } | null = null
+    let orbiting = false
+    const onDown = (e: PointerEvent) => {
+      downAt = { x: e.clientX, y: e.clientY }
+      orbiting = false
+      el.setPointerCapture(e.pointerId)
+    }
     const onMove = (e: PointerEvent) => {
+      if (downAt) {
+        const dx = e.clientX - downAt.x
+        const dy = e.clientY - downAt.y
+        if (!orbiting && dx * dx + dy * dy > 16) {
+          orbiting = true
+          helmRef.current.dragging = true
+          el.style.cursor = 'grabbing'
+          if (hiRef.current >= 0) {
+            hiRef.current = -1
+            onHover(null)
+          }
+        }
+        if (orbiting) {
+          helmRef.current.yaw += (e.movementX || 0) * 0.006
+          helmRef.current.pitch = Math.max(
+            -0.9,
+            Math.min(0.9, helmRef.current.pitch + (e.movementY || 0) * 0.005),
+          )
+          return
+        }
+      }
       const i = pick(e)
       if (i === hiRef.current) return
       hiRef.current = i
       el.style.cursor = i >= 0 ? 'pointer' : ''
       onHover(i >= 0 ? model.nodeIds[i] : null)
     }
-    const onLeave = () => {
-      if (hiRef.current < 0) return
-      hiRef.current = -1
-      el.style.cursor = ''
-      onHover(null)
-    }
-    const onClick = (e: PointerEvent) => {
+    const onUp = (e: PointerEvent) => {
+      const wasOrbit = orbiting
+      downAt = null
+      orbiting = false
+      helmRef.current.dragging = false
+      el.style.cursor = hiRef.current >= 0 ? 'pointer' : ''
+      if (wasOrbit) return /* an orbit is never a click */
       const i = pick(e)
       if (i < 0) return
       const node = nodeById(model.nodeIds[i])
@@ -110,16 +171,33 @@ function Machine({
          :target lights the row, the address stays shareable */
       window.location.hash = node.anchor
     }
+    const onLeave = () => {
+      if (hiRef.current < 0) return
+      hiRef.current = -1
+      el.style.cursor = ''
+      onHover(null)
+    }
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      helmRef.current.zoom = Math.max(
+        0.55,
+        Math.min(2.1, helmRef.current.zoom * Math.exp(e.deltaY * 0.0011)),
+      )
+    }
+    el.addEventListener('pointerdown', onDown)
     el.addEventListener('pointermove', onMove, { passive: true })
+    el.addEventListener('pointerup', onUp)
     el.addEventListener('pointerleave', onLeave, { passive: true })
-    el.addEventListener('click', onClick as EventListener)
+    el.addEventListener('wheel', onWheel, { passive: false })
     return () => {
+      el.removeEventListener('pointerdown', onDown)
       el.removeEventListener('pointermove', onMove)
+      el.removeEventListener('pointerup', onUp)
       el.removeEventListener('pointerleave', onLeave)
-      el.removeEventListener('click', onClick as EventListener)
+      el.removeEventListener('wheel', onWheel)
       el.style.cursor = ''
     }
-  }, [gl, camera, model, hiRef, onHover])
+  }, [gl, camera, model, layers, hiRef, helmRef, onHover])
 
   useFrame((state, delta) => {
     const u = layers.uniforms
@@ -150,27 +228,58 @@ function Machine({
       u.uFocusA.value[i] += (focT - u.uFocusA.value[i]) * kFoc
     }
 
-    /* the pose glide · one eased camera/group move per section boundary,
-       pointer parallax (±0.06 rad · drum values) + a quiet idle breath */
+    /* THE HELM · user orbit spring-returns once released · zoom eases ·
+       the explode washes in/out like a stratum */
+    const helm = helmRef.current
+    if (!helm.dragging) {
+      const decay = Math.exp(-delta * 2.4)
+      helm.yaw *= decay
+      helm.pitch *= decay
+    }
+    const exT = helm.explode ? 1 : 0
+    u.uExplode.value += (exT - u.uExplode.value) * Math.min(1, delta * 2.6)
+
+    /* the pose glide · one eased move per section boundary: the ship sails
+       under the camera (inner x → -pose.x, explode-compensated so the
+       focused section stays centred) while the outer group orbits it */
     const g = group.current
-    if (!g) return
+    const inn = inner.current
+    if (!g || !inn) return
     const k = Math.min(1, delta * 2.2)
     const breathe = Math.sin(u.uTime.value * 0.11) * 0.02
-    g.rotation.y += (pose.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
-    g.rotation.x += (pose.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
+    g.rotation.y += (pose.yaw + helm.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
+    g.rotation.x += (pose.pitch + helm.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k
-    state.camera.position.z += (pose.dist - state.camera.position.z) * k
+    const exOff = pose.focus >= 0 ? model.explode[pose.focus] * u.uExplode.value : 0
+    inn.position.x += (-(pose.x + exOff) - inn.position.x) * k
+    state.camera.position.z += (pose.dist * helm.zoom - state.camera.position.z) * k
+
+    /* the reactor + engine glows track their spine points through sail +
+       explode — inner-local X projected through the outer yaw/pitch */
+    const cY = Math.cos(g.rotation.y)
+    const sY = Math.sin(g.rotation.y)
+    const cX = Math.cos(g.rotation.x)
+    const sX = Math.sin(g.rotation.x)
+    const track = (mesh: THREE.Mesh, localX: number) => {
+      const a = localX + inn.position.x
+      mesh.position.set(a * cY, g.position.y + a * sX * sY, -a * cX * sY)
+    }
+    track(layers.glow, 0.68 + model.explode[stratumIndex('verbs')] * u.uExplode.value)
+    track(layers.thrust, -1.34 + model.explode[stratumIndex('providers')] * u.uExplode.value)
   })
 
   return (
     <>
-      <group ref={group} rotation={[0.42, 0.6, 0]}>
-        <primitive object={layers.fills} />
-        <primitive object={layers.wires} />
-        <primitive object={layers.lines} />
+      <group ref={group} rotation={[0.3, 0.55, 0]}>
+        <group ref={inner}>
+          <primitive object={layers.fills} />
+          <primitive object={layers.wires} />
+          <primitive object={layers.lines} />
+        </group>
       </group>
-      {/* the ignition glow stays camera-facing OUTSIDE the turning group */}
+      {/* the reactor + engine glows stay camera-facing OUTSIDE the group */}
       <primitive object={layers.glow} />
+      <primitive object={layers.thrust} />
     </>
   )
 }
@@ -180,6 +289,8 @@ export default function TheSpecMachine({
   lit,
   current,
   highlight = null,
+  explode = false,
+  resetSignal = 0,
   onHover = () => {},
 }: {
   stageRef: React.RefObject<HTMLDivElement | null>
@@ -187,6 +298,10 @@ export default function TheSpecMachine({
   current: StratumKey | null
   /** W2 · a node id the DOM side is hovering/focusing (chips · stamp · TOC) */
   highlight?: string | null
+  /** the helm · exploded-drawing toggle (page button) */
+  explode?: boolean
+  /** the helm · bump to spring everything home (page button) */
+  resetSignal?: number
   /** W2 · the machine's own hover, reported back for the MR readout + chips */
   onHover?: (id: string | null) => void
 }) {
@@ -201,6 +316,22 @@ export default function TheSpecMachine({
   useEffect(() => {
     hiRef.current = highlight ? MACHINE_NODES.findIndex((n) => n.id === highlight) : -1
   }, [highlight])
+
+  /* the helm · page buttons + canvas gestures share this bag */
+  const helmRef = useRef<HelmState>(helmDefaults())
+  useEffect(() => {
+    helmRef.current.explode = explode
+    if (import.meta.env.DEV && typeof window !== 'undefined') {
+      if (new URLSearchParams(window.location.search).get('explode') === '1')
+        helmRef.current.explode = true
+    }
+  }, [explode])
+  useEffect(() => {
+    if (resetSignal === 0) return
+    helmRef.current.yaw = 0
+    helmRef.current.pitch = 0
+    helmRef.current.zoom = 1
+  }, [resetSignal])
 
   /* dev-only capture override · /spec?pose=sN pins the section pose */
   const devPose = useMemo<StratumKey | null>(() => {
@@ -227,7 +358,7 @@ export default function TheSpecMachine({
     poseRef.current = POSES[devPose ?? current ?? 'frame']
   }, [current, devPose])
 
-  /* the schematic steps aside ONLY once this layer is really mounted */
+  /* the elevation steps aside ONLY once this layer is really mounted */
   useEffect(() => {
     const stage = stageRef.current
     if (!stage) return
@@ -237,7 +368,7 @@ export default function TheSpecMachine({
     }
   }, [stageRef])
 
-  /* frame loop gate · rail in view + tab visible, else zero GPU work */
+  /* frame loop gate · stage in view + tab visible, else zero GPU work */
   useEffect(() => {
     const el = wrapRef.current
     if (!el) return
@@ -263,7 +394,7 @@ export default function TheSpecMachine({
         frameloop={inView && !hidden ? 'always' : 'never'}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', stencil: false }}
-        camera={{ fov: 38, near: 0.1, far: 30, position: [0, 0, 4.9] }}
+        camera={{ fov: 38, near: 0.1, far: 30, position: [0, 0, 4.6] }}
         onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       >
         <Machine
@@ -272,6 +403,7 @@ export default function TheSpecMachine({
           poseRef={poseRef}
           strikeRef={strikeRef}
           hiRef={hiRef}
+          helmRef={helmRef}
           onHover={onHover}
         />
       </Canvas>

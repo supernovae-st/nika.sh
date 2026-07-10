@@ -1376,7 +1376,7 @@
     justify-content: center;
   }
   .spec-rail-stage .spec-schematic {
-    width: min(100%, calc(100vh - 220px), 600px);
+    width: min(100%, 620px);
     height: auto;
   }
 }
@@ -1424,46 +1424,45 @@
   transition: stroke 0.9s ease, fill 0.9s ease, opacity 0.9s ease;
 }
 
-/* S.0 · the stage frame */
-.sms-frame {
-  fill: none;
-  stroke: var(--v4-line);
-}
-.sms-crop {
-  fill: none;
-  stroke: color-mix(in oklch, var(--v4-hud-faint) 75%, transparent);
-}
-.sms-stratum[data-lit] .sms-crop {
-  stroke: var(--sm-ink-lit);
-}
-
-/* S.7 · the containment shell (14 cells by dasharray construction) */
-.sms-shell {
-  fill: none;
-  stroke: color-mix(in oklch, var(--sm-ink-shadow) 70%, transparent);
-}
-.sms-stratum[data-lit] .sms-shell {
-  stroke: color-mix(in oklch, var(--sm-ink-lit) 80%, transparent);
-}
-
-/* S.5 · the provider halo · locals docked solid · cloud dashed · mock dim */
-.sms-sat {
+/* S.0 · THE KEEL · envelope-key spine segments (required read heavier) */
+.sms-keel {
   fill: var(--sm-fill);
   stroke: var(--sm-ink-shadow);
 }
-.sms-sat--cloud {
-  fill: none;
-  stroke-dasharray: 2.5 2;
+.sms-keel--req {
+  stroke-width: 1.3px;
 }
-.sms-sat--mock {
-  fill: none;
-  opacity: 0.4;
-}
-.sms-stratum[data-lit] .sms-sat {
+.sms-stratum[data-lit] .sms-keel {
   stroke: var(--sm-ink-lit);
 }
 
-/* S.6 · the fetch manifold · 9 ports fanned off the fetch tick */
+/* S.7 · THE SHIELD · 14 flared skirt plates */
+.sms-plate {
+  stroke: color-mix(in oklch, var(--sm-ink-shadow) 85%, transparent);
+  stroke-width: 2;
+}
+.sms-stratum[data-lit] .sms-plate {
+  stroke: var(--sm-ink-lit);
+}
+
+/* S.5 · THE ENGINES · docked solid · outboard dashed · mock dim */
+.sms-nozzle {
+  fill: var(--sm-fill);
+  stroke: var(--sm-ink-shadow);
+}
+.sms-nozzle--cloud {
+  fill: none;
+  stroke-dasharray: 2.5 2;
+}
+.sms-nozzle--mock {
+  fill: none;
+  opacity: 0.4;
+}
+.sms-stratum[data-lit] .sms-nozzle {
+  stroke: var(--sm-ink-lit);
+}
+
+/* S.6 · THE ARRAY · 9 ports fanned off the fetch flank */
 .sms-port {
   stroke: color-mix(in oklch, var(--sm-ink-shadow) 80%, transparent);
 }
@@ -1478,20 +1477,31 @@
   fill: var(--sm-ink-lit);
 }
 
-/* S.4 · the tool belt · 27 ticks in 5 family arcs */
+/* S.4 · THE HOLD · the shallow ring + 27 family ticks */
+.sms-drum {
+  fill: none;
+  stroke: color-mix(in oklch, var(--sm-ink-shadow) 55%, transparent);
+}
 .sms-tick {
   stroke: var(--sm-ink-shadow);
 }
 .sms-tick--fetch {
   stroke-width: 2;
 }
+.sms-stratum[data-lit] .sms-drum {
+  stroke: color-mix(in oklch, var(--sm-ink-lit) 65%, transparent);
+}
 .sms-stratum[data-lit] .sms-tick {
   stroke: var(--sm-ink-lit);
 }
 
-/* S.3 · the gate collar · the boundary ring + 4 gate diamonds */
+/* S.3 · THE RING edge-on · the boundary + spokes + 4 gate stations */
 .sms-collar {
   fill: none;
+  stroke: color-mix(in oklch, var(--sm-ink-shadow) 70%, transparent);
+  stroke-width: 1.6px;
+}
+.sms-spoke {
   stroke: color-mix(in oklch, var(--sm-ink-shadow) 55%, transparent);
 }
 .sms-gate {
@@ -1499,29 +1509,24 @@
   stroke: var(--sm-ink-shadow);
   stroke-width: 1.2px;
 }
-.sms-stratum[data-lit] .sms-collar {
-  stroke: color-mix(in oklch, var(--sm-ink-lit) 65%, transparent);
+.sms-stratum[data-lit] .sms-collar,
+.sms-stratum[data-lit] .sms-spoke {
+  stroke: color-mix(in oklch, var(--sm-ink-lit) 75%, transparent);
 }
 .sms-stratum[data-lit] .sms-gate {
   stroke: var(--sm-ink-lit);
 }
 
-/* S.2 · the plan ring · slabs + depends_on wires */
-.sms-wire {
-  stroke: color-mix(in oklch, var(--sm-ink-shadow) 85%, transparent);
-}
+/* S.2 · THE BRIDGE · plan slabs */
 .sms-slab {
   fill: var(--sm-fill);
   stroke: var(--sm-ink-shadow);
-}
-.sms-stratum[data-lit] .sms-wire {
-  stroke: var(--sm-ink-lit);
 }
 .sms-stratum[data-lit] .sms-slab {
   stroke: var(--sm-ink-lit);
 }
 
-/* S.1 · the core tetrad · 4 verb blocks + 6 tetrahedron edges */
+/* S.1 · THE CORE · the reactor diamond */
 .sms-edge {
   stroke: color-mix(in oklch, var(--sm-ink-shadow) 60%, transparent);
 }
@@ -1538,17 +1543,18 @@
 }
 
 /* the current stratum reads brightest — the struck blue */
-.sms-stratum[data-focus] .sms-crop,
-.sms-stratum[data-focus] .sms-shell,
-.sms-stratum[data-focus] .sms-sat,
+.sms-stratum[data-focus] .sms-keel,
+.sms-stratum[data-focus] .sms-plate,
+.sms-stratum[data-focus] .sms-nozzle,
+.sms-stratum[data-focus] .sms-port,
+.sms-stratum[data-focus] .sms-drum,
 .sms-stratum[data-focus] .sms-tick,
 .sms-stratum[data-focus] .sms-collar,
+.sms-stratum[data-focus] .sms-spoke,
 .sms-stratum[data-focus] .sms-gate,
-.sms-stratum[data-focus] .sms-wire,
 .sms-stratum[data-focus] .sms-slab,
 .sms-stratum[data-focus] .sms-edge,
-.sms-stratum[data-focus] .sms-core,
-.sms-stratum[data-focus] .sms-port {
+.sms-stratum[data-focus] .sms-core {
   stroke: var(--sm-ink-struck);
 }
 .sms-stratum[data-focus] .sms-port-tip {
@@ -1716,4 +1722,42 @@
 /* the click's landing · the hash lights the section head (manifesto E1) */
 .spec-block:target .spec-head-fig {
   color: var(--sm-ink-lit);
+}
+
+/* ── THE HELM · the ship's view controls (real DOM · outside the aria-hidden
+   stage so the keyboard can reach them; shown only once the canvas holds
+   the stage — the elevation needs no helm) ─────────────────────────────────── */
+.spec-helm {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  gap: 8px;
+  z-index: 2;
+}
+.spec-rail:has(.spec-rail-stage[data-machine]) .spec-helm {
+  display: flex;
+}
+.spec-helm-btn {
+  min-height: 30px;
+  padding: 5px 12px;
+  border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 32%, var(--v4-line));
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 72%, transparent);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: color-mix(in oklch, var(--sm-ink-lit) 72%, var(--v4-text-dim));
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+}
+.spec-helm-btn:hover {
+  color: var(--sm-ink-struck);
+  border-color: color-mix(in oklch, var(--sm-ink-lit) 60%, var(--v4-line));
+}
+.spec-helm-btn[aria-pressed='true'] {
+  color: var(--v4-bg);
+  background: var(--sm-ink-lit);
+  border-color: var(--sm-ink-lit);
 }

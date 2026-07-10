@@ -1,5 +1,6 @@
 import {
   BUILTIN_GROUPS,
+  ENVELOPE_KEYS,
   PERMIT_CATS,
   PLAN_TASKS,
   SPEC_SECTIONS,
@@ -7,107 +8,98 @@ import {
 } from '../../scene/spec-machine-data'
 import { CANON } from '../../canon.generated'
 
-/* ─── SpecSchematic · the machine's floor plan (the designed fallback truth) ──
-   THE SPEC MACHINE as a pure-SVG concentric drawing — the CSS-drum-rings
-   equivalent for /spec: the whole language as ONE shape, centre → out exactly
-   like the 3D strata (core tetrad → plan ring → gate collar → tool belt +
-   fetch manifold → provider halo → containment shell, inside the S.0 frame).
-   Serves mobile + no-WebGL + reduced-motion, and is the sticky rail's truth
-   until the W1 canvas takes the stage ([data-machine] retires it, the
-   drum-rings pattern). Ink: the tholos blue-and-black — unlit strata whisper
-   in shadow wire blue, ignited strata wash to the lit accent (lit-state
-   synced from useSpecReading), the current stratum reads brightest.
-   Every count derives from spec-machine-data (CANON projections) — the tick
-   loops below can never disagree with the page. Pure render: deterministic
-   trig, no Math.random, no hooks. Decorative (aria-hidden): the TOC + the
-   content column stay the accessible truth. */
+/* ─── SpecSchematic · THE SHIP in profile (the designed fallback truth) ───────
+   The v2 elevation drawing — the same vessel the 3D stage sails, seen
+   side-on, bow LEFT → stern RIGHT (the reading order made horizontal):
+   the keel (10 envelope-key segments) · the bridge cluster (plan slabs by
+   wave) · the core diamond (verb tetrad) · THE RING edge-on (a tall ellipse,
+   4 gate stations + 2 visible spokes) · the hold ring (27 family ticks on
+   an ellipse) · the array fan (9 ports off the fetch flank) · the engine
+   block (16 nozzles: 5 docked · 10 outboard · 1 dim) · the shield skirt
+   (14 flared plates). Serves mobile + no-WebGL + reduced-motion, is the
+   stage's truth until the canvas mounts ([data-machine] retires it), and
+   doubles as the SIDE VIEW thumbnail on the instrument plate.
+   Ink: tholos blue-and-black — unlit strata whisper in shadow wire blue,
+   ignited strata wash to the lit accent (lit-state synced), the current
+   stratum reads brightest. Every count derives from spec-machine-data.
+   Pure render: deterministic trig, no Math.random, no hooks. Decorative
+   (aria-hidden): the TOC + the content column stay the accessible truth. */
 
-const C = 160 // viewBox centre
-const pt = (deg: number, r: number): [number, number] => {
-  const a = (deg * Math.PI) / 180
-  return [C + Math.cos(a) * r, C + Math.sin(a) * r]
-}
+const W = 460
+const H = 230
+const CY = H / 2
+/* bow x → stern x (screen) */
+const X0 = 30
+const X1 = 434
+const sx = (shipX: number) => X0 + ((1.42 - shipX) / (1.42 - -1.68)) * (X1 - X0)
 const fmt = (n: number) => Math.round(n * 100) / 100
 
-/* ── the tool belt · 27 ticks in 5 family arcs (gaps = the family seams) ────── */
-const BELT_R0 = 82
-const BELT_R1 = 93
-const FAMILY_GAP = 9 // degrees between family arcs
-const beltSlot = (360 - BUILTIN_GROUPS.length * FAMILY_GAP) / CANON.builtins
-interface BeltTick {
+/* the keel · 10 envelope-key segments, required lead the bow (heavier) */
+const KEEL_X0 = sx(1.3)
+const KEEL_X1 = sx(-1.42)
+const KEEL_SEG = (KEEL_X1 - KEEL_X0) / ENVELOPE_KEYS.length
+
+/* the bridge · plan slabs clustered by wave off the bow */
+const BRIDGE = PLAN_TASKS.map((t, i) => {
+  const inWave = PLAN_TASKS.filter((x) => x.wave === t.wave)
+  const j = inWave.findIndex((x) => x.id === t.id)
+  const spread = inWave.length > 1 ? (j - (inWave.length - 1) / 2) * 26 : 0
+  return { id: t.id, x: sx(1.22 - t.wave * 0.15), y: CY + spread, i }
+})
+
+/* THE RING edge-on · a tall ellipse at midship */
+const RING_X = sx(0)
+const RING_RY = 86
+const RING_RX = 10
+
+/* the hold · 27 ticks around a squashed ellipse (the ring seen shallow) */
+const HOLD_X = sx(-0.52)
+const HOLD_RY = 44
+const HOLD_RX = 16
+interface HoldTick {
   name: string
-  family: string
   deg: number
 }
-const BELT_TICKS: BeltTick[] = (() => {
-  const ticks: BeltTick[] = []
-  let deg = -90 + FAMILY_GAP / 2
+const HOLD_GAP = 14
+const holdSlot = (360 - BUILTIN_GROUPS.length * HOLD_GAP) / CANON.builtins
+const HOLD_TICKS: HoldTick[] = (() => {
+  const ticks: HoldTick[] = []
+  let deg = -90 + HOLD_GAP / 2
   for (const f of BUILTIN_GROUPS) {
     for (const n of f.names) {
-      ticks.push({ name: n, family: f.label, deg: deg + beltSlot / 2 })
-      deg += beltSlot
+      ticks.push({ name: n, deg: deg + holdSlot / 2 })
+      deg += holdSlot
     }
-    deg += FAMILY_GAP
+    deg += HOLD_GAP
   }
   return ticks
 })()
-const FETCH_DEG = BELT_TICKS.find((t) => t.name === 'fetch')?.deg ?? 90
+const holdPt = (deg: number, grow = 0): [number, number] => {
+  const a = (deg * Math.PI) / 180
+  return [HOLD_X + Math.cos(a) * (HOLD_RX + grow), CY + Math.sin(a) * (HOLD_RY + grow)]
+}
+const FETCH_DEG = HOLD_TICKS.find((t) => t.name === 'fetch')?.deg ?? 90
 
-/* ── the fetch manifold · 9 ports fanned off the fetch tick ─────────────────── */
-const MANIFOLD_SPREAD = 52
-const MANIFOLD_R = 110
-const manifoldDeg = (i: number) =>
-  FETCH_DEG - MANIFOLD_SPREAD / 2 + (MANIFOLD_SPREAD * i) / Math.max(1, CANON.extractModes - 1)
+/* the array · 9 ports fanned off the fetch flank (below the hold) */
+const ARRAY_R0 = 8
+const ARRAY_R1 = 52
+const arrayDeg = (i: number) =>
+  FETCH_DEG - 28 + (56 * i) / Math.max(1, CANON.extractModes - 1)
 
-/* ── the provider halo · 5 locals docked · 10 cloud + 1 mock distant ────────── */
-const LOCAL_R = 120
-const CLOUD_R = 136
-/* phase the locals so none lands inside the manifold fan */
-const localDeg = (i: number) => FETCH_DEG + 180 / CANON.providersLocal + (360 * i) / CANON.providersLocal
-const outerCount = CANON.providersCloud + CANON.providersTest
-const outerDeg = (i: number) => FETCH_DEG + 180 / outerCount + (360 * i) / outerCount
+/* the engines · 5 docked (inner column) · 10 outboard (two banks) · 1 dim */
+const ENG_X = sx(-1.18)
+const localY = (i: number) => CY + (i - (CANON.providersLocal - 1) / 2) * 15
+const outerY = (i: number) => {
+  const half = Math.ceil(CANON.providersCloud / 2)
+  const top = i < half
+  const j = top ? i : i - half
+  const n = top ? half : CANON.providersCloud - half
+  return CY + (top ? -1 : 1) * (46 + (j - (n - 1) / 2) * 0) + (top ? -1 : 1) * ((j % n) - (n - 1) / 2) * 16
+}
 
-/* ── the containment shell · one dashed circle, 14 cells by construction ────── */
-const SHELL_R = 150
-const SHELL_CIRC = 2 * Math.PI * SHELL_R
-const SHELL_CELL = SHELL_CIRC / CANON.errorNamespaces
-
-/* ── the plan ring · the standup-digest slabs + their depends_on wires ──────── */
-const PLAN_R = 46
-const SLAB_W = 11
-const SLAB_H = 6.5
-const planDeg = (i: number) => -90 + (360 * i) / Math.max(1, PLAN_TASKS.length)
-const PLAN_POS = PLAN_TASKS.map((t, i) => ({ t, xy: pt(planDeg(i), PLAN_R) }))
-const PLAN_WIRES = PLAN_TASKS.flatMap((t, i) =>
-  t.deps.map((d) => {
-    const from = PLAN_POS[PLAN_TASKS.findIndex((x) => x.id === d)].xy
-    const to = PLAN_POS[i].xy
-    /* trim each end so the wire meets the slab edge, not its centre */
-    const dx = to[0] - from[0]
-    const dy = to[1] - from[1]
-    const len = Math.hypot(dx, dy) || 1
-    const trim = 8
-    return {
-      id: `${d}→${t.id}`,
-      x1: from[0] + (dx / len) * trim,
-      y1: from[1] + (dy / len) * trim,
-      x2: to[0] - (dx / len) * trim,
-      y2: to[1] - (dy / len) * trim,
-    }
-  }),
-)
-
-/* ── the core tetrad · 4 verb blocks + their 6 tetrahedron edges ────────────── */
-const TETRAD_R = 24
-const tetradDeg = (i: number) => -90 + (360 * i) / CANON.verbs
-const TETRAD_POS = CANON.verbNames.map((v, i) => ({ v, xy: pt(tetradDeg(i), TETRAD_R) }))
-const TETRAD_EDGES = TETRAD_POS.flatMap((a, i) =>
-  TETRAD_POS.slice(i + 1).map((b) => ({ id: `${a.v}·${b.v}`, a: a.xy, b: b.xy })),
-)
-
-/* ── the gate collar · 4 diamonds at the cardinals on the boundary ring ─────── */
-const COLLAR_R = 66
-const gateDeg = (i: number) => -90 + (360 * i) / PERMIT_CATS.length
+/* the shield skirt · 14 plates flared aft */
+const SKIRT_X = sx(-1.5)
+const skirtY = (i: number) => CY + (i - (CANON.errorNamespaces - 1) / 2) * (176 / CANON.errorNamespaces)
 
 const ORDER = SPEC_SECTIONS.map((s) => s.key)
 
@@ -128,109 +120,101 @@ export function SpecSchematic({
   })
   return (
     <svg
-      viewBox="0 0 320 320"
+      viewBox={`0 0 ${W} ${H}`}
       className={`spec-schematic${className ? ` ${className}` : ''}`}
       aria-hidden
       data-order={ORDER.join(' ')}
     >
-      {/* S.0 · the stage frame · hairline box + corner crop-marks */}
+      {/* S.0 · THE KEEL · the envelope's 10 keys ARE the spine (bow left) */}
       <g {...g('frame')}>
-        <rect className="sms-frame" x="8.5" y="8.5" width="303" height="303" />
-        {[
-          [8.5, 8.5, 1, 1],
-          [311.5, 8.5, -1, 1],
-          [8.5, 311.5, 1, -1],
-          [311.5, 311.5, -1, -1],
-        ].map(([x, y, sx, sy]) => (
-          <path
-            key={`${x}·${y}`}
-            className="sms-crop"
-            d={`M ${fmt(x + 9 * sx)} ${y} L ${x} ${y} L ${x} ${fmt(y + 9 * sy)}`}
+        {ENVELOPE_KEYS.map((k, i) => (
+          <rect
+            key={k.key}
+            className={`sms-keel${k.req ? ' sms-keel--req' : ''}`}
+            x={fmt(KEEL_X0 + KEEL_SEG * i + 1.5)}
+            y={k.req ? CY - 3 : CY - 2}
+            width={fmt(KEEL_SEG - 3)}
+            height={k.req ? 6 : 4}
           />
         ))}
       </g>
 
-      {/* S.7 · the containment shell · 14 cells (one dashed circle) */}
+      {/* S.7 · THE SHIELD · 14 namespace plates flared aft (stern right) */}
       <g {...g('errors')}>
-        <circle
-          className="sms-shell"
-          cx={C}
-          cy={C}
-          r={SHELL_R}
-          strokeDasharray={`${fmt(SHELL_CELL * 0.72)} ${fmt(SHELL_CELL * 0.28)}`}
-          strokeDashoffset={fmt(SHELL_CELL * 0.36)}
-        />
+        {CANON.errorNamespaceNames.map((ns, i) => {
+          const y = skirtY(i)
+          const lean = ((y - CY) / (H / 2)) * 10
+          return (
+            <line
+              key={ns}
+              className="sms-plate"
+              x1={fmt(SKIRT_X)}
+              y1={fmt(y)}
+              x2={fmt(SKIRT_X + 16 + Math.abs(lean) * 0.4)}
+              y2={fmt(y + lean)}
+            />
+          )
+        })}
       </g>
 
-      {/* S.5 · the provider halo · locals docked solid, cloud dashed, mock dim */}
+      {/* S.5 · THE ENGINES · 5 docked · 10 outboard · 1 mock dim */}
       <g {...g('providers')}>
-        {CANON.providerIdsLocal.map((p, i) => {
-          const [x, y] = pt(localDeg(i), LOCAL_R)
-          return (
-            <rect
-              key={p}
-              className="sms-sat sms-sat--local"
-              x={fmt(x - 3)}
-              y={fmt(y - 3)}
-              width="6"
-              height="6"
-            />
-          )
-        })}
-        {CANON.providerIdsCloud.map((p, i) => {
-          const [x, y] = pt(outerDeg(i), CLOUD_R)
-          return (
-            <rect
-              key={p}
-              className="sms-sat sms-sat--cloud"
-              x={fmt(x - 2.5)}
-              y={fmt(y - 2.5)}
-              width="5"
-              height="5"
-            />
-          )
-        })}
-        {CANON.providerIdsTest.map((p, i) => {
-          const [x, y] = pt(outerDeg(CANON.providersCloud + i), CLOUD_R)
-          return (
-            <rect
-              key={p}
-              className="sms-sat sms-sat--mock"
-              x={fmt(x - 2)}
-              y={fmt(y - 2)}
-              width="4"
-              height="4"
-            />
-          )
-        })}
+        {CANON.providerIdsLocal.map((p, i) => (
+          <rect
+            key={p}
+            className="sms-nozzle sms-nozzle--local"
+            x={fmt(ENG_X - 5)}
+            y={fmt(localY(i) - 5)}
+            width="12"
+            height="10"
+          />
+        ))}
+        {CANON.providerIdsCloud.map((p, i) => (
+          <rect
+            key={p}
+            className="sms-nozzle sms-nozzle--cloud"
+            x={fmt(ENG_X - 2 + (i % 2) * 6)}
+            y={fmt(outerY(i) - 3.5)}
+            width="9"
+            height="7"
+          />
+        ))}
+        {CANON.providerIdsTest.map((p) => (
+          <rect
+            key={p}
+            className="sms-nozzle sms-nozzle--mock"
+            x={fmt(ENG_X + 2)}
+            y={fmt(CY - 78)}
+            width="7"
+            height="6"
+          />
+        ))}
       </g>
 
-      {/* S.6 · the fetch manifold · 9 ports fanned off the fetch tick */}
+      {/* S.6 · THE ARRAY · 9 ports fanned off the fetch flank */}
       <g {...g('extract')}>
-        {Array.from({ length: CANON.extractModes }, (_, i) => {
-          const base = pt(FETCH_DEG, BELT_R1 + 2)
-          const tip = pt(manifoldDeg(i), MANIFOLD_R)
+        {CANON.extractModeNames.map((m, i) => {
+          const a = (arrayDeg(i) * Math.PI) / 180
+          const bx = HOLD_X + Math.cos((FETCH_DEG * Math.PI) / 180) * (HOLD_RX + ARRAY_R0)
+          const by = CY + Math.sin((FETCH_DEG * Math.PI) / 180) * (HOLD_RY + ARRAY_R0)
+          const tx = HOLD_X + Math.cos(a) * (HOLD_RX + ARRAY_R1)
+          const ty = CY + Math.sin(a) * (HOLD_RY + ARRAY_R1 * 0.9)
           return (
-            <g key={i}>
-              <line
-                className="sms-port"
-                x1={fmt(base[0])}
-                y1={fmt(base[1])}
-                x2={fmt(tip[0])}
-                y2={fmt(tip[1])}
-              />
-              <circle className="sms-port-tip" cx={fmt(tip[0])} cy={fmt(tip[1])} r="1.4" />
+            <g key={m}>
+              <line className="sms-port" x1={fmt(bx)} y1={fmt(by)} x2={fmt(tx)} y2={fmt(ty)} />
+              <circle className="sms-port-tip" cx={fmt(tx)} cy={fmt(ty)} r="1.5" />
             </g>
           )
         })}
       </g>
 
-      {/* S.4 · the tool belt · 27 ticks in 5 family arcs (fetch runs longer) */}
+      {/* S.4 · THE HOLD · 27 family ticks on the shallow ring */}
       <g {...g('stdlib')}>
-        {BELT_TICKS.map((t) => {
+        <ellipse className="sms-drum" cx={fmt(HOLD_X)} cy={CY} rx={HOLD_RX} ry={HOLD_RY} />
+        {HOLD_TICKS.map((t) => {
           const long = t.name === 'fetch'
-          const a = pt(t.deg, long ? BELT_R0 - 2 : BELT_R0)
-          const b = pt(t.deg, long ? BELT_R1 + 2 : BELT_R1)
+          const a = holdPt(t.deg, long ? -2 : 0)
+          const b = holdPt(t.deg, long ? 7 : 4)
           return (
             <line
               key={t.name}
@@ -244,11 +228,16 @@ export function SpecSchematic({
         })}
       </g>
 
-      {/* S.3 · the gate collar · the boundary ring + 4 gate diamonds */}
+      {/* S.3 · THE RING edge-on · the boundary every outbound run crosses —
+          4 gate stations + the 2 visible spokes to the hub */}
       <g {...g('permits')}>
-        <circle className="sms-collar" cx={C} cy={C} r={COLLAR_R} />
+        <ellipse className="sms-collar" cx={fmt(RING_X)} cy={CY} rx={RING_RX} ry={RING_RY} />
+        <line className="sms-spoke" x1={fmt(RING_X)} y1={fmt(CY - RING_RY + 8)} x2={fmt(RING_X)} y2={CY - 8} />
+        <line className="sms-spoke" x1={fmt(RING_X)} y1={CY + 8} x2={fmt(RING_X)} y2={fmt(CY + RING_RY - 8)} />
         {PERMIT_CATS.map((c, i) => {
-          const [x, y] = pt(gateDeg(i), COLLAR_R)
+          /* the 4 cardinals, edge-on: top · centre-front · bottom · centre-back */
+          const y = i === 0 ? CY - RING_RY : i === 2 ? CY + RING_RY : CY
+          const x = i === 1 ? RING_X + RING_RX : i === 3 ? RING_X - RING_RX : RING_X
           return (
             <rect
               key={c.key}
@@ -263,52 +252,39 @@ export function SpecSchematic({
         })}
       </g>
 
-      {/* S.2 · the plan ring · standup-digest slabs + depends_on wires */}
+      {/* S.2 · THE BRIDGE · plan slabs by wave, wires flowing to the core */}
       <g {...g('plan')}>
-        {PLAN_WIRES.map((w) => (
-          <line
-            key={w.id}
-            className="sms-wire"
-            x1={fmt(w.x1)}
-            y1={fmt(w.y1)}
-            x2={fmt(w.x2)}
-            y2={fmt(w.y2)}
-          />
-        ))}
-        {PLAN_POS.map(({ t, xy }) => (
+        {BRIDGE.map((b) => (
           <rect
-            key={t.id}
+            key={b.id}
             className="sms-slab"
-            x={fmt(xy[0] - SLAB_W / 2)}
-            y={fmt(xy[1] - SLAB_H / 2)}
-            width={SLAB_W}
-            height={SLAB_H}
+            x={fmt(b.x - 7)}
+            y={fmt(b.y - 4.5)}
+            width="14"
+            height="9"
           />
         ))}
       </g>
 
-      {/* S.1 · the core tetrad · 4 verb blocks + the 6 tetrahedron edges */}
+      {/* S.1 · THE CORE · the verb tetrad as the reactor diamond */}
       <g {...g('verbs')}>
-        {TETRAD_EDGES.map((e) => (
-          <line
-            key={e.id}
-            className="sms-edge"
-            x1={fmt(e.a[0])}
-            y1={fmt(e.a[1])}
-            x2={fmt(e.b[0])}
-            y2={fmt(e.b[1])}
-          />
-        ))}
-        {TETRAD_POS.map(({ v, xy }) => (
-          <rect
-            key={v}
-            className="sms-core"
-            x={fmt(xy[0] - 3.5)}
-            y={fmt(xy[1] - 3.5)}
-            width="7"
-            height="7"
-          />
-        ))}
+        {CANON.verbNames.map((v, i) => {
+          const a = -Math.PI / 2 + (2 * Math.PI * i) / CANON.verbs
+          const x = sx(0.68) + Math.cos(a) * 13
+          const y = CY + Math.sin(a) * 20
+          return (
+            <rect
+              key={v}
+              className="sms-core"
+              x={fmt(x - 3.5)}
+              y={fmt(y - 3.5)}
+              width="7"
+              height="7"
+            />
+          )
+        })}
+        <line className="sms-edge" x1={fmt(sx(0.68))} y1={fmt(CY - 20)} x2={fmt(sx(0.68))} y2={fmt(CY + 20)} />
+        <line className="sms-edge" x1={fmt(sx(0.68) - 13)} y1={fmt(CY)} x2={fmt(sx(0.68) + 13)} y2={fmt(CY)} />
       </g>
     </svg>
   )

@@ -8,66 +8,98 @@ import {
 import { VERB_HEX } from '../sections/morph/plan-scene-model'
 import { CANON } from '../canon.generated'
 
-/* ─── spec-machine-model · THE SPEC MACHINE as pure data (W1) ─────────────────
-   The whole language as one machined instrument: concentric strata read
-   centre → out in section order — the core tetrad (S.1 verbs), the plan ring
-   (S.2 · the standup-digest slabs + their depends_on wires), the gate collar
-   (S.3 · 4 cardinals), the tool belt (S.4 · 27 blocks in 5 family arcs), the
-   fetch manifold (S.6 · 9 ports fanned off the fetch block), the provider
-   halo (S.5 · 5 locals docked · 10 cloud distant · 1 mock dim) and the
-   containment shell (S.7 · 14 arc cells). Every instance derives from the
-   strata graph (spec-machine-data · CANON projections); every placement is a
-   pure function — no Math.random, no three import, testable.
-   The wire harness routes every stratum back to its verb: slabs → their
-   verb, belt → invoke, halo → infer, ports → fetch — and every outbound run
-   crosses the collar radius: the boundary is IN the geometry.
-   POSES: one camera preset per /spec section — a single continuous turn
-   (yaw strictly increases with the reading) so the machine revolves once as
-   the contract assembles. */
+/* ─── spec-machine-model · THE SPEC MACHINE as pure data (v2 · THE SHIP) ──────
+   The whole language as one vessel, read bow → stern along the spine — the
+   reading IS the journey (S.0 → S.8):
+
+     BOW  S.2 the bridge     the plan · standup-digest slabs clustered by wave,
+                             depends_on wires flowing INTO the core
+          S.1 the core       the verb tetrad around the spine · the reactor
+          S.3 THE RING       the permits boundary ⊥ the spine — one great
+                             habitat ring (the station register: ring + spokes
+                             + hub), its 4 SPOKES = the 4 gates: everything
+                             outbound crosses this plane
+          S.4 the hold       27 builtin blocks drummed around the spine in 5
+                             family arcs · the cargo racks
+          S.6 the array      9 extract ports fanned off the fetch block — the
+                             antenna boom on the flank
+     STERN S.5 the engines   16 provider nozzles: 5 local DOCKED tight on the
+                             spine (the thrust you own) · 10 cloud outboard ·
+                             1 mock dim
+          S.7 the shield     14 error-namespace plates flared as the stern
+                             skirt — failures come back typed: the hull
+     S.0  the keel           the envelope's 10 top-level keys ARE the spine
+                             segments everything mounts on — it lights FIRST.
+
+   Every node derives from the strata graph (spec-machine-data · CANON
+   projections); STRUCTURE instances (ring arc segments · spokes) are craft
+   geometry in the permits stratum, never counted as canon. Pure functions
+   only — no Math.random, no three import, testable.
+   The wire harness routes every stratum to its verb; wire SEEDS are
+   per-ENDPOINT stratum, so a wire lights as a gradient between its two
+   strata and STRETCHES connected under the axial explode.
+   POSES: one camera preset per section — yaw strictly increases and the
+   license pose lands at frame.yaw + 2π: one exact revolution, the close
+   mirrors the open, now lit. */
 
 export const STRATA_ORDER: StratumKey[] = SPEC_SECTIONS.map((s) => s.key)
 export const stratumIndex = (k: StratumKey): number => STRATA_ORDER.indexOf(k)
 
-/** outer shell radius — the camera frames this */
-export const MACHINE_R = 1.85
+/* ── the hull dimensions · spine along X, bow at +X ─────────────────────────── */
+export const BOW_X = 1.42
+export const STERN_X = -1.68
+/** outermost radius (the ring) — the camera frames this */
+export const MACHINE_R = 0.95
 
-/* the strata radii · centre → out (the section order made spatial) */
-const R_TETRAD = 0.24
-const R_PLAN = 0.55
-const R_COLLAR = 0.8
-const R_BELT = 1.02
-const R_MANIFOLD = 1.3
-const R_LOCAL = 1.32
-const R_CLOUD = 1.56
-const R_SHELL = MACHINE_R
+const X_BRIDGE = 1.22 /* wave-0 slabs · later waves step toward the core */
+const X_CORE = 0.68
+const X_RING = 0
+const X_HOLD = -0.52
+const X_ENGINES = -1.18
+const X_SKIRT = -1.5
 
-/* the belt's family arcs · same grammar as the 2D schematic */
-const FAMILY_GAP = (9 * Math.PI) / 180
-const BELT_SLOT = (2 * Math.PI - BUILTIN_GROUPS.length * FAMILY_GAP) / CANON.builtins
-/* the manifold fan · 9 ports off the fetch block */
-const MANIFOLD_SPREAD = (52 * Math.PI) / 180
+const R_RING = 0.92
+const R_HUB = 0.1
+const R_HOLD = 0.4
+const R_ARRAY = 0.78
+const R_LOCAL = 0.15
+const R_CLOUD = 0.35
+const R_SKIRT = 0.46
+const SKIRT_TILT = 0.55 /* the flare · radians the plates lean off the ring plane */
+
+/* the hold's family arcs + the array fan (same grammar as the elevation) */
+const FAMILY_GAP = (16 * Math.PI) / 180
+const HOLD_SLOT = (2 * Math.PI - BUILTIN_GROUPS.length * FAMILY_GAP) / CANON.builtins
+const ARRAY_SPREAD = (64 * Math.PI) / 180
+
+/* craft structure counts (geometry, NEVER spoken as canon counts) */
+const RING_SEGS = 36
+const SPOKE_SEGS = 5
+const TRUSS_SEGS = 26
 
 export interface SpecMachineModel {
+  /** total instances · nodes first, then structure */
   count: number
-  /** xyz center per instance */
+  /** the pickable prefix · MACHINE_NODES.length */
+  nodeCount: number
   pos: Float32Array
-  /** xyzw orientation per instance (+z = planar radial out on ring strata) */
   quat: Float32Array
-  /** box dims per instance (w · h · d) */
   scale: Float32Array
   /** per instance: (stratum index · deterministic jitter 0..1) */
   seed: Float32Array
   /** per instance rgb · the LIT target colour (verb hue on tetrad + slabs) */
   tint: Float32Array
-  /** instance i ↔ MACHINE_NODES[i].id (raycast + tests) */
+  /** instance i ↔ MACHINE_NODES[i].id for i < nodeCount */
   nodeIds: string[]
   /** wire segment endpoints · xyz per vertex, 2 vertices per wire */
   wirePos: Float32Array
-  /** per wire VERTEX: the owning stratum index (wires ignite with strata) */
+  /** per wire VERTEX: its OWN endpoint's stratum (gradient lit · explode) */
   wireSeed: Float32Array
   wireCount: number
-  /** the group yaw that brings the fetch block to the front (extract pose) */
-  fetchYaw: number
+  /** per-stratum representative point (callout leader-line anchors) · 9×3 */
+  anchors: Float32Array
+  /** per-stratum X shift at full explode (the axial exploded drawing) */
+  explode: Float32Array
 }
 
 export interface MachinePose {
@@ -75,11 +107,13 @@ export interface MachinePose {
   pitch: number
   dist: number
   y: number
+  /** the spine point the camera centres (group eases to -x) */
+  x: number
   /** the focused stratum index · -1 = overview (nothing x-rayed) */
   focus: number
 }
 
-/** deterministic hash — the machine must build identically every mount */
+/** deterministic hash — the ship must build identically every mount */
 const hash = (a: number, b: number): number => {
   const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453
   return s - Math.floor(s)
@@ -93,8 +127,7 @@ const hexRgb = (h: string): [number, number, number] => [
 const LIT_BLUE = hexRgb('#4f86ff')
 const DIM_BLUE = hexRgb('#2a4470')
 
-/** quaternion from the orthonormal basis columns (east · north · radial) —
-    the same construction the drum-sphere model uses */
+/** quaternion from orthonormal basis columns (e · n · r), e×n = r */
 function quatFromBasis(
   e: readonly number[],
   n: readonly number[],
@@ -147,20 +180,105 @@ function quatFromBasis(
   out[o + 3] = w
 }
 
-/** planar-radial orientation at angle a (+z out · +x tangent) — n points -y
-    so the basis stays right-handed (e × n = r · the drum's equator basis);
-    the boxes are y-symmetric, so the flip is invisible */
-function radialQuat(a: number, out: Float32Array, o: number): void {
-  const r = [Math.cos(a), 0, Math.sin(a)]
-  const e = [-Math.sin(a), 0, Math.cos(a)]
-  const n = [0, -1, 0]
-  quatFromBasis(e, n, r, out, o)
+/** ring orientation in the YZ plane (⊥ spine) · +z = radial out · e×n=r */
+function yzRadialQuat(a: number, out: Float32Array, o: number): void {
+  quatFromBasis([0, -Math.sin(a), Math.cos(a)], [1, 0, 0], [0, Math.cos(a), Math.sin(a)], out, o)
 }
-
+/** engine orientation · +z faces the STERN (-X · the thrust axis) */
+function sternQuat(a: number, out: Float32Array, o: number): void {
+  quatFromBasis([0, -Math.sin(a), Math.cos(a)], [0, Math.cos(a), Math.sin(a)], [-1, 0, 0], out, o)
+}
+/** skirt-plate orientation · radial-out leaned +X by tilt t (the cone flare) */
+function coneQuat(a: number, t: number, out: Float32Array, o: number): void {
+  const cA = Math.cos(a)
+  const sA = Math.sin(a)
+  const cT = Math.cos(t)
+  const sT = Math.sin(t)
+  quatFromBasis([0, -sA, cA], [cT, -sT * cA, -sT * sA], [sT, cT * cA, cT * sA], out, o)
+}
 const IDENTITY_Q: readonly number[] = [0, 0, 0, 1]
 
+/* the axial explode · per-stratum X shift at uExplode=1 — the ring anchors
+   (0), the keel stays (the spine everything separates along), bow strata
+   slide forward, stern strata slide aft (the exploded drawing read) */
+const EXPLODE_X: Record<StratumKey, number> = {
+  frame: 0,
+  verbs: 0.46,
+  plan: 0.85,
+  permits: 0,
+  stdlib: -0.34,
+  providers: -0.85,
+  extract: -0.58,
+  errors: -1.15,
+  license: 0,
+}
+
 export function buildSpecMachine(): SpecMachineModel {
-  const count = MACHINE_NODES.length
+  const nodeCount = MACHINE_NODES.length
+
+  /* structure instances (craft) · the ring's arc segments + the 4 spokes */
+  interface Struct {
+    p: [number, number, number]
+    q: (out: Float32Array, o: number) => void
+    s: [number, number, number]
+  }
+  const structs: Struct[] = []
+  /* THE RING · a double rim (fore + aft) braced by cross-ties — the great
+     habitat wheel (the station register: two hoops of blocks, tied) */
+  const ringArc = ((2 * Math.PI * R_RING) / RING_SEGS) * 0.8
+  for (const dx of [-0.07, 0.07]) {
+    for (let i = 0; i < RING_SEGS; i++) {
+      const a = ((2 * Math.PI) * (i + (dx > 0 ? 0.5 : 0))) / RING_SEGS
+      structs.push({
+        p: [X_RING + dx, Math.cos(a) * R_RING, Math.sin(a) * R_RING],
+        q: (out, o) => yzRadialQuat(a, out, o),
+        s: [ringArc, 0.085, 0.045],
+      })
+    }
+  }
+  /* the rim ties · one axial brace per segment, between the two hoops */
+  for (let i = 0; i < RING_SEGS; i++) {
+    const a = ((2 * Math.PI) * (i + 0.25)) / RING_SEGS
+    structs.push({
+      p: [X_RING, Math.cos(a) * (R_RING - 0.02), Math.sin(a) * (R_RING - 0.02)],
+      q: (out, o) => yzRadialQuat(a, out, o),
+      s: [0.03, 0.12, 0.03],
+    })
+  }
+  /* the 4 spokes · hub → rim at the cardinals (the gates' feet) */
+  for (let g = 0; g < 4; g++) {
+    const a = -Math.PI / 2 + (2 * Math.PI * g) / 4
+    for (let s = 0; s < SPOKE_SEGS; s++) {
+      const r = R_HUB + ((R_RING - 0.09 - R_HUB) * (s + 0.5)) / SPOKE_SEGS
+      structs.push({
+        p: [X_RING, Math.cos(a) * r, Math.sin(a) * r],
+        q: (out, o) => yzRadialQuat(a, out, o),
+        s: [0.035, 0.035, (R_RING - R_HUB) / SPOKE_SEGS - 0.04],
+      })
+    }
+  }
+  /* the keel TRUSS · cross-braces marching the whole spine (the lattice
+     mast every station hangs off — the frame stratum, it lights first) */
+  for (let i = 0; i < TRUSS_SEGS; i++) {
+    const x = BOW_X - 0.2 - ((BOW_X - 0.2 - (STERN_X + 0.3)) * (i + 0.5)) / TRUSS_SEGS
+    const a = (i % 2) * (Math.PI / 2)
+    structs.push({
+      p: [x, 0, 0],
+      q: (out, o) => yzRadialQuat(a + Math.PI / 4, out, o),
+      s: [0.02, 0.11, 0.02],
+    })
+  }
+  /* the engine pylons · 5 struts fanning the local block to the outboard bank */
+  for (let g = 0; g < 5; g++) {
+    const a = -Math.PI / 2 + (2 * Math.PI * g) / 5
+    structs.push({
+      p: [X_ENGINES + 0.06, Math.cos(a) * (R_CLOUD * 0.55), Math.sin(a) * (R_CLOUD * 0.55)],
+      q: (out, o) => yzRadialQuat(a, out, o),
+      s: [0.025, 0.025, R_CLOUD * 0.8],
+    })
+  }
+
+  const count = nodeCount + structs.length
   const pos = new Float32Array(count * 3)
   const quat = new Float32Array(count * 4)
   const scale = new Float32Array(count * 3)
@@ -168,27 +286,26 @@ export function buildSpecMachine(): SpecMachineModel {
   const tint = new Float32Array(count * 3)
   const nodeIds = MACHINE_NODES.map((n) => n.id)
 
-  /* per-kind running indices (placement is per-stratum, node order is the
-     data module's — the two never disagree because both iterate MACHINE_NODES) */
   const centers = new Map<string, [number, number, number]>()
   const kindIdx: Record<string, number> = {}
 
-  /* the belt's family angles, precomputed (fetch anchors the manifold) */
-  const beltAngle = new Map<string, number>()
+  /* the hold's family angles, precomputed (fetch anchors the array) */
+  const holdAngle = new Map<string, number>()
   {
-    let a = -Math.PI / 2 + FAMILY_GAP / 2
+    let a = Math.PI / 2 + FAMILY_GAP / 2
     for (const f of BUILTIN_GROUPS) {
       for (const n of f.names) {
-        beltAngle.set(n, a + BELT_SLOT / 2)
-        a += BELT_SLOT
+        holdAngle.set(n, a + HOLD_SLOT / 2)
+        a += HOLD_SLOT
       }
       a += FAMILY_GAP
     }
   }
-  const fetchA = beltAngle.get('fetch') ?? Math.PI / 2
+  const fetchA = holdAngle.get('fetch') ?? -Math.PI / 2
 
   const put = (
     k: number,
+    stratum: StratumKey,
     p: [number, number, number],
     s: [number, number, number],
     t: [number, number, number],
@@ -203,111 +320,152 @@ export function buildSpecMachine(): SpecMachineModel {
     tint[k * 3] = t[0]
     tint[k * 3 + 1] = t[1]
     tint[k * 3 + 2] = t[2]
-    seed[k * 2] = stratumIndex(MACHINE_NODES[k].stratum)
+    seed[k * 2] = stratumIndex(stratum)
     seed[k * 2 + 1] = hash(jitterSeed + 1, k + 1)
-    centers.set(MACHINE_NODES[k].id, p)
   }
 
-  for (let k = 0; k < count; k++) {
+  const keelCount = MACHINE_NODES.filter((n) => n.kind === 'key').length
+  const keelSpan = BOW_X - 0.12 - (STERN_X + 0.26)
+  const keelSeg = keelSpan / Math.max(1, keelCount)
+
+  for (let k = 0; k < nodeCount; k++) {
     const node = MACHINE_NODES[k]
     const i = (kindIdx[node.kind] = (kindIdx[node.kind] ?? -1) + 1)
     switch (node.kind) {
+      case 'key': {
+        /* THE KEEL · the envelope keys as spine segments, bow → stern —
+           the 3 required keys lead, drawn heavier */
+        const x = BOW_X - 0.12 - keelSeg * (i + 0.5)
+        const req = node.family === 'required'
+        put(k, 'frame', [x, 0, 0], [keelSeg * 0.74, req ? 0.075 : 0.05, req ? 0.075 : 0.05], LIT_BLUE, 7)
+        quat.set(IDENTITY_Q, k * 4)
+        centers.set(node.id, [x, 0, 0])
+        break
+      }
       case 'verb': {
-        /* the core tetrad · 4 blocks on flattened tetrahedron vertices */
+        /* THE CORE · the tetrad around the spine at the reactor section */
         const a = -Math.PI / 2 + (2 * Math.PI * i) / CANON.verbs
-        const y = i % 2 === 0 ? 0.09 : -0.05
-        put(
-          k,
-          [Math.cos(a) * R_TETRAD, y, Math.sin(a) * R_TETRAD],
-          [0.15, 0.11, 0.11],
-          hexRgb(VERB_HEX[node.verb!]),
-          11,
-        )
-        radialQuat(a, quat, k * 4)
+        const x = X_CORE + (i % 2 === 0 ? 0.05 : -0.05)
+        const p: [number, number, number] = [x, Math.cos(a) * 0.17, Math.sin(a) * 0.17]
+        put(k, 'verbs', p, [0.13, 0.11, 0.11], hexRgb(VERB_HEX[node.verb!]), 11)
+        yzRadialQuat(a, quat, k * 4)
+        centers.set(node.id, p)
         break
       }
       case 'task': {
-        /* the plan ring · standup-digest slabs, verb tint riding each */
-        const a = -Math.PI / 2 + (2 * Math.PI * i) / Math.max(1, PLAN_TASKS.length)
-        put(
-          k,
-          [Math.cos(a) * R_PLAN, 0, Math.sin(a) * R_PLAN],
-          [0.22, 0.13, 0.05],
-          hexRgb(VERB_HEX[node.verb!]),
-          23,
-        )
-        radialQuat(a, quat, k * 4)
+        /* THE BRIDGE · slabs clustered at the bow by WAVE (wave 0 leads),
+           spread around the spine — the command module cluster */
+        const t = PLAN_TASKS[i]
+        const wave = t?.wave ?? 0
+        const inWave = PLAN_TASKS.filter((x) => x.wave === wave)
+        const j = inWave.findIndex((x) => x.id === node.label)
+        const n = Math.max(1, inWave.length)
+        const a = wave * 0.9 + (2 * Math.PI * Math.max(0, j)) / n
+        const x = X_BRIDGE - wave * 0.15
+        const p: [number, number, number] = [x, Math.cos(a) * 0.15, Math.sin(a) * 0.15]
+        put(k, 'plan', p, [0.15, 0.09, 0.05], hexRgb(VERB_HEX[node.verb!]), 23)
+        yzRadialQuat(a, quat, k * 4)
+        centers.set(node.id, p)
         break
       }
       case 'gate': {
-        /* the gate collar · 4 portal plates at the cardinals */
+        /* THE RING's 4 gate stations at the cardinals — the spokes' feet */
         const a = -Math.PI / 2 + (2 * Math.PI * i) / 4
-        put(k, [Math.cos(a) * R_COLLAR, 0.02, Math.sin(a) * R_COLLAR], [0.17, 0.21, 0.03], LIT_BLUE, 37)
-        radialQuat(a, quat, k * 4)
+        const p: [number, number, number] = [X_RING, Math.cos(a) * R_RING, Math.sin(a) * R_RING]
+        put(k, 'permits', p, [0.16, 0.2, 0.09], LIT_BLUE, 37)
+        yzRadialQuat(a, quat, k * 4)
+        centers.set(node.id, p)
         break
       }
       case 'builtin': {
-        /* the tool belt · 27 blocks in 5 family arcs (fetch reads bigger) */
-        const a = beltAngle.get(node.label) ?? 0
+        /* THE HOLD · 27 blocks drummed in 5 family arcs (fetch reads bigger) */
+        const a = holdAngle.get(node.label) ?? 0
         const fetch = node.label === 'fetch'
-        put(
-          k,
-          [Math.cos(a) * R_BELT, 0, Math.sin(a) * R_BELT],
-          fetch ? [0.1, 0.09, 0.07] : [0.07, 0.06, 0.05],
-          LIT_BLUE,
-          41,
-        )
-        radialQuat(a, quat, k * 4)
+        const p: [number, number, number] = [
+          X_HOLD + (i % 2 === 0 ? 0.045 : -0.045),
+          Math.cos(a) * R_HOLD,
+          Math.sin(a) * R_HOLD,
+        ]
+        put(k, 'stdlib', p, fetch ? [0.1, 0.09, 0.08] : [0.068, 0.06, 0.052], LIT_BLUE, 41)
+        yzRadialQuat(a, quat, k * 4)
+        centers.set(node.id, p)
         break
       }
       case 'provider': {
-        /* the halo · locals docked on the inner ring, cloud distant with a
-           slight elevation stagger, the mock dim on the outer ring */
+        /* THE ENGINES · 5 local docked on the spine (the thrust you own) ·
+           10 cloud outboard staggered · 1 mock dim on the rim */
         const local = node.family === 'local'
+        const mock = node.family === 'test'
         const nOuter = CANON.providersCloud + CANON.providersTest
         const a = local
-          ? fetchA + Math.PI / CANON.providersLocal + (2 * Math.PI * i) / CANON.providersLocal
-          : fetchA + Math.PI / nOuter + (2 * Math.PI * (i - CANON.providersLocal)) / nOuter
-        const mock = node.family === 'test'
-        const y = local ? -0.03 : (i % 2 === 0 ? 0.09 : -0.09)
+          ? -Math.PI / 2 + (2 * Math.PI * i) / CANON.providersLocal
+          : -Math.PI / 2 + Math.PI / nOuter + (2 * Math.PI * (i - CANON.providersLocal)) / nOuter
+        const r = local ? R_LOCAL : mock ? R_CLOUD + 0.14 : R_CLOUD
+        const x = X_ENGINES - (local ? 0 : 0.08) - (i % 2 === 0 ? 0 : 0.05)
+        const p: [number, number, number] = [x, Math.cos(a) * r, Math.sin(a) * r]
         put(
           k,
-          [Math.cos(a) * (local ? R_LOCAL : R_CLOUD), y, Math.sin(a) * (local ? R_LOCAL : R_CLOUD)],
-          local ? [0.085, 0.075, 0.06] : mock ? [0.05, 0.045, 0.04] : [0.06, 0.055, 0.045],
+          'providers',
+          p,
+          local ? [0.085, 0.085, 0.13] : mock ? [0.05, 0.05, 0.07] : [0.062, 0.062, 0.1],
           mock ? DIM_BLUE : LIT_BLUE,
           53,
         )
-        radialQuat(a, quat, k * 4)
+        sternQuat(a, quat, k * 4)
+        centers.set(node.id, p)
         break
       }
       case 'extract': {
-        /* the fetch manifold · 9 ports fanned off the fetch block */
-        const spread =
-          CANON.extractModes > 1 ? (MANIFOLD_SPREAD * i) / (CANON.extractModes - 1) : 0
-        const a = fetchA - MANIFOLD_SPREAD / 2 + spread
-        const y = 0.05 * ((i % 3) - 1)
-        put(k, [Math.cos(a) * R_MANIFOLD, y, Math.sin(a) * R_MANIFOLD], [0.036, 0.036, 0.03], LIT_BLUE, 67)
-        radialQuat(a, quat, k * 4)
+        /* THE ARRAY · 9 ports fanned off the fetch flank — the antenna boom */
+        const spread = CANON.extractModes > 1 ? (ARRAY_SPREAD * i) / (CANON.extractModes - 1) : 0
+        const a = fetchA - ARRAY_SPREAD / 2 + spread
+        const r = R_ARRAY - 0.1 * Math.abs(i - (CANON.extractModes - 1) / 2) * 0.4
+        const p: [number, number, number] = [X_HOLD - 0.12 - 0.03 * (i % 3), Math.cos(a) * r, Math.sin(a) * r]
+        put(k, 'extract', p, [0.036, 0.036, 0.05], LIT_BLUE, 67)
+        yzRadialQuat(a, quat, k * 4)
+        centers.set(node.id, p)
         break
       }
       case 'errns': {
-        /* the containment shell · 14 long arc cells, tangent-oriented */
+        /* THE SHIELD · 14 namespace plates flared as the stern skirt */
         const a = -Math.PI / 2 + (2 * Math.PI * i) / CANON.errorNamespaces
-        const arc = ((2 * Math.PI * R_SHELL) / CANON.errorNamespaces) * 0.6
-        put(k, [Math.cos(a) * R_SHELL, 0, Math.sin(a) * R_SHELL], [arc, 0.17, 0.028], LIT_BLUE, 79)
-        radialQuat(a, quat, k * 4)
+        const arc = ((2 * Math.PI * R_SKIRT) / CANON.errorNamespaces) * 0.68
+        const p: [number, number, number] = [X_SKIRT, Math.cos(a) * R_SKIRT, Math.sin(a) * R_SKIRT]
+        put(k, 'errors', p, [arc, 0.2, 0.03], LIT_BLUE, 79)
+        coneQuat(a, SKIRT_TILT, quat, k * 4)
+        centers.set(node.id, p)
         break
       }
       default: {
-        put(k, [0, 0, 0], [0.05, 0.05, 0.05], LIT_BLUE, 97)
+        put(k, node.stratum, [0, 0, 0], [0.05, 0.05, 0.05], LIT_BLUE, 97)
         quat.set(IDENTITY_Q, k * 4)
       }
     }
   }
 
-  /* ── the wire harness · every stratum routes back to its verb ─────────────── */
-  const wires: { a: [number, number, number]; b: [number, number, number]; s: number }[] = []
+  /* the structure instances (not pickable) · ring+ties+spokes = permits ·
+     the keel truss = frame · the pylons = providers */
+  const ringStructs = RING_SEGS * 3 + 4 * SPOKE_SEGS
+  structs.forEach((st, j) => {
+    const k = nodeCount + j
+    const stratum: StratumKey =
+      j < ringStructs ? 'permits' : j < ringStructs + TRUSS_SEGS ? 'frame' : 'providers'
+    put(k, stratum, st.p, st.s, LIT_BLUE, 101)
+    st.q(quat, k * 4)
+  })
+
+  /* ── the wire harness · per-ENDPOINT stratum seeds ─────────────────────────── */
+  const wires: {
+    a: [number, number, number]
+    b: [number, number, number]
+    sa: number
+    sb: number
+  }[] = []
   const c = (id: string): [number, number, number] | undefined => centers.get(id)
+  const stratumOf = (id: string): number => {
+    const n = MACHINE_NODES.find((x) => x.id === id)
+    return n ? stratumIndex(n.stratum) : 0
+  }
   const trim = (
     a: [number, number, number],
     b: [number, number, number],
@@ -322,24 +480,24 @@ export function buildSpecMachine(): SpecMachineModel {
       [b[0] - u[0] * tb, b[1] - u[1] * tb, b[2] - u[2] * tb],
     ]
   }
-  const wire = (fromId: string, toId: string, stratum: StratumKey, ta = 0.08, tb = 0.08): void => {
+  const wire = (fromId: string, toId: string, ta = 0.07, tb = 0.07): void => {
     const a = c(fromId)
     const b = c(toId)
     if (!a || !b) return
     const [ta3, tb3] = trim(a, b, ta, tb)
-    wires.push({ a: ta3, b: tb3, s: stratumIndex(stratum) })
+    wires.push({ a: ta3, b: tb3, sa: stratumOf(fromId), sb: stratumOf(toId) })
   }
-  /* plan deps · dep → task (the DAG's own edges) */
-  for (const t of PLAN_TASKS) for (const d of t.deps) wire(`task:${d}`, `task:${t.id}`, 'plan', 0.12, 0.12)
-  /* each slab → its verb block (the plan binds verbs) */
-  for (const t of PLAN_TASKS) wire(`task:${t.id}`, `verb:${t.verb}`, 'plan', 0.12, 0.1)
-  /* the belt → invoke (every builtin is reached under invoke:) */
-  for (const g of BUILTIN_GROUPS) for (const n of g.names) wire(`builtin:${n}`, 'verb:invoke', 'stdlib', 0.05, 0.1)
-  /* the halo → infer (every provider serves the model verb) */
+  /* plan deps · dep → task (the DAG's own edges, on the bridge) */
+  for (const t of PLAN_TASKS) for (const d of t.deps) wire(`task:${d}`, `task:${t.id}`, 0.1, 0.1)
+  /* each slab → its verb block (the plan flows INTO the core) */
+  for (const t of PLAN_TASKS) wire(`task:${t.id}`, `verb:${t.verb}`, 0.1, 0.09)
+  /* the hold → invoke (every builtin is reached under invoke:) */
+  for (const g of BUILTIN_GROUPS) for (const n of g.names) wire(`builtin:${n}`, 'verb:invoke', 0.05, 0.09)
+  /* the engines → infer (every provider serves the model verb) */
   for (const p of [...CANON.providerIdsLocal, ...CANON.providerIdsCloud, ...CANON.providerIdsTest])
-    wire(`provider:${p}`, 'verb:infer', 'providers', 0.05, 0.1)
-  /* the manifold → fetch (nine ports on one builtin) */
-  for (const m of CANON.extractModeNames) wire(`extract:${m}`, 'builtin:fetch', 'extract', 0.03, 0.07)
+    wire(`provider:${p}`, 'verb:infer', 0.06, 0.09)
+  /* the array → fetch (nine ports on one builtin) */
+  for (const m of CANON.extractModeNames) wire(`extract:${m}`, 'builtin:fetch', 0.03, 0.06)
 
   const wireCount = wires.length
   const wirePos = new Float32Array(wireCount * 6)
@@ -347,38 +505,66 @@ export function buildSpecMachine(): SpecMachineModel {
   wires.forEach((w, i) => {
     wirePos.set(w.a, i * 6)
     wirePos.set(w.b, i * 6 + 3)
-    wireSeed[i * 2] = w.s
-    wireSeed[i * 2 + 1] = w.s
+    wireSeed[i * 2] = w.sa
+    wireSeed[i * 2 + 1] = w.sb
   })
 
-  /* the group yaw that brings the fetch block to the camera front — rotY(g)
-     maps planar angle a → a - g, and the camera sits at +z (angle +π/2), so
-     g = fetchA - π/2 centres the fetch block on the near side */
-  const fetchYaw = fetchA - Math.PI / 2
+  /* per-stratum callout anchors (a top-side representative point each) */
+  const anchors = new Float32Array(STRATA_ORDER.length * 3)
+  const setA = (k: StratumKey, x: number, y: number, z: number) => {
+    const i = stratumIndex(k) * 3
+    anchors[i] = x
+    anchors[i + 1] = y
+    anchors[i + 2] = z
+  }
+  setA('frame', BOW_X - 0.3, 0.06, 0)
+  setA('verbs', X_CORE, 0.22, 0)
+  setA('plan', X_BRIDGE, 0.2, 0)
+  setA('permits', X_RING, R_RING, 0)
+  setA('stdlib', X_HOLD, R_HOLD + 0.05, 0)
+  setA('providers', X_ENGINES, R_CLOUD + 0.06, 0)
+  setA('extract', X_HOLD - 0.14, -R_ARRAY, 0)
+  setA('errors', X_SKIRT, R_SKIRT + 0.1, 0)
+  setA('license', 0, 0, 0)
 
-  return { count, pos, quat, scale, seed, tint, nodeIds, wirePos, wireSeed, wireCount, fetchYaw }
+  const explode = new Float32Array(STRATA_ORDER.map((k) => EXPLODE_X[k]))
+
+  return {
+    count,
+    nodeCount,
+    pos,
+    quat,
+    scale,
+    seed,
+    tint,
+    nodeIds,
+    wirePos,
+    wireSeed,
+    wireCount,
+    anchors,
+    explode,
+  }
 }
 
-/* ── POSES · one preset per section · a single continuous turn ────────────────
-   yaw strictly increases in section order (the machine revolves once as the
-   contract assembles); pitch/dist frame each stratum; focus x-rays the rest. */
+/* ── POSES · one preset per section · one exact revolution ────────────────────
+   yaw strictly increases; the ship also travels under the camera (x eases to
+   each section's spine point — the reading sails bow → stern); license.yaw =
+   frame.yaw + 2π, the close mirrors the open. Landmark shots: plan ≈ bow-on
+   through the ring (the docking approach) · providers = stern-on (the engine
+   array face-on). */
 function buildPoses(): Record<StratumKey, MachinePose> {
-  const { fetchYaw } = buildSpecMachine()
-  /* lift fetchYaw into the (providers, errors) yaw window by whole turns */
-  let extractYaw = fetchYaw
-  while (extractYaw < 4.6) extractYaw += 2 * Math.PI
-  while (extractYaw >= 4.6 + 2 * Math.PI) extractYaw -= 2 * Math.PI
   const f = (k: StratumKey): number => stratumIndex(k)
+  const FRAME: MachinePose = { yaw: 0.55, pitch: 0.3, dist: 4.6, y: 0, x: -0.1, focus: -1 }
   return {
-    frame: { yaw: 0.6, pitch: 0.42, dist: 4.9, y: 0, focus: -1 },
-    verbs: { yaw: 1.1, pitch: 0.5, dist: 3.15, y: 0.04, focus: f('verbs') },
-    plan: { yaw: 1.95, pitch: 0.55, dist: 3.1, y: 0, focus: f('plan') },
-    permits: { yaw: 2.7, pitch: 0.24, dist: 3.6, y: 0.05, focus: f('permits') },
-    stdlib: { yaw: 3.45, pitch: 0.48, dist: 4.1, y: 0, focus: f('stdlib') },
-    providers: { yaw: 4.25, pitch: 0.6, dist: 5.2, y: 0, focus: f('providers') },
-    extract: { yaw: extractYaw, pitch: 0.34, dist: 3.3, y: 0, focus: f('extract') },
-    errors: { yaw: extractYaw + 0.75, pitch: 0.78, dist: 5.6, y: 0, focus: f('errors') },
-    license: { yaw: extractYaw + 1.4, pitch: 0.42, dist: 4.7, y: 0, focus: -1 },
+    frame: FRAME,
+    verbs: { yaw: 1.05, pitch: 0.24, dist: 2.5, y: 0.02, x: X_CORE, focus: f('verbs') },
+    plan: { yaw: 1.62, pitch: 0.12, dist: 2.9, y: 0, x: X_BRIDGE - 0.15, focus: f('plan') },
+    permits: { yaw: 2.45, pitch: 0.12, dist: 4.3, y: 0.05, x: X_RING, focus: f('permits') },
+    stdlib: { yaw: 3.2, pitch: 0.34, dist: 2.9, y: 0, x: X_HOLD, focus: f('stdlib') },
+    providers: { yaw: 4.05, pitch: 0.2, dist: 3.4, y: 0, x: X_ENGINES + 0.1, focus: f('providers') },
+    extract: { yaw: 4.78, pitch: -0.18, dist: 2.9, y: -0.08, x: X_HOLD - 0.1, focus: f('extract') },
+    errors: { yaw: 5.6, pitch: 0.5, dist: 4.4, y: 0, x: X_SKIRT + 0.25, focus: f('errors') },
+    license: { ...FRAME, yaw: FRAME.yaw + Math.PI * 2 },
   }
 }
 export const POSES: Record<StratumKey, MachinePose> = buildPoses()
