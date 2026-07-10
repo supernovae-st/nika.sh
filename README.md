@@ -10,21 +10,26 @@
 # nika.sh — Intent as Code
 
 The public site for [Nika](https://github.com/supernovae-st/nika), the open
-language for AI workflows. A cinematic single-page experience: one WebGL
-galaxy scene (react-three-fiber), a scroll-driven camera journey, and the
-whole pitch written into the dive.
+language for AI workflows. The whole site lives inside a living device
+frame — a near-black contour whose colour reads the section under it —
+and the home's centrepiece is a scroll-driven film: the workflow file
+travels in, bursts into its DAG, the recorded run chains through it, and
+the plan lies down into a flat map. Every YAML fragment shown is real and
+spec-validated; every number derives from the spec's canon.
 
 **Live** · [nika.sh](https://nika.sh)
 **License** · AGPL-3.0-or-later
 
 ## Stack
 
-- **Vite + React 19 + TypeScript** — static output, no server
-- **three.js / @react-three/fiber + postprocessing** — the galaxy scene,
-  the butterfly intro, the curved-glass lens, the stargate warp
-- **Tailwind v4** — utility layer over a hand-rolled cosmic design system
+- **Vite + React 19 + TypeScript + react-router** — ~40 routes prerendered
+  to static HTML (react-ssg), no server
+- **three.js / @react-three/fiber** — the manifesto's drum sphere, the
+  film's 3D plan scene, and the galaxy easter egg
+- **CodeMirror 6** — the /play playground (spec-true validation, in-tab)
+- **Tailwind v4** — utility layer over the engineered dark token system
 - **Fonts** — Clash Display (Fontshare ITF FFL), Martian Grotesk + Martian
-  Mono (OFL), self-hosted
+  Mono (OFL), self-hosted, subsetted (fontTools) with metric-twin fallbacks
 
 ## Develop
 
@@ -39,27 +44,35 @@ via `.github/workflows/gate.yml`, plus a live-URL-contract presence check
 on `dist/`):
 
 ```sh
-pnpm check               # tsc --noEmit
+pnpm check               # tsc --noEmit + icon-ontology sync
 pnpm lint                # eslint, zero warnings
-pnpm build               # tsc -b && vite build → dist/
+pnpm build               # tsc -b && vite build → dist/ (prerenders every route)
+pnpm test                # vitest — models, i18n parity + the drift gates
+pnpm visual              # pixel-compared goldens (per-OS · see AGENTS.md)
 ```
 
 Dev helpers:
 
-- `?it=<seconds>` freezes the intro film at an exact beat
+- `?it=<seconds>` freezes the hero intro at an exact beat
   (deterministic screenshots)
 - type `nika` anywhere — the galaxy answers
+- the full verification toolbelt (`scripts/`) is documented in
+  [`AGENTS.md`](AGENTS.md) — shoot-routes, shoot-scroll, a11y-sweep,
+  lighthouse-spot, size-budget, demo-drive
 
 ## Layout
 
 ```
 src/
-  App.tsx            page assembly · hash-router-lite (#/blog · #/learn)
-  content.ts         copy + spec-correct YAML (source: supernovae-st/nika-spec)
-  scene/             the 3D film (galaxy · butterfly · director · lens · verbs)
-  sections/          scroll story · transform · use cases · toolbelt ·
-                     run simulator (break-it) · diagrams
-  pages/             Blog · Learn
+  shell/             nav capsule · root layout · scroll rail · footer
+  fx/                EdgeAurora — the living device frame (bezel + aurora)
+  sections/          the home chapters 01-14 · morph/ is the film
+                     (ScrollMorph · the 3D plan scene · the flat DAG)
+  pages/             Home · Play · Spec · Learn · Blog · Manifesto (8 locales) ·
+                     Install · Convert · UseCases · Changelog · Errors
+  scene/             drum sphere (manifesto) · galaxy easter egg
+  content/           blog.generated.ts + the site changelog
+content/blog/        the posts, markdown (compiled by scripts/build-blog.mjs)
 public/
   install.sh         curl install entry (live URL · warns on pre-1.0 legacy)
   llms.txt           LLM-readable site summary (live URL)
@@ -67,13 +80,15 @@ public/
 ```
 
 **Generated content — never hand-edit**:
-`src/sections/usecases-yaml.generated.ts` (the showcase explorer YAML +
-DAGs + the 6 templates), `public/schema/workflow.json` and
-`public/errors/catalog.json` are all projected from
-[nika-spec](https://github.com/supernovae-st/nika-spec) by
-`scripts/showcase-projector.py --write` (drift-gated by `--check` in the
-monorepo audit). Every other YAML fragment in copy is hand-written but
-spec-validated — never invent shapes.
+`src/canon.generated.ts` (every language count ·
+nika-spec `canon-projectors.py`), `src/sections/usecases-yaml.generated.ts`
+(the showcase explorer YAML + DAGs + templates · `showcase-projector.py`),
+`src/content/blog.generated.ts` (from `content/blog/*.md` ·
+`scripts/build-blog.mjs`), `public/schema/workflow.json` and
+`public/errors/catalog.json` (projected from
+[nika-spec](https://github.com/supernovae-st/nika-spec)). All drift-gated —
+`pnpm test` fails when a generated module goes stale. Every other YAML
+fragment in copy is hand-written but spec-validated — never invent shapes.
 
 ## Brand assets
 
