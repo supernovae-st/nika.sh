@@ -174,39 +174,37 @@ export function Component() {
   const [explode, setExplode] = useState(false)
   const [resetSignal, setResetSignal] = useState(0)
 
-  /* ── THE FLIGHT · the chassis's stage state (hero → full → dock → off).
-     The takeover runway drives it: while it crosses the viewport the stage
-     is FULLSCREEN and its progress steers one full revolution + a dive
-     (read by the machine's frame loop via flightRef — no re-render churn);
-     past the last section the chassis stands down. */
-  const takeoverEl = useRef<HTMLDivElement>(null)
-  const [stage, setStage] = useState<'hero' | 'full' | 'dock' | 'off'>('hero')
-  const [orbitPct, setOrbitPct] = useState(0)
+  /* ── THE VOYAGE · hero (the whole vessel, turning, colours up, labels
+     quiet) → dock (the reading zooms deck by deck) → FINALE (the runway at
+     the BOTTOM hands the chassis the whole viewport: the assembled flyover)
+     → off (the footer's turn). The machine's frame loop reads flightRef —
+     no re-render churn. */
+  const finaleEl = useRef<HTMLDivElement>(null)
+  const [stage, setStage] = useState<'hero' | 'dock' | 'finale' | 'off'>('hero')
   const flightRef = useRef({ state: 'hero', progress: 0 })
   useEffect(() => {
     if (!machine) return
     let raf = 0
-    type Stage = 'hero' | 'full' | 'dock' | 'off'
+    type Stage = 'hero' | 'dock' | 'finale' | 'off'
     const tick = () => {
       raf = 0
       const vh = window.innerHeight
-      const t = takeoverEl.current?.getBoundingClientRect()
-      const last = document.querySelector('.spec-block--last')?.getBoundingClientRect()
+      const first = document.querySelector('.spec-block[data-stratum]')?.getBoundingClientRect()
+      const fin = finaleEl.current?.getBoundingClientRect()
       /* hysteresis: enter/exit thresholds differ so a small scroll near a
-         boundary can never thrash the chassis width (the friction bug) */
+         boundary can never thrash the chassis width */
       const step = (prev: Stage): Stage => {
-        if (!t) return 'hero'
-        if (last && last.bottom < vh * 0.55) return 'off'
         switch (prev) {
           case 'hero':
-            return t.top <= vh * 0.32 ? 'full' : 'hero'
-          case 'full':
-            if (t.top > vh * 0.48) return 'hero'
-            return t.bottom < vh * 0.68 ? 'dock' : 'full'
+            return first && first.top <= vh * 0.6 ? 'dock' : 'hero'
           case 'dock':
-            return t.bottom >= vh * 0.8 ? 'full' : 'dock'
+            if (first && first.top > vh * 0.78) return 'hero'
+            return fin && fin.top <= vh * 0.55 ? 'finale' : 'dock'
+          case 'finale':
+            if (fin && fin.top > vh * 0.7) return 'dock'
+            return fin && fin.bottom < vh * 0.22 ? 'off' : 'finale'
           case 'off':
-            return last && last.bottom >= vh * 0.55 ? 'dock' : 'off'
+            return fin && fin.bottom >= vh * 0.38 ? 'finale' : 'off'
         }
       }
       let s = flightRef.current.state as Stage
@@ -214,11 +212,6 @@ export function Component() {
         const next = step(s)
         if (next === s) break
         s = next
-      }
-      if (t) {
-        const p = Math.min(1, Math.max(0, (vh * 0.32 - t.top) / Math.max(1, t.height - vh * 0.36)))
-        flightRef.current.progress = p
-        if (s === 'full') setOrbitPct(Math.round(p * 20) * 5)
       }
       flightRef.current.state = s
       setStage((prev) => (prev === s ? prev : s))
@@ -388,8 +381,7 @@ export function Component() {
             style={{ ['--rise-delay' as string]: '180ms' }}
           >
             <span className="spec-hero-cue-tick" aria-hidden />
-            <span className="spec-hero-cue-desk">SCROLL·····BOARD THE SHIP</span>
-            <span className="spec-hero-cue-mob">SCROLL·····READ TO ASSEMBLE</span>
+            <span>SCROLL·····READ TO ASSEMBLE</span>
             <span aria-hidden>▾</span>
           </a>
             </div>
@@ -399,13 +391,6 @@ export function Component() {
               <SpecSchematic lit={lit} current={current} />
             </div>
           </header>
-
-          {/* THE TAKEOVER · the runway between the poster and the reading:
-              while it crosses the viewport the chassis goes fullscreen and
-              the ship makes one full revolution, diving closer mid-turn —
-              then docks to the rail as S.0 arrives. Lives only when the
-              machine is live (the fallback keeps the plain flow). */}
-          {machine ? <div className="spec-takeover" ref={takeoverEl} aria-hidden /> : null}
 
           <div className="spec-stage">
             <div className="spec-flow">
@@ -534,7 +519,7 @@ export function Component() {
               {/* ══ S.0 · the envelope ══════════════════════════════════════ */}
               <div
                 id="s0"
-                className="spec-block"
+                className="spec-block" data-sec=""
                 data-stratum="frame"
                 data-rise
                 style={{ ['--rise-delay' as string]: '120ms' }}
@@ -586,7 +571,7 @@ export function Component() {
                   Rich cards · a real 2-line example open in the premium CodeFile.
                   The verb hue lights ONLY inside the code frame — the card chrome
                   and the rest of the reference stay monochrome. */}
-              <div id="s1" className="spec-block" data-stratum="verbs" data-rise>
+              <div id="s1" className="spec-block" data-sec="" data-stratum="verbs" data-rise>
                 <SpecHead fig="S.1" name="The four verbs" count={`${CANON.verbs} · locked forever`}>
                   A verb is a <b>distinct native execution model</b>. A task binds exactly one. That is
                   the whole operation space: <code>fetch</code>, recall, db and files are <em>tools</em>{' '}
@@ -619,7 +604,7 @@ export function Component() {
                   An anatomy diagram (a labelled node · the required core lit, the
                   optional controls dimmed) beside the field ledger (required core
                   visible · optional controls behind the fold). */}
-              <div id="s2" className="spec-block" data-stratum="plan" data-rise>
+              <div id="s2" className="spec-block" data-sec="" data-stratum="plan" data-rise>
                 <SpecHead fig="S.2" name="The task shape" count="1 required field · 1 verb">
                   A task is a DAG node. <code>id</code> is the only required field and exactly one verb
                   binds; everything else is an optional structural control.
@@ -703,7 +688,7 @@ export function Component() {
               </div>
 
               {/* ══ S.3 · the permits — the enforcement model (the seatbelt) ══ */}
-              <div id="permits" className="spec-block spec-block--permits" data-stratum="permits" data-rise>
+              <div id="permits" className="spec-block spec-block--permits" data-sec="" data-stratum="permits" data-rise>
                 <SpecHead
                   fig="S.3"
                   name="The permits"
@@ -802,7 +787,7 @@ export function Component() {
               </div>
 
               {/* ══ S.4 · the stdlib ════════════════════════════════════════ */}
-              <div id="s3" className="spec-block" data-stratum="stdlib" data-rise>
+              <div id="s3" className="spec-block" data-sec="" data-stratum="stdlib" data-rise>
                 <SpecHead
                   fig="S.4"
                   name="The standard library"
@@ -831,7 +816,7 @@ export function Component() {
               </div>
 
               {/* ══ S.5 · providers ═════════════════════════════════════════ */}
-              <div id="s4" className="spec-block" data-stratum="providers" data-rise>
+              <div id="s4" className="spec-block" data-sec="" data-stratum="providers" data-rise>
                 <SpecHead
                   fig="S.5"
                   name="Providers"
@@ -884,7 +869,7 @@ export function Component() {
               </div>
 
               {/* ══ S.6 · extract modes ═════════════════════════════════════ */}
-              <div id="s5" className="spec-block" data-stratum="extract" data-rise>
+              <div id="s5" className="spec-block" data-sec="" data-stratum="extract" data-rise>
                 <SpecHead
                   fig="S.6"
                   name="Extract modes"
@@ -904,7 +889,7 @@ export function Component() {
               </div>
 
               {/* ══ S.7 · error namespaces ══════════════════════════════════ */}
-              <div id="s6" className="spec-block" data-stratum="errors" data-rise>
+              <div id="s6" className="spec-block" data-sec="" data-stratum="errors" data-rise>
                 <SpecHead
                   fig="S.7"
                   name="Error namespaces"
@@ -925,7 +910,7 @@ export function Component() {
               </div>
 
               {/* ══ S.8 · license + invariants ══════════════════════════════ */}
-              <div id="s7" className="spec-block spec-block--last" data-stratum="license" data-rise>
+              <div id="s7" className="spec-block spec-block--last" data-sec="" data-stratum="license" data-rise>
                 <SpecHead fig="S.8" name="License + invariants" count="locked, forever">
                   The contract you can count on: the parts that never change.
                 </SpecHead>
@@ -978,6 +963,11 @@ export function Component() {
                   </a>
                 </div>
               </div>
+
+              {/* THE FINALE RUNWAY · past the last section the chassis takes
+                  the whole viewport for the assembled flyover — the voyage
+                  ends where it began, every stratum lit. Live only. */}
+              {machine ? <div className="spec-finale" ref={finaleEl} aria-hidden /> : null}
             </div>
 
             {/* ── the machine rail · sticky. The STAGE is decoration (aria-hidden:
@@ -1008,36 +998,28 @@ export function Component() {
                     fig + its ship station + the derived count */}
                 <div
                   className="spec-rail-pos"
-                  key={stage === 'full' ? 'boarding' : (current ?? 'ship')}
+                  key={stage === 'finale' ? 'assembled' : (current ?? 'ship')}
                 >
                   <span className="spec-rail-pos-fig mono">
-                    {stage === 'full' ? '▸ BOARDING' : cur ? `▸ ${cur.fig}` : '▸ THE SHIP'}
+                    {stage === 'finale' ? '▸ ASSEMBLED' : cur ? `▸ ${cur.fig}` : '▸ THE SHIP'}
                   </span>
                   <span className="spec-rail-pos-part">
-                    {stage === 'full' ? 'THE SHIP' : cur ? cur.shipPart.toUpperCase() : 'NIKA: V1'}
+                    {stage === 'finale' ? 'THE SHIP' : cur ? cur.shipPart.toUpperCase() : 'NIKA: V1'}
                   </span>
-                  {stage === 'full' ? (
-                    <span className="spec-rail-pos-sub mono">ORBIT·····{orbitPct}%</span>
+                  {stage === 'finale' ? (
+                    <span className="spec-rail-pos-sub mono">EVERY STRATUM·····LIT</span>
                   ) : null}
                 </div>
                 <span className="spec-rail-hud spec-rail-hud--bl">
                   ASSEMBLED·····{assembled}/{assembledMax}
                 </span>
                 <span className="spec-rail-gauge">
-                  {SPEC_SECTIONS.map((s, i) => {
-                    /* during the boarding the gauge IS the flight bar; at
-                       the dock it converts to the reading's spine */
-                    const flying = stage === 'full'
-                    const litT = flying
-                      ? i < Math.round((orbitPct / 100) * SPEC_SECTIONS.length)
-                      : lit.has(s.key)
-                    const curT = flying
-                      ? i === Math.round((orbitPct / 100) * SPEC_SECTIONS.length) - 1
-                      : current === s.key
-                    return (
-                      <i key={s.fig} className={`${litT ? 'is-lit' : ''}${curT ? ' is-cur' : ''}`} />
-                    )
-                  })}
+                  {SPEC_SECTIONS.map((s) => (
+                    <i
+                      key={s.fig}
+                      className={`${stage === 'finale' || lit.has(s.key) ? 'is-lit' : ''}${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
+                    />
+                  ))}
                 </span>
                 <span className="spec-rail-hud spec-rail-hud--br">
                   {current === 'license' ? 'AGPL·····FOREVER' : 'NIKA: V1·····FROZEN'}

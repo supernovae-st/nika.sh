@@ -107,7 +107,10 @@ void main() {
   /* the breath lifts a lit face a whisper (the drum's fill law); at the
      OVERVIEW the faces carry the night-blue plate light — mass reads at a
      distance where hairlines cannot (the engineering-plate look) */
-  col = mix(col, vec3(0.07, 0.12, 0.28), uHero * (0.4 + 0.18 * vLit));
+  /* the hero plate light wears each station's HUE — the mass carries the
+     colour (edges are 1px; faces are what the eye reads at distance) */
+  vec3 plate = mix(vec3(0.05, 0.085, 0.2), vTint * 0.52, 0.6);
+  col = mix(col, plate, uHero * (0.46 + 0.18 * vLit));
   col += vec3(0.02, 0.034, 0.075) * vPulse * (0.3 + 0.7 * vLit) * (1.0 + uHero * 0.8);
   gl_FragColor = vec4(col, 1.0);
 }
@@ -153,7 +156,7 @@ void main() {
      brightens the front as it sails past (the drum's line law). At the
      OVERVIEW poses (uHero) the ghost hull glows up and the heartbeat
      becomes a visible sweep — the beauty idle. */
-  float a = (0.34 + 0.52 * vFacing) * (0.52 + 0.48 * vLit) * (0.3 + 0.7 * vFocusA)
+  float a = (0.46 + 0.44 * vFacing) * (0.62 + 0.38 * vLit) * (0.34 + 0.66 * vFocusA)
     * (0.86 + (0.5 + 1.15 * uHero) * vPulse) * uFade * vNear
     * (1.0 + uHero * 0.55 * (1.0 - vLit));
   /* the hovered node pulses over everything (the W2 bus highlight) */
@@ -161,8 +164,9 @@ void main() {
   if (a < 0.01) discard;
   /* shadow wire blue → the instance's lit tint (verb hue on tetrad + slabs);
      the hero showcase lifts the ghost ink toward the lit family */
-  vec3 col = mix(vec3(0.086, 0.188, 0.478), vTint, vLit * (0.45 + 0.55 * vKey));
-  col = mix(col, vec3(0.31, 0.525, 1.0), uHero * 0.3 * (1.0 - vLit));
+  /* the hull wears its hues from the FIRST frame: the hero showcase lifts
+     every station toward its own tint (reading ignition still outshines) */
+  vec3 col = mix(vec3(0.086, 0.188, 0.478), vTint, max(vLit * (0.45 + 0.55 * vKey), uHero * 0.66));
   col += vec3(0.06, 0.1, 0.2) * vPulse * vLit;
   col = mix(col, vec3(0.553, 0.706, 1.0), vHi * (0.55 + 0.35 * sin(uTime * 7.0)));
   gl_FragColor = vec4(col, a);

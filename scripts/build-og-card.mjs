@@ -525,7 +525,12 @@ const cardHtml = (c) => `<!doctype html>
   }
   .art svg { width: 100%; height: auto; display: block; }
   .art [class^='sms'], .art [class*=' sms'] { stroke: #4f86ff; fill: none; }
-  .art .sms-port-tip { fill: #8db4ff; stroke: none; }
+  .art [data-stratum='frame'] * { stroke: #8db4ff; }
+  .art [data-stratum='permits'] * { stroke: #ff7a3c; }
+  .art [data-stratum='stdlib'] *, .art [data-stratum='extract'] * { stroke: #22d3ee; }
+  .art [data-stratum='providers'] * { stroke: #5b8cff; }
+  .art [data-stratum='errors'] * { stroke: #b07bff; }
+  .art .sms-port-tip { fill: #22d3ee; stroke: none; }
   .art .sms-keel--req, .art .sms-tick--fetch { stroke-width: 1.7; }
 </style>
 </head>

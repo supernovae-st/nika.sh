@@ -8,8 +8,11 @@ import './scroll-rail.css'
    hairline progress fill tracks the whole page. Clicking a tick jumps via
    the native anchor (html scroll-behavior handles smoothness, motion-safe).
 
-   Auto-discovers `section[id]` inside <main> and reads each section's FIG
-   plate (.v4sec-fig) for the readout — zero hand-maintained maps. SSR-safe:
+   Auto-discovers `section[id]` (and any `[data-sec][id]` block — the /spec
+   reference marks its S.n blocks) inside <main>, and reads each entry's FIG
+   plate (.v4sec-fig / .spec-head-fig) for the readout — zero hand-maintained
+   maps. Site-wide since v4.11 (mounted in RootLayout, keyed by route so each
+   page re-discovers); a page with fewer than 3 marks shows no rail. SSR-safe:
    renders nothing until mounted; ≥1280px only (scroll-rail.css). */
 
 interface RailItem {
@@ -41,7 +44,7 @@ export default function ScrollRail() {
     /* discovery deferred one frame — the effect body only wires externals */
     raf = requestAnimationFrame(() => {
       const sections = Array.from(
-        document.querySelectorAll<HTMLElement>('main section[id]'),
+        document.querySelectorAll<HTMLElement>('main :is(section, [data-sec])[id]'),
       ).filter((s) => s.id !== '')
       if (sections.length < 3) return
 
@@ -49,11 +52,12 @@ export default function ScrollRail() {
         sections.map((s, i) => {
           const fig =
             s.querySelector('.v4sec-fig')?.textContent?.trim() ||
+            s.querySelector('.spec-head-fig')?.textContent?.trim() ||
             String(i + 1).padStart(2, '0')
           const name =
             (s.getAttribute('aria-labelledby')
               ? document.getElementById(s.getAttribute('aria-labelledby')!)?.textContent
-              : '') ?? s.id
+              : s.querySelector('h2')?.textContent) ?? s.id
           return { id: s.id, fig, name: name.trim() }
         }),
       )
