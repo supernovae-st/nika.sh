@@ -27,6 +27,20 @@
   inset: var(--frame-w, 0px) var(--frame-w, 0px) auto var(--frame-w, 0px);
   z-index: 50; /* above content, below the aurora frame (z-60/61) and any sheet */
   pointer-events: none; /* the capsule re-arms hits; the gutter stays inert */
+
+  /* THE NAV JOINS THE TINT SYSTEM (arc 10g) · the capsule is an instrument
+     seated in the device frame — its hairline and top catch-light carry the
+     frame's section temperature (--aurora-tint-hue/-c live on :root,
+     @property-transitioned: the drift is free). A WHISPER, not a colour:
+     chroma is halved and alphas match the old static seam kit, so the
+     chrome stays monochrome-plus-blue and the hue can never leave the Siri
+     pool (bounded [246,372] upstream — never green/yellow). Plain fallbacks
+     precede each tinted pass (the calc-in-oklch two-pass law, arc 9j). */
+  --nav-tint-hairline: oklch(
+    0.72 calc(var(--aurora-tint-c, 0.12) * 0.5) var(--aurora-tint-hue, 262deg) / 0.13
+  );
+  --nav-tint-catch: inset 0 1px 0
+    oklch(0.85 calc(var(--aurora-tint-c, 0.12) * 0.4) var(--aurora-tint-hue, 262deg) / 0.09);
 }
 /* THE SCRIM (arc 9i · UX socratic) · scrolled content used to read straight
    through the gutter above/behind the capsule (clipped text floating over
@@ -98,9 +112,16 @@
   /* the near-opaque floor · dark enough to occlude anything scrolling under,
      translucent enough that the blur reads as machined glass, not paint */
   background: rgb(10 13 18 / 0.92);
+  /* the section-tinted hairline + catch-light (arc 10g) · static fallback
+     first — a parse failure degrades to the old seam kit, never currentColor */
   border-color: var(--seam-hairline);
+  border-color: var(--nav-tint-hairline);
   box-shadow:
     var(--seam-highlight),
+    0 1px 2px rgb(0 0 0 / 0.32),
+    0 16px 40px -20px rgb(0 0 0 / 0.55);
+  box-shadow:
+    var(--nav-tint-catch),
     0 1px 2px rgb(0 0 0 / 0.32),
     0 16px 40px -20px rgb(0 0 0 / 0.55);
 }
@@ -112,6 +133,10 @@
 .v4nav[data-scrolled='true'][data-solid='true'] .v4nav-capsule {
   box-shadow:
     var(--seam-highlight),
+    0 1px 2px rgb(0 0 0 / 0.36),
+    0 8px 24px -16px rgb(0 0 0 / 0.5);
+  box-shadow:
+    var(--nav-tint-catch),
     0 1px 2px rgb(0 0 0 / 0.36),
     0 8px 24px -16px rgb(0 0 0 / 0.5);
 }
@@ -414,9 +439,14 @@
      translucent+blur version let the field bleed through and muddied the
      type). Seam kit: hairline + inner-top catch + ONE tight float shadow. */
   background: #0b0e13;
+  /* the panel hangs from the capsule — same tinted hairline (arc 10g) */
   border: 1px solid var(--seam-hairline);
+  border-color: var(--nav-tint-hairline);
   box-shadow:
     var(--seam-highlight),
+    0 16px 40px -16px rgb(0 0 0 / 0.6);
+  box-shadow:
+    var(--nav-tint-catch),
     0 16px 40px -16px rgb(0 0 0 / 0.6);
   /* two GROUP COLUMNS side by side (Linear register) — each column owns its
      eyebrow + its stacked items; groups never interleave. */
