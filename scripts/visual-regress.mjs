@@ -84,6 +84,12 @@ const FRAMES = [
      pixel-guarded. Route-aware frames navigate once, then shoot. */
   { name: 'manifesto-record', route: '/manifesto', p: 0.62 },
   { name: 'manifesto-close', route: '/manifesto', p: 0.84 },
+  /* the spec machine joins the gate (v4.8) — same reduced register: the
+     canvas never mounts under reduce, so these guard the DOM truth (the
+     split stage, the 2D schematic in the rail, the lit TOC ticks + the
+     HUD tally, the folds): mid-read + the assembled close. */
+  { name: 'spec-read', route: '/spec', p: 0.55 },
+  { name: 'spec-close', route: '/spec', p: 0.94 },
 ]
 
 /* ── static file server (no python dependency in CI) ─────────────────────── */

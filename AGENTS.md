@@ -41,6 +41,11 @@ auto-deploys on push to `main` (DigitalOcean App Platform, `.do/app.yaml`).
   frame clock — never CSS keyframes for film beats.
 - No troika/drei `<Text>` (SDF readbacks break software-GL verification);
   text in the scene is CanvasTexture or extruded TextGeometry.
+- A uniform shared across shader stages must agree on precision: the
+  vertex stage defaults to highp, so a fragment shader under
+  `precision mediump float;` declares that uniform `highp` explicitly —
+  or the program fails VALIDATE_STATUS silently, per material (the
+  spec-machine W2 probe caught a dead edges draw call this way).
 - Verify visually headless: build, serve `dist/`, screenshot with
   swiftshader Chromium (`?it=N` freezes the film deterministically).
 - Scroll-linked scenes (ScrollMorph) verify with the sweep driver:
