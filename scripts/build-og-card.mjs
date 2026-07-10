@@ -162,6 +162,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/the-one-task-rerun — --task scopes fresh runs; --from re-rolls the recorded past.
+    out: 'og-blog-the-one-task-rerun.png',
+    fig: 'FIG B.16',
+    size: 60,
+    headline: 'One block,<br><span class="b">not the world.</span>',
+    sub: '<span style="white-space:nowrap">--task</span> runs a task and its upstream, nothing else; <span style="white-space:nowrap">--from</span> re-rolls a recorded run, downstream only. The DAG is the blast radius of your doubt.',
+    detail:
+      '<span class="arrow">▸</span><span>--task&nbsp;=&nbsp;ancestors<span class="sep">·</span>--from&nbsp;=&nbsp;downstream<span class="sep">·</span><b>finished&nbsp;work&nbsp;never&nbsp;twice</b></span>',
+  },
+  {
     // /blog/the-run-that-waits — the approval gate is a task; the answer rides the resume.
     out: 'og-blog-the-run-that-waits.png',
     fig: 'FIG B.15',
