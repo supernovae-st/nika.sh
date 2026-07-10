@@ -7,6 +7,14 @@
     <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
     <language>en</language>
     <item>
+      <title>The run that waits for you</title>
+      <link>https://nika.sh/blog/the-run-that-waits</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-run-that-waits</guid>
+      <pubDate>Fri, 10 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>The approval gate is a task in the file, not a Slack thread: a plan fails closed on nika:prompt, and the human's answer rides the resume.</description>
+    </item>
+    <item>
       <title>The resume story</title>
       <link>https://nika.sh/blog/the-resume-story</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-resume-story</guid>
