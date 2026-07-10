@@ -53,6 +53,13 @@ export const CHANGELOG: ChangelogEntry[] = [
     gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.99.0',
   },
   {
+    date: '2026-07-10',
+    tag: 'site',
+    title: 'nika.sh v4.7 · the manifesto learns to prove itself',
+    body: 'The poem gets a proof layer: THE RECORD, a two-strand timeline of who controls access to intelligence — the cage in grey, the drum in light — every entry dated and carrying its primary source, probed weekly by CI so a dead link fails the build. The founding Friday is pinned (the letter, the switch-off, the tap reopening nineteen days later) and the hero stamp deep-links straight to it. On desktop the record becomes a stage: vertical scroll plays the track left to right through a fixed playhead — drum above the baseline, cage below, the live card lit, a big tabular year turning, a minimap riding the score — while mobile and reduced motion keep the vertical truth. The five promises now carry receipts, the statements ignite as they reveal, and the section frame speaks eight languages.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.7.0',
+  },
+  {
     date: '2026-07-09',
     tag: 'site',
     title: 'nika.sh v4.6 · the black frame, and the page learns its colour law',
