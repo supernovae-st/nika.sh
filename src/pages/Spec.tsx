@@ -1,4 +1,4 @@
-import { Suspense, lazy, useRef } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
@@ -16,6 +16,7 @@ import {
   SPEC_SECTIONS,
   TASK_FIELDS,
   displayProvider,
+  nodeReadout,
   nsScope,
 } from '../scene/spec-machine-data'
 import { useSpecReading } from '../sections/spec/use-spec-reading'
@@ -185,6 +186,67 @@ export function Component() {
      only when the moment can be worth its cost */
   const stageRef = useRef<HTMLDivElement>(null)
   const machine = usePlan3D(stageRef)
+
+  /* ── W2 · the hover bus — ONE id, both sides write: pointering a 3D node
+     reports here (MR readout + the DOM twins light), and hover/focus on any
+     [data-node] DOM twin (chips · stamp legend · TOC · gates · ns rows)
+     pulses the 3D node. Delegated: two listeners, zero per-chip wiring. */
+  const [hoverNode, setHoverNode] = useState<string | null>(null)
+  const hoverReadout = hoverNode ? nodeReadout(hoverNode) : null
+  useEffect(() => {
+    const root = document.querySelector('.spec-page')
+    if (!root) return
+    const resolve = (t: EventTarget | null): string | null =>
+      (t as Element | null)?.closest?.('[data-node]')?.getAttribute('data-node') ?? null
+    const onOver = (e: Event) => setHoverNode(resolve(e.target))
+    const onFocus = (e: Event) => {
+      const id = resolve(e.target)
+      if (id) setHoverNode(id)
+    }
+    const onBlur = (e: Event) => {
+      if (resolve(e.target)) setHoverNode(null)
+    }
+    root.addEventListener('pointerover', onOver, { passive: true })
+    root.addEventListener('focusin', onFocus)
+    root.addEventListener('focusout', onBlur)
+    return () => {
+      root.removeEventListener('pointerover', onOver)
+      root.removeEventListener('focusin', onFocus)
+      root.removeEventListener('focusout', onBlur)
+    }
+  }, [])
+  /* the machine → DOM mirror · every twin of the hovered node lights */
+  useEffect(() => {
+    if (!hoverNode) return
+    const els = document.querySelectorAll(`[data-node="${hoverNode}"]`)
+    els.forEach((el) => el.classList.add('is-node-hot'))
+    return () => els.forEach((el) => el.classList.remove('is-node-hot'))
+  }, [hoverNode])
+
+  /* Shift+←/→ jumps sections (the /play chapter-keys precedent) · the hash
+     is the navigation: native smooth scroll + :target + shareable address */
+  const currentRef = useRef(current)
+  useEffect(() => {
+    currentRef.current = current
+  }, [current])
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!e.shiftKey || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return
+      const t = e.target as HTMLElement | null
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      const idx = SPEC_SECTIONS.findIndex((s) => s.key === currentRef.current)
+      if (idx === -1 && e.key === 'ArrowLeft') return
+      const next =
+        e.key === 'ArrowRight'
+          ? Math.min(SPEC_SECTIONS.length - 1, idx + 1)
+          : Math.max(0, idx - 1)
+      if (next === idx) return
+      e.preventDefault()
+      window.location.hash = SPEC_SECTIONS[next].anchor
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   useHead({
     title: 'Spec · Nika',
@@ -800,7 +862,13 @@ export function Component() {
                 <HudMarks />
                 {machine ? (
                   <Suspense fallback={null}>
-                    <TheSpecMachine stageRef={stageRef} lit={lit} current={current} />
+                    <TheSpecMachine
+                      stageRef={stageRef}
+                      lit={lit}
+                      current={current}
+                      highlight={hoverNode}
+                      onHover={setHoverNode}
+                    />
                   </Suspense>
                 ) : null}
                 <SpecSchematic lit={lit} current={current} />
@@ -816,6 +884,9 @@ export function Component() {
                 <span className="spec-rail-hud spec-rail-hud--br">
                   {current === 'license' ? 'AGPL·····FOREVER' : 'NIKA: V1·····FROZEN'}
                 </span>
+                {hoverReadout ? (
+                  <span className="spec-rail-hud spec-rail-hud--mr">{hoverReadout}</span>
+                ) : null}
               </div>
             </aside>
           </div>

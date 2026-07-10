@@ -32,15 +32,18 @@ attribute vec4 iQuat;
 attribute vec3 iScale;
 attribute vec2 iSeed;
 attribute vec3 iTint;
+attribute float iId;
 uniform float uTime;
 uniform float uFade;
 uniform float uStrike;
 uniform float uStrikeStratum;
+uniform float uHi;
 uniform float uLit[${N_STRATA}];
 uniform float uFocusA[${N_STRATA}];
 varying float vLit;
 varying float vFocusA;
 varying vec3 vTint;
+varying float vHi;
 
 vec3 qrot(vec4 q, vec3 v) { return v + 2.0 * cross(q.xyz, cross(q.xyz, v) + q.w * v); }
 
@@ -55,9 +58,11 @@ vec3 machineVertex(vec3 p) {
   vLit = uLit[si];
   vFocusA = uFocusA[si];
   vTint = iTint;
+  /* the highlighted node (W2 wiring · hover on either side of the bus) */
+  vHi = step(abs(iId - uHi), 0.25);
   /* the struck stratum swells on its ignition beat, then settles lit */
   float hit = strikeEnv() * step(abs(iSeed.x - uStrikeStratum), 0.25);
-  vec3 s = iScale * (1.0 + hit * 0.16 + vLit * 0.02);
+  vec3 s = iScale * (1.0 + hit * 0.16 + vLit * 0.02 + vHi * 0.06);
   return qrot(iQuat, p * s) + iPos;
 }
 `
@@ -110,15 +115,22 @@ varying vec3 vTint;
 varying float vFacing;
 varying float vKey;
 varying float vNear;
+varying float vHi;
 uniform float uFade;
+/* highp: the vertex stage declares uTime highp (its default) — a shared
+   uniform must agree across stages or the program fails to validate */
+uniform highp float uTime;
 void main() {
   /* the tol.is line law · alpha from facing; a ghost stratum whispers, an
      ignited one reads, the focused one carries the frame */
   float a = (0.14 + 0.72 * vFacing) * (0.3 + 0.7 * vLit) * (0.28 + 0.72 * vFocusA) * uFade * vNear;
+  /* the hovered node pulses over everything (the W2 bus highlight) */
+  a = min(a * (1.0 + vHi * 1.4) + vHi * 0.22, 1.0);
   if (a < 0.01) discard;
   /* shadow wire blue → the instance's lit tint (verb hue on tetrad + slabs) */
   vec3 col = mix(vec3(0.086, 0.188, 0.478), vTint, vLit * (0.45 + 0.55 * vKey));
-  gl_FragColor = vec4(col, min(a, 1.0));
+  col = mix(col, vec3(0.553, 0.706, 1.0), vHi * (0.55 + 0.35 * sin(uTime * 7.0)));
+  gl_FragColor = vec4(col, a);
 }
 `
 
@@ -191,6 +203,8 @@ export interface MachineLayers {
     uStrike: { value: number }
     /** stratum index of the last ignition (drives the swell's target) */
     uStrikeStratum: { value: number }
+    /** the hovered node's instance index · -1 = none (the W2 hover bus) */
+    uHi: { value: number }
     /** per-stratum ignition level · CPU-eased toward 0/1 (~1s wash) */
     uLit: { value: Float32Array }
     /** per-stratum x-ray alpha · CPU-eased (focused 1 · others 0.3) */
@@ -206,6 +220,10 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
   const iScale = new THREE.InstancedBufferAttribute(m.scale, 3)
   const iSeed = new THREE.InstancedBufferAttribute(m.seed, 2)
   const iTint = new THREE.InstancedBufferAttribute(m.tint, 3)
+
+  const ids = new Float32Array(m.count)
+  for (let i = 0; i < m.count; i++) ids[i] = i
+  const iId = new THREE.InstancedBufferAttribute(ids, 1)
 
   const box = new THREE.BoxGeometry(1, 1, 1)
   const edges = new THREE.EdgesGeometry(box)
@@ -225,6 +243,7 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     g.setAttribute('iScale', iScale)
     g.setAttribute('iSeed', iSeed)
     g.setAttribute('iTint', iTint)
+    g.setAttribute('iId', iId)
   }
 
   const uniforms = {
@@ -232,6 +251,8 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     uFade: { value: 0 },
     uStrike: { value: -1e3 },
     uStrikeStratum: { value: -1 },
+    /** the hovered node's instance index · -1 = none (W2 bus) */
+    uHi: { value: -1 },
     uLit: { value: new Float32Array(N_STRATA) },
     uFocusA: { value: new Float32Array(N_STRATA).fill(1) },
   }

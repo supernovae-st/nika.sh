@@ -1676,3 +1676,44 @@
     transition: none;
   }
 }
+
+/* ════ W2 · the wiring — the hover bus lights both sides ══════════════════════
+   ONE hovered node id: the 3D node pulses (uHi in the machine) while every
+   DOM twin ([data-node]) lights, and the MR whisper reads the node out.
+   Keyboard: focus-visible on a twin (TOC · stamp legend) drives the same bus. */
+
+/* the hover readout · mid-right, clear of the four corner whispers */
+.spec-rail-hud--mr {
+  top: 50%;
+  right: 2%;
+  transform: translateY(-50%);
+  color: color-mix(in oklch, var(--sm-ink-struck) 78%, transparent);
+}
+
+/* the lit DOM twins · chips + gates + rows + legend + TOC */
+.spec-chip.is-node-hot {
+  border-color: var(--sm-ink-lit);
+  background: color-mix(in oklch, var(--sm-ink-lit) 14%, var(--v4-bg-raised));
+}
+.spec-toc-link.is-node-hot {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--sm-ink-lit) 60%, var(--v4-line));
+}
+.spec-stamp-link.is-node-hot {
+  background: color-mix(in oklch, var(--sm-ink-lit) 10%, var(--v4-bg-raised));
+}
+.spec-boundary-gate.is-node-hot {
+  border-color: color-mix(in oklch, var(--sm-ink-lit) 55%, var(--v4-line));
+  transform: translateY(-1px);
+}
+.spec-verbcard.is-node-hot {
+  border-color: color-mix(in oklch, var(--sm-ink-lit) 45%, var(--seam-hairline));
+}
+.spec-ns-row.is-node-hot .spec-ns-name {
+  color: var(--sm-ink-struck);
+}
+
+/* the click's landing · the hash lights the section head (manifesto E1) */
+.spec-block:target .spec-head-fig {
+  color: var(--sm-ink-lit);
+}

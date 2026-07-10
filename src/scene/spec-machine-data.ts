@@ -298,3 +298,34 @@ export const MACHINE_NODES: MachineNode[] = [
 export function nodesFor(stratum: StratumKey): MachineNode[] {
   return MACHINE_NODES.filter((n) => n.stratum === stratum)
 }
+
+const NODE_BY_ID = new Map(MACHINE_NODES.map((n) => [n.id, n]))
+export const nodeById = (id: string): MachineNode | undefined => NODE_BY_ID.get(id)
+
+/* ── the MR hover whisper · `fetch·····web · 9 modes` (dot-leader grammar) ────
+   One line per node, derived from the graph — the machine's hover readout and
+   the DOM chips' shared vocabulary. Counts appear only where they are real. */
+export function nodeReadout(id: string): string | null {
+  const n = NODE_BY_ID.get(id)
+  if (!n) return null
+  switch (n.kind) {
+    case 'verb':
+      return `${n.label}·····verb · locked`
+    case 'task': {
+      const t = PLAN_TASKS.find((x) => x.id === n.label)
+      return `${n.label}·····${n.verb}${t ? ` · wave ${t.wave}` : ''}`
+    }
+    case 'gate':
+      return `${n.label}·····permit gate`
+    case 'builtin':
+      return n.label === 'fetch'
+        ? `${n.label}·····${n.family?.toLowerCase()} · ${CANON.extractModes} modes`
+        : `${n.label}·····${n.family?.toLowerCase()}`
+    case 'provider':
+      return `${n.label}·····${n.family}`
+    case 'extract':
+      return `${n.label}·····mode on fetch`
+    case 'errns':
+      return `${n.label}·····error namespace`
+  }
+}
