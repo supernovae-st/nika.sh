@@ -188,13 +188,26 @@ await sleep(7000) /* load + settle */
    Clash/Martian loading past the 7s and the hero frame shot with fallback
    glyphs — a 15% text-area diff that alternated run to run (the a11y sweep
    had the same class · same fix) */
-for (let i = 0; i < 40; i++) {
-  const ready = await evaluate(
-    `document.readyState === 'complete' && document.fonts.status === 'loaded'`,
-  ).catch(() => false)
-  if (ready) break
-  await sleep(250)
+const fontsGate = async () => {
+  for (let i = 0; i < 40; i++) {
+    const ready = await evaluate(
+      `document.readyState === 'complete' && document.fonts.status === 'loaded'`,
+    ).catch(() => false)
+    if (ready) break
+    await sleep(250)
+  }
 }
+await fontsGate()
+/* THE WARM-UP RELOAD · the body face ships font-display: optional — on a
+   COLD profile it can miss its ~100ms block window, load anyway (the gate
+   above reads 'loaded') and never be APPLIED: the whole run shoots in the
+   metric fallback and the first run after a build diffs while re-runs pass
+   (the W20b cold-fonts flake — twice in one day, arc 10). One reload after
+   the first load puts every font in HTTP cache, so it MAKES the block
+   window: cold and warm profiles converge on the same applied state. */
+await send('Page.reload')
+await sleep(4000)
+await fontsGate()
 
 async function shootFrame(p) {
   /* body-progress scroll with the c-v re-aim (the W11 harness lesson) */
