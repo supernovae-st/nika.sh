@@ -1,16 +1,26 @@
 /* ─── /spec page · the language reference register ────────────────────────────
    Extends the shared v4 blueprint register (.v4sec* / .v4belt* in
    sections/v4-home.css) with the page-level chrome for the language reference:
-   a full-height theme-dark surface, a contents rail, and a stack of FIG-numbered
+   a full-height theme-dark surface, a split stage (the measured ledger column +
+   the sticky machine rail), a lit contents rail, and a stack of FIG-numbered
    spec blocks (envelope · verbs · task shape · stdlib · providers · extract ·
-   errors · license). Monochrome blueprint; the ONLY colour is the global
-   EdgeAurora. Everything reads off the v4 theme tokens (--v4-* via theme-dark),
-   so it would invert cleanly if ever themed light. SSR-safe: pure CSS. */
+   errors · license). Monochrome blueprint — AMENDED 2026-07-10 (spec-machine):
+   THE SPEC MACHINE is the page's ONE saturated field (the W7 law), speaking
+   the wire-blue family the home film + the manifesto drum already own
+   (--sm-ink-* below); verb hue stays confined inside CodeFile frames.
+   Everything else reads off the v4 theme tokens (--v4-* via theme-dark), so it
+   would invert cleanly if ever themed light. SSR-safe: pure CSS. */
 
 /* the page fills the viewport so theme-dark paints edge-to-edge under the fixed
    nav (solid immediately on a page with no hero sentinel). */
 .spec-page {
   min-height: 100vh;
+  /* the tholos ink · the drum-sphere shader family (drum-sphere-three.ts):
+     shadow wire blue → lit accent → struck bright — the machine's one hue */
+  --sm-ink-shadow: #16307a;
+  --sm-ink-lit: #4f86ff;
+  --sm-ink-struck: #8db4ff;
+  --sm-fill: #0a0c10;
 }
 /* clear the fixed nav: the page has no hero, so the nav is solid from the top —
    add headroom on top of the section's own padding. */
@@ -717,14 +727,20 @@
 }
 .spec-stamp-cell {
   position: relative;
-  padding: 16px 16px 15px;
   background: color-mix(in oklch, var(--v4-bg-raised) 62%, var(--v4-bg));
-  display: flex;
-  flex-direction: column;
   transition: background-color 0.2s ease;
 }
 .spec-stamp-cell:hover {
   background: var(--v4-bg-raised);
+}
+/* the cell is a real link into its section (the machine's legend) — the link
+   carries the padding + column so the whole plate is the target */
+.spec-stamp-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px 16px 15px;
+  color: inherit;
 }
 .spec-stamp-fig {
   font-family: var(--mono);
@@ -1278,4 +1294,385 @@
 }
 .spec-tldr-link a:hover {
   color: var(--v4-text);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   THE SPEC MACHINE · W0 — the split stage · the lit reading · the 2D schematic
+   (mega plan 2026-07-10 · Q1 spec-pure strata · Q2 sticky split rail · Q4
+   designed schematic fallback). The rail is decoration (aria-hidden): the
+   ledger column + the lit TOC stay the accessible, no-JS, SEO truth.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── the split stage · the ledger column + the machine rail (≥1024px) ───────── */
+.spec-stage {
+  margin-top: clamp(28px, 4vh, 44px);
+}
+.spec-flow {
+  min-width: 0;
+}
+.spec-flow .spec-toc {
+  margin-top: 0;
+}
+.spec-rail {
+  display: none;
+}
+@media (min-width: 1024px) {
+  /* the stage needs air: the wrap widens on this page only */
+  .spec-page .v4sec-wrap {
+    max-width: 96rem;
+  }
+  .spec-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(340px, 42vw, 620px);
+    gap: clamp(28px, 3.2vw, 56px);
+    align-items: start;
+  }
+  /* the column reads single-flow — the rail owns the right side, so the
+     internal side-by-side splits stand down (the "lighter" half of the ask) */
+  .spec-flow .spec-split,
+  .spec-flow .spec-tasksplit,
+  .spec-flow .spec-permits-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .spec-flow .spec-aside,
+  .spec-flow .spec-anatomy,
+  .spec-flow .spec-permits-denials {
+    position: static;
+  }
+  .spec-flow .spec-boundary-gates {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* the sticky TOC adds to the anchor-jump clearance */
+  .spec-flow .spec-block {
+    scroll-margin-top: 152px;
+  }
+  /* the contents rail docks under the nav and keeps its ticks in the eye */
+  .spec-flow .spec-toc {
+    position: sticky;
+    top: 84px;
+    z-index: 6;
+    padding: 12px 0;
+    background: var(--v4-bg);
+    box-shadow: 0 1px 0 var(--v4-line);
+  }
+}
+
+/* ── the machine rail · the sticky stage + the HUD whispers ─────────────────── */
+@media (min-width: 1024px) {
+  .spec-rail {
+    display: block;
+    min-width: 0;
+    /* the stage grid aligns items start — the rail must stretch the full
+       column height or its sticky child has no runway to travel */
+    align-self: stretch;
+  }
+  .spec-rail-stage {
+    position: sticky;
+    top: 84px;
+    height: min(calc(100vh - 104px), 820px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spec-rail-stage .spec-schematic {
+    width: min(100%, calc(100vh - 220px), 600px);
+    height: auto;
+  }
+}
+/* the HUD whisper · the tholos label register (drum-sphere.css grammar),
+   pinned at the stage corners — tracks the reading */
+.spec-rail-hud {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: color-mix(in oklch, var(--sm-ink-lit) 58%, transparent);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  white-space: nowrap;
+}
+.spec-rail-hud--tl {
+  top: 3%;
+  left: 2%;
+}
+.spec-rail-hud--tr {
+  top: 3%;
+  right: 2%;
+}
+.spec-rail-hud--bl {
+  bottom: 3%;
+  left: 2%;
+}
+.spec-rail-hud--br {
+  bottom: 3%;
+  right: 2%;
+}
+
+/* ── the 2D schematic · the machine's floor plan (SpecSchematic.tsx) ──────────
+   Tholos ink only: unlit strata whisper in the shadow wire blue, an ignited
+   stratum washes to the lit accent over ~a second (the drum's band wash), the
+   current stratum reads the struck bright. Crisp hairlines at any size. */
+.spec-schematic {
+  display: block;
+}
+.spec-schematic line,
+.spec-schematic rect,
+.spec-schematic circle,
+.spec-schematic path {
+  vector-effect: non-scaling-stroke;
+  transition: stroke 0.9s ease, fill 0.9s ease, opacity 0.9s ease;
+}
+
+/* S.0 · the stage frame */
+.sms-frame {
+  fill: none;
+  stroke: var(--v4-line);
+}
+.sms-crop {
+  fill: none;
+  stroke: color-mix(in oklch, var(--v4-hud-faint) 75%, transparent);
+}
+.sms-stratum[data-lit] .sms-crop {
+  stroke: var(--sm-ink-lit);
+}
+
+/* S.7 · the containment shell (14 cells by dasharray construction) */
+.sms-shell {
+  fill: none;
+  stroke: color-mix(in oklch, var(--sm-ink-shadow) 70%, transparent);
+}
+.sms-stratum[data-lit] .sms-shell {
+  stroke: color-mix(in oklch, var(--sm-ink-lit) 80%, transparent);
+}
+
+/* S.5 · the provider halo · locals docked solid · cloud dashed · mock dim */
+.sms-sat {
+  fill: var(--sm-fill);
+  stroke: var(--sm-ink-shadow);
+}
+.sms-sat--cloud {
+  fill: none;
+  stroke-dasharray: 2.5 2;
+}
+.sms-sat--mock {
+  fill: none;
+  opacity: 0.4;
+}
+.sms-stratum[data-lit] .sms-sat {
+  stroke: var(--sm-ink-lit);
+}
+
+/* S.6 · the fetch manifold · 9 ports fanned off the fetch tick */
+.sms-port {
+  stroke: color-mix(in oklch, var(--sm-ink-shadow) 80%, transparent);
+}
+.sms-port-tip {
+  fill: var(--sm-ink-shadow);
+  stroke: none;
+}
+.sms-stratum[data-lit] .sms-port {
+  stroke: var(--sm-ink-lit);
+}
+.sms-stratum[data-lit] .sms-port-tip {
+  fill: var(--sm-ink-lit);
+}
+
+/* S.4 · the tool belt · 27 ticks in 5 family arcs */
+.sms-tick {
+  stroke: var(--sm-ink-shadow);
+}
+.sms-tick--fetch {
+  stroke-width: 2;
+}
+.sms-stratum[data-lit] .sms-tick {
+  stroke: var(--sm-ink-lit);
+}
+
+/* S.3 · the gate collar · the boundary ring + 4 gate diamonds */
+.sms-collar {
+  fill: none;
+  stroke: color-mix(in oklch, var(--sm-ink-shadow) 55%, transparent);
+}
+.sms-gate {
+  fill: var(--sm-fill);
+  stroke: var(--sm-ink-shadow);
+  stroke-width: 1.2px;
+}
+.sms-stratum[data-lit] .sms-collar {
+  stroke: color-mix(in oklch, var(--sm-ink-lit) 65%, transparent);
+}
+.sms-stratum[data-lit] .sms-gate {
+  stroke: var(--sm-ink-lit);
+}
+
+/* S.2 · the plan ring · slabs + depends_on wires */
+.sms-wire {
+  stroke: color-mix(in oklch, var(--sm-ink-shadow) 85%, transparent);
+}
+.sms-slab {
+  fill: var(--sm-fill);
+  stroke: var(--sm-ink-shadow);
+}
+.sms-stratum[data-lit] .sms-wire {
+  stroke: var(--sm-ink-lit);
+}
+.sms-stratum[data-lit] .sms-slab {
+  stroke: var(--sm-ink-lit);
+}
+
+/* S.1 · the core tetrad · 4 verb blocks + 6 tetrahedron edges */
+.sms-edge {
+  stroke: color-mix(in oklch, var(--sm-ink-shadow) 60%, transparent);
+}
+.sms-core {
+  fill: var(--sm-fill);
+  stroke: var(--sm-ink-shadow);
+  stroke-width: 1.4px;
+}
+.sms-stratum[data-lit] .sms-edge {
+  stroke: color-mix(in oklch, var(--sm-ink-lit) 75%, transparent);
+}
+.sms-stratum[data-lit] .sms-core {
+  stroke: var(--sm-ink-lit);
+}
+
+/* the current stratum reads brightest — the struck blue */
+.sms-stratum[data-focus] .sms-crop,
+.sms-stratum[data-focus] .sms-shell,
+.sms-stratum[data-focus] .sms-sat,
+.sms-stratum[data-focus] .sms-tick,
+.sms-stratum[data-focus] .sms-collar,
+.sms-stratum[data-focus] .sms-gate,
+.sms-stratum[data-focus] .sms-wire,
+.sms-stratum[data-focus] .sms-slab,
+.sms-stratum[data-focus] .sms-edge,
+.sms-stratum[data-focus] .sms-core,
+.sms-stratum[data-focus] .sms-port {
+  stroke: var(--sm-ink-struck);
+}
+.sms-stratum[data-focus] .sms-port-tip {
+  fill: var(--sm-ink-struck);
+}
+
+/* ── the schematic strip · the mobile / narrow expression of the machine ────── */
+.spec-strip {
+  position: relative;
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
+.spec-schematic--strip {
+  width: min(320px, 82vw);
+}
+.spec-strip-tally {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+@media (min-width: 1024px) {
+  .spec-strip {
+    display: none;
+  }
+}
+
+/* ── the lit TOC · reading ticks (the DOM mirror of the machine tally) ──────── */
+.spec-toc-tick {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 1.5px;
+  border: 1px solid color-mix(in oklch, var(--v4-text) 32%, transparent);
+  background: transparent;
+  transition: background-color 0.9s ease, border-color 0.9s ease;
+}
+.spec-toc-link.is-lit .spec-toc-tick {
+  background: var(--sm-ink-lit);
+  border-color: var(--sm-ink-lit);
+}
+.spec-toc-link[aria-current] {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--sm-ink-lit) 50%, var(--v4-line));
+}
+
+/* ── the disclosure folds · the optional rows stand behind a ledger row ─────── */
+.spec-fold {
+  margin: 0;
+}
+.spec-fold-cue {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 11px 2px;
+  border-bottom: 1px solid var(--v4-line);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  transition: color 0.18s ease;
+}
+.spec-fold-cue::-webkit-details-marker {
+  display: none;
+}
+.spec-fold-cue::marker {
+  content: '';
+}
+.spec-fold-cue:hover {
+  color: var(--v4-text);
+}
+.spec-fold-mark {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+}
+.spec-fold-mark::before,
+.spec-fold-mark::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  transition: transform 0.2s var(--ease-ui, ease);
+}
+.spec-fold-mark::before {
+  left: 0;
+  top: 4px;
+  width: 9px;
+  height: 1px;
+}
+.spec-fold-mark::after {
+  left: 4px;
+  top: 0;
+  width: 1px;
+  height: 9px;
+}
+.spec-fold[open] .spec-fold-mark::after {
+  transform: scaleY(0);
+}
+.spec-fold .spec-keys--fold,
+.spec-fold .spec-fields--fold {
+  border-top: none;
+  margin: 0;
+}
+
+/* the ignition wash + fold marks sit still under reduced motion (state stays) */
+@media (prefers-reduced-motion: reduce) {
+  .spec-schematic line,
+  .spec-schematic rect,
+  .spec-schematic circle,
+  .spec-schematic path,
+  .spec-toc-tick,
+  .spec-fold-mark::before,
+  .spec-fold-mark::after {
+    transition: none;
+  }
 }
