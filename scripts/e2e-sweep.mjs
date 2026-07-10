@@ -429,6 +429,34 @@ await check('blog · All restores the lead + the whole shelf', async () => {
   return last
 })
 
+/* 3b-ter · a post fence hands off to the playground (arc 13 W1): the
+   build-time ?y= link on a workflow fence must DECODE into the editor —
+   the film's see→touch loop, extended to the journal's exact yaml. */
+{
+  await send('Page.navigate', { url: `${BASE}/blog/the-run-that-waits` })
+  await settle()
+  const fenceHref = await until(
+    () => evaluate(`document.querySelector('.bp-open-play')?.getAttribute('href') || false`),
+    10,
+    400,
+  )
+  if (typeof fenceHref === 'string' && fenceHref.startsWith('/play?y=')) {
+    await send('Page.navigate', { url: `${BASE}${fenceHref}` })
+    await settle()
+    await check('blog · a fence run-it link decodes into the playground', async () =>
+      until(
+        () =>
+          evaluate(
+            `(document.querySelector('.cm-content')?.textContent ?? '').includes('gated-release') || false`,
+          ),
+        20,
+        600,
+      ))
+  } else {
+    fail('battery', 'blog · a fence run-it link decodes into the playground', `no .bp-open-play href (${JSON.stringify(fenceHref).slice(0, 60)})`)
+  }
+}
+
 /* 3c · the eggs (global key listeners — synthetic keydown works; re-type the
    word per attempt — keys swallowed pre-hydration never assemble the egg) */
 await check('egg · agpl toast (any page)', async () => {
