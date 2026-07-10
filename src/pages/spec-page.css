@@ -1433,6 +1433,17 @@
 .sms-stratum[data-stratum='providers'] { --sm-ink-lit: #5b8cff; }
 .sms-stratum[data-stratum='errors'] { --sm-ink-lit: #b07bff; }
 
+/* the hero poster wears the hull hues from the first paint — unlit strata
+   whisper their OWN colour (the reading's data-lit still brightens them) */
+.spec-hero-eleva .sms-stratum:not([data-lit]) [class^='sms-'],
+.spec-hero-eleva .sms-stratum:not([data-lit]) [class*=' sms-'] {
+  stroke: color-mix(in oklch, var(--sm-ink-lit) 52%, transparent);
+}
+.spec-hero-eleva .sms-stratum:not([data-lit]) .sms-port-tip {
+  fill: color-mix(in oklch, var(--sm-ink-lit) 52%, transparent);
+  stroke: none;
+}
+
 /* S.0 · THE KEEL · envelope-key spine segments (required read heavier) */
 .sms-keel {
   fill: var(--sm-fill);
@@ -2055,17 +2066,6 @@
   width: 26px;
   height: 1px;
   background: color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
-}
-.spec-hero-cue-desk {
-  display: none;
-}
-@media (min-width: 1024px) {
-  .spec-hero-cue-desk {
-    display: inline;
-  }
-  .spec-hero-cue-mob {
-    display: none;
-  }
 }
 .spec-hero-cue span[aria-hidden]:last-child {
   animation: specCueBob 2.4s ease-in-out infinite;
