@@ -790,3 +790,218 @@ h1, h2 { font-family: var(--headline); }
     border: 1px solid CanvasText;
   }
 }
+
+/* ─── the record (manifesto §05 · mr-*) ──────────────────────────────────────
+   The proof layer's skin. Two strands, one law: the material is black, the
+   colour is light · cage entries carry NO colour (grey, still · walls don't
+   dance) · drum entries carry the page's cyan and one radial beat on reveal.
+   The score strip compresses the whole record: sparse ticks left, dense light
+   right — the close line « the drum is getting louder », visible as data.
+   Filter = one data-mrf attribute on the section (pure CSS, zero JS beyond
+   the toggle) · deep links :target-light their entry · the terminus pulse
+   only breathes while [data-live] (IO-gated, never loops offscreen). */
+
+.mr-strip-wrap {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+.mr-strip {
+  position: relative;
+  height: 30px;
+  border-bottom: 1px solid var(--hair);
+  margin-bottom: 6px;
+}
+.mr-tick {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  border-radius: 1px 1px 0 0;
+  transform: translateX(-50%);
+}
+.mr-tick[data-strand='cage'] {
+  height: 10px;
+  background: color-mix(in srgb, var(--fg-dim) 55%, transparent);
+}
+.mr-tick[data-strand='drum'] {
+  height: 20px;
+  background: color-mix(in srgb, var(--cyan) 78%, transparent);
+}
+
+.mr-chip {
+  font-size: 12px;
+  padding: 5px 14px;
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  color: var(--fg-dim);
+  transition: color 160ms ease-out, border-color 160ms ease-out;
+}
+.mr-chip:hover { color: var(--fg-mute); }
+.mr-chip[aria-pressed='true'] {
+  color: var(--fg);
+  border-color: color-mix(in srgb, var(--cyan) 45%, transparent);
+}
+.mr-chip[data-strand='cage']::before,
+.mr-chip[data-strand='drum']::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  vertical-align: baseline;
+}
+.mr-chip[data-strand='cage']::before {
+  border: 1px solid currentColor;
+}
+.mr-chip[data-strand='drum']::before {
+  border-radius: 50%;
+  background: var(--cyan);
+}
+
+/* the spine · a static hairline lit at its head (print register · no motion) */
+.mr-list {
+  position: relative;
+  margin-top: 8px;
+  padding-left: 30px;
+}
+.mr-list::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--cyan) 42%, transparent),
+    color-mix(in srgb, var(--fg-dim) 34%, transparent) 22%,
+    color-mix(in srgb, var(--fg-dim) 34%, transparent) 78%,
+    color-mix(in srgb, var(--cyan) 42%, transparent)
+  );
+}
+/* the two-strand filter · one attribute, zero JS beyond the toggle */
+.mr-scope[data-mrf='cage'] .mr-item:not([data-strand='cage']),
+.mr-scope[data-mrf='drum'] .mr-item:not([data-strand='drum']) {
+  display: none;
+}
+
+.mr-item {
+  position: relative;
+  padding: 2px 0 30px;
+  scroll-margin-top: 96px;
+}
+.mr-item.mr-tight { padding-bottom: 20px; }
+.mr-item:last-child { padding-bottom: 8px; }
+.mr-item:target {
+  background: color-mix(in srgb, var(--cyan) 7%, transparent);
+  border-radius: 10px;
+  padding-left: 12px;
+  margin-left: -12px;
+}
+
+/* the glyphs · ▢ enclosure vs ● beat · seated on the spine */
+.mr-glyph {
+  position: absolute;
+  left: -34.5px;
+  top: 7px;
+  width: 9px;
+  height: 9px;
+}
+.mr-item[data-strand='cage'] .mr-glyph {
+  border: 1px solid var(--fg-dim);
+}
+.mr-item[data-strand='drum'] .mr-glyph {
+  border-radius: 50%;
+  background: var(--cyan);
+}
+.mr-item[data-founding] .mr-glyph {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--fg-dim) 22%, transparent);
+}
+/* one beat on reveal · drum entries only · compositor props · plays once */
+.mr-item[data-strand='drum'] .mr-glyph::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--cyan) 70%, transparent);
+  opacity: 0;
+}
+.mr-item[data-strand='drum'].in .mr-glyph::after {
+  animation: mrBeat 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1 both;
+}
+@keyframes mrBeat {
+  0% { transform: scale(0.3); opacity: 0.9; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.mr-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.mr-date {
+  color: var(--fg-dim);
+  font-variant-numeric: tabular-nums;
+  transition: color 160ms ease-out;
+}
+.mr-date:hover { color: var(--fg-mute); }
+.mr-item[data-strand='drum'] .mr-date { color: color-mix(in srgb, var(--cyan) 72%, var(--fg-dim)); }
+.mr-now { color: var(--cyan); font-size: 11px; }
+.mr-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 4px;
+}
+.mr-line {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--fg-mute);
+  text-wrap: pretty;
+  max-width: 60ch;
+}
+.mr-srcs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 11.5px;
+  margin-top: 7px;
+}
+.mr-srcs a {
+  color: var(--fg-dim);
+  transition: color 160ms ease-out;
+}
+.mr-srcs a:hover { color: var(--cyan); }
+
+/* the terminus · the drum core, still beating (only while on screen) */
+.mr-terminus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+.mr-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cyan);
+  opacity: 0.5;
+}
+.mr-terminus[data-live] .mr-pulse {
+  animation: mrBreathe 3.6s ease-in-out infinite;
+}
+@keyframes mrBreathe {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.5); opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mr-item[data-strand='drum'].in .mr-glyph::after,
+  .mr-terminus[data-live] .mr-pulse {
+    animation: none;
+  }
+  .mr-pulse { opacity: 0.7; }
+  .mr-chip, .mr-date, .mr-srcs a { transition: none; }
+}

@@ -2,8 +2,10 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { REPO, SPEC, SITE } from '../content'
+import { CANON } from '../canon.generated'
 import { MANIFESTO_LOCALES, manifestoCopyFor, type MfSeg } from '../content/manifesto-copy'
 import { usePlan3D } from '../sections/morph/use-plan3d'
+import { TheRecord } from '../sections/manifesto/TheRecord'
 
 /* ─── /manifesto · the drum of liberation (v5 theme · F7) ─────────────────────
    Routed at /manifesto (React Router) · the sovereignty manifesto, written the
@@ -25,6 +27,17 @@ const TheDrumSphere = lazy(() => import('../scene/TheDrumSphere'))
 
 /* inline emphasis renderer · the copy module's segment idiom ({fg} bright,
    {em} italic) — the manifesto's whole formatting vocabulary. */
+/* E3 · promise receipts · each promise points at its mechanism (the control is
+   the proof, extended to the manifesto). Untranslated product-truth register
+   (like code blocks) · counts DERIVE from the spec canon, never hand-typed. */
+const RECEIPTS = [
+  { t: `${CANON.providers} providers · ${CANON.providersLocal} local`, href: SPEC },
+  { t: 'permits: default-deny', href: SPEC },
+  { t: 'plain YAML · replayable trace', href: SPEC },
+  { t: 'AGPL-3.0-or-later', href: REPO },
+  { t: 'one binary · no daemon', href: REPO },
+]
+
 const seg = (segs: MfSeg[]) =>
   segs.map((x, i) =>
     typeof x === 'string' ? (
@@ -251,9 +264,15 @@ export function Component() {
             <p className="mb-3 max-w-[34rem] text-[19px] leading-relaxed text-[var(--fg-mute)]">
               {c.sub}
             </p>
-            <p className="mono text-[12px] tracking-[0.04em] text-[var(--fg-dim)]">
+            {/* E1 · the stamp is the loop: the poem's own dateline deep-links to
+                the record's founding entry (#rec-the-kill-switch · :target lit).
+                Same words, now a doorway. */}
+            <a
+              href="#rec-the-kill-switch"
+              className="mono text-[12px] tracking-[0.04em] text-[var(--fg-dim)] underline decoration-[color-mix(in_srgb,var(--cyan)_35%,transparent)] underline-offset-4 transition-colors hover:text-[var(--fg-mute)]"
+            >
               {c.stamp}
-            </p>
+            </a>
             {/* the language rail · real crawlable links, BCP 47 cluster */}
             <nav className="mf-langs mono mt-7 flex items-center gap-4 text-[12px] tracking-[0.08em]" aria-label="Languages">
               {MANIFESTO_LOCALES.map((l) => (
@@ -365,15 +384,31 @@ export function Component() {
                 </div>
                 <h3 className="mb-2.5 text-[18px] font-semibold text-[var(--fg)]">{p.t}</h3>
                 <p className="text-[14.5px] leading-relaxed text-[var(--fg-mute)]">{p.d}</p>
+                {RECEIPTS[i] ? (
+                  <a
+                    href={RECEIPTS[i].href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mono mt-4 inline-block text-[11px] text-[var(--fg-dim)] transition-colors hover:text-[var(--cyan)]"
+                  >
+                    {RECEIPTS[i].t} ↗
+                  </a>
+                ) : null}
               </div>
             ))}
           </div>
         </section>
 
+        {/* ─── §04 · the record · the poem's proof layer (register duality:
+            the prose above carries no number and no vendor · the record below
+            carries ONLY dated primary-sourced facts · see manifesto-record.ts
+            header for the scoped copy law) ─── */}
+        <TheRecord c={c} />
+
         {/* ─── the close ─── */}
         <section className="mf-prose mx-auto flex flex-col items-center px-6 pt-20 pb-28 text-center">
           <div className="rv mf-secreg w-full" aria-hidden>
-            <span className="mf-secno">04</span>
+            <span className="mf-secno">05</span>
             <span className="mf-secrule" />
           </div>
           {/* the close keeps its words and links but carries NO butterfly of its

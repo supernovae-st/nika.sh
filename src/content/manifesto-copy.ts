@@ -48,6 +48,19 @@ export interface ManifestoCopy {
   promises: { n: string; t: string; d: string }[]
   close: [string, string]
   drumline: string
+  /* §the record (05) · the section FRAME only — entries stay EN by design
+     (technical register, like code blocks · see manifesto-record.ts) */
+  recordKicker: string
+  recordTitle: string
+  recordIntro: string
+  recordFilterLabel: string
+  recordFilterAll: string
+  recordFilterCage: string
+  recordFilterDrum: string
+  recordLegend: string
+  recordContinues: string
+  recordUpdated: string
+  recordLaw: string
   linkSpec: string
   linkGithub: string
   linkBack: string
@@ -131,6 +144,18 @@ const EN: ManifestoCopy = {
   ],
   close: ['Open source AI must win.', 'Not for a nation. For everyone.'],
   drumline: 'The drum of liberation is getting louder.',
+  recordKicker: '§ The record',
+  recordTitle: 'The manifesto states. The record proves.',
+  recordIntro:
+    'Two lines run through the last three decades. One builds the cage: the letters and laws deciding who may think with what. One beats the drum: ramparts held, weights set free, coalitions forming. Every entry is dated, sourced, and yours to verify.',
+  recordFilterLabel: 'Filter the record',
+  recordFilterAll: 'all',
+  recordFilterCage: 'the cage',
+  recordFilterDrum: 'the drum',
+  recordLegend: 'control advances stay grey. liberation carries the light.',
+  recordContinues: 'the record continues',
+  recordUpdated: 'updated',
+  recordLaw: 'every entry carries a primary source · nothing from memory',
   linkSpec: 'Read the spec →',
   linkGithub: 'Star on GitHub →',
   linkBack: '← Back to site',
@@ -214,6 +239,18 @@ const FR: ManifestoCopy = {
   ],
   close: ['L’IA open source doit gagner.', 'Pas pour une nation. Pour tout le monde.'],
   drumline: 'Le tambour de la libération bat de plus en plus fort.',
+  recordKicker: '§ Le registre',
+  recordTitle: 'Le manifeste affirme. Le registre prouve.',
+  recordIntro:
+    'Deux lignes traversent les trois dernières décennies. L’une bâtit la cage : les lettres et les lois qui décident qui peut penser avec quoi. L’autre bat le tambour : des remparts qui tiennent, des poids libérés, des coalitions qui se forment. Chaque entrée est datée, sourcée, et vérifiable par vous.',
+  recordFilterLabel: 'Filtrer le registre',
+  recordFilterAll: 'tout',
+  recordFilterCage: 'la cage',
+  recordFilterDrum: 'le tambour',
+  recordLegend: 'le contrôle reste gris. la libération porte la lumière.',
+  recordContinues: 'le registre continue',
+  recordUpdated: 'mis à jour',
+  recordLaw: 'chaque entrée porte une source primaire · rien de mémoire',
   linkSpec: 'Lire la spec →',
   linkGithub: 'Star sur GitHub →',
   linkBack: '← Retour au site',
@@ -297,6 +334,18 @@ const ES: ManifestoCopy = {
   ],
   close: ['La IA open source debe ganar.', 'No para una nación. Para todos.'],
   drumline: 'El tambor de la liberación suena cada vez más fuerte.',
+  recordKicker: '§ El registro',
+  recordTitle: 'El manifiesto afirma. El registro prueba.',
+  recordIntro:
+    'Dos líneas recorren las últimas tres décadas. Una construye la jaula: las cartas y las leyes que deciden quién puede pensar con qué. La otra toca el tambor: murallas que resisten, pesos liberados, coaliciones que se forman. Cada entrada está fechada, con su fuente, y puedes verificarla tú mismo.',
+  recordFilterLabel: 'Filtrar el registro',
+  recordFilterAll: 'todo',
+  recordFilterCage: 'la jaula',
+  recordFilterDrum: 'el tambor',
+  recordLegend: 'el control queda en gris. la liberación lleva la luz.',
+  recordContinues: 'el registro continúa',
+  recordUpdated: 'actualizado',
+  recordLaw: 'cada entrada lleva una fuente primaria · nada de memoria',
   linkSpec: 'Leer la spec →',
   linkGithub: 'Star en GitHub →',
   linkBack: '← Volver al sitio',
@@ -379,6 +428,18 @@ const ZH_HANS: ManifestoCopy = {
   ],
   close: ['开源 AI 必须赢。', '不为某个国家，为所有人。'],
   drumline: '解放之鼓，正越敲越响。',
+  recordKicker: '§ 记录',
+  recordTitle: '宣言陈述。记录证明。',
+  recordIntro:
+    '过去三十年，有两条线贯穿始终。一条在筑笼：决定谁能用什么思考的信函与法律。一条在击鼓：守住的壁垒、放开的权重、正在成形的联盟。每一条目都有日期与一手来源，供你亲自查证。',
+  recordFilterLabel: '筛选记录',
+  recordFilterAll: '全部',
+  recordFilterCage: '笼子',
+  recordFilterDrum: '鼓',
+  recordLegend: '控制保持灰色。解放携带光。',
+  recordContinues: '记录仍在继续',
+  recordUpdated: '更新于',
+  recordLaw: '每条目均有一手来源 · 绝不凭记忆书写',
   linkSpec: '阅读规范 →',
   linkGithub: '在 GitHub 加星 →',
   linkBack: '← 返回主站',
@@ -463,6 +524,18 @@ const DE: ManifestoCopy = {
   ],
   close: ['Open-Source-KI muss gewinnen.', 'Nicht für eine Nation. Für alle.'],
   drumline: 'Die Trommel der Befreiung wird lauter.',
+  recordKicker: '§ Das Register',
+  recordTitle: 'Das Manifest behauptet. Das Register beweist.',
+  recordIntro:
+    'Zwei Linien ziehen sich durch die letzten drei Jahrzehnte. Eine baut den Käfig: die Briefe und Gesetze, die entscheiden, wer womit denken darf. Die andere schlägt die Trommel: Wälle, die halten, freigegebene Gewichte, Koalitionen im Entstehen. Jeder Eintrag ist datiert, belegt und von dir überprüfbar.',
+  recordFilterLabel: 'Das Register filtern',
+  recordFilterAll: 'alles',
+  recordFilterCage: 'der Käfig',
+  recordFilterDrum: 'die Trommel',
+  recordLegend: 'Kontrolle bleibt grau. Befreiung trägt das Licht.',
+  recordContinues: 'das Register geht weiter',
+  recordUpdated: 'aktualisiert',
+  recordLaw: 'jeder Eintrag trägt eine Primärquelle · nichts aus dem Gedächtnis',
   linkSpec: 'Spec lesen →',
   linkGithub: 'Star auf GitHub →',
   linkBack: '← Zurück zur Seite',
@@ -546,6 +619,18 @@ const PT_BR: ManifestoCopy = {
   ],
   close: ['A IA open source precisa vencer.', 'Não por uma nação. Por todos.'],
   drumline: 'O tambor da libertação está batendo cada vez mais alto.',
+  recordKicker: '§ O registro',
+  recordTitle: 'O manifesto afirma. O registro prova.',
+  recordIntro:
+    'Duas linhas atravessam as últimas três décadas. Uma constrói a jaula: as cartas e as leis que decidem quem pode pensar com o quê. A outra bate o tambor: muralhas que resistem, pesos libertados, coalizões se formando. Cada entrada é datada, com fonte, e você mesmo pode verificar.',
+  recordFilterLabel: 'Filtrar o registro',
+  recordFilterAll: 'tudo',
+  recordFilterCage: 'a jaula',
+  recordFilterDrum: 'o tambor',
+  recordLegend: 'o controle fica em cinza. a libertação carrega a luz.',
+  recordContinues: 'o registro continua',
+  recordUpdated: 'atualizado',
+  recordLaw: 'cada entrada carrega uma fonte primária · nada de memória',
   linkSpec: 'Ler a spec →',
   linkGithub: 'Star no GitHub →',
   linkBack: '← Voltar ao site',
@@ -629,6 +714,18 @@ const JA: ManifestoCopy = {
   ],
   close: ['オープンソースAIが勝たねばならない。', 'ひとつの国のためではなく、すべての人のために。'],
   drumline: '解放の太鼓は、鳴り止むどころか大きくなっていく。',
+  recordKicker: '§ 記録',
+  recordTitle: '宣言は語る。記録は証明する。',
+  recordIntro:
+    'この三十年を、二本の線が貫いている。ひとつは檻を築く線。誰が何で考えてよいかを決める書簡と法律だ。もうひとつは太鼓を打つ線。持ちこたえた砦、解き放たれた重み、生まれつつある連合。すべての項目に日付と一次資料があり、あなた自身が検証できる。',
+  recordFilterLabel: '記録を絞り込む',
+  recordFilterAll: 'すべて',
+  recordFilterCage: '檻',
+  recordFilterDrum: '太鼓',
+  recordLegend: '支配は灰色のまま。解放だけが光をまとう。',
+  recordContinues: '記録は続く',
+  recordUpdated: '更新',
+  recordLaw: 'すべての項目に一次資料 · 記憶からは何も書かない',
   linkSpec: '仕様を読む →',
   linkGithub: 'GitHub でスターを →',
   linkBack: '← サイトに戻る',
@@ -713,6 +810,18 @@ const KO: ManifestoCopy = {
   ],
   close: ['오픈소스 AI가 이겨야 한다.', '한 나라를 위해서가 아니라, 모두를 위해서.'],
   drumline: '해방의 북소리가 점점 커지고 있다.',
+  recordKicker: '§ 기록',
+  recordTitle: '선언은 말한다. 기록은 증명한다.',
+  recordIntro:
+    '지난 삼십 년을 두 개의 선이 가로지른다. 하나는 새장을 짓는 선. 누가 무엇으로 생각해도 되는지를 정하는 서한과 법이다. 다른 하나는 북을 울리는 선. 버텨낸 방벽, 풀려난 가중치, 만들어지는 연합. 모든 항목에는 날짜와 일차 출처가 있고, 당신이 직접 검증할 수 있다.',
+  recordFilterLabel: '기록 필터',
+  recordFilterAll: '전체',
+  recordFilterCage: '새장',
+  recordFilterDrum: '북',
+  recordLegend: '통제는 회색으로 남는다. 해방만이 빛을 지닌다.',
+  recordContinues: '기록은 계속된다',
+  recordUpdated: '갱신',
+  recordLaw: '모든 항목은 일차 출처를 지닌다 · 기억으로 쓰지 않는다',
   linkSpec: '스펙 읽기 →',
   linkGithub: 'GitHub에서 스타 →',
   linkBack: '← 사이트로 돌아가기',
