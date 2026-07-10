@@ -363,3 +363,50 @@
 .blog-folder-link:focus-visible {
   color: var(--v4-text);
 }
+
+/* ── the register filter · the /use-cases métier-bar grammar on the journal ──
+   Plain aria-pressed toggles; pressed = ink-on-paper inversion. The row wraps
+   on phones (chips keep their 40px hit height). */
+.blog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 26px;
+}
+.blog-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  min-height: 40px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background: transparent;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-dim);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+.blog-tag:hover {
+  color: var(--v4-text);
+  border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+}
+.blog-tag:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+}
+.blog-tag[aria-pressed='true'] {
+  background: var(--v4-text);
+  border-color: var(--v4-text);
+  color: var(--v4-bg);
+}
+.blog-tag-n {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+  font-variant-numeric: tabular-nums;
+}
