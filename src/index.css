@@ -861,12 +861,13 @@ h1, h2 { font-family: var(--headline); }
 .mr-list {
   position: relative;
   margin-top: 8px;
-  padding-left: 30px;
+  padding-left: 54px;
+  padding-right: 24px;
 }
 .mr-list::before {
   content: '';
   position: absolute;
-  left: 0;
+  left: 24px;
   top: 6px;
   bottom: 6px;
   width: 1px;
@@ -1004,4 +1005,193 @@ h1, h2 { font-family: var(--headline); }
   }
   .mr-pulse { opacity: 0.7; }
   .mr-chip, .mr-date, .mr-srcs a { transition: none; }
+}
+
+/* ─── the record · THE STAGE (data-mode='h' · desktop ≥1024 + motion) ────────
+   The horizontal act: a sticky full-viewport scene; the reader's vertical
+   scroll slides the track left→right through a fixed playhead (the driver in
+   TheRecord.tsx · house rAF+translate3d · compositor-only · no scroll-jack).
+   Drum cards ride ABOVE the baseline, cage cards BELOW: two staves, read
+   like a score. The colour law holds: the cage stays grey, only liberation
+   carries the light. Under reduced motion or narrow viewports this whole
+   block is inert (the capability gate never sets data-mode='h'). */
+.mr-scope[data-mode='h'] .mr-strip-wrap { display: none; }
+.mr-wrap { position: relative; }
+.mr-scope[data-mode='h'] .mr-stage {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  overflow: clip;
+}
+.mr-scope[data-mode='h'] .mr-list {
+  display: flex;
+  align-items: center;
+  gap: 76px;
+  max-width: none;
+  width: max-content;
+  margin: 0;
+  padding: 0 46vw 0 40vw;
+  /* the whole h session IS the animation window · cleared on mode exit */
+  will-change: transform;
+}
+/* the baseline spans the whole track · lit at both ends */
+.mr-scope[data-mode='h'] .mr-list::before {
+  left: 0;
+  right: 0;
+  top: 50%;
+  bottom: auto;
+  width: auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--cyan) 34%, transparent),
+    color-mix(in srgb, var(--fg-dim) 32%, transparent) 10%,
+    color-mix(in srgb, var(--fg-dim) 32%, transparent) 90%,
+    color-mix(in srgb, var(--cyan) 46%, transparent)
+  );
+}
+.mr-scope[data-mode='h'] .mr-item {
+  width: 300px;
+  height: 230px;
+  flex: none;
+  padding: 0;
+  margin: 0;
+}
+/* the two staves · offsets by margin (the .rv reveal owns transform) */
+.mr-scope[data-mode='h'] .mr-item[data-strand='drum'] { margin-bottom: 460px; }
+.mr-scope[data-mode='h'] .mr-item[data-strand='cage'] { margin-top: 460px; }
+/* stems + glyphs reach down/up to the baseline */
+.mr-scope[data-mode='h'] .mr-stem {
+  display: block;
+  position: absolute;
+  left: 18px;
+  width: 1px;
+  background: var(--hair-bright);
+}
+.mr-scope[data-mode='h'] .mr-item[data-strand='drum'] .mr-stem { top: 100%; height: 106px; }
+.mr-scope[data-mode='h'] .mr-item[data-strand='cage'] .mr-stem { bottom: 100%; height: 106px; }
+.mr-scope[data-mode='h'] .mr-glyph { left: 14px; }
+.mr-scope[data-mode='h'] .mr-item[data-strand='drum'] .mr-glyph { top: auto; bottom: -119px; }
+.mr-scope[data-mode='h'] .mr-item[data-strand='cage'] .mr-glyph { top: -119px; }
+/* denser type at card size */
+.mr-scope[data-mode='h'] .mr-title { color: var(--fg-mute); transition: color 300ms ease-out; }
+.mr-scope[data-mode='h'] .mr-line { font-size: 13px; line-height: 1.55; }
+.mr-scope[data-mode='h'] .mr-srcs { font-size: 11px; gap: 12px; }
+/* the playhead · fixed in the stage, the track plays through it */
+.mr-year,
+.mr-playhead { display: none; }
+.mr-scope[data-mode='h'] .mr-playhead {
+  display: block;
+  position: absolute;
+  left: 38%;
+  top: 9dvh;
+  bottom: 9dvh;
+  width: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--cyan) 50%, transparent) 28%,
+    color-mix(in srgb, var(--cyan) 50%, transparent) 72%,
+    transparent
+  );
+}
+.mr-scope[data-mode='h'] .mr-playhead::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -3.5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  opacity: 0.85;
+  transform: translateY(-50%);
+}
+/* the year counter · big, dim, tabular · turned by the driver */
+.mr-scope[data-mode='h'] .mr-year {
+  display: block;
+  position: absolute;
+  top: 88px;
+  right: clamp(24px, 6vw, 96px);
+  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+  color: var(--fg-dim);
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+}
+/* whatever crosses the playhead goes live · the beat fires on the pad */
+.mr-scope[data-mode='h'] .mr-item[data-live] .mr-title { color: var(--fg); }
+.mr-scope[data-mode='h'] .mr-item[data-live] .mr-date { color: var(--cyan); }
+.mr-item[data-live][data-strand='drum'] .mr-glyph::after {
+  animation: mrBeat 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1 both;
+}
+/* the terminus waits at the stage's edge and lands with the last beat */
+.mr-scope[data-mode='h'] .mr-terminus {
+  position: absolute;
+  right: clamp(24px, 6vw, 96px);
+  bottom: 13dvh;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 500ms ease-out, transform 500ms ease-out;
+}
+.mr-scope[data-mode='h'] .mr-stage[data-end] .mr-terminus {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── the movements · VFX polish (motion-gated · CJK-safe) ───────────────────
+   The three statements IGNITE on reveal: the existing clipped gradient
+   sweeps through the words once (whole-block, no per-word splits · the
+   close and hero gradients are untouched). The stack tokens land one by
+   one (delays inline per token). Reduced motion sees none of this. */
+@media (prefers-reduced-motion: no-preference) {
+  .mf-acid .mf-statement.mf-grad {
+    background-size: 230% 100%;
+    background-position: 78% 0;
+  }
+  .mf-acid .mf-statement.mf-grad.in {
+    animation: mfIgnite 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.15s 1 both;
+  }
+  .mf-acid .rv .mf-token {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 550ms ease-out, transform 550ms ease-out;
+  }
+  .mf-acid .rv.in .mf-token {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes mfIgnite {
+  from { background-position: 78% 0; }
+  to { background-position: 0% 0; }
+}
+
+/* h-mode reveal law · the stage owns its cards: the .rv scroll-reveal is
+   inert here (instant jumps + IO don't mix), presence is physical (sliding
+   in from the right) and LIFE comes from the playhead — idle cards sit
+   dimmed, the live one is lit. The header/law keep their .rv reveals. */
+.mr-scope[data-mode='h'] .mr-item.rv {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition: none;
+}
+/* the terminus keeps its own opacity law (data-end) · only the reveal
+   transform/blur are neutralized */
+.mr-scope[data-mode='h'] .mr-terminus.rv {
+  transform: translateY(10px);
+  filter: none;
+}
+.mr-scope[data-mode='h'] .mr-stage[data-end] .mr-terminus.rv { transform: none; }
+.mr-scope[data-mode='h'] .mr-item {
+  opacity: 0.5;
+  transition: opacity 320ms ease-out;
+}
+.mr-scope[data-mode='h'] .mr-item[data-live] { opacity: 1; }
+.mr-scope[data-mode='h'] .mr-terminus {
+  transition: opacity 500ms ease-out, transform 500ms ease-out;
 }
