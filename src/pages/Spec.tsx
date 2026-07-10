@@ -16,6 +16,7 @@ import {
   SPEC_SECTIONS,
   TASK_FIELDS,
   displayProvider,
+  nodeById,
   nodeReadout,
   nsScope,
 } from '../scene/spec-machine-data'
@@ -160,15 +161,74 @@ export function Component() {
   const assembledMax = SPEC_SECTIONS.length - 1 /* license is the close whisper */
   const assembled = [...lit].filter((k) => k !== 'license').length
 
-  /* the machine's capability gate · the canvas mounts over the rail stage
-     only when the moment can be worth its cost */
+  /* the machine's capability gate · the HERO is the near-trigger (the stage
+     itself now sits a runway below the fold — gating on it would mount the
+     chassis late, mid-scroll, with a layout jump); the stage ref stays the
+     [data-machine] handshake target */
+  const heroRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
-  const machine = usePlan3D(stageRef)
+  const machine = usePlan3D(heroRef)
 
   /* THE HELM · the ship's view controls (explode toggle + spring-home) —
      real DOM buttons outside the aria-hidden stage, keyboard-reachable */
   const [explode, setExplode] = useState(false)
   const [resetSignal, setResetSignal] = useState(0)
+
+  /* ── THE FLIGHT · the chassis's stage state (hero → full → dock → off).
+     The takeover runway drives it: while it crosses the viewport the stage
+     is FULLSCREEN and its progress steers one full revolution + a dive
+     (read by the machine's frame loop via flightRef — no re-render churn);
+     past the last section the chassis stands down. */
+  const takeoverEl = useRef<HTMLDivElement>(null)
+  const [stage, setStage] = useState<'hero' | 'full' | 'dock' | 'off'>('hero')
+  const flightRef = useRef({ state: 'hero', progress: 0 })
+  useEffect(() => {
+    if (!machine) return
+    let raf = 0
+    const tick = () => {
+      raf = 0
+      const vh = window.innerHeight
+      const t = takeoverEl.current?.getBoundingClientRect()
+      const last = document.querySelector('.spec-block--last')?.getBoundingClientRect()
+      let s: 'hero' | 'full' | 'dock' | 'off' = 'hero'
+      if (t) {
+        if (t.top <= vh * 0.35 && t.bottom >= vh * 0.72) s = 'full'
+        else if (t.bottom < vh * 0.72) s = 'dock'
+        flightRef.current.progress = Math.min(
+          1,
+          Math.max(0, (vh * 0.35 - t.top) / Math.max(1, t.height - vh * 0.37)),
+        )
+      }
+      if (last && last.bottom < vh * 0.55) s = 'off'
+      flightRef.current.state = s
+      setStage((prev) => (prev === s ? prev : s))
+    }
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(tick)
+    }
+    window.addEventListener('scroll', on, { passive: true })
+    window.addEventListener('resize', on, { passive: true })
+    on()
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', on)
+      window.removeEventListener('resize', on)
+    }
+  }, [machine])
+
+  /* the cursor tooltip · follows the pointer while a node is hovered */
+  const tipRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      const el = tipRef.current
+      if (!el) return
+      const x = Math.min(e.clientX + 16, window.innerWidth - el.offsetWidth - 12)
+      const y = Math.min(e.clientY + 18, window.innerHeight - el.offsetHeight - 12)
+      el.style.transform = `translate(${x}px, ${y}px)`
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onMove)
+  }, [])
 
   /* ── W2 · the hover bus — ONE id, both sides write: pointering a 3D node
      reports here (MR readout + the DOM twins light), and hover/focus on any
@@ -264,15 +324,15 @@ export function Component() {
   })
 
   return (
-    <main className="theme-dark spec-page">
+    <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`}>
       <section ref={ref} aria-labelledby="spec-title" className="v4sec">
         <div className="v4sec-wrap spec-wrap">
-          {/* ── the split stage · THE PLATE (v2): the grid opens at the masthead
-              so the ship rides beside the hero from the first paint — the
-              poster IS the page. Below 1024px the rail retires and the
-              elevation strip carries the shape. */}
-          <div className="spec-stage">
-            <div className="spec-flow">
+          {/* ── THE HERO · a poster: the title column and THE SHIP, nothing
+              else. When the machine is live the fixed chassis carries the
+              ship (52vw); the SSG elevation holds the same ground for the
+              fallback register (mobile · reduced · no-WebGL). */}
+          <header className="spec-hero" ref={heroRef}>
+            <div className="spec-hero-copy">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
             the language reference
@@ -299,6 +359,30 @@ export function Component() {
             </a>{' '}
             is the canonical, normative source.
           </p>
+          {/* the invitation · what the scroll will do (the takeover reads
+              as intent, not accident) */}
+          <p className="spec-hero-cue mono" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
+            <span className="spec-hero-cue-tick" aria-hidden />
+            SCROLL·····BOARD THE SHIP
+            <span aria-hidden>▾</span>
+          </p>
+            </div>
+            {/* the fallback poster · the same vessel, drawn (SSG · goldens'
+                truth); the live chassis covers this ground when it mounts */}
+            <div className="spec-hero-eleva" aria-hidden>
+              <SpecSchematic lit={lit} current={current} />
+            </div>
+          </header>
+
+          {/* THE TAKEOVER · the runway between the poster and the reading:
+              while it crosses the viewport the chassis goes fullscreen and
+              the ship makes one full revolution, diving closer mid-turn —
+              then docks to the rail as S.0 arrives. Lives only when the
+              machine is live (the fallback keeps the plain flow). */}
+          {machine ? <div className="spec-takeover" ref={takeoverEl} aria-hidden /> : null}
+
+          <div className="spec-stage">
+            <div className="spec-flow">
 
           {/* THE PROTOCOL PLATE · the data plate: protocol, type, licenses,
               status, and the honest microchart (builtins per family — bars
@@ -881,9 +965,11 @@ export function Component() {
                 the TOC + the column are the truth — the elevation until the
                 canvas mounts, [data-machine] retires it); THE HELM below stays
                 exposed (real buttons, keyboard-reachable). */}
-            <aside className="spec-rail">
+            <aside
+              className={`spec-rail${machine ? ' is-live' : ''}`}
+              data-stage={stage}
+            >
               <div className="spec-rail-stage" ref={stageRef} aria-hidden>
-                <HudMarks />
                 {machine ? (
                   <Suspense fallback={null}>
                     <TheSpecMachine
@@ -893,6 +979,7 @@ export function Component() {
                       highlight={hoverNode}
                       explode={explode}
                       resetSignal={resetSignal}
+                      flightRef={flightRef}
                       onHover={setHoverNode}
                     />
                   </Suspense>
@@ -907,11 +994,11 @@ export function Component() {
                   <span className="spec-rail-pos-part">
                     {cur ? cur.shipPart.toUpperCase() : 'NIKA: V1'}
                   </span>
-                  <span className="spec-rail-pos-sub mono">
-                    {cur
-                      ? `${cur.title.toUpperCase()} · ${cur.countLabel}·····${cur.count}`
-                      : `SECTIONS·····${SPEC_SECTIONS.length} · READ TO ASSEMBLE`}
-                  </span>
+                  {cur ? null : (
+                    <span className="spec-rail-pos-sub mono">
+                      SECTIONS·····{SPEC_SECTIONS.length} · SCROLL TO BOARD
+                    </span>
+                  )}
                 </div>
                 <span className="spec-rail-hud spec-rail-hud--bl">
                   ASSEMBLED·····{assembled}/{assembledMax}
@@ -927,9 +1014,6 @@ export function Component() {
                 <span className="spec-rail-hud spec-rail-hud--br">
                   {current === 'license' ? 'AGPL·····FOREVER' : 'NIKA: V1·····FROZEN'}
                 </span>
-                {hoverReadout ? (
-                  <span className="spec-rail-hud spec-rail-hud--mr">{hoverReadout}</span>
-                ) : null}
               </div>
               {/* THE HELM · outside the aria-hidden stage (keyboard-reachable);
                   CSS shows it only while the canvas holds the stage */}
@@ -955,6 +1039,21 @@ export function Component() {
               </div>
             </aside>
           </div>
+
+          {/* the cursor tooltip · the node under the pointer, spoken in full:
+              name · family/detail · where a click lands (pointer-only
+              decoration — the readout also lights the DOM twins) */}
+          {hoverReadout ? (
+            <div className="spec-tip mono" ref={tipRef} aria-hidden>
+              <b>{hoverReadout.split('·····')[0]}</b>
+              <span>{hoverReadout.split('·····')[1]}</span>
+              {(() => {
+                const n = hoverNode ? nodeById(hoverNode) : undefined
+                const sec = n ? SPEC_SECTIONS.find((x) => x.anchor === n.anchor) : undefined
+                return sec ? <i>click ▸ {sec.fig} · {sec.title}</i> : null
+              })()}
+            </div>
+          ) : null}
         </div>
       </section>
     </main>

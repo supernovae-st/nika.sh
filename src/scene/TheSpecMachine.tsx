@@ -78,6 +78,7 @@ function Machine({
   hiRef,
   helmRef,
   calloutRef,
+  flightRef,
   onHover,
 }: {
   pointer: React.MutableRefObject<Pointer>
@@ -87,6 +88,7 @@ function Machine({
   hiRef: React.MutableRefObject<number>
   helmRef: React.MutableRefObject<HelmState>
   calloutRef: React.MutableRefObject<CalloutRig>
+  flightRef?: React.MutableRefObject<{ state: string; progress: number }>
   onHover: (id: string | null) => void
 }) {
   const model = useMemo(() => buildSpecMachine(), [])
@@ -260,12 +262,27 @@ function Machine({
     if (!g || !inn) return
     const k = Math.min(1, delta * 2.2)
     const breathe = Math.sin(u.uTime.value * 0.11) * 0.02
-    g.rotation.y += (pose.yaw + helm.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
-    g.rotation.x += (pose.pitch + helm.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
+    /* THE FLIGHT · while the takeover runway crosses the viewport the ship
+       owns the screen: its progress steers ONE full revolution, diving
+       toward the hull mid-turn and rising out again — landing exactly on
+       the opening yaw as S.0 docks (2π ≡ 0: perfect continuity) */
+    const flight = flightRef?.current
+    let tYaw = pose.yaw
+    let tPitch = pose.pitch
+    let tDist = pose.dist
+    if (flight && flight.state === 'full') {
+      const p = flight.progress
+      const f = POSES.frame
+      tYaw = f.yaw + p * Math.PI * 2
+      tPitch = f.pitch + 0.14 * Math.sin(p * Math.PI)
+      tDist = f.dist - 2.6 * Math.sin(p * Math.PI)
+    }
+    g.rotation.y += (tYaw + helm.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
+    g.rotation.x += (tPitch + helm.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k
     const exOff = pose.focus >= 0 ? model.explode[pose.focus] * u.uExplode.value : 0
     inn.position.x += (-(pose.x + exOff) - inn.position.x) * k
-    state.camera.position.z += (pose.dist * helm.zoom - state.camera.position.z) * k
+    state.camera.position.z += (tDist * helm.zoom - state.camera.position.z) * k
 
     /* THE CALLOUTS · per-item leaders: at the overview every stratum is
        labelled (the plate's labelled-drawing read); at a SECTION pose only
@@ -345,6 +362,7 @@ export default function TheSpecMachine({
   highlight = null,
   explode = false,
   resetSignal = 0,
+  flightRef,
   onHover = () => {},
 }: {
   stageRef: React.RefObject<HTMLDivElement | null>
@@ -356,6 +374,9 @@ export default function TheSpecMachine({
   explode?: boolean
   /** the helm · bump to spring everything home (page button) */
   resetSignal?: number
+  /** THE FLIGHT · the chassis stage + takeover progress (page scroll rig):
+      'full' steers one revolution + a dive over the runway */
+  flightRef?: React.MutableRefObject<{ state: string; progress: number }>
   /** W2 · the machine's own hover, reported back for the MR readout + chips */
   onHover?: (id: string | null) => void
 }) {
@@ -474,6 +495,7 @@ export default function TheSpecMachine({
           hiRef={hiRef}
           helmRef={helmRef}
           calloutRef={calloutRef}
+          flightRef={flightRef}
           onHover={onHover}
         />
       </Canvas>
