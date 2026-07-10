@@ -30,7 +30,7 @@ const SOON: { slug: string; tag: string; date: string; title: string; teaser: st
     tag: 'Engine',
     date: 'soon',
     title: 'The one-task re-run',
-    teaser: 'Regenerate one block without re-running the world: --task scopes execution to a task and its upstream, --force re-rolls what the hashes cannot see.',
+    teaser: 'Regenerate one block without re-running the world: --task scopes execution to a task and its upstream, --from re-rolls what the hashes cannot see.',
   },
   {
     slug: 'written-by-agents',
