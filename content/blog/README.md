@@ -6,6 +6,7 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 
 | date | post | file |
 |---|---|---|
+| 2026-07-10 | The run that waits for you | [`2026-07-10-the-run-that-waits.md`](./2026-07-10-the-run-that-waits.md) |
 | 2026-07-10 | The resume story | [`2026-07-10-the-resume-story.md`](./2026-07-10-the-resume-story.md) |
 | 2026-07-08 | Prompts are code now | [`2026-07-08-prompts-are-code.md`](./2026-07-08-prompts-are-code.md) |
 | 2026-07-08 | The prompt injection that goes nowhere | [`2026-07-08-injection-goes-nowhere.md`](./2026-07-08-injection-goes-nowhere.md) |

@@ -30,6 +30,360 @@ export interface BlogPost {
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "the-run-that-waits",
+    "file": "2026-07-10-the-run-that-waits.md",
+    "title": "The run that waits for you",
+    "tag": "Engine",
+    "date": "2026-07-10",
+    "description": "The approval gate is a task in the file, not a Slack thread: a plan fails closed on nika:prompt, and the human's answer rides the resume.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Every serious pipeline eventually needs a human in it. Ship the release note — "
+          },
+          {
+            "k": "em",
+            "text": "after someone reads it"
+          },
+          {
+            "k": "text",
+            "text": ". Send the refund — "
+          },
+          {
+            "k": "em",
+            "text": "after someone approves it"
+          },
+          {
+            "k": "text",
+            "text": ". The usual place that approval lives is a Slack thread, a dashboard button, a \"reply YES to continue\" email: somewhere outside the logic, invisible to review, lost to the audit."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Nika's answer is the same answer it gives everything else: "
+          },
+          {
+            "k": "strong",
+            "text": "the gate is a task in the file."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "gated-release.nika.yaml",
+        "text": "nika: v1\nworkflow: gated-release\ndescription: \"Draft the release note, wait for a human yes, only then publish\"\n\npermits:\n  fs:\n    read: [\"./CHANGES.md\"]\n    write: [\"./release-note.md\"]\n  tools: [\"nika:read\", \"nika:write\", \"nika:prompt\"]\n\ntasks:\n  - id: draft\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./CHANGES.md\" }\n\n  # The gate: a human reads the draft and answers. Nothing downstream\n  # runs until this task has an answer.\n  - id: approve\n    depends_on: [draft]\n    invoke:\n      tool: \"nika:prompt\"\n      args:\n        mode: confirm\n        message: \"Publish this release note?\"\n\n  - id: publish\n    depends_on: [draft, approve]\n    when: \"${{ tasks.approve.output == true }}\"\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./release-note.md\"\n        content: \"${{ tasks.draft.output }}\"\n\noutputs:\n  approved: \"${{ tasks.approve.output }}\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " reads the gate like any other step: wave 1 drafts, wave 2 asks, wave 3 publishes. The plan a reviewer sees "
+          },
+          {
+            "k": "em",
+            "text": "is"
+          },
+          {
+            "k": "text",
+            "text": " the approval flow — no side channel to reverse-engineer."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Run it in a terminal and "
+          },
+          {
+            "k": "code",
+            "text": "approve"
+          },
+          {
+            "k": "text",
+            "text": " simply asks you there, in the console, and blocks until you answer. That is the easy case. The interesting case is the one every approval system actually lives in: "
+          },
+          {
+            "k": "strong",
+            "text": "nobody is at the keyboard."
+          },
+          {
+            "k": "text",
+            "text": " Cron fired the run. CI fired the run. What now?"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika run gated-release.nika.yaml   # headless · no one to ask\n\n  ✔  draft    invoke · nika:read  2ms\n  ✖  approve  invoke · nika:prompt\n  ↷  publish  when: false\n  ── 3/3 done · $0.00 · elapsed 0.0s ─────────────────────────────\n\n  ✖ NIKA-BUILTIN-PROMPT-001 · non-interactive and no `default:` —\n    cannot answer without a human\n    trace: .nika/traces/2026-07-10T16-04-45Z-aaf0.ndjson"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The run "
+          },
+          {
+            "k": "strong",
+            "text": "fails closed"
+          },
+          {
+            "k": "text",
+            "text": ". Not \"assumes yes\", not \"hangs forever holding a worker\": a typed error names exactly what is missing (a human), the gated step is skipped ("
+          },
+          {
+            "k": "code",
+            "text": "when: false"
+          },
+          {
+            "k": "text",
+            "text": "), nothing is written, the exit code is 1. And the journal — the same "
+          },
+          {
+            "k": "link",
+            "text": "journal that survives kill -9",
+            "href": "/blog/the-resume-story"
+          },
+          {
+            "k": "text",
+            "text": " — recorded the question."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "That trace is the pending approval. When a human shows up, the answer rides the resume:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika run gated-release.nika.yaml \\\n    --resume .nika/traces/2026-07-10T16-04-45Z-aaf0.ndjson \\\n    --answer approve=true\n\n  ↷  draft    cache hit (resume)\n  ✔  approve  invoke · nika:prompt\n  ✔  publish  invoke · nika:write  4ms\n\n  resumed · 1 skipped (cache hit) · 2 ran live"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "code",
+            "text": "draft"
+          },
+          {
+            "k": "text",
+            "text": " is not re-done — finished work never runs twice — the gate binds your answer, and only then does "
+          },
+          {
+            "k": "code",
+            "text": "publish"
+          },
+          {
+            "k": "text",
+            "text": " touch the disk. The pairing is enforced by the CLI itself: "
+          },
+          {
+            "k": "code",
+            "text": "--answer"
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "em",
+            "text": "requires"
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "code",
+            "text": "--resume"
+          },
+          {
+            "k": "text",
+            "text": ". There is no way to pre-answer a question that has not been asked yet; the approval is always attached to a specific recorded run, of a specific file, with a specific draft already in its journal."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "And a "
+          },
+          {
+            "k": "em",
+            "text": "no"
+          },
+          {
+            "k": "text",
+            "text": " is not a failure. Answer "
+          },
+          {
+            "k": "code",
+            "text": "--answer approve=false"
+          },
+          {
+            "k": "text",
+            "text": " and the run completes cleanly: the gate carries the refusal, "
+          },
+          {
+            "k": "code",
+            "text": "publish"
+          },
+          {
+            "k": "text",
+            "text": " skips ("
+          },
+          {
+            "k": "code",
+            "text": "when: false"
+          },
+          {
+            "k": "text",
+            "text": "), nothing ships, exit 0. A refused release is a workflow that "
+          },
+          {
+            "k": "strong",
+            "text": "worked"
+          },
+          {
+            "k": "text",
+            "text": " — the outcome your reviewer chose, on the record, in the same trace format as everything else."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Three properties fall out of the gate being a task, none of which a Slack-thread approval has:"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "It is reviewable before it runs."
+          },
+          {
+            "k": "text",
+            "text": " The "
+          },
+          {
+            "k": "code",
+            "text": "when:"
+          },
+          {
+            "k": "text",
+            "text": " line on "
+          },
+          {
+            "k": "code",
+            "text": "publish"
+          },
+          {
+            "k": "text",
+            "text": " is the entire policy. A PR reviewer can see that nothing ships without a yes — the same way they "
+          },
+          {
+            "k": "link",
+            "text": "see the blast radius in permits:",
+            "href": "/blog/injection-goes-nowhere"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "It fails closed by construction."
+          },
+          {
+            "k": "text",
+            "text": " Headless with no "
+          },
+          {
+            "k": "code",
+            "text": "default:"
+          },
+          {
+            "k": "text",
+            "text": " is an error, not a guess. If you "
+          },
+          {
+            "k": "em",
+            "text": "want"
+          },
+          {
+            "k": "text",
+            "text": " an unattended fallback, you write "
+          },
+          {
+            "k": "code",
+            "text": "default:"
+          },
+          {
+            "k": "text",
+            "text": " into the file — visible, diffable, yours."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The approval is evidence."
+          },
+          {
+            "k": "text",
+            "text": " The question, the answer, who-ran-what-when — all of it lands in the run's journal next to every other event. Six months later the trace still shows the release went out because a human said yes."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Chats evaporate. Files compound. Even the \"hey, can someone approve this?\" is a file now."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-resume-story",
     "file": "2026-07-10-the-resume-story.md",
     "title": "The resume story",
