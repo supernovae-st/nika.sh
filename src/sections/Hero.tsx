@@ -477,7 +477,6 @@ export default function Hero({
       ref={rootRef}
       id="hero"
       className="theme-dark relative isolate flex min-h-screen flex-col justify-center overflow-hidden"
-      data-aurora="blue"
     >
       {/* the HUD ticks + the readability scrim (the WebGL field is page-level) */}
       <HeroAtmosphere />

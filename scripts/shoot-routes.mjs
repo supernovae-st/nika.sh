@@ -67,10 +67,13 @@ const CHROME = arg(
    var + data attrs on [data-edge-aurora]; drift frozen at a fixed phase so
    shots are comparable across runs) */
 const STATE_JS = {
-  rest: `el.style.setProperty('--aurora-intensity','0.055')`,
-  hello: `el.style.setProperty('--aurora-intensity','0.32')`,
-  run: `el.dataset.run='on'; el.style.setProperty('--aurora-intensity','0.26'); el.style.setProperty('--aurora-progress','0.6')`,
-  pulse: `delete el.dataset.run; el.style.setProperty('--aurora-intensity','0.38'); el.style.setProperty('--aurora-progress','0')`,
+  /* the machined frame (v10): rest = static hardware (nothing to force) ·
+     the run states drive the drum lining (--run-glow presence · --run-p
+     ring progress · data-run) — the same keys older belts pass */
+  rest: `el.style.setProperty('--run-glow','0')`,
+  hello: `el.style.setProperty('--run-glow','0.5')`,
+  run: `el.dataset.run='on'; el.style.setProperty('--run-glow','0.85'); el.style.setProperty('--run-p','0.6')`,
+  pulse: `delete el.dataset.run; el.style.setProperty('--run-glow','1'); el.style.setProperty('--run-p','0')`,
 }
 const VIEWPORTS = {
   desktop: { w: 1600, h: 1000, mobile: false },
@@ -188,21 +191,10 @@ if (REDUCED) {
   })
 }
 
-/* freeze the aurora drift at a fixed phase (comparable shots) — only when a
-   non-rest state is being forced; the rest register ships as-is */
-const FREEZE = `(() => {
-  const s = document.createElement('style')
-  s.textContent = \`
-    .edge-aurora { animation: none !important; opacity: 1 !important; }
-    .edge-aurora::before, .edge-aurora::after,
-    .edge-aurora-depth, .edge-aurora-lining {
-      animation-play-state: paused !important;
-      animation-delay: -21s !important;
-    }
-  \`
-  document.head.appendChild(s)
-  return true
-})()`
+/* the machined frame (v10) is static at rest — nothing drifts. The freeze
+   is a no-op kept for belt compatibility (older invocations pass non-rest
+   states expecting a stabilized frame). */
+const FREEZE = `(() => true)()`
 
 mkdirSync(OUT, { recursive: true })
 const wantsAuroraFreeze = STATES.some((s) => s !== 'rest')

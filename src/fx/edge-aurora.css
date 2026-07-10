@@ -1,761 +1,121 @@
-/* ─── EdgeAurora · the intelligence weather (v9 · the soft law) ───────────────
-   The Apple-Intelligence register, properly this time: a soft iridescent
-   light that hugs the viewport frame, blooms in the corners and breathes —
-   never a border. It is THE DRUM: it beats on workflow events (intensity
-   pulses via the `--aurora-intensity` custom property, mutated on the element
-   directly — no React re-render).
+/* ─── THE MACHINED FRAME (v10 · the nuke · 2026-07-11) ────────────────────────
+   The device frame, rebuilt from zero after ten arcs of accretion (design:
+   the frame-rebuild design doc · operator locks: machined · one fixed
+   colour · drum kept · geometry kept).
 
-   THE RING LAW (v6, still definitive): the band is a rounded-rect RING carved
-   by the canonical gradient-border mask (two layers, content-box vs
-   border-box, composite exclude). The band thickness is the element's PADDING
-   in px — nothing is expressed in mask percentages, so nothing can land
-   off-viewport ever again (rounds 1-5 all died to exactly that). The element
-   never moves, never scales: only registered custom-property angles animate.
+   PHILOSOPHY — the frame is dark anodized HARDWARE. One element, one flat
+   near-black slab, one static site-blue edge-light, one gasket, one recess.
+   No per-section tint, no hue journeys, no slosh, no breathing, no hello:
+   at rest the frame is byte-deterministic on every display (the P3-vs-sRGB
+   mud and the state explosion died with the old system).
 
-   THE SOFT LAW (v9 — what killed the "square & hard" read):
-   · the palette is the Siri-glow pool (violet · pale pink · periwinkle ·
-     coral · peach — high-luminance neighbours that blend into each other),
-     anchored on the site blue. NO green, NO yellow: the full RGB wheel is
-     what made v6-v8 read as an LED strip.
-   · nothing rotates. The hue angles SLOSH (ease-in-out, alternate) on two
-     incommensurate periods — pools of colour drift, merge and part like
-     weather. A wheel that spins reads mechanical; light that sloshes reads
-     alive.
-   · the perimeter is NON-UNIFORM: quiet stretches, hot pools, corner blooms
-     (four radial pools ride the bloom ring) — a uniform ribbon is a border,
-     pools are light.
-   · layers ACCUMULATE (mix-blend plus-lighter, screen fallback): where rim,
-     bloom and depth overlap — the corners, exactly — luminosity adds up and
-     the frame goes hot the way the lock-screen glow does.
+   THE DRUM SURVIVES — the one dynamic signal: while a run replays, the
+   .frame-lining ring DRAWS around the screen with the recorded progress
+   (conic reveal by --run-p), glowing by --run-glow; each task beats it a
+   touch brighter; the verdict sweeps it full (success) or flashes danger.
+   Idle is --run-glow: 0 — the lining does not exist at rest.
 
-   Three surfaces share one geometry law:
-     ::before — THE RIM · thin, the brightest layer, melted by blur ≈ 2.6×band
-     ::after  — THE BLOOM · fatter ring + corner pools · the inward falloff
-                (and the surface the danger flash / verdict sweep repaint)
-     .edge-aurora-depth — THE DEPTH SHEET · the body behind the viewport edge
+   Geometry contract (unchanged): --frame-w is the bezel thickness every
+   anchored instrument reads (nav · scroll rail · morph console); the cutout
+   radius is --frame-r. The harness hook [data-edge-aurora] survives on the
+   root element (shoot-routes forces run states through it).
 
-   Pure CSS so it renders during the Node prerender (vite-plugin-react-ssg);
-   the component only touches the DOM in effects. pointer-events:none — it
-   never intercepts clicks. */
+   SSR-safe: pure CSS at rest; the run vars mutate via ref (zero re-render). */
 
-/* the section-response vars are @property-registered so a section change
-   TRANSITIONS the frame (the smoothing is CSS · the JS only sets the target).
-   Under reduced-motion the blanket rule (index.css) snaps the duration to 0 →
-   deterministic (goldens see the default). */
-/* initial-value 1 (not cool's 1.2) is DELIBERATE: the no-JS / reduced-motion
-   register holds the calmer, shallower frame — the depth "settles in" to the
-   section value only for motion-on users (the hue/chroma initials DO match
-   the cool tone, so no colour wobbles at load). Goldens bake this state. */
-@property --aurora-bezel-k {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 1;
-}
-@property --aurora-tint-hue {
-  syntax: '<angle>';
-  inherits: true;
-  initial-value: 262deg;
-}
-/* the 5th dimension (arc 9j) · how RICH the section's light is — the chroma
-   of the static edge-light on the black frame (the film runs jewel-deep, the
-   airy light section calms). Registered so a section change eases it. */
-@property --aurora-tint-c {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0.12;
-}
 :root {
-  /* THE FRAME WIDTH (arc 9e) · the device bezel's physical thickness. The
-     screen (the content cutout) lives INSIDE it; the nav, the scroll rail and
-     the morph console all offset by it (« les éléments se calent »). */
+  /* THE FRAME WIDTH · the device bezel's physical thickness. The screen
+     (the content cutout) lives INSIDE it; the nav, the scroll rail and the
+     morph console all offset by it (« les éléments se calent »). */
   --frame-w: 14px;
-  /* depth answers fast (a physical response); the COLOUR travels slower —
-     the long hue journeys (blue 258° → coral 372° at the close) ease as one
-     luxurious drift, never a snap (arc 9j) */
-  transition:
-    --aurora-bezel-k 0.7s var(--ease-ui, ease),
-    --aurora-tint-hue 1.05s var(--ease-ui, ease),
-    --aurora-tint-c 1.05s var(--ease-ui, ease);
+  /* the cutout's corner radius — one geometry, shared by slab + lining */
+  --frame-r: 48px;
 }
 @media (max-width: 767px) {
   :root {
     --frame-w: 8px;
+    --frame-r: 28px;
   }
 }
 
-/* ─── THE BEZEL (arc 9g) · ONE piece of material, ONE inner edge ──────────────
-   The double-aura / stepped-corner bug (operator corner crop): the previous
-   build STACKED surfaces — a masked material band with its OWN outer radius
-   sitting on a differently-coloured flood (= a corner seam), plus a white
-   lip + an inner ridge + the aurora lining (= three concentric hairlines).
-   A real device bezel is ONE slab of material with ONE rounded inner edge.
-
-   So: the element is the screen cutout; ONE opaque spread shadow paints the
-   whole frame in ONE colour (uniform to the viewport edge — square corners,
-   zero outer radius, zero seams). The skeuo modelling comes from shadows
-   that FOLLOW the cutout's rounded silhouette (smooth corners by
-   construction): a dark gasket where the screen sinks in, a single top
-   catch-light, and the glass overhang shadow INSIDE the screen.
-
-   THE BLACK-FRAME LAW (arc 9j · operator on P3: « plus noir/dark gris · le
-   fond derrière doit VRAIMENT faire noir · coloré mais moins transformé »):
-   the slab is NEAR-BLACK NEUTRAL — the section hue survives only as a
-   whisper of temperature (chroma 0.006 · felt, never seen). The section's
-   COLOUR moved into the LIGHT: a static two-halo EDGE-LIGHT hugging the
-   cutout, painted onto the black slab, its richness per-section via
-   --aurora-tint-c. The material is never dyed again. The aurora rides
-   ABOVE it (z-61 > 60 · arc 9h): the contour itself ignites on runs.
-   Static → deterministic. */
-.edge-bezel {
+/* ── THE FRAME · one element, one box-shadow, six jobs — that's the budget ──
+   The element is the screen cutout; everything paints off its silhouette:
+   1 gasket    · the dark seam where the screen sinks into the frame
+   2 edge-glow · the site-blue light leaking from under the screen edge
+   3 edge-glow · its wide falloff (two halos = the arc-9j look, now FIXED)
+   4 slab      · one opaque flood to the viewport edge — flat near-black,
+                 NEVER dyed (the black-frame law, final form)
+   5 overhang  · the frame shades the screen's top edge (inset)
+   6 recess    · symmetric ambient occlusion on all four screen edges */
+.frame {
   position: fixed;
-  inset: var(--frame-w, 14px);
-  z-index: 60; /* below the aurora (61) — one shared edge geometry */
+  inset: var(--frame-w);
+  z-index: 60;
   pointer-events: none;
-  border-radius: var(--aurora-radius, 48px);
+  border-radius: var(--frame-r);
   box-shadow:
-    /* the GASKET · a dark seam where the screen sinks into the frame */
-    0 0 0 1.5px rgb(0 0 0 / 0.78),
-    /* the raked light · a soft catch-light on the frame ABOVE the opening
-       (negative y offsets the halo upward; the silhouette covers below) —
-       ambient light licking anodized black, faintly hue-tinted */
-    0 -2px 12px -4px oklch(0.85 0.045 var(--aurora-tint-hue, 262deg) / 0.11),
-    /* the glass drop-shadow · the screen sits PROUD of the band and casts
-       down onto it (raked light's dark counterpart — before this the band
-       below the cutout carried zero modelling and the straight edges read
-       printed, not machined · arc 10b detail pass) */
-    0 3px 9px -4px rgb(0 0 0 / 0.8),
-    /* THE EDGE-LIGHT (arc 9j) · the section's colour AS LIGHT: two halos
-       (tight seam glow + wide falloff) leaking from under the screen edge
-       onto the black slab — the colour lives here, not in the material.
-       Chroma follows the section (--aurora-tint-c · the 5th dimension). */
-    0 0 9px 0 oklch(0.62 var(--aurora-tint-c, 0.12) var(--aurora-tint-hue, 262deg) / 0.33),
-    0 0 30px 2px oklch(0.55 var(--aurora-tint-c, 0.12) var(--aurora-tint-hue, 262deg) / 0.22),
-    /* THE FRAME · one opaque slab to the viewport edge — near-black neutral
-       (the black-frame law above) */
-    0 0 0 9999px oklch(0.045 0.006 var(--aurora-tint-hue, 262deg)),
-    /* the glass overhang · the frame shades the screen's top edge */
-    inset 0 3px 9px -3px rgb(0 0 0 / 0.6),
-    /* the glass RECESS · a symmetric ambient occlusion on all four screen
-       edges (the overhang above only shades the top — the sides and bottom
-       met the frame with zero depth cue and read flat · arc 10b). Follows
-       the rounded silhouette; the corners naturally run deeper where two
-       edges overlap. */
-    inset 0 0 10px -2px rgb(0 0 0 / 0.42),
-    /* the deep body · the dark mass INSIDE the screen — neutral dark (the
-       tint no longer washes the content edge · « moins transformé ») */
-    inset 0 0 var(--aurora-bezel-reach, 180px) var(--aurora-bezel-spread, -58px)
-      oklch(0.04 0.018 var(--aurora-tint-hue, 262deg) / calc(0.66 * var(--aurora-bezel-k, 1))),
-    /* the tighter edge band · the bevel depth inside the screen */
-    inset 0 0 var(--aurora-bezel-edge, 52px) var(--aurora-bezel-edge-spread, -22px)
-      oklch(0.015 0.015 var(--aurora-tint-hue, 262deg) / calc(0.62 * var(--aurora-bezel-k, 1)));
+    0 0 0 1.5px rgb(0 0 0 / 0.8),
+    0 0 9px 0 rgb(79 134 255 / 0.2),
+    0 0 28px 2px rgb(79 134 255 / 0.1),
+    0 0 0 9999px #08090c,
+    inset 0 2px 8px -3px rgb(0 0 0 / 0.55),
+    inset 0 0 9px -2px rgb(0 0 0 / 0.38);
 }
 
-.edge-aurora {
-  /* rest intensity (arc 9f) · at rest the frame is the dark MATERIAL — the
-     iridescence is a quiet light living ON the contour (above the bezel
-     since arc 9h); the per-section 4th dimension nudges it, the RUNS own
-     the wow (mutated by EdgeAurora.tsx · SSR fallback). */
-  --aurora-intensity: 0.11;
-  /* rim geometry · the band thickness in px */
-  --aurora-band: 16px;
-  /* THE FIELD LAW (v11) · how deep the soft field reaches from each edge.
-     The falloff lives in eased mask-gradient stops — NEVER in a mega
-     filter:blur. Real GPUs clamp large blur radii (the requested 88/130px
-     rendered far smaller at dsf 2), which re-exposed the binary ring mask's
-     inner edge as nested rectangular steps in the contours (operator
-     screenshot 2026-07-05 · reproduced headless on real GPU at dsf 2 —
-     swiftshader applies the exact blur, which is why CI shots stayed soft). */
-  --aurora-reach: 190px;
-  /* generous, continuous-curvature read — device-screen corners, never a
-     rounded rectangle drawn on the page (48px ≈ the lock-screen register) */
-  --aurora-radius: 48px;
-
-  position: fixed;
-  /* ONE aurora (arc 9h · operator: « le contour doit être le contour ») —
-     the glow lives ON the frame, not beside it: ABOVE the bezel (z-61 > 60),
-     anchored at the screen edge, its bloom paints the frame's band OUTWARD
-     and licks the screen edge INWARD. At rest the frame is dark living
-     material (low intensity · section tint); on runs the CONTOUR ITSELF
-     ignites (« aurora défois oui »). The bezel's gasket + raked light stay
-     readable through the quiet floor — the skeuo survives the light. */
-  inset: var(--frame-w, 14px);
-  z-index: 61;
-  pointer-events: none;
-  background: transparent;
-
-  /* the slow ambient breath · composes multiplicatively with intensity */
-  animation: edge-aurora-breathe 12s ease-in-out infinite;
-  will-change: opacity;
-}
-
-/* tab hidden (EdgeAurora.tsx sets data-idle on visibilitychange) — freeze the
-   infinite animations; they composit for nobody. */
-.edge-aurora[data-idle='on'],
-.edge-aurora[data-idle='on']::before,
-.edge-aurora[data-idle='on']::after,
-.edge-aurora[data-idle='on'] .edge-aurora-depth,
-.edge-aurora[data-idle='on'] .edge-aurora-lining {
-  animation-play-state: paused;
-}
-
-/* the sloshing hue angles · registered so they interpolate as real angles */
-@property --aurora-spin {
-  syntax: '<angle>';
-  inherits: true;
-  initial-value: 0deg;
-}
-@property --aurora-spin2 {
-  syntax: '<angle>';
-  inherits: true;
-  initial-value: 180deg;
-}
-@property --aurora-progress {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0;
-}
-
-/* THE MASK IS ONE ATOMIC DECLARATION. The compositing operator lives INSIDE
-   the mask layer (`… content-box exclude, …`), never as a standalone
-   `mask-composite` / `-webkit-mask-composite` property. The production flood
-   of 2026-07-03 came exactly from splitting them: the CSS minifier deleted
-   the standalone `mask-composite: exclude` and re-ordered `-webkit-mask`
-   after `-webkit-mask-composite`, so the shorthand reset compositing to
-   `add` — the union of both rects is the FULL viewport and the raw conic
-   painted over every page. Per-layer syntax cannot be split, dropped or
-   re-ordered. The @supports gate makes the only possible degradation
-   "no frame at all", never "flood". */
-.edge-aurora::before,
-.edge-aurora::after {
-  content: none;
-}
-@supports (mask: linear-gradient(#000 0 0) exclude, linear-gradient(#000 0 0)) {
-  .edge-aurora::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: var(--aurora-radius);
-    /* the canonical ring · keep only the padding frame of the element */
-    mask:
-      linear-gradient(#000 0 0) content-box exclude,
-      linear-gradient(#000 0 0);
-    pointer-events: none;
-    /* the slosh · two incommensurate periods (26s / 19s) so the weather
-       never visibly repeats; ease-in-out alternate = light that breathes,
-       not a wheel that spins */
-    animation:
-      aurora-slosh-a 26s ease-in-out infinite alternate,
-      aurora-slosh-b 19s ease-in-out infinite alternate;
-  }
-
-  /* THE RIM · the Siri-glow wheel (top periwinkle→violet · right coral→peach
-     · bottom quiet blue · left pink→magenta) + one counter-sloshing pool
-     sheet riding it, so brightness travels the perimeter. First/last conic
-     stops match — the wrap is seamless. Declared twice: the oklch pass wins
-     where gradient interpolation spaces ship (no grey dead-zones between
-     hue-distant stops); the sRGB pass is the belt underneath. */
-  .edge-aurora::before {
-    background:
-      conic-gradient(
-        from var(--aurora-spin2),
-        transparent,
-        rgb(245 185 234 / 0.22) 9%,
-        transparent 22%,
-        transparent 36%,
-        rgb(255 186 113 / 0.2) 50%,
-        transparent 64%,
-        transparent 78%,
-        rgb(198 134 255 / 0.82) 88%,
-        transparent
-      ),
-      conic-gradient(
-        from var(--aurora-spin),
-        rgb(141 159 255 / 0.95),
-        rgb(188 130 243 / 0.92) 12%,
-        rgb(255 103 120 / 0.18) 27%,
-        rgb(255 186 113 / 0.26) 40%,
-        rgb(10 132 255 / 0.72) 52%,
-        rgb(94 92 230 / 0.78) 62%,
-        rgb(245 185 234 / 0.24) 74%,
-        rgb(255 45 149 / 0.16) 85%,
-        rgb(198 134 255 / 0.9) 93%,
-        rgb(141 159 255 / 0.95)
-      );
-    background:
-      conic-gradient(
-        from var(--aurora-spin2),
-        transparent,
-        rgb(245 185 234 / 0.22) 9%,
-        transparent 22%,
-        transparent 36%,
-        rgb(255 186 113 / 0.2) 50%,
-        transparent 64%,
-        transparent 78%,
-        rgb(198 134 255 / 0.82) 88%,
-        transparent
-      ),
-      conic-gradient(
-        from var(--aurora-spin) in oklch,
-        rgb(141 159 255 / 0.95),
-        rgb(188 130 243 / 0.92) 12%,
-        rgb(255 103 120 / 0.18) 27%,
-        rgb(255 186 113 / 0.26) 40%,
-        rgb(10 132 255 / 0.72) 52%,
-        rgb(94 92 230 / 0.78) 62%,
-        rgb(245 185 234 / 0.24) 74%,
-        rgb(255 45 149 / 0.16) 85%,
-        rgb(198 134 255 / 0.9) 93%,
-        rgb(141 159 255 / 0.95)
-      );
-  }
-
-}
-
-/* THE BLOOM (v11 · the field law) · a full-bleed sheet of pre-soft light —
-   two counter-sloshing feathered conics (where they overlap the hues BLEND)
-   + four anchored pools (left coral · right peach · top violet crown ·
-   bottom quiet blue floor) — revealed at the edges by a SOFT mask: one
-   eased alpha ramp per side, union-added, so the corners (where two ramps
-   overlap) naturally run hottest. No filter blur anywhere on this layer —
-   eased gradient stops ARE the softness, at any dpr, on any GPU.
-
-   The mask stays ONE atomic declaration (the 2026-07-03 law): four plain
-   alpha layers, default add compositing — there is no standalone
-   mask-composite for a minifier to drop or re-order. The @supports gate
-   keeps the only degradation "no bloom at all", never "flood". */
-@supports (mask: linear-gradient(#000, #0000)) {
-  .edge-aurora::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    mask:
-      linear-gradient(
-          to bottom,
-          rgb(0 0 0 / 0.92),
-          rgb(0 0 0 / 0.5) 34%,
-          rgb(0 0 0 / 0.16) 64%,
-          transparent
-        )
-        top / 100% var(--aurora-reach) no-repeat,
-      linear-gradient(
-          to top,
-          rgb(0 0 0 / 0.92),
-          rgb(0 0 0 / 0.5) 34%,
-          rgb(0 0 0 / 0.16) 64%,
-          transparent
-        )
-        bottom / 100% var(--aurora-reach) no-repeat,
-      linear-gradient(
-          to right,
-          rgb(0 0 0 / 0.92),
-          rgb(0 0 0 / 0.5) 34%,
-          rgb(0 0 0 / 0.16) 64%,
-          transparent
-        )
-        left / var(--aurora-reach) 100% no-repeat,
-      linear-gradient(
-          to left,
-          rgb(0 0 0 / 0.92),
-          rgb(0 0 0 / 0.5) 34%,
-          rgb(0 0 0 / 0.16) 64%,
-          transparent
-        )
-        right / var(--aurora-reach) 100% no-repeat;
-    animation:
-      aurora-slosh-a 26s ease-in-out infinite alternate,
-      aurora-slosh-b 19s ease-in-out infinite alternate;
-    background:
-      conic-gradient(
-        from var(--aurora-spin),
-        transparent,
-        rgb(255 103 120 / 0.22) 10%,
-        transparent 26%,
-        rgb(188 130 243 / 0.75) 44%,
-        transparent 60%,
-        rgb(255 45 149 / 0.14) 76%,
-        transparent 92%,
-        transparent
-      ),
-      conic-gradient(
-        from var(--aurora-spin2),
-        transparent,
-        rgb(255 186 113 / 0.16) 14%,
-        transparent 30%,
-        rgb(141 159 255 / 0.75) 48%,
-        transparent 66%,
-        rgb(245 185 234 / 0.18) 84%,
-        transparent
-      ),
-      radial-gradient(
-        75% 60% at 0% 30%,
-        rgb(255 103 120 / 0.18),
-        rgb(255 103 120 / 0.07) 45%,
-        transparent 72%
-      ),
-      radial-gradient(
-        70% 60% at 100% 42%,
-        rgb(255 186 113 / 0.18),
-        rgb(255 186 113 / 0.07) 45%,
-        transparent 72%
-      ),
-      radial-gradient(
-        80% 55% at 50% -8%,
-        rgb(188 130 243 / 0.7),
-        rgb(188 130 243 / 0.24) 48%,
-        transparent 75%
-      ),
-      radial-gradient(85% 55% at 50% 112%, rgb(10 132 255 / 0.6), transparent 68%);
-  }
-}
-
-/* THE RIM · melted into fog — blur ≈ 2.6× the band: no inner edge, ever */
-.edge-aurora::before {
-  padding: var(--aurora-band);
-  filter: blur(42px) saturate(1.15);
-  opacity: min(1, calc(var(--aurora-intensity) * 1.2));
-}
-
-/* THE BLOOM · the inward falloff · adds luminosity over the rim where they
-   overlap (the corners go hot — the lock-screen read). plus-lighter where
-   supported, screen everywhere else; the parent's opacity animation isolates
-   the group, so the accumulation stays INSIDE the aurora and composites over
-   the page as plain alpha. NO blur (the field law) — saturate only. */
-.edge-aurora::after {
-  filter: saturate(1.05);
-  opacity: calc(var(--aurora-intensity) * 0.95);
-  mix-blend-mode: screen;
-  mix-blend-mode: plus-lighter;
-}
-
-/* THE DEPTH SHEET · the aurora's BODY behind the viewport edge: cool tones
-   only (periwinkle · indigo · violet — warmth stays on the rim), twice the
-   bloom's reach, a fraction of the intensity, sloshing on its own slow
-   period (the deep layer lags the bloom — parallax, not sync). Same field
-   law as the bloom: eased mask ramps, no blur. */
-.edge-aurora-depth {
-  display: none;
-}
-/* the depth sheet is a WIDE-viewport instrument: at phone width its reach
-   swallows most of the frame — it stands down and the rim + bloom carry the
-   aurora alone (found on the 390px sweep) */
-@media (max-width: 767px) {
-  .edge-aurora-depth {
-    display: none !important;
-  }
-}
-@supports (mask: linear-gradient(#000, #0000)) {
-  .edge-aurora-depth {
-    display: block;
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    mask:
-      linear-gradient(
-          to bottom,
-          rgb(0 0 0 / 0.85),
-          rgb(0 0 0 / 0.4) 36%,
-          rgb(0 0 0 / 0.12) 66%,
-          transparent
-        )
-        top / 100% calc(var(--aurora-reach) * 2) no-repeat,
-      linear-gradient(
-          to top,
-          rgb(0 0 0 / 0.85),
-          rgb(0 0 0 / 0.4) 36%,
-          rgb(0 0 0 / 0.12) 66%,
-          transparent
-        )
-        bottom / 100% calc(var(--aurora-reach) * 2) no-repeat,
-      linear-gradient(
-          to right,
-          rgb(0 0 0 / 0.85),
-          rgb(0 0 0 / 0.4) 36%,
-          rgb(0 0 0 / 0.12) 66%,
-          transparent
-        )
-        left / calc(var(--aurora-reach) * 2) 100% no-repeat,
-      linear-gradient(
-          to left,
-          rgb(0 0 0 / 0.85),
-          rgb(0 0 0 / 0.4) 36%,
-          rgb(0 0 0 / 0.12) 66%,
-          transparent
-        )
-        right / calc(var(--aurora-reach) * 2) 100% no-repeat;
-    background: conic-gradient(
-      from var(--aurora-spin2),
-      rgb(10 132 255 / 0.7),
-      transparent 26%,
-      rgb(94 92 230 / 0.78) 46%,
-      transparent 64%,
-      rgb(188 130 243 / 0.5) 82%,
-      rgb(10 132 255 / 0.7)
-    );
-    background: conic-gradient(
-      from var(--aurora-spin2) in oklch,
-      rgb(10 132 255 / 0.7),
-      transparent 26%,
-      rgb(94 92 230 / 0.78) 46%,
-      transparent 64%,
-      rgb(188 130 243 / 0.5) 82%,
-      rgb(10 132 255 / 0.7)
-    );
-    filter: saturate(1.1);
-    /* a BODY, not a veil: past ~0.4 the depth reads as milk over the page
-       (found on the v9 run sweep) */
-    opacity: calc(var(--aurora-intensity) * 0.35);
-    mix-blend-mode: screen;
-    mix-blend-mode: plus-lighter;
-    animation: aurora-slosh-b 34s ease-in-out infinite alternate;
-  }
-}
-
-/* THE LINING (v10) · the one near-crisp element. The Apple read (verified on
-   the SwiftUI recreations): the COLOURS are always diffuse — a faint WHITE
-   line owns the definition. Hairline ring, tiny blur, brightness pools
-   travelling with the rim's pool sheet (same spin2, same period — in phase).
-   Normal compositing (it is a lining, not light accumulation). */
-.edge-aurora-lining {
+/* ── THE DRUM LINING · the run, drawn on the frame ────────────────────────────
+   A hairline ring hugging the cutout, revealed clockwise from 12 o'clock by
+   the recorded progress (--run-p 0..1) and lit by --run-glow (0 at rest —
+   the lining does not exist outside a run). The ring geometry uses the
+   PROVEN atomic-mask recipe (content-box exclude over full box: only the
+   2px padding band survives) — the compositing operator lives inside the
+   one declaration, per the old system's hard-won law. Angle-based reveal
+   (corners sweep faster) — accepted, the tol.is read. */
+.frame-lining {
   display: none;
 }
 @supports (mask: linear-gradient(#000 0 0) exclude, linear-gradient(#000 0 0)) {
-  .edge-aurora-lining {
+  .frame-lining {
     display: block;
     position: absolute;
-    inset: 0;
-    border-radius: var(--aurora-radius);
+    inset: -1px;
+    border-radius: var(--frame-r);
     padding: 2px;
     mask:
       linear-gradient(#000 0 0) content-box exclude,
       linear-gradient(#000 0 0);
     pointer-events: none;
-    background:
-      conic-gradient(
-        from var(--aurora-spin2),
-        transparent,
-        rgb(255 255 255 / 0.55) 9%,
-        transparent 22%,
-        transparent 36%,
-        rgb(255 255 255 / 0.5) 50%,
-        transparent 64%,
-        transparent 78%,
-        rgb(255 255 255 / 0.5) 88%,
-        transparent
-      ),
-      /* the always-there base rim · a hairline DEFINITION of the screen edge
-         (the Apple read: the colour stays diffuse, one near-crisp line owns
-         the definition). Present on EVERY page — even the dark content ones,
-         where a dark-on-dark bezel alone reads as nothing (arc 9 review · «
-         fais mieux »). Faintly tinted by the section hue so it's an iridescent
-         physical rim, never a stark white border. */
-      linear-gradient(
-        oklch(0.88 0.06 var(--aurora-tint-hue, 262deg) / 0.2) 0 0
-      );
-    /* ONE tint system (arc 9j qw2) · the lining's richness follows the
-       section like the edge-light does (×0.5 → 0.06 at the default, richer
-       in the film, calmer on light pages). Declared as a SECOND full pass —
-       if calc-in-oklch ever fails to parse, the cascade keeps the fixed-
-       chroma declaration above (never « no lining at all »). */
-    background:
-      conic-gradient(
-        from var(--aurora-spin2),
-        transparent,
-        rgb(255 255 255 / 0.55) 9%,
-        transparent 22%,
-        transparent 36%,
-        rgb(255 255 255 / 0.5) 50%,
-        transparent 64%,
-        transparent 78%,
-        rgb(255 255 255 / 0.5) 88%,
-        transparent
-      ),
-      linear-gradient(
-        oklch(
-          0.88 calc(var(--aurora-tint-c, 0.12) * 0.5)
-            var(--aurora-tint-hue, 262deg) / 0.2
-        )
-        0 0
-      );
-    filter: blur(4.5px);
-    /* the rim holds a floor (a defined edge always) and swells with the run —
-       decoupled from the low rest intensity that used to hide it */
-    /* a QUIET defined edge at rest (the white line mixing with violet at a
-       high floor read MAUVE — arc 9f); it swells with the run */
-    opacity: clamp(0.13, calc(var(--aurora-intensity) * 1.4), 1);
-    animation:
-      aurora-slosh-a 26s ease-in-out infinite alternate,
-      aurora-slosh-b 19s ease-in-out infinite alternate;
-  }
-}
-
-/* the slosh · each keyframes drives ONE angle so the periods stay free;
-   resting phase (reduced-motion / prerender) sits inside both ranges */
-@keyframes aurora-slosh-a {
-  from {
-    --aurora-spin: -16deg;
-  }
-  to {
-    --aurora-spin: 54deg;
-  }
-}
-@keyframes aurora-slosh-b {
-  from {
-    --aurora-spin2: 208deg;
-  }
-  to {
-    --aurora-spin2: 128deg;
-  }
-}
-
-/* breathing · gently swells the layer opacity around its rest value; the
-   per-event pulses ride --aurora-intensity underneath. */
-@keyframes edge-aurora-breathe {
-  0%,
-  100% {
-    opacity: 0.74;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-/* ─── RUN MODE · the frame IS run visualization ───────────────────────────────
-   While a run replays (data-run), the same weather simply speaks louder:
-   wider bloom, faster slosh, and the recorded progress swells the rim.
-   Idle chrome is byte-identical when data-run is absent. */
-.edge-aurora[data-run] {
-  --aurora-reach: 240px;
-}
-.edge-aurora[data-run]::before {
-  opacity: min(
-    1,
-    calc(var(--aurora-intensity) * 1.2 + var(--aurora-progress) * 0.06)
-  );
-}
-.edge-aurora[data-run]::before,
-.edge-aurora[data-run]::after,
-.edge-aurora[data-run] .edge-aurora-lining {
-  /* both slosh periods tighten · the weather quickens; band, bloom and
-     lining stay phase-free but equally alive */
-  animation-duration: 9s, 6.5s;
-}
-
-/* the permits-wall beat · one danger flash (600ms) on the bloom, then back.
-   `forwards` holds the final opacity:0 — the data-flash attribute outlives the
-   animation by ~50ms (DANGER_MS 650 vs 600), and without the fill the bloom
-   snapped back to the red conic at full intensity for those frames (a hard
-   red pop AFTER the fade — found in the wave-I sweep). The danger conic is
-   static, but the slosh entries STAY in the list: dropping them restarts the
-   bloom's slosh from zero when the flash ends (an angle snap — the same
-   continuity law v6 solved by keeping the drift running during danger). */
-.edge-aurora[data-flash='danger']::after {
-  background: conic-gradient(from 0deg, #ff453a, #7a1622 50%, #ff453a);
-  animation:
-    aurora-slosh-a 26s ease-in-out infinite alternate,
-    aurora-slosh-b 19s ease-in-out infinite alternate,
-    aurora-danger 600ms var(--ease-ui) 1 forwards;
-}
-@keyframes aurora-danger {
-  0% {
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.65;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-/* the verdict sweep · ONE bright arc travels the full frame once, then
-   DISSOLVES in place (the spin var is driven through a single revolution;
-   the arc holds through ~78% and fades out by the end). `forwards` pins the
-   final transparent frame — the data-run='sweep' attribute outlives the
-   900ms animation by ~300ms (RUN_HOLD_MS 1200), and without the fill the
-   finished arc froze at 12 o'clock for those 300ms, then vanished on the
-   attribute drop (found in the wave-I sweep). */
-.edge-aurora[data-run='sweep']::after {
-  background: conic-gradient(
-    from var(--aurora-spin),
-    transparent 0turn,
-    var(--v4-accent-bright, #8db4ff) 0.05turn,
-    transparent 0.18turn
-  );
-  animation: aurora-sweep 900ms cubic-bezier(0.4, 0, 0.2, 1) 1 forwards;
-  opacity: 0.8;
-}
-@keyframes aurora-sweep {
-  0% {
-    --aurora-spin: 0deg;
-    opacity: 0.8;
-  }
-  78% {
-    opacity: 0.8;
-  }
-  100% {
-    --aurora-spin: 360deg;
-    opacity: 0;
-  }
-}
-
-/* print · the frame is SCREEN chrome: both overlays are position:fixed (they
-   would repeat on every printed page) and the bezel's opaque 9999px flood
-   inks the whole sheet black when print-backgrounds are on. The paper gets
-   the content, never the device. */
-@media print {
-  .edge-bezel,
-  .edge-aurora {
-    display: none;
-  }
-}
-
-/* mobile · the ring scales down with the viewport instead of disappearing;
-   the radius stays generous — square corners are exactly the non-Apple read */
-@media (max-width: 767px) {
-  .edge-aurora {
-    --aurora-band: 10px;
-    --aurora-reach: 90px;
-    --aurora-radius: 28px;
-  }
-  .edge-aurora::before {
-    filter: blur(22px) saturate(1.15);
-  }
-}
-
-/* reduced-motion · a static weather frame — nothing sloshes, nothing
-   breathes; intensity (event pulses) still rises and decays. The sweep/danger
-   rules above carry higher specificity than the plain ::after kill-switch, so
-   they are re-neutralized here explicitly (today every runEnd/flashDanger
-   caller is motion-gated — this is the structural belt if one ever isn't):
-   danger keeps its brief opacity-only flash (feedback, not travel); the
-   sweep's traveling arc is replaced by the plain held palette. */
-@media (prefers-reduced-motion: reduce) {
-  .edge-aurora,
-  .edge-aurora::before,
-  .edge-aurora::after,
-  .edge-aurora-depth,
-  .edge-aurora-lining {
-    animation: none;
-  }
-  .edge-aurora[data-flash='danger']::after {
-    animation: aurora-danger 600ms var(--ease-ui) 1 forwards;
-  }
-  .edge-aurora[data-run='sweep']::after {
     background: conic-gradient(
-      from var(--aurora-spin),
-      rgb(141 159 255 / 0.95),
-      rgb(188 130 243 / 0.92) 12%,
-      rgb(255 103 120 / 0.18) 27%,
-      rgb(255 186 113 / 0.26) 40%,
-      rgb(10 132 255 / 0.72) 52%,
-      rgb(94 92 230 / 0.78) 62%,
-      rgb(245 185 234 / 0.24) 74%,
-      rgb(255 45 149 / 0.16) 85%,
-      rgb(198 134 255 / 0.9) 93%,
-      rgb(141 159 255 / 0.95)
+      from 0deg,
+      rgb(111 157 255 / 0.95),
+      rgb(79 134 255 / 0.8) calc(var(--run-p, 0) * 1turn),
+      transparent calc(var(--run-p, 0) * 1turn)
     );
-    animation: none;
-    opacity: calc(var(--aurora-intensity) * 1.15);
+    filter: blur(0.5px);
+    opacity: var(--run-glow, 0);
+    transition: opacity 0.28s ease;
+  }
+  /* the danger beat · the permits wall / a failed verdict — the ring flashes
+     the danger coral for the flash window (data-danger, JS-timed) */
+  .frame[data-danger] .frame-lining {
+    background: conic-gradient(
+      from 0deg,
+      rgb(255 122 92 / 0.95),
+      rgb(255 92 92 / 0.8) calc(var(--run-p, 0) * 1turn),
+      transparent calc(var(--run-p, 0) * 1turn)
+    );
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame-lining {
+    transition: none;
+  }
+}
+
+/* print · the frame is SCREEN chrome: fixed elements repeat on every printed
+   page and the slab's opaque flood would ink the sheet black. Paper gets
+   none of it (the print register owns its own chrome · print.css). */
+@media print {
+  .frame,
+  .frame-lining {
+    display: none;
   }
 }
