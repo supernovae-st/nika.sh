@@ -226,8 +226,9 @@ function Machine({
     /* the hover bus · either side of the page may have written it */
     u.uHi.value = hiRef.current
 
-    /* a pending ignition stamped by the prop effect plays from now */
-    if (strikeRef.current >= 0) {
+    /* a pending ignition stamped by the prop effect plays from now
+       (-1 = idle · 0..8 = one stratum · -2 = the ASSEMBLED full-ship surge) */
+    if (strikeRef.current !== -1) {
       u.uStrike.value = u.uTime.value
       u.uStrikeStratum.value = strikeRef.current
       strikeRef.current = -1
@@ -381,6 +382,9 @@ function Machine({
   return (
     <>
       <group ref={group} rotation={[0.3, 0.55, 0]}>
+        {/* the starfield rides the OUTER group: the sky sweeps as the view
+            orbits — a camera flight, never a turntable */}
+        <primitive object={layers.stars} />
         <group ref={inner}>
           <primitive object={layers.fills} />
           <primitive object={layers.wires} />
@@ -481,6 +485,12 @@ export default function TheSpecMachine({
     for (const k of lit) {
       if (!prevLit.current.has(k)) strikeRef.current = stratumIndex(k)
     }
+    /* THE ASSEMBLED SURGE · the 8th reading stratum completes the contract:
+       one full-ship beat — every wire fires, the whole hull swells (-2 =
+       the all-strata sentinel in the strike shaders) */
+    const done = (x: ReadonlySet<StratumKey>) =>
+      [...x].filter((k) => k !== 'license').length >= 8
+    if (done(lit) && !done(prevLit.current)) strikeRef.current = -2
     prevLit.current = lit
   }, [lit])
   useEffect(() => {
