@@ -307,6 +307,36 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
   })
 }
 
+/* 3b-bis · the blog register filter (deep-link + click round-trip). The
+   assertions are SELF-CONSISTENT: the shelf must match the pressed chip's
+   own count (no hardcoded totals — the belt survives every future post). */
+await send('Page.navigate', { url: `${BASE}/blog?tag=Engine` })
+await settle()
+await check('blog · ?tag= deep-link filters the shelf to the chip count', async () => {
+  return await evaluate(`(() => {
+    const pressed = document.querySelector('.blog-tag[aria-pressed="true"]')
+    if (!pressed || !pressed.textContent.startsWith('Engine')) return 'chip not pressed'
+    const want = Number(pressed.querySelector('.blog-tag-n')?.textContent)
+    const cards = document.querySelectorAll('.blog-card').length
+    const lead = !!document.querySelector('.blog-lead')
+    return cards === want && !lead ? true : JSON.stringify({ want, cards, lead })
+  })()`)
+})
+await check('blog · All restores the lead + the whole shelf', async () => {
+  await evaluate(
+    `[...document.querySelectorAll('.blog-tag')].find((b) => b.textContent.startsWith('All'))?.click()`,
+  )
+  await sleep(400)
+  return await evaluate(`(() => {
+    const all = Number(document.querySelector('.blog-tag .blog-tag-n')?.textContent)
+    const cards = document.querySelectorAll('.blog-card').length
+    const lead = !!document.querySelector('.blog-lead')
+    return lead && cards === all - 1 && location.search === ''
+      ? true
+      : JSON.stringify({ all, cards, lead, search: location.search })
+  })()`)
+})
+
 /* 3c · the eggs (global key listeners — synthetic keydown works) */
 await check('egg · agpl toast (any page)', async () => {
   await evaluate(`for (const k of 'agpl') window.dispatchEvent(new KeyboardEvent('keydown', { key: k }))`)
