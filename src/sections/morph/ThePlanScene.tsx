@@ -569,6 +569,11 @@ function Advance({
 
     /* ── dependency edges · draw-on + state + the traveling ignite pulse ── */
     const draw = wireAt(p)
+    /* the draw HEAD (arc 10h) · while the wires ink in, a bright spot rides
+       the ink front — the drawing is an EVENT, not a fade (the resting wire
+       whisper was the only thing announcing the graph's connections). Gated
+       to the draw window; pure function of p (scrub-reversible). */
+    const drawing = draw > 0.001 && draw < 0.999 ? 1 : 0
     const dC = layers.deps.color.array as Float32Array
     const dA = layers.deps.alpha.array as Float32Array
     const vpe = layers.deps.vertsPerEdge
@@ -594,11 +599,14 @@ function Advance({
         /* draw-on with a soft head (fully on once the wires finish) */
         const on = clamp01((draw * 1.05 - tv) / 0.05)
         const g = pulse.strength * Math.exp(-Math.pow((tv - pulse.pos) * 7.0, 2))
+        /* the ink-front glow (arc 10h) · brightest AT the head, gone once
+           the wire is fully drawn — the same gaussian device as the pulse */
+        const hd = drawing * Math.exp(-Math.pow((tv - draw) * 8.5, 2))
         const k = e * vpe + vi
-        dC[k * 3] = EDGE_BLUE[0] * (0.5 + 0.3 * lit + 0.4 * swW) + hue[0] * g
-        dC[k * 3 + 1] = EDGE_BLUE[1] * (0.5 + 0.3 * lit + 0.4 * swW) + hue[1] * g
-        dC[k * 3 + 2] = EDGE_BLUE[2] * (0.5 + 0.3 * lit + 0.4 * swW) + hue[2] * g
-        dA[k] = eVis * on * (0.24 + 0.2 * lit + g * 0.9 + swW * 0.45)
+        dC[k * 3] = EDGE_BLUE[0] * (0.5 + 0.3 * lit + 0.4 * swW + 0.85 * hd) + hue[0] * g
+        dC[k * 3 + 1] = EDGE_BLUE[1] * (0.5 + 0.3 * lit + 0.4 * swW + 0.85 * hd) + hue[1] * g
+        dC[k * 3 + 2] = EDGE_BLUE[2] * (0.5 + 0.3 * lit + 0.4 * swW + 0.85 * hd) + hue[2] * g
+        dA[k] = eVis * on * (0.3 + 0.2 * lit + g * 0.9 + swW * 0.45 + hd * 0.55)
       }
     }
     layers.deps.color.needsUpdate = true

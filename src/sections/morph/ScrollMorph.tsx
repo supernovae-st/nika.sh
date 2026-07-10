@@ -251,6 +251,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   /* the seed chips · one per task, driven along their bezier by apply() */
   const seedLayerRef = useRef<HTMLDivElement>(null)
   const seedRefs = useRef(new Map<string, HTMLSpanElement | null>())
+  /* the landing reticles · one docking target per task (arc 10h) */
+  const targetRefs = useRef(new Map<string, HTMLSpanElement | null>())
   /* the trail afterimages · two per seed (keys `${id}·0` / `${id}·1`) */
   const ghostRefs = useRef(new Map<string, HTMLSpanElement | null>())
   /* --morph-wired's last written value (write-on-change · F2 budget) */
@@ -671,6 +673,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           const o = seedIn * seedOut
           const g0 = ghostRefs.current.get(`${t.id}·0`)
           const g1 = ghostRefs.current.get(`${t.id}·1`)
+          const ret = targetRefs.current.get(t.id)
           if (o <= 0.001) {
             seed.style.opacity = '0'
             seed.style.visibility = 'hidden'
@@ -681,6 +684,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             if (g1) {
               g1.style.opacity = '0'
               g1.style.visibility = 'hidden'
+            }
+            if (ret) {
+              ret.style.opacity = '0'
+              ret.style.visibility = 'hidden'
             }
           } else {
             const t3 = use3d && psOff ? slabTargetsRef.current.get(t.id) : undefined
@@ -720,6 +727,27 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 gh.style.opacity = go.toFixed(3)
                 gh.style.visibility = 'visible'
                 gh.style.transform = `translate3d(${gx.toFixed(1)}px, ${gy.toFixed(1)}px, 0) translate(-50%, -50%) scale(${(1 - (1 - scale) * gk).toFixed(3)})`
+              }
+            }
+            /* THE LANDING RETICLE (arc 10h) · the destination announces
+               itself while the seed is in flight — a dashed docking target
+               at (tx, ty), the chip's own footprint (it clones the seed's
+               layout metrics with transparent ink). It tightens as the chip
+               approaches, then the IGNITION consumes it: a brief expansion
+               that dissolves into the slab's materialization. Pure function
+               of p (scrubbing replays it); same hot-path discipline as the
+               ghosts — direct style writes, zero allocation. */
+            if (ret) {
+              const ig = easeInOut(igniteAt(e))
+              const retO = clamp01((te - 0.06) / 0.28) * (1 - ig) * 0.85
+              if (retO <= 0.003) {
+                ret.style.opacity = '0'
+                ret.style.visibility = 'hidden'
+              } else {
+                const rs = scale * (1.16 - 0.16 * k) * (1 + 0.26 * ig)
+                ret.style.opacity = retO.toFixed(3)
+                ret.style.visibility = 'visible'
+                ret.style.transform = `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) translate(-50%, -50%) scale(${rs.toFixed(3)})`
               }
             }
           }
@@ -1638,6 +1666,19 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             <div className="morph-seeds" aria-hidden ref={seedLayerRef}>
               {plan.tasks.map((t) => (
                 <Fragment key={t.id}>
+                  {/* the landing reticle · paints UNDER the trail + chip (DOM
+                      order) — it clones the seed's structure so its box IS
+                      the chip's landing footprint (transparent ink sizes it) */}
+                  <span
+                    className="morph-seed morph-seed-target"
+                    data-verb={t.verb}
+                    ref={(el) => {
+                      targetRefs.current.set(t.id, el)
+                    }}
+                  >
+                    <span className="morph-seed-id">{t.id}</span>
+                    <span className="morph-seed-verb">{t.verb}</span>
+                  </span>
                   {[0, 1].map((gI) => (
                     <span
                       key={gI}
