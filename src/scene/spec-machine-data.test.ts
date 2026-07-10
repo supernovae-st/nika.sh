@@ -10,6 +10,7 @@ import {
   PLAN_TASKS,
   SPEC_SECTIONS,
   TASK_FIELDS,
+  nodeReadout,
   nodesFor,
 } from './spec-machine-data'
 
@@ -136,5 +137,20 @@ describe('MACHINE_NODES · every stratum node is real and anchored', () => {
     }
     /* the fetch manifold: every extract node is a port on the fetch builtin */
     expect(MACHINE_NODES.some((n) => n.id === 'builtin:fetch')).toBe(true)
+  })
+})
+
+describe('nodeReadout · the MR hover whisper derives from the graph', () => {
+  it('speaks kind + family, counts only where they are real', () => {
+    expect(nodeReadout('builtin:fetch')).toBe(`fetch·····web · ${CANON.extractModes} modes`)
+    expect(nodeReadout('builtin:jq')).toBe('jq·····data')
+    expect(nodeReadout('provider:ollama')).toBe('Ollama·····local')
+    expect(nodeReadout('provider:mistral')).toBe('Mistral·····cloud')
+    expect(nodeReadout('extract:article')).toBe('article·····mode on fetch')
+    expect(nodeReadout('verb:invoke')).toBe('invoke·····verb · locked')
+    expect(nodeReadout('gate:fs')).toBe('fs.read / fs.write·····permit gate')
+    expect(nodeReadout('ns:NIKA-SEC')).toBe('NIKA-SEC·····error namespace')
+    expect(nodeReadout('task:digest')).toMatch(/^digest·····infer/)
+    expect(nodeReadout('nope')).toBe(null)
   })
 })

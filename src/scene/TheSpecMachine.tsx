@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-import { SPEC_SECTIONS, type StratumKey } from './spec-machine-data'
+import { MACHINE_NODES, SPEC_SECTIONS, nodeById, type StratumKey } from './spec-machine-data'
 import {
   POSES,
   STRATA_ORDER,
@@ -42,17 +42,84 @@ function Machine({
   litRef,
   poseRef,
   strikeRef,
+  hiRef,
+  onHover,
 }: {
   pointer: React.MutableRefObject<Pointer>
   litRef: React.MutableRefObject<ReadonlySet<StratumKey>>
   poseRef: React.MutableRefObject<MachinePose>
   strikeRef: React.MutableRefObject<number>
+  hiRef: React.MutableRefObject<number>
+  onHover: (id: string | null) => void
 }) {
   const model = useMemo(() => buildSpecMachine(), [])
   const layers = useMemo(() => makeMachineLayers(model), [model])
   useEffect(() => () => layers.dispose(), [layers])
 
   const group = useRef<THREE.Group>(null)
+  const { camera, gl } = useThree()
+
+  /* ── W2 · the pick bus — no raycaster: 78 instance centres projected to
+     screen space, nearest within reach wins (deterministic, trivially cheap).
+     Hover → the node pulses + the page readout/chips light; click → the
+     node's DOM twin via the hash (native :target + the page's smooth law). */
+  useEffect(() => {
+    const el = gl.domElement
+    const v = new THREE.Vector3()
+    const pick = (e: PointerEvent): number => {
+      const g = group.current
+      if (!g) return -1
+      const rect = el.getBoundingClientRect()
+      const px = e.clientX - rect.left
+      const py = e.clientY - rect.top
+      let best = -1
+      let bestD = 26 * 26 /* px² reach */
+      for (let i = 0; i < model.count; i++) {
+        v.set(model.pos[i * 3], model.pos[i * 3 + 1], model.pos[i * 3 + 2])
+        v.applyMatrix4(g.matrixWorld).project(camera)
+        if (v.z > 1) continue
+        const sx = ((v.x + 1) / 2) * rect.width
+        const sy = ((1 - v.y) / 2) * rect.height
+        const d = (sx - px) * (sx - px) + (sy - py) * (sy - py)
+        if (d < bestD) {
+          bestD = d
+          best = i
+        }
+      }
+      return best
+    }
+    const onMove = (e: PointerEvent) => {
+      const i = pick(e)
+      if (i === hiRef.current) return
+      hiRef.current = i
+      el.style.cursor = i >= 0 ? 'pointer' : ''
+      onHover(i >= 0 ? model.nodeIds[i] : null)
+    }
+    const onLeave = () => {
+      if (hiRef.current < 0) return
+      hiRef.current = -1
+      el.style.cursor = ''
+      onHover(null)
+    }
+    const onClick = (e: PointerEvent) => {
+      const i = pick(e)
+      if (i < 0) return
+      const node = nodeById(model.nodeIds[i])
+      if (!node) return
+      /* the hash IS the navigation: native scroll (the page's smooth law),
+         :target lights the row, the address stays shareable */
+      window.location.hash = node.anchor
+    }
+    el.addEventListener('pointermove', onMove, { passive: true })
+    el.addEventListener('pointerleave', onLeave, { passive: true })
+    el.addEventListener('click', onClick as EventListener)
+    return () => {
+      el.removeEventListener('pointermove', onMove)
+      el.removeEventListener('pointerleave', onLeave)
+      el.removeEventListener('click', onClick as EventListener)
+      el.style.cursor = ''
+    }
+  }, [gl, camera, model, hiRef, onHover])
 
   useFrame((state, delta) => {
     const u = layers.uniforms
@@ -60,6 +127,8 @@ function Machine({
     const doc = document.timeline?.currentTime
     u.uTime.value = typeof doc === 'number' ? doc / 1000 : state.clock.elapsedTime
     u.uFade.value = Math.min(1, u.uFade.value + delta * 0.7)
+    /* the hover bus · either side of the page may have written it */
+    u.uHi.value = hiRef.current
 
     /* a pending ignition stamped by the prop effect plays from now */
     if (strikeRef.current >= 0) {
@@ -110,15 +179,28 @@ export default function TheSpecMachine({
   stageRef,
   lit,
   current,
+  highlight = null,
+  onHover = () => {},
 }: {
   stageRef: React.RefObject<HTMLDivElement | null>
   lit: ReadonlySet<StratumKey>
   current: StratumKey | null
+  /** W2 · a node id the DOM side is hovering/focusing (chips · stamp · TOC) */
+  highlight?: string | null
+  /** W2 · the machine's own hover, reported back for the MR readout + chips */
+  onHover?: (id: string | null) => void
 }) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const pointer = useRef<Pointer>({ x: 0, y: 0 })
   const [inView, setInView] = useState(false)
   const [hidden, setHidden] = useState(false)
+
+  /* the hover bus · one slot, either side writes (pick wins on move,
+     the DOM prop wins on change) — the frame loop reads it each frame */
+  const hiRef = useRef(-1)
+  useEffect(() => {
+    hiRef.current = highlight ? MACHINE_NODES.findIndex((n) => n.id === highlight) : -1
+  }, [highlight])
 
   /* dev-only capture override · /spec?pose=sN pins the section pose */
   const devPose = useMemo<StratumKey | null>(() => {
@@ -184,7 +266,14 @@ export default function TheSpecMachine({
         camera={{ fov: 38, near: 0.1, far: 30, position: [0, 0, 4.9] }}
         onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       >
-        <Machine pointer={pointer} litRef={litRef} poseRef={poseRef} strikeRef={strikeRef} />
+        <Machine
+          pointer={pointer}
+          litRef={litRef}
+          poseRef={poseRef}
+          strikeRef={strikeRef}
+          hiRef={hiRef}
+          onHover={onHover}
+        />
       </Canvas>
     </div>
   )
