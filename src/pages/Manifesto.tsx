@@ -4,6 +4,7 @@ import { useHead } from '@unhead/react'
 import { REPO, SPEC, SITE } from '../content'
 import { MANIFESTO_LOCALES, manifestoCopyFor, type MfSeg } from '../content/manifesto-copy'
 import { usePlan3D } from '../sections/morph/use-plan3d'
+import { TheRecord } from '../sections/manifesto/TheRecord'
 
 /* ─── /manifesto · the drum of liberation (v5 theme · F7) ─────────────────────
    Routed at /manifesto (React Router) · the sovereignty manifesto, written the
@@ -370,10 +371,16 @@ export function Component() {
           </div>
         </section>
 
+        {/* ─── §04 · the record · the poem's proof layer (register duality:
+            the prose above carries no number and no vendor · the record below
+            carries ONLY dated primary-sourced facts · see manifesto-record.ts
+            header for the scoped copy law) ─── */}
+        <TheRecord />
+
         {/* ─── the close ─── */}
         <section className="mf-prose mx-auto flex flex-col items-center px-6 pt-20 pb-28 text-center">
           <div className="rv mf-secreg w-full" aria-hidden>
-            <span className="mf-secno">04</span>
+            <span className="mf-secno">05</span>
             <span className="mf-secrule" />
           </div>
           {/* the close keeps its words and links but carries NO butterfly of its

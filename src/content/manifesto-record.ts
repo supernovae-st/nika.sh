@@ -23,6 +23,9 @@
 
 export type Strand = 'cage' | 'drum'
 
+/** the curation date · rendered by the terminus stamp · bump on every append */
+export const RECORD_UPDATED = '2026-07-10'
+
 export type RecEntry = {
   /** stable slug · the deep-link anchor is #rec-<id> */
   id: string
