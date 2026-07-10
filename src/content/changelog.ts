@@ -308,3 +308,4 @@ export function entryDate(e: ChangelogEntry): string {
 export function entryDateTime(e: ChangelogEntry): string {
   return isRelease(e) ? e.date : e.date.slice(0, 7)
 }
+
