@@ -725,7 +725,7 @@ const JA: ManifestoCopy = {
   recordLegend: '支配は灰色のまま。解放だけが光をまとう。',
   recordContinues: '記録は続く',
   recordUpdated: '更新',
-  recordLaw: 'すべての項目に一次資料 · 記憶からは何も書かない',
+  recordLaw: 'すべての項目に一次資料・記憶からは何も書かない',
   linkSpec: '仕様を読む →',
   linkGithub: 'GitHub でスターを →',
   linkBack: '← サイトに戻る',

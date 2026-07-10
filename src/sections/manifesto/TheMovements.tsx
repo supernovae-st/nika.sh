@@ -93,8 +93,8 @@ export function TheMovements({ c }: { c: ManifestoCopy }) {
         <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.realProblem)}</p>
 
         <div className="rv my-8 flex flex-wrap justify-center gap-2.5">
-          {c.stack.map((s) => (
-            <span key={s} className="mf-token">
+          {c.stack.map((s, i) => (
+            <span key={s} className="mf-token" style={{ transitionDelay: `${140 + i * 60}ms` }}>
               {s}
             </span>
           ))}
