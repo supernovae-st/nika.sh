@@ -108,7 +108,16 @@ said otherwise). Each script documents its flags in its own header.
   (content-visibility estimates — resolve selectors at use time) and
   `html { scroll-behavior: smooth }` hijacks bare programmatic
   `scrollTo` (drivers must pass `behavior: 'instant'`).
-- `build-blog.mjs` / `build-errors.mjs` / `build-og-card.mjs` — content
-  compilers (blog markdown → generated module + RSS · error register ·
-  OG cards). Run MANUALLY after editing their sources — the vitest
-  drift gates fail when a generated module is stale.
+- `build-blog.mjs` / `build-errors.mjs` / `build-og-card.mjs` /
+  `build-palette.mjs` — content compilers (blog markdown → generated
+  module + RSS · error register · OG cards · the ⌘K corpus). Run
+  MANUALLY after editing their sources — the vitest drift gates fail
+  when a generated module is stale. Shipping a post touches THREE:
+  build-blog, build-og-card (the new card), build-palette (the corpus
+  lists every post).
+- `e2e-sweep.mjs` — the deep integration belt (console/network clean ·
+  link+anchor integrity · the interaction battery). Gates every PR in
+  CI (gate.yml `deep-belts`). Its law: on a slow environment every
+  one-shot read races a React commit — poll via its `until()` helper
+  and re-trigger the ACTION per attempt (clicks/keys dispatched before
+  hydration are swallowed whole); assert POSITIONS, not deltas.
