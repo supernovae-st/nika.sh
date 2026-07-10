@@ -403,7 +403,7 @@ export function Component() {
             the prose above carries no number and no vendor · the record below
             carries ONLY dated primary-sourced facts · see manifesto-record.ts
             header for the scoped copy law) ─── */}
-        <TheRecord />
+        <TheRecord c={c} />
 
         {/* ─── the close ─── */}
         <section className="mf-prose mx-auto flex flex-col items-center px-6 pt-20 pb-28 text-center">

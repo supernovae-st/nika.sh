@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { RECORD, RECORD_UPDATED, type Strand } from '../../content/manifesto-record'
+import type { ManifestoCopy } from '../../content/manifesto-copy'
 
 /* ─── §05 · THE RECORD · the proof layer (W2) ─────────────────────────────────
    The manifesto's opposite register, by design: sections 01-04 carry the poem
@@ -9,24 +10,12 @@ import { RECORD, RECORD_UPDATED, type Strand } from '../../content/manifesto-rec
    reveal). The score strip up top compresses the whole record into one
    glance: sparse ticks left, dense light right. The crescendo IS the data.
 
-   Copy here is EN-only for now (the record's own technical register); the
-   section FRAME strings move into manifesto-copy.ts ×8 locales in W5.
+   The section FRAME is translated ×8 (manifesto-copy.ts record* keys); the
+   ENTRIES stay EN by design (technical register, like code blocks).
    Interaction: pure-CSS strand filter (data-mrf on the section · exitchat
    pattern), #rec-<id> deep links with :target highlight, IO-gated terminus
    pulse (never loops offscreen). Styles: the mr-* block in index.css. */
 
-const COPY = {
-  kicker: '§ The record',
-  title: 'The manifesto states. The record proves.',
-  intro:
-    'Two lines run through the last three decades. One builds the cage: the letters and laws deciding who may think with what. One beats the drum: ramparts held, weights set free, coalitions forming. Every entry is dated, sourced, and yours to verify.',
-  filterLabel: 'Filter the record',
-  filters: { all: 'all', cage: 'the cage', drum: 'the drum' } as const,
-  legend: 'control advances stay grey. liberation carries the light.',
-  continues: 'the record continues',
-  updated: 'updated',
-  law: 'every entry carries a primary source · nothing from memory',
-}
 
 /* strip geometry · a tick's horizontal seat, 1991 → just past now (pure render
    math, no effect). Month precision is enough for a 28px-tall artifact. */
@@ -38,8 +27,9 @@ const seat = (date: string) => {
   return `${(((t - T0) / (T1 - T0)) * 100).toFixed(2)}%`
 }
 
-export function TheRecord() {
+export function TheRecord({ c }: { c: ManifestoCopy }) {
   const [filter, setFilter] = useState<'all' | Strand>('all')
+  const labels = { all: c.recordFilterAll, cage: c.recordFilterCage, drum: c.recordFilterDrum }
 
   /* the terminus pulse breathes only while on screen (never loops offscreen) */
   const endRef = useRef<HTMLDivElement>(null)
@@ -66,16 +56,16 @@ export function TheRecord() {
       </div>
 
       <p className="rv mono mb-3 text-center text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-        {COPY.kicker}
+        {c.recordKicker}
       </p>
       <h2
         className="rv mb-6 text-center font-semibold tracking-tight text-balance"
         style={{ fontSize: 'clamp(1.7rem, 1rem + 2.4vw, 2.8rem)', lineHeight: 1.06 }}
       >
-        {COPY.title}
+        {c.recordTitle}
       </h2>
       <p className="rv mx-auto mb-12 max-w-[38rem] text-center text-[15px] leading-relaxed text-pretty text-[var(--fg-mute)]">
-        {COPY.intro}
+        {c.recordIntro}
       </p>
 
       {/* the score · every entry a tick, 1991 → now · the crescendo in one glance */}
@@ -92,7 +82,7 @@ export function TheRecord() {
       </div>
 
       {/* the strand filter · one attribute on the section, CSS does the rest */}
-      <div className="rv mt-8 mb-2 flex flex-wrap items-center justify-center gap-2.5" role="group" aria-label={COPY.filterLabel}>
+      <div className="rv mt-8 mb-2 flex flex-wrap items-center justify-center gap-2.5" role="group" aria-label={c.recordFilterLabel}>
         {(['all', 'cage', 'drum'] as const).map((f) => (
           <button
             key={f}
@@ -102,11 +92,11 @@ export function TheRecord() {
             aria-pressed={filter === f}
             onClick={() => setFilter(f)}
           >
-            {COPY.filters[f]}
+            {labels[f]}
           </button>
         ))}
       </div>
-      <p className="rv mono mb-10 text-center text-[11px] text-[var(--fg-dim)]">{COPY.legend}</p>
+      <p className="rv mono mb-10 text-center text-[11px] text-[var(--fg-dim)]">{c.recordLegend}</p>
 
       <ol className="mr-list">
         {RECORD.map((e) => (
@@ -144,11 +134,11 @@ export function TheRecord() {
       <div ref={endRef} className="rv mr-terminus">
         <span className="mr-pulse" aria-hidden />
         <p className="mono text-[12px] text-[var(--fg-dim)]">
-          {COPY.continues} · {COPY.updated} <time dateTime={RECORD_UPDATED}>{RECORD_UPDATED}</time>
+          {c.recordContinues} · {c.recordUpdated} <time dateTime={RECORD_UPDATED}>{RECORD_UPDATED}</time>
         </p>
       </div>
 
-      <p className="rv mono mt-10 text-center text-[11px] text-[var(--fg-dim)]">{COPY.law}</p>
+      <p className="rv mono mt-10 text-center text-[11px] text-[var(--fg-dim)]">{c.recordLaw}</p>
     </section>
   )
 }

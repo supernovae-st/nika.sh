@@ -56,6 +56,14 @@ export const RECORD: RecEntry[] = [
     src: { label: 'EPIC · Clipper Chip archive', href: 'https://archive.epic.org/crypto/clipper/' },
   },
   {
+    id: 'the-web-set-free',
+    date: '1993-04-30',
+    strand: 'drum',
+    title: 'The Web, set free',
+    line: 'CERN puts the World Wide Web software in the public domain. The same year the Clipper Chip ships, the counter-move ships too.',
+    src: { label: 'CERN · the release document', href: 'https://cds.cern.ch/record/1164399?ln=en' },
+  },
+  {
     id: 'retain-everything',
     date: '2006-03-15',
     strand: 'cage',
@@ -127,12 +135,28 @@ export const RECORD: RecEntry[] = [
     },
   },
   {
+    id: 'open-weights-era',
+    date: '2023-09-27',
+    strand: 'drum',
+    title: 'Weights go public',
+    line: 'A European lab releases a frontier-class model as open weights, by magnet link. The era of downloadable intelligence begins in earnest.',
+    src: { label: 'Mistral AI · announcing Mistral 7B', href: 'https://mistral.ai/news/announcing-mistral-7b/' },
+  },
+  {
     id: 'the-spy-clause',
     date: '2023-10-26',
     strand: 'cage',
     title: 'The spy clause',
     line: 'The Online Safety Act keeps a message-scanning power where technically feasible. The key stays in the door.',
     src: { label: 'Online Safety Act 2023', href: 'https://www.legislation.gov.uk/ukpga/2023/50/contents' },
+  },
+  {
+    id: 'intellect-1',
+    date: '2024-11-29',
+    strand: 'drum',
+    title: 'Trained across continents',
+    line: 'The first 10-billion-parameter model trained collaboratively across the globe, over ordinary internet links. Federated frontier training stops being a thesis.',
+    src: { label: 'Prime Intellect · INTELLECT-1 release', href: 'https://www.primeintellect.ai/blog/intellect-1-release' },
   },
   {
     id: 'papers-please',
@@ -228,6 +252,16 @@ export const RECORD: RecEntry[] = [
     },
   },
   {
+    id: 'the-un-names-it',
+    date: '2026-07-06',
+    strand: 'drum',
+    now: true,
+    title: 'The UN names it',
+    line: 'At the first Global Dialogue on AI Governance, the Secretary-General warns: the most advanced systems are concentrated in a handful of companies and countries.',
+    src: { label: 'UN News · 6 July 2026', href: 'https://news.un.org/en/story/2026/07/1167873' },
+    src2: { label: 'Reuters · Geneva', href: 'https://www.reuters.com/technology/un-chief-warns-ai-is-developing-faster-than-rules-can-keep-up-2026-07-06/' },
+  },
+  {
     id: 'the-majority-flips',
     date: '2026-07-09',
     strand: 'cage',
@@ -251,20 +285,7 @@ export const RECORD: RecEntry[] = [
 ]
 
 /* ─── THE BENCH · facts waiting on a verified primary source ───────────────────
-   These are real events that belong in the record, held out until their primary
-   URL is pinned by hand (never guessed). Pin, move up, keep the sort.
+   Pin, move up, keep the sort. Remaining:
 
    linux-just-a-hobby   1991-08-25 · drum · Torvalds announces Linux ("just a
-                        hobby") · pin: comp.os.minix archived post
-   the-web-set-free     1993-04-30 · drum · CERN releases the Web into the
-                        public domain (the same year as the Clipper Chip) ·
-                        pin: CERN document server record
-   open-weights-era     2023 · drum · frontier-class weights go public
-                        (Llama 2 / Mistral 7B) · pin: one primary announcement
-   intellect-1          2024-11 · drum · first 10B model trained across
-                        continents over ordinary internet links · pin: Prime
-                        Intellect primary report
-   the-un-names-it      2026-07-06 · drum · Guterres, in Geneva, at the first
-                        UN Global Dialogue on AI Governance: the most advanced
-                        systems are concentrated in a handful of companies and
-                        countries · pin: Reuters dispatch or UN transcript */
+                        hobby") · pin: a stable comp.os.minix archive URL */
