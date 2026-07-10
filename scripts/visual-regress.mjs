@@ -205,17 +205,49 @@ const fontsGate = async () => {
     await sleep(250)
   }
 }
-await fontsGate()
-/* THE WARM-UP RELOAD · the body face ships font-display: optional — on a
-   COLD profile it can miss its ~100ms block window, load anyway (the gate
-   above reads 'loaded') and never be APPLIED: the whole run shoots in the
-   metric fallback and the first run after a build diffs while re-runs pass
-   (the W20b cold-fonts flake — twice in one day, arc 10). One reload after
-   the first load puts every font in HTTP cache, so it MAKES the block
-   window: cold and warm profiles converge on the same applied state. */
+/* THE APPLIED GATE · the body face ships font-display: optional — on a
+   COLD profile (or a starved main thread · load 20+) it can miss its
+   ~100ms block window, load anyway (fonts.status reads 'loaded') and never
+   be APPLIED: the run shoots in the metric fallback and the hero diffs
+   13.66% while a re-run passes (the W20b cold-fonts flake — arc 10's one
+   blind reload killed the cold-profile case, load starvation still slipped
+   through). 'loaded' is availability; the PIXELS follow application — so
+   PROBE it: a span in the real family against a FOREIGN fallback
+   (monospace — the metric twin is deliberately too close for a width
+   probe). Rejected face → monospace metrics → reload and retry (each load
+   re-decides an optional face; the cache warmed by the first load makes
+   the block window on a healthy attempt). */
+const bodyFaceApplied = () =>
+  evaluate(
+    `(() => {
+      const mk = (ff) => {
+        const s = document.createElement('span')
+        s.style.cssText = 'position:absolute;visibility:hidden;font-size:64px;white-space:nowrap;font-family:' + ff
+        s.textContent = 'The quick brown fox 0123'
+        document.body.appendChild(s)
+        const w = s.getBoundingClientRect().width
+        s.remove()
+        return w
+      }
+      return Math.abs(mk('"Martian Grotesk", monospace') - mk('monospace')) > 4
+    })()`,
+  ).catch(() => false)
+const appliedGate = async () => {
+  await fontsGate()
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    if (await bodyFaceApplied()) return
+    console.error(`fonts: body face loaded but NOT applied — reload ${attempt}/4`)
+    await send('Page.reload')
+    await sleep(4000)
+    await fontsGate()
+  }
+  console.error('fonts: body face still not applied after 4 reloads — shooting anyway')
+}
+/* the first load always reloads once (HTTP-cache warm-up), then the applied
+   probe decides whether more are needed */
 await send('Page.reload')
 await sleep(4000)
-await fontsGate()
+await appliedGate()
 
 async function shootFrame(p) {
   /* body-progress scroll with the c-v re-aim (the W11 harness lesson) */
@@ -256,7 +288,8 @@ for (const f of FRAMES) {
   if (route !== curRoute) {
     await send('Page.navigate', { url: `http://127.0.0.1:${PORT_HTTP}${route}?it=99` })
     await sleep(4000)
-    await fontsGate()
+    /* a navigation is a NEW load — the optional face re-decides there too */
+    await appliedGate()
     curRoute = route
   }
   /* shoot FIRST, skip after — the sequential scroll warm-up is part of the
