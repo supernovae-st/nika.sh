@@ -105,7 +105,7 @@ void main() {
   /* the breath lifts a lit face a whisper (the drum's fill law); at the
      OVERVIEW the faces carry the night-blue plate light — mass reads at a
      distance where hairlines cannot (the engineering-plate look) */
-  col = mix(col, vec3(0.082, 0.142, 0.325), uHero * (0.62 + 0.2 * vLit));
+  col = mix(col, vec3(0.07, 0.12, 0.28), uHero * (0.4 + 0.18 * vLit));
   col += vec3(0.02, 0.034, 0.075) * vPulse * (0.3 + 0.7 * vLit) * (1.0 + uHero * 0.8);
   gl_FragColor = vec4(col, 1.0);
 }
@@ -153,7 +153,7 @@ void main() {
      becomes a visible sweep — the beauty idle. */
   float a = (0.34 + 0.52 * vFacing) * (0.52 + 0.48 * vLit) * (0.3 + 0.7 * vFocusA)
     * (0.86 + (0.5 + 1.15 * uHero) * vPulse) * uFade * vNear
-    * (1.0 + uHero * 0.7 * (1.0 - vLit));
+    * (1.0 + uHero * 0.55 * (1.0 - vLit));
   /* the hovered node pulses over everything (the W2 bus highlight) */
   a = min(a * (1.0 + vHi * 1.4) + vHi * 0.22, 1.0);
   if (a < 0.01) discard;
@@ -200,7 +200,7 @@ uniform float uHero;
 void main() {
   /* the full-wire ghost: at the overview the whole harness reads */
   float a = (0.06 + 0.3 * vLit) * (0.18 + 0.82 * vFocusA) * uFade * vNear
-    * (1.0 + uHero * 1.0);
+    * (1.0 + uHero * 0.6);
   if (a < 0.008) discard;
   vec3 col = mix(vec3(0.086, 0.188, 0.478), vec3(0.31, 0.525, 1.0), vLit);
   gl_FragColor = vec4(col, min(a, 1.0));

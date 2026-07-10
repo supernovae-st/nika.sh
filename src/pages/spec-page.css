@@ -2084,8 +2084,27 @@
     transition: width 0.7s var(--ease-ui, ease), right 0.7s var(--ease-ui, ease), opacity 0.5s ease;
   }
   .spec-rail.is-live .spec-rail-stage {
-    position: static;
+    position: relative;
+    z-index: 1;
     height: 100%;
+  }
+  /* the boarding backdrop · while the ship owns the screen nothing bleeds
+     through: an opaque night field with a faint reactor halo (contrast is
+     what makes the hull crisp — the haze was the page under the canvas) */
+  .spec-rail.is-live::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(105% 80% at 54% 44%, #0b1124 0%, #05060a 68%),
+      #05060a;
+    opacity: 0;
+    transition: opacity 0.55s ease;
+    pointer-events: none;
+  }
+  .spec-rail.is-live[data-stage='full']::before {
+    opacity: 1;
   }
   .spec-rail.is-live .smw,
   .spec-rail.is-live .spec-helm {
@@ -2110,8 +2129,10 @@
     bottom: 22px;
   }
   .spec-rail.is-live[data-stage='hero'] {
-    width: min(54vw, 980px);
-    right: 2vw;
+    /* the copy column ends ≈43vw on every width — the ship owns the rest,
+       never overlapping the title (the text-collision bug) */
+    width: 56vw;
+    right: 0;
   }
   .spec-rail.is-live[data-stage='full'] {
     width: 100vw;
@@ -2127,6 +2148,32 @@
   .spec-rail.is-live[data-stage='off'] .smw,
   .spec-rail.is-live[data-stage='off'] .spec-helm {
     pointer-events: none;
+  }
+}
+
+/* the flight's quiet law · the inspection instruments belong to the DOCK:
+   during the poster and the boarding only the plate + gauge + ship labels
+   speak (the ASSEMBLED tally at 0/8 before reading was pure noise) */
+@media (min-width: 1024px) {
+  .spec-rail.is-live[data-stage='hero'] .spec-helm,
+  .spec-rail.is-live[data-stage='full'] .spec-helm,
+  .spec-rail.is-live[data-stage='hero'] .spec-rail-hud--bl,
+  .spec-rail.is-live[data-stage='full'] .spec-rail-hud--bl,
+  .spec-rail.is-live[data-stage='hero'] .spec-rail-hud--br,
+  .spec-rail.is-live[data-stage='full'] .spec-rail-hud--br {
+    display: none;
+  }
+  /* the hero copy steps aside while the ship takes the screen */
+  .spec-page .spec-hero-copy {
+    transition: opacity 0.4s ease;
+  }
+  .spec-page[data-stage='full'] .spec-hero-copy {
+    opacity: 0;
+  }
+  .spec-page[data-stage='full'] .spec-hero-cue,
+  .spec-page[data-stage='dock'] .spec-hero-cue,
+  .spec-page[data-stage='off'] .spec-hero-cue {
+    visibility: hidden;
   }
 }
 
