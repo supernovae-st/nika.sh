@@ -1,11 +1,13 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
-import { REPO, SPEC, SITE } from '../content'
-import { CANON } from '../canon.generated'
-import { MANIFESTO_LOCALES, manifestoCopyFor, type MfSeg } from '../content/manifesto-copy'
+import { SITE } from '../content'
+import { MANIFESTO_LOCALES, manifestoCopyFor } from '../content/manifesto-copy'
 import { usePlan3D } from '../sections/morph/use-plan3d'
+import { TheMovements } from '../sections/manifesto/TheMovements'
+import { ThePromises } from '../sections/manifesto/ThePromises'
 import { TheRecord } from '../sections/manifesto/TheRecord'
+import { TheClose } from '../sections/manifesto/TheClose'
 
 /* ─── /manifesto · the drum of liberation (v5 theme · F7) ─────────────────────
    Routed at /manifesto (React Router) · the sovereignty manifesto, written the
@@ -24,30 +26,6 @@ import { TheRecord } from '../sections/manifesto/TheRecord'
    CSS drum rings only once actually mounted ([data-drum3d], set by the layer
    itself) — the rings below stay the mobile / reduced-motion / no-WebGL truth. */
 const TheDrumSphere = lazy(() => import('../scene/TheDrumSphere'))
-
-/* inline emphasis renderer · the copy module's segment idiom ({fg} bright,
-   {em} italic) — the manifesto's whole formatting vocabulary. */
-/* E3 · promise receipts · each promise points at its mechanism (the control is
-   the proof, extended to the manifesto). Untranslated product-truth register
-   (like code blocks) · counts DERIVE from the spec canon, never hand-typed. */
-const RECEIPTS = [
-  { t: `${CANON.providers} providers · ${CANON.providersLocal} local`, href: SPEC },
-  { t: 'permits: default-deny', href: SPEC },
-  { t: 'plain YAML · replayable trace', href: SPEC },
-  { t: 'AGPL-3.0-or-later', href: REPO },
-  { t: 'one binary · no daemon', href: REPO },
-]
-
-const seg = (segs: MfSeg[]) =>
-  segs.map((x, i) =>
-    typeof x === 'string' ? (
-      x
-    ) : 'fg' in x ? (
-      <span key={i} className="text-[var(--fg)]">{x.fg}</span>
-    ) : (
-      <em key={i}>{x.em}</em>
-    ),
-  )
 
 export function Component() {
   /* the locale rides the pathname (/manifesto · /fr/… · /es/… · /zh-hans/…) —
@@ -148,58 +126,6 @@ export function Component() {
       if (raf) cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
-    }
-  }, [])
-
-  /* the acid movements (W10c) · the v3 register returns: the manifesto's
-     body warps under FAST scroll and resolves still when the reader settles
-     — instability under haste, clarity at rest (the BeyondChat pattern:
-     scroll-velocity → feDisplacementMap scale, zero re-renders, reduced-
-     motion never references the filter). */
-  const acidRef = useRef<HTMLDivElement>(null)
-  const acidDispRef = useRef<SVGFEDisplacementMapElement>(null)
-  const acidTurbRef = useRef<SVGFETurbulenceElement>(null)
-  const [acid, setAcid] = useState<'off' | 'live'>('off')
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const host = acidRef.current
-    if (!host) return
-    setAcid('live')
-    let onScreen = false
-    let warp = 0
-    let lastY = window.scrollY
-    let raf = 0
-    let wasStill = false
-    const vis = new IntersectionObserver(
-      (es) => {
-        onScreen = es[0]?.isIntersecting ?? false
-        if (onScreen && !raf) raf = requestAnimationFrame(tick)
-      },
-      { threshold: 0 },
-    )
-    vis.observe(host)
-    const tick = () => {
-      const y = window.scrollY
-      const vel = Math.abs(y - lastY)
-      lastY = y
-      warp = Math.max(Math.min(1, vel / 46), warp * 0.87)
-      if (warp < 0.004) warp = 0
-      const still = warp === 0
-      if (!(still && wasStill)) {
-        acidDispRef.current?.setAttribute('scale', (warp * 22).toFixed(2))
-        acidTurbRef.current?.setAttribute(
-          'baseFrequency',
-          `${(0.006 + 0.016 * warp).toFixed(4)} ${(0.006 + 0.016 * warp).toFixed(4)}`,
-        )
-      }
-      wasStill = still
-      raf = onScreen || warp > 0 ? requestAnimationFrame(tick) : 0
-    }
-    raf = requestAnimationFrame(tick)
-    return () => {
-      cancelAnimationFrame(raf)
-      vis.disconnect()
     }
   }, [])
 
@@ -312,92 +238,11 @@ export function Component() {
           <p className="rv mt-5 text-[19px] font-medium text-[var(--fg)]">{c.lore2}</p>
         </section>
 
-        {/* the acid filter · inert until data-acid=live (motion-gated above) */}
-        <svg width="0" height="0" aria-hidden focusable="false" style={{ position: 'absolute' }}>
-          <filter id="mf-acid-warp" x="-8%" y="-8%" width="116%" height="116%" colorInterpolationFilters="sRGB">
-            <feTurbulence ref={acidTurbRef} type="fractalNoise" baseFrequency="0.006 0.006" numOctaves={2} seed={11} result="noise" />
-            <feDisplacementMap ref={acidDispRef} in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </svg>
+        {/* ─── §02 · the movements (extracted · sections/manifesto/TheMovements) ─── */}
+        <TheMovements c={c} />
 
-        {/* ─── the movements · scroll-revealed prose + big statements — the
-            acid layer: unstable under fast scroll, still when read ─── */}
-        <div ref={acidRef} data-acid={acid} className="mf-acid mf-prose mx-auto px-6 pt-14 pb-16">
-          <div className="rv mf-secreg" aria-hidden>
-            <span className="mf-secno">02</span>
-            <span className="mf-secrule" />
-          </div>
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.friday)}</p>
-
-          <p className="rv mf-statement mf-grad mf-pull my-20">{c.statement1}</p>
-
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.realProblem)}</p>
-
-          <div className="rv my-8 flex flex-wrap justify-center gap-2.5">
-            {c.stack.map((s) => (
-              <span key={s} className="mf-token">
-                {s}
-              </span>
-            ))}
-          </div>
-
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.rented)}</p>
-
-          <p className="rv mf-statement mf-grad mf-pull my-20">{c.statement2}</p>
-
-          <p className="rv text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.agent)}</p>
-
-          <p className="rv mt-8 text-[17.5px] leading-relaxed text-[var(--fg-mute)]">{seg(c.openSource)}</p>
-
-          <p className="rv mf-statement mf-grad mf-pull my-20">{c.statement3}</p>
-        </div>
-
-        {/* ─── the 5 promises · seam-kit panels ─── */}
-        <section className="mx-auto max-w-5xl px-6 pt-20 pb-24">
-          <div className="rv mf-secreg" aria-hidden>
-            <span className="mf-secno">03</span>
-            <span className="mf-secrule" />
-          </div>
-          <p className="rv mono mb-3 text-center text-[12px] tracking-[0.28em] text-[var(--cyan)] uppercase">
-            {c.promisesKicker}
-          </p>
-          <h2
-            className="rv mb-12 text-center font-semibold tracking-tight"
-            style={{ fontSize: 'clamp(1.7rem, 1rem + 2.4vw, 2.8rem)', lineHeight: 1.06 }}
-          >
-            {c.promisesTitle}
-          </h2>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {c.promises.map((p, i) => (
-              <div
-                key={p.n}
-                className="rv mf-promise px-7 py-7"
-                style={{ transitionDelay: `${i * 70}ms` }}
-              >
-                <span className="mf-promise-hud" aria-hidden />
-                <div className="mf-promise-reg">
-                  <p className="mf-pn">{p.n}</p>
-                  <span className="mf-promise-rule" aria-hidden />
-                  <span className="mf-promise-tag" aria-hidden>
-                    promise
-                  </span>
-                </div>
-                <h3 className="mb-2.5 text-[18px] font-semibold text-[var(--fg)]">{p.t}</h3>
-                <p className="text-[14.5px] leading-relaxed text-[var(--fg-mute)]">{p.d}</p>
-                {RECEIPTS[i] ? (
-                  <a
-                    href={RECEIPTS[i].href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mono mt-4 inline-block text-[11px] text-[var(--fg-dim)] transition-colors hover:text-[var(--cyan)]"
-                  >
-                    {RECEIPTS[i].t} ↗
-                  </a>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* ─── §03 · the promises + receipts (extracted · sections/manifesto/ThePromises) ─── */}
+        <ThePromises c={c} />
 
         {/* ─── §04 · the record · the poem's proof layer (register duality:
             the prose above carries no number and no vendor · the record below
@@ -405,45 +250,8 @@ export function Component() {
             header for the scoped copy law) ─── */}
         <TheRecord c={c} />
 
-        {/* ─── the close ─── */}
-        <section className="mf-prose mx-auto flex flex-col items-center px-6 pt-20 pb-28 text-center">
-          <div className="rv mf-secreg w-full" aria-hidden>
-            <span className="mf-secno">05</span>
-            <span className="mf-secrule" />
-          </div>
-          {/* the close keeps its words and links but carries NO butterfly of its
-              own: the shared SiteFooter's living particle butterfly right below
-              is THE mark (one signature, one close · the double-footer fix) */}
-          <p className="rv mf-statement mf-grad mb-10">
-            {c.close[0]}
-            <br />
-            {c.close[1]}
-          </p>
-          <p className="rv mono mt-2 text-[13px] tracking-[0.04em] text-[var(--cyan)]">
-            {c.drumline}
-          </p>
-          <div className="rv mono mt-10 flex flex-wrap items-center justify-center gap-6 text-[12.5px]">
-            <a
-              href={SPEC}
-              target="_blank"
-              rel="noreferrer"
-              className="text-[var(--cyan)] transition-colors hover:text-[var(--fg)]"
-            >
-              {c.linkSpec}
-            </a>
-            <a
-              href={REPO}
-              target="_blank"
-              rel="noreferrer"
-              className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]"
-            >
-              {c.linkGithub}
-            </a>
-            <Link to="/" className="text-[var(--fg-mute)] transition-colors hover:text-[var(--fg)]">
-              {c.linkBack}
-            </Link>
-          </div>
-        </section>
+        {/* ─── §05 · the close (extracted · sections/manifesto/TheClose) ─── */}
+        <TheClose c={c} />
 
       </main>
     </div>
