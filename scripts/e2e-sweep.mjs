@@ -224,7 +224,20 @@ for (const [href, froms] of links) {
   }
   if (hash) {
     const ids = idsByRoute.get(target)
-    if (ids && !ids.has(hash)) { fail(froms[0], 'dead anchor', `${href} (no #${hash} on ${target})`); linkFails++ }
+    if (ids && !ids.has(hash)) {
+      /* VERIFY before failing: the PASS-1 id harvest is one snapshot and a
+         heavy page (the /spec machine) hydrates its sections late on a slow
+         runner — 6 phantom "dead anchors" on a 2-core CI runner while a fast
+         local run saw them all. Re-visit the target and POLL for the id. */
+      await send('Page.navigate', { url: `${BASE}${target}` })
+      let live = false
+      for (let i = 0; i < 20 && !live; i++) {
+        await sleep(400)
+        live = await evaluate(`!!document.getElementById(${JSON.stringify(hash)})`).catch(() => false)
+      }
+      if (live) { ids.add(hash) /* future hrefs to the same anchor skip the re-visit */ }
+      else { fail(froms[0], 'dead anchor', `${href} (no #${hash} on ${target})`); linkFails++ }
+    }
   }
 }
 if (linkFails === 0) console.log(`  ✓ ${links.size} internal links resolve (anchors included)`)
@@ -281,24 +294,32 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
      logic must see a primary pointer; the drag path calls seek() → scrollTo
      directly (no self-chaining rAF), so it works headless. Assert on the
      SCROLL position (the store) — --morph-p follows via a one-shot rAF that
-     may lag a beat under swiftshader. */
-  const r = await evaluate(`(() => {
-    const track = document.querySelector('.morph-track')
-    const tr = track.getBoundingClientRect()
-    const y0 = window.scrollY
-    const base = { clientY: tr.top + tr.height / 2, bubbles: true, pointerId: 7, isPrimary: true, pointerType: 'mouse', button: 0, buttons: 1 }
-    track.dispatchEvent(new PointerEvent('pointerdown', { ...base, clientX: tr.left + tr.width * 0.98 }))
-    track.dispatchEvent(new PointerEvent('pointermove', { ...base, clientX: tr.left + tr.width * 0.3 }))
-    track.dispatchEvent(new PointerEvent('pointerup', { ...base, clientX: tr.left + tr.width * 0.3, buttons: 0 }))
-    return new Promise((res) => setTimeout(() => {
-      const s = document.querySelector('.morphsec')
-      const r2 = s.getBoundingClientRect()
-      const runway = r2.height - document.querySelector('.morph-stage').offsetHeight
-      const p = -r2.top / runway
-      res({ moved: Math.abs(window.scrollY - y0) > 100, p: +p.toFixed(3), dy: Math.round(window.scrollY - y0) })
-    }, 500))
-  })()`)
-  return (r.moved && r.p > 0.2 && r.p < 0.4) || r
+     may lag a beat under swiftshader. RETRIED ×3: the pointer handler is
+     attached during hydration and a starved runner can miss the first
+     attempt entirely (dy:0 — flipped between two CI runs); a real break
+     fails all three. */
+  let r
+  for (let attempt = 0; attempt < 3; attempt++) {
+    r = await evaluate(`(() => {
+      const track = document.querySelector('.morph-track')
+      const tr = track.getBoundingClientRect()
+      const y0 = window.scrollY
+      const base = { clientY: tr.top + tr.height / 2, bubbles: true, pointerId: 7, isPrimary: true, pointerType: 'mouse', button: 0, buttons: 1 }
+      track.dispatchEvent(new PointerEvent('pointerdown', { ...base, clientX: tr.left + tr.width * 0.98 }))
+      track.dispatchEvent(new PointerEvent('pointermove', { ...base, clientX: tr.left + tr.width * 0.3 }))
+      track.dispatchEvent(new PointerEvent('pointerup', { ...base, clientX: tr.left + tr.width * 0.3, buttons: 0 }))
+      return new Promise((res) => setTimeout(() => {
+        const s = document.querySelector('.morphsec')
+        const r2 = s.getBoundingClientRect()
+        const runway = r2.height - document.querySelector('.morph-stage').offsetHeight
+        const p = -r2.top / runway
+        res({ moved: Math.abs(window.scrollY - y0) > 100, p: +p.toFixed(3), dy: Math.round(window.scrollY - y0) })
+      }, 500))
+    })()`)
+    if (r.moved && r.p > 0.2 && r.p < 0.4) return true
+    await sleep(1500)
+  }
+  return r
 })
 
 /* 3b · the ?y= share round-trip · 3a proved ENCODE (the handoff href);
