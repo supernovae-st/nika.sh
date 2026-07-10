@@ -61,11 +61,33 @@
   background: transparent;
   border: 1px solid transparent;
   box-shadow: none;
+  /* THE FLUID GLASS LAW (arc 10f) · backdrop-filter is NOT in this list.
+     Transitioning a blur re-rasterizes the backdrop on every frame of the
+     0.32s arrival — the one non-compositor animation on the scroll path,
+     firing exactly while the page is busy scrolling. The blur lives on the
+     ::below layer at a CONSTANT radius and only its OPACITY fades
+     (compositor-only). The floor arrives a touch faster than the height
+     compression (0.26 vs 0.36): the capsule sets its glass down, then
+     settles — an orchestrated arrival, not one mechanical block. */
   transition:
-    background-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    backdrop-filter 0.32s ease;
+    background-color 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* the GLASS · a dedicated backdrop layer under the capsule's own floor
+   (negative z paints it behind the background's stacking slot; the blur
+   reads the page beneath either way). Constant blur — only opacity moves. */
+.v4nav-capsule::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(14px) saturate(1.35);
+  backdrop-filter: blur(14px) saturate(1.35);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 @media (min-width: 720px) {
   .v4nav-capsule {
@@ -77,12 +99,13 @@
      translucent enough that the blur reads as machined glass, not paint */
   background: rgb(10 13 18 / 0.92);
   border-color: var(--seam-hairline);
-  backdrop-filter: blur(14px) saturate(1.35);
-  -webkit-backdrop-filter: blur(14px) saturate(1.35);
   box-shadow:
     var(--seam-highlight),
     0 1px 2px rgb(0 0 0 / 0.32),
     0 16px 40px -20px rgb(0 0 0 / 0.55);
+}
+.v4nav[data-solid='true'] .v4nav-capsule::after {
+  opacity: 1;
 }
 /* compression · once the page is in motion the float shadow pulls in tight
    (the capsule sits closer to the content it now shares the viewport with) */
@@ -114,7 +137,9 @@
      a notch in landscape, and the row always fits a 390px viewport. */
   padding-left: max(20px, env(safe-area-inset-left));
   padding-right: max(20px, env(safe-area-inset-right));
-  transition: height 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  /* the compression trails the floor by design (0.36 vs 0.26 · the fluid
+     glass law above) — the capsule lands, then settles tighter */
+  transition: height 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .v4nav[data-scrolled='true'] .v4nav-row {
   height: 56px;
