@@ -156,16 +156,33 @@
   text-wrap: pretty;
 }
 
-/* ── the workflow grid · two columns on wide, one on narrow ──────────────────*/
+/* ── the workflow list · ONE at a time (arc 11) — every workflow is a
+   full-width presentation, never a masonry cell: the reader meets each file
+   whole (header → file | plan → outcome), the way the film presents THE
+   flagship. ──────────────────────────────────────────────────────────────*/
 .ucp-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 22px;
 }
-@media (min-width: 880px) {
-  .ucp-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
+
+/* the card's body · the film's closing-frame composition (file LEFT · the
+   plan RIGHT) on wide screens; stacked file-then-plan on narrow (the film's
+   own reading order) */
+.ucp-wf-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .ucp-wf-body {
+    grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+    gap: 20px;
+  }
+  .ucp-wf-aside {
+    position: sticky;
+    top: 96px;
   }
 }
 
@@ -544,127 +561,6 @@
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
 }
-.ucp-dag-flow {
-  display: flex;
-  align-items: stretch;
-  gap: 0;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  padding-bottom: 4px;
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in oklch, var(--v4-text) 14%, transparent) transparent;
-}
-/* keyboard scroll well (tab stop only while overflowing — use-scroll-well) */
-.ucp-dag-flow:focus-visible {
-  outline: 1px solid var(--focus-ring);
-  outline-offset: -1px;
-}
-.ucp-dag-flow::-webkit-scrollbar {
-  height: 6px;
-}
-.ucp-dag-flow::-webkit-scrollbar-thumb {
-  background: color-mix(in oklch, var(--v4-text) 14%, transparent);
-  border-radius: var(--v4-radius);
-}
-.ucp-dag-wave {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0;
-  flex: 0 0 auto;
-}
-.ucp-dag-wave-n {
-  position: absolute;
-  top: -2px;
-  left: 0;
-  font-size: 8.5px;
-  letter-spacing: 0.1em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-.ucp-dag-nodes {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 12px 6px 2px;
-}
-.ucp-dag-node {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 9px 4px 6px;
-  border: 1px solid color-mix(in oklch, var(--vh) 28%, var(--v4-line));
-  border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--vh) 7%, var(--v4-bg-raised));
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: -0.005em;
-  color: var(--v4-text);
-  white-space: nowrap;
-}
-.ucp-dag-node--when {
-  border-style: dashed;
-}
-.ucp-dag-node--always {
-  border-style: dotted;
-}
-.ucp-dag-node-glyph {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: color-mix(in oklch, var(--vh) 18%, transparent);
-  color: var(--vh);
-  font-size: 9.5px;
-  line-height: 1;
-}
-.ucp-dag-node-id {
-  color: var(--v4-text-dim);
-}
-.ucp-dag-arrow {
-  flex: 0 0 auto;
-  align-self: center;
-  margin-top: 10px;
-  padding: 0 4px;
-  font-family: var(--mono);
-  font-size: 15px;
-  color: var(--v4-text-faint);
-}
-.ucp-dag-legend {
-  margin-top: 11px;
-  padding-top: 10px;
-  border-top: 1px solid var(--v4-line);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  color: var(--v4-text-dim);
-}
-.ucp-dag-legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.ucp-dag-legend-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--vh);
-}
-.ucp-dag-legend-ring {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1px dashed var(--v4-text-dim);
-}
-.ucp-dag-legend-item--gate {
-  color: var(--v4-text-faint);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .ucp-stamp-cell,
   .ucp-wf-hud-mark {

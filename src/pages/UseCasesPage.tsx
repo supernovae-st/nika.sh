@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRevealOnce } from '../sections/use-reveal-once'
-import { useScrollWellTab } from '../lib/use-scroll-well'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CodeFile } from '../components/CodeFile'
 import { CountUp } from '../components/CountUp'
+import { PlanMap } from '../components/PlanMap'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
 import { SHOWCASE_YAML, SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
@@ -225,27 +225,15 @@ const PERSONAS: Persona[] = [
   },
 ]
 
-/* ─── the plan strip · « the plan — tasks and what they wait on », drawn ──────
-   Reads the projected SHOWCASE_DAG (tasks · verb · deps · wave · gate) for a
-   slug and lays the tasks out by topological WAVE — each column is "what runs
-   together". Every node is a verb-hued dot with the canonical glyph; a `when`
-   gate gets a dashed ring, an `always` gate a dotted one. Pure CSS grid —
-   SSR-static, no measurement, no JS. The truth (verb · wave · gate) is
-   projected; only the layout is craft. Falls back to null if a slug has no DAG. */
+/* ─── the plan · rendered in THE plan language (arc 11) ───────────────────────
+   The film (home 01) teaches the site's one grammar for a plan — slab cards
+   in captioned wave columns. This page used to speak its own dialect
+   (verb-hued pill-dots + bare wave digits + a legend); it now renders the
+   shared <PlanMap/> so a reader who scrolled the film reads every showcase
+   plan on sight. Truth (verb · wave · gate · gloss) stays projected. */
 function WorkflowDag({ slug }: { slug: string }) {
   const dag = SHOWCASE_DAG[slug]
-  /* long chains (T3/T4) overflow the card — the well earns its tab stop */
-  const flowRef = useRef<HTMLDivElement>(null)
-  useScrollWellTab(flowRef, slug)
   if (!dag || dag.tasks.length === 0) return null
-
-  // bucket tasks by wave, preserving declared order within a wave.
-  const columns: (typeof dag.tasks)[] = Array.from({ length: dag.waves }, () => [])
-  for (const t of dag.tasks) {
-    ;(columns[t.wave] ?? columns[columns.length - 1]).push(t)
-  }
-  const verbsUsed = Array.from(new Set(dag.tasks.map((t) => t.verb))) as NikaVerb[]
-
   return (
     <figure
       className="ucp-dag"
@@ -257,49 +245,7 @@ function WorkflowDag({ slug }: { slug: string }) {
           {dag.tasks.length} tasks · {dag.waves} {dag.waves === 1 ? 'step' : 'steps'}
         </span>
       </figcaption>
-      <div ref={flowRef} className="ucp-dag-flow" role="group" aria-label="plan diagram">
-        {columns.map((col, ci) => (
-          <div className="ucp-dag-wave" key={ci}>
-            <span className="ucp-dag-wave-n mono" aria-hidden>
-              {ci}
-            </span>
-            <div className="ucp-dag-nodes">
-              {col.map((t) => (
-                <span
-                  key={t.id}
-                  className={`ucp-dag-node ucp-dag-node--${t.gate}`}
-                  style={{ ['--vh' as string]: VERB_HUE[t.verb as NikaVerb] }}
-                  title={`${t.id} · ${t.verb}${t.gate !== 'default' ? ` · ${t.gate}` : ''}`}
-                >
-                  <span className="ucp-dag-node-glyph" aria-hidden>
-                    {verbGlyph(t.verb)}
-                  </span>
-                  <span className="ucp-dag-node-id">{t.id}</span>
-                </span>
-              ))}
-            </div>
-            {ci < columns.length - 1 ? (
-              <span className="ucp-dag-arrow" aria-hidden>
-                ›
-              </span>
-            ) : null}
-          </div>
-        ))}
-      </div>
-      <div className="ucp-dag-legend" aria-hidden>
-        {verbsUsed.map((v) => (
-          <span key={v} className="ucp-dag-legend-item" style={{ ['--vh' as string]: VERB_HUE[v] }}>
-            <span className="ucp-dag-legend-dot" />
-            {v}
-          </span>
-        ))}
-        {dag.tasks.some((t) => t.gate === 'when') ? (
-          <span className="ucp-dag-legend-item ucp-dag-legend-item--gate">
-            <span className="ucp-dag-legend-ring" />
-            conditional
-          </span>
-        ) : null}
-      </div>
+      <PlanMap tasks={dag.tasks} waves={dag.waves} well={slug} />
     </figure>
   )
 }
@@ -341,32 +287,39 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
         ))}
       </span>
 
-      {/* the plan · tasks and what they wait on (projected · never hand-drawn) */}
-      <WorkflowDag slug={uc.slug} />
-
-      <div className="ucp-wf-file">
-        <div className="ucp-wf-filemeta">
-          <span className="ucp-wf-filename">
-            <span aria-hidden className="ucp-wf-prompt">
-              ❯{' '}
+      {/* the film's closing-frame composition, echoed (arc 11): the FILE on
+          the left, THE PLAN on the right — one workflow, presented whole.
+          On small screens the file leads and the plan follows (the film's
+          own reading order). */}
+      <div className="ucp-wf-body">
+        <div className="ucp-wf-file">
+          <div className="ucp-wf-filemeta">
+            <span className="ucp-wf-filename">
+              <span aria-hidden className="ucp-wf-prompt">
+                ❯{' '}
+              </span>
+              <b>{fileFor(uc)}</b>
             </span>
-            <b>{fileFor(uc)}</b>
-          </span>
-          <a className="ucp-wf-walk" href={docsFor(uc)} target="_blank" rel="noreferrer">
-            walkthrough ↗
-          </a>
+            <a className="ucp-wf-walk" href={docsFor(uc)} target="_blank" rel="noreferrer">
+              walkthrough ↗
+            </a>
+          </div>
+          <div className="ucp-wf-code">
+            <CodeFile yaml={yaml} wrap tips />
+          </div>
         </div>
-        <div className="ucp-wf-code">
-          <CodeFile yaml={yaml} wrap tips />
+
+        <div className="ucp-wf-aside">
+          {/* the plan · tasks and what they wait on (projected · never hand-drawn) */}
+          <WorkflowDag slug={uc.slug} />
+          <p className="ucp-wf-outcome">
+            <span className="ucp-arrow" aria-hidden>
+              →
+            </span>
+            {uc.outcome}
+          </p>
         </div>
       </div>
-
-      <p className="ucp-wf-outcome">
-        <span className="ucp-arrow" aria-hidden>
-          →
-        </span>
-        {uc.outcome}
-      </p>
     </article>
   )
 }
