@@ -872,10 +872,10 @@ h1, h2 { font-family: var(--headline); }
   width: 1px;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--cyan) 30%, transparent),
-    var(--hair) 22%,
-    var(--hair) 78%,
-    color-mix(in srgb, var(--cyan) 30%, transparent)
+    color-mix(in srgb, var(--cyan) 42%, transparent),
+    color-mix(in srgb, var(--fg-dim) 34%, transparent) 22%,
+    color-mix(in srgb, var(--fg-dim) 34%, transparent) 78%,
+    color-mix(in srgb, var(--cyan) 42%, transparent)
   );
 }
 /* the two-strand filter · one attribute, zero JS beyond the toggle */
