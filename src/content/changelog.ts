@@ -48,6 +48,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-07-10',
     tag: 'site',
+    title: 'nika.sh v4.9 · the spec ship',
+    body: 'The spec machine becomes a vessel. The strata leave the disc and take stations along a spine, read bow to stern: the bridge (the plan), the reactor core (four verbs), one great habitat ring braced by four spokes (the permits boundary every outbound run crosses), the hold (the standard library in five family arcs), the antenna array (nine extract ports off fetch), the engine block (five local nozzles docked on the spine, ten cloud outboard, one mock dim) and the shield skirt (fourteen typed-error plates) — and the keel is the envelope itself, its ten keys the spine segments everything mounts on. The drum of liberation lends its heartbeat: a 2.4-second breath sails the hull bow to stern while the reading ignites each station in turn, one exact revolution from opening frame to lit close. The page becomes its engineering plate: the ship rides beside the title from the first paint, labelled by leader lines that carry real counts, over a protocol plate, an honest family microchart and a nine-chip index that tracks the reading. And it answers the hand now: drag to orbit (it springs home), wheel to zoom, one button to explode the drawing apart along the spine — the wires stretch, still connected.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.9.0',
+  },
+  {
+    date: '2026-07-10',
+    tag: 'site',
     title: 'nika.sh v4.8 · the spec machine',
     body: 'The language reference becomes an instrument you read with. /spec splits into a measured ledger and a sticky rail where the whole language stands as one concentric machine: the four-verb core, the plan ring, the gate collar, the tool belt, the fetch manifold, the provider halo, the containment shell — every block derived from the spec canon, spoken in the site’s wire-blue ink. The reading assembles it: each section you cross ignites its stratum, the TOC ticks fill, and the HUD keeps the tally until the whole contract stands lit, one full revolution later. Every node answers the pointer — hover reads it out, click lands on its row — and every chip, stamp cell and TOC pill lights its block back. Phones, reduced motion and no-WebGL keep a designed 2D floor plan of the same machine, lit by the same reading. The optional envelope keys and task controls fold behind native disclosures, and a counted drift dies: chart and image_fx take their real families, the family count derives forever.',
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.8.0',
