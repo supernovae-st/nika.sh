@@ -48,6 +48,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-07-10',
     tag: 'site',
+    title: 'nika.sh v4.11 · the ship wears its colours',
+    body: 'The spec vessel becomes the voyage it promised. It arrives whole and coloured — the permits ring in boundary orange, the standard-library hold and extract array in tool cyan, the provider engines in model blue, the error shield in agent violet, the envelope keel in the struck blue — turning on its own against a swept starfield, no labels, just the shape. The reading docks it deck by deck; past the last section the finale hands it the whole width, every stratum lit, every station labelled from its plate slot. The wheel never fights the page (zoom moved to ctrl+wheel), a flick of the drag now coasts with real weight, and the exploded drawing pulls the camera back so it always fits. The share card and the phone poster carry the same coloured elevation, extracted from the page itself. And the home\u2019s wayfinding rail goes site-wide: every page with sections gets its ruler, the spec\u2019s S-blocks included.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.11.0',
+  },
+  {
+    date: '2026-07-10',
+    tag: 'site',
     title: 'nika.sh v4.10 · one plan language',
     body: 'The film taught the grammar; now every plan on the site speaks it. A shared PlanMap carries the film’s flat map verbatim — the slab card with its verb-hued inset, the wave captions in the film’s own words, the hairline chevron on every wire — and /use-cases, the home gallery and /play’s live plan all draw the same object the film flattens into. Plans that outgrow their column scroll inside their own well, keyboard included, on every surface. The journal earns its register filter: deep-linkable, counts derived from the posts themselves, issue numbers absolute under any view. Two engine-truth posts land from live proof sessions: kill -9 a run and resume it (finished work never runs twice), and the approval gate as a task — fails closed headless, the human’s answer rides the resume, a refusal is a run that worked. And a long-lived ghost dies on the way out: the hero’s background field could lose its GL init for a whole session and composite blank — a watchdog now remounts it until the first frame paints, on the site and in the golden harness both.',
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.10.0',
