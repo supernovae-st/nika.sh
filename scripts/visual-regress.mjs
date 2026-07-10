@@ -25,7 +25,7 @@
    counting as a diff. */
 import { execFile } from 'node:child_process'
 import { createServer } from 'node:http'
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { PNG } from 'pngjs'
 import pixelmatch from 'pixelmatch'
@@ -78,6 +78,12 @@ const FRAMES = [
   { name: 'home-p084', p: 0.84 },
   { name: 'home-p096', p: 0.96 },
   { name: 'home-footer', p: 1 },
+  /* the manifesto joins the gate (v4.7 · the record) — shot in the same
+     reduced-motion register: the record's VERTICAL truth (the stage never
+     mounts under reduce), reveals instant, spine/strip/i18n frame all
+     pixel-guarded. Route-aware frames navigate once, then shoot. */
+  { name: 'manifesto-record', route: '/manifesto', p: 0.62 },
+  { name: 'manifesto-close', route: '/manifesto', p: 0.84 },
 ]
 
 /* ── static file server (no python dependency in CI) ─────────────────────── */
@@ -96,6 +102,8 @@ const MIME = {
 const server = createServer((req, res) => {
   const path = (req.url ?? '/').split('?')[0]
   let file = join('dist', path === '/' ? 'index.html' : path)
+  /* SSG routes are directories (dist/manifesto/index.html) — resolve them */
+  if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html')
   if (!existsSync(file)) file = 'dist/index.html' /* SPA fallback */
   try {
     const body = readFileSync(file)
@@ -242,7 +250,15 @@ if (ONLY) {
 }
 
 let failures = 0
+let curRoute = '/'
 for (const f of FRAMES) {
+  const route = f.route ?? '/'
+  if (route !== curRoute) {
+    await send('Page.navigate', { url: `http://127.0.0.1:${PORT_HTTP}${route}?it=99` })
+    await sleep(4000)
+    await fontsGate()
+    curRoute = route
+  }
   /* shoot FIRST, skip after — the sequential scroll warm-up is part of the
      measurement (see the --only note above) */
   let buf = await shootFrame(f.p)

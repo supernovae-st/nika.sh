@@ -18,6 +18,10 @@ on:
         description: 'Re-bake the Linux goldens and commit them'
         type: boolean
         default: false
+      only:
+        description: 'Scope the re-bake to specific frame names (comma-separated) — the W20b law: never commit a byte-only full re-bake'
+        required: false
+        type: string
 
 jobs:
   compare:
@@ -83,7 +87,8 @@ jobs:
       - name: bake goldens
         env:
           CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
-        run: node scripts/visual-regress.mjs --update
+          ONLY: ${{ inputs.only }}
+        run: node scripts/visual-regress.mjs --update ${ONLY:+--only "$ONLY"}
       - name: commit goldens
         run: |
           git config user.name "nika-visual-bot"
