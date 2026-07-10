@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "visual": "node scripts/visual-regress.mjs",
     "visual:update": "node scripts/visual-regress.mjs --update",
-    "icons": "node design/build.mjs"
+    "icons": "node design/build.mjs",
+    "links:record": "node scripts/check-record-links.mjs"
   },
   "dependencies": {
     "@codemirror/lang-yaml": "^6.1.3",
