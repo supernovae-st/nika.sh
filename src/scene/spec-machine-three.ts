@@ -71,8 +71,10 @@ vec3 machineVertex(vec3 p) {
   vTint = iTint;
   /* the highlighted node (W2 wiring · hover on either side of the bus) */
   vHi = step(abs(iId - uHi), 0.25);
-  /* the struck stratum swells on its ignition beat, then settles lit */
-  float hit = strikeEnv() * step(abs(iSeed.x - uStrikeStratum), 0.25);
+  /* the struck stratum swells on its ignition beat, then settles lit —
+     the ASSEMBLED surge (uStrikeStratum = -2) swells the whole ship */
+  float mAll = step(uStrikeStratum, -1.5);
+  float hit = strikeEnv() * max(mAll, step(abs(iSeed.x - uStrikeStratum), 0.25));
   float breath = breathEnv();
   vPulse = breath + hit;
   vec3 s = iScale * (1.0 + hit * 0.16 + breath * 0.05 + vLit * 0.02 + vHi * 0.06);
@@ -170,6 +172,9 @@ void main() {
 /* the wire harness · per-vertex stratum seed, static positions */
 const WIRE_VERT = /* glsl */ `
 attribute float aSeed;
+attribute float aT;
+attribute float aFrom;
+attribute float aTo;
 uniform float uExplode;
 uniform float uLit[${N_STRATA}];
 uniform float uFocusA[${N_STRATA}];
@@ -177,12 +182,18 @@ uniform float uExplodeOff[${N_STRATA}];
 varying float vLit;
 varying float vFocusA;
 varying float vNear;
+varying float vT;
+varying float vFrom;
+varying float vTo;
 void main() {
   /* per-ENDPOINT stratum: the wire gradient-lights between its two strata
      and STRETCHES connected under the axial explode */
   int si = int(aSeed + 0.5);
   vLit = uLit[si];
   vFocusA = uFocusA[si];
+  vT = aT;
+  vFrom = aFrom;
+  vTo = aTo;
   vec3 p = position;
   p.x += uExplodeOff[si] * uExplode;
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
@@ -195,15 +206,73 @@ precision mediump float;
 varying float vLit;
 varying float vFocusA;
 varying float vNear;
+varying float vT;
+varying float vFrom;
+varying float vTo;
 uniform float uFade;
 uniform float uHero;
+uniform highp float uTime;
+uniform float uStrike;
+uniform float uStrikeStratum;
 void main() {
   /* the full-wire ghost: at the overview the whole harness reads */
   float a = (0.06 + 0.3 * vLit) * (0.18 + 0.82 * vFocusA) * uFade * vNear
     * (1.0 + uHero * 0.6);
-  if (a < 0.008) discard;
   vec3 col = mix(vec3(0.086, 0.188, 0.478), vec3(0.31, 0.525, 1.0), vLit);
-  gl_FragColor = vec4(col, min(a, 1.0));
+  /* THE IGNITION PULSE · when a stratum strikes, its energy TRAVELS the
+     harness (the film's ignite-pulse law): a bright front sweeps from the
+     striking end toward the other, decaying over the beat. The ASSEMBLED
+     surge (uStrikeStratum = -2) fires every wire at once. */
+  float t = max(uTime - uStrike, 0.0);
+  float all = step(uStrikeStratum, -1.5);
+  float mFrom = max(all, 1.0 - step(0.25, abs(vFrom - uStrikeStratum)));
+  float mTo = max(all, 1.0 - step(0.25, abs(vTo - uStrikeStratum)));
+  float front = t * 1.5;
+  float d = min(
+    mFrom > 0.5 ? abs(vT - front) : 1e3,
+    mTo > 0.5 ? abs((1.0 - vT) - front) : 1e3
+  );
+  float pulse = exp(-d * d * 34.0) * exp(-t * 1.9);
+  a = min(a + pulse * 0.85, 1.0);
+  col = mix(col, vec3(0.553, 0.706, 1.0), pulse);
+  if (a < 0.008) discard;
+  gl_FragColor = vec4(col, a);
+}
+`
+
+/* THE STARFIELD · the space the boarding sails through. Deterministic
+   points on a far shell INSIDE the turning group (they revolve with the
+   hull's world — on screen the sky sweeps while the ship holds centre:
+   the orbit reads as a real camera flight, not a turntable). Additive,
+   deep wire blue, blooming during the boarding (uHero), whispering at
+   the dock. Twinkle rides the one clock. */
+const STAR_VERT = /* glsl */ `
+attribute float aSeed;
+uniform float uTime;
+uniform float uFade;
+uniform float uHero;
+varying float vA;
+varying float vWarm;
+float hash1(float n) { return fract(sin(n * 127.1) * 43758.5453); }
+void main() {
+  vec4 mv = modelViewMatrix * vec4(position, 1.0);
+  gl_Position = projectionMatrix * mv;
+  float tw = 0.72 + 0.28 * sin(uTime * 0.9 + aSeed * 37.0);
+  vA = (0.14 + 0.72 * uHero) * tw * uFade;
+  vWarm = hash1(aSeed + 3.0);
+  gl_PointSize = (1.4 + 2.2 * hash1(aSeed)) * clamp(15.0 / max(1.0, -mv.z), 1.0, 3.6);
+}
+`
+const STAR_FRAG = /* glsl */ `
+precision mediump float;
+varying float vA;
+varying float vWarm;
+void main() {
+  if (vA < 0.01) discard;
+  vec2 d = gl_PointCoord - 0.5;
+  float r = 1.0 - smoothstep(0.12, 0.5, length(d));
+  vec3 col = mix(vec3(0.14, 0.25, 0.55), vec3(0.31, 0.525, 1.0), vWarm * 0.6);
+  gl_FragColor = vec4(col, vA * r);
 }
 `
 
@@ -261,6 +330,7 @@ export interface MachineLayers {
   wires: THREE.LineSegments
   glow: THREE.Mesh
   thrust: THREE.Mesh
+  stars: THREE.Points
   uniforms: {
     uTime: { value: number }
     uFade: { value: number }
@@ -356,6 +426,25 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
   const wireGeo = new THREE.BufferGeometry()
   wireGeo.setAttribute('position', new THREE.BufferAttribute(m.wirePos, 3))
   wireGeo.setAttribute('aSeed', new THREE.BufferAttribute(m.wireSeed, 1))
+  /* per-vertex pulse rig · t along the wire + BOTH endpoint strata
+     (duplicated on the pair) so the fragment knows the striking end */
+  {
+    const n = m.wireCount
+    const aT = new Float32Array(n * 2)
+    const aFrom = new Float32Array(n * 2)
+    const aTo = new Float32Array(n * 2)
+    for (let i = 0; i < n; i++) {
+      aT[i * 2] = 0
+      aT[i * 2 + 1] = 1
+      aFrom[i * 2] = m.wireSeed[i * 2]
+      aFrom[i * 2 + 1] = m.wireSeed[i * 2]
+      aTo[i * 2] = m.wireSeed[i * 2 + 1]
+      aTo[i * 2 + 1] = m.wireSeed[i * 2 + 1]
+    }
+    wireGeo.setAttribute('aT', new THREE.BufferAttribute(aT, 1))
+    wireGeo.setAttribute('aFrom', new THREE.BufferAttribute(aFrom, 1))
+    wireGeo.setAttribute('aTo', new THREE.BufferAttribute(aTo, 1))
+  }
   const wireMat = new THREE.ShaderMaterial({
     vertexShader: WIRE_VERT,
     fragmentShader: WIRE_FRAG,
@@ -373,6 +462,38 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     depthWrite: false,
     blending: THREE.AdditiveBlending,
   })
+  /* the starfield · deterministic far shell (hash-placed, no Math.random) */
+  const STAR_N = 900
+  const starGeo = new THREE.BufferGeometry()
+  {
+    const pos = new Float32Array(STAR_N * 3)
+    const seed = new Float32Array(STAR_N)
+    const h = (a: number, b: number) => {
+      const x = Math.sin(a * 127.1 + b * 311.7) * 43758.5453
+      return x - Math.floor(x)
+    }
+    for (let i = 0; i < STAR_N; i++) {
+      const u = h(i + 1, 7) * 2 - 1
+      const th = h(i + 1, 13) * Math.PI * 2
+      const r = 3.6 + 7.5 * h(i + 1, 29)
+      const s2 = Math.sqrt(Math.max(0, 1 - u * u))
+      pos[i * 3] = r * s2 * Math.cos(th)
+      pos[i * 3 + 1] = r * u * 0.7
+      pos[i * 3 + 2] = r * s2 * Math.sin(th)
+      seed[i] = h(i + 1, 43) * 100
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+    starGeo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1))
+  }
+  const starMat = new THREE.ShaderMaterial({
+    vertexShader: STAR_VERT,
+    fragmentShader: STAR_FRAG,
+    uniforms,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+
   const thrustGeo = new THREE.PlaneGeometry(1.5, 1.5)
   const thrustMat = new THREE.ShaderMaterial({
     vertexShader: GLOW_VERT,
@@ -392,6 +513,9 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
   const thrust = new THREE.Mesh(thrustGeo, thrustMat)
   thrust.frustumCulled = false
   thrust.renderOrder = 2
+  const stars = new THREE.Points(starGeo, starMat)
+  stars.frustumCulled = false
+  stars.renderOrder = 0
   const wires = new THREE.LineSegments(wireGeo, wireMat)
   wires.frustumCulled = false
   wires.renderOrder = 3
@@ -405,8 +529,11 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     wires,
     glow,
     thrust,
+    stars,
     uniforms,
     dispose: () => {
+      starGeo.dispose()
+      starMat.dispose()
       box.dispose()
       edges.dispose()
       fillGeo.dispose()
