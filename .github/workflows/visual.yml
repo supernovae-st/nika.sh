@@ -16,12 +16,12 @@ on:
     inputs:
       update_goldens:
         description: 'Re-bake the Linux goldens and commit them'
+        type: boolean
+        default: false
       only:
         description: 'Scope the re-bake to specific frame names (comma-separated) — the W20b law: never commit a byte-only full re-bake'
         required: false
         type: string
-        type: boolean
-        default: false
 
 jobs:
   compare:
