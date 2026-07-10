@@ -235,13 +235,43 @@ const bodyFaceApplied = () =>
 const appliedGate = async () => {
   await fontsGate()
   for (let attempt = 1; attempt <= 4; attempt++) {
-    if (await bodyFaceApplied()) return
+    if (await bodyFaceApplied()) break
     console.error(`fonts: body face loaded but NOT applied — reload ${attempt}/4`)
     await send('Page.reload')
     await sleep(4000)
     await fontsGate()
   }
-  console.error('fonts: body face still not applied after 4 reloads — shooting anyway')
+  await canvasGate()
+}
+/* THE CANVAS GATE · the fixed dither field can fail to INITIALIZE under a
+   starved GPU (the canvas stays at the 300×150 default all session — the
+   13.66% hero bistable; probe sessions read exactly that state). The gate
+   is structural, never opt-in (an uninitialized canvas carries no marks to
+   wait on): if the `.depth-fixed` wrapper is in the DOM, its canvas must
+   have marked `data-painted` (set by the scene's first processed frame;
+   the product-side init watchdog remounts the Canvas until it does). */
+const canvasGate = async () => {
+  /* the field is the HOME background and its component is lazy — on '/' the
+     wrapper itself arrives late under load, so first WAIT FOR THE MOUNT
+     (a missing wrapper must block, or the gate passes vacuously and the
+     shot races the init), then for the paint mark. */
+  const onHome = await evaluate(`location.pathname === '/'`).catch(() => false)
+  if (!onHome) return
+  for (let i = 0; i < 60; i++) {
+    if (await evaluate(`!!document.querySelector('.depth-fixed')`).catch(() => false)) break
+    await sleep(250)
+  }
+  for (let i = 0; i < 120; i++) {
+    const pendingPaint = await evaluate(
+      `[...document.querySelectorAll('.depth-fixed')].filter((w) => {
+        const c = w.querySelector('canvas')
+        return !c || !c.dataset.painted
+      }).length`,
+    ).catch(() => 1)
+    if (pendingPaint === 0) return
+    await sleep(250)
+  }
+  console.error('canvas: the dither field never painted after 30s — shooting anyway')
 }
 /* the first load always reloads once (HTTP-cache warm-up), then the applied
    probe decides whether more are needed */
