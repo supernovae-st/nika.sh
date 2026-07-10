@@ -48,6 +48,8 @@ export function TheRecord({ c }: { c: ManifestoCopy }) {
   const stageRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLOListElement>(null)
   const yearRef = useRef<HTMLSpanElement>(null)
+  const miniRef = useRef<HTMLSpanElement>(null)
+  const minimapRef = useRef<HTMLDivElement>(null)
   const endRef = useRef<HTMLDivElement>(null)
 
   /* capability gate · the stage needs width and motion; everyone else keeps
@@ -95,6 +97,9 @@ export function TheRecord({ c }: { c: ManifestoCopy }) {
 
     let trackScroll = 0
     let wrapTop = 0
+    let miniW = 0
+    let lastX = -1
+    let near = true
     let centers: { el: HTMLElement; cx: number; year: string }[] = []
     let liveEl: HTMLElement | null = null
     let ended = false
@@ -104,6 +109,7 @@ export function TheRecord({ c }: { c: ManifestoCopy }) {
       trackScroll = Math.max(0, track.scrollWidth - stage.clientWidth)
       wrap.style.height = `calc(100dvh + ${trackScroll}px)`
       wrapTop = wrap.getBoundingClientRect().top + window.scrollY
+      miniW = (minimapRef.current?.clientWidth ?? 0) - 2
       centers = [...track.querySelectorAll<HTMLElement>('.mr-item')]
         .filter((el) => el.offsetParent !== null)
         .map((el) => ({
@@ -117,12 +123,20 @@ export function TheRecord({ c }: { c: ManifestoCopy }) {
       raf = 0
       const p = Math.min(1, Math.max(0, (window.scrollY - wrapTop) / (trackScroll || 1)))
       const x = p * trackScroll
+      if (x === lastX) return // clamped or idle · identical write, skip
+      lastX = x
       track.style.transform = `translate3d(${-x}px, 0, 0)`
+      if (miniRef.current) miniRef.current.style.transform = `translate3d(${p * miniW}px, 0, 0)`
       const ph = x + stage.clientWidth * PLAYHEAD
       let cur: (typeof centers)[0] | undefined
       for (const it of centers) {
         if (it.cx <= ph + 30) cur = it
         else break
+      }
+      if (!cur && centers[0]) {
+        /* before the first crossing the counter shows where the record opens */
+        if (yearRef.current && yearRef.current.textContent !== centers[0].year)
+          yearRef.current.textContent = centers[0].year
       }
       if (cur && cur.el !== liveEl) {
         liveEl?.removeAttribute('data-live')
@@ -138,7 +152,7 @@ export function TheRecord({ c }: { c: ManifestoCopy }) {
     }
 
     const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(apply)
+      if (near && !raf) raf = requestAnimationFrame(apply)
     }
     const onResize = () => {
       measure()
@@ -153,13 +167,36 @@ export function TheRecord({ c }: { c: ManifestoCopy }) {
       window.scrollTo({ top: wrapTop + it.cx - stage.clientWidth * PLAYHEAD, behavior: 'instant' })
     }
 
+    /* keyboard travels the record too · focusing a card's link brings the
+       card onto the playhead (the same seat deep links get) */
+    const onFocus = (e: FocusEvent) => {
+      const li = (e.target as HTMLElement).closest?.('.mr-item') as HTMLElement | null
+      if (!li) return
+      const it = centers.find((x) => x.el === li)
+      if (it) window.scrollTo({ top: wrapTop + it.cx - stage.clientWidth * PLAYHEAD, behavior: 'instant' })
+    }
+    /* the whole driver sleeps while the stage is far from the viewport */
+    const io = new IntersectionObserver(
+      (es) => {
+        near = es[0]?.isIntersecting ?? true
+        if (near) {
+          lastX = -1
+          onScroll()
+        }
+      },
+      { rootMargin: '50% 0px' },
+    )
+    io.observe(wrap)
     measure()
     apply()
     toHash()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize, { passive: true })
     window.addEventListener('hashchange', toHash)
+    stage.addEventListener('focusin', onFocus)
     return () => {
+      io.disconnect()
+      stage.removeEventListener('focusin', onFocus)
       cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
@@ -231,6 +268,16 @@ export function TheRecord({ c }: { c: ManifestoCopy }) {
         <div ref={stageRef} className="mr-stage">
           <span className="mr-year mono" aria-hidden ref={yearRef} />
           <span className="mr-playhead" aria-hidden />
+          {/* the minimap · the score strip returns inside the stage: the whole
+              record in one glance, with the reading head riding it */}
+          <div className="mr-minimap" aria-hidden ref={minimapRef}>
+            <div className="mr-strip">
+              {RECORD.map((e) => (
+                <span key={e.id} className="mr-tick" data-strand={e.strand} style={{ left: seat(e.date) }} />
+              ))}
+            </div>
+            <span className="mr-mini-ph" ref={miniRef} />
+          </div>
 
           <ol ref={trackRef} className="mr-list mx-auto w-full max-w-3xl px-6">
             {RECORD.map((e) => (

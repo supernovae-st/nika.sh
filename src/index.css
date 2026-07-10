@@ -1195,3 +1195,36 @@ h1, h2 { font-family: var(--headline); }
 .mr-scope[data-mode='h'] .mr-terminus {
   transition: opacity 500ms ease-out, transform 500ms ease-out;
 }
+
+/* ─── the stage minimap · the score strip rides inside the scene ─────────────
+   Bottom-center of the stage: every entry a tick (same .mr-tick law · cage
+   grey, drum light), and the reading head travels it — the whole record in
+   one glance while you play it. Marker driven by the same rAF as the track
+   (transform only). Hidden in the vertical layout (the header strip serves
+   there). */
+.mr-minimap { display: none; }
+.mr-scope[data-mode='h'] .mr-minimap {
+  display: block;
+  position: absolute;
+  bottom: 7dvh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(420px, 44vw);
+  height: 24px;
+  pointer-events: none;
+}
+.mr-scope[data-mode='h'] .mr-minimap .mr-strip {
+  height: 100%;
+  margin: 0;
+  border-bottom: 1px solid var(--hair-bright);
+}
+.mr-mini-ph {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 2px;
+  height: 30px;
+  border-radius: 1px;
+  background: var(--cyan);
+  opacity: 0.9;
+}
