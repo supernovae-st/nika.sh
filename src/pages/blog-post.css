@@ -20,14 +20,6 @@
 .bp-crumb-link:focus-visible {
   color: var(--v4-text);
 }
-/* the way back answers too — the ← leads left (the blog-card-arrow language) */
-.bp-crumb-arrow {
-  display: inline-block;
-  transition: transform var(--dur-ui) var(--ease-ui);
-}
-.bp-crumb-link:hover .bp-crumb-arrow {
-  transform: translateX(-3px);
-}
 
 .bp-fig {
   font-size: 11.5px;

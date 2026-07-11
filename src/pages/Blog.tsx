@@ -200,7 +200,7 @@ export function Component() {
               <span className="blog-lead-teaser">{BLOG_POSTS[0].description}</span>
               <span className="blog-card-foot mono">
                 {BLOG_POSTS[0].readingMin} min read
-                <span className="blog-card-arrow" aria-hidden>
+                <span className="blog-card-arrow acue acue--r" aria-hidden>
                   {' '}
                   →
                 </span>
@@ -220,7 +220,7 @@ export function Component() {
                 <span className="blog-card-teaser">{p.description}</span>
                 <span className="blog-card-foot mono">
                   {p.readingMin} min read
-                  <span className="blog-card-arrow" aria-hidden>
+                  <span className="blog-card-arrow acue acue--r" aria-hidden>
                     {' '}
                     →
                   </span>

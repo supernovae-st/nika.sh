@@ -165,11 +165,11 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
               <div className="v4every-cta v4every-links">
                 <a href={VSCODE_MARKETPLACE} target="_blank" rel="noreferrer" className="v4every-link">
                   VS Code Marketplace
-                  <span aria-hidden> ↗</span>
+                  <span className="acue acue--ext" aria-hidden> ↗</span>
                 </a>
                 <a href={OPENVSX} target="_blank" rel="noreferrer" className="v4every-link">
                   Open VSX · Cursor / Windsurf
-                  <span aria-hidden> ↗</span>
+                  <span className="acue acue--ext" aria-hidden> ↗</span>
                 </a>
               </div>
             </article>
@@ -187,7 +187,7 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
               <div className="v4every-cta v4every-links">
                 <a href={DOCS} target="_blank" rel="noreferrer" className="v4every-link">
                   docs.nika.sh
-                  <span aria-hidden> ↗</span>
+                  <span className="acue acue--ext" aria-hidden> ↗</span>
                 </a>
               </div>
             </article>
@@ -198,7 +198,10 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
         <p className="v4start-more" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
           <Link to="/learn" className="v4start-more-link">
             Learn it in 5 minutes
-            <span aria-hidden> →</span>
+            <span className="acue acue--r" aria-hidden>
+              {' '}
+              →
+            </span>
           </Link>
           <span className="v4start-more-note" aria-hidden>
             the quickstart, end to end

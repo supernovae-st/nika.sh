@@ -276,3 +276,30 @@
     transition: none;
   }
 }
+
+
+/* ── the arrow cue · ONE language: a link's directional glyph answers the
+   hand (the blog-card-arrow pattern, promoted — four per-register copies
+   and five silent surfaces became this). Motion needs BOTH gates: a hover
+   that can't stick (touch taps pin :hover) and no-preference (the blanket
+   freeze covers transitions, but the intent reads better stated). The
+   hover binds to the INTERACTIVE ANCESTOR (:is(a,button)) so a card-sized
+   link moves its own glyph. */
+.acue {
+  display: inline-block;
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  :is(a, button):hover .acue--r {
+    transform: translateX(3px); /* → leads on */
+  }
+  :is(a, button):hover .acue--l {
+    transform: translateX(-3px); /* ← leads back */
+  }
+  :is(a, button):hover .acue--d {
+    transform: translateY(3px); /* ↓ dips toward its anchor */
+  }
+  :is(a, button):hover .acue--ext {
+    transform: translate(2px, -2px); /* ↗ escapes off-site */
+  }
+}

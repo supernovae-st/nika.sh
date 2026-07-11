@@ -220,7 +220,7 @@ export function Component() {
                           className="cl-tl-gh mono"
                         >
                           release notes on GitHub{' '}
-                          <span className="cl-tl-gh-arrow" aria-hidden>
+                          <span className="acue acue--ext" aria-hidden>
                             ↗
                           </span>
                         </a>

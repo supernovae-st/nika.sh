@@ -138,7 +138,7 @@ export function Component() {
           {/* the way back + the register row */}
           <nav className="bp-crumb" aria-label="Breadcrumb" data-rise>
             <Link to="/blog" viewTransition className="bp-crumb-link">
-              <span className="bp-crumb-arrow" aria-hidden>
+              <span className="acue acue--l" aria-hidden>
                 ←
               </span>{' '}
               blog
