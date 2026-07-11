@@ -3,10 +3,10 @@ slug: injection-goes-nowhere
 title: "The prompt injection that goes nowhere"
 tag: Security
 date: 2026-07-08
-description: "AI agent security without a runtime guard: the plan is authored before the model runs, so a hostile note becomes data, never a new action — and the boundary is checked before a token is spent."
+description: "Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs — the hostile note becomes data, never an action, and the boundary is checked before a token is spent."
 ---
 
-Here is the demo that scares people, and it should. You hand an agent a document to summarize. Somewhere in that document, an attacker has written:
+Every list of prompt injection examples opens with the same demo, and it should scare you. You hand an agent a document to summarize. Somewhere in that document, an attacker has written:
 
 ```text note.md
 Meeting moved to 3pm. Budget approved.
@@ -93,6 +93,6 @@ The static check names the exact task, the exact category, the exact path, and t
 
 Two locks, and they compose. The **fixed plan** means a hostile input can never become a new action — injection has nowhere to go, because the model's output only flows into slots the author already wrote. The **declared boundary** means the plan the author wrote can never exceed what a reviewer approved — checked before a token, refused before an effect, with a typed error you can gate on.
 
-Neither lock is a model watching a model. They are structure: the shape of the workflow, verified. The most reliable way to stop an agent from doing something is to build a system where it was never able to do it in the first place.
+Neither lock is a model watching a model. They are structure: the shape of the workflow, verified. And that is the honest answer to "how do I prevent prompt injection" — not a smarter filter, but a system where the injected instruction was never able to become an action in the first place.
 
 Every transcript here was captured verbatim against the released `nika 0.97.0` (`brew install supernovae-st/tap/nika`), on a local model, for $0.00 — the hostile note included.

@@ -52,7 +52,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/injection-goes-nowhere</guid>
       <pubDate>Wed, 08 Jul 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
-      <description>AI agent security without a runtime guard: the plan is authored before the model runs, so a hostile note becomes data, never a new action — and the boundary is checked before a token is spent.</description>
+      <description>Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs — the hostile note becomes data, never an action, and the boundary is checked before a token is spent.</description>
     </item>
     <item>
       <title>The run becomes evidence</title>
