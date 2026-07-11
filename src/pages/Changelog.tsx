@@ -219,7 +219,10 @@ export function Component() {
                           rel="noreferrer"
                           className="cl-tl-gh mono"
                         >
-                          release notes on GitHub ↗
+                          release notes on GitHub{' '}
+                          <span className="cl-tl-gh-arrow" aria-hidden>
+                            ↗
+                          </span>
                         </a>
                       ) : null}
                     </div>

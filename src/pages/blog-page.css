@@ -391,6 +391,9 @@
     color var(--dur-ui) var(--ease-ui),
     background-color var(--dur-ui) var(--ease-ui);
 }
+.blog-tag:active {
+  transform: translateY(1px); /* the machined dip */
+}
 .blog-tag:hover {
   color: var(--v4-text);
   border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);

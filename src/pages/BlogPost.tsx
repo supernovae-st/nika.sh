@@ -117,7 +117,10 @@ export function Component() {
           {/* the way back + the register row */}
           <nav className="bp-crumb" aria-label="Breadcrumb" data-rise>
             <Link to="/blog" viewTransition className="bp-crumb-link">
-              ← blog
+              <span className="bp-crumb-arrow" aria-hidden>
+                ←
+              </span>{' '}
+              blog
             </Link>
           </nav>
           <p className="bp-fig mono" data-rise style={{ ['--rise-delay' as string]: '40ms' }}>
