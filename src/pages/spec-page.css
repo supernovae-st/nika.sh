@@ -1752,6 +1752,9 @@
   cursor: pointer;
   transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
 }
+.spec-helm-btn:active {
+  transform: translateY(1px); /* the machined dip */
+}
 .spec-helm-btn:hover {
   color: var(--sm-ink-struck);
   border-color: color-mix(in oklch, var(--sm-ink-lit) 60%, var(--v4-line));

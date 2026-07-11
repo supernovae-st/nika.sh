@@ -165,6 +165,9 @@
   --mono: 'Martian Mono', 'Martian Mono Fallback', ui-monospace, 'SF Mono', monospace;
 
   color-scheme: dark;
+  /* the press language is OURS (:active dips) — the UA's grey tap flash
+     fights it on every phone; and every enabled button invites like a link */
+  -webkit-tap-highlight-color: transparent;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--display);
@@ -191,6 +194,10 @@ body { background: var(--bg); overflow-x: clip; }
    axis visible and position:sticky/fixed descendants working. */
 main > section { overflow-x: clip; }
 ::selection { background: color-mix(in oklch, var(--brand) 40%, transparent); color: #fff; }
+
+button:not(:disabled) {
+  cursor: pointer;
+}
 
 /* the scrollbar joins the instrument · thin, engineered, blue-on-black. The
    default chrome scrollbar is the one unstyled element left on the frame.

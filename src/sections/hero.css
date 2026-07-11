@@ -1141,6 +1141,17 @@
 .v4hero-play:hover {
   color: var(--v4-text);
 }
+/* the arrow answers the hand (the blog-card-arrow language): → slides on,
+   the editor's ↓ dips toward its anchor. Flex items take transform as-is. */
+.v4hero-play [aria-hidden] {
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+.v4hero-play:hover [aria-hidden] {
+  transform: translateX(3px);
+}
+a.v4hero-play[href='#editor']:hover [aria-hidden] {
+  transform: translateY(3px);
+}
 .v4hero-play:focus-visible {
   outline: 1.5px solid var(--v4-focus-ring);
   outline-offset: 2px;

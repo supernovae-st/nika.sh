@@ -94,7 +94,9 @@ export default function ScrollRail() {
     <nav ref={railRef} className="srail" aria-label="Page sections">
       {/* the readout · the active section's FIG plate (decorative twin of the
           tick's accessible name) */}
-      <span className="srail-read" aria-hidden>
+      {/* keyed on the fig: a section change REMOUNTS the readout and replays
+          its 220ms rise — the instrument clicks over instead of teleporting */}
+      <span className="srail-read" key={current?.fig ?? 'none'} aria-hidden>
         {current?.fig ? `[ ${current.fig} ]` : '[ — ]'}
       </span>
       <ol className="srail-list">

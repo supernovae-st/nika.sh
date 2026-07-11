@@ -318,6 +318,13 @@
 }
 
 /* the release's GitHub pointer · one voice, two surfaces */
+.cl-tl-gh-arrow {
+  display: inline-block;
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+.cl-tl-gh:hover .cl-tl-gh-arrow {
+  transform: translate(2px, -2px); /* ↗ escapes toward GitHub */
+}
 .cl-tl-gh {
   display: inline-flex;
   align-items: center;

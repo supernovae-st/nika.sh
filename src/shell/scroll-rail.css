@@ -25,7 +25,17 @@
   }
 }
 
+@keyframes srail-read-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
 .srail-read {
+  /* replayed per section (the span remounts on fig change — ScrollRail.tsx):
+     the readout clicks over like an instrument, never teleports. Reduced
+     motion: the blanket freeze snaps it — info, not motion. */
+  animation: srail-read-in 220ms var(--ease-ui);
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.12em;

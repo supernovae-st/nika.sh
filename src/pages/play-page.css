@@ -479,6 +479,9 @@
 .play-sim-btn:disabled {
   opacity: 0.45;
 }
+.play-sim-btn:active {
+  transform: translateY(1px); /* the machined dip */
+}
 .play-sim-btn:focus-visible {
   outline: 1.5px solid var(--v4-focus-ring);
   outline-offset: 2px;
@@ -502,6 +505,9 @@
 .play-share-btn:hover {
   color: var(--v4-text);
   border-color: var(--v4-line-strong);
+}
+.play-share-btn:active {
+  transform: translateY(1px); /* the machined dip */
 }
 .play-share-btn:focus-visible {
   outline: 1.5px solid var(--v4-focus-ring);
