@@ -2185,10 +2185,17 @@
     bottom: 26px;
   }
   .spec-rail.is-live .spec-rail-gauge {
-    bottom: 27px;
+    bottom: 26px; /* the instrument baseline */
+  }
+  /* the POSTER's gauge berths UNDER THE VESSEL (centre ≈64vw) — centred on
+     the viewport it floated in dead water left of the ship; the FINALE
+     keeps 50% (there the ship IS centred) */
+  .spec-rail.is-live[data-stage='hero'] .spec-rail-gauge {
+    left: 64%;
   }
   .spec-rail.is-live .spec-helm {
     bottom: 58px;
+    right: 2%; /* one right edge with the hud below it */
   }
   .spec-rail.is-live[data-stage='hero'] {
     /* THE FULL-BLEED POSTER (operator pass 2026-07-11) · the ground is the
@@ -2238,7 +2245,9 @@
   .spec-page.is-live .spec-rail.is-live .spec-transport {
     display: flex;
     position: absolute;
-    bottom: 14px;
+    /* the ONE instrument baseline · tally (bl) · transport · frozen (br)
+       all sit on 26px — three different heights read as clutter */
+    bottom: 26px;
     left: 50%;
     transform: translateX(-50%);
     gap: 1px;
@@ -2278,11 +2287,21 @@
   .spec-rail.is-live:not([data-stage='hero']):not([data-stage='finale']) .spec-rail-gauge {
     display: none;
   }
-  .spec-rail.is-live[data-stage='hero'] .spec-transport,
-  .spec-rail.is-live[data-stage='finale'] .spec-transport,
-  .spec-rail.is-live[data-stage='off'] .spec-transport {
+  /* specificity note: the SHOW rule above carries .spec-page.is-live —
+     these hide rules must outweigh it (0-6-0 > 0-5-0) or the transport
+     leaks onto the poster (it did: the mystery dashes at 50vw) */
+  .spec-page.is-live .spec-rail.is-live[data-stage='hero'] .spec-transport,
+  .spec-page.is-live .spec-rail.is-live[data-stage='finale'] .spec-transport,
+  .spec-page.is-live .spec-rail.is-live[data-stage='off'] .spec-transport {
     display: none;
   }
+}
+
+/* the callout fig at the DOCK · the plate + the rail chip already carry
+   S.N — the label keeps only WHAT the station is (title · count); the
+   FINALE's labelled drawing restores the numbering */
+.spec-rail.is-live:not([data-stage='finale']) .smc-fig {
+  display: none;
 }
 
 /* the flight's quiet law · the inspection instruments belong to the DOCK:
