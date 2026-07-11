@@ -1,5 +1,6 @@
 import { useHead } from '@unhead/react'
 import { routeHead } from '../content'
+import { CANON } from '../canon.generated'
 import { NK_ICONS, NK_ANIMS, type NikaIconId, type NikaAnimId } from '../icons/manifest'
 import { NikaIcon } from '../icons/Icon'
 import { NikaDots } from '../fx/dotmatrix/NikaDots'
@@ -14,7 +15,7 @@ import './brand-page.css'
 
 const NS_SECTIONS: { ns: string; title: string; blurb: string }[] = [
   { ns: 'verb/', title: 'The four verbs', blurb: 'A verb is a distinct native execution model. Hue = alive.' },
-  { ns: 'builtin/', title: 'The 25 builtins', blurb: 'Everything callable is a tool reached through invoke:.' },
+  { ns: 'builtin/', title: `The ${CANON.builtins} builtins`, blurb: 'Everything callable is a tool reached through invoke:.' },
   { ns: 'feature/', title: 'Features', blurb: 'The product surface — audit · run · trace · prove.' },
   { ns: 'state/', title: 'Run states', blurb: 'The trace fold — every settle has a face.' },
 ]
