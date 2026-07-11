@@ -194,6 +194,33 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
           </div>
         </div>
 
+        {/* the stack hatch (W4-P2 · issue #123) · the doors, named plain —
+            no logos, no counts (the docs map + listings.yaml carry the
+            truth · mirror-law); one link out. */}
+        <div className="v4start-stack" data-rise style={{ ['--rise-delay' as string]: '100ms' }}>
+          <p className="v4start-stack-kicker mono">WORKS WITH YOUR STACK</p>
+          <p className="v4start-stack-doors mono">
+            Claude Code · Codex · Cursor · VS&nbsp;Code · Hermes · OpenCode ·
+            Zed · GitHub&nbsp;Actions · MCP
+          </p>
+          <p className="v4start-stack-note">
+            <code className="mono">nika init</code> teaches whatever agent you
+            run.{' '}
+            <a
+              href="https://docs.nika.sh/integrations/everywhere"
+              target="_blank"
+              rel="noreferrer"
+              className="v4start-stack-link"
+            >
+              the full integrations map
+              <span className="acue acue--ext" aria-hidden>
+                {' '}
+                ↗
+              </span>
+            </a>
+          </p>
+        </div>
+
         {/* the close · learn it in 5 minutes */}
         <p className="v4start-more" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
           <Link to="/learn" className="v4start-more-link">

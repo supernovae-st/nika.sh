@@ -266,6 +266,19 @@
   text-wrap: balance;
   color: var(--v4-text);
 }
+/* the receipt link · the pipeline post is the hero's long-form anchor
+   (issue #192) — quiet dotted hint at rest, solid on hover */
+.v4hero-sublink {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in oklch, currentColor 45%, transparent);
+  text-underline-offset: 3px;
+  transition: color 0.18s ease;
+}
+.v4hero-sublink:hover {
+  color: var(--v4-text, #fff);
+  text-decoration-style: solid;
+}
 .v4hero-sub {
   margin-top: var(--gap-title);
   max-width: 34rem;
