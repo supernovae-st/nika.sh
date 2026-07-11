@@ -771,9 +771,12 @@
 /* ════════════════════════════════════════════════════════════════════════════
    FIG 6.0 · USE CASES  (theme-LIGHT · the editorial gallery · rhythm break)
    A clean GALLERY of real showcase workflows — NOT a run animation (the Living
-   File owns the run). Tabbed by métier; each card = title + outcome + verb chips
-   (glyphs) + a peek of its real YAML. Selecting a card reveals its full YAML
-   panel via <CodeFile>. Light surface, blueprint register inverted, tabular-nums.
+   File owns the run). Tabbed by métier; each card = icon + title + tier · body
+   (what it does) · the → payoff (outcome) · verb chips (SSOT glyphs) + the
+   projected task count. Selecting a card reveals its full YAML panel via
+   <CodeFile>. Light surface, blueprint register inverted, tabular-nums.
+   Hover discipline: ONE calm cue per interactive element (border-brighten,
+   --dur-ui) — never lift+brighten+repaint stacked.
    ════════════════════════════════════════════════════════════════════════════ */
 
 /* the métier tab bar · sharp hairline tabs (v5 carré), the active one inked solid */
@@ -874,16 +877,17 @@
     inset 0 -2px 0 rgb(0 0 0 / 0.22),
     0 10px 24px -16px rgb(4 10 34 / 0.55);
   cursor: pointer;
+  /* transform intentionally NOT transitioned — the card never moves (hover
+     diet: one cue, zero thrash); bg/shadow animate on the SELECTED state */
   transition:
     border-color var(--dur-ui) var(--ease-ui),
     background-color var(--dur-ui) var(--ease-ui),
-    transform var(--dur-ui) var(--ease-ui),
     box-shadow var(--dur-ui) var(--ease-ui);
 }
+/* hover = the ONE cue: the hairline brightens (raises contrast · 140ms).
+   Everything a hover reveals here is already visible at rest (touch parity). */
 .v4uc-card:hover {
   border-color: color-mix(in oklch, var(--v4-text) 26%, transparent);
-  background-color: var(--v4-bg-raised);
-  transform: translateY(-1px);
 }
 .v4uc-card[aria-pressed='true'] {
   border-color: color-mix(in oklch, var(--v4-text) 42%, transparent);
@@ -919,6 +923,14 @@
   font-variant-numeric: tabular-nums;
   flex: 0 0 auto;
 }
+/* the métier emoji · the card's scan anchor — the ONE polychrome dot per card
+   (the curated icon from usecases-data; decorative, aria-hidden) */
+.v4uc-card-icon {
+  flex: 0 0 auto;
+  font-size: 15px;
+  line-height: 1;
+  user-select: none;
+}
 .v4uc-card-title {
   font-size: 16px;
   font-weight: 600;
@@ -937,17 +949,50 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.v4uc-card-outcome {
+/* what it does · the dim one-liner (usecases-data `body`) */
+.v4uc-card-body {
+  display: block;
   margin-top: 9px;
   font-size: 13.5px;
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
 }
-/* the verb chips · glyph + name, hairline-bordered, monochrome (hue whisper on
-   the glyph only) */
-.v4uc-verbs {
+/* the payoff · the site's ONE outcome device (→ + full ink), same grammar as
+   the panel footer + /use-cases — distinct from the dim body above it */
+.v4uc-card-outcome {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text);
+  text-wrap: pretty;
+}
+.v4uc-card-outcome .v4uc-arrow {
+  flex: 0 0 auto;
+  color: var(--v4-text-faint);
+}
+/* the meta row · verb chips (left) + the projected task count (right) */
+.v4uc-card-meta {
   margin-top: 13px;
+  display: flex;
+  align-items: center;
+  gap: 7px 10px;
+  flex-wrap: wrap;
+}
+.v4uc-card-tasks {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* the verb chips · glyph + name, hairline-bordered, monochrome (hue whisper on
+   the glyph only — the same SSOT glyphs ◇▷◆✦ the VS Code extension speaks) */
+.v4uc-verbs {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
