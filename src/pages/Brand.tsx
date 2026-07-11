@@ -1,9 +1,11 @@
 import { useHead } from '@unhead/react'
 import { routeHead } from '../content'
 import { CANON } from '../canon.generated'
+import { NIKA_VERB_HEX, NIKA_STATUS, type NikaVerbName } from '../design-tokens.generated'
 import { NK_ICONS, NK_ANIMS, type NikaIconId, type NikaAnimId } from '../icons/manifest'
 import { NikaIcon } from '../icons/Icon'
 import { NikaDots } from '../fx/dotmatrix/NikaDots'
+import { DagNodeCard } from '../components/dag'
 import './brand-page.css'
 
 /* ─── /brand · the design system, shown by the system itself ──────────────
@@ -31,6 +33,36 @@ const MARKS: { src: string; label: string; light?: boolean }[] = [
 /* curated order first (the verbs · the brand beat · the neutral register);
    any anim/* entity added to the ontology later APPENDS instead of hiding —
    the page can't silently under-show the system. */
+/* the run-register demo cards — LIVE library components (components/dag ·
+   the exact DagNodeCard ThePlan renders on the home), one per verb, states
+   from the recorded-run grammar. Data is illustrative; the DESIGN is the
+   product's. */
+const REGISTER_DEMOS: {
+  id: string
+  verb: NikaVerbName
+  target: string
+  when?: string
+  chip?: { text: string; skipped?: boolean }
+}[] = [
+  { id: 'triage', verb: 'infer', target: 'ollama/llama3.2:3b', chip: { text: '29.2s' } },
+  { id: 'convert', verb: 'exec', target: 'magick brief.png', chip: { text: '412ms' } },
+  { id: 'save', verb: 'invoke', target: 'nika:write', chip: { text: '14ms' } },
+  {
+    id: 'review',
+    verb: 'agent',
+    target: 'claude · 3 turns max',
+    when: 'tasks.triage.output != ""',
+    chip: { text: 'skipped · gate closed', skipped: true },
+  },
+]
+
+/* the shared palette rows — rendered FROM the generated module (the spec
+   SSOT projection), never hand-typed: the swatch IS the token. */
+const VERB_ROWS = (Object.entries(NIKA_VERB_HEX) as [NikaVerbName, string][]).map(
+  ([name, hex]) => ({ name, hex, var: `--verb-${name}` }),
+)
+const STATUS_ROWS = Object.entries(NIKA_STATUS).map(([name, hex]) => ({ name, hex }))
+
 const MOTION_CURATED: NikaAnimId[] = [
   'anim/infer',
   'anim/exec',
@@ -116,6 +148,57 @@ export function Component() {
           </section>
         )
       })}
+
+      <section className="brand-sec" aria-labelledby="brand-register">
+        <h2 id="brand-register" className="brand-h2">
+          The run register · one component library
+        </h2>
+        <p className="brand-blurb">
+          The task card below is the LIVE library component (<code>components/dag</code>) — the
+          exact one the home renders when a plan settles. The VS Code canvas draws its denser
+          editor card from the same generated vocabulary: one source (
+          <code>design/tokens.yaml</code>, spec-first), projected into TypeScript on every
+          surface, pinned by drift gates. A verb hue appears on the tick only — hue = alive.
+        </p>
+        <div className="brand-register">
+          {REGISTER_DEMOS.map((d) => (
+            <DagNodeCard
+              key={d.id}
+              id={d.id}
+              verb={d.verb}
+              target={d.target}
+              when={d.when}
+              chip={d.chip}
+            />
+          ))}
+        </div>
+        <div className="brand-palette">
+          <div className="brand-palette-group">
+            <p className="brand-palette-kick">the four verb hues</p>
+            <ul className="brand-swatches">
+              {VERB_ROWS.map((r) => (
+                <li key={r.name} className="brand-swatch">
+                  <span className="brand-swatch-chip" style={{ background: r.hex }} />
+                  <span className="brand-swatch-name">{r.name}</span>
+                  <code className="brand-swatch-hex">{r.hex}</code>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="brand-palette-group">
+            <p className="brand-palette-kick">the run states</p>
+            <ul className="brand-swatches">
+              {STATUS_ROWS.map((r) => (
+                <li key={r.name} className="brand-swatch">
+                  <span className="brand-swatch-chip" style={{ background: r.hex }} />
+                  <span className="brand-swatch-name">{r.name}</span>
+                  <code className="brand-swatch-hex">{r.hex}</code>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
       <section className="brand-sec" aria-labelledby="brand-motion">
         <h2 id="brand-motion" className="brand-h2">

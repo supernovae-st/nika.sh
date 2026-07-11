@@ -9,7 +9,11 @@
    against a real yaml-lib parse in src/flagships/derive.test.ts. Determinism:
    pure string ops, no I/O, SSR-safe. */
 
-export type NikaVerb = 'infer' | 'exec' | 'invoke' | 'agent'
+import type { NikaVerbName } from '../design-tokens.generated'
+
+/** the verb vocabulary IS the SSOT's (design/tokens.yaml → generated) —
+ *  a fifth verb cannot be typed here by construction */
+export type NikaVerb = NikaVerbName
 
 export interface FlagshipTask {
   id: string

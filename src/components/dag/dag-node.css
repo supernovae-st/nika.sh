@@ -1,0 +1,107 @@
+/* ─── the DAG node card · THE register (component library) ────────────────────
+   The one task-card the site draws anywhere a plan settles: /#the-plan (via
+   ThePlan), the /brand run-register demos — one markup (DagNodeCard.tsx),
+   one stylesheet, one vocabulary. The verb hue rides ONE custom prop
+   (--node-vhue ← --verb-* ← styles/tokens.css ← design/tokens.yaml, the
+   spec SSOT — the tokens gate pins that chain) and lives on the tick only:
+   hue = alive, never decoration.
+
+   The class stays `.v5plan-node` — it is the SHIPPED register name
+   (slab-sweep.css tilts it with order-immune specificity; goldens pin it).
+   MOVED VERBATIM from sections/plan/plan.css 2026-07-11 (the library
+   extraction) — plan.css keeps the SCENE (waves · wires · captions);
+   this file owns the CARD.
+
+   NO raw hex in this file (the design-tokens-css gate asserts it): every
+   color is a token var. SSR-safe: pure CSS. */
+
+/* the node card · verb hue on the tick only · flat token-swap hover */
+.v5plan-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px 10px 14px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  background: color-mix(in oklch, var(--v4-bg-raised) 88%, transparent);
+  box-shadow:
+    inset 2px 0 0 var(--node-vhue, var(--v4-accent)),
+    var(--seam-highlight);
+  cursor: default;
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui),
+    opacity var(--dur-ui) var(--ease-ui);
+}
+.v5plan-node[data-verb='infer'] {
+  --node-vhue: var(--verb-infer);
+}
+.v5plan-node[data-verb='exec'] {
+  --node-vhue: var(--verb-exec);
+}
+.v5plan-node[data-verb='invoke'] {
+  --node-vhue: var(--verb-invoke);
+}
+.v5plan-node[data-verb='agent'] {
+  --node-vhue: var(--verb-agent);
+}
+
+.v5plan-node[data-state='focus'] {
+  border-color: var(--seam-hairline-strong);
+  background: var(--v4-bg-raised);
+}
+.v5plan-node[data-state='dep-up'] {
+  border-color: rgb(140 170 255 / 0.35);
+}
+.v5plan-node[data-state='dep-down'] {
+  border-color: rgb(140 170 255 / 0.2);
+}
+
+.v5plan-node-id {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--v4-text);
+}
+.v5plan-node-verb {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--node-vhue, var(--v4-text-dim));
+}
+.v5plan-node-target {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--v4-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.v5plan-node-when {
+  margin-top: 4px;
+  padding: 2px 6px;
+  align-self: flex-start;
+  border: 1px solid rgb(230 184 115 / 0.35);
+  border-radius: var(--v4-radius-sm);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--cf-num);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.v5plan-node-chip {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--cf-str);
+}
+.v5plan-node-chip[data-skipped] {
+  color: var(--cf-num);
+}
+.v5plan-node[data-skipped] {
+  border-style: dashed;
+}
