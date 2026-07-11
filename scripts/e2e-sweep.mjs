@@ -328,8 +328,9 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
      SCROLL position (the store) — --morph-p follows via a one-shot rAF that
      may lag a beat under swiftshader. RETRIED ×3: the pointer handler is
      attached during hydration and a starved runner can miss the first
-     attempt entirely (dy:0 — flipped between two CI runs); a real break
-     fails all three. */
+     attempt entirely (dy:0 — flipped between two CI runs · then {p:1}
+     three PRs in one day, strike 3 → the handler-proof below); a real
+     break fails all three. */
   /* the assertion is the POSITION, not the delta: the film sits at p≈1
      when this check starts, so p∈[0.2,0.4] can ONLY result from the seek
      landing where the pointer pointed (a slow runner applies the scroll
@@ -365,7 +366,28 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
       window.__e2eBase = { clientY: tr.top + tr.height / 2, bubbles: true, pointerId: 7, isPrimary: true, pointerType: 'mouse', button: 0, buttons: 1 }
       track.dispatchEvent(new PointerEvent('pointerdown', { ...window.__e2eBase, clientX: tr.left + tr.width * 0.98 }))
     })()`)
-    await sleep(80)
+    /* PROVE THE HANDLER RAN before spending the move: onTrackDown writes
+       data-scrub DOM-direct (no reconcile), so its absence after the down
+       means React's listeners aren't attached yet (starved hydration) —
+       the third-strike {p:1} class: three well-formed drags into a deaf
+       DOM. Re-dispatch the down per poll tick; a dead track after ~2.4s
+       fails THIS attempt (re-park + retry), not the whole check. */
+    const armed = await until(
+      () =>
+        evaluate(`(() => {
+          const track = document.querySelector('.morph-track')
+          if (track.dataset.scrub === '1') return true
+          const tr = track.getBoundingClientRect()
+          track.dispatchEvent(new PointerEvent('pointerdown', { ...window.__e2eBase, clientX: tr.left + tr.width * 0.98 }))
+          return { scrub: track.dataset.scrub ?? null }
+        })()`),
+      6,
+      400,
+    )
+    if (armed !== true) {
+      last = { attempt, handler: armed }
+      continue
+    }
     await evaluate(`(() => {
       const track = document.querySelector('.morph-track')
       const tr = track.getBoundingClientRect()
