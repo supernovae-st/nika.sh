@@ -256,15 +256,18 @@ function Machine({
     }
 
     /* per-stratum washes · lit eases toward its target over ~a second (the
-       drum's band wash), focus x-ray eases a touch faster */
+       drum's band wash), focus eases a touch faster. ONE array carries two
+       signals (operator pass 2026-07-11: dim the rest, push the read zone):
+       ≤1 is the x-ray dim on the siblings, the overflow ABOVE 1 is the
+       spotlight on the stratum being read — the shaders split it back. */
     const pose = poseRef.current
     const lit = litRef.current
     const kLit = Math.min(1, delta * 2.4)
-    const kFoc = Math.min(1, delta * 3)
+    const kFoc = Math.min(1, delta * 2.6)
     for (let i = 0; i < STRATA_ORDER.length; i++) {
       const litT = lit.has(STRATA_ORDER[i]) ? 1 : 0
       u.uLit.value[i] += (litT - u.uLit.value[i]) * kLit
-      const focT = pose.focus < 0 ? 1 : pose.focus === i ? 1 : 0.3
+      const focT = pose.focus < 0 ? 1 : pose.focus === i ? 1.3 : 0.22
       u.uFocusA.value[i] += (focT - u.uFocusA.value[i]) * kFoc
     }
 

@@ -1320,6 +1320,13 @@
   /* the stage needs air: the wrap widens on this page only */
   .spec-page .v4sec-wrap {
     max-width: 96rem;
+    /* the reading indent (operator 2026-07-11: the column read glued to the
+       left edge) · the copy + the ledger step in from the wrap's left rule */
+    --spec-indent: clamp(20px, 2.6vw, 52px);
+  }
+  .spec-hero-copy,
+  .spec-flow {
+    padding-left: var(--spec-indent);
   }
   .spec-stage {
     display: grid;
@@ -1433,13 +1440,16 @@
 .sms-stratum[data-stratum='providers'] { --sm-ink-lit: #5b8cff; }
 .sms-stratum[data-stratum='errors'] { --sm-ink-lit: #b07bff; }
 
-/* the hero poster wears the hull hues from the first paint — unlit strata
-   whisper their OWN colour (the reading's data-lit still brightens them) */
-.spec-hero-eleva .sms-stratum:not([data-lit]) [class^='sms-'],
-.spec-hero-eleva .sms-stratum:not([data-lit]) [class*=' sms-'] {
+/* the drawing wears the hull hues from the first paint — unlit strata
+   whisper their OWN colour (the reading's data-lit still brightens them).
+   EVERY schematic surface (operator 2026-07-11): the hero poster AND the
+   rail dock keep their colours through the whole read — ignition + the
+   struck focus stay the brighter register above the whisper. */
+.spec-schematic .sms-stratum:not([data-lit]) [class^='sms-'],
+.spec-schematic .sms-stratum:not([data-lit]) [class*=' sms-'] {
   stroke: color-mix(in oklch, var(--sm-ink-lit) 52%, transparent);
 }
-.spec-hero-eleva .sms-stratum:not([data-lit]) .sms-port-tip {
+.spec-schematic .sms-stratum:not([data-lit]) .sms-port-tip {
   fill: color-mix(in oklch, var(--sm-ink-lit) 52%, transparent);
   stroke: none;
 }
@@ -2082,7 +2092,8 @@
   .spec-page.is-live .spec-hero-descent {
     display: block;
     position: absolute;
-    left: 13px;
+    /* rides the reading indent — the hairline stays under the cue's tick */
+    left: calc(var(--spec-indent, 0px) + 13px);
     bottom: calc(-1 * clamp(48px, 9vh, 110px));
     width: 1px;
     height: clamp(70px, 16vh, 170px);
