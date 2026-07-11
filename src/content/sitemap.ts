@@ -2,6 +2,7 @@ import { BLOG_POSTS } from './blog.generated'
 import { ERROR_CODES } from './errors.generated'
 import { TOOLS } from './tools.generated'
 import { PROVIDERS } from './providers.generated'
+import { TEMPLATES } from './templates.generated'
 import { DOCS, REPO, SPEC } from '../content'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
@@ -86,6 +87,11 @@ export const SITE_MAP: MapGroup[] = [
         href: '/providers',
         hint: `local first · your keys · no lock-in (${PROVIDERS.length})`,
       },
+      {
+        label: 'Templates',
+        href: '/templates',
+        hint: `instantiable skeletons — route · copy · fill (${TEMPLATES.length})`,
+      },
       { label: 'Changelog', href: '/changelog', hint: 'the ship log, dated and tagged' },
       { label: 'Brand', href: '/brand', hint: 'the marks · icons · motion' },
     ],
@@ -93,6 +99,7 @@ export const SITE_MAP: MapGroup[] = [
       ...TOOLS.map((t) => ({ label: t.name, href: `/tools/${t.bare}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
       ...PROVIDERS.map((p) => ({ label: `provider: ${p.id}`, href: `/providers/${p.id}` })),
+      ...TEMPLATES.map((t) => ({ label: t.file, href: `/templates/${t.name}` })),
     ],
   },
   {
@@ -115,6 +122,11 @@ export const SITE_MAP: MapGroup[] = [
         label: 'provider catalog',
         href: '/providers/catalog.json',
         hint: 'the named set + model pins, JSON',
+      },
+      {
+        label: 'template catalog',
+        href: '/templates/catalog.json',
+        hint: 'the skeletons, sha256-pinned, JSON',
       },
       { label: 'icon ontology', href: '/brand/icons.json', hint: 'every mark, with semantics' },
       { label: 'security.txt', href: '/.well-known/security.txt', hint: 'how to reach us, signed' },

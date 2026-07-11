@@ -17,6 +17,7 @@ import { Component as Errors } from './pages/Errors'
 import { Component as Tools } from './pages/Tools'
 import { Component as Sitemap } from './pages/Sitemap'
 import { Component as Providers } from './pages/Providers'
+import { Component as Templates } from './pages/Templates'
 
 /* ─── central route table · React Router v7 data router ──────────────────────
    Replaces the old hand-rolled hash navigation (#/blog, #/manifesto …) with
@@ -69,6 +70,10 @@ export const routes: RouteObject[] = [
          Spec-named set only; the engine's embedded tail stays a count. */
       { path: 'providers', Component: Providers },
       { path: 'providers/:id', Component: Providers },
+      /* the skeleton register · the human twin of /templates/catalog.json.
+         Deep links open the full SLOT-marked workflow in the product panel. */
+      { path: 'templates', Component: Templates },
+      { path: 'templates/:name', Component: Templates },
       /* the human map · the twin of sitemap.xml. The coverage gate
          (src/test/sitemap.test.ts) keeps it exhaustive both ways. */
       { path: 'sitemap', Component: Sitemap },
