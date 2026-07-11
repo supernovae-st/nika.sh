@@ -42,6 +42,7 @@ function canonValues() {
     providersLocal: num('providersLocal'),
     providersCloud: num('providersCloud'),
     extractModes: num('extractModes'),
+    mcpTools: num('mcpTools'),
   }
   return { ...base, 'builtins-4': base.builtins - 4 }
 }

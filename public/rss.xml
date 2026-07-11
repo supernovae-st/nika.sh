@@ -15,6 +15,14 @@
       <description>nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot — and the human review is a two-line diff.</description>
     </item>
     <item>
+      <title>The MCP server you didn't have to build</title>
+      <link>https://nika.sh/blog/the-mcp-server-you-didnt-build</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-mcp-server-you-didnt-build</guid>
+      <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one — eight read-only tools that let any agent audit a plan and learn the language from the thing that enforces it.</description>
+    </item>
+    <item>
       <title>The forecast is local</title>
       <link>https://nika.sh/blog/the-local-forecast</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-local-forecast</guid>
