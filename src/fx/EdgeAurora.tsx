@@ -40,6 +40,19 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
   const lastTsRef = useRef(0)
   const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const dangerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  /* reduced-motion = the settled register: the ring stays INFO (present
+     during a run, coral on danger, gone after) but never eases and never
+     beats — every write snaps straight to the state's floor. */
+  const reducedRef = useRef(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => {
+      reducedRef.current = mq.matches
+    }
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
 
   const tickRef = useRef<(ts: number) => void>(() => {})
   const tickNow = useCallback((ts: number) => tickRef.current(ts), [])
@@ -71,6 +84,12 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
 
   const kick = useCallback(
     (to: number) => {
+      /* settled register: no transient — the glow IS the state's floor */
+      if (reducedRef.current) {
+        glowRef.current = floorRef.current
+        elRef.current?.style.setProperty('--run-glow', glowRef.current.toFixed(3))
+        return
+      }
       glowRef.current = Math.max(glowRef.current, to)
       elRef.current?.style.setProperty('--run-glow', glowRef.current.toFixed(3))
       lastTsRef.current = 0
@@ -89,8 +108,12 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
     const fadeOut = () => {
       floorRef.current = 0
       kick(glowRef.current) /* arm the loop; it decays to the new floor */
-      /* reset the ring AFTER the fade so the next run draws from zero */
-      holdTimerRef.current = setTimeout(() => setP(0), 400)
+      /* reset the ring AFTER the fade so the next run draws from zero — and
+         drop a held failure coral here too (glow ≈ 0: both are invisible) */
+      holdTimerRef.current = setTimeout(() => {
+        setP(0)
+        elRef.current?.removeAttribute('data-danger')
+      }, 400)
     }
     return {
       runStart: () => {
@@ -126,14 +149,16 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
         clearHold()
         const el = elRef.current
         if (!el) return
-        /* the verdict · success completes the ring full; failure flashes
-           danger on whatever drew. Holds a beat, then fades. */
+        /* the verdict · success completes the ring full; failure turns
+           whatever drew coral and HOLDS it coral through the whole verdict
+           beat (a pending wall-flash timer must not strip it mid-hold — the
+           fade's invisible reset clears it instead). */
         el.removeAttribute('data-run')
         if (verdict === 'success') setP(1)
         else {
-          el.setAttribute('data-danger', 'on')
           if (dangerTimerRef.current) clearTimeout(dangerTimerRef.current)
-          dangerTimerRef.current = setTimeout(() => el.removeAttribute('data-danger'), DANGER_MS)
+          dangerTimerRef.current = null
+          el.setAttribute('data-danger', 'on')
         }
         kick(BEAT_GLOW)
         holdTimerRef.current = setTimeout(fadeOut, HOLD_MS)

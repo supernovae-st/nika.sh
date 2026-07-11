@@ -10,6 +10,7 @@ import { track } from '../lib/track'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
+import { useAurora } from '../fx/aurora-context'
 import { routeHead } from '../content'
 import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import { NIKA_VERBS, verbGlyph, type NikaVerb } from '../components/codefile-highlight'
@@ -79,15 +80,26 @@ export function Component() {
      Editing or switching seeds cancels the sim (the plan changed). */
   const [simWave, setSimWave] = useState<number | undefined>(undefined)
   const simTimer = useRef(0)
+  /* the sim beats THE MACHINED FRAME's drum like the home film does — one
+     run grammar site-wide: the ring appears at runStart, draws with the
+     waves, each wave beats on its lead verb, the verdict completes it.
+     (The sim only runs a check-green plan, so the verdict is success.) */
+  const aurora = useAurora()
   const stopSim = () => {
     window.clearInterval(simTimer.current)
     setSimWave(undefined)
+    /* only abort the drum when a sim is actually live — stopSim also fires
+       on EVERY edit keystroke (onCode), and idle runStops would churn
+       timers on the frame for nothing */
+    if (simWave !== undefined) aurora.runStop()
   }
   const runSim = () => {
     if (!plan || stale) return
     track('play-run')
     window.clearInterval(simTimer.current)
     setSimWave(0)
+    aurora.runStart()
+    aurora.verbTick(plan.waves[0]?.[0]?.verb ?? 'invoke')
     let w = 0
     simTimer.current = window.setInterval(() => {
       w += 1
@@ -96,9 +108,22 @@ export function Component() {
         return
       }
       setSimWave(w)
+      if (w === plan.waves.length) {
+        aurora.runEnd('success')
+      } else {
+        aurora.verbTick(plan.waves[w]?.[0]?.verb ?? 'invoke')
+        aurora.runProgress(w / plan.waves.length)
+      }
     }, 850)
   }
-  useEffect(() => () => window.clearInterval(simTimer.current), [])
+  /* unmount mid-sim: without runStop the lit ring outlives the page — the
+     frame is site chrome and survives navigation (the class runStop exists
+     for). The interval dies with it. */
+  const stopSimRef = useRef(stopSim)
+  useEffect(() => {
+    stopSimRef.current = stopSim
+  })
+  useEffect(() => () => stopSimRef.current(), [])
 
   /* SHARE (E2) · the file as a link — ?y= carries the yaml (lz-string), so
      a playground state is one URL. Loaded post-hydration (SSG stays the
