@@ -128,7 +128,10 @@ export function Component() {
 
   return (
     <main className="theme-dark cl-page">
-      <section ref={ref} aria-labelledby="cl-title" className="v4sec">
+      {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts):
+          on a one-section page the observer armed everything at hydration anyway;
+          baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
+      <section ref={ref} aria-labelledby="cl-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <p className="v4sec-fig" data-rise>
             the ship log

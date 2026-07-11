@@ -14,6 +14,17 @@ import { useEffect, useRef } from 'react'
    SSR/no-JS keep the content visible by default (the CSS only hides rows under
    no-preference), so this only matters when motion is on.
 
+   THE POSTER LAW (LH-measured, /spec first, then every one-section page): any
+   arm that waits on JS — this observer, hydration, the index.html watchdog —
+   lands seconds after the prerendered bytes on a throttled connection, so the
+   hero lede sat at a ~4.7s LCP with ~100% render delay (≡ FCP + the watchdog's
+   1600ms). Pages whose whole content is ONE .v4sec bake `v4-in` into the JSX
+   instead: the observer was arming everything at hydration anyway (the section
+   intersects at load), so the only trade is the entrance stagger — and a
+   poster page paints its poster at first paint. The hook stays attached for
+   its ref; adding `.v4-in` to a section that already has it is a no-op.
+   Multi-section surfaces (the home plates) keep the on-scroll entrance.
+
    Returns a ref to attach to the section element. */
 export function useRevealOnce<T extends HTMLElement = HTMLElement>(opts?: {
   threshold?: number

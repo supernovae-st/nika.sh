@@ -108,7 +108,10 @@ export function Component() {
 
   return (
     <main className="theme-dark v4page">
-      <section ref={ref} aria-labelledby="blog-title" className="v4sec">
+      {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts):
+          on a one-section page the observer armed everything at hydration anyway;
+          baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
+      <section ref={ref} aria-labelledby="blog-title" className="v4sec v4-in">
         {/* the HUD registration frame on the reading column (decorative) */}
         <div className="v4hud" aria-hidden>
           <span className="v4hud-mark v4hud-mark--tl" />
