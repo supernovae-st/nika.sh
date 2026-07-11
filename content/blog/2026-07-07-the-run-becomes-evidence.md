@@ -4,6 +4,8 @@ title: "The run becomes evidence"
 tag: Engine
 date: 2026-07-07
 description: "Every journal line now carries a hash chain — verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify."
+series: trace-family
+series_stop: evidence
 ---
 
 A workflow journal is a nice story until someone asks the auditor's question: **how do I know this record is what actually happened?**

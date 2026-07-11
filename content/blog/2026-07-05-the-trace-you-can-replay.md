@@ -4,6 +4,8 @@ title: "The trace you can replay"
 tag: Engine
 date: 2026-07-05
 description: "Every run leaves a flight recorder: a deterministic AI audit trail you can replay like a film, never re-execute by accident."
+series: trace-family
+series_stop: replay
 ---
 
 Ask most AI tooling what happened during a run and you get logs: interleaved, truncated, gone at the next rotation. Ask what *exactly* happened, in what order, at what cost, and the honest answer is usually a shrug.

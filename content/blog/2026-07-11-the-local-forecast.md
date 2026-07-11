@@ -4,6 +4,8 @@ title: "The forecast is local"
 tag: Engine
 date: 2026-07-11
 description: "explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five — never a model call, never the network."
+series: trace-family
+series_stop: forecast
 ---
 
 Two questions decide whether a pipeline is safe to re-run: how long will it take, and what will it cost? The industry's answer is a dashboard — ship your telemetry to somebody's cloud, and they will sell your own history back to you as graphs. Nika's answer is a flag:

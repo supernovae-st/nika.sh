@@ -24,7 +24,24 @@ export interface BlogPost {
   date: string
   description: string
   readingMin: number
+  /** reading-path membership (optional) · id into BLOG_SERIES + this post's stop label */
+  series?: string
+  seriesStop?: string
   tokens: BlogToken[]
+}
+
+export const BLOG_SERIES: Record<string, { title: string; claim: string; stops: string[] }> = {
+  "trace-family": {
+    "title": "The trace family",
+    "claim": "One recorded file, five jobs",
+    "stops": [
+      "evidence",
+      "replay",
+      "resume",
+      "forecast",
+      "custody"
+    ]
+  }
 }
 
 /* newest first */
@@ -867,6 +884,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "date": "2026-07-11",
     "description": "explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five — never a model call, never the network.",
     "readingMin": 3,
+    "series": "trace-family",
+    "seriesStop": "forecast",
     "tokens": [
       {
         "k": "p",
@@ -1099,6 +1118,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "date": "2026-07-11",
     "description": "A recorded run is a text file, and text files can be edited. nika trace verify recomputes the hash chain: one changed word in history breaks every line after it, and the run's printed head closes the loop.",
     "readingMin": 3,
+    "series": "trace-family",
+    "seriesStop": "custody",
     "tokens": [
       {
         "k": "p",
@@ -1689,6 +1710,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "date": "2026-07-10",
     "description": "kill -9 a run mid-flight, then resume it: finished work never runs twice. Durability as a file property, shown from the real journal.",
     "readingMin": 3,
+    "series": "trace-family",
+    "seriesStop": "resume",
     "tokens": [
       {
         "k": "p",
@@ -2922,6 +2945,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "date": "2026-07-07",
     "description": "Every journal line now carries a hash chain — verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify.",
     "readingMin": 3,
+    "series": "trace-family",
+    "seriesStop": "evidence",
     "tokens": [
       {
         "k": "p",
@@ -4766,6 +4791,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "date": "2026-07-05",
     "description": "Every run leaves a flight recorder: a deterministic AI audit trail you can replay like a film, never re-execute by accident.",
     "readingMin": 2,
+    "series": "trace-family",
+    "seriesStop": "replay",
     "tokens": [
       {
         "k": "p",
