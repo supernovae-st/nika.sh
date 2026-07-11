@@ -47,6 +47,8 @@ title: "The title"
 tag: Origins | Manifesto | Language | Engine | Sovereignty | Security
 date: 2026-01-01
 description: "One honest sentence for the card + the feed."
+series: trace-family       # optional · a reading path (registry in build-blog.mjs)
+series_stop: custody       # required with series · this post's station on the line
 ---
 
 Body in plain Markdown. A fenced ```yaml block may carry a filename
@@ -56,6 +58,10 @@ the product's editor panel, copy button included.
 
 Two conventions the build enforces:
 
+- **A series ships complete.** `series:` names a registry entry (SERIES in
+  `scripts/build-blog.mjs` — title, claim, ordered stops); `series_stop:` claims one
+  stop. Unknown id, unknown stop, a stop claimed twice, or a declared stop with no
+  post all fail the build — a reading path is never half-wired.
 - **Counts derive from the spec.** A number that comes from the language canon is wrapped in `<!-- canon:… -->N<!-- /canon -->` markers; the compiler verifies it against `canon.yaml` and the build fails on drift. Never hand-type a count.
 - **YAML is spec-correct.** Fenced workflow examples are real, runnable shapes, never pseudo-code.
 

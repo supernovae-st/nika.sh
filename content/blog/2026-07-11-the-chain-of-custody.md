@@ -4,6 +4,8 @@ title: "The chain of custody"
 tag: Engine
 date: 2026-07-11
 description: "A recorded run is a text file, and text files can be edited. nika trace verify recomputes the hash chain: one changed word in history breaks every line after it, and the run's printed head closes the loop."
+series: trace-family
+series_stop: custody
 ---
 
 Your pipeline ran last Tuesday. The trace says five tasks went green, the summary came from a local model, and the whole thing cost nothing. Now the compliance question: *prove it*. The trace is an NDJSON file — plain text, one event per line, sitting in `.nika/traces/`. Plain text is wonderful for `grep` and terrible for trust, because anyone with write access can make last Tuesday say anything.

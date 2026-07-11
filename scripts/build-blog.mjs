@@ -128,8 +128,25 @@ export function compilePost(raw, file, canon) {
     date: String(meta.date),
     description: String(meta.description),
     readingMin: Math.max(1, Math.ceil(words / 220)),
+    /* optional reading-path membership · `series: <id>` (+ `series_stop: <label>`
+       naming this post's station). Both-or-neither: the compiler gates below. */
+    ...(meta.series ? { series: String(meta.series), seriesStop: String(meta.series_stop ?? '') } : {}),
     tokens,
   }
+}
+
+/* ── the series registry · id → display copy (a series is EDITORIAL: the id in
+   frontmatter binds the posts; the title/claim live here, once). Adding a
+   series = one row + `series:` lines in its posts — the gates below refuse
+   half-wired states (unknown id · singleton series · missing stop label). */
+export const SERIES = {
+  'trace-family': {
+    title: 'The trace family',
+    claim: 'One recorded file, five jobs',
+    /* the READING order — editorial (the custody post's canonical phrase),
+       not chronological: a path is a curriculum, not a changelog */
+    stops: ['evidence', 'replay', 'resume', 'forecast', 'custody'],
+  },
 }
 
 export function compileAll(dir = SRC_DIR) {
@@ -145,6 +162,25 @@ export function compileAll(dir = SRC_DIR) {
     if (slugs.has(p.slug)) throw new Error(`duplicate slug: ${p.slug}`)
     slugs.add(p.slug)
   }
+  /* series gates · unknown id, singleton, or a member missing its stop label
+     all fail the build (half-wired reading paths never ship) */
+  const bySeries = new Map()
+  for (const p of posts) {
+    if (!p.series) continue
+    const reg = SERIES[p.series]
+    if (!reg) throw new Error(`${p.file}: unknown series "${p.series}"`)
+    if (!reg.stops.includes(p.seriesStop))
+      throw new Error(`${p.file}: stop "${p.seriesStop}" not in series "${p.series}" (${reg.stops.join(' · ')})`)
+    if (!bySeries.has(p.series)) bySeries.set(p.series, new Map())
+    const stops = bySeries.get(p.series)
+    if (stops.has(p.seriesStop))
+      throw new Error(`series "${p.series}" stop "${p.seriesStop}" claimed twice (${stops.get(p.seriesStop)} + ${p.file})`)
+    stops.set(p.seriesStop, p.file)
+  }
+  /* the path ships COMPLETE: every declared stop has its post */
+  for (const [id, stops] of bySeries)
+    for (const stop of SERIES[id].stops)
+      if (!stops.has(stop)) throw new Error(`series "${id}" missing its "${stop}" stop`)
   return posts
 }
 
@@ -191,8 +227,13 @@ export interface BlogPost {
   date: string
   description: string
   readingMin: number
+  /** reading-path membership (optional) · id into BLOG_SERIES + this post's stop label */
+  series?: string
+  seriesStop?: string
   tokens: BlogToken[]
 }
+
+export const BLOG_SERIES: Record<string, { title: string; claim: string; stops: string[] }> = ${JSON.stringify(SERIES, null, 2)}
 
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = ${JSON.stringify(posts, null, 2)}

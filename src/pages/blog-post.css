@@ -39,6 +39,103 @@
   color: var(--v4-text-dim);
 }
 
+/* ── the reading path · the series rail (trace family et al.) ─────────────────
+   A quiet instrument between lede and body: the whole line in editorial order,
+   this station lit. Register: hairline box + mono figs (the site's HUD voice);
+   the strip scrolls inside itself on phones — never the page (the well law). */
+.bp-series {
+  margin-top: clamp(20px, 3.5vh, 30px);
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius-sm);
+  padding: 12px 14px;
+  max-width: 640px;
+}
+.bp-series-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.bp-series-name {
+  color: var(--v4-text-dim);
+  white-space: nowrap;
+}
+.bp-series-claim {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+.bp-series-count {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.bp-series-line {
+  /* the strip is its own scroller (never the page) · positioned so the
+     centering JS reads offsetLeft in STRIP coordinates, not an ancestor's ·
+     inner padding gives focus rings room (one auto axis forces the other
+     from visible to auto — an unpadded box would clip the outline) */
+  position: relative;
+  display: flex;
+  gap: 4px;
+  margin: 8px -3px -3px;
+  padding: 3px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.bp-series-line::-webkit-scrollbar { display: none; }
+.bp-series-stop { display: flex; flex: none; align-items: center; }
+.bp-series-stop + .bp-series-stop::before {
+  /* alt-text syntax: the arrow is visual flow, never announced */
+  content: '→' / '';
+  margin: 0 6px 0 2px;
+  font-size: 11px;
+  color: var(--v4-text-faint);
+}
+.bp-series-tick {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  min-height: 24px;
+  padding: 3px 7px;
+  border-radius: var(--v4-radius-sm);
+  font-size: 12.5px;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.bp-series-tick i {
+  font-style: normal;
+  font-size: 10px;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+a.bp-series-tick:hover,
+a.bp-series-tick:focus-visible {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-text) 7%, transparent);
+}
+a.bp-series-tick:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 1px;
+}
+.bp-series-tick.is-here {
+  color: var(--v4-text);
+  background: color-mix(in oklch, var(--v4-accent) 13%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--v4-accent) 30%, transparent);
+}
+.bp-series-tick.is-here i {
+  color: var(--v4-accent);
+}
+
 /* ── the article column · the reading ramp ─────────────────────────────────── */
 .bp-body {
   margin-top: clamp(30px, 5vh, 52px);

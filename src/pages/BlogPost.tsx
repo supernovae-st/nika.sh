@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, REPO } from '../content'
-import { BLOG_POSTS } from '../content/blog.generated'
+import { BLOG_POSTS, BLOG_SERIES } from '../content/blog.generated'
 import { BlogBody } from '../lib/blog-render'
 import { Component as NotFound } from './NotFound'
 import '../sections/v4-home.css'
@@ -103,9 +103,30 @@ export function Component() {
     window.scrollTo(0, 0)
   }, [slug])
 
+  /* center the lit station inside the strip's OWN scroller (phones: stations
+     4-5 start off-screen right) — a scrollLeft write on the well, never the
+     page (scrollIntoView would drag the viewport) */
+  useEffect(() => {
+    const line = document.querySelector<HTMLElement>('.bp-series-line')
+    const here = line?.querySelector<HTMLElement>('.is-here')
+    if (line && here) line.scrollLeft = here.offsetLeft - (line.clientWidth - here.offsetWidth) / 2
+  }, [slug])
+
   if (!post) return <NotFound />
   const prev = BLOG_POSTS[idx + 1]
   const next = BLOG_POSTS[idx - 1]
+
+  /* the reading path · when the post belongs to a series, the rail names the
+     whole line in its EDITORIAL order (the registry's stops — a curriculum,
+     not a changelog) with this station lit. Compiler gates guarantee the
+     path is complete, so the lookups below cannot come up short. */
+  const series = post.series ? BLOG_SERIES[post.series] : undefined
+  const stations = series
+    ? series.stops.map((stop) => ({
+        stop,
+        post: BLOG_POSTS.find((q) => q.series === post.series && q.seriesStop === stop)!,
+      }))
+    : []
 
   return (
     <main className="theme-dark v4page">
@@ -135,6 +156,38 @@ export function Component() {
           <p className="bp-lede">
             {post.description}
           </p>
+
+          {series && (
+            <nav className="bp-series" aria-label={`${series.title} reading path`}>
+              <p className="bp-series-head mono">
+                <span className="bp-series-name">{series.title}</span>
+                <span className="bp-series-claim">{series.claim}</span>
+                <span className="bp-series-count">
+                  {stations.findIndex((st) => st.post.slug === post.slug) + 1}/{stations.length}
+                </span>
+              </p>
+              <ol className="bp-series-line">
+                {stations.map((st, i) => (
+                  <li key={st.stop} className="bp-series-stop">
+                    {st.post.slug === post.slug ? (
+                      <span className="bp-series-tick is-here" aria-current="page">
+                        <i className="mono" aria-hidden>{String(i + 1).padStart(2, '0')}</i> {st.stop}
+                      </span>
+                    ) : (
+                      <Link
+                        to={`/blog/${st.post.slug}`}
+                        viewTransition
+                        className="bp-series-tick"
+                        aria-label={`${st.stop} · ${st.post.title}`}
+                      >
+                        <i className="mono" aria-hidden>{String(i + 1).padStart(2, '0')}</i> {st.stop}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
 
           <article className="bp-body">
             <BlogBody tokens={post.tokens} />

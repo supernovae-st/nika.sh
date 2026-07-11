@@ -4,6 +4,8 @@ title: "The resume story"
 tag: Engine
 date: 2026-07-10
 description: "kill -9 a run mid-flight, then resume it: finished work never runs twice. Durability as a file property, shown from the real journal."
+series: trace-family
+series_stop: resume
 ---
 
 Every long pipeline eventually meets a hard death. The laptop lid closes, the CI runner is reaped, someone trips over `Ctrl-C` twice. The question that decides whether that hurts is not *did it crash* — everything crashes — it is **what happens to the work that already finished?**
