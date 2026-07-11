@@ -92,8 +92,14 @@ vec3 machineVertex(vec3 p) {
 
 const FILL_VERT = /* glsl */ `
 ${MACHINE_COMMON}
+varying float vNearF;
 void main() {
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(machineVertex(position), 1.0);
+  vec4 mv = modelViewMatrix * vec4(machineVertex(position), 1.0);
+  gl_Position = projectionMatrix * mv;
+  /* the fills join the lines' near-plane law: a block brushing the camera
+     used to print a giant OPAQUE murk that occluded the whole lit read
+     behind it — it dissolves instead (screen-door in the fragment) */
+  vNearF = smoothstep(0.5, 0.95, length(mv.xyz));
 }
 `
 
@@ -105,8 +111,19 @@ varying float vLit;
 varying float vFocusA;
 varying vec3 vTint;
 varying float vPulse;
+varying float vNearF;
 uniform float uHero;
 void main() {
+  /* the near screen-door · an opaque fill cannot fade (tholos: fills never
+     go transparent), so it dithers out on an ordered 4x4 Bayer as it nears
+     the camera (the site's own dotmatrix language — never random noise);
+     by this range the edge lines have already dissolved (vNear), so the
+     block reads as a clean screen-door and the lit read behind survives */
+  vec2 b1 = mod(gl_FragCoord.xy, 2.0);
+  vec2 b2 = mod(floor(gl_FragCoord.xy * 0.5), 2.0);
+  float m1 = b1.x * 3.0 + b1.y * 2.0 - b1.x * b1.y * 4.0;
+  float m2 = b2.x * 3.0 + b2.y * 2.0 - b2.x * b2.y * 4.0;
+  if ((m1 * 4.0 + m2 + 0.5) / 16.0 > vNearF) discard;
   float spot = clamp((vFocusA - 1.0) * 3.4, 0.0, 1.0);
   vec3 deep = mix(vec3(0.043, 0.075, 0.18), vTint * 0.26, 0.4);
   vec3 col = mix(vec3(0.039, 0.047, 0.063), deep, vLit * (0.18 + 0.2 * vFocusA));
