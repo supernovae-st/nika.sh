@@ -10,6 +10,8 @@ import {
   INSTALL_SH_CMD,
   VERIFY_CMD,
   RELEASES_URL,
+  BINSTALL_CMD,
+  NIX_RUN_CMD,
   VSCODE_EXT_URL,
   OPENVSX_EXT_URL,
   VSCODE_REPO,
@@ -135,8 +137,17 @@ export function Component() {
                   Reopen the terminal and <code>nika --version</code> works.
                 </p>
               </div>
-              <div className="ins-step-body">
+              <div className="ins-step-body ins-step-body--stack">
                 <CopyRow track="install-copy" cmd={INSTALL_SH_CMD} label="install script" />
+                <p className="ins-step-plain">
+                  Already carrying a toolchain? <b>cargo</b> fetches the prebuilt release
+                  tarball — no compile (the binary lands as <code>nika-cli</code> until the
+                  crates.io publish: symlink the public name once). <b>nix</b> builds the
+                  exact release source via the repo flake — the first run compiles, the
+                  store caches it.
+                </p>
+                <CopyRow track="install-copy" cmd={BINSTALL_CMD} label="cargo binstall" />
+                <CopyRow track="install-copy" cmd={NIX_RUN_CMD} label="nix" />
               </div>
             </li>
 

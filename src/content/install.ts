@@ -15,6 +15,13 @@ export const INSTALL_SH_CMD = 'curl -LsSf https://nika.sh/install.sh | sh'
 export const VERIFY_CMD = 'sha256sum -c SHA256SUMS --ignore-missing'
 export const RELEASES_URL = `${REPO}/releases/latest`
 
+/* the toolchain paths (engine README §Get started · both merged 2026-07-11):
+   binstall fetches the PREBUILT release tarball (no compile · binary lands as
+   `nika-cli` until the crates.io publish) · nix BUILDS the exact release
+   source via the root flake (first run compiles, the store caches it). */
+export const BINSTALL_CMD = `cargo binstall --git ${REPO} nika-cli`
+export const NIX_RUN_CMD = 'nix run github:supernovae-st/nika'
+
 /* the marketplace ids · the extension repo */
 export const VSCODE_EXT_URL =
   'https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang'
