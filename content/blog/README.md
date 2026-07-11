@@ -7,6 +7,7 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 | date | post | file |
 |---|---|---|
 | 2026-07-11 | The MCP server you didn't have to build | [`2026-07-11-the-mcp-server-you-didnt-build.md`](./2026-07-11-the-mcp-server-you-didnt-build.md) |
+| 2026-07-11 | The agent workflow spectrum | [`2026-07-11-the-agent-workflow-spectrum.md`](./2026-07-11-the-agent-workflow-spectrum.md) |
 | 2026-07-11 | The pipeline is a file | [`2026-07-11-the-pipeline-is-a-file.md`](./2026-07-11-the-pipeline-is-a-file.md) |
 | 2026-07-11 | The chain of custody | [`2026-07-11-the-chain-of-custody.md`](./2026-07-11-the-chain-of-custody.md) |
 | 2026-07-11 | The forecast is local | [`2026-07-11-the-local-forecast.md`](./2026-07-11-the-local-forecast.md) |

@@ -26,11 +26,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-agent-workflow-spectrum',
+    slug: 'the-generative-workflow',
     tag: 'Language',
     date: 'soon',
-    title: 'The agent workflow spectrum',
-    teaser: 'Every ai agent workflow sits between two poles: a declared graph the engine can audit, and a loop the model steers in flight. Where your work lands decides which safety you can even ask for.',
+    title: 'The generative ai workflow, minus the mystery',
+    teaser: 'Strip the buzzword and a generative ai workflow is inputs, a model step, and effects you can name. Declare the three and the mystery evaporates: reviewable in, typed out, priced before it runs.',
   },
   {
     slug: 'the-run-that-never-runs',

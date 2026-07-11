@@ -240,6 +240,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>one&nbsp;shape<span class="sep">·</span>five&nbsp;sovereign&nbsp;hosts<span class="sep">·</span><b>zero&nbsp;lock-in</b></span>',
   },
   {
+    // /blog/the-agent-workflow-spectrum — declared graph ↔ free loop; the agent verb contains the dynamic end.
+    out: 'og-blog-the-agent-workflow-spectrum.png',
+    fig: 'FIG B.22',
+    size: 60,
+    headline: 'The agent workflow<br><span class="b">spectrum.</span>',
+    sub: 'Every ai agent workflow sits between a declared graph and a free loop. In a file it&#8217;s a per-task verb: infer when you know the step&#8217;s shape, agent — leashed — when you don&#8217;t.',
+    detail:
+      '<span class="arrow">▸</span><span>tools&nbsp;default-deny<span class="sep">·</span>turns&nbsp;+&nbsp;tokens&nbsp;bounded<span class="sep">·</span><b>prose&nbsp;is&nbsp;not&nbsp;a&nbsp;contract</b></span>',
+  },
+  {
     // /blog/the-pipeline-is-a-file — an llm pipeline is a declared graph, not framework glue.
     out: 'og-blog-the-pipeline-is-a-file.png',
     fig: 'FIG B.21',

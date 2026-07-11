@@ -1651,6 +1651,361 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
+    "slug": "the-agent-workflow-spectrum",
+    "file": "2026-07-11-the-agent-workflow-spectrum.md",
+    "title": "The agent workflow spectrum",
+    "tag": "Language",
+    "date": "2026-07-11",
+    "description": "An ai agent workflow is any pipeline where a model chooses some of the steps. Every design sits between a declared graph and a free loop — and where yours lands decides which safety you can even ask for.",
+    "readingMin": 4,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "An ai agent workflow is any pipeline where a model chooses some of the steps. That single property splits the whole design space into a spectrum with two poles. At one end, the "
+          },
+          {
+            "k": "strong",
+            "text": "declared graph"
+          },
+          {
+            "k": "text",
+            "text": ": every task and edge written down before anything runs — "
+          },
+          {
+            "k": "link",
+            "text": "the pipeline that is a file",
+            "href": "/blog/the-pipeline-is-a-file"
+          },
+          {
+            "k": "text",
+            "text": ", which an engine can schedule, price and audit statically. At the other, the "
+          },
+          {
+            "k": "strong",
+            "text": "free loop"
+          },
+          {
+            "k": "text",
+            "text": ": the model reads, decides, acts, repeats — maximally flexible, and nothing about it can be known in advance, which is why its failures make headlines."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Neither pole is \"the right way to build agents.\" The design question is narrower and more useful: "
+          },
+          {
+            "k": "em",
+            "text": "which of your steps actually need a model's judgment at runtime?"
+          },
+          {
+            "k": "text",
+            "text": " Most steps do not — read these files, call this tool, save that output. Some genuinely do — triage, research, review, anything where the path depends on what the content turns out to say. The spectrum is not a choice of tool. In a Nika file it is a per-task choice of verb: "
+          },
+          {
+            "k": "code",
+            "text": "infer"
+          },
+          {
+            "k": "text",
+            "text": " when you know the shape of the step, "
+          },
+          {
+            "k": "code",
+            "text": "agent"
+          },
+          {
+            "k": "text",
+            "text": " when you do not."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "What makes the dynamic end shippable is that the freedom is "
+          },
+          {
+            "k": "strong",
+            "text": "contained in a task"
+          },
+          {
+            "k": "text",
+            "text": ". Here is the workflow this post ran — instantiated from the engine's own "
+          },
+          {
+            "k": "code",
+            "text": "agent-loop"
+          },
+          {
+            "k": "text",
+            "text": " template ("
+          },
+          {
+            "k": "code",
+            "text": "nika new --from agent-loop"
+          },
+          {
+            "k": "text",
+            "text": "), whose header states the doctrine outright: "
+          },
+          {
+            "k": "em",
+            "text": "\"Three leashes (NEVER ship an unleashed agent): tools: default-deny — grant the MINIMUM; max_turns + max_tokens_total — the worst case is bounded; schema: — the final message is TYPED, prose is not a contract.\""
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "notes-triage.nika.yaml",
+        "text": "nika: v1\nworkflow: notes-triage\ndescription: \"Read the status notes, return a typed triage\"\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs:\n    read: [\"./notes.txt\"]\n  exec: false\n  tools: [\"nika:assert\", \"nika:done\", \"nika:read\"]\n\nvars:\n  goal:\n    type: string\n    required: true\n    description: \"What the agent must accomplish\"\n\ntasks:\n  - id: plan\n    infer:\n      prompt: \"Break '${{ vars.goal }}' into at most 4 concrete steps.\"\n      max_tokens: 400\n      schema:\n        type: object\n        required: [steps]\n        additionalProperties: false\n        properties:\n          steps: { type: array, items: { type: string } }\n\n  - id: execute\n    depends_on: [plan]\n    agent:\n      model: ollama/qwen2.5:14b\n      system: \"Work the plan step by step. Read ./notes.txt with nika:read, then call nika:done with your final answer.\"\n      prompt: \"Plan · ${{ tasks.plan.output.steps }}\"\n      tools:\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 6\n      max_tokens_total: 20000\n      schema:\n        type: object\n        required: [findings]\n        additionalProperties: false\n        properties:\n          findings: { type: array, items: { type: string } }\n\n  - id: confirm\n    depends_on: [execute]\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: \"${{ size(tasks.execute.output.findings) > 0 }}\"\n        message: \"Agent returned no findings, do not trust an empty run\"\n\noutputs:\n  findings:\n    value: ${{ tasks.execute.output.findings }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWYNAFwFMBnAWhIxAgHMykATSgYzoAcSQ1hYAIgBKZCCxgkAFmRgUSEEgFcKMYuQoAaGBjLKMwGBEkBPLmQm16TQUiQBbNG1yw0uXBHsQA9O88QAZgA6ACYoAIAjO3MMexASCigkGBhsROSUnTEWWABtQSDvdUogkgAPEkEAXQyyMrJ2WGwIXApmFJI0N0SYfNBIKAgKNoxK7UF+6BZ+MkFxyahdcWq7OAgMdJSGNBakzNNzWHk6YAYMlN0ARyUQXRzJDCV2zLYKThAePgEYQQB1KUUkhkRiYwBIMHsKnBEHY7DQ9i4uBAFCktiQCgoYE2MCoMBA90REGA5zxwGwZAwe32MC4GHhPCEACElmAYAByAAkAG8ufB1hQgtsWjAAL4itmkzpGcGOeQwAAsMDhwE4elk8jIXAFtmpEIgZQA+p0wGRgD15QAGC0klJvGReKm6khmMiuCIAKwaJBtmSuNzueQ1WpqupS4hY8S+LQACnSYrxKE0Wm0fSlaWh4yBE6nMkGerznYcjBgMBATNp4mR7PmDq65FZTqLRXYUrj8bA6g0lOQSWxzMAWBQDfw8oTgCHMoxTSRHZlHM5XH4vN5LihTSEggBWKAIeVRXUUEwa+xCX6YVnSWRj+uamAREw3rhBGCicQwQrFAXlcEoeJSNTgNASwsNol6GOwLS4ABAzTMAsi-tIMAmGgSgYKkIDAMKRIUGuGBBDq1LpgiM4-NGHiGAA7TA3IFkMWJBGOQQoSQXDdkEeaiiKBH7J03SzvsuITIBizZNx1KCQssGzD6XiGvoZqwAAbDJ+pGmgJpmmpCguDAIRWlaPp2lW0A5oWdZoB6Xo5n6twWHk2AYRGpwUBOurhpG-AxnGFIJj0zStM8urppm2ahpkDkDhhDA1mZsDrKW5Z4uQ1awAWLpHA2DBNiKLY4ni9zKg5sS9pqpqDsO3y5J27DdmQrmknA6muj6vE6UJAxDCMlQ+us0X8ZkyoRrwI4-DRcggAAXmQAAUGL0dVtVMd2rEkEEEVOdFACUMAAHwwBanFifs9iUBQU5CAAgqC4K6PJFhqGg6GRc52jTA94K0FCRiGFWPAPo8wBosxK3YutUXYikay4E8sBjXNAoLeQS0sWxYPOZxQA"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Read the shape of the spectrum in one file: "
+          },
+          {
+            "k": "code",
+            "text": "plan"
+          },
+          {
+            "k": "text",
+            "text": " is an "
+          },
+          {
+            "k": "code",
+            "text": "infer"
+          },
+          {
+            "k": "text",
+            "text": " — the step's shape is known, so it gets a schema and a 400-token ceiling. "
+          },
+          {
+            "k": "code",
+            "text": "execute"
+          },
+          {
+            "k": "text",
+            "text": " is the "
+          },
+          {
+            "k": "code",
+            "text": "agent"
+          },
+          {
+            "k": "text",
+            "text": " — a 14B with exactly two tools, six turns, twenty thousand tokens, and a typed final-message contract. "
+          },
+          {
+            "k": "code",
+            "text": "confirm"
+          },
+          {
+            "k": "text",
+            "text": " is a plain assert that refuses an empty triage. Even the first draft's sloppiness was caught before running: "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " opened with five hints — a missing token ceiling, two schemas that admitted undeclared keys, no permits boundary — and closed at one after the tightening. The audit coaches the leashes on."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Then we ran it, and this is the part worth being honest about: "
+          },
+          {
+            "k": "strong",
+            "text": "my laptop never produced a green agent run."
+          },
+          {
+            "k": "text",
+            "text": " What it produced was better evidence."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Run one, the provider's HTTP ceiling killed the model call. The failure came back typed — "
+          },
+          {
+            "k": "code",
+            "text": "NIKA-INFER-001 · provider API error (408)"
+          },
+          {
+            "k": "text",
+            "text": " — and the downstream tasks were "
+          },
+          {
+            "k": "code",
+            "text": "⊘ blocked"
+          },
+          {
+            "k": "text",
+            "text": ", not executed on garbage. Run two, a smaller model answered "
+          },
+          {
+            "k": "em",
+            "text": "fast"
+          },
+          {
+            "k": "text",
+            "text": " — with a Python-dict string instead of the declared object. The schema leash refused it at the boundary: "
+          },
+          {
+            "k": "em",
+            "text": "agent final message failed schema validation"
+          },
+          {
+            "k": "text",
+            "text": ". The model was confident; the contract said no. Prose is not a contract, enforced live. Run three, the bigger model got to work — the flight recorder shows the loop's real anatomy, "
+          },
+          {
+            "k": "code",
+            "text": "agent_tools_selected → agent_budget_checkpoint → tool_invoked"
+          },
+          {
+            "k": "text",
+            "text": " (it read the notes, one turn done) — and then hit the provider ceiling mid-loop. Typed again, blocked again."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "And threaded through all three: "
+          },
+          {
+            "k": "code",
+            "text": "↷ plan cache hit (resume)"
+          },
+          {
+            "k": "text",
+            "text": ". The finished planning step "
+          },
+          {
+            "k": "link",
+            "text": "never ran twice",
+            "href": "/blog/the-resume-story"
+          },
+          {
+            "k": "text",
+            "text": " across a whole afternoon of failures. Total damage from three failed agent runs on an under-powered machine: zero files touched outside the boundary, zero surprise spend, zero mystery — three traces you can "
+          },
+          {
+            "k": "link",
+            "text": "verify line by line",
+            "href": "/blog/the-chain-of-custody"
+          },
+          {
+            "k": "text",
+            "text": ", each naming exactly which leash held."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "That is the pitch of bounded autonomy, stated without the demo-day gloss: the leashes are not there to make a strong model stronger, they are there to make "
+          },
+          {
+            "k": "em",
+            "text": "trying an agent cheap"
+          },
+          {
+            "k": "text",
+            "text": " — "
+          },
+          {
+            "k": "link",
+            "text": "the same division of labor that made a weak model safe to let write",
+            "href": "/blog/written-by-agents"
+          },
+          {
+            "k": "text",
+            "text": ", extended to letting one act. When the model is too small for the job, you find out through a typed error and a capped bill, not an incident. And when you want the muscle, the upgrade is one line — the "
+          },
+          {
+            "k": "code",
+            "text": "model:"
+          },
+          {
+            "k": "text",
+            "text": " inside the agent task — while every leash stays exactly where it was."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "So place your next workflow on the spectrum honestly. Write the steps whose shape you know as "
+          },
+          {
+            "k": "code",
+            "text": "infer"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "exec"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "code",
+            "text": "invoke"
+          },
+          {
+            "k": "text",
+            "text": " — the declared graph does the scheduling, the pricing, the audit. Give the genuinely open-ended step to "
+          },
+          {
+            "k": "code",
+            "text": "agent"
+          },
+          {
+            "k": "text",
+            "text": ", leashed. The file stays reviewable end to end, and the part of it that thinks for itself does so inside a fence you wrote."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-run-that-waits",
     "file": "2026-07-10-the-run-that-waits.md",
     "title": "The run that waits for you",
