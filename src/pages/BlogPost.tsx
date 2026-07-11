@@ -120,19 +120,20 @@ export function Component() {
           <p className="bp-fig mono" data-rise style={{ ['--rise-delay' as string]: '40ms' }}>
             {post.tag} · <time dateTime={post.date}>{post.date}</time> · {post.readingMin} min
           </p>
-          <h1
-            id="bp-title"
-            className="v4sec-title bp-title"
-            data-rise
-            style={{ ['--rise-delay' as string]: '80ms' }}
-          >
+          <h1 id="bp-title" className="v4sec-title bp-title">
             {post.title}
           </h1>
-          <p className="bp-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+          {/* the title + lede + body do NOT ride the entrance — the reveal
+              watchdog's 1.6s timer queues behind the bundle parse on a slow
+              device (LH mobile: LCP 4.8s at 100% render delay, first on the
+              body's lead paragraph, then on the freed title — the whole
+              article hid behind the choreography). The crumb + fig still
+              rise; the content people came for is just THERE. */}
+          <p className="bp-lede">
             {post.description}
           </p>
 
-          <article className="bp-body" data-rise style={{ ['--rise-delay' as string]: '170ms' }}>
+          <article className="bp-body">
             <BlogBody tokens={post.tokens} />
           </article>
 
