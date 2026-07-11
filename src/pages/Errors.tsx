@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { Link, useParams } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
-import { CountUp } from '../components/CountUp'
+import { StampStrip } from '../components/StampStrip'
 import { ERROR_CODES, ERROR_INDEX, ERROR_NAMESPACES, type ErrorCodeEntry } from '../content/errors.generated'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
@@ -143,25 +143,14 @@ export function Component() {
           )}
 
           {/* the register's dimensions, at a glance */}
-          <ul className="cl-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
-            {[
+          <StampStrip
+            items={[
               { n: ERROR_CODES.length, label: 'codes', sub: 'registered' },
               { n: ERROR_NAMESPACES.length, label: 'namespaces', sub: 'NIKA-*' },
               { n: categoryCount, label: 'categories', sub: 'typed' },
               { n: transientCount, label: 'transient', sub: 'retry-able' },
-            ].map((s, i) => (
-              <li className="cl-stamp-cell" key={s.label}>
-                <span className="cl-stamp-fig" aria-hidden>
-                  {String(i).padStart(2, '0')}
-                </span>
-                <span className="cl-stamp-n">
-                  <CountUp n={s.n} />
-                </span>
-                <span className="cl-stamp-label">{s.label}</span>
-                <span className="cl-stamp-sub">{s.sub}</span>
-              </li>
-            ))}
-          </ul>
+            ]}
+          />
 
           {groups.map((group, gi) => (
             <div className="er-ns" key={group.ns} data-rise style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}>

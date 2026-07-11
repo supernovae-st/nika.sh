@@ -196,3 +196,80 @@
   opacity: 1;
   transform: translate(-50%, 0);
 }
+
+/* ── the stamp strip · the register's dimensions, at a glance (StampStrip) ────
+   One surface for the 4-cell stat band on /use-cases · /changelog · /errors.
+   The cells sit LOW (62% raised) and lift to raised on hover — the register
+   register: quieter than a panel at rest, alive under the pointer. */
+.v4stamp {
+  margin: clamp(28px, 4vh, 44px) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  border: 1px solid var(--seam-hairline);
+  border-radius: var(--v4-radius);
+  overflow: hidden;
+  background: var(--seam-hairline-soft);
+  box-shadow: var(--seam-panel); /* seam kit */
+}
+@media (min-width: 620px) {
+  .v4stamp {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.v4stamp-cell {
+  position: relative;
+  padding: 16px 16px 15px;
+  background: color-mix(in oklch, var(--v4-bg-raised) 62%, var(--v4-bg));
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.2s ease;
+}
+.v4stamp-cell:hover {
+  background: var(--v4-bg-raised);
+}
+.v4stamp-fig {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.v4stamp-n {
+  margin: 8px 0 0;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+}
+.v4stamp-n--mono {
+  font-family: var(--mono);
+  font-size: clamp(1.1rem, 0.8rem + 1.1vw, 1.4rem);
+  letter-spacing: 0.01em;
+}
+.v4stamp-label {
+  margin-top: 7px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.v4stamp-sub {
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+@media (prefers-reduced-motion: reduce) {
+  .v4stamp-cell {
+    transition: none;
+  }
+}
