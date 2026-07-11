@@ -50,6 +50,7 @@ const KIND_GLYPH: Record<PaletteEntry['kind'], string> = {
   page: '▸',
   post: '¶',
   error: '✕',
+  tool: '⌗',
 }
 
 export default function CommandK({ onClose }: { onClose: () => void }) {
