@@ -118,6 +118,10 @@
   --verb-invoke: #22d3ee;
   --verb-agent: #b07bff;
 
+  /* the recorded-run status green (spec NIKA_SEVERITY.ok) — its fail twin
+     is --danger (index.css, the one danger red) */
+  --status-done: #34d399;
+
   /* ── the CodeFile editor syntax theme · the PRODUCT replica ────────────────
      The static code panel is the product surface, so color is allowed HERE (and
      only here). A restrained, muted, premium dark-editor palette — distinct

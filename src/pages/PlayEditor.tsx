@@ -5,6 +5,7 @@ import { linter, lintGutter, type Diagnostic } from '@codemirror/lint'
 import { EditorView } from '@codemirror/view'
 import { syntaxHighlighting } from '@codemirror/language'
 import { lintNika, type LintDiag } from '../lib/nika-lint'
+import { NIKA_VERB_HEX } from '../design-tokens.generated'
 import {
   CF_BG,
   CF_GUTTER_INK,
@@ -84,10 +85,10 @@ const cfTheme = EditorView.theme(
        signature — type `infer:` and it lights up like everywhere on the site),
        refs in teal live-wiring, number/bool values amber/mauve. */
     '.cm-nika-verb': { fontWeight: '500' },
-    '.cm-nika-verb--infer': { color: 'var(--verb-infer, #5b8cff)' },
-    '.cm-nika-verb--exec': { color: 'var(--verb-exec, #ff7a3c)' },
-    '.cm-nika-verb--invoke': { color: 'var(--verb-invoke, #22d3ee)' },
-    '.cm-nika-verb--agent': { color: 'var(--verb-agent, #b07bff)' },
+    '.cm-nika-verb--infer': { color: `var(--verb-infer, ${NIKA_VERB_HEX.infer})` },
+    '.cm-nika-verb--exec': { color: `var(--verb-exec, ${NIKA_VERB_HEX.exec})` },
+    '.cm-nika-verb--invoke': { color: `var(--verb-invoke, ${NIKA_VERB_HEX.invoke})` },
+    '.cm-nika-verb--agent': { color: `var(--verb-agent, ${NIKA_VERB_HEX.agent})` },
     '.cm-nika-ref': { color: CF_REF },
     '.cm-nika-num': { color: CF_NUM, fontVariantNumeric: 'tabular-nums' },
     '.cm-nika-bool': { color: CF_BOOL, fontWeight: '500' },
@@ -104,7 +105,7 @@ const cfTheme = EditorView.theme(
     },
     '.cm-tooltip.cm-tooltip-lint': { padding: '2px 0' },
     '.cm-diagnostic': { padding: '6px 10px', whiteSpace: 'pre-wrap' },
-    '.cm-diagnostic-error': { borderLeft: '3px solid var(--verb-exec, #ff7a3c)' },
+    '.cm-diagnostic-error': { borderLeft: `3px solid var(--verb-exec, ${NIKA_VERB_HEX.exec})` },
     /* the smart-hover card rides a CM tooltip — the card (codefile.css twin)
        owns the chrome, so the lint-tooltip shell steps aside for it */
     '.cm-tooltip:has(> .cm-nika-tipcard)': {

@@ -16,6 +16,7 @@ import {
   stratumIndex,
 } from './spec-machine-model'
 import { VERB_HEX } from '../sections/morph/plan-scene-model'
+import { NIKA_VERB_HEX } from '../design-tokens.generated'
 
 /* ─── spec-machine-model v2 · THE SHIP is pure, deterministic data ────────────
    Bow → stern along the spine: keel (envelope keys) · bridge (plan slabs) ·
@@ -139,11 +140,11 @@ describe('buildSpecMachine v2 · the hull', () => {
   /* the hull hues · every station wears the hue of the verb it serves */
   const HULL_HUE: Record<string, string> = {
     frame: '#8db4ff',
-    permits: '#ff7a3c',
-    stdlib: '#22d3ee',
-    extract: '#22d3ee',
-    providers: '#5b8cff',
-    errors: '#b07bff',
+    permits: NIKA_VERB_HEX.exec,
+    stdlib: NIKA_VERB_HEX.invoke,
+    extract: NIKA_VERB_HEX.invoke,
+    providers: NIKA_VERB_HEX.infer,
+    errors: NIKA_VERB_HEX.agent,
   }
 
   it('seeds carry the stratum index · verb tint on tetrad + bridge slabs', () => {
