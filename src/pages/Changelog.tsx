@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
-import { CountUp } from '../components/CountUp'
+import { StampStrip } from '../components/StampStrip'
 import { useHead } from '@unhead/react'
 import {
   CHANGELOG,
@@ -149,25 +149,14 @@ export function Component() {
           </p>
 
           {/* the ship-log register · the log's dimensions, at a glance */}
-          <ul className="cl-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
-            {[
+          <StampStrip
+            items={[
               { n: releases, label: releases === 1 ? 'release' : 'releases', sub: 'shipped' },
               { n: total, label: 'milestones', sub: 'logged' },
               { n: tagCount, label: 'registers', sub: 'tags' },
-              { n: latestDate, label: 'latest', sub: CHANGELOG[0].tag, mono: true },
-            ].map((s, i) => (
-              <li className="cl-stamp-cell" key={s.label}>
-                <span className="cl-stamp-fig" aria-hidden>
-                  {String(i).padStart(2, '0')}
-                </span>
-                <span className={`cl-stamp-n${s.mono ? ' cl-stamp-n--mono' : ''}`}>
-                  {typeof s.n === 'number' ? <CountUp n={s.n} /> : s.n}
-                </span>
-                <span className="cl-stamp-label">{s.label}</span>
-                <span className="cl-stamp-sub">{s.sub}</span>
-              </li>
-            ))}
-          </ul>
+              { n: latestDate, label: 'latest', sub: CHANGELOG[0].tag },
+            ]}
+          />
 
           {/* the register legend · the tag vocabulary with its hue */}
           <ul className="cl-legend" data-rise style={{ ['--rise-delay' as string]: '160ms' }} aria-hidden>

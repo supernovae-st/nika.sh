@@ -424,69 +424,6 @@
    ════════════════════════════════════════════════════════════════════════════ */
 
 /* ── the gallery register · the showcase dimensions, at a glance ────────────────*/
-.ucp-stamp {
-  margin: clamp(28px, 4vh, 44px) 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  border: 1px solid var(--seam-hairline);
-  border-radius: var(--v4-radius);
-  overflow: hidden;
-  background: var(--seam-hairline-soft);
-  box-shadow: var(--seam-panel); /* seam kit */
-}
-@media (min-width: 620px) {
-  .ucp-stamp {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-.ucp-stamp-cell {
-  position: relative;
-  padding: 16px 16px 15px;
-  background: var(--v4-bg-raised);
-  display: flex;
-  flex-direction: column;
-  transition: background-color 0.2s ease;
-}
-.ucp-stamp-cell:hover {
-  background: color-mix(in oklch, var(--v4-bg-raised) 92%, var(--v4-text));
-}
-.ucp-stamp-fig {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-.ucp-stamp-n {
-  margin: 8px 0 0;
-  font-family: var(--display);
-  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.1rem);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--v4-text);
-  font-variant-numeric: tabular-nums;
-}
-.ucp-stamp-label {
-  margin-top: 7px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--v4-text-dim);
-}
-.ucp-stamp-sub {
-  margin-top: 3px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-
 /* ── the workflow card · two HUD crop-marks (TL + BR), the "registered" read ────*/
 .ucp-wf {
   position: relative;
@@ -569,7 +506,6 @@
   font-variant-numeric: tabular-nums;
 }
 @media (prefers-reduced-motion: reduce) {
-  .ucp-stamp-cell,
   .ucp-wf-hud-mark {
     transition: none;
   }

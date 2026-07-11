@@ -129,74 +129,6 @@
    ════════════════════════════════════════════════════════════════════════════ */
 
 /* ── the ship-log register · the log's dimensions, at a glance ──────────────────*/
-.cl-stamp {
-  margin: clamp(28px, 4vh, 44px) 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  border: 1px solid var(--seam-hairline);
-  border-radius: var(--v4-radius);
-  overflow: hidden;
-  background: var(--seam-hairline-soft);
-  box-shadow: var(--seam-panel); /* seam kit */
-}
-@media (min-width: 620px) {
-  .cl-stamp {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-.cl-stamp-cell {
-  position: relative;
-  padding: 16px 16px 15px;
-  background: color-mix(in oklch, var(--v4-bg-raised) 62%, var(--v4-bg));
-  display: flex;
-  flex-direction: column;
-  transition: background-color 0.2s ease;
-}
-.cl-stamp-cell:hover {
-  background: var(--v4-bg-raised);
-}
-.cl-stamp-fig {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-.cl-stamp-n {
-  margin: 8px 0 0;
-  font-family: var(--display);
-  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.1rem);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--v4-text);
-  font-variant-numeric: tabular-nums;
-}
-.cl-stamp-n--mono {
-  font-family: var(--mono);
-  font-size: clamp(1.1rem, 0.8rem + 1.1vw, 1.4rem);
-  letter-spacing: 0.01em;
-}
-.cl-stamp-label {
-  margin-top: 7px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--v4-text-dim);
-}
-.cl-stamp-sub {
-  margin-top: 3px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-
 /* ── the register legend · the tag vocabulary, each with its hue ────────────────*/
 .cl-legend {
   margin: clamp(20px, 3vh, 30px) 0 0;
@@ -383,12 +315,6 @@
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cl-stamp-cell {
-    transition: none;
-  }
 }
 
 /* the release's GitHub pointer · one voice, two surfaces */

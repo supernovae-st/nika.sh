@@ -3,7 +3,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CodeFile } from '../components/CodeFile'
-import { CountUp } from '../components/CountUp'
+import { StampStrip } from '../components/StampStrip'
 import { PlanMap } from '../components/PlanMap'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
@@ -465,25 +465,14 @@ export function Component() {
           </p>
 
           {/* the gallery register · the showcase dimensions, at a glance. */}
-          <ul className="ucp-stamp" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
-            {[
+          <StampStrip
+            items={[
               { n: total, label: 'workflows', sub: 'spec-valid' },
               { n: PERSONAS.length, label: 'audiences', sub: 'everyone → researchers' },
               { n: 4, label: 'tiers', sub: 'T1 → T4' },
               { n: totalTasks, label: 'tasks', sub: 'across all workflows' },
-            ].map((s, i) => (
-              <li className="ucp-stamp-cell" key={s.label}>
-                <span className="ucp-stamp-fig" aria-hidden>
-                  {String(i).padStart(2, '0')}
-                </span>
-                <span className="ucp-stamp-n">
-                  <CountUp n={s.n} />
-                </span>
-                <span className="ucp-stamp-label">{s.label}</span>
-                <span className="ucp-stamp-sub">{s.sub}</span>
-              </li>
-            ))}
-          </ul>
+            ]}
+          />
 
           {/* the persona rail · sticky anchor jumps (scroll-spy highlights the
               section in view). Plain in-page anchors → no JS needed to navigate. */}

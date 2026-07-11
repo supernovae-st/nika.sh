@@ -1,5 +1,5 @@
 /* ─── /errors page · the error register ──────────────────────────────────────
-   Deliberately speaks the ship-log register grammar (.cl-stamp · .cl-year-head
+   Deliberately speaks the ship-log register grammar (StampStrip · .cl-year-head
    from changelog-page.css — one register family across /changelog and /errors;
    pages are sync-imported so the shared rules are always loaded). This file
    adds only the er- vocabulary: namespace buckets, anchored code rows, the
