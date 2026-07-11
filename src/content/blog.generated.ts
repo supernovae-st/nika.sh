@@ -526,6 +526,238 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
+    "slug": "the-local-forecast",
+    "file": "2026-07-11-the-local-forecast.md",
+    "title": "The forecast is local",
+    "tag": "Engine",
+    "date": "2026-07-11",
+    "description": "explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five — never a model call, never the network.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Two questions decide whether a pipeline is safe to re-run: how long will it take, and what will it cost? The industry's answer is a dashboard — ship your telemetry to somebody's cloud, and they will sell your own history back to you as graphs. Nika's answer is a flag:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika explain site-build.nika.yaml --forecast\n\n  FORECAST · based on last 5 runs (window 50 runs / 30 days) · low confidence (n<10)\n    fetch_data       3ms–24ms               —          1 cache hit\n    render_page      ~8ms (p90 11ms)        —\n    build_index      ~5ms (p90 16ms)        —\n    compress_assets  4ms–13ms               —          1 cache hit\n    ─────────────────────────────────────────────────\n    run              ~30ms (p90 53ms)       —\n    estimates vary with `when` branches, inputs, and provider latency"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "That is "
+          },
+          {
+            "k": "link",
+            "text": "the four-task build from the re-run post",
+            "href": "/blog/the-one-task-rerun"
+          },
+          {
+            "k": "text",
+            "text": ", run five times on a laptop. Every number in the table is a statistic over those five recorded runs — nothing else. Per task: the typical duration and the p90 tail. Per task, too: how often a run never paid for it at all ("
+          },
+          {
+            "k": "code",
+            "text": "1 cache hit"
+          },
+          {
+            "k": "text",
+            "text": " — resume skipped it). At the bottom, the whole run's prior. And the last line is the tool lowering your confidence on purpose: estimates vary, branches branch, providers have moods."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The numbers are "
+          },
+          {
+            "k": "em",
+            "text": "earned"
+          },
+          {
+            "k": "text",
+            "text": ", and the table says how much. At two runs you get honest ranges ("
+          },
+          {
+            "k": "code",
+            "text": "42.0s–1m00s"
+          },
+          {
+            "k": "text",
+            "text": " — the min and max, because two points make an interval, not a distribution). At five, the percentiles arrive. The header names its own weight the whole way — "
+          },
+          {
+            "k": "code",
+            "text": "based on last 5 runs · low confidence (n<10)"
+          },
+          {
+            "k": "text",
+            "text": " — and the window it reads: the last 50 runs, the last 30 days, whichever ends first. A forecast that tells you how little it knows is worth more than a confident one that won't."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "It prices inference the same way. Here is a three-task digest — read a status file, one small "
+          },
+          {
+            "k": "code",
+            "text": "infer"
+          },
+          {
+            "k": "text",
+            "text": " on a local model, write the result:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "digest.nika.yaml",
+        "text": "nika: v1\nworkflow: digest\ndescription: \"Read the notes, draft a one-line digest, save it\"\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs:\n    read: [\"./notes.txt\"]\n    write: [\"./digest.md\"]\n  exec: false\n  tools: [\"nika:read\", \"nika:write\"]\n\ntasks:\n  - id: notes\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./notes.txt\" }\n\n  - id: draft\n    depends_on: [notes]\n    infer:\n      prompt: |\n        One sentence, plain prose, summarizing this status file:\n        ${{ tasks.notes.output }}\n      max_tokens: 200\n\n  - id: save\n    depends_on: [draft]\n    invoke:\n      tool: \"nika:write\"\n      args: { path: \"./digest.md\", content: \"${{ tasks.draft.output }}\" }\n\noutputs:\n  digest: ${{ tasks.draft.output }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAExAHMBTAZwBckiqBjDEAB2pDWFgCIAlciERjUAFuRjA01KgBoYRDBGzUYEGJ3IBaXCGDiSFGnMoQ44kNW5IkAWzT1csNLlwQbEAPQu3EAMwA6ACYoXwAjaxZyDBsLSigkGBhsOITEmAwBIlgAbW5-D0lpSn9qAA9LAF1UxJRmaRy8jwMqan8bIm4qxPJS8gZYbAhcSnJU6jRnOJhc0EgoDMFuOW5Z6FqLck7raghKMBTEzRgQLIkpKmrj4Dg0MHJ4tLTx5x5V+cyrR8SIDFIpgG8YCwIKIePlClQSuVuDAAL7WQ7HU4KJS0R70SLAIiUAD6nByEMoXTSumwUQeXxYGDQNjYsAAPpdHgB5PQwEbAaTABjkOQsVy6IHUkbGACuNnczAAXrpSMIRCBKOydtRRUrsCBcPcmWkACT-QE7PbFQn+NCi6gsC1w+FfGDuUo48Z3YBTQIABndCJgRxOsBMZkuGPIWNx+OmKOUxMSuhudwpj2ejhgK3Aazqmx1Pz+sEBwNBKfyzRobQ6cgYnC51B4+sNu32-kjrXNlutsNhMPhSBbVuoB3kZBasFrwnrxSbZotvZtQA"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Five runs later:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika explain digest.nika.yaml --forecast\n\n  FORECAST · based on last 5 runs (window 50 runs / 30 days) · low confidence (n<10)\n    notes  ~0ms (p90 14ms)        —\n    draft  ~11.5s (p90 41.8s)     ≥ —        unpriced: local_model\n    save   ~4ms (p90 17ms)        —\n    ───────────────────────────────────────\n    run    ~11.6s (p90 41.9s)     ≥ —\n    estimates vary with `when` branches, inputs, and provider latency"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Two details in the "
+          },
+          {
+            "k": "code",
+            "text": "draft"
+          },
+          {
+            "k": "text",
+            "text": " row are the whole philosophy. The cost column says "
+          },
+          {
+            "k": "code",
+            "text": "≥ —"
+          },
+          {
+            "k": "text",
+            "text": " with "
+          },
+          {
+            "k": "code",
+            "text": "unpriced: local_model"
+          },
+          {
+            "k": "text",
+            "text": ": a local model has no catalog price, and the forecast refuses to invent one — unpriced compute is not free compute, it is compute whose bill is your electricity and your patience. (The "
+          },
+          {
+            "k": "link",
+            "text": "static audit",
+            "href": "/blog/injection-goes-nowhere"
+          },
+          {
+            "k": "text",
+            "text": " says the same thing before the first run ever happens; the forecast says it from experience.) And the p90 remembers what the average forgets: 11.5s typical, 41.8s tail — my first run loaded the model into memory cold, and that forty-second truth stays in the prior, because it will be true again."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Now the part that should be table stakes and is not. The "
+          },
+          {
+            "k": "code",
+            "text": "--forecast"
+          },
+          {
+            "k": "text",
+            "text": " help, verbatim: duration, cost and risk priors come "
+          },
+          {
+            "k": "em",
+            "text": "\"from YOUR local traces (stats over .nika/traces/ · never a model call · never the network)\""
+          },
+          {
+            "k": "text",
+            "text": ". Two nevers. Never a model call: the forecast is arithmetic over NDJSON, not an LLM guessing how long LLMs take — it costs nothing to consult. Never the network: your run history never leaves the machine it was made on. The traces feeding it are the same flight recorder that "
+          },
+          {
+            "k": "link",
+            "text": "resume reads to skip finished work",
+            "href": "/blog/the-resume-story"
+          },
+          {
+            "k": "text",
+            "text": " and "
+          },
+          {
+            "k": "link",
+            "text": "the audit trail is made of",
+            "href": "/blog/the-run-becomes-evidence"
+          },
+          {
+            "k": "text",
+            "text": ". One recorded artifact, four jobs: evidence, replay, resume, and now foresight."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The cloud version of this feature exists everywhere, and it is a fine business: your usage, their database, a monthly invoice for the mirror. The local version is not just more private — it is more "
+          },
+          {
+            "k": "em",
+            "text": "yours"
+          },
+          {
+            "k": "text",
+            "text": " in kind. It prices your machine, your models, your inputs, your cache behavior. Run any workflow five times and ask: "
+          },
+          {
+            "k": "code",
+            "text": "nika explain <file> --forecast"
+          },
+          {
+            "k": "text",
+            "text": ". The history you already own starts working for you."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-run-that-waits",
     "file": "2026-07-10-the-run-that-waits.md",
     "title": "The run that waits for you",

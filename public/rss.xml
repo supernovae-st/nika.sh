@@ -15,6 +15,14 @@
       <description>nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot — and the human review is a two-line diff.</description>
     </item>
     <item>
+      <title>The forecast is local</title>
+      <link>https://nika.sh/blog/the-local-forecast</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-local-forecast</guid>
+      <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five — never a model call, never the network.</description>
+    </item>
+    <item>
       <title>The run that waits for you</title>
       <link>https://nika.sh/blog/the-run-that-waits</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-run-that-waits</guid>

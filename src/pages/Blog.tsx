@@ -26,11 +26,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-local-forecast',
+    slug: 'the-chain-of-custody',
     tag: 'Engine',
     date: 'soon',
-    title: 'The forecast is local',
-    teaser: 'explain --forecast computes duration, cost and risk priors from your own traces: stats over .nika/traces/, earned at n >= 5, never a model call, never the network.',
+    title: 'The chain of custody',
+    teaser: 'nika trace verify proves a recorded run intact: any edited, inserted, dropped or reordered line breaks every hash after it — tamper-evident, and honest about not being tamper-proof.',
   },
   {
     slug: 'the-run-that-never-runs',
