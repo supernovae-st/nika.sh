@@ -214,9 +214,15 @@ export function Component() {
         s = next
       }
       flightRef.current.state = s
-      /* the approach · at the poster the scroll steers the turn (the frame
-         loop reads progress: most of a quarter-turn + a closing dive) */
-      if (s === 'hero') flightRef.current.progress = Math.min(1, Math.max(0, window.scrollY / (vh * 0.9)))
+      /* the approach · progress is measured in the FLIP'S OWN coordinates:
+         p runs 0 → 1 exactly as the first block's top travels 1.0vh →
+         0.6vh (the dock threshold above) — the scroll-steered turn, dive
+         and carry all COMPLETE at the precise scroll position where the
+         dock takes over (no early plateau, no unfinished motion). */
+      if (s === 'hero')
+        flightRef.current.progress = first
+          ? Math.min(1, Math.max(0, (vh - first.top) / (vh * 0.4)))
+          : Math.min(1, Math.max(0, window.scrollY / (vh * 0.9)))
       setStage((prev) => (prev === s ? prev : s))
     }
     const on = () => {

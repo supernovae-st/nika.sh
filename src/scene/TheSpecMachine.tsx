@@ -112,6 +112,9 @@ function Machine({
   const group = useRef<THREE.Group>(null)
   const inner = useRef<THREE.Group>(null)
   const spin = useRef(0)
+  /* the last approach progress — the scroll turn folds into spin as a
+     DELTA, so scrubbing back unwinds it and the dock flip subtracts nothing */
+  const heroP = useRef(0)
   const { camera, gl } = useThree()
 
   /* ── the pick bus + THE HELM's drag — one pointer state machine ───────────
@@ -320,13 +323,22 @@ function Machine({
            the whole viewport, so the hero framing overrides the reading's
            beauty shot: closer (bigger vessel). The rightward carry rides
            g.position.x below — SCREEN space; pose.x/lookX would travel the
-           SPINE (the inner group lives in the rotating frame). The
-           APPROACH is scroll-steered — progress adds most of a quarter-
-           turn and a gentle closing dive, so the first scroll visibly
-           turns the ship before the dock takes the wheel. */
+           SPINE (the inner group lives in the rotating frame).
+           THE APPROACH IS SCROLL-STEERED, precisely (operator pass 2):
+           - the turn folds into spin.current as a DELTA (p−prevP), so the
+             rotation the scroll added is simply part of the accumulated
+             turn — at the dock flip nothing is subtracted back (the old
+             additive form un-wound ~1.2 rad on arrival: a visible wobble);
+             the settle then rounds to the nearest full revolution as ever.
+           - the dive is gentle (the dock's own S.0 pose pulls back to 6.9
+             right after — diving hard just to zoom out again read as a
+             pump). */
         const p = flight?.progress ?? 0
-        tDist = 6.1 - p * 0.55
-        tYaw += p * 1.2
+        spin.current += (p - heroP.current) * 1.2
+        heroP.current = p
+        tDist = 6.1 - p * 0.3
+      } else {
+        heroP.current = flight?.progress ?? heroP.current
       }
     } else {
       const settle = Math.round(spin.current / (Math.PI * 2)) * Math.PI * 2
@@ -346,9 +358,19 @@ function Machine({
     g.rotation.x += (tPitch + helm.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k
     /* the poster's rightward carry (SCREEN x — the outer group never turns):
-       the full-bleed hero parks the vessel right of the copy column; every
-       other stage centres the ground it owns */
-    g.position.x += ((st === 'hero' ? 1.35 : 0) - g.position.x) * k
+       the full-bleed hero parks the vessel right of the copy column. THE
+       PRECISE HANDOFF: as the approach completes, the carry flies the
+       vessel's centre to where the DOCK will hold it — the dock chassis is
+       the right 46vw (centre ≈ 77vw) while the hero centre sits ≈ 64vw, so
+       carry grows 1.35 → ~2.5 world units with p. At the flip the canvas
+       narrows and the carry eases to 0, and both project the SAME screen
+       point: the vessel does not jump, the bay closes around it. */
+    const hp = st === 'hero' ? (flight?.progress ?? 0) : 0
+    /* ease-in (p²): the vessel HOLDS its poster mark through most of the
+       approach and slides bay-ward only as the dock becomes imminent —
+       the final mark is exact, the mid-approach never crowds the edge */
+    const heroCarry = 1.35 + hp * hp * 1.15
+    g.position.x += ((st === 'hero' ? heroCarry : 0) - g.position.x) * k
     const exOff = pose.focus >= 0 ? model.explode[pose.focus] * u.uExplode.value : 0
     inn.position.x += (-(lookX + exOff) - inn.position.x) * k
     state.camera.position.z += (tDist * helm.zoom - state.camera.position.z) * k
