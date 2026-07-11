@@ -529,14 +529,20 @@ export default function Hero({
             <span className="v4hero-hatches">
               <Link to="/play" className="v4hero-play">
                 try it in your browser
-                <span aria-hidden> →</span>
+                <span className="acue acue--r" aria-hidden>
+                  {' '}
+                  →
+                </span>
               </Link>
               <span className="v4hero-hatch-sep" aria-hidden>
                 ·
               </span>
               <a href="#editor" className="v4hero-play">
                 or in VS Code / Cursor
-                <span aria-hidden> ↓</span>
+                <span className="acue acue--d" aria-hidden>
+                  {' '}
+                  ↓
+                </span>
               </a>
             </span>
           </div>

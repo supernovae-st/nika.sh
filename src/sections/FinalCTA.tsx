@@ -75,13 +75,13 @@ export default function FinalCTA() {
           </a>
           <a href={SPEC} target="_blank" rel="noreferrer" className="v4cta-link v4cta-link--dim">
             Read the spec
-            <span aria-hidden className="v4cta-link-arrow">
+            <span aria-hidden className="v4cta-link-arrow acue acue--r">
               →
             </span>
           </a>
           <Link to="/learn" className="v4cta-link v4cta-link--dim">
             Learn it in 5&nbsp;min
-            <span aria-hidden className="v4cta-link-arrow">
+            <span aria-hidden className="v4cta-link-arrow acue acue--r">
               →
             </span>
           </Link>
@@ -100,7 +100,7 @@ export default function FinalCTA() {
           </p>
           <Link to="/convert" className="v4convert-cta" data-track="convert-open">
             Send a workflow
-            <span aria-hidden className="v4convert-arrow">
+            <span aria-hidden className="v4convert-arrow acue acue--r">
               →
             </span>
           </Link>

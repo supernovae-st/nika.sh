@@ -335,14 +335,7 @@
   color: var(--v4-text-faint);
 }
 .blog-card-arrow {
-  display: inline-block;
-  margin-left: 5px;
-  transition: transform var(--dur-ui) var(--ease-ui);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .blog-card:hover .blog-card-arrow {
-    transform: translateX(3px);
-  }
+  margin-left: 5px; /* motion: the shared .acue cue (shell.css) */
 }
 
 /* the folder truth line */

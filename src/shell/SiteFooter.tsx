@@ -106,7 +106,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
                     ) : (
                       <a href={l.href} target="_blank" rel="noreferrer" className="sitefoot-link">
                         {l.label}
-                        <span aria-hidden className="sitefoot-ext">
+                        <span aria-hidden className="sitefoot-ext acue acue--ext">
                           {' '}
                           ↗
                         </span>
