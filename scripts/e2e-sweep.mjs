@@ -199,10 +199,28 @@ const errSample = new Set()
     if (!seen.has(ns)) { seen.add(ns); errSample.add(r) }
   }
 }
-const NAV_ROUTES = ROUTES.filter((r) => !/^\/errors\/.+/.test(r) || errSample.has(r))
+/* the other registers (tools · providers · templates) are template-identical
+   too — CDP-load the FIRST TWO of each (one row shape + one with the opened
+   skeleton/args variety); pass 2 still fetches every page over HTTP, and
+   pass 3 pins each register's deep-link behavior explicitly. */
+const regDetail = ROUTES.filter((r) => /^\/(tools|providers|templates)\/.+/.test(r))
+const regSample = new Set()
+{
+  const perReg = new Map()
+  for (const r of regDetail) {
+    const reg = r.split('/')[1]
+    const n = perReg.get(reg) ?? 0
+    if (n < 2) { perReg.set(reg, n + 1); regSample.add(r) }
+  }
+}
+const NAV_ROUTES = ROUTES.filter(
+  (r) =>
+    (!/^\/errors\/.+/.test(r) || errSample.has(r)) &&
+    (!/^\/(tools|providers|templates)\/.+/.test(r) || regSample.has(r)),
+)
 const idsByRoute = new Map()
 const links = new Map() // href -> [fromRoutes]
-console.log(`e2e-sweep · ${ROUTES.length} routes (${NAV_ROUTES.length} CDP-loaded · errors sampled ${errSample.size}/${errDetail.length}) · ${BASE}\n`)
+console.log(`e2e-sweep · ${ROUTES.length} routes (${NAV_ROUTES.length} CDP-loaded · errors sampled ${errSample.size}/${errDetail.length} · registers sampled ${regSample.size}/${regDetail.length}) · ${BASE}\n`)
 for (const route of NAV_ROUTES) {
   consoleErrs.length = 0
   pageErrs.length = 0
@@ -305,6 +323,33 @@ const until = async (fn, tries = 12, gap = 400) => {
     await sleep(gap)
   }
   return last
+}
+
+/* 3-reg · the register deep links: prerendered landing → the row is ACTIVE,
+   HIGHLIGHTED and IN VIEW (the scroll effect is a client behavior that can
+   break silently — pass 1's static loads never see it). One pin per
+   register; the templates pin also asserts the opened skeleton panel. */
+const REGISTER_PINS = [
+  { route: '/errors/NIKA-SEC-001', row: '.er-row--active', extra: null },
+  { route: '/tools/fetch', row: '.tp-row--active', extra: null },
+  { route: '/providers/ollama', row: '.pv-row--active', extra: null },
+  { route: '/templates/fanout', row: '.tm-row--active', extra: '.tm-row--active .cf-panel' },
+]
+for (const pin of REGISTER_PINS) {
+  await send('Page.navigate', { url: `${BASE}${pin.route}` })
+  await settle()
+  await check(`register · ${pin.route} → active row highlighted + scrolled into view`, () =>
+    until(() =>
+      evaluate(`(() => {
+        const row = document.querySelector('${pin.row}')
+        if (!row) return { err: 'no active row' }
+        const r = row.getBoundingClientRect()
+        const inView = r.bottom > 0 && r.top < innerHeight
+        ${pin.extra ? `const extra = !!document.querySelector('${pin.extra}')` : 'const extra = true'}
+        return inView && extra ? true : { top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight, extra }
+      })()`),
+    ),
+  )
 }
 
 /* 3a · the film's done frame: triangle + drag-seek + handoff */
