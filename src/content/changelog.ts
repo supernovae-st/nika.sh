@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-11',
+    tag: 'site',
+    title: 'nika.sh v4.12 · the machined frame',
+    body: 'The device frame is rebuilt from zero. Ten rounds of accretion \u2014 five stacked layers, per-section tints, hue journeys, a small state machine of moods \u2014 collapse into one machined element: a flat near-black slab, one gasket, one recess, one static edge-light in the site\u2019s struck blue, byte-deterministic on every display. The one thing that still moves is the drum: while a run replays, a hairline ring draws around the screen with the recorded progress, beats brighter as each task starts, completes on the verdict \u2014 and holds the danger red through a failure. The playground joins that grammar: /play\u2019s run-order simulate now beats the same ring the home film does, and leaving the page mid-run aborts it \u2014 the ring never outlives its run, and a belt navigates away mid-sim to prove it. One danger red everywhere: the frame\u2019s flash was a stray coral; it now speaks the same red as the failing verdict and the denied permits row, pinned across files by test. The spec vessel\u2019s opening becomes a full-bleed poster with a precisely measured approach, prose terms wire live to their stations and the gauge becomes a transport of nine real links; the nine steps of /learn feed the wayfinding rail; cargo binstall and nix join the install paths.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.12.0',
+  },
+  {
     date: '2026-07-10',
     tag: 'site',
     title: 'nika.sh v4.11 · the ship wears its colours',
