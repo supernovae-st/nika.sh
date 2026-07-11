@@ -109,7 +109,10 @@ export function Component() {
 
   return (
     <main className="theme-dark v4page">
-      <section ref={ref} aria-labelledby="bp-title" className="v4sec">
+      {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts):
+          on a one-section page the observer armed everything at hydration anyway;
+          baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
+      <section ref={ref} aria-labelledby="bp-title" className="v4sec v4-in">
         <div className="v4sec-wrap bp-wrap">
           {/* the way back + the register row */}
           <nav className="bp-crumb" aria-label="Breadcrumb" data-rise>

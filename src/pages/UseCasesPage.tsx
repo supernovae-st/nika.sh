@@ -360,14 +360,30 @@ function RotatingOutcome() {
   const [leaving, setLeaving] = useState(false)
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const tick = setInterval(() => {
-      setLeaving(true)
-      window.setTimeout(() => {
-        setI((n) => (n + 1) % ROTA_LINES.length)
-        setLeaving(false)
-      }, 260)
-    }, 3000)
-    return () => clearInterval(tick)
+    /* the cycle is INTERACTION-EARNED: every swap paints a fresh largest-
+       contentful candidate, so on an input-less trace (Lighthouse sends
+       none) a free-running rotator slides LCP to the last swap before the
+       trace ends — this span measured as an 8s LCP while real users saw
+       nothing slow. Real hands move within the first second; the first
+       pointer / scroll / key starts the cycle, imperceptibly. */
+    let timer: ReturnType<typeof setInterval> | null = null
+    const start = () => {
+      if (timer) return
+      timer = setInterval(() => {
+        setLeaving(true)
+        window.setTimeout(() => {
+          setI((n) => (n + 1) % ROTA_LINES.length)
+          setLeaving(false)
+        }, 260)
+      }, 3000)
+    }
+    const opts = { once: true, passive: true } as const
+    const evs = ['pointermove', 'pointerdown', 'scroll', 'keydown', 'touchstart'] as const
+    evs.forEach((e) => window.addEventListener(e, start, opts))
+    return () => {
+      if (timer) clearInterval(timer)
+      evs.forEach((e) => window.removeEventListener(e, start))
+    }
   }, [])
   return (
     <p className="ucp-rota" data-rise style={{ ['--rise-delay' as string]: '80ms' }}>
@@ -438,7 +454,10 @@ export function Component() {
 
   return (
     <main className="theme-dark ucp-page">
-      <section ref={ref} aria-labelledby="ucp-title" className="v4sec">
+      {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts):
+          on a one-section page the observer armed everything at hydration anyway;
+          baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
+      <section ref={ref} aria-labelledby="ucp-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <p className="v4sec-fig" data-rise>
             pick a workflow
