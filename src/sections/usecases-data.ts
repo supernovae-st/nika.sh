@@ -105,6 +105,14 @@ export const UC_TABS: UCTab[] = [
         outcome: 'Monday 8am, everything they shipped last week is on your desk, with what it signals.',
       },
       {
+        slug: 't2-bookmark-triage',
+        icon: '🔖',
+        title: 'Bookmark triage',
+        body: 'One metadata fetch per URL — retry for blips, recover for dead links — then jq renders the triage table.',
+        tier: 'T2',
+        outcome: 'The pile becomes a sortable table. Dead links say dead instead of killing the batch.',
+      },
+      {
         slug: 't4-release-train',
         icon: '🚂',
         title: 'Release train',
@@ -150,6 +158,22 @@ export const UC_TABS: UCTab[] = [
         body: 'Maps the competitor’s sitemap, reads their best page, then writes a typed brief that goes after the gaps.',
         tier: 'T2',
         outcome: 'Your writer starts from gaps and search intent, grounded in pages that actually rank.',
+      },
+      {
+        slug: 't1-image-fx-batch',
+        icon: '🎞️',
+        title: 'Image FX batch',
+        body: 'glob lists the folder, for_each styles every photo through the same deterministic ops chain — no model, pure pixels.',
+        tier: 'T1',
+        outcome: 'The preset lives in git. Re-run in a year: byte-identical art, zero clicks.',
+      },
+      {
+        slug: 't2-transcript-shownotes',
+        icon: '🎙️',
+        title: 'Transcript show-notes',
+        body: 'One bounded infer extracts chapters, quotes and summary as schema-typed data; jq and write render the page.',
+        tier: 'T2',
+        outcome: 'Episode recorded → notes publishable, for the price of exactly one model call.',
       },
       {
         slug: 't3-localization-factory',
@@ -236,6 +260,14 @@ export const UC_TABS: UCTab[] = [
         body: 'jq filters the overdue rows out of the CSV, reminders get drafted, and a human gate sits before anything is saved.',
         tier: 'T2',
         outcome: 'Friday’s awkward chore shrinks to reading the drafts and typing yes.',
+      },
+      {
+        slug: 't2-csv-chart-report',
+        icon: '📊',
+        title: 'CSV chart report',
+        body: 'convert types the spreadsheet, jq aggregates, chart renders a real image, write assembles the report. Zero model calls.',
+        tier: 'T2',
+        outcome: 'Paste the export, get the slide — same data, same bytes, works on a plane.',
       },
       {
         slug: 't3-resume-screener',
