@@ -6,6 +6,7 @@ import Ajv2020 from 'ajv/dist/2020'
 import { FLAGSHIPS } from '../flagships/flagship-data'
 import { CHAPTERS } from '../sections/verbs-data'
 import { BLOG_POSTS } from '../content/blog.generated'
+import { BLOG_BODIES } from '../content/blog-bodies.generated'
 import { HELLO_YAML, HELLO_AI_YAML } from '../content/install'
 import { EXTENSION_SHOWCASE_YAML } from '../sections/EditorCanvas'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
@@ -57,7 +58,7 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
   it('the blog four-verbs fragment validates', () => {
     /* every yaml fence in every compiled blog post is a real workflow */
     for (const post of BLOG_POSTS)
-      for (const t of post.tokens)
+      for (const t of BLOG_BODIES[post.slug] ?? [])
         if (t.k === 'code' && t.lang === 'yaml')
           expectValid(`blog/${post.slug} · ${t.filename ?? 'fence'}`, t.text)
   })
