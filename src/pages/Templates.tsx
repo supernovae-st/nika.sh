@@ -105,12 +105,16 @@ export function Component() {
     ],
   })
 
-  /* the deep-link lands ON its row (client effect — prerender unaffected) */
+  /* the deep-link LANDS on its row (client effect — prerender unaffected).
+     behavior: 'instant' by the smooth-hijack law: the site's global
+     html{scroll-behavior:smooth} (the rail's, motion-on) would turn this
+     post-hydration jump into a long animated yank down the whole register —
+     an arrival is not a travel (arc 10d · PR #166 precedent). */
   useEffect(() => {
     if (!hit) {
       return
     }
-    document.getElementById(hit.name)?.scrollIntoView({ block: 'start' })
+    document.getElementById(hit.name)?.scrollIntoView({ block: 'start', behavior: 'instant' })
   }, [hit])
 
   return (
