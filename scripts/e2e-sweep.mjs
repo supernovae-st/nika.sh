@@ -899,6 +899,75 @@ await check('spec · Shift+← sails to the previous station (the chapter keys)'
   }
   return last
 })
+await check('spec · the pick bus lands (click a node \u2192 its section hash)', async () => {
+  /* the LAST unbelted gesture: pointing the hull picks a node (screen-space
+     projection, no raycaster), clicking navigates to its section. Headless
+     we cannot know a node's pixel \u2014 but the machine TELLS us: the canvas
+     cursor flips to 'pointer' over a node (an inline style write in the
+     same pointermove handler as the pick). So: park a dock section, seed at
+     the umbilical dot (it rides the read stratum's projected anchor), walk
+     a coarse spiral of TRUSTED mouse moves until the cursor says 'pointer',
+     then click THERE (press+release, no travel \u2014 under the 4px slop an
+     orbit never starts) and assert a section hash lands. Every layer of
+     the path is real: projection \u2192 pick \u2192 cursor \u2192 click \u2192 hash. */
+  await evaluate(`history.replaceState(null, '', location.pathname)`) /* a prior check's hash must not vacuously pass this one */
+  let last = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    /* RE-ANCHOR PER ATTEMPT (the helm check's own lesson, relived here:
+       anchored once outside the loop, a slow hero→dock flip left every
+       attempt seeking a seed in stage:hero) */
+    await evaluate(`(() => {
+      const el = document.querySelector('#s3')
+      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - innerHeight * 0.4, behavior: 'instant' })
+    })()`)
+    const seed = await until(
+      () =>
+        evaluate(`(() => {
+          const stage = document.querySelector('.spec-rail')?.dataset.stage
+          if (stage !== 'dock') return { stage }
+          const dot = [...document.querySelectorAll('.smc-dot')].find((d) => Number(d.style.opacity || 0) > 0.3)
+          const cv = document.querySelector('.smw canvas')?.getBoundingClientRect()
+          if (!dot || !cv) return { dot: !!dot, cv: !!cv }
+          const x = Number(dot.getAttribute('cx')) + cv.left
+          const y = Number(dot.getAttribute('cy')) + cv.top
+          return x > cv.left && y > 0 ? { x, y, cvl: cv.left } : { x, y }
+        })()`),
+      8,
+      400,
+    )
+    if (typeof seed !== 'object' || !('x' in seed)) {
+      last = { attempt, seed }
+      continue
+    }
+    /* the spiral · trusted moves stepping out from the anchor; the pick
+       reach is 26px so 24px steps cannot jump the basin */
+    let hit = null
+    outer: for (let r = 0; r <= 168; r += 24) {
+      const steps = r === 0 ? 1 : Math.max(6, Math.round((2 * Math.PI * r) / 24))
+      for (let k = 0; k < steps; k++) {
+        const a = (2 * Math.PI * k) / steps
+        const x = seed.x + Math.cos(a) * r
+        const y = seed.y + Math.sin(a) * r
+        if (x < seed.cvl + 8 || y < 60 || y > 960) continue
+        await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x, y, button: 'none', buttons: 0, pointerType: 'mouse' })
+        const cur = await evaluate(`document.querySelector('.smw canvas')?.style.cursor ?? ''`)
+        if (cur === 'pointer') {
+          hit = { x, y }
+          break outer
+        }
+      }
+    }
+    if (!hit) {
+      last = { attempt, spiral: 'no pointer cursor', seed: { x: Math.round(seed.x), y: Math.round(seed.y) } }
+      continue
+    }
+    await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: hit.x, y: hit.y, button: 'left', buttons: 1, clickCount: 1 })
+    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: hit.x, y: hit.y, button: 'left', buttons: 0, clickCount: 1 })
+    last = await until(() => evaluate(`(location.hash.length > 1 && location.hash) || false`), 6, 300)
+    if (typeof last === 'string' && last.startsWith('#')) return true
+  }
+  return last
+})
 
 /* 3f · THE MOBILE BATTERY — everything above ran at 1600×1000; the burger,
    the sheet and its focus contract only EXIST under the mobile breakpoint.

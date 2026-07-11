@@ -10,10 +10,11 @@ import { useEffect } from 'react'
    top 2202 vs viewport 1000 — the scroll had been outgrown).
 
    The fix is the aim, repeated until the layout is done moving: scroll now,
-   re-aim after fonts settle, and re-aim once more a beat later. Instant
-   (behavior:'auto') — html{scroll-behavior:smooth} would glide three times;
-   the deep link should LAND, not tour. Cleanup-guarded: a route change
-   mid-sequence cancels the remaining aims. */
+   re-aim after fonts settle, and re-aim once more a beat later. behavior:
+   'instant', NOT 'auto' — 'auto' defers to the stylesheet, and the site's
+   html{scroll-behavior:smooth} would turn three aims into three glides
+   (the smooth-hijack law, swept site-wide in #196: an arrival is not a
+   travel). Cleanup-guarded: a route change cancels the remaining aims. */
 export function useAnchorScroll(id: string | undefined, block: ScrollLogicalPosition = 'center') {
   useEffect(() => {
     if (!id) {
@@ -24,7 +25,7 @@ export function useAnchorScroll(id: string | undefined, block: ScrollLogicalPosi
       if (!alive) {
         return
       }
-      document.getElementById(id)?.scrollIntoView({ block, behavior: 'auto' })
+      document.getElementById(id)?.scrollIntoView({ block, behavior: 'instant' })
     }
     aim()
     document.fonts?.ready.then(() => {

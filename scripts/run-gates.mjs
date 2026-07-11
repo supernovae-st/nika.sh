@@ -30,7 +30,10 @@ const GATES = [
   { name: 'test', cmd: ['pnpm', 'test'] },
   { name: 'build', cmd: ['pnpm', 'build'], slow: true },
   { name: 'goldens', cmd: ['node', 'scripts/visual-regress.mjs'], slow: true },
-  { name: 'e2e', cmd: ['node', 'scripts/e2e-sweep.mjs'], slow: true },
+  /* PID-derived ports: the sweep's defaults (4523/9285) belong to whoever ran
+     it bare — a parallel session's live belt, a zombie. EADDRINUSE cost a full
+     gate run; the runner now always brings its own pair, unique per process. */
+  { name: 'e2e', cmd: ['node', 'scripts/e2e-sweep.mjs', '--port', String(4600 + (process.pid % 97)), '--cdp', String(9400 + (process.pid % 97))], slow: true },
   { name: 'a11y', cmd: ['node', 'scripts/a11y-sweep.mjs'], slow: true },
 ]
 

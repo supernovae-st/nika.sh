@@ -136,6 +136,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "The generative ai workflow, minus the mystery",
+    "href": "/blog/the-generative-workflow",
+    "hint": "Language · 2026-07-11"
+  },
+  {
+    "kind": "post",
     "label": "The chain of custody",
     "href": "/blog/the-chain-of-custody",
     "hint": "Engine · 2026-07-11"

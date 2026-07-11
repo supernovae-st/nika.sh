@@ -1012,6 +1012,38 @@ export function Component() {
                       {cur.count} {cur.countLabel.toUpperCase()}
                     </span>
                   ) : null}
+                  {/* THE PLATE IS A NAVIGATOR (nav pass): prev/next chevrons
+                      sail the reading deck by deck — POINTER affordance only
+                      (the stage is aria-hidden; tabIndex -1 keeps the links
+                      out of the tab order — keyboard sails with ⇧←→, the
+                      chips and the transport: the transport's own axe law).
+                      The ⇧←→ hint finally SAYS the chapter keys exist. */}
+                  {stage !== 'finale' && cur ? (
+                    (() => {
+                      const ci = SPEC_SECTIONS.findIndex((x) => x.key === current)
+                      const prev = ci > 0 ? SPEC_SECTIONS[ci - 1] : null
+                      const next = ci < SPEC_SECTIONS.length - 1 ? SPEC_SECTIONS[ci + 1] : null
+                      return (
+                        <span className="spec-rail-pos-nav mono">
+                          {prev ? (
+                            <a href={prev.anchor} tabIndex={-1} title={`${prev.fig} · ${prev.title}`}>
+                              ‹ {prev.fig}
+                            </a>
+                          ) : (
+                            <i>‹</i>
+                          )}
+                          <em>⇧←→</em>
+                          {next ? (
+                            <a href={next.anchor} tabIndex={-1} title={`${next.fig} · ${next.title}`}>
+                              {next.fig} ›
+                            </a>
+                          ) : (
+                            <i>›</i>
+                          )}
+                        </span>
+                      )
+                    })()
+                  ) : null}
                 </div>
                 <span className="spec-rail-hud spec-rail-hud--bl">
                   ASSEMBLED·····{assembled}/{assembledMax}

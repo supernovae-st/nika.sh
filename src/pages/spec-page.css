@@ -1828,6 +1828,38 @@
   color: color-mix(in oklch, var(--sm-ink-lit) 62%, transparent);
   font-variant-numeric: tabular-nums;
 }
+/* the plate's nav row · prev/next chevrons (pointer-only — the stage is
+   aria-hidden) + the chapter-keys hint, finally said out loud */
+.spec-rail-pos-nav {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 5px;
+  padding-top: 6px;
+  border-top: 1px solid color-mix(in oklch, var(--sm-ink-lit) 16%, transparent);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+.spec-rail-pos-nav a {
+  pointer-events: auto;
+  color: color-mix(in oklch, var(--sm-ink-struck) 78%, transparent);
+  text-decoration: none;
+  transition: color var(--dur-ui, 140ms) var(--ease-ui, ease);
+}
+.spec-rail-pos-nav a:hover {
+  color: var(--v4-text);
+}
+.spec-rail-pos-nav i {
+  font-style: normal;
+  color: color-mix(in oklch, var(--sm-ink-lit) 26%, transparent);
+}
+.spec-rail-pos-nav em {
+  font-style: normal;
+  margin-inline: auto;
+  color: color-mix(in oklch, var(--sm-ink-lit) 38%, transparent);
+  letter-spacing: 0.06em;
+}
 
 /* the spine gauge · 9 sections, lit fills, the current one pulses wider */
 .spec-rail-gauge {

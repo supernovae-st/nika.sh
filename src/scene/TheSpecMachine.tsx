@@ -118,6 +118,22 @@ function Machine({
   const model = useMemo(() => buildSpecMachine(), [])
   const layers = useMemo(() => makeMachineLayers(model), [model])
   useEffect(() => () => layers.dispose(), [layers])
+  /* THE SAIL · the reading's scroll-way: each wheel/scroll kicks a signed
+     velocity; the frame loop decays it. Drives the engine wash (uSail) and
+     a whisper of hull pitch — the ship sails WITH the reading, never on a
+     timer. Motion-gated: reduced-motion never attaches the listener. */
+  const sailRef = useRef({ v: 0, y: 0 })
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    sailRef.current.y = window.scrollY
+    const onScroll = () => {
+      const dy = window.scrollY - sailRef.current.y
+      sailRef.current.y = window.scrollY
+      sailRef.current.v = Math.max(-1, Math.min(1, sailRef.current.v + dy * 0.0016))
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   /* nested groups · the INNER slides the ship along its spine so the read
      section sits at the origin; the OUTER orbits around that point — the
@@ -370,8 +386,15 @@ function Machine({
       lookX = lookX + (-0.15 - lookX) * ex
       tPitch = tPitch + (0.24 - tPitch) * ex
     }
+    /* the sail decays toward rest (~0.4s tail) and writes its uniform —
+       the engines answer in the shader; the hull noses a whisper into the
+       travel (±0.045 rad — felt, never seen as a move) */
+    const sail = sailRef.current
+    sail.v *= Math.exp(-delta * 2.6)
+    if (Math.abs(sail.v) < 0.003) sail.v = 0
+    u.uSail.value = sail.v
     g.rotation.y += (tYaw + helm.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
-    g.rotation.x += (tPitch + helm.pitch + pointer.current.y * 0.06 - g.rotation.x) * k
+    g.rotation.x += (tPitch + helm.pitch + pointer.current.y * 0.06 + sail.v * 0.045 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k
     /* the poster's rightward carry (SCREEN x — the outer group never turns):
        the full-bleed hero parks the vessel right of the copy column. THE
@@ -423,7 +446,13 @@ function Machine({
           helm.dragging ? 0
           : term ? (hot === -1 ? 0.55 : hot === si ? 1 : 0.18)
           : hero ? 0
-          : full || pose.focus === si ? 1 : pose.focus < 0 ? 0 : 0
+          : full || pose.focus === si ? 1
+          : pose.focus < 0 ? 0
+          /* the dock's WAYFINDING (nav pass): the stations either side of
+             the one being read keep a ghost label — where you came from,
+             where the reading sails next, ON the hull itself. Ghosts stay
+             under the 0.5 pointer floor: pure display, never a target. */
+          : si === pose.focus - 1 || si === pose.focus + 1 ? 0.26 : 0
         it.o = (it.o ?? 0) + (target - (it.o ?? 0)) * Math.min(1, delta * 3)
         const op = it.o.toFixed(3)
         it.label.style.opacity = op

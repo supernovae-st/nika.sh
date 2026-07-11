@@ -203,7 +203,8 @@ export function Component() {
   })
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    /* the smooth-hijack law: a route-mount reset is an arrival, never a travel */
+    window.scrollTo({ top: 0, behavior: 'instant' })
   }, [])
 
   const pick = (slug: string) => {
