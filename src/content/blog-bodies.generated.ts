@@ -1339,6 +1339,312 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     }
   ],
+  "the-generative-workflow": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A generative ai workflow, with the buzzword stripped, is three things: "
+        },
+        {
+          "k": "strong",
+          "text": "inputs you name"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "strong",
+          "text": "a model step"
+        },
+        {
+          "k": "text",
+          "text": ", and "
+        },
+        {
+          "k": "strong",
+          "text": "effects you can point to"
+        },
+        {
+          "k": "text",
+          "text": " — files that exist afterward and didn't before. Every image pipeline, every audio pack, every \"brief to assets\" product flow reduces to that triple. The mystery lives entirely in how those three usually stay "
+        },
+        {
+          "k": "em",
+          "text": "implicit"
+        },
+        {
+          "k": "text",
+          "text": ": the inputs buried in a notebook, the model step wrapped in a vendor helper script, the effects scattered wherever the SDK felt like writing."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Declare the triple instead. This workflow came from the engine's own skeleton — "
+        },
+        {
+          "k": "code",
+          "text": "nika new --from media-asset-pack"
+        },
+        {
+          "k": "text",
+          "text": ", whose header states the house rule: "
+        },
+        {
+          "k": "em",
+          "text": "\"Native-first · generation is nika:image_generate (no provider curl · no OpenAI helper script)\""
+        },
+        {
+          "k": "text",
+          "text": ". Filled, it reads:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "landing-hero-pack.nika.yaml",
+      "text": "nika: v1\nworkflow: landing-hero-pack\ndescription: \"One brief, one rendered hero, one manifest naming what landed where\"\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs:\n    write: [\"./out/assets/**\"]\n  exec: false\n  tools: [\"nika:image_generate\", \"nika:jq\", \"nika:write\"]\n\nvars:\n  subject: \"a calm cosmic landing hero\"\n  out_dir: \"./out/assets\"\n\ntasks:\n  - id: brief\n    infer:\n      max_tokens: 600\n      prompt: |\n        Write one vivid, concrete image prompt for: ${{ vars.subject }}.\n        No text in the image · no watermark · a calm central zone.\n      schema:\n        type: object\n        additionalProperties: false\n        properties:\n          image_prompt: { type: string }\n        required: [image_prompt]\n\n  - id: render\n    depends_on: [brief]\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock\n        prompt: \"${{ tasks.brief.output.image_prompt }}\"\n        output_dir: \"${{ vars.out_dir }}\"\n        filename_prefix: \"hero\"\n\n  - id: manifest\n    depends_on: [brief, render]\n    invoke:\n      tool: \"nika:jq\"\n      args:\n        expression: \"{ brief: .[0], images: .[1].images }\"\n        input:\n          - \"${{ tasks.brief.output }}\"\n          - \"${{ tasks.render.output }}\"\n\n  - id: persist\n    depends_on: [manifest]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"${{ vars.out_dir }}/manifest.json\"\n        create_dirs: true\n        content: \"${{ tasks.manifest.output }}\"\n\noutputs:\n  manifest: ${{ tasks.manifest.output }}",
+      "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWXCYAExGAHMBaACwFMM1qAHCAYzCVPoGd2MIFgBcQaYLABEAeWD0YAI0H1sAGhjj5GemUb1SMBk3WaYAWxIhsfYTGAQzFSjBS0It4roOu9kpEjM0HlxYNFxiCwB6cIcIAGYAOgAmKDiFfxZGR2FeKCQYGGxc-IKXQWF6WABtSQTItABXYUiIXl56HMiAKi7JAF0S+gAPenZYbAhcdpLhNDDcmBrQSCgQC0p6AH0NuQx3ekl1SWXoACsAR0OYY-BoFHKDgaQ4CAxigt4GhVPR4SkIGDsSZmQFoXiOdgwTzkKiGRhoPwFRrCTbkDBSOrIlptDq8PxIYStMDvGDUGAgUiwJQgFQlAoUazoumlCxDTazMA6BYANgADLzmQUWEwzCJYAAfQWlADqDw0cngIDgFPU7HEAg68jWEA2MGFaFFtmwmFgABIAN7m+CvXgJT7fX4wAC+ToSUoKADk0DAKkNbBQfQxyet5AB2uzelD7DAWLAwcMAoG4EHsHTCPa4GAAL00btKpX4DAseXz+eEAE9MqEHexhO6YBBSORROJJgAFJiZDCiPjjSbTUulfVdnskwf0kObfWG2BWitVmC8dNOZ317TnBogbSUxbajZTkUiJ4FMkU2DaXQYZk8TJkXibcTVakqAb5ihwNCckul2ZhKQnVZJx2Rh9kRUtXkoMdS31ZUeHRcw0E4etpzFa4LTnIlbWfbAEmRFgmgSPcthQ2wXTAwc8KaVEtykdDrTeXCqLRZ0nXI0tsBAXAdAcYjtA4oYpCMBF-BPckdwsUBrCXa96FvUh70fRZsPUC84NfUp30-SopV-EJrgAi42IKCCoPzYZhT4XgxAka4rWw2AEiqXk+nUIiFkchA+kIkNeGdIyNOAfC-nrUTJDowleGJBJsMY4QgpY-z8zJMLLR9TCElUxhYvisiRNJMTYC7KzpPzG8dHkh8bKqCSrBsdT6WAD8vx0uY9JuFZ7hACp-JM79BzYYRaFo1KXgY5FqIwFjIhqqThASU5eHERLAW0fYJoWdMGnoes1WACo9uGjDIttGabGypoEv8Sicm-U6lzNVKIqiu65uuligA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The triple, made explicit: "
+        },
+        {
+          "k": "code",
+          "text": "vars:"
+        },
+        {
+          "k": "text",
+          "text": " is the input surface — change the subject, nothing else moves. The "
+        },
+        {
+          "k": "code",
+          "text": "brief"
+        },
+        {
+          "k": "text",
+          "text": " is the model step, schema-typed so the prompt it writes is a value, not vibes. And the effects are "
+        },
+        {
+          "k": "em",
+          "text": "declared before they happen"
+        },
+        {
+          "k": "text",
+          "text": ": "
+        },
+        {
+          "k": "code",
+          "text": "permits.fs.write"
+        },
+        {
+          "k": "text",
+          "text": " says assets land under "
+        },
+        {
+          "k": "code",
+          "text": "./out/assets/**"
+        },
+        {
+          "k": "text",
+          "text": " and nowhere else. That last line taught me something while writing this — I first asked the audit to infer the boundary for me, and it refused, correctly: "
+        },
+        {
+          "k": "em",
+          "text": "\"task render uses a dynamic path — fs cannot express 'any path'; add the resolved path(s) before running.\""
+        },
+        {
+          "k": "text",
+          "text": " The tool would not guess my blast radius. I had to write it down. That is the review working on the "
+        },
+        {
+          "k": "em",
+          "text": "author"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Then the run — and here is the part that separates a declared pipeline from a vendor script. The render step "
+        },
+        {
+          "k": "strong",
+          "text": "narrates itself"
+        },
+        {
+          "k": "text",
+          "text": ":"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "❯ nika run landing-hero-pack.nika.yaml\n\n  ✔  brief     infer · ollama/llama3.2:3b  2m23s\nnika:emit [image_generation.started]  {\"mode\":\"generate\",\"model\":\"mock-image-1\",\"n\":1,\"provider\":\"mock\"}\nnika:emit [image_generation.decoded]  {\"height\":256,\"index\":0,\"mime_type\":\"image/png\",\"size_bytes\":196947,\"width\":256}\nnika:emit [image_generation.saved]    {\"path\":\"./out/assets/hero-mock-mock-image-1-0-03ae7c86.png\",\"sha256_8\":\"03ae7c86\"}\nnika:emit [image_generation.completed] {\"cost_usd\":null,\"count\":1,\"duration_ms\":18,\"total_bytes\":197419}\n  ✔  render    invoke · nika:image_generate  18ms\n  ✔  manifest  invoke · nika:jq  10ms\n  ✔  persist   invoke · nika:write  6ms\n  ── 4/4 done · ≥ $0.00 (1 unpriced) · elapsed 143.8s ────────────"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Read the filename the "
+        },
+        {
+          "k": "code",
+          "text": "saved"
+        },
+        {
+          "k": "text",
+          "text": " event printed: the asset's own sha256 prefix is "
+        },
+        {
+          "k": "em",
+          "text": "in its name"
+        },
+        {
+          "k": "text",
+          "text": ", and the manifest that lands next to it carries the full record — provider, model, dimensions, byte size, the complete hash:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "json",
+      "text": "\"images\": [{\n  \"filename\": \"hero-mock-mock-image-1-0-03ae7c86.png\",\n  \"provider\": \"mock\", \"model\": \"mock-image-1\",\n  \"width\": 256, \"height\": 256, \"size_bytes\": 197419,\n  \"sha256\": \"03ae7c864a55591fe1a79d0a4c8df5e761a6add701bd4cdfb82ba80834d6785f\"\n}]"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Every generated asset ships with its provenance, the way "
+        },
+        {
+          "k": "link",
+          "text": "the run itself ships with a verifiable trace",
+          "href": "/blog/the-chain-of-custody"
+        },
+        {
+          "k": "text",
+          "text": ". Six months from now, \"which model made this hero image, from what brief?\" is a lookup, not an archaeology dig. "
+        },
+        {
+          "k": "link",
+          "text": "Media are workflow citizens",
+          "href": "/blog/media-are-workflow-citizens"
+        },
+        {
+          "k": "text",
+          "text": " — assets land on disk with names and hashes, never inline blobs pasted between scripts."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "And notice which provider ran: "
+        },
+        {
+          "k": "code",
+          "text": "mock"
+        },
+        {
+          "k": "text",
+          "text": ". The whole pipeline — brief, render, manifest, persist — rehearsed end to end, offline, for $0.00, on a laptop. That is what "
+        },
+        {
+          "k": "code",
+          "text": "provider: mock"
+        },
+        {
+          "k": "text",
+          "text": " is "
+        },
+        {
+          "k": "em",
+          "text": "for"
+        },
+        {
+          "k": "text",
+          "text": ": the generative workflow's shape, boundary and manifest are all real; only the pixels are placeholders. When it is time for real pixels, the swap is the one line the "
+        },
+        {
+          "k": "link",
+          "text": "pipeline post",
+          "href": "/blog/the-pipeline-is-a-file"
+        },
+        {
+          "k": "text",
+          "text": " promised — "
+        },
+        {
+          "k": "code",
+          "text": "provider: openai"
+        },
+        {
+          "k": "text",
+          "text": " or "
+        },
+        {
+          "k": "code",
+          "text": "gemini"
+        },
+        {
+          "k": "text",
+          "text": " — and nothing else changes: same boundary, same manifest, same provenance, now with a real "
+        },
+        {
+          "k": "code",
+          "text": "cost_usd"
+        },
+        {
+          "k": "text",
+          "text": " in the completed event instead of "
+        },
+        {
+          "k": "code",
+          "text": "null"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is the whole demystification. Not a platform, not a \"creative AI stack\" — a file where the inputs have names, the model step has a schema, and the effects have an address you approved in advance. Generation was never the mysterious part. The missing part was always just: "
+        },
+        {
+          "k": "em",
+          "text": "write the three things down."
+        }
+      ]
+    }
+  ],
   "the-chain-of-custody": [
     {
       "k": "p",
