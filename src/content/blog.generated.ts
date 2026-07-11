@@ -1800,7 +1800,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The prompt injection that goes nowhere",
     "tag": "Security",
     "date": "2026-07-08",
-    "description": "AI agent security without a runtime guard: the plan is authored before the model runs, so a hostile note becomes data, never a new action — and the boundary is checked before a token is spent.",
+    "description": "Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs — the hostile note becomes data, never an action, and the boundary is checked before a token is spent.",
     "readingMin": 3,
     "tokens": [
       {
@@ -1808,7 +1808,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "inline": [
           {
             "k": "text",
-            "text": "Here is the demo that scares people, and it should. You hand an agent a document to summarize. Somewhere in that document, an attacker has written:"
+            "text": "Every list of prompt injection examples opens with the same demo, and it should scare you. You hand an agent a document to summarize. Somewhere in that document, an attacker has written:"
           }
         ]
       },
@@ -2082,7 +2082,7 @@ export const BLOG_POSTS: BlogPost[] = [
         "inline": [
           {
             "k": "text",
-            "text": "Neither lock is a model watching a model. They are structure: the shape of the workflow, verified. The most reliable way to stop an agent from doing something is to build a system where it was never able to do it in the first place."
+            "text": "Neither lock is a model watching a model. They are structure: the shape of the workflow, verified. And that is the honest answer to \"how do I prevent prompt injection\" — not a smarter filter, but a system where the injected instruction was never able to become an action in the first place."
           }
         ]
       },
