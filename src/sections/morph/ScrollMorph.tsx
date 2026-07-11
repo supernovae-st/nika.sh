@@ -1,4 +1,4 @@
-import { Fragment, Suspense, lazy, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 /* lz-string is CJS — named ESM imports break the Node prerender (the /play
    law); the done-frame handoff encodes the flagship into a /play?y= link */
@@ -7,7 +7,6 @@ import { CodeFile } from '../../components/CodeFile'
 import { FileTabsGhost } from '../Hero'
 import TheRun from '../run/TheRun'
 import ThePlan from '../plan/ThePlan'
-import { usePlan3D } from './use-plan3d'
 import { useAurora } from '../../fx/aurora-context'
 import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships'
 import { buildScript } from '../run/replay-model'
@@ -167,12 +166,6 @@ const yieldEntry = (stage: HTMLElement, clearance: number): void => {
   }
 }
 
-/* wave H · the 3D DAG layer (desktop ≥1024px + WebGL + motion, lazy chunk).
-   It reads the SAME scroll progress apply() computes (progressRef) and hides
-   the DOM DAG only once actually mounted ([data-plan3d], set by the layer
-   itself) — the DOM story below stays the fallback truth everywhere else. */
-const ThePlanScene = lazy(() => import('./ThePlanScene'))
-
 const { compressToEncodedURIComponent } = lz
 
 export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
@@ -257,11 +250,6 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const ghostRefs = useRef(new Map<string, HTMLSpanElement | null>())
   /* --morph-wired's last written value (write-on-change · F2 budget) */
   const wiredRef = useRef('')
-  /* live slab landing targets (ps-layer px), written by the 3D loop when the
-     slabs are the visible DAG — [x, y, projectedWidth] */
-  const slabTargetsRef = useRef(new Map<string, [number, number, number]>())
-  const psLayerRef = useRef<HTMLElement | null>(null)
-  const psOffRef = useRef<{ x: number; y: number } | null>(null)
   /** the morph panel's identity rect, section-relative (seam handoff base) */
   const seamBaseRef = useRef<{ left: number; top: number; w: number; h: number } | null>(null)
   /** the card's line grid (final font) — the unroll clip snaps to whole rows */
@@ -278,7 +266,6 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   })
   const aurora = useAurora()
   const progressRef = useRef(0)
-  const plan3d = usePlan3D(sectionRef)
 
   /* ── measure · task blocks + seed paths + node targets (live layout) ────────
      Transforms are cleared first so a mid-scroll (re)measure — reload, tab
@@ -424,7 +411,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     let firstTaskLn = Infinity
     let lastTaskLn = -Infinity
     /* the DAG content's lowest edge (viewport px) — anchors the flat-note
-       caption BELOW the bounding box (plan-scene.css · --morph-nodes-b) */
+       caption BELOW the bounding box (morph.css · --morph-nodes-b) */
     let nodesBottom = -Infinity
     for (const t of plan.tasks) {
       firstTaskLn = Math.min(firstTaskLn, t.line0)
@@ -596,12 +583,6 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
 
       /* phase flag → caption + narration crossfade (morph.css) */
       stage.dataset.phase = phaseAt(p)
-      /* the 3D layer's END-OF-RUNWAY visibility gate (plan-scene.css · W5):
-         p-keyed like its opacity ramp — the hit-rects leave hover/tab order
-         exactly when the layer has fully receded, and scrub-back restores
-         them the same frame (never a timer) */
-      if (p >= 0.97) stage.dataset.psgone = '1'
-      else delete stage.dataset.psgone
 
       /* the file card travels in, then its shell steps aside for the burst */
       const shell = shellAt(p)
@@ -619,11 +600,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
 
       /* ── the aspiration · one task at a time, reading order ──────────────────
          Each block CONDENSES in place into its seed chip, the chip rides a
-         curve INTO its DAG slot, the slot ignites on arrival. In 3D mode the
-         landing follows the LIVE projected slab; the DOM node is the truth
-         everywhere else. */
-      const use3d = !!stage.dataset.plan3d
-      const psOff = psOffRef.current
+         curve INTO its DAG slot, the slot ignites on arrival. The DOM node
+         is the one truth (the flat register — every width, every device). */
       const n = plan.tasks.length
 
       /* THE DRAIN (wave M) · the un-consumed remainder slides below the slab
@@ -690,11 +668,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               ret.style.visibility = 'hidden'
             }
           } else {
-            const t3 = use3d && psOff ? slabTargetsRef.current.get(t.id) : undefined
-            const tx = t3 ? t3[0] + psOff!.x : g.p2.x
-            const ty = t3 ? t3[1] + psOff!.y : g.p2.y
-            /* landing size follows the projected slab into depth (3D mode) */
-            const scale = t3 ? Math.max(0.55, Math.min(1, t3[2])) : 1
+            const tx = g.p2.x
+            const ty = g.p2.y
+            const scale = 1
             const k = easeInOut(te)
             /* the seed is born where its DRAINED block sits (the queue-slide) */
             const y0 = g.p0.y + D
@@ -753,8 +729,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           }
         }
 
-        /* the node is BORN as its seed lands (2D truth; the 3D slab mirrors
-           this same ignition via plan-scene-model.materializeAt) */
+        /* the node is BORN as its seed lands — the flat register, the one truth
+           on every width */
         const nodeEl = nodeRefs.current.get(t.id)
         if (nodeEl) {
           const o = easeInOut(igniteAt(e))
@@ -894,7 +870,6 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     stage.style.removeProperty('--morph-slot-b')
     delete stage.dataset.phase
     delete stage.dataset.entry
-    delete stage.dataset.psgone
     for (const el of stage.querySelectorAll<HTMLElement>(
       '.cf-line, .morph-node, .morph-term, .morph-seed',
     )) {
@@ -1044,25 +1019,6 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       if (needMeasure) {
         needMeasure = false
         measure()
-      }
-      /* the seed→slab coordinate bridge (3D mode) · read while the frame is
-         still in its read phase */
-      const stage = stageRef.current
-      const seedLayer = seedLayerRef.current
-      if (stage?.dataset.plan3d && seedLayer) {
-        const ps =
-          psLayerRef.current ??
-          (psLayerRef.current = stage.querySelector<HTMLElement>(
-            '.ps-layer:not(.ps-tiplayer)',
-          ))
-        if (ps) {
-          const a = ps.getBoundingClientRect()
-          const b = seedLayer.getBoundingClientRect()
-          psOffRef.current = { x: a.left - b.left, y: a.top - b.top }
-        }
-      } else {
-        psLayerRef.current = null
-        psOffRef.current = null
       }
       /* runway from the STAGE's own height, not innerHeight (W20): the stage
          is 100svh on phones — innerHeight grows when the URL bar collapses
@@ -1668,21 +1624,6 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 </div>
               ))}
             </div>
-
-            {/* THE 3D MOMENT · wave H (desktop) — the DAG as dither-lit slabs,
-                 the camera advancing through the waves with the recorded run */}
-            {armed && plan3d ? (
-              <Suspense fallback={null}>
-                <ThePlanScene
-                  flagship={flagship}
-                  progressRef={progressRef}
-                  stageRef={stageRef}
-                  cardRef={cardRef}
-                  slabTargetsRef={slabTargetsRef}
-                  onSeekTask={seekTask}
-                />
-              </Suspense>
-            ) : null}
 
             {/* THE SEEDS · one chip per task, driven along their curves by
                 apply() — the condensed block traveling INTO its slot. The two

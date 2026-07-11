@@ -5,7 +5,6 @@ import {
   SPEC_SECTIONS,
   type StratumKey,
 } from './spec-machine-data'
-import { VERB_HEX } from '../sections/morph/plan-scene-model'
 import { NIKA_BRAND, NIKA_VERB_HEX } from '../design-tokens.generated'
 import { CANON } from '../canon.generated'
 
@@ -362,7 +361,7 @@ export function buildSpecMachine(): SpecMachineModel {
         const a = -Math.PI / 2 + (2 * Math.PI * i) / CANON.verbs
         const x = X_CORE + (i % 2 === 0 ? 0.05 : -0.05)
         const p: [number, number, number] = [x, Math.cos(a) * 0.17, Math.sin(a) * 0.17]
-        put(k, 'verbs', p, [0.13, 0.11, 0.11], hexRgb(VERB_HEX[node.verb!]), 11)
+        put(k, 'verbs', p, [0.13, 0.11, 0.11], hexRgb(NIKA_VERB_HEX[node.verb!]), 11)
         yzRadialQuat(a, quat, k * 4)
         centers.set(node.id, p)
         break
@@ -378,7 +377,7 @@ export function buildSpecMachine(): SpecMachineModel {
         const a = wave * 0.9 + (2 * Math.PI * Math.max(0, j)) / n
         const x = X_BRIDGE - wave * 0.15
         const p: [number, number, number] = [x, Math.cos(a) * 0.15, Math.sin(a) * 0.15]
-        put(k, 'plan', p, [0.15, 0.09, 0.05], hexRgb(VERB_HEX[node.verb!]), 23)
+        put(k, 'plan', p, [0.15, 0.09, 0.05], hexRgb(NIKA_VERB_HEX[node.verb!]), 23)
         yzRadialQuat(a, quat, k * 4)
         centers.set(node.id, p)
         break
