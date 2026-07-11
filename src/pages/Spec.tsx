@@ -347,7 +347,12 @@ export function Component() {
 
   return (
     <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`} data-stage={stage}>
-      <section ref={ref} aria-labelledby="spec-title" className="v4sec">
+      {/* v4-in is BAKED into the prerendered HTML: on a throttled connection
+          every JS-side reveal (observer · watchdog · hydration) lands seconds
+          after this hero's bytes arrive — LH measured the lede as a 4.7s LCP,
+          ~100% render delay. A poster page paints its poster at first paint;
+          the text entrance stagger is traded away on this page only. */}
+      <section ref={ref} aria-labelledby="spec-title" className="v4sec v4-in">
         <div className="v4sec-wrap spec-wrap">
           {/* ── THE HERO · a poster: the title column and THE SHIP, nothing
               else. When the machine is live the fixed chassis carries the
