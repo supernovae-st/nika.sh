@@ -162,6 +162,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/written-by-agents — the agent writes the plan; the audit gates it; you review a two-line diff.
+    out: 'og-blog-written-by-agents.png',
+    fig: 'FIG B.17',
+    size: 60,
+    headline: 'Written by agents,<br><span class="b">reviewed by you.</span>',
+    sub: 'nika init teaches the language to whatever agent you run. The agent writes the workflow, <span style="white-space:nowrap">nika check</span> refuses the invented one before anything executes, and the human review is a two-line diff.',
+    detail:
+      '<span class="arrow">▸</span><span>agent&nbsp;writes<span class="sep">·</span>audit&nbsp;gates<span class="sep">·</span><b>you&nbsp;review&nbsp;the&nbsp;diff</b></span>',
+  },
+  {
     // /blog/the-one-task-rerun — --task scopes fresh runs; --from re-rolls the recorded past.
     out: 'og-blog-the-one-task-rerun.png',
     fig: 'FIG B.16',

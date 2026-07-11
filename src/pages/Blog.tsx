@@ -33,11 +33,11 @@ const SOON: { slug: string; tag: string; date: string; title: string; teaser: st
     teaser: 'explain --forecast computes duration, cost and risk priors from your own traces: stats over .nika/traces/, earned at n >= 5, never a model call, never the network.',
   },
   {
-    slug: 'written-by-agents',
-    tag: 'Agents',
+    slug: 'the-run-that-never-runs',
+    tag: 'Engine',
     date: 'soon',
-    title: 'Written by agents, reviewed by you',
-    teaser: 'nika init teaches your agent the language; the plan it writes is a file you read before it runs.',
+    title: 'The run that never runs',
+    teaser: 'nika run --dry-run shows the whole static plan and executes zero effects: waves, permits, models, the cost floor — the full rehearsal before anything is allowed to happen.',
   },
 ]
 

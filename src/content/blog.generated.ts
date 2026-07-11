@@ -30,6 +30,502 @@ export interface BlogPost {
 /* newest first */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "written-by-agents",
+    "file": "2026-07-11-written-by-agents.md",
+    "title": "Written by agents, reviewed by you",
+    "tag": "Agents",
+    "date": "2026-07-11",
+    "description": "nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot — and the human review is a two-line diff.",
+    "readingMin": 5,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Your agent already writes code you review. That contract — the agent drafts, the diff is the meeting point, nothing merges unread — is the only reason agents are allowed near serious codebases at all. Then the same agent proposes to "
+          },
+          {
+            "k": "em",
+            "text": "run"
+          },
+          {
+            "k": "text",
+            "text": " something, and the contract quietly dissolves: the plan lives in chat scrollback, execution is whatever the loop decides in the moment, and \"review\" means watching it happen. "
+          },
+          {
+            "k": "link",
+            "text": "The file already made prompts reviewable",
+            "href": "/blog/prompts-are-code"
+          },
+          {
+            "k": "text",
+            "text": "; this post is about the division of labor that falls out of it — the agent writes the file, a machine audits it, and you review a diff instead of a transcript."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "code",
+            "text": "nika init"
+          },
+          {
+            "k": "text",
+            "text": " sets the table. In an empty repo:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika init\n\n  ✔ created .vscode/settings.json\n  ✔ created AGENTS.md\n  ✔ created .cursor/rules/nika.mdc\n  ✔ created .agents/skills/nika-authoring/SKILL.md\n  ✔ created .github/copilot-instructions.md\n  ✔ created CLAUDE.md"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "One scaffold, every harness — Claude Code, Cursor, Copilot, and anything else that reads "
+          },
+          {
+            "k": "code",
+            "text": "AGENTS.md"
+          },
+          {
+            "k": "text",
+            "text": " (opencode does). The 75-line "
+          },
+          {
+            "k": "code",
+            "text": "AGENTS.md"
+          },
+          {
+            "k": "text",
+            "text": " is the piece that matters: it teaches the loop — "
+          },
+          {
+            "k": "em",
+            "text": "write the workflow as a file, audit it with nika check, fix the findings, only then run"
+          },
+          {
+            "k": "text",
+            "text": " — and the generated "
+          },
+          {
+            "k": "code",
+            "text": "CLAUDE.md"
+          },
+          {
+            "k": "text",
+            "text": " says out loud that the contract \"stays parity-tested against the binary\". Run "
+          },
+          {
+            "k": "code",
+            "text": "nika init"
+          },
+          {
+            "k": "text",
+            "text": " twice and the second pass prints six "
+          },
+          {
+            "k": "code",
+            "text": "skipped (exists · --force to overwrite)"
+          },
+          {
+            "k": "text",
+            "text": " lines: the scaffold does not overwrite files it did not write."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "So we ran the experiment. Same scaffolded repo, three standup notes under "
+          },
+          {
+            "k": "code",
+            "text": "./notes/"
+          },
+          {
+            "k": "text",
+            "text": ", and the same one-sentence ask to two very different agents — worded naturally, no schema smuggled into the prompt:"
+          }
+        ]
+      },
+      {
+        "k": "quote",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Read AGENTS.md, then write a workflow that reads ./notes/*.md and writes a summary manifest to ./manifest.md. Save it as summarize-notes.nika.yaml."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The local agent first"
+          },
+          {
+            "k": "text",
+            "text": " — opencode driving qwen2.5:14b on ollama, no cloud anywhere. It read the contract, then wrote confident YAML in a dialect it invented: "
+          },
+          {
+            "k": "code",
+            "text": "steps:"
+          },
+          {
+            "k": "text",
+            "text": " blocks, a "
+          },
+          {
+            "k": "code",
+            "text": "tool: summarize"
+          },
+          {
+            "k": "text",
+            "text": " that exists in no catalog. The audit stopped it at the door:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika check summarize-notes.nika.yaml\n\nPARSE ✗  [NIKA-PARSE-005] unknown field `steps` in the workflow envelope (strict mode)"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Fed the error back, the model "
+          },
+          {
+            "k": "em",
+            "text": "described"
+          },
+          {
+            "k": "text",
+            "text": " a fix — and its own example was still wrong (a freshly invented "
+          },
+          {
+            "k": "code",
+            "text": "verb: summarize_notes"
+          },
+          {
+            "k": "text",
+            "text": "). Honest result: a 14B local model does not speak this language yet. But look at what did not happen. Nothing executed. No file was touched. The invented plan died as a parse error, not as a production incident. That is the loop working, not failing — the audit does not require a strong agent, it makes weak agents "
+          },
+          {
+            "k": "em",
+            "text": "safe"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "The frontier agent next"
+          },
+          {
+            "k": "text",
+            "text": " — "
+          },
+          {
+            "k": "code",
+            "text": "claude -p"
+          },
+          {
+            "k": "text",
+            "text": ", headless; one of several, the scaffold does not care which frontier you call. First shot, audit-green. Here is the file it wrote, shown as reviewed — the two lines we ended up changing are the story of the third act:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "summarize-notes.nika.yaml",
+        "text": "nika: v1\nworkflow: summarize-notes\ndescription: \"Summarize the three notes under ./notes/ into ./manifest.md\"\n\nmodel: ollama/llama3.2:3b   # local · zero key · swap for anthropic/claude-haiku-4-5\n\npermits:\n  fs:\n    read: [\"./notes/monday.md\", \"./notes/tuesday.md\", \"./notes/wednesday.md\"]\n    write: [\"./manifest.md\"]\n  exec: false\n  tools: [\"nika:read\", \"nika:write\"]\n\ntasks:\n  # No deps between the three reads → the engine runs them in parallel.\n  - id: monday\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./notes/monday.md\" }\n\n  - id: tuesday\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./notes/tuesday.md\" }\n\n  - id: wednesday\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./notes/wednesday.md\" }\n\n  - id: summary\n    depends_on: [monday, tuesday, wednesday]\n    infer:\n      prompt: |\n        Three daily standup notes ·\n\n        --- monday ---\n        ${{ tasks.monday.output }}\n\n        --- tuesday ---\n        ${{ tasks.tuesday.output }}\n\n        --- wednesday ---\n        ${{ tasks.wednesday.output }}\n\n        Write ONE paragraph (3-5 sentences) summarizing the week so far ·\n        what was shipped, what was fixed, and what comes next.\n        Plain prose · no bullets · no headings.\n      max_tokens: 2000\n\n  - id: save\n    depends_on: [summary]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./manifest.md\"\n        content: \"${{ tasks.summary.output }}\"\n\noutputs:\n  manifest: ${{ tasks.summary.output }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAZwFcBbMiDEALwFMBaYNAFzqKQBN2BjagBxYg0wWACIAyuUrV6MFgAs68hRjrLmbIjBLBuGGADoA9JvbGYIYCzRHjlUNnYtDZTmKRIyabrlhpcXAhKY0DgiABmQwAmKAiAIxgkgGIYfB4IXBgAdph6DFswOgBPHJgiFAh+GGxMGAhrVTR+EB5jHiCSbgYFCHASBgAWBgBWT346DDIQFiIoJCTsOYWkmDUITlgAbTETMyJ7EU4IYtd3ABoYXdNWcxYSdmPTtzFL6-3jFDpOYEeTs7EAF0VkkUNQ2Ntrg4QE4iC4XsCknQAB50HiwbCZIh0FY2AJzGA7UCQKDrC5XYnQMEzOhAzwsCBEMDLFIwABytm4-G08ToLC+dGAKmUijUyjJ2kASYTCmCCgDmVnFum0ijoZEsQv4VEyuDouEMKwYlk2MG8ehOII1cDQRXmq1WeL8FPA0DJHntSSocoJAG8YFrFOI9rcDmangCYABfTxJI0gE33P7FS1Wa22y1JR3iSmkugbd0er2+-0QQNXYNaYyJojhl5RmMwOMmr4-JMp4Bpuh2j1Z50kt0Z+oYb2wP0BhRBm6Vlu-Gv-OvRw3G4jSKjJ+1cwWcIgAfRE2zDJ0u1aelxnScRqysTgw3ft-AKZEEsAAPoOkgAVVTqGDHEC4Uo4QaTgSGqfYcgbD1GwYI1D1KGCGHfGAABIfT9BkmSIVwjn+NASBYfh8KjRcoNjGD5AeOd4JgpDUPQxlmUME9cPwwiWGIyCPQQmBzyo6DENIlC0PkBisN48M8IIojIxI0iAHVwWUAB5NkAFESwwCA5U0-gFBgAAKCJRnKQU2GAHh2AASnKVdZCsOUZQFMBylsTEDGyJCUF6djKm0IgFBAfgJk4M9vJ4xkahAVEQvqPQeLCng0DIdgYF+ZEXCQgAFIIrH9ApsTKZgYHiEhAj5bRciKpQNnsrDB0oZEdxsIpgAJaIAAZOobJtiAgOAcQ3OgJj0Xd90JUgKDXS8klTG0u0HXsxBzak2ALe0izvD1x0naFYXhdwkMS6xTPEOiRMwwwJpkU5JLY4iPCQW78JZU0GhhZxYDOjDGKutdDCe9iZKAA"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Three things worth reading in a file no human drafted. It did not invent — it started from the embedded showcase example the authoring skill points to, the exact read-summarize-write shape. It built its own cage — the "
+          },
+          {
+            "k": "code",
+            "text": "permits:"
+          },
+          {
+            "k": "text",
+            "text": " block came from "
+          },
+          {
+            "k": "code",
+            "text": "nika check --infer-permits"
+          },
+          {
+            "k": "text",
+            "text": ": reads scoped to exactly three note files, writes scoped to exactly one, "
+          },
+          {
+            "k": "code",
+            "text": "exec: false"
+          },
+          {
+            "k": "text",
+            "text": ", two tools. And handed a free model choice, the cloud agent picked a "
+          },
+          {
+            "k": "em",
+            "text": "local"
+          },
+          {
+            "k": "text",
+            "text": " model for the inference — the sovereignty lives in the file, not in whoever wrote it."
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika check summarize-notes.nika.yaml\n\n ✔ PLAN     3 wave(s) · 5 task(s) · max parallelism 3\n ✔ MODELS   1 model resolves in this binary\n ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)\n   summary  ollama/llama3.2:3b  UNBOUNDED — no catalog price (local/unknown model)\n ✔ SECRETS  no information-flow escapes\n ✔ TOOLS    every nika: tool names a canonical builtin\n ✔ PERMITS  body fits the declared boundary\n ✔ audited · 5 task(s) · 3 wave(s) · permits declared · 0 hints"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The "
+          },
+          {
+            "k": "code",
+            "text": "COST"
+          },
+          {
+            "k": "text",
+            "text": " warning is honesty, not a defect: a local model has no catalog price, and the audit refuses to pretend unpriced compute is free compute."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "strong",
+            "text": "Then the run — and the trap."
+          },
+          {
+            "k": "text",
+            "text": " The agent's draft named "
+          },
+          {
+            "k": "code",
+            "text": "ollama/qwen3.5:4b"
+          },
+          {
+            "k": "text",
+            "text": " with "
+          },
+          {
+            "k": "code",
+            "text": "max_tokens: 512"
+          },
+          {
+            "k": "text",
+            "text": ". Five tasks, all green, exit 0. And "
+          },
+          {
+            "k": "code",
+            "text": "./manifest.md"
+          },
+          {
+            "k": "text",
+            "text": " was empty. The trace autopsy, one command:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika trace peek .nika/traces/<run>.ndjson summary\n\n  summary · infer · ollama/qwen3.5:4b\n  33.8s · 512 tok · 2B\n\n  \"\""
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Two bytes. qwen3.5 is a thinking model: it spent all 512 tokens inside its reasoning block and emitted nothing — and the run stayed green, because an empty string is a valid output. First review line: raise "
+          },
+          {
+            "k": "code",
+            "text": "max_tokens"
+          },
+          {
+            "k": "text",
+            "text": " to 2000. Resume re-runs the summary — an edited task "
+          },
+          {
+            "k": "link",
+            "text": "is a different task",
+            "href": "/blog/the-resume-story"
+          },
+          {
+            "k": "text",
+            "text": " — and the model thought its way through 2000 tokens to the same two quote marks."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Second review line: swap the model to "
+          },
+          {
+            "k": "code",
+            "text": "llama3.2:3b"
+          },
+          {
+            "k": "text",
+            "text": ". And here the session paid for itself twice, because resume "
+          },
+          {
+            "k": "em",
+            "text": "skipped"
+          },
+          {
+            "k": "text",
+            "text": " the summary — a cache hit on stale, empty output. The task identity covers the task as written and its inputs, but not the envelope "
+          },
+          {
+            "k": "code",
+            "text": "model:"
+          },
+          {
+            "k": "text",
+            "text": " line, so a model swap looks like nothing changed. We filed that upstream as "
+          },
+          {
+            "k": "link",
+            "text": "#409",
+            "href": "https://github.com/supernovae-st/nika/issues/409"
+          },
+          {
+            "k": "text",
+            "text": ", and the silent empty-but-green infer as "
+          },
+          {
+            "k": "link",
+            "text": "#410",
+            "href": "https://github.com/supernovae-st/nika/issues/410"
+          },
+          {
+            "k": "text",
+            "text": " — both found not by a demo going well but by a trace that names the model, the token count, and the two bytes."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "A model swap is precisely a change "
+          },
+          {
+            "k": "link",
+            "text": "the hashes cannot see",
+            "href": "/blog/the-one-task-rerun"
+          },
+          {
+            "k": "text",
+            "text": " — which is what "
+          },
+          {
+            "k": "code",
+            "text": "--from"
+          },
+          {
+            "k": "text",
+            "text": " is for. Name the distrust and re-roll it:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika run summarize-notes.nika.yaml --resume last.ndjson --from summary\n\n  ↷  monday     cache hit (resume)\n  ↷  tuesday    cache hit (resume)\n  ↷  wednesday  cache hit (resume)\n  ✔  summary    infer · ollama/llama3.2:3b  6.9s\n  ✔  save       invoke · nika:write  3ms\n\n  resumed · 3 skipped (cache hit) · 2 ran live"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "6.9 seconds, 89 tokens, 470 bytes — and "
+          },
+          {
+            "k": "code",
+            "text": "./manifest.md"
+          },
+          {
+            "k": "text",
+            "text": " holds a real paragraph: "
+          },
+          {
+            "k": "em",
+            "text": "\"The week started with a promising start as the parser was successfully shipped on Monday…\""
+          },
+          {
+            "k": "text",
+            "text": ". Not Pulitzer material; a 3B wrote it on a laptop. But it is real, it is scoped, and the three reads it depends on never ran twice."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Count what the human actually did in this story. Zero YAML written. One ask, worded like you would say it out loud. Then a review: read a 70-line file, change two lines — a model name and a token budget. The agent wrote the plan; the audit refused the invented one before anything ran; the trace made the silent failure inspectable; the re-run touched only what our doubt named. That is the same division of labor your code already lives under, extended to the work agents want to "
+          },
+          {
+            "k": "em",
+            "text": "run"
+          },
+          {
+            "k": "text",
+            "text": " — and the whole contract fits in one file your agent now knows how to write. "
+          },
+          {
+            "k": "code",
+            "text": "nika init"
+          },
+          {
+            "k": "text",
+            "text": " is where it learns."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-run-that-waits",
     "file": "2026-07-10-the-run-that-waits.md",
     "title": "The run that waits for you",

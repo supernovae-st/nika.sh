@@ -87,6 +87,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "Written by agents, reviewed by you",
+    "href": "/blog/written-by-agents",
+    "hint": "Agents · 2026-07-11"
+  },
+  {
+    "kind": "post",
     "label": "The run that waits for you",
     "href": "/blog/the-run-that-waits",
     "hint": "Engine · 2026-07-10"
