@@ -1157,3 +1157,11 @@
 .v4hero-hatch-sep {
   color: var(--v4-text-faint);
 }
+/* the hatch row wraps to two lines on narrow phones — a separator with
+   nothing after it is an orphan glyph, not punctuation. Below the wrap
+   width the links separate themselves; the dot dies. */
+@media (max-width: 560px) {
+  .v4hero-hatch-sep {
+    display: none;
+  }
+}
