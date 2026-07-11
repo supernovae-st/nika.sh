@@ -122,6 +122,7 @@ const evaluate = async (expr) => {
 }
 await send('Page.enable')
 await send('Runtime.enable')
+if (process.env.E2E_THROTTLE) await send('Emulation.setCPUThrottlingRate', { rate: Number(process.env.E2E_THROTTLE) })
 await send('Network.enable')
 await send('Emulation.setDeviceMetricsOverride', { width: 1600, height: 1000, deviceScaleFactor: 1, mobile: false })
 

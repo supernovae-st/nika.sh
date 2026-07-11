@@ -69,10 +69,19 @@
     0 0 0 9999px #08090c,
     inset 0 2px 8px -3px rgb(0 0 0 / 0.55),
     inset 0 0 9px -2px rgb(0 0 0 / 0.38);
-  /* the ring's draw easing (--run-p is written on THIS element; the lining
-     inherits the animating value) — one step per task log line becomes a
-     continuous draw, and runEnd(success)'s p=1 reads as the verdict sweep */
+  /* the verdict's draw easing (--run-p is written on THIS element; the
+     lining inherits the animating value): runEnd(success) completes the
+     ring as a SWEEP, the wall flash draws in — not a snap */
   transition: --run-p 0.42s ease;
+}
+/* while a run PLAYS, progress snaps step-to-step: an interpolating --run-p
+   re-rasterizes the masked blurred ring every compositor frame for 0.42s
+   after EVERY progress write — free on real GPUs, a margin-eater on
+   software GL (the CI runner starved under it; one repaint per step is
+   the pre-sweep cost). The sweep belongs to the verdict, which fires
+   AFTER data-run drops. */
+.frame[data-run] {
+  transition: none;
 }
 
 /* ── THE DRUM LINING · the run, drawn on the frame ────────────────────────────
