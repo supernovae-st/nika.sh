@@ -1434,11 +1434,11 @@
 /* THE HULL HUES · each stratum's drawing wears its verb-family hue (the 3D
    ship's exact palette — one language, two renderers) */
 .sms-stratum[data-stratum='frame'] { --sm-ink-lit: #8db4ff; }
-.sms-stratum[data-stratum='permits'] { --sm-ink-lit: #ff7a3c; }
+.sms-stratum[data-stratum='permits'] { --sm-ink-lit: var(--verb-exec); }
 .sms-stratum[data-stratum='stdlib'],
-.sms-stratum[data-stratum='extract'] { --sm-ink-lit: #22d3ee; }
-.sms-stratum[data-stratum='providers'] { --sm-ink-lit: #5b8cff; }
-.sms-stratum[data-stratum='errors'] { --sm-ink-lit: #b07bff; }
+.sms-stratum[data-stratum='extract'] { --sm-ink-lit: var(--verb-invoke); }
+.sms-stratum[data-stratum='providers'] { --sm-ink-lit: var(--verb-infer); }
+.sms-stratum[data-stratum='errors'] { --sm-ink-lit: var(--verb-agent); }
 
 /* the drawing wears the hull hues from the first paint — unlit strata
    whisper their OWN colour (the reading's data-lit still brightens them).

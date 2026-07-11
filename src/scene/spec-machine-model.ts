@@ -6,6 +6,7 @@ import {
   type StratumKey,
 } from './spec-machine-data'
 import { VERB_HEX } from '../sections/morph/plan-scene-model'
+import { NIKA_BRAND, NIKA_VERB_HEX } from '../design-tokens.generated'
 import { CANON } from '../canon.generated'
 
 /* ─── spec-machine-model · THE SPEC MACHINE as pure data (v2 · THE SHIP) ──────
@@ -124,7 +125,7 @@ const hexRgb = (h: string): [number, number, number] => [
   parseInt(h.slice(3, 5), 16) / 255,
   parseInt(h.slice(5, 7), 16) / 255,
 ]
-const LIT_BLUE = hexRgb('#4f86ff')
+const LIT_BLUE = hexRgb(NIKA_BRAND.accent)
 const DIM_BLUE = hexRgb('#2a4470')
 
 /* THE HULL HUES · every station wears the hue of the verb it serves (the
@@ -134,11 +135,11 @@ const DIM_BLUE = hexRgb('#2a4470')
    agent's typed failures (violet) · the keel is the struck structure. */
 const HUE: Record<string, [number, number, number]> = {
   frame: hexRgb('#8db4ff'),
-  permits: hexRgb('#ff7a3c'),
-  stdlib: hexRgb('#22d3ee'),
-  extract: hexRgb('#22d3ee'),
-  providers: hexRgb('#5b8cff'),
-  errors: hexRgb('#b07bff'),
+  permits: hexRgb(NIKA_VERB_HEX.exec),
+  stdlib: hexRgb(NIKA_VERB_HEX.invoke),
+  extract: hexRgb(NIKA_VERB_HEX.invoke),
+  providers: hexRgb(NIKA_VERB_HEX.infer),
+  errors: hexRgb(NIKA_VERB_HEX.agent),
 }
 
 /** quaternion from orthonormal basis columns (e · n · r), e×n = r */

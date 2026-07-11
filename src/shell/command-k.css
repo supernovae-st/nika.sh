@@ -98,7 +98,7 @@
   color: var(--v4-accent);
 }
 .ck-opt[data-kind='error'] .ck-opt-glyph {
-  color: var(--verb-exec, #e6b873);
+  color: var(--verb-exec, #ff7a3c);
 }
 .ck-opt-label {
   font-size: 13.5px;
