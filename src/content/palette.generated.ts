@@ -5,8 +5,8 @@
 // Drift gate: src/test/palette.test.ts recompiles and byte-diffs.
 
 export interface PaletteEntry {
-  /** page (core surface) · post (journal) · error (registry code) · tool (stdlib builtin) */
-  kind: 'page' | 'post' | 'error' | 'tool'
+  /** page (core surface) · post (journal) · error (registry code) · tool (stdlib builtin) · provider (catalog id) */
+  kind: 'page' | 'post' | 'error' | 'tool' | 'provider'
   label: string
   href: string
   /** the dim second line — tag · date · one-line failure · … */
@@ -85,6 +85,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "Tools",
     "href": "/tools",
     "hint": "the standard library"
+  },
+  {
+    "kind": "page",
+    "label": "Providers",
+    "href": "/providers",
+    "hint": "local first · your keys"
   },
   {
     "kind": "page",
@@ -733,5 +739,101 @@ export const PALETTE: PaletteEntry[] = [
     "label": "nika:write",
     "href": "/tools/write",
     "hint": "Write a file · returns the path. overwrite defaults true · create_dirs defaults false."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: ollama",
+    "href": "/providers/ollama",
+    "hint": "Local Ollama server (default port 11434) — serves any pulled model."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: lmstudio",
+    "href": "/providers/lmstudio",
+    "hint": "LM Studio local server (default port 1234) — serves the loaded model."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: llamacpp",
+    "href": "/providers/llamacpp",
+    "hint": "llama.cpp server (default port 8080) — serves the loaded GGUF; the wire model id is free-form."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: localai",
+    "href": "/providers/localai",
+    "hint": "LocalAI server (default port 8080) — an OpenAI-compatible gateway over local backends."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: vllm",
+    "href": "/providers/vllm",
+    "hint": "vLLM server (default port 8000) — serves Hugging Face model ids at throughput."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: mistral",
+    "href": "/providers/mistral",
+    "hint": "Mistral Large, Medium, Small models."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: anthropic",
+    "href": "/providers/anthropic",
+    "hint": "Claude models (Opus, Sonnet, Haiku)."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: openai",
+    "href": "/providers/openai",
+    "hint": "GPT-4, GPT-4o, and other OpenAI models."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: gemini",
+    "href": "/providers/gemini",
+    "hint": "Gemini Pro, Flash, and Ultra models."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: deepseek",
+    "href": "/providers/deepseek",
+    "hint": "DeepSeek Chat and Coder models."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: xai",
+    "href": "/providers/xai",
+    "hint": "Grok models (Grok-3, Grok-4)."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: groq",
+    "href": "/providers/groq",
+    "hint": "Fast inference with Llama, Mixtral models."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: openrouter",
+    "href": "/providers/openrouter",
+    "hint": "200+ models via unified gateway."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: huggingface",
+    "href": "/providers/huggingface",
+    "hint": "Inference Providers router · 100+ open-weight models across 18 providers (Groq · Cerebras · Together · Scaleway · OVHcloud · …) · zero markup · :provider or :fastest/:cheapest routing suffix."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: nvidia",
+    "href": "/providers/nvidia",
+    "hint": "NVIDIA API (integrate.api.nvidia.com) · Nemotron 3 family (Open Model License · agentic-first) + hosted open models · self-hosted NIM containers expose the same surface."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: mock",
+    "href": "/providers/mock",
+    "hint": "Deterministic test responses — no API calls, no keys needed."
   }
 ]

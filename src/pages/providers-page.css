@@ -1,0 +1,217 @@
+/* ─── /providers page · the provider register ─────────────────────────────────
+   Speaks the register grammar the /errors + /tools family established
+   (StampStrip · .cl-year-head — pages are sync-imported so the shared rules
+   are always loaded). This file adds only the pv- vocabulary: kind buckets,
+   anchored provider rows, the env-var chip, the model pin lines, the
+   deep-link highlight, the honest miss. Monochrome blueprint; the ONLY
+   colour is the deep-link highlight hairline. SSR-safe: pure CSS. */
+
+.pv-page {
+  min-height: 100vh;
+}
+.pv-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.pv-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* ── the honest miss (unregistered :id) · recovery, never a dead end ───────── */
+.pv-miss {
+  margin-top: clamp(20px, 3vh, 32px);
+  padding: 14px 18px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 22%, transparent);
+  border-left-width: 3px;
+  max-width: 62ch;
+}
+.pv-miss-id {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+}
+.pv-miss p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+}
+
+/* ── kind bucket · reuses the year-head rule line ──────────────────────────── */
+.pv-family {
+  margin-top: clamp(40px, 5vh, 60px);
+}
+.pv-family-n {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pv-family-gloss {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+
+/* ── the provider rows · anchored, hairline-ruled ──────────────────────────── */
+.pv-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+.pv-row {
+  padding: 14px 10px 16px 14px;
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+  scroll-margin-top: 120px;
+}
+.pv-row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+.pv-row-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pv-id {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--v4-text);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 25%, transparent);
+}
+.pv-id:hover,
+.pv-id:focus-visible {
+  border-bottom-color: var(--v4-text);
+}
+.pv-id:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 3px;
+}
+.pv-name {
+  font-size: 13.5px;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+}
+.pv-env {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 18%, transparent);
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  white-space: nowrap;
+  cursor: help;
+}
+.pv-nokey {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--v4-text) 60%, transparent);
+  white-space: nowrap;
+  cursor: help;
+}
+.pv-desc {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+  max-width: 74ch;
+}
+
+/* ── the facts strip · default/cheap model, dialect, aliases ───────────────── */
+.pv-facts {
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+}
+.pv-fact {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.pv-fact dt {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+.pv-fact dd {
+  margin: 0;
+  font-size: 12.5px;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+}
+.pv-fact dd code {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* ── the model pins · alias → exact upstream id + capabilities ─────────────── */
+.pv-models {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.pv-model {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 12.5px;
+}
+.pv-model-id {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 1px 7px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 14%, transparent);
+  color: var(--v4-text);
+  white-space: nowrap;
+}
+.pv-model-pin {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  overflow-wrap: anywhere;
+}
+.pv-model-caps {
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+
+/* ── the deep-link highlight · one quiet accent, nothing else on the page ──── */
+.pv-row--active {
+  border-left: 3px solid var(--v4-text);
+  padding-left: 11px;
+  background: color-mix(in srgb, var(--v4-text) 5%, transparent);
+}
+.pv-row--active .pv-id {
+  border-bottom-color: var(--v4-text);
+}
+
+/* ── the closing line ──────────────────────────────────────────────────────── */
+.pv-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}
+
+@media (max-width: 560px) {
+  .pv-row-head {
+    gap: 8px;
+  }
+  .pv-desc {
+    font-size: 13.5px;
+  }
+  .pv-facts {
+    gap: 4px 16px;
+  }
+}

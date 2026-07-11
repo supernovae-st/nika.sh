@@ -1,6 +1,7 @@
 import { BLOG_POSTS } from './blog.generated'
 import { ERROR_CODES } from './errors.generated'
 import { TOOLS } from './tools.generated'
+import { PROVIDERS } from './providers.generated'
 import { DOCS, REPO, SPEC } from '../content'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
@@ -80,12 +81,18 @@ export const SITE_MAP: MapGroup[] = [
         href: '/errors',
         hint: `every typed check finding (${ERROR_CODES.length})`,
       },
+      {
+        label: 'Providers',
+        href: '/providers',
+        hint: `local first · your keys · no lock-in (${PROVIDERS.length})`,
+      },
       { label: 'Changelog', href: '/changelog', hint: 'the ship log, dated and tagged' },
       { label: 'Brand', href: '/brand', hint: 'the marks · icons · motion' },
     ],
     dense: [
       ...TOOLS.map((t) => ({ label: t.name, href: `/tools/${t.bare}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
+      ...PROVIDERS.map((p) => ({ label: `provider: ${p.id}`, href: `/providers/${p.id}` })),
     ],
   },
   {
@@ -104,6 +111,11 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'sitemap.xml', href: '/sitemap.xml', hint: 'this map, for crawlers' },
       { label: 'tools catalog', href: '/tools/catalog.json', hint: 'the stdlib vocabulary, JSON' },
       { label: 'error catalog', href: '/errors/catalog.json', hint: 'the typed registry, JSON' },
+      {
+        label: 'provider catalog',
+        href: '/providers/catalog.json',
+        hint: 'the named set + model pins, JSON',
+      },
       { label: 'icon ontology', href: '/brand/icons.json', hint: 'every mark, with semantics' },
       { label: 'security.txt', href: '/.well-known/security.txt', hint: 'how to reach us, signed' },
     ],

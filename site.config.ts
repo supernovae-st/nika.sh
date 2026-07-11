@@ -141,4 +141,28 @@ export const TOOL_PATHS = [
   '/tools/write',
 ]
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/sitemap', '/use-cases', '/spec', '/install', '/convert', '/brand']
+/* the provider register's deep pages — one static landing per spec-named
+   provider (slug = provider id: /providers/ollama). Same prerender law;
+   kept literal (this file stays import-free); the providers drift gate
+   (src/test/providers.test.ts) fails when the catalog and these paths
+   diverge. Order mirrors the presentation law (local first). */
+export const PROVIDER_PATHS = [
+  '/providers/ollama',
+  '/providers/lmstudio',
+  '/providers/llamacpp',
+  '/providers/localai',
+  '/providers/vllm',
+  '/providers/mistral',
+  '/providers/anthropic',
+  '/providers/openai',
+  '/providers/gemini',
+  '/providers/deepseek',
+  '/providers/xai',
+  '/providers/groq',
+  '/providers/openrouter',
+  '/providers/huggingface',
+  '/providers/nvidia',
+  '/providers/mock',
+]
+
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/providers', ...PROVIDER_PATHS, '/sitemap', '/use-cases', '/spec', '/install', '/convert', '/brand']

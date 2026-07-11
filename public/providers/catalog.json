@@ -1,0 +1,633 @@
+{
+  "version": "0.99.0",
+  "embedded_extra": 22,
+  "providers": [
+    {
+      "id": "ollama",
+      "name": "Ollama",
+      "kind": "local",
+      "description": "Local Ollama server (default port 11434) — serves any pulled model.",
+      "requires_key": false,
+      "api_dialect": "openai-chat",
+      "default_model": "qwen3.5:4b",
+      "cheap_model": "llama3.2:3b",
+      "aliases": [],
+      "tags": [
+        "local",
+        "open-source"
+      ],
+      "models": [
+        {
+          "id": "qwen",
+          "model": "qwen3.5:4b",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        },
+        {
+          "id": "llama",
+          "model": "llama3.2:3b",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lmstudio",
+      "name": "LM Studio",
+      "kind": "local",
+      "description": "LM Studio local server (default port 1234) — serves the loaded model.",
+      "requires_key": false,
+      "api_dialect": "openai-chat",
+      "default_model": "qwen3.5-4b",
+      "cheap_model": "qwen3.5-4b",
+      "aliases": [
+        "lm-studio"
+      ],
+      "tags": [
+        "local",
+        "open-source"
+      ],
+      "models": [
+        {
+          "id": "qwen",
+          "model": "qwen3.5-4b",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "llamacpp",
+      "name": "llama.cpp",
+      "kind": "local",
+      "description": "llama.cpp server (default port 8080) — serves the loaded GGUF; the wire model id is free-form.",
+      "requires_key": false,
+      "api_dialect": "openai-chat",
+      "default_model": "default",
+      "cheap_model": "default",
+      "aliases": [
+        "llama-cpp"
+      ],
+      "tags": [
+        "local",
+        "open-source"
+      ],
+      "models": [
+        {
+          "id": "default",
+          "model": "default",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "localai",
+      "name": "LocalAI",
+      "kind": "local",
+      "description": "LocalAI server (default port 8080) — an OpenAI-compatible gateway over local backends.",
+      "requires_key": false,
+      "api_dialect": "openai-chat",
+      "default_model": "default",
+      "cheap_model": "default",
+      "aliases": [],
+      "tags": [
+        "local",
+        "open-source"
+      ],
+      "models": [
+        {
+          "id": "default",
+          "model": "default",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "vllm",
+      "name": "vLLM",
+      "kind": "local",
+      "description": "vLLM server (default port 8000) — serves Hugging Face model ids at throughput.",
+      "requires_key": false,
+      "api_dialect": "openai-chat",
+      "default_model": "Qwen/Qwen3-8B",
+      "cheap_model": "Qwen/Qwen3-8B",
+      "aliases": [],
+      "tags": [
+        "local",
+        "open-source"
+      ],
+      "models": [
+        {
+          "id": "qwen",
+          "model": "Qwen/Qwen3-8B",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral AI",
+      "kind": "cloud",
+      "description": "Mistral Large, Medium, Small models.",
+      "env_var": "MISTRAL_API_KEY",
+      "requires_key": true,
+      "api_dialect": "openai-chat",
+      "default_model": "mistral-large-latest",
+      "cheap_model": "mistral-small-latest",
+      "aliases": [],
+      "tags": [
+        "code",
+        "european",
+        "frontier",
+        "function-calling",
+        "open-source",
+        "streaming",
+        "structured-output"
+      ],
+      "models": [
+        {
+          "id": "large",
+          "model": "mistral-large-latest",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "small",
+          "model": "mistral-small-latest",
+          "context_window_tokens": 32000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        }
+      ]
+    },
+    {
+      "id": "anthropic",
+      "name": "Anthropic Claude",
+      "kind": "cloud",
+      "description": "Claude models (Opus, Sonnet, Haiku).",
+      "env_var": "ANTHROPIC_API_KEY",
+      "requires_key": true,
+      "api_dialect": "anthropic",
+      "default_model": "claude-sonnet-4-20250514",
+      "cheap_model": "claude-haiku-4-5-20251001",
+      "aliases": [
+        "claude"
+      ],
+      "tags": [
+        "extended-thinking",
+        "frontier",
+        "function-calling",
+        "long-context",
+        "prompt-caching",
+        "streaming",
+        "structured-output",
+        "vision"
+      ],
+      "models": [
+        {
+          "id": "sonnet",
+          "model": "claude-sonnet-4-20250514",
+          "context_window_tokens": 200000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": true,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "haiku",
+          "model": "claude-haiku-4-5-20251001",
+          "context_window_tokens": 200000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": true,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        }
+      ]
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "kind": "cloud",
+      "description": "GPT-4, GPT-4o, and other OpenAI models.",
+      "env_var": "OPENAI_API_KEY",
+      "requires_key": true,
+      "api_dialect": "openai-chat",
+      "default_model": "gpt-4o",
+      "cheap_model": "gpt-4o-mini",
+      "aliases": [
+        "gpt"
+      ],
+      "tags": [
+        "code-execution",
+        "frontier",
+        "function-calling",
+        "image-gen",
+        "prompt-caching",
+        "realtime",
+        "streaming",
+        "vision"
+      ],
+      "models": [
+        {
+          "id": "gpt-4o",
+          "model": "gpt-4o",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 16384,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "gpt-4o-mini",
+          "model": "gpt-4o-mini",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 16384,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "name": "Google Gemini",
+      "kind": "cloud",
+      "description": "Gemini Pro, Flash, and Ultra models.",
+      "env_var": "GEMINI_API_KEY",
+      "requires_key": true,
+      "api_dialect": "gemini",
+      "default_model": "gemini-2.5-flash",
+      "cheap_model": "gemini-2.0-flash",
+      "aliases": [
+        "google"
+      ],
+      "tags": [
+        "code-execution",
+        "frontier",
+        "function-calling",
+        "long-context",
+        "multimodal",
+        "streaming",
+        "vision",
+        "web-search"
+      ],
+      "models": [
+        {
+          "id": "flash-25",
+          "model": "gemini-2.5-flash",
+          "context_window_tokens": 1048576,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "flash-20",
+          "model": "gemini-2.0-flash",
+          "context_window_tokens": 1048576,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "kind": "cloud",
+      "description": "DeepSeek Chat and Coder models.",
+      "env_var": "DEEPSEEK_API_KEY",
+      "requires_key": true,
+      "api_dialect": "openai-chat",
+      "default_model": "deepseek-chat",
+      "cheap_model": "deepseek-chat",
+      "aliases": [
+        "deep-seek"
+      ],
+      "tags": [
+        "budget",
+        "chinese",
+        "code",
+        "function-calling",
+        "open-source",
+        "reasoning",
+        "streaming",
+        "structured-output"
+      ],
+      "models": [
+        {
+          "id": "chat",
+          "model": "deepseek-chat",
+          "context_window_tokens": 64000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": false,
+            "json_mode": "object"
+          }
+        }
+      ]
+    },
+    {
+      "id": "xai",
+      "name": "xAI Grok",
+      "kind": "cloud",
+      "description": "Grok models (Grok-3, Grok-4).",
+      "env_var": "XAI_API_KEY",
+      "requires_key": true,
+      "api_dialect": "openai-chat",
+      "default_model": "grok-3",
+      "cheap_model": "grok-3-mini-fast",
+      "aliases": [
+        "grok"
+      ],
+      "tags": [
+        "frontier",
+        "function-calling",
+        "reasoning",
+        "streaming",
+        "structured-output",
+        "vision",
+        "web-search"
+      ],
+      "models": [
+        {
+          "id": "grok-3",
+          "model": "grok-3",
+          "context_window_tokens": 131072,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": false,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "mini",
+          "model": "grok-3-mini-fast",
+          "context_window_tokens": 131072,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": true,
+            "vision": false,
+            "json_mode": "schema"
+          }
+        }
+      ]
+    },
+    {
+      "id": "groq",
+      "name": "Groq",
+      "kind": "cloud",
+      "description": "Fast inference with Llama, Mixtral models.",
+      "env_var": "GROQ_API_KEY",
+      "requires_key": true,
+      "api_dialect": "openai-chat",
+      "default_model": "llama-3.3-70b-versatile",
+      "cheap_model": "llama-3.1-8b-instant",
+      "aliases": [],
+      "tags": [
+        "fast",
+        "function-calling",
+        "parallel-tools",
+        "streaming",
+        "structured-output"
+      ],
+      "models": [
+        {
+          "id": "llama-70b",
+          "model": "llama-3.3-70b-versatile",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": false,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "llama-8b",
+          "model": "llama-3.1-8b-instant",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 8192,
+          "capabilities": {
+            "reasoning": false,
+            "vision": false,
+            "json_mode": "schema"
+          }
+        }
+      ]
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter",
+      "kind": "cloud",
+      "description": "200+ models via unified gateway.",
+      "env_var": "OPENROUTER_API_KEY",
+      "requires_key": true,
+      "api_dialect": "openai-chat",
+      "default_model": "anthropic/claude-sonnet-4-20250514",
+      "cheap_model": "anthropic/claude-haiku-4-5-20251001",
+      "aliases": [
+        "or"
+      ],
+      "tags": [
+        "function-calling",
+        "streaming"
+      ],
+      "models": [
+        {
+          "id": "default",
+          "model": "anthropic/claude-sonnet-4-20250514",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 4096,
+          "capabilities": {
+            "reasoning": true,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "cheap",
+          "model": "anthropic/claude-haiku-4-5-20251001",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 4096,
+          "capabilities": {
+            "reasoning": true,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        }
+      ]
+    },
+    {
+      "id": "huggingface",
+      "name": "Hugging Face",
+      "kind": "cloud",
+      "description": "Inference Providers router · 100+ open-weight models across 18 providers (Groq · Cerebras · Together · Scaleway · OVHcloud · …) · zero markup · :provider or :fastest/:cheapest routing suffix.",
+      "env_var": "HF_TOKEN",
+      "requires_key": true,
+      "api_dialect": "openai-chat",
+      "default_model": "Qwen/Qwen3.5-397B-A17B:fastest",
+      "cheap_model": "Qwen/Qwen3.5-9B:cheapest",
+      "aliases": [
+        "hf"
+      ],
+      "tags": [
+        "function-calling",
+        "open-source",
+        "streaming"
+      ],
+      "models": [
+        {
+          "id": "default",
+          "model": "Qwen/Qwen3.5-397B-A17B:fastest",
+          "context_window_tokens": 262144,
+          "max_output_tokens": 32768,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        },
+        {
+          "id": "cheap",
+          "model": "Qwen/Qwen3.5-9B:cheapest",
+          "context_window_tokens": 262144,
+          "max_output_tokens": 16384,
+          "capabilities": {
+            "reasoning": false,
+            "vision": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "nvidia",
+      "name": "NVIDIA",
+      "kind": "cloud",
+      "description": "NVIDIA API (integrate.api.nvidia.com) · Nemotron 3 family (Open Model License · agentic-first) + hosted open models · self-hosted NIM containers expose the same surface.",
+      "env_var": "NVIDIA_API_KEY",
+      "requires_key": true,
+      "api_dialect": "openai-chat",
+      "default_model": "nvidia/nemotron-3-super-120b-a12b",
+      "cheap_model": "nvidia/nemotron-3-nano-30b-a3b",
+      "aliases": [
+        "nim",
+        "nvidia-nim"
+      ],
+      "tags": [
+        "function-calling",
+        "open-source",
+        "streaming"
+      ],
+      "models": [
+        {
+          "id": "default",
+          "model": "nvidia/nemotron-3-super-120b-a12b",
+          "context_window_tokens": 262144,
+          "max_output_tokens": 32768,
+          "capabilities": {
+            "reasoning": false,
+            "vision": false,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "cheap",
+          "model": "nvidia/nemotron-3-nano-30b-a3b",
+          "context_window_tokens": 262144,
+          "max_output_tokens": 16384,
+          "capabilities": {
+            "reasoning": false,
+            "vision": false,
+            "json_mode": "schema"
+          }
+        },
+        {
+          "id": "llama-70b",
+          "model": "meta/llama-3.1-70b-instruct",
+          "context_window_tokens": 128000,
+          "max_output_tokens": 4096,
+          "capabilities": {
+            "reasoning": false,
+            "vision": false,
+            "json_mode": "schema"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mock",
+      "name": "Mock",
+      "kind": "test",
+      "description": "Deterministic test responses — no API calls, no keys needed.",
+      "requires_key": false,
+      "api_dialect": "mock",
+      "default_model": "mock-default",
+      "cheap_model": "mock-default",
+      "aliases": [],
+      "tags": [],
+      "models": [
+        {
+          "id": "default",
+          "model": "mock-default",
+          "context_window_tokens": 1000000,
+          "max_output_tokens": 1000000,
+          "capabilities": {
+            "reasoning": true,
+            "vision": true,
+            "json_mode": "schema"
+          }
+        }
+      ]
+    }
+  ]
+}
