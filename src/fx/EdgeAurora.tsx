@@ -100,8 +100,6 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
         dangerTimerRef.current = null
         elRef.current?.removeAttribute('data-danger')
         floorRef.current = RUN_FLOOR
-        /* data-run FIRST: it gates the sweep transition off, so the ring
-           reset (and every progress step after) SNAPS — cheap repaints */
         elRef.current?.setAttribute('data-run', 'on')
         setP(0)
         kick(RUN_FLOOR)
@@ -128,9 +126,8 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
         clearHold()
         const el = elRef.current
         if (!el) return
-        /* the verdict · data-run drops FIRST (it gates the sweep transition
-           back on), then success completes the ring as a SWEEP; failure
-           flashes danger on whatever drew. Holds a beat, then fades. */
+        /* the verdict · success completes the ring full; failure flashes
+           danger on whatever drew. Holds a beat, then fades. */
         el.removeAttribute('data-run')
         if (verdict === 'success') setP(1)
         else {
