@@ -150,7 +150,9 @@ export function Component() {
   )
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    /* the smooth-hijack law: a route-mount reset is an arrival — the naked
+       two-arg form inherits html{scroll-behavior:smooth} and animates */
+    window.scrollTo({ top: 0, behavior: 'instant' })
   }, [slug])
 
   /* center the lit station inside the strip's OWN scroller (phones: stations

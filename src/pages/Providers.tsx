@@ -168,7 +168,7 @@ export function Component() {
     if (!hit) {
       return
     }
-    document.getElementById(hit.id)?.scrollIntoView({ block: 'center' })
+    document.getElementById(hit.id)?.scrollIntoView({ block: 'center', behavior: 'instant' }) /* the smooth-hijack law: an arrival is not a travel */
   }, [hit])
 
   return (
