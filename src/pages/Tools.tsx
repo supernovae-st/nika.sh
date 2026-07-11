@@ -134,7 +134,7 @@ export function Component() {
       return
     }
     const el = document.getElementById(hit.bare)
-    el?.scrollIntoView({ block: 'center' })
+    el?.scrollIntoView({ block: 'center', behavior: 'instant' }) /* the smooth-hijack law: an arrival is not a travel */
   }, [hit])
 
   return (

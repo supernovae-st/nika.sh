@@ -1,0 +1,182 @@
+/* ─── /templates page · the skeleton register ─────────────────────────────────
+   Speaks the register grammar (StampStrip — pages are sync-imported so the
+   shared rules are always loaded). This file adds only the tm- vocabulary:
+   the intent phrase (the routing star), the anchored template rows, the
+   pattern chips, the slots mark, the opened skeleton panel, the honest
+   miss. Monochrome blueprint; the ONLY colour rides the CodeFile product
+   panel (the sanctioned surface). SSR-safe: pure CSS. */
+
+.tm-page {
+  min-height: 100vh;
+}
+.tm-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.tm-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* ── the honest miss (unregistered :name) · recovery, never a dead end ─────── */
+.tm-miss {
+  margin-top: clamp(20px, 3vh, 32px);
+  padding: 14px 18px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 22%, transparent);
+  border-left-width: 3px;
+  max-width: 62ch;
+}
+.tm-miss-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+}
+.tm-miss p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+}
+
+/* ── the template rows · intent-first, anchored, hairline-ruled ────────────── */
+.tm-list {
+  list-style: none;
+  margin: clamp(28px, 4vh, 44px) 0 0;
+  padding: 0;
+}
+.tm-row {
+  padding: 18px 10px 20px 14px;
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+  scroll-margin-top: 110px;
+}
+.tm-row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+
+/* the routing phrase IS the star — you arrive with words, not a name */
+.tm-intent {
+  margin: 0 0 8px;
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--v4-text);
+  max-width: 70ch;
+}
+.tm-intent-mark {
+  color: color-mix(in srgb, var(--v4-text) 40%, transparent);
+  margin-inline: 2px;
+}
+
+.tm-row-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tm-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--v4-text);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 25%, transparent);
+}
+.tm-name:hover,
+.tm-name:focus-visible {
+  border-bottom-color: var(--v4-text);
+}
+.tm-name:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 3px;
+}
+.tm-slots {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 18%, transparent);
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  white-space: nowrap;
+  cursor: help;
+}
+.tm-file {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--v4-text) 48%, transparent);
+}
+
+/* ── the pattern chips · what the skeleton locks in ────────────────────────── */
+.tm-patterns {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tm-pattern {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  padding: 3px 9px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 14%, transparent);
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--v4-text) 66%, transparent);
+}
+
+/* ── the opened skeleton (deep-link only) + the open cue ───────────────────── */
+.tm-skeleton {
+  margin-top: 16px;
+}
+.tm-pin {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+.tm-pin a {
+  color: inherit;
+}
+.tm-open {
+  margin: 12px 0 0;
+  font-size: 13px;
+}
+.tm-open a {
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 25%, transparent);
+}
+.tm-open a:hover,
+.tm-open a:focus-visible {
+  color: var(--v4-text);
+  border-bottom-color: var(--v4-text);
+}
+
+/* the deep-link highlight · one quiet accent */
+.tm-row--active {
+  border-left: 3px solid var(--v4-text);
+  padding-left: 11px;
+}
+.tm-row--active .tm-name {
+  border-bottom-color: var(--v4-text);
+}
+
+/* ── the closing line ──────────────────────────────────────────────────────── */
+.tm-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}
+
+@media (max-width: 560px) {
+  .tm-row-head {
+    gap: 8px;
+  }
+  .tm-intent {
+    font-size: 14.5px;
+  }
+}
