@@ -828,7 +828,7 @@
   background: var(--v4-text-faint);
 }
 .morph-rec-dot[data-live='true'] {
-  background: #ff5d5d;
+  background: var(--danger);
 }
 @media (prefers-reduced-motion: no-preference) {
   .morph-rec-dot[data-live='true'] {
@@ -966,7 +966,7 @@
   font-weight: 600;
 }
 .morph-verdict-exit[data-exit='1'] {
-  color: #ff5d5d;
+  color: var(--danger);
 }
 .morph-verdict-sep {
   color: var(--v4-hud-faint);
