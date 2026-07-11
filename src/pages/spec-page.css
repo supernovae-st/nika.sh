@@ -1354,8 +1354,12 @@
   .spec-flow .spec-block {
     scroll-margin-top: 152px;
   }
-  /* THE INDEX docks under the nav and keeps its ticks in the eye */
-  .spec-flow .spec-chips {
+  /* THE INDEX docks under the nav and keeps its ticks in the eye.
+     (.spec-index, NOT .spec-chips: the token chip-wraps in S.4/S.5/S.6
+     share that older class — the blanket sticky+grid made EVERY chip
+     group a sticky 9-col grid, and S.5's provider chips rode over the
+     S.6 read as a phantom pinned row. One class per instrument.) */
+  .spec-flow .spec-index {
     position: sticky;
     top: 84px;
     z-index: 6;
@@ -1814,57 +1818,16 @@
   box-shadow: 0 0 0 3px color-mix(in oklch, var(--sm-ink-lit) 18%, transparent);
 }
 
-/* the honest microchart · bars derive from the family map (sum = canon) */
-.spec-plate-chartcap {
-  margin-top: 12px;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-.spec-chart {
-  margin-top: 8px;
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  height: 52px;
-}
-.spec-chart-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-  height: 100%;
-}
-.spec-chart-bar {
-  width: 100%;
-  height: var(--bar);
-  min-height: 3px;
-  border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
-  border-bottom: none;
-  background:
-    linear-gradient(to top, color-mix(in oklch, var(--sm-ink-lit) 26%, transparent), transparent);
-}
-.spec-chart-n {
-  font-size: 9.5px;
-  color: var(--v4-text-dim);
-  font-variant-numeric: tabular-nums;
-}
 
 /* THE INDEX · the S-chips band (9 cells · fig + count + title + gloss + tick) */
-.spec-chips {
+.spec-index {
   margin-top: clamp(26px, 4vh, 40px);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
 @media (min-width: 640px) {
-  .spec-chips {
+  .spec-index {
     grid-template-columns: repeat(9, 1fr);
   }
 }
@@ -2328,43 +2291,6 @@
   }
 }
 
-/* the cursor tooltip · the node under the pointer, spoken in full */
-.spec-tip {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 60;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 9px 12px;
-  border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 55%, transparent);
-  border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--sm-fill) 94%, transparent);
-  pointer-events: none;
-  will-change: transform;
-}
-.spec-tip b {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--v4-text);
-}
-.spec-tip span {
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: color-mix(in oklch, var(--sm-ink-struck) 80%, transparent);
-  font-variant-numeric: tabular-nums;
-}
-.spec-tip i {
-  margin-top: 2px;
-  padding-top: 4px;
-  border-top: 1px solid var(--v4-line);
-  font-style: normal;
-  font-size: 9.5px;
-  letter-spacing: 0.12em;
-  color: var(--v4-text-dim);
-}
 
 /* ════ the elevation breathes (mobile's ship idles on the drum beat) ══════════
    The hero elevation pulses stratum by stratum — a 2.4s wash sailing the
