@@ -1219,7 +1219,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const rect = section.getBoundingClientRect()
     const runway = rect.height - (stageRef.current?.offsetHeight ?? window.innerHeight)
     if (runway <= 0) return
-    window.scrollTo({ top: window.scrollY + rect.top + clamp01(frac) * runway })
+    /* behavior:'instant' — the scroll-rail ships html{scroll-behavior:smooth}
+       (anchor links), and an option-less scrollTo inherits it: the 1:1 drag
+       was easing behind the pointer, and each pointermove's smooth scroll
+       interrupted the last (rubber-band). seek IS the direct path by design —
+       the glide owns smoothness. (Also the CI {p:1} flake class: a starved
+       runner freezes a smooth scroll mid-flight; instant applies at once.) */
+    window.scrollTo({ top: window.scrollY + rect.top + clamp01(frac) * runway, behavior: 'instant' })
   }, [])
 
   const cancelGlide = useCallback(() => {

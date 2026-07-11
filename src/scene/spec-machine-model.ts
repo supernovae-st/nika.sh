@@ -573,12 +573,18 @@ function buildPoses(): Record<StratumKey, MachinePose> {
   const FRAME: MachinePose = { yaw: 1.12, pitch: 0.2, dist: 6.9, y: -0.02, x: -0.26, focus: -1 }
   return {
     frame: FRAME,
-    verbs: { yaw: 1.38, pitch: 0.24, dist: 2.5, y: 0.02, x: X_CORE, focus: f('verbs') },
-    plan: { yaw: 1.78, pitch: 0.12, dist: 2.9, y: 0, x: X_BRIDGE - 0.15, focus: f('plan') },
+    /* S.1 · the reactor intimacy holds (the near fills dissolve now) —
+       a touch wider + flatter so the tetrad reads against space */
+    verbs: { yaw: 1.46, pitch: 0.18, dist: 2.75, y: 0.02, x: X_CORE, focus: f('verbs') },
+    /* S.2 · angled off broadside, looking slightly down: the slab cluster
+       clears the ring instead of hiding behind it */
+    plan: { yaw: 1.95, pitch: 0.26, dist: 3.2, y: 0, x: X_BRIDGE - 0.15, focus: f('plan') },
     permits: { yaw: 2.45, pitch: 0.12, dist: 4.3, y: 0.05, x: X_RING, focus: f('permits') },
     stdlib: { yaw: 3.2, pitch: 0.34, dist: 2.9, y: 0, x: X_HOLD, focus: f('stdlib') },
     providers: { yaw: 4.05, pitch: 0.2, dist: 3.4, y: 0, x: X_ENGINES + 0.1, focus: f('providers') },
-    extract: { yaw: 4.78, pitch: -0.18, dist: 2.9, y: -0.08, x: X_HOLD - 0.1, focus: f('extract') },
+    /* S.6 · the old near-axial view flattened the fan into the face-on
+       ring — quarter view from below, ship raised: the belly array centres */
+    extract: { yaw: 5.05, pitch: -0.32, dist: 3.3, y: 0.3, x: X_HOLD - 0.1, focus: f('extract') },
     errors: { yaw: 5.6, pitch: 0.5, dist: 4.4, y: 0, x: X_SKIRT + 0.25, focus: f('errors') },
     license: { ...FRAME, yaw: FRAME.yaw + Math.PI * 2 },
   }
