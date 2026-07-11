@@ -88,6 +88,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
+    "label": "Site map",
+    "href": "/sitemap",
+    "hint": "every page, one map"
+  },
+  {
+    "kind": "page",
     "label": "Brand",
     "href": "/brand",
     "hint": "logos and the mark"

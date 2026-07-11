@@ -36,6 +36,7 @@ const CORE = [
   ['Convert', '/convert', 'send us a workflow'],
   ['Errors', '/errors', 'the typed error registry'],
   ['Tools', '/tools', 'the standard library'],
+  ['Site map', '/sitemap', 'every page, one map'],
   ['Brand', '/brand', 'logos and the mark'],
 ]
 

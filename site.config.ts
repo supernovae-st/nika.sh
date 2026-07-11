@@ -141,4 +141,4 @@ export const TOOL_PATHS = [
   '/tools/write',
 ]
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/use-cases', '/spec', '/install', '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/sitemap', '/use-cases', '/spec', '/install', '/convert', '/brand']
