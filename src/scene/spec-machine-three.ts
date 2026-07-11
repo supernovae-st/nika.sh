@@ -349,13 +349,17 @@ const THRUST_FRAG = /* glsl */ `
 precision mediump float;
 uniform float uTime;
 uniform float uFade;
+uniform float uSail;
 varying vec2 vUv;
 void main() {
   float w = fract(uTime / 2.4);
   float beat = smoothstep(0.0, 0.08, w) * exp(-w * 3.2);
   vec2 c = vUv - 0.5;
   float d = length(c) * 2.0;
-  float g = exp(-d * d * 5.5) * (0.06 + 0.1 * beat) * uFade;
+  /* the sail · the reading's scroll-way feeds the engines: the wash swells
+     while the reader travels the register, settles to the idle breath at
+     rest (abs: sailing back up glows the same — thrust, not a direction) */
+  float g = exp(-d * d * 5.5) * (0.06 + 0.1 * beat + 0.2 * abs(uSail)) * uFade;
   if (g < 0.004) discard;
   gl_FragColor = vec4(vec3(0.31, 0.525, 1.0), g);
 }
@@ -381,6 +385,9 @@ export interface MachineLayers {
     uExplode: { value: number }
     /** the overview showcase 0..1 (1 at frame/license poses) */
     uHero: { value: number }
+    /** the reading's scroll-way −1..1 · thrust swells + the hull pitches
+        while the reader sails; decays to 0 at rest (CPU-driven, motion-on) */
+    uSail: { value: number }
     /** per-stratum ignition level · CPU-eased toward 0/1 (~1s wash) */
     uLit: { value: Float32Array }
     /** per-stratum x-ray alpha · CPU-eased (focused 1 · others 0.3) */
@@ -437,6 +444,7 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     uExplode: { value: 0 },
     /** the overview showcase 0..1 · ghost glow-up + amplified breath sweep */
     uHero: { value: 0 },
+    uSail: { value: 0 },
     uLit: { value: new Float32Array(N_STRATA) },
     uFocusA: { value: new Float32Array(N_STRATA).fill(1) },
     uExplodeOff: { value: m.explode },
