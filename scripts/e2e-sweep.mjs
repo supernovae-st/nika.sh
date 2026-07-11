@@ -278,10 +278,13 @@ await send('Page.navigate', { url: `${BASE}/?it=99` })
 await settle()
 /* content-visibility re-layouts drift a one-shot target (the re-aim law) —
    re-aim + POLL until the phase settles (fixed sleeps mis-time under load) */
+/* parks are behavior:'instant' — the scroll-rail's html{scroll-behavior:smooth}
+   hijacks option-less scrollTo, and a starved runner freezes a smooth park
+   mid-flight (the throttle-8 {p:-0.297} finding) */
 await check('film · done frame reached (phase=done)', async () => {
   let last = null
   for (let i = 0; i < 10; i++) {
-    await evaluate(`(() => { const s = document.querySelector('.morphsec'); const r = s.getBoundingClientRect(); window.scrollTo(0, r.top + scrollY + (r.height - innerHeight)); })()`)
+    await evaluate(`(() => { const s = document.querySelector('.morphsec'); const r = s.getBoundingClientRect(); window.scrollTo({ top: r.top + scrollY + (r.height - innerHeight), behavior: 'instant' }); })()`)
     await sleep(500)
     last = await evaluate(`(() => { const st = document.querySelector('.morph-stage'); const s = document.querySelector('.morphsec'); const r = s.getBoundingClientRect(); return { phase: st?.dataset.phase, p: st?.style.getPropertyValue('--morph-p'), armed: s?.dataset.armed ?? null, top: Math.round(r.top), h: Math.round(r.height), sy: Math.round(scrollY) } })()`)
     if (last.phase === 'done') return true
@@ -343,7 +346,7 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
        {p:1} CI finding: three drags, zero motion). Park the scroll on the
        done frame, then WAIT until the track rect is real before
        dispatching; carry the rect in the diagnostics. */
-    await evaluate(`(() => { const s = document.querySelector('.morphsec'); const r = s.getBoundingClientRect(); window.scrollTo(0, r.top + scrollY + (r.height - innerHeight)) })()`)
+    await evaluate(`(() => { const s = document.querySelector('.morphsec'); const r = s.getBoundingClientRect(); window.scrollTo({ top: r.top + scrollY + (r.height - innerHeight), behavior: 'instant' }) })()`)
     const rect = await until(
       () =>
         evaluate(`(() => {
