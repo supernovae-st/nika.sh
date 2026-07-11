@@ -162,6 +162,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/the-mcp-server-you-didnt-build — nika mcp: the in-binary read-only oracle, 8 tools, two jobs.
+    out: 'og-blog-the-mcp-server-you-didnt-build.png',
+    fig: 'FIG B.20',
+    size: 60,
+    headline: 'The MCP server<br><span class="b">you didn&#8217;t build.</span>',
+    sub: 'The nika binary already serves MCP: eight read-only tools — the agent audits any plan and learns the language from the thing that enforces it. No run tool, by design.',
+    detail:
+      '<span class="arrow">▸</span><span>one&nbsp;wiring&nbsp;line<span class="sep">·</span>validate&nbsp;+&nbsp;learn<span class="sep">·</span><b>knows,&nbsp;never&nbsp;acts</b></span>',
+  },
+  {
     // /blog/the-chain-of-custody — trace verify recomputes the hash chain; one edited word breaks history.
     out: 'og-blog-the-chain-of-custody.png',
     fig: 'FIG B.19',

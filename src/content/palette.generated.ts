@@ -93,6 +93,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "The MCP server you didn't have to build",
+    "href": "/blog/the-mcp-server-you-didnt-build",
+    "hint": "Engine · 2026-07-11"
+  },
+  {
+    "kind": "post",
     "label": "The forecast is local",
     "href": "/blog/the-local-forecast",
     "hint": "Engine · 2026-07-11"
