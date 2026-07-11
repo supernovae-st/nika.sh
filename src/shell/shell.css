@@ -30,6 +30,11 @@
   display: inline-flex;
   align-items: center;
   gap: 0;
+  /* grow into stretched hosts (the /install stack spans its column): the
+     free space lives INSIDE the command well and the copy button stays
+     pinned to the box edge. Shrink-wrapped hosts (the home pills) have no
+     free space — unchanged by construction. */
+  flex: 1 1 auto;
   min-width: 0;
   padding: 11px 14px;
   font-size: 13px;
