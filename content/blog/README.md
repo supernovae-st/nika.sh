@@ -6,6 +6,7 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 
 | date | post | file |
 |---|---|---|
+| 2026-07-11 | The chain of custody | [`2026-07-11-the-chain-of-custody.md`](./2026-07-11-the-chain-of-custody.md) |
 | 2026-07-11 | The forecast is local | [`2026-07-11-the-local-forecast.md`](./2026-07-11-the-local-forecast.md) |
 | 2026-07-11 | Written by agents, reviewed by you | [`2026-07-11-written-by-agents.md`](./2026-07-11-written-by-agents.md) |
 | 2026-07-10 | The one-task re-run | [`2026-07-10-the-one-task-rerun.md`](./2026-07-10-the-one-task-rerun.md) |
