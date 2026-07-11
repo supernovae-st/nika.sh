@@ -1,9 +1,10 @@
 /* ─── drum-sphere-three · the GPU side of the manifesto drum sphere (wave I) ──
 
    ★ THEME DOCTRINE · THE THOLOS REGISTER ★
-   This scene and src/sections/morph/plan-scene-three.ts (the /plan DAG
-   slabs) speak ONE shared geometric language, and future nika.sh 3D scenes
-   reuse it rather than inventing a new one:
+   This scene and src/scene/spec-machine-three.ts (the /spec ship) speak
+   ONE shared geometric language, and future nika.sh 3D scenes reuse it
+   rather than inventing a new one (the home's mid-scroll plan scene retired
+   2026-07-11 — hero-contained scenes are the register's home):
      · WIREFRAME BLOCKS       instanced boxes, the tol.is block signature
      · FACING-ALPHA LINES     edge ink whose alpha follows how squarely a
                               block faces the camera (the tol.is line law)

@@ -20,7 +20,7 @@ import { NIKA_VERB_RGB } from '../design-tokens.generated'
      exec   ▷ a cube that emits a shard tick — does
      invoke ◆ a cube orbited by two satellites — uses a tool
      agent  ✦ a parent block spawns a child that returns — delegates, leashed
-   Edges carry the verb hue (plan-scene-model VERB_HUE values, baked); the
+   Edges carry the verb hue (design-tokens NIKA_VERB_HEX values, baked); the
    leash/tick accents reuse the same hue at low alpha. DECORATIVE ONLY: the
    mount (verb-glyphs-mount.tsx) gates on desktop + motion + WebGL and mounts
    at most the in-view chapters; the kicker's static glyph char stays the

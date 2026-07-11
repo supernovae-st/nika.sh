@@ -130,9 +130,9 @@ export function runFracAt(p: number): number {
 }
 
 /** the scene's phase — drives the head captions + the narration rail (H2).
-    `flat` opens as the run window saturates: the verdict beat (exit-0 sweep
-    + the 3D flatten) plays there; `done` at flat1, when the flat 2D map is
-    the closing frame (the ps-layer ⇄ DOM DAG crossfade keys on it). */
+    `flat` opens as the run window saturates: the verdict beat (the exit-0
+    sweep) plays there; `done` at flat1, when the settled map is the closing
+    frame. */
 export type MorphPhase = 'file' | 'burst' | 'run' | 'flat' | 'done'
 
 export function phaseAt(p: number): MorphPhase {

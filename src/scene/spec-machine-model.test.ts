@@ -15,7 +15,6 @@ import {
   buildSpecMachine,
   stratumIndex,
 } from './spec-machine-model'
-import { VERB_HEX } from '../sections/morph/plan-scene-model'
 import { NIKA_VERB_HEX } from '../design-tokens.generated'
 
 /* ─── spec-machine-model v2 · THE SHIP is pure, deterministic data ────────────
@@ -155,7 +154,7 @@ describe('buildSpecMachine v2 · the hull', () => {
       expect(m.seed[k * 2 + 1]).toBeLessThan(1)
       const t = [m.tint[k * 3], m.tint[k * 3 + 1], m.tint[k * 3 + 2]]
       if (node.verb) {
-        const [r, g, b] = hex(VERB_HEX[node.verb])
+        const [r, g, b] = hex(NIKA_VERB_HEX[node.verb])
         expect(t[0]).toBeCloseTo(r, 2)
         expect(t[1]).toBeCloseTo(g, 2)
         expect(t[2]).toBeCloseTo(b, 2)
