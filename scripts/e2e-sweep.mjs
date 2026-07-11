@@ -11,7 +11,9 @@
          the film's done-frame triangle (log hover lights the node + the
          file lines), the drag-seek (the 1:1 pointer path — rAF-free, so it
          works headless), the playground handoff href, the /play ?y= share
-         round-trip, the machined frame mount, and the agpl + drum eggs.
+         round-trip, the machined frame mount, the /play run-sim drum
+         (simulate → draw → verdict · route-change aborts — no immortal
+         ring), and the agpl + drum eggs.
 
    Headless laws (learned the hard way — arc 8): self-chaining rAF loops
    STARVE under swiftshader (never assert on glide/play motion); React 19
@@ -403,6 +405,91 @@ await check('film · drag-seek scrubs (the 1:1 pointer path)', async () => {
     return false
   })
 }
+
+/* 3b-ter · the run-sim beats the frame drum (one run grammar site-wide) +
+   the abort-on-route-change pin (the immortal-ring class: the frame is site
+   chrome and survives SPA navigation — a surface that runStart()s MUST
+   runStop() on unmount or the lit ring outlives the page forever).
+   Ground truth = MutationObserver on the frame (attribute timeline — no
+   dependence on the starved frame pipeline); clicks = trusted CDP Input
+   (React 19 ignores synthetic dispatchEvent clicks). The sim is
+   setInterval-driven, so it advances fine under runner starvation. */
+await check('play · simulate beats the frame drum (start → draw → verdict)', async () => {
+  /* the plan must be parsed (button enabled) — poll, never fixed-sleep */
+  const ready = await until(
+    () => evaluate(`!!document.querySelector('.play-sim-btn:not([disabled])')`),
+    12,
+    500,
+  )
+  if (ready !== true) return { btn: 'never enabled' }
+  await evaluate(`(() => { const f = document.querySelector('[data-edge-aurora]'); window.__drum = []; new MutationObserver((ms) => { for (const m of ms) window.__drum.push({ run: f.hasAttribute('data-run'), p: f.style.getPropertyValue('--run-p') }) }).observe(f, { attributes: true, attributeFilter: ['data-run', 'style'] }) })()`)
+  const at = await evaluate(
+    `(() => { const b = document.querySelector('.play-sim-btn'); b.scrollIntoView({ behavior: 'instant', block: 'center' }); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`,
+  )
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  /* the whole choreography lands in the log: run-on → a mid draw → the
+     success verdict (run off at p=1) — poll the log, not the pipeline */
+  return until(
+    () =>
+      evaluate(`(() => {
+        const log = window.__drum ?? []
+        const on = log.some((e) => e.run)
+        const draw = log.some((e) => { const v = Number(e.p); return v > 0 && v < 1 })
+        const verdict = log.some((e) => !e.run && Number(e.p) === 1)
+        return (on && draw && verdict) || JSON.stringify({ on, draw, verdict, n: log.length })
+      })()`),
+    24,
+    600,
+  )
+})
+await check('play · route change mid-sim aborts the drum (no immortal ring)', async () => {
+  /* restart the sim (post-verdict the button reads ■ stop — clear it first) */
+  const press = async () => {
+    const at = await evaluate(
+      `(() => { const b = document.querySelector('.play-sim-btn'); b.scrollIntoView({ behavior: 'instant', block: 'center' }); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`,
+    )
+    await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  }
+  await press() /* ■ stop (the completed sim is still displayed) */
+  /* wait for React to re-render the toggle — a starved runner can lag the
+     state flip and the second press would hit the OLD onClick (stop again) */
+  const rearmed = await until(
+    () => evaluate(`document.querySelector('.play-sim-btn')?.textContent.includes('simulate')`),
+    10,
+    400,
+  )
+  if (rearmed !== true) return { toggle: 'never flipped back to simulate' }
+  await press() /* ▶ simulate — a fresh run */
+  const running = await until(
+    () => evaluate(`document.querySelector('[data-edge-aurora]').hasAttribute('data-run')`),
+    10,
+    400,
+  )
+  if (running !== true) return { restart: 'drum never armed' }
+  /* client-side navigation AWAY mid-sim — the SPA route change is the
+     regression path (a full reload would remount the frame clean and
+     prove nothing). The nav link is a trusted click too. */
+  const nav = await evaluate(
+    `(() => { const a = document.querySelector('.v4nav a[href="/blog"]'); if (!a) return null; a.scrollIntoView({ behavior: 'instant', block: 'nearest' }); const r = a.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`,
+  )
+  if (!nav) return { nav: 'blog link not found' }
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: nav.x, y: nav.y, button: 'left', clickCount: 1 })
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: nav.x, y: nav.y, button: 'left', clickCount: 1 })
+  return until(
+    () =>
+      evaluate(`(() => {
+        const f = document.querySelector('[data-edge-aurora]')
+        const here = location.pathname
+        const run = f.hasAttribute('data-run')
+        const p = f.style.getPropertyValue('--run-p')
+        return (here === '/blog' && !run && p === '0.0000') || JSON.stringify({ here, run, p })
+      })()`),
+    12,
+    500,
+  )
+})
 
 /* 3b-bis · the blog register filter (deep-link + click round-trip). The
    assertions are SELF-CONSISTENT: the shelf must match the pressed chip's

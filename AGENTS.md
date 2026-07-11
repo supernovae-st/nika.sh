@@ -60,6 +60,36 @@ static surface that draws one speaks it (arc 11):
 - **Exempt**: the hero `MiniDag` (survey register — dots + mono ids; the
   other SCALE of the same vocabulary) and the film itself (the source).
 
+## The run drum (the frame speaks runs)
+
+THE MACHINED FRAME (`src/fx/` · one fixed element, one ink, static at
+rest) carries the site's ONE dynamic signal: while a run replays, the
+`.frame-lining` ring draws around the screen (`--run-p`) and glows
+(`--run-glow`). The grammar:
+
+- **The drum speaks REPLAYS OF RUNS only** — the home film (ScrollMorph)
+  and /play's run-sim. TheBoundary's wall flash is the one crossover (a
+  permits event). Scroll journeys (the /spec voyage, the film's approach)
+  speak their own scene language — never wire them to the drum.
+- **The contract** for a surface that replays a run: `runStart()` →
+  `verbTick(verb)` per task start + `runProgress(fraction)` (recorded
+  truth, never a timer) → `runEnd(verdict)` — and `runStop()` on EVERY
+  exit path, unmount included: the frame is site chrome and survives SPA
+  navigation, a missed runStop is a lit ring forever (pinned by
+  deep-belts). Guard idle aborts (never runStop per keystroke).
+- **JS owns the glow envelope** — never put a CSS transition on
+  `--run-glow`/`--run-p`: the beat's attack must land in one frame, and
+  an interpolating registered prop re-rasterizes the masked ring every
+  compositor frame (free on real GPUs, a CI-margin eater on software GL
+  — it broke deep-belts three times before the law).
+- **One ink, one danger**: the run ring's tail is the struck-blue
+  `#4f86ff`; the danger ring's tail IS `--danger` `#ff5d5d` (the site's
+  one danger red — verdict exit≠0, the denied row). The frame's css stays
+  raw-valued by the self-contained law; the palette is pinned across
+  files by `src/fx/EdgeAurora.test.tsx`.
+- Reduced-motion = the settled register: state floors only (ring during a
+  run, coral on danger, gone after), no transients, no beats.
+
 ## Scene rules (src/scene/)
 
 - ONE clock: the intro film (canvas + DOM titles) is driven from the R3F
@@ -95,7 +125,7 @@ said otherwise). Each script documents its flags in its own header.
   can fail for a whole session — DitherField's own watchdog remounts the
   Canvas until it paints).
 - `shoot-routes.mjs` — the design-iteration eye: any route × viewport ×
-  aurora state, `--scroll-to`, `--reduced`.
+  frame state (`rest/run/beat/danger`), `--scroll-to`, `--reduced`.
 - `shoot-scroll.mjs` — the scroll-linked sweep (above).
 - `a11y-sweep.mjs` — axe-core over every prerendered route
   (critical/serious = gate).

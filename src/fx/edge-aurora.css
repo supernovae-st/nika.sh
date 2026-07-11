@@ -89,6 +89,8 @@
       linear-gradient(#000 0 0) content-box exclude,
       linear-gradient(#000 0 0);
     pointer-events: none;
+    /* two stops: lighter head → the site's struck-blue ink #4f86ff
+       (rgb 79 134 255 — the tholos register's middle ink). Raw by law. */
     background: conic-gradient(
       from 0deg,
       rgb(111 157 255 / 0.95),
@@ -102,13 +104,16 @@
     filter: blur(0.5px);
     opacity: var(--run-glow, 0);
   }
-  /* the danger beat · the permits wall / a failed verdict — the ring flashes
-     the danger coral for the flash window (data-danger, JS-timed) */
+  /* the danger beat · the permits wall / a failed verdict — the ring turns
+     the SITE's danger red (data-danger, JS-timed). Same two-stop structure
+     as the blue (lighter head → canonical tail); raw values by the frame's
+     self-contained law — the tail IS --danger #ff5d5d (index.css accent
+     family), the head one step lighter. Pinned by the palette test. */
   .frame[data-danger] .frame-lining {
     background: conic-gradient(
       from 0deg,
-      rgb(255 122 92 / 0.95),
-      rgb(255 92 92 / 0.8) calc(var(--run-p, 0) * 1turn),
+      rgb(255 125 125 / 0.95),
+      rgb(255 93 93 / 0.8) calc(var(--run-p, 0) * 1turn),
       transparent calc(var(--run-p, 0) * 1turn)
     );
   }

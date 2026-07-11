@@ -88,7 +88,7 @@
   word-break: break-word;
 }
 .v5bnd-deny-glyph {
-  color: #ff5d5d;
+  color: var(--danger);
 }
 .v5bnd-deny-note {
   margin-top: 12px;

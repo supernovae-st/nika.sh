@@ -156,6 +156,7 @@
   --brand-bright: oklch(0.72 0.172 258);
   --cyan: #22d3ee;
   --ember: #ff7a3c; /* the one warm "running" accent */
+  --danger: #ff5d5d; /* the one danger red — verdict exit≠0 · the denied row · the frame's danger ring */
   --hair: rgba(160, 190, 255, 0.1);
   --hair-bright: rgba(170, 200, 255, 0.17);
 
