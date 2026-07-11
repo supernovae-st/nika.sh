@@ -15,6 +15,14 @@
       <description>nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot — and the human review is a two-line diff.</description>
     </item>
     <item>
+      <title>The pipeline is a file</title>
+      <link>https://nika.sh/blog/the-pipeline-is-a-file</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-pipeline-is-a-file</guid>
+      <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>An llm pipeline is a graph of model calls, tools and processes. A graph is declared, not programmed: forty lines of YAML replace the orchestration framework — diffable, auditable, replayable.</description>
+    </item>
+    <item>
       <title>The MCP server you didn't have to build</title>
       <link>https://nika.sh/blog/the-mcp-server-you-didnt-build</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-mcp-server-you-didnt-build</guid>

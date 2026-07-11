@@ -222,6 +222,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>one&nbsp;shape<span class="sep">·</span>five&nbsp;sovereign&nbsp;hosts<span class="sep">·</span><b>zero&nbsp;lock-in</b></span>',
   },
   {
+    // /blog/the-pipeline-is-a-file — an llm pipeline is a declared graph, not framework glue.
+    out: 'og-blog-the-pipeline-is-a-file.png',
+    fig: 'FIG B.21',
+    size: 60,
+    headline: 'An llm pipeline<br><span class="b">is a file.</span>',
+    sub: 'Model calls + tools + processes, wired by data dependencies — a graph you declare, not glue you program. Forty lines of YAML; the engine derives the schedule, the cost, the audit.',
+    detail:
+      '<span class="arrow">▸</span><span>one&nbsp;graph<span class="sep">·</span>zero&nbsp;glue<span class="sep">·</span><b>diff&nbsp;·&nbsp;audit&nbsp;·&nbsp;replay</b></span>',
+  },
+  {
     // /blog/the-mcp-server-you-didnt-build — nika mcp: the in-binary read-only oracle, 8 tools, two jobs.
     out: 'og-blog-the-mcp-server-you-didnt-build.png',
     fig: 'FIG B.20',
