@@ -109,7 +109,7 @@ export function Component() {
       return
     }
     const el = document.getElementById(hit.code)
-    el?.scrollIntoView({ block: 'center' })
+    el?.scrollIntoView({ block: 'center', behavior: 'instant' }) /* the smooth-hijack law: an arrival is not a travel */
   }, [hit])
 
   return (
