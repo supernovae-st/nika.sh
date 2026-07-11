@@ -16,6 +16,7 @@
 
 import type { FlagshipEntry, FlagshipTask, NikaVerb } from '../../flagships'
 import { formatMs } from '../../flagships'
+import { NIKA_VERB_HEX, NIKA_VERB_RGB } from '../../design-tokens.generated'
 import { PH, aspireAt, clamp01, easeInOut, igniteAt, runFracAt, taskInterval } from './morph-model'
 
 /* ── layout constants (world units) ──────────────────────────────────────────
@@ -574,21 +575,12 @@ export function faceChipAt(entry: FlagshipEntry, task: FlagshipTask, state: Slab
   return ''
 }
 
-/* ── palette (tokens.css values baked, the DitherField convention) ─────────── */
-export const VERB_HUE: Record<NikaVerb, [number, number, number]> = {
-  infer: [0.357, 0.549, 1.0], // #5b8cff
-  exec: [1.0, 0.478, 0.235], // #ff7a3c
-  invoke: [0.133, 0.827, 0.933], // #22d3ee
-  agent: [0.69, 0.482, 1.0], // #b07bff
-}
+/* ── palette (design-tokens.generated, the spec's shared visual vocabulary —
+      same values tokens.css --verb-* carries · the DitherField convention) ──── */
+export const VERB_HUE: Record<NikaVerb, readonly [number, number, number]> = NIKA_VERB_RGB
 /** the same verb hues as hex — canvas-label ink (the label atlas draws with
     2D canvas, which wants CSS colors) */
-export const VERB_HEX: Record<NikaVerb, string> = {
-  infer: '#5b8cff',
-  exec: '#ff7a3c',
-  invoke: '#22d3ee',
-  agent: '#b07bff',
-}
+export const VERB_HEX: Record<NikaVerb, string> = NIKA_VERB_HEX
 export const RAMP_LO: [number, number, number] = [0.031, 0.035, 0.043] // #08090b
 export const RAMP_MID: [number, number, number] = [0.086, 0.137, 0.247] // #16233f
 export const RAMP_HI: [number, number, number] = [0.31, 0.525, 1.0] // #4f86ff

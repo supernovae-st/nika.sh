@@ -112,6 +112,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "The pipeline is a file",
+    "href": "/blog/the-pipeline-is-a-file",
+    "hint": "Language · 2026-07-11"
+  },
+  {
+    "kind": "post",
     "label": "The MCP server you didn't have to build",
     "href": "/blog/the-mcp-server-you-didnt-build",
     "hint": "Engine · 2026-07-11"

@@ -745,9 +745,12 @@ await check('spec · the reading assembles the ship (9 ticks · 8/8 tally)', asy
   const n = await evaluate(`document.querySelectorAll('.spec-block[data-stratum]').length`)
   if (n !== 9) return { blocks: n }
   for (let i = 0; i < n; i++) {
+    /* behavior:'instant' — the site's smooth-scroll law (arc 14b): a bare
+       scrollTo under html{scroll-behavior:smooth} ANIMATES, and a starved
+       runner never finishes the glide (lived: lit:0, the page never moved) */
     await evaluate(`(() => {
       const el = document.querySelectorAll('.spec-block[data-stratum]')[${i}]
-      window.scrollTo(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.4)
+      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - innerHeight * 0.4, behavior: 'instant' })
     })()`)
     await sleep(250)
   }
@@ -758,7 +761,11 @@ await check('spec · the reading assembles the ship (9 ticks · 8/8 tally)', asy
   return until(
     () =>
       evaluate(`(() => {
-        window.scrollTo(0, document.body.scrollHeight)
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' })
+        /* a scrollTo that is ALREADY at the bottom moves nothing → fires no
+           scroll event → the hook's rAF sweep never re-runs (lived: lit
+           stuck at 7 for the full poll budget). Force one sweep per tick. */
+        window.dispatchEvent(new Event('scroll'))
         const lit = document.querySelectorAll('.spec-chip2.is-lit').length
         const tally = document.querySelector('.spec-rail-hud--bl')?.textContent ?? ''
         return (lit === 9 && tally.includes('8/8')) || { lit, tally }
@@ -776,10 +783,6 @@ await check('spec · the helm answers (EXPLODE aria-pressed round-trip)', async 
      click aimed mid-flight lands on empty space ({pressed:false}). Two
      rect reads 300ms apart must agree before a press spends; the whole
      press → assert round retries ×4. */
-  await evaluate(`(() => {
-    const el = document.querySelector('#permits')
-    window.scrollTo(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.4)
-  })()`)
   const rect = () =>
     evaluate(`(() => {
       const b = [...document.querySelectorAll('.spec-helm-btn')].find((x) => x.textContent === 'EXPLODE')
@@ -803,6 +806,23 @@ await check('spec · the helm answers (EXPLODE aria-pressed round-trip)', async 
     )
   let last = null
   for (let attempt = 0; attempt < 4; attempt++) {
+    /* RE-ANCHOR PER ATTEMPT (the belt's law — lived here too: anchored
+       once outside the loop, a stage stuck in its finale→dock transition
+       kept the helm display:none through every retry, r1:null ×4): park
+       the reading on S.3, then REQUIRE the dock before spending a press */
+    await evaluate(`(() => {
+      const el = document.querySelector('#permits')
+      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - innerHeight * 0.4, behavior: 'instant' })
+    })()`)
+    const staged = await until(
+      () => evaluate(`document.querySelector('.spec-rail')?.dataset.stage === 'dock' || document.querySelector('.spec-rail')?.dataset.stage`),
+      6,
+      300,
+    )
+    if (staged !== true) {
+      last = { attempt, staged }
+      continue
+    }
     const r1 = await rect()
     await sleep(300)
     const r2 = await rect()

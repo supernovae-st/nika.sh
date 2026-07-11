@@ -26,11 +26,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-pipeline-is-a-file',
+    slug: 'the-agent-workflow-spectrum',
     tag: 'Language',
     date: 'soon',
-    title: 'The pipeline is a file',
-    teaser: 'What an llm pipeline actually is — a DAG of model calls, tools and processes — and the case that yours should be one reviewable file: four verbs, declared permits, a replayable trace.',
+    title: 'The agent workflow spectrum',
+    teaser: 'Every ai agent workflow sits between two poles: a declared graph the engine can audit, and a loop the model steers in flight. Where your work lands decides which safety you can even ask for.',
   },
   {
     slug: 'the-run-that-never-runs',

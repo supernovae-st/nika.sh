@@ -2107,7 +2107,7 @@
   color: var(--v4-text-dim);
 }
 
-.v4ed-status--done { color: #34d399; }
+.v4ed-status--done { color: var(--status-done); }
 .v4ed-status--running { color: var(--verb-infer); }
 
 .v4ed-card-body {
@@ -2366,7 +2366,7 @@
   color: var(--v4-text-faint);
 }
 
-.v4edx-dot--done { color: #34d399; }
+.v4edx-dot--done { color: var(--status-done); }
 .v4edx-dot--running { color: #2b62ea; }
 
 .v4edx-meta {
@@ -2402,8 +2402,8 @@
 }
 
 @keyframes v4edx-verdict {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, #34d399 35%, transparent); }
-  40% { box-shadow: 0 0 24px 2px color-mix(in srgb, #34d399 18%, transparent); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--status-done) 35%, transparent); }
+  40% { box-shadow: 0 0 24px 2px color-mix(in srgb, var(--status-done) 18%, transparent); }
   100% { box-shadow: 0 0 0 0 transparent; }
 }
 

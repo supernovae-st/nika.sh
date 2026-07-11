@@ -543,6 +543,309 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
+    "slug": "the-pipeline-is-a-file",
+    "file": "2026-07-11-the-pipeline-is-a-file.md",
+    "title": "The pipeline is a file",
+    "tag": "Language",
+    "date": "2026-07-11",
+    "description": "An llm pipeline is a graph of model calls, tools and processes. A graph is declared, not programmed: forty lines of YAML replace the orchestration framework — diffable, auditable, replayable.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "An llm pipeline is a graph of model calls, tools and processes, wired by data dependencies. That is the whole definition. And the industry's default answer to \"how do I build one\" is a framework: pick an SDK, learn its abstractions, write the glue code that calls the model, passes the output, handles the retry — a program that "
+          },
+          {
+            "k": "em",
+            "text": "performs"
+          },
+          {
+            "k": "text",
+            "text": " the graph, step by imperative step."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "But look at what a pipeline actually "
+          },
+          {
+            "k": "em",
+            "text": "is"
+          },
+          {
+            "k": "text",
+            "text": " for a second. The model call does not care what called it. The file write does not care what wrote the content. The only real structure is which task needs whose output — and that is not behavior, that is a "
+          },
+          {
+            "k": "strong",
+            "text": "shape"
+          },
+          {
+            "k": "text",
+            "text": ". Shapes are declared, not programmed."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Here is a release-notes pipeline, whole. It reads a changelog, summarizes it on a local model, saves the notes, and — on a separate branch — counts the changelog into a badge. Three verbs, two branches, zero glue:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "yaml",
+        "filename": "release-notes.nika.yaml",
+        "text": "nika: v1\nworkflow: release-notes\ndescription: \"Fetch the changelog, summarize it, badge the repo — one reviewable file\"\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs:\n    read: [\"./CHANGELOG.md\"]\n    write: [\"./notes.md\", \"./badge.json\"]\n  exec: [\"wc\"]\n  tools: [\"nika:read\", \"nika:write\"]\n\ntasks:\n  - id: changelog\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./CHANGELOG.md\" }\n\n  - id: size\n    exec:\n      command: [\"wc\", \"-l\", \"./CHANGELOG.md\"]\n\n  - id: notes\n    depends_on: [changelog]\n    infer:\n      prompt: |\n        Turn this changelog into three plain sentences for release notes:\n        ${{ tasks.changelog.output }}\n      max_tokens: 300\n\n  - id: save\n    depends_on: [notes]\n    invoke:\n      tool: \"nika:write\"\n      args: { path: \"./notes.md\", content: \"${{ tasks.notes.output }}\" }\n\n  - id: badge\n    depends_on: [size]\n    invoke:\n      tool: \"nika:write\"\n      args: { path: \"./badge.json\", content: \"${{ tasks.size.output }}\" }\n\noutputs:\n  notes: ${{ tasks.notes.output }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWDAU12IgGdiBaYNAF2IqQBMmBjDEAB3pDWCwARADFi9dgAsY9ScRhSIwAOak0ygDQwKAVwC2eiFwBe8kPS0AjCC1Uy5MEtzQxAKAQwB8knBDEUESzIYbBAyISQkPTQ2XFg0XFwIQwB6BKSIAGYAOgAmKAzLCO5iDD1zCigkGGCKqurHchZYAG0hLOSAYQAJAEEAOQBxAFEAGQB5Aay9FiEAXTrqlC5GFrbkukYKKZmtNetbYiyAKwoBObriAA9idlWUdnPq+jR4iphW0EgoEhshXc-oEtzMRzkh6JQwLVqtQYCAmgpJEpVPhlAtYcA4GgwMRKvV6s94sIAd9GuE8dUjMo3gBvGDcCCyYTtbr9YbjSbTIQwAC+EWhsPhFBApjRVxuuPJ7DQBiU8Na9z+MCE1FwirWLMGowm21B-LhsA2TDRbGKwBYFAA+gIWooVGplPM8SBgNgShK8dwMNLeLAAD5ovEAFR0GGA9hAFARSPt6Oe9hI8m4iWd2mIwEYwHYTGCmAaZEo8kNUPJ1QAJNTaeCKJCsrbkeosmgdPRuM2ebyS4ZLhbntjgG8MgAGQd8mAw-XaCBwYjG4im81WwTvIuO+rOzHY934l6xJXEoGMMnkyk0ukMyRM9YMJg6rRS9Np+jCcuViFbIuN5ut+jtrm8urjvC+yqLO86Wta7xCqYq7VOuWI4gGMg7kS4CAssIKISesC0vSjJKu0wGHCcZx3gIGZPkqL4yG+WRQYcTYtm23Lcn+EQMd+xZFrAVFVjWH7sUx3JAA"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Now watch what the engine derives from that shape, before a single token is spent:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika check release-notes.nika.yaml\n\n ✔ PLAN     3 wave(s) · 5 task(s) · max parallelism 2\n      wave 1 changelog (invoke · nika:read) · size (exec · wc)\n      wave 2 notes (infer · ollama/llama3.2:3b) · badge (invoke · nika:write)\n      wave 3 save (invoke · nika:write)\n ✔ MODELS   1 model resolves in this binary\n ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)\n   notes  ollama/llama3.2:3b  UNBOUNDED — no catalog price (local/unknown model)\n ✔ SECRETS  no information-flow escapes\n ✔ PERMITS  body fits the declared boundary\n ✔ audited · 5 task(s) · 3 wave(s) · permits declared · est ≥$0.0000 · 0 hints"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Read wave 2. An inference and a file write run "
+          },
+          {
+            "k": "em",
+            "text": "together"
+          },
+          {
+            "k": "text",
+            "text": ", because the graph says they can — "
+          },
+          {
+            "k": "code",
+            "text": "badge"
+          },
+          {
+            "k": "text",
+            "text": " descends from "
+          },
+          {
+            "k": "code",
+            "text": "size"
+          },
+          {
+            "k": "text",
+            "text": ", not from the model call. Nobody wrote a scheduler, a thread pool, an "
+          },
+          {
+            "k": "code",
+            "text": "asyncio.gather"
+          },
+          {
+            "k": "text",
+            "text": ". "
+          },
+          {
+            "k": "link",
+            "text": "The plan was always in the file",
+            "href": "/blog/dag-for-free"
+          },
+          {
+            "k": "text",
+            "text": "; declaring the shape is what lets the engine find it. And the same derivation prices the run (a local model, "
+          },
+          {
+            "k": "link",
+            "text": "honestly unpriced",
+            "href": "/blog/the-local-forecast"
+          },
+          {
+            "k": "text",
+            "text": ") and checks every effect against the declared boundary — the audit is possible "
+          },
+          {
+            "k": "em",
+            "text": "because"
+          },
+          {
+            "k": "text",
+            "text": " the pipeline is data, not code. You cannot statically audit glue."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Go down the feature list of any orchestration framework and watch each one collapse into a line of this file. Model routing? "
+          },
+          {
+            "k": "code",
+            "text": "model:"
+          },
+          {
+            "k": "text",
+            "text": " is one line — swap "
+          },
+          {
+            "k": "code",
+            "text": "ollama/llama3.2:3b"
+          },
+          {
+            "k": "text",
+            "text": " for a cloud model and nothing else changes. Guardrails? The "
+          },
+          {
+            "k": "code",
+            "text": "permits:"
+          },
+          {
+            "k": "text",
+            "text": " block, "
+          },
+          {
+            "k": "link",
+            "text": "enforced before and during the run",
+            "href": "/blog/injection-goes-nowhere"
+          },
+          {
+            "k": "text",
+            "text": ". Cost tracking? The "
+          },
+          {
+            "k": "code",
+            "text": "COST"
+          },
+          {
+            "k": "text",
+            "text": " line, per task, at check time. Retries, timeouts? Fields on the task. Observability, resume, caching? The recorded trace — one file that is "
+          },
+          {
+            "k": "link",
+            "text": "evidence",
+            "href": "/blog/the-run-becomes-evidence"
+          },
+          {
+            "k": "text",
+            "text": ", "
+          },
+          {
+            "k": "link",
+            "text": "resume state",
+            "href": "/blog/the-resume-story"
+          },
+          {
+            "k": "text",
+            "text": ", forecast and custody at once. None of these are features "
+          },
+          {
+            "k": "em",
+            "text": "of a framework"
+          },
+          {
+            "k": "text",
+            "text": "; they are consequences of the pipeline being an artifact the engine can reason about."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The honest boundary: some agent work is genuinely dynamic — the model decides mid-flight what to do next, and no static graph can hold that. Nika gives that its own verb, "
+          },
+          {
+            "k": "code",
+            "text": "agent"
+          },
+          {
+            "k": "text",
+            "text": ", with a tool whitelist and a turn budget: the dynamic part is "
+          },
+          {
+            "k": "em",
+            "text": "contained in a task"
+          },
+          {
+            "k": "text",
+            "text": ", and the pipeline around it stays declared. What never needed to be dynamic — and it is most of what pipelines do all day — never needed to be code."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The payoff compounds because a file is a "
+          },
+          {
+            "k": "em",
+            "text": "thing"
+          },
+          {
+            "k": "text",
+            "text": ". It diffs: the review of a pipeline change is two red lines and one green line, not a walkthrough of a Python module. It replays: the run that used this file is a trace you can "
+          },
+          {
+            "k": "link",
+            "text": "verify line by line",
+            "href": "/blog/the-chain-of-custody"
+          },
+          {
+            "k": "text",
+            "text": ". It travels: mail it, commit it, hand it to a teammate — there is no environment to reproduce. And "
+          },
+          {
+            "k": "link",
+            "text": "your agent can write it",
+            "href": "/blog/written-by-agents"
+          },
+          {
+            "k": "text",
+            "text": " — because the format it has to learn is forty lines of YAML with four verbs, not a framework API."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The next pipeline you sketch, try writing the "
+          },
+          {
+            "k": "em",
+            "text": "shape"
+          },
+          {
+            "k": "text",
+            "text": " first: the tasks, and who needs whose output. You will find the file was the whole program."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-mcp-server-you-didnt-build",
     "file": "2026-07-11-the-mcp-server-you-didnt-build.md",
     "title": "The MCP server you didn't have to build",

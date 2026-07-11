@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { NikaVerb } from '../components/codefile-highlight'
+import { NIKA_VERB_RGB } from '../design-tokens.generated'
 
 /* ─── verb-glyphs-three · the four verb glyphs in the tholos register ─────────
    One SMALL (~136px) WebGL specimen per verb chapter (Verbs.tsx), speaking the
@@ -26,13 +27,8 @@ import type { NikaVerb } from '../components/codefile-highlight'
    truth everywhere else. Lazy chunk — three.js is already on the page via
    the other scenes' shared vendor chunk. */
 
-/* the 4 verb hues · plan-scene-model values baked (tokens.css --verb-*) */
-const HUE: Record<NikaVerb, [number, number, number]> = {
-  infer: [0.357, 0.549, 1.0], // #5b8cff
-  exec: [1.0, 0.478, 0.235], // #ff7a3c
-  invoke: [0.133, 0.827, 0.933], // #22d3ee
-  agent: [0.69, 0.482, 1.0], // #b07bff
-}
+/* the 4 verb hues · design-tokens.generated (tokens.css --verb-*) */
+const HUE: Record<NikaVerb, readonly [number, number, number]> = NIKA_VERB_RGB
 
 /* ── shaders · facing-alpha edge ink + Bayer-quantized occluder fill ───────── */
 const EDGE_VERT = /* glsl */ `
@@ -75,7 +71,7 @@ void main() {
 }
 `
 
-function edgeMat(hue: [number, number, number], alpha = 0.9): THREE.ShaderMaterial {
+function edgeMat(hue: readonly [number, number, number], alpha = 0.9): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     vertexShader: EDGE_VERT,
     fragmentShader: EDGE_FRAG,
@@ -88,7 +84,7 @@ function edgeMat(hue: [number, number, number], alpha = 0.9): THREE.ShaderMateri
   })
 }
 
-function fillMat(hue: [number, number, number]): THREE.ShaderMaterial {
+function fillMat(hue: readonly [number, number, number]): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     vertexShader: FILL_VERT,
     fragmentShader: FILL_FRAG,
@@ -109,7 +105,7 @@ interface Block {
   edge: THREE.ShaderMaterial
   dispose(): void
 }
-function makeBlock(geom: THREE.BufferGeometry, hue: [number, number, number], edgeAlpha = 0.9): Block {
+function makeBlock(geom: THREE.BufferGeometry, hue: readonly [number, number, number], edgeAlpha = 0.9): Block {
   const fill = fillMat(hue)
   const edge = edgeMat(hue, edgeAlpha)
   const edges = new THREE.EdgesGeometry(geom)
