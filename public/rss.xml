@@ -47,6 +47,14 @@
       <description>A recorded run is a text file, and text files can be edited. nika trace verify recomputes the hash chain: one changed word in history breaks every line after it, and the run's printed head closes the loop.</description>
     </item>
     <item>
+      <title>The agent workflow spectrum</title>
+      <link>https://nika.sh/blog/the-agent-workflow-spectrum</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-agent-workflow-spectrum</guid>
+      <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>An ai agent workflow is any pipeline where a model chooses some of the steps. Every design sits between a declared graph and a free loop — and where yours lands decides which safety you can even ask for.</description>
+    </item>
+    <item>
       <title>The run that waits for you</title>
       <link>https://nika.sh/blog/the-run-that-waits</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-run-that-waits</guid>

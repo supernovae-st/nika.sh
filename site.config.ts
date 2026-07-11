@@ -16,6 +16,7 @@ export const ORIGIN = 'https://nika.sh'
    import-free); the vitest drift gate (blog.test.ts) fails when a post and
    this list disagree. */
 export const BLOG_PATHS = [
+  '/blog/the-agent-workflow-spectrum',
   '/blog/the-pipeline-is-a-file',
   '/blog/the-mcp-server-you-didnt-build',
   '/blog/the-chain-of-custody',
