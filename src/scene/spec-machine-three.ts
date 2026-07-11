@@ -8,10 +8,12 @@ import type { SpecMachineModel } from './spec-machine-model'
          near-black, polygonOffset pushed back; an ignited stratum deepens
          toward its blue-black; the fills NEVER go transparent (zero sorting).
      2 · block EDGES — one InstancedBufferGeometry over the unit-box
-         EdgesGeometry: facing-alpha ink (the tol.is line law), shadow wire
-         blue → the instance's LIT tint (wire blue everywhere · verb hue on
-         the core tetrad + plan slabs — the film's slab precedent), stratum
-         ignition washing in over ~a second, focus x-ray on the rest.
+         EdgesGeometry: facing-alpha ink (the tol.is line law). THE HULL
+         WEARS ITS HUES THROUGH THE WHOLE READING (operator 2026-07-11):
+         every station carries its own tint at the dock too — shadow wire
+         blue is only the floor under a dimmed sibling; stratum ignition
+         still washes in over ~a second, the focused stratum burns hottest
+         while the siblings recede (the x-ray keeps their colour).
      3 · the WIRE HARNESS — one LineSegments over the model's wire table
          (slabs → verbs · belt → invoke · halo → infer · ports → fetch ·
          plan deps): per-vertex stratum seed, ignites with its stratum.
@@ -77,7 +79,10 @@ vec3 machineVertex(vec3 p) {
   float hit = strikeEnv() * max(mAll, step(abs(iSeed.x - uStrikeStratum), 0.25));
   float breath = breathEnv();
   vPulse = breath + hit;
-  vec3 s = iScale * (1.0 + hit * 0.16 + breath * 0.05 + vLit * 0.02 + vHi * 0.06);
+  /* the read stratum swells a whisper — the focus overflow above 1 (CPU
+     target 1.3) is the spotlight channel (the fragments split it too) */
+  float foc = clamp((vFocusA - 1.0) * 3.4, 0.0, 1.0);
+  vec3 s = iScale * (1.0 + hit * 0.16 + breath * 0.05 + vLit * 0.02 + vHi * 0.06 + foc * 0.05);
   vec3 w = qrot(iQuat, p * s) + iPos;
   /* the axial explode · strata separate along the spine, keel + ring anchor */
   w.x += uExplodeOff[si] * uExplode;
@@ -102,15 +107,18 @@ varying vec3 vTint;
 varying float vPulse;
 uniform float uHero;
 void main() {
+  float spot = clamp((vFocusA - 1.0) * 3.4, 0.0, 1.0);
   vec3 deep = mix(vec3(0.043, 0.075, 0.18), vTint * 0.26, 0.4);
   vec3 col = mix(vec3(0.039, 0.047, 0.063), deep, vLit * (0.18 + 0.2 * vFocusA));
   /* the breath lifts a lit face a whisper (the drum's fill law); at the
      OVERVIEW the faces carry the night-blue plate light — mass reads at a
      distance where hairlines cannot (the engineering-plate look) */
-  /* the hero plate light wears each station's HUE — the mass carries the
-     colour (edges are 1px; faces are what the eye reads at distance) */
+  /* the plate light wears each station's HUE — the mass carries the colour
+     (edges are 1px; faces are what the eye reads at distance). A floor of
+     it stays on at the DOCK (the hull keeps its colours through the read)
+     and the spotlight lifts the stratum being read. */
   vec3 plate = mix(vec3(0.05, 0.085, 0.2), vTint * 0.52, 0.6);
-  col = mix(col, plate, uHero * (0.46 + 0.18 * vLit));
+  col = mix(col, plate, max(uHero * (0.46 + 0.18 * vLit), 0.16 + 0.3 * spot));
   col += vec3(0.02, 0.034, 0.075) * vPulse * (0.3 + 0.7 * vLit) * (1.0 + uHero * 0.8);
   gl_FragColor = vec4(col, 1.0);
 }
@@ -155,18 +163,26 @@ void main() {
      ignited one reads, the focused one carries the frame; the breath
      brightens the front as it sails past (the drum's line law). At the
      OVERVIEW poses (uHero) the ghost hull glows up and the heartbeat
-     becomes a visible sweep — the beauty idle. */
-  float a = (0.46 + 0.44 * vFacing) * (0.62 + 0.38 * vLit) * (0.34 + 0.66 * vFocusA)
+     becomes a visible sweep — the beauty idle.
+     THE FOCUS SPLIT (operator 2026-07-11) · vFocusA carries two signals:
+     ≤1 dims the sibling strata under a reading, the overflow above 1 is
+     the spotlight on the stratum being read. */
+  float dim = min(vFocusA, 1.0);
+  float spot = clamp((vFocusA - 1.0) * 3.4, 0.0, 1.0);
+  float a = (0.46 + 0.44 * vFacing) * (0.62 + 0.38 * vLit) * (0.30 + 0.70 * dim)
     * (0.86 + (0.5 + 1.15 * uHero) * vPulse) * uFade * vNear
-    * (1.0 + uHero * 0.55 * (1.0 - vLit));
+    * (1.0 + uHero * 0.55 * (1.0 - vLit)) * (1.0 + spot * 0.45);
   /* the hovered node pulses over everything (the W2 bus highlight) */
   a = min(a * (1.0 + vHi * 1.4) + vHi * 0.22, 1.0);
   if (a < 0.01) discard;
-  /* shadow wire blue → the instance's lit tint (verb hue on tetrad + slabs);
-     the hero showcase lifts the ghost ink toward the lit family */
-  /* the hull wears its hues from the FIRST frame: the hero showcase lifts
-     every station toward its own tint (reading ignition still outshines) */
-  vec3 col = mix(vec3(0.086, 0.188, 0.478), vTint, max(vLit * (0.45 + 0.55 * vKey), uHero * 0.66));
+  /* THE HULL WEARS ITS HUES THE WHOLE VOYAGE (operator: keep the colours
+     during the read) · every station keeps a floor of its own tint at the
+     dock; ignition and the hero showcase lift it further, the spotlight
+     pushes the read stratum toward its bright */
+  float hue = max(vLit * (0.45 + 0.55 * vKey), 0.52 + 0.26 * spot);
+  hue = max(hue, uHero * 0.66);
+  vec3 col = mix(vec3(0.086, 0.188, 0.478), vTint, hue);
+  col += vTint * spot * 0.3;
   col += vec3(0.06, 0.1, 0.2) * vPulse * vLit;
   col = mix(col, vec3(0.553, 0.706, 1.0), vHi * (0.55 + 0.35 * sin(uTime * 7.0)));
   gl_FragColor = vec4(col, a);
