@@ -134,6 +134,40 @@ const fail = (route, kind, detail) => {
   console.log(`  ✗ ${kind} · ${detail}`)
 }
 
+/* ── PASS 0 · static integrity (dist, no browser) ───────────────────────────
+   The share/feed surfaces break SILENTLY: a dead og:image renders a blank
+   card on every social share (six posts shipped that way before this belt),
+   a stale rss/llms drops posts for readers and models. All fs — free. */
+{
+  const { existsSync: ex } = await import('node:fs')
+  /* og:image — every prerendered page's card must exist as a file */
+  const seen = new Set()
+  let ogMissing = 0
+  for (const route of ROUTES) {
+    const html = readFileSync(join(DIST, route === '/' ? 'index.html' : `${route.replace(/^\//, '')}/index.html`), 'utf8')
+    for (const m of html.matchAll(/og:image" content="https:\/\/nika\.sh(\/[^"]+)"/g)) {
+      if (seen.has(m[1])) continue
+      seen.add(m[1])
+      if (!ex(join(DIST, m[1]))) {
+        ogMissing++
+        fail(route, 'og:image', `${m[1]} does not exist in dist`)
+      }
+    }
+  }
+  /* rss — every /blog/<slug> route rides the feed (same-date order is the
+     feed's own law; presence is the contract) */
+  const rss = ex(join(DIST, 'rss.xml')) ? readFileSync(join(DIST, 'rss.xml'), 'utf8') : ''
+  const llms = ex(join(DIST, 'llms-full.txt')) ? readFileSync(join(DIST, 'llms-full.txt'), 'utf8') : ''
+  const posts = ROUTES.filter((r) => /^\/blog\/.+/.test(r))
+  let rssMiss = 0
+  let llmsMiss = 0
+  for (const r of posts) {
+    if (!rss.includes(`<link>https://nika.sh${r}</link>`)) { rssMiss++; fail(r, 'rss', `${r} missing from rss.xml`) }
+    if (!llms.includes(r)) { llmsMiss++; fail(r, 'llms-full', `${r} missing from llms-full.txt`) }
+  }
+  console.log(`static integrity · og:image ${seen.size - ogMissing}/${seen.size} · rss ${posts.length - rssMiss}/${posts.length} posts · llms-full ${posts.length - llmsMiss}/${posts.length}\n`)
+}
+
 /* deterministic settle — NEVER a fixed sleep before interacting: scrollTo
    issued before hydration lands gets clobbered by the router's scroll
    restoration (cost this belt its first two calibration rounds). RootLayout
@@ -642,6 +676,50 @@ await check('egg · drum (manifesto)', async () => {
   return last
 })
 
+/* 3d · the palette closes clean (Escape → dialog gone; the page it opened
+   over is still the manifesto from the egg check above) */
+await check('palette · Escape closes and the page keeps focus', async () => {
+  let last = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await evaluate(`window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))`)
+    last = await until(() => evaluate(`!!document.querySelector('.ck-input')`), 5, 300)
+    if (last === true) break
+  }
+  if (last !== true) return 'palette never opened'
+  await evaluate(`document.querySelector('.ck-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))`)
+  return until(
+    () =>
+      evaluate(`(() => {
+        const gone = !document.querySelector('.ck-input')
+        const focusSane = document.activeElement === document.body || !document.activeElement?.closest?.('.ck')
+        return (gone && focusSane) || JSON.stringify({ gone, focusSane })
+      })()`),
+    6,
+    300,
+  )
+})
+
+/* 3e · the manifesto language rail — real navigation, trusted click (the
+   links are crawlable <a>; the SPA route change must land the FR page) */
+await check('manifesto · the language rail navigates (EN → FR)', async () => {
+  const at = await evaluate(
+    `(() => { const a = document.querySelector('.mf-langs a[href="/fr/manifesto"]'); if (!a) return null; a.scrollIntoView({ behavior: 'instant', block: 'center' }); const r = a.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`,
+  )
+  if (!at) return 'FR link not found'
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  return until(
+    () =>
+      evaluate(`(() => {
+        const here = location.pathname === '/fr/manifesto'
+        const lang = document.documentElement.lang
+        return (here && lang === 'fr') || JSON.stringify({ path: location.pathname, lang })
+      })()`),
+    10,
+    400,
+  )
+})
+
 /* 3d · THE SPEC MACHINE (/spec) · the voyage's own belt: the canvas takes
    the stage (desktop + GL — this runner qualifies), the reading assembles
    the ship (the DOM ticks and the machine can never disagree — assert the
@@ -755,6 +833,83 @@ await check('spec · Shift+← sails to the previous station (the chapter keys)'
     if (last === true) return true
   }
   return last
+})
+
+/* 3f · THE MOBILE BATTERY — everything above ran at 1600×1000; the burger,
+   the sheet and its focus contract only EXIST under the mobile breakpoint.
+   Device flips to 390×844 for the rest of the run (exit follows). */
+await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true })
+consoleErrs.length = 0
+pageErrs.length = 0
+await send('Page.navigate', { url: `${BASE}/` })
+await settle()
+await check('mobile · burger opens the sheet, Escape returns focus', async () => {
+  const at = await evaluate(
+    `(() => { const b = document.querySelector('.v4nav-burger'); if (!b || !b.offsetParent) return null; const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`,
+  )
+  if (!at) return 'burger not visible at 390px'
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  const open = await until(
+    () => evaluate(`!!document.querySelector('.v4sheet[role="dialog"]') && document.querySelector('.v4nav-burger')?.getAttribute('aria-expanded') === 'true'`),
+    8,
+    300,
+  )
+  if (open !== true) return { open }
+  await evaluate(`document.querySelector('.v4sheet').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))`)
+  return until(
+    () =>
+      evaluate(`(() => {
+        const gone = !document.querySelector('.v4sheet[role="dialog"]')
+        const focusBack = document.activeElement === document.querySelector('.v4nav-burger')
+        return (gone && focusBack) || JSON.stringify({ gone, focusBack })
+      })()`),
+    6,
+    300,
+  )
+})
+await check('mobile · a sheet link navigates (→ /blog)', async () => {
+  /* reopen, then trusted-click the Blog link inside the sheet */
+  const at = await evaluate(
+    `(() => { const b = document.querySelector('.v4nav-burger'); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`,
+  )
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: at.x, y: at.y, button: 'left', clickCount: 1 })
+  const open = await until(() => evaluate(`!!document.querySelector('.v4sheet[role="dialog"]')`), 8, 300)
+  if (open !== true) return 'sheet never reopened'
+  /* the sheet ARRIVES by a css slide-in (v4sheet-in · translateX(100%) → 0)
+     and a starved headless runner never advances it — the link's rect sits
+     OFF-VIEWPORT at the from-frame forever (found live: x=558 in a 390px
+     viewport). Pump frames until the geometry LANDS, then click where it
+     actually is. On real devices the animation is 260ms — product is fine;
+     the belt must not click a moving (or parked-off-screen) target. */
+  let link = null
+  for (let i = 0; i < 10 && !link; i++) {
+    await evaluate(`(async () => { for (let f = 0; f < 12; f++) await new Promise((r) => requestAnimationFrame(r)) })()`)
+    link = await evaluate(
+      `(() => { const a = [...document.querySelectorAll('.v4sheet a[href="/blog"]')][0]; if (!a) return null; a.scrollIntoView({ behavior: 'instant', block: 'center' }); const r = a.getBoundingClientRect(); const w = document.documentElement.clientWidth; return r.left >= 0 && r.right <= w + 1 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null })()`,
+    )
+    if (!link) await sleep(200)
+  }
+  if (!link) return 'blog link never landed in the viewport (sheet slide-in stuck)'
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: link.x, y: link.y, button: 'left', clickCount: 1 })
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: link.x, y: link.y, button: 'left', clickCount: 1 })
+  return until(
+    () =>
+      evaluate(`(() => {
+        const here = location.pathname === '/blog'
+        const closed = !document.querySelector('.v4sheet[role="dialog"]')
+        return (here && closed) || JSON.stringify({ path: location.pathname, closed })
+      })()`),
+    10,
+    400,
+  )
+})
+/* the mobile leg rode /, the sheet and /blog — its console must be as clean
+   as the desktop pass (mobile-only crashes hid here before this belt) */
+await check('mobile · console clean across the battery', async () => {
+  const errs = [...consoleErrs, ...pageErrs]
+  return errs.length === 0 || errs.slice(0, 3).join(' | ')
 })
 
 /* ── verdict ───────────────────────────────────────────────────────────────── */

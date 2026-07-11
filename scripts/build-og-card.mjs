@@ -162,6 +162,66 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/the-run-becomes-evidence — hash-chained journal; verify names the first broken link.
+    out: 'og-blog-the-run-becomes-evidence.png',
+    fig: 'FIG B.26',
+    size: 60,
+    headline: 'The run<br><span class="b">becomes evidence.</span>',
+    sub: 'Every journal line carries a hash chain — <span style="white-space:nowrap">nika trace verify</span> names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it.',
+    detail:
+      '<span class="arrow">▸</span><span>hash&nbsp;chain<span class="sep">·</span>first&nbsp;break&nbsp;named<span class="sep">·</span><b>engine&nbsp;attested</b></span>',
+  },
+  {
+    // /blog/media-are-workflow-citizens — image/speech builtins under the same discipline as text.
+    out: 'og-blog-media-are-workflow-citizens.png',
+    fig: 'FIG B.25',
+    size: 60,
+    headline: 'Media are<br><span class="b">workflow citizens.</span>',
+    sub: 'Images and speech render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger — the sovereign path first.',
+    detail:
+      '<span class="arrow">▸</span><span>permit-gated<span class="sep">·</span>sha256&nbsp;provenance<span class="sep">·</span><b>sovereign&nbsp;path&nbsp;first</b></span>',
+  },
+  {
+    // /blog/the-credentials-your-pipeline-breaks — C2PA signatures survive the pipeline now.
+    out: 'og-blog-the-credentials-your-pipeline-breaks.png',
+    fig: 'FIG B.24',
+    size: 60,
+    headline: 'The credentials your<br><span class="b">pipeline was breaking.</span>',
+    sub: 'OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering — including, until this week, ours.',
+    detail:
+      '<span class="arrow">▸</span><span>C2PA&nbsp;signed<span class="sep">·</span>bytes&nbsp;preserved<span class="sep">·</span><b>provenance&nbsp;survives</b></span>',
+  },
+  {
+    // /blog/the-editor-tells-the-truth — the extension audited against the engine; the badge is a fact now.
+    out: 'og-blog-the-editor-tells-the-truth.png',
+    fig: 'FIG B.23',
+    size: 60,
+    headline: 'The editor<br><span class="b">tells the truth.</span>',
+    sub: 'A green badge is a claim. We audited the editor extension against the engine the way you&#8217;d audit a client against a server — and found the badge lying. The contract keeps it honest now.',
+    detail:
+      '<span class="arrow">▸</span><span>audited&nbsp;vs&nbsp;engine<span class="sep">·</span>same&nbsp;verdicts<span class="sep">·</span><b>the&nbsp;badge&nbsp;is&nbsp;a&nbsp;fact</b></span>',
+  },
+  {
+    // /blog/time-travel-for-real — the past is a file; stepping backward is free.
+    out: 'og-blog-time-travel-for-real.png',
+    fig: 'FIG B.22',
+    size: 60,
+    headline: 'Time travel,<br><span class="b">for real.</span>',
+    sub: 'Every debugger replays the past by re-running it. Nika&#8217;s past is a file — so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.',
+    detail:
+      '<span class="arrow">▸</span><span>step&nbsp;back&nbsp;free<span class="sep">·</span>breakpoints&nbsp;in&nbsp;YAML<span class="sep">·</span><b>replay,&nbsp;never&nbsp;re-run</b></span>',
+  },
+  {
+    // /blog/one-wire-five-servers — the self-hosted media world standardized on one wire shape.
+    out: 'og-blog-one-wire-five-servers.png',
+    fig: 'FIG B.21',
+    size: 60,
+    headline: 'One wire,<br><span class="b">five servers.</span>',
+    sub: 'The self-hosted media world quietly standardized on OpenAI&#8217;s wire shapes. That accident of history is the best sovereignty news in years — and Nika&#8217;s media builtins are built on it.',
+    detail:
+      '<span class="arrow">▸</span><span>one&nbsp;shape<span class="sep">·</span>five&nbsp;sovereign&nbsp;hosts<span class="sep">·</span><b>zero&nbsp;lock-in</b></span>',
+  },
+  {
     // /blog/the-mcp-server-you-didnt-build — nika mcp: the in-binary read-only oracle, 8 tools, two jobs.
     out: 'og-blog-the-mcp-server-you-didnt-build.png',
     fig: 'FIG B.20',
