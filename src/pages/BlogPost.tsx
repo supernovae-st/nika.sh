@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, REPO } from '../content'
-import { BLOG_POSTS, BLOG_SERIES } from '../content/blog.generated'
+import { BLOG_POSTS, BLOG_SERIES, type BlogToken } from '../content/blog.generated'
 import { BlogBody } from '../lib/blog-render'
 import { Component as NotFound } from './NotFound'
 import '../sections/v4-home.css'
@@ -23,10 +23,60 @@ import './blog-post.css'
 
 const CONTENT_DIR = 'https://github.com/supernovae-st/nika.sh/blob/main/content/blog'
 
+/* ─── the body island · the initial-bundle diet (arc 13m) ─────────────────────
+   The 31 post bodies (~85% of the old blog.generated mass) no longer ride the
+   initial bundle. Three paths to the SAME tokens:
+
+   · SSG — the bodies module is awaited HERE, in the SSR-only branch: the SSG
+     module runner resolves it while loading the route graph (before any
+     render — RR's static handler never awaits mid-render, routes.tsx's own
+     law), and import.meta.env.SSR is compile-time false in the client build,
+     so the branch is dead code and the module never enters the client graph.
+   · client HYDRATION — the SSG serialized the doc into an inline JSON island
+     (the <script> below); the first client render reads it back, so the
+     hydrated tree matches the prerendered HTML byte for byte, zero fetch.
+   · client SPA NAVIGATION — no island in the DOM (React builds the page from
+     scratch): the bodies module loads as its OWN chunk (import() below), once
+     per session, while the header (metadata — already here) paints.
+
+   The island carries the RAW string both ways (re-serializing a parsed doc
+   would flip the \u003c escapes and desync hydration). */
+let SSR_BODIES: Record<string, BlogToken[]> | null = null
+if (import.meta.env.SSR) {
+  SSR_BODIES = (await import('../content/blog-bodies.generated')).BLOG_BODIES
+}
+
+const islandId = (slug: string) => `bp-doc-${slug}`
+/* </script> inside the JSON would close the island early — \u003c survives
+   JSON.parse unchanged in meaning and keeps the HTML inert */
+const toIslandJson = (tokens: BlogToken[]) =>
+  JSON.stringify(tokens).replace(/</g, '\\u003c')
+
+function useBodyJson(slug: string): string | null {
+  const [json, setJson] = useState<string | null>(() => {
+    if (import.meta.env.SSR) return toIslandJson(SSR_BODIES?.[slug] ?? [])
+    /* hydration: the island the SSG rendered is already in the DOM */
+    return document.getElementById(islandId(slug))?.textContent ?? null
+  })
+  useEffect(() => {
+    if (json != null) return
+    /* SPA navigation: pull the bodies chunk (cached after the first post) */
+    let live = true
+    import('../content/blog-bodies.generated').then((m) => {
+      if (live) setJson(toIslandJson(m.BLOG_BODIES[slug] ?? []))
+    })
+    return () => {
+      live = false
+    }
+  }, [json, slug])
+  return json
+}
+
 export function Component() {
   const { slug } = useParams()
   const idx = BLOG_POSTS.findIndex((p) => p.slug === slug)
   const post = idx >= 0 ? BLOG_POSTS[idx] : null
+  const bodyJson = useBodyJson(slug ?? '')
 
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
@@ -193,7 +243,15 @@ export function Component() {
           )}
 
           <article className="bp-body">
-            <BlogBody tokens={post.tokens} />
+            {bodyJson != null ? <BlogBody tokens={JSON.parse(bodyJson)} /> : null}
+            {/* the island · the SSG writes it, hydration reads it back — the
+                raw string round-trips so the node matches byte for byte */}
+            <script
+              type="application/json"
+              id={islandId(post.slug)}
+              suppressHydrationWarning
+              dangerouslySetInnerHTML={{ __html: bodyJson ?? '[]' }}
+            />
           </article>
 
           {/* the honest foot · the post IS a file — read it, edit it, discuss it */}

@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 // @ts-expect-error — the compiler is the untyped build script itself (the point: same code path)
 import { compileAll, SERIES } from '../../scripts/build-blog.mjs'
 import { BLOG_POSTS } from '../content/blog.generated'
+import { BLOG_BODIES } from '../content/blog-bodies.generated'
 import { BLOG_PATHS } from '../../site.config'
 
 /* ── the blog drift gates · sources and projections may never disagree ────────
@@ -16,10 +17,19 @@ import { BLOG_PATHS } from '../../site.config'
    README table row) goes red here, never silently stale to prod. */
 
 describe('/blog · the compiled projection matches its markdown sources', () => {
-  const fresh = compileAll() as typeof BLOG_POSTS
+  const fresh = compileAll() as (typeof BLOG_POSTS[number] & { tokens: unknown[] })[]
+  const freshMetas = fresh.map((p) => {
+    const meta = { ...p } as Partial<typeof p>
+    delete meta.tokens
+    return meta
+  })
 
-  it('blog.generated.ts is exactly what the compiler emits today', () => {
-    expect(BLOG_POSTS).toEqual(fresh)
+  it('blog.generated.ts is exactly what the compiler emits today (metadata)', () => {
+    expect(BLOG_POSTS).toEqual(freshMetas)
+  })
+
+  it('blog-bodies.generated.ts is exactly what the compiler emits today (bodies)', () => {
+    expect(BLOG_BODIES).toEqual(Object.fromEntries(fresh.map((p) => [p.slug, p.tokens])))
   })
 
   it('every post prerenders · BLOG_PATHS mirrors the slugs', () => {
@@ -46,7 +56,7 @@ describe('/blog · the compiled projection matches its markdown sources', () => 
       expect(p.slug).toMatch(/^[a-z0-9-]+$/)
       expect(p.date).toMatch(/^\d{4}-\d{2}-\d{2}$/)
       expect(p.readingMin).toBeGreaterThan(0)
-      expect(p.tokens.length).toBeGreaterThan(2)
+      expect(p.tokens.length).toBeGreaterThan(2) /* fresh — the compiler still carries tokens */
     }
   })
 })
