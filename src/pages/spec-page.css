@@ -52,39 +52,6 @@
   text-decoration-color: var(--v4-text);
 }
 
-/* ── the contents rail · jump links to each FIG (hairline pills) ───────────── */
-.spec-toc {
-  margin-top: clamp(28px, 4vh, 44px);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.spec-toc-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 36px;
-  padding: 7px 13px;
-  border: 1px solid var(--v4-line);
-  border-radius: var(--v4-radius);
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.01em;
-  color: var(--v4-text-dim);
-  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
-}
-.spec-toc-link:hover {
-  color: var(--v4-text);
-  border-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
-  background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
-}
-.spec-toc-n {
-  font-size: 10.5px;
-  letter-spacing: 0.1em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-
 /* ── a spec block · the unit of the reference · hairline-topped ───────────────
    Each FIG section opens with a sub-head, then its own ledger. The first block
    draws the top rule; subsequent blocks inherit the rhythm. scroll-margin clears
@@ -706,76 +673,6 @@
   right: 0;
 }
 
-/* ── the spec-sheet register · the contract's key dimensions, at a glance ───────
-   A row of mono stat cells under the lede — the "data plate" read. */
-.spec-stamp {
-  margin: clamp(28px, 4vh, 44px) 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  border: 1px solid var(--v4-line);
-  border-radius: var(--v4-radius);
-  overflow: hidden;
-  background: var(--v4-line);
-}
-@media (min-width: 620px) {
-  .spec-stamp {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-.spec-stamp-cell {
-  position: relative;
-  background: color-mix(in oklch, var(--v4-bg-raised) 62%, var(--v4-bg));
-  transition: background-color 0.2s ease;
-}
-.spec-stamp-cell:hover {
-  background: var(--v4-bg-raised);
-}
-/* the cell is a real link into its section (the machine's legend) — the link
-   carries the padding + column so the whole plate is the target */
-.spec-stamp-link {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 16px 16px 15px;
-  color: inherit;
-}
-.spec-stamp-fig {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-.spec-stamp-n {
-  margin: 8px 0 0;
-  font-family: var(--display);
-  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.1rem);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--v4-text);
-  font-variant-numeric: tabular-nums;
-}
-.spec-stamp-label {
-  margin-top: 7px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--v4-text-dim);
-}
-.spec-stamp-sub {
-  margin-top: 3px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--v4-text-faint);
-  font-variant-numeric: tabular-nums;
-}
-
 /* ── FIG S.1 · the rich verb cards · hue + glyph + a real example ───────────────
    MONOCHROME plates (2026-07-02 accent discipline): the verb hue lives ONLY
    inside the CodeFile frames — the card chrome (seam · glyph tile) stays ink.
@@ -1184,8 +1081,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .spec-verbcard,
-  .spec-boundary-gate,
-  .spec-stamp-cell {
+  .spec-boundary-gate {
     transition: none;
   }
 }
@@ -1309,9 +1205,6 @@
 }
 .spec-flow {
   min-width: 0;
-}
-.spec-flow .spec-toc {
-  margin-top: 0;
 }
 .spec-rail {
   display: none;
@@ -1596,25 +1489,6 @@
 }
 
 
-/* ── the lit TOC · reading ticks (the DOM mirror of the machine tally) ──────── */
-.spec-toc-tick {
-  flex: 0 0 auto;
-  width: 7px;
-  height: 7px;
-  border-radius: 1.5px;
-  border: 1px solid color-mix(in oklch, var(--v4-text) 32%, transparent);
-  background: transparent;
-  transition: background-color 0.9s ease, border-color 0.9s ease;
-}
-.spec-toc-link.is-lit .spec-toc-tick {
-  background: var(--sm-ink-lit);
-  border-color: var(--sm-ink-lit);
-}
-.spec-toc-link[aria-current] {
-  color: var(--v4-text);
-  border-color: color-mix(in oklch, var(--sm-ink-lit) 50%, var(--v4-line));
-}
-
 /* ── the disclosure folds · the optional rows stand behind a ledger row ─────── */
 .spec-fold {
   margin: 0;
@@ -1685,7 +1559,6 @@
   .spec-schematic rect,
   .spec-schematic circle,
   .spec-schematic path,
-  .spec-toc-tick,
   .spec-fold-mark::before,
   .spec-fold-mark::after {
     transition: none;
