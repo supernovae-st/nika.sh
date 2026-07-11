@@ -127,6 +127,12 @@ said otherwise). Each script documents its flags in its own header.
 - `shoot-routes.mjs` — the design-iteration eye: any route × viewport ×
   frame state (`rest/run/beat/danger`), `--scroll-to`, `--reduced`.
 - `shoot-scroll.mjs` — the scroll-linked sweep (above).
+- `station-sweep.mjs` — the /spec station audit: one SETTLED shot per
+  dock section (full pose glide ≈3.2s — a short settle judges mid-glides,
+  not poses). `node scripts/station-sweep.mjs <out> [url] [onlyIdx,…]
+  [--port N]`. Dev capture params on the page itself (DEV builds only):
+  `?lit=N` pins the first N strata lit · `?pose=sN` pins the camera ·
+  `?explode=1` pins the exploded drawing.
 - `a11y-sweep.mjs` — axe-core over every prerendered route
   (critical/serious = gate).
 - `lighthouse-spot.mjs` — perf spots on `/`, `/play`, one post (only TBT
