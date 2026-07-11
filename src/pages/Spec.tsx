@@ -1087,6 +1087,7 @@ export function Component() {
                       stage === 'finale' || lit.has(s.key) ? ' is-lit' : ''
                     }${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
                     aria-label={`${s.fig} · ${s.title} (${s.shipPart})`}
+                    title={`${s.fig} · ${s.title}`}
                   >
                     <i aria-hidden />
                   </a>

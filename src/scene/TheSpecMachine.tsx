@@ -735,7 +735,12 @@ export default function TheSpecMachine({
               style={{ ['--slot' as string]: `${19 + (i % 4) * 21}%` }}
             >
               <b>
-                {c.fig} · {c.title.toUpperCase()}
+                {/* the fig hides at the DOCK (the plate + the rail chip
+                    already say S.N — three occurrences read as noise) and
+                    returns at the FINALE, where the labelled drawing wants
+                    every slot numbered */}
+                <i className="smc-fig">{c.fig} · </i>
+                {c.title.toUpperCase()}
               </b>
               {c.count} {c.countLabel.toLowerCase()}
             </span>
