@@ -8,7 +8,6 @@
 
    This file owns:
      1 · .depth-fixed       — the fixed full-bleed WebGL background mount.
-     2 · .v4hud             — faint corner registration ticks (the blueprint HUD).
      3 · .v4hero-readscrim  — the left readability vignette over the field.
      4 · .v4hero-grid       — the two-column layout (copy LEFT · editor RIGHT).
      5 · .v4ftabs / .v4ftab — the sharp mono file-tab strip above the editor.
@@ -329,49 +328,6 @@
     }
   }
 }
-
-/* ── 2 · the HUD registration marks · the blueprint corner ticks ──────────────
-   Four faint L-shaped ticks at the hero's corners (a survey/registration mark
-   register). DECORATIVE only — aria-hidden, drawn from the accent at low alpha
-   so they read as a quiet HUD, never as chrome that competes with the copy. */
-.v4hud {
-  position: absolute;
-  inset: clamp(16px, 3vw, 40px);
-  z-index: 0;
-  pointer-events: none;
-}
-.v4hud-tick {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  opacity: 0.34;
-}
-.v4hud-tick::before,
-.v4hud-tick::after {
-  content: '';
-  position: absolute;
-  background: color-mix(in oklch, var(--hero-blue-line) 60%, transparent);
-}
-.v4hud-tick::before { /* horizontal arm */
-  width: 14px;
-  height: 1px;
-  top: 0;
-}
-.v4hud-tick::after { /* vertical arm */
-  width: 1px;
-  height: 14px;
-  left: 0;
-}
-.v4hud-tick--tl { top: 0; left: 0; }
-.v4hud-tick--tr { top: 0; right: 0; }
-.v4hud-tick--tr::before { right: 0; }
-.v4hud-tick--tr::after { left: auto; right: 0; }
-.v4hud-tick--bl { bottom: 0; left: 0; }
-.v4hud-tick--bl::before { top: auto; bottom: 0; }
-.v4hud-tick--bl::after { top: auto; bottom: 0; }
-.v4hud-tick--br { bottom: 0; right: 0; }
-.v4hud-tick--br::before { top: auto; bottom: 0; right: 0; }
-.v4hud-tick--br::after { top: auto; bottom: 0; left: auto; right: 0; }
 
 /* ── 3 · the readability scrim · bottom-edge only (wave F) ────────────────────
    The blue field now OWNS the left (F1: white type on the deep blue core, the
@@ -1072,11 +1028,6 @@
   #hero {
     min-height: 0;
     justify-content: flex-start;
-  }
-  /* orphan decorative anchors read as glitches on a phone — the corner ticks
-     are a desktop-composition device only */
-  .v4hud {
-    display: none;
   }
   .v4hero-grid {
     display: flex;

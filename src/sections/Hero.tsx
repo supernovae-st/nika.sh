@@ -31,21 +31,13 @@ import './hero.css'
 const rise = (ms: number): React.CSSProperties =>
   ({ '--rise-delay': `${ms}ms` }) as React.CSSProperties
 
-/* ── the hero chrome · the desktop HUD ticks + a readability vignette ─────────
-   The corner ticks are desktop-only (hero.css hides them ≤767px — orphan
-   decorative anchors read as glitches on a phone). */
+/* ── the hero chrome · the readability vignette ───────────────────────────────
+   (The corner registration ticks retired 2026-07-11: over the live dither
+   field they rasterized as smudge squares, not 1px arms — pixel-probed at
+   144,117/1282,117 — and they were the glitch-read the mobile hide rule
+   already admitted. The blueprint register lives in the field + fig marks.) */
 function HeroAtmosphere() {
-  return (
-    <>
-      <div className="v4hud" aria-hidden>
-        <span className="v4hud-tick v4hud-tick--tl" />
-        <span className="v4hud-tick v4hud-tick--tr" />
-        <span className="v4hud-tick v4hud-tick--bl" />
-        <span className="v4hud-tick v4hud-tick--br" />
-      </div>
-      <div className="v4hero-readscrim" aria-hidden />
-    </>
-  )
+  return <div className="v4hero-readscrim" aria-hidden />
 }
 
 /* ── the sharp file-tab strip · mono, hairline, no pills ──────────────────────
