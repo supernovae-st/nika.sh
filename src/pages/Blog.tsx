@@ -26,11 +26,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-chain-of-custody',
-    tag: 'Engine',
+    slug: 'the-pipeline-is-a-file',
+    tag: 'Language',
     date: 'soon',
-    title: 'The chain of custody',
-    teaser: 'nika trace verify proves a recorded run intact: any edited, inserted, dropped or reordered line breaks every hash after it — tamper-evident, and honest about not being tamper-proof.',
+    title: 'The pipeline is a file',
+    teaser: 'What an llm pipeline actually is — a DAG of model calls, tools and processes — and the case that yours should be one reviewable file: four verbs, declared permits, a replayable trace.',
   },
   {
     slug: 'the-run-that-never-runs',

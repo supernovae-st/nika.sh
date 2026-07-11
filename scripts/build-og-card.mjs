@@ -162,6 +162,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/the-chain-of-custody — trace verify recomputes the hash chain; one edited word breaks history.
+    out: 'og-blog-the-chain-of-custody.png',
+    fig: 'FIG B.19',
+    size: 60,
+    headline: 'History,<br><span class="b">re-derivable.</span>',
+    sub: 'A recorded run is a text file — editable. <span style="white-space:nowrap">nika trace verify</span> recomputes the hash chain: one changed word breaks every line after it, and the run&#8217;s printed head closes the loop.',
+    detail:
+      '<span class="arrow">▸</span><span>tamper-evident<span class="sep">·</span>exact&nbsp;line&nbsp;named<span class="sep">·</span><b>exit&nbsp;2&nbsp;gates&nbsp;CI</b></span>',
+  },
+  {
     // /blog/the-local-forecast — duration/cost priors from your own traces; never a model call, never the network.
     out: 'og-blog-the-local-forecast.png',
     fig: 'FIG B.18',

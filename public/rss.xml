@@ -23,6 +23,14 @@
       <description>explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five — never a model call, never the network.</description>
     </item>
     <item>
+      <title>The chain of custody</title>
+      <link>https://nika.sh/blog/the-chain-of-custody</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-chain-of-custody</guid>
+      <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>A recorded run is a text file, and text files can be edited. nika trace verify recomputes the hash chain: one changed word in history breaks every line after it, and the run's printed head closes the loop.</description>
+    </item>
+    <item>
       <title>The run that waits for you</title>
       <link>https://nika.sh/blog/the-run-that-waits</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-run-that-waits</guid>

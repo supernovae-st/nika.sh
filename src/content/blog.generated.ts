@@ -758,6 +758,241 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
+    "slug": "the-chain-of-custody",
+    "file": "2026-07-11-the-chain-of-custody.md",
+    "title": "The chain of custody",
+    "tag": "Engine",
+    "date": "2026-07-11",
+    "description": "A recorded run is a text file, and text files can be edited. nika trace verify recomputes the hash chain: one changed word in history breaks every line after it, and the run's printed head closes the loop.",
+    "readingMin": 3,
+    "tokens": [
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Your pipeline ran last Tuesday. The trace says five tasks went green, the summary came from a local model, and the whole thing cost nothing. Now the compliance question: "
+          },
+          {
+            "k": "em",
+            "text": "prove it"
+          },
+          {
+            "k": "text",
+            "text": ". The trace is an NDJSON file — plain text, one event per line, sitting in "
+          },
+          {
+            "k": "code",
+            "text": ".nika/traces/"
+          },
+          {
+            "k": "text",
+            "text": ". Plain text is wonderful for "
+          },
+          {
+            "k": "code",
+            "text": "grep"
+          },
+          {
+            "k": "text",
+            "text": " and terrible for trust, because anyone with write access can make last Tuesday say anything."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "So every trace Nika writes is a hash chain: each event line carries a hash computed over itself and the hash before it, and the run prints the chain's head as its last word:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika run digest.nika.yaml\n\n  ...\n  trace: .nika/traces/2026-07-11T10-30-24Z-2cfb.ndjson · 11 events\n         · chain eb7b4e422cec1a51d44da4741f240d45732105bd7ebd05dd3bab419af9c95c0b"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Later — next week, next audit — anyone holding the file can recompute the whole chain:"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ nika trace verify .nika/traces/2026-07-11T10-30-24Z-2cfb.ndjson\n\nOK — 11 events · chain intact · head eb7b4e422cec1a51d44da4741f240d45732105bd7ebd05dd3bab419af9c95c0b\n  internally consistent (tamper-evident, not tamper-proof) — compare the head\n  against the one the run printed to close the loop"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Same head, character for character — the file you hold is the file the run wrote. That is the loop closing: the head the run printed (in your CI log, your journal, your ticket) is the anchor, and the file re-derives it or it does not."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Now let's lie to it. Say the résumé needs padding: last Tuesday's run should have used a bigger model. One word in one recorded event, "
+          },
+          {
+            "k": "code",
+            "text": "llama3.2:3b"
+          },
+          {
+            "k": "text",
+            "text": " becomes "
+          },
+          {
+            "k": "code",
+            "text": "llama3.2:70b"
+          },
+          {
+            "k": "text",
+            "text": ":"
+          }
+        ]
+      },
+      {
+        "k": "code",
+        "lang": "text",
+        "text": "❯ sed 's/llama3.2:3b/llama3.2:70b/' trace.ndjson > padded.ndjson\n❯ nika trace verify padded.ndjson\n\nBROKEN at line 8 — recorded chain 359cc6ff152b6272 · computed b98b3157197e443f\n  every line from here on is unverified (edited, inserted, dropped or reordered)\n\n❯ echo $?\n2"
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The chain names the exact line where history diverged, shows the hash it recorded against the hash the bytes actually produce, and declares everything downstream unverified — because that is what a chain means: the help says it plainly, "
+          },
+          {
+            "k": "em",
+            "text": "\"any edited, inserted, dropped or reordered line breaks every hash after it\""
+          },
+          {
+            "k": "text",
+            "text": ". And it exits "
+          },
+          {
+            "k": "code",
+            "text": "2"
+          },
+          {
+            "k": "text",
+            "text": ", so a CI step can gate on it. (Exit "
+          },
+          {
+            "k": "code",
+            "text": "3"
+          },
+          {
+            "k": "text",
+            "text": " is reserved for traces older than the chain itself — an honest code for \"this predates the guarantee\", not a fake pass.)"
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "Read the parenthesis in the OK output again, because the tool is underclaiming on purpose: "
+          },
+          {
+            "k": "strong",
+            "text": "tamper-evident, not tamper-proof"
+          },
+          {
+            "k": "text",
+            "text": ". An attacker who can rewrite the whole file can rewrite the whole chain; what the hashes prove is internal consistency, and what turns that into custody is the head you kept somewhere else — the one the run printed. This is the same register as the "
+          },
+          {
+            "k": "link",
+            "text": "forecast's",
+            "href": "/blog/the-local-forecast"
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "code",
+            "text": "low confidence (n<10)"
+          },
+          {
+            "k": "text",
+            "text": " and its refusal to price local models, the same as the audit's "
+          },
+          {
+            "k": "code",
+            "text": "COST UNBOUNDED"
+          },
+          {
+            "k": "text",
+            "text": ": the engine states what it knows, states what it cannot know, and leaves the difference in your hands. A tool that overclaims trust is how you end up trusting nothing."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "text",
+            "text": "The quiet economy here is that this is not a new artifact. The trace being verified is the same flight recorder that "
+          },
+          {
+            "k": "link",
+            "text": "makes the run evidence",
+            "href": "/blog/the-run-becomes-evidence"
+          },
+          {
+            "k": "text",
+            "text": ", the same journal "
+          },
+          {
+            "k": "link",
+            "text": "resume reads to skip finished work",
+            "href": "/blog/the-resume-story"
+          },
+          {
+            "k": "text",
+            "text": ", the same history "
+          },
+          {
+            "k": "link",
+            "text": "the forecast prices your next run from",
+            "href": "/blog/the-local-forecast"
+          },
+          {
+            "k": "text",
+            "text": ". One recorded file, five jobs — evidence, replay, resume, forecast, custody — and the fifth is the one that lets you believe the other four after the fact."
+          }
+        ]
+      },
+      {
+        "k": "p",
+        "inline": [
+          {
+            "k": "code",
+            "text": "nika trace verify <file>"
+          },
+          {
+            "k": "text",
+            "text": " — put it after every run your compliance story depends on. The audit trail now audits itself."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "the-run-that-waits",
     "file": "2026-07-10-the-run-that-waits.md",
     "title": "The run that waits for you",

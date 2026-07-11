@@ -99,6 +99,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "The chain of custody",
+    "href": "/blog/the-chain-of-custody",
+    "hint": "Engine · 2026-07-11"
+  },
+  {
+    "kind": "post",
     "label": "The run that waits for you",
     "href": "/blog/the-run-that-waits",
     "hint": "Engine · 2026-07-10"
