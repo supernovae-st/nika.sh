@@ -129,11 +129,6 @@ const PROVIDERS_TEST = CANON.providerIdsTest.map(displayProvider)
 
 const bySection = Object.fromEntries(SPEC_SECTIONS.map((s) => [s.key, s]))
 
-/* THE PROTOCOL PLATE · the contract's data plate (every value real: canon,
-   licenses, the family bars) — the instrument-plate register (v2 mockups) */
-const FAMILY_BARS = BUILTIN_GROUPS.map((f) => ({ label: f.label, n: f.names.length }))
-const FAMILY_MAX = Math.max(...FAMILY_BARS.map((b) => b.n))
-
 /* the worked fragment · sliced from a REAL showcase workflow (never hand-typed).
    standup-digest exercises 3 of the 4 verbs (invoke · exec · infer) in a tiny
    readable DAG — the friendly first look. Falls back gracefully if the key ever
@@ -237,20 +232,6 @@ export function Component() {
       window.removeEventListener('resize', on)
     }
   }, [machine])
-
-  /* the cursor tooltip · follows the pointer while a node is hovered */
-  const tipRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const onMove = (e: PointerEvent) => {
-      const el = tipRef.current
-      if (!el) return
-      const x = Math.min(e.clientX + 16, window.innerWidth - el.offsetWidth - 12)
-      const y = Math.min(e.clientY + 18, window.innerHeight - el.offsetHeight - 12)
-      el.style.transform = `translate(${x}px, ${y}px)`
-    }
-    window.addEventListener('pointermove', onMove, { passive: true })
-    return () => window.removeEventListener('pointermove', onMove)
-  }, [])
 
   /* ── W2 · the hover bus — ONE id, both sides write: pointering a 3D node
      reports here (MR readout + the DOM twins light), and hover/focus on any
@@ -427,60 +408,32 @@ export function Component() {
           <div className="spec-stage">
             <div className="spec-flow">
 
-          {/* THE PROTOCOL PLATE · the data plate: protocol, type, licenses,
-              status, and the honest microchart (builtins per family — bars
-              derive from the craft map, the sum is the canon count). */}
-          <section
-            className="spec-plate"
-            aria-labelledby="spec-plate-title"
-            data-rise
-            style={{ ['--rise-delay' as string]: '140ms' }}
-          >
-            <p id="spec-plate-title" className="spec-plate-kicker mono">
-              PROTOCOL
-            </p>
-            <dl className="spec-plate-rows mono">
-              <div className="spec-plate-row">
-                <dt>PROTOCOL</dt>
-                <dd>nika: v1</dd>
-              </div>
-              <div className="spec-plate-row">
-                <dt>TYPE</dt>
-                <dd>workflow language</dd>
-              </div>
-              <div className="spec-plate-row">
-                <dt>SPEC</dt>
-                <dd>Apache-2.0</dd>
-              </div>
-              <div className="spec-plate-row">
-                <dt>ENGINE</dt>
-                <dd>AGPL-3.0 · forever</dd>
-              </div>
-              <div className="spec-plate-row">
-                <dt>STATUS</dt>
-                <dd>
-                  <span className="spec-plate-dot" aria-hidden /> FROZEN
-                </dd>
-              </div>
-            </dl>
-            <p className="spec-plate-chartcap mono">
-              BUILTINS BY FAMILY
-              <span>{FAMILY_BARS.map((b) => b.n).join('·')}</span>
-            </p>
-            <div className="spec-chart" role="img" aria-label={`Builtins by family: ${FAMILY_BARS.map((b) => `${b.label} ${b.n}`).join(', ')}`}>
-              {FAMILY_BARS.map((b) => (
-                <div className="spec-chart-col" key={b.label}>
-                  <span
-                    className="spec-chart-bar"
-                    style={{ ['--bar' as string]: `${(b.n / FAMILY_MAX) * 100}%` }}
-                  />
-                  <span className="spec-chart-n mono">{b.n}</span>
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* THE INDEX · the S-chips band — fig · title · gloss · derived
+                  count · reading tick. Absorbs the old stamp band AND the TOC
+                  pills: one instrument, sticky under the nav on desktop. */}
+              <nav className="spec-index" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+                {SPEC_SECTIONS.map((s) => (
+                  <a
+                    key={s.fig}
+                    href={s.anchor}
+                    className={`spec-chip2${lit.has(s.key) ? ' is-lit' : ''}`}
+                    aria-current={current === s.key ? 'true' : undefined}
+                    data-node={s.key}
+                  >
+                    <span className="spec-chip2-head mono">
+                      <span className="spec-chip2-tick" aria-hidden />
+                      {s.fig}
+                      <span className="spec-chip2-count">{s.count}</span>
+                    </span>
+                    <span className="spec-chip2-title">{s.title}</span>
+                    <span className="spec-chip2-gloss">{s.chipGloss}</span>
+                  </a>
+                ))}
+              </nav>
 
-          {/* ── the consumer TL;DR · the whole language in one glance-table ──
+
+
+              {/* ── the consumer TL;DR · the whole language in one glance-table ──
               Museum-plate rows (01 · the envelope → 05 · errors), each a
               two-tone sentence + its mono token. The technical reference
               (S.0+) deepens every row below. */}
@@ -520,31 +473,6 @@ export function Component() {
               </a>
             </p>
           </section>
-
-
-
-              {/* THE INDEX · the S-chips band — fig · title · gloss · derived
-                  count · reading tick. Absorbs the old stamp band AND the TOC
-                  pills: one instrument, sticky under the nav on desktop. */}
-              <nav className="spec-chips" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
-                {SPEC_SECTIONS.map((s) => (
-                  <a
-                    key={s.fig}
-                    href={s.anchor}
-                    className={`spec-chip2${lit.has(s.key) ? ' is-lit' : ''}`}
-                    aria-current={current === s.key ? 'true' : undefined}
-                    data-node={s.key}
-                  >
-                    <span className="spec-chip2-head mono">
-                      <span className="spec-chip2-tick" aria-hidden />
-                      {s.fig}
-                      <span className="spec-chip2-count">{s.count}</span>
-                    </span>
-                    <span className="spec-chip2-title">{s.title}</span>
-                    <span className="spec-chip2-gloss">{s.chipGloss}</span>
-                  </a>
-                ))}
-              </nav>
 
 
 
@@ -965,6 +893,43 @@ export function Component() {
                   </Invariant>
                 </ul>
 
+                {/* THE PROTOCOL PLATE · the contract's data plate (real values
+                    only) — closes the reference beside the license invariants:
+                    the licenses live with the licenses. */}
+                <section
+                  className="spec-plate"
+                  aria-labelledby="spec-plate-title"
+                  data-rise
+                >
+                  <p id="spec-plate-title" className="spec-plate-kicker mono">
+                    PROTOCOL
+                  </p>
+                  <dl className="spec-plate-rows mono">
+                    <div className="spec-plate-row">
+                      <dt>PROTOCOL</dt>
+                      <dd>nika: v1</dd>
+                    </div>
+                    <div className="spec-plate-row">
+                      <dt>TYPE</dt>
+                      <dd>workflow language</dd>
+                    </div>
+                    <div className="spec-plate-row">
+                      <dt>SPEC</dt>
+                      <dd>Apache-2.0</dd>
+                    </div>
+                    <div className="spec-plate-row">
+                      <dt>ENGINE</dt>
+                      <dd>AGPL-3.0 · forever</dd>
+                    </div>
+                    <div className="spec-plate-row">
+                      <dt>STATUS</dt>
+                      <dd>
+                        <span className="spec-plate-dot" aria-hidden /> FROZEN
+                      </dd>
+                    </div>
+                  </dl>
+                </section>
+
                 {/* the close · the dimension line + the forward links */}
                 <p className="spec-note">
                   {CANON.verbs} verbs · {CANON.builtins} builtins · {CANON.providers} providers ·{' '}
@@ -1040,6 +1005,12 @@ export function Component() {
                   </span>
                   {stage === 'finale' ? (
                     <span className="spec-rail-pos-sub mono">EVERY STRATUM·····LIT</span>
+                  ) : cur ? (
+                    /* the count the floating label used to carry — the plate
+                       is the dock's one text instrument now */
+                    <span className="spec-rail-pos-sub mono">
+                      {cur.count} {cur.countLabel.toUpperCase()}
+                    </span>
                   ) : null}
                 </div>
                 <span className="spec-rail-hud spec-rail-hud--bl">
@@ -1056,6 +1027,18 @@ export function Component() {
                 <span className="spec-rail-hud spec-rail-hud--br">
                   {current === 'license' ? 'AGPL·····FOREVER' : 'NIKA: V1·····FROZEN'}
                 </span>
+                {/* the hover readout · a FIXED instrument (mid-right), never a
+                    cursor-chaser: the node under the pointer, spoken in place */}
+                {hoverReadout ? (
+                  <span className="spec-rail-hud spec-rail-hud--mr">
+                    {hoverReadout}
+                    {(() => {
+                      const n = hoverNode ? nodeById(hoverNode) : undefined
+                      const sec = n ? SPEC_SECTIONS.find((x) => x.anchor === n.anchor) : undefined
+                      return sec ? `·····${sec.fig}` : ''
+                    })()}
+                  </span>
+                ) : null}
               </div>
               {/* THE HELM · outside the aria-hidden stage (keyboard-reachable);
                   CSS shows it only while the canvas holds the stage */}
@@ -1101,20 +1084,6 @@ export function Component() {
             </aside>
           </div>
 
-          {/* the cursor tooltip · the node under the pointer, spoken in full:
-              name · family/detail · where a click lands (pointer-only
-              decoration — the readout also lights the DOM twins) */}
-          {hoverReadout ? (
-            <div className="spec-tip mono" ref={tipRef} aria-hidden>
-              <b>{hoverReadout.split('·····')[0]}</b>
-              <span>{hoverReadout.split('·····')[1]}</span>
-              {(() => {
-                const n = hoverNode ? nodeById(hoverNode) : undefined
-                const sec = n ? SPEC_SECTIONS.find((x) => x.anchor === n.anchor) : undefined
-                return sec ? <i>click ▸ {sec.fig} · {sec.title}</i> : null
-              })()}
-            </div>
-          ) : null}
         </div>
       </section>
     </main>
