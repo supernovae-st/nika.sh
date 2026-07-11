@@ -5,8 +5,8 @@
 // Drift gate: src/test/palette.test.ts recompiles and byte-diffs.
 
 export interface PaletteEntry {
-  /** page (core surface) · post (journal) · error (registry code) · tool (stdlib builtin) · provider (catalog id) */
-  kind: 'page' | 'post' | 'error' | 'tool' | 'provider'
+  /** page (core surface) · post (journal) · error (registry code) · tool (stdlib builtin) · provider (catalog id) · template (skeleton) */
+  kind: 'page' | 'post' | 'error' | 'tool' | 'provider' | 'template'
   label: string
   href: string
   /** the dim second line — tag · date · one-line failure · … */
@@ -91,6 +91,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "Providers",
     "href": "/providers",
     "hint": "local first · your keys"
+  },
+  {
+    "kind": "page",
+    "label": "Templates",
+    "href": "/templates",
+    "hint": "instantiable skeletons"
   },
   {
     "kind": "page",
@@ -751,6 +757,66 @@ export const PALETTE: PaletteEntry[] = [
     "label": "nika:write",
     "href": "/tools/write",
     "hint": "Write a file · returns the path. overwrite defaults true · create_dirs defaults false."
+  },
+  {
+    "kind": "template",
+    "label": "chain",
+    "href": "/templates/chain",
+    "hint": "take data, produce words, save them"
+  },
+  {
+    "kind": "template",
+    "label": "gate-and-act",
+    "href": "/templates/gate-and-act",
+    "hint": "watch X, act when Y"
+  },
+  {
+    "kind": "template",
+    "label": "fanout",
+    "href": "/templates/fanout",
+    "hint": "do this for EVERY item"
+  },
+  {
+    "kind": "template",
+    "label": "etl-state",
+    "href": "/templates/etl-state",
+    "hint": "only what changed since last run · survive bad input"
+  },
+  {
+    "kind": "template",
+    "label": "agent-loop",
+    "href": "/templates/agent-loop",
+    "hint": "research / review / open-ended"
+  },
+  {
+    "kind": "template",
+    "label": "human-gated-ship",
+    "href": "/templates/human-gated-ship",
+    "hint": "anything irreversible (deploy · send · publish)"
+  },
+  {
+    "kind": "template",
+    "label": "website-brief",
+    "href": "/templates/website-brief",
+    "hint": "understand a site (domain · theme · assets) from a URL"
+  },
+  {
+    "kind": "template",
+    "label": "media-asset-pack",
+    "href": "/templates/media-asset-pack",
+    "hint": "generate image/audio assets from a brief"
+  },
+  {
+    "kind": "template",
+    "label": "api-upload-and-create",
+    "href": "/templates/api-upload-and-create",
+    "hint": "call a product API: upload a file, then create from it"
+  },
+  {
+    "kind": "template",
+    "label": "docker-report",
+    "href": "/templates/docker-report",
+    "hint": "read a system's state (docker · kubectl · gh), explain it, keep the report"
   },
   {
     "kind": "provider",

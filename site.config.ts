@@ -167,4 +167,21 @@ export const PROVIDER_PATHS = [
   '/providers/mock',
 ]
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/providers', ...PROVIDER_PATHS, '/sitemap', '/use-cases', '/spec', '/install', '/convert', '/brand']
+/* the skeleton register's deep pages — one static landing per template
+   (slug = template name: /templates/chain). Same prerender law; kept
+   literal; the templates drift gate (src/test/templates.test.ts) fails
+   when the pack and these paths diverge. README routing order. */
+export const TEMPLATE_PATHS = [
+  '/templates/chain',
+  '/templates/gate-and-act',
+  '/templates/fanout',
+  '/templates/etl-state',
+  '/templates/agent-loop',
+  '/templates/human-gated-ship',
+  '/templates/website-brief',
+  '/templates/media-asset-pack',
+  '/templates/api-upload-and-create',
+  '/templates/docker-report',
+]
+
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, '/sitemap', '/use-cases', '/spec', '/install', '/convert', '/brand']

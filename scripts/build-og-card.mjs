@@ -171,6 +171,15 @@ const CARDS = [
       '<span class="arrow">▸</span><span>local&nbsp;default<span class="sep">·</span>model&nbsp;pins<span class="sep">·</span><b>no&nbsp;inference&nbsp;lock-in</b></span>',
   },
   {
+    // /templates — the skeleton register; instantiate, never invent.
+    out: 'og-templates.png',
+    fig: 'FIG T.1',
+    headline: 'Instantiate,<br><span class="b">never invent.</span>',
+    sub: 'Ten complete, valid skeletons with <span style="white-space:nowrap"># SLOT:</span> markers at every decision point&nbsp;— route your intent, copy, fill, check. The path to a correct file is&nbsp;mechanical.',
+    detail:
+      '<span class="arrow">▸</span><span>route<span class="sep">·</span>copy<span class="sep">·</span>fill<span class="sep">·</span><b>check&nbsp;repairs&nbsp;the&nbsp;rest</b></span>',
+  },
+  {
     // /tools — the standard library register; one closed namespace, spec-versioned.
     out: 'og-tools.png',
     fig: 'FIG T.0',
