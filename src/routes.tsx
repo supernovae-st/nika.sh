@@ -14,6 +14,7 @@ import { Component as Convert } from './pages/Convert'
 import { Component as Brand } from './pages/Brand'
 import { Component as NotFound } from './pages/NotFound'
 import { Component as Errors } from './pages/Errors'
+import { Component as Tools } from './pages/Tools'
 
 /* ─── central route table · React Router v7 data router ──────────────────────
    Replaces the old hand-rolled hash navigation (#/blog, #/manifesto …) with
@@ -57,6 +58,11 @@ export const routes: RouteObject[] = [
          anchored row. */
       { path: 'errors', Component: Errors },
       { path: 'errors/:code', Component: Errors },
+      /* the stdlib register · the human twin of /tools/catalog.json. Every
+         builtin prerenders its own static landing (TOOL_PATHS in
+         site.config.ts) and scrolls to its anchored row. */
+      { path: 'tools', Component: Tools },
+      { path: 'tools/:name', Component: Tools },
       { path: 'use-cases', Component: UseCasesPage },
       { path: 'spec', Component: Spec },
       { path: 'install', Component: Install },

@@ -65,6 +65,24 @@ for (const [id, e] of Object.entries(entities)) {
     fail(`${id}: no resolution (supernovae:/local: glyph, or pattern: for anim/*)`)
 }
 
+/* ── validation · shared visual vocabulary parity (nika-spec) ──────────────
+   src/design-tokens.generated.ts is projected from the spec SSOT (nika-spec
+   design/tokens.yaml); the site's own tokens.css must carry the SAME verb
+   hexes — drift between the two vocabularies is a hard failure. */
+const genTs = readFileSync(join(ROOT, 'src/design-tokens.generated.ts'), 'utf8')
+const genVerbHex = Object.fromEntries(
+  [...genTs.match(/NIKA_VERB_HEX = \{([^}]*)\}/)[1].matchAll(/(\w+): '(#[0-9a-fA-F]{6})'/g)].map(
+    (m) => [m[1], m[2]],
+  ),
+)
+for (const v of VERBS) {
+  const live = tokenHex(`--verb-${v}`)
+  if (!genVerbHex[v]) fail(`design-tokens.generated.ts: NIKA_VERB_HEX.${v} missing`)
+  else if (!live) fail(`tokens.css: --verb-${v} not found`)
+  else if (genVerbHex[v].toLowerCase() !== live.toLowerCase())
+    fail(`verb ${v}: vocabulary drift — generated ${genVerbHex[v]} vs tokens.css ${live}`)
+}
+
 /* ── validation · footer sprite ↔ social/* semantic parity ─────────────────
    public/icons.svg is BYTE-FROZEN (the visual goldens shoot the footer), so
    it is not regenerated — instead this gate proves the sprite and the

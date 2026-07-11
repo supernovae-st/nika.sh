@@ -191,7 +191,7 @@ HTML** (not just a JS bundle). `pnpm preview` → no hydration mismatch warnings
 
 ### Task 1.0 (cross-repo): author the hero workflow in nika-spec
 
-**Files (in `nika/02-engineering/repos/spec/`):** Create
+**Files (in the public [nika-spec](https://github.com/supernovae-st/nika-spec) repo):** Create
 `examples/showcase/morning-brief.nika.yaml` (all 4 verbs, design doc §5.1);
 regenerate `examples → usecases-yaml.generated.ts` via
 `python3 scripts/showcase-projector.py --write`; regenerate canon if needed.

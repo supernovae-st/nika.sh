@@ -606,8 +606,8 @@ export const BLOG_POSTS: BlogPost[] = [
         "k": "code",
         "lang": "yaml",
         "filename": "release-notes.nika.yaml",
-        "text": "nika: v1\nworkflow: release-notes\ndescription: \"Fetch the changelog, summarize it, badge the repo — one reviewable file\"\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs:\n    read: [\"./CHANGELOG.md\"]\n    write: [\"./notes.md\", \"./badge.json\"]\n  exec: [\"wc\"]\n  tools: [\"nika:read\", \"nika:write\", \"nika:jq\"]\n\ntasks:\n  - id: changelog\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./CHANGELOG.md\" }\n\n  - id: size\n    exec:\n      command: [\"wc\", \"-l\", \"./CHANGELOG.md\"]\n\n  - id: notes\n    depends_on: [changelog]\n    infer:\n      prompt: |\n        Turn this changelog into three plain sentences for release notes:\n        ${{ tasks.changelog.output }}\n      max_tokens: 300\n\n  - id: save\n    depends_on: [notes]\n    invoke:\n      tool: \"nika:write\"\n      args: { path: \"./notes.md\", content: \"${{ tasks.notes.output }}\" }\n\n  - id: badge\n    depends_on: [size]\n    invoke:\n      tool: \"nika:write\"\n      args: { path: \"./badge.json\", content: \"${{ tasks.size.output }}\" }\n\noutputs:\n  notes: ${{ tasks.notes.output }}",
-        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWDAU12IgGdiBaYNAF2IqQBMmBjDEAB3pDWCwARADFi9dgAsY9ScRhSIwAOak0ygDQwKAVwC2eiFwBe8kPS0AjCC1Uy5MEtzQxAKAQwB8knBDEUESzIYbBAyISQkPTQ2XFg0XFwIQwB6BKSIAGYAOgAmKAzLCO5iDD1zCigkGGCKqurHchZYAG0hLOSAYQAJAEEAOQBxAFEAGQB5Aay9FiEAXTrqlC5GFrbkukYKKZmtNetbYiyAKwoBObriAA9idlWUdnPq+jR4iphW0EgoEhshXc-oEtzMQ-jAhACoEcAI7nJD0ShgWrVagwEBNBSSJSqfDKBao4BwNBgYiVer1Z7xYQQn4zPHVIzKN4Abxg3AgsmE7W6-WG40m0yEMAAvhFkaj0RQQKY8VcbqSyQo0AYlOjWvdQUJqLgNVzeoNRhNtrCxWjYBsmHi2MVgCwKAB9AQtRQqNTKeZkkDAbAleVk7gYJW8WAAHzp9QAKjoMMB7CAKBisa78c97CR5NxEp7tMRgIxgOwmMFMA0yJR5OakQrqgASJks+EURFZZ3Y9RZNA6ejcTvCkVVwyXO3PYnAN4ZAAM49FMBRpu0EDgxEtxGttodgneFfd9U9hOJvvJL1iYIhQMY4SrDOZrPZkk56wYTCNWnYAjz9GEtfrCK2Ffbne7ehe0FEU6lndF9lUZdV3tR13klUxt2qXciRJMMKWPcFwEBZYQTDK9YBZNkOTBdpIMOE4zhfN8cw-MEvxkH8sgQw4Oy7HshSFECIjYwDKwrWAGIbJs-14jihSAA"
+        "text": "nika: v1\nworkflow: release-notes\ndescription: \"Fetch the changelog, summarize it, badge the repo — one reviewable file\"\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  fs:\n    read: [\"./CHANGELOG.md\"]\n    write: [\"./notes.md\", \"./badge.json\"]\n  exec: [\"wc\"]\n  tools: [\"nika:read\", \"nika:write\"]\n\ntasks:\n  - id: changelog\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./CHANGELOG.md\" }\n\n  - id: size\n    exec:\n      command: [\"wc\", \"-l\", \"./CHANGELOG.md\"]\n\n  - id: notes\n    depends_on: [changelog]\n    infer:\n      prompt: |\n        Turn this changelog into three plain sentences for release notes:\n        ${{ tasks.changelog.output }}\n      max_tokens: 300\n\n  - id: save\n    depends_on: [notes]\n    invoke:\n      tool: \"nika:write\"\n      args: { path: \"./notes.md\", content: \"${{ tasks.notes.output }}\" }\n\n  - id: badge\n    depends_on: [size]\n    invoke:\n      tool: \"nika:write\"\n      args: { path: \"./badge.json\", content: \"${{ tasks.size.output }}\" }\n\noutputs:\n  notes: ${{ tasks.notes.output }}",
+        "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWDAU12IgGdiBaYNAF2IqQBMmBjDEAB3pDWCwARADFi9dgAsY9ScRhSIwAOak0ygDQwKAVwC2eiFwBe8kPS0AjCC1Uy5MEtzQxAKAQwB8knBDEUESzIYbBAyISQkPTQ2XFg0XFwIQwB6BKSIAGYAOgAmKAzLCO5iDD1zCigkGGCKqurHchZYAG0hLOSAYQAJAEEAOQBxAFEAGQB5Aay9FiEAXTrqlC5GFrbkukYKKZmtNetbYiyAKwoBObriAA9idlWUdnPq+jR4iphW0EgoEhshXc-oEtzMRzkh6JQwLVqtQYCAmgpJEpVPhlAtYcA4GgwMRKvV6s94sIAd9GuE8dUjMo3gBvGDcCCyYTtbr9YbjSbTIQwAC+EWhsPhFBApjRVxuuPJ7DQBiU8Na9z+MCE1FwirWLMGowm21B-LhsA2TDRbGKwBYFAA+gIWooVGplPM8SBgNgShK8dwMNLeLAAD5ovEAFR0GGA9hAFARSPt6Oe9hI8m4iWd2mIwEYwHYTGCmAaZEo8kNUPJ1QAJNTaeCKJCsrbkeosmgdPRuM2ebyS4ZLhbntjgG8MgAGQd8mAw-XaCBwYjG4im81WwTvIuO+rOzHY934l6xJXEoGMMnkyk0ukMyRM9YMJg6rRS9Np+jCcuViFbIuN5ut+jtrm8urjvC+yqLO86Wta7xCqYq7VOuWI4gGMg7kS4CAssIKISesC0vSjJKu0wGHCcZx3gIGZPkqL4yG+WRQYcTYtm23Lcn+EQMd+xZFrAVFVjWH7sUx3JAA"
       },
       {
         "k": "p",
@@ -621,7 +621,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         "k": "code",
         "lang": "text",
-        "text": "❯ nika check release-notes.nika.yaml\n\n ✔ PLAN     3 wave(s) · 5 task(s) · max parallelism 2\n      wave 1 changelog (invoke · nika:read) · size (exec · wc)\n      wave 2 notes (infer · ollama/llama3.2:3b) · badge (invoke · nika:write)\n      wave 3 save (invoke · nika:write)\n ✔ MODELS   1 model resolves in this binary\n ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)\n ✔ SECRETS  no information-flow escapes\n ✔ PERMITS  body fits the declared boundary"
+        "text": "❯ nika check release-notes.nika.yaml\n\n ✔ PLAN     3 wave(s) · 5 task(s) · max parallelism 2\n      wave 1 changelog (invoke · nika:read) · size (exec · wc)\n      wave 2 notes (infer · ollama/llama3.2:3b) · badge (invoke · nika:write)\n      wave 3 save (invoke · nika:write)\n ✔ MODELS   1 model resolves in this binary\n ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)\n   notes  ollama/llama3.2:3b  UNBOUNDED — no catalog price (local/unknown model)\n ✔ SECRETS  no information-flow escapes\n ✔ PERMITS  body fits the declared boundary\n ✔ audited · 5 task(s) · 3 wave(s) · permits declared · est ≥$0.0000 · 0 hints"
       },
       {
         "k": "p",
@@ -813,7 +813,7 @@ export const BLOG_POSTS: BlogPost[] = [
           },
           {
             "k": "text",
-            "text": ". It travels: mail it, commit it, hand it to a teammate with no environment to reproduce. And "
+            "text": ". It travels: mail it, commit it, hand it to a teammate — there is no environment to reproduce. And "
           },
           {
             "k": "link",

@@ -79,6 +79,19 @@ interface CalloutRig {
   /** the term under the pointer/focus (stratum index · -1 none) — its
       wire brightens, the others whisper */
   hot?: number
+  /** THE UMBILICAL (the dock) · per-stratum SECTION blocks — the section
+      being read wires to its station across the column seam */
+  docks?: Partial<Record<number, HTMLElement | null>>
+  /** eased viewport-y of the umbilical's column end (a section change
+      GLIDES the anchor, never teleports it) */
+  uy?: number
+  /** the umbilical's own ink · a bézier core + a soft halo + THE SPARK
+      (the ignition travelling the wire INTO the hull — the one effect
+      that crosses the DOM/GL seam on the one clock) */
+  upath?: SVGPathElement | null
+  uhalo?: SVGPathElement | null
+  spark?: SVGCircleElement | null
+  ugrad?: SVGLinearGradientElement | null
 }
 
 function Machine({
@@ -397,6 +410,7 @@ function Machine({
         v.set(0, 0, 0).applyMatrix4(inner.current.matrixWorld).project(camera)
         centreZ = v.z
       }
+      let umbDrawn = false
       for (let si = 0; si < rig.items.length; si++) {
         const it = rig.items[si]
         if (!it?.line || !it.dot || !it.label) continue
@@ -461,10 +475,72 @@ function Machine({
           it.dot.setAttribute('cy', py.toFixed(1))
           continue
         }
+        /* THE UMBILICAL · at the DOCK the floating label stands down (the
+           position plate is the one text source) and the leader becomes
+           the seam-crossing wire: its column end rides the stage's LEFT
+           EDGE at the read section's on-screen height (eased — a section
+           change glides the anchor), its far end sails with the hull. The
+           ignition strike travels it — width + brightness on the same
+           clock as the hull swell: one effect crossing the boundary. */
+        if (!hero && !full && pose.focus === si) {
+          const blk = rig.docks?.[si]
+          if (blk && rig.upath && rig.uhalo && rig.spark) {
+            const br = blk.getBoundingClientRect()
+            const yT = Math.min(Math.max(br.top - rect.top + 96, 96), rect.height - 130)
+            rig.uy = (rig.uy ?? yT) + (yT - (rig.uy ?? yT)) * Math.min(1, delta * 4)
+            const ts = Math.max(u.uTime.value - u.uStrike.value, 0)
+            const pulse = u.uStrikeStratum.value === si ? Math.exp(-ts * 2.2) : 0
+            it.label.style.opacity = '0'
+            it.label.style.pointerEvents = 'none'
+            it.line.style.opacity = '0'
+            /* the seam curve · out of the column horizontally, a lazy S
+               into the station (control points at 35% of the run) */
+            const x0 = 12
+            const y0 = rig.uy
+            const cx = (px - x0) * 0.35
+            const d = `M ${x0} ${y0.toFixed(1)} C ${(x0 + cx).toFixed(1)} ${y0.toFixed(1)}, ${(px - cx).toFixed(1)} ${py.toFixed(1)}, ${px.toFixed(1)} ${py.toFixed(1)}`
+            rig.upath.setAttribute('d', d)
+            rig.uhalo.setAttribute('d', d)
+            if (rig.ugrad) {
+              rig.ugrad.setAttribute('x1', String(x0))
+              rig.ugrad.setAttribute('y1', y0.toFixed(1))
+              rig.ugrad.setAttribute('x2', px.toFixed(1))
+              rig.ugrad.setAttribute('y2', py.toFixed(1))
+            }
+            rig.upath.style.opacity = (it.o * (0.66 + 0.34 * pulse)).toFixed(3)
+            rig.upath.style.strokeWidth = (1.2 + pulse * 1.2).toFixed(2)
+            rig.uhalo.style.opacity = (it.o * (0.16 + 0.3 * pulse)).toFixed(3)
+            umbDrawn = true
+            /* THE SPARK · the ignition travels the wire INTO the hull over
+               the strike's first ~0.9s (the hull swell + wire pulses read
+               the same clock — one event, both worlds) */
+            const tt = u.uStrikeStratum.value === si ? ts / 0.9 : 2
+            if (tt < 1) {
+              const w = tt * tt * (3 - 2 * tt) /* smoothstep ease */
+              const omw = 1 - w
+              const sx2 =
+                omw * omw * omw * x0 + 3 * omw * omw * w * (x0 + cx) + 3 * omw * w * w * (px - cx) + w * w * w * px
+              const sy2 = omw * omw * omw * y0 + 3 * omw * omw * w * y0 + 3 * omw * w * w * py + w * w * w * py
+              rig.spark.setAttribute('cx', sx2.toFixed(1))
+              rig.spark.setAttribute('cy', sy2.toFixed(1))
+              rig.spark.setAttribute('r', (2 + Math.sin(Math.PI * tt) * 2.4).toFixed(2))
+              rig.spark.style.opacity = Math.sin(Math.PI * tt).toFixed(3)
+            } else {
+              rig.spark.style.opacity = '0'
+            }
+            it.dot.setAttribute('cx', px.toFixed(1))
+            it.dot.setAttribute('cy', py.toFixed(1))
+            it.dot.setAttribute('r', (2.2 + pulse * 1.8).toFixed(2))
+            it.dot.style.opacity = op
+            continue
+          }
+        }
         const left = it.label.dataset.side === 'l'
         /* the labels hold their PLATE SLOTS (left/right columns) — the
            engineering-plate read at the finale, one clean leader at the
            dock; only the line's far end sails with the hull */
+        it.dot.setAttribute('r', '2.2') /* undo the umbilical's swell */
+        it.line.style.strokeWidth = ''
         const lw = it.label.offsetWidth
         const lh = it.label.offsetHeight
         const x1 = it.label.offsetLeft + (left ? lw + 6 : -6)
@@ -475,6 +551,12 @@ function Machine({
         it.line.setAttribute('y2', py.toFixed(1))
         it.dot.setAttribute('cx', px.toFixed(1))
         it.dot.setAttribute('cy', py.toFixed(1))
+      }
+      /* off the dock (poster · finale · drag) the umbilical stands down */
+      if (!umbDrawn && rig.upath && rig.uhalo && rig.spark) {
+        rig.upath.style.opacity = '0'
+        rig.uhalo.style.opacity = '0'
+        rig.spark.style.opacity = '0'
       }
     }
 
@@ -611,6 +693,20 @@ export default function TheSpecMachine({
       rig.hot = -1
     }
   }, [])
+  /* THE UMBILICAL's anchors · the page's own section blocks, by stratum
+     (stable SSG DOM — queried once; license maps too but the overview
+     pose never focuses it) */
+  useEffect(() => {
+    const rig = calloutRef.current
+    rig.docks = {}
+    for (const el of document.querySelectorAll<HTMLElement>('.spec-block[data-stratum]')) {
+      const si = stratumIndex(el.dataset.stratum as StratumKey)
+      if (si >= 0) rig.docks[si] = el
+    }
+    return () => {
+      rig.docks = {}
+    }
+  }, [])
   useEffect(() => {
     if (resetSignal === 0) return
     helmRef.current.yaw = 0
@@ -714,6 +810,43 @@ export default function TheSpecMachine({
         }}
       >
         <svg className="smc-lines">
+          {/* THE UMBILICAL · the seam-crossing wire (halo under core) + THE
+              SPARK — attribute-driven by the frame loop, zero re-renders.
+              The gradient runs the wire's own span (userSpaceOnUse — the
+              loop feeds it the endpoints): a whisper at the column, the
+              struck bright at the hull — the read flows INTO the ship. */}
+          <defs>
+            <linearGradient
+              id="smcUmb"
+              gradientUnits="userSpaceOnUse"
+              ref={(el) => {
+                calloutRef.current.ugrad = el
+              }}
+            >
+              <stop offset="0" stopColor="#4f86ff" stopOpacity="0.3" />
+              <stop offset="0.55" stopColor="#4f86ff" stopOpacity="0.8" />
+              <stop offset="1" stopColor="#8db4ff" stopOpacity="1" />
+            </linearGradient>
+          </defs>
+          <path
+            className="smc-uhalo"
+            ref={(el) => {
+              calloutRef.current.uhalo = el
+            }}
+          />
+          <path
+            className="smc-umbilical"
+            ref={(el) => {
+              calloutRef.current.upath = el
+            }}
+          />
+          <circle
+            className="smc-spark"
+            r="2.4"
+            ref={(el) => {
+              calloutRef.current.spark = el
+            }}
+          />
           {CALLOUTS.map((c) => {
             const si = STRATA_ORDER.indexOf(c.key)
             return (

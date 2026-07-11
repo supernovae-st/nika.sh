@@ -108,4 +108,38 @@ export const ERROR_PATHS = [
   '/errors/NIKA-VAR-009',
 ]
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/use-cases', '/spec', '/install', '/convert', '/brand']
+/* the stdlib register's deep pages — one static landing per builtin (slug =
+   bare name: /tools/fetch). Same prerender law as ERROR_PATHS; kept literal
+   (this file stays import-free); the tools drift gate
+   (src/test/tools.test.ts) fails when the catalog and these paths diverge. */
+export const TOOL_PATHS = [
+  '/tools/assert',
+  '/tools/chart',
+  '/tools/compose',
+  '/tools/convert',
+  '/tools/date',
+  '/tools/done',
+  '/tools/edit',
+  '/tools/emit',
+  '/tools/fetch',
+  '/tools/glob',
+  '/tools/grep',
+  '/tools/hash',
+  '/tools/image_fx',
+  '/tools/image_generate',
+  '/tools/inspect',
+  '/tools/jq',
+  '/tools/json_diff',
+  '/tools/json_merge_patch',
+  '/tools/log',
+  '/tools/notify',
+  '/tools/prompt',
+  '/tools/read',
+  '/tools/tts_generate',
+  '/tools/uuid',
+  '/tools/validate',
+  '/tools/wait',
+  '/tools/write',
+]
+
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/use-cases', '/spec', '/install', '/convert', '/brand']

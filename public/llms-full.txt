@@ -178,7 +178,7 @@ permits:
     read: ["./CHANGELOG.md"]
     write: ["./notes.md", "./badge.json"]
   exec: ["wc"]
-  tools: ["nika:read", "nika:write", "nika:jq"]
+  tools: ["nika:read", "nika:write"]
 
 tasks:
   - id: changelog
@@ -225,8 +225,10 @@ Now watch what the engine derives from that shape, before a single token is spen
       wave 3 save (invoke · nika:write)
  ✔ MODELS   1 model resolves in this binary
  ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)
+   notes  ollama/llama3.2:3b  UNBOUNDED — no catalog price (local/unknown model)
  ✔ SECRETS  no information-flow escapes
  ✔ PERMITS  body fits the declared boundary
+ ✔ audited · 5 task(s) · 3 wave(s) · permits declared · est ≥$0.0000 · 0 hints
 ```
 
 Read wave 2. An inference and a file write run *together*, because the graph says they can — `badge` descends from `size`, not from the model call. Nobody wrote a scheduler, a thread pool, an `asyncio.gather`. [The plan was always in the file](/blog/dag-for-free); declaring the shape is what lets the engine find it. And the same derivation prices the run (a local model, [honestly unpriced](/blog/the-local-forecast)) and checks every effect against the declared boundary — the audit is possible *because* the pipeline is data, not code. You cannot statically audit glue.
@@ -235,7 +237,7 @@ Go down the feature list of any orchestration framework and watch each one colla
 
 The honest boundary: some agent work is genuinely dynamic — the model decides mid-flight what to do next, and no static graph can hold that. Nika gives that its own verb, `agent`, with a tool whitelist and a turn budget: the dynamic part is *contained in a task*, and the pipeline around it stays declared. What never needed to be dynamic — and it is most of what pipelines do all day — never needed to be code.
 
-The payoff compounds because a file is a *thing*. It diffs: the review of a pipeline change is two red lines and one green line, not a walkthrough of a Python module. It replays: the run that used this file is a trace you can [verify line by line](/blog/the-chain-of-custody). It travels: mail it, commit it, hand it to a teammate with no environment to reproduce. And [your agent can write it](/blog/written-by-agents) — because the format it has to learn is forty lines of YAML with four verbs, not a framework API.
+The payoff compounds because a file is a *thing*. It diffs: the review of a pipeline change is two red lines and one green line, not a walkthrough of a Python module. It replays: the run that used this file is a trace you can [verify line by line](/blog/the-chain-of-custody). It travels: mail it, commit it, hand it to a teammate — there is no environment to reproduce. And [your agent can write it](/blog/written-by-agents) — because the format it has to learn is forty lines of YAML with four verbs, not a framework API.
 
 The next pipeline you sketch, try writing the *shape* first: the tasks, and who needs whose output. You will find the file was the whole program.
 

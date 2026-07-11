@@ -162,6 +162,15 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /tools — the standard library register; one closed namespace, spec-versioned.
+    out: 'og-tools.png',
+    fig: 'FIG T.0',
+    headline: 'One namespace,<br><span class="b">no plugin store.</span>',
+    sub: 'Every <span style="white-space:nowrap">nika:</span> builtin the engine ships&nbsp;— files, data, network, media&nbsp;— versioned with the spec and reviewed like the rest of your&nbsp;file.',
+    detail:
+      '<span class="arrow">▸</span><span>invoke-gated<span class="sep">·</span>permit-bound<span class="sep">·</span><b>check&nbsp;teaches&nbsp;the&nbsp;args</b></span>',
+  },
+  {
     // /blog/the-run-becomes-evidence — hash-chained journal; verify names the first broken link.
     out: 'og-blog-the-run-becomes-evidence.png',
     fig: 'FIG B.26',
