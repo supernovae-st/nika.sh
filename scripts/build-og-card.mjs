@@ -249,6 +249,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>one&nbsp;shape<span class="sep">·</span>five&nbsp;sovereign&nbsp;hosts<span class="sep">·</span><b>zero&nbsp;lock-in</b></span>',
   },
   {
+    // /blog/the-generative-workflow — inputs · a model step · effects you can point to; provenance built in.
+    out: 'og-blog-the-generative-workflow.png',
+    fig: 'FIG B.23',
+    size: 60,
+    headline: 'Generative workflow,<br><span class="b">minus the mystery.</span>',
+    sub: 'Inputs you name, a model step, effects you can point to — declared in one file. Rehearsed offline on the mock provider; every asset lands with its sha256 and a provenance manifest.',
+    detail:
+      '<span class="arrow">▸</span><span>declared&nbsp;triple<span class="sep">·</span>offline&nbsp;rehearsal<span class="sep">·</span><b>assets&nbsp;carry&nbsp;provenance</b></span>',
+  },
+  {
     // /blog/the-agent-workflow-spectrum — declared graph ↔ free loop; the agent verb contains the dynamic end.
     out: 'og-blog-the-agent-workflow-spectrum.png',
     fig: 'FIG B.22',

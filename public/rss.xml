@@ -39,6 +39,14 @@
       <description>explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five — never a model call, never the network.</description>
     </item>
     <item>
+      <title>The generative ai workflow, minus the mystery</title>
+      <link>https://nika.sh/blog/the-generative-workflow</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-generative-workflow</guid>
+      <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>Strip the buzzword and a generative ai workflow is three things: inputs you name, a model step, and effects you can point to. Declare all three in one file and the mystery evaporates — rehearsed offline, every asset with provenance.</description>
+    </item>
+    <item>
       <title>The chain of custody</title>
       <link>https://nika.sh/blog/the-chain-of-custody</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-chain-of-custody</guid>

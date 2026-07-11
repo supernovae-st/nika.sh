@@ -26,11 +26,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-generative-workflow',
-    tag: 'Language',
+    slug: 'the-registry-reproves-everything',
+    tag: 'Engine',
     date: 'soon',
-    title: 'The generative ai workflow, minus the mystery',
-    teaser: 'Strip the buzzword and a generative ai workflow is inputs, a model step, and effects you can name. Declare the three and the mystery evaporates: reviewable in, typed out, priced before it runs.',
+    title: 'The registry re-proves everything',
+    teaser: 'A workflow registry where nothing is taken on faith: every entry is CI re-proven against the engine — hash, oracle, certificate. The npm-of-workflows, minus the trust-me.',
   },
   {
     slug: 'the-run-that-never-runs',

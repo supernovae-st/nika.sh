@@ -85,6 +85,15 @@ export const BLOG_POSTS: BlogPost[] = [
     "seriesStop": "forecast"
   },
   {
+    "slug": "the-generative-workflow",
+    "file": "2026-07-11-the-generative-workflow.md",
+    "title": "The generative ai workflow, minus the mystery",
+    "tag": "Language",
+    "date": "2026-07-11",
+    "description": "Strip the buzzword and a generative ai workflow is three things: inputs you name, a model step, and effects you can point to. Declare all three in one file and the mystery evaporates — rehearsed offline, every asset with provenance.",
+    "readingMin": 3
+  },
+  {
     "slug": "the-chain-of-custody",
     "file": "2026-07-11-the-chain-of-custody.md",
     "title": "The chain of custody",
