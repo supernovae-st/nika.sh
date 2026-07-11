@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Link, useParams } from 'react-router'
 import { useHead } from '@unhead/react'
+import { useAnchorScroll } from '../lib/use-anchor-scroll'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
@@ -105,13 +106,9 @@ export function Component() {
     ],
   })
 
-  /* the deep-link lands ON its row (client effect — prerender unaffected) */
-  useEffect(() => {
-    if (!hit) {
-      return
-    }
-    document.getElementById(hit.name)?.scrollIntoView({ block: 'start' })
-  }, [hit])
+  /* the deep-link lands ON its row — re-aimed until layout settles
+     (the one-shot scroll drifted on slow devices · use-anchor-scroll) */
+  useAnchorScroll(hit?.name, 'start')
 
   return (
     <main className="theme-dark tm-page">

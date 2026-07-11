@@ -171,6 +171,15 @@ const CARDS = [
       '<span class="arrow">▸</span><span>local&nbsp;default<span class="sep">·</span>model&nbsp;pins<span class="sep">·</span><b>no&nbsp;inference&nbsp;lock-in</b></span>',
   },
   {
+    // /sitemap — the human map; the coverage gate keeps it exhaustive.
+    out: 'og-sitemap.png',
+    fig: 'FIG M.0',
+    headline: 'Every page,<br><span class="b">one map.</span>',
+    sub: 'The whole territory on one labeled page&nbsp;— the registers, the writing, the machine twins&nbsp;— and CI fails when a page ships without joining&nbsp;it.',
+    detail:
+      '<span class="arrow">▸</span><span>coverage-gated<span class="sep">·</span>both&nbsp;directions<span class="sep">·</span><b>crawlers&nbsp;get&nbsp;sitemap.xml</b></span>',
+  },
+  {
     // /templates — the skeleton register; instantiate, never invent.
     out: 'og-templates.png',
     fig: 'FIG T.1',

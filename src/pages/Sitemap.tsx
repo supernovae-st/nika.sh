@@ -63,6 +63,11 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:image', content: 'https://nika.sh/og-sitemap.png' },
+      {
+        property: 'og:image:alt',
+        content: 'The nika.sh site map. Every page, one labeled map, coverage-gated.',
+      },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ],
@@ -101,9 +106,10 @@ export function Component() {
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Everything this site serves, on one page — <b>including the machine twins</b>. The
-            registers (tools · errors) are projections of the binary and the spec; the map derives
-            its tails from the same compiled catalogs, and CI fails when a page ships without
-            joining it. Crawlers read <a href="/sitemap.xml">/sitemap.xml</a>; you read this.
+            registers (tools · providers · templates · errors) are projections of the binary and
+            the spec; the map derives its tails from the same compiled catalogs, and CI fails when
+            a page ships without joining it. Crawlers read <a href="/sitemap.xml">/sitemap.xml</a>;
+            you read this.
           </p>
 
           {/* the territory's dimensions, at a glance */}
