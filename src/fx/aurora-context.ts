@@ -32,8 +32,8 @@ export type AuroraContextValue = {
   /** The permits-wall beat: one danger flash (~650ms) — the full ring in
       coral at rest, the partially-drawn ring in coral during a run. */
   flashDanger: () => void
-  /** Leave run mode: success SWEEPS the ring full · failure flashes danger on
-      whatever drew; the verdict holds ~1.2s, then the lining fades out. */
+  /** Leave run mode: success completes the ring full · failure flashes danger
+      on whatever drew; the verdict holds ~1.2s, then the lining fades out. */
   runEnd: (verdict: 'success' | 'failure') => void
   /** ABORT run mode with no verdict beat — the replay was interrupted (scrubbed
       back above the run window · surface unmounted · route change). The lining

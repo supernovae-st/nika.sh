@@ -12,7 +12,7 @@
    THE DRUM SURVIVES — the one dynamic signal: while a run replays, the
    .frame-lining ring DRAWS around the screen with the recorded progress
    (conic reveal by --run-p), glowing by --run-glow; each task beats it a
-   touch brighter; the verdict sweeps it full (success) or flashes danger.
+   touch brighter; the verdict completes it full (success) or flashes danger.
    Idle is --run-glow: 0 — the lining does not exist at rest.
 
    Geometry contract (unchanged): --frame-w is the bezel thickness every
@@ -29,16 +29,6 @@
   --frame-w: 14px;
   /* the cutout's corner radius — one geometry, shared by slab + lining */
   --frame-r: 48px;
-}
-
-/* registered so the ring DRAWS (typed number = interpolable): progress steps
-   ease between task beats and the success verdict completes as a SWEEP, not a
-   snap. Unregistered fallback (old engines) degrades to today's snap. The
-   initial IS the pre-JS state (the arc-10a @property law). */
-@property --run-p {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0;
 }
 @media (max-width: 767px) {
   :root {
@@ -69,20 +59,13 @@
     0 0 0 9999px #08090c,
     inset 0 2px 8px -3px rgb(0 0 0 / 0.55),
     inset 0 0 9px -2px rgb(0 0 0 / 0.38);
-  /* the verdict's draw easing (--run-p is written on THIS element; the
-     lining inherits the animating value): runEnd(success) completes the
-     ring as a SWEEP, the wall flash draws in — not a snap */
-  transition: --run-p 0.42s ease;
 }
-/* while a run PLAYS, progress snaps step-to-step: an interpolating --run-p
-   re-rasterizes the masked blurred ring every compositor frame for 0.42s
-   after EVERY progress write — free on real GPUs, a margin-eater on
-   software GL (the CI runner starved under it; one repaint per step is
-   the pre-sweep cost). The sweep belongs to the verdict, which fires
-   AFTER data-run drops. */
-.frame[data-run] {
-  transition: none;
-}
+/* NO --run-p transition, by CI-proven law: an interpolating registered
+   custom prop re-rasterizes the masked blurred ring every compositor frame
+   for its whole duration — free on real GPUs, a MARGIN-EATER on software
+   GL (the deep-belts runner starved twice under the 0.42s verdict sweep,
+   even gated to [data-run]-off). The ring SNAPS everywhere; the verdict
+   moment is the 1.2s full-ring HOLD, which needs no motion. */
 
 /* ── THE DRUM LINING · the run, drawn on the frame ────────────────────────────
    A hairline ring hugging the cutout, revealed clockwise from 12 o'clock by
@@ -130,12 +113,6 @@
     );
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .frame {
-    transition: none; /* the ring SNAPS to each progress step — info, not motion */
-  }
-}
-
 /* print · the frame is SCREEN chrome: fixed elements repeat on every printed
    page and the slab's opaque flood would ink the sheet black. Paper gets
    none of it (the print register owns its own chrome · print.css). */
