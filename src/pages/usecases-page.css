@@ -87,7 +87,11 @@
   font-size: 12px;
   letter-spacing: 0.02em;
   color: var(--v4-text-dim);
-  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+  /* the ONE micro-interaction system (tokens.css) · 140ms color-only */
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
 }
 .ucp-rail-link:hover {
   color: var(--v4-text);
@@ -193,7 +197,9 @@
   }
 }
 
-/* ── a workflow card · head + body + verbs + open file + outcome ─────────────*/
+/* ── a workflow card · head + body + verbs + open file + outcome ─────────────
+   NO hover state: the <article> is not interactive (its links are) — a card
+   that brightens under the pointer promises a click it can't honour. */
 .ucp-wf {
   display: flex;
   flex-direction: column;
@@ -202,11 +208,6 @@
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius); /* v5 sharp — the 0-4px system */
   background: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-.ucp-wf:hover {
-  border-color: color-mix(in oklch, var(--v4-text) 22%, transparent);
-  background: var(--v4-bg-raised);
 }
 .ucp-wf-head {
   display: flex;
@@ -317,7 +318,9 @@
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
-  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    text-decoration-color var(--dur-ui) var(--ease-ui);
   white-space: nowrap;
 }
 .ucp-wf-walk:hover {
@@ -374,7 +377,7 @@
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
-  transition: color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .ucp-note a:hover {
   color: var(--v4-text);
@@ -395,7 +398,7 @@
   font-size: 14.5px;
   color: var(--v4-text);
   border-radius: var(--v4-radius);
-  transition: color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .ucp-link--dim {
   color: var(--v4-text-dim);
@@ -405,16 +408,21 @@
 }
 .ucp-link-glyph {
   color: var(--v4-text-dim);
-  transition: color 0.18s ease;
+  transition: color var(--dur-ui) var(--ease-ui);
 }
 .ucp-link:hover .ucp-link-glyph {
   color: var(--v4-text);
 }
 .ucp-link-arrow {
-  transition: transform 0.18s ease;
+  transition: transform var(--dur-ui) var(--ease-ui);
 }
 .ucp-link:hover .ucp-link-arrow {
   transform: translateX(2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ucp-link:hover .ucp-link-arrow {
+    transform: none;
+  }
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -434,15 +442,14 @@
   z-index: 1;
   pointer-events: none;
 }
+/* the crop-marks print with the sheet — always-on faint (a hover-only reveal
+   was invisible to touch + keyboard readers, and dressed a non-interactive
+   card in an affordance) */
 .ucp-wf-hud-mark {
   position: absolute;
   width: 8px;
   height: 8px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-.ucp-wf:hover .ucp-wf-hud-mark {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 .ucp-wf-hud-mark::before,
 .ucp-wf-hud-mark::after {
@@ -504,9 +511,4 @@
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
-}
-@media (prefers-reduced-motion: reduce) {
-  .ucp-wf-hud-mark {
-    transition: none;
-  }
 }

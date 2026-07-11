@@ -11,7 +11,8 @@ import { SectionHead } from '../components/SectionHead'
 /* ─── FIG 7.0 · Use cases (theme-LIGHT · the editorial gallery) ────────────────
    Design doc §6 (FIG 7.0) — proof. A clean GALLERY of real showcase workflows,
    tabbed by métier (data from usecases-data.ts · the 5 UC_TABS). Each card =
-   title + one-line outcome + verb chips (glyphs) + a peek of its real YAML.
+   icon + title + tier · what it does (body) · the → payoff (outcome) · verb
+   chips (SSOT glyphs) + the projected task count.
    Selecting a card reveals its full YAML panel via <CodeFile>.
 
    It is NOT a run animation — the Living File centerpiece owns the run. This is
@@ -106,6 +107,8 @@ export default function UseCasesV4() {
             {t.cases.map((u, i) => {
               const selected = i === Math.min(sel, t.cases.length - 1)
               const cardVerbs = verbsFor(u)
+              /* the task count DERIVES from the projected DAG — never hand-typed */
+              const taskCount = SHOWCASE_DAG[u.slug]?.tasks.length ?? 0
               return (
                 <button
                   key={u.slug}
@@ -116,21 +119,37 @@ export default function UseCasesV4() {
                 >
                   <span className="v4uc-card-head">
                     <span className="v4uc-card-fig">7.{tab + 1}.{i + 1}</span>
+                    <span className="v4uc-card-icon" aria-hidden>
+                      {u.icon}
+                    </span>
                     <span className="v4uc-card-title">{u.title}</span>
                     <span className="v4uc-card-tier" title={`Complexity tier ${u.tier.slice(1)} of 4`}>
                       {u.tier}
                     </span>
                   </span>
-                  <span className="v4uc-card-outcome">{u.outcome}</span>
-                  <span className="v4uc-verbs">
-                    {cardVerbs.map((v) => (
-                      <span key={v} className="v4uc-verb" style={{ ['--vh' as string]: VERB_HUE[v] }}>
-                        <span className="v4uc-verb-glyph" aria-hidden>
-                          {verbGlyph(v)}
+                  <span className="v4uc-card-body">{u.body}</span>
+                  <span className="v4uc-card-outcome">
+                    <span className="v4uc-arrow" aria-hidden>
+                      →
+                    </span>
+                    {u.outcome}
+                  </span>
+                  <span className="v4uc-card-meta">
+                    <span className="v4uc-verbs">
+                      {cardVerbs.map((v) => (
+                        <span key={v} className="v4uc-verb" style={{ ['--vh' as string]: VERB_HUE[v] }}>
+                          <span className="v4uc-verb-glyph" aria-hidden>
+                            {verbGlyph(v)}
+                          </span>
+                          {v}
                         </span>
-                        {v}
+                      ))}
+                    </span>
+                    {taskCount > 0 ? (
+                      <span className="v4uc-card-tasks">
+                        {taskCount} {taskCount === 1 ? 'task' : 'tasks'}
                       </span>
-                    ))}
+                    ) : null}
                   </span>
                 </button>
               )

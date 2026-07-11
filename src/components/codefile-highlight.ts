@@ -13,18 +13,18 @@
    clean component-only export (react-refresh / fast-refresh friendly) and the
    helpers can be unit-tested in isolation. */
 
+import { NIKA_VERB_GLYPH } from '../design-tokens.generated'
+
 /** The 4 Nika verbs, locked forever (D-2026-05-22-N18). */
 export const NIKA_VERBS = ['infer', 'exec', 'invoke', 'agent'] as const
 export type NikaVerb = (typeof NIKA_VERBS)[number]
 
-/** A monochrome-safe glyph per verb. Distinct, single-cell in a monospace font,
- *  no emoji (no color/variation-selector surprises), grayscale by default. */
-const VERB_GLYPH: Record<NikaVerb, string> = {
-  infer: '◇', // diamond outline — a thought / inference
-  exec: '▷', // play triangle — run a local command
-  invoke: '◆', // filled diamond — call a tool
-  agent: '✦', // four-point star — an autonomous loop
-}
+/** The monochrome-safe glyph per verb (◇ ▷ ◆ ✦) — read from the generated
+ *  design-token SSOT (design/tokens.yaml via nika-spec), so the site, the
+ *  VS Code extension and every other consumer speak the same icon language.
+ *  Distinct, single-cell in a monospace font, no emoji (no color/variation-
+ *  selector surprises), grayscale by default. */
+const VERB_GLYPH: Record<NikaVerb, string> = NIKA_VERB_GLYPH
 
 /**
  * Map a Nika verb to its glyph. Pure. Case-sensitive: only the 4 lowercase
