@@ -2,7 +2,7 @@
    Complements shoot-scroll.mjs (scroll-linked sweeps) and visual-regress.mjs
    (pixel-compared goldens): this one is the DESIGN-ITERATION eye — build,
    then shoot any set of prerendered routes at chosen viewports, optionally
-   forcing the EdgeAurora state (rest / hello / run / pulse), scrolling a
+   forcing the frame state (rest / run / beat / danger), scrolling a
    section into view, or emulating reduced motion for the settled register.
    Zero deps — Node 22 global WebSocket + CDP against Chrome headless on
    swiftshader (same GL truth as CI screenshots).
@@ -10,7 +10,7 @@
    Usage:
      pnpm build && node scripts/shoot-routes.mjs \
        --routes /,/blog,/spec \
-       --states rest,hello \
+       --states rest,run \
        --viewports desktop,mobile \
        --out shots/belt
      node scripts/shoot-routes.mjs --routes / --scroll-to .v5run-stage \
@@ -19,8 +19,7 @@
 
    Flags:
      --routes    comma list of prerendered paths (default /)
-     --states    comma subset of rest,hello,run,pulse (default: rest only;
-                 states other than rest freeze the aurora drift first)
+     --states    comma subset of rest,run,beat,danger (default: rest only)
      --viewports comma subset of desktop,mobile (default both)
      --scroll-to CSS selector scrolled into view before the shot
      --settle    extra ms to wait before shooting (autoplay devices)
@@ -63,17 +62,16 @@ const CHROME = arg(
   process.env.CHROME_BIN ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
 )
 
-/* the aurora states the belt can force (edge-aurora.css contract: intensity
-   var + data attrs on [data-edge-aurora]; drift frozen at a fixed phase so
-   shots are comparable across runs) */
+/* the frame states the belt can force (edge-aurora.css contract: --run-glow
+   presence · --run-p ring progress · data-run/data-danger on
+   [data-edge-aurora]) — the REACHABLE vocabulary only: a glow with p=0
+   paints nothing (the conic reveals by p), so the old hello/pulse states
+   were blind probes and died with the machined frame. */
 const STATE_JS = {
-  /* the machined frame (v10): rest = static hardware (nothing to force) ·
-     the run states drive the drum lining (--run-glow presence · --run-p
-     ring progress · data-run) — the same keys older belts pass */
   rest: `el.style.setProperty('--run-glow','0')`,
-  hello: `el.style.setProperty('--run-glow','0.5')`,
-  run: `el.dataset.run='on'; el.style.setProperty('--run-glow','0.85'); el.style.setProperty('--run-p','0.6')`,
-  pulse: `delete el.dataset.run; el.style.setProperty('--run-glow','1'); el.style.setProperty('--run-p','0')`,
+  run: `el.dataset.run='on'; el.style.setProperty('--run-glow','0.8'); el.style.setProperty('--run-p','0.6')`,
+  beat: `el.dataset.run='on'; el.style.setProperty('--run-glow','1'); el.style.setProperty('--run-p','0.82')`,
+  danger: `el.dataset.danger='on'; el.style.setProperty('--run-glow','1'); el.style.setProperty('--run-p','1')`,
 }
 const VIEWPORTS = {
   desktop: { w: 1600, h: 1000, mobile: false },

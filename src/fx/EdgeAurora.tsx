@@ -4,9 +4,10 @@ import './edge-aurora.css'
 
 /* ─── THE MACHINED FRAME · provider (v10 · the nuke) ──────────────────────────
    The frame is static hardware (edge-aurora.css); this provider keeps the
-   SAME 7-method drum API the run surfaces already speak (TheRun ·
-   ScrollMorph · TheBoundary — zero caller changes) and drives exactly TWO
-   custom properties + one data attribute on the frame element, via ref:
+   drum API the run surfaces already speak (TheRun · ScrollMorph ·
+   TheBoundary — zero caller changes; the caller-less pulse() died in the
+   polish pass) and drives exactly TWO custom properties + one data
+   attribute on the frame element, via ref:
 
      --run-glow  0..1 · the lining's presence (0 at rest — no lining)
      --run-p     0..1 · how far around the frame the ring has drawn
@@ -92,9 +93,12 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
       holdTimerRef.current = setTimeout(() => setP(0), 400)
     }
     return {
-      pulse: () => kick(0.5),
       runStart: () => {
         clearHold()
+        /* a stale wall flash must not leak coral into a fresh run */
+        if (dangerTimerRef.current) clearTimeout(dangerTimerRef.current)
+        dangerTimerRef.current = null
+        elRef.current?.removeAttribute('data-danger')
         floorRef.current = RUN_FLOOR
         setP(0)
         elRef.current?.setAttribute('data-run', 'on')
@@ -106,9 +110,17 @@ export function AuroraProvider({ children }: { children: ReactNode }) {
         const el = elRef.current
         if (!el) return
         el.setAttribute('data-danger', 'on')
+        /* outside a run --run-p is 0 and the conic paints NOTHING — the
+           permits wall flashes the FULL ring instead (inside a run, the
+           partially-drawn ring flashes as-is: « how far it got » reads) */
+        if (!el.hasAttribute('data-run')) setP(1)
         kick(BEAT_GLOW)
         if (dangerTimerRef.current) clearTimeout(dangerTimerRef.current)
-        dangerTimerRef.current = setTimeout(() => el.removeAttribute('data-danger'), DANGER_MS)
+        dangerTimerRef.current = setTimeout(() => {
+          el.removeAttribute('data-danger')
+          /* glow has decayed to ~0.006 by now — the reset is invisible */
+          if (!el.hasAttribute('data-run')) setP(0)
+        }, DANGER_MS)
       },
       runEnd: (verdict: 'success' | 'failure') => {
         clearHold()

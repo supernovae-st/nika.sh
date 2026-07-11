@@ -30,6 +30,16 @@
   /* the cutout's corner radius — one geometry, shared by slab + lining */
   --frame-r: 48px;
 }
+
+/* registered so the ring DRAWS (typed number = interpolable): progress steps
+   ease between task beats and the success verdict completes as a SWEEP, not a
+   snap. Unregistered fallback (old engines) degrades to today's snap. The
+   initial IS the pre-JS state (the arc-10a @property law). */
+@property --run-p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
 @media (max-width: 767px) {
   :root {
     --frame-w: 8px;
@@ -59,6 +69,10 @@
     0 0 0 9999px #08090c,
     inset 0 2px 8px -3px rgb(0 0 0 / 0.55),
     inset 0 0 9px -2px rgb(0 0 0 / 0.38);
+  /* the ring's draw easing (--run-p is written on THIS element; the lining
+     inherits the animating value) — one step per task log line becomes a
+     continuous draw, and runEnd(success)'s p=1 reads as the verdict sweep */
+  transition: --run-p 0.42s ease;
 }
 
 /* ── THE DRUM LINING · the run, drawn on the frame ────────────────────────────
@@ -89,9 +103,12 @@
       rgb(79 134 255 / 0.8) calc(var(--run-p, 0) * 1turn),
       transparent calc(var(--run-p, 0) * 1turn)
     );
+    /* NO opacity transition: the JS decay loop owns the whole envelope —
+       a beat's attack must land in ONE frame (percussion: sharp attack,
+       exponential release); a CSS transition on top restarts 0.28s toward
+       every 16ms write and turns the drum into mush. */
     filter: blur(0.5px);
     opacity: var(--run-glow, 0);
-    transition: opacity 0.28s ease;
   }
   /* the danger beat · the permits wall / a failed verdict — the ring flashes
      the danger coral for the flash window (data-danger, JS-timed) */
@@ -105,8 +122,8 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .frame-lining {
-    transition: none;
+  .frame {
+    transition: none; /* the ring SNAPS to each progress step — info, not motion */
   }
 }
 
