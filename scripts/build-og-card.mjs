@@ -162,6 +162,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /blog/the-local-forecast — duration/cost priors from your own traces; never a model call, never the network.
+    out: 'og-blog-the-local-forecast.png',
+    fig: 'FIG B.18',
+    size: 60,
+    headline: 'Your history,<br><span class="b">your forecast.</span>',
+    sub: '<span style="white-space:nowrap">explain --forecast</span> prices the next run from your own recorded traces: honest ranges at two runs, percentiles at five, local models honestly unpriced.',
+    detail:
+      '<span class="arrow">▸</span><span>stats&nbsp;over&nbsp;your&nbsp;traces<span class="sep">·</span>never&nbsp;a&nbsp;model&nbsp;call<span class="sep">·</span><b>never&nbsp;the&nbsp;network</b></span>',
+  },
+  {
     // /blog/written-by-agents — the agent writes the plan; the audit gates it; you review a two-line diff.
     out: 'og-blog-written-by-agents.png',
     fig: 'FIG B.17',
