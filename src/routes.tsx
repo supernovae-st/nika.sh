@@ -15,6 +15,8 @@ import { Component as Brand } from './pages/Brand'
 import { Component as NotFound } from './pages/NotFound'
 import { Component as Errors } from './pages/Errors'
 import { Component as Tools } from './pages/Tools'
+import { Component as Sitemap } from './pages/Sitemap'
+import { Component as Providers } from './pages/Providers'
 
 /* ─── central route table · React Router v7 data router ──────────────────────
    Replaces the old hand-rolled hash navigation (#/blog, #/manifesto …) with
@@ -63,6 +65,13 @@ export const routes: RouteObject[] = [
          site.config.ts) and scrolls to its anchored row. */
       { path: 'tools', Component: Tools },
       { path: 'tools/:name', Component: Tools },
+      /* the provider register · the human twin of /providers/catalog.json.
+         Spec-named set only; the engine's embedded tail stays a count. */
+      { path: 'providers', Component: Providers },
+      { path: 'providers/:id', Component: Providers },
+      /* the human map · the twin of sitemap.xml. The coverage gate
+         (src/test/sitemap.test.ts) keeps it exhaustive both ways. */
+      { path: 'sitemap', Component: Sitemap },
       { path: 'use-cases', Component: UseCasesPage },
       { path: 'spec', Component: Spec },
       { path: 'install', Component: Install },

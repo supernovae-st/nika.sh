@@ -162,6 +162,15 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    // /providers — the provider register; local first, keys yours, no lock-in.
+    out: 'og-providers.png',
+    fig: 'FIG P.0',
+    headline: 'Local first,<br><span class="b">keys stay yours.</span>',
+    sub: 'One <span style="white-space:nowrap">provider:</span> line moves a workflow between models&nbsp;— laptop Ollama to a frontier API is a one-word diff. Keys ride env vars, never a config&nbsp;file.',
+    detail:
+      '<span class="arrow">▸</span><span>local&nbsp;default<span class="sep">·</span>model&nbsp;pins<span class="sep">·</span><b>no&nbsp;inference&nbsp;lock-in</b></span>',
+  },
+  {
     // /tools — the standard library register; one closed namespace, spec-versioned.
     out: 'og-tools.png',
     fig: 'FIG T.0',

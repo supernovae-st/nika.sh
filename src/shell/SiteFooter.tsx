@@ -39,6 +39,7 @@ const COLS: {
       { label: 'Docs', href: DOCS },
       { label: 'Spec', to: '/spec' },
       { label: 'Standard library', to: '/tools' },
+      { label: 'Providers', to: '/providers' },
       { label: 'GitHub', href: REPO },
       { label: 'VS Code extension', href: 'https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang' },
       { label: 'Homebrew tap', href: 'https://github.com/supernovae-st/homebrew-tap' },
@@ -52,6 +53,7 @@ const COLS: {
       { label: 'SuperNovae', href: 'https://supernovae.studio' },
       { label: 'License · AGPL-3.0', href: `${REPO}/blob/main/LICENSE` },
       { label: 'security.txt', href: '/.well-known/security.txt' },
+      { label: 'Site map', to: '/sitemap' },
     ],
   },
 ]

@@ -1,0 +1,129 @@
+/* ─── /sitemap page · the human map ───────────────────────────────────────────
+   Speaks the register grammar (StampStrip · .cl-year-head — pages are
+   sync-imported so the shared rules are always loaded). This file adds only
+   the sm- vocabulary: editorial groups, the labeled top links, the dense
+   mono grid for exhaustive tails (tools · error codes · posts), the external
+   mark. Monochrome blueprint. SSR-safe: pure CSS. */
+
+.sm-page {
+  min-height: 100vh;
+}
+.sm-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.sm-title {
+  max-width: 20ch;
+}
+
+/* ── editorial group · reuses the year-head rule line ──────────────────────── */
+.sm-group {
+  margin-top: clamp(40px, 5vh, 60px);
+}
+.sm-group-n {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.sm-group-gloss {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+
+/* ── the labeled top links · label + dim hint on one row ───────────────────── */
+.sm-links {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+.sm-link {
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+.sm-link:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+.sm-link a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 11px 10px 11px 14px;
+  text-decoration: none;
+}
+.sm-link a:hover .sm-link-label,
+.sm-link a:focus-visible .sm-link-label {
+  border-bottom-color: var(--v4-text);
+}
+.sm-link a:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: -1px;
+}
+.sm-link-label {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--v4-text);
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 25%, transparent);
+}
+.sm-link-hint {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--v4-text) 58%, transparent);
+}
+.sm-ext {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--v4-text) 45%, transparent);
+}
+
+/* ── the dense grid · exhaustive tails, mono, column-flowed ────────────────── */
+.sm-dense {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 12px 0 0 14px;
+  columns: 3;
+  column-gap: 28px;
+}
+.sm-dense li {
+  break-inside: avoid;
+  padding: 2px 0;
+}
+.sm-dense-link {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--v4-text) 66%, transparent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  overflow-wrap: anywhere;
+}
+.sm-dense-link:hover,
+.sm-dense-link:focus-visible {
+  color: var(--v4-text);
+  border-bottom-color: color-mix(in srgb, var(--v4-text) 45%, transparent);
+}
+.sm-dense-link:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 2px;
+}
+
+/* ── the closing line ──────────────────────────────────────────────────────── */
+.sm-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}
+
+@media (max-width: 860px) {
+  .sm-dense {
+    columns: 2;
+  }
+}
+@media (max-width: 560px) {
+  .sm-dense {
+    columns: 1;
+  }
+  .sm-link a {
+    gap: 8px;
+  }
+}
