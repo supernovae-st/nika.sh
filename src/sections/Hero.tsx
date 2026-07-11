@@ -489,14 +489,22 @@ export default function Hero({
 
           {/* the sub · ONE sentence pair. The full version is desktop; phones
               get the short register (the 7-line sub wall is a defect class). */}
+          {/* the two moments lead (issue #192): audited BEFORE a token is
+              spent · a verifiable receipt AFTER every run — the painkiller
+              stops hiding behind the specs line (which lives on the plate).
+              The receipt phrase links the long-form anchor, quietly. */}
           <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--full">
-            Nika turns repeatable AI work into files you can run, review, diff and
-            share. One file, four verbs, one Rust binary. The agent writes the
-            plan, you review it, the runtime <b>enforces</b> it. Then it runs.
+            Nika turns repeatable AI work into files you can run, review, diff
+            and share &mdash; <b>audited before a token is spent</b>,{' '}
+            <Link to="/blog/the-pipeline-is-a-file" className="v4hero-sublink">
+              a verifiable receipt
+            </Link>{' '}
+            after every run. The agent writes the plan, you review it, the
+            runtime <b>enforces</b> it. Then it runs.
           </p>
           <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--short">
-            Repeatable AI work as a file you run, review and share. The agent
-            writes the plan. You review it. The runtime <b>enforces</b> it.
+            Repeatable AI work as a file &mdash; audited before a token is
+            spent, a receipt after every run. The runtime <b>enforces</b> it.
           </p>
 
           {/* the main CTA row · the primary button + the command-as-CTA install */}

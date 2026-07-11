@@ -1690,6 +1690,46 @@
   margin-top: 0;
 }
 /* the close · learn it in 5 minutes (mirrors .v4log-more) */
+/* the stack hatch (W4-P2) · plain door names over one hairline, one link
+   out to the docs map — the home names the doors, the docs own the truth */
+.v4start-stack {
+  margin-top: clamp(28px, 4vh, 44px);
+  padding-top: 18px;
+  border-top: 1px solid var(--v4-line);
+}
+.v4start-stack-kicker {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--v4-text-faint);
+}
+.v4start-stack-doors {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+  color: var(--v4-text);
+}
+.v4start-stack-note {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+}
+.v4start-stack-note code {
+  font-size: 0.9em;
+  color: var(--v4-text);
+}
+.v4start-stack-link {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+}
+.v4start-stack-link:hover {
+  color: var(--v4-text);
+  text-decoration-color: var(--v4-text);
+}
 .v4start-more {
   margin-top: clamp(28px, 4vh, 44px);
   display: flex;
