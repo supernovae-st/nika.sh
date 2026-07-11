@@ -735,7 +735,10 @@ export default function TheSpecMachine({
               data-side={left ? 'l' : 'r'}
               data-node={c.key}
               data-anchor={c.anchor}
-              style={{ ['--slot' as string]: `${19 + (i % 4) * 21}%` }}
+              /* the 4th right rung used to land ON the helm (errors label
+                  904-951 vs EXPLODE/RESET 912-942 — rect-probed at the S.7
+                  dock) — the ladder tightens so the last rung clears it */
+              style={{ ['--slot' as string]: `${16 + (i % 4) * 19}%` }}
             >
               <b>
                 {/* the fig hides at the DOCK (the plate + the rail chip

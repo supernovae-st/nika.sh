@@ -642,6 +642,121 @@ await check('egg · drum (manifesto)', async () => {
   return last
 })
 
+/* 3d · THE SPEC MACHINE (/spec) · the voyage's own belt: the canvas takes
+   the stage (desktop + GL — this runner qualifies), the reading assembles
+   the ship (the DOM ticks and the machine can never disagree — assert the
+   DOM side), the helm answers (trusted clicks), the chapter keys sail. */
+await send('Page.navigate', { url: `${BASE}/spec` })
+await settle()
+await check('spec · the machine takes the stage ([data-machine] + canvas)', async () =>
+  until(
+    () =>
+      evaluate(`(() => {
+        const stage = document.querySelector('.spec-rail-stage')
+        const live = !!stage?.dataset.machine
+        const canvas = !!stage?.querySelector('.smw canvas')
+        return (live && canvas) || { live, canvas }
+      })()`),
+    20,
+    600,
+  ))
+await check('spec · the reading assembles the ship (9 ticks · 8/8 tally)', async () => {
+  /* sail the reading: jump each block past the ignition line (the hook's
+     rAF sweep catches instant jumps — its own documented law), then poll
+     the DOM truth: every INDEX tick lit + the ASSEMBLED tally full */
+  const n = await evaluate(`document.querySelectorAll('.spec-block[data-stratum]').length`)
+  if (n !== 9) return { blocks: n }
+  for (let i = 0; i < n; i++) {
+    await evaluate(`(() => {
+      const el = document.querySelectorAll('.spec-block[data-stratum]')[${i}]
+      window.scrollTo(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.4)
+    })()`)
+    await sleep(250)
+  }
+  /* the last block's target can drift under a content-visibility re-layout
+     (the harness re-aim law) — anchor at the page BOTTOM per poll tick: the
+     hook's rAF jump-catch (bottom < 0) ignites everything passed, so the
+     bottom is the one scroll position that cannot under-read */
+  return until(
+    () =>
+      evaluate(`(() => {
+        window.scrollTo(0, document.body.scrollHeight)
+        const lit = document.querySelectorAll('.spec-chip2.is-lit').length
+        const tally = document.querySelector('.spec-rail-hud--bl')?.textContent ?? ''
+        return (lit === 9 && tally.includes('8/8')) || { lit, tally }
+      })()`),
+    10,
+    500,
+  )
+})
+await check('spec · the helm answers (EXPLODE aria-pressed round-trip)', async () => {
+  /* the helm lives at the DOCK (hidden on the poster + finale) — park the
+     reading mid-ship first. Trusted CDP clicks (React 19 ignores synthetic
+     clicks — the /play trusted-click law). THE MOVING-TARGET TRAP (lived,
+     run 2): arriving from the page bottom the chassis flips finale → dock
+     and its 0.7s width transition TRAVELS the helm across the screen — a
+     click aimed mid-flight lands on empty space ({pressed:false}). Two
+     rect reads 300ms apart must agree before a press spends; the whole
+     press → assert round retries ×4. */
+  await evaluate(`(() => {
+    const el = document.querySelector('#permits')
+    window.scrollTo(0, el.getBoundingClientRect().top + scrollY - innerHeight * 0.4)
+  })()`)
+  const rect = () =>
+    evaluate(`(() => {
+      const b = [...document.querySelectorAll('.spec-helm-btn')].find((x) => x.textContent === 'EXPLODE')
+      if (!b) return null
+      const r = b.getBoundingClientRect()
+      const vis = r.width > 0 && r.top > 0 && r.bottom < innerHeight
+      return vis ? { x: +(r.left + r.width / 2).toFixed(1), y: +(r.top + r.height / 2).toFixed(1) } : null
+    })()`)
+  const press = async (r) => {
+    await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: r.x, y: r.y, button: 'left', buttons: 1, clickCount: 1 })
+    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: r.x, y: r.y, button: 'left', buttons: 0, clickCount: 1 })
+  }
+  const aria = (want) =>
+    until(
+      () =>
+        evaluate(
+          `[...document.querySelectorAll('.spec-helm-btn')].find((x) => x.textContent === 'EXPLODE')?.getAttribute('aria-pressed') === ${JSON.stringify(want)} || false`,
+        ),
+      6,
+      400,
+    )
+  let last = null
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const r1 = await rect()
+    await sleep(300)
+    const r2 = await rect()
+    if (!r1 || !r2 || Math.abs(r1.x - r2.x) > 1 || Math.abs(r1.y - r2.y) > 1) {
+      last = { attempt, r1, r2, stage: await evaluate(`document.querySelector('.spec-rail')?.dataset.stage`) }
+      continue
+    }
+    await press(r2)
+    const on = await aria('true')
+    if (on !== true) {
+      last = { attempt, pressed: on }
+      continue
+    }
+    const r3 = await rect() /* toggle back — leave the stage as found */
+    if (r3) await press(r3)
+    return aria('false')
+  }
+  return last
+})
+await check('spec · Shift+← sails to the previous station (the chapter keys)', async () => {
+  /* the reading sits at S.3 (parked above) — the chapter key must land a
+     REAL hash (the handler owns window keydown; synthetic keys reach it,
+     the eggs' own precedent; re-type per attempt) */
+  let last = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await evaluate(`window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', shiftKey: true }))`)
+    last = await until(() => evaluate(`location.hash.length > 1 || false`), 5, 300)
+    if (last === true) return true
+  }
+  return last
+})
+
 /* ── verdict ───────────────────────────────────────────────────────────────── */
 console.log('')
 if (failures.length) {
