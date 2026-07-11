@@ -90,6 +90,7 @@ const PRODUCT_GROUPS: MegaGroup[] = [
     items: [
       { label: 'Playground', desc: 'Write & run in the browser', icon: 'terminal', to: '/play' },
       { label: 'Learn it in 5 min', desc: 'The quickstart', icon: 'book', to: '/learn' },
+      { label: 'Standard library', desc: 'Every nika: builtin, one register', icon: 'tiles', to: '/tools' },
       { label: 'Manifesto', desc: 'The drum of liberation', icon: 'butterfly', to: '/manifesto' },
       { label: 'Design system', desc: 'The marks · icons · motion', icon: 'tiles', to: '/brand' },
     ],

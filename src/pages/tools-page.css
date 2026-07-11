@@ -1,0 +1,195 @@
+/* ─── /tools page · the standard library register ─────────────────────────────
+   Speaks the register grammar the /errors + /changelog family established
+   (StampStrip · .cl-year-head — pages are sync-imported so the shared rules
+   are always loaded). This file adds only the tp- vocabulary: family buckets,
+   anchored tool rows, the category chip, the required mark, the args
+   definition list, the deep-link highlight, the honest miss. Monochrome
+   blueprint; the ONLY colour is the deep-link highlight hairline.
+   SSR-safe: pure CSS. */
+
+.tp-page {
+  min-height: 100vh;
+}
+.tp-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.tp-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* ── the honest miss (unregistered :name) · recovery, never a dead end ─────── */
+.tp-miss {
+  margin-top: clamp(20px, 3vh, 32px);
+  padding: 14px 18px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 22%, transparent);
+  border-left-width: 3px;
+  max-width: 62ch;
+}
+.tp-miss-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+}
+.tp-miss p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+}
+
+/* ── family bucket · reuses the year-head rule line ────────────────────────── */
+.tp-family {
+  margin-top: clamp(40px, 5vh, 60px);
+}
+.tp-family-n {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.tp-family-gloss {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+
+/* ── the tool rows · anchored, hairline-ruled ──────────────────────────────── */
+.tp-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+.tp-row {
+  padding: 14px 10px 16px 14px;
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+  scroll-margin-top: 120px;
+}
+.tp-row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+.tp-row-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tp-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--v4-text);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 25%, transparent);
+}
+.tp-name:hover,
+.tp-name:focus-visible {
+  border-bottom-color: var(--v4-text);
+}
+.tp-name:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 3px;
+}
+.tp-cat {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 18%, transparent);
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  white-space: nowrap;
+  cursor: help;
+}
+.tp-required {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--v4-text) 60%, transparent);
+  white-space: nowrap;
+  cursor: help;
+}
+.tp-desc {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+  max-width: 74ch;
+}
+
+/* ── the args · one definition list, name column + description ─────────────── */
+.tp-args {
+  margin: 12px 0 0;
+  display: grid;
+  gap: 6px;
+}
+.tp-arg {
+  display: grid;
+  grid-template-columns: minmax(120px, 168px) 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+.tp-arg-name {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: color-mix(in srgb, var(--v4-text) 66%, transparent);
+  overflow-wrap: anywhere;
+}
+.tp-arg-name--required {
+  color: var(--v4-text);
+}
+.tp-arg-star {
+  margin-left: 2px;
+  color: color-mix(in srgb, var(--v4-text) 55%, transparent);
+  cursor: help;
+}
+.tp-arg-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--v4-text) 66%, transparent);
+  max-width: 64ch;
+}
+.tp-arg-type {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 1px 6px;
+  margin-right: 8px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 14%, transparent);
+  color: color-mix(in srgb, var(--v4-text) 58%, transparent);
+  white-space: nowrap;
+}
+
+/* ── the deep-link highlight · one quiet accent, nothing else on the page ──── */
+.tp-row--active {
+  border-left: 3px solid var(--v4-text);
+  padding-left: 11px;
+  background: color-mix(in srgb, var(--v4-text) 5%, transparent);
+}
+.tp-row--active .tp-name {
+  border-bottom-color: var(--v4-text);
+}
+
+/* ── the closing line ──────────────────────────────────────────────────────── */
+.tp-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}
+
+@media (max-width: 560px) {
+  .tp-row-head {
+    gap: 8px;
+  }
+  .tp-arg {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .tp-desc {
+    font-size: 13.5px;
+  }
+}
