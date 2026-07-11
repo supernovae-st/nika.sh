@@ -146,3 +146,55 @@
   align-items: center;
   gap: 16px;
 }
+
+/* ── the run register · the live library demo + the shared palette ──────────── */
+.brand-register {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+  max-width: 980px;
+}
+.brand-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 56px;
+  margin-top: 26px;
+}
+.brand-palette-kick {
+  margin: 0 0 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+}
+.brand-swatches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.brand-swatch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-swatch-chip {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+}
+.brand-swatch-name {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--v4-text);
+  min-width: 72px;
+}
+.brand-swatch-hex {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--v4-text-faint);
+}

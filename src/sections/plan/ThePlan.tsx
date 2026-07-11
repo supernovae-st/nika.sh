@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { SectionHead } from '../../components/SectionHead'
+import { DagNodeCard } from '../../components/dag'
 import { useRevealOnce } from '../use-reveal-once'
 import { useSlabTilt } from '../../fx/use-slab-tilt'
 import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships'
@@ -175,19 +176,22 @@ export default function ThePlan({ flagship }: { flagship: FlagshipEntry }) {
                 {wave.map((task) => {
                   const chip = chipFor(flagship, task)
                   return (
-                    /* tap-toggle on coarse pointers, hover on fine — and the
-                       SAME toggle from the keyboard (role=button + Enter/Space
-                       + the global :focus-visible ring): the wire-tracing
-                       intelligence must not be pointer-only. */
-                    <div
+                    /* the LIBRARY card (components/dag) — tap-toggle on coarse
+                       pointers, hover on fine, and the SAME toggle from the
+                       keyboard (role=button + Enter/Space + the global
+                       :focus-visible ring): the wire-tracing intelligence
+                       must not be pointer-only. */
+                    <DagNodeCard
                       key={task.id}
                       ref={(el) => {
                         nodeRefs.current.set(task.id, el)
                       }}
-                      className="v5plan-node"
-                      data-verb={task.verb}
-                      data-state={stateOf(task.id)}
-                      data-skipped={chip.skipped || undefined}
+                      id={task.id}
+                      verb={task.verb}
+                      target={task.target}
+                      when={task.when ? whenLabel(task.when) : undefined}
+                      chip={chip.text || chip.skipped ? chip : undefined}
+                      state={stateOf(task.id)}
                       role="button"
                       tabIndex={0}
                       aria-pressed={focus === task.id}
@@ -202,23 +206,7 @@ export default function ThePlan({ flagship }: { flagship: FlagshipEntry }) {
                           setFocus((f) => (f === task.id ? null : task.id))
                         }
                       }}
-                    >
-                      <span className="v5plan-node-id">{task.id}</span>
-                      <span className="v5plan-node-verb">{task.verb}</span>
-                      <span className="v5plan-node-target" title={task.target}>
-                        {task.target}
-                      </span>
-                      {task.when ? (
-                        <span className="v5plan-node-when" title={task.when}>
-                          when: {whenLabel(task.when)}
-                        </span>
-                      ) : null}
-                      {chip.text ? (
-                        <span className="v5plan-node-chip" data-skipped={chip.skipped || undefined}>
-                          {chip.skipped ? '⊘' : '✓'} {chip.text}
-                        </span>
-                      ) : null}
-                    </div>
+                    />
                   )
                 })}
               </div>
