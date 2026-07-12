@@ -337,7 +337,7 @@ const REGISTER_PINS = [
   { route: '/tools/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
   { route: '/providers/ollama', row: '.pv-row--active', extra: null },
   { route: '/verbs/invoke', row: 'section[data-verb="invoke"]', extra: '.td-usage .cf-panel' },
-  { route: '/language/depends_on', row: '.lg-row--active', extra: null },
+  { route: '/language/depends_on', row: 'section[data-word="depends_on"]', extra: '.td-usage .cf-panel' },
   { route: '/templates/fanout', row: '.tm-row--active', extra: '.tm-row--active .cf-panel' },
 ]
 for (const pin of REGISTER_PINS) {

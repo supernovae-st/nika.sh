@@ -1,12 +1,10 @@
-import { Link, useParams } from 'react-router'
+import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import { useAnchorScroll } from '../lib/use-anchor-scroll'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import {
   LANGUAGE_SCOPES,
   LANGUAGE_WORDS,
-  WORD_INDEX,
   type LanguageWord,
 } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
@@ -32,10 +30,10 @@ import './language-page.css'
    LANGUAGE_PATHS in site.config.ts). Highlight + the deep-link scroll stay
    client effects. */
 
-function WordRow({ entry, active }: { entry: LanguageWord; active: boolean }) {
+function WordRow({ entry }: { entry: LanguageWord }) {
   const required = entry.decls.filter((d) => d.required)
   return (
-    <li id={entry.word} className={`lg-row${active ? ' lg-row--active' : ''}`}>
+    <li id={entry.word} className="lg-row">
       <div className="tp-row-head">
         <a className="tp-name" href={`/language/${entry.word}`}>
           {entry.word}
@@ -93,23 +91,17 @@ function WordRow({ entry, active }: { entry: LanguageWord; active: boolean }) {
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
-  const { word: rawWord } = useParams()
-  const word = rawWord?.toLowerCase()
-  const hit = word ? WORD_INDEX[word] : undefined
-  const miss = Boolean(word) && !hit
 
   const declsTotal = LANGUAGE_WORDS.reduce((n, w) => n + w.decls.length, 0)
 
-  const title = hit ? `${hit.word} · the Nika language` : 'The language · every word · Nika'
-  const description = hit
-    ? `${hit.word} — ${hit.decls.map((d) => `${d.scope}${d.required ? ' (required)' : ''}`).join(', ')}. ${hit.decls.find((d) => d.desc)?.desc ?? WORD_GLOSS[hit.word] ?? ''}`
-    : `Every key a .nika.yaml can carry — ${LANGUAGE_WORDS.length} words, ${declsTotal} declarations over ${LANGUAGE_SCOPES.length} surfaces, projected from the served schema. The four verbs open their own rooms.`
+  const title = 'The language · every word · Nika'
+  const description = `Every key a .nika.yaml can carry — ${LANGUAGE_WORDS.length} words, ${declsTotal} declarations over ${LANGUAGE_SCOPES.length} surfaces, projected from the served schema. Every word opens its own room.`
 
   useHead({
     title,
-    link: routeHead(word ? `/language/${word}` : '/language').link,
+    link: routeHead('/language').link,
     meta: [
-      ...routeHead(word ? `/language/${word}` : '/language').meta,
+      ...routeHead('/language').meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -124,51 +116,22 @@ export function Component() {
     script: [
       {
         type: 'application/ld+json',
-        innerHTML: JSON.stringify(
-          hit
-            ? [
-                {
-                  '@context': 'https://schema.org',
-                  '@type': 'BreadcrumbList',
-                  itemListElement: [
-                    { '@type': 'ListItem', position: 1, name: 'The language', item: `${SITE}/language` },
-                    { '@type': 'ListItem', position: 2, name: hit.word },
-                  ],
-                },
-                {
-                  '@context': 'https://schema.org',
-                  '@type': 'DefinedTerm',
-                  name: hit.word,
-                  description:
-                    hit.decls.find((d) => d.desc)?.desc ?? WORD_GLOSS[hit.word] ?? '',
-                  url: `${SITE}/language/${hit.word}`,
-                  inDefinedTermSet: {
-                    '@type': 'DefinedTermSet',
-                    name: 'The Nika language · every word',
-                    url: `${SITE}/language`,
-                  },
-                },
-              ]
-            : {
-                '@context': 'https://schema.org',
-                '@type': 'DefinedTermSet',
-                name: 'The Nika language · every word',
-                url: `${SITE}/language`,
-                hasDefinedTerm: LANGUAGE_WORDS.map((w) => ({
-                  '@type': 'DefinedTerm',
-                  name: w.word,
-                  url: `${SITE}/language/${w.word}`,
-                })),
-              },
-        ),
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'DefinedTermSet',
+          name: 'The Nika language · every word',
+          url: `${SITE}/language`,
+          hasDefinedTerm: LANGUAGE_WORDS.map((w) => ({
+            '@type': 'DefinedTerm',
+            name: w.word,
+            url: `${SITE}/language/${w.word}`,
+          })),
+        }),
         // unhead: don't HTML-escape JSON (keeps it valid ld+json, not &quot;)
         processTemplateParams: false,
       },
     ],
   })
-
-  /* the deep-link lands ON its row — re-aimed until layout settles */
-  useAnchorScroll(hit?.word)
 
   return (
     <main className="theme-dark tp-page lg-page">
@@ -179,28 +142,16 @@ export function Component() {
             the language
           </p>
           <h1 id="lg-title" className="v4sec-title tp-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-            {hit ? hit.word : 'Every word.'}
+            Every word.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Every key a <code>.nika.yaml</code> can carry, projected from the one contract the
             engine serves — <a href="/schema/workflow.json">workflow.schema.json</a>, the same file
-            your editor validates against. Descriptions are the schema's own. The{' '}
-            <Link to="/verbs">four verbs</Link> open their own rooms; the deeper grammar lives in{' '}
+            your editor validates against. Descriptions are the schema's own. <b>Every word opens its own room</b> — the
+            contract, the word in a real file, the block it lives in; the{' '}
+            <Link to="/verbs">four verbs</Link> keep theirs. The deeper grammar lives in{' '}
             <a href={`${SPEC}/tree/main/spec`}>the spec</a>.
           </p>
-
-          {miss && (
-            <div className="tp-miss" role="status" data-rise>
-              <p className="tp-miss-name">{word}</p>
-              <p>
-                is not a key the schema declares — check the register below, the{' '}
-                <a href="/schema/workflow.json">served schema</a>, or{' '}
-                <a href={`${SPEC}/tree/main/spec`}>the spec</a>. Tool names live in{' '}
-                <Link to="/tools">the standard library</Link>, error codes in{' '}
-                <Link to="/errors">the registry</Link>.
-              </p>
-            </div>
-          )}
 
           {/* the vocabulary's dimensions, at a glance */}
           <StampStrip
@@ -224,7 +175,7 @@ export function Component() {
 
           <ol className="tp-list lg-list" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {LANGUAGE_WORDS.map((w) => (
-              <WordRow key={w.word} entry={w} active={w.word === word} />
+              <WordRow key={w.word} entry={w} />
             ))}
           </ol>
 
