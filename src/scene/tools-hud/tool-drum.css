@@ -100,35 +100,6 @@
   right: 12px;
 }
 
-/* ── the caption · the instrument names itself (td-pin recipe) ─────────────── */
-.tdrum-caption {
-  margin: 10px 0 0;
-  font-family: var(--mono);
-  font-size: 11px;
-  line-height: 1.7;
-  letter-spacing: 0.04em;
-  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
-  max-width: 72ch;
-}
-
-/* ── the room berth grid · hero text + the drum at rest (≥1100px) ──────────── */
-@media (min-width: 1100px) {
-  .td-hero {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(300px, 27vw, 400px);
-    gap: clamp(28px, 4vw, 56px);
-    align-items: start;
-  }
-  .td-hero-berth {
-    position: sticky;
-    top: 120px;
-  }
-}
-@media (max-width: 1099px) {
-  .td-hero-berth {
-    display: none;
-  }
-}
 @media (max-width: 1023px) {
   .tdrum-stage--register {
     height: clamp(240px, 32vh, 340px);

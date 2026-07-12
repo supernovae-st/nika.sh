@@ -5,6 +5,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
 import { CHAPTERS } from '../sections/verbs-data'
+import { PartEgg } from '../scene/parts/PartEgg'
 import { LANGUAGE_WORDS } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { TEMPLATES } from '../content/templates.generated'
@@ -40,6 +41,14 @@ const VERB_ERROR_NS: Record<string, string[]> = {
   exec: ['NIKA-EXEC'],
   invoke: ['NIKA-INVOKE', 'NIKA-BUILTIN', 'NIKA-MCP'],
   agent: ['NIKA-AGENT'],
+}
+
+/* the emblem captions — every count in them is a catalog count */
+const EMBLEM_CAPTION: Record<string, string> = {
+  infer: `the halo · one spoke per provider (${CANON.providers}) · the hub is the prompt`,
+  exec: 'the press · the piston captures, the tray types · five fins, five block keys',
+  invoke: `the carousel · ${CANON.builtins} teeth, one per builtin · six family blades`,
+  agent: 'the gimbal · two budget rings (the leashes) · satellites are the whitelist',
 }
 
 /* the verb's one-line job — the chapter claim+gloss speak it; this is the
@@ -185,7 +194,8 @@ export function Component() {
           )}
 
           {chapter && (
-            <>
+            <div className="td-hero">
+              <div className="td-hero-main">
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
                 <b>{chapter.claim}</b> {chapter.gloss} One of the four verbs — a verb is a{' '}
                 <em>distinct native execution model</em>, and every task speaks exactly one.{' '}
@@ -354,7 +364,16 @@ export function Component() {
                 is in <Link to="/language">the keyword register</Link>.{' '}
                 <Link to="/spec">Read the spec →</Link>
               </p>
-            </>
+              </div>
+
+              {/* THE EMBLEM · the verb's own machine, removed from the ship
+                  (parts catalog: infer=halo · exec=press · invoke=carousel ·
+                  agent=gimbal — every count a catalog count) */}
+              <aside className="td-hero-berth" data-rise>
+                <PartEgg id={chapter.verb} />
+                <p className="tdrum-caption">{EMBLEM_CAPTION[chapter.verb]}</p>
+              </aside>
+            </div>
           )}
         </div>
       </section>
