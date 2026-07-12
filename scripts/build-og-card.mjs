@@ -189,6 +189,24 @@ const CARDS = [
       '<span class="arrow">▸</span><span>route<span class="sep">·</span>copy<span class="sep">·</span>fill<span class="sep">·</span><b>check&nbsp;repairs&nbsp;the&nbsp;rest</b></span>',
   },
   {
+    // /verbs — the four rooms; a verb is a distinct native execution model.
+    out: 'og-verbs.png',
+    fig: 'FIG V.0',
+    headline: 'Four verbs,<br><span class="b">locked forever.</span>',
+    sub: 'A verb is a distinct native execution model&nbsp;— <span style="white-space:nowrap">infer · exec · invoke · agent</span>. Every task speaks exactly one; everything callable is a tool, ordering is the DAG&rsquo;s&nbsp;job.',
+    detail:
+      '<span class="arrow">▸</span><span>think<span class="sep">·</span>run<span class="sep">·</span>use&nbsp;a&nbsp;tool<span class="sep">·</span><b>delegate&nbsp;on&nbsp;a&nbsp;leash</b></span>',
+  },
+  {
+    // /language — the keyword register; every schema-declared key, one row.
+    out: 'og-language.png',
+    fig: 'FIG L.0',
+    headline: 'Every word,<br><span class="b">one register.</span>',
+    sub: 'Every key a <span style="white-space:nowrap">.nika.yaml</span> can carry, projected from the served schema&nbsp;— its scopes, its types, its required flags. Descriptions are the contract&rsquo;s own, never&nbsp;prose.',
+    detail:
+      '<span class="arrow">▸</span><span>schema-projected<span class="sep">·</span>scope-mapped<span class="sep">·</span><b>check&nbsp;teaches&nbsp;a&nbsp;miss</b></span>',
+  },
+  {
     // /tools — the standard library register; one closed namespace, spec-versioned.
     out: 'og-tools.png',
     fig: 'FIG T.0',

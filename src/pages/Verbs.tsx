@@ -34,10 +34,10 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
-      { property: 'og:image', content: 'https://nika.sh/og.png' },
+      { property: 'og:image', content: 'https://nika.sh/og-verbs.png' },
       {
         property: 'og:image:alt',
-        content: 'Nika — Intent as Code. Four verbs: infer, exec, invoke, agent.',
+        content: 'Nika — four verbs, locked forever: infer, exec, invoke, agent.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
