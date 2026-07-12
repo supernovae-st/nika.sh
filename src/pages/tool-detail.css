@@ -215,3 +215,21 @@ a.td-chip:focus-visible {
   color: color-mix(in srgb, var(--v4-text) 52%, transparent);
   max-width: 72ch;
 }
+
+/* ── the sources rail · where this element lives (SourcesRail) ─────────────── */
+.src-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.src-glyph {
+  font-size: 10px;
+  color: color-mix(in srgb, var(--v4-text) 46%, transparent);
+}
+.src-rail--dense {
+  gap: 6px;
+}
+.src-rail--dense .td-chip {
+  padding: 2px 8px;
+  font-size: 11px;
+}

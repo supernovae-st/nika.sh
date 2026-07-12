@@ -12,6 +12,8 @@ import { TOOL_USAGE } from '../content/tool-usage.generated'
 import { CATEGORY_GLOSS } from '../content/tools-meta'
 import { PartEgg } from '../scene/parts/PartEgg'
 import { layoutDrum } from '../scene/tools-hud/slot-layout'
+import { TOOL_SOURCES } from '../content/sources'
+import { SourcesRail } from '../components/SourcesRail'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -334,6 +336,10 @@ export function Component() {
                       ))}
                     </ul>
                   </div>
+                  <div>
+                    <p className="td-ref-k">where it lives</p>
+                    <SourcesRail links={TOOL_SOURCES} />
+                  </div>
                 </div>
               </div>
 
@@ -408,6 +414,8 @@ export function Component() {
                   {hit.category} {ARCHETYPE_NAME[hit.category]} · ports are the args — bright =
                   required
                 </p>
+                {/* the part's provenance — the sources, right under the machine */}
+                <SourcesRail links={TOOL_SOURCES.slice(0, 3)} dense />
               </aside>
             </div>
           )}
