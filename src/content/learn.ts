@@ -210,7 +210,7 @@ outputs:
 /* ── the whole file · the nine fragments, assembled ───────────────────────────
    Every idea above, composed into the ONE workflow the page teaches. This
    exact text passes `nika check` on the shipping binary — the transcript
-   below is that run, VERBATIM (captured 2026-07-10 · nika 0.99.0). The
+   below is that run, VERBATIM (captured 2026-07-13 · nika 0.101.0). The
    honesty law: re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
 workflow: weekly-radar
@@ -264,7 +264,7 @@ outputs:
 export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika check weekly-radar.nika.yaml' },
   { kind: 'out', text: 'nika check · weekly-radar.nika.yaml' },
-  { kind: 'ok', text: ' ✔ PLAN     3 wave(s) · 5 task(s) · max parallelism 3' },
+  { kind: 'ok', text: ' ✔ PLAN     3 waves · 5 tasks · max parallelism 3' },
   { kind: 'dim', text: '      wave 1 fetch_news (invoke · nika:fetch) · repo_log (exec · sh -c) · read_notes (invoke · nika:read)' },
   { kind: 'dim', text: '      wave 2 digest (infer · ollama/llama3.2:3b)' },
   { kind: 'dim', text: '      wave 3 save (invoke · nika:write)' },
@@ -281,7 +281,7 @@ export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'soft', text: ' ↳ HINT     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)' },
   { kind: 'soft', text: ' ↳ HINT     [inputs] `read_notes` reads `./notes.md` which does not exist here — create it (or point its var elsewhere) · the run would fail at that wave' },
   { kind: 'soft', text: ' ↳ HINT     [inputs] required input(s) with no default · pass at run time: --var topic=…' },
-  { kind: 'ok', text: ' ✔ audited · 5 task(s) · 3 wave(s) · permits none · est ≥$0.0000 · 4 hints' },
+  { kind: 'ok', text: ' ✔ audited · 5 tasks · 3 waves · permits none · est ≥$0.0000 · 4 hints' },
 ]
 
 export const ERROR_JSON = `{
