@@ -1,0 +1,186 @@
+/* ─── /tools/:name · the builtin room ─────────────────────────────────────────
+   Extends the register grammar (tools-page.css tp-* stays the shared
+   vocabulary — args contract, category chip, miss, foot; pages are
+   sync-imported so those rules are always loaded). This file adds only the
+   td- room vocabulary: the crumb, section heads, the usage pin, the
+   cross-reference grid, the family chips, the prev/next walk. Monochrome
+   blueprint — the room's one colour lives inside the CodeFile panel (the
+   product). SSR-safe: pure CSS. */
+
+.td-page .v4sec-wrap {
+  padding-bottom: clamp(72px, 10vh, 120px);
+}
+
+/* ── the way back · the register row ───────────────────────────────────────── */
+.td-crumb {
+  margin-bottom: clamp(18px, 3vh, 30px);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.td-crumb-link {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.td-crumb-link:hover,
+.td-crumb-link:focus-visible {
+  color: var(--v4-text);
+}
+
+/* ── section blocks · the year-head grammar carries the room ───────────────── */
+.td-sec {
+  margin-top: clamp(40px, 5.5vh, 64px);
+}
+.td-h2 {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--v4-text);
+}
+.td-gloss {
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+.td-args {
+  margin-top: 16px;
+}
+
+/* ── the usage panel · the tool inside a real file ─────────────────────────── */
+.td-usage {
+  margin-top: 16px;
+  max-width: 860px;
+}
+.td-pin {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+  max-width: 72ch;
+}
+.td-pin a {
+  color: inherit;
+}
+.td-pin a:hover,
+.td-pin a:focus-visible {
+  color: var(--v4-text);
+}
+
+/* ── cross-references · two labeled columns ────────────────────────────────── */
+.td-refs {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px 32px;
+  max-width: 860px;
+}
+.td-ref-k {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 48%, transparent);
+}
+.td-none {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 58%, transparent);
+  max-width: 46ch;
+}
+
+/* ── the chips · templates · codes · siblings ──────────────────────────────── */
+.td-chips {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.td-chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 18%, transparent);
+  color: color-mix(in srgb, var(--v4-text) 74%, transparent);
+  text-decoration: none;
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    border-color var(--dur-ui) var(--ease-ui);
+}
+a.td-chip:hover,
+a.td-chip:focus-visible {
+  color: var(--v4-text);
+  border-color: color-mix(in srgb, var(--v4-text) 45%, transparent);
+}
+a.td-chip:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 2px;
+}
+.td-chip--here {
+  color: var(--v4-text);
+  border-color: var(--v4-text);
+  cursor: default;
+}
+
+/* ── the walk · prev / register / next ─────────────────────────────────────── */
+.td-nav {
+  margin-top: clamp(44px, 6vh, 72px);
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.td-nav-link {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--v4-text) 74%, transparent);
+  text-decoration: none;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.td-nav-link:hover,
+.td-nav-link:focus-visible {
+  color: var(--v4-text);
+}
+.td-nav-link--all {
+  text-align: center;
+}
+.td-nav-link--next {
+  text-align: right;
+}
+.td-nav-label {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 42%, transparent);
+  margin-bottom: 4px;
+}
+
+@media (max-width: 560px) {
+  .td-refs {
+    grid-template-columns: 1fr;
+  }
+  .td-nav-link--all {
+    display: none; /* the crumb already walks back — keep the rail two-handed */
+  }
+}

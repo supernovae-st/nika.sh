@@ -77,9 +77,23 @@ function sitemap(): Plugin {
         }),
         `    <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}/manifesto" />`,
       ].join('\n')
+      /* class-aware tiers — the crawler reads intent, not one flat 0.7:
+         home 1.0/weekly · the doors (every top-level page) 0.8/weekly ·
+         posts 0.6/monthly on their REAL date · manifesto locale variants
+         0.6/monthly (the EN door carries the family) · register deep rows
+         (errors/tools/providers/templates — dense stable reference, not
+         news) 0.5/monthly. */
+      const tier = (p: string): { priority: string; changefreq: string } => {
+        if (p === '/') return { priority: '1.0', changefreq: 'weekly' }
+        if (p.startsWith('/blog/')) return { priority: '0.6', changefreq: 'monthly' }
+        if (/^\/(errors|tools|providers|templates)\/.+/.test(p))
+          return { priority: '0.5', changefreq: 'monthly' }
+        if (MANIFESTO_PATHS.includes(p)) return { priority: '0.6', changefreq: 'monthly' }
+        return { priority: '0.8', changefreq: 'weekly' }
+      }
       const urls = PATHS.map((p) => {
         const loc = p === '/' ? `${ORIGIN}/` : `${ORIGIN}${p}`
-        const priority = p === '/' ? '1.0' : '0.7'
+        const { priority, changefreq } = tier(p)
         const slug = p.startsWith('/blog/') ? p.slice('/blog/'.length) : null
         const lastmod = (slug && postDates.get(slug)) || buildDate
         const alternates = MF_ALL.includes(p) ? `\n${mfLinks}` : ''
@@ -87,7 +101,7 @@ function sitemap(): Plugin {
           `  <url>\n` +
           `    <loc>${loc}</loc>\n` +
           `    <lastmod>${lastmod}</lastmod>\n` +
-          `    <changefreq>weekly</changefreq>\n` +
+          `    <changefreq>${changefreq}</changefreq>\n` +
           `    <priority>${priority}</priority>${alternates}\n` +
           `  </url>`
         )

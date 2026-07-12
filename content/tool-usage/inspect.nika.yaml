@@ -1,0 +1,18 @@
+nika: v1
+workflow: watch-the-meter
+description: "the workflow looks at its own run — cost as data, mid-flight"
+
+tasks:
+  - id: spend
+    invoke:
+      tool: "nika:inspect"
+      args: { view: cost }
+
+  - id: report
+    depends_on: [spend]
+    invoke:
+      tool: "nika:log"
+      args:
+        level: info
+        message: "cost so far"
+        data: ${{ tasks.spend.output }}

@@ -65,7 +65,7 @@ data language (jq) · workflows are callable · mock-first.
 ## Links
 
 - Language spec (Apache-2.0): https://github.com/supernovae-st/nika-spec
-- Standard library register (every nika: builtin — args, required set, category): https://nika.sh/tools — machine catalog: https://nika.sh/tools/catalog.json
+- Standard library register (every nika: builtin — args, required set, category): https://nika.sh/tools — one room per builtin (e.g. https://nika.sh/tools/fetch — the arg contract, the tool inside a real check-green file, the skeletons that ship it) — machine catalog: https://nika.sh/tools/catalog.json
 - Provider register (local first, model pins, env vars): https://nika.sh/providers — machine catalog: https://nika.sh/providers/catalog.json
 - Engine source (AGPL): https://github.com/supernovae-st/nika
 - Install: https://nika.sh/#install (or `brew install supernovae-st/tap/nika`)

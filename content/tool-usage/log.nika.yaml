@@ -1,0 +1,12 @@
+nika: v1
+workflow: narrate-the-run
+description: "a human-readable line in the run stream — best-effort, never fails"
+
+tasks:
+  - id: narrate
+    invoke:
+      tool: "nika:log"
+      args:
+        level: info
+        message: "starting the nightly export"
+        data: { records: 1204 }

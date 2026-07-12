@@ -1,0 +1,18 @@
+nika: v1
+workflow: runs-per-month
+description: "rows in, one deterministic svg out — same bytes every run"
+
+tasks:
+  - id: render
+    invoke:
+      tool: "nika:chart"
+      args:
+        data:
+          - { month: "jan", runs: 41 }
+          - { month: "feb", runs: 57 }
+          - { month: "mar", runs: 64 }
+        chart: { type: bar, x: month, y: runs }
+        out: "./charts/runs.svg"
+
+outputs:
+  receipt: ${{ tasks.render.output }}

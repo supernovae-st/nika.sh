@@ -1,0 +1,16 @@
+nika: v1
+workflow: bump-log-level
+description: "literal find/replace in place — not regex, no surprises"
+
+tasks:
+  - id: bump
+    invoke:
+      tool: "nika:edit"
+      args:
+        path: "./config.toml"
+        find: 'level = "info"'
+        replace: 'level = "debug"'
+        count: 1
+
+outputs:
+  changed: ${{ tasks.bump.output }}

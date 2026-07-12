@@ -15,6 +15,7 @@ import { Component as Brand } from './pages/Brand'
 import { Component as NotFound } from './pages/NotFound'
 import { Component as Errors } from './pages/Errors'
 import { Component as Tools } from './pages/Tools'
+import { Component as ToolPage } from './pages/ToolPage'
 import { Component as Sitemap } from './pages/Sitemap'
 import { Component as Providers } from './pages/Providers'
 import { Component as Templates } from './pages/Templates'
@@ -61,11 +62,11 @@ export const routes: RouteObject[] = [
          anchored row. */
       { path: 'errors', Component: Errors },
       { path: 'errors/:code', Component: Errors },
-      /* the stdlib register · the human twin of /tools/catalog.json. Every
-         builtin prerenders its own static landing (TOOL_PATHS in
-         site.config.ts) and scrolls to its anchored row. */
+      /* the stdlib register · the human twin of /tools/catalog.json — and one
+         ROOM per builtin (ToolPage: contract · usage · cross-refs). Every
+         room prerenders its own static landing (TOOL_PATHS in site.config.ts). */
       { path: 'tools', Component: Tools },
-      { path: 'tools/:name', Component: Tools },
+      { path: 'tools/:name', Component: ToolPage },
       /* the provider register · the human twin of /providers/catalog.json.
          Spec-named set only; the engine's embedded tail stays a count. */
       { path: 'providers', Component: Providers },

@@ -1,0 +1,14 @@
+nika: v1
+workflow: patch-the-config
+description: "RFC 7396 — set a key, null deletes one"
+
+tasks:
+  - id: merge
+    invoke:
+      tool: "nika:json_merge_patch"
+      args:
+        target: { retries: 3, level: "info", legacy: true }
+        patch: { level: "debug", legacy: null }
+
+outputs:
+  config: ${{ tasks.merge.output }}

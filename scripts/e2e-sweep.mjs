@@ -328,10 +328,13 @@ const until = async (fn, tries = 12, gap = 400) => {
 /* 3-reg · the register deep links: prerendered landing → the row is ACTIVE,
    HIGHLIGHTED and IN VIEW (the scroll effect is a client behavior that can
    break silently — pass 1's static loads never see it). One pin per
-   register; the templates pin also asserts the opened skeleton panel. */
+   register; the templates pin also asserts the opened skeleton panel. The
+   tools pin differs since the builtin ROOMS shipped: /tools/<name> is a
+   full page (no scroll target) — the pin asserts the room mounted FOR the
+   right tool and its usage CodeFile rendered. */
 const REGISTER_PINS = [
   { route: '/errors/NIKA-SEC-001', row: '.er-row--active', extra: null },
-  { route: '/tools/fetch', row: '.tp-row--active', extra: null },
+  { route: '/tools/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
   { route: '/providers/ollama', row: '.pv-row--active', extra: null },
   { route: '/templates/fanout', row: '.tm-row--active', extra: '.tm-row--active .cf-panel' },
 ]

@@ -1,21 +1,21 @@
 import { useMemo } from 'react'
-import { Link, useParams } from 'react-router'
+import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import { useAnchorScroll } from '../lib/use-anchor-scroll'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
-import { TOOLS, TOOL_INDEX, TOOL_CATEGORIES, type ToolEntry } from '../content/tools.generated'
+import { TOOLS, TOOL_CATEGORIES, type ToolEntry } from '../content/tools.generated'
+import { CATEGORY_GLOSS } from '../content/tools-meta'
 import { CANON } from '../canon.generated'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
 
-/* ─── /tools + /tools/:name · the standard library register (theme-dark) ──────
+/* ─── /tools · the standard library register (theme-dark) ─────────────────────
    Every `nika:` builtin as an anchored row — the vocabulary an author reaches
-   for under `invoke:`. One register page, not 27 thin ones (the /errors
-   precedent): the :name deep-link prerenders its own static landing, scrolls
-   to its row and highlights it. Unknown names get an honest miss with the
-   recovery links (never a dead end).
+   for under `invoke:`, at a glance. Each name now owns a real room at
+   /tools/<name> (ToolPage.tsx: the contract, the tool in a real file, the
+   skeletons that ship it, the check gates) — this page stays the register:
+   scan the families, open a room.
 
    Spec truth: rows come from src/content/tools.generated.ts — a compiled
    projection of public/tools/catalog.json, itself derived from the engine's
@@ -24,24 +24,13 @@ import './tools-page.css'
    JSON; humans read this register. Same artifact, two renderings — the page
    can never drift from what the binary answers.
 
-   SSR-safe: /tools AND every /tools/<name> page prerender (PATHS +
-   TOOL_PATHS in site.config.ts — DO's error_document beats the catchall, so
-   a deep link must own its static landing to serve a 200). Highlight + the
-   deep-link scroll stay client effects. */
+   SSR-safe: /tools prerenders (PATHS in site.config.ts); the rooms own
+   TOOL_PATHS. Rows keep their id anchors — /tools#fetch still lands. */
 
-const CATEGORY_GLOSS: Record<string, string> = {
-  core: 'control flow and run-stream primitives',
-  file: 'workspace files — read, write, search (permits.fs-gated)',
-  data: 'pure JSON/data transforms — no I/O',
-  network: 'network egress (permits.net-gated)',
-  introspection: 'the workflow looking at itself',
-  media: 'images, audio, charts — assets, not blobs',
-}
-
-function ToolRow({ entry, active }: { entry: ToolEntry; active: boolean }) {
+function ToolRow({ entry }: { entry: ToolEntry }) {
   const required = entry.args.filter((a) => a.required)
   return (
-    <li id={entry.bare} className={`tp-row${active ? ' tp-row--active' : ''}`}>
+    <li id={entry.bare} className="tp-row">
       <div className="tp-row-head">
         <a className="tp-name" href={`/tools/${entry.bare}`}>
           {entry.name}
@@ -88,10 +77,6 @@ function ToolRow({ entry, active }: { entry: ToolEntry; active: boolean }) {
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
-  const { name: rawName } = useParams()
-  const name = rawName?.toLowerCase().replace(/^nika:/, '')
-  const hit = name ? TOOL_INDEX[name] : undefined
-  const miss = Boolean(name) && !hit
 
   const groups = useMemo(
     () =>
@@ -106,16 +91,14 @@ export function Component() {
     [],
   )
 
-  const title = hit ? `${hit.name} · Nika standard library` : 'Standard library · Nika'
-  const description = hit
-    ? `${hit.name} — ${hit.description} Args: ${hit.args.map((a) => a.name + (a.required ? '*' : '')).join(', ')}.`
-    : `Every nika: builtin the engine ships — ${CANON.builtins} tools across ${TOOL_CATEGORIES.length} families, one closed namespace, no plugin store to audit. Machine twin: /tools/catalog.json.`
+  const title = 'Standard library · Nika'
+  const description = `Every nika: builtin the engine ships — ${CANON.builtins} tools across ${TOOL_CATEGORIES.length} families, one closed namespace, no plugin store to audit. Machine twin: /tools/catalog.json.`
 
   useHead({
     title,
-    link: routeHead(name ? `/tools/${name}` : '/tools').link,
+    link: routeHead('/tools').link,
     meta: [
-      ...routeHead(name ? `/tools/${name}` : '/tools').meta,
+      ...routeHead('/tools').meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -129,10 +112,6 @@ export function Component() {
     ],
   })
 
-  /* the deep-link lands ON its row — re-aimed until layout settles
-     (the one-shot scroll drifted on slow devices · use-anchor-scroll) */
-  useAnchorScroll(hit?.bare)
-
   return (
     <main className="theme-dark tp-page">
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
@@ -142,27 +121,17 @@ export function Component() {
             the standard library
           </p>
           <h1 id="tp-title" className="v4sec-title tp-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-            {hit ? hit.name : 'Tools.'}
+            Tools.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Everything callable is a tool under <code>invoke:</code> — and the engine ships its own.
             One closed <code>nika:</code> namespace, <b>no plugin store to audit</b>: these tools
-            version with the spec and pass the same review as your file. Machines read the same
-            vocabulary at <a href="/tools/catalog.json">/tools/catalog.json</a>; the contract lives
-            in <a href={`${SPEC}/blob/main/spec/06-stdlib-contract.md`}>spec 06 · stdlib</a>.
+            version with the spec and pass the same review as your file. Every name opens its own
+            room — the contract, the tool in a real file, the skeletons that ship it. Machines read
+            the same vocabulary at <a href="/tools/catalog.json">/tools/catalog.json</a>; the
+            contract lives in{' '}
+            <a href={`${SPEC}/blob/main/spec/06-stdlib-contract.md`}>spec 06 · stdlib</a>.
           </p>
-
-          {miss && (
-            <div className="tp-miss" role="status" data-rise>
-              <p className="tp-miss-name">nika:{name}</p>
-              <p>
-                is not a builtin the engine ships — the <code>nika:</code> namespace is{' '}
-                <em>closed</em> (engine-specific tools route through <code>mcp:</code> servers
-                instead). Check <a href="/tools/catalog.json">the machine catalog</a> or the{' '}
-                <a href={`${SPEC}/blob/main/spec/06-stdlib-contract.md`}>stdlib contract</a>.
-              </p>
-            </div>
-          )}
 
           {/* the library's dimensions, at a glance */}
           <StampStrip
@@ -186,7 +155,7 @@ export function Component() {
               <p className="tp-family-gloss">{CATEGORY_GLOSS[group.category]}</p>
               <ol className="tp-list">
                 {group.entries.map((t) => (
-                  <ToolRow key={t.bare} entry={t} active={t.bare === name} />
+                  <ToolRow key={t.bare} entry={t} />
                 ))}
               </ol>
             </div>

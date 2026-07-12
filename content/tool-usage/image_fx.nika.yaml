@@ -1,0 +1,18 @@
+nika: v1
+workflow: poster-treatment
+description: "deterministic artistic ops over a png — seeded, replayable"
+
+tasks:
+  - id: stylize
+    invoke:
+      tool: "nika:image_fx"
+      args:
+        input: "./shots/hero.png"
+        out: "./shots/hero-poster.png"
+        ops:
+          - duotone: {}
+          - grain: {}
+        seed: 7
+
+outputs:
+  poster: ${{ tasks.stylize.output }}
