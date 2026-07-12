@@ -127,7 +127,6 @@ const PROVIDERS_LOCAL = CANON.providerIdsLocal.map(displayProvider)
 const PROVIDERS_CLOUD = CANON.providerIdsCloud.map(displayProvider)
 const PROVIDERS_TEST = CANON.providerIdsTest.map(displayProvider)
 
-const bySection = Object.fromEntries(SPEC_SECTIONS.map((s) => [s.key, s]))
 
 /* the worked fragment · sliced from a REAL showcase workflow (never hand-typed).
    standup-digest exercises 3 of the 4 verbs (invoke · exec · infer) in a tiny
@@ -152,7 +151,6 @@ export function Component() {
      stratum under the reading line — drives the TOC ticks, the schematic and
      the rail HUD (the W1 machine mirrors this with its own observer) */
   const { lit, current } = useSpecReading()
-  const cur = current ? bySection[current] : null
   const assembledMax = SPEC_SECTIONS.length - 1 /* license is the close whisper */
   const assembled = [...lit].filter((k) => k !== 'license').length
 
@@ -412,23 +410,40 @@ export function Component() {
                   count · reading tick. Absorbs the old stamp band AND the TOC
                   pills: one instrument, sticky under the nav on desktop. */}
               <nav className="spec-index" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
-                {SPEC_SECTIONS.map((s) => (
-                  <a
-                    key={s.fig}
-                    href={s.anchor}
-                    className={`spec-chip2${lit.has(s.key) ? ' is-lit' : ''}`}
-                    aria-current={current === s.key ? 'true' : undefined}
-                    data-node={s.key}
-                  >
-                    <span className="spec-chip2-head mono">
-                      <span className="spec-chip2-tick" aria-hidden />
-                      {s.fig}
-                      <span className="spec-chip2-count">{s.count}</span>
-                    </span>
-                    <span className="spec-chip2-title">{s.title}</span>
-                    <span className="spec-chip2-gloss">{s.chipGloss}</span>
-                  </a>
-                ))}
+                {SPEC_SECTIONS.map((s) => {
+                  const active = current === s.key
+                  return (
+                    <a
+                      key={s.fig}
+                      href={s.anchor}
+                      className={`spec-chip2${lit.has(s.key) ? ' is-lit' : ''}`}
+                      aria-current={active ? 'true' : undefined}
+                      data-node={s.key}
+                    >
+                      <span className="spec-chip2-head mono">
+                        <span className="spec-chip2-tick" aria-hidden />
+                        {s.fig}
+                        <span className="spec-chip2-count">{s.count}</span>
+                      </span>
+                      <span className="spec-chip2-title">{s.title}</span>
+                      {/* the rail IS the navigator (the plate's duties came home):
+                          the read station announces its ship organ + the chapter
+                          keys; the others keep their gloss */}
+                      <span className="spec-chip2-gloss">
+                        {active ? (
+                          <>
+                            <b className="mono">{s.shipPart.toUpperCase()}</b>
+                            <em className="mono" aria-hidden>
+                              ⇧←→
+                            </em>
+                          </>
+                        ) : (
+                          s.chipGloss
+                        )}
+                      </span>
+                    </a>
+                  )
+                })}
               </nav>
 
 
@@ -996,60 +1011,6 @@ export function Component() {
                   </Suspense>
                 ) : null}
                 <SpecSchematic lit={lit} current={current} />
-                {/* THE POSITION PLATE · where you are, said loud: the section
-                    fig + its ship station + the derived count */}
-                <div
-                  className="spec-rail-pos"
-                  key={stage === 'finale' ? 'assembled' : (current ?? 'ship')}
-                >
-                  <span className="spec-rail-pos-fig mono">
-                    {stage === 'finale' ? '▸ ASSEMBLED' : cur ? `▸ ${cur.fig}` : '▸ THE SHIP'}
-                  </span>
-                  <span className="spec-rail-pos-part">
-                    {stage === 'finale' ? 'THE SHIP' : cur ? cur.shipPart.toUpperCase() : 'NIKA: V1'}
-                  </span>
-                  {stage === 'finale' ? (
-                    <span className="spec-rail-pos-sub mono">EVERY STRATUM·····LIT</span>
-                  ) : cur ? (
-                    /* the count the floating label used to carry — the plate
-                       is the dock's one text instrument now */
-                    <span className="spec-rail-pos-sub mono">
-                      {cur.count} {cur.countLabel.toUpperCase()}
-                    </span>
-                  ) : null}
-                  {/* THE PLATE IS A NAVIGATOR (nav pass): prev/next chevrons
-                      sail the reading deck by deck — POINTER affordance only
-                      (the stage is aria-hidden; tabIndex -1 keeps the links
-                      out of the tab order — keyboard sails with ⇧←→, the
-                      chips and the transport: the transport's own axe law).
-                      The ⇧←→ hint finally SAYS the chapter keys exist. */}
-                  {stage !== 'finale' && cur ? (
-                    (() => {
-                      const ci = SPEC_SECTIONS.findIndex((x) => x.key === current)
-                      const prev = ci > 0 ? SPEC_SECTIONS[ci - 1] : null
-                      const next = ci < SPEC_SECTIONS.length - 1 ? SPEC_SECTIONS[ci + 1] : null
-                      return (
-                        <span className="spec-rail-pos-nav mono">
-                          {prev ? (
-                            <a href={prev.anchor} tabIndex={-1} title={`${prev.fig} · ${prev.title}`}>
-                              ‹ {prev.fig}
-                            </a>
-                          ) : (
-                            <i>‹</i>
-                          )}
-                          <em>⇧←→</em>
-                          {next ? (
-                            <a href={next.anchor} tabIndex={-1} title={`${next.fig} · ${next.title}`}>
-                              {next.fig} ›
-                            </a>
-                          ) : (
-                            <i>›</i>
-                          )}
-                        </span>
-                      )
-                    })()
-                  ) : null}
-                </div>
                 <span className="spec-rail-hud spec-rail-hud--bl">
                   ASSEMBLED·····{assembled}/{assembledMax}
                 </span>

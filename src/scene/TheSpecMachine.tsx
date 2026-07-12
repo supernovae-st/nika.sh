@@ -64,6 +64,10 @@ const helmDefaults = (): HelmState => ({
 
 interface CalloutRig {
   wrap: HTMLDivElement | null
+  /** the seam probe (1 Hz) · true while the prose column overlaps the
+      stage's left-slot band — left plates stand down (the seam law) */
+  leftSeam?: boolean
+  seamAt?: number
   items: {
     line: SVGLineElement | null
     dot: SVGCircleElement | null
@@ -144,6 +148,9 @@ function Machine({
   /* the last approach progress — the scroll turn folds into spin as a
      DELTA, so scrubbing back unwinds it and the dock flip subtracts nothing */
   const heroP = useRef(0)
+  const heroPrev = useRef(0)
+  const heroHand = useRef(false)
+  const parallax = useRef({ x: 0, y: 0 })
   const { camera, gl } = useThree()
 
   /* ── the pick bus + THE HELM's drag — one pointer state machine ───────────
@@ -330,8 +337,13 @@ function Machine({
     const g = group.current
     const inn = inner.current
     if (!g || !inn) return
-    /* scroll-steered flight tracks tight; poses glide soft */
-    const kBase = flight?.state === 'full' ? 4.6 : 2.2
+    /* THE FOLLOWER (flight v2 · operator pass 2026-07-12) · poses glide on
+       one damped chase — but the chase owns a CEILING: fast scrubbing used
+       to whip the hull pose-to-pose («va dans tous les sens»). The yaw now
+       travels at most MAX_YAW_VEL rad/s toward its target; every other
+       channel keeps the soft glide. The measured yaw velocity also BANKS
+       the ship (below): it leans into its turns like a vessel, not a dial. */
+    const kBase = 2.2
     const k = Math.min(1, delta * kBase)
     const breathe = Math.sin(u.uTime.value * 0.11) * 0.02
     /* THE FLIGHT · while the takeover runway crosses the viewport the ship
@@ -365,17 +377,29 @@ function Machine({
            - the dive is gentle (the dock's own S.0 pose pulls back to 6.9
              right after — diving hard just to zoom out again read as a
              pump). */
-        const p = flight?.progress ?? 0
-        spin.current += (p - heroP.current) * 1.2
-        heroP.current = p
-        tDist = 6.1 - p * 0.3
+        /* the raw progress rides layout estimates (content-visibility) — a
+           one-pole smooth before the fold kills the first-scroll jitter */
+        const raw = flight?.progress ?? 0
+        heroP.current += (raw - heroP.current) * Math.min(1, delta * 9)
+        spin.current += (heroP.current - heroPrev.current) * 1.2
+        heroPrev.current = heroP.current
+        tDist = 6.1 - heroP.current * 0.3
       } else {
         heroP.current = flight?.progress ?? heroP.current
+        heroPrev.current = heroP.current
       }
     } else {
+      /* the dock folds the accrued turn to the nearest revolution — and the
+         FIRST flip folds it instantly (the leftover idle spin used to add a
+         surprise part-turn on arrival: the opening lurch) */
       const settle = Math.round(spin.current / (Math.PI * 2)) * Math.PI * 2
+      if (heroHand.current) {
+        heroHand.current = false
+        spin.current = settle
+      }
       spin.current += (settle - spin.current) * Math.min(1, delta * 2.2)
     }
+    if (st === 'hero') heroHand.current = true
     tYaw += spin.current
     /* THE EXPLODED DRAWING must FIT · while the strata stand apart the
        camera pulls back to the overview and centres the spine — zooming
@@ -393,8 +417,26 @@ function Machine({
     sail.v *= Math.exp(-delta * 2.6)
     if (Math.abs(sail.v) < 0.003) sail.v = 0
     u.uSail.value = sail.v
-    g.rotation.y += (tYaw + helm.yaw + breathe + pointer.current.x * 0.06 - g.rotation.y) * k
-    g.rotation.x += (tPitch + helm.pitch + pointer.current.y * 0.06 + sail.v * 0.045 - g.rotation.x) * k
+    /* the yaw follower · damped chase under a hard velocity ceiling, so a
+       fast scrub reads as ONE deliberate arc — never a whip */
+    const yawTarget = tYaw + helm.yaw + breathe + parallax.current.x * 0.06
+    let dYaw = (yawTarget - g.rotation.y) * k
+    const MAX_YAW_VEL = 1.7 /* rad/s · the ceiling IS the grace */
+    const maxStep = MAX_YAW_VEL * delta
+    if (dYaw > maxStep) dYaw = maxStep
+    else if (dYaw < -maxStep) dYaw = -maxStep
+    g.rotation.y += dYaw
+    /* the bank · the hull LEANS into its turn (roll follows yaw velocity,
+       clamped a whisper past subtle) and rights itself at rest */
+    const yawVel = delta > 0 ? dYaw / delta : 0
+    const bankTarget = Math.max(-0.13, Math.min(0.13, -yawVel * 0.16))
+    g.rotation.z += (bankTarget - g.rotation.z) * Math.min(1, delta * 3.2)
+    /* pointer parallax earns its seat only at rest — during a travel it was
+       one more hand on the wheel (the opening fought itself) */
+    const atRest = Math.abs(yawVel) < 0.25 && st !== 'hero'
+    parallax.current.x += ((atRest ? pointer.current.x : 0) - parallax.current.x) * Math.min(1, delta * 2)
+    parallax.current.y += ((atRest ? pointer.current.y : 0) - parallax.current.y) * Math.min(1, delta * 2)
+    g.rotation.x += (tPitch + helm.pitch + parallax.current.y * 0.06 + sail.v * 0.045 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k
     /* the poster's rightward carry (SCREEN x — the outer group never turns):
        the full-bleed hero parks the vessel right of the copy column. THE
@@ -422,6 +464,20 @@ function Machine({
     if (rig.wrap && inner.current) {
       const el = gl.domElement
       const rect = el.getBoundingClientRect()
+      /* the seam probe · at the live dock the prose cards float OVER the
+         stage's left flank; measure once per second (layout moves rarely,
+         the probe is a rect read) — left-slot plates stand down while any
+         prose overlaps their band */
+      if ((rig.seamAt ?? 0) < u.uTime.value) {
+        rig.seamAt = u.uTime.value + 1
+        const prose = document.querySelector('.spec-flow, .spec-block')
+        if (prose) {
+          const pr = prose.getBoundingClientRect()
+          rig.leftSeam = pr.right > rect.left + rect.width * 0.06
+        } else {
+          rig.leftSeam = false
+        }
+      }
       const v = new THREE.Vector3()
       const st2 = flight?.state
       const hero = st2 === 'hero'
@@ -446,13 +502,18 @@ function Machine({
           helm.dragging ? 0
           : term ? (hot === -1 ? 0.55 : hot === si ? 1 : 0.18)
           : hero ? 0
-          : full || pose.focus === si ? 1
+          : full || pose.focus === si ? (rig.leftSeam && si < 4 && pose.focus !== si ? 0 : 1)
           : pose.focus < 0 ? 0
           /* the dock's WAYFINDING (nav pass): the stations either side of
              the one being read keep a ghost label — where you came from,
              where the reading sails next, ON the hull itself. Ghosts stay
-             under the 0.5 pointer floor: pure display, never a target. */
-          : si === pose.focus - 1 || si === pose.focus + 1 ? 0.26 : 0
+             under the 0.5 pointer floor: pure display, never a target.
+             THE SEAM LAW (operator 2026-07-12): left-slot plates share the
+             screen with the prose column at the dock — a plate the seam
+             would CUT stands down instead (the wire law, for labels). */
+          : (si === pose.focus - 1 || si === pose.focus + 1) && !(rig.leftSeam && si < 4)
+            ? 0.26
+            : 0
         it.o = (it.o ?? 0) + (target - (it.o ?? 0)) * Math.min(1, delta * 3)
         const op = it.o.toFixed(3)
         it.label.style.opacity = op
