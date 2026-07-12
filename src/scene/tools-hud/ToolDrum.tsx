@@ -26,6 +26,10 @@ import { aimDelta } from './slot-layout'
 /* the walk's memory · survives route remounts (module scope, room mode) */
 const CARRY: { spin: number | null } = { spin: null }
 
+function buildRigFocus(model: DrumModel, focus: string): number | undefined {
+  return model.layout.slots.find((s) => s.bare === focus)?.index
+}
+
 interface Rig {
   mode: 'register' | 'room'
   focusIdx: number
@@ -79,6 +83,7 @@ function Shell({
     if (r.mode !== 'register') return
     const el = gl.domElement
     const v = new THREE.Vector3()
+    const tilt = new THREE.Euler(0.1, -0.32, 0)
     const pick = (e: PointerEvent): number => {
       const rect = el.getBoundingClientRect()
       let best = -1
@@ -87,7 +92,7 @@ function Shell({
         const a = model.anchors[i]
         const ang = Math.atan2(a.sin, a.cos) + spin.current
         v.set(a.x, Math.cos(ang) * 1.06, Math.sin(ang) * 1.06)
-        v.applyEuler(new THREE.Euler(0.1, -0.32, 0))
+        v.applyEuler(tilt)
         v.project(camera)
         /* rows on the camera-far side never pick */
         if (v.z > 1) continue
@@ -209,9 +214,13 @@ export default function ToolDrum({
   const [inView, setInView] = useState(false)
   const [hidden, setHidden] = useState(false)
   const wrapRef = useRef<HTMLDivElement>(null)
+  /* the rig initializer runs at FIRST render — the Shell's pre-aim effect
+     (a child effect, so it fires BEFORE this component's own effects) must
+     already see the real focus, or the room would mount at slot 0 and
+     travel on first paint (the poster law: no entrance travel) */
   const rig = useRef<Rig>({
     mode,
-    focusIdx: -1,
+    focusIdx: focus ? (buildRigFocus(model, focus) ?? -1) : -1,
     hoverIdx: -1,
     sail: 0,
     stage: null,
@@ -220,9 +229,7 @@ export default function ToolDrum({
   /* prop → rig bridge (the loop reads refs, never captured values) */
   useEffect(() => {
     rig.current.mode = mode
-    rig.current.focusIdx = focus
-      ? (model.layout.slots.find((s) => s.bare === focus)?.index ?? -1)
-      : -1
+    rig.current.focusIdx = focus ? (buildRigFocus(model, focus) ?? -1) : -1
     rig.current.stage = stageRef.current
   }, [mode, focus, model, stageRef])
 
