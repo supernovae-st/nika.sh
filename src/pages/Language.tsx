@@ -113,10 +113,10 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
-      { property: 'og:image', content: 'https://nika.sh/og.png' },
+      { property: 'og:image', content: 'https://nika.sh/og-language.png' },
       {
         property: 'og:image:alt',
-        content: 'The Nika language register. Every word the schema declares, one page.',
+        content: 'The Nika language register — every schema-declared word, one page.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
