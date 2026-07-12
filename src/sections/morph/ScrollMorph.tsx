@@ -27,6 +27,8 @@ import {
   termAt,
   timelineAt,
   travelAt,
+  verdictFrontAt,
+  verdictPulseAt,
   wireAt,
   type MorphPhase,
   type MorphTimeline,
@@ -125,7 +127,7 @@ const sayLines = (maxTogether: number): { phase: MorphPhase; text: string }[] =>
     phase: 'run',
     text: `steps light up in order${maxTogether > 1 ? ` · ${countWord(maxTogether)} together` : ''}`,
   },
-  { phase: 'flat', text: 'the whole run · laid out flat' },
+  { phase: 'flat', text: 'the verdict sweeps the plan' },
   { phase: 'done', text: 'the run is a file too · replay anytime' },
 ]
 
@@ -250,6 +252,9 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const ghostRefs = useRef(new Map<string, HTMLSpanElement | null>())
   /* --morph-wired's last written value (write-on-change · F2 budget) */
   const wiredRef = useRef('')
+  /* the verdict sweep's window latch — outside the flat window the per-node
+     --vswp vars get ONE clearing pass, then the frame loop stays silent */
+  const sweepOnRef = useRef(false)
   /** the morph panel's identity rect, section-relative (seam handoff base) */
   const seamBaseRef = useRef<{ left: number; top: number; w: number; h: number } | null>(null)
   /** the card's line grid (final font) — the unroll clip snaps to whole rows */
@@ -615,7 +620,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       if (base) yieldEntry(stage, base.top + (1 - settle) * 26 - capBotRef.current)
       /* once every seed has landed AND the outputs line has left, the empty
          card stops painting (the condensing lines live INSIDE it) */
-      card.style.visibility = p >= PH.wire1 && blocksRef.current.size > 0 ? 'hidden' : ''
+      /* the card stops painting the moment its last visible ink is gone —
+         the outputs tail exits by burstEnd−0.03 and every block's lines are
+         consumed before that at any corpus n (arc 20b: waiting for wire1
+         left a ghost silhouette + the curtain band floating over the wire
+         draw with no card to justify them) */
+      card.style.visibility =
+        p >= PH.burstEnd - 0.03 && blocksRef.current.size > 0 ? 'hidden' : ''
 
       /* ── the aspiration · one task at a time, reading order ──────────────────
          Each block CONDENSES in place into its seed chip, the chip rides a
@@ -707,12 +718,17 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                step behind — the flight reads as MOTION in a still glance,
                and the trail collapses into the chip at landing (eased-k
                offsets bunch at the ends). Pure function of p; params live at
-               module scope so this hot path never allocates (F2 budget). */
+               module scope so this hot path never allocates (F2 budget).
+               Distance-damped (arc 20b): on a SHORT flight (the phone's
+               vertical hop) the k-offsets barely separate — the trail read
+               as a stacked triple exposure, not motion — so it fades out
+               below ~220px and is gone under 90px. Long flights unchanged. */
+            const trailDamp = Math.min(1, Math.max(0, (dist - 90) / 130))
             for (let gI = 0; gI < 2; gI++) {
               const gh = gI === 0 ? g0 : g1
               if (!gh) continue
               const gk = k - GHOST_TRAIL[gI][0]
-              const go = gk > 0.001 && k < 0.995 ? o * GHOST_TRAIL[gI][1] : 0
+              const go = gk > 0.001 && k < 0.995 ? o * GHOST_TRAIL[gI][1] * trailDamp : 0
               if (go <= 0.003) {
                 gh.style.opacity = '0'
                 gh.style.visibility = 'hidden'
@@ -760,6 +776,36 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             o >= 1
               ? ''
               : `translateY(${((1 - o) * 10).toFixed(2)}px) scale(${(0.94 + 0.06 * o).toFixed(3)})`
+        }
+      }
+
+      /* THE VERDICT SWEEP (arc 20b) · the flat window's scene event — the
+         confirmation front crosses the plan left→right (the drum's verdict
+         register, spoken on the DAG): each node's ring flashes as the front
+         passes its measured x. Opacity-only (a pre-painted ::before ring in
+         morph.css), per-node var writes gated to the window — outside it
+         ONE clearing pass, then silence (F2 budget). Pure function of p. */
+      const front = verdictFrontAt(p)
+      if (front > 0 && front < 1 && blocksRef.current.size > 0) {
+        sweepOnRef.current = true
+        let minX = Infinity
+        let maxX = -Infinity
+        for (const g of blocksRef.current.values()) {
+          minX = Math.min(minX, g.p2.x)
+          maxX = Math.max(maxX, g.p2.x)
+        }
+        const span = Math.max(1, maxX - minX)
+        for (const t of plan.tasks) {
+          const g = blocksRef.current.get(t.id)
+          const nodeEl = nodeRefs.current.get(t.id)
+          if (!g || !nodeEl) continue
+          const v = verdictPulseAt(front, (g.p2.x - minX) / span)
+          nodeEl.style.setProperty('--vswp', v.toFixed(3))
+        }
+      } else if (sweepOnRef.current) {
+        sweepOnRef.current = false
+        for (const t of plan.tasks) {
+          nodeRefs.current.get(t.id)?.style.setProperty('--vswp', '0')
         }
       }
 
@@ -902,7 +948,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       el.style.transform = ''
       el.style.opacity = ''
       el.style.visibility = ''
+      /* a mid-sweep disarm must not freeze a verdict ring on the static
+         scene (the ::before reads var(--vswp, 0)) */
+      el.style.removeProperty('--vswp')
     }
+    sweepOnRef.current = false
     setTimeline(timelineAt(flagship, script.lines, 1))
     timelineSigRef.current = timelineAt(flagship, script.lines, 1).sig
   }, [armed, flagship, script])
@@ -1475,7 +1525,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 The recorded run chains through it, step by step.
               </p>
               <p className="morph-cap" data-for="flat">
-                The run is done. The plan <b>lies down flat</b>.
+                The run is done. The <b>verdict</b> sweeps the plan — every step accounted
+                for.
               </p>
               <p className="morph-cap" data-for="done">
                 Hover any step to see its lines in the file. Click it to replay from there.
