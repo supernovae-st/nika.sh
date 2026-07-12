@@ -41,6 +41,19 @@ if (scenes.length === 0) {
 const ff = (fargs) =>
   execFileSync("ffmpeg", ["-hide_banner", "-loglevel", "error", ...fargs], { stdio: "inherit" });
 const mb = (p) => (fs.statSync(p).size / 1024 / 1024).toFixed(2);
+/* the poster's WEB twin · near-lossless WebP (terminal text stays pixel-crisp,
+   ~1/3 the PNG bytes — the LH modern-image-formats audit flagged the PNG
+   posters at 179KB wasted on the home trace). The pages reference the .webp;
+   the .png stays committed (the archival master + hot-link safety). */
+const webpTwin = (pngPath) => {
+  const out = pngPath.replace(/\.png$/, ".webp");
+  try {
+    execFileSync("cwebp", ["-quiet", "-near_lossless", "40", "-m", "6", pngPath, "-o", out]);
+  } catch {
+    console.warn(`  ⚠ cwebp missing — ${path.basename(out)} NOT regenerated (brew install webp)`);
+  }
+  return out;
+};
 
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 
@@ -78,6 +91,7 @@ for (const scene of scenes) {
   if (meta.duration <= 100) {
     await page.evaluate((t) => window.__seek(Number(t)), meta.posterAt ?? 0);
     await page.screenshot({ path: poster, clip });
+    webpTwin(poster);
     console.log(`▸ ${scene} · static · poster ${mb(poster)}MB`);
     await page.close();
     continue;
@@ -113,6 +127,7 @@ for (const scene of scenes) {
   // poster = the exact posterAt frame
   await page.evaluate((t) => window.__seek(Number(t)), meta.posterAt ?? 0);
   await page.screenshot({ path: poster, clip });
+  webpTwin(poster);
 
   console.log(`  mp4 ${mb(mp4)}MB · webm ${mb(webm)}MB · gif ${mb(gif)}MB · poster ${mb(poster)}MB`);
   if (!flag("keep-frames")) fs.rmSync(framesDir, { recursive: true, force: true });
