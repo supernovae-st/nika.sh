@@ -335,7 +335,7 @@
 
 /* the denial codes · the inset card · « out of bounds » → a typed refusal */
 .spec-permits-denials {
-  padding: 16px;
+  padding: 18px;
   border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 60%, transparent);
@@ -360,7 +360,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 .spec-permits-code {
   display: flex;
@@ -802,7 +802,7 @@
 .spec-anatomy {
   position: relative;
   margin: 0;
-  padding: 16px 16px 16px;
+  padding: 18px;
   border: 1px solid var(--seam-hairline);
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
@@ -1256,9 +1256,18 @@
     position: sticky;
     top: 84px;
     z-index: 6;
-    padding: 10px 0;
-    background: var(--v4-bg);
-    box-shadow: 0 1px 0 var(--v4-line);
+    padding: 8px;
+    border: 1px solid var(--seam-hairline);
+    border-radius: 6px;
+    background: color-mix(in oklch, var(--v4-bg) 78%, transparent);
+    /* the glass floor · CONSTANT blur (fluid-glass law — never transitioned):
+       the reading melts under the navigator instead of hard-cropping at the
+       old flat opaque band */
+    -webkit-backdrop-filter: blur(12px) saturate(1.3);
+    backdrop-filter: blur(12px) saturate(1.3);
+    box-shadow:
+      var(--seam-panel),
+      0 10px 28px -18px rgb(0 0 0 / 0.55);
   }
 }
 
@@ -1621,7 +1630,11 @@
   padding: 5px 12px;
   border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 32%, var(--v4-line));
   border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-raised) 72%, transparent);
+  background: color-mix(in oklch, var(--v4-bg-raised) 62%, transparent);
+  /* glass instruments over the live hull · CONSTANT blur (fluid-glass law) —
+     live-only DOM (the reduced register never mounts the helm) */
+  -webkit-backdrop-filter: blur(8px) saturate(1.25);
+  backdrop-filter: blur(8px) saturate(1.25);
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -1979,6 +1992,16 @@
      (the scroll steers the turn; the helm returns at the dock) */
   .spec-rail.is-live[data-stage='hero'] .smw {
     pointer-events: none;
+  }
+  /* THE SEAM DISSOLVE · a wide dock pose is broader than its berth — the
+     hull used to SLICE raw at the canvas's left edge, a crop wall against
+     the prose. The far flank melts into the page's dark over the seam's
+     first ~100px instead. STATIC stops only (the raster law: a mask on a
+     live layer never transitions); the callout layer stays unmasked — the
+     umbilical still crosses the seam whole. */
+  .spec-rail.is-live[data-stage='dock'] .smw {
+    -webkit-mask-image: linear-gradient(to right, transparent, rgb(0 0 0 / 0.6) 8%, #000 14%);
+    mask-image: linear-gradient(to right, transparent, rgb(0 0 0 / 0.6) 8%, #000 14%);
   }
   /* the position plate stays quiet at the POSTER (operator: the poster
      speaks through the vessel + the connected lines, not a floating chip);
