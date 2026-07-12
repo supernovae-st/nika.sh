@@ -16,11 +16,16 @@ import type { FlagshipEntry } from '../../flagships'
 import type { ReplayLine } from '../run/replay-model'
 
 /* ── the phase windows (fractions of the section's scroll runway) ──────────────
-   FILE   0.00–0.20  the selected file travels in and holds (sticky)
-   BURST  0.20–0.60  one task at a time (reading order) CONDENSES into its
+   FILE   0.00–0.13  the selected file travels in and holds (sticky) — SHORT:
+                     the visitor just read this file in the hero (« the same
+                     file you just read »); holding it a fifth of the runway
+                     read as dead scroll (operator, arc 20)
+   BURST  0.13–0.60  one task at a time (reading order) CONDENSES into its
                      seed chip, then the chip is drawn along a curve INTO its
                      DAG slot — the slot ignites on arrival (per-task
-                     aspiration, wave I; the per-line scatter is gone)
+                     aspiration, wave I; the per-line scatter is gone). The
+                     earlier open WIDENS the window: each beat gets more
+                     scroll room, so the relay reads softer AND starts sooner
    WIRES  0.56–0.66  dependency wires draw between the landed nodes
    RUN    0.66–0.86  the recorded trace chains through the DAG + terminal
    FLAT   0.86–0.94  the verdict beat: the exit-0 sweep crosses the graph,
@@ -30,7 +35,7 @@ import type { ReplayLine } from '../run/replay-model'
    DONE   0.94–1.00  the flat 2D DAG takes over as the closing frame        */
 export const PH = {
   settleEnd: 0.07,
-  burst0: 0.2,
+  burst0: 0.13,
   burstEnd: 0.6,
   wire0: 0.56,
   wire1: 0.66,
@@ -51,10 +56,12 @@ export const clamp01 = (v: number): number => Math.min(1, Math.max(0, v))
 export const easeInOut = (k: number): number =>
   k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2
 
-/** the file card's shell (chrome · gutter · panel floor) 1→0 quickly at the
-    top of the burst — the frame steps aside, the task blocks stay readable */
+/** the file card's shell (chrome · gutter · panel floor) 1→0 across the top
+    of the burst — the frame steps aside, the task blocks stay readable. 0.16
+    window (was 0.1): the frame dissolving faster than the first beat could
+    land read as a hard cut into the burst (operator, arc 20) */
 export function shellAt(p: number): number {
-  return 1 - clamp01((p - PH.burst0) / 0.1)
+  return 1 - clamp01((p - PH.burst0) / 0.16)
 }
 
 /* ── the aspiration · one beat per task, reading order ─────────────────────────
@@ -94,9 +101,10 @@ export const igniteAt = (e: number): number => snap01(clamp01((travelAt(e) - 0.7
    condenses, so D is continuous in p. This ramp gates D's onset: it
    saturates at burst0 + 0.085, BEFORE the first slot can ignite — ignition
    onset is 0.879 × beat past burst0 (travelAt 0.78 · condense 0.45), and
-   the widest corpus beat (n = 7) puts that at burst0 + 0.0879. The model
-   test sweeps the REAL corpus and fails if a future flagship's task count
-   ever breaks this bound. Pure function of p — scrubbing reverses it. */
+   the widest corpus beat (n = 7, window 0.47) puts that at burst0 + 0.103.
+   The model test sweeps the REAL corpus and fails if a future flagship's
+   task count ever breaks this bound. Pure function of p — scrubbing
+   reverses it. */
 export const DRAIN_END = 0.085
 export function drainRampAt(p: number): number {
   return easeInOut(clamp01((p - (PH.burst0 + 0.02)) / (DRAIN_END - 0.02)))

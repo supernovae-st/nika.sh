@@ -306,6 +306,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       stage.style.removeProperty('--morph-code-fs')
       stage.style.removeProperty('--morph-code-w')
       stage.style.removeProperty('--morph-slot-b')
+      stage.style.removeProperty('--morph-pre-max')
+      delete stage.dataset.filecrop
       const fH = parseFloat(getComputedStyle(heroCode).fontSize)
       const f0 = parseFloat(getComputedStyle(codeEl).fontSize)
       const heroW = heroCode.getBoundingClientRect().width
@@ -349,6 +351,23 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             const fM = Math.max(7.5, Math.min(f0, (f0 * slotH) / H0))
             stage.style.setProperty('--morph-code-fs', `${fM.toFixed(2)}px`)
             stage.style.setProperty('--morph-code-w', `${((heroW * fM) / fH).toFixed(2)}px`)
+            /* THE CURTAIN (arc 20) · when the 7.5px floor BINDS the fitted
+               card still overflows the slot — before this, the overflow
+               painted on BEHIND the docked monitor and the visible edge was
+               the monitor chrome cutting glyphs mid-line. Cap the pre at the
+               slot floor (measured AFTER the new font lands — the gBCR
+               flushes the layout) and let morph.css dissolve the last rows
+               through the dither curtain. [data-filecrop] gates it all. */
+            if ((f0 * slotH) / H0 < 7.5) {
+              const pre = codeEl.querySelector<HTMLElement>('.cf-pre')
+              if (pre) {
+                const preMax = slotBottom - pre.getBoundingClientRect().top
+                if (preMax > 80) {
+                  stage.dataset.filecrop = '1'
+                  stage.style.setProperty('--morph-pre-max', `${preMax.toFixed(1)}px`)
+                }
+              }
+            }
           }
         }
       }
@@ -730,12 +749,17 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         }
 
         /* the node is BORN as its seed lands — the flat register, the one truth
-           on every width */
+           on every width. The birth is a small BLOOM (arc 20): rise + a
+           0.94→1 scale on the same eased ignition — the slab materializes
+           instead of fading in flat (still a pure function of p) */
         const nodeEl = nodeRefs.current.get(t.id)
         if (nodeEl) {
           const o = easeInOut(igniteAt(e))
           nodeEl.style.opacity = o.toFixed(3)
-          nodeEl.style.transform = o >= 1 ? '' : `translateY(${((1 - o) * 10).toFixed(2)}px)`
+          nodeEl.style.transform =
+            o >= 1
+              ? ''
+              : `translateY(${((1 - o) * 10).toFixed(2)}px) scale(${(0.94 + 0.06 * o).toFixed(3)})`
         }
       }
 
@@ -868,8 +892,10 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     stage.style.removeProperty('--morph-code-w')
     stage.style.removeProperty('--morph-code-fs')
     stage.style.removeProperty('--morph-slot-b')
+    stage.style.removeProperty('--morph-pre-max')
     delete stage.dataset.phase
     delete stage.dataset.entry
+    delete stage.dataset.filecrop
     for (const el of stage.querySelectorAll<HTMLElement>(
       '.cf-line, .morph-node, .morph-term, .morph-seed',
     )) {
