@@ -102,14 +102,15 @@
   }
 }
 
-/* the runway · only when the scroll driver is armed. 440vh: the per-task
-   aspiration (wave I) reads one beat at a time — each task gets real scroll
-   room to condense + travel instead of the old all-at-once scatter — and
-   the verdict gets a real window (wave K): the run keeps its former scroll
-   length while the exit-0 sweep + the 3D→2D flatten play across ~7% of the
-   runway instead of a cut. */
+/* the runway · only when the scroll driver is armed. 370vh (was 440): the
+   per-task aspiration (wave I) reads one beat at a time — each task gets
+   real scroll room to condense + travel instead of the old all-at-once
+   scatter — and the verdict gets a real window (wave K). The arc-20 trim
+   pairs with burst0 0.20→0.13 (morph-model): the scene OPENS sooner and the
+   whole film asks ~16% less scroll, while the burst window itself GREW
+   (0.40→0.47 of a shorter runway ≈ the same absolute room per beat). */
 .morphsec[data-armed] {
-  height: 440vh;
+  height: 370vh;
 }
 .morphsec[data-armed] .morph-stage {
   position: sticky;
@@ -286,14 +287,23 @@
   width: var(--morph-code-w, min(620px, 52vw));
   font-size: var(--morph-code-fs, clamp(9px, 1vh, 11px));
 }
-/* the bottom dissolve · the shared .cf-panel--fadebottom device
-   (codefile.css) — when a tall corpus flooring the fit-font still crops,
-   the file visibly CONTINUES instead of cutting; rides the shell (--msh)
-   so the burst (lines flying) is never masked */
-.morph-code {
-  --cf-fade-h: 64px;
-  --cf-fade-bg: var(--cf-bg);
-  --cf-fade-o: var(--msh, 1);
+/* THE CROP LANDS THE CURTAIN (arc 20) · when the 7.5px fit floor binds, the
+   fitted card still overflows the slot — its tail painted on BEHIND the
+   docked monitor, and the visible « end » of the file was the monitor
+   chrome cutting glyphs mid-line (operator: « coupé bizarre »). The fix is
+   geometric, not a new device: the pre caps at the slot floor (the driver
+   measures --morph-pre-max), which lands the EXISTING fadebottom band
+   (codefile.css · the one sanctioned dissolve, knobs above) at the card's
+   now-VISIBLE bottom edge. The file visibly continues; nothing hides
+   behind the instrument. */
+.morphsec[data-armed] .morph-stage[data-filecrop] .morph-code .cf-pre {
+  max-height: var(--morph-pre-max, none);
+}
+/* cropped = the card fills its slot: anchor it to the slot TOP so the
+   measured cap puts the panel floor exactly on the slot floor — re-centering
+   the capped card would float the curtain off its measured line */
+.morphsec[data-armed] .morph-stage[data-filecrop] .morph-file {
+  align-items: flex-start;
 }
 /* the card shell (chrome · gutter · floor) dissolves through the burst via
    --msh (1→0, written per-frame). The flying lines keep their own opacity.
