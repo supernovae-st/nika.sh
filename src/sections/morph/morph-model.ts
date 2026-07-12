@@ -120,6 +120,31 @@ export function wireAt(p: number): number {
   return clamp01((p - PH.wire0) / (PH.wire1 - PH.wire0))
 }
 
+/* ── THE VERDICT SWEEP (arc 20b) · the flat window's scene event ───────────────
+   Post-#207 nothing lies down in the flat beat — the window's real content
+   is the VERDICT. The confirmation front crosses the plan left→right (the
+   drum's verdict-sweep register, on the DAG), each node flashing its ring
+   as the front passes. Front + pulse are pure functions of p so the beat
+   scrubs in reverse like everything else. */
+
+/** the sweep front's travel 0..1 across the flat window (eased; done a
+    touch before flat1 so the done frame opens on a settled graph) */
+export function verdictFrontAt(p: number): number {
+  return easeInOut(clamp01((p - PH.run1) / (PH.flat1 - PH.run1 - 0.015)))
+}
+
+/** the pulse half-width, in normalized graph x (wide enough that a 2-column
+    plan still reads as a traveling wash, not a per-node blink) */
+export const SWEEP_W = 0.42
+
+/** a node's ring intensity 0..1 as the front passes its normalized x —
+    the front travels −w → 1+w so every node rises AND falls fully */
+export function verdictPulseAt(front: number, xNorm: number): number {
+  if (front <= 0 || front >= 1) return 0
+  const pos = -SWEEP_W + front * (1 + 2 * SWEEP_W)
+  return clamp01(1 - Math.abs(pos - xNorm) / SWEEP_W)
+}
+
 /** the run monitor's dock 0..1 — the window is standing (empty, honest)
     long before the run streams into it */
 export function termAt(p: number): number {

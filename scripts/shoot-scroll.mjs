@@ -161,9 +161,14 @@ for (const f of frames) {
           const top = r.top + window.scrollY
           return ${f.q !== null ? `top - (1 - ${f.q}) * innerHeight` : `top + ${f.p} * (r.height - innerHeight)`}
         })()`)
-  await evaluate(`window.scrollTo(0, ${await calcY()})`)
+  /* behavior:'instant' EXPLICIT — the 2-arg scrollTo(0,y) form inherits the
+     page's html{scroll-behavior:smooth} (the #196 smooth-hijack law: it swept
+     src/ but this probe kept gliding) — a frame shot mid-glide reads as a
+     p-purity violation that isn't one (found on the arc-20b verdict sweep:
+     forward vs reverse frames at the SAME p disagreed) */
+  await evaluate(`window.scrollTo({ top: ${await calcY()}, behavior: 'instant' })`)
   await sleep(400) /* let content-visibility render + layout settle… */
-  await evaluate(`window.scrollTo(0, ${await calcY()})`) /* …re-aim on the settled layout */
+  await evaluate(`window.scrollTo({ top: ${await calcY()}, behavior: 'instant' })`) /* …re-aim on the settled layout */
   await sleep(800) /* rAF applies + 3D settles */
   await shot(REVERSE ? `r-${f.name}` : f.name)
 }

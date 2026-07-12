@@ -4,6 +4,7 @@ import { buildScript } from '../run/replay-model'
 import {
   DRAIN_END,
   PH,
+  SWEEP_W,
   aspireAt,
   condenseAt,
   drainRampAt,
@@ -16,6 +17,8 @@ import {
   termAt,
   timelineAt,
   travelAt,
+  verdictFrontAt,
+  verdictPulseAt,
   wireAt,
 } from './morph-model'
 
@@ -251,6 +254,36 @@ describe('timelineAt · endpoints', () => {
       /* the block's line opacity at birth: 1 − (0.35−0.25)/0.5 = 0.8 —
          the overlap the causality needs */
       expect(1 - (0.35 - 0.25) / 0.5).toBeCloseTo(0.8, 6)
+    })
+  })
+
+  describe('verdict sweep · the flat window has a real scene event (arc 20b)', () => {
+    it('front is 0 through the run window, saturates before flat1, monotone', () => {
+      expect(verdictFrontAt(PH.run1)).toBe(0)
+      expect(verdictFrontAt(PH.run1 - 0.05)).toBe(0)
+      expect(verdictFrontAt(PH.flat1 - 0.015)).toBe(1)
+      let prev = 0
+      for (let p = PH.run1; p <= PH.flat1; p += 0.002) {
+        const f = verdictFrontAt(p)
+        expect(f).toBeGreaterThanOrEqual(prev)
+        prev = f
+      }
+    })
+    it('every node rises AND falls fully — silent at both ends of the travel', () => {
+      for (const xNorm of [0, 0.5, 1]) {
+        expect(verdictPulseAt(0, xNorm)).toBe(0)
+        expect(verdictPulseAt(1, xNorm)).toBe(0)
+        let peak = 0
+        for (let f = 0.001; f < 1; f += 0.002) {
+          peak = Math.max(peak, verdictPulseAt(f, xNorm))
+        }
+        expect(peak).toBeGreaterThan(0.99)
+      }
+    })
+    it('the pulse peaks exactly as the front crosses the node', () => {
+      const xNorm = 0.5
+      const fAtNode = (xNorm + SWEEP_W) / (1 + 2 * SWEEP_W)
+      expect(verdictPulseAt(fAtNode, xNorm)).toBeCloseTo(1, 6)
     })
   })
 })

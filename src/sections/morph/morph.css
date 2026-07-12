@@ -545,6 +545,24 @@
   background-image: radial-gradient(color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 75%, transparent) 1px, transparent 1px);
   opacity: 1;
 }
+/* THE VERDICT RING (arc 20b) · the flat window's scene event — a pre-painted
+   verb-hued ring + glow whose OPACITY rides --vswp (driver-written per node
+   as the confirmation front crosses its measured x · morph-model
+   verdictFrontAt/verdictPulseAt). Opacity-only over a static paint — no
+   per-frame raster (the LOI RASTER lesson). var default 0: the static scene
+   and the goldens never see it. */
+.morph-node::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--v4-radius) + 2px);
+  border: 1px solid color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 80%, white 8%);
+  box-shadow:
+    0 0 16px -2px color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 55%, transparent),
+    inset 0 0 12px color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 22%, transparent);
+  opacity: var(--vswp, 0);
+  pointer-events: none;
+}
 .morphsec[data-armed] .morph-node {
   opacity: 0; /* materializes where its lines land (driver-written) */
   will-change: transform, opacity;
