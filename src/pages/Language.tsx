@@ -11,7 +11,7 @@ import {
 } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { CANON } from '../canon.generated'
-import { SPEC, routeHead } from '../content'
+import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './language-page.css'
@@ -120,6 +120,50 @@ export function Component() {
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
+    ],
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(
+          hit
+            ? [
+                {
+                  '@context': 'https://schema.org',
+                  '@type': 'BreadcrumbList',
+                  itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'The language', item: `${SITE}/language` },
+                    { '@type': 'ListItem', position: 2, name: hit.word },
+                  ],
+                },
+                {
+                  '@context': 'https://schema.org',
+                  '@type': 'DefinedTerm',
+                  name: hit.word,
+                  description:
+                    hit.decls.find((d) => d.desc)?.desc ?? WORD_GLOSS[hit.word] ?? '',
+                  url: `${SITE}/language/${hit.word}`,
+                  inDefinedTermSet: {
+                    '@type': 'DefinedTermSet',
+                    name: 'The Nika language · every word',
+                    url: `${SITE}/language`,
+                  },
+                },
+              ]
+            : {
+                '@context': 'https://schema.org',
+                '@type': 'DefinedTermSet',
+                name: 'The Nika language · every word',
+                url: `${SITE}/language`,
+                hasDefinedTerm: LANGUAGE_WORDS.map((w) => ({
+                  '@type': 'DefinedTerm',
+                  name: w.word,
+                  url: `${SITE}/language/${w.word}`,
+                })),
+              },
+        ),
+        // unhead: don't HTML-escape JSON (keeps it valid ld+json, not &quot;)
+        processTemplateParams: false,
+      },
     ],
   })
 

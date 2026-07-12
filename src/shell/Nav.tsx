@@ -80,7 +80,8 @@ const PRODUCT_GROUPS: MegaGroup[] = [
     title: 'The control layer',
     items: [
       { label: 'See it run', desc: 'The plan, reviewed and enforced', icon: 'run', href: '/#the-run' },
-      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', icon: 'verbs', href: '/#verbs' },
+      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', icon: 'verbs', to: '/verbs' },
+      { label: 'The language', desc: 'Every word the schema declares', icon: 'book', to: '/language' },
       { label: 'What it can touch', desc: 'The permits enforcement model', icon: 'shield', href: '/#the-boundary' },
       { label: 'Use cases', desc: 'Real plans, reviewable and bound', icon: 'tiles', to: '/use-cases' },
     ],
