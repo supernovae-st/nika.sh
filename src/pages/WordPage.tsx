@@ -11,6 +11,8 @@ import {
 } from '../content/language.generated'
 import { WORD_USAGE } from '../content/language-usage.generated'
 import { WORD_GLOSS } from '../content/language-meta'
+import { sourcesForWord } from '../content/sources'
+import { SourcesRail } from '../components/SourcesRail'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -359,6 +361,10 @@ export function Component() {
                       the whole story today.
                     </p>
                   )}
+                  <div>
+                    <p className="td-ref-k">where it lives</p>
+                    <SourcesRail links={sourcesForWord(hit)} />
+                  </div>
                 </div>
               </div>
 

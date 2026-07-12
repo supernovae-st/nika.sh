@@ -6,6 +6,8 @@ import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
 import { CHAPTERS } from '../sections/verbs-data'
 import { PartEgg } from '../scene/parts/PartEgg'
+import { VERB_SOURCES } from '../content/sources'
+import { SourcesRail } from '../components/SourcesRail'
 import { LANGUAGE_WORDS } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { TEMPLATES } from '../content/templates.generated'
@@ -330,6 +332,10 @@ export function Component() {
                       </p>
                     </div>
                   )}
+                  <div>
+                    <p className="td-ref-k">where it lives</p>
+                    <SourcesRail links={VERB_SOURCES} />
+                  </div>
                 </div>
               </div>
 
@@ -372,6 +378,8 @@ export function Component() {
               <aside className="td-hero-berth" data-rise>
                 <PartEgg id={chapter.verb} />
                 <p className="tdrum-caption">{EMBLEM_CAPTION[chapter.verb]}</p>
+                {/* the emblem's provenance — the sources, right under the machine */}
+                <SourcesRail links={VERB_SOURCES.slice(0, 3)} dense />
               </aside>
             </div>
           )}

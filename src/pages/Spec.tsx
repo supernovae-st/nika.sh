@@ -3,6 +3,8 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { usePlan3D } from '../scene/use-plan3d'
+import { ECOSYSTEM } from '../content/sources'
+import { SourcesRail } from '../components/SourcesRail'
 import { CANON } from '../canon.generated'
 import { ENGINE_VERSION, SPEC, REPO, routeHead, VERBS as VERB_CARDS } from '../content'
 import { CodeFile } from '../components/CodeFile'
@@ -966,6 +968,27 @@ export function Component() {
                     </div>
                   </dl>
                 </section>
+
+                {/* WHERE THE LANGUAGE LIVES · the sources register — the ship
+                    above is the site's projection of the SAME map: normative
+                    spec, served schema, engine, docs, the agent + editor
+                    lanes. One registry (sources.ts); the rooms render slices
+                    of it under their berths. */}
+                <div className="td-sec" data-rise>
+                  <div className="cl-year-head">
+                    <h3 className="td-h2" id="spec-sources">
+                      where the language lives
+                    </h3>
+                    <span className="cl-year-rule" aria-hidden />
+                    <span className="cl-year-count">{ECOSYSTEM.length} surfaces · one map</span>
+                  </div>
+                  <p className="td-gloss">
+                    The same contract, everywhere you meet it: the chapters are normative, the
+                    schema is what your editor validates, the engine enforces, the oracle teaches
+                    your agent, the registry re-proves what you share.
+                  </p>
+                  <SourcesRail links={ECOSYSTEM} />
+                </div>
 
                 {/* the close · the dimension line + the forward links */}
                 <p className="spec-note">
