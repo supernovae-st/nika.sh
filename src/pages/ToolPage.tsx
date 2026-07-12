@@ -10,7 +10,7 @@ import { CodeFile } from '../components/CodeFile'
 import { TOOLS, TOOL_CATEGORIES, TOOL_INDEX } from '../content/tools.generated'
 import { TOOL_USAGE } from '../content/tool-usage.generated'
 import { CATEGORY_GLOSS } from '../content/tools-meta'
-import { DrumEgg } from '../scene/tools-hud/DrumEgg'
+import { PartEgg } from '../scene/parts/PartEgg'
 import { layoutDrum } from '../scene/tools-hud/slot-layout'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
@@ -42,6 +42,16 @@ const { compressToEncodedURIComponent } = lz
    SSR-safe: every /tools/<name> page prerenders (TOOL_PATHS in
    site.config.ts); the playground handoff is a pure string compress at
    render. No effects beyond the shared reveal. */
+
+/* the archetype the family wears in the parts catalog (part-model.ts) */
+const ARCHETYPE_NAME: Record<string, string> = {
+  core: 'regulator',
+  file: 'cabinet',
+  data: 'prism bench',
+  network: 'dish',
+  introspection: 'periscope',
+  media: 'projector',
+}
 
 function ArgsContract({ bare }: { bare: string }) {
   const entry = TOOL_INDEX[bare]
@@ -387,13 +397,16 @@ export function Component() {
               </p>
               </div>
 
-              {/* THE PIN DRUM · the room's berth (≥1100px) — the machine holds
-                  aimed at this row; prev/next turns it exactly one notch */}
+              {/* THE PART · the room's berth (≥1100px) — this builtin's own
+                  machine, removed from the ship: the family names the
+                  archetype, the ports ARE the args (bright = required).
+                  Every room a different part, one ink (the parts catalog). */}
               <aside className="td-hero-berth" data-rise>
-                <DrumEgg mode="room" focus={hit.bare} />
+                <PartEgg id={hit.bare} />
                 <p className="tdrum-caption">
-                  the pin drum · slot {String((slot?.index ?? 0) + 1).padStart(2, '0')}/
-                  {TOOLS.length} · {hit.category} arc · pins are the args — bright = required
+                  part {String((slot?.index ?? 0) + 1).padStart(2, '0')}/{TOOLS.length} · the{' '}
+                  {hit.category} {ARCHETYPE_NAME[hit.category]} · ports are the args — bright =
+                  required
                 </p>
               </aside>
             </div>

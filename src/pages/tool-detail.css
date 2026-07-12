@@ -184,3 +184,34 @@ a.td-chip:focus-visible {
     display: none; /* the crumb already walks back — keep the rail two-handed */
   }
 }
+
+/* ── the room berth grid · hero text + the machine at rest (≥1100px) ─────────
+   Shared by the tool rooms and the verb rooms (the parts catalog berths). */
+@media (min-width: 1100px) {
+  .td-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(300px, 27vw, 400px);
+    gap: clamp(28px, 4vw, 56px);
+    align-items: start;
+  }
+  .td-hero-berth {
+    position: sticky;
+    top: 120px;
+  }
+}
+@media (max-width: 1099px) {
+  .td-hero-berth {
+    display: none;
+  }
+}
+
+/* the berth caption (the instrument names itself · mono 11px) */
+.tdrum-caption {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+  max-width: 72ch;
+}

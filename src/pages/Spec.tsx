@@ -484,7 +484,7 @@ export function Component() {
                 data-rise
                 style={{ ['--rise-delay' as string]: '120ms' }}
               >
-                <SpecHead fig="S.0" name="The envelope" count={`${ENVELOPE_KEYS.length} top-level keys`}>
+                <SpecHead fig="S.0" name="The envelope" register={{ href: '/language', label: 'the keyword register' }} count={`${ENVELOPE_KEYS.length} top-level keys`}>
                   Every file opens with <code>nika: v1</code>, one version marker, pinned for the v1
                   lifetime. No <code>v1.0</code>, no <code>v2</code> migration. Three keys are required;
                   the rest are optional.
@@ -532,7 +532,7 @@ export function Component() {
                   The verb hue lights ONLY inside the code frame — the card chrome
                   and the rest of the reference stay monochrome. */}
               <div id="s1" className="spec-block" data-sec="" data-stratum="verbs" data-rise>
-                <SpecHead fig="S.1" name="The four verbs" count={`${CANON.verbs} · locked forever`}>
+                <SpecHead fig="S.1" name="The four verbs" register={{ href: '/verbs', label: 'the verb rooms' }} count={`${CANON.verbs} · locked forever`}>
                   A verb is a <b>distinct native execution model</b>. A task binds exactly one. That is
                   the whole operation space: <code>fetch</code>, recall, db and files are <em>tools</em>{' '}
                   reached under <code>invoke:</code>, not verbs.
@@ -565,7 +565,7 @@ export function Component() {
                   optional controls dimmed) beside the field ledger (required core
                   visible · optional controls behind the fold). */}
               <div id="s2" className="spec-block" data-sec="" data-stratum="plan" data-rise>
-                <SpecHead fig="S.2" name="The task shape" count="1 required field · 1 verb">
+                <SpecHead fig="S.2" name="The task shape" register={{ href: '/language', label: 'the keyword register' }} count="1 required field · 1 verb">
                   A task is a DAG node. <code>id</code> is the only required field and exactly one verb
                   binds; everything else is an optional structural control.
                 </SpecHead>
@@ -652,6 +652,7 @@ export function Component() {
                 <SpecHead
                   fig="S.3"
                   name="The permits"
+                  register={{ href: '/language/permits', label: 'its register row' }}
                   count="default-deny once present"
                 >
                   The <b>capability boundary</b>: the contract an agent must satisfy before it
@@ -751,6 +752,7 @@ export function Component() {
                 <SpecHead
                   fig="S.4"
                   name="The standard library"
+                  register={{ href: '/tools', label: 'the tool rooms' }}
                   count={`${CANON.builtins} builtins · ${BUILTIN_GROUPS.length} families`}
                 >
                   <b>{CANON.builtins}</b> builtin tools, all reached with <code>invoke:</code> · nothing
@@ -780,6 +782,7 @@ export function Component() {
                 <SpecHead
                   fig="S.5"
                   name="Providers"
+                  register={{ href: '/providers', label: 'the provider register' }}
                   count={`${CANON.providers} · ${CANON.providersLocal} local · ${CANON.providersCloud} cloud · ${CANON.providersTest} mock`}
                 >
                   Pick per task or per file. <b>Local-first</b>: <code>provider: ollama</code> runs
@@ -833,6 +836,7 @@ export function Component() {
                 <SpecHead
                   fig="S.6"
                   name="Extract modes"
+                  register={{ href: '/tools/fetch', label: 'the fetch room' }}
                   count={`${CANON.extractModes} modes on fetch`}
                 >
                   How <code>nika:fetch</code> turns a page into typed output: from raw{' '}
@@ -853,6 +857,7 @@ export function Component() {
                 <SpecHead
                   fig="S.7"
                   name="Error namespaces"
+                  register={{ href: '/errors', label: 'the error registry' }}
                   count={`${CANON.errorNamespaces} namespaces · ${CANON.errorCodes} codes`}
                 >
                   Every failure carries a typed code (<code>NIKA-‹NS›-NNN</code>) across{' '}
@@ -1128,11 +1133,15 @@ function SpecHead({
   fig,
   name,
   count,
+  register,
   children,
 }: {
   fig: string
   name: string
   count?: string
+  /** the organ's own page — every element of the ship has one (the
+      parts-catalog law); rendered as the head's trailing link */
+  register?: { href: string; label: string }
   children: React.ReactNode
 }) {
   return (
@@ -1141,6 +1150,11 @@ function SpecHead({
         <span className="spec-head-fig">{fig}</span>
         <h2 className="spec-head-name">{name}</h2>
         {count ? <span className="spec-head-count">{count}</span> : null}
+        {register ? (
+          <a className="spec-head-register" href={register.href}>
+            {register.label} →
+          </a>
+        ) : null}
       </div>
       <p className="spec-head-cap">{children}</p>
     </div>
