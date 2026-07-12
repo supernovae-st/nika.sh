@@ -26,7 +26,7 @@ const { compressToEncodedURIComponent } = lz
    prev/next walk. Detail without prose-drift — everything on the page is a
    projection:
 
-     · contract        tools.generated.ts (the binary's own `nika tools --json`)
+     · contract        tools.generated.ts (the binary's own `nika catalog --tools --json`)
      · usage panel     tool-usage.generated.ts — a VERBATIM task excerpt from
                        a conformance-gated spec skeleton (real line numbers,
                        CodeFile firstLine law: the same body, partially shown)
@@ -257,7 +257,7 @@ export function Component() {
                 <p className="td-gloss">
                   A missing required arg is a <code>nika check</code> finding{' '}
                   <b>before anything runs</b> — the vocabulary below comes from the binary itself
-                  (<code>nika tools --json</code>), not from prose.
+                  (<code>nika catalog --tools --json</code>), not from prose.
                 </p>
                 <ArgsContract bare={hit.bare} />
               </div>
@@ -393,7 +393,7 @@ export function Component() {
                 <a href="/tools/catalog.json">/tools/catalog.json</a>; the contract lives in{' '}
                 <a href={`${SPEC}/blob/main/spec/06-stdlib-contract.md`}>spec 06 · stdlib</a>.{' '}
                 <Link to="/install">Install</Link> and ask the binary itself:{' '}
-                <code>nika tools</code>. <Link to="/spec">Read the spec →</Link>
+                <code>nika catalog --tools</code>. <Link to="/spec">Read the spec →</Link>
               </p>
               </div>
 
