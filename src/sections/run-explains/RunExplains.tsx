@@ -37,7 +37,7 @@ const BEATS: Beat[] = [
     label: 'nika check',
     claim: 'Audited before a single token.',
     note: 'the pre-flight ladder: plan · cost · secrets · types · tools · args · schema · permits, then one hint. rc=0.',
-    img: `${MEDIA}/posters/check-audit.png`,
+    img: `${MEDIA}/posters/check-audit.webp`,
     alt: 'Terminal capture of nika check on the signature workflow: the audit ladder passes with a cost floor warning and one permits hint, rc=0.',
   },
   {
@@ -45,7 +45,7 @@ const BEATS: Beat[] = [
     label: 'nika inspect',
     claim: 'The shape of the run, before the run.',
     note: 'static anatomy: 8 waves · a 2-wide parallel box · the pinch points · the blast radius per task.',
-    img: `${MEDIA}/posters/inspect-anatomy.png`,
+    img: `${MEDIA}/posters/inspect-anatomy.webp`,
     alt: 'Terminal capture of nika inspect: the DAG as waves with a parallel box, plus parallelism, pinch and blast-radius lines.',
   },
   {
@@ -53,7 +53,7 @@ const BEATS: Beat[] = [
     label: 'the epilogue',
     claim: 'Every run ends with its proof.',
     note: 'per-task waterfall · the verdict card · 922 tokens · $0.00 · outputs typed. Straight off the live render.',
-    img: `${MEDIA}/posters/run-epilogue.png`,
+    img: `${MEDIA}/posters/run-epilogue.webp`,
     alt: 'Terminal capture of the end of a nika run: nine green tasks, a duration waterfall, and the verdict card with tokens and cost.',
   },
   {
@@ -61,7 +61,7 @@ const BEATS: Beat[] = [
     label: 'trace outputs',
     claim: 'The flight recorder, browsable.',
     note: 'nika trace outputs: verb · duration · tokens · a bounded preview per task, from the run’s NDJSON trace.',
-    img: `${MEDIA}/posters/trace-outputs.png`,
+    img: `${MEDIA}/posters/trace-outputs.webp`,
     alt: 'Terminal capture of nika trace outputs: a table of nine tasks with verbs, durations, token counts and output previews.',
   },
   {
@@ -69,7 +69,7 @@ const BEATS: Beat[] = [
     label: 'trace flow',
     claim: 'Which output fed which task.',
     note: 'the data waterfall: 11 edges with recorded sizes, derived from plan bindings and the trace.',
-    img: `${MEDIA}/posters/trace-flow.png`,
+    img: `${MEDIA}/posters/trace-flow.webp`,
     alt: 'Terminal capture of nika trace flow: task-to-task edges annotated with the byte size that flowed across each one.',
   },
   {
@@ -77,7 +77,7 @@ const BEATS: Beat[] = [
     label: 'kill → resume',
     claim: 'Finished work never runs twice.',
     note: 'kill -9 mid-fanout (exit 137), then nika run --resume: 4 cache hits banked, 4 ran live.',
-    img: `${MEDIA}/posters/kill-resume.png`,
+    img: `${MEDIA}/posters/kill-resume.webp`,
     alt: 'Two terminal panels: a run killed mid-fanout with exit 137, then a resumed run where four tasks are cache hits and four run live.',
   },
   {
@@ -85,7 +85,7 @@ const BEATS: Beat[] = [
     label: 'human gate',
     claim: 'It pauses for a human. Durably.',
     note: 'a nika:prompt gate exits 4 and journals the question; --resume --answer approve=true re-arms and publishes.',
-    img: `${MEDIA}/posters/gate-consent.png`,
+    img: `${MEDIA}/posters/gate-consent.webp`,
     alt: 'Two terminal panels: a gated run pausing with exit 4 and a workflow_paused note, then the answered resume completing with five cache hits.',
   },
 ]
@@ -157,7 +157,7 @@ export default function RunExplains() {
           <video
             ref={videoRef}
             className="v5rx-video"
-            poster={`${MEDIA}/posters/run-live.png`}
+            poster={`${MEDIA}/posters/run-live.webp`}
             width={1600}
             height={900}
             muted

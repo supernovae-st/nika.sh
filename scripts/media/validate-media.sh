@@ -67,6 +67,16 @@ required=(
   public/media/posters/trace-flow.png
   public/media/posters/kill-resume.png
   public/media/posters/gate-consent.png
+  # the web twins — what the pages actually reference (near-lossless WebP,
+  # emitted by render-scenes.mjs beside each PNG master; needs cwebp)
+  public/media/posters/check-audit.webp
+  public/media/posters/inspect-anatomy.webp
+  public/media/posters/run-live.webp
+  public/media/posters/run-epilogue.webp
+  public/media/posters/trace-outputs.webp
+  public/media/posters/trace-flow.webp
+  public/media/posters/kill-resume.webp
+  public/media/posters/gate-consent.webp
   public/media/videos/run-live.mp4
   public/media/videos/run-live.webm
   public/media/gifs/run-live.optimized.gif
@@ -89,6 +99,8 @@ budget() { # path max_bytes label
 }
 budget public/media/gifs/run-live.optimized.gif $((8 * 1024 * 1024))
 for p in public/media/posters/*.png; do budget "$p" $((1024 * 1024)); done
+# the web twins carry the page weight — hold them well under the PNG masters
+for p in public/media/posters/*.webp; do budget "$p" $((160 * 1024)); done
 
 [ "$fail" = 0 ] && say "media gate: GREEN" || say "media gate: RED"
 exit "$fail"
