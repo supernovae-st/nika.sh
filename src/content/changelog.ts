@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-12',
+    tag: 'site',
+    title: 'nika.sh v4.15 · every word gets its room, every room its machine',
+    body: 'The vocabulary completes. Every builtin opens its own room — the arg contract in the binary’s own words, the tool inside a real file (a verbatim skeleton excerpt at its true line numbers, or a crafted workflow that passes check — the drift gates re-prove both on every test run), the skeletons that ship it, the check gates that name it, the family walk. The four verbs get rooms of their own, and every key the schema declares gets its register row — 51 words projected from the served contract, never prose, with an honest miss for anything else. THE PIN DRUM plays the standard library on /tools: one row per builtin, one pin per real argument — bright means required — six family blades, a fixed comb; walking prev/next between rooms turns one persistent machine exactly one notch. Then the parts catalog: every room berths its OWN machine in the ship’s ink — six family archetypes (the file cabinet’s required drawers sit pulled out at you), four verb emblems (infer’s halo carries one spoke per provider), no two parts share a silhouette, every count a catalog count, and a 2D engineering drawing of the same instance tables stands in wherever GL never mounts. The ship links back — every spec section head opens its organ’s page — and ⌘K answers the whole vocabulary now, builtins, verbs and keywords alike. The spec voyage earns its grace: the floating plate dies into the rail — one 42px machined strip whose read segment expands to speak its organ and the chapter keys, titles never break (an overflowing tail fades under a machined window; at narrow berths resting titles fold whole and hover peeks them back) — hull plates stand down when the prose column would cut them, and the opening flight flies like a vessel at last: the yaw follower under a hard velocity ceiling, the hull banking into its turns, the pointer’s hand on the wheel only at rest. The sitemap learns class-aware tiers, the nav opens the new doors, and every room speaks schema.org.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.15.0',
+  },
+  {
     date: '2026-07-11',
     tag: 'site',
     title: 'nika.sh v4.14 · the site names its doors',
