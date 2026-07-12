@@ -293,9 +293,17 @@
    chrome cutting glyphs mid-line (operator: « coupé bizarre »). The fix is
    geometric, not a new device: the pre caps at the slot floor (the driver
    measures --morph-pre-max), which lands the EXISTING fadebottom band
-   (codefile.css · the one sanctioned dissolve, knobs above) at the card's
-   now-VISIBLE bottom edge. The file visibly continues; nothing hides
-   behind the instrument. */
+   (codefile.css · the one sanctioned dissolve) at the card's now-VISIBLE
+   bottom edge. The file visibly continues; nothing hides behind the
+   instrument. */
+.morph-code {
+  --cf-fade-h: 64px;
+  --cf-fade-bg: var(--cf-bg); /* the band matches the card floor, not the page */
+  /* the band no longer rides --msh (wave-M dissolved it with the shell, back
+     when it sat mid-card): capped, it sits at the SLOT edge — holding it
+     through the burst keeps the drained queue's soft edge while the shell
+     dissolves (arc-20 sweep truth; the card hides at wire1 anyway) */
+}
 .morphsec[data-armed] .morph-stage[data-filecrop] .morph-code .cf-pre {
   max-height: var(--morph-pre-max, none);
 }
