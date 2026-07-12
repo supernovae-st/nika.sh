@@ -5,6 +5,7 @@ import { useAnchorScroll } from '../lib/use-anchor-scroll'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { ERROR_CODES, ERROR_INDEX, ERROR_NAMESPACES, type ErrorCodeEntry } from '../content/errors.generated'
+import { CODE_REFS } from '../content/graph'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './errors-page.css'
@@ -64,6 +65,24 @@ function CodeRow({ entry, active }: { entry: ErrorCodeEntry; active: boolean }) 
         )}
       </div>
       <p className="er-failure">{entry.failure}</p>
+      {/* the graph, closed: the words and tools whose pages NAME this code
+          point back from here (derived by inverting the rooms' own data —
+          graph.ts; a code nothing names carries no line) */}
+      {(CODE_REFS[entry.code]?.words.length || CODE_REFS[entry.code]?.tools.length) ? (
+        <p className="er-refs mono">
+          <span className="er-refs-k">named by</span>
+          {CODE_REFS[entry.code].words.map((w) => (
+            <Link key={`w:${w}`} className="er-ref" to={`/language/${w}`}>
+              {w}
+            </Link>
+          ))}
+          {CODE_REFS[entry.code].tools.map((t) => (
+            <Link key={`t:${t}`} className="er-ref" to={`/tools/${t}`}>
+              nika:{t}
+            </Link>
+          ))}
+        </p>
+      ) : null}
     </li>
   )
 }

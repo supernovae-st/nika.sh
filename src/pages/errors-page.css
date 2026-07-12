@@ -140,3 +140,30 @@
     font-size: 13.5px;
   }
 }
+
+/* ── the graph, closed · the words/tools whose pages name this code ────────── */
+.er-refs {
+  margin: 8px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.er-refs-k {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 40%, transparent);
+}
+.er-ref {
+  color: color-mix(in srgb, var(--v4-text) 66%, transparent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 18%, transparent);
+}
+.er-ref:hover,
+.er-ref:focus-visible {
+  color: var(--v4-text);
+  border-bottom-color: var(--v4-text);
+}

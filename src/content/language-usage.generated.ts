@@ -58,9 +58,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "api-upload-and-create",
       "docker-report"
     ],
-    "codes": [
-      "NIKA-INVOKE-002"
-    ]
+    "codes": []
   },
   "backoff_max_ms": {
     "word": "backoff_max_ms",
@@ -187,9 +185,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "env": {
     "word": "env",
     "templates": [],
-    "codes": [
-      "NIKA-VAR-001"
-    ]
+    "codes": []
   },
   "exec": {
     "word": "exec",
@@ -198,10 +194,8 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "docker-report"
     ],
     "codes": [
-      "NIKA-PARSE-008",
       "NIKA-PARSE-018",
-      "NIKA-SEC-001",
-      "NIKA-SEC-004"
+      "NIKA-SEC-001"
     ]
   },
   "fail_fast": {
@@ -267,12 +261,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "api-upload-and-create",
       "docker-report"
     ],
-    "codes": [
-      "NIKA-PARSE-004",
-      "NIKA-PARSE-006",
-      "NIKA-PARSE-007",
-      "NIKA-INVOKE-001"
-    ]
+    "codes": []
   },
   "infer": {
     "word": "infer",
@@ -781,14 +770,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "api-upload-and-create",
       "docker-report"
     ],
-    "codes": [
-      "NIKA-PARSE-018",
-      "NIKA-INVOKE-001",
-      "NIKA-INVOKE-002",
-      "NIKA-MCP-002",
-      "NIKA-SEC-002",
-      "NIKA-SEC-004"
-    ]
+    "codes": []
   },
   "tools": {
     "word": "tools",
@@ -832,8 +814,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "api-upload-and-create"
     ],
     "codes": [
-      "NIKA-PARSE-015",
-      "NIKA-VAR-001"
+      "NIKA-PARSE-015"
     ]
   },
   "vision": {
@@ -866,8 +847,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     "word": "with",
     "templates": [],
     "codes": [
-      "NIKA-PARSE-013",
-      "NIKA-DAG-003"
+      "NIKA-PARSE-013"
     ]
   },
   "workflow": {
