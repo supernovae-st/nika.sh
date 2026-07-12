@@ -20,7 +20,7 @@ import './tools-page.css'
 
    Spec truth: rows come from src/content/tools.generated.ts — a compiled
    projection of public/tools/catalog.json, itself derived from the engine's
-   own `nika tools --json` vocabulary (name · category · description · args
+   own `nika catalog --tools --json` vocabulary (name · category · description · args
    with per-arg descriptions and the required set). The machine reads the
    JSON; humans read this register. Same artifact, two renderings — the page
    can never drift from what the binary answers.
@@ -177,7 +177,7 @@ export function Component() {
             A missing required arg is a <code>nika check</code> finding <b>before anything runs</b> —
             the engine teaches its own vocabulary. Try one in the{' '}
             <Link to="/play">playground</Link>, or <Link to="/install">install</Link> and ask the
-            binary itself: <code>nika tools</code>. <Link to="/spec">Read the spec →</Link>
+            binary itself: <code>nika catalog --tools</code>. <Link to="/spec">Read the spec →</Link>
           </p>
         </div>
       </section>
