@@ -16,6 +16,9 @@ import { Component as NotFound } from './pages/NotFound'
 import { Component as Errors } from './pages/Errors'
 import { Component as Tools } from './pages/Tools'
 import { Component as ToolPage } from './pages/ToolPage'
+import { Component as Verbs } from './pages/Verbs'
+import { Component as VerbPage } from './pages/VerbPage'
+import { Component as Language } from './pages/Language'
 import { Component as Sitemap } from './pages/Sitemap'
 import { Component as Providers } from './pages/Providers'
 import { Component as Templates } from './pages/Templates'
@@ -67,6 +70,13 @@ export const routes: RouteObject[] = [
          room prerenders its own static landing (TOOL_PATHS in site.config.ts). */
       { path: 'tools', Component: Tools },
       { path: 'tools/:name', Component: ToolPage },
+      /* the language surfaces · the four verb ROOMS + the keyword register
+         (every schema-declared word, /errors-style anchored rows). All
+         prerender (VERB_PATHS + LANGUAGE_PATHS in site.config.ts). */
+      { path: 'verbs', Component: Verbs },
+      { path: 'verbs/:name', Component: VerbPage },
+      { path: 'language', Component: Language },
+      { path: 'language/:word', Component: Language },
       /* the provider register · the human twin of /providers/catalog.json.
          Spec-named set only; the engine's embedded tail stays a count. */
       { path: 'providers', Component: Providers },

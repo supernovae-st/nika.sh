@@ -1,0 +1,86 @@
+/* ─── /language · the keyword register ────────────────────────────────────────
+   Extends the register grammar (tools-page.css tp-* is the shared
+   vocabulary — rows, chips, args grid, miss, foot). This file adds only
+   the lg- layer: the surfaces legend, the per-declaration rows, the enum
+   value chips, the verb-room link, the deep-link highlight. Monochrome
+   blueprint. SSR-safe: pure CSS. */
+
+.lg-list {
+  margin-top: clamp(28px, 4vh, 44px);
+}
+.lg-row {
+  padding: 14px 10px 16px 14px;
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+  scroll-margin-top: 120px;
+}
+.lg-row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+.lg-row--active {
+  border-left: 3px solid var(--v4-text);
+  padding-left: 11px;
+  background: color-mix(in srgb, var(--v4-text) 5%, transparent);
+}
+.lg-decls {
+  margin-top: 10px;
+}
+.lg-room-link {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--v4-text) 66%, transparent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 22%, transparent);
+}
+.lg-room-link:hover,
+.lg-room-link:focus-visible {
+  color: var(--v4-text);
+  border-bottom-color: var(--v4-text);
+}
+.lg-enum {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-left: 6px;
+}
+.lg-enum-val {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 0 5px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 14%, transparent);
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+}
+
+/* ── the surfaces legend ───────────────────────────────────────────────────── */
+.lg-scopes {
+  list-style: none;
+  margin: clamp(24px, 3.5vh, 36px) 0 0;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--v4-text) 12%, transparent);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px 24px;
+}
+.lg-scope {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+.lg-scope-k {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text);
+  white-space: nowrap;
+}
+.lg-scope-b {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--v4-text) 56%, transparent);
+}
+
+@media (max-width: 560px) {
+  .lg-scopes {
+    grid-template-columns: 1fr;
+  }
+}

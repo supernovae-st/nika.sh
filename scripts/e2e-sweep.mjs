@@ -203,7 +203,7 @@ const errSample = new Set()
    too — CDP-load the FIRST TWO of each (one row shape + one with the opened
    skeleton/args variety); pass 2 still fetches every page over HTTP, and
    pass 3 pins each register's deep-link behavior explicitly. */
-const regDetail = ROUTES.filter((r) => /^\/(tools|providers|templates)\/.+/.test(r))
+const regDetail = ROUTES.filter((r) => /^\/(tools|verbs|language|providers|templates)\/.+/.test(r))
 const regSample = new Set()
 {
   const perReg = new Map()
@@ -216,7 +216,7 @@ const regSample = new Set()
 const NAV_ROUTES = ROUTES.filter(
   (r) =>
     (!/^\/errors\/.+/.test(r) || errSample.has(r)) &&
-    (!/^\/(tools|providers|templates)\/.+/.test(r) || regSample.has(r)),
+    (!/^\/(tools|verbs|language|providers|templates)\/.+/.test(r) || regSample.has(r)),
 )
 const idsByRoute = new Map()
 const links = new Map() // href -> [fromRoutes]
@@ -336,6 +336,8 @@ const REGISTER_PINS = [
   { route: '/errors/NIKA-SEC-001', row: '.er-row--active', extra: null },
   { route: '/tools/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
   { route: '/providers/ollama', row: '.pv-row--active', extra: null },
+  { route: '/verbs/invoke', row: 'section[data-verb="invoke"]', extra: '.td-usage .cf-panel' },
+  { route: '/language/depends_on', row: '.lg-row--active', extra: null },
   { route: '/templates/fanout', row: '.tm-row--active', extra: '.tm-row--active .cf-panel' },
 ]
 for (const pin of REGISTER_PINS) {

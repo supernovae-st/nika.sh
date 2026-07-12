@@ -36,6 +36,8 @@ const CORE = [
   ['Convert', '/convert', 'send us a workflow'],
   ['Errors', '/errors', 'the typed error registry'],
   ['Tools', '/tools', 'the standard library'],
+  ['The four verbs', '/verbs', 'infer · exec · invoke · agent'],
+  ['The language', '/language', 'every word the schema declares'],
   ['Providers', '/providers', 'local first · your keys'],
   ['Templates', '/templates', 'instantiable skeletons'],
   ['Site map', '/sitemap', 'every page, one map'],
