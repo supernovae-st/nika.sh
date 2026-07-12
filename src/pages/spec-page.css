@@ -1630,7 +1630,11 @@
   padding: 5px 12px;
   border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 32%, var(--v4-line));
   border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-raised) 72%, transparent);
+  background: color-mix(in oklch, var(--v4-bg-raised) 62%, transparent);
+  /* glass instruments over the live hull · CONSTANT blur (fluid-glass law) —
+     live-only DOM (the reduced register never mounts the helm) */
+  -webkit-backdrop-filter: blur(8px) saturate(1.25);
+  backdrop-filter: blur(8px) saturate(1.25);
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.14em;

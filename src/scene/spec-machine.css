@@ -74,7 +74,11 @@
   padding: 7px 10px;
   border: 1px solid color-mix(in oklch, #4f86ff 30%, transparent);
   border-radius: 4px;
-  background: color-mix(in oklch, #0a0c10 88%, transparent);
+  background: color-mix(in oklch, #0a0c10 74%, transparent);
+  /* the plates read as machined glass over the hull · CONSTANT blur (the
+     fluid-glass law — only their opacity rides the frame loop) */
+  -webkit-backdrop-filter: blur(7px) saturate(1.2);
+  backdrop-filter: blur(7px) saturate(1.2);
   font-size: 9.5px;
   letter-spacing: 0.1em;
   color: color-mix(in oklch, #8db4ff 78%, transparent);
@@ -101,10 +105,12 @@
   color: #c9dbff;
 }
 
-/* the CURRENT section's callout · the you-are-here plate on the ship */
+/* the CURRENT section's callout · the you-are-here plate on the ship
+   (a touch more translucent since the glass floor landed — the emphasis
+   stays with the border + ink, the hull whispers through) */
 .smc-label.is-cur {
   border-color: #4f86ff;
   color: #c9dbff;
-  background: color-mix(in oklch, #10203f 92%, transparent);
+  background: color-mix(in oklch, #10203f 84%, transparent);
 }
 
