@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import * as THREE from 'three'
 
 /* ─── The dither field · the full-bleed WebGL background (BRAND-11) ────────────
    ONE fullscreen quad + an ordered-dither fragment shader — the v5 signature
@@ -10,6 +8,17 @@ import * as THREE from 'three'
    diffusing into the engineered black toward the right and bottom, with the
    faint survey grid living ONLY inside the glow. The Bayer 8×8 quantizer
    turns the falloff into the dithered dissolve — the signature move.
+
+   VANILLA WEBGL (arc 20d) · this was an r3f <Canvas> — the ONLY r3f consumer
+   on the default home path, and LH billed the whole fiber+three chunk to it:
+   227 KB gz transferred · 994 ms bootup · 128 KB unused, all for one quad.
+   The rewrite keeps the FRAGMENT SOURCE byte-identical (raw gl_FragColor —
+   three's ShaderMaterial injected no tonemap/colorspace chunk, so the bytes
+   match) and re-implements the six hard-won mechanisms explicitly:
+   paint watchdog (data-painted · the harness gates on it) · init watchdog
+   (remount ×3 · the 300×150 blank-canvas flake) · context loss/restore ·
+   reduced-motion demand mode (ONE static frame, uTime 0, lens.w SNAPPED 0) ·
+   the scroll fade + loop pause · the loupe/wake pointer state.
 
    THE FIELD (composed in the shader, then dithered):
    • the glow — a deep saturated radial (#0F53B7 family) anchored at the
@@ -46,8 +55,9 @@ function smoothstep(a: number, b: number, x: number): number {
 }
 
 const VERT = /* glsl */ `
+attribute vec2 aPos;
 void main() {
-  gl_Position = vec4(position.xy, 0.0, 1.0);
+  gl_Position = vec4(aPos, 0.0, 1.0);
 }
 `
 
@@ -156,146 +166,40 @@ void main() {
 }
 `
 
-function FieldQuad({
-  scroll,
-  reduced,
-}: {
-  scroll: React.MutableRefObject<number>
-  reduced: boolean
-}) {
-  const gl = useThree((s) => s.gl)
-  const invalidate = useThree((s) => s.invalidate)
-  const uniforms = useMemo(
-    () => ({
-      uRes: { value: new THREE.Vector2(1, 1) },
-      uTime: { value: 0 },
-      uScroll: { value: 0 },
-      uMouse: { value: new THREE.Vector2(0, 0) },
-      /* z (radius px) seeds >0 — smoothstep(0,0,x) is undefined GLSL and a
-         frame could theoretically draw before the first useFrame writes it */
-      uLens: { value: new THREE.Vector4(0, 0, 180, 0) },
-    }),
-    [],
-  )
-  const mouse = useRef({ x: 0, y: 0 })
-  /* the loupe's target amp · 1 only for a fine hover pointer at desktop width
-     (set by the pointer listener below) · eased on the existing frame loop */
-  const lensAmp = useRef(0)
-  const bufSize = useMemo(() => new THREE.Vector2(), [])
-
-  /* seed the resolution before the first paint (the 'demand' static frame under
-     reduced motion renders once — it must not draw at the 1×1 default), then
-     request a frame so demand mode repaints AFTER the seed (without the
-     invalidate, the one-and-only demand frame can land pre-seed at 1×1). */
-  useEffect(() => {
-    uniforms.uRes.value.copy(gl.getDrawingBufferSize(bufSize))
-    invalidate()
-  }, [gl, uniforms, bufSize, invalidate])
-
-  /* THE PAINT WATCHDOG · in demand mode the field gets ONE frame — under a
-     starved GPU init (heavy load · slow swiftshader) that frame can be
-     dropped and nothing ever re-requests it: the canvas stays BLANK for the
-     whole session (a real reduced-motion user bug — and the goldens' exact
-     13.66% hero bistable, isolated by the no-canvas probe). useFrame marks
-     the first PROCESSED frame on the canvas (`data-painted` — the harness
-     gates on it); until it lands, staggered invalidates re-request the
-     demand frame. Idempotent: the rest frame is pure (uTime 0), extra
-     paints change nothing. */
-  const paintedRef = useRef(false)
-  useEffect(() => {
-    gl.domElement.dataset.paints = '1'
-    if (paintedRef.current) return
-    const timers = [500, 1500, 3000, 6000].map((ms) =>
-      setTimeout(() => {
-        if (!paintedRef.current) invalidate()
-      }, ms),
-    )
-    return () => timers.forEach(clearTimeout)
-  }, [gl, invalidate])
-
-  /* GPU context loss: preventDefault on `lost` so the browser is ALLOWED to
-     restore (three re-inits its GL state on `restored`); the invalidate then
-     repaints — otherwise a demand/paused canvas stays blank after a GPU reset. */
-  useEffect(() => {
-    const canvas = gl.domElement
-    const onLost = (e: Event) => e.preventDefault()
-    const onRestored = () => invalidate()
-    canvas.addEventListener('webglcontextlost', onLost)
-    canvas.addEventListener('webglcontextrestored', onRestored)
-    return () => {
-      canvas.removeEventListener('webglcontextlost', onLost)
-      canvas.removeEventListener('webglcontextrestored', onRestored)
+/** compile + link the one program — returns null on any compile/link failure
+    (the outer init watchdog owns recovery; a shader that fails here would
+    fail identically on a remount, so 3 tries then the page's own background
+    carries the register) */
+function buildProgram(gl: WebGLRenderingContext): WebGLProgram | null {
+  const sh = (type: number, src: string): WebGLShader | null => {
+    const s = gl.createShader(type)
+    if (!s) return null
+    gl.shaderSource(s, src)
+    gl.compileShader(s)
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS) && !gl.isContextLost()) {
+      console.warn('dither-field shader:', gl.getShaderInfoLog(s))
+      gl.deleteShader(s)
+      return null
     }
-  }, [gl, invalidate])
-
-  /* reduced-motion flips at runtime (OS toggle) swap the frameloop — request
-     one frame so the new mode paints its state immediately. */
-  useEffect(() => {
-    invalidate()
-  }, [reduced, invalidate])
-
-  useFrame((state) => {
-    if (!paintedRef.current) {
-      paintedRef.current = true
-      gl.domElement.dataset.painted = '1'
-    }
-    uniforms.uRes.value.copy(gl.getDrawingBufferSize(bufSize))
-    uniforms.uTime.value = reduced ? 0 : state.clock.elapsedTime
-    // reduced motion: no dive — the beat stays a static frame
-    uniforms.uScroll.value = reduced ? 0 : scroll.current
-    const k = 0.06
-    const mx = reduced ? 0 : mouse.current.x
-    const my = reduced ? 0 : mouse.current.y
-    uniforms.uMouse.value.x += (mx - uniforms.uMouse.value.x) * k
-    uniforms.uMouse.value.y += (-my - uniforms.uMouse.value.y) * k
-    /* the loupe · faster follow than the parallax (a lens tracks the hand),
-       amp eases so the emulsion develops rather than snapping. All on THIS
-       loop — the lens adds zero listeners and zero frames of its own. */
-    const lens = uniforms.uLens.value
-    lens.x += (mouse.current.x - lens.x) * 0.25
-    lens.y += (mouse.current.y - lens.y) * 0.25
-    lens.z = 180 * (uniforms.uRes.value.x / Math.max(1, window.innerWidth))
-    /* reduced motion SNAPS to zero (never eases): the demand loop renders ONE
-       frame on the OS toggle — an eased w would bake a ~92%-amp lens circle
-       into that static frame. Exact zero, always. */
-    if (reduced) lens.w = 0
-    else lens.w += (lensAmp.current - lens.w) * 0.08
-  })
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    /* the loupe's gate · a real hover cursor at desktop width (matches the
-       CSS cursor-effect gates) — coarse pointers and phones never see it */
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
-    const onMove = (e: PointerEvent) => {
-      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1
-      mouse.current.y = (e.clientY / window.innerHeight) * 2 - 1
-      lensAmp.current = fine.matches && window.innerWidth >= 1024 ? 1 : 0
-    }
-    /* pointer leaves the page → the loupe sets down (amp eases to 0) */
-    const onOut = (e: PointerEvent) => {
-      if (e.relatedTarget === null) lensAmp.current = 0
-    }
-    window.addEventListener('pointermove', onMove, { passive: true })
-    window.addEventListener('pointerout', onOut, { passive: true })
-    return () => {
-      window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('pointerout', onOut)
-    }
-  }, [])
-
-  return (
-    <mesh frustumCulled={false}>
-      <planeGeometry args={[2, 2]} />
-      <shaderMaterial
-        vertexShader={VERT}
-        fragmentShader={FRAG}
-        uniforms={uniforms}
-        depthTest={false}
-        depthWrite={false}
-      />
-    </mesh>
-  )
+    return s
+  }
+  const v = sh(gl.VERTEX_SHADER, VERT)
+  const f = sh(gl.FRAGMENT_SHADER, FRAG)
+  if (!v || !f) return null
+  const p = gl.createProgram()
+  if (!p) return null
+  gl.attachShader(p, v)
+  gl.attachShader(p, f)
+  gl.linkProgram(p)
+  /* the shaders are owned by the program now — flag for deletion either way */
+  gl.deleteShader(v)
+  gl.deleteShader(f)
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS) && !gl.isContextLost()) {
+    console.warn('dither-field link:', gl.getProgramInfoLog(p))
+    gl.deleteProgram(p)
+    return null
+  }
+  return p
 }
 
 export default function DitherField() {
@@ -323,16 +227,31 @@ export default function DitherField() {
   )
   const wrap = useRef<HTMLDivElement>(null)
 
+  /* the frame loop reads these by REF — mode flips never rebuild the GL world */
+  const reducedRef = useRef(reduced)
+  const scrollRef = useRef(0)
+  const activeRef = useRef(true)
+  /* the demand kick · request ONE frame (resize · mode flip · watchdog retry ·
+     scroll reactivation). Owned by the GL effect; null while torn down. */
+  const kickRef = useRef<(() => void) | null>(null)
+
+  /* reduced-motion flips at runtime (OS toggle) swap the loop's mode — kick
+     one frame so the new mode paints its state immediately (the continuous
+     loop re-arms itself from inside draw() when motion returns). */
+  useEffect(() => {
+    reducedRef.current = reduced
+    kickRef.current?.()
+  }, [reduced])
+
   /* THE INIT WATCHDOG · under a starved GPU (heavy load · slow swiftshader)
-     the r3f <Canvas> can fail to initialize AT ALL — the element stays at
-     the 300×150 default for the whole session and the field is a blank
-     rectangle (a real reduced-motion/slow-GPU user bug, and the goldens'
-     13.66% hero bistable: probe sessions showed the flake state IS the
-     uninitialized canvas). The inner demand watchdog can't fire there (its
-     component never mounts), so the recovery lives OUTSIDE: if the canvas
-     hasn't marked `data-painted` after a grace, remount the whole Canvas
-     (a fresh context attempt) — 3 tries with backoff, then leave it be
-     (no WebGL → the page's own background carries the register). */
+     the context can fail to produce a first frame AT ALL — historically the
+     canvas sat at its default size for the whole session and the field was a
+     blank rectangle (a real reduced-motion/slow-GPU user bug, and the
+     goldens' 13.66% hero bistable: probe sessions showed the flake state IS
+     the uninitialized canvas). If the canvas hasn't marked `data-painted`
+     after a grace, rebuild the whole GL world (a fresh context attempt) —
+     3 tries with backoff, then leave it be (no WebGL → the page's own
+     background carries the register). */
   const [glTry, setGlTry] = useState(0)
   useEffect(() => {
     if (disabled || glTry >= 3) return
@@ -345,8 +264,6 @@ export default function DitherField() {
     )
     return () => clearTimeout(t)
   }, [disabled, glTry])
-  const scroll = useRef(0)
-  const [active, setActive] = useState(true)
 
   /* the scene is FIXED + full-screen and CHANGES WITH SCROLL: window scroll over
      the first ~1.9 screens eases the header glow out and fades the canvas so
@@ -358,19 +275,19 @@ export default function DitherField() {
     // in-scene beat at a given point (the scroll itself isn't visible headless).
     const dag = new URLSearchParams(window.location.search).get('dag')
     if (dag !== null) {
-      scroll.current = Math.min(1, Math.max(0, parseFloat(dag) || 0))
+      scrollRef.current = Math.min(1, Math.max(0, parseFloat(dag) || 0))
       return
     }
-    let on = true
     const onScroll = () => {
       // the glow eases off across the hero, then the canvas fades entirely
       const p = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 1.9)))
-      scroll.current = p
+      scrollRef.current = p
       if (wrap.current) wrap.current.style.opacity = `${1 - smoothstep(0.82, 1, p)}`
       const a = p < 1
-      if (a !== on) {
-        on = a
-        setActive(a)
+      if (a !== activeRef.current) {
+        activeRef.current = a
+        /* scrolled back INTO the field → restart the paused loop */
+        if (a) kickRef.current?.()
       }
     }
     onScroll()
@@ -382,22 +299,203 @@ export default function DitherField() {
     }
   }, [])
 
+  /* ── THE GL WORLD · canvas + context + program + the one frame loop ──────────
+     Rebuilt only by the init watchdog (glTry). Everything the loop reads at
+     frame rate lives in refs/locals — pointer moves and scroll never touch
+     React state. */
+  useEffect(() => {
+    if (disabled) return
+    const host = wrap.current
+    if (typeof window === 'undefined' || !host) return
+
+    const canvas = document.createElement('canvas')
+    canvas.setAttribute('aria-hidden', 'true')
+    canvas.style.cssText =
+      'position:absolute;inset:0;width:100%;height:100%;display:block'
+    /* the harness contract (visual-regress): `data-paints` = a live field is
+       expected on this page · `data-painted` = the first frame REACHED the
+       canvas (set from inside draw, never optimistically) */
+    canvas.dataset.paints = '1'
+    host.appendChild(canvas)
+
+    const gl = canvas.getContext('webgl', {
+      antialias: false,
+      alpha: false,
+      powerPreference: 'high-performance',
+    }) as WebGLRenderingContext | null
+
+    let raf = 0
+    let dead = false
+    let painted = false
+    let program: WebGLProgram | null = null
+    let uRes: WebGLUniformLocation | null = null
+    let uTime: WebGLUniformLocation | null = null
+    let uScroll: WebGLUniformLocation | null = null
+    let uMouse: WebGLUniformLocation | null = null
+    let uLens: WebGLUniformLocation | null = null
+
+    /* the eased pointer state — SURVIVES mode flips (same object across
+       frames, exactly like the old uniforms ref) */
+    const mouse = { x: 0, y: 0 }
+    let lensAmp = 0
+    const eased = { mx: 0, my: 0, lx: 0, ly: 0, lw: 0 }
+    const t0 = performance.now()
+
+    const build = (): boolean => {
+      if (!gl) return false
+      program = buildProgram(gl)
+      if (!program) return false
+      const quad = gl.createBuffer()
+      gl.bindBuffer(gl.ARRAY_BUFFER, quad)
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+        gl.STATIC_DRAW,
+      )
+      gl.useProgram(program)
+      const aPos = gl.getAttribLocation(program, 'aPos')
+      gl.enableVertexAttribArray(aPos)
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0)
+      uRes = gl.getUniformLocation(program, 'uRes')
+      uTime = gl.getUniformLocation(program, 'uTime')
+      uScroll = gl.getUniformLocation(program, 'uScroll')
+      uMouse = gl.getUniformLocation(program, 'uMouse')
+      uLens = gl.getUniformLocation(program, 'uLens')
+      gl.disable(gl.DEPTH_TEST)
+      gl.clearColor(0, 0, 0, 1)
+      return true
+    }
+
+    const resize = () => {
+      /* r3f parity: dpr capped at 1.5 · buffer follows the CSS box */
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+      const w = Math.max(1, Math.round(canvas.clientWidth * dpr))
+      const h = Math.max(1, Math.round(canvas.clientHeight * dpr))
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w
+        canvas.height = h
+        gl?.viewport(0, 0, w, h)
+      }
+    }
+
+    const draw = () => {
+      raf = 0
+      if (dead || !gl || !program || gl.isContextLost()) return
+      resize()
+      const rm = reducedRef.current
+      /* uniform easing — the same per-frame constants the r3f loop ran */
+      const k = 0.06
+      const mx = rm ? 0 : mouse.x
+      const my = rm ? 0 : mouse.y
+      eased.mx += (mx - eased.mx) * k
+      eased.my += (-my - eased.my) * k
+      /* the loupe · faster follow than the parallax (a lens tracks the hand),
+         amp eases so the emulsion develops rather than snapping. Reduced
+         motion SNAPS w to zero (never eases): the demand mode renders ONE
+         frame on the OS toggle — an eased w would bake a ~92%-amp lens
+         circle into that static frame. Exact zero, always. */
+      eased.lx += (mouse.x - eased.lx) * 0.25
+      eased.ly += (mouse.y - eased.ly) * 0.25
+      if (rm) eased.lw = 0
+      else eased.lw += (lensAmp - eased.lw) * 0.08
+
+      gl.uniform2f(uRes, canvas.width, canvas.height)
+      gl.uniform1f(uTime, rm ? 0 : (performance.now() - t0) / 1000)
+      // reduced motion: no dive — the beat stays a static frame
+      gl.uniform1f(uScroll, rm ? 0 : scrollRef.current)
+      gl.uniform2f(uMouse, eased.mx, eased.my)
+      gl.uniform4f(
+        uLens,
+        eased.lx,
+        eased.ly,
+        180 * (canvas.width / Math.max(1, window.innerWidth)),
+        eased.lw,
+      )
+      gl.clear(gl.COLOR_BUFFER_BIT)
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+      if (!painted) {
+        painted = true
+        canvas.dataset.painted = '1'
+      }
+      /* continuous only while the field is on screen AND motion is allowed —
+         demand mode (reduced) and the scrolled-past state stop here; the
+         kick (scroll back · OS toggle · resize) re-requests. */
+      if (!rm && activeRef.current) schedule()
+    }
+    const schedule = () => {
+      if (!raf && !dead) raf = requestAnimationFrame(draw)
+    }
+
+    if (gl && build()) {
+      kickRef.current = schedule
+      schedule()
+    }
+
+    /* THE PAINT WATCHDOG · under a starved GPU the first frame can be dropped
+       with nothing re-requesting it — the canvas stays BLANK for the whole
+       session (the goldens' exact 13.66% hero bistable). Staggered retries
+       until the first frame lands; idempotent (the rest frame is pure). */
+    const wds = [500, 1500, 3000, 6000].map((ms) =>
+      setTimeout(() => {
+        if (!painted) schedule()
+      }, ms),
+    )
+
+    /* GPU context loss: preventDefault on `lost` so the browser is ALLOWED to
+       restore; on `restored` the program/buffers are gone — rebuild the GL
+       state and repaint (otherwise a demand/paused canvas stays blank after
+       a GPU reset). */
+    const onLost = (e: Event) => {
+      e.preventDefault()
+      if (raf) cancelAnimationFrame(raf)
+      raf = 0
+    }
+    const onRestored = () => {
+      if (build()) schedule()
+    }
+    canvas.addEventListener('webglcontextlost', onLost)
+    canvas.addEventListener('webglcontextrestored', onRestored)
+
+    /* the loupe's gate · a real hover cursor at desktop width (matches the
+       CSS cursor-effect gates) — coarse pointers and phones never see it */
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)')
+    const onMove = (e: PointerEvent) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1
+      mouse.y = (e.clientY / window.innerHeight) * 2 - 1
+      lensAmp = fine.matches && window.innerWidth >= 1024 ? 1 : 0
+    }
+    /* pointer leaves the page → the loupe sets down (amp eases to 0) */
+    const onOut = (e: PointerEvent) => {
+      if (e.relatedTarget === null) lensAmp = 0
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    window.addEventListener('pointerout', onOut, { passive: true })
+
+    /* demand-mode resize truth: the reduced static frame must re-render at
+       the new buffer size (the continuous loop resizes itself every frame) */
+    const onResize = () => {
+      kickRef.current?.()
+    }
+    window.addEventListener('resize', onResize, { passive: true })
+
+    return () => {
+      dead = true
+      kickRef.current = null
+      if (raf) cancelAnimationFrame(raf)
+      wds.forEach(clearTimeout)
+      canvas.removeEventListener('webglcontextlost', onLost)
+      canvas.removeEventListener('webglcontextrestored', onRestored)
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerout', onOut)
+      window.removeEventListener('resize', onResize)
+      /* release the context politely (three's dispose did) — the next try
+         (init watchdog) gets a fresh slot instead of racing the GC */
+      gl?.getExtension('WEBGL_lose_context')?.loseContext()
+      canvas.remove()
+    }
+  }, [disabled, glTry])
+
   if (disabled) return null
 
-  return (
-    <div ref={wrap} className="depth-fixed" aria-hidden>
-      <Canvas
-        key={glTry}
-        aria-hidden
-        gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
-        dpr={[1, 1.5]}
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
-        /* reduced motion → 'demand': the static dithered frame renders once
-           (and on resize) without a continuous loop; past the fade → 'never' */
-        frameloop={!active ? 'never' : reduced ? 'demand' : 'always'}
-      >
-        <FieldQuad scroll={scroll} reduced={reduced} />
-      </Canvas>
-    </div>
-  )
+  return <div ref={wrap} className="depth-fixed" aria-hidden />
 }
