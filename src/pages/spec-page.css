@@ -1777,172 +1777,6 @@
   }
 }
 
-/* ════ the you-are-here layer (beauty polish) ═════════════════════════════════
-   THE POSITION PLATE (top-left, loud) + the 9-tick spine gauge (bottom-centre):
-   the current section's fig, its ship station and its derived count — always
-   in the eye while reading. Page DOM: also the reduced-motion truth. */
-@media (prefers-reduced-motion: no-preference) {
-  .spec-rail-pos {
-    animation: specPosLand 0.45s var(--ease-ui, ease) both;
-  }
-}
-@keyframes specPosLand {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.spec-rail-pos {
-  position: absolute;
-  top: 3%;
-  left: 2%;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 10px 14px 9px;
-  border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 30%, transparent);
-  border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--sm-fill) 88%, transparent);
-  pointer-events: none;
-}
-.spec-rail-pos-fig {
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  color: color-mix(in oklch, var(--sm-ink-struck) 85%, transparent);
-  font-variant-numeric: tabular-nums;
-}
-.spec-rail-pos-part {
-  font-family: var(--display);
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--v4-text);
-}
-.spec-rail-pos-sub {
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
-  color: color-mix(in oklch, var(--sm-ink-lit) 62%, transparent);
-  font-variant-numeric: tabular-nums;
-}
-/* the plate's nav row · prev/next chevrons (pointer-only — the stage is
-   aria-hidden) + the chapter-keys hint, finally said out loud */
-.spec-rail-pos-nav {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-top: 5px;
-  padding-top: 6px;
-  border-top: 1px solid color-mix(in oklch, var(--sm-ink-lit) 16%, transparent);
-  font-size: 9.5px;
-  letter-spacing: 0.12em;
-  font-variant-numeric: tabular-nums;
-}
-.spec-rail-pos-nav a {
-  pointer-events: auto;
-  color: color-mix(in oklch, var(--sm-ink-struck) 78%, transparent);
-  text-decoration: none;
-  transition: color var(--dur-ui, 140ms) var(--ease-ui, ease);
-}
-.spec-rail-pos-nav a:hover {
-  color: var(--v4-text);
-}
-.spec-rail-pos-nav i {
-  font-style: normal;
-  color: color-mix(in oklch, var(--sm-ink-lit) 26%, transparent);
-}
-.spec-rail-pos-nav em {
-  font-style: normal;
-  margin-inline: auto;
-  color: color-mix(in oklch, var(--sm-ink-lit) 38%, transparent);
-  letter-spacing: 0.06em;
-}
-
-/* the spine gauge · 9 sections, lit fills, the current one pulses wider */
-.spec-rail-gauge {
-  position: absolute;
-  bottom: 3.2%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 5px;
-  pointer-events: none;
-}
-.spec-rail-gauge i {
-  width: 16px;
-  height: 3px;
-  border-radius: 2px;
-  background: color-mix(in oklch, var(--sm-ink-shadow) 65%, transparent);
-  transition: background-color 0.9s ease, width 0.3s var(--ease-ui, ease);
-}
-.spec-rail-gauge i.is-lit {
-  background: var(--sm-ink-lit);
-}
-.spec-rail-gauge i.is-cur {
-  width: 26px;
-  background: var(--sm-ink-struck);
-}
-
-/* the INDEX chip you are in reads as the current station */
-.spec-chip2[aria-current] {
-  background: color-mix(in oklch, var(--sm-ink-lit) 10%, var(--v4-bg-raised));
-}
-@media (prefers-reduced-motion: reduce) {
-  .spec-rail-gauge i {
-    transition: none;
-  }
-}
-
-/* ════ THE FLIGHT (v2.2) · hero poster → fullscreen 360 → dock ═══════════════
-   The hero is a poster: the title column and THE SHIP, nothing else. The
-   takeover runway then hands the whole viewport to the chassis for one
-   revolution + a dive, and the ship docks to the rail as S.0 arrives. */
-
-/* the hero poster · text column left, the ship's ground right */
-.spec-hero {
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: center;
-  gap: 24px;
-}
-@media (min-width: 1024px) {
-  .spec-hero {
-    grid-template-columns: minmax(0, 42%) 1fr;
-    min-height: calc(100vh - 220px);
-  }
-}
-/* the hero elevation · mobile's ONE ship (a full-width profile poster,
-   SSG, zero JS) and desktop's fallback ground until the chassis mounts */
-.spec-hero-eleva {
-  display: block;
-  margin-top: 6px;
-}
-.spec-hero-eleva .spec-schematic {
-  width: 100%;
-  height: auto;
-}
-@media (min-width: 1024px) {
-  .spec-hero-eleva {
-    margin-top: 0;
-    padding: 0 2vw;
-  }
-  /* the live chassis covers this ground — the drawing stands down */
-  .spec-page.is-live .spec-hero-eleva {
-    visibility: hidden;
-  }
-}
-.spec-hero-cue {
-  margin-top: clamp(26px, 4vh, 44px);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  color: color-mix(in oklch, var(--sm-ink-lit) 70%, var(--v4-text-dim));
-}
 
 /* ── the connected poster (full-bleed live hero only) ─────────────────────────
    The descent: the cue's tick keeps going — a vertical hairline runs from
@@ -2055,9 +1889,6 @@
     pointer-events: auto;
   }
   /* the instruments clear the fixed nav + the viewport floor */
-  .spec-rail.is-live .spec-rail-pos {
-    top: 96px;
-  }
   .spec-rail.is-live .spec-rail-hud--tl,
   .spec-rail.is-live .spec-rail-hud--tr {
     top: 96px;
@@ -2096,9 +1927,6 @@
   /* the position plate stays quiet at the POSTER (operator: the poster
      speaks through the vessel + the connected lines, not a floating chip);
      it returns at the dock where it tracks the reading. */
-  .spec-rail.is-live[data-stage='hero'] .spec-rail-pos {
-    display: none;
-  }
   .spec-rail.is-live[data-stage='finale'] {
     width: 100vw;
     right: 0;
@@ -2237,4 +2065,50 @@
 .spec-head-register:focus-visible {
   color: var(--v4-text);
   border-bottom-color: var(--v4-text);
+}
+
+/* ── the rail IS the navigator (the plate came home) ──────────────────────────
+   Titles clamp to two lines instead of ellipsizing («Envel…» read as noise);
+   the READ station's chip promotes — its tick burns, its border lifts, and
+   its gloss slot announces the ship organ + the chapter keys. Same grid,
+   same heights: promotion is light, never layout. */
+.spec-chip2-title {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: clip;
+  min-height: 2.35em;
+}
+/* the 9-col band sizes the word to the column — at the live dock a chip's
+   inner width is ~62px, so «Providers» must fit at ELEVEN px or it clips
+   («Envel…» read as noise); multi-word titles wrap at their spaces under
+   the 2-line clamp. The padding gives the word its last four px. */
+@media (min-width: 640px) {
+  .spec-chip2 {
+    padding: 8px 6px 7px;
+  }
+  .spec-chip2-title {
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+}
+.spec-chip2[aria-current] {
+  border-color: color-mix(in srgb, var(--v4-text) 42%, transparent);
+  background: color-mix(in srgb, var(--v4-text) 6%, transparent);
+}
+.spec-chip2[aria-current] .spec-chip2-title {
+  color: var(--v4-text);
+}
+.spec-chip2-gloss b {
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+}
+.spec-chip2-gloss em {
+  font-style: normal;
+  letter-spacing: 0.08em;
+  margin-left: 8px;
+  color: color-mix(in srgb, var(--v4-text) 38%, transparent);
 }
