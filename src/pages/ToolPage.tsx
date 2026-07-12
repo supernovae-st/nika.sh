@@ -7,9 +7,11 @@ import lz from 'lz-string'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
-import { TOOLS, TOOL_INDEX } from '../content/tools.generated'
+import { TOOLS, TOOL_CATEGORIES, TOOL_INDEX } from '../content/tools.generated'
 import { TOOL_USAGE } from '../content/tool-usage.generated'
 import { CATEGORY_GLOSS } from '../content/tools-meta'
+import { DrumEgg } from '../scene/tools-hud/DrumEgg'
+import { layoutDrum } from '../scene/tools-hud/slot-layout'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -88,6 +90,11 @@ export function Component() {
   const usage = hit ? TOOL_USAGE[hit.bare] : undefined
 
   const family = useMemo(() => TOOLS.filter((t) => hit && t.category === hit.category), [hit])
+  /* the drum's slot (register order — the pin drum's own reading) */
+  const slot = useMemo(
+    () => layoutDrum(TOOLS, TOOL_CATEGORIES).slots.find((s) => s.bare === name),
+    [name],
+  )
   const at = useMemo(() => TOOLS.findIndex((t) => t.bare === name), [name])
   const prev = at > 0 ? TOOLS[at - 1] : undefined
   const next = at >= 0 && at < TOOLS.length - 1 ? TOOLS[at + 1] : undefined
@@ -207,7 +214,8 @@ export function Component() {
           )}
 
           {hit && usage && (
-            <>
+            <div className="td-hero">
+              <div className="td-hero-main">
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
                 {hit.description} One of {TOOLS.length} builtins in the closed{' '}
                 <code>nika:</code> namespace — {CATEGORY_GLOSS[hit.category]}.
@@ -377,7 +385,18 @@ export function Component() {
                 <Link to="/install">Install</Link> and ask the binary itself:{' '}
                 <code>nika tools</code>. <Link to="/spec">Read the spec →</Link>
               </p>
-            </>
+              </div>
+
+              {/* THE PIN DRUM · the room's berth (≥1100px) — the machine holds
+                  aimed at this row; prev/next turns it exactly one notch */}
+              <aside className="td-hero-berth" data-rise>
+                <DrumEgg mode="room" focus={hit.bare} />
+                <p className="tdrum-caption">
+                  the pin drum · slot {String((slot?.index ?? 0) + 1).padStart(2, '0')}/
+                  {TOOLS.length} · {hit.category} arc · pins are the args — bright = required
+                </p>
+              </aside>
+            </div>
           )}
         </div>
       </section>

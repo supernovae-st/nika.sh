@@ -355,6 +355,27 @@ for (const pin of REGISTER_PINS) {
   )
 }
 
+/* 3-drum · the pin drum paints, or honestly doesn't: on /tools the GL layer
+   must either stamp [data-drum-painted] or not be mounted at all — a canvas
+   that mounted but never painted is the silent-death class the outer
+   watchdog exists for (3 remounts ≈ 15s worst case, hence the long poll;
+   when the gate says no, the prerendered schematic IS the register). */
+await send('Page.navigate', { url: `${BASE}/tools` })
+await settle()
+await check('drum · /tools → GL painted or gracefully absent', () =>
+  until(
+    () =>
+      evaluate(`(() => {
+        const stage = document.querySelector('[data-tools-hud]')
+        if (!stage) return { err: 'no drum stage' }
+        if (!stage.querySelector('canvas')) return true /* gate said no — schematic truth */
+        return stage.dataset.drumPainted === '1' ? true : { canvas: true, painted: false }
+      })()`),
+    40,
+    500,
+  ),
+)
+
 /* 3a · the film's done frame: triangle + drag-seek + handoff */
 await send('Page.navigate', { url: `${BASE}/?it=99` })
 await settle()

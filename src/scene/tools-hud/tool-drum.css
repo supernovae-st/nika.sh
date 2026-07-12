@@ -1,0 +1,136 @@
+/* ─── the pin drum · stage + schematic + whispers ─────────────────────────────
+   The berth law: the stage owns its space in CSS from first paint (the
+   prerendered schematic fills it — a late canvas is a fade-in, never a
+   layout shift). Below 1024px the stage never renders 3D (usePlan3D);
+   the register stage steps down gracefully, the room berth collapses via
+   the page grid. Monochrome blueprint here — the hue arrives with the GL
+   layer (the schematic is the drawing, the canvas is the machine). */
+
+.tdrum-stage {
+  position: relative;
+  contain: layout style;
+}
+.tdrum-stage--register {
+  width: 100%;
+  height: clamp(340px, 44vh, 520px);
+  margin-top: clamp(28px, 4vh, 44px);
+}
+.tdrum-stage--room {
+  height: clamp(280px, 36vh, 420px);
+}
+
+/* ── the 2D schematic · the poster + the no-GL truth ───────────────────────── */
+.tdrum-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 600ms var(--ease-ui, ease);
+}
+.tdrum-arc {
+  fill: none;
+  stroke: color-mix(in srgb, var(--v4-text) 26%, transparent);
+  stroke-width: 0.8;
+}
+.tdrum-blade {
+  stroke: color-mix(in srgb, var(--v4-text) 34%, transparent);
+  stroke-width: 0.7;
+}
+.tdrum-tick {
+  stroke: color-mix(in srgb, var(--v4-text) 52%, transparent);
+  stroke-width: 1.1;
+}
+.tdrum-tick--focus {
+  stroke: var(--v4-text);
+  stroke-width: 1.8;
+}
+.tdrum-sight path {
+  fill: none;
+  stroke: var(--v4-text);
+  stroke-width: 1.1;
+}
+.tdrum-hub {
+  fill: none;
+  stroke: color-mix(in srgb, var(--v4-text) 30%, transparent);
+  stroke-width: 0.8;
+}
+.tdrum-hub--in {
+  fill: color-mix(in srgb, var(--v4-text) 40%, transparent);
+  stroke: none;
+}
+
+/* the handshake · the schematic steps aside ONLY once the GL layer is
+   really mounted (never on the gate alone — the init can still fail) */
+.tdrum-stage[data-drum3d] .tdrum-svg {
+  opacity: 0.1;
+}
+
+/* ── the GL layer ──────────────────────────────────────────────────────────── */
+.tdw {
+  position: absolute;
+  inset: 0;
+}
+.tdw-canvas {
+  display: block;
+}
+
+/* HUD whispers · the tholos label grammar (dot leaders, mono, corners) */
+.tdw-hud {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--v4-text) 40%, transparent);
+  pointer-events: none;
+}
+.tdw-hud-tl {
+  top: 10px;
+  left: 12px;
+}
+.tdw-hud-tr {
+  top: 10px;
+  right: 12px;
+}
+.tdw-hud-bl {
+  bottom: 10px;
+  left: 12px;
+}
+.tdw-hud-br {
+  bottom: 10px;
+  right: 12px;
+}
+
+/* ── the caption · the instrument names itself (td-pin recipe) ─────────────── */
+.tdrum-caption {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+  max-width: 72ch;
+}
+
+/* ── the room berth grid · hero text + the drum at rest (≥1100px) ──────────── */
+@media (min-width: 1100px) {
+  .td-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(300px, 27vw, 400px);
+    gap: clamp(28px, 4vw, 56px);
+    align-items: start;
+  }
+  .td-hero-berth {
+    position: sticky;
+    top: 120px;
+  }
+}
+@media (max-width: 1099px) {
+  .td-hero-berth {
+    display: none;
+  }
+}
+@media (max-width: 1023px) {
+  .tdrum-stage--register {
+    height: clamp(240px, 32vh, 340px);
+  }
+}

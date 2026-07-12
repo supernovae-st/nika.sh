@@ -5,6 +5,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { TOOLS, TOOL_CATEGORIES, type ToolEntry } from '../content/tools.generated'
 import { CATEGORY_GLOSS } from '../content/tools-meta'
+import { DrumEgg } from '../scene/tools-hud/DrumEgg'
 import { CANON } from '../canon.generated'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
@@ -142,6 +143,17 @@ export function Component() {
               { n: CANON.mcpTools, label: 'mcp tools', sub: 'the other lane' },
             ]}
           />
+
+          {/* THE PIN DRUM · the library as one closed machine — every builtin
+              a row, every pin a REAL argument (the drum of liberation plays,
+              and what it plays is the vocabulary) */}
+          <div data-rise style={{ ['--rise-delay' as string]: '170ms' }}>
+            <DrumEgg mode="register" />
+            <p className="tdrum-caption">
+              the pin drum · {TOOLS.length} tools · {groups.length} arcs · pins are arguments —
+              bright = required · hover a row to turn it
+            </p>
+          </div>
 
           {groups.map((group, gi) => (
             <div className="tp-family" key={group.category} data-rise style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}>
