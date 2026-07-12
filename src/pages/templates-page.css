@@ -180,3 +180,20 @@
     font-size: 14.5px;
   }
 }
+
+/* ── the graph, closed · what the open skeleton carries (rooms, linked) ────── */
+.tm-carries {
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.tm-carries-k {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 40%, transparent);
+}

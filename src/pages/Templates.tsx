@@ -6,6 +6,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
 import { TEMPLATES, TEMPLATE_INDEX, type TemplateEntry } from '../content/templates.generated'
+import { TEMPLATE_REFS } from '../content/graph'
 import { CANON } from '../canon.generated'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
@@ -64,6 +65,23 @@ function TemplateRow({ entry, active }: { entry: TemplateEntry; active: boolean 
             sha256 {entry.sha256.slice(0, 16)}… · conformance-gated upstream ·{' '}
             <a href={`${SPEC}/blob/main/templates/${entry.file}`}>source</a>
           </p>
+          {/* the graph, closed: every word and builtin this skeleton carries
+              opens its room (derived from the rooms' own data — graph.ts) */}
+          {(TEMPLATE_REFS[entry.name]?.tools.length || TEMPLATE_REFS[entry.name]?.words.length) ? (
+            <p className="tm-carries mono">
+              <span className="tm-carries-k">carries</span>
+              {TEMPLATE_REFS[entry.name].tools.map((t) => (
+                <Link key={`t:${t}`} className="er-ref" to={`/tools/${t}`}>
+                  nika:{t}
+                </Link>
+              ))}
+              {TEMPLATE_REFS[entry.name].words.map((w) => (
+                <Link key={`w:${w}`} className="er-ref" to={`/language/${w}`}>
+                  {w}
+                </Link>
+              ))}
+            </p>
+          ) : null}
         </div>
       ) : (
         <p className="tm-open">
