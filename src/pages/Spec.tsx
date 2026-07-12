@@ -151,6 +151,25 @@ export function Component() {
      stratum under the reading line — drives the TOC ticks, the schematic and
      the rail HUD (the W1 machine mirrors this with its own observer) */
   const { lit, current } = useSpecReading()
+  /* the rail follows the reading · when the strip scrolls INSIDE itself
+     (narrow berths — the well law) the read segment glides to centre.
+     Manual scrollLeft, never scrollIntoView (which would also move the
+     PAGE); behavior declared explicitly (the smooth-hijack law). */
+  const indexRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const el = indexRef.current
+    if (!el || !current) return
+    if (el.scrollWidth <= el.clientWidth + 4) return
+    const chip = el.querySelector<HTMLAnchorElement>(`[data-node="${current}"]`)
+    if (!chip) return
+    const left = chip.offsetLeft - (el.clientWidth - chip.offsetWidth) / 2
+    el.scrollTo({
+      left,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'instant'
+        : 'smooth',
+    })
+  }, [current])
   const assembledMax = SPEC_SECTIONS.length - 1 /* license is the close whisper */
   const assembled = [...lit].filter((k) => k !== 'license').length
 
@@ -409,7 +428,13 @@ export function Component() {
           {/* THE INDEX · the S-chips band — fig · title · gloss · derived
                   count · reading tick. Absorbs the old stamp band AND the TOC
                   pills: one instrument, sticky under the nav on desktop. */}
-              <nav className="spec-index" aria-label="On this page" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+              <nav
+                ref={indexRef}
+                className="spec-index"
+                aria-label="On this page"
+                data-rise
+                style={{ ['--rise-delay' as string]: '160ms' }}
+              >
                 {SPEC_SECTIONS.map((s) => {
                   const active = current === s.key
                   return (
@@ -423,23 +448,15 @@ export function Component() {
                       <span className="spec-chip2-head mono">
                         <span className="spec-chip2-tick" aria-hidden />
                         {s.fig}
-                        <span className="spec-chip2-count">{s.count}</span>
                       </span>
                       <span className="spec-chip2-title">{s.title}</span>
-                      {/* the rail IS the navigator (the plate's duties came home):
-                          the read station announces its ship organ + the chapter
-                          keys; the others keep their gloss */}
-                      <span className="spec-chip2-gloss">
-                        {active ? (
-                          <>
-                            <b className="mono">{s.shipPart.toUpperCase()}</b>
-                            <em className="mono" aria-hidden>
-                              ⇧←→
-                            </em>
-                          </>
-                        ) : (
-                          s.chipGloss
-                        )}
+                      {/* the read segment speaks like the retired plate did —
+                          organ · count · the chapter keys — inside its own
+                          expansion (below, css: the segment grows, the meta
+                          fades in; nothing ever ellipsizes) */}
+                      <span className="spec-chip2-meta mono" aria-hidden>
+                        {s.shipPart.toUpperCase()} · {s.count} {s.countLabel.toUpperCase()}
+                        <em>⇧←→</em>
                       </span>
                     </a>
                   )
