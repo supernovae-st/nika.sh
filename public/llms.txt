@@ -70,6 +70,8 @@ data language (jq) · workflows are callable · mock-first.
 - The language register (every schema-declared key — scopes, types, required flags): https://nika.sh/language (e.g. https://nika.sh/language/depends_on) — the contract: https://nika.sh/schema/workflow.json
 - Provider register (local first, model pins, env vars): https://nika.sh/providers — machine catalog: https://nika.sh/providers/catalog.json
 - Engine source (AGPL): https://github.com/supernovae-st/nika
+- Agent lane (the MCP oracle — 8 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools): https://github.com/supernovae-st/nika-agents
+- Editor lane (VS Code · Cursor · Windsurf — syntax, diagnostics, DAG view; files validate against https://nika.sh/spec/v1/workflow.schema.json via the yaml-language-server line): https://github.com/supernovae-st/nika-vscode
 - Install: https://nika.sh/#install (or `brew install supernovae-st/tap/nika`)
 - Docs: https://docs.nika.sh
 - Registry (share workflows · every entry machine-re-proven — pinned sha256 + conformance oracle + engine cert before run): https://github.com/supernovae-st/nika-registry — machine index: https://raw.githubusercontent.com/supernovae-st/nika-registry/main/index.json · never install an LLM-suggested name without resolving it there first

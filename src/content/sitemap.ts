@@ -142,6 +142,16 @@ export const SITE_MAP: MapGroup[] = [
         href: '/templates/catalog.json',
         hint: 'the skeletons, sha256-pinned, JSON',
       },
+      {
+        label: 'workflow schema',
+        href: '/schema/workflow.json',
+        hint: 'the served contract — what editors validate against',
+      },
+      {
+        label: 'spec/v1 schema',
+        href: '/spec/v1/workflow.schema.json',
+        hint: 'the versioned twin the yaml-language-server line points at',
+      },
       { label: 'icon ontology', href: '/brand/icons.json', hint: 'every mark, with semantics' },
       { label: 'security.txt', href: '/.well-known/security.txt', hint: 'how to reach us, signed' },
     ],
