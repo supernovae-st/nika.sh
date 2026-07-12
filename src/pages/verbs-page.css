@@ -1,0 +1,77 @@
+/* ─── /verbs + /verbs/:name · the verb register + rooms ───────────────────────
+   Extends the register grammar (tools-page.css + tool-detail.css stay the
+   shared vocabulary). This file adds only the vb-/vbs- layer: the verb's
+   hue as the page's one saturated field (--vb-hue, from the generated
+   tokens via inline style — never hand-typed here), the glyph, the
+   four-row register. SSR-safe: pure CSS. */
+
+/* ── the room · the hue arrives with the verb ──────────────────────────────── */
+.vb-title {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.vb-glyph {
+  color: var(--vb-hue, var(--v4-text));
+  font-size: 0.72em;
+}
+.vb-page [data-verb] .v4sec-lede b {
+  color: var(--vb-hue, var(--v4-text));
+}
+.vb-word-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 25%, transparent);
+}
+.vb-word-link:hover,
+.vb-word-link:focus-visible {
+  border-bottom-color: var(--v4-text);
+}
+
+/* ── the register's four rows · each wears its verb ────────────────────────── */
+.vbs-list {
+  list-style: none;
+  margin: clamp(32px, 4.5vh, 52px) 0 0;
+  padding: 0;
+}
+.vbs-row {
+  display: flex;
+  gap: 18px;
+  padding: 22px 12px 24px 16px;
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+  border-left: 3px solid color-mix(in srgb, var(--vb-hue) 55%, transparent);
+  margin-bottom: 2px;
+}
+.vbs-row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+.vbs-fig {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: color-mix(in srgb, var(--v4-text) 40%, transparent);
+  padding-top: 4px;
+}
+.vbs-body {
+  min-width: 0;
+}
+.vbs-name {
+  font-size: 20px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.vbs-open {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+@media (max-width: 560px) {
+  .vbs-row {
+    gap: 12px;
+    padding: 18px 8px 20px 12px;
+  }
+  .vbs-name {
+    font-size: 17px;
+  }
+}

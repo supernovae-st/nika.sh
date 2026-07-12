@@ -1,0 +1,24 @@
+nika: v1
+workflow: gate-the-payload
+description: "a schema verdict as data — invalid input is a report, not a crash"
+
+tasks:
+  - id: verdict
+    invoke:
+      tool: "nika:validate"
+      args:
+        data: { name: "nika", verbs: 4 }
+        schema:
+          type: object
+          required: [name, verbs]
+          properties:
+            name: { type: string }
+            verbs: { type: integer }
+
+  - id: gate
+    depends_on: [verdict]
+    invoke:
+      tool: "nika:assert"
+      args:
+        condition: ${{ tasks.verdict.output.valid }}
+        message: "payload failed its schema"

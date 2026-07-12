@@ -1,0 +1,15 @@
+nika: v1
+workflow: say-the-verdict
+description: "one audio file under output_dir — mock provider runs offline"
+
+tasks:
+  - id: speak
+    invoke:
+      tool: "nika:tts_generate"
+      args:
+        provider: mock
+        text: "The run is green."
+        output_dir: "./audio"
+
+outputs:
+  audio: ${{ tasks.speak.output }}

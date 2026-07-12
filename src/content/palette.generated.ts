@@ -88,6 +88,18 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
+    "label": "The four verbs",
+    "href": "/verbs",
+    "hint": "infer · exec · invoke · agent"
+  },
+  {
+    "kind": "page",
+    "label": "The language",
+    "href": "/language",
+    "hint": "every word the schema declares"
+  },
+  {
+    "kind": "page",
     "label": "Providers",
     "href": "/providers",
     "hint": "local first · your keys"

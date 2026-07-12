@@ -1,0 +1,15 @@
+nika: v1
+workflow: json-to-yaml
+description: "one format in, another out — identity is rejected"
+
+tasks:
+  - id: translate
+    invoke:
+      tool: "nika:convert"
+      args:
+        input: '{"name":"nika","verbs":4}'
+        from: json
+        to: yaml
+
+outputs:
+  yaml: ${{ tasks.translate.output }}

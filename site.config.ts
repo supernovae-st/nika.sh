@@ -168,6 +168,70 @@ export const PROVIDER_PATHS = [
   '/providers/mock',
 ]
 
+/* the verb rooms — one static landing per verb (slug = verb name:
+   /verbs/infer). Same prerender law; kept literal; the language drift gate
+   (src/test/language.test.ts) pins these against CANON.verbNames. */
+export const VERB_PATHS = ['/verbs/infer', '/verbs/exec', '/verbs/invoke', '/verbs/agent']
+
+/* the keyword register's deep pages — one static landing per language word
+   (slug = the key as typed: /language/depends_on). Same prerender law;
+   kept literal (this file stays import-free); the language drift gate
+   (src/test/language.test.ts) fails when the schema's word set and these
+   paths diverge. */
+export const LANGUAGE_PATHS = [
+  '/language/agent',
+  '/language/args',
+  '/language/backoff_max_ms',
+  '/language/backoff_ms',
+  '/language/backoff_strategy',
+  '/language/capture',
+  '/language/command',
+  '/language/cwd',
+  '/language/depends_on',
+  '/language/description',
+  '/language/env',
+  '/language/exec',
+  '/language/fail_fast',
+  '/language/fail_workflow',
+  '/language/for_each',
+  '/language/id',
+  '/language/infer',
+  '/language/invoke',
+  '/language/jitter',
+  '/language/max_attempts',
+  '/language/max_parallel',
+  '/language/max_tokens',
+  '/language/max_tokens_total',
+  '/language/max_turns',
+  '/language/model',
+  '/language/nika',
+  '/language/on_codes',
+  '/language/on_error',
+  '/language/on_finally',
+  '/language/output',
+  '/language/outputs',
+  '/language/permits',
+  '/language/prompt',
+  '/language/recover',
+  '/language/retry',
+  '/language/schema',
+  '/language/secrets',
+  '/language/skip',
+  '/language/stdin',
+  '/language/system',
+  '/language/tasks',
+  '/language/temperature',
+  '/language/thinking',
+  '/language/timeout',
+  '/language/tool',
+  '/language/tools',
+  '/language/vars',
+  '/language/vision',
+  '/language/when',
+  '/language/with',
+  '/language/workflow',
+]
+
 /* the skeleton register's deep pages — one static landing per template
    (slug = template name: /templates/chain). Same prerender law; kept
    literal; the templates drift gate (src/test/templates.test.ts) fails
@@ -185,4 +249,4 @@ export const TEMPLATE_PATHS = [
   '/templates/docker-report',
 ]
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, '/sitemap', '/use-cases', '/spec', '/install', '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, '/sitemap', '/use-cases', '/spec', '/install', '/convert', '/brand']

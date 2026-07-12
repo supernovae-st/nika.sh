@@ -1,0 +1,22 @@
+nika: v1
+workflow: count-the-todos
+description: "recursive regex search — {path, line, match}, sorted"
+
+tasks:
+  - id: todos
+    invoke:
+      tool: "nika:grep"
+      args:
+        pattern: "TODO|FIXME"
+        path: "./src"
+
+  - id: tally
+    depends_on: [todos]
+    invoke:
+      tool: "nika:jq"
+      args:
+        input: ${{ tasks.todos.output }}
+        expression: "length"
+
+outputs:
+  count: ${{ tasks.tally.output }}

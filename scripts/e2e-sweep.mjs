@@ -203,7 +203,7 @@ const errSample = new Set()
    too — CDP-load the FIRST TWO of each (one row shape + one with the opened
    skeleton/args variety); pass 2 still fetches every page over HTTP, and
    pass 3 pins each register's deep-link behavior explicitly. */
-const regDetail = ROUTES.filter((r) => /^\/(tools|providers|templates)\/.+/.test(r))
+const regDetail = ROUTES.filter((r) => /^\/(tools|verbs|language|providers|templates)\/.+/.test(r))
 const regSample = new Set()
 {
   const perReg = new Map()
@@ -216,7 +216,7 @@ const regSample = new Set()
 const NAV_ROUTES = ROUTES.filter(
   (r) =>
     (!/^\/errors\/.+/.test(r) || errSample.has(r)) &&
-    (!/^\/(tools|providers|templates)\/.+/.test(r) || regSample.has(r)),
+    (!/^\/(tools|verbs|language|providers|templates)\/.+/.test(r) || regSample.has(r)),
 )
 const idsByRoute = new Map()
 const links = new Map() // href -> [fromRoutes]
@@ -328,11 +328,16 @@ const until = async (fn, tries = 12, gap = 400) => {
 /* 3-reg · the register deep links: prerendered landing → the row is ACTIVE,
    HIGHLIGHTED and IN VIEW (the scroll effect is a client behavior that can
    break silently — pass 1's static loads never see it). One pin per
-   register; the templates pin also asserts the opened skeleton panel. */
+   register; the templates pin also asserts the opened skeleton panel. The
+   tools pin differs since the builtin ROOMS shipped: /tools/<name> is a
+   full page (no scroll target) — the pin asserts the room mounted FOR the
+   right tool and its usage CodeFile rendered. */
 const REGISTER_PINS = [
   { route: '/errors/NIKA-SEC-001', row: '.er-row--active', extra: null },
-  { route: '/tools/fetch', row: '.tp-row--active', extra: null },
+  { route: '/tools/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
   { route: '/providers/ollama', row: '.pv-row--active', extra: null },
+  { route: '/verbs/invoke', row: 'section[data-verb="invoke"]', extra: '.td-usage .cf-panel' },
+  { route: '/language/depends_on', row: '.lg-row--active', extra: null },
   { route: '/templates/fanout', row: '.tm-row--active', extra: '.tm-row--active .cf-panel' },
 ]
 for (const pin of REGISTER_PINS) {
@@ -351,6 +356,27 @@ for (const pin of REGISTER_PINS) {
     ),
   )
 }
+
+/* 3-drum · the pin drum paints, or honestly doesn't: on /tools the GL layer
+   must either stamp [data-drum-painted] or not be mounted at all — a canvas
+   that mounted but never painted is the silent-death class the outer
+   watchdog exists for (3 remounts ≈ 15s worst case, hence the long poll;
+   when the gate says no, the prerendered schematic IS the register). */
+await send('Page.navigate', { url: `${BASE}/tools` })
+await settle()
+await check('drum · /tools → GL painted or gracefully absent', () =>
+  until(
+    () =>
+      evaluate(`(() => {
+        const stage = document.querySelector('[data-tools-hud]')
+        if (!stage) return { err: 'no drum stage' }
+        if (!stage.querySelector('canvas')) return true /* gate said no — schematic truth */
+        return stage.dataset.drumPainted === '1' ? true : { canvas: true, painted: false }
+      })()`),
+    40,
+    500,
+  ),
+)
 
 /* 3a · the film's done frame: triangle + drag-seek + handoff */
 await send('Page.navigate', { url: `${BASE}/?it=99` })

@@ -1,6 +1,8 @@
 import { BLOG_POSTS } from './blog.generated'
 import { ERROR_CODES } from './errors.generated'
 import { TOOLS } from './tools.generated'
+import { LANGUAGE_WORDS } from './language.generated'
+import { CHAPTERS } from '../sections/verbs-data'
 import { PROVIDERS } from './providers.generated'
 import { TEMPLATES } from './templates.generated'
 import { DOCS, REPO, SPEC } from '../content'
@@ -78,6 +80,16 @@ export const SITE_MAP: MapGroup[] = [
         hint: `every nika: builtin — one closed namespace (${TOOLS.length})`,
       },
       {
+        label: 'The four verbs',
+        href: '/verbs',
+        hint: 'infer · exec · invoke · agent — locked forever, one room each',
+      },
+      {
+        label: 'The language',
+        href: '/language',
+        hint: `every schema-declared word (${LANGUAGE_WORDS.length})`,
+      },
+      {
         label: 'Error registry',
         href: '/errors',
         hint: `every typed check finding (${ERROR_CODES.length})`,
@@ -97,6 +109,8 @@ export const SITE_MAP: MapGroup[] = [
     ],
     dense: [
       ...TOOLS.map((t) => ({ label: t.name, href: `/tools/${t.bare}` })),
+      ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/verbs/${c.verb}` })),
+      ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/${w.word}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
       ...PROVIDERS.map((p) => ({ label: `provider: ${p.id}`, href: `/providers/${p.id}` })),
       ...TEMPLATES.map((t) => ({ label: t.file, href: `/templates/${t.name}` })),

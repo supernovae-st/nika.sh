@@ -1,0 +1,11 @@
+nika: v1
+workflow: announce-the-ship
+description: "a custom machine event for subscribers — distinct from log"
+
+tasks:
+  - id: announce
+    invoke:
+      tool: "nika:emit"
+      args:
+        event_type: "deploy.finished"
+        payload: { env: "prod", ok: true }
