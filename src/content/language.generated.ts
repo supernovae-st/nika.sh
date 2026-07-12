@@ -14,6 +14,10 @@ export interface WordDecl {
   type?: string
   /** closed value set, when the schema pins one */
   enum?: string[]
+  /** value language annotation (cel-expression · jq) when the schema marks one */
+  format?: string
+  /** the schema's own regex (the word's, or its items') */
+  pattern?: string
   /** the schema's own description — the teaching voice, never prose */
   desc?: string
 }
@@ -179,7 +183,8 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "array"
+        "type": "array",
+        "pattern": "^[a-z][a-z0-9_]*$"
       }
     ]
   },
@@ -268,6 +273,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "task",
         "required": true,
         "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$",
         "desc": "Task id · snake_case (CEL-safe · no hyphens) · unique within workflow."
       }
     ]
@@ -408,12 +414,14 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "retry",
         "required": false,
-        "type": "array"
+        "type": "array",
+        "pattern": "^NIKA-[A-Z]{2,9}(-[A-Z][A-Z0-9_]{1,15})?-[0-9]{3}$"
       },
       {
         "scope": "on_error",
         "required": false,
         "type": "array",
+        "pattern": "^NIKA-[A-Z]{2,9}(-[A-Z][A-Z0-9_]{1,15})?-[0-9]{3}$",
         "desc": "Optional catch-side filter (mirror of retry.on_codes · same regex) · the action applies ONLY when the final error code is listed · unlisted codes fall through to the default fail (spec/05-errors.md §Fields)."
       }
     ]
@@ -448,6 +456,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "task",
         "required": false,
         "type": "object",
+        "format": "jq",
         "desc": "Named jq-expression bindings · `${{ tasks.X.<name> }}`. jq is the single data extraction-and-transform language (the former RFC 9535 JSONPath was dropped · jq is a superset · per spec/04-variables.md §216-225). Reserved names forbidden at parse time (spec/04-variables.md §Rules): output · status · error · started_at · ended_at · duration_ms — enforced via propertyNames."
       }
     ]
@@ -628,6 +637,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "task",
         "required": false,
         "type": "string",
+        "pattern": "^[0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h)([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))*$",
         "desc": "Go-duration string · quoted · e.g. \"30s\" \"5m\" \"1h30m\" \"2.5s\". Max 24h."
       },
       {
@@ -645,6 +655,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "invoke",
         "required": true,
         "type": "string",
+        "pattern": "^mcp:[a-z][a-z0-9-]*/[A-Za-z0-9_/-]+$",
         "desc": "Tool reference · nika:<path> (closed v0.1 builtin set) OR mcp:<server>/<tool> (requires the slash). The namespace set is CLOSED at v1 (spec/02-verbs.md) — an x-<vendor>: prefix is RESERVED, not valid (engine-specific tools route through mcp: · spec/06-stdlib-contract.md §Namespace ownership)."
       }
     ]
@@ -692,12 +703,14 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "task",
         "required": false,
         "type": "boolean | string",
+        "format": "cel-expression",
         "desc": "Conditional execution gate · a ${{ }} CEL boolean OR the YAML literal true/false. An explicit when: replaces the default success-gate (spec/03-dag.md §Task states)."
       },
       {
         "scope": "on_finally",
         "required": false,
         "type": "boolean | string",
+        "format": "cel-expression",
         "desc": "Conditional execution gate · a ${{ }} CEL boolean OR the YAML literal true/false. An explicit when: replaces the default success-gate (spec/03-dag.md §Task states)."
       }
     ]
@@ -722,6 +735,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "envelope",
         "required": true,
         "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$",
         "desc": "Workflow id · kebab-case · unique within file · the document-type discriminator."
       }
     ]

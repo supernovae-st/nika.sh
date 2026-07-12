@@ -54,6 +54,27 @@ function typeLabel(prop) {
   return undefined
 }
 
+/* the deeper invariants the contract carries — a property's own format/
+   pattern, or its ITEMS' (depends_on constrains each entry, not the list) */
+function invariants(prop) {
+  const own = (n) => ({
+    ...(typeof n?.format === 'string' ? { format: n.format } : {}),
+    ...(typeof n?.pattern === 'string' ? { pattern: n.pattern } : {}),
+  })
+  const direct = own(prop)
+  if (direct.format || direct.pattern) return direct
+  const viaItems = own(prop?.items)
+  if (viaItems.format || viaItems.pattern) return viaItems
+  /* output: {<name>: <jq>} — the annotation rides additionalProperties */
+  const viaAP = own(prop?.additionalProperties)
+  if (viaAP.format || viaAP.pattern) return viaAP
+  for (const arm of prop?.anyOf ?? prop?.oneOf ?? []) {
+    const a = own(arm)
+    if (a.format || a.pattern) return a
+  }
+  return {}
+}
+
 const byWord = new Map()
 for (const s of SURFACES) {
   const req = new Set(s.node.required ?? [])
@@ -64,6 +85,7 @@ for (const s of SURFACES) {
       required: req.has(word),
       ...(typeLabel(prop) ? { type: typeLabel(prop) } : {}),
       ...(prop.enum ? { enum: prop.enum } : {}),
+      ...invariants(prop),
       ...(prop.description ? { desc: prop.description } : {}),
     })
   }
@@ -94,6 +116,10 @@ export interface WordDecl {
   type?: string
   /** closed value set, when the schema pins one */
   enum?: string[]
+  /** value language annotation (cel-expression · jq) when the schema marks one */
+  format?: string
+  /** the schema's own regex (the word's, or its items') */
+  pattern?: string
   /** the schema's own description — the teaching voice, never prose */
   desc?: string
 }
