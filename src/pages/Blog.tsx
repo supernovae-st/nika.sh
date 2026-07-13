@@ -30,14 +30,14 @@ const SOON: { slug: string; tag: string; date: string; title: string; teaser: st
     tag: 'Engine',
     date: 'soon',
     title: 'The registry re-proves everything',
-    teaser: 'A workflow registry where nothing is taken on faith: every entry is CI re-proven against the engine — hash, oracle, certificate. The npm-of-workflows, minus the trust-me.',
+    teaser: 'A workflow registry where nothing is taken on faith: every entry is CI re-proven against the engine (hash, oracle, certificate). The npm-of-workflows, minus the trust-me.',
   },
   {
     slug: 'the-run-that-never-runs',
     tag: 'Engine',
     date: 'soon',
     title: 'The run that never runs',
-    teaser: 'nika run --dry-run shows the whole static plan and executes zero effects: waves, permits, models, the cost floor — the full rehearsal before anything is allowed to happen.',
+    teaser: 'nika run --dry-run shows the whole static plan and executes zero effects: waves, permits, models, the cost floor. The full rehearsal before anything is allowed to happen.',
   },
 ]
 

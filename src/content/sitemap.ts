@@ -72,17 +72,17 @@ export const SITE_MAP: MapGroup[] = [
   },
   {
     kick: 'reference',
-    gloss: 'the registers — projections of the binary and the spec, never prose',
+    gloss: 'the registers: projections of the binary and the spec, never prose',
     links: [
       {
         label: 'Standard library',
         href: '/tools',
-        hint: `every nika: builtin — one closed namespace (${TOOLS.length})`,
+        hint: `every nika: builtin, one closed namespace (${TOOLS.length})`,
       },
       {
         label: 'The four verbs',
         href: '/verbs',
-        hint: 'infer · exec · invoke · agent — locked forever, one room each',
+        hint: 'infer · exec · invoke · agent; locked forever, one room each',
       },
       {
         label: 'The language',
@@ -102,7 +102,7 @@ export const SITE_MAP: MapGroup[] = [
       {
         label: 'Templates',
         href: '/templates',
-        hint: `instantiable skeletons — route · copy · fill (${TEMPLATES.length})`,
+        hint: `instantiable skeletons: route · copy · fill (${TEMPLATES.length})`,
       },
       { label: 'Changelog', href: '/changelog', hint: 'the ship log, dated and tagged' },
       { label: 'Brand', href: '/brand', hint: 'the marks · icons · motion' },
@@ -118,13 +118,13 @@ export const SITE_MAP: MapGroup[] = [
   },
   {
     kick: 'writing',
-    gloss: 'notes from the source — long-form pedagogy, newest first',
+    gloss: 'notes from the source: long-form pedagogy, newest first',
     links: [{ label: 'Blog', href: '/blog', hint: 'the journal · rss + full text for machines' }],
     dense: BLOG_POSTS.map((p) => ({ label: p.title, href: `/blog/${p.slug}` })),
   },
   {
     kick: 'machines',
-    gloss: 'the machine-readable twins — same facts the pages render',
+    gloss: 'the machine-readable twins: same facts the pages render',
     links: [
       { label: 'llms.txt', href: '/llms.txt', hint: 'the agent-facing summary' },
       { label: 'llms-full.txt', href: '/llms-full.txt', hint: 'every post, full text' },
@@ -145,7 +145,7 @@ export const SITE_MAP: MapGroup[] = [
       {
         label: 'workflow schema',
         href: '/schema/workflow.json',
-        hint: 'the served contract — what editors validate against',
+        hint: 'the served contract: what editors validate against',
       },
       {
         label: 'spec/v1 schema',

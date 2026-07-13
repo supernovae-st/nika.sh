@@ -24,7 +24,7 @@ export function Component() {
     LANGUAGE_WORDS.reduce((n, w) => n + (w.decls.some((d) => d.scope === verb) ? 1 : 0), 0)
 
   const title = 'The four verbs · Nika'
-  const description = `Nika ships exactly ${CANON.verbs} verbs — infer, exec, invoke, agent — locked forever. A verb is a distinct native execution model; every task speaks exactly one. Each opens its room: the block contract, a complete file, the skeletons that speak it.`
+  const description = `Nika ships exactly ${CANON.verbs} verbs, locked forever: infer, exec, invoke, agent. A verb is a distinct native execution model; every task speaks exactly one. Each opens its room: the block contract, a complete file, the skeletons that speak it.`
 
   useHead({
     title,
@@ -37,7 +37,7 @@ export function Component() {
       { property: 'og:image', content: 'https://nika.sh/og-verbs.png' },
       {
         property: 'og:image:alt',
-        content: 'Nika — four verbs, locked forever: infer, exec, invoke, agent.',
+        content: 'Nika. Four verbs, locked forever: infer, exec, invoke, agent.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
@@ -56,7 +56,7 @@ export function Component() {
             Four verbs.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Locked forever — four, never five. A verb is a <em>distinct native execution model</em>,
+            Locked forever: four, never five. A verb is a <em>distinct native execution model</em>,
             and every task speaks exactly one; everything <em>callable</em> is a tool under{' '}
             <code>invoke:</code>, everything about <em>ordering</em> is the DAG's job. Each verb
             opens its own room; every other key lives in{' '}
@@ -109,7 +109,7 @@ export function Component() {
 
           <p className="tp-foot" data-rise>
             Why four? <code>fetch</code> is a builtin, <code>recall</code> is a tool, ordering is a
-            DAG construct — a verb only exists where the <em>execution model</em> differs. Try one
+            DAG construct; a verb only exists where the <em>execution model</em> differs. Try one
             in the <Link to="/play">playground</Link>, or walk{' '}
             <Link to="/language">every word the schema declares</Link>.{' '}
             <Link to="/spec">Read the spec →</Link>

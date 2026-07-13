@@ -210,7 +210,7 @@ export default function TheRun({ flagship }: { flagship: FlagshipEntry }) {
               role="log"
               aria-live="off"
               tabIndex={0}
-              aria-label={`recorded run of ${flagship.filename} — scrollable log`}
+              aria-label={`recorded run of ${flagship.filename}, scrollable log`}
             >
               {script.lines.slice(0, revealed).map((line, i) => (
                 <Line line={line} key={`${flagship.id}-${i}`} />

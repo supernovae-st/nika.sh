@@ -3,12 +3,12 @@ slug: prompts-are-code
 title: "Prompts are code now"
 tag: Language
 date: 2026-07-08
-description: "Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it — and the engine itself names an edited prompt when two runs diverge."
+description: "Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it. The engine itself names an edited prompt when two runs diverge."
 ---
 
 Ask a team where their prompts live. A chat window. A doc titled `PROMPT_v2_FINAL_really`. An f-string three layers deep in a glue script. Then ask the question that matters during an incident: **which prompt produced this output?**
 
-The usual answer is a prompt-management platform — another dashboard, another account, another place your logic lives that is not your repo. Nika's answer is shorter: **the prompt is a line in the workflow file.**
+The usual answer is a prompt-management platform: another dashboard, another account, another place your logic lives that is not your repo. Nika's answer is shorter. **The prompt is a line in the workflow file.**
 
 ```yaml release-notes.nika.yaml
 nika: v1
@@ -39,7 +39,7 @@ outputs:
 
 One reviewable artifact: the model (a local one here), the permits, the plan, and the prompt. Which means the prompt inherits every tool your code already has, starting with the one you trust most.
 
-**Git diffs it.** We ran the file once, then tightened the prompt — the kind of change teams make every week and then lose track of forever:
+**Git diffs it.** We ran the file once, then tightened the prompt, the kind of change teams make every week and then lose track of forever:
 
 ```text
 $ git diff
@@ -78,7 +78,7 @@ featuring several exciting updates and improvements.
   [project name].
 ```
 
-It keeps going like that — ceremony, section headers, and a helpful placeholder for a project name we never gave it. After the one-line diff:
+It keeps going like that: ceremony, section headers, and a helpful placeholder for a project name we never gave it. After the one-line diff:
 
 ```text
 Here are the release notes based on the commits:
@@ -90,7 +90,7 @@ Release Notes v0.1
 * Updated documentation to include coverage of using local models in the quickstart guide.
 ```
 
-Still a 3B model — it kept its little preamble. But the three bullets are there, plain, and they will be there on every future run, because the constraint lives in the file, not in a chat's short-term memory.
+Still a 3B model: it kept its little preamble. But the three bullets are there, plain, and they will be there on every future run, because the constraint lives in the file, not in a chat's short-term memory.
 
 **Every run pins the prompt that produced it.** The run closes with its trace and the journal records the workflow's content identity:
 
@@ -105,7 +105,7 @@ Still a 3B model — it kept its little preamble. But the three bullets are ther
     trace: .nika/traces/2026-07-08T09-52-43Z-22c6.ndjson · 11 events · chain 03ad7a3f2bf1c6a92481b8483b9942ab
 ```
 
-The old run stays exactly as it happened, replayable after the edit — `nika trace replay` re-renders the recorded events, it never re-executes. So "which prompt produced this output?" has a literal answer: the one recorded with the run.
+The old run stays exactly as it happened, replayable after the edit: `nika trace replay` re-renders the recorded events, it never re-executes. So "which prompt produced this output?" has a literal answer, the one recorded with the run.
 
 **And the engine names an edit.** Hand `nika trace reproduce` the runs from before and after the diff:
 
@@ -119,7 +119,7 @@ DIVERGED — 1 AUTHORED · 1 ENVIRONMENT · 1 reproduced
   engine: 0.97.0/macos/aarch64 (both runs)
 ```
 
-`AUTHORED — the task changed`. Not "the model is being weird today": a classified, named fact that the divergence came from your edit — and you can watch it propagate, the downstream `save` diverging as `ENVIRONMENT` because its input changed. Prompt versioning is not just storage; it is being able to say, between any two runs, *this changed because we changed it*.
+`AUTHORED — the task changed`. Not "the model is being weird today": a classified, named fact that the divergence came from your edit. You can watch it propagate too, the downstream `save` diverging as `ENVIRONMENT` because its input changed. Prompt versioning is not just storage; it is being able to say, between any two runs, *this changed because we changed it*.
 
 No platform. No prompt registry with its own login. A text file in your repo, the versioning tool you have used for fifteen years, and one binary as the witness.
 

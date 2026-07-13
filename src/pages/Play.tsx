@@ -348,7 +348,7 @@ export function Component() {
               )}
               {simWave !== undefined && plan && simWave >= plan.waves.length && (
                 <p className="play-sim-note">
-                  order + parallelism are real · timings are not simulated —{' '}
+                  order + parallelism are real · timings are not simulated:{' '}
                   <code>nika run</code> records the truth
                 </p>
               )}
@@ -390,7 +390,7 @@ export function Component() {
                 </>
               ) : (
                 <p className="play-permits-empty">
-                  no <code>permits:</code> declared — add one and the file becomes its own
+                  no <code>permits:</code> declared. Add one and the file becomes its own
                   blast radius (try the <b>human-gated-ship</b> template)
                 </p>
               )}

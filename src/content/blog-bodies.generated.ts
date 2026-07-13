@@ -16,7 +16,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Your agent already writes code you review. That contract — the agent drafts, the diff is the meeting point, nothing merges unread — is the only reason agents are allowed near serious codebases at all. Then the same agent proposes to "
+          "text": "Your agent already writes code you review. That contract (the agent drafts, the diff is the meeting point, nothing merges unread) is the only reason agents are allowed near serious codebases at all. Then the same agent proposes to "
         },
         {
           "k": "em",
@@ -33,7 +33,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": "; this post is about the division of labor that falls out of it — the agent writes the file, a machine audits it, and you review a diff instead of a transcript."
+          "text": "; this post is about the division of labor that falls out of it: the agent writes the file, a machine audits it, and you review a diff instead of a transcript."
         }
       ]
     },
@@ -60,7 +60,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "One scaffold, every harness — Claude Code, Cursor, Copilot, and anything else that reads "
+          "text": "One scaffold, every harness: Claude Code, Cursor, Copilot, and anything else that reads "
         },
         {
           "k": "code",
@@ -76,7 +76,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is the piece that matters: it teaches the loop — "
+          "text": " is the piece that matters. It teaches the loop ("
         },
         {
           "k": "em",
@@ -84,7 +84,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and the generated "
+          "text": "), and the generated "
         },
         {
           "k": "code",
@@ -125,7 +125,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", and the same one-sentence ask to two very different agents — worded naturally, no schema smuggled into the prompt:"
+          "text": ", and the same one-sentence ask to two very different agents, worded naturally, no schema smuggled into the prompt:"
         }
       ]
     },
@@ -147,7 +147,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — opencode driving qwen2.5:14b on ollama, no cloud anywhere. It read the contract, then wrote confident YAML in a dialect it invented: "
+          "text": ": opencode driving qwen2.5:14b on ollama, no cloud anywhere. It read the contract, then wrote confident YAML in a dialect it invented: "
         },
         {
           "k": "code",
@@ -185,7 +185,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " a fix — and its own example was still wrong (a freshly invented "
+          "text": " a fix, and its own example was still wrong (a freshly invented "
         },
         {
           "k": "code",
@@ -193,7 +193,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": "). Honest result: a 14B local model does not speak this language yet. But look at what did not happen. Nothing executed. No file was touched. The invented plan died as a parse error, not as a production incident. That is the loop working, not failing — the audit does not require a strong agent, it makes weak agents "
+          "text": "). Honest result: a 14B local model does not speak this language yet. But look at what did not happen. Nothing executed. No file was touched. The invented plan died as a parse error, not as a production incident. That is the loop working, not failing: the audit does not require a strong agent, it makes weak agents "
         },
         {
           "k": "em",
@@ -214,7 +214,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — "
+          "text": ": "
         },
         {
           "k": "code",
@@ -222,7 +222,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", headless; one of several, the scaffold does not care which frontier you call. First shot, audit-green. Here is the file it wrote, shown as reviewed — the two lines we ended up changing are the story of the third act:"
+          "text": ", headless; one of several, the scaffold does not care which frontier you call. First shot, audit-green. Here is the file it wrote, shown as reviewed. The two lines we ended up changing are the story of the third act:"
         }
       ]
     },
@@ -238,7 +238,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Three things worth reading in a file no human drafted. It did not invent — it started from the embedded showcase example the authoring skill points to, the exact read-summarize-write shape. It built its own cage — the "
+          "text": "Three things worth reading in a file no human drafted. It did not invent: it started from the embedded showcase example the authoring skill points to, the exact read-summarize-write shape. It built its own cage. The "
         },
         {
           "k": "code",
@@ -270,7 +270,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " model for the inference — the sovereignty lives in the file, not in whoever wrote it."
+          "text": " model for the inference. The sovereignty lives in the file, not in whoever wrote it."
         }
       ]
     },
@@ -301,7 +301,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "strong",
-          "text": "Then the run — and the trap."
+          "text": "Then the run, and the trap."
         },
         {
           "k": "text",
@@ -343,7 +343,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Two bytes. qwen3.5 is a thinking model: it spent all 512 tokens inside its reasoning block and emitted nothing — and the run stayed green, because an empty string is a valid output. First review line: raise "
+          "text": "Two bytes. qwen3.5 is a thinking model: it spent all 512 tokens inside its reasoning block and emitted nothing. The run stayed green, because an empty string is a valid output. First review line: raise "
         },
         {
           "k": "code",
@@ -351,7 +351,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " to 2000. Resume re-runs the summary — an edited task "
+          "text": " to 2000. Resume re-runs the summary (an edited task "
         },
         {
           "k": "link",
@@ -360,7 +360,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and the model thought its way through 2000 tokens to the same two quote marks."
+          "text": "), and the model thought its way through 2000 tokens to the same two quote marks."
         }
       ]
     },
@@ -385,7 +385,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " the summary — a cache hit on stale, empty output. The task identity covers the task as written and its inputs, but not the envelope "
+          "text": " the summary: a cache hit on stale, empty output. The task identity covers the task as written and its inputs, but not the envelope "
         },
         {
           "k": "code",
@@ -411,7 +411,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — both found not by a demo going well but by a trace that names the model, the token count, and the two bytes."
+          "text": ". Both were found not by a demo going well but by a trace that names the model, the token count, and the two bytes."
         }
       ]
     },
@@ -429,7 +429,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — which is what "
+          "text": ", which is what "
         },
         {
           "k": "code",
@@ -451,7 +451,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "6.9 seconds, 89 tokens, 470 bytes — and "
+          "text": "6.9 seconds, 89 tokens, 470 bytes, and "
         },
         {
           "k": "code",
@@ -476,7 +476,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Count what the human actually did in this story. Zero YAML written. One ask, worded like you would say it out loud. Then a review: read a 70-line file, change two lines — a model name and a token budget. The agent wrote the plan; the audit refused the invented one before anything ran; the trace made the silent failure inspectable; the re-run touched only what our doubt named. That is the same division of labor your code already lives under, extended to the work agents want to "
+          "text": "Count what the human actually did in this story. Zero YAML written. One ask, worded like you would say it out loud. Then a review: read a 70-line file and change two lines, a model name and a token budget. The agent wrote the plan; the audit refused the invented one before anything ran; the trace made the silent failure inspectable; the re-run touched only what our doubt named. That is the same division of labor your code already lives under, extended to the work agents want to "
         },
         {
           "k": "em",
@@ -484,7 +484,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and the whole contract fits in one file your agent now knows how to write. "
+          "text": ". The whole contract fits in one file your agent now knows how to write, and "
         },
         {
           "k": "code",
@@ -503,7 +503,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "An llm pipeline is a graph of model calls, tools and processes, wired by data dependencies. That is the whole definition. And the industry's default answer to \"how do I build one\" is a framework: pick an SDK, learn its abstractions, write the glue code that calls the model, passes the output, handles the retry — a program that "
+          "text": "An llm pipeline is a graph of model calls, tools and processes, wired by data dependencies. That is the whole definition. And the industry's default answer to \"how do I build one\" is a framework: pick an SDK, learn its abstractions, write the glue code that calls the model, passes the output, handles the retry. That is a program which "
         },
         {
           "k": "em",
@@ -528,7 +528,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " for a second. The model call does not care what called it. The file write does not care what wrote the content. The only real structure is which task needs whose output — and that is not behavior, that is a "
+          "text": " for a second. The model call does not care what called it. The file write does not care what wrote the content. The only real structure is which task needs whose output. That is not behavior, that is a "
         },
         {
           "k": "strong",
@@ -545,7 +545,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Here is a release-notes pipeline, whole. It reads a changelog, summarizes it on a local model, saves the notes, and — on a separate branch — counts the changelog into a badge. Three verbs, two branches, zero glue:"
+          "text": "Here is a release-notes pipeline, whole. It reads a changelog, summarizes it on a local model, saves the notes, and, on a separate branch, counts the changelog into a badge. Three verbs, two branches, zero glue:"
         }
       ]
     },
@@ -583,7 +583,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", because the graph says they can — "
+          "text": ", because the graph says they can: "
         },
         {
           "k": "code",
@@ -625,7 +625,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ") and checks every effect against the declared boundary — the audit is possible "
+          "text": ") and checks every effect against the declared boundary. The audit is possible "
         },
         {
           "k": "em",
@@ -650,7 +650,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is one line — swap "
+          "text": " is one line: swap "
         },
         {
           "k": "code",
@@ -683,7 +683,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " line, per task, at check time. Retries, timeouts? Fields on the task. Observability, resume, caching? The recorded trace — one file that is "
+          "text": " line, per task, at check time. Retries, timeouts? Fields on the task. Observability, resume, caching? The recorded trace: one file that is "
         },
         {
           "k": "link",
@@ -718,7 +718,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The honest boundary: some agent work is genuinely dynamic — the model decides mid-flight what to do next, and no static graph can hold that. Nika gives that its own verb, "
+          "text": "The honest boundary: some agent work is genuinely dynamic. The model decides mid-flight what to do next, and no static graph can hold that. Nika gives that its own verb, "
         },
         {
           "k": "code",
@@ -734,7 +734,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", and the pipeline around it stays declared. What never needed to be dynamic — and it is most of what pipelines do all day — never needed to be code."
+          "text": ", and the pipeline around it stays declared. What never needed to be dynamic (and it is most of what pipelines do all day) never needed to be code."
         }
       ]
     },
@@ -760,7 +760,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". It travels: mail it, commit it, hand it to a teammate — there is no environment to reproduce. And "
+          "text": ". It travels: mail it, commit it, hand it to a teammate. There is no environment to reproduce. And "
         },
         {
           "k": "link",
@@ -769,7 +769,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — because the format it has to learn is forty lines of YAML with four verbs, not a framework API."
+          "text": ", because the format it has to learn is forty lines of YAML with four verbs, not a framework API."
         }
       ]
     },
@@ -797,7 +797,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "\"How to build an MCP server\" is this year's most-searched developer tutorial, and the ecosystem's answer is a scaffold: pick an SDK, define your tools, wire the transport, keep the schema in sync with the thing it describes, forever. Before you build one for your workflow tooling, check whether it already exists. If the workflow tool is Nika, it does — and it shipped inside the binary you already installed:"
+          "text": "\"How to build an MCP server\" is this year's most-searched developer tutorial, and the ecosystem's answer is a scaffold: pick an SDK, define your tools, wire the transport, keep the schema in sync with the thing it describes, forever. Before you build one for your workflow tooling, check whether it already exists. If the workflow tool is Nika, it does, and it shipped inside the binary you already installed:"
         }
       ]
     },
@@ -833,7 +833,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " speaks the protocol over stdio — five revisions negotiated, current through 2026 — and exposes 8 tools. They divide into exactly two jobs."
+          "text": " speaks the protocol over stdio (five revisions negotiated, current through 2026) and exposes 8 tools. They divide into exactly two jobs."
         }
       ]
     },
@@ -871,7 +871,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " the CLI runs — schema, DAG, permits, secrets, cost — reached as a tool call. We did not mock this for the post: the workflow below was audited by a real agent, over MCP, mid-session. Handed a plan whose "
+          "text": " the CLI runs (schema, DAG, permits, secrets, cost), reached as a tool call. We did not mock this for the post: the workflow below was audited by a real agent, over MCP, mid-session. Handed a plan whose "
         },
         {
           "k": "code",
@@ -917,7 +917,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Same audit, two registers. The CLI speaks human; the MCP surface speaks agent — task, category, detail, and the fix as a machine-readable field. An agent holding that response does not parse a console with a regex; it reads "
+          "text": "Same audit, two registers. The CLI speaks human; the MCP surface speaks agent: task, category, detail, and the fix as a machine-readable field. An agent holding that response does not parse a console with a regex; it reads "
         },
         {
           "k": "code",
@@ -942,7 +942,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — the loop is write, audit, fix, and the audit's structured voice is what makes the loop cheap.)"
+          "text": ". The loop is write, audit, fix, and the audit's structured voice is what makes the loop cheap.)"
         }
       ]
     },
@@ -979,7 +979,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " serve real, runnable shapes to start from — the same embedded showcase the frontier agent cribbed in the last post, which is why its first draft was audit-green. "
+          "text": " serve real, runnable shapes to start from: the same embedded showcase the frontier agent cribbed in the last post, which is why its first draft was audit-green. "
         },
         {
           "k": "code",
@@ -1003,7 +1003,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " returns the language's locked registry — the counts and names that every doc is a projection of. Its own description states the discipline: "
+          "text": " returns the language's locked registry: the counts and names that every doc is a projection of. Its own description states the discipline: "
         },
         {
           "k": "em",
@@ -1044,7 +1044,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " Look at the tool list again — there is no "
+          "text": " Look at the tool list again: there is no "
         },
         {
           "k": "code",
@@ -1069,7 +1069,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " the run without ever being able to cause one — the capability boundary is not a setting on the server, it is the absence of the tool. If you are sketching your own MCP server architecture, that is the line worth stealing: separate the surface that knows from the surface that acts, and give agents the first one."
+          "text": " the run without ever being able to cause one. The capability boundary is not a setting on the server. It is the absence of the tool. If you are sketching your own MCP server architecture, that is the line worth stealing: separate the surface that knows from the surface that acts, and give agents the first one."
         }
       ]
     },
@@ -1086,7 +1086,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " A hand-built MCP server describing your tool is documentation wearing a protocol — the schema it serves and the binary it describes are two artifacts, and two artifacts diverge. "
+          "text": " A hand-built MCP server describing your tool is documentation wearing a protocol. The schema it serves and the binary it describes are two artifacts, and two artifacts diverge. "
         },
         {
           "k": "code",
@@ -1111,7 +1111,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is the other half — the loop's questions, answered by the thing that will enforce the answers."
+          "text": " is the other half: the loop's questions, answered by the thing that will enforce the answers."
         }
       ]
     }
@@ -1122,7 +1122,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Two questions decide whether a pipeline is safe to re-run: how long will it take, and what will it cost? The industry's answer is a dashboard — ship your telemetry to somebody's cloud, and they will sell your own history back to you as graphs. Nika's answer is a flag:"
+          "text": "Two questions decide whether a pipeline is safe to re-run: how long will it take, and what will it cost? The industry's answer is a dashboard: ship your telemetry to somebody's cloud, and they will sell your own history back to you as graphs. Nika's answer is a flag:"
         }
       ]
     },
@@ -1145,7 +1145,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", run five times on a laptop. Every number in the table is a statistic over those five recorded runs — nothing else. Per task: the typical duration and the p90 tail. Per task, too: how often a run never paid for it at all ("
+          "text": ", run five times on a laptop. Every number in the table is a statistic over those five recorded runs, nothing else. Per task: the typical duration and the p90 tail. Per task, too: how often a run never paid for it at all ("
         },
         {
           "k": "code",
@@ -1153,7 +1153,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — resume skipped it). At the bottom, the whole run's prior. And the last line is the tool lowering your confidence on purpose: estimates vary, branches branch, providers have moods."
+          "text": " means resume skipped it). At the bottom, the whole run's prior. And the last line is the tool lowering your confidence on purpose: estimates vary, branches branch, providers have moods."
         }
       ]
     },
@@ -1178,7 +1178,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — the min and max, because two points make an interval, not a distribution). At five, the percentiles arrive. The header names its own weight the whole way — "
+          "text": ": the min and max, because two points make an interval, not a distribution). At five, the percentiles arrive. The header names its own weight the whole way, "
         },
         {
           "k": "code",
@@ -1186,7 +1186,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and the window it reads: the last 50 runs, the last 30 days, whichever ends first. A forecast that tells you how little it knows is worth more than a confident one that won't."
+          "text": ", and the window it reads: the last 50 runs, the last 30 days, whichever ends first. A forecast that tells you how little it knows is worth more than a confident one that won't."
         }
       ]
     },
@@ -1195,7 +1195,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "It prices inference the same way. Here is a three-task digest — read a status file, one small "
+          "text": "It prices inference the same way. Here is a three-task digest that reads a status file, runs one small "
         },
         {
           "k": "code",
@@ -1203,7 +1203,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " on a local model, write the result:"
+          "text": " on a local model, and writes the result:"
         }
       ]
     },
@@ -1257,7 +1257,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ": a local model has no catalog price, and the forecast refuses to invent one — unpriced compute is not free compute, it is compute whose bill is your electricity and your patience. (The "
+          "text": ": a local model has no catalog price, and the forecast refuses to invent one. Unpriced compute is not free compute, it is compute whose bill is your electricity and your patience. (The "
         },
         {
           "k": "link",
@@ -1266,7 +1266,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " says the same thing before the first run ever happens; the forecast says it from experience.) And the p90 remembers what the average forgets: 11.5s typical, 41.8s tail — my first run loaded the model into memory cold, and that forty-second truth stays in the prior, because it will be true again."
+          "text": " says the same thing before the first run ever happens; the forecast says it from experience.) And the p90 remembers what the average forgets: 11.5s typical, 41.8s tail. My first run loaded the model into memory cold, and that forty-second truth stays in the prior, because it will be true again."
         }
       ]
     },
@@ -1291,7 +1291,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". Two nevers. Never a model call: the forecast is arithmetic over NDJSON, not an LLM guessing how long LLMs take — it costs nothing to consult. Never the network: your run history never leaves the machine it was made on. The traces feeding it are the same flight recorder that "
+          "text": ". Two nevers. Never a model call: the forecast is arithmetic over NDJSON, not an LLM guessing how long LLMs take; it costs nothing to consult. Never the network: your run history never leaves the machine it was made on. The traces feeding it are the same flight recorder that "
         },
         {
           "k": "link",
@@ -1318,7 +1318,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The cloud version of this feature exists everywhere, and it is a fine business: your usage, their database, a monthly invoice for the mirror. The local version is not just more private — it is more "
+          "text": "The cloud version of this feature exists everywhere, and it is a fine business: your usage, their database, a monthly invoice for the mirror. The local version is not just more private. It is more "
         },
         {
           "k": "em",
@@ -1369,7 +1369,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — files that exist afterward and didn't before. Every image pipeline, every audio pack, every \"brief to assets\" product flow reduces to that triple. The mystery lives entirely in how those three usually stay "
+          "text": ", meaning files that exist afterward and didn't before. Every image pipeline, every audio pack, every \"brief to assets\" product flow reduces to that triple. The mystery lives entirely in how those three usually stay "
         },
         {
           "k": "em",
@@ -1386,7 +1386,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Declare the triple instead. This workflow came from the engine's own skeleton — "
+          "text": "Declare the triple instead. This workflow came from the engine's own skeleton, "
         },
         {
           "k": "code",
@@ -1426,7 +1426,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is the input surface — change the subject, nothing else moves. The "
+          "text": " is the input surface, and changing the subject moves nothing else. The "
         },
         {
           "k": "code",
@@ -1458,7 +1458,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " and nowhere else. That last line taught me something while writing this — I first asked the audit to infer the boundary for me, and it refused, correctly: "
+          "text": " and nowhere else. That last line taught me something while writing this. I first asked the audit to infer the boundary for me, and it refused, correctly: "
         },
         {
           "k": "em",
@@ -1483,7 +1483,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Then the run — and here is the part that separates a declared pipeline from a vendor script. The render step "
+          "text": "Then the run. Here is the part that separates a declared pipeline from a vendor script: the render step "
         },
         {
           "k": "strong",
@@ -1491,7 +1491,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ":"
+          "text": "."
         }
       ]
     },
@@ -1521,7 +1521,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", and the manifest that lands next to it carries the full record — provider, model, dimensions, byte size, the complete hash:"
+          "text": ", and the manifest that lands next to it carries the full record of provider, model, dimensions, byte size, and the complete hash:"
         }
       ]
     },
@@ -1553,7 +1553,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — assets land on disk with names and hashes, never inline blobs pasted between scripts."
+          "text": ": assets land on disk with names and hashes, never inline blobs pasted between scripts."
         }
       ]
     },
@@ -1570,7 +1570,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". The whole pipeline — brief, render, manifest, persist — rehearsed end to end, offline, for $0.00, on a laptop. That is what "
+          "text": ". The whole pipeline (brief, render, manifest, persist) rehearsed end to end, offline, for $0.00, on a laptop. That is what "
         },
         {
           "k": "code",
@@ -1595,7 +1595,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " promised — "
+          "text": " promised, "
         },
         {
           "k": "code",
@@ -1611,7 +1611,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and nothing else changes: same boundary, same manifest, same provenance, now with a real "
+          "text": ", and nothing else changes: same boundary, same manifest, same provenance, now with a real "
         },
         {
           "k": "code",
@@ -1636,7 +1636,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "That is the whole demystification. Not a platform, not a \"creative AI stack\" — a file where the inputs have names, the model step has a schema, and the effects have an address you approved in advance. Generation was never the mysterious part. The missing part was always just: "
+          "text": "That is the whole demystification. Not a platform, not a \"creative AI stack\": a file where the inputs have names, the model step has a schema, and the effects have an address you approved in advance. Generation was never the mysterious part. The missing part was always just: "
         },
         {
           "k": "em",
@@ -1659,7 +1659,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". The trace is an NDJSON file — plain text, one event per line, sitting in "
+          "text": ". The trace is an NDJSON file, plain text, one event per line, sitting in "
         },
         {
           "k": "code",
@@ -1698,7 +1698,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Later — next week, next audit — anyone holding the file can recompute the whole chain:"
+          "text": "Later, next week or next audit, anyone holding the file can recompute the whole chain:"
         }
       ]
     },
@@ -1712,7 +1712,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Same head, character for character — the file you hold is the file the run wrote. That is the loop closing: the head the run printed (in your CI log, your journal, your ticket) is the anchor, and the file re-derives it or it does not."
+          "text": "Same head, character for character: the file you hold is the file the run wrote. That is the loop closing. The head the run printed (in your CI log, your journal, your ticket) is the anchor, and the file re-derives it or it does not."
         }
       ]
     },
@@ -1751,7 +1751,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The chain names the exact line where history diverged, shows the hash it recorded against the hash the bytes actually produce, and declares everything downstream unverified — because that is what a chain means: the help says it plainly, "
+          "text": "The chain names the exact line where history diverged, shows the hash it recorded against the hash the bytes actually produce, and declares everything downstream unverified, because that is what a chain means. The help says it plainly: "
         },
         {
           "k": "em",
@@ -1775,7 +1775,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is reserved for traces older than the chain itself — an honest code for \"this predates the guarantee\", not a fake pass.)"
+          "text": " is reserved for traces older than the chain itself: an honest code for \"this predates the guarantee\", not a fake pass.)"
         }
       ]
     },
@@ -1792,7 +1792,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". An attacker who can rewrite the whole file can rewrite the whole chain; what the hashes prove is internal consistency, and what turns that into custody is the head you kept somewhere else — the one the run printed. This is the same register as the "
+          "text": ". An attacker who can rewrite the whole file can rewrite the whole chain; what the hashes prove is internal consistency, and what turns that into custody is the head you kept somewhere else, the one the run printed. This is the same register as the "
         },
         {
           "k": "link",
@@ -1853,7 +1853,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". One recorded file, five jobs — evidence, replay, resume, forecast, custody — and the fifth is the one that lets you believe the other four after the fact."
+          "text": ". One recorded file, five jobs: evidence, replay, resume, forecast, custody. The fifth is the one that lets you believe the other four after the fact."
         }
       ]
     },
@@ -1866,7 +1866,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — put it after every run your compliance story depends on. The audit trail now audits itself."
+          "text": ": put it after every run your compliance story depends on. The audit trail now audits itself."
         }
       ]
     }
@@ -1885,7 +1885,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ": every task and edge written down before anything runs — "
+          "text": ": every task and edge written down before anything runs, "
         },
         {
           "k": "link",
@@ -1902,7 +1902,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ": the model reads, decides, acts, repeats — maximally flexible, and nothing about it can be known in advance, which is why its failures make headlines."
+          "text": ": the model reads, decides, acts, repeats. Maximally flexible, and nothing about it can be known in advance, which is why its failures make headlines."
         }
       ]
     },
@@ -1919,7 +1919,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " Most steps do not — read these files, call this tool, save that output. Some genuinely do — triage, research, review, anything where the path depends on what the content turns out to say. The spectrum is not a choice of tool. In a Nika file it is a per-task choice of verb: "
+          "text": " Most steps do not: read these files, call this tool, save that output. Some genuinely do: triage, research, review, anything where the path depends on what the content turns out to say. The spectrum is not a choice of tool. In a Nika file it is a per-task choice of verb: "
         },
         {
           "k": "code",
@@ -1952,7 +1952,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". Here is the workflow this post ran — instantiated from the engine's own "
+          "text": ". Here is the workflow this post ran, instantiated from the engine's own "
         },
         {
           "k": "code",
@@ -1988,7 +1988,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Read the shape of the spectrum in one file: "
+          "text": "Read the shape of the spectrum in one file. "
         },
         {
           "k": "code",
@@ -2004,7 +2004,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — the step's shape is known, so it gets a schema and a 400-token ceiling. "
+          "text": ": the step's shape is known, so it gets a schema and a 400-token ceiling. "
         },
         {
           "k": "code",
@@ -2020,7 +2020,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — a 14B with exactly two tools, six turns, twenty thousand tokens, and a typed final-message contract. "
+          "text": ": a 14B with exactly two tools, six turns, twenty thousand tokens, and a typed final-message contract. "
         },
         {
           "k": "code",
@@ -2036,7 +2036,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " opened with five hints — a missing token ceiling, two schemas that admitted undeclared keys, no permits boundary — and closed at one after the tightening. The audit coaches the leashes on."
+          "text": " opened with five hints (a missing token ceiling, two schemas that admitted undeclared keys, no permits boundary) and closed at one after the tightening. The audit coaches the leashes on."
         }
       ]
     },
@@ -2062,7 +2062,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Run one, the provider's HTTP ceiling killed the model call. The failure came back typed — "
+          "text": "Run one, the provider's HTTP ceiling killed the model call. The failure came back typed, "
         },
         {
           "k": "code",
@@ -2070,7 +2070,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and the downstream tasks were "
+          "text": ", and the downstream tasks were "
         },
         {
           "k": "code",
@@ -2086,7 +2086,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — with a Python-dict string instead of the declared object. The schema leash refused it at the boundary: "
+          "text": ", with a Python-dict string instead of the declared object. The schema leash refused it at the boundary: "
         },
         {
           "k": "em",
@@ -2094,7 +2094,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". The model was confident; the contract said no. Prose is not a contract, enforced live. Run three, the bigger model got to work — the flight recorder shows the loop's real anatomy, "
+          "text": ". The model was confident; the contract said no. Prose is not a contract, enforced live. Run three, the bigger model got to work. The flight recorder shows the loop's real anatomy, "
         },
         {
           "k": "code",
@@ -2102,7 +2102,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " (it read the notes, one turn done) — and then hit the provider ceiling mid-loop. Typed again, blocked again."
+          "text": " (it read the notes, one turn done). Then it hit the provider ceiling mid-loop. Typed again, blocked again."
         }
       ]
     },
@@ -2128,7 +2128,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " across a whole afternoon of failures. Total damage from three failed agent runs on an under-powered machine: zero files touched outside the boundary, zero surprise spend, zero mystery — three traces you can "
+          "text": " across a whole afternoon of failures. Total damage from three failed agent runs on an under-powered machine: zero files touched outside the boundary, zero surprise spend, zero mystery. Three traces you can "
         },
         {
           "k": "link",
@@ -2154,7 +2154,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — "
+          "text": ". It is "
         },
         {
           "k": "link",
@@ -2163,7 +2163,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", extended to letting one act. When the model is too small for the job, you find out through a typed error and a capped bill, not an incident. And when you want the muscle, the upgrade is one line — the "
+          "text": ", extended to letting one act. When the model is too small for the job, you find out through a typed error and a capped bill, not an incident. And when you want the muscle, the upgrade is one line (the "
         },
         {
           "k": "code",
@@ -2171,7 +2171,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " inside the agent task — while every leash stays exactly where it was."
+          "text": " inside the agent task) while every leash stays exactly where it was."
         }
       ]
     },
@@ -2204,7 +2204,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — the declared graph does the scheduling, the pricing, the audit. Give the genuinely open-ended step to "
+          "text": ": the declared graph does the scheduling, the pricing, the audit. Give the genuinely open-ended step to "
         },
         {
           "k": "code",
@@ -2223,7 +2223,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Every serious pipeline eventually needs a human in it. Ship the release note — "
+          "text": "Every serious pipeline eventually needs a human in it. Ship the release note, "
         },
         {
           "k": "em",
@@ -2231,7 +2231,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". Send the refund — "
+          "text": ". Send the refund, "
         },
         {
           "k": "em",
@@ -2280,7 +2280,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " the approval flow — no side channel to reverse-engineer."
+          "text": " the approval flow. There is no side channel to reverse-engineer."
         }
       ]
     },
@@ -2335,7 +2335,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": "), nothing is written, the exit code is 1. And the journal — the same "
+          "text": "), nothing is written, the exit code is 1. And the journal, the same "
         },
         {
           "k": "link",
@@ -2344,7 +2344,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — recorded the question."
+          "text": ", recorded the question."
         }
       ]
     },
@@ -2371,7 +2371,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is not re-done — finished work never runs twice — the gate binds your answer, and only then does "
+          "text": " is not re-done: finished work never runs twice. The gate binds your answer, and only then does "
         },
         {
           "k": "code",
@@ -2452,7 +2452,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — the outcome your reviewer chose, on the record, in the same trace format as everything else."
+          "text": ": the outcome your reviewer chose, on the record, in the same trace format as everything else."
         }
       ]
     },
@@ -2490,7 +2490,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is the entire policy. A PR reviewer can see that nothing ships without a yes — the same way they "
+          "text": " is the entire policy. A PR reviewer can see that nothing ships without a yes, the same way they "
         },
         {
           "k": "link",
@@ -2536,7 +2536,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " into the file — visible, diffable, yours."
+          "text": " into the file: visible, diffable, yours."
         }
       ]
     },
@@ -2549,7 +2549,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " The question, the answer, who-ran-what-when — all of it lands in the run's journal next to every other event. Six months later the trace still shows the release went out because a human said yes."
+          "text": " The question, the answer, who-ran-what-when: all of it lands in the run's journal next to every other event. Six months later the trace still shows the release went out because a human said yes."
         }
       ]
     },
@@ -2585,7 +2585,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — everything crashes — it is "
+          "text": ". Everything crashes. It is "
         },
         {
           "k": "strong",
@@ -2607,7 +2607,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Here is a workflow with real work in it — checksum the day's notes, count them, pack a 300 MB asset archive, write a manifest:"
+          "text": "Here is a workflow with real work in it: checksum the day's notes, count them, pack a 300 MB asset archive, write a manifest."
         }
       ]
     },
@@ -2623,7 +2623,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Run it, and five seconds in — while "
+          "text": "Run it. Five seconds in, while "
         },
         {
           "k": "code",
@@ -2631,7 +2631,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is grinding through the archive — kill it the rude way. Not "
+          "text": " is grinding through the archive, kill it the rude way. Not "
         },
         {
           "k": "code",
@@ -2661,7 +2661,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "That is the whole console. The two checksums finished in milliseconds; the pack was mid-flight when the process died. No cleanup ran, no state was saved on the way down — the engine never saw the signal coming."
+          "text": "That is the whole console. The two checksums finished in milliseconds; the pack was mid-flight when the process died. No cleanup ran, no state was saved on the way down: the engine never saw the signal coming."
         }
       ]
     },
@@ -2708,7 +2708,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " events survived the kill, because they were written the moment the work settled — not at the end of the run, not on shutdown. The journal does not need the process to die politely."
+          "text": " events survived the kill, because they were written the moment the work settled, not at the end of the run, not on shutdown. The journal does not need the process to die politely."
         }
       ]
     },
@@ -2743,7 +2743,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". The two tasks whose completion the journal recorded are skipped — visibly, by name, as "
+          "text": ". The two tasks whose completion the journal recorded skip visibly, by name, as "
         },
         {
           "k": "code",
@@ -2751,7 +2751,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and only the interrupted pack and everything downstream of it run. "
+          "text": ", and only the interrupted pack and everything downstream of it run. "
         },
         {
           "k": "strong",
@@ -2784,7 +2784,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " matches a journaled success — and its identity is the task as written: the command, the resolved inputs, the shape of the thing you can read in the file. Edit the task and the match breaks. Change one flag — "
+          "text": " matches a journaled success. Its identity is the task as written: the command, the resolved inputs, the shape of the thing you can read in the file. Edit the task and the match breaks. Change one flag, "
         },
         {
           "k": "code",
@@ -2800,7 +2800,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and resume again:"
+          "text": ", and resume again:"
         }
       ]
     },
@@ -2814,7 +2814,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The edited task re-runs; its untouched sibling still skips. You cannot accidentally resume yourself into stale results from a plan you have since changed. And a trace with no resumable successes in it is a notice, never an error — the run simply happens live."
+          "text": "The edited task re-runs; its untouched sibling still skips. You cannot accidentally resume yourself into stale results from a plan you have since changed. And a trace with no resumable successes in it is a notice, never an error: the run simply happens live."
         }
       ]
     },
@@ -2831,7 +2831,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " from this story: a workflow cluster. A database. A coordinator service that has to stay up so your work can survive. Durable execution is usually sold as infrastructure — stand up a server, keep it healthy, and it will remember your workflows for you. Here, durability is a property of two files sitting in your repo: the plan and the journal. "
+          "text": " from this story: a workflow cluster. A database. A coordinator service that has to stay up so your work can survive. Durable execution is usually sold as infrastructure: stand up a server, keep it healthy, and it will remember your workflows for you. Here, durability is a property of two files sitting in your repo: the plan and the journal. "
         },
         {
           "k": "code",
@@ -2839,7 +2839,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " the engine, lose the machine, come back tomorrow on a different one — the pair still knows exactly what is done and what is not."
+          "text": " the engine, lose the machine, come back tomorrow on a different one. The pair still knows exactly what is done and what is not."
         }
       ]
     },
@@ -2866,7 +2866,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " steps through. One artifact, three jobs: evidence, replay, resume. Chats evaporate; files compound — and it turns out the "
+          "text": " steps through. One artifact, three jobs: evidence, replay, resume. Chats evaporate; files compound. It turns out the "
         },
         {
           "k": "em",
@@ -2931,7 +2931,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " scopes a fresh run to one task and its transitive upstream — nothing else exists for this run:"
+          "text": " scopes a fresh run to one task and its transitive upstream. Nothing else exists for this run:"
         }
       ]
     },
@@ -2953,7 +2953,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". The full file declares four; the scoped plan re-derives to the ancestor sub-DAG — "
+          "text": ". The full file declares four; the scoped plan re-derives to the ancestor sub-DAG: "
         },
         {
           "k": "code",
@@ -2993,7 +2993,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " are skipped — they may read tasks that are not part of this run, and the engine will not fabricate them."
+          "text": " are skipped, since they may read tasks that are not part of this run and the engine will not fabricate them."
         }
       ]
     },
@@ -3006,7 +3006,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " Resume normally skips finished work by identity — "
+          "text": " Resume normally skips finished work by identity, "
         },
         {
           "k": "link",
@@ -3053,7 +3053,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", by name, visibly), the forced task and everything that depends on it runs live. The independent branch stays cached too — "
+          "text": ", by name, visibly), the forced task and everything that depends on it runs live. The independent branch stays cached too: "
         },
         {
           "k": "code",
@@ -3086,7 +3086,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". That is not ceremony — it is the same pairing law the "
+          "text": ". That is not ceremony. It is the same pairing law the "
         },
         {
           "k": "link",
@@ -3095,7 +3095,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " rides. A re-roll is always "
+          "text": " rides: a re-roll is always "
         },
         {
           "k": "em",
@@ -3103,7 +3103,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": "; there is no such thing as \"re-run from here\" of nothing in particular. The trace names what \"here\" means."
+          "text": ", and there is no such thing as \"re-run from here\" of nothing in particular. The trace names what \"here\" means."
         }
       ]
     },
@@ -3112,7 +3112,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "And the two levers are deliberately disjoint — the CLI refuses "
+          "text": "And the two levers are deliberately disjoint: the CLI refuses "
         },
         {
           "k": "code",
@@ -3185,7 +3185,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " the re-run logic — which is the quiet payoff of intent as code: you stop maintaining two descriptions of the same pipeline, one for the tool and one for the emergencies."
+          "text": " the re-run logic. That is the quiet payoff of intent as code: you stop maintaining two descriptions of the same pipeline, one for the tool and one for the emergencies."
         }
       ]
     }
@@ -3217,11 +3217,11 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The usual answer is a prompt-management platform — another dashboard, another account, another place your logic lives that is not your repo. Nika's answer is shorter: "
+          "text": "The usual answer is a prompt-management platform: another dashboard, another account, another place your logic lives that is not your repo. Nika's answer is shorter. "
         },
         {
           "k": "strong",
-          "text": "the prompt is a line in the workflow file."
+          "text": "The prompt is a line in the workflow file."
         }
       ]
     },
@@ -3250,7 +3250,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " We ran the file once, then tightened the prompt — the kind of change teams make every week and then lose track of forever:"
+          "text": " We ran the file once, then tightened the prompt, the kind of change teams make every week and then lose track of forever:"
         }
       ]
     },
@@ -3299,7 +3299,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "It keeps going like that — ceremony, section headers, and a helpful placeholder for a project name we never gave it. After the one-line diff:"
+          "text": "It keeps going like that: ceremony, section headers, and a helpful placeholder for a project name we never gave it. After the one-line diff:"
         }
       ]
     },
@@ -3313,7 +3313,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Still a 3B model — it kept its little preamble. But the three bullets are there, plain, and they will be there on every future run, because the constraint lives in the file, not in a chat's short-term memory."
+          "text": "Still a 3B model: it kept its little preamble. But the three bullets are there, plain, and they will be there on every future run, because the constraint lives in the file, not in a chat's short-term memory."
         }
       ]
     },
@@ -3340,7 +3340,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The old run stays exactly as it happened, replayable after the edit — "
+          "text": "The old run stays exactly as it happened, replayable after the edit: "
         },
         {
           "k": "code",
@@ -3348,7 +3348,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " re-renders the recorded events, it never re-executes. So \"which prompt produced this output?\" has a literal answer: the one recorded with the run."
+          "text": " re-renders the recorded events, it never re-executes. So \"which prompt produced this output?\" has a literal answer, the one recorded with the run."
         }
       ]
     },
@@ -3387,7 +3387,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". Not \"the model is being weird today\": a classified, named fact that the divergence came from your edit — and you can watch it propagate, the downstream "
+          "text": ". Not \"the model is being weird today\": a classified, named fact that the divergence came from your edit. You can watch it propagate too, the downstream "
         },
         {
           "k": "code",
@@ -3479,7 +3479,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " the next tool call. So text the model read can become an action the model takes — and a note you never wrote can move your keys."
+          "text": " the next tool call. So text the model read can become an action the model takes, and a note you never wrote can move your keys."
         }
       ]
     },
@@ -3597,7 +3597,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The injection landed in the model's context and went nowhere. Not because a 3B model was clever enough to resist it (though this one noticed) — but because even if it had fully believed the attacker, its "
+          "text": "The injection landed in the model's context and went nowhere. Not because a 3B model was clever enough to resist it (though this one noticed), but because even if it had fully believed the attacker, its "
         },
         {
           "k": "em",
@@ -3626,7 +3626,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " What if the escalation is not something the model is tricked into — what if the author's own plan reaches too far? A leash you can read is only a leash if the boundary itself holds. So we wrote the workflow the attacker "
+          "text": " What if the escalation is not something the model is tricked into? What if the author's own plan reaches too far? A leash you can read is only a leash if the boundary itself holds. So we wrote the workflow the attacker "
         },
         {
           "k": "em",
@@ -3672,7 +3672,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The static check names the exact task, the exact category, the exact path, and the exact fix — and exits non-zero, so CI gates on it. And "
+          "text": "The static check names the exact task, the exact category, the exact path, and the exact fix. It exits non-zero, so CI gates on it. And "
         },
         {
           "k": "code",
@@ -3713,7 +3713,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " means a hostile input can never become a new action — injection has nowhere to go, because the model's output only flows into slots the author already wrote. The "
+          "text": " means a hostile input can never become a new action: injection has nowhere to go, because the model's output only flows into slots the author already wrote. The "
         },
         {
           "k": "strong",
@@ -3721,7 +3721,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " means the plan the author wrote can never exceed what a reviewer approved — checked before a token, refused before an effect, with a typed error you can gate on."
+          "text": " means the plan the author wrote can never exceed what a reviewer approved: checked before a token, refused before an effect, with a typed error you can gate on."
         }
       ]
     },
@@ -3730,7 +3730,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Neither lock is a model watching a model. They are structure: the shape of the workflow, verified. And that is the honest answer to \"how do I prevent prompt injection\" — not a smarter filter, but a system where the injected instruction was never able to become an action in the first place."
+          "text": "Neither lock is a model watching a model. They are structure: the shape of the workflow, verified. And that is the honest answer to \"how do I prevent prompt injection\". Not a smarter filter, but a system where the injected instruction was never able to become an action in the first place."
         }
       ]
     },
@@ -3755,7 +3755,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": "), on a local model, for $0.00 — the hostile note included."
+          "text": "), on a local model, for $0.00, the hostile note included."
         }
       ]
     }
@@ -3779,7 +3779,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Logs get edited. Files get truncated. A colleague \"cleans up\" a trace before attaching it to the incident report. Most systems answer the auditor with process — "
+          "text": "Logs get edited. Files get truncated. A colleague \"cleans up\" a trace before attaching it to the incident report. Most systems answer the auditor with process: "
         },
         {
           "k": "em",
@@ -3808,7 +3808,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " Each journal line records the SHA-256 of the previous line's exact bytes (the first line chains from a fixed genesis). Change one byte anywhere — an output, a timestamp, a status — and every line after it stops adding up. The run's closing line prints the head:"
+          "text": " Each journal line records the SHA-256 of the previous line's exact bytes (the first line chains from a fixed genesis). Change one byte anywhere (an output, a timestamp, a status) and every line after it stops adding up. The run's closing line prints the head:"
         }
       ]
     },
@@ -3840,7 +3840,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "We flipped one byte in a recorded output — "
+          "text": "We flipped one byte in a recorded output ("
         },
         {
           "k": "code",
@@ -3856,7 +3856,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and asked again:"
+          "text": ") and asked again:"
         }
       ]
     },
@@ -3878,7 +3878,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". A hash chain cannot stop someone from rewriting the whole file, chain included — that would take signatures and a trusted clock, and pretending otherwise would be a lie. What it "
+          "text": ". A hash chain cannot stop someone from rewriting the whole file, chain included. That would take signatures and a trusted clock, and pretending otherwise would be a lie. What it "
         },
         {
           "k": "em",
@@ -3907,7 +3907,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " It re-runs nothing by itself — you hand it the recorded journal and a fresh one, and it classifies every task:"
+          "text": " It re-runs nothing by itself. You hand it the recorded journal and a fresh one, and it classifies every task:"
         }
       ]
     },
@@ -3959,7 +3959,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " (same definition, same inputs, different output — the model changed its mind) · "
+          "text": " (same definition, same inputs, different output: the model changed its mind) · "
         },
         {
           "k": "strong",
@@ -4033,7 +4033,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " of your workflow — so the drift warning (\"workflow changed since this run\") can finally tell a real edit from your editor re-encoding line endings; a CRLF↔LF save no longer cries wolf. And "
+          "text": " of your workflow, so the drift warning (\"workflow changed since this run\") can finally tell a real edit from your editor re-encoding line endings; a CRLF↔LF save no longer cries wolf. And "
         },
         {
           "k": "code",
@@ -4049,7 +4049,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " from a 602-rule catalog refreshed from models.dev — the VS Code extension's preflight shows "
+          "text": " from a 602-rule catalog refreshed from models.dev: the VS Code extension's preflight shows "
         },
         {
           "k": "code",
@@ -4065,7 +4065,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". Priced, then run — never the other way around."
+          "text": ". Priced, then run. Never the other way around."
         }
       ]
     },
@@ -4082,7 +4082,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " tarball — SHA-verified, same binary "
+          "text": " tarball: SHA-verified, the same binary "
         },
         {
           "k": "code",
@@ -4109,7 +4109,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". Set a breakpoint, restart the program, hope the bug happens again. If the program spends money, calls an API, or asks a model for tokens — every debugging session spends again, and a flaky failure may never reproduce at all."
+          "text": ". Set a breakpoint, restart the program, hope the bug happens again. If the program spends money, calls an API, or asks a model for tokens, every debugging session spends again, and a flaky failure may never reproduce at all."
         }
       ]
     },
@@ -4135,7 +4135,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Every run writes a journal — an append-only record of every task start, settle, output and cost, in "
+          "text": "Every run writes a journal: an append-only record of every task start, settle, output and cost, in "
         },
         {
           "k": "code",
@@ -4168,7 +4168,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "strong",
-          "text": "nika dap — the engine is its own debug adapter."
+          "text": "nika dap: the engine is its own debug adapter."
         },
         {
           "k": "text",
@@ -4188,7 +4188,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". The engine speaks the Debug Adapter Protocol over stdio — no extension middleware, no adapter process to install. The debugger attaches to the "
+          "text": ". The engine speaks the Debug Adapter Protocol over stdio: no extension middleware, no adapter process to install. The debugger attaches to the "
         },
         {
           "k": "em",
@@ -4229,7 +4229,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". It is not a trick — stepping back through a re-running debugger means re-executing everything before that point, which is why so few debuggers dare. Stepping back through a journal is just reading the previous line. Replay never re-executes, so time travel is free — no side effects fire twice, no tokens are spent, and the run you debug is exactly the run that happened, deterministically, every time."
+          "text": ". It is not a trick: stepping back through a re-running debugger means re-executing everything before that point, which is why so few debuggers dare. Stepping back through a journal is just reading the previous line. Replay never re-executes, so time travel is free: no side effects fire twice, no tokens are spent, and the run you debug is exactly the run that happened, deterministically, every time."
         }
       ]
     },
@@ -4263,7 +4263,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — a local OTLP/JSON file, no collector, no vendor. Drag it into Jaeger and the run appears as a trace: one root span for the workflow, one child span per task, correctly parented, with the run's identity riding standard "
+          "text": ": a local OTLP/JSON file, no collector, no vendor. Drag it into Jaeger and the run appears as a trace: one root span for the workflow, one child span per task, correctly parented, with the run's identity riding standard "
         },
         {
           "k": "code",
@@ -4280,7 +4280,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "We proved the whole wire on the shipping binary before writing this post — the raw DAP protocol against "
+          "text": "We proved the whole wire on the shipping binary before writing this post, the raw DAP protocol against "
         },
         {
           "k": "code",
@@ -4344,7 +4344,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "We found out this week, the honest way — by auditing our own client against our own server."
+          "text": "We found out this week, the honest way: by auditing our own client against our own server."
         }
       ]
     },
@@ -4357,7 +4357,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " The engine's check report carries finding families: secret leaks, permits escapes, unknown tools, schema defects. The extension folded seven of them. But the engine had grown three more — a required tool arg that's missing, an arg key that's a typo ("
+          "text": " The engine's check report carries finding families: secret leaks, permits escapes, unknown tools, schema defects. The extension folded seven of them. But the engine had grown three more: a required tool arg that's missing, an arg key that's a typo ("
         },
         {
           "k": "code",
@@ -4429,7 +4429,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — while the CLI, on the same file, refused it."
+          "text": " while the CLI, on the same file, refused it."
         }
       ]
     },
@@ -4446,7 +4446,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " as its oracle — draft, check, repair, until clean. Its definition of "
+          "text": " as its oracle: draft, check, repair, until clean. Its definition of "
         },
         {
           "k": "em",
@@ -4467,7 +4467,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " The three families now fold into every surface — with the engine's own "
+          "text": " The three families now fold into every surface, with the engine's own "
         },
         {
           "k": "code",
@@ -4505,7 +4505,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": "; the exit code guarantees the verdict stays honest even when the engine grows a family the client hasn't learned yet. A future finding class can make the editor's count wrong — it can no longer make the editor's "
+          "text": "; the exit code guarantees the verdict stays honest even when the engine grows a family the client hasn't learned yet. A future finding class can make the editor's count wrong. It can no longer make the editor's "
         },
         {
           "k": "strong",
@@ -4526,7 +4526,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " Every keystroke-fresh check used to write your dirty buffer to a temp file, spawn the binary against it, and unlink. The engine now reads the Unix dash — "
+          "text": " Every keystroke-fresh check used to write your dirty buffer to a temp file, spawn the binary against it, and unlink. The engine now reads the Unix dash ("
         },
         {
           "k": "code",
@@ -4534,7 +4534,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — so unsaved work pipes straight to stdin and never touches the disk. And the extension doesn't gate that on a version number: it reads the binary's own "
+          "text": "), so unsaved work pipes straight to stdin and never touches the disk. And the extension doesn't gate that on a version number: it reads the binary's own "
         },
         {
           "k": "code",
@@ -4563,7 +4563,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "None of this is editor-specific. It's the discipline for any client of any audited system: mirror the server's definition of clean, carry its evidence (codes, spans, fixes) instead of paraphrasing it, and when the server gives you a verdict bit — trust it over your own bookkeeping. The margin paint is nice. The exit code is the truth."
+          "text": "None of this is editor-specific. It's the discipline for any client of any audited system: mirror the server's definition of clean, carry its evidence (codes, spans, fixes) instead of paraphrasing it, and when the server gives you a verdict bit, trust it over your own bookkeeping. The margin paint is nice. The exit code is the truth."
         }
       ]
     }
@@ -4582,7 +4582,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " in the bytes they return — a cryptographically signed manifest saying "
+          "text": " in the bytes they return: a cryptographically signed manifest saying "
         },
         {
           "k": "em",
@@ -4639,7 +4639,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " tool that writes into the file afterward — a metadata tagger, an optimizer, a workflow engine adding its own note — doesn't strip the credentials. It does something worse. The manifest stays present and parseable, and validation now fails. "
+          "text": " tool that writes into the file afterward (a metadata tagger, an optimizer, a workflow engine adding its own note) doesn't strip the credentials. It does something worse. The manifest stays present and parseable, and validation now fails. "
         },
         {
           "k": "em",
@@ -4664,7 +4664,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " tEXt chunk — tool, engine version, provider, prompt, seed — so provenance survives a "
+          "text": " tEXt chunk (tool, engine version, provider, prompt, seed) so provenance survives a "
         },
         {
           "k": "code",
@@ -4708,7 +4708,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The engine now scans every returned payload for credential carriage before any in-file write — a "
+          "text": "The engine now scans every returned payload for credential carriage before any in-file write: a "
         },
         {
           "k": "code",
@@ -4756,7 +4756,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " chunk is not embedded — their signed manifest outranks our informal one — and the run says so out loud:"
+          "text": " chunk is not embedded (their signed manifest outranks our informal one) and the run says so out loud:"
         }
       ]
     },
@@ -4800,7 +4800,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — we found the carriage, we did not cryptographically validate the chain. An engine that hasn't verified must never say \"verified\"; a recent formal analysis of C2PA (arXiv:2604.24890) is blunt about how much weight the ecosystem's claims can bear, and we'd rather under-claim. And "
+          "text": ": we found the carriage, we did not cryptographically validate the chain. An engine that hasn't verified must never say \"verified\"; a recent formal analysis of C2PA (arXiv:2604.24890) is blunt about how much weight the ecosystem's claims can bear, and we'd rather under-claim. And "
         },
         {
           "k": "code",
@@ -4816,7 +4816,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", not a detection: SynthID's image and audio detectors are closed — only Google can check. Anyone who tells you their pipeline \"detects SynthID\" is selling something."
+          "text": ", not a detection: SynthID's image and audio detectors are closed. Only Google can check. Anyone who tells you their pipeline \"detects SynthID\" is selling something."
         }
       ]
     },
@@ -4833,7 +4833,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — four weeks from this post. Providers of generative systems must ensure outputs are \"marked in a machine-readable format and detectable as artificially generated,\" and the marking must be "
+          "text": ", four weeks from this post. Providers of generative systems must ensure outputs are \"marked in a machine-readable format and detectable as artificially generated,\" and the marking must be "
         },
         {
           "k": "em",
@@ -4850,7 +4850,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "No other workflow engine looks at these octets. n8n saves the binary; Make hands the file down the pipe; the agent frameworks paste result URLs into context. None of them will tell you the asset was signed, none of them will notice when a step breaks the signature. Nika's whole media design — assets on disk, sha256-named, manifest beside them, bytes never in workflow state — exists so that questions like "
+          "text": "No other workflow engine looks at these octets. n8n saves the binary; Make hands the file down the pipe; the agent frameworks paste result URLs into context. None of them will tell you the asset was signed, none of them will notice when a step breaks the signature. Nika's whole media design (assets on disk, sha256-named, manifest beside them, bytes never in workflow state) exists so that questions like "
         },
         {
           "k": "em",
@@ -4883,7 +4883,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " (a reserved crate, pure-Rust crypto, bundled trust lists, no network — the sovereignty rules apply to verification too) → "
+          "text": " (a reserved crate, pure-Rust crypto, bundled trust lists, no network: the sovereignty rules apply to verification too) → "
         },
         {
           "k": "strong",
@@ -4919,7 +4919,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " LLM runtimes, and the image path had zero. Sovereignty isn't a footnote in our doctrine — local-first is the presentation order, the default example, the first provider in every table. So we went looking for the local image wire."
+          "text": " LLM runtimes, and the image path had zero. Sovereignty isn't a footnote in our doctrine: local-first is the presentation order, the default example, the first provider in every table. So we went looking for the local image wire."
         }
       ]
     },
@@ -4973,7 +4973,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " returning raw audio bytes is spoken by LocalAI, Kokoro-FastAPI, Speaches and openedai-speech. And for video — coming later, but the research is done — vLLM-Omni mirrors the Sora job lifecycle byte for byte, down to the "
+          "text": " returning raw audio bytes is spoken by LocalAI, Kokoro-FastAPI, Speaches and openedai-speech. And for video (coming later, but the research is done), vLLM-Omni mirrors the Sora job lifecycle byte for byte, down to the "
         },
         {
           "k": "code",
@@ -5046,7 +5046,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — safe only because endpoints are engine-fixed constants. A configurable endpoint could have broken that reasoning, so it doesn't enter through the workflow: "
+          "text": ", which is safe only because endpoints are engine-fixed constants. A configurable endpoint could have broken that reasoning, so it doesn't enter through the workflow: "
         },
         {
           "k": "code",
@@ -5062,7 +5062,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " key reaches the URL. A workflow cannot steer the engine's sockets, period — we had an adversarial reviewer try."
+          "text": " key reaches the URL. A workflow cannot steer the engine's sockets, period. We had an adversarial reviewer try."
         }
       ]
     },
@@ -5083,7 +5083,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — it answers with a link to the render. Nika forces "
+          "text": ": it answers with a link to the render. Nika forces "
         },
         {
           "k": "code",
@@ -5112,7 +5112,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " than api.openai.com by definition — that's the point of running your own. So the trust seams assume it: a verbose server that reflects your "
+          "text": " than api.openai.com by definition. That's the point of running your own. So the trust seams assume it: a verbose server that reflects your "
         },
         {
           "k": "code",
@@ -5128,7 +5128,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — "
+          "text": ", "
         },
         {
           "k": "em",
@@ -5136,7 +5136,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " server rendered this asset — because once the endpoint is configurable, that fact is load-bearing."
+          "text": " server rendered this asset, because once the endpoint is configurable, that fact is load-bearing."
         }
       ]
     },
@@ -5202,7 +5202,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The deeper reason this matters is the one in our alignment doctrine. Cloud media APIs are wonderful and we wire them happily — with attribution, exact cost metering, and their signatures preserved. But a workflow you can only run against someone else's datacenter is a workflow someone else can turn off, reprice, or subpoena. The one-wire accident means the sovereign path costs us one adapter — and costs you one environment variable."
+          "text": "The deeper reason this matters is the one in our alignment doctrine. Cloud media APIs are wonderful and we wire them happily, with attribution, exact cost metering, and their signatures preserved. But a workflow you can only run against someone else's datacenter is a workflow someone else can turn off, reprice, or subpoena. The one-wire accident means the sovereign path costs us one adapter. It costs you one environment variable."
         }
       ]
     },
@@ -5231,7 +5231,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Nika's stdlib grew two Media builtins this week — "
+          "text": "Nika's stdlib grew two Media builtins this week, "
         },
         {
           "k": "code",
@@ -5247,7 +5247,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and the point is not that they exist. It's that they had to pass the same bar as "
+          "text": ", and the point is not that they exist. It's that they had to pass the same bar as "
         },
         {
           "k": "code",
@@ -5290,7 +5290,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " The render lands on disk, sha256-named, with a provenance manifest beside it — resolved request, dimensions, hashes, timing, which server actually answered ("
+          "text": " The render lands on disk, sha256-named, with a provenance manifest beside it: resolved request, dimensions, hashes, timing, which server actually answered ("
         },
         {
           "k": "code",
@@ -5336,7 +5336,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — PNG header, JPEG SOF, WAV "
+          "text": ": PNG header, JPEG SOF, WAV "
         },
         {
           "k": "code",
@@ -5344,7 +5344,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", MP3 frame sync — and the saved extension follows the bytes, not the provider's label. A WAV's duration is exact header math; an MP3's duration is honestly "
+          "text": ", MP3 frame sync. The saved extension follows the bytes, not the provider's label. A WAV's duration is exact header math; an MP3's duration is honestly "
         },
         {
           "k": "code",
@@ -5381,7 +5381,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". Every lossy mapping is a stable, visible warning — "
+          "text": ". Every lossy mapping is a stable, visible warning: "
         },
         {
           "k": "code",
@@ -5413,7 +5413,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — and the spec says silent degradation is non-conformant. The one place we invert the pattern: an argument whose silent drop would make the "
+          "text": ". The spec says silent degradation is non-conformant. The one place we invert the pattern: an argument whose silent drop would make the "
         },
         {
           "k": "em",
@@ -5456,7 +5456,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — never an estimate dressed as truth. Any tool that reports a top-level "
+          "text": ", never an estimate dressed as truth. Any tool that reports a top-level "
         },
         {
           "k": "code",
@@ -5493,7 +5493,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " renders real, decodable, deterministic files — an actual PNG, an actual playable WAV — with zero network and zero keys. Your media pipeline runs in CI as-is; production is a one-line flip."
+          "text": " renders real, decodable, deterministic files (an actual PNG, an actual playable WAV) with zero network and zero keys. Your media pipeline runs in CI as-is; production is a one-line flip."
         }
       ]
     },
@@ -5510,7 +5510,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " hardware first. Both builtins speak one OpenAI-compatible wire that the entire self-hosted landscape converged on — LocalAI, Ollama, stable-diffusion.cpp, SGLang, vLLM-Omni for images; LocalAI, Kokoro-FastAPI, Speaches for speech. The base URL is engine config, never workflow data, so the security model holds. That story deserves its own post: "
+          "text": " hardware first. Both builtins speak one OpenAI-compatible wire that the entire self-hosted landscape converged on: LocalAI, Ollama, stable-diffusion.cpp, SGLang, vLLM-Omni for images; LocalAI, Kokoro-FastAPI, Speaches for speech. The base URL is engine config, never workflow data, so the security model holds. That story deserves its own post: "
         },
         {
           "k": "link",
@@ -5536,7 +5536,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " from a script another model wrote inside the same workflow, fan-outs racing into one directory without a collision, and a local compat server asserting — server-side — that the engine sent exactly the wire it promised."
+          "text": " from a script another model wrote inside the same workflow, fan-outs racing into one directory without a collision, and a local compat server asserting, server-side, that the engine sent exactly the wire it promised."
         }
       ]
     },
@@ -6302,7 +6302,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — a ceiling on one generation. The audit even notices "
+          "text": ": a ceiling on one generation. The audit even notices "
         },
         {
           "k": "em",
@@ -6331,7 +6331,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " Its model is the operating system's: a program, arguments, an exit code. The honest form is the argv array — "
+          "text": " Its model is the operating system's: a program, arguments, an exit code. The honest form is the argv array "
         },
         {
           "k": "code",
@@ -6339,7 +6339,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — the program and its arguments as data, not a shell string to quote-escape. It costs $0.00 on the COST line, and its permit is the "
+          "text": ": the program and its arguments as data, not a shell string to quote-escape. It costs $0.00 on the COST line, and its permit is the "
         },
         {
           "k": "code",
@@ -6437,7 +6437,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " (how long it may drive). And its budget knob is different from infer's in exactly the way the semantics differ — "
+          "text": " (how long it may drive). And its budget knob is different from infer's in exactly the way the semantics differ: "
         },
         {
           "k": "code",
@@ -6476,7 +6476,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Programs for exec. Tools for invoke and agent. Files for whatever touches disk. Each verb's blast radius has its own shape, which is precisely why the language needs them to be distinct words — a permission system can only be this legible when the execution models it guards are this separate."
+          "text": "Programs for exec. Tools for invoke and agent. Files for whatever touches disk. Each verb's blast radius has its own shape, which is precisely why the language needs them to be distinct words. A permission system can only be this legible when the execution models it guards are this separate."
         }
       ]
     },

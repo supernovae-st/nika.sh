@@ -416,7 +416,7 @@ export function Component() {
             <h2 className="lrn-full-title">Every idea above, in one file</h2>
             <p className="lrn-full-body">
               The nine fragments compose into the workflow this page has been teaching. This
-              exact text passes the engine&apos;s audit — the verdict below is{' '}
+              exact text passes the engine&apos;s audit; the verdict below is{' '}
               <code className="mono">nika check</code>&apos;s real answer, and its hints are
               your next three lessons.
             </p>
@@ -433,7 +433,7 @@ export function Component() {
             <h2 className="lrn-cta-title">That&apos;s the whole language.</h2>
             <p className="lrn-cta-body">
               Nine ideas, four verbs, one file. Install it, write one, run it, or open the
-              playground and check your file as you type — or send us the task you repeat and
+              playground and check your file as you type. Or send us the task you repeat and
               get it back as a file.
             </p>
             <div style={{ marginTop: 18 }}>

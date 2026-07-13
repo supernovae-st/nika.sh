@@ -45,7 +45,7 @@ function ToolRow({ entry }: { entry: ToolEntry }) {
         {required.length > 0 && (
           <span
             className="tp-required"
-            title={`required: ${required.map((a) => a.name).join(' · ')} — a miss is a nika check finding, not a runtime surprise`}
+            title={`required: ${required.map((a) => a.name).join(' · ')}. A miss is a nika check finding, not a runtime surprise`}
           >
             {required.length} required
           </span>
@@ -93,7 +93,7 @@ export function Component() {
   )
 
   const title = 'Standard library · Nika'
-  const description = `Every nika: builtin the engine ships — ${CANON.builtins} tools across ${TOOL_CATEGORIES.length} families, one closed namespace, no plugin store to audit. Machine twin: /tools/catalog.json.`
+  const description = `Every nika: builtin the engine ships: ${CANON.builtins} tools across ${TOOL_CATEGORIES.length} families, one closed namespace, no plugin store to audit. Machine twin: /tools/catalog.json.`
 
   useHead({
     title,
@@ -125,10 +125,10 @@ export function Component() {
             Tools.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Everything callable is a tool under <code>invoke:</code> — and the engine ships its own.
+            Everything callable is a tool under <code>invoke:</code>, and the engine ships its own.
             One closed <code>nika:</code> namespace, <b>no plugin store to audit</b>: these tools
             version with the spec and pass the same review as your file. Every name opens its own
-            room — the contract, the tool in a real file, the skeletons that ship it. Machines read
+            room: the contract, the tool in a real file, the skeletons that ship it. Machines read
             the same vocabulary at <a href="/tools/catalog.json">/tools/catalog.json</a>; the
             contract lives in{' '}
             <a href={`${SPEC}/blob/main/spec/06-stdlib-contract.md`}>spec 06 · stdlib</a>.
@@ -150,7 +150,7 @@ export function Component() {
           <div data-rise style={{ ['--rise-delay' as string]: '170ms' }}>
             <DrumEgg mode="register" />
             <p className="tdrum-caption">
-              the pin drum · {TOOLS.length} tools · {groups.length} arcs · pins are arguments —
+              the pin drum · {TOOLS.length} tools · {groups.length} arcs · pins are arguments;
               bright = required · hover a row to turn it
             </p>
           </div>
@@ -174,7 +174,7 @@ export function Component() {
           ))}
 
           <p className="tp-foot" data-rise>
-            A missing required arg is a <code>nika check</code> finding <b>before anything runs</b> —
+            A missing required arg is a <code>nika check</code> finding <b>before anything runs</b>;
             the engine teaches its own vocabulary. Try one in the{' '}
             <Link to="/play">playground</Link>, or <Link to="/install">install</Link> and ask the
             binary itself: <code>nika catalog --tools</code>. <Link to="/spec">Read the spec →</Link>

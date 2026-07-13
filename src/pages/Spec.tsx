@@ -1113,7 +1113,7 @@ export function Component() {
                   links OUTSIDE the aria-hidden stage (the display gauge is
                   its pointer-inert twin at the poster/finale) — click a
                   tick, sail to that station's section. ≥24px hits. */}
-              <nav className="spec-transport" aria-label="Ship stations — jump to a section">
+              <nav className="spec-transport" aria-label="Ship stations: jump to a section">
                 {SPEC_SECTIONS.map((s) => (
                   <a
                     key={s.fig}

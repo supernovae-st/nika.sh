@@ -37,15 +37,15 @@ const KIND_ORDER = ['local', 'cloud', 'test'] as const
 const KIND_GLOSS: Record<(typeof KIND_ORDER)[number], { title: string; gloss: string }> = {
   local: {
     title: 'local',
-    gloss: 'the sovereign default — your hardware, no key, nothing leaves the machine',
+    gloss: 'the sovereign default: your hardware, no key, nothing leaves the machine',
   },
   cloud: {
     title: 'cloud',
-    gloss: 'bring your own key — it rides an env var, never a config file, and stays yours',
+    gloss: 'bring your own key; it rides an env var, never a config file, and stays yours',
   },
   test: {
     title: 'test',
-    gloss: 'the harness — mock-first is how workflows are written before they cost anything',
+    gloss: 'the harness: mock-first is how workflows are written before they cost anything',
   },
 }
 
@@ -65,11 +65,11 @@ function ProviderRow({ entry, active }: { entry: ProviderEntry; active: boolean 
         </a>
         <span className="pv-name">{entry.name}</span>
         {entry.env_var ? (
-          <code className="pv-env" title="the key rides this env var — never a config file">
+          <code className="pv-env" title="the key rides this env var, never a config file">
             {entry.env_var}
           </code>
         ) : (
-          <span className="pv-nokey" title="no key — nothing to leak">
+          <span className="pv-nokey" title="no key, nothing to leak">
             no key
           </span>
         )}
@@ -143,8 +143,8 @@ export function Component() {
 
   const title = hit ? `${hit.name} · Nika providers` : 'Providers · Nika'
   const description = hit
-    ? `Run Nika workflows on ${hit.name} (provider: ${hit.id}) — ${hit.description} ${hit.env_var ? `Key: ${hit.env_var}.` : 'No key needed.'}`
-    : `The ${CANON.providers} providers Nika names — ${CANON.providersLocal} local (the sovereign default), ${CANON.providersCloud} cloud (bring your own key), one test harness. Machine twin: /providers/catalog.json.`
+    ? `Run Nika workflows on ${hit.name} (provider: ${hit.id}). ${hit.description} ${hit.env_var ? `Key: ${hit.env_var}.` : 'No key needed.'}`
+    : `The ${CANON.providers} providers Nika names: ${CANON.providersLocal} local (the sovereign default), ${CANON.providersCloud} cloud (bring your own key), one test harness. Machine twin: /providers/catalog.json.`
 
   useHead({
     title,
@@ -180,7 +180,7 @@ export function Component() {
             {hit ? hit.name : 'Providers.'}
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            One <code>provider:</code> line moves a workflow between models — local first, keys via
+            One <code>provider:</code> line moves a workflow between models: local first, keys via
             env vars that stay yours, <b>no inference lock-in</b>. The same file runs on a laptop
             Ollama and a frontier API; swapping is a one-word diff. Machines read the catalog at{' '}
             <a href="/providers/catalog.json">/providers/catalog.json</a>; the binary answers{' '}
@@ -192,7 +192,7 @@ export function Component() {
               <p className="pv-miss-id">provider: {id}</p>
               <p>
                 is not a spec-named provider. The engine also embeds a longer OpenAI-compatible
-                tail — ask the binary (<code>nika catalog</code>) or check{' '}
+                tail; ask the binary (<code>nika catalog</code>) or check{' '}
                 <a href="/providers/catalog.json">the machine catalog</a>.
               </p>
             </div>
@@ -228,7 +228,7 @@ export function Component() {
 
           <p className="pv-foot" data-rise>
             Beyond the named set, the engine embeds {EMBEDDED_EXTRA} more OpenAI-compatible
-            endpoints — <code>nika catalog</code> lists every one. Models are aliases in the file
+            endpoints; <code>nika catalog</code> lists every one. Models are aliases in the file
             (<code>model: sonnet</code>) pinned to exact upstream ids by the engine, so a run is
             reproducible even after a vendor rotates names. Try one in the{' '}
             <Link to="/play">playground</Link>, or <Link to="/install">install</Link> and go local
