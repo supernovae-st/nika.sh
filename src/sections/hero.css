@@ -470,12 +470,13 @@
    the Bayer fade tile (the ONE sanctioned dither-fade device) — the file
    visibly continues; scrolling is the invitation. */
 .v4hero-code .cf-pre {
-  /* whole lines only: 16px top pad + 20 × 23px line boxes + 18px bottom pad —
+  /* whole lines only: 16px top pad + 26 × 23px line boxes + 18px bottom pad —
      a frame that cuts a line in half reads as broken (coordinator punch #1).
-     The cap is border-box (Tailwind preflight), so BOTH paddings must be in
-     the calc: without the +18px the content box was 442px = 19.2 line boxes
-     and the 20th line peeked as a 5px sliver under the fade (wave-I sweep). */
-  max-height: calc(16px + 20 * 23px + 18px);
+     26 (was 20 · operator 2026-07-13): the taller strip shows the whole
+     daily-brief story to the tasks' heart before the first internal scroll.
+     The cap is border-box (Tailwind preflight), so BOTH paddings ride the
+     calc (the off-by-padding sliver, wave-I sweep). */
+  max-height: calc(16px + 26 * 23px + 18px);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -631,183 +632,10 @@
    The trigger sits at the bar's right end; the popover drops BELOW the
    titlebar, over the code (the chrome stays overflow-visible for exactly
    this — codefile.css wave P). */
-.v4lib {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-}
-.v4lib-trigger {
-  appearance: none;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  border: none;
-  border-left: 1px solid var(--seam-hairline-soft, rgb(140 170 255 / 0.08));
-  background: transparent;
-  padding: 0 0.815em;
-  font-family: var(--mono);
-  font-size: 0.815em;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-  color: rgb(230 235 245 / 0.45);
-  cursor: pointer;
-  transition:
-    color var(--dur-ui) var(--ease-ui),
-    background-color var(--dur-ui) var(--ease-ui);
-}
-.v4lib-trigger:hover,
-.v4lib-trigger[aria-expanded='true'] {
-  color: var(--v4-text);
-}
-.v4lib-trigger:focus-visible {
-  outline: 2px solid var(--v4-focus-ring);
-  outline-offset: -3px;
-}
-.v4lib-trigger-glyph {
-  color: var(--v4-text-faint);
-  letter-spacing: 0.08em;
-}
-/* a library pick is active → the trigger IS the selected tab (raised + seam) */
-.v4lib-trigger[data-active] {
-  color: var(--v4-text);
-  background: rgb(255 255 255 / 0.055);
-}
-.v4lib-trigger[data-active]::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 2px;
-  background: var(--v4-accent-strong);
-}
 
-/* the popover · a raised quick-open sheet — drops DOWN from the titlebar over
-   the code, anchored to the bar's right end. */
-.v4lib-panel {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  left: auto;
-  width: min(440px, calc(100vw - 40px));
-  z-index: 40;
-  border: 1px solid var(--v4-line-strong);
-  border-radius: var(--v4-radius);
-  background: color-mix(in srgb, var(--v4-bg-raised) 97%, white 3%);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.05),
-    0 1px 0 rgb(0 0 0 / 0.5),
-    0 28px 70px -24px rgb(0 0 0 / 0.85);
-  padding: 6px;
-  font-size: 12px; /* the popover keeps the UI scale — never the chrome's em */
-}
-.v4lib-head,
-.v4lib-legend {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--v4-text-faint);
-  padding: 6px 10px 4px;
-  margin: 0;
-}
-.v4lib-legend {
-  border-top: 1px solid var(--v4-line);
-  padding-top: 8px;
-  margin-top: 4px;
-}
-.v4lib-legend code {
-  font-size: 10px;
-  color: var(--v4-text-dim);
-}
-.v4lib-list {
-  /* 7.5 × the 52px row box — the half-cut row IS the scroll invitation
-     (the same whole-lines honesty law as the editor cap, inverted) */
-  max-height: min(46vh, 390px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-}
-.v4lib-row {
-  appearance: none;
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: none;
-  background: transparent;
-  border-radius: var(--v4-radius-sm);
-  padding: 7px 10px 8px;
-  cursor: pointer;
-  transition: background-color var(--dur-ui) var(--ease-ui);
-}
-.v4lib-row:hover,
-.v4lib-row:focus-visible {
-  background: rgb(255 255 255 / 0.045);
-}
-.v4lib-row[aria-selected='true'] {
-  background: rgb(255 255 255 / 0.06);
-  box-shadow: inset 2px 0 0 var(--v4-accent-strong);
-}
-.v4lib-line {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  font-family: var(--mono);
-  font-size: 11.5px;
-}
-.v4lib-glyphs {
-  display: inline-flex;
-  gap: 3px;
-  font-size: 10px;
-  min-width: 34px;
-}
-.v4lib-glyphs [data-v='infer'] {
-  color: var(--verb-infer);
-}
-.v4lib-glyphs [data-v='exec'] {
-  color: var(--verb-exec);
-}
-.v4lib-glyphs [data-v='invoke'] {
-  color: var(--verb-invoke);
-}
-.v4lib-glyphs [data-v='agent'] {
-  color: var(--verb-agent);
-}
-.v4lib-name {
-  color: var(--v4-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.v4lib-ext {
-  color: var(--v4-text-faint);
-}
-.v4lib-meta {
-  margin-left: auto;
-  font-size: 10.5px;
-  color: var(--v4-text-faint);
-  white-space: nowrap;
-}
-.v4lib-rec {
-  color: color-mix(in oklch, var(--v4-accent-bright) 78%, white 22%);
-}
-.v4lib-blurb {
-  display: block;
-  margin-top: 2px;
-  padding-left: 42px;
-  font-size: 12.5px;
-  line-height: 1.45;
-  color: var(--v4-text-dim);
-}
-@media (max-width: 480px) {
-  .v4lib-blurb {
-    padding-left: 0;
-  }
-  .v4lib-glyphs {
-    min-width: 0;
-  }
-  .v4lib-meta {
-    display: none;
-  }
-}
+
+/* a library pick is active → the trigger IS the selected tab (raised + seam) */
+
 
 
 /* ── 5c · the mini-DAG placement (wave O · above the file, title level) ───────
