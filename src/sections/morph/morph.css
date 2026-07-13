@@ -7,7 +7,13 @@
 
 .morphsec {
   position: relative;
-  background: var(--v4-bg);
+  /* NO SEAM AT ALL (operator 2026-07-13 v2): the page's fixed field (the
+     v5 radial + the WebGL dither) paints BEHIND every section; the hero is
+     transparent over it and this section used to be an opaque slab — the
+     living field cut dead against a static plate printed a hairline no
+     weld could hide. The floor now opens transparent and closes over
+     420px: the field dies INSIDE the room, never against it. */
+  background: linear-gradient(180deg, transparent 0, var(--v4-bg) 420px);
   /* the ONE terminal-band height — every reserve (DAG bottom · 3D canvas edge
      · done panel · flat note) derives from it so the bands can never drift
      apart. Slimmer than the v1 (11vh→9.5vh): the scene breathes (wave I). */
@@ -76,35 +82,9 @@
   mask-composite: intersect;
 }
 
-/* the hero→morph weld (wave M · reworked 2026-07-13) · a quiet blue breath
-   through the ordered-dither ramp. The old ramp opened at 50% alpha on the
-   section's FIRST pixel — it assumed the hero floor was still blue, but the
-   left-anchored field dies black long before the edge, so the weld itself
-   printed the cut it existed to heal. Zero ink at both ends now: the dark
-   floors of the two sections ARE the same surface, the weld only warms the
-   crossing's middle. */
-.morphsec::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 300px;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0,
-    rgb(15 30 72 / 0.16) 34%,
-    rgb(13 24 58 / 0.1) 62%,
-    transparent 100%
-  );
-  -webkit-mask-image: var(--v4-dither-fade);
-  -webkit-mask-size: 4px 300px;
-  -webkit-mask-repeat: repeat-x;
-  mask-image: var(--v4-dither-fade);
-  mask-size: 4px 300px;
-  mask-repeat: repeat-x;
-}
+/* the hero→morph weld is GONE (2026-07-13 v2): with the section floor
+   opening transparent, the page's one fixed field carries the crossing —
+   the best weld is no weld. */
 /* W20 · phones run the FULL morph when armed; the vertical story is the
    un-armed truth (reduced-motion · no-JS — ScrollMorph mounts exactly one).
    The un-armed morphsec stays a desktop object: its static final scene is
