@@ -2172,6 +2172,27 @@
 .spec-transport {
   display: none;
 }
+/* THE ARRIVAL (arc 30) · the dock's instruments fade up instead of popping
+   (a display flip replays a one-shot animation) — live register only, and
+   staggered: helm, then tally, then the transport */
+@media (min-width: 1024px) {
+  .spec-rail.is-live[data-stage='dock'] .spec-helm {
+    animation: specInstrUp 0.45s ease-out backwards;
+  }
+  .spec-rail.is-live[data-stage='dock'] .spec-rail-hud--bl {
+    animation: specInstrUp 0.45s ease-out 0.08s backwards;
+  }
+  .spec-page.is-live .spec-rail.is-live[data-stage='dock'] .spec-transport {
+    animation: specInstrUp 0.45s ease-out 0.16s backwards;
+  }
+  .spec-rail.is-live .spec-rail-hud--mr {
+    animation: specInstrUp 0.3s ease-out backwards;
+  }
+}
+@keyframes specInstrUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 @media (min-width: 1024px) {
   .spec-page.is-live .spec-rail.is-live .spec-transport {
     display: flex;

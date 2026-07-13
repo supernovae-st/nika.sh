@@ -5,6 +5,7 @@ import { MACHINE_NODES, SPEC_SECTIONS, nodeById, type StratumKey } from './spec-
 import {
   POSES,
   STRATA_ORDER,
+  STRATUM_HEX,
   buildSpecMachine,
   stratumIndex,
   type MachinePose,
@@ -782,6 +783,11 @@ function Machine({
               rig.ugrad.setAttribute('y1', y0.toFixed(1))
               rig.ugrad.setAttribute('x2', px.toFixed(1))
               rig.ugrad.setAttribute('y2', py.toFixed(1))
+              /* THE WIRE WEARS THE STATION'S HUE · one palette, every
+                 renderer — orange into the ring, cyan into the hold,
+                 blue into the engines, violet into the shield */
+              const hue = STRATUM_HEX[STRATA_ORDER[si]]
+              for (const stop of rig.ugrad.children) stop.setAttribute('stop-color', hue)
             }
             /* the joint and the wire BREATHE on the drum's 2.4s beat —
                the same envelope the hull swells on (sharp attack, long
@@ -799,6 +805,7 @@ function Machine({
               rig.uroot.setAttribute('cx', x0.toFixed(1))
               rig.uroot.setAttribute('cy', y0.toFixed(1))
               rig.uroot.setAttribute('r', (2.4 + wb * 0.8 + pulse * 1.4).toFixed(2))
+              rig.uroot.style.stroke = STRATUM_HEX[STRATA_ORDER[si]]
               rig.uroot.style.opacity = (it.o * (0.8 + 0.2 * pulse)).toFixed(3)
             }
             umbDrawn = true
@@ -822,6 +829,7 @@ function Machine({
             it.dot.setAttribute('cx', px.toFixed(1))
             it.dot.setAttribute('cy', py.toFixed(1))
             it.dot.setAttribute('r', (2.2 + pulse * 1.8).toFixed(2))
+            it.dot.style.fill = STRATUM_HEX[STRATA_ORDER[si]]
             it.dot.style.opacity = op
             continue
           }
@@ -831,6 +839,7 @@ function Machine({
            engineering-plate read at the finale, one clean leader at the
            dock; only the line's far end sails with the hull */
         it.dot.setAttribute('r', '2.2') /* undo the umbilical's swell */
+        it.dot.style.fill = '' /* back to the plate ink */
         it.line.style.strokeWidth = ''
         const lw = it.label.offsetWidth
         const lh = it.label.offsetHeight
