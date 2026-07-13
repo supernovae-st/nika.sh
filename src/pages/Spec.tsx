@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, memo, useEffect, useRef, useState } from 'react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
@@ -354,8 +354,12 @@ export function Component() {
     ],
   })
 
+  /* the stage attribute lives on the RAIL alone (every CSS consumer is
+     .spec-rail-scoped, the e2e belt reads the rail): carrying it on <main>
+     too made each flip invalidate style across the WHOLE page subtree — a
+     one-frame ~50ms recalc bill at every boundary, for nothing */
   return (
-    <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`} data-stage={stage}>
+    <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`}>
       {/* v4-in is BAKED into the prerendered HTML: on a throttled connection
           every JS-side reveal (observer · watchdog · hydration) lands seconds
           after this hero's bytes arrive — LH measured the lede as a 4.7s LCP,
@@ -476,6 +480,141 @@ export function Component() {
 
 
 
+              {/* the reference ledger · TL;DR + S.0 → S.8 lives in
+                  <SpecReference/> below — static, memoized: the scroll-hot
+                  re-renders (current · lit · stage · hover) reconcile the
+                  instruments, never the page's heaviest tree */}
+              <SpecReference />
+
+              {/* THE FINALE RUNWAY · past the last section the chassis takes
+                  the whole viewport for the assembled flyover — the voyage
+                  ends where it began, every stratum lit. Live only. */}
+              {machine ? <div className="spec-finale" ref={finaleEl} aria-hidden /> : null}
+            </div>
+
+            {/* ── the machine rail · sticky. The STAGE is decoration (aria-hidden:
+                the TOC + the column are the truth — the elevation until the
+                canvas mounts, [data-machine] retires it); THE HELM below stays
+                exposed (real buttons, keyboard-reachable). */}
+            <aside
+              className={`spec-rail${machine ? ' is-live' : ''}`}
+              data-stage={stage}
+            >
+              <div className="spec-rail-stage" ref={stageRef} aria-hidden>
+                {machine ? (
+                  <Suspense fallback={null}>
+                    <TheSpecMachine
+                      stageRef={stageRef}
+                      lit={lit}
+                      current={current}
+                      highlight={hoverNode}
+                      explode={explode}
+                      resetSignal={resetSignal}
+                      flightRef={flightRef}
+                      onHover={setHoverNode}
+                    />
+                  </Suspense>
+                ) : null}
+                <SpecSchematic lit={lit} current={current} />
+                <span className="spec-rail-hud spec-rail-hud--bl">
+                  ASSEMBLED·····{assembled}/{assembledMax}
+                </span>
+                <span className="spec-rail-gauge">
+                  {SPEC_SECTIONS.map((s) => (
+                    <i
+                      key={s.fig}
+                      className={`${stage === 'finale' || lit.has(s.key) ? 'is-lit' : ''}${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
+                    />
+                  ))}
+                </span>
+                <span className="spec-rail-hud spec-rail-hud--br">
+                  {current === 'license' ? 'AGPL·····FOREVER' : 'NIKA: V1·····FROZEN'}
+                </span>
+                {/* the hover readout · a FIXED instrument (mid-right), never a
+                    cursor-chaser: the node under the pointer, spoken in place */}
+                {hoverReadout ? (
+                  <span className="spec-rail-hud spec-rail-hud--mr">
+                    {hoverReadout}
+                    {(() => {
+                      const n = hoverNode ? nodeById(hoverNode) : undefined
+                      const sec = n ? SPEC_SECTIONS.find((x) => x.anchor === n.anchor) : undefined
+                      return sec ? `·····${sec.fig}` : ''
+                    })()}
+                  </span>
+                ) : null}
+              </div>
+              {/* THE HELM · outside the aria-hidden stage (keyboard-reachable);
+                  CSS shows it only while the canvas holds the stage */}
+              <div className="spec-helm">
+                <button
+                  type="button"
+                  className="spec-helm-btn"
+                  aria-pressed={explode}
+                  onClick={() => setExplode((e) => !e)}
+                >
+                  EXPLODE
+                </button>
+                <button
+                  type="button"
+                  className="spec-helm-btn"
+                  onClick={() => {
+                    setExplode(false)
+                    setResetSignal((n) => n + 1)
+                  }}
+                >
+                  RESET
+                </button>
+              </div>
+              {/* THE TRANSPORT · the spine gauge, made a helm: nine real
+                  links OUTSIDE the aria-hidden stage (the display gauge is
+                  its pointer-inert twin at the poster/finale) — click a
+                  tick, sail to that station's section. ≥24px hits. */}
+              <nav className="spec-transport" aria-label="Ship stations: jump to a section">
+                {SPEC_SECTIONS.map((s) => (
+                  <a
+                    key={s.fig}
+                    href={s.anchor}
+                    className={`spec-transport-tick${
+                      stage === 'finale' || lit.has(s.key) ? ' is-lit' : ''
+                    }${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
+                    aria-label={`${s.fig} · ${s.title} (${s.shipPart})`}
+                    title={`${s.fig} · ${s.title}`}
+                  >
+                    <i aria-hidden />
+                  </a>
+                ))}
+              </nav>
+            </aside>
+          </div>
+
+        </div>
+
+        {/* THE CLOSE · the voyage's last beat, every register: the mark, the
+            one-line creed, the ecosystem in one rail (sources registry — the
+            live finale's LAY-DOWN dissolves the hull into its own drawing
+            just above this). Real DOM, real links; the footer follows. */}
+        <section className="spec-close" aria-labelledby="spec-close-mark">
+          <p id="spec-close-mark" className="spec-close-mark">
+            nika
+          </p>
+          <p className="spec-close-tag">Intent as Code. The contract, frozen forever.</p>
+          <SourcesRail links={ECOSYSTEM} dense />
+        </section>
+      </section>
+    </main>
+  )
+}
+
+/* ── the reference ledger · TL;DR + S.0 → S.8, one static column ─────────────
+   Every value here is a module constant (canon projections + craft copy):
+   nothing reads the reading state. Memoized because the page re-renders on
+   every section crossing (current · lit · stage · hoverNode) — under a fast
+   travel that reconciled the whole ledger (the page's heaviest tree, the
+   CodeFiles included) many times a second for instruments that live outside
+   it. The ledger renders once; the chips + rail do the moving. */
+const SpecReference = memo(function SpecReference() {
+  return (
+    <>
               {/* ── the consumer TL;DR · the whole language in one glance-table ──
               Museum-plate rows (01 · the envelope → 05 · errors), each a
               two-tone sentence + its mono token. The technical reference
@@ -1029,125 +1168,9 @@ export function Component() {
                   </a>
                 </div>
               </div>
-
-              {/* THE FINALE RUNWAY · past the last section the chassis takes
-                  the whole viewport for the assembled flyover — the voyage
-                  ends where it began, every stratum lit. Live only. */}
-              {machine ? <div className="spec-finale" ref={finaleEl} aria-hidden /> : null}
-            </div>
-
-            {/* ── the machine rail · sticky. The STAGE is decoration (aria-hidden:
-                the TOC + the column are the truth — the elevation until the
-                canvas mounts, [data-machine] retires it); THE HELM below stays
-                exposed (real buttons, keyboard-reachable). */}
-            <aside
-              className={`spec-rail${machine ? ' is-live' : ''}`}
-              data-stage={stage}
-            >
-              <div className="spec-rail-stage" ref={stageRef} aria-hidden>
-                {machine ? (
-                  <Suspense fallback={null}>
-                    <TheSpecMachine
-                      stageRef={stageRef}
-                      lit={lit}
-                      current={current}
-                      highlight={hoverNode}
-                      explode={explode}
-                      resetSignal={resetSignal}
-                      flightRef={flightRef}
-                      onHover={setHoverNode}
-                    />
-                  </Suspense>
-                ) : null}
-                <SpecSchematic lit={lit} current={current} />
-                <span className="spec-rail-hud spec-rail-hud--bl">
-                  ASSEMBLED·····{assembled}/{assembledMax}
-                </span>
-                <span className="spec-rail-gauge">
-                  {SPEC_SECTIONS.map((s) => (
-                    <i
-                      key={s.fig}
-                      className={`${stage === 'finale' || lit.has(s.key) ? 'is-lit' : ''}${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
-                    />
-                  ))}
-                </span>
-                <span className="spec-rail-hud spec-rail-hud--br">
-                  {current === 'license' ? 'AGPL·····FOREVER' : 'NIKA: V1·····FROZEN'}
-                </span>
-                {/* the hover readout · a FIXED instrument (mid-right), never a
-                    cursor-chaser: the node under the pointer, spoken in place */}
-                {hoverReadout ? (
-                  <span className="spec-rail-hud spec-rail-hud--mr">
-                    {hoverReadout}
-                    {(() => {
-                      const n = hoverNode ? nodeById(hoverNode) : undefined
-                      const sec = n ? SPEC_SECTIONS.find((x) => x.anchor === n.anchor) : undefined
-                      return sec ? `·····${sec.fig}` : ''
-                    })()}
-                  </span>
-                ) : null}
-              </div>
-              {/* THE HELM · outside the aria-hidden stage (keyboard-reachable);
-                  CSS shows it only while the canvas holds the stage */}
-              <div className="spec-helm">
-                <button
-                  type="button"
-                  className="spec-helm-btn"
-                  aria-pressed={explode}
-                  onClick={() => setExplode((e) => !e)}
-                >
-                  EXPLODE
-                </button>
-                <button
-                  type="button"
-                  className="spec-helm-btn"
-                  onClick={() => {
-                    setExplode(false)
-                    setResetSignal((n) => n + 1)
-                  }}
-                >
-                  RESET
-                </button>
-              </div>
-              {/* THE TRANSPORT · the spine gauge, made a helm: nine real
-                  links OUTSIDE the aria-hidden stage (the display gauge is
-                  its pointer-inert twin at the poster/finale) — click a
-                  tick, sail to that station's section. ≥24px hits. */}
-              <nav className="spec-transport" aria-label="Ship stations: jump to a section">
-                {SPEC_SECTIONS.map((s) => (
-                  <a
-                    key={s.fig}
-                    href={s.anchor}
-                    className={`spec-transport-tick${
-                      stage === 'finale' || lit.has(s.key) ? ' is-lit' : ''
-                    }${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
-                    aria-label={`${s.fig} · ${s.title} (${s.shipPart})`}
-                    title={`${s.fig} · ${s.title}`}
-                  >
-                    <i aria-hidden />
-                  </a>
-                ))}
-              </nav>
-            </aside>
-          </div>
-
-        </div>
-
-        {/* THE CLOSE · the voyage's last beat, every register: the mark, the
-            one-line creed, the ecosystem in one rail (sources registry — the
-            live finale's LAY-DOWN dissolves the hull into its own drawing
-            just above this). Real DOM, real links; the footer follows. */}
-        <section className="spec-close" aria-labelledby="spec-close-mark">
-          <p id="spec-close-mark" className="spec-close-mark">
-            nika
-          </p>
-          <p className="spec-close-tag">Intent as Code. The contract, frozen forever.</p>
-          <SourcesRail links={ECOSYSTEM} dense />
-        </section>
-      </section>
-    </main>
+    </>
   )
-}
+})
 
 /* ── a shared sub-head · the section index, the name, an optional count,
    and a one-line caption — the register used at the top of every spec block. */

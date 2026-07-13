@@ -145,11 +145,21 @@ function Machine({
   const group = useRef<THREE.Group>(null)
   const inner = useRef<THREE.Group>(null)
   const spin = useRef(0)
+  /* the committed pose + when the reading first diverged from it — the
+     frame loop's gate (see THE POSE COMMIT below; null until the first
+     frame adopts the mount pose — refs stay unread during render) */
+  const poseGate = useRef<{ pose: MachinePose | null; since: number }>({
+    pose: null,
+    since: -1,
+  })
   /* the last approach progress — the scroll turn folds into spin as a
      DELTA, so scrubbing back unwinds it and the dock flip subtracts nothing */
   const heroP = useRef(0)
   const heroPrev = useRef(0)
   const heroHand = useRef(false)
+  /* armed while at the poster · the entry fold (THE POSTER LANDING below)
+     fires once per arrival, then re-arms off-stage */
+  const posterArm = useRef(false)
   const parallax = useRef({ x: 0, y: 0 })
   const { camera, gl } = useThree()
 
@@ -291,12 +301,32 @@ function Machine({
       strikeRef.current = -1
     }
 
+    /* THE POSE COMMIT (operator 2026-07-13 · «va dans tous les sens») · a
+       fast travel sweeps the scrollspy through every intermediate section,
+       and chasing each pose dove the camera spine-end to spine-end — close
+       poses (S.1 dist 2.75) flashed by mid-fling. The gate holds the pose
+       while the sail runs and commits the LATEST want once the hand calms
+       (a ~quarter-second dwell): a fling reads as ONE deliberate glide to
+       where the reading stopped. An unbroken medium scroll still commits
+       every 1.6s (stately arcs, never a freeze); reading pace — crossings
+       seconds apart, sail calm — commits on the spot, as before. */
+    const gate = poseGate.current
+    if (gate.pose === null) gate.pose = poseRef.current /* first frame · the mount pose */
+    if (poseRef.current !== gate.pose) {
+      if (gate.since < 0) gate.since = u.uTime.value
+      const dwell = u.uTime.value - gate.since
+      if ((dwell > 0.22 && Math.abs(sailRef.current.v) < 0.5) || dwell > 1.6) {
+        gate.pose = poseRef.current
+        gate.since = -1
+      }
+    } else gate.since = -1
+
     /* per-stratum washes · lit eases toward its target over ~a second (the
        drum's band wash), focus eases a touch faster. ONE array carries two
        signals (operator pass 2026-07-11: dim the rest, push the read zone):
        ≤1 is the x-ray dim on the siblings, the overflow ABOVE 1 is the
        spotlight on the stratum being read — the shaders split it back. */
-    const pose = poseRef.current
+    const pose = gate.pose
     const lit = litRef.current
     const kLit = Math.min(1, delta * 2.4)
     const kFoc = Math.min(1, delta * 2.6)
@@ -376,6 +406,21 @@ function Machine({
         lookX = lookX + (-0.15 - lookX) * lay
       }
       if (st === 'hero') {
+        /* THE POSTER LANDING (operator 2026-07-13) · re-entering the hero
+           after a travel used to inherit an ARBITRARY fraction of a turn
+           (the dock settle cut short mid-flip, plus the approach offset
+           still to unwind) — the poster held a random orientation and the
+           idle revolved from there. On entry the accrued turn folds to the
+           beauty framing's own revolution and the approach fold re-bases
+           at the LIVE progress (no stale delta to unwind): the wrapped
+           follower turns the hull there in one short arc, and the idle
+           spin resumes FROM the poster. */
+        if (!posterArm.current) {
+          posterArm.current = true
+          spin.current = Math.round(spin.current / (Math.PI * 2)) * (Math.PI * 2)
+          heroP.current = flight?.progress ?? 0
+          heroPrev.current = heroP.current
+        }
         /* THE FULL-BLEED POSTER (operator pass 2026-07-11) · the ground is
            the whole viewport, so the hero framing overrides the reading's
            beauty shot: closer (bigger vessel). The rightward carry rides
@@ -413,6 +458,7 @@ function Machine({
       spin.current += (settle - spin.current) * Math.min(1, delta * 2.2)
     }
     if (st === 'hero') heroHand.current = true
+    else posterArm.current = false
     tYaw += spin.current
     if (lay > 0) {
       /* the side profile IS rotation.y ≡ 0 (mod 2π) — fold the TOTAL yaw
@@ -451,9 +497,22 @@ function Machine({
     if (Math.abs(sail.v) < 0.003) sail.v = 0
     u.uSail.value = sail.v
     /* the yaw follower · damped chase under a hard velocity ceiling, so a
-       fast scrub reads as ONE deliberate arc — never a whip */
+       fast scrub reads as ONE deliberate arc — never a whip. THE SHORT WAY
+       (operator 2026-07-13): the chase steers ORIENTATION, never the
+       odometer — a fast traversal moves the accumulated target by whole
+       revolutions (license.yaw = frame.yaw + 2π, the hero fold on top),
+       and chasing that figure under the ceiling kept the hull visibly
+       turning for SECONDS after the scroll stopped. The error folds to
+       [-π, π] first; every designed slow move (idle spin · scroll-steered
+       approach · dock settle · lay-down) stays far under π per frame and
+       never wraps — only the big jumps take the short arc. */
     const yawTarget = tYaw + helm.yaw + breathe + parallax.current.x * 0.06
-    let dYaw = (yawTarget - g.rotation.y) * k
+    let yawErr = yawTarget - g.rotation.y
+    if (Math.abs(yawErr) > Math.PI) {
+      yawErr = ((((yawErr + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) - Math.PI
+      g.rotation.y = yawTarget - yawErr /* re-express in the target's turn */
+    }
+    let dYaw = yawErr * k
     const MAX_YAW_VEL = 1.7 /* rad/s · the ceiling IS the grace */
     const maxStep = MAX_YAW_VEL * delta
     if (dYaw > maxStep) dYaw = maxStep
@@ -903,6 +962,13 @@ export default function TheSpecMachine({
       <Canvas
         frameloop={inView && !hidden ? 'always' : 'never'}
         dpr={[1, 2]}
+        /* the chassis width TWEENS 0.7s at every stage flip — fiber's
+           default resize debounce is 0, so each observed tick reallocated
+           the full-DPR antialiased drawing buffer (the 100-200ms frame
+           spikes the operator filmed as scroll lag). One realloc shortly
+           after the tween settles instead; mid-tween the canvas scales by
+           CSS exactly as the starved per-frame reallocs already did. */
+        resize={{ debounce: { scroll: 50, resize: 150 } }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', stencil: false }}
         camera={{ fov: 38, near: 0.1, far: 30, position: [0, 0, 4.6] }}
         onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
