@@ -6620,8 +6620,8 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "k": "code",
       "lang": "yaml",
       "filename": "release-radar.nika.yaml",
-      "text": "nika: v1\nworkflow: release-radar\n\ntasks:\n  - id: changelog\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh/changelog\"\n\n  - id: repo_log\n    exec:\n      command: \"git log --since='1 week'\"\n\n  - id: digest\n    depends_on: [changelog, repo_log]\n    infer:\n      prompt: \"What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}\"",
-      "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWDAU12IgGdiBaDCAEwgySQBdKwKokYZqYQ9WAGMAFhGABzUmkk9eA4HDRhi3BQtZo0uWACJQkKNmKsxe+RqaSuljTACuGXTD2jWrAA5cA9D8MQAHQUoj5iEtL4khby-IJExJ5oAPpRdsQAHsTC6vbCaAC2BRJCrpIgrDBRfNQUIMDCxAC8AOQIMCjExGAtMbxxpfQg0hSsdvSJxMD0FMlowLAA2uFSMpIANDAkSamyALp29SYYuRqeGIWerPoA6uKVK9L0MKyiIBQdXWCwACQA3n8XhwKIFHmtAmgHF4oTAAL6wmD-QHsCicQLbFJRCFQzww+F6IA"
+      "text": "nika: v1\nworkflow: release-radar\n\ntasks:\n  - id: changelog\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh/changelog\"\n\n  - id: repo_log\n    exec:\n      command: [\"git\", \"log\", \"--since='1\", \"week'\"]\n\n  - id: digest\n    depends_on: [changelog, repo_log]\n    infer:\n      prompt: \"What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}\"",
+      "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWDAU12IgGdiBaDCAEwgySQBdKwKokYZqYQ9WAGMAFhGABzUmkk9eA4HDRhi3BQtZo0uWACJQkKNmKsxe+RqaSuljTACuGXTD2jWrAA5cA9D8MQAHQUoj5iEtL4khby-IJExJ5oAPpRdsQAHsTC6vbCaAC2BRJCMADaepIgrHoANK5Rda7U1BQgwMLEALwA5AhNeijExGA9egC6LLxxpfQg0hSsdvSJxMD0FMlowLBl4VIykvUkSamykxrtJhi5Gp4YhZ6s+gDq4qww+9L0MKyiIBQYEMRrAACQAb3Bvw4FECX0OgTQDi8yJgAF80TAIVD2BROIETikoojkZ5URi9EA"
     },
     {
       "k": "p",
@@ -6776,8 +6776,8 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "k": "code",
       "lang": "yaml",
       "filename": "morning-brief.nika.yaml",
-      "text": "nika: v1\nworkflow: morning-brief\n\ntasks:\n  - id: fetch_news\n    invoke:\n      tool: \"nika:fetch\"          # a tool, not a verb\n      args:\n        url: \"https://hnrss.org/frontpage\"\n\n  - id: build\n    exec:\n      command: \"cargo build --release\"\n\n  - id: digest\n    depends_on: [fetch_news, build]\n    infer:\n      prompt: \"Summarize what changed\"\n\noutputs:\n  brief: ${{ tasks.digest.output }}",
-      "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAW01GAHMBaAIwxAFNskkAXCAZzHaiRhkpggAJrGz0WAYwAWAfWD0U7Xn0HA4aMPR4qVLNGlywARKEhQxkqUZ02YAYhgQYegwBoYwNC0fx6Gaso6EBjk3IE2AK4YhjBGUiwsAA7cAPQpUsAY7OwAdJjkKdgYaMBJEOT0Rsx8AsKw1BEguELh9AAe9BLaNhJoREQQwCKxEsHkaDANTUL8lBj0uPQcldX8gsNCIBXsLOFC9In0Q+wyJbAA2hbScgrs7lPNALrhIMBiGN06icVEiSzGAGUIv1giAAF70GAoKQQbzSQYVIRVJBoCJJNFhPi0BjYWAAEgA3gTnBwuDlNtsWHk0Yk0TAAL70oA"
+      "text": "nika: v1\nworkflow: morning-brief\n\ntasks:\n  - id: fetch_news\n    invoke:\n      tool: \"nika:fetch\"          # a tool, not a verb\n      args:\n        url: \"https://hnrss.org/frontpage\"\n\n  - id: build\n    exec:\n      command: [\"cargo\", \"build\", \"--release\"]\n\n  - id: digest\n    depends_on: [fetch_news, build]\n    infer:\n      prompt: \"Summarize what changed\"\n\noutputs:\n  brief: ${{ tasks.digest.output }}",
+      "play": "HYSw1ghgXABAbgRgFAHcD2AnMAzANmlWAW01GAHMBaAIwxAFNskkAXCAZzHaiRhkpggAJrGz0WAYwAWAfWD0U7Xn0HA4aMPR4qVLNGlywARKEhQxkqUZ02YAYhgQYegwBoYwNC0fx6Gaso6EBjk3IE2AK4YhjBGUiwsAA7cAPQpUsAY7OwAdJjkKdgYaMBJEOT0Rsx8AsKw1BEguELh9AAe9BLaNhJoREQQwCIwANpGEsHkaEbuRg1NQjOxlJQY9Lj0HJUAutX8gsNCIBXsLOFC9In0Q+wyJbAjFtJyCuzu8827OiDAYhjdOkSxSIiRYxgAyhF+sEQAAvegwFBSCDeaSDCqLZhoCJJHFhPi0BjYWAAEgA3mTnBwuDkjicWHkcYkcTAAL6soA"
     },
     {
       "k": "p",
