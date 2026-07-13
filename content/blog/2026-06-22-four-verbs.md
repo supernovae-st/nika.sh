@@ -23,7 +23,7 @@ tasks:
 
   - id: build
     exec:
-      command: "cargo build --release"
+      command: ["cargo", "build", "--release"]
 
   - id: digest
     depends_on: [fetch_news, build]

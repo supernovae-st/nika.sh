@@ -23,7 +23,7 @@ tasks:
 
   - id: repo_log
     exec:
-      command: "git log --since='1 week'"
+      command: ["git", "log", "--since='1", "week'"]
 
   - id: digest
     depends_on: [changelog, repo_log]

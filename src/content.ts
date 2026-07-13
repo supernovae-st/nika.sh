@@ -50,7 +50,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
     body: 'A real command on your machine. stdout becomes the task output, exit codes become errors.',
     code: `- id: build
   exec:
-    command: "cargo build --release"`,
+    command: ["cargo", "build", "--release"]`,
   },
   {
     verb: 'invoke',

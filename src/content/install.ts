@@ -47,7 +47,7 @@ workflow: hello
 tasks:
   - id: greet
     exec:
-      command: "echo hello from nika"
+      command: ["echo", "hello", "from", "nika"]
 `
 
 /* the first AI step — a free local model, nothing leaves the machine */

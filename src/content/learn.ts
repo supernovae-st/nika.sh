@@ -38,7 +38,7 @@ export const DICT: Record<string, string> = {
   outputs: 'what the whole workflow hands back, by name',
   prompt: 'the question sent to the model',
   tool: 'which tool to use · always named, never guessed',
-  command: 'the shell command to run · captured, with its exit code',
+  shell: 'the shell command to run · captured, with its exit code',
   type: 'what kind of value this input is',
   required: 'the run refuses to start without it',
   description: 'a human note about this input',
@@ -122,7 +122,7 @@ model: ollama/llama3.2:3b
 
 - id: repo_log
   exec:
-    command: "git log --since='1 week'"
+    command: ["git", "log", "--since='1", "week'"]
 
 - id: digest
   depends_on: [ fetch_news, repo_log ]   # waits for BOTH
@@ -143,7 +143,7 @@ model: ollama/llama3.2:3b
       tool: "nika:fetch"
   - id: repo_log
     exec:
-      command: "git log --since='1 week'"
+      command: ["git", "log", "--since='1", "week'"]
   - id: read_notes
     invoke:
       tool: "nika:read"
@@ -233,7 +233,7 @@ tasks:
 
   - id: repo_log
     exec:
-      command: "git log --since='1 week'"
+      command: ["git", "log", "--since='1", "week'"]
 
   - id: read_notes
     invoke:

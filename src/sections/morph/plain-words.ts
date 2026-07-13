@@ -42,7 +42,7 @@ export const KEY_WORDS: Record<string, string> = {
   recover: 'the value used if this step fails',
   outputs: 'what the run hands back',
   vars: 'plain data the file reuses',
-  command: 'the exact command line that runs',
+  command: ['the', 'exact', 'command', 'line', 'that', 'runs'],
   tool: 'the tool this step calls',
 }
 
