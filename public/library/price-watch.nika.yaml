@@ -1,0 +1,33 @@
+nika: v1
+workflow: price-watch
+# zero model · two tools and one CEL compare
+
+# the file IS the blast radius
+permits:
+  fs: { read: [ ./price.json ], write: [ ./price-alert.md ] }
+  tools: [ "nika:read", "nika:jq", "nika:write" ]
+
+vars:
+  alert_below: 899  # your threshold · plain data
+
+tasks:
+  - id: snapshot
+    invoke: { tool: "nika:read", args: { path: ./price.json } }
+
+  - id: price
+    depends_on: [ snapshot ]
+    invoke:
+      tool: "nika:jq"
+      args: { input: "${{ tasks.snapshot.output }}", expression: "fromjson | .price" }
+
+  - id: alert
+    depends_on: [ price ]
+    when: ${{ tasks.price.output < vars.alert_below }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./price-alert.md
+        content: "Price drop: now ${{ tasks.price.output }} (target ${{ vars.alert_below }})"
+
+outputs:
+  price: "${{ tasks.price.output }}"

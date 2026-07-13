@@ -38,6 +38,10 @@ export interface LibraryItem {
   gloss: string
   /** the recorded flagship behind this item — absent on browse-only files */
   flagship?: FlagshipEntry
+  /** the file's OFFICIAL source (operator 2026-07-13): browse files point
+      at their nika-spec pack blob; the recorded seven point at their own
+      SERVED copy (public/library/ · byte-pinned to this module by test) */
+  sourceUrl: string
 }
 
 /** distinct verbs, file order — the picker's glyph row derives, never typed */
@@ -98,6 +102,7 @@ export const LIBRARY: LibraryItem[] = [
     plan: f.plan,
     highlight: f.highlight,
     gloss: f.gloss,
+    sourceUrl: `/library/${f.filename}`,
     flagship: f,
   })),
   ...BROWSE.map((b) => ({
@@ -109,6 +114,7 @@ export const LIBRARY: LibraryItem[] = [
     plan: deriveWorkflow(SHOWCASE_YAML[b.slug]),
     highlight: b.highlight,
     gloss: b.gloss,
+    sourceUrl: `https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${b.slug}.nika.yaml`,
   })),
 ]
 

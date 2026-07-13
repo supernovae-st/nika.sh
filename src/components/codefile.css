@@ -584,6 +584,39 @@
   top: 8px;
   right: 10px;
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+/* the registered-source link · beside the copy, quieter than it (the copy
+   is the ACTION, the source is the provenance) — same corner grammar */
+.cf-src {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+  text-decoration: none;
+  padding: 4px 6px;
+  border-radius: 3px;
+  transition: color var(--dur-ui, 0.18s) var(--ease-ui, ease);
+}
+.cf-src:hover {
+  color: var(--v4-text);
+}
+.cf-src:focus-visible {
+  outline: 1.5px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+}
+.cf-copy-float .cf-src {
+  background: color-mix(in srgb, var(--cf-bg) 82%, transparent);
+  border: 1px solid rgb(140 170 255 / 0.1);
+  backdrop-filter: blur(2px);
+  padding: 5px 8px;
+}
+.cf-chrome-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 .cf-copy-float .cf-copy {
   border: 1px solid rgb(140 170 255 / 0.16);

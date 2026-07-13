@@ -1,0 +1,74 @@
+nika: v1
+workflow: etl-quarantine
+# zero model · a schema gate splits the batch
+
+# the file IS the blast radius
+permits:
+  fs: { read: [ ./data/incoming/* ], write: [ ./data/* ] }
+  tools: [ "nika:read", "nika:convert", "nika:validate", "nika:jq", "nika:write" ]
+
+tasks:
+  # the deterministic fallback if parsing dies
+  - id: empty_batch
+    invoke: { tool: "nika:jq", args: { input: [], expression: "." } }
+
+  - id: raw
+    invoke: { tool: "nika:read", args: { path: ./data/incoming/orders.csv } }
+
+  - id: rows
+    depends_on: [ raw ]
+    invoke:
+      tool: "nika:convert"
+      args: { input: "${{ tasks.raw.output }}", from: csv, to: json, has_header: true }
+    # malformed CSV → empty batch · the run survives
+    on_error:
+      recover: ${{ tasks.empty_batch.output }}
+
+  - id: check
+    depends_on: [ rows ]
+    invoke:
+      tool: "nika:validate"
+      args:
+        data: "${{ tasks.rows.output }}"
+        format: json
+        schema:
+          type: array
+          items:
+            type: object
+            required: [ order_id, amount, currency ]
+            properties:
+              order_id: { type: string }
+              amount: { type: string }
+              currency: { type: string, enum: [ EUR, USD, GBP ] }
+
+  - id: good
+    depends_on: [ rows, check ]
+    when: ${{ tasks.check.output.valid == true }}
+    invoke:
+      tool: "nika:jq"
+      args:
+        input: "${{ tasks.rows.output }}"
+        expression: 'group_by(.currency) | map({currency: .[0].currency, orders: length, total: (map(.amount | tonumber) | add)})'
+
+  - id: quarantine
+    depends_on: [ rows, check ]
+    when: ${{ tasks.check.output.valid == false }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./data/quarantine/rejected.json
+        content: "${{ tasks.check.output.errors }}"
+        create_dirs: true
+
+  - id: report
+    depends_on: [ good ]
+    when: ${{ tasks.good.output != null && size(tasks.good.output) > 0 }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./data/daily-totals.json
+        content: "${{ tasks.good.output }}"
+        create_dirs: true
+
+outputs:
+  totals: "${{ tasks.good.output }}"

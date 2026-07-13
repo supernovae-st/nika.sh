@@ -1,0 +1,45 @@
+nika: v1
+workflow: pr-risk-review
+
+# local model · the diff never leaves
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
+  exec: [ git ]
+  fs: { write: [ ./review.md ] }
+  tools: [ "nika:read", "nika:write" ]
+
+tasks:
+  - id: diff
+    exec: { command: [ git, diff, main ] }
+
+  - id: risk
+    depends_on: [ diff ]
+    timeout: "120s"
+    infer:
+      prompt: "Score this diff's blast radius from 0 to 10: ${{ tasks.diff.output }}"
+      schema:
+        type: object
+        required: [ score, reasons ]
+        properties:
+          score: { type: number }
+          reasons: { type: array, items: { type: string } }
+      max_tokens: 400
+
+  - id: probe
+    depends_on: [ risk ]
+    when: ${{ tasks.risk.output.score >= 7 }}
+    agent:
+      prompt: "Trace the risky call paths behind: ${{ tasks.risk.output.reasons }}"
+      tools: [ "nika:read" ]
+      max_turns: 3
+
+  - id: report
+    depends_on: [ risk ]
+    invoke:
+      tool: "nika:write"
+      args: { path: ./review.md, content: "${{ tasks.risk.output }}" }
+
+outputs:
+  review: "${{ tasks.risk.output }}"

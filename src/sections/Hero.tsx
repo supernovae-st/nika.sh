@@ -1,7 +1,6 @@
 import { Link } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
-import { NikaIcon } from '../icons/Icon'
 import { verbGlyph } from '../components/codefile-highlight'
 import { MiniDag } from '../components/MiniDag'
 import { InstallCommand } from '../components/InstallCommand'
@@ -84,6 +83,19 @@ function FileTabs({
       ro?.disconnect()
     }
   }, [])
+  /* THE BROWSER STRIP (operator 2026-07-13): the tab row scrolls like a
+     browser's — vertical wheel drives horizontal travel over the strip,
+     and the selected tab always brings itself into view. */
+  const onWheel = (e: React.WheelEvent) => {
+    const strip = stripRef.current
+    if (!strip || strip.scrollWidth <= strip.clientWidth) return
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      strip.scrollLeft += e.deltaY
+    }
+  }
+  useEffect(() => {
+    refs.current[active]?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [active])
   const onKeyDown = (e: React.KeyboardEvent) => {
     // APG tablist keys · arrows cycle, Home/End jump to the edges. When the
     // active file lives off-strip (library pick), arrows re-enter at the edge.
@@ -107,6 +119,7 @@ function FileTabs({
         role="tablist"
         aria-label="Flagship workflow files"
         onKeyDown={onKeyDown}
+        onWheel={onWheel}
       >
       {TABS.map((f, i) => (
         <button
@@ -123,10 +136,11 @@ function FileTabs({
           className="v4ftab"
           onClick={() => onSelect(i)}
         >
-          {/* the format's own mark — the selected tab reads as the FILE it
-              is: ◈ daily-brief.nika.yaml (CSS reveals mark+ext on select) */}
+          {/* the OFFICIAL nika mark (operator 2026-07-13) — the same asset
+              the nav brand wears (/nika.svg), one source of truth. The
+              selected tab reads as the FILE it is: 🦋 name.nika.yaml */}
           <span className="v4ftab-mark" aria-hidden>
-            <NikaIcon id="ui/butterfly" size={12} />
+            <img src="/nika.svg" alt="" width={12} height={12} />
           </span>
           {f.label}
           <span className="v4ftab-ext" aria-hidden>
@@ -154,7 +168,7 @@ export function FileTabsGhost({ active }: { active: string }) {
           {TABS.map((f) => (
             <span key={f.id} className="v4ftab" data-sel={f.label === active || undefined}>
               <span className="v4ftab-mark" aria-hidden>
-                <NikaIcon id="ui/butterfly" size={12} />
+                <img src="/nika.svg" alt="" width={12} height={12} />
               </span>
               {f.label}
               <span className="v4ftab-ext" aria-hidden>
@@ -576,6 +590,7 @@ export default function Hero({
               className="v4hero-code cf-panel--seam cf-panel--fadebottom"
               wrap
               tips
+              sourceHref={item.sourceUrl}
               rangeTip={rangeTip}
               onLineHover={onLineHover}
               copyInBody

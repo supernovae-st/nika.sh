@@ -1,0 +1,38 @@
+nika: v1
+workflow: social-repurpose
+
+# local model · your draft never leaves
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
+  fs: { read: [ ./post.md ], write: [ ./social-bundle.md ] }
+  tools: [ "nika:read", "nika:write" ]
+
+tasks:
+  # one read · three parallel rewrites · one merge
+  - id: post
+    invoke: { tool: "nika:read", args: { path: ./post.md } }
+
+  - id: thread
+    depends_on: [ post ]
+    infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: ${{ tasks.post.output }}", max_tokens: 400 }
+
+  - id: linkedin
+    depends_on: [ post ]
+    infer: { prompt: "Rewrite this post for LinkedIn, hook first: ${{ tasks.post.output }}", max_tokens: 400 }
+
+  - id: newsletter
+    depends_on: [ post ]
+    infer: { prompt: "Write a 3-sentence newsletter blurb for this post: ${{ tasks.post.output }}", max_tokens: 300 }
+
+  - id: bundle
+    depends_on: [ thread, linkedin, newsletter ]
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ./social-bundle.md
+        content: "${{ tasks.thread.output }}\n\n---\n\n${{ tasks.linkedin.output }}\n\n---\n\n${{ tasks.newsletter.output }}"
+
+outputs:
+  bundle: "${{ tasks.bundle.output }}"

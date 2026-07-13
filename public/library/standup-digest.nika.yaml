@@ -1,0 +1,40 @@
+nika: v1
+workflow: standup-digest
+
+# local model · your commits never leave
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
+  exec: [ git ]
+  fs: { write: [ ./standup-note.md ] }
+  tools: [ "nika:date", "nika:write" ]
+
+tasks:
+  # no dependency · the engine runs them together
+  - id: today
+    invoke: { tool: "nika:date", args: { op: now } }
+
+  - id: history
+    exec: { command: [ git, log, --since=yesterday, --oneline, --no-merges ] }
+
+  - id: digest
+    depends_on: [ today, history ]
+    infer:
+      prompt: |
+        Date: ${{ tasks.today.output }}
+        Commits since yesterday:
+        ${{ tasks.history.output }}
+
+        Write my standup note, 3 bullets: done / doing / blocked.
+        Plain words, no fluff.
+      max_tokens: 300
+
+  - id: save
+    depends_on: [ digest ]
+    invoke:
+      tool: "nika:write"
+      args: { path: ./standup-note.md, content: "${{ tasks.digest.output }}" }
+
+outputs:
+  note: "${{ tasks.digest.output }}"

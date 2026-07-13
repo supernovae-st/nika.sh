@@ -93,6 +93,9 @@ export interface CodeFileProps {
       the tabpanel its chrome tabs control (correct APG topology: the tablist
       must not live inside the panel it labels). */
   bodyProps?: React.HTMLAttributes<HTMLDivElement>
+  /** the file's OFFICIAL registered source — renders a corner link beside
+      the copy (spec pack blob · served /library file). */
+  sourceHref?: string
 }
 
 /* token kind → syntax class (the literal hue resolves per theme via codefile.css) */
@@ -143,6 +146,24 @@ function TokenSpan({ token }: { token: Token }) {
   )
 }
 
+/* the file's OFFICIAL source, beside the copy (operator 2026-07-13):
+   every yaml on the site is registered — the corner link takes you to the
+   registration (the spec pack blob, or the served /library file). */
+function SourceLink({ href }: { href: string }) {
+  const external = href.startsWith('http')
+  return (
+    <a
+      className="cf-src"
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noreferrer' : undefined}
+      title="The registered source of this file"
+    >
+      source<span aria-hidden> ↗</span>
+    </a>
+  )
+}
+
 function CopyButton({ value }: { value: string }) {
   const { copied, copy } = useCopy(value) // shared state · one reset delay · unmount-safe
   return (
@@ -180,6 +201,7 @@ export function CodeFile({
   rangeTip,
   chromeSlot,
   copyInBody = false,
+  sourceHref,
   bodyProps,
 }: CodeFileProps) {
   const lines = useMemo(() => tokenizeCached(yaml), [yaml])
@@ -314,6 +336,7 @@ export function CodeFile({
           ))}
         {copyInBody ? null : (
           <span className="cf-chrome-right">
+            {sourceHref ? <SourceLink href={sourceHref} /> : null}
             <CopyButton value={yaml} />
           </span>
         )}
@@ -477,6 +500,7 @@ export function CodeFile({
             copy chip moves into the code well's corner, GitHub register. */}
         {copyInBody ? (
           <span className="cf-copy-float">
+            {sourceHref ? <SourceLink href={sourceHref} /> : null}
             <CopyButton value={yaml} />
           </span>
         ) : null}

@@ -37,6 +37,11 @@
   pointer-events: none;
   background-image:
     var(--v4-grain-img),
+    /* THE DUST (operator 2026-07-13 · « différents effets ») · a sparse,
+       deterministic star layer riding the same vignette — the dark room
+       gains depth without a single frame of JS. Two point sizes on a big
+       tile so the repeat never reads; alpha whispers under the grid ink. */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cg fill='%238db4ff'%3E%3Ccircle cx='23' cy='31' r='1' opacity='.13'/%3E%3Ccircle cx='167' cy='58' r='.7' opacity='.09'/%3E%3Ccircle cx='96' cy='118' r='1' opacity='.11'/%3E%3Ccircle cx='214' cy='143' r='.7' opacity='.08'/%3E%3Ccircle cx='58' cy='196' r='1' opacity='.1'/%3E%3Ccircle cx='142' cy='222' r='.7' opacity='.09'/%3E%3Ccircle cx='191' cy='12' r='.7' opacity='.07'/%3E%3Ccircle cx='12' cy='127' r='.7' opacity='.08'/%3E%3C/g%3E%3C/svg%3E"),
     /* the table · a quantized pool of light under the DAG — the slabs rest ON
        something (hard steps, never an airbrush falloff · BRAND-11). The pool
        overshoots the vignette mask so its outer step dies INSIDE the fade —
@@ -55,12 +60,14 @@
     linear-gradient(180deg, var(--morph-grid-ink-far) 1px, transparent 1px);
   background-size:
     var(--v4-grain-size, 4px) var(--v4-grain-size, 4px),
+    240px 240px,
     100% 100%,
     72px 72px,
     72px 72px,
     126px 126px,
     126px 126px;
   background-position:
+    0 0,
     0 0,
     0 0,
     0 0,
