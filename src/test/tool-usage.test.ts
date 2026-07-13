@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
 import Ajv2020 from 'ajv/dist/2020'
 import { TOOL_USAGE } from '../content/tool-usage.generated'
+import { TOOL_USAGE_REFS } from '../content/tool-usage-refs.generated'
 import { TOOLS } from '../content/tools.generated'
 import { TEMPLATE_INDEX } from '../content/templates.generated'
 import { ERROR_CODES } from '../content/errors.generated'
@@ -37,12 +38,25 @@ const validate = ajv.compile(schema)
 const errorCodeSet = new Set(ERROR_CODES.map((e) => e.code))
 
 describe('/tools/:name · the usage projection matches its sources', () => {
-  it('tool-usage.generated.ts is exactly what the compiler emits today', () => {
+  it('tool-usage.generated.ts (and its refs twin) is exactly what the compiler emits today', () => {
     const path = join(ROOT, 'src/content/tool-usage.generated.ts')
+    const refsPath = join(ROOT, 'src/content/tool-usage-refs.generated.ts')
     const committed = readFileSync(path, 'utf8')
+    const committedRefs = readFileSync(refsPath, 'utf8')
     execFileSync('node', [join(ROOT, 'scripts/build-tool-usage.mjs')])
-    const fresh = readFileSync(path, 'utf8')
-    expect(fresh).toBe(committed)
+    expect(readFileSync(path, 'utf8')).toBe(committed)
+    expect(readFileSync(refsPath, 'utf8')).toBe(committedRefs)
+  })
+
+  it('the refs twin IS the registry projected (graph.ts inverts the twin)', () => {
+    expect(TOOL_USAGE_REFS).toEqual(
+      Object.fromEntries(
+        Object.entries(TOOL_USAGE).map(([k, e]) => [
+          k,
+          { templates: e.templates, errorCodes: e.errorCodes },
+        ]),
+      ),
+    )
   })
 
   it('every builtin owns a room (exact-set match, no orphan either way)', () => {

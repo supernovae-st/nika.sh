@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { WORD_USAGE } from '../content/language-usage.generated'
+import { WORD_USAGE_REFS } from '../content/language-usage-refs.generated'
 import { LANGUAGE_WORDS } from '../content/language.generated'
 import { TEMPLATE_INDEX } from '../content/templates.generated'
 import { ERROR_CODES } from '../content/errors.generated'
@@ -24,12 +25,25 @@ import { ERROR_CODES } from '../content/errors.generated'
 const ROOT = join(__dirname, '../..')
 
 describe('/language/:word · the usage projection matches its sources', () => {
-  it('language-usage.generated.ts is exactly what the compiler emits today', () => {
+  it('language-usage.generated.ts (and its refs twin) is exactly what the compiler emits today', () => {
     const path = join(ROOT, 'src/content/language-usage.generated.ts')
+    const refsPath = join(ROOT, 'src/content/language-usage-refs.generated.ts')
     const committed = readFileSync(path, 'utf8')
+    const committedRefs = readFileSync(refsPath, 'utf8')
     execFileSync('node', [join(ROOT, 'scripts/build-language-usage.mjs')])
-    const fresh = readFileSync(path, 'utf8')
-    expect(fresh).toBe(committed)
+    expect(readFileSync(path, 'utf8')).toBe(committed)
+    expect(readFileSync(refsPath, 'utf8')).toBe(committedRefs)
+  })
+
+  it('the refs twin IS the registry projected (graph.ts inverts the twin)', () => {
+    expect(WORD_USAGE_REFS).toEqual(
+      Object.fromEntries(
+        Object.entries(WORD_USAGE).map(([k, e]) => [
+          k,
+          { templates: e.templates, codes: e.codes },
+        ]),
+      ),
+    )
   })
 
   it('every schema word owns an entry (exact set, both ways)', () => {
