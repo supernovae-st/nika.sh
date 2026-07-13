@@ -34,20 +34,25 @@ import type { ReplayLine } from '../run/replay-model'
                      (wave K; scrub back and it stands up again)
    DONE   0.94–1.00  the flat 2D DAG takes over as the closing frame        */
 export const PH = {
-  settleEnd: 0.07,
-  burst0: 0.13,
-  burstEnd: 0.6,
-  wire0: 0.56,
-  wire1: 0.66,
+  /* THE FRONT-LOADED GESTURE (operator 2026-07-13) · the visitor just read
+     this file in the hero, so the film spends the scroll on the TRANSFORM,
+     not the recap: the burst opens at 0.08 and lands by 0.42, the wires
+     draw as the last chips settle, and the RUN — terminal tape, node
+     ticks, the whole instrument story — starts at HALF the gesture
+     (run0 0.50, was 0.66). The verdict window keeps its widened sweep. */
+  settleEnd: 0.05,
+  burst0: 0.08,
+  burstEnd: 0.42,
+  wire0: 0.4,
+  wire1: 0.5,
   /* the run monitor DOCKS with the file's settle — real software shows its
      instrument panel before the tape rolls: empty log well, plan facts in
      the status row, the tick map already on the rail. The log then streams
-     into the standing window at run0 (it used to rise at 0.56 — the whole
-     monitor materializing mid-film read as a late prop, operator ask). */
-  term0: 0.04,
-  term1: 0.1,
-  run0: 0.66,
-  run1: 0.86,
+     into the standing window at run0. */
+  term0: 0.03,
+  term1: 0.07,
+  run0: 0.5,
+  run1: 0.8,
   flat1: 0.94,
 } as const
 
@@ -101,11 +106,12 @@ export const igniteAt = (e: number): number => snap01(clamp01((travelAt(e) - 0.7
    condenses, so D is continuous in p. This ramp gates D's onset: it
    saturates at burst0 + 0.085, BEFORE the first slot can ignite — ignition
    onset is 0.879 × beat past burst0 (travelAt 0.78 · condense 0.45), and
-   the widest corpus beat (n = 7, window 0.47) puts that at burst0 + 0.103.
+   the widest corpus beat (n = 7, window 0.34 since the front-loaded
+   gesture) puts that at burst0 + 0.074.
    The model test sweeps the REAL corpus and fails if a future flagship's
    task count ever breaks this bound. Pure function of p — scrubbing
    reverses it. */
-export const DRAIN_END = 0.085
+export const DRAIN_END = 0.06
 export function drainRampAt(p: number): number {
   return easeInOut(clamp01((p - (PH.burst0 + 0.02)) / (DRAIN_END - 0.02)))
 }
