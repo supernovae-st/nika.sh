@@ -27,6 +27,23 @@ import type { SpecMachineModel } from './spec-machine-model'
 
 const N_STRATA = SPEC_SECTIONS.length
 
+/* THE SEAM (arc 28 · THE ONE STAGE) · the canvas is one constant full-screen
+   stage; the berth is a REGION of it. At the dock the hull melts out toward
+   the prose over a screen-space feather — GPU-side, on the site's own
+   dotmatrix language for the fills (the near screen-door's Bayer), plain
+   alpha for the inks. uSeamX is the seam's x in DEVICE pixels (0 = no seam:
+   the poster + the finale own the whole stage), uSeamW the feather. Eased
+   by the frame loop — a mask-image transition would re-raster the layer
+   every frame (the raster law); a uniform costs nothing. Fragment-only:
+   no cross-stage precision contract to keep. */
+const SEAM_CHUNK = /* glsl */ `
+uniform float uSeamX;
+uniform float uSeamW;
+float seamT() {
+  return mix(1.0, smoothstep(uSeamX - uSeamW, uSeamX, gl_FragCoord.x), step(0.5, uSeamX));
+}
+`
+
 /* the shared vertex chunk · per-stratum lit/focus lookup + the strike swell */
 const MACHINE_COMMON = /* glsl */ `
 attribute vec3 iPos;
@@ -113,17 +130,20 @@ varying vec3 vTint;
 varying float vPulse;
 varying float vNearF;
 uniform float uHero;
+${SEAM_CHUNK}
 void main() {
   /* the near screen-door · an opaque fill cannot fade (tholos: fills never
      go transparent), so it dithers out on an ordered 4x4 Bayer as it nears
      the camera (the site's own dotmatrix language — never random noise);
      by this range the edge lines have already dissolved (vNear), so the
-     block reads as a clean screen-door and the lit read behind survives */
+     block reads as a clean screen-door and the lit read behind survives.
+     THE SEAM rides the same door: past the berth's edge the mass dissolves
+     into the page's dark on the identical ordered matrix. */
   vec2 b1 = mod(gl_FragCoord.xy, 2.0);
   vec2 b2 = mod(floor(gl_FragCoord.xy * 0.5), 2.0);
   float m1 = b1.x * 3.0 + b1.y * 2.0 - b1.x * b1.y * 4.0;
   float m2 = b2.x * 3.0 + b2.y * 2.0 - b2.x * b2.y * 4.0;
-  if ((m1 * 4.0 + m2 + 0.5) / 16.0 > vNearF) discard;
+  if ((m1 * 4.0 + m2 + 0.5) / 16.0 > min(vNearF, seamT())) discard;
   float spot = clamp((vFocusA - 1.0) * 3.4, 0.0, 1.0);
   vec3 deep = mix(vec3(0.043, 0.075, 0.18), vTint * 0.26, 0.4);
   vec3 col = mix(vec3(0.039, 0.047, 0.063), deep, vLit * (0.18 + 0.2 * vFocusA));
@@ -175,6 +195,7 @@ uniform float uHero;
 /* highp: the vertex stage declares uTime highp (its default) — a shared
    uniform must agree across stages or the program fails to validate */
 uniform highp float uTime;
+${SEAM_CHUNK}
 void main() {
   /* the tol.is line law · alpha from facing; a ghost stratum whispers, an
      ignited one reads, the focused one carries the frame; the breath
@@ -191,6 +212,7 @@ void main() {
     * (1.0 + uHero * 0.55 * (1.0 - vLit)) * (1.0 + spot * 0.45);
   /* the hovered node pulses over everything (the W2 bus highlight) */
   a = min(a * (1.0 + vHi * 1.4) + vHi * 0.22, 1.0);
+  a *= seamT();
   if (a < 0.01) discard;
   /* THE HULL WEARS ITS HUES THE WHOLE VOYAGE (operator: keep the colours
      during the read) · every station keeps a floor of its own tint at the
@@ -251,6 +273,7 @@ uniform float uHero;
 uniform highp float uTime;
 uniform float uStrike;
 uniform float uStrikeStratum;
+${SEAM_CHUNK}
 void main() {
   /* the full-wire ghost: at the overview the whole harness reads */
   float a = (0.06 + 0.3 * vLit) * (0.18 + 0.82 * vFocusA) * uFade * vNear
@@ -271,6 +294,7 @@ void main() {
   );
   float pulse = exp(-d * d * 34.0) * exp(-t * 1.9);
   a = min(a + pulse * 0.85, 1.0);
+  a *= seamT();
   col = mix(col, vec3(0.553, 0.706, 1.0), pulse);
   if (a < 0.008) discard;
   gl_FragColor = vec4(col, a);
@@ -304,12 +328,13 @@ const STAR_FRAG = /* glsl */ `
 precision mediump float;
 varying float vA;
 varying float vWarm;
+${SEAM_CHUNK}
 void main() {
   if (vA < 0.01) discard;
   vec2 d = gl_PointCoord - 0.5;
   float r = 1.0 - smoothstep(0.12, 0.5, length(d));
   vec3 col = mix(vec3(0.14, 0.25, 0.55), vec3(0.31, 0.525, 1.0), vWarm * 0.6);
-  gl_FragColor = vec4(col, vA * r);
+  gl_FragColor = vec4(col, vA * r * seamT());
 }
 `
 
@@ -329,6 +354,7 @@ uniform float uTime;
 uniform float uFade;
 uniform float uStrike;
 varying vec2 vUv;
+${SEAM_CHUNK}
 void main() {
   /* the reactor heart · the idle 2.4s beat (the drum's core) + a harder
      flash on each stratum ignition — light from within the hull */
@@ -337,7 +363,7 @@ void main() {
   float t = max(uTime - uStrike, 0.0);
   float hit = smoothstep(0.0, 0.04, t) * exp(-t * 2.6);
   float d = length(vUv - 0.5) * 2.0;
-  float g = exp(-d * d * 4.2) * (0.05 + 0.16 * beat + 0.55 * hit) * uFade;
+  float g = exp(-d * d * 4.2) * (0.05 + 0.16 * beat + 0.55 * hit) * uFade * seamT();
   if (g < 0.004) discard;
   gl_FragColor = vec4(vec3(0.36, 0.56, 1.0), g);
 }
@@ -351,6 +377,7 @@ uniform float uTime;
 uniform float uFade;
 uniform float uSail;
 varying vec2 vUv;
+${SEAM_CHUNK}
 void main() {
   float w = fract(uTime / 2.4);
   float beat = smoothstep(0.0, 0.08, w) * exp(-w * 3.2);
@@ -359,7 +386,7 @@ void main() {
   /* the sail · the reading's scroll-way feeds the engines: the wash swells
      while the reader travels the register, settles to the idle breath at
      rest (abs: sailing back up glows the same — thrust, not a direction) */
-  float g = exp(-d * d * 5.5) * (0.06 + 0.1 * beat + 0.2 * abs(uSail)) * uFade;
+  float g = exp(-d * d * 5.5) * (0.06 + 0.1 * beat + 0.2 * abs(uSail)) * uFade * seamT();
   if (g < 0.004) discard;
   gl_FragColor = vec4(vec3(0.31, 0.525, 1.0), g);
 }
@@ -388,6 +415,10 @@ export interface MachineLayers {
     /** the reading's scroll-way −1..1 · thrust swells + the hull pitches
         while the reader sails; decays to 0 at rest (CPU-driven, motion-on) */
     uSail: { value: number }
+    /** THE SEAM · berth left edge in device px (0 = whole stage) */
+    uSeamX: { value: number }
+    /** the seam's feather · device px */
+    uSeamW: { value: number }
     /** per-stratum ignition level · CPU-eased toward 0/1 (~1s wash) */
     uLit: { value: Float32Array }
     /** per-stratum x-ray alpha · CPU-eased (focused 1 · others 0.3) */
@@ -445,6 +476,11 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     /** the overview showcase 0..1 · ghost glow-up + amplified breath sweep */
     uHero: { value: 0 },
     uSail: { value: 0 },
+    /** THE SEAM · the berth's left edge in DEVICE px (0 = whole stage) —
+        eased by the frame loop toward the stage's own berth */
+    uSeamX: { value: 0 },
+    /** the seam's feather width · device px */
+    uSeamW: { value: 260 },
     uLit: { value: new Float32Array(N_STRATA) },
     uFocusA: { value: new Float32Array(N_STRATA).fill(1) },
     uExplodeOff: { value: m.explode },

@@ -102,7 +102,10 @@
   letter-spacing: 0.12em;
 }
 .smc-label[data-side='l'] {
-  left: 2%;
+  /* the plates live in the BERTH — the stage is the whole screen (THE ONE
+     STAGE), so a bare left % would park the left slots on the prose at the
+     dock; --berth is 0px at the poster + the finale (full-stage slots) */
+  left: calc(var(--berth, 0px) + 2%);
 }
 .smc-label[data-side='r'] {
   right: 2%;

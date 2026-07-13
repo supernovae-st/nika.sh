@@ -57,10 +57,35 @@
    draws the top rule; subsequent blocks inherit the rhythm. scroll-margin clears
    the fixed nav for the in-page jump links. */
 .spec-block {
+  position: relative; /* the struck flash's anchor (below) */
   margin-top: clamp(44px, 6.5vh, 84px);
   padding-top: clamp(34px, 5vh, 56px);
   border-top: 1px solid var(--v4-line);
   scroll-margin-top: 104px;
+}
+/* THE STRUCK CARD (arc 28) · the block whose stratum just lit answers the
+   ignition: a seam-side hairline + a whisper wash, one beat, then gone —
+   the umbilical's spark travels DOM → hull; this is the same event landing
+   hull → DOM. One-shot declarative animation on a class the page stamps
+   (motion-gated JS — reduced-motion never sees the class, so the goldens'
+   register never carries a transient). Never a rAF-driven property here
+   (the raster law): the class changes once, the keyframes do the rest. */
+.spec-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  border-left: 1px solid #4f86ff;
+  background: linear-gradient(90deg, rgb(79 134 255 / 0.11), transparent 36%);
+}
+.spec-block.is-struck::after {
+  animation: specStruck 1.05s ease-out;
+}
+@keyframes specStruck {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  100% { opacity: 0; }
 }
 .spec-block--last {
   /* no extra bottom rule — the section's own padding closes it */
@@ -1227,6 +1252,17 @@
     gap: clamp(28px, 3.2vw, 56px);
     align-items: start;
   }
+  /* THE BERTH LAW (operator 2026-07-13 · the 3D overlapped the cards) ·
+     the phantom column said 46vw while the LIVE chassis berths at
+     min(50vw, 760px) — two formulas, drifting: at 1440px the prose sat at
+     0px from the canvas and the hull floated against the cards at
+     half-opacity (the seam mask only reaches solid ~100px in). Live, the
+     phantom column IS the berth — the flow always keeps the grid gap of
+     air before the canvas even begins. The fallback register keeps 46vw:
+     its schematic lives INSIDE the column, overlap is impossible there. */
+  .spec-page.is-live .spec-stage {
+    grid-template-columns: minmax(0, 1fr) min(50vw, 760px);
+  }
   /* the column reads single-flow — the rail owns the right side, so the
      internal side-by-side splits stand down (the "lighter" half of the ask) */
   .spec-flow .spec-split,
@@ -1994,19 +2030,42 @@
   height: 170vh;
 }
 
-/* THE CHASSIS · the live rail leaves the flow and stages the viewport:
-   hero (beside the title) → full (the whole screen) → dock (the reading
-   rail) → off (the footer's turn). The grid keeps its phantom column. */
+/* THE CHASSIS · THE ONE STAGE (arc 28) · the live rail is ONE constant
+   full-screen stage; the berth is a REGION of it (--berth, its left edge).
+   The old chassis TWEENED its width at every flip — each observed tick
+   reallocated the full-DPR GL buffer (the filmed stalls) and the settle
+   reprojected in one frame (the filmed teleport). Now the stage never
+   resizes: the compositor slides a clip along --berth (hit-test + hard
+   bound), the shaders melt the hull out at the same seam (the dotmatrix
+   language), and the camera carries the vessel into the berth. */
 @media (min-width: 1024px) {
   .spec-rail.is-live {
     position: fixed;
     top: 0;
     height: 100vh;
-    right: max(16px, calc((100vw - 96rem) / 2 + 8px));
-    width: min(50vw, 760px);
+    right: 0;
+    width: 100vw;
+    --berth: 0px;
     z-index: 5;
     pointer-events: none;
-    transition: width 0.7s var(--ease-ui, ease), right 0.7s var(--ease-ui, ease), opacity 0.5s ease;
+    transition: opacity 0.5s ease;
+  }
+  /* the clip is a STATE on the CANVAS WRAPPER alone, never a transition
+     and never on the whole rail: animating it re-rastered the subtree on
+     the main thread (200-260ms frames), and even a snap re-rastered the
+     glass plates + the callout SVG (~150ms). On .smw the cut only re-clips
+     a GPU texture. The SHADER eases the seam (uSeamX): by the time the
+     clip snaps, the region it cuts or reveals is already dark — invisible
+     by construction. The clip bounds the hit-test (the dock canvas must
+     never eat the prose's links) + hard-crops as a safety net; the plates
+     and instruments never cross the berth by construction (--berth). */
+  .spec-rail.is-live .smw {
+    clip-path: inset(0 0 0 var(--berth));
+  }
+  .spec-rail.is-live[data-stage='dock'] {
+    /* the berth's left edge · the complement of THE BERTH LAW's phantom
+       column (berth width = min(50vw, 760px) — one formula, both sides) */
+    --berth: max(50vw, calc(100vw - 760px));
   }
   .spec-rail.is-live .spec-rail-stage {
     position: relative;
@@ -2044,6 +2103,12 @@
   .spec-rail.is-live .spec-rail-hud--br {
     bottom: 26px;
   }
+  /* the left instruments live in the BERTH (the stage is the whole screen
+     now — a bare left % would land them on the prose at the dock) */
+  .spec-rail.is-live .spec-rail-hud--tl,
+  .spec-rail.is-live .spec-rail-hud--bl {
+    left: calc(var(--berth) + 18px);
+  }
   .spec-rail.is-live .spec-rail-gauge {
     bottom: 26px; /* the instrument baseline */
   }
@@ -2058,12 +2123,10 @@
     right: 2%; /* one right edge with the hud below it */
   }
   .spec-rail.is-live[data-stage='hero'] {
-    /* THE FULL-BLEED POSTER (operator pass 2026-07-11) · the ground is the
-       whole viewport — the vessel rides bigger and to the right (the scene's
-       hero framing carries it clear of the copy), the copy floats above the
-       canvas (z below + the copy column's own z:1). */
-    width: 100vw;
-    right: 0;
+    /* THE FULL-BLEED POSTER (operator pass 2026-07-11) · the vessel rides
+       bigger and to the right (the sovereign hero framing carries it clear
+       of the copy), the copy floats above the canvas (z below + the copy
+       column's own z:1). The stage itself no longer changes size. */
     z-index: 0;
   }
   /* the full-bleed canvas must never eat the copy — no orbit at the poster
@@ -2071,28 +2134,21 @@
   .spec-rail.is-live[data-stage='hero'] .smw {
     pointer-events: none;
   }
-  /* THE SEAM DISSOLVE · a wide dock pose is broader than its berth — the
-     hull used to SLICE raw at the canvas's left edge, a crop wall against
-     the prose. The far flank melts into the page's dark over the seam's
-     first ~100px instead. STATIC stops only (the raster law: a mask on a
-     live layer never transitions); the callout layer stays unmasked — the
-     umbilical still crosses the seam whole. */
-  .spec-rail.is-live[data-stage='dock'] .smw {
-    -webkit-mask-image: linear-gradient(to right, transparent, rgb(0 0 0 / 0.6) 8%, #000 14%);
-    mask-image: linear-gradient(to right, transparent, rgb(0 0 0 / 0.6) 8%, #000 14%);
-  }
-  /* the position plate stays quiet at the POSTER (operator: the poster
-     speaks through the vessel + the connected lines, not a floating chip);
-     it returns at the dock where it tracks the reading. */
+  /* THE SEAM lives in the shaders now (spec-machine-three · uSeamX/uSeamW):
+     the hull melts toward the prose on the site's own dotmatrix door, eased
+     by the frame loop — a CSS mask cannot follow the berth without either
+     transitioning (the raster law) or popping at the flip. */
   .spec-rail.is-live[data-stage='finale'] {
-    width: 100vw;
-    right: 0;
     /* the fullscreen turn rides above the reading chrome (chips z-6),
        below the site nav */
     z-index: 30;
   }
   .spec-rail.is-live[data-stage='off'] {
-    opacity: 0;
+    /* NOT 0 · a fully transparent subtree gets dematerialised and the
+       return from the footer re-rasters every layer in one frame
+       (measured ~230ms). 1.5% of a dark render on the dark footer is
+       invisible; the layers stay warm, the return costs nothing. */
+    opacity: 0.015;
     pointer-events: none;
   }
   .spec-rail.is-live[data-stage='off'] .smw,
@@ -2113,9 +2169,11 @@
     display: flex;
     position: absolute;
     /* the ONE instrument baseline · tally (bl) · transport · frozen (br)
-       all sit on 26px — three different heights read as clutter */
+       all sit on 26px — three different heights read as clutter. Centred
+       in the BERTH (the stage is the whole screen; a bare 50% sat the
+       transport on the seam). */
     bottom: 26px;
-    left: 50%;
+    left: calc(var(--berth) + (100vw - var(--berth)) / 2);
     transform: translateX(-50%);
     gap: 1px;
     z-index: 2;
