@@ -555,10 +555,27 @@
   outline: 2px solid var(--v4-focus-ring);
   outline-offset: -3px;
 }
-/* the ".nika.yaml" extension stays off the compact tabs — the basename IS the
-   title; the extension is a given in a .nika.yaml editor. */
+/* the SELECTED tab reads as the FILE it is (operator 2026-07-13):
+   ◈ daily-brief.nika.yaml — the format's own mark + the full extension.
+   Unselected tabs stay compact (basename only, no mark): the strip
+   breathes, the active file self-identifies. */
 .v4ftab-ext {
   display: none;
+}
+.v4ftab-mark {
+  display: none;
+  line-height: 0;
+  margin-right: 6px;
+  color: var(--v4-text-dim);
+}
+.v4ftab[aria-selected='true'] .v4ftab-ext,
+.v4ftab[data-sel] .v4ftab-ext {
+  display: inline;
+  color: var(--v4-text-faint);
+}
+.v4ftab[aria-selected='true'] .v4ftab-mark,
+.v4ftab[data-sel] .v4ftab-mark {
+  display: inline-flex;
 }
 .v4ftab[aria-selected='true'],
 .v4ftab[data-sel] {

@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
+import { NikaIcon } from '../icons/Icon'
 import { verbGlyph } from '../components/codefile-highlight'
 import { MiniDag } from '../components/MiniDag'
 import { InstallCommand } from '../components/InstallCommand'
@@ -122,6 +123,11 @@ function FileTabs({
           className="v4ftab"
           onClick={() => onSelect(i)}
         >
+          {/* the format's own mark — the selected tab reads as the FILE it
+              is: ◈ daily-brief.nika.yaml (CSS reveals mark+ext on select) */}
+          <span className="v4ftab-mark" aria-hidden>
+            <NikaIcon id="ui/butterfly" size={12} />
+          </span>
           {f.label}
           <span className="v4ftab-ext" aria-hidden>
             .nika.yaml
@@ -147,7 +153,13 @@ export function FileTabsGhost({ active }: { active: string }) {
         <span className="v4ftabs">
           {TABS.map((f) => (
             <span key={f.id} className="v4ftab" data-sel={f.label === active || undefined}>
+              <span className="v4ftab-mark" aria-hidden>
+                <NikaIcon id="ui/butterfly" size={12} />
+              </span>
               {f.label}
+              <span className="v4ftab-ext" aria-hidden>
+                .nika.yaml
+              </span>
             </span>
           ))}
         </span>
