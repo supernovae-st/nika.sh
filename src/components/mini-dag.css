@@ -273,4 +273,44 @@
 /* the band's drawing hangs LEFT with the caption + the window below it (wave
    P — centering floated it away from every other anchor on the column). */
 
+/* ── rail variant · the plan stands VERTICAL beside the hero file ─────────────
+   (operator 2026-07-13) Time reads DOWN — the same axis as the file. The
+   survey frame keeps its grammar (title in the top rule, base rule closing)
+   but the row stacks: drawing first, the plate (meta · action) grounded
+   under it on the base line. The horizontal tie has no vertical meaning. */
+.mdag--rail .mdag-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 0 2px;
+}
+.mdag--rail .mdag-scroll {
+  order: -1;
+  overflow: visible;
+  align-self: center;
+}
+.mdag--rail .mdag-tie {
+  display: none;
+}
+.mdag--rail .mdag-side {
+  align-items: flex-start;
+  gap: 5px;
+  max-width: none;
+  padding: 0 2px 2px;
+}
+/* the column is narrow (RAIL_W 180) — labels stay tight so parallel waves
+   of three read without collisions */
+.mdag--rail .mdag-id {
+  max-width: 62px;
+  font-size: 10px;
+}
+/* THE CONTINUOUS FILM · as the film is born the rail's chrome steps aside
+   (--mrail 1→0, written by the scroll driver); the pips fade per-card. */
+.mdag--rail .mdag-title,
+.mdag--rail .mdag-side,
+.mdag--rail .mdag-base,
+.mdag--rail .mdag-wires {
+  opacity: var(--mrail, 1);
+}
+
 

@@ -45,7 +45,7 @@ export interface MiniDagLayout {
 }
 
 /* the rail (vertical · ≥1440) */
-const RAIL_W = 180
+const RAIL_W = 176
 const RAIL_PAD_T = 16
 const RAIL_ROW = 47
 const RAIL_TAIL = 30 // label room under the last wave
