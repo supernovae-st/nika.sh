@@ -379,7 +379,10 @@
        (at 1440 this puts the well at ~55ch: daily-brief's fs permits line
        fits whole — no orphan `}` tail). The copy keeps its own max-width
        caps and the H1 still sets in 4 lines. */
-    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+    /* the editor track carries FILE + VERTICAL RAIL now (operator
+       2026-07-13) — the copy cedes width it never used (the H1's longest
+       line sets ~430px) so the yaml keeps its no-wrap reading measure */
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
     align-items: center;
   }
 }
@@ -397,9 +400,27 @@
 }
 @media (min-width: 1024px) {
   .v4hero-editor {
-    /* let the editor read at a comfortable, generous width in its column */
-    max-width: 560px;
+    /* the film's opening pose (operator 2026-07-13): the FILE reads left,
+       THE PLAN stands VERTICAL at its right — the DAG folded into a column,
+       waiting for the scroll to unfold it. The rail track is the drawing's
+       own width (mini-dag-layout RAIL_W). */
+    max-width: 780px;
     margin-left: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 18px;
+    align-items: start;
+  }
+  .v4hero-editor > .v4hero-dag {
+    grid-column: 2;
+    grid-row: 1;
+    /* the column stands on the file's title-bar line, not above it */
+    margin-top: 2px;
+  }
+  .v4hero-editor > .v4hero-well {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
   }
 }
 /* a faint lift on the editor panel so it floats over the field (its own dark
@@ -767,7 +788,6 @@
 @media (min-width: 1024px) {
   .v4hero-dag {
     display: block;
-    margin-bottom: 12px;
   }
 }
 

@@ -12,21 +12,19 @@ import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships
 import { buildScript } from '../run/replay-model'
 import {
   PH,
-  aspireAt,
+  bornAt,
   clamp01,
-  condenseAt,
-  drainRampAt,
   easeInOut,
-  igniteAt,
+  glideAt,
+  litAt,
   phaseAt,
   runFracAt,
   runMsAt,
-  seedInAt,
-  shellAt,
+  seedFlightAt,
   taskInterval,
   termAt,
   timelineAt,
-  travelAt,
+  unfoldAt,
   verdictFrontAt,
   verdictPulseAt,
   wireAt,
@@ -66,26 +64,15 @@ import '../../fx/slab-sweep.css'
      terminal lines come verbatim from the recorded trace (morph-model). */
 
 interface BlockGeom {
-  /** the task block's own file lines */
+  /** the task's own yaml lines IN THE HERO PANEL (the birth glow's target) */
   els: HTMLElement[]
-  /** per line · distance to the block's center (the condensation vector) */
-  lineDy: number[]
-  /** the block's center — the seed's origin (seed-layer coords) */
+  /** the seed's origin — the hero block's center (seed-layer coords) */
   p0: { x: number; y: number }
-  /** the DOM node's center — the seed's landing (seed-layer coords) */
+  /** the card's BIRTH pose — its hero-rail pip (seed-layer coords) */
+  cp: { x: number; y: number }
+  /** the card's SEATED pose — the DAG layout (seed-layer coords) */
   p2: { x: number; y: number }
 }
-
-/** the drain's measured geometry — block tops + the band edge (viewport px):
-    apply() lerps remTop(p) from these and slides the remainder as ONE unit */
-interface DrainGeom {
-  tops: number[]
-  end: number
-  band: number
-}
-
-/* THE DRAIN lives in morph-model (wave M): the clearance is MEASURED per
-   layout (drainNeedRef, computed in measure()) — never a magic constant. */
 
 interface Edge {
   from: string
@@ -121,8 +108,8 @@ const countWord = (n: number): string => COUNT_WORDS[n] ?? String(n)
    both narrator surfaces render (the armed console + the static caption):
    a copy edit can never fork the two (wave M review) */
 const sayLines = (maxTogether: number): { phase: MorphPhase; text: string }[] => [
-  { phase: 'file', text: 'one file · the whole plan' },
-  { phase: 'burst', text: 'each task takes its place' },
+  { phase: 'hero', text: 'the plan takes shape beside the file' },
+  { phase: 'glide', text: 'each task stands in its place' },
   {
     phase: 'run',
     text: `steps light up in order${maxTogether > 1 ? ` · ${countWord(maxTogether)} together` : ''}`,
@@ -236,13 +223,12 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
      would force a reflow per path per frame (longtask budget, F2) */
   const wireLenRef = useRef<number[]>([])
   const blocksRef = useRef<Map<string, BlockGeom>>(new Map())
-  /** the drain's measured geometry — see measure() · morph-model */
-  const drainGeomRef = useRef<DrainGeom | null>(null)
-  /* non-task lines · header whispers UP, separators just dissolve, the
-     outputs block lands LAST toward the run footer */
-  const headLinesRef = useRef<HTMLElement[]>([])
-  const midLinesRef = useRef<HTMLElement[]>([])
-  const tailLinesRef = useRef<HTMLElement[]>([])
+  /** the hero panel's lines by number — the birth glow writes these direct */
+  const heroLinesRef = useRef<Map<number, HTMLElement>>(new Map())
+  /** task → wave index (the birth/unfold beats are per WAVE) */
+  const waveOfTaskRef = useRef<Map<string, number>>(new Map())
+  /** the hero rail's pips by task — each steps aside as its card is born */
+  const railPipsRef = useRef<Map<string, HTMLElement>>(new Map())
   /* the seed chips · one per task, driven along their bezier by apply() */
   const seedLayerRef = useRef<HTMLDivElement>(null)
   const seedRefs = useRef(new Map<string, HTMLSpanElement | null>())
@@ -416,97 +402,98 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const slr = seedLayer.getBoundingClientRect()
     const blocks = new Map<string, BlockGeom>()
 
-    const lineEls = new Map<number, HTMLElement>()
-    let fileTop = Infinity
-    let fileBottom = -Infinity
-    for (const el of card.querySelectorAll<HTMLElement>('.cf-line')) {
-      el.style.transform = ''
+    /* THE CONTINUOUS FILM (operator 2026-07-13): the birth beats play while
+       the HERO owns the screen — the seed flies from the task's yaml lines
+       in the HERO panel to its card being born beside the hero's vertical
+       rail. During the whole approach the hero and this stage scroll
+       TOGETHER, so hero-anchored geometry measured stage-relative is
+       scroll-invariant — one measure, zero per-frame reads. */
+    const heroLines = new Map<number, HTMLElement>()
+    if (heroCode) {
+      for (const el of heroCode.querySelectorAll<HTMLElement>('.cf-line')) {
+        el.classList.remove('morph-lit')
+        el.style.removeProperty('--mlit')
+        const ln = Number(el.dataset.ln)
+        if (!Number.isNaN(ln)) heroLines.set(ln, el)
+      }
+    }
+    /* the birth column · each card is born ON its rail pip (the hero plan's
+       vertical rail — the DAG folded into a column). data-task wires pip to
+       task; a missing rail (phones · reduced hero) makes birth an in-place
+       bloom (cp = node pose). */
+    const railNodes = new Map<string, DOMRect>()
+    for (const el of document.querySelectorAll<HTMLElement>(
+      '.v4hero-dag .mdag-node[data-task]',
+    )) {
       el.style.opacity = ''
-      const ln = Number(el.dataset.ln)
-      if (Number.isNaN(ln)) continue
-      lineEls.set(ln, el)
-      const r = el.getBoundingClientRect()
-      fileTop = Math.min(fileTop, r.top)
-      fileBottom = Math.max(fileBottom, r.bottom)
+      railNodes.set(el.dataset.task ?? '', el.getBoundingClientRect())
     }
 
-    const taskLines = new Set<number>()
-    const blockTops: number[] = []
-    let firstTaskLn = Infinity
-    let lastTaskLn = -Infinity
     /* the DAG content's lowest edge (viewport px) — anchors the flat-note
        caption BELOW the bounding box (morph.css · --morph-nodes-b) */
     let nodesBottom = -Infinity
     for (const t of plan.tasks) {
-      firstTaskLn = Math.min(firstTaskLn, t.line0)
-      lastTaskLn = Math.max(lastTaskLn, t.line1)
       const els: HTMLElement[] = []
-      const centers: number[] = []
       let top = Infinity
       let bottom = -Infinity
       let left = Infinity
       let right = -Infinity
       for (let n = t.line0; n <= t.line1; n++) {
-        taskLines.add(n)
-        const el = lineEls.get(n)
+        const el = heroLines.get(n)
         if (!el) continue
         els.push(el)
         const r = el.getBoundingClientRect()
-        centers.push(r.top + r.height / 2)
         top = Math.min(top, r.top)
         bottom = Math.max(bottom, r.bottom)
         left = Math.min(left, r.left)
         right = Math.max(right, r.right)
       }
       const nodeEl = nodeRefs.current.get(t.id)
-      /* the drain lerps dg.tops[i] by TASK index — every task must land an
-         entry even when its block can't be measured (else the queue-slide
-         reads a later task's top and D jumps · review find) */
-      blockTops.push(
-        Number.isFinite(top) ? top : (blockTops[blockTops.length - 1] ?? fileTop),
-      )
-      if (els.length === 0 || !nodeEl) continue
+      if (!nodeEl) continue
       nodeEl.style.opacity = ''
       nodeEl.style.transform = ''
       const nr = nodeEl.getBoundingClientRect()
       if (nr.bottom > nodesBottom) nodesBottom = nr.bottom
-      const cy = (top + bottom) / 2
+      const rail = railNodes.get(t.id)
+      const nodePose = {
+        x: nr.left + nr.width / 2 - slr.left,
+        y: nr.top + nr.height / 2 - slr.top,
+      }
       blocks.set(t.id, {
         els,
-        lineDy: centers.map((c) => cy - c),
-        p0: { x: (left + right) / 2 - slr.left, y: cy - slr.top },
-        p2: {
-          x: nr.left + nr.width / 2 - slr.left,
-          y: nr.top + nr.height / 2 - slr.top,
-        },
+        /* the seed's origin · the task's own lines in the HERO file (falls
+           back to the node pose when the hero panel is absent — the seed
+           then just materializes at its card) */
+        p0:
+          els.length > 0
+            ? { x: (left + right) / 2 - slr.left, y: (top + bottom) / 2 - slr.top }
+            : { ...nodePose },
+        /* the card's birth pose · its rail pip (grown leftward from it —
+           apply() anchors the card's right edge near the pip) */
+        cp: rail
+          ? {
+              x: rail.left + rail.width / 2 - slr.left,
+              y: rail.top + rail.height / 2 - slr.top,
+            }
+          : { ...nodePose },
+        /* the card's seated pose · the DAG layout (unfold's destination,
+           the verdict sweep's x) */
+        p2: nodePose,
       })
     }
 
-    const head: HTMLElement[] = []
-    const mid: HTMLElement[] = []
-    const tail: HTMLElement[] = []
-    for (const [ln, el] of lineEls) {
-      if (taskLines.has(ln)) continue
-      if (ln < firstTaskLn) head.push(el)
-      else if (ln > lastTaskLn) tail.push(el)
-      else mid.push(el)
-    }
-
     blocksRef.current = blocks
-    headLinesRef.current = head
-    midLinesRef.current = mid
-    tailLinesRef.current = tail
-
-    /* THE DRAIN GEOMETRY (wave M) · block tops + the band's lowest edge —
-       apply() slides the un-consumed remainder below the band as ONE unit
-       (order-preserving, layout intact: the queue stays readable), the
-       offset lerped from these tops so it's continuous in p. Replaces the
-       old 150px weighted sag that let un-read YAML and landed slabs
-       interleave (operator: « des choses qui buggent »). */
-    drainGeomRef.current =
-      blockTops.length > 0 && Number.isFinite(nodesBottom)
-        ? { tops: blockTops, end: fileBottom, band: nodesBottom }
-        : null
+    heroLinesRef.current = heroLines
+    const waveMap = new Map<string, number>()
+    for (const [w, wave] of plan.waves.entries()) for (const t of wave) waveMap.set(t.id, w)
+    waveOfTaskRef.current = waveMap
+    const pips = new Map<string, HTMLElement>()
+    for (const el of document.querySelectorAll<HTMLElement>(
+      '.v4hero-dag .mdag-node[data-task]',
+    )) {
+      pips.set(el.dataset.task ?? '', el)
+    }
+    railPipsRef.current = pips
 
     /* the wires · measured node-edge to node-edge, in DAG-local coordinates */
     const dr = dag.getBoundingClientRect()
@@ -607,81 +594,64 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
 
       /* phase flag → caption + narration crossfade (morph.css) */
       stage.dataset.phase = phaseAt(p)
-
-      /* the file card travels in, then its shell steps aside for the burst */
-      const shell = shellAt(p)
-      const settle = easeInOut(clamp01(p / PH.settleEnd))
-      stage.style.setProperty('--msh', shell.toFixed(3))
-      card.style.transform = `translateY(${((1 - settle) * 26).toFixed(2)}px)`
-      /* the entry yield at rest · the docked card's top edge vs the caption
-         band (seam() re-evaluates with the in-flight rect while it owns the
-         card — same gate, same frame, its verdict lands last) */
-      const base = seamBaseRef.current
-      if (base) yieldEntry(stage, base.top + (1 - settle) * 26 - capBotRef.current)
-      /* once every seed has landed AND the outputs line has left, the empty
-         card stops painting (the condensing lines live INSIDE it) */
-      /* the card stops painting the moment its last visible ink is gone —
-         the outputs tail exits by burstEnd−0.03 and every block's lines are
-         consumed before that at any corpus n (arc 20b: waiting for wire1
-         left a ghost silhouette + the curtain band floating over the wire
-         draw with no card to justify them) */
-      card.style.visibility =
-        p >= PH.burstEnd - 0.03 && blocksRef.current.size > 0 ? 'hidden' : ''
-
-      /* ── the aspiration · one task at a time, reading order ──────────────────
-         Each block CONDENSES in place into its seed chip, the chip rides a
-         curve INTO its DAG slot, the slot ignites on arrival. The DOM node
-         is the one truth (the flat register — every width, every device). */
-      const n = plan.tasks.length
-
-      /* THE DRAIN (wave M) · the un-consumed remainder slides below the slab
-         band as ONE unit — layout intact, the queue readable, no cross-over.
-         remTop lerps between successive block tops as each block condenses,
-         so D is continuous in p; the ramp completes before first ignition. */
-      let D = 0
-      const dg = drainGeomRef.current
-      if (dg) {
-        let remTop = dg.end
-        for (let i = 0; i < n && i < dg.tops.length; i++) {
-          const ceI = condenseAt(aspireAt(p, i, n))
-          if (ceI < 1) {
-            const next = i + 1 < dg.tops.length ? dg.tops[i + 1] : dg.end
-            remTop = dg.tops[i] + (next - dg.tops[i]) * ceI
-            break
-          }
-        }
-        D = Math.max(0, dg.band + 24 - remTop) * drainRampAt(p)
+      /* the hero rail's CHROME (title · meta · rules · pip wires) steps
+         aside as the plan it promised comes true — the pips themselves
+         fade per-card (born); this is the frame around them */
+      const rail = document.querySelector<HTMLElement>('.v4hero-dag')
+      if (rail) {
+        const gone = easeInOut(clamp01((p - PH.birth0) / (PH.birth1 - PH.birth0)))
+        rail.style.setProperty('--mrail', (1 - gone).toFixed(3))
       }
+
+      /* THE FILE holds whole for the entire film — the glide (seam below)
+         owns its transform; here only its done-crossfade visibility: the
+         settled interactive panel takes over at flat1 (same berth, a soft
+         swap — the film never re-seats the file). */
+      const card2 = cardRef.current
+      if (card2) card2.style.visibility = p >= PH.flat1 ? 'hidden' : ''
+
+      /* ── THE BIRTH + THE UNFOLD · wave by wave ────────────────────────────────
+         Birth (during the approach · the hero on screen): each rail pip
+         GROWS into its real task card at the pip's own pose — a seed flies
+         from the task's yaml lines (they light) into the growing card.
+         Unfold (after the dock): the column deals into the DAG layout.
+         Both are pure functions of p — scrub back and the plan folds back
+         into the rail. */
+      const n = plan.tasks.length
+      const waveCount = plan.waves.length
+      const waveOfTask = waveOfTaskRef.current
 
       for (let i = 0; i < n; i++) {
         const t = plan.tasks[i]
         const g = blocksRef.current.get(t.id)
         if (!g) continue
-        const e = aspireAt(p, i, n)
-        const ce = easeInOut(condenseAt(e))
-        const te = travelAt(e)
+        const w = waveOfTask.get(t.id) ?? 0
+        const born = bornAt(p, w, waveCount)
+        const unfold = unfoldAt(p, w, waveCount)
 
-        /* the block's lines ride the queue-slide and TIGHTEN toward their
-           center (0.55 damp — a squeeze, never a cross-over), then hand over */
+        /* the source lines' glow — up as the seed departs, released once the
+           card stands (direct DOM on the HERO panel; measure() cleans up) */
+        const lit = litAt(born)
         for (let j = 0; j < g.els.length; j++) {
           const el = g.els[j]
-          const dy = g.lineDy[j] * ce * 0.55 + D
-          el.style.transform = dy === 0 ? '' : `translateY(${dy.toFixed(2)}px)`
-          el.style.opacity =
-            ce <= 0.25 ? '1' : String(Math.max(0, 1 - (ce - 0.25) / 0.5))
+          if (lit <= 0.001) {
+            if (el.classList.contains('morph-lit')) {
+              el.classList.remove('morph-lit')
+              el.style.removeProperty('--mlit')
+            }
+          } else {
+            el.classList.add('morph-lit')
+            el.style.setProperty('--mlit', lit.toFixed(3))
+          }
         }
 
-        /* the seed chip · born from the condensation, drawn along its curve.
-           Birth OVERLAPS the block (seedInAt · wave M): the chip exists while
-           its lines are still readable — visibly born FROM them. */
+        /* the seed chip · flies from the yaml lines INTO the growing card */
         const seed = seedRefs.current.get(t.id)
         if (seed) {
-          const seedIn = seedInAt(ce)
-          const seedOut = 1 - clamp01((te - 0.85) / 0.15)
-          const o = seedIn * seedOut
+          const fl = seedFlightAt(born)
+          const o = fl <= 0 || fl >= 1 ? 0 : Math.min(1, fl * 4) * (1 - clamp01((fl - 0.8) / 0.2))
           const g0 = ghostRefs.current.get(`${t.id}·0`)
           const g1 = ghostRefs.current.get(`${t.id}·1`)
-          const ret = targetRefs.current.get(t.id)
           if (o <= 0.001) {
             seed.style.opacity = '0'
             seed.style.visibility = 'hidden'
@@ -693,36 +663,16 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               g1.style.opacity = '0'
               g1.style.visibility = 'hidden'
             }
-            if (ret) {
-              ret.style.opacity = '0'
-              ret.style.visibility = 'hidden'
-            }
           } else {
-            const tx = g.p2.x
-            const ty = g.p2.y
-            const scale = 1
-            const k = easeInOut(te)
-            /* the seed is born where its DRAINED block sits (the queue-slide) */
-            const y0 = g.p0.y + D
-            const dist = Math.hypot(tx - g.p0.x, ty - y0)
-            const cx = (g.p0.x + tx) / 2
-            const cy = (y0 + ty) / 2 - Math.min(90, Math.max(24, dist * 0.22))
-            const x = qbez(g.p0.x, cx, tx, k)
-            const y = qbez(y0, cy, ty, k)
+            const k = easeInOut(fl)
+            const dist = Math.hypot(g.cp.x - g.p0.x, g.cp.y - g.p0.y)
+            const cx = (g.p0.x + g.cp.x) / 2
+            const cy = (g.p0.y + g.cp.y) / 2 - Math.min(90, Math.max(24, dist * 0.22))
+            const x = qbez(g.p0.x, cx, g.cp.x, k)
+            const y = qbez(g.p0.y, cy, g.cp.y, k)
             seed.style.opacity = o.toFixed(3)
-            /* the base class ships hidden — an empty inline write would fall
-               back to the stylesheet and never show (found empirically) */
             seed.style.visibility = 'visible'
-            seed.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(-50%, -50%) scale(${(1 - (1 - scale) * k).toFixed(3)})`
-            /* THE TRAIL (wave M) · two afterimages ride the same bezier a
-               step behind — the flight reads as MOTION in a still glance,
-               and the trail collapses into the chip at landing (eased-k
-               offsets bunch at the ends). Pure function of p; params live at
-               module scope so this hot path never allocates (F2 budget).
-               Distance-damped (arc 20b): on a SHORT flight (the phone's
-               vertical hop) the k-offsets barely separate — the trail read
-               as a stacked triple exposure, not motion — so it fades out
-               below ~220px and is gone under 90px. Long flights unchanged. */
+            seed.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) translate(-50%, -50%)`
             const trailDamp = Math.min(1, Math.max(0, (dist - 90) / 130))
             for (let gI = 0; gI < 2; gI++) {
               const gh = gI === 0 ? g0 : g1
@@ -733,50 +683,41 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 gh.style.opacity = '0'
                 gh.style.visibility = 'hidden'
               } else {
-                const gx = qbez(g.p0.x, cx, tx, gk)
-                const gy = qbez(y0, cy, ty, gk)
+                const gx = qbez(g.p0.x, cx, g.cp.x, gk)
+                const gy = qbez(g.p0.y, cy, g.cp.y, gk)
                 gh.style.opacity = go.toFixed(3)
                 gh.style.visibility = 'visible'
-                gh.style.transform = `translate3d(${gx.toFixed(1)}px, ${gy.toFixed(1)}px, 0) translate(-50%, -50%) scale(${(1 - (1 - scale) * gk).toFixed(3)})`
-              }
-            }
-            /* THE LANDING RETICLE (arc 10h) · the destination announces
-               itself while the seed is in flight — a dashed docking target
-               at (tx, ty), the chip's own footprint (it clones the seed's
-               layout metrics with transparent ink). It tightens as the chip
-               approaches, then the IGNITION consumes it: a brief expansion
-               that dissolves into the slab's materialization. Pure function
-               of p (scrubbing replays it); same hot-path discipline as the
-               ghosts — direct style writes, zero allocation. */
-            if (ret) {
-              const ig = easeInOut(igniteAt(e))
-              const retO = clamp01((te - 0.06) / 0.28) * (1 - ig) * 0.85
-              if (retO <= 0.003) {
-                ret.style.opacity = '0'
-                ret.style.visibility = 'hidden'
-              } else {
-                const rs = scale * (1.16 - 0.16 * k) * (1 + 0.26 * ig)
-                ret.style.opacity = retO.toFixed(3)
-                ret.style.visibility = 'visible'
-                ret.style.transform = `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) translate(-50%, -50%) scale(${rs.toFixed(3)})`
+                gh.style.transform = `translate3d(${gx.toFixed(1)}px, ${gy.toFixed(1)}px, 0) translate(-50%, -50%)`
               }
             }
           }
         }
 
-        /* the node is BORN as its seed lands — the flat register, the one truth
-           on every width. The birth is a small BLOOM (arc 20): rise + a
-           0.94→1 scale on the same eased ignition — the slab materializes
-           instead of fading in flat (still a pure function of p) */
+        /* the card · born ON its rail pip (right edge anchored a step left
+           of the pip — it grows INTO the free space between file and rail),
+           then dealt to its DAG seat by the unfold. One transform, both
+           journeys: birth scales it up at the pip, unfold travels pip→seat. */
         const nodeEl = nodeRefs.current.get(t.id)
         if (nodeEl) {
-          const o = easeInOut(igniteAt(e))
+          const o = born
+          const gs = 0.34 + 0.66 * born /* growth · a pip-sized chip becomes the card */
+          /* birth pose: the card's RIGHT edge hangs off its pip — it grows
+             INTO the gutter between file and rail, never over the yaml
+             (the half-width scales with the growth) */
+          const bx = g.cp.x - 10 - (nodeEl.offsetWidth * gs) / 2
+          const dx = (bx - g.p2.x) * (1 - unfold)
+          const dy = (g.cp.y - g.p2.y) * (1 - unfold)
           nodeEl.style.opacity = o.toFixed(3)
           nodeEl.style.transform =
-            o >= 1
+            o >= 1 && unfold >= 1
               ? ''
-              : `translateY(${((1 - o) * 10).toFixed(2)}px) scale(${(0.94 + 0.06 * o).toFixed(3)})`
+              : `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0) scale(${(gs + (1 - gs) * unfold).toFixed(3)})`
         }
+
+        /* the rail pip steps aside as ITS card is born (per-pip, not the
+           whole drawing — the rail visibly BECOMES the plan) */
+        const pip = railPipsRef.current.get(t.id)
+        if (pip) pip.style.opacity = String(1 - Math.min(1, born * 1.6))
       }
 
       /* THE VERDICT SWEEP (arc 20b) · the flat window's scene event — the
@@ -807,32 +748,6 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         for (const t of plan.tasks) {
           nodeRefs.current.get(t.id)?.style.setProperty('--vswp', '0')
         }
-      }
-
-      /* header lines whisper UP and out with the shell; separators dissolve
-         in place; the outputs block holds, then lands LAST toward the run
-         footer as the terminal rises (its landing = the footer being born) */
-      for (let i = 0; i < headLinesRef.current.length; i++) {
-        const el = headLinesRef.current[i]
-        el.style.opacity = shell.toFixed(3)
-        el.style.transform = shell >= 1 ? '' : `translateY(${(-(1 - shell) * 14).toFixed(2)}px)`
-      }
-      for (let i = 0; i < midLinesRef.current.length; i++) {
-        const el = midLinesRef.current[i]
-        el.style.opacity = shell.toFixed(3)
-        /* separators ride the queue-slide WITH the blocks around them */
-        el.style.transform = D === 0 ? '' : `translateY(${D.toFixed(2)}px)`
-      }
-      /* the outputs tail rides the queue-slide WITH the document (D) — it
-         re-enters from below as the queue empties — then exits INTO the
-         terminal's birth, done by the time the strip is half-risen, so YAML
-         never reads through its chrome (wave M · the p060 mush) */
-      const oe = easeInOut(clamp01((p - (PH.burstEnd - 0.09)) / 0.06))
-      for (let i = 0; i < tailLinesRef.current.length; i++) {
-        const el = tailLinesRef.current[i]
-        el.style.opacity = (1 - oe).toFixed(3)
-        const dy = D + oe * 34
-        el.style.transform = dy === 0 ? '' : `translateY(${dy.toFixed(2)}px)`
       }
 
       /* wires draw once the nodes have landed (lengths pre-cached) — the
@@ -987,57 +902,62 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
     const heroPanel = document.querySelector<HTMLElement>('.v4hero-code')
     const heroBox = heroPanel?.closest<HTMLElement>('.v4hero-editor') ?? heroPanel
     const heroCopy = document.querySelector<HTMLElement>('.v4hero-copy')
-    /* the hero's peripheral mini-DAG fades WITH the copy — no orphan
-       micro-text hanging beside the flight (wave M) */
-    const heroDags = Array.from(document.querySelectorAll<HTMLElement>('.v4hero-dag'))
-    const SEAM_TAKE = 0.04
     const handBack = () => {
       if (heroBox) heroBox.style.visibility = ''
       if (heroCopy) heroCopy.style.opacity = ''
-      for (const d of heroDags) d.style.opacity = ''
+      for (const el of heroLinesRef.current.values()) {
+        el.classList.remove('morph-lit')
+        el.style.removeProperty('--mlit')
+      }
+      for (const pip of railPipsRef.current.values()) pip.style.opacity = ''
     }
-    const seam = (rect: DOMRect, vh: number) => {
+    /* THE ADOPTION + THE GLIDE (the continuous film) · the hero owns the
+       file through the whole birth; at glide0 the morph card
+       takes over AT the hero panel's live projected rect — pixel-equal
+       content, exactly ONE copy ever paints — then glideAt flies it into
+       its LEFT berth (seamBase). Scrub up and it hands back the same way. */
+    const seam = (p: number, vh: number) => {
       const card = cardRef.current
       const stage = stageRef.current
-      if (!heroPanel || !heroBox || !card || !stage) return
-      const q = 1 - rect.top / vh
-      const inWindow = q >= SEAM_TAKE && q < 1
-      /* the stage un-clips ONLY while the card travels outside its box */
-      if (inWindow) stage.dataset.seam = '1'
+      if (!card || !stage) return
+      /* the stage un-clips while ANY actor lives outside its box: the birth
+         column rides above the docking stage, the gliding card crosses it */
+      if (p > 0.004 && p < PH.glide1) stage.dataset.seam = '1'
       else delete stage.dataset.seam
-      /* the ENTRY yield window is GEOMETRIC (wave I): computed below from the
-         panel's actual travel rect vs the caption band — never from q alone
-         (the old q<1 window let the lede overlap the diving title bar) */
-      if (q >= 1) {
-        /* past the seam · the hero is above the viewport; hand everything
-           back so an upward scrub finds it intact (and the unroll clip must
-           not survive a fast scrub past the window) */
-        handBack()
-        card.style.clipPath = ''
-        return
+      /* the hero copy peels as the plan is born beside it (p-keyed, scrub-
+         reversible — the page is being pulled toward the plan) */
+      if (heroCopy) {
+        const peel = 1 - easeInOut(clamp01((p - 0.05) / 0.17))
+        heroCopy.style.opacity = p <= 0.004 ? '' : peel.toFixed(3)
       }
-      if (!inWindow) {
-        /* before the takeover · the hero editor IS the file; no second copy —
-           and the heading stands aside (the hero still owns this scroll) */
-        stage.dataset.entry = '1'
-        handBack()
+      const k = glideAt(p)
+      if (p < PH.glide0 || !heroPanel || !heroBox) {
+        /* the approach · the hero editor IS the file; the card waits */
+        if (heroBox) heroBox.style.visibility = ''
         card.style.visibility = 'hidden'
         card.style.clipPath = ''
+        delete stage.dataset.entry
         return
       }
       const base = seamBaseRef.current
       const hr = heroPanel.getBoundingClientRect()
       if (!base || base.w <= 0 || hr.width <= 0) {
-        /* no geometry yet (first frame · zero-width edge) — the hero stays
-           the ONE visible file until the projection can take over */
-        stage.dataset.entry = '1'
-        handBack()
+        if (heroBox) heroBox.style.visibility = ''
         card.style.visibility = 'hidden'
         card.style.clipPath = ''
         return
       }
+      if (k >= 1) {
+        /* seated · the berth owns it (apply() handles the done swap) */
+        heroBox.style.visibility = 'hidden'
+        card.style.clipPath = ''
+        card.style.transform = ''
+        if (card.style.visibility === 'hidden' && progressRef.current < PH.flat1)
+          card.style.visibility = ''
+        delete stage.dataset.entry
+        return
+      }
       const sr = stage.getBoundingClientRect()
-      const k = easeInOut(clamp01((q - SEAM_TAKE) / (1 - SEAM_TAKE)))
       const inv = 1 - k
       /* the vertical component eases faster — the card DIVES out of the
          nav band instead of lingering behind it */
@@ -1046,43 +966,30 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       const slotCy = sr.top + base.top + base.h / 2
       const dx = (hr.left + hr.width / 2 - slotCx) * inv
       let dy = (hr.top + hr.height / 2 - slotCy) * invY
-      const s = 1 + (hr.width / base.w - 1) * inv
-      /* nav clearance · blended in across the seam's first fifth so the
-         takeover instant stays pixel-continuous with the hero panel while
-         the card clears the fixed nav EARLY (never lingers behind it) */
-      const top = slotCy + dy + 26 * k - (base.h * s) / 2
-      const lift = Math.max(0, NAV_SAFE - top) * Math.min(1, q * 5)
+      const sc1 = 1 + (hr.width / base.w - 1) * inv
+      const top = slotCy + dy - (base.h * sc1) / 2
+      const lift = Math.max(0, NAV_SAFE - top) * Math.min(1, k * 5)
       dy += lift
       /* the yield gate, from the panel's LIVE top edge — the heading/lede is
          gone before the title bar can reach its band, and comes back the
-         moment the flight clears it (scrub-up reverses it the same way) */
+         moment the flight clears it */
       yieldEntry(stage, top + lift - (capBotRef.current + sr.top))
       /* THE UNROLL (wave M) · the hero caps its file at ~20 lines; the card
          carries the WHOLE file. At takeover the card clips to the hero
-         panel's projected height (the shared top region is pixel-identical),
-         then the clip releases with k — the rest of the file REVEALS below
-         the fold instead of popping in. Pure function of q. */
-      const visH = Math.min(base.h, hr.height / Math.max(s, 0.0001))
+         panel's projected height, then the clip releases with k. */
+      const visH = Math.min(base.h, hr.height / Math.max(sc1, 0.0001))
       let clipB = Math.max(0, (base.h - visH) * (1 - k))
-      /* snap the cut to the line grid — whole rows only (the hero's law);
-         the release then steps line by line, terminal-like */
-      const sc = seamClipRef.current
-      if (sc && clipB > 0.5) {
-        const cut = Math.max(sc.headH + sc.lineH, base.h - clipB)
-        const rows = Math.round((cut - sc.headH) / sc.lineH)
-        clipB = Math.max(0, base.h - (sc.headH + rows * sc.lineH))
+      const scl = seamClipRef.current
+      if (scl && clipB > 0.5) {
+        const cut = Math.max(scl.headH + scl.lineH, base.h - clipB)
+        const rows = Math.round((cut - scl.headH) / scl.lineH)
+        clipB = Math.max(0, base.h - (scl.headH + rows * scl.lineH))
       }
       card.style.clipPath = clipB > 0.5 ? `inset(-1px -1px ${clipB.toFixed(1)}px -1px)` : ''
-      /* the glide ENDS on the settle pose (translateY 26px) — apply() then
-         eases 26→0 across the file beat, zero teleport at the boundary */
       card.style.visibility = ''
-      card.style.transform = `translate3d(${dx.toFixed(1)}px, ${(dy + 26 * k).toFixed(1)}px, 0) scale(${s.toFixed(4)})`
+      card.style.transform = `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0) scale(${sc1.toFixed(4)})`
       heroBox.style.visibility = 'hidden'
-      /* the pitch fades as its file is drawn away (restored on scrub-up) —
-         q-based so the dimming is felt from the seam's first third */
-      const peel = (1 - easeInOut(clamp01(q * 1.8))).toFixed(3)
-      if (heroCopy) heroCopy.style.opacity = peel
-      for (const d of heroDags) d.style.opacity = peel
+      void vh
     }
 
     let needMeasure = true
@@ -1096,13 +1003,18 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         needMeasure = false
         measure()
       }
-      /* runway from the STAGE's own height, not innerHeight (W20): the stage
-         is 100svh on phones — innerHeight grows when the URL bar collapses
-         and would let p hit 1 before the sticky actually detaches. Desktop
-         stage is 100vh = innerHeight, so this changes nothing there. */
-      const runway = rect.height - (stageRef.current?.offsetHeight ?? vh)
-      apply(runway > 0 ? clamp01(-rect.top / runway) : 1)
-      seam(rect, vh)
+      /* THE CONTINUOUS AXIS (operator 2026-07-13): p spans the APPROACH plus
+         the sticky runway as one number — p=0 the section top touches the
+         viewport bottom (the hero fully on screen, birth plays THERE), the
+         stage docks at P_ARM, the sticky releases at 1. The stage height
+         (not innerHeight · W20) keeps phones honest when the URL bar
+         collapses. */
+      const stageH = stageRef.current?.offsetHeight ?? vh
+      const runway = rect.height - stageH
+      const axis = runway + stageH /* runway + one viewport of approach */
+      const pNow = axis > 0 ? clamp01((stageH - rect.top) / axis) : 1
+      apply(pNow)
+      seam(pNow, vh)
     }
     const schedule = () => {
       if (rafRef.current == null) rafRef.current = requestAnimationFrame(frame)
@@ -1425,7 +1337,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
      plus the tasks running there (verbatim intervals) — never a guess */
   const tipAt = useCallback(
     (frac: number): string => {
-      if (frac < PH.burst0) return 'the file'
+      if (frac < PH.birth0) return 'the file'
+      if (frac < PH.glide0) return 'the plan is born'
       const rf = runFracAt(frac)
       if (rf <= 0) return 'the plan assembles'
       if (rf >= 1) return `exit ${script.verdict.exit} · ${formatMs(script.verdict.totalMs)}`
@@ -1506,7 +1419,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
       aria-labelledby="the-morph-title"
       data-armed={armed || undefined}
     >
-      <div className="morph-stage" ref={stageRef} data-phase={armed ? 'file' : 'done'}>
+      <div className="morph-stage" ref={stageRef} data-phase={armed ? 'hero' : 'done'}>
         <div className="morph-wrap">
           <header className="morph-head">
             <p className="v4fig">01</p>
@@ -1515,11 +1428,11 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
             </h2>
             {/* the phase captions · one visible at a time (CSS crossfade) */}
             <div className="morph-captions" aria-hidden={armed ? undefined : true}>
-              <p className="morph-cap" data-for="file">
-                The same file you just read. Keep scrolling.
+              <p className="morph-cap" data-for="hero">
+                The plan you just read is <b>taking shape</b> beside the file.
               </p>
-              <p className="morph-cap" data-for="burst">
-                One task at a time is <b>drawn into its place</b> in the plan.
+              <p className="morph-cap" data-for="glide">
+                The file settles in; every task <b>stands in its place</b>.
               </p>
               <p className="morph-cap" data-for="run">
                 The recorded run chains through it, step by step.
@@ -1945,7 +1858,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                   the tasks truly running there) — words written DOM-direct by
                   onTrackMove, position riding the same --morph-hx var */}
               <span className="morph-track-tip" aria-hidden ref={tipRef} />
-              {[PH.burst0, PH.run0, PH.run1].map((b) => (
+              {[PH.glide0, PH.run0, PH.run1].map((b) => (
                 <span key={b} className="morph-notch" style={{ left: `${b * 100}%` }} aria-hidden />
               ))}
               {ticks.map((t) => (

@@ -116,6 +116,7 @@ export function MiniDag({
                 key={n.id}
                 type="button"
                 className="mdag-node"
+                data-task={n.id}
                 data-verb={n.verb}
                 data-hi={pairTask === n.id || undefined}
                 style={

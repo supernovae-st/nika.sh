@@ -110,9 +110,12 @@
    whole film asks ~16% less scroll, while the burst window itself GREW
    (0.40→0.47 of a shorter runway ≈ the same absolute room per beat). */
 .morphsec[data-armed] {
-  /* 320 (was 370): the front-loaded beats need less tail — the next
-     section arrives with the verdict still warm */
-  height: 320vh;
+  /* THE CONTINUOUS AXIS (operator 2026-07-13): the section is stage (100vh)
+     + sticky runway (320vh = morph-model RUNWAY_VH × stage — the model owns
+     the ratio, P_ARM derives from it). The film's p ALSO counts the 100vh
+     approach BEFORE the dock, so the birth beats play while the hero is
+     still on screen — the runway itself did not grow. */
+  height: 420vh;
 }
 .morphsec[data-armed] .morph-stage {
   position: sticky;
@@ -223,8 +226,9 @@
   color: var(--v4-text);
   font-weight: 600;
 }
-.morph-stage[data-phase='file'] .morph-cap[data-for='file'],
-.morph-stage[data-phase='burst'] .morph-cap[data-for='burst'],
+.morph-stage[data-phase='hero'] .morph-cap[data-for='hero'],
+.morph-stage[data-phase='glide'] .morph-cap[data-for='glide'],
+.morph-stage[data-phase='wires'] .morph-cap[data-for='glide'],
 .morph-stage[data-phase='run'] .morph-cap[data-for='run'],
 .morph-stage[data-phase='flat'] .morph-cap[data-for='run'],
 .morph-stage[data-phase='done'] .morph-cap[data-for='run'] {
@@ -257,7 +261,11 @@
   flex: none;
 }
 
-/* THE FILE · centered in the scene while it travels (armed only) */
+/* THE FILE · the traveling card (armed only). THE CONTINUOUS FILM (operator
+   2026-07-13): ≥1024 its berth is the LEFT column — the done-frame's own
+   reading pose — from the very first frame. The glide flies the hero panel
+   straight into this berth and the film never re-seats it; the composition
+   the ending promises is the composition the film opens into. */
 .morph-file {
   pointer-events: none; /* decorative in the morph — the hero owns interaction */
 }
@@ -279,6 +287,16 @@
   display: flex;
   align-items: safe center;
   justify-content: center;
+}
+@media (min-width: 1024px) {
+  .morphsec[data-armed] .morph-file {
+    /* the LEFT berth — the exact geometry morph-done-file settles into, so
+       the done crossfade is a pixel-stable swap, never a move */
+    inset: 0 auto calc(var(--morph-term-h) + 132px) 0;
+    width: clamp(300px, 27vw, 372px);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
 .morph-code {
   /* the driver derives BOTH from the LIVE hero panel at measure time: the
@@ -355,13 +373,15 @@
   will-change: transform, opacity;
   background-image: none; /* the gutter hairline must not fly with the line */
 }
-/* once the burst begins the lines LEAVE the card — clipping would amputate
-   every flight that targets a node beyond the card edge */
-.morph-stage[data-phase='burst'] .morph-code.cf-panel,
+/* the glide's unroll clip is an inline clip-path — the panel itself never
+   scroll-clips mid-film (a cropped edge mid-flight reads as broken) */
+.morph-stage[data-phase='glide'] .morph-code.cf-panel,
+.morph-stage[data-phase='wires'] .morph-code.cf-panel,
 .morph-stage[data-phase='run'] .morph-code.cf-panel,
 .morph-stage[data-phase='flat'] .morph-code.cf-panel,
 .morph-stage[data-phase='done'] .morph-code.cf-panel,
-.morph-stage[data-phase='burst'] .morph-code .cf-pre,
+.morph-stage[data-phase='glide'] .morph-code .cf-pre,
+.morph-stage[data-phase='wires'] .morph-code .cf-pre,
 .morph-stage[data-phase='run'] .morph-code .cf-pre,
 .morph-stage[data-phase='flat'] .morph-code .cf-pre,
 .morph-stage[data-phase='done'] .morph-code .cf-pre {
@@ -1170,14 +1190,11 @@
       transform 0.5s var(--ease-ui, ease) 0.15s,
       visibility 0s;
   }
-  /* the DAG takes its done-frame inset at `flat` ALREADY (W10) — the DOM is
-     invisible through the dive, so the layout freezes BEFORE the 3D slabs
-     measure their landing targets from it, and nothing slides during the
-     crossfade (the old 0.5s left-transition was the teleport's second half:
-     the 3D landed while the DOM was still traveling). The jump happens
-     hidden at run→flat; scrubbing back reverses it hidden too. */
-  .morphsec[data-armed] .morph-stage[data-phase='flat'] .morph-dag,
-  .morphsec[data-armed] .morph-stage[data-phase='done'] .morph-dag {
+  /* THE CONTINUOUS FILM (operator 2026-07-13): the DAG owns the RIGHT of the
+     file's berth for the WHOLE armed film, not just the done frame — the
+     unfold deals the cards into a layout that never re-seats afterward
+     (the old flat-time jump dies with the centered interlude it healed). */
+  .morphsec[data-armed] .morph-dag {
     left: calc(clamp(300px, 27vw, 372px) + 28px);
   }
 }
@@ -1233,6 +1250,16 @@
   cursor: pointer; /* the lit block is clickable — replay from this step */
   background: rgb(79 134 255 / 0.13);
   box-shadow: inset 2px 0 0 var(--v4-accent);
+}
+
+/* THE BIRTH GLOW (the continuous film) · while a card is being born beside
+   the hero, its OWN yaml lines light in the HERO panel — the same wash as
+   the done pairing (one vocabulary: lit lines = this task), driven by the
+   scroll (litAt via --mlit), released once the card stands. */
+.v4hero-code .cf-line.morph-lit {
+  background: rgb(79 134 255 / calc(0.13 * var(--mlit, 1)));
+  box-shadow: inset 2px 0 0
+    color-mix(in oklch, var(--v4-accent) calc(100% * var(--mlit, 1)), transparent);
 }
 
 
@@ -1343,8 +1370,9 @@
   opacity: 0;
   transition: opacity 0.3s var(--ease-ui, ease);
 }
-.morph-stage[data-phase='file'] .morph-csay-line[data-for='file'],
-.morph-stage[data-phase='burst'] .morph-csay-line[data-for='burst'],
+.morph-stage[data-phase='hero'] .morph-csay-line[data-for='hero'],
+.morph-stage[data-phase='glide'] .morph-csay-line[data-for='glide'],
+.morph-stage[data-phase='wires'] .morph-csay-line[data-for='glide'],
 .morph-stage[data-phase='run'] .morph-csay-line[data-for='run'],
 .morph-stage[data-phase='flat'] .morph-csay-line[data-for='flat'],
 .morph-stage[data-phase='done'] .morph-csay-line[data-for='done'] {

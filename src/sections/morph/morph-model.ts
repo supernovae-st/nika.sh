@@ -1,10 +1,38 @@
 /* ─── morph-model · scroll progress → the morph's whole state ─────────────────
    PURE LOGIC, no UI. The scroll morph (F2) is a pure function of
-   (flagship, p): the phase windows, each task's aspiration beat (condense →
-   travel → ignite), and the run timeline (node states + terminal reveal) all
-   derive from the one scroll progress. No timers, no accumulated state —
-   scrubbing backward replays the scene in reverse for free and nothing can
-   ever teleport.
+   (flagship, p): the phase windows, each wave's birth beat, the file's
+   glide, the column unfold and the run timeline (node states + terminal
+   reveal) all derive from the one scroll progress. No timers, no
+   accumulated state — scrubbing backward replays the scene in reverse for
+   free and nothing can ever teleport.
+
+   THE CONTINUOUS AXIS (operator 2026-07-13 · the film starts in the hero):
+   p spans the APPROACH + the sticky runway as ONE number:
+
+     p = (vh − section.top) / (runway + vh)
+
+   p=0 the section's top touches the viewport bottom (the hero still fully
+   on screen) · p=P_ARM the stage docks (section top hits 0 — the sticky
+   physics defines the seam) · p=1 the sticky releases. During the approach
+   the stage and the hero scroll TOGETHER, so hero-anchored geometry is
+   scroll-invariant relative to the stage — measured once, never per frame.
+
+   THE BEAT SHEET (why each window sits where it does):
+   BIRTH   0.02–0.12  while the hero is STILL READABLE each rail pip GROWS
+                      into its real task card — a seed flies from the
+                      task's own yaml lines (they light) into the growing
+                      card. The file never shreds (the early-burst law).
+   UNFOLD  →0.30      a standing card immediately FLIES toward its DAG seat
+                      (the birth column never parks — the hero is leaving
+                      the screen under it); the flight crosses the dock.
+   GLIDE   0.08–0.20  the card adopts the hero panel at 0.08 (two-thirds
+                      still on screen) and flies it to its LEFT berth,
+                      SEATED before the dock — the sticky freeze finds
+                      every actor already stage-fixed.
+   WIRES   0.30–0.40  dependency wires draw between the seated cards.
+   RUN     0.44–0.78  the recorded trace chains through the DAG + terminal.
+   FLAT    0.78–0.94  the verdict: the exit-0 sweep crosses the plan.
+   DONE    0.94–1.00  the settled comprehension frame (file ⟷ DAG pairing).
 
    HONESTY: node intervals come from the RECORDED trace. The engine flushes
    task_started/task_completed together at completion time, so a task's real
@@ -15,111 +43,92 @@
 import type { FlagshipEntry } from '../../flagships'
 import type { ReplayLine } from '../run/replay-model'
 
-/* ── the phase windows (fractions of the section's scroll runway) ──────────────
-   FILE   0.00–0.13  the selected file travels in and holds (sticky) — SHORT:
-                     the visitor just read this file in the hero (« the same
-                     file you just read »); holding it a fifth of the runway
-                     read as dead scroll (operator, arc 20)
-   BURST  0.13–0.60  one task at a time (reading order) CONDENSES into its
-                     seed chip, then the chip is drawn along a curve INTO its
-                     DAG slot — the slot ignites on arrival (per-task
-                     aspiration, wave I; the per-line scatter is gone). The
-                     earlier open WIDENS the window: each beat gets more
-                     scroll room, so the relay reads softer AND starts sooner
-   WIRES  0.56–0.66  dependency wires draw between the landed nodes
-   RUN    0.66–0.86  the recorded trace chains through the DAG + terminal
-   FLAT   0.86–0.94  the verdict beat: the exit-0 sweep crosses the graph,
-                     then the camera rises to top-down while the slabs lie
-                     face-up — the 3D plan WATCHED lying down into the map
-                     (wave K; scrub back and it stands up again)
-   DONE   0.94–1.00  the flat 2D DAG takes over as the closing frame        */
 export const PH = {
-  /* THE FRONT-LOADED GESTURE (operator 2026-07-13) · the visitor just read
-     this file in the hero, so the film spends the scroll on the TRANSFORM,
-     not the recap: the burst opens at 0.08 and lands by 0.42, the wires
-     draw as the last chips settle, and the RUN — terminal tape, node
-     ticks, the whole instrument story — starts at HALF the gesture
-     (run0 0.50, was 0.66). The verdict window keeps its widened sweep. */
-  settleEnd: 0.05,
-  burst0: 0.08,
-  burstEnd: 0.42,
-  wire0: 0.4,
-  wire1: 0.5,
-  /* the run monitor DOCKS with the file's settle — real software shows its
+  /* the approach share of the axis is vh/(runway+vh) — with the 320vh
+     runway that is ≈ 0.238 (P_ARM). The geometry writes the beat sheet
+     (swept empirically): the hero's RAIL leaves the top of the screen by
+     p≈0.12 and its FILE PANEL by p≈0.19 — so the births complete by 0.12,
+     the card adopts the panel at 0.10 (still two-thirds on screen) and its
+     glide ENJAMBS the dock (glide1 > P_ARM > glide0): the one voyage sews
+     approach and runway together, no dead frame on either side. */
+  birth0: 0.02,
+  birth1: 0.12,
+  /* the flight pip→seat must BEAT the hero's exit (the page climbs ~4.2vh
+     per unit p on this axis — a slow flight rides its pip off-screen and
+     yo-yos back, swept empirically): every card is seated by 0.18 */
+  unfold1: 0.18,
+  /* the file's voyage obeys the same law (its hero anchor also exits at
+     ~4.2vh/p): adopted at 0.08 while two-thirds on screen, SEATED in its
+     berth by 0.20 — before the dock, so the sticky freeze finds the card
+     already stage-fixed and the seam has nothing left to sew */
+  glide0: 0.08,
+  glide1: 0.2,
+  wire0: 0.22,
+  wire1: 0.32,
+  /* the run monitor DOCKS during the glide — real software shows its
      instrument panel before the tape rolls: empty log well, plan facts in
-     the status row, the tick map already on the rail. The log then streams
-     into the standing window at run0. */
-  term0: 0.03,
-  term1: 0.07,
-  run0: 0.5,
-  run1: 0.8,
+     the status row, the tick map already on the rail. */
+  term0: 0.24,
+  term1: 0.32,
+  run0: 0.38,
+  run1: 0.78,
   flat1: 0.94,
 } as const
+
+/* the sticky runway in viewport-heights (morph.css sets the armed section
+   height to RUNWAY_VH + 100vh of stage) — the model owns the number so the
+   axis math and the CSS can be pinned together by test */
+export const RUNWAY_VH = 3.2
+
+/** where the stage docks on the continuous axis (section top hits 0) */
+export const P_ARM = 1 / (RUNWAY_VH + 1)
 
 export const clamp01 = (v: number): number => Math.min(1, Math.max(0, v))
 
 export const easeInOut = (k: number): number =>
   k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2
 
-/** the file card's shell (chrome · gutter · panel floor) 1→0 across the top
-    of the burst — the frame steps aside, the task blocks stay readable. 0.16
-    window (was 0.1): the frame dissolving faster than the first beat could
-    land read as a hard cut into the burst (operator, arc 20) */
-export function shellAt(p: number): number {
-  return 1 - clamp01((p - PH.burst0) / 0.16)
-}
-
-/* ── the aspiration · one beat per task, reading order ─────────────────────────
-   File order IS topological order (deps live strictly earlier in the file),
-   so the plan assembles the way the file reads: transcript → extract → save.
-   Beats overlap 50% (a readable relay: at most two seeds in the air), and the
-   LAST beat lands exactly at burstEnd. */
-
 /* saturation must be EXACT at the beat boundaries (the DOM clears inline
    transforms at 1) — snap the float dust the divisions leave behind */
 const snap01 = (v: number): number => (v >= 1 - 1e-9 ? 1 : v <= 1e-9 ? 0 : v)
 
-/** a task's aspiration beat 0..1 (raw, un-eased) — index in file order */
-export function aspireAt(p: number, index: number, count: number): number {
-  const window = PH.burstEnd - PH.burst0
-  const beat = window / (1 + 0.5 * Math.max(0, count - 1))
-  const start = PH.burst0 + index * beat * 0.5
-  return snap01(clamp01((p - start) / beat))
+/* ── BIRTH · one beat per WAVE, time order ─────────────────────────────────────
+   The rail is the DAG folded into a column; birth unfolds it card by card.
+   Wave beats overlap 40% (a readable relay), the LAST wave lands exactly
+   at birth1 — every card stands before the glide can start. */
+export function bornAt(p: number, wave: number, waveCount: number): number {
+  const window = PH.birth1 - PH.birth0
+  const beat = window / (1 + 0.6 * Math.max(0, waveCount - 1))
+  const start = PH.birth0 + wave * beat * 0.6
+  return snap01(easeInOut(clamp01((p - start) / beat)))
 }
 
-/** CONDENSE sub-phase 0..1 — the block's lines converge into the seed chip */
-export const condenseAt = (e: number): number => snap01(clamp01(e / 0.45))
+/** the seed's flight inside a birth beat — it leaves the yaml lines early
+    and lands as the card reaches ~80% grown (causality: the line feeds
+    the card) */
+export const seedFlightAt = (b: number): number => snap01(clamp01(b / 0.8))
 
-/** TRAVEL sub-phase 0..1 — the seed rides its curve into the DAG slot */
-export const travelAt = (e: number): number => snap01(clamp01((e - 0.45) / 0.55))
+/** the source lines' glow — up with the seed's departure, released after
+    the card lands (the file is read, never consumed) */
+export const litAt = (b: number): number =>
+  b <= 0 ? 0 : b >= 1 ? 0 : clamp01(b / 0.25) * (1 - clamp01((b - 0.7) / 0.3))
 
-/** IGNITION 0..1 — the slot is BORN as its seed lands (the causality beat) */
-export const igniteAt = (e: number): number => snap01(clamp01((travelAt(e) - 0.78) / 0.22))
-
-/* ── THE DRAIN · a uniform queue-slide, geometric, order-preserving (wave M) ──
-   The un-consumed remainder of the file slides DOWN as ONE block — its own
-   layout intact (a per-line weighted sag at clearance amplitude made lines
-   cross into an unreadable pile — found empirically, wave M sweep) — so the
-   next task always reads at the top of the queue, below the slab band.
-   The driver computes the offset D = (bandBottom + margin − remTop(p)) from
-   MEASURED block tops; remTop lerps between successive tops as each block
-   condenses, so D is continuous in p. This ramp gates D's onset: it
-   saturates at burst0 + 0.085, BEFORE the first slot can ignite — ignition
-   onset is 0.879 × beat past burst0 (travelAt 0.78 · condense 0.45), and
-   the widest corpus beat (n = 7, window 0.34 since the front-loaded
-   gesture) puts that at burst0 + 0.074.
-   The model test sweeps the REAL corpus and fails if a future flagship's
-   task count ever breaks this bound. Pure function of p — scrubbing
-   reverses it. */
-export const DRAIN_END = 0.06
-export function drainRampAt(p: number): number {
-  return easeInOut(clamp01((p - (PH.burst0 + 0.02)) / (DRAIN_END - 0.02)))
+/* ── GLIDE · the file's one voyage, hero pose → left berth ────────────────────
+   It STARTS while the hero panel is still two-thirds on screen and ENDS
+   after the dock — the voyage itself is the seam. */
+export function glideAt(p: number): number {
+  return snap01(easeInOut(clamp01((p - PH.glide0) / (PH.glide1 - PH.glide0))))
 }
 
-/** the seed chip's birth 0..1 — starts while the block is still readable
-    (ce 0.35 → block opacity ≈ 0.8): the chip is visibly born FROM its block,
-    never popping in a void after it (wave M causality) */
-export const seedInAt = (ce: number): number => clamp01((ce - 0.35) / 0.4)
+/* ── UNFOLD · pip → seat, wave by wave ─────────────────────────────────────────
+   A card flies toward its DAG seat as soon as it stands (the birth column
+   never parks — the hero is leaving the screen under it); every card is
+   seated by unfold1 — the wires can trust the geometry. */
+export function unfoldAt(p: number, wave: number, waveCount: number): number {
+  const start =
+    PH.birth0 + wave * ((PH.birth1 - PH.birth0) / Math.max(1, waveCount)) + 0.02
+  return snap01(easeInOut(clamp01((p - start) / (PH.unfold1 - start))))
+}
 
 /** wire draw progress 0..1 */
 export function wireAt(p: number): number {
@@ -127,11 +136,10 @@ export function wireAt(p: number): number {
 }
 
 /* ── THE VERDICT SWEEP (arc 20b) · the flat window's scene event ───────────────
-   Post-#207 nothing lies down in the flat beat — the window's real content
-   is the VERDICT. The confirmation front crosses the plan left→right (the
-   drum's verdict-sweep register, on the DAG), each node flashing its ring
-   as the front passes. Front + pulse are pure functions of p so the beat
-   scrubs in reverse like everything else. */
+   The confirmation front crosses the plan left→right (the drum's
+   verdict-sweep register, on the DAG), each node flashing its ring as the
+   front passes. Front + pulse are pure functions of p so the beat scrubs
+   in reverse like everything else. */
 
 /** the sweep front's travel 0..1 across the flat window (eased; done a
     touch before flat1 so the done frame opens on a settled graph) */
@@ -169,14 +177,16 @@ export function runFracAt(p: number): number {
 }
 
 /** the scene's phase — drives the head captions + the narration rail (H2).
+    `hero` while the visitor is still reading the pitch (birth plays there);
     `flat` opens as the run window saturates: the verdict beat (the exit-0
     sweep) plays there; `done` at flat1, when the settled map is the closing
     frame. */
-export type MorphPhase = 'file' | 'burst' | 'run' | 'flat' | 'done'
+export type MorphPhase = 'hero' | 'glide' | 'wires' | 'run' | 'flat' | 'done'
 
 export function phaseAt(p: number): MorphPhase {
-  if (p < PH.burst0) return 'file'
-  if (p < PH.run0) return 'burst'
+  if (p < PH.glide0) return 'hero'
+  if (p < PH.wire0) return 'glide'
+  if (p < PH.run0) return 'wires'
   if (runFracAt(p) < 1) return 'run'
   return p < PH.flat1 ? 'flat' : 'done'
 }

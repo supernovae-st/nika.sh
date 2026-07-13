@@ -430,7 +430,7 @@ export default function Hero({
       <HeroAtmosphere />
 
       {/* the two-column composition · copy LEFT · editor RIGHT · generous air. */}
-      <div className="v4hero-grid relative z-[1] mx-auto w-full max-w-6xl">
+      <div className="v4hero-grid relative z-[1] mx-auto w-full max-w-7xl">
         {/* ── LEFT · the pitch ─────────────────────────────────────────────── */}
         <div className="v4hero-copy flex max-w-2xl flex-col">
           {/* the bracket eyebrow · the mono museum-plate register */}
@@ -530,17 +530,20 @@ export default function Hero({
         <div className="v4hero-editor" data-rise style={rise(180)}>
           {/* THE PLAN · derived from the selection, so every library pick gets
               its diagram for free · ≥1024 only (the editor is the phone's
-              whole story — phones keep the big See-it-run CTA). */}
+              whole story — phones keep the big See-it-run CTA).
+              VERTICAL at the file's right (operator 2026-07-13): the rail is
+              the DAG folded into a column — the film's opening pose, time
+              reading DOWN on the same axis as the file. */}
           <MiniDag
             plan={item.plan}
-            orientation="band"
+            orientation="rail"
             fileId={item.id}
             pairTask={pairTask}
             onPair={setPairTask}
             action={planAction}
             className="v4hero-dag"
           />
-          <div ref={panelRef}>
+          <div ref={panelRef} className="v4hero-well">
             {/* wrap: the hero is the READING surface — long flow lines soft-wrap
                 with a hanging indent (no right-edge clip, no hidden content).
                 tips + rangeTip: the smart-hover layer (plain-words glossary +
