@@ -7,9 +7,9 @@
 
 export const CATEGORY_GLOSS: Record<string, string> = {
   core: 'control flow and run-stream primitives',
-  file: 'workspace files — read, write, search (permits.fs-gated)',
-  data: 'pure JSON/data transforms — no I/O',
+  file: 'workspace files: read, write, search (permits.fs-gated)',
+  data: 'pure JSON/data transforms, no I/O',
   network: 'network egress (permits.net-gated)',
   introspection: 'the workflow looking at itself',
-  media: 'images, audio, charts — assets, not blobs',
+  media: 'images, audio, charts: assets, not blobs',
 }

@@ -73,7 +73,7 @@ export const SRC = {
     kind: 'schema',
     label: 'workflow.schema.json',
     href: '/schema/workflow.json',
-    hint: 'the served contract — the same file your editor validates against',
+    hint: 'the served contract, the same file your editor validates against',
   } as SourceLink,
   schemaPinned: {
     kind: 'schema',
@@ -97,25 +97,25 @@ export const SRC = {
     kind: 'mcp',
     label: 'the MCP oracle',
     href: 'https://github.com/supernovae-st/nika-agents',
-    hint: 'nika_schema · nika_explain · nika_check … — 8 read-only tools your agent loads',
+    hint: 'nika_schema · nika_explain · nika_check: 8 read-only tools your agent loads',
   } as SourceLink,
   editor: {
     kind: 'editor',
     label: 'the editor extension',
     href: 'https://github.com/supernovae-st/nika-vscode',
-    hint: 'VS Code · Cursor · Windsurf — syntax, diagnostics, DAG view (nika-lang)',
+    hint: 'VS Code · Cursor · Windsurf: syntax, diagnostics, DAG view (nika-lang)',
   } as SourceLink,
   engine: {
     kind: 'engine',
     label: 'the engine',
     href: REPO,
-    hint: 'the AGPL runtime — nika check enforces everything these pages describe',
+    hint: 'the AGPL runtime; nika check enforces everything these pages describe',
   } as SourceLink,
   registry: {
     kind: 'registry',
     label: 'the registry',
     href: 'https://github.com/supernovae-st/nika-registry',
-    hint: 'share workflows — every entry content-pinned and re-proven by CI',
+    hint: 'share workflows, every entry content-pinned and re-proven by CI',
   } as SourceLink,
   toolsCatalog: {
     kind: 'catalog',
@@ -149,7 +149,7 @@ export const ECOSYSTEM: SourceLink[] = [
     kind: 'spec',
     label: 'nika-spec',
     href: SPEC,
-    hint: 'the normative source — Apache-2.0, nine chapters, conformance-gated',
+    hint: 'the normative source: Apache-2.0, nine chapters, conformance-gated',
   },
   SRC.schema,
   SRC.engine,
@@ -161,25 +161,25 @@ export const ECOSYSTEM: SourceLink[] = [
 
 /* ── per-scope normative chapter (the schema's own structure → the prose) ── */
 const SCOPE_CHAPTER: Record<string, SourceLink> = {
-  envelope: chapter('01-envelope.md', 'the container — every top-level key'),
+  envelope: chapter('01-envelope.md', 'the container: every top-level key'),
   task: chapter('03-dag.md', 'the task shape and the plan it hangs on'),
-  infer: chapter('02-verbs.md', 'the four verbs — one execution model each'),
-  exec: chapter('02-verbs.md', 'the four verbs — one execution model each'),
-  invoke: chapter('02-verbs.md', 'the four verbs — one execution model each'),
-  agent: chapter('02-verbs.md', 'the four verbs — one execution model each'),
-  retry: chapter('05-errors.md', 'failures, typed — and the leash that retries them'),
-  on_error: chapter('05-errors.md', 'failures, typed — the catch side'),
+  infer: chapter('02-verbs.md', 'the four verbs, one execution model each'),
+  exec: chapter('02-verbs.md', 'the four verbs, one execution model each'),
+  invoke: chapter('02-verbs.md', 'the four verbs, one execution model each'),
+  agent: chapter('02-verbs.md', 'the four verbs, one execution model each'),
+  retry: chapter('05-errors.md', 'failures, typed, and the leash that retries them'),
+  on_error: chapter('05-errors.md', 'failures, typed: the catch side'),
   on_finally: chapter('03-dag.md', 'the cleanup lane rides the task shape'),
 }
 
 /* words whose PROSE home differs from their scope's default */
 const WORD_CHAPTER: Record<string, SourceLink> = {
   vars: chapter('04-variables.md', 'inputs, interpolation and the ${{ }} grammar'),
-  env: chapter('04-variables.md', 'runtime config — may appear in logs'),
-  secrets: chapter('04-variables.md', 'masked references — never inline literals'),
+  env: chapter('04-variables.md', 'runtime config; it may appear in logs'),
+  secrets: chapter('04-variables.md', 'masked references, never inline literals'),
   with: chapter('04-variables.md', 'task-level scope injection'),
   output: chapter('04-variables.md', 'named jq bindings over a task result'),
-  outputs: chapter('04-variables.md', 'the workflow return value — symmetric to vars'),
+  outputs: chapter('04-variables.md', 'the workflow return value, symmetric to vars'),
   tool: chapter('06-stdlib-contract.md', 'the closed nika: set + the mcp: lane'),
   args: chapter('06-stdlib-contract.md', 'validated against the builtin contract'),
 }
@@ -201,7 +201,7 @@ export function sourcesForWord(w: LanguageWord): SourceLink[] {
 
 /** the sources rail for a builtin room */
 export const TOOL_SOURCES: SourceLink[] = [
-  chapter('06-stdlib-contract.md', 'the stdlib contract — one closed namespace'),
+  chapter('06-stdlib-contract.md', 'the stdlib contract: one closed namespace'),
   SRC.toolsCatalog,
   SRC.docs,
   SRC.mcp,
@@ -210,7 +210,7 @@ export const TOOL_SOURCES: SourceLink[] = [
 
 /** the sources rail for a verb room */
 export const VERB_SOURCES: SourceLink[] = [
-  chapter('02-verbs.md', 'the four verbs — one execution model each'),
+  chapter('02-verbs.md', 'the four verbs, one execution model each'),
   SRC.schema,
   SRC.patterns,
   SRC.mcp,
