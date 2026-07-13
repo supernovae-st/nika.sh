@@ -565,7 +565,9 @@ function Machine({
         const prose = document.querySelector('.spec-flow, .spec-block')
         if (prose) {
           const pr = prose.getBoundingClientRect()
-          rig.leftSeam = pr.right > rect.left + rect.width * 0.06
+          /* +24px of guard (arc 28 · the berth pass): a plate the prose
+             merely BRUSHES reads as a collision before it overlaps */
+          rig.leftSeam = pr.right + 24 > rect.left + rect.width * 0.06
         } else {
           rig.leftSeam = false
         }

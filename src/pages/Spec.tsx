@@ -21,6 +21,7 @@ import {
   nodeById,
   nodeReadout,
   nsScope,
+  type StratumKey,
 } from '../scene/spec-machine-data'
 import { useSpecReading } from '../sections/spec/use-spec-reading'
 import { SpecSchematic } from '../sections/spec/SpecSchematic'
@@ -153,6 +154,27 @@ export function Component() {
      stratum under the reading line — drives the TOC ticks, the schematic and
      the rail HUD (the W1 machine mirrors this with its own observer) */
   const { lit, current } = useSpecReading()
+  /* THE STRUCK CARD (arc 28) · the block whose stratum just lit answers the
+     ignition with a seam-side flash — the umbilical's spark travels DOM →
+     hull; this is the same beat landing hull-side → DOM. Motion-gated: the
+     reduced register never sees the class (the goldens' truth stays still).
+     The timeout runs out on its own — removing a class from a detached
+     node is a no-op, so an unmount mid-beat costs nothing. */
+  const prevStruck = useRef<ReadonlySet<StratumKey>>(new Set())
+  useEffect(() => {
+    const prev = prevStruck.current
+    prevStruck.current = lit
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    for (const k of lit) {
+      if (prev.has(k)) continue
+      const el = document.querySelector(`.spec-block[data-stratum="${k}"]`)
+      if (!el) continue
+      el.classList.remove('is-struck') /* restart cleanly if re-struck */
+      void (el as HTMLElement).offsetWidth /* flush so the animation re-arms */
+      el.classList.add('is-struck')
+      window.setTimeout(() => el.classList.remove('is-struck'), 1090)
+    }
+  }, [lit])
   /* the rail follows the reading · when the strip scrolls INSIDE itself
      (narrow berths — the well law) the read segment glides to centre.
      Manual scrollLeft, never scrollIntoView (which would also move the
