@@ -58,6 +58,10 @@
   fill: none;
   stroke: url(#smcUmb);
   stroke-width: 1.4;
+  /* THE CURRENT · the dash drifts hull-ward (offset written per frame by
+     the loop — JS owns the envelope, never a CSS transition) */
+  stroke-dasharray: 9 5;
+  stroke-linecap: round;
   opacity: 0;
 }
 .smc-uhalo {
@@ -68,6 +72,14 @@
 }
 .smc-spark {
   fill: #c9dbff;
+  opacity: 0;
+}
+/* THE ROOT · the wire's joint on the read card — a lit ring, not a blob:
+   the connection reads as machined */
+.smc-uroot {
+  fill: #0a0c10;
+  stroke: #8db4ff;
+  stroke-width: 1.2;
   opacity: 0;
 }
 .smc-dot {

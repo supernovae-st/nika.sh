@@ -5,6 +5,7 @@ import { MACHINE_NODES, SPEC_SECTIONS, nodeById, type StratumKey } from './spec-
 import {
   POSES,
   STRATA_ORDER,
+  STRATUM_HEX,
   buildSpecMachine,
   stratumIndex,
   type MachinePose,
@@ -95,6 +96,8 @@ interface CalloutRig {
   upath?: SVGPathElement | null
   uhalo?: SVGPathElement | null
   spark?: SVGCircleElement | null
+  /** the wire's rooted joint on the read card (the connection made visible) */
+  uroot?: SVGCircleElement | null
   ugrad?: SVGLinearGradientElement | null
 }
 
@@ -386,7 +389,7 @@ function Machine({
     if (seamRef.current < 0.004 && seamTarget === 0) seamRef.current = 0
     const dpr = gl.domElement.width / Math.max(1, state.size.width)
     u.uSeamX.value = seamRef.current <= 0.004 ? 0 : seamRef.current * gl.domElement.width
-    u.uSeamW.value = 150 * dpr
+    u.uSeamW.value = 110 * dpr
 
     /* THE HELM · user orbit spring-returns once released · zoom eases ·
        the explode washes in/out like a stratum */
@@ -601,7 +604,11 @@ function Machine({
        resized — the stage never resizes now, and the handoff is exact by
        construction (the same fraction on both sides of the flip). */
     const hp = st === 'hero' ? (flight?.progress ?? 0) : 0
-    const berthCentre = 0.5 + berthFrac / 2
+    /* the dock seat leans PROSE-WARD of the berth's centre (operator
+       2026-07-13: « la distance entre le vaisseau et le texte est trop
+       grande ») — the wire shortens, the reading and the hull sit
+       together; the shortened feather below keeps the near flank whole */
+    const berthCentre = 0.5 + berthFrac / 2 - 0.045
     const centreFrac =
       st === 'hero' ? 0.64 + hp * hp * (berthCentre - 0.64)
       : st === 'finale' ? 0.5
@@ -753,18 +760,19 @@ function Machine({
           const blk = rig.docks?.[si]
           if (blk && rig.upath && rig.uhalo && rig.spark) {
             const br = blk.getBoundingClientRect()
-            const yT = Math.min(Math.max(br.top - rect.top + 96, 96), rect.height - 130)
+            const yT = Math.min(Math.max(br.top - rect.top + 72, 88), rect.height - 130)
             rig.uy = (rig.uy ?? yT) + (yT - (rig.uy ?? yT)) * Math.min(1, delta * 4)
             const ts = Math.max(u.uTime.value - u.uStrike.value, 0)
             const pulse = u.uStrikeStratum.value === si ? Math.exp(-ts * 2.2) : 0
             it.label.style.opacity = '0'
             it.label.style.pointerEvents = 'none'
             it.line.style.opacity = '0'
-            /* the seam curve · out of the column horizontally, a lazy S
-               into the station (control points at 35% of the run) — its
-               column end rides THE SEAM (the berth's left edge on the one
-               full-screen stage), where the prose hands over to the hull */
-            const x0 = seamRef.current * rect.width + 14
+            /* THE ROOT (operator 2026-07-13 · « se connecte pas assez ») ·
+               the wire is born at the CARD — its column end pins to the
+               read block's right edge (the seam start left it adrift in
+               the berth's dark), a rooted dot marks the joint, and the
+               lazy S still lands on the hull's station */
+            const x0 = Math.min(br.right - rect.left + 14, seamRef.current * rect.width + 10)
             const y0 = rig.uy
             const cx = (px - x0) * 0.35
             const d = `M ${x0} ${y0.toFixed(1)} C ${(x0 + cx).toFixed(1)} ${y0.toFixed(1)}, ${(px - cx).toFixed(1)} ${py.toFixed(1)}, ${px.toFixed(1)} ${py.toFixed(1)}`
@@ -775,10 +783,31 @@ function Machine({
               rig.ugrad.setAttribute('y1', y0.toFixed(1))
               rig.ugrad.setAttribute('x2', px.toFixed(1))
               rig.ugrad.setAttribute('y2', py.toFixed(1))
+              /* THE WIRE WEARS THE STATION'S HUE · one palette, every
+                 renderer — orange into the ring, cyan into the hold,
+                 blue into the engines, violet into the shield */
+              const hue = STRATUM_HEX[STRATA_ORDER[si]]
+              for (const stop of rig.ugrad.children) stop.setAttribute('stop-color', hue)
             }
+            /* the joint and the wire BREATHE on the drum's 2.4s beat —
+               the same envelope the hull swells on (sharp attack, long
+               decay): the connection is alive even between ignitions */
+            const wb = Math.exp(-((u.uTime.value / 2.4) % 1) * 5) * 0.5
             rig.upath.style.opacity = (it.o * (0.66 + 0.34 * pulse)).toFixed(3)
-            rig.upath.style.strokeWidth = (1.2 + pulse * 1.2).toFixed(2)
+            rig.upath.style.strokeWidth = (1.2 + wb * 0.5 + pulse * 1.2).toFixed(2)
+            /* THE CURRENT · the reading flows INTO the hull — the dash
+               pattern drifts along the wire on the one clock (an
+               attribute per frame: JS owns the envelope, the raster law
+               stays untouched) */
+            rig.upath.style.strokeDashoffset = (-((u.uTime.value * 26) % 14)).toFixed(2)
             rig.uhalo.style.opacity = (it.o * (0.16 + 0.3 * pulse)).toFixed(3)
+            if (rig.uroot) {
+              rig.uroot.setAttribute('cx', x0.toFixed(1))
+              rig.uroot.setAttribute('cy', y0.toFixed(1))
+              rig.uroot.setAttribute('r', (2.4 + wb * 0.8 + pulse * 1.4).toFixed(2))
+              rig.uroot.style.stroke = STRATUM_HEX[STRATA_ORDER[si]]
+              rig.uroot.style.opacity = (it.o * (0.8 + 0.2 * pulse)).toFixed(3)
+            }
             umbDrawn = true
             /* THE SPARK · the ignition travels the wire INTO the hull over
                the strike's first ~0.9s (the hull swell + wire pulses read
@@ -800,6 +829,7 @@ function Machine({
             it.dot.setAttribute('cx', px.toFixed(1))
             it.dot.setAttribute('cy', py.toFixed(1))
             it.dot.setAttribute('r', (2.2 + pulse * 1.8).toFixed(2))
+            it.dot.style.fill = STRATUM_HEX[STRATA_ORDER[si]]
             it.dot.style.opacity = op
             continue
           }
@@ -809,6 +839,7 @@ function Machine({
            engineering-plate read at the finale, one clean leader at the
            dock; only the line's far end sails with the hull */
         it.dot.setAttribute('r', '2.2') /* undo the umbilical's swell */
+        it.dot.style.fill = '' /* back to the plate ink */
         it.line.style.strokeWidth = ''
         const lw = it.label.offsetWidth
         const lh = it.label.offsetHeight
@@ -826,6 +857,7 @@ function Machine({
         rig.upath.style.opacity = '0'
         rig.uhalo.style.opacity = '0'
         rig.spark.style.opacity = '0'
+        if (rig.uroot) rig.uroot.style.opacity = '0'
       }
     }
 
@@ -1129,6 +1161,13 @@ export default function TheSpecMachine({
             r="2.4"
             ref={(el) => {
               calloutRef.current.spark = el
+            }}
+          />
+          <circle
+            className="smc-uroot"
+            r="2.4"
+            ref={(el) => {
+              calloutRef.current.uroot = el
             }}
           />
           {CALLOUTS.map((c) => {

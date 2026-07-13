@@ -132,13 +132,27 @@ const DIM_BLUE = hexRgb('#2a4470')
    are invoke's tools (cyan) · the engines serve infer (blue) · THE RING
    bounds exec-and-everything (the boundary orange) · the shield speaks
    agent's typed failures (violet) · the keel is the struck structure. */
+/** the same family in CSS hex — the DOM-side instruments (the umbilical's
+    gradient, the root joint) wear the read station's hue too: one palette,
+    every renderer (the model tint · the elevation CSS · the wire) */
+export const STRATUM_HEX: Record<StratumKey, string> = {
+  frame: '#8db4ff',
+  verbs: '#8db4ff',
+  plan: '#8db4ff',
+  permits: NIKA_VERB_HEX.exec,
+  stdlib: NIKA_VERB_HEX.invoke,
+  extract: NIKA_VERB_HEX.invoke,
+  providers: NIKA_VERB_HEX.infer,
+  errors: NIKA_VERB_HEX.agent,
+  license: '#8db4ff',
+}
 const HUE: Record<string, [number, number, number]> = {
-  frame: hexRgb('#8db4ff'),
-  permits: hexRgb(NIKA_VERB_HEX.exec),
-  stdlib: hexRgb(NIKA_VERB_HEX.invoke),
-  extract: hexRgb(NIKA_VERB_HEX.invoke),
-  providers: hexRgb(NIKA_VERB_HEX.infer),
-  errors: hexRgb(NIKA_VERB_HEX.agent),
+  frame: hexRgb(STRATUM_HEX.frame),
+  permits: hexRgb(STRATUM_HEX.permits),
+  stdlib: hexRgb(STRATUM_HEX.stdlib),
+  extract: hexRgb(STRATUM_HEX.extract),
+  providers: hexRgb(STRATUM_HEX.providers),
+  errors: hexRgb(STRATUM_HEX.errors),
 }
 
 /** quaternion from orthonormal basis columns (e · n · r), e×n = r */
