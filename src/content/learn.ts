@@ -210,7 +210,7 @@ outputs:
 /* ── the whole file · the nine fragments, assembled ───────────────────────────
    Every idea above, composed into the ONE workflow the page teaches. This
    exact text passes `nika check` on the shipping binary — the transcript
-   below is that run, VERBATIM (captured 2026-07-13 · nika 0.102.0). The
+   below is that run, VERBATIM (captured 2026-07-13 · nika 0.103.0). The
    honesty law: re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
 workflow: weekly-radar
