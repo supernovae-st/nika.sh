@@ -200,6 +200,7 @@ uniform float uHero;
 /* highp: the vertex stage declares uTime highp (its default) — a shared
    uniform must agree across stages or the program fails to validate */
 uniform highp float uTime;
+uniform float uNovaT;
 ${SEAM_CHUNK}
 void main() {
   /* the tol.is line law · alpha from facing; a ghost stratum whispers, an
@@ -217,6 +218,11 @@ void main() {
     * (1.0 + uHero * 0.55 * (1.0 - vLit)) * (1.0 + spot * 0.45);
   /* the hovered node pulses over everything (the W2 bus highlight) */
   a = min(a * (1.0 + vHi * 1.4) + vHi * 0.22, 1.0);
+  /* THE IRRADIATION · while the supernova burns, the whole hull glows
+     in its light (decaying with the burst — the ship lit by its own
+     death) */
+  float nl = uNovaT >= 0.0 ? exp(-uNovaT * 2.0) * 0.6 : 0.0;
+  a = min(a * (1.0 + nl) + nl * 0.1, 1.0);
   a *= seamT();
   if (a < 0.01) discard;
   /* THE HULL WEARS ITS HUES THE WHOLE VOYAGE (operator: keep the colours
@@ -431,23 +437,39 @@ void main() {
   vec2 d = (frag - c) * vec2(aspect, 1.0);
   float r = length(d);
   float ang = atan(d.y, d.x);
+  vec3 acc = vec3(0.0);
   /* the core flash · blinding for a breath, gone fast */
   float flash = exp(-t * 14.0) * exp(-r * 5.0) * 2.2;
-  /* the shockwave · radius eases out, the band thins as it runs */
+  acc += vec3(0.85, 0.9, 1.0) * flash;
+  /* the shockwave · CHROMATIC-FRINGED (each channel rides its own
+     radius — the dispersion of a real blast) and COOLING as it runs
+     (white-blue at birth, ember orange as it dies: thermal truth,
+     spoken in the site's own exec hue) */
   float rw = 0.95 * (1.0 - exp(-t * 3.2));
-  float ring = exp(-pow((r - rw) * (26.0 + t * 40.0), 2.0)) * exp(-t * 1.6) * 1.2;
+  float w1 = 26.0 + t * 40.0;
+  float env1 = exp(-t * 1.6) * 1.2;
+  vec3 ringCol = mix(vec3(0.95, 0.97, 1.0), vec3(1.0, 0.5, 0.26), smoothstep(0.22, 0.8, t));
+  acc.r += exp(-pow((r - rw - 0.006) * w1, 2.0)) * ringCol.r * env1;
+  acc.g += exp(-pow((r - rw) * w1, 2.0)) * ringCol.g * env1;
+  acc.b += exp(-pow((r - rw + 0.006) * w1, 2.0)) * ringCol.b * env1;
+  /* the echo shell · a second, softer wave chasing the first (real
+     supernovae shed more than one) */
+  float t2 = max(0.0, t - 0.14);
+  float rw2 = 0.9 * (1.0 - exp(-t2 * 2.4));
+  acc += ringCol * (exp(-pow((r - rw2) * (w1 * 1.4), 2.0)) * exp(-t * 1.9) * 0.5 * step(0.001, t2));
   /* the rays · two starburst frequencies, slowly counter-turning */
   float rays = pow(abs(cos(ang * 7.0 + t * 0.7)), 24.0) * exp(-r * 2.6) * exp(-t * 3.4) * 1.4;
   float rays2 = pow(abs(cos(ang * 3.0 - t * 0.4)), 40.0) * exp(-r * 1.8) * exp(-t * 2.6);
-  /* the ember dust · a sparkle field blooming then falling back */
+  acc += vec3(0.55, 0.68, 1.0) * rays;
+  acc += vec3(0.55, 0.42, 1.0) * rays2 * 0.5;
+  /* the ember dust · blooming then falling back, warming as it falls */
   float n = hash21(floor(d * 90.0));
   float dust = step(0.982, n) * exp(-t * 2.2) * smoothstep(0.0, 0.25, t)
     * (1.0 - smoothstep(0.0, 0.9, r)) * 0.8;
-  float e = flash + ring + rays + rays2 + dust;
-  if (e < 0.004) discard;
-  vec3 col = mix(vec3(0.31, 0.525, 1.0), vec3(0.95, 0.97, 1.0), clamp(flash + ring * 0.5, 0.0, 1.0));
-  col += vec3(0.55, 0.42, 1.0) * rays2 * 0.35;
-  gl_FragColor = vec4(col * e, clamp(e, 0.0, 1.0));
+  acc += mix(vec3(0.6, 0.72, 1.0), vec3(1.0, 0.6, 0.3), smoothstep(0.3, 0.9, t)) * dust;
+  float lum = dot(acc, vec3(0.35));
+  if (lum < 0.004) discard;
+  gl_FragColor = vec4(acc, clamp(lum, 0.0, 1.0));
 }
 `
 

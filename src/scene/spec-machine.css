@@ -90,6 +90,11 @@
   fill: #c9dbff;
   opacity: 0;
 }
+/* the comet's tail · a fainter twin riding a beat behind the spark */
+.smc-strail {
+  fill: #8db4ff;
+  opacity: 0;
+}
 /* THE ROOT · the wire's joint on the read card — a lit ring, not a blob:
    the connection reads as machined */
 .smc-uroot {

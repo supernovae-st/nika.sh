@@ -96,6 +96,8 @@ interface CalloutRig {
   upath?: SVGPathElement | null
   uhalo?: SVGPathElement | null
   spark?: SVGCircleElement | null
+  /** the spark's comet trail (a fainter twin, a beat behind on the curve) */
+  strail?: SVGCircleElement | null
   /** the wire's rooted joint on the read card (the connection made visible) */
   uroot?: SVGCircleElement | null
   ugrad?: SVGLinearGradientElement | null
@@ -854,17 +856,30 @@ function Machine({
                the same clock — one event, both worlds) */
             const tt = u.uStrikeStratum.value === si ? ts / 0.9 : 2
             if (tt < 1) {
+              const bez = (wp: number): [number, number] => {
+                const o = 1 - wp
+                return [
+                  o * o * o * x0 + 3 * o * o * wp * (x0 + cx) + 3 * o * wp * wp * (px - cx) + wp * wp * wp * px,
+                  o * o * o * y0 + 3 * o * o * wp * y0 + 3 * o * wp * wp * py + wp * wp * wp * py,
+                ]
+              }
               const w = tt * tt * (3 - 2 * tt) /* smoothstep ease */
-              const omw = 1 - w
-              const sx2 =
-                omw * omw * omw * x0 + 3 * omw * omw * w * (x0 + cx) + 3 * omw * w * w * (px - cx) + w * w * w * px
-              const sy2 = omw * omw * omw * y0 + 3 * omw * omw * w * y0 + 3 * omw * w * w * py + w * w * w * py
+              const [sx2, sy2] = bez(w)
               rig.spark.setAttribute('cx', sx2.toFixed(1))
               rig.spark.setAttribute('cy', sy2.toFixed(1))
               rig.spark.setAttribute('r', (2 + Math.sin(Math.PI * tt) * 2.4).toFixed(2))
               rig.spark.style.opacity = Math.sin(Math.PI * tt).toFixed(3)
+              /* the comet trail · a fainter twin a beat behind the head */
+              if (rig.strail) {
+                const [tx, ty] = bez(Math.max(0, w - 0.085))
+                rig.strail.setAttribute('cx', tx.toFixed(1))
+                rig.strail.setAttribute('cy', ty.toFixed(1))
+                rig.strail.setAttribute('r', (1.3 + Math.sin(Math.PI * tt) * 1.5).toFixed(2))
+                rig.strail.style.opacity = (Math.sin(Math.PI * tt) * 0.45).toFixed(3)
+              }
             } else {
               rig.spark.style.opacity = '0'
+              if (rig.strail) rig.strail.style.opacity = '0'
             }
             it.dot.setAttribute('cx', px.toFixed(1))
             it.dot.setAttribute('cy', py.toFixed(1))
@@ -897,6 +912,7 @@ function Machine({
         rig.upath.style.opacity = '0'
         rig.uhalo.style.opacity = '0'
         rig.spark.style.opacity = '0'
+        if (rig.strail) rig.strail.style.opacity = '0'
         if (rig.uroot) rig.uroot.style.opacity = '0'
       }
     }
@@ -1210,6 +1226,13 @@ export default function TheSpecMachine({
             r="2.4"
             ref={(el) => {
               calloutRef.current.uroot = el
+            }}
+          />
+          <circle
+            className="smc-strail"
+            r="1.6"
+            ref={(el) => {
+              calloutRef.current.strail = el
             }}
           />
           {CALLOUTS.map((c) => {
