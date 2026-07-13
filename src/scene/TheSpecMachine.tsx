@@ -107,6 +107,7 @@ function Machine({
   helmRef,
   calloutRef,
   flightRef,
+  hitRef,
   onHover,
 }: {
   pointer: React.MutableRefObject<Pointer>
@@ -117,6 +118,10 @@ function Machine({
   helmRef: React.MutableRefObject<HelmState>
   calloutRef: React.MutableRefObject<CalloutRig>
   flightRef?: React.MutableRefObject<{ state: string; progress: number }>
+  /** THE BERTH HIT OVERLAY · the canvas renders the whole screen with
+      pointer-events none; the drag/pick/wheel listeners ride this element
+      (seated on --berth), so the sky never eats the prose's links */
+  hitRef?: React.RefObject<HTMLDivElement | null>
   onHover: (id: string | null) => void
 }) {
   const model = useMemo(() => buildSpecMachine(), [])
@@ -173,9 +178,20 @@ function Machine({
   /* ── the pick bus + THE HELM's drag — one pointer state machine ───────────
      No raycaster: node instance centres projected to screen space, nearest
      within reach wins. pointerdown starts a potential orbit; >4px of travel
-     commits it (click suppressed, cursor grabs); release springs back. */
+     commits it (click suppressed, cursor grabs); release springs back.
+     THE HIT LIVES ON THE BERTH OVERLAY (.smw-hit): the canvas renders the
+     whole screen (the sky under the prose) with pointer-events none — the
+     listeners ride the overlay instead; projection maths still reads the
+     CANVAS rect, and the cursor is written to BOTH (the e2e pick-bus reads
+     the canvas's — the machine keeps telling the probe where its nodes
+     are). */
   useEffect(() => {
     const el = gl.domElement
+    const hit: HTMLElement = hitRef?.current ?? el
+    const setCursor = (c: string) => {
+      hit.style.cursor = c
+      el.style.cursor = c
+    }
     const v = new THREE.Vector3()
     const pick = (e: PointerEvent): number => {
       const g = inner.current /* full transform: outer orbit × inner sail */
@@ -209,7 +225,7 @@ function Machine({
     const onDown = (e: PointerEvent) => {
       downAt = { x: e.clientX, y: e.clientY }
       orbiting = false
-      el.setPointerCapture(e.pointerId)
+      hit.setPointerCapture(e.pointerId)
     }
     const onMove = (e: PointerEvent) => {
       if (downAt) {
@@ -218,7 +234,7 @@ function Machine({
         if (!orbiting && dx * dx + dy * dy > 16) {
           orbiting = true
           helmRef.current.dragging = true
-          el.style.cursor = 'grabbing'
+          setCursor('grabbing')
           if (hiRef.current >= 0) {
             hiRef.current = -1
             onHover(null)
@@ -239,7 +255,7 @@ function Machine({
       if (i === hiRef.current) return
       hiRef.current = i
       /* the empty hull invites the hand — grab at rest, pointer on a node */
-      el.style.cursor = i >= 0 ? 'pointer' : 'grab'
+      setCursor(i >= 0 ? 'pointer' : 'grab')
       onHover(i >= 0 ? model.nodeIds[i] : null)
     }
     const onUp = (e: PointerEvent) => {
@@ -247,7 +263,7 @@ function Machine({
       downAt = null
       orbiting = false
       helmRef.current.dragging = false
-      el.style.cursor = hiRef.current >= 0 ? 'pointer' : 'grab'
+      setCursor(hiRef.current >= 0 ? 'pointer' : 'grab')
       if (wasOrbit) return /* an orbit is never a click */
       const i = pick(e)
       if (i < 0) return
@@ -260,7 +276,7 @@ function Machine({
     const onLeave = () => {
       if (hiRef.current < 0) return
       hiRef.current = -1
-      el.style.cursor = 'grab'
+      setCursor('grab')
       onHover(null)
     }
     const onWheel = (e: WheelEvent) => {
@@ -274,20 +290,20 @@ function Machine({
         Math.min(2.1, helmRef.current.zoom * Math.exp(e.deltaY * 0.0011)),
       )
     }
-    el.addEventListener('pointerdown', onDown)
-    el.addEventListener('pointermove', onMove, { passive: true })
-    el.addEventListener('pointerup', onUp)
-    el.addEventListener('pointerleave', onLeave, { passive: true })
-    el.addEventListener('wheel', onWheel, { passive: false })
+    hit.addEventListener('pointerdown', onDown)
+    hit.addEventListener('pointermove', onMove, { passive: true })
+    hit.addEventListener('pointerup', onUp)
+    hit.addEventListener('pointerleave', onLeave, { passive: true })
+    hit.addEventListener('wheel', onWheel, { passive: false })
     return () => {
-      el.removeEventListener('pointerdown', onDown)
-      el.removeEventListener('pointermove', onMove)
-      el.removeEventListener('pointerup', onUp)
-      el.removeEventListener('pointerleave', onLeave)
-      el.removeEventListener('wheel', onWheel)
-      el.style.cursor = ''
+      hit.removeEventListener('pointerdown', onDown)
+      hit.removeEventListener('pointermove', onMove)
+      hit.removeEventListener('pointerup', onUp)
+      hit.removeEventListener('pointerleave', onLeave)
+      hit.removeEventListener('wheel', onWheel)
+      setCursor('')
     }
-  }, [gl, camera, model, layers, hiRef, helmRef, onHover])
+  }, [gl, camera, model, layers, hiRef, helmRef, hitRef, onHover])
 
   useFrame((state, delta) => {
     const u = layers.uniforms
@@ -872,6 +888,9 @@ export default function TheSpecMachine({
   onHover?: (id: string | null) => void
 }) {
   const wrapRef = useRef<HTMLDivElement>(null)
+  /* THE BERTH HIT OVERLAY · seated on --berth (CSS), carries the pointer
+     listeners so the full-screen canvas can stay pointer-events: none */
+  const hitRef = useRef<HTMLDivElement>(null)
   const pointer = useRef<Pointer>({ x: 0, y: 0 })
   const [inView, setInView] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -1053,9 +1072,14 @@ export default function TheSpecMachine({
           helmRef={helmRef}
           calloutRef={calloutRef}
           flightRef={flightRef}
+          hitRef={hitRef}
           onHover={onHover}
         />
       </Canvas>
+      {/* THE BERTH HIT OVERLAY · the drag/pick/wheel surface, seated on the
+          berth by CSS (--berth) — the canvas itself renders the whole
+          screen (the sky under the prose) and never captures a pointer */}
+      <div className="smw-hit" ref={hitRef} />
       {/* THE CALLOUTS · the labelled-drawing layer (overview poses only) —
           fixed label slots, projected line ends; clicks land on the section */}
       <div

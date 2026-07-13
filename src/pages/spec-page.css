@@ -2052,17 +2052,24 @@
     pointer-events: none;
     transition: opacity 0.5s ease;
   }
-  /* the clip is a STATE on the CANVAS WRAPPER alone, never a transition
-     and never on the whole rail: animating it re-rastered the subtree on
-     the main thread (200-260ms frames), and even a snap re-rastered the
-     glass plates + the callout SVG (~150ms). On .smw the cut only re-clips
-     a GPU texture. The SHADER eases the seam (uSeamX): by the time the
-     clip snaps, the region it cuts or reveals is already dark — invisible
-     by construction. The clip bounds the hit-test (the dock canvas must
-     never eat the prose's links) + hard-crops as a safety net; the plates
-     and instruments never cross the berth by construction (--berth). */
+  /* NO CLIP on the canvas (operator capture 2026-07-13): the sky is the
+     stage's background at every stage — the stars drift under the prose,
+     the shaders alone berth the HULL at the seam (a clip cut the feather
+     off and sliced the hull hard). The hit-test moves to .smw-hit — a
+     transparent overlay seated on the berth — so the full-screen canvas
+     never eats the prose's links. */
   .spec-rail.is-live .smw {
-    clip-path: inset(0 0 0 var(--berth));
+    pointer-events: none;
+  }
+  .spec-rail.is-live .smw-hit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: var(--berth);
+    pointer-events: auto;
+    /* no z-index: DOM order stacks it over the canvas and UNDER the
+       callout layer — the plates stay clickable */
   }
   .spec-rail.is-live[data-stage='dock'] {
     /* the berth's left edge · the complement of THE BERTH LAW's phantom
@@ -2092,7 +2099,6 @@
   .spec-rail.is-live[data-stage='finale']::before {
     opacity: 1;
   }
-  .spec-rail.is-live .smw,
   .spec-rail.is-live .spec-helm {
     pointer-events: auto;
   }
@@ -2131,9 +2137,9 @@
        column's own z:1). The stage itself no longer changes size. */
     z-index: 0;
   }
-  /* the full-bleed canvas must never eat the copy — no orbit at the poster
-     (the scroll steers the turn; the helm returns at the dock) */
-  .spec-rail.is-live[data-stage='hero'] .smw {
+  /* the full-bleed hit surface must never eat the copy — no orbit at the
+     poster (the scroll steers the turn; the helm returns at the dock) */
+  .spec-rail.is-live[data-stage='hero'] .smw-hit {
     pointer-events: none;
   }
   /* THE SEAM lives in the shaders now (spec-machine-three · uSeamX/uSeamW):
@@ -2153,7 +2159,7 @@
     opacity: 0.008;
     pointer-events: none;
   }
-  .spec-rail.is-live[data-stage='off'] .smw,
+  .spec-rail.is-live[data-stage='off'] .smw-hit,
   .spec-rail.is-live[data-stage='off'] .spec-helm {
     pointer-events: none;
   }
