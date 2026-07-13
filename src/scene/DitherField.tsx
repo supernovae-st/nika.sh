@@ -98,7 +98,15 @@ void main() {
 
   /* the header glow eases out as the page dives (scroll hands the field back
      to the sections) — the pointer lean stays a whisper. */
-  float glowAmp = 1.0 - smoothstep(0.35, 0.95, uScroll);
+  /* THE RETREAT (operator 2026-07-13): a pure amplitude fade DILUTES the
+     field — the quantizer then keeps only its innermost band and that one
+     surviving edge prints a hard step across wide screens. The glow now
+     CONTRACTS toward its anchor as it dims (bands travel off the corner,
+     every edge crosses the screen instead of parking on it) and only
+     finishes dimming once it has mostly left. uScroll=0 is byte-identical
+     to the old field (goldens hold by construction). */
+  float glowAmp = 1.0 - smoothstep(0.55, 1.0, uScroll);
+  float shrink = 1.0 + 2.2 * smoothstep(0.10, 1.0, uScroll);
 
   /* ── F1 · THE GLOW · one deep saturated radial anchored LEFT ──────────────
      Hot heart off-canvas above the nav; the visible core is the #0F53B7
@@ -107,6 +115,7 @@ void main() {
   vec2 ctr = mix(vec2(0.16, -0.10), vec2(0.50, -0.14), portrait);
   vec2 g = st - ctr;
   g -= uMouse * 0.02;
+  g *= shrink;
   g.x *= mix(aspect * 0.72, aspect * 1.05, portrait); // spread across the left 2/3
   float core = exp(-dot(g, g) * mix(2.6, 3.4, portrait));
 
@@ -114,6 +123,7 @@ void main() {
      smooth hand-off from the core into the black */
   vec2 s = st - mix(vec2(0.44, 0.02), vec2(0.52, 0.02), portrait);
   s.x *= mix(aspect * 0.9, aspect * 1.1, portrait);
+  s *= shrink;
   float spread = exp(-dot(s, s) * 1.5) * 0.30;
 
   float glow = (core * mix(0.94, 0.90, portrait) + spread) * glowAmp;
