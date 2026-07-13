@@ -62,29 +62,47 @@
     63px 42px,
     63px 42px;
   /* the room dies toward the edges — grid, table and grain share one vignette
-     so nothing reads as wallpaper */
-  -webkit-mask-image: radial-gradient(130% 105% at 50% 56%, #000 0%, #000 46%, transparent 82%);
-  mask-image: radial-gradient(130% 105% at 50% 56%, #000 0%, #000 46%, transparent 82%);
+     so nothing reads as wallpaper. TWO mask layers, intersected (operator
+     2026-07-13 · the seam): the radial vignette AND a top ramp — the room
+     was ~80% lit at its very first pixel, printing a horizontal cut against
+     the hero's dark floor; now it wakes over the first 280px. */
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 0, #000 280px),
+    radial-gradient(130% 105% at 50% 56%, #000 0%, #000 46%, transparent 82%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(180deg, transparent 0, #000 280px),
+    radial-gradient(130% 105% at 50% 56%, #000 0%, #000 46%, transparent 82%);
+  mask-composite: intersect;
 }
 
-/* the hero→morph weld (wave M · every width since W20) · the hero field's
-   floor tone dissolves INTO the dark room through the ordered-dither ramp —
-   the section edge stops reading as a horizontal cut (the dissolve is ours,
-   never a smooth falloff) */
+/* the hero→morph weld (wave M · reworked 2026-07-13) · a quiet blue breath
+   through the ordered-dither ramp. The old ramp opened at 50% alpha on the
+   section's FIRST pixel — it assumed the hero floor was still blue, but the
+   left-anchored field dies black long before the edge, so the weld itself
+   printed the cut it existed to heal. Zero ink at both ends now: the dark
+   floors of the two sections ARE the same surface, the weld only warms the
+   crossing's middle. */
 .morphsec::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 240px;
+  height: 300px;
   pointer-events: none;
-  background: linear-gradient(180deg, rgb(17 34 82 / 0.5), rgb(13 24 58 / 0.28) 55%, rgb(11 18 42 / 0.12) 100%);
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    rgb(15 30 72 / 0.16) 34%,
+    rgb(13 24 58 / 0.1) 62%,
+    transparent 100%
+  );
   -webkit-mask-image: var(--v4-dither-fade);
-  -webkit-mask-size: 4px 240px;
+  -webkit-mask-size: 4px 300px;
   -webkit-mask-repeat: repeat-x;
   mask-image: var(--v4-dither-fade);
-  mask-size: 4px 240px;
+  mask-size: 4px 300px;
   mask-repeat: repeat-x;
 }
 /* W20 · phones run the FULL morph when armed; the vertical story is the
