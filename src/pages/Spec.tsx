@@ -175,6 +175,32 @@ export function Component() {
       window.setTimeout(() => el.classList.remove('is-struck'), 1090)
     }
   }, [lit])
+  /* THE ANCHOR FLASH (arc 31) · a hash arrival answers on the card: the
+     targeted block replays the struck beat even when already lit — the
+     navigation lands somewhere VISIBLE. Covers clicks (hashchange) and
+     deep links (the initial hash, after the reveal settles). Motion-gated
+     like every transient; reuses the struck rig (restart-safe). */
+  useEffect(() => {
+    const flash = () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const id = window.location.hash.slice(1)
+      if (!id) return
+      const el = document.getElementById(id)
+      const block = el?.closest('.spec-block[data-stratum]')
+      if (!block) return
+      block.classList.remove('is-struck')
+      void (block as HTMLElement).offsetWidth
+      block.classList.add('is-struck')
+      window.setTimeout(() => block.classList.remove('is-struck'), 1090)
+    }
+    const initial = window.setTimeout(flash, 700) /* the deep link's beat */
+    window.addEventListener('hashchange', flash)
+    return () => {
+      window.clearTimeout(initial)
+      window.removeEventListener('hashchange', flash)
+    }
+  }, [])
+
   /* the rail follows the reading · when the strip scrolls INSIDE itself
      (narrow berths — the well law) the read segment glides to centre.
      Manual scrollLeft, never scrollIntoView (which would also move the

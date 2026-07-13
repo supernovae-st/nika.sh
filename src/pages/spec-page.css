@@ -1915,10 +1915,23 @@
   .spec-hero-eleva {
     margin-top: 0;
     padding: 0 2vw;
+    transition: opacity 0.9s ease;
   }
-  /* the live chassis covers this ground — the drawing stands down */
+  /* THE OPENING METAMORPHOSIS (arc 31) · the live chassis covers this
+     ground — but the drawing FADES under the rising hull instead of
+     snapping away (the operator's « ça se téléporte »): is-live lands
+     while the lazy GL chunk loads, the elevation melts over 0.9s, the
+     canvas fades in over ~1.4s (uFade) with the camera gliding its
+     approach — the drawing becomes the vessel. Layout is kept (opacity,
+     not display): zero reflow, and reduced-motion snaps as before. */
   .spec-page.is-live .spec-hero-eleva {
-    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .spec-hero-eleva {
+    transition: none;
   }
 }
 .spec-hero-cue {

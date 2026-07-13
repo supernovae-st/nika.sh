@@ -13,18 +13,34 @@
 .smw canvas {
   display: block;
 }
-/* the canvas takes the stage — the schematic steps aside ONLY once the layer
-   is really mounted. THE LAY-DOWN exception: while the finale dissolves the
-   hull into its own drawing ([data-laydown], stamped by the frame loop as
-   the canvas fade begins), the elevation RETURNS beneath the fading canvas —
-   one machine, two renderings, one crossfade. */
+/* THE OPENING METAMORPHOSIS (arc 31 · operator: the 2D « se téléporte »
+   into the 3D) — the schematic never snaps away: when the canvas mounts
+   ([data-machine]) the drawing FADES under the rising hull (uFade lifts
+   the GL over ~1.4s, the camera glides its approach) — the elevation
+   becomes the vessel. THE LAY-DOWN plays the same seam backwards
+   ([data-laydown]): the drawing returns through the same fade while the
+   canvas dissolves. One machine, two renderings, one crossfade at both
+   ends of the voyage. display stays block for the whole live session —
+   the e2e pin reads display, the eye reads opacity. */
+.spec-rail-stage .spec-schematic {
+  transition: opacity 0.9s ease;
+}
+.spec-rail-stage[data-machine] .spec-schematic {
+  display: block;
+  pointer-events: none;
+}
 .spec-rail-stage[data-machine]:not([data-laydown]) .spec-schematic {
-  display: none;
+  opacity: 0;
 }
 .spec-rail-stage[data-machine][data-laydown] .spec-schematic {
-  display: block;
+  opacity: 1;
   width: min(92%, 720px);
   height: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .spec-rail-stage .spec-schematic {
+    transition: none;
+  }
 }
 
 /* ── THE CALLOUTS · the labelled-drawing layer (smc-) ─────────────────────────
