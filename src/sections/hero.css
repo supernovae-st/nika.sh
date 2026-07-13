@@ -600,6 +600,17 @@
   flex: 1 1 auto;
   min-width: 0;
 }
+/* THE BROWSER STRIP (operator 2026-07-13) · the row scrolls like a
+   browser's tab bar: no visible scrollbar (the edge fades already say
+   « more »), wheel travel handled by the component. */
+.v4ftabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.v4ftabs::-webkit-scrollbar {
+  display: none;
+}
 .v4ftabs-clip::after {
   content: '';
   position: absolute;

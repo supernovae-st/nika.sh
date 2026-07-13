@@ -1,0 +1,37 @@
+nika: v1
+workflow: daily-brief
+
+# local model · your notes never leave
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
+  fs: { read: [ ./notes/* ], write: [ ./brief.md ] }
+  tools: [ "nika:read", "nika:write" ]
+
+tasks:
+  - { id: notes, invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
+  - { id: inbox, invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
+  - { id: calendar, invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
+
+  - id: triage
+    depends_on: [ inbox ]
+    infer: { prompt: "Flag what is urgent: ${{ tasks.inbox.output }}", max_tokens: 300 }
+  - id: agenda
+    depends_on: [ calendar ]
+    infer: { prompt: "Plan the day around: ${{ tasks.calendar.output }}", max_tokens: 300 }
+
+  - id: draft
+    depends_on: [ notes, triage, agenda ]
+    infer:
+      prompt: "Write the morning brief. Notes: ${{ tasks.notes.output }} Urgent: ${{ tasks.triage.output }} Plan: ${{ tasks.agenda.output }}"
+      max_tokens: 500
+
+  - id: save
+    depends_on: [ draft ]
+    invoke:
+      tool: "nika:write"
+      args: { path: ./brief.md, content: "${{ tasks.draft.output }}" }
+
+outputs:
+  brief: "${{ tasks.draft.output }}"

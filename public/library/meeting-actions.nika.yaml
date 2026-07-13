@@ -1,0 +1,41 @@
+nika: v1
+workflow: meeting-actions
+
+# local model · the recording stays yours
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
+  fs: { read: [ ./transcript.txt ], write: [ ./action-items.json ] }
+  tools: [ "nika:read", "nika:write" ]
+
+tasks:
+  - id: transcript
+    invoke: { tool: "nika:read", args: { path: ./transcript.txt } }
+
+  - id: extract
+    depends_on: [ transcript ]
+    infer:
+      prompt: "Extract every action item with its owner: ${{ tasks.transcript.output }}"
+      schema:
+        type: object
+        required: [ actions ]
+        properties:
+          actions:
+            type: array
+            items:
+              type: object
+              required: [ owner, task ]
+              properties:
+                owner: { type: string }
+                task: { type: string }
+      max_tokens: 400
+
+  - id: save
+    depends_on: [ extract ]
+    invoke:
+      tool: "nika:write"
+      args: { path: ./action-items.json, content: "${{ tasks.extract.output }}" }
+
+outputs:
+  actions: "${{ tasks.extract.output }}"
