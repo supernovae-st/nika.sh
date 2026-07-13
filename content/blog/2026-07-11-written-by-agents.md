@@ -41,8 +41,9 @@ Fed the error back, the model *described* a fix, and its own example was still w
 
 ```yaml summarize-notes.nika.yaml
 nika: v1
-workflow: summarize-notes
-description: "Summarize the three notes under ./notes/ into ./manifest.md"
+workflow:
+  id: summarize-notes
+  description: "Summarize the three notes under ./notes/ into ./manifest.md"
 
 model: ollama/llama3.2:3b   # local · zero key · swap for anthropic/claude-haiku-4-5
 
@@ -55,22 +56,22 @@ permits:
 
 tasks:
   # No deps between the three reads → the engine runs them in parallel.
-  - id: monday
+  monday:
     invoke:
       tool: "nika:read"
       args: { path: "./notes/monday.md" }
 
-  - id: tuesday
+  tuesday:
     invoke:
       tool: "nika:read"
       args: { path: "./notes/tuesday.md" }
 
-  - id: wednesday
+  wednesday:
     invoke:
       tool: "nika:read"
       args: { path: "./notes/wednesday.md" }
 
-  - id: summary
+  summary:
     depends_on: [monday, tuesday, wednesday]
     infer:
       prompt: |
@@ -90,7 +91,7 @@ tasks:
         Plain prose · no bullets · no headings.
       max_tokens: 2000
 
-  - id: save
+  save:
     depends_on: [summary]
     invoke:
       tool: "nika:write"

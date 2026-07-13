@@ -12,14 +12,15 @@ Nika's stdlib grew two Media builtins this week, `nika:image_generate` and `nika
 
 ```yaml
 nika: v1
-workflow: og-hero
+workflow:
+  id: og-hero
 
 permits:
   fs: { write: ["./assets/**"] }     # saves are boundary-gated, per final path
   tools: ["nika:image_generate"]
 
 tasks:
-  - id: hero
+  hero:
     invoke:
       tool: "nika:image_generate"
       args:

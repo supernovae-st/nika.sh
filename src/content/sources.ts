@@ -162,6 +162,8 @@ export const ECOSYSTEM: SourceLink[] = [
 /* ── per-scope normative chapter (the schema's own structure → the prose) ── */
 const SCOPE_CHAPTER: Record<string, SourceLink> = {
   envelope: chapter('01-envelope.md', 'the container: every top-level key'),
+  /* W1 « the map »: the identity object is envelope prose */
+  workflow: chapter('01-envelope.md', 'the identity object: id + description'),
   task: chapter('03-dag.md', 'the task shape and the plan it hangs on'),
   infer: chapter('02-verbs.md', 'the four verbs, one execution model each'),
   exec: chapter('02-verbs.md', 'the four verbs, one execution model each'),

@@ -3,8 +3,9 @@
 # SIGNATURE DEMO · gated variant — same release-notes pipeline, plus ONE
 # human gate (nika:prompt) between the agent verify and the publish.
 nika: v1
-workflow: release-notes-i18n-gated
-description: "signature pipeline + a human consent gate before publish"
+workflow:
+  id: release-notes-i18n-gated
+  description: "signature pipeline + a human consent gate before publish"
 
 model: mock/echo
 
@@ -13,17 +14,17 @@ vars:
   locales: ["fr-FR", "de-DE", "ja-JP", "es-ES"]
 
 tasks:
-  - id: discover
+  discover:
     invoke:
       tool: "nika:glob"
       args: { pattern: "${{ vars.changes_dir }}/*.md" }
 
-  - id: digest
+  digest:
     depends_on: [discover]
     exec:
       command: ["cat", "items/item-1.md", "items/item-2.md", "items/item-3.md", "items/item-4.md", "items/item-5.md"]
 
-  - id: draft
+  draft:
     depends_on: [digest]
     infer:
       max_tokens: 400
@@ -31,7 +32,7 @@ tasks:
         Draft concise release notes from these changes:
         ${{ tasks.digest.output }}
 
-  - id: translate
+  translate:
     depends_on: [draft]
     for_each: ${{ vars.locales }}
     max_parallel: 4
@@ -41,7 +42,7 @@ tasks:
         Translate these release notes to ${{ item }}:
         ${{ tasks.draft.output }}
 
-  - id: verify
+  verify:
     depends_on: [translate]
     agent:
       max_tokens_total: 2000
@@ -50,13 +51,13 @@ tasks:
         Reply APPROVED if every locale is present.
         ${{ tasks.translate.output }}
 
-  - id: approve
+  approve:
     depends_on: [verify]
     invoke:
       tool: "nika:prompt"
       args: { message: "Publish these release notes?" }
 
-  - id: publish
+  publish:
     depends_on: [approve]
     when: ${{ tasks.approve.output == true }}
     exec:

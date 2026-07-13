@@ -1,14 +1,15 @@
 nika: v1
-workflow: stamp-the-run
-description: "a sortable v7 id — minted once, threaded through the file"
+workflow:
+  id: stamp-the-run
+  description: "a sortable v7 id — minted once, threaded through the file"
 
 tasks:
-  - id: mint
+  mint:
     invoke:
       tool: "nika:uuid"
       args: { version: v7 }
 
-  - id: stamp
+  stamp:
     depends_on: [mint]
     invoke:
       tool: "nika:write"

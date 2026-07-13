@@ -40,7 +40,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
     verb: 'infer',
     tagline: 'Call a model',
     body: `Any of ${CANON.providers} providers: Ollama, Mistral, Anthropic, OpenAI and more. You pick, per task or per file.`,
-    code: `- id: research
+    code: `research:
   infer:
     prompt: "Research \${{ vars.topic }}"`,
   },
@@ -48,7 +48,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
     verb: 'exec',
     tagline: 'Run a process',
     body: 'A real command on your machine. stdout becomes the task output, exit codes become errors.',
-    code: `- id: build
+    code: `build:
   exec:
     command: ["cargo", "build", "--release"]`,
   },
@@ -56,7 +56,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
     verb: 'invoke',
     tagline: 'Call a tool',
     body: `${CANON.builtins} nika: builtins (read, write, fetch, jq) plus any mcp: server you already use.`,
-    code: `- id: read_config
+    code: `read_config:
   invoke:
     tool: "nika:read"
     args:
@@ -66,7 +66,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
     verb: 'agent',
     tagline: 'Drive a loop',
     body: 'An autonomous tool-use loop. Tools are default-deny. The whitelist is in the file, reviewable.',
-    code: `- id: research
+    code: `research:
   agent:
     prompt: "Research \${{ vars.topic }}"
     tools: ["nika:fetch"]`,

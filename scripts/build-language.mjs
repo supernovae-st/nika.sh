@@ -28,6 +28,8 @@ const schema = JSON.parse(readFileSync(join(ROOT, 'public/schema/workflow.json')
 /* the reading order of the language's surfaces (the spec's own order) */
 const SURFACES = [
   { scope: 'envelope', node: schema, blurb: 'the file itself' },
+  /* W1 « the map »: the identity object carries id + description */
+  { scope: 'workflow', node: schema.properties.workflow, blurb: 'inside workflow:' },
   { scope: 'task', node: schema.$defs.task, blurb: 'one step of the plan' },
   { scope: 'infer', node: schema.$defs.infer, blurb: 'inside infer:' },
   { scope: 'exec', node: schema.$defs.exec, blurb: 'inside exec:' },

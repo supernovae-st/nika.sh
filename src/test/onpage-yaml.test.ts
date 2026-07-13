@@ -90,7 +90,7 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
         .join('\n')
       expectValid(
         `spec verb card · ${verb}`,
-        `nika: v1\nworkflow: card-${verb}\ntasks:\n${indented}\n`,
+        `nika: v1\nworkflow:\n  id: card-${verb}\ntasks:\n${indented}\n`,
       )
     },
   )

@@ -1,22 +1,23 @@
 nika: v1
-workflow: let-the-index-settle
-description: "a declared pause — relative duration XOR absolute until"
+workflow:
+  id: let-the-index-settle
+  description: "a declared pause — relative duration XOR absolute until"
 
 tasks:
-  - id: publish
+  publish:
     invoke:
       tool: "nika:notify"
       args:
         target: "https://hooks.example.com/deploys"
         message: "docs published"
 
-  - id: settle
+  settle:
     depends_on: [publish]
     invoke:
       tool: "nika:wait"
       args: { duration: "30s" }
 
-  - id: verify
+  verify:
     depends_on: [settle]
     invoke:
       tool: "nika:fetch"

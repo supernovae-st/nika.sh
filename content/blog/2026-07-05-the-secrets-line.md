@@ -18,7 +18,8 @@ For that line to be provable, a secret has to be something the language can see:
 
 ```yaml billing-brief.nika.yaml
 nika: v1
-workflow: billing-brief
+workflow:
+  id: billing-brief
 model: ollama/llama3.2:3b
 
 # a secret is a reference to a store, never a value
@@ -38,7 +39,7 @@ permits:
   tools: [ "nika:fetch" ]
 
 tasks:
-  - id: charges
+  charges:
     invoke:
       tool: "nika:fetch"
       args:
@@ -46,7 +47,7 @@ tasks:
         headers:
           Authorization: "Bearer ${{ secrets.stripe_key }}"
 
-  - id: brief
+  brief:
     depends_on: [ charges ]
     infer:
       prompt: "One short paragraph: what moved in these charges? ${{ tasks.charges.output }}"

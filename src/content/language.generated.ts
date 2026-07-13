@@ -38,6 +38,10 @@ export const LANGUAGE_SCOPES = [
     "blurb": "the file itself"
   },
   {
+    "scope": "workflow",
+    "blurb": "inside workflow:"
+  },
+  {
     "scope": "task",
     "blurb": "one step of the plan"
   },
@@ -159,9 +163,9 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "decls": [
       {
         "scope": "exec",
-        "required": true,
-        "type": "string | array",
-        "desc": "String -> /bin/sh -c (shell). Array -> execve, no shell (the injection-safe form)."
+        "required": false,
+        "type": "array",
+        "desc": "argv — the program and its arguments, execve, NO shell. Each element substituted independently (the injection-safe form). Shell features (pipes · redirects · globs) live in `shell:`."
       }
     ]
   },
@@ -193,7 +197,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "verb": false,
     "decls": [
       {
-        "scope": "envelope",
+        "scope": "workflow",
         "required": false,
         "type": "string"
       }
@@ -270,11 +274,11 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "verb": false,
     "decls": [
       {
-        "scope": "task",
+        "scope": "workflow",
         "required": true,
         "type": "string",
-        "pattern": "^[a-z][a-z0-9_]*$",
-        "desc": "Task id · snake_case (CEL-safe · no hyphens) · unique within workflow."
+        "pattern": "^[a-z][a-z0-9-]*$",
+        "desc": "Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object)."
       }
     ]
   },
@@ -553,6 +557,30 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     ]
   },
   {
+    "word": "shell",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "exec",
+        "required": false,
+        "type": "string",
+        "desc": "One shell line, run via /bin/sh -c — the EXPLICIT dangerous door (pipes · redirects · globs). The blocklist applies here; interpolating untrusted values here is on the author. Exactly one of command|shell."
+      }
+    ]
+  },
+  {
+    "word": "skills",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "agent",
+        "required": false,
+        "type": "array",
+        "desc": "Agent Skill (SKILL.md) file paths · agentskills.io shape · explicit static paths only (no globs · no templates) · loaded at compose time and injected into the system context."
+      }
+    ]
+  },
+  {
     "word": "skip",
     "verb": false,
     "decls": [
@@ -597,7 +625,8 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": true,
-        "type": "array"
+        "type": "object",
+        "desc": "The task map · the KEY is the task's identity (snake_case · CEL-safe). Source order is presentation only — the graph alone schedules."
       }
     ]
   },
@@ -734,9 +763,8 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": true,
-        "type": "string",
-        "pattern": "^[a-z][a-z0-9-]*$",
-        "desc": "Workflow id · kebab-case · unique within file · the document-type discriminator."
+        "type": "object",
+        "desc": "The workflow object · a stable home for identity and metadata (W1 'the map')."
       }
     ]
   }

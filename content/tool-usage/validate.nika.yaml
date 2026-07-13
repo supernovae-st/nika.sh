@@ -1,9 +1,10 @@
 nika: v1
-workflow: gate-the-payload
-description: "a schema verdict as data — invalid input is a report, not a crash"
+workflow:
+  id: gate-the-payload
+  description: "a schema verdict as data — invalid input is a report, not a crash"
 
 tasks:
-  - id: verdict
+  verdict:
     invoke:
       tool: "nika:validate"
       args:
@@ -15,7 +16,7 @@ tasks:
             name: { type: string }
             verbs: { type: integer }
 
-  - id: gate
+  gate:
     depends_on: [verdict]
     invoke:
       tool: "nika:assert"

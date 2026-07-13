@@ -1,5 +1,6 @@
 nika: v1
-workflow: pr-risk-review
+workflow:
+  id: pr-risk-review
 
 # local model · the diff never leaves
 model: ollama/llama3.2:3b
@@ -11,10 +12,10 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - id: diff
+  diff:
     exec: { command: [ git, diff, main ] }
 
-  - id: risk
+  risk:
     depends_on: [ diff ]
     timeout: "120s"
     infer:
@@ -27,7 +28,7 @@ tasks:
           reasons: { type: array, items: { type: string } }
       max_tokens: 400
 
-  - id: probe
+  probe:
     depends_on: [ risk ]
     when: ${{ tasks.risk.output.score >= 7 }}
     agent:
@@ -35,7 +36,7 @@ tasks:
       tools: [ "nika:read" ]
       max_turns: 3
 
-  - id: report
+  report:
     depends_on: [ risk ]
     invoke:
       tool: "nika:write"

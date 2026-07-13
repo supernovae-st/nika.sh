@@ -1,5 +1,6 @@
 nika: v1
-workflow: price-watch
+workflow:
+  id: price-watch
 # zero model · two tools and one CEL compare
 
 # the file IS the blast radius
@@ -11,16 +12,16 @@ vars:
   alert_below: 899  # your threshold · plain data
 
 tasks:
-  - id: snapshot
+  snapshot:
     invoke: { tool: "nika:read", args: { path: ./price.json } }
 
-  - id: price
+  price:
     depends_on: [ snapshot ]
     invoke:
       tool: "nika:jq"
       args: { input: "${{ tasks.snapshot.output }}", expression: "fromjson | .price" }
 
-  - id: alert
+  alert:
     depends_on: [ price ]
     when: ${{ tasks.price.output < vars.alert_below }}
     invoke:

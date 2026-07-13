@@ -90,15 +90,15 @@ export function parsePlan(src: string): ParsedPlan | null {
   }
   if (!doc || typeof doc !== 'object') return null
   const rawTasks = (doc as Record<string, unknown>).tasks
-  if (!Array.isArray(rawTasks)) return null
+  // W1 « the map »: tasks is a MAP whose key IS the identity.
+  if (!rawTasks || typeof rawTasks !== 'object' || Array.isArray(rawTasks)) return null
 
   const tasks: PlanTask[] = []
   const seen = new Set<string>()
-  for (const rt of rawTasks) {
+  for (const [id, rt] of Object.entries(rawTasks as Record<string, unknown>)) {
     if (!rt || typeof rt !== 'object') continue
     const t = rt as Record<string, unknown>
-    const id = typeof t.id === 'string' && t.id.length > 0 ? t.id : null
-    if (!id || seen.has(id)) continue /* the linter names dup/missing ids */
+    if (!id || seen.has(id)) continue
     seen.add(id)
     const verb = VERBS.find((v) => v in t) ?? null
     const deps = Array.isArray(t.depends_on)

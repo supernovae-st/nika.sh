@@ -1,9 +1,10 @@
 nika: v1
-workflow: poster-treatment
-description: "deterministic artistic ops over a png — seeded, replayable"
+workflow:
+  id: poster-treatment
+  description: "deterministic artistic ops over a png — seeded, replayable"
 
 tasks:
-  - id: stylize
+  stylize:
     invoke:
       tool: "nika:image_fx"
       args:

@@ -16,8 +16,9 @@ Here is a workflow with real work in it: checksum the day's notes, count them, p
 
 ```yaml nightly-archive.nika.yaml
 nika: v1
-workflow: nightly-archive
-description: "Hash, count and pack the day's notes into one manifest"
+workflow:
+  id: nightly-archive
+  description: "Hash, count and pack the day's notes into one manifest"
 
 permits:
   fs:
@@ -27,21 +28,21 @@ permits:
 
 tasks:
   # No deps between these two → the engine runs them in parallel.
-  - id: hash_notes
+  hash_notes:
     exec:
       command: ["shasum", "-a", "256", "notes/monday.md", "notes/tuesday.md", "notes/wednesday.md"]
 
-  - id: count_notes
+  count_notes:
     exec:
       command: ["wc", "-w", "notes/monday.md", "notes/tuesday.md", "notes/wednesday.md"]
 
   # Pack only once the notes are verified — the checksums gate the archive.
-  - id: pack_assets
+  pack_assets:
     depends_on: [hash_notes, count_notes]
     exec:
       command: ["gzip", "-kf9", "assets.bin"]
 
-  - id: manifest
+  manifest:
     depends_on: [pack_assets]
     exec:
       command: ["echo", "archive ok"]

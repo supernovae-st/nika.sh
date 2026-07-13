@@ -27,11 +27,12 @@ describe('/learn · every teaching fragment parses', () => {
       id: string
       depends_on?: string[]
     }
-    const doc = parse(step.yaml) as { tasks: Task[] }
+    const doc = parse(step.yaml) as { tasks: Record<string, Task> }
     // the drawn plan: 5 tasks · 3 depends_on-free sources · digest waits for
     // all three · save waits for digest (the SVG in Learn.tsx draws THIS)
-    expect(doc.tasks.length).toBe(5)
-    const deps = Object.fromEntries(doc.tasks.map((t) => [t.id, t.depends_on ?? []]))
+    const entries = Object.entries(doc.tasks)
+    expect(entries.length).toBe(5)
+    const deps = Object.fromEntries(entries.map(([id, t]) => [id, t.depends_on ?? []]))
     expect(deps.fetch_news).toEqual([])
     expect(deps.repo_log).toEqual([])
     expect(deps.read_notes).toEqual([])
@@ -50,7 +51,7 @@ describe('/learn · every teaching fragment parses', () => {
   it('step 01 carries the frozen envelope', () => {
     const doc = parse(STEPS[0].yaml) as Record<string, unknown>
     expect(doc.nika).toBe('v1')
-    expect(typeof doc.workflow).toBe('string')
+    expect(typeof (doc.workflow as { id?: unknown })?.id).toBe('string')
   })
 
   it('the typed-error example is real JSON with the load-bearing fields', () => {
@@ -75,22 +76,23 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
     }
     /* the envelope (01) · the inputs (02) · the model (03) */
     expect(doc.nika).toBe('v1')
-    expect(doc.workflow).toBe('weekly-radar')
+    expect((doc.workflow as { id?: unknown }).id).toBe('weekly-radar')
     expect(Object.keys(doc.vars)).toEqual(['output_dir', 'topic'])
     expect(doc.model).toBe('ollama/llama3.2:3b')
     /* the plan (05/06) · same five tasks, same wave shape as the drawn DAG */
-    expect(doc.tasks.map((t) => t.id)).toEqual([
+    const whole = Object.entries(doc.tasks as Record<string, Task>)
+    expect(whole.map(([id]) => id)).toEqual([
       'fetch_news',
       'repo_log',
       'read_notes',
       'digest',
       'save',
     ])
-    const deps = Object.fromEntries(doc.tasks.map((t) => [t.id, t.depends_on ?? []]))
+    const deps = Object.fromEntries(whole.map(([id, t]) => [id, t.depends_on ?? []]))
     expect(deps.digest).toEqual(['fetch_news', 'repo_log', 'read_notes'])
     expect(deps.save).toEqual(['digest'])
     /* the failure policy (08) rides the digest · the outputs (09) are named */
-    const digest = doc.tasks.find((t) => t.id === 'digest') as Task & {
+    const digest = (doc.tasks as Record<string, Task>).digest as Task & {
       retry?: { max_attempts: number }
     }
     expect(digest.retry?.max_attempts).toBe(3)

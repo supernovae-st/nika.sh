@@ -14,8 +14,9 @@ Here is a small build with a diamond in it: fetch feeds render feeds index, and 
 
 ```yaml site-build.nika.yaml
 nika: v1
-workflow: site-build
-description: "Fetch the data, render the page, index it - and pack assets on the side"
+workflow:
+  id: site-build
+  description: "Fetch the data, render the page, index it - and pack assets on the side"
 
 permits:
   fs:
@@ -24,22 +25,22 @@ permits:
   exec: ["date", "cat", "wc", "gzip"]
 
 tasks:
-  - id: fetch_data
+  fetch_data:
     exec:
       command: ["date", "-u", "+data@%H:%M:%S"]
 
-  - id: render_page
+  render_page:
     depends_on: [fetch_data]
     exec:
       command: ["cat", "./data.txt"]
 
-  - id: build_index
+  build_index:
     depends_on: [render_page]
     exec:
       command: ["wc", "-c", "./page.txt"]
 
   # independent branch - no deps on the chain above
-  - id: compress_assets
+  compress_assets:
     exec:
       command: ["gzip", "-kf", "./assets.txt"]
 

@@ -43,8 +43,9 @@ Fed the error back, the model *described* a fix, and its own example was still w
 
 ```yaml summarize-notes.nika.yaml
 nika: v1
-workflow: summarize-notes
-description: "Summarize the three notes under ./notes/ into ./manifest.md"
+workflow:
+  id: summarize-notes
+  description: "Summarize the three notes under ./notes/ into ./manifest.md"
 
 model: ollama/llama3.2:3b   # local · zero key · swap for anthropic/claude-haiku-4-5
 
@@ -57,22 +58,22 @@ permits:
 
 tasks:
   # No deps between the three reads → the engine runs them in parallel.
-  - id: monday
+  monday:
     invoke:
       tool: "nika:read"
       args: { path: "./notes/monday.md" }
 
-  - id: tuesday
+  tuesday:
     invoke:
       tool: "nika:read"
       args: { path: "./notes/tuesday.md" }
 
-  - id: wednesday
+  wednesday:
     invoke:
       tool: "nika:read"
       args: { path: "./notes/wednesday.md" }
 
-  - id: summary
+  summary:
     depends_on: [monday, tuesday, wednesday]
     infer:
       prompt: |
@@ -92,7 +93,7 @@ tasks:
         Plain prose · no bullets · no headings.
       max_tokens: 2000
 
-  - id: save
+  save:
     depends_on: [summary]
     invoke:
       tool: "nika:write"
@@ -168,8 +169,9 @@ Here is a release-notes pipeline, whole. It reads a changelog, summarizes it on 
 
 ```yaml release-notes.nika.yaml
 nika: v1
-workflow: release-notes
-description: "Fetch the changelog, summarize it, badge the repo — one reviewable file"
+workflow:
+  id: release-notes
+  description: "Fetch the changelog, summarize it, badge the repo — one reviewable file"
 
 model: ollama/llama3.2:3b
 
@@ -181,16 +183,16 @@ permits:
   tools: ["nika:read", "nika:write"]
 
 tasks:
-  - id: changelog
+  changelog:
     invoke:
       tool: "nika:read"
       args: { path: "./CHANGELOG.md" }
 
-  - id: size
+  size:
     exec:
       command: ["wc", "-l", "./CHANGELOG.md"]
 
-  - id: notes
+  notes:
     depends_on: [changelog]
     infer:
       prompt: |
@@ -198,13 +200,13 @@ tasks:
         ${{ tasks.changelog.output }}
       max_tokens: 300
 
-  - id: save
+  save:
     depends_on: [notes]
     invoke:
       tool: "nika:write"
       args: { path: "./notes.md", content: "${{ tasks.notes.output }}" }
 
-  - id: badge
+  badge:
     depends_on: [size]
     invoke:
       tool: "nika:write"
@@ -314,8 +316,9 @@ It prices inference the same way. Here is a three-task digest that reads a statu
 
 ```yaml digest.nika.yaml
 nika: v1
-workflow: digest
-description: "Read the notes, draft a one-line digest, save it"
+workflow:
+  id: digest
+  description: "Read the notes, draft a one-line digest, save it"
 
 model: ollama/llama3.2:3b
 
@@ -327,12 +330,12 @@ permits:
   tools: ["nika:read", "nika:write"]
 
 tasks:
-  - id: notes
+  notes:
     invoke:
       tool: "nika:read"
       args: { path: "./notes.txt" }
 
-  - id: draft
+  draft:
     depends_on: [notes]
     infer:
       prompt: |
@@ -340,7 +343,7 @@ tasks:
         ${{ tasks.notes.output }}
       max_tokens: 200
 
-  - id: save
+  save:
     depends_on: [draft]
     invoke:
       tool: "nika:write"
@@ -382,8 +385,9 @@ Declare the triple instead. This workflow came from the engine's own skeleton, `
 
 ```yaml landing-hero-pack.nika.yaml
 nika: v1
-workflow: landing-hero-pack
-description: "One brief, one rendered hero, one manifest naming what landed where"
+workflow:
+  id: landing-hero-pack
+  description: "One brief, one rendered hero, one manifest naming what landed where"
 
 model: ollama/llama3.2:3b
 
@@ -398,7 +402,7 @@ vars:
   out_dir: "./out/assets"
 
 tasks:
-  - id: brief
+  brief:
     infer:
       max_tokens: 600
       prompt: |
@@ -411,7 +415,7 @@ tasks:
           image_prompt: { type: string }
         required: [image_prompt]
 
-  - id: render
+  render:
     depends_on: [brief]
     invoke:
       tool: "nika:image_generate"
@@ -421,7 +425,7 @@ tasks:
         output_dir: "${{ vars.out_dir }}"
         filename_prefix: "hero"
 
-  - id: manifest
+  manifest:
     depends_on: [brief, render]
     invoke:
       tool: "nika:jq"
@@ -431,7 +435,7 @@ tasks:
           - "${{ tasks.brief.output }}"
           - "${{ tasks.render.output }}"
 
-  - id: persist
+  persist:
     depends_on: [manifest]
     invoke:
       tool: "nika:write"
@@ -544,8 +548,9 @@ What makes the dynamic end shippable is that the freedom is **contained in a tas
 
 ```yaml notes-triage.nika.yaml
 nika: v1
-workflow: notes-triage
-description: "Read the status notes, return a typed triage"
+workflow:
+  id: notes-triage
+  description: "Read the status notes, return a typed triage"
 
 model: ollama/llama3.2:3b
 
@@ -562,7 +567,7 @@ vars:
     description: "What the agent must accomplish"
 
 tasks:
-  - id: plan
+  plan:
     infer:
       prompt: "Break '${{ vars.goal }}' into at most 4 concrete steps."
       max_tokens: 400
@@ -573,7 +578,7 @@ tasks:
         properties:
           steps: { type: array, items: { type: string } }
 
-  - id: execute
+  execute:
     depends_on: [plan]
     agent:
       model: ollama/qwen2.5:14b
@@ -591,7 +596,7 @@ tasks:
         properties:
           findings: { type: array, items: { type: string } }
 
-  - id: confirm
+  confirm:
     depends_on: [execute]
     invoke:
       tool: "nika:assert"
@@ -628,8 +633,9 @@ Nika's answer is the same answer it gives everything else: **the gate is a task 
 
 ```yaml gated-release.nika.yaml
 nika: v1
-workflow: gated-release
-description: "Draft the release note, wait for a human yes, only then publish"
+workflow:
+  id: gated-release
+  description: "Draft the release note, wait for a human yes, only then publish"
 
 permits:
   fs:
@@ -638,14 +644,14 @@ permits:
   tools: ["nika:read", "nika:write", "nika:prompt"]
 
 tasks:
-  - id: draft
+  draft:
     invoke:
       tool: "nika:read"
       args: { path: "./CHANGES.md" }
 
   # The gate: a human reads the draft and answers. Nothing downstream
   # runs until this task has an answer.
-  - id: approve
+  approve:
     depends_on: [draft]
     invoke:
       tool: "nika:prompt"
@@ -653,7 +659,7 @@ tasks:
         mode: confirm
         message: "Publish this release note?"
 
-  - id: publish
+  publish:
     depends_on: [draft, approve]
     when: "${{ tasks.approve.output == true }}"
     invoke:
@@ -727,8 +733,9 @@ Here is a workflow with real work in it: checksum the day's notes, count them, p
 
 ```yaml nightly-archive.nika.yaml
 nika: v1
-workflow: nightly-archive
-description: "Hash, count and pack the day's notes into one manifest"
+workflow:
+  id: nightly-archive
+  description: "Hash, count and pack the day's notes into one manifest"
 
 permits:
   fs:
@@ -738,21 +745,21 @@ permits:
 
 tasks:
   # No deps between these two → the engine runs them in parallel.
-  - id: hash_notes
+  hash_notes:
     exec:
       command: ["shasum", "-a", "256", "notes/monday.md", "notes/tuesday.md", "notes/wednesday.md"]
 
-  - id: count_notes
+  count_notes:
     exec:
       command: ["wc", "-w", "notes/monday.md", "notes/tuesday.md", "notes/wednesday.md"]
 
   # Pack only once the notes are verified — the checksums gate the archive.
-  - id: pack_assets
+  pack_assets:
     depends_on: [hash_notes, count_notes]
     exec:
       command: ["gzip", "-kf9", "assets.bin"]
 
-  - id: manifest
+  manifest:
     depends_on: [pack_assets]
     exec:
       command: ["echo", "archive ok"]
@@ -837,8 +844,9 @@ Here is a small build with a diamond in it: fetch feeds render feeds index, and 
 
 ```yaml site-build.nika.yaml
 nika: v1
-workflow: site-build
-description: "Fetch the data, render the page, index it - and pack assets on the side"
+workflow:
+  id: site-build
+  description: "Fetch the data, render the page, index it - and pack assets on the side"
 
 permits:
   fs:
@@ -847,22 +855,22 @@ permits:
   exec: ["date", "cat", "wc", "gzip"]
 
 tasks:
-  - id: fetch_data
+  fetch_data:
     exec:
       command: ["date", "-u", "+data@%H:%M:%S"]
 
-  - id: render_page
+  render_page:
     depends_on: [fetch_data]
     exec:
       command: ["cat", "./data.txt"]
 
-  - id: build_index
+  build_index:
     depends_on: [render_page]
     exec:
       command: ["wc", "-c", "./page.txt"]
 
   # independent branch - no deps on the chain above
-  - id: compress_assets
+  compress_assets:
     exec:
       command: ["gzip", "-kf", "./assets.txt"]
 
@@ -920,7 +928,8 @@ The usual answer is a prompt-management platform: another dashboard, another acc
 
 ```yaml release-notes.nika.yaml
 nika: v1
-workflow: release-notes
+workflow:
+  id: release-notes
 # local model · nothing leaves this machine
 model: ollama/llama3.2:3b
 
@@ -929,15 +938,15 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - { id: commits, invoke: { tool: "nika:read", args: { path: ./commits.txt } } }
+  commits: { invoke: { tool: "nika:read", args: { path: ./commits.txt } } }
 
-  - id: draft
+  draft:
     depends_on: [ commits ]
     infer:
       prompt: "Write release notes from these commits: ${{ tasks.commits.output }}"
       max_tokens: 200
 
-  - id: save
+  save:
     depends_on: [ draft ]
     invoke: { tool: "nika:write", args: { path: ./notes.md, content: "${{ tasks.draft.output }}" } }
 
@@ -956,14 +965,14 @@ index 06134b3..253fa1e 100644
 --- a/release-notes.nika.yaml
 +++ b/release-notes.nika.yaml
 @@ -13,7 +13,7 @@ tasks:
-   - id: draft
+   draft:
      depends_on: [ commits ]
      infer:
 -      prompt: "Write release notes from these commits: ${{ tasks.commits.output }}"
 +      prompt: "Write release notes from these commits. Exactly three bullets, plain words, no hype: ${{ tasks.commits.output }}"
        max_tokens: 200
 
-   - id: save
+   save:
 ```
 
 A prompt change as a one-line diff. It gets a commit message. It goes through a pull request, a colleague reads it, and someone can `git revert` it at 2am without archaeology.
@@ -1057,7 +1066,8 @@ Nika answers a different way. **The plan is authored before the model runs.** He
 
 ```yaml brief.nika.yaml
 nika: v1
-workflow: brief
+workflow:
+  id: brief
 # local model · the note below is hostile on purpose
 model: ollama/llama3.2:3b
 
@@ -1066,15 +1076,15 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - { id: note, invoke: { tool: "nika:read", args: { path: ./note.md } } }
+  note: { invoke: { tool: "nika:read", args: { path: ./note.md } } }
 
-  - id: summary
+  summary:
     depends_on: [ note ]
     infer:
       prompt: "Summarize this note in one sentence: ${{ tasks.note.output }}"
       max_tokens: 100
 
-  - id: save
+  save:
     depends_on: [ summary ]
     invoke: { tool: "nika:write", args: { path: ./summary.md, content: "${{ tasks.summary.output }}" } }
 
@@ -1336,14 +1346,15 @@ Nika's stdlib grew two Media builtins this week, `nika:image_generate` and `nika
 
 ```yaml
 nika: v1
-workflow: og-hero
+workflow:
+  id: og-hero
 
 permits:
   fs: { write: ["./assets/**"] }     # saves are boundary-gated, per final path
   tools: ["nika:image_generate"]
 
 tasks:
-  - id: hero
+  hero:
     invoke:
       tool: "nika:image_generate"
       args:
@@ -1430,7 +1441,8 @@ For that line to be provable, a secret has to be something the language can see:
 
 ```yaml billing-brief.nika.yaml
 nika: v1
-workflow: billing-brief
+workflow:
+  id: billing-brief
 model: ollama/llama3.2:3b
 
 # a secret is a reference to a store, never a value
@@ -1450,7 +1462,7 @@ permits:
   tools: [ "nika:fetch" ]
 
 tasks:
-  - id: charges
+  charges:
     invoke:
       tool: "nika:fetch"
       args:
@@ -1458,7 +1470,7 @@ tasks:
         headers:
           Authorization: "Bearer ${{ secrets.stripe_key }}"
 
-  - id: brief
+  brief:
     depends_on: [ charges ]
     infer:
       prompt: "One short paragraph: what moved in these charges? ${{ tasks.charges.output }}"
@@ -1498,14 +1510,15 @@ Nika moves the question to before. The second verdict `nika check` prints, right
 
 ```yaml cost-probe.nika.yaml
 nika: v1
-workflow: cost-probe
+workflow:
+  id: cost-probe
 model: mistral/mistral-small
 
 tasks:
-  - id: bounded
+  bounded:
     infer: { prompt: "one word", max_tokens: 200 }
 
-  - id: loop
+  loop:
     depends_on: [bounded]
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 3, max_tokens_total: 4000 }
 
@@ -1543,21 +1556,22 @@ The language locks at four verbs, and the [earlier post](/blog/four-verbs) made 
 
 ```yaml verbs-probe.nika.yaml
 nika: v1
-workflow: verbs-probe
+workflow:
+  id: verbs-probe
 model: ollama/llama3.2:3b
 
 tasks:
-  - id: think
+  think:
     infer: { prompt: "one word", max_tokens: 8 }
 
-  - id: run
+  run:
     exec: { command: ["echo", "ok"] }
 
-  - id: use
+  use:
     depends_on: [run]
     invoke: { tool: "nika:read", args: { path: ./notes.md } }
 
-  - id: loop
+  loop:
     depends_on: [think]
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 2 }
 
@@ -1602,11 +1616,12 @@ Local-first gets said a lot, and it means anything from "we cache" to "we sync, 
 
 ```yaml hello-ai.nika.yaml
 nika: v1
-workflow: hello-ai
+workflow:
+  id: hello-ai
 model: ollama/llama3.2:3b
 
 tasks:
-  - id: greet
+  greet:
     infer:
       prompt: "Say hello in one sentence."
 ```
@@ -1629,20 +1644,21 @@ Every orchestration tool eventually grows a scheduler dialect: stages, barriers,
 
 ```yaml release-radar.nika.yaml
 nika: v1
-workflow: release-radar
+workflow:
+  id: release-radar
 
 tasks:
-  - id: changelog
+  changelog:
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://nika.sh/changelog"
 
-  - id: repo_log
+  repo_log:
     exec:
       command: ["git", "log", "--since='1", "week'"]
 
-  - id: digest
+  digest:
     depends_on: [changelog, repo_log]
     infer:
       prompt: "What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}"
@@ -1672,20 +1688,21 @@ Nika locks the count at four, forever. The rule that makes this possible is stri
 
 ```yaml morning-brief.nika.yaml
 nika: v1
-workflow: morning-brief
+workflow:
+  id: morning-brief
 
 tasks:
-  - id: fetch_news
+  fetch_news:
     invoke:
       tool: "nika:fetch"          # a tool, not a verb
       args:
         url: "https://hnrss.org/frontpage"
 
-  - id: build
+  build:
     exec:
       command: ["cargo", "build", "--release"]
 
-  - id: digest
+  digest:
     depends_on: [fetch_news, build]
     infer:
       prompt: "Summarize what changed"
@@ -1730,7 +1747,8 @@ In Nika, the boundary is a block in the file you review:
 
 ```yaml daily-brief.nika.yaml
 nika: v1
-workflow: daily-brief
+workflow:
+  id: daily-brief
 
 permits:
   fs:
@@ -1739,13 +1757,13 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - id: notes
+  notes:
     invoke:
       tool: "nika:read"
       args:
         path: ./notes/today.md
 
-  - id: save
+  save:
     depends_on: [notes]
     invoke:
       tool: "nika:write"
@@ -1776,16 +1794,17 @@ A workflow language lives or dies on its tools, and the industry default is a ma
 
 ```yaml headlines.nika.yaml
 nika: v1
-workflow: headlines
+workflow:
+  id: headlines
 
 tasks:
-  - id: page
+  page:
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://nika.sh"
 
-  - id: save
+  save:
     depends_on: [page]
     invoke:
       tool: "nika:write"

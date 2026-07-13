@@ -1,5 +1,6 @@
 nika: v1
-workflow: meeting-actions
+workflow:
+  id: meeting-actions
 
 # local model · the recording stays yours
 model: ollama/llama3.2:3b
@@ -10,10 +11,10 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - id: transcript
+  transcript:
     invoke: { tool: "nika:read", args: { path: ./transcript.txt } }
 
-  - id: extract
+  extract:
     depends_on: [ transcript ]
     infer:
       prompt: "Extract every action item with its owner: ${{ tasks.transcript.output }}"
@@ -31,7 +32,7 @@ tasks:
                 task: { type: string }
       max_tokens: 400
 
-  - id: save
+  save:
     depends_on: [ extract ]
     invoke:
       tool: "nika:write"

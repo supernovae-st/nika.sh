@@ -1,9 +1,10 @@
 nika: v1
-workflow: narrate-the-run
-description: "a human-readable line in the run stream — best-effort, never fails"
+workflow:
+  id: narrate-the-run
+  description: "a human-readable line in the run stream — best-effort, never fails"
 
 tasks:
-  - id: narrate
+  narrate:
     invoke:
       tool: "nika:log"
       args:

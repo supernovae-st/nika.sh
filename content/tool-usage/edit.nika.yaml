@@ -1,9 +1,10 @@
 nika: v1
-workflow: bump-log-level
-description: "literal find/replace in place — not regex, no surprises"
+workflow:
+  id: bump-log-level
+  description: "literal find/replace in place — not regex, no surprises"
 
 tasks:
-  - id: bump
+  bump:
     invoke:
       tool: "nika:edit"
       args:

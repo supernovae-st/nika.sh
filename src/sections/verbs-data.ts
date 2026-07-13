@@ -29,10 +29,11 @@ export const CHAPTERS: Chapter[] = [
     gloss: 'Ask any model · local or cloud.',
     filename: 'think.nika.yaml',
     yaml: `nika: v1
-workflow: think
+workflow:
+  id: think
 model: ollama/llama3.2:3b
 tasks:
-  - id: summarize
+  summarize:
     infer:
       prompt: "Three risks in this release, ranked"
 `,
@@ -49,9 +50,10 @@ tasks:
     gloss: 'A shell command, captured and typed.',
     filename: 'run.nika.yaml',
     yaml: `nika: v1
-workflow: run
+workflow:
+  id: run
 tasks:
-  - id: build
+  build:
     exec:
       command: ["cargo", "build", "--release"]
 `,
@@ -68,9 +70,10 @@ tasks:
     gloss: 'Fetch a page, write a file, call GitHub. Every tool explicit.',
     filename: 'use-a-tool.nika.yaml',
     yaml: `nika: v1
-workflow: use-a-tool
+workflow:
+  id: use-a-tool
 tasks:
-  - id: page
+  page:
     invoke:
       tool: "nika:fetch"
       args: { url: "https://nika.sh" }
@@ -88,10 +91,11 @@ tasks:
     gloss: 'An autonomous loop, on a leash you can read.',
     filename: 'delegate.nika.yaml',
     yaml: `nika: v1
-workflow: delegate
+workflow:
+  id: delegate
 model: ollama/llama3.2:3b
 tasks:
-  - id: audit
+  audit:
     agent:
       prompt: "Find every dead link in ./docs"
       tools: [ "nika:read", "nika:fetch" ]

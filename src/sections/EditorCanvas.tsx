@@ -29,24 +29,25 @@ import './v4-home.css'
    no effects run at mount. */
 
 export const EXTENSION_SHOWCASE_YAML = `nika: v1
-workflow: release-notes
+workflow:
+  id: release-notes
 
 model: ollama/qwen3.5:4b
 
 tasks:
-  - id: fetch_commits
+  fetch_commits:
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://api.github.com/repos/acme/app/commits?since=v1.4.0"
 
-  - id: write_notes
+  write_notes:
     depends_on: [fetch_commits]
     infer:
       max_tokens: 800
       prompt: "Write the release notes from \${{ tasks.fetch_commits.output }}: grouped, human, no hype."
 
-  - id: hero_image
+  hero_image:
     depends_on: [fetch_commits]
     invoke:
       tool: "nika:image_generate"
@@ -56,7 +57,7 @@ tasks:
         aspect_ratio: "16:9"
         output_dir: "media/"
 
-  - id: publish
+  publish:
     depends_on: [write_notes, hero_image]
     exec:
       command: ["gh", "release", "create", "v1.5.0", "--notes-file", "notes.md"]

@@ -60,6 +60,8 @@ export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/de/manifesto
 export const ERROR_PATHS = [
   '/errors/NIKA-AGENT-001',
   '/errors/NIKA-AGENT-002',
+  '/errors/NIKA-AGENT-003',
+  '/errors/NIKA-AGENT-004',
   '/errors/NIKA-BUILTIN-001',
   '/errors/NIKA-BUILTIN-DONE-001',
   '/errors/NIKA-CANCEL-001',
@@ -93,6 +95,10 @@ export const ERROR_PATHS = [
   '/errors/NIKA-PARSE-017',
   '/errors/NIKA-PARSE-018',
   '/errors/NIKA-PARSE-019',
+  '/errors/NIKA-PARSE-020',
+  '/errors/NIKA-PARSE-021',
+  '/errors/NIKA-PARSE-022',
+  '/errors/NIKA-PARSE-023',
   '/errors/NIKA-SEC-001',
   '/errors/NIKA-SEC-002',
   '/errors/NIKA-SEC-003',
@@ -108,6 +114,7 @@ export const ERROR_PATHS = [
   '/errors/NIKA-VAR-007',
   '/errors/NIKA-VAR-008',
   '/errors/NIKA-VAR-009',
+  '/errors/NIKA-VAR-020',
 ]
 
 /* the stdlib register's deep pages — one static landing per builtin (slug =
@@ -216,6 +223,8 @@ export const LANGUAGE_PATHS = [
   '/language/retry',
   '/language/schema',
   '/language/secrets',
+  '/language/shell',
+  '/language/skills',
   '/language/skip',
   '/language/stdin',
   '/language/system',

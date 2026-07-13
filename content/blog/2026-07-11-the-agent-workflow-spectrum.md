@@ -14,8 +14,9 @@ What makes the dynamic end shippable is that the freedom is **contained in a tas
 
 ```yaml notes-triage.nika.yaml
 nika: v1
-workflow: notes-triage
-description: "Read the status notes, return a typed triage"
+workflow:
+  id: notes-triage
+  description: "Read the status notes, return a typed triage"
 
 model: ollama/llama3.2:3b
 
@@ -32,7 +33,7 @@ vars:
     description: "What the agent must accomplish"
 
 tasks:
-  - id: plan
+  plan:
     infer:
       prompt: "Break '${{ vars.goal }}' into at most 4 concrete steps."
       max_tokens: 400
@@ -43,7 +44,7 @@ tasks:
         properties:
           steps: { type: array, items: { type: string } }
 
-  - id: execute
+  execute:
     depends_on: [plan]
     agent:
       model: ollama/qwen2.5:14b
@@ -61,7 +62,7 @@ tasks:
         properties:
           findings: { type: array, items: { type: string } }
 
-  - id: confirm
+  confirm:
     depends_on: [execute]
     invoke:
       tool: "nika:assert"

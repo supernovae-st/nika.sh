@@ -1,9 +1,10 @@
 nika: v1
-workflow: runs-per-month
-description: "rows in, one deterministic svg out — same bytes every run"
+workflow:
+  id: runs-per-month
+  description: "rows in, one deterministic svg out — same bytes every run"
 
 tasks:
-  - id: render
+  render:
     invoke:
       tool: "nika:chart"
       args:

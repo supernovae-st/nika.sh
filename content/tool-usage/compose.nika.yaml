@@ -1,11 +1,12 @@
 nika: v1
-workflow: delegate-a-sub-run
-description: "the agent drafts a sub-workflow and spawns it through its one doorway"
+workflow:
+  id: delegate-a-sub-run
+  description: "the agent drafts a sub-workflow and spawns it through its one doorway"
 
 model: ollama/qwen3.5:4b
 
 tasks:
-  - id: build
+  build:
     agent:
       system: "Draft a minimal workflow for the goal, spawn it via nika:compose, call nika:done with its outputs."
       prompt: "Summarize ./notes.md into three bullet points."

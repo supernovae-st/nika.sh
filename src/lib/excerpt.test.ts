@@ -39,7 +39,7 @@ describe('sliceExcerpt', () => {
 
   it('locates the permits block (1-based span within the excerpt)', () => {
     // permits header through the tools list, lifted as one contiguous slice
-    const { text, highlight } = sliceExcerpt(YAML, [[1, 11]], /permits:|^\s*(fs|read|write|tools):/)
+    const { text, highlight } = sliceExcerpt(YAML, [[1, 12]], /permits:|^\s*(fs|read|write|tools):/)
     expect(highlight).toBeDefined()
     const lines = text.split('\n')
     const [lo, hi] = highlight!

@@ -39,11 +39,13 @@ const PROVIDERS = new Set<string>([
   ...CANON.providerIdsTest,
 ])
 
-/** 1-based line of each `- id: <name>` task opener (mirrors the projector) */
+/** 1-based line of each task map key (mirrors the projector · W1). */
 function taskLines(src: string): Map<string, number> {
   const out = new Map<string, number>()
+  let inTasks = false
   src.split('\n').forEach((l, i) => {
-    const m = /^ {2}- id: ([a-z][a-z0-9_-]*)\s*$/.exec(l)
+    if (/^[A-Za-z0-9_-]+\s*:/.test(l)) inTasks = /^tasks\s*:/.test(l)
+    const m = inTasks ? /^ {2}([a-z][a-z0-9_-]*)\s*:\s*(?:#.*)?$/.exec(l) : null
     if (m && !out.has(m[1])) out.set(m[1], i + 1)
   })
   return out
@@ -92,14 +94,21 @@ export function lintNika(src: string): LintDiag[] {
   // ── envelope ──
   if (doc.nika !== 'v1')
     diags.push({ line: 1, code: 'NIKA-PARSE', message: '`nika: v1` is required · the exact value, first line', fix: 'add `nika: v1` at the top' })
-  if (typeof doc.workflow !== 'string' || !/^[a-z][a-z0-9-]*$/.test(doc.workflow))
-    diags.push({ line: keyLine(src, 'workflow'), code: 'NIKA-PARSE', message: '`workflow:` must be kebab-case', fix: 'e.g. `workflow: my-job`' })
+  const wfObj = (doc.workflow && typeof doc.workflow === 'object' && !Array.isArray(doc.workflow))
+    ? (doc.workflow as Record<string, unknown>)
+    : null
+  if (!wfObj || typeof wfObj.id !== 'string' || !/^[a-z][a-z0-9-]*$/.test(wfObj.id))
+    diags.push({ line: keyLine(src, 'workflow'), code: 'NIKA-PARSE', message: '`workflow:` is an object · `id:` must be kebab-case', fix: 'e.g. `workflow:` then `  id: my-job`' })
 
-  const tasks = (Array.isArray(doc.tasks) ? doc.tasks : []) as Task[]
-  if (!Array.isArray(doc.tasks) || tasks.length === 0)
-    diags.push({ line: keyLine(src, 'tasks'), code: 'NIKA-PARSE', message: 'a workflow needs a non-empty `tasks:` list', fix: 'add at least one task' })
+  // W1 « the map »: tasks is a MAP · the key IS the identity.
+  const tasksMap = (doc.tasks && typeof doc.tasks === 'object' && !Array.isArray(doc.tasks))
+    ? (doc.tasks as Record<string, Task>)
+    : null
+  const entries: Array<[string, Task]> = tasksMap ? Object.entries(tasksMap) : []
+  if (!tasksMap || entries.length === 0)
+    diags.push({ line: keyLine(src, 'tasks'), code: 'NIKA-PARSE', message: 'a workflow needs a non-empty `tasks:` map', fix: 'add at least one task (`name:` under tasks)' })
 
-  const ids = tasks.map((t) => t?.id).filter((i): i is string => typeof i === 'string')
+  const ids = entries.map(([id]) => id)
   const idset = new Set(ids)
 
   // model: provider prefix (envelope + per-task overrides)
@@ -113,19 +122,13 @@ export function lintNika(src: string): LintDiag[] {
   }
   checkModel(doc.model, keyLine(src, 'model'))
 
-  const seen = new Set<string>()
-  for (const t of tasks) {
+  for (const [id, t] of entries) {
     if (!t || typeof t !== 'object') continue
-    const id = typeof t.id === 'string' ? t.id : undefined
     const line = at(id)
 
-    // ids · snake_case + unique
-    if (!id || !/^[a-z][a-z0-9_]*$/.test(id))
-      diags.push({ line, code: 'NIKA-PARSE', message: `task id ${JSON.stringify(t.id)} must be snake_case`, fix: 'a hyphen is CEL subtraction · use _' })
-    if (id) {
-      if (seen.has(id)) diags.push({ line, code: 'NIKA-PARSE', message: `duplicate task id '${id}'`, fix: 'rename one of them' })
-      seen.add(id)
-    }
+    // ids · snake_case (uniqueness is structural: map keys cannot repeat)
+    if (!/^[a-z][a-z0-9_]*$/.test(id))
+      diags.push({ line, code: 'NIKA-PARSE', message: `task id ${JSON.stringify(id)} must be snake_case`, fix: 'a hyphen is CEL subtraction · use _' })
 
     // timeout: quoted Go-duration (used by task · wait · on_finally rules below)
     const checkDuration = (v: unknown, whereFix: string) => {

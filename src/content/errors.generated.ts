@@ -30,6 +30,18 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "max_tokens_total exhausted before completion"
   },
   {
+    "code": "NIKA-AGENT-003",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a skills: path does not resolve (file missing/unreadable at compose time)"
+  },
+  {
+    "code": "NIKA-AGENT-004",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)"
+  },
+  {
     "code": "NIKA-BUILTIN-001",
     "category": "validation_error",
     "transient": false,
@@ -228,6 +240,30 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "generic structural validation — wrong YAML shape for a field"
   },
   {
+    "code": "NIKA-PARSE-020",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)"
+  },
+  {
+    "code": "NIKA-PARSE-021",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "top-level description: — it moved into workflow.description"
+  },
+  {
+    "code": "NIKA-PARSE-022",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "tasks: is a sequence — it became a map keyed by task id (drop `- id:`, the key IS the identity)"
+  },
+  {
+    "code": "NIKA-PARSE-023",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a task carries an id: field — the map key is the identity, the field is gone"
+  },
+  {
     "code": "NIKA-SEC-001",
     "category": "security_error",
     "transient": false,
@@ -316,6 +352,12 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "category": "validation_error",
     "transient": false,
     "failure": "typed outputs value did not match its declared type: at run end (the output half of the callable contract)"
+  },
+  {
+    "code": "NIKA-VAR-020",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)"
   }
 ]
 

@@ -43,19 +43,21 @@ export const DOCTOR_CMD = 'nika doctor'
 
 /* the zero-setup first file — no model, no key (exec only) */
 export const HELLO_YAML = `nika: v1
-workflow: hello
+workflow:
+  id: hello
 tasks:
-  - id: greet
+  greet:
     exec:
       command: ["echo", "hello", "from", "nika"]
 `
 
 /* the first AI step — a free local model, nothing leaves the machine */
 export const HELLO_AI_YAML = `nika: v1
-workflow: hello-ai
+workflow:
+  id: hello-ai
 model: ollama/llama3.2:3b   # local · free · swap for any provider in the catalog
 tasks:
-  - id: greet
+  greet:
     infer:
       prompt: "Say hello in one sentence."
 `

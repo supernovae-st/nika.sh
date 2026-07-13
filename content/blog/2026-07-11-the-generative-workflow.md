@@ -12,8 +12,9 @@ Declare the triple instead. This workflow came from the engine's own skeleton, `
 
 ```yaml landing-hero-pack.nika.yaml
 nika: v1
-workflow: landing-hero-pack
-description: "One brief, one rendered hero, one manifest naming what landed where"
+workflow:
+  id: landing-hero-pack
+  description: "One brief, one rendered hero, one manifest naming what landed where"
 
 model: ollama/llama3.2:3b
 
@@ -28,7 +29,7 @@ vars:
   out_dir: "./out/assets"
 
 tasks:
-  - id: brief
+  brief:
     infer:
       max_tokens: 600
       prompt: |
@@ -41,7 +42,7 @@ tasks:
           image_prompt: { type: string }
         required: [image_prompt]
 
-  - id: render
+  render:
     depends_on: [brief]
     invoke:
       tool: "nika:image_generate"
@@ -51,7 +52,7 @@ tasks:
         output_dir: "${{ vars.out_dir }}"
         filename_prefix: "hero"
 
-  - id: manifest
+  manifest:
     depends_on: [brief, render]
     invoke:
       tool: "nika:jq"
@@ -61,7 +62,7 @@ tasks:
           - "${{ tasks.brief.output }}"
           - "${{ tasks.render.output }}"
 
-  - id: persist
+  persist:
     depends_on: [manifest]
     invoke:
       tool: "nika:write"

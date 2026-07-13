@@ -10,21 +10,22 @@ The language locks at four verbs, and the [earlier post](/blog/four-verbs) made 
 
 ```yaml verbs-probe.nika.yaml
 nika: v1
-workflow: verbs-probe
+workflow:
+  id: verbs-probe
 model: ollama/llama3.2:3b
 
 tasks:
-  - id: think
+  think:
     infer: { prompt: "one word", max_tokens: 8 }
 
-  - id: run
+  run:
     exec: { command: ["echo", "ok"] }
 
-  - id: use
+  use:
     depends_on: [run]
     invoke: { tool: "nika:read", args: { path: ./notes.md } }
 
-  - id: loop
+  loop:
     depends_on: [think]
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 2 }
 

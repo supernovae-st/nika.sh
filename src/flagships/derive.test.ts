@@ -12,17 +12,17 @@ import { deriveWorkflow, type NikaVerb } from './derive'
 const VERBS: readonly NikaVerb[] = ['infer', 'exec', 'invoke', 'agent']
 
 interface YamlTask {
-  id: string
   depends_on?: string[]
   when?: string
   [k: string]: unknown
 }
 interface YamlDoc {
-  workflow: string
+  workflow: { id: string; description?: string }
   /** absent on a zero-model flagship (price-watch runs no inference) */
   model?: string
   permits: Record<string, unknown>
-  tasks: YamlTask[]
+  /** W1 « the map »: the key IS the task identity */
+  tasks: Record<string, YamlTask>
   outputs?: Record<string, string>
 }
 
@@ -30,32 +30,33 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
   'derive · %s',
   (_filename, yaml) => {
     const truth = parse(yaml) as YamlDoc
+    const truthTasks = Object.entries(truth.tasks)
     const plan = deriveWorkflow(yaml)
 
     it('derives the exact task id set, in file order', () => {
-      expect(plan.tasks.map((t) => t.id)).toEqual(truth.tasks.map((t) => t.id))
+      expect(plan.tasks.map((t) => t.id)).toEqual(truthTasks.map(([id]) => id))
     })
 
     it('derives every dependency edge verbatim (deps in YAML == deps in the plan)', () => {
-      for (const t of truth.tasks) {
-        const derived = plan.tasks.find((d) => d.id === t.id)
-        expect(derived, `task ${t.id} missing from the derivation`).toBeDefined()
-        expect(derived?.deps, `deps of ${t.id}`).toEqual(t.depends_on ?? [])
+      for (const [id, t] of truthTasks) {
+        const derived = plan.tasks.find((d) => d.id === id)
+        expect(derived, `task ${id} missing from the derivation`).toBeDefined()
+        expect(derived?.deps, `deps of ${id}`).toEqual(t.depends_on ?? [])
       }
     })
 
     it('derives each task verb exactly as the YAML declares it', () => {
-      for (const t of truth.tasks) {
+      for (const [id, t] of truthTasks) {
         const declared = VERBS.filter((v) => v in t)
-        expect(declared, `task ${t.id} must declare exactly one verb`).toHaveLength(1)
-        const derived = plan.tasks.find((d) => d.id === t.id)
+        expect(declared, `task ${id} must declare exactly one verb`).toHaveLength(1)
+        const derived = plan.tasks.find((d) => d.id === id)
         expect(derived?.verb).toBe(declared[0])
       }
     })
 
     it('derives when: gates only where the YAML declares them', () => {
-      for (const t of truth.tasks) {
-        const derived = plan.tasks.find((d) => d.id === t.id)
+      for (const [id, t] of truthTasks) {
+        const derived = plan.tasks.find((d) => d.id === id)
         if (t.when === undefined) expect(derived?.when).toBeUndefined()
         else expect(derived?.when).toBeDefined()
       }
@@ -86,13 +87,13 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
     it('pins task line anchors to the real file lines', () => {
       const lines = yaml.split('\n')
       for (const t of plan.tasks) {
-        expect(lines[t.line0 - 1]).toContain(`id: ${t.id}`)
+        expect(lines[t.line0 - 1]).toMatch(new RegExp(`^ {2}${t.id}:`))
         expect(t.line1).toBeGreaterThanOrEqual(t.line0)
       }
     })
 
     it('derives workflow name, model and outputs', () => {
-      expect(plan.workflow).toBe(truth.workflow)
+      expect(plan.workflow).toBe(truth.workflow.id)
       // a zero-model flagship (price-watch) declares NO model: derive yields ''
       expect(plan.model).toBe(truth.model ?? '')
       expect(plan.outputs).toEqual(Object.keys(truth.outputs ?? {}))

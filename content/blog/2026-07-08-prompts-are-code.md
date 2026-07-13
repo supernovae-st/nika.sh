@@ -12,7 +12,8 @@ The usual answer is a prompt-management platform: another dashboard, another acc
 
 ```yaml release-notes.nika.yaml
 nika: v1
-workflow: release-notes
+workflow:
+  id: release-notes
 # local model · nothing leaves this machine
 model: ollama/llama3.2:3b
 
@@ -21,15 +22,15 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - { id: commits, invoke: { tool: "nika:read", args: { path: ./commits.txt } } }
+  commits: { invoke: { tool: "nika:read", args: { path: ./commits.txt } } }
 
-  - id: draft
+  draft:
     depends_on: [ commits ]
     infer:
       prompt: "Write release notes from these commits: ${{ tasks.commits.output }}"
       max_tokens: 200
 
-  - id: save
+  save:
     depends_on: [ draft ]
     invoke: { tool: "nika:write", args: { path: ./notes.md, content: "${{ tasks.draft.output }}" } }
 
@@ -48,14 +49,14 @@ index 06134b3..253fa1e 100644
 --- a/release-notes.nika.yaml
 +++ b/release-notes.nika.yaml
 @@ -13,7 +13,7 @@ tasks:
-   - id: draft
+   draft:
      depends_on: [ commits ]
      infer:
 -      prompt: "Write release notes from these commits: ${{ tasks.commits.output }}"
 +      prompt: "Write release notes from these commits. Exactly three bullets, plain words, no hype: ${{ tasks.commits.output }}"
        max_tokens: 200
 
-   - id: save
+   save:
 ```
 
 A prompt change as a one-line diff. It gets a commit message. It goes through a pull request, a colleague reads it, and someone can `git revert` it at 2am without archaeology.
