@@ -378,6 +378,46 @@ await check('drum · /tools → GL painted or gracefully absent', () =>
   ),
 )
 
+/* 3-lay · THE LAY-DOWN handshake: parked at the page end the finale must
+   have dissolved the hull INTO its drawing — [data-laydown] stamped, the
+   canvas faded, the schematic returned — and the close must carry the mark.
+   (On this belt window the machine mounts: swiftshader GL. If the gate ever
+   said no, [data-machine] is absent and the check passes on the fallback
+   truth.) Park is behavior:'instant' — the smooth-hijack law. */
+await send('Page.navigate', { url: `${BASE}/spec` })
+await settle()
+await check('spec · the lay-down dissolves the hull into its drawing', () =>
+  until(
+    () =>
+      evaluate(`(async () => {
+        const close = document.querySelector('.spec-close')
+        if (!close) return { err: 'no close section' }
+        /* park INSIDE the lay-down window: the runway's bottom at 0.3vh
+           keeps the stage in 'finale' with p≈0.96 (past the 0.8 dissolve
+           threshold) — parking AT the close lands in 'off', where the rail
+           itself fades (the pin's own first catch) */
+        const fin = document.querySelector('.spec-finale')
+        if (!fin) return true /* fallback register — no live finale */
+        const r = fin.getBoundingClientRect()
+        window.scrollBy({ top: r.bottom - innerHeight * 0.3, behavior: 'instant' })
+        await new Promise((r2) => setTimeout(r2, 400))
+        const stage = document.querySelector('.spec-rail-stage')
+        const mark = document.querySelector('.spec-close-mark')
+        if (!mark || mark.textContent.trim() !== 'nika') return { err: 'no mark' }
+        if (!stage || !stage.dataset.machine) return true /* fallback register truth */
+        const canvas = stage.querySelector('canvas')
+        const faded = !canvas || parseFloat(getComputedStyle(canvas).opacity) < 0.5
+        const drawing = stage.querySelector('.spec-schematic')
+        const drawn = drawing && getComputedStyle(drawing).display !== 'none'
+        return stage.dataset.laydown === '1' && faded && drawn
+          ? true
+          : { laydown: stage.dataset.laydown, faded, drawn: Boolean(drawn) }
+      })()`),
+    30,
+    500,
+  ),
+)
+
 /* 3a · the film's done frame: triangle + drag-seek + handoff */
 await send('Page.navigate', { url: `${BASE}/?it=99` })
 await settle()
