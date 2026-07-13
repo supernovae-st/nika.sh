@@ -54,6 +54,7 @@ const SPEC_AT: Record<string, string> = {
   max_tokens: '/spec#s1',
   max_turns: '/spec#s1',
   command: '/spec#s1',
+  shell: '/spec#s1',
   tool: '/spec#s3',
 }
 

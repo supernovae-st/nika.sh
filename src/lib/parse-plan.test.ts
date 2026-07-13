@@ -29,7 +29,7 @@ describe('parsePlan', () => {
   net: { http: [ api.github.com ] }
 tasks:
   - id: a
-    exec: { command: "git log" }
+    exec: { command: ["git", "log"] }
 `)
     expect(withP!.permits).toEqual({
       fsRead: ['./notes/*'],
@@ -74,7 +74,7 @@ tasks:
     const plan = parsePlan(`tasks:
   - id: a
     depends_on: [b]
-    exec: { command: "ls" }
+    exec: { command: ["ls"] }
   - id: b
     depends_on: [a]
     exec: { command: ["git", "log"] }
@@ -103,7 +103,7 @@ tasks:
   it('skips duplicate ids and non-mapping tasks without dying', () => {
     const plan = parsePlan(`tasks:
   - id: a
-    exec: { command: "ls" }
+    exec: { command: ["ls"] }
   - id: a
     infer: { prompt: "dup" }
   - 42

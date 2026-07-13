@@ -252,7 +252,7 @@ tasks:
 
   - id: history
     exec:
-      command: "git log --since=yesterday --oneline --no-merges"
+      command: ["git", "log", "--since=yesterday", "--oneline", "--no-merges"]
 
   - id: digest
     depends_on: [today, history]
@@ -763,7 +763,7 @@ secrets:
 tasks:
   - id: history
     exec:
-      command: "git log \${{ vars.since_tag }}..HEAD --oneline --no-merges"
+      command: ["git", "log", "\${{ vars.since_tag }}..HEAD", "--oneline", "--no-merges"]
 
   - id: notes
     depends_on: [history]
@@ -1380,7 +1380,7 @@ vars:
 tasks:
   - id: changed
     exec:
-      command: "git diff --name-only \${{ vars.base_ref }}...HEAD"
+      command: ["git", "diff", "--name-only", "\${{ vars.base_ref }}...HEAD"]
 
   - id: files
     depends_on: [changed]
@@ -1602,7 +1602,7 @@ tasks:
   # ── branch 2 · engineering pulse ──
   - id: pulse
     exec:
-      command: "git shortlog -sn --since='1 week ago'"
+      command: ["git", "shortlog", "-sn", "--since='1", "week", "ago'"]
 
   # ── branch 3 · the numbers ──
   - id: kpi_raw
@@ -1790,7 +1790,7 @@ tasks:
   # ── the gather wave · all three run in parallel ──
   - id: logs
     exec:
-      command: "journalctl -u \${{ vars.service }} --since '\${{ vars.log_window }}' --no-pager"
+      command: ["journalctl", "-u", "\${{ vars.service }}", "--since", "'\${{ vars.log_window }}'", "--no-pager"]
       capture: structured
 
   - id: status_history
@@ -1939,19 +1939,19 @@ tasks:
   # ── the gate wave · all three run in parallel ──
   - id: tests
     exec:
-      command: "cargo test --workspace --quiet"
+      command: ["cargo", "test", "--workspace", "--quiet"]
       capture: structured
     timeout: "15m"
 
   - id: lint
     exec:
-      command: "cargo clippy --workspace --all-targets -- -D warnings"
+      command: ["cargo", "clippy", "--workspace", "--all-targets", "--", "-D", "warnings"]
       capture: structured
     timeout: "10m"
 
   - id: audit
     exec:
-      command: "cargo audit"
+      command: ["cargo", "audit"]
       capture: structured
     timeout: "5m"
     retry:
@@ -2004,7 +2004,7 @@ tasks:
   - id: ship
     depends_on: [hold]
     exec:
-      command: "./scripts/release.sh \${{ vars.version }}"
+      command: ["./scripts/release.sh", "\${{ vars.version }}"]
       capture: structured
     timeout: "30m"
 

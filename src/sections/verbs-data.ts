@@ -53,7 +53,7 @@ workflow: run
 tasks:
   - id: build
     exec:
-      command: "cargo build --release"
+      command: ["cargo", "build", "--release"]
 `,
     sub: [
       { n: '5.2.1', label: 'capture & exit codes' },

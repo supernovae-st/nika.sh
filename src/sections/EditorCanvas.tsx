@@ -59,7 +59,7 @@ tasks:
   - id: publish
     depends_on: [write_notes, hero_image]
     exec:
-      command: "gh release create v1.5.0 --notes-file notes.md"
+      command: ["gh", "release", "create", "v1.5.0", "--notes-file", "notes.md"]
 `
 
 type TaskId = 'fetch_commits' | 'write_notes' | 'hero_image' | 'publish'
