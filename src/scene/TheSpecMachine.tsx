@@ -149,6 +149,9 @@ function Machine({
      berth's left edge) — one figure feeds the shaders, the umbilical's
      column end and the left-plate stand-down probe */
   const seamRef = useRef(0)
+  /* armed once per lay-down · the farewell surge fires as the dissolve
+     begins (re-armed when the reader scrubs back above the window) */
+  const bloomArm = useRef(false)
   /* the committed pose + when the reading first diverged from it — the
      frame loop's gate (see THE POSE COMMIT below; null until the first
      frame adopts the mount pose — refs stay unread during render) */
@@ -420,17 +423,21 @@ function Machine({
        showcase idle); the FINALE spins a touch faster — the assembled
        flyover. Between them the accumulated turn eases to the nearest
        full revolution so every dock pose lands on its exact framing. */
-    /* THE LAY-DOWN · the flyover's tail (p 0.62→1): the assembled ship
-       glides to its own drawing's projection — level pitch, centred spine,
-       the accumulated yaw folding to a whole revolution (side profile) —
-       and then the canvas dissolves INTO the 2D elevation (the stage's
-       schematic returns under it via [data-laydown]). One machine, two
-       renderings; the close section below carries the mark + the links. */
+    /* THE LAY-DOWN · the flyover's tail (p 0.5→0.82 — the 260vh runway
+       gives the whole close its time, operator 2026-07-13): the assembled
+       ship glides to its own drawing's projection — level pitch, centred
+       spine, the accumulated yaw folding to a whole revolution (side
+       profile) — and then the canvas dissolves INTO the 2D elevation (the
+       stage's schematic returns under it via [data-laydown]). One machine,
+       two renderings; the close section below carries the birth of the
+       mark. */
     const finaleP = st === 'finale' ? (flight?.progress ?? 0) : 0
-    const lay = Math.min(1, Math.max(0, (finaleP - 0.62) / 0.3))
+    const lay = Math.min(1, Math.max(0, (finaleP - 0.5) / 0.32))
     if (st === 'hero' || st === 'finale') {
       spin.current += delta * (st === 'finale' ? 0.17 * (1 - lay) : 0.11)
-      if (st === 'finale') tDist = Math.min(tDist, 5.6) /* the flyover fills */
+      /* the flyover fills the screen — GRAND (5.6 → 5.2, the operator's
+         « tout le vaisseau en grand ») before the lay pulls it back */
+      if (st === 'finale') tDist = Math.min(tDist, 5.2)
       if (lay > 0) {
         tPitch = tPitch * (1 - lay)
         tDist = tDist + (7.1 - tDist) * lay
@@ -497,12 +504,19 @@ function Machine({
       const flat = Math.round(tYaw / (Math.PI * 2)) * (Math.PI * 2)
       tYaw = tYaw + (flat - tYaw) * lay
     }
-    /* the dissolve · the last stretch of the lay fades the WHOLE canvas
-       (fills are opaque by the tholos law — alpha lives at the element);
-       the drawing returns beneath it once the fade begins. The handshake
-       rides the same element the mount stamp does (gl.domElement's stage
-       ancestor — resolved once, cached on the rig). */
-    const fadeOut = Math.min(1, Math.max(0, (finaleP - 0.8) / 0.16))
+    /* the dissolve · a LONG crossfade after the lay settles (0.78 → 0.92
+       of the stretched runway — « qui transitionne parfaitement vers sa
+       forme 2D »): the canvas fades at the element (fills are opaque by
+       the tholos law), the drawing returns beneath it. The handshake
+       rides the same element the mount stamp does. */
+    const fadeOut = Math.min(1, Math.max(0, (finaleP - 0.78) / 0.14))
+    /* THE LAST BEAT · as the hull begins to melt into its own drawing,
+       every wire fires once and the whole ship swells — the assembled
+       surge, spent as a farewell (re-armed if the reader scrubs back) */
+    if (fadeOut > 0 && !bloomArm.current) {
+      bloomArm.current = true
+      strikeRef.current = -2
+    } else if (finaleP < 0.6 && bloomArm.current) bloomArm.current = false
     gl.domElement.style.opacity = fadeOut > 0 ? String(1 - fadeOut) : ''
     {
       const stageEl = gl.domElement.closest('.spec-rail-stage') as HTMLElement | null
@@ -599,7 +613,11 @@ function Machine({
          prose overlaps their band */
       if ((rig.seamAt ?? 0) < u.uTime.value) {
         rig.seamAt = u.uTime.value + 1
-        const prose = document.querySelector('.spec-flow, .spec-block')
+        /* the stand-down is a DOCK law only: at the finale the prose lies
+           far above the stage and the labelled drawing wants BOTH flanks
+           (the one-stage seam sits at 0 there — measuring against it hid
+           every left plate and left four lone diagonals) */
+        const prose = st === 'dock' ? document.querySelector('.spec-flow, .spec-block') : null
         if (prose) {
           const pr = prose.getBoundingClientRect()
           /* +24px of guard (arc 28 · the berth pass): a plate the prose
@@ -635,7 +653,11 @@ function Machine({
         const hot = rig.hot ?? -1
         const target =
           helm.dragging ? 0
-          : term ? (hot === -1 ? 0.55 : hot === si ? 1 : 0.18)
+          /* the poster carries NO wires at rest (operator 2026-07-13: the
+             hull opens clean — the leaders belong to the reading, from S.0
+             on); a HOVERED term still lights its one wire (discoverable,
+             never ambient) */
+          : term ? (hot === si ? 1 : 0)
           : hero ? 0
           : full || pose.focus === si ? (rig.leftSeam && si < 4 && pose.focus !== si ? 0 : 1)
           : pose.focus < 0 ? 0

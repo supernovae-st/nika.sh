@@ -2026,8 +2026,10 @@
 /* THE FINALE RUNWAY · scroll room for the assembled flyover, past the last
    section (live only — the fallback flow ends at S.8 untouched) */
 .spec-finale {
-  /* the flyover (head) + THE LAY-DOWN (tail) both need runway */
-  height: 170vh;
+  /* the flyover GRAND (head · p 0-0.5) + THE LAY-DOWN (0.5-0.82) + the
+     long dissolve into the drawing (0.78-0.92): the whole close gets its
+     time (operator 2026-07-13 · 170vh read as a cut, not a ceremony) */
+  height: 260vh;
 }
 
 /* THE CHASSIS · THE ONE STAGE (arc 28) · the live rail is ONE constant
@@ -2312,4 +2314,95 @@
 }
 .spec-close .td-chips {
   justify-content: center;
+}
+
+/* ── THE BIRTH · the close, live register only (arc 29) ──────────────────────
+   The hull has just melted into its own drawing above; the close answers:
+   the butterfly glyph BLOOMS out of a supernova burst, the mark forms
+   from letter-space, the creed and the rail follow. Every rule is
+   .is-live-scoped and every element below is machine-gated JSX — the
+   fallback register (mobile · reduced · no-GL · the goldens) keeps the
+   plain close verbatim. One-shot declarative animations on a class the
+   page stamps once (the raster law: nothing rides a rAF var). */
+.spec-close.is-live .spec-close-nova {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  margin-bottom: -6px;
+}
+.spec-close.is-live .spec-close-glyph {
+  width: 58px;
+  height: 58px;
+  opacity: 0;
+  z-index: 1;
+}
+.spec-close.is-live .spec-close-burst,
+.spec-close.is-live .spec-close-ring {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.spec-close.is-live .spec-close-burst {
+  background: radial-gradient(
+    circle,
+    rgb(201 219 255 / 0.9) 0%,
+    rgb(79 134 255 / 0.5) 30%,
+    rgb(79 134 255 / 0.12) 55%,
+    transparent 72%
+  );
+}
+.spec-close.is-live .spec-close-ring {
+  border: 1px solid rgb(141 180 255 / 0.75);
+}
+.spec-close.is-live .spec-close-mark,
+.spec-close.is-live .spec-close-tag,
+.spec-close.is-live .td-chips {
+  opacity: 0;
+}
+.spec-close.is-live.is-borne .spec-close-burst {
+  animation: specNovaBurst 1.15s cubic-bezier(0.16, 0.8, 0.3, 1) 0.1s;
+}
+.spec-close.is-live.is-borne .spec-close-ring {
+  animation: specNovaRing 1.35s cubic-bezier(0.16, 0.8, 0.3, 1) 0.16s;
+}
+.spec-close.is-live.is-borne .spec-close-glyph {
+  animation: specGlyphBloom 1.15s cubic-bezier(0.2, 0.9, 0.24, 1) 0.34s forwards;
+}
+.spec-close.is-live.is-borne .spec-close-mark {
+  animation: specMarkForm 1.15s cubic-bezier(0.2, 0.8, 0.2, 1) 0.62s forwards;
+}
+.spec-close.is-live.is-borne .spec-close-tag {
+  animation: specCloseUp 0.85s ease-out 1.15s forwards;
+}
+.spec-close.is-live.is-borne .td-chips {
+  animation: specCloseUp 0.85s ease-out 1.35s forwards;
+}
+@keyframes specNovaBurst {
+  0% { opacity: 0; transform: scale(0.12); }
+  18% { opacity: 1; }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+@keyframes specNovaRing {
+  0% { opacity: 0; transform: scale(0.2); }
+  22% { opacity: 0.9; }
+  100% { opacity: 0; transform: scale(3.4); }
+}
+@keyframes specGlyphBloom {
+  0% { opacity: 0; transform: scale(0.4) rotate(-14deg); filter: drop-shadow(0 0 0 rgb(79 134 255 / 0)); }
+  55% { opacity: 1; transform: scale(1.12) rotate(2deg); filter: drop-shadow(0 0 22px rgb(79 134 255 / 0.85)); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 10px rgb(79 134 255 / 0.4)); }
+}
+@keyframes specMarkForm {
+  0% { opacity: 0; letter-spacing: 0.4em; transform: translateY(16px); filter: blur(6px); }
+  60% { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; letter-spacing: -0.045em; transform: translateY(0); filter: blur(0); }
+}
+@keyframes specCloseUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
