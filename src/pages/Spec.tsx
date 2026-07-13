@@ -375,12 +375,30 @@ export function Component() {
       root.removeEventListener('focusout', onBlur)
     }
   }, [])
-  /* the machine → DOM mirror · every twin of the hovered node lights */
+  /* the machine → DOM mirror · every twin of the hovered node lights.
+     THE SYMMETRY (arc 33): a CANVAS-side hover has no DOM end — if a twin
+     is on screen, it becomes one: the living link tends the same wire
+     back from the block to its word in the prose. Only adopted when the
+     page-side bus left the ref empty (a real DOM hover always wins). */
   useEffect(() => {
     if (!hoverNode) return
     const els = document.querySelectorAll(`[data-node="${hoverNode}"]`)
     els.forEach((el) => el.classList.add('is-node-hot'))
-    return () => els.forEach((el) => el.classList.remove('is-node-hot'))
+    let adopted: HTMLElement | null = null
+    if (!hoverElRef.current) {
+      for (const el of els) {
+        const r = el.getBoundingClientRect()
+        if (r.bottom > 80 && r.top < window.innerHeight - 40 && r.width > 0) {
+          adopted = el as HTMLElement
+          break
+        }
+      }
+      hoverElRef.current = adopted
+    }
+    return () => {
+      els.forEach((el) => el.classList.remove('is-node-hot'))
+      if (adopted && hoverElRef.current === adopted) hoverElRef.current = null
+    }
   }, [hoverNode])
 
   /* Shift+←/→ jumps sections (the /play chapter-keys precedent) · the hash
