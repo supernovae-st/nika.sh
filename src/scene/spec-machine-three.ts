@@ -35,12 +35,17 @@ const N_STRATA = SPEC_SECTIONS.length
    the poster + the finale own the whole stage), uSeamW the feather. Eased
    by the frame loop — a mask-image transition would re-raster the layer
    every frame (the raster law); a uniform costs nothing. Fragment-only:
-   no cross-stage precision contract to keep. */
+   no cross-stage precision contract to keep.
+   THE FADE LIVES ON THE VISIBLE SIDE (operator capture 2026-07-13): the
+   first cut put the gradient BELOW uSeamX — inside the region the old
+   clip removed — so the hull sliced hard at the seam and the feather was
+   never seen. Zero at the seam, full at seam + feather: the melt is on
+   the stage. */
 const SEAM_CHUNK = /* glsl */ `
 uniform float uSeamX;
 uniform float uSeamW;
 float seamT() {
-  return mix(1.0, smoothstep(uSeamX - uSeamW, uSeamX, gl_FragCoord.x), step(0.5, uSeamX));
+  return mix(1.0, smoothstep(uSeamX, uSeamX + uSeamW, gl_FragCoord.x), step(0.5, uSeamX));
 }
 `
 
@@ -328,13 +333,15 @@ const STAR_FRAG = /* glsl */ `
 precision mediump float;
 varying float vA;
 varying float vWarm;
-${SEAM_CHUNK}
 void main() {
+  /* THE SKY OWNS THE WHOLE SCREEN (operator 2026-07-13) · the stars are
+     the stage's background at every stage — they drift under the prose
+     at whisper alpha; only the HULL berths at the seam */
   if (vA < 0.01) discard;
   vec2 d = gl_PointCoord - 0.5;
   float r = 1.0 - smoothstep(0.12, 0.5, length(d));
   vec3 col = mix(vec3(0.14, 0.25, 0.55), vec3(0.31, 0.525, 1.0), vWarm * 0.6);
-  gl_FragColor = vec4(col, vA * r * seamT());
+  gl_FragColor = vec4(col, vA * r);
 }
 `
 

@@ -216,6 +216,28 @@ export function Component() {
      → off (the footer's turn). The machine's frame loop reads flightRef —
      no re-render churn. */
   const finaleEl = useRef<HTMLDivElement>(null)
+  /* THE BIRTH's trigger · once the close crosses a third of the viewport
+     (live only — the hull has just lain down into its drawing above), the
+     section is stamped .is-borne and the one-shot birth plays: burst →
+     glyph bloom → the mark forms → creed + rail. Stamped once, forever. */
+  const closeRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const el = closeRef.current
+    if (!machine || !el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        el.classList.add('is-borne')
+        io.disconnect()
+      },
+      /* the birth waits for its stage: at 0.3 it played while the 2D
+         drawing still held the screen above — the burst fired half out
+         of view. 0.6 = the close owns the viewport. */
+      { threshold: 0.6 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [machine])
   const [stage, setStage] = useState<'hero' | 'dock' | 'finale' | 'off'>('hero')
   const flightRef = useRef({ state: 'hero', progress: 0 })
   useEffect(() => {
@@ -614,8 +636,24 @@ export function Component() {
         {/* THE CLOSE · the voyage's last beat, every register: the mark, the
             one-line creed, the ecosystem in one rail (sources registry — the
             live finale's LAY-DOWN dissolves the hull into its own drawing
-            just above this). Real DOM, real links; the footer follows. */}
-        <section className="spec-close" aria-labelledby="spec-close-mark">
+            just above this). Real DOM, real links; the footer follows.
+            THE BIRTH (live only): the butterfly glyph blooms out of a
+            supernova burst and the mark forms — machine-gated JSX +
+            .is-live-scoped CSS, so the fallback register (and the goldens)
+            keeps this section verbatim. */}
+        <section
+          ref={closeRef}
+          className={`spec-close${machine ? ' is-live' : ''}`}
+          aria-labelledby="spec-close-mark"
+        >
+          {machine ? (
+            <span className="spec-close-nova" aria-hidden>
+              <i className="spec-close-burst" />
+              <i className="spec-close-ring" />
+              <i className="spec-close-ring spec-close-ring--far" />
+              <img src="/nika.svg" alt="" className="spec-close-glyph" />
+            </span>
+          ) : null}
           <p id="spec-close-mark" className="spec-close-mark">
             nika
           </p>
