@@ -110,7 +110,9 @@
    whole film asks ~16% less scroll, while the burst window itself GREW
    (0.40→0.47 of a shorter runway ≈ the same absolute room per beat). */
 .morphsec[data-armed] {
-  height: 370vh;
+  /* 320 (was 370): the front-loaded beats need less tail — the next
+     section arrives with the verdict still warm */
+  height: 320vh;
 }
 .morphsec[data-armed] .morph-stage {
   position: sticky;

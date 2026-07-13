@@ -1525,7 +1525,7 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 The recorded run chains through it, step by step.
               </p>
               <p className="morph-cap" data-for="flat">
-                The run is done. The <b>verdict</b> sweeps the plan — every step accounted
+                The run is done. The <b>verdict</b> sweeps the plan: every step accounted
                 for.
               </p>
               <p className="morph-cap" data-for="done">
