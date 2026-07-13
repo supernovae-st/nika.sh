@@ -145,6 +145,10 @@ function Machine({
   const group = useRef<THREE.Group>(null)
   const inner = useRef<THREE.Group>(null)
   const spin = useRef(0)
+  /* THE SEAM's eased screen fraction (0 = whole stage · ~0.5+ = the dock
+     berth's left edge) — one figure feeds the shaders, the umbilical's
+     column end and the left-plate stand-down probe */
+  const seamRef = useRef(0)
   /* the committed pose + when the reading first diverged from it — the
      frame loop's gate (see THE POSE COMMIT below; null until the first
      frame adopts the mount pose — refs stay unread during render) */
@@ -321,21 +325,49 @@ function Machine({
       }
     } else gate.since = -1
 
+    /* THE SOVEREIGN FRAMING (operator 2026-07-13 · the hull painted over
+       the prose) · at the FULL-SCREEN stages the camera answers to its OWN
+       reference — hero reads the beauty FRAME, the finale reads LICENSE —
+       never the scrollspy: a section pose (S.1 dist 2.75, spine-centred)
+       rendered full-bleed put the close-up hull anywhere on the page. The
+       reading only steers the camera at the DOCK, where the stage is
+       berthed beside the prose by construction. */
+    const st = flight?.state
+    const pose =
+      st === 'hero' ? POSES.frame
+      : st === 'finale' ? POSES.license
+      : gate.pose
+
     /* per-stratum washes · lit eases toward its target over ~a second (the
        drum's band wash), focus eases a touch faster. ONE array carries two
        signals (operator pass 2026-07-11: dim the rest, push the read zone):
        ≤1 is the x-ray dim on the siblings, the overflow ABOVE 1 is the
-       spotlight on the stratum being read — the shaders split it back. */
-    const pose = gate.pose
+       spotlight on the stratum being read — the shaders split it back
+       (lifted 1.3 → 1.42: the chosen station burns a clear notch hotter). */
     const lit = litRef.current
     const kLit = Math.min(1, delta * 2.4)
     const kFoc = Math.min(1, delta * 2.6)
     for (let i = 0; i < STRATA_ORDER.length; i++) {
       const litT = lit.has(STRATA_ORDER[i]) ? 1 : 0
       u.uLit.value[i] += (litT - u.uLit.value[i]) * kLit
-      const focT = pose.focus < 0 ? 1 : pose.focus === i ? 1.3 : 0.22
+      const focT = pose.focus < 0 ? 1 : pose.focus === i ? 1.42 : 0.22
       u.uFocusA.value[i] += (focT - u.uFocusA.value[i]) * kFoc
     }
+
+    /* THE SEAM (THE ONE STAGE) · the berth's left edge, eased in screen
+       fraction and handed to the shaders in device px — at the dock the
+       hull melts toward the prose over the feather; the poster + the
+       finale own the whole stage. The chassis never resizes again (the
+       old width tween reallocated the GL buffer at every flip and its
+       settle SNAPPED the projection); CSS clips the same edge for the
+       hit-test, the shaders own the light. */
+    const berthFrac = Math.max(0.5, 1 - 760 / state.size.width)
+    const seamTarget = st === 'dock' ? berthFrac : 0
+    seamRef.current += (seamTarget - seamRef.current) * Math.min(1, delta * 3.4)
+    if (seamRef.current < 0.004 && seamTarget === 0) seamRef.current = 0
+    const dpr = gl.domElement.width / Math.max(1, state.size.width)
+    u.uSeamX.value = seamRef.current <= 0.004 ? 0 : seamRef.current * gl.domElement.width
+    u.uSeamW.value = 150 * dpr
 
     /* THE HELM · user orbit spring-returns once released · zoom eases ·
        the explode washes in/out like a stratum */
@@ -388,7 +420,6 @@ function Machine({
        showcase idle); the FINALE spins a touch faster — the assembled
        flyover. Between them the accumulated turn eases to the nearest
        full revolution so every dock pose lands on its exact framing. */
-    const st = flight?.state
     /* THE LAY-DOWN · the flyover's tail (p 0.62→1): the assembled ship
        glides to its own drawing's projection — level pitch, centred spine,
        the accumulated yaw folding to a whole revolution (side profile) —
@@ -530,20 +561,26 @@ function Machine({
     parallax.current.y += ((atRest ? pointer.current.y : 0) - parallax.current.y) * Math.min(1, delta * 2)
     g.rotation.x += (tPitch + helm.pitch + parallax.current.y * 0.06 + sail.v * 0.045 - g.rotation.x) * k
     g.position.y += (pose.y - g.position.y) * k
-    /* the poster's rightward carry (SCREEN x — the outer group never turns):
-       the full-bleed hero parks the vessel right of the copy column. THE
-       PRECISE HANDOFF: as the approach completes, the carry flies the
-       vessel's centre to where the DOCK will hold it — the dock chassis is
-       the right 46vw (centre ≈ 77vw) while the hero centre sits ≈ 64vw, so
-       carry grows 1.35 → ~2.5 world units with p. At the flip the canvas
-       narrows and the carry eases to 0, and both project the SAME screen
-       point: the vessel does not jump, the bay closes around it. */
+    /* THE CARRY, DERIVED (THE ONE STAGE) · the vessel's on-screen centre is
+       a stage decision — poster ≈ 64vw (right of the copy) gliding to the
+       berth's centre as the dock becomes imminent (ease-in p²: the mark
+       holds through most of the approach), dock = the berth's centre,
+       finale = full centre. One projection does the maths against the LIVE
+       camera distance: the old world-unit constants (1.35 → 2.5) encoded
+       this by hand for one canvas width and snapped when the stage
+       resized — the stage never resizes now, and the handoff is exact by
+       construction (the same fraction on both sides of the flip). */
     const hp = st === 'hero' ? (flight?.progress ?? 0) : 0
-    /* ease-in (p²): the vessel HOLDS its poster mark through most of the
-       approach and slides bay-ward only as the dock becomes imminent —
-       the final mark is exact, the mid-approach never crowds the edge */
-    const heroCarry = 1.35 + hp * hp * 1.15
-    g.position.x += ((st === 'hero' ? heroCarry : 0) - g.position.x) * k
+    const berthCentre = 0.5 + berthFrac / 2
+    const centreFrac =
+      st === 'hero' ? 0.64 + hp * hp * (berthCentre - 0.64)
+      : st === 'finale' ? 0.5
+      : berthCentre
+    const halfW =
+      Math.tan((38 * Math.PI) / 360) *
+      state.camera.position.z *
+      (state.size.width / Math.max(1, state.size.height))
+    g.position.x += ((centreFrac - 0.5) * 2 * halfW - g.position.x) * k
     const exOff = pose.focus >= 0 ? model.explode[pose.focus] * u.uExplode.value : 0
     inn.position.x += (-(lookX + exOff) - inn.position.x) * k
     state.camera.position.z += (tDist * helm.zoom - state.camera.position.z) * k
@@ -566,8 +603,12 @@ function Machine({
         if (prose) {
           const pr = prose.getBoundingClientRect()
           /* +24px of guard (arc 28 · the berth pass): a plate the prose
-             merely BRUSHES reads as a collision before it overlaps */
-          rig.leftSeam = pr.right + 24 > rect.left + rect.width * 0.06
+             merely BRUSHES reads as a collision before it overlaps. The
+             plates live in the BERTH now (the stage is the whole screen —
+             their slots offset by --berth), so the band measures from the
+             berth's edge, not the canvas's. */
+          rig.leftSeam =
+            pr.right + 24 > rect.left + seamRef.current * rect.width + rect.width * 0.03
         } else {
           rig.leftSeam = false
         }
@@ -678,8 +719,10 @@ function Machine({
             it.label.style.pointerEvents = 'none'
             it.line.style.opacity = '0'
             /* the seam curve · out of the column horizontally, a lazy S
-               into the station (control points at 35% of the run) */
-            const x0 = 12
+               into the station (control points at 35% of the run) — its
+               column end rides THE SEAM (the berth's left edge on the one
+               full-screen stage), where the prose hands over to the hull */
+            const x0 = seamRef.current * rect.width + 14
             const y0 = rig.uy
             const cx = (px - x0) * 0.35
             const d = `M ${x0} ${y0.toFixed(1)} C ${(x0 + cx).toFixed(1)} ${y0.toFixed(1)}, ${(px - cx).toFixed(1)} ${py.toFixed(1)}, ${px.toFixed(1)} ${py.toFixed(1)}`

@@ -573,9 +573,11 @@ function buildPoses(): Record<StratumKey, MachinePose> {
   const FRAME: MachinePose = { yaw: 1.12, pitch: 0.2, dist: 6.9, y: -0.02, x: -0.26, focus: -1 }
   return {
     frame: FRAME,
-    /* S.1 · the reactor intimacy holds (the near fills dissolve now) —
-       a touch wider + flatter so the tetrad reads against space */
-    verbs: { yaw: 1.46, pitch: 0.18, dist: 2.75, y: 0.02, x: X_CORE, focus: f('verbs') },
+    /* S.1 · the reactor, intimate but never INSIDE the cloud: 2.75 put the
+       camera among the near fills (whole poses could dissolve to nothing —
+       operator capture 2026-07-13); 3.1 keeps the tetrad close against
+       space with the spine for context */
+    verbs: { yaw: 1.46, pitch: 0.18, dist: 3.1, y: 0.02, x: X_CORE, focus: f('verbs') },
     /* S.2 · angled off broadside, looking slightly down: the slab cluster
        clears the ring instead of hiding behind it */
     plan: { yaw: 1.95, pitch: 0.26, dist: 3.2, y: 0, x: X_BRIDGE - 0.15, focus: f('plan') },
