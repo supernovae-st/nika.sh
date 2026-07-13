@@ -79,7 +79,9 @@
 }
 .mdag-row {
   display: flex;
-  align-items: center;
+  /* the plate sits at the DRAWING'S BASE (operator 2026-07-13): title in the
+     top rule, meta + the run link grounded on the dag's bottom line */
+  align-items: flex-end;
   gap: 18px;
   padding: 0 4px;
 }
@@ -91,7 +93,9 @@
   flex: 1 1 28px;
   min-width: 28px;
   height: 1px;
-  align-self: center;
+  /* the tie stays on the plate's reading line now the row grounds */
+  align-self: flex-end;
+  margin-bottom: 14px;
   background: linear-gradient(
     to right,
     transparent 0%,
@@ -120,6 +124,8 @@
   max-width: 240px;
   margin: 0;
   text-align: left;
+  /* grounded · a whisper above the drawing's baseline */
+  padding-bottom: 2px;
 }
 .mdag-cap-meta {
   font-size: 10px;

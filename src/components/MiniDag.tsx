@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { layoutMiniDag, type MiniDagOrientation } from './mini-dag-layout'
 import type { FlagshipPlanModel } from '../flagships/derive'
-import { VERB_WORDS } from '../sections/morph/plain-words'
 import './mini-dag.css'
 
 /* ─── MiniDag · the compact plan diagram beside the hero editor (wave K) ──────
@@ -65,10 +64,11 @@ export function MiniDag({
   const lay = useMemo(() => layoutMiniDag(plan, orientation), [plan, orientation])
   /* wave lookup for the wire choreography (an edge draws on its TARGET's beat) */
   const waveOf = useMemo(() => new Map(lay.nodes.map((n) => [n.id, n.wave])), [lay])
-  /* the caption doubles as the gloss line: while a node is paired it speaks
-     that task in plain words (the shared VERB_WORDS · zero drift with the 3D
-     tips and the /learn dictionary), then returns to the steps count. */
-  const pairedNode = pairTask ? lay.nodes.find((n) => n.id === pairTask) : undefined
+  /* THE PLATE HOLDS STILL (operator 2026-07-13) · the caption/title used to
+     swap to the paired node's id + verb words on hover — the text width
+     changed, the tie flexed, and THE WHOLE DRAWING JUMPED sideways on every
+     enter/leave (« ça se téléporte »). The pairing already speaks through
+     the node halo + the lit code lines; the plate stays constant. */
   return (
     <figure className={`mdag mdag--${orientation} ${className ?? ''}`}>
       {/* THE SURVEY FRAME (wave S · operator reference) — the block reads as
@@ -80,17 +80,13 @@ export function MiniDag({
           text is aria-hidden; the group carries the plan for AT. */}
       <p className="mdag-title" aria-hidden>
         <i className="mdag-rule mdag-rule--lead" />
-        <span className={`mdag-title-text${pairedNode ? ' mdag-title-text--pair' : ''}`}>
-          {pairedNode ? pairedNode.id : 'the plan'}
-        </span>
+        <span className="mdag-title-text">the plan</span>
         <i className="mdag-rule mdag-rule--trail" />
       </p>
       <div className="mdag-row">
         <p className="mdag-side">
           <span className="mdag-cap-meta" aria-hidden>
-            {pairedNode
-              ? VERB_WORDS[pairedNode.verb]
-              : `${plan.tasks.length} steps · time ${orientation === 'rail' ? '↓' : '→'}`}
+            {`${plan.tasks.length} steps · time ${orientation === 'rail' ? '↓' : '→'}`}
           </span>
           {action}
         </p>
