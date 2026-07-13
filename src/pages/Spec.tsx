@@ -23,6 +23,7 @@ import {
   nsScope,
   type StratumKey,
 } from '../scene/spec-machine-data'
+import { STRATUM_HEX } from '../scene/spec-machine-model'
 import { useSpecReading } from '../sections/spec/use-spec-reading'
 import { SpecSchematic } from '../sections/spec/SpecSchematic'
 import '../sections/v4-home.css'
@@ -604,6 +605,18 @@ export function Component() {
                     cursor-chaser: the node under the pointer, spoken in place */}
                 {hoverReadout ? (
                   <span className="spec-rail-hud spec-rail-hud--mr">
+                    {/* the readout wears its stratum's hue — the tooltip
+                        speaks the same colour the wire and the hull do */}
+                    {(() => {
+                      const n = hoverNode ? nodeById(hoverNode) : undefined
+                      return n ? (
+                        <i
+                          className="spec-hud-stratum-dot"
+                          style={{ background: STRATUM_HEX[n.stratum] }}
+                          aria-hidden
+                        />
+                      ) : null
+                    })()}
                     {hoverReadout}
                     {(() => {
                       const n = hoverNode ? nodeById(hoverNode) : undefined

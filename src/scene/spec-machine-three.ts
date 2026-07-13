@@ -404,6 +404,53 @@ void main() {
 }
 `
 
+/* ─── THE SUPERNOVA (arc 32) · the vessel's death-and-birth VFX ────────────────
+   One full-screen additive quad, alive only while the lay-down dissolve
+   fires (~2.4s — mesh.visible is toggled by the frame loop, so the extra
+   draw call costs nothing outside the event). Four phases on one clock:
+   the core FLASH · the expanding SHOCKWAVE (thinning as it runs) · the
+   anisotropic RAYS (two frequencies, one whispering violet) · the ember
+   DUST falling back. Centred on the hull's projected screen point. */
+const NOVA_VERT = /* glsl */ `
+void main() {
+  gl_Position = vec4(position.xy, 0.0, 1.0);
+}
+`
+const NOVA_FRAG = /* glsl */ `
+precision mediump float;
+uniform float uNovaT;
+uniform vec2 uNovaC;
+uniform vec2 uNovaV;
+float hash21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+void main() {
+  float t = uNovaT / 2.4;
+  if (t <= 0.0 || t >= 1.0) discard;
+  vec2 frag = gl_FragCoord.xy / uNovaV;
+  vec2 c = uNovaC * 0.5 + 0.5;
+  float aspect = uNovaV.x / max(1.0, uNovaV.y);
+  vec2 d = (frag - c) * vec2(aspect, 1.0);
+  float r = length(d);
+  float ang = atan(d.y, d.x);
+  /* the core flash · blinding for a breath, gone fast */
+  float flash = exp(-t * 14.0) * exp(-r * 5.0) * 2.2;
+  /* the shockwave · radius eases out, the band thins as it runs */
+  float rw = 0.95 * (1.0 - exp(-t * 3.2));
+  float ring = exp(-pow((r - rw) * (26.0 + t * 40.0), 2.0)) * exp(-t * 1.6) * 1.2;
+  /* the rays · two starburst frequencies, slowly counter-turning */
+  float rays = pow(abs(cos(ang * 7.0 + t * 0.7)), 24.0) * exp(-r * 2.6) * exp(-t * 3.4) * 1.4;
+  float rays2 = pow(abs(cos(ang * 3.0 - t * 0.4)), 40.0) * exp(-r * 1.8) * exp(-t * 2.6);
+  /* the ember dust · a sparkle field blooming then falling back */
+  float n = hash21(floor(d * 90.0));
+  float dust = step(0.982, n) * exp(-t * 2.2) * smoothstep(0.0, 0.25, t)
+    * (1.0 - smoothstep(0.0, 0.9, r)) * 0.8;
+  float e = flash + ring + rays + rays2 + dust;
+  if (e < 0.004) discard;
+  vec3 col = mix(vec3(0.31, 0.525, 1.0), vec3(0.95, 0.97, 1.0), clamp(flash + ring * 0.5, 0.0, 1.0));
+  col += vec3(0.55, 0.42, 1.0) * rays2 * 0.35;
+  gl_FragColor = vec4(col * e, clamp(e, 0.0, 1.0));
+}
+`
+
 export interface MachineLayers {
   fills: THREE.Mesh
   lines: THREE.LineSegments
@@ -411,6 +458,8 @@ export interface MachineLayers {
   glow: THREE.Mesh
   thrust: THREE.Mesh
   stars: THREE.Points
+  /** THE SUPERNOVA · full-screen additive quad, visible only mid-event */
+  nova: THREE.Mesh
   uniforms: {
     uTime: { value: number }
     uFade: { value: number }
@@ -431,6 +480,12 @@ export interface MachineLayers {
     uSeamX: { value: number }
     /** the seam's feather · device px */
     uSeamW: { value: number }
+    /** THE SUPERNOVA's clock · seconds since the burst (-1 = idle) */
+    uNovaT: { value: number }
+    /** the burst's centre · NDC */
+    uNovaC: { value: THREE.Vector2 }
+    /** viewport in device px (the nova frag needs the aspect) */
+    uNovaV: { value: THREE.Vector2 }
     /** per-stratum ignition level · CPU-eased toward 0/1 (~1s wash) */
     uLit: { value: Float32Array }
     /** per-stratum x-ray alpha · CPU-eased (focused 1 · others 0.3) */
@@ -493,6 +548,9 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     uSeamX: { value: 0 },
     /** the seam's feather width · device px */
     uSeamW: { value: 260 },
+    uNovaT: { value: -1 },
+    uNovaC: { value: new THREE.Vector2(0, 0) },
+    uNovaV: { value: new THREE.Vector2(1, 1) },
     uLit: { value: new Float32Array(N_STRATA) },
     uFocusA: { value: new Float32Array(N_STRATA).fill(1) },
     uExplodeOff: { value: m.explode },
@@ -597,6 +655,17 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     blending: THREE.AdditiveBlending,
   })
 
+  const novaGeo = new THREE.PlaneGeometry(2, 2)
+  const novaMat = new THREE.ShaderMaterial({
+    vertexShader: NOVA_VERT,
+    fragmentShader: NOVA_FRAG,
+    uniforms,
+    transparent: true,
+    depthTest: false,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+
   const fills = new THREE.Mesh(fillGeo, fillMat)
   fills.frustumCulled = false
   fills.renderOrder = 1
@@ -615,6 +684,10 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
   const lines = new THREE.LineSegments(lineGeo, lineMat)
   lines.frustumCulled = false
   lines.renderOrder = 4
+  const nova = new THREE.Mesh(novaGeo, novaMat)
+  nova.frustumCulled = false
+  nova.renderOrder = 5
+  nova.visible = false /* the frame loop wakes it for the burst alone */
 
   return {
     fills,
@@ -623,8 +696,11 @@ export function makeMachineLayers(m: SpecMachineModel): MachineLayers {
     glow,
     thrust,
     stars,
+    nova,
     uniforms,
     dispose: () => {
+      novaGeo.dispose()
+      novaMat.dispose()
       starGeo.dispose()
       starMat.dispose()
       box.dispose()

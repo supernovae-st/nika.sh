@@ -2307,6 +2307,40 @@
   40% { opacity: 0.8; }
 }
 
+/* the readout's stratum dot · the tooltip speaks the hull's colour */
+.spec-hud-stratum-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* THE DRAWING WAKES (arc 32) · as the hull lies down into its elevation,
+   the drawing's strata LIGHT bow → stern — the ship's soul crossing into
+   its blueprint. One-shot, live-only ([data-laydown] never exists off the
+   machine), riding the same nth-child stagger as the hero breath. */
+@media (prefers-reduced-motion: no-preference) {
+  .spec-rail-stage[data-laydown] .sms-stratum {
+    animation: smsWake 1.1s ease-out backwards;
+  }
+  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(2) { animation-delay: 0.1s; }
+  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(3) { animation-delay: 0.2s; }
+  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(4) { animation-delay: 0.3s; }
+  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(5) { animation-delay: 0.4s; }
+  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(6) { animation-delay: 0.5s; }
+  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(7) { animation-delay: 0.6s; }
+  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(8) { animation-delay: 0.7s; }
+}
+@keyframes smsWake {
+  0% { opacity: 0; }
+  55% { opacity: 1; }
+  75% { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
 /* the organ's own page — the head's trailing link (parts-catalog law) */
 .spec-head-register {
   margin-left: auto;

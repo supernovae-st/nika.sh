@@ -164,6 +164,11 @@ function Machine({
   /* armed once per lay-down · the farewell surge fires as the dissolve
      begins (re-armed when the reader scrubs back above the window) */
   const bloomArm = useRef(false)
+  /* THE SUPERNOVA's clock · uTime at the burst (-1 = idle) */
+  const novaStart = useRef(-1)
+  /* armed once per flyover entry · the assembled vessel SALUTES as it
+     takes the screen (every wire, one swell) */
+  const finaleArm = useRef(false)
   /* the committed pose + when the reading first diverged from it — the
      frame loop's gate (see THE POSE COMMIT below; null until the first
      frame adopts the mount pose — refs stay unread during render) */
@@ -539,7 +544,32 @@ function Machine({
     if (fadeOut > 0 && !bloomArm.current) {
       bloomArm.current = true
       strikeRef.current = -2
+      /* THE SUPERNOVA · the hull dies into light as it melts into its
+         drawing — the shader quad wakes for one 2.4s burst */
+      novaStart.current = u.uTime.value
     } else if (finaleP < 0.6 && bloomArm.current) bloomArm.current = false
+    /* the flyover's SALUTE · the assembled vessel takes the screen with
+       one full-ship beat (armed per entry, re-armed at the dock) */
+    if (st === 'finale' && !finaleArm.current) {
+      finaleArm.current = true
+      if (strikeRef.current === -1) strikeRef.current = -2
+    } else if (st !== 'finale' && finaleArm.current) finaleArm.current = false
+    /* the nova's clock + centre · the quad wakes only mid-burst (the
+       seventh draw call costs nothing outside its 2.4s window) */
+    {
+      const novaT = novaStart.current >= 0 ? u.uTime.value - novaStart.current : -1
+      const alive = novaT >= 0 && novaT < 2.4
+      layers.nova.visible = alive
+      u.uNovaT.value = alive ? novaT : -1
+      if (alive && inner.current) {
+        const nc = new THREE.Vector3(0, 0, 0)
+          .applyMatrix4(inner.current.matrixWorld)
+          .project(state.camera)
+        u.uNovaC.value.set(nc.x, nc.y)
+        u.uNovaV.value.set(gl.domElement.width, gl.domElement.height)
+      }
+      if (novaT >= 2.4) novaStart.current = -1
+    }
     gl.domElement.style.opacity = fadeOut > 0 ? String(1 - fadeOut) : ''
     {
       const stageEl = gl.domElement.closest('.spec-rail-stage') as HTMLElement | null
@@ -900,6 +930,8 @@ function Machine({
       {/* the reactor + engine glows stay camera-facing OUTSIDE the group */}
       <primitive object={layers.glow} />
       <primitive object={layers.thrust} />
+      {/* THE SUPERNOVA · a screen-space quad, awake for its burst alone */}
+      <primitive object={layers.nova} />
     </>
   )
 }
