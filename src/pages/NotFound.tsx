@@ -11,6 +11,18 @@ import './not-found.css'
    default error boundary (a register break); now it renders the same crafted
    404 composition inside the app shell. noindex — never a crawl target. */
 
+/* the joke file OBEYS the law (operator 2026-07-13: every yaml on the site
+   is schema-true — even this one): a complete workflow that would check
+   green, gated with the rest in onpage-yaml.test.ts */
+export const NOT_FOUND_YAML = `nika: v1
+workflow: not-found
+description: "404 · nothing at this path parses"
+
+tasks:
+  - id: recover
+    invoke: { tool: "nika:log", args: { message: "go home ↓" } }
+`
+
 export function Component() {
   useHead({
     title: '404 · This file doesn’t parse · Nika',
@@ -31,7 +43,7 @@ export function Component() {
           site (loop T4 · one voice law) — real chrome, gutter, syntax. */}
       <div className="nf-file" aria-hidden>
         <CodeFile
-          yaml={'nika: v1\nworkflow: not-found\ndescription: "404 · nothing at this path parses"\n'}
+          yaml={NOT_FOUND_YAML}
           filename="not-found.nika.yaml"
           wrap
         />

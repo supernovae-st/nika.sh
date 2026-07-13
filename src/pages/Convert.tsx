@@ -27,7 +27,7 @@ import './convert-page.css'
 const PROOF_ASK =
   'Every Friday I paste the week’s merged PRs into a chat and ask for a changelog draft. It can read git log; it may only write CHANGELOG.draft.md.'
 
-const PROOF_YAML = `# from @your-handle's friday ritual · converted + checked
+export const PROOF_YAML = `# from @your-handle's friday ritual · converted + checked
 nika: v1
 workflow: friday-changelog
 description: "the week's merged PRs become a changelog draft"
