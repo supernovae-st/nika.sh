@@ -693,10 +693,8 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
           }
         }
 
-        /* the card · born ON its rail pip (right edge anchored a step left
-           of the pip — it grows INTO the free space between file and rail),
-           then dealt to its DAG seat by the unfold. One transform, both
-           journeys: birth scales it up at the pip, unfold travels pip→seat. */
+        /* the card · born ON its minimap pip, then dealt to its DAG seat by
+           the unfold. One transform, both journeys. */
         const nodeEl = nodeRefs.current.get(t.id)
         if (nodeEl) {
           const o = born
@@ -705,8 +703,22 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
              would pile into the tiny drawing (swept); as an ejected swarm
              each reads, and the scene receives them full-size */
           const gs = 0.22 + 0.78 * unfold
-          const dx = (g.cp.x - g.p2.x) * (1 - unfold)
-          const dy = (g.cp.y - g.p2.y) * (1 - unfold)
+          /* THE ARC · the leap flies a curve, not a wire — the same bezier
+             device as the seeds. Each card bows its own way: the bow lifts
+             with the flight distance and alternates/varies by the task's
+             index (deterministic — no Math.random, the film must replay),
+             so a wave ejected together fans instead of stacking. */
+          const fx = g.cp.x
+          const fy = g.cp.y
+          const dist2 = Math.hypot(g.p2.x - fx, g.p2.y - fy)
+          const bow = Math.min(110, Math.max(28, dist2 * 0.24)) * (i % 2 === 0 ? -1 : -0.45)
+          const cxA = (fx + g.p2.x) / 2 + (i % 3 - 1) * 24
+          const cyA = (fy + g.p2.y) / 2 + bow
+          const k2 = unfold
+          const px = qbez(fx, cxA, g.p2.x, k2)
+          const py = qbez(fy, cyA, g.p2.y, k2)
+          const dx = px - g.p2.x
+          const dy = py - g.p2.y
           nodeEl.style.opacity = o.toFixed(3)
           nodeEl.style.transform =
             o >= 1 && unfold >= 1
