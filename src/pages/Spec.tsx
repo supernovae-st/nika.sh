@@ -338,18 +338,33 @@ export function Component() {
      pulses the 3D node. Delegated: two listeners, zero per-chip wiring. */
   const [hoverNode, setHoverNode] = useState<string | null>(null)
   const hoverReadout = hoverNode ? nodeReadout(hoverNode) : null
+  /* THE LIVING LINK's DOM end · the hovered [data-node] ELEMENT rides a
+     ref into the machine's frame loop — the loop tends an ephemeral wire
+     from the word to ITS block on the hull (a canvas-side hover has no
+     DOM end: the ref stays null and no wire is drawn) */
+  const hoverElRef = useRef<HTMLElement | null>(null)
   useEffect(() => {
     const root = document.querySelector('.spec-page')
     if (!root) return
-    const resolve = (t: EventTarget | null): string | null =>
-      (t as Element | null)?.closest?.('[data-node]')?.getAttribute('data-node') ?? null
-    const onOver = (e: Event) => setHoverNode(resolve(e.target))
+    const resolveEl = (t: EventTarget | null): HTMLElement | null =>
+      ((t as Element | null)?.closest?.('[data-node]') as HTMLElement | null) ?? null
+    const onOver = (e: Event) => {
+      const el = resolveEl(e.target)
+      hoverElRef.current = el
+      setHoverNode(el?.getAttribute('data-node') ?? null)
+    }
     const onFocus = (e: Event) => {
-      const id = resolve(e.target)
-      if (id) setHoverNode(id)
+      const el = resolveEl(e.target)
+      if (el) {
+        hoverElRef.current = el
+        setHoverNode(el.getAttribute('data-node'))
+      }
     }
     const onBlur = (e: Event) => {
-      if (resolve(e.target)) setHoverNode(null)
+      if (resolveEl(e.target)) {
+        hoverElRef.current = null
+        setHoverNode(null)
+      }
     }
     root.addEventListener('pointerover', onOver, { passive: true })
     root.addEventListener('focusin', onFocus)
@@ -579,6 +594,7 @@ export function Component() {
                       lit={lit}
                       current={current}
                       highlight={hoverNode}
+                      hoverElRef={hoverElRef}
                       explode={explode}
                       resetSignal={resetSignal}
                       flightRef={flightRef}

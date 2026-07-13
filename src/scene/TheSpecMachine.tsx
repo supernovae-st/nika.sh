@@ -98,6 +98,10 @@ interface CalloutRig {
   spark?: SVGCircleElement | null
   /** the spark's comet trail (a fainter twin, a beat behind on the curve) */
   strail?: SVGCircleElement | null
+  /** THE LIVING LINK · the ephemeral wire from the hovered DOM element
+      to ITS block on the hull (stratum-tinted) + its eased opacity */
+  hline?: SVGLineElement | null
+  ho?: number
   /** the wire's rooted joint on the read card (the connection made visible) */
   uroot?: SVGCircleElement | null
   ugrad?: SVGLinearGradientElement | null
@@ -113,6 +117,7 @@ function Machine({
   calloutRef,
   flightRef,
   hitRef,
+  hoverElRef,
   onHover,
 }: {
   pointer: React.MutableRefObject<Pointer>
@@ -127,6 +132,8 @@ function Machine({
       pointer-events none; the drag/pick/wheel listeners ride this element
       (seated on --berth), so the sky never eats the prose's links */
   hitRef?: React.RefObject<HTMLDivElement | null>
+  /** THE LIVING LINK's DOM end (page-side hover) · null on canvas hovers */
+  hoverElRef?: React.RefObject<HTMLElement | null>
   onHover: (id: string | null) => void
 }) {
   const model = useMemo(() => buildSpecMachine(), [])
@@ -907,6 +914,38 @@ function Machine({
         it.dot.setAttribute('cx', px.toFixed(1))
         it.dot.setAttribute('cy', py.toFixed(1))
       }
+      /* THE LIVING LINK · hovering ANY [data-node] word tends an
+         ephemeral wire from the element to ITS block on the hull, in the
+         stratum's own hue — the whole reference is physically wired to
+         the vessel, at every station. Canvas-side hovers have no DOM end
+         (the ref is null) and draw nothing; the readout speaks there. */
+      if (rig.hline) {
+        const hEl = hoverElRef?.current
+        const hi2 = hiRef.current
+        const want = hEl && hEl.isConnected && hi2 >= 0 && !helm.dragging ? 1 : 0
+        rig.ho = (rig.ho ?? 0) + (want - (rig.ho ?? 0)) * Math.min(1, delta * 6)
+        if (rig.ho > 0.02 && hEl && hi2 >= 0) {
+          v.set(
+            model.pos[hi2 * 3] + model.explode[model.seed[hi2 * 2]] * u.uExplode.value,
+            model.pos[hi2 * 3 + 1],
+            model.pos[hi2 * 3 + 2],
+          )
+          v.applyMatrix4(inner.current.matrixWorld).project(camera)
+          const nx = ((v.x + 1) / 2) * rect.width
+          const ny = ((1 - v.y) / 2) * rect.height
+          const er = hEl.getBoundingClientRect()
+          rig.hline.setAttribute('x1', (er.right - rect.left + 10).toFixed(1))
+          rig.hline.setAttribute('y1', (er.top + er.height / 2 - rect.top).toFixed(1))
+          rig.hline.setAttribute('x2', nx.toFixed(1))
+          rig.hline.setAttribute('y2', ny.toFixed(1))
+          rig.hline.style.stroke = STRATUM_HEX[STRATA_ORDER[model.seed[hi2 * 2]]]
+          rig.hline.style.strokeDashoffset = (-((u.uTime.value * 30) % 10)).toFixed(2)
+          rig.hline.style.opacity = (rig.ho * 0.85).toFixed(3)
+        } else {
+          rig.hline.style.opacity = ((rig.ho ?? 0) * 0.85).toFixed(3)
+          if ((rig.ho ?? 0) <= 0.02) rig.hline.style.opacity = '0'
+        }
+      }
       /* off the dock (poster · finale · drag) the umbilical stands down */
       if (!umbDrawn && rig.upath && rig.uhalo && rig.spark) {
         rig.upath.style.opacity = '0'
@@ -960,6 +999,7 @@ export default function TheSpecMachine({
   explode = false,
   resetSignal = 0,
   flightRef,
+  hoverElRef,
   onHover = () => {},
 }: {
   stageRef: React.RefObject<HTMLDivElement | null>
@@ -974,6 +1014,8 @@ export default function TheSpecMachine({
   /** THE FLIGHT · the chassis stage + takeover progress (page scroll rig):
       'full' steers one revolution + a dive over the runway */
   flightRef?: React.MutableRefObject<{ state: string; progress: number }>
+  /** THE LIVING LINK's DOM end (the page's hovered [data-node] element) */
+  hoverElRef?: React.RefObject<HTMLElement | null>
   /** W2 · the machine's own hover, reported back for the MR readout + chips */
   onHover?: (id: string | null) => void
 }) {
@@ -1163,6 +1205,7 @@ export default function TheSpecMachine({
           calloutRef={calloutRef}
           flightRef={flightRef}
           hitRef={hitRef}
+          hoverElRef={hoverElRef}
           onHover={onHover}
         />
       </Canvas>
@@ -1233,6 +1276,12 @@ export default function TheSpecMachine({
             r="1.6"
             ref={(el) => {
               calloutRef.current.strail = el
+            }}
+          />
+          <line
+            className="smc-hlink"
+            ref={(el) => {
+              calloutRef.current.hline = el
             }}
           />
           {CALLOUTS.map((c) => {
