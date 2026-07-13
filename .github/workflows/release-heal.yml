@@ -38,8 +38,18 @@ jobs:
           fi
           perl -pi -e "s/(export const ENGINE_VERSION = ')v[0-9][0-9.]*(')/\${1}${tag}\${2}/" src/content.ts
           grep -qF "ENGINE_VERSION = '$tag'" src/content.ts || { echo "::error::rewrite missed"; exit 1; }
+          # The four sibling carriers the version-truth gate names — a
+          # half-heal ships a red board (learned 2026-07-13: the first
+          # 0.102 heal healed the hero alone and main went red).
+          ver="${tag#v}"
+          perl -pi -e "s/\b0\.[0-9]+\.[0-9]+\b/${ver}/g if /currently v|Shipping in the open \(v/" public/llms.txt
+          perl -pi -e "s/(nika )0\.[0-9]+\.[0-9]+/\${1}${ver}/g" public/humans.txt src/content/install.ts src/content/learn.ts
+          perl -pi -e "s/(against nika )0\.[0-9]+\.[0-9]+/\${1}${ver}/g" src/content/install.ts
+          if grep -rn "0\.[0-9]\+\.[0-9]\+" public/llms.txt | grep -v "${ver}" | grep -qE "v0\.[0-9]+\.[0-9]+"; then
+            echo "::warning::a version-shaped string survives in llms.txt — check the gate"
+          fi
           git config user.name "nika-release[bot]"
           git config user.email "nika@supernovae.studio"
-          git add src/content.ts
+          git add src/content.ts public/llms.txt public/humans.txt src/content/install.ts src/content/learn.ts
           git commit -m "chore(hero): the plate heals to $tag — release-heal cron"
           git push
