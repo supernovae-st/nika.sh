@@ -120,6 +120,7 @@ function Machine({
   flightRef,
   hitRef,
   hoverElRef,
+  hoverStratumRef,
   onHover,
 }: {
   pointer: React.MutableRefObject<Pointer>
@@ -136,6 +137,9 @@ function Machine({
   hitRef?: React.RefObject<HTMLDivElement | null>
   /** THE LIVING LINK's DOM end (page-side hover) · null on canvas hovers */
   hoverElRef?: React.RefObject<HTMLElement | null>
+  /** THE STATION PREVIEW · hovered STRATUM index (-1 none) — index chips
+      and transport ticks spotlight their whole station on the hull */
+  hoverStratumRef?: React.RefObject<number>
   onHover: (id: string | null) => void
 }) {
   const model = useMemo(() => buildSpecMachine(), [])
@@ -389,10 +393,19 @@ function Machine({
     const lit = litRef.current
     const kLit = Math.min(1, delta * 2.4)
     const kFoc = Math.min(1, delta * 2.6)
+    /* THE STATION PREVIEW · a hovered index chip / transport tick
+       spotlights its whole stratum — at the dock it joins the read
+       station under the light (navigation previewed); at the overview
+       it lifts alone over the even wash */
+    const hovS = hoverStratumRef?.current ?? -1
     for (let i = 0; i < STRATA_ORDER.length; i++) {
       const litT = lit.has(STRATA_ORDER[i]) ? 1 : 0
       u.uLit.value[i] += (litT - u.uLit.value[i]) * kLit
-      const focT = pose.focus < 0 ? 1 : pose.focus === i ? 1.42 : 0.22
+      const focT =
+        hovS === i ? 1.42
+        : pose.focus < 0 ? 1
+        : pose.focus === i ? 1.42
+        : 0.22
       u.uFocusA.value[i] += (focT - u.uFocusA.value[i]) * kFoc
     }
 
@@ -1012,6 +1025,7 @@ export default function TheSpecMachine({
   resetSignal = 0,
   flightRef,
   hoverElRef,
+  hoverStratumRef,
   onHover = () => {},
 }: {
   stageRef: React.RefObject<HTMLDivElement | null>
@@ -1028,6 +1042,8 @@ export default function TheSpecMachine({
   flightRef?: React.MutableRefObject<{ state: string; progress: number }>
   /** THE LIVING LINK's DOM end (the page's hovered [data-node] element) */
   hoverElRef?: React.RefObject<HTMLElement | null>
+  /** THE STATION PREVIEW · hovered stratum index (index chips · ticks) */
+  hoverStratumRef?: React.RefObject<number>
   /** W2 · the machine's own hover, reported back for the MR readout + chips */
   onHover?: (id: string | null) => void
 }) {
@@ -1218,6 +1234,7 @@ export default function TheSpecMachine({
           flightRef={flightRef}
           hitRef={hitRef}
           hoverElRef={hoverElRef}
+          hoverStratumRef={hoverStratumRef}
           onHover={onHover}
         />
       </Canvas>

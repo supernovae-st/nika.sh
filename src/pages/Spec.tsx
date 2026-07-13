@@ -23,7 +23,7 @@ import {
   nsScope,
   type StratumKey,
 } from '../scene/spec-machine-data'
-import { STRATUM_HEX } from '../scene/spec-machine-model'
+import { STRATA_ORDER, STRATUM_HEX } from '../scene/spec-machine-model'
 import { useSpecReading } from '../sections/spec/use-spec-reading'
 import { SpecSchematic } from '../sections/spec/SpecSchematic'
 import '../sections/v4-home.css'
@@ -343,28 +343,28 @@ export function Component() {
      from the word to ITS block on the hull (a canvas-side hover has no
      DOM end: the ref stays null and no wire is drawn) */
   const hoverElRef = useRef<HTMLElement | null>(null)
+  /* THE STATION PREVIEW · hovering an element whose data-node names a
+     whole STRATUM (index chips · transport ticks) spotlights that
+     station on the hull — navigation previewed before the click */
+  const hoverStratumRef = useRef(-1)
   useEffect(() => {
     const root = document.querySelector('.spec-page')
     if (!root) return
     const resolveEl = (t: EventTarget | null): HTMLElement | null =>
       ((t as Element | null)?.closest?.('[data-node]') as HTMLElement | null) ?? null
-    const onOver = (e: Event) => {
-      const el = resolveEl(e.target)
+    const apply = (el: HTMLElement | null) => {
       hoverElRef.current = el
-      setHoverNode(el?.getAttribute('data-node') ?? null)
+      const id = el?.getAttribute('data-node') ?? null
+      hoverStratumRef.current = id ? STRATA_ORDER.indexOf(id as (typeof STRATA_ORDER)[number]) : -1
+      setHoverNode(id)
     }
+    const onOver = (e: Event) => apply(resolveEl(e.target))
     const onFocus = (e: Event) => {
       const el = resolveEl(e.target)
-      if (el) {
-        hoverElRef.current = el
-        setHoverNode(el.getAttribute('data-node'))
-      }
+      if (el) apply(el)
     }
     const onBlur = (e: Event) => {
-      if (resolveEl(e.target)) {
-        hoverElRef.current = null
-        setHoverNode(null)
-      }
+      if (resolveEl(e.target)) apply(null)
     }
     root.addEventListener('pointerover', onOver, { passive: true })
     root.addEventListener('focusin', onFocus)
@@ -595,6 +595,7 @@ export function Component() {
                       current={current}
                       highlight={hoverNode}
                       hoverElRef={hoverElRef}
+                      hoverStratumRef={hoverStratumRef}
                       explode={explode}
                       resetSignal={resetSignal}
                       flightRef={flightRef}
@@ -673,6 +674,7 @@ export function Component() {
                   <a
                     key={s.fig}
                     href={s.anchor}
+                    data-node={s.key}
                     className={`spec-transport-tick${
                       stage === 'finale' || lit.has(s.key) ? ' is-lit' : ''
                     }${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
