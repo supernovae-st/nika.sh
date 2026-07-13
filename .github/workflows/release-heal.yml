@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   heal:
@@ -24,7 +25,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: The hero plate tracks the published release
+      - name: Every carrier follows the release — honestly
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -33,23 +34,31 @@ jobs:
           [[ "$tag" =~ ^v[0-9][0-9.]*$ ]] || { echo "::error::unexpected tag shape: $tag"; exit 1; }
           current="$(sed -n "s/.*ENGINE_VERSION = '\([^']*\)'.*/\1/p" src/content.ts | head -1)"
           if [ "$current" = "$tag" ]; then
-            echo "hero already at $tag — nothing to heal"
+            echo "carriers already at $tag — nothing to heal"
             exit 0
           fi
-          perl -pi -e "s/(export const ENGINE_VERSION = ')v[0-9][0-9.]*(')/\${1}${tag}\${2}/" src/content.ts
-          grep -qF "ENGINE_VERSION = '$tag'" src/content.ts || { echo "::error::rewrite missed"; exit 1; }
-          # The four sibling carriers the version-truth gate names — a
-          # half-heal ships a red board (learned 2026-07-13: the first
-          # 0.102 heal healed the hero alone and main went red).
+          # The honesty law: the install transcript claims what `nika
+          # --version` answers — so CAPTURE it from the released binary
+          # (checksum-verified), never fabricate the string.
           ver="${tag#v}"
-          perl -pi -e "s/\b0\.[0-9]+\.[0-9]+\b/${ver}/g if /currently v|Shipping in the open \(v/" public/llms.txt
-          perl -pi -e "s/(nika )0\.[0-9]+\.[0-9]+/\${1}${ver}/g" public/humans.txt src/content/install.ts src/content/learn.ts
-          perl -pi -e "s/(against nika )0\.[0-9]+\.[0-9]+/\${1}${ver}/g" src/content/install.ts
-          if grep -rn "0\.[0-9]\+\.[0-9]\+" public/llms.txt | grep -v "${ver}" | grep -qE "v0\.[0-9]+\.[0-9]+"; then
-            echo "::warning::a version-shaped string survives in llms.txt — check the gate"
-          fi
+          curl -fsSLO "https://github.com/supernovae-st/nika/releases/download/${tag}/SHA256SUMS"
+          curl -fsSLO "https://github.com/supernovae-st/nika/releases/download/${tag}/nika-linux-x64-${ver}.tar.gz"
+          grep "nika-linux-x64-${ver}.tar.gz" SHA256SUMS | sha256sum -c -
+          tar xzf "nika-linux-x64-${ver}.tar.gz" nika
+          captured="$(./nika --version)"
+          rm -f nika "nika-linux-x64-${ver}.tar.gz" SHA256SUMS
+          # ONE rewrite lane (scripts/sync-version.mjs) — version.test.ts
+          # judges the PR: a half-heal stays red on the branch, main
+          # never breaks (the 2026-07-13 half-heal lesson, structural).
+          node scripts/sync-version.mjs "$tag" --transcript "$captured"
+          git add -A
+          git diff --cached --quiet && { echo "no diff after sync — done"; exit 0; }
           git config user.name "nika-release[bot]"
           git config user.email "nika@supernovae.studio"
-          git add src/content.ts public/llms.txt public/humans.txt src/content/install.ts src/content/learn.ts
-          git commit -m "chore(hero): the plate heals to $tag — release-heal cron"
-          git push
+          git checkout -B bot/release-heal
+          git commit -m "chore(version): every carrier follows $tag — transcript captured from the released binary"
+          git push -f origin bot/release-heal
+          gh pr create --head bot/release-heal \
+            --title "chore(version): every carrier follows $tag" \
+            --body "Automated heal (ONE lane: sync-version.mjs · transcript CAPTURED from the checksum-verified release binary: \`$captured\`). version-truth judges; merge on green." \
+            2>/dev/null || echo "PR already open — refreshed"
