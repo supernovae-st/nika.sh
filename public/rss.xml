@@ -12,7 +12,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/written-by-agents</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <category>Agents</category>
-      <description>nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot — and the human review is a two-line diff.</description>
+      <description>nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot. The human review is a two-line diff.</description>
     </item>
     <item>
       <title>The pipeline is a file</title>
@@ -20,7 +20,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-pipeline-is-a-file</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
-      <description>An llm pipeline is a graph of model calls, tools and processes. A graph is declared, not programmed: forty lines of YAML replace the orchestration framework — diffable, auditable, replayable.</description>
+      <description>An llm pipeline is a graph of model calls, tools and processes. A graph is declared, not programmed: forty lines of YAML replace the orchestration framework. Diffable, auditable, replayable.</description>
     </item>
     <item>
       <title>The MCP server you didn't have to build</title>
@@ -28,7 +28,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-mcp-server-you-didnt-build</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
-      <description>Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one — eight read-only tools that let any agent audit a plan and learn the language from the thing that enforces it.</description>
+      <description>Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one. Eight read-only tools let any agent audit a plan and learn the language from the thing that enforces it.</description>
     </item>
     <item>
       <title>The forecast is local</title>
@@ -36,7 +36,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-local-forecast</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
-      <description>explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five — never a model call, never the network.</description>
+      <description>explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five. Never a model call, never the network.</description>
     </item>
     <item>
       <title>The generative ai workflow, minus the mystery</title>
@@ -44,7 +44,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-generative-workflow</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
-      <description>Strip the buzzword and a generative ai workflow is three things: inputs you name, a model step, and effects you can point to. Declare all three in one file and the mystery evaporates — rehearsed offline, every asset with provenance.</description>
+      <description>Strip the buzzword and a generative ai workflow is three things: inputs you name, a model step, and effects you can point to. Declare all three in one file and the mystery evaporates. Rehearsed offline, every asset with provenance.</description>
     </item>
     <item>
       <title>The chain of custody</title>
@@ -60,7 +60,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-agent-workflow-spectrum</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
-      <description>An ai agent workflow is any pipeline where a model chooses some of the steps. Every design sits between a declared graph and a free loop — and where yours lands decides which safety you can even ask for.</description>
+      <description>An ai agent workflow is any pipeline where a model chooses some of the steps. Every design sits between a declared graph and a free loop. Where yours lands decides which safety you can even ask for.</description>
     </item>
     <item>
       <title>The run that waits for you</title>
@@ -92,7 +92,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/prompts-are-code</guid>
       <pubDate>Wed, 08 Jul 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
-      <description>Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it — and the engine itself names an edited prompt when two runs diverge.</description>
+      <description>Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it. The engine itself names an edited prompt when two runs diverge.</description>
     </item>
     <item>
       <title>The prompt injection that goes nowhere</title>
@@ -100,7 +100,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/injection-goes-nowhere</guid>
       <pubDate>Wed, 08 Jul 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
-      <description>Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs — the hostile note becomes data, never an action, and the boundary is checked before a token is spent.</description>
+      <description>Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs: the hostile note becomes data, never an action, and the boundary is checked before a token is spent.</description>
     </item>
     <item>
       <title>The run becomes evidence</title>
@@ -108,7 +108,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-run-becomes-evidence</guid>
       <pubDate>Tue, 07 Jul 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
-      <description>Every journal line now carries a hash chain — verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify.</description>
+      <description>Every journal line now carries a hash chain: verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify.</description>
     </item>
     <item>
       <title>Time travel, for real</title>
@@ -116,7 +116,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/time-travel-for-real</guid>
       <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
-      <description>Every debugger replays the past by re-running it. Nika's past is a file — so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.</description>
+      <description>Every debugger replays the past by re-running it. Nika's past is a file, so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.</description>
     </item>
     <item>
       <title>The editor tells the truth</title>
@@ -124,7 +124,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-editor-tells-the-truth</guid>
       <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
-      <description>A green badge is a claim. We audited the editor extension against the engine the way you'd audit a client against a server — and found the badge lying. Here is the contract that keeps it honest now.</description>
+      <description>A green badge is a claim. We audited the editor extension against the engine the way you'd audit a client against a server, and found the badge lying. Here is the contract that keeps it honest now.</description>
     </item>
     <item>
       <title>The credentials your pipeline was breaking</title>
@@ -132,7 +132,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-credentials-your-pipeline-breaks</guid>
       <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
-      <description>OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering — including, until this week, ours.</description>
+      <description>OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering. That included ours, until this week.</description>
     </item>
     <item>
       <title>One wire, five servers</title>
@@ -140,7 +140,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/one-wire-five-servers</guid>
       <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
       <category>Sovereignty</category>
-      <description>The self-hosted media world quietly standardized on OpenAI's wire shapes. That accident of history is the best sovereignty news in years — and Nika's media builtins are built on it.</description>
+      <description>The self-hosted media world quietly standardized on OpenAI's wire shapes. That accident of history is the best sovereignty news in years, and Nika's media builtins are built on it.</description>
     </item>
     <item>
       <title>Media are workflow citizens</title>
@@ -148,7 +148,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/media-are-workflow-citizens</guid>
       <pubDate>Mon, 06 Jul 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
-      <description>Images and speech now render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger — and the sovereign path first.</description>
+      <description>Images and speech now render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger, and the sovereign path first.</description>
     </item>
     <item>
       <title>The trace you can replay</title>

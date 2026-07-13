@@ -56,10 +56,10 @@ const EMBLEM_CAPTION: Record<string, string> = {
 /* the verb's one-line job — the chapter claim+gloss speak it; this is the
    machine-lane line under the stamps */
 const VERB_LANE: Record<string, string> = {
-  infer: `any of ${CANON.providers} providers — local first, your keys, no lock-in`,
-  exec: 'string form rides /bin/sh · array form is execve, no shell — the injection-safe lane',
-  invoke: `${CANON.builtins} nika: builtins + mcp:<server>/<tool> — everything callable is a tool`,
-  agent: 'default-deny tools · max_turns + max_tokens_total — never an unleashed loop',
+  infer: `any of ${CANON.providers} providers: local first, your keys, no lock-in`,
+  exec: 'string form rides /bin/sh · array form is execve, no shell: the injection-safe lane',
+  invoke: `${CANON.builtins} nika: builtins + mcp:<server>/<tool>; everything callable is a tool`,
+  agent: 'default-deny tools · max_turns + max_tokens_total, never an unleashed loop',
 }
 
 export function Component() {
@@ -91,8 +91,8 @@ export function Component() {
 
   const title = chapter ? `${chapter.verb} · the four verbs · Nika` : 'The four verbs · Nika'
   const description = chapter
-    ? `${chapter.verb} — ${chapter.claim} ${chapter.gloss} The block contract (${block.length} keys, ${required.length} required), a complete minimal file, the skeletons that speak it.`
-    : `${name} is not a Nika verb — the language ships exactly four: infer, exec, invoke, agent.`
+    ? `${chapter.verb}: ${chapter.claim} ${chapter.gloss} The block contract (${block.length} keys, ${required.length} required), a complete minimal file, the skeletons that speak it.`
+    : `${name} is not a Nika verb. The language ships exactly four: infer, exec, invoke, agent.`
 
   useHead({
     title,
@@ -105,7 +105,7 @@ export function Component() {
       { property: 'og:image', content: 'https://nika.sh/og-verbs.png' },
       {
         property: 'og:image:alt',
-        content: 'Nika — four verbs, locked forever: infer, exec, invoke, agent.',
+        content: 'Nika. Four verbs, locked forever: infer, exec, invoke, agent.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
@@ -186,10 +186,10 @@ export function Component() {
             <div className="tp-miss" role="status" data-rise>
               <p className="tp-miss-name">{name}</p>
               <p>
-                is not a Nika verb — the language ships exactly four, locked forever:{' '}
+                is not a Nika verb. The language ships exactly four, locked forever:{' '}
                 <Link to="/verbs/infer">infer</Link> · <Link to="/verbs/exec">exec</Link> ·{' '}
                 <Link to="/verbs/invoke">invoke</Link> · <Link to="/verbs/agent">agent</Link>.
-                Everything callable is a tool under <code>invoke:</code> — see{' '}
+                Everything callable is a tool under <code>invoke:</code>. See{' '}
                 <Link to="/tools">the standard library</Link>.
               </p>
             </div>
@@ -199,7 +199,7 @@ export function Component() {
             <div className="td-hero">
               <div className="td-hero-main">
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-                <b>{chapter.claim}</b> {chapter.gloss} One of the four verbs — a verb is a{' '}
+                <b>{chapter.claim}</b> {chapter.gloss} One of the four verbs. A verb is a{' '}
                 <em>distinct native execution model</em>, and every task speaks exactly one.{' '}
                 {VERB_LANE[chapter.verb]}.
               </p>
@@ -230,7 +230,7 @@ export function Component() {
                   <span className="cl-year-count">a complete workflow</span>
                 </div>
                 <p className="td-gloss">
-                  Schema-valid whole — this exact text passes <code>nika check</code> (the on-page
+                  Schema-valid whole: this exact text passes <code>nika check</code> (the on-page
                   YAML gate re-validates it on every test run).
                 </p>
                 <div className="td-usage">
@@ -251,7 +251,7 @@ export function Component() {
                 </div>
                 <p className="td-gloss">
                   The block's vocabulary comes from the served contract itself (
-                  <a href="/schema/workflow.json">workflow.schema.json</a>) — each key opens its
+                  <a href="/schema/workflow.json">workflow.schema.json</a>). Each key opens its
                   register row.
                 </p>
                 <dl className="tp-args td-args">
@@ -298,7 +298,7 @@ export function Component() {
                         ))}
                       </ul>
                     ) : (
-                      <p className="td-none">no skeleton leads with it — the shape above is the reference.</p>
+                      <p className="td-none">no skeleton leads with it; the shape above is the reference.</p>
                     )}
                   </div>
                   <div>
@@ -317,7 +317,7 @@ export function Component() {
                     <div>
                       <p className="td-ref-k">the vocabulary</p>
                       <p className="td-none">
-                        everything callable is a tool — <Link to="/tools">the {TOOLS.length}{' '}
+                        everything callable is a tool: <Link to="/tools">the {TOOLS.length}{' '}
                         builtins</Link> are invoke's standard library; <code>mcp:</code> servers are
                         the other lane.
                       </p>
@@ -327,8 +327,8 @@ export function Component() {
                     <div>
                       <p className="td-ref-k">the providers</p>
                       <p className="td-none">
-                        <Link to="/providers">{CANON.providers} spec-named providers</Link> — local
-                        first, your keys ride env vars, never a config file.
+                        <Link to="/providers">{CANON.providers} spec-named providers</Link>, local
+                        first; your keys ride env vars, never a config file.
                       </p>
                     </div>
                   )}
@@ -364,7 +364,7 @@ export function Component() {
               </nav>
 
               <p className="tp-foot" data-rise>
-                The verbs are locked forever — four, never five (<code>fetch</code> is a builtin,
+                The verbs are locked forever: four, never five (<code>fetch</code> is a builtin,
                 not a verb; ordering is the DAG's job, not a word's). The grammar lives in{' '}
                 <a href={`${SPEC}/blob/main/spec/02-verbs.md`}>spec 02 · verbs</a>; every other key
                 is in <Link to="/language">the keyword register</Link>.{' '}

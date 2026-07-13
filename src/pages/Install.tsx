@@ -144,9 +144,9 @@ export function Component() {
                 <CopyRow track="install-copy" cmd={INSTALL_SH_CMD} label="install script" />
                 <p className="ins-step-plain">
                   Already carrying a toolchain? <b>cargo</b> fetches the prebuilt release
-                  tarball — no compile (the binary lands as <code>nika-cli</code> until the
+                  tarball, no compile (the binary lands as <code>nika-cli</code> until the
                   crates.io publish: symlink the public name once). <b>nix</b> builds the
-                  exact release source via the repo flake — the first run compiles, the
+                  exact release source via the repo flake; the first run compiles, the
                   store caches it.
                 </p>
                 <CopyRow track="install-copy" cmd={BINSTALL_CMD} label="cargo binstall" />
@@ -229,7 +229,7 @@ export function Component() {
                 <p className="ins-step-n">06 · first run</p>
                 <h2 className="ins-step-title">Zero keys, zero cloud</h2>
                 <p className="ins-step-plain">
-                  Start with <code>nika welcome</code> — the mirror: what this machine
+                  Start with <code>nika welcome</code>, the mirror: what this machine
                   already has (editors · local models · key <i>presence</i>, never values)
                   and where to go next. Your first workflow needs no model and no API key.
                   Save the file, audit it with <code>nika check</code> (plan · cost ·

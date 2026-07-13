@@ -52,7 +52,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Written by agents, reviewed by you",
     "tag": "Agents",
     "date": "2026-07-11",
-    "description": "nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot — and the human review is a two-line diff.",
+    "description": "nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot. The human review is a two-line diff.",
     "readingMin": 5
   },
   {
@@ -61,7 +61,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The pipeline is a file",
     "tag": "Language",
     "date": "2026-07-11",
-    "description": "An llm pipeline is a graph of model calls, tools and processes. A graph is declared, not programmed: forty lines of YAML replace the orchestration framework — diffable, auditable, replayable.",
+    "description": "An llm pipeline is a graph of model calls, tools and processes. A graph is declared, not programmed: forty lines of YAML replace the orchestration framework. Diffable, auditable, replayable.",
     "readingMin": 3
   },
   {
@@ -70,7 +70,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The MCP server you didn't have to build",
     "tag": "Engine",
     "date": "2026-07-11",
-    "description": "Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one — eight read-only tools that let any agent audit a plan and learn the language from the thing that enforces it.",
+    "description": "Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one. Eight read-only tools let any agent audit a plan and learn the language from the thing that enforces it.",
     "readingMin": 3
   },
   {
@@ -79,7 +79,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The forecast is local",
     "tag": "Engine",
     "date": "2026-07-11",
-    "description": "explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five — never a model call, never the network.",
+    "description": "explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five. Never a model call, never the network.",
     "readingMin": 3,
     "series": "trace-family",
     "seriesStop": "forecast"
@@ -90,7 +90,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The generative ai workflow, minus the mystery",
     "tag": "Language",
     "date": "2026-07-11",
-    "description": "Strip the buzzword and a generative ai workflow is three things: inputs you name, a model step, and effects you can point to. Declare all three in one file and the mystery evaporates — rehearsed offline, every asset with provenance.",
+    "description": "Strip the buzzword and a generative ai workflow is three things: inputs you name, a model step, and effects you can point to. Declare all three in one file and the mystery evaporates. Rehearsed offline, every asset with provenance.",
     "readingMin": 3
   },
   {
@@ -110,7 +110,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The agent workflow spectrum",
     "tag": "Language",
     "date": "2026-07-11",
-    "description": "An ai agent workflow is any pipeline where a model chooses some of the steps. Every design sits between a declared graph and a free loop — and where yours lands decides which safety you can even ask for.",
+    "description": "An ai agent workflow is any pipeline where a model chooses some of the steps. Every design sits between a declared graph and a free loop. Where yours lands decides which safety you can even ask for.",
     "readingMin": 4
   },
   {
@@ -148,7 +148,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Prompts are code now",
     "tag": "Language",
     "date": "2026-07-08",
-    "description": "Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it — and the engine itself names an edited prompt when two runs diverge.",
+    "description": "Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it. The engine itself names an edited prompt when two runs diverge.",
     "readingMin": 2
   },
   {
@@ -157,7 +157,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The prompt injection that goes nowhere",
     "tag": "Security",
     "date": "2026-07-08",
-    "description": "Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs — the hostile note becomes data, never an action, and the boundary is checked before a token is spent.",
+    "description": "Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs: the hostile note becomes data, never an action, and the boundary is checked before a token is spent.",
     "readingMin": 3
   },
   {
@@ -166,7 +166,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The run becomes evidence",
     "tag": "Engine",
     "date": "2026-07-07",
-    "description": "Every journal line now carries a hash chain — verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify.",
+    "description": "Every journal line now carries a hash chain: verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify.",
     "readingMin": 3,
     "series": "trace-family",
     "seriesStop": "evidence"
@@ -177,8 +177,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Time travel, for real",
     "tag": "Engine",
     "date": "2026-07-06",
-    "description": "Every debugger replays the past by re-running it. Nika's past is a file — so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.",
-    "readingMin": 3
+    "description": "Every debugger replays the past by re-running it. Nika's past is a file, so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.",
+    "readingMin": 2
   },
   {
     "slug": "the-editor-tells-the-truth",
@@ -186,7 +186,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The editor tells the truth",
     "tag": "Engine",
     "date": "2026-07-06",
-    "description": "A green badge is a claim. We audited the editor extension against the engine the way you'd audit a client against a server — and found the badge lying. Here is the contract that keeps it honest now.",
+    "description": "A green badge is a claim. We audited the editor extension against the engine the way you'd audit a client against a server, and found the badge lying. Here is the contract that keeps it honest now.",
     "readingMin": 3
   },
   {
@@ -195,7 +195,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The credentials your pipeline was breaking",
     "tag": "Security",
     "date": "2026-07-06",
-    "description": "OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering — including, until this week, ours.",
+    "description": "OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering. That included ours, until this week.",
     "readingMin": 4
   },
   {
@@ -204,7 +204,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "One wire, five servers",
     "tag": "Sovereignty",
     "date": "2026-07-06",
-    "description": "The self-hosted media world quietly standardized on OpenAI's wire shapes. That accident of history is the best sovereignty news in years — and Nika's media builtins are built on it.",
+    "description": "The self-hosted media world quietly standardized on OpenAI's wire shapes. That accident of history is the best sovereignty news in years, and Nika's media builtins are built on it.",
     "readingMin": 3
   },
   {
@@ -213,7 +213,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Media are workflow citizens",
     "tag": "Engine",
     "date": "2026-07-06",
-    "description": "Images and speech now render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger — and the sovereign path first.",
+    "description": "Images and speech now render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger, and the sovereign path first.",
     "readingMin": 3
   },
   {

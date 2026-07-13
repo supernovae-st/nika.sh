@@ -170,7 +170,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
           ))}
           {hits.length === 0 && (
             <li className="ck-empty mono" role="option" aria-selected={false} aria-disabled="true">
-              nothing matches — try a page, a post title, a NIKA- code
+              nothing matches; try a page, a post title, a NIKA- code
             </li>
           )}
         </ul>

@@ -95,7 +95,7 @@ export function Component() {
   const declsTotal = LANGUAGE_WORDS.reduce((n, w) => n + w.decls.length, 0)
 
   const title = 'The language · every word · Nika'
-  const description = `Every key a .nika.yaml can carry — ${LANGUAGE_WORDS.length} words, ${declsTotal} declarations over ${LANGUAGE_SCOPES.length} surfaces, projected from the served schema. Every word opens its own room.`
+  const description = `Every key a .nika.yaml can carry: ${LANGUAGE_WORDS.length} words, ${declsTotal} declarations over ${LANGUAGE_SCOPES.length} surfaces, projected from the served schema. Every word opens its own room.`
 
   useHead({
     title,
@@ -108,7 +108,7 @@ export function Component() {
       { property: 'og:image', content: 'https://nika.sh/og-language.png' },
       {
         property: 'og:image:alt',
-        content: 'The Nika language register — every schema-declared word, one page.',
+        content: 'The Nika language register: every schema-declared word, one page.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
@@ -146,8 +146,8 @@ export function Component() {
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Every key a <code>.nika.yaml</code> can carry, projected from the one contract the
-            engine serves — <a href="/schema/workflow.json">workflow.schema.json</a>, the same file
-            your editor validates against. Descriptions are the schema's own. <b>Every word opens its own room</b> — the
+            engine serves: <a href="/schema/workflow.json">workflow.schema.json</a>, the same file
+            your editor validates against. Descriptions are the schema's own. <b>Every word opens its own room</b>; the
             contract, the word in a real file, the block it lives in; the{' '}
             <Link to="/verbs">four verbs</Link> keep theirs. The deeper grammar lives in{' '}
             <a href={`${SPEC}/tree/main/spec`}>the spec</a>.
@@ -181,7 +181,7 @@ export function Component() {
 
           <p className="tp-foot" data-rise>
             A key the schema doesn't declare is a <code>nika check</code> finding{' '}
-            <b>before anything runs</b> — the language teaches itself. Try it in the{' '}
+            <b>before anything runs</b>. The language teaches itself. Try it in the{' '}
             <Link to="/play">playground</Link>, walk <Link to="/verbs">the four verbs</Link> or{' '}
             <Link to="/tools">the standard library</Link>. <Link to="/spec">Read the spec →</Link>
           </p>

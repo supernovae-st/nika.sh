@@ -18,8 +18,8 @@ import './brand-page.css'
 const NS_SECTIONS: { ns: string; title: string; blurb: string }[] = [
   { ns: 'verb/', title: 'The four verbs', blurb: 'A verb is a distinct native execution model. Hue = alive.' },
   { ns: 'builtin/', title: `The ${CANON.builtins} builtins`, blurb: 'Everything callable is a tool reached through invoke:.' },
-  { ns: 'feature/', title: 'Features', blurb: 'The product surface — audit · run · trace · prove.' },
-  { ns: 'state/', title: 'Run states', blurb: 'The trace fold — every settle has a face.' },
+  { ns: 'feature/', title: 'Features', blurb: 'The product surface: audit · run · trace · prove.' },
+  { ns: 'state/', title: 'Run states', blurb: 'The trace fold: every settle has a face.' },
 ]
 
 const MARKS: { src: string; label: string; light?: boolean }[] = [
@@ -90,7 +90,7 @@ export function Component() {
       { property: 'og:image', content: 'https://nika.sh/og-brand.png' },
       {
         property: 'og:image:alt',
-        content: 'Nika · One mark, one ontology — the machine-readable design system.',
+        content: 'Nika · One mark, one ontology: the machine-readable design system.',
       },
       { name: 'twitter:image', content: 'https://nika.sh/og-brand.png' },
       ...head.meta,
@@ -106,7 +106,7 @@ export function Component() {
         <h1 className="brand-title">One mark, one ontology</h1>
         <p className="brand-lede">
           Every Nika verb, builtin, feature and run-state has a canonical glyph, color role and
-          motion — declared once in the icon ontology, projected everywhere. Machine-readable:{' '}
+          motion, declared once in the icon ontology, projected everywhere. Machine-readable:{' '}
           <a href="/brand/icons.json">icons.json</a> · <a href="/brand/icons.ttl">icons.ttl</a> ·{' '}
           <a href="https://docs.nika.sh/reference/design-system">integrator reference</a>.
         </p>
@@ -154,11 +154,11 @@ export function Component() {
           The run register · one component library
         </h2>
         <p className="brand-blurb">
-          The task card below is the LIVE library component (<code>components/dag</code>) — the
+          The task card below is the LIVE library component (<code>components/dag</code>): the
           exact one the home renders when a plan settles. The VS Code canvas draws its denser
           editor card from the same generated vocabulary: one source (
           <code>design/tokens.yaml</code>, spec-first), projected into TypeScript on every
-          surface, pinned by drift gates. A verb hue appears on the tick only — hue = alive.
+          surface, pinned by drift gates. A verb hue appears on the tick only: hue = alive.
         </p>
         <div className="brand-register">
           {REGISTER_DEMOS.map((d) => (
@@ -206,7 +206,7 @@ export function Component() {
         </h2>
         <p className="brand-blurb">
           A pattern is an execution model: infer samples, exec scans, invoke round-trips, the
-          agent orbits its bounded loop — and the butterfly beats its wings.
+          agent orbits its bounded loop, and the butterfly beats its wings.
         </p>
         <ul className="brand-motion">
           {MOTION_ORDER.map((id) => (

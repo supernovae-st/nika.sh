@@ -107,12 +107,12 @@ export const TROUBLE: { q: string; a: string; cmd?: string }[] = [
   },
   {
     q: 'behind a corporate proxy',
-    a: 'The install script is plain curl — it honors the standard proxy variables for the download. The binary itself phones nothing home.',
+    a: 'The install script is plain curl; it honors the standard proxy variables for the download. The binary itself phones nothing home.',
     cmd: 'HTTPS_PROXY=http://proxy:8080 curl -LsSf https://nika.sh/install.sh | sh',
   },
   {
     q: 'checksum mismatch on the tarball',
-    a: 'A mismatch means a corrupted or tampered download — don’t run it. Re-download both the tarball and SHA256SUMS from the release page and verify again.',
+    a: 'A mismatch means a corrupted or tampered download. Don’t run it. Re-download both the tarball and SHA256SUMS from the release page and verify again.',
     cmd: 'sha256sum -c SHA256SUMS --ignore-missing',
   },
 ]

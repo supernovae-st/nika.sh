@@ -58,7 +58,7 @@ const ARCHETYPE_NAME: Record<string, string> = {
 function ArgsContract({ bare }: { bare: string }) {
   const entry = TOOL_INDEX[bare]
   if (!entry || entry.args.length === 0) {
-    return <p className="td-none">takes no arguments — the call itself is the signal.</p>
+    return <p className="td-none">takes no arguments; the call itself is the signal.</p>
   }
   return (
     <dl className="tp-args td-args">
@@ -122,8 +122,8 @@ export function Component() {
 
   const title = hit ? `${hit.name} · Nika standard library` : 'Standard library · Nika'
   const description = hit
-    ? `${hit.name} — ${hit.description} Args: ${hit.args.map((a) => a.name + (a.required ? '*' : '')).join(', ')}. In a real file, with the skeletons that ship it.`
-    : `nika:${name} is not a builtin the engine ships — the nika: namespace is closed. The register lists all of them.`
+    ? `${hit.name}: ${hit.description} Args: ${hit.args.map((a) => a.name + (a.required ? '*' : '')).join(', ')}. In a real file, with the skeletons that ship it.`
+    : `nika:${name} is not a builtin the engine ships. The nika: namespace is closed. The register lists all of them.`
 
   useHead({
     title,
@@ -216,7 +216,7 @@ export function Component() {
             <div className="tp-miss" role="status" data-rise>
               <p className="tp-miss-name">nika:{name}</p>
               <p>
-                is not a builtin the engine ships — the <code>nika:</code> namespace is{' '}
+                is not a builtin the engine ships. The <code>nika:</code> namespace is{' '}
                 <em>closed</em> (engine-specific tools route through <code>mcp:</code> servers
                 instead). Walk <Link to="/tools">the register</Link>, check{' '}
                 <a href="/tools/catalog.json">the machine catalog</a> or the{' '}
@@ -230,7 +230,7 @@ export function Component() {
               <div className="td-hero-main">
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
                 {hit.description} One of {TOOLS.length} builtins in the closed{' '}
-                <code>nika:</code> namespace — {CATEGORY_GLOSS[hit.category]}.
+                <code>nika:</code> namespace: {CATEGORY_GLOSS[hit.category]}.
               </p>
 
               {/* the room's dimensions, at a glance */}
@@ -258,7 +258,7 @@ export function Component() {
                 />
                 <p className="td-gloss">
                   A missing required arg is a <code>nika check</code> finding{' '}
-                  <b>before anything runs</b> — the vocabulary below comes from the binary itself
+                  <b>before anything runs</b>; the vocabulary below comes from the binary itself
                   (<code>nika catalog --tools --json</code>), not from prose.
                 </p>
                 <ArgsContract bare={hit.bare} />
@@ -284,7 +284,7 @@ export function Component() {
                 </div>
                 {usage.source.kind === 'template' ? (
                   <p className="td-pin">
-                    a verbatim excerpt — real line numbers from{' '}
+                    a verbatim excerpt, real line numbers from{' '}
                     <a href={`${SPEC}/blob/main/templates/${usage.source.file}`}>
                       {usage.source.file}
                     </a>
@@ -295,7 +295,7 @@ export function Component() {
                   </p>
                 ) : (
                   <p className="td-pin">
-                    a complete file, <code>nika check</code> green — the drift gate re-validates
+                    a complete file, <code>nika check</code> green; the drift gate re-validates
                     this copy against <a href="/schema/workflow.json">the schema</a> on every test
                     run. <a href={playHref}>open it in the playground →</a>
                   </p>
@@ -320,7 +320,7 @@ export function Component() {
                       </ul>
                     ) : (
                       <p className="td-none">
-                        no skeleton ships it — the crafted file above is the reference.
+                        no skeleton ships it; the crafted file above is the reference.
                       </p>
                     )}
                   </div>
@@ -411,7 +411,7 @@ export function Component() {
                 <PartEgg id={hit.bare} />
                 <p className="tdrum-caption">
                   part {String((slot?.index ?? 0) + 1).padStart(2, '0')}/{TOOLS.length} · the{' '}
-                  {hit.category} {ARCHETYPE_NAME[hit.category]} · ports are the args — bright =
+                  {hit.category} {ARCHETYPE_NAME[hit.category]} · ports are the args; bright =
                   required
                 </p>
                 {/* the part's provenance — the sources, right under the machine */}

@@ -38,7 +38,7 @@ const CATEGORY_GLOSS: Record<string, string> = {
   security_error: 'a security policy refused the effect',
   timeout_error: 'a task or step timed out',
   cancelled: 'cancelled before completion',
-  internal_error: 'an engine bug — report it',
+  internal_error: 'an engine bug; report it',
 }
 
 function nsOf(code: string): string {
@@ -107,7 +107,7 @@ export function Component() {
 
   const title = hit ? `${hit.code} · Nika error register` : 'Error register · Nika'
   const description = hit
-    ? `${hit.code} — ${hit.failure} (${hit.category}${hit.transient ? ' · transient' : ''}). Every Nika error is a typed structure with a stable code.`
+    ? `${hit.code}: ${hit.failure} (${hit.category}${hit.transient ? ' · transient' : ''}). Every Nika error is a typed structure with a stable code.`
     : 'Every registered Nika error code: stable identifiers, categories, and the transient flag the retry machinery reads. Machine twin: /errors/catalog.json.'
 
   useHead({
@@ -152,7 +152,7 @@ export function Component() {
             <div className="er-miss" role="status" data-rise>
               <p className="er-miss-code">{code}</p>
               <p>
-                is not a <em>registered</em> code — engines may mint codes inside a namespace&apos;s
+                is not a <em>registered</em> code. Engines may mint codes inside a namespace&apos;s
                 001-099 range beyond the normative floor below. Check{' '}
                 <a href="/errors/catalog.json">the machine registry</a> or the{' '}
                 <a href={`${SPEC}/blob/main/spec/05-errors.md`}>spec chapter</a>.
@@ -188,7 +188,7 @@ export function Component() {
           ))}
 
           <p className="er-foot" data-rise>
-            Codes are <b>stable identifiers</b> — never renamed, never repurposed. Route on them
+            Codes are <b>stable identifiers</b>: never renamed, never repurposed. Route on them
             (<code>retry.on_codes</code> · <code>on_error.on_codes</code>) and they keep meaning the
             same failure forever. <Link to="/spec">Read the spec →</Link>
           </p>

@@ -44,7 +44,7 @@ tasks:
     depends_on: [fetch_commits]
     infer:
       max_tokens: 800
-      prompt: "Write the release notes from \${{ tasks.fetch_commits.output }} — grouped, human, no hype."
+      prompt: "Write the release notes from \${{ tasks.fetch_commits.output }}: grouped, human, no hype."
 
   - id: hero_image
     depends_on: [fetch_commits]
@@ -183,7 +183,7 @@ export default function EditorCanvas() {
 
         <h2 id="editor-title" className="v4wedge-thesis" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
           <b>The file becomes a canvas.</b> Open any <code className="mono">.nika.yaml</code>{' '}
-          in VS Code or Cursor — prompts sit on the cards, a run lights the
+          in VS Code or Cursor: prompts sit on the cards, a run lights the
           graph wave by wave, and every canvas edit lands back in the file.
           This miniature works: press <b>▶ mock</b>.
         </h2>
@@ -192,11 +192,11 @@ export default function EditorCanvas() {
           {/* THE MINIATURE · a working diamond, in the extension's register */}
           <div
             className={`v4ed-frame v4edx-stage-frame${phase === 'done' ? ' v4edx-frame--verdict' : ''}`}
-            aria-label="A miniature of the Nika canvas: four task cards in a diamond — fetch_commits, then write_notes and hero_image in parallel, then publish — with a mock-run control. Activating a card highlights its lines in the YAML panel."
+            aria-label="A miniature of the Nika canvas: four task cards in a diamond: fetch_commits, then write_notes and hero_image in parallel, then publish, with a mock-run control. Activating a card highlights its lines in the YAML panel."
           >
             <p className="v4ed-tab">
               release-notes.nika.yaml · canvas
-              <span className="v4edx-tab-hint">hover a card — its lineage stays lit</span>
+              <span className="v4edx-tab-hint">hover a card; its lineage stays lit</span>
             </p>
 
             <div className="v4edx-stage" role="group" aria-label="Workflow graph">
@@ -240,7 +240,7 @@ export default function EditorCanvas() {
                     onBlur={() => { setHovered(null) }}
                     onClick={() => { setSelected((cur) => (cur === c.id ? null : c.id)) }}
                     aria-pressed={selected === c.id}
-                    aria-label={`Task ${c.id} (${c.verb}) — ${st}. Show its YAML.`}
+                    aria-label={`Task ${c.id} (${c.verb}): ${st}. Show its YAML.`}
                   >
                     <span className="v4edx-tile" aria-hidden>{c.glyph}</span>
                     <span className="v4edx-body">
@@ -273,7 +273,7 @@ export default function EditorCanvas() {
                 {phase === 'done'
                   ? '✓ 4 tasks · 2 ran in parallel · $0.00'
                   : phase === 'running'
-                    ? 'wave by wave — watch the middle two'
+                    ? 'wave by wave; watch the middle two'
                     : '$0.00 ceiling · local model · audited before it runs'}
               </span>
             </p>
@@ -289,7 +289,7 @@ export default function EditorCanvas() {
               className="v4edx-pre"
               tabIndex={0}
               role="region"
-              aria-label="release-notes.nika.yaml — the workflow file, scrollable"
+              aria-label="release-notes.nika.yaml: the workflow file, scrollable"
             >
               {splitYamlByTask(EXTENSION_SHOWCASE_YAML).map((seg) => (
                 <span
@@ -314,7 +314,7 @@ export default function EditorCanvas() {
           <li>
             <b>The engine's judgment, as you type.</b> Diagnostics, completions
             and hovers come from <code className="mono">nika check</code> and
-            the schema — codes, fixes and positions are the binary's, not the
+            the schema: codes, fixes and positions are the binary's, not the
             extension's. Even this demo file passes the real{' '}
             <code className="mono">nika check</code>, exit 0.
           </li>
@@ -324,7 +324,7 @@ export default function EditorCanvas() {
           </li>
           <li>
             <b>Audited before a token is spent.</b> Cost ceiling, permits
-            boundary and secret flows are static facts on the cards — read
+            boundary and secret flows are static facts on the cards. Read
             them before you press Run.
           </li>
         </ul>

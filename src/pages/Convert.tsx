@@ -156,7 +156,7 @@ export function Component() {
                 <span className="cv-proof-check" aria-hidden>
                   ✔
                 </span>{' '}
-                clean — the engine&rsquo;s checker, before a single token is spent
+                clean: the engine&rsquo;s checker, before a single token is spent
               </p>
             </div>
           </div>

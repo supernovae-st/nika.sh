@@ -47,7 +47,7 @@ outputs:
   index: "${{ tasks.build_index.output }}"
 ```
 
-**Lever one: regenerate this block.** `--task` scopes a fresh run to one task and its transitive upstream — nothing else exists for this run:
+**Lever one: regenerate this block.** `--task` scopes a fresh run to one task and its transitive upstream. Nothing else exists for this run:
 
 ```text
 ❯ nika run site-build.nika.yaml --task render_page
@@ -60,9 +60,9 @@ outputs:
   ── 2/2 done · $0.00 · elapsed 0.0s ─────────────────────────────
 ```
 
-Read the header: **2 tasks**. The full file declares four; the scoped plan re-derives to the ancestor sub-DAG — `fetch_data` because `render_page` needs it, and nothing more. `build_index` (downstream) never runs. `compress_assets` (the independent branch) never runs. The cost line re-derives for exactly what will run, and the workflow's `outputs:` are skipped — they may read tasks that are not part of this run, and the engine will not fabricate them.
+Read the header: **2 tasks**. The full file declares four; the scoped plan re-derives to the ancestor sub-DAG: `fetch_data` because `render_page` needs it, and nothing more. `build_index` (downstream) never runs. `compress_assets` (the independent branch) never runs. The cost line re-derives for exactly what will run, and the workflow's `outputs:` are skipped, since they may read tasks that are not part of this run and the engine will not fabricate them.
 
-**Lever two: trust nothing from here on.** Resume normally skips finished work by identity — [the task as written](/blog/the-resume-story). But some changes live outside the hashes: a rotated secret, external state that moved, an inference you want to re-roll. `--from` forces a task *and its transitive downstream* to re-run even on an identity match:
+**Lever two: trust nothing from here on.** Resume normally skips finished work by identity, [the task as written](/blog/the-resume-story). But some changes live outside the hashes: a rotated secret, external state that moved, an inference you want to re-roll. `--from` forces a task *and its transitive downstream* to re-run even on an identity match:
 
 ```text
 ❯ nika run site-build.nika.yaml \
@@ -77,10 +77,10 @@ Read the header: **2 tasks**. The full file declares four; the scoped plan re-de
   resumed · 2 skipped (cache hit) · 2 ran live
 ```
 
-The mirror image of lever one. Upstream stays cached (`↷`, by name, visibly), the forced task and everything that depends on it runs live. The independent branch stays cached too — `compress_assets` never depended on the render, so distrusting the render says nothing about it. The DAG is the blast radius of your doubt.
+The mirror image of lever one. Upstream stays cached (`↷`, by name, visibly), the forced task and everything that depends on it runs live. The independent branch stays cached too: `compress_assets` never depended on the render, so distrusting the render says nothing about it. The DAG is the blast radius of your doubt.
 
-Note what `--from` requires: `--resume <trace>`. That is not ceremony — it is the same pairing law the [approval gate](/blog/the-run-that-waits) rides. A re-roll is always *relative to a specific recorded run*; there is no such thing as "re-run from here" of nothing in particular. The trace names what "here" means.
+Note what `--from` requires: `--resume <trace>`. That is not ceremony. It is the same pairing law the [approval gate](/blog/the-run-that-waits) rides: a re-roll is always *relative to a specific recorded run*, and there is no such thing as "re-run from here" of nothing in particular. The trace names what "here" means.
 
-And the two levers are deliberately disjoint — the CLI refuses `--task` with `--resume`. They answer different questions at different moments. `--task` is *before*: build me this block, fresh, minimum footprint. `--from` is *after*: that recorded run is fine up to here, and from here I trust nothing. One is a scalpel for the plan, the other a scalpel for the past.
+And the two levers are deliberately disjoint: the CLI refuses `--task` with `--resume`. They answer different questions at different moments. `--task` is *before*: build me this block, fresh, minimum footprint. `--from` is *after*: that recorded run is fine up to here, and from here I trust nothing. One is a scalpel for the plan, the other a scalpel for the past.
 
-Both levers read the same file everyone reviewed. Nobody wrote a `--skip-steps 3,4,7` incantation in a runbook; nobody commented out half the pipeline to nurse one block through. The dependency graph you already declared *is* the re-run logic — which is the quiet payoff of intent as code: you stop maintaining two descriptions of the same pipeline, one for the tool and one for the emergencies.
+Both levers read the same file everyone reviewed. Nobody wrote a `--skip-steps 3,4,7` incantation in a runbook; nobody commented out half the pipeline to nurse one block through. The dependency graph you already declared *is* the re-run logic. That is the quiet payoff of intent as code: you stop maintaining two descriptions of the same pipeline, one for the tool and one for the emergencies.

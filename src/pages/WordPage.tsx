@@ -75,8 +75,8 @@ export function Component() {
 
   const title = hit ? `${hit.word} · the Nika language` : 'The language · Nika'
   const description = hit
-    ? `${hit.word} — ${hit.decls.map((d) => `${d.scope}${d.required ? ' (required)' : ''}`).join(', ')}. ${voice ?? ''} In a real file, with the skeletons that carry it.`
-    : `${word} is not a key the schema declares — the register lists all of them.`
+    ? `${hit.word}: ${hit.decls.map((d) => `${d.scope}${d.required ? ' (required)' : ''}`).join(', ')}. ${voice ?? ''} In a real file, with the skeletons that carry it.`
+    : `${word} is not a key the schema declares. The register lists all of them.`
 
   useHead({
     title,
@@ -89,7 +89,7 @@ export function Component() {
       { property: 'og:image', content: 'https://nika.sh/og-language.png' },
       {
         property: 'og:image:alt',
-        content: 'The Nika language register — every schema-declared word, one page.',
+        content: 'The Nika language register: every schema-declared word, one page.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
@@ -159,7 +159,7 @@ export function Component() {
             <div className="tp-miss" role="status" data-rise>
               <p className="tp-miss-name">{word}</p>
               <p>
-                is not a key the schema declares — a key the contract doesn't know is a{' '}
+                is not a key the schema declares. A key the contract doesn't know is a{' '}
                 <code>nika check</code> finding before anything runs. Walk{' '}
                 <Link to="/language">the register</Link>, the{' '}
                 <a href="/schema/workflow.json">served schema</a>, or{' '}
@@ -172,7 +172,7 @@ export function Component() {
           {hit && (
             <>
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-                {voice} One of {LANGUAGE_WORDS.length} words the served contract declares —
+                {voice} One of {LANGUAGE_WORDS.length} words the served contract declares,
                 projected from <a href="/schema/workflow.json">workflow.schema.json</a>, the same
                 file your editor validates against.
               </p>
@@ -211,8 +211,8 @@ export function Component() {
                   </span>
                 </div>
                 <p className="td-gloss">
-                  Descriptions are the schema's own; the deeper invariants — value languages and
-                  regexes — ride the same projection. A miss is a <code>nika check</code> finding{' '}
+                  Descriptions are the schema's own; the deeper invariants (value languages and
+                  regexes) ride the same projection. A miss is a <code>nika check</code> finding{' '}
                   <b>before anything runs</b>.
                 </p>
                 <dl className="tp-args td-args">
@@ -276,7 +276,7 @@ export function Component() {
                 </div>
                 {hit.verb ? (
                   <p className="td-gloss">
-                    <b>{hit.word}</b> is one of the four verbs — its room owns the complete file:
+                    <b>{hit.word}</b> is one of the four verbs; its room owns the complete file:
                     the shape, the block contract, the skeletons that speak it.{' '}
                     <Link to={`/verbs/${hit.word}`}>enter the verb's room →</Link>
                   </p>
@@ -290,7 +290,7 @@ export function Component() {
                       />
                     </div>
                     <p className="td-pin">
-                      a verbatim slice — real line numbers from{' '}
+                      a verbatim slice, real line numbers from{' '}
                       {use.usage.source.kind === 'template' ? (
                         <>
                           <a href={`${SPEC}/blob/main/templates/${use.usage.source.file}`}>
@@ -303,7 +303,7 @@ export function Component() {
                         </>
                       ) : (
                         <>
-                          {use.usage.source.file}, <code>nika check</code> green — the drift gate
+                          {use.usage.source.file}, <code>nika check</code> green; the drift gate
                           re-proves this copy on every test run.
                         </>
                       )}
@@ -311,7 +311,7 @@ export function Component() {
                   </>
                 ) : (
                   <p className="td-gloss">
-                    No gated source on this site speaks <code>{hit.word}</code> yet — the contract
+                    No gated source on this site speaks <code>{hit.word}</code> yet. The contract
                     above is the reference, and the register never invents evidence. Try it in the{' '}
                     <Link to="/play">playground</Link>: <code>nika check</code> teaches the shape.
                   </p>
@@ -357,7 +357,7 @@ export function Component() {
                   )}
                   {(!use || (use.templates.length === 0 && use.codes.length === 0)) && (
                     <p className="td-none">
-                      no skeleton carries it and no registered code names it — the schema row is
+                      no skeleton carries it and no registered code names it; the schema row is
                       the whole story today.
                     </p>
                   )}
@@ -379,7 +379,7 @@ export function Component() {
                 {siblings.map((g) => (
                   <div key={g.scope} style={{ marginTop: 14 }}>
                     <p className="td-ref-k">
-                      {g.scope} — {SCOPE_BLURB[g.scope]}
+                      {g.scope}: {SCOPE_BLURB[g.scope]}
                     </p>
                     {g.words.length > 0 ? (
                       <ul className="td-chips">

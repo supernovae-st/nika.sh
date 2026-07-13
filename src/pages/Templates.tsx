@@ -46,7 +46,7 @@ function TemplateRow({ entry, active }: { entry: TemplateEntry; active: boolean 
         <a className="tm-name" href={`/templates/${entry.name}`}>
           {entry.name}
         </a>
-        <span className="tm-slots" title="SLOT-marked decision points — fill these, nothing else">
+        <span className="tm-slots" title="SLOT-marked decision points: fill these, nothing else">
           {entry.slots} slots
         </span>
         <span className="tm-file">{entry.file}</span>
@@ -61,7 +61,7 @@ function TemplateRow({ entry, active }: { entry: TemplateEntry; active: boolean 
       {active ? (
         <div className="tm-skeleton">
           <CodeFile yaml={entry.yaml} filename={entry.file} />
-          <p className="tm-pin" title="the copy-fidelity pin — the drift gate re-hashes this copy">
+          <p className="tm-pin" title="the copy-fidelity pin: the drift gate re-hashes this copy">
             sha256 {entry.sha256.slice(0, 16)}… · conformance-gated upstream ·{' '}
             <a href={`${SPEC}/blob/main/templates/${entry.file}`}>source</a>
           </p>
@@ -103,8 +103,8 @@ export function Component() {
 
   const title = hit ? `${hit.name} · Nika templates` : 'Templates · Nika'
   const description = hit
-    ? `The ${hit.name} skeleton — « ${hit.intent} ». ${hit.slots} SLOT-marked decision points; patterns locked: ${hit.patterns.join(', ')}. A complete, valid workflow.`
-    : `The ${CANON.templates} instantiable skeletons agents route intents to — complete valid workflows with SLOT markers at every decision point. Machine twin: /templates/catalog.json.`
+    ? `The ${hit.name} skeleton, « ${hit.intent} ». ${hit.slots} SLOT-marked decision points; patterns locked: ${hit.patterns.join(', ')}. A complete, valid workflow.`
+    : `The ${CANON.templates} instantiable skeletons agents route intents to: complete valid workflows with SLOT markers at every decision point. Machine twin: /templates/catalog.json.`
 
   useHead({
     title,
@@ -117,7 +117,7 @@ export function Component() {
       { property: 'og:image', content: 'https://nika.sh/og-templates.png' },
       {
         property: 'og:image:alt',
-        content: 'Nika templates. Agents do not invent structure — they instantiate it.',
+        content: 'Nika templates. Agents do not invent structure; they instantiate it.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
@@ -140,7 +140,7 @@ export function Component() {
             {hit ? hit.name : 'Templates.'}
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            <b>Agents do not invent structure — they instantiate it.</b> Each skeleton below is a
+            <b>Agents do not invent structure; they instantiate it.</b> Each skeleton below is a
             complete, valid workflow with <code># SLOT:</code> markers at every decision point:
             route your intent, copy, fill the slots, <code>nika check</code>, done. Machines read
             the same pack at <a href="/templates/catalog.json">/templates/catalog.json</a>; the

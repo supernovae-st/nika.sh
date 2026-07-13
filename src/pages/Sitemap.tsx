@@ -53,7 +53,7 @@ export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
 
   const title = 'Site map · Nika'
-  const description = `Every page nika.sh serves, on one labeled map — ${TOOLS.length} builtins, ${ERROR_CODES.length} error codes, ${BLOG_POSTS.length} posts, the machine-readable twins. Crawler twin: /sitemap.xml.`
+  const description = `Every page nika.sh serves, on one labeled map: ${TOOLS.length} builtins, ${ERROR_CODES.length} error codes, ${BLOG_POSTS.length} posts, the machine-readable twins. Crawler twin: /sitemap.xml.`
 
   useHead({
     title,
@@ -105,7 +105,7 @@ export function Component() {
             Site map.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Everything this site serves, on one page — <b>including the machine twins</b>. The
+            Everything this site serves, on one page, <b>including the machine twins</b>. The
             registers (tools · providers · templates · errors) are projections of the binary and
             the spec; the map derives its tails from the same compiled catalogs, and CI fails when
             a page ships without joining it. Crawlers read <a href="/sitemap.xml">/sitemap.xml</a>;
@@ -154,7 +154,7 @@ export function Component() {
 
           <p className="sm-foot" data-rise>
             You are here: <code>/sitemap</code>. If a page exists and this map misses it, that is
-            a bug — the coverage gate in CI enforces the promise both ways.
+            a bug; the coverage gate in CI enforces the promise both ways.
           </p>
         </div>
       </section>
