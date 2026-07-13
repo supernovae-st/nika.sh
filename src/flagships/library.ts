@@ -118,8 +118,7 @@ export const LIBRARY: LibraryItem[] = [
   })),
 ]
 
-/** how many tabs the hero strip shows — the first THREE (permits · when-gate ·
-    schema, the pedagogy row) keep the buffer row; the rest live behind the
-    library picker. Three + the trigger fit the panel width whole at every
-    desktop width — five overflowed and cut a tab mid-word (wave N). */
-export const HERO_TAB_COUNT = 3
+/** every file rides the strip now (operator 2026-07-13): the tab row is a
+    BROWSER strip — scrollable, edge-faded, wheel-driven — so the whole
+    ten-file corpus lives as tabs and the library picker dies. */
+export const HERO_TAB_COUNT = 10

@@ -31,10 +31,12 @@ describe('library · corpus shape', () => {
     }
   })
 
-  it('the first HERO_TAB_COUNT items are the strip tabs, recorded', () => {
-    expect(HERO_TAB_COUNT).toBe(3)
-    for (const item of LIBRARY.slice(0, HERO_TAB_COUNT)) {
-      expect(item.flagship).toBeDefined()
+  it('the strip carries the WHOLE corpus (operator 2026-07-13 · the picker died)', () => {
+    expect(HERO_TAB_COUNT).toBe(LIBRARY.length)
+    /* reading order: the recorded seven lead (their traces replay), the
+       browse wing closes the strip */
+    for (const item of LIBRARY.slice(0, 7)) {
+      expect(item.flagship, item.id).toBeDefined()
     }
   })
 

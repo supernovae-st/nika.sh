@@ -1,13 +1,12 @@
 import { Link } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
-import { verbGlyph } from '../components/codefile-highlight'
 import { MiniDag } from '../components/MiniDag'
 import { InstallCommand } from '../components/InstallCommand'
 import { useMagnetic } from '../fx/use-magnetic'
 import { ENGINE_VERSION } from '../content'
 import { type FlagshipEntry } from '../flagships'
-import { HERO_TAB_COUNT, LIBRARY, verbsOf, type LibraryItem } from '../flagships/library'
+import { HERO_TAB_COUNT, LIBRARY, type LibraryItem } from '../flagships/library'
 import '../shell/shell.css'
 import './hero.css'
 
@@ -97,13 +96,10 @@ function FileTabs({
     refs.current[active]?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
   }, [active])
   const onKeyDown = (e: React.KeyboardEvent) => {
-    // APG tablist keys · arrows cycle, Home/End jump to the edges. When the
-    // active file lives off-strip (library pick), arrows re-enter at the edge.
-    const onStrip = active >= 0 && active < TABS.length
+    // APG tablist keys · arrows cycle, Home/End jump to the edges.
     let next: number
-    if (e.key === 'ArrowRight') next = onStrip ? (active + 1) % TABS.length : 0
-    else if (e.key === 'ArrowLeft')
-      next = onStrip ? (active - 1 + TABS.length) % TABS.length : TABS.length - 1
+    if (e.key === 'ArrowRight') next = (active + 1) % TABS.length
+    else if (e.key === 'ArrowLeft') next = (active - 1 + TABS.length) % TABS.length
     else if (e.key === 'Home') next = 0
     else if (e.key === 'End') next = TABS.length - 1
     else return
@@ -132,7 +128,7 @@ function FileTabs({
           id={`v4ftab-${f.id}`}
           aria-selected={i === active}
           aria-controls="v4ftab-panel"
-          tabIndex={i === active || (i === 0 && active >= TABS.length) ? 0 : -1}
+          tabIndex={i === active ? 0 : -1}
           className="v4ftab"
           onClick={() => onSelect(i)}
         >
@@ -160,7 +156,6 @@ function FileTabs({
    (a library pick), the trigger slot carries its name, exactly like the live
    picker does. */
 export function FileTabsGhost({ active }: { active: string }) {
-  const onStrip = TABS.some((f) => f.label === active)
   return (
     <span className="v4chrometabs v4chrometabs--ghost" aria-hidden>
       <span className="v4ftabs-clip">
@@ -178,171 +173,10 @@ export function FileTabsGhost({ active }: { active: string }) {
           ))}
         </span>
       </span>
-      <span className="v4lib">
-        <span className="v4lib-trigger" data-active={!onStrip || undefined}>
-          {onStrip ? 'library' : active}
-          <span className="v4lib-trigger-glyph">⋯</span>
-        </span>
-      </span>
     </span>
   )
 }
 
-/* ── the library picker · the « other files » quick-open (wave K) ─────────────
-   A compact popover listing the WHOLE ten-file corpus: verb glyphs (derived
-   from each plan, hued), filename, one honest phrase, task count, and the
-   recorded dot when a real trace backs the file. APG listbox: the trigger is
-   a button (aria-haspopup/expanded); options take real focus, arrows walk,
-   Enter/Space picks, Escape returns to the trigger; outside-pointerdown
-   closes. SSR renders the trigger only (closed) — byte-stable. */
-function LibraryPicker({
-  active,
-  onSelect,
-}: {
-  active: number
-  onSelect: (i: number) => void
-}) {
-  const [open, setOpen] = useState(false)
-  const triggerRef = useRef<HTMLButtonElement>(null)
-  const panelRef = useRef<HTMLDivElement>(null)
-  const optRefs = useRef<(HTMLButtonElement | null)[]>([])
-  const offStrip = active >= HERO_TAB_COUNT
-
-  /* outside-click + Escape · armed only while open (costs nothing at rest) */
-  useEffect(() => {
-    if (!open) return
-    const onDown = (e: PointerEvent) => {
-      const t = e.target as Node
-      if (panelRef.current?.contains(t) || triggerRef.current?.contains(t)) return
-      setOpen(false)
-    }
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      setOpen(false)
-      triggerRef.current?.focus()
-    }
-    document.addEventListener('pointerdown', onDown)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('pointerdown', onDown)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [open])
-
-  /* opening lands focus on the active file's row (the quick-open register) */
-  useEffect(() => {
-    if (open) optRefs.current[active]?.focus()
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- snapshot on open only
-  }, [open])
-
-  const walk = (e: React.KeyboardEvent) => {
-    const idx = optRefs.current.findIndex((el) => el === document.activeElement)
-    let next: number
-    if (e.key === 'ArrowDown') next = Math.min(LIBRARY.length - 1, idx + 1)
-    else if (e.key === 'ArrowUp') next = Math.max(0, idx - 1)
-    else if (e.key === 'Home') next = 0
-    else if (e.key === 'End') next = LIBRARY.length - 1
-    else return
-    e.preventDefault()
-    optRefs.current[next]?.focus()
-  }
-
-  const pick = (i: number) => {
-    onSelect(i)
-    setOpen(false)
-    triggerRef.current?.focus()
-  }
-
-  return (
-    <div className="v4lib">
-      <button
-        ref={triggerRef}
-        type="button"
-        id="v4lib-trigger"
-        className="v4lib-trigger"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls="v4lib-panel"
-        data-active={offStrip || undefined}
-        onClick={() => setOpen((o) => !o)}
-        onKeyDown={(e) => {
-          if (e.key === 'ArrowDown' && !open) {
-            e.preventDefault()
-            setOpen(true)
-          }
-        }}
-      >
-        {offStrip ? (
-          <>
-            {LIBRARY[active].label}
-            <span className="v4ftab-ext" aria-hidden>
-              .nika.yaml
-            </span>
-          </>
-        ) : (
-          'library'
-        )}
-        <span className="v4lib-trigger-glyph" aria-hidden>
-          ⋯
-        </span>
-      </button>
-      {open && (
-        <div ref={panelRef} className="v4lib-panel" id="v4lib-panel">
-          <p className="v4lib-head" aria-hidden>
-            the workflow library · {LIBRARY.length} files
-          </p>
-          <div
-            role="listbox"
-            aria-label="Workflow library"
-            className="v4lib-list"
-            onKeyDown={walk}
-          >
-            {LIBRARY.map((f, i) => (
-              <button
-                key={f.id}
-                ref={(el) => {
-                  optRefs.current[i] = el
-                }}
-                type="button"
-                role="option"
-                aria-selected={i === active}
-                className="v4lib-row"
-                onClick={() => pick(i)}
-              >
-                <span className="v4lib-line">
-                  <span className="v4lib-glyphs" aria-hidden>
-                    {verbsOf(f.plan).map((v) => (
-                      <span key={v} data-v={v}>
-                        {verbGlyph(v)}
-                      </span>
-                    ))}
-                  </span>
-                  <span className="v4lib-name">
-                    {f.label}
-                    <span className="v4lib-ext" aria-hidden>
-                      .nika.yaml
-                    </span>
-                  </span>
-                  <span className="v4lib-meta">
-                    {f.plan.tasks.length} tasks
-                    {f.flagship ? (
-                      <span className="v4lib-rec"> · ● recorded</span>
-                    ) : null}
-                  </span>
-                </span>
-                <span className="v4lib-blurb">{f.blurb}</span>
-              </button>
-            ))}
-          </div>
-          <p className="v4lib-legend">
-            ● recorded from a real nika run · the rest browse from the embedded
-            pack (<code>nika examples</code>)
-          </p>
-        </div>
-      )}
-    </div>
-  )
-}
 
 export default function Hero({
   item,
@@ -597,14 +431,13 @@ export default function Hero({
               chromeSlot={
                 <div className="v4chrometabs">
                   <FileTabs active={index} onSelect={onSelect} />
-                  <LibraryPicker active={index} onSelect={onSelect} />
                 </div>
               }
               bodyProps={{
                 id: 'v4ftab-panel',
                 role: 'tabpanel',
                 'aria-labelledby':
-                  index < HERO_TAB_COUNT ? `v4ftab-${item.id}` : 'v4lib-trigger',
+                  `v4ftab-${item.id}`,
               }}
             />
           </div>
