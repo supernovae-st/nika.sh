@@ -157,6 +157,10 @@ function Machine({
      berth's left edge) — one figure feeds the shaders, the umbilical's
      column end and the left-plate stand-down probe */
   const seamRef = useRef(0)
+  /* THE APPROACH · armed once at mount: the camera opens a beat further
+     out and glides in as the drawing fades under the hull — the page
+     starts on a movement, never a swap */
+  const entryRef = useRef(false)
   /* armed once per lay-down · the farewell surge fires as the dissolve
      begins (re-armed when the reader scrubs back above the window) */
   const bloomArm = useRef(false)
@@ -620,6 +624,12 @@ function Machine({
     g.position.x += ((centreFrac - 0.5) * 2 * halfW - g.position.x) * k
     const exOff = pose.focus >= 0 ? model.explode[pose.focus] * u.uExplode.value : 0
     inn.position.x += (-(lookX + exOff) - inn.position.x) * k
+    if (!entryRef.current) {
+      entryRef.current = true
+      /* the opening dolly-in · start 22% further out; the follower glides
+         the approach while uFade lifts the hull out of its drawing */
+      state.camera.position.z = tDist * 1.22
+    }
     state.camera.position.z += (tDist * helm.zoom - state.camera.position.z) * k
 
     /* THE CALLOUTS · per-item leaders: at the overview every stratum is
