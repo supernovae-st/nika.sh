@@ -317,12 +317,17 @@ attribute float aSeed;
 uniform float uTime;
 uniform float uFade;
 uniform float uHero;
+uniform float uSail;
 varying float vA;
 varying float vWarm;
 float hash1(float n) { return fract(sin(n * 127.1) * 43758.5453); }
 void main() {
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   gl_Position = projectionMatrix * mv;
+  /* THE SKY ANSWERS THE READING · while the reader sails, every star
+     shivers against the travel (per-star depth via its seed) — the whole
+     screen feels the way; dead still at rest (uSail decays to 0) */
+  gl_Position.y += uSail * (0.35 + 0.65 * hash1(aSeed + 9.0)) * 0.045 * gl_Position.w;
   float tw = 0.72 + 0.28 * sin(uTime * 0.9 + aSeed * 37.0);
   vA = (0.14 + 0.72 * uHero) * tw * uFade;
   vWarm = hash1(aSeed + 3.0);

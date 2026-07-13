@@ -783,8 +783,12 @@ function Machine({
               rig.ugrad.setAttribute('x2', px.toFixed(1))
               rig.ugrad.setAttribute('y2', py.toFixed(1))
             }
+            /* the joint and the wire BREATHE on the drum's 2.4s beat —
+               the same envelope the hull swells on (sharp attack, long
+               decay): the connection is alive even between ignitions */
+            const wb = Math.exp(-((u.uTime.value / 2.4) % 1) * 5) * 0.5
             rig.upath.style.opacity = (it.o * (0.66 + 0.34 * pulse)).toFixed(3)
-            rig.upath.style.strokeWidth = (1.2 + pulse * 1.2).toFixed(2)
+            rig.upath.style.strokeWidth = (1.2 + wb * 0.5 + pulse * 1.2).toFixed(2)
             /* THE CURRENT · the reading flows INTO the hull — the dash
                pattern drifts along the wire on the one clock (an
                attribute per frame: JS owns the envelope, the raster law
@@ -794,7 +798,7 @@ function Machine({
             if (rig.uroot) {
               rig.uroot.setAttribute('cx', x0.toFixed(1))
               rig.uroot.setAttribute('cy', y0.toFixed(1))
-              rig.uroot.setAttribute('r', (2.4 + pulse * 1.4).toFixed(2))
+              rig.uroot.setAttribute('r', (2.4 + wb * 0.8 + pulse * 1.4).toFixed(2))
               rig.uroot.style.opacity = (it.o * (0.8 + 0.2 * pulse)).toFixed(3)
             }
             umbDrawn = true
