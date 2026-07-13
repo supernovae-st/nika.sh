@@ -1915,24 +1915,32 @@
   .spec-hero-eleva {
     margin-top: 0;
     padding: 0 2vw;
-    transition: opacity 0.9s ease;
   }
-  /* THE OPENING METAMORPHOSIS (arc 31) · the live chassis covers this
-     ground — but the drawing FADES under the rising hull instead of
-     snapping away (the operator's « ça se téléporte »): is-live lands
-     while the lazy GL chunk loads, the elevation melts over 0.9s, the
-     canvas fades in over ~1.4s (uFade) with the camera gliding its
-     approach — the drawing becomes the vessel. Layout is kept (opacity,
-     not display): zero reflow, and reduced-motion snaps as before. */
+}
+/* THE FIRST PAINT IS THE VESSEL (arc 33 · operator: « faut voir le 3D
+   direct ») · on desktop-with-motion the 2D elevation never shows at
+   all: it opens INVISIBLE from the very first CSS paint (before any
+   JS runs), and the hull fades in over that ground (uFade + the camera
+   dolly-in — the apparition IS the wow). The pure-CSS animation below
+   is the safety net: with no JS or no WebGL the drawing reveals itself
+   at 2.2s, so no register ever ends up shipless. is-live (stamped the
+   frame the gate says yes, long before 2.2s) cancels the net and pins
+   the elevation dark for the whole live session. Mobile and
+   reduced-motion never enter this media block: their drawing IS the
+   truth, painted from byte one (and the goldens with it). */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .spec-hero-eleva {
+    opacity: 0;
+    animation: specElevaNet 0.8s ease 2.2s forwards;
+  }
   .spec-page.is-live .spec-hero-eleva {
+    animation: none;
     opacity: 0;
     pointer-events: none;
   }
 }
-@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
-  .spec-hero-eleva {
-    transition: none;
-  }
+@keyframes specElevaNet {
+  to { opacity: 1; }
 }
 .spec-hero-cue {
   margin-top: clamp(26px, 4vh, 44px);
