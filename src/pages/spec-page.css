@@ -1847,6 +1847,83 @@
 }
 
 
+/* ══ RESTORED (the #207 sweep's collateral · operator catch 2026-07-13) ══════
+   The plate-removal regex («comment block → next header») ate five sibling
+   rule groups: the hero grid, the hero elevation (+ its is-live stand-down —
+   the 2D/3D doublon on every live desktop), the cue, and the display gauge.
+   Restored verbatim from f4b3d5f~1; the lesson lives in the memory note:
+   surgical means ANCHORED ends, never [\s\S]*?-to-next-header. */
+.spec-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 24px;
+}
+@media (min-width: 1024px) {
+  .spec-hero {
+    grid-template-columns: minmax(0, 42%) 1fr;
+    min-height: calc(100vh - 220px);
+  }
+}
+/* the hero elevation · mobile's ONE ship (a full-width profile poster,
+   SSG, zero JS) and desktop's fallback ground until the chassis mounts */
+.spec-hero-eleva {
+  display: block;
+  margin-top: 6px;
+}
+.spec-hero-eleva .spec-schematic {
+  width: 100%;
+  height: auto;
+}
+@media (min-width: 1024px) {
+  .spec-hero-eleva {
+    margin-top: 0;
+    padding: 0 2vw;
+  }
+  /* the live chassis covers this ground — the drawing stands down */
+  .spec-page.is-live .spec-hero-eleva {
+    visibility: hidden;
+  }
+}
+.spec-hero-cue {
+  margin-top: clamp(26px, 4vh, 44px);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  color: color-mix(in oklch, var(--sm-ink-lit) 70%, var(--v4-text-dim));
+}
+/* the display gauge · the spine's quiet twin (poster + finale) */
+.spec-rail-gauge {
+  position: absolute;
+  bottom: 3.2%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  pointer-events: none;
+}
+.spec-rail-gauge i {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in oklch, var(--sm-ink-shadow) 65%, transparent);
+  transition: background-color 0.9s ease, width 0.3s var(--ease-ui, ease);
+}
+.spec-rail-gauge i.is-lit {
+  background: var(--sm-ink-lit);
+}
+.spec-rail-gauge i.is-cur {
+  width: 26px;
+  background: var(--sm-ink-struck);
+}
+@media (prefers-reduced-motion: reduce) {
+  .spec-rail-gauge i {
+    transition: none;
+  }
+}
+
 /* ── the connected poster (full-bleed live hero only) ─────────────────────────
    The descent: the cue's tick keeps going — a vertical hairline runs from
    under the cue toward S.0, tying the poster to the reading it announces.
