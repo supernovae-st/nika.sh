@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-13',
+    tag: 'site',
+    title: 'nika.sh v4.16 · the ship lies down in its own drawing',
+    body: 'THE LAY-DOWN closes the spec voyage: past the last station the vessel folds its yaw to the whole revolution, lays flat into the exact pose of its 2D engineering drawing, dissolves into it, and the nika mark closes the file over the sources rail (an e2e pin parks inside the window to prove the handoff every run). The home film front-loads its gesture: the YAML becomes the DAG in the first half of the runway, the wires close over the last landings, and the run (terminal, timeline, badges) rides the same scroll from mid-gesture; the verdict keeps its tail. The voice purge lands site-wide: about 345 authored lines rewritten for real (blog posts, llms.txt, every register and room, this ship log itself), each dash a real edit, while the truth layer keeps its own words: engine failure-lines, provider contracts, captured transcripts and quoted artifacts stay verbatim, because rewriting a citation would make the page lie. WHERE THE LANGUAGE LIVES ships one verified sources map (every URL checked against the live repos before it renders) on the rooms, the 3D berths and the spec close, and the cross-reference graph closes: errors and templates point back at every room that names them, derived by inverting the rooms’ own data. The heavy usage registries leave the initial bundle behind inline-JSON islands (their refs twins keep the graph sync), the dither field drops its framework for one raw quad, the run posters go WebP at a third of the bytes, and the language doors get their share cards. Underneath: the version gate now re-captures transcripts against the real binary on every engine wave (it caught a CLI voice change a sed would have missed), and the heal lane opens one idempotent PR that the gate itself judges.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.16.0',
+  },
+  {
     date: '2026-07-12',
     tag: 'site',
     title: 'nika.sh v4.15 · every word gets its room, every room its machine',
