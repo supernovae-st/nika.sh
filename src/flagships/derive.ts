@@ -111,7 +111,7 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
   }
   const raws: Raw[] = []
 
-  type Section = '' | 'permits' | 'tasks' | 'outputs'
+  type Section = '' | 'permits' | 'tasks' | 'outputs' | 'workflow'
   let section: Section = ''
   let current: Raw | null = null
 
