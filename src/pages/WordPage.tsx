@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -9,7 +9,7 @@ import {
   LANGUAGE_WORDS,
   WORD_INDEX,
 } from '../content/language.generated'
-import { WORD_USAGE } from '../content/language-usage.generated'
+import type { WordUsage } from '../content/language-usage.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { sourcesForWord } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
@@ -41,12 +41,65 @@ import './language-page.css'
 
 const SCOPE_BLURB = Object.fromEntries(LANGUAGE_SCOPES.map((s) => [s.scope, s.blurb]))
 
+/* ─── the usage island · the initial-bundle diet (arc 13m, BlogPost's recipe) ──
+   The verbatim usage slices (~30K src) are the room's heaviest cargo and
+   WordPage is their only consumer — they no longer ride the initial bundle.
+   Three paths to the SAME record:
+
+   · SSG — the registry module is awaited in the SSR-only branch (the SSG
+     module runner resolves it while loading the route graph; the branch is
+     compile-time dead in the client build, so the module never enters the
+     client graph).
+   · client HYDRATION — the SSG serialized this word's record into the inline
+     JSON island below; the first client render reads it back, byte-stable.
+   · client SPA NAVIGATION — no island in the DOM (RootLayout keys the route
+     subtree on pathname, so each nav remounts this page from scratch): the
+     registry loads as its OWN chunk, once per session.
+
+   `ready` gates the honest-miss copy — while the chunk is in flight the page
+   must not claim "no gated source speaks it" (that would be a lie for the
+   ~100ms the import takes on the first SPA room). */
+let SSR_WORD_USAGE: Record<string, WordUsage> | null = null
+if (import.meta.env.SSR) {
+  SSR_WORD_USAGE = (await import('../content/language-usage.generated')).WORD_USAGE
+}
+
+const islandId = (word: string) => `wd-use-${word}`
+/* </script> inside the JSON would close the island early — < survives
+   JSON.parse unchanged in meaning and keeps the HTML inert */
+const toIslandJson = (u: WordUsage | undefined) =>
+  JSON.stringify(u ?? null).replace(/</g, '\\u003c')
+
+function useWordUsage(word: string): { use: WordUsage | undefined; ready: boolean; json: string | null } {
+  const [json, setJson] = useState<string | null>(() => {
+    if (import.meta.env.SSR) return toIslandJson(SSR_WORD_USAGE?.[word])
+    /* hydration: the island the SSG rendered is already in the DOM */
+    return document.getElementById(islandId(word))?.textContent ?? null
+  })
+  useEffect(() => {
+    if (json != null) return
+    /* SPA navigation: pull the registry chunk (cached after the first room) */
+    let live = true
+    import('../content/language-usage.generated').then((m) => {
+      if (live) setJson(toIslandJson(m.WORD_USAGE[word]))
+    })
+    return () => {
+      live = false
+    }
+  }, [json, word])
+  const use = useMemo(
+    () => (json != null ? ((JSON.parse(json) ?? undefined) as WordUsage | undefined) : undefined),
+    [json],
+  )
+  return { use, ready: json != null, json }
+}
+
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const { word: rawWord } = useParams()
   const word = (rawWord ?? '').toLowerCase()
   const hit = WORD_INDEX[word]
-  const use = hit ? WORD_USAGE[hit.word] : undefined
+  const { use, ready, json: usageJson } = useWordUsage(hit?.word ?? word)
 
   const required = hit ? hit.decls.filter((d) => d.required) : []
   const types = hit ? [...new Set(hit.decls.map((d) => d.type).filter(Boolean))] : []
@@ -309,13 +362,23 @@ export function Component() {
                       )}
                     </p>
                   </>
-                ) : (
+                ) : ready ? (
                   <p className="td-gloss">
                     No gated source on this site speaks <code>{hit.word}</code> yet. The contract
                     above is the reference, and the register never invents evidence. Try it in the{' '}
                     <Link to="/play">playground</Link>: <code>nika check</code> teaches the shape.
                   </p>
-                )}
+                ) : null}
+                {/* the island · the SSG writes it, hydration reads it back — the
+                    raw string round-trips so the node matches byte for byte
+                    (build-time JSON from our own registry, <-escaped, inert
+                    application/json — the audited BlogPost recipe) */}
+                <script
+                  type="application/json"
+                  id={islandId(hit.word)}
+                  suppressHydrationWarning
+                  dangerouslySetInnerHTML={{ __html: usageJson ?? 'null' }}
+                />
               </div>
 
               {/* ── cross-references · gates + the block's siblings ──────────── */}
@@ -355,7 +418,7 @@ export function Component() {
                       </ul>
                     </div>
                   )}
-                  {(!use || (use.templates.length === 0 && use.codes.length === 0)) && (
+                  {ready && (!use || (use.templates.length === 0 && use.codes.length === 0)) && (
                     <p className="td-none">
                       no skeleton carries it and no registered code names it; the schema row is
                       the whole story today.

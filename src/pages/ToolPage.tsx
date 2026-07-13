@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { useHead } from '@unhead/react'
 /* lz-string is CJS — named ESM imports break the Node prerender (SSG);
@@ -8,7 +8,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
 import { TOOLS, TOOL_CATEGORIES, TOOL_INDEX } from '../content/tools.generated'
-import { TOOL_USAGE } from '../content/tool-usage.generated'
+import type { ToolUsageEntry } from '../content/tool-usage.generated'
 import { CATEGORY_GLOSS } from '../content/tools-meta'
 import { PartEgg } from '../scene/parts/PartEgg'
 import { layoutDrum } from '../scene/tools-hud/slot-layout'
@@ -94,12 +94,50 @@ function SectionHead({ id, title, count }: { id: string; title: string; count?: 
   )
 }
 
+/* ─── the usage island · the initial-bundle diet (arc 13m, BlogPost's recipe) ──
+   The verbatim usage excerpts (~18K src) are this room's heaviest cargo and
+   ToolPage is their only consumer — off the initial bundle. SSG awaits the
+   registry in the SSR-only branch; hydration reads the inline JSON island
+   back byte-stable; SPA navigation (each nav remounts — RootLayout keys the
+   route subtree on pathname) pulls the registry as its own chunk once. */
+let SSR_TOOL_USAGE: Record<string, ToolUsageEntry> | null = null
+if (import.meta.env.SSR) {
+  SSR_TOOL_USAGE = (await import('../content/tool-usage.generated')).TOOL_USAGE
+}
+
+const islandId = (bare: string) => `td-use-${bare}`
+/* </script> inside the JSON would close the island early — < stays escaped */
+const toIslandJson = (u: ToolUsageEntry | undefined) =>
+  JSON.stringify(u ?? null).replace(/</g, '\\u003c')
+
+function useToolUsage(bare: string): { usage: ToolUsageEntry | undefined; json: string | null } {
+  const [json, setJson] = useState<string | null>(() => {
+    if (import.meta.env.SSR) return toIslandJson(SSR_TOOL_USAGE?.[bare])
+    return document.getElementById(islandId(bare))?.textContent ?? null
+  })
+  useEffect(() => {
+    if (json != null) return
+    let live = true
+    import('../content/tool-usage.generated').then((m) => {
+      if (live) setJson(toIslandJson(m.TOOL_USAGE[bare]))
+    })
+    return () => {
+      live = false
+    }
+  }, [json, bare])
+  const usage = useMemo(
+    () => (json != null ? ((JSON.parse(json) ?? undefined) as ToolUsageEntry | undefined) : undefined),
+    [json],
+  )
+  return { usage, json }
+}
+
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const { name: rawName } = useParams()
   const name = (rawName ?? '').toLowerCase().replace(/^nika:/, '')
   const hit = TOOL_INDEX[name]
-  const usage = hit ? TOOL_USAGE[hit.bare] : undefined
+  const { usage, json: usageJson } = useToolUsage(hit?.bare ?? name)
 
   const family = useMemo(() => TOOLS.filter((t) => hit && t.category === hit.category), [hit])
   /* the drum's slot (register order — the pin drum's own reading) */
@@ -223,6 +261,20 @@ export function Component() {
                 <a href={`${SPEC}/blob/main/spec/06-stdlib-contract.md`}>stdlib contract</a>.
               </p>
             </div>
+          )}
+
+          {/* the island · the SSG writes it, hydration reads it back (raw
+              string round-trip — build-time JSON from our own registry,
+              <-escaped, inert application/json — the audited BlogPost recipe).
+              Outside the usage gate so it lands even while a SPA import is
+              in flight. */}
+          {hit && (
+            <script
+              type="application/json"
+              id={islandId(hit.bare)}
+              suppressHydrationWarning
+              dangerouslySetInnerHTML={{ __html: usageJson ?? 'null' }}
+            />
           )}
 
           {hit && usage && (
