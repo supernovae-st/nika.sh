@@ -99,8 +99,10 @@ interface CalloutRig {
   /** the spark's comet trail (a fainter twin, a beat behind on the curve) */
   strail?: SVGCircleElement | null
   /** THE LIVING LINK · the ephemeral wire from the hovered DOM element
-      to ITS block on the hull (stratum-tinted) + its eased opacity */
+      to ITS block on the hull (stratum-tinted) + its eased opacity,
+      and the rooted joint marking where the word hands over */
   hline?: SVGLineElement | null
+  hroot?: SVGCircleElement | null
   ho?: number
   /** the wire's rooted joint on the read card (the connection made visible) */
   uroot?: SVGCircleElement | null
@@ -934,16 +936,26 @@ function Machine({
           const nx = ((v.x + 1) / 2) * rect.width
           const ny = ((1 - v.y) / 2) * rect.height
           const er = hEl.getBoundingClientRect()
-          rig.hline.setAttribute('x1', (er.right - rect.left + 10).toFixed(1))
-          rig.hline.setAttribute('y1', (er.top + er.height / 2 - rect.top).toFixed(1))
+          const lx = er.right - rect.left + 10
+          const ly = er.top + er.height / 2 - rect.top
+          const hue2 = STRATUM_HEX[STRATA_ORDER[model.seed[hi2 * 2]]]
+          rig.hline.setAttribute('x1', lx.toFixed(1))
+          rig.hline.setAttribute('y1', ly.toFixed(1))
           rig.hline.setAttribute('x2', nx.toFixed(1))
           rig.hline.setAttribute('y2', ny.toFixed(1))
-          rig.hline.style.stroke = STRATUM_HEX[STRATA_ORDER[model.seed[hi2 * 2]]]
+          rig.hline.style.stroke = hue2
           rig.hline.style.strokeDashoffset = (-((u.uTime.value * 30) % 10)).toFixed(2)
           rig.hline.style.opacity = (rig.ho * 0.85).toFixed(3)
+          if (rig.hroot) {
+            rig.hroot.setAttribute('cx', (lx - 4).toFixed(1))
+            rig.hroot.setAttribute('cy', ly.toFixed(1))
+            rig.hroot.style.stroke = hue2
+            rig.hroot.style.opacity = (rig.ho * 0.9).toFixed(3)
+          }
         } else {
           rig.hline.style.opacity = ((rig.ho ?? 0) * 0.85).toFixed(3)
           if ((rig.ho ?? 0) <= 0.02) rig.hline.style.opacity = '0'
+          if (rig.hroot) rig.hroot.style.opacity = rig.hline.style.opacity
         }
       }
       /* off the dock (poster · finale · drag) the umbilical stands down */
@@ -1282,6 +1294,13 @@ export default function TheSpecMachine({
             className="smc-hlink"
             ref={(el) => {
               calloutRef.current.hline = el
+            }}
+          />
+          <circle
+            className="smc-hroot"
+            r="2.1"
+            ref={(el) => {
+              calloutRef.current.hroot = el
             }}
           />
           {CALLOUTS.map((c) => {

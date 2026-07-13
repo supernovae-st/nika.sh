@@ -104,6 +104,13 @@
   stroke-linecap: round;
   opacity: 0;
 }
+/* the living link's rooted joint · the same machined ring the umbilical
+   wears, at the word's edge (stroke hue inline, from the loop) */
+.smc-hroot {
+  fill: #0a0c10;
+  stroke-width: 1.2;
+  opacity: 0;
+}
 /* THE ROOT · the wire's joint on the read card — a lit ring, not a blob:
    the connection reads as machined */
 .smc-uroot {
