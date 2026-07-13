@@ -247,7 +247,7 @@ export function lintNika(src: string): LintDiag[] {
         if (!idset.has(target)) continue
         // downstream test · does target transitively depend on id?
         const depsOf = (n: string): string[] => {
-          const tt = tasks.find((x) => x?.id === n)
+          const tt = tasksMap?.[n]
           return Array.isArray(tt?.depends_on) ? (tt.depends_on as string[]) : []
         }
         const stack = [target]
@@ -297,9 +297,8 @@ export function lintNika(src: string): LintDiag[] {
     const net = permits.net as Record<string, unknown> | undefined
     const hosts = net && Array.isArray(net.http) ? (net.http as string[]) : null
 
-    for (const t of tasks) {
+    for (const [id, t] of entries) {
       if (!t || typeof t !== 'object') continue
-      const id = typeof t.id === 'string' ? t.id : undefined
       const line = at(id)
       if ('exec' in t) {
         const body = t.exec as Record<string, unknown> | undefined
@@ -331,7 +330,7 @@ export function lintNika(src: string): LintDiag[] {
   }
 
   // DAG-001 · cycles
-  const graph = new Map(tasks.filter((t) => typeof t?.id === 'string').map((t) => [t.id as string, (Array.isArray(t.depends_on) ? (t.depends_on as string[]) : []).filter((d) => idset.has(d))]))
+  const graph = new Map(entries.map(([id, t]) => [id, (Array.isArray(t?.depends_on) ? (t.depends_on as string[]) : []).filter((d) => idset.has(d))]))
   const color = new Map<string, number>()
   const dfs = (n: string): boolean => {
     color.set(n, 1)

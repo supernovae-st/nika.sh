@@ -80,7 +80,7 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
     expect(Object.keys(doc.vars)).toEqual(['output_dir', 'topic'])
     expect(doc.model).toBe('ollama/llama3.2:3b')
     /* the plan (05/06) · same five tasks, same wave shape as the drawn DAG */
-    const whole = Object.entries(doc.tasks as Record<string, Task>)
+    const whole = Object.entries(doc.tasks as unknown as Record<string, Task>)
     expect(whole.map(([id]) => id)).toEqual([
       'fetch_news',
       'repo_log',
@@ -92,7 +92,7 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
     expect(deps.digest).toEqual(['fetch_news', 'repo_log', 'read_notes'])
     expect(deps.save).toEqual(['digest'])
     /* the failure policy (08) rides the digest · the outputs (09) are named */
-    const digest = (doc.tasks as Record<string, Task>).digest as Task & {
+    const digest = (doc.tasks as unknown as Record<string, Task>).digest as Task & {
       retry?: { max_attempts: number }
     }
     expect(digest.retry?.max_attempts).toBe(3)
