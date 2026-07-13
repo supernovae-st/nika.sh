@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { FLAGSHIP_ENTRIES } from '../../flagships'
 import { buildScript } from '../run/replay-model'
@@ -346,5 +348,21 @@ describe('verdict sweep · the flat window has a real scene event (arc 20b)', ()
     const xNorm = 0.5
     const fAtNode = (xNorm + SWEEP_W) / (1 + 2 * SWEEP_W)
     expect(verdictPulseAt(fAtNode, xNorm)).toBeCloseTo(1, 6)
+  })
+})
+
+describe('the runway CSS is pinned to the model', () => {
+  it('morph.css armed height = (RUNWAY_VH + 1) × 100vh — the axis math and the CSS agree', () => {
+    /* the model owns RUNWAY_VH (P_ARM derives from it, every seam invariant
+       above leans on it). The section's armed height is stage (100vh) +
+       runway — a CSS edit that forgets the model (or vice versa) silently
+       rescales every beat window. This pin makes the drift a red test. */
+    const css = readFileSync(
+      join(__dirname, 'morph.css'),
+      'utf8',
+    )
+    const m = css.match(/\.morphsec\[data-armed\]\s*\{[^}]*?height:\s*(\d+(?:\.\d+)?)vh/s)
+    expect(m, 'the armed section height must be declared in morph.css').toBeTruthy()
+    expect(Number(m![1])).toBeCloseTo((RUNWAY_VH + 1) * 100, 6)
   })
 })
