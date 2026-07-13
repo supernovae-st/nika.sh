@@ -111,6 +111,11 @@
   stroke-width: 1.2;
   opacity: 0;
 }
+/* the living link's landing · the far-end dot on the block (fill hue
+   inline, from the loop) */
+.smc-hdot {
+  opacity: 0;
+}
 /* THE ROOT · the wire's joint on the read card — a lit ring, not a blob:
    the connection reads as machined */
 .smc-uroot {

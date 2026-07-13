@@ -103,6 +103,7 @@ interface CalloutRig {
       and the rooted joint marking where the word hands over */
   hline?: SVGLineElement | null
   hroot?: SVGCircleElement | null
+  hdot?: SVGCircleElement | null
   ho?: number
   /** the wire's rooted joint on the read card (the connection made visible) */
   uroot?: SVGCircleElement | null
@@ -965,10 +966,19 @@ function Machine({
             rig.hroot.style.stroke = hue2
             rig.hroot.style.opacity = (rig.ho * 0.9).toFixed(3)
           }
+          if (rig.hdot) {
+            /* the landing · the wire touches the block with its own dot
+               (the umbilical's grammar, at the living link's far end) */
+            rig.hdot.setAttribute('cx', nx.toFixed(1))
+            rig.hdot.setAttribute('cy', ny.toFixed(1))
+            rig.hdot.style.fill = hue2
+            rig.hdot.style.opacity = (rig.ho * 0.95).toFixed(3)
+          }
         } else {
           rig.hline.style.opacity = ((rig.ho ?? 0) * 0.85).toFixed(3)
           if ((rig.ho ?? 0) <= 0.02) rig.hline.style.opacity = '0'
           if (rig.hroot) rig.hroot.style.opacity = rig.hline.style.opacity
+          if (rig.hdot) rig.hdot.style.opacity = rig.hline.style.opacity
         }
       }
       /* off the dock (poster · finale · drag) the umbilical stands down */
@@ -1318,6 +1328,13 @@ export default function TheSpecMachine({
             r="2.1"
             ref={(el) => {
               calloutRef.current.hroot = el
+            }}
+          />
+          <circle
+            className="smc-hdot"
+            r="2"
+            ref={(el) => {
+              calloutRef.current.hdot = el
             }}
           />
           {CALLOUTS.map((c) => {
