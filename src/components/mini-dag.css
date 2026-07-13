@@ -307,7 +307,23 @@
 /* THE MINIMAP REGISTER (operator 2026-07-13 v2) · in the hero the rail is
    an editor's minimap riding the panel — the survey chrome dies (no title,
    no rules, no base line); only the drawing + the grounded meta/action
-   remain. Scoped to the hero mount so /learn-style survey uses stay whole. */
+   remain. Scoped to the hero mount so /learn-style survey uses stay whole.
+   DETAIL PASS (v3): the 0.72 plate scale shrank the interactive targets —
+   the run link fell to ~8px type and the pips under the 24px floor. The
+   link's TYPE compensates the scale (never the layout: 15px × 0.72 ≈ 11px
+   rendered, the site's mono-link size) and the pips grow their HIT AREA
+   with transparent padding (the drawing's ink is untouched). */
+.v4hero-dag .v4plan-run {
+  font-size: 15px;
+  padding: 12px 9px;
+  margin: -12px -9px;
+}
+.v4hero-dag .mdag-node {
+  /* ≥24px real target at 0.72 scale → 34px unscaled box, invisible ink */
+  min-width: 34px;
+  min-height: 34px;
+  padding: 7px 6px 4px;
+}
 .v4hero-dag .mdag-title,
 .v4hero-dag .mdag-base {
   display: none;
