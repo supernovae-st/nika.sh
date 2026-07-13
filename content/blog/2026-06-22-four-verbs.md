@@ -12,20 +12,21 @@ Nika locks the count at four, forever. The rule that makes this possible is stri
 
 ```yaml morning-brief.nika.yaml
 nika: v1
-workflow: morning-brief
+workflow:
+  id: morning-brief
 
 tasks:
-  - id: fetch_news
+  fetch_news:
     invoke:
       tool: "nika:fetch"          # a tool, not a verb
       args:
         url: "https://hnrss.org/frontpage"
 
-  - id: build
+  build:
     exec:
       command: ["cargo", "build", "--release"]
 
-  - id: digest
+  digest:
     depends_on: [fetch_news, build]
     infer:
       prompt: "Summarize what changed"

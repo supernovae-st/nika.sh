@@ -31,6 +31,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-PARSE-008",
+      "NIKA-AGENT-004",
       "NIKA-SEC-002",
       "NIKA-BUILTIN-DONE-001"
     ]
@@ -159,15 +160,6 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "description": {
     "word": "description",
-    "usage": {
-      "yaml": "description: \"gather → think → persist\"   # SLOT: one honest sentence",
-      "source": {
-        "kind": "template",
-        "name": "chain",
-        "file": "chain.nika.yaml",
-        "firstLine": 11
-      }
-    },
     "templates": [
       "chain",
       "gate-and-act",
@@ -180,7 +172,10 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "api-upload-and-create",
       "docker-report"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-PARSE-021",
+      "NIKA-AGENT-004"
+    ]
   },
   "env": {
     "word": "env",
@@ -261,7 +256,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "api-upload-and-create",
       "docker-report"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-PARSE-020",
+      "NIKA-PARSE-022",
+      "NIKA-PARSE-023"
+    ]
   },
   "infer": {
     "word": "infer",
@@ -512,6 +511,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-PARSE-013",
+      "NIKA-VAR-020",
       "NIKA-VAR-009",
       "NIKA-INFER-002"
     ]
@@ -666,6 +666,19 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-PARSE-014"
     ]
   },
+  "shell": {
+    "word": "shell",
+    "templates": [],
+    "codes": []
+  },
+  "skills": {
+    "word": "skills",
+    "templates": [],
+    "codes": [
+      "NIKA-AGENT-003",
+      "NIKA-AGENT-004"
+    ]
+  },
   "skip": {
     "word": "skip",
     "templates": [],
@@ -717,7 +730,9 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-PARSE-002",
-      "NIKA-DAG-003"
+      "NIKA-PARSE-022",
+      "NIKA-DAG-003",
+      "NIKA-VAR-020"
     ]
   },
   "temperature": {
@@ -879,6 +894,8 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-PARSE-002",
       "NIKA-PARSE-004",
       "NIKA-PARSE-007",
+      "NIKA-PARSE-020",
+      "NIKA-PARSE-021",
       "NIKA-SEC-003",
       "NIKA-CANCEL-001"
     ]

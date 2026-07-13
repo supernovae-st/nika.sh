@@ -137,11 +137,11 @@ describe('tokenizeLine · flow-mapping task lines (the F2 burst carriers)', () =
 describe('CodeFile · template ref rendering', () => {
   const yamlRefs = [
     'tasks:',
-    '  - id: pool',
+    '  pool:',
     '    invoke:',
     '      args:',
     '        files: ${{ vars.cv_glob }}',
-    '  - id: pick',
+    '  pick:',
     '    infer:',
     '      prompt: ${{ tasks.pool.output }}',
     'merge: &base',
@@ -178,7 +178,7 @@ describe('CodeFile (static render)', () => {
     'workflow: morning-brief',
     '# a comment',
     'tasks:',
-    '  - id: issues',
+    '  issues:',
     '    invoke:',
     '      max_steps: 8',
   ].join('\n')
@@ -336,7 +336,7 @@ describe('CodeFile (static render)', () => {
           &quot; on the server but renders the raw " on the client. The token span
           carrying the value is marked suppressHydrationWarning so React trusts the
           (correct) server text instead of regenerating the subtree. */
-  const yamlWithBlank = ['nika: v1', '', 'tasks:', '  - id: a'].join('\n')
+  const yamlWithBlank = ['nika: v1', '', 'tasks:', '  a:'].join('\n')
 
   it('renders empty lines without a bare text-node child (hydration-safe)', () => {
     const { container } = render(<CodeFile yaml={yamlWithBlank} lineNumbers={false} />)

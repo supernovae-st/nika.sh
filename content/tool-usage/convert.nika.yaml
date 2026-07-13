@@ -1,9 +1,10 @@
 nika: v1
-workflow: json-to-yaml
-description: "one format in, another out — identity is rejected"
+workflow:
+  id: json-to-yaml
+  description: "one format in, another out — identity is rejected"
 
 tasks:
-  - id: translate
+  translate:
     invoke:
       tool: "nika:convert"
       args:

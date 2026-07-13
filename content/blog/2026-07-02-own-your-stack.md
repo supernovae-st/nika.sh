@@ -14,11 +14,12 @@ Local-first gets said a lot, and it means anything from "we cache" to "we sync, 
 
 ```yaml hello-ai.nika.yaml
 nika: v1
-workflow: hello-ai
+workflow:
+  id: hello-ai
 model: ollama/llama3.2:3b
 
 tasks:
-  - id: greet
+  greet:
     infer:
       prompt: "Say hello in one sentence."
 ```

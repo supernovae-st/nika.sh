@@ -1,14 +1,15 @@
 nika: v1
-workflow: pin-the-artifact
-description: "content-address a file — the receipt survives the run"
+workflow:
+  id: pin-the-artifact
+  description: "content-address a file — the receipt survives the run"
 
 tasks:
-  - id: artifact
+  artifact:
     invoke:
       tool: "nika:read"
       args: { path: "./dist/report.md" }
 
-  - id: pin
+  pin:
     depends_on: [artifact]
     invoke:
       tool: "nika:hash"

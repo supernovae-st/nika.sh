@@ -26,7 +26,7 @@ export interface FlagshipTask {
   fanout?: boolean
   /** topological wave · deps always live in strictly-earlier waves */
   wave: number
-  /** 1-based line of the task head (`- id:` / `- { id:`) in the file */
+  /** 1-based line of the task head (its map key line) in the file */
   line0: number
   /** 1-based last line of the task block */
   line1: number
@@ -135,12 +135,19 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
       if (top) {
         closeTask(n - 1)
         const [, key, rest] = top
-        section = key === 'permits' || key === 'tasks' || key === 'outputs' ? key : ''
-        if (key === 'workflow') workflow = rest.trim()
+        section = key === 'permits' || key === 'tasks' || key === 'outputs' || key === 'workflow' ? key : ''
+        if (key === 'workflow' && rest.trim()) workflow = rest.trim()
         if (key === 'model') model = rest.replace(/#.*$/, '').trim()
         if (key === 'permits') permitsRange = [n, n]
         continue
       }
+    }
+
+    if (section === 'workflow') {
+      /* W1: the identity object — the display name is its id: field */
+      const row = line.match(/^ {2}id:\s*(.+?)\s*(?:#.*)?$/)
+      if (row) workflow = row[1]
+      continue
     }
 
     if (section === 'permits') {
@@ -157,7 +164,9 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
     }
 
     if (section === 'tasks') {
-      const head = line.match(/^ {2}- (?:\{ *)?id: ([A-Za-z0-9_-]+)/)
+      /* W1 « the map »: a task opens at its indent-2 key — bare (block
+         body follows) or with an inline flow body on the same line */
+      const head = line.match(/^ {2}([a-z][a-z0-9_]*):(?:\s*(?:\{.*)?)?(?:\s*#.*)?$/)
       if (head) {
         closeTask(n - 1)
         current = { id: head[1], line0: n, line1: n, body: [line] }

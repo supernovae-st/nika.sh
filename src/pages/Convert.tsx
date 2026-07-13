@@ -29,8 +29,9 @@ const PROOF_ASK =
 
 export const PROOF_YAML = `# from @your-handle's friday ritual · converted + checked
 nika: v1
-workflow: friday-changelog
-description: "the week's merged PRs become a changelog draft"
+workflow:
+  id: friday-changelog
+  description: "the week's merged PRs become a changelog draft"
 
 model: ollama/llama3.2
 
@@ -40,11 +41,11 @@ permits:
   fs: { write: ["./CHANGELOG.draft.md"] }
 
 tasks:
-  - id: collect
+  collect:
     exec:
       command: ["git", "log", "--merges", "--since=7 days ago", "--oneline"]
 
-  - id: draft
+  draft:
     depends_on: [collect]
     infer:
       max_tokens: 900
@@ -52,7 +53,7 @@ tasks:
         Group these merges by area and write a changelog draft.
         \${{ tasks.collect.output }}
 
-  - id: save
+  save:
     depends_on: [draft]
     invoke:
       tool: "nika:write"

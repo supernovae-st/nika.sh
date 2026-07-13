@@ -49,7 +49,7 @@ export const FLAGSHIPS: Flagship[] = [
     /* consumer-first: « blast radius » is earned 3 beats later by TheBoundary —
        the default tab must not open on unexplained jargon (P2-13a) */
     gloss: 'permits: the file says what it may touch',
-    highlight: [8, 10],
+    highlight: [9, 11],
     artifact: 'wrote brief.md',
     traceNdjson: dailyBriefTrace,
     /* comment discipline (all 7 files): section comments live on their OWN
@@ -58,7 +58,8 @@ export const FLAGSHIPS: Flagship[] = [
        broken. Comments are display prose; ids/paths/structure stay byte-true
        to the recorded run. */
     yaml: `nika: v1
-workflow: daily-brief
+workflow:
+  id: daily-brief
 
 # local model · your notes never leave
 model: ollama/llama3.2:3b
@@ -69,24 +70,24 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - { id: notes, invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
-  - { id: inbox, invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
-  - { id: calendar, invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
+  notes: { invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
+  inbox: { invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
+  calendar: { invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
 
-  - id: triage
+  triage:
     depends_on: [ inbox ]
     infer: { prompt: "Flag what is urgent: \${{ tasks.inbox.output }}", max_tokens: 300 }
-  - id: agenda
+  agenda:
     depends_on: [ calendar ]
     infer: { prompt: "Plan the day around: \${{ tasks.calendar.output }}", max_tokens: 300 }
 
-  - id: draft
+  draft:
     depends_on: [ notes, triage, agenda ]
     infer:
       prompt: "Write the morning brief. Notes: \${{ tasks.notes.output }} Urgent: \${{ tasks.triage.output }} Plan: \${{ tasks.agenda.output }}"
       max_tokens: 500
 
-  - id: save
+  save:
     depends_on: [ draft ]
     invoke:
       tool: "nika:write"
@@ -103,11 +104,12 @@ outputs:
     gloss: 'when: the probe only fires on real risk',
     /* the lit band is the caption's EVIDENCE, nothing more: the probe task's
        head + its when: gate (the schema block above is a different story). */
-    highlight: [30, 32],
+    highlight: [31, 33],
     artifact: 'wrote review.md',
     traceNdjson: prRiskReviewTrace,
     yaml: `nika: v1
-workflow: pr-risk-review
+workflow:
+  id: pr-risk-review
 
 # local model · the diff never leaves
 model: ollama/llama3.2:3b
@@ -119,10 +121,10 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - id: diff
+  diff:
     exec: { command: [ git, diff, main ] }
 
-  - id: risk
+  risk:
     depends_on: [ diff ]
     timeout: "120s"
     infer:
@@ -135,7 +137,7 @@ tasks:
           reasons: { type: array, items: { type: string } }
       max_tokens: 400
 
-  - id: probe
+  probe:
     depends_on: [ risk ]
     when: \${{ tasks.risk.output.score >= 7 }}
     agent:
@@ -143,7 +145,7 @@ tasks:
       tools: [ "nika:read" ]
       max_turns: 3
 
-  - id: report
+  report:
     depends_on: [ risk ]
     invoke:
       tool: "nika:write"
@@ -158,11 +160,12 @@ outputs:
     filename: 'meeting-actions.nika.yaml',
     label: 'meeting-actions',
     gloss: 'schema: the output is a contract, not prose',
-    highlight: [20, 31],
+    highlight: [21, 32],
     artifact: 'wrote action-items.json',
     traceNdjson: meetingActionsTrace,
     yaml: `nika: v1
-workflow: meeting-actions
+workflow:
+  id: meeting-actions
 
 # local model · the recording stays yours
 model: ollama/llama3.2:3b
@@ -173,10 +176,10 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - id: transcript
+  transcript:
     invoke: { tool: "nika:read", args: { path: ./transcript.txt } }
 
-  - id: extract
+  extract:
     depends_on: [ transcript ]
     infer:
       prompt: "Extract every action item with its owner: \${{ tasks.transcript.output }}"
@@ -194,7 +197,7 @@ tasks:
                 task: { type: string }
       max_tokens: 400
 
-  - id: save
+  save:
     depends_on: [ extract ]
     invoke:
       tool: "nika:write"
@@ -211,11 +214,12 @@ outputs:
     /* the zero-model tab: not every workflow needs an LLM · the DAG, two
        builtins and one CEL compare do the whole job deterministically. */
     gloss: 'when: zero model · plain data opens the gate',
-    highlight: [23, 25],
+    highlight: [24, 26],
     artifact: 'wrote price-alert.md',
     traceNdjson: priceWatchTrace,
     yaml: `nika: v1
-workflow: price-watch
+workflow:
+  id: price-watch
 # zero model · two tools and one CEL compare
 
 # the file IS the blast radius
@@ -227,16 +231,16 @@ vars:
   alert_below: 899  # your threshold · plain data
 
 tasks:
-  - id: snapshot
+  snapshot:
     invoke: { tool: "nika:read", args: { path: ./price.json } }
 
-  - id: price
+  price:
     depends_on: [ snapshot ]
     invoke:
       tool: "nika:jq"
       args: { input: "\${{ tasks.snapshot.output }}", expression: "fromjson | .price" }
 
-  - id: alert
+  alert:
     depends_on: [ price ]
     when: \${{ tasks.price.output < vars.alert_below }}
     invoke:
@@ -258,11 +262,12 @@ outputs:
     gloss: 'depends_on: three parallel rewrites, one merge',
     /* the lit band = the caption's evidence: the bundle head + the fan-in
        depends_on line that literally lists the three parallel rewrites. */
-    highlight: [29, 30],
+    highlight: [30, 31],
     artifact: 'wrote social-bundle.md',
     traceNdjson: socialRepurposeTrace,
     yaml: `nika: v1
-workflow: social-repurpose
+workflow:
+  id: social-repurpose
 
 # local model · your draft never leaves
 model: ollama/llama3.2:3b
@@ -274,22 +279,22 @@ permits:
 
 tasks:
   # one read · three parallel rewrites · one merge
-  - id: post
+  post:
     invoke: { tool: "nika:read", args: { path: ./post.md } }
 
-  - id: thread
+  thread:
     depends_on: [ post ]
     infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: \${{ tasks.post.output }}", max_tokens: 400 }
 
-  - id: linkedin
+  linkedin:
     depends_on: [ post ]
     infer: { prompt: "Rewrite this post for LinkedIn, hook first: \${{ tasks.post.output }}", max_tokens: 400 }
 
-  - id: newsletter
+  newsletter:
     depends_on: [ post ]
     infer: { prompt: "Write a 3-sentence newsletter blurb for this post: \${{ tasks.post.output }}", max_tokens: 300 }
 
-  - id: bundle
+  bundle:
     depends_on: [ thread, linkedin, newsletter ]
     invoke:
       tool: "nika:write"
@@ -314,11 +319,12 @@ outputs:
     /* the grounding tab: the note starts from `git log`, not from what a
        model remembers — the lit lines are the exec task that fetched truth. */
     gloss: 'exec: the note starts from real commits, not memory',
-    highlight: [18, 19],
+    highlight: [19, 20],
     artifact: 'wrote standup-note.md',
     traceNdjson: standupDigestTrace,
     yaml: `nika: v1
-workflow: standup-digest
+workflow:
+  id: standup-digest
 
 # local model · your commits never leave
 model: ollama/llama3.2:3b
@@ -331,13 +337,13 @@ permits:
 
 tasks:
   # no dependency · the engine runs them together
-  - id: today
+  today:
     invoke: { tool: "nika:date", args: { op: now } }
 
-  - id: history
+  history:
     exec: { command: [ git, log, --since=yesterday, --oneline, --no-merges ] }
 
-  - id: digest
+  digest:
     depends_on: [ today, history ]
     infer:
       prompt: |
@@ -349,7 +355,7 @@ tasks:
         Plain words, no fluff.
       max_tokens: 300
 
-  - id: save
+  save:
     depends_on: [ digest ]
     invoke:
       tool: "nika:write"
@@ -366,11 +372,12 @@ outputs:
     /* the resilience tab: zero model · a validate gate splits the batch and
        the lit lines are the on_error recover that keeps the pipeline alive. */
     gloss: 'on_error: a bad batch degrades, the run survives',
-    highlight: [23, 25],
+    highlight: [24, 26],
     artifact: 'wrote daily-totals.json',
     traceNdjson: etlQuarantineTrace,
     yaml: `nika: v1
-workflow: etl-quarantine
+workflow:
+  id: etl-quarantine
 # zero model · a schema gate splits the batch
 
 # the file IS the blast radius
@@ -380,13 +387,13 @@ permits:
 
 tasks:
   # the deterministic fallback if parsing dies
-  - id: empty_batch
+  empty_batch:
     invoke: { tool: "nika:jq", args: { input: [], expression: "." } }
 
-  - id: raw
+  raw:
     invoke: { tool: "nika:read", args: { path: ./data/incoming/orders.csv } }
 
-  - id: rows
+  rows:
     depends_on: [ raw ]
     invoke:
       tool: "nika:convert"
@@ -395,7 +402,7 @@ tasks:
     on_error:
       recover: \${{ tasks.empty_batch.output }}
 
-  - id: check
+  check:
     depends_on: [ rows ]
     invoke:
       tool: "nika:validate"
@@ -412,7 +419,7 @@ tasks:
               amount: { type: string }
               currency: { type: string, enum: [ EUR, USD, GBP ] }
 
-  - id: good
+  good:
     depends_on: [ rows, check ]
     when: \${{ tasks.check.output.valid == true }}
     invoke:
@@ -421,7 +428,7 @@ tasks:
         input: "\${{ tasks.rows.output }}"
         expression: 'group_by(.currency) | map({currency: .[0].currency, orders: length, total: (map(.amount | tonumber) | add)})'
 
-  - id: quarantine
+  quarantine:
     depends_on: [ rows, check ]
     when: \${{ tasks.check.output.valid == false }}
     invoke:
@@ -431,7 +438,7 @@ tasks:
         content: "\${{ tasks.check.output.errors }}"
         create_dirs: true
 
-  - id: report
+  report:
     depends_on: [ good ]
     when: \${{ tasks.good.output != null && size(tasks.good.output) > 0 }}
     invoke:

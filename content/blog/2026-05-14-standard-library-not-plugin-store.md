@@ -14,16 +14,17 @@ A workflow language lives or dies on its tools, and the industry default is a ma
 
 ```yaml headlines.nika.yaml
 nika: v1
-workflow: headlines
+workflow:
+  id: headlines
 
 tasks:
-  - id: page
+  page:
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://nika.sh"
 
-  - id: save
+  save:
     depends_on: [page]
     invoke:
       tool: "nika:write"

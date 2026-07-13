@@ -24,7 +24,8 @@ Nika answers a different way. **The plan is authored before the model runs.** He
 
 ```yaml brief.nika.yaml
 nika: v1
-workflow: brief
+workflow:
+  id: brief
 # local model · the note below is hostile on purpose
 model: ollama/llama3.2:3b
 
@@ -33,15 +34,15 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - { id: note, invoke: { tool: "nika:read", args: { path: ./note.md } } }
+  note: { invoke: { tool: "nika:read", args: { path: ./note.md } } }
 
-  - id: summary
+  summary:
     depends_on: [ note ]
     infer:
       prompt: "Summarize this note in one sentence: ${{ tasks.note.output }}"
       max_tokens: 100
 
-  - id: save
+  save:
     depends_on: [ summary ]
     invoke: { tool: "nika:write", args: { path: ./summary.md, content: "${{ tasks.summary.output }}" } }
 

@@ -32,7 +32,6 @@ export const WORD_GLOSS: Record<string, string> = {
   skip: 'treat the failed task as skipped and continue the plan',
   stdin: 'text piped to the command’s standard input',
   system: 'the standing instruction: who the model is for this task',
-  tasks: 'the plan itself: every step, one verb each; order comes from depends_on, not position',
   thinking: 'extended-reasoning budget for models that expose it',
   vision: 'image inputs for multimodal models',
 }

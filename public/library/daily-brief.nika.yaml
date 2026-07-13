@@ -1,5 +1,6 @@
 nika: v1
-workflow: daily-brief
+workflow:
+  id: daily-brief
 
 # local model · your notes never leave
 model: ollama/llama3.2:3b
@@ -10,24 +11,24 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - { id: notes, invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
-  - { id: inbox, invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
-  - { id: calendar, invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
+  notes: { invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
+  inbox: { invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
+  calendar: { invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
 
-  - id: triage
+  triage:
     depends_on: [ inbox ]
     infer: { prompt: "Flag what is urgent: ${{ tasks.inbox.output }}", max_tokens: 300 }
-  - id: agenda
+  agenda:
     depends_on: [ calendar ]
     infer: { prompt: "Plan the day around: ${{ tasks.calendar.output }}", max_tokens: 300 }
 
-  - id: draft
+  draft:
     depends_on: [ notes, triage, agenda ]
     infer:
       prompt: "Write the morning brief. Notes: ${{ tasks.notes.output }} Urgent: ${{ tasks.triage.output }} Plan: ${{ tasks.agenda.output }}"
       max_tokens: 500
 
-  - id: save
+  save:
     depends_on: [ draft ]
     invoke:
       tool: "nika:write"

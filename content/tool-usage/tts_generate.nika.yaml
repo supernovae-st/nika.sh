@@ -1,9 +1,10 @@
 nika: v1
-workflow: say-the-verdict
-description: "one audio file under output_dir — mock provider runs offline"
+workflow:
+  id: say-the-verdict
+  description: "one audio file under output_dir — mock provider runs offline"
 
 tasks:
-  - id: speak
+  speak:
     invoke:
       tool: "nika:tts_generate"
       args:

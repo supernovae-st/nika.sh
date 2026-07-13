@@ -14,8 +14,9 @@ Here is a release-notes pipeline, whole. It reads a changelog, summarizes it on 
 
 ```yaml release-notes.nika.yaml
 nika: v1
-workflow: release-notes
-description: "Fetch the changelog, summarize it, badge the repo — one reviewable file"
+workflow:
+  id: release-notes
+  description: "Fetch the changelog, summarize it, badge the repo — one reviewable file"
 
 model: ollama/llama3.2:3b
 
@@ -27,16 +28,16 @@ permits:
   tools: ["nika:read", "nika:write"]
 
 tasks:
-  - id: changelog
+  changelog:
     invoke:
       tool: "nika:read"
       args: { path: "./CHANGELOG.md" }
 
-  - id: size
+  size:
     exec:
       command: ["wc", "-l", "./CHANGELOG.md"]
 
-  - id: notes
+  notes:
     depends_on: [changelog]
     infer:
       prompt: |
@@ -44,13 +45,13 @@ tasks:
         ${{ tasks.changelog.output }}
       max_tokens: 300
 
-  - id: save
+  save:
     depends_on: [notes]
     invoke:
       tool: "nika:write"
       args: { path: "./notes.md", content: "${{ tasks.notes.output }}" }
 
-  - id: badge
+  badge:
     depends_on: [size]
     invoke:
       tool: "nika:write"

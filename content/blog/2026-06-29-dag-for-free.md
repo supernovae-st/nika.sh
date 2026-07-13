@@ -12,20 +12,21 @@ Every orchestration tool eventually grows a scheduler dialect: stages, barriers,
 
 ```yaml release-radar.nika.yaml
 nika: v1
-workflow: release-radar
+workflow:
+  id: release-radar
 
 tasks:
-  - id: changelog
+  changelog:
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://nika.sh/changelog"
 
-  - id: repo_log
+  repo_log:
     exec:
       command: ["git", "log", "--since='1", "week'"]
 
-  - id: digest
+  digest:
     depends_on: [changelog, repo_log]
     infer:
       prompt: "What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}"

@@ -12,14 +12,15 @@ Nika moves the question to before. The second verdict `nika check` prints, right
 
 ```yaml cost-probe.nika.yaml
 nika: v1
-workflow: cost-probe
+workflow:
+  id: cost-probe
 model: mistral/mistral-small
 
 tasks:
-  - id: bounded
+  bounded:
     infer: { prompt: "one word", max_tokens: 200 }
 
-  - id: loop
+  loop:
     depends_on: [bounded]
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 3, max_tokens_total: 4000 }
 

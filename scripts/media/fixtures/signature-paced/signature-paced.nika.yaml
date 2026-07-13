@@ -4,8 +4,9 @@
 # rate-limit pace (nika:wait) before each translate so the fanout takes
 # real seconds: long enough to kill mid-flight and resume.
 nika: v1
-workflow: release-notes-i18n-paced
-description: "signature pipeline + per-locale pacing — the kill/resume demo subject"
+workflow:
+  id: release-notes-i18n-paced
+  description: "signature pipeline + per-locale pacing — the kill/resume demo subject"
 
 model: mock/echo
 
@@ -14,17 +15,17 @@ vars:
   locales: ["fr-FR", "de-DE", "ja-JP", "es-ES"]
 
 tasks:
-  - id: discover
+  discover:
     invoke:
       tool: "nika:glob"
       args: { pattern: "${{ vars.changes_dir }}/*.md" }
 
-  - id: digest
+  digest:
     depends_on: [discover]
     exec:
       command: ["cat", "items/item-1.md", "items/item-2.md", "items/item-3.md", "items/item-4.md", "items/item-5.md"]
 
-  - id: stats
+  stats:
     depends_on: [discover]
     invoke:
       tool: "nika:jq"
@@ -32,7 +33,7 @@ tasks:
         input: ${{ tasks.discover.output }}
         expression: "{ files: length }"
 
-  - id: draft
+  draft:
     depends_on: [digest]
     infer:
       max_tokens: 400
@@ -40,7 +41,7 @@ tasks:
         Draft concise release notes from these changes:
         ${{ tasks.digest.output }}
 
-  - id: pace
+  pace:
     depends_on: [draft]
     for_each: ${{ vars.locales }}
     max_parallel: 4
@@ -48,7 +49,7 @@ tasks:
       tool: "nika:wait"
       args: { duration: "6s" }
 
-  - id: translate
+  translate:
     depends_on: [pace, draft]
     for_each: ${{ vars.locales }}
     max_parallel: 4
@@ -58,7 +59,7 @@ tasks:
         Translate these release notes to ${{ item }}:
         ${{ tasks.draft.output }}
 
-  - id: survivors
+  survivors:
     depends_on: [translate]
     invoke:
       tool: "nika:jq"
@@ -66,7 +67,7 @@ tasks:
         input: ${{ tasks.translate.output }}
         expression: "[ .[] | select(. != null) ]"
 
-  - id: publish
+  publish:
     depends_on: [survivors]
     when: ${{ tasks.survivors.output.size() > 0 }}
     exec:

@@ -31,8 +31,9 @@ It prices inference the same way. Here is a three-task digest that reads a statu
 
 ```yaml digest.nika.yaml
 nika: v1
-workflow: digest
-description: "Read the notes, draft a one-line digest, save it"
+workflow:
+  id: digest
+  description: "Read the notes, draft a one-line digest, save it"
 
 model: ollama/llama3.2:3b
 
@@ -44,12 +45,12 @@ permits:
   tools: ["nika:read", "nika:write"]
 
 tasks:
-  - id: notes
+  notes:
     invoke:
       tool: "nika:read"
       args: { path: "./notes.txt" }
 
-  - id: draft
+  draft:
     depends_on: [notes]
     infer:
       prompt: |
@@ -57,7 +58,7 @@ tasks:
         ${{ tasks.notes.output }}
       max_tokens: 200
 
-  - id: save
+  save:
     depends_on: [draft]
     invoke:
       tool: "nika:write"

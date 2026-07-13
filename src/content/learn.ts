@@ -65,7 +65,8 @@ export const STEPS: Step[] = [
       'The whole thing is one plain-text file. Two lines make it real: name the language, name the workflow. That header is the whole ceremony: no project setup, no boilerplate, no config.',
     file: 'weekly-radar.nika.yaml',
     yaml: `nika: v1
-workflow: weekly-radar`,
+workflow:
+  id: weekly-radar`,
     note: 'nika: v1 means the format is frozen. Files you write today won’t break.',
   },
   {
@@ -104,7 +105,7 @@ model: ollama/llama3.2:3b
       'Each task does exactly one thing, with one of the four verbs. This one thinks: it sends a prompt to the model and keeps the answer as its output.',
     file: 'tasks',
     yaml: `tasks:
-  - id: digest
+  digest:
     infer:
       prompt: "Summarize in 5 bullets: \${{ tasks.fetch_news.output }}"`,
     note: 'infer thinks · exec runs a command · invoke uses a tool · agent delegates.',
@@ -116,15 +117,15 @@ model: ollama/llama3.2:3b
     plain:
       'depends_on is all you write. Tasks that don’t wait on each other run in parallel automatically. You never schedule anything. The plan (which tasks wait on which) falls out of the file.',
     file: 'depends_on',
-    yaml: `- id: fetch_news
+    yaml: `fetch_news:
   invoke:
     tool: "nika:fetch"
 
-- id: repo_log
+repo_log:
   exec:
-    command: ["git", "log", "--since='1", "week'"]
+    command: ["git", "log", "--since=1 week"]
 
-- id: digest
+digest:
   depends_on: [ fetch_news, repo_log ]   # waits for BOTH
   infer:
     prompt: "Cross-reference news with our work…"`,
@@ -138,20 +139,20 @@ model: ollama/llama3.2:3b
       'A workflow is a to-do list where some steps wait for others. Steps that wait on nothing all start at the same time, automatically; you never schedule anything. Before anything runs, the runtime reads every depends_on and draws the plan: here, three sources start together, the digest waits for all three, and the save waits for the digest.',
     file: 'tasks · the whole plan',
     yaml: `tasks:
-  - id: fetch_news
+  fetch_news:
     invoke:
       tool: "nika:fetch"
-  - id: repo_log
+  repo_log:
     exec:
-      command: ["git", "log", "--since='1", "week'"]
-  - id: read_notes
+      command: ["git", "log", "--since=1 week"]
+  read_notes:
     invoke:
       tool: "nika:read"
-  - id: digest
+  digest:
     depends_on: [ fetch_news, repo_log, read_notes ]
     infer:
       prompt: "One weekly radar, five bullets"
-  - id: save
+  save:
     depends_on: [ digest ]
     invoke:
       tool: "nika:write"`,
@@ -165,7 +166,7 @@ model: ollama/llama3.2:3b
     plain:
       'when: makes a task conditional, a yes/no test over what already happened. Waiting for success is free (depends_on already does it); when: is for conditions beyond it, like a value check.',
     file: 'when',
-    yaml: `- id: alert
+    yaml: `alert:
   depends_on: [ check ]
   when: \${{ tasks.check.output.errors > 0 }}
   invoke:
@@ -178,7 +179,7 @@ model: ollama/llama3.2:3b
     plain:
       'Errors come back typed: a stable code, a category, and whether retrying could help. Tasks declare their own retry policy and a fallback. No stack-trace archaeology.',
     file: 'retry · on_error',
-    yaml: `- id: research
+    yaml: `research:
   retry:
     max_attempts: 3
     backoff_ms: 1000
@@ -196,7 +197,7 @@ model: ollama/llama3.2:3b
       'output: binds pieces of a task result to names; the workflow declares what it returns. Downstream tasks (and you) read clean names, not raw API responses.',
     file: 'output · outputs',
     yaml: `tasks:
-  - id: digest
+  digest:
     infer:
       prompt: "…"
     output:
@@ -213,7 +214,8 @@ outputs:
    below is that run, VERBATIM (captured 2026-07-13 · nika 0.103.0). The
    honesty law: re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
-workflow: weekly-radar
+workflow:
+  id: weekly-radar
 
 vars:
   output_dir: "./radar"
@@ -225,23 +227,23 @@ vars:
 model: ollama/llama3.2:3b
 
 tasks:
-  - id: fetch_news
+  fetch_news:
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://hnrss.org/frontpage"
 
-  - id: repo_log
+  repo_log:
     exec:
-      command: ["git", "log", "--since='1", "week'"]
+      command: ["git", "log", "--since=1 week"]
 
-  - id: read_notes
+  read_notes:
     invoke:
       tool: "nika:read"
       args:
         path: "./notes.md"
 
-  - id: digest
+  digest:
     depends_on: [ fetch_news, repo_log, read_notes ]
     retry:
       max_attempts: 3
@@ -249,7 +251,7 @@ tasks:
     infer:
       prompt: "One weekly radar on \${{ vars.topic }}, five bullets: \${{ tasks.fetch_news.output }} \${{ tasks.repo_log.output }} \${{ tasks.read_notes.output }}"
 
-  - id: save
+  save:
     depends_on: [ digest ]
     invoke:
       tool: "nika:write"

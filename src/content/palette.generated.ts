@@ -424,6 +424,30 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-PARSE-020",
+    "href": "/errors/NIKA-PARSE-020",
+    "hint": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-PARSE-021",
+    "href": "/errors/NIKA-PARSE-021",
+    "hint": "top-level description: — it moved into workflow.description"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-PARSE-022",
+    "href": "/errors/NIKA-PARSE-022",
+    "hint": "tasks: is a sequence — it became a map keyed by task id (drop `- id:`, the key IS the identity)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-PARSE-023",
+    "href": "/errors/NIKA-PARSE-023",
+    "hint": "a task carries an id: field — the map key is the identity, the field is gone"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-DAG-001",
     "href": "/errors/NIKA-DAG-001",
     "hint": "cycle in depends_on (incl. self-dependency)"
@@ -496,6 +520,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-VAR-020",
+    "href": "/errors/NIKA-VAR-020",
+    "hint": "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-VAR-009",
     "href": "/errors/NIKA-VAR-009",
     "hint": "typed outputs value did not match its declared type: at run end (the output half of the callable contract)"
@@ -547,6 +577,18 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-AGENT-002",
     "href": "/errors/NIKA-AGENT-002",
     "hint": "max_tokens_total exhausted before completion"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-AGENT-003",
+    "href": "/errors/NIKA-AGENT-003",
+    "hint": "a skills: path does not resolve (file missing/unreadable at compose time)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-AGENT-004",
+    "href": "/errors/NIKA-AGENT-004",
+    "hint": "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)"
   },
   {
     "kind": "error",
@@ -996,7 +1038,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "command",
     "href": "/language/command",
-    "hint": "exec — String -> /bin/sh -c (shell). Array -> execve, no shell (the injection-safe form)."
+    "hint": "exec — argv — the program and its arguments, execve, NO shell. Each element substituted independently (the inj"
   },
   {
     "kind": "word",
@@ -1014,7 +1056,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "description",
     "href": "/language/description",
-    "hint": "envelope"
+    "hint": "workflow"
   },
   {
     "kind": "word",
@@ -1050,7 +1092,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "id",
     "href": "/language/id",
-    "hint": "task — Task id · snake_case (CEL-safe · no hyphens) · unique within workflow."
+    "hint": "workflow — Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object)."
   },
   {
     "kind": "word",
@@ -1180,6 +1222,18 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
+    "label": "shell",
+    "href": "/language/shell",
+    "hint": "exec — One shell line, run via /bin/sh -c — the EXPLICIT dangerous door (pipes · redirects · globs). The block"
+  },
+  {
+    "kind": "word",
+    "label": "skills",
+    "href": "/language/skills",
+    "hint": "agent — Agent Skill (SKILL.md) file paths · agentskills.io shape · explicit static paths only (no globs · no t"
+  },
+  {
+    "kind": "word",
     "label": "skip",
     "href": "/language/skip",
     "hint": "on_error"
@@ -1200,7 +1254,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "tasks",
     "href": "/language/tasks",
-    "hint": "envelope"
+    "hint": "envelope — The task map · the KEY is the task's identity (snake_case · CEL-safe). Source order is presentation"
   },
   {
     "kind": "word",
@@ -1260,6 +1314,6 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "workflow",
     "href": "/language/workflow",
-    "hint": "envelope — Workflow id · kebab-case · unique within file · the document-type discriminator."
+    "hint": "envelope — The workflow object · a stable home for identity and metadata (W1 'the map')."
   }
 ]

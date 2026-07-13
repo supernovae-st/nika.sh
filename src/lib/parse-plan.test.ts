@@ -2,19 +2,20 @@ import { describe, expect, it } from 'vitest'
 import { parsePlan } from './parse-plan'
 
 const FLAGSHIP_LIKE = `nika: v1
-workflow: daily-brief
+workflow:
+  id: daily-brief
 tasks:
-  - { id: notes,    invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
-  - { id: inbox,    invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
-  - id: triage
+  notes: { invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
+  inbox: { invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
+  triage:
     depends_on: [inbox]
     infer: { prompt: "Flag urgent: \${{ tasks.inbox.output }}" }
-  - id: draft
+  draft:
     depends_on: [notes, triage]
     infer:
       prompt: "Write the brief"
       model: ollama/llama3.2:3b
-  - id: save
+  save:
     depends_on: [draft]
     when: \${{ tasks.draft.output != "" }}
     invoke: { tool: "nika:write", args: { path: ./brief.md, content: "x" } }
@@ -28,7 +29,7 @@ describe('parsePlan', () => {
   exec: [ git ]
   net: { http: [ api.github.com ] }
 tasks:
-  - id: a
+  a:
     exec: { command: ["git", "log"] }
 `)
     expect(withP!.permits).toEqual({
@@ -38,7 +39,7 @@ tasks:
       exec: ['git'],
       hosts: ['api.github.com'],
     })
-    const noP = parsePlan('tasks:\n  - id: a\n    infer: { prompt: "x" }')
+    const noP = parsePlan('tasks:\n  a:\n    infer: { prompt: "x" }')
     expect(noP!.permits).toBeNull()
   })
 
@@ -64,7 +65,7 @@ tasks:
   })
 
   it('returns null on mid-edit broken yaml (caller keeps the last plan)', () => {
-    expect(parsePlan('tasks:\n  - id: a\n    invoke: {')).toBeNull()
+    expect(parsePlan('tasks:\n  a:\n    invoke: {')).toBeNull()
     expect(parsePlan('')).toBeNull()
     expect(parsePlan('just a string')).toBeNull()
     expect(parsePlan('nika: v1\nworkflow: x')).toBeNull() /* no tasks yet */
@@ -72,10 +73,10 @@ tasks:
 
   it('survives a cycle · cyclic flag + file-order fallback keeps every task visible', () => {
     const plan = parsePlan(`tasks:
-  - id: a
+  a:
     depends_on: [b]
     exec: { command: ["ls"] }
-  - id: b
+  b:
     depends_on: [a]
     exec: { command: ["git", "log"] }
 `)
@@ -87,10 +88,10 @@ tasks:
 
   it('drops unknown/self deps from edges (the linter speaks, the map stays sane)', () => {
     const plan = parsePlan(`tasks:
-  - id: a
+  a:
     depends_on: [ghost, a]
     infer: { prompt: "x" }
-  - id: b
+  b:
     depends_on: [a]
 `)
     expect(plan).not.toBeNull()
@@ -101,13 +102,14 @@ tasks:
   })
 
   it('skips duplicate ids and non-mapping tasks without dying', () => {
+    // W1: duplicate keys cannot coexist in a MAP (the loader keeps the
+    // last — the engine refuses them); a non-mapping BODY is the robust
+    // case the client must skip without dying.
     const plan = parsePlan(`tasks:
-  - id: a
+  a:
     exec: { command: ["ls"] }
-  - id: a
-    infer: { prompt: "dup" }
-  - 42
-  - id: c
+  b: 42
+  c:
     depends_on: [a]
     agent: { model: mistral/mistral-small }
 `)

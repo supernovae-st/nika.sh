@@ -1,5 +1,6 @@
 nika: v1
-workflow: social-repurpose
+workflow:
+  id: social-repurpose
 
 # local model · your draft never leaves
 model: ollama/llama3.2:3b
@@ -11,22 +12,22 @@ permits:
 
 tasks:
   # one read · three parallel rewrites · one merge
-  - id: post
+  post:
     invoke: { tool: "nika:read", args: { path: ./post.md } }
 
-  - id: thread
+  thread:
     depends_on: [ post ]
     infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: ${{ tasks.post.output }}", max_tokens: 400 }
 
-  - id: linkedin
+  linkedin:
     depends_on: [ post ]
     infer: { prompt: "Rewrite this post for LinkedIn, hook first: ${{ tasks.post.output }}", max_tokens: 400 }
 
-  - id: newsletter
+  newsletter:
     depends_on: [ post ]
     infer: { prompt: "Write a 3-sentence newsletter blurb for this post: ${{ tasks.post.output }}", max_tokens: 300 }
 
-  - id: bundle
+  bundle:
     depends_on: [ thread, linkedin, newsletter ]
     invoke:
       tool: "nika:write"

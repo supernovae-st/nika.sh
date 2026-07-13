@@ -1,9 +1,10 @@
 nika: v1
-workflow: the-review-window
-description: "timestamp arithmetic without a shell date incantation"
+workflow:
+  id: the-review-window
+  description: "timestamp arithmetic without a shell date incantation"
 
 tasks:
-  - id: deadline
+  deadline:
     invoke:
       tool: "nika:date"
       args:
@@ -11,7 +12,7 @@ tasks:
         base: "2026-07-01T09:00:00Z"
         duration: "7d"
 
-  - id: days_left
+  days_left:
     depends_on: [deadline]
     invoke:
       tool: "nika:date"

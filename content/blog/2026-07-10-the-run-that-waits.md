@@ -12,8 +12,9 @@ Nika's answer is the same answer it gives everything else: **the gate is a task 
 
 ```yaml gated-release.nika.yaml
 nika: v1
-workflow: gated-release
-description: "Draft the release note, wait for a human yes, only then publish"
+workflow:
+  id: gated-release
+  description: "Draft the release note, wait for a human yes, only then publish"
 
 permits:
   fs:
@@ -22,14 +23,14 @@ permits:
   tools: ["nika:read", "nika:write", "nika:prompt"]
 
 tasks:
-  - id: draft
+  draft:
     invoke:
       tool: "nika:read"
       args: { path: "./CHANGES.md" }
 
   # The gate: a human reads the draft and answers. Nothing downstream
   # runs until this task has an answer.
-  - id: approve
+  approve:
     depends_on: [draft]
     invoke:
       tool: "nika:prompt"
@@ -37,7 +38,7 @@ tasks:
         mode: confirm
         message: "Publish this release note?"
 
-  - id: publish
+  publish:
     depends_on: [draft, approve]
     when: "${{ tasks.approve.output == true }}"
     invoke:

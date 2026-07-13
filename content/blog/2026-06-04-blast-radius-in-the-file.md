@@ -12,7 +12,8 @@ In Nika, the boundary is a block in the file you review:
 
 ```yaml daily-brief.nika.yaml
 nika: v1
-workflow: daily-brief
+workflow:
+  id: daily-brief
 
 permits:
   fs:
@@ -21,13 +22,13 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - id: notes
+  notes:
     invoke:
       tool: "nika:read"
       args:
         path: ./notes/today.md
 
-  - id: save
+  save:
     depends_on: [notes]
     invoke:
       tool: "nika:write"

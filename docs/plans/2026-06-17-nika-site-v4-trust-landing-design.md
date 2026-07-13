@@ -165,8 +165,9 @@ scroll — all four verbs firing in topological order.
 
 ```yaml
 nika: v1
-workflow: morning-brief
-description: "Triage GitHub issues with a local model, dig with an agent, ship a report"
+workflow:
+  id: morning-brief
+  description: "Triage GitHub issues with a local model, dig with an agent, ship a report"
 
 model: ollama/qwen2.5          # local-first · swap for mistral/mistral-large or any of the 14
 
@@ -174,7 +175,7 @@ vars:
   repo: "supernovae-st/nika"
 
 tasks:
-  - id: issues                 # ① invoke — a builtin tool (fetch)
+  issues:                 # ① invoke — a builtin tool (fetch)
     invoke:
       tool: "nika:fetch"
       args:
@@ -182,7 +183,7 @@ tasks:
         mode: jq
         jq: ".[] | {title, url, comments}"
 
-  - id: triage                 # ② infer — a LOCAL model ranks + summarizes
+  triage:                 # ② infer — a LOCAL model ranks + summarizes
     depends_on: [issues]
     infer:
       prompt: |
@@ -194,20 +195,20 @@ tasks:
         properties:
           ranked: { type: array, items: { type: object } }
 
-  - id: dig                    # ③ agent — autonomous investigation loop
+  dig:                    # ③ agent — autonomous investigation loop
     depends_on: [triage]
     agent:
       goal: "Investigate the top 3 issues; find related PRs and likely root cause"
       tools: ["nika:fetch", "nika:grep"]
       max_steps: 8
 
-  - id: report                 # ④ exec — render the brief locally
+  report:                 # ④ exec — render the brief locally
     depends_on: [dig]
     exec:
       run: "pandoc -o brief.md"
       stdin: ${{ tasks.dig.output }}
 
-  - id: ship                   # ⑤ invoke — notify
+  ship:                   # ⑤ invoke — notify
     depends_on: [report]
     invoke:
       tool: "nika:notify"
