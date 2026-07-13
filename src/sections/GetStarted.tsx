@@ -158,8 +158,8 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
               </h3>
               <p className="v4every-body">
                 The <code className="mono">nika-lang</code> extension: the file as
-                a content-first canvas — run it live, replay it, audit it before a
-                token is spent — plus engine-true diagnostics and completions, in
+                a content-first canvas. Run it live, replay it, audit it before a
+                token is spent, with engine-true diagnostics and completions, in
                 VS Code, Cursor and Windsurf.
               </p>
               <div className="v4every-cta v4every-links">
