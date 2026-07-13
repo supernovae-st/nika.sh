@@ -38,6 +38,8 @@ const COLS: {
     links: [
       { label: 'Docs', href: DOCS },
       { label: 'Spec', to: '/spec' },
+      { label: 'The four verbs', to: '/verbs' },
+      { label: 'The language', to: '/language' },
       { label: 'Standard library', to: '/tools' },
       { label: 'Providers', to: '/providers' },
       { label: 'Templates', to: '/templates' },
