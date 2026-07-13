@@ -470,13 +470,12 @@
    the Bayer fade tile (the ONE sanctioned dither-fade device) — the file
    visibly continues; scrolling is the invitation. */
 .v4hero-code .cf-pre {
-  /* whole lines only: 16px top pad + 26 × 23px line boxes + 18px bottom pad —
+  /* whole lines only: 16px top pad + 32 × 23px line boxes + 18px bottom pad —
      a frame that cuts a line in half reads as broken (coordinator punch #1).
-     26 (was 20 · operator 2026-07-13): the taller strip shows the whole
-     daily-brief story to the tasks' heart before the first internal scroll.
-     The cap is border-box (Tailwind preflight), so BOTH paddings ride the
-     calc (the off-by-padding sliver, wave-I sweep). */
-  max-height: calc(16px + 26 * 23px + 18px);
+     32 (was 26, was 20 · operator 2026-07-13 ×2): the file is the hero —
+     give it the column. The cap is border-box (Tailwind preflight), so BOTH
+     paddings ride the calc (the off-by-padding sliver, wave-I sweep). */
+  max-height: calc(16px + 32 * 23px + 18px);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;

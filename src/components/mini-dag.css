@@ -332,13 +332,10 @@
   gap: 6px;
   padding: 0;
 }
+/* minimap register (operator 2026-07-13 v4): the plate is the DRAWING and
+   nothing else — the steps meta and the run link both die (the hero's big
+   See-it-run button already owns that gesture; twice was noise). */
 .v4hero-dag.mdag--rail .mdag-side {
-  padding: 0;
-  gap: 2px;
-}
-/* minimap register: the steps meta is noise at this size — the action
-   (see it run) is the one line that earns the space */
-.v4hero-dag.mdag--rail .mdag-cap-meta {
   display: none;
 }
 
