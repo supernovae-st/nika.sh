@@ -90,6 +90,32 @@
   fill: #c9dbff;
   opacity: 0;
 }
+/* the comet's tail · a fainter twin riding a beat behind the spark */
+.smc-strail {
+  fill: #8db4ff;
+  opacity: 0;
+}
+/* THE LIVING LINK · the hover wire from a word to its block — stratum
+   hue inline (the loop writes it), the current drifts hull-ward */
+.smc-hlink {
+  fill: none;
+  stroke-width: 1;
+  stroke-dasharray: 6 4;
+  stroke-linecap: round;
+  opacity: 0;
+}
+/* the living link's rooted joint · the same machined ring the umbilical
+   wears, at the word's edge (stroke hue inline, from the loop) */
+.smc-hroot {
+  fill: #0a0c10;
+  stroke-width: 1.2;
+  opacity: 0;
+}
+/* the living link's landing · the far-end dot on the block (fill hue
+   inline, from the loop) */
+.smc-hdot {
+  opacity: 0;
+}
 /* THE ROOT · the wire's joint on the read card — a lit ring, not a blob:
    the connection reads as machined */
 .smc-uroot {

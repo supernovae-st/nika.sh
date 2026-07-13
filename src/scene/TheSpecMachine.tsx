@@ -96,6 +96,15 @@ interface CalloutRig {
   upath?: SVGPathElement | null
   uhalo?: SVGPathElement | null
   spark?: SVGCircleElement | null
+  /** the spark's comet trail (a fainter twin, a beat behind on the curve) */
+  strail?: SVGCircleElement | null
+  /** THE LIVING LINK · the ephemeral wire from the hovered DOM element
+      to ITS block on the hull (stratum-tinted) + its eased opacity,
+      and the rooted joint marking where the word hands over */
+  hline?: SVGLineElement | null
+  hroot?: SVGCircleElement | null
+  hdot?: SVGCircleElement | null
+  ho?: number
   /** the wire's rooted joint on the read card (the connection made visible) */
   uroot?: SVGCircleElement | null
   ugrad?: SVGLinearGradientElement | null
@@ -111,6 +120,8 @@ function Machine({
   calloutRef,
   flightRef,
   hitRef,
+  hoverElRef,
+  hoverStratumRef,
   onHover,
 }: {
   pointer: React.MutableRefObject<Pointer>
@@ -125,6 +136,11 @@ function Machine({
       pointer-events none; the drag/pick/wheel listeners ride this element
       (seated on --berth), so the sky never eats the prose's links */
   hitRef?: React.RefObject<HTMLDivElement | null>
+  /** THE LIVING LINK's DOM end (page-side hover) · null on canvas hovers */
+  hoverElRef?: React.RefObject<HTMLElement | null>
+  /** THE STATION PREVIEW · hovered STRATUM index (-1 none) — index chips
+      and transport ticks spotlight their whole station on the hull */
+  hoverStratumRef?: React.RefObject<number>
   onHover: (id: string | null) => void
 }) {
   const model = useMemo(() => buildSpecMachine(), [])
@@ -164,6 +180,11 @@ function Machine({
   /* armed once per lay-down · the farewell surge fires as the dissolve
      begins (re-armed when the reader scrubs back above the window) */
   const bloomArm = useRef(false)
+  /* THE SUPERNOVA's clock · uTime at the burst (-1 = idle) */
+  const novaStart = useRef(-1)
+  /* armed once per flyover entry · the assembled vessel SALUTES as it
+     takes the screen (every wire, one swell) */
+  const finaleArm = useRef(false)
   /* the committed pose + when the reading first diverged from it — the
      frame loop's gate (see THE POSE COMMIT below; null until the first
      frame adopts the mount pose — refs stay unread during render) */
@@ -373,10 +394,19 @@ function Machine({
     const lit = litRef.current
     const kLit = Math.min(1, delta * 2.4)
     const kFoc = Math.min(1, delta * 2.6)
+    /* THE STATION PREVIEW · a hovered index chip / transport tick
+       spotlights its whole stratum — at the dock it joins the read
+       station under the light (navigation previewed); at the overview
+       it lifts alone over the even wash */
+    const hovS = hoverStratumRef?.current ?? -1
     for (let i = 0; i < STRATA_ORDER.length; i++) {
       const litT = lit.has(STRATA_ORDER[i]) ? 1 : 0
       u.uLit.value[i] += (litT - u.uLit.value[i]) * kLit
-      const focT = pose.focus < 0 ? 1 : pose.focus === i ? 1.42 : 0.22
+      const focT =
+        hovS === i ? 1.42
+        : pose.focus < 0 ? 1
+        : pose.focus === i ? 1.42
+        : 0.22
       u.uFocusA.value[i] += (focT - u.uFocusA.value[i]) * kFoc
     }
 
@@ -539,7 +569,32 @@ function Machine({
     if (fadeOut > 0 && !bloomArm.current) {
       bloomArm.current = true
       strikeRef.current = -2
+      /* THE SUPERNOVA · the hull dies into light as it melts into its
+         drawing — the shader quad wakes for one 2.4s burst */
+      novaStart.current = u.uTime.value
     } else if (finaleP < 0.6 && bloomArm.current) bloomArm.current = false
+    /* the flyover's SALUTE · the assembled vessel takes the screen with
+       one full-ship beat (armed per entry, re-armed at the dock) */
+    if (st === 'finale' && !finaleArm.current) {
+      finaleArm.current = true
+      if (strikeRef.current === -1) strikeRef.current = -2
+    } else if (st !== 'finale' && finaleArm.current) finaleArm.current = false
+    /* the nova's clock + centre · the quad wakes only mid-burst (the
+       seventh draw call costs nothing outside its 2.4s window) */
+    {
+      const novaT = novaStart.current >= 0 ? u.uTime.value - novaStart.current : -1
+      const alive = novaT >= 0 && novaT < 2.4
+      layers.nova.visible = alive
+      u.uNovaT.value = alive ? novaT : -1
+      if (alive && inner.current) {
+        const nc = new THREE.Vector3(0, 0, 0)
+          .applyMatrix4(inner.current.matrixWorld)
+          .project(state.camera)
+        u.uNovaC.value.set(nc.x, nc.y)
+        u.uNovaV.value.set(gl.domElement.width, gl.domElement.height)
+      }
+      if (novaT >= 2.4) novaStart.current = -1
+    }
     gl.domElement.style.opacity = fadeOut > 0 ? String(1 - fadeOut) : ''
     {
       const stageEl = gl.domElement.closest('.spec-rail-stage') as HTMLElement | null
@@ -824,17 +879,30 @@ function Machine({
                the same clock — one event, both worlds) */
             const tt = u.uStrikeStratum.value === si ? ts / 0.9 : 2
             if (tt < 1) {
+              const bez = (wp: number): [number, number] => {
+                const o = 1 - wp
+                return [
+                  o * o * o * x0 + 3 * o * o * wp * (x0 + cx) + 3 * o * wp * wp * (px - cx) + wp * wp * wp * px,
+                  o * o * o * y0 + 3 * o * o * wp * y0 + 3 * o * wp * wp * py + wp * wp * wp * py,
+                ]
+              }
               const w = tt * tt * (3 - 2 * tt) /* smoothstep ease */
-              const omw = 1 - w
-              const sx2 =
-                omw * omw * omw * x0 + 3 * omw * omw * w * (x0 + cx) + 3 * omw * w * w * (px - cx) + w * w * w * px
-              const sy2 = omw * omw * omw * y0 + 3 * omw * omw * w * y0 + 3 * omw * w * w * py + w * w * w * py
+              const [sx2, sy2] = bez(w)
               rig.spark.setAttribute('cx', sx2.toFixed(1))
               rig.spark.setAttribute('cy', sy2.toFixed(1))
               rig.spark.setAttribute('r', (2 + Math.sin(Math.PI * tt) * 2.4).toFixed(2))
               rig.spark.style.opacity = Math.sin(Math.PI * tt).toFixed(3)
+              /* the comet trail · a fainter twin a beat behind the head */
+              if (rig.strail) {
+                const [tx, ty] = bez(Math.max(0, w - 0.085))
+                rig.strail.setAttribute('cx', tx.toFixed(1))
+                rig.strail.setAttribute('cy', ty.toFixed(1))
+                rig.strail.setAttribute('r', (1.3 + Math.sin(Math.PI * tt) * 1.5).toFixed(2))
+                rig.strail.style.opacity = (Math.sin(Math.PI * tt) * 0.45).toFixed(3)
+              }
             } else {
               rig.spark.style.opacity = '0'
+              if (rig.strail) rig.strail.style.opacity = '0'
             }
             it.dot.setAttribute('cx', px.toFixed(1))
             it.dot.setAttribute('cy', py.toFixed(1))
@@ -862,11 +930,63 @@ function Machine({
         it.dot.setAttribute('cx', px.toFixed(1))
         it.dot.setAttribute('cy', py.toFixed(1))
       }
+      /* THE LIVING LINK · hovering ANY [data-node] word tends an
+         ephemeral wire from the element to ITS block on the hull, in the
+         stratum's own hue — the whole reference is physically wired to
+         the vessel, at every station. Canvas-side hovers have no DOM end
+         (the ref is null) and draw nothing; the readout speaks there. */
+      if (rig.hline) {
+        const hEl = hoverElRef?.current
+        const hi2 = hiRef.current
+        const want = hEl && hEl.isConnected && hi2 >= 0 && !helm.dragging ? 1 : 0
+        rig.ho = (rig.ho ?? 0) + (want - (rig.ho ?? 0)) * Math.min(1, delta * 6)
+        if (rig.ho > 0.02 && hEl && hi2 >= 0) {
+          v.set(
+            model.pos[hi2 * 3] + model.explode[model.seed[hi2 * 2]] * u.uExplode.value,
+            model.pos[hi2 * 3 + 1],
+            model.pos[hi2 * 3 + 2],
+          )
+          v.applyMatrix4(inner.current.matrixWorld).project(camera)
+          const nx = ((v.x + 1) / 2) * rect.width
+          const ny = ((1 - v.y) / 2) * rect.height
+          const er = hEl.getBoundingClientRect()
+          const lx = er.right - rect.left + 10
+          const ly = er.top + er.height / 2 - rect.top
+          const hue2 = STRATUM_HEX[STRATA_ORDER[model.seed[hi2 * 2]]]
+          rig.hline.setAttribute('x1', lx.toFixed(1))
+          rig.hline.setAttribute('y1', ly.toFixed(1))
+          rig.hline.setAttribute('x2', nx.toFixed(1))
+          rig.hline.setAttribute('y2', ny.toFixed(1))
+          rig.hline.style.stroke = hue2
+          rig.hline.style.strokeDashoffset = (-((u.uTime.value * 30) % 10)).toFixed(2)
+          rig.hline.style.opacity = (rig.ho * 0.85).toFixed(3)
+          if (rig.hroot) {
+            rig.hroot.setAttribute('cx', (lx - 4).toFixed(1))
+            rig.hroot.setAttribute('cy', ly.toFixed(1))
+            rig.hroot.style.stroke = hue2
+            rig.hroot.style.opacity = (rig.ho * 0.9).toFixed(3)
+          }
+          if (rig.hdot) {
+            /* the landing · the wire touches the block with its own dot
+               (the umbilical's grammar, at the living link's far end) */
+            rig.hdot.setAttribute('cx', nx.toFixed(1))
+            rig.hdot.setAttribute('cy', ny.toFixed(1))
+            rig.hdot.style.fill = hue2
+            rig.hdot.style.opacity = (rig.ho * 0.95).toFixed(3)
+          }
+        } else {
+          rig.hline.style.opacity = ((rig.ho ?? 0) * 0.85).toFixed(3)
+          if ((rig.ho ?? 0) <= 0.02) rig.hline.style.opacity = '0'
+          if (rig.hroot) rig.hroot.style.opacity = rig.hline.style.opacity
+          if (rig.hdot) rig.hdot.style.opacity = rig.hline.style.opacity
+        }
+      }
       /* off the dock (poster · finale · drag) the umbilical stands down */
       if (!umbDrawn && rig.upath && rig.uhalo && rig.spark) {
         rig.upath.style.opacity = '0'
         rig.uhalo.style.opacity = '0'
         rig.spark.style.opacity = '0'
+        if (rig.strail) rig.strail.style.opacity = '0'
         if (rig.uroot) rig.uroot.style.opacity = '0'
       }
     }
@@ -900,6 +1020,8 @@ function Machine({
       {/* the reactor + engine glows stay camera-facing OUTSIDE the group */}
       <primitive object={layers.glow} />
       <primitive object={layers.thrust} />
+      {/* THE SUPERNOVA · a screen-space quad, awake for its burst alone */}
+      <primitive object={layers.nova} />
     </>
   )
 }
@@ -912,6 +1034,8 @@ export default function TheSpecMachine({
   explode = false,
   resetSignal = 0,
   flightRef,
+  hoverElRef,
+  hoverStratumRef,
   onHover = () => {},
 }: {
   stageRef: React.RefObject<HTMLDivElement | null>
@@ -926,6 +1050,10 @@ export default function TheSpecMachine({
   /** THE FLIGHT · the chassis stage + takeover progress (page scroll rig):
       'full' steers one revolution + a dive over the runway */
   flightRef?: React.MutableRefObject<{ state: string; progress: number }>
+  /** THE LIVING LINK's DOM end (the page's hovered [data-node] element) */
+  hoverElRef?: React.RefObject<HTMLElement | null>
+  /** THE STATION PREVIEW · hovered stratum index (index chips · ticks) */
+  hoverStratumRef?: React.RefObject<number>
   /** W2 · the machine's own hover, reported back for the MR readout + chips */
   onHover?: (id: string | null) => void
 }) {
@@ -1115,6 +1243,8 @@ export default function TheSpecMachine({
           calloutRef={calloutRef}
           flightRef={flightRef}
           hitRef={hitRef}
+          hoverElRef={hoverElRef}
+          hoverStratumRef={hoverStratumRef}
           onHover={onHover}
         />
       </Canvas>
@@ -1178,6 +1308,33 @@ export default function TheSpecMachine({
             r="2.4"
             ref={(el) => {
               calloutRef.current.uroot = el
+            }}
+          />
+          <circle
+            className="smc-strail"
+            r="1.6"
+            ref={(el) => {
+              calloutRef.current.strail = el
+            }}
+          />
+          <line
+            className="smc-hlink"
+            ref={(el) => {
+              calloutRef.current.hline = el
+            }}
+          />
+          <circle
+            className="smc-hroot"
+            r="2.1"
+            ref={(el) => {
+              calloutRef.current.hroot = el
+            }}
+          />
+          <circle
+            className="smc-hdot"
+            r="2"
+            ref={(el) => {
+              calloutRef.current.hdot = el
             }}
           />
           {CALLOUTS.map((c) => {

@@ -23,6 +23,7 @@ import {
   nsScope,
   type StratumKey,
 } from '../scene/spec-machine-data'
+import { STRATA_ORDER, STRATUM_HEX } from '../scene/spec-machine-model'
 import { useSpecReading } from '../sections/spec/use-spec-reading'
 import { SpecSchematic } from '../sections/spec/SpecSchematic'
 import '../sections/v4-home.css'
@@ -337,18 +338,33 @@ export function Component() {
      pulses the 3D node. Delegated: two listeners, zero per-chip wiring. */
   const [hoverNode, setHoverNode] = useState<string | null>(null)
   const hoverReadout = hoverNode ? nodeReadout(hoverNode) : null
+  /* THE LIVING LINK's DOM end · the hovered [data-node] ELEMENT rides a
+     ref into the machine's frame loop — the loop tends an ephemeral wire
+     from the word to ITS block on the hull (a canvas-side hover has no
+     DOM end: the ref stays null and no wire is drawn) */
+  const hoverElRef = useRef<HTMLElement | null>(null)
+  /* THE STATION PREVIEW · hovering an element whose data-node names a
+     whole STRATUM (index chips · transport ticks) spotlights that
+     station on the hull — navigation previewed before the click */
+  const hoverStratumRef = useRef(-1)
   useEffect(() => {
     const root = document.querySelector('.spec-page')
     if (!root) return
-    const resolve = (t: EventTarget | null): string | null =>
-      (t as Element | null)?.closest?.('[data-node]')?.getAttribute('data-node') ?? null
-    const onOver = (e: Event) => setHoverNode(resolve(e.target))
+    const resolveEl = (t: EventTarget | null): HTMLElement | null =>
+      ((t as Element | null)?.closest?.('[data-node]') as HTMLElement | null) ?? null
+    const apply = (el: HTMLElement | null) => {
+      hoverElRef.current = el
+      const id = el?.getAttribute('data-node') ?? null
+      hoverStratumRef.current = id ? STRATA_ORDER.indexOf(id as (typeof STRATA_ORDER)[number]) : -1
+      setHoverNode(id)
+    }
+    const onOver = (e: Event) => apply(resolveEl(e.target))
     const onFocus = (e: Event) => {
-      const id = resolve(e.target)
-      if (id) setHoverNode(id)
+      const el = resolveEl(e.target)
+      if (el) apply(el)
     }
     const onBlur = (e: Event) => {
-      if (resolve(e.target)) setHoverNode(null)
+      if (resolveEl(e.target)) apply(null)
     }
     root.addEventListener('pointerover', onOver, { passive: true })
     root.addEventListener('focusin', onFocus)
@@ -578,6 +594,8 @@ export function Component() {
                       lit={lit}
                       current={current}
                       highlight={hoverNode}
+                      hoverElRef={hoverElRef}
+                      hoverStratumRef={hoverStratumRef}
                       explode={explode}
                       resetSignal={resetSignal}
                       flightRef={flightRef}
@@ -604,6 +622,18 @@ export function Component() {
                     cursor-chaser: the node under the pointer, spoken in place */}
                 {hoverReadout ? (
                   <span className="spec-rail-hud spec-rail-hud--mr">
+                    {/* the readout wears its stratum's hue — the tooltip
+                        speaks the same colour the wire and the hull do */}
+                    {(() => {
+                      const n = hoverNode ? nodeById(hoverNode) : undefined
+                      return n ? (
+                        <i
+                          className="spec-hud-stratum-dot"
+                          style={{ background: STRATUM_HEX[n.stratum] }}
+                          aria-hidden
+                        />
+                      ) : null
+                    })()}
                     {hoverReadout}
                     {(() => {
                       const n = hoverNode ? nodeById(hoverNode) : undefined
@@ -644,6 +674,7 @@ export function Component() {
                   <a
                     key={s.fig}
                     href={s.anchor}
+                    data-node={s.key}
                     className={`spec-transport-tick${
                       stage === 'finale' || lit.has(s.key) ? ' is-lit' : ''
                     }${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
