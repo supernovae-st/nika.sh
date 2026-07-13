@@ -1990,7 +1990,8 @@
 /* THE FINALE RUNWAY · scroll room for the assembled flyover, past the last
    section (live only — the fallback flow ends at S.8 untouched) */
 .spec-finale {
-  height: 110vh;
+  /* the flyover (head) + THE LAY-DOWN (tail) both need runway */
+  height: 170vh;
 }
 
 /* THE CHASSIS · the live rail leaves the flow and stages the viewport:
@@ -2223,3 +2224,34 @@
   border-bottom-color: var(--v4-text);
 }
 
+
+/* ── THE CLOSE · the voyage's last beat (every register) ──────────────────────
+   The mark, the creed, the ecosystem rail — centred, quiet, enormous. The
+   live finale dissolves the hull into its drawing just above; this section
+   receives the reader in every register (reduced · mobile · no-GL too). */
+.spec-close {
+  min-height: 88vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 14vh 24px 10vh;
+}
+.spec-close-mark {
+  margin: 0;
+  font-size: clamp(96px, 17vw, 240px);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+  color: var(--v4-text);
+}
+.spec-close-tag {
+  margin: 2px 0 18px;
+  font-size: clamp(14px, 1.6vw, 18px);
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+}
+.spec-close .td-chips {
+  justify-content: center;
+}

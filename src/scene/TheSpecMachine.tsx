@@ -359,9 +359,22 @@ function Machine({
        flyover. Between them the accumulated turn eases to the nearest
        full revolution so every dock pose lands on its exact framing. */
     const st = flight?.state
+    /* THE LAY-DOWN · the flyover's tail (p 0.62→1): the assembled ship
+       glides to its own drawing's projection — level pitch, centred spine,
+       the accumulated yaw folding to a whole revolution (side profile) —
+       and then the canvas dissolves INTO the 2D elevation (the stage's
+       schematic returns under it via [data-laydown]). One machine, two
+       renderings; the close section below carries the mark + the links. */
+    const finaleP = st === 'finale' ? (flight?.progress ?? 0) : 0
+    const lay = Math.min(1, Math.max(0, (finaleP - 0.62) / 0.3))
     if (st === 'hero' || st === 'finale') {
-      spin.current += delta * (st === 'finale' ? 0.17 : 0.11)
+      spin.current += delta * (st === 'finale' ? 0.17 * (1 - lay) : 0.11)
       if (st === 'finale') tDist = Math.min(tDist, 5.6) /* the flyover fills */
+      if (lay > 0) {
+        tPitch = tPitch * (1 - lay)
+        tDist = tDist + (7.1 - tDist) * lay
+        lookX = lookX + (-0.15 - lookX) * lay
+      }
       if (st === 'hero') {
         /* THE FULL-BLEED POSTER (operator pass 2026-07-11) · the ground is
            the whole viewport, so the hero framing overrides the reading's
@@ -401,6 +414,26 @@ function Machine({
     }
     if (st === 'hero') heroHand.current = true
     tYaw += spin.current
+    if (lay > 0) {
+      /* the side profile IS rotation.y ≡ 0 (mod 2π) — fold the TOTAL yaw
+         (pose + accrued turn), shortest way, weighted by the lay */
+      const flat = Math.round(tYaw / (Math.PI * 2)) * (Math.PI * 2)
+      tYaw = tYaw + (flat - tYaw) * lay
+    }
+    /* the dissolve · the last stretch of the lay fades the WHOLE canvas
+       (fills are opaque by the tholos law — alpha lives at the element);
+       the drawing returns beneath it once the fade begins. The handshake
+       rides the same element the mount stamp does (gl.domElement's stage
+       ancestor — resolved once, cached on the rig). */
+    const fadeOut = Math.min(1, Math.max(0, (finaleP - 0.8) / 0.16))
+    gl.domElement.style.opacity = fadeOut > 0 ? String(1 - fadeOut) : ''
+    {
+      const stageEl = gl.domElement.closest('.spec-rail-stage') as HTMLElement | null
+      if (stageEl) {
+        if (fadeOut > 0.02) stageEl.dataset.laydown = '1'
+        else if (stageEl.dataset.laydown) delete stageEl.dataset.laydown
+      }
+    }
     /* THE EXPLODED DRAWING must FIT · while the strata stand apart the
        camera pulls back to the overview and centres the spine — zooming
        into one station of an exploded ship showed only fragments */

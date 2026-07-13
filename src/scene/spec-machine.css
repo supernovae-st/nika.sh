@@ -14,9 +14,17 @@
   display: block;
 }
 /* the canvas takes the stage — the schematic steps aside ONLY once the layer
-   is really mounted */
-.spec-rail-stage[data-machine] .spec-schematic {
+   is really mounted. THE LAY-DOWN exception: while the finale dissolves the
+   hull into its own drawing ([data-laydown], stamped by the frame loop as
+   the canvas fade begins), the elevation RETURNS beneath the fading canvas —
+   one machine, two renderings, one crossfade. */
+.spec-rail-stage[data-machine]:not([data-laydown]) .spec-schematic {
   display: none;
+}
+.spec-rail-stage[data-machine][data-laydown] .spec-schematic {
+  display: block;
+  width: min(92%, 720px);
+  height: auto;
 }
 
 /* ── THE CALLOUTS · the labelled-drawing layer (smc-) ─────────────────────────

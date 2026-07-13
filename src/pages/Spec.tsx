@@ -237,6 +237,15 @@ export function Component() {
         flightRef.current.progress = first
           ? Math.min(1, Math.max(0, (vh - first.top) / (vh * 0.4)))
           : Math.min(1, Math.max(0, window.scrollY / (vh * 0.9)))
+      /* THE FLYOVER'S OWN COORDINATES · p runs 0 → 1 exactly as the runway
+         travels from its boarding threshold (top = 0.55vh) to the off
+         threshold (bottom = 0.22vh) — the assembled turn spends the head
+         of it, THE LAY-DOWN the tail (the machine splits at 0.62). */
+      else if (s === 'finale' && fin)
+        flightRef.current.progress = Math.min(
+          1,
+          Math.max(0, (vh * 0.55 - fin.top) / (fin.height + vh * 0.33)),
+        )
       setStage((prev) => (prev === s ? prev : s))
     }
     const on = () => {
@@ -1123,6 +1132,18 @@ export function Component() {
           </div>
 
         </div>
+
+        {/* THE CLOSE · the voyage's last beat, every register: the mark, the
+            one-line creed, the ecosystem in one rail (sources registry — the
+            live finale's LAY-DOWN dissolves the hull into its own drawing
+            just above this). Real DOM, real links; the footer follows. */}
+        <section className="spec-close" aria-labelledby="spec-close-mark">
+          <p id="spec-close-mark" className="spec-close-mark">
+            nika
+          </p>
+          <p className="spec-close-tag">Intent as Code. The contract, frozen forever.</p>
+          <SourcesRail links={ECOSYSTEM} dense />
+        </section>
       </section>
     </main>
   )
