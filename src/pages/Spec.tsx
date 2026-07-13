@@ -650,6 +650,7 @@ export function Component() {
             <span className="spec-close-nova" aria-hidden>
               <i className="spec-close-burst" />
               <i className="spec-close-ring" />
+              <i className="spec-close-ring spec-close-ring--far" />
               <img src="/nika.svg" alt="" className="spec-close-glyph" />
             </span>
           ) : null}

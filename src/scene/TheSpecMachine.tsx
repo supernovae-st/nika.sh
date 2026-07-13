@@ -659,7 +659,11 @@ function Machine({
              never ambient) */
           : term ? (hot === si ? 1 : 0)
           : hero ? 0
-          : full || pose.focus === si ? (rig.leftSeam && si < 4 && pose.focus !== si ? 0 : 1)
+          /* the labelled drawing belongs to the FLYOVER — as the lay-down
+             begins the plates and their leaders melt away (× (1 − lay)):
+             the metamorphosis into the 2D elevation plays unannotated,
+             one hull alone on the stage */
+          : full || pose.focus === si ? (rig.leftSeam && si < 4 && pose.focus !== si ? 0 : 1) * (full ? 1 - lay : 1)
           : pose.focus < 0 ? 0
           /* the dock's WAYFINDING (nav pass): the stations either side of
              the one being read keep a ghost label — where you came from,
