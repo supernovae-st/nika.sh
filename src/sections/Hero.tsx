@@ -528,22 +528,22 @@ export default function Hero({
              titlebar (wave P: a real editor's tab bar — the active tab IS the
              filename, no repeat), the copy chip floats in the code corner. */}
         <div className="v4hero-editor" data-rise style={rise(180)}>
-          {/* THE PLAN · derived from the selection, so every library pick gets
-              its diagram for free · ≥1024 only (the editor is the phone's
-              whole story — phones keep the big See-it-run CTA).
-              VERTICAL at the file's right (operator 2026-07-13): the rail is
-              the DAG folded into a column — the film's opening pose, time
-              reading DOWN on the same axis as the file. */}
-          <MiniDag
-            plan={item.plan}
-            orientation="rail"
-            fileId={item.id}
-            pairTask={pairTask}
-            onPair={setPairTask}
-            action={planAction}
-            className="v4hero-dag"
-          />
           <div ref={panelRef} className="v4hero-well">
+            {/* THE PLAN · derived from the selection, so every library pick
+                gets its diagram for free · ≥1024 only (the editor is the
+                phone's whole story — phones keep the big See-it-run CTA).
+                THE MINIMAP (operator 2026-07-13 v2): the drawing rides
+                INSIDE the panel, bottom-right — an editor's minimap, no
+                title, no frame. The film's pips keep their data-task rects. */}
+            <MiniDag
+              plan={item.plan}
+              orientation="rail"
+              fileId={item.id}
+              pairTask={pairTask}
+              onPair={setPairTask}
+              action={planAction}
+              className="v4hero-dag"
+            />
             {/* wrap: the hero is the READING surface — long flow lines soft-wrap
                 with a hanging indent (no right-edge clip, no hidden content).
                 tips + rangeTip: the smart-hover layer (plain-words glossary +

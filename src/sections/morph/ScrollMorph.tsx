@@ -700,18 +700,18 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
         const nodeEl = nodeRefs.current.get(t.id)
         if (nodeEl) {
           const o = born
-          const gs = 0.34 + 0.66 * born /* growth · a pip-sized chip becomes the card */
-          /* birth pose: the card's RIGHT edge hangs off its pip — it grows
-             INTO the gutter between file and rail, never over the yaml
-             (the half-width scales with the growth) */
-          const bx = g.cp.x - 10 - (nodeEl.offsetWidth * gs) / 2
-          const dx = (bx - g.p2.x) * (1 - unfold)
+          /* THE LEAP (minimap register): the card is born pip-SIZED on its
+             minimap pip and grows IN FLIGHT — seven cards growing in place
+             would pile into the tiny drawing (swept); as an ejected swarm
+             each reads, and the scene receives them full-size */
+          const gs = 0.22 + 0.78 * unfold
+          const dx = (g.cp.x - g.p2.x) * (1 - unfold)
           const dy = (g.cp.y - g.p2.y) * (1 - unfold)
           nodeEl.style.opacity = o.toFixed(3)
           nodeEl.style.transform =
             o >= 1 && unfold >= 1
               ? ''
-              : `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0) scale(${(gs + (1 - gs) * unfold).toFixed(3)})`
+              : `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0) scale(${gs.toFixed(3)})`
         }
 
         /* the rail pip steps aside as ITS card is born (per-pip, not the
