@@ -8,6 +8,10 @@ import { CHAPTERS } from '../sections/verbs-data'
 import { BLOG_POSTS } from '../content/blog.generated'
 import { BLOG_BODIES } from '../content/blog-bodies.generated'
 import { HELLO_YAML, HELLO_AI_YAML } from '../content/install'
+import { FULL_FILE } from '../content/learn'
+import { PROOF_YAML } from '../pages/Convert'
+import { NOT_FOUND_YAML } from '../pages/NotFound'
+import { VERBS } from '../content'
 import { EXTENSION_SHOWCASE_YAML } from '../sections/EditorCanvas'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
 
@@ -67,7 +71,29 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
     ['install · hello.nika.yaml', HELLO_YAML],
     ['install · hello-ai.nika.yaml', HELLO_AI_YAML],
     ['editor miniature · release-notes.nika.yaml', EXTENSION_SHOWCASE_YAML],
+    /* the gaps the 2026-07-13 audit closed — every yaml a visitor can read
+       is schema-true, INCLUDING the /convert proof, the /learn full file
+       and the 404 joke (the law has no exceptions) */
+    ['convert · friday-changelog.nika.yaml', PROOF_YAML],
+    ['learn · weekly-radar.nika.yaml (the full file)', FULL_FILE],
+    ['404 · not-found.nika.yaml', NOT_FOUND_YAML],
   ] as const)('%s validates', (label, yaml) => expectValid(label, yaml))
+
+  it.each(VERBS.map((v) => [v.verb, v.code] as const))(
+    '/spec verb card fragment %s seats in a valid file',
+    (verb, code) => {
+      /* the cards show task FRAGMENTS — the gate embeds each in a minimal
+         envelope: the fragment is proven AS IT WOULD BE WRITTEN */
+      const indented = code
+        .split('\n')
+        .map((l) => (l ? `  ${l}` : l))
+        .join('\n')
+      expectValid(
+        `spec verb card · ${verb}`,
+        `nika: v1\nworkflow: card-${verb}\ntasks:\n${indented}\n`,
+      )
+    },
+  )
 
   it.each(Object.entries(SHOWCASE_YAML))('showcase %s validates', (slug, yaml) =>
     expectValid(slug, yaml),

@@ -44,6 +44,21 @@ describe('/blog · the compiled projection matches its markdown sources', () => 
     }
   })
 
+  it('llms-full.txt carries every post (the agents’ full-text face never goes stale)', () => {
+    /* the 2026-07-13 audit: rss.xml had a drift gate, llms-full.txt did not —
+       an edited post could ship with a stale full-text companion. Same law
+       as the feed: every post present at its real URL, newest first. */
+    const full = readFileSync(join(__dirname, '../../public/llms-full.txt'), 'utf8')
+    for (const p of fresh) {
+      expect(full).toContain(`## ${p.title}`)
+      expect(full).toContain(`url: https://nika.sh/blog/${p.slug}`)
+    }
+    const order = fresh
+      .map((p) => full.indexOf(`url: https://nika.sh/blog/${p.slug}`))
+      .filter((i) => i >= 0)
+    expect([...order].sort((a, b) => a - b)).toEqual(order)
+  })
+
   it('the GitHub face (content/blog/README.md) lists every post file', () => {
     const readme = readFileSync(join(__dirname, '../../content/blog/README.md'), 'utf8')
     for (const p of fresh) expect(readme).toContain(p.file)
