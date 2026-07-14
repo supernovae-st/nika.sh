@@ -124,6 +124,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "The registry re-proves everything",
+    "href": "/blog/the-registry-reproves-everything",
+    "hint": "Engine · 2026-07-14"
+  },
+  {
+    "kind": "post",
     "label": "Written by agents, reviewed by you",
     "href": "/blog/written-by-agents",
     "hint": "Agents · 2026-07-11"

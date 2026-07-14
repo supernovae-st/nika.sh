@@ -10,6 +10,407 @@
 import type { BlogToken } from './blog.generated'
 
 export const BLOG_BODIES: Record<string, BlogToken[]> = {
+  "the-registry-reproves-everything": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "npm taught everyone the failure mode: "
+        },
+        {
+          "k": "em",
+          "text": "install"
+        },
+        {
+          "k": "text",
+          "text": " means "
+        },
+        {
+          "k": "em",
+          "text": "trust the publisher"
+        },
+        {
+          "k": "text",
+          "text": ". A name you recognize, a README that reads well, and a postinstall script runs on your machine with your credentials in reach. Every package ecosystem since has rediscovered the same wound — typosquats, rug-pulled versions, maintainers gone rogue — and patched it with process: more review, more badges, more gatekeepers to trust instead."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The "
+        },
+        {
+          "k": "link",
+          "text": "Nika registry",
+          "href": "https://github.com/supernovae-st/nika-registry"
+        },
+        {
+          "k": "text",
+          "text": " starts from the opposite premise, and states it in its own repo description: "
+        },
+        {
+          "k": "strong",
+          "text": "trust lives in the artifact, not the gatekeeper."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It can afford that premise because of what a workflow "
+        },
+        {
+          "k": "em",
+          "text": "is"
+        },
+        {
+          "k": "text",
+          "text": " here. A registry entry does not point at a tarball of code that will do whatever it does at runtime — it points at "
+        },
+        {
+          "k": "link",
+          "text": "a declared file",
+          "href": "/blog/the-pipeline-is-a-file"
+        },
+        {
+          "k": "text",
+          "text": " whose blast radius is statically checkable. That changes what a registry can promise. Here is one entry from the live index, whole, in the file's own field order:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "json",
+      "text": "{\n  \"advisories\": [],\n  \"cert\": \"certs/supernovae-st/ceo-monday-brief/0.1.0.json\",\n  \"cert_summary\": {\n    \"broad\": false,\n    \"clean\": true,\n    \"cost_usd_bounded\": null,\n    \"exec\": false,\n    \"llm_calls\": 1,\n    \"secret_leaks\": 0\n  },\n  \"description\": \"news + repo pulse + KPIs → thinking synthesis → dated brief + cost ping\",\n  \"entry\": \"registry/workflows/supernovae-st/ceo-monday-brief/0.1.0.toml\",\n  \"license\": \"Apache-2.0\",\n  \"name\": \"ceo-monday-brief\",\n  \"publisher\": \"supernovae-st\",\n  \"sha256\": \"a566cc5671694d0740ffd315d6d7f8164531f673841e07312a862f33d81de4cb\",\n  \"source\": {\n    \"path\": \"examples/showcase/t4-ceo-monday-brief.nika.yaml\",\n    \"repo\": \"supernovae-st/nika-spec\",\n    \"rev\": \"12157ad949e75859c0cc41806c73876887871fac\"\n  },\n  \"spec\": \"nika/v1\",\n  \"type\": \"workflow\",\n  \"version\": \"0.1.0\"\n}"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Read it as a threat model, field by field. The "
+        },
+        {
+          "k": "code",
+          "text": "sha256"
+        },
+        {
+          "k": "text",
+          "text": " is a "
+        },
+        {
+          "k": "strong",
+          "text": "content pin"
+        },
+        {
+          "k": "text",
+          "text": " — a typosquat can steal a name, it cannot fake a hash. The "
+        },
+        {
+          "k": "code",
+          "text": "source.rev"
+        },
+        {
+          "k": "text",
+          "text": " pins provenance to an exact commit — a rug-pull can rewrite a branch, it cannot rewrite the revision you resolved. The "
+        },
+        {
+          "k": "code",
+          "text": "cert"
+        },
+        {
+          "k": "text",
+          "text": " is the receipt of a "
+        },
+        {
+          "k": "strong",
+          "text": "re-proof"
+        },
+        {
+          "k": "text",
+          "text": ": the registry's CI fetched that exact file and ran the same static audit "
+        },
+        {
+          "k": "link",
+          "text": "nika check runs on your machine",
+          "href": "/blog/injection-goes-nowhere"
+        },
+        {
+          "k": "text",
+          "text": " — so the summary you read ("
+        },
+        {
+          "k": "code",
+          "text": "clean"
+        },
+        {
+          "k": "text",
+          "text": ", one LLM call, zero secret leaks, cost honestly "
+        },
+        {
+          "k": "em",
+          "text": "un"
+        },
+        {
+          "k": "text",
+          "text": "bounded) was measured by the conformance oracle, not asserted by the publisher. Publisher honesty is not a required input to the system. And "
+        },
+        {
+          "k": "code",
+          "text": "advisories"
+        },
+        {
+          "k": "text",
+          "text": " is the post-hoc channel — findings attach to the entry after the fact, in the open."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The certificate underneath goes further than the summary. It carries the full inferred permits boundary — a pinned "
+        },
+        {
+          "k": "code",
+          "text": "exec: [\"git\"]"
+        },
+        {
+          "k": "text",
+          "text": ", nine named tools — and, written into that boundary, the audit's own refusals as review comments: "
+        },
+        {
+          "k": "em",
+          "text": "\"task news reaches a dynamic URL — net.http cannot express 'any host'; add the resolved host(s) before running.\""
+        },
+        {
+          "k": "text",
+          "text": " The same honesty "
+        },
+        {
+          "k": "link",
+          "text": "the generative post",
+          "href": "/blog/the-generative-workflow"
+        },
+        {
+          "k": "text",
+          "text": " hit with dynamic paths, here in a published artifact. The certificate does not launder what refused to pin into looking pinned: the boundary you download names its own gaps, and the engine that measured it is stamped beside the hash."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Now the part that makes this a protocol instead of a promise. The index carries its own verification instructions, and they are worth quoting exactly — the "
+        },
+        {
+          "k": "code",
+          "text": "verify.how"
+        },
+        {
+          "k": "text",
+          "text": ":"
+        }
+      ]
+    },
+    {
+      "k": "quote",
+      "inline": [
+        {
+          "k": "text",
+          "text": "fetch "
+        },
+        {
+          "k": "link",
+          "text": "source.repo@source.rev",
+          "href": "mailto:source.repo@source.rev"
+        },
+        {
+          "k": "text",
+          "text": ":source.path · sha256 MUST equal .sha256 · then "
+        },
+        {
+          "k": "code",
+          "text": "nika check <file>"
+        },
+        {
+          "k": "text",
+          "text": " locally"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "and the "
+        },
+        {
+          "k": "code",
+          "text": "verify.never"
+        },
+        {
+          "k": "text",
+          "text": ":"
+        }
+      ]
+    },
+    {
+      "k": "quote",
+      "inline": [
+        {
+          "k": "text",
+          "text": "install anything an advisory names · "
+        },
+        {
+          "k": "strong",
+          "text": "trust this index over your own hash check"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An index that instructs you not to take "
+        },
+        {
+          "k": "em",
+          "text": "its own word"
+        },
+        {
+          "k": "text",
+          "text": " for it. So I didn't — the loop closes in a few lines, no special tooling:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "❯ curl -sL raw.githubusercontent.com/supernovae-st/nika-spec/12157ad9…/examples/showcase/t4-ceo-monday-brief.nika.yaml \\\n    | shasum -a 256\na566cc5671694d0740ffd315d6d7f8164531f673841e07312a862f33d81de4cb  -\n\n# the index says:\n\"sha256\": \"a566cc5671694d0740ffd315d6d7f8164531f673841e07312a862f33d81de4cb\""
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Fetched at the pinned revision, hashed locally: match. Then "
+        },
+        {
+          "k": "code",
+          "text": "nika check"
+        },
+        {
+          "k": "text",
+          "text": " on the file re-derives the certificate's claims on "
+        },
+        {
+          "k": "em",
+          "text": "your"
+        },
+        {
+          "k": "text",
+          "text": " machine — the third leg of the protocol, and the one that matters most, because it means the registry's whole trust chain is "
+        },
+        {
+          "k": "strong",
+          "text": "reproducible by anyone, from public material, without asking anyone"
+        },
+        {
+          "k": "text",
+          "text": ". The same move as "
+        },
+        {
+          "k": "link",
+          "text": "the trace whose hash chain you can re-derive",
+          "href": "/blog/the-chain-of-custody"
+        },
+        {
+          "k": "text",
+          "text": ", one level up: there, a run proves itself; here, a "
+        },
+        {
+          "k": "em",
+          "text": "published artifact"
+        },
+        {
+          "k": "text",
+          "text": " does."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The registry's own plumbing follows the same discipline. First-party entries are not hand-curated — they are a projection of the spec's example pack at a pinned spec revision ("
+        },
+        {
+          "k": "code",
+          "text": "SPEC_PIN"
+        },
+        {
+          "k": "text",
+          "text": " in the repo root), regenerated and re-proven when the pin moves. There is an "
+        },
+        {
+          "k": "code",
+          "text": "ENTRY_TEMPLATE.toml"
+        },
+        {
+          "k": "text",
+          "text": " for contributed entries, and an "
+        },
+        {
+          "k": "code",
+          "text": "llms.txt"
+        },
+        {
+          "k": "text",
+          "text": " — because the audience that installs workflows increasingly "
+        },
+        {
+          "k": "link",
+          "text": "reads registries by machine",
+          "href": "/blog/the-mcp-server-you-didnt-build"
+        },
+        {
+          "k": "text",
+          "text": ", and an agent can run the verify protocol as easily as you can."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Sharing was always the point of making "
+        },
+        {
+          "k": "link",
+          "text": "the intent a file",
+          "href": "/blog/intent-as-code"
+        },
+        {
+          "k": "text",
+          "text": ": a file can be mailed, diffed, reviewed — and published. The registry is what publishing looks like when the ecosystem refuses to inherit npm's axiom. Nothing is taken on faith; everything is re-derivable; the gatekeeper you don't have to trust is also the gatekeeper who can't betray you."
+        }
+      ]
+    }
+  ],
   "written-by-agents": [
     {
       "k": "p",
