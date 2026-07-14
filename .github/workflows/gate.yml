@@ -20,6 +20,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
       - name: enable corepack (pnpm pinned via packageManager)
         run: corepack enable
       - name: install
@@ -54,6 +55,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
       - uses: browser-actions/setup-chrome@v2
         id: chrome
       - name: enable corepack (pnpm pinned via packageManager)

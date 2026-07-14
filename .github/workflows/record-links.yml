@@ -24,5 +24,6 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
       - name: probe every record source
         run: node scripts/check-record-links.mjs

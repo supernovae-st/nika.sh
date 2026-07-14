@@ -31,6 +31,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
