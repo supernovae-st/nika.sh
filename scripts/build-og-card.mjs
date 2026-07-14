@@ -276,6 +276,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>one&nbsp;shape<span class="sep">·</span>five&nbsp;sovereign&nbsp;hosts<span class="sep">·</span><b>zero&nbsp;lock-in</b></span>',
   },
   {
+    // /blog/the-registry-reproves-everything — content-pinned entries, CI re-proofs, a verify protocol.
+    out: 'og-blog-the-registry-reproves-everything.png',
+    fig: 'FIG B.24',
+    size: 60,
+    headline: 'Trust the artifact,<br><span class="b">not the gatekeeper.</span>',
+    sub: 'Every registry entry is content-pinned to an exact source revision and re-proven by CI — hash, certificate, advisories. The index itself tells you: never trust it over your own hash check.',
+    detail:
+      '<span class="arrow">▸</span><span>sha256&nbsp;pin<span class="sep">·</span>CI&nbsp;re-proof<span class="sep">·</span><b>verify&nbsp;it&nbsp;yourself</b></span>',
+  },
+  {
     // /blog/the-generative-workflow — inputs · a model step · effects you can point to; provenance built in.
     out: 'og-blog-the-generative-workflow.png',
     fig: 'FIG B.23',

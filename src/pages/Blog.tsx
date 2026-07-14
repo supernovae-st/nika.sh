@@ -26,11 +26,11 @@ import './blog-page.css'
 /* the upcoming teasers · dated stubs of coming articles (unchanged content). */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-registry-reproves-everything',
-    tag: 'Engine',
+    slug: 'the-advisory-that-names-itself',
+    tag: 'Security',
     date: 'soon',
-    title: 'The registry re-proves everything',
-    teaser: 'A workflow registry where nothing is taken on faith: every entry is CI re-proven against the engine (hash, oracle, certificate). The npm-of-workflows, minus the trust-me.',
+    title: 'The advisory that names itself',
+    teaser: 'When a published workflow goes bad, the registry does not unpublish history — an advisory attaches to the pinned entry in the open, and the verify protocol already told you never to install what one names.',
   },
   {
     slug: 'the-run-that-never-runs',

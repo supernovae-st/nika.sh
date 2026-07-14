@@ -7,6 +7,14 @@
     <description>Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, why the language locks at four verbs, and what local-first actually buys you.</description>
     <language>en</language>
     <item>
+      <title>The registry re-proves everything</title>
+      <link>https://nika.sh/blog/the-registry-reproves-everything</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-registry-reproves-everything</guid>
+      <pubDate>Tue, 14 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>A workflow registry where nothing is taken on faith: every entry is content-pinned to an exact source revision and re-proven by CI — hash, certificate, advisories. The npm-of-workflows, minus the trust-me.</description>
+    </item>
+    <item>
       <title>Written by agents, reviewed by you</title>
       <link>https://nika.sh/blog/written-by-agents</link>
       <guid isPermaLink="true">https://nika.sh/blog/written-by-agents</guid>

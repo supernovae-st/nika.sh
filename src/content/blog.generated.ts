@@ -47,6 +47,15 @@ export const BLOG_SERIES: Record<string, { title: string; claim: string; stops: 
    (initial-bundle diet: the token mass never rides a non-post page) */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "the-registry-reproves-everything",
+    "file": "2026-07-14-the-registry-reproves-everything.md",
+    "title": "The registry re-proves everything",
+    "tag": "Engine",
+    "date": "2026-07-14",
+    "description": "A workflow registry where nothing is taken on faith: every entry is content-pinned to an exact source revision and re-proven by CI — hash, certificate, advisories. The npm-of-workflows, minus the trust-me.",
+    "readingMin": 4
+  },
+  {
     "slug": "written-by-agents",
     "file": "2026-07-11-written-by-agents.md",
     "title": "Written by agents, reviewed by you",
