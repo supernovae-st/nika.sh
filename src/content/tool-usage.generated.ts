@@ -25,12 +25,12 @@ export interface ToolUsageEntry {
 export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   "assert": {
     "bare": "assert",
-    "yaml": "  - id: confirm\n    depends_on: [execute]\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: \"${{ size(tasks.execute.output.findings) > 0 }}\"\n        message: \"Agent returned no findings, do not trust an empty run\"   # SLOT",
+    "yaml": "  confirm:\n    depends_on: [execute]\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: \"${{ size(tasks.execute.output.findings) > 0 }}\"\n        message: \"Agent returned no findings, do not trust an empty run\"   # SLOT",
     "source": {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 50
+      "firstLine": 51
     },
     "templates": [
       "agent-loop",
@@ -90,12 +90,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "done": {
     "bare": "done",
-    "yaml": "  - id: execute\n    depends_on: [plan]\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ tasks.plan.output.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
+    "yaml": "  execute:\n    depends_on: [plan]\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ tasks.plan.output.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
     "source": {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 31
+      "firstLine": 32
     },
     "templates": [
       "agent-loop"
@@ -131,12 +131,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "fetch": {
     "bare": "fetch",
-    "yaml": "  - id: check\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+    "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
     "source": {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 26
+      "firstLine": 27
     },
     "templates": [
       "gate-and-act",
@@ -150,12 +150,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "glob": {
     "bare": "glob",
-    "yaml": "  - id: discover\n    invoke:                         # SLOT: glob / fetch sitemap / exec + jq split\n      tool: \"nika:glob\"\n      args: { pattern: \"${{ vars.collection_source }}/*.md\" }",
+    "yaml": "  discover:\n    invoke:                         # SLOT: glob / fetch sitemap / exec + jq split\n      tool: \"nika:glob\"\n      args: { pattern: \"${{ vars.collection_source }}/*.md\" }",
     "source": {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 19
+      "firstLine": 20
     },
     "templates": [
       "fanout"
@@ -202,12 +202,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "image_generate": {
     "bare": "image_generate",
-    "yaml": "  - id: render\n    depends_on: [brief]\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)\n        prompt: \"${{ tasks.brief.output.image_prompt }}\"\n        output_dir: \"${{ vars.out_dir }}\"\n        filename_prefix: \"asset\"    # SLOT: filename stem",
+    "yaml": "  render:\n    depends_on: [brief]\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)\n        prompt: \"${{ tasks.brief.output.image_prompt }}\"\n        output_dir: \"${{ vars.out_dir }}\"\n        filename_prefix: \"asset\"    # SLOT: filename stem",
     "source": {
       "kind": "template",
       "template": "media-asset-pack",
       "file": "media-asset-pack.nika.yaml",
-      "firstLine": 34
+      "firstLine": 35
     },
     "templates": [
       "media-asset-pack"
@@ -230,12 +230,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "jq": {
     "bare": "jq",
-    "yaml": "  - id: survivors\n    depends_on: [process]\n    invoke:                         # the null-aware fan-in · order preserved\n      tool: \"nika:jq\"\n      args:\n        input: ${{ tasks.process.output }}\n        # `. // []` · an EMPTY discovery skips the whole for_each (null\n        # upstream) — the fan-in must survive its own quiet day.\n        expression: \"(. // []) | [ .[] | select(. != null) ]\"",
+    "yaml": "  survivors:\n    depends_on: [process]\n    invoke:                         # the null-aware fan-in · order preserved\n      tool: \"nika:jq\"\n      args:\n        input: ${{ tasks.process.output }}\n        # `. // []` · an EMPTY discovery skips the whole for_each (null\n        # upstream) — the fan-in must survive its own quiet day.\n        expression: \"(. // []) | [ .[] | select(. != null) ]\"",
     "source": {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 40
+      "firstLine": 41
     },
     "templates": [
       "fanout",
@@ -248,12 +248,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "json_diff": {
     "bare": "json_diff",
-    "yaml": "  - id: delta\n    depends_on: [previous, fresh]\n    invoke:\n      tool: \"nika:json_diff\"        # RFC 6902 · empty patch = nothing new\n      args:\n        before: \"${{ tasks.previous.output }}\"\n        after: \"${{ tasks.fresh.output }}\"",
+    "yaml": "  delta:\n    depends_on: [previous, fresh]\n    invoke:\n      tool: \"nika:json_diff\"        # RFC 6902 · empty patch = nothing new\n      args:\n        before: \"${{ tasks.previous.output }}\"\n        after: \"${{ tasks.fresh.output }}\"",
     "source": {
       "kind": "template",
       "template": "etl-state",
       "file": "etl-state.nika.yaml",
-      "firstLine": 42
+      "firstLine": 43
     },
     "templates": [
       "etl-state"
@@ -288,12 +288,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "notify": {
     "bare": "notify",
-    "yaml": "  - id: act\n    depends_on: [check]\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ tasks.check.value > vars.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ tasks.check.value }}\"   # SLOT\n        severity: warning",
+    "yaml": "  act:\n    depends_on: [check]\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ tasks.check.value > vars.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ tasks.check.value }}\"   # SLOT\n        severity: warning",
     "source": {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 40
+      "firstLine": 41
     },
     "templates": [
       "gate-and-act",
@@ -305,12 +305,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "prompt": {
     "bare": "prompt",
-    "yaml": "  - id: human\n    depends_on: [gates]\n    invoke:\n      # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:\n      #   nika run --resume <trace> --answer human=yes\n      tool: \"nika:prompt\"\n      args:\n        message: \"All gates GREEN. Proceed?\"   # SLOT: the decision, fully informed\n        default: false",
+    "yaml": "  human:\n    depends_on: [gates]\n    invoke:\n      # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:\n      #   nika run --resume <trace> --answer human=yes\n      tool: \"nika:prompt\"\n      args:\n        message: \"All gates GREEN. Proceed?\"   # SLOT: the decision, fully informed\n        default: false",
     "source": {
       "kind": "template",
       "template": "human-gated-ship",
       "file": "human-gated-ship.nika.yaml",
-      "firstLine": 46
+      "firstLine": 47
     },
     "templates": [
       "human-gated-ship"
@@ -321,12 +321,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "read": {
     "bare": "read",
-    "yaml": "  - id: gather\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 20
+      "firstLine": 21
     },
     "templates": [
       "chain",
@@ -387,12 +387,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "write": {
     "bare": "write",
-    "yaml": "  - id: persist\n    depends_on: [think]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./output.md\"         # SLOT: destination\n        content: \"${{ tasks.think.output }}\"   # ALWAYS pass content · a write without it writes nothing",
+    "yaml": "  persist:\n    depends_on: [think]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./output.md\"         # SLOT: destination\n        content: \"${{ tasks.think.output }}\"   # ALWAYS pass content · a write without it writes nothing",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 32
+      "firstLine": 33
     },
     "templates": [
       "chain",
