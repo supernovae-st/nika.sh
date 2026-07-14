@@ -48,23 +48,29 @@ const crafted = new Set(readdirSync(CRAFTED_DIR).filter((f) => f.endsWith('.nika
 /* ── the excerpt walker ──
    Given a skeleton's yaml and a builtin ref, find the first line that USES
    the tool (`tool: "nika:x"` beats a whitelist grant `- "nika:x"`), then
-   slice the enclosing task item: up to its `  - id:` line (plus any
+   slice the enclosing task item: up to its task header (plus any
    contiguous task-level comment lines directly above — they carry the
-   teaching), down to the next task or the next top-level key. */
+   teaching), down to the next task or the next top-level key.
+   A task header is the W1 map key (`  <id>:` bare at 2-space indent);
+   the pre-W1 list form (`  - id: <id>`) is still recognized so the walker
+   never silently excerpts nothing on an older pack. */
 function excerpt(yaml, ref) {
   const lines = yaml.split('\n')
   /* skeleton lines carry SLOT comments — the ref match tolerates a trailer */
   const isUse = (l) => new RegExp(`^\\s*tool:\\s*"${ref}"\\s*(#.*)?$`).test(l)
   const isGrant = (l) => new RegExp(`^\\s*-\\s*"${ref}"\\s*(#.*)?$`).test(l)
+  /* the map key is BARE (`  guard:`) — a 2-indent key with an inline value
+     (`  id: pin-me` under `workflow:`) is a field, never a task header */
+  const isTask = (l) => /^  - id:\s/.test(l) || /^  [A-Za-z0-9_-]+:\s*(#.*)?$/.test(l)
   let at = lines.findIndex(isUse)
   if (at === -1) at = lines.findIndex(isGrant)
   if (at === -1) return null
   let start = at
-  while (start > 0 && !/^  - id:\s/.test(lines[start])) start--
-  if (!/^  - id:\s/.test(lines[start])) return null
+  while (start > 0 && !isTask(lines[start])) start--
+  if (!isTask(lines[start])) return null
   while (start > 0 && /^  #/.test(lines[start - 1])) start--
   let end = at + 1
-  while (end < lines.length && !/^  - id:\s/.test(lines[end]) && !/^[a-z_#]/.test(lines[end])) {
+  while (end < lines.length && !isTask(lines[end]) && !/^[a-z_#]/.test(lines[end])) {
     end++
   }
   /* a comment block directly above the NEXT task belongs to the next task */
