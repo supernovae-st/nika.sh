@@ -2,6 +2,21 @@ import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
 import { STEPS, ERROR_JSON, FULL_FILE } from '../content/learn'
 
+/* W2 · a task's producers are its two doors: tasks.X refs in with: values
+   (data edges) + after: keys (control edges) — the same rule the engine,
+   the browser lint and the flagship derivation apply. */
+const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
+function producersOf(t: { with?: Record<string, unknown>; after?: Record<string, string> }): string[] {
+  const out: string[] = []
+  const push = (id: string) => {
+    if (!out.includes(id)) out.push(id)
+  }
+  for (const v of Object.values(t.with ?? {}))
+    if (typeof v === 'string') for (const m of v.matchAll(TASK_REF)) push(m[1])
+  for (const k of Object.keys(t.after ?? {})) push(k)
+  return out
+}
+
 /* ── /learn fragment validity · every code block on the page parses ──────────
    The walkthrough shows YAML fragments (not always full workflows), but each
    one MUST at least parse as a standalone YAML document — a reader who copies
@@ -25,14 +40,15 @@ describe('/learn · every teaching fragment parses', () => {
     expect(step.n).toBe('06')
     interface Task {
       id: string
-      depends_on?: string[]
+      with?: Record<string, unknown>
+      after?: Record<string, string>
     }
     const doc = parse(step.yaml) as { tasks: Record<string, Task> }
-    // the drawn plan: 5 tasks · 3 depends_on-free sources · digest waits for
+    // the drawn plan: 5 tasks · 3 sources with no wires in · digest waits for
     // all three · save waits for digest (the SVG in Learn.tsx draws THIS)
     const entries = Object.entries(doc.tasks)
     expect(entries.length).toBe(5)
-    const deps = Object.fromEntries(entries.map(([id, t]) => [id, t.depends_on ?? []]))
+    const deps = Object.fromEntries(entries.map(([id, t]) => [id, producersOf(t)]))
     expect(deps.fetch_news).toEqual([])
     expect(deps.repo_log).toEqual([])
     expect(deps.read_notes).toEqual([])
@@ -64,7 +80,8 @@ describe('/learn · every teaching fragment parses', () => {
 it('the assembled whole file composes every taught idea and stays coherent', () => {
     interface Task {
       id: string
-      depends_on?: string[]
+      with?: Record<string, unknown>
+      after?: Record<string, string>
     }
     const doc = parse(FULL_FILE) as {
       nika: string
@@ -88,7 +105,7 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
       'digest',
       'save',
     ])
-    const deps = Object.fromEntries(whole.map(([id, t]) => [id, t.depends_on ?? []]))
+    const deps = Object.fromEntries(whole.map(([id, t]) => [id, producersOf(t)]))
     expect(deps.digest).toEqual(['fetch_news', 'repo_log', 'read_notes'])
     expect(deps.save).toEqual(['digest'])
     /* the failure policy (08) rides the digest · the outputs (09) are named */

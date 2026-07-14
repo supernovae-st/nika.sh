@@ -13,8 +13,9 @@ export const VERB_WORDS: Record<NikaVerb, string> = {
   agent: 'delegates to an agent, capped in turns',
 }
 
-export const DEPENDS_WORDS = 'waits for these steps'
-export const WHEN_WORDS = 'a gate · this step runs only if it’s true'
+export const WITH_WORDS = 'the step’s inputs · each wire in is one line here'
+export const AFTER_WORDS = 'waits for that step’s outcome · order, no data'
+export const WHEN_WORDS = 'a yes/no test · the step runs only if it’s true'
 export const PERMITS_WORDS = 'what the file may touch'
 
 /* the key glossary · the YAML hover layer (wave O) — one line per key a
@@ -30,7 +31,8 @@ export const KEY_WORDS: Record<string, string> = {
   fs: 'file permits · what it may read and write',
   tools: 'the only tools this run may call',
   tasks: 'the plan · one step per task',
-  depends_on: DEPENDS_WORDS,
+  with: WITH_WORDS,
+  after: AFTER_WORDS,
   when: WHEN_WORDS,
   for_each: 'fan-out · one run per item',
   schema: 'the output is a contract · typed and checked',

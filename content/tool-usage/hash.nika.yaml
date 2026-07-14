@@ -10,11 +10,12 @@ tasks:
       args: { path: "./dist/report.md" }
 
   pin:
-    depends_on: [artifact]
+    with:
+      artifact: ${{ tasks.artifact.output }}
     invoke:
       tool: "nika:hash"
       args:
-        content: "${{ tasks.artifact.output }}"
+        content: "${{ with.artifact }}"
         algo: sha256
 
 outputs:

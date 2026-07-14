@@ -16,10 +16,11 @@ tasks:
     exec: { command: [ git, diff, main ] }
 
   risk:
-    depends_on: [ diff ]
+    with:
+      diff: ${{ tasks.diff.output }}
     timeout: "120s"
     infer:
-      prompt: "Score this diff's blast radius from 0 to 10: ${{ tasks.diff.output }}"
+      prompt: "Score this diff's blast radius from 0 to 10: ${{ with.diff }}"
       schema:
         type: object
         required: [ score, reasons ]
@@ -29,18 +30,21 @@ tasks:
       max_tokens: 400
 
   probe:
-    depends_on: [ risk ]
-    when: ${{ tasks.risk.output.score >= 7 }}
+    with:
+      score: ${{ tasks.risk.output.score }}
+      reasons: ${{ tasks.risk.output.reasons }}
+    when: ${{ with.score >= 7 }}
     agent:
-      prompt: "Trace the risky call paths behind: ${{ tasks.risk.output.reasons }}"
+      prompt: "Trace the risky call paths behind: ${{ with.reasons }}"
       tools: [ "nika:read" ]
       max_turns: 3
 
   report:
-    depends_on: [ risk ]
+    with:
+      review: ${{ tasks.risk.output }}
     invoke:
       tool: "nika:write"
-      args: { path: ./review.md, content: "${{ tasks.risk.output }}" }
+      args: { path: ./review.md, content: "${{ with.review }}" }
 
 outputs:
   review: "${{ tasks.risk.output }}"

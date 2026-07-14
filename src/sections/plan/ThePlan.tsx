@@ -138,8 +138,9 @@ export default function ThePlan({ flagship }: { flagship: FlagshipEntry }) {
     >
       <div className="v4sec-wrap">
         <SectionHead fig="01.2" id="the-plan-title" title="One file. A plan you can read.">
-          The engine derives the order from <code className="mono">depends_on</code>.
-          Steps with no dependency between them <b>run together</b>. Nothing runs
+          The engine derives the order from the wiring: a <code className="mono">with:</code>{' '}
+          binding is a data edge, an <code className="mono">after:</code> entry a control edge.
+          Steps with no edge between them <b>run together</b>. Nothing runs
           that is not written in the file.
         </SectionHead>
 

@@ -18,11 +18,14 @@ export interface LintDiag {
 
 interface Task {
   id?: unknown
-  depends_on?: unknown
+  with?: unknown
+  after?: unknown
   when?: unknown
   for_each?: unknown
   [k: string]: unknown
 }
+
+const AFTER_PREDICATES = ['succeeded', 'failed', 'skipped', 'terminal'] as const
 
 const VERBS = ['infer', 'exec', 'invoke', 'agent'] as const
 const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
@@ -111,6 +114,19 @@ export function lintNika(src: string): LintDiag[] {
   const ids = entries.map(([id]) => id)
   const idset = new Set(ids)
 
+  /* W2 « the flow » · a task's producers are its two doors — every tasks.X
+     reference in a with: value is a DATA edge, every after: key a CONTROL
+     edge. G_p = E_d ∪ E_c (the binding IS the edge · no invisible edges). */
+  const producersOf = (t: Task | null | undefined): string[] => {
+    if (!t || typeof t !== 'object') return []
+    const out = new Set<string>()
+    for (const body of exprBodies(t.with))
+      for (const m of body.matchAll(TASK_REF)) out.add(m[1])
+    if (t.after && typeof t.after === 'object' && !Array.isArray(t.after))
+      for (const k of Object.keys(t.after as object)) out.add(k)
+    return [...out].filter((d) => idset.has(d))
+  }
+
   // model: provider prefix (envelope + per-task overrides)
   const checkModel = (model: unknown, line: number) => {
     if (typeof model !== 'string' || model.includes('${{')) return
@@ -151,20 +167,41 @@ export function lintNika(src: string): LintDiag[] {
       if (body && typeof body === 'object') checkModel((body as Record<string, unknown>).model, line)
     }
 
-    // DAG-003 · every tasks.X reference needs depends_on
-    const declared = new Set(Array.isArray(t.depends_on) ? (t.depends_on as string[]) : [])
-    const refs = new Set<string>()
-    for (const field of ['when', 'with', 'for_each', 'infer', 'exec', 'invoke', 'agent'])
-      for (const body of exprBodies(t[field]))
-        for (const m of body.matchAll(TASK_REF)) refs.add(m[1])
-    for (const r of refs)
-      if (idset.has(r) && !declared.has(r))
-        diags.push({ line, code: 'NIKA-DAG-003', message: `task '${id}' references tasks.${r} without an edge`, fix: `add depends_on: [${r}]` })
+    // PARSE-024 · depends_on is dead since W2 — the language spells the intent
+    if ('depends_on' in t)
+      diags.push({ line, code: 'NIKA-PARSE-024', message: `task '${id}' carries depends_on: — dead since W2`, fix: 'data → with: bindings (the binding IS the edge) · control → after: {producer: succeeded} · always → after: {producer: terminal}' })
 
-    // DAG-002 · depends_on must resolve
-    for (const dep of declared)
-      if (!idset.has(dep))
-        diags.push({ line, code: 'NIKA-DAG-002', message: `depends_on '${dep}' is not a task`, fix: 'fix the name or add the task' })
+    // DAG-002 · every with:/after: edge target must be a declared task
+    for (const body of exprBodies(t.with))
+      for (const m of body.matchAll(TASK_REF))
+        if (!idset.has(m[1]))
+          diags.push({ line, code: 'NIKA-DAG-002', message: `with: binds tasks.${m[1]} · not a task`, fix: 'fix the name or add the task' })
+
+    // DAG-005 · after: predicates are a closed set
+    const afterObj = (t.after && typeof t.after === 'object' && !Array.isArray(t.after))
+      ? (t.after as Record<string, unknown>)
+      : null
+    if (afterObj)
+      for (const [prod, pred] of Object.entries(afterObj)) {
+        if (!idset.has(prod))
+          diags.push({ line, code: 'NIKA-DAG-002', message: `after: '${prod}' is not a task`, fix: 'fix the name or add the task' })
+        if (typeof pred !== 'string' || !(AFTER_PREDICATES as readonly string[]).includes(pred))
+          diags.push({ line, code: 'NIKA-DAG-005', message: `after: predicate '${String(pred)}' on '${prod}' is unknown`, fix: 'the closed set · succeeded · failed · skipped · terminal (terminal includes cancelled)' })
+      }
+
+    // VAR-021 · tasks.* is boundary-only — with:/after: declare the edges,
+    // the body reads its bindings (when:/for_each:/verb fields are LOCAL)
+    for (const field of ['when', 'for_each', ...VERBS])
+      for (const body of exprBodies(t[field]))
+        for (const m of body.matchAll(TASK_REF))
+          diags.push({ line, code: 'NIKA-VAR-021', message: `tasks.${m[1]} in ${field}: on '${id}' — the body never reads the graph`, fix: `hoist it into with: and read \${{ with.${m[1]} }}` })
+
+    // VAR-021 · on_finally reads its PARENT only (a sibling may still be running)
+    for (const step of Array.isArray(t.on_finally) ? (t.on_finally as unknown[]) : [])
+      for (const body of exprBodies(step))
+        for (const m of body.matchAll(TASK_REF))
+          if (m[1] !== id)
+            diags.push({ line, code: 'NIKA-VAR-021', message: `on_finally on '${id}' reads tasks.${m[1]} · only the parent is legal there`, fix: `cleanup reads its parent only · \${{ tasks.${id}.status }}` })
 
     // VAR-001 · roots must resolve
     const vars = new Set(Object.keys((doc.vars as object) || {}))
@@ -187,8 +224,6 @@ export function lintNika(src: string): LintDiag[] {
           diags.push({ line, code: 'NIKA-VAR-001', message: `secrets.${seg} is not declared`, fix: 'declare it under secrets:' })
         else if (root === 'with' && seg && !withKeys.has(seg))
           diags.push({ line, code: 'NIKA-VAR-001', message: `with.${seg} is not in this task's with:`, fix: 'add it to with:' })
-        else if (root === 'tasks' && seg && !idset.has(seg))
-          diags.push({ line, code: 'NIKA-VAR-001', message: `tasks.${seg} does not exist`, fix: 'fix the task name' })
         else if (seg && !NAMESPACES.has(root) && !LOOP_LOCALS.has(root))
           diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}.${seg}' uses an unknown namespace`, fix: 'the five namespaces · vars with tasks env secrets' })
       }
@@ -245,11 +280,8 @@ export function lintNika(src: string): LintDiag[] {
       for (const m of String(onErr.recover).matchAll(TASK_REF)) {
         const target = m[1]
         if (!idset.has(target)) continue
-        // downstream test · does target transitively depend on id?
-        const depsOf = (n: string): string[] => {
-          const tt = tasksMap?.[n]
-          return Array.isArray(tt?.depends_on) ? (tt.depends_on as string[]) : []
-        }
+        // downstream test · does target transitively depend on id? (over G_p)
+        const depsOf = (n: string): string[] => producersOf(tasksMap?.[n])
         const stack = [target]
         const seenD = new Set<string>()
         while (stack.length) {
@@ -329,8 +361,8 @@ export function lintNika(src: string): LintDiag[] {
     }
   }
 
-  // DAG-001 · cycles
-  const graph = new Map(entries.map(([id, t]) => [id, (Array.isArray(t?.depends_on) ? (t.depends_on as string[]) : []).filter((d) => idset.has(d))]))
+  // DAG-001 · cycles over the precedence graph G_p = E_d ∪ E_c
+  const graph = new Map(entries.map(([id, t]) => [id, producersOf(t)]))
   const color = new Map<string, number>()
   const dfs = (n: string): boolean => {
     color.set(n, 1)
@@ -343,7 +375,7 @@ export function lintNika(src: string): LintDiag[] {
   }
   for (const n of graph.keys())
     if (!color.has(n) && dfs(n)) {
-      diags.push({ line: at(n), code: 'NIKA-DAG-001', message: 'cycle in depends_on', fix: 'remove the back-edge · a DAG has no loops' })
+      diags.push({ line: at(n), code: 'NIKA-DAG-001', message: 'cycle in the graph (with/after edges)', fix: 'remove the back-edge · G_p = data ∪ control edges must stay acyclic' })
       break
     }
 

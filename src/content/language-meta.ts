@@ -15,7 +15,6 @@ export const WORD_GLOSS: Record<string, string> = {
   backoff_strategy: 'how the delay grows between attempts',
   capture: 'which stream becomes the task output',
   cwd: 'working directory for the command',
-  depends_on: 'the DAG’s edges: every ${{ tasks.X }} reference requires its id here (NIKA-DAG-003)',
   description: 'one honest sentence about the workflow; it shows in listings and traces',
   exec: 'the second verb: run a command, captured and typed; its room: /verbs/exec',
   fail_workflow: 'escalate: a caught error still fails the run after recovery',

@@ -74,19 +74,22 @@ tasks:
       args: { path: "./notes/wednesday.md" }
 
   summary:
-    depends_on: [monday, tuesday, wednesday]
+    with:
+      monday: ${{ tasks.monday.output }}
+      tuesday: ${{ tasks.tuesday.output }}
+      wednesday: ${{ tasks.wednesday.output }}
     infer:
       prompt: |
         Three daily standup notes ·
 
         --- monday ---
-        ${{ tasks.monday.output }}
+        ${{ with.monday }}
 
         --- tuesday ---
-        ${{ tasks.tuesday.output }}
+        ${{ with.tuesday }}
 
         --- wednesday ---
-        ${{ tasks.wednesday.output }}
+        ${{ with.wednesday }}
 
         Write ONE paragraph (3-5 sentences) summarizing the week so far ·
         what was shipped, what was fixed, and what comes next.
@@ -94,12 +97,13 @@ tasks:
       max_tokens: 2000
 
   save:
-    depends_on: [summary]
+    with:
+      summary: ${{ tasks.summary.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./manifest.md"
-        content: "${{ tasks.summary.output }}"
+        content: "${{ with.summary }}"
 
 outputs:
   manifest: ${{ tasks.summary.output }}
@@ -193,24 +197,27 @@ tasks:
       command: ["wc", "-l", "./CHANGELOG.md"]
 
   notes:
-    depends_on: [changelog]
+    with:
+      changelog: ${{ tasks.changelog.output }}
     infer:
       prompt: |
         Turn this changelog into three plain sentences for release notes:
-        ${{ tasks.changelog.output }}
+        ${{ with.changelog }}
       max_tokens: 300
 
   save:
-    depends_on: [notes]
+    with:
+      notes: ${{ tasks.notes.output }}
     invoke:
       tool: "nika:write"
-      args: { path: "./notes.md", content: "${{ tasks.notes.output }}" }
+      args: { path: "./notes.md", content: "${{ with.notes }}" }
 
   badge:
-    depends_on: [size]
+    with:
+      size: ${{ tasks.size.output }}
     invoke:
       tool: "nika:write"
-      args: { path: "./badge.json", content: "${{ tasks.size.output }}" }
+      args: { path: "./badge.json", content: "${{ with.size }}" }
 
 outputs:
   notes: ${{ tasks.notes.output }}
@@ -336,18 +343,20 @@ tasks:
       args: { path: "./notes.txt" }
 
   draft:
-    depends_on: [notes]
+    with:
+      notes: ${{ tasks.notes.output }}
     infer:
       prompt: |
         One sentence, plain prose, summarizing this status file:
-        ${{ tasks.notes.output }}
+        ${{ with.notes }}
       max_tokens: 200
 
   save:
-    depends_on: [draft]
+    with:
+      draft: ${{ tasks.draft.output }}
     invoke:
       tool: "nika:write"
-      args: { path: "./digest.md", content: "${{ tasks.draft.output }}" }
+      args: { path: "./digest.md", content: "${{ with.draft }}" }
 
 outputs:
   digest: ${{ tasks.draft.output }}
@@ -416,33 +425,37 @@ tasks:
         required: [image_prompt]
 
   render:
-    depends_on: [brief]
+    with:
+      image_prompt: ${{ tasks.brief.output.image_prompt }}
     invoke:
       tool: "nika:image_generate"
       args:
         provider: mock
-        prompt: "${{ tasks.brief.output.image_prompt }}"
+        prompt: "${{ with.image_prompt }}"
         output_dir: "${{ vars.out_dir }}"
         filename_prefix: "hero"
 
   manifest:
-    depends_on: [brief, render]
+    with:
+      brief: ${{ tasks.brief.output }}
+      render: ${{ tasks.render.output }}
     invoke:
       tool: "nika:jq"
       args:
         expression: "{ brief: .[0], images: .[1].images }"
         input:
-          - "${{ tasks.brief.output }}"
-          - "${{ tasks.render.output }}"
+          - "${{ with.brief }}"
+          - "${{ with.render }}"
 
   persist:
-    depends_on: [manifest]
+    with:
+      manifest: ${{ tasks.manifest.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "${{ vars.out_dir }}/manifest.json"
         create_dirs: true
-        content: "${{ tasks.manifest.output }}"
+        content: "${{ with.manifest }}"
 
 outputs:
   manifest: ${{ tasks.manifest.output }}
@@ -579,11 +592,12 @@ tasks:
           steps: { type: array, items: { type: string } }
 
   execute:
-    depends_on: [plan]
+    with:
+      steps: ${{ tasks.plan.output.steps }}
     agent:
       model: ollama/qwen2.5:14b
       system: "Work the plan step by step. Read ./notes.txt with nika:read, then call nika:done with your final answer."
-      prompt: "Plan · ${{ tasks.plan.output.steps }}"
+      prompt: "Plan · ${{ with.steps }}"
       tools:
         - "nika:read"
         - "nika:done"
@@ -597,11 +611,12 @@ tasks:
           findings: { type: array, items: { type: string } }
 
   confirm:
-    depends_on: [execute]
+    with:
+      findings: ${{ tasks.execute.output.findings }}
     invoke:
       tool: "nika:assert"
       args:
-        condition: "${{ size(tasks.execute.output.findings) > 0 }}"
+        condition: "${{ size(with.findings) > 0 }}"
         message: "Agent returned no findings, do not trust an empty run"
 
 outputs:
@@ -652,7 +667,8 @@ tasks:
   # The gate: a human reads the draft and answers. Nothing downstream
   # runs until this task has an answer.
   approve:
-    depends_on: [draft]
+    after:
+      draft: succeeded
     invoke:
       tool: "nika:prompt"
       args:
@@ -660,13 +676,15 @@ tasks:
         message: "Publish this release note?"
 
   publish:
-    depends_on: [draft, approve]
-    when: "${{ tasks.approve.output == true }}"
+    with:
+      draft: ${{ tasks.draft.output }}
+      approved: ${{ tasks.approve.output }}
+    when: "${{ with.approved == true }}"
     invoke:
       tool: "nika:write"
       args:
         path: "./release-note.md"
-        content: "${{ tasks.draft.output }}"
+        content: "${{ with.draft }}"
 
 outputs:
   approved: "${{ tasks.approve.output }}"
@@ -681,15 +699,15 @@ Run it in a terminal and `approve` simply asks you there, in the console, and bl
 
   ✔  draft    invoke · nika:read  2ms
   ✖  approve  invoke · nika:prompt
-  ↷  publish  when: false
-  ── 3/3 done · $0.00 · elapsed 0.0s ─────────────────────────────
+  ⊘  publish  gate: an edge did not admit
+  ── 3/3 done · 1 failed · $0.00 · elapsed 0.0s ──────────────────
 
   ✖ NIKA-BUILTIN-PROMPT-001 · non-interactive and no `default:` —
     cannot answer without a human
     trace: .nika/traces/2026-07-10T16-04-45Z-aaf0.ndjson
 ```
 
-The run **fails closed**. Not "assumes yes", not "hangs forever holding a worker": a typed error names exactly what is missing (a human), the gated step is skipped (`when: false`), nothing is written, the exit code is 1. And the journal, the same [journal that survives kill -9](/blog/the-resume-story), recorded the question.
+The run **fails closed**. Not "assumes yes", not "hangs forever holding a worker": a typed error names exactly what is missing (a human), the gated step is cancelled (`gate: an edge did not admit`), nothing is written, the exit code is 1. And the journal, the same [journal that survives kill -9](/blog/the-resume-story), recorded the question.
 
 That trace is the pending approval. When a human shows up, the answer rides the resume:
 
@@ -707,11 +725,11 @@ That trace is the pending approval. When a human shows up, the answer rides the 
 
 `draft` is not re-done: finished work never runs twice. The gate binds your answer, and only then does `publish` touch the disk. The pairing is enforced by the CLI itself: `--answer` *requires* `--resume`. There is no way to pre-answer a question that has not been asked yet; the approval is always attached to a specific recorded run, of a specific file, with a specific draft already in its journal.
 
-And a *no* is not a failure. Answer `--answer approve=false` and the run completes cleanly: the gate carries the refusal, `publish` skips (`when: false`), nothing ships, exit 0. A refused release is a workflow that **worked**: the outcome your reviewer chose, on the record, in the same trace format as everything else.
+And a *no* is not a failure. Answer `--answer approve=false` and the run completes cleanly: the gate carries the refusal, `publish` skips (`when: closed`), nothing ships, exit 0. A refused release is a workflow that **worked**: the outcome your reviewer chose, on the record, in the same trace format as everything else.
 
 Three properties fall out of the gate being a task, none of which a Slack-thread approval has:
 
-**It is reviewable before it runs.** The `when:` line on `publish` is the entire policy. A PR reviewer can see that nothing ships without a yes, the same way they [see the blast radius in `permits:`](/blog/injection-goes-nowhere).
+**It is reviewable before it runs.** The `approved` binding and the `when:` line on `publish` are the entire policy. A PR reviewer can see that nothing ships without a yes, the same way they [see the blast radius in `permits:`](/blog/injection-goes-nowhere).
 
 **It fails closed by construction.** Headless with no `default:` is an error, not a guess. If you *want* an unattended fallback, you write `default:` into the file: visible, diffable, yours.
 
@@ -755,12 +773,15 @@ tasks:
 
   # Pack only once the notes are verified — the checksums gate the archive.
   pack_assets:
-    depends_on: [hash_notes, count_notes]
+    after:
+      hash_notes: succeeded
+      count_notes: succeeded
     exec:
       command: ["gzip", "-kf9", "assets.bin"]
 
   manifest:
-    depends_on: [pack_assets]
+    after:
+      pack_assets: succeeded
     exec:
       command: ["echo", "archive ok"]
 
@@ -860,12 +881,14 @@ tasks:
       command: ["date", "-u", "+data@%H:%M:%S"]
 
   render_page:
-    depends_on: [fetch_data]
+    after:
+      fetch_data: succeeded
     exec:
       command: ["cat", "./data.txt"]
 
   build_index:
-    depends_on: [render_page]
+    after:
+      render_page: succeeded
     exec:
       command: ["wc", "-c", "./page.txt"]
 
@@ -941,14 +964,16 @@ tasks:
   commits: { invoke: { tool: "nika:read", args: { path: ./commits.txt } } }
 
   draft:
-    depends_on: [ commits ]
+    with:
+      commits: ${{ tasks.commits.output }}
     infer:
-      prompt: "Write release notes from these commits: ${{ tasks.commits.output }}"
+      prompt: "Write release notes from these commits: ${{ with.commits }}"
       max_tokens: 200
 
   save:
-    depends_on: [ draft ]
-    invoke: { tool: "nika:write", args: { path: ./notes.md, content: "${{ tasks.draft.output }}" } }
+    with:
+      draft: ${{ tasks.draft.output }}
+    invoke: { tool: "nika:write", args: { path: ./notes.md, content: "${{ with.draft }}" } }
 
 outputs:
   notes: "${{ tasks.draft.output }}"
@@ -964,12 +989,12 @@ diff --git a/release-notes.nika.yaml b/release-notes.nika.yaml
 index 06134b3..253fa1e 100644
 --- a/release-notes.nika.yaml
 +++ b/release-notes.nika.yaml
-@@ -13,7 +13,7 @@ tasks:
-   draft:
-     depends_on: [ commits ]
+@@ -15,7 +15,7 @@ tasks:
+     with:
+       commits: ${{ tasks.commits.output }}
      infer:
--      prompt: "Write release notes from these commits: ${{ tasks.commits.output }}"
-+      prompt: "Write release notes from these commits. Exactly three bullets, plain words, no hype: ${{ tasks.commits.output }}"
+-      prompt: "Write release notes from these commits: ${{ with.commits }}"
++      prompt: "Write release notes from these commits. Exactly three bullets, plain words, no hype: ${{ with.commits }}"
        max_tokens: 200
 
    save:
@@ -1079,14 +1104,16 @@ tasks:
   note: { invoke: { tool: "nika:read", args: { path: ./note.md } } }
 
   summary:
-    depends_on: [ note ]
+    with:
+      note: ${{ tasks.note.output }}
     infer:
-      prompt: "Summarize this note in one sentence: ${{ tasks.note.output }}"
+      prompt: "Summarize this note in one sentence: ${{ with.note }}"
       max_tokens: 100
 
   save:
-    depends_on: [ summary ]
-    invoke: { tool: "nika:write", args: { path: ./summary.md, content: "${{ tasks.summary.output }}" } }
+    with:
+      summary: ${{ tasks.summary.output }}
+    invoke: { tool: "nika:write", args: { path: ./summary.md, content: "${{ with.summary }}" } }
 
 outputs:
   summary: "${{ tasks.summary.output }}"
@@ -1415,7 +1442,7 @@ The run plays back **live**, in the same renderer as the original: the plan, the
 
 Why this matters compounds with everything else in the file:
 
-**Same file, same steps, same order.** The plan is derived from `depends_on` before anything runs, so two runs of the same file schedule identically. The trace makes that claim checkable: run it again, record it again, and diff the two NDJSON files like code. Determinism stops being a promise and becomes a property you can verify with tools you already have.
+**Same file, same steps, same order.** The plan is derived from the wiring, `with:` and `after:`, before anything runs, so two runs of the same file schedule identically. The trace makes that claim checkable: run it again, record it again, and diff the two NDJSON files like code. Determinism stops being a promise and becomes a property you can verify with tools you already have.
 
 **The boundary is in the recording.** The trace opens by stating the permits context the run started under. An auditor reading the file sees not only what happened but what was *allowed* to happen: the blast radius and the actions, in one artifact.
 
@@ -1471,9 +1498,10 @@ tasks:
           Authorization: "Bearer ${{ secrets.stripe_key }}"
 
   brief:
-    depends_on: [ charges ]
+    with:
+      charges: ${{ tasks.charges.output }}
     infer:
-      prompt: "One short paragraph: what moved in these charges? ${{ tasks.charges.output }}"
+      prompt: "One short paragraph: what moved in these charges? ${{ with.charges }}"
       max_tokens: 300
 
 outputs:
@@ -1487,10 +1515,10 @@ Three details make the line proof rather than pattern-matching:
 **The audit follows the data, not the variable.** Delete the `- to: "infer"` sanction from the file above and the checker does not just refuse, it prints the path the secret would have walked:
 
 ```text
- ✖ SECRETS  leak into infer (task `brief`) — secrets.stripe_key → tasks.charges.output
+ ✖ SECRETS  leak into infer (task `brief`) — secrets.stripe_key → tasks.charges.output → with.charges @ brief
 ```
 
-The key was only ever typed in the fetch header, but the response of a call that carried a secret is tainted until its destination is sanctioned too. Laundering it through a capture, a downstream task, or a workflow `outputs:` does not wash it; the arrow in the verdict is the taint trace.
+The key was only ever typed in the fetch header, but the response of a call that carried a secret is tainted until its destination is sanctioned too. Laundering it through a capture, a `with:` binding, a downstream task, or a workflow `outputs:` does not wash it; the arrow in the verdict is the taint trace.
 
 **Declassification only narrows.** The sanction is per-sink and per-host: same key against a different host refuses, same key in a different tool refuses. And `egress` can never widen the boundary. Sanction a host that `permits.net.http` does not list and both lines go red at once, the secrets line and the permits line, each printing its own fix.
 
@@ -1519,7 +1547,7 @@ tasks:
     infer: { prompt: "one word", max_tokens: 200 }
 
   loop:
-    depends_on: [bounded]
+    after: { bounded: succeeded }
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 3, max_tokens_total: 4000 }
 
 outputs:
@@ -1568,11 +1596,11 @@ tasks:
     exec: { command: ["echo", "ok"] }
 
   use:
-    depends_on: [run]
+    after: { run: succeeded }
     invoke: { tool: "nika:read", args: { path: ./notes.md } }
 
   loop:
-    depends_on: [think]
+    after: { think: succeeded }
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 2 }
 
 outputs:
@@ -1640,7 +1668,7 @@ date: 2026-06-29 · tag: Engine
 
 Every orchestration tool eventually grows a scheduler dialect: stages, barriers, fan-in nodes, retry graphs. You learn its vocabulary, you maintain its diagrams, and one day the diagram and the code disagree.
 
-**Nika has one word: `depends_on`.** A task lists what it waits for. That is the entire scheduling surface. Everything else is derived: tasks whose dependencies are met run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune.
+**Nika has two doors: `with:` and `after:`.** A task names the data it consumes, or the state it waits on, and each declaration is an edge. That is the entire scheduling surface. Everything else is derived: tasks whose edges are satisfied run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune.
 
 ```yaml release-radar.nika.yaml
 nika: v1
@@ -1659,12 +1687,14 @@ tasks:
       command: ["git", "log", "--since='1", "week'"]
 
   digest:
-    depends_on: [changelog, repo_log]
+    with:
+      changelog: ${{ tasks.changelog.output }}
+      repo_log: ${{ tasks.repo_log.output }}
     infer:
-      prompt: "What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}"
+      prompt: "What changed this week: ${{ with.changelog }} ${{ with.repo_log }}"
 ```
 
-Nothing in that file says parallel. `changelog` and `repo_log` start together because nothing orders them; `digest` waits because it says so. Add a third source tomorrow and the plan redraws itself: no stage to renumber, no barrier to move.
+Nothing in that file says parallel. `changelog` and `repo_log` start together because nothing orders them; `digest` waits because its bindings say so. The data and the edge are one declaration: naming what you consume is what draws the graph. Add a third source tomorrow and the plan redraws itself: no stage to renumber, no barrier to move.
 
 The plan is also drawn **before anything runs**. It is the first verdict `nika check` prints for that exact file:
 
@@ -1672,7 +1702,7 @@ The plan is also drawn **before anything runs**. It is the first verdict `nika c
  ✔ PLAN     2 wave(s) · 3 task(s) · max parallelism 2
 ```
 
-A cycle is not a hang, it is a typed error naming its members. A ghost name in `depends_on` is caught in the same pass. The graph the engine runs is the graph you read, and both come from three verbs and a list.
+A cycle is not a hang, it is a typed error naming its members. A ghost name in a `with:` binding is caught in the same pass. The graph the engine runs is the graph you read, and both come from three verbs and their wiring.
 
 You never scheduled anything. The plan was in the file all along.
 
@@ -1703,7 +1733,9 @@ tasks:
       command: ["cargo", "build", "--release"]
 
   digest:
-    depends_on: [fetch_news, build]
+    after:
+      fetch_news: succeeded
+      build: succeeded
     infer:
       prompt: "Summarize what changed"
 
@@ -1729,7 +1761,7 @@ We've accepted a strange deal: the more useful the work, the more disposable the
 
 **Nika's bet is simple: useful AI work is worth writing down.** Not as a transcript, as *source*. A small YAML file that says what you want: fetch this, think about that, run this command, save the result. The file is the workflow. Run it again tomorrow and it does the same thing. Change a line and `git diff` shows exactly what changed.
 
-Four verbs cover the whole space: **infer** (call a model), **exec** (run a process), **invoke** (use a tool), **agent** (let it work a loop). Everything else is data flowing between tasks. The order falls out of the dependencies. Write `depends_on` and independent branches run in parallel, for free.
+Four verbs cover the whole space: **infer** (call a model), **exec** (run a process), **invoke** (use a tool), **agent** (let it work a loop). Everything else is data flowing between tasks. The order falls out of the wiring: `with:` names what a step consumes, the binding is the edge, and independent branches run in parallel, for free.
 
 And it runs on **your machine**. One Rust binary. Your model keys, your files, your git history. No cloud between you and your own work, and a license (AGPL) that guarantees it stays that way.
 
@@ -1764,12 +1796,13 @@ tasks:
         path: ./notes/today.md
 
   save:
-    depends_on: [notes]
+    with:
+      notes: ${{ tasks.notes.output }}
     invoke:
       tool: "nika:write"
       args:
         path: ./brief.md
-        content: "${{ tasks.notes.output }}"
+        content: "${{ with.notes }}"
 ```
 
 **`permits:` is the whole list.** Not a suggestion, not a default profile. Once the block is present, every category is default-deny: which files it may read and write, which tools it may call, which programs, which hosts. A reviewer reads the blast radius in the diff, right next to the logic it serves.
@@ -1805,12 +1838,13 @@ tasks:
         url: "https://nika.sh"
 
   save:
-    depends_on: [page]
+    with:
+      page: ${{ tasks.page.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./page.md"
-        content: "${{ tasks.page.output }}"
+        content: "${{ with.page }}"
 ```
 
 Everything beyond the library arrives through MCP: name a `mcp:` tool id and any server you already run is reachable, but only if the file allow-lists it. Growth belongs in the toolbelt, not in the grammar.

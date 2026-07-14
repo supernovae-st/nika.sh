@@ -57,7 +57,7 @@ function typeLabel(prop) {
 }
 
 /* the deeper invariants the contract carries — a property's own format/
-   pattern, or its ITEMS' (depends_on constrains each entry, not the list) */
+   pattern, or its ITEMS' (an array prop constrains each entry, not the list) */
 function invariants(prop) {
   const own = (n) => ({
     ...(typeof n?.format === 'string' ? { format: n.format } : {}),

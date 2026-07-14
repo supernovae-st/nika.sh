@@ -55,10 +55,12 @@ describe('the mark regex · classification', () => {
 
 describe('the hover resolver · cmTipAt (the static glossary, live)', () => {
   it('tips a curated key when the column sits on it', () => {
-    const line = '  depends_on: [gather]'
-    const hit = cmTipAt(line, 4) /* inside "depends_on" */
-    expect(hit?.tip.term).toBe('depends_on')
-    expect(line.slice(hit!.from, hit!.to)).toBe('depends_on')
+    const line = '    with:'
+    const hit = cmTipAt(line, 5) /* inside "with" */
+    expect(hit?.tip.term).toBe('with')
+    expect(line.slice(hit!.from, hit!.to)).toBe('with')
+    const after = cmTipAt('    after: { gather: succeeded }', 6)
+    expect(after?.tip.term).toBe('after')
   })
 
   it('tips a verb key with its verb hue', () => {
@@ -77,7 +79,7 @@ describe('the hover resolver · cmTipAt (the static glossary, live)', () => {
 
   it('stays silent on plumbing keys, values and empty air', () => {
     expect(cmTipAt('      id: gather', 7)).toBeNull() /* id = plumbing */
-    expect(cmTipAt('  depends_on: [gather]', 16)).toBeNull() /* the value */
+    expect(cmTipAt('    tool: "nika:read"', 13)).toBeNull() /* the value */
     expect(cmTipAt('    infer:', 0)).toBeNull() /* the indent */
   })
 })

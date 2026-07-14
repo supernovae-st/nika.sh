@@ -3,12 +3,12 @@ slug: dag-for-free
 title: "The plan you get for free"
 tag: Engine
 date: 2026-06-29
-description: "depends_on is all you write. The orchestration falls out of the graph: parallel waves, drawn before anything runs."
+description: "The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs."
 ---
 
 Every orchestration tool eventually grows a scheduler dialect: stages, barriers, fan-in nodes, retry graphs. You learn its vocabulary, you maintain its diagrams, and one day the diagram and the code disagree.
 
-**Nika has one word: `depends_on`.** A task lists what it waits for. That is the entire scheduling surface. Everything else is derived: tasks whose dependencies are met run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune.
+**Nika has two doors: `with:` and `after:`.** A task names the data it consumes, or the state it waits on, and each declaration is an edge. That is the entire scheduling surface. Everything else is derived: tasks whose edges are satisfied run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune.
 
 ```yaml release-radar.nika.yaml
 nika: v1
@@ -27,12 +27,14 @@ tasks:
       command: ["git", "log", "--since='1", "week'"]
 
   digest:
-    depends_on: [changelog, repo_log]
+    with:
+      changelog: ${{ tasks.changelog.output }}
+      repo_log: ${{ tasks.repo_log.output }}
     infer:
-      prompt: "What changed this week: ${{ tasks.changelog.output }} ${{ tasks.repo_log.output }}"
+      prompt: "What changed this week: ${{ with.changelog }} ${{ with.repo_log }}"
 ```
 
-Nothing in that file says parallel. `changelog` and `repo_log` start together because nothing orders them; `digest` waits because it says so. Add a third source tomorrow and the plan redraws itself: no stage to renumber, no barrier to move.
+Nothing in that file says parallel. `changelog` and `repo_log` start together because nothing orders them; `digest` waits because its bindings say so. The data and the edge are one declaration: naming what you consume is what draws the graph. Add a third source tomorrow and the plan redraws itself: no stage to renumber, no barrier to move.
 
 The plan is also drawn **before anything runs**. It is the first verdict `nika check` prints for that exact file:
 
@@ -40,6 +42,6 @@ The plan is also drawn **before anything runs**. It is the first verdict `nika c
  ✔ PLAN     2 wave(s) · 3 task(s) · max parallelism 2
 ```
 
-A cycle is not a hang, it is a typed error naming its members. A ghost name in `depends_on` is caught in the same pass. The graph the engine runs is the graph you read, and both come from three verbs and a list.
+A cycle is not a hang, it is a typed error naming its members. A ghost name in a `with:` binding is caught in the same pass. The graph the engine runs is the graph you read, and both come from three verbs and their wiring.
 
 You never scheduled anything. The plan was in the file all along.

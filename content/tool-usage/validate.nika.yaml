@@ -17,9 +17,10 @@ tasks:
             verbs: { type: integer }
 
   gate:
-    depends_on: [verdict]
+    with:
+      verdict_valid: ${{ tasks.verdict.output.valid }}
     invoke:
       tool: "nika:assert"
       args:
-        condition: ${{ tasks.verdict.output.valid }}
+        condition: ${{ with.verdict_valid }}
         message: "payload failed its schema"

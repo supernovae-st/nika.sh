@@ -5,13 +5,13 @@
    05-errors) AND parses as standalone YAML · guarded by
    src/test/learn-fragments.test.ts. */
 
-import { VERB_WORDS, DEPENDS_WORDS, WHEN_WORDS, PERMITS_WORDS } from '../sections/morph/plain-words'
+import { VERB_WORDS, WITH_WORDS, AFTER_WORDS, WHEN_WORDS, PERMITS_WORDS } from '../sections/morph/plain-words'
 import type { TermLine } from '../components/TermFrame'
 
 /* ── the plain-words dictionary · one line per key, anyone-register ───────────
    The hover/focus glossary for every YAML panel on /learn (Learn.tsx wraps
    CodeFile in LearnFile — the component defaults stay untouched). The four
-   verbs + depends_on + when + permits REUSE the site-wide plain-words module
+   verbs + with + after + when + permits REUSE the site-wide plain-words module
    (the morph 3D tooltips read the same strings — the two surfaces can never
    explain the same key differently). Keys are the token texts the CodeFile
    tokenizer emits (no trailing colon). */
@@ -22,8 +22,9 @@ export const DICT: Record<string, string> = {
   vars: 'the inputs · change them from the command line, not the file',
   permits: PERMITS_WORDS,
   tasks: 'the to-do list · each item does exactly one thing',
-  id: 'the step’s name · other steps point at it',
-  depends_on: `this step ${DEPENDS_WORDS}`,
+  id: 'the workflow’s handle · what you call from the command line',
+  with: WITH_WORDS,
+  after: AFTER_WORDS,
   when: WHEN_WORDS,
   infer: VERB_WORDS.infer,
   exec: VERB_WORDS.exec,
@@ -113,10 +114,10 @@ model: ollama/llama3.2:3b
   {
     n: '05',
     topic: 'the plan',
-    title: 'Order is one word. The plan is free.',
+    title: 'The wiring is the plan. The plan is free.',
     plain:
-      'depends_on is all you write. Tasks that don’t wait on each other run in parallel automatically. You never schedule anything. The plan (which tasks wait on which) falls out of the file.',
-    file: 'depends_on',
+      'with: names what a task takes in — and each wire IS an edge of the plan. Tasks that don’t feed each other run in parallel automatically. You never schedule anything. The plan (which tasks wait on which) falls out of the file.',
+    file: 'with',
     yaml: `fetch_news:
   invoke:
     tool: "nika:fetch"
@@ -126,17 +127,19 @@ repo_log:
     command: ["git", "log", "--since=1 week"]
 
 digest:
-  depends_on: [ fetch_news, repo_log ]   # waits for BOTH
+  with:
+    news: \${{ tasks.fetch_news.output }}   # each wire in
+    log: \${{ tasks.repo_log.output }}      # is one edge
   infer:
-    prompt: "Cross-reference news with our work…"`,
-    note: 'fetch_news and repo_log run at the same time. digest waits for both.',
+    prompt: "Cross-reference \${{ with.news }} with \${{ with.log }}…"`,
+    note: 'fetch_news and repo_log run at the same time. digest waits for both. For order with no data, there is after: — { producer: succeeded }.',
   },
   {
     n: '06',
     topic: 'the waves',
     title: 'Steps that wait, steps that run together',
     plain:
-      'A workflow is a to-do list where some steps wait for others. Steps that wait on nothing all start at the same time, automatically; you never schedule anything. Before anything runs, the runtime reads every depends_on and draws the plan: here, three sources start together, the digest waits for all three, and the save waits for the digest.',
+      'A workflow is a to-do list where some steps wait for others. Steps that wait on nothing all start at the same time, automatically; you never schedule anything. Before anything runs, the runtime reads every with: wire and draws the plan: here, three sources start together, the digest waits for all three, and the save waits for the digest.',
     file: 'tasks · the whole plan',
     yaml: `tasks:
   fetch_news:
@@ -149,11 +152,15 @@ digest:
     invoke:
       tool: "nika:read"
   digest:
-    depends_on: [ fetch_news, repo_log, read_notes ]
+    with:
+      news: \${{ tasks.fetch_news.output }}
+      log: \${{ tasks.repo_log.output }}
+      notes: \${{ tasks.read_notes.output }}
     infer:
       prompt: "One weekly radar, five bullets"
   save:
-    depends_on: [ digest ]
+    with:
+      brief: \${{ tasks.digest.output }}
     invoke:
       tool: "nika:write"`,
     note: 'Nothing in this file says parallel. The picture below is the plan drawn from these five steps: follow the arrows, not the line order.',
@@ -164,11 +171,12 @@ digest:
     topic: 'the branch',
     title: 'Branch like an adult',
     plain:
-      'when: makes a task conditional, a yes/no test over what already happened. Waiting for success is free (depends_on already does it); when: is for conditions beyond it, like a value check.',
+      'when: makes a task conditional, a yes/no test over what it imports. The wiring already orders it; when: decides whether an admitted step runs — and it reads the step’s own bindings, never the graph.',
     file: 'when',
     yaml: `alert:
-  depends_on: [ check ]
-  when: \${{ tasks.check.output.errors > 0 }}
+  with:
+    errors: \${{ tasks.check.output.errors }}
+  when: \${{ with.errors > 0 }}
   invoke:
     tool: "nika:notify"`,
   },
@@ -211,7 +219,7 @@ outputs:
 /* ── the whole file · the nine fragments, assembled ───────────────────────────
    Every idea above, composed into the ONE workflow the page teaches. This
    exact text passes `nika check` on the shipping binary — the transcript
-   below is that run, VERBATIM (captured 2026-07-13 · nika 0.103.0). The
+   below is that run, VERBATIM (captured 2026-07-14 · nika 0.103.0). The
    honesty law: re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
 workflow:
@@ -244,20 +252,24 @@ tasks:
         path: "./notes.md"
 
   digest:
-    depends_on: [ fetch_news, repo_log, read_notes ]
+    with:
+      news: \${{ tasks.fetch_news.output }}
+      log: \${{ tasks.repo_log.output }}
+      notes: \${{ tasks.read_notes.output }}
     retry:
       max_attempts: 3
       backoff_ms: 1000
     infer:
-      prompt: "One weekly radar on \${{ vars.topic }}, five bullets: \${{ tasks.fetch_news.output }} \${{ tasks.repo_log.output }} \${{ tasks.read_notes.output }}"
+      prompt: "One weekly radar on \${{ vars.topic }}, five bullets: \${{ with.news }} \${{ with.log }} \${{ with.notes }}"
 
   save:
-    depends_on: [ digest ]
+    with:
+      brief: \${{ tasks.digest.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "\${{ vars.output_dir }}/radar.md"
-        content: "\${{ tasks.digest.output }}"
+        content: "\${{ with.brief }}"
 
 outputs:
   brief: \${{ tasks.digest.output }}
@@ -267,7 +279,7 @@ export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika check weekly-radar.nika.yaml' },
   { kind: 'out', text: 'nika check · weekly-radar.nika.yaml' },
   { kind: 'ok', text: ' ✔ PLAN     3 waves · 5 tasks · max parallelism 3' },
-  { kind: 'dim', text: '      wave 1 fetch_news (invoke · nika:fetch) · repo_log (exec · sh -c) · read_notes (invoke · nika:read)' },
+  { kind: 'dim', text: '      wave 1 fetch_news (invoke · nika:fetch) · repo_log (exec · git) · read_notes (invoke · nika:read)' },
   { kind: 'dim', text: '      wave 2 digest (infer · ollama/llama3.2:3b)' },
   { kind: 'dim', text: '      wave 3 save (invoke · nika:write)' },
   { kind: 'ok', text: ' ✔ MODELS   1 model resolves in this binary' },

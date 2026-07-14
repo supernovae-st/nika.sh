@@ -29,12 +29,13 @@ tasks:
         path: ./notes/today.md
 
   save:
-    depends_on: [notes]
+    with:
+      notes: ${{ tasks.notes.output }}
     invoke:
       tool: "nika:write"
       args:
         path: ./brief.md
-        content: "${{ tasks.notes.output }}"
+        content: "${{ with.notes }}"
 ```
 
 **`permits:` is the whole list.** Not a suggestion, not a default profile. Once the block is present, every category is default-deny: which files it may read and write, which tools it may call, which programs, which hosts. A reviewer reads the blast radius in the diff, right next to the logic it serves.

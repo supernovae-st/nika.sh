@@ -78,6 +78,18 @@ export const LANGUAGE_SCOPES = [
 /** every unique word the schema declares, sorted. */
 export const LANGUAGE_WORDS: LanguageWord[] = [
   {
+    "word": "after",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "task",
+        "required": false,
+        "type": "object",
+        "desc": "The CONTROL boundary · {producer-task: predicate}. Each entry is one control edge (spec/03-dag.md §after). State, never data — observe outcomes through with:."
+      }
+    ]
+  },
+  {
     "word": "agent",
     "verb": true,
     "decls": [
@@ -177,18 +189,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "exec",
         "required": false,
         "type": "string"
-      }
-    ]
-  },
-  {
-    "word": "depends_on",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "task",
-        "required": false,
-        "type": "array",
-        "pattern": "^[a-z][a-z0-9_]*$"
       }
     ]
   },
@@ -733,14 +733,14 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "required": false,
         "type": "boolean | string",
         "format": "cel-expression",
-        "desc": "Conditional execution gate · a ${{ }} CEL boolean OR the YAML literal true/false. An explicit when: replaces the default success-gate (spec/03-dag.md §Task states)."
+        "desc": "LOCAL business condition · evaluated POST-gate over {vars · env · with · item · index} — tasks.* is illegal here (NIKA-VAR-021 · hoist into with:). false → skipped (spec/03-dag.md §when)."
       },
       {
         "scope": "on_finally",
         "required": false,
         "type": "boolean | string",
         "format": "cel-expression",
-        "desc": "Conditional execution gate · a ${{ }} CEL boolean OR the YAML literal true/false. An explicit when: replaces the default success-gate (spec/03-dag.md §Task states)."
+        "desc": "Cleanup condition · may read the PARENT task's record (tasks.<parent>.status / .error — the only legal tasks.* target inside on_finally · spec/03-dag.md §on_finally)."
       }
     ]
   },

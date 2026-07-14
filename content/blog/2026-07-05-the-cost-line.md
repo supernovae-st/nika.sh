@@ -21,7 +21,7 @@ tasks:
     infer: { prompt: "one word", max_tokens: 200 }
 
   loop:
-    depends_on: [bounded]
+    after: { bounded: succeeded }
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 3, max_tokens_total: 4000 }
 
 outputs:

@@ -269,8 +269,8 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The plan you get for free",
     "tag": "Engine",
     "date": "2026-06-29",
-    "description": "depends_on is all you write. The orchestration falls out of the graph: parallel waves, drawn before anything runs.",
-    "readingMin": 1
+    "description": "The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs.",
+    "readingMin": 2
   },
   {
     "slug": "four-verbs",

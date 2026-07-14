@@ -26,7 +26,7 @@ import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generat
 
    It ALSO pins the Living File choreography to its file: the hand-built DAG's
    line0/line1 must point at the exact YAML line carrying each task, and its
-   deps/waves must be exactly the file's depends_on topology — so the scroll
+   deps/waves must be exactly the file's with:/after: topology — so the scroll
    story can never drift from the text it animates. */
 
 const schema = JSON.parse(

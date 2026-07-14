@@ -90,8 +90,8 @@ const TLDR_PILLARS: { name: string; token: string; claim: string; gloss: string 
   },
   {
     name: 'the plan (dag)',
-    token: 'depends_on',
-    claim: 'Tasks, and what they wait on.',
+    token: 'with · after',
+    claim: 'Tasks, and the wires between them.',
     gloss: 'Independent tasks run at the same time, automatically.',
   },
   {
@@ -882,9 +882,11 @@ const SpecReference = memo(function SpecReference() {
                   optional controls dimmed) beside the field ledger (required core
                   visible · optional controls behind the fold). */}
               <div id="s2" className="spec-block" data-sec="" data-stratum="plan" data-rise>
-                <SpecHead fig="S.2" name="The task shape" register={{ href: '/language', label: 'the keyword register' }} count="1 required field · 1 verb">
-                  A task is a DAG node. <code>id</code> is the only required field and exactly one verb
-                  binds; everything else is an optional structural control.
+                <SpecHead fig="S.2" name="The task shape" register={{ href: '/language', label: 'the keyword register' }} count="1 identity · 1 verb · 2 doors">
+                  A task is a DAG node. Its map key is its identity and exactly one verb binds;
+                  <code>tasks.*</code> crosses the boundary through two doors — <code>with</code>{' '}
+                  (data) and <code>after</code> (control); everything else is an optional
+                  structural control.
                 </SpecHead>
                 <div className="spec-tasksplit">
                   {/* the anatomy · a labelled task node */}
@@ -893,13 +895,11 @@ const SpecReference = memo(function SpecReference() {
                     <figcaption className="spec-anatomy-cap mono">anatomy of a task node</figcaption>
                     <div className="spec-anatomy-node">
                       <span className="spec-anatomy-line">
-                        <span className="spec-anatomy-punct" aria-hidden>
-                          -{' '}
+                        <span className="spec-anatomy-k spec-anatomy-k--req">summarize</span>
+                        <span className="spec-anatomy-punct">:</span>
+                        <span className="spec-anatomy-mark spec-anatomy-mark--req">
+                          the key IS the identity
                         </span>
-                        <span className="spec-anatomy-k spec-anatomy-k--req">id</span>
-                        <span className="spec-anatomy-punct">: </span>
-                        <span className="spec-anatomy-v">summarize</span>
-                        <span className="spec-anatomy-mark spec-anatomy-mark--req">required</span>
                       </span>
                       <span className="spec-anatomy-line spec-anatomy-line--verb">
                         <span className="spec-anatomy-k spec-anatomy-k--verb">infer</span>
@@ -910,18 +910,27 @@ const SpecReference = memo(function SpecReference() {
                       </span>
                       <span className="spec-anatomy-line spec-anatomy-line--nest">
                         <span className="spec-anatomy-punct">  prompt: </span>
-                        <span className="spec-anatomy-v">&quot;…&quot;</span>
+                        <span className="spec-anatomy-v">&quot;… ${'{{'} with.notes {'}}'} …&quot;</span>
                       </span>
                       <span className="spec-anatomy-line">
-                        <span className="spec-anatomy-k spec-anatomy-k--opt">depends_on</span>
-                        <span className="spec-anatomy-punct">: [extract]</span>
-                        <span className="spec-anatomy-mark">the edges</span>
+                        <span className="spec-anatomy-k spec-anatomy-k--opt">with</span>
+                        <span className="spec-anatomy-punct">:</span>
+                        <span className="spec-anatomy-mark">the data edges</span>
+                      </span>
+                      <span className="spec-anatomy-line spec-anatomy-line--nest">
+                        <span className="spec-anatomy-punct">  notes: </span>
+                        <span className="spec-anatomy-v">${'{{'} tasks.extract.output {'}}'}</span>
+                      </span>
+                      <span className="spec-anatomy-line">
+                        <span className="spec-anatomy-k spec-anatomy-k--opt">after</span>
+                        <span className="spec-anatomy-punct">{': { lint: succeeded }'}</span>
+                        <span className="spec-anatomy-mark">the control edges</span>
                       </span>
                       <span className="spec-anatomy-line">
                         <span className="spec-anatomy-k spec-anatomy-k--opt">when</span>
                         <span className="spec-anatomy-punct">: </span>
                         <span className="spec-anatomy-v">${'{{'} … {'}}'}</span>
-                        <span className="spec-anatomy-mark">a CEL gate</span>
+                        <span className="spec-anatomy-mark">a local test</span>
                       </span>
                     </div>
                     <p className="spec-anatomy-legend">

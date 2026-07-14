@@ -45,11 +45,12 @@ tasks:
           steps: { type: array, items: { type: string } }
 
   execute:
-    depends_on: [plan]
+    with:
+      steps: ${{ tasks.plan.output.steps }}
     agent:
       model: ollama/qwen2.5:14b
       system: "Work the plan step by step. Read ./notes.txt with nika:read, then call nika:done with your final answer."
-      prompt: "Plan · ${{ tasks.plan.output.steps }}"
+      prompt: "Plan · ${{ with.steps }}"
       tools:
         - "nika:read"
         - "nika:done"
@@ -63,11 +64,12 @@ tasks:
           findings: { type: array, items: { type: string } }
 
   confirm:
-    depends_on: [execute]
+    with:
+      findings: ${{ tasks.execute.output.findings }}
     invoke:
       tool: "nika:assert"
       args:
-        condition: "${{ size(tasks.execute.output.findings) > 0 }}"
+        condition: "${{ size(with.findings) > 0 }}"
         message: "Agent returned no findings, do not trust an empty run"
 
 outputs:

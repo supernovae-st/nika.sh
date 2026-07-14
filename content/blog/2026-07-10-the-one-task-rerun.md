@@ -30,12 +30,14 @@ tasks:
       command: ["date", "-u", "+data@%H:%M:%S"]
 
   render_page:
-    depends_on: [fetch_data]
+    after:
+      fetch_data: succeeded
     exec:
       command: ["cat", "./data.txt"]
 
   build_index:
-    depends_on: [render_page]
+    after:
+      render_page: succeeded
     exec:
       command: ["wc", "-c", "./page.txt"]
 

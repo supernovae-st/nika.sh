@@ -42,13 +42,14 @@ tasks:
         url: "https://api.github.com/repos/acme/app/commits?since=v1.4.0"
 
   write_notes:
-    depends_on: [fetch_commits]
+    with:
+      commits: \${{ tasks.fetch_commits.output }}
     infer:
       max_tokens: 800
-      prompt: "Write the release notes from \${{ tasks.fetch_commits.output }}: grouped, human, no hype."
+      prompt: "Write the release notes from \${{ with.commits }}: grouped, human, no hype."
 
   hero_image:
-    depends_on: [fetch_commits]
+    after: { fetch_commits: succeeded }
     invoke:
       tool: "nika:image_generate"
       args:
@@ -58,7 +59,9 @@ tasks:
         output_dir: "media/"
 
   publish:
-    depends_on: [write_notes, hero_image]
+    after:
+      write_notes: succeeded
+      hero_image: succeeded
     exec:
       command: ["gh", "release", "create", "v1.5.0", "--notes-file", "notes.md"]
 `
@@ -86,8 +89,9 @@ const CARDS: CardDef[] = [
   { id: 'publish', verb: 'exec', glyph: '▷', fact: ['$', 'gh release create v1.5.0'], x: 30, y: 72, dur: 800, meta: '0.8s' },
 ]
 
-/* the diamond's wires — the edge that CARRIES a binding (`\${{ tasks.x }}`)
-   is SOLID, a pure depends_on edge is DASHED: the extension's data story */
+/* the diamond's wires — a value edge (a `with:` binding · the binding IS the
+   edge) is SOLID, an `after:` control edge is DASHED: the extension's data
+   story, now the language's own typed-edge story (W2) */
 const WIRES: Array<{ from: TaskId; to: TaskId; data: boolean; d: string }> = [
   { from: 'fetch_commits', to: 'write_notes', data: true, d: 'M 250 64 C 215 108 165 112 125 146' },
   { from: 'fetch_commits', to: 'hero_image', data: false, d: 'M 310 64 C 345 108 395 112 435 146' },

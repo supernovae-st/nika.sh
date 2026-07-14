@@ -43,33 +43,37 @@ tasks:
         required: [image_prompt]
 
   render:
-    depends_on: [brief]
+    with:
+      image_prompt: ${{ tasks.brief.output.image_prompt }}
     invoke:
       tool: "nika:image_generate"
       args:
         provider: mock
-        prompt: "${{ tasks.brief.output.image_prompt }}"
+        prompt: "${{ with.image_prompt }}"
         output_dir: "${{ vars.out_dir }}"
         filename_prefix: "hero"
 
   manifest:
-    depends_on: [brief, render]
+    with:
+      brief: ${{ tasks.brief.output }}
+      render: ${{ tasks.render.output }}
     invoke:
       tool: "nika:jq"
       args:
         expression: "{ brief: .[0], images: .[1].images }"
         input:
-          - "${{ tasks.brief.output }}"
-          - "${{ tasks.render.output }}"
+          - "${{ with.brief }}"
+          - "${{ with.render }}"
 
   persist:
-    depends_on: [manifest]
+    with:
+      manifest: ${{ tasks.manifest.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "${{ vars.out_dir }}/manifest.json"
         create_dirs: true
-        content: "${{ tasks.manifest.output }}"
+        content: "${{ with.manifest }}"
 
 outputs:
   manifest: ${{ tasks.manifest.output }}

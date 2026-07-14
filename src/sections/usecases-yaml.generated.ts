@@ -34,8 +34,9 @@ tasks:
 
   # One deterministic darkroom pass per photo · the ops run IN ORDER.
   stylize:
-    depends_on: [shots]
-    for_each: \${{ tasks.shots.output }}
+    with:
+      shots: \${{ tasks.shots.output }}
+    for_each: \${{ with.shots }}
     max_parallel: 4
     invoke:
       tool: "nika:image_fx"
@@ -75,11 +76,12 @@ tasks:
       args: { path: "\${{ vars.transcript_path }}" }
 
   extract:
-    depends_on: [transcript]
+    with:
+      transcript: \${{ tasks.transcript.output }}
     infer:
       prompt: |
         Extract every action item from this meeting transcript ·
-        \${{ tasks.transcript.output }}
+        \${{ with.transcript }}
       schema:                          # the contract the model must satisfy
         type: object
         required: [actions]
@@ -95,15 +97,17 @@ tasks:
                 due: { type: string }
 
   save:
-    depends_on: [extract]
+    with:
+      extract_actions: \${{ tasks.extract.output.actions }}
     invoke:
       tool: "nika:write"
       args:
         path: "./action-items.json"
-        content: "\${{ tasks.extract.output.actions }}"
+        content: "\${{ with.extract_actions }}"
 
   trace:
-    depends_on: [extract]
+    after:
+      extract: succeeded
     invoke:
       tool: "nika:log"
       args:
@@ -176,14 +180,16 @@ tasks:
       recover: { price: 949, name: "MacBook Air (offline sample)" }
 
   alert:
-    depends_on: [check]
-    when: \${{ tasks.check.price < vars.alert_below }}
+    with:
+      price: \${{ tasks.check.price }}     # value edges · the named bindings cross the boundary here
+      name: \${{ tasks.check.name }}
+    when: \${{ with.price < vars.alert_below }}
     invoke:
       tool: "nika:notify"
       args:
         channel: webhook
         target: "\${{ secrets.alerts_webhook }}"
-        message: "Price drop · \${{ tasks.check.name }} is now \${{ tasks.check.price }} (target \${{ vars.alert_below }})"
+        message: "Price drop · \${{ with.name }} is now \${{ with.price }} (target \${{ vars.alert_below }})"
         severity: info
 
 outputs:
@@ -207,22 +213,24 @@ tasks:
 
   # Three rewrites · no deps between them · they run concurrently.
   thread:
-    depends_on: [post]
+    with:
+      post: \${{ tasks.post.output }}
     infer:
-      prompt: "Turn this post into a 6-tweet thread · keep the voice · \${{ tasks.post.output }}"
+      prompt: "Turn this post into a 6-tweet thread · keep the voice · \${{ with.post }}"
 
   linkedin:
-    depends_on: [post]
+    with:
+      post: \${{ tasks.post.output }}
     infer:
-      prompt: "Rewrite this post for LinkedIn · hook first · \${{ tasks.post.output }}"
+      prompt: "Rewrite this post for LinkedIn · hook first · \${{ with.post }}"
 
   newsletter:
-    depends_on: [post]
+    with:
+      post: \${{ tasks.post.output }}
     infer:
-      prompt: "Write a 3-sentence newsletter blurb for this post · \${{ tasks.post.output }}"
+      prompt: "Write a 3-sentence newsletter blurb for this post · \${{ with.post }}"
 
   bundle:
-    depends_on: [thread, linkedin, newsletter]
     with:
       t: \${{ tasks.thread.output }}
       l: \${{ tasks.linkedin.output }}
@@ -265,23 +273,26 @@ tasks:
       command: ["git", "log", "--since=yesterday", "--oneline", "--no-merges"]
 
   digest:
-    depends_on: [today, history]
+    with:
+      today: \${{ tasks.today.output }}
+      history: \${{ tasks.history.output }}
     infer:
       prompt: |
-        Date · \${{ tasks.today.output }}
+        Date · \${{ with.today }}
         Commits since yesterday ·
-        \${{ tasks.history.output }}
+        \${{ with.history }}
 
         Write my standup note · 3 bullets · done / doing / blocked.
         Plain words · no fluff.
 
   save:
-    depends_on: [digest]
+    with:
+      digest: \${{ tasks.digest.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./standup-note.md"
-        content: "\${{ tasks.digest.output }}"
+        content: "\${{ with.digest }}"
 
 outputs:
   note: \${{ tasks.digest.output }}
@@ -326,13 +337,14 @@ tasks:
 
   # The fan-in · zip results back to their URLs · split live from dead.
   table:
-    depends_on: [pages]
+    with:
+      pages: \${{ tasks.pages.output }}
     invoke:
       tool: "nika:jq"
       args:
         input:
           urls: \${{ vars.bookmarks }}
-          pages: \${{ tasks.pages.output }}
+          pages: \${{ with.pages }}
         expression: >-
           def esc: tostring | gsub("\\\\|"; "\\\\|") | gsub("\\n"; " ");
           ([.urls, .pages] | transpose | map({ url: .[0], page: .[1] })) as $rows |
@@ -343,7 +355,9 @@ tasks:
           }
 
   report:
-    depends_on: [table]
+    with:
+      table_live: \${{ tasks.table.output.live }}
+      table_dead: \${{ tasks.table.output.dead }}
     invoke:
       tool: "nika:write"
       args:
@@ -354,8 +368,8 @@ tasks:
 
           | url | title | description |
           | --- | --- | --- |
-          \${{ tasks.table.output.live }}
-          \${{ tasks.table.output.dead }}
+          \${{ with.table_live }}
+          \${{ with.table_dead }}
 
           *Generated by [nika](https://nika.sh) — dead links survived the batch (\`on_error: recover:\`).*
 
@@ -385,11 +399,12 @@ tasks:
       args: { path: "\${{ vars.contract_path }}" }
 
   clauses:
-    depends_on: [contract]
+    with:
+      contract: \${{ tasks.contract.output }}
     infer:
       prompt: |
         Extract every risk-bearing clause from this contract ·
-        \${{ tasks.contract.output }}
+        \${{ with.contract }}
         Quote each clause verbatim · classify its risk.
       schema:
         type: object
@@ -406,11 +421,12 @@ tasks:
                 risk: { type: string, enum: [low, medium, high] }
 
   check:
-    depends_on: [clauses]
+    with:
+      clauses: \${{ tasks.clauses.output }}
     invoke:
       tool: "nika:validate"
       args:
-        data: "\${{ tasks.clauses.output }}"
+        data: "\${{ with.clauses }}"
         format: json
         schema:
           type: object
@@ -421,28 +437,33 @@ tasks:
               minItems: 1
 
   gate:
-    depends_on: [check]
+    with:
+      extraction_ok: \${{ tasks.check.output.valid == true }}   # the whole condition crosses as ONE boundary expression
     invoke:
       tool: "nika:assert"
       args:
-        condition: "\${{ tasks.check.output.valid == true }}"
+        condition: "\${{ with.extraction_ok }}"
         message: "Clause extraction failed the schema gate: refusing to write the memo"
 
   memo:
-    depends_on: [clauses, gate]
+    with:
+      clauses: \${{ tasks.clauses.output.clauses }}
+    after:
+      gate: succeeded              # state, no data · the assert passed or the memo is cancelled
     infer:
       prompt: |
         Write a one-page risk memo from these clauses ·
-        \${{ tasks.clauses.output.clauses }}
+        \${{ with.clauses }}
         Order by risk · high first · cite the quoted text.
 
   save:
-    depends_on: [memo]
+    with:
+      memo: \${{ tasks.memo.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./legal/risk-memo.md"
-        content: "\${{ tasks.memo.output }}"
+        content: "\${{ with.memo }}"
         create_dirs: true
 
 outputs:
@@ -474,31 +495,34 @@ tasks:
       args: { path: "\${{ vars.sales_csv }}" }
 
   rows:
-    depends_on: [raw]
+    with:
+      raw: \${{ tasks.raw.output }}
     invoke:
       tool: "nika:convert"
       args:
-        input: "\${{ tasks.raw.output }}"
+        input: "\${{ with.raw }}"
         from: csv
         to: json
         has_header: true
 
   # Sum revenue per region · a deterministic reduce, no model.
   by_region:
-    depends_on: [rows]
+    with:
+      rows: \${{ tasks.rows.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.rows.output }}"
+        input: "\${{ with.rows }}"
         expression: 'group_by(.region) | map({ region: .[0].region, revenue: (map(.revenue | tonumber) | add) })'
 
   # The picture · one SVG, its sha lands in the trace.
   chart:
-    depends_on: [by_region]
+    with:
+      by_region: \${{ tasks.by_region.output }}
     invoke:
       tool: "nika:chart"
       args:
-        data: "\${{ tasks.by_region.output }}"
+        data: "\${{ with.by_region }}"
         semantics: { region: category, revenue: usd }
         chart: { type: bar, x: region, y: revenue, title: "Revenue by region" }
         out: out/revenue-by-region.svg
@@ -506,18 +530,22 @@ tasks:
   # The rows as MARKDOWN · a report renders lines, never a JSON blob
   # (region names are user data — the esc guards a \`|\` in them).
   rows_md:
-    depends_on: [by_region]
+    with:
+      by_region: \${{ tasks.by_region.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.by_region.output }}"
+        input: "\${{ with.by_region }}"
         expression: >-
           def esc: tostring | gsub("\\\\|"; "\\\\|") | gsub("\\n"; " ");
           map("| \\(.region | esc) | \\(.revenue) |") | join("\\n")
 
   # The page · the report references the picture beside it.
   report:
-    depends_on: [chart, rows_md]
+    with:
+      rows_md: \${{ tasks.rows_md.output }}
+    after:
+      chart: succeeded
     invoke:
       tool: "nika:write"
       args:
@@ -529,7 +557,7 @@ tasks:
 
           | region | revenue |
           | --- | --- |
-          \${{ tasks.rows_md.output }}
+          \${{ with.rows_md }}
 
           *Generated offline by [nika](https://nika.sh) · the chart's sha is in the run trace (\`nika trace verify\`).*
 
@@ -560,11 +588,12 @@ tasks:
       args: { path: "\${{ vars.batch_csv }}" }
 
   rows:
-    depends_on: [raw]
+    with:
+      csv: \${{ tasks.raw.output }}
     invoke:
       tool: "nika:convert"
       args:
-        input: "\${{ tasks.raw.output }}"
+        input: "\${{ with.csv }}"
         from: csv
         to: json
         has_header: true
@@ -572,11 +601,12 @@ tasks:
       recover: \${{ tasks.empty_batch.output }}    # malformed CSV → empty batch · pipeline lives
 
   check:
-    depends_on: [rows]
+    with:
+      rows: \${{ tasks.rows.output }}
     invoke:
       tool: "nika:validate"
       args:
-        data: "\${{ tasks.rows.output }}"
+        data: "\${{ with.rows }}"
         format: json
         schema:
           type: array
@@ -589,32 +619,37 @@ tasks:
               currency: { type: string, enum: [EUR, USD, GBP] }
 
   good:
-    depends_on: [rows, check]
-    when: \${{ tasks.check.output.valid == true }}
+    with:
+      rows: \${{ tasks.rows.output }}
+      valid: \${{ tasks.check.output.valid }}
+    when: \${{ with.valid == true }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.rows.output }}"
+        input: "\${{ with.rows }}"
         expression: 'group_by(.currency) | map({currency: .[0].currency, orders: length, total: (map(.amount | tonumber) | add)})'
 
   quarantine:
-    depends_on: [rows, check]
-    when: \${{ tasks.check.output.valid == false }}
+    with:
+      valid: \${{ tasks.check.output.valid }}
+      errors: \${{ tasks.check.output.errors }}
+    when: \${{ with.valid == false }}
     invoke:
       tool: "nika:write"
       args:
         path: "./data/quarantine/orders-rejected.json"
-        content: "\${{ tasks.check.output.errors }}"
+        content: "\${{ with.errors }}"
         create_dirs: true
 
   report:
-    depends_on: [good]
-    when: \${{ tasks.good.output != null && size(tasks.good.output) > 0 }}   # good is SKIPPED (null) on the quarantine path · guard before size()
+    with:
+      totals: \${{ tasks.good.output }}
+    when: \${{ with.totals != null && size(with.totals) > 0 }}   # good is SKIPPED (null) on the quarantine path · guard before size()
     invoke:
       tool: "nika:write"
       args:
         path: "./data/reports/daily-totals.json"
-        content: "\${{ tasks.good.output }}"
+        content: "\${{ with.totals }}"
         create_dirs: true
 
 outputs:
@@ -640,35 +675,39 @@ tasks:
       args: { path: "\${{ vars.ledger_csv }}" }
 
   rows:
-    depends_on: [ledger]
+    with:
+      csv: \${{ tasks.ledger.output }}
     invoke:
       tool: "nika:convert"
       args:
-        input: "\${{ tasks.ledger.output }}"
+        input: "\${{ with.csv }}"
         from: csv
         to: json
         has_header: true
 
   overdue:
-    depends_on: [rows]
+    with:
+      rows: \${{ tasks.rows.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.rows.output }}"
+        input: "\${{ with.rows }}"
         expression: 'map(select(.status == "overdue"))'
 
   drafts:
-    depends_on: [overdue]
-    when: \${{ size(tasks.overdue.output) > 0 }}
+    with:
+      overdue: \${{ tasks.overdue.output }}
+    when: \${{ size(with.overdue) > 0 }}
     infer:
       prompt: |
         Draft one short, polite payment reminder per overdue invoice ·
-        \${{ tasks.overdue.output }}
+        \${{ with.overdue }}
         Markdown · one section per client · firm but warm.
 
   approve:
-    depends_on: [drafts]
-    when: \${{ tasks.drafts.output != null }}   # nothing drafted · nothing to approve
+    with:
+      drafts: \${{ tasks.drafts.output }}
+    when: \${{ with.drafts != null }}   # nothing drafted · nothing to approve
     invoke:
       tool: "nika:prompt"
       args:
@@ -676,13 +715,15 @@ tasks:
         default: false
 
   save:
-    depends_on: [approve, drafts]
-    when: \${{ tasks.drafts.output != null && tasks.approve.output == true }}   # zero overdue → drafts skipped (null) · don't write nothing
+    with:
+      drafts: \${{ tasks.drafts.output }}
+      approved: \${{ tasks.approve.output }}
+    when: \${{ with.drafts != null && with.approved == true }}   # zero overdue → drafts skipped (null) · don't write nothing
     invoke:
       tool: "nika:write"
       args:
         path: "./finance/reminders-to-send.md"
-        content: "\${{ tasks.drafts.output }}"
+        content: "\${{ with.drafts }}"
 
 outputs:
   overdue:
@@ -722,20 +763,26 @@ tasks:
       max_tokens: 600
 
   tabulate:
-    depends_on: [ask_incumbent, ask_challenger, ask_tiny]
+    with:
+      ask_incumbent_duration_ms: \${{ tasks.ask_incumbent.duration_ms }}
+      ask_incumbent: \${{ tasks.ask_incumbent.output }}
+      ask_challenger_duration_ms: \${{ tasks.ask_challenger.duration_ms }}
+      ask_challenger: \${{ tasks.ask_challenger.output }}
+      ask_tiny_duration_ms: \${{ tasks.ask_tiny.duration_ms }}
+      ask_tiny: \${{ tasks.ask_tiny.output }}
     invoke:
       tool: "nika:jq"
       args:
         input:
           - model: "ollama/qwen2.5:14b"
-            ms: "\${{ tasks.ask_incumbent.duration_ms }}"
-            answer: "\${{ tasks.ask_incumbent.output }}"
+            ms: "\${{ with.ask_incumbent_duration_ms }}"
+            answer: "\${{ with.ask_incumbent }}"
           - model: "ollama/llama3.2:3b"
-            ms: "\${{ tasks.ask_challenger.duration_ms }}"
-            answer: "\${{ tasks.ask_challenger.output }}"
+            ms: "\${{ with.ask_challenger_duration_ms }}"
+            answer: "\${{ with.ask_challenger }}"
           - model: "ollama/qwen2.5:0.5b"
-            ms: "\${{ tasks.ask_tiny.duration_ms }}"
-            answer: "\${{ tasks.ask_tiny.output }}"
+            ms: "\${{ with.ask_tiny_duration_ms }}"
+            answer: "\${{ with.ask_tiny }}"
         expression: >-
           "| model | latency | chars | answer (first 160) |\\n|---|---|---|---|\\n"
           + (map("| " + .model + " | "
@@ -745,7 +792,8 @@ tasks:
              | join("\\n"))
 
   persist:
-    depends_on: [tabulate]
+    with:
+      tabulate: \${{ tasks.tabulate.output }}
     invoke:
       tool: "nika:write"
       args:
@@ -754,7 +802,7 @@ tasks:
         content: |
           # Model bench — same question, measured
 
-          \${{ tasks.tabulate.output }}
+          \${{ with.tabulate }}
 
           Facts only: latency from the run's clock, length in characters.
           The answers are side by side — the quality call is yours.
@@ -783,11 +831,12 @@ tasks:
       command: ["git", "log", "\${{ vars.since_tag }}..HEAD", "--oneline", "--no-merges"]
 
   notes:
-    depends_on: [history]
+    with:
+      history: \${{ tasks.history.output }}
     infer:
       prompt: |
         Write release notes from these commits ·
-        \${{ tasks.history.output }}
+        \${{ with.history }}
         Tone · plain, direct, no marketing fluff.
       schema:
         type: object
@@ -798,7 +847,9 @@ tasks:
           body: { type: string }
 
   changelog:
-    depends_on: [notes]
+    with:
+      notes_headline: \${{ tasks.notes.output.headline }}
+      notes_body: \${{ tasks.notes.output.body }}
     invoke:
       tool: "nika:edit"
       args:
@@ -807,18 +858,21 @@ tasks:
         replace: |
           # Changelog
 
-          ## \${{ vars.since_tag }}..HEAD · \${{ tasks.notes.output.headline }}
+          ## \${{ vars.since_tag }}..HEAD · \${{ with.notes_headline }}
 
-          \${{ tasks.notes.output.body }}
+          \${{ with.notes_body }}
 
   announce:
-    depends_on: [notes, changelog]
+    with:
+      notes_headline: \${{ tasks.notes.output.headline }}
+    after:
+      changelog: succeeded
     invoke:
       tool: "nika:notify"
       args:
         channel: webhook
         target: "\${{ secrets.team_webhook }}"
-        message: "Release notes ready · \${{ tasks.notes.output.headline }}"
+        message: "Release notes ready · \${{ with.notes_headline }}"
         severity: info
 
 outputs:
@@ -861,32 +915,37 @@ tasks:
       entries: "[.items[] | {title, url, published}]"
 
   fresh:
-    depends_on: [previous, feed]
+    with:
+      previous: \${{ tasks.previous.output }}
+      entries: \${{ tasks.feed.entries }}
     invoke:
       tool: "nika:json_diff"
       args:
-        before: "\${{ tasks.previous.output }}"
-        after: "\${{ tasks.feed.entries }}"
+        before: "\${{ with.previous }}"
+        after: "\${{ with.entries }}"
 
   digest:
-    depends_on: [fresh, feed]
-    when: \${{ size(tasks.fresh.output) > 0 }}
+    with:
+      fresh: \${{ tasks.fresh.output }}
+      entries: \${{ tasks.feed.entries }}
+    when: \${{ size(with.fresh) > 0 }}
     infer:
       prompt: |
         New releases appeared on our dependency radar (RFC 6902 patch
         against last run) ·
-        \${{ tasks.fresh.output }}
-        Full current feed · \${{ tasks.feed.entries }}
+        \${{ with.fresh }}
+        Full current feed · \${{ with.entries }}
         Write 3 bullets · what shipped · whether it looks breaking ·
         what to check in our code.
 
   save_state:
-    depends_on: [feed]
+    with:
+      entries: \${{ tasks.feed.entries }}
     invoke:
       tool: "nika:write"
       args:
         path: "\${{ vars.state_path }}"
-        content: "\${{ tasks.feed.entries }}"
+        content: "\${{ with.entries }}"
         create_dirs: true
         overwrite: true
 
@@ -921,21 +980,24 @@ tasks:
       top: ".[:5] | map(.loc)"
 
   top_page:
-    depends_on: [map]
+    with:
+      map_top: \${{ tasks.map.top[0] }}
     invoke:
       tool: "nika:fetch"
       args:
-        url: "\${{ tasks.map.top[0] }}"
+        url: "\${{ with.map_top }}"
         mode: article
 
   brief:
-    depends_on: [map, top_page]
+    with:
+      map_top: \${{ tasks.map.top }}
+      top_page: \${{ tasks.top_page.output }}
     infer:
       prompt: |
         Topic to rank for · \${{ vars.topic }}
-        Competitor's top URLs · \${{ tasks.map.top }}
+        Competitor's top URLs · \${{ with.map_top }}
         Their best page on it ·
-        \${{ tasks.top_page.output }}
+        \${{ with.top_page }}
 
         Write a content brief that BEATS this page · find the gaps they
         missed · angle for search intent.
@@ -949,12 +1011,13 @@ tasks:
           keywords: { type: array, items: { type: string } }
 
   save:
-    depends_on: [brief]
+    with:
+      brief: \${{ tasks.brief.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./briefs/\${{ vars.topic }}.json"
-        content: "\${{ tasks.brief.output }}"
+        content: "\${{ with.brief }}"
         create_dirs: true
 
 outputs:
@@ -993,11 +1056,12 @@ tasks:
       args: { path: "\${{ vars.queue_path }}" }
 
   triage:
-    depends_on: [queue]
+    with:
+      queue: \${{ tasks.queue.output }}
     infer:
       prompt: |
         Triage every ticket in this queue ·
-        \${{ tasks.queue.output }}
+        \${{ with.queue }}
         For each · classify category and urgency, draft a 2-sentence first reply.
       schema:
         type: object
@@ -1015,31 +1079,36 @@ tasks:
                 first_reply: { type: string }
 
   urgent:
-    depends_on: [triage]
+    with:
+      tickets: \${{ tasks.triage.output.tickets }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.triage.output.tickets }}"
+        input: "\${{ with.tickets }}"
         expression: 'map(select(.urgency == "high" or .urgency == "critical"))'
 
   escalate:
-    depends_on: [urgent, batch]
-    when: \${{ size(tasks.urgent.output) > 0 }}
+    with:
+      urgent: \${{ tasks.urgent.output }}
+      batch: \${{ tasks.batch.output }}
+    when: \${{ size(with.urgent) > 0 }}
     invoke:
       tool: "nika:notify"
       args:
         channel: webhook
         target: "\${{ secrets.oncall_webhook }}"
-        message: "Urgent tickets in triage batch \${{ tasks.batch.output }} · \${{ tasks.urgent.output }}"
+        message: "Urgent tickets in triage batch \${{ with.batch }} · \${{ with.urgent }}"
         severity: warning
 
   board:
-    depends_on: [triage, batch]
+    with:
+      tickets: \${{ tasks.triage.output.tickets }}
+      batch: \${{ tasks.batch.output }}
     invoke:
       tool: "nika:write"
       args:
-        path: "./support/triage-\${{ tasks.batch.output }}.json"
-        content: "\${{ tasks.triage.output.tickets }}"
+        path: "./support/triage-\${{ with.batch }}.json"
+        content: "\${{ with.tickets }}"
 
 outputs:
   tickets:
@@ -1072,14 +1141,15 @@ tasks:
 
   # ONE bounded model call · the schema is the contract, not a suggestion.
   notes:
-    depends_on: [raw]
+    with:
+      raw: \${{ tasks.raw.output }}
     infer:
       prompt: |
         Turn this transcript into show-notes. Ground every chapter title
         and quote in the text — invent nothing.
 
         Transcript ·
-        \${{ tasks.raw.output }}
+        \${{ with.raw }}
       max_tokens: 800
       schema:
         type: object
@@ -1102,11 +1172,12 @@ tasks:
 
   # Typed JSON → markdown lines · mechanical, zero second model call.
   sections:
-    depends_on: [notes]
+    with:
+      notes: \${{ tasks.notes.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.notes.output }}"
+        input: "\${{ with.notes }}"
         expression: >-
           {
             chapters: (.chapters | map("- **\\(.title)** — \\(.gist)") | join("\\n")),
@@ -1114,7 +1185,10 @@ tasks:
           }
 
   page:
-    depends_on: [sections, notes]
+    with:
+      notes_summary: \${{ tasks.notes.output.summary }}
+      sections_chapters: \${{ tasks.sections.output.chapters }}
+      sections_quotes: \${{ tasks.sections.output.quotes }}
     invoke:
       tool: "nika:write"
       args:
@@ -1122,15 +1196,15 @@ tasks:
         content: |
           # Show notes
 
-          \${{ tasks.notes.output.summary }}
+          \${{ with.notes_summary }}
 
           ## Chapters
 
-          \${{ tasks.sections.output.chapters }}
+          \${{ with.sections_chapters }}
 
           ## Pull quotes
 
-          \${{ tasks.sections.output.quotes }}
+          \${{ with.sections_quotes }}
 
           *Generated by [nika](https://nika.sh) · one bounded infer, typed output · the run's trace is the receipt.*
 
@@ -1169,8 +1243,9 @@ tasks:
       recent: ".[:8] | map(.loc)"     # sitemap = the root array of {loc, …} · cap at 8, keep the URLs
 
   pages:
-    depends_on: [map]
-    for_each: \${{ tasks.map.recent }}
+    with:
+      map_recent: \${{ tasks.map.recent }}
+    for_each: \${{ with.map_recent }}
     max_parallel: 4                    # be polite · 4 fetches in flight max
     fail_fast: false                   # one dead page must not kill the radar
     on_error:
@@ -1187,25 +1262,28 @@ tasks:
         mode: article
 
   digest:
-    depends_on: [pages]
+    with:
+      pages: \${{ tasks.pages.output }}
     infer:
       prompt: |
         These are the pages a competitor published recently ·
-        \${{ tasks.pages.output }}
+        \${{ with.pages }}
         Write the Monday brief · what they shipped · what it signals ·
         what we should watch. One page, plain words.
 
   save:
-    depends_on: [digest]
+    with:
+      digest: \${{ tasks.digest.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./radar/competitor-brief.md"
-        content: "\${{ tasks.digest.output }}"
+        content: "\${{ with.digest }}"
         create_dirs: true
 
   ping:
-    depends_on: [save]
+    after:
+      save: succeeded
     invoke:
       tool: "nika:notify"
       args:
@@ -1258,61 +1336,71 @@ tasks:
       args: { path: "\${{ vars.baseline_path }}" }
 
   expected:
-    depends_on: [baseline]
+    with:
+      baseline: \${{ tasks.baseline.output }}
     invoke:
       tool: "nika:json_merge_patch"
       args:
-        target: "\${{ tasks.baseline.output }}"
+        target: "\${{ with.baseline }}"
         patch: "\${{ vars.approved_overrides }}"
 
   drift:
-    depends_on: [expected, live]
+    with:
+      expected: \${{ tasks.expected.output }}
+      live: \${{ tasks.live.output }}
     invoke:
       tool: "nika:json_diff"
       args:
-        before: "\${{ tasks.expected.output }}"
-        after: "\${{ tasks.live.output }}"
+        before: "\${{ with.expected }}"
+        after: "\${{ with.live }}"
 
   fingerprint:
-    depends_on: [live]
+    with:
+      live: \${{ tasks.live.output }}
     invoke:
       tool: "nika:hash"
       args:
         algo: blake3
-        content: "\${{ tasks.live.output }}"
+        content: "\${{ with.live }}"
         encoding: hex
 
   explain:
-    depends_on: [drift]
-    when: \${{ size(tasks.drift.output) > 0 }}
+    with:
+      patch: \${{ tasks.drift.output }}
+    when: \${{ size(with.patch) > 0 }}
     on_error:
       recover: "(explanation unavailable · model call failed · the raw patch is attached)"
     infer:
       prompt: |
         This RFC 6902 patch is UNSANCTIONED config drift in production ·
-        \${{ tasks.drift.output }}
+        \${{ with.patch }}
         Explain in 3 bullets · what changed · likely blast radius · first check.
 
   alert:
-    depends_on: [explain, drift, fingerprint]
-    when: \${{ size(tasks.drift.output) > 0 }}
+    with:
+      patch: \${{ tasks.drift.output }}
+      explanation: \${{ tasks.explain.output }}
+      live_hash: \${{ tasks.fingerprint.output }}
+    when: \${{ size(with.patch) > 0 }}
     invoke:
       tool: "nika:notify"
       args:
         channel: webhook
         target: "\${{ secrets.oncall_webhook }}"
-        message: "Config drift detected · \${{ tasks.explain.output }} · live config blake3 \${{ tasks.fingerprint.output }}"
+        message: "Config drift detected · \${{ with.explanation }} · live config blake3 \${{ with.live_hash }}"
         severity: critical
 
   record:
-    depends_on: [drift, fingerprint]
+    with:
+      patch: \${{ tasks.drift.output }}
+      live_hash: \${{ tasks.fingerprint.output }}
     invoke:
       tool: "nika:emit"
       args:
         event_type: "config.drift.scan"
         payload:
-          patch: "\${{ tasks.drift.output }}"
-          live_hash: "\${{ tasks.fingerprint.output }}"
+          patch: "\${{ with.patch }}"
+          live_hash: "\${{ with.live_hash }}"
 
 outputs:
   drift:
@@ -1340,24 +1428,28 @@ tasks:
         exclude: ["**/node_modules/**"]
 
   texts:
-    depends_on: [files]
-    for_each: \${{ tasks.files.output }}
+    with:
+      files: \${{ tasks.files.output }}
+    for_each: \${{ with.files }}
     max_parallel: 8
     invoke:
       tool: "nika:read"
       args: { path: "\${{ item }}" }
 
   pairs:
-    depends_on: [files, texts]
+    with:
+      files: \${{ tasks.files.output }}
+      texts: \${{ tasks.texts.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: ["\${{ tasks.files.output }}", "\${{ tasks.texts.output }}"]
+        input: ["\${{ with.files }}", "\${{ with.texts }}"]
         expression: "transpose | map({path: .[0], text: .[1]})"
 
   translated:
-    depends_on: [pairs]
-    for_each: \${{ tasks.pairs.output }}
+    with:
+      pairs: \${{ tasks.pairs.output }}
+    for_each: \${{ with.pairs }}
     max_parallel: 3                    # rate-limit the provider
     fail_fast: false                   # finish the batch · a failed file yields null at its index
     on_error:
@@ -1369,16 +1461,19 @@ tasks:
         \${{ item.text }}
 
   bundle:
-    depends_on: [pairs, translated]
+    with:
+      pairs: \${{ tasks.pairs.output }}
+      translated: \${{ tasks.translated.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: ["\${{ tasks.pairs.output }}", "\${{ tasks.translated.output }}"]
+        input: ["\${{ with.pairs }}", "\${{ with.translated }}"]
         expression: "transpose | map(select(.[1] != null)) | map({path: .[0].path, text: .[1]})"
 
   mirror:
-    depends_on: [bundle]
-    for_each: \${{ tasks.bundle.output }}
+    with:
+      bundle: \${{ tasks.bundle.output }}
+    for_each: \${{ with.bundle }}
     max_parallel: 8
     invoke:
       tool: "nika:write"
@@ -1409,11 +1504,12 @@ tasks:
       command: ["git", "diff", "--name-only", "\${{ vars.base_ref }}...HEAD"]
 
   files:
-    depends_on: [changed]
+    with:
+      changed: \${{ tasks.changed.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.changed.output }}"
+        input: "\${{ with.changed }}"
         expression: 'split("\\n") | map(select(length > 0))'
 
   todo_sweep:
@@ -1424,8 +1520,9 @@ tasks:
         path: "./src"
 
   reviews:
-    depends_on: [files]
-    for_each: \${{ tasks.files.output }}
+    with:
+      files: \${{ tasks.files.output }}
+    for_each: \${{ with.files }}
     max_parallel: 4
     fail_fast: false
     on_error:
@@ -1454,32 +1551,36 @@ tasks:
                 line: { type: integer }
 
   merged:
-    depends_on: [reviews]
+    with:
+      reviews: \${{ tasks.reviews.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.reviews.output }}"
+        input: "\${{ with.reviews }}"
         # \`. // []\` · a clean diff SKIPS the swarm (empty for_each → null
         # upstream) and the fan-in must survive its own good news.
         expression: '(. // []) | map(select(. != null)) | map(.findings[] + {file: .file}) | sort_by(.severity)'
 
   summary:
-    depends_on: [merged, todo_sweep]
+    with:
+      merged: \${{ tasks.merged.output }}
+      todo_sweep: \${{ tasks.todo_sweep.output }}
     infer:
       prompt: |
         Merge these review findings into REVIEW.md · blockers first ·
-        \${{ tasks.merged.output }}
+        \${{ with.merged }}
         Open TODO debt found by grep ·
-        \${{ tasks.todo_sweep.output }}
+        \${{ with.todo_sweep }}
         End with a verdict · ship / fix-first / redesign.
 
   save:
-    depends_on: [summary]
+    with:
+      summary: \${{ tasks.summary.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./REVIEW.md"
-        content: "\${{ tasks.summary.output }}"
+        content: "\${{ with.summary }}"
 
 outputs:
   findings:
@@ -1513,8 +1614,9 @@ tasks:
       args: { pattern: "\${{ vars.cv_glob }}" }
 
   cvs:
-    depends_on: [pool]
-    for_each: \${{ tasks.pool.output }}
+    with:
+      paths: \${{ tasks.pool.output }}    # the collection crosses the boundary here
+    for_each: \${{ with.paths }}
     max_parallel: 8
     fail_fast: false                   # one unreadable CV must not stop the batch
     on_error:
@@ -1524,22 +1626,24 @@ tasks:
       args: { path: "\${{ item }}" }
 
   pairs:
-    depends_on: [pool, cvs]
+    with:
+      paths: \${{ tasks.pool.output }}
+      texts: \${{ tasks.cvs.output }}
     invoke:                            # zip path + content · order survived the nulls
       tool: "nika:jq"
       args:
-        input: ["\${{ tasks.pool.output }}", "\${{ tasks.cvs.output }}"]
+        input: ["\${{ with.paths }}", "\${{ with.texts }}"]
         expression: "transpose | map(select(.[1] != null)) | map({path: .[0], text: .[1]})"
 
   screened:
-    depends_on: [pairs]
-    for_each: \${{ tasks.pairs.output }}
+    with:
+      pairs: \${{ tasks.pairs.output }}   # pre-fan-out import · the collection
+      cv_path: \${{ item.path }}          # re-evaluated per iteration
+    for_each: \${{ with.pairs }}
     max_parallel: 2                    # local model · don't thrash the GPU
     fail_fast: false
     on_error:
       recover: null
-    with:
-      cv_path: \${{ item.path }}
     infer:
       prompt: |
         Role · \${{ vars.role }}
@@ -1559,39 +1663,43 @@ tasks:
           concerns: { type: array, items: { type: string } }
 
   ranked:
-    depends_on: [screened]
+    with:
+      screened: \${{ tasks.screened.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.screened.output }}"
+        input: "\${{ with.screened }}"
         expression: 'map(select(. != null)) | map(select(.fit != "weak")) | sort_by(.fit != "strong", -(.years_relevant // 0))'
 
   shortlist:
-    depends_on: [ranked]
+    with:
+      ranked: \${{ tasks.ranked.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.ranked.output }}"
+        input: "\${{ with.ranked }}"
         expression: ".[:\${{ vars.shortlist_size }}]"
 
   brief:
-    depends_on: [shortlist]
-    when: \${{ size(tasks.shortlist.output) > 0 }}
+    with:
+      shortlist: \${{ tasks.shortlist.output }}
+    when: \${{ size(with.shortlist) > 0 }}
     infer:
       prompt: |
         Write the screening brief for these shortlisted candidates ·
-        \${{ tasks.shortlist.output }}
+        \${{ with.shortlist }}
         One paragraph each · lead with the evidence quotes · end with
         the suggested interview focus.
 
   save:
-    depends_on: [brief]
-    when: \${{ tasks.brief.output != null }}    # skip cascades by VALUE · a skipped brief is null
+    with:
+      brief: \${{ tasks.brief.output }}
+    when: \${{ with.brief != null }}    # skip cascades by VALUE · a skipped brief reads null
     invoke:
       tool: "nika:write"
       args:
         path: "./hiring/shortlist-brief.md"
-        content: "\${{ tasks.brief.output }}"
+        content: "\${{ with.brief }}"
         create_dirs: true
 
 outputs:
@@ -1641,33 +1749,39 @@ tasks:
       args: { path: "\${{ vars.kpi_csv }}" }
 
   kpis:
-    depends_on: [kpi_raw]
+    with:
+      csv: \${{ tasks.kpi_raw.output }}
     invoke:
       tool: "nika:convert"
       args:
-        input: "\${{ tasks.kpi_raw.output }}"
+        input: "\${{ with.csv }}"
         from: csv
         to: json
         has_header: true
 
   revenue:
-    depends_on: [kpis]
+    with:
+      kpis: \${{ tasks.kpis.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.kpis.output }}"
+        input: "\${{ with.kpis }}"
         expression: "map(.weekly_revenue | tonumber) | add"
 
   # ── synthesis · with a thinking budget ──
   brief:
-    depends_on: [news, pulse, kpis, revenue]
+    with:                              # the three branches join here · four value edges
+      news: \${{ tasks.news.output }}
+      pulse: \${{ tasks.pulse.output }}
+      kpis: \${{ tasks.kpis.output }}
+      revenue: \${{ tasks.revenue.output }}
     infer:
       model: anthropic/claude-sonnet-4-6   # per-task override · thinking budget
       prompt: |
-        Market signal · \${{ tasks.news.output }}
-        Engineering pulse · \${{ tasks.pulse.output }}
-        KPIs · \${{ tasks.kpis.output }}
-        Revenue (summed) · \${{ tasks.revenue.output }}
+        Market signal · \${{ with.news }}
+        Engineering pulse · \${{ with.pulse }}
+        KPIs · \${{ with.kpis }}
+        Revenue (summed) · \${{ with.revenue }}
 
         Write my Monday brief · 5 sections · market · product ·
         numbers · risks · the ONE decision this week needs.
@@ -1683,29 +1797,34 @@ tasks:
       day: ".[:10]"                  # nika:date returns the ISO string itself · slice YYYY-MM-DD
 
   save:
-    depends_on: [brief, stamp]
+    with:
+      day: \${{ tasks.stamp.day }}
+      brief: \${{ tasks.brief.output }}
     invoke:
       tool: "nika:write"
       args:
-        path: "./briefs/\${{ tasks.stamp.day }}-monday.md"
-        content: "\${{ tasks.brief.output }}"
+        path: "./briefs/\${{ with.day }}-monday.md"
+        content: "\${{ with.brief }}"
         create_dirs: true
 
   # ── the run reports its own bill ──
   bill:
-    depends_on: [save]
+    after:
+      save: succeeded                # state, no data · read the meter once the brief landed
     invoke:
       tool: "nika:inspect"
       args: { view: cost }
 
   ping:
-    depends_on: [bill, stamp]
+    with:
+      day: \${{ tasks.stamp.day }}    # hoisted once · the body AND the cleanup below read this binding
+      cost: \${{ tasks.bill.output.total_usd }}
     invoke:
       tool: "nika:notify"
       args:
         channel: webhook
         target: "\${{ secrets.founders_webhook }}"
-        message: "Monday brief ready · briefs/\${{ tasks.stamp.day }}-monday.md · run cost $\${{ tasks.bill.output.total_usd }}"
+        message: "Monday brief ready · briefs/\${{ with.day }}-monday.md · run cost $\${{ with.cost }}"
         severity: info
     on_finally:
       - invoke:
@@ -1713,7 +1832,7 @@ tasks:
           args:
             event_type: "brief.monday.run"
             payload:
-              day: "\${{ tasks.stamp.day }}"
+              day: "\${{ with.day }}"   # the parent's own binding · cleanup never reads a sibling task
 
 outputs:
   brief: \${{ tasks.brief.output }}
@@ -1746,13 +1865,14 @@ tasks:
             items: { type: string }
 
   investigate:
-    depends_on: [plan]
+    with:
+      plan_queries: \${{ tasks.plan.output.queries }}
     agent:
       system: |
         You are a rigorous researcher. Work the queries one by one ·
         fetch sources · keep verbatim quotes · note what each source
         actually supports. Call nika:done when the plan is exhausted.
-      prompt: "Research plan · \${{ tasks.plan.output.queries }}"
+      prompt: "Research plan · \${{ with.plan_queries }}"
       tools:
         - "nika:fetch"                 # the web
         - "nika:write"                 # scratch notes
@@ -1771,11 +1891,13 @@ tasks:
             items: { type: string }
 
   brief:
-    depends_on: [investigate]
+    with:
+      investigate_findings: \${{ tasks.investigate.output.findings }}
+      investigate_sources: \${{ tasks.investigate.output.sources }}
     infer:
       prompt: |
-        Findings · \${{ tasks.investigate.output.findings }}
-        Sources · \${{ tasks.investigate.output.sources }}
+        Findings · \${{ with.investigate_findings }}
+        Sources · \${{ with.investigate_sources }}
         Write the executive brief · what's true · what's contested ·
         what it means · what to do. Two pages max.
       thinking:
@@ -1783,12 +1905,13 @@ tasks:
         budget_tokens: 8000
 
   save:
-    depends_on: [brief]
+    with:
+      brief: \${{ tasks.brief.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./research/\${{ vars.topic }}.md"
-        content: "\${{ tasks.brief.output }}"
+        content: "\${{ with.brief }}"
         create_dirs: true
 
 outputs:
@@ -1844,13 +1967,16 @@ tasks:
 
   # ── reconstruct · typed timeline ──
   timeline:
-    depends_on: [logs, status_history, runbook]
+    with:                               # three value edges · the gather wave feeds the synthesis
+      logs: \${{ tasks.logs.output.stdout }}
+      history: \${{ tasks.status_history.output }}
+      runbook: \${{ tasks.runbook.output }}
     infer:
       prompt: |
         Service logs ·
-        \${{ tasks.logs.output.stdout }}
-        Status history · \${{ tasks.status_history.output }}
-        Runbook · \${{ tasks.runbook.output }}
+        \${{ with.logs }}
+        Status history · \${{ with.history }}
+        Runbook · \${{ with.runbook }}
 
         Reconstruct the incident timeline as events.
       schema:
@@ -1869,13 +1995,15 @@ tasks:
 
   # ── settle, then confirm recovery before claiming it ──
   settle:
-    depends_on: [timeline]
+    after:
+      timeline: succeeded
     invoke:
       tool: "nika:wait"
       args: { duration: "60s" }
 
   recheck:
-    depends_on: [settle]
+    after:
+      settle: succeeded
     invoke:
       tool: "nika:fetch"
       args:
@@ -1884,20 +2012,24 @@ tasks:
         jq: ".current.state"
 
   confirmed:
-    depends_on: [recheck]
+    with:
+      recovered: \${{ tasks.recheck.output == 'operational' }}   # the whole check crosses as ONE boundary expression
     invoke:
       tool: "nika:assert"
       args:
-        condition: "\${{ tasks.recheck.output == 'operational' }}"
+        condition: "\${{ with.recovered }}"
         message: "Service is NOT back to operational: postmortem draft blocked"
 
   # ── the draft · only after recovery is proven ──
   postmortem:
-    depends_on: [timeline, confirmed]
+    with:
+      events: \${{ tasks.timeline.output.events }}
+    after:
+      confirmed: succeeded             # state, no data · recovery proven or no draft
     infer:
       model: anthropic/claude-sonnet-4-6   # per-task override · thinking budget
       prompt: |
-        Timeline · \${{ tasks.timeline.output.events }}
+        Timeline · \${{ with.events }}
         Write the postmortem draft · summary · impact · root-cause
         hypotheses · 3 follow-up actions with owners left blank.
       thinking:
@@ -1905,35 +2037,38 @@ tasks:
         budget_tokens: 6000
 
   save:
-    depends_on: [postmortem]
+    with:
+      postmortem: \${{ tasks.postmortem.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./incidents/\${{ vars.service }}-postmortem.md"
-        content: "\${{ tasks.postmortem.output }}"
+        content: "\${{ with.postmortem }}"
         create_dirs: true
 
   # the always-pattern · the on-call ping fires on EVERY outcome:
   # including the designed failure path (recovery NOT confirmed → the
-  # assert fails → save never starts → this still runs · when: true
-  # replaces the default gate · 03 §Task states).
+  # assert fails → save is cancelled → this still runs · \`after:
+  # terminal\` admits all four settled states · 03 §gate algebra).
   ping:
-    depends_on: [save]
-    when: true
+    after:
+      save: terminal
+    with:
+      outcome: \${{ tasks.save.status }}   # observe WHAT happened · same pass-set as the after edge
     invoke:
       tool: "nika:emit"
       args:
         event_type: "incident.postmortem.drafted"
         payload:
           service: "\${{ vars.service }}"
-          status: "\${{ tasks.save.status }}"
+          status: "\${{ with.outcome }}"
     on_finally:
       - invoke:
           tool: "nika:notify"
           args:
             channel: webhook
             target: "\${{ secrets.oncall_webhook }}"
-            message: "Postmortem draft run finished for \${{ vars.service }} · \${{ tasks.save.status }}"
+            message: "Postmortem draft run finished for \${{ vars.service }} · \${{ with.outcome }}"
             severity: info
 
 outputs:
@@ -1991,43 +2126,50 @@ tasks:
       max_attempts: 2                  # advisory DB fetch can flake
 
   gates_green:
-    depends_on: [tests, lint, audit]
+    with:
+      all_green: \${{ tasks.tests.output.exit_code == 0 && tasks.lint.output.exit_code == 0 && tasks.audit.output.exit_code == 0 }}   # three value edges · one boundary expression
     invoke:
       tool: "nika:assert"
       args:
-        condition: "\${{ tasks.tests.output.exit_code == 0 && tasks.lint.output.exit_code == 0 && tasks.audit.output.exit_code == 0 }}"
+        condition: "\${{ with.all_green }}"
         message: "A release gate is RED: the train does not depart"
 
   gate_time:
-    depends_on: [t0, gates_green]
+    with:
+      t0: \${{ tasks.t0.output }}
+    after:
+      gates_green: succeeded           # state, no data · the timing is only worth taking on a green board
     invoke:
       tool: "nika:date"
       args:
         op: diff
-        start: "\${{ tasks.t0.output }}"
+        start: "\${{ with.t0 }}"
         end: "now"
         unit: minutes
 
   # ── the human signs the departure ──
   conductor:
-    depends_on: [gates_green, gate_time]
+    with:
+      gate_time: \${{ tasks.gate_time.output }}
     invoke:
       tool: "nika:prompt"
       args:
-        message: "Gates GREEN in \${{ tasks.gate_time.output }} min. Ship \${{ vars.version }} in the \${{ vars.window }} window?"
+        message: "Gates GREEN in \${{ with.gate_time }} min. Ship \${{ vars.version }} in the \${{ vars.window }} window?"
         default: false
 
   approved:
-    depends_on: [conductor]
+    with:
+      signed: \${{ tasks.conductor.output == true }}   # the signature check crosses as ONE boundary expression
     invoke:
       tool: "nika:assert"
       args:
-        condition: "\${{ tasks.conductor.output == true }}"
+        condition: "\${{ with.signed }}"
         message: "Departure not signed: train cancelled"
 
   # ── hold until the window · absolute time, not a sleep ──
   hold:
-    depends_on: [approved]
+    after:
+      approved: succeeded
     invoke:
       tool: "nika:wait"
       args:
@@ -2035,14 +2177,16 @@ tasks:
         timeout: "48h"
 
   ship:
-    depends_on: [hold]
+    after:
+      hold: succeeded
     exec:
       command: ["./scripts/release.sh", "\${{ vars.version }}"]   # argv: the interpolation cannot break out
       capture: structured
     timeout: "30m"
 
   verify:
-    depends_on: [ship]
+    after:
+      ship: succeeded
     invoke:
       tool: "nika:fetch"
       args:
@@ -2055,34 +2199,37 @@ tasks:
       backoff_ms: 5000
 
   live:
-    depends_on: [verify]
+    with:
+      version_live: \${{ tasks.verify.output == vars.version }}   # the whole check crosses as ONE boundary expression
     invoke:
       tool: "nika:assert"
       args:
-        condition: "\${{ tasks.verify.output == vars.version }}"
+        condition: "\${{ with.version_live }}"
         message: "Prod does not report the shipped version: investigate before announcing"
 
-  # the always-pattern · \`when: true\` replaces the default success-gate ·
-  # this task runs whether \`live\` succeeded, failed, or never started
-  # (upstream abort) · a record that must land on EVERY outcome is a
-  # terminal task, not a cleanup hook (03 §Task states).
+  # the always-pattern · \`after: {live: terminal}\` admits every settled
+  # state · this task runs whether \`live\` succeeded, failed, or was
+  # cancelled by an upstream abort · a record that must land on EVERY
+  # outcome is a terminal task, not a cleanup hook (03 §on_finally).
   record:
-    depends_on: [live]
-    when: true
+    after:
+      live: terminal
+    with:
+      outcome: \${{ tasks.live.status }}   # observe the departure verdict · same pass-set as the after edge
     invoke:
       tool: "nika:emit"
       args:
         event_type: "release.train.departed"
         payload:
           version: "\${{ vars.version }}"
-          status: "\${{ tasks.live.status }}"
+          status: "\${{ with.outcome }}"
     on_finally:
       - invoke:
           tool: "nika:notify"
           args:
             channel: webhook
             target: "\${{ secrets.team_webhook }}"
-            message: "Release train \${{ vars.version }} · \${{ tasks.live.status }}"
+            message: "Release train \${{ vars.version }} · \${{ with.outcome }}"
             severity: info
 
 outputs:
@@ -2110,32 +2257,32 @@ export interface ShowcaseDag {
 }
 
 export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
-  't1-image-fx-batch': {"tasks": [{"id": "shots", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 21, "line1": 26}, {"id": "stylize", "verb": "invoke", "deps": ["shots"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:image_fx`", "flags": ["fan-out · ≤4 in flight"], "line0": 27, "line1": 39}], "outputs": ["rendered"], "waves": 2},
-  't1-meeting-actions': {"tasks": [{"id": "transcript", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 14, "line1": 17}, {"id": "extract", "verb": "infer", "deps": ["transcript"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 19, "line1": 37}, {"id": "save", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 39, "line1": 45}, {"id": "trace", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:log`", "flags": [], "line0": 47, "line1": 53}], "outputs": ["actions"], "waves": 3},
+  't1-image-fx-batch': {"tasks": [{"id": "shots", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 21, "line1": 26}, {"id": "stylize", "verb": "invoke", "deps": ["shots"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:image_fx`", "flags": ["fan-out · ≤4 in flight"], "line0": 27, "line1": 40}], "outputs": ["rendered"], "waves": 2},
+  't1-meeting-actions': {"tasks": [{"id": "transcript", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 14, "line1": 17}, {"id": "extract", "verb": "infer", "deps": ["transcript"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 19, "line1": 38}, {"id": "save", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 40, "line1": 47}, {"id": "trace", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:log`", "flags": [], "line0": 49, "line1": 56}], "outputs": ["actions"], "waves": 3},
   't1-og-images': {"tasks": [{"id": "hero", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:image_generate`", "flags": [], "line0": 10, "line1": 20}], "outputs": ["paths", "manifest"], "waves": 1},
-  't1-price-watch': {"tasks": [{"id": "check", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 18, "line1": 31}, {"id": "alert", "verb": "invoke", "deps": ["check"], "wave": 1, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 33, "line1": 42}], "outputs": ["price"], "waves": 2},
-  't1-social-repurpose': {"tasks": [{"id": "post", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 11, "line1": 16}, {"id": "thread", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 17, "line1": 20}, {"id": "linkedin", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 22, "line1": 25}, {"id": "newsletter", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 27, "line1": 30}, {"id": "bundle", "verb": "invoke", "deps": ["thread", "linkedin", "newsletter"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 32, "line1": 52}], "outputs": ["bundle_path"], "waves": 3},
-  't1-standup-digest': {"tasks": [{"id": "today", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 9, "line1": 12}, {"id": "history", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 14, "line1": 16}, {"id": "digest", "verb": "infer", "deps": ["today", "history"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 18, "line1": 27}, {"id": "save", "verb": "invoke", "deps": ["digest"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 29, "line1": 35}], "outputs": ["note"], "waves": 3},
-  't2-bookmark-triage': {"tasks": [{"id": "pages", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "for each item · call `nika:fetch`", "flags": ["fan-out · ≤3 in flight", "collects errors", "retry"], "line0": 25, "line1": 38}, {"id": "table", "verb": "invoke", "deps": ["pages"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 39, "line1": 54}, {"id": "report", "verb": "invoke", "deps": ["table"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 56, "line1": 71}], "outputs": ["table"], "waves": 3},
-  't2-contract-guard': {"tasks": [{"id": "contract", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 14, "line1": 17}, {"id": "clauses", "verb": "infer", "deps": ["contract"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 19, "line1": 38}, {"id": "check", "verb": "invoke", "deps": ["clauses"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 40, "line1": 53}, {"id": "gate", "verb": "invoke", "deps": ["check"], "wave": 3, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 55, "line1": 61}, {"id": "memo", "verb": "infer", "deps": ["clauses", "gate"], "wave": 4, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 63, "line1": 69}, {"id": "save", "verb": "invoke", "deps": ["memo"], "wave": 5, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 71, "line1": 78}], "outputs": ["clauses", "memo"], "waves": 6},
-  't2-csv-chart-report': {"tasks": [{"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 16, "line1": 19}, {"id": "rows", "verb": "invoke", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 21, "line1": 31}, {"id": "by_region", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 32, "line1": 40}, {"id": "chart", "verb": "invoke", "deps": ["by_region"], "wave": 3, "gate": "default", "gloss": "call `nika:chart`", "flags": [], "line0": 41, "line1": 52}, {"id": "rows_md", "verb": "invoke", "deps": ["by_region"], "wave": 3, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 53, "line1": 63}, {"id": "report", "verb": "invoke", "deps": ["chart", "rows_md"], "wave": 4, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 64, "line1": 79}], "outputs": ["by_region"], "waves": 5},
-  't2-etl-quarantine': {"tasks": [{"id": "empty_batch", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 10, "line1": 13}, {"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 15, "line1": 18}, {"id": "rows", "verb": "invoke", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 20, "line1": 30}, {"id": "check", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 32, "line1": 47}, {"id": "good", "verb": "invoke", "deps": ["rows", "check"], "wave": 3, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 49, "line1": 56}, {"id": "quarantine", "verb": "invoke", "deps": ["rows", "check"], "wave": 3, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 58, "line1": 66}, {"id": "report", "verb": "invoke", "deps": ["good"], "wave": 4, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 68, "line1": 76}], "outputs": ["totals"], "waves": 5},
-  't2-invoice-chaser': {"tasks": [{"id": "ledger", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 11, "line1": 14}, {"id": "rows", "verb": "invoke", "deps": ["ledger"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 16, "line1": 24}, {"id": "overdue", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 26, "line1": 32}, {"id": "drafts", "verb": "infer", "deps": ["overdue"], "wave": 3, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 34, "line1": 41}, {"id": "approve", "verb": "invoke", "deps": ["drafts"], "wave": 4, "gate": "when", "gloss": "call `nika:prompt` · only if its condition holds", "flags": ["conditional"], "line0": 43, "line1": 50}, {"id": "save", "verb": "invoke", "deps": ["approve", "drafts"], "wave": 5, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 52, "line1": 59}], "outputs": ["overdue"], "waves": 6},
-  't2-model-bench': {"tasks": [{"id": "ask_incumbent", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 13, "line1": 17}, {"id": "ask_challenger", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 19, "line1": 23}, {"id": "ask_tiny", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 25, "line1": 29}, {"id": "tabulate", "verb": "invoke", "deps": ["ask_incumbent", "ask_challenger", "ask_tiny"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 31, "line1": 52}, {"id": "persist", "verb": "invoke", "deps": ["tabulate"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 54, "line1": 67}], "outputs": [], "waves": 3},
-  't2-release-notes': {"tasks": [{"id": "history", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 19, "line1": 21}, {"id": "notes", "verb": "infer", "deps": ["history"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 23, "line1": 36}, {"id": "changelog", "verb": "invoke", "deps": ["notes"], "wave": 2, "gate": "default", "gloss": "call `nika:edit`", "flags": [], "line0": 38, "line1": 50}, {"id": "announce", "verb": "invoke", "deps": ["notes", "changelog"], "wave": 3, "gate": "default", "gloss": "call `nika:notify`", "flags": [], "line0": 52, "line1": 60}], "outputs": ["headline", "body"], "waves": 4},
-  't2-release-radar': {"tasks": [{"id": "no_state", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 13, "line1": 16}, {"id": "previous", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 18, "line1": 24}, {"id": "feed", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 26, "line1": 33}, {"id": "fresh", "verb": "invoke", "deps": ["previous", "feed"], "wave": 1, "gate": "default", "gloss": "call `nika:json_diff`", "flags": [], "line0": 35, "line1": 41}, {"id": "digest", "verb": "infer", "deps": ["fresh", "feed"], "wave": 2, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 43, "line1": 53}, {"id": "save_state", "verb": "invoke", "deps": ["feed"], "wave": 1, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 55, "line1": 63}], "outputs": ["new_entries"], "waves": 3},
-  't2-seo-content-brief': {"tasks": [{"id": "map", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 15, "line1": 22}, {"id": "top_page", "verb": "invoke", "deps": ["map"], "wave": 1, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 24, "line1": 30}, {"id": "brief", "verb": "infer", "deps": ["map", "top_page"], "wave": 2, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 32, "line1": 50}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 52, "line1": 59}], "outputs": ["brief"], "waves": 4},
-  't2-support-triage': {"tasks": [{"id": "batch", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:uuid`", "flags": [], "line0": 19, "line1": 22}, {"id": "queue", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 24, "line1": 27}, {"id": "triage", "verb": "infer", "deps": ["queue"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 29, "line1": 49}, {"id": "urgent", "verb": "invoke", "deps": ["triage"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 51, "line1": 57}, {"id": "escalate", "verb": "invoke", "deps": ["urgent", "batch"], "wave": 3, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 59, "line1": 68}, {"id": "board", "verb": "invoke", "deps": ["triage", "batch"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 70, "line1": 76}], "outputs": ["tickets"], "waves": 4},
-  't2-transcript-shownotes': {"tasks": [{"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 18, "line1": 23}, {"id": "notes", "verb": "infer", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 24, "line1": 53}, {"id": "sections", "verb": "invoke", "deps": ["notes"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 54, "line1": 64}, {"id": "page", "verb": "invoke", "deps": ["sections", "notes"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 66, "line1": 85}], "outputs": ["notes"], "waves": 4},
-  't3-competitor-radar': {"tasks": [{"id": "map", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 19, "line1": 26}, {"id": "pages", "verb": "invoke", "deps": ["map"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:fetch`", "flags": ["fan-out · ≤4 in flight", "collects errors", "retry", "timeout 30s"], "line0": 28, "line1": 44}, {"id": "digest", "verb": "infer", "deps": ["pages"], "wave": 2, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 46, "line1": 53}, {"id": "save", "verb": "invoke", "deps": ["digest"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 55, "line1": 62}, {"id": "ping", "verb": "invoke", "deps": ["save"], "wave": 4, "gate": "default", "gloss": "call `nika:notify`", "flags": [], "line0": 64, "line1": 72}], "outputs": ["brief"], "waves": 5},
-  't3-config-drift-sentinel': {"tasks": [{"id": "live", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 24, "line1": 33}, {"id": "baseline", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 35, "line1": 38}, {"id": "expected", "verb": "invoke", "deps": ["baseline"], "wave": 1, "gate": "default", "gloss": "call `nika:json_merge_patch`", "flags": [], "line0": 40, "line1": 46}, {"id": "drift", "verb": "invoke", "deps": ["expected", "live"], "wave": 2, "gate": "default", "gloss": "call `nika:json_diff`", "flags": [], "line0": 48, "line1": 54}, {"id": "fingerprint", "verb": "invoke", "deps": ["live"], "wave": 1, "gate": "default", "gloss": "call `nika:hash`", "flags": [], "line0": 56, "line1": 63}, {"id": "explain", "verb": "infer", "deps": ["drift"], "wave": 3, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 65, "line1": 74}, {"id": "alert", "verb": "invoke", "deps": ["explain", "drift", "fingerprint"], "wave": 4, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 76, "line1": 85}, {"id": "record", "verb": "invoke", "deps": ["drift", "fingerprint"], "wave": 3, "gate": "default", "gloss": "call `nika:emit`", "flags": [], "line0": 87, "line1": 95}], "outputs": ["drift"], "waves": 5},
-  't3-localization-factory': {"tasks": [{"id": "files", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 12, "line1": 17}, {"id": "texts", "verb": "invoke", "deps": ["files"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:read`", "flags": ["fan-out · ≤8 in flight"], "line0": 19, "line1": 25}, {"id": "pairs", "verb": "invoke", "deps": ["files", "texts"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 27, "line1": 33}, {"id": "translated", "verb": "infer", "deps": ["pairs"], "wave": 3, "gate": "default", "gloss": "for each item · ask the model", "flags": ["fan-out · ≤3 in flight", "collects errors"], "line0": 35, "line1": 46}, {"id": "bundle", "verb": "invoke", "deps": ["pairs", "translated"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 48, "line1": 54}, {"id": "mirror", "verb": "invoke", "deps": ["bundle"], "wave": 5, "gate": "default", "gloss": "for each item · call `nika:write`", "flags": ["fan-out · ≤8 in flight"], "line0": 56, "line1": 65}], "outputs": ["files"], "waves": 6},
-  't3-pr-review-fanout': {"tasks": [{"id": "changed", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 11, "line1": 13}, {"id": "files", "verb": "invoke", "deps": ["changed"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 15, "line1": 21}, {"id": "todo_sweep", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:grep`", "flags": [], "line0": 23, "line1": 28}, {"id": "reviews", "verb": "agent", "deps": ["files"], "wave": 2, "gate": "default", "gloss": "for each item · run an agent loop · 2 tools granted", "flags": ["fan-out · ≤4 in flight", "collects errors", "typed output"], "line0": 30, "line1": 58}, {"id": "merged", "verb": "invoke", "deps": ["reviews"], "wave": 3, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 60, "line1": 68}, {"id": "summary", "verb": "infer", "deps": ["merged", "todo_sweep"], "wave": 4, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 70, "line1": 78}, {"id": "save", "verb": "invoke", "deps": ["summary"], "wave": 5, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 80, "line1": 86}], "outputs": ["findings", "review"], "waves": 6},
-  't3-resume-screener': {"tasks": [{"id": "pool", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 19, "line1": 22}, {"id": "cvs", "verb": "invoke", "deps": ["pool"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:read`", "flags": ["fan-out · ≤8 in flight", "collects errors"], "line0": 24, "line1": 33}, {"id": "pairs", "verb": "invoke", "deps": ["pool", "cvs"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 35, "line1": 41}, {"id": "screened", "verb": "infer", "deps": ["pairs"], "wave": 3, "gate": "default", "gloss": "for each item · ask the model for typed JSON", "flags": ["fan-out · ≤2 in flight", "collects errors", "typed output"], "line0": 43, "line1": 68}, {"id": "ranked", "verb": "invoke", "deps": ["screened"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 70, "line1": 76}, {"id": "shortlist", "verb": "invoke", "deps": ["ranked"], "wave": 5, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 78, "line1": 84}, {"id": "brief", "verb": "infer", "deps": ["shortlist"], "wave": 6, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 86, "line1": 94}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 7, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 96, "line1": 104}], "outputs": ["shortlist"], "waves": 8},
-  't4-ceo-monday-brief': {"tasks": [{"id": "news", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 21, "line1": 29}, {"id": "pulse", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 30, "line1": 34}, {"id": "kpi_raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 35, "line1": 38}, {"id": "kpis", "verb": "invoke", "deps": ["kpi_raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 40, "line1": 48}, {"id": "revenue", "verb": "invoke", "deps": ["kpis"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 50, "line1": 58}, {"id": "brief", "verb": "infer", "deps": ["news", "pulse", "kpis", "revenue"], "wave": 3, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 59, "line1": 73}, {"id": "stamp", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 75, "line1": 80}, {"id": "save", "verb": "invoke", "deps": ["brief", "stamp"], "wave": 4, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 82, "line1": 91}, {"id": "bill", "verb": "invoke", "deps": ["save"], "wave": 5, "gate": "default", "gloss": "call `nika:inspect`", "flags": [], "line0": 92, "line1": 96}, {"id": "ping", "verb": "invoke", "deps": ["bill", "stamp"], "wave": 6, "gate": "default", "gloss": "call `nika:notify`", "flags": ["cleanup always runs"], "line0": 98, "line1": 113}], "outputs": ["brief", "cost_usd"], "waves": 7},
-  't4-deep-research-brief': {"tasks": [{"id": "plan", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 14, "line1": 24}, {"id": "investigate", "verb": "agent", "deps": ["plan"], "wave": 1, "gate": "default", "gloss": "run an agent loop · 3 tools granted", "flags": ["typed output"], "line0": 26, "line1": 49}, {"id": "brief", "verb": "infer", "deps": ["investigate"], "wave": 2, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 51, "line1": 61}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 63, "line1": 70}], "outputs": ["brief", "sources"], "waves": 4},
-  't4-incident-war-room': {"tasks": [{"id": "logs", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `journalctl`", "flags": [], "line0": 22, "line1": 25}, {"id": "status_history", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 27, "line1": 37}, {"id": "runbook", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 39, "line1": 44}, {"id": "timeline", "verb": "infer", "deps": ["logs", "status_history", "runbook"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 45, "line1": 69}, {"id": "settle", "verb": "invoke", "deps": ["timeline"], "wave": 2, "gate": "default", "gloss": "call `nika:wait`", "flags": [], "line0": 70, "line1": 74}, {"id": "recheck", "verb": "invoke", "deps": ["settle"], "wave": 3, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 76, "line1": 83}, {"id": "confirmed", "verb": "invoke", "deps": ["recheck"], "wave": 4, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 85, "line1": 93}, {"id": "postmortem", "verb": "infer", "deps": ["timeline", "confirmed"], "wave": 5, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 94, "line1": 104}, {"id": "save", "verb": "invoke", "deps": ["postmortem"], "wave": 6, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 106, "line1": 118}, {"id": "ping", "verb": "invoke", "deps": ["save"], "wave": 7, "gate": "always", "gloss": "call `nika:emit` · only if its condition holds", "flags": ["conditional", "cleanup always runs"], "line0": 119, "line1": 136}], "outputs": ["events", "postmortem"], "waves": 8},
-  't4-release-train': {"tasks": [{"id": "t0", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 21, "line1": 26}, {"id": "tests", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `cargo`", "flags": ["timeout 15m"], "line0": 27, "line1": 31}, {"id": "lint", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `cargo`", "flags": ["timeout 10m"], "line0": 33, "line1": 37}, {"id": "audit", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `cargo`", "flags": ["retry", "timeout 5m"], "line0": 39, "line1": 45}, {"id": "gates_green", "verb": "invoke", "deps": ["tests", "lint", "audit"], "wave": 1, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 47, "line1": 53}, {"id": "gate_time", "verb": "invoke", "deps": ["t0", "gates_green"], "wave": 2, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 55, "line1": 65}, {"id": "conductor", "verb": "invoke", "deps": ["gates_green", "gate_time"], "wave": 3, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 66, "line1": 72}, {"id": "approved", "verb": "invoke", "deps": ["conductor"], "wave": 4, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 74, "line1": 82}, {"id": "hold", "verb": "invoke", "deps": ["approved"], "wave": 5, "gate": "default", "gloss": "call `nika:wait`", "flags": [], "line0": 83, "line1": 89}, {"id": "ship", "verb": "exec", "deps": ["hold"], "wave": 6, "gate": "default", "gloss": "run `./scripts/release.sh`", "flags": ["timeout 30m"], "line0": 91, "line1": 96}, {"id": "verify", "verb": "invoke", "deps": ["ship"], "wave": 7, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 98, "line1": 109}, {"id": "live", "verb": "invoke", "deps": ["verify"], "wave": 8, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 111, "line1": 122}, {"id": "record", "verb": "invoke", "deps": ["live"], "wave": 9, "gate": "always", "gloss": "call `nika:emit` · only if its condition holds", "flags": ["conditional", "cleanup always runs"], "line0": 123, "line1": 140}], "outputs": ["shipped"], "waves": 10},
+  't1-price-watch': {"tasks": [{"id": "check", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 18, "line1": 31}, {"id": "alert", "verb": "invoke", "deps": ["check"], "wave": 1, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 33, "line1": 44}], "outputs": ["price"], "waves": 2},
+  't1-social-repurpose': {"tasks": [{"id": "post", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 11, "line1": 16}, {"id": "thread", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 17, "line1": 21}, {"id": "linkedin", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 23, "line1": 27}, {"id": "newsletter", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 29, "line1": 33}, {"id": "bundle", "verb": "invoke", "deps": ["thread", "linkedin", "newsletter"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 35, "line1": 54}], "outputs": ["bundle_path"], "waves": 3},
+  't1-standup-digest': {"tasks": [{"id": "today", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 9, "line1": 12}, {"id": "history", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 14, "line1": 16}, {"id": "digest", "verb": "infer", "deps": ["today", "history"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 18, "line1": 29}, {"id": "save", "verb": "invoke", "deps": ["digest"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 31, "line1": 38}], "outputs": ["note"], "waves": 3},
+  't2-bookmark-triage': {"tasks": [{"id": "pages", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "for each item · call `nika:fetch`", "flags": ["fan-out · ≤3 in flight", "collects errors", "retry"], "line0": 25, "line1": 38}, {"id": "table", "verb": "invoke", "deps": ["pages"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 39, "line1": 55}, {"id": "report", "verb": "invoke", "deps": ["table"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 57, "line1": 74}], "outputs": ["table"], "waves": 3},
+  't2-contract-guard': {"tasks": [{"id": "contract", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 14, "line1": 17}, {"id": "clauses", "verb": "infer", "deps": ["contract"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 19, "line1": 39}, {"id": "check", "verb": "invoke", "deps": ["clauses"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 41, "line1": 55}, {"id": "gate", "verb": "invoke", "deps": ["check"], "wave": 3, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 57, "line1": 64}, {"id": "memo", "verb": "infer", "deps": ["clauses", "gate"], "wave": 4, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 66, "line1": 75}, {"id": "save", "verb": "invoke", "deps": ["memo"], "wave": 5, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 77, "line1": 85}], "outputs": ["clauses", "memo"], "waves": 6},
+  't2-csv-chart-report': {"tasks": [{"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 16, "line1": 19}, {"id": "rows", "verb": "invoke", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 21, "line1": 32}, {"id": "by_region", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 33, "line1": 42}, {"id": "chart", "verb": "invoke", "deps": ["by_region"], "wave": 3, "gate": "default", "gloss": "call `nika:chart`", "flags": [], "line0": 43, "line1": 55}, {"id": "rows_md", "verb": "invoke", "deps": ["by_region"], "wave": 3, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 56, "line1": 67}, {"id": "report", "verb": "invoke", "deps": ["rows_md", "chart"], "wave": 4, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 68, "line1": 86}], "outputs": ["by_region"], "waves": 5},
+  't2-etl-quarantine': {"tasks": [{"id": "empty_batch", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 10, "line1": 13}, {"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 15, "line1": 18}, {"id": "rows", "verb": "invoke", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 20, "line1": 31}, {"id": "check", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 33, "line1": 49}, {"id": "good", "verb": "invoke", "deps": ["rows", "check"], "wave": 3, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 51, "line1": 60}, {"id": "quarantine", "verb": "invoke", "deps": ["check"], "wave": 3, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 62, "line1": 72}, {"id": "report", "verb": "invoke", "deps": ["good"], "wave": 4, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 74, "line1": 83}], "outputs": ["totals"], "waves": 5},
+  't2-invoice-chaser': {"tasks": [{"id": "ledger", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 11, "line1": 14}, {"id": "rows", "verb": "invoke", "deps": ["ledger"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 16, "line1": 25}, {"id": "overdue", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 27, "line1": 34}, {"id": "drafts", "verb": "infer", "deps": ["overdue"], "wave": 3, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 36, "line1": 44}, {"id": "approve", "verb": "invoke", "deps": ["drafts"], "wave": 4, "gate": "when", "gloss": "call `nika:prompt` · only if its condition holds", "flags": ["conditional"], "line0": 46, "line1": 54}, {"id": "save", "verb": "invoke", "deps": ["drafts", "approve"], "wave": 5, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 56, "line1": 65}], "outputs": ["overdue"], "waves": 6},
+  't2-model-bench': {"tasks": [{"id": "ask_incumbent", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 13, "line1": 17}, {"id": "ask_challenger", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 19, "line1": 23}, {"id": "ask_tiny", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 25, "line1": 29}, {"id": "tabulate", "verb": "invoke", "deps": ["ask_incumbent", "ask_challenger", "ask_tiny"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 31, "line1": 58}, {"id": "persist", "verb": "invoke", "deps": ["tabulate"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 60, "line1": 74}], "outputs": [], "waves": 3},
+  't2-release-notes': {"tasks": [{"id": "history", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 19, "line1": 21}, {"id": "notes", "verb": "infer", "deps": ["history"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 23, "line1": 37}, {"id": "changelog", "verb": "invoke", "deps": ["notes"], "wave": 2, "gate": "default", "gloss": "call `nika:edit`", "flags": [], "line0": 39, "line1": 53}, {"id": "announce", "verb": "invoke", "deps": ["notes", "changelog"], "wave": 3, "gate": "default", "gloss": "call `nika:notify`", "flags": [], "line0": 55, "line1": 66}], "outputs": ["headline", "body"], "waves": 4},
+  't2-release-radar': {"tasks": [{"id": "no_state", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 13, "line1": 16}, {"id": "previous", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 18, "line1": 24}, {"id": "feed", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 26, "line1": 33}, {"id": "fresh", "verb": "invoke", "deps": ["previous", "feed"], "wave": 1, "gate": "default", "gloss": "call `nika:json_diff`", "flags": [], "line0": 35, "line1": 43}, {"id": "digest", "verb": "infer", "deps": ["fresh", "feed"], "wave": 2, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 45, "line1": 57}, {"id": "save_state", "verb": "invoke", "deps": ["feed"], "wave": 1, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 59, "line1": 68}], "outputs": ["new_entries"], "waves": 3},
+  't2-seo-content-brief': {"tasks": [{"id": "map", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 15, "line1": 22}, {"id": "top_page", "verb": "invoke", "deps": ["map"], "wave": 1, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 24, "line1": 31}, {"id": "brief", "verb": "infer", "deps": ["map", "top_page"], "wave": 2, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 33, "line1": 53}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 55, "line1": 63}], "outputs": ["brief"], "waves": 4},
+  't2-support-triage': {"tasks": [{"id": "batch", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:uuid`", "flags": [], "line0": 19, "line1": 22}, {"id": "queue", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 24, "line1": 27}, {"id": "triage", "verb": "infer", "deps": ["queue"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 29, "line1": 50}, {"id": "urgent", "verb": "invoke", "deps": ["triage"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 52, "line1": 59}, {"id": "escalate", "verb": "invoke", "deps": ["urgent", "batch"], "wave": 3, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 61, "line1": 72}, {"id": "board", "verb": "invoke", "deps": ["triage", "batch"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 74, "line1": 82}], "outputs": ["tickets"], "waves": 4},
+  't2-transcript-shownotes': {"tasks": [{"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 18, "line1": 23}, {"id": "notes", "verb": "infer", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 24, "line1": 54}, {"id": "sections", "verb": "invoke", "deps": ["notes"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 55, "line1": 66}, {"id": "page", "verb": "invoke", "deps": ["notes", "sections"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 68, "line1": 90}], "outputs": ["notes"], "waves": 4},
+  't3-competitor-radar': {"tasks": [{"id": "map", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 19, "line1": 26}, {"id": "pages", "verb": "invoke", "deps": ["map"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:fetch`", "flags": ["fan-out · ≤4 in flight", "collects errors", "retry", "timeout 30s"], "line0": 28, "line1": 45}, {"id": "digest", "verb": "infer", "deps": ["pages"], "wave": 2, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 47, "line1": 55}, {"id": "save", "verb": "invoke", "deps": ["digest"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 57, "line1": 65}, {"id": "ping", "verb": "invoke", "deps": ["save"], "wave": 4, "gate": "default", "gloss": "call `nika:notify`", "flags": [], "line0": 67, "line1": 76}], "outputs": ["brief"], "waves": 5},
+  't3-config-drift-sentinel': {"tasks": [{"id": "live", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 24, "line1": 33}, {"id": "baseline", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 35, "line1": 38}, {"id": "expected", "verb": "invoke", "deps": ["baseline"], "wave": 1, "gate": "default", "gloss": "call `nika:json_merge_patch`", "flags": [], "line0": 40, "line1": 47}, {"id": "drift", "verb": "invoke", "deps": ["expected", "live"], "wave": 2, "gate": "default", "gloss": "call `nika:json_diff`", "flags": [], "line0": 49, "line1": 57}, {"id": "fingerprint", "verb": "invoke", "deps": ["live"], "wave": 1, "gate": "default", "gloss": "call `nika:hash`", "flags": [], "line0": 59, "line1": 67}, {"id": "explain", "verb": "infer", "deps": ["drift"], "wave": 3, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 69, "line1": 79}, {"id": "alert", "verb": "invoke", "deps": ["drift", "explain", "fingerprint"], "wave": 4, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 81, "line1": 93}, {"id": "record", "verb": "invoke", "deps": ["drift", "fingerprint"], "wave": 3, "gate": "default", "gloss": "call `nika:emit`", "flags": [], "line0": 95, "line1": 105}], "outputs": ["drift"], "waves": 5},
+  't3-localization-factory': {"tasks": [{"id": "files", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 12, "line1": 17}, {"id": "texts", "verb": "invoke", "deps": ["files"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:read`", "flags": ["fan-out · ≤8 in flight"], "line0": 19, "line1": 26}, {"id": "pairs", "verb": "invoke", "deps": ["files", "texts"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 28, "line1": 36}, {"id": "translated", "verb": "infer", "deps": ["pairs"], "wave": 3, "gate": "default", "gloss": "for each item · ask the model", "flags": ["fan-out · ≤3 in flight", "collects errors"], "line0": 38, "line1": 50}, {"id": "bundle", "verb": "invoke", "deps": ["pairs", "translated"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 52, "line1": 60}, {"id": "mirror", "verb": "invoke", "deps": ["bundle"], "wave": 5, "gate": "default", "gloss": "for each item · call `nika:write`", "flags": ["fan-out · ≤8 in flight"], "line0": 62, "line1": 72}], "outputs": ["files"], "waves": 6},
+  't3-pr-review-fanout': {"tasks": [{"id": "changed", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 11, "line1": 13}, {"id": "files", "verb": "invoke", "deps": ["changed"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 15, "line1": 22}, {"id": "todo_sweep", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:grep`", "flags": [], "line0": 24, "line1": 29}, {"id": "reviews", "verb": "agent", "deps": ["files"], "wave": 2, "gate": "default", "gloss": "for each item · run an agent loop · 2 tools granted", "flags": ["fan-out · ≤4 in flight", "collects errors", "typed output"], "line0": 31, "line1": 60}, {"id": "merged", "verb": "invoke", "deps": ["reviews"], "wave": 3, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 62, "line1": 71}, {"id": "summary", "verb": "infer", "deps": ["merged", "todo_sweep"], "wave": 4, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 73, "line1": 83}, {"id": "save", "verb": "invoke", "deps": ["summary"], "wave": 5, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 85, "line1": 92}], "outputs": ["findings", "review"], "waves": 6},
+  't3-resume-screener': {"tasks": [{"id": "pool", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 19, "line1": 22}, {"id": "cvs", "verb": "invoke", "deps": ["pool"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:read`", "flags": ["fan-out · ≤8 in flight", "collects errors"], "line0": 24, "line1": 34}, {"id": "pairs", "verb": "invoke", "deps": ["pool", "cvs"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 36, "line1": 44}, {"id": "screened", "verb": "infer", "deps": ["pairs"], "wave": 3, "gate": "default", "gloss": "for each item · ask the model for typed JSON", "flags": ["fan-out · ≤2 in flight", "collects errors", "typed output"], "line0": 46, "line1": 71}, {"id": "ranked", "verb": "invoke", "deps": ["screened"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 73, "line1": 80}, {"id": "shortlist", "verb": "invoke", "deps": ["ranked"], "wave": 5, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 82, "line1": 89}, {"id": "brief", "verb": "infer", "deps": ["shortlist"], "wave": 6, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 91, "line1": 100}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 7, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 102, "line1": 111}], "outputs": ["shortlist"], "waves": 8},
+  't4-ceo-monday-brief': {"tasks": [{"id": "news", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 21, "line1": 29}, {"id": "pulse", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 30, "line1": 34}, {"id": "kpi_raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 35, "line1": 38}, {"id": "kpis", "verb": "invoke", "deps": ["kpi_raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 40, "line1": 49}, {"id": "revenue", "verb": "invoke", "deps": ["kpis"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 51, "line1": 60}, {"id": "brief", "verb": "infer", "deps": ["news", "pulse", "kpis", "revenue"], "wave": 3, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 61, "line1": 79}, {"id": "stamp", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 81, "line1": 86}, {"id": "save", "verb": "invoke", "deps": ["stamp", "brief"], "wave": 4, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 88, "line1": 99}, {"id": "bill", "verb": "invoke", "deps": ["save"], "wave": 5, "gate": "default", "gloss": "call `nika:inspect`", "flags": [], "line0": 100, "line1": 105}, {"id": "ping", "verb": "invoke", "deps": ["stamp", "bill"], "wave": 6, "gate": "default", "gloss": "call `nika:notify`", "flags": ["cleanup always runs"], "line0": 107, "line1": 124}], "outputs": ["brief", "cost_usd"], "waves": 7},
+  't4-deep-research-brief': {"tasks": [{"id": "plan", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 14, "line1": 24}, {"id": "investigate", "verb": "agent", "deps": ["plan"], "wave": 1, "gate": "default", "gloss": "run an agent loop · 3 tools granted", "flags": ["typed output"], "line0": 26, "line1": 50}, {"id": "brief", "verb": "infer", "deps": ["investigate"], "wave": 2, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 52, "line1": 64}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 66, "line1": 74}], "outputs": ["brief", "sources"], "waves": 4},
+  't4-incident-war-room': {"tasks": [{"id": "logs", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `journalctl`", "flags": [], "line0": 22, "line1": 25}, {"id": "status_history", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 27, "line1": 37}, {"id": "runbook", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 39, "line1": 44}, {"id": "timeline", "verb": "infer", "deps": ["logs", "status_history", "runbook"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 45, "line1": 72}, {"id": "settle", "verb": "invoke", "deps": ["timeline"], "wave": 2, "gate": "default", "gloss": "call `nika:wait`", "flags": [], "line0": 73, "line1": 78}, {"id": "recheck", "verb": "invoke", "deps": ["settle"], "wave": 3, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 80, "line1": 88}, {"id": "confirmed", "verb": "invoke", "deps": ["recheck"], "wave": 4, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 90, "line1": 99}, {"id": "postmortem", "verb": "infer", "deps": ["timeline", "confirmed"], "wave": 5, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 100, "line1": 113}, {"id": "save", "verb": "invoke", "deps": ["postmortem"], "wave": 6, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 115, "line1": 128}, {"id": "ping", "verb": "invoke", "deps": ["save"], "wave": 7, "gate": "default", "gloss": "call `nika:emit`", "flags": ["cleanup always runs"], "line0": 129, "line1": 148}], "outputs": ["events", "postmortem"], "waves": 8},
+  't4-release-train': {"tasks": [{"id": "t0", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 21, "line1": 26}, {"id": "tests", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `cargo`", "flags": ["timeout 15m"], "line0": 27, "line1": 31}, {"id": "lint", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `cargo`", "flags": ["timeout 10m"], "line0": 33, "line1": 37}, {"id": "audit", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `cargo`", "flags": ["retry", "timeout 5m"], "line0": 39, "line1": 45}, {"id": "gates_green", "verb": "invoke", "deps": ["tests", "lint", "audit"], "wave": 1, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 47, "line1": 54}, {"id": "gate_time", "verb": "invoke", "deps": ["t0", "gates_green"], "wave": 2, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 56, "line1": 69}, {"id": "conductor", "verb": "invoke", "deps": ["gate_time"], "wave": 3, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 70, "line1": 77}, {"id": "approved", "verb": "invoke", "deps": ["conductor"], "wave": 4, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 79, "line1": 88}, {"id": "hold", "verb": "invoke", "deps": ["approved"], "wave": 5, "gate": "default", "gloss": "call `nika:wait`", "flags": [], "line0": 89, "line1": 96}, {"id": "ship", "verb": "exec", "deps": ["hold"], "wave": 6, "gate": "default", "gloss": "run `./scripts/release.sh`", "flags": ["timeout 30m"], "line0": 98, "line1": 104}, {"id": "verify", "verb": "invoke", "deps": ["ship"], "wave": 7, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 106, "line1": 118}, {"id": "live", "verb": "invoke", "deps": ["verify"], "wave": 8, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 120, "line1": 132}, {"id": "record", "verb": "invoke", "deps": ["live"], "wave": 9, "gate": "default", "gloss": "call `nika:emit`", "flags": ["cleanup always runs"], "line0": 133, "line1": 152}], "outputs": ["shipped"], "waves": 10},
 }
 
 /** the 6 instantiable skeletons (spec templates/ · SLOT comments
@@ -2165,13 +2312,14 @@ tasks:
           steps: { type: array, items: { type: string } }
 
   execute:
-    depends_on: [plan]
+    with:
+      steps: \${{ tasks.plan.output.steps }}
     agent:
       # The done-contract belongs IN the prompt: the final message must
       # carry the schema'd shape, so SAY so — a live model that is not
       # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).
       system: "Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a \`findings\` array (one short string each), then call nika:done."   # SLOT
-      prompt: "Plan · \${{ tasks.plan.output.steps }}"
+      prompt: "Plan · \${{ with.steps }}"
       tools:                        # SLOT: the MINIMUM grant for the job
         - "nika:read"
         - "nika:done"
@@ -2184,11 +2332,12 @@ tasks:
           findings: { type: array, items: { type: string } }
 
   confirm:
-    depends_on: [execute]
+    with:
+      has_findings: \${{ size(tasks.execute.output.findings) > 0 }}   # the check crosses as ONE boundary expression
     invoke:
       tool: "nika:assert"
       args:
-        condition: "\${{ size(tasks.execute.output.findings) > 0 }}"
+        condition: "\${{ with.has_findings }}"
         message: "Agent returned no findings, do not trust an empty run"   # SLOT
 
 outputs:
@@ -2232,7 +2381,8 @@ tasks:
         jq: ".url"                  # SLOT: where the response carries the asset URL
 
   create:
-    depends_on: [upload]
+    with:
+      upload: \${{ tasks.upload.output }}
     invoke:
       tool: "nika:fetch"
       args:
@@ -2241,7 +2391,7 @@ tasks:
         headers:
           x-api-key: "\${{ secrets.API_KEY }}"
         body:                       # SLOT: the create payload (objects auto-JSON)
-          asset_url: "\${{ tasks.upload.output }}"
+          asset_url: "\${{ with.upload }}"
         mode: jq
         jq: "{ id: .id, url: .url }"   # SLOT: the fields downstream needs
 
@@ -2266,19 +2416,21 @@ tasks:
       args: { path: "\${{ vars.source }}" }
 
   think:
-    depends_on: [gather]
+    with:
+      gather: \${{ tasks.gather.output }}
     infer:
       prompt: |
-        # SLOT: the one model job · interpolate \${{ tasks.gather.output }}
-        Summarize · \${{ tasks.gather.output }}
+        # SLOT: the one model job · interpolate \${{ with.gather }}
+        Summarize · \${{ with.gather }}
 
   persist:
-    depends_on: [think]
+    with:
+      think: \${{ tasks.think.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./output.md"         # SLOT: destination
-        content: "\${{ tasks.think.output }}"   # ALWAYS pass content · a write without it writes nothing
+        content: "\${{ with.think }}"   # ALWAYS pass content · a write without it writes nothing
 
 outputs:
   result: \${{ tasks.think.output }}  # SLOT: the callable contract
@@ -2300,7 +2452,7 @@ permits:
       - "./docker-health.md"        # SLOT: where the report lands (must match \`keep\`)
 
 tasks:
-  # The reads run IN PARALLEL (no depends_on between them) — the
+  # The reads run IN PARALLEL (no edges between them) — the
   # scheduler proves it from the DAG, nobody orders it.
   ps:
     exec:
@@ -2312,15 +2464,17 @@ tasks:
       command: ["docker", "system", "df"]   # SLOT: the second read (drop the task if one suffices)
 
   diagnose:
-    depends_on: [ps, df]
+    with:
+      ps: \${{ tasks.ps.output }}
+      df: \${{ tasks.df.output }}
     infer:
       # SLOT: what should the model DO with the readings?
       prompt: |
         You are reading a Docker host's state. Containers (name·status·image):
-        \${{ tasks.ps.output }}
+        \${{ with.ps }}
 
         Disk usage:
-        \${{ tasks.df.output }}
+        \${{ with.df }}
 
         Write a short health report: what is running, what exited, what
         looks unhealthy (restart loops · old exits), and whether disk
@@ -2328,12 +2482,13 @@ tasks:
       max_tokens: 600               # SLOT: the spend ceiling for this call
 
   keep:
-    depends_on: [diagnose]
+    with:
+      diagnose: \${{ tasks.diagnose.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./docker-health.md"  # SLOT: same path as permits.fs.write
-        content: "\${{ tasks.diagnose.output }}"
+        content: "\${{ with.diagnose }}"
 
 outputs:
   report: \${{ tasks.keep.output }}
@@ -2373,29 +2528,33 @@ tasks:
       recover: []                   # offline rehearsal · an empty batch, the delta stays quiet
 
   delta:
-    depends_on: [previous, fresh]
+    with:                           # the bindings ARE the edges · previous + fresh → delta
+      previous: \${{ tasks.previous.output }}
+      fresh: \${{ tasks.fresh.output }}
     invoke:
       tool: "nika:json_diff"        # RFC 6902 · empty patch = nothing new
       args:
-        before: "\${{ tasks.previous.output }}"
-        after: "\${{ tasks.fresh.output }}"
+        before: "\${{ with.previous }}"
+        after: "\${{ with.fresh }}"
 
   process:
-    depends_on: [delta]
-    when: \${{ size(tasks.delta.output) > 0 }}
+    with:
+      delta: \${{ tasks.delta.output }}
+    when: \${{ size(with.delta) > 0 }}
     invoke:
       tool: "nika:jq"               # SLOT: the delta job (jq · infer · write…)
       args:
-        input: "\${{ tasks.delta.output }}"
+        input: "\${{ with.delta }}"
         expression: "length"
 
   save_state:
-    depends_on: [fresh]
+    with:
+      fresh: \${{ tasks.fresh.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "\${{ vars.state_path }}"
-        content: "\${{ tasks.fresh.output }}"
+        content: "\${{ with.fresh }}"
         create_dirs: true
         overwrite: true
 
@@ -2422,8 +2581,9 @@ tasks:
       args: { pattern: "\${{ vars.collection_source }}/*.md" }
 
   process:
-    depends_on: [discover]
-    for_each: \${{ tasks.discover.output }}
+    with:
+      discover: \${{ tasks.discover.output }}
+    for_each: \${{ with.discover }}
     max_parallel: 4                 # SLOT: the polite ceiling
     fail_fast: false
     timeout: "60s"                  # SLOT: per-iteration bound
@@ -2438,21 +2598,23 @@ tasks:
         Process this item · \${{ item }}
 
   survivors:
-    depends_on: [process]
+    with:
+      process: \${{ tasks.process.output }}
     invoke:                         # the null-aware fan-in · order preserved
       tool: "nika:jq"
       args:
-        input: \${{ tasks.process.output }}
+        input: \${{ with.process }}
         # \`. // []\` · an EMPTY discovery skips the whole for_each (null
         # upstream) — the fan-in must survive its own quiet day.
         expression: "(. // []) | [ .[] | select(. != null) ]"
 
   merge:
-    depends_on: [survivors]
+    with:
+      survivors: \${{ tasks.survivors.output }}
     infer:
       prompt: |
         # SLOT: the fan-in · the survivors array (failed items filtered)
-        Merge these results into one report · \${{ tasks.survivors.output }}
+        Merge these results into one report · \${{ with.survivors }}
 
 outputs:
   report: \${{ tasks.merge.output }}
@@ -2490,15 +2652,16 @@ tasks:
       recover: { value: 42 }
 
   act:
-    depends_on: [check]
+    with:
+      value: \${{ tasks.check.value }}   # the binding IS the edge · check → act
     # when: is a SKIP gate — routing, not failure (a skipped task is not an error)
-    when: \${{ tasks.check.value > vars.threshold }}   # SLOT: the CEL condition
+    when: \${{ with.value > vars.threshold }}   # SLOT: the CEL condition
     invoke:
       tool: "nika:notify"           # SLOT: the action · notify / write / exec
       args:
         channel: webhook
         target: "\${{ secrets.webhook }}"
-        message: "Threshold crossed · \${{ tasks.check.value }}"   # SLOT
+        message: "Threshold crossed · \${{ with.value }}"   # SLOT
         severity: warning
 
 outputs:
@@ -2535,15 +2698,17 @@ tasks:
       capture: structured
 
   gates:
-    depends_on: [check_a, check_b]
+    with:
+      all_green: \${{ tasks.check_a.output.exit_code == 0 && tasks.check_b.output.exit_code == 0 }}   # two value edges · one boundary expression
     invoke:
       tool: "nika:assert"
       args:
-        condition: "\${{ tasks.check_a.output.exit_code == 0 && tasks.check_b.output.exit_code == 0 }}"
+        condition: "\${{ with.all_green }}"
         message: "A gate is RED: refusing to proceed"   # SLOT
 
   human:
-    depends_on: [gates]
+    after:
+      gates: succeeded              # state, no data · no question until the board is green
     invoke:
       # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:
       #   nika run --resume <trace> --answer human=yes
@@ -2553,8 +2718,9 @@ tasks:
         default: false
 
   act:
-    depends_on: [human]
-    when: \${{ tasks.human.output == true }}
+    with:
+      go: \${{ tasks.human.output }}   # the answer crosses as a value edge
+    when: \${{ with.go == true }}
     exec:
       command: ["echo", "shipped"]   # SLOT: the irreversible action (argv · program must be in permits.exec)
       # default capture · a failing ship fails LOUDLY (NIKA-EXEC-001):
@@ -2562,14 +2728,16 @@ tasks:
       # would become data and a red ship would read as success)
 
   record:
-    depends_on: [act]
-    when: true                      # the always-pattern · runs on success, failure, OR refusal
+    after:
+      act: terminal                 # the always-pattern · runs on success, failure, OR refusal
+    with:
+      acted: \${{ tasks.act.status }}   # observe the outcome · same pass-set as the after edge
     invoke:
       tool: "nika:notify"
       args:
         channel: webhook
         target: "\${{ secrets.webhook }}"
-        message: "Run finished · act=\${{ tasks.act.status }}"   # SLOT · success | failure | skipped
+        message: "Run finished · act=\${{ with.acted }}"   # SLOT · success | failure | skipped
         severity: info
 
 outputs:
@@ -2602,33 +2770,37 @@ tasks:
         required: [image_prompt]
 
   render:
-    depends_on: [brief]
+    with:
+      brief_image_prompt: \${{ tasks.brief.output.image_prompt }}
     invoke:
       tool: "nika:image_generate"
       args:
         provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)
-        prompt: "\${{ tasks.brief.output.image_prompt }}"
+        prompt: "\${{ with.brief_image_prompt }}"
         output_dir: "\${{ vars.out_dir }}"
         filename_prefix: "asset"    # SLOT: filename stem
 
   manifest:
-    depends_on: [brief, render]
+    with:
+      brief: \${{ tasks.brief.output }}
+      render: \${{ tasks.render.output }}
     invoke:
       tool: "nika:jq"
       args:
         expression: "{ brief: .[0], images: .[1].images }"
         input:
-          - "\${{ tasks.brief.output }}"
-          - "\${{ tasks.render.output }}"
+          - "\${{ with.brief }}"
+          - "\${{ with.render }}"
 
   persist:
-    depends_on: [manifest]
+    with:
+      manifest: \${{ tasks.manifest.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "\${{ vars.out_dir }}/manifest.json"
         create_dirs: true
-        content: "\${{ tasks.manifest.output }}"
+        content: "\${{ with.manifest }}"
 
 outputs:
   manifest: \${{ tasks.manifest.output }}  # SLOT: the callable contract
@@ -2653,7 +2825,8 @@ tasks:
         traverse: { max_pages: 5 }  # SLOT: crawl bound · 1..=25 (robots honored)
 
   brief:
-    depends_on: [crawl_site]
+    with:
+      crawl_site: \${{ tasks.crawl_site.output }}
     infer:
       max_tokens: 1200
       prompt: |
@@ -2661,7 +2834,7 @@ tasks:
         From this site crawl, produce a creative brief: the domain of
         activity, the dominant visual theme, the audience, the usable
         colors and image assets.
-        Crawl digest · \${{ tasks.crawl_site.output }}
+        Crawl digest · \${{ with.crawl_site }}
       schema:                       # SLOT: the typed shape downstream tasks rely on
         type: object
         additionalProperties: false
@@ -2674,13 +2847,14 @@ tasks:
         required: [domain, theme, audience, colors, assets]
 
   persist:
-    depends_on: [brief]
+    with:
+      brief: \${{ tasks.brief.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "\${{ vars.out_path }}"
         create_dirs: true
-        content: "\${{ tasks.brief.output }}"   # ALWAYS pass content
+        content: "\${{ with.brief }}"   # ALWAYS pass content
 
 outputs:
   brief: \${{ tasks.brief.output }}   # SLOT: the callable contract

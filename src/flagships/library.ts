@@ -74,21 +74,21 @@ const BROWSE: {
     blurb: 'finds the overdue, drafts reminders, waits for your yes',
     /* the lit lines: the approve task — a human answer gates the save */
     gloss: 'invoke: a human yes sits before anything is saved',
-    highlight: [44, 48],
+    highlight: [47, 52],
   },
   {
     slug: 't4-deep-research-brief',
     blurb: 'an agent works the web inside hard caps, then the brief',
     /* the lit lines: the granted tools + the turn/token ceilings */
     gloss: 'agent: three tools granted, caps it cannot exceed',
-    highlight: [35, 40],
+    highlight: [36, 41],
   },
   {
     slug: 't3-localization-factory',
     blurb: 'every doc translated in parallel, the tree mirrored back',
     /* the lit lines: the fan-out head — one run per item, rate-limited */
     gloss: 'for_each: one run per doc, three in flight at a time',
-    highlight: [38, 39],
+    highlight: [42, 43],
   },
 ]
 

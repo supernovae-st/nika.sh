@@ -31,7 +31,8 @@ tasks:
   # The gate: a human reads the draft and answers. Nothing downstream
   # runs until this task has an answer.
   approve:
-    depends_on: [draft]
+    after:
+      draft: succeeded
     invoke:
       tool: "nika:prompt"
       args:
@@ -39,13 +40,15 @@ tasks:
         message: "Publish this release note?"
 
   publish:
-    depends_on: [draft, approve]
-    when: "${{ tasks.approve.output == true }}"
+    with:
+      draft: ${{ tasks.draft.output }}
+      approved: ${{ tasks.approve.output }}
+    when: "${{ with.approved == true }}"
     invoke:
       tool: "nika:write"
       args:
         path: "./release-note.md"
-        content: "${{ tasks.draft.output }}"
+        content: "${{ with.draft }}"
 
 outputs:
   approved: "${{ tasks.approve.output }}"
@@ -60,15 +63,15 @@ Run it in a terminal and `approve` simply asks you there, in the console, and bl
 
   ✔  draft    invoke · nika:read  2ms
   ✖  approve  invoke · nika:prompt
-  ↷  publish  when: false
-  ── 3/3 done · $0.00 · elapsed 0.0s ─────────────────────────────
+  ⊘  publish  gate: an edge did not admit
+  ── 3/3 done · 1 failed · $0.00 · elapsed 0.0s ──────────────────
 
   ✖ NIKA-BUILTIN-PROMPT-001 · non-interactive and no `default:` —
     cannot answer without a human
     trace: .nika/traces/2026-07-10T16-04-45Z-aaf0.ndjson
 ```
 
-The run **fails closed**. Not "assumes yes", not "hangs forever holding a worker": a typed error names exactly what is missing (a human), the gated step is skipped (`when: false`), nothing is written, the exit code is 1. And the journal, the same [journal that survives kill -9](/blog/the-resume-story), recorded the question.
+The run **fails closed**. Not "assumes yes", not "hangs forever holding a worker": a typed error names exactly what is missing (a human), the gated step is cancelled (`gate: an edge did not admit`), nothing is written, the exit code is 1. And the journal, the same [journal that survives kill -9](/blog/the-resume-story), recorded the question.
 
 That trace is the pending approval. When a human shows up, the answer rides the resume:
 
@@ -86,11 +89,11 @@ That trace is the pending approval. When a human shows up, the answer rides the 
 
 `draft` is not re-done: finished work never runs twice. The gate binds your answer, and only then does `publish` touch the disk. The pairing is enforced by the CLI itself: `--answer` *requires* `--resume`. There is no way to pre-answer a question that has not been asked yet; the approval is always attached to a specific recorded run, of a specific file, with a specific draft already in its journal.
 
-And a *no* is not a failure. Answer `--answer approve=false` and the run completes cleanly: the gate carries the refusal, `publish` skips (`when: false`), nothing ships, exit 0. A refused release is a workflow that **worked**: the outcome your reviewer chose, on the record, in the same trace format as everything else.
+And a *no* is not a failure. Answer `--answer approve=false` and the run completes cleanly: the gate carries the refusal, `publish` skips (`when: closed`), nothing ships, exit 0. A refused release is a workflow that **worked**: the outcome your reviewer chose, on the record, in the same trace format as everything else.
 
 Three properties fall out of the gate being a task, none of which a Slack-thread approval has:
 
-**It is reviewable before it runs.** The `when:` line on `publish` is the entire policy. A PR reviewer can see that nothing ships without a yes, the same way they [see the blast radius in `permits:`](/blog/injection-goes-nowhere).
+**It is reviewable before it runs.** The `approved` binding and the `when:` line on `publish` are the entire policy. A PR reviewer can see that nothing ships without a yes, the same way they [see the blast radius in `permits:`](/blog/injection-goes-nowhere).
 
 **It fails closed by construction.** Headless with no `default:` is an error, not a guess. If you *want* an unattended fallback, you write `default:` into the file: visible, diffable, yours.
 

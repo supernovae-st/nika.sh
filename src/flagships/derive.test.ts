@@ -12,9 +12,32 @@ import { deriveWorkflow, type NikaVerb } from './derive'
 const VERBS: readonly NikaVerb[] = ['infer', 'exec', 'invoke', 'agent']
 
 interface YamlTask {
-  depends_on?: string[]
+  with?: Record<string, unknown>
+  after?: Record<string, string>
   when?: string
   [k: string]: unknown
+}
+
+/* ground-truth producers (W2 · the two doors): every tasks.X reference in a
+   with: value is a data edge · every after: key a control edge — collected in
+   the task's own key order, deduped, exactly the derivation's contract. */
+const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
+function* strings(v: unknown): Generator<string> {
+  if (typeof v === 'string') yield v
+  else if (Array.isArray(v)) for (const x of v) yield* strings(x)
+  else if (v && typeof v === 'object') for (const x of Object.values(v)) yield* strings(x)
+}
+function producersOf(t: YamlTask): string[] {
+  const out: string[] = []
+  const push = (id: string) => {
+    if (!out.includes(id)) out.push(id)
+  }
+  for (const [k, v] of Object.entries(t)) {
+    if (k === 'with') for (const s of strings(v)) for (const m of s.matchAll(TASK_REF)) push(m[1])
+    else if (k === 'after' && v && typeof v === 'object')
+      for (const key of Object.keys(v)) push(key)
+  }
+  return out
 }
 interface YamlDoc {
   workflow: { id: string; description?: string }
@@ -37,11 +60,11 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
       expect(plan.tasks.map((t) => t.id)).toEqual(truthTasks.map(([id]) => id))
     })
 
-    it('derives every dependency edge verbatim (deps in YAML == deps in the plan)', () => {
+    it('derives every edge from the two doors (with: refs ∪ after: keys == deps in the plan)', () => {
       for (const [id, t] of truthTasks) {
         const derived = plan.tasks.find((d) => d.id === id)
         expect(derived, `task ${id} missing from the derivation`).toBeDefined()
-        expect(derived?.deps, `deps of ${id}`).toEqual(t.depends_on ?? [])
+        expect(derived?.deps, `deps of ${id}`).toEqual(producersOf(t))
       }
     })
 

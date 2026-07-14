@@ -48,9 +48,10 @@ tasks:
           Authorization: "Bearer ${{ secrets.stripe_key }}"
 
   brief:
-    depends_on: [ charges ]
+    with:
+      charges: ${{ tasks.charges.output }}
     infer:
-      prompt: "One short paragraph: what moved in these charges? ${{ tasks.charges.output }}"
+      prompt: "One short paragraph: what moved in these charges? ${{ with.charges }}"
       max_tokens: 300
 
 outputs:
@@ -64,10 +65,10 @@ Three details make the line proof rather than pattern-matching:
 **The audit follows the data, not the variable.** Delete the `- to: "infer"` sanction from the file above and the checker does not just refuse, it prints the path the secret would have walked:
 
 ```text
- ✖ SECRETS  leak into infer (task `brief`) — secrets.stripe_key → tasks.charges.output
+ ✖ SECRETS  leak into infer (task `brief`) — secrets.stripe_key → tasks.charges.output → with.charges @ brief
 ```
 
-The key was only ever typed in the fetch header, but the response of a call that carried a secret is tainted until its destination is sanctioned too. Laundering it through a capture, a downstream task, or a workflow `outputs:` does not wash it; the arrow in the verdict is the taint trace.
+The key was only ever typed in the fetch header, but the response of a call that carried a secret is tainted until its destination is sanctioned too. Laundering it through a capture, a `with:` binding, a downstream task, or a workflow `outputs:` does not wash it; the arrow in the verdict is the taint trace.
 
 **Declassification only narrows.** The sanction is per-sink and per-host: same key against a different host refuses, same key in a different tool refuses. And `egress` can never widen the boundary. Sanction a host that `permits.net.http` does not list and both lines go red at once, the secrets line and the permits line, each printing its own fix.
 

@@ -30,7 +30,7 @@ The run plays back **live**, in the same renderer as the original: the plan, the
 
 Why this matters compounds with everything else in the file:
 
-**Same file, same steps, same order.** The plan is derived from `depends_on` before anything runs, so two runs of the same file schedule identically. The trace makes that claim checkable: run it again, record it again, and diff the two NDJSON files like code. Determinism stops being a promise and becomes a property you can verify with tools you already have.
+**Same file, same steps, same order.** The plan is derived from the wiring, `with:` and `after:`, before anything runs, so two runs of the same file schedule identically. The trace makes that claim checkable: run it again, record it again, and diff the two NDJSON files like code. Determinism stops being a promise and becomes a property you can verify with tools you already have.
 
 **The boundary is in the recording.** The trace opens by stating the permits context the run started under. An auditor reading the file sees not only what happened but what was *allowed* to happen: the blast radius and the actions, in one artifact.
 

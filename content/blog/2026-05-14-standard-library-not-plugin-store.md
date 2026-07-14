@@ -25,12 +25,13 @@ tasks:
         url: "https://nika.sh"
 
   save:
-    depends_on: [page]
+    with:
+      page: ${{ tasks.page.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./page.md"
-        content: "${{ tasks.page.output }}"
+        content: "${{ with.page }}"
 ```
 
 Everything beyond the library arrives through MCP: name a `mcp:` tool id and any server you already run is reachable, but only if the file allow-lists it. Growth belongs in the toolbelt, not in the grammar.

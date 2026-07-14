@@ -12,6 +12,20 @@ export interface WordUsageRefs {
 
 /** Cross-reference fields per schema word, keyed by word. */
 export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
+  "after": {
+    "templates": [
+      "etl-state",
+      "human-gated-ship"
+    ],
+    "codes": [
+      "NIKA-PARSE-024",
+      "NIKA-DAG-001",
+      "NIKA-DAG-002",
+      "NIKA-DAG-005",
+      "NIKA-VAR-021",
+      "NIKA-INFER-002"
+    ]
+  },
   "agent": {
     "templates": [
       "agent-loop"
@@ -73,24 +87,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   "cwd": {
     "templates": [],
     "codes": []
-  },
-  "depends_on": {
-    "templates": [
-      "chain",
-      "gate-and-act",
-      "fanout",
-      "etl-state",
-      "agent-loop",
-      "human-gated-ship",
-      "website-brief",
-      "media-asset-pack",
-      "api-upload-and-create",
-      "docker-report"
-    ],
-    "codes": [
-      "NIKA-DAG-001",
-      "NIKA-DAG-002"
-    ]
   },
   "description": {
     "templates": [
@@ -285,12 +281,15 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-012",
-      "NIKA-DAG-004"
+      "NIKA-DAG-004",
+      "NIKA-VAR-021"
     ]
   },
   "on_finally": {
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-VAR-021"
+    ]
   },
   "output": {
     "templates": [
@@ -317,6 +316,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "docker-report"
     ],
     "codes": [
+      "NIKA-VAR-021",
       "NIKA-VAR-009"
     ]
   },
@@ -350,7 +350,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "etl-state"
     ],
     "codes": [
-      "NIKA-DAG-004"
+      "NIKA-DAG-004",
+      "NIKA-VAR-021"
     ]
   },
   "retry": {
@@ -424,8 +425,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "codes": [
       "NIKA-PARSE-002",
       "NIKA-PARSE-022",
-      "NIKA-DAG-003",
-      "NIKA-VAR-020"
+      "NIKA-VAR-020",
+      "NIKA-VAR-021"
     ]
   },
   "temperature": {
@@ -496,14 +497,30 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "human-gated-ship"
     ],
     "codes": [
+      "NIKA-DAG-006",
       "NIKA-VAR-005",
       "NIKA-VAR-006"
     ]
   },
   "with": {
-    "templates": [],
+    "templates": [
+      "chain",
+      "gate-and-act",
+      "fanout",
+      "etl-state",
+      "agent-loop",
+      "human-gated-ship",
+      "website-brief",
+      "media-asset-pack",
+      "api-upload-and-create",
+      "docker-report"
+    ],
     "codes": [
-      "NIKA-PARSE-013"
+      "NIKA-PARSE-013",
+      "NIKA-PARSE-024",
+      "NIKA-DAG-001",
+      "NIKA-DAG-002",
+      "NIKA-VAR-021"
     ]
   },
   "workflow": {
@@ -525,6 +542,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-007",
       "NIKA-PARSE-020",
       "NIKA-PARSE-021",
+      "NIKA-VAR-021",
       "NIKA-SEC-003",
       "NIKA-CANCEL-001"
     ]

@@ -5,7 +5,7 @@ import { SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
 
 /* ── mini-dag layout · the generated plan drawing (wave K) ────────────────────
    Pure layout, pinned so every library file gets a correct diagram for free:
-   wave alignment IS the topology, every depends_on is an edge, gates and
+   wave alignment IS the topology, every with:/after: edge is drawn, gates and
    fan-outs are marked from the derivation (never hand-typed). */
 
 const by = (id: string) => LIBRARY.find((x) => x.id === id)!

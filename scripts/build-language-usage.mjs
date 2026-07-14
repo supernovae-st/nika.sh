@@ -67,11 +67,12 @@ function envelopeSlice(yaml, word) {
   if (at === -1) return null
   let end = at + 1
   while (end < lines.length && !/^[a-z_#]/.test(lines[end])) end++
-  /* `tasks:` would swallow the whole plan — keep its first item only */
+  /* `tasks:` would swallow the whole plan — keep its first task only
+     (a task is its indent-2 map key since W1) */
   if (word === 'tasks') {
     let seen = 0
     for (let i = at + 1; i < end; i++) {
-      if (/^  - /.test(lines[i])) {
+      if (/^ {2}[a-z][a-z0-9_]*:/.test(lines[i])) {
         seen += 1
         if (seen === 2) {
           end = i
@@ -88,12 +89,13 @@ function taskSlice(yaml, word) {
   const lines = yaml.split('\n')
   const at = keyLineIdx(lines, word)
   if (at === -1) return null
+  const TASK_KEY = /^ {2}[a-z][a-z0-9_]*:/
   let start = at
-  while (start > 0 && !/^  - id:\s/.test(lines[start])) start--
-  if (!/^  - id:\s/.test(lines[start])) return null
+  while (start > 0 && !TASK_KEY.test(lines[start])) start--
+  if (!TASK_KEY.test(lines[start])) return null
   while (start > 0 && /^  #/.test(lines[start - 1])) start--
   let end = Math.max(at + 1, start + 1)
-  while (end < lines.length && !/^  - id:\s/.test(lines[end]) && !/^[a-z_#]/.test(lines[end])) end++
+  while (end < lines.length && !TASK_KEY.test(lines[end]) && !/^[a-z_#]/.test(lines[end])) end++
   while (end > at + 1 && (/^\s*$/.test(lines[end - 1]) || /^  #/.test(lines[end - 1]))) end--
   return { yaml: lines.slice(start, end).join('\n'), firstLine: start + 1 }
 }

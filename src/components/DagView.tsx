@@ -179,7 +179,7 @@ export function DagView({
         </div>
       ))}
       {plan.cyclic && (
-        <p className="dv-note">cycle in depends_on · showing file order</p>
+        <p className="dv-note">cycle in the wiring (with/after) · showing file order</p>
       )}
       </div>
     </div>

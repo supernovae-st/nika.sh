@@ -51,18 +51,20 @@ tasks:
       args: { path: "./notes.txt" }
 
   draft:
-    depends_on: [notes]
+    with:
+      notes: ${{ tasks.notes.output }}
     infer:
       prompt: |
         One sentence, plain prose, summarizing this status file:
-        ${{ tasks.notes.output }}
+        ${{ with.notes }}
       max_tokens: 200
 
   save:
-    depends_on: [draft]
+    with:
+      draft: ${{ tasks.draft.output }}
     invoke:
       tool: "nika:write"
-      args: { path: "./digest.md", content: "${{ tasks.draft.output }}" }
+      args: { path: "./digest.md", content: "${{ with.draft }}" }
 
 outputs:
   digest: ${{ tasks.draft.output }}

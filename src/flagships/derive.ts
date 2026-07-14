@@ -18,7 +18,7 @@ export type NikaVerb = NikaVerbName
 export interface FlagshipTask {
   id: string
   verb: NikaVerb
-  /** upstream task ids, verbatim from depends_on */
+  /** upstream producers — tasks.X bound in with: (data) ∪ after: keys (control) */
   deps: string[]
   /** the raw when: expression when the task is gated (display verbatim) */
   when?: string
@@ -58,11 +58,45 @@ export interface FlagshipPlanModel {
 }
 
 const VERBS: readonly NikaVerb[] = ['infer', 'exec', 'invoke', 'agent']
+const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
 
 /** indentation width (spaces) of a line */
 function indentOf(line: string): number {
   const m = line.match(/^( *)/)
   return m ? m[1].length : 0
+}
+
+/* the two doors, line-scanned (W2 « the flow ») · a tasks.X reference inside
+   the with: block is a DATA edge · an after: entry is a CONTROL edge — the
+   precedence graph is exactly their union. tasks.* reads elsewhere in the
+   block (on_error.recover · on_finally) are settled-record reads, NOT
+   precedence, and never count as deps. */
+function depsOf(body: string[]): string[] {
+  const out: string[] = []
+  const push = (id: string) => {
+    if (!out.includes(id)) out.push(id)
+  }
+  let door: 'with' | 'after' | null = null
+  for (const line of body) {
+    if (line.trim() === '') continue
+    const indent = indentOf(line)
+    if (indent <= 4) door = null
+    const head = line.match(/^ {4}(with|after):(.*)$/)
+    if (head) {
+      door = head[1] as 'with' | 'after'
+      const rest = head[2]
+      if (door === 'with') for (const m of rest.matchAll(TASK_REF)) push(m[1])
+      else for (const m of rest.matchAll(/([a-z][a-z0-9_]*)\s*:/g)) push(m[1])
+      continue
+    }
+    if (door === 'with' && indent > 4) {
+      for (const m of line.matchAll(TASK_REF)) push(m[1])
+    } else if (door === 'after' && indent > 4) {
+      const k = line.match(/^\s+([a-z][a-z0-9_]*)\s*:/)
+      if (k) push(k[1])
+    }
+  }
+  return out
 }
 
 /** extract the human target chip for a task block, per verb */
@@ -181,13 +215,7 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
   /* per-task facts from the collected block */
   const parsed = raws.map((raw) => {
     const block = raw.body.join('\n')
-    const depsM = block.match(/depends_on:\s*\[([^\]]*)\]/)
-    const deps = depsM
-      ? depsM[1]
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean)
-      : []
+    const deps = depsOf(raw.body)
     const verb = VERBS.find((v) => new RegExp(`(?:^|[\\s{])${v}:`, 'm').test(block))
     if (!verb) throw new Error(`flagship task "${raw.id}" declares no verb`)
     const whenM = block.match(/when:\s*(.+?)\s*$/m)
