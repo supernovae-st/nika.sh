@@ -87,11 +87,27 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "backoff_max_ms": {
     "word": "backoff_max_ms",
+    "usage": {
+      "yaml": "  line:\n    infer:\n      model: ollama/qwen3.5:4b\n      prompt: \"One warm sentence announcing a green run. Nothing else.\"\n      temperature: 0.9\n    retry:\n      max_attempts: 3\n      backoff_ms: 500\n      backoff_max_ms: 4000",
+      "source": {
+        "kind": "crafted",
+        "file": "tts_generate.nika.yaml",
+        "firstLine": 7
+      }
+    },
     "templates": [],
     "codes": []
   },
   "backoff_ms": {
     "word": "backoff_ms",
+    "usage": {
+      "yaml": "  line:\n    infer:\n      model: ollama/qwen3.5:4b\n      prompt: \"One warm sentence announcing a green run. Nothing else.\"\n      temperature: 0.9\n    retry:\n      max_attempts: 3\n      backoff_ms: 500\n      backoff_max_ms: 4000",
+      "source": {
+        "kind": "crafted",
+        "file": "tts_generate.nika.yaml",
+        "firstLine": 7
+      }
+    },
     "templates": [],
     "codes": []
   },
@@ -151,6 +167,14 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "cwd": {
     "word": "cwd",
+    "usage": {
+      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"",
+      "source": {
+        "kind": "crafted",
+        "file": "hash.nika.yaml",
+        "firstLine": 10
+      }
+    },
     "templates": [],
     "codes": []
   },
@@ -184,6 +208,14 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "env": {
     "word": "env",
+    "usage": {
+      "yaml": "env:\n  LC_ALL: \"C\"",
+      "source": {
+        "kind": "crafted",
+        "file": "hash.nika.yaml",
+        "firstLine": 6
+      }
+    },
     "templates": [],
     "codes": []
   },
@@ -216,6 +248,14 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "fail_workflow": {
     "word": "fail_workflow",
+    "usage": {
+      "yaml": "  gate:\n    on_error:\n      fail_workflow: true\n    with:\n      verdict_valid: ${{ tasks.verdict.output.valid }}\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: ${{ with.verdict_valid }}\n        message: \"payload failed its schema\"",
+      "source": {
+        "kind": "crafted",
+        "file": "validate.nika.yaml",
+        "firstLine": 19
+      }
+    },
     "templates": [],
     "codes": []
   },
@@ -498,6 +538,14 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "on_finally": {
     "word": "on_finally",
+    "usage": {
+      "yaml": "  speak:\n    with:\n      line: ${{ tasks.line.output }}\n    invoke:\n      tool: \"nika:tts_generate\"\n      args:\n        provider: mock\n        text: \"${{ with.line }}\"\n        output_dir: \"./audio\"\n    on_finally:\n      - invoke:\n          tool: \"nika:log\"\n          args: { message: \"audio pass done — anything staged is under ./audio\" }",
+      "source": {
+        "kind": "crafted",
+        "file": "tts_generate.nika.yaml",
+        "firstLine": 17
+      }
+    },
     "templates": [],
     "codes": [
       "NIKA-VAR-021"
@@ -678,11 +726,27 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "shell": {
     "word": "shell",
+    "usage": {
+      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"",
+      "source": {
+        "kind": "crafted",
+        "file": "hash.nika.yaml",
+        "firstLine": 10
+      }
+    },
     "templates": [],
     "codes": []
   },
   "skills": {
     "word": "skills",
+    "usage": {
+      "yaml": "  build:\n    agent:\n      system: \"Draft a minimal workflow for the goal, spawn it via nika:compose, call nika:done with its outputs.\"\n      prompt: \"Summarize ./notes.md into three bullet points.\"\n      skills:\n        - \"./skills/summarizer/SKILL.md\"\n      tools:\n        - \"nika:compose\"\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 8\n      max_tokens_total: 40000",
+      "source": {
+        "kind": "crafted",
+        "file": "compose.nika.yaml",
+        "firstLine": 9
+      }
+    },
     "templates": [],
     "codes": [
       "NIKA-AGENT-003",
@@ -691,11 +755,27 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "skip": {
     "word": "skip",
+    "usage": {
+      "yaml": "  announce:\n    on_error:\n      skip: true\n    invoke:\n      tool: \"nika:emit\"\n      args:\n        event_type: \"deploy.finished\"\n        payload: { env: \"prod\", ok: true }",
+      "source": {
+        "kind": "crafted",
+        "file": "emit.nika.yaml",
+        "firstLine": 7
+      }
+    },
     "templates": [],
     "codes": []
   },
   "stdin": {
     "word": "stdin",
+    "usage": {
+      "yaml": "  tally:\n    with:\n      hits: ${{ tasks.lines.output }}\n    exec:\n      command: [\"wc\", \"-l\"]\n      stdin: \"${{ with.hits }}\"",
+      "source": {
+        "kind": "crafted",
+        "file": "grep.nika.yaml",
+        "firstLine": 23
+      }
+    },
     "templates": [],
     "codes": []
   },
@@ -747,11 +827,27 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "temperature": {
     "word": "temperature",
+    "usage": {
+      "yaml": "  line:\n    infer:\n      model: ollama/qwen3.5:4b\n      prompt: \"One warm sentence announcing a green run. Nothing else.\"\n      temperature: 0.9\n    retry:\n      max_attempts: 3\n      backoff_ms: 500\n      backoff_max_ms: 4000",
+      "source": {
+        "kind": "crafted",
+        "file": "tts_generate.nika.yaml",
+        "firstLine": 7
+      }
+    },
     "templates": [],
     "codes": []
   },
   "thinking": {
     "word": "thinking",
+    "usage": {
+      "yaml": "  review:\n    with:\n      poster: ${{ tasks.stylize.output }}\n    infer:\n      model: ollama/llama3.2-vision\n      prompt: \"Poster at ${{ with.poster }} — is the subject still legible after the treatment? One line.\"\n      vision:\n        - { source: file, path: \"./shots/hero-poster.png\" }\n      thinking: { enabled: true, budget_tokens: 2000 }",
+      "source": {
+        "kind": "crafted",
+        "file": "image_fx.nika.yaml",
+        "firstLine": 18
+      }
+    },
     "templates": [],
     "codes": []
   },
@@ -846,6 +942,14 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   },
   "vision": {
     "word": "vision",
+    "usage": {
+      "yaml": "  review:\n    with:\n      poster: ${{ tasks.stylize.output }}\n    infer:\n      model: ollama/llama3.2-vision\n      prompt: \"Poster at ${{ with.poster }} — is the subject still legible after the treatment? One line.\"\n      vision:\n        - { source: file, path: \"./shots/hero-poster.png\" }\n      thinking: { enabled: true, budget_tokens: 2000 }",
+      "source": {
+        "kind": "crafted",
+        "file": "image_fx.nika.yaml",
+        "firstLine": 18
+      }
+    },
     "templates": [],
     "codes": []
   },

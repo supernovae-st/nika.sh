@@ -10,6 +10,8 @@ tasks:
     agent:
       system: "Draft a minimal workflow for the goal, spawn it via nika:compose, call nika:done with its outputs."
       prompt: "Summarize ./notes.md into three bullet points."
+      skills:
+        - "./skills/summarizer/SKILL.md"
       tools:
         - "nika:compose"
         - "nika:read"
