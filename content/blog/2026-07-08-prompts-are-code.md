@@ -25,14 +25,16 @@ tasks:
   commits: { invoke: { tool: "nika:read", args: { path: ./commits.txt } } }
 
   draft:
-    depends_on: [ commits ]
+    with:
+      commits: ${{ tasks.commits.output }}
     infer:
-      prompt: "Write release notes from these commits: ${{ tasks.commits.output }}"
+      prompt: "Write release notes from these commits: ${{ with.commits }}"
       max_tokens: 200
 
   save:
-    depends_on: [ draft ]
-    invoke: { tool: "nika:write", args: { path: ./notes.md, content: "${{ tasks.draft.output }}" } }
+    with:
+      draft: ${{ tasks.draft.output }}
+    invoke: { tool: "nika:write", args: { path: ./notes.md, content: "${{ with.draft }}" } }
 
 outputs:
   notes: "${{ tasks.draft.output }}"
@@ -48,12 +50,12 @@ diff --git a/release-notes.nika.yaml b/release-notes.nika.yaml
 index 06134b3..253fa1e 100644
 --- a/release-notes.nika.yaml
 +++ b/release-notes.nika.yaml
-@@ -13,7 +13,7 @@ tasks:
-   draft:
-     depends_on: [ commits ]
+@@ -15,7 +15,7 @@ tasks:
+     with:
+       commits: ${{ tasks.commits.output }}
      infer:
--      prompt: "Write release notes from these commits: ${{ tasks.commits.output }}"
-+      prompt: "Write release notes from these commits. Exactly three bullets, plain words, no hype: ${{ tasks.commits.output }}"
+-      prompt: "Write release notes from these commits: ${{ with.commits }}"
++      prompt: "Write release notes from these commits. Exactly three bullets, plain words, no hype: ${{ with.commits }}"
        max_tokens: 200
 
    save:

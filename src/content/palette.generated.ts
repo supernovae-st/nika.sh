@@ -448,27 +448,45 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-PARSE-024",
+    "href": "/errors/NIKA-PARSE-024",
+    "hint": "a task carries depends_on: — dead since W2 (data → with: bindings · control → after: predicates · check --fix migrates)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-DAG-001",
     "href": "/errors/NIKA-DAG-001",
-    "hint": "cycle in depends_on (incl. self-dependency)"
+    "hint": "cycle in the precedence graph G_p = E_d ∪ E_c (incl. self-dependency · via with:/after:)"
   },
   {
     "kind": "error",
     "label": "NIKA-DAG-002",
     "href": "/errors/NIKA-DAG-002",
-    "hint": "depends_on references an undeclared task"
-  },
-  {
-    "kind": "error",
-    "label": "NIKA-DAG-003",
-    "href": "/errors/NIKA-DAG-003",
-    "hint": "a tasks.X reference with no declared edge"
+    "hint": "with:/after: references an undeclared task"
   },
   {
     "kind": "error",
     "label": "NIKA-DAG-004",
     "href": "/errors/NIKA-DAG-004",
     "hint": "on_error.recover references a task downstream of the declaring task (await would deadlock)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-DAG-005",
+    "href": "/errors/NIKA-DAG-005",
+    "hint": "after: predicate outside the closed set (succeeded · failed · skipped · terminal)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-DAG-006",
+    "href": "/errors/NIKA-DAG-006",
+    "hint": "statically dead task — an incoming edge's pass-set excludes every reachable producer state, or the when: gate is false under every reachable upstream combination (gate algebra v2)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-DAG-007",
+    "href": "/errors/NIKA-DAG-007",
+    "hint": "status compared against a literal outside the vocabulary (success · failure · skipped · cancelled) — == never matches, != always holds"
   },
   {
     "kind": "error",
@@ -523,6 +541,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-VAR-020",
     "href": "/errors/NIKA-VAR-020",
     "hint": "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-VAR-021",
+    "href": "/errors/NIKA-VAR-021",
+    "hint": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)"
   },
   {
     "kind": "error",
@@ -1000,6 +1024,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
+    "label": "after",
+    "href": "/language/after",
+    "hint": "task — The CONTROL boundary · {producer-task: predicate}. Each entry is one control edge (spec/03-dag.md §afte"
+  },
+  {
+    "kind": "word",
     "label": "agent",
     "href": "/language/agent",
     "hint": "task · on_finally"
@@ -1045,12 +1075,6 @@ export const PALETTE: PaletteEntry[] = [
     "label": "cwd",
     "href": "/language/cwd",
     "hint": "exec"
-  },
-  {
-    "kind": "word",
-    "label": "depends_on",
-    "href": "/language/depends_on",
-    "hint": "task"
   },
   {
     "kind": "word",
@@ -1302,7 +1326,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "when",
     "href": "/language/when",
-    "hint": "task · on_finally — Conditional execution gate · a ${{ }} CEL boolean OR the YAML literal true/false. An expli"
+    "hint": "task · on_finally — LOCAL business condition · evaluated POST-gate over {vars · env · with · item · index} — t"
   },
   {
     "kind": "word",

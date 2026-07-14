@@ -8,16 +8,20 @@ tasks:
   notes: { invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
   inbox: { invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
   triage:
-    depends_on: [inbox]
-    infer: { prompt: "Flag urgent: \${{ tasks.inbox.output }}" }
+    with:
+      inbox: \${{ tasks.inbox.output }}
+    infer: { prompt: "Flag urgent: \${{ with.inbox }}" }
   draft:
-    depends_on: [notes, triage]
+    with:
+      notes: \${{ tasks.notes.output }}
+      triage: \${{ tasks.triage.output }}
     infer:
       prompt: "Write the brief"
       model: ollama/llama3.2:3b
   save:
-    depends_on: [draft]
-    when: \${{ tasks.draft.output != "" }}
+    with:
+      draft: \${{ tasks.draft.output }}
+    when: \${{ with.draft != "" }}
     invoke: { tool: "nika:write", args: { path: ./brief.md, content: "x" } }
 `
 
@@ -71,13 +75,16 @@ tasks:
     expect(parsePlan('nika: v1\nworkflow: x')).toBeNull() /* no tasks yet */
   })
 
-  it('survives a cycle · cyclic flag + file-order fallback keeps every task visible', () => {
+  it('survives a cycle across BOTH doors · cyclic flag + file-order fallback', () => {
+    /* a waits on b through after: (control) · b binds a through with: (data)
+       — the precedence graph is E_d ∪ E_c, so this IS a cycle */
     const plan = parsePlan(`tasks:
   a:
-    depends_on: [b]
+    after: { b: succeeded }
     exec: { command: ["ls"] }
   b:
-    depends_on: [a]
+    with:
+      prev: \${{ tasks.a.output }}
     exec: { command: ["git", "log"] }
 `)
     expect(plan).not.toBeNull()
@@ -86,13 +93,15 @@ tasks:
     expect(plan!.tasks.find((t) => t.id === 'b')!.target).toBe('git')
   })
 
-  it('drops unknown/self deps from edges (the linter speaks, the map stays sane)', () => {
+  it('drops unknown/self targets from edges (the linter speaks, the map stays sane)', () => {
     const plan = parsePlan(`tasks:
   a:
-    depends_on: [ghost, a]
+    with:
+      g: \${{ tasks.ghost.output }}
+      me: \${{ tasks.a.output }}
     infer: { prompt: "x" }
   b:
-    depends_on: [a]
+    after: { a: succeeded }
 `)
     expect(plan).not.toBeNull()
     expect(plan!.edges).toEqual([{ from: 'a', to: 'b' }])
@@ -110,7 +119,7 @@ tasks:
     exec: { command: ["ls"] }
   b: 42
   c:
-    depends_on: [a]
+    after: { a: succeeded }
     agent: { model: mistral/mistral-small }
 `)
     expect(plan).not.toBeNull()

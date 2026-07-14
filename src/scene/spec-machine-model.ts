@@ -13,7 +13,7 @@ import { CANON } from '../canon.generated'
    reading IS the journey (S.0 → S.8):
 
      BOW  S.2 the bridge     the plan · standup-digest slabs clustered by wave,
-                             depends_on wires flowing INTO the core
+                             with:/after: wires flowing INTO the core
           S.1 the core       the verb tetrad around the spine · the reactor
           S.3 THE RING       the permits boundary ⊥ the spine — one great
                              habitat ring (the station register: ring + spokes

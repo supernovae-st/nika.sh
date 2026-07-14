@@ -37,14 +37,16 @@ tasks:
   note: { invoke: { tool: "nika:read", args: { path: ./note.md } } }
 
   summary:
-    depends_on: [ note ]
+    with:
+      note: ${{ tasks.note.output }}
     infer:
-      prompt: "Summarize this note in one sentence: ${{ tasks.note.output }}"
+      prompt: "Summarize this note in one sentence: ${{ with.note }}"
       max_tokens: 100
 
   save:
-    depends_on: [ summary ]
-    invoke: { tool: "nika:write", args: { path: ./summary.md, content: "${{ tasks.summary.output }}" } }
+    with:
+      summary: ${{ tasks.summary.output }}
+    invoke: { tool: "nika:write", args: { path: ./summary.md, content: "${{ with.summary }}" } }
 
 outputs:
   summary: "${{ tasks.summary.output }}"

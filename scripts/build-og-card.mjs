@@ -518,9 +518,9 @@ const CARDS = [
     out: 'og-blog-dag-for-free.png',
     fig: 'FIG B.6',
     headline: 'The plan<br><span class="b">you get for free.</span>',
-    sub: 'depends_on is all you write. Parallelism and ordering fall out of the graph, drawn before anything&nbsp;runs.',
+    sub: 'with: is all you write&nbsp;— the binding IS the edge. Parallelism and ordering fall out of the graph, drawn before anything&nbsp;runs.',
     detail:
-      '<span class="arrow">▸</span><span><b>depends_on</b><span class="sep">·</span>waves<span class="sep">·</span>max&nbsp;parallelism,&nbsp;computed</span>',
+      '<span class="arrow">▸</span><span><b>with:</b><span class="sep">·</span>waves<span class="sep">·</span>max&nbsp;parallelism,&nbsp;computed</span>',
   },
   {
     // /blog/own-your-stack — the local-first argument.

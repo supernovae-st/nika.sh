@@ -15,9 +15,10 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./transcript.txt } }
 
   extract:
-    depends_on: [ transcript ]
+    with:
+      transcript: ${{ tasks.transcript.output }}
     infer:
-      prompt: "Extract every action item with its owner: ${{ tasks.transcript.output }}"
+      prompt: "Extract every action item with its owner: ${{ with.transcript }}"
       schema:
         type: object
         required: [ actions ]
@@ -33,10 +34,11 @@ tasks:
       max_tokens: 400
 
   save:
-    depends_on: [ extract ]
+    with:
+      extract: ${{ tasks.extract.output }}
     invoke:
       tool: "nika:write"
-      args: { path: ./action-items.json, content: "${{ tasks.extract.output }}" }
+      args: { path: ./action-items.json, content: "${{ with.extract }}" }
 
 outputs:
   actions: "${{ tasks.extract.output }}"

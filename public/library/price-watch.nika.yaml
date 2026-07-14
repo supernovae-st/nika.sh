@@ -16,19 +16,21 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./price.json } }
 
   price:
-    depends_on: [ snapshot ]
+    with:
+      snapshot: ${{ tasks.snapshot.output }}
     invoke:
       tool: "nika:jq"
-      args: { input: "${{ tasks.snapshot.output }}", expression: "fromjson | .price" }
+      args: { input: "${{ with.snapshot }}", expression: "fromjson | .price" }
 
   alert:
-    depends_on: [ price ]
-    when: ${{ tasks.price.output < vars.alert_below }}
+    with:
+      price: ${{ tasks.price.output }}
+    when: ${{ with.price < vars.alert_below }}
     invoke:
       tool: "nika:write"
       args:
         path: ./price-alert.md
-        content: "Price drop: now ${{ tasks.price.output }} (target ${{ vars.alert_below }})"
+        content: "Price drop: now ${{ with.price }} (target ${{ vars.alert_below }})"
 
 outputs:
   price: "${{ tasks.price.output }}"

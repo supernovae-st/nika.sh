@@ -21,28 +21,30 @@ tasks:
       args: { pattern: "${{ vars.changes_dir }}/*.md" }
 
   digest:
-    depends_on: [discover]
+    after: { discover: succeeded }
     exec:
       command: ["cat", "items/item-1.md", "items/item-2.md", "items/item-3.md", "items/item-4.md", "items/item-5.md"]
 
   stats:
-    depends_on: [discover]
+    with:
+      files: ${{ tasks.discover.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: ${{ tasks.discover.output }}
+        input: ${{ with.files }}
         expression: "{ files: length }"
 
   draft:
-    depends_on: [digest]
+    with:
+      digest: ${{ tasks.digest.output }}
     infer:
       max_tokens: 400
       prompt: |
         Draft concise release notes from these changes:
-        ${{ tasks.digest.output }}
+        ${{ with.digest }}
 
   pace:
-    depends_on: [draft]
+    after: { draft: succeeded }
     for_each: ${{ vars.locales }}
     max_parallel: 4
     invoke:
@@ -50,26 +52,30 @@ tasks:
       args: { duration: "6s" }
 
   translate:
-    depends_on: [pace, draft]
+    after: { pace: succeeded }
+    with:
+      draft: ${{ tasks.draft.output }}
     for_each: ${{ vars.locales }}
     max_parallel: 4
     infer:
       max_tokens: 400
       prompt: |
         Translate these release notes to ${{ item }}:
-        ${{ tasks.draft.output }}
+        ${{ with.draft }}
 
   survivors:
-    depends_on: [translate]
+    with:
+      translations: ${{ tasks.translate.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: ${{ tasks.translate.output }}
+        input: ${{ with.translations }}
         expression: "[ .[] | select(. != null) ]"
 
   publish:
-    depends_on: [survivors]
-    when: ${{ tasks.survivors.output.size() > 0 }}
+    with:
+      survivors: ${{ tasks.survivors.output }}
+    when: ${{ with.survivors.size() > 0 }}
     exec:
       command: ["printf", "%s", "published: release notes ready"]
 

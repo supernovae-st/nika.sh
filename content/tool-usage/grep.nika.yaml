@@ -12,11 +12,12 @@ tasks:
         path: "./src"
 
   tally:
-    depends_on: [todos]
+    with:
+      todos: ${{ tasks.todos.output }}
     invoke:
       tool: "nika:jq"
       args:
-        input: ${{ tasks.todos.output }}
+        input: ${{ with.todos }}
         expression: "length"
 
 outputs:

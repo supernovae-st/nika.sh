@@ -27,7 +27,9 @@ tasks:
       command: ["cargo", "build", "--release"]
 
   digest:
-    depends_on: [fetch_news, build]
+    after:
+      fetch_news: succeeded
+      build: succeeded
     infer:
       prompt: "Summarize what changed"
 

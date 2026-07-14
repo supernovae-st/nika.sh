@@ -10,10 +10,11 @@ tasks:
       args: { view: cost }
 
   report:
-    depends_on: [spend]
+    with:
+      spend: ${{ tasks.spend.output }}
     invoke:
       tool: "nika:log"
       args:
         level: info
         message: "cost so far"
-        data: ${{ tasks.spend.output }}
+        data: ${{ with.spend }}

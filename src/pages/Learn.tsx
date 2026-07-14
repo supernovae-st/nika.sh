@@ -140,7 +140,7 @@ function LearnFile({ yaml, filename }: { yaml: string; filename?: string }) {
 
 /* ── the weekly-radar mini-DAG · the 2D comprehension anchor (step 06) ────────
    HONEST: node-for-node the YAML fragment beside it — five tasks, the three
-   depends_on-free sources in one wave, digest joining them, save closing.
+   sources (no wires in) sharing one wave, digest joining them, save closing.
    Hand-authored static SVG (no runtime), verb-hued node dots, thin accent
    dependency arrows, a wave bracket reading « run together ×3 ». Text is real
    SVG text (crisp at every DPR); on narrow screens the plate scrolls inside
@@ -153,7 +153,7 @@ const DAG_NODES: { id: string; verb: string; x: number; y: number; w: number }[]
   { id: 'save', verb: 'invoke', x: 546, y: 98, w: 118 },
 ]
 
-/* one dependency arrow per depends_on entry in the fragment · nothing more */
+/* one dependency arrow per with: wire in the fragment · nothing more */
 const DAG_ARROWS = [
   'M196 54 C 246 54, 262 106, 312 108', // fetch_news → digest
   'M196 118 H 312', //                     repo_log   → digest
@@ -204,7 +204,7 @@ function WeeklyRadarDag() {
           {/* the wave bracket · the three steps that share a start line */}
           <path className="lrn-dag-bracket" d="M13 36 H8 V200 H13" />
 
-          {/* the dependency arrows · one per depends_on entry */}
+          {/* the dependency arrows · one per with: wire */}
           {DAG_ARROWS.map((d) => (
             <path key={d} className="lrn-dag-arrow" d={d} markerEnd="url(#lrn-dag-head)" />
           ))}

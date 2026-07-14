@@ -38,24 +38,27 @@ tasks:
       command: ["wc", "-l", "./CHANGELOG.md"]
 
   notes:
-    depends_on: [changelog]
+    with:
+      changelog: ${{ tasks.changelog.output }}
     infer:
       prompt: |
         Turn this changelog into three plain sentences for release notes:
-        ${{ tasks.changelog.output }}
+        ${{ with.changelog }}
       max_tokens: 300
 
   save:
-    depends_on: [notes]
+    with:
+      notes: ${{ tasks.notes.output }}
     invoke:
       tool: "nika:write"
-      args: { path: "./notes.md", content: "${{ tasks.notes.output }}" }
+      args: { path: "./notes.md", content: "${{ with.notes }}" }
 
   badge:
-    depends_on: [size]
+    with:
+      size: ${{ tasks.size.output }}
     invoke:
       tool: "nika:write"
-      args: { path: "./badge.json", content: "${{ tasks.size.output }}" }
+      args: { path: "./badge.json", content: "${{ with.size }}" }
 
 outputs:
   notes: ${{ tasks.notes.output }}

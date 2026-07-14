@@ -16,24 +16,30 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./post.md } }
 
   thread:
-    depends_on: [ post ]
-    infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: ${{ tasks.post.output }}", max_tokens: 400 }
+    with:
+      post: ${{ tasks.post.output }}
+    infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: ${{ with.post }}", max_tokens: 400 }
 
   linkedin:
-    depends_on: [ post ]
-    infer: { prompt: "Rewrite this post for LinkedIn, hook first: ${{ tasks.post.output }}", max_tokens: 400 }
+    with:
+      post: ${{ tasks.post.output }}
+    infer: { prompt: "Rewrite this post for LinkedIn, hook first: ${{ with.post }}", max_tokens: 400 }
 
   newsletter:
-    depends_on: [ post ]
-    infer: { prompt: "Write a 3-sentence newsletter blurb for this post: ${{ tasks.post.output }}", max_tokens: 300 }
+    with:
+      post: ${{ tasks.post.output }}
+    infer: { prompt: "Write a 3-sentence newsletter blurb for this post: ${{ with.post }}", max_tokens: 300 }
 
   bundle:
-    depends_on: [ thread, linkedin, newsletter ]
+    with:
+      thread: ${{ tasks.thread.output }}
+      linkedin: ${{ tasks.linkedin.output }}
+      newsletter: ${{ tasks.newsletter.output }}
     invoke:
       tool: "nika:write"
       args:
         path: ./social-bundle.md
-        content: "${{ tasks.thread.output }}\n\n---\n\n${{ tasks.linkedin.output }}\n\n---\n\n${{ tasks.newsletter.output }}"
+        content: "${{ with.thread }}\n\n---\n\n${{ with.linkedin }}\n\n---\n\n${{ with.newsletter }}"
 
 outputs:
   bundle: "${{ tasks.bundle.output }}"

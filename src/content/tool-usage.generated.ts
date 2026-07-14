@@ -25,12 +25,12 @@ export interface ToolUsageEntry {
 export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   "assert": {
     "bare": "assert",
-    "yaml": "  - id: confirm\n    depends_on: [execute]\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: \"${{ size(tasks.execute.output.findings) > 0 }}\"\n        message: \"Agent returned no findings, do not trust an empty run\"   # SLOT",
+    "yaml": "  confirm:\n    with:\n      has_findings: ${{ size(tasks.execute.output.findings) > 0 }}   # the check crosses as ONE boundary expression\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: \"${{ with.has_findings }}\"\n        message: \"Agent returned no findings, do not trust an empty run\"   # SLOT",
     "source": {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 50
+      "firstLine": 52
     },
     "templates": [
       "agent-loop",
@@ -78,7 +78,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "date": {
     "bare": "date",
-    "yaml": "nika: v1\nworkflow:\n  id: the-review-window\n  description: \"timestamp arithmetic without a shell date incantation\"\n\ntasks:\n  deadline:\n    invoke:\n      tool: \"nika:date\"\n      args:\n        op: add\n        base: \"2026-07-01T09:00:00Z\"\n        duration: \"7d\"\n\n  days_left:\n    depends_on: [deadline]\n    invoke:\n      tool: \"nika:date\"\n      args:\n        op: diff\n        start: \"2026-07-01T09:00:00Z\"\n        end: \"${{ tasks.deadline.output }}\"\n        unit: days\n\noutputs:\n  deadline: ${{ tasks.deadline.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: the-review-window\n  description: \"timestamp arithmetic without a shell date incantation\"\n\ntasks:\n  deadline:\n    invoke:\n      tool: \"nika:date\"\n      args:\n        op: add\n        base: \"2026-07-01T09:00:00Z\"\n        duration: \"7d\"\n\n  days_left:\n    with:\n      deadline: ${{ tasks.deadline.output }}\n    invoke:\n      tool: \"nika:date\"\n      args:\n        op: diff\n        start: \"2026-07-01T09:00:00Z\"\n        end: \"${{ with.deadline }}\"\n        unit: days\n\noutputs:\n  deadline: ${{ tasks.deadline.output }}",
     "source": {
       "kind": "crafted",
       "file": "date.nika.yaml"
@@ -90,12 +90,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "done": {
     "bare": "done",
-    "yaml": "  - id: execute\n    depends_on: [plan]\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ tasks.plan.output.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
+    "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
     "source": {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 31
+      "firstLine": 32
     },
     "templates": [
       "agent-loop"
@@ -131,12 +131,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "fetch": {
     "bare": "fetch",
-    "yaml": "  - id: check\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+    "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
     "source": {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 26
+      "firstLine": 27
     },
     "templates": [
       "gate-and-act",
@@ -150,12 +150,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "glob": {
     "bare": "glob",
-    "yaml": "  - id: discover\n    invoke:                         # SLOT: glob / fetch sitemap / exec + jq split\n      tool: \"nika:glob\"\n      args: { pattern: \"${{ vars.collection_source }}/*.md\" }",
+    "yaml": "  discover:\n    invoke:                         # SLOT: glob / fetch sitemap / exec + jq split\n      tool: \"nika:glob\"\n      args: { pattern: \"${{ vars.collection_source }}/*.md\" }",
     "source": {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 19
+      "firstLine": 20
     },
     "templates": [
       "fanout"
@@ -166,7 +166,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "grep": {
     "bare": "grep",
-    "yaml": "nika: v1\nworkflow:\n  id: count-the-todos\n  description: \"recursive regex search — {path, line, match}, sorted\"\n\ntasks:\n  todos:\n    invoke:\n      tool: \"nika:grep\"\n      args:\n        pattern: \"TODO|FIXME\"\n        path: \"./src\"\n\n  tally:\n    depends_on: [todos]\n    invoke:\n      tool: \"nika:jq\"\n      args:\n        input: ${{ tasks.todos.output }}\n        expression: \"length\"\n\noutputs:\n  count: ${{ tasks.tally.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: count-the-todos\n  description: \"recursive regex search — {path, line, match}, sorted\"\n\ntasks:\n  todos:\n    invoke:\n      tool: \"nika:grep\"\n      args:\n        pattern: \"TODO|FIXME\"\n        path: \"./src\"\n\n  tally:\n    with:\n      todos: ${{ tasks.todos.output }}\n    invoke:\n      tool: \"nika:jq\"\n      args:\n        input: ${{ with.todos }}\n        expression: \"length\"\n\noutputs:\n  count: ${{ tasks.tally.output }}",
     "source": {
       "kind": "crafted",
       "file": "grep.nika.yaml"
@@ -178,7 +178,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "hash": {
     "bare": "hash",
-    "yaml": "nika: v1\nworkflow:\n  id: pin-the-artifact\n  description: \"content-address a file — the receipt survives the run\"\n\ntasks:\n  artifact:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./dist/report.md\" }\n\n  pin:\n    depends_on: [artifact]\n    invoke:\n      tool: \"nika:hash\"\n      args:\n        content: \"${{ tasks.artifact.output }}\"\n        algo: sha256\n\noutputs:\n  sha256: ${{ tasks.pin.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: pin-the-artifact\n  description: \"content-address a file — the receipt survives the run\"\n\ntasks:\n  artifact:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./dist/report.md\" }\n\n  pin:\n    with:\n      artifact: ${{ tasks.artifact.output }}\n    invoke:\n      tool: \"nika:hash\"\n      args:\n        content: \"${{ with.artifact }}\"\n        algo: sha256\n\noutputs:\n  sha256: ${{ tasks.pin.output }}",
     "source": {
       "kind": "crafted",
       "file": "hash.nika.yaml"
@@ -202,12 +202,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "image_generate": {
     "bare": "image_generate",
-    "yaml": "  - id: render\n    depends_on: [brief]\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)\n        prompt: \"${{ tasks.brief.output.image_prompt }}\"\n        output_dir: \"${{ vars.out_dir }}\"\n        filename_prefix: \"asset\"    # SLOT: filename stem",
+    "yaml": "  render:\n    with:\n      brief_image_prompt: ${{ tasks.brief.output.image_prompt }}\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)\n        prompt: \"${{ with.brief_image_prompt }}\"\n        output_dir: \"${{ vars.out_dir }}\"\n        filename_prefix: \"asset\"    # SLOT: filename stem",
     "source": {
       "kind": "template",
       "template": "media-asset-pack",
       "file": "media-asset-pack.nika.yaml",
-      "firstLine": 34
+      "firstLine": 35
     },
     "templates": [
       "media-asset-pack"
@@ -218,7 +218,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "inspect": {
     "bare": "inspect",
-    "yaml": "nika: v1\nworkflow:\n  id: watch-the-meter\n  description: \"the workflow looks at its own run — cost as data, mid-flight\"\n\ntasks:\n  spend:\n    invoke:\n      tool: \"nika:inspect\"\n      args: { view: cost }\n\n  report:\n    depends_on: [spend]\n    invoke:\n      tool: \"nika:log\"\n      args:\n        level: info\n        message: \"cost so far\"\n        data: ${{ tasks.spend.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: watch-the-meter\n  description: \"the workflow looks at its own run — cost as data, mid-flight\"\n\ntasks:\n  spend:\n    invoke:\n      tool: \"nika:inspect\"\n      args: { view: cost }\n\n  report:\n    with:\n      spend: ${{ tasks.spend.output }}\n    invoke:\n      tool: \"nika:log\"\n      args:\n        level: info\n        message: \"cost so far\"\n        data: ${{ with.spend }}",
     "source": {
       "kind": "crafted",
       "file": "inspect.nika.yaml"
@@ -230,12 +230,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "jq": {
     "bare": "jq",
-    "yaml": "  - id: survivors\n    depends_on: [process]\n    invoke:                         # the null-aware fan-in · order preserved\n      tool: \"nika:jq\"\n      args:\n        input: ${{ tasks.process.output }}\n        # `. // []` · an EMPTY discovery skips the whole for_each (null\n        # upstream) — the fan-in must survive its own quiet day.\n        expression: \"(. // []) | [ .[] | select(. != null) ]\"",
+    "yaml": "  survivors:\n    with:\n      process: ${{ tasks.process.output }}\n    invoke:                         # the null-aware fan-in · order preserved\n      tool: \"nika:jq\"\n      args:\n        input: ${{ with.process }}\n        # `. // []` · an EMPTY discovery skips the whole for_each (null\n        # upstream) — the fan-in must survive its own quiet day.\n        expression: \"(. // []) | [ .[] | select(. != null) ]\"",
     "source": {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 40
+      "firstLine": 42
     },
     "templates": [
       "fanout",
@@ -248,12 +248,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "json_diff": {
     "bare": "json_diff",
-    "yaml": "  - id: delta\n    depends_on: [previous, fresh]\n    invoke:\n      tool: \"nika:json_diff\"        # RFC 6902 · empty patch = nothing new\n      args:\n        before: \"${{ tasks.previous.output }}\"\n        after: \"${{ tasks.fresh.output }}\"",
+    "yaml": "  delta:\n    with:                           # the bindings ARE the edges · previous + fresh → delta\n      previous: ${{ tasks.previous.output }}\n      fresh: ${{ tasks.fresh.output }}\n    invoke:\n      tool: \"nika:json_diff\"        # RFC 6902 · empty patch = nothing new\n      args:\n        before: \"${{ with.previous }}\"\n        after: \"${{ with.fresh }}\"",
     "source": {
       "kind": "template",
       "template": "etl-state",
       "file": "etl-state.nika.yaml",
-      "firstLine": 42
+      "firstLine": 43
     },
     "templates": [
       "etl-state"
@@ -288,12 +288,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "notify": {
     "bare": "notify",
-    "yaml": "  - id: act\n    depends_on: [check]\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ tasks.check.value > vars.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ tasks.check.value }}\"   # SLOT\n        severity: warning",
+    "yaml": "  act:\n    with:\n      value: ${{ tasks.check.value }}   # the binding IS the edge · check → act\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ with.value > vars.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ with.value }}\"   # SLOT\n        severity: warning",
     "source": {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 40
+      "firstLine": 41
     },
     "templates": [
       "gate-and-act",
@@ -305,12 +305,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "prompt": {
     "bare": "prompt",
-    "yaml": "  - id: human\n    depends_on: [gates]\n    invoke:\n      # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:\n      #   nika run --resume <trace> --answer human=yes\n      tool: \"nika:prompt\"\n      args:\n        message: \"All gates GREEN. Proceed?\"   # SLOT: the decision, fully informed\n        default: false",
+    "yaml": "  human:\n    after:\n      gates: succeeded              # state, no data · no question until the board is green\n    invoke:\n      # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:\n      #   nika run --resume <trace> --answer human=yes\n      tool: \"nika:prompt\"\n      args:\n        message: \"All gates GREEN. Proceed?\"   # SLOT: the decision, fully informed\n        default: false",
     "source": {
       "kind": "template",
       "template": "human-gated-ship",
       "file": "human-gated-ship.nika.yaml",
-      "firstLine": 46
+      "firstLine": 48
     },
     "templates": [
       "human-gated-ship"
@@ -321,12 +321,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "read": {
     "bare": "read",
-    "yaml": "  - id: gather\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 20
+      "firstLine": 21
     },
     "templates": [
       "chain",
@@ -351,7 +351,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "uuid": {
     "bare": "uuid",
-    "yaml": "nika: v1\nworkflow:\n  id: stamp-the-run\n  description: \"a sortable v7 id — minted once, threaded through the file\"\n\ntasks:\n  mint:\n    invoke:\n      tool: \"nika:uuid\"\n      args: { version: v7 }\n\n  stamp:\n    depends_on: [mint]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./run-id.txt\"\n        content: \"${{ tasks.mint.output }}\"\n\noutputs:\n  run_id: ${{ tasks.mint.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: stamp-the-run\n  description: \"a sortable v7 id — minted once, threaded through the file\"\n\ntasks:\n  mint:\n    invoke:\n      tool: \"nika:uuid\"\n      args: { version: v7 }\n\n  stamp:\n    with:\n      mint: ${{ tasks.mint.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./run-id.txt\"\n        content: \"${{ with.mint }}\"\n\noutputs:\n  run_id: ${{ tasks.mint.output }}",
     "source": {
       "kind": "crafted",
       "file": "uuid.nika.yaml"
@@ -363,7 +363,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "validate": {
     "bare": "validate",
-    "yaml": "nika: v1\nworkflow:\n  id: gate-the-payload\n  description: \"a schema verdict as data — invalid input is a report, not a crash\"\n\ntasks:\n  verdict:\n    invoke:\n      tool: \"nika:validate\"\n      args:\n        data: { name: \"nika\", verbs: 4 }\n        schema:\n          type: object\n          required: [name, verbs]\n          properties:\n            name: { type: string }\n            verbs: { type: integer }\n\n  gate:\n    depends_on: [verdict]\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: ${{ tasks.verdict.output.valid }}\n        message: \"payload failed its schema\"",
+    "yaml": "nika: v1\nworkflow:\n  id: gate-the-payload\n  description: \"a schema verdict as data — invalid input is a report, not a crash\"\n\ntasks:\n  verdict:\n    invoke:\n      tool: \"nika:validate\"\n      args:\n        data: { name: \"nika\", verbs: 4 }\n        schema:\n          type: object\n          required: [name, verbs]\n          properties:\n            name: { type: string }\n            verbs: { type: integer }\n\n  gate:\n    with:\n      verdict_valid: ${{ tasks.verdict.output.valid }}\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: ${{ with.verdict_valid }}\n        message: \"payload failed its schema\"",
     "source": {
       "kind": "crafted",
       "file": "validate.nika.yaml"
@@ -375,7 +375,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "wait": {
     "bare": "wait",
-    "yaml": "nika: v1\nworkflow:\n  id: let-the-index-settle\n  description: \"a declared pause — relative duration XOR absolute until\"\n\ntasks:\n  publish:\n    invoke:\n      tool: \"nika:notify\"\n      args:\n        target: \"https://hooks.example.com/deploys\"\n        message: \"docs published\"\n\n  settle:\n    depends_on: [publish]\n    invoke:\n      tool: \"nika:wait\"\n      args: { duration: \"30s\" }\n\n  verify:\n    depends_on: [settle]\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://docs.example.com/health\"\n        mode: jq\n        jq: \".status\"",
+    "yaml": "nika: v1\nworkflow:\n  id: let-the-index-settle\n  description: \"a declared pause — relative duration XOR absolute until\"\n\ntasks:\n  publish:\n    invoke:\n      tool: \"nika:notify\"\n      args:\n        target: \"https://hooks.example.com/deploys\"\n        message: \"docs published\"\n\n  settle:\n    after:\n      publish: succeeded\n    invoke:\n      tool: \"nika:wait\"\n      args: { duration: \"30s\" }\n\n  verify:\n    after:\n      settle: succeeded\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://docs.example.com/health\"\n        mode: jq\n        jq: \".status\"",
     "source": {
       "kind": "crafted",
       "file": "wait.nika.yaml"
@@ -387,12 +387,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "write": {
     "bare": "write",
-    "yaml": "  - id: persist\n    depends_on: [think]\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./output.md\"         # SLOT: destination\n        content: \"${{ tasks.think.output }}\"   # ALWAYS pass content · a write without it writes nothing",
+    "yaml": "  persist:\n    with:\n      think: ${{ tasks.think.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./output.md\"         # SLOT: destination\n        content: \"${{ with.think }}\"   # ALWAYS pass content · a write without it writes nothing",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 32
+      "firstLine": 34
     },
     "templates": [
       "chain",

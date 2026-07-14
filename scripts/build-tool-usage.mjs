@@ -48,9 +48,11 @@ const crafted = new Set(readdirSync(CRAFTED_DIR).filter((f) => f.endsWith('.nika
 /* ── the excerpt walker ──
    Given a skeleton's yaml and a builtin ref, find the first line that USES
    the tool (`tool: "nika:x"` beats a whitelist grant `- "nika:x"`), then
-   slice the enclosing task item: up to its `  - id:` line (plus any
-   contiguous task-level comment lines directly above — they carry the
-   teaching), down to the next task or the next top-level key. */
+   slice the enclosing task block: up to its indent-2 `  <key>:` line (the
+   map key IS the identity since W1 · plus any contiguous task-level comment
+   lines directly above — they carry the teaching), down to the next task or
+   the next top-level key. */
+const TASK_KEY = /^ {2}[a-z][a-z0-9_]*:/
 function excerpt(yaml, ref) {
   const lines = yaml.split('\n')
   /* skeleton lines carry SLOT comments — the ref match tolerates a trailer */
@@ -60,11 +62,11 @@ function excerpt(yaml, ref) {
   if (at === -1) at = lines.findIndex(isGrant)
   if (at === -1) return null
   let start = at
-  while (start > 0 && !/^  - id:\s/.test(lines[start])) start--
-  if (!/^  - id:\s/.test(lines[start])) return null
+  while (start > 0 && !TASK_KEY.test(lines[start])) start--
+  if (!TASK_KEY.test(lines[start])) return null
   while (start > 0 && /^  #/.test(lines[start - 1])) start--
   let end = at + 1
-  while (end < lines.length && !/^  - id:\s/.test(lines[end]) && !/^[a-z_#]/.test(lines[end])) {
+  while (end < lines.length && !TASK_KEY.test(lines[end]) && !/^[a-z_#]/.test(lines[end])) {
     end++
   }
   /* a comment block directly above the NEXT task belongs to the next task */

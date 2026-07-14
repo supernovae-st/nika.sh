@@ -7,7 +7,11 @@
 
    Honesty notes · a cycle can't be layered: `cyclic` flips true and the
    waves fall back to file order (the linter's NIKA-DAG-001 carries the
-   message). Unknown depends_on names don't edge (NIKA-DAG-002 speaks). */
+   message). Unknown with:/after: targets don't edge (NIKA-DAG-002 speaks).
+
+   W2 « the flow » · edges are DERIVED from the two doors: every tasks.X
+   reference in a with: value is a data edge, every after: key a control
+   edge — G_p = E_d ∪ E_c (the binding IS the edge · no invisible edges). */
 import { parse } from 'yaml'
 
 export type PlanVerb = 'infer' | 'exec' | 'invoke' | 'agent'
@@ -17,7 +21,7 @@ export interface PlanTask {
   id: string
   /** the ONE verb, or null while the task is still being written */
   verb: PlanVerb | null
-  /** resolved depends_on (only ids that exist) */
+  /** resolved producers — with: bindings (data) ∪ after: keys (control) */
   deps: string[]
   /** the card's third line — tool / argv head / model register */
   target: string
@@ -46,6 +50,24 @@ export interface ParsedPlan {
 
 const strs = (v: unknown): string[] =>
   Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []
+
+const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
+
+function* strings(value: unknown): Generator<string> {
+  if (typeof value === 'string') yield value
+  else if (Array.isArray(value)) for (const v of value) yield* strings(v)
+  else if (value && typeof value === 'object')
+    for (const v of Object.values(value)) yield* strings(v)
+}
+
+/** the two doors → the producers (W2) · with: refs = data · after: keys = control */
+function producersOf(t: Record<string, unknown>): string[] {
+  const out = new Set<string>()
+  for (const s of strings(t.with)) for (const m of s.matchAll(TASK_REF)) out.add(m[1])
+  if (t.after && typeof t.after === 'object' && !Array.isArray(t.after))
+    for (const k of Object.keys(t.after as object)) out.add(k)
+  return [...out]
+}
 
 function permitsOf(doc: Record<string, unknown>): PlanPermits | null {
   const p = doc.permits
@@ -101,10 +123,7 @@ export function parsePlan(src: string): ParsedPlan | null {
     if (!id || seen.has(id)) continue
     seen.add(id)
     const verb = VERBS.find((v) => v in t) ?? null
-    const deps = Array.isArray(t.depends_on)
-      ? (t.depends_on as unknown[]).filter((d): d is string => typeof d === 'string')
-      : []
-    tasks.push({ id, verb, deps, target: targetOf(t, verb), gated: 'when' in t })
+    tasks.push({ id, verb, deps: producersOf(t), target: targetOf(t, verb), gated: 'when' in t })
   }
   if (tasks.length === 0) return null
 

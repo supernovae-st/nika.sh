@@ -46,18 +46,20 @@ tasks:
       command: ["git", "log", "--merges", "--since=7 days ago", "--oneline"]
 
   draft:
-    depends_on: [collect]
+    with:
+      merges: \${{ tasks.collect.output }}
     infer:
       max_tokens: 900
       prompt: |
         Group these merges by area and write a changelog draft.
-        \${{ tasks.collect.output }}
+        \${{ with.merges }}
 
   save:
-    depends_on: [draft]
+    with:
+      draft: \${{ tasks.draft.output }}
     invoke:
       tool: "nika:write"
-      args: { path: "./CHANGELOG.draft.md", content: "\${{ tasks.draft.output }}" }
+      args: { path: "./CHANGELOG.draft.md", content: "\${{ with.draft }}" }
 `
 
 const STEPS: { n: string; title: string; body: string }[] = [

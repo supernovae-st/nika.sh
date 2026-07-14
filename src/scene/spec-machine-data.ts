@@ -51,7 +51,7 @@ export interface MachineNode {
   family?: string
   /** the verb hue key (verb nodes + plan-ring task nodes) */
   verb?: VerbName
-  /** plan-ring edges · depends_on ids within the stratum */
+  /** plan-ring edges · upstream producers (with: refs ∪ after: keys) */
   deps?: string[]
   gloss?: string
 }
@@ -73,10 +73,11 @@ export const ENVELOPE_KEYS: { key: string; req: boolean; gloss: string }[] = [
 
 /* ── the task shape · from the JSON schema $defs.task (required first) ─────── */
 export const TASK_FIELDS: { name: string; req: boolean; gloss: string }[] = [
-  { name: 'id', req: true, gloss: 'snake_case · CEL-safe · unique in the workflow' },
+  { name: '‹key›', req: true, gloss: 'the map key IS the identity · snake_case · CEL-safe · unique' },
   { name: '‹verb›', req: true, gloss: 'exactly one of infer · exec · invoke · agent' },
-  { name: 'depends_on', req: false, gloss: 'the edges · ids this task waits on' },
-  { name: 'when', req: false, gloss: 'a CEL boolean gate (or true/false) · replaces the success gate' },
+  { name: 'with', req: false, gloss: 'the data door · each ${{ tasks.X }} binding IS a typed edge' },
+  { name: 'after', req: false, gloss: 'the control door · {producer: succeeded|failed|skipped|terminal}' },
+  { name: 'when', req: false, gloss: 'a local CEL yes/no (or true/false) · post-gate · false → skipped' },
   { name: 'for_each', req: false, gloss: 'map the task over a collection' },
   { name: 'max_parallel', req: false, gloss: 'cap concurrent for_each iterations · 1 = sequential' },
   { name: 'timeout', req: false, gloss: 'a quoted Go-duration · e.g. "30s" "5m" "1h30m" · max 24h' },

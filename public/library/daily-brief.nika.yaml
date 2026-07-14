@@ -16,23 +16,29 @@ tasks:
   calendar: { invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
 
   triage:
-    depends_on: [ inbox ]
-    infer: { prompt: "Flag what is urgent: ${{ tasks.inbox.output }}", max_tokens: 300 }
+    with:
+      inbox: ${{ tasks.inbox.output }}
+    infer: { prompt: "Flag what is urgent: ${{ with.inbox }}", max_tokens: 300 }
   agenda:
-    depends_on: [ calendar ]
-    infer: { prompt: "Plan the day around: ${{ tasks.calendar.output }}", max_tokens: 300 }
+    with:
+      calendar: ${{ tasks.calendar.output }}
+    infer: { prompt: "Plan the day around: ${{ with.calendar }}", max_tokens: 300 }
 
   draft:
-    depends_on: [ notes, triage, agenda ]
+    with:
+      notes: ${{ tasks.notes.output }}
+      triage: ${{ tasks.triage.output }}
+      agenda: ${{ tasks.agenda.output }}
     infer:
-      prompt: "Write the morning brief. Notes: ${{ tasks.notes.output }} Urgent: ${{ tasks.triage.output }} Plan: ${{ tasks.agenda.output }}"
+      prompt: "Write the morning brief. Notes: ${{ with.notes }} Urgent: ${{ with.triage }} Plan: ${{ with.agenda }}"
       max_tokens: 500
 
   save:
-    depends_on: [ draft ]
+    with:
+      draft: ${{ tasks.draft.output }}
     invoke:
       tool: "nika:write"
-      args: { path: ./brief.md, content: "${{ tasks.draft.output }}" }
+      args: { path: ./brief.md, content: "${{ with.draft }}" }
 
 outputs:
   brief: "${{ tasks.draft.output }}"

@@ -10,12 +10,13 @@ tasks:
       args: { version: v7 }
 
   stamp:
-    depends_on: [mint]
+    with:
+      mint: ${{ tasks.mint.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./run-id.txt"
-        content: "${{ tasks.mint.output }}"
+        content: "${{ with.mint }}"
 
 outputs:
   run_id: ${{ tasks.mint.output }}

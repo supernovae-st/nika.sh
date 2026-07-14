@@ -22,11 +22,11 @@ tasks:
     exec: { command: ["echo", "ok"] }
 
   use:
-    depends_on: [run]
+    after: { run: succeeded }
     invoke: { tool: "nika:read", args: { path: ./notes.md } }
 
   loop:
-    depends_on: [think]
+    after: { think: succeeded }
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 2 }
 
 outputs:

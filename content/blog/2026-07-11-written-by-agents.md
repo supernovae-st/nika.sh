@@ -72,19 +72,22 @@ tasks:
       args: { path: "./notes/wednesday.md" }
 
   summary:
-    depends_on: [monday, tuesday, wednesday]
+    with:
+      monday: ${{ tasks.monday.output }}
+      tuesday: ${{ tasks.tuesday.output }}
+      wednesday: ${{ tasks.wednesday.output }}
     infer:
       prompt: |
         Three daily standup notes ·
 
         --- monday ---
-        ${{ tasks.monday.output }}
+        ${{ with.monday }}
 
         --- tuesday ---
-        ${{ tasks.tuesday.output }}
+        ${{ with.tuesday }}
 
         --- wednesday ---
-        ${{ tasks.wednesday.output }}
+        ${{ with.wednesday }}
 
         Write ONE paragraph (3-5 sentences) summarizing the week so far ·
         what was shipped, what was fixed, and what comes next.
@@ -92,12 +95,13 @@ tasks:
       max_tokens: 2000
 
   save:
-    depends_on: [summary]
+    with:
+      summary: ${{ tasks.summary.output }}
     invoke:
       tool: "nika:write"
       args:
         path: "./manifest.md"
-        content: "${{ tasks.summary.output }}"
+        content: "${{ with.summary }}"
 
 outputs:
   manifest: ${{ tasks.summary.output }}

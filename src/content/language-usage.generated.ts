@@ -24,6 +24,30 @@ export interface WordUsage {
 
 /** usage evidence per schema word, keyed by word. */
 export const WORD_USAGE: Record<string, WordUsage> = {
+  "after": {
+    "word": "after",
+    "usage": {
+      "yaml": "  delta:\n    with:                           # the bindings ARE the edges · previous + fresh → delta\n      previous: ${{ tasks.previous.output }}\n      fresh: ${{ tasks.fresh.output }}\n    invoke:\n      tool: \"nika:json_diff\"        # RFC 6902 · empty patch = nothing new\n      args:\n        before: \"${{ with.previous }}\"\n        after: \"${{ with.fresh }}\"",
+      "source": {
+        "kind": "template",
+        "name": "etl-state",
+        "file": "etl-state.nika.yaml",
+        "firstLine": 43
+      }
+    },
+    "templates": [
+      "etl-state",
+      "human-gated-ship"
+    ],
+    "codes": [
+      "NIKA-PARSE-024",
+      "NIKA-DAG-001",
+      "NIKA-DAG-002",
+      "NIKA-DAG-005",
+      "NIKA-VAR-021",
+      "NIKA-INFER-002"
+    ]
+  },
   "agent": {
     "word": "agent",
     "templates": [
@@ -39,12 +63,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "args": {
     "word": "args",
     "usage": {
-      "yaml": "  - id: gather\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 20
+        "firstLine": 21
       }
     },
     "templates": [
@@ -74,12 +98,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "backoff_strategy": {
     "word": "backoff_strategy",
     "usage": {
-      "yaml": "  - id: process\n    depends_on: [discover]\n    for_each: ${{ tasks.discover.output }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 24
+        "firstLine": 25
       }
     },
     "templates": [
@@ -90,12 +114,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "capture": {
     "word": "capture",
     "usage": {
-      "yaml": "  # ── the verification wave · all checks run in parallel ──\n  - id: check_a\n    exec:\n      command: [\"echo\", \"ok\"]        # SLOT: gate 1 (argv form · injection-safe)\n      capture: structured",
+      "yaml": "  # ── the verification wave · all checks run in parallel ──\n  check_a:\n    exec:\n      command: [\"echo\", \"ok\"]        # SLOT: gate 1 (argv form · injection-safe)\n      capture: structured",
       "source": {
         "kind": "template",
         "name": "human-gated-ship",
         "file": "human-gated-ship.nika.yaml",
-        "firstLine": 27
+        "firstLine": 28
       }
     },
     "templates": [
@@ -108,12 +132,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "command": {
     "word": "command",
     "usage": {
-      "yaml": "  # ── the verification wave · all checks run in parallel ──\n  - id: check_a\n    exec:\n      command: [\"echo\", \"ok\"]        # SLOT: gate 1 (argv form · injection-safe)\n      capture: structured",
+      "yaml": "  # ── the verification wave · all checks run in parallel ──\n  check_a:\n    exec:\n      command: [\"echo\", \"ok\"]        # SLOT: gate 1 (argv form · injection-safe)\n      capture: structured",
       "source": {
         "kind": "template",
         "name": "human-gated-ship",
         "file": "human-gated-ship.nika.yaml",
-        "firstLine": 27
+        "firstLine": 28
       }
     },
     "templates": [
@@ -130,36 +154,17 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     "templates": [],
     "codes": []
   },
-  "depends_on": {
-    "word": "depends_on",
+  "description": {
+    "word": "description",
     "usage": {
-      "yaml": "  - id: think\n    depends_on: [gather]\n    infer:\n      prompt: |\n        # SLOT: the one model job · interpolate ${{ tasks.gather.output }}\n        Summarize · ${{ tasks.gather.output }}",
+      "yaml": "  description: \"gather → think → persist\"   # SLOT: one honest sentence",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 25
+        "firstLine": 12
       }
     },
-    "templates": [
-      "chain",
-      "gate-and-act",
-      "fanout",
-      "etl-state",
-      "agent-loop",
-      "human-gated-ship",
-      "website-brief",
-      "media-asset-pack",
-      "api-upload-and-create",
-      "docker-report"
-    ],
-    "codes": [
-      "NIKA-DAG-001",
-      "NIKA-DAG-002"
-    ]
-  },
-  "description": {
-    "word": "description",
     "templates": [
       "chain",
       "gate-and-act",
@@ -196,12 +201,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "fail_fast": {
     "word": "fail_fast",
     "usage": {
-      "yaml": "  - id: process\n    depends_on: [discover]\n    for_each: ${{ tasks.discover.output }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 24
+        "firstLine": 25
       }
     },
     "templates": [
@@ -217,12 +222,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "for_each": {
     "word": "for_each",
     "usage": {
-      "yaml": "  - id: process\n    depends_on: [discover]\n    for_each: ${{ tasks.discover.output }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 24
+        "firstLine": 25
       }
     },
     "templates": [
@@ -236,12 +241,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "id": {
     "word": "id",
     "usage": {
-      "yaml": "  - id: gather\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+      "yaml": "  id: chain-template            # SLOT: kebab-case workflow id",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 20
+        "firstLine": 11
       }
     },
     "templates": [
@@ -300,12 +305,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "jitter": {
     "word": "jitter",
     "usage": {
-      "yaml": "  - id: process\n    depends_on: [discover]\n    for_each: ${{ tasks.discover.output }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 24
+        "firstLine": 25
       }
     },
     "templates": [
@@ -316,12 +321,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "max_attempts": {
     "word": "max_attempts",
     "usage": {
-      "yaml": "  - id: process\n    depends_on: [discover]\n    for_each: ${{ tasks.discover.output }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 24
+        "firstLine": 25
       }
     },
     "templates": [
@@ -332,12 +337,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "max_parallel": {
     "word": "max_parallel",
     "usage": {
-      "yaml": "  - id: process\n    depends_on: [discover]\n    for_each: ${{ tasks.discover.output }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 24
+        "firstLine": 25
       }
     },
     "templates": [
@@ -348,12 +353,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "max_tokens": {
     "word": "max_tokens",
     "usage": {
-      "yaml": "  - id: brief\n    depends_on: [crawl_site]\n    infer:\n      max_tokens: 1200\n      prompt: |\n        # SLOT: the one model job · what should the brief capture?\n        From this site crawl, produce a creative brief: the domain of\n        activity, the dominant visual theme, the audience, the usable\n        colors and image assets.\n        Crawl digest · ${{ tasks.crawl_site.output }}\n      schema:                       # SLOT: the typed shape downstream tasks rely on\n        type: object\n        additionalProperties: false\n        properties:\n          domain: { type: string }\n          theme: { type: string }\n          audience: { type: string }\n          colors: { type: array, items: { type: string } }\n          assets: { type: array, items: { type: string } }\n        required: [domain, theme, audience, colors, assets]",
+      "yaml": "  brief:\n    with:\n      crawl_site: ${{ tasks.crawl_site.output }}\n    infer:\n      max_tokens: 1200\n      prompt: |\n        # SLOT: the one model job · what should the brief capture?\n        From this site crawl, produce a creative brief: the domain of\n        activity, the dominant visual theme, the audience, the usable\n        colors and image assets.\n        Crawl digest · ${{ with.crawl_site }}\n      schema:                       # SLOT: the typed shape downstream tasks rely on\n        type: object\n        additionalProperties: false\n        properties:\n          domain: { type: string }\n          theme: { type: string }\n          audience: { type: string }\n          colors: { type: array, items: { type: string } }\n          assets: { type: array, items: { type: string } }\n        required: [domain, theme, audience, colors, assets]",
       "source": {
         "kind": "template",
         "name": "website-brief",
         "file": "website-brief.nika.yaml",
-        "firstLine": 27
+        "firstLine": 28
       }
     },
     "templates": [
@@ -366,12 +371,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "max_tokens_total": {
     "word": "max_tokens_total",
     "usage": {
-      "yaml": "  - id: execute\n    depends_on: [plan]\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ tasks.plan.output.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
+      "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
       "source": {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 31
+        "firstLine": 32
       }
     },
     "templates": [
@@ -384,12 +389,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "max_turns": {
     "word": "max_turns",
     "usage": {
-      "yaml": "  - id: execute\n    depends_on: [plan]\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ tasks.plan.output.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
+      "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
       "source": {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 31
+        "firstLine": 32
       }
     },
     "templates": [
@@ -407,7 +412,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 13
+        "firstLine": 14
       }
     },
     "templates": [
@@ -456,12 +461,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "on_codes": {
     "word": "on_codes",
     "usage": {
-      "yaml": "  - id: previous\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.state_path }}\" }\n    on_error:\n      on_codes: [NIKA-BUILTIN-READ-001]   # not-found ONLY · a permission error still fails loudly\n      recover: ${{ tasks.empty.output }}",
+      "yaml": "  previous:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.state_path }}\" }\n    on_error:\n      on_codes: [NIKA-BUILTIN-READ-001]   # not-found ONLY · a permission error still fails loudly\n      recover: ${{ tasks.empty.output }}",
       "source": {
         "kind": "template",
         "name": "etl-state",
         "file": "etl-state.nika.yaml",
-        "firstLine": 24
+        "firstLine": 25
       }
     },
     "templates": [
@@ -472,12 +477,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "on_error": {
     "word": "on_error",
     "usage": {
-      "yaml": "  - id: check\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
       "source": {
         "kind": "template",
         "name": "gate-and-act",
         "file": "gate-and-act.nika.yaml",
-        "firstLine": 26
+        "firstLine": 27
       }
     },
     "templates": [
@@ -487,23 +492,26 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-PARSE-012",
-      "NIKA-DAG-004"
+      "NIKA-DAG-004",
+      "NIKA-VAR-021"
     ]
   },
   "on_finally": {
     "word": "on_finally",
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-VAR-021"
+    ]
   },
   "output": {
     "word": "output",
     "usage": {
-      "yaml": "  - id: check\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
       "source": {
         "kind": "template",
         "name": "gate-and-act",
         "file": "gate-and-act.nika.yaml",
-        "firstLine": 26
+        "firstLine": 27
       }
     },
     "templates": [
@@ -524,7 +532,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 40
+        "firstLine": 43
       }
     },
     "templates": [
@@ -540,6 +548,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "docker-report"
     ],
     "codes": [
+      "NIKA-VAR-021",
       "NIKA-VAR-009"
     ]
   },
@@ -551,7 +560,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "human-gated-ship",
         "file": "human-gated-ship.nika.yaml",
-        "firstLine": 13
+        "firstLine": 14
       }
     },
     "templates": [
@@ -566,12 +575,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "prompt": {
     "word": "prompt",
     "usage": {
-      "yaml": "  - id: think\n    depends_on: [gather]\n    infer:\n      prompt: |\n        # SLOT: the one model job · interpolate ${{ tasks.gather.output }}\n        Summarize · ${{ tasks.gather.output }}",
+      "yaml": "  think:\n    with:\n      gather: ${{ tasks.gather.output }}\n    infer:\n      prompt: |\n        # SLOT: the one model job · interpolate ${{ with.gather }}\n        Summarize · ${{ with.gather }}",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 25
+        "firstLine": 26
       }
     },
     "templates": [
@@ -589,12 +598,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "recover": {
     "word": "recover",
     "usage": {
-      "yaml": "  - id: check\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
       "source": {
         "kind": "template",
         "name": "gate-and-act",
         "file": "gate-and-act.nika.yaml",
-        "firstLine": 26
+        "firstLine": 27
       }
     },
     "templates": [
@@ -603,18 +612,19 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "etl-state"
     ],
     "codes": [
-      "NIKA-DAG-004"
+      "NIKA-DAG-004",
+      "NIKA-VAR-021"
     ]
   },
   "retry": {
     "word": "retry",
     "usage": {
-      "yaml": "  - id: process\n    depends_on: [discover]\n    for_each: ${{ tasks.discover.output }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 24
+        "firstLine": 25
       }
     },
     "templates": [
@@ -627,12 +637,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "schema": {
     "word": "schema",
     "usage": {
-      "yaml": "  - id: plan\n    infer:\n      prompt: \"Break '${{ vars.goal }}' into at most 4 concrete steps.\"   # SLOT\n      schema:\n        type: object\n        required: [steps]\n        properties:\n          steps: { type: array, items: { type: string } }",
+      "yaml": "  plan:\n    infer:\n      prompt: \"Break '${{ vars.goal }}' into at most 4 concrete steps.\"   # SLOT\n      schema:\n        type: object\n        required: [steps]\n        properties:\n          steps: { type: array, items: { type: string } }",
       "source": {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 22
+        "firstLine": 23
       }
     },
     "templates": [
@@ -654,7 +664,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "gate-and-act",
         "file": "gate-and-act.nika.yaml",
-        "firstLine": 17
+        "firstLine": 18
       }
     },
     "templates": [
@@ -692,12 +702,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "system": {
     "word": "system",
     "usage": {
-      "yaml": "  - id: execute\n    depends_on: [plan]\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ tasks.plan.output.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
+      "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
       "source": {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 31
+        "firstLine": 32
       }
     },
     "templates": [
@@ -708,66 +718,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "tasks": {
     "word": "tasks",
     "usage": {
-      "yaml": "tasks:\n  - id: gather\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
-      "source": {
-        "kind": "template",
-        "name": "chain",
-        "file": "chain.nika.yaml",
-        "firstLine": 19
-      }
-    },
-    "templates": [
-      "chain",
-      "gate-and-act",
-      "fanout",
-      "etl-state",
-      "agent-loop",
-      "human-gated-ship",
-      "website-brief",
-      "media-asset-pack",
-      "api-upload-and-create",
-      "docker-report"
-    ],
-    "codes": [
-      "NIKA-PARSE-002",
-      "NIKA-PARSE-022",
-      "NIKA-DAG-003",
-      "NIKA-VAR-020"
-    ]
-  },
-  "temperature": {
-    "word": "temperature",
-    "templates": [],
-    "codes": []
-  },
-  "thinking": {
-    "word": "thinking",
-    "templates": [],
-    "codes": []
-  },
-  "timeout": {
-    "word": "timeout",
-    "usage": {
-      "yaml": "  - id: process\n    depends_on: [discover]\n    for_each: ${{ tasks.discover.output }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
-      "source": {
-        "kind": "template",
-        "name": "fanout",
-        "file": "fanout.nika.yaml",
-        "firstLine": 24
-      }
-    },
-    "templates": [
-      "fanout"
-    ],
-    "codes": [
-      "NIKA-PARSE-010",
-      "NIKA-TIMEOUT-001"
-    ]
-  },
-  "tool": {
-    "word": "tool",
-    "usage": {
-      "yaml": "  - id: gather\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+      "yaml": "tasks:\n  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
       "source": {
         "kind": "template",
         "name": "chain",
@@ -787,17 +738,76 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "api-upload-and-create",
       "docker-report"
     ],
+    "codes": [
+      "NIKA-PARSE-002",
+      "NIKA-PARSE-022",
+      "NIKA-VAR-020",
+      "NIKA-VAR-021"
+    ]
+  },
+  "temperature": {
+    "word": "temperature",
+    "templates": [],
+    "codes": []
+  },
+  "thinking": {
+    "word": "thinking",
+    "templates": [],
+    "codes": []
+  },
+  "timeout": {
+    "word": "timeout",
+    "usage": {
+      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      prompt: |\n        Process this item · ${{ item }}",
+      "source": {
+        "kind": "template",
+        "name": "fanout",
+        "file": "fanout.nika.yaml",
+        "firstLine": 25
+      }
+    },
+    "templates": [
+      "fanout"
+    ],
+    "codes": [
+      "NIKA-PARSE-010",
+      "NIKA-TIMEOUT-001"
+    ]
+  },
+  "tool": {
+    "word": "tool",
+    "usage": {
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+      "source": {
+        "kind": "template",
+        "name": "chain",
+        "file": "chain.nika.yaml",
+        "firstLine": 21
+      }
+    },
+    "templates": [
+      "chain",
+      "gate-and-act",
+      "fanout",
+      "etl-state",
+      "agent-loop",
+      "human-gated-ship",
+      "website-brief",
+      "media-asset-pack",
+      "api-upload-and-create",
+      "docker-report"
+    ],
     "codes": []
   },
   "tools": {
     "word": "tools",
     "usage": {
-      "yaml": "  - id: execute\n    depends_on: [plan]\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ tasks.plan.output.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
+      "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
       "source": {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 31
+        "firstLine": 32
       }
     },
     "templates": [
@@ -817,7 +827,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 15
+        "firstLine": 16
       }
     },
     "templates": [
@@ -842,12 +852,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "when": {
     "word": "when",
     "usage": {
-      "yaml": "  - id: act\n    depends_on: [check]\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ tasks.check.value > vars.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ tasks.check.value }}\"   # SLOT\n        severity: warning",
+      "yaml": "  act:\n    with:\n      value: ${{ tasks.check.value }}   # the binding IS the edge · check → act\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ with.value > vars.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ with.value }}\"   # SLOT\n        severity: warning",
       "source": {
         "kind": "template",
         "name": "gate-and-act",
         "file": "gate-and-act.nika.yaml",
-        "firstLine": 40
+        "firstLine": 41
       }
     },
     "templates": [
@@ -856,21 +866,46 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "human-gated-ship"
     ],
     "codes": [
+      "NIKA-DAG-006",
       "NIKA-VAR-005",
       "NIKA-VAR-006"
     ]
   },
   "with": {
     "word": "with",
-    "templates": [],
+    "usage": {
+      "yaml": "  think:\n    with:\n      gather: ${{ tasks.gather.output }}\n    infer:\n      prompt: |\n        # SLOT: the one model job · interpolate ${{ with.gather }}\n        Summarize · ${{ with.gather }}",
+      "source": {
+        "kind": "template",
+        "name": "chain",
+        "file": "chain.nika.yaml",
+        "firstLine": 26
+      }
+    },
+    "templates": [
+      "chain",
+      "gate-and-act",
+      "fanout",
+      "etl-state",
+      "agent-loop",
+      "human-gated-ship",
+      "website-brief",
+      "media-asset-pack",
+      "api-upload-and-create",
+      "docker-report"
+    ],
     "codes": [
-      "NIKA-PARSE-013"
+      "NIKA-PARSE-013",
+      "NIKA-PARSE-024",
+      "NIKA-DAG-001",
+      "NIKA-DAG-002",
+      "NIKA-VAR-021"
     ]
   },
   "workflow": {
     "word": "workflow",
     "usage": {
-      "yaml": "workflow: chain-template            # SLOT: kebab-case workflow id",
+      "yaml": "workflow:\n  id: chain-template            # SLOT: kebab-case workflow id\n  description: \"gather → think → persist\"   # SLOT: one honest sentence",
       "source": {
         "kind": "template",
         "name": "chain",
@@ -896,6 +931,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-PARSE-007",
       "NIKA-PARSE-020",
       "NIKA-PARSE-021",
+      "NIKA-VAR-021",
       "NIKA-SEC-003",
       "NIKA-CANCEL-001"
     ]

@@ -12,7 +12,7 @@ We've accepted a strange deal: the more useful the work, the more disposable the
 
 **Nika's bet is simple: useful AI work is worth writing down.** Not as a transcript, as *source*. A small YAML file that says what you want: fetch this, think about that, run this command, save the result. The file is the workflow. Run it again tomorrow and it does the same thing. Change a line and `git diff` shows exactly what changed.
 
-Four verbs cover the whole space: **infer** (call a model), **exec** (run a process), **invoke** (use a tool), **agent** (let it work a loop). Everything else is data flowing between tasks. The order falls out of the dependencies. Write `depends_on` and independent branches run in parallel, for free.
+Four verbs cover the whole space: **infer** (call a model), **exec** (run a process), **invoke** (use a tool), **agent** (let it work a loop). Everything else is data flowing between tasks. The order falls out of the wiring: `with:` names what a step consumes, the binding is the edge, and independent branches run in parallel, for free.
 
 And it runs on **your machine**. One Rust binary. Your model keys, your files, your git history. No cloud between you and your own work, and a license (AGPL) that guarantees it stays that way.
 

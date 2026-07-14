@@ -13,13 +13,14 @@ tasks:
         duration: "7d"
 
   days_left:
-    depends_on: [deadline]
+    with:
+      deadline: ${{ tasks.deadline.output }}
     invoke:
       tool: "nika:date"
       args:
         op: diff
         start: "2026-07-01T09:00:00Z"
-        end: "${{ tasks.deadline.output }}"
+        end: "${{ with.deadline }}"
         unit: days
 
 outputs:

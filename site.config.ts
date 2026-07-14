@@ -67,8 +67,10 @@ export const ERROR_PATHS = [
   '/errors/NIKA-CANCEL-001',
   '/errors/NIKA-DAG-001',
   '/errors/NIKA-DAG-002',
-  '/errors/NIKA-DAG-003',
   '/errors/NIKA-DAG-004',
+  '/errors/NIKA-DAG-005',
+  '/errors/NIKA-DAG-006',
+  '/errors/NIKA-DAG-007',
   '/errors/NIKA-EXEC-001',
   '/errors/NIKA-EXEC-002',
   '/errors/NIKA-INFER-001',
@@ -99,6 +101,7 @@ export const ERROR_PATHS = [
   '/errors/NIKA-PARSE-021',
   '/errors/NIKA-PARSE-022',
   '/errors/NIKA-PARSE-023',
+  '/errors/NIKA-PARSE-024',
   '/errors/NIKA-SEC-001',
   '/errors/NIKA-SEC-002',
   '/errors/NIKA-SEC-003',
@@ -115,6 +118,7 @@ export const ERROR_PATHS = [
   '/errors/NIKA-VAR-008',
   '/errors/NIKA-VAR-009',
   '/errors/NIKA-VAR-020',
+  '/errors/NIKA-VAR-021',
 ]
 
 /* the stdlib register's deep pages — one static landing per builtin (slug =
@@ -181,11 +185,12 @@ export const PROVIDER_PATHS = [
 export const VERB_PATHS = ['/verbs/infer', '/verbs/exec', '/verbs/invoke', '/verbs/agent']
 
 /* the keyword register's deep pages — one static landing per language word
-   (slug = the key as typed: /language/depends_on). Same prerender law;
+   (slug = the key as typed: /language/with). Same prerender law;
    kept literal (this file stays import-free); the language drift gate
    (src/test/language.test.ts) fails when the schema's word set and these
    paths diverge. */
 export const LANGUAGE_PATHS = [
+  '/language/after',
   '/language/agent',
   '/language/args',
   '/language/backoff_max_ms',
@@ -194,7 +199,6 @@ export const LANGUAGE_PATHS = [
   '/language/capture',
   '/language/command',
   '/language/cwd',
-  '/language/depends_on',
   '/language/description',
   '/language/env',
   '/language/exec',

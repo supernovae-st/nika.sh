@@ -12,13 +12,15 @@ tasks:
         message: "docs published"
 
   settle:
-    depends_on: [publish]
+    after:
+      publish: succeeded
     invoke:
       tool: "nika:wait"
       args: { duration: "30s" }
 
   verify:
-    depends_on: [settle]
+    after:
+      settle: succeeded
     invoke:
       tool: "nika:fetch"
       args:

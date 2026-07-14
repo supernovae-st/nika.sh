@@ -10,7 +10,8 @@ describe('tipFor', () => {
   it('resolves the high-signal keys from the shared glossary', () => {
     expect(tipFor('key', 'permits')).toEqual({ term: 'permits', words: KEY_WORDS.permits })
     expect(tipFor('key', 'when')?.words).toBe(WHEN_WORDS)
-    expect(tipFor('key', 'depends_on')?.words).toBe(KEY_WORDS.depends_on)
+    expect(tipFor('key', 'with')?.words).toBe(KEY_WORDS.with)
+    expect(tipFor('key', 'after')?.words).toBe(KEY_WORDS.after)
     expect(tipFor('key', 'schema')?.term).toBe('schema')
   })
 

@@ -67,7 +67,7 @@ data language (jq) · workflows are callable · mock-first.
 - Language spec (Apache-2.0): https://github.com/supernovae-st/nika-spec
 - Standard library register (every nika: builtin: args, required set, category): https://nika.sh/tools · one room per builtin (e.g. https://nika.sh/tools/fetch: the arg contract, the tool inside a real check-green file, the skeletons that ship it) · machine catalog: https://nika.sh/tools/catalog.json
 - The four verbs (one room each: block contract, a complete file, the skeletons that speak it): https://nika.sh/verbs (e.g. https://nika.sh/verbs/invoke)
-- The language register (every schema-declared key: scopes, types, required flags): https://nika.sh/language (e.g. https://nika.sh/language/depends_on) · the contract: https://nika.sh/schema/workflow.json
+- The language register (every schema-declared key: scopes, types, required flags): https://nika.sh/language (e.g. https://nika.sh/language/with) · the contract: https://nika.sh/schema/workflow.json
 - Provider register (local first, model pins, env vars): https://nika.sh/providers · machine catalog: https://nika.sh/providers/catalog.json
 - Engine source (AGPL): https://github.com/supernovae-st/nika
 - Agent lane (the MCP oracle · 8 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools): https://github.com/supernovae-st/nika-agents

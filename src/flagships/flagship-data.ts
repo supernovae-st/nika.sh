@@ -75,23 +75,29 @@ tasks:
   calendar: { invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
 
   triage:
-    depends_on: [ inbox ]
-    infer: { prompt: "Flag what is urgent: \${{ tasks.inbox.output }}", max_tokens: 300 }
+    with:
+      inbox: \${{ tasks.inbox.output }}
+    infer: { prompt: "Flag what is urgent: \${{ with.inbox }}", max_tokens: 300 }
   agenda:
-    depends_on: [ calendar ]
-    infer: { prompt: "Plan the day around: \${{ tasks.calendar.output }}", max_tokens: 300 }
+    with:
+      calendar: \${{ tasks.calendar.output }}
+    infer: { prompt: "Plan the day around: \${{ with.calendar }}", max_tokens: 300 }
 
   draft:
-    depends_on: [ notes, triage, agenda ]
+    with:
+      notes: \${{ tasks.notes.output }}
+      triage: \${{ tasks.triage.output }}
+      agenda: \${{ tasks.agenda.output }}
     infer:
-      prompt: "Write the morning brief. Notes: \${{ tasks.notes.output }} Urgent: \${{ tasks.triage.output }} Plan: \${{ tasks.agenda.output }}"
+      prompt: "Write the morning brief. Notes: \${{ with.notes }} Urgent: \${{ with.triage }} Plan: \${{ with.agenda }}"
       max_tokens: 500
 
   save:
-    depends_on: [ draft ]
+    with:
+      draft: \${{ tasks.draft.output }}
     invoke:
       tool: "nika:write"
-      args: { path: ./brief.md, content: "\${{ tasks.draft.output }}" }
+      args: { path: ./brief.md, content: "\${{ with.draft }}" }
 
 outputs:
   brief: "\${{ tasks.draft.output }}"
@@ -103,8 +109,9 @@ outputs:
     label: 'pr-risk-review',
     gloss: 'when: the probe only fires on real risk',
     /* the lit band is the caption's EVIDENCE, nothing more: the probe task's
-       head + its when: gate (the schema block above is a different story). */
-    highlight: [31, 33],
+       head + the with: boundary its when: reads (the schema block above is a
+       different story). */
+    highlight: [32, 36],
     artifact: 'wrote review.md',
     traceNdjson: prRiskReviewTrace,
     yaml: `nika: v1
@@ -125,10 +132,11 @@ tasks:
     exec: { command: [ git, diff, main ] }
 
   risk:
-    depends_on: [ diff ]
+    with:
+      diff: \${{ tasks.diff.output }}
     timeout: "120s"
     infer:
-      prompt: "Score this diff's blast radius from 0 to 10: \${{ tasks.diff.output }}"
+      prompt: "Score this diff's blast radius from 0 to 10: \${{ with.diff }}"
       schema:
         type: object
         required: [ score, reasons ]
@@ -138,18 +146,21 @@ tasks:
       max_tokens: 400
 
   probe:
-    depends_on: [ risk ]
-    when: \${{ tasks.risk.output.score >= 7 }}
+    with:
+      score: \${{ tasks.risk.output.score }}
+      reasons: \${{ tasks.risk.output.reasons }}
+    when: \${{ with.score >= 7 }}
     agent:
-      prompt: "Trace the risky call paths behind: \${{ tasks.risk.output.reasons }}"
+      prompt: "Trace the risky call paths behind: \${{ with.reasons }}"
       tools: [ "nika:read" ]
       max_turns: 3
 
   report:
-    depends_on: [ risk ]
+    with:
+      review: \${{ tasks.risk.output }}
     invoke:
       tool: "nika:write"
-      args: { path: ./review.md, content: "\${{ tasks.risk.output }}" }
+      args: { path: ./review.md, content: "\${{ with.review }}" }
 
 outputs:
   review: "\${{ tasks.risk.output }}"
@@ -160,7 +171,7 @@ outputs:
     filename: 'meeting-actions.nika.yaml',
     label: 'meeting-actions',
     gloss: 'schema: the output is a contract, not prose',
-    highlight: [21, 32],
+    highlight: [22, 33],
     artifact: 'wrote action-items.json',
     traceNdjson: meetingActionsTrace,
     yaml: `nika: v1
@@ -180,9 +191,10 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./transcript.txt } }
 
   extract:
-    depends_on: [ transcript ]
+    with:
+      transcript: \${{ tasks.transcript.output }}
     infer:
-      prompt: "Extract every action item with its owner: \${{ tasks.transcript.output }}"
+      prompt: "Extract every action item with its owner: \${{ with.transcript }}"
       schema:
         type: object
         required: [ actions ]
@@ -198,10 +210,11 @@ tasks:
       max_tokens: 400
 
   save:
-    depends_on: [ extract ]
+    with:
+      extract: \${{ tasks.extract.output }}
     invoke:
       tool: "nika:write"
-      args: { path: ./action-items.json, content: "\${{ tasks.extract.output }}" }
+      args: { path: ./action-items.json, content: "\${{ with.extract }}" }
 
 outputs:
   actions: "\${{ tasks.extract.output }}"
@@ -214,7 +227,7 @@ outputs:
     /* the zero-model tab: not every workflow needs an LLM · the DAG, two
        builtins and one CEL compare do the whole job deterministically. */
     gloss: 'when: zero model · plain data opens the gate',
-    highlight: [24, 26],
+    highlight: [25, 28],
     artifact: 'wrote price-alert.md',
     traceNdjson: priceWatchTrace,
     yaml: `nika: v1
@@ -235,19 +248,21 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./price.json } }
 
   price:
-    depends_on: [ snapshot ]
+    with:
+      snapshot: \${{ tasks.snapshot.output }}
     invoke:
       tool: "nika:jq"
-      args: { input: "\${{ tasks.snapshot.output }}", expression: "fromjson | .price" }
+      args: { input: "\${{ with.snapshot }}", expression: "fromjson | .price" }
 
   alert:
-    depends_on: [ price ]
-    when: \${{ tasks.price.output < vars.alert_below }}
+    with:
+      price: \${{ tasks.price.output }}
+    when: \${{ with.price < vars.alert_below }}
     invoke:
       tool: "nika:write"
       args:
         path: ./price-alert.md
-        content: "Price drop: now \${{ tasks.price.output }} (target \${{ vars.alert_below }})"
+        content: "Price drop: now \${{ with.price }} (target \${{ vars.alert_below }})"
 
 outputs:
   price: "\${{ tasks.price.output }}"
@@ -259,10 +274,11 @@ outputs:
     label: 'social-repurpose',
     /* the parallelism tab: one read fans out into three rewrites (no deps
        between them → the engine runs them concurrently) and one merge. */
-    gloss: 'depends_on: three parallel rewrites, one merge',
+    gloss: 'with: three parallel rewrites, one merge',
     /* the lit band = the caption's evidence: the bundle head + the fan-in
-       depends_on line that literally lists the three parallel rewrites. */
-    highlight: [30, 31],
+       with: block whose bindings literally list the three parallel rewrites
+       (the binding IS the edge — W2). */
+    highlight: [33, 37],
     artifact: 'wrote social-bundle.md',
     traceNdjson: socialRepurposeTrace,
     yaml: `nika: v1
@@ -283,24 +299,30 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./post.md } }
 
   thread:
-    depends_on: [ post ]
-    infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: \${{ tasks.post.output }}", max_tokens: 400 }
+    with:
+      post: \${{ tasks.post.output }}
+    infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: \${{ with.post }}", max_tokens: 400 }
 
   linkedin:
-    depends_on: [ post ]
-    infer: { prompt: "Rewrite this post for LinkedIn, hook first: \${{ tasks.post.output }}", max_tokens: 400 }
+    with:
+      post: \${{ tasks.post.output }}
+    infer: { prompt: "Rewrite this post for LinkedIn, hook first: \${{ with.post }}", max_tokens: 400 }
 
   newsletter:
-    depends_on: [ post ]
-    infer: { prompt: "Write a 3-sentence newsletter blurb for this post: \${{ tasks.post.output }}", max_tokens: 300 }
+    with:
+      post: \${{ tasks.post.output }}
+    infer: { prompt: "Write a 3-sentence newsletter blurb for this post: \${{ with.post }}", max_tokens: 300 }
 
   bundle:
-    depends_on: [ thread, linkedin, newsletter ]
+    with:
+      thread: \${{ tasks.thread.output }}
+      linkedin: \${{ tasks.linkedin.output }}
+      newsletter: \${{ tasks.newsletter.output }}
     invoke:
       tool: "nika:write"
       args:
         path: ./social-bundle.md
-        content: "\${{ tasks.thread.output }}\\n\\n---\\n\\n\${{ tasks.linkedin.output }}\\n\\n---\\n\\n\${{ tasks.newsletter.output }}"
+        content: "\${{ with.thread }}\\n\\n---\\n\\n\${{ with.linkedin }}\\n\\n---\\n\\n\${{ with.newsletter }}"
 
 outputs:
   bundle: "\${{ tasks.bundle.output }}"
@@ -344,22 +366,25 @@ tasks:
     exec: { command: [ git, log, --since=yesterday, --oneline, --no-merges ] }
 
   digest:
-    depends_on: [ today, history ]
+    with:
+      today: \${{ tasks.today.output }}
+      history: \${{ tasks.history.output }}
     infer:
       prompt: |
-        Date: \${{ tasks.today.output }}
+        Date: \${{ with.today }}
         Commits since yesterday:
-        \${{ tasks.history.output }}
+        \${{ with.history }}
 
         Write my standup note, 3 bullets: done / doing / blocked.
         Plain words, no fluff.
       max_tokens: 300
 
   save:
-    depends_on: [ digest ]
+    with:
+      digest: \${{ tasks.digest.output }}
     invoke:
       tool: "nika:write"
-      args: { path: ./standup-note.md, content: "\${{ tasks.digest.output }}" }
+      args: { path: ./standup-note.md, content: "\${{ with.digest }}" }
 
 outputs:
   note: "\${{ tasks.digest.output }}"
@@ -372,7 +397,7 @@ outputs:
     /* the resilience tab: zero model · a validate gate splits the batch and
        the lit lines are the on_error recover that keeps the pipeline alive. */
     gloss: 'on_error: a bad batch degrades, the run survives',
-    highlight: [24, 26],
+    highlight: [25, 27],
     artifact: 'wrote daily-totals.json',
     traceNdjson: etlQuarantineTrace,
     yaml: `nika: v1
@@ -394,20 +419,22 @@ tasks:
     invoke: { tool: "nika:read", args: { path: ./data/incoming/orders.csv } }
 
   rows:
-    depends_on: [ raw ]
+    with:
+      raw: \${{ tasks.raw.output }}
     invoke:
       tool: "nika:convert"
-      args: { input: "\${{ tasks.raw.output }}", from: csv, to: json, has_header: true }
+      args: { input: "\${{ with.raw }}", from: csv, to: json, has_header: true }
     # malformed CSV → empty batch · the run survives
     on_error:
       recover: \${{ tasks.empty_batch.output }}
 
   check:
-    depends_on: [ rows ]
+    with:
+      rows: \${{ tasks.rows.output }}
     invoke:
       tool: "nika:validate"
       args:
-        data: "\${{ tasks.rows.output }}"
+        data: "\${{ with.rows }}"
         format: json
         schema:
           type: array
@@ -420,32 +447,37 @@ tasks:
               currency: { type: string, enum: [ EUR, USD, GBP ] }
 
   good:
-    depends_on: [ rows, check ]
-    when: \${{ tasks.check.output.valid == true }}
+    with:
+      rows: \${{ tasks.rows.output }}
+      valid: \${{ tasks.check.output.valid }}
+    when: \${{ with.valid == true }}
     invoke:
       tool: "nika:jq"
       args:
-        input: "\${{ tasks.rows.output }}"
+        input: "\${{ with.rows }}"
         expression: 'group_by(.currency) | map({currency: .[0].currency, orders: length, total: (map(.amount | tonumber) | add)})'
 
   quarantine:
-    depends_on: [ rows, check ]
-    when: \${{ tasks.check.output.valid == false }}
+    with:
+      valid: \${{ tasks.check.output.valid }}
+      errors: \${{ tasks.check.output.errors }}
+    when: \${{ with.valid == false }}
     invoke:
       tool: "nika:write"
       args:
         path: ./data/quarantine/rejected.json
-        content: "\${{ tasks.check.output.errors }}"
+        content: "\${{ with.errors }}"
         create_dirs: true
 
   report:
-    depends_on: [ good ]
-    when: \${{ tasks.good.output != null && size(tasks.good.output) > 0 }}
+    with:
+      totals: \${{ tasks.good.output }}   # value edge · passes when good is skipped (reads null)
+    when: \${{ with.totals != null && size(with.totals) > 0 }}
     invoke:
       tool: "nika:write"
       args:
         path: ./data/daily-totals.json
-        content: "\${{ tasks.good.output }}"
+        content: "\${{ with.totals }}"
         create_dirs: true
 
 outputs:
