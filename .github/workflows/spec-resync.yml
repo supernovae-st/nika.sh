@@ -25,13 +25,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Fetch the spec SSOT (sibling layout)
         run: git clone --depth 1 https://github.com/supernovae-st/nika-spec ../spec
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - uses: actions/setup-python@v5
+          package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - name: Re-derive every spec-fed surface

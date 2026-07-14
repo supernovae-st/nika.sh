@@ -29,10 +29,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
+          package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
       - uses: browser-actions/setup-chrome@v2
         id: chrome
       - name: enable corepack (pnpm pinned via packageManager)
@@ -72,10 +73,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
+          package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
       - uses: browser-actions/setup-chrome@v2
         id: chrome
       - name: enable corepack (pnpm pinned via packageManager)
