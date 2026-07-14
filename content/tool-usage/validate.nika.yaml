@@ -17,6 +17,8 @@ tasks:
             verbs: { type: integer }
 
   gate:
+    on_error:
+      fail_workflow: true
     with:
       verdict_valid: ${{ tasks.verdict.output.valid }}
     invoke:

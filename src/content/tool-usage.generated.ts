@@ -54,7 +54,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "compose": {
     "bare": "compose",
-    "yaml": "nika: v1\nworkflow:\n  id: delegate-a-sub-run\n  description: \"the agent drafts a sub-workflow and spawns it through its one doorway\"\n\nmodel: ollama/qwen3.5:4b\n\ntasks:\n  build:\n    agent:\n      system: \"Draft a minimal workflow for the goal, spawn it via nika:compose, call nika:done with its outputs.\"\n      prompt: \"Summarize ./notes.md into three bullet points.\"\n      tools:\n        - \"nika:compose\"\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 8\n      max_tokens_total: 40000\n\noutputs:\n  result: ${{ tasks.build.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: delegate-a-sub-run\n  description: \"the agent drafts a sub-workflow and spawns it through its one doorway\"\n\nmodel: ollama/qwen3.5:4b\n\ntasks:\n  build:\n    agent:\n      system: \"Draft a minimal workflow for the goal, spawn it via nika:compose, call nika:done with its outputs.\"\n      prompt: \"Summarize ./notes.md into three bullet points.\"\n      skills:\n        - \"./skills/summarizer/SKILL.md\"\n      tools:\n        - \"nika:compose\"\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 8\n      max_tokens_total: 40000\n\noutputs:\n  result: ${{ tasks.build.output }}",
     "source": {
       "kind": "crafted",
       "file": "compose.nika.yaml"
@@ -119,7 +119,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "emit": {
     "bare": "emit",
-    "yaml": "nika: v1\nworkflow:\n  id: announce-the-ship\n  description: \"a custom machine event for subscribers — distinct from log\"\n\ntasks:\n  announce:\n    invoke:\n      tool: \"nika:emit\"\n      args:\n        event_type: \"deploy.finished\"\n        payload: { env: \"prod\", ok: true }",
+    "yaml": "nika: v1\nworkflow:\n  id: announce-the-ship\n  description: \"a custom machine event for subscribers — distinct from log\"\n\ntasks:\n  announce:\n    on_error:\n      skip: true\n    invoke:\n      tool: \"nika:emit\"\n      args:\n        event_type: \"deploy.finished\"\n        payload: { env: \"prod\", ok: true }",
     "source": {
       "kind": "crafted",
       "file": "emit.nika.yaml"
@@ -166,7 +166,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "grep": {
     "bare": "grep",
-    "yaml": "nika: v1\nworkflow:\n  id: count-the-todos\n  description: \"recursive regex search — {path, line, match}, sorted\"\n\ntasks:\n  todos:\n    invoke:\n      tool: \"nika:grep\"\n      args:\n        pattern: \"TODO|FIXME\"\n        path: \"./src\"\n\n  tally:\n    with:\n      todos: ${{ tasks.todos.output }}\n    invoke:\n      tool: \"nika:jq\"\n      args:\n        input: ${{ with.todos }}\n        expression: \"length\"\n\noutputs:\n  count: ${{ tasks.tally.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: count-the-todos\n  description: \"recursive regex search — {path, line, match}, sorted\"\n\ntasks:\n  todos:\n    invoke:\n      tool: \"nika:grep\"\n      args:\n        pattern: \"TODO|FIXME\"\n        path: \"./src\"\n\n  lines:\n    with:\n      todos: ${{ tasks.todos.output }}\n    invoke:\n      tool: \"nika:jq\"\n      args:\n        input: ${{ with.todos }}\n        expression: \"map(.path) | join(\\\"\\\\n\\\")\"\n\n  tally:\n    with:\n      hits: ${{ tasks.lines.output }}\n    exec:\n      command: [\"wc\", \"-l\"]\n      stdin: \"${{ with.hits }}\"\n\noutputs:\n  count: ${{ tasks.tally.output }}",
     "source": {
       "kind": "crafted",
       "file": "grep.nika.yaml"
@@ -178,7 +178,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "hash": {
     "bare": "hash",
-    "yaml": "nika: v1\nworkflow:\n  id: pin-the-artifact\n  description: \"content-address a file — the receipt survives the run\"\n\ntasks:\n  artifact:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./dist/report.md\" }\n\n  pin:\n    with:\n      artifact: ${{ tasks.artifact.output }}\n    invoke:\n      tool: \"nika:hash\"\n      args:\n        content: \"${{ with.artifact }}\"\n        algo: sha256\n\noutputs:\n  sha256: ${{ tasks.pin.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: pin-the-artifact\n  description: \"content-address a file — the receipt survives the run\"\n\nenv:\n  LC_ALL: \"C\"\n\ntasks:\n  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n\n  pin:\n    with:\n      artifact: ${{ tasks.artifact.output }}\n    invoke:\n      tool: \"nika:hash\"\n      args:\n        content: \"${{ with.artifact }}\"\n        algo: sha256\n\noutputs:\n  sha256: ${{ tasks.pin.output }}",
     "source": {
       "kind": "crafted",
       "file": "hash.nika.yaml"
@@ -190,7 +190,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "image_fx": {
     "bare": "image_fx",
-    "yaml": "nika: v1\nworkflow:\n  id: poster-treatment\n  description: \"deterministic artistic ops over a png — seeded, replayable\"\n\ntasks:\n  stylize:\n    invoke:\n      tool: \"nika:image_fx\"\n      args:\n        input: \"./shots/hero.png\"\n        out: \"./shots/hero-poster.png\"\n        ops:\n          - duotone: {}\n          - grain: {}\n        seed: 7\n\noutputs:\n  poster: ${{ tasks.stylize.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: poster-treatment\n  description: \"deterministic artistic ops over a png — seeded, replayable\"\n\ntasks:\n  stylize:\n    invoke:\n      tool: \"nika:image_fx\"\n      args:\n        input: \"./shots/hero.png\"\n        out: \"./shots/hero-poster.png\"\n        ops:\n          - duotone: {}\n          - grain: {}\n        seed: 7\n\n  review:\n    with:\n      poster: ${{ tasks.stylize.output }}\n    infer:\n      model: ollama/llama3.2-vision\n      prompt: \"Poster at ${{ with.poster }} — is the subject still legible after the treatment? One line.\"\n      vision:\n        - { source: file, path: \"./shots/hero-poster.png\" }\n      thinking: { enabled: true, budget_tokens: 2000 }\n\noutputs:\n  poster: ${{ tasks.stylize.output }}\n  verdict: ${{ tasks.review.output }}",
     "source": {
       "kind": "crafted",
       "file": "image_fx.nika.yaml"
@@ -339,7 +339,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "tts_generate": {
     "bare": "tts_generate",
-    "yaml": "nika: v1\nworkflow:\n  id: say-the-verdict\n  description: \"one audio file under output_dir — mock provider runs offline\"\n\ntasks:\n  speak:\n    invoke:\n      tool: \"nika:tts_generate\"\n      args:\n        provider: mock\n        text: \"The run is green.\"\n        output_dir: \"./audio\"\n\noutputs:\n  audio: ${{ tasks.speak.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: say-the-verdict\n  description: \"one audio file under output_dir — mock provider runs offline\"\n\ntasks:\n  line:\n    infer:\n      model: ollama/qwen3.5:4b\n      prompt: \"One warm sentence announcing a green run. Nothing else.\"\n      temperature: 0.9\n    retry:\n      max_attempts: 3\n      backoff_ms: 500\n      backoff_max_ms: 4000\n\n  speak:\n    with:\n      line: ${{ tasks.line.output }}\n    invoke:\n      tool: \"nika:tts_generate\"\n      args:\n        provider: mock\n        text: \"${{ with.line }}\"\n        output_dir: \"./audio\"\n    on_finally:\n      - invoke:\n          tool: \"nika:log\"\n          args: { message: \"audio pass done — anything staged is under ./audio\" }\n\noutputs:\n  audio: ${{ tasks.speak.output }}",
     "source": {
       "kind": "crafted",
       "file": "tts_generate.nika.yaml"
@@ -363,7 +363,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "validate": {
     "bare": "validate",
-    "yaml": "nika: v1\nworkflow:\n  id: gate-the-payload\n  description: \"a schema verdict as data — invalid input is a report, not a crash\"\n\ntasks:\n  verdict:\n    invoke:\n      tool: \"nika:validate\"\n      args:\n        data: { name: \"nika\", verbs: 4 }\n        schema:\n          type: object\n          required: [name, verbs]\n          properties:\n            name: { type: string }\n            verbs: { type: integer }\n\n  gate:\n    with:\n      verdict_valid: ${{ tasks.verdict.output.valid }}\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: ${{ with.verdict_valid }}\n        message: \"payload failed its schema\"",
+    "yaml": "nika: v1\nworkflow:\n  id: gate-the-payload\n  description: \"a schema verdict as data — invalid input is a report, not a crash\"\n\ntasks:\n  verdict:\n    invoke:\n      tool: \"nika:validate\"\n      args:\n        data: { name: \"nika\", verbs: 4 }\n        schema:\n          type: object\n          required: [name, verbs]\n          properties:\n            name: { type: string }\n            verbs: { type: integer }\n\n  gate:\n    on_error:\n      fail_workflow: true\n    with:\n      verdict_valid: ${{ tasks.verdict.output.valid }}\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: ${{ with.verdict_valid }}\n        message: \"payload failed its schema\"",
     "source": {
       "kind": "crafted",
       "file": "validate.nika.yaml"

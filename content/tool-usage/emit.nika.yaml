@@ -5,6 +5,8 @@ workflow:
 
 tasks:
   announce:
+    on_error:
+      skip: true
     invoke:
       tool: "nika:emit"
       args:

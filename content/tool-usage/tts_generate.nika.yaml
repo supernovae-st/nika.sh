@@ -4,13 +4,29 @@ workflow:
   description: "one audio file under output_dir — mock provider runs offline"
 
 tasks:
+  line:
+    infer:
+      model: ollama/qwen3.5:4b
+      prompt: "One warm sentence announcing a green run. Nothing else."
+      temperature: 0.9
+    retry:
+      max_attempts: 3
+      backoff_ms: 500
+      backoff_max_ms: 4000
+
   speak:
+    with:
+      line: ${{ tasks.line.output }}
     invoke:
       tool: "nika:tts_generate"
       args:
         provider: mock
-        text: "The run is green."
+        text: "${{ with.line }}"
         output_dir: "./audio"
+    on_finally:
+      - invoke:
+          tool: "nika:log"
+          args: { message: "audio pass done — anything staged is under ./audio" }
 
 outputs:
   audio: ${{ tasks.speak.output }}

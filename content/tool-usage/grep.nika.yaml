@@ -11,14 +11,21 @@ tasks:
         pattern: "TODO|FIXME"
         path: "./src"
 
-  tally:
+  lines:
     with:
       todos: ${{ tasks.todos.output }}
     invoke:
       tool: "nika:jq"
       args:
         input: ${{ with.todos }}
-        expression: "length"
+        expression: "map(.path) | join(\"\\n\")"
+
+  tally:
+    with:
+      hits: ${{ tasks.lines.output }}
+    exec:
+      command: ["wc", "-l"]
+      stdin: "${{ with.hits }}"
 
 outputs:
   count: ${{ tasks.tally.output }}

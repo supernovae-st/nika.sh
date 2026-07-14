@@ -15,5 +15,16 @@ tasks:
           - grain: {}
         seed: 7
 
+  review:
+    with:
+      poster: ${{ tasks.stylize.output }}
+    infer:
+      model: ollama/llama3.2-vision
+      prompt: "Poster at ${{ with.poster }} — is the subject still legible after the treatment? One line."
+      vision:
+        - { source: file, path: "./shots/hero-poster.png" }
+      thinking: { enabled: true, budget_tokens: 2000 }
+
 outputs:
   poster: ${{ tasks.stylize.output }}
+  verdict: ${{ tasks.review.output }}
