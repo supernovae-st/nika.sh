@@ -8,6 +8,7 @@ import { Component as Play } from './pages/Play'
 import { Component as Manifesto } from './pages/Manifesto'
 import { Component as Changelog } from './pages/Changelog'
 import { Component as UseCasesPage } from './pages/UseCasesPage'
+import { Component as UseCaseRoom } from './pages/UseCaseRoom'
 import { Component as Spec } from './pages/Spec'
 import { Component as Install } from './pages/Install'
 import { Component as Convert } from './pages/Convert'
@@ -102,6 +103,9 @@ export const routes: RouteObject[] = [
       { path: 'boundary', Component: BoundaryPage },
       { path: 'proof', Component: ProofPage },
       { path: 'use-cases', Component: UseCasesPage },
+      /* one room per conformance-gated showcase (§4.13 · rooms_exist flip:
+         ATLAS_PATHS prerenders all 26 · the gallery keeps the browse) */
+      { path: 'use-cases/:slug', Component: UseCaseRoom },
       { path: 'spec', Component: Spec },
       { path: 'install', Component: Install },
       { path: 'convert', Component: Convert },

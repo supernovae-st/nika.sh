@@ -302,8 +302,8 @@ export const MAP_LAYERS: MapLayer[] = [
         "surface": "rooms",
         "slot": null,
         "closed": false,
-        "exists": false,
-        "lands": "wo-5"
+        "exists": true,
+        "lands": null
       },
       {
         "id": "truth-words",

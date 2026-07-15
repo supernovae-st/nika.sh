@@ -3005,7 +3005,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "rooms",
     "clock": "spec",
-    "page_exists": false
+    "page_exists": true
   },
   {
     "id": "set:templates",

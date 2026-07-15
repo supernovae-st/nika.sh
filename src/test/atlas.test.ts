@@ -96,7 +96,6 @@ describe('atlas · rooms and routes cover each other', () => {
       // room members only (anchored members point at pages judged below)
       const set = ATLAS_INDEX[`set:${n.set}`]
       if (set?.surface !== 'rooms') continue
-      if (n.set === 'showcases') continue // rooms land WO-5 · written waiver
       expect(pathSet.has(n.url), `${n.id} → ${n.url} missing from PATHS`).toBe(true)
     }
   })
@@ -264,7 +263,6 @@ describe('atlas · the palette covers every living room (⌘K parity)', () => {
       if (n.kind !== 'member' || !n.url || n.anchor) continue
       const set = ATLAS_INDEX[`set:${n.set}`]
       if (set?.surface !== 'rooms' || (set as { page_exists?: boolean }).page_exists === false) continue
-      if (n.set === 'showcases') continue // rooms + entries land together at WO-5
       expect(hrefs.has(n.url), `${n.id} room ${n.url} missing from the palette`).toBe(true)
     }
   })

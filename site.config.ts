@@ -292,7 +292,7 @@ export const TEMPLATE_PATHS = [
 /* ── ATLAS PATHS · GENERATED between these markers by scripts/atlas/build-atlas.mjs
    (compiler output 3): the routes the ATLAS introduced — hubs and surfaces flip
    into existence by descriptor edit + recompile, never by hand here. DO NOT EDIT. */
-export const ATLAS_PATHS = ['/map', '/flow', '/boundary', '/proof']
+export const ATLAS_PATHS = ['/map', '/flow', '/boundary', '/proof', '/use-cases/t1-image-fx-batch', '/use-cases/t1-meeting-actions', '/use-cases/t1-og-images', '/use-cases/t1-price-watch', '/use-cases/t1-social-repurpose', '/use-cases/t1-standup-digest', '/use-cases/t2-bookmark-triage', '/use-cases/t2-contract-guard', '/use-cases/t2-csv-chart-report', '/use-cases/t2-etl-quarantine', '/use-cases/t2-invoice-chaser', '/use-cases/t2-model-bench', '/use-cases/t2-release-notes', '/use-cases/t2-release-radar', '/use-cases/t2-seo-content-brief', '/use-cases/t2-support-triage', '/use-cases/t2-transcript-shownotes', '/use-cases/t3-competitor-radar', '/use-cases/t3-config-drift-sentinel', '/use-cases/t3-localization-factory', '/use-cases/t3-pr-review-fanout', '/use-cases/t3-resume-screener', '/use-cases/t4-ceo-monday-brief', '/use-cases/t4-deep-research-brief', '/use-cases/t4-incident-war-room', '/use-cases/t4-release-train']
 /* ── ATLAS PATHS END ── */
 
 export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, ...ATLAS_PATHS, '/use-cases', '/spec', '/install', '/convert', '/brand']

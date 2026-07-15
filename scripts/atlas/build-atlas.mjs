@@ -898,6 +898,11 @@ export const CAPTURES: { id: string; surface: string; export: string; command: s
 const atlasPaths = [
   ...S.sets.surfaces.filter((x) => x.atlas_route && x.exists).map((x) => x.url),
   ...S.sets.layers.filter((l) => l.atlas_route && l.hub_exists).map((l) => l.hub),
+  /* atlas-born ROOM sets (the showcases · §4.13): every member url joins
+     the prerender the day rooms_exist flips — never listed by hand */
+  ...(S.sets.sets.find((x) => x.id === 'showcases')?.rooms_exist
+    ? Object.keys(S.dag).sort().map((slug) => `/use-cases/${slug}`)
+    : []),
 ]
 const siteConfigPath = join(ROOT, 'site.config.ts')
 const siteConfig = readFileSync(siteConfigPath, 'utf8')

@@ -536,9 +536,7 @@ sets:
     closed: false
     surface: rooms
     rooms_url: /use-cases/:slug
-    rooms_exist: false
-    lands: wo-5
-    surface_waiver: "rooms land in WO-5 · until then the /use-cases hub carries every member (galerie) · waiver dies with WO-5"
+    rooms_exist: true
     unique_data: "the ENTIRE workflow file + its projected DAG model + tier and persona + verbs and tools used (scan)"
     defined_by: [examples/manifest.yaml]
     evidence: { kind: conformance, ref: "showcase-projector.py --check · every file passes the spec gate" }

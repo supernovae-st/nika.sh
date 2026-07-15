@@ -14,8 +14,8 @@
   "route_source": "src/routes.tsx",
   "prerender_source": "site.config.ts",
   "prerender_consumer": "react-ssg.config.ts",
-  "route_definition_count": 36,
-  "page_claim_count": 258,
+  "route_definition_count": 37,
+  "page_claim_count": 284,
   "features": [
     {
       "id": "product.boundary",
@@ -2219,6 +2219,214 @@
     },
     {
       "selector": "site.config.ts#page:254",
+      "path": "/use-cases/t1-image-fx-batch",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:255",
+      "path": "/use-cases/t1-meeting-actions",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:256",
+      "path": "/use-cases/t1-og-images",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:257",
+      "path": "/use-cases/t1-price-watch",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:258",
+      "path": "/use-cases/t1-social-repurpose",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:259",
+      "path": "/use-cases/t1-standup-digest",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:260",
+      "path": "/use-cases/t2-bookmark-triage",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:261",
+      "path": "/use-cases/t2-contract-guard",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:262",
+      "path": "/use-cases/t2-csv-chart-report",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:263",
+      "path": "/use-cases/t2-etl-quarantine",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:264",
+      "path": "/use-cases/t2-invoice-chaser",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:265",
+      "path": "/use-cases/t2-model-bench",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:266",
+      "path": "/use-cases/t2-release-notes",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:267",
+      "path": "/use-cases/t2-release-radar",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:268",
+      "path": "/use-cases/t2-seo-content-brief",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:269",
+      "path": "/use-cases/t2-support-triage",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:270",
+      "path": "/use-cases/t2-transcript-shownotes",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:271",
+      "path": "/use-cases/t3-competitor-radar",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:272",
+      "path": "/use-cases/t3-config-drift-sentinel",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:273",
+      "path": "/use-cases/t3-localization-factory",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:274",
+      "path": "/use-cases/t3-pr-review-fanout",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:275",
+      "path": "/use-cases/t3-resume-screener",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:276",
+      "path": "/use-cases/t4-ceo-monday-brief",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:277",
+      "path": "/use-cases/t4-deep-research-brief",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:278",
+      "path": "/use-cases/t4-incident-war-room",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:279",
+      "path": "/use-cases/t4-release-train",
+      "route_selector": "src/routes.tsx#route:32",
+      "component": "UseCaseRoom",
+      "feature": "product.use_cases",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:280",
       "path": "/use-cases",
       "route_selector": "src/routes.tsx#route:31",
       "component": "UseCasesPage",
@@ -2226,33 +2434,33 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:255",
+      "selector": "site.config.ts#page:281",
       "path": "/spec",
-      "route_selector": "src/routes.tsx#route:32",
+      "route_selector": "src/routes.tsx#route:33",
       "component": "Spec",
       "feature": "site.spec",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:256",
+      "selector": "site.config.ts#page:282",
       "path": "/install",
-      "route_selector": "src/routes.tsx#route:33",
+      "route_selector": "src/routes.tsx#route:34",
       "component": "Install",
       "feature": "product.install",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:257",
+      "selector": "site.config.ts#page:283",
       "path": "/convert",
-      "route_selector": "src/routes.tsx#route:34",
+      "route_selector": "src/routes.tsx#route:35",
       "component": "Convert",
       "feature": "product.convert",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:258",
+      "selector": "site.config.ts#page:284",
       "path": "/brand",
-      "route_selector": "src/routes.tsx#route:35",
+      "route_selector": "src/routes.tsx#route:36",
       "component": "Brand",
       "feature": "site.brand",
       "presented_as": "live"

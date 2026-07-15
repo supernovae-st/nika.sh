@@ -5,6 +5,7 @@ import { LANGUAGE_WORDS } from './language.generated'
 import { CHAPTERS } from '../sections/verbs-data'
 import { PROVIDERS } from './providers.generated'
 import { TEMPLATES } from './templates.generated'
+import { UC_TABS } from '../sections/usecases-data'
 import { DOCS, REPO, SPEC } from '../content'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
@@ -59,6 +60,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'Use cases', href: '/use-cases', hint: 'real files you would write' },
       { label: 'Send us a workflow', href: '/convert', hint: 'yours, converted' },
     ],
+    dense: UC_TABS.flatMap((t) => t.cases.map((uc) => ({ label: uc.title, href: `/use-cases/${uc.slug}` }))),
   },
   {
     kick: 'product',

@@ -212,6 +212,7 @@ const COMPONENT_FEATURE = {
   FlowPage: 'product.flow',
   BoundaryPage: 'product.boundary',
   ProofPage: 'product.proof',
+  UseCaseRoom: 'product.use_cases',
 }
 
 const FEATURE_EVIDENCE = {

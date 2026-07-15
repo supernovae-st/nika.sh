@@ -182,7 +182,6 @@ export const ATLAS_HUBS = [
 export const ATLAS_SCORE = {
   "score": 100,
   "waived": [
-    "showcases: rooms land in WO-5 · until then the /use-cases hub carries every member (galerie) · waiver dies with WO-5",
     "truth-words: /sources lands in WO-7 · the meta-set ships with it · waiver dies with WO-7"
   ],
   "unarmed": [
