@@ -671,6 +671,115 @@ export const MAP_LAYERS: MapLayer[] = ${JSON.stringify(mapLayers, null, 2)}
 const geometry = layoutConstellation(twin)
 const constellationSvg = renderConstellation(geometry, S.tokens)
 
+/* the chrome (sortie 4 · §4.11-4.12: nav + footer as projections). Authored
+   intent comes from the descriptor's nav: section; every `ref` item resolves
+   AGAINST THE GRAPH — url from the node, count from the set, soon from
+   page_exists / hub existence / slot. WO-4 flips hub_exists and the chrome
+   gains its links in the same compile, zero nav edits. */
+const NAV_ICONS = new Set(['run', 'verbs', 'shield', 'tiles', 'terminal', 'book', 'butterfly'])
+const nodeById = new Map(nodes.map((n) => [n.id, n]))
+function resolveNavItem(item) {
+  for (const k of ['label', 'icon']) {
+    if (k === 'icon' && item.icon == null) continue
+    if (!item[k] && k === 'label') throw new Error(`nav item without label: ${JSON.stringify(item)}`)
+  }
+  if (item.icon && !NAV_ICONS.has(item.icon)) throw new Error(`nav icon unknown: ${item.icon}`)
+  if (!item.ref) {
+    const out = { label: item.label }
+    if (item.icon) out.icon = item.icon
+    if (item.desc) out.desc = item.desc
+    if (item.to) out.to = item.to
+    if (item.href) out.href = item.href
+    if (item.external) out.external = true
+    if (item.slot) out.slot = true
+    if (item.title) out.title = item.title
+    return out
+  }
+  const node = nodeById.get(item.ref)
+  if (!node) throw new Error(`nav ref not in the atlas: ${item.ref}`)
+  const out = { label: item.label }
+  if (item.icon) out.icon = item.icon
+  if (node.kind === 'set') {
+    const setDecl = S.sets.sets.find((s) => `set:${s.id}` === item.ref)
+    const page = setDecl.surface === 'rooms'
+      ? `/${(setDecl.rooms_url ?? '/x').split('/')[1]}`
+      : (setDecl.anchor_page ?? hubOf(setDecl)).split('#')[0]
+    const soon = Boolean(setDecl.slot) || node.page_exists === false
+    if (soon) {
+      out.soon = true
+      out.slot_wave = setDecl.slot ?? null
+    } else {
+      out.to = page
+      out.count = nodes.filter((x) => x.kind === 'member' && x.set === setDecl.id).length
+    }
+  } else if (node.kind === 'layer') {
+    if (node.exists) out.to = node.url
+    else {
+      out.soon = true
+      out.lands = node.lands
+    }
+  } else {
+    throw new Error(`nav ref must be a set or layer: ${item.ref}`)
+  }
+  return out
+}
+const navProduct = S.sets.nav.product.cols.map((c) => ({ col: c.col, items: c.items.map(resolveNavItem) }))
+const navReference = {
+  featured: resolveNavItem(S.sets.nav.reference.featured),
+  cols: S.sets.nav.reference.cols.map((c) => ({ col: c.col, items: c.items.map(resolveNavItem) })),
+}
+const footerCols = [
+  ...navReference.cols.map((c) => ({
+    kick: c.col,
+    items: [
+      ...c.items,
+      ...S.sets.nav.footer.extras.filter((e) => e.col === c.col).map((e) => resolveNavItem(e.item)),
+    ],
+  })),
+  ...S.sets.nav.footer.authored.map((c) => ({ kick: c.col, items: c.items.map(resolveNavItem) })),
+]
+const navTs = GEN(
+  'atlas-nav.generated.ts',
+  `/** the chrome as projection (§4.11-4.12): the Reference panel, the Product
+ * panel (authored in the descriptor) and the footer's five columns. Soon
+ * flags and counts are RESOLVED against the graph — a hub landing flips
+ * them here, never in Nav.tsx. Docs/GitHub hrefs stay content.ts consts
+ * (external: true marks them). */
+export interface NavItem {
+  label: string
+  to?: string
+  href?: string
+  external?: boolean
+  icon?: string
+  /** the derived register count (a one-token receipt · rendered as a chip) */
+  count?: number
+  /** the surface has not landed yet (wave slot or a WO ahead) */
+  soon?: boolean
+  slot_wave?: string | null
+  lands?: string | null
+  slot?: boolean
+  title?: string
+  desc?: string
+}
+
+export const NAV_BAR_LINKS: NavItem[] = ${JSON.stringify(S.sets.nav.bar.links.map(resolveNavItem), null, 2)}
+
+export const NAV_VERSION_PILL = ${JSON.stringify(S.sets.nav.bar.version_pill, null, 2)} as const
+
+export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = ${JSON.stringify(navProduct, null, 2)}
+
+export const NAV_DOCTRINE = ${JSON.stringify(S.sets.nav.product.doctrine_line, null, 2)} as const
+
+export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: NavItem[] }[] } =
+  ${JSON.stringify(navReference, null, 2)}
+
+export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = ${JSON.stringify(footerCols, null, 2)}
+
+export const FOOTER_MACHINE: { label: string; href: string }[] =
+  ${JSON.stringify(S.sets.nav.footer.machine_row, null, 2)}
+`,
+)
+
 /* jsonld: one DefinedTermSet per set, placed on its page (§0.9) */
 const ORIGIN = 'https://nika.sh'
 const termsetsByPage = {}
@@ -811,6 +920,7 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/jsonld.generated.ts'), jsonldTs)
   writeFileSync(join(ROOT, 'src/content/market-vocab.generated.ts'), vocabTs)
   writeFileSync(join(ROOT, 'src/content/snippets.generated.ts'), snippetsTs)
+  writeFileSync(join(ROOT, 'src/content/atlas-nav.generated.ts'), navTs)
   writeFileSync(join(ROOT, 'src/pages/map-data.generated.ts'), mapDataTs)
   writeFileSync(join(ROOT, 'src/assets/constellation.generated.svg'), constellationSvg)
   mkdirSync(join(ROOT, 'public/ontology'), { recursive: true })

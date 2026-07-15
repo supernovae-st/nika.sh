@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { REPO, DOCS, ENGINE_VERSION } from '../content'
-import { MANIFESTO_LOCALES } from '../content/manifesto-copy'
+import {
+  NAV_BAR_LINKS,
+  NAV_DOCTRINE,
+  NAV_PRODUCT,
+  NAV_REFERENCE,
+  NAV_VERSION_PILL,
+  type NavItem,
+} from '../content/atlas-nav.generated'
 import { useMagnetic } from '../fx/use-magnetic'
 import './nav.css'
 import { NK_ICONS } from '../icons/manifest'
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
-   ONE nav for every route (mounted in RootLayout). Replaces the v3 glass pill.
+   ONE nav for every route (mounted in RootLayout). The chrome is a
+   PROJECTION since WO-3 (§4.11): the bar, both panels and the footer read
+   atlas-nav.generated.ts — the Reference panel's items, counts and `soon`
+   badges resolve against the language graph at compile time (a hub landing
+   flips them in the same build · never an edit here).
 
    Register: sovereign-engineering-instrument — austere, hairline 1px rules, a
    FIG/blueprint feel. Grayscale only; the lone color is the global EdgeAurora.
@@ -25,24 +36,31 @@ import { NK_ICONS } from '../icons/manifest'
      width · ~180ms), fades in on first entry and out on leave. rAF-batched
      reads/writes, zero per-item hover backgrounds. The active route keeps its
      own persistent dim pill (aria-current, pure CSS).
-   - `Product ▾` is a real grouped mega-menu (WAI-ARIA disclosure): full keyboard
-     (Esc closes + returns focus, ↓/↑ move through items, Home/End jump, Tab
-     parks focus back on the trigger before closing — no focus drop), closes on
-     outside click / route change. On MOUSE it opens on HOVER with intent
+   - `Product ▾` and `Reference ▾` are real grouped mega-menus (WAI-ARIA
+     disclosure · ONE shared MegaDisclosure machine): full keyboard (Esc
+     closes + returns focus, ↓/↑ move through items, Home/End jump, Tab parks
+     focus back on the trigger before closing — no focus drop), closes on
+     outside click / route change. On MOUSE each opens on HOVER with intent
      timing (~70ms in, so flybys never flash it · ~250ms grace out) and a
      SAFE TRIANGLE — while the pointer keeps moving inside the triangle from
      its exit point to the panel's top corners (i.e. traveling toward the
      panel) the grace deadline keeps extending, so the diagonal path to the
      far corner never slams the menu shut; parking anywhere else (another
-     rail link) lets the grace expire. Touch/pen never hover-open (per-event
+     rail link) lets the grace expire. Opening one panel closes the other
+     (the parent owns WHICH is open). Touch/pen never hover-open (per-event
      pointerType gate); click still toggles; keyboard is untouched.
-     Semantics: role=menu/menuitem is used WITH
-     the full APG keyboard contract implemented below — a plain list of links
-     would also be a11y-correct, but the roving-focus behaviour is already here,
-     so the roles are honest.
+     Semantics: role=menu/menuitem is used WITH the full APG keyboard
+     contract implemented below.
+   - descriptions live ONLY in the Product panel (featured-class · §4.11) —
+     the Reference panel speaks label + count chip + soon badge, nothing
+     else (the scannability verdict).
+   - the VERSION PILL replaces the Changelog text link: the release signal
+     rides the bar, reads ENGINE_VERSION (the release cascade's one truth),
+     links /changelog.
    - one emphasized CTA (`Install`) — near-white on dark, NOT a blue pill.
    - mobile: the rail collapses to a burger → a right-side sheet (disclosure),
-     with generous ≥44px touch targets and ≥16px text (no iOS zoom).
+     with generous ≥44px touch targets and ≥16px text (no iOS zoom); the
+     sheet renders the same groups as the panels (same data, one source).
 
    SSR-safe: no window/document at render; all browser access is in effects or
    event handlers. The fixed-position sentinel detection degrades gracefully —
@@ -56,55 +74,10 @@ const FIELD_ROUTES = new Set(['/', '/manifesto'])
 
 type MegaIconName = 'run' | 'verbs' | 'shield' | 'tiles' | 'terminal' | 'book' | 'butterfly'
 
-interface MegaItem {
-  label: string
-  desc: string
-  icon: MegaIconName
-  to?: string // internal RR route
-  href?: string // home anchor (/#x) or external
-  external?: boolean
-}
-
-interface MegaGroup {
-  title: string
-  items: MegaItem[]
-}
-
-/* the Product mega-menu · two grouped columns (Language · Workflows + Learn).
-   Internal routes use RR <Link>; home anchors use /#x; externals open a tab.
-   F6 (operator drop #2): NO bullet glyphs — text hierarchy only (six mixed
-   glyphs read as noise; the Linear/Cursor register is title+desc, nothing
-   else). */
-const PRODUCT_GROUPS: MegaGroup[] = [
-  {
-    title: 'The control layer',
-    items: [
-      { label: 'See it run', desc: 'The plan, reviewed and enforced', icon: 'run', href: '/#the-run' },
-      { label: 'The four verbs', desc: 'infer · exec · invoke · agent', icon: 'verbs', to: '/verbs' },
-      { label: 'The language', desc: 'Every word the schema declares', icon: 'book', to: '/language' },
-      { label: 'What it can touch', desc: 'The permits enforcement model', icon: 'shield', href: '/#the-boundary' },
-      { label: 'Use cases', desc: 'Real plans, reviewable and bound', icon: 'tiles', to: '/use-cases' },
-    ],
-  },
-  {
-    title: 'Build · Learn',
-    items: [
-      { label: 'Playground', desc: 'Write & run in the browser', icon: 'terminal', to: '/play' },
-      { label: 'Learn it in 5 min', desc: 'The quickstart', icon: 'book', to: '/learn' },
-      { label: 'Standard library', desc: 'Every nika: builtin, one register', icon: 'tiles', to: '/tools' },
-      { label: 'Error codes', desc: 'Errors are data — every NIKA code, one register', icon: 'book', to: '/errors' },
-      { label: 'Manifesto', desc: 'The drum of liberation', icon: 'butterfly', to: '/manifesto' },
-      { label: 'Design system', desc: 'The marks · icons · motion', icon: 'tiles', to: '/brand' },
-    ],
-  },
-]
-
 /* ── the mega icon set · the icon library's hand-drawn ui/* family (16px
    grid · stroke 1.5 · round joins · monochrome dim, inked+accent on row
    hover via CSS). Bodies come from the generated manifest (design/icons.yaml
-   → src/icons/manifest.ts) — the same artwork as before, now owned by the
-   icon ontology. The butterfly is the nika mark reduced to a 4-lobe glyph —
-   the full-color public/nika.svg art doesn't survive 16px. */
+   → src/icons/manifest.ts). */
 const MEGA_ICON_BODY: Record<MegaIconName, string> = {
   run: NK_ICONS['ui/run'].body,
   verbs: NK_ICONS['ui/verbs'].body,
@@ -134,14 +107,6 @@ function MegaIcon({ name }: { name: MegaIconName }) {
   )
 }
 
-/* the flat top-level links after Product */
-const TOP_LINKS: { label: string; href: string; external?: boolean; newTab?: boolean }[] = [
-  { label: 'Docs', href: DOCS, external: true },
-  { label: 'Spec', href: '/spec' },
-  { label: 'Changelog', href: '/changelog' },
-  { label: 'Blog', href: '/blog' },
-]
-
 function GitHubGlyph({ size = 15 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden>
@@ -158,32 +123,57 @@ function CaretGlyph() {
   )
 }
 
-/* the flat list of all mega items, in tab/arrow order (Language then Build) */
-const FLAT_PRODUCT_ITEMS: MegaItem[] = PRODUCT_GROUPS.flatMap((g) => g.items)
-
-/* a single mega-menu / sheet item rendered as the right element type */
+/* one nav item rendered as the right element type (menu panel or sheet) */
 function ItemLink({
   item,
   className,
   onSelect,
   refCb,
+  showDesc,
 }: {
-  item: MegaItem
+  item: NavItem
   className: string
   onSelect: () => void
   refCb?: (el: HTMLAnchorElement | null) => void
+  showDesc?: boolean
 }) {
   const inner = (
     <>
-      <span className="v4mega-icobox" aria-hidden>
-        <MegaIcon name={item.icon} />
-      </span>
+      {item.icon ? (
+        <span className="v4mega-icobox" aria-hidden>
+          <MegaIcon name={item.icon as MegaIconName} />
+        </span>
+      ) : null}
       <span className="v4mega-text">
-        <span className="v4mega-label">{item.label}</span>
-        <span className="v4mega-desc">{item.desc}</span>
+        <span className="v4mega-label">
+          {item.label}
+          {item.count != null && <span className="v4mega-chip">·{item.count}</span>}
+          {item.slot && (
+            <span className="v4mega-soon" title={item.title ?? 'the surface is owed'}>
+              slot
+            </span>
+          )}
+        </span>
+        {showDesc && item.desc ? <span className="v4mega-desc">{item.desc}</span> : null}
       </span>
     </>
   )
+  if (item.soon) {
+    /* a hub that has not landed yet: an honest non-link (never a 404) —
+       the compile flips it to a link the day the page ships */
+    return (
+      <span
+        className={`${className} v4mega-item--soon`}
+        title={item.slot_wave ? `ships with the ${item.slot_wave} wave` : 'landing soon'}
+      >
+        {inner}
+        <span className="v4mega-soon" aria-hidden>
+          soon
+        </span>
+      </span>
+    )
+  }
+  const href = item.external && item.label === 'Docs' ? DOCS : item.external && item.label === 'GitHub' ? REPO : item.href
   if (item.to) {
     return (
       <Link ref={refCb} to={item.to} role="menuitem" className={className} onClick={onSelect}>
@@ -194,159 +184,80 @@ function ItemLink({
   return (
     <a
       ref={refCb}
-      href={item.href}
+      href={href}
       role="menuitem"
       className={className}
       onClick={onSelect}
-      {...(item.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+      {...(href?.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
     >
       {inner}
     </a>
   )
 }
 
-export default function Nav() {
-  const location = useLocation()
-  /* `scrolled` = the page is in motion (>24px) — drives the capsule COMPRESSION.
-     The FLOOR is the derived `solid` below: field-less routes prerender solid
-     from scroll 0 (no transparent flash · P2-12), field routes ride transparent
-     until the sentinel scrolls out. */
-  const [scrolled, setScrolled] = useState(false)
-  const [megaOpen, setMegaOpen] = useState(false)
-  const [sheetOpen, setSheetOpen] = useState(false)
+/* ─── MegaDisclosure · the ONE panel machine (two instances ride it) ─────────
+   Owns its trigger, panel, roving item refs, hover-intent timers, safe
+   triangle and placement. The parent owns WHICH panel is open (mutual
+   exclusion) via open/onOpenChange. */
+function MegaDisclosure({
+  label,
+  open,
+  onOpenChange,
+  capsuleRef,
+  wide,
+  ariaLabel,
+  children,
+}: {
+  label: string
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  capsuleRef: React.RefObject<HTMLDivElement | null>
+  wide?: boolean
+  ariaLabel: string
+  children: (ctx: {
+    close: () => void
+    registerItem: (idx: number) => (el: HTMLAnchorElement | null) => void
+  }) => React.ReactNode
+}) {
+  const panelId = useId()
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([])
+  const kbOpenRef = useRef(false)
 
-  const megaWrapRef = useRef<HTMLDivElement>(null)
-  const megaBtnRef = useRef<HTMLButtonElement>(null)
-  const megaItemRefs = useRef<(HTMLAnchorElement | null)[]>([])
-  const sheetRef = useRef<HTMLDivElement>(null)
-  const burgerRef = useRef<HTMLButtonElement>(null)
-  const sentinelRef = useRef<HTMLDivElement>(null)
-  /* the nav CTA leans toward the hand (wave-I VFX · fine pointers only) */
-  const installRef = useRef<HTMLAnchorElement>(null)
-  useMagnetic(installRef)
-  const railRef = useRef<HTMLDivElement>(null)
-  const pillRef = useRef<HTMLSpanElement>(null)
-  const capsuleRef = useRef<HTMLDivElement>(null)
-  const megaPanelRef = useRef<HTMLDivElement>(null)
-
-  const megaId = useId()
-  const sheetId = useId()
-
-  /* ── the 24px scroll sentinel ──
-     A 1px marker parked 24px down the document; while it is in view the page
-     counts as "at the top" (capsule relaxed), once it leaves the capsule
-     compresses (and, on field routes, gains its floor). The observer runs on
-     EVERY route so compression works everywhere; the FLOOR is the derived
-     `solid` — transparent-at-top applies ONLY on FIELD_ROUTES (the nav floats
-     on the hero field, F5), field-less routes are solid from scroll 0 (P2-12). */
-  const hasField = FIELD_ROUTES.has(location.pathname)
-  const solid = scrolled || !hasField
-  useEffect(() => {
-    const el = sentinelRef.current
-    if (!el || typeof IntersectionObserver === 'undefined') {
-      setScrolled(true)
-      return
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => setScrolled(!entry.isIntersecting),
-      { rootMargin: '-1px 0px 0px 0px', threshold: 0 },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-
-  /* ── the sliding hover pill ──
-     ONE shared highlight <span> parked in the rail; hover or keyboard focus on
-     a rail item makes it the "hot" target and the pill SLIDES there (transform
-     + width). Two sources (hover · focus) are tracked separately so mousing
-     away doesn't strand a keyboard user, and vice-versa. rAF-batched: all
-     rect reads and style writes happen inside one frame, and repeated
-     triggers coalesce into the latest — zero layout thrash. Measurement is
-     rect-based against the CAPSULE (the pill's containing block — the rail is
-     deliberately unpositioned so the mega panel can anchor to the capsule
-     too). First entry: the position commits while the pill is HIDDEN (the
-     hidden state transitions opacity only, so the write is silent), then it
-     fades in on the next frame — no cross-rail streak. */
-  const pillRaf = useRef(0)
-  const pillHot = useRef<{ hover: HTMLElement | null; focus: HTMLElement | null }>({
-    hover: null,
-    focus: null,
-  })
-  const syncPill = useCallback(() => {
-    cancelAnimationFrame(pillRaf.current)
-    pillRaf.current = requestAnimationFrame(() => {
-      const capsule = capsuleRef.current
-      const pill = pillRef.current
-      if (!capsule || !pill) return
-      const hot = pillHot.current.hover ?? pillHot.current.focus
-      if (!hot) {
-        pill.dataset.on = 'false' // fade out in place (opacity-only when hidden)
-        return
-      }
-      const capBox = capsule.getBoundingClientRect()
-      const box = hot.getBoundingClientRect()
-      /* clientLeft/Top: absolute children offset from the PADDING box (the
-         capsule wears a 1px border) */
-      const x = box.left - capBox.left - capsule.clientLeft
-      const y = box.top - capBox.top - capsule.clientTop
-      pill.style.transform = `translate(${x}px, ${y}px)`
-      pill.style.width = `${box.width}px`
-      pill.style.height = `${box.height}px`
-      if (pill.dataset.on !== 'true') {
-        pillRaf.current = requestAnimationFrame(() => {
-          pill.dataset.on = 'true'
-        })
-      }
-    })
-  }, [])
-  useEffect(() => () => cancelAnimationFrame(pillRaf.current), [])
-  const railItemOf = (t: EventTarget | null): HTMLElement | null =>
-    t instanceof Element ? t.closest<HTMLElement>('.v4nav-link') : null
-
-  /* ── close everything on a real route change (back/forward + cross-route nav).
-     Guarded by a ref so setState only fires when the location actually changed —
-     never unconditionally in the effect body (react-hooks/set-state-in-effect). */
-  const lastLocRef = useRef(`${location.pathname}${location.hash}`)
-  useEffect(() => {
-    const key = `${location.pathname}${location.hash}`
-    if (lastLocRef.current !== key) {
-      lastLocRef.current = key
-      setMegaOpen(false)
-      setSheetOpen(false)
-    }
-  }, [location.pathname, location.hash])
-
-  /* ── mega panel placement · align the capsule-anchored panel under its
-     trigger. The panel's containing block is the CAPSULE (so its 8px
-     bottom gap survives the 64→56 compression — pure CSS), but its LEFT must
-     track the trigger, whose x depends on the brand width. Measured once per
-     open (+ on resize), before paint — one read, one write, no flash. */
+  /* placement · align the capsule-anchored panel under its trigger (its
+     containing block is the CAPSULE so the 8px bottom gap survives the
+     64→56 compression); LEFT tracks the trigger. One read, one write. */
   useLayoutEffect(() => {
-    if (!megaOpen) return
+    if (!open) return
     const place = () => {
       const capsule = capsuleRef.current
-      const wrap = megaWrapRef.current
-      const panel = megaPanelRef.current
+      const wrap = wrapRef.current
+      const panel = panelRef.current
       if (!capsule || !wrap || !panel) return
       const x =
         wrap.getBoundingClientRect().left - capsule.getBoundingClientRect().left - capsule.clientLeft
       panel.style.left = `${x}px`
+      /* wide panels can overflow the capsule's right edge — clamp */
+      const overflow = x + panel.offsetWidth - capsule.clientWidth + 8
+      if (overflow > 0) panel.style.left = `${Math.max(8, x - overflow)}px`
     }
     place()
     window.addEventListener('resize', place)
     return () => window.removeEventListener('resize', place)
-  }, [megaOpen])
+  }, [open, capsuleRef])
 
-  /* ── mega-menu: outside-click + Escape (returns focus to the trigger) ── */
+  /* outside-click + Escape (returns focus to the trigger) */
   useEffect(() => {
-    if (!megaOpen) return
+    if (!open) return
     const onDown = (e: MouseEvent) => {
-      if (!megaWrapRef.current?.contains(e.target as Node)) setMegaOpen(false)
+      if (!wrapRef.current?.contains(e.target as Node)) onOpenChange(false)
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setMegaOpen(false)
-        megaBtnRef.current?.focus()
+        onOpenChange(false)
+        btnRef.current?.focus()
       }
     }
     document.addEventListener('mousedown', onDown)
@@ -355,29 +266,16 @@ export default function Nav() {
       document.removeEventListener('mousedown', onDown)
       document.removeEventListener('keydown', onKey)
     }
-  }, [megaOpen])
+  }, [open, onOpenChange])
 
-  /* ── mega-menu: move focus to the first item ONLY on keyboard opens ──
-     Auto-focusing after a mouse click made the first item wear the global
-     :focus-visible ring as a permanent-looking selection box (operator F6
-     screenshot). Pointer opens leave focus on the trigger; keyboard opens
-     (Enter/Space fire click with detail 0 · ArrowDown) move it in. */
-  const kbOpenRef = useRef(false)
+  /* move focus to the first item ONLY on keyboard opens (pointer opens leave
+     focus on the trigger — the F6 permanent-selection-box fix) */
   useEffect(() => {
-    if (megaOpen && kbOpenRef.current) megaItemRefs.current[0]?.focus()
-  }, [megaOpen])
+    if (open && kbOpenRef.current) itemRefs.current.find(Boolean)?.focus()
+  }, [open])
 
-  /* ── hover-intent (mouse only) · open ~70ms in · ~250ms grace out ──
-     The wrap is the hover surface: the panel is a DOM CHILD of the wrap (even
-     though it positions against the capsule), so pointerenter/leave on the
-     wrap already treat trigger+panel as ONE region — leaving the trigger for
-     the panel fires leave (the gap is rail territory) then enter, and the
-     grace timer bridges the crossing. SAFE TRIANGLE: while a close is
-     pending, a document-level pointermove keeps extending the deadline as
-     long as the pointer moves INSIDE the triangle {exit point → panel top
-     corners} (traveling toward the panel), capped at ~1.2s so parking inside
-     the triangle (e.g. on Docs) still lets it expire. All timers/listeners
-     are refs — zero re-renders until the open/close state actually flips. */
+  /* hover-intent (mouse only) · open ~70ms in · ~250ms grace out · safe
+     triangle toward the panel's top corners (see the file header) */
   const hoverRef = useRef({ openT: 0, closeT: 0, deadline: 0, maxDeadline: 0 })
   const graceMoveRef = useRef<((e: PointerEvent) => void) | null>(null)
   const stopGraceTracking = useCallback(() => {
@@ -394,43 +292,39 @@ export default function Nav() {
     h.closeT = 0
     stopGraceTracking()
   }, [stopGraceTracking])
-  /* any non-hover close (Esc · outside click · route · click-toggle) must not
-     leave a stale open/close timer or a dangling pointermove listener */
   useEffect(() => {
-    if (!megaOpen) cancelHoverTimers()
-  }, [megaOpen, cancelHoverTimers])
+    if (!open) cancelHoverTimers()
+  }, [open, cancelHoverTimers])
   useEffect(() => cancelHoverTimers, [cancelHoverTimers])
 
-  const onMegaPointerEnter = useCallback(
+  const onPointerEnter = useCallback(
     (e: React.PointerEvent) => {
       if (e.pointerType !== 'mouse') return
       const h = hoverRef.current
-      // re-entering trigger or panel: a pending grace close is void
       window.clearTimeout(h.closeT)
       h.closeT = 0
       stopGraceTracking()
-      if (!megaOpen && !h.openT) {
+      if (!open && !h.openT) {
         h.openT = window.setTimeout(() => {
           h.openT = 0
           kbOpenRef.current = false
-          setMegaOpen(true)
+          onOpenChange(true)
         }, 70)
       }
     },
-    [megaOpen, stopGraceTracking],
+    [open, onOpenChange, stopGraceTracking],
   )
-  const onMegaPointerLeave = useCallback(
+  const onPointerLeave = useCallback(
     (e: React.PointerEvent) => {
       if (e.pointerType !== 'mouse') return
       const h = hoverRef.current
       window.clearTimeout(h.openT)
       h.openT = 0
-      if (!megaOpen) return
-      // grace close + safe-triangle tracking toward the panel's top edge
+      if (!open) return
       const now = performance.now()
       h.deadline = now + 250
       h.maxDeadline = now + 1200
-      const panel = megaPanelRef.current
+      const panel = panelRef.current
       if (panel) {
         const box = panel.getBoundingClientRect()
         const ax = e.clientX
@@ -440,12 +334,11 @@ export default function Nav() {
         const ty = box.top
         const onMove = (ev: PointerEvent) => {
           /* sign-of-cross-product point-in-triangle {A exit · B top-left ·
-             C top-right}; the panel hangs BELOW the exit point so the test
-             degenerates safely (never true) if layout ever flips */
+             C top-right}; degenerates safely if layout ever flips */
           const px = ev.clientX
           const py = ev.clientY
           const d1 = (px - bx) * (ay - ty) - (ax - bx) * (py - ty)
-          const d2 = (cx - bx) * (py - ty) // B→C edge is horizontal (both at ty)
+          const d2 = (cx - bx) * (py - ty)
           const d3 = (px - ax) * (ty - ay) - (cx - ax) * (py - ay)
           const neg = d1 < 0 || d2 < 0 || d3 < 0
           const pos = d1 > 0 || d2 > 0 || d3 > 0
@@ -464,47 +357,184 @@ export default function Nav() {
         }
         hoverRef.current.closeT = 0
         stopGraceTracking()
-        setMegaOpen(false)
+        onOpenChange(false)
       }
       window.clearTimeout(h.closeT)
       h.closeT = window.setTimeout(tick, 250)
     },
-    [megaOpen, stopGraceTracking],
+    [open, onOpenChange, stopGraceTracking],
   )
 
-  /* roving arrow-key navigation across the flattened mega items (APG menu) */
-  const onMegaKeyDown = useCallback((e: React.KeyboardEvent) => {
-    const items = megaItemRefs.current.filter(Boolean) as HTMLAnchorElement[]
-    if (items.length === 0) return
-    const idx = items.indexOf(document.activeElement as HTMLAnchorElement)
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      items[(idx + 1 + items.length) % items.length]?.focus()
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      items[(idx - 1 + items.length) % items.length]?.focus()
-    } else if (e.key === 'Home') {
-      e.preventDefault()
-      items[0]?.focus()
-    } else if (e.key === 'End') {
-      e.preventDefault()
-      items[items.length - 1]?.focus()
-    } else if (e.key === 'Tab') {
-      /* Tab leaves the menu. Without intervention the panel unmounts with
-         focus still inside it and the browser restarts tabbing from <body>
-         (focus drop). Park focus back on the trigger FIRST, then close — the
-         default Tab action then continues naturally from the trigger
-         (forward: the link after Product · Shift+Tab: the brand). */
-      megaBtnRef.current?.focus()
-      setMegaOpen(false)
+  /* roving arrow-key navigation across the flattened items (APG menu) */
+  const onKeyDownPanel = useCallback(
+    (e: React.KeyboardEvent) => {
+      const items = itemRefs.current.filter(Boolean) as HTMLAnchorElement[]
+      if (items.length === 0) return
+      const idx = items.indexOf(document.activeElement as HTMLAnchorElement)
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        items[(idx + 1 + items.length) % items.length]?.focus()
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        items[(idx - 1 + items.length) % items.length]?.focus()
+      } else if (e.key === 'Home') {
+        e.preventDefault()
+        items[0]?.focus()
+      } else if (e.key === 'End') {
+        e.preventDefault()
+        items[items.length - 1]?.focus()
+      } else if (e.key === 'Tab') {
+        /* park focus back on the trigger FIRST, then close — Tab continues
+           naturally from the trigger (no focus drop) */
+        btnRef.current?.focus()
+        onOpenChange(false)
+      }
+    },
+    [onOpenChange],
+  )
+
+  const registerItem = useCallback(
+    (idx: number) => (el: HTMLAnchorElement | null) => {
+      itemRefs.current[idx] = el
+    },
+    [],
+  )
+  const close = useCallback(() => onOpenChange(false), [onOpenChange])
+
+  return (
+    <div
+      className="v4mega-wrap"
+      ref={wrapRef}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+    >
+      <button
+        ref={btnRef}
+        type="button"
+        className="v4nav-link"
+        data-open={open}
+        aria-expanded={open}
+        aria-controls={panelId}
+        aria-haspopup="true"
+        onClick={(e) => {
+          kbOpenRef.current = e.detail === 0
+          onOpenChange(!open)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault()
+            kbOpenRef.current = true
+            if (open) itemRefs.current.find(Boolean)?.focus()
+            else onOpenChange(true)
+          }
+        }}
+      >
+        {label}
+        <CaretGlyph />
+      </button>
+
+      {open ? (
+        <div
+          id={panelId}
+          ref={panelRef}
+          className={`v4mega${wide ? ' v4mega--wide' : ''}`}
+          role="menu"
+          aria-label={ariaLabel}
+          onKeyDown={onKeyDownPanel}
+        >
+          {children({ close, registerItem })}
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+export default function Nav() {
+  const location = useLocation()
+  /* `scrolled` = the page is in motion (>24px) — drives the capsule COMPRESSION.
+     The FLOOR is the derived `solid` below: field-less routes prerender solid
+     from scroll 0 (no transparent flash · P2-12), field routes ride transparent
+     until the sentinel scrolls out. */
+  const [scrolled, setScrolled] = useState(false)
+  const [openPanel, setOpenPanel] = useState<null | 'product' | 'reference'>(null)
+  const [sheetOpen, setSheetOpen] = useState(false)
+
+  const sheetRef = useRef<HTMLDivElement>(null)
+  const burgerRef = useRef<HTMLButtonElement>(null)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  /* the nav CTA leans toward the hand (wave-I VFX · fine pointers only) */
+  const installRef = useRef<HTMLAnchorElement>(null)
+  useMagnetic(installRef)
+  const railRef = useRef<HTMLDivElement>(null)
+  const pillRef = useRef<HTMLSpanElement>(null)
+  const capsuleRef = useRef<HTMLDivElement>(null)
+
+  const sheetId = useId()
+
+  /* ── the 24px scroll sentinel (see the header comment) ── */
+  const hasField = FIELD_ROUTES.has(location.pathname)
+  const solid = scrolled || !hasField
+  useEffect(() => {
+    const el = sentinelRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setScrolled(true)
+      return
     }
+    const io = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      { rootMargin: '-1px 0px 0px 0px', threshold: 0 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
   }, [])
 
-  /* ── sheet: Escape + scroll lock + focus trap (Tab cycles WITHIN the sheet) ──
-     role="dialog" aria-modal needs a real trap or focus escapes to the page
-     behind. We cycle Tab / Shift+Tab across the sheet's focusable set (querying
-     it live on each Tab so it stays correct as the DOM changes), Escape closes
-     and returns focus to the burger. */
+  /* ── the sliding hover pill (see the header comment) ── */
+  const pillRaf = useRef(0)
+  const pillHot = useRef<{ hover: HTMLElement | null; focus: HTMLElement | null }>({
+    hover: null,
+    focus: null,
+  })
+  const syncPill = useCallback(() => {
+    cancelAnimationFrame(pillRaf.current)
+    pillRaf.current = requestAnimationFrame(() => {
+      const capsule = capsuleRef.current
+      const pill = pillRef.current
+      if (!capsule || !pill) return
+      const hot = pillHot.current.hover ?? pillHot.current.focus
+      if (!hot) {
+        pill.dataset.on = 'false'
+        return
+      }
+      const capBox = capsule.getBoundingClientRect()
+      const box = hot.getBoundingClientRect()
+      const x = box.left - capBox.left - capsule.clientLeft
+      const y = box.top - capBox.top - capsule.clientTop
+      pill.style.transform = `translate(${x}px, ${y}px)`
+      pill.style.width = `${box.width}px`
+      pill.style.height = `${box.height}px`
+      if (pill.dataset.on !== 'true') {
+        pillRaf.current = requestAnimationFrame(() => {
+          pill.dataset.on = 'true'
+        })
+      }
+    })
+  }, [])
+  useEffect(() => () => cancelAnimationFrame(pillRaf.current), [])
+  const railItemOf = (t: EventTarget | null): HTMLElement | null =>
+    t instanceof Element ? t.closest<HTMLElement>('.v4nav-link') : null
+
+  /* close everything on a real route change (guarded — never unconditional) */
+  const lastLocRef = useRef(`${location.pathname}${location.hash}`)
+  useEffect(() => {
+    const key = `${location.pathname}${location.hash}`
+    if (lastLocRef.current !== key) {
+      lastLocRef.current = key
+      setOpenPanel(null)
+      setSheetOpen(false)
+    }
+  }, [location.pathname, location.hash])
+
+  /* ── sheet: Escape + scroll lock + focus trap (unchanged machinery) ── */
   useEffect(() => {
     if (!sheetOpen) return
     const prevOverflow = document.body.style.overflow
@@ -527,7 +557,6 @@ export default function Nav() {
       const first = items[0]
       const last = items[items.length - 1]
       const active = document.activeElement as HTMLElement | null
-      // wrap at the edges; also pull focus back in if it has somehow escaped
       if (e.shiftKey) {
         if (active === first || !sheetRef.current?.contains(active)) {
           e.preventDefault()
@@ -539,7 +568,6 @@ export default function Nav() {
       }
     }
     document.addEventListener('keydown', onKey)
-    // focus the first focusable in the sheet
     requestAnimationFrame(() => {
       sheetRef.current?.querySelector<HTMLElement>('[data-autofocus]')?.focus()
     })
@@ -549,9 +577,17 @@ export default function Nav() {
     }
   }, [sheetOpen])
 
+  /* the panels' flattened item counts (roving index bases) */
+  const productItemCount = NAV_PRODUCT.reduce((n, g) => n + g.items.length, 0)
+
   return (
     <>
-      <header className="v4nav" data-solid={solid} data-scrolled={scrolled} data-mega={megaOpen}>
+      <header
+        className="v4nav"
+        data-solid={solid}
+        data-scrolled={scrolled}
+        data-mega={openPanel !== null}
+      >
         <div className="v4nav-capsule" ref={capsuleRef}>
         <nav
           className="v4nav-row"
@@ -581,8 +617,6 @@ export default function Nav() {
               syncPill()
             }}
             onFocus={(e) => {
-              /* keyboard only — pointer clicks already carry the hover pill;
-                 :focus-visible keeps a mouse press from double-driving it */
               const el = railItemOf(e.target)
               if (el && e.target instanceof Element && e.target.matches(':focus-visible')) {
                 pillHot.current.focus = el
@@ -599,153 +633,125 @@ export default function Nav() {
             {/* the shared sliding highlight — purely decorative */}
             <span ref={pillRef} className="v4nav-pill" data-on="false" aria-hidden />
 
-            {/* Product ▾ — the mega-menu disclosure. The wrap is the hover
-                surface (trigger + panel are both inside it, DOM-wise) */}
-            <div
-              className="v4mega-wrap"
-              ref={megaWrapRef}
-              onPointerEnter={onMegaPointerEnter}
-              onPointerLeave={onMegaPointerLeave}
+            {/* Product ▾ · persuasion + try (authored · descs allowed) */}
+            <MegaDisclosure
+              label="Product"
+              open={openPanel === 'product'}
+              onOpenChange={(v) => setOpenPanel(v ? 'product' : null)}
+              capsuleRef={capsuleRef}
+              ariaLabel="Product"
             >
-              <button
-                ref={megaBtnRef}
-                type="button"
-                className="v4nav-link"
-                data-open={megaOpen}
-                aria-expanded={megaOpen}
-                aria-controls={megaId}
-                aria-haspopup="true"
-                onClick={(e) => {
-                  kbOpenRef.current = e.detail === 0 // keyboard "click"
-                  setMegaOpen((v) => !v)
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'ArrowDown') {
-                    e.preventDefault()
-                    kbOpenRef.current = true
-                    if (megaOpen) megaItemRefs.current[0]?.focus()
-                    else setMegaOpen(true)
-                  }
-                }}
-              >
-                Product
-                <CaretGlyph />
-              </button>
-
-              {megaOpen ? (
-                <div
-                  id={megaId}
-                  ref={megaPanelRef}
-                  className="v4mega"
-                  role="menu"
-                  aria-label="Product"
-                  onKeyDown={onMegaKeyDown}
-                >
-                  {PRODUCT_GROUPS.map((group) => (
-                    <div key={group.title} className="v4mega-col">
+              {({ close, registerItem }) => (
+                <>
+                  {NAV_PRODUCT.map((group, gi) => (
+                    <div key={group.col} className="v4mega-col">
                       <p className="v4mega-col-title" role="presentation">
-                        {group.title}
+                        {group.col}
                       </p>
-                      {group.items.map((item) => {
-                        const flatIdx = FLAT_PRODUCT_ITEMS.indexOf(item)
+                      {group.items.map((item, ii) => {
+                        const flatIdx = NAV_PRODUCT.slice(0, gi).reduce((n, g) => n + g.items.length, 0) + ii
                         return (
                           <div key={item.label} className="v4mega-cell">
                             <ItemLink
                               item={item}
                               className="v4mega-item"
-                              onSelect={() => setMegaOpen(false)}
-                              refCb={(el) => {
-                                megaItemRefs.current[flatIdx] = el
-                              }}
+                              onSelect={close}
+                              refCb={registerItem(flatIdx)}
+                              showDesc
                             />
-                            {item.to === '/manifesto' ? (
-                              /* the manifesto speaks 8 languages · crawlable
-                                 shortcuts (tabIndex -1: the roving arrow order
-                                 stays intact; keyboard reaches the switcher on
-                                 the page itself) */
-                              <p className="v4mega-langs" aria-label="Manifesto languages">
-                                {MANIFESTO_LOCALES.map((l) => (
-                                  <Link
-                                    key={l.bcp47}
-                                    to={l.path}
-                                    lang={l.bcp47}
-                                    tabIndex={-1}
-                                    onClick={() => setMegaOpen(false)}
-                                  >
-                                    {l.label}
-                                  </Link>
-                                ))}
-                              </p>
-                            ) : null}
                           </div>
                         )
                       })}
                     </div>
                   ))}
-
-                  {/* the bottom rail · version truth (left · links /changelog)
-                      + the one conversion CTA (right). Both are honest
-                      menuitems: they join the roving arrow order after the
-                      grouped items, and Tab still parks on the trigger. */}
+                  {/* the doctrine line · the SSOT promise as a nav row (§4.11) */}
                   <div className="v4mega-rail">
                     <Link
-                      to="/changelog"
+                      to={NAV_DOCTRINE.to}
                       role="menuitem"
                       className="v4mega-rail-version"
-                      onClick={() => setMegaOpen(false)}
-                      ref={(el) => {
-                        megaItemRefs.current[FLAT_PRODUCT_ITEMS.length] = el
-                      }}
+                      onClick={close}
+                      ref={registerItem(productItemCount)}
                     >
-                      {ENGINE_VERSION} · shipping in the open
-                    </Link>
-                    <Link
-                      to="/install"
-                      role="menuitem"
-                      className="v4mega-rail-install"
-                      onClick={() => setMegaOpen(false)}
-                      ref={(el) => {
-                        megaItemRefs.current[FLAT_PRODUCT_ITEMS.length + 1] = el
-                      }}
-                    >
-                      Install
-                      <span className="v4mega-rail-arrow" aria-hidden>
-                        →
-                      </span>
+                      {NAV_DOCTRINE.label} →
                     </Link>
                   </div>
-                </div>
-              ) : null}
-            </div>
+                </>
+              )}
+            </MegaDisclosure>
 
-            {/* flat top-level links */}
-            {TOP_LINKS.map((l) =>
-              l.external ? (
+            {/* Reference ▾ · the Atlas panel (generated · chips, no descs) */}
+            <MegaDisclosure
+              label="Reference"
+              open={openPanel === 'reference'}
+              onOpenChange={(v) => setOpenPanel(v ? 'reference' : null)}
+              capsuleRef={capsuleRef}
+              wide
+              ariaLabel="Reference"
+            >
+              {({ close, registerItem }) => (
+                <>
+                  <div className="v4mega-feat">
+                    <ItemLink
+                      item={NAV_REFERENCE.featured}
+                      className="v4mega-item v4mega-item--feat"
+                      onSelect={close}
+                      refCb={registerItem(0)}
+                      showDesc
+                    />
+                  </div>
+                  <div className="v4mega-refcols">
+                    {NAV_REFERENCE.cols.map((group, gi) => (
+                      <div key={group.col} className="v4mega-col">
+                        <p className="v4mega-col-title" role="presentation">
+                          {group.col}
+                        </p>
+                        {group.items.map((item, ii) => {
+                          const flatIdx =
+                            1 + NAV_REFERENCE.cols.slice(0, gi).reduce((n, g) => n + g.items.length, 0) + ii
+                          return (
+                            <div key={item.label} className="v4mega-cell">
+                              <ItemLink
+                                item={item}
+                                className="v4mega-item v4mega-item--ref"
+                                onSelect={close}
+                                refCb={registerItem(flatIdx)}
+                              />
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </MegaDisclosure>
+
+            {/* flat top-level links (generated bar data · Docs ↗ · Blog) */}
+            {NAV_BAR_LINKS.map((l) =>
+              l.external || l.href ? (
                 <a
                   key={l.label}
-                  href={l.href}
+                  href={l.external && l.label === 'Docs' ? DOCS : l.href}
                   className="v4nav-link"
                   itemProp="url"
-                  {...(l.newTab ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <span itemProp="name">{l.label}</span>
-                  {l.newTab ? (
-                    <span className="v4nav-ext-arrow" aria-hidden>
-                      ↗
-                    </span>
-                  ) : null}
+                  <span className="v4nav-ext-arrow" aria-hidden>
+                    ↗
+                  </span>
                 </a>
               ) : (
                 <Link
                   key={l.label}
-                  to={l.href}
+                  to={l.to!}
                   viewTransition
                   className="v4nav-link"
                   itemProp="url"
-                  /* the active route keeps a persistent dim pill (pure CSS on
-                     aria-current) under the sliding hover pill */
                   aria-current={
-                    location.pathname === l.href || location.pathname.startsWith(`${l.href}/`)
+                    location.pathname === l.to || location.pathname.startsWith(`${l.to}/`)
                       ? 'page'
                       : undefined
                   }
@@ -758,6 +764,16 @@ export default function Nav() {
 
           {/* right cluster */}
           <div className="v4nav-right">
+            {/* the version pill · the release signal rides the bar (reads
+                ENGINE_VERSION — the release cascade's one truth) */}
+            <Link
+              to={NAV_VERSION_PILL.to}
+              className="v4nav-vpill"
+              title={NAV_VERSION_PILL.title}
+              aria-label={`${ENGINE_VERSION} · changelog`}
+            >
+              {ENGINE_VERSION}
+            </Link>
             {/* the palette trigger (arc 13 W2) · fires the shell's listener —
                 no prop drilling; hidden on phones (command-k.css) */}
             <button
@@ -779,8 +795,7 @@ export default function Nav() {
               <span className="v4nav-ghost-label">GitHub</span>
             </a>
 
-            {/* the ONE solid CTA — the canonical /install deep link (docs/README/
-               social share one stable URL; the old /#install anchor had none). */}
+            {/* the ONE solid CTA — the canonical /install deep link */}
             <Link
               ref={installRef}
               to="/install"
@@ -812,16 +827,14 @@ export default function Nav() {
         </div>
       </header>
 
-      {/* the scroll sentinel · a 1px, pointer-events:none marker parked 24px
-          down the document flow; leaving the viewport = "the page is in
-          motion" (capsule compression + field-route solidification). */}
+      {/* the scroll sentinel */}
       <div
         ref={sentinelRef}
         aria-hidden
         style={{ position: 'absolute', top: 24, left: 0, height: 1, width: 1, pointerEvents: 'none' }}
       />
 
-      {/* ── the mobile sheet ── */}
+      {/* ── the mobile sheet · the same groups, one source (§4.11 mobile) ── */}
       {sheetOpen ? (
         <>
           <div className="v4sheet-scrim" onClick={() => setSheetOpen(false)} aria-hidden />
@@ -851,9 +864,30 @@ export default function Nav() {
               </button>
             </div>
 
-            {PRODUCT_GROUPS.map((group) => (
-              <div key={group.title}>
-                <p className="v4sheet-sectitle">{group.title}</p>
+            {/* the map first (the featured row's sheet seat) */}
+            <ItemLink
+              item={NAV_REFERENCE.featured}
+              className="v4sheet-link"
+              onSelect={() => setSheetOpen(false)}
+            />
+
+            {NAV_PRODUCT.map((group) => (
+              <div key={group.col}>
+                <p className="v4sheet-sectitle">{group.col}</p>
+                {group.items.map((item) => (
+                  <ItemLink
+                    key={item.label}
+                    item={item}
+                    className="v4sheet-link"
+                    onSelect={() => setSheetOpen(false)}
+                  />
+                ))}
+              </div>
+            ))}
+
+            {NAV_REFERENCE.cols.map((group) => (
+              <div key={group.col}>
+                <p className="v4sheet-sectitle">{group.col}</p>
                 {group.items.map((item) => (
                   <ItemLink
                     key={item.label}
@@ -866,24 +900,28 @@ export default function Nav() {
             ))}
 
             <div className="v4sheet-rule" />
-            {TOP_LINKS.map((l) =>
-              l.external ? (
+            {NAV_BAR_LINKS.map((l) =>
+              l.external || l.href ? (
                 <a
                   key={l.label}
-                  href={l.href}
+                  href={l.external && l.label === 'Docs' ? DOCS : l.href}
                   className="v4sheet-link"
-                  {...(l.newTab ? { target: '_blank', rel: 'noreferrer' } : {})}
+                  target="_blank"
+                  rel="noreferrer"
                   onClick={() => setSheetOpen(false)}
                 >
                   {l.label}
-                  {l.newTab ? <span aria-hidden>↗</span> : null}
+                  <span aria-hidden>↗</span>
                 </a>
               ) : (
-                <Link key={l.label} to={l.href} className="v4sheet-link" onClick={() => setSheetOpen(false)}>
+                <Link key={l.label} to={l.to!} className="v4sheet-link" onClick={() => setSheetOpen(false)}>
                   {l.label}
                 </Link>
               ),
             )}
+            <Link to={NAV_VERSION_PILL.to} className="v4sheet-link" onClick={() => setSheetOpen(false)}>
+              {ENGINE_VERSION} · changelog
+            </Link>
             <a
               href={REPO}
               target="_blank"

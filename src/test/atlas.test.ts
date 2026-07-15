@@ -24,6 +24,7 @@ const OUTPUTS = [
   'src/content/jsonld.generated.ts',
   'src/content/market-vocab.generated.ts',
   'src/content/snippets.generated.ts',
+  'src/content/atlas-nav.generated.ts',
   'src/pages/map-data.generated.ts',
   'src/assets/constellation.generated.svg',
   'public/map/constellation.svg',

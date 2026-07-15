@@ -2,65 +2,59 @@ import { Link } from 'react-router'
 import { lazy, Suspense } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
 import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
+import { FOOTER_COLS, FOOTER_MACHINE, type NavItem } from '../content/atlas-nav.generated'
 import '../sections/v4-home.css'
 
 /* ─── SiteFooter · the ONE footer, every route (F7) ───────────────────────────
    Extracted VERBATIM from FinalCTA (the operator-locked SUPERNOVAE block +
    the PROD rule) plus the F3 living-butterfly signature above it. Mounted by
    RootLayout on every non-home route; Home keeps it inside FinalCTA (the
-   close beat owns its rhythm there). One footer register everywhere — the
-   theme-drift class the operator flagged (F7) ends here. */
+   close beat owns its rhythm there). One footer register everywhere.
+
+   THE SECOND PROJECTION (§4.12 · WO-3): the nav answers « where am I
+   going » (two curated panels), the footer answers « what exists » — the
+   complete card. Its first three columns ARE the Reference panel's columns
+   plus their extras, the last two are authored intent — all five read
+   atlas-nav.generated.ts (one source, two projections, zero drift). The
+   FOR MACHINES row names the site's own machine surfaces (the agents-first
+   identity, said in the chrome). */
 
 /* the signature reveal · lazy so it never enters any route's critical bundle
    (in-view only; the prerendered fallback below is the no-JS truth) */
 const FooterSignature = lazy(() => import('../fx/FooterSignature'))
 
-/* the link columns (W8 · the Cursor/ElevenLabs footer grammar, sized honestly
-   for one OSS product) — every route the site actually has + the canonical
-   external surfaces. Internal = <Link>, external = <a ↗>. */
-const COLS: {
-  kick: string
-  links: { label: string; to?: string; href?: string; track?: string }[]
-}[] = [
-  {
-    kick: 'product',
-    links: [
-      { label: 'Install', to: '/install' },
-      { label: 'Playground', to: '/play' },
-      { label: 'Learn', to: '/learn' },
-      { label: 'Use cases', to: '/use-cases' },
-      { label: 'Changelog', to: '/changelog' },
-      { label: 'Blog', to: '/blog' },
-    ],
-  },
-  {
-    kick: 'resources',
-    links: [
-      { label: 'Docs', href: DOCS },
-      { label: 'Spec', to: '/spec' },
-      { label: 'The four verbs', to: '/verbs' },
-      { label: 'The language', to: '/language' },
-      { label: 'Standard library', to: '/tools' },
-      { label: 'Providers', to: '/providers' },
-      { label: 'Templates', to: '/templates' },
-      { label: 'Error codes', to: '/errors' },
-      { label: 'GitHub', href: REPO },
-      { label: 'VS Code extension', href: 'https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang' },
-      { label: 'Homebrew tap', href: 'https://github.com/supernovae-st/homebrew-tap' },
-    ],
-  },
-  {
-    kick: 'project',
-    links: [
-      { label: 'Manifesto', to: '/manifesto' },
-      { label: 'Send a workflow', to: '/convert', track: 'convert-open' },
-      { label: 'SuperNovae', href: 'https://supernovae.studio' },
-      { label: 'License · AGPL-3.0', href: `${REPO}/blob/main/LICENSE` },
-      { label: 'security.txt', href: '/.well-known/security.txt' },
-      { label: 'The map', to: '/map' },
-    ],
-  },
-]
+function FooterLink({ item }: { item: NavItem }) {
+  if (item.soon) {
+    return (
+      <span
+        className="sitefoot-link sitefoot-link--soon"
+        title={item.slot_wave ? `ships with the ${item.slot_wave} wave` : 'landing soon'}
+      >
+        {item.label}
+        <span className="sitefoot-soon" aria-hidden>
+          soon
+        </span>
+      </span>
+    )
+  }
+  if (item.to) {
+    return (
+      <Link to={item.to} className="sitefoot-link">
+        {item.label}
+      </Link>
+    )
+  }
+  const href = item.external && item.label === 'Docs' ? DOCS : item.external && item.label === 'GitHub' ? REPO : item.href
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className="sitefoot-link" title={item.title}>
+      {item.label}
+      <span aria-hidden className="sitefoot-ext acue acue--ext">
+        {' '}
+        ↗
+      </span>
+    </a>
+  )
+}
 
 /* THE SIGNATURE · the living butterfly + its museum-plate caption (F3).
    Exported: Home lifts it ABOVE the final CTA (the mark OPENS the close —
@@ -94,34 +88,43 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
             one mark, one close) */}
         {signature && <SignatureMark />}
 
-        {/* THE COLUMNS · the wayfinding band (W8) — left-aligned survey grid
-            over the centered altar below; every label is a real surface */}
-        <nav className="sitefoot-cols" aria-label="Site map">
-          {COLS.map((col) => (
+        {/* THE MAP ROW · the complete card opens on its cover (§4.12) */}
+        <div className="sitefoot-maprow">
+          <Link to="/map" className="sitefoot-maplink">
+            <span aria-hidden className="sitefoot-mapstar">
+              ★
+            </span>
+            The map · every page, one graph
+          </Link>
+          <span className="sitefoot-doctrine">Every claim on this site derives from the spec</span>
+        </div>
+
+        {/* THE COLUMNS · five, projected (the anatomy trio = the Reference
+            panel's columns + extras · learn/build + project = authored) */}
+        <nav className="sitefoot-cols sitefoot-cols--five" aria-label="Site map">
+          {FOOTER_COLS.map((col) => (
             <div className="sitefoot-col" key={col.kick}>
               <p className="sitefoot-kick">{col.kick}</p>
               <ul className="sitefoot-list">
-                {col.links.map((l) => (
+                {col.items.map((l) => (
                   <li key={l.label}>
-                    {l.to ? (
-                      <Link to={l.to} className="sitefoot-link" data-track={l.track}>
-                        {l.label}
-                      </Link>
-                    ) : (
-                      <a href={l.href} target="_blank" rel="noreferrer" className="sitefoot-link">
-                        {l.label}
-                        <span aria-hidden className="sitefoot-ext acue acue--ext">
-                          {' '}
-                          ↗
-                        </span>
-                      </a>
-                    )}
+                    <FooterLink item={l} />
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </nav>
+
+        {/* FOR MACHINES · the site names its own machine surfaces */}
+        <p className="sitefoot-machines">
+          <span className="sitefoot-machines-kick">for machines</span>
+          {FOOTER_MACHINE.map((m) => (
+            <a key={m.href} href={m.href} className="sitefoot-machine-link">
+              {m.label}
+            </a>
+          ))}
+        </p>
 
         {/* ─── SUPERNOVAE · the footer — KEPT INTACT (operator lock). The per-letter
              float wave + hover lift wordmark, the studio line, the founders, and
@@ -185,6 +188,12 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
             </span>
           </span>
           <span className="flex flex-wrap items-center gap-x-5">
+            <a
+              href="/.well-known/security.txt"
+              className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
+            >
+              security.txt
+            </a>
             <a
               href={REPO}
               target="_blank"
