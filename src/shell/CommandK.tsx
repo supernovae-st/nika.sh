@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PALETTE, type PaletteEntry } from '../content/palette.generated'
+import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import './command-k.css'
 
 /* ─── CommandK · the site as an instrument (arc 13 W2) ────────────────────────
@@ -64,6 +65,14 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
   const [cursor, setCursor] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+
+  /* the overlay duties (focus.ts · WO-12): give focus back to the opener on
+     close — BEFORE the autofocus effect below steals it (mount order) — and
+     keep Tab inside the dialog (it used to escape into the page). Escape
+     stays below with the combobox keys. */
+  useFocusReturn(true)
+  useFocusTrap(dialogRef, true)
 
   const hits = useMemo(() => {
     if (!q.trim()) return PALETTE.slice(0, 9)
@@ -120,7 +129,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="ck-scrim" onPointerDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="ck" role="dialog" aria-modal="true" aria-label="Site search">
+      <div ref={dialogRef} className="ck" role="dialog" aria-modal="true" aria-label="Site search">
         <div className="ck-field">
           <span className="ck-glyph mono" aria-hidden>
             ❯

@@ -10,6 +10,7 @@ import {
   type NavItem,
 } from '../content/atlas-nav.generated'
 import { useMagnetic } from '../fx/use-magnetic'
+import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import './nav.css'
 import { NK_ICONS } from '../icons/manifest'
 
@@ -538,38 +539,17 @@ export default function Nav() {
     }
   }, [location.pathname, location.hash])
 
-  /* ── sheet: Escape + scroll lock + focus trap (unchanged machinery) ── */
+  /* ── sheet: Escape + scroll lock + the shared focus duties (focus.ts ·
+     WO-12 — the trap machinery this file pioneered now lives there; the
+     burger return rides useFocusReturn instead of a hand call) ── */
+  useFocusReturn(sheetOpen)
+  useFocusTrap(sheetRef, sheetOpen)
   useEffect(() => {
     if (!sheetOpen) return
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    const focusables = () =>
-      Array.from(
-        sheetRef.current?.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        ) ?? [],
-      ).filter((el) => el.offsetParent !== null || el === document.activeElement)
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setSheetOpen(false)
-        burgerRef.current?.focus()
-        return
-      }
-      if (e.key !== 'Tab') return
-      const items = focusables()
-      if (items.length === 0) return
-      const first = items[0]
-      const last = items[items.length - 1]
-      const active = document.activeElement as HTMLElement | null
-      if (e.shiftKey) {
-        if (active === first || !sheetRef.current?.contains(active)) {
-          e.preventDefault()
-          last.focus()
-        }
-      } else if (active === last || !sheetRef.current?.contains(active)) {
-        e.preventDefault()
-        first.focus()
-      }
+      if (e.key === 'Escape') setSheetOpen(false)
     }
     document.addEventListener('keydown', onKey)
     requestAnimationFrame(() => {

@@ -787,23 +787,33 @@ await check('egg · drum (manifesto)', async () => {
   return last
 })
 
-/* 3d · the palette closes clean (Escape → dialog gone; the page it opened
-   over is still the manifesto from the egg check above) */
-await check('palette · Escape closes and the page keeps focus', async () => {
+/* 3d · the palette pays the three overlay duties (focus.ts · WO-12): Tab
+   stays INSIDE the dialog, Escape closes it, and focus RETURNS to the
+   opener (the nav ⌘K trigger). This assertion used to codify the bug
+   (`focus === body` accepted) — inverted the day the debt was paid. */
+await check('palette · Tab trapped, Escape closes, focus returns to the trigger', async () => {
   let last = null
   for (let attempt = 0; attempt < 3; attempt++) {
+    // the trigger is the opener of record — the return duty aims at it
+    await evaluate(`document.querySelector('.ck-trigger')?.focus()`)
     await evaluate(`window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))`)
     last = await until(() => evaluate(`!!document.querySelector('.ck-input')`), 5, 300)
     if (last === true) break
   }
   if (last !== true) return 'palette never opened'
+  // the trap: a Tab dispatched at the document wraps focus inside .ck
+  const trapped = await evaluate(`(() => {
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true }))
+    return !!document.activeElement?.closest?.('.ck')
+  })()`)
+  if (trapped !== true) return `Tab escaped the dialog (trapped=${trapped})`
   await evaluate(`document.querySelector('.ck-input').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))`)
   return until(
     () =>
       evaluate(`(() => {
         const gone = !document.querySelector('.ck-input')
-        const focusSane = document.activeElement === document.body || !document.activeElement?.closest?.('.ck')
-        return (gone && focusSane) || JSON.stringify({ gone, focusSane })
+        const focusBack = document.activeElement === document.querySelector('.ck-trigger')
+        return (gone && focusBack) || JSON.stringify({ gone, focusBack })
       })()`),
     6,
     300,
