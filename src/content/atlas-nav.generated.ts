@@ -123,7 +123,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "The language",
           "icon": "book",
           "to": "/language",
-          "count": 53
+          "count": 57
         },
         {
           "label": "The four verbs",
@@ -152,7 +152,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "Error codes",
           "icon": "book",
           "to": "/errors",
-          "count": 61
+          "count": 82
         },
         {
           "label": "The boundary",
@@ -175,7 +175,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "Standard library",
           "icon": "tiles",
           "to": "/tools",
-          "count": 27
+          "count": 28
         },
         {
           "label": "Providers",
@@ -207,7 +207,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "label": "The language",
         "icon": "book",
         "to": "/language",
-        "count": 53
+        "count": 57
       },
       {
         "label": "The four verbs",
@@ -240,7 +240,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "label": "Error codes",
         "icon": "book",
         "to": "/errors",
-        "count": 61
+        "count": 82
       },
       {
         "label": "The boundary",
@@ -267,7 +267,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "label": "Standard library",
         "icon": "tiles",
         "to": "/tools",
-        "count": 27
+        "count": 28
       },
       {
         "label": "Providers",
