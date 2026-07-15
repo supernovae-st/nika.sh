@@ -112,9 +112,9 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
-    "label": "Site map",
-    "href": "/sitemap",
-    "hint": "every page, one map"
+    "label": "The map",
+    "href": "/map",
+    "hint": "every page, one graph"
   },
   {
     "kind": "page",

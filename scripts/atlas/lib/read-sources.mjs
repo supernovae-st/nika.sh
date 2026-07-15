@@ -120,6 +120,25 @@ export function readSources(ROOT) {
   const engineVersion = /export const ENGINE_VERSION = '(v[\d.]+)'/.exec(read('src/content.ts'))?.[1]
   if (!engineVersion) throw new Error('content.ts: ENGINE_VERSION not found')
 
+  /* design tokens (SSOT values · the constellation bakes them into its
+     standalone svg — values change SPEC-FIRST, this only reads) */
+  const tokensTs = read('src/design-tokens.generated.ts')
+  const hex = (name) => {
+    const m = new RegExp(`${name}: '(#[0-9a-fA-F]{6})'`).exec(tokensTs)
+    if (!m) throw new Error(`design-tokens: ${name} not found`)
+    return m[1]
+  }
+  const tokens = {
+    infer: hex('infer'),
+    exec: hex('exec'),
+    invoke: hex('invoke'),
+    agent: hex('agent'),
+    ok: hex('ok'),
+    fail: hex('fail'),
+    markIce: hex('markIce'),
+    accent: hex('accent'),
+  }
+
   /* the spec pin — stamped by the resync cron from its fresh clone; null
      until the first post-atlas resync runs (named in the report) */
   const pinPath = join(ROOT, 'public/spec/v1/PIN')
@@ -147,5 +166,6 @@ export function readSources(ROOT) {
     engineVersion,
     specPin,
     posts,
+    tokens,
   }
 }

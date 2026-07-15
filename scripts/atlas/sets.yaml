@@ -562,13 +562,20 @@ sets:
 surfaces:
   - { id: home, url: /, exists: true, title: Home,
       role: "the funnel cover · the engine's public face (market-vocab anchors here)" }
-  - { id: map, url: /map, lands: wo-3, title: The map,
-      role: "the mother page · the anatomy at a glance · every page reachable in 3 nav edges" }
+  - id: map
+    url: /map
+    exists: true   # lands in the WO-3a leg that carries this flip
+    title: The map
+    role: "the mother page · the anatomy at a glance · every page reachable in 3 nav edges"
+    opener: >-
+      Nika is a workflow language for agentic work. Everything it is fits on
+      this map: seven layers, every set counted, every member accountable to
+      the spec.
   - { id: sources, url: /sources, lands: wo-7, title: Sources,
       role: "the public page of the truth system · the three clocks taught" }
   - { id: spec-lens, url: /spec, exists: true, rework: wo-7, title: "The spec at a glance",
       role: "the linear lens · same atlas data, scroll and print form · the hand-body dies" }
-  - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: false,
+  - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: true,
       moved: { from: /sitemap, to: /map, applied: wo-3 } }
 
 # ─── the library heroes (§2bis audit · VERDICT · WO-2b 2026-07-15) ──────────

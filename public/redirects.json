@@ -117,7 +117,7 @@
       "from": "/sitemap",
       "to": "/map",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-3"
     }
   ]

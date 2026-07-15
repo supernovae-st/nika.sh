@@ -20,7 +20,7 @@ const PORT = 9251
    died with WO-2) — every existing hub + the first room of every rooms-set,
    so a page class the atlas grows is swept the day it lands, never
    remembered by hand. The funnel + blog sample stays curated (not atlas). */
-const CORE_ROUTES = ['/', '/manifesto', '/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/blog/own-your-stack', '/blog/dag-for-free', '/blog/blast-radius-in-the-file', '/blog/standard-library-not-plugin-store', '/blog/open-spec-copyleft-engine', '/blog/the-note-that-started-it', '/blog/naming-the-drum', '/blog/starting-over-on-purpose', '/blog/the-trace-you-can-replay', '/blog/anatomy-of-a-verb', '/blog/the-cost-line', '/changelog', '/sitemap', '/convert', '/brand']
+const CORE_ROUTES = ['/', '/manifesto', '/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/blog/own-your-stack', '/blog/dag-for-free', '/blog/blast-radius-in-the-file', '/blog/standard-library-not-plugin-store', '/blog/open-spec-copyleft-engine', '/blog/the-note-that-started-it', '/blog/naming-the-drum', '/blog/starting-over-on-purpose', '/blog/the-trace-you-can-replay', '/blog/anatomy-of-a-verb', '/blog/the-cost-line', '/changelog', '/map', '/convert', '/brand']
 function atlasRoutes() {
   const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8'))
   const routes = new Set()

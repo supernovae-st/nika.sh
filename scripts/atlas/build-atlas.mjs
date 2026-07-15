@@ -26,6 +26,8 @@ import { writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readSources } from './lib/read-sources.mjs'
+import { layoutConstellation } from './lib/radial-layout.mjs'
+import { renderConstellation } from './lib/render-constellation.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..')
 const REPORT_ONLY = process.argv.includes('--report')
@@ -200,7 +202,7 @@ const nodes = []
 const edges = []
 const addEdge = (from, to, kind) => edges.push({ from, to, kind })
 
-for (const layer of S.sets.layers) {
+S.sets.layers.forEach((layer, i) => {
   nodes.push({
     id: `layer:${layer.id}`,
     kind: 'layer',
@@ -210,9 +212,13 @@ for (const layer of S.sets.layers) {
     opener: layer.opener.trim(),
     exists: layer.hub_exists,
     lands: layer.lands ?? null,
+    /* the anatomy's reading order (node sort is alphabetical · consumers
+       that need the book order — the constellation, the hub chain — read
+       this, never the array position) */
+    order: i,
     ...(layer.sibling_hubs ? { sibling_hubs: layer.sibling_hubs } : {}),
   })
-}
+})
 
 /* which PAGES exist today (set nodes carry page_exists so consumers — the
    a11y sweep, nav — never point at a hub that has not landed yet) */
@@ -495,6 +501,8 @@ const atlasTs = GEN(
   clock?: string
   exists?: boolean
   lands?: string | null
+  /** layer nodes: the anatomy's reading order (node sort is alphabetical) */
+  order?: number
   /** set nodes: their page is served today (consumers never point at a hub
    * that has not landed yet) */
   page_exists?: boolean
@@ -546,6 +554,19 @@ export const ATLAS_INDEX: Record<string, AtlasNode> = Object.fromEntries(
 `,
 )
 
+/* the two-clock diff, computed (never written): what the spec ratifies vs
+   what the shipped catalogs witness — /map renders this line */
+const clockDiff = {
+  builtins: {
+    ratified_only: [...ratifiedBuiltins].filter((b) => !shippedBuiltins.has(b)).sort(),
+    shipped_only: [...shippedBuiltins].filter((b) => !ratifiedBuiltins.has(b)).sort(),
+  },
+  providers: {
+    ratified_only: [...ratifiedProviders].filter((p) => !shippedProviders.has(p)).sort(),
+    shipped_only: [...shippedProviders].filter((p) => !ratifiedProviders.has(p)).sort(),
+  },
+}
+
 const metaTs = GEN(
   'atlas-meta.generated.ts',
   `/** chrome-safe: provenance + counts only — the full graph stays lazy
@@ -570,10 +591,68 @@ export const ATLAS_HUBS = ${JSON.stringify(
 
 export const ATLAS_SCORE = ${JSON.stringify({ score, waived, unarmed }, null, 2)} as const
 
+/** the two clocks diffed (computed at compile · /map renders the line) */
+export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers', { ratified_only: string[]; shipped_only: string[] }> =
+  ${JSON.stringify(clockDiff, null, 2)}
+
 /** flips when /sources ships (WO-7) — TruthLine withholds the link until then */
 export const SOURCES_LIVE = false
 `,
 )
+
+/* the map page data (sortie 5 · chrome-lean: the layers with their sets and
+   counts, ready to render — the page never imports the full graph) */
+const mapLayers = S.sets.layers.map((l) => ({
+  id: l.id,
+  title: l.title,
+  hub: l.hub,
+  exists: l.hub_exists,
+  lands: l.lands ?? null,
+  opener: l.opener.trim(),
+  sets: S.sets.sets
+    .filter((s) => s.layer === l.id)
+    .map((s) => ({
+      id: s.id,
+      title: s.title,
+      url: s.surface === 'rooms' ? `/${(s.rooms_url ?? '/x').split('/')[1]}` : (s.anchor_page ?? l.hub).split('#')[0],
+      count: nodes.filter((x) => x.kind === 'member' && x.set === s.id).length,
+      surface: s.surface,
+      slot: s.slot ?? null,
+      closed: s.closed,
+    })),
+}))
+const mapSurface = S.sets.surfaces.find((s) => s.id === 'map')
+const mapDataTs = GEN(
+  'map-data.generated.ts',
+  `export interface MapSet {
+  id: string
+  title: string
+  url: string
+  count: number
+  surface: string
+  slot: string | null
+  closed: boolean
+}
+export interface MapLayer {
+  id: string
+  title: string
+  hub: string
+  exists: boolean
+  lands: string | null
+  opener: string
+  sets: MapSet[]
+}
+
+export const MAP_OPENER = ${JSON.stringify(mapSurface?.opener?.trim() ?? '')}
+
+export const MAP_LAYERS: MapLayer[] = ${JSON.stringify(mapLayers, null, 2)}
+`,
+)
+
+/* the constellation (sorties 5+6 · pure layout → static svg · two byte-equal
+   copies: the page inlines the src asset, agents fetch the public one) */
+const geometry = layoutConstellation(twin)
+const constellationSvg = renderConstellation(geometry, S.tokens)
 
 /* jsonld: one DefinedTermSet per set, placed on its page (§0.9) */
 const ORIGIN = 'https://nika.sh'
@@ -715,7 +794,11 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/jsonld.generated.ts'), jsonldTs)
   writeFileSync(join(ROOT, 'src/content/market-vocab.generated.ts'), vocabTs)
   writeFileSync(join(ROOT, 'src/content/snippets.generated.ts'), snippetsTs)
+  writeFileSync(join(ROOT, 'src/pages/map-data.generated.ts'), mapDataTs)
+  writeFileSync(join(ROOT, 'src/assets/constellation.generated.svg'), constellationSvg)
   mkdirSync(join(ROOT, 'public/ontology'), { recursive: true })
+  mkdirSync(join(ROOT, 'public/map'), { recursive: true })
+  writeFileSync(join(ROOT, 'public/map/constellation.svg'), constellationSvg)
   writeFileSync(join(ROOT, 'public/ontology/language.json'), JSON.stringify(twin, null, 2) + '\n')
   writeFileSync(join(ROOT, 'public/redirects.json'), redirectsJson)
 }

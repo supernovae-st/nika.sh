@@ -57,7 +57,7 @@ const COLS: {
       { label: 'SuperNovae', href: 'https://supernovae.studio' },
       { label: 'License · AGPL-3.0', href: `${REPO}/blob/main/LICENSE` },
       { label: 'security.txt', href: '/.well-known/security.txt' },
-      { label: 'Site map', to: '/sitemap' },
+      { label: 'The map', to: '/map' },
     ],
   },
 ]

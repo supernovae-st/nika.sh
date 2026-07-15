@@ -40,7 +40,7 @@ const CORE = [
   ['The language', '/language', 'every word the schema declares'],
   ['Providers', '/providers', 'local first · your keys'],
   ['Templates', '/templates', 'instantiable skeletons'],
-  ['Site map', '/sitemap', 'every page, one map'],
+  ['The map', '/map', 'every page, one graph'],
   ['Brand', '/brand', 'logos and the mark'],
 ]
 

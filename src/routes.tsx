@@ -20,7 +20,8 @@ import { Component as Verbs } from './pages/Verbs'
 import { Component as VerbPage } from './pages/VerbPage'
 import { Component as Language } from './pages/Language'
 import { Component as WordPage } from './pages/WordPage'
-import { Component as Sitemap } from './pages/Sitemap'
+import { Component as SitemapMoved } from './pages/SitemapMoved'
+import { Component as MapPage } from './pages/Map'
 import { Component as Providers } from './pages/Providers'
 import { Component as Templates } from './pages/Templates'
 
@@ -86,9 +87,11 @@ export const routes: RouteObject[] = [
          Deep links open the full SLOT-marked workflow in the product panel. */
       { path: 'templates', Component: Templates },
       { path: 'templates/:name', Component: Templates },
-      /* the human map · the twin of sitemap.xml. The coverage gate
-         (src/test/sitemap.test.ts) keeps it exhaustive both ways. */
-      { path: 'sitemap', Component: Sitemap },
+      /* the mother page · the anatomy of the language, one graph. The
+         coverage gate (src/test/map.test.ts) keeps it exhaustive both
+         ways; /sitemap 301s here (the moved stub · §0.12b). */
+      { path: 'map', Component: MapPage },
+      { path: 'sitemap', Component: SitemapMoved },
       { path: 'use-cases', Component: UseCasesPage },
       { path: 'spec', Component: Spec },
       { path: 'install', Component: Install },

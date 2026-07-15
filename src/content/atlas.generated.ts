@@ -21,6 +21,8 @@ export interface AtlasNode {
   clock?: string
   exists?: boolean
   lands?: string | null
+  /** layer nodes: the anatomy's reading order (node sort is alphabetical) */
+  order?: number
   /** set nodes: their page is served today (consumers never point at a hub
    * that has not landed yet) */
   page_exists?: boolean
@@ -1904,7 +1906,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "both",
     "opener": "A verb is a distinct native execution model: infer thinks, exec runs, invoke calls a tool, agent loops with judgment. The set is closed by design · everything callable is a tool under invoke.",
     "exists": true,
-    "lands": null
+    "lands": null,
+    "order": 2
   },
   {
     "id": "layer:boundary",
@@ -1914,7 +1917,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "both",
     "opener": "The file declares its blast radius. Permits allowlist what runs, reads, writes and calls · secrets stay masked references. Absent means the engine floor, present means default-deny.",
     "exists": false,
-    "lands": "wo-4"
+    "lands": "wo-4",
+    "order": 4
   },
   {
     "id": "layer:flow",
@@ -1924,7 +1928,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "both",
     "opener": "Tasks link through two doors: with binds values, after orders effects. The engine reads those bindings and builds the run graph · nothing else creates an edge.",
     "exists": false,
-    "lands": "wo-4"
+    "lands": "wo-4",
+    "order": 1
   },
   {
     "id": "layer:proof",
@@ -1934,7 +1939,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "both",
     "opener": "A run you can verify, a graph you can read. The proof layer is how Nika shows its work: the run graph, the hash-chained trace, the conformance suite that re-proves every claim.",
     "exists": false,
-    "lands": "wo-4"
+    "lands": "wo-4",
+    "order": 6
   },
   {
     "id": "layer:reach",
@@ -1945,6 +1951,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "opener": "Reach is what a workflow can touch: the standard library, the model providers, the routing skeletons. Every capability is named, cataloged and versioned · nothing arrives by plugin.",
     "exists": true,
     "lands": null,
+    "order": 3,
     "sibling_hubs": [
       "/providers",
       "/templates"
@@ -1958,7 +1965,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "both",
     "opener": "Every refusal has a name. Errors are data: stable codes with a category, a transient flag and a documented fix shape · never prose exceptions.",
     "exists": true,
-    "lands": null
+    "lands": null,
+    "order": 5
   },
   {
     "id": "layer:shape",
@@ -1968,7 +1976,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "both",
     "opener": "The shape layer is every word an author can type: the envelope, the task grammar, the namespaces that scope every value. If a key is not declared here, it is not Nika.",
     "exists": true,
-    "lands": null
+    "lands": null,
+    "order": 0
   },
   {
     "id": "level:core",
@@ -3449,8 +3458,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/map",
     "status": "both",
     "opener": null,
-    "exists": false,
-    "lands": "wo-3"
+    "exists": true,
+    "lands": null
   },
   {
     "id": "surface:sitemap-legacy",

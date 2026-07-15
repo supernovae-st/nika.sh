@@ -193,5 +193,18 @@ export const ATLAS_SCORE = {
   ]
 } as const
 
+/** the two clocks diffed (computed at compile · /map renders the line) */
+export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers', { ratified_only: string[]; shipped_only: string[] }> =
+  {
+  "builtins": {
+    "ratified_only": [],
+    "shipped_only": []
+  },
+  "providers": {
+    "ratified_only": [],
+    "shipped_only": []
+  }
+}
+
 /** flips when /sources ships (WO-7) — TruthLine withholds the link until then */
 export const SOURCES_LIVE = false

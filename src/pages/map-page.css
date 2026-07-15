@@ -1,0 +1,305 @@
+/* ─── /map · the mother page register ─────────────────────────────────────────
+   The list is the truth (left · reading order) · the constellation is the
+   lens (right · sticky on desktop, fit-width figure after the list on
+   mobile — the §4quater.10 verdict). Calm blueprint register: hairlines,
+   mono chips, the layer hue appears ONLY as a 2px leader on each layer row
+   (the drawing carries the color story; the list stays ink). */
+
+.mp-page {
+  background: var(--v4-bg);
+}
+
+.mp-wrap {
+  padding-block: clamp(48px, 8vh, 84px) 40px;
+}
+
+.mp-head {
+  max-width: 720px;
+}
+
+.mp-title {
+  margin: 0 0 14px;
+}
+
+.mp-opener {
+  margin: 0 0 10px;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.85));
+}
+
+.mp-clock {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--v4-text-faint, rgb(140 160 190 / 0.65));
+}
+
+.mp-clock[data-agree='true']::before {
+  content: '✓ ';
+  color: #34d399;
+}
+
+/* ── the two-register body ── */
+.mp-body {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 28px clamp(24px, 4vw, 56px);
+  margin-top: 40px;
+  align-items: start;
+}
+
+.mp-sec-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint, rgb(140 160 190 / 0.65));
+  margin: 0 0 18px;
+}
+
+/* the anatomy list */
+.mp-layers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 22px;
+}
+
+.mp-layer {
+  border-left: 2px solid var(--mp-hue, rgb(140 170 255 / 0.4));
+  padding-left: 16px;
+}
+
+/* the layer hue leader — token values, the same story as the drawing */
+.mp-layer[data-layer='shape'] { --mp-hue: #9fd0ff; }
+.mp-layer[data-layer='flow'] { --mp-hue: #5b8cff; }
+.mp-layer[data-layer='acts'] { --mp-hue: #b07bff; }
+.mp-layer[data-layer='reach'] { --mp-hue: #22d3ee; }
+.mp-layer[data-layer='boundary'] { --mp-hue: #ff7a3c; }
+.mp-layer[data-layer='refusals'] { --mp-hue: #ff5d5d; }
+.mp-layer[data-layer='proof'] { --mp-hue: #34d399; }
+
+.mp-layer-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.mp-layer-link {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--v4-text, #e8eefc);
+  text-decoration: none;
+}
+
+a.mp-layer-link:hover,
+a.mp-layer-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.mp-layer-link--soon {
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.8));
+}
+
+.mp-soon {
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border: 1px solid rgb(140 170 255 / 0.25);
+  border-radius: 999px;
+  color: var(--v4-text-faint, rgb(140 160 190 / 0.7));
+  vertical-align: 2px;
+}
+
+.mp-layer-opener {
+  margin: 6px 0 10px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.75));
+  max-width: 52ch;
+}
+
+.mp-sets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mp-set-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 1px solid var(--v4-line, rgb(140 170 255 / 0.14));
+  border-radius: 6px;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.85));
+  text-decoration: none;
+  min-height: 28px;
+}
+
+a.mp-set-chip:hover,
+a.mp-set-chip:focus-visible {
+  border-color: var(--mp-hue, rgb(140 170 255 / 0.5));
+  color: var(--v4-text, #e8eefc);
+}
+
+.mp-set-chip--slot {
+  border-style: dashed;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
+}
+
+.mp-set-count {
+  font-size: 11px;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.85));
+}
+
+/* the constellation figure */
+.mp-figure {
+  margin: 0;
+  position: sticky;
+  top: 84px;
+}
+
+.mp-constellation svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mp-figcap {
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--v4-text-faint, rgb(140 160 190 / 0.6));
+  text-align: center;
+}
+
+.mp-figcap a {
+  color: inherit;
+}
+
+/* ── every page (the absorbed human sitemap) ── */
+.mp-everypage {
+  margin-top: 64px;
+  border-top: 1px solid var(--v4-line, rgb(140 170 255 / 0.12));
+  padding-top: 40px;
+}
+
+.mp-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px 40px;
+}
+
+.mp-kick {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.85));
+  margin: 0 0 4px;
+}
+
+.mp-gloss {
+  font-size: 12.5px;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
+  margin: 0 0 12px;
+}
+
+.mp-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.mp-link a {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.85));
+  text-decoration: none;
+  font-size: 14px;
+  min-height: 24px;
+}
+
+.mp-link a:hover .mp-link-label,
+.mp-link a:focus-visible .mp-link-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--v4-text, #e8eefc);
+}
+
+.mp-link-hint {
+  font-size: 12px;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.6));
+}
+
+.mp-ext {
+  font-size: 11px;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.6));
+}
+
+.mp-dense {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+.mp-dense a {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.75));
+  text-decoration: none;
+}
+
+.mp-dense a:hover,
+.mp-dense a:focus-visible {
+  color: var(--v4-text, #e8eefc);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mp-foot {
+  margin-top: 56px;
+  border-top: 1px solid var(--v4-line, rgb(140 170 255 / 0.12));
+  padding-top: 18px;
+}
+
+/* ── mobile (the §4quater.10 grammar: list first — already DOM order;
+      the drawing becomes a fit-width figure after it) ── */
+@media (max-width: 900px) {
+  .mp-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mp-figure {
+    position: static;
+    max-width: 560px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .mp-opener {
+    font-size: 15.5px;
+  }
+
+  .mp-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

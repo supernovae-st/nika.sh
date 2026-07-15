@@ -8,13 +8,14 @@ import { TEMPLATES } from './templates.generated'
 import { DOCS, REPO, SPEC } from '../content'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
-   /sitemap renders THIS structure; src/test/sitemap.test.ts asserts it
-   COVERS the prerender manifest (every route in site.config PATHS must
-   appear here, and every internal href here must be a real route) — a page
-   shipped without joining the map goes red in CI, never silently
-   undiscoverable. The dense tails (posts · tools · error codes) derive from
-   the same generated modules the register pages render, so the map can
-   never drift from the registers.
+   /map's « every page » section renders THIS structure (the human sitemap
+   the /map mother page absorbed at WO-3 · /sitemap 301s there);
+   src/test/map.test.ts asserts it COVERS the prerender manifest (every
+   route in site.config PATHS must appear here, and every internal href
+   here must be a real route) — a page shipped without joining the map
+   goes red in CI, never silently undiscoverable. The dense tails (posts ·
+   tools · error codes) derive from the same generated modules the
+   register pages render, so the map can never drift from the registers.
 
    Curated by hand ON PURPOSE: groups and glosses are editorial (what a
    sitemap is FOR); membership is what the gate enforces. */
@@ -64,6 +65,7 @@ export const SITE_MAP: MapGroup[] = [
     gloss: 'what Nika is, and why',
     links: [
       { label: 'Home', href: '/', hint: 'the film · intent as code' },
+      { label: 'The map', href: '/map', hint: 'every page, one graph · the anatomy' },
       { label: 'Spec', href: '/spec', hint: 'the language reference · nika: v1' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },
       { label: 'Manifesto', href: '/manifesto', hint: 'the drum of liberation · 8 languages' },
