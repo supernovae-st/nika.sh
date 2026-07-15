@@ -357,6 +357,34 @@ for (const pin of REGISTER_PINS) {
   )
 }
 
+/* the injected DefinedTermSets (WO-7a · vite.config jsonldTermsets): the
+   register pages carry the compiler twin's JSON-LD in their static head —
+   zero bundle bytes, so the ONLY witness is the served HTML. One page per
+   injection family; a missing script or an empty @graph goes red here. */
+await check('jsonld · the register pages carry their DefinedTermSets (post-build injection)', async () => {
+  const want = [
+    ['/errors', 'set-error-codes'],
+    ['/language', 'set-words'],
+    ['/tools', 'set-builtins'],
+    ['/verbs', 'set-verbs'],
+    ['/providers', 'set-providers'],
+    ['/tools/fetch', 'set-extract-modes'],
+  ]
+  for (const [route, marker] of want) {
+    await send('Page.navigate', { url: `${BASE}${route}` })
+    await settle()
+    const ok = await evaluate(`(() => {
+      const scripts = [...document.querySelectorAll('script[type="application/ld+json"]')]
+      const hit = scripts.find((s) => s.textContent.includes('${marker}'))
+      if (!hit) return 'no script carries ${marker}'
+      const graph = JSON.parse(hit.textContent)['@graph']
+      return Array.isArray(graph) && graph.length > 0 ? true : 'empty @graph'
+    })()`)
+    if (ok !== true) return `${route}: ${ok}`
+  }
+  return true
+})
+
 /* 3-drum · the pin drum paints, or honestly doesn't: on /tools the GL layer
    must either stamp [data-drum-painted] or not be mounted at all — a canvas
    that mounted but never painted is the silent-death class the outer

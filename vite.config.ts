@@ -115,12 +115,62 @@ function sitemap(): Plugin {
   }
 }
 
+/* ─── DefinedTermSet JSON-LD injector (WO-7a) ─────────────────────────────────
+   The compiler's jsonld.generated.ts carries one DefinedTermSet per atlas
+   page ("Pages mount these at WO-7"). Every route is SYNC-prerendered, so a
+   runtime import would drag the ~80K corpus into the initial chunk (the
+   bundle-derive law); JSON-LD only has value in the STATIC html (crawlers
+   never client-navigate) — so it lands POST-BUILD, straight into each
+   page's prerendered <head>. Zero bundle bytes, zero hydration surface
+   (React's walker hydrates #app; a static head script is inert to it).
+   The hubs (/flow /boundary /proof) are the named exception: they derive
+   the same sets in useHubHead (gate-pinned to this twin) — skipped here.
+   A twin page with no dist file (unborn room, e.g. /sources pre-birth) is
+   skipped BY NAME in the build log, never a silent hole. */
+function jsonldTermsets(): Plugin {
+  let outDir = 'dist'
+  const HUB_MOUNTED = new Set(['/flow', '/boundary', '/proof'])
+  return {
+    name: 'jsonld-termsets',
+    apply: 'build',
+    configResolved(config) {
+      outDir = config.build.outDir
+    },
+    closeBundle() {
+      /* regex-slice, not import — vite.config must not join the app graph
+         (the blog.generated precedent); the payload is pure JSON.stringify */
+      const gen = readFileSync('src/content/jsonld.generated.ts', 'utf8')
+      const m = gen.match(/= (\{[\s\S]*\})\n$/)
+      if (!m) throw new Error('jsonld-termsets: cannot slice JSONLD_TERMSETS')
+      const termsets = JSON.parse(m[1]) as Record<string, unknown[]>
+      let injected = 0
+      for (const [page, sets] of Object.entries(termsets)) {
+        if (HUB_MOUNTED.has(page) || sets.length === 0) continue
+        const file = join(outDir, page.slice(1), 'index.html')
+        if (!existsSync(file)) {
+          console.log(`  jsonld-termsets: ${page} has no prerendered page yet — skipped`)
+          continue
+        }
+        const html = readFileSync(file, 'utf8')
+        const script = `<script type="application/ld+json">${JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': sets,
+        })}</script>`
+        if (!html.includes('</head>')) throw new Error(`jsonld-termsets: ${page} has no </head>`)
+        writeFileSync(file, html.replace('</head>', `${script}</head>`))
+        injected++
+      }
+      console.log(`  jsonld-termsets: ${injected} page(s) carry their DefinedTermSets`)
+    },
+  }
+}
+
 // https://vite.dev/config/
 // reactSsg() prerenders each route to static HTML at build time (closeBundle):
 // instant first paint + crawlable DOM, then the client hydrates (see main.tsx).
 // Routes to prerender are declared in react-ssg.config.ts (project root).
 export default defineConfig({
-  plugins: [react(), tailwindcss(), reactSsg(), previewCleanUrls(), sitemap()],
+  plugins: [react(), tailwindcss(), reactSsg(), previewCleanUrls(), sitemap(), jsonldTermsets()],
   build: {
     // Vite 8 / Rolldown declarative chunking (NOT the deprecated manualChunks fn).
     // Pull the React runtime (react / react-dom / react-router / scheduler) into

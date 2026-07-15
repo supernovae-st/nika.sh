@@ -9,7 +9,7 @@ import {
 } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { CANON } from '../canon.generated'
-import { SPEC, SITE, routeHead } from '../content'
+import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './language-page.css'
@@ -113,24 +113,11 @@ export function Component() {
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ],
-    script: [
-      {
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'DefinedTermSet',
-          name: 'The Nika language · every word',
-          url: `${SITE}/language`,
-          hasDefinedTerm: LANGUAGE_WORDS.map((w) => ({
-            '@type': 'DefinedTerm',
-            name: w.word,
-            url: `${SITE}/language/${w.word}`,
-          })),
-        }),
-        // unhead: don't HTML-escape JSON (keeps it valid ld+json, not &quot;)
-        processTemplateParams: false,
-      },
-    ],
+    /* JSON-LD: the canonical DefinedTermSets (set-words + set-namespaces,
+       with version + license + per-term descriptions) land POST-BUILD from
+       the compiler twin (vite.config jsonldTermsets · WO-7a) — the hand
+       graph that lived here had already diverged from it (words only, no
+       descriptions). Crawlers read the static head; nothing to mount. */
   })
 
   return (
