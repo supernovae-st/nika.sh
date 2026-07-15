@@ -6,7 +6,7 @@ import { InstallCommand } from '../components/InstallCommand'
 import { useMagnetic } from '../fx/use-magnetic'
 import { ENGINE_VERSION } from '../content'
 import { type FlagshipEntry } from '../flagships'
-import { HERO_TAB_COUNT, LIBRARY, type LibraryItem } from '../flagships/library'
+import { LIBRARY_TABS, type LibraryItem } from '../flagships/library'
 import '../shell/shell.css'
 import './hero.css'
 
@@ -51,7 +51,7 @@ function HeroAtmosphere() {
    library picker at the strip's right edge. `active` is a LIBRARY index —
    when it points past the strip, no tab is selected (the picker trigger
    carries the active filename instead). */
-const TABS = LIBRARY.slice(0, HERO_TAB_COUNT)
+const TABS = LIBRARY_TABS // id + label only — the strip never carries yaml
 
 function FileTabs({
   active,

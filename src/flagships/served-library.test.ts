@@ -2,7 +2,10 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { FLAGSHIPS } from './flagship-data'
-import { LIBRARY } from './library'
+import { buildLibrary } from './library'
+import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
+
+const LIBRARY = buildLibrary(SHOWCASE_YAML)
 
 /* ── the served library · the recorded seven ARE files (operator 2026-07-13) ──
    Every yaml on the site points at its registered source. The browse wing

@@ -20,7 +20,6 @@
 
 import { FLAGSHIP_ENTRIES, type FlagshipEntry } from './index'
 import { deriveWorkflow, type FlagshipPlanModel, type NikaVerb } from './derive'
-import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 
 export interface LibraryItem {
   /** stable pick id (flagship id · or the pack slug for browse-only) */
@@ -92,31 +91,49 @@ const BROWSE: {
   },
 ]
 
-export const LIBRARY: LibraryItem[] = [
-  ...FLAGSHIP_ENTRIES.map((f) => ({
-    id: f.id,
-    filename: f.filename,
-    label: f.label,
-    blurb: FLAGSHIP_BLURBS[f.id],
-    yaml: f.yaml,
-    plan: f.plan,
-    highlight: f.highlight,
-    gloss: f.gloss,
-    sourceUrl: `/library/${f.filename}`,
-    flagship: f,
-  })),
-  ...BROWSE.map((b) => ({
-    id: b.slug,
-    filename: `${b.slug}.nika.yaml`,
-    label: b.slug,
-    blurb: b.blurb,
-    yaml: SHOWCASE_YAML[b.slug],
-    plan: deriveWorkflow(SHOWCASE_YAML[b.slug]),
-    highlight: b.highlight,
-    gloss: b.gloss,
-    sourceUrl: `https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${b.slug}.nika.yaml`,
-  })),
-]
+/** the browse wing's showcase slugs — Home's island carries exactly these
+    three files (the register diet: the yaml dictionary is an async chunk) */
+export const BROWSE_SLUGS: string[] = BROWSE.map((b) => b.slug)
+
+/** the strip/ghost row — id + label only, ZERO yaml (FileTabs + the morph
+    ghost render nothing heavier; the static tab bar must never re-pin the
+    dictionary to the initial chunk) */
+export const LIBRARY_TABS: { id: string; label: string }[] = [
+  ...FLAGSHIP_ENTRIES.map((f) => ({ id: f.id, label: f.label })),
+  ...BROWSE.map((b) => ({ id: b.slug, label: b.slug })),
+].slice(0, 10)
+
+/** the full library, built where the showcase yamls are AVAILABLE (Home:
+    island at first render · async chunk on SPA-nav). A missing browse yaml
+    (the one fetch beat) yields an empty model — deriveWorkflow('') is a
+    line-scan, honest and crash-free; the editor fills when the chunk lands. */
+export function buildLibrary(showcaseYaml: Record<string, string>): LibraryItem[] {
+  return [
+    ...FLAGSHIP_ENTRIES.map((f) => ({
+      id: f.id,
+      filename: f.filename,
+      label: f.label,
+      blurb: FLAGSHIP_BLURBS[f.id],
+      yaml: f.yaml,
+      plan: f.plan,
+      highlight: f.highlight,
+      gloss: f.gloss,
+      sourceUrl: `/library/${f.filename}`,
+      flagship: f,
+    })),
+    ...BROWSE.map((b) => ({
+      id: b.slug,
+      filename: `${b.slug}.nika.yaml`,
+      label: b.slug,
+      blurb: b.blurb,
+      yaml: showcaseYaml[b.slug] ?? '',
+      plan: deriveWorkflow(showcaseYaml[b.slug] ?? ''),
+      highlight: b.highlight,
+      gloss: b.gloss,
+      sourceUrl: `https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${b.slug}.nika.yaml`,
+    })),
+  ]
+}
 
 /** every file rides the strip now (operator 2026-07-13): the tab row is a
     BROWSER strip — scrollable, edge-faded, wheel-driven — so the whole

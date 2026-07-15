@@ -5,14 +5,12 @@
    NOT counted: keeping them lazy is the point, and route-level code split is
    asserted by the second check (no three.js in the entry graph).
 
-   Budget: 357 KB gz (raised from 356 · 2026-07-15 WO-9a: the i18n chrome
-   joined the sync graph — the locale registry + footer switcher must SSR
-   (crawlable variant links) · +0.5 KB real; the suggestion banner + its
-   native lines stay a lazy chunk. THIS RAISE DIES at the register-island
-   arc (§13m islands · ~27 KB gz of registers leave the initial chunk) —
-   re-ratchet the line down there. Prior raise: 350→356 · 2026-07-11 W9
-   (three sync-prerendered registers). The ceiling stays a bite-on-growth
-   ratchet.
+   Budget: 341 KB gz (RE-RATCHETED DOWN from 357 · 2026-07-16 WO-12g: the
+   register-island arc landed — the showcase/template yaml dictionary left
+   the static graph entirely (SSR-door + byte islands + one async chunk),
+   measured 356.7 → 339.6. The wo9a raise's death clause is PAID. Margin
+   stays ~1.4 KB (the bite-on-growth grammar). History: 350→356 W9 ·
+   356→357 WO-9a · 357→341 WO-12g.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -20,7 +18,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 357
+const BUDGET_KB = 341
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

@@ -9,7 +9,9 @@ import { CANON } from '../canon.generated'
 import { ENGINE_VERSION, SPEC, REPO, routeHead, VERBS as VERB_CARDS } from '../content'
 import { CodeFile } from '../components/CodeFile'
 import { verbGlyph } from '../components/codefile-highlight'
-import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
+import { ssrShowcaseYaml, loadShowcaseYaml } from '../sections/showcase-yaml-access'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
 import {
   BUILTIN_GROUPS,
   ENVELOPE_KEYS,
@@ -136,8 +138,15 @@ const PROVIDERS_TEST = CANON.providerIdsTest.map(displayProvider)
    standup-digest exercises 3 of the 4 verbs (invoke · exec · infer) in a tiny
    readable DAG — the friendly first look. Falls back gracefully if the key ever
    leaves the projection. */
-const SAMPLE_YAML =
-  SHOWCASE_YAML['t1-standup-digest'] ?? Object.values(SHOWCASE_YAML)[0] ?? 'nika: v1\n'
+/* the register diet: the worked fragment rides a byte island (SSG: the SSR
+   door · hydration: the island · SPA-nav: the async chunk) */
+const SPEC_ISLAND_ID = 'spec-sample-island'
+const SAMPLE_SLUG = 't1-standup-digest'
+const ssrSample = (): string | null => {
+  const all = ssrShowcaseYaml()
+  if (!all) return null
+  return all[SAMPLE_SLUG] ?? Object.values(all)[0] ?? 'nika: v1\n'
+}
 
 /* W1 · THE SPEC MACHINE · the rail 3D layer (desktop ≥1024px + motion + WebGL
    + rail-near, lazy chunk — three itself is already the shared vendor chunk).
@@ -155,6 +164,12 @@ export function Component() {
      stratum under the reading line — drives the TOC ticks, the schematic and
      the rail HUD (the W1 machine mirrors this with its own observer) */
   const { lit, current } = useSpecReading()
+
+  /* the worked fragment's bytes (register diet · island recipe) */
+  const sampleYaml = useIslandPayload(SPEC_ISLAND_ID, ssrSample(), async () => {
+    const all = await loadShowcaseYaml()
+    return all[SAMPLE_SLUG] ?? Object.values(all)[0] ?? 'nika: v1\n'
+  })
   /* THE STRUCK CARD (arc 28) · the block whose stratum just lit answers the
      ignition with a seam-side flash — the umbilical's spark travels DOM →
      hull; this is the same beat landing hull-side → DOM. Motion-gated: the
@@ -464,6 +479,7 @@ export function Component() {
      one-frame ~50ms recalc bill at every boundary, for nothing */
   return (
     <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`}>
+      <Island id={SPEC_ISLAND_ID} payload={sampleYaml} />
       {/* v4-in is BAKED into the prerendered HTML: on a throttled connection
           every JS-side reveal (observer · watchdog · hydration) lands seconds
           after this hero's bytes arrive — LH measured the lede as a 4.7s LCP,
@@ -588,7 +604,7 @@ export function Component() {
                   <SpecReference/> below — static, memoized: the scroll-hot
                   re-renders (current · lit · stage · hover) reconcile the
                   instruments, never the page's heaviest tree */}
-              <SpecReference />
+              <SpecReference sampleYaml={sampleYaml} />
 
               {/* THE FINALE RUNWAY · past the last section the chassis takes
                   the whole viewport for the assembled flyover — the voyage
@@ -747,7 +763,7 @@ export function Component() {
    travel that reconciled the whole ledger (the page's heaviest tree, the
    CodeFiles included) many times a second for instruments that live outside
    it. The ledger renders once; the chips + rail do the moving. */
-const SpecReference = memo(function SpecReference() {
+const SpecReference = memo(function SpecReference({ sampleYaml }: { sampleYaml: string }) {
   return (
     <>
               {/* ── the consumer TL;DR · the whole language in one glance-table ──
@@ -837,7 +853,7 @@ const SpecReference = memo(function SpecReference() {
                   <div className="spec-aside">
                     <p className="spec-aside-cap">A real file · standup-digest</p>
                     <CodeFile
-                      yaml={SAMPLE_YAML}
+                      yaml={sampleYaml}
                       filename="standup-digest.nika.yaml"
                       className="spec-code" wrap tips />
                   </div>

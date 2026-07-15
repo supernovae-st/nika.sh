@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { HERO_TAB_COUNT, LIBRARY, verbsOf } from './library'
+import { LIBRARY_TABS, buildLibrary, verbsOf } from './library'
 import { FLAGSHIP_ENTRIES } from './index'
 import { SHOWCASE_DAG, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
+
+/* the tests build the library with the REAL dictionary (node-side import
+   is not the client bundle — the diet law binds the bundle, not vitest) */
+const LIBRARY = buildLibrary(SHOWCASE_YAML)
 
 /* ── the library · honesty + coherence gates (wave K) ─────────────────────────
    The picker's corpus must stay structurally honest:
@@ -32,7 +36,7 @@ describe('library · corpus shape', () => {
   })
 
   it('the strip carries the WHOLE corpus (operator 2026-07-13 · the picker died)', () => {
-    expect(HERO_TAB_COUNT).toBe(LIBRARY.length)
+    expect(LIBRARY_TABS).toHaveLength(LIBRARY.length)
     /* reading order: the recorded seven lead (their traces replay), the
        browse wing closes the strip */
     for (const item of LIBRARY.slice(0, 7)) {

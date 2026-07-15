@@ -1,9 +1,20 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react'
 import { useHead } from '@unhead/react'
 import { routeHead, REPO, SITE } from '../content'
 import Hero from '../sections/Hero'
 import { FLAGSHIP_ENTRIES } from '../flagships'
-import { LIBRARY } from '../flagships/library'
+import { buildLibrary, BROWSE_SLUGS } from '../flagships/library'
+import { ssrShowcaseYaml, loadShowcaseYaml } from '../sections/showcase-yaml-access'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
+
+/* the register diet (WO-12): Home's island carries EXACTLY the three
+   browse yamls the hero needs — the dictionary itself stays an async
+   chunk. The subset computes at SSG; SPA-nav tops up from the chunk. */
+const HOME_ISLAND_ID = 'home-lib-island'
+const browseSubset = (all: Record<string, string>): Record<string, string> =>
+  Object.fromEntries(BROWSE_SLUGS.map((slug) => [slug, all[slug] ?? '']))
+
 import ScrollMorph from '../sections/morph/ScrollMorph'
 import TheBoundary from '../sections/boundary/TheBoundary'
 import ProofStrip from '../sections/ProofStrip'
@@ -107,11 +118,19 @@ export function Component() {
      the hero affordance says so honestly (never a fabricated replay). */
   const [libIdx, setLibIdx] = useState(0)
   const [storyIdx, setStoryIdx] = useState(0)
-  const item = LIBRARY[libIdx]
+  const ssrDict = ssrShowcaseYaml()
+  const browseJson = useIslandPayload(HOME_ISLAND_ID, ssrDict && JSON.stringify(browseSubset(ssrDict)), async () =>
+    JSON.stringify(browseSubset(await loadShowcaseYaml())),
+  )
+  const library = useMemo(
+    () => buildLibrary(browseJson ? (JSON.parse(browseJson) as Record<string, string>) : {}),
+    [browseJson],
+  )
+  const item = library[libIdx]
   const flagship = FLAGSHIP_ENTRIES[storyIdx]
   const onPick = (i: number) => {
     setLibIdx(i)
-    const rec = LIBRARY[i].flagship
+    const rec = library[i].flagship
     if (rec) setStoryIdx(FLAGSHIP_ENTRIES.indexOf(rec))
   }
   /* idle-mount the dither field · React.lazy alone still FETCHES the chunk at
@@ -233,6 +252,7 @@ export function Component() {
       )}
       <main className="relative z-[1]">
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
+        <Island id={HOME_ISLAND_ID} payload={browseJson} />
         <Hero item={item} index={libIdx} onSelect={onPick} flagship={flagship} />
 
         {/* FIG 1.0 · THE MORPH — ONE continuous scroll-linked scene at every

@@ -6,7 +6,7 @@
    conformance gate (schema + DAG cross-refs + stdlib surface).
    Hand-curated craft = icons, copy, outcomes. Truth = projected. */
 import type { NikaVerb } from '../components/codefile-highlight'
-import { SHOWCASE_DAG, SHOWCASE_YAML } from './usecases-yaml.generated'
+import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 
 export type Tier = 'T1' | 'T2' | 'T3' | 'T4'
 
@@ -29,7 +29,10 @@ export interface UCTab {
 
 export const DOCS_EXAMPLES_BASE = 'https://docs.nika.sh/examples'
 
-export const yamlFor = (uc: UC): string => SHOWCASE_YAML[uc.slug] ?? ''
+/* yamlFor DIED with the register diet: raw yaml reaches pages through
+   showcase-yaml-access (SSR door + async chunk) and per-page byte islands
+   — a shared static lookup here would re-pin the 79K to the initial chunk
+   (the namespace-retention law). */
 /** verb chips DERIVE from the projected DAG model — never hand-typed */
 export const verbsFor = (uc: UC): NikaVerb[] => {
   const seen: NikaVerb[] = []

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
@@ -6,7 +6,10 @@ import { CodeFile } from '../components/CodeFile'
 import { StampStrip } from '../components/StampStrip'
 import { PlanMap } from '../components/PlanMap'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
-import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
+import { UC_TABS, verbsFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
+import { ssrShowcaseYaml, loadShowcaseYaml } from '../sections/showcase-yaml-access'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { REPO, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
@@ -250,13 +253,21 @@ function WorkflowDag({ slug }: { slug: string }) {
   )
 }
 
+/* the register diet: the gallery's island carries the WHOLE dictionary
+   (every card renders its open file at SSG — the visible code is
+   transformed markup, never byte-recoverable) · one Provider, cards read
+   the context (no 26-level prop drilling) */
+const GALLERY_ISLAND_ID = 'ucp-yaml-island'
+const YamlDict = createContext<Record<string, string>>({})
+
 /* a single workflow · outcome title, two-tone gloss, verb chips, the plan,
    and the real open YAML. Truth (yaml · verbs · plan · tier) is projected. */
 function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
+  const dict = useContext(YamlDict) // hooks before the miss return (rules-of-hooks)
   const uc = UC_BY_SLUG[card.slug]
   if (!uc) return null
   const cardVerbs = verbsFor(uc) as NikaVerb[]
-  const yaml = yamlFor(uc)
+  const yaml = dict[uc.slug] ?? ''
   return (
     <article className="ucp-wf">
       <span className="ucp-wf-hud" aria-hidden>
@@ -399,6 +410,15 @@ export function Component() {
      safety-net timer reveals anyway if the observer misfires) */
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -6% 0px' })
   const [active, setActive] = useState(PERSONAS[0]?.id ?? '')
+  /* the yaml dictionary rides the island (SSG: the SSR door · client: the
+     island bytes · SPA-nav: the async chunk) */
+  const dictJson = useIslandPayload(GALLERY_ISLAND_ID, ssrShowcaseYaml() && JSON.stringify(ssrShowcaseYaml()), async () =>
+    JSON.stringify(await loadShowcaseYaml()),
+  )
+  const dict = useMemo<Record<string, string>>(
+    () => (dictJson ? (JSON.parse(dictJson) as Record<string, string>) : {}),
+    [dictJson],
+  )
 
   const total = Object.keys(SHOWCASE_DAG).length
   /* total projected tasks across the whole showcase — derived, never hand-typed */
@@ -509,12 +529,15 @@ export function Component() {
             ))}
           </nav>
 
+          <Island id={GALLERY_ISLAND_ID} payload={dictJson} />
           {/* every persona, every workflow — the full gallery */}
+          <YamlDict.Provider value={dict}>
           <div className="ucp-metiers" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {PERSONAS.map((p, i) => (
               <PersonaSection key={p.id} persona={p} index={i} />
             ))}
           </div>
+          </YamlDict.Provider>
 
           {/* the close · the spec-truth dimension line + forward links */}
           <p className="ucp-note">

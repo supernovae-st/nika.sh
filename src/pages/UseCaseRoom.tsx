@@ -5,7 +5,10 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { CodeFile } from '../components/CodeFile'
 import { TruthLine } from '../components/TruthLine'
 import { Rails } from './hub-shared'
-import { UC_TABS, yamlFor, verbsFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
+import { UC_TABS, verbsFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
+import { useEffect, useState } from 'react'
+import { ssrShowcaseYaml, loadShowcaseYaml } from '../sections/showcase-yaml-access'
+import { Island } from '../lib/ssg-island'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
@@ -27,6 +30,15 @@ const { compressToEncodedURIComponent } = lz
 
 const ALL: { uc: UC; tab: string }[] = UC_TABS.flatMap((t) => t.cases.map((uc) => ({ uc, tab: t.label })))
 
+/* the register diet: each room's prerendered HTML carries ITS OWN file as
+   a byte island (the visible CodeFile is transformed markup — never byte-
+   recoverable); SPA navigation pulls the async chunk once. The id is
+   SLUG-SUFFIXED: the route wrapper is pathname-keyed, so a room→room hop
+   REMOUNTS this component while the OLD room's DOM still stands at render
+   time — a shared id would feed the new room the previous room's bytes
+   (CDP-caught: the drift room rendered the resume file). */
+const roomIslandId = (slug: string) => `ucr-yaml-${slug}`
+
 /** the tools a showcase exercises — from the projected model's glosses
     (the compiler derives its witnesses edges from the same source) */
 function toolsFor(slug: string): string[] {
@@ -43,6 +55,27 @@ export function Component() {
   const { slug = '' } = useParams()
   const hit = ALL.find((x) => x.uc.slug === slug)
   const dag = SHOWCASE_DAG[slug]
+  /* slug-AWARE island state (the plain hook kept the PREVIOUS room's bytes
+     on a room→room SPA hop — same component instance, the initializer never
+     re-runs · CDP-caught): the state carries its slug; a mismatch renders
+     '' for the fetch beat and the chunk corrects it. */
+  const [got, setGot] = useState(() => ({
+    slug,
+    yaml: import.meta.env.SSR
+      ? (ssrShowcaseYaml()?.[slug] ?? '')
+      : ((document.getElementById(roomIslandId(slug)) as HTMLTextAreaElement | null)?.value ?? ''),
+  }))
+  useEffect(() => {
+    if (got.slug === slug && got.yaml) return
+    let live = true
+    void loadShowcaseYaml().then((all) => {
+      if (live) setGot({ slug, yaml: all[slug] ?? '' })
+    })
+    return () => {
+      live = false
+    }
+  }, [slug, got.slug, got.yaml])
+  const yaml = got.slug === slug ? got.yaml : ''
 
   const title = hit ? `${hit.uc.title} · a real Nika workflow` : 'Showcase · Nika'
   const description = hit
@@ -109,7 +142,6 @@ export function Component() {
   }
 
   const uc = hit.uc
-  const yaml = yamlFor(uc)
   const verbs = verbsFor(uc)
   const tools = toolsFor(slug)
   const tier = ALL.filter((x) => x.uc.tier === uc.tier)
@@ -122,6 +154,7 @@ export function Component() {
     <main className="theme-dark hub-page" style={{ ['--hub-hue' as string]: '#22d3ee' }}>
       <section ref={ref} aria-labelledby="ucr-title" className="v4sec v4-in">
         <div className="v4sec-wrap hub-wrap">
+          <Island id={roomIslandId(slug)} payload={yaml} />
           <header>
             <p className="v4-kick">
               showcase · tier {uc.tier.slice(1)} · {hit.tab.toLowerCase()}

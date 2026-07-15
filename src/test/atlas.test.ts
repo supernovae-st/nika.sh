@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process'
-import { readFileSync, readdirSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ATLAS_NODES, ATLAS_EDGES, ATLAS_INDEX } from '../content/atlas.generated'
@@ -165,6 +165,29 @@ describe('atlas · the graph is referentially whole', () => {
     expect(ATLAS_HUBS.map((h) => h.id)).toEqual([
       'shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof',
     ])
+  })
+})
+
+describe('atlas · the register diet holds (the namespace-retention law)', () => {
+  it('nothing imports usecases-yaml.generated statically except the access doors and tests', () => {
+    const offenders: string[] = []
+    const walk = (dir: string) => {
+      for (const name of readdirSync(join(ROOT, dir))) {
+        const rel = `${dir}/${name}`
+        const full = join(ROOT, rel)
+        if (statSync(full).isDirectory()) {
+          walk(rel)
+          continue
+        }
+        if (!/\.(ts|tsx)$/.test(name) || /\.test\.tsx?$/.test(name)) continue
+        if (rel.endsWith('sections/showcase-yaml-access.ts')) continue
+        if (rel.endsWith('sections/usecases-yaml.generated.ts')) continue
+        const src = readFileSync(full, 'utf8')
+        if (/^import[^\n]*from ['"].*usecases-yaml\.generated['"]/m.test(src)) offenders.push(rel)
+      }
+    }
+    walk('src')
+    expect(offenders, `static import re-pins the 79K to the initial chunk: ${offenders.join(', ')}`).toEqual([])
   })
 })
 

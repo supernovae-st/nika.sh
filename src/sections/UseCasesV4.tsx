@@ -1,8 +1,13 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
 import { useRevealOnce } from './use-reveal-once'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
-import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from './usecases-data'
+import { UC_TABS, verbsFor, fileFor, docsFor, type UC } from './usecases-data'
+import { ssrShowcaseYaml, loadShowcaseYaml } from './showcase-yaml-access'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
+
+const UC_ISLAND_ID = 'uc-v4-yaml-island'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { PlanMap } from '../components/PlanMap'
 import './v4-home.css'
@@ -43,7 +48,30 @@ export default function UseCasesV4() {
 
   const t = UC_TABS[tab]
   const active: UC = t.cases[Math.min(sel, t.cases.length - 1)]
-  const yaml = useMemo(() => yamlFor(active), [active])
+  /* the register diet: SSG + first hydration show the DEFAULT case (its
+     yaml rides the island); any switch tops up the whole dictionary from
+     the async chunk (fetched once) — the LAST yaml stays on screen for
+     the fetch beat (the play-plan stale precedent · no empty flash) */
+  const defaultSlug = UC_TABS[0].cases[0]?.slug ?? ''
+  const islandYaml = useIslandPayload(UC_ISLAND_ID, ssrShowcaseYaml()?.[defaultSlug] ?? null, async () => {
+    const all = await loadShowcaseYaml()
+    return all[defaultSlug] ?? ''
+  })
+  const [dict, setDict] = useState<Record<string, string> | null>(null)
+  useEffect(() => {
+    if (active.slug === defaultSlug || dict) return
+    let live = true
+    void loadShowcaseYaml().then((all) => {
+      if (live) setDict(all)
+    })
+    return () => {
+      live = false
+    }
+  }, [active.slug, defaultSlug, dict])
+  /* pure derivation (the compiler lint forbids refs in render): until the
+     chunk lands, a non-default selection shows the island's default file
+     for one beat — the first switch only, then the dict is exact forever */
+  const yaml = dict ? (dict[active.slug] ?? '') : islandYaml
 
   const pickTab = (i: number) => {
     setTab(i)
@@ -60,6 +88,7 @@ export default function UseCasesV4() {
       className="theme-blue v4sec v4-flip v4-cv v4-sheet scroll-mt-24"
     >
       <div className="v4sec-wrap">
+        <Island id={UC_ISLAND_ID} payload={islandYaml} />
         <SectionHead fig="08" id="usecases-title" title={<>Real files you&apos;d write.</>}>
           Anything you&apos;d ask an AI to do more than once belongs in a file. Every workflow
           below is <b>real</b>, projected from <code className="mono">nika-spec</code>, audited

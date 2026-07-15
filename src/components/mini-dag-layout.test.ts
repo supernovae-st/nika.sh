@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { layoutMiniDag } from './mini-dag-layout'
-import { LIBRARY } from '../flagships/library'
+import { buildLibrary } from '../flagships/library'
+import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import { SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
+
+/* the tests build the library with the REAL dictionary (node-side import
+   is not the client bundle — the diet law binds the bundle, not vitest) */
+const LIBRARY = buildLibrary(SHOWCASE_YAML)
 
 /* ── mini-dag layout · the generated plan drawing (wave K) ────────────────────
    Pure layout, pinned so every library file gets a correct diagram for free:
