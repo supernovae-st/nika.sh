@@ -402,6 +402,7 @@ export function discoverPrerenderPaths(root) {
   for (const name of [
     'BLOG_PATHS', 'MANIFESTO_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
     'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS',
+    'ATLAS_PATHS',
   ]) arrays.set(name, literalArray(source, name))
   const expression = source.match(/export const PATHS = \[([^\n]+)\]/)?.[1]
   if (!expression) throw new Error('PATHS expression missing from site.config.ts')

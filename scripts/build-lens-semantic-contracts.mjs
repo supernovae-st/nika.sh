@@ -209,6 +209,9 @@ const COMPONENT_FEATURE = {
   Brand: 'site.brand',
   NotFound: 'site.not_found',
   MapPage: 'registry.map',
+  FlowPage: 'product.flow',
+  BoundaryPage: 'product.boundary',
+  ProofPage: 'product.proof',
 }
 
 const FEATURE_EVIDENCE = {
@@ -231,6 +234,9 @@ const FEATURE_EVIDENCE = {
   'site.brand': 'src/pages/Brand.tsx',
   'site.not_found': 'src/pages/NotFound.tsx',
   'registry.map': 'src/pages/Map.tsx',
+  'product.flow': 'src/pages/Flow.tsx',
+  'product.boundary': 'src/pages/Boundary.tsx',
+  'product.proof': 'src/pages/Proof.tsx',
 }
 
 function featureContract() {

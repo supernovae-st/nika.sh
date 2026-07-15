@@ -316,7 +316,8 @@ export const HUBS: Record<string, HubData> = {
       "nika_template",
       "nika_canon",
       "nika_catalog",
-      "nika_tools"
+      "nika_tools",
+      "nika_inspect"
     ]
   }
 }

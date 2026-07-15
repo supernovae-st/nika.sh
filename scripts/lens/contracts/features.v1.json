@@ -14,14 +14,28 @@
   "route_source": "src/routes.tsx",
   "prerender_source": "site.config.ts",
   "prerender_consumer": "react-ssg.config.ts",
-  "route_definition_count": 33,
-  "page_claim_count": 255,
+  "route_definition_count": 36,
+  "page_claim_count": 258,
   "features": [
+    {
+      "id": "product.boundary",
+      "status": "live",
+      "evidence": [
+        "src/pages/Boundary.tsx"
+      ]
+    },
     {
       "id": "product.convert",
       "status": "live",
       "evidence": [
         "src/pages/Convert.tsx"
+      ]
+    },
+    {
+      "id": "product.flow",
+      "status": "live",
+      "evidence": [
+        "src/pages/Flow.tsx"
       ]
     },
     {
@@ -43,6 +57,13 @@
       "status": "live",
       "evidence": [
         "src/pages/Play.tsx"
+      ]
+    },
+    {
+      "id": "product.proof",
+      "status": "live",
+      "evidence": [
+        "src/pages/Proof.tsx"
       ]
     },
     {
@@ -2174,40 +2195,64 @@
     },
     {
       "selector": "site.config.ts#page:251",
-      "path": "/use-cases",
+      "path": "/flow",
       "route_selector": "src/routes.tsx#route:28",
+      "component": "FlowPage",
+      "feature": "product.flow",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:252",
+      "path": "/boundary",
+      "route_selector": "src/routes.tsx#route:29",
+      "component": "BoundaryPage",
+      "feature": "product.boundary",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:253",
+      "path": "/proof",
+      "route_selector": "src/routes.tsx#route:30",
+      "component": "ProofPage",
+      "feature": "product.proof",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:254",
+      "path": "/use-cases",
+      "route_selector": "src/routes.tsx#route:31",
       "component": "UseCasesPage",
       "feature": "product.use_cases",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:252",
+      "selector": "site.config.ts#page:255",
       "path": "/spec",
-      "route_selector": "src/routes.tsx#route:29",
+      "route_selector": "src/routes.tsx#route:32",
       "component": "Spec",
       "feature": "site.spec",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:253",
+      "selector": "site.config.ts#page:256",
       "path": "/install",
-      "route_selector": "src/routes.tsx#route:30",
+      "route_selector": "src/routes.tsx#route:33",
       "component": "Install",
       "feature": "product.install",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:254",
+      "selector": "site.config.ts#page:257",
       "path": "/convert",
-      "route_selector": "src/routes.tsx#route:31",
+      "route_selector": "src/routes.tsx#route:34",
       "component": "Convert",
       "feature": "product.convert",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:255",
+      "selector": "site.config.ts#page:258",
       "path": "/brand",
-      "route_selector": "src/routes.tsx#route:32",
+      "route_selector": "src/routes.tsx#route:35",
       "component": "Brand",
       "feature": "site.brand",
       "presented_as": "live"
