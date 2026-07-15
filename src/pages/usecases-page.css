@@ -229,6 +229,18 @@
   letter-spacing: -0.01em;
   color: var(--v4-text);
 }
+/* the room door (WO-5) · the title IS the link — quiet at rest, the
+   underline arrives on intent (the register-row grammar) */
+.ucp-wf-door {
+  color: inherit;
+  text-decoration: none;
+}
+.ucp-wf-door:hover,
+.ucp-wf-door:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, currentColor 55%, transparent);
+}
 .ucp-wf-tier {
   margin-left: auto;
   font-family: var(--mono);

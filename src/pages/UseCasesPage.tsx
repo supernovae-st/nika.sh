@@ -276,7 +276,13 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
       </span>
       <header className="ucp-wf-head">
         <span className="ucp-wf-fig">{fig}</span>
-        <h3 className="ucp-wf-title">{card.title}</h3>
+        <h3 className="ucp-wf-title">
+          {/* the room door (WO-5: the gallery gains the links — the rooms
+              were reachable only by palette/map, caught by the SPA probe) */}
+          <Link to={`/use-cases/${uc.slug}`} className="ucp-wf-door">
+            {card.title}
+          </Link>
+        </h3>
         <span className="ucp-wf-tier" title={`Complexity tier ${uc.tier.slice(1)} of 4`}>
           {uc.tier}
         </span>
@@ -311,6 +317,9 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
               </span>
               <b>{fileFor(uc)}</b>
             </span>
+            <Link className="ucp-wf-walk" to={`/use-cases/${uc.slug}`}>
+              the room →
+            </Link>
             <a className="ucp-wf-walk" href={docsFor(uc)} target="_blank" rel="noreferrer">
               walkthrough ↗
             </a>
