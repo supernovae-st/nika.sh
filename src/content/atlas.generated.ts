@@ -2901,7 +2901,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "surface": "anchors",
     "clock": "spec",
     "page_exists": true,
-    "anchors_exist": false
+    "anchors_exist": true
   },
   {
     "id": "set:gate-predicates",

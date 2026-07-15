@@ -831,6 +831,85 @@ export const MARKET_VOCAB: Record<string, { term: string; volume_mo: number; kd:
 `,
 )
 
+/* room rails (WO-5b): the per-room slices of the graph, chrome-lean —
+   rooms never import the 344-node module (our own bundle-safety law).
+   Everything below is a REGROUPING of edges already derived above from
+   the gated twins; the scope→chapter table routes to chapters that exist
+   (presentation routing, not new facts). */
+const wordAccepts = {}
+const verbAccepts = {}
+for (const e of uniqEdges) {
+  if (e.kind !== 'accepts') continue
+  const verb = e.from.slice(5)
+  const word = e.to.slice(5)
+  ;(wordAccepts[word] ??= []).push(verb)
+  ;(verbAccepts[verb] ??= []).push(word)
+}
+for (const k of Object.keys(wordAccepts)) wordAccepts[k].sort()
+for (const k of Object.keys(verbAccepts)) verbAccepts[k].sort()
+
+/* scope → normative chapter (the descriptor's defined_by, member-level:
+   envelope→01 · task/leashes→03 · a verb block→02 · namespaces→04) */
+const SCOPE_CHAPTER = { envelope: '01', workflow: '01', task: '03', vars: '04', env: '04', secrets: '04' }
+const wordChapters = {}
+for (const w of S.words) {
+  const set = new Set()
+  for (const d of w.decls) set.add(VERBS.has(d.scope) ? '02' : SCOPE_CHAPTER[d.scope] ?? '03')
+  wordChapters[w.word] = [...set].sort()
+}
+
+const templateGrants = {}
+const templateCarries = {}
+for (const [bare, refs] of Object.entries(S.toolRefs)) {
+  for (const t of refs.templates ?? []) (templateGrants[t] ??= []).push(bare)
+}
+for (const [word, refs] of Object.entries(S.wordRefs)) {
+  for (const t of refs.templates ?? []) (templateCarries[t] ??= []).push(word)
+}
+for (const k of Object.keys(templateGrants)) templateGrants[k].sort()
+for (const k of Object.keys(templateCarries)) templateCarries[k].sort()
+
+/* a verb's error namespace exists only if the catalog declares it */
+const declaredNs = new Set(Object.keys(S.errors.namespaces))
+const verbErrNs = Object.fromEntries(
+  S.canon.verbNames
+    .map((v) => [v, `NIKA-${v.toUpperCase()}`])
+    .filter(([, ns]) => declaredNs.has(ns)),
+)
+
+const roomRailsTs = GEN(
+  'room-rails.generated.ts',
+  `/** the per-room graph slices (WO-5b) — regroupings of the atlas edges,
+ * lean enough for the room pages (the full graph stays lazy). */
+export const WORD_ACCEPTS: Record<string, string[]> = ${JSON.stringify(wordAccepts)}
+
+/** word → the normative chapters its scopes live in (member-level
+ * defined_by · SHORT keys — CHAPTER_FILES resolves · the bundle stays lean) */
+export const WORD_CHAPTERS: Record<string, string[]> = ${JSON.stringify(wordChapters)}
+
+export const CHAPTER_FILES: Record<string, string> = {
+  '01': 'spec/01-envelope.md',
+  '02': 'spec/02-verbs.md',
+  '03': 'spec/03-dag.md',
+  '04': 'spec/04-variables.md',
+}
+
+export const VERB_ACCEPTS: Record<string, string[]> = ${JSON.stringify(verbAccepts)}
+
+/** verb → its declared error namespace (catalog-checked · absent = none declared) */
+export const VERB_ERR_NS: Record<string, string> = ${JSON.stringify(verbErrNs)}
+
+/** template → the nika tools its whitelist grants (usage-refs inverse) */
+export const TEMPLATE_GRANTS: Record<string, string[]> = ${JSON.stringify(templateGrants)}
+
+/** template → the notable words its skeleton carries (usage-refs inverse) */
+export const TEMPLATE_CARRIES: Record<string, string[]> = ${JSON.stringify(templateCarries)}
+
+/** the fetch extract modes (canon order · anchors on the fetch room) */
+export const FETCH_MODES: string[] = ${JSON.stringify(S.canon.extractModeNames)}
+`,
+)
+
 /* snippets manifest (output 14 · §2bis: the lineage of every code block) */
 const snippets = []
 for (const t of S.templates.templates) {
@@ -1075,6 +1154,7 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/market-vocab.generated.ts'), vocabTs)
   writeFileSync(join(ROOT, 'src/content/snippets.generated.ts'), snippetsTs)
   writeFileSync(join(ROOT, 'src/content/atlas-nav.generated.ts'), navTs)
+  writeFileSync(join(ROOT, 'src/content/room-rails.generated.ts'), roomRailsTs)
   writeFileSync(join(ROOT, 'src/pages/map-data.generated.ts'), mapDataTs)
   writeFileSync(join(ROOT, 'src/pages/hub-data.generated.ts'), hubDataTs)
   if (nextSiteConfig !== siteConfig) writeFileSync(siteConfigPath, nextSiteConfig)

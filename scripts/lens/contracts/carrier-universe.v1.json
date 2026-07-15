@@ -43,8 +43,8 @@
     "site.config.ts",
     "src/routes.tsx"
   ],
-  "carrier_count": 412,
-  "set_sha256": "2dfbbb5d7f1a37dd34dba65f97fabf3ecd9d8d99069483bc48c2be4aafefab75",
+  "carrier_count": 413,
+  "set_sha256": "0d81f557b67858af9589c00dc0a33d7dced994bf1ec3f20a23226c9e18ed2ef1",
   "normative_source_count": 205,
   "normative_source_sha256": "c8c4c5ec601a4c672791ebe7e2598c8a13a823a9f21021b84b8b19baed2e17a5",
   "normative_sources": [
@@ -406,6 +406,7 @@
     "src/content/market-vocab.generated.ts",
     "src/content/palette.generated.ts",
     "src/content/providers.generated.ts",
+    "src/content/room-rails.generated.ts",
     "src/content/snippets.generated.ts",
     "src/content/templates.generated.ts",
     "src/content/tool-usage-refs.generated.ts",
@@ -685,6 +686,7 @@
     "src/content/market-vocab.generated.ts",
     "src/content/palette.generated.ts",
     "src/content/providers.generated.ts",
+    "src/content/room-rails.generated.ts",
     "src/content/sitemap.ts",
     "src/content/snippets.generated.ts",
     "src/content/sources.ts",

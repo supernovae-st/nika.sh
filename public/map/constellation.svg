@@ -144,15 +144,15 @@
 <g class="cst-star"><a href="/tools/fetch" tabindex="-1"><circle cx="956.71" cy="906.04" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:fetch</title></a></g>
 <g class="cst-star"><a href="/tools/glob" tabindex="-1"><circle cx="942.43" cy="921.93" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:glob</title></a></g>
 <g class="cst-star"><a href="/tools/grep" tabindex="-1"><circle cx="927.45" cy="937.16" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:grep</title></a></g>
-<g class="cst-star cst-star--soon"><circle cx="996.96" cy="851.65" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>article</title></g>
-<g class="cst-star cst-star--soon"><circle cx="982.18" cy="873.56" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>feed</title></g>
-<g class="cst-star cst-star--soon"><circle cx="966.2" cy="894.62" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>jq</title></g>
-<g class="cst-star cst-star--soon"><circle cx="949.05" cy="914.74" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>links</title></g>
-<g class="cst-star cst-star--soon"><circle cx="930.81" cy="933.87" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>markdown</title></g>
-<g class="cst-star cst-star--soon"><circle cx="911.51" cy="951.94" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>metadata</title></g>
-<g class="cst-star cst-star--soon"><circle cx="891.24" cy="968.89" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>selector</title></g>
-<g class="cst-star cst-star--soon"><circle cx="870.04" cy="984.68" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>sitemap</title></g>
-<g class="cst-star cst-star--soon"><circle cx="847.98" cy="999.26" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>text</title></g>
+<g class="cst-star"><a href="/tools/fetch#mode-article" tabindex="-1"><circle cx="996.96" cy="851.65" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>article</title></a></g>
+<g class="cst-star"><a href="/tools/fetch#mode-feed" tabindex="-1"><circle cx="982.18" cy="873.56" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>feed</title></a></g>
+<g class="cst-star"><a href="/tools/fetch#mode-jq" tabindex="-1"><circle cx="966.2" cy="894.62" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>jq</title></a></g>
+<g class="cst-star"><a href="/tools/fetch#mode-links" tabindex="-1"><circle cx="949.05" cy="914.74" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>links</title></a></g>
+<g class="cst-star"><a href="/tools/fetch#mode-markdown" tabindex="-1"><circle cx="930.81" cy="933.87" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>markdown</title></a></g>
+<g class="cst-star"><a href="/tools/fetch#mode-metadata" tabindex="-1"><circle cx="911.51" cy="951.94" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>metadata</title></a></g>
+<g class="cst-star"><a href="/tools/fetch#mode-selector" tabindex="-1"><circle cx="891.24" cy="968.89" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>selector</title></a></g>
+<g class="cst-star"><a href="/tools/fetch#mode-sitemap" tabindex="-1"><circle cx="870.04" cy="984.68" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>sitemap</title></a></g>
+<g class="cst-star"><a href="/tools/fetch#mode-text" tabindex="-1"><circle cx="847.98" cy="999.26" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>text</title></a></g>
 <g class="cst-star"><a href="/providers#anthropic" tabindex="-1"><circle cx="937.42" cy="927.18" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Anthropic Claude</title></a></g>
 <g class="cst-star"><a href="/providers#deepseek" tabindex="-1"><circle cx="922.2" cy="942.18" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>DeepSeek</title></a></g>
 <g class="cst-star"><a href="/providers#gemini" tabindex="-1"><circle cx="906.32" cy="956.46" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Google Gemini</title></a></g>

@@ -13,6 +13,7 @@ import type { WordUsage } from '../content/language-usage.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { sourcesForWord } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
+import { WORD_ACCEPTS, WORD_CHAPTERS, CHAPTER_FILES } from '../content/room-rails.generated'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -427,6 +428,39 @@ export function Component() {
                   <div>
                     <p className="td-ref-k">where it lives</p>
                     <SourcesRail links={sourcesForWord(hit)} />
+                  </div>
+                  {/* WO-5b · the atlas rails: which verbs accept the word
+                      (schema-derived) + the chapters its scopes live in */}
+                  {(WORD_ACCEPTS[hit.word] ?? []).length > 0 && (
+                    <div>
+                      <p className="td-ref-k">accepted by</p>
+                      <ul className="td-chips">
+                        {(WORD_ACCEPTS[hit.word] ?? []).map((v) => (
+                          <li key={v}>
+                            <a className="td-chip" href={`/verbs/${v}`}>
+                              {v}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  <div>
+                    <p className="td-ref-k">defined by</p>
+                    <ul className="td-chips">
+                      {(WORD_CHAPTERS[hit.word] ?? []).map((ch) => (
+                        <li key={ch}>
+                          <a
+                            className="td-chip"
+                            href={`https://github.com/supernovae-st/nika-spec/blob/main/${CHAPTER_FILES[ch]}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {CHAPTER_FILES[ch].replace('spec/', '').replace('.md', '')}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>

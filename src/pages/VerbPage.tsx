@@ -8,6 +8,7 @@ import { CHAPTERS } from '../sections/verbs-data'
 import { PartEgg } from '../scene/parts/PartEgg'
 import { VERB_SOURCES } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
+import { VERB_ACCEPTS, VERB_ERR_NS } from '../content/room-rails.generated'
 import { LANGUAGE_WORDS } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { TEMPLATES } from '../content/templates.generated'
@@ -336,6 +337,32 @@ export function Component() {
                     <p className="td-ref-k">where it lives</p>
                     <SourcesRail links={VERB_SOURCES} />
                   </div>
+                  {/* WO-5b · the atlas rails: the words this verb's block
+                      accepts (schema-derived) + its declared error namespace */}
+                  <div>
+                    <p className="td-ref-k">accepts</p>
+                    <ul className="td-chips">
+                      {(VERB_ACCEPTS[name] ?? []).map((w) => (
+                        <li key={w}>
+                          <a className="td-chip" href={`/language/${w}`}>
+                            {w}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  {VERB_ERR_NS[name] && (
+                    <div>
+                      <p className="td-ref-k">errors of this verb</p>
+                      <ul className="td-chips">
+                        <li>
+                          <a className="td-chip" href="/errors">
+                            {VERB_ERR_NS[name]}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
 

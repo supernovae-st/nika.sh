@@ -14,6 +14,7 @@ import { PartEgg } from '../scene/parts/PartEgg'
 import { layoutDrum } from '../scene/tools-hud/slot-layout'
 import { TOOL_SOURCES } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
+import { FETCH_MODES } from '../content/room-rails.generated'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -394,6 +395,37 @@ export function Component() {
                   </div>
                 </div>
               </div>
+
+              {/* WO-5b · the fetch room owns the extract modes (§4.5 carries:
+                  the anchors live where an author meets them · canon order) */}
+              {name === 'fetch' && (
+                <div className="v4block" id="modes">
+                  <div className="v4block-head-line">
+                    <span className="v4block-fig">carries · extract modes</span>
+                    <h2 className="v4block-name">Structure, not just bytes.</h2>
+                    <span className="v4block-count">{FETCH_MODES.length} modes</span>
+                  </div>
+                  <p className="v4block-cap">
+                    Each mode is a named contract with a defined output shape · the full
+                    teaching lives in{' '}
+                    <a
+                      href="https://github.com/supernovae-st/nika-spec/blob/main/stdlib/extract-modes-v0.1.md"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      stdlib · extract modes ↗
+                    </a>
+                    .
+                  </p>
+                  <ul className="td-chips">
+                    {FETCH_MODES.map((m) => (
+                      <li key={m} id={`mode-${m}`}>
+                        <span className="td-chip">{m}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* ── the family · siblings in the same bucket ─────────────────── */}
               <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '300ms' }}>

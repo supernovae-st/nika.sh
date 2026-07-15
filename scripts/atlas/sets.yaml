@@ -347,8 +347,7 @@ sets:
 
   - id: extract-modes
     layer: reach
-    anchors_exist: false
-    anchors_land: wo-5
+    anchors_exist: true
     title: The extract modes
     source: { artifact: src/canon.generated.ts, field: extractModeNames }
     clock: spec
