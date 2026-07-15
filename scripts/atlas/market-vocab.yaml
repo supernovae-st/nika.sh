@@ -1,0 +1,40 @@
+# ─── market-vocab.yaml · the market-language bridge (AUTHORED) ──────────────
+#
+# The ONE place market vocabulary exists (ratchet §6.5): the taught
+# nomenclature (flow · reach · acts) stays the house voice on pages; metas
+# and titles speak the language people actually search. A grep-gate refuses
+# these phrases hand-written in src/pages — they enter rendered surfaces
+# through market-vocab.generated.ts only.
+#
+# EN terms below are the operator-locked verdicts of mega-plan §0.10
+# (research observed 2026-07 · Ahrefs US). LOCALE columns and any NEW terms
+# are the WO-10 operator-review stop (quarterly Ahrefs re-check per market
+# at L1 rollout) — this file grows there, under review, never here.
+
+market_vocab: 1
+observed: 2026-07
+next_review: 2026-10   # quarterly · Ahrefs
+
+terms:
+  - node: "layer:flow"
+    term: "agentic workflow orchestration"
+    volume_mo: 2000
+    kd: 25
+    observed: 2026-07
+  - node: "layer:reach"
+    term: "llm orchestration"
+    volume_mo: 500
+    kd: 6
+    observed: 2026-07
+  - node: "layer:acts"
+    term: "ai agent workflow"
+    volume_mo: 600
+    kd: 35
+    observed: 2026-07
+  - node: "surface:home"
+    # §0.10 says « hub engine » — the engine's public face on this site is
+    # the home funnel. Placement confirmed or moved at the WO-10 review.
+    term: "workflow orchestration"
+    volume_mo: 1200
+    kd: 5
+    observed: 2026-07

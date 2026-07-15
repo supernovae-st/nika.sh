@@ -1,0 +1,42 @@
+/* ─── truth-line + canon-count · the provenance register ─────────────────────
+   The calm one-line register (§4 anti-slop: one truth line per page · chips
+   never stickers). Mono, faint, links underline on hover only — the same
+   restraint as the footer strip. */
+
+.truth-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  align-items: baseline;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--v4-text-faint, rgb(140 160 190 / 0.65));
+}
+
+.truth-line-link {
+  color: var(--v4-text-dim, rgb(170 190 220 / 0.8));
+  text-decoration: none;
+}
+
+.truth-line-link:hover,
+.truth-line-link:focus-visible {
+  color: var(--v4-text, #e8eefc);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* a canonical figure IS a link — quiet at rest, honest on focus */
+.canon-count {
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgb(140 170 255 / 0.35);
+  text-underline-offset: 3px;
+}
+
+.canon-count:hover,
+.canon-count:focus-visible {
+  text-decoration-color: currentColor;
+}
