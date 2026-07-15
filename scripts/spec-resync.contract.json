@@ -205,7 +205,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/vendor-lint-fixtures.mjs",
-   "sha256": "abe95b1f071f838d2b5558223fc75098a67b422b0f7c91dab87ffc4527bef167",
+   "sha256": "ce0595079fa9564b1de1ab0da3ca5e7f917fc9ba407904addde45604af5b0509",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -219,7 +219,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/vendor-gate-matrix.mjs",
-   "sha256": "faa7b0c08c1fa707f3763e2e173a39bf0473a30f48d3d54b0fff3af43d48e7e4",
+   "sha256": "5ac3f3705f3c365da5d537b8888efbd3a551a699836bccba7b52044d7b35939c",
    "args": [],
    "depends_on": [
     "spec-showcase"

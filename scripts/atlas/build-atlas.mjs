@@ -59,6 +59,14 @@ const MEMBER_PREFIX = {
 }
 const nid = (setId, member) => `${MEMBER_PREFIX[setId]}:${member}`
 
+/* a code's namespace, by grammar — dies naming the drifting code, never an
+   anonymous null-deref (a resynced catalog is allowed to surprise us) */
+const errNs = (code) => {
+  const m = /^NIKA-[A-Z]+(?=-)/.exec(code)
+  if (!m) throw new Error(`error code outside the NIKA-<NS>- grammar: ${code}`)
+  return m[0]
+}
+
 /* ─── member resolution per set (source → [{member, title, opener?, url,
        anchor?, status}]) · the clock diff is computed, never written ───────*/
 const ratifiedBuiltins = new Set(S.canon.builtinNames)
@@ -162,7 +170,7 @@ function membersOf(set) {
       }))
     case 'error-namespaces': {
       const declared = Object.keys(S.errors.namespaces).sort()
-      const witnessed = new Set(S.errors.codes.map((c) => c.code.match(/^NIKA-[A-Z]+/)[0]))
+      const witnessed = new Set(S.errors.codes.map((c) => errNs(c.code)))
       return declared.map((m) => ({
         member: m,
         title: m,
@@ -319,7 +327,7 @@ for (const [bare, refs] of Object.entries(S.toolRefs)) {
 /* belongs-to: tool → family · code → namespace + category */
 for (const t of S.tools.tools) addEdge(`tool:${t.bare}`, `family:${t.category}`, 'belongs-to')
 for (const c of S.errors.codes) {
-  addEdge(`code:${c.code}`, `errns:${c.code.match(/^NIKA-[A-Z]+/)[0]}`, 'belongs-to')
+  addEdge(`code:${c.code}`, `errns:${errNs(c.code)}`, 'belongs-to')
   addEdge(`code:${c.code}`, `errcat:${c.category}`, 'belongs-to')
 }
 
@@ -807,10 +815,15 @@ for (const set of S.sets.sets) {
 for (const page of Object.keys(termsetsByPage)) {
   termsetsByPage[page].sort((a, b) => a['@id'].localeCompare(b['@id']))
 }
+/* these structures land inside <script type=application/ld+json> via
+   innerHTML (unhead, escaping off) — a '</script' in any opener would
+   close the tag mid-JSON (the render-constellation guard, same class) */
+if (JSON.stringify(termsetsByPage).includes('</script'))
+  throw new Error('jsonld: an opener contains </script — refuse at the source')
 const jsonldTs = GEN(
   'jsonld.generated.ts',
   `/** DefinedTermSet/DefinedTerm per atlas page (§0.9: +version +license).
- * Pages mount these at WO-7 inside their single @graph. Data only. */
+ * Hub heads mount these (hub-lib.ts); pages join at WO-7. Data only. */
 export const JSONLD_TERMSETS: Record<string, unknown[]> = ${JSON.stringify(termsetsByPage, null, 2)}
 `,
 )
@@ -997,7 +1010,7 @@ const nextSiteConfig =
    import the 344-node graph — the bundle-safety law applied to ourselves) */
 const hubSets = (layerId) =>
   S.sets.sets
-    .filter((x) => x.layer === layerId && x.surface === 'anchors' && x.anchors_exist && Array.isArray(x.members))
+    .filter((x) => x.layer === layerId && x.surface === 'anchors' && x.anchors_exist)
     .map((x) => ({
       id: x.id,
       title: x.title,
@@ -1005,8 +1018,12 @@ const hubSets = (layerId) =>
       anchor_prefix: x.anchor_prefix ?? '',
       defined_by: x.defined_by.filter((c) => !c.startsWith('site:')),
       closed: x.closed,
-      members: x.members.map((m) => ({ id: m.id, one_liner: m.one_liner, slot: m.slot ?? null })),
+      /* membersOf covers canon-sourced sets too (mcp-tools) — inline sets
+         resolve to the same rows they inlined before */
+      members: membersOf(x)
+        .map((m) => ({ id: m.member, one_liner: m.opener ?? null, slot: m.meta?.slot ?? null })),
     }))
+    .filter((x) => x.members.length > 0)
 const hubData = S.sets.layers
   .filter((l) => l.atlas_route && l.hub_exists)
   .map((l) => ({
@@ -1023,12 +1040,6 @@ const hubData = S.sets.layers
     })),
     sets: hubSets(l.id),
   }))
-/* the mcp tools ride /proof#machine but live in canon, not descriptor
-   members — join them for the proof hub's machine section */
-const proofHub = hubData.find((h) => h.id === 'proof')
-if (proofHub) {
-  proofHub.mcp_tools = S.canon.mcpToolNames
-}
 /* the 40-cell verdict grid summary (tiny · the static face of I1 — the
    full matrix with yamls stays its own lazy chunk) */
 const gateGrid = {
@@ -1043,7 +1054,7 @@ const hubDataTs = GEN(
   'hub-data.generated.ts',
   `export interface HubSetMember {
   id: string
-  one_liner: string
+  one_liner: string | null
   slot: string | null
 }
 export interface HubSet {
@@ -1069,7 +1080,6 @@ export interface HubData {
   opener: string
   sections: HubSection[]
   sets: HubSet[]
-  mcp_tools?: string[]
 }
 
 export const HUBS: Record<string, HubData> = ${JSON.stringify(Object.fromEntries(hubData.map((h) => [h.id, h])), null, 2)}

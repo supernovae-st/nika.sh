@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useAnchorScroll } from '../lib/use-anchor-scroll'
+import { useHydrated } from '../lib/use-hydrated'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import {
@@ -16,11 +17,12 @@ import { routeHead } from '../content'
 import '../sections/v4-home.css'
 import './providers-page.css'
 
-/* ─── /providers + /providers/:id · the provider register (theme-dark) ────────
+/* ─── /providers · the provider register (theme-dark) ─────────────────────────
    Every spec-named provider as an anchored row — the `provider:` value an
    author writes under `infer:`. One register page (the /errors · /tools
-   precedent): the :id deep-link prerenders its own static landing, scrolls
-   to its row and highlights it. Unknown ids get an honest miss.
+   precedent) since the WO-6 fusion: the old /providers/:id rooms are 301
+   stubs onto #id anchors here. A deep-link scrolls to its row and
+   highlights it. A hash that matches nothing gets an honest miss.
 
    Spec truth: rows come from src/content/providers.generated.ts — a
    compiled projection of public/providers/catalog.json, itself derived from
@@ -61,7 +63,7 @@ function ProviderRow({ entry, active }: { entry: ProviderEntry; active: boolean 
   return (
     <li id={entry.id} className={`pv-row${active ? ' pv-row--active' : ''}`}>
       <div className="pv-row-head">
-        <a className="pv-id" href={`/providers/${entry.id}`}>
+        <a className="pv-id" href={`#${entry.id}`}>
           {entry.id}
         </a>
         <span className="pv-name">{entry.name}</span>
@@ -134,7 +136,12 @@ export function Component() {
   const { hash } = useLocation()
   const id = hash ? hash.slice(1).toLowerCase() : undefined
   const hit = id ? PROVIDER_INDEX[id] : undefined
-  const miss = false
+  /* the honest miss, post-hydration: a hash that names no provider AND no
+     real element on the page (#pv-title stays a legit anchor, never a miss).
+     useHydrated keeps SSR and the first client render agreeing on false —
+     the server never sees a hash, hydration stays byte-true by construction. */
+  const hydrated = useHydrated()
+  const miss = hydrated && Boolean(id && !hit && !document.getElementById(id))
 
   const groups = useMemo(
     () =>

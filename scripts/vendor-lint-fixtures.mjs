@@ -12,14 +12,23 @@
    resync cron's builders). Deterministic: sorted ids, no dates.
 
    Run: NIKA_SPEC_ROOT=../spec node scripts/vendor-lint-fixtures.mjs */
-import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
+/* env override first, then the sibling clone, then the monorepo layout
+   (the build-templates.mjs probe pattern) — no checkout, die loudly */
 const SPEC_ROOT =
   process.env.NIKA_SPEC_ROOT ??
-  join(ROOT, '../../../../../..', 'ventures/nika/02-engineering/repos/spec/repo')
+  [
+    join(ROOT, '..', 'spec', 'repo'),
+    join(ROOT, '../../../../..', 'ventures/nika/02-engineering/repos/spec/repo'),
+  ].find((p) => existsSync(join(p, 'conformance/tests/core')))
+if (!SPEC_ROOT) {
+  console.error('vendor-lint-fixtures: no spec checkout found — set NIKA_SPEC_ROOT')
+  process.exit(1)
+}
 
 const CORE = join(SPEC_ROOT, 'conformance/tests/core')
 const fixtures = []

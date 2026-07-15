@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { routes } from '../routes'
 import { CANON } from '../canon.generated'
 import { SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
+import { UC_TABS } from '../sections/usecases-data'
 
 /* ── smoke · the cheapest possible "does the wiring import + hold shape" gate ──
    Importing the route table + the generated constants exercises their whole
@@ -47,6 +48,14 @@ describe('smoke · module graph imports without throwing', () => {
       expect(task.wave).toBeGreaterThanOrEqual(0)
       expect(task.wave).toBeLessThan(dag.waves)
       expect(CANON.verbNames as readonly string[]).toContain(task.verb)
+    }
+  })
+
+  it('every gallery showcase carries its projected DAG (the room renders whole, never half-true)', () => {
+    for (const t of UC_TABS) {
+      for (const uc of t.cases) {
+        expect(SHOWCASE_DAG[uc.slug], `${uc.slug} has no DAG projection`).toBeTruthy()
+      }
     }
   })
 })

@@ -101,7 +101,7 @@ workflow:
       q: 'Next week the topic changes. What do you edit?',
       options: ['The file, then re-save it', 'Nothing: pass the new value on the command line', 'A separate config file'],
       answer: 1,
-      why: 'vars are the declared inputs: nika run radar.nika.yaml --var topic="new subject". The file stays the contract; the inputs move per run.',
+      why: 'vars are the declared inputs: nika run weekly-radar.nika.yaml --var topic="new subject". The file stays the contract; the inputs move per run.',
     },
   },
   {

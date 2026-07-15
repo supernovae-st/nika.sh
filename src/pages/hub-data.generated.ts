@@ -5,7 +5,7 @@
 
 export interface HubSetMember {
   id: string
-  one_liner: string
+  one_liner: string | null
   slot: string | null
 }
 export interface HubSet {
@@ -31,7 +31,6 @@ export interface HubData {
   opener: string
   sections: HubSection[]
   sets: HubSet[]
-  mcp_tools?: string[]
 }
 
 export const HUBS: Record<string, HubData> = {
@@ -306,18 +305,64 @@ export const HUBS: Record<string, HubData> = {
             "slot": null
           }
         ]
+      },
+      {
+        "id": "mcp-tools",
+        "title": "The oracle tools",
+        "opener": "The read-only oracle an agent loads: check, explain, schema, examples and the rest of the register. The same truth the CLI speaks, served over MCP · nothing here mutates anything.",
+        "anchor_prefix": "mcp-",
+        "defined_by": [
+          "canon.yaml"
+        ],
+        "closed": false,
+        "members": [
+          {
+            "id": "nika_check",
+            "one_liner": null,
+            "slot": null
+          },
+          {
+            "id": "nika_explain",
+            "one_liner": null,
+            "slot": null
+          },
+          {
+            "id": "nika_schema",
+            "one_liner": null,
+            "slot": null
+          },
+          {
+            "id": "nika_examples",
+            "one_liner": null,
+            "slot": null
+          },
+          {
+            "id": "nika_template",
+            "one_liner": null,
+            "slot": null
+          },
+          {
+            "id": "nika_canon",
+            "one_liner": null,
+            "slot": null
+          },
+          {
+            "id": "nika_catalog",
+            "one_liner": null,
+            "slot": null
+          },
+          {
+            "id": "nika_tools",
+            "one_liner": null,
+            "slot": null
+          },
+          {
+            "id": "nika_inspect",
+            "one_liner": null,
+            "slot": null
+          }
+        ]
       }
-    ],
-    "mcp_tools": [
-      "nika_check",
-      "nika_explain",
-      "nika_schema",
-      "nika_examples",
-      "nika_template",
-      "nika_canon",
-      "nika_catalog",
-      "nika_tools",
-      "nika_inspect"
     ]
   }
 }

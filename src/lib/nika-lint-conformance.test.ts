@@ -32,7 +32,10 @@ describe('nika-lint · the corpus is vendored and byte-stable', () => {
   const specCore =
     process.env.NIKA_SPEC_ROOT != null
       ? join(process.env.NIKA_SPEC_ROOT, 'conformance/tests/core')
-      : join(ROOT, '../../../../../..', 'ventures/nika/02-engineering/repos/spec/repo/conformance/tests/core')
+      : [
+          join(ROOT, '../spec/repo/conformance/tests/core'),
+          join(ROOT, '../../../../..', 'ventures/nika/02-engineering/repos/spec/repo/conformance/tests/core'),
+        ].find((p) => existsSync(p)) ?? ''
   it.skipIf(!existsSync(specCore))(
     'lint-fixtures.generated.ts is exactly what the vendor emits today',
     () => {

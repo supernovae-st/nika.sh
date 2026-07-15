@@ -18,7 +18,10 @@ describe('gate matrix · the vendored corpus is byte-stable and complete', () =>
   const specGates =
     process.env.NIKA_SPEC_ROOT != null
       ? join(process.env.NIKA_SPEC_ROOT, 'conformance/tests/runtime/gates')
-      : join(ROOT, '../../../../../..', 'ventures/nika/02-engineering/repos/spec/repo/conformance/tests/runtime/gates')
+      : [
+          join(ROOT, '../spec/repo/conformance/tests/runtime/gates'),
+          join(ROOT, '../../../../..', 'ventures/nika/02-engineering/repos/spec/repo/conformance/tests/runtime/gates'),
+        ].find((p) => existsSync(p)) ?? ''
   it.skipIf(!existsSync(specGates))('gate-matrix.generated.ts is exactly what the vendor emits', () => {
     const committed = readFileSync(join(ROOT, 'src/content/gate-matrix.generated.ts'), 'utf8')
     execFileSync('node', [join(ROOT, 'scripts/vendor-gate-matrix.mjs')], { env: { ...process.env } })

@@ -44,6 +44,22 @@ describe('/map · the map covers the territory, and only the territory', () => {
       expect(g.links.length).toBeGreaterThan(0)
     }
   })
+
+  /* the sitemap.test.ts assertion the map gate must not lose: a mislabeled
+     row escapes BOTH surviving gates (sitemapInternalHrefs filters on this
+     very flag), so the honesty of the ↗ is judged here directly */
+  it('external links are marked external (the ↗ is honest)', () => {
+    for (const g of SITE_MAP) {
+      for (const l of g.links) {
+        expect(l.external ?? false, l.href).toBe(!l.href.startsWith('/'))
+      }
+    }
+  })
+
+  it('hrefs are unique across the whole map (one place per page)', () => {
+    const all = sitemapInternalHrefs()
+    expect(new Set(all).size).toBe(all.length)
+  })
 })
 
 describe('/map · the anatomy list is the derived truth', () => {

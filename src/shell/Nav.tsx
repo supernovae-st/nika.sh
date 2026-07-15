@@ -130,12 +130,16 @@ function ItemLink({
   onSelect,
   refCb,
   showDesc,
+  menuitem,
 }: {
   item: NavItem
   className: string
   onSelect: () => void
   refCb?: (el: HTMLAnchorElement | null) => void
   showDesc?: boolean
+  /* true only under the mega panels' role="menu" — the sheet is a dialog
+     with plain links (an orphan menuitem is an axe serious) */
+  menuitem?: boolean
 }) {
   const inner = (
     <>
@@ -176,7 +180,7 @@ function ItemLink({
   const href = item.external && item.label === 'Docs' ? DOCS : item.external && item.label === 'GitHub' ? REPO : item.href
   if (item.to) {
     return (
-      <Link ref={refCb} to={item.to} role="menuitem" className={className} onClick={onSelect}>
+      <Link ref={refCb} to={item.to} role={menuitem ? 'menuitem' : undefined} className={className} onClick={onSelect}>
         {inner}
       </Link>
     )
@@ -185,7 +189,7 @@ function ItemLink({
     <a
       ref={refCb}
       href={href}
-      role="menuitem"
+      role={menuitem ? 'menuitem' : undefined}
       className={className}
       onClick={onSelect}
       {...(href?.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
@@ -658,6 +662,7 @@ export default function Nav() {
                               onSelect={close}
                               refCb={registerItem(flatIdx)}
                               showDesc
+                              menuitem
                             />
                           </div>
                         )
@@ -697,6 +702,7 @@ export default function Nav() {
                       className="v4mega-item v4mega-item--feat"
                       onSelect={close}
                       refCb={registerItem(0)}
+                      menuitem
                       showDesc
                     />
                   </div>
@@ -716,6 +722,7 @@ export default function Nav() {
                                 className="v4mega-item v4mega-item--ref"
                                 onSelect={close}
                                 refCb={registerItem(flatIdx)}
+                                menuitem
                               />
                             </div>
                           )

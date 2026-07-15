@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { lazy, Suspense } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
 import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
+import type { FunnelEvent } from '../lib/track'
 import { FOOTER_COLS, FOOTER_MACHINE, type NavItem } from '../content/atlas-nav.generated'
 import '../sections/v4-home.css'
 
@@ -23,6 +24,11 @@ import '../sections/v4-home.css'
    (in-view only; the prerendered fallback below is the no-JS truth) */
 const FooterSignature = lazy(() => import('../fx/FooterSignature'))
 
+/* the funnel wiring the projection must not drop (the delegated listener in
+   RootLayout reads [data-track]): which routes are funnel doors is a SHELL
+   concern, so the map lives here — the nav descriptor stays structure-only. */
+const FOOTER_TRACK: Record<string, FunnelEvent> = { '/convert': 'convert-open' }
+
 function FooterLink({ item }: { item: NavItem }) {
   if (item.soon) {
     return (
@@ -39,7 +45,7 @@ function FooterLink({ item }: { item: NavItem }) {
   }
   if (item.to) {
     return (
-      <Link to={item.to} className="sitefoot-link">
+      <Link to={item.to} className="sitefoot-link" data-track={FOOTER_TRACK[item.to]}>
         {item.label}
       </Link>
     )

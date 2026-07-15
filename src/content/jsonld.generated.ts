@@ -4,7 +4,7 @@
 // Drift gate: src/test/atlas.test.ts recompiles and byte-diffs.
 
 /** DefinedTermSet/DefinedTerm per atlas page (§0.9: +version +license).
- * Pages mount these at WO-7 inside their single @graph. Data only. */
+ * Hub heads mount these (hub-lib.ts); pages join at WO-7. Data only. */
 export const JSONLD_TERMSETS: Record<string, unknown[]> = {
   "/language": [
     {

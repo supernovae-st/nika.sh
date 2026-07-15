@@ -82,7 +82,7 @@ export function Component() {
             <p className="hub-sec-note">{edgeKinds.opener}</p>
             <MemberRows set={edgeKinds} />
             <p className="hub-slot">
-              real `nika inspect` payloads per kind land with the first W2+ release train
+              real <code>nika inspect</code> payloads per kind land with the first W2+ release train
               (engine captures are release-gated by law) · until then every kind above
               links its conformance fixtures through the matrix below.
             </p>

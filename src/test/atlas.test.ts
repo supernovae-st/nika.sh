@@ -5,6 +5,8 @@ import { describe, expect, it } from 'vitest'
 import { ATLAS_NODES, ATLAS_EDGES, ATLAS_INDEX } from '../content/atlas.generated'
 import { ATLAS_PROVENANCE, ATLAS_SET_COUNTS, ATLAS_HUBS, ATLAS_SCORE } from '../content/atlas-meta.generated'
 import { JSONLD_TERMSETS } from '../content/jsonld.generated'
+import { HUBS } from '../pages/hub-data.generated'
+import { hubJsonldSets } from '../pages/hub-lib'
 import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { SNIPPETS, SNIPPET_REGISTRY, CAPTURES } from '../content/snippets.generated'
 import { PATHS } from '../../site.config'
@@ -25,11 +27,18 @@ const OUTPUTS = [
   'src/content/market-vocab.generated.ts',
   'src/content/snippets.generated.ts',
   'src/content/atlas-nav.generated.ts',
+  'src/content/room-rails.generated.ts',
   'src/pages/map-data.generated.ts',
+  'src/pages/hub-data.generated.ts',
   'src/assets/constellation.generated.svg',
   'public/map/constellation.svg',
   'public/ontology/language.json',
   'public/redirects.json',
+  // the in-place ATLAS_PATHS block + the moved-row 301 stubs are emissions too
+  'site.config.ts',
+  ...JSON.parse(readFileSync(join(__dirname, '../../public/redirects.json'), 'utf8'))
+    .redirects.filter((r: { from: string }) => r.from.startsWith('/providers/'))
+    .map((r: { from: string }) => `public${r.from}/index.html`),
 ]
 
 describe('atlas · the compiler is idempotent and the score is green', () => {
@@ -159,6 +168,22 @@ describe('atlas · the graph is referentially whole', () => {
 })
 
 describe('atlas · jsonld and market vocab stay lawful', () => {
+  /* the derived-inverses law: the hubs rebuild their DefinedTermSets from
+     bundle-resident HubData (never a second shipped copy of the 80K corpus)
+     — this gate holds the derivation equal to the twin's ANCHORED sets (a
+     room set — showcases — catalogs terms living on their own pages; its
+     JSON-LD mounts with those pages at WO-7, not in the hub head) */
+  it('the hub head derivation IS the twin, for every set anchored on the page', () => {
+    for (const h of Object.values(HUBS)) {
+      const anchoredHere = (JSONLD_TERMSETS[h.hub] ?? []).filter((t) => {
+        const terms = (t as { hasDefinedTerm: { '@id': string }[] }).hasDefinedTerm
+        return terms.every((term) => term['@id'].includes(`${h.hub}#`))
+      })
+      expect(hubJsonldSets(h), h.hub).toEqual(anchoredHere)
+    }
+  })
+
+
   it('every DefinedTermSet carries license + version and unique termCodes', () => {
     for (const [page, sets] of Object.entries(JSONLD_TERMSETS)) {
       expect(page.startsWith('/'), page).toBe(true)

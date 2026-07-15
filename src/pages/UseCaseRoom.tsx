@@ -88,7 +88,10 @@ export function Component() {
       : [{ type: 'application/ld+json', innerHTML: '{}', processTemplateParams: false }],
   })
 
-  if (!hit) {
+  /* the honest miss covers BOTH registers: the curated gallery row (hit)
+     AND the projected DAG — a slug in one but not the other is drift, and a
+     room must never render half-true plan facts (or crash the prerender) */
+  if (!hit || !dag) {
     return (
       <main className="theme-dark hub-page">
         <section className="v4sec v4-in">

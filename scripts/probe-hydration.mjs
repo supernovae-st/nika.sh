@@ -39,6 +39,11 @@ for (let i = 0; i < 40; i++) {
   } catch { /* retry */ }
   await sleep(250)
 }
+if (!ws) {
+  chrome.kill()
+  console.error('probe-hydration: CDP target never appeared (is Chrome installed? CHROME_BIN set?)')
+  process.exit(1)
+}
 await new Promise((r) => (ws.onopen = r))
 let mid = 0
 const pending = new Map()

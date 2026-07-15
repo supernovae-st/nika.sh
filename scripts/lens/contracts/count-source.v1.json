@@ -976,7 +976,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:1",
       "path": "src/pages/Providers.tsx",
-      "line": 150,
+      "line": 157,
       "text": "${CANON.providers} providers",
       "source": "${CANON.providers}",
       "field": "providers",
@@ -989,7 +989,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:2",
       "path": "src/pages/Providers.tsx",
-      "line": 207,
+      "line": 214,
       "text": "one provider",
       "source": "one",
       "field": "providers",

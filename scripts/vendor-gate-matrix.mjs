@@ -7,14 +7,23 @@
    zero local semantics. Spec-time clock; the resync cron re-vendors.
 
    Run: NIKA_SPEC_ROOT=../spec node scripts/vendor-gate-matrix.mjs */
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync, readdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
+/* env override first, then the sibling clone, then the monorepo layout
+   (the build-templates.mjs probe pattern) — no checkout, die loudly */
 const SPEC_ROOT =
   process.env.NIKA_SPEC_ROOT ??
-  join(ROOT, '../../../../../..', 'ventures/nika/02-engineering/repos/spec/repo')
+  [
+    join(ROOT, '..', 'spec', 'repo'),
+    join(ROOT, '../../../../..', 'ventures/nika/02-engineering/repos/spec/repo'),
+  ].find((p) => existsSync(join(p, 'conformance/tests/runtime/gates')))
+if (!SPEC_ROOT) {
+  console.error('vendor-gate-matrix: no spec checkout found — set NIKA_SPEC_ROOT')
+  process.exit(1)
+}
 const GATES = join(SPEC_ROOT, 'conformance/tests/runtime/gates')
 
 const PRODUCERS = ['success', 'failure', 'skipped', 'cancelled']

@@ -45,7 +45,7 @@ export function Component() {
               envelope and its additive law.
             </p>
             <p className="hub-slot">
-              a real `nika inspect --format json` payload renders here with the first W2+
+              a real <code>nika inspect --format json</code> payload renders here with the first W2+
               release train (engine captures are release-gated by law) · the structure
               above is the spec's, already fixture-proven.
             </p>
@@ -63,7 +63,7 @@ export function Component() {
             </h2>
             <p className="hub-slot">
               ratified · fills with the trace wave: the NDJSON trace, the hash chain,
-              `nika trace verify`, resume — this section projects the canon the resync
+              <code>nika trace verify</code>, resume — this section projects the canon the resync
               brings, never prose written ahead of it.
             </p>
           </section>
@@ -87,13 +87,13 @@ export function Component() {
               Machine surfaces
             </h2>
             <p className="hub-sec-note">
-              The same truth, machine-shaped: `nika check --json` speaks typed findings with
+              The same truth, machine-shaped: <code>nika check --json</code> speaks typed findings with
               stable exit codes · the read-only MCP oracle serves the register below to any
               agent · this site serves its own twin, /ontology/language.json — the page you
               are reading, as data.
             </p>
             <ul className="hub-members">
-              {(hub.mcp_tools ?? []).map((t) => (
+              {(hub.sets.find((s) => s.id === 'mcp-tools')?.members ?? []).map(({ id: t }) => (
                 <li key={t} className="hub-member" id={`mcp-${t}`}>
                   <span className="hub-member-id">
                     <a href={`#mcp-${t}`}>{t}</a>

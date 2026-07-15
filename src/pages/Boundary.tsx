@@ -54,7 +54,7 @@ export function Component() {
             </h2>
             <p className="hub-sec-note">
               Two laws, the whole model: absent, the engine floor applies · present, the
-              boundary is default-deny and the body must fit it. `nika check --infer-permits`
+              boundary is default-deny and the body must fit it. <code>nika check --infer-permits</code>
               writes the tightest boundary the file can prove.
             </p>
             <MemberRows set={permits} />
