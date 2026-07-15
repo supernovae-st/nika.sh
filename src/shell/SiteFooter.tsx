@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router'
 import { lazy, Suspense } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
+import { prefersLiteData } from '../lib/save-data'
 import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
 import type { FunnelEvent } from '../lib/track'
 import { variantsFor } from '../lib/i18n'
@@ -96,7 +97,9 @@ function FooterLink({ item }: { item: NavItem }) {
    The static butterfly is the SSG/no-JS truth; the living particles take
    over right after hydration (the shared useHydrated gate). */
 export function SignatureMark() {
-  const fxReady = useHydrated()
+  /* W-H: the particle chunk is decoration — a lite-data visitor keeps the
+     static butterfly (the SSG/no-JS truth), zero extra bytes */
+  const fxReady = useHydrated() && !prefersLiteData()
   const staticSig = (
     <div className="fsig">
       <img src="/nika.svg" alt="" width={170} height={170} loading="lazy" />
