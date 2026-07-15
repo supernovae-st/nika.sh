@@ -28,6 +28,7 @@ const OUTPUTS = [
   'src/content/snippets.generated.ts',
   'src/content/atlas-nav.generated.ts',
   'src/content/room-rails.generated.ts',
+  'src/content/showcase-dag.generated.ts',
   'src/pages/map-data.generated.ts',
   'src/pages/hub-data.generated.ts',
   'src/assets/constellation.generated.svg',
@@ -164,6 +165,14 @@ describe('atlas · the graph is referentially whole', () => {
     expect(ATLAS_HUBS.map((h) => h.id)).toEqual([
       'shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof',
     ])
+  })
+})
+
+describe('atlas · the derived DAG module IS the projector export', () => {
+  it('showcase-dag.generated toEqual usecases-yaml.generated SHOWCASE_DAG (value-equal, both directions)', async () => {
+    const source = (await import('../sections/usecases-yaml.generated')).SHOWCASE_DAG
+    const derived = (await import('../content/showcase-dag.generated')).SHOWCASE_DAG
+    expect(derived).toEqual(source)
   })
 })
 

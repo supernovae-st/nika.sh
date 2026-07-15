@@ -1105,6 +1105,38 @@ export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridC
 `,
 )
 
+/* the DERIVED DAG module (WO-12 register diet): the plan facts every
+   first-render surface needs (home hero tallies · rooms · spec machine),
+   re-emitted HERE so pages can import them WITHOUT touching
+   usecases-yaml.generated — once no static import reaches that module,
+   the 79K of yaml strings becomes an async chunk (the island recipe).
+   The SOURCE stays the spec-owned projector emission (frontier law);
+   this is a value-equal projection, gate-pinned toEqual in atlas.test. */
+const showcaseDagTs = GEN(
+  'showcase-dag.generated.ts',
+  `/** the showcase plan facts (value-equal projection of SHOWCASE_DAG in
+ * usecases-yaml.generated.ts — atlas.test pins the equality; import THIS
+ * for first-render facts so the yaml strings can stay an async chunk). */
+export interface ShowcaseTask {
+  id: string
+  verb: 'infer' | 'exec' | 'invoke' | 'agent'
+  deps: string[]
+  wave: number
+  gate: 'default' | 'when' | 'always'
+  gloss: string
+  flags: string[]
+  line0: number
+  line1: number
+}
+export interface ShowcaseDag {
+  tasks: ShowcaseTask[]
+  outputs: string[]
+  waves: number
+}
+export const SHOWCASE_DAG: Record<string, ShowcaseDag> = ${JSON.stringify(S.dag, null, 2)}
+`,
+)
+
 /* redirects (moved → data · e2e replays live entries) */
 const redirects = []
 for (const set of S.sets.sets) {
@@ -1170,6 +1202,7 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/market-vocab.generated.ts'), vocabTs)
   writeFileSync(join(ROOT, 'src/content/snippets.generated.ts'), snippetsTs)
   writeFileSync(join(ROOT, 'src/content/atlas-nav.generated.ts'), navTs)
+  writeFileSync(join(ROOT, 'src/content/showcase-dag.generated.ts'), showcaseDagTs)
   writeFileSync(join(ROOT, 'src/content/room-rails.generated.ts'), roomRailsTs)
   writeFileSync(join(ROOT, 'src/pages/map-data.generated.ts'), mapDataTs)
   writeFileSync(join(ROOT, 'src/pages/hub-data.generated.ts'), hubDataTs)

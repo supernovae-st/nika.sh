@@ -1,5 +1,5 @@
 import { CANON } from '../canon.generated'
-import { SHOWCASE_DAG, type ShowcaseTask } from '../sections/usecases-yaml.generated'
+import { SHOWCASE_DAG, type ShowcaseTask } from '../content/showcase-dag.generated'
 
 /* ─── spec-machine-data · the strata graph of THE SPEC MACHINE ────────────────
    The whole language as one machine: every stratum, node and count on /spec —

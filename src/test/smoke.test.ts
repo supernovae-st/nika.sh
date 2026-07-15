@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { routes } from '../routes'
 import { CANON } from '../canon.generated'
-import { SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
+import { SHOWCASE_DAG, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 import { UC_TABS } from '../sections/usecases-data'
 
 /* ── smoke · the cheapest possible "does the wiring import + hold shape" gate ──
@@ -49,6 +49,10 @@ describe('smoke · module graph imports without throwing', () => {
       expect(task.wave).toBeLessThan(dag.waves)
       expect(CANON.verbNames as readonly string[]).toContain(task.verb)
     }
+  })
+
+  it('the DAG and YAML registers carry the SAME slugs (the island recipe lists keys from the DAG)', () => {
+    expect(Object.keys(SHOWCASE_DAG).sort()).toEqual(Object.keys(SHOWCASE_YAML).sort())
   })
 
   it('every gallery showcase carries its projected DAG (the room renders whole, never half-true)', () => {

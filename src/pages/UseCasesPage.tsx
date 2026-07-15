@@ -7,7 +7,7 @@ import { StampStrip } from '../components/StampStrip'
 import { PlanMap } from '../components/PlanMap'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
-import { SHOWCASE_YAML, SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
+import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { REPO, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './usecases-page.css'
@@ -400,7 +400,7 @@ export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -6% 0px' })
   const [active, setActive] = useState(PERSONAS[0]?.id ?? '')
 
-  const total = Object.keys(SHOWCASE_YAML).length
+  const total = Object.keys(SHOWCASE_DAG).length
   /* total projected tasks across the whole showcase — derived, never hand-typed */
   const totalTasks = Object.values(SHOWCASE_DAG).reduce((n, d) => n + d.tasks.length, 0)
 

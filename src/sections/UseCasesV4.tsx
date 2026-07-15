@@ -3,7 +3,7 @@ import { CodeFile } from '../components/CodeFile'
 import { useRevealOnce } from './use-reveal-once'
 import { verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { UC_TABS, verbsFor, yamlFor, fileFor, docsFor, type UC } from './usecases-data'
-import { SHOWCASE_YAML, SHOWCASE_DAG } from './usecases-yaml.generated'
+import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { PlanMap } from '../components/PlanMap'
 import './v4-home.css'
 import { SectionHead } from '../components/SectionHead'
@@ -50,7 +50,7 @@ export default function UseCasesV4() {
     setSel(0)
   }
 
-  const total = Object.keys(SHOWCASE_YAML).length
+  const total = Object.keys(SHOWCASE_DAG).length
 
   return (
     <section

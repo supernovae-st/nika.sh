@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
 import { parsePlan, type ParsedPlan } from '../lib/parse-plan'
 import { DagView } from '../components/DagView'
@@ -12,7 +12,9 @@ import { useHead } from '@unhead/react'
 import { checkNika, type LintDiag } from '../lib/nika-lint'
 import { useAurora } from '../fx/aurora-context'
 import { routeHead } from '../content'
-import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
+import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
 import { PLAY_BREAKS } from './play-breaks'
 import { NIKA_VERBS, verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { InstallCommand } from '../components/InstallCommand'
@@ -58,6 +60,21 @@ const EditorFallback = (
 
 const TEMPLATE_ORDER = ['chain', 'gate-and-act', 'fanout', 'etl-state', 'agent-loop', 'human-gated-ship']
 
+/* the register diet (WO-12 · the Map island recipe): the seed dictionaries
+   leave the client graph — SSG awaits them in this SSR-only branch (the
+   module becomes an async chunk the first load never fetches), the island
+   below carries the template seeds as exact bytes, and a showcase pick
+   dynamic-imports the same chunk once, at the interaction. The dropdown's
+   KEYS ride SHOWCASE_DAG (sync · the plan facts stay first-render) — the
+   smoke gate pins DAG keys == YAML keys so the list can never lie. */
+let SSR_SEEDS: string | null = null
+if (import.meta.env.SSR) {
+  SSR_SEEDS = JSON.stringify((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML)
+}
+const SEEDS_ISLAND_ID = 'play-seeds-island'
+const loadShowcaseYaml = async () =>
+  (await import('../sections/usecases-yaml.generated')).SHOWCASE_YAML
+
 const VERB_HUE: Record<NikaVerb, string> = {
   infer: 'var(--verb-infer)',
   exec: 'var(--verb-exec)',
@@ -66,13 +83,20 @@ const VERB_HUE: Record<NikaVerb, string> = {
 }
 
 export function Component() {
+  const seedsJson = useIslandPayload(SEEDS_ISLAND_ID, SSR_SEEDS, async () =>
+    JSON.stringify((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML),
+  )
+  const seeds = useMemo<Record<string, string>>(
+    () => (seedsJson ? (JSON.parse(seedsJson) as Record<string, string>) : {}),
+    [seedsJson],
+  )
   const [seed, setSeed] = useState('chain')
-  const [code, setCode] = useState(TEMPLATES_YAML['chain'] ?? '')
-  const [diags, setDiags] = useState<LintDiag[]>(() => checkNika(TEMPLATES_YAML['chain'] ?? ''))
+  const [code, setCode] = useState(seeds['chain'] ?? '')
+  const [diags, setDiags] = useState<LintDiag[]>(() => checkNika(seeds['chain'] ?? ''))
   /* the LIVE PLAN (W12b·E1) · parsePlan on a 150ms debounce; an unparseable
      mid-edit source keeps the LAST VALID plan on screen, dimmed ([data-stale])
      — the picture never flickers while you type */
-  const [plan, setPlan] = useState<ParsedPlan | null>(() => parsePlan(TEMPLATES_YAML['chain'] ?? ''))
+  const [plan, setPlan] = useState<ParsedPlan | null>(() => parsePlan(seeds['chain'] ?? ''))
   const [stale, setStale] = useState(false)
   const planTimer = useRef(0)
   /* THE RUN-SIM (E2) · a user-triggered replay of the ORDER — wave by wave,
@@ -210,12 +234,21 @@ export function Component() {
 
   const pick = (slug: string) => {
     stopSim()
-    const src = TEMPLATES_YAML[slug] ?? SHOWCASE_YAML[slug] ?? ''
-    setSeed(slug)
-    setCode(src)
-    setDiags(checkNika(src))
-    setPlan(parsePlan(src))
-    setStale(false)
+    const apply = (src: string) => {
+      setSeed(slug)
+      setCode(src)
+      setDiags(checkNika(src))
+      setPlan(parsePlan(src))
+      setStale(false)
+    }
+    const local = seeds[slug]
+    if (local !== undefined) {
+      apply(local)
+      return
+    }
+    /* a showcase seed: the yaml rides the async chunk (fetched once,
+       cached) — the interaction is the moment that pays it */
+    void loadShowcaseYaml().then((all) => apply(all[slug] ?? ''))
   }
 
   const valid = diags.length === 0
@@ -224,6 +257,8 @@ export function Component() {
     <main className="theme-dark v4page">
       <section className="v4sec">
         <div className="v4sec-wrap">
+          {/* the byte island · the template seeds' exact bytes (RCDATA) */}
+          <Island id={SEEDS_ISLAND_ID} payload={seedsJson} />
           {/* the masthead */}
           <p className="v4sec-fig">the playground</p>
           <h1 id="play-title" className="v4sec-title play-title">
@@ -240,7 +275,7 @@ export function Component() {
           {/* ── the seed picker · templates (pills) then showcase (a select) ── */}
           <div className="play-seeds">
             <span className="play-seeds-label">Templates</span>
-            {TEMPLATE_ORDER.filter((t) => t in TEMPLATES_YAML).map((t) => (
+            {TEMPLATE_ORDER.filter((t) => t in seeds).map((t) => (
               <button
                 key={t}
                 type="button"
@@ -253,13 +288,13 @@ export function Component() {
             ))}
             <span className="play-seeds-label">Showcase</span>
             <select
-              value={seed in SHOWCASE_YAML ? seed : ''}
+              value={seed in SHOWCASE_DAG ? seed : ''}
               onChange={(e) => e.target.value && pick(e.target.value)}
               className="play-seed-select"
               aria-label="Pick a showcase workflow"
             >
               <option value="">pick a real job…</option>
-              {Object.keys(SHOWCASE_YAML).map((s) => (
+              {Object.keys(SHOWCASE_DAG).map((s) => (
                 <option key={s} value={s}>
                   {s}
                 </option>
