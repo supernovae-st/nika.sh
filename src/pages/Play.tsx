@@ -444,7 +444,18 @@ export function Component() {
                     {diags.slice(0, 8).map((d, i) => (
                       <li key={i} className="play-diag">
                         <span className="play-diag-id">
-                          L{d.line} · {d.code}
+                          {/* U1 (WO-12): a REGISTERED code opens its room — suffixed
+                              codes have rooms, bare namespaces (spec-latitude
+                              catch-alls) stay text; nika-lint-conformance pins
+                              the suffixed⊆ERROR_PATHS claim so this can't 404 */}
+                          L{d.line} ·{' '}
+                          {/\d{3}$/.test(d.code) ? (
+                            <Link className="play-diag-room" to={`/errors/${d.code}`}>
+                              {d.code}
+                            </Link>
+                          ) : (
+                            d.code
+                          )}
                         </span>
                         <span className="play-diag-msg">{d.message}</span>
                         <span className="play-diag-fix">{d.fix}</span>

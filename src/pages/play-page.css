@@ -270,6 +270,17 @@
   color: var(--verb-exec); /* the error/amber tone from the verb palette */
   font-variant-numeric: tabular-nums;
 }
+/* the code's room door (U1) · same ink, the underline is the affordance */
+.play-diag-room {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, currentColor 45%, transparent);
+}
+.play-diag-room:hover,
+.play-diag-room:focus-visible {
+  text-decoration-color: currentColor;
+}
 .play-diag-msg {
   font-size: 13px;
   line-height: 1.5;

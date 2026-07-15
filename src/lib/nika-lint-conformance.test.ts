@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { lintNika, LINT_COVERAGE } from './nika-lint'
 import { LINT_FIXTURES } from './lint-fixtures.generated'
+import { ERROR_PATHS } from '../../site.config'
 
 /* ── the port's conformance replay (WO-11 · U2 · ratchet 8(b) VERBATIM) ───────
    nika-lint.ts is a pinned port of a SUBSET of the engine's static checks.
@@ -110,4 +111,17 @@ describe('nika-lint · replay: no mislabeling outside the coverage', () => {
       ).toEqual([])
     },
   )
+})
+
+describe('nika-lint · every suffixed code opens a real room (the U1 door law)', () => {
+  /* Play links a diagnostic's code to /errors/<code> whenever it carries a
+     numeric suffix (bare namespaces are spec-latitude catch-alls, text
+     only). This gate holds that claim against the served routes: a lint
+     code with a suffix but no room would ship a dead door. */
+  it('suffixed LINT_COVERAGE ⊆ ERROR_PATHS', () => {
+    for (const code of LINT_COVERAGE) {
+      if (!/\d{3}$/.test(code)) continue
+      expect(ERROR_PATHS, `${code} has no room`).toContain(`/errors/${code}`)
+    }
+  })
 })
