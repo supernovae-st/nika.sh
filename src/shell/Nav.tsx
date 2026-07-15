@@ -851,7 +851,24 @@ export default function Nav() {
               </button>
             </div>
 
-            {/* the map first (the featured row's sheet seat) */}
+            {/* search first (WO-12 · the ⌘K mobile door: the chip hides below
+                760px — no hardware ⌘K — so the sheet carries the palette's
+                only phone entrance; same window event as the chip) */}
+            <button
+              type="button"
+              className="v4sheet-link v4sheet-search"
+              onClick={() => {
+                setSheetOpen(false)
+                window.dispatchEvent(new Event('ck:open'))
+              }}
+            >
+              <span aria-hidden className="v4sheet-search-glyph">
+                ❯
+              </span>
+              Search the site
+            </button>
+
+            {/* the map (the featured row's sheet seat) */}
             <ItemLink
               item={NAV_REFERENCE.featured}
               className="v4sheet-link"

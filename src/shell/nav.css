@@ -704,6 +704,21 @@
   text-transform: uppercase;
   color: var(--v4-text-dim);
 }
+
+/* the sheet's search door (WO-12 · a <button> wearing the link row) */
+button.v4sheet-search {
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.v4sheet-search-glyph {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--v4-text-faint);
+}
 .v4sheet-link {
   display: flex;
   align-items: center;
