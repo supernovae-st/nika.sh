@@ -43,9 +43,9 @@ function previewCleanUrls(): Plugin {
    Derives dist/sitemap.xml from the SAME `PATHS` array that drives the
    prerender (react-ssg.config.ts) — one source of truth, so the sitemap can
    never list a route that doesn't ship (or miss one that does). Runs in
-   closeBundle, AFTER public/ is copied and the routes are prerendered, so it
-   overwrites the placeholder public/sitemap.xml with the derived, complete
-   list. Home gets priority 1.0; the rest 0.7. `lastmod` = build date. */
+   closeBundle, AFTER public/ is copied and the routes are prerendered, and
+   writes dist/sitemap.xml as the ONLY copy — a committed placeholder rotted
+   daily (lastmod = build date) with zero consumers, so none exists. Home gets priority 1.0; the rest 0.7. `lastmod` = build date. */
 function sitemap(): Plugin {
   let outDir = 'dist'
   return {
