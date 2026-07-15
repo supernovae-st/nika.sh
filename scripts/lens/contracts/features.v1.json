@@ -74,6 +74,13 @@
       ]
     },
     {
+      "id": "registry.map",
+      "status": "live",
+      "evidence": [
+        "src/pages/Map.tsx"
+      ]
+    },
+    {
       "id": "registry.providers",
       "status": "live",
       "evidence": [
@@ -134,13 +141,6 @@
       "status": "live",
       "evidence": [
         "src/pages/NotFound.tsx"
-      ]
-    },
-    {
-      "id": "site.sitemap",
-      "status": "live",
-      "evidence": [
-        "src/pages/Sitemap.tsx"
       ]
     },
     {
@@ -2166,10 +2166,10 @@
     },
     {
       "selector": "site.config.ts#page:250",
-      "path": "/sitemap",
+      "path": "/map",
       "route_selector": "src/routes.tsx#route:27",
-      "component": "Sitemap",
-      "feature": "site.sitemap",
+      "component": "MapPage",
+      "feature": "registry.map",
       "presented_as": "live"
     },
     {

@@ -50,7 +50,12 @@ export function renderConstellation(geo, tokens) {
   `
 
   const parts = []
-  parts.push(`<svg class="cst" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Nika language constellation: seven layers, every set, the counted members. The list below the drawing carries the same truth in reading order.">`)
+  /* aria-hidden: the drawing is a LENS — the anatomy list is the assistive
+     truth (axe: role=img must not contain interactive descendants, and the
+     stars ARE crawlable <a>). aria-hidden + tabindex=-1 anchors is clean
+     (not tabbable → no aria-hidden-focus) and crawlers ignore aria-hidden
+     entirely — the seo purpose survives whole. */
+  parts.push(`<svg class="cst" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`)
   parts.push(`<style>${style}</style>`)
 
   /* ring 1 · layer sectors + labels */

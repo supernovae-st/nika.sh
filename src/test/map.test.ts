@@ -96,7 +96,11 @@ describe('/map · the constellation is one drawing, twice served', () => {
     // every enrichment WO grows this — the floor only rises)
     expect(anchors.length).toBeGreaterThan(50)
     for (const a of anchors) expect(a, a).toContain('tabindex="-1"')
-    expect(svg).toContain('role="img"')
+    // the drawing is a LENS: aria-hidden for assistive tech (the anatomy
+    // list is the AT truth · axe nested-interactive forbids role=img over
+    // interactive children) · crawlers ignore aria-hidden, the seo holds
+    expect(svg).toContain('aria-hidden="true"')
+    expect(svg).not.toContain('role="img"')
     expect(svg).toContain('prefers-reduced-motion')
   })
 

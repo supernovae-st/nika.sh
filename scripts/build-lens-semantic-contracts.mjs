@@ -202,13 +202,13 @@ const COMPONENT_FEATURE = {
   WordPage: 'registry.language',
   Providers: 'registry.providers',
   Templates: 'registry.templates',
-  Sitemap: 'site.sitemap',
   UseCasesPage: 'product.use_cases',
   Spec: 'site.spec',
   Install: 'product.install',
   Convert: 'product.convert',
   Brand: 'site.brand',
   NotFound: 'site.not_found',
+  MapPage: 'registry.map',
 }
 
 const FEATURE_EVIDENCE = {
@@ -224,13 +224,13 @@ const FEATURE_EVIDENCE = {
   'registry.language': 'src/pages/Language.tsx',
   'registry.providers': 'src/pages/Providers.tsx',
   'registry.templates': 'src/pages/Templates.tsx',
-  'site.sitemap': 'src/pages/Sitemap.tsx',
   'product.use_cases': 'src/pages/UseCasesPage.tsx',
   'site.spec': 'src/pages/Spec.tsx',
   'product.install': 'src/pages/Install.tsx',
   'product.convert': 'src/pages/Convert.tsx',
   'site.brand': 'src/pages/Brand.tsx',
   'site.not_found': 'src/pages/NotFound.tsx',
+  'registry.map': 'src/pages/Map.tsx',
 }
 
 function featureContract() {
