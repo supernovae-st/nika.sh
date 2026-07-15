@@ -1,0 +1,581 @@
+# ─── sets.yaml · the atlas descriptor table (AUTHORED · operator-reviewed) ───
+#
+# The ONE authored input of the language atlas (mega-plan §2 · §3). Every
+# canonical set the site projects is DECLARED here exactly once: which layer
+# owns it, which gated source carries its members, which surface renders them
+# (rooms or anchors), and what unique data justifies a room (the
+# three-conditions law). build-atlas.mjs (WO-2) compiles this file plus the
+# gated sources into atlas.generated.ts + the served twin; nothing downstream
+# re-declares a set.
+#
+# LAWS OF THIS FILE
+#  · counts are NEVER written here · they derive from the sources at build
+#    time (census.mjs is the executable proof the sources carry them).
+#  · member lists appear here ONLY for the closed versioned-constant sets
+#    (edge kinds · gate predicates · permit families · secret sources ·
+#    conformance levels · truth words): sets the spec defines in prose,
+#    deliberately not counted in canon.yaml. Each mirrors its chapter at the
+#    current pin and is revised when a wave extends it (W-DEC · W5).
+#  · `surface: rooms` REQUIRES `unique_data` naming a real source field ·
+#    otherwise the compiler refuses to generate rooms (ratchet §6.2).
+#  · a surface that does not exist yet carries `lands: wo-N` + a waiver ·
+#    the ratchet prints waivers by name instead of deducting, and every
+#    waiver dies in the WO that lands the surface.
+#  · openers are the quotable definitional voice of each node (2-3
+#    sentences, rendered at the top of its page and served in the twin).
+#    They carry no canonical numerals: counts render adjacent via
+#    CanonCount, which links every figure to its source.
+#
+# Review protocol (operator): the openers · the room-vs-anchor verdicts ·
+# the waivers · the moved entries · the versioned member constants. Everything
+# else is derivation plumbing the gates judge.
+
+atlas_descriptors: 1
+revised: 2026-07-15
+
+# ─── the seven layers · the anatomy (order = the reading order of the atlas ·
+#     /map is the cover, hubs chain prev/next in this order) ─────────────────
+layers:
+  - id: shape
+    title: The shape
+    hub: /language
+    hub_exists: true
+    opener: >-
+      The shape layer is every word an author can type: the envelope, the
+      task grammar, the namespaces that scope every value. If a key is not
+      declared here, it is not Nika.
+    sections:
+      - { id: namespaces, anchor: namespaces, title: The namespaces }
+      - { id: expressions, anchor: expressions, title: Expressions,
+          note: "CEL subset in ${{ }} · size() is the only function · jq lives on output" }
+      - { id: types-slot, anchor: types, title: Types, slot: W3 }
+
+  - id: flow
+    title: The flow
+    hub: /flow
+    hub_exists: false
+    lands: wo-4
+    opener: >-
+      Tasks link through two doors: with binds values, after orders effects.
+      The engine reads those bindings and builds the run graph · nothing else
+      creates an edge.
+    sections:
+      - { id: doors, anchor: doors, title: The two doors }
+      - { id: edges, anchor: edges, title: Edge kinds }
+      - { id: predicates, anchor: predicates, title: Gate predicates }
+      - { id: waves, anchor: waves, title: Waves,
+          note: "Kahn fronts · max_parallel · fail_fast" }
+      - { id: decisions-slot, anchor: decisions, title: Decisions, slot: W-DEC }
+
+  - id: acts
+    title: The acts
+    hub: /verbs
+    hub_exists: true
+    opener: >-
+      A verb is a distinct native execution model: infer thinks, exec runs,
+      invoke calls a tool, agent loops with judgment. The set is closed by
+      design · everything callable is a tool under invoke.
+
+  - id: reach
+    title: The reach
+    hub: /tools
+    hub_exists: true
+    # reach is the one layer with sibling hubs · /tools chains as primary
+    sibling_hubs: [/providers, /templates]
+    opener: >-
+      Reach is what a workflow can touch: the standard library, the model
+      providers, the routing skeletons. Every capability is named, cataloged
+      and versioned · nothing arrives by plugin.
+
+  - id: boundary
+    title: The boundary
+    hub: /boundary
+    hub_exists: false
+    lands: wo-4
+    opener: >-
+      The file declares its blast radius. Permits allowlist what runs, reads,
+      writes and calls · secrets stay masked references. Absent means the
+      engine floor, present means default-deny.
+    sections:
+      - { id: permits, anchor: permits, title: The permit families }
+      - { id: secrets, anchor: secrets, title: Secrets }
+      - { id: ssrf-floor, anchor: ssrf-floor, title: The always-on floor }
+
+  - id: refusals
+    title: The refusals
+    hub: /errors
+    hub_exists: true
+    opener: >-
+      Every refusal has a name. Errors are data: stable codes with a
+      category, a transient flag and a documented fix shape · never prose
+      exceptions.
+    sections:
+      - { id: by-namespace, anchor: namespaces, title: By namespace }
+      - { id: by-category, anchor: categories, title: By category }
+      - { id: grammar, anchor: grammar, title: "The code grammar",
+          note: "NIKA-<NS>-<NNN> · four segments explained" }
+
+  - id: proof
+    title: The proof
+    hub: /proof
+    hub_exists: false
+    lands: wo-4
+    opener: >-
+      A run you can verify, a graph you can read. The proof layer is how
+      Nika shows its work: the run graph, the hash-chained trace, the
+      conformance suite that re-proves every claim.
+    sections:
+      - { id: graph, anchor: graph, title: The run graph,
+          note: "graph_format 2 · the envelope · additive law · edge kinds project from /flow#edges" }
+      - { id: receipt, anchor: receipt, title: The receipt, slot: W5,
+          note: "NDJSON trace · hash chain · verify · resume · fills with the trace wave" }
+      - { id: conformance, anchor: conformance, title: Conformance }
+      - { id: machine, anchor: machine, title: Machine surfaces }
+
+# ─── the sets ────────────────────────────────────────────────────────────────
+# Field key:
+#   source        the gated artifact members derive from (path · field)
+#   clock         spec | release | both (which clock refreshes it · §1bis)
+#   counted_in_canon  canon.yaml carries the count (census verifies)
+#   closed        the spec closes the set (additions are a spec event)
+#   surface       rooms | anchors (three-conditions law arbitrates)
+#   unique_data   the per-member data only this set carries (rooms only)
+#   defined_by    the normative chapter(s) · the authority line on every page
+#   evidence      what proves members live (usage refs · fixtures · catalog)
+
+sets:
+  # ── shape ──────────────────────────────────────────────────────────────────
+  - id: words
+    layer: shape
+    title: The language words
+    source: { artifact: public/schema/workflow.json, via: src/content/language.generated.ts }
+    clock: spec
+    counted_in_canon: false
+    closed: false
+    surface: rooms
+    rooms_url: /language/:word
+    rooms_exist: true
+    unique_data: "per-scope declarations (type · required · enum · pattern · desc) + usage evidence (language-usage.generated.ts)"
+    defined_by: [spec/01-envelope.md, spec/03-dag.md, spec/04-variables.md]
+    # member-level chapter derives by scope: envelope→01 · task/verb blocks→03 · namespaces→04
+    evidence: { kind: usage, ref: src/content/language-usage.generated.ts }
+    opener: >-
+      Every key an author can type in a workflow file, each scoped to the
+      surface where it speaks. The schema declares them · the register lists
+      them all · each room shows the word at work.
+
+  - id: namespaces
+    layer: shape
+    title: The namespaces
+    source: { artifact: src/canon.generated.ts, field: namespaceNames }
+    clock: spec
+    counted_in_canon: true
+    closed: true
+    surface: anchors
+    anchor_page: /language
+    anchor_prefix: ns-
+    defined_by: [spec/04-variables.md]
+    opener: >-
+      Each namespace scopes where a value lives and who may read it: vars for
+      inputs, with for bindings, tasks for outputs, env and secrets for the
+      boundary. The boundary law is four sentences and it is the whole story.
+
+  - id: types
+    layer: shape
+    title: The types
+    slot: W3
+    source: { artifact: public/schema/workflow.json, field: "$defs.typeExpr", pending: true }
+    clock: spec
+    counted_in_canon: false
+    closed: false
+    surface: anchors
+    anchor_page: /language
+    anchor_prefix: type-
+    defined_by: [spec/09-types.md]   # lands with the types wave · not in the vendored tree yet
+    opener: >-
+      Typed contracts for task outputs: types, returns, decode. Ratified with
+      the types wave · this surface fills when the resync brings it.
+
+  # ── flow ───────────────────────────────────────────────────────────────────
+  - id: edge-kinds
+    layer: flow
+    title: The edge kinds
+    source: { constants: true, mirrors: "spec/03-dag.md · the graph edges table", revised_by: [W5] }
+    clock: spec
+    counted_in_canon: false   # deliberately · closed set, spec prose is the source
+    closed: true
+    surface: anchors
+    anchor_page: /flow
+    anchor_prefix: edge-
+    defined_by: [spec/03-dag.md]
+    evidence: { kind: capture, ref: "nika inspect --format json", release_gated: true }
+    opener: >-
+      The run graph speaks a closed set of edge kinds: value bindings, the
+      two observations, control, recovery and the reserved finally. Unknown
+      kinds are reader-tolerated by law · new ones arrive with the spec.
+    members:
+      - { id: value, one_liner: "a with binding referencing a task output · carries the binding name" }
+      - { id: terminal-observation, one_liner: "a status or timing read in with · settles with the producer" }
+      - { id: failure-observation, one_liner: "an error read in with · flows only when the producer failed" }
+      - { id: control, one_liner: "an after entry · carries its gate predicate" }
+      - { id: recovery, one_liner: "an on_error.recover reference · a parking read, not an ordering edge" }
+      - { id: finally, one_liner: "reserved · named so the enum is complete before the trace wave gives cleanup identity", slot: W5 }
+
+  - id: gate-predicates
+    layer: flow
+    title: The gate predicates
+    source: { constants: true, mirrors: "spec/03-dag.md · gate v2", revised_by: [W-DEC] }
+    clock: spec
+    counted_in_canon: false
+    closed: true
+    surface: anchors
+    anchor_page: /flow
+    anchor_prefix: predicate-
+    defined_by: [spec/03-dag.md]
+    evidence: { kind: fixtures, ref: "nika-spec gen-gate-matrix.py · the producer-status × predicate matrix" }
+    opener: >-
+      An after entry gates on producer state: succeeded, failed, skipped or
+      terminal. The full producer-status by predicate matrix is
+      fixture-proven upstream · the site replays it, never re-derives it.
+    members:
+      - { id: succeeded, one_liner: "fire when the producer completed clean" }
+      - { id: failed, one_liner: "fire when the producer failed terminally" }
+      - { id: skipped, one_liner: "fire when the producer was gated out" }
+      - { id: terminal, one_liner: "fire when the producer reached any terminal state" }
+
+  # ── acts ───────────────────────────────────────────────────────────────────
+  - id: verbs
+    layer: acts
+    title: The four verbs
+    source: { artifact: src/canon.generated.ts, field: verbNames }
+    clock: spec
+    counted_in_canon: true
+    closed: true
+    surface: rooms
+    rooms_url: /verbs/:name
+    rooms_exist: true
+    unique_data: "the verb's schema block (accepted words · required shape) + skeleton excerpts + its error namespace"
+    defined_by: [spec/02-verbs.md]
+    evidence: { kind: usage, ref: src/sections/usecases-yaml.generated.ts }
+    opener: >-
+      infer thinks, exec runs, invoke calls a tool, agent loops with
+      judgment. A verb is a distinct native execution model and the set is
+      closed · everything callable is a tool under invoke.
+
+  # ── reach ──────────────────────────────────────────────────────────────────
+  - id: builtins
+    layer: reach
+    title: The standard library
+    source: { artifact: public/tools/catalog.json, field: tools, ratified_twin: "src/canon.generated.ts · builtinNames" }
+    clock: both   # ratified from canon (spec) · shipped from the tools catalog (release)
+    counted_in_canon: true
+    closed: false
+    surface: rooms
+    rooms_url: /tools/:bare
+    rooms_exist: true
+    unique_data: "args JSON Schema per tool + usage evidence (tool-usage.generated.ts) + template grants"
+    defined_by: [stdlib/builtins-v0.1.md]
+    evidence: { kind: usage, ref: src/content/tool-usage.generated.ts }
+    opener: >-
+      Every nika tool the engine ships, each with a JSON Schema for its
+      args. No plugin store · capability is versioned with the engine and
+      granted per file by the boundary.
+
+  - id: tool-families
+    layer: reach
+    title: The tool families
+    source: { artifact: public/tools/catalog.json, field: "tools[].category", derived: true }
+    clock: release
+    counted_in_canon: false
+    closed: false
+    surface: anchors
+    anchor_page: /tools
+    anchor_prefix: ""   # /tools#core · /tools#file · …
+    defined_by: [stdlib/builtins-v0.1.md]
+    promotion: "anchor→room flips here per quarterly search review · no page today (no distinct intent proven)"
+    opener: >-
+      The library groups by intent: core, file, data, introspection, network,
+      media. Families are anchors on the hub · each lists its members with
+      their one-line contracts.
+
+  - id: providers
+    layer: reach
+    title: The providers
+    source: { artifact: public/providers/catalog.json, field: providers, ratified_twin: "src/canon.generated.ts · providerIds*" }
+    clock: release
+    counted_in_canon: true
+    closed: false
+    surface: anchors   # WO-6 fusion verdict (§0.6) · the 16 doorway rooms die in 301
+    anchor_page: /providers
+    anchor_prefix: ""   # /providers#ollama · /providers#mistral · …
+    order: "local-first (locked): the catalog order is the law · local · cloud · mock"
+    unique_data: "env var · api dialect · default and cheap model · capabilities per provider (rendered as hub sections)"
+    defined_by: [stdlib/providers-v0.1.md]
+    moved:
+      # 16 redirects · /providers/:id → /providers#:id · applied at WO-6 ·
+      # redirects.json derives from these lines (output n°13)
+      - { from: /providers/ollama, to: "/providers#ollama" }
+      - { from: /providers/lmstudio, to: "/providers#lmstudio" }
+      - { from: /providers/llamacpp, to: "/providers#llamacpp" }
+      - { from: /providers/localai, to: "/providers#localai" }
+      - { from: /providers/vllm, to: "/providers#vllm" }
+      - { from: /providers/mistral, to: "/providers#mistral" }
+      - { from: /providers/anthropic, to: "/providers#anthropic" }
+      - { from: /providers/openai, to: "/providers#openai" }
+      - { from: /providers/gemini, to: "/providers#gemini" }
+      - { from: /providers/deepseek, to: "/providers#deepseek" }
+      - { from: /providers/xai, to: "/providers#xai" }
+      - { from: /providers/groq, to: "/providers#groq" }
+      - { from: /providers/openrouter, to: "/providers#openrouter" }
+      - { from: /providers/huggingface, to: "/providers#huggingface" }
+      - { from: /providers/nvidia, to: "/providers#nvidia" }
+      - { from: /providers/mock, to: "/providers#mock" }
+    opener: >-
+      Model access is provider-agnostic and local-first: the same file runs
+      on a laptop runtime or a cloud API. Each provider declares its env
+      var, its dialect and its models · the file picks, never the vendor.
+
+  - id: extract-modes
+    layer: reach
+    title: The extract modes
+    source: { artifact: src/canon.generated.ts, field: extractModeNames }
+    clock: spec
+    counted_in_canon: true
+    closed: false
+    surface: anchors
+    anchor_page: /tools/fetch
+    anchor_section: modes
+    anchor_prefix: mode-
+    defined_by: [stdlib/extract-modes-v0.1.md]
+    opener: >-
+      nika fetch extracts structure, not just bytes. Each mode is a named
+      contract with a defined output shape · the modes anchor inside the
+      fetch room because that is where an author meets them.
+
+  - id: templates
+    layer: reach
+    title: The templates
+    source: { artifact: public/templates/catalog.json, field: templates }
+    clock: spec
+    counted_in_canon: true
+    closed: false
+    surface: rooms
+    rooms_url: /templates/:name
+    rooms_exist: true
+    unique_data: "the sha-pinned YAML + intent + slots + the tools each skeleton grants (whitelist scan)"
+    defined_by: [templates/README.md]
+    evidence: { kind: catalog, ref: public/templates/catalog.json }
+    opener: >-
+      Routing skeletons for real work: each template is sha-pinned,
+      conformance-checked and grants exactly the tools it needs. Copy one
+      and the provenance travels with it.
+
+  # ── boundary ───────────────────────────────────────────────────────────────
+  - id: permit-families
+    layer: boundary
+    title: The permit families
+    source: { artifact: public/schema/workflow.json, field: "properties.permits.properties", derived: true }
+    clock: spec
+    counted_in_canon: false
+    closed: true
+    surface: anchors
+    anchor_page: /boundary
+    anchor_prefix: ""   # /boundary#exec · /boundary#fs · /boundary#net · /boundary#tools
+    defined_by: [spec/01-envelope.md]
+    opener: >-
+      Permits fence a run by family: exec for processes, fs for reads and
+      writes, net for the wire, tools for the library. Absent means the
+      engine floor · present means default-deny.
+    members:
+      - { id: exec, one_liner: "which commands may run · false kills the family" }
+      - { id: fs, one_liner: "read and write globs · the walk root is gated" }
+      - { id: net, one_liner: "http allowlist · the SSRF floor stays on regardless" }
+      - { id: tools, one_liner: "which nika tools the file may invoke" }
+
+  - id: secret-sources
+    layer: boundary
+    title: The secret sources
+    source: { artifact: public/schema/workflow.json, field: "properties.secrets.additionalProperties.properties.source.enum", derived: true }
+    clock: spec
+    counted_in_canon: false
+    closed: true
+    surface: anchors
+    anchor_page: /boundary
+    anchor_section: secrets
+    anchor_prefix: secret-
+    defined_by: [spec/04-variables.md]
+    opener: >-
+      A secret is a masked reference, never a literal: it resolves from
+      vault, env or file at run time and stays masked in every log and
+      every trace the run leaves behind.
+    members:
+      - { id: vault, one_liner: "the OS keychain backend · the default posture" }
+      - { id: env, one_liner: "read from the environment at run time" }
+      - { id: file, one_liner: "read from a path the boundary allows" }
+
+  # ── refusals ───────────────────────────────────────────────────────────────
+  - id: error-codes
+    layer: refusals
+    title: The error codes
+    source: { artifact: public/errors/catalog.json, field: codes }
+    clock: spec
+    counted_in_canon: true
+    closed: false
+    surface: rooms
+    rooms_url: /errors/:code
+    rooms_exist: true
+    unique_data: "canonical failure line + category + transient flag · the vendored explain teaching (cause · fix form) when the release-gated vendor lands"
+    defined_by: [spec/05-errors.md]
+    evidence: { kind: catalog, ref: public/errors/catalog.json }
+    opener: >-
+      Every failure the engine can name, as data: a stable code with a
+      category and a transient flag. If the engine can refuse it, the
+      refusal has a name you can retry on, route on and search.
+
+  - id: error-namespaces
+    layer: refusals
+    title: The error namespaces
+    source: { artifact: public/errors/catalog.json, field: namespaces }
+    clock: spec
+    counted_in_canon: true
+    closed: false
+    surface: anchors
+    anchor_page: /errors
+    anchor_prefix: ns-
+    defined_by: [spec/05-errors.md]
+    # two truths, both rendered: the catalog DECLARES the namespaces (14
+    # today, canon agrees) · the codes WITNESS a subset (12 today: IMPL and
+    # PROVIDER declare ranges but ship no codes yet). Declared-empty renders
+    # honestly as such · the census prints both figures.
+    opener: >-
+      Codes group by namespace, one per surface of the engine: parse, DAG,
+      variables, security, each verb and the machine seams. A namespace can
+      exist before its first code ships · the register says so out loud.
+
+  - id: error-categories
+    layer: refusals
+    title: The error categories
+    source: { artifact: public/errors/catalog.json, field: categories }
+    clock: spec
+    counted_in_canon: true
+    closed: false
+    surface: anchors
+    anchor_page: /errors
+    anchor_prefix: cat-
+    defined_by: [spec/05-errors.md]
+    opener: >-
+      A category names the kind of failure, orthogonal to the namespace
+      that raised it. Transient categories are retry candidates · the rest
+      are contract refusals that no retry will fix.
+
+  # ── proof ──────────────────────────────────────────────────────────────────
+  - id: conformance-levels
+    layer: proof
+    title: The conformance levels
+    source: { constants: true, mirrors: "spec/07-conformance.md · three nested levels", revised_by: [W5, W6] }
+    clock: spec
+    counted_in_canon: false
+    closed: true
+    surface: anchors
+    anchor_page: /proof
+    anchor_section: conformance
+    anchor_prefix: level-
+    defined_by: [spec/07-conformance.md]
+    opener: >-
+      Conformance nests: core parses and validates, runtime executes, stdlib
+      proves the library. A higher level includes every lower one · the
+      fixtures are the contract, not the prose.
+    members:
+      - { id: core, one_liner: "parse · validate · DAG · variables · typed errors · no execution" }
+      - { id: runtime, one_liner: "executes verbs · evaluates when and for_each over run state" }
+      - { id: stdlib, one_liner: "proves the v0.1 library surface · the production default" }
+
+  - id: mcp-tools
+    layer: proof
+    title: The oracle tools
+    source: { artifact: src/canon.generated.ts, field: mcpToolNames }
+    clock: spec
+    counted_in_canon: true
+    closed: false
+    surface: anchors
+    anchor_page: /proof
+    anchor_section: machine
+    anchor_prefix: mcp-
+    defined_by: [canon.yaml]   # reference: the engine's MCP crate · no spec chapter owns the oracle
+    opener: >-
+      The read-only oracle an agent loads: check, explain, schema, examples
+      and the rest of the register. The same truth the CLI speaks, served
+      over MCP · nothing here mutates anything.
+
+  - id: showcases
+    layer: proof
+    title: The showcases
+    source: { artifact: src/sections/usecases-yaml.generated.ts, field: SHOWCASE_YAML, upstream: "nika-spec examples/showcase (conformance-gated · manifest-hashed)" }
+    clock: spec
+    counted_in_canon: false
+    closed: false
+    surface: rooms
+    rooms_url: /use-cases/:slug
+    rooms_exist: false
+    lands: wo-5
+    surface_waiver: "rooms land in WO-5 · until then the /use-cases hub carries every member (galerie) · waiver dies with WO-5"
+    unique_data: "the ENTIRE workflow file + its projected DAG model + tier and persona + verbs and tools used (scan)"
+    defined_by: [examples/manifest.yaml]
+    evidence: { kind: conformance, ref: "showcase-projector.py --check · every file passes the spec gate" }
+    opener: >-
+      Real workflows, whole files: each showcase passes the spec conformance
+      gate and ships with its graph. This is the language at work on real
+      jobs, not a demo reel.
+
+  - id: truth-words
+    layer: proof
+    title: The truth words
+    source: { constants: true, mirrors: "mega-plan §1bis · the vocabulary of the truth", site_meta: true }
+    clock: spec
+    counted_in_canon: false
+    closed: false
+    surface: anchors
+    anchor_page: /sources
+    anchor_prefix: ""
+    lands: wo-7
+    surface_waiver: "/sources lands in WO-7 · the meta-set ships with it · waiver dies with WO-7"
+    defined_by: [site:/sources]   # the one site-defined set · it documents the machinery itself
+    opener: >-
+      The vocabulary of how this site tells the truth: spec, canon, schema,
+      pack, pin, catalog, mirror, registry, manifest, atlas. Each word has
+      exactly one meaning · confusing two of them is a prose bug.
+    members:
+      - { id: spec, one_liner: "the nika-spec repo · the truth of the language" }
+      - { id: canon, one_liner: "canon.yaml · the counted sets, spec-first" }
+      - { id: schema, one_liner: "workflow.schema.json · the shapes" }
+      - { id: pack, one_liner: "the spec corpus vendored inside the engine" }
+      - { id: pin, one_liner: "SPEC_PIN · the exact spec sha the engine targets" }
+      - { id: catalog, one_liner: "a machine projection the site serves · byte-diffed in CI" }
+      - { id: mirror, one_liner: "a byte-pinned copy, sha256-verified" }
+      - { id: registry, one_liner: "nika-registry THE PRODUCT · shared workflows, re-proven nightly" }
+      - { id: manifest, one_liner: "the snippet lineage table · every rendered block resolves here" }
+      - { id: atlas, one_liner: "language_graph 1 · the graph of the language, site-side" }
+
+# ─── named surfaces (non-set pages that join the graph) ──────────────────────
+surfaces:
+  - { id: map, url: /map, lands: wo-3, title: The map,
+      role: "the mother page · the anatomy at a glance · every page reachable in 3 nav edges" }
+  - { id: sources, url: /sources, lands: wo-7, title: Sources,
+      role: "the public page of the truth system · the three clocks taught" }
+  - { id: spec-lens, url: /spec, exists: true, rework: wo-7, title: "The spec at a glance",
+      role: "the linear lens · same atlas data, scroll and print form · the hand-body dies" }
+  - { id: sitemap-legacy, url: /sitemap, exists: true,
+      moved: { from: /sitemap, to: /map, applied: wo-3 } }
+
+# ─── the library heroes (§2bis audit input · classed at WO-2) ────────────────
+# Two legal classes exist: re-vendored from spec (pinned) or crafted with the
+# binary gate. A third class does not exist. class: null = the WO-2 audit
+# assigns the verdict and this file records it.
+library_heroes:
+  - { file: public/library/daily-brief.nika.yaml, class: null }
+  - { file: public/library/etl-quarantine.nika.yaml, class: null }
+  - { file: public/library/meeting-actions.nika.yaml, class: null }
+  - { file: public/library/pr-risk-review.nika.yaml, class: null }
+  - { file: public/library/price-watch.nika.yaml, class: null }
+  - { file: public/library/social-repurpose.nika.yaml, class: null }
+  - { file: public/library/standup-digest.nika.yaml, class: null }
