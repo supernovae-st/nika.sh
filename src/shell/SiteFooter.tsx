@@ -43,6 +43,7 @@ const COLS: {
       { label: 'Standard library', to: '/tools' },
       { label: 'Providers', to: '/providers' },
       { label: 'Templates', to: '/templates' },
+      { label: 'Error codes', to: '/errors' },
       { label: 'GitHub', href: REPO },
       { label: 'VS Code extension', href: 'https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang' },
       { label: 'Homebrew tap', href: 'https://github.com/supernovae-st/homebrew-tap' },
