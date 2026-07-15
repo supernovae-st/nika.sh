@@ -807,3 +807,38 @@ export const SNIPPET_REGISTRY: { file: string; kind: string; gate: string; dies?
     "gate": "verb-cards embedding gate (fragment validated as written)"
   }
 ]
+
+/** the capture registry (§2bis law 4): every terminal capture surface, its
+ * command and the gate that pins it — all recorded at the DISPLAYED release
+ * (old pin declared) · new captures are release-gated. */
+export const CAPTURES: { id: string; surface: string; export: string; command: string; gate: string }[] =
+  [
+  {
+    "id": "home-run-explains",
+    "surface": "src/flagships/flagship-data.ts",
+    "export": "FLAGSHIPS",
+    "command": "nika run <flagship>.nika.yaml",
+    "gate": "trace.test.ts honesty suite (recorded traces)"
+  },
+  {
+    "id": "install-first-run",
+    "surface": "src/content/install.ts",
+    "export": "FIRST_RUN_TRANSCRIPT",
+    "command": "nika check hello.nika.yaml",
+    "gate": "version.test.ts pins to ENGINE_VERSION"
+  },
+  {
+    "id": "install-version",
+    "surface": "src/content/install.ts",
+    "export": "VERSION_TRANSCRIPT",
+    "command": "nika --version",
+    "gate": "version.test.ts pins to ENGINE_VERSION"
+  },
+  {
+    "id": "learn-full-file",
+    "surface": "src/content/learn.ts",
+    "export": "FULL_FILE_TRANSCRIPT",
+    "command": "nika check weekly-radar.nika.yaml",
+    "gate": "learn-fragments + version.test.ts"
+  }
+]

@@ -883,6 +883,12 @@ export const SNIPPETS: SnippetRef[] = ${JSON.stringify(snippets, null, 2)}
  * the gate that judges it (from the descriptor's snippet_registry). */
 export const SNIPPET_REGISTRY: { file: string; kind: string; gate: string; dies?: string; note?: string }[] =
   ${JSON.stringify(registry, null, 2)}
+
+/** the capture registry (§2bis law 4): every terminal capture surface, its
+ * command and the gate that pins it — all recorded at the DISPLAYED release
+ * (old pin declared) · new captures are release-gated. */
+export const CAPTURES: { id: string; surface: string; export: string; command: string; gate: string }[] =
+  ${JSON.stringify([...S.sets.capture_registry].sort((a, b) => a.id.localeCompare(b.id)), null, 2)}
 `,
 )
 

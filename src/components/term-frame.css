@@ -101,3 +101,12 @@
 .tf-line--dim {
   color: #626875;
 }
+
+/* ── TermCapture · the §2bis stamp (one calm line under the frame) ── */
+.tc-stamp {
+  margin: 6px 2px 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-faint, rgb(140 160 190 / 0.6));
+}

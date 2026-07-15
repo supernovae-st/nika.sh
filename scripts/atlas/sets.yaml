@@ -715,6 +715,20 @@ library_heroes:
   - { file: public/library/social-repurpose.nika.yaml, class: crafted-room }
   - { file: public/library/standup-digest.nika.yaml, class: crafted-room }
 
+# ─── the capture registry (§2bis · every terminal capture, its command,
+# its gate) · all OLD-PIN captures (recorded at the displayed release ·
+# version.test.ts pins the transcript surfaces to ENGINE_VERSION · the
+# release cascade re-captures) · NEW captures stay release-gated (L5).
+capture_registry:
+  - { id: install-version, surface: src/content/install.ts, export: VERSION_TRANSCRIPT,
+      command: "nika --version", gate: "version.test.ts pins to ENGINE_VERSION" }
+  - { id: install-first-run, surface: src/content/install.ts, export: FIRST_RUN_TRANSCRIPT,
+      command: "nika check hello.nika.yaml", gate: "version.test.ts pins to ENGINE_VERSION" }
+  - { id: learn-full-file, surface: src/content/learn.ts, export: FULL_FILE_TRANSCRIPT,
+      command: "nika check weekly-radar.nika.yaml", gate: "learn-fragments + version.test.ts" }
+  - { id: home-run-explains, surface: src/flagships/flagship-data.ts, export: FLAGSHIPS,
+      command: "nika run <flagship>.nika.yaml", gate: "trace.test.ts honesty suite (recorded traces)" }
+
 # ─── the snippet registry (§2bis · the one gate-map of inline YAML) ──────────
 # Every NON-generated source file that carries a `nika: v1` literal, each
 # with the gate that already judges it. The no-floating-code lint refuses

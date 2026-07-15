@@ -9,7 +9,7 @@ import { tokenize } from '../components/codefile-highlight'
 import { STEPS, ERROR_JSON, DICT, FULL_FILE, FULL_FILE_TRANSCRIPT } from '../content/learn'
 import { LearnCheck } from '../components/LearnCheck'
 import { InstallCommand } from '../components/InstallCommand'
-import { TermFrame } from '../components/TermFrame'
+import { TermCapture } from '../components/TermCapture'
 import { track } from '../lib/track'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -428,7 +428,7 @@ export function Component() {
               <div className="lrn-frame v4-frame-canvas">
                 <LearnFile yaml={FULL_FILE} filename="weekly-radar.nika.yaml" />
               </div>
-              <TermFrame title="what the engine says" lines={FULL_FILE_TRANSCRIPT} />
+              <TermCapture title="what the engine says" lines={FULL_FILE_TRANSCRIPT} command="nika check weekly-radar.nika.yaml" />
             </div>
           </div>
 

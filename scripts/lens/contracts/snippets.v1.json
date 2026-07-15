@@ -794,7 +794,7 @@
     },
     {
       "path": "src/pages/Install.tsx",
-      "source_blob": "218ebb2ac2dab73aa70c08daf40014c332f2866a",
+      "source_blob": "5b1b975fd4e1a1681a136bf30de939a8364a25a9",
       "blocks": [
         {
           "selector": "src/pages/Install.tsx#codefile:1",
@@ -812,7 +812,7 @@
     },
     {
       "path": "src/pages/Learn.tsx",
-      "source_blob": "c1157b689a5e45e065d8dc5f11dbb41a6e148ece",
+      "source_blob": "5c93b8a9cef3a5e7bdf8a97893358bc9bbd1ea56",
       "blocks": [
         {
           "selector": "src/pages/Learn.tsx#codefile:1",

@@ -6,7 +6,7 @@ import { ATLAS_NODES, ATLAS_EDGES, ATLAS_INDEX } from '../content/atlas.generate
 import { ATLAS_PROVENANCE, ATLAS_SET_COUNTS, ATLAS_HUBS, ATLAS_SCORE } from '../content/atlas-meta.generated'
 import { JSONLD_TERMSETS } from '../content/jsonld.generated'
 import { MARKET_VOCAB } from '../content/market-vocab.generated'
-import { SNIPPETS, SNIPPET_REGISTRY } from '../content/snippets.generated'
+import { SNIPPETS, SNIPPET_REGISTRY, CAPTURES } from '../content/snippets.generated'
 import { PATHS } from '../../site.config'
 
 /* ── the atlas compiler gates ─────────────────────────────────────────────────
@@ -226,6 +226,16 @@ describe('atlas · the snippet manifest (§2bis · no floating code)', () => {
     for (const r of SNIPPET_REGISTRY) {
       expect(() => readFileSync(join(ROOT, r.file), 'utf8'), r.file).not.toThrow()
       expect(r.gate.length, r.file).toBeGreaterThan(8)
+    }
+  })
+
+  it('every registered capture surface exists, exports its transcript and names its gate (§2bis law 4)', () => {
+    expect(CAPTURES.length).toBeGreaterThanOrEqual(4)
+    for (const c of CAPTURES) {
+      const body = readFileSync(join(ROOT, c.surface), 'utf8')
+      expect(body.includes(c.export), `${c.id}: ${c.export} not exported by ${c.surface}`).toBe(true)
+      expect(c.command.startsWith('nika '), c.id).toBe(true)
+      expect(c.gate.length, c.id).toBeGreaterThan(8)
     }
   })
 

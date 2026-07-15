@@ -5,7 +5,7 @@ import { routeHead, ENGINE_VERSION, DOCS } from '../content'
 import { CodeFile } from '../components/CodeFile'
 import { CopyRow } from '../components/CopyRow'
 import { InstallCommand } from '../components/InstallCommand'
-import { TermFrame } from '../components/TermFrame'
+import { TermCapture } from '../components/TermCapture'
 import {
   INSTALL_SH_CMD,
   VERIFY_CMD,
@@ -125,7 +125,7 @@ export function Component() {
               <div className="ins-step-body ins-step-body--stack">
                 <InstallCommand />
                 {/* the anti-anxiety beat · what a good install answers (verbatim) */}
-                <TermFrame title="what you should see" lines={VERSION_TRANSCRIPT} />
+                <TermCapture title="what you should see" lines={VERSION_TRANSCRIPT} command="nika --version" />
               </div>
             </li>
 
@@ -253,7 +253,7 @@ export function Component() {
                 </div>
                 {/* the verdicts this exact file earns · captured from the real
                     binary (content/install.ts · the honesty law) */}
-                <TermFrame title="what you should see" lines={FIRST_RUN_TRANSCRIPT} />
+                <TermCapture title="what you should see" lines={FIRST_RUN_TRANSCRIPT} command="nika check hello.nika.yaml" />
                 <div className="ins-frame v4-frame-canvas">
                   <CodeFile yaml={HELLO_AI_YAML} filename="hello-ai.nika.yaml" wrap tips />
                 </div>
