@@ -35,8 +35,12 @@ describe('/llms.txt · every nika.sh URL it cites resolves', () => {
       /\.[a-z0-9]+$/i.test(base) && existsSync(join(ROOT, 'public', ...base.slice(1).split('/')))
     /* served icon catalog pattern — a directory of generated files */
     const isIconPattern = base.startsWith('/brand/icons/')
+    /* build-derived live contracts — written at closeBundle (vite.config
+       sitemap plugin), never committed; presence in dist/ is enforced by
+       gate.yml's live-URL contract step on every push */
+    const isBuildDerived = base === '/sitemap.xml'
     expect(
-      isRoute || isPublicFile || isIconPattern,
+      isRoute || isPublicFile || isIconPattern || isBuildDerived,
       `${path} is neither a prerendered route nor a public/ file`,
     ).toBe(true)
   })
