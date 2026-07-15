@@ -13,6 +13,7 @@ import { checkNika, type LintDiag } from '../lib/nika-lint'
 import { useAurora } from '../fx/aurora-context'
 import { routeHead } from '../content'
 import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
+import { PLAY_BREAKS } from './play-breaks'
 import { NIKA_VERBS, verbGlyph, type NikaVerb } from '../components/codefile-highlight'
 import { InstallCommand } from '../components/InstallCommand'
 import '../sections/v4-home.css'
@@ -411,13 +412,31 @@ export function Component() {
                       <code>nika check</code> runs the full audit. Ship it with{' '}
                       <code>nika run {seed}.nika.yaml</code>.
                     </p>
-                    {(seed === 'human-gated-ship' || seed === 'resume-screener') && (
-                      <p className="play-pass-experiment">
-                        Experiment · this file declares <code>permits:</code> · its whole blast
-                        radius, in-file. Remove an entry from <code>permits.tools</code> and watch{' '}
-                        <code>NIKA-SEC-004</code> fire: once the boundary is declared, the body must
-                        fit it.
-                      </p>
+                    {/* U8 · break it: ONE authored mutation per template seed —
+                        the button applies the real edit, the port fires the
+                        real code, the room teaches the rest (every promise
+                        test-proven in play-breaks.test.ts). The old
+                        human-gated prose experiment graduated into this. */}
+                    {PLAY_BREAKS[seed] && code.includes(PLAY_BREAKS[seed].find) && (
+                      <div className="play-break">
+                        <p className="play-break-lesson">{PLAY_BREAKS[seed].lesson}</p>
+                        <p className="play-break-row">
+                          <button
+                            type="button"
+                            className="play-break-btn"
+                            onClick={() => {
+                              const b = PLAY_BREAKS[seed]
+                              track('play-break')
+                              onCode(code.replace(b.find, b.replace))
+                            }}
+                          >
+                            Break it · {PLAY_BREAKS[seed].label.toLowerCase()}
+                          </button>
+                          <a className="play-break-code" href={`/errors/${PLAY_BREAKS[seed].fires}`}>
+                            {PLAY_BREAKS[seed].fires}
+                          </a>
+                        </p>
+                      </div>
                     )}
                   </div>
                 ) : (

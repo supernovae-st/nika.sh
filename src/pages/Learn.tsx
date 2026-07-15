@@ -7,6 +7,7 @@ import { CodeFile } from '../components/CodeFile'
 import { DecodeText } from '../fx/DecodeText'
 import { tokenize } from '../components/codefile-highlight'
 import { STEPS, ERROR_JSON, DICT, FULL_FILE, FULL_FILE_TRANSCRIPT } from '../content/learn'
+import { LearnCheck } from '../components/LearnCheck'
 import { InstallCommand } from '../components/InstallCommand'
 import { TermFrame } from '../components/TermFrame'
 import { track } from '../lib/track'
@@ -376,6 +377,9 @@ export function Component() {
                   <LearnFile yaml={s.yaml} filename={s.file} />
                 </div>
                 {s.dag && <WeeklyRadarDag />}
+                {/* I7 · the inline check — one per step MAX, only where a
+                    misread is likely (the data decides; zero here is fine) */}
+                {s.check && <LearnCheck check={s.check} />}
               </li>
             ))}
           </ol>

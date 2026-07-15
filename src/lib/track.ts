@@ -21,6 +21,7 @@ declare global {
 export type FunnelEvent =
   | 'install-copy'
   | 'play-run'
+  | 'play-break'
   | 'learn-done'
   | 'github-out'
   | 'convert-open'

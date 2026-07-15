@@ -55,6 +55,19 @@ export interface Step {
   note?: string
   /** step 06 renders the 2D mini-DAG plate under the text + file pair */
   dag?: boolean
+  /** the inline check (I7 · WO-11) — at most ONE per step, only where a
+      misread is likely; the answer explains itself; no streaks, no
+      points, no badges (the Rust-Book quiz pattern minus the game). */
+  check?: LearnCheck
+}
+
+export interface LearnCheck {
+  q: string
+  options: string[]
+  /** index into options */
+  answer: number
+  /** the explanation shown after ANY pick — the teaching, not a reward */
+  why: string
 }
 
 export const STEPS: Step[] = [
@@ -84,6 +97,12 @@ workflow:
     required: true
     description: "Subject to research"`,
     note: 'Use it anywhere as ${{ vars.topic }}. Change the input, not the file.',
+    check: {
+      q: 'Next week the topic changes. What do you edit?',
+      options: ['The file, then re-save it', 'Nothing: pass the new value on the command line', 'A separate config file'],
+      answer: 1,
+      why: 'vars are the declared inputs: nika run radar.nika.yaml --var topic="new subject". The file stays the contract; the inputs move per run.',
+    },
   },
   {
     n: '03',
@@ -133,6 +152,12 @@ digest:
   infer:
     prompt: "Cross-reference \${{ with.news }} with \${{ with.log }}…"`,
     note: 'fetch_news and repo_log run at the same time. digest waits for both. For order with no data, there is after: — { producer: succeeded }.',
+    check: {
+      q: 'digest reads ${{ tasks.fetch_news.output }} in with:. What did that line just do?',
+      options: ['Copied a value once, at parse time', 'Created an edge: digest now waits for fetch_news', 'Nothing until you also declare the dependency'],
+      answer: 1,
+      why: 'The binding IS the edge. There is no separate dependency list to maintain: reading a task\u2019s output is what makes you wait for it.',
+    },
   },
   {
     n: '06',
@@ -179,6 +204,12 @@ digest:
   when: \${{ with.errors > 0 }}
   invoke:
     tool: "nika:notify"`,
+    check: {
+      q: 'check failed outright. What happens to alert and its when: test?',
+      options: ['when: is evaluated anyway, on empty data', 'alert never reaches its when: · the missing value settles it first', 'alert runs, because when: only reads bindings'],
+      answer: 1,
+      why: 'when: is business logic AFTER the wiring admits the task. A value that can never exist settles the reader before any condition runs.',
+    },
   },
   {
     n: '08',
@@ -196,6 +227,12 @@ digest:
   infer:
     prompt: "…"`,
     note: 'A failed call retries with backoff; if it still fails, the cached result steps in.',
+    check: {
+      q: 'The error says transient: false. What does retrying buy you?',
+      options: ['A fresh chance: every error deserves three tries', 'Nothing: the contract is broken, the same input fails the same way', 'It depends on the provider'],
+      answer: 1,
+      why: 'transient marks the retry candidates (network, 503, rate limits). A validation refusal is deterministic: fix the file, not the schedule.',
+    },
   },
   {
     n: '09',
