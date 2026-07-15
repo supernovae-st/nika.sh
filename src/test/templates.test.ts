@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { TEMPLATES, TEMPLATE_INDEX } from '../content/templates.generated'
@@ -25,6 +25,31 @@ describe('/templates · the compiled projection matches the served catalog', () 
     const fresh = readFileSync(join(ROOT, 'src/content/templates.generated.ts'), 'utf8')
     expect(fresh).toBe(committed)
   })
+
+  /* the FRESHNESS leg (the lint-fixtures precedent · RISK B of the PRE1
+     census): the committed catalog is the release authority, and stage 1
+     regex-parses the spec README's prose (intent · patterns · routing) —
+     fields the sha/count gates below never see. Re-deriving from the
+     sibling spec and byte-diffing catches EVERY parsed field, so a README
+     edit or a hand edit of the committed catalog goes red naming the file,
+     never ships silently wrong. Plain CI has no spec checkout — skipped
+     there; the dev machine and the resync cron are the surfaces. */
+  const specTemplates =
+    process.env.NIKA_SPEC_ROOT != null
+      ? join(process.env.NIKA_SPEC_ROOT, 'templates')
+      : [
+          join(ROOT, '../spec/repo/templates'),
+          join(ROOT, '../../../../..', 'ventures/nika/02-engineering/repos/spec/repo/templates'),
+        ].find((p) => existsSync(p)) ?? ''
+  it.skipIf(!existsSync(specTemplates))(
+    'catalog.json is exactly what the spec pack derives today (prose fields included)',
+    () => {
+      const committed = readFileSync(join(ROOT, 'public/templates/catalog.json'), 'utf8')
+      execFileSync('node', [join(ROOT, 'scripts/build-templates.mjs')], { env: { ...process.env } })
+      const fresh = readFileSync(join(ROOT, 'public/templates/catalog.json'), 'utf8')
+      expect(fresh).toBe(committed)
+    },
+  )
 
   it('the pack size IS the spec vocabulary (CANON.templates, exactly)', () => {
     expect(TEMPLATES.length).toBe(CANON.templates)
