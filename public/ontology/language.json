@@ -1905,7 +1905,11 @@
       "status": "both",
       "opener": "Reach is what a workflow can touch: the standard library, the model providers, the routing skeletons. Every capability is named, cataloged and versioned · nothing arrives by plugin.",
       "exists": true,
-      "lands": null
+      "lands": null,
+      "sibling_hubs": [
+        "/providers",
+        "/templates"
+      ]
     },
     {
       "id": "layer:refusals",
@@ -2756,7 +2760,8 @@
       "closed": false,
       "counted_in_canon": true,
       "surface": "rooms",
-      "clock": "both"
+      "clock": "both",
+      "page_exists": true
     },
     {
       "id": "set:conformance-levels",
@@ -2769,7 +2774,8 @@
       "closed": true,
       "counted_in_canon": false,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": false
     },
     {
       "id": "set:edge-kinds",
@@ -2782,7 +2788,8 @@
       "closed": true,
       "counted_in_canon": false,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": false
     },
     {
       "id": "set:error-categories",
@@ -2795,7 +2802,8 @@
       "closed": false,
       "counted_in_canon": true,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "set:error-codes",
@@ -2808,7 +2816,8 @@
       "closed": false,
       "counted_in_canon": true,
       "surface": "rooms",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "set:error-namespaces",
@@ -2821,7 +2830,8 @@
       "closed": false,
       "counted_in_canon": true,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "set:extract-modes",
@@ -2834,7 +2844,8 @@
       "closed": false,
       "counted_in_canon": true,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "set:gate-predicates",
@@ -2847,7 +2858,8 @@
       "closed": true,
       "counted_in_canon": false,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": false
     },
     {
       "id": "set:mcp-tools",
@@ -2860,7 +2872,8 @@
       "closed": false,
       "counted_in_canon": true,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": false
     },
     {
       "id": "set:namespaces",
@@ -2873,7 +2886,8 @@
       "closed": true,
       "counted_in_canon": true,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "set:permit-families",
@@ -2886,7 +2900,8 @@
       "closed": true,
       "counted_in_canon": false,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": false
     },
     {
       "id": "set:providers",
@@ -2899,7 +2914,8 @@
       "closed": false,
       "counted_in_canon": true,
       "surface": "anchors",
-      "clock": "release"
+      "clock": "release",
+      "page_exists": true
     },
     {
       "id": "set:secret-sources",
@@ -2912,7 +2928,8 @@
       "closed": true,
       "counted_in_canon": false,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": false
     },
     {
       "id": "set:showcases",
@@ -2925,7 +2942,8 @@
       "closed": false,
       "counted_in_canon": false,
       "surface": "rooms",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": false
     },
     {
       "id": "set:templates",
@@ -2938,7 +2956,8 @@
       "closed": false,
       "counted_in_canon": true,
       "surface": "rooms",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "set:tool-families",
@@ -2951,7 +2970,8 @@
       "closed": false,
       "counted_in_canon": false,
       "surface": "anchors",
-      "clock": "release"
+      "clock": "release",
+      "page_exists": true
     },
     {
       "id": "set:truth-words",
@@ -2964,7 +2984,8 @@
       "closed": false,
       "counted_in_canon": false,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": false
     },
     {
       "id": "set:types",
@@ -2977,7 +2998,8 @@
       "closed": false,
       "counted_in_canon": false,
       "surface": "anchors",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "set:verbs",
@@ -2990,7 +3012,8 @@
       "closed": true,
       "counted_in_canon": true,
       "surface": "rooms",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "set:words",
@@ -3003,7 +3026,8 @@
       "closed": false,
       "counted_in_canon": false,
       "surface": "rooms",
-      "clock": "spec"
+      "clock": "spec",
+      "page_exists": true
     },
     {
       "id": "showcase:t1-image-fx-batch",

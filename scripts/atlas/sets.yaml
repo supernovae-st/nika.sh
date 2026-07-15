@@ -571,15 +571,46 @@ surfaces:
   - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: false,
       moved: { from: /sitemap, to: /map, applied: wo-3 } }
 
-# ─── the library heroes (§2bis audit input · classed at WO-2) ────────────────
+# ─── the library heroes (§2bis audit · VERDICT · WO-2b 2026-07-15) ──────────
 # Two legal classes exist: re-vendored from spec (pinned) or crafted with the
-# binary gate. A third class does not exist. class: null = the WO-2 audit
-# assigns the verdict and this file records it.
+# binary gate. A third class does not exist.
+#
+# AUDIT RECEIPTS (evidence at the binary + the test suite):
+#  · all 7 are FLAGSHIPS: real recorded traces (src/flagships/traces ·
+#    trace.test.ts honesty suite) + served copies byte-pinned to the rendered
+#    module (served-library.test.ts) + registered sourceUrl (the source ↗ law).
+#  · 5 of 7 share a showcase name upstream but the bodies DIVERGED on
+#    purpose (recorded runs) · daily-brief and pr-risk-review have no
+#    upstream twin → the vendored class is false for all 7.
+#  · `nika check` at the RELEASED 0.103.0 refuses all 7 (NIKA-PARSE-019:
+#    the W2 envelope's `workflow:` object vs the pre-W2 scalar) — the
+#    binary-check leg of the crafted gate is RELEASE-GATED until the first
+#    W2+ train · the schema gate (AJV, full file) holds today.
+library_heroes_gates: "served byte-pin (served-library.test.ts) · recorded-trace honesty (trace.test.ts) · plan parity (library.test.ts) · schema AJV · binary check RELEASE-GATED (pre-W2 released binary refuses the W2 envelope)"
 library_heroes:
-  - { file: public/library/daily-brief.nika.yaml, class: null }
-  - { file: public/library/etl-quarantine.nika.yaml, class: null }
-  - { file: public/library/meeting-actions.nika.yaml, class: null }
-  - { file: public/library/pr-risk-review.nika.yaml, class: null }
-  - { file: public/library/price-watch.nika.yaml, class: null }
-  - { file: public/library/social-repurpose.nika.yaml, class: null }
-  - { file: public/library/standup-digest.nika.yaml, class: null }
+  - { file: public/library/daily-brief.nika.yaml, class: crafted-room }
+  - { file: public/library/etl-quarantine.nika.yaml, class: crafted-room }
+  - { file: public/library/meeting-actions.nika.yaml, class: crafted-room }
+  - { file: public/library/pr-risk-review.nika.yaml, class: crafted-room }
+  - { file: public/library/price-watch.nika.yaml, class: crafted-room }
+  - { file: public/library/social-repurpose.nika.yaml, class: crafted-room }
+  - { file: public/library/standup-digest.nika.yaml, class: crafted-room }
+
+# ─── the snippet registry (§2bis · the one gate-map of inline YAML) ──────────
+# Every NON-generated source file that carries a `nika: v1` literal, each
+# with the gate that already judges it. The no-floating-code lint refuses
+# any file outside this registry (generated modules are the other legal
+# home). Render-time enforcement (CodeFile/TermCapture require a ref)
+# deploys at WO-4/5 — this registry is the compile-time porte.
+snippet_registry:
+  - { file: src/content/changelog.ts, kind: crafted-room, gate: "onpage-yaml AJV (full-file law)" }
+  - { file: src/content/install.ts, kind: engine-capture, gate: "version.test.ts pins the transcript to ENGINE_VERSION" }
+  - { file: src/content/learn.ts, kind: learn-fragment, gate: "learn-fragments.test.ts (FULL_FILE AJV)" }
+  - { file: src/content/sitemap.ts, kind: crafted-room, gate: "onpage-yaml AJV", dies: wo-3 }
+  - { file: src/flagships/flagship-data.ts, kind: library-hero, gate: "served byte-pin + recorded traces (see library_heroes_gates)" }
+  - { file: src/pages/Convert.tsx, kind: crafted-room, gate: "convert PROOF export + AJV" }
+  - { file: src/pages/NotFound.tsx, kind: crafted-room, gate: "the 404 file is a VALID workflow (the law has no exception)" }
+  - { file: src/pages/Spec.tsx, kind: crafted-room, gate: "onpage-yaml AJV", dies: wo-7, note: "the hand body dies when /spec becomes the generated lens" }
+  - { file: src/sections/EditorCanvas.tsx, kind: crafted-room, gate: "play lint (nika-lint.test.ts) + onpage-yaml" }
+  - { file: src/sections/morph/plain-words.ts, kind: crafted-room, gate: "onpage-yaml AJV (the film corpus)" }
+  - { file: src/sections/verbs-data.ts, kind: crafted-room, gate: "verb-cards embedding gate (fragment validated as written)" }

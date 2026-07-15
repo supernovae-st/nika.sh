@@ -21,6 +21,12 @@ export interface AtlasNode {
   clock?: string
   exists?: boolean
   lands?: string | null
+  /** set nodes: their page is served today (consumers never point at a hub
+   * that has not landed yet) */
+  page_exists?: boolean
+  /** layer nodes: register hubs that share the layer (reach: providers ·
+   * templates) */
+  sibling_hubs?: string[]
   meta?: Record<string, unknown>
 }
 
@@ -1938,7 +1944,11 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "both",
     "opener": "Reach is what a workflow can touch: the standard library, the model providers, the routing skeletons. Every capability is named, cataloged and versioned · nothing arrives by plugin.",
     "exists": true,
-    "lands": null
+    "lands": null,
+    "sibling_hubs": [
+      "/providers",
+      "/templates"
+    ]
   },
   {
     "id": "layer:refusals",
@@ -2789,7 +2799,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": true,
     "surface": "rooms",
-    "clock": "both"
+    "clock": "both",
+    "page_exists": true
   },
   {
     "id": "set:conformance-levels",
@@ -2802,7 +2813,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": true,
     "counted_in_canon": false,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": false
   },
   {
     "id": "set:edge-kinds",
@@ -2815,7 +2827,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": true,
     "counted_in_canon": false,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": false
   },
   {
     "id": "set:error-categories",
@@ -2828,7 +2841,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": true,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "set:error-codes",
@@ -2841,7 +2855,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": true,
     "surface": "rooms",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "set:error-namespaces",
@@ -2854,7 +2869,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": true,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "set:extract-modes",
@@ -2867,7 +2883,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": true,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "set:gate-predicates",
@@ -2880,7 +2897,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": true,
     "counted_in_canon": false,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": false
   },
   {
     "id": "set:mcp-tools",
@@ -2893,7 +2911,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": true,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": false
   },
   {
     "id": "set:namespaces",
@@ -2906,7 +2925,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": true,
     "counted_in_canon": true,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "set:permit-families",
@@ -2919,7 +2939,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": true,
     "counted_in_canon": false,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": false
   },
   {
     "id": "set:providers",
@@ -2932,7 +2953,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": true,
     "surface": "anchors",
-    "clock": "release"
+    "clock": "release",
+    "page_exists": true
   },
   {
     "id": "set:secret-sources",
@@ -2945,7 +2967,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": true,
     "counted_in_canon": false,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": false
   },
   {
     "id": "set:showcases",
@@ -2958,7 +2981,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": false,
     "surface": "rooms",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": false
   },
   {
     "id": "set:templates",
@@ -2971,7 +2995,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": true,
     "surface": "rooms",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "set:tool-families",
@@ -2984,7 +3009,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": false,
     "surface": "anchors",
-    "clock": "release"
+    "clock": "release",
+    "page_exists": true
   },
   {
     "id": "set:truth-words",
@@ -2997,7 +3023,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": false,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": false
   },
   {
     "id": "set:types",
@@ -3010,7 +3037,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": false,
     "surface": "anchors",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "set:verbs",
@@ -3023,7 +3051,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": true,
     "counted_in_canon": true,
     "surface": "rooms",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "set:words",
@@ -3036,7 +3065,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "closed": false,
     "counted_in_canon": false,
     "surface": "rooms",
-    "clock": "spec"
+    "clock": "spec",
+    "page_exists": true
   },
   {
     "id": "showcase:t1-image-fx-batch",

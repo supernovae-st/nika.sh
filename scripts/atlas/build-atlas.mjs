@@ -210,7 +210,24 @@ for (const layer of S.sets.layers) {
     opener: layer.opener.trim(),
     exists: layer.hub_exists,
     lands: layer.lands ?? null,
+    ...(layer.sibling_hubs ? { sibling_hubs: layer.sibling_hubs } : {}),
   })
+}
+
+/* which PAGES exist today (set nodes carry page_exists so consumers — the
+   a11y sweep, nav — never point at a hub that has not landed yet) */
+const existingPages = new Set()
+for (const l of S.sets.layers) {
+  if (l.hub_exists) {
+    existingPages.add(l.hub)
+    for (const sib of l.sibling_hubs ?? []) existingPages.add(sib)
+  }
+}
+for (const surf of S.sets.surfaces) if (surf.exists) existingPages.add(surf.url)
+for (const set of S.sets.sets) {
+  if (set.surface === 'rooms' && set.rooms_exist) {
+    existingPages.add(`/${set.rooms_url.split('/')[1]}`)
+  }
 }
 
 const chapterFiles = [...new Set(S.sets.sets.flatMap((s) => s.defined_by))].sort()
@@ -241,6 +258,7 @@ for (const surf of S.sets.surfaces) {
 
 for (const set of S.sets.sets) {
   const setNode = `set:${set.id}`
+  const setPage = (set.surface === 'rooms' ? `/${(set.rooms_url ?? '/x').split('/')[1]}` : set.anchor_page ?? '').split('#')[0]
   nodes.push({
     id: setNode,
     kind: 'set',
@@ -253,6 +271,7 @@ for (const set of S.sets.sets) {
     counted_in_canon: set.counted_in_canon,
     surface: set.surface,
     clock: set.clock,
+    page_exists: existingPages.has(setPage) || [...existingPages].some((p) => setPage.startsWith(`${p}/`)),
   })
   addEdge(setNode, `layer:${set.layer}`, 'member-of')
   for (const ch of set.defined_by) {
@@ -402,12 +421,17 @@ const setCounts = Object.fromEntries(
 const deductions = []
 const waived = []
 const unarmed = [
-  'heroes-class → arms with the snippet manifest leg (wo2b)',
   'capture-stamps → arms at wo-4 (TermCapture)',
   'count-links (CanonCount deployment) → arms at wo-3',
   'keyboard+touch verdicts → arm at wo-12',
   'hreflang coverage → arms at wo-9',
 ]
+/* heroes-class ARMED (wo2b): an unclassed hero deducts −5 by name */
+for (const h of S.sets.library_heroes ?? []) {
+  if (!h.class) deductions.push({ points: 5, why: `${h.file}: library hero unclassed (§2bis)` })
+  else if (!['spec-vendored', 'crafted-room'].includes(h.class))
+    deductions.push({ points: 5, why: `${h.file}: illegal class ${h.class} (a third class does not exist)` })
+}
 for (const set of S.sets.sets) {
   if (set.slot) continue // W3/W-DEC slots resolve when their wave ships
   if (set.surface === 'rooms' && set.rooms_exist === false) {
@@ -471,6 +495,12 @@ const atlasTs = GEN(
   clock?: string
   exists?: boolean
   lands?: string | null
+  /** set nodes: their page is served today (consumers never point at a hub
+   * that has not landed yet) */
+  page_exists?: boolean
+  /** layer nodes: register hubs that share the layer (reach: providers ·
+   * templates) */
+  sibling_hubs?: string[]
   meta?: Record<string, unknown>
 }
 
@@ -596,6 +626,61 @@ export const MARKET_VOCAB: Record<string, { term: string; volume_mo: number; kd:
 `,
 )
 
+/* snippets manifest (output 14 · §2bis: the lineage of every code block) */
+const snippets = []
+for (const t of S.templates.templates) {
+  snippets.push({
+    id: `snip:template:${t.name}`,
+    source: { kind: 'spec-template', artifact: `templates/${t.file}`, pin: S.specPin, sha256: t.sha256 },
+    gates: ['templates catalog byte-diff (vitest)', 'sha-pinned at the catalog'],
+    badge: 're-proven at every push',
+    rendered_on: [`/templates/${t.name}`],
+  })
+}
+for (const slug of Object.keys(S.dag).sort()) {
+  snippets.push({
+    id: `snip:showcase:${slug}`,
+    source: { kind: 'spec-showcase', artifact: `examples/showcase/${slug}.nika.yaml`, pin: S.specPin },
+    gates: ['showcase-projector --check (byte parity)', 'spec conformance gate upstream'],
+    badge: 're-proven at every push',
+    rendered_on: ['/use-cases'],
+  })
+}
+for (const h of S.sets.library_heroes) {
+  if (!h.class) throw new Error(`library hero unclassed: ${h.file} (the §2bis audit owes a verdict)`)
+  snippets.push({
+    id: `snip:hero:${h.file.replace(/^public\/library\//, '').replace(/\.nika\.yaml$/, '')}`,
+    source: { kind: h.class, artifact: h.file, pin: null },
+    gates: S.sets.library_heroes_gates.split(' · '),
+    badge: 'checked against the binary (release-gated: pre-W2 released binary refuses the W2 envelope)',
+    rendered_on: ['/', `/${h.file.replace(/^public\//, '')}`],
+  })
+}
+snippets.sort((a, b) => a.id.localeCompare(b.id))
+const registry = [...S.sets.snippet_registry].sort((a, b) => a.file.localeCompare(b.file))
+const snippetsTs = GEN(
+  'snippets.generated.ts',
+  `/** the snippet manifest (§2bis « no floating code ») — every code block
+ * rendered anywhere resolves here or lives in a registered file below.
+ * The lint (atlas.test.ts) refuses a nika-yaml literal outside this map. */
+export interface SnippetRef {
+  id: string
+  source: { kind: string; artifact: string; pin: string | null; sha256?: string }
+  gates: string[]
+  /** the §2bis gate badge — the confidence said in a few words */
+  badge: string
+  rendered_on: string[]
+}
+
+export const SNIPPETS: SnippetRef[] = ${JSON.stringify(snippets, null, 2)}
+
+/** non-generated source files legally carrying inline nika-yaml, each with
+ * the gate that judges it (from the descriptor's snippet_registry). */
+export const SNIPPET_REGISTRY: { file: string; kind: string; gate: string; dies?: string; note?: string }[] =
+  ${JSON.stringify(registry, null, 2)}
+`,
+)
+
 /* redirects (moved → data · e2e replays live entries) */
 const redirects = []
 for (const set of S.sets.sets) {
@@ -629,6 +714,7 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/atlas-meta.generated.ts'), metaTs)
   writeFileSync(join(ROOT, 'src/content/jsonld.generated.ts'), jsonldTs)
   writeFileSync(join(ROOT, 'src/content/market-vocab.generated.ts'), vocabTs)
+  writeFileSync(join(ROOT, 'src/content/snippets.generated.ts'), snippetsTs)
   mkdirSync(join(ROOT, 'public/ontology'), { recursive: true })
   writeFileSync(join(ROOT, 'public/ontology/language.json'), JSON.stringify(twin, null, 2) + '\n')
   writeFileSync(join(ROOT, 'public/redirects.json'), redirectsJson)

@@ -6,6 +6,7 @@ import { ATLAS_NODES, ATLAS_EDGES, ATLAS_INDEX } from '../content/atlas.generate
 import { ATLAS_PROVENANCE, ATLAS_SET_COUNTS, ATLAS_HUBS, ATLAS_SCORE } from '../content/atlas-meta.generated'
 import { JSONLD_TERMSETS } from '../content/jsonld.generated'
 import { MARKET_VOCAB } from '../content/market-vocab.generated'
+import { SNIPPETS, SNIPPET_REGISTRY } from '../content/snippets.generated'
 import { PATHS } from '../../site.config'
 
 /* ── the atlas compiler gates ─────────────────────────────────────────────────
@@ -22,6 +23,7 @@ const OUTPUTS = [
   'src/content/atlas-meta.generated.ts',
   'src/content/jsonld.generated.ts',
   'src/content/market-vocab.generated.ts',
+  'src/content/snippets.generated.ts',
   'public/ontology/language.json',
   'public/redirects.json',
 ]
@@ -189,6 +191,75 @@ describe('atlas · jsonld and market vocab stay lawful', () => {
         }
       }
     }
+  })
+})
+
+describe('atlas · the snippet manifest (§2bis · no floating code)', () => {
+  it('templates and showcases are manifest-covered with their pins and shas', () => {
+    const templates = SNIPPETS.filter((s) => s.source.kind === 'spec-template')
+    const catalog = JSON.parse(readFileSync(join(ROOT, 'public/templates/catalog.json'), 'utf8')) as {
+      templates: { name: string; sha256: string }[]
+    }
+    expect(templates.length).toBe(catalog.templates.length)
+    for (const t of catalog.templates) {
+      const snip = SNIPPETS.find((s) => s.id === `snip:template:${t.name}`)
+      expect(snip?.source.sha256, t.name).toBe(t.sha256)
+    }
+    expect(SNIPPETS.filter((s) => s.source.kind === 'spec-showcase').length).toBeGreaterThanOrEqual(26)
+  })
+
+  it('all seven heroes are classed with a legal §2bis class and a badge', () => {
+    const heroes = SNIPPETS.filter((s) => s.id.startsWith('snip:hero:'))
+    expect(heroes.length).toBe(7)
+    for (const h of heroes) {
+      expect(['spec-vendored', 'crafted-room']).toContain(h.source.kind)
+      expect(h.badge.length).toBeGreaterThan(10)
+      expect(h.gates.length).toBeGreaterThanOrEqual(3)
+    }
+  })
+
+  it('every registered inline-yaml file exists and names its gate', () => {
+    for (const r of SNIPPET_REGISTRY) {
+      expect(() => readFileSync(join(ROOT, r.file), 'utf8'), r.file).not.toThrow()
+      expect(r.gate.length, r.file).toBeGreaterThan(8)
+    }
+  })
+
+  it('THE LINT: no nika-yaml literal outside the registry and generated modules', () => {
+    const registered = new Set(SNIPPET_REGISTRY.map((r) => r.file))
+    const dirs = ['src/pages', 'src/sections', 'src/shell', 'src/content', 'src/flagships', 'src/components']
+    const offenders: string[] = []
+    for (const dir of dirs) {
+      for (const f of readdirSync(join(ROOT, dir), { recursive: true }) as string[]) {
+        if (!/\.(tsx?|mts)$/.test(f)) continue
+        const rel = `${dir}/${f}`
+        if (rel.includes('.generated.') || rel.includes('.test.')) continue
+        const body = readFileSync(join(ROOT, rel), 'utf8')
+        if (body.includes('nika: v1') && !registered.has(rel)) offenders.push(rel)
+      }
+    }
+    expect(offenders, `unregistered inline nika-yaml: ${offenders.join(' · ')} — register it in sets.yaml snippet_registry with its gate, or move it behind a generated module`).toEqual([])
+  })
+})
+
+describe('atlas · the palette covers every living room (⌘K parity)', () => {
+  it('every member of an existing rooms-set has a palette entry at its href', async () => {
+    const { PALETTE } = await import('../content/palette.generated')
+    const hrefs = new Set(PALETTE.map((p: { href: string }) => p.href))
+    for (const n of ATLAS_NODES) {
+      if (n.kind !== 'member' || !n.url || n.anchor) continue
+      const set = ATLAS_INDEX[`set:${n.set}`]
+      if (set?.surface !== 'rooms' || (set as { page_exists?: boolean }).page_exists === false) continue
+      if (n.set === 'showcases') continue // rooms + entries land together at WO-5
+      expect(hrefs.has(n.url), `${n.id} room ${n.url} missing from the palette`).toBe(true)
+    }
+  })
+
+  it('provenance sanity: the vendored catalog vintage never exceeds the release', () => {
+    const v = (s: string) => s.replace(/^v/, '').split('.').map(Number)
+    const [cat, eng] = [v(ATLAS_PROVENANCE.catalogs.tools), v(ATLAS_PROVENANCE.engine_version)]
+    const le = cat[0] < eng[0] || (cat[0] === eng[0] && (cat[1] < eng[1] || (cat[1] === eng[1] && cat[2] <= eng[2])))
+    expect(le, `catalogs ${ATLAS_PROVENANCE.catalogs.tools} newer than displayed release ${ATLAS_PROVENANCE.engine_version}?`).toBe(true)
   })
 })
 

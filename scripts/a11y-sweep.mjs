@@ -15,7 +15,35 @@ import { fileURLToPath } from 'node:url'
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const PORT = 9251
-const ROUTES = ['/', '/manifesto', '/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/blog/own-your-stack', '/blog/dag-for-free', '/blog/blast-radius-in-the-file', '/blog/standard-library-not-plugin-store', '/blog/open-spec-copyleft-engine', '/blog/the-note-that-started-it', '/blog/naming-the-drum', '/blog/starting-over-on-purpose', '/blog/the-trace-you-can-replay', '/blog/anatomy-of-a-verb', '/blog/the-cost-line', '/changelog', '/errors', '/errors/NIKA-SEC-001', '/tools', '/tools/fetch', '/providers', '/providers/ollama', '/templates', '/templates/chain', '/sitemap', '/convert', '/brand']
+
+/* the atlas legs DERIVE from the served twin (§6.8bis: the hardcoded sample
+   died with WO-2) — every existing hub + the first room of every rooms-set,
+   so a page class the atlas grows is swept the day it lands, never
+   remembered by hand. The funnel + blog sample stays curated (not atlas). */
+const CORE_ROUTES = ['/', '/manifesto', '/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/blog/own-your-stack', '/blog/dag-for-free', '/blog/blast-radius-in-the-file', '/blog/standard-library-not-plugin-store', '/blog/open-spec-copyleft-engine', '/blog/the-note-that-started-it', '/blog/naming-the-drum', '/blog/starting-over-on-purpose', '/blog/the-trace-you-can-replay', '/blog/anatomy-of-a-verb', '/blog/the-cost-line', '/changelog', '/sitemap', '/convert', '/brand']
+function atlasRoutes() {
+  const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8'))
+  const routes = new Set()
+  for (const n of twin.nodes) {
+    if (n.kind === 'layer' && n.exists) {
+      routes.add(n.url)
+      for (const sib of n.sibling_hubs ?? []) routes.add(sib)
+    }
+    if (n.kind === 'set' && n.surface === 'anchors' && n.url && n.page_exists) {
+      routes.add(n.url.split('#')[0])
+    }
+  }
+  const roomSets = twin.nodes.filter((n) => n.kind === 'set' && n.surface === 'rooms' && n.page_exists)
+  for (const setNode of roomSets) {
+    const setId = setNode.id.slice(4)
+    const first = twin.nodes.find((n) => n.kind === 'member' && n.set === setId && n.url && !n.anchor)
+    if (first) routes.add(first.url)
+  }
+  // the doorway rooms awaiting fusion still serve — sweep one until WO-6 flips
+  routes.add('/providers/ollama')
+  return [...routes].filter((r) => r && r.startsWith('/')).sort()
+}
+const ROUTES = [...new Set([...CORE_ROUTES, ...atlasRoutes()])]
 const AXE_SRC = readFileSync(join(ROOT, 'node_modules/axe-core/axe.min.js'), 'utf8')
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.woff2': 'font/woff2', '.webp': 'image/webp', '.txt': 'text/plain', '.xml': 'application/xml' }

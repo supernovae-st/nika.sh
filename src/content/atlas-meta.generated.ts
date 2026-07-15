@@ -186,7 +186,6 @@ export const ATLAS_SCORE = {
     "truth-words: /sources lands in WO-7 · the meta-set ships with it · waiver dies with WO-7"
   ],
   "unarmed": [
-    "heroes-class → arms with the snippet manifest leg (wo2b)",
     "capture-stamps → arms at wo-4 (TermCapture)",
     "count-links (CanonCount deployment) → arms at wo-3",
     "keyboard+touch verdicts → arm at wo-12",
