@@ -439,7 +439,7 @@ const unarmed = [
   'capture-stamps → arms at wo-4 (TermCapture)',
   'count-links (CanonCount deployment) → arms at wo-3',
   'keyboard+touch verdicts → arm at wo-12',
-  'hreflang coverage → arms at wo-9',
+  'hreflang coverage → ARMED in src/test/i18n.test.ts (wo-9a · registry⇔PATHS⇔cluster judged test-side; PATHS is not compiler-readable)',
 ]
 /* heroes-class ARMED (wo2b): an unclassed hero deducts −5 by name */
 for (const h of S.sets.library_heroes ?? []) {
@@ -1019,9 +1019,15 @@ const hubSets = (layerId) =>
       defined_by: x.defined_by.filter((c) => !c.startsWith('site:')),
       closed: x.closed,
       /* membersOf covers canon-sourced sets too (mcp-tools) — inline sets
-         resolve to the same rows they inlined before */
+         resolve to the same rows they inlined before. Null fields are
+         OMITTED (this module rides the initial bundle · consumers read
+         truthiness) */
       members: membersOf(x)
-        .map((m) => ({ id: m.member, one_liner: m.opener ?? null, slot: m.meta?.slot ?? null })),
+        .map((m) => ({
+          id: m.member,
+          ...(m.opener ? { one_liner: m.opener } : {}),
+          ...(m.meta?.slot ? { slot: m.meta.slot } : {}),
+        })),
     }))
     .filter((x) => x.members.length > 0)
 const hubData = S.sets.layers
@@ -1035,8 +1041,8 @@ const hubData = S.sets.layers
       id: sec.id,
       anchor: sec.anchor,
       title: sec.title,
-      note: sec.note ?? null,
-      slot: sec.slot ?? null,
+      ...(sec.note ? { note: sec.note } : {}),
+      ...(sec.slot ? { slot: sec.slot } : {}),
     })),
     sets: hubSets(l.id),
   }))
@@ -1054,8 +1060,8 @@ const hubDataTs = GEN(
   'hub-data.generated.ts',
   `export interface HubSetMember {
   id: string
-  one_liner: string | null
-  slot: string | null
+  one_liner?: string
+  slot?: string
 }
 export interface HubSet {
   id: string
@@ -1070,8 +1076,8 @@ export interface HubSection {
   id: string
   anchor: string
   title: string
-  note: string | null
-  slot: string | null
+  note?: string
+  slot?: string
 }
 export interface HubData {
   id: string

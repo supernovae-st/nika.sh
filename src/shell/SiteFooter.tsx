@@ -1,8 +1,9 @@
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { lazy, Suspense } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
 import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
 import type { FunnelEvent } from '../lib/track'
+import { variantsFor } from '../lib/i18n'
 import { FOOTER_COLS, FOOTER_MACHINE, type NavItem } from '../content/atlas-nav.generated'
 import '../sections/v4-home.css'
 
@@ -28,6 +29,31 @@ const FooterSignature = lazy(() => import('../fx/FooterSignature'))
    RootLayout reads [data-track]): which routes are funnel doors is a SHELL
    concern, so the map lives here — the nav descriptor stays structure-only. */
 const FOOTER_TRACK: Record<string, FunnelEvent> = { '/convert': 'convert-open' }
+
+/* the locale switcher row · SSR-identical (variants derive from the pathname
+   + the static i18n registry, no client state) — pages without variants
+   render nothing at all */
+function LocaleSwitcher() {
+  const { pathname } = useLocation()
+  const variants = variantsFor(pathname)
+  if (variants.length < 2) return null
+  return (
+    <nav className="sitefoot-langs" aria-label="Languages">
+      <span className="sitefoot-machines-kick">languages</span>
+      {variants.map(({ locale, path }) => (
+        <Link
+          key={locale.bcp47}
+          to={path}
+          lang={locale.bcp47}
+          aria-current={path === pathname ? 'page' : undefined}
+          className="sitefoot-lang-link"
+        >
+          {locale.label}
+        </Link>
+      ))}
+    </nav>
+  )
+}
 
 function FooterLink({ item }: { item: NavItem }) {
   if (item.soon) {
@@ -131,6 +157,11 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
             </a>
           ))}
         </p>
+
+        {/* THE LANGUAGES ROW · rendered ONLY when this page ships variants
+            (the §4bis anti-slop law — today the manifesto family; L1 pages
+            join at WO-10 through the i18n registry, zero edits here) */}
+        <LocaleSwitcher />
 
         {/* ─── SUPERNOVAE · the footer — KEPT INTACT (operator lock). The per-letter
              float wave + hover lift wordmark, the studio line, the founders, and

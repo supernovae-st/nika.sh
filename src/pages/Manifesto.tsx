@@ -39,7 +39,11 @@ export function Component() {
     htmlAttrs: { lang: c.bcp47 },
     link: [
       { rel: 'canonical', href: `${SITE}${c.path}` },
-      /* the hreflang cluster · every variant lists every sibling + x-default */
+      /* the hreflang cluster · every variant lists every sibling + x-default.
+         The copy registry stays the in-page source (PATHS must not enter the
+         client graph — budget); i18n.test pins THIS cluster equal to the
+         WO-9a seam derivation over the served routes (two producers, one
+         gate — the refs-twins law). */
       ...MANIFESTO_LOCALES.map((l) => ({
         rel: 'alternate' as const,
         hreflang: l.bcp47,

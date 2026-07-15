@@ -5,8 +5,8 @@
 
 export interface HubSetMember {
   id: string
-  one_liner: string | null
-  slot: string | null
+  one_liner?: string
+  slot?: string
 }
 export interface HubSet {
   id: string
@@ -21,8 +21,8 @@ export interface HubSection {
   id: string
   anchor: string
   title: string
-  note: string | null
-  slot: string | null
+  note?: string
+  slot?: string
 }
 export interface HubData {
   id: string
@@ -43,36 +43,28 @@ export const HUBS: Record<string, HubData> = {
       {
         "id": "doors",
         "anchor": "doors",
-        "title": "The two doors",
-        "note": null,
-        "slot": null
+        "title": "The two doors"
       },
       {
         "id": "edges",
         "anchor": "edges",
-        "title": "Edge kinds",
-        "note": null,
-        "slot": null
+        "title": "Edge kinds"
       },
       {
         "id": "predicates",
         "anchor": "predicates",
-        "title": "Gate predicates",
-        "note": null,
-        "slot": null
+        "title": "Gate predicates"
       },
       {
         "id": "waves",
         "anchor": "waves",
         "title": "Waves",
-        "note": "Kahn fronts · max_parallel · fail_fast",
-        "slot": null
+        "note": "Kahn fronts · max_parallel · fail_fast"
       },
       {
         "id": "decisions-slot",
         "anchor": "decisions",
         "title": "Decisions",
-        "note": null,
         "slot": "W-DEC"
       }
     ],
@@ -89,28 +81,23 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "value",
-            "one_liner": "a with binding referencing a task output · carries the binding name",
-            "slot": null
+            "one_liner": "a with binding referencing a task output · carries the binding name"
           },
           {
             "id": "terminal-observation",
-            "one_liner": "a status or timing read in with · settles with the producer",
-            "slot": null
+            "one_liner": "a status or timing read in with · settles with the producer"
           },
           {
             "id": "failure-observation",
-            "one_liner": "an error read in with · flows only when the producer failed",
-            "slot": null
+            "one_liner": "an error read in with · flows only when the producer failed"
           },
           {
             "id": "control",
-            "one_liner": "an after entry · carries its gate predicate",
-            "slot": null
+            "one_liner": "an after entry · carries its gate predicate"
           },
           {
             "id": "recovery",
-            "one_liner": "an on_error.recover reference · a parking read, not an ordering edge",
-            "slot": null
+            "one_liner": "an on_error.recover reference · a parking read, not an ordering edge"
           },
           {
             "id": "finally",
@@ -131,23 +118,19 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "succeeded",
-            "one_liner": "fire when the producer completed clean",
-            "slot": null
+            "one_liner": "fire when the producer completed clean"
           },
           {
             "id": "failed",
-            "one_liner": "fire when the producer failed terminally",
-            "slot": null
+            "one_liner": "fire when the producer failed terminally"
           },
           {
             "id": "skipped",
-            "one_liner": "fire when the producer was gated out",
-            "slot": null
+            "one_liner": "fire when the producer was gated out"
           },
           {
             "id": "terminal",
-            "one_liner": "fire when the producer reached any terminal state",
-            "slot": null
+            "one_liner": "fire when the producer reached any terminal state"
           }
         ]
       }
@@ -162,23 +145,17 @@ export const HUBS: Record<string, HubData> = {
       {
         "id": "permits",
         "anchor": "permits",
-        "title": "The permit families",
-        "note": null,
-        "slot": null
+        "title": "The permit families"
       },
       {
         "id": "secrets",
         "anchor": "secrets",
-        "title": "Secrets",
-        "note": null,
-        "slot": null
+        "title": "Secrets"
       },
       {
         "id": "ssrf-floor",
         "anchor": "ssrf-floor",
-        "title": "The always-on floor",
-        "note": null,
-        "slot": null
+        "title": "The always-on floor"
       }
     ],
     "sets": [
@@ -194,23 +171,19 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "exec",
-            "one_liner": "which commands may run · false kills the family",
-            "slot": null
+            "one_liner": "which commands may run · false kills the family"
           },
           {
             "id": "fs",
-            "one_liner": "read and write globs · the walk root is gated",
-            "slot": null
+            "one_liner": "read and write globs · the walk root is gated"
           },
           {
             "id": "net",
-            "one_liner": "http allowlist · the SSRF floor stays on regardless",
-            "slot": null
+            "one_liner": "http allowlist · the SSRF floor stays on regardless"
           },
           {
             "id": "tools",
-            "one_liner": "which nika tools the file may invoke",
-            "slot": null
+            "one_liner": "which nika tools the file may invoke"
           }
         ]
       },
@@ -226,18 +199,15 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "vault",
-            "one_liner": "the OS keychain backend · the default posture",
-            "slot": null
+            "one_liner": "the OS keychain backend · the default posture"
           },
           {
             "id": "env",
-            "one_liner": "read from the environment at run time",
-            "slot": null
+            "one_liner": "read from the environment at run time"
           },
           {
             "id": "file",
-            "one_liner": "read from a path the boundary allows",
-            "slot": null
+            "one_liner": "read from a path the boundary allows"
           }
         ]
       }
@@ -253,8 +223,7 @@ export const HUBS: Record<string, HubData> = {
         "id": "graph",
         "anchor": "graph",
         "title": "The run graph",
-        "note": "graph_format 2 · the envelope · additive law · edge kinds project from /flow#edges",
-        "slot": null
+        "note": "graph_format 2 · the envelope · additive law · edge kinds project from /flow#edges"
       },
       {
         "id": "receipt",
@@ -266,16 +235,12 @@ export const HUBS: Record<string, HubData> = {
       {
         "id": "conformance",
         "anchor": "conformance",
-        "title": "Conformance",
-        "note": null,
-        "slot": null
+        "title": "Conformance"
       },
       {
         "id": "machine",
         "anchor": "machine",
-        "title": "Machine surfaces",
-        "note": null,
-        "slot": null
+        "title": "Machine surfaces"
       }
     ],
     "sets": [
@@ -291,18 +256,15 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "core",
-            "one_liner": "parse · validate · DAG · variables · typed errors · no execution",
-            "slot": null
+            "one_liner": "parse · validate · DAG · variables · typed errors · no execution"
           },
           {
             "id": "runtime",
-            "one_liner": "executes verbs · evaluates when and for_each over run state",
-            "slot": null
+            "one_liner": "executes verbs · evaluates when and for_each over run state"
           },
           {
             "id": "stdlib",
-            "one_liner": "proves the v0.1 library surface · the production default",
-            "slot": null
+            "one_liner": "proves the v0.1 library surface · the production default"
           }
         ]
       },
@@ -317,49 +279,28 @@ export const HUBS: Record<string, HubData> = {
         "closed": false,
         "members": [
           {
-            "id": "nika_check",
-            "one_liner": null,
-            "slot": null
+            "id": "nika_check"
           },
           {
-            "id": "nika_explain",
-            "one_liner": null,
-            "slot": null
+            "id": "nika_explain"
           },
           {
-            "id": "nika_schema",
-            "one_liner": null,
-            "slot": null
+            "id": "nika_schema"
           },
           {
-            "id": "nika_examples",
-            "one_liner": null,
-            "slot": null
+            "id": "nika_examples"
           },
           {
-            "id": "nika_template",
-            "one_liner": null,
-            "slot": null
+            "id": "nika_template"
           },
           {
-            "id": "nika_canon",
-            "one_liner": null,
-            "slot": null
+            "id": "nika_canon"
           },
           {
-            "id": "nika_catalog",
-            "one_liner": null,
-            "slot": null
+            "id": "nika_catalog"
           },
           {
-            "id": "nika_tools",
-            "one_liner": null,
-            "slot": null
-          },
-          {
-            "id": "nika_inspect",
-            "one_liner": null,
-            "slot": null
+            "id": "nika_tools"
           }
         ]
       }

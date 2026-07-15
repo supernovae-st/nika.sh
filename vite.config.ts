@@ -4,7 +4,8 @@ import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import reactSsg from 'vite-plugin-react-ssg'
-import { ORIGIN, PATHS, MANIFESTO_PATHS } from './site.config'
+import { ORIGIN, PATHS } from './site.config'
+import { hreflangLinks, localeOf } from './src/lib/i18n'
 
 /* ─── preview clean-URL resolver ─────────────────────────────────────────────
    `vite preview` serves the SPA fallback (dist/index.html) for an extension-less
@@ -63,20 +64,22 @@ function sitemap(): Plugin {
       const postDates = new Map(
         [...gen.matchAll(/"slug": "([^"]+)"[\s\S]*?"date": "([^"]+)"/g)].map((m) => [m[1], m[2]]),
       )
-      /* the manifesto's hreflang cluster · sitemap-level alternates (Google's
-         recommended complement to the in-page <link> tags). URL slug → BCP 47. */
-      const mfTag = (p: string) => {
-        const seg = p.split('/')[1]
-        return seg === 'pt-br' ? 'pt-BR' : seg === 'zh-hans' ? 'zh-Hans' : seg
+      /* hreflang clusters · sitemap-level alternates (Google's recommended
+         complement to the in-page <link> tags). GENERAL since WO-9a: the
+         cluster is DERIVED from what PATHS serves (src/lib/i18n seam — the
+         anti-slop law §4bis), so a page gains its alternates the day its
+         locale route ships, and never before. Today that is the manifesto
+         family; L1 pages join at WO-10 with zero edits here. */
+      const clusterFor = (p: string) => {
+        const links = hreflangLinks(p)
+        if (links.length === 0) return ''
+        return (
+          '\n' +
+          links
+            .map((l) => `    <xhtml:link rel="alternate" hreflang="${l.hreflang}" href="${ORIGIN}${l.href}" />`)
+            .join('\n')
+        )
       }
-      const MF_ALL = ['/manifesto', ...MANIFESTO_PATHS]
-      const mfLinks = [
-        ...MF_ALL.map((mp) => {
-          const tag = mp === '/manifesto' ? 'en' : mfTag(mp)
-          return `    <xhtml:link rel="alternate" hreflang="${tag}" href="${ORIGIN}${mp}" />`
-        }),
-        `    <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}/manifesto" />`,
-      ].join('\n')
       /* class-aware tiers — the crawler reads intent, not one flat 0.7:
          home 1.0/weekly · the doors (every top-level page) 0.8/weekly ·
          posts 0.6/monthly on their REAL date · manifesto locale variants
@@ -88,7 +91,7 @@ function sitemap(): Plugin {
         if (p.startsWith('/blog/')) return { priority: '0.6', changefreq: 'monthly' }
         if (/^\/(errors|tools|verbs|language|providers|templates)\/.+/.test(p))
           return { priority: '0.5', changefreq: 'monthly' }
-        if (MANIFESTO_PATHS.includes(p)) return { priority: '0.6', changefreq: 'monthly' }
+        if (localeOf(p).prefix) return { priority: '0.6', changefreq: 'monthly' }
         return { priority: '0.8', changefreq: 'weekly' }
       }
       const urls = PATHS.map((p) => {
@@ -96,7 +99,7 @@ function sitemap(): Plugin {
         const { priority, changefreq } = tier(p)
         const slug = p.startsWith('/blog/') ? p.slice('/blog/'.length) : null
         const lastmod = (slug && postDates.get(slug)) || buildDate
-        const alternates = MF_ALL.includes(p) ? `\n${mfLinks}` : ''
+        const alternates = clusterFor(p)
         return (
           `  <url>\n` +
           `    <loc>${loc}</loc>\n` +

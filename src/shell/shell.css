@@ -200,6 +200,61 @@
   transform: translate(-50%, 0);
 }
 
+/* ─── the locale suggestion · quiet plate, bottom-left, dismissible (WO-9a) ───
+   Appears post-hydration only when the visitor's browser language has a
+   served variant of THIS page (LocaleSuggest.tsx) — never a redirect. */
+.lsg {
+  position: fixed;
+  left: 20px;
+  bottom: 24px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px 4px 12px;
+  border: 1px solid rgb(96 141 255 / 0.32);
+  border-radius: var(--v4-radius);
+  background: rgb(10 13 18 / 0.92);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+}
+.lsg-link {
+  color: var(--v4-text, #e8eefc);
+  text-decoration: none;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.lsg-link:hover,
+.lsg-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lsg-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  border: 0;
+  background: none;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
+  cursor: pointer;
+}
+.lsg-dismiss:hover,
+.lsg-dismiss:focus-visible {
+  color: var(--v4-text, #e8eefc);
+}
+@media (max-width: 560px) {
+  .lsg {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    justify-content: space-between;
+  }
+}
+
 /* ── the stamp strip · the register's dimensions, at a glance (StampStrip) ────
    One surface for the 4-cell stat band on /use-cases · /changelog · /errors.
    The cells sit LOW (62% raised) and lift to raised on hover — the register

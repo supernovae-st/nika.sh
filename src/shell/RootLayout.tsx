@@ -7,11 +7,17 @@ import { REPO, SITE } from '../content'
 import { track, type FunnelEvent } from '../lib/track'
 import Nav from './Nav'
 import SiteFooter from './SiteFooter'
+import { useHydrated } from '../lib/use-hydrated'
 import './skip-link.css'
 
 /* the palette is a lazy chunk — the initial bundle carries only the ⌘K
    listener below; the chunk (component + corpus) loads on first open */
 const CommandK = lazy(() => import('./CommandK'))
+
+/* the Accept-Language suggestion · lazy + post-hydration only (the
+   FooterSignature precedent: no Suspense in the SSG tree, no initial-bundle
+   bytes — the banner is client-state by design) */
+const LocaleSuggest = lazy(() => import('./LocaleSuggest'))
 
 /* ─── site-wide JSON-LD · Organization + WebSite (schema.org) ─────────────────
    Build-time / zero-runtime: @unhead/react flushes this <script> into every
@@ -61,6 +67,7 @@ const SITE_JSONLD = {
 export default function RootLayout() {
   const { pathname } = useLocation()
   const showFooter = pathname !== '/'
+  const hydrated = useHydrated()
 
   /* the funnel listener (W12a · FRONT F) · ONE delegated click handler for
      the whole site: any element carrying data-track fires its event, and
@@ -163,6 +170,13 @@ export default function RootLayout() {
       <div className="agpl-toast" role="status" data-on={agplToast || undefined}>
         AGPL-3.0-or-later · forever.
       </div>
+      {/* the Accept-Language suggestion · §4bis law 2: a quiet dismissible
+          bar when THIS page ships the visitor's language — never a redirect */}
+      {hydrated ? (
+        <Suspense fallback={null}>
+          <LocaleSuggest />
+        </Suspense>
+      ) : null}
       {/* the routed content target · the skip link lands here (id="main"); each
           page renders its own <main> landmark inside. tabindex=-1 so the link can
           move focus to it programmatically. */}

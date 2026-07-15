@@ -1524,6 +1524,39 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+/* the languages row (WO-9a) · same register as the machines row above */
+.sitefoot-langs {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin: 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--v4-line);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  text-align: left;
+}
+.sitefoot-lang-link {
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.sitefoot-lang-link:hover,
+.sitefoot-lang-link:focus-visible {
+  color: var(--v4-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sitefoot-lang-link[aria-current='page'] {
+  color: var(--v4-text);
+  text-decoration: underline;
+  text-decoration-color: var(--v4-accent, #4f86ff);
+  text-underline-offset: 3px;
+}
 
 .v4cta-title {
   margin-top: 24px;

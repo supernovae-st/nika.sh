@@ -188,7 +188,7 @@ export const ATLAS_SCORE = {
     "capture-stamps → arms at wo-4 (TermCapture)",
     "count-links (CanonCount deployment) → arms at wo-3",
     "keyboard+touch verdicts → arm at wo-12",
-    "hreflang coverage → arms at wo-9"
+    "hreflang coverage → ARMED in src/test/i18n.test.ts (wo-9a · registry⇔PATHS⇔cluster judged test-side; PATHS is not compiler-readable)"
   ]
 } as const
 
