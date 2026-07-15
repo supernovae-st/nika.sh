@@ -623,3 +623,13 @@
     min-height: min(480px, 56svh); /* the reserve tracks the mobile well */
   }
 }
+
+/* ── WO-11 · the iOS zoom law: a focusable text surface under 560px must
+      read at 16px or Safari zooms the whole page on focus. The editor is
+      the one such surface on /play. */
+@media (max-width: 560px) {
+  .play-editor-body .cm-editor .cm-content,
+  .play-editor-body .cm-editor .cm-gutters {
+    font-size: 16px;
+  }
+}
