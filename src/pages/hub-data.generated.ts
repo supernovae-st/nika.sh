@@ -301,6 +301,9 @@ export const HUBS: Record<string, HubData> = {
           },
           {
             "id": "nika_tools"
+          },
+          {
+            "id": "nika_inspect"
           }
         ]
       }
