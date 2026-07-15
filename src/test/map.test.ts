@@ -92,7 +92,9 @@ describe('/map · the constellation is one drawing, twice served', () => {
   it('member anchors are crawlable but out of the tab order (the list is the keyboard path)', () => {
     const svg = readFileSync(join(ROOT, 'public/map/constellation.svg'), 'utf8')
     const anchors = svg.match(/<a [^>]*href="[^"]+"[^>]*>/g) ?? []
-    expect(anchors.length).toBeGreaterThan(80)
+    // rooms + the providers hub link today (soon stars are plain points ·
+    // every enrichment WO grows this — the floor only rises)
+    expect(anchors.length).toBeGreaterThan(50)
     for (const a of anchors) expect(a, a).toContain('tabindex="-1"')
     expect(svg).toContain('role="img"')
     expect(svg).toContain('prefers-reduced-motion')
@@ -101,6 +103,25 @@ describe('/map · the constellation is one drawing, twice served', () => {
   it('the bytes stay island-safe (no closing-script sequence · the hydration parity law)', () => {
     const svg = readFileSync(join(ROOT, 'public/map/constellation.svg'), 'utf8')
     expect(/<\/script/i.test(svg)).toBe(false)
+  })
+
+  it('a fragment anchor in the drawing only exists where the section does (the sweep crawls fragments)', () => {
+    const svg = readFileSync(join(ROOT, 'public/map/constellation.svg'), 'utf8')
+    const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8')) as {
+      nodes: { id: string; kind: string; surface?: string; anchors_exist?: boolean }[]
+    }
+    const anchorsLive = new Set(
+      twin.nodes
+        .filter((n) => n.kind === 'set' && n.surface === 'anchors' && n.anchors_exist)
+        .map((n) => n.id.slice(4)),
+    )
+    // today that is exactly the providers hub (empirical: its 16 #id
+    // sections serve) — each enrichment WO widens this set by descriptor
+    expect(anchorsLive.has('providers')).toBe(true)
+    const fragments = [...svg.matchAll(/<a href="([^"]+#[^"]+)"/g)].map((m) => m[1])
+    for (const href of fragments) {
+      expect(href.startsWith('/providers#'), `${href}: fragment link on a section that has not landed`).toBe(true)
+    }
   })
 })
 

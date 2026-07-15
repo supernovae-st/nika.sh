@@ -78,6 +78,7 @@ export function layoutConstellation(twin, { topN = 12 } = {}) {
         layer: layerId,
         surface: s.surface,
         page_exists: s.page_exists !== false,
+        anchors_exist: s.anchors_exist !== false,
         count,
         angle: r2(a),
         x: r2(CENTER + Math.cos(a) * RING.sets),
@@ -107,10 +108,11 @@ export function layoutConstellation(twin, { topN = 12 } = {}) {
         anchor: m.anchor ?? null,
         set: d.id,
         layer: d.layer,
-        /* a star is an <a> only when its page is served today — the sweep
-           crawls these anchors for real (its whole point), so a star on a
-           landing-later hub renders as a plain point until the WO flips */
-        linkable: d.page_exists,
+        /* a star is an <a> only when BOTH truths hold today: its page is
+           served AND (for anchored members) its section anchor exists —
+           the sweep crawls page + fragment for real (its whole point);
+           anchors are born by their WOs and flip this by recompile */
+        linkable: d.page_exists && (!m.anchor || d.anchors_exist),
         hollow: m.status === 'ratified' && sets.find((s) => s.id === `set:${d.id}`)?.clock === 'both',
         x: r2(CENTER + Math.cos(a) * RING.members),
         y: r2(CENTER + Math.sin(a) * RING.members),

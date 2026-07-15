@@ -2782,7 +2782,8 @@
       "counted_in_canon": false,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": false
+      "page_exists": false,
+      "anchors_exist": false
     },
     {
       "id": "set:edge-kinds",
@@ -2796,7 +2797,8 @@
       "counted_in_canon": false,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": false
+      "page_exists": false,
+      "anchors_exist": false
     },
     {
       "id": "set:error-categories",
@@ -2810,7 +2812,8 @@
       "counted_in_canon": true,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "anchors_exist": false
     },
     {
       "id": "set:error-codes",
@@ -2838,7 +2841,8 @@
       "counted_in_canon": true,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "anchors_exist": false
     },
     {
       "id": "set:extract-modes",
@@ -2852,7 +2856,8 @@
       "counted_in_canon": true,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "anchors_exist": false
     },
     {
       "id": "set:gate-predicates",
@@ -2866,7 +2871,8 @@
       "counted_in_canon": false,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": false
+      "page_exists": false,
+      "anchors_exist": false
     },
     {
       "id": "set:mcp-tools",
@@ -2880,7 +2886,8 @@
       "counted_in_canon": true,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": false
+      "page_exists": false,
+      "anchors_exist": false
     },
     {
       "id": "set:namespaces",
@@ -2894,7 +2901,8 @@
       "counted_in_canon": true,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "anchors_exist": false
     },
     {
       "id": "set:permit-families",
@@ -2908,7 +2916,8 @@
       "counted_in_canon": false,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": false
+      "page_exists": false,
+      "anchors_exist": false
     },
     {
       "id": "set:providers",
@@ -2922,7 +2931,8 @@
       "counted_in_canon": true,
       "surface": "anchors",
       "clock": "release",
-      "page_exists": true
+      "page_exists": true,
+      "anchors_exist": true
     },
     {
       "id": "set:secret-sources",
@@ -2936,7 +2946,8 @@
       "counted_in_canon": false,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": false
+      "page_exists": false,
+      "anchors_exist": false
     },
     {
       "id": "set:showcases",
@@ -2978,7 +2989,8 @@
       "counted_in_canon": false,
       "surface": "anchors",
       "clock": "release",
-      "page_exists": true
+      "page_exists": true,
+      "anchors_exist": false
     },
     {
       "id": "set:truth-words",
@@ -2992,7 +3004,8 @@
       "counted_in_canon": false,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": false
+      "page_exists": false,
+      "anchors_exist": false
     },
     {
       "id": "set:types",
@@ -3006,7 +3019,8 @@
       "counted_in_canon": false,
       "surface": "anchors",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "anchors_exist": false
     },
     {
       "id": "set:verbs",

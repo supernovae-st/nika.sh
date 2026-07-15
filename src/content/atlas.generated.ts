@@ -26,6 +26,9 @@ export interface AtlasNode {
   /** set nodes: their page is served today (consumers never point at a hub
    * that has not landed yet) */
   page_exists?: boolean
+  /** anchor sets: the member section anchors exist on the page today
+   * (each enrichment WO flips its sets · renders gate on this) */
+  anchors_exist?: boolean
   /** layer nodes: register hubs that share the layer (reach: providers ·
    * templates) */
   sibling_hubs?: string[]
@@ -2823,7 +2826,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false
+    "page_exists": false,
+    "anchors_exist": false
   },
   {
     "id": "set:edge-kinds",
@@ -2837,7 +2841,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false
+    "page_exists": false,
+    "anchors_exist": false
   },
   {
     "id": "set:error-categories",
@@ -2851,7 +2856,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": true,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "anchors_exist": false
   },
   {
     "id": "set:error-codes",
@@ -2879,7 +2885,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": true,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "anchors_exist": false
   },
   {
     "id": "set:extract-modes",
@@ -2893,7 +2900,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": true,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "anchors_exist": false
   },
   {
     "id": "set:gate-predicates",
@@ -2907,7 +2915,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false
+    "page_exists": false,
+    "anchors_exist": false
   },
   {
     "id": "set:mcp-tools",
@@ -2921,7 +2930,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": true,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false
+    "page_exists": false,
+    "anchors_exist": false
   },
   {
     "id": "set:namespaces",
@@ -2935,7 +2945,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": true,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "anchors_exist": false
   },
   {
     "id": "set:permit-families",
@@ -2949,7 +2960,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false
+    "page_exists": false,
+    "anchors_exist": false
   },
   {
     "id": "set:providers",
@@ -2963,7 +2975,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": true,
     "surface": "anchors",
     "clock": "release",
-    "page_exists": true
+    "page_exists": true,
+    "anchors_exist": true
   },
   {
     "id": "set:secret-sources",
@@ -2977,7 +2990,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false
+    "page_exists": false,
+    "anchors_exist": false
   },
   {
     "id": "set:showcases",
@@ -3019,7 +3033,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "release",
-    "page_exists": true
+    "page_exists": true,
+    "anchors_exist": false
   },
   {
     "id": "set:truth-words",
@@ -3033,7 +3048,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false
+    "page_exists": false,
+    "anchors_exist": false
   },
   {
     "id": "set:types",
@@ -3047,7 +3063,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "anchors_exist": false
   },
   {
     "id": "set:verbs",

@@ -166,6 +166,8 @@ sets:
 
   - id: namespaces
     layer: shape
+    anchors_exist: false
+    anchors_land: wo-7
     title: The namespaces
     source: { artifact: src/canon.generated.ts, field: namespaceNames }
     clock: spec
@@ -182,6 +184,7 @@ sets:
 
   - id: types
     layer: shape
+    anchors_exist: false
     title: The types
     slot: W3
     source: { artifact: public/schema/workflow.json, field: "$defs.typeExpr", pending: true }
@@ -199,6 +202,8 @@ sets:
   # ── flow ───────────────────────────────────────────────────────────────────
   - id: edge-kinds
     layer: flow
+    anchors_exist: false
+    anchors_land: wo-4
     title: The edge kinds
     source: { constants: true, mirrors: "spec/03-dag.md · the graph edges table", revised_by: [W5] }
     clock: spec
@@ -223,6 +228,8 @@ sets:
 
   - id: gate-predicates
     layer: flow
+    anchors_exist: false
+    anchors_land: wo-4
     title: The gate predicates
     source: { constants: true, mirrors: "spec/03-dag.md · gate v2", revised_by: [W-DEC] }
     clock: spec
@@ -283,6 +290,8 @@ sets:
 
   - id: tool-families
     layer: reach
+    anchors_exist: false
+    anchors_land: wo-5
     title: The tool families
     source: { artifact: public/tools/catalog.json, field: "tools[].category", derived: true }
     clock: release
@@ -300,6 +309,7 @@ sets:
 
   - id: providers
     layer: reach
+    anchors_exist: true   # empirical: the current hub already serves #<id> for all 16
     title: The providers
     source: { artifact: public/providers/catalog.json, field: providers, ratified_twin: "src/canon.generated.ts · providerIds*" }
     clock: release
@@ -339,6 +349,8 @@ sets:
 
   - id: extract-modes
     layer: reach
+    anchors_exist: false
+    anchors_land: wo-5
     title: The extract modes
     source: { artifact: src/canon.generated.ts, field: extractModeNames }
     clock: spec
@@ -375,6 +387,8 @@ sets:
   # ── boundary ───────────────────────────────────────────────────────────────
   - id: permit-families
     layer: boundary
+    anchors_exist: false
+    anchors_land: wo-4
     title: The permit families
     source: { artifact: public/schema/workflow.json, field: "properties.permits.properties", derived: true }
     clock: spec
@@ -396,6 +410,8 @@ sets:
 
   - id: secret-sources
     layer: boundary
+    anchors_exist: false
+    anchors_land: wo-4
     title: The secret sources
     source: { artifact: public/schema/workflow.json, field: "properties.secrets.additionalProperties.properties.source.enum", derived: true }
     clock: spec
@@ -436,6 +452,8 @@ sets:
 
   - id: error-namespaces
     layer: refusals
+    anchors_exist: false
+    anchors_land: wo-5
     title: The error namespaces
     source: { artifact: public/errors/catalog.json, field: namespaces }
     clock: spec
@@ -456,6 +474,8 @@ sets:
 
   - id: error-categories
     layer: refusals
+    anchors_exist: false
+    anchors_land: wo-5
     title: The error categories
     source: { artifact: public/errors/catalog.json, field: categories }
     clock: spec
@@ -473,6 +493,8 @@ sets:
   # ── proof ──────────────────────────────────────────────────────────────────
   - id: conformance-levels
     layer: proof
+    anchors_exist: false
+    anchors_land: wo-4
     title: The conformance levels
     source: { constants: true, mirrors: "spec/07-conformance.md · three nested levels", revised_by: [W5, W6] }
     clock: spec
@@ -494,6 +516,8 @@ sets:
 
   - id: mcp-tools
     layer: proof
+    anchors_exist: false
+    anchors_land: wo-4
     title: The oracle tools
     source: { artifact: src/canon.generated.ts, field: mcpToolNames }
     clock: spec
@@ -531,6 +555,8 @@ sets:
 
   - id: truth-words
     layer: proof
+    anchors_exist: false
+    anchors_land: wo-7
     title: The truth words
     source: { constants: true, mirrors: "mega-plan §1bis · the vocabulary of the truth", site_meta: true }
     clock: spec

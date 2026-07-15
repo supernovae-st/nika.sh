@@ -278,6 +278,7 @@ for (const set of S.sets.sets) {
     surface: set.surface,
     clock: set.clock,
     page_exists: existingPages.has(setPage) || [...existingPages].some((p) => setPage.startsWith(`${p}/`)),
+    ...(set.surface === 'anchors' ? { anchors_exist: set.anchors_exist === true } : {}),
   })
   addEdge(setNode, `layer:${set.layer}`, 'member-of')
   for (const ch of set.defined_by) {
@@ -506,6 +507,9 @@ const atlasTs = GEN(
   /** set nodes: their page is served today (consumers never point at a hub
    * that has not landed yet) */
   page_exists?: boolean
+  /** anchor sets: the member section anchors exist on the page today
+   * (each enrichment WO flips its sets · renders gate on this) */
+  anchors_exist?: boolean
   /** layer nodes: register hubs that share the layer (reach: providers ·
    * templates) */
   sibling_hubs?: string[]
