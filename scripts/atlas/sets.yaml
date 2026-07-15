@@ -53,8 +53,8 @@ layers:
   - id: flow
     title: The flow
     hub: /flow
-    hub_exists: false
-    lands: wo-4
+    hub_exists: true
+    atlas_route: true
     opener: >-
       Tasks link through two doors: with binds values, after orders effects.
       The engine reads those bindings and builds the run graph · nothing else
@@ -90,8 +90,8 @@ layers:
   - id: boundary
     title: The boundary
     hub: /boundary
-    hub_exists: false
-    lands: wo-4
+    hub_exists: true
+    atlas_route: true
     opener: >-
       The file declares its blast radius. Permits allowlist what runs, reads,
       writes and calls · secrets stay masked references. Absent means the
@@ -118,8 +118,8 @@ layers:
   - id: proof
     title: The proof
     hub: /proof
-    hub_exists: false
-    lands: wo-4
+    hub_exists: true
+    atlas_route: true
     opener: >-
       A run you can verify, a graph you can read. The proof layer is how
       Nika shows its work: the run graph, the hash-chained trace, the
@@ -202,8 +202,7 @@ sets:
   # ── flow ───────────────────────────────────────────────────────────────────
   - id: edge-kinds
     layer: flow
-    anchors_exist: false
-    anchors_land: wo-4
+    anchors_exist: true
     title: The edge kinds
     source: { constants: true, mirrors: "spec/03-dag.md · the graph edges table", revised_by: [W5] }
     clock: spec
@@ -228,8 +227,7 @@ sets:
 
   - id: gate-predicates
     layer: flow
-    anchors_exist: false
-    anchors_land: wo-4
+    anchors_exist: true
     title: The gate predicates
     source: { constants: true, mirrors: "spec/03-dag.md · gate v2", revised_by: [W-DEC] }
     clock: spec
@@ -387,8 +385,7 @@ sets:
   # ── boundary ───────────────────────────────────────────────────────────────
   - id: permit-families
     layer: boundary
-    anchors_exist: false
-    anchors_land: wo-4
+    anchors_exist: true
     title: The permit families
     source: { artifact: public/schema/workflow.json, field: "properties.permits.properties", derived: true }
     clock: spec
@@ -410,8 +407,7 @@ sets:
 
   - id: secret-sources
     layer: boundary
-    anchors_exist: false
-    anchors_land: wo-4
+    anchors_exist: true
     title: The secret sources
     source: { artifact: public/schema/workflow.json, field: "properties.secrets.additionalProperties.properties.source.enum", derived: true }
     clock: spec
@@ -493,8 +489,7 @@ sets:
   # ── proof ──────────────────────────────────────────────────────────────────
   - id: conformance-levels
     layer: proof
-    anchors_exist: false
-    anchors_land: wo-4
+    anchors_exist: true
     title: The conformance levels
     source: { constants: true, mirrors: "spec/07-conformance.md · three nested levels", revised_by: [W5, W6] }
     clock: spec
@@ -516,8 +511,7 @@ sets:
 
   - id: mcp-tools
     layer: proof
-    anchors_exist: false
-    anchors_land: wo-4
+    anchors_exist: true
     title: The oracle tools
     source: { artifact: src/canon.generated.ts, field: mcpToolNames }
     clock: spec
@@ -591,13 +585,14 @@ surfaces:
   - id: map
     url: /map
     exists: true   # lands in the WO-3a leg that carries this flip
+    atlas_route: true
     title: The map
     role: "the mother page · the anatomy at a glance · every page reachable in 3 nav edges"
     opener: >-
       Nika is a workflow language for agentic work. Everything it is fits on
       this map: seven layers, every set counted, every member accountable to
       the spec.
-  - { id: sources, url: /sources, lands: wo-7, title: Sources,
+  - { id: sources, url: /sources, lands: wo-7, atlas_route: true, title: Sources,
       role: "the public page of the truth system · the three clocks taught" }
   - { id: spec-lens, url: /spec, exists: true, rework: wo-7, title: "The spec at a glance",
       role: "the linear lens · same atlas data, scroll and print form · the hand-body dies" }
@@ -626,9 +621,8 @@ nav:
         items:
           - { label: See it run, href: "/#the-run", icon: run,
               desc: "The plan, reviewed and enforced" }
-          - { label: The boundary, href: "/#the-boundary", icon: shield,
-              desc: "The file declares its blast radius",
-              becomes: { at: wo-4, to: /boundary } }
+          - { label: The boundary, to: /boundary, icon: shield,
+              desc: "The file declares its blast radius" }
           - { label: Use cases, to: /use-cases, icon: tiles,
               desc: "Real plans, reviewable and bound" }
           - { label: Manifesto, to: /manifesto, icon: butterfly,

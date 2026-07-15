@@ -75,8 +75,8 @@ export const MAP_LAYERS: MapLayer[] = [
     "id": "flow",
     "title": "The flow",
     "hub": "/flow",
-    "exists": false,
-    "lands": "wo-4",
+    "exists": true,
+    "lands": null,
     "opener": "Tasks link through two doors: with binds values, after orders effects. The engine reads those bindings and builds the run graph · nothing else creates an edge.",
     "sets": [
       {
@@ -87,8 +87,8 @@ export const MAP_LAYERS: MapLayer[] = [
         "surface": "anchors",
         "slot": null,
         "closed": true,
-        "exists": false,
-        "lands": "wo-4"
+        "exists": true,
+        "lands": null
       },
       {
         "id": "gate-predicates",
@@ -98,8 +98,8 @@ export const MAP_LAYERS: MapLayer[] = [
         "surface": "anchors",
         "slot": null,
         "closed": true,
-        "exists": false,
-        "lands": "wo-4"
+        "exists": true,
+        "lands": null
       }
     ]
   },
@@ -193,8 +193,8 @@ export const MAP_LAYERS: MapLayer[] = [
     "id": "boundary",
     "title": "The boundary",
     "hub": "/boundary",
-    "exists": false,
-    "lands": "wo-4",
+    "exists": true,
+    "lands": null,
     "opener": "The file declares its blast radius. Permits allowlist what runs, reads, writes and calls · secrets stay masked references. Absent means the engine floor, present means default-deny.",
     "sets": [
       {
@@ -205,8 +205,8 @@ export const MAP_LAYERS: MapLayer[] = [
         "surface": "anchors",
         "slot": null,
         "closed": true,
-        "exists": false,
-        "lands": "wo-4"
+        "exists": true,
+        "lands": null
       },
       {
         "id": "secret-sources",
@@ -216,8 +216,8 @@ export const MAP_LAYERS: MapLayer[] = [
         "surface": "anchors",
         "slot": null,
         "closed": true,
-        "exists": false,
-        "lands": "wo-4"
+        "exists": true,
+        "lands": null
       }
     ]
   },
@@ -268,8 +268,8 @@ export const MAP_LAYERS: MapLayer[] = [
     "id": "proof",
     "title": "The proof",
     "hub": "/proof",
-    "exists": false,
-    "lands": "wo-4",
+    "exists": true,
+    "lands": null,
     "opener": "A run you can verify, a graph you can read. The proof layer is how Nika shows its work: the run graph, the hash-chained trace, the conformance suite that re-proves every claim.",
     "sets": [
       {
@@ -280,8 +280,8 @@ export const MAP_LAYERS: MapLayer[] = [
         "surface": "anchors",
         "slot": null,
         "closed": true,
-        "exists": false,
-        "lands": "wo-4"
+        "exists": true,
+        "lands": null
       },
       {
         "id": "mcp-tools",
@@ -291,8 +291,8 @@ export const MAP_LAYERS: MapLayer[] = [
         "surface": "anchors",
         "slot": null,
         "closed": false,
-        "exists": false,
-        "lands": "wo-4"
+        "exists": true,
+        "lands": null
       },
       {
         "id": "showcases",

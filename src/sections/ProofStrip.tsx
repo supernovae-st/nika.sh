@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { CANON } from '../canon.generated'
 import { REPO } from '../content'
 import './v4-home.css'
@@ -46,6 +47,11 @@ export default function ProofStrip() {
               ↗
             </span>
           </a>
+        </li>
+        <li className="v4strip-plate v4strip-plate--link">
+          <Link to="/map" className="v4strip-link">
+            every claim, one graph · /map
+          </Link>
         </li>
       </ul>
     </section>

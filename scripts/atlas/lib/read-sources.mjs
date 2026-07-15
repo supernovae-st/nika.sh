@@ -105,6 +105,27 @@ export function readSources(ROOT) {
     'usecases-yaml.generated.ts',
   )
 
+  /* the gate matrix (vendored spec fixtures · #283): the compiler reads the
+     VERDICT plane only — a targeted extractor over our own emission (the
+     objects embed multi-line YAML strings, so the generic literal parser
+     is the wrong tool; the field order is JSON.stringify's, stable) */
+  const gmSrc = read('src/content/gate-matrix.generated.ts')
+  const gateMatrix = [
+    ...gmSrc.matchAll(
+      /"producer": "(\w+)",\s*"form": "([\w-]+)",\s*"dead": (true|false),\s*"verdict": "(\w+)",\s*"code": (null|"[\w-]+"),\s*"fixture": (null|"[^"]+")/g,
+    ),
+  ].map((m) => ({
+    producer: m[1],
+    form: m[2],
+    dead: m[3] === 'true',
+    verdict: m[4],
+    code: m[5] === 'null' ? null : JSON.parse(m[5]),
+    fixture: m[6] === 'null' ? null : JSON.parse(m[6]),
+  }))
+  if (gateMatrix.length !== 40) {
+    throw new Error(`gate-matrix.generated.ts: verdict extractor found ${gateMatrix.length}/40 cells — emission drifted`)
+  }
+
   /* the served catalogs */
   const tools = json('public/tools/catalog.json')
   const providers = json('public/providers/catalog.json')
@@ -167,5 +188,6 @@ export function readSources(ROOT) {
     specPin,
     posts,
     tokens,
+    gateMatrix,
   }
 }

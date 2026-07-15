@@ -100,8 +100,8 @@ describe('atlas-nav · the §4.11 scannability law holds', () => {
     const soonLabels = new Set(
       [...NAV_REFERENCE.cols.flatMap((c) => c.items)].filter((i) => i.soon).map((i) => i.label),
     )
-    // today: Types (W3 slot) + the three WO-4 hubs · WO-4 flips the hubs
-    expect(soonLabels).toEqual(new Set(['Types', 'The flow', 'The boundary', 'The proof']))
+    // WO-4 flipped the three hubs live · Types stays the W3 slot
+    expect(soonLabels).toEqual(new Set(['Types']))
     for (const { item } of allItems) {
       if (item.soon) expect(item.to ?? item.href, `${item.label} soon must not link`).toBeUndefined()
     }

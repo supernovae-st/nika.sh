@@ -1919,8 +1919,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/boundary",
     "status": "both",
     "opener": "The file declares its blast radius. Permits allowlist what runs, reads, writes and calls · secrets stay masked references. Absent means the engine floor, present means default-deny.",
-    "exists": false,
-    "lands": "wo-4",
+    "exists": true,
+    "lands": null,
     "order": 4
   },
   {
@@ -1930,8 +1930,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/flow",
     "status": "both",
     "opener": "Tasks link through two doors: with binds values, after orders effects. The engine reads those bindings and builds the run graph · nothing else creates an edge.",
-    "exists": false,
-    "lands": "wo-4",
+    "exists": true,
+    "lands": null,
     "order": 1
   },
   {
@@ -1941,8 +1941,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/proof",
     "status": "both",
     "opener": "A run you can verify, a graph you can read. The proof layer is how Nika shows its work: the run graph, the hash-chained trace, the conformance suite that re-proves every claim.",
-    "exists": false,
-    "lands": "wo-4",
+    "exists": true,
+    "lands": null,
     "order": 6
   },
   {
@@ -2826,8 +2826,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false,
-    "anchors_exist": false
+    "page_exists": true,
+    "anchors_exist": true
   },
   {
     "id": "set:edge-kinds",
@@ -2841,8 +2841,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false,
-    "anchors_exist": false
+    "page_exists": true,
+    "anchors_exist": true
   },
   {
     "id": "set:error-categories",
@@ -2915,8 +2915,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false,
-    "anchors_exist": false
+    "page_exists": true,
+    "anchors_exist": true
   },
   {
     "id": "set:mcp-tools",
@@ -2930,8 +2930,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": true,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false,
-    "anchors_exist": false
+    "page_exists": true,
+    "anchors_exist": true
   },
   {
     "id": "set:namespaces",
@@ -2960,8 +2960,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false,
-    "anchors_exist": false
+    "page_exists": true,
+    "anchors_exist": true
   },
   {
     "id": "set:providers",
@@ -2990,8 +2990,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false,
-    "anchors_exist": false
+    "page_exists": true,
+    "anchors_exist": true
   },
   {
     "id": "set:showcases",

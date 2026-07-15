@@ -112,19 +112,21 @@ describe('/map · the constellation is one drawing, twice served', () => {
   it('a fragment anchor in the drawing only exists where the section does (the sweep crawls fragments)', () => {
     const svg = readFileSync(join(ROOT, 'public/map/constellation.svg'), 'utf8')
     const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8')) as {
-      nodes: { id: string; kind: string; surface?: string; anchors_exist?: boolean }[]
+      nodes: { id: string; kind: string; surface?: string; url?: string | null; anchors_exist?: boolean }[]
     }
-    const anchorsLive = new Set(
-      twin.nodes
-        .filter((n) => n.kind === 'set' && n.surface === 'anchors' && n.anchors_exist)
-        .map((n) => n.id.slice(4)),
-    )
-    // today that is exactly the providers hub (empirical: its 16 #id
-    // sections serve) — each enrichment WO widens this set by descriptor
-    expect(anchorsLive.has('providers')).toBe(true)
-    const fragments = [...svg.matchAll(/<a href="([^"]+#[^"]+)"/g)].map((m) => m[1])
-    for (const href of fragments) {
-      expect(href.startsWith('/providers#'), `${href}: fragment link on a section that has not landed`).toBe(true)
+    const twinSets = twin.nodes.filter((n) => n.kind === 'set' && n.surface === 'anchors')
+    const liveByPage = new Map<string, boolean>()
+    for (const n of twinSets) {
+      if (!n.url) continue
+      const page = n.url.split('#')[0]
+      liveByPage.set(page, (liveByPage.get(page) ?? false) || n.anchors_exist === true)
+    }
+    // providers was live pre-atlas · WO-4 lit its hubs' sections — each
+    // enrichment WO widens this by descriptor, the gate follows the twin
+    expect(liveByPage.get('/providers')).toBe(true)
+    const fragments = [...svg.matchAll(/<a href="([^"]+)#[^"]+"/g)].map((m) => m[1])
+    for (const page of fragments) {
+      expect(liveByPage.get(page), `${page}: fragment link on a page with no living sections`).toBe(true)
     }
   })
 })

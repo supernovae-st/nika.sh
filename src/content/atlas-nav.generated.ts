@@ -55,7 +55,7 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
         "label": "The boundary",
         "icon": "shield",
         "desc": "The file declares its blast radius",
-        "href": "/#the-boundary"
+        "to": "/boundary"
       },
       {
         "label": "Use cases",
@@ -145,8 +145,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
         {
           "label": "The flow",
           "icon": "run",
-          "soon": true,
-          "lands": "wo-4"
+          "to": "/flow"
         },
         {
           "label": "Error codes",
@@ -157,14 +156,12 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
         {
           "label": "The boundary",
           "icon": "shield",
-          "soon": true,
-          "lands": "wo-4"
+          "to": "/boundary"
         },
         {
           "label": "The proof",
           "icon": "shield",
-          "soon": true,
-          "lands": "wo-4"
+          "to": "/proof"
         }
       ]
     },
@@ -233,8 +230,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       {
         "label": "The flow",
         "icon": "run",
-        "soon": true,
-        "lands": "wo-4"
+        "to": "/flow"
       },
       {
         "label": "Error codes",
@@ -245,14 +241,12 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       {
         "label": "The boundary",
         "icon": "shield",
-        "soon": true,
-        "lands": "wo-4"
+        "to": "/boundary"
       },
       {
         "label": "The proof",
         "icon": "shield",
-        "soon": true,
-        "lands": "wo-4"
+        "to": "/proof"
       },
       {
         "label": "Changelog",

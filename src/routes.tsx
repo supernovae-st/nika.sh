@@ -21,6 +21,9 @@ import { Component as VerbPage } from './pages/VerbPage'
 import { Component as Language } from './pages/Language'
 import { Component as WordPage } from './pages/WordPage'
 import { Component as MapPage } from './pages/Map'
+import { Component as FlowPage } from './pages/Flow'
+import { Component as BoundaryPage } from './pages/Boundary'
+import { Component as ProofPage } from './pages/Proof'
 import { Component as Providers } from './pages/Providers'
 import { Component as Templates } from './pages/Templates'
 
@@ -92,6 +95,12 @@ export const routes: RouteObject[] = [
          public/sitemap/index.html (the /docs pattern · a React stub
          hydrated during its own refresh and threw #418). */
       { path: 'map', Component: MapPage },
+      /* the atlas-born hubs (WO-4) · their routes ride ATLAS_PATHS (the
+         compiler's site.config section) — descriptor flip + recompile is
+         how a hub is born */
+      { path: 'flow', Component: FlowPage },
+      { path: 'boundary', Component: BoundaryPage },
+      { path: 'proof', Component: ProofPage },
       { path: 'use-cases', Component: UseCasesPage },
       { path: 'spec', Component: Spec },
       { path: 'install', Component: Install },

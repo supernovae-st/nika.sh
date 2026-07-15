@@ -17,228 +17,227 @@
   .cst-corering { fill: none; stroke: #9db4e0; stroke-opacity: .25; }
   @media (prefers-reduced-motion: reduce) { .cst-sector, .cst-star a { transition: none; } }
   </style>
-<path class="cst-sector" data-layer="shape" d="M 602.69 390.02 A 210 210 0 0 1 794.07 519.77 L 751.56 537.35 A 164 164 0 0 0 602.10 436.01 Z" fill="#9fd0ff" stroke="#9fd0ff"/>
-<text class="cst-laylab" x="903.58" y="147.38" text-anchor="start" fill="#9fd0ff">the shape</text>
-<path class="cst-sector" data-layer="flow" d="M 795.94 524.45 A 210 210 0 0 1 809.36 616.36 L 763.50 612.78 A 164 164 0 0 0 753.02 541.00 Z" fill="#5b8cff" stroke="#5b8cff"/>
-<text class="cst-laylab" x="1139.67" y="523.95" text-anchor="start" fill="#5b8cff">the flow</text>
-<path class="cst-sector" data-layer="acts" d="M 808.91 621.38 A 210 210 0 0 1 794.39 679.45 L 751.81 662.05 A 164 164 0 0 0 763.15 616.70 Z" fill="#b07bff" stroke="#b07bff"/>
-<text class="cst-laylab" x="1128.06" y="734.84" text-anchor="start" fill="#b07bff">the acts</text>
-<path class="cst-sector" data-layer="reach" d="M 792.43 684.09 A 210 210 0 0 1 585.90 809.53 L 588.99 763.63 A 164 164 0 0 0 750.28 665.67 Z" fill="#22d3ee" stroke="#22d3ee"/>
-<text class="cst-laylab" x="885.23" y="1064.40" text-anchor="start" fill="#22d3ee">the reach</text>
-<path class="cst-sector" data-layer="boundary" d="M 580.87 809.13 A 210 210 0 0 1 505.42 787.49 L 526.14 746.42 A 164 164 0 0 0 585.06 763.32 Z" fill="#ff7a3c" stroke="#ff7a3c"/>
-<text class="cst-laylab" x="449.80" y="1123.89" text-anchor="middle" fill="#ff7a3c">the boundary</text>
-<path class="cst-sector" data-layer="refusals" d="M 500.95 785.17 A 210 210 0 0 1 417.38 496.31 L 457.39 519.02 A 164 164 0 0 0 522.64 744.61 Z" fill="#ff5d5d" stroke="#ff5d5d"/>
-<text class="cst-laylab" x="76.47" y="751.45" text-anchor="end" fill="#ff5d5d">the refusals</text>
-<path class="cst-sector" data-layer="proof" d="M 419.93 491.96 A 210 210 0 0 1 596.98 390.02 L 597.64 436.02 A 164 164 0 0 0 459.37 515.62 Z" fill="#34d399" stroke="#34d399"/>
-<text class="cst-laylab" x="328.07" y="127.69" text-anchor="end" fill="#34d399">the proof</text>
-<path class="cst-lk" data-kind="accepts" d="M 920.15 680.04 Q 690.91 587.29 885.92 435.23" stroke-width="3"/>
-<path class="cst-lk" data-kind="carries" d="M 881.33 772.49 Q 677.13 660.95 832.85 833.84" stroke-width="2.26"/>
-<path class="cst-lk" data-kind="carries" d="M 700.13 914.44 Q 657.91 622.45 885.92 435.23" stroke-width="4.31"/>
-<path class="cst-lk" data-kind="grants" d="M 700.13 914.44 Q 657.22 673.04 881.33 772.49" stroke-width="2.92"/>
-<path class="cst-lk" data-kind="names" d="M 283 691.7 Q 594.65 639.63 881.33 772.49" stroke-width="3.05"/>
-<path class="cst-lk" data-kind="names" d="M 283 691.7 Q 595.34 589.04 885.92 435.23" stroke-width="4"/>
-<circle class="cst-setdot" data-set="verbs" cx="920.15" cy="680.04" r="9.11" fill="#b07bff" stroke="#b07bff"/>
-<text class="cst-setlab" x="935.76" y="684.03" text-anchor="start">verbs</text>
-<circle class="cst-setdot" data-set="permit-families" cx="558.14" cy="927.33" r="9.11" fill="#ff7a3c" stroke="#ff7a3c"/>
-<text class="cst-setlab" x="556.06" y="943.31" text-anchor="middle">permit-families</text>
-<circle class="cst-setdot" data-set="secret-sources" cx="462.07" cy="899.79" r="8.4" fill="#ff7a3c" stroke="#ff7a3c"/>
-<text class="cst-setlab" x="455.66" y="913.79" text-anchor="end">secret-sources</text>
-<circle class="cst-setdot" data-set="edge-kinds" cx="912.87" cy="495.07" r="10.18" fill="#5b8cff" stroke="#5b8cff"/>
-<text class="cst-setlab" x="929.18" y="489.67" text-anchor="start">edge-kinds</text>
-<circle class="cst-setdot" data-set="gate-predicates" cx="929.81" cy="611.09" r="9.11" fill="#5b8cff" stroke="#5b8cff"/>
-<text class="cst-setlab" x="945.91" y="611.57" text-anchor="start">gate-predicates</text>
-<circle class="cst-setdot" data-set="conformance-levels" cx="337.93" cy="399.45" r="8.4" fill="#34d399" stroke="#34d399"/>
-<text class="cst-setlab" x="325.66" y="390.15" text-anchor="end">conformance-levels</text>
-<circle class="cst-setdot" data-set="mcp-tools" cx="399.21" cy="338.12" r="11.31" fill="#34d399" stroke="#34d399"/>
-<text class="cst-setlab" x="388.09" y="323.57" text-anchor="end">mcp-tools</text>
-<circle class="cst-setdot" data-set="showcases" cx="474.34" cy="294.86" r="14.46" fill="#34d399" stroke="#34d399"/>
-<text class="cst-setlab" x="466.13" y="275.03" text-anchor="end">showcases</text>
-<circle class="cst-setdot" data-set="truth-words" cx="558.14" cy="272.67" r="11.61" fill="#34d399" stroke="#34d399"/>
-<text class="cst-setlab" x="555.87" y="254.20" text-anchor="middle">truth-words</text>
-<circle class="cst-setdot" data-set="builtins" cx="881.33" cy="772.49" r="14.69" fill="#22d3ee" stroke="#22d3ee"/>
-<text class="cst-setlab" x="899.82" y="783.83" text-anchor="start">builtins</text>
-<circle class="cst-setdot" data-set="extract-modes" cx="832.85" cy="833.84" r="11.31" fill="#22d3ee" stroke="#22d3ee"/>
-<text class="cst-setlab" x="845.74" y="846.85" text-anchor="start">extract-modes</text>
-<circle class="cst-setdot" data-set="providers" cx="771.3" cy="882.06" r="12.99" fill="#22d3ee" stroke="#22d3ee"/>
-<text class="cst-setlab" x="781.76" y="899.09" text-anchor="start">providers</text>
-<circle class="cst-setdot" data-set="templates" cx="700.13" cy="914.44" r="11.61" fill="#22d3ee" stroke="#22d3ee"/>
-<text class="cst-setlab" x="705.82" y="932.16" text-anchor="start">templates</text>
-<circle class="cst-setdot" data-set="tool-families" cx="623.34" cy="929.17" r="10.18" fill="#22d3ee" stroke="#22d3ee"/>
-<text class="cst-setlab" x="624.56" y="946.31" text-anchor="middle">tool-families</text>
-<circle class="cst-setdot" data-set="error-categories" cx="394.14" cy="857.92" r="12.14" fill="#ff5d5d" stroke="#ff5d5d"/>
-<text class="cst-setlab" x="382.27" y="872.93" text-anchor="end">error-categories</text>
-<circle class="cst-setdot" data-set="error-codes" cx="283" cy="691.7" r="18.03" fill="#ff5d5d" stroke="#ff5d5d"/>
-<text class="cst-setlab" x="258.96" y="698.66" text-anchor="end">error-codes</text>
-<circle class="cst-setdot" data-set="error-namespaces" cx="288.24" cy="491.82" r="13.81" fill="#ff5d5d" stroke="#ff5d5d"/>
-<text class="cst-setlab" x="268.61" y="484.91" text-anchor="end">error-namespaces</text>
-<circle class="cst-setdot" data-set="namespaces" cx="647.22" cy="273.4" r="9.69" fill="#9fd0ff" stroke="#9fd0ff"/>
-<text class="cst-setlab" x="649.56" y="256.88" text-anchor="middle">namespaces</text>
-<circle class="cst-setdot" data-set="types" cx="785.19" cy="326.86" r="4" fill="#9fd0ff" stroke="#9fd0ff"/>
-<text class="cst-setlab" x="791.32" y="317.72" text-anchor="start">types</text>
-<circle class="cst-setdot" data-set="words" cx="885.92" cy="435.23" r="16.89" fill="#9fd0ff" stroke="#9fd0ff"/>
-<text class="cst-setlab" x="906.65" y="423.36" text-anchor="start">words</text>
-<g class="cst-star"><a href="/verbs/agent" tabindex="-1"><circle cx="1064.72" cy="670.24" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>agent</title></a></g>
-<g class="cst-star"><a href="/verbs/exec" tabindex="-1"><circle cx="1059.01" cy="701.04" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>exec</title></a></g>
-<g class="cst-star"><a href="/verbs/infer" tabindex="-1"><circle cx="1051.26" cy="731.39" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>infer</title></a></g>
-<g class="cst-star"><a href="/verbs/invoke" tabindex="-1"><circle cx="1041.51" cy="761.16" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>invoke</title></a></g>
-<g class="cst-star cst-star--soon"><circle cx="586.28" cy="1069.8" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>exec</title></g>
-<g class="cst-star cst-star--soon"><circle cx="555.01" cy="1067.84" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>fs</title></g>
-<g class="cst-star cst-star--soon"><circle cx="523.94" cy="1063.81" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>net</title></g>
-<g class="cst-star cst-star--soon"><circle cx="493.22" cy="1057.71" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>tools</title></g>
-<g class="cst-star cst-star--soon"><circle cx="436.98" cy="1040.82" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>env</title></g>
-<g class="cst-star cst-star--soon"><circle cx="404.41" cy="1027.37" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>file</title></g>
-<g class="cst-star cst-star--soon"><circle cx="372.94" cy="1011.51" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>vault</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1019.04" cy="387.14" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>control</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1031.05" cy="412.65" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>failure-observation</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1041.51" cy="438.84" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>finally</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1050.37" cy="465.6" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>recovery</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1057.62" cy="492.85" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>terminal-observation</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1063.22" cy="520.48" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>value</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1068.85" cy="567.13" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>failed</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1070" cy="598.43" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>skipped</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1069.06" cy="629.75" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>succeeded</title></g>
-<g class="cst-star cst-star--soon"><circle cx="1066.03" cy="660.93" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>terminal</title></g>
-<g class="cst-star cst-star--soon"><circle cx="205.17" cy="345.03" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>core</title></g>
-<g class="cst-star cst-star--soon"><circle cx="225.39" cy="316.16" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>runtime</title></g>
-<g class="cst-star cst-star--soon"><circle cx="247.71" cy="288.89" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>stdlib</title></g>
-<g class="cst-star cst-star--soon"><circle cx="238.54" cy="299.59" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_canon</title></g>
-<g class="cst-star cst-star--soon"><circle cx="256" cy="279.75" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_catalog</title></g>
-<g class="cst-star cst-star--soon"><circle cx="274.55" cy="260.91" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_check</title></g>
-<g class="cst-star cst-star--soon"><circle cx="294.12" cy="243.15" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_examples</title></g>
-<g class="cst-star cst-star--soon"><circle cx="314.67" cy="226.52" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_explain</title></g>
-<g class="cst-star cst-star--soon"><circle cx="336.12" cy="211.07" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_inspect</title></g>
-<g class="cst-star cst-star--soon"><circle cx="358.4" cy="196.85" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_schema</title></g>
-<g class="cst-star cst-star--soon"><circle cx="381.45" cy="183.9" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_template</title></g>
-<g class="cst-star cst-star--soon"><circle cx="405.19" cy="172.28" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_tools</title></g>
-<g class="cst-star cst-star--soon"><circle cx="318.42" cy="223.69" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>image-fx-batch</title></g>
-<g class="cst-star cst-star--soon"><circle cx="335.81" cy="211.28" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>meeting-actions</title></g>
-<g class="cst-star cst-star--soon"><circle cx="353.74" cy="199.68" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>og-images</title></g>
-<g class="cst-star cst-star--soon"><circle cx="372.19" cy="188.9" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>price-watch</title></g>
-<g class="cst-star cst-star--soon"><circle cx="391.1" cy="178.97" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>social-repurpose</title></g>
-<g class="cst-star cst-star--soon"><circle cx="410.45" cy="169.92" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>standup-digest</title></g>
-<g class="cst-star cst-star--soon"><circle cx="430.19" cy="161.75" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>bookmark-triage</title></g>
-<g class="cst-star cst-star--soon"><circle cx="450.28" cy="154.49" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>contract-guard</title></g>
-<g class="cst-star cst-star--soon"><circle cx="470.68" cy="148.14" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>csv-chart-report</title></g>
-<g class="cst-star cst-star--soon"><circle cx="491.34" cy="142.73" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>etl-quarantine</title></g>
-<g class="cst-star cst-star--soon"><circle cx="512.23" cy="138.27" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>invoice-chaser</title></g>
-<g class="cst-star cst-star--soon"><circle cx="533.3" cy="134.76" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>model-bench</title></g>
-<g class="cst-star cst-star--soon"><circle cx="428.99" cy="162.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>atlas</title></g>
-<g class="cst-star cst-star--soon"><circle cx="453.57" cy="153.39" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>canon</title></g>
-<g class="cst-star cst-star--soon"><circle cx="478.59" cy="145.95" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>catalog</title></g>
-<g class="cst-star cst-star--soon"><circle cx="503.99" cy="139.91" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>manifest</title></g>
-<g class="cst-star cst-star--soon"><circle cx="529.69" cy="135.29" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>mirror</title></g>
-<g class="cst-star cst-star--soon"><circle cx="555.6" cy="132.1" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pack</title></g>
-<g class="cst-star cst-star--soon"><circle cx="581.65" cy="130.36" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pin</title></g>
-<g class="cst-star cst-star--soon"><circle cx="607.75" cy="130.06" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>registry</title></g>
-<g class="cst-star cst-star--soon"><circle cx="633.84" cy="131.22" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>schema</title></g>
-<g class="cst-star cst-star--soon"><circle cx="659.81" cy="133.82" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>spec</title></g>
-<g class="cst-star"><a href="/tools/assert" tabindex="-1"><circle cx="1049.01" cy="738.89" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:assert</title></a></g>
-<g class="cst-star"><a href="/tools/chart" tabindex="-1"><circle cx="1042.23" cy="759.15" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:chart</title></a></g>
-<g class="cst-star"><a href="/tools/compose" tabindex="-1"><circle cx="1034.54" cy="779.08" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:compose</title></a></g>
-<g class="cst-star"><a href="/tools/convert" tabindex="-1"><circle cx="1025.96" cy="798.64" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:convert</title></a></g>
-<g class="cst-star"><a href="/tools/date" tabindex="-1"><circle cx="1016.49" cy="817.79" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:date</title></a></g>
-<g class="cst-star"><a href="/tools/decide" tabindex="-1"><circle cx="1006.17" cy="836.49" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:decide</title></a></g>
-<g class="cst-star"><a href="/tools/done" tabindex="-1"><circle cx="995" cy="854.71" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:done</title></a></g>
-<g class="cst-star"><a href="/tools/edit" tabindex="-1"><circle cx="983.02" cy="872.39" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:edit</title></a></g>
-<g class="cst-star"><a href="/tools/emit" tabindex="-1"><circle cx="970.25" cy="889.51" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:emit</title></a></g>
-<g class="cst-star"><a href="/tools/fetch" tabindex="-1"><circle cx="956.71" cy="906.04" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:fetch</title></a></g>
-<g class="cst-star"><a href="/tools/glob" tabindex="-1"><circle cx="942.43" cy="921.93" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:glob</title></a></g>
-<g class="cst-star"><a href="/tools/grep" tabindex="-1"><circle cx="927.45" cy="937.16" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:grep</title></a></g>
-<g class="cst-star cst-star--soon"><circle cx="996.96" cy="851.65" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>article</title></g>
-<g class="cst-star cst-star--soon"><circle cx="982.18" cy="873.56" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>feed</title></g>
-<g class="cst-star cst-star--soon"><circle cx="966.2" cy="894.62" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>jq</title></g>
-<g class="cst-star cst-star--soon"><circle cx="949.05" cy="914.74" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>links</title></g>
-<g class="cst-star cst-star--soon"><circle cx="930.81" cy="933.87" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>markdown</title></g>
-<g class="cst-star cst-star--soon"><circle cx="911.51" cy="951.94" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>metadata</title></g>
-<g class="cst-star cst-star--soon"><circle cx="891.24" cy="968.89" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>selector</title></g>
-<g class="cst-star cst-star--soon"><circle cx="870.04" cy="984.68" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>sitemap</title></g>
-<g class="cst-star cst-star--soon"><circle cx="847.98" cy="999.26" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>text</title></g>
-<g class="cst-star"><a href="/providers#anthropic" tabindex="-1"><circle cx="937.42" cy="927.18" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Anthropic Claude</title></a></g>
-<g class="cst-star"><a href="/providers#deepseek" tabindex="-1"><circle cx="922.2" cy="942.18" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>DeepSeek</title></a></g>
-<g class="cst-star"><a href="/providers#gemini" tabindex="-1"><circle cx="906.32" cy="956.46" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Google Gemini</title></a></g>
-<g class="cst-star"><a href="/providers#groq" tabindex="-1"><circle cx="889.81" cy="970.02" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Groq</title></a></g>
-<g class="cst-star"><a href="/providers#huggingface" tabindex="-1"><circle cx="872.7" cy="982.8" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Hugging Face</title></a></g>
-<g class="cst-star"><a href="/providers#llamacpp" tabindex="-1"><circle cx="855.02" cy="994.8" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>llama.cpp</title></a></g>
-<g class="cst-star"><a href="/providers#lmstudio" tabindex="-1"><circle cx="836.82" cy="1005.98" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>LM Studio</title></a></g>
-<g class="cst-star"><a href="/providers#localai" tabindex="-1"><circle cx="818.13" cy="1016.32" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>LocalAI</title></a></g>
-<g class="cst-star"><a href="/providers#mistral" tabindex="-1"><circle cx="798.98" cy="1025.8" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Mistral AI</title></a></g>
-<g class="cst-star"><a href="/providers#mock" tabindex="-1"><circle cx="779.43" cy="1034.4" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Mock</title></a></g>
-<g class="cst-star"><a href="/providers#nvidia" tabindex="-1"><circle cx="759.51" cy="1042.11" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>NVIDIA</title></a></g>
-<g class="cst-star"><a href="/providers#ollama" tabindex="-1"><circle cx="739.25" cy="1048.9" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Ollama</title></a></g>
-<g class="cst-star"><a href="/templates/agent-loop" tabindex="-1"><circle cx="849.97" cy="998.01" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>agent-loop</title></a></g>
-<g class="cst-star"><a href="/templates/api-upload-and-create" tabindex="-1"><circle cx="827.49" cy="1011.28" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>api-upload-and-create</title></a></g>
-<g class="cst-star"><a href="/templates/chain" tabindex="-1"><circle cx="804.3" cy="1023.27" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>chain</title></a></g>
-<g class="cst-star"><a href="/templates/docker-report" tabindex="-1"><circle cx="780.48" cy="1033.97" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>docker-report</title></a></g>
-<g class="cst-star"><a href="/templates/etl-state" tabindex="-1"><circle cx="756.11" cy="1043.32" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>etl-state</title></a></g>
-<g class="cst-star"><a href="/templates/fanout" tabindex="-1"><circle cx="731.25" cy="1051.3" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>fanout</title></a></g>
-<g class="cst-star"><a href="/templates/gate-and-act" tabindex="-1"><circle cx="705.99" cy="1057.89" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>gate-and-act</title></a></g>
-<g class="cst-star"><a href="/templates/human-gated-ship" tabindex="-1"><circle cx="680.4" cy="1063.07" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>human-gated-ship</title></a></g>
-<g class="cst-star"><a href="/templates/media-asset-pack" tabindex="-1"><circle cx="654.56" cy="1066.82" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>media-asset-pack</title></a></g>
-<g class="cst-star"><a href="/templates/website-brief" tabindex="-1"><circle cx="628.56" cy="1069.13" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>website-brief</title></a></g>
-<g class="cst-star cst-star--soon"><circle cx="702.93" cy="1058.59" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>core</title></g>
-<g class="cst-star cst-star--soon"><circle cx="675.25" cy="1063.94" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>data</title></g>
-<g class="cst-star cst-star--soon"><circle cx="647.29" cy="1067.61" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>file</title></g>
-<g class="cst-star cst-star--soon"><circle cx="619.17" cy="1069.61" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>introspection</title></g>
-<g class="cst-star cst-star--soon"><circle cx="590.97" cy="1069.91" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>media</title></g>
-<g class="cst-star cst-star--soon"><circle cx="562.81" cy="1068.53" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>network</title></g>
-<g class="cst-star cst-star--soon"><circle cx="408.69" cy="1029.3" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>budget_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="389.38" cy="1020.17" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>cancelled</title></g>
-<g class="cst-star cst-star--soon"><circle cx="370.51" cy="1010.16" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>internal_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="352.11" cy="999.31" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>network_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="334.22" cy="987.64" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>parse_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="316.88" cy="975.16" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>process_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="300.13" cy="961.91" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>provider_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="283.99" cy="947.91" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>security_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="268.51" cy="933.19" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>timeout_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="253.71" cy="917.78" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>tool_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="239.63" cy="901.72" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>validation_error</title></g>
-<g class="cst-star cst-star--soon"><circle cx="226.29" cy="885.03" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>variable_error</title></g>
-<g class="cst-star"><a href="/errors/NIKA-AGENT-001" tabindex="-1"><circle cx="194.86" cy="838.25" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AGENT-002" tabindex="-1"><circle cx="184.45" cy="819.59" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-002</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AGENT-003" tabindex="-1"><circle cx="174.9" cy="800.48" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-003</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AGENT-004" tabindex="-1"><circle cx="166.23" cy="780.96" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-004</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-ASSERT-001" tabindex="-1"><circle cx="158.46" cy="761.06" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-ASSERT-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-BUILTIN-001" tabindex="-1"><circle cx="151.6" cy="740.83" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-BUILTIN-DONE-001" tabindex="-1"><circle cx="145.66" cy="720.31" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN-DONE-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-CANCEL-001" tabindex="-1"><circle cx="140.66" cy="699.54" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-CANCEL-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-COMP-001" tabindex="-1"><circle cx="136.61" cy="678.57" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-COMP-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-COMP-002" tabindex="-1"><circle cx="133.52" cy="657.43" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-COMP-002</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-COMP-003" tabindex="-1"><circle cx="131.39" cy="636.18" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-COMP-003</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-COMP-004" tabindex="-1"><circle cx="130.23" cy="614.85" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-COMP-004</title></a></g>
-<g class="cst-star cst-star--soon"><circle cx="131.84" cy="558.5" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT</title></g>
-<g class="cst-star cst-star--soon"><circle cx="134.2" cy="537.27" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-ASSERT</title></g>
-<g class="cst-star cst-star--soon"><circle cx="137.54" cy="516.17" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN</title></g>
-<g class="cst-star cst-star--soon"><circle cx="141.82" cy="495.24" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-CANCEL</title></g>
-<g class="cst-star cst-star--soon"><circle cx="147.06" cy="474.53" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-COMP</title></g>
-<g class="cst-star cst-star--soon"><circle cx="153.22" cy="454.08" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-DAG</title></g>
-<g class="cst-star cst-star--soon"><circle cx="160.32" cy="433.93" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-DECIDE</title></g>
-<g class="cst-star cst-star--soon"><circle cx="168.32" cy="414.12" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-EXEC</title></g>
-<g class="cst-star cst-star--soon"><circle cx="177.21" cy="394.7" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-IMPL</title></g>
-<g class="cst-star cst-star--soon"><circle cx="186.97" cy="375.7" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-INFER</title></g>
-<g class="cst-star cst-star--soon"><circle cx="197.59" cy="357.17" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-INVOKE</title></g>
-<g class="cst-star cst-star--soon"><circle cx="209.04" cy="339.13" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-LOCK</title></g>
+<path class="cst-sector" data-layer="shape" d="M 602.69 390.02 A 210 210 0 0 1 794.86 521.72 L 752.18 538.86 A 164 164 0 0 0 602.10 436.01 Z" fill="#9fd0ff" stroke="#9fd0ff"/>
+<text class="cst-laylab" x="908.09" y="150.44" text-anchor="start" fill="#9fd0ff">the shape</text>
+<path class="cst-sector" data-layer="flow" d="M 796.69 526.42 A 210 210 0 0 1 808.54 624.72 L 762.86 619.31 A 164 164 0 0 0 753.60 542.53 Z" fill="#5b8cff" stroke="#5b8cff"/>
+<text class="cst-laylab" x="1141.08" y="534.76" text-anchor="start" fill="#5b8cff">the flow</text>
+<path class="cst-sector" data-layer="acts" d="M 807.89 629.72 A 210 210 0 0 1 791.06 687.16 L 749.21 668.07 A 164 164 0 0 0 762.35 623.21 Z" fill="#b07bff" stroke="#b07bff"/>
+<text class="cst-laylab" x="1122.24" y="755.84" text-anchor="start" fill="#b07bff">the acts</text>
+<path class="cst-sector" data-layer="reach" d="M 788.91 691.72 A 210 210 0 0 1 567.12 807.41 L 574.32 761.98 A 164 164 0 0 0 747.53 671.63 Z" fill="#22d3ee" stroke="#22d3ee"/>
+<text class="cst-laylab" x="852.05" y="1083.21" text-anchor="start" fill="#22d3ee">the reach</text>
+<path class="cst-sector" data-layer="boundary" d="M 562.16 806.56 A 210 210 0 0 1 485.41 775.98 L 510.51 737.43 A 164 164 0 0 0 570.44 761.31 Z" fill="#ff7a3c" stroke="#ff7a3c"/>
+<text class="cst-laylab" x="398.25" y="1106.28" text-anchor="end" fill="#ff7a3c">the boundary</text>
+<path class="cst-sector" data-layer="refusals" d="M 481.22 773.18 A 210 210 0 0 1 413.38 503.70 L 454.26 524.79 A 164 164 0 0 0 507.24 735.24 Z" fill="#ff5d5d" stroke="#ff5d5d"/>
+<text class="cst-laylab" x="70.83" y="730.39" text-anchor="end" fill="#ff5d5d">the refusals</text>
+<path class="cst-sector" data-layer="proof" d="M 415.75 499.25 A 210 210 0 0 1 596.98 390.02 L 597.64 436.02 A 164 164 0 0 0 456.11 521.32 Z" fill="#34d399" stroke="#34d399"/>
+<text class="cst-laylab" x="318.68" y="133.22" text-anchor="end" fill="#34d399">the proof</text>
+<path class="cst-lk" data-kind="accepts" d="M 916.69 692.78 Q 690.61 589.58 887.36 437.75" stroke-width="2.95"/>
+<path class="cst-lk" data-kind="carries" d="M 873.1 785.24 Q 673.89 664.74 819.52 846.39" stroke-width="2.26"/>
+<path class="cst-lk" data-kind="carries" d="M 676.45 921.02 Q 654.57 623.82 887.36 437.75" stroke-width="4.31"/>
+<path class="cst-lk" data-kind="grants" d="M 676.45 921.02 Q 652.43 675.94 873.1 785.24" stroke-width="2.92"/>
+<path class="cst-lk" data-kind="names" d="M 279.98 680.55 Q 592.96 639.87 873.1 785.24" stroke-width="3.03"/>
+<path class="cst-lk" data-kind="names" d="M 279.98 680.55 Q 595.1 587.75 887.36 437.75" stroke-width="3.78"/>
+<circle class="cst-setdot" data-set="verbs" cx="916.69" cy="692.78" r="9.11" fill="#b07bff" stroke="#b07bff"/>
+<text class="cst-setlab" x="932.13" y="697.39" text-anchor="start">verbs</text>
+<circle class="cst-setdot" data-set="permit-families" cx="528.11" cy="922.07" r="9.11" fill="#ff7a3c" stroke="#ff7a3c"/>
+<text class="cst-setlab" x="524.61" y="937.79" text-anchor="middle">permit-families</text>
+<circle class="cst-setdot" data-set="secret-sources" cx="430.67" cy="883.25" r="8.4" fill="#ff7a3c" stroke="#ff7a3c"/>
+<text class="cst-setlab" x="422.76" y="896.47" text-anchor="end">secret-sources</text>
+<circle class="cst-setdot" data-set="edge-kinds" cx="914.27" cy="499.33" r="10.18" fill="#5b8cff" stroke="#5b8cff"/>
+<text class="cst-setlab" x="930.63" y="494.09" text-anchor="start">edge-kinds</text>
+<circle class="cst-setdot" data-set="gate-predicates" cx="929.19" cy="623.08" r="9.11" fill="#5b8cff" stroke="#5b8cff"/>
+<text class="cst-setlab" x="945.26" y="624.21" text-anchor="start">gate-predicates</text>
+<circle class="cst-setdot" data-set="conformance-levels" cx="331.04" cy="408.79" r="8.4" fill="#34d399" stroke="#34d399"/>
+<text class="cst-setlab" x="318.49" y="399.86" text-anchor="end">conformance-levels</text>
+<circle class="cst-setdot" data-set="mcp-tools" cx="392.71" cy="343.23" r="10.97" fill="#34d399" stroke="#34d399"/>
+<text class="cst-setlab" x="381.38" y="329.28" text-anchor="end">mcp-tools</text>
+<circle class="cst-setdot" data-set="showcases" cx="469.8" cy="296.77" r="14.46" fill="#34d399" stroke="#34d399"/>
+<text class="cst-setlab" x="461.40" y="277.02" text-anchor="end">showcases</text>
+<circle class="cst-setdot" data-set="truth-words" cx="556.57" cy="272.87" r="11.61" fill="#34d399" stroke="#34d399"/>
+<text class="cst-setlab" x="554.11" y="254.42" text-anchor="middle">truth-words</text>
+<circle class="cst-setdot" data-set="builtins" cx="873.1" cy="785.24" r="14.58" fill="#22d3ee" stroke="#22d3ee"/>
+<text class="cst-setlab" x="890.91" y="797.42" text-anchor="start">builtins</text>
+<circle class="cst-setdot" data-set="extract-modes" cx="819.52" cy="846.39" r="11.31" fill="#22d3ee" stroke="#22d3ee"/>
+<text class="cst-setlab" x="831.74" y="860.02" text-anchor="start">extract-modes</text>
+<circle class="cst-setdot" data-set="providers" cx="752.62" cy="892.59" r="12.99" fill="#22d3ee" stroke="#22d3ee"/>
+<text class="cst-setlab" x="761.87" y="910.31" text-anchor="start">providers</text>
+<circle class="cst-setdot" data-set="templates" cx="676.45" cy="921.02" r="11.61" fill="#22d3ee" stroke="#22d3ee"/>
+<text class="cst-setlab" x="680.71" y="939.14" text-anchor="middle">templates</text>
+<circle class="cst-setdot" data-set="tool-families" cx="595.64" cy="929.97" r="10.18" fill="#22d3ee" stroke="#22d3ee"/>
+<text class="cst-setlab" x="595.48" y="947.15" text-anchor="middle">tool-families</text>
+<circle class="cst-setdot" data-set="error-categories" cx="371.32" cy="837.92" r="12.14" fill="#ff5d5d" stroke="#ff5d5d"/>
+<text class="cst-setlab" x="358.01" y="851.67" text-anchor="end">error-categories</text>
+<circle class="cst-setdot" data-set="error-codes" cx="279.98" cy="680.55" r="17.1" fill="#ff5d5d" stroke="#ff5d5d"/>
+<text class="cst-setlab" x="256.58" y="686.32" text-anchor="end">error-codes</text>
+<circle class="cst-setdot" data-set="error-namespaces" cx="285.93" cy="498.7" r="12.6" fill="#ff5d5d" stroke="#ff5d5d"/>
+<text class="cst-setlab" x="267.25" y="492.75" text-anchor="end">error-namespaces</text>
+<circle class="cst-setdot" data-set="namespaces" cx="647.62" cy="273.45" r="9.69" fill="#9fd0ff" stroke="#9fd0ff"/>
+<text class="cst-setlab" x="649.96" y="256.93" text-anchor="middle">namespaces</text>
+<circle class="cst-setdot" data-set="types" cx="786.55" cy="327.79" r="4" fill="#9fd0ff" stroke="#9fd0ff"/>
+<text class="cst-setlab" x="792.77" y="318.72" text-anchor="start">types</text>
+<circle class="cst-setdot" data-set="words" cx="887.36" cy="437.75" r="16.66" fill="#9fd0ff" stroke="#9fd0ff"/>
+<text class="cst-setlab" x="908.01" y="426.20" text-anchor="start">words</text>
+<g class="cst-star"><a href="/verbs/agent" tabindex="-1"><circle cx="1061.54" cy="688.76" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>agent</title></a></g>
+<g class="cst-star"><a href="/verbs/exec" tabindex="-1"><circle cx="1054.6" cy="719.31" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>exec</title></a></g>
+<g class="cst-star"><a href="/verbs/infer" tabindex="-1"><circle cx="1045.65" cy="749.33" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>infer</title></a></g>
+<g class="cst-star"><a href="/verbs/invoke" tabindex="-1"><circle cx="1034.71" cy="778.69" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>invoke</title></a></g>
+<g class="cst-star"><a href="/boundary#exec" tabindex="-1"><circle cx="544.11" cy="1066.66" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>exec</title></a></g>
+<g class="cst-star"><a href="/boundary#fs" tabindex="-1"><circle cx="513.14" cy="1061.9" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>fs</title></a></g>
+<g class="cst-star"><a href="/boundary#net" tabindex="-1"><circle cx="482.57" cy="1055.09" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>net</title></a></g>
+<g class="cst-star"><a href="/boundary#tools" tabindex="-1"><circle cx="452.51" cy="1046.26" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>tools</title></a></g>
+<g class="cst-star"><a href="/boundary#secret-env" tabindex="-1"><circle cx="389.58" cy="1020.26" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>env</title></a></g>
+<g class="cst-star"><a href="/boundary#secret-file" tabindex="-1"><circle cx="358.68" cy="1003.32" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>file</title></a></g>
+<g class="cst-star"><a href="/boundary#secret-vault" tabindex="-1"><circle cx="329.14" cy="984.1" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>vault</title></a></g>
+<g class="cst-star"><a href="/flow#edge-control" tabindex="-1"><circle cx="1021.14" cy="391.34" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>control</title></a></g>
+<g class="cst-star"><a href="/flow#edge-failure-observation" tabindex="-1"><circle cx="1032.9" cy="416.97" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>failure-observation</title></a></g>
+<g class="cst-star"><a href="/flow#edge-finally" tabindex="-1"><circle cx="1043.09" cy="443.26" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>finally</title></a></g>
+<g class="cst-star"><a href="/flow#edge-recovery" tabindex="-1"><circle cx="1051.7" cy="470.11" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>recovery</title></a></g>
+<g class="cst-star"><a href="/flow#edge-terminal-observation" tabindex="-1"><circle cx="1058.67" cy="497.43" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>terminal-observation</title></a></g>
+<g class="cst-star"><a href="/flow#edge-value" tabindex="-1"><circle cx="1064" cy="525.12" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>value</title></a></g>
+<g class="cst-star"><a href="/flow#predicate-failed" tabindex="-1"><circle cx="1069.79" cy="585.9" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>failed</title></a></g>
+<g class="cst-star"><a href="/flow#predicate-skipped" tabindex="-1"><circle cx="1069.68" cy="617.23" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>skipped</title></a></g>
+<g class="cst-star"><a href="/flow#predicate-succeeded" tabindex="-1"><circle cx="1067.49" cy="648.48" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>succeeded</title></a></g>
+<g class="cst-star"><a href="/flow#predicate-terminal" tabindex="-1"><circle cx="1063.22" cy="679.52" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>terminal</title></a></g>
+<g class="cst-star"><a href="/proof#level-core" tabindex="-1"><circle cx="197.7" cy="356.98" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>core</title></a></g>
+<g class="cst-star"><a href="/proof#level-runtime" tabindex="-1"><circle cx="217.04" cy="327.52" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>runtime</title></a></g>
+<g class="cst-star"><a href="/proof#level-stdlib" tabindex="-1"><circle cx="238.54" cy="299.59" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>stdlib</title></a></g>
+<g class="cst-star"><a href="/proof#mcp-nika_canon" tabindex="-1"><circle cx="237.04" cy="301.41" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_canon</title></a></g>
+<g class="cst-star"><a href="/proof#mcp-nika_catalog" tabindex="-1"><circle cx="254.68" cy="281.16" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_catalog</title></a></g>
+<g class="cst-star"><a href="/proof#mcp-nika_check" tabindex="-1"><circle cx="273.46" cy="261.96" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_check</title></a></g>
+<g class="cst-star"><a href="/proof#mcp-nika_examples" tabindex="-1"><circle cx="293.3" cy="243.86" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_examples</title></a></g>
+<g class="cst-star"><a href="/proof#mcp-nika_explain" tabindex="-1"><circle cx="314.14" cy="226.93" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_explain</title></a></g>
+<g class="cst-star"><a href="/proof#mcp-nika_schema" tabindex="-1"><circle cx="335.91" cy="211.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_schema</title></a></g>
+<g class="cst-star"><a href="/proof#mcp-nika_template" tabindex="-1"><circle cx="358.54" cy="196.76" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_template</title></a></g>
+<g class="cst-star"><a href="/proof#mcp-nika_tools" tabindex="-1"><circle cx="381.97" cy="183.63" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_tools</title></a></g>
+<g class="cst-star cst-star--soon"><circle cx="314.67" cy="226.52" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>image-fx-batch</title></g>
+<g class="cst-star cst-star--soon"><circle cx="331.93" cy="213.94" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>meeting-actions</title></g>
+<g class="cst-star cst-star--soon"><circle cx="349.75" cy="202.16" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>og-images</title></g>
+<g class="cst-star cst-star--soon"><circle cx="368.09" cy="191.2" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>price-watch</title></g>
+<g class="cst-star cst-star--soon"><circle cx="386.9" cy="181.08" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>social-repurpose</title></g>
+<g class="cst-star cst-star--soon"><circle cx="406.16" cy="171.83" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>standup-digest</title></g>
+<g class="cst-star cst-star--soon"><circle cx="425.82" cy="163.47" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>bookmark-triage</title></g>
+<g class="cst-star cst-star--soon"><circle cx="445.83" cy="156" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>contract-guard</title></g>
+<g class="cst-star cst-star--soon"><circle cx="466.16" cy="149.46" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>csv-chart-report</title></g>
+<g class="cst-star cst-star--soon"><circle cx="486.77" cy="143.84" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>etl-quarantine</title></g>
+<g class="cst-star cst-star--soon"><circle cx="507.62" cy="139.17" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>invoice-chaser</title></g>
+<g class="cst-star cst-star--soon"><circle cx="528.65" cy="135.45" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>model-bench</title></g>
+<g class="cst-star cst-star--soon"><circle cx="424.63" cy="163.95" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>atlas</title></g>
+<g class="cst-star cst-star--soon"><circle cx="449.11" cy="154.88" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>canon</title></g>
+<g class="cst-star cst-star--soon"><circle cx="474.06" cy="147.19" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>catalog</title></g>
+<g class="cst-star cst-star--soon"><circle cx="499.4" cy="140.89" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>manifest</title></g>
+<g class="cst-star cst-star--soon"><circle cx="525.04" cy="136.02" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>mirror</title></g>
+<g class="cst-star cst-star--soon"><circle cx="550.92" cy="132.57" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pack</title></g>
+<g class="cst-star cst-star--soon"><circle cx="576.95" cy="130.57" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pin</title></g>
+<g class="cst-star cst-star--soon"><circle cx="603.05" cy="130.01" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>registry</title></g>
+<g class="cst-star cst-star--soon"><circle cx="629.15" cy="130.9" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>schema</title></g>
+<g class="cst-star cst-star--soon"><circle cx="655.15" cy="133.25" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>spec</title></g>
+<g class="cst-star"><a href="/tools/assert" tabindex="-1"><circle cx="1041.51" cy="761.16" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:assert</title></a></g>
+<g class="cst-star"><a href="/tools/chart" tabindex="-1"><circle cx="1033.73" cy="781.06" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:chart</title></a></g>
+<g class="cst-star"><a href="/tools/compose" tabindex="-1"><circle cx="1025.05" cy="800.58" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:compose</title></a></g>
+<g class="cst-star"><a href="/tools/convert" tabindex="-1"><circle cx="1015.5" cy="819.68" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:convert</title></a></g>
+<g class="cst-star"><a href="/tools/date" tabindex="-1"><circle cx="1005.09" cy="838.34" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:date</title></a></g>
+<g class="cst-star"><a href="/tools/done" tabindex="-1"><circle cx="993.84" cy="856.5" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:done</title></a></g>
+<g class="cst-star"><a href="/tools/edit" tabindex="-1"><circle cx="981.78" cy="874.13" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:edit</title></a></g>
+<g class="cst-star"><a href="/tools/emit" tabindex="-1"><circle cx="968.93" cy="891.19" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:emit</title></a></g>
+<g class="cst-star"><a href="/tools/fetch" tabindex="-1"><circle cx="955.31" cy="907.66" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:fetch</title></a></g>
+<g class="cst-star"><a href="/tools/glob" tabindex="-1"><circle cx="940.97" cy="923.48" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:glob</title></a></g>
+<g class="cst-star"><a href="/tools/grep" tabindex="-1"><circle cx="925.92" cy="938.64" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:grep</title></a></g>
+<g class="cst-star"><a href="/tools/hash" tabindex="-1"><circle cx="910.19" cy="953.1" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:hash</title></a></g>
+<g class="cst-star cst-star--soon"><circle cx="983.88" cy="871.17" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>article</title></g>
+<g class="cst-star cst-star--soon"><circle cx="968.03" cy="892.32" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>feed</title></g>
+<g class="cst-star cst-star--soon"><circle cx="951.01" cy="912.55" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>jq</title></g>
+<g class="cst-star cst-star--soon"><circle cx="932.89" cy="931.79" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>links</title></g>
+<g class="cst-star cst-star--soon"><circle cx="913.71" cy="949.98" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>markdown</title></g>
+<g class="cst-star cst-star--soon"><circle cx="893.54" cy="967.07" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>metadata</title></g>
+<g class="cst-star cst-star--soon"><circle cx="872.43" cy="982.99" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>selector</title></g>
+<g class="cst-star cst-star--soon"><circle cx="850.47" cy="997.7" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>sitemap</title></g>
+<g class="cst-star cst-star--soon"><circle cx="827.72" cy="1011.15" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>text</title></g>
+<g class="cst-star"><a href="/providers#anthropic" tabindex="-1"><circle cx="913.71" cy="949.98" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Anthropic Claude</title></a></g>
+<g class="cst-star"><a href="/providers#deepseek" tabindex="-1"><circle cx="897.48" cy="963.88" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>DeepSeek</title></a></g>
+<g class="cst-star"><a href="/providers#gemini" tabindex="-1"><circle cx="880.64" cy="977.02" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Google Gemini</title></a></g>
+<g class="cst-star"><a href="/providers#groq" tabindex="-1"><circle cx="863.22" cy="989.38" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Groq</title></a></g>
+<g class="cst-star"><a href="/providers#huggingface" tabindex="-1"><circle cx="845.25" cy="1000.94" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Hugging Face</title></a></g>
+<g class="cst-star"><a href="/providers#llamacpp" tabindex="-1"><circle cx="826.78" cy="1011.67" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>llama.cpp</title></a></g>
+<g class="cst-star"><a href="/providers#lmstudio" tabindex="-1"><circle cx="807.84" cy="1021.55" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>LM Studio</title></a></g>
+<g class="cst-star"><a href="/providers#localai" tabindex="-1"><circle cx="788.47" cy="1030.56" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>LocalAI</title></a></g>
+<g class="cst-star"><a href="/providers#mistral" tabindex="-1"><circle cx="768.71" cy="1038.67" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Mistral AI</title></a></g>
+<g class="cst-star"><a href="/providers#mock" tabindex="-1"><circle cx="748.61" cy="1045.89" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Mock</title></a></g>
+<g class="cst-star"><a href="/providers#nvidia" tabindex="-1"><circle cx="728.19" cy="1052.18" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>NVIDIA</title></a></g>
+<g class="cst-star"><a href="/providers#ollama" tabindex="-1"><circle cx="707.51" cy="1057.54" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Ollama</title></a></g>
+<g class="cst-star"><a href="/templates/agent-loop" tabindex="-1"><circle cx="817.37" cy="1016.71" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>agent-loop</title></a></g>
+<g class="cst-star"><a href="/templates/api-upload-and-create" tabindex="-1"><circle cx="793.89" cy="1028.14" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>api-upload-and-create</title></a></g>
+<g class="cst-star"><a href="/templates/chain" tabindex="-1"><circle cx="769.82" cy="1038.25" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>chain</title></a></g>
+<g class="cst-star"><a href="/templates/docker-report" tabindex="-1"><circle cx="745.22" cy="1047" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>docker-report</title></a></g>
+<g class="cst-star"><a href="/templates/etl-state" tabindex="-1"><circle cx="720.18" cy="1054.38" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>etl-state</title></a></g>
+<g class="cst-star"><a href="/templates/fanout" tabindex="-1"><circle cx="694.76" cy="1060.35" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>fanout</title></a></g>
+<g class="cst-star"><a href="/templates/gate-and-act" tabindex="-1"><circle cx="669.06" cy="1064.9" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>gate-and-act</title></a></g>
+<g class="cst-star"><a href="/templates/human-gated-ship" tabindex="-1"><circle cx="643.14" cy="1068.02" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>human-gated-ship</title></a></g>
+<g class="cst-star"><a href="/templates/media-asset-pack" tabindex="-1"><circle cx="617.08" cy="1069.69" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>media-asset-pack</title></a></g>
+<g class="cst-star"><a href="/templates/website-brief" tabindex="-1"><circle cx="590.97" cy="1069.91" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>website-brief</title></a></g>
+<g class="cst-star cst-star--soon"><circle cx="665.96" cy="1065.35" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>core</title></g>
+<g class="cst-star cst-star--soon"><circle cx="637.93" cy="1068.47" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>data</title></g>
+<g class="cst-star cst-star--soon"><circle cx="609.77" cy="1069.9" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>file</title></g>
+<g class="cst-star cst-star--soon"><circle cx="581.58" cy="1069.64" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>introspection</title></g>
+<g class="cst-star cst-star--soon"><circle cx="553.45" cy="1067.69" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>media</title></g>
+<g class="cst-star cst-star--soon"><circle cx="525.49" cy="1064.06" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>network</title></g>
+<g class="cst-star cst-star--soon"><circle cx="366.79" cy="1008.06" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>budget_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="348.49" cy="997.04" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>cancelled</title></g>
+<g class="cst-star cst-star--soon"><circle cx="330.71" cy="985.2" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>internal_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="313.48" cy="972.57" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>network_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="296.85" cy="959.17" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>parse_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="280.84" cy="945.02" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>process_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="265.5" cy="930.16" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>provider_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="250.84" cy="914.62" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>security_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="236.9" cy="898.43" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>timeout_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="223.72" cy="881.62" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>tool_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="211.31" cy="864.24" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>validation_error</title></g>
+<g class="cst-star cst-star--soon"><circle cx="199.71" cy="846.3" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>variable_error</title></g>
+<g class="cst-star"><a href="/errors/NIKA-AGENT-001" tabindex="-1"><circle cx="185.66" cy="821.85" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-001</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-AGENT-002" tabindex="-1"><circle cx="176" cy="802.8" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-002</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-AGENT-003" tabindex="-1"><circle cx="167.23" cy="783.32" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-003</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-AGENT-004" tabindex="-1"><circle cx="159.34" cy="763.47" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-004</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-BUILTIN-001" tabindex="-1"><circle cx="152.37" cy="743.28" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN-001</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-BUILTIN-DONE-001" tabindex="-1"><circle cx="146.32" cy="722.79" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN-DONE-001</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-CANCEL-001" tabindex="-1"><circle cx="141.21" cy="702.05" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-CANCEL-001</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-DAG-001" tabindex="-1"><circle cx="137.05" cy="681.1" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-DAG-001</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-DAG-002" tabindex="-1"><circle cx="133.84" cy="659.98" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-DAG-002</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-DAG-004" tabindex="-1"><circle cx="131.6" cy="638.73" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-DAG-004</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-DAG-005" tabindex="-1"><circle cx="130.32" cy="617.41" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-DAG-005</title></a></g>
+<g class="cst-star"><a href="/errors/NIKA-DAG-006" tabindex="-1"><circle cx="130.02" cy="596.05" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-DAG-006</title></a></g>
+<g class="cst-star cst-star--soon"><circle cx="130.8" cy="572.56" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT</title></g>
+<g class="cst-star cst-star--soon"><circle cx="132.53" cy="551.27" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN</title></g>
+<g class="cst-star cst-star--soon"><circle cx="135.23" cy="530.08" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-CANCEL</title></g>
+<g class="cst-star cst-star--soon"><circle cx="138.89" cy="509.04" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-DAG</title></g>
+<g class="cst-star cst-star--soon"><circle cx="143.5" cy="488.18" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-EXEC</title></g>
+<g class="cst-star cst-star--soon"><circle cx="149.05" cy="467.55" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-IMPL</title></g>
+<g class="cst-star cst-star--soon"><circle cx="155.53" cy="447.2" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-INFER</title></g>
+<g class="cst-star cst-star--soon"><circle cx="162.94" cy="427.16" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-INVOKE</title></g>
+<g class="cst-star cst-star--soon"><circle cx="171.24" cy="407.48" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-MCP</title></g>
+<g class="cst-star cst-star--soon"><circle cx="180.43" cy="388.19" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-PARSE</title></g>
+<g class="cst-star cst-star--soon"><circle cx="190.49" cy="369.35" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-PROVIDER</title></g>
+<g class="cst-star cst-star--soon"><circle cx="201.39" cy="350.98" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-SEC</title></g>
 <g class="cst-star cst-star--soon"><circle cx="607.42" cy="130.06" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>env</title></g>
 <g class="cst-star cst-star--soon"><circle cx="636.76" cy="131.44" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>secrets</title></g>
 <g class="cst-star cst-star--soon"><circle cx="665.96" cy="134.65" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>tasks</title></g>
 <g class="cst-star cst-star--soon"><circle cx="694.89" cy="139.68" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>vars</title></g>
 <g class="cst-star cst-star--soon"><circle cx="723.46" cy="146.5" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>with</title></g>
-<g class="cst-star"><a href="/language/after" tabindex="-1"><circle cx="937.42" cy="272.82" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>after</title></a></g>
-<g class="cst-star"><a href="/language/agent" tabindex="-1"><circle cx="951.94" cy="288.49" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>agent</title></a></g>
-<g class="cst-star"><a href="/language/args" tabindex="-1"><circle cx="965.73" cy="304.8" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>args</title></a></g>
-<g class="cst-star"><a href="/language/backoff_max_ms" tabindex="-1"><circle cx="978.76" cy="321.72" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_max_ms</title></a></g>
-<g class="cst-star"><a href="/language/backoff_ms" tabindex="-1"><circle cx="991.02" cy="339.22" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_ms</title></a></g>
-<g class="cst-star"><a href="/language/backoff_strategy" tabindex="-1"><circle cx="1002.46" cy="357.26" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_strategy</title></a></g>
-<g class="cst-star"><a href="/language/capture" tabindex="-1"><circle cx="1013.08" cy="375.8" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>capture</title></a></g>
-<g class="cst-star"><a href="/language/command" tabindex="-1"><circle cx="1022.84" cy="394.8" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>command</title></a></g>
-<g class="cst-star"><a href="/language/cwd" tabindex="-1"><circle cx="1031.73" cy="414.22" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>cwd</title></a></g>
-<g class="cst-star"><a href="/language/decode" tabindex="-1"><circle cx="1039.72" cy="434.03" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>decode</title></a></g>
-<g class="cst-star"><a href="/language/description" tabindex="-1"><circle cx="1046.81" cy="454.18" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>description</title></a></g>
-<g class="cst-star"><a href="/language/env" tabindex="-1"><circle cx="1052.97" cy="474.64" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>env</title></a></g>
-<g class="cst-agg"><a href="/tools" tabindex="-1"><text x="915.45" y="948.41" text-anchor="middle">+16</text><title>+16 more · open the register</title></a></g>
-<g class="cst-agg"><a href="/providers" tabindex="-1"><text x="723.46" y="1053.5" text-anchor="middle">+4</text><title>+4 more · open the register</title></a></g>
-<g class="cst-agg"><a href="/errors" tabindex="-1"><text x="130" y="598.4" text-anchor="middle">+70</text><title>+70 more · open the register</title></a></g>
-<g class="cst-agg"><a href="/errors" tabindex="-1"><text x="218.41" y="325.61" text-anchor="middle">+9</text><title>+9 more · open the register</title></a></g>
-<g class="cst-agg"><a href="/language" tabindex="-1"><text x="1057.08" y="490.56" text-anchor="middle">+45</text><title>+45 more · open the register</title></a></g>
+<g class="cst-star"><a href="/language/after" tabindex="-1"><circle cx="940.67" cy="276.21" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>after</title></a></g>
+<g class="cst-star"><a href="/language/agent" tabindex="-1"><circle cx="955.03" cy="292.02" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>agent</title></a></g>
+<g class="cst-star"><a href="/language/args" tabindex="-1"><circle cx="968.66" cy="308.47" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>args</title></a></g>
+<g class="cst-star"><a href="/language/backoff_max_ms" tabindex="-1"><circle cx="981.53" cy="325.52" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_max_ms</title></a></g>
+<g class="cst-star"><a href="/language/backoff_ms" tabindex="-1"><circle cx="993.61" cy="343.14" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_ms</title></a></g>
+<g class="cst-star"><a href="/language/backoff_strategy" tabindex="-1"><circle cx="1004.87" cy="361.29" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_strategy</title></a></g>
+<g class="cst-star"><a href="/language/capture" tabindex="-1"><circle cx="1015.3" cy="379.94" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>capture</title></a></g>
+<g class="cst-star"><a href="/language/command" tabindex="-1"><circle cx="1024.87" cy="399.04" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>command</title></a></g>
+<g class="cst-star"><a href="/language/cwd" tabindex="-1"><circle cx="1033.56" cy="418.55" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>cwd</title></a></g>
+<g class="cst-star"><a href="/language/description" tabindex="-1"><circle cx="1041.36" cy="438.44" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>description</title></a></g>
+<g class="cst-star"><a href="/language/env" tabindex="-1"><circle cx="1048.24" cy="458.66" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>env</title></a></g>
+<g class="cst-star"><a href="/language/exec" tabindex="-1"><circle cx="1054.2" cy="479.17" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>exec</title></a></g>
+<g class="cst-agg"><a href="/tools" tabindex="-1"><text x="897.65" y="963.74" text-anchor="middle">+15</text><title>+15 more · open the register</title></a></g>
+<g class="cst-agg"><a href="/providers" tabindex="-1"><text x="691.44" y="1061.02" text-anchor="middle">+4</text><title>+4 more · open the register</title></a></g>
+<g class="cst-agg"><a href="/errors" tabindex="-1"><text x="130.44" y="579.6" text-anchor="middle">+49</text><title>+49 more · open the register</title></a></g>
+<g class="cst-agg"><a href="/errors" tabindex="-1"><text x="210.35" y="337.18" text-anchor="middle">+2</text><title>+2 more · open the register</title></a></g>
+<g class="cst-agg"><a href="/language" tabindex="-1"><text x="1058.15" y="495.14" text-anchor="middle">+41</text><title>+41 more · open the register</title></a></g>
 <circle class="cst-corering" cx="600" cy="600" r="64"/>
 <text class="cst-core" x="600" y="605" text-anchor="middle">nika: v1</text>
 </svg>

@@ -66,6 +66,9 @@ export const SITE_MAP: MapGroup[] = [
     links: [
       { label: 'Home', href: '/', hint: 'the film · intent as code' },
       { label: 'The map', href: '/map', hint: 'every page, one graph · the anatomy' },
+      { label: 'The flow', href: '/flow', hint: 'two doors, one graph · the gate matrix' },
+      { label: 'The boundary', href: '/boundary', hint: 'permits · secrets · the always-on floor' },
+      { label: 'The proof', href: '/proof', hint: 'run graph · conformance · machine surfaces' },
       { label: 'Spec', href: '/spec', hint: 'the language reference · nika: v1' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },
       { label: 'Manifesto', href: '/manifesto', hint: 'the drum of liberation · 8 languages' },

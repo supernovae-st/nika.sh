@@ -289,4 +289,10 @@ export const TEMPLATE_PATHS = [
   '/templates/docker-report',
 ]
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, '/map', '/use-cases', '/spec', '/install', '/convert', '/brand']
+/* ── ATLAS PATHS · GENERATED between these markers by scripts/atlas/build-atlas.mjs
+   (compiler output 3): the routes the ATLAS introduced — hubs and surfaces flip
+   into existence by descriptor edit + recompile, never by hand here. DO NOT EDIT. */
+export const ATLAS_PATHS = ['/map', '/flow', '/boundary', '/proof']
+/* ── ATLAS PATHS END ── */
+
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, ...ATLAS_PATHS, '/use-cases', '/spec', '/install', '/convert', '/brand']

@@ -41,6 +41,9 @@ const CORE = [
   ['Providers', '/providers', 'local first · your keys'],
   ['Templates', '/templates', 'instantiable skeletons'],
   ['The map', '/map', 'every page, one graph'],
+  ['The flow', '/flow', 'two doors, one graph · the gate matrix'],
+  ['The boundary', '/boundary', 'permits · secrets · the floor'],
+  ['The proof', '/proof', 'run graph · conformance · machine surfaces'],
   ['Brand', '/brand', 'logos and the mark'],
 ]
 

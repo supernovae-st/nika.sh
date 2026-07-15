@@ -22,7 +22,7 @@
 
    Run: node scripts/atlas/build-atlas.mjs            (write + report)
         node scripts/atlas/build-atlas.mjs --report   (report only · no writes) */
-import { writeFileSync, mkdirSync } from 'node:fs'
+import { writeFileSync, mkdirSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readSources } from './lib/read-sources.mjs'
@@ -886,6 +886,119 @@ export const SNIPPET_REGISTRY: { file: string; kind: string; gate: string; dies?
 `,
 )
 
+/* ATLAS_PATHS (output 3 · §7 WO-4): the routes the atlas introduced, written
+   IN PLACE between the site.config.ts markers (the file stays import-free ·
+   the rest stays hand-owned). Reading order; only served surfaces emit. */
+const atlasPaths = [
+  ...S.sets.surfaces.filter((x) => x.atlas_route && x.exists).map((x) => x.url),
+  ...S.sets.layers.filter((l) => l.atlas_route && l.hub_exists).map((l) => l.hub),
+]
+const siteConfigPath = join(ROOT, 'site.config.ts')
+const siteConfig = readFileSync(siteConfigPath, 'utf8')
+const MARK_A = 'export const ATLAS_PATHS = '
+const MARK_B = '\n/* ── ATLAS PATHS END ── */'
+const a = siteConfig.indexOf(MARK_A)
+const b = siteConfig.indexOf(MARK_B)
+if (a === -1 || b === -1) throw new Error('site.config.ts: ATLAS PATHS markers missing')
+const nextSiteConfig =
+  siteConfig.slice(0, a) + MARK_A + JSON.stringify(atlasPaths).replaceAll('","', "', '").replace('["', "['").replace('"]', "']") + siteConfig.slice(b)
+
+/* hub data (the atlas-born hubs' render module · chrome-lean: pages never
+   import the 344-node graph — the bundle-safety law applied to ourselves) */
+const hubSets = (layerId) =>
+  S.sets.sets
+    .filter((x) => x.layer === layerId && x.surface === 'anchors' && x.anchors_exist && Array.isArray(x.members))
+    .map((x) => ({
+      id: x.id,
+      title: x.title,
+      opener: x.opener.trim(),
+      anchor_prefix: x.anchor_prefix ?? '',
+      defined_by: x.defined_by.filter((c) => !c.startsWith('site:')),
+      closed: x.closed,
+      members: x.members.map((m) => ({ id: m.id, one_liner: m.one_liner, slot: m.slot ?? null })),
+    }))
+const hubData = S.sets.layers
+  .filter((l) => l.atlas_route && l.hub_exists)
+  .map((l) => ({
+    id: l.id,
+    title: l.title,
+    hub: l.hub,
+    opener: l.opener.trim(),
+    sections: (l.sections ?? []).map((sec) => ({
+      id: sec.id,
+      anchor: sec.anchor,
+      title: sec.title,
+      note: sec.note ?? null,
+      slot: sec.slot ?? null,
+    })),
+    sets: hubSets(l.id),
+  }))
+/* the mcp tools ride /proof#machine but live in canon, not descriptor
+   members — join them for the proof hub's machine section */
+const proofHub = hubData.find((h) => h.id === 'proof')
+if (proofHub) {
+  proofHub.mcp_tools = S.canon.mcpToolNames
+}
+/* the 40-cell verdict grid summary (tiny · the static face of I1 — the
+   full matrix with yamls stays its own lazy chunk) */
+const gateGrid = {
+  producers: ['success', 'failure', 'skipped', 'cancelled'],
+  forms: [
+    'with-value', 'with-status', 'with-error', 'after-succeeded', 'after-failed',
+    'after-skipped', 'after-terminal', 'when-true', 'when-false', 'no-edge',
+  ],
+  cells: S.gateMatrix,
+}
+const hubDataTs = GEN(
+  'hub-data.generated.ts',
+  `export interface HubSetMember {
+  id: string
+  one_liner: string
+  slot: string | null
+}
+export interface HubSet {
+  id: string
+  title: string
+  opener: string
+  anchor_prefix: string
+  defined_by: string[]
+  closed: boolean
+  members: HubSetMember[]
+}
+export interface HubSection {
+  id: string
+  anchor: string
+  title: string
+  note: string | null
+  slot: string | null
+}
+export interface HubData {
+  id: string
+  title: string
+  hub: string
+  opener: string
+  sections: HubSection[]
+  sets: HubSet[]
+  mcp_tools?: string[]
+}
+
+export const HUBS: Record<string, HubData> = ${JSON.stringify(Object.fromEntries(hubData.map((h) => [h.id, h])), null, 2)}
+
+/** the I1 grid axes (the verdict summary renders statically · the full
+ * matrix with fixture yamls is its own lazy chunk: gate-matrix.generated) */
+export interface GateGridCell {
+  producer: string
+  form: string
+  verdict: string
+  dead: boolean
+  code: string | null
+  fixture: string | null
+}
+export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridCell[] } =
+  ${JSON.stringify(gateGrid, null, 2)}
+`,
+)
+
 /* redirects (moved → data · e2e replays live entries) */
 const redirects = []
 for (const set of S.sets.sets) {
@@ -922,6 +1035,8 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/snippets.generated.ts'), snippetsTs)
   writeFileSync(join(ROOT, 'src/content/atlas-nav.generated.ts'), navTs)
   writeFileSync(join(ROOT, 'src/pages/map-data.generated.ts'), mapDataTs)
+  writeFileSync(join(ROOT, 'src/pages/hub-data.generated.ts'), hubDataTs)
+  if (nextSiteConfig !== siteConfig) writeFileSync(siteConfigPath, nextSiteConfig)
   writeFileSync(join(ROOT, 'src/assets/constellation.generated.svg'), constellationSvg)
   mkdirSync(join(ROOT, 'public/ontology'), { recursive: true })
   mkdirSync(join(ROOT, 'public/map'), { recursive: true })

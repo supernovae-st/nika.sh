@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router'
 import { SectionHead } from '../../components/SectionHead'
 import { useRevealOnce } from '../use-reveal-once'
 import './run-explains.css'
@@ -149,7 +150,8 @@ export default function RunExplains() {
           One file ran once: audited before it started, storyboarded while it ran,
           replayable after it ended. Every frame below is real output of the real
           binary, captured on a terminal against committed fixtures. Offline, on the
-          mock model, for zero dollars.
+          mock model, for zero dollars. How the proof works · graph, receipt,
+          conformance · lives at <Link to="/proof">/proof</Link>.
         </SectionHead>
 
         {/* the hero loop · the recorded live run */}

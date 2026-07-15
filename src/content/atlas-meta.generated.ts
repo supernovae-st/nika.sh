@@ -139,8 +139,8 @@ export const ATLAS_HUBS = [
     "id": "flow",
     "title": "The flow",
     "hub": "/flow",
-    "exists": false,
-    "lands": "wo-4"
+    "exists": true,
+    "lands": null
   },
   {
     "id": "acts",
@@ -160,8 +160,8 @@ export const ATLAS_HUBS = [
     "id": "boundary",
     "title": "The boundary",
     "hub": "/boundary",
-    "exists": false,
-    "lands": "wo-4"
+    "exists": true,
+    "lands": null
   },
   {
     "id": "refusals",
@@ -174,8 +174,8 @@ export const ATLAS_HUBS = [
     "id": "proof",
     "title": "The proof",
     "hub": "/proof",
-    "exists": false,
-    "lands": "wo-4"
+    "exists": true,
+    "lands": null
   }
 ] as const
 

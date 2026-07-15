@@ -1,0 +1,257 @@
+/* ─── the atlas hubs register (/flow · /boundary · /proof) ────────────────────
+   One shared register, the /map grammar continued: calm blueprint, hairline
+   sections, mono chips, member rows as anchored definition lines. The layer
+   hue appears ONLY as the section leader (2px). */
+
+.hub-page {
+  background: var(--v4-bg);
+}
+
+.hub-wrap {
+  padding-block: clamp(48px, 8vh, 84px) 40px;
+  max-width: 880px;
+}
+
+.hub-opener {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.85));
+  max-width: 62ch;
+}
+
+.hub-authority {
+  margin: 0 0 40px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--v4-text-faint, rgb(140 160 190 / 0.65));
+}
+
+.hub-authority a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.hub-authority a:hover,
+.hub-authority a:focus-visible {
+  color: var(--v4-text, #e8eefc);
+}
+
+.hub-sec {
+  margin-top: 44px;
+  border-left: 2px solid var(--hub-hue, rgb(140 170 255 / 0.4));
+  padding-left: 18px;
+  scroll-margin-top: 90px;
+}
+
+.hub-sec-title {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 650;
+  color: var(--v4-text, #e8eefc);
+}
+
+.hub-sec-note {
+  margin: 0 0 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.75));
+  max-width: 60ch;
+}
+
+.hub-slot {
+  margin: 6px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 8px 12px;
+  border: 1px dashed var(--v4-line-strong, rgb(140 170 255 / 0.28));
+  border-radius: var(--v4-radius, 4px);
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.75));
+  max-width: 52ch;
+}
+
+/* the member definition rows (an anchored line per member) */
+.hub-members {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.hub-member {
+  display: grid;
+  grid-template-columns: minmax(150px, max-content) minmax(0, 1fr);
+  gap: 4px 16px;
+  padding: 9px 10px;
+  border-radius: var(--v4-radius, 4px);
+  scroll-margin-top: 90px;
+}
+
+.hub-member:target {
+  background: color-mix(in oklch, var(--hub-hue, #5b8cff) 9%, transparent);
+}
+
+.hub-member-id {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--v4-text, #e8eefc);
+}
+
+.hub-member-id a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hub-member-id a:hover,
+.hub-member-id a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.hub-member-gloss {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.8));
+}
+
+.hub-member-slot {
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  padding: 1.5px 6px;
+  border: 1px dashed var(--v4-line-strong, rgb(140 170 255 / 0.3));
+  border-radius: 999px;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
+}
+
+/* the excerpt pair (/flow doors: two CodeFiles side by side) */
+.hub-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+/* rails (outgoing links · quiet chips) */
+.hub-rails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.hub-rail {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1px solid var(--v4-line, rgb(140 170 255 / 0.14));
+  border-radius: 6px;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.85));
+  text-decoration: none;
+}
+
+.hub-rail:hover,
+.hub-rail:focus-visible {
+  border-color: var(--hub-hue, rgb(140 170 255 / 0.5));
+  color: var(--v4-text, #e8eefc);
+}
+
+.hub-rail-kind {
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.65));
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hub-foot {
+  margin-top: 56px;
+  border-top: 1px solid var(--v4-line, rgb(140 170 255 / 0.12));
+  padding-top: 18px;
+}
+
+/* ── the I1 gate matrix (roving grid · replay of fixture verdicts) ── */
+.gm-well {
+  margin-top: 14px;
+  overflow-x: auto;
+}
+
+.gm-grid {
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.gm-grid th {
+  font-weight: 500;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
+  padding: 6px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.gm-cell {
+  padding: 2px;
+}
+
+.gm-btn {
+  width: 100%;
+  min-width: 76px;
+  min-height: 34px;
+  border: 1px solid var(--v4-line, rgb(140 170 255 / 0.12));
+  border-radius: 4px;
+  background: none;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.8));
+  cursor: pointer;
+}
+
+.gm-btn[data-verdict='success'] { color: #34d399; }
+.gm-btn[data-verdict='skipped'] { color: #8fa0bd; }
+.gm-btn[data-verdict='cancelled'] { color: #e0b071; }
+.gm-btn[data-verdict='failure'] { color: #ff5d5d; }
+.gm-btn[data-verdict='refused'] { color: #ff5d5d; opacity: 0.65; }
+
+.gm-btn[aria-pressed='true'] {
+  border-color: var(--hub-hue, #5b8cff);
+  background: color-mix(in oklch, var(--hub-hue, #5b8cff) 10%, transparent);
+}
+
+.gm-btn:focus-visible {
+  outline: 2px solid var(--v4-accent, #4f86ff);
+  outline-offset: 1px;
+}
+
+.gm-detail {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--v4-line, rgb(140 170 255 / 0.14));
+  border-radius: var(--v4-radius, 4px);
+  font-size: 13px;
+}
+
+.gm-detail-line {
+  margin: 0 0 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--v4-text-dim, rgb(190 205 230 / 0.85));
+}
+
+.gm-detail-line a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .hub-member {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
