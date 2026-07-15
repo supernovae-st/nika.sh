@@ -40,6 +40,7 @@ export function renderConstellation(geo, tokens) {
   .cst-star a { transform-box: fill-box; transform-origin: center; transition: transform .15s ease; }
   .cst-star a:hover, .cst-star a:focus-visible { transform: scale(1.8); }
   .cst-star a:focus-visible circle { stroke: #fff; stroke-width: 1.2; }
+  .cst-star--soon { opacity: .45; }
   .cst-agg { font-size: 10px; fill: #8fa0bd; }
   .cst-agg a:hover text, .cst-agg a:focus-visible text { fill: #e8eefc; }
   .cst-lk { fill: none; stroke: #9db4e0; stroke-opacity: .10; }
@@ -84,18 +85,23 @@ export function renderConstellation(geo, tokens) {
     )
   }
 
-  /* ring 3 · member stars (real crawlable anchors · out of tab order) */
+  /* ring 3 · member stars — real crawlable anchors when the page is served
+     (out of tab order · the list is the keyboard path); a landing-later
+     hub's stars render as plain points with their title (never a 404) */
   for (const m of geo.members) {
     if (!m.url) continue
-    const href = m.anchor ? `${m.url}#${m.anchor}` : m.url
     const fill = m.hollow ? 'none' : hue(m.layer)
     const stroke = hue(m.layer)
-    parts.push(
-      `<g class="cst-star"><a href="${esc(href)}" tabindex="-1"><circle cx="${m.x}" cy="${m.y}" r="3.1" fill="${fill}" stroke="${stroke}" stroke-width="${m.hollow ? 1.3 : 0}"/><title>${esc(m.title)}</title></a></g>`,
-    )
+    const dot = `<circle cx="${m.x}" cy="${m.y}" r="3.1" fill="${fill}" stroke="${stroke}" stroke-width="${m.hollow ? 1.3 : 0}"/><title>${esc(m.title)}</title>`
+    if (m.linkable) {
+      const href = m.anchor ? `${m.url}#${m.anchor}` : m.url
+      parts.push(`<g class="cst-star"><a href="${esc(href)}" tabindex="-1">${dot}</a></g>`)
+    } else {
+      parts.push(`<g class="cst-star cst-star--soon">${dot}</g>`)
+    }
   }
   for (const a of geo.aggregates) {
-    if (!a.url) continue
+    if (!a.url || !a.linkable) continue
     parts.push(
       `<g class="cst-agg"><a href="${esc(a.url)}" tabindex="-1"><text x="${a.x}" y="${a.y}" text-anchor="middle">+${a.count}</text><title>+${a.count} more · open the register</title></a></g>`,
     )

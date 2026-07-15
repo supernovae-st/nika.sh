@@ -107,6 +107,10 @@ export function layoutConstellation(twin, { topN = 12 } = {}) {
         anchor: m.anchor ?? null,
         set: d.id,
         layer: d.layer,
+        /* a star is an <a> only when its page is served today — the sweep
+           crawls these anchors for real (its whole point), so a star on a
+           landing-later hub renders as a plain point until the WO flips */
+        linkable: d.page_exists,
         hollow: m.status === 'ratified' && sets.find((s) => s.id === `set:${d.id}`)?.clock === 'both',
         x: r2(CENTER + Math.cos(a) * RING.members),
         y: r2(CENTER + Math.sin(a) * RING.members),
@@ -118,6 +122,7 @@ export function layoutConstellation(twin, { topN = 12 } = {}) {
         set: d.id,
         count: rest,
         url: d.surface === 'rooms' ? d.url?.split('/:')[0] ?? d.url : d.url,
+        linkable: d.page_exists,
         x: r2(CENTER + Math.cos(a) * RING.members),
         y: r2(CENTER + Math.sin(a) * RING.members),
       })

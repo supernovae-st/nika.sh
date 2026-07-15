@@ -289,4 +289,4 @@ export const TEMPLATE_PATHS = [
   '/templates/docker-report',
 ]
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, '/map', '/sitemap', '/use-cases', '/spec', '/install', '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, '/map', '/use-cases', '/spec', '/install', '/convert', '/brand']
