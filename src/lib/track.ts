@@ -22,6 +22,8 @@ export type FunnelEvent =
   | 'install-copy'
   | 'play-run'
   | 'play-break'
+  | 'play-share'
+  | 'play-seed'
   | 'learn-done'
   | 'github-out'
   | 'convert-open'

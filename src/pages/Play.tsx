@@ -174,6 +174,7 @@ export function Component() {
     const url = `${window.location.origin}/play?y=${compressToEncodedURIComponent(code)}`
     window.history.replaceState(null, '', url)
     void navigator.clipboard?.writeText(url).then(() => {
+      track('play-share')
       setShared(true)
       window.setTimeout(() => setShared(false), 1600)
     })
@@ -234,6 +235,7 @@ export function Component() {
 
   const pick = (slug: string) => {
     stopSim()
+    track('play-seed')
     const apply = (src: string) => {
       setSeed(slug)
       setCode(src)
