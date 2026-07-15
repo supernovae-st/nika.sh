@@ -37,12 +37,15 @@ const diffLine = (() => {
    The 39K drawing is this page's heaviest cargo and its only consumer — off
    the initial bundle. SSG awaits the asset in the SSR-only branch (the svg
    lands INLINE in the prerendered HTML: crawlable anchors); hydration reads
-   the SIBLING SCRIPT ISLAND's textContent back — NEVER the host div's
-   innerHTML: the browser re-serializes markup (self-closing tags, attribute
-   forms), so innerHTML is not byte-equal to the source and hydration threw
-   React #418 (caught by the e2e sweep). A <script type="text/plain"> is a
-   raw-text element: its textContent IS the exact bytes we wrote — the
-   BlogPost island discipline, applied to markup. SPA navigation pulls the
+   the SIBLING TEXTAREA ISLAND's value back — NEVER the host div's
+   innerHTML: the browser re-serializes markup (self-closing tags), so
+   innerHTML is never byte-equal to the source (#418, caught by the sweep).
+   Why a TEXTAREA and not a <script type="text/plain">: React's hydration
+   walker SKIPS script tags in the DOM (extension tolerance), so a
+   React-rendered script can never be matched — #418 again, structurally
+   (probe-verified). A textarea is RCDATA: renderToString escapes the
+   entities, the parser decodes them back, and .value IS the exact source
+   bytes — and the matcher sees the element. SPA navigation pulls the
    asset as its own chunk once. */
 let SSR_CONSTELLATION: string | null = null
 if (import.meta.env.SSR) {
@@ -54,7 +57,8 @@ const CST_ISLAND_ID = 'mp-cst-island'
 function useConstellation(): string {
   const [svg, setSvg] = useState<string>(() => {
     if (import.meta.env.SSR) return SSR_CONSTELLATION ?? ''
-    return document.getElementById(CST_ISLAND_ID)?.textContent ?? ''
+    const island = document.getElementById(CST_ISLAND_ID) as HTMLTextAreaElement | null
+    return island?.value ?? ''
   })
   useEffect(() => {
     if (svg) return
@@ -97,6 +101,7 @@ function EveryPageRow({ link }: { link: MapLink }) {
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const constellation = useConstellation()
+
 
   const title = 'The map · every page, one graph · Nika'
   const description =
@@ -201,7 +206,7 @@ export function Component() {
                           ) : (
                             <Link className="mp-set-chip" to={s.url}>
                               {s.title}
-                              <CanonCount setId={s.id} className="mp-set-count" />
+                              <CanonCount setId={s.id} className="mp-set-count" plain />
                             </Link>
                           )}
                         </li>
@@ -219,12 +224,29 @@ export function Component() {
                   user input ever reaches these innerHTMLs (the MegaIcon
                   precedent). The script island carries the EXACT source
                   bytes for hydration; the div is the visible drawing. */}
-              <script
-                type="text/plain"
+              {/* the byte island: RCDATA round-trips exactly (see the recipe
+                  note above) · display:none inline so no stylesheet race can
+                  ever flash a wall of svg source text */}
+              <textarea
                 id={CST_ISLAND_ID}
+                value={constellation}
+                readOnly
+                hidden
+                tabIndex={-1}
+                aria-hidden
+                style={{ display: 'none' }}
+              />
+              {/* suppressHydrationWarning: React 19 validates innerHTML at
+                  hydration and the browser RE-SERIALIZES markup (self-closing
+                  svg tags), so the DOM can never be byte-equal to the source
+                  string — the mismatch is structural, not a bug; the island
+                  textarea above carries the exact bytes for state, and this
+                  flag is the tool React ships for exactly this adoption. */}
+              <div
+                className="mp-constellation"
+                suppressHydrationWarning
                 dangerouslySetInnerHTML={{ __html: constellation }}
               />
-              <div className="mp-constellation" dangerouslySetInnerHTML={{ __html: constellation }} />
               <figcaption className="mp-figcap">
                 the same atlas, drawn · members link their rooms · <a href="/map/constellation.svg">the file</a>
               </figcaption>
