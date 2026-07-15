@@ -4,7 +4,7 @@ import { yaml as yamlLang } from '@codemirror/lang-yaml'
 import { linter, lintGutter, type Diagnostic } from '@codemirror/lint'
 import { EditorView } from '@codemirror/view'
 import { syntaxHighlighting } from '@codemirror/language'
-import { lintNika, type LintDiag } from '../lib/nika-lint'
+import { checkNika, type LintDiag } from '../lib/nika-lint'
 import { NIKA_VERB_HEX } from '../design-tokens.generated'
 import {
   CF_BG,
@@ -136,7 +136,7 @@ export default function PlayEditor({ value, onChange, onDiags }: PlayEditorProps
       linter(
         (view) => {
           const src = view.state.doc.toString()
-          const found = lintNika(src)
+          const found = checkNika(src)
           onDiags(found)
           return found.map((d): Diagnostic => {
             const line = view.state.doc.line(Math.min(d.line, view.state.doc.lines))

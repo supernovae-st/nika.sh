@@ -45,6 +45,8 @@ jobs:
           node scripts/build-templates.mjs
           node scripts/build-tool-usage.mjs
           node scripts/build-language-usage.mjs
+          node scripts/vendor-lint-fixtures.mjs   # the port's conformance corpus follows the spec
+          node scripts/vendor-gate-matrix.mjs     # the gate explorable's 40 cells follow too
           python3 ../spec/scripts/design-projector.py --write || true # absent legs skip; the diff judges
       - name: One idempotent PR on drift
         env:

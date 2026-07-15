@@ -9,7 +9,7 @@ const { compressToEncodedURIComponent, decompressFromEncodedURIComponent } = lz
 import { track } from '../lib/track'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import { lintNika, type LintDiag } from '../lib/nika-lint'
+import { checkNika, type LintDiag } from '../lib/nika-lint'
 import { useAurora } from '../fx/aurora-context'
 import { routeHead } from '../content'
 import { TEMPLATES_YAML, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
@@ -67,7 +67,7 @@ const VERB_HUE: Record<NikaVerb, string> = {
 export function Component() {
   const [seed, setSeed] = useState('chain')
   const [code, setCode] = useState(TEMPLATES_YAML['chain'] ?? '')
-  const [diags, setDiags] = useState<LintDiag[]>(() => lintNika(TEMPLATES_YAML['chain'] ?? ''))
+  const [diags, setDiags] = useState<LintDiag[]>(() => checkNika(TEMPLATES_YAML['chain'] ?? ''))
   /* the LIVE PLAN (W12b·E1) · parsePlan on a 150ms debounce; an unparseable
      mid-edit source keeps the LAST VALID plan on screen, dimmed ([data-stale])
      — the picture never flickers while you type */
@@ -139,7 +139,7 @@ export function Component() {
       if (!src) return
       setSeed('shared')
       setCode(src)
-      setDiags(lintNika(src))
+      setDiags(checkNika(src))
       setPlan(parsePlan(src))
       setStale(false)
     })
@@ -212,7 +212,7 @@ export function Component() {
     const src = TEMPLATES_YAML[slug] ?? SHOWCASE_YAML[slug] ?? ''
     setSeed(slug)
     setCode(src)
-    setDiags(lintNika(src))
+    setDiags(checkNika(src))
     setPlan(parsePlan(src))
     setStale(false)
   }

@@ -16,6 +16,48 @@ export interface LintDiag {
   fix: string
 }
 
+/** the EXACT codes this port can emit ('NIKA-PARSE' bare = the envelope
+    catch-all, spec latitude) — the conformance replay
+    (nika-lint-conformance.test.ts) reads this to scope its assertions,
+    and the I8 wasm parity gate inherits the same list. Extending the
+    port = extending this, and the corpus judges the claim. */
+export const LINT_COVERAGE = [
+  'NIKA-PARSE',
+  'NIKA-PARSE-024',
+  'NIKA-DAG-001',
+  'NIKA-DAG-002',
+  'NIKA-DAG-004',
+  'NIKA-DAG-005',
+  'NIKA-VAR-001',
+  'NIKA-VAR-005',
+  'NIKA-VAR-008',
+  'NIKA-VAR-021',
+  'NIKA-SEC-004',
+  'NIKA-BUILTIN-DONE-001',
+] as const
+
+/* ─── the oracle seam (WO-11 · U3 · the I8 contract, born early) ─────────────
+   The day the engine ships its wasm check artifact it registers
+   window.NikaOracle; every judge-surface on the site PREFERS the oracle
+   and falls back to this port — the site becomes truer without a line of
+   site code changing. checkNika is the ONE door the call-sites use. */
+export interface NikaOracle {
+  /** the real `nika check` verdict · findings in check --json shape */
+  check(src: string): LintDiag[]
+}
+
+export function checkNika(src: string): LintDiag[] {
+  const oracle = (globalThis as { NikaOracle?: NikaOracle }).NikaOracle
+  if (oracle) {
+    try {
+      return oracle.check(src)
+    } catch {
+      /* a broken oracle never breaks the page — the port stays the floor */
+    }
+  }
+  return lintNika(src)
+}
+
 interface Task {
   id?: unknown
   with?: unknown
