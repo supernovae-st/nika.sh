@@ -84,8 +84,10 @@ export const routes: RouteObject[] = [
       { path: 'language/:word', Component: WordPage },
       /* the provider register · the human twin of /providers/catalog.json.
          Spec-named set only; the engine's embedded tail stays a count. */
+      /* the provider rooms died in the WO-6 fusion: /providers/:id serves a
+         STATIC meta-refresh stub (compiler-emitted from redirects.json ·
+         the /docs pattern) → /providers#id · the hub is the register */
       { path: 'providers', Component: Providers },
-      { path: 'providers/:id', Component: Providers },
       /* the skeleton register · the human twin of /templates/catalog.json.
          Deep links open the full SLOT-marked workflow in the product panel. */
       { path: 'templates', Component: Templates },

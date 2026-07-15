@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Link, useParams } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useAnchorScroll } from '../lib/use-anchor-scroll'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -11,6 +11,7 @@ import {
   type ProviderEntry,
 } from '../content/providers.generated'
 import { CANON } from '../canon.generated'
+import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { routeHead } from '../content'
 import '../sections/v4-home.css'
 import './providers-page.css'
@@ -127,10 +128,13 @@ function ProviderRow({ entry, active }: { entry: ProviderEntry; active: boolean 
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
-  const { id: rawId } = useParams()
-  const id = rawId?.toLowerCase()
+  /* the fusion (§4.6 · WO-6): the 16 doorway rooms died in 301 stubs — the
+     hub IS the register, #id anchors are the citable surface. The hash
+     drives the same re-aim the rooms had. */
+  const { hash } = useLocation()
+  const id = hash ? hash.slice(1).toLowerCase() : undefined
   const hit = id ? PROVIDER_INDEX[id] : undefined
-  const miss = Boolean(id) && !hit
+  const miss = false
 
   const groups = useMemo(
     () =>
@@ -141,16 +145,15 @@ export function Component() {
     [],
   )
 
-  const title = hit ? `${hit.name} · Nika providers` : 'Providers · Nika'
-  const description = hit
-    ? `Run Nika workflows on ${hit.name} (provider: ${hit.id}). ${hit.description} ${hit.env_var ? `Key: ${hit.env_var}.` : 'No key needed.'}`
-    : `The ${CANON.providers} providers Nika names: ${CANON.providersLocal} local (the sovereign default), ${CANON.providersCloud} cloud (bring your own key), one test harness. Machine twin: /providers/catalog.json.`
+  // the market phrase rides the vocab bridge, never typed here (§6.5)
+  const title = `Providers · ${MARKET_VOCAB['layer:reach'].term}, provider-agnostic · Nika`
+  const description = `The ${CANON.providers} providers Nika names: ${CANON.providersLocal} local (the sovereign default), ${CANON.providersCloud} cloud (bring your own key), one test harness. Machine twin: /providers/catalog.json.`
 
   useHead({
     title,
-    link: routeHead(id ? `/providers/${id}` : '/providers').link,
+    link: routeHead('/providers').link,
     meta: [
-      ...routeHead(id ? `/providers/${id}` : '/providers').meta,
+      ...routeHead('/providers').meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },

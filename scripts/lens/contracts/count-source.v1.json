@@ -26,8 +26,8 @@
     ],
     "count": 205,
     "set_sha256": "c8c4c5ec601a4c672791ebe7e2598c8a13a823a9f21021b84b8b19baed2e17a5",
-    "rendered_count": 396,
-    "rendered_set_sha256": "dd17be43841d98d483807be7478fc0c412b5724f78ed75b14d62d698059d1c39"
+    "rendered_count": 412,
+    "rendered_set_sha256": "2dfbbb5d7f1a37dd34dba65f97fabf3ecd9d8d99069483bc48c2be4aafefab75"
   },
   "claim_count": 140,
   "bindings": [
@@ -976,7 +976,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:1",
       "path": "src/pages/Providers.tsx",
-      "line": 147,
+      "line": 150,
       "text": "${CANON.providers} providers",
       "source": "${CANON.providers}",
       "field": "providers",
@@ -989,7 +989,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:2",
       "path": "src/pages/Providers.tsx",
-      "line": 204,
+      "line": 207,
       "text": "one provider",
       "source": "one",
       "field": "providers",

@@ -403,7 +403,13 @@ export function discoverPrerenderPaths(root) {
     'BLOG_PATHS', 'MANIFESTO_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
     'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS',
     'ATLAS_PATHS',
-  ]) arrays.set(name, literalArray(source, name))
+  ]) {
+    // A registry page can fuse away (its path array leaves the file with it);
+    // only arrays still declared join the map — an unknown SPREAD stays fatal.
+    if (new RegExp(`export const ${name} = \\[`).test(source)) {
+      arrays.set(name, literalArray(source, name))
+    }
+  }
   const expression = source.match(/export const PATHS = \[([^\n]+)\]/)?.[1]
   if (!expression) throw new Error('PATHS expression missing from site.config.ts')
   const paths = []

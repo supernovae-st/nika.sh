@@ -6,7 +6,6 @@ import { CANON } from '../canon.generated'
 import {
   ERROR_PATHS,
   LANGUAGE_PATHS,
-  PROVIDER_PATHS,
   TEMPLATE_PATHS,
   TOOL_PATHS,
   VERB_PATHS,
@@ -188,9 +187,14 @@ describe('sets.yaml · the versioned constants mirror their gated sources', () =
 })
 
 describe('sets.yaml · moved entries are complete and shaped as redirects', () => {
-  it('providers moved covers every provider room the site serves today', () => {
+  it('providers moved covers every cataloged provider (the rooms died in the WO-6 fusion)', () => {
     const moved = need('providers').moved!
-    expect(moved.map((m) => m.from).sort()).toEqual([...PROVIDER_PATHS].sort())
+    const catalog = JSON.parse(
+      readFileSync(join(ROOT, 'public/providers/catalog.json'), 'utf8'),
+    ) as { providers: { id: string }[] }
+    expect(moved.map((m) => m.from).sort()).toEqual(
+      catalog.providers.map((p) => `/providers/${p.id}`).sort(),
+    )
     for (const m of moved) {
       const id = m.from.replace('/providers/', '')
       expect(m.to).toBe(`/providers#${id}`)

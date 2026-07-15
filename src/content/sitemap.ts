@@ -119,7 +119,7 @@ export const SITE_MAP: MapGroup[] = [
       ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/verbs/${c.verb}` })),
       ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/${w.word}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
-      ...PROVIDERS.map((p) => ({ label: `provider: ${p.id}`, href: `/providers/${p.id}` })),
+      ...PROVIDERS.map((p) => ({ label: `provider: ${p.id}`, href: `/providers#${p.id}` })),
       ...TEMPLATES.map((t) => ({ label: t.file, href: `/templates/${t.name}` })),
     ],
   },

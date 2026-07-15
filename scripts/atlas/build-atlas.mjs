@@ -1037,6 +1037,36 @@ for (const surf of S.sets.surfaces) {
 redirects.sort((a, b) => a.from.localeCompare(b.from))
 const redirectsJson = JSON.stringify({ redirects_format: 1, redirects }, null, 2) + '\n'
 
+/* the 301 stubs (WO-6): every LIVE moved row under /providers/ becomes a
+   STATIC meta-refresh file (the /docs pattern — a React stub hydrates
+   during its own refresh and throws #418, the law paid at /sitemap).
+   Emitted FROM redirects.json rows: the manifest and the files cannot
+   drift apart. Static hosting has no server rules; the stub IS the 301. */
+const stub = (to, label) => `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content="0; url=${to}" />
+    <link rel="canonical" href="https://nika.sh${to.split('#')[0]}" />
+    <title>${label} · Nika</title>
+    <meta name="theme-color" content="#0a0b0d" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      :root { color-scheme: dark; }
+      body { margin: 0; display: grid; place-items: center; min-height: 100svh; background: #0a0b0d; color: #f4f5f7; font: 15px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+      a { color: #8db4ff; }
+    </style>
+  </head>
+  <body>
+    <p>→ <a href="${to}">nika.sh${to}</a></p>
+  </body>
+</html>
+`
+const providerStubs = redirects.filter((r) => r.live && r.from.startsWith('/providers/'))
+
 /* ─── write + report ───────────────────────────────────────────────────────*/
 if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/atlas.generated.ts'), atlasTs)
@@ -1049,6 +1079,11 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/pages/hub-data.generated.ts'), hubDataTs)
   if (nextSiteConfig !== siteConfig) writeFileSync(siteConfigPath, nextSiteConfig)
   writeFileSync(join(ROOT, 'src/assets/constellation.generated.svg'), constellationSvg)
+  for (const r of providerStubs) {
+    const dir = join(ROOT, 'public', r.from.slice(1))
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(join(dir, 'index.html'), stub(r.to, r.from.split('/').pop()))
+  }
   mkdirSync(join(ROOT, 'public/ontology'), { recursive: true })
   mkdirSync(join(ROOT, 'public/map'), { recursive: true })
   writeFileSync(join(ROOT, 'public/map/constellation.svg'), constellationSvg)

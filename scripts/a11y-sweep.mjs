@@ -39,8 +39,6 @@ function atlasRoutes() {
     const first = twin.nodes.find((n) => n.kind === 'member' && n.set === setId && n.url && !n.anchor)
     if (first) routes.add(first.url)
   }
-  // the doorway rooms awaiting fusion still serve — sweep one until WO-6 flips
-  routes.add('/providers/ollama')
   return [...routes].filter((r) => r && r.startsWith('/')).sort()
 }
 const ROUTES = [...new Set([...CORE_ROUTES, ...atlasRoutes()])]

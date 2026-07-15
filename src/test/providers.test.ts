@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { PROVIDERS, PROVIDER_INDEX, EMBEDDED_EXTRA } from '../content/providers.generated'
 import { CANON } from '../canon.generated'
-import { PROVIDER_PATHS, PATHS } from '../../site.config'
+import { PATHS } from '../../site.config'
 
 /* ── the provider-register drift gates ────────────────────────────────────────
    public/providers/catalog.json is the source (the engine's own `nika
@@ -65,7 +65,21 @@ describe('/providers · the compiled projection matches the served catalog', () 
     expect(PATHS).toContain('/providers')
   })
 
-  it('every provider prerenders its deep page (DO error_document beats the catchall)', () => {
-    expect(new Set(PROVIDER_PATHS)).toEqual(new Set(PROVIDERS.map((p) => `/providers/${p.id}`)))
+  it('every dead provider room serves its 301 stub (the WO-6 fusion contract)', () => {
+    // the rooms died · their URLs live as compiler-emitted static stubs
+    // (public/providers/<id>/index.html · refresh 0 → /providers#id ·
+    // canonical /providers · noindex) — emitted FROM redirects.json, so
+    // manifest and files cannot drift
+    for (const p of PROVIDERS) {
+      const body = readFileSync(join(ROOT, `public/providers/${p.id}/index.html`), 'utf8')
+      expect(body, p.id).toContain(`url=/providers#${p.id}`)
+      expect(body, p.id).toContain('rel="canonical" href="https://nika.sh/providers"')
+      expect(body, p.id).toContain('noindex')
+    }
+    const manifest = JSON.parse(readFileSync(join(ROOT, 'public/redirects.json'), 'utf8')) as {
+      redirects: { from: string; live: boolean }[]
+    }
+    const live = manifest.redirects.filter((r) => r.live && r.from.startsWith('/providers/'))
+    expect(live.length).toBe(PROVIDERS.length)
   })
 })

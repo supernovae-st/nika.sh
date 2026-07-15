@@ -29,8 +29,9 @@ describe('/map · the map covers the territory, and only the territory', () => {
   it('every internal page link is a prerendered route (no dead links)', () => {
     const routes = new Set(PATHS)
     const dead = [...hrefs].filter((h) => {
-      const isFileTwin = /\.[a-z]+$/.test(h) || h.startsWith('/.well-known/')
-      return !isFileTwin && !routes.has(h)
+      const page = h.split('#')[0] // anchored rows (providers) judge their page
+      const isFileTwin = /\.[a-z]+$/.test(page) || page.startsWith('/.well-known/')
+      return !isFileTwin && !routes.has(page)
     })
     expect(dead, `map links to nowhere: ${dead.join(', ')}`).toEqual([])
   })

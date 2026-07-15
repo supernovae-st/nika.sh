@@ -28,8 +28,8 @@ describe('/palette · the ⌘K corpus matches its sources', () => {
     for (const e of ERROR_CODES) expect(hrefs.has(`/errors/${e.code}`), e.code).toBe(true)
   })
 
-  it('every palette href is a real route (prerender set)', () => {
+  it('every palette href is a real route (fragments judge their page · the WO-6 fusion)', () => {
     const routes = new Set([...PATHS, ...BLOG_PATHS])
-    for (const e of PALETTE) expect(routes.has(e.href), e.href).toBe(true)
+    for (const e of PALETTE) expect(routes.has(e.href.split('#')[0]), e.href).toBe(true)
   })
 })

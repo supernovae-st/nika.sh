@@ -91,7 +91,7 @@ export function compilePalette() {
     entries.push({
       kind: 'provider',
       label: `provider: ${p.id}`,
-      href: `/providers/${p.id}`,
+      href: `/providers#${p.id}`,
       hint: p.description,
     })
 

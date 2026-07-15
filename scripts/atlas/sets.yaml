@@ -319,8 +319,8 @@ sets:
     order: "local-first (locked): the catalog order is the law · local · cloud · mock"
     unique_data: "env var · api dialect · default and cheap model · capabilities per provider (rendered as hub sections)"
     defined_by: [stdlib/providers-v0.1.md]
-    moved_applies: wo-6   # the fusion WO flips moved_live true when the 301 pages ship
-    moved_live: false
+    moved_applies: wo-6
+    moved_live: true   # WO-6 shipped the stubs · the e2e replays these from redirects.json
     moved:
       # 16 redirects · /providers/:id → /providers#:id · applied at WO-6 ·
       # redirects.json derives from these lines (output n°13)

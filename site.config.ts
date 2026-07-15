@@ -178,29 +178,9 @@ export const TOOL_PATHS = [
   '/tools/write',
 ]
 
-/* the provider register's deep pages — one static landing per spec-named
-   provider (slug = provider id: /providers/ollama). Same prerender law;
-   kept literal (this file stays import-free); the providers drift gate
-   (src/test/providers.test.ts) fails when the catalog and these paths
-   diverge. Order mirrors the presentation law (local first). */
-export const PROVIDER_PATHS = [
-  '/providers/ollama',
-  '/providers/lmstudio',
-  '/providers/llamacpp',
-  '/providers/localai',
-  '/providers/vllm',
-  '/providers/mistral',
-  '/providers/anthropic',
-  '/providers/openai',
-  '/providers/gemini',
-  '/providers/deepseek',
-  '/providers/xai',
-  '/providers/groq',
-  '/providers/openrouter',
-  '/providers/huggingface',
-  '/providers/nvidia',
-  '/providers/mock',
-]
+/* (the provider rooms died in the WO-6 fusion — their URLs live as
+   compiler-emitted 301 stubs in public/providers/<id>/ · redirects.json
+   is the manifest) */
 
 /* the verb rooms — one static landing per verb (slug = verb name:
    /verbs/infer). Same prerender law; kept literal; the language drift gate
@@ -295,4 +275,4 @@ export const TEMPLATE_PATHS = [
 export const ATLAS_PATHS = ['/map', '/flow', '/boundary', '/proof', '/use-cases/t1-image-fx-batch', '/use-cases/t1-meeting-actions', '/use-cases/t1-og-images', '/use-cases/t1-price-watch', '/use-cases/t1-social-repurpose', '/use-cases/t1-standup-digest', '/use-cases/t2-bookmark-triage', '/use-cases/t2-contract-guard', '/use-cases/t2-csv-chart-report', '/use-cases/t2-etl-quarantine', '/use-cases/t2-invoice-chaser', '/use-cases/t2-model-bench', '/use-cases/t2-release-notes', '/use-cases/t2-release-radar', '/use-cases/t2-seo-content-brief', '/use-cases/t2-support-triage', '/use-cases/t2-transcript-shownotes', '/use-cases/t3-competitor-radar', '/use-cases/t3-config-drift-sentinel', '/use-cases/t3-localization-factory', '/use-cases/t3-pr-review-fanout', '/use-cases/t3-resume-screener', '/use-cases/t4-ceo-monday-brief', '/use-cases/t4-deep-research-brief', '/use-cases/t4-incident-war-room', '/use-cases/t4-release-train']
 /* ── ATLAS PATHS END ── */
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', ...PROVIDER_PATHS, '/templates', ...TEMPLATE_PATHS, ...ATLAS_PATHS, '/use-cases', '/spec', '/install', '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...ATLAS_PATHS, '/use-cases', '/spec', '/install', '/convert', '/brand']

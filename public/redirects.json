@@ -5,112 +5,112 @@
       "from": "/providers/anthropic",
       "to": "/providers#anthropic",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/deepseek",
       "to": "/providers#deepseek",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/gemini",
       "to": "/providers#gemini",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/groq",
       "to": "/providers#groq",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/huggingface",
       "to": "/providers#huggingface",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/llamacpp",
       "to": "/providers#llamacpp",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/lmstudio",
       "to": "/providers#lmstudio",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/localai",
       "to": "/providers#localai",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/mistral",
       "to": "/providers#mistral",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/mock",
       "to": "/providers#mock",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/nvidia",
       "to": "/providers#nvidia",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/ollama",
       "to": "/providers#ollama",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/openai",
       "to": "/providers#openai",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/openrouter",
       "to": "/providers#openrouter",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/vllm",
       "to": "/providers#vllm",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
       "from": "/providers/xai",
       "to": "/providers#xai",
       "status": 301,
-      "live": false,
+      "live": true,
       "applies": "wo-6"
     },
     {
