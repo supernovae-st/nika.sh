@@ -788,7 +788,16 @@ h1, h2 { font-family: var(--headline); }
   .cf-line--lit,
   .play-seed[aria-pressed='true'],
   .blog-card:hover,
-  .dv-node[data-run='running'] {
+  .dv-node[data-run='running'],
+  /* the two named A1 debts (Lens §6.8quater): the palette's selected row
+     and the mini-dag's highlighted node both read through tint alone */
+  .ck-opt[aria-selected='true'],
+  .mdag-node[data-hi],
+  /* the new atlas surfaces born interactive (WO-3..5): selected matrix
+     cell · pressed check option · map set chips keep their hairline via
+     border, listed here for the registry's completeness */
+  .gm-btn[aria-pressed='true'],
+  .lck-opt[aria-pressed='true'] {
     outline: 1px solid Highlight;
     outline-offset: -1px;
   }
