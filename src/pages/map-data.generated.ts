@@ -11,6 +11,9 @@ export interface MapSet {
   surface: string
   slot: string | null
   closed: boolean
+  /** the page is served today — a chip only links when true */
+  exists: boolean
+  lands: string | null
 }
 export interface MapLayer {
   id: string
@@ -40,7 +43,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 53,
         "surface": "rooms",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       },
       {
         "id": "namespaces",
@@ -49,7 +54,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 5,
         "surface": "anchors",
         "slot": null,
-        "closed": true
+        "closed": true,
+        "exists": true,
+        "lands": null
       },
       {
         "id": "types",
@@ -58,7 +65,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 0,
         "surface": "anchors",
         "slot": "W3",
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       }
     ]
   },
@@ -77,7 +86,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 6,
         "surface": "anchors",
         "slot": null,
-        "closed": true
+        "closed": true,
+        "exists": false,
+        "lands": "wo-4"
       },
       {
         "id": "gate-predicates",
@@ -86,7 +97,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 4,
         "surface": "anchors",
         "slot": null,
-        "closed": true
+        "closed": true,
+        "exists": false,
+        "lands": "wo-4"
       }
     ]
   },
@@ -105,7 +118,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 4,
         "surface": "rooms",
         "slot": null,
-        "closed": true
+        "closed": true,
+        "exists": true,
+        "lands": null
       }
     ]
   },
@@ -124,7 +139,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 27,
         "surface": "rooms",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       },
       {
         "id": "tool-families",
@@ -133,7 +150,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 6,
         "surface": "anchors",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       },
       {
         "id": "providers",
@@ -142,7 +161,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 16,
         "surface": "anchors",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       },
       {
         "id": "extract-modes",
@@ -151,7 +172,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 9,
         "surface": "anchors",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       },
       {
         "id": "templates",
@@ -160,7 +183,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 10,
         "surface": "rooms",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       }
     ]
   },
@@ -179,7 +204,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 4,
         "surface": "anchors",
         "slot": null,
-        "closed": true
+        "closed": true,
+        "exists": false,
+        "lands": "wo-4"
       },
       {
         "id": "secret-sources",
@@ -188,7 +215,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 3,
         "surface": "anchors",
         "slot": null,
-        "closed": true
+        "closed": true,
+        "exists": false,
+        "lands": "wo-4"
       }
     ]
   },
@@ -207,7 +236,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 61,
         "surface": "rooms",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       },
       {
         "id": "error-namespaces",
@@ -216,7 +247,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 14,
         "surface": "anchors",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       },
       {
         "id": "error-categories",
@@ -225,7 +258,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 12,
         "surface": "anchors",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": true,
+        "lands": null
       }
     ]
   },
@@ -244,7 +279,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 3,
         "surface": "anchors",
         "slot": null,
-        "closed": true
+        "closed": true,
+        "exists": false,
+        "lands": "wo-4"
       },
       {
         "id": "mcp-tools",
@@ -253,7 +290,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 8,
         "surface": "anchors",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": false,
+        "lands": "wo-4"
       },
       {
         "id": "showcases",
@@ -262,7 +301,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 26,
         "surface": "rooms",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": false,
+        "lands": "wo-5"
       },
       {
         "id": "truth-words",
@@ -271,7 +312,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "count": 10,
         "surface": "anchors",
         "slot": null,
-        "closed": false
+        "closed": false,
+        "exists": false,
+        "lands": "wo-7"
       }
     ]
   }

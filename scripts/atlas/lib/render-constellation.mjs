@@ -105,5 +105,10 @@ export function renderConstellation(geo, tokens) {
   parts.push(`<circle class="cst-corering" cx="${C}" cy="${C}" r="64"/>`)
   parts.push(`<text class="cst-core" x="${C}" y="${C + 5}" text-anchor="middle">nika: v1</text>`)
   parts.push('</svg>')
-  return parts.join('\n') + '\n'
+  const out = parts.join('\n') + '\n'
+  /* the island guard: /map carries these bytes inside a <script type=
+     text/plain> island (hydration byte-parity) — a closing-script sequence
+     would end that island early. Structural refusal, not an escape. */
+  if (/<\/script/i.test(out)) throw new Error('constellation: closing-script sequence would break the island')
+  return out
 }

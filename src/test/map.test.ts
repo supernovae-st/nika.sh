@@ -65,6 +65,21 @@ describe('/map · the anatomy list is the derived truth', () => {
       expect(l.lands, `${l.id} must name its landing WO`).toMatch(/^wo-\d+$/)
     }
   })
+
+  it('a set chip only links a served page (the dead-link catch, structural)', () => {
+    const routeSet = new Set(PATHS)
+    for (const l of MAP_LAYERS) {
+      for (const s of l.sets) {
+        if (s.slot) continue
+        if (s.exists) {
+          const served = routeSet.has(s.url) || PATHS.some((p) => p !== '/' && s.url.startsWith(`${p}/`))
+          expect(served, `${s.id} claims exists but ${s.url} is not served`).toBe(true)
+        } else {
+          expect(s.lands, `${s.id} not served: must name its landing WO`).toMatch(/^wo-\d+$/)
+        }
+      }
+    }
+  })
 })
 
 describe('/map · the constellation is one drawing, twice served', () => {
@@ -81,6 +96,11 @@ describe('/map · the constellation is one drawing, twice served', () => {
     for (const a of anchors) expect(a, a).toContain('tabindex="-1"')
     expect(svg).toContain('role="img"')
     expect(svg).toContain('prefers-reduced-motion')
+  })
+
+  it('the bytes stay island-safe (no closing-script sequence · the hydration parity law)', () => {
+    const svg = readFileSync(join(ROOT, 'public/map/constellation.svg'), 'utf8')
+    expect(/<\/script/i.test(svg)).toBe(false)
   })
 })
 

@@ -602,6 +602,8 @@ export const SOURCES_LIVE = false
 
 /* the map page data (sortie 5 · chrome-lean: the layers with their sets and
    counts, ready to render — the page never imports the full graph) */
+const pageServed = (page) =>
+  existingPages.has(page) || [...existingPages].some((p) => p !== '/' && page.startsWith(`${p}/`))
 const mapLayers = S.sets.layers.map((l) => ({
   id: l.id,
   title: l.title,
@@ -611,15 +613,23 @@ const mapLayers = S.sets.layers.map((l) => ({
   opener: l.opener.trim(),
   sets: S.sets.sets
     .filter((s) => s.layer === l.id)
-    .map((s) => ({
-      id: s.id,
-      title: s.title,
-      url: s.surface === 'rooms' ? `/${(s.rooms_url ?? '/x').split('/')[1]}` : (s.anchor_page ?? l.hub).split('#')[0],
-      count: nodes.filter((x) => x.kind === 'member' && x.set === s.id).length,
-      surface: s.surface,
-      slot: s.slot ?? null,
-      closed: s.closed,
-    })),
+    .map((s) => {
+      const url = s.surface === 'rooms' ? `/${(s.rooms_url ?? '/x').split('/')[1]}` : (s.anchor_page ?? l.hub).split('#')[0]
+      return {
+        id: s.id,
+        title: s.title,
+        url,
+        count: nodes.filter((x) => x.kind === 'member' && x.set === s.id).length,
+        surface: s.surface,
+        slot: s.slot ?? null,
+        closed: s.closed,
+        /* a chip only LINKS when its page is served today (the sweep's
+           dead-link catch: /flow /boundary /proof /sources land later —
+           their chips render soon until their WO flips this) */
+        exists: pageServed(url),
+        lands: s.lands ?? l.lands ?? null,
+      }
+    }),
 }))
 const mapSurface = S.sets.surfaces.find((s) => s.id === 'map')
 const mapDataTs = GEN(
@@ -632,6 +642,9 @@ const mapDataTs = GEN(
   surface: string
   slot: string | null
   closed: boolean
+  /** the page is served today — a chip only links when true */
+  exists: boolean
+  lands: string | null
 }
 export interface MapLayer {
   id: string

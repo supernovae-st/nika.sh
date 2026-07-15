@@ -37,19 +37,24 @@ const diffLine = (() => {
    The 39K drawing is this page's heaviest cargo and its only consumer — off
    the initial bundle. SSG awaits the asset in the SSR-only branch (the svg
    lands INLINE in the prerendered HTML: crawlable anchors); hydration reads
-   the host's own innerHTML back (byte-stable adoption); SPA navigation pulls
-   the asset as its own chunk once. */
+   the SIBLING SCRIPT ISLAND's textContent back — NEVER the host div's
+   innerHTML: the browser re-serializes markup (self-closing tags, attribute
+   forms), so innerHTML is not byte-equal to the source and hydration threw
+   React #418 (caught by the e2e sweep). A <script type="text/plain"> is a
+   raw-text element: its textContent IS the exact bytes we wrote — the
+   BlogPost island discipline, applied to markup. SPA navigation pulls the
+   asset as its own chunk once. */
 let SSR_CONSTELLATION: string | null = null
 if (import.meta.env.SSR) {
   SSR_CONSTELLATION = (await import('../assets/constellation.generated.svg?raw')).default
 }
 
-const CST_HOST_ID = 'mp-cst-host'
+const CST_ISLAND_ID = 'mp-cst-island'
 
 function useConstellation(): string {
   const [svg, setSvg] = useState<string>(() => {
     if (import.meta.env.SSR) return SSR_CONSTELLATION ?? ''
-    return document.getElementById(CST_HOST_ID)?.innerHTML ?? ''
+    return document.getElementById(CST_ISLAND_ID)?.textContent ?? ''
   })
   useEffect(() => {
     if (svg) return
@@ -182,8 +187,14 @@ export function Component() {
                     <ul className="mp-sets">
                       {l.sets.map((s) => (
                         <li key={s.id} className="mp-set">
-                          {s.slot ? (
-                            <span className="mp-set-chip mp-set-chip--slot" title={`ships with the ${s.slot} wave`}>
+                          {s.slot || !s.exists ? (
+                            /* a chip only links a served page — wave slots
+                               and landing-later hubs render the honest soon
+                               (the sweep's dead-link catch) */
+                            <span
+                              className="mp-set-chip mp-set-chip--slot"
+                              title={s.slot ? `ships with the ${s.slot} wave` : 'landing soon'}
+                            >
                               {s.title}
                               <span className="mp-soon">soon</span>
                             </span>
@@ -202,15 +213,18 @@ export function Component() {
             </nav>
 
             <figure className="mp-figure" aria-label="The constellation drawing (a lens over the same list)">
-              {/* safe sink: static build-time bytes from our own compiler
-                  emission (scripts/atlas/build-atlas.mjs · committed asset) —
-                  no user input ever reaches this innerHTML (the MegaIcon
-                  precedent, Nav.tsx) */}
-              <div
-                id={CST_HOST_ID}
-                className="mp-constellation"
+              {/* safe sink ×2: static build-time bytes from our own compiler
+                  emission (scripts/atlas/build-atlas.mjs · committed asset ·
+                  the render guard refuses a closing-script sequence) — no
+                  user input ever reaches these innerHTMLs (the MegaIcon
+                  precedent). The script island carries the EXACT source
+                  bytes for hydration; the div is the visible drawing. */}
+              <script
+                type="text/plain"
+                id={CST_ISLAND_ID}
                 dangerouslySetInnerHTML={{ __html: constellation }}
               />
+              <div className="mp-constellation" dangerouslySetInnerHTML={{ __html: constellation }} />
               <figcaption className="mp-figcap">
                 the same atlas, drawn · members link their rooms · <a href="/map/constellation.svg">the file</a>
               </figcaption>
