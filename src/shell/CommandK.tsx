@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PALETTE, type PaletteEntry } from '../content/palette.generated'
+import { parseQuery } from '../lib/palette-query'
 import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import './command-k.css'
 
@@ -75,10 +76,15 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
   useFocusTrap(dialogRef, true)
 
   const hits = useMemo(() => {
-    if (!q.trim()) return PALETTE.slice(0, 9)
-    return PALETTE.map((e) => ({
+    /* the prefix grammar (WO-12): `e:` scopes to error codes, `t:` to tools…
+       — the corpus narrows BEFORE scoring; an unknown prefix stays a plain
+       query (palette-query.ts, unit-gated) */
+    const { kind, needle } = parseQuery(q)
+    const corpus = kind ? PALETTE.filter((e) => e.kind === kind) : PALETTE
+    if (!needle.trim()) return corpus.slice(0, 9)
+    return corpus.map((e) => ({
       e,
-      s: Math.max(fuzzyScore(q, e.label), fuzzyScore(q, e.hint) - 20),
+      s: Math.max(fuzzyScore(needle, e.label), fuzzyScore(needle, e.hint) - 20),
     }))
       .filter((x) => x.s >= 0)
       .sort((a, b) => b.s - a.s)
@@ -142,7 +148,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
             aria-controls="ck-list"
             aria-activedescendant={hits[cur] ? `ck-opt-${cur}` : undefined}
             aria-label="Search pages, posts and error codes"
-            placeholder="pages · posts · error codes…"
+            placeholder="pages · posts · error codes… (e: t: v: w: scope a register)"
             value={q}
             spellCheck={false}
             autoComplete="off"
