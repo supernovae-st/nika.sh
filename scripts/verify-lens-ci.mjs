@@ -276,7 +276,7 @@ function verifyCarrierAuthority() {
     count_claims: 'forbidden',
     allowed_literals: [
       '', ' (', ' · ', ')', '+', 'plain words', '· press ▶ · or keep scrolling ·',
-      '“', '”', '›', '→', '→ ', '−',
+      '“', '”', '›', '→', '→ ', '−', '★ ', '✓ ',
     ],
     allowed_dynamic_expressions: ['attr(href)'],
   }

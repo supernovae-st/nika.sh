@@ -31,6 +31,7 @@ workflows teaching the constructs plus tiered showcase real jobs
 (pack_version · constructs · sha256 per file) makes the pack
 verifiable end-to-end; docs and site render projections of the same
 files.
+Every served library file (e.g. https://nika.sh/library/daily-brief.nika.yaml) carries its SPDX line (Apache-2.0).
 
 - Templates (instantiate, never invent: SLOT-marked skeletons): https://nika.sh/templates · machine catalog: https://nika.sh/templates/catalog.json · source: https://github.com/supernovae-st/nika-spec/tree/main/templates
 - Agent authoring protocol: https://docs.nika.sh/guides/agent-authoring
@@ -68,6 +69,7 @@ data language (jq) · workflows are callable · mock-first.
 - Standard library register (every nika: builtin: args, required set, category): https://nika.sh/tools · one room per builtin (e.g. https://nika.sh/tools/fetch: the arg contract, the tool inside a real check-green file, the skeletons that ship it) · machine catalog: https://nika.sh/tools/catalog.json
 - The four verbs (one room each: block contract, a complete file, the skeletons that speak it): https://nika.sh/verbs (e.g. https://nika.sh/verbs/invoke)
 - The language register (every schema-declared key: scopes, types, required flags): https://nika.sh/language (e.g. https://nika.sh/language/with) · the contract: https://nika.sh/schema/workflow.json
+- Error register (every NIKA-* code: category, transient flag, failure line): https://nika.sh/errors · one room per code (e.g. https://nika.sh/errors/NIKA-PARSE-001) · machine catalog: https://nika.sh/errors/catalog.json
 - Provider register (local first, model pins, env vars): https://nika.sh/providers · machine catalog: https://nika.sh/providers/catalog.json
 - Engine source (AGPL): https://github.com/supernovae-st/nika
 - Agent lane (the MCP oracle · 9 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools · nika_inspect): https://github.com/supernovae-st/nika-agents

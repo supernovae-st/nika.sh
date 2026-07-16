@@ -546,7 +546,7 @@ const PT_BR: ManifestoCopy = {
   bcp47: 'pt-BR',
   ogLocale: 'pt_BR',
   label: 'PT',
-  htmlTitle: 'Manifesto · Nika',
+  htmlTitle: 'O Manifesto · Nika',
   metaDescription:
     'O tambor da libertação. Por que seus workflows devem rodar na sua máquina, com qualquer modelo, sem que ninguém além de você possa desligá-los.',
   ogDescription: 'O tambor da libertação · workflows de IA soberanos, seus.',

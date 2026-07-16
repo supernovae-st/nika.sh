@@ -788,8 +788,7 @@ export const SNIPPET_REGISTRY: { file: string; kind: string; gate: string; dies?
     "file": "src/pages/Spec.tsx",
     "kind": "crafted-room",
     "gate": "onpage-yaml AJV",
-    "dies": "wo-7",
-    "note": "the hand body dies when /spec becomes the generated lens"
+    "note": "permanent · the page derives from canon (verdict 2026-07-16) · the sample rides the showcase island"
   },
   {
     "file": "src/sections/EditorCanvas.tsx",

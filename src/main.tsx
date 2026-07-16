@@ -43,7 +43,17 @@ const tree = (
   </StrictMode>
 )
 
+// A deploy can retire hashed chunks under a live tab; the next lazy import
+// then dies. One reload against the new manifest heals it — the session flag
+// keeps a genuinely broken deploy from reload-looping.
+window.addEventListener('vite:preloadError', () => {
+  if (sessionStorage.getItem('lens-chunk-reload') === '1') return
+  sessionStorage.setItem('lens-chunk-reload', '1')
+  window.location.reload()
+})
+
 // Prerendered HTML present (prod) → hydrate it. Empty container (dev) → mount fresh.
+sessionStorage.removeItem('lens-chunk-reload')
 if (container.firstChild) {
   hydrateRoot(container, tree)
 } else {

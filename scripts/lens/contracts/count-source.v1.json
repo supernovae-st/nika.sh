@@ -250,7 +250,7 @@
     {
       "selector": "public/llms.txt#count:5",
       "path": "public/llms.txt",
-      "line": 69,
+      "line": 70,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -262,7 +262,7 @@
     {
       "selector": "public/llms.txt#count:6",
       "path": "public/llms.txt",
-      "line": 73,
+      "line": 75,
       "text": "9 read-only tools",
       "source": "9",
       "field": "mcpTools",

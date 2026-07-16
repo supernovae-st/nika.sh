@@ -167,7 +167,7 @@ sets:
   - id: namespaces
     layer: shape
     anchors_exist: false
-    anchors_land: wo-7
+    anchors_land: post-contract
     title: The namespaces
     source: { artifact: src/canon.generated.ts, field: namespaceNames }
     clock: spec
@@ -289,7 +289,7 @@ sets:
   - id: tool-families
     layer: reach
     anchors_exist: false
-    anchors_land: wo-5
+    anchors_land: post-contract
     title: The tool families
     source: { artifact: public/tools/catalog.json, field: "tools[].category", derived: true }
     clock: release
@@ -448,7 +448,7 @@ sets:
   - id: error-namespaces
     layer: refusals
     anchors_exist: false
-    anchors_land: wo-5
+    anchors_land: post-contract
     title: The error namespaces
     source: { artifact: public/errors/catalog.json, field: namespaces }
     clock: spec
@@ -470,7 +470,7 @@ sets:
   - id: error-categories
     layer: refusals
     anchors_exist: false
-    anchors_land: wo-5
+    anchors_land: post-contract
     title: The error categories
     source: { artifact: public/errors/catalog.json, field: categories }
     clock: spec
@@ -591,8 +591,8 @@ surfaces:
       the spec.
   - { id: sources, url: /sources, lands: wo-7, atlas_route: true, title: Sources,
       role: "the public page of the truth system · the three clocks taught" }
-  - { id: spec-lens, url: /spec, exists: true, rework: wo-7, title: "The spec at a glance",
-      role: "the linear lens · same atlas data, scroll and print form · the hand-body dies" }
+  - { id: spec-lens, url: /spec, exists: true, title: "The spec at a glance",
+      role: "the linear lens · derives from canon via spec-machine-data (verdict 2026-07-16 · the hand-body premise retired) · residue: gloss-vs-opener voice merge (op-call) + provenance close (contract field)" }
   - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: true,
       moved: { from: /sitemap, to: /map, applied: wo-3 } }
 
@@ -740,7 +740,7 @@ snippet_registry:
   - { file: src/flagships/flagship-data.ts, kind: library-hero, gate: "served byte-pin + recorded traces (see library_heroes_gates)" }
   - { file: src/pages/Convert.tsx, kind: crafted-room, gate: "convert PROOF export + AJV" }
   - { file: src/pages/NotFound.tsx, kind: crafted-room, gate: "the 404 file is a VALID workflow (the law has no exception)" }
-  - { file: src/pages/Spec.tsx, kind: crafted-room, gate: "onpage-yaml AJV", dies: wo-7, note: "the hand body dies when /spec becomes the generated lens" }
+  - { file: src/pages/Spec.tsx, kind: crafted-room, gate: "onpage-yaml AJV", note: "permanent · the page derives from canon (verdict 2026-07-16) · the sample rides the showcase island" }
   - { file: src/sections/EditorCanvas.tsx, kind: crafted-room, gate: "play lint (nika-lint.test.ts) + onpage-yaml" }
   - { file: src/sections/morph/plain-words.ts, kind: crafted-room, gate: "onpage-yaml AJV (the film corpus)" }
   - { file: src/sections/verbs-data.ts, kind: crafted-room, gate: "verb-cards embedding gate (fragment validated as written)" }

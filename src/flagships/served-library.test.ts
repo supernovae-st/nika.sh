@@ -11,17 +11,24 @@ const LIBRARY = buildLibrary(SHOWCASE_YAML)
    Every yaml on the site points at its registered source. The browse wing
    points at the nika-spec pack; the recorded seven point at their own
    SERVED copy under public/library/ — which therefore must be byte-equal
-   to the module the site renders, or the « source » link lies. */
+   to the module the site renders, or the « source » link lies.
+   The served copy alone carries the SPDX preamble (G.17): the licence
+   travels with the downloadable file; the rendered hero stays the bare
+   workflow. Exactly that two-line comment header is the tolerated delta. */
 
 const ROOT = join(__dirname, '../..')
+
+const SPDX_PREAMBLE
+  = '# SPDX-License-Identifier: Apache-2.0\n# © SuperNovae Studio · nika.sh/library\n'
 
 describe('public/library · the served copies are the rendered truth', () => {
   it.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
     '%s is byte-equal to its served file',
     (filename, yaml) => {
       const served = readFileSync(join(ROOT, 'public/library', filename), 'utf8')
+      expect(served.startsWith(SPDX_PREAMBLE), `${filename} carries the SPDX preamble`).toBe(true)
       const want = yaml.endsWith('\n') ? yaml : `${yaml}\n`
-      expect(served).toBe(want)
+      expect(served.slice(SPDX_PREAMBLE.length)).toBe(want)
     },
   )
 
