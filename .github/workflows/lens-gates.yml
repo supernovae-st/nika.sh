@@ -1,0 +1,110 @@
+name: lens-gates
+
+# LENS-006 · the lens presentation gates, wired one CI job per REQUIRED gate from the
+# PRE1 design-pack machine/lens-gates.json. The three DEFERRED gates
+# (lens-output-inventory, lens-normative-prose, lens-carrier-census) carry operator
+# tokens, not CI jobs, and are intentionally absent here. No untrusted event input is
+# interpolated anywhere in this workflow.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lens-gate-canon-drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/lens-gate.mjs lens-canon-drift
+  lens-gate-forbidden-keys:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/lens-gate.mjs lens-forbidden-keys
+  lens-gate-manual-edit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/lens-gate.mjs lens-manual-edit
+  lens-gate-pin-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/lens-gate.mjs lens-pin-verify
+  lens-gate-count-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/lens-gate.mjs lens-count-source
+  lens-gate-snippet-provenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/lens-gate.mjs lens-snippet-provenance
+  lens-gate-feature-maturity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/lens-gate.mjs lens-feature-maturity
+  lens-gate-channel-policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: node scripts/lens-gate.mjs lens-channel-policy
