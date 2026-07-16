@@ -122,12 +122,17 @@ jobs:
           else
             echo "design-projector.py absent from the spec at ${SPEC_COMMIT} — leg skipped by declared condition"
           fi
+      - name: Verify generated outputs (LENS-011 — no undeclared bytes past the generators)
+        run: node scripts/verify_generated_outputs.mjs
       - name: One idempotent PR on drift — UNIQUE branch, PLAIN create, no force
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          git add -A
+          # LENS-011: stage ONLY the declared generated surfaces — never `-A`, which
+          # would sweep any out-of-band file. The guard step above already refused any
+          # undeclared change; this scoped add is the second, structural line of defense.
+          git add -- ':(glob)src/**/*.generated.*' 'public/templates/catalog.json'
           if git diff --cached --quiet; then
             echo "every spec-fed surface already current at the pinned spec — nothing to resync"
             exit 0
