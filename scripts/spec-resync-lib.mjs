@@ -13,6 +13,7 @@ import {
   writeFileSync,
 } from 'node:fs'
 import { createHash } from 'node:crypto'
+import { createRequire } from 'node:module'
 import { basename, dirname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -21,6 +22,16 @@ export const CONTRACT_PATH = join(ROOT, 'scripts/spec-resync.contract.json')
 
 const FULL_SHA = /^[0-9a-f]{40}$/
 const SHA256 = /^[0-9a-f]{64}$/
+const require = createRequire(import.meta.url)
+const PUBLISH_BUILD_STEPS = ['corepack enable', 'pnpm install --frozen-lockfile', 'pnpm build']
+const PUBLISH_BUILD_COMMAND = PUBLISH_BUILD_STEPS.join(' && ')
+const PUBLISH_INPUT_KEYS = [
+  'required_receipt_status', 'manifest', 'component', 'repository', 'branch',
+  'deploy_on_push', 'source_directory', 'environment_slug', 'features',
+  'build_time_environment', 'build_steps',
+  'build_command', 'output_directory', 'exact_file_set', 'exact_byte_identity',
+  'tree_identity', 'sealed_build_equality', 'proof_scope',
+]
 
 export function fail(message) {
   throw new Error(`LENS-011: ${message}`)
@@ -39,6 +50,13 @@ export function loadContract(path = CONTRACT_PATH) {
   const contract = JSON.parse(readFileSync(path, 'utf8'))
   validateContract(contract)
   return contract
+}
+
+function assertExactKeys(value, expected, label) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) fail(`${label} is not an object`)
+  const actual = Object.keys(value).sort()
+  const wanted = [...expected].sort()
+  if (JSON.stringify(actual) !== JSON.stringify(wanted)) fail(`${label} is not closed`)
 }
 
 export function validateContract(contract) {
@@ -82,6 +100,48 @@ export function validateContract(contract) {
     fail('sealed build command must be exactly pnpm build')
   }
   assertRelativePath(contract.build.output_directory, 'sealed build output directory')
+  const publish = contract.publish_input_contract
+  assertExactKeys(publish, PUBLISH_INPUT_KEYS, 'publish-input contract')
+  assertExactKeys(publish.manifest, ['path', 'git_blob', 'sha256'], 'publish manifest identity')
+  if (publish.required_receipt_status !== 'publish_input_verified') {
+    fail('publish-input required receipt status differs')
+  }
+  if (publish.manifest.path !== '.do/app.yaml') fail('publish manifest path differs')
+  if (!FULL_SHA.test(publish.manifest.git_blob ?? '')) fail('publish manifest Git blob is not 40-hex')
+  if (!SHA256.test(publish.manifest.sha256 ?? '')) fail('publish manifest digest is not SHA-256')
+  const expectedPublish = {
+    component: 'nika-landing',
+    repository: 'supernovae-st/nika.sh',
+    branch: 'main',
+    deploy_on_push: true,
+    source_directory: '/',
+    environment_slug: 'node-js',
+    build_command: PUBLISH_BUILD_COMMAND,
+    output_directory: 'dist',
+    exact_file_set: 'complete-recursive-regular-files',
+    exact_byte_identity: 'sha256-per-file',
+    tree_identity: 'sorted-path-bytes-sha256',
+    sealed_build_equality: 'required',
+    proof_scope: 'local-deployment-manifest-projection',
+  }
+  for (const [field, expected] of Object.entries(expectedPublish)) {
+    if (publish[field] !== expected) fail(`publish-input ${field} differs from the closed contract`)
+  }
+  if (JSON.stringify(publish.features) !== JSON.stringify(['buildpack-stack=ubuntu-22'])) {
+    fail('publish-input buildpack feature set differs from the closed contract')
+  }
+  if (JSON.stringify(publish.build_steps) !== JSON.stringify(PUBLISH_BUILD_STEPS)
+    || publish.build_command !== publish.build_steps.join(' && ')
+    || publish.build_steps.at(-1) !== contract.build.command.join(' ')) {
+    fail('publish-input command does not project exactly onto the sealed build command')
+  }
+  const expectedBuildEnvironment = [{ key: 'NODE_VERSION', value: contract.toolchain?.node, scope: 'BUILD_TIME' }]
+  if (JSON.stringify(publish.build_time_environment) !== JSON.stringify(expectedBuildEnvironment)) {
+    fail('publish-input build-time environment differs from the closed toolchain')
+  }
+  if (publish.output_directory !== contract.build.output_directory) {
+    fail('publish output directory differs from the sealed build output directory')
+  }
   for (const tool of ['node', 'pnpm', 'python', 'pyyaml']) {
     if (typeof contract.toolchain?.[tool] !== 'string' || !contract.toolchain[tool]) {
       fail(`fixed toolchain version is absent: ${tool}`)
@@ -175,6 +235,96 @@ export function verifySpecIdentity(specRoot, contract) {
   if (commit !== contract.spec.commit) fail(`spec commit mismatch: ${commit} != ${contract.spec.commit}`)
   if (tree !== contract.spec.tree) fail(`spec tree mismatch: ${tree} != ${contract.spec.tree}`)
   return { commit, tree }
+}
+
+export function verifyPublishInputContract(root, contract, sealedBuildProof) {
+  validateContract(contract)
+  const publish = contract.publish_input_contract
+  const manifestPath = confinedPath(root, publish.manifest.path, 'publish manifest')
+  if (!existsSync(manifestPath)) fail('publish manifest is absent')
+  const manifestMetadata = lstatSync(manifestPath)
+  if (manifestMetadata.isSymbolicLink()) fail('publish manifest is a symlink')
+  if (!manifestMetadata.isFile()) fail('publish manifest is not a regular file')
+  const manifestSha256 = sha256File(manifestPath)
+  if (manifestSha256 !== publish.manifest.sha256) {
+    fail(`publish manifest digest mismatch: ${manifestSha256} != ${publish.manifest.sha256}`)
+  }
+  const manifestGitBlob = runGit(root, ['rev-parse', `HEAD:${publish.manifest.path}`]).trim()
+  if (manifestGitBlob !== publish.manifest.git_blob) {
+    fail(`publish manifest Git blob mismatch: ${manifestGitBlob} != ${publish.manifest.git_blob}`)
+  }
+  let manifest
+  try {
+    manifest = require('yaml').parse(readFileSync(manifestPath, 'utf8'))
+  } catch (error) {
+    fail(`publish manifest is not valid YAML: ${error.message}`)
+  }
+  if (!Array.isArray(manifest?.static_sites) || manifest.static_sites.length !== 1) {
+    fail('publish manifest must contain exactly one static site')
+  }
+  if (JSON.stringify(manifest.features) !== JSON.stringify(publish.features)) {
+    fail('publish manifest buildpack feature set differs from the closed contract')
+  }
+  const site = manifest.static_sites[0]
+  for (const [field, expected] of Object.entries({
+    name: publish.component,
+    source_dir: publish.source_directory,
+    environment_slug: publish.environment_slug,
+    build_command: publish.build_command,
+    output_dir: publish.output_directory,
+  })) {
+    if (site?.[field] !== expected) fail(`publish manifest ${field} differs from the closed contract`)
+  }
+  for (const [field, expected] of Object.entries({
+    repo: publish.repository,
+    branch: publish.branch,
+    deploy_on_push: publish.deploy_on_push,
+  })) {
+    if (site?.github?.[field] !== expected) {
+      fail(`publish manifest GitHub ${field} differs from the closed contract`)
+    }
+  }
+  if (JSON.stringify(site?.envs) !== JSON.stringify(publish.build_time_environment)) {
+    fail('publish manifest build-time environment differs from the closed contract')
+  }
+  const binding = {
+    status: sealedBuildProof ? publish.required_receipt_status : 'publish_input_bound',
+    deployment_manifest_verified: true,
+    manifest: {
+      path: publish.manifest.path,
+      git_blob: manifestGitBlob,
+      sha256: manifestSha256,
+    },
+    component: publish.component,
+    repository: publish.repository,
+    branch: publish.branch,
+    deploy_on_push: publish.deploy_on_push,
+    source_directory: publish.source_directory,
+    environment_slug: publish.environment_slug,
+    features: publish.features,
+    build_time_environment: publish.build_time_environment,
+    build_steps: publish.build_steps,
+    build_command: publish.build_command,
+    output_directory: publish.output_directory,
+    exact_file_set: publish.exact_file_set,
+    exact_byte_identity: publish.exact_byte_identity,
+    tree_identity: publish.tree_identity,
+    sealed_build_equality: publish.sealed_build_equality,
+    proof_scope: publish.proof_scope,
+  }
+  if (!sealedBuildProof) return binding
+  const publishSnapshot = snapshotDirectory(root, publish.output_directory)
+  const filesEqual = JSON.stringify(publishSnapshot.files) === JSON.stringify(sealedBuildProof.files)
+  const treeEqual = publishSnapshot.tree_sha256 === sealedBuildProof.tree_sha256
+  if (!filesEqual) fail('publish-input exact file set or bytes differ from the sealed build')
+  if (!treeEqual) fail('publish-input tree digest differs from the sealed build')
+  return {
+    ...binding,
+    files: publishSnapshot.files,
+    tree_sha256: publishSnapshot.tree_sha256,
+    sealed_build_files_equal: true,
+    sealed_build_tree_equal: true,
+  }
 }
 
 export function verifyGeneratorDigests(websiteRoot, specRoot, contract) {
@@ -281,6 +431,7 @@ export function verifyConsumers(root, contract) {
 
 export function runGeneratorDag(websiteRoot, specRoot, contract, { verify = true, dependenciesRoot } = {}) {
   verifySpecIdentity(specRoot, contract)
+  verifyPublishInputContract(websiteRoot, contract)
   verifyGeneratorDigests(websiteRoot, specRoot, contract)
   clearContractOutputs(websiteRoot, contract)
   const env = sealedEnvironment(contract, {

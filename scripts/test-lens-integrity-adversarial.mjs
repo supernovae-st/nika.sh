@@ -31,6 +31,10 @@ function pinMutation(root, path) {
   writeFileSync(join(root, integrityPath), `${JSON.stringify(integrity, null, 2)}\n`)
 }
 
+function git(root, args) {
+  return execFileSync('git', ['-C', root, ...args], { encoding: 'utf8' }).trim()
+}
+
 function removeJob(text, job) {
   const start = text.indexOf(`  ${job}:\n`)
   if (start < 0) throw new Error(`job missing in fixture: ${job}`)
@@ -39,11 +43,15 @@ function removeJob(text, job) {
   return next < 0 ? text.slice(0, start) : text.slice(0, start) + rest.slice(rest.indexOf('\n') + 1 + next)
 }
 
-function expectRejected(name, mutate) {
+function expectRejected(name, mutate, expectedFragment) {
   const root = clone(name)
   mutate(root)
   const result = spawnSync(process.execPath, ['scripts/verify-lens-ci.mjs'], { cwd: root, encoding: 'utf8' })
   if (result.status === 0) throw new Error(`integrity adversary accepted: ${name}`)
+  const evidence = `${result.stdout}\n${result.stderr}`
+  if (expectedFragment && !evidence.includes(expectedFragment)) {
+    throw new Error(`integrity adversary ${name} failed for the wrong reason: ${evidence.trim()}`)
+  }
   console.log(`ok · ${name} rejected`)
 }
 
@@ -124,6 +132,57 @@ try {
     const path = join(root, 'vite.config.ts')
     writeFileSync(path, `${readFileSync(path, 'utf8')}\n// unpinned build authority\n`)
   })
+  expectRejected('deployment post-build overwrite with repinned integrity', (root) => {
+    const path = '.do/app.yaml'
+    const manifest = join(root, path)
+    writeFileSync(manifest, readFileSync(manifest, 'utf8').replace(
+      'corepack enable && pnpm install --frozen-lockfile && pnpm build',
+      'corepack enable && pnpm install --frozen-lockfile && pnpm build && rm -rf dist && cp -R public dist',
+    ))
+    pinMutation(root, path)
+  }, 'publish manifest digest mismatch')
+  expectRejected('deployment output-directory swap with repinned integrity', (root) => {
+    const path = '.do/app.yaml'
+    const manifest = join(root, path)
+    writeFileSync(manifest, readFileSync(manifest, 'utf8').replace('output_dir: dist', 'output_dir: public'))
+    pinMutation(root, path)
+  }, 'publish manifest digest mismatch')
+  expectRejected('deployment build-time environment expansion with repinned integrity', (root) => {
+    const path = '.do/app.yaml'
+    const manifest = join(root, path)
+    writeFileSync(manifest, readFileSync(manifest, 'utf8').replace(
+      '        scope: BUILD_TIME\n',
+      '        scope: BUILD_TIME\n      - key: LOT11_UNDECLARED\n        value: injected\n        scope: BUILD_TIME\n',
+    ))
+    pinMutation(root, path)
+  }, 'publish manifest digest mismatch')
+  expectRejected('coordinated deployment build-command authority drift', (root) => {
+    const manifestPath = '.do/app.yaml'
+    const channelsPath = 'scripts/lens/contracts/channels.v1.json'
+    const resyncPath = 'scripts/spec-resync.contract.json'
+    const safe = 'corepack enable && pnpm install --frozen-lockfile && pnpm build'
+    const unsafe = `${safe} && rm -rf dist && cp -R public dist`
+    const manifest = join(root, manifestPath)
+    writeFileSync(manifest, readFileSync(manifest, 'utf8').replace(safe, unsafe))
+
+    const channels = JSON.parse(readFileSync(join(root, channelsPath), 'utf8'))
+    channels.deployment.expected.build_command = unsafe
+    writeFileSync(join(root, channelsPath), `${JSON.stringify(channels, null, 2)}\n`)
+
+    const resync = JSON.parse(readFileSync(join(root, resyncPath), 'utf8'))
+    resync.publish_input_contract.build_steps[2] = 'pnpm build && rm -rf dist && cp -R public dist'
+    resync.publish_input_contract.build_command = unsafe
+    resync.publish_input_contract.manifest.git_blob = git(root, ['hash-object', manifestPath])
+    resync.publish_input_contract.manifest.sha256 = sha(readFileSync(manifest))
+    writeFileSync(join(root, resyncPath), `${JSON.stringify(resync, null, 2)}\n`)
+
+    for (const path of [manifestPath, channelsPath, resyncPath]) pinMutation(root, path)
+    git(root, ['add', '--', manifestPath, channelsPath, resyncPath, integrityPath])
+    git(root, [
+      '-c', 'user.name=Nika', '-c', 'user.email=nika@supernovae.studio',
+      'commit', '--quiet', '-m', 'test: coordinate publish authority drift',
+    ])
+  }, 'publish-input command does not project exactly onto the sealed build command')
   expectRejected('visible CSS count claim', (root) => {
     const path = join(root, 'src/pages/home.css')
     const target = existsSync(path) ? path : join(root, 'src/index.css')
@@ -181,7 +240,7 @@ try {
     writeFileSync(join(root, countPath), `${JSON.stringify(count, null, 2)}\n`)
     pinMutation(root, countPath)
   })
-  console.log('LENS-006 integrity adversarial harness: 27/27 counterexamples rejected')
+  console.log('LENS-006 integrity adversarial harness: 31/31 counterexamples rejected')
 } finally {
   rmSync(scratch, { recursive: true, force: true })
 }

@@ -29,6 +29,7 @@ import {
   verifyChangedSet,
   verifyConsumers,
   verifyOutputTree,
+  verifyPublishInputContract,
   writeReceipt,
 } from './spec-resync-lib.mjs'
 
@@ -51,7 +52,7 @@ function parseArgs(argv) {
     else if (arg === '--allow-toolchain-mismatch') options.allowToolchainMismatch = true
     else usage()
   }
-  if (!options.specRoot || (options.stage && !options.apply)) usage()
+  if (!options.specRoot || (options.stage && !options.apply) || (options.receipt && !options.build)) usage()
   options.dependenciesRoot ??= ROOT
   return options
 }
@@ -112,6 +113,7 @@ try {
   }
 
   let buildProof
+  let publishInputProof
   if (options.build) {
     for (const run of [first, second]) {
       linkDependencies(options.dependenciesRoot, run.website)
@@ -126,6 +128,14 @@ try {
       second.website,
       contract.build.output_directory,
     )
+    // The first clone is the sealed-build reference. The second clone is an
+    // independent deployment-manifest projection: its manifest-bound output
+    // directory must reproduce the first clone's complete file/byte tree.
+    publishInputProof = verifyPublishInputContract(second.website, contract, first.build)
+    if (publishInputProof.tree_sha256 !== buildProof.tree_sha256
+      || JSON.stringify(publishInputProof.files) !== JSON.stringify(buildProof.files)) {
+      throw new Error('LENS-011: publish-input proof differs from the dual sealed build proof')
+    }
   }
 
   let staged = []
@@ -169,10 +179,11 @@ try {
     build_output_files: buildProof?.files ?? [],
     dual_build: options.build,
     sealed_build: options.build,
+    publish_input_contract: publishInputProof ?? null,
   }
   if (options.receipt) writeReceipt(options.receipt, receipt)
   console.log(`LENS-011: ${contract.outputs.length} exact outputs · dual-run deterministic · digests verified`)
-  if (options.build) console.log(`LENS-011: dual sealed builds byte-identical${first.build.stdout ? ' · build command green' : ''}`)
+  if (options.build) console.log(`LENS-011: dual sealed builds byte-identical · publish input verified${first.build.stdout ? ' · build command green' : ''}`)
   if (options.stage) console.log(`LENS-011: ${staged.length} literal path(s) staged · raw index bytes verified`)
 } finally {
   if (options.keepTemp) console.error(`LENS-011: retained ${scratch}`)

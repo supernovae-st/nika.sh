@@ -6,7 +6,10 @@ import hashlib
 import json
 import pathlib
 import re
+import subprocess
 import sys
+
+import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WF = ROOT / ".github/workflows/spec-resync.yml"
@@ -16,6 +19,8 @@ LIB = ROOT / "scripts/spec-resync-lib.mjs"
 RUNNER = ROOT / "scripts/spec-resync-run.mjs"
 GUARD = ROOT / "scripts/verify_generated_outputs.mjs"
 TEST = ROOT / "scripts/test-spec-resync-adversarial.mjs"
+APP = ROOT / ".do/app.yaml"
+CHANNELS = ROOT / "scripts/lens/contracts/channels.v1.json"
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 FAILS: list[str] = []
@@ -32,7 +37,7 @@ def digest(path: pathlib.Path) -> str:
 
 
 def main() -> int:
-    required = [WF, PIN, CONTRACT, LIB, RUNNER, GUARD, TEST]
+    required = [WF, PIN, CONTRACT, LIB, RUNNER, GUARD, TEST, APP, CHANNELS]
     for path in required:
         check(f"required artifact exists: {path.relative_to(ROOT)}", path.is_file())
     if any(not path.is_file() for path in required):
@@ -46,6 +51,7 @@ def main() -> int:
     adversarial = TEST.read_text(encoding="utf-8")
     pin = json.loads(PIN.read_text(encoding="utf-8"))
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+    channels = json.loads(CHANNELS.read_text(encoding="utf-8"))
 
     print("== exact source + generator DAG ==")
     check("contract is version 1", contract.get("contract_version") == 1)
@@ -87,6 +93,98 @@ def main() -> int:
         "PYTHONHASHSEED": "0", "SOURCE_DATE_EPOCH": "0", "TZ": "UTC",
     })
 
+    print("== closed deployment publish input ==")
+    publish = contract.get("publish_input_contract", {})
+    publish_keys = {
+        "required_receipt_status", "manifest", "component", "repository", "branch",
+        "deploy_on_push", "source_directory", "environment_slug", "features",
+        "build_time_environment", "build_steps", "build_command", "output_directory",
+        "exact_file_set", "exact_byte_identity", "tree_identity", "sealed_build_equality",
+        "proof_scope",
+    }
+    check("publish-input contract is a closed object", set(publish) == publish_keys)
+    check("publish-input receipt status is exact",
+          publish.get("required_receipt_status") == "publish_input_verified")
+    build_steps = ["corepack enable", "pnpm install --frozen-lockfile", "pnpm build"]
+    build = contract.get("build", {})
+    check("deployment command projects exactly onto sealed build", publish.get("build_steps") == build_steps
+          and publish.get("build_command") == " && ".join(build_steps)
+          and build_steps[-1] == " ".join(build.get("command", [])))
+    check("deployment output directory equals sealed build directory",
+          publish.get("output_directory") == build.get("output_directory") == "dist")
+    check("publish-input proof semantics are closed", all((
+        publish.get("exact_file_set") == "complete-recursive-regular-files",
+        publish.get("exact_byte_identity") == "sha256-per-file",
+        publish.get("tree_identity") == "sorted-path-bytes-sha256",
+        publish.get("sealed_build_equality") == "required",
+        publish.get("proof_scope") == "local-deployment-manifest-projection",
+    )))
+    manifest_identity = publish.get("manifest", {})
+    check("deployment manifest identity is closed", set(manifest_identity) == {"path", "git_blob", "sha256"})
+    check("deployment manifest path is exact", manifest_identity.get("path") == ".do/app.yaml")
+    check("deployment manifest SHA-256 matches current bytes", manifest_identity.get("sha256") == digest(APP))
+    head_blob = subprocess.check_output(
+        ["git", "-C", str(ROOT), "rev-parse", "HEAD:.do/app.yaml"], text=True,
+    ).strip()
+    working_blob = subprocess.check_output(
+        ["git", "-C", str(ROOT), "hash-object", ".do/app.yaml"], text=True,
+    ).strip()
+    check("deployment manifest Git blob matches HEAD and current bytes",
+          manifest_identity.get("git_blob") == head_blob == working_blob)
+    manifest = yaml.safe_load(APP.read_text(encoding="utf-8"))
+    sites = manifest.get("static_sites", []) if isinstance(manifest, dict) else []
+    site = sites[0] if len(sites) == 1 else {}
+    expected_publish = {
+        "component": "nika-landing",
+        "repository": "supernovae-st/nika.sh",
+        "branch": "main",
+        "deploy_on_push": True,
+        "source_directory": "/",
+        "environment_slug": "node-js",
+        "features": ["buildpack-stack=ubuntu-22"],
+        "build_time_environment": [{"key": "NODE_VERSION", "value": "22", "scope": "BUILD_TIME"}],
+        "build_command": " && ".join(build_steps),
+        "output_directory": "dist",
+    }
+    check("publish-input component/repository/toolchain values are exact", all((
+        publish.get("component") == expected_publish["component"],
+        publish.get("repository") == expected_publish["repository"],
+        publish.get("branch") == expected_publish["branch"],
+        publish.get("deploy_on_push") == expected_publish["deploy_on_push"],
+        publish.get("source_directory") == expected_publish["source_directory"],
+        publish.get("environment_slug") == expected_publish["environment_slug"],
+        publish.get("features") == expected_publish["features"],
+        publish.get("build_time_environment") == expected_publish["build_time_environment"],
+        publish.get("build_command") == expected_publish["build_command"],
+        publish.get("output_directory") == expected_publish["output_directory"],
+    )))
+    check("deployment YAML carries the exact closed publish input", len(sites) == 1 and all((
+        manifest.get("features") == publish.get("features"),
+        site.get("name") == publish.get("component"),
+        site.get("github", {}).get("repo") == publish.get("repository"),
+        site.get("github", {}).get("branch") == publish.get("branch"),
+        site.get("github", {}).get("deploy_on_push") == publish.get("deploy_on_push"),
+        site.get("source_dir") == publish.get("source_directory"),
+        site.get("environment_slug") == publish.get("environment_slug"),
+        site.get("envs") == publish.get("build_time_environment"),
+        site.get("build_command") == publish.get("build_command"),
+        site.get("output_dir") == publish.get("output_directory"),
+    )))
+    channel_expected = channels.get("deployment", {}).get("expected", {})
+    check("channel matrix is linked to the publish-input contract", all((
+        channels.get("deployment", {}).get("manifest") == manifest_identity.get("path"),
+        channel_expected.get("component_name") == publish.get("component"),
+        channel_expected.get("repository") == publish.get("repository"),
+        channel_expected.get("branch") == publish.get("branch"),
+        channel_expected.get("deploy_on_push") == publish.get("deploy_on_push"),
+        channel_expected.get("source_dir") == publish.get("source_directory"),
+        channel_expected.get("environment_slug") == publish.get("environment_slug"),
+        channel_expected.get("features") == publish.get("features"),
+        channel_expected.get("build_time_environment") == publish.get("build_time_environment"),
+        channel_expected.get("build_command") == publish.get("build_command"),
+        channel_expected.get("output_dir") == publish.get("output_directory"),
+    )))
+
     print("== literal output set + byte digests ==")
     outputs = contract.get("outputs", [])
     paths = [entry.get("path") for entry in outputs]
@@ -127,6 +225,11 @@ def main() -> int:
           and "['show', `:${output.path}`]" in lib
           and "raw index digest mismatch" in lib)
     check("built public bytes are compared to contract digests", "sealed build did not consume exact" in lib)
+    check("runner compares an independent manifest-bound candidate to the sealed build",
+          "verifyPublishInputContract(second.website, contract, first.build)" in runner
+          and "publish-input proof differs from the dual sealed build proof" in runner)
+    check("post-generation guard verifies the deployment manifest identity",
+          "verifyPublishInputContract(ROOT, contract)" in guard)
     for receipt_field in (
         "contract_sha256", "website_tree", "generators", "fixed_environment",
         "inherited_environment_allowlist", "generator_derived_environment_allowlist",
@@ -134,6 +237,7 @@ def main() -> int:
         "expected_toolchain", "actual_tool_versions", "toolchain_conformant",
         "index_verified_outputs", "build_input_verified_outputs", "build_command",
         "build_output_directory", "build_output_tree_sha256", "build_output_files", "dual_build",
+        "publish_input_contract",
     ):
         check(f"receipt binds {receipt_field}", receipt_field in runner)
     check("NO broad generated-file pathspec remains", ":(glob)" not in code and "**/*.generated" not in code)
@@ -148,6 +252,8 @@ def main() -> int:
         "no-op producer after output clearing", "stale producer bytes after output clearing",
         "output path confinement escape", "undeclared build environment neutralized",
         "sealed dist byte mismatch",
+        "publish manifest digest mismatch", "coordinated post-build publish overwrite",
+        "coordinated publish output-directory swap", "coordinated undeclared build-time environment",
     )
     for case in cases:
         check(f"adversarial case is present: {case}", case in adversarial)

@@ -23,6 +23,7 @@ import {
   verifyGeneratorDigests,
   verifyIndex,
   verifyOutputTree,
+  verifyPublishInputContract,
   verifySpecIdentity,
   validateContract,
 } from './spec-resync-lib.mjs'
@@ -31,6 +32,8 @@ const scratch = mkdtempSync(join(tmpdir(), 'spec-resync-adversarial-'))
 const base = join(scratch, 'base')
 const outputPath = 'src/content/templates.generated.ts'
 const generatorPath = 'scripts/generate.mjs'
+const publishManifestPath = '.do/app.yaml'
+const publishBuildCommand = 'corepack enable && pnpm install --frozen-lockfile && pnpm build'
 
 function git(root, args) {
   return execFileSync('git', ['-C', root, ...args], { encoding: 'utf8' }).trim()
@@ -53,12 +56,28 @@ function expectReject(name, operation) {
   throw new Error(`adversarial case was accepted: ${name}`)
 }
 
+function commitPublishManifest(root, source, contract) {
+  writeFileSync(join(root, publishManifestPath), source)
+  git(root, ['add', '--', publishManifestPath])
+  git(root, [
+    '-c', 'user.name=Nika', '-c', 'user.email=nika@supernovae.studio',
+    'commit', '--quiet', '-m', 'test: mutate publish manifest',
+  ])
+  contract.publish_input_contract.manifest = {
+    path: publishManifestPath,
+    git_blob: git(root, ['rev-parse', `HEAD:${publishManifestPath}`]),
+    sha256: sha256File(join(root, publishManifestPath)),
+  }
+}
+
 try {
   mkdirSync(join(base, 'src/content'), { recursive: true })
   mkdirSync(join(base, 'scripts'), { recursive: true })
+  mkdirSync(join(base, '.do'), { recursive: true })
   writeFileSync(join(base, outputPath), 'export const VALUE = "verified"\n')
   writeFileSync(join(base, 'src/app.ts'), "import './content/templates.generated'\n")
   writeFileSync(join(base, generatorPath), '// deterministic fixture generator\n')
+  writeFileSync(join(base, publishManifestPath), `features:\n  - buildpack-stack=ubuntu-22\nstatic_sites:\n  - name: nika-landing\n    github:\n      repo: supernovae-st/nika.sh\n      branch: main\n      deploy_on_push: true\n    source_dir: /\n    environment_slug: node-js\n    build_command: ${publishBuildCommand}\n    output_dir: dist\n    envs:\n      - key: NODE_VERSION\n        value: "22"\n        scope: BUILD_TIME\n`)
   execFileSync('git', ['init', '--quiet', base])
   git(base, ['config', 'user.email', 'nika@supernovae.studio'])
   git(base, ['config', 'user.name', 'Nika'])
@@ -92,7 +111,75 @@ try {
       consumers: ['src/app.ts'],
     }],
     build: { command: ['pnpm', 'build'], output_directory: 'dist' },
+    publish_input_contract: {
+      required_receipt_status: 'publish_input_verified',
+      manifest: {
+        path: publishManifestPath,
+        git_blob: git(base, ['rev-parse', `HEAD:${publishManifestPath}`]),
+        sha256: sha256File(join(base, publishManifestPath)),
+      },
+      component: 'nika-landing',
+      repository: 'supernovae-st/nika.sh',
+      branch: 'main',
+      deploy_on_push: true,
+      source_directory: '/',
+      environment_slug: 'node-js',
+      features: ['buildpack-stack=ubuntu-22'],
+      build_time_environment: [{ key: 'NODE_VERSION', value: '22', scope: 'BUILD_TIME' }],
+      build_steps: ['corepack enable', 'pnpm install --frozen-lockfile', 'pnpm build'],
+      build_command: publishBuildCommand,
+      output_directory: 'dist',
+      exact_file_set: 'complete-recursive-regular-files',
+      exact_byte_identity: 'sha256-per-file',
+      tree_identity: 'sorted-path-bytes-sha256',
+      sealed_build_equality: 'required',
+      proof_scope: 'local-deployment-manifest-projection',
+    },
   }
+  validateContract(contract)
+  verifyPublishInputContract(base, contract)
+  console.log('ok · valid publish-input contract accepted')
+
+  const badManifestDigest = structuredClone(contract)
+  badManifestDigest.publish_input_contract.manifest.sha256 = '0'.repeat(64)
+  expectReject('publish manifest digest mismatch', () => verifyPublishInputContract(base, badManifestDigest))
+
+  const postBuild = clone('post-build-publish-overwrite')
+  const postBuildContract = structuredClone(contract)
+  const unsafeCommand = `${publishBuildCommand} && rm -rf dist && cp -R public dist`
+  commitPublishManifest(
+    postBuild,
+    readFileSync(join(postBuild, publishManifestPath), 'utf8').replace(publishBuildCommand, unsafeCommand),
+    postBuildContract,
+  )
+  postBuildContract.publish_input_contract.build_steps[2] = 'pnpm build && rm -rf dist && cp -R public dist'
+  postBuildContract.publish_input_contract.build_command = unsafeCommand
+  expectReject('coordinated post-build publish overwrite', () => verifyPublishInputContract(postBuild, postBuildContract))
+
+  const publishDirectory = clone('publish-output-directory-swap')
+  const publishDirectoryContract = structuredClone(contract)
+  commitPublishManifest(
+    publishDirectory,
+    readFileSync(join(publishDirectory, publishManifestPath), 'utf8').replace('output_dir: dist', 'output_dir: public'),
+    publishDirectoryContract,
+  )
+  publishDirectoryContract.publish_input_contract.output_directory = 'public'
+  publishDirectoryContract.build.output_directory = 'public'
+  expectReject('coordinated publish output-directory swap', () => verifyPublishInputContract(publishDirectory, publishDirectoryContract))
+
+  const publishEnvironment = clone('publish-build-time-environment-expansion')
+  const publishEnvironmentContract = structuredClone(contract)
+  commitPublishManifest(
+    publishEnvironment,
+    `${readFileSync(join(publishEnvironment, publishManifestPath), 'utf8')}      - key: LOT11_UNDECLARED\n        value: injected\n        scope: BUILD_TIME\n`,
+    publishEnvironmentContract,
+  )
+  publishEnvironmentContract.publish_input_contract.build_time_environment.push({
+    key: 'LOT11_UNDECLARED', value: 'injected', scope: 'BUILD_TIME',
+  })
+  expectReject('coordinated undeclared build-time environment', () => (
+    verifyPublishInputContract(publishEnvironment, publishEnvironmentContract)
+  ))
 
   const allowed = clone('allowed-path-tamper')
   appendFileSync(join(allowed, outputPath), '\n// CODEX_LOT10_POST_GENERATOR_TAMPER\n')
@@ -173,9 +260,10 @@ try {
   configureEnvironmentProbe(sealedA)
   configureEnvironmentProbe(sealedB)
   const priorProbe = process.env.LENS_UNDECLARED_BUILD_PROBE
+  let sealedBuildProof
   try {
     process.env.LENS_UNDECLARED_BUILD_PROBE = 'alpha'
-    runSealedBuild(sealedA, buildContract)
+    sealedBuildProof = runSealedBuild(sealedA, buildContract)
     process.env.LENS_UNDECLARED_BUILD_PROBE = 'beta'
     runSealedBuild(sealedB, buildContract)
   } finally {
@@ -183,6 +271,8 @@ try {
     else process.env.LENS_UNDECLARED_BUILD_PROBE = priorProbe
   }
   compareDirectoryTrees(sealedA, sealedB, 'dist')
+  verifyPublishInputContract(sealedB, buildContract, sealedBuildProof)
+  console.log('ok · independent publish candidate equals sealed build')
   console.log('ok · undeclared build environment neutralized')
   appendFileSync(join(sealedB, 'dist/index.html'), 'post-build tamper\n')
   expectReject('sealed dist byte mismatch', () => compareDirectoryTrees(sealedA, sealedB, 'dist'))
@@ -204,7 +294,7 @@ try {
   escaping.outputs[0].path = '../escaped.generated.ts'
   expectReject('output path confinement escape', () => validateContract(escaping))
 
-  console.log('LENS-011 adversarial harness: 15/15 counterexamples rejected')
+  console.log('LENS-011 adversarial harness: 19/19 counterexamples rejected')
 } finally {
   rmSync(scratch, { recursive: true, force: true })
 }

@@ -217,5 +217,35 @@
   "build": {
     "command": ["pnpm", "build"],
     "output_directory": "dist"
+  },
+  "publish_input_contract": {
+    "required_receipt_status": "publish_input_verified",
+    "manifest": {
+      "path": ".do/app.yaml",
+      "git_blob": "902c777c874615e14d05bf79c34d14dc8ca1d8bb",
+      "sha256": "a8a7b8c78200af15a59d9e009459d9d2d669246bc2a345c0b9e90629f7772de5"
+    },
+    "component": "nika-landing",
+    "repository": "supernovae-st/nika.sh",
+    "branch": "main",
+    "deploy_on_push": true,
+    "source_directory": "/",
+    "environment_slug": "node-js",
+    "features": ["buildpack-stack=ubuntu-22"],
+    "build_time_environment": [
+      {"key": "NODE_VERSION", "value": "22", "scope": "BUILD_TIME"}
+    ],
+    "build_steps": [
+      "corepack enable",
+      "pnpm install --frozen-lockfile",
+      "pnpm build"
+    ],
+    "build_command": "corepack enable && pnpm install --frozen-lockfile && pnpm build",
+    "output_directory": "dist",
+    "exact_file_set": "complete-recursive-regular-files",
+    "exact_byte_identity": "sha256-per-file",
+    "tree_identity": "sorted-path-bytes-sha256",
+    "sealed_build_equality": "required",
+    "proof_scope": "local-deployment-manifest-projection"
   }
 }

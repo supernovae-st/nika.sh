@@ -11,6 +11,7 @@ import {
   sha256File,
   verifyGeneratorDigests,
   verifyOutputTree,
+  verifyPublishInputContract,
 } from './spec-resync-lib.mjs'
 import {
   carrierSetSha256,
@@ -485,7 +486,7 @@ function validateChannelCandidate(rules, candidate) {
   }
 }
 
-function validateDeploymentManifest(rules, source) {
+function validateDeploymentManifest(rules, resync, source) {
   let manifest
   try {
     manifest = require('yaml').parse(source)
@@ -493,8 +494,27 @@ function validateDeploymentManifest(rules, source) {
     fail(`deployment manifest is not valid YAML: ${error.message}`)
   }
   const expected = rules.deployment.expected
+  const publish = resync.publish_input_contract
+  if (rules.deployment.manifest !== publish.manifest.path
+    || expected.component_name !== publish.component
+    || expected.repository !== publish.repository
+    || expected.branch !== publish.branch
+    || expected.deploy_on_push !== publish.deploy_on_push
+    || expected.source_dir !== publish.source_directory
+    || expected.environment_slug !== publish.environment_slug
+    || expected.build_command !== publish.build_command
+    || expected.output_dir !== publish.output_directory
+    || expected.output_dir !== resync.build.output_directory
+    || JSON.stringify(expected.features) !== JSON.stringify(publish.features)
+    || JSON.stringify(expected.build_time_environment) !== JSON.stringify(publish.build_time_environment)
+    || expected.build_time_environment?.[0]?.value !== resync.toolchain.node) {
+    fail('deployment channel matrix differs from the closed publish-input contract')
+  }
   if (JSON.stringify(manifest?.domains) !== JSON.stringify(expected.domains)) {
     fail('deployment domain structure differs from the channel matrix')
+  }
+  if (JSON.stringify(manifest?.features) !== JSON.stringify(expected.features)) {
+    fail('deployment buildpack feature set differs from the channel matrix')
   }
   const sites = manifest?.static_sites
   if (!Array.isArray(sites) || sites.length !== 1) fail('deployment must contain exactly one static site')
@@ -502,6 +522,8 @@ function validateDeploymentManifest(rules, source) {
   for (const [field, value] of Object.entries({
     name: expected.component_name,
     source_dir: expected.source_dir,
+    environment_slug: expected.environment_slug,
+    build_command: expected.build_command,
     output_dir: expected.output_dir,
   })) {
     if (site?.[field] !== value) fail(`deployment static-site ${field} differs from the channel matrix`)
@@ -512,6 +534,9 @@ function validateDeploymentManifest(rules, source) {
     deploy_on_push: expected.deploy_on_push,
   })) {
     if (site?.github?.[field] !== value) fail(`deployment GitHub ${field} differs from the channel matrix`)
+  }
+  if (JSON.stringify(site?.envs) !== JSON.stringify(expected.build_time_environment)) {
+    fail('deployment build-time environment differs from the channel matrix')
   }
   const ingress = manifest?.ingress?.rules
   if (!Array.isArray(ingress) || ingress.length !== 1) fail('deployment must contain exactly one ingress rule')
@@ -524,8 +549,9 @@ function validateDeploymentManifest(rules, source) {
 
 function gateChannelPolicy(fixture) {
   const rules = contract('channels.v1.json')
+  const resync = loadResyncContract()
   if (fixture?.candidate) return validateChannelCandidate(rules, fixture.candidate)
-  if (fixture?.manifest) return validateDeploymentManifest(rules, fixture.manifest)
+  if (fixture?.manifest) return validateDeploymentManifest(rules, resync, fixture.manifest)
   const channels = rules.matrix.map((row) => row.channel)
   if (JSON.stringify(channels) !== JSON.stringify(['stable', 'preview', 'nightly'])) {
     fail('channel matrix must contain stable, preview, and nightly exactly once')
@@ -538,7 +564,7 @@ function gateChannelPolicy(fixture) {
     fail('named channel negative-case registry is incomplete')
   }
   const pin = json(join(ROOT, rules.pin_source))
-  validatePin(pin, loadResyncContract())
+  validatePin(pin, resync)
   validateReleaseAttestation(pin)
   validateServedPin(join(ROOT, rules.pin_source), join(ROOT, rules.served_pin))
   if (pin.release_attestation !== rules.release_attestation) fail('channel contract points at a different release attestation')
@@ -548,8 +574,9 @@ function gateChannelPolicy(fixture) {
     release_closed: pin.release_closed,
   }
   validateChannelCandidate(rules, candidate)
+  verifyPublishInputContract(ROOT, resync)
   const manifest = readFileSync(join(ROOT, rules.deployment.manifest), 'utf8')
-  validateDeploymentManifest(rules, manifest)
+  validateDeploymentManifest(rules, resync, manifest)
 }
 
 const handlers = new Map([

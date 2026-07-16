@@ -49,7 +49,13 @@
       "branch": "main",
       "deploy_on_push": true,
       "source_dir": "/",
+      "environment_slug": "node-js",
+      "features": ["buildpack-stack=ubuntu-22"],
+      "build_time_environment": [
+        {"key": "NODE_VERSION", "value": "22", "scope": "BUILD_TIME"}
+      ],
       "ingress_path_prefix": "/",
+      "build_command": "corepack enable && pnpm install --frozen-lockfile && pnpm build",
       "output_dir": "dist"
     },
     "candidate": {

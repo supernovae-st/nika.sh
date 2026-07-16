@@ -19,7 +19,7 @@
     },
     {
       "path": ".github/workflows/spec-resync.yml",
-      "sha256": "37d02b520a66b24ffe9786fbd4b7472d4a40eaaa3be06a18ae4b70c710dfe6bb"
+      "sha256": "cc5c411d25158f837a8e5020e22b85bc36a849efa8982fea7e592ec43e3d77e7"
     },
     {
       "path": "index.html",
@@ -55,7 +55,7 @@
     },
     {
       "path": "scripts/lens-gate.mjs",
-      "sha256": "5e6f6ae307a4f7ce4aa8c36767438c9e67523967654f8f884a6d21e67ba37467"
+      "sha256": "4644b37bc9d99a04be5748b2bd305f592aabaa2e750c89365790caa77fb130a2"
     },
     {
       "path": "scripts/lens-semantics-lib.mjs",
@@ -67,7 +67,7 @@
     },
     {
       "path": "scripts/lens/contracts/channels.v1.json",
-      "sha256": "ff9474d471c866f79d8411e61f37fa5f2643ae314c56830caf890ca58341b465"
+      "sha256": "610f38e2fcdc2355726a01ddac40d23716006de0c6d0c570be990038b45db491"
     },
     {
       "path": "scripts/lens/contracts/count-source.v1.json",
@@ -99,19 +99,19 @@
     },
     {
       "path": "scripts/spec-resync.contract.json",
-      "sha256": "6ab2f062ace74e607e68cf7c6b6adfdfea021dd9d65f31ed782d775004e0fe72"
+      "sha256": "ecff664cb347cf75a9f762abe704978fe5badfb7fc5bc5cd7c5ea5029457eb3b"
     },
     {
       "path": "scripts/spec-resync-lib.mjs",
-      "sha256": "125a403aab2f6561cca7398e8fa7bdc1c5af5b0e158755284e467254000503da"
+      "sha256": "793a33a26dc9c24ad965f68ce0401576b6090fa0093109637e4f2ed71a402d10"
     },
     {
       "path": "scripts/spec-resync-run.mjs",
-      "sha256": "89ffac9e1fbedaa56a928c7c6d39ecb2aa6a9054a9457cc2be18d45c5f8ddbce"
+      "sha256": "e526e3f4d3aa343f33bbcbd292286dfcb38a6a1f160d7fa32b365248ff3b8e56"
     },
     {
       "path": "scripts/test-lens-integrity-adversarial.mjs",
-      "sha256": "9a6fe2937dfdc9290d449d4a08645124ad9e4a757477db97276673083eddac0b"
+      "sha256": "d843311e72df6bd5ae46a2d87b08d0a417ebd29b4e846a149c559c770646cc9b"
     },
     {
       "path": "scripts/test-lens-semantics-adversarial.mjs",
@@ -119,11 +119,11 @@
     },
     {
       "path": "scripts/test-spec-resync-adversarial.mjs",
-      "sha256": "f253a6662519de357fe959f34fc82c824cfb03be50deb12e536967238ce863f2"
+      "sha256": "36b7e8f865def289e66199f4fdd80f25eddb5437c944458e27be8dd131f39d3c"
     },
     {
       "path": "scripts/verify_generated_outputs.mjs",
-      "sha256": "fffed09ffb906ccf8dc7c9dadf4631c461423e9d6756ebff74a08d04a6bd42c7"
+      "sha256": "6ec37c682531888ab20ab0d4c839ca381d06cd05a71926019bf3e162394b7ad6"
     },
     {
       "path": "scripts/verify-lens-ci.mjs",
@@ -131,7 +131,7 @@
     },
     {
       "path": "scripts/verify_spec_resync_conformance.py",
-      "sha256": "296dc450ad0311fb8f0aabae6cf53e890ed137c1d55161c1c894329edede3497"
+      "sha256": "79d0d7eec3799edf16877e4e445b1db992857f324e6fa5dffc22be873b46e491"
     },
     {
       "path": "site.config.ts",
