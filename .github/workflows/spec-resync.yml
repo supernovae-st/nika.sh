@@ -24,8 +24,10 @@ name: spec-resync
 #   (4) PLAIN CREATE push — no --force, no --force-with-lease anywhere;
 #       idempotence is decided by QUERY (a PR already open for this pin
 #       => exit clean), and a create race fails non-fast-forward loudly.
-#   Every generator leg is normative — a failure PROPAGATES (no `|| true`),
-#   so a partially derived proposal PR is impossible.
+#   The v1 exact contract pins the literal generator DAG, generator digests,
+#   output path set, and output byte digests. Two disposable runs must agree;
+#   literal staging is followed by a raw Git-index byte comparison, and the
+#   build consumes the first sealed verified snapshot.
 
 on:
   schedule:
@@ -103,36 +105,29 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Re-derive every spec-fed surface (every leg NORMATIVE — failures propagate)
-        env:
-          NIKA_SPEC_ROOT: ${{ github.workspace }}/../spec
-          NIKA_WEBSITE_SRC: ${{ github.workspace }}/src
+      - name: Install the sealed build toolchain
         run: |
           set -euo pipefail
-          pip install pyyaml
-          node scripts/build-templates.mjs
-          node scripts/build-tool-usage.mjs
-          node scripts/build-language-usage.mjs
-          node scripts/vendor-lint-fixtures.mjs   # the port's conformance corpus follows the spec
-          node scripts/vendor-gate-matrix.mjs      # the gate explorable's 40 cells follow too
-          # an ABSENT leg skips by DECLARED file-existence condition; a PRESENT leg
-          # that fails PROPAGATES — no `|| true` ever swallows a normative failure.
-          if [ -f ../spec/scripts/design-projector.py ]; then
-            python3 ../spec/scripts/design-projector.py --write
-          else
-            echo "design-projector.py absent from the spec at ${SPEC_COMMIT} — leg skipped by declared condition"
-          fi
-      - name: Verify generated outputs (LENS-011 — no undeclared bytes past the generators)
-        run: node scripts/verify_generated_outputs.mjs
+          pip install pyyaml==6.0.3
+          corepack enable
+          pnpm install --frozen-lockfile
+      - name: Re-derive twice, verify exact bytes, build sealed snapshot, and stage literally
+        run: |
+          set -euo pipefail
+          node scripts/spec-resync-run.mjs \
+            --spec-root ../spec \
+            --build \
+            --apply \
+            --stage \
+            --receipt "${RUNNER_TEMP}/spec-resync-receipt.json"
+          node scripts/verify_generated_outputs.mjs
       - name: One idempotent PR on drift — UNIQUE branch, PLAIN create, no force
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          # LENS-011: stage ONLY the declared generated surfaces — never `-A`, which
-          # would sweep any out-of-band file. The guard step above already refused any
-          # undeclared change; this scoped add is the second, structural line of defense.
-          git add -- ':(glob)src/**/*.generated.*' 'public/templates/catalog.json'
+          # The preceding runner staged literal contract paths and compared every
+          # raw index blob to its pin-specific SHA-256. No path glob is used here.
           if git diff --cached --quiet; then
             echo "every spec-fed surface already current at the pinned spec — nothing to resync"
             exit 0

@@ -34,6 +34,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-008",
       "NIKA-AGENT-004",
       "NIKA-SEC-002",
+      "NIKA-SEC-006",
       "NIKA-BUILTIN-DONE-001"
     ]
   },
@@ -71,6 +72,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "human-gated-ship"
     ],
     "codes": [
+      "NIKA-PARSE-025",
       "NIKA-EXEC-001"
     ]
   },
@@ -87,6 +89,13 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   "cwd": {
     "templates": [],
     "codes": []
+  },
+  "decode": {
+    "templates": [],
+    "codes": [
+      "NIKA-PARSE-025",
+      "NIKA-TYPE-004"
+    ]
   },
   "description": {
     "templates": [
@@ -117,6 +126,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-018",
+      "NIKA-TYPE-101",
       "NIKA-SEC-001"
     ]
   },
@@ -169,7 +179,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-008",
-      "NIKA-PARSE-018"
+      "NIKA-PARSE-018",
+      "NIKA-SEC-006"
     ]
   },
   "invoke": {
@@ -188,6 +199,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "codes": [
       "NIKA-PARSE-008",
       "NIKA-PARSE-018",
+      "NIKA-COMP-001",
+      "NIKA-TYPE-101",
+      "NIKA-SEC-006",
       "NIKA-BUILTIN-001"
     ]
   },
@@ -263,6 +277,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-003",
       "NIKA-INVOKE-001",
       "NIKA-SEC-005",
+      "NIKA-LOCK-001",
       "NIKA-BUILTIN-001",
       "NIKA-BUILTIN-DONE-001"
     ]
@@ -316,8 +331,11 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "docker-report"
     ],
     "codes": [
+      "NIKA-COMP-004",
+      "NIKA-TYPE-001",
       "NIKA-VAR-021",
-      "NIKA-VAR-009"
+      "NIKA-VAR-009",
+      "NIKA-SEC-007"
     ]
   },
   "permits": {
@@ -330,6 +348,13 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-SEC-005"
     ]
   },
+  "policy": {
+    "templates": [],
+    "codes": [
+      "NIKA-POLICY-001",
+      "NIKA-PORT-002"
+    ]
+  },
   "prompt": {
     "templates": [
       "chain",
@@ -340,7 +365,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "docker-report"
     ],
     "codes": [
-      "NIKA-PARSE-018"
+      "NIKA-PARSE-018",
+      "NIKA-SEC-006"
     ]
   },
   "recover": {
@@ -362,6 +388,17 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-011"
     ]
   },
+  "returns": {
+    "templates": [],
+    "codes": [
+      "NIKA-PARSE-025",
+      "NIKA-COMP-004",
+      "NIKA-TYPE-001",
+      "NIKA-TYPE-003",
+      "NIKA-TYPE-004",
+      "NIKA-TYPE-101"
+    ]
+  },
   "schema": {
     "templates": [
       "agent-loop",
@@ -369,9 +406,11 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "media-asset-pack"
     ],
     "codes": [
+      "NIKA-TYPE-003",
       "NIKA-VAR-003",
       "NIKA-INFER-002",
-      "NIKA-INVOKE-002"
+      "NIKA-INVOKE-002",
+      "NIKA-DECIDE-002"
     ]
   },
   "secrets": {
@@ -381,7 +420,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "api-upload-and-create"
     ],
     "codes": [
-      "NIKA-PARSE-014"
+      "NIKA-PARSE-014",
+      "NIKA-SEC-006"
     ]
   },
   "shell": {
@@ -471,6 +511,13 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-SEC-002"
     ]
   },
+  "types": {
+    "templates": [],
+    "codes": [
+      "NIKA-TYPE-001",
+      "NIKA-TYPE-002"
+    ]
+  },
   "vars": {
     "templates": [
       "chain",
@@ -542,8 +589,11 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-007",
       "NIKA-PARSE-020",
       "NIKA-PARSE-021",
+      "NIKA-COMP-001",
+      "NIKA-COMP-002",
       "NIKA-VAR-021",
       "NIKA-SEC-003",
+      "NIKA-SEC-007",
       "NIKA-CANCEL-001"
     ]
   }

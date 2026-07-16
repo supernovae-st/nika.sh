@@ -460,6 +460,36 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-PARSE-025",
+    "href": "/errors/NIKA-PARSE-025",
+    "hint": "decode: with capture: structured — that capture already IS an object · type it with returns:"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-COMP-001",
+    "href": "/errors/NIKA-COMP-001",
+    "hint": "invoke.workflow: target is not statically resolvable (templated · malformed · unpinned registry ref) — a call graph you cannot draw before the run cannot be bounded (spec 14)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-COMP-002",
+    "href": "/errors/NIKA-COMP-002",
+    "hint": "the child workflow's effect boundary exceeds the parent capped by the call-site declaration (Authority(child) subset of Authority(parent) intersect declared · spec 14 laws 3/4)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-COMP-003",
+    "href": "/errors/NIKA-COMP-003",
+    "hint": "the static call graph is not acyclic (self-launch · cycle · spec 14 law 7 · NIKA-SEC-003 is the runtime depth backstop)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-COMP-004",
+    "href": "/errors/NIKA-COMP-004",
+    "hint": "the typed call does not compose — parent args do not fit child inputs, or child outputs do not fit parent returns (spec 14 law 2)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-DAG-001",
     "href": "/errors/NIKA-DAG-001",
     "hint": "cycle in the precedence graph G_p = E_d ∪ E_c (incl. self-dependency · via with:/after:)"
@@ -493,6 +523,48 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-DAG-007",
     "href": "/errors/NIKA-DAG-007",
     "hint": "status compared against a literal outside the vocabulary (success · failure · skipped · cancelled) — == never matches, != always holds"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-TYPE-001",
+    "href": "/errors/NIKA-TYPE-001",
+    "hint": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-TYPE-002",
+    "href": "/errors/NIKA-TYPE-002",
+    "hint": "recursive type reference — the types: graph must be acyclic"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-TYPE-003",
+    "href": "/errors/NIKA-TYPE-003",
+    "hint": "returns: and schema: on the same task — one contract, one spelling"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-TYPE-004",
+    "href": "/errors/NIKA-TYPE-004",
+    "hint": "returns: type unreachable from the declared decode: (an object contract over decode: text · …)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-TYPE-005",
+    "href": "/errors/NIKA-TYPE-005",
+    "hint": "a secret-carrying type in a lowered position (reserved with secret<T> · W4)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-TYPE-006",
+    "href": "/errors/NIKA-TYPE-006",
+    "hint": "regex pattern outside the locked dialect (backreference · lookaround · named group · inline flags · lazy/possessive · word-boundary · unicode-class — spec 09 §the regex dialect)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-TYPE-101",
+    "href": "/errors/NIKA-TYPE-101",
+    "hint": "run-time contract violation — the decoded value does not fit returns: (exec:/invoke: lane)"
   },
   {
     "kind": "error",
@@ -634,6 +706,36 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-DECIDE-001",
+    "href": "/errors/NIKA-DECIDE-001",
+    "hint": "the decision bundle is malformed or violates its own laws (float weight · undeclared evidence key in rules · identity key feeding a technical dimension · missing contradictory fixture · monotonicity violated by the bundle's own fixtures) (spec 11)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-DECIDE-002",
+    "href": "/errors/NIKA-DECIDE-002",
+    "hint": "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-POLICY-001",
+    "href": "/errors/NIKA-POLICY-001",
+    "hint": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-PORT-001",
+    "href": "/errors/NIKA-PORT-001",
+    "hint": "a gateway artifact (deployment bundle · capabilities report · lowering report · fidelity report · authority delta) is malformed or violates its laws (unknown promoted · permissive_unsafe without refusal · disclosure subset-chain violated · child authority exceeding parent) (spec 12)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-PORT-002",
+    "href": "/errors/NIKA-PORT-002",
+    "hint": "policy lowering is permissive_unsafe — the backend would allow what the policy forbids · refused with the divergence witness (spec 12)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-SEC-001",
     "href": "/errors/NIKA-SEC-001",
     "hint": "exec: blocklist hit"
@@ -664,6 +766,18 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-SEC-006",
+    "href": "/errors/NIKA-SEC-006",
+    "hint": "secret flow — a secrets.<name> value reaches an unsanctioned sink (exec argument · invoke payload · infer/agent prompt) · the diagnostic carries the taint path + the egress clause that would sanction it (spec 10 · flow rules in 01 §egress)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-SEC-007",
+    "href": "/errors/NIKA-SEC-007",
+    "hint": "secret egress — a tainted value reaches the workflow boundary (outputs:) · the diagnostic carries the taint path (spec 10 · the to: outputs sanction in 01 §egress)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-TIMEOUT-001",
     "href": "/errors/NIKA-TIMEOUT-001",
     "hint": "task (or for_each iteration) exceeded timeout:"
@@ -673,6 +787,18 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-CANCEL-001",
     "href": "/errors/NIKA-CANCEL-001",
     "hint": "task cancelled (workflow failure gate · user cancellation)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-ASSERT-001",
+    "href": "/errors/NIKA-ASSERT-001",
+    "hint": "an assert: claims a level the evidence does not support (a StaticProof the IR cannot decide · a mis-leveled obligation · spec 15)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-LOCK-001",
+    "href": "/errors/NIKA-LOCK-001",
+    "hint": "a dependency resolved that nika.lock does not pin, or a hand-edited lock digest does not match (pin-by-default · the lock's own hash catches the edit · spec 15)"
   },
   {
     "kind": "error",
@@ -1084,6 +1210,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
+    "label": "decode",
+    "href": "/language/decode",
+    "hint": "exec — How the captured string becomes a value (spec 09 §decode) — illegal with capture: structured (NIKA-PARS"
+  },
+  {
+    "kind": "word",
     "label": "description",
     "href": "/language/description",
     "hint": "workflow"
@@ -1222,6 +1354,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
+    "label": "policy",
+    "href": "/language/policy",
+    "hint": "envelope — Named workflow law · hard families (require/forbid/allow/limits) are judged at check (NIKA-POLICY-0"
+  },
+  {
+    "kind": "word",
     "label": "prompt",
     "href": "/language/prompt",
     "hint": "infer · agent"
@@ -1237,6 +1375,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "retry",
     "href": "/language/retry",
     "hint": "task"
+  },
+  {
+    "kind": "word",
+    "label": "returns",
+    "href": "/language/returns",
+    "hint": "task — The task's output contract (spec 09-types.md) — exclusive with a verb-level schema: (NIKA-TYPE-003)"
   },
   {
     "kind": "word",
@@ -1318,6 +1462,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
+    "label": "types",
+    "href": "/language/types",
+    "hint": "envelope — Named type declarations (spec 09-types.md · PascalCase · acyclic)"
+  },
+  {
+    "kind": "word",
     "label": "vars",
     "href": "/language/vars",
     "hint": "envelope — Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declarati"
@@ -1344,6 +1494,6 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "workflow",
     "href": "/language/workflow",
-    "hint": "envelope — The workflow object · a stable home for identity and metadata (W1 'the map')."
+    "hint": "envelope · invoke — The workflow object · a stable home for identity and metadata (W1 'the map')."
   }
 ]

@@ -193,6 +193,24 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     ]
   },
   {
+    "word": "decode",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "exec",
+        "required": false,
+        "type": "string",
+        "enum": [
+          "text",
+          "json",
+          "jsonl",
+          "bytes"
+        ],
+        "desc": "How the captured string becomes a value (spec 09 §decode) — illegal with capture: structured (NIKA-PARSE-025)"
+      }
+    ]
+  },
+  {
     "word": "description",
     "verb": false,
     "decls": [
@@ -490,6 +508,18 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     ]
   },
   {
+    "word": "policy",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "envelope",
+        "required": false,
+        "type": "object",
+        "desc": "Named workflow law · hard families (require/forbid/allow/limits) are judged at check (NIKA-POLICY-001) · soft families (prefer/optimize) are recorded, never judged in v1 (spec/10-authority.md)."
+      }
+    ]
+  },
+  {
     "word": "prompt",
     "verb": false,
     "decls": [
@@ -523,6 +553,17 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false
+      }
+    ]
+  },
+  {
+    "word": "returns",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "task",
+        "required": false,
+        "desc": "The task's output contract (spec 09-types.md) — exclusive with a verb-level schema: (NIKA-TYPE-003)"
       }
     ]
   },
@@ -682,7 +723,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "decls": [
       {
         "scope": "invoke",
-        "required": true,
+        "required": false,
         "type": "string",
         "pattern": "^mcp:[a-z][a-z0-9-]*/[A-Za-z0-9_/-]+$",
         "desc": "Tool reference · nika:<path> (closed v0.1 builtin set) OR mcp:<server>/<tool> (requires the slash). The namespace set is CLOSED at v1 (spec/02-verbs.md) — an x-<vendor>: prefix is RESERVED, not valid (engine-specific tools route through mcp: · spec/06-stdlib-contract.md §Namespace ownership)."
@@ -698,6 +739,18 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "required": false,
         "type": "array",
         "desc": "Whitelist · DEFAULT-DENY (no tools if absent) · gitignore-style globs · `!` negation."
+      }
+    ]
+  },
+  {
+    "word": "types",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "envelope",
+        "required": false,
+        "type": "object",
+        "desc": "Named type declarations (spec 09-types.md · PascalCase · acyclic)"
       }
     ]
   },
@@ -765,6 +818,12 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "required": true,
         "type": "object",
         "desc": "The workflow object · a stable home for identity and metadata (W1 'the map')."
+      },
+      {
+        "scope": "invoke",
+        "required": false,
+        "type": "string",
+        "desc": "Compose another workflow (spec 14) · a STATIC target: a filesystem path OR registry:owner/name@version (pinned). A templated target is refused at check (NIKA-COMP-001). Exactly one of tool: | workflow: (the invoke tagged union · G21)."
       }
     ]
   }

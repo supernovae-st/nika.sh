@@ -38,6 +38,16 @@
       "type": "string",
       "description": "Default model · `<provider>/<name>` (e.g. ollama/qwen3.5:9b · anthropic/claude-sonnet-4-6 · mock/echo)."
     },
+    "types": {
+      "type": "object",
+      "description": "Named type declarations (spec 09-types.md · PascalCase · acyclic)",
+      "propertyNames": {
+        "pattern": "^[A-Z][A-Za-z0-9]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/typeExpr"
+      }
+    },
     "vars": {
       "type": "object",
       "description": "Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declaration object.",
@@ -269,6 +279,94 @@
         }
       }
     },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Named workflow law · hard families (require/forbid/allow/limits) are judged at check (NIKA-POLICY-001) · soft families (prefer/optimize) are recorded, never judged in v1 (spec/10-authority.md).",
+      "properties": {
+        "require": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "human_gate_before": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "exec",
+                  "write",
+                  "net",
+                  "tools"
+                ]
+              },
+              "description": "Effect classes that must sit behind a human gate (an ancestor nika:prompt)."
+            }
+          }
+        },
+        "forbid": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "exec_after": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "exec",
+                  "write",
+                  "net",
+                  "tools"
+                ]
+              },
+              "description": "No exec: task downstream of a task carrying these effect classes (order law)."
+            }
+          }
+        },
+        "allow": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "providers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "infer:/agent: provider allowlist (the segment of model: before /) · fail-closed on statically unknown providers."
+            }
+          }
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "max_tasks": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "The workflow declares at most this many tasks."
+            }
+          }
+        },
+        "prefer": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "providers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "SOFT · ordered provider preference · recorded, never judged (v1)."
+            }
+          }
+        },
+        "optimize": {
+          "enum": [
+            "cost",
+            "latency",
+            "quality"
+          ],
+          "description": "SOFT · declared objective · recorded, never judged (v1)."
+        }
+      }
+    },
     "tasks": {
       "type": "object",
       "minProperties": 1,
@@ -307,7 +405,8 @@
                   "boolean",
                   "array",
                   "object"
-                ]
+                ],
+                "description": "flat closed enum — the workflow-contract halves (typed vars/outputs) widen to the 09-types grammar together at the input-authority window (G9)"
               },
               "description": {
                 "type": "string"
@@ -450,6 +549,10 @@
         },
         "agent": {
           "$ref": "#/$defs/agent"
+        },
+        "returns": {
+          "$ref": "#/$defs/typeExpr",
+          "description": "The task's output contract (spec 09-types.md) — exclusive with a verb-level schema: (NIKA-TYPE-003)"
         }
       }
     },
@@ -554,6 +657,16 @@
             "structured"
           ]
         },
+        "decode": {
+          "type": "string",
+          "enum": [
+            "text",
+            "json",
+            "jsonl",
+            "bytes"
+          ],
+          "description": "How the captured string becomes a value (spec 09 §decode) — illegal with capture: structured (NIKA-PARSE-025)"
+        },
         "shell": {
           "description": "One shell line, run via /bin/sh -c — the EXPLICIT dangerous door (pipes · redirects · globs). The blocklist applies here; interpolating untrusted values here is on the author. Exactly one of command|shell.",
           "type": "string",
@@ -575,9 +688,6 @@
     },
     "invoke": {
       "type": "object",
-      "required": [
-        "tool"
-      ],
       "additionalProperties": false,
       "properties": {
         "tool": {
@@ -592,6 +702,7 @@
                 "nika:compose",
                 "nika:convert",
                 "nika:date",
+                "nika:decide",
                 "nika:done",
                 "nika:edit",
                 "nika:emit",
@@ -625,8 +736,34 @@
         },
         "args": {
           "type": "object"
+        },
+        "workflow": {
+          "type": "string",
+          "description": "Compose another workflow (spec 14) · a STATIC target: a filesystem path OR registry:owner/name@version (pinned). A templated target is refused at check (NIKA-COMP-001). Exactly one of tool: | workflow: (the invoke tagged union · G21)."
         }
-      }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "tool"
+          ],
+          "not": {
+            "required": [
+              "workflow"
+            ]
+          }
+        },
+        {
+          "required": [
+            "workflow"
+          ],
+          "not": {
+            "required": [
+              "tool"
+            ]
+          }
+        }
+      ]
     },
     "agent": {
       "type": "object",
@@ -815,6 +952,120 @@
           "required": [
             "agent"
           ]
+        }
+      ]
+    },
+    "typeExpr": {
+      "description": "A Nika type expression (spec 09-types.md · closed v1 grammar · optional is FIELD-ONLY, see fieldTypeExpr)",
+      "oneOf": [
+        {
+          "type": "null",
+          "description": "the bare YAML null scalar spells the null type"
+        },
+        {
+          "type": "string",
+          "pattern": "^(null|bool|integer|number|string|bytes|uri|path|duration|timestamp|[A-Z][A-Za-z0-9]*)$",
+          "description": "a primitive name or a declared PascalCase type reference (money/result/artifact/secret are reserved — the checker refuses them with their wave)"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 2,
+          "properties": {
+            "array": {
+              "$ref": "#/$defs/typeExpr"
+            },
+            "map": {
+              "$ref": "#/$defs/typeExpr"
+            },
+            "object": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/fieldTypeExpr"
+              }
+            },
+            "additional": {
+              "type": "boolean"
+            },
+            "union": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "$ref": "#/$defs/typeExpr"
+              }
+            },
+            "enum": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "integer": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "min": {
+                  "type": "integer"
+                },
+                "max": {
+                  "type": "integer"
+                }
+              }
+            },
+            "number": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "min": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                }
+              }
+            },
+            "string": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pattern": {
+                  "type": "string",
+                  "maxLength": 512
+                },
+                "min_len": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "max_len": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "fieldTypeExpr": {
+      "description": "A field slot (spec 09 §optional is presence): a type expression, or { optional: T } — the presence modifier is legal ONLY here",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/typeExpr"
+        },
+        {
+          "type": "object",
+          "required": [
+            "optional"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "optional": {
+              "$ref": "#/$defs/typeExpr"
+            }
+          }
         }
       ]
     }

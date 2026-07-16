@@ -1,138 +1,152 @@
 #!/usr/bin/env python3
-"""verify_spec_resync_conformance.py — LENS-011 (PRE1 design-pack contract · lot 9i).
-
-Proves the four fail-closed preconditions of .github/workflows/spec-resync.yml
-against the committed pin .github/nika-spec-pin.json — deterministically, offline,
-stdlib only. The spec-resync workflow runs this as its first job (verify-conformance)
-and the resync job `needs:` it, so a non-conformant workflow can never publish.
-
-  1 PINNED spec        — a committed pin with a full 40-hex spec_commit + spec_tree;
-                         the spec is fetched BY SHA; no clone of a moving ref/HEAD.
-  2 DIGEST VERIFY      — HEAD and HEAD^{tree} are compared to the pin and a mismatch
-                         `exit 1`s, and that step PRECEDES every derivation/commit/push.
-  3 UNIQUE branch      — the bot branch embeds the spec sha; no reused `bot/spec-resync`
-                         stable branch, no `checkout -B`.
-  4 PLAIN CREATE push  — no `--force` / `--force-with-lease` anywhere; idempotence by
-                         a `gh pr list` QUERY; no swallowed failures on normative legs;
-                         no `github.event` data in a shell; `set -euo pipefail`.
-
-Exit 0 = conformant, 1 = a precondition is violated (each printed).
-"""
+"""Fail-closed conformance proof for the LENS-011 exact resync contract."""
 from __future__ import annotations
 
+import hashlib
 import json
 import pathlib
 import re
 import sys
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent  # repo root (scripts/..)
+ROOT = pathlib.Path(__file__).resolve().parent.parent
 WF = ROOT / ".github/workflows/spec-resync.yml"
 PIN = ROOT / ".github/nika-spec-pin.json"
-FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
+CONTRACT = ROOT / "scripts/spec-resync.contract.json"
+LIB = ROOT / "scripts/spec-resync-lib.mjs"
+RUNNER = ROOT / "scripts/spec-resync-run.mjs"
+GUARD = ROOT / "scripts/verify_generated_outputs.mjs"
+TEST = ROOT / "scripts/test-spec-resync-adversarial.mjs"
+SHA40 = re.compile(r"^[0-9a-f]{40}$")
+SHA256 = re.compile(r"^[0-9a-f]{64}$")
 FAILS: list[str] = []
 
 
 def check(name: str, ok: bool, detail: str = "") -> None:
+    print(f"  {'ok  ' if ok else 'FAIL'} {name}" + (f" — {detail}" if detail and not ok else ""))
     if not ok:
-        FAILS.append(f"{name}{(' — ' + detail) if detail else ''}")
-    print(f"  {'ok ' if ok else 'FAIL'} {name}" + (f" — {detail}" if detail and not ok else ""))
+        FAILS.append(name + (f" — {detail}" if detail else ""))
+
+
+def digest(path: pathlib.Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def main() -> int:
-    if not WF.is_file():
-        print(f"FATAL: workflow not found at {WF}")
+    required = [WF, PIN, CONTRACT, LIB, RUNNER, GUARD, TEST]
+    for path in required:
+        check(f"required artifact exists: {path.relative_to(ROOT)}", path.is_file())
+    if any(not path.is_file() for path in required):
         return 1
-    text = WF.read_text(encoding="utf-8")
-    lines = text.splitlines()
-    # CODE = the workflow with `#` comment lines dropped. The negative "NO X
-    # anywhere" checks scan CODE, so the header prose ("no --force", "no `|| true`")
-    # documenting the preconditions never trips its own gate.
-    code = "\n".join(ln for ln in lines if not ln.lstrip().startswith("#"))
 
-    print("== 1 · PINNED spec (full sha + tree · fetched by sha · no moving ref) ==")
-    if not PIN.is_file():
-        check("committed pin .github/nika-spec-pin.json exists", False)
-        pin = {}
-    else:
-        pin = json.loads(PIN.read_text(encoding="utf-8"))
-        check("committed pin .github/nika-spec-pin.json exists", True)
-    check("pin.spec_commit is a full 40-hex sha", bool(FULL_SHA.match(pin.get("spec_commit", ""))),
-          pin.get("spec_commit", "<absent>"))
-    check("pin.spec_tree is a full 40-hex sha (content digest)", bool(FULL_SHA.match(pin.get("spec_tree", ""))),
-          pin.get("spec_tree", "<absent>"))
-    check("the workflow reads the committed pin", "nika-spec-pin.json" in text)
-    check("the spec is fetched BY SHA (git fetch … SPEC_COMMIT)",
-          "fetch" in text and "${SPEC_COMMIT}" in text)
-    check("NO clone of a moving ref (no `git clone … nika-spec` of default HEAD)",
-          "git clone" not in text, "a bare `git clone` of the spec pulls a moving HEAD")
-    check("NO `ref: main` used to CHECK OUT the spec (main is the WEBSITE surface only)",
-          text.count("nika-spec") == 0 or "clone" not in text)
+    workflow = WF.read_text(encoding="utf-8")
+    code = "\n".join(line for line in workflow.splitlines() if not line.lstrip().startswith("#"))
+    runner = RUNNER.read_text(encoding="utf-8")
+    lib = LIB.read_text(encoding="utf-8")
+    guard = GUARD.read_text(encoding="utf-8")
+    adversarial = TEST.read_text(encoding="utf-8")
+    pin = json.loads(PIN.read_text(encoding="utf-8"))
+    contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    print("== 2 · DIGEST VERIFY before any derivation (fail-closed) ==")
-    verify_i = next((i for i, ln in enumerate(lines) if "DIGEST VERIFY" in ln), None)
-    check("a DIGEST VERIFY step exists", verify_i is not None)
-    check("it compares HEAD to the pinned commit and HEAD^{tree} to the pinned tree",
-          "rev-parse HEAD" in text and "HEAD^{tree}" in text
-          and "!= \"${SPEC_COMMIT}\"" in text and "!= \"${SPEC_TREE}\"" in text)
-    check("a mismatch aborts the run (exit 1)", re.search(r"mismatch[\s\S]{0,120}exit 1", text) is not None)
-    # ordering: verify precedes the FIRST derivation/commit/push
-    derive_i = next((i for i, ln in enumerate(lines) if "Re-derive every spec-fed surface" in ln), None)
-    pr_i = next((i for i, ln in enumerate(lines) if "One idempotent PR" in ln), None)
-    check("DIGEST VERIFY precedes the derivation step",
-          verify_i is not None and derive_i is not None and verify_i < derive_i,
-          f"verify@{verify_i} derive@{derive_i}")
-    check("DIGEST VERIFY precedes the commit/push/PR step",
-          verify_i is not None and pr_i is not None and verify_i < pr_i)
+    print("== exact source + generator DAG ==")
+    check("contract is version 1", contract.get("contract_version") == 1)
+    spec = contract.get("spec", {})
+    check("spec commit is full 40-hex", bool(SHA40.fullmatch(spec.get("commit", ""))))
+    check("spec tree is full 40-hex", bool(SHA40.fullmatch(spec.get("tree", ""))))
+    check("contract commit equals committed pin", spec.get("commit") == pin.get("spec_commit"))
+    check("contract tree equals committed pin", spec.get("tree") == pin.get("spec_tree"))
+    check("contract repository equals committed pin", spec.get("repository") == pin.get("repository"))
 
-    print("== 3 · UNIQUE branch (per pin · never a reused stable branch) ==")
-    check("the bot branch embeds the spec sha (unique to the pin)",
-          "bot/spec-resync/${SPEC_COMMIT}" in text)
-    check("NO reused bare stable branch (`bot/spec-resync` without the sha, or `checkout -B`)",
-          "checkout -B" not in text
-          and not re.search(r"bot/spec-resync(?![/$])", text.replace("bot/spec-resync/${SPEC_COMMIT}", "")),
-          "a bare bot/spec-resync is a reused stable branch")
+    generators = contract.get("generators", [])
+    ids: set[str] = set()
+    produced: list[str] = []
+    dag_ok = True
+    digest_ok = True
+    website_digest_ok = True
+    for generator in generators:
+        generator_id = generator.get("id")
+        dag_ok &= bool(generator_id) and generator_id not in ids
+        dag_ok &= all(dependency in ids for dependency in generator.get("depends_on", []))
+        ids.add(generator_id)
+        digest_ok &= bool(SHA256.fullmatch(generator.get("sha256", "")))
+        produced.extend(generator.get("outputs", []))
+        if generator.get("root") == "website":
+            path = ROOT / generator.get("path", "")
+            website_digest_ok &= path.is_file() and digest(path) == generator.get("sha256")
+    check("generator IDs are unique and DAG is topological", dag_ok)
+    check("every generator has a pinned SHA-256", digest_ok)
+    check("all website generator files match pinned digests", website_digest_ok)
+    check("toolchain is fixed in the contract", contract.get("toolchain") == {
+        "node": "22", "pnpm": "10.32.1", "python": "3.12", "pyyaml": "6.0.3"
+    })
 
-    print("== 4 · PLAIN CREATE push · no force · query idempotence · no event injection ==")
-    check("NO --force anywhere (code)", "--force" not in code)
-    check("NO --force-with-lease anywhere (code)", "force-with-lease" not in code)
-    check("the push is a plain create (git push origin <branch>, no flags)",
-          re.search(r'git push origin "\$\{branch\}"\s*$', text, re.M) is not None)
-    check("PR idempotence decided by QUERY (gh pr list --head)", "gh pr list --head" in text)
-    check("no normative leg swallows failures (`|| true` absent, code)", "|| true" not in code)
-    check("no github.event data reaches a shell",
-          "github.event" not in code and "github.head_ref" not in code)
-    for tok in ("set -euo pipefail",):
-        check(f"defensive shell: `{tok}` present", tok in text)
+    print("== literal output set + byte digests ==")
+    outputs = contract.get("outputs", [])
+    paths = [entry.get("path") for entry in outputs]
+    check("output paths are literal and unique", len(paths) == len(set(paths)) and all(paths))
+    check("generator output union equals exact output contract", sorted(produced) == sorted(paths))
+    check("every output has a SHA-256", all(SHA256.fullmatch(entry.get("sha256", "")) for entry in outputs))
+    check("every committed output currently matches the contract", all(
+        (ROOT / entry["path"]).is_file() and digest(ROOT / entry["path"]) == entry["sha256"]
+        for entry in outputs
+    ))
+    check("every non-public output declares a build/test consumer", all(
+        entry.get("dist") or entry.get("consumers") for entry in outputs
+    ))
 
-    print("== 5 · OUTPUT PROVENANCE — generated bytes verified before git add (LENS-011) ==")
-    guard = ROOT / "scripts/verify_generated_outputs.mjs"
-    check("the output guard script exists (scripts/verify_generated_outputs.mjs)", guard.is_file())
-    guard_i = next((i for i, ln in enumerate(lines) if "verify_generated_outputs.mjs" in ln), None)
-    check("the workflow RUNS the output guard", guard_i is not None)
-    # the guard must run AFTER the generators and BEFORE the commit/push/PR
-    check("the output guard runs AFTER derivation and BEFORE the PR step",
-          guard_i is not None and derive_i is not None and pr_i is not None
-          and derive_i < guard_i < pr_i, f"derive@{derive_i} guard@{guard_i} pr@{pr_i}")
-    # NO unscoped add — the exact LENS-011 hole (`git add -A` / `git add .` sweeps a
-    # tamper file). The stage must be an explicit declared-output pathspec.
-    check("NO `git add -A` (the unscoped sweep that let the tamper file ride the PR)",
-          "git add -A" not in code, "git add -A sweeps undeclared bytes into the proposal")
-    check("NO `git add .` (equally unscoped)", not re.search(r"git add \.(?:\s|$)", code))
-    check("the stage is a SCOPED declared-output pathspec (src/**/*.generated.* · catalog)",
-          ".generated." in code and "git add --" in code)
-    if guard.is_file():
-        gtext = guard.read_text(encoding="utf-8")
-        check("the guard enumerates the WORKING TREE (git status --porcelain, untracked included)",
-              "status" in gtext and "porcelain" in gtext and "untracked-files=all" in gtext)
-        check("the guard REFUSES undeclared outputs with a non-zero exit (no commit/push/PR)",
-              "process.exit(1)" in gtext and "undeclared" in gtext.lower())
-        check("the guard's allow-list is the declared generated surface (.generated. + catalog)",
-              ".generated." in gtext and "catalog.json" in gtext)
+    print("== dual disposable generation + exact staging + sealed build ==")
+    runner_command = re.search(r"node scripts/spec-resync-run\.mjs[\s\\]+--spec-root ../spec", workflow)
+    check("workflow invokes the exact runner", runner_command is not None)
+    for flag in ("--build", "--apply", "--stage", "--receipt"):
+        check(f"workflow exact runner includes {flag}", flag in workflow)
+    check("workflow installs locked dependencies before sealed build", "pnpm install --frozen-lockfile" in workflow)
+    check("workflow pins PyYAML", "pip install pyyaml==6.0.3" in workflow)
+    check("workflow does not permit toolchain variance", "--allow-toolchain-mismatch" not in workflow)
+    check("runner creates first + second disposable runs", "generateRun(scratch, 'first'" in runner and "generateRun(scratch, 'second'" in runner)
+    check("runner compares dual-run bytes", "compareOutputTrees(first.website, second.website" in runner)
+    check("runner builds the generated sealed clone", "runSealedBuild(first.website" in runner)
+    check("staging passes an exact path array after `--`", "['add', '--', ...changed]" in lib)
+    check("raw Git index blobs are compared for the complete contract set",
+          "for (const output of contract.outputs)" in lib
+          and "['show', `:${output.path}`]" in lib
+          and "raw index digest mismatch" in lib)
+    check("built public bytes are compared to contract digests", "sealed build did not consume exact" in lib)
+    for receipt_field in (
+        "contract_sha256", "website_tree", "generators", "fixed_environment",
+        "expected_toolchain", "actual_tool_versions", "toolchain_conformant",
+        "index_verified_outputs", "build_input_verified_outputs", "build_command",
+        "build_output_directory",
+    ):
+        check(f"receipt binds {receipt_field}", receipt_field in runner)
+    check("NO broad generated-file pathspec remains", ":(glob)" not in code and "**/*.generated" not in code)
+    check("NO unscoped git add", "git add -A" not in code and not re.search(r"git add \.(?:\s|$)", code))
+    check("post-generation exact guard runs", "node scripts/verify_generated_outputs.mjs" in workflow and "verifyOutputTree" in guard)
+
+    print("== adversarial coverage ==")
+    cases = (
+        "supplied allowed-path tamper", "missing output", "extra output", "renamed output",
+        "source pin/tree mismatch", "generator digest mismatch", "newline-only byte drift",
+        "post-verification raw index mutation", "missing build/test consumer", "dual-run byte mismatch",
+    )
+    for case in cases:
+        check(f"adversarial case is present: {case}", case in adversarial)
+
+    print("== proposal safety ==")
+    verify_i = workflow.find("DIGEST VERIFY")
+    runner_i = workflow.find("spec-resync-run.mjs")
+    proposal_i = workflow.find("One idempotent PR")
+    check("spec HEAD + tree are compared before runner", "rev-parse HEAD" in workflow and "HEAD^{tree}" in workflow and 0 <= verify_i < runner_i)
+    check("runner precedes proposal", 0 <= runner_i < proposal_i)
+    check("unique branch embeds spec commit", "bot/spec-resync/${SPEC_COMMIT}" in workflow)
+    check("plain create push", re.search(r'git push origin "\$\{branch\}"\s*$', workflow, re.M) is not None)
+    check("idempotence is a PR query", "gh pr list --head" in workflow)
+    check("no force push or swallowed normative failure", "--force" not in code and "|| true" not in code)
+    check("no event payload enters shell", "github.event" not in code and "github.head_ref" not in code)
+    check("strict shell mode remains", "set -euo pipefail" in workflow)
 
     print()
-    print(f"RESULT: {'GREEN — spec-resync is LENS-011 conformant' if not FAILS else 'RED'} · {len(FAILS)} failing")
-    for f in FAILS:
-        print(f"  FAIL {f}")
+    print(f"RESULT: {'GREEN' if not FAILS else 'RED'} · {len(FAILS)} failing")
+    for failure in FAILS:
+        print(f"  FAIL {failure}")
     return 1 if FAILS else 0
 
 

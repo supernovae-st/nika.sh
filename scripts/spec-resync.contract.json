@@ -1,0 +1,206 @@
+{
+  "$schema": "https://nika.sh/contracts/spec-resync/v1.json",
+  "contract_version": 1,
+  "spec": {
+    "repository": "supernovae-st/nika-spec",
+    "commit": "24c3dfdeee7de5181107c02bdda7bc211d167bb8",
+    "tree": "370e3f16e99835e325aef13a34cb590bae39db5a"
+  },
+  "environment": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "NIKA_BIN": "/__nika_spec_resync_no_binary__",
+    "PYTHONHASHSEED": "0",
+    "SOURCE_DATE_EPOCH": "0",
+    "TZ": "UTC"
+  },
+  "toolchain": {
+    "node": "22",
+    "pnpm": "10.32.1",
+    "python": "3.12",
+    "pyyaml": "6.0.3"
+  },
+  "generators": [
+    {
+      "id": "spec-canon",
+      "root": "spec",
+      "runtime": "python3",
+      "path": "scripts/canon-projectors.py",
+      "sha256": "1974de3eba2602c5464b0a0e8ec5edd04b2ce85d286d8845bcf8830b94346aee",
+      "args": ["--write"],
+      "depends_on": [],
+      "outputs": ["src/canon.generated.ts"]
+    },
+    {
+      "id": "spec-showcase",
+      "root": "spec",
+      "runtime": "python3",
+      "path": "scripts/showcase-projector.py",
+      "sha256": "60604742a15c98a4fce73deb03a4d0cc0a4395826dcab8a5970d18b4982451df",
+      "args": ["--write"],
+      "depends_on": ["spec-canon"],
+      "outputs": [
+        "public/errors/catalog.json",
+        "public/schema/workflow.json",
+        "src/sections/usecases-yaml.generated.ts"
+      ]
+    },
+    {
+      "id": "spec-schema-twin",
+      "root": "spec",
+      "runtime": "copy",
+      "path": "schemas/workflow.schema.json",
+      "sha256": "2b11d632438195d9bb75b3fe19e5437c07f63dd9252447501327ab2be59db296",
+      "args": [],
+      "depends_on": ["spec-showcase"],
+      "outputs": ["public/spec/v1/workflow.schema.json"]
+    },
+    {
+      "id": "spec-design",
+      "root": "spec",
+      "runtime": "python3",
+      "path": "scripts/design-projector.py",
+      "sha256": "8305ccb6bc2a3dd1460f2bd969c8982342ac87bd76054273b97c53d4090850ae",
+      "args": ["--write"],
+      "depends_on": ["spec-canon"],
+      "outputs": ["src/design-tokens.generated.ts"]
+    },
+    {
+      "id": "website-templates",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/build-templates.mjs",
+      "sha256": "f3add4627c23799cb39437798f55349876700e8f4a3f9787c6c04446cbea3214",
+      "args": [],
+      "depends_on": ["spec-showcase"],
+      "outputs": ["public/templates/catalog.json", "src/content/templates.generated.ts"]
+    },
+    {
+      "id": "website-errors",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/build-errors.mjs",
+      "sha256": "3eb73b7e99e2f6310aa524f34350dfa64efb240d9c5357728b098ec85bb08784",
+      "args": [],
+      "depends_on": ["spec-showcase"],
+      "outputs": ["src/content/errors.generated.ts"]
+    },
+    {
+      "id": "website-language",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/build-language.mjs",
+      "sha256": "d2c100e5ea33a775db720fcea4b56bc9b7a5d325fd0f5cc22ecd5e089980203a",
+      "args": [],
+      "depends_on": ["spec-showcase"],
+      "outputs": ["src/content/language.generated.ts"]
+    },
+    {
+      "id": "website-providers",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/build-providers.mjs",
+      "sha256": "cadbaf47044f6b0b39e8bb6a2d5579b578a8abd2f14cf4920831050d94b835be",
+      "args": ["--from-catalog"],
+      "depends_on": ["spec-canon"],
+      "outputs": ["src/content/providers.generated.ts"]
+    },
+    {
+      "id": "website-tools",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/build-tools.mjs",
+      "sha256": "d67b42985370c406f85ed3b4a9b7ce8e9d683ec14b25e9c0d94824e082a31885",
+      "args": ["--from-catalog"],
+      "depends_on": ["spec-canon"],
+      "outputs": ["src/content/tools.generated.ts"]
+    },
+    {
+      "id": "website-tool-usage",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/build-tool-usage.mjs",
+      "sha256": "d5d9aa34d44aa67d98106b7a90f8639027a281847e0980ab917f9675828a3a48",
+      "args": [],
+      "depends_on": ["website-templates", "website-tools"],
+      "outputs": [
+        "src/content/tool-usage.generated.ts",
+        "src/content/tool-usage-refs.generated.ts"
+      ]
+    },
+    {
+      "id": "website-language-usage",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/build-language-usage.mjs",
+      "sha256": "3d4e17b3c6140d4d80b67b0a58e112a64e0c646f2488a6615a5c5074cb6469f0",
+      "args": [],
+      "depends_on": ["website-language", "website-templates"],
+      "outputs": [
+        "src/content/language-usage.generated.ts",
+        "src/content/language-usage-refs.generated.ts"
+      ]
+    },
+    {
+      "id": "website-lint-fixtures",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/vendor-lint-fixtures.mjs",
+      "sha256": "abe95b1f071f838d2b5558223fc75098a67b422b0f7c91dab87ffc4527bef167",
+      "args": [],
+      "depends_on": ["spec-showcase"],
+      "outputs": ["src/lib/lint-fixtures.generated.ts"]
+    },
+    {
+      "id": "website-gate-matrix",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/vendor-gate-matrix.mjs",
+      "sha256": "faa7b0c08c1fa707f3763e2e173a39bf0473a30f48d3d54b0fff3af43d48e7e4",
+      "args": [],
+      "depends_on": ["spec-showcase"],
+      "outputs": ["src/content/gate-matrix.generated.ts"]
+    },
+    {
+      "id": "website-palette",
+      "root": "website",
+      "runtime": "node",
+      "path": "scripts/build-palette.mjs",
+      "sha256": "49375b9ffe2da46c322c6b09b46c29c217e591453ea56891052fefc48c903328",
+      "args": [],
+      "depends_on": [
+        "website-errors",
+        "website-language",
+        "website-providers",
+        "website-templates",
+        "website-tools"
+      ],
+      "outputs": ["src/content/palette.generated.ts"]
+    }
+  ],
+  "outputs": [
+    {"path": "public/errors/catalog.json", "sha256": "3a1f335b8a49eee4401bdd5a43644beb8f51d44865001ca39fb86116e35fc40a", "dist": "errors/catalog.json"},
+    {"path": "public/schema/workflow.json", "sha256": "2b11d632438195d9bb75b3fe19e5437c07f63dd9252447501327ab2be59db296", "dist": "schema/workflow.json"},
+    {"path": "public/spec/v1/workflow.schema.json", "sha256": "2b11d632438195d9bb75b3fe19e5437c07f63dd9252447501327ab2be59db296", "dist": "spec/v1/workflow.schema.json"},
+    {"path": "public/templates/catalog.json", "sha256": "4c99dfc5f51fd3e529e5297efc03bc996294c9d144db92a4276744e359ae9c0a", "dist": "templates/catalog.json"},
+    {"path": "src/canon.generated.ts", "sha256": "89ca058ec8c519e8281d032286a85b45606a3e29af94f40232d6839a03dc99ba", "consumers": ["src/pages/Verbs.tsx"]},
+    {"path": "src/design-tokens.generated.ts", "sha256": "06f0729a85c582a0812ddc00fac47c908a4a125f5e5b9f634a6f9bc547da2727", "consumers": ["src/pages/Brand.tsx"]},
+    {"path": "src/sections/usecases-yaml.generated.ts", "sha256": "448022e0fc4fb705669428ceb892e82b38ffccb7416b754f30c3e8dde2a5f79d", "consumers": ["src/pages/UseCasesPage.tsx"]},
+    {"path": "src/content/templates.generated.ts", "sha256": "4874e69cd5f4b8f749e0fc9f4186c3eb9e6dd1e073ab1043436aea712cf10d37", "consumers": ["src/pages/Templates.tsx"]},
+    {"path": "src/content/errors.generated.ts", "sha256": "268a147e5c47311a8953a5bc4c8746e5a66b2f88f6d8f03ef0ba8c9ebdf71868", "consumers": ["src/pages/Errors.tsx"]},
+    {"path": "src/content/language.generated.ts", "sha256": "7b3dee5cffda169c61b6f8a723eb224e42e48b96a4f6d30121bfe916e15ca5b6", "consumers": ["src/pages/Language.tsx"]},
+    {"path": "src/content/providers.generated.ts", "sha256": "8e222bec3607263a381f9dcfe64ac69c50c8278edf9f018f01150a64a42fcc3d", "consumers": ["src/pages/Providers.tsx"]},
+    {"path": "src/content/tools.generated.ts", "sha256": "2d9d07e04d287f2aceb67a232422f38e0d64f60231ff660d4ea70f4d4d2a6ef6", "consumers": ["src/pages/Tools.tsx"]},
+    {"path": "src/content/tool-usage.generated.ts", "sha256": "201150b0c1e3baaf1caa87b6f19c39975bfe1c9268db4dcd1b08acf939a1fd70", "consumers": ["src/pages/ToolPage.tsx"]},
+    {"path": "src/content/tool-usage-refs.generated.ts", "sha256": "7e47ba121e4fae6e6b09e20d3fd419ba4833f2265c3a65d2d29febc478d807a6", "consumers": ["src/content/graph.ts"]},
+    {"path": "src/content/language-usage.generated.ts", "sha256": "dd0ce016b03a3eb26b869c7d6a2539c0c0791e1e597955b742af1ff0a74806e9", "consumers": ["src/pages/WordPage.tsx"]},
+    {"path": "src/content/language-usage-refs.generated.ts", "sha256": "749bdac1df0ec06b5ea89e0cd8c066f57f262457307a414f9cc26e913c3eb015", "consumers": ["src/content/graph.ts"]},
+    {"path": "src/lib/lint-fixtures.generated.ts", "sha256": "a2ef545b32f1dad0531a293c1d75f95b225b572d822cda22c21860ca3174b0e9", "consumers": ["src/lib/nika-lint-conformance.test.ts"]},
+    {"path": "src/content/gate-matrix.generated.ts", "sha256": "57cfcf9bd76329b65f029ff588b4f2eae26887f202005eea9076166eee04f7ea", "consumers": ["src/test/gate-matrix.test.ts"]},
+    {"path": "src/content/palette.generated.ts", "sha256": "8890118c56083436884130ce8240f1e1510eab2a1b1e8bfc029268e1ebb7ce0b", "consumers": ["src/shell/CommandK.tsx"]}
+  ],
+  "build": {
+    "command": ["pnpm", "build"],
+    "output_directory": "dist"
+  }
+}

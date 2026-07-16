@@ -42,6 +42,12 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)"
   },
   {
+    "code": "NIKA-ASSERT-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "an assert: claims a level the evidence does not support (a StaticProof the IR cannot decide · a mis-leveled obligation · spec 15)"
+  },
+  {
     "code": "NIKA-BUILTIN-001",
     "category": "validation_error",
     "transient": false,
@@ -58,6 +64,30 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "category": "cancelled",
     "transient": false,
     "failure": "task cancelled (workflow failure gate · user cancellation)"
+  },
+  {
+    "code": "NIKA-COMP-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "invoke.workflow: target is not statically resolvable (templated · malformed · unpinned registry ref) — a call graph you cannot draw before the run cannot be bounded (spec 14)"
+  },
+  {
+    "code": "NIKA-COMP-002",
+    "category": "security_error",
+    "transient": false,
+    "failure": "the child workflow's effect boundary exceeds the parent capped by the call-site declaration (Authority(child) subset of Authority(parent) intersect declared · spec 14 laws 3/4)"
+  },
+  {
+    "code": "NIKA-COMP-003",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "the static call graph is not acyclic (self-launch · cycle · spec 14 law 7 · NIKA-SEC-003 is the runtime depth backstop)"
+  },
+  {
+    "code": "NIKA-COMP-004",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "the typed call does not compose — parent args do not fit child inputs, or child outputs do not fit parent returns (spec 14 law 2)"
   },
   {
     "code": "NIKA-DAG-001",
@@ -96,6 +126,18 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "status compared against a literal outside the vocabulary (success · failure · skipped · cancelled) — == never matches, != always holds"
   },
   {
+    "code": "NIKA-DECIDE-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "the decision bundle is malformed or violates its own laws (float weight · undeclared evidence key in rules · identity key feeding a technical dimension · missing contradictory fixture · monotonicity violated by the bundle's own fixtures) (spec 11)"
+  },
+  {
+    "code": "NIKA-DECIDE-002",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)"
+  },
+  {
     "code": "NIKA-EXEC-001",
     "category": "process_error",
     "transient": false,
@@ -130,6 +172,12 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "category": "validation_error",
     "transient": false,
     "failure": "tool args failed the tool's schema"
+  },
+  {
+    "code": "NIKA-LOCK-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a dependency resolved that nika.lock does not pin, or a hand-edited lock digest does not match (pin-by-default · the lock's own hash catches the edit · spec 15)"
   },
   {
     "code": "NIKA-MCP-001",
@@ -282,6 +330,30 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "a task carries depends_on: — dead since W2 (data → with: bindings · control → after: predicates · check --fix migrates)"
   },
   {
+    "code": "NIKA-PARSE-025",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "decode: with capture: structured — that capture already IS an object · type it with returns:"
+  },
+  {
+    "code": "NIKA-POLICY-001",
+    "category": "security_error",
+    "transient": false,
+    "failure": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)"
+  },
+  {
+    "code": "NIKA-PORT-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a gateway artifact (deployment bundle · capabilities report · lowering report · fidelity report · authority delta) is malformed or violates its laws (unknown promoted · permissive_unsafe without refusal · disclosure subset-chain violated · child authority exceeding parent) (spec 12)"
+  },
+  {
+    "code": "NIKA-PORT-002",
+    "category": "security_error",
+    "transient": false,
+    "failure": "policy lowering is permissive_unsafe — the backend would allow what the policy forbids · refused with the divergence witness (spec 12)"
+  },
+  {
     "code": "NIKA-SEC-001",
     "category": "security_error",
     "transient": false,
@@ -312,10 +384,64 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "SSRF block — a nika:fetch/nika:notify URL resolves to a loopback/private/link-local/metadata target (always-on engine floor · independent of permits:)"
   },
   {
+    "code": "NIKA-SEC-006",
+    "category": "security_error",
+    "transient": false,
+    "failure": "secret flow — a secrets.<name> value reaches an unsanctioned sink (exec argument · invoke payload · infer/agent prompt) · the diagnostic carries the taint path + the egress clause that would sanction it (spec 10 · flow rules in 01 §egress)"
+  },
+  {
+    "code": "NIKA-SEC-007",
+    "category": "security_error",
+    "transient": false,
+    "failure": "secret egress — a tainted value reaches the workflow boundary (outputs:) · the diagnostic carries the taint path (spec 10 · the to: outputs sanction in 01 §egress)"
+  },
+  {
     "code": "NIKA-TIMEOUT-001",
     "category": "timeout_error",
     "transient": false,
     "failure": "task (or for_each iteration) exceeded timeout:"
+  },
+  {
+    "code": "NIKA-TYPE-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close"
+  },
+  {
+    "code": "NIKA-TYPE-002",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "recursive type reference — the types: graph must be acyclic"
+  },
+  {
+    "code": "NIKA-TYPE-003",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "returns: and schema: on the same task — one contract, one spelling"
+  },
+  {
+    "code": "NIKA-TYPE-004",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "returns: type unreachable from the declared decode: (an object contract over decode: text · …)"
+  },
+  {
+    "code": "NIKA-TYPE-005",
+    "category": "security_error",
+    "transient": false,
+    "failure": "a secret-carrying type in a lowered position (reserved with secret<T> · W4)"
+  },
+  {
+    "code": "NIKA-TYPE-006",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "regex pattern outside the locked dialect (backreference · lookaround · named group · inline flags · lazy/possessive · word-boundary · unicode-class — spec 09 §the regex dialect)"
+  },
+  {
+    "code": "NIKA-TYPE-101",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "run-time contract violation — the decoded value does not fit returns: (exec:/invoke: lane)"
   },
   {
     "code": "NIKA-VAR-001",
