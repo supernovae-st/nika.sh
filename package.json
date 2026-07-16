@@ -17,6 +17,8 @@
     "links:record": "node scripts/check-record-links.mjs",
     "lens:gate": "node scripts/lens-gate.mjs",
     "lens:adversarial": "node scripts/test-lens-integrity-adversarial.mjs",
+    "lens:semantic-contracts": "node scripts/build-lens-semantic-contracts.mjs",
+    "lens:semantics-adversarial": "node scripts/test-lens-semantics-adversarial.mjs",
     "lens:integrity": "node scripts/verify-lens-ci.mjs",
     "spec-resync:adversarial": "node scripts/test-spec-resync-adversarial.mjs",
     "spec-resync:conformance": "python3 scripts/verify_spec_resync_conformance.py",

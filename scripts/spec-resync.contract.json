@@ -176,9 +176,20 @@
         "website-tools"
       ],
       "outputs": ["src/content/palette.generated.ts"]
+    },
+    {
+      "id": "website-spec-pin-twin",
+      "root": "website",
+      "runtime": "copy",
+      "path": ".github/nika-spec-pin.json",
+      "sha256": "b76ddab8342320c09647b64dbdd4357306325cdb0acbdcf63dba94063f93e10e",
+      "args": [],
+      "depends_on": ["website-palette"],
+      "outputs": ["public/.well-known/nika-spec-pin.json"]
     }
   ],
   "outputs": [
+    {"path": "public/.well-known/nika-spec-pin.json", "sha256": "b76ddab8342320c09647b64dbdd4357306325cdb0acbdcf63dba94063f93e10e", "dist": ".well-known/nika-spec-pin.json"},
     {"path": "public/errors/catalog.json", "sha256": "3a1f335b8a49eee4401bdd5a43644beb8f51d44865001ca39fb86116e35fc40a", "dist": "errors/catalog.json"},
     {"path": "public/schema/workflow.json", "sha256": "2b11d632438195d9bb75b3fe19e5437c07f63dd9252447501327ab2be59db296", "dist": "schema/workflow.json"},
     {"path": "public/spec/v1/workflow.schema.json", "sha256": "2b11d632438195d9bb75b3fe19e5437c07f63dd9252447501327ab2be59db296", "dist": "spec/v1/workflow.schema.json"},

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execFileSync, spawnSync } from 'node:child_process'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
@@ -18,6 +18,8 @@ function sha(bytes) {
 function clone(name) {
   const root = join(scratch, name)
   execFileSync('git', ['clone', '--quiet', '--no-hardlinks', ROOT, root])
+  const dependencies = join(ROOT, 'node_modules')
+  if (existsSync(dependencies)) symlinkSync(dependencies, join(root, 'node_modules'), 'dir')
   return root
 }
 

@@ -1,15 +1,71 @@
 {
   "contract_version": 1,
-  "production": {
-    "host": "nika.sh",
-    "branch": "main",
-    "deploy_on_push": true,
-    "release_closed": true
+  "pin_source": ".github/nika-spec-pin.json",
+  "served_pin": "public/.well-known/nika-spec-pin.json",
+  "release_attestation": "scripts/lens/contracts/release-attestation.v1.json",
+  "matrix": [
+    {
+      "channel": "stable",
+      "hosts": [
+        {"kind": "exact", "value": "nika.sh"},
+        {"kind": "exact", "value": "www.nika.sh"}
+      ],
+      "paths": ["/"],
+      "pin_channels": ["stable"],
+      "banner": {"mode": "forbidden"},
+      "release_closed": {"mode": "required", "value": true}
+    },
+    {
+      "channel": "preview",
+      "hosts": [
+        {"kind": "suffix", "value": ".ondigitalocean.app"},
+        {"kind": "exact", "value": "preview.nika.sh"}
+      ],
+      "paths": ["/"],
+      "pin_channels": ["preview"],
+      "banner": {"mode": "required", "value": "preview"},
+      "release_closed": {"mode": "any"}
+    },
+    {
+      "channel": "nightly",
+      "hosts": [
+        {"kind": "exact", "value": "nightly.nika.sh"}
+      ],
+      "paths": ["/"],
+      "pin_channels": ["nightly"],
+      "banner": {"mode": "required", "value": "nightly"},
+      "release_closed": {"mode": "any"}
+    }
+  ],
+  "deployment": {
+    "manifest": ".do/app.yaml",
+    "expected": {
+      "domains": [
+        {"domain": "nika.sh", "type": "PRIMARY", "zone": "nika.sh"},
+        {"domain": "www.nika.sh", "type": "ALIAS", "zone": "nika.sh"}
+      ],
+      "component_name": "nika-landing",
+      "repository": "supernovae-st/nika.sh",
+      "branch": "main",
+      "deploy_on_push": true,
+      "source_dir": "/",
+      "ingress_path_prefix": "/",
+      "output_dir": "dist"
+    },
+    "candidate": {
+      "channel": "stable",
+      "pin_channel": "stable",
+      "host": "nika.sh",
+      "path": "/",
+      "banner": null,
+      "release_closed": true
+    }
   },
-  "preview": {
-    "host_pattern": "*.ondigitalocean.app",
-    "release_closed": false,
-    "banner": "preview"
-  },
-  "deployment_manifest": ".do/app.yaml"
+  "named_negative_cases": [
+    "nightly-pin-on-stable-host",
+    "missing-preview-banner",
+    "missing-nightly-banner",
+    "unclosed-stable-release",
+    "wrong-channel-path"
+  ]
 }

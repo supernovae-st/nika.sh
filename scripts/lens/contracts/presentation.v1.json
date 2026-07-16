@@ -8,9 +8,5 @@
     "src/sections/faq-data.ts",
     "public/llms.txt"
   ],
-  "count_sources": [
-    "public/llms.txt",
-    "content/blog/2026-05-14-standard-library-not-plugin-store.md"
-  ],
   "adjacent_claim_roots": ["src"]
 }

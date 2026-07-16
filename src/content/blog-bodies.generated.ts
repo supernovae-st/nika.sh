@@ -7124,7 +7124,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " binding is caught in the same pass. The graph the engine runs is the graph you read, and both come from three verbs and their wiring."
+          "text": " binding is caught in the same pass. The graph the engine runs is the graph you read, and both come from four verbs and their wiring."
         }
       ]
     },

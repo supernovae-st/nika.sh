@@ -8,6 +8,30 @@ import { ROOT, sha256File } from './spec-resync-lib.mjs'
 
 const CONTRACT_ROOT = join(ROOT, 'scripts/lens/contracts')
 const workflowPath = join(ROOT, '.github/workflows/lens-gates.yml')
+const requiredIntegrityArtifacts = [
+  '.do/app.yaml',
+  '.github/nika-spec-pin.json',
+  '.github/workflows/lens-gates.yml',
+  'public/.well-known/nika-spec-pin.json',
+  'react-ssg.config.ts',
+  'scripts/build-lens-semantic-contracts.mjs',
+  'scripts/lens-gate.mjs',
+  'scripts/lens-semantics-lib.mjs',
+  'scripts/lens/contracts/channels.v1.json',
+  'scripts/lens/contracts/count-source.v1.json',
+  'scripts/lens/contracts/features.v1.json',
+  'scripts/lens/contracts/gates.v1.json',
+  'scripts/lens/contracts/presentation.v1.json',
+  'scripts/lens/contracts/release-attestation.v1.json',
+  'scripts/lens/contracts/snippets.v1.json',
+  'scripts/lens/fixtures/negative.v1.json',
+  'scripts/spec-resync.contract.json',
+  'scripts/test-lens-integrity-adversarial.mjs',
+  'scripts/test-lens-semantics-adversarial.mjs',
+  'scripts/verify-lens-ci.mjs',
+  'site.config.ts',
+  'src/routes.tsx',
+]
 
 function fail(message) {
   throw new Error(`LENS-006 integrity: ${message}`)
@@ -64,6 +88,10 @@ try {
   if (new Set(declaredJobs).size !== declaredJobs.length) fail('duplicate gate job in contract')
   if (ids.length !== 8) fail(`expected eight gate IDs, got ${ids.length}`)
 
+  const integrityPaths = integrity.artifacts.map((artifact) => artifact.path)
+  if (JSON.stringify(integrityPaths) !== JSON.stringify(requiredIntegrityArtifacts)) {
+    fail('integrity artifact manifest is not set-equal to the required semantic surface')
+  }
   for (const artifact of integrity.artifacts) {
     const got = sha256File(join(ROOT, artifact.path))
     if (got !== artifact.sha256) fail(`bad digest for ${artifact.path}: ${got} != ${artifact.sha256}`)
@@ -100,7 +128,15 @@ try {
     }
   }
 
-  console.log('LENS-006 integrity: 8/8 jobs exact · digests pinned · 8/8 positive and negative replays verified')
+  const semanticAdversarial = spawnSync(process.execPath, ['scripts/test-lens-semantics-adversarial.mjs'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+  })
+  if (semanticAdversarial.status !== 0) {
+    fail(`semantic adversarial suite failed: ${(semanticAdversarial.stderr || semanticAdversarial.stdout).trim()}`)
+  }
+
+  console.log('LENS-006 integrity: 8/8 jobs exact · artifact set pinned · 8/8 gate negatives + 16/16 semantic adversaries verified')
 } catch (error) {
   console.error(error.message)
   process.exit(1)

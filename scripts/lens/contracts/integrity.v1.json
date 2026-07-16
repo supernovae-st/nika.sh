@@ -1,15 +1,27 @@
 {
   "contract_version": 1,
   "artifacts": [
+    {"path": ".do/app.yaml", "sha256": "a8a7b8c78200af15a59d9e009459d9d2d669246bc2a345c0b9e90629f7772de5"},
+    {"path": ".github/nika-spec-pin.json", "sha256": "b76ddab8342320c09647b64dbdd4357306325cdb0acbdcf63dba94063f93e10e"},
     {"path": ".github/workflows/lens-gates.yml", "sha256": "0498a82b0860c1a1f84cabdd8407f258479f3397b4ec0c1285d258ab1e5e089d"},
-    {"path": "scripts/lens-gate.mjs", "sha256": "b43ae522df0de2c3df2d7f89e718dade27ea7ea93e0800c2be5261a8bc423095"},
-    {"path": "scripts/verify-lens-ci.mjs", "sha256": "ad033650e2b7800dbbd2aefacd15777a8d8b0663877ce3cbb48f245fc008e3d5"},
-    {"path": "scripts/spec-resync.contract.json", "sha256": "c9f7ef0633094a7f29ace2d5aa66269d07e74ac2a1e4d5c35c3c2793762d8d0f"},
+    {"path": "public/.well-known/nika-spec-pin.json", "sha256": "b76ddab8342320c09647b64dbdd4357306325cdb0acbdcf63dba94063f93e10e"},
+    {"path": "react-ssg.config.ts", "sha256": "785d33b8ddce179481d90a15366b7f51d6286401875ce68e1a76704f0ed6ec4b"},
+    {"path": "scripts/build-lens-semantic-contracts.mjs", "sha256": "4258969546bcce3bfdb76030a703154e3f95a63877c5c6ed3b1029529a0af54a"},
+    {"path": "scripts/lens-gate.mjs", "sha256": "e509c5f5277fccc0efb94d8b72373d9cd55eab5ddd8eb9af2857883abac389ec"},
+    {"path": "scripts/lens-semantics-lib.mjs", "sha256": "d9d5aa27656be7db145fd46e717252425db7e13d5deb5f7698bbc6dcbccdb640"},
+    {"path": "scripts/lens/contracts/channels.v1.json", "sha256": "ff9474d471c866f79d8411e61f37fa5f2643ae314c56830caf890ca58341b465"},
+    {"path": "scripts/lens/contracts/count-source.v1.json", "sha256": "cee527e3024c65ff13d5e0ea858a3cf48cb746cae2f8cde461c5022e098eb1d8"},
+    {"path": "scripts/lens/contracts/features.v1.json", "sha256": "6f7327d9e510953c99ada1d202f67ec6778668272b78504048402696ec266361"},
     {"path": "scripts/lens/contracts/gates.v1.json", "sha256": "a96216b81e34da1832e95ba920ce5c25437f99631e7c52a2872fed42f93066f1"},
-    {"path": "scripts/lens/contracts/presentation.v1.json", "sha256": "129536b43a8dcbeee81a4ddf6c333dc9744d4d2525491bb4a9dd9e85a646618a"},
-    {"path": "scripts/lens/contracts/snippets.v1.json", "sha256": "ef32e2d74c4fbc65b65786be9d4906303b11cd452f5888e6f89032239270430e"},
-    {"path": "scripts/lens/contracts/features.v1.json", "sha256": "9d48a3836c0f2e890c828bf3a27219fe87943ffaf0fa890bc5e2a3ae4f111c4f"},
-    {"path": "scripts/lens/contracts/channels.v1.json", "sha256": "15fc0300186f2a556906f893165d160f70a8266142058f8bc0c62d9af0745cfd"},
-    {"path": "scripts/lens/fixtures/negative.v1.json", "sha256": "44e33497fb03ca26f63700201346c1e1c1e5c9ea2a798473edb4e0f60f130825"}
+    {"path": "scripts/lens/contracts/presentation.v1.json", "sha256": "9645a596d85db3c0abff2cebecbd554a18e6b1208b756d55e35c290faf829775"},
+    {"path": "scripts/lens/contracts/release-attestation.v1.json", "sha256": "b1beea6f26c2e281cc4daba14eb3c1a48577f08403c65cd354f88387b3fcaa02"},
+    {"path": "scripts/lens/contracts/snippets.v1.json", "sha256": "5fb4febbcbd14d938a066608b1448c6e60981e11880005647e9c1d3748a68353"},
+    {"path": "scripts/lens/fixtures/negative.v1.json", "sha256": "9c888fd35f49271f8ab470608d1ca79a2b741b30eb4fb8f878da4176cf663cf0"},
+    {"path": "scripts/spec-resync.contract.json", "sha256": "b2b52a6b9b0836b1d2062ff3cbc95f60d24840ef3e11cff1eeebf4771aaf9af4"},
+    {"path": "scripts/test-lens-integrity-adversarial.mjs", "sha256": "608a7795745280601c29b9a4c179607e14aa7312e68d4ebeacb97580eb9311f1"},
+    {"path": "scripts/test-lens-semantics-adversarial.mjs", "sha256": "1649b09f54aa4c2885b5cde1c7a99a1a3818158cd5eee4b3a8752bc6edad3ac6"},
+    {"path": "scripts/verify-lens-ci.mjs", "sha256": "3944ede7141fcb662459a54302d8a2fc440351c3dac68e89b716b5f4bcb147d8"},
+    {"path": "site.config.ts", "sha256": "de759624a40bd26da85077438ce27e0466b1f7abde849b0768382fddf94dd2b9"},
+    {"path": "src/routes.tsx", "sha256": "935980cfe2e1529ba8fbd4b2acbf037c1f8705649c9603d3ef6e034b7753598a"}
   ]
 }

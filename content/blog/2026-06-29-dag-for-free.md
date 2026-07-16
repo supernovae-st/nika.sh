@@ -42,6 +42,6 @@ The plan is also drawn **before anything runs**. It is the first verdict `nika c
  ✔ PLAN     2 wave(s) · 3 task(s) · max parallelism 2
 ```
 
-A cycle is not a hang, it is a typed error naming its members. A ghost name in a `with:` binding is caught in the same pass. The graph the engine runs is the graph you read, and both come from three verbs and their wiring.
+A cycle is not a hang, it is a typed error naming its members. A ghost name in a `with:` binding is caught in the same pass. The graph the engine runs is the graph you read, and both come from four verbs and their wiring.
 
 You never scheduled anything. The plan was in the file all along.

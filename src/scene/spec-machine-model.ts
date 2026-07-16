@@ -19,14 +19,14 @@ import { CANON } from '../canon.generated'
                              habitat ring (the station register: ring + spokes
                              + hub), its 4 SPOKES = the 4 gates: everything
                              outbound crosses this plane
-          S.4 the hold       27 builtin blocks drummed around the spine in 5
+          S.4 the hold       28 builtin blocks drummed around the spine in 5
                              family arcs · the cargo racks
           S.6 the array      9 extract ports fanned off the fetch block — the
                              antenna boom on the flank
      STERN S.5 the engines   16 provider nozzles: 5 local DOCKED tight on the
                              spine (the thrust you own) · 10 cloud outboard ·
                              1 mock dim
-          S.7 the shield     14 error-namespace plates flared as the stern
+          S.7 the shield     21 error-namespace plates flared as the stern
                              skirt — failures come back typed: the hull
      S.0  the keel           the envelope's 10 top-level keys ARE the spine
                              segments everything mounts on — it lights FIRST.
