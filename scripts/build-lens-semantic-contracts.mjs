@@ -14,9 +14,32 @@ import {
 
 const WRITE = process.argv.includes('--write')
 const CONTRACT_ROOT = join(ROOT, 'scripts/lens/contracts')
+const CARRIER_UNIVERSE_PATH = join(CONTRACT_ROOT, 'carrier-universe.v1.json')
 
 function fail(message) {
   throw new Error(`LENS-006 contract build: ${message}`)
+}
+
+function authoritativeCarriers() {
+  const universe = JSON.parse(readFileSync(CARRIER_UNIVERSE_PATH, 'utf8'))
+  const carriers = universe.carriers
+  if (universe.contract_version !== 1 || universe.authority !== 'independent-exhaustive-carrier-universe') {
+    fail('carrier universe has the wrong identity/version')
+  }
+  if (!Array.isArray(carriers) || new Set(carriers).size !== carriers.length
+    || JSON.stringify(carriers) !== JSON.stringify([...carriers].sort())) {
+    fail('carrier universe is not a unique sorted path set')
+  }
+  if (universe.carrier_count !== carriers.length || universe.set_sha256 !== carrierSetSha256(carriers)) {
+    fail('carrier universe count/digest differs from its exhaustive path set')
+  }
+  const discovered = renderedCarriers(ROOT)
+  if (JSON.stringify(discovered) !== JSON.stringify(carriers)) {
+    const missing = carriers.filter((path) => !discovered.includes(path))
+    const extra = discovered.filter((path) => !carriers.includes(path))
+    fail(`rendered carriers differ from independent universe; missing=[${missing.join(', ')}] extra=[${extra.join(', ')}]`)
+  }
+  return { ...universe, carriers }
 }
 
 function canonCounts() {
@@ -59,7 +82,8 @@ const COUNT_WAIVERS = new Map([
 
 function countContract() {
   const canon = canonCounts()
-  const carriers = renderedCarriers(ROOT)
+  const universe = authoritativeCarriers()
+  const carriers = universe.carriers
   const bindings = discoverCountClaims(ROOT, carriers).map((claim) => {
     let relation
     let reason
@@ -96,8 +120,8 @@ function countContract() {
     canon_source: 'src/canon.generated.ts',
     canon_fields: Object.keys(canon),
     carrier_census: {
-      roots: ['src/**/*.{ts,tsx}', 'content/blog/*.md', 'public/llms.txt'],
-      exclusions: ['*.generated.*', '*.test.*', 'src/test/**', 'content/blog/README.md'],
+      roots: universe.roots,
+      exclusions: universe.exclusions,
       count: carriers.length,
       set_sha256: carrierSetSha256(carriers),
     },
@@ -107,7 +131,7 @@ function countContract() {
 }
 
 function snippetContract() {
-  const carriers = discoverSnippetCarriers(ROOT)
+  const carriers = discoverSnippetCarriers(ROOT, authoritativeCarriers().carriers)
   if (WRITE) {
     for (const carrier of carriers) {
       const blob = execFileSync('git', ['hash-object', '-w', carrier.path], { cwd: ROOT, encoding: 'utf8' }).trim()
@@ -177,6 +201,11 @@ const FEATURE_EVIDENCE = {
 }
 
 function featureContract() {
+  const universe = authoritativeCarriers()
+  const expectedSources = ['react-ssg.config.ts', 'site.config.ts', 'src/routes.tsx']
+  if (JSON.stringify(universe.feature_sources) !== JSON.stringify(expectedSources)) {
+    fail('feature census source universe differs')
+  }
   const routes = discoverRouteClaims(ROOT)
   const pages = discoverPrerenderClaims(ROOT)
   const claims = pages.map((page) => {

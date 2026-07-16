@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import {
   appendFileSync,
   mkdirSync,
@@ -13,8 +13,11 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import {
   compareOutputTrees,
+  compareDirectoryTrees,
   runGeneratorDag,
+  runSealedBuild,
   sha256File,
+  snapshotDirectory,
   verifyChangedSet,
   verifyConsumers,
   verifyGeneratorDigests,
@@ -66,6 +69,19 @@ try {
   const contract = {
     contract_version: 1,
     spec: { commit: head, tree },
+    environment: {
+      LANG: 'C.UTF-8',
+      LC_ALL: 'C.UTF-8',
+      NIKA_BIN: '/__nika_spec_resync_no_binary__',
+      PYTHONHASHSEED: '0',
+      SOURCE_DATE_EPOCH: '0',
+      TZ: 'UTC',
+    },
+    environment_policy: {
+      inherit: ['PATH'],
+      generator_derived: ['NIKA_SPEC_ROOT', 'NIKA_WEBSITE_ROOT', 'NIKA_WEBSITE_SRC'],
+    },
+    toolchain: { node: '22', pnpm: '10.32.1', python: '3.12', pyyaml: '6.0.3' },
     generators: [{
       id: 'fixture', root: 'website', runtime: 'node', path: generatorPath,
       sha256: sha256File(join(base, generatorPath)), args: [], depends_on: [], outputs: [outputPath],
@@ -122,6 +138,55 @@ try {
   appendFileSync(join(nondeterministic, outputPath), '// second run differs\n')
   expectReject('dual-run byte mismatch', () => compareOutputTrees(base, nondeterministic, contract))
 
+  const configureEnvironmentProbe = (root) => {
+    writeFileSync(join(root, 'package.json'), `${JSON.stringify({
+      type: 'module',
+      scripts: { build: 'node scripts/environment-probe-build.mjs' },
+    }, null, 2)}\n`)
+    writeFileSync(
+      join(root, 'scripts/environment-probe-build.mjs'),
+      "import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs'\n"
+      + "mkdirSync('dist', { recursive: true })\n"
+      + "copyFileSync('src/content/templates.generated.ts', 'dist/generated.js')\n"
+      + "writeFileSync('dist/index.html', `probe=${process.env.LENS_UNDECLARED_BUILD_PROBE ?? 'sealed'}\\n`)\n",
+    )
+  }
+  const buildContract = structuredClone(contract)
+  buildContract.outputs[0].dist = 'generated.js'
+  const rawA = clone('raw-environment-a')
+  const rawB = clone('raw-environment-b')
+  configureEnvironmentProbe(rawA)
+  configureEnvironmentProbe(rawB)
+  for (const [root, value] of [[rawA, 'alpha'], [rawB, 'beta']]) {
+    const result = spawnSync('pnpm', ['build'], {
+      cwd: root,
+      env: { ...process.env, LENS_UNDECLARED_BUILD_PROBE: value },
+      encoding: 'utf8',
+    })
+    if (result.status !== 0) throw new Error(`raw environment probe failed: ${result.stderr}`)
+  }
+  if (snapshotDirectory(rawA, 'dist').tree_sha256 === snapshotDirectory(rawB, 'dist').tree_sha256) {
+    throw new Error('undeclared environment probe is not live')
+  }
+  const sealedA = clone('sealed-environment-a')
+  const sealedB = clone('sealed-environment-b')
+  configureEnvironmentProbe(sealedA)
+  configureEnvironmentProbe(sealedB)
+  const priorProbe = process.env.LENS_UNDECLARED_BUILD_PROBE
+  try {
+    process.env.LENS_UNDECLARED_BUILD_PROBE = 'alpha'
+    runSealedBuild(sealedA, buildContract)
+    process.env.LENS_UNDECLARED_BUILD_PROBE = 'beta'
+    runSealedBuild(sealedB, buildContract)
+  } finally {
+    if (priorProbe === undefined) delete process.env.LENS_UNDECLARED_BUILD_PROBE
+    else process.env.LENS_UNDECLARED_BUILD_PROBE = priorProbe
+  }
+  compareDirectoryTrees(sealedA, sealedB, 'dist')
+  console.log('ok · undeclared build environment neutralized')
+  appendFileSync(join(sealedB, 'dist/index.html'), 'post-build tamper\n')
+  expectReject('sealed dist byte mismatch', () => compareDirectoryTrees(sealedA, sealedB, 'dist'))
+
   const noop = clone('noop-producer')
   expectReject('no-op producer after output clearing', () => runGeneratorDag(noop, noop, contract))
 
@@ -139,7 +204,7 @@ try {
   escaping.outputs[0].path = '../escaped.generated.ts'
   expectReject('output path confinement escape', () => validateContract(escaping))
 
-  console.log('LENS-011 adversarial harness: 13/13 counterexamples rejected')
+  console.log('LENS-011 adversarial harness: 15/15 counterexamples rejected')
 } finally {
   rmSync(scratch, { recursive: true, force: true })
 }

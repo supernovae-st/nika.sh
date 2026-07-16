@@ -26,8 +26,9 @@ name: spec-resync
 #       => exit clean), and a create race fails non-fast-forward loudly.
 #   The v1 exact contract pins the literal generator DAG, generator digests,
 #   output path set, and output byte digests. Two disposable runs must agree;
-#   literal staging is followed by a raw Git-index byte comparison, and the
-#   build consumes the first sealed verified snapshot.
+#   literal staging is followed by a raw Git-index byte comparison. Generation
+#   and both builds run under the closed child-environment allowlist; complete
+#   dist path sets and bytes from the two sealed snapshots must agree.
 
 on:
   schedule:

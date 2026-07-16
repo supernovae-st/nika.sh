@@ -3,8 +3,8 @@
 //
 // Generation happens twice in disposable clones. Both runs must match the
 // versioned output digests and each other byte-for-byte. Only then may the
-// verified bytes replace the checkout, enter the index through literal paths,
-// and build from the first sealed clone.
+// verified bytes replace the checkout and enter the index through literal
+// paths. Both sealed clones build, then every dist path and byte must agree.
 import { execFileSync } from 'node:child_process'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { join, resolve } from 'node:path'
@@ -12,6 +12,7 @@ import { tmpdir } from 'node:os'
 import {
   ROOT,
   CONTRACT_PATH,
+  compareDirectoryTrees,
   changedPaths,
   compareOutputTrees,
   copyContractOutputs,
@@ -21,6 +22,7 @@ import {
   loadContract,
   runGeneratorDag,
   runSealedBuild,
+  sealedEnvironment,
   sha256File,
   stageLiteralOutputs,
   unlinkDependencies,
@@ -109,14 +111,21 @@ try {
     throw new Error('LENS-011: dual-run producer attribution mismatch')
   }
 
-  let buildOutput = ''
+  let buildProof
   if (options.build) {
-    linkDependencies(options.dependenciesRoot, first.website)
-    try {
-      buildOutput = runSealedBuild(first.website, contract)
-    } finally {
-      unlinkDependencies(first.website)
+    for (const run of [first, second]) {
+      linkDependencies(options.dependenciesRoot, run.website)
+      try {
+        run.build = runSealedBuild(run.website, contract)
+      } finally {
+        unlinkDependencies(run.website)
+      }
     }
+    buildProof = compareDirectoryTrees(
+      first.website,
+      second.website,
+      contract.build.output_directory,
+    )
   }
 
   let staged = []
@@ -143,6 +152,9 @@ try {
     generators: contract.generators.map(({ id, path, sha256 }) => ({ id, path, sha256 })),
     producer_proofs: first.producerProofs,
     fixed_environment: contract.environment,
+    inherited_environment_allowlist: contract.environment_policy.inherit,
+    generator_derived_environment_allowlist: contract.environment_policy.generator_derived,
+    build_environment_keys: options.build ? Object.keys(sealedEnvironment(contract)).sort() : [],
     expected_toolchain: contract.toolchain,
     actual_tool_versions: toolVersions,
     toolchain_conformant: toolchainConformant,
@@ -153,11 +165,14 @@ try {
     build_input_verified_outputs: options.build ? contract.outputs.map((output) => output.path) : [],
     build_command: contract.build.command,
     build_output_directory: contract.build.output_directory,
+    build_output_tree_sha256: buildProof?.tree_sha256 ?? null,
+    build_output_files: buildProof?.files ?? [],
+    dual_build: options.build,
     sealed_build: options.build,
   }
   if (options.receipt) writeReceipt(options.receipt, receipt)
   console.log(`LENS-011: ${contract.outputs.length} exact outputs · dual-run deterministic · digests verified`)
-  if (options.build) console.log(`LENS-011: sealed snapshot build verified${buildOutput ? ' · build command green' : ''}`)
+  if (options.build) console.log(`LENS-011: dual sealed builds byte-identical${first.build.stdout ? ' · build command green' : ''}`)
   if (options.stage) console.log(`LENS-011: ${staged.length} literal path(s) staged · raw index bytes verified`)
 } finally {
   if (options.keepTemp) console.error(`LENS-011: retained ${scratch}`)

@@ -78,6 +78,14 @@ def main() -> int:
     check("toolchain is fixed in the contract", contract.get("toolchain") == {
         "node": "22", "pnpm": "10.32.1", "python": "3.12", "pyyaml": "6.0.3"
     })
+    check("child environment inherit allowlist is closed", contract.get("environment_policy") == {
+        "inherit": ["PATH"],
+        "generator_derived": ["NIKA_SPEC_ROOT", "NIKA_WEBSITE_ROOT", "NIKA_WEBSITE_SRC"],
+    })
+    check("fixed child environment is exact", contract.get("environment") == {
+        "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8", "NIKA_BIN": "/__nika_spec_resync_no_binary__",
+        "PYTHONHASHSEED": "0", "SOURCE_DATE_EPOCH": "0", "TZ": "UTC",
+    })
 
     print("== literal output set + byte digests ==")
     outputs = contract.get("outputs", [])
@@ -107,7 +115,12 @@ def main() -> int:
     check("each producer must newly materialize its declared output set", "proveGeneratorOutputs" in lib and "did not newly materialize" in lib)
     check("producer proof is bound into the receipt", "producer_proofs" in runner)
     check("generator/output paths are root-confined", "assertRelativePath" in lib and "generator resolves outside" in lib)
-    check("runner builds the generated sealed clone", "runSealedBuild(first.website" in runner)
+    check("runner builds both generated sealed clones", "for (const run of [first, second])" in runner
+          and "runSealedBuild(run.website" in runner)
+    check("runner byte-compares the complete dual-build dist", "compareDirectoryTrees(" in runner
+          and "dual-run directory byte mismatch" in lib)
+    check("generation and build use the closed child environment", "sealedEnvironment(contract" in lib
+          and "env: { ...process.env" not in lib)
     check("staging passes an exact path array after `--`", "['add', '--', ...changed]" in lib)
     check("raw Git index blobs are compared for the complete contract set",
           "for (const output of contract.outputs)" in lib
@@ -116,9 +129,11 @@ def main() -> int:
     check("built public bytes are compared to contract digests", "sealed build did not consume exact" in lib)
     for receipt_field in (
         "contract_sha256", "website_tree", "generators", "fixed_environment",
+        "inherited_environment_allowlist", "generator_derived_environment_allowlist",
+        "build_environment_keys",
         "expected_toolchain", "actual_tool_versions", "toolchain_conformant",
         "index_verified_outputs", "build_input_verified_outputs", "build_command",
-        "build_output_directory",
+        "build_output_directory", "build_output_tree_sha256", "build_output_files", "dual_build",
     ):
         check(f"receipt binds {receipt_field}", receipt_field in runner)
     check("NO broad generated-file pathspec remains", ":(glob)" not in code and "**/*.generated" not in code)
@@ -131,7 +146,8 @@ def main() -> int:
         "source pin/tree mismatch", "generator digest mismatch", "newline-only byte drift",
         "post-verification raw index mutation", "missing build/test consumer", "dual-run byte mismatch",
         "no-op producer after output clearing", "stale producer bytes after output clearing",
-        "output path confinement escape",
+        "output path confinement escape", "undeclared build environment neutralized",
+        "sealed dist byte mismatch",
     )
     for case in cases:
         check(f"adversarial case is present: {case}", case in adversarial)

@@ -213,11 +213,11 @@ function jsxBlocks(path, text) {
   return out.sort((a, b) => a.line - b.line || a.selector.localeCompare(b.selector))
 }
 
-export function discoverSnippetCarriers(root) {
-  const paths = [
-    ...walk(root, 'content/blog', (path) => path.endsWith('.md') && !path.endsWith('/README.md')),
-    ...walk(root, 'src', (path) => path.endsWith('.tsx') && !path.includes('.test.') && !path.includes('.generated.')),
-  ].sort()
+export function discoverSnippetCarriers(root, carrierUniverse = renderedCarriers(root)) {
+  const paths = carrierUniverse.filter((path) => (
+    (path.startsWith('content/blog/') && path.endsWith('.md'))
+    || (path.startsWith('src/') && path.endsWith('.tsx'))
+  ))
   const carriers = []
   for (const path of paths) {
     const bytes = readFileSync(join(root, path))

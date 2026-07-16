@@ -58,7 +58,29 @@ try {
   expectRejected('true no-op', (root) => mutateWorkflow(root, (text) => text.replace(command, '- run: true')))
   expectRejected('echo no-op', (root) => mutateWorkflow(root, (text) => text.replace(command, '- run: echo ok')))
   expectRejected('continue-on-error', (root) => mutateWorkflow(root, (text) => text.replace(command, `${command}\n        continue-on-error: true`)))
+  expectRejected('job-level continue-on-error', (root) => mutateWorkflow(
+    root,
+    (text) => text.replace(
+      '  lens-gate-canon-drift:\n',
+      '  lens-gate-canon-drift:\n    continue-on-error: true\n',
+    ),
+  ))
   expectRejected('always-false job', (root) => mutateWorkflow(root, (text) => text.replace(command, `${command}\n        if: false`)))
+  expectRejected('statically false step expression', (root) => mutateWorkflow(
+    root,
+    (text) => text.replace(command, `${command}\n        if: \${{ 0 == 1 }}`),
+  ))
+  expectRejected('statically false job expression', (root) => mutateWorkflow(
+    root,
+    (text) => text.replace(
+      '  lens-gate-canon-drift:\n',
+      "  lens-gate-canon-drift:\n    'if': ${{ 0 == 1 }}\n",
+    ),
+  ))
+  expectRejected('flow-form false expression', (root) => mutateWorkflow(
+    root,
+    (text) => text.replace(command, "- {run: node scripts/lens-gate.mjs lens-canon-drift, if: '${{ 0 == 1 }}'}"),
+  ))
   expectRejected('absent job', (root) => mutateWorkflow(root, (text) => removeJob(text, 'lens-gate-canon-drift')))
   expectRejected('renamed job', (root) => mutateWorkflow(root, (text) => text.replace('  lens-gate-canon-drift:', '  lens-gate-canon-drift-renamed:')))
   expectRejected('duplicate workflow job', (root) => mutateWorkflow(root, (text) => `${text}\n  lens-gate-canon-drift:\n    runs-on: ubuntu-latest\n    steps:\n      ${command}\n`))
@@ -73,7 +95,34 @@ try {
     writeFileSync(path, `${JSON.stringify(gates, null, 2)}\n`)
     pinMutation(root, gatesPath)
   })
-  console.log('LENS-006 integrity adversarial harness: 9/9 counterexamples rejected')
+  expectRejected('coordinated semantic carrier omission', (root) => {
+    const omitted = 'src/pages/Home.tsx'
+    const home = join(root, omitted)
+    writeFileSync(home, `${readFileSync(home, 'utf8')}\n/* Nika has five verbs */\n`)
+
+    const semanticsPath = 'scripts/lens-semantics-lib.mjs'
+    const semantics = join(root, semanticsPath)
+    const original = readFileSync(semantics, 'utf8')
+    const changed = original.replace(
+      "return [...source, ...posts, 'public/llms.txt'].sort()",
+      "return [...source, ...posts, 'public/llms.txt'].filter((path) => path !== 'src/pages/Home.tsx').sort()",
+    )
+    if (changed === original) throw new Error('semantic omission fixture did not alter carrier discovery')
+    writeFileSync(semantics, changed)
+    pinMutation(root, semanticsPath)
+
+    const universe = JSON.parse(readFileSync(join(root, 'scripts/lens/contracts/carrier-universe.v1.json'), 'utf8'))
+    const countPath = 'scripts/lens/contracts/count-source.v1.json'
+    const count = JSON.parse(readFileSync(join(root, countPath), 'utf8'))
+    const shrunk = universe.carriers.filter((path) => path !== omitted)
+    count.carrier_census.count = shrunk.length
+    count.carrier_census.set_sha256 = sha(Buffer.from(`${shrunk.join('\n')}\n`))
+    count.bindings = count.bindings.filter((binding) => binding.path !== omitted)
+    count.claim_count = count.bindings.length
+    writeFileSync(join(root, countPath), `${JSON.stringify(count, null, 2)}\n`)
+    pinMutation(root, countPath)
+  })
+  console.log('LENS-006 integrity adversarial harness: 14/14 counterexamples rejected')
 } finally {
   rmSync(scratch, { recursive: true, force: true })
 }

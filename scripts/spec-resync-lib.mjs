@@ -4,6 +4,7 @@ import {
   existsSync,
   lstatSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
   realpathSync,
   rmSync,
@@ -77,11 +78,54 @@ export function validateContract(contract) {
   if (!Array.isArray(contract.build?.command) || contract.build.command.length < 2) {
     fail('sealed build command is absent')
   }
+  if (JSON.stringify(contract.build.command) !== JSON.stringify(['pnpm', 'build'])) {
+    fail('sealed build command must be exactly pnpm build')
+  }
+  assertRelativePath(contract.build.output_directory, 'sealed build output directory')
   for (const tool of ['node', 'pnpm', 'python', 'pyyaml']) {
     if (typeof contract.toolchain?.[tool] !== 'string' || !contract.toolchain[tool]) {
       fail(`fixed toolchain version is absent: ${tool}`)
     }
   }
+  const inherited = contract.environment_policy?.inherit
+  const generatorDerived = contract.environment_policy?.generator_derived
+  if (JSON.stringify(inherited) !== JSON.stringify(['PATH'])) {
+    fail('child environment inherit allowlist must be exactly PATH')
+  }
+  if (JSON.stringify(generatorDerived) !== JSON.stringify([
+    'NIKA_SPEC_ROOT', 'NIKA_WEBSITE_ROOT', 'NIKA_WEBSITE_SRC',
+  ])) {
+    fail('generator-derived environment allowlist differs')
+  }
+  const expectedFixed = {
+    LANG: 'C.UTF-8',
+    LC_ALL: 'C.UTF-8',
+    NIKA_BIN: '/__nika_spec_resync_no_binary__',
+    PYTHONHASHSEED: '0',
+    SOURCE_DATE_EPOCH: '0',
+    TZ: 'UTC',
+  }
+  if (JSON.stringify(contract.environment) !== JSON.stringify(expectedFixed)) {
+    fail('fixed child environment differs from the closed contract')
+  }
+  const fixed = Object.keys(expectedFixed)
+  const allKeys = [...fixed, ...inherited, ...generatorDerived]
+  if (new Set(allKeys).size !== allKeys.length) fail('child environment allowlists overlap')
+}
+
+export function sealedEnvironment(contract, derived = {}) {
+  const allowedDerived = contract.environment_policy.generator_derived
+  const derivedKeys = Object.keys(derived).sort()
+  if (derivedKeys.some((key) => !allowedDerived.includes(key))) {
+    fail(`undeclared derived environment key: ${derivedKeys.find((key) => !allowedDerived.includes(key))}`)
+  }
+  const env = {}
+  for (const key of contract.environment_policy.inherit) {
+    if (typeof process.env[key] !== 'string' || !process.env[key]) fail(`required inherited environment is absent: ${key}`)
+    env[key] = process.env[key]
+  }
+  Object.assign(env, contract.environment, derived)
+  return env
 }
 
 export function assertRelativePath(path, label = 'path') {
@@ -239,13 +283,11 @@ export function runGeneratorDag(websiteRoot, specRoot, contract, { verify = true
   verifySpecIdentity(specRoot, contract)
   verifyGeneratorDigests(websiteRoot, specRoot, contract)
   clearContractOutputs(websiteRoot, contract)
-  const env = {
-    ...process.env,
-    ...contract.environment,
+  const env = sealedEnvironment(contract, {
     NIKA_SPEC_ROOT: specRoot,
     NIKA_WEBSITE_ROOT: websiteRoot,
     NIKA_WEBSITE_SRC: join(websiteRoot, 'src'),
-  }
+  })
   const produced = new Set()
   const producerProofs = []
   for (const generator of contract.generators) {
@@ -343,11 +385,60 @@ export function verifyBuiltPublic(root, contract) {
   }
 }
 
+export function snapshotDirectory(root, relativeDirectory) {
+  assertRelativePath(relativeDirectory, 'snapshot directory')
+  const directory = join(root, relativeDirectory)
+  if (!existsSync(directory) || !lstatSync(directory).isDirectory()) {
+    fail(`snapshot directory is absent: ${relativeDirectory}`)
+  }
+  const files = []
+  const visit = (current, prefix = '') => {
+    const entries = readdirSync(current, { withFileTypes: true }).sort((a, b) => (
+      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+    ))
+    for (const entry of entries) {
+      const path = prefix ? `${prefix}/${entry.name}` : entry.name
+      const absolute = join(current, entry.name)
+      const metadata = lstatSync(absolute)
+      if (metadata.isSymbolicLink()) fail(`snapshot contains a symlink: ${relativeDirectory}/${path}`)
+      if (metadata.isDirectory()) visit(absolute, path)
+      else if (metadata.isFile()) {
+        const bytes = readFileSync(absolute)
+        files.push({ path, bytes: bytes.length, sha256: sha256Bytes(bytes) })
+      } else fail(`snapshot contains a non-file entry: ${relativeDirectory}/${path}`)
+    }
+  }
+  visit(directory)
+  if (files.length === 0) fail(`snapshot directory is empty: ${relativeDirectory}`)
+  const treeSha256 = sha256Bytes(Buffer.from(`${files.map((entry) => (
+    `${entry.sha256} ${entry.bytes} ${entry.path}`
+  )).join('\n')}\n`))
+  return { tree_sha256: treeSha256, files }
+}
+
+export function compareDirectoryTrees(firstRoot, secondRoot, relativeDirectory) {
+  const first = snapshotDirectory(firstRoot, relativeDirectory)
+  const second = snapshotDirectory(secondRoot, relativeDirectory)
+  const firstPaths = first.files.map((entry) => entry.path)
+  const secondPaths = second.files.map((entry) => entry.path)
+  if (JSON.stringify(firstPaths) !== JSON.stringify(secondPaths)) {
+    fail(`dual-run directory path mismatch: ${relativeDirectory}`)
+  }
+  for (const path of firstPaths) {
+    const firstBytes = readFileSync(join(firstRoot, relativeDirectory, path))
+    const secondBytes = readFileSync(join(secondRoot, relativeDirectory, path))
+    if (!firstBytes.equals(secondBytes)) fail(`dual-run directory byte mismatch: ${relativeDirectory}/${path}`)
+  }
+  if (first.tree_sha256 !== second.tree_sha256) fail(`dual-run directory digest mismatch: ${relativeDirectory}`)
+  return first
+}
+
 export function runSealedBuild(root, contract) {
   const [command, ...args] = contract.build.command
+  rmSync(join(root, contract.build.output_directory), { recursive: true, force: true })
   const result = spawnSync(command, args, {
     cwd: root,
-    env: { ...process.env, ...contract.environment },
+    env: sealedEnvironment(contract),
     encoding: 'utf8',
     maxBuffer: 64 * 1024 * 1024,
   })
@@ -355,7 +446,10 @@ export function runSealedBuild(root, contract) {
     fail(`sealed build failed (${result.status}): ${(result.stderr || result.stdout).trim()}`)
   }
   verifyBuiltPublic(root, contract)
-  return result.stdout.trim()
+  return {
+    stdout: result.stdout.trim(),
+    ...snapshotDirectory(root, contract.build.output_directory),
+  }
 }
 
 export function linkDependencies(sourceRoot, cloneRoot) {

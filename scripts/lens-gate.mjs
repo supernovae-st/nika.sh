@@ -49,6 +49,26 @@ function contract(name) {
   return value
 }
 
+function carrierUniverse() {
+  const universe = contract('carrier-universe.v1.json')
+  if (universe.authority !== 'independent-exhaustive-carrier-universe') {
+    fail('carrier universe has the wrong authority')
+  }
+  if (!Array.isArray(universe.carriers) || new Set(universe.carriers).size !== universe.carriers.length
+    || JSON.stringify(universe.carriers) !== JSON.stringify([...universe.carriers].sort())) {
+    fail('carrier universe is not a unique sorted path set')
+  }
+  if (universe.carrier_count !== universe.carriers.length
+    || universe.set_sha256 !== carrierSetSha256(universe.carriers)) {
+    fail('carrier universe count/digest differs from its exhaustive path set')
+  }
+  const discovered = renderedCarriers(ROOT)
+  if (JSON.stringify(discovered) !== JSON.stringify(universe.carriers)) {
+    fail('rendered carriers differ from the independent exhaustive universe')
+  }
+  return universe
+}
+
 function parseCanon() {
   const source = readFileSync(join(ROOT, 'src/canon.generated.ts'), 'utf8')
   const number = (key) => {
@@ -230,7 +250,12 @@ function gateCountSource(fixture) {
     return
   }
   const rules = contract('count-source.v1.json')
-  const carriers = renderedCarriers(ROOT)
+  const universe = carrierUniverse()
+  const carriers = universe.carriers
+  if (JSON.stringify(rules.carrier_census?.roots) !== JSON.stringify(universe.roots)
+    || JSON.stringify(rules.carrier_census?.exclusions) !== JSON.stringify(universe.exclusions)) {
+    fail('count carrier-census policy differs from independent universe')
+  }
   if (rules.carrier_census?.count !== carriers.length) {
     fail(`rendered-carrier census count differs: ${carriers.length} != ${rules.carrier_census?.count}`)
   }
@@ -298,7 +323,7 @@ function gateSnippetProvenance(fixture) {
     gitBlobBytes(fixture.source_blob, fixture.path ?? 'negative fixture')
     return
   }
-  const discovered = discoverSnippetCarriers(ROOT)
+  const discovered = discoverSnippetCarriers(ROOT, carrierUniverse().carriers)
   const discoveredBlocks = flattenSnippetBlocks(discovered)
   const registeredBlocks = flattenSnippetBlocks(rules.carriers)
   if (rules.registry !== 'SNIPPET_REGISTRY' || !rules.source_repository) fail('snippet registry identity is absent')
@@ -346,6 +371,10 @@ function validateFeatureClaim(claim, features, rules) {
 
 function gateFeatureMaturity(fixture) {
   const rules = contract('features.v1.json')
+  const universe = carrierUniverse()
+  if (JSON.stringify(universe.feature_sources) !== JSON.stringify([
+    'react-ssg.config.ts', 'site.config.ts', 'src/routes.tsx',
+  ])) fail('feature census source universe differs')
   const features = new Map()
   for (const feature of rules.features) {
     if (!feature.id || features.has(feature.id)) fail(`duplicate feature id: ${feature.id}`)
