@@ -1,0 +1,7 @@
+{
+  "nika_spec_pin_format": 1,
+  "$comment": "LENS-011 (PRE1 design-pack contract · lot 9i): the EXACT nika-spec identity the website resyncs against — a full 40-hex commit AND its tree (the content digest). spec-resync fetches THIS commit by sha (never a moving ref), verifies HEAD == spec_commit AND HEAD^{tree} == spec_tree BEFORE any derivation or commit, and opens ONE idempotent PR on a branch UNIQUE to this pin with a plain create push (no --force, no --force-with-lease). An operator bumps this pin to advance the pinned spec; the resync mechanically re-derives the spec-fed surfaces and proposes them for the visual gates.",
+  "repository": "supernovae-st/nika-spec",
+  "spec_commit": "24c3dfdeee7de5181107c02bdda7bc211d167bb8",
+  "spec_tree": "370e3f16e99835e325aef13a34cb590bae39db5a"
+}
