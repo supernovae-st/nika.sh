@@ -134,6 +134,9 @@ export function compilePost(raw, file, canon) {
     tag: String(meta.tag),
     date: String(meta.date),
     description: String(meta.description),
+    /* authorship (D8) · Person for E-E-A-T: a post without `author:` in its
+       frontmatter inherits the house default — zero migration of the pack */
+    author: String(meta.author ?? 'Thibaut Melen'),
     readingMin: Math.max(1, Math.ceil(words / 220)),
     /* optional reading-path membership · `series: <id>` (+ `series_stop: <label>`
        naming this post's station). Both-or-neither: the compiler gates below. */
@@ -251,6 +254,8 @@ export interface BlogPost {
   tag: string
   date: string
   description: string
+  /** the writing Person (JSON-LD author) · frontmatter override, house default */
+  author: string
   readingMin: number
   /** reading-path membership (optional) · id into BLOG_SERIES + this post's stop label */
   series?: string

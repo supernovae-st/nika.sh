@@ -98,9 +98,10 @@ export function Component() {
             url: `https://nika.sh/blog/${post.slug}`,
             mainEntityOfPage: `https://nika.sh/blog/${post.slug}`,
             author: {
-              '@type': 'Organization',
-              name: 'SuperNovae Studio',
-              url: 'https://supernovae.studio',
+              '@type': 'Person',
+              name: post.author,
+              url: 'https://nika.sh/manifesto',
+              sameAs: ['https://github.com/ThibautMelen'],
             },
             publisher: {
               '@type': 'Organization',
