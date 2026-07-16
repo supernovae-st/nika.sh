@@ -260,7 +260,15 @@ function gatePinVerify(fixture) {
       join(ROOT, '.github/nika-spec-pin.json'),
       join(ROOT, 'public/.well-known/nika-spec-pin.json'),
     )
-    execFileSync('python3', ['scripts/verify_spec_resync_conformance.py'], { cwd: ROOT, stdio: 'ignore' })
+    try {
+      execFileSync('python3', ['scripts/verify_spec_resync_conformance.py'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+      })
+    } catch (error) {
+      const detail = (error.stdout || error.stderr || error.message).toString().trim()
+      fail(`spec-resync conformance failed${detail ? `: ${detail}` : ''}`)
+    }
   }
 }
 

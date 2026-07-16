@@ -55,7 +55,7 @@
     },
     {
       "path": "scripts/lens-gate.mjs",
-      "sha256": "4644b37bc9d99a04be5748b2bd305f592aabaa2e750c89365790caa77fb130a2"
+      "sha256": "858fb0150c464fad9d1b8fb5eee546161ef2238f60afca84f5d17ecc41b7869a"
     },
     {
       "path": "scripts/lens-semantics-lib.mjs",
@@ -111,7 +111,7 @@
     },
     {
       "path": "scripts/test-lens-integrity-adversarial.mjs",
-      "sha256": "d843311e72df6bd5ae46a2d87b08d0a417ebd29b4e846a149c559c770646cc9b"
+      "sha256": "91358c06f8cb226412377357bf4e06f040f87879c58b0de2a2b67459a984afa0"
     },
     {
       "path": "scripts/test-lens-semantics-adversarial.mjs",

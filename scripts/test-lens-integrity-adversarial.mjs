@@ -140,13 +140,13 @@ try {
       'corepack enable && pnpm install --frozen-lockfile && pnpm build && rm -rf dist && cp -R public dist',
     ))
     pinMutation(root, path)
-  }, 'publish manifest digest mismatch')
+  }, 'deployment manifest SHA-256 matches current bytes')
   expectRejected('deployment output-directory swap with repinned integrity', (root) => {
     const path = '.do/app.yaml'
     const manifest = join(root, path)
     writeFileSync(manifest, readFileSync(manifest, 'utf8').replace('output_dir: dist', 'output_dir: public'))
     pinMutation(root, path)
-  }, 'publish manifest digest mismatch')
+  }, 'deployment manifest SHA-256 matches current bytes')
   expectRejected('deployment build-time environment expansion with repinned integrity', (root) => {
     const path = '.do/app.yaml'
     const manifest = join(root, path)
@@ -155,7 +155,7 @@ try {
       '        scope: BUILD_TIME\n      - key: LOT11_UNDECLARED\n        value: injected\n        scope: BUILD_TIME\n',
     ))
     pinMutation(root, path)
-  }, 'publish manifest digest mismatch')
+  }, 'deployment manifest SHA-256 matches current bytes')
   expectRejected('coordinated deployment build-command authority drift', (root) => {
     const manifestPath = '.do/app.yaml'
     const channelsPath = 'scripts/lens/contracts/channels.v1.json'
@@ -182,7 +182,7 @@ try {
       '-c', 'user.name=Nika', '-c', 'user.email=nika@supernovae.studio',
       'commit', '--quiet', '-m', 'test: coordinate publish authority drift',
     ])
-  }, 'publish-input command does not project exactly onto the sealed build command')
+  }, 'deployment command projects exactly onto sealed build')
   expectRejected('visible CSS count claim', (root) => {
     const path = join(root, 'src/pages/home.css')
     const target = existsSync(path) ? path : join(root, 'src/index.css')
