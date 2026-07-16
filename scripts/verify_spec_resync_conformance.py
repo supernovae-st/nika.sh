@@ -103,6 +103,10 @@ def main() -> int:
     check("workflow does not permit toolchain variance", "--allow-toolchain-mismatch" not in workflow)
     check("runner creates first + second disposable runs", "generateRun(scratch, 'first'" in runner and "generateRun(scratch, 'second'" in runner)
     check("runner compares dual-run bytes", "compareOutputTrees(first.website, second.website" in runner)
+    check("runner clears every expected output before the DAG", "clearContractOutputs(websiteRoot, contract)" in lib)
+    check("each producer must newly materialize its declared output set", "proveGeneratorOutputs" in lib and "did not newly materialize" in lib)
+    check("producer proof is bound into the receipt", "producer_proofs" in runner)
+    check("generator/output paths are root-confined", "assertRelativePath" in lib and "generator resolves outside" in lib)
     check("runner builds the generated sealed clone", "runSealedBuild(first.website" in runner)
     check("staging passes an exact path array after `--`", "['add', '--', ...changed]" in lib)
     check("raw Git index blobs are compared for the complete contract set",
@@ -126,6 +130,8 @@ def main() -> int:
         "supplied allowed-path tamper", "missing output", "extra output", "renamed output",
         "source pin/tree mismatch", "generator digest mismatch", "newline-only byte drift",
         "post-verification raw index mutation", "missing build/test consumer", "dual-run byte mismatch",
+        "no-op producer after output clearing", "stale producer bytes after output clearing",
+        "output path confinement escape",
     )
     for case in cases:
         check(f"adversarial case is present: {case}", case in adversarial)

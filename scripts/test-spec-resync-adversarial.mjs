@@ -13,6 +13,7 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import {
   compareOutputTrees,
+  runGeneratorDag,
   sha256File,
   verifyChangedSet,
   verifyConsumers,
@@ -20,6 +21,7 @@ import {
   verifyIndex,
   verifyOutputTree,
   verifySpecIdentity,
+  validateContract,
 } from './spec-resync-lib.mjs'
 
 const scratch = mkdtempSync(join(tmpdir(), 'spec-resync-adversarial-'))
@@ -120,7 +122,24 @@ try {
   appendFileSync(join(nondeterministic, outputPath), '// second run differs\n')
   expectReject('dual-run byte mismatch', () => compareOutputTrees(base, nondeterministic, contract))
 
-  console.log('LENS-011 adversarial harness: 10/10 counterexamples rejected')
+  const noop = clone('noop-producer')
+  expectReject('no-op producer after output clearing', () => runGeneratorDag(noop, noop, contract))
+
+  const stale = clone('stale-producer')
+  writeFileSync(
+    join(stale, generatorPath),
+    "import { mkdirSync, writeFileSync } from 'node:fs'\nmkdirSync('src/content', { recursive: true })\nwriteFileSync('src/content/templates.generated.ts', 'stale producer bytes\\n')\n",
+  )
+  const staleContract = structuredClone(contract)
+  staleContract.generators[0].sha256 = sha256File(join(stale, generatorPath))
+  expectReject('stale producer bytes after output clearing', () => runGeneratorDag(stale, stale, staleContract))
+
+  const escaping = structuredClone(contract)
+  escaping.generators[0].outputs = ['../escaped.generated.ts']
+  escaping.outputs[0].path = '../escaped.generated.ts'
+  expectReject('output path confinement escape', () => validateContract(escaping))
+
+  console.log('LENS-011 adversarial harness: 13/13 counterexamples rejected')
 } finally {
   rmSync(scratch, { recursive: true, force: true })
 }

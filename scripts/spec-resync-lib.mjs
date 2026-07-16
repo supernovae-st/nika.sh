@@ -6,12 +6,13 @@ import {
   mkdirSync,
   readFileSync,
   realpathSync,
+  rmSync,
   symlinkSync,
   unlinkSync,
   writeFileSync,
 } from 'node:fs'
 import { createHash } from 'node:crypto'
-import { basename, dirname, join, resolve } from 'node:path'
+import { basename, dirname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
@@ -50,17 +51,22 @@ export function validateContract(contract) {
     generatorIds.add(generator.id)
     if (!['spec', 'website'].includes(generator.root)) fail(`bad generator root: ${generator.id}`)
     if (!['python3', 'node', 'copy'].includes(generator.runtime)) fail(`bad runtime: ${generator.id}`)
+    assertRelativePath(generator.path, `generator path for ${generator.id}`)
     if (!SHA256.test(generator.sha256 ?? '')) fail(`bad generator digest: ${generator.id}`)
     for (const dependency of generator.depends_on ?? []) {
       if (!generatorIds.has(dependency)) fail(`generator DAG is not topological: ${generator.id} -> ${dependency}`)
     }
     for (const path of generator.outputs ?? []) {
+      assertRelativePath(path, `generator output for ${generator.id}`)
       if (generated.has(path)) fail(`output has multiple producers: ${path}`)
       generated.add(path)
     }
   }
   const declared = new Set()
   for (const output of contract.outputs ?? []) {
+    assertRelativePath(output.path, 'contract output')
+    if (output.dist) assertRelativePath(output.dist, `dist path for ${output.path}`)
+    for (const consumer of output.consumers ?? []) assertRelativePath(consumer, `consumer for ${output.path}`)
     if (!output.path || declared.has(output.path)) fail(`duplicate output path: ${output.path}`)
     if (!SHA256.test(output.sha256 ?? '')) fail(`bad output digest: ${output.path}`)
     declared.add(output.path)
@@ -76,6 +82,27 @@ export function validateContract(contract) {
       fail(`fixed toolchain version is absent: ${tool}`)
     }
   }
+}
+
+export function assertRelativePath(path, label = 'path') {
+  if (typeof path !== 'string' || !path || isAbsolute(path) || path.includes('\0')) {
+    fail(`${label} is not a confined relative path: ${String(path)}`)
+  }
+  const normalized = normalize(path)
+  if (normalized !== path || normalized === '..' || normalized.startsWith(`..${sep}`)) {
+    fail(`${label} escapes or is not normalized: ${path}`)
+  }
+}
+
+export function confinedPath(root, path, label = 'path') {
+  assertRelativePath(path, label)
+  const base = resolve(root)
+  const target = resolve(base, path)
+  const rel = relative(base, target)
+  if (!rel || rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) {
+    fail(`${label} escapes root: ${path}`)
+  }
+  return target
 }
 
 function runGit(root, args, options = {}) {
@@ -109,7 +136,13 @@ export function verifySpecIdentity(specRoot, contract) {
 export function verifyGeneratorDigests(websiteRoot, specRoot, contract) {
   for (const generator of contract.generators) {
     const root = generator.root === 'website' ? websiteRoot : specRoot
-    const got = sha256File(join(root, generator.path))
+    const source = confinedPath(root, generator.path, `generator ${generator.id}`)
+    const rootReal = realpathSync(root)
+    const sourceReal = realpathSync(source)
+    if (sourceReal !== rootReal && !sourceReal.startsWith(`${rootReal}${sep}`)) {
+      fail(`generator resolves outside its declared root: ${generator.id}`)
+    }
+    const got = sha256File(sourceReal)
     if (got !== generator.sha256) {
       fail(`generator digest mismatch for ${generator.id}: ${got} != ${generator.sha256}`)
     }
@@ -138,13 +171,51 @@ export function verifyOutputTree(root, contract, { checkChanges = false } = {}) 
   if (checkChanges) verifyChangedSet(root, contract)
   const receipt = {}
   for (const output of contract.outputs) {
-    const got = sha256File(join(root, output.path))
+    const path = confinedPath(root, output.path, `output ${output.path}`)
+    if (existsSync(path) && lstatSync(path).isSymbolicLink()) fail(`output is a symlink: ${output.path}`)
+    const got = sha256File(path)
     if (got !== output.sha256) {
       fail(`output digest mismatch for ${output.path}: ${got} != ${output.sha256}`)
     }
     receipt[output.path] = got
   }
   return receipt
+}
+
+export function clearContractOutputs(root, contract) {
+  for (const output of contract.outputs) {
+    const path = confinedPath(root, output.path, `output ${output.path}`)
+    if (existsSync(path) && lstatSync(path).isSymbolicLink()) fail(`refusing symlink output: ${output.path}`)
+    rmSync(path, { force: true })
+  }
+  const survivors = contract.outputs.filter((output) => existsSync(confinedPath(root, output.path)))
+  if (survivors.length) fail(`could not clear expected outputs: ${survivors.map((entry) => entry.path).join(', ')}`)
+}
+
+function proveGeneratorOutputs(websiteRoot, generator, contract, produced) {
+  const expectedByPath = new Map(contract.outputs.map((output) => [output.path, output]))
+  const declared = new Set(generator.outputs)
+  const materialized = []
+  for (const output of contract.outputs) {
+    const path = confinedPath(websiteRoot, output.path, `output ${output.path}`)
+    const exists = existsSync(path)
+    if (declared.has(output.path)) {
+      if (!exists || !lstatSync(path).isFile() || lstatSync(path).isSymbolicLink()) {
+        fail(`producer ${generator.id} did not newly materialize ${output.path}`)
+      }
+      const got = sha256File(path)
+      if (got !== output.sha256) fail(`producer ${generator.id} wrote stale bytes for ${output.path}: ${got} != ${output.sha256}`)
+      materialized.push({ path: output.path, sha256: got })
+    } else if (!produced.has(output.path) && exists) {
+      fail(`producer ${generator.id} materialized another producer's output: ${output.path}`)
+    } else if (produced.has(output.path)) {
+      if (!exists) fail(`producer ${generator.id} removed prior output ${output.path}`)
+      const got = sha256File(path)
+      if (got !== expectedByPath.get(output.path).sha256) fail(`producer ${generator.id} mutated prior output ${output.path}`)
+    }
+  }
+  for (const output of generator.outputs) produced.add(output)
+  return { id: generator.id, outputs: materialized }
 }
 
 export function verifyConsumers(root, contract) {
@@ -164,9 +235,10 @@ export function verifyConsumers(root, contract) {
   }
 }
 
-export function runGeneratorDag(websiteRoot, specRoot, contract, { verify = true } = {}) {
+export function runGeneratorDag(websiteRoot, specRoot, contract, { verify = true, dependenciesRoot } = {}) {
   verifySpecIdentity(specRoot, contract)
   verifyGeneratorDigests(websiteRoot, specRoot, contract)
+  clearContractOutputs(websiteRoot, contract)
   const env = {
     ...process.env,
     ...contract.environment,
@@ -174,33 +246,46 @@ export function runGeneratorDag(websiteRoot, specRoot, contract, { verify = true
     NIKA_WEBSITE_ROOT: websiteRoot,
     NIKA_WEBSITE_SRC: join(websiteRoot, 'src'),
   }
+  const produced = new Set()
+  const producerProofs = []
   for (const generator of contract.generators) {
     const sourceRoot = generator.root === 'website' ? websiteRoot : specRoot
-    const source = join(sourceRoot, generator.path)
+    const source = confinedPath(sourceRoot, generator.path, `generator ${generator.id}`)
     if (generator.runtime === 'copy') {
       if (generator.outputs.length !== 1) fail(`copy generator ${generator.id} must have one output`)
-      const destination = join(websiteRoot, generator.outputs[0])
+      const destination = confinedPath(websiteRoot, generator.outputs[0], `copy output ${generator.id}`)
       mkdirSync(dirname(destination), { recursive: true })
       copyFileSync(source, destination)
+      producerProofs.push(proveGeneratorOutputs(websiteRoot, generator, contract, produced))
+      verifyChangedSet(websiteRoot, contract)
       continue
     }
     const executable = generator.runtime === 'node' ? process.execPath : 'python3'
     // realpath keeps process.argv[1] equal to import.meta.url on macOS where
     // /var and /private/var name the same file (build-palette's main guard).
-    const result = spawnSync(executable, [realpathSync(source), ...(generator.args ?? [])], {
-      cwd: sourceRoot,
-      env,
-      encoding: 'utf8',
-      maxBuffer: 64 * 1024 * 1024,
-    })
+    if (generator.runtime === 'node' && dependenciesRoot) linkDependencies(dependenciesRoot, websiteRoot)
+    let result
+    try {
+      result = spawnSync(executable, [realpathSync(source), ...(generator.args ?? [])], {
+        cwd: sourceRoot,
+        env,
+        encoding: 'utf8',
+        maxBuffer: 64 * 1024 * 1024,
+      })
+    } finally {
+      if (generator.runtime === 'node' && dependenciesRoot) unlinkDependencies(websiteRoot)
+    }
     if (result.status !== 0) {
       fail(`generator ${generator.id} failed (${result.status}): ${(result.stderr || result.stdout).trim()}`)
     }
+    producerProofs.push(proveGeneratorOutputs(websiteRoot, generator, contract, produced))
+    verifyChangedSet(websiteRoot, contract)
   }
-  if (!verify) return undefined
+  if (produced.size !== contract.outputs.length) fail('producer proof did not cover the exact output set')
+  if (!verify) return { producerProofs }
   verifyChangedSet(websiteRoot, contract)
   verifyConsumers(websiteRoot, contract)
-  return verifyOutputTree(websiteRoot, contract)
+  return { outputs: verifyOutputTree(websiteRoot, contract), producerProofs }
 }
 
 export function compareOutputTrees(firstRoot, secondRoot, contract) {

@@ -68,17 +68,16 @@ function generateRun(parent, name, sourceHead, specSource, dependenciesRoot, con
   const spec = join(parent, `${name}-spec`)
   cloneAt(ROOT, website, sourceHead)
   cloneAt(specSource, spec, contract.spec.commit)
-  linkDependencies(dependenciesRoot, website)
   let outputs
-  try {
-    runGeneratorDag(website, spec, contract, { verify: false })
-  } finally {
-    unlinkDependencies(website)
-  }
+  let producerProofs
+  producerProofs = runGeneratorDag(website, spec, contract, {
+    verify: false,
+    dependenciesRoot,
+  }).producerProofs
   verifyChangedSet(website, contract)
   verifyConsumers(website, contract)
   outputs = verifyOutputTree(website, contract)
-  return { website, spec, outputs }
+  return { website, spec, outputs, producerProofs }
 }
 
 const options = parseArgs(process.argv.slice(2))
@@ -106,6 +105,9 @@ try {
   const first = generateRun(scratch, 'first', sourceHead, options.specRoot, options.dependenciesRoot, contract)
   const second = generateRun(scratch, 'second', sourceHead, options.specRoot, options.dependenciesRoot, contract)
   compareOutputTrees(first.website, second.website, contract)
+  if (JSON.stringify(first.producerProofs) !== JSON.stringify(second.producerProofs)) {
+    throw new Error('LENS-011: dual-run producer attribution mismatch')
+  }
 
   let buildOutput = ''
   if (options.build) {
@@ -139,6 +141,7 @@ try {
     spec_commit: contract.spec.commit,
     spec_tree: contract.spec.tree,
     generators: contract.generators.map(({ id, path, sha256 }) => ({ id, path, sha256 })),
+    producer_proofs: first.producerProofs,
     fixed_environment: contract.environment,
     expected_toolchain: contract.toolchain,
     actual_tool_versions: toolVersions,
