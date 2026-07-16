@@ -14,7 +14,7 @@
 
    Run: node scripts/build-blog.mjs        (regenerates BOTH outputs)
    Outputs: src/content/blog.generated.ts · public/blog/rss.xml (committed) */
-import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parse as parseYaml } from 'yaml'
@@ -27,6 +27,12 @@ const OUT_TS = join(ROOT, 'src', 'content', 'blog.generated.ts')
 const OUT_BODIES = join(ROOT, 'src', 'content', 'blog-bodies.generated.ts')
 const OUT_RSS = join(ROOT, 'public', 'rss.xml')
 const SITE = 'https://nika.sh'
+export const BLOG_GENERATED_MIRRORS = [
+  'public/llms-full.txt',
+  'public/rss.xml',
+  'src/content/blog-bodies.generated.ts',
+  'src/content/blog.generated.ts',
+]
 
 /* ── canon values (the site's own generated projection is the source) ──────── */
 function canonValues() {
@@ -150,10 +156,15 @@ export const SERIES = {
   },
 }
 
-export function compileAll(dir = SRC_DIR) {
-  const canon = canonValues()
-  const files = readdirSync(dir).filter((f) => f.endsWith('.md') && f !== 'README.md').sort()
-  const posts = files.map((f) => compilePost(readFileSync(join(dir, f), 'utf8'), f, canon))
+export function readBlogSourceSnapshot(dir = SRC_DIR) {
+  return readdirSync(dir)
+    .filter((file) => file.endsWith('.md') && file !== 'README.md')
+    .sort()
+    .map((file) => ({ file, raw: readFileSync(join(dir, file), 'utf8') }))
+}
+
+function compileSourceSnapshot(sources, canon = canonValues()) {
+  const posts = sources.map(({ file, raw }) => compilePost(raw, file, canon))
   /* newest-first; same-day posts by filename DESC — a comparator that never
      returns 0 is engine-defined order, and this one shipped that way (the
      tiebreak below pins the order it happened to produce). */
@@ -185,6 +196,10 @@ export function compileAll(dir = SRC_DIR) {
   return posts
 }
 
+export function compileAll(dir = SRC_DIR) {
+  return compileSourceSnapshot(readBlogSourceSnapshot(dir))
+}
+
 /* ── emit · the generated module + the feed ─────────────────────────────────── */
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
@@ -201,7 +216,9 @@ function rssOf(posts) {
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]
 if (isMain) {
-  const posts = compileAll()
+  const sourceSnapshot = readBlogSourceSnapshot()
+  const canon = canonValues()
+  const posts = compileSourceSnapshot(sourceSnapshot, canon)
   /* THE SPLIT (the bundle diet · arc 13m): the metadata module rides the
      initial bundle (Blog · Sitemap · BlogPost's header need it on every
      page — routes are sync); the BODIES (the 29 full posts, ~85% of the
@@ -259,29 +276,45 @@ import type { BlogToken } from './blog.generated'
 
 export const BLOG_BODIES: Record<string, BlogToken[]> = ${JSON.stringify(bodies, null, 2)}
 `
-  writeFileSync(OUT_TS, ts)
-  writeFileSync(OUT_BODIES, tsBodies)
-  mkdirSync(dirname(OUT_RSS), { recursive: true })
-  writeFileSync(OUT_RSS, rssOf(posts))
   /* llms-full.txt · the llmstxt.org companion: the whole blog as raw
      markdown for agents (the posts ALREADY are markdown — serve the source).
      Canon markers are resolved (applyCanonMarkers ran), frontmatter kept as
      a simple header per post. Deterministic: no build stamps. */
-  const canon = canonValues()
-  const files = readdirSync(SRC_DIR).filter((f) => f.endsWith('.md') && f !== 'README.md').sort().reverse()
   const full = [
     '# nika.sh · llms-full.txt',
     '# The complete blog, newest first, as raw markdown (source: content/blog in the site repo).',
     '# Companion to https://nika.sh/llms.txt · spec: https://llmstxt.org/',
     '',
-    ...files.map((f) => {
-      const raw = readFileSync(join(SRC_DIR, f), 'utf8')
+    ...[...sourceSnapshot].reverse().map(({ file, raw }) => {
       const m = raw.match(/^---\n([\s\S]*?)\n---\n/)
       const meta = parseYaml(m[1])
-      const body = applyCanonMarkers(raw.slice(m[0].length), canon, f).trim()
+      const body = applyCanonMarkers(raw.slice(m[0].length), canon, file).trim()
       return `---\n\n## ${meta.title}\nurl: https://nika.sh/blog/${meta.slug}\ndate: ${meta.date} · tag: ${meta.tag}\n\n${body}\n`
     }),
   ].join('\n')
-  writeFileSync(join(ROOT, 'public', 'llms-full.txt'), full)
-  console.log(`wrote ${OUT_TS.replace(ROOT + '/', '')} + blog-bodies (${posts.length} posts) + ${OUT_RSS.replace(ROOT + '/', '')}`)
+  const projectionBytes = new Map([
+    ['public/llms-full.txt', full],
+    ['public/rss.xml', rssOf(posts)],
+    ['src/content/blog-bodies.generated.ts', tsBodies],
+    ['src/content/blog.generated.ts', ts],
+  ])
+  if (projectionBytes.size !== BLOG_GENERATED_MIRRORS.length
+    || BLOG_GENERATED_MIRRORS.some((path) => !projectionBytes.has(path))) {
+    throw new Error('blog generated mirror path set differs from the closed four-output contract')
+  }
+  const projections = BLOG_GENERATED_MIRRORS.map((path) => [join(ROOT, path), projectionBytes.get(path)])
+  if (process.argv.includes('--check')) {
+    for (const [path, expected] of projections) {
+      if (!existsSync(path) || readFileSync(path, 'utf8') !== expected) {
+        throw new Error(`blog generated mirror drift: ${path.replace(`${ROOT}/`, '')}`)
+      }
+    }
+    console.log(`blog projections: ${projections.length}/${projections.length} byte-exact mirrors verified`)
+  } else {
+    for (const [path, bytes] of projections) {
+      mkdirSync(dirname(path), { recursive: true })
+      writeFileSync(path, bytes)
+    }
+    console.log(`wrote ${OUT_TS.replace(`${ROOT}/`, '')} + blog-bodies (${posts.length} posts) + ${OUT_RSS.replace(`${ROOT}/`, '')}`)
+  }
 }

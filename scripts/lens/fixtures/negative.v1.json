@@ -14,6 +14,7 @@
     "count-source": {"text": "Nika has five verbs."},
     "count-source-composed-word": {"text": "Nika has twenty-one verbs."},
     "count-source-digit-ordinal": {"text": "The 21st verbs are documented here."},
+    "count-source-read-only-tools": {"text": "Eight read-only tools let every agent inspect the plan."},
     "count-source-unregistered-carrier": {
       "case": "unregistered-carrier",
       "path": "src/pages/FloatingCount.tsx"

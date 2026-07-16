@@ -40,11 +40,150 @@ const COUNT_NOUNS = new Map([
   ['extraction mode', 'extractModes'], ['extraction modes', 'extractModes'],
   ['template', 'templates'], ['templates', 'templates'],
   ['mcp tool', 'mcpTools'], ['mcp tools', 'mcpTools'],
+  ['read-only tool', 'mcpTools'], ['read-only tools', 'mcpTools'],
   ['error code', 'errorCodes'], ['error codes', 'errorCodes'],
   ['error namespace', 'errorNamespaces'], ['error namespaces', 'errorNamespaces'],
 ])
 
-const COUNT_NOUN_PATTERN = /(verbs?|builtins?|providers?|extract(?:ion)?\s+modes?|templates?|MCP\s+tools?|error\s+codes?|error\s+namespaces?)\b/gi
+const COUNT_NOUN_PATTERN = /(verbs?|builtins?|providers?|extract(?:ion)?\s+modes?|templates?|MCP\s+tools?|read-only\s+tools?|error\s+codes?|error\s+namespaces?)\b/gi
+
+const PUBLIC_TEXT = /\.(?:css|html|json|md|sh|svg|ttl|txt|webmanifest|xml|ya?ml)$/
+const PROJECTION_SOURCES = ['scripts/build-blog.mjs', 'scripts/build-og-card.mjs']
+
+function cssContentDeclarations(text) {
+  const declarations = []
+  const boundary = (character) => !character || !/[A-Za-z0-9_-]/.test(character)
+  let index = 0
+  while (index < text.length) {
+    if (text.startsWith('/*', index)) {
+      const end = text.indexOf('*/', index + 2)
+      index = end < 0 ? text.length : end + 2
+      continue
+    }
+    const quote = text[index]
+    if (quote === "'" || quote === '"') {
+      index += 1
+      while (index < text.length && text[index] !== quote) {
+        index += text[index] === '\\' ? 2 : 1
+      }
+      index += 1
+      continue
+    }
+    if (text.startsWith('content', index) && boundary(text[index - 1]) && boundary(text[index + 7])) {
+      let cursor = index + 7
+      while (/\s/.test(text[cursor] ?? '')) cursor += 1
+      if (text[cursor] === ':') {
+        const start = cursor + 1
+        cursor = start
+        let depth = 0
+        while (cursor < text.length) {
+          if (text.startsWith('/*', cursor)) {
+            const end = text.indexOf('*/', cursor + 2)
+            cursor = end < 0 ? text.length : end + 2
+            continue
+          }
+          const valueQuote = text[cursor]
+          if (valueQuote === "'" || valueQuote === '"') {
+            cursor += 1
+            while (cursor < text.length && text[cursor] !== valueQuote) {
+              cursor += text[cursor] === '\\' ? 2 : 1
+            }
+            cursor += 1
+            continue
+          }
+          if (text[cursor] === '(') depth += 1
+          else if (text[cursor] === ')') depth = Math.max(0, depth - 1)
+          else if (depth === 0 && (text[cursor] === ';' || text[cursor] === '}')) break
+          cursor += 1
+        }
+        declarations.push({
+          line: lineAt(text, index),
+          value: text.slice(start, cursor).trim(),
+        })
+        index = cursor + 1
+        continue
+      }
+    }
+    index += 1
+  }
+  return declarations
+}
+
+function decodeCssEscape(source, index) {
+  const next = source[index + 1]
+  if (next === '\n' || next === '\r' || next === '\f') return { value: '', next: index + 2 }
+  const hex = source.slice(index + 1).match(/^[0-9a-f]{1,6}/i)?.[0]
+  if (hex) {
+    let nextIndex = index + 1 + hex.length
+    if (/\s/.test(source[nextIndex] ?? '')) nextIndex += 1
+    const point = Number.parseInt(hex, 16)
+    return { value: point === 0 || point > 0x10ffff ? '\uFFFD' : String.fromCodePoint(point), next: nextIndex }
+  }
+  return { value: next ?? '', next: Math.min(source.length, index + 2) }
+}
+
+function cssValueInventory(value) {
+  const literals = []
+  let unquoted = ''
+  let index = 0
+  while (index < value.length) {
+    const quote = value[index]
+    if (quote !== "'" && quote !== '"') {
+      unquoted += quote
+      index += 1
+      continue
+    }
+    let decoded = ''
+    index += 1
+    while (index < value.length && value[index] !== quote) {
+      if (value[index] === '\\') {
+        const escape = decodeCssEscape(value, index)
+        decoded += escape.value
+        index = escape.next
+      } else {
+        decoded += value[index]
+        index += 1
+      }
+    }
+    if (value[index] === quote) index += 1
+    literals.push(decoded)
+    unquoted += ' '
+  }
+  const expressions = [...unquoted.matchAll(/\b([a-z-]+)\s*\(([^()]*)\)/gi)]
+    .map((match) => `${match[1].toLowerCase()}(${match[2].trim().replace(/\s+/g, ' ')})`)
+  return { literals, expressions }
+}
+
+export function cssContentInventory(root, paths = renderedCarriers(root).filter((path) => path.endsWith('.css'))) {
+  const declarations = []
+  for (const path of paths) {
+    const text = readFileSync(join(root, path), 'utf8')
+    for (const [ordinal, declaration] of cssContentDeclarations(text).entries()) {
+      const inventory = cssValueInventory(declaration.value)
+      declarations.push({
+        selector: `${path}#css-content:${ordinal + 1}`,
+        path,
+        line: declaration.line,
+        value: declaration.value,
+        ...inventory,
+      })
+    }
+  }
+  const literals = [...new Set(declarations.flatMap((entry) => entry.literals))].sort()
+  const dynamic_expressions = [...new Set(declarations.flatMap((entry) => entry.expressions))].sort()
+  const count_claims = declarations.flatMap((entry) => {
+    const visible = entry.literals.join(' ')
+    return discoverCountClaimsInText(entry.path, visible).map((claim) => ({
+      selector: entry.selector,
+      path: entry.path,
+      line: entry.line,
+      text: claim.text,
+      field: claim.field,
+      value: claim.value,
+    }))
+  })
+  return { literals, dynamic_expressions, count_claims }
+}
 
 export function sha256Bytes(bytes) {
   return createHash('sha256').update(bytes).digest('hex')
@@ -61,6 +200,7 @@ function walk(root, directory, accept) {
   const out = []
   for (const entry of readdirSync(join(root, directory), { withFileTypes: true })) {
     const path = join(directory, entry.name)
+    if (entry.isSymbolicLink()) throw new Error(`rendered carrier is a symlink: ${path}`)
     if (entry.isDirectory()) out.push(...walk(root, path, accept))
     else if (accept(path)) out.push(path.split(sep).join('/'))
   }
@@ -69,11 +209,12 @@ function walk(root, directory, accept) {
 
 export function renderedCarriers(root) {
   const source = walk(root, 'src', (path) => {
-    if (!/\.(?:ts|tsx)$/.test(path)) return false
-    return !path.includes('.generated.') && !path.includes('.test.') && !path.startsWith('src/test/')
+    if (!/\.(?:css|ts|tsx)$/.test(path)) return false
+    return !path.includes('.test.') && !path.startsWith('src/test/')
   })
   const posts = walk(root, 'content/blog', (path) => path.endsWith('.md') && !path.endsWith('/README.md'))
-  return [...source, ...posts, 'public/llms.txt'].sort()
+  const publicText = walk(root, 'public', (path) => PUBLIC_TEXT.test(path))
+  return [...new Set([...source, ...posts, ...publicText, ...PROJECTION_SOURCES])].sort()
 }
 
 export function carrierSetSha256(paths) {

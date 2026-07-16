@@ -79,7 +79,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The MCP server you didn't have to build",
     "tag": "Engine",
     "date": "2026-07-11",
-    "description": "Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one. Eight read-only tools let any agent audit a plan and learn the language from the thing that enforces it.",
+    "description": "Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one. Read-only tools let any agent audit a plan and learn the language from the thing that enforces it.",
     "readingMin": 3
   },
   {

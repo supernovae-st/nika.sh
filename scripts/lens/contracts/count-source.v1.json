@@ -13,20 +13,23 @@
   ],
   "carrier_census": {
     "roots": [
-      "src/**/*.{ts,tsx}",
+      "src/**/*.{css,ts,tsx}",
       "content/blog/*.md",
-      "public/llms.txt"
+      "public/**/*.{css,html,json,md,sh,svg,ttl,txt,webmanifest,xml,yaml,yml}",
+      "scripts/{build-blog,build-og-card}.mjs"
     ],
     "exclusions": [
-      "*.generated.*",
       "*.test.*",
       "src/test/**",
-      "content/blog/README.md"
+      "content/blog/README.md",
+      "binary public assets"
     ],
-    "count": 188,
-    "set_sha256": "bd741f59f0bc50ce8053ea8630783a26b93be1458b5890d061a3727b676583ce"
+    "count": 196,
+    "set_sha256": "cdb7048f1f2a476db2c880a0cf798513e4dc092733fc51ac503294fc37d8f56e",
+    "rendered_count": 373,
+    "rendered_set_sha256": "81ae671b4bd709ce7e235864ed61b0ecdf7b4aca7e5e29705740ee7b744fd4dc"
   },
-  "claim_count": 136,
+  "claim_count": 142,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -255,6 +258,78 @@
       "ordinal": false,
       "relation": "canon-count",
       "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "public/llms.txt#count:6",
+      "path": "public/llms.txt",
+      "line": 73,
+      "text": "9 read-only tools",
+      "source": "9",
+      "field": "mcpTools",
+      "value": 9,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.mcpTools"
+    },
+    {
+      "selector": "scripts/build-blog.mjs#count:1",
+      "path": "scripts/build-blog.mjs",
+      "line": 214,
+      "text": "four verbs",
+      "source": "four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "scripts/build-og-card.mjs#count:1",
+      "path": "scripts/build-og-card.mjs",
+      "line": 87,
+      "text": "four verbs",
+      "source": "four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "scripts/build-og-card.mjs#count:2",
+      "path": "scripts/build-og-card.mjs",
+      "line": 195,
+      "text": "Four verbs",
+      "source": "Four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "scripts/build-og-card.mjs#count:3",
+      "path": "scripts/build-og-card.mjs",
+      "line": 491,
+      "text": "Four verbs",
+      "source": "Four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "scripts/build-og-card.mjs#count:4",
+      "path": "scripts/build-og-card.mjs",
+      "line": 540,
+      "text": "16 providers",
+      "source": "16",
+      "field": "providers",
+      "value": 16,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.providers"
     },
     {
       "selector": "src/components/CodeFile.tsx#count:1",

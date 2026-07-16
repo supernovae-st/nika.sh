@@ -5,6 +5,7 @@ import { join } from 'node:path'
 import { ROOT } from './spec-resync-lib.mjs'
 import {
   carrierSetSha256,
+  cssContentInventory,
   discoverCountClaims,
   discoverPrerenderClaims,
   discoverRouteClaims,
@@ -32,6 +33,36 @@ function authoritativeCarriers() {
   }
   if (universe.carrier_count !== carriers.length || universe.set_sha256 !== carrierSetSha256(carriers)) {
     fail('carrier universe count/digest differs from its exhaustive path set')
+  }
+  for (const key of ['normative_sources', 'generated_mirrors', 'machine_or_presentational']) {
+    if (!Array.isArray(universe[key]) || new Set(universe[key]).size !== universe[key].length
+      || JSON.stringify(universe[key]) !== JSON.stringify([...universe[key]].sort())) {
+      fail(`carrier classification is not a unique sorted set: ${key}`)
+    }
+  }
+  const classified = [
+    ...universe.normative_sources,
+    ...universe.generated_mirrors,
+    ...universe.machine_or_presentational,
+  ].sort()
+  if (new Set(classified).size !== classified.length || JSON.stringify(classified) !== JSON.stringify(carriers)) {
+    fail('carrier classifications are not a disjoint exact partition')
+  }
+  if (universe.normative_source_count !== universe.normative_sources.length
+    || universe.normative_source_sha256 !== carrierSetSha256(universe.normative_sources)) {
+    fail('normative source count/digest differs from its exact path set')
+  }
+  const css = cssContentInventory(ROOT, carriers.filter((path) => path.endsWith('.css')))
+  const cssPolicy = universe.css_content_policy
+  if (cssPolicy?.mode !== 'closed-stylistic-literals-v1'
+    || cssPolicy.scope !== 'all classified *.css carriers'
+    || cssPolicy.count_claims !== 'forbidden'
+    || JSON.stringify(cssPolicy.allowed_literals) !== JSON.stringify(css.literals)
+    || JSON.stringify(cssPolicy.allowed_dynamic_expressions) !== JSON.stringify(css.dynamic_expressions)) {
+    fail('CSS content policy differs from the closed observed literal/function set')
+  }
+  if (css.count_claims.length > 0) {
+    fail(`CSS content carries a forbidden count claim: ${css.count_claims[0].selector}`)
   }
   const discovered = renderedCarriers(ROOT)
   if (JSON.stringify(discovered) !== JSON.stringify(carriers)) {
@@ -83,7 +114,7 @@ const COUNT_WAIVERS = new Map([
 function countContract() {
   const canon = canonCounts()
   const universe = authoritativeCarriers()
-  const carriers = universe.carriers
+  const carriers = universe.normative_sources
   const bindings = discoverCountClaims(ROOT, carriers).map((claim) => {
     let relation
     let reason
@@ -124,6 +155,8 @@ function countContract() {
       exclusions: universe.exclusions,
       count: carriers.length,
       set_sha256: carrierSetSha256(carriers),
+      rendered_count: universe.carrier_count,
+      rendered_set_sha256: universe.set_sha256,
     },
     claim_count: bindings.length,
     bindings,

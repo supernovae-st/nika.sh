@@ -14,6 +14,7 @@ import {
 } from './spec-resync-lib.mjs'
 import {
   carrierSetSha256,
+  cssContentInventory,
   discoverCountClaims,
   discoverCountClaimsInText,
   discoverPrerenderClaims,
@@ -62,6 +63,35 @@ function carrierUniverse() {
     || universe.set_sha256 !== carrierSetSha256(universe.carriers)) {
     fail('carrier universe count/digest differs from its exhaustive path set')
   }
+  const classifications = ['normative_sources', 'generated_mirrors', 'machine_or_presentational']
+  const classified = []
+  for (const key of classifications) {
+    if (!Array.isArray(universe[key]) || new Set(universe[key]).size !== universe[key].length
+      || JSON.stringify(universe[key]) !== JSON.stringify([...universe[key]].sort())) {
+      fail(`carrier classification is not a unique sorted path set: ${key}`)
+    }
+    classified.push(...universe[key])
+  }
+  if (new Set(classified).size !== classified.length
+    || JSON.stringify(classified.sort()) !== JSON.stringify(universe.carriers)) {
+    fail('carrier classifications are not a disjoint exact partition')
+  }
+  if (universe.normative_source_count !== universe.normative_sources.length
+    || universe.normative_source_sha256 !== carrierSetSha256(universe.normative_sources)) {
+    fail('normative source count/digest differs')
+  }
+  const css = cssContentInventory(ROOT, universe.carriers.filter((path) => path.endsWith('.css')))
+  const cssPolicy = universe.css_content_policy
+  if (cssPolicy?.mode !== 'closed-stylistic-literals-v1'
+    || cssPolicy.scope !== 'all classified *.css carriers'
+    || cssPolicy.count_claims !== 'forbidden'
+    || JSON.stringify(cssPolicy.allowed_literals) !== JSON.stringify(css.literals)
+    || JSON.stringify(cssPolicy.allowed_dynamic_expressions) !== JSON.stringify(css.dynamic_expressions)) {
+    fail('CSS content policy differs from the closed observed literal/function set')
+  }
+  if (css.count_claims.length > 0) {
+    fail(`CSS content carries a forbidden count claim: ${css.count_claims[0].selector}`)
+  }
   const discovered = renderedCarriers(ROOT)
   if (JSON.stringify(discovered) !== JSON.stringify(universe.carriers)) {
     fail('rendered carriers differ from the independent exhaustive universe')
@@ -105,7 +135,7 @@ function claimValue(raw) {
 
 function validateCountText(text, label, canon, { adjacent = false } = {}) {
   const count = '(\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)'
-  const noun = '(verbs?|builtins?|providers?|extract(?:ion)?\\s+modes?|templates?|MCP\\s+tools?|error\\s+codes?|error\\s+namespaces?)'
+  const noun = '(verbs?|builtins?|providers?|extract(?:ion)?\\s+modes?|templates?|MCP\\s+tools?|read-only\\s+tools?|error\\s+codes?|error\\s+namespaces?)'
   const claims = new RegExp(adjacent ? `\\bNika\\s+(?:has|uses|ships with|locks at)\\s+${count}\\s+${noun}\\b` : `\\b${count}\\s+${noun}\\b`, 'gi')
   for (const match of text.matchAll(claims)) {
     // Indefinite singular prose (`one builtin, nine shapes`) does not claim
@@ -121,7 +151,7 @@ function validateCountText(text, label, canon, { adjacent = false } = {}) {
       : claimedNoun.startsWith('builtin') ? 'builtins'
         : claimedNoun.startsWith('provider') ? 'providers' : 'extractModes'
     const resolvedField = claimedNoun.startsWith('template') ? 'templates'
-      : claimedNoun.startsWith('mcp') ? 'mcpTools'
+      : claimedNoun.startsWith('mcp') || claimedNoun.startsWith('read-only') ? 'mcpTools'
         : claimedNoun.startsWith('error code') ? 'errorCodes'
           : claimedNoun.startsWith('error namespace') ? 'errorNamespaces' : field
     const got = claimValue(match[countIndex])
@@ -251,7 +281,7 @@ function gateCountSource(fixture) {
   }
   const rules = contract('count-source.v1.json')
   const universe = carrierUniverse()
-  const carriers = universe.carriers
+  const carriers = universe.normative_sources
   if (JSON.stringify(rules.carrier_census?.roots) !== JSON.stringify(universe.roots)
     || JSON.stringify(rules.carrier_census?.exclusions) !== JSON.stringify(universe.exclusions)) {
     fail('count carrier-census policy differs from independent universe')
@@ -262,6 +292,10 @@ function gateCountSource(fixture) {
   const censusDigest = carrierSetSha256(carriers)
   if (rules.carrier_census?.set_sha256 !== censusDigest) {
     fail(`rendered-carrier census set differs: ${censusDigest}`)
+  }
+  if (rules.carrier_census?.rendered_count !== universe.carrier_count
+    || rules.carrier_census?.rendered_set_sha256 !== universe.set_sha256) {
+    fail('rendered carrier closure differs from the count-source contract')
   }
   if (JSON.stringify(rules.canon_fields) !== JSON.stringify(Object.keys(canon))) {
     fail('CanonCount field registry differs from the generated canon')

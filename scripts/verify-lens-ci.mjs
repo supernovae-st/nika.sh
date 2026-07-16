@@ -6,17 +6,33 @@ import { createHash } from 'node:crypto'
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { ROOT, sha256File } from './spec-resync-lib.mjs'
-import { renderedCarriers as semanticRenderedCarriers } from './lens-semantics-lib.mjs'
+import { BLOG_GENERATED_MIRRORS } from './build-blog.mjs'
+import {
+  cssContentInventory,
+  renderedCarriers as semanticRenderedCarriers,
+} from './lens-semantics-lib.mjs'
 
 const CONTRACT_ROOT = join(ROOT, 'scripts/lens/contracts')
 const workflowPath = join(ROOT, '.github/workflows/lens-gates.yml')
+const expectedBlogGeneratedMirrors = [
+  'public/llms-full.txt',
+  'public/rss.xml',
+  'src/content/blog-bodies.generated.ts',
+  'src/content/blog.generated.ts',
+]
 const requiredIntegrityArtifacts = [
+  '.npmrc',
   '.do/app.yaml',
   '.github/nika-spec-pin.json',
   '.github/workflows/lens-gates.yml',
   '.github/workflows/spec-resync.yml',
+  'index.html',
   'public/.well-known/nika-spec-pin.json',
+  'package.json',
+  'pnpm-lock.yaml',
   'react-ssg.config.ts',
+  'scripts/build-blog.mjs',
+  'scripts/build-og-card.mjs',
   'scripts/build-lens-semantic-contracts.mjs',
   'scripts/lens-gate.mjs',
   'scripts/lens-semantics-lib.mjs',
@@ -40,6 +56,10 @@ const requiredIntegrityArtifacts = [
   'scripts/verify_spec_resync_conformance.py',
   'site.config.ts',
   'src/routes.tsx',
+  'tsconfig.app.json',
+  'tsconfig.json',
+  'tsconfig.node.json',
+  'vite.config.ts',
 ]
 
 function fail(message) {
@@ -56,11 +76,11 @@ import sys
 import yaml
 
 source = sys.stdin.read()
-for event in yaml.parse(source, Loader=yaml.SafeLoader):
+for event in yaml.parse(source, Loader=yaml.BaseLoader):
     if getattr(event, "anchor", None) is not None:
         raise ValueError("YAML anchors and aliases are forbidden")
 
-class ClosedLoader(yaml.SafeLoader):
+class ClosedLoader(yaml.BaseLoader):
     pass
 
 def closed_mapping(loader, node, deep=False):
@@ -130,6 +150,42 @@ function exactCommandCount(job, definition, command) {
   return steps.length
 }
 
+function exactStructure(label, actual, expected) {
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    fail(`${label} differs from the closed workflow structure`)
+  }
+}
+
+function gateJob(command) {
+  return {
+    'runs-on': 'ubuntu-latest',
+    'timeout-minutes': '10',
+    steps: [
+      { uses: 'actions/checkout@v5' },
+      { uses: 'actions/setup-node@v5', with: { 'node-version': '22', 'package-manager-cache': 'false' } },
+      { run: 'corepack enable' },
+      { run: 'pnpm install --frozen-lockfile' },
+      { run: command },
+    ],
+  }
+}
+
+function integrityJob(command) {
+  return {
+    'runs-on': 'ubuntu-latest',
+    'timeout-minutes': '10',
+    steps: [
+      { uses: 'actions/checkout@v5' },
+      { uses: 'actions/setup-node@v5', with: { 'node-version': '22', 'package-manager-cache': 'false' } },
+      { uses: 'actions/setup-python@v6', with: { 'python-version': '3.12' } },
+      { run: 'corepack enable' },
+      { run: 'pnpm install --frozen-lockfile' },
+      { run: 'pip install pyyaml==6.0.3' },
+      { run: command },
+    ],
+  }
+}
+
 function independentCarrierUniverse() {
   const walk = (directory, prefix, accept) => {
     const paths = []
@@ -142,15 +198,47 @@ function independentCarrierUniverse() {
     return paths
   }
   const source = walk(join(ROOT, 'src'), 'src', (path) => (
-    /\.(?:ts|tsx)$/.test(path)
-    && !path.includes('.generated.')
+    /\.(?:css|ts|tsx)$/.test(path)
     && !path.includes('.test.')
     && !path.startsWith('src/test/')
   ))
   const posts = walk(join(ROOT, 'content/blog'), 'content/blog', (path) => (
     path.endsWith('.md') && path !== 'content/blog/README.md'
   ))
-  return [...source, ...posts, 'public/llms.txt'].sort()
+  const publicText = walk(join(ROOT, 'public'), 'public', (path) => (
+    /\.(?:css|html|json|md|sh|svg|ttl|txt|webmanifest|xml|ya?ml)$/.test(path)
+  ))
+  return [...new Set([
+    ...source,
+    ...posts,
+    ...publicText,
+    'scripts/build-blog.mjs',
+    'scripts/build-og-card.mjs',
+  ])].sort()
+}
+
+function independentCarrierClassification(carriers) {
+  const mirrors = new Set(expectedBlogGeneratedMirrors)
+  const normative = carriers.filter((path) => (
+    path.startsWith('content/blog/')
+    || path === 'scripts/build-blog.mjs'
+    || path === 'scripts/build-og-card.mjs'
+    || (path.startsWith('src/') && /\.(?:ts|tsx)$/.test(path) && !path.includes('.generated.'))
+    || [
+      'public/.well-known/security.txt',
+      'public/404.html',
+      'public/humans.txt',
+      'public/install.sh',
+      'public/llms.txt',
+      'public/manifest.webmanifest',
+      'public/robots.txt',
+    ].includes(path)
+  ) && !mirrors.has(path))
+  const generatedMirrors = carriers.filter((path) => mirrors.has(path))
+  const normativeSet = new Set(normative)
+  const mirrorSet = new Set(generatedMirrors)
+  const machineOrPresentational = carriers.filter((path) => !normativeSet.has(path) && !mirrorSet.has(path))
+  return { normative, generatedMirrors, machineOrPresentational }
 }
 
 function carrierSetSha256(paths) {
@@ -172,9 +260,38 @@ function verifyCarrierAuthority() {
   if (universe.carrier_count !== carriers.length || universe.set_sha256 !== carrierSetSha256(carriers)) {
     fail('carrier universe count/digest differs from independent enumeration')
   }
+  const classified = independentCarrierClassification(carriers)
+  exactStructure('normative carrier sources', universe.normative_sources, classified.normative)
+  exactStructure('generated carrier mirrors', universe.generated_mirrors, classified.generatedMirrors)
+  exactStructure('generated mirror authority path set', expectedBlogGeneratedMirrors, classified.generatedMirrors)
+  exactStructure('generated mirror generator path set', BLOG_GENERATED_MIRRORS, expectedBlogGeneratedMirrors)
+  exactStructure('machine/presentational carriers', universe.machine_or_presentational, classified.machineOrPresentational)
+  if (universe.normative_source_count !== classified.normative.length
+    || universe.normative_source_sha256 !== carrierSetSha256(classified.normative)) {
+    fail('normative carrier count/digest differs from independent classification')
+  }
+  const cssPolicy = {
+    mode: 'closed-stylistic-literals-v1',
+    scope: 'all classified *.css carriers',
+    count_claims: 'forbidden',
+    allowed_literals: [
+      '', ' (', ' · ', ')', '+', 'plain words', '· press ▶ · or keep scrolling ·',
+      '“', '”', '›', '→', '→ ', '−',
+    ],
+    allowed_dynamic_expressions: ['attr(href)'],
+  }
+  exactStructure('CSS content policy', universe.css_content_policy, cssPolicy)
+  const css = cssContentInventory(ROOT, carriers.filter((path) => path.endsWith('.css')))
+  exactStructure('CSS content literal allowlist', css.literals, cssPolicy.allowed_literals)
+  exactStructure('CSS content dynamic-expression allowlist', css.dynamic_expressions, cssPolicy.allowed_dynamic_expressions)
+  if (css.count_claims.length > 0) {
+    fail(`CSS content carries a forbidden count claim: ${css.count_claims[0].selector}`)
+  }
   const count = json(join(CONTRACT_ROOT, 'count-source.v1.json'))
-  if (count.carrier_census?.count !== universe.carrier_count
-    || count.carrier_census?.set_sha256 !== universe.set_sha256
+  if (count.carrier_census?.count !== universe.normative_source_count
+    || count.carrier_census?.set_sha256 !== universe.normative_source_sha256
+    || count.carrier_census?.rendered_count !== universe.carrier_count
+    || count.carrier_census?.rendered_set_sha256 !== universe.set_sha256
     || JSON.stringify(count.carrier_census?.roots) !== JSON.stringify(universe.roots)
     || JSON.stringify(count.carrier_census?.exclusions) !== JSON.stringify(universe.exclusions)) {
     fail('generated count census shrank or diverged from independent carrier authority')
@@ -182,6 +299,16 @@ function verifyCarrierAuthority() {
   const expectedFeatureSources = ['react-ssg.config.ts', 'site.config.ts', 'src/routes.tsx']
   if (JSON.stringify(universe.feature_sources) !== JSON.stringify(expectedFeatureSources)) {
     fail('feature source universe differs from the closed authority')
+  }
+}
+
+function verifyGeneratedMirrors() {
+  const result = spawnSync(process.execPath, ['scripts/build-blog.mjs', '--check'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+  })
+  if (result.status !== 0) {
+    fail(`generated carrier mirror projection differs: ${(result.stderr || result.stdout).trim()}`)
   }
 }
 
@@ -211,9 +338,16 @@ try {
     if (got !== artifact.sha256) fail(`bad digest for ${artifact.path}: ${got} != ${artifact.sha256}`)
   }
   verifyCarrierAuthority()
+  verifyGeneratedMirrors()
 
   const workflow = readFileSync(workflowPath, 'utf8')
   const workflowDocument = parseWorkflow(workflow)
+  exactStructure('workflow root keys', Object.keys(workflowDocument), ['name', 'on', 'jobs'])
+  exactStructure('workflow name', workflowDocument.name, 'lens-gates')
+  exactStructure('workflow triggers', workflowDocument.on, {
+    push: { branches: ['main'] },
+    pull_request: '',
+  })
   const jobs = workflowDocument?.jobs
   if (!jobs || typeof jobs !== 'object' || Array.isArray(jobs)) fail('workflow jobs mapping is absent')
   const expectedJobs = new Set([...declaredJobs, gateContract.integrity_job])
@@ -226,11 +360,13 @@ try {
   for (const gate of gateContract.gates) {
     const definition = jobs[gate.job]
     rejectNoOps(gate.job, definition)
+    exactStructure(gate.job, definition, gateJob(gate.command))
     const occurrences = exactCommandCount(gate.job, definition, gate.command)
     if (occurrences !== 1) fail(`${gate.job} must run exact command once, got ${occurrences}`)
   }
   const integrityDefinition = jobs[gateContract.integrity_job]
   rejectNoOps(gateContract.integrity_job, integrityDefinition)
+  exactStructure(gateContract.integrity_job, integrityDefinition, integrityJob(gateContract.integrity_command))
   if (exactCommandCount(gateContract.integrity_job, integrityDefinition, gateContract.integrity_command) !== 1) {
     fail('integrity job command is absent, renamed, or duplicated')
   }
@@ -253,7 +389,7 @@ try {
     fail(`semantic adversarial suite failed: ${(semanticAdversarial.stderr || semanticAdversarial.stdout).trim()}`)
   }
 
-  console.log('LENS-006 integrity: 8/8 jobs exact · artifact set pinned · 8/8 gate negatives + 16/16 semantic adversaries verified')
+  console.log('LENS-006 integrity: 8/8 jobs exact · artifact set pinned · 8/8 gate negatives + 17/17 semantic adversaries verified')
 } catch (error) {
   console.error(error.message)
   process.exit(1)

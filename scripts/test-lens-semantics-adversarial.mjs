@@ -6,6 +6,7 @@ const cases = [
   ['literal count drift', 'lens-count-source', 'count-source'],
   ['composed written-number drift', 'lens-count-source', 'count-source-composed-word'],
   ['digit ordinal outside fixed lists', 'lens-count-source', 'count-source-digit-ordinal'],
+  ['stale read-only tool count', 'lens-count-source', 'count-source-read-only-tools'],
   ['unregistered rendered carrier', 'lens-count-source', 'count-source-unregistered-carrier'],
   ['floating code block', 'lens-snippet-provenance', 'snippet-provenance'],
   ['dead snippet Git object', 'lens-snippet-provenance', 'snippet-dead-git-object'],

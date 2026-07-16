@@ -36,7 +36,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-mcp-server-you-didnt-build</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
-      <description>Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one. Eight read-only tools let any agent audit a plan and learn the language from the thing that enforces it.</description>
+      <description>Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one. Read-only tools let any agent audit a plan and learn the language from the thing that enforces it.</description>
     </item>
     <item>
       <title>The forecast is local</title>

@@ -321,7 +321,7 @@ const CARDS = [
     fig: 'FIG B.20',
     size: 60,
     headline: 'The MCP server<br><span class="b">you didn&#8217;t build.</span>',
-    sub: 'The nika binary already serves MCP: eight read-only tools — the agent audits any plan and learns the language from the thing that enforces it. No run tool, by design.',
+    sub: 'The nika binary already serves MCP: read-only tools let the agent audit any plan and learn the language from the thing that enforces it. No run tool, by design.',
     detail:
       '<span class="arrow">▸</span><span>one&nbsp;wiring&nbsp;line<span class="sep">·</span>validate&nbsp;+&nbsp;learn<span class="sep">·</span><b>knows,&nbsp;never&nbsp;acts</b></span>',
   },
@@ -509,7 +509,7 @@ const CARDS = [
     fig: 'FIG B.4',
     size: 62,
     headline: 'A standard library,<br><span class="b">not a plugin store.</span>',
-    sub: '23 builtins in the binary, allow-listed, nothing to install&nbsp;— the library grows, the language holds&nbsp;still.',
+    sub: 'Builtins ride the binary, allow-listed, nothing to install&nbsp;— the library grows, the language holds&nbsp;still.',
     detail:
       '<span class="arrow">▸</span><span>files<span class="sep">·</span>data<span class="sep">·</span>web<span class="sep">·</span>flow<span class="sep">·</span><b>nothing&nbsp;to&nbsp;install</b></span>',
   },

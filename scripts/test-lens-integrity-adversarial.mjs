@@ -81,6 +81,25 @@ try {
     root,
     (text) => text.replace(command, "- {run: node scripts/lens-gate.mjs lens-canon-drift, if: '${{ 0 == 1 }}'}"),
   ))
+  expectRejected('wrong workflow trigger', (root) => mutateWorkflow(
+    root,
+    (text) => text.replace('branches: [main]', 'branches: [development]'),
+  ))
+  expectRejected('wrong required runner', (root) => mutateWorkflow(
+    root,
+    (text) => text.replace('runs-on: ubuntu-latest', 'runs-on: macos-latest'),
+  ))
+  expectRejected('extra gate step', (root) => mutateWorkflow(
+    root,
+    (text) => text.replace(command, `${command}\n      - run: node --version`),
+  ))
+  expectRejected('integrity install omitted', (root) => mutateWorkflow(
+    root,
+    (text) => text.replace(
+      '      - run: corepack enable\n      - run: pnpm install --frozen-lockfile\n      - run: pip install pyyaml==6.0.3',
+      '      - run: corepack enable\n      - run: pip install pyyaml==6.0.3',
+    ),
+  ))
   expectRejected('absent job', (root) => mutateWorkflow(root, (text) => removeJob(text, 'lens-gate-canon-drift')))
   expectRejected('renamed job', (root) => mutateWorkflow(root, (text) => text.replace('  lens-gate-canon-drift:', '  lens-gate-canon-drift-renamed:')))
   expectRejected('duplicate workflow job', (root) => mutateWorkflow(root, (text) => `${text}\n  lens-gate-canon-drift:\n    runs-on: ubuntu-latest\n    steps:\n      ${command}\n`))
@@ -95,6 +114,46 @@ try {
     writeFileSync(path, `${JSON.stringify(gates, null, 2)}\n`)
     pinMutation(root, gatesPath)
   })
+  expectRejected('dependency authority omitted', (root) => {
+    const path = join(root, integrityPath)
+    const integrity = JSON.parse(readFileSync(path, 'utf8'))
+    integrity.artifacts = integrity.artifacts.filter((artifact) => artifact.path !== '.npmrc')
+    writeFileSync(path, `${JSON.stringify(integrity, null, 2)}\n`)
+  })
+  expectRejected('build configuration tamper', (root) => {
+    const path = join(root, 'vite.config.ts')
+    writeFileSync(path, `${readFileSync(path, 'utf8')}\n// unpinned build authority\n`)
+  })
+  expectRejected('visible CSS count claim', (root) => {
+    const path = join(root, 'src/pages/home.css')
+    const target = existsSync(path) ? path : join(root, 'src/index.css')
+    writeFileSync(target, `${readFileSync(target, 'utf8')}\n.lot11-count-smuggle::after { content: 'five verbs'; }\n`)
+  })
+  for (const [name, path] of [
+    ['RSS mirror text drift', 'public/rss.xml'],
+    ['llms-full mirror text drift', 'public/llms-full.txt'],
+    ['blog metadata mirror text drift', 'src/content/blog.generated.ts'],
+    ['blog body mirror text drift', 'src/content/blog-bodies.generated.ts'],
+  ]) {
+    expectRejected(name, (root) => {
+      const target = join(root, path)
+      writeFileSync(target, `${readFileSync(target, 'utf8')}\n<!-- lot11 mirror drift -->\n`)
+    })
+  }
+  expectRejected('missing generated mirror', (root) => {
+    rmSync(join(root, 'public/rss.xml'))
+  })
+  expectRejected('extra generated mirror declaration', (root) => {
+    const path = join(root, 'scripts/build-blog.mjs')
+    const source = readFileSync(path, 'utf8')
+    const changed = source.replace(
+      "  'src/content/blog.generated.ts',\n]",
+      "  'src/content/blog.generated.ts',\n  'public/extra-blog-mirror.txt',\n]",
+    )
+    if (changed === source) throw new Error('extra generated mirror fixture did not alter the generator path set')
+    writeFileSync(path, changed)
+    pinMutation(root, 'scripts/build-blog.mjs')
+  })
   expectRejected('coordinated semantic carrier omission', (root) => {
     const omitted = 'src/pages/Home.tsx'
     const home = join(root, omitted)
@@ -104,8 +163,8 @@ try {
     const semantics = join(root, semanticsPath)
     const original = readFileSync(semantics, 'utf8')
     const changed = original.replace(
-      "return [...source, ...posts, 'public/llms.txt'].sort()",
-      "return [...source, ...posts, 'public/llms.txt'].filter((path) => path !== 'src/pages/Home.tsx').sort()",
+      'return [...new Set([...source, ...posts, ...publicText, ...PROJECTION_SOURCES])].sort()',
+      "return [...new Set([...source, ...posts, ...publicText, ...PROJECTION_SOURCES])].filter((path) => path !== 'src/pages/Home.tsx').sort()",
     )
     if (changed === original) throw new Error('semantic omission fixture did not alter carrier discovery')
     writeFileSync(semantics, changed)
@@ -114,7 +173,7 @@ try {
     const universe = JSON.parse(readFileSync(join(root, 'scripts/lens/contracts/carrier-universe.v1.json'), 'utf8'))
     const countPath = 'scripts/lens/contracts/count-source.v1.json'
     const count = JSON.parse(readFileSync(join(root, countPath), 'utf8'))
-    const shrunk = universe.carriers.filter((path) => path !== omitted)
+    const shrunk = universe.normative_sources.filter((path) => path !== omitted)
     count.carrier_census.count = shrunk.length
     count.carrier_census.set_sha256 = sha(Buffer.from(`${shrunk.join('\n')}\n`))
     count.bindings = count.bindings.filter((binding) => binding.path !== omitted)
@@ -122,7 +181,7 @@ try {
     writeFileSync(join(root, countPath), `${JSON.stringify(count, null, 2)}\n`)
     pinMutation(root, countPath)
   })
-  console.log('LENS-006 integrity adversarial harness: 14/14 counterexamples rejected')
+  console.log('LENS-006 integrity adversarial harness: 27/27 counterexamples rejected')
 } finally {
   rmSync(scratch, { recursive: true, force: true })
 }
