@@ -111,7 +111,7 @@
     },
     {
       "path": "scripts/test-lens-integrity-adversarial.mjs",
-      "sha256": "91358c06f8cb226412377357bf4e06f040f87879c58b0de2a2b67459a984afa0"
+      "sha256": "965b80ef365676df3046945628fddd8e438b1c0bd464eee83bcaae61f123abbd"
     },
     {
       "path": "scripts/test-lens-semantics-adversarial.mjs",

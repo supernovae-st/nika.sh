@@ -182,7 +182,7 @@ try {
       '-c', 'user.name=Nika', '-c', 'user.email=nika@supernovae.studio',
       'commit', '--quiet', '-m', 'test: coordinate publish authority drift',
     ])
-  }, 'deployment command projects exactly onto sealed build')
+  }, 'publish-input build_command differs from the closed contract')
   expectRejected('visible CSS count claim', (root) => {
     const path = join(root, 'src/pages/home.css')
     const target = existsSync(path) ? path : join(root, 'src/index.css')
