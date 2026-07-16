@@ -15,6 +15,7 @@ describe('palette-query · the prefix grammar', () => {
     expect(parseQuery('E: DAG')).toEqual({ kind: 'error', needle: 'DAG' })
     expect(parseQuery('blog:drum')).toEqual({ kind: 'post', needle: 'drum' })
     expect(parseQuery('v:')).toEqual({ kind: 'verb', needle: '' })
+    expect(parseQuery('s:edge')).toEqual({ kind: 'set', needle: 'edge' })
   })
 
   it('an unknown prefix is NOT a filter — the query stays whole', () => {

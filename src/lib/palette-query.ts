@@ -16,6 +16,7 @@ export type PaletteKind =
   | 'verb'
   | 'word'
   | 'usecase'
+  | 'set'
 
 /* one short + one full alias per kind (p is pages · posts ride b for blog) */
 export const KIND_PREFIX: Record<string, PaletteKind> = {
@@ -40,6 +41,8 @@ export const KIND_PREFIX: Record<string, PaletteKind> = {
   u: 'usecase',
   uc: 'usecase',
   usecase: 'usecase',
+  s: 'set',
+  set: 'set',
 }
 
 /** parse a raw palette query into an optional kind scope + the needle */
