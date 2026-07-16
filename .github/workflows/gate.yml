@@ -33,8 +33,10 @@ jobs:
         run: pnpm test
       - name: build
         run: pnpm build
-      - name: size budget (initial JS ≤ 350 KB gz · three-stack stays lazy)
+      - name: size budget (ceiling lives in scripts/size-budget.mjs · three-stack stays lazy)
         run: node scripts/size-budget.mjs
+      - name: integrity sweep (links · anchors · jsonld · indexing · waiver liquidation)
+        run: node scripts/lens/integrity-sweep.mjs
       - name: live-URL contracts present in dist
         run: |
           for f in install.sh llms.txt schema/workflow.json errors/catalog.json 404.html sitemap.xml robots.txt; do
