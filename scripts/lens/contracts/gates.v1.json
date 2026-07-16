@@ -1,0 +1,15 @@
+{
+  "contract_version": 1,
+  "gates": [
+    {"id": "lens-canon-drift", "job": "lens-gate-canon-drift", "command": "node scripts/lens-gate.mjs lens-canon-drift", "negative": "canon-drift"},
+    {"id": "lens-forbidden-keys", "job": "lens-gate-forbidden-keys", "command": "node scripts/lens-gate.mjs lens-forbidden-keys", "negative": "forbidden-keys"},
+    {"id": "lens-manual-edit", "job": "lens-gate-manual-edit", "command": "node scripts/lens-gate.mjs lens-manual-edit", "negative": "manual-edit"},
+    {"id": "lens-pin-verify", "job": "lens-gate-pin-verify", "command": "node scripts/lens-gate.mjs lens-pin-verify", "negative": "pin-verify"},
+    {"id": "lens-count-source", "job": "lens-gate-count-source", "command": "node scripts/lens-gate.mjs lens-count-source", "negative": "count-source"},
+    {"id": "lens-snippet-provenance", "job": "lens-gate-snippet-provenance", "command": "node scripts/lens-gate.mjs lens-snippet-provenance", "negative": "snippet-provenance"},
+    {"id": "lens-feature-maturity", "job": "lens-gate-feature-maturity", "command": "node scripts/lens-gate.mjs lens-feature-maturity", "negative": "feature-maturity"},
+    {"id": "lens-channel-policy", "job": "lens-gate-channel-policy", "command": "node scripts/lens-gate.mjs lens-channel-policy", "negative": "channel-policy"}
+  ],
+  "integrity_job": "lens-gate-integrity",
+  "integrity_command": "node scripts/verify-lens-ci.mjs"
+}

@@ -190,14 +190,14 @@
     {"path": "src/content/errors.generated.ts", "sha256": "268a147e5c47311a8953a5bc4c8746e5a66b2f88f6d8f03ef0ba8c9ebdf71868", "consumers": ["src/pages/Errors.tsx"]},
     {"path": "src/content/language.generated.ts", "sha256": "7b3dee5cffda169c61b6f8a723eb224e42e48b96a4f6d30121bfe916e15ca5b6", "consumers": ["src/pages/Language.tsx"]},
     {"path": "src/content/providers.generated.ts", "sha256": "8e222bec3607263a381f9dcfe64ac69c50c8278edf9f018f01150a64a42fcc3d", "consumers": ["src/pages/Providers.tsx"]},
-    {"path": "src/content/tools.generated.ts", "sha256": "2d9d07e04d287f2aceb67a232422f38e0d64f60231ff660d4ea70f4d4d2a6ef6", "consumers": ["src/pages/Tools.tsx"]},
-    {"path": "src/content/tool-usage.generated.ts", "sha256": "201150b0c1e3baaf1caa87b6f19c39975bfe1c9268db4dcd1b08acf939a1fd70", "consumers": ["src/pages/ToolPage.tsx"]},
-    {"path": "src/content/tool-usage-refs.generated.ts", "sha256": "7e47ba121e4fae6e6b09e20d3fd419ba4833f2265c3a65d2d29febc478d807a6", "consumers": ["src/content/graph.ts"]},
+    {"path": "src/content/tools.generated.ts", "sha256": "49df4969d9c412b3f8d852f82ec57f1b504bf51db3b86e78a21937c8abb7d3be", "consumers": ["src/pages/Tools.tsx"]},
+    {"path": "src/content/tool-usage.generated.ts", "sha256": "6f5ba8433792b313bef4769345514101b071061f43c014640682b017d26f05b1", "consumers": ["src/pages/ToolPage.tsx"]},
+    {"path": "src/content/tool-usage-refs.generated.ts", "sha256": "1e7380fb8f8ffc691ffc28331300c2185d9402c4db0ac0cf37863e4a44a9aed8", "consumers": ["src/content/graph.ts"]},
     {"path": "src/content/language-usage.generated.ts", "sha256": "dd0ce016b03a3eb26b869c7d6a2539c0c0791e1e597955b742af1ff0a74806e9", "consumers": ["src/pages/WordPage.tsx"]},
     {"path": "src/content/language-usage-refs.generated.ts", "sha256": "749bdac1df0ec06b5ea89e0cd8c066f57f262457307a414f9cc26e913c3eb015", "consumers": ["src/content/graph.ts"]},
     {"path": "src/lib/lint-fixtures.generated.ts", "sha256": "a2ef545b32f1dad0531a293c1d75f95b225b572d822cda22c21860ca3174b0e9", "consumers": ["src/lib/nika-lint-conformance.test.ts"]},
     {"path": "src/content/gate-matrix.generated.ts", "sha256": "57cfcf9bd76329b65f029ff588b4f2eae26887f202005eea9076166eee04f7ea", "consumers": ["src/test/gate-matrix.test.ts"]},
-    {"path": "src/content/palette.generated.ts", "sha256": "8890118c56083436884130ce8240f1e1510eab2a1b1e8bfc029268e1ebb7ce0b", "consumers": ["src/shell/CommandK.tsx"]}
+    {"path": "src/content/palette.generated.ts", "sha256": "c4769189b223821309d5226c2960c24324dba4d591c8e699a1ea1d998c2c0806", "consumers": ["src/shell/CommandK.tsx"]}
   ],
   "build": {
     "command": ["pnpm", "build"],

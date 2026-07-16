@@ -45,6 +45,12 @@ export const TOOL_USAGE_REFS: Record<string, ToolUsageRefs> = {
       "NIKA-BUILTIN-001"
     ]
   },
+  "decide": {
+    "templates": [],
+    "errorCodes": [
+      "NIKA-BUILTIN-001"
+    ]
+  },
   "done": {
     "templates": [
       "agent-loop"

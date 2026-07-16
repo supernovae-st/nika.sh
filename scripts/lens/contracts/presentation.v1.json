@@ -1,0 +1,16 @@
+{
+  "contract_version": 1,
+  "forbidden_keys": ["depends_on", "max_iterations", "output_schema"],
+  "forbidden_key_carriers": [
+    "src/sections/Hero.tsx",
+    "src/sections/Proof.tsx",
+    "src/sections/ProofStrip.tsx",
+    "src/sections/faq-data.ts",
+    "public/llms.txt"
+  ],
+  "count_sources": [
+    "public/llms.txt",
+    "content/blog/2026-05-14-standard-library-not-plugin-store.md"
+  ],
+  "adjacent_claim_roots": ["src"]
+}

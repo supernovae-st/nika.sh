@@ -173,6 +173,25 @@
       ]
     },
     {
+      "name": "nika:decide",
+      "bare": "decide",
+      "category": "data",
+      "description": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt.",
+      "args": [
+        {
+          "name": "bundle",
+          "required": true,
+          "desc": "bundle path or inline Decision Bundle object"
+        },
+        {
+          "name": "evidence",
+          "required": true,
+          "type": "object",
+          "desc": "EvidenceSnapshot with time and cited evidence items"
+        }
+      ]
+    },
+    {
       "name": "nika:done",
       "bare": "done",
       "category": "core",

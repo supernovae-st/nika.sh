@@ -219,6 +219,22 @@
       "category": "data",
       "canon": null
     },
+    "builtin/decide": {
+      "label": "decide",
+      "semantic": "Deterministic decision kernel — evidence plus bundle to a traced receipt",
+      "svg": "https://nika.sh/brand/icons/builtin-decide.svg",
+      "set": "supernovae",
+      "glyph": "filter-settings/filter-1",
+      "pattern": null,
+      "grid": null,
+      "alternate": null,
+      "hue": null,
+      "fx": [],
+      "parent": "verb/invoke",
+      "shares_glyph_with": null,
+      "category": "data",
+      "canon": null
+    },
     "builtin/done": {
       "label": "done",
       "semantic": "The loop-completion sentinel (agent loops only)",

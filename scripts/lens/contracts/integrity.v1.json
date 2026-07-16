@@ -1,0 +1,15 @@
+{
+  "contract_version": 1,
+  "artifacts": [
+    {"path": ".github/workflows/lens-gates.yml", "sha256": "0498a82b0860c1a1f84cabdd8407f258479f3397b4ec0c1285d258ab1e5e089d"},
+    {"path": "scripts/lens-gate.mjs", "sha256": "b43ae522df0de2c3df2d7f89e718dade27ea7ea93e0800c2be5261a8bc423095"},
+    {"path": "scripts/verify-lens-ci.mjs", "sha256": "ad033650e2b7800dbbd2aefacd15777a8d8b0663877ce3cbb48f245fc008e3d5"},
+    {"path": "scripts/spec-resync.contract.json", "sha256": "c9f7ef0633094a7f29ace2d5aa66269d07e74ac2a1e4d5c35c3c2793762d8d0f"},
+    {"path": "scripts/lens/contracts/gates.v1.json", "sha256": "a96216b81e34da1832e95ba920ce5c25437f99631e7c52a2872fed42f93066f1"},
+    {"path": "scripts/lens/contracts/presentation.v1.json", "sha256": "129536b43a8dcbeee81a4ddf6c333dc9744d4d2525491bb4a9dd9e85a646618a"},
+    {"path": "scripts/lens/contracts/snippets.v1.json", "sha256": "ef32e2d74c4fbc65b65786be9d4906303b11cd452f5888e6f89032239270430e"},
+    {"path": "scripts/lens/contracts/features.v1.json", "sha256": "9d48a3836c0f2e890c828bf3a27219fe87943ffaf0fa890bc5e2a3ae4f111c4f"},
+    {"path": "scripts/lens/contracts/channels.v1.json", "sha256": "15fc0300186f2a556906f893165d160f70a8266142058f8bc0c62d9af0745cfd"},
+    {"path": "scripts/lens/fixtures/negative.v1.json", "sha256": "44e33497fb03ca26f63700201346c1e1c1e5c9ea2a798473edb4e0f60f130825"}
+  ]
+}

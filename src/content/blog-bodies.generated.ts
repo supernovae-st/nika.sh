@@ -1234,7 +1234,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " speaks the protocol over stdio (five revisions negotiated, current through 2026) and exposes 8 tools. They divide into exactly two jobs."
+          "text": " speaks the protocol over stdio (five revisions negotiated, current through 2026) and exposes 9 tools. They divide into exactly two jobs."
         }
       ]
     },
@@ -7225,7 +7225,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " lives in the standard library, reached through invoke, next to read, write, jq and the other 23 builtins. Everything callable is a tool. Everything about ordering is the graph."
+          "text": " lives in the standard library, reached through invoke, next to read, write, jq and the other 24 builtins. Everything callable is a tool. Everything about ordering is the graph."
         }
       ]
     },
@@ -7506,7 +7506,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "strong",
-          "text": "27 builtins ride the binary"
+          "text": "28 builtins ride the binary"
         },
         {
           "k": "text",

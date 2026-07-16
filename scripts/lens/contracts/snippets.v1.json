@@ -1,0 +1,12 @@
+{
+  "contract_version": 1,
+  "snippets": [
+    {
+      "id": "public-site-constants",
+      "path": "src/content.ts",
+      "sha256": "d9bcf51c220df193c2ee2cae3c1b2b7daaae6f9be88dc93c09d99a04d7436566",
+      "source_repository": "supernovae-st/nika.sh",
+      "source_commit": "4e2d817720044001cfb394891bb14f296522417e"
+    }
+  ]
+}

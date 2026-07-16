@@ -18,7 +18,7 @@ a verb is a distinct native execution model.
 The language envelope is `nika: v1`, frozen forever. The engine versions
 independently on real semver toward a 1.0 launch; currently v0.103.0.
 
-Stdlib v0.1: 27 builtins · 16 providers (Ollama, LM Studio, llama.cpp,
+Stdlib v0.1: 28 builtins · 16 providers (Ollama, LM Studio, llama.cpp,
 LocalAI, vLLM, Mistral, Anthropic, OpenAI, Gemini, Groq, DeepSeek, xAI,
 OpenRouter, Hugging Face, NVIDIA, mock) · 9 extract modes. Bring your own keys. Every key
 stays yours. Local-first. Runs on your laptop, no daemon.
@@ -70,7 +70,7 @@ data language (jq) · workflows are callable · mock-first.
 - The language register (every schema-declared key: scopes, types, required flags): https://nika.sh/language (e.g. https://nika.sh/language/with) · the contract: https://nika.sh/schema/workflow.json
 - Provider register (local first, model pins, env vars): https://nika.sh/providers · machine catalog: https://nika.sh/providers/catalog.json
 - Engine source (AGPL): https://github.com/supernovae-st/nika
-- Agent lane (the MCP oracle · 8 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools): https://github.com/supernovae-st/nika-agents
+- Agent lane (the MCP oracle · 9 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools · nika_inspect): https://github.com/supernovae-st/nika-agents
 - Editor lane (VS Code · Cursor · Windsurf: syntax, diagnostics, DAG view; files validate against https://nika.sh/spec/v1/workflow.schema.json via the yaml-language-server line): https://github.com/supernovae-st/nika-vscode
 - Install: https://nika.sh/#install (or `brew install supernovae-st/tap/nika`)
 - Docs: https://docs.nika.sh

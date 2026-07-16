@@ -844,6 +844,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "tool",
+    "label": "nika:decide",
+    "href": "/tools/decide",
+    "hint": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt."
+  },
+  {
+    "kind": "tool",
     "label": "nika:done",
     "href": "/tools/done",
     "hint": "Mark the current agent loop complete (the loop-completion sentinel · agent loops only)."

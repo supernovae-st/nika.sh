@@ -1,0 +1,17 @@
+nika: v1
+workflow:
+  id: deterministic-triage
+  description: "apply a governed decision bundle to cited evidence"
+
+tasks:
+  decide:
+    invoke:
+      tool: "nika:decide"
+      args:
+        bundle: "./decisions/pr-triage.bundle.json"
+        evidence:
+          t: "2026-07-16T00:00:00Z"
+          evidence: []
+
+outputs:
+  decision: ${{ tasks.decide.output }}

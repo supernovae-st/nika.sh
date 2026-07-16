@@ -1,0 +1,20 @@
+{
+  "contract_version": 1,
+  "allowed_maturity": ["operational", "gated", "experimental", "deferred"],
+  "features": [
+    {
+      "id": "spec-resync",
+      "maturity": "operational",
+      "evidence": ["scripts/spec-resync.contract.json", "scripts/spec-resync-run.mjs"],
+      "presentation": ".github/workflows/spec-resync.yml",
+      "token": "spec-resync-run.mjs"
+    },
+    {
+      "id": "lens-presentation-gates",
+      "maturity": "gated",
+      "evidence": ["scripts/lens-gate.mjs", ".github/workflows/lens-gates.yml"],
+      "presentation": ".github/workflows/lens-gates.yml",
+      "token": "lens-gate-canon-drift"
+    }
+  ]
+}

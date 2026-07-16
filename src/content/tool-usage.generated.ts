@@ -88,6 +88,18 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "NIKA-BUILTIN-001"
     ]
   },
+  "decide": {
+    "bare": "decide",
+    "yaml": "nika: v1\nworkflow:\n  id: deterministic-triage\n  description: \"apply a governed decision bundle to cited evidence\"\n\ntasks:\n  decide:\n    invoke:\n      tool: \"nika:decide\"\n      args:\n        bundle: \"./decisions/pr-triage.bundle.json\"\n        evidence:\n          t: \"2026-07-16T00:00:00Z\"\n          evidence: []\n\noutputs:\n  decision: ${{ tasks.decide.output }}",
+    "source": {
+      "kind": "crafted",
+      "file": "decide.nika.yaml"
+    },
+    "templates": [],
+    "errorCodes": [
+      "NIKA-BUILTIN-001"
+    ]
+  },
   "done": {
     "bare": "done",
     "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",

@@ -21,7 +21,7 @@ One line for Claude Code; for Cursor, Claude Desktop, or anything else that spea
 { "mcpServers": { "nika": { "command": "nika", "args": ["mcp"] } } }
 ```
 
-No separate package, no port, no server process to babysit. `nika mcp` speaks the protocol over stdio (five revisions negotiated, current through 2026) and exposes <!-- canon:mcpTools -->8<!-- /canon --> tools. They divide into exactly two jobs.
+No separate package, no port, no server process to babysit. `nika mcp` speaks the protocol over stdio (five revisions negotiated, current through 2026) and exposes <!-- canon:mcpTools -->9<!-- /canon --> tools. They divide into exactly two jobs.
 
 **Job one: the agent validates before anything runs.** `nika_check` and `nika_explain` are [the same static audit](/blog/injection-goes-nowhere) the CLI runs (schema, DAG, permits, secrets, cost), reached as a tool call. We did not mock this for the post: the workflow below was audited by a real agent, over MCP, mid-session. Handed a plan whose `save` step reaches for `~/.ssh/authorized_keys`, the human CLI prints the red `PERMITS ✖` console you have seen before. The MCP surface returns the same verdict *as data*:
 

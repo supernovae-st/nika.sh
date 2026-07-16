@@ -1,0 +1,15 @@
+{
+  "contract_version": 1,
+  "production": {
+    "host": "nika.sh",
+    "branch": "main",
+    "deploy_on_push": true,
+    "release_closed": true
+  },
+  "preview": {
+    "host_pattern": "*.ondigitalocean.app",
+    "release_closed": false,
+    "banner": "preview"
+  },
+  "deployment_manifest": ".do/app.yaml"
+}

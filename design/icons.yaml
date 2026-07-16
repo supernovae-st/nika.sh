@@ -75,7 +75,7 @@ entities:
     fx: [run-glow]
     canon: spec/02-verbs.md
 
-  # ── builtins · the 25 nika:* tools (parity-gated vs canon) ────────────────
+  # ── builtins · the 28 nika:* tools (parity-gated vs canon) ────────────────
   # Every builtin is reached through invoke: → parent verb/invoke; in a live
   # run it wears invoke's cyan; statically it wears the dim ink like all UI.
   builtin/assert:
@@ -108,6 +108,12 @@ entities:
     semantic: "Timestamp arithmetic (now|add|subtract|format|parse|diff)"
     parent: verb/invoke
     supernovae: time-date/calendar-clock
+    category: data
+  builtin/decide:
+    label: decide
+    semantic: "Deterministic decision kernel — evidence plus bundle to a traced receipt"
+    parent: verb/invoke
+    supernovae: filter-settings/filter-1
     category: data
   builtin/done:
     label: done

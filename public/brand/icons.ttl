@@ -105,6 +105,15 @@ nkd:fx-dim a nkd:Effect .
   nkd:category "data" ;
   nkd:servedAt <https://nika.sh/brand/icons/builtin-date.svg> .
 
+<https://nika.sh/ontology/design#builtin-decide> a nkd:Builtin ;
+  rdfs:label "decide" ;
+  nkd:semantic "Deterministic decision kernel — evidence plus bundle to a traced receipt" ;
+  nkd:glyph "filter-settings/filter-1" ;
+  nkd:glyphSet "supernovae" ;
+  nkd:parent <https://nika.sh/ontology/design#verb-invoke> ;
+  nkd:category "data" ;
+  nkd:servedAt <https://nika.sh/brand/icons/builtin-decide.svg> .
+
 <https://nika.sh/ontology/design#builtin-done> a nkd:Builtin ;
   rdfs:label "done" ;
   nkd:semantic "The loop-completion sentinel (agent loops only)" ;
