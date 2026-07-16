@@ -82,8 +82,12 @@ const FRAMES = [
      reduced-motion register: the record's VERTICAL truth (the stage never
      mounts under reduce), reveals instant, spine/strip/i18n frame all
      pixel-guarded. Route-aware frames navigate once, then shoot. */
-  { name: 'manifesto-record', route: '/manifesto', p: 0.62 },
-  { name: 'manifesto-close', route: '/manifesto', p: 0.84 },
+  /* ELEMENT-ANCHORED (the 2026-07-15 incident law: a p-frame on a page
+     that grows lives on a line-boundary knife edge — one sub-line height
+     variance re-bakes both OS for nothing). The anchor pins the CONTENT;
+     growth elsewhere on the page no longer moves the frame. */
+  { name: 'manifesto-record', route: '/manifesto', anchor: '#rec-open-weights-era', at: 0.3 },
+  { name: 'manifesto-close', route: '/manifesto', anchor: '#mf-close', at: 0.18 },
   /* the spec machine joins the gate (v4.8) — same reduced register: the
      canvas never mounts under reduce, so these guard the DOM truth (the
      split stage, the 2D schematic in the rail, the lit TOC ticks + the
@@ -285,9 +289,13 @@ await send('Page.reload')
 await sleep(4000)
 await appliedGate()
 
-async function shootFrame(p) {
-  /* body-progress scroll with the c-v re-aim (the W11 harness lesson) */
-  const aim = `(() => { const d = document.documentElement; return ${p} * (d.scrollHeight - innerHeight) })()`
+async function shootFrame(f) {
+  /* element-anchored when the frame declares one (the content IS the
+     reference); body-progress otherwise — both keep the c-v re-aim (the
+     W11 harness lesson) */
+  const aim = f.anchor
+    ? `(() => { const el = document.querySelector('${f.anchor}'); if (!el) throw new Error('frame anchor missing: ${f.anchor}'); return scrollY + el.getBoundingClientRect().top - Math.round(innerHeight * ${f.at ?? 0.35}) })()`
+    : `(() => { const d = document.documentElement; return ${f.p} * (d.scrollHeight - innerHeight) })()`
   await evaluate(`window.scrollTo(0, ${aim})`)
   await sleep(350)
   await evaluate(`window.scrollTo(0, ${aim})`)
@@ -330,7 +338,7 @@ for (const f of FRAMES) {
   }
   /* shoot FIRST, skip after — the sequential scroll warm-up is part of the
      measurement (see the --only note above) */
-  let buf = await shootFrame(f.p)
+  let buf = await shootFrame(f)
   if (ONLY && !ONLY.has(f.name)) continue
   let png = PNG.sync.read(buf)
   const goldenPath = join(GOLDEN_DIR, `${f.name}.png`)
@@ -350,7 +358,7 @@ for (const f of FRAMES) {
   /* flake armor · if the shot is near-black but the golden isn't, re-shoot once */
   if (meanLuma(png) < 4 && meanLuma(golden) >= 4) {
     console.warn(`flake suspected on ${f.name} (near-black) — re-shooting`)
-    buf = await shootFrame(f.p)
+    buf = await shootFrame(f)
     png = PNG.sync.read(buf)
   }
 

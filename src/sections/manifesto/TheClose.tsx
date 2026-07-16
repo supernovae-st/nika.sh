@@ -7,7 +7,7 @@ import type { ManifestoCopy } from '../../content/manifesto-copy'
    right below is THE mark (one signature, one close · the double-footer fix) */
 export function TheClose({ c }: { c: ManifestoCopy }) {
   return (
-    <section className="mf-prose mx-auto flex flex-col items-center px-6 pt-20 pb-28 text-center">
+    <section id="mf-close" className="mf-prose mx-auto flex flex-col items-center px-6 pt-20 pb-28 text-center">
       <div className="rv mf-secreg w-full" aria-hidden>
         <span className="mf-secno">05</span>
         <span className="mf-secrule" />
