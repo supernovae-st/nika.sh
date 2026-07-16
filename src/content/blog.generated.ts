@@ -52,7 +52,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The registry re-proves everything",
     "tag": "Engine",
     "date": "2026-07-14",
-    "description": "A workflow registry where nothing is taken on faith: every entry is content-pinned to an exact source revision and re-proven by CI — hash, certificate, advisories. The npm-of-workflows, minus the trust-me.",
+    "description": "A workflow registry where nothing is taken on faith: every entry is content-pinned to an exact source revision and re-proven by CI (hash, certificate, advisories). The npm-of-workflows, minus the trust-me.",
     "readingMin": 4
   },
   {

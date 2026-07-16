@@ -10,7 +10,7 @@ An ai agent workflow is any pipeline where a model chooses some of the steps. Th
 
 Neither pole is "the right way to build agents." The design question is narrower and more useful: *which of your steps actually need a model's judgment at runtime?* Most steps do not: read these files, call this tool, save that output. Some genuinely do: triage, research, review, anything where the path depends on what the content turns out to say. The spectrum is not a choice of tool. In a Nika file it is a per-task choice of verb: `infer` when you know the shape of the step, `agent` when you do not.
 
-What makes the dynamic end shippable is that the freedom is **contained in a task**. Here is the workflow this post ran, instantiated from the engine's own `agent-loop` template (`nika new --from agent-loop`), whose header states the doctrine outright: *"Three leashes (NEVER ship an unleashed agent): `tools:` default-deny — grant the MINIMUM; `max_turns` + `max_tokens_total` — the worst case is bounded; `schema:` — the final message is TYPED, prose is not a contract."*
+What makes the dynamic end shippable is that the freedom is **contained in a task**. Here is the workflow this post ran, instantiated from the engine's own `agent-loop` template (`nika new --from agent-loop`), whose header states the doctrine outright: *"Three leashes (NEVER ship an unleashed agent): `tools:` default-deny · grant the MINIMUM; `max_turns` + `max_tokens_total` · the worst case is bounded; `schema:` · the final message is TYPED, prose is not a contract."*
 
 ```yaml notes-triage.nika.yaml
 nika: v1

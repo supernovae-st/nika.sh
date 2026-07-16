@@ -32,7 +32,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". A name you recognize, a README that reads well, and a postinstall script runs on your machine with your credentials in reach. Every package ecosystem since has rediscovered the same wound — typosquats, rug-pulled versions, maintainers gone rogue — and patched it with process: more review, more badges, more gatekeepers to trust instead."
+          "text": ". A name you recognize, a README that reads well, and a postinstall script runs on your machine with your credentials in reach. Every package ecosystem since has rediscovered the same wound (typosquats, rug-pulled versions, maintainers gone rogue) and patched it with process: more review, more badges, more gatekeepers to trust instead."
         }
       ]
     },
@@ -71,7 +71,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " here. A registry entry does not point at a tarball of code that will do whatever it does at runtime — it points at "
+          "text": " here. A registry entry does not point at a tarball of code that will do whatever it does at runtime. It points at "
         },
         {
           "k": "link",
@@ -110,7 +110,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — a typosquat can steal a name, it cannot fake a hash. The "
+          "text": ": a typosquat can steal a name, it cannot fake a hash. The "
         },
         {
           "k": "code",
@@ -118,7 +118,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " pins provenance to an exact commit — a rug-pull can rewrite a branch, it cannot rewrite the revision you resolved. The "
+          "text": " pins provenance to an exact commit: a rug-pull can rewrite a branch, it cannot rewrite the revision you resolved. The "
         },
         {
           "k": "code",
@@ -143,7 +143,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — so the summary you read ("
+          "text": ". So the summary you read ("
         },
         {
           "k": "code",
@@ -167,7 +167,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " is the post-hoc channel — findings attach to the entry after the fact, in the open."
+          "text": " is the post-hoc channel: findings attach to the entry after the fact, in the open."
         }
       ]
     },
@@ -176,7 +176,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The certificate underneath goes further than the summary. It carries the full inferred permits boundary — a pinned "
+          "text": "The certificate underneath goes further than the summary. It carries the full inferred permits boundary (a pinned "
         },
         {
           "k": "code",
@@ -184,7 +184,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ", nine named tools — and, written into that boundary, the audit's own refusals as review comments: "
+          "text": ", nine named tools) and, written into that boundary, the audit's own refusals as review comments: "
         },
         {
           "k": "em",
@@ -210,7 +210,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Now the part that makes this a protocol instead of a promise. The index carries its own verification instructions, and they are worth quoting exactly — the "
+          "text": "Now the part that makes this a protocol instead of a promise. The index carries its own verification instructions, and they are worth quoting exactly. The "
         },
         {
           "k": "code",
@@ -291,7 +291,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " for it. So I didn't — the loop closes in a few lines, no special tooling:"
+          "text": " for it. So I didn't. The loop closes in a few lines, no special tooling:"
         }
       ]
     },
@@ -321,7 +321,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " machine — the third leg of the protocol, and the one that matters most, because it means the registry's whole trust chain is "
+          "text": " machine: the third leg of the protocol, and the one that matters most, because it means the registry's whole trust chain is "
         },
         {
           "k": "strong",
@@ -355,7 +355,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The registry's own plumbing follows the same discipline. First-party entries are not hand-curated — they are a projection of the spec's example pack at a pinned spec revision ("
+          "text": "The registry's own plumbing follows the same discipline. First-party entries are not hand-curated: they are a projection of the spec's example pack at a pinned spec revision ("
         },
         {
           "k": "code",
@@ -379,7 +379,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " — because the audience that installs workflows increasingly "
+          "text": ", because the audience that installs workflows increasingly "
         },
         {
           "k": "link",
@@ -406,7 +406,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ": a file can be mailed, diffed, reviewed — and published. The registry is what publishing looks like when the ecosystem refuses to inherit npm's axiom. Nothing is taken on faith; everything is re-derivable; the gatekeeper you don't have to trust is also the gatekeeper who can't betray you."
+          "text": ": a file can be mailed, diffed, reviewed. And published. The registry is what publishing looks like when the ecosystem refuses to inherit npm's axiom. Nothing is taken on faith; everything is re-derivable; the gatekeeper you don't have to trust is also the gatekeeper who can't betray you."
         }
       ]
     }
@@ -2373,7 +2373,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "em",
-          "text": "\"Three leashes (NEVER ship an unleashed agent): tools: default-deny — grant the MINIMUM; max_turns + max_tokens_total — the worst case is bounded; schema: — the final message is TYPED, prose is not a contract.\""
+          "text": "\"Three leashes (NEVER ship an unleashed agent): tools: default-deny · grant the MINIMUM; max_turns + max_tokens_total · the worst case is bounded; schema: · the final message is TYPED, prose is not a contract.\""
         }
       ]
     },

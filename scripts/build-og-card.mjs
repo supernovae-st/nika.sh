@@ -72,9 +72,9 @@ const CARDS = [
     out: 'og.png',
     fig: 'FIG 0.0',
     headline: 'See what your AI will do.<br><span class="b">Before it does it.</span>',
-    sub: 'The control layer for AI agents&nbsp;— a reviewable, enforceable plan before it acts.',
+    sub: 'The control layer for AI agents: a reviewable, enforceable plan before it acts.',
     detail:
-      '<span class="arrow">▸</span><span><b>permits:</b> everything it can touch&nbsp;— and nothing&nbsp;else.</span>',
+      '<span class="arrow">▸</span><span><b>permits:</b> everything it can touch, and nothing&nbsp;else.</span>',
   },
   {
     // /spec — the language reference. The contract a plan must satisfy.
@@ -84,7 +84,7 @@ const CARDS = [
     size: 62, // a longer headline · a touch smaller so 3 lines clear the brand row
     headline:
       'The contract an agent<br>must satisfy<br><span class="b">before it acts.</span>',
-    sub: 'The nika language reference&nbsp;— the envelope, the four verbs, the task shape, the standard&nbsp;library.',
+    sub: 'The nika language reference: the envelope, the four verbs, the task shape, the standard&nbsp;library.',
     detail:
       '<span class="arrow">▸</span><span><b>permits:</b> &nbsp;infer&nbsp;<span class="sep">·</span>&nbsp;exec&nbsp;<span class="sep">·</span>&nbsp;invoke&nbsp;<span class="sep">·</span>&nbsp;agent</span>',
   },
@@ -93,7 +93,7 @@ const CARDS = [
     out: 'og-use-cases.png',
     fig: 'FIG 6.0',
     headline: 'Real plans<br><span class="b">you&rsquo;d review.</span>',
-    sub: 'The full showcase&nbsp;— every métier, every workflow, each with the exact spec-valid YAML that runs&nbsp;it.',
+    sub: 'The full showcase: every métier, every workflow, each with the exact spec-valid YAML that runs&nbsp;it.',
     detail:
       '<span class="arrow">▸</span><span><b>builders</b><span class="sep">·</span>research<span class="sep">·</span>content<span class="sep">·</span>ops<span class="sep">·</span>business</span>',
   },
@@ -112,7 +112,7 @@ const CARDS = [
     out: 'og-play.png',
     fig: 'FIG P.0',
     headline: 'Write Nika,<br><span class="b">checked live.</span>',
-    sub: 'Real Nika, validated as you type&nbsp;— the same NIKA codes the engine raises. Everything runs in your tab; nothing is sent&nbsp;anywhere.',
+    sub: 'Real Nika, validated as you type: the same NIKA codes the engine raises. Everything runs in your tab; nothing is sent&nbsp;anywhere.',
     detail:
       '<span class="arrow">▸</span><span>edit<span class="sep">·</span>watch&nbsp;the&nbsp;plan<span class="sep">·</span><b>simulate&nbsp;the&nbsp;order</b></span>',
   },
@@ -130,7 +130,7 @@ const CARDS = [
     out: 'og-learn.png',
     fig: 'FIG L.0',
     headline: 'One file,<br><span class="b">line by line.</span>',
-    sub: 'A workflow is a file you can read&nbsp;— nine small ideas make you fluent. Every fragment is real, spec-correct&nbsp;YAML.',
+    sub: 'A workflow is a file you can read: nine small ideas make you fluent. Every fragment is real, spec-correct&nbsp;YAML.',
     detail:
       '<span class="arrow">▸</span><span>read<span class="sep">·</span>hover<span class="sep">·</span><b>run&nbsp;it&nbsp;in&nbsp;the&nbsp;playground</b></span>',
   },
@@ -139,7 +139,7 @@ const CARDS = [
     out: 'og-brand.png',
     fig: 'FIG D.0',
     headline: 'One mark,<br><span class="b">one ontology.</span>',
-    sub: 'Every verb, builtin, feature and run-state carries a canonical glyph, hue and motion&nbsp;— declared once, projected everywhere, machine-readable.',
+    sub: 'Every verb, builtin, feature and run-state carries a canonical glyph, hue and motion, declared once, projected everywhere, machine-readable.',
     detail:
       '<span class="arrow">▸</span><span>icons.json<span class="sep">·</span>icons.ttl<span class="sep">·</span><b>hue&nbsp;=&nbsp;alive</b></span>',
   },
@@ -148,7 +148,7 @@ const CARDS = [
     out: 'og-blog.png',
     fig: 'FIG B.0',
     headline: 'Notes from<br><span class="b">the source.</span>',
-    sub: 'Long-form pedagogy on Intent as Code&nbsp;— why useful AI work belongs in a file, and what local-first actually buys&nbsp;you.',
+    sub: 'Long-form pedagogy on Intent as Code: why useful AI work belongs in a file, and what local-first actually buys&nbsp;you.',
     detail:
       '<span class="arrow">▸</span><span>intent&nbsp;as&nbsp;code<span class="sep">·</span>four&nbsp;verbs<span class="sep">·</span><b>local-first</b></span>',
   },
@@ -157,7 +157,7 @@ const CARDS = [
     out: 'og-changelog.png',
     fig: 'FIG C.0',
     headline: 'Moving,<br><span class="b">without breaking.</span>',
-    sub: 'Every public milestone, dated and tagged&nbsp;— the spec opened, the verbs locked, the boundary&nbsp;shipped.',
+    sub: 'Every public milestone, dated and tagged: the spec opened, the verbs locked, the boundary&nbsp;shipped.',
     detail:
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
@@ -166,7 +166,7 @@ const CARDS = [
     out: 'og-providers.png',
     fig: 'FIG P.0',
     headline: 'Local first,<br><span class="b">keys stay yours.</span>',
-    sub: 'One <span style="white-space:nowrap">provider:</span> line moves a workflow between models&nbsp;— laptop Ollama to a frontier API is a one-word diff. Keys ride env vars, never a config&nbsp;file.',
+    sub: 'One <span style="white-space:nowrap">provider:</span> line moves a workflow between models: laptop Ollama to a frontier API is a one-word diff. Keys ride env vars, never a config&nbsp;file.',
     detail:
       '<span class="arrow">▸</span><span>local&nbsp;default<span class="sep">·</span>model&nbsp;pins<span class="sep">·</span><b>no&nbsp;inference&nbsp;lock-in</b></span>',
   },
@@ -175,7 +175,7 @@ const CARDS = [
     out: 'og-map.png',
     fig: 'FIG M.0',
     headline: 'Every page,<br><span class="b">one graph.</span>',
-    sub: 'Seven layers, every set counted, every member accountable to the spec&nbsp;— the whole site derives from one atlas, and CI fails when a page ships without joining&nbsp;it.',
+    sub: 'Seven layers, every set counted, every member accountable to the spec: the whole site derives from one atlas, and CI fails when a page ships without joining&nbsp;it.',
     detail:
       '<span class="arrow">▸</span><span>seven&nbsp;layers<span class="sep">·</span>coverage-gated<span class="sep">·</span><b>crawlers&nbsp;get&nbsp;sitemap.xml</b></span>',
   },
@@ -184,7 +184,7 @@ const CARDS = [
     out: 'og-templates.png',
     fig: 'FIG T.1',
     headline: 'Instantiate,<br><span class="b">never invent.</span>',
-    sub: 'Ten complete, valid skeletons with <span style="white-space:nowrap"># SLOT:</span> markers at every decision point&nbsp;— route your intent, copy, fill, check. The path to a correct file is&nbsp;mechanical.',
+    sub: 'Ten complete, valid skeletons with <span style="white-space:nowrap"># SLOT:</span> markers at every decision point: route your intent, copy, fill, check. The path to a correct file is&nbsp;mechanical.',
     detail:
       '<span class="arrow">▸</span><span>route<span class="sep">·</span>copy<span class="sep">·</span>fill<span class="sep">·</span><b>check&nbsp;repairs&nbsp;the&nbsp;rest</b></span>',
   },
@@ -193,7 +193,7 @@ const CARDS = [
     out: 'og-verbs.png',
     fig: 'FIG V.0',
     headline: 'Four verbs,<br><span class="b">locked forever.</span>',
-    sub: 'A verb is a distinct native execution model&nbsp;— <span style="white-space:nowrap">infer · exec · invoke · agent</span>. Every task speaks exactly one; everything callable is a tool, ordering is the DAG&rsquo;s&nbsp;job.',
+    sub: 'A verb is a distinct native execution model: <span style="white-space:nowrap">infer · exec · invoke · agent</span>. Every task speaks exactly one; everything callable is a tool, ordering is the DAG&rsquo;s&nbsp;job.',
     detail:
       '<span class="arrow">▸</span><span>think<span class="sep">·</span>run<span class="sep">·</span>use&nbsp;a&nbsp;tool<span class="sep">·</span><b>delegate&nbsp;on&nbsp;a&nbsp;leash</b></span>',
   },
@@ -202,7 +202,7 @@ const CARDS = [
     out: 'og-language.png',
     fig: 'FIG L.0',
     headline: 'Every word,<br><span class="b">one register.</span>',
-    sub: 'Every key a <span style="white-space:nowrap">.nika.yaml</span> can carry, projected from the served schema&nbsp;— its scopes, its types, its required flags. Descriptions are the contract&rsquo;s own, never&nbsp;prose.',
+    sub: 'Every key a <span style="white-space:nowrap">.nika.yaml</span> can carry, projected from the served schema: its scopes, its types, its required flags. Descriptions are the contract&rsquo;s own, never&nbsp;prose.',
     detail:
       '<span class="arrow">▸</span><span>schema-projected<span class="sep">·</span>scope-mapped<span class="sep">·</span><b>check&nbsp;teaches&nbsp;a&nbsp;miss</b></span>',
   },
@@ -211,7 +211,7 @@ const CARDS = [
     out: 'og-tools.png',
     fig: 'FIG T.0',
     headline: 'One namespace,<br><span class="b">no plugin store.</span>',
-    sub: 'Every <span style="white-space:nowrap">nika:</span> builtin the engine ships&nbsp;— files, data, network, media&nbsp;— versioned with the spec and reviewed like the rest of your&nbsp;file.',
+    sub: 'Every <span style="white-space:nowrap">nika:</span> builtin the engine ships (files, data, network, media), versioned with the spec and reviewed like the rest of your&nbsp;file.',
     detail:
       '<span class="arrow">▸</span><span>invoke-gated<span class="sep">·</span>permit-bound<span class="sep">·</span><b>check&nbsp;teaches&nbsp;the&nbsp;args</b></span>',
   },
@@ -221,7 +221,7 @@ const CARDS = [
     fig: 'FIG B.26',
     size: 60,
     headline: 'The run<br><span class="b">becomes evidence.</span>',
-    sub: 'Every journal line carries a hash chain — <span style="white-space:nowrap">nika trace verify</span> names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it.',
+    sub: 'Every journal line carries a hash chain: <span style="white-space:nowrap">nika trace verify</span> names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it.',
     detail:
       '<span class="arrow">▸</span><span>hash&nbsp;chain<span class="sep">·</span>first&nbsp;break&nbsp;named<span class="sep">·</span><b>engine&nbsp;attested</b></span>',
   },
@@ -231,7 +231,7 @@ const CARDS = [
     fig: 'FIG B.25',
     size: 60,
     headline: 'Media are<br><span class="b">workflow citizens.</span>',
-    sub: 'Images and speech render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger — the sovereign path first.',
+    sub: 'Images and speech render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger. The sovereign path first.',
     detail:
       '<span class="arrow">▸</span><span>permit-gated<span class="sep">·</span>sha256&nbsp;provenance<span class="sep">·</span><b>sovereign&nbsp;path&nbsp;first</b></span>',
   },
@@ -241,7 +241,7 @@ const CARDS = [
     fig: 'FIG B.24',
     size: 60,
     headline: 'The credentials your<br><span class="b">pipeline was breaking.</span>',
-    sub: 'OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering — including, until this week, ours.',
+    sub: 'OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering. Including, until this week, ours.',
     detail:
       '<span class="arrow">▸</span><span>C2PA&nbsp;signed<span class="sep">·</span>bytes&nbsp;preserved<span class="sep">·</span><b>provenance&nbsp;survives</b></span>',
   },
@@ -251,7 +251,7 @@ const CARDS = [
     fig: 'FIG B.23',
     size: 60,
     headline: 'The editor<br><span class="b">tells the truth.</span>',
-    sub: 'A green badge is a claim. We audited the editor extension against the engine the way you&#8217;d audit a client against a server — and found the badge lying. The contract keeps it honest now.',
+    sub: 'A green badge is a claim. We audited the editor extension against the engine the way you&#8217;d audit a client against a server, and found the badge lying. The contract keeps it honest now.',
     detail:
       '<span class="arrow">▸</span><span>audited&nbsp;vs&nbsp;engine<span class="sep">·</span>same&nbsp;verdicts<span class="sep">·</span><b>the&nbsp;badge&nbsp;is&nbsp;a&nbsp;fact</b></span>',
   },
@@ -261,7 +261,7 @@ const CARDS = [
     fig: 'FIG B.22',
     size: 60,
     headline: 'Time travel,<br><span class="b">for real.</span>',
-    sub: 'Every debugger replays the past by re-running it. Nika&#8217;s past is a file — so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.',
+    sub: 'Every debugger replays the past by re-running it. Nika&#8217;s past is a file, so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.',
     detail:
       '<span class="arrow">▸</span><span>step&nbsp;back&nbsp;free<span class="sep">·</span>breakpoints&nbsp;in&nbsp;YAML<span class="sep">·</span><b>replay,&nbsp;never&nbsp;re-run</b></span>',
   },
@@ -271,7 +271,7 @@ const CARDS = [
     fig: 'FIG B.21',
     size: 60,
     headline: 'One wire,<br><span class="b">five servers.</span>',
-    sub: 'The self-hosted media world quietly standardized on OpenAI&#8217;s wire shapes. That accident of history is the best sovereignty news in years — and Nika&#8217;s media builtins are built on it.',
+    sub: 'The self-hosted media world quietly standardized on OpenAI&#8217;s wire shapes. That accident of history is the best sovereignty news in years, and Nika&#8217;s media builtins are built on it.',
     detail:
       '<span class="arrow">▸</span><span>one&nbsp;shape<span class="sep">·</span>five&nbsp;sovereign&nbsp;hosts<span class="sep">·</span><b>zero&nbsp;lock-in</b></span>',
   },
@@ -281,7 +281,7 @@ const CARDS = [
     fig: 'FIG B.24',
     size: 60,
     headline: 'Trust the artifact,<br><span class="b">not the gatekeeper.</span>',
-    sub: 'Every registry entry is content-pinned to an exact source revision and re-proven by CI — hash, certificate, advisories. The index itself tells you: never trust it over your own hash check.',
+    sub: 'Every registry entry is content-pinned to an exact source revision and re-proven by CI: hash, certificate, advisories. The index itself tells you: never trust it over your own hash check.',
     detail:
       '<span class="arrow">▸</span><span>sha256&nbsp;pin<span class="sep">·</span>CI&nbsp;re-proof<span class="sep">·</span><b>verify&nbsp;it&nbsp;yourself</b></span>',
   },
@@ -291,7 +291,7 @@ const CARDS = [
     fig: 'FIG B.23',
     size: 60,
     headline: 'Generative workflow,<br><span class="b">minus the mystery.</span>',
-    sub: 'Inputs you name, a model step, effects you can point to — declared in one file. Rehearsed offline on the mock provider; every asset lands with its sha256 and a provenance manifest.',
+    sub: 'Inputs you name, a model step, effects you can point to, declared in one file. Rehearsed offline on the mock provider; every asset lands with its sha256 and a provenance manifest.',
     detail:
       '<span class="arrow">▸</span><span>declared&nbsp;triple<span class="sep">·</span>offline&nbsp;rehearsal<span class="sep">·</span><b>assets&nbsp;carry&nbsp;provenance</b></span>',
   },
@@ -301,7 +301,7 @@ const CARDS = [
     fig: 'FIG B.22',
     size: 60,
     headline: 'The agent workflow<br><span class="b">spectrum.</span>',
-    sub: 'Every ai agent workflow sits between a declared graph and a free loop. In a file it&#8217;s a per-task verb: infer when you know the step&#8217;s shape, agent — leashed — when you don&#8217;t.',
+    sub: 'Every ai agent workflow sits between a declared graph and a free loop. In a file it&#8217;s a per-task verb: infer when you know the step&#8217;s shape, agent, leashed, when you don&#8217;t.',
     detail:
       '<span class="arrow">▸</span><span>tools&nbsp;default-deny<span class="sep">·</span>turns&nbsp;+&nbsp;tokens&nbsp;bounded<span class="sep">·</span><b>prose&nbsp;is&nbsp;not&nbsp;a&nbsp;contract</b></span>',
   },
@@ -311,7 +311,7 @@ const CARDS = [
     fig: 'FIG B.21',
     size: 60,
     headline: 'An llm pipeline<br><span class="b">is a file.</span>',
-    sub: 'Model calls + tools + processes, wired by data dependencies — a graph you declare, not glue you program. Forty lines of YAML; the engine derives the schedule, the cost, the audit.',
+    sub: 'Model calls + tools + processes, wired by data dependencies: a graph you declare, not glue you program. Forty lines of YAML; the engine derives the schedule, the cost, the audit.',
     detail:
       '<span class="arrow">▸</span><span>one&nbsp;graph<span class="sep">·</span>zero&nbsp;glue<span class="sep">·</span><b>diff&nbsp;·&nbsp;audit&nbsp;·&nbsp;replay</b></span>',
   },
@@ -331,7 +331,7 @@ const CARDS = [
     fig: 'FIG B.19',
     size: 60,
     headline: 'History,<br><span class="b">re-derivable.</span>',
-    sub: 'A recorded run is a text file — editable. <span style="white-space:nowrap">nika trace verify</span> recomputes the hash chain: one changed word breaks every line after it, and the run&#8217;s printed head closes the loop.',
+    sub: 'A recorded run is a text file: editable. <span style="white-space:nowrap">nika trace verify</span> recomputes the hash chain: one changed word breaks every line after it, and the run&#8217;s printed head closes the loop.',
     detail:
       '<span class="arrow">▸</span><span>tamper-evident<span class="sep">·</span>exact&nbsp;line&nbsp;named<span class="sep">·</span><b>exit&nbsp;2&nbsp;gates&nbsp;CI</b></span>',
   },
@@ -371,7 +371,7 @@ const CARDS = [
     fig: 'FIG B.15',
     size: 60,
     headline: 'The run that<br><span class="b">waits for you.</span>',
-    sub: 'The approval gate is a task in the file: headless it fails closed with the question on record — the human&rsquo;s answer rides the resume.',
+    sub: 'The approval gate is a task in the file: headless it fails closed with the question on record; the human&rsquo;s answer rides the resume.',
     detail:
       '<span class="arrow">▸</span><span>fails&nbsp;closed<span class="sep">·</span>--answer&nbsp;rides&nbsp;--resume<span class="sep">·</span><b>a&nbsp;no&nbsp;is&nbsp;not&nbsp;a&nbsp;failure</b></span>',
   },
@@ -381,7 +381,7 @@ const CARDS = [
     fig: 'FIG B.14',
     size: 60,
     headline: 'Finished work<br><span class="b">never runs twice.</span>',
-    sub: 'kill -9 a run mid-flight: the journal already holds every settled task — resume skips them by name and only the interrupted work runs.',
+    sub: 'kill -9 a run mid-flight: the journal already holds every settled task; resume skips them by name and only the interrupted work runs.',
     detail:
       '<span class="arrow">▸</span><span>↷&nbsp;cache&nbsp;hit&nbsp;(resume)<span class="sep">·</span>append-only&nbsp;journal<span class="sep">·</span><b>2&nbsp;skipped&nbsp;·&nbsp;2&nbsp;ran&nbsp;live</b></span>',
   },
@@ -391,7 +391,7 @@ const CARDS = [
     fig: 'FIG B.13',
     size: 60,
     headline: 'The injection<br><span class="b">that goes nowhere.</span>',
-    sub: 'The plan is authored before the model runs, so a hostile note becomes data, never a new action — and the boundary is checked before a token.',
+    sub: 'The plan is authored before the model runs, so a hostile note becomes data, never a new action, and the boundary is checked before a token.',
     detail:
       '<span class="arrow">▸</span><span>data,&nbsp;not&nbsp;capability<span class="sep">·</span>refused&nbsp;before&nbsp;the&nbsp;effect<span class="sep">·</span><b>NIKA&nbsp;·&nbsp;PERMITS</b></span>',
   },
@@ -441,7 +441,7 @@ const CARDS = [
     fig: 'FIG B.9',
     size: 62,
     headline: 'Anatomy<br><span class="b">of a verb.</span>',
-    sub: 'What makes infer, exec, invoke and agent genuinely different execution models&nbsp;— in the engine\'s own verdicts.',
+    sub: 'What makes infer, exec, invoke and agent genuinely different execution models, in the engine\'s own verdicts.',
     detail:
       '<span class="arrow">▸</span><span>four&nbsp;verbs<span class="sep">·</span>four&nbsp;budgets<span class="sep">·</span><b>four&nbsp;blast&nbsp;radii</b></span>',
   },
@@ -461,7 +461,7 @@ const CARDS = [
     fig: 'FIG 0.1',
     size: 62,
     headline: 'The note<br><span class="b">that started it.</span>',
-    sub: 'October 2025, one evening note: the best AI work of the month had just disappeared&nbsp;— write it down, own it forever.',
+    sub: 'October 2025, one evening note: the best AI work of the month had just disappeared. Write it down, own it forever.',
     detail:
       '<span class="arrow">▸</span><span>the&nbsp;work&nbsp;is&nbsp;real<span class="sep">·</span><b>the&nbsp;container&nbsp;is&nbsp;fake</b></span>',
   },
@@ -470,7 +470,7 @@ const CARDS = [
     out: 'og-blog-naming-the-drum.png',
     fig: 'FIG 0.2',
     headline: 'Naming<br><span class="b">the drum.</span>',
-    sub: 'Why a workflow engine carries the name of a liberation god&nbsp;— and a butterfly on every&nbsp;commit.',
+    sub: 'Why a workflow engine carries the name of a liberation god, and a butterfly on every&nbsp;commit.',
     detail:
       '<span class="arrow">▸</span><span>the&nbsp;sun&nbsp;god<span class="sep">·</span>the&nbsp;beat<span class="sep">·</span><b>the&nbsp;butterfly</b></span>',
   },
@@ -480,7 +480,7 @@ const CARDS = [
     fig: 'FIG B.1',
     size: 62,
     headline: 'Intent as Code:<br><span class="b">your AI work, as a file.</span>',
-    sub: 'Chats evaporate, files compound&nbsp;— the case for writing AI work down as source you&nbsp;own.',
+    sub: 'Chats evaporate, files compound: the case for writing AI work down as source you&nbsp;own.',
     detail:
       '<span class="arrow">▸</span><span>write&nbsp;it&nbsp;down<span class="sep">·</span>diff&nbsp;it<span class="sep">·</span><b>own&nbsp;it&nbsp;forever</b></span>',
   },
@@ -489,7 +489,7 @@ const CARDS = [
     out: 'og-blog-four-verbs.png',
     fig: 'FIG B.2',
     headline: 'Four verbs<br><span class="b">are enough.</span>',
-    sub: 'A verb is a distinct execution model, not a feature&nbsp;— why the language locks at four, forever.',
+    sub: 'A verb is a distinct execution model, not a feature: why the language locks at four, forever.',
     detail:
       '<span class="arrow">▸</span><span>infer<span class="sep">·</span>exec<span class="sep">·</span>invoke<span class="sep">·</span>agent<span class="sep">·</span><b>no&nbsp;fifth,&nbsp;ever</b></span>',
   },
@@ -509,7 +509,7 @@ const CARDS = [
     fig: 'FIG B.4',
     size: 62,
     headline: 'A standard library,<br><span class="b">not a plugin store.</span>',
-    sub: 'Builtins ride the binary, allow-listed, nothing to install&nbsp;— the library grows, the language holds&nbsp;still.',
+    sub: 'Builtins ride the binary, allow-listed, nothing to install: the library grows, the language holds&nbsp;still.',
     detail:
       '<span class="arrow">▸</span><span>files<span class="sep">·</span>data<span class="sep">·</span>web<span class="sep">·</span>flow<span class="sep">·</span><b>nothing&nbsp;to&nbsp;install</b></span>',
   },
@@ -519,7 +519,7 @@ const CARDS = [
     fig: 'FIG B.5',
     size: 62,
     headline: 'The blast radius<br><span class="b">is part of the file.</span>',
-    sub: 'permits: is the whole list&nbsp;— everything not on it is denied before it runs, with a named&nbsp;error.',
+    sub: 'permits: is the whole list. Everything not on it is denied before it runs, with a named&nbsp;error.',
     detail:
       '<span class="arrow">▸</span><span><b>permits:</b>&nbsp;default-deny<span class="sep">·</span>NIKA-SEC-004<span class="sep">·</span>before&nbsp;it&nbsp;runs</span>',
   },
@@ -528,7 +528,7 @@ const CARDS = [
     out: 'og-blog-dag-for-free.png',
     fig: 'FIG B.6',
     headline: 'The plan<br><span class="b">you get for free.</span>',
-    sub: 'with: is all you write&nbsp;— the binding IS the edge. Parallelism and ordering fall out of the graph, drawn before anything&nbsp;runs.',
+    sub: 'with: is all you write. The binding IS the edge. Parallelism and ordering fall out of the graph, drawn before anything&nbsp;runs.',
     detail:
       '<span class="arrow">▸</span><span><b>with:</b><span class="sep">·</span>waves<span class="sep">·</span>max&nbsp;parallelism,&nbsp;computed</span>',
   },
@@ -537,7 +537,7 @@ const CARDS = [
     out: 'og-blog-own-your-stack.png',
     fig: 'FIG B.7',
     headline: 'No cloud<br><span class="b">needed.</span>',
-    sub: 'One Rust binary, your models, your files&nbsp;— 5 of the 16 providers run fully&nbsp;local.',
+    sub: 'One Rust binary, your models, your files: 5 of the 16 providers run fully&nbsp;local.',
     detail:
       '<span class="arrow">▸</span><span>ollama<span class="sep">·</span>lm&nbsp;studio<span class="sep">·</span>llama.cpp<span class="sep">·</span>localai<span class="sep">·</span>vllm</span>',
   },
@@ -546,7 +546,7 @@ const CARDS = [
     out: 'og-convert.png',
     fig: 'FIG →',
     headline: 'Send us<br><span class="b">a workflow.</span>',
-    sub: 'Describe one AI task you repeat&nbsp;— we convert the best into runnable .nika.yaml examples, credited to&nbsp;you.',
+    sub: 'Describe one AI task you repeat: we convert the best into runnable .nika.yaml examples, credited to&nbsp;you.',
     detail:
       '<span class="arrow">▸</span><span>your&nbsp;task<span class="sep">·</span>a&nbsp;file&nbsp;you&nbsp;<b>own</b></span>',
   },
