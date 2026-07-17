@@ -84,3 +84,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* the same rendering diet as /errors (F-SENSATION-3) — the word register
+   is the site's longest single list */
+.lg-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 160px;
+}

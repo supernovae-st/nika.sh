@@ -167,3 +167,14 @@
   color: var(--v4-text);
   border-bottom-color: var(--v4-text);
 }
+
+/* long-register rendering diet (F-SENSATION-3): off-screen rows skip
+   layout/paint entirely — the browser renders them on scroll or when a
+   deep-link targets their id (spec behavior: c-v:auto elements render
+   on-demand for fragment navigation). intrinsic-size keeps the scrollbar
+   honest; `auto` retains the real size once painted. Goldens never shoot
+   this page — the frame law holds. */
+.er-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 140px;
+}
