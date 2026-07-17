@@ -29,11 +29,16 @@
 }
 .bp-author {
   color: var(--v4-text-dim);
-  text-decoration: none;
+  /* a link inside a text block needs a non-color cue at rest (WCAG 1.4.1 ·
+     axe link-in-text-block) — the hero receipt-link language: quiet dotted
+     hint, solid on hover */
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in oklab, var(--v4-text-faint) 70%, transparent);
+  text-underline-offset: 3px;
 }
 .bp-author:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-style: solid;
+  text-decoration-color: currentColor;
 }
 
 /* reading progress · scroll-driven, zero JS — silently absent where the
