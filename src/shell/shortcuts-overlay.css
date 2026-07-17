@@ -1,0 +1,87 @@
+/* the `?` overlay · rides the ⌘K scrim school (mono/hairline registry) */
+
+.sk-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgb(4 5 8 / 0.62);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: start center;
+  padding-top: 14vh;
+}
+.sk {
+  width: min(430px, calc(100vw - 32px));
+  background: #0c0e12;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 10px;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.55);
+  padding: 14px 16px 16px;
+}
+.sk-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  margin-bottom: 8px;
+}
+.sk-close {
+  all: unset;
+  cursor: pointer;
+  font-size: 10.5px;
+  padding: 3px 7px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 4px;
+  color: var(--v4-text-faint);
+}
+.sk-close:hover,
+.sk-close:focus-visible {
+  color: var(--v4-text);
+}
+.sk-group + .sk-group {
+  margin-top: 12px;
+}
+.sk-title {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  margin: 0 0 6px;
+}
+.sk-rows {
+  margin: 0;
+  display: grid;
+  gap: 5px;
+}
+.sk-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+}
+.sk-row dt {
+  display: flex;
+  gap: 4px;
+}
+.sk-row kbd {
+  font-size: 11px;
+  padding: 2px 6px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  color: var(--v4-text);
+  background: rgb(255 255 255 / 0.03);
+}
+.sk-row dd {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--v4-text-dim);
+}
+@media (forced-colors: active) {
+  .sk-row kbd {
+    outline: 1px solid CanvasText;
+  }
+}

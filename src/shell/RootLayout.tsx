@@ -2,6 +2,8 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import ScrollRail from './ScrollRail'
 import { useHead } from '@unhead/react'
+import { useNavigate } from 'react-router'
+import { NAV_CHORDS } from '../lib/chords'
 import { AuroraProvider } from '../fx/EdgeAurora'
 import { REPO, SITE } from '../content'
 import { track, type FunnelEvent } from '../lib/track'
@@ -18,6 +20,10 @@ const CommandK = lazy(() => import('./CommandK'))
    FooterSignature precedent: no Suspense in the SSG tree, no initial-bundle
    bytes — the banner is client-state by design) */
 const LocaleSuggest = lazy(() => import('./LocaleSuggest'))
+
+/* the `?` overlay · lazy like the palette (a chord answers on first
+   keystroke — its TABLE is inline; only the CARD is a chunk) */
+const ShortcutsOverlay = lazy(() => import('./ShortcutsOverlay'))
 
 /* ─── site-wide JSON-LD · Organization + WebSite (schema.org) ─────────────────
    Build-time / zero-runtime: @unhead/react flushes this <script> into every
@@ -138,6 +144,49 @@ export default function RootLayout() {
     }
   }, [])
 
+  /* the g-chords + the `?` door (round-2A · the egg guards verbatim):
+     g then a letter navigates; unknown = silent reset (a missed chord does
+     not exist); modifiers or a field = abandon; 800ms window. */
+  const [shortcutsOpen, setShortcutsOpen] = useState(false)
+  const navigate = useNavigate()
+  useEffect(() => {
+    let armed = false
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const disarm = () => {
+      armed = false
+      clearTimeout(timer)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return disarm()
+      const t = e.target as HTMLElement | null
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      if (e.key === '?') {
+        e.preventDefault()
+        setShortcutsOpen((v) => !v)
+        return disarm()
+      }
+      if (armed) {
+        const hit = NAV_CHORDS.find((c) => c.key === e.key.toLowerCase())
+        disarm()
+        if (hit) {
+          e.preventDefault()
+          void navigate(hit.to, { viewTransition: true })
+        }
+        return
+      }
+      if (e.key.toLowerCase() === 'g') {
+        armed = true
+        clearTimeout(timer)
+        timer = setTimeout(disarm, 800)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      clearTimeout(timer)
+    }
+  }, [navigate])
+
   /* site-wide structured data · prerendered into every route's <head> */
   useHead({
     script: [
@@ -164,6 +213,11 @@ export default function RootLayout() {
       {paletteOpen ? (
         <Suspense fallback={null}>
           <CommandK onClose={() => setPaletteOpen(false)} />
+        </Suspense>
+      ) : null}
+      {shortcutsOpen ? (
+        <Suspense fallback={null}>
+          <ShortcutsOverlay onClose={() => setShortcutsOpen(false)} />
         </Suspense>
       ) : null}
       {/* the agpl egg toast · aria-live polite (announced), pointer-inert */}
