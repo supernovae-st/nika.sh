@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "24c3dfdeee7de5181107c02bdda7bc211d167bb8",
-  "tree": "370e3f16e99835e325aef13a34cb590bae39db5a"
+  "commit": "d5700addf6169879deca1d770e2f42a72c37199e",
+  "tree": "51639aa623e485c9188ccc55ed5beb624c095411"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -68,7 +68,7 @@
    "root": "spec",
    "runtime": "copy",
    "path": "schemas/workflow.schema.json",
-   "sha256": "2b11d632438195d9bb75b3fe19e5437c07f63dd9252447501327ab2be59db296",
+   "sha256": "624b3fd98b31f8653cf50bfa1a76a885d5e431a8f647de92d9214f912907f8fc",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -219,7 +219,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/vendor-gate-matrix.mjs",
-   "sha256": "5ac3f3705f3c365da5d537b8888efbd3a551a699836bccba7b52044d7b35939c",
+   "sha256": "2ddefb09223483ccbb52fdb44d3600fb071f6c01b2cbfda28856903d3400e4b1",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "b76ddab8342320c09647b64dbdd4357306325cdb0acbdcf63dba94063f93e10e",
+   "sha256": "830d6403f862c1231a9f0cd7bcc9028f3a3f6f6897ca192df7689418c5da6e00",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -264,32 +264,32 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "b76ddab8342320c09647b64dbdd4357306325cdb0acbdcf63dba94063f93e10e",
+   "sha256": "830d6403f862c1231a9f0cd7bcc9028f3a3f6f6897ca192df7689418c5da6e00",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
    "path": "public/errors/catalog.json",
-   "sha256": "3a1f335b8a49eee4401bdd5a43644beb8f51d44865001ca39fb86116e35fc40a",
+   "sha256": "5113f0262a0583e605cd07bfa026f39fcfe6c1b575fd34d3c6cae3fcc209de44",
    "dist": "errors/catalog.json"
   },
   {
    "path": "public/schema/workflow.json",
-   "sha256": "2b11d632438195d9bb75b3fe19e5437c07f63dd9252447501327ab2be59db296",
+   "sha256": "624b3fd98b31f8653cf50bfa1a76a885d5e431a8f647de92d9214f912907f8fc",
    "dist": "schema/workflow.json"
   },
   {
    "path": "public/spec/v1/workflow.schema.json",
-   "sha256": "2b11d632438195d9bb75b3fe19e5437c07f63dd9252447501327ab2be59db296",
+   "sha256": "624b3fd98b31f8653cf50bfa1a76a885d5e431a8f647de92d9214f912907f8fc",
    "dist": "spec/v1/workflow.schema.json"
   },
   {
    "path": "public/templates/catalog.json",
-   "sha256": "4c99dfc5f51fd3e529e5297efc03bc996294c9d144db92a4276744e359ae9c0a",
+   "sha256": "ecd1efcfb07cd68f195098f2c7ab76a631cd436c04d5707491a535b544bb3fa7",
    "dist": "templates/catalog.json"
   },
   {
    "path": "src/canon.generated.ts",
-   "sha256": "89ca058ec8c519e8281d032286a85b45606a3e29af94f40232d6839a03dc99ba",
+   "sha256": "692fb151756e3a6deac8ebdeb8fcff351791f4a9b0b5c28ec88e825abbbea1c9",
    "consumers": [
     "src/pages/Verbs.tsx"
    ]
@@ -303,21 +303,21 @@
   },
   {
    "path": "src/sections/usecases-yaml.generated.ts",
-   "sha256": "448022e0fc4fb705669428ceb892e82b38ffccb7416b754f30c3e8dde2a5f79d",
+   "sha256": "14ba9b51a03426c535f102dec14e9634d5ff88e8d39711fd8c74c8aab633eec2",
    "consumers": [
     "src/sections/showcase-yaml-access.ts"
    ]
   },
   {
    "path": "src/content/templates.generated.ts",
-   "sha256": "4874e69cd5f4b8f749e0fc9f4186c3eb9e6dd1e073ab1043436aea712cf10d37",
+   "sha256": "1cd281ba7a417c7c1f37f8f2d2676a5e3c4597a54751637acfae8b46e428ea45",
    "consumers": [
     "src/pages/Templates.tsx"
    ]
   },
   {
    "path": "src/content/errors.generated.ts",
-   "sha256": "268a147e5c47311a8953a5bc4c8746e5a66b2f88f6d8f03ef0ba8c9ebdf71868",
+   "sha256": "47ce592e12a2efc16168acc17c6fa9b4c6b8a071baec81bb5693cbffd7ae4921",
    "consumers": [
     "src/pages/Errors.tsx"
    ]
@@ -345,7 +345,7 @@
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "6f5ba8433792b313bef4769345514101b071061f43c014640682b017d26f05b1",
+   "sha256": "30204032cdd423bee40178a4e8dd401401b01ff70646c57d644626c4e59fb504",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
@@ -373,21 +373,21 @@
   },
   {
    "path": "src/lib/lint-fixtures.generated.ts",
-   "sha256": "a2ef545b32f1dad0531a293c1d75f95b225b572d822cda22c21860ca3174b0e9",
+   "sha256": "4f1c5329db8547d368d496b996ccd5846a6ee28bf74bff40b761e041b6a30dde",
    "consumers": [
     "src/lib/nika-lint-conformance.test.ts"
    ]
   },
   {
    "path": "src/content/gate-matrix.generated.ts",
-   "sha256": "57cfcf9bd76329b65f029ff588b4f2eae26887f202005eea9076166eee04f7ea",
+   "sha256": "df2d6b654f48817eed3e1bccbb74a0acb485a33e66e3551483671dd826f19340",
    "consumers": [
     "src/test/gate-matrix.test.ts"
    ]
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "274200f1c77838818d58c5e50ce5280f56acf74e113959b405d5c727de851d41",
+   "sha256": "8f86332047e585101330781f77b106ba6d0d36608dc8ff4d1316d0d67c660d6a",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]

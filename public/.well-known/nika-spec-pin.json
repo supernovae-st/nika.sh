@@ -1,11 +1,11 @@
 {
-  "nika_spec_pin_format": 1,
-  "$comment": "LENS-011 (PRE1 design-pack contract · lot 9i): the EXACT nika-spec identity the website resyncs against — a full 40-hex commit AND its tree (the content digest). spec-resync fetches THIS commit by sha (never a moving ref), verifies HEAD == spec_commit AND HEAD^{tree} == spec_tree BEFORE any derivation or commit, and opens ONE idempotent PR on a branch UNIQUE to this pin with a plain create push (no --force, no --force-with-lease). LENS-006 binds the stable channel and closed-release attestation into these same bytes; public/.well-known/nika-spec-pin.json is a byte-identical generated twin.",
-  "repository": "supernovae-st/nika-spec",
-  "spec_commit": "24c3dfdeee7de5181107c02bdda7bc211d167bb8",
-  "spec_tree": "370e3f16e99835e325aef13a34cb590bae39db5a",
-  "channel": "stable",
-  "release_closed": true,
-  "release_attestation": "scripts/lens/contracts/release-attestation.v1.json",
-  "release_attestation_sha256": "b1beea6f26c2e281cc4daba14eb3c1a48577f08403c65cd354f88387b3fcaa02"
+ "nika_spec_pin_format": 1,
+ "$comment": "LENS-011 (PRE1 design-pack contract \u00b7 lot 9i): the EXACT nika-spec identity the website resyncs against \u2014 a full 40-hex commit AND its tree (the content digest). spec-resync fetches THIS commit by sha (never a moving ref), verifies HEAD == spec_commit AND HEAD^{tree} == spec_tree BEFORE any derivation or commit, and opens ONE idempotent PR on a branch UNIQUE to this pin with a plain create push (no --force, no --force-with-lease). LENS-006 binds the stable channel and closed-release attestation into these same bytes; public/.well-known/nika-spec-pin.json is a byte-identical generated twin.",
+ "repository": "supernovae-st/nika-spec",
+ "spec_commit": "d5700addf6169879deca1d770e2f42a72c37199e",
+ "spec_tree": "51639aa623e485c9188ccc55ed5beb624c095411",
+ "channel": "stable",
+ "release_closed": true,
+ "release_attestation": "scripts/lens/contracts/release-attestation.v1.json",
+ "release_attestation_sha256": "5e7a885afc62551186ae3ef9fdc9e83d3b961508fdc51560a8317a9f0e81a77b"
 }

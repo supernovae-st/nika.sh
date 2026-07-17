@@ -1,14 +1,14 @@
 {
-  "contract_version": 1,
-  "attestation_type": "nika-release-closure",
-  "release_id": "spec-24c3dfdeee7de5181107c02bdda7bc211d167bb8-stable",
-  "repository": "supernovae-st/nika-spec",
-  "spec_commit": "24c3dfdeee7de5181107c02bdda7bc211d167bb8",
-  "spec_tree": "370e3f16e99835e325aef13a34cb590bae39db5a",
-  "channel": "stable",
-  "release_closed": true,
-  "evidence": [
-    "scripts/spec-resync.contract.json",
-    ".github/workflows/spec-resync.yml"
-  ]
+ "contract_version": 1,
+ "attestation_type": "nika-release-closure",
+ "release_id": "spec-d5700addf6169879deca1d770e2f42a72c37199e-stable",
+ "repository": "supernovae-st/nika-spec",
+ "spec_commit": "d5700addf6169879deca1d770e2f42a72c37199e",
+ "spec_tree": "51639aa623e485c9188ccc55ed5beb624c095411",
+ "channel": "stable",
+ "release_closed": true,
+ "evidence": [
+  "scripts/spec-resync.contract.json",
+  ".github/workflows/spec-resync.yml"
+ ]
 }
