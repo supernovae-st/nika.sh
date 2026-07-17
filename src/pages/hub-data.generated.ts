@@ -13,6 +13,9 @@ export interface HubSet {
   title: string
   opener: string
   anchor_prefix: string
+  /** the graph's node-id prefix (member id is prefix:member) — the
+   * Inspector door */
+  node_prefix: string
   defined_by: string[]
   closed: boolean
   members: HubSetMember[]
@@ -74,6 +77,7 @@ export const HUBS: Record<string, HubData> = {
         "title": "The edge kinds",
         "opener": "The run graph speaks a closed set of edge kinds: value bindings, the two observations, control, recovery and the reserved finally. Unknown kinds are reader-tolerated by law · new ones arrive with the spec.",
         "anchor_prefix": "edge-",
+        "node_prefix": "edgekind",
         "defined_by": [
           "spec/03-dag.md"
         ],
@@ -111,6 +115,7 @@ export const HUBS: Record<string, HubData> = {
         "title": "The gate predicates",
         "opener": "An after entry gates on producer state: succeeded, failed, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
         "anchor_prefix": "predicate-",
+        "node_prefix": "predicate",
         "defined_by": [
           "spec/03-dag.md"
         ],
@@ -164,6 +169,7 @@ export const HUBS: Record<string, HubData> = {
         "title": "The permit families",
         "opener": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library. Absent means the engine floor · present means default-deny.",
         "anchor_prefix": "",
+        "node_prefix": "permit",
         "defined_by": [
           "spec/01-envelope.md"
         ],
@@ -192,6 +198,7 @@ export const HUBS: Record<string, HubData> = {
         "title": "The secret sources",
         "opener": "A secret is a masked reference, never a literal: it resolves from vault, env or file at run time and stays masked in every log and every trace the run leaves behind.",
         "anchor_prefix": "secret-",
+        "node_prefix": "secret",
         "defined_by": [
           "spec/04-variables.md"
         ],
@@ -249,6 +256,7 @@ export const HUBS: Record<string, HubData> = {
         "title": "The conformance levels",
         "opener": "Conformance nests: core parses and validates, runtime executes, stdlib proves the library. A higher level includes every lower one · the fixtures are the contract, not the prose.",
         "anchor_prefix": "level-",
+        "node_prefix": "level",
         "defined_by": [
           "spec/07-conformance.md"
         ],
@@ -273,6 +281,7 @@ export const HUBS: Record<string, HubData> = {
         "title": "The oracle tools",
         "opener": "The read-only oracle an agent loads: check, explain, schema, examples and the rest of the register. The same truth the CLI speaks, served over MCP · nothing here mutates anything.",
         "anchor_prefix": "mcp-",
+        "node_prefix": "mcp",
         "defined_by": [
           "canon.yaml"
         ],

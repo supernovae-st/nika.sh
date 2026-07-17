@@ -1113,6 +1113,7 @@ const hubSets = (layerId, hubUrl) =>
       title: x.title,
       opener: x.opener.trim(),
       anchor_prefix: x.anchor_prefix ?? '',
+      node_prefix: MEMBER_PREFIX[x.id],
       defined_by: x.defined_by.filter((c) => !c.startsWith('site:')),
       closed: x.closed,
       /* membersOf covers canon-sourced sets too (mcp-tools) — inline sets
@@ -1165,6 +1166,9 @@ export interface HubSet {
   title: string
   opener: string
   anchor_prefix: string
+  /** the graph's node-id prefix (member id is prefix:member) — the
+   * Inspector door */
+  node_prefix: string
   defined_by: string[]
   closed: boolean
   members: HubSetMember[]

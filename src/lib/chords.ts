@@ -44,6 +44,15 @@ export function shortcutGroups(): ShortcutGroup[] {
       ],
     },
     {
+      id: 'inspector',
+      title: 'Inspector',
+      rows: [
+        { keys: 'click', does: 'select a member · the readout opens, the page stays' },
+        { keys: 'esc', does: 'close (when focus is inside)' },
+        { keys: '⏎', does: 'follow a readout link' },
+      ],
+    },
+    {
       id: 'palette',
       title: 'Palette',
       rows: [

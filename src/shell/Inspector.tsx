@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useFocusReturn, useFocusTrap } from '../lib/focus'
 import { loadAtlas, type AtlasModule } from '../lib/atlas-access'
-import { readoutFor, type Readout } from './inspector-readout'
+import { readoutFor, nodeIdForHref, type Readout } from './inspector-readout'
 import './inspector.css'
 
 /* ─── Inspector · round-1 (desktop panel + mobile sheet, two detents) ────────
@@ -74,7 +74,8 @@ export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose
 
   const cycleDetent = () => setDetent((d) => (d === 'peek' ? 'full' : 'peek'))
 
-  const readout: Readout | null = graph ? readoutFor(nodeId, graph) : null
+  const resolvedId = graph && nodeId.startsWith('/') ? nodeIdForHref(nodeId, graph) : nodeId
+  const readout: Readout | null = graph && resolvedId ? readoutFor(resolvedId, graph) : null
 
   return (
     <aside

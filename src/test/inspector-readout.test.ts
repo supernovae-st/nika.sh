@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { readoutFor } from '../shell/inspector-readout'
+import { readoutFor, nodeIdForHref } from '../shell/inspector-readout'
 import { ATLAS_NODES, ATLAS_EDGES, ATLAS_INDEX } from '../content/atlas.generated'
 
 /* ── the readout gate (round-1) ──────────────────────────────────────────────
@@ -53,5 +53,15 @@ describe('inspector · the per-set readout stays lawful', () => {
 
   it('an unknown id is an honest null, never a throw', () => {
     expect(readoutFor('ghost:nope', graph)).toBeNull()
+  })
+})
+
+describe('inspector · the star href resolves to its node (the constellation door)', () => {
+  it('resolves room urls and anchored urls, and misses honestly', () => {
+    const code = ATLAS_NODES.find((n) => n.set === 'error-codes' && n.kind === 'member')!
+    expect(nodeIdForHref(code.url!, graph)).toBe(code.id)
+    const anchored = ATLAS_NODES.find((n) => n.kind === 'member' && n.anchor)!
+    expect(nodeIdForHref(`${anchored.url}#${anchored.anchor}`, graph)).toBe(anchored.id)
+    expect(nodeIdForHref('/nowhere#ghost', graph)).toBeNull()
   })
 })

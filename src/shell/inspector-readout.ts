@@ -59,6 +59,20 @@ function nodeHref(n: AtlasNode): string | null {
   return n.anchor ? `${n.url}#${n.anchor}` : n.url
 }
 
+/* a star's href resolves to its node (url or url#anchor — derived reverse
+   lookup, never a second table) */
+export function nodeIdForHref(
+  href: string,
+  graph: { ATLAS_INDEX: Record<string, AtlasNode> },
+): string | null {
+  const [path, frag] = href.split('#')
+  for (const [id, n] of Object.entries(graph.ATLAS_INDEX)) {
+    if (n.url !== path) continue
+    if ((n.anchor ?? '') === (frag ?? '')) return id
+  }
+  return null
+}
+
 export function readoutFor(
   id: string,
   graph: { ATLAS_INDEX: Record<string, AtlasNode>; ATLAS_EDGES: AtlasEdge[] },

@@ -230,7 +230,23 @@ export function Component() {
               </ol>
             </nav>
 
-            <figure className="mp-figure" aria-label="The constellation drawing (a lens over the same list)">
+            <figure
+              className="mp-figure"
+              aria-label="The constellation drawing (a lens over the same list)"
+              onClick={(e) => {
+                /* the stars select too (round-1 step 3): the svg anchors are
+                   aria-hidden COURTESY doors — a plain click opens the
+                   readout (the Inspector resolves the href to its node);
+                   modifier-clicks keep the real navigation */
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+                const a = (e.target as Element).closest('a')
+                if (!a) return
+                const href = a.getAttribute('href')
+                if (!href || !href.startsWith('/')) return
+                e.preventDefault()
+                window.dispatchEvent(new CustomEvent('insp:open', { detail: { href } }))
+              }}
+            >
               {/* safe sink ×2: static build-time bytes from our own compiler
                   emission (scripts/atlas/build-atlas.mjs · committed asset ·
                   the render guard refuses a closing-script sequence) — no

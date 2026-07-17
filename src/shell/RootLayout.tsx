@@ -159,12 +159,41 @@ export default function RootLayout() {
   )
   useEffect(() => {
     const onOpen = (e: Event) => {
-      const id = (e as CustomEvent<{ id?: string }>).detail?.id
-      if (typeof id === 'string' && id) setInspNode(id)
+      const d = (e as CustomEvent<{ id?: string; href?: string }>).detail
+      const next = d?.id ?? d?.href
+      if (typeof next !== 'string' || !next) return
+      setInspNode(next)
+      /* §6 write-side: an explicit id-open pushes ONCE (?node=) so Back
+         closes the panel (popstate → close · the NN/g law); href
+         selections are courtesy doors and keep the URL clean */
+      if (d?.id) {
+        const url = new URL(window.location.href)
+        if (url.searchParams.get('node') !== d.id) {
+          url.searchParams.set('node', d.id)
+          window.history.pushState({ insp: d.id }, '', url)
+        }
+      }
+    }
+    const onPop = () => {
+      setInspNode(new URLSearchParams(window.location.search).get('node'))
     }
     window.addEventListener('insp:open', onOpen)
-    return () => window.removeEventListener('insp:open', onOpen)
+    window.addEventListener('popstate', onPop)
+    return () => {
+      window.removeEventListener('insp:open', onOpen)
+      window.removeEventListener('popstate', onPop)
+    }
   }, [])
+
+  /* closing cleans the URL (replace — closing is not a history moment) */
+  const closeInspector = () => {
+    setInspNode(null)
+    const url = new URL(window.location.href)
+    if (url.searchParams.has('node')) {
+      url.searchParams.delete('node')
+      window.history.replaceState({}, '', url)
+    }
+  }
 
   /* the g-chords + the `?` door (round-2A · the egg guards verbatim):
      g then a letter navigates; unknown = silent reset (a missed chord does
@@ -241,7 +270,7 @@ export default function RootLayout() {
           carried the panel — mounting it during hydration would mismatch */}
       {hydrated && inspNode ? (
         <Suspense fallback={null}>
-          <Inspector nodeId={inspNode} onClose={() => setInspNode(null)} />
+          <Inspector nodeId={inspNode} onClose={closeInspector} />
         </Suspense>
       ) : null}
       {shortcutsOpen ? (
