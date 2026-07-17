@@ -68,6 +68,7 @@ const MACHINE = [
   ['/llms.txt', 'text'],
   ['/llms-full.txt', 'text'],
   ['/blog/intent-as-code.md', 'text'],
+  ['/pagefind/pagefind.js', 'text'],
 ]
 let twins = 0
 for (const [path, kind] of MACHINE) {

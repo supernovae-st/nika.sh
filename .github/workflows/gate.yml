@@ -39,7 +39,7 @@ jobs:
         run: node scripts/lens/integrity-sweep.mjs
       - name: live-URL contracts present in dist
         run: |
-          for f in install.sh llms.txt schema/workflow.json errors/catalog.json 404.html sitemap.xml robots.txt; do
+          for f in install.sh llms.txt schema/workflow.json errors/catalog.json 404.html sitemap.xml robots.txt pagefind/pagefind.js; do
             test -f "dist/$f" || { echo "MISSING live-URL contract: dist/$f"; exit 1; }
           done
 

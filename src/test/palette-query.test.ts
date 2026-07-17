@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseQuery, KIND_PREFIX } from '../lib/palette-query'
+import { parseQuery, KIND_PREFIX, mergePageHits, normalizePagePath } from '../lib/palette-query'
 import { PALETTE } from '../content/palette.generated'
 
 /* ── the ⌘K prefix grammar (WO-12) ────────────────────────────────────────────
@@ -34,5 +34,28 @@ describe('palette-query · the prefix grammar', () => {
     for (const [alias, kind] of Object.entries(KIND_PREFIX)) {
       expect(kinds.has(kind), `${alias}: → ${kind} has no corpus entries`).toBe(true)
     }
+  })
+})
+
+describe('palette stage 2 · the pagefind merge stays lawful', () => {
+  it('normalizes every url form pagefind can return', () => {
+    expect(normalizePagePath('https://nika.sh/blog/foo/')).toBe('/blog/foo')
+    expect(normalizePagePath('/tools/fetch/index.html')).toBe('/tools/fetch')
+    expect(normalizePagePath('/')).toBe('/')
+  })
+
+  it('dedups against the register stage, strips marks, honors the cap', () => {
+    const taken = new Set(['/tools/fetch'])
+    const rows = mergePageHits(
+      taken,
+      [
+        { url: '/tools/fetch/', title: 'fetch', excerpt: 'already <mark>taken</mark>' },
+        { url: '/blog/foo/', title: 'Foo', excerpt: 'a <mark>hit</mark>  with   marks' },
+        { url: '/blog/foo/index.html', title: 'Foo dup', excerpt: 'same page twice' },
+        { url: '/blog/bar/', title: 'Bar', excerpt: 'second' },
+      ],
+      1,
+    )
+    expect(rows).toEqual([{ kind: 'pagetext', label: 'Foo', href: '/blog/foo', hint: 'a hit with marks' }])
   })
 })

@@ -175,6 +175,11 @@
   opacity: 1;
 }
 .cf-pre {
+  /* typo-matière (R16): displayed code disambiguates by GLYPH — slashed
+     zero, tabular digits, contextual alternates off (a ligature in shown
+     source would lie about the bytes) */
+  font-feature-settings: 'calt' 0, 'zero' 1;
+  font-variant-numeric: tabular-nums slashed-zero;
   margin: 0;
   padding: 11px 0 13px;
   overflow-x: auto;

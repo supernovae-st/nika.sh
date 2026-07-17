@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PALETTE, type PaletteEntry } from '../content/palette.generated'
-import { parseQuery } from '../lib/palette-query'
+import { parseQuery, mergePageHits, type PageTextHit } from '../lib/palette-query'
 import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import './command-k.css'
 
@@ -46,6 +46,24 @@ function fuzzyScore(needle: string, hay: string): number {
   }
   /* shorter targets rank higher on equal evidence */
   return score * 100 - h.length
+}
+
+/* stage 2 · the page index (pagefind · built from the SSG dist by the
+   postbuild step). Loaded once at first use; dev or a missing index
+   degrades to the register stage alone — by design, never an error. */
+type Pagefind = {
+  init?: () => void
+  debouncedSearch: (q: string) => Promise<{ results: { data: () => Promise<{ url: string; meta: { title?: string }; excerpt: string }> }[] } | null>
+}
+let pagefindOnce: Promise<Pagefind | null> | null = null
+const loadPagefind = () => {
+  pagefindOnce ??= import(/* @vite-ignore */ `${location.origin}/pagefind/pagefind.js`)
+    .then((m: Pagefind) => {
+      m.init?.()
+      return m
+    })
+    .catch(() => null)
+  return pagefindOnce
 }
 
 const KIND_GLYPH: Record<PaletteEntry['kind'], string> = {
@@ -93,8 +111,44 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
       .map((x) => x.e)
   }, [q])
 
+  /* stage 2 · « in pages »: past two characters the palette also asks the
+     full-text index — rows land BELOW the registers, deduped by url. A
+     kind-scoped query is a register question; it never triggers the index. */
+  const [pageHits, setPageHits] = useState<PageTextHit[]>([])
+  useEffect(() => {
+    const { kind, needle } = parseQuery(q)
+    const text = needle.trim()
+    const registerOnly = Boolean(kind) || text.length < 2
+    let live = true
+    /* every state write rides the timer (never synchronous in the effect
+       body) — the clear fires immediately, a real query waits the debounce */
+    const t = setTimeout(() => {
+      if (registerOnly) {
+        if (live) setPageHits((prev) => (prev.length ? [] : prev))
+        return
+      }
+      void loadPagefind().then(async (pf) => {
+        const res = pf ? await pf.debouncedSearch(text) : null
+        if (!res || !live) return
+        const rows = await Promise.all(
+          res.results.slice(0, 12).map(async (r) => {
+            const d = await r.data()
+            return { url: d.url, title: d.meta.title ?? d.url, excerpt: d.excerpt }
+          }),
+        )
+        if (live) setPageHits(mergePageHits(new Set(hits.map((h) => h.href.split('#')[0])), rows))
+      })
+    }, registerOnly ? 0 : 130)
+    return () => {
+      live = false
+      clearTimeout(t)
+    }
+  }, [q, hits])
+
+  const list: (PaletteEntry | PageTextHit)[] = useMemo(() => [...hits, ...pageHits], [hits, pageHits])
+
   /* the cursor follows the list, never exceeds it */
-  const cur = Math.min(cursor, Math.max(0, hits.length - 1))
+  const cur = Math.min(cursor, Math.max(0, list.length - 1))
 
   useEffect(() => {
     inputRef.current?.focus()
@@ -111,9 +165,9 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
     listRef.current
       ?.querySelector('[aria-selected="true"]')
       ?.scrollIntoView({ block: 'nearest' })
-  }, [cur, hits])
+  }, [cur, list])
 
-  const go = (e: PaletteEntry) => {
+  const go = (e: PaletteEntry | PageTextHit) => {
     onClose()
     navigate(e.href, { viewTransition: true })
   }
@@ -124,13 +178,13 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
       onClose()
     } else if (ev.key === 'ArrowDown') {
       ev.preventDefault()
-      setCursor((c) => Math.min(c + 1, hits.length - 1))
+      setCursor((c) => Math.min(c + 1, list.length - 1))
     } else if (ev.key === 'ArrowUp') {
       ev.preventDefault()
       setCursor((c) => Math.max(c - 1, 0))
-    } else if (ev.key === 'Enter' && hits[cur]) {
+    } else if (ev.key === 'Enter' && list[cur]) {
       ev.preventDefault()
-      go(hits[cur])
+      go(list[cur])
     }
   }
 
@@ -147,7 +201,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
             role="combobox"
             aria-expanded="true"
             aria-controls="ck-list"
-            aria-activedescendant={hits[cur] ? `ck-opt-${cur}` : undefined}
+            aria-activedescendant={list[cur] ? `ck-opt-${cur}` : undefined}
             aria-label="Search pages, posts and error codes"
             placeholder="pages · posts · error codes… (e: t: v: w: scope a register)"
             value={q}
@@ -164,7 +218,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
           </kbd>
         </div>
         <ul id="ck-list" ref={listRef} className="ck-list" role="listbox" aria-label="Results">
-          {hits.map((e, i) => (
+          {list.map((e, i) => (
             <li
               key={e.href}
               id={`ck-opt-${i}`}
@@ -179,13 +233,13 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
               }}
             >
               <span className="ck-opt-glyph mono" aria-hidden>
-                {KIND_GLYPH[e.kind]}
+                {e.kind === 'pagetext' ? '⌕' : KIND_GLYPH[e.kind]}
               </span>
               <span className="ck-opt-label">{e.label}</span>
               <span className="ck-opt-hint mono">{e.hint}</span>
             </li>
           ))}
-          {hits.length === 0 && (
+          {list.length === 0 && (
             <li className="ck-empty mono" role="option" aria-selected={false} aria-disabled="true">
               nothing matches; try a page, a post title, a NIKA- code
             </li>

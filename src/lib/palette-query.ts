@@ -54,3 +54,45 @@ export function parseQuery(raw: string): { kind?: PaletteKind; needle: string } 
   }
   return { needle: raw }
 }
+
+/* ── stage 2 · full-text rows (the pagefind merge · WO-12 pack) ──────────────
+   The register stage answers instantly from the compiled corpus; past two
+   characters the palette ALSO asks the page index (built from the SSG dist,
+   the rendered truth) and appends « in pages » rows: deduped against the
+   register hits by normalized url, marks stripped, capped. Pure function —
+   the unit gate proves dedup, stripping and the cap. */
+
+export interface PageTextHit {
+  kind: 'pagetext'
+  label: string
+  href: string
+  hint: string
+}
+
+export function normalizePagePath(url: string): string {
+  const path = url.replace(/^https?:\/\/[^/]+/, '').replace(/index\.html$/, '').replace(/\.html$/, '')
+  const clean = path.replace(/\/+$/, '')
+  return clean === '' ? '/' : clean
+}
+
+export function mergePageHits(
+  taken: ReadonlySet<string>,
+  results: { url: string; title: string; excerpt: string }[],
+  cap = 8,
+): PageTextHit[] {
+  const out: PageTextHit[] = []
+  const seen = new Set<string>()
+  for (const r of results) {
+    const href = normalizePagePath(r.url)
+    if (taken.has(href) || seen.has(href)) continue
+    seen.add(href)
+    out.push({
+      kind: 'pagetext',
+      label: r.title,
+      href,
+      hint: r.excerpt.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().slice(0, 110),
+    })
+    if (out.length >= cap) break
+  }
+  return out
+}
