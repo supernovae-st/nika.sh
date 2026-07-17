@@ -38,3 +38,78 @@ terms:
     volume_mo: 1200
     kd: 5
     observed: 2026-07
+
+# ─── WO-10 · LOCALE COLUMNS (DRAFT · operator-review stop #2) ────────────────
+#
+# Observed 2026-07 · Ahrefs keywords-explorer per market (FR ES DE BR JP KR
+# CN · volume = avg monthly searches in THAT country · kd where Ahrefs
+# computes one). NOT consumed by the compiler yet — the `terms:` pipeline
+# above stays EN-only until the operator ratifies these picks; wiring the
+# locale metas is the post-review step. Every pick below carries its
+# alternatives so the review is a choice, not an audit.
+#
+# Two structural findings the picks encode:
+#   1. The AGENT head-terms dwarf everything localized (ki agenten 4500 ·
+#      agentes de ia 3600 BR / 900 ES · agent ia 7700 FR) — acts-node metas
+#      should ride the local agent term, not a translated "workflow" phrase.
+#   2. Practitioner terms often stay ENGLISH outside EN (workflow
+#      orchestration 150/mo KR kd3 · 150 BR kd6 · 100 FR kd3) — where the
+#      EN term beats the translation, the pick keeps EN (developers search
+#      in English; the page chrome still speaks the locale).
+
+locale_terms:
+  fr:
+    - { node: "layer:flow", term: "workflow ia", volume_mo: 250, observed: 2026-07,
+        alts: [{ term: "workflow orchestration", volume_mo: 100, kd: 3 }] }
+    - { node: "layer:reach", term: "orchestration llm", volume_mo: 80, observed: 2026-07,
+        alts: [{ term: "llm orchestration", volume_mo: 90 }] }
+    - { node: "layer:acts", term: "agent ia", volume_mo: 7700, kd: 35, observed: 2026-07,
+        alts: [{ term: "orchestration agents ia", volume_mo: 20 }] }
+    - { node: "surface:home", term: "automatisation ia", volume_mo: 900, kd: 24, observed: 2026-07 }
+  es:
+    - { node: "layer:flow", term: "workflow orchestration", volume_mo: 80, observed: 2026-07,
+        alts: [{ term: "workflow ia", volume_mo: 50 }] }
+    - { node: "layer:reach", term: "llm orchestration", volume_mo: 90, observed: 2026-07 }
+    - { node: "layer:acts", term: "agentes de ia", volume_mo: 900, kd: 45, observed: 2026-07 }
+    - { node: "surface:home", term: "automatización con ia", volume_mo: 350, observed: 2026-07 }
+  de:
+    - { node: "layer:flow", term: "ki workflow", volume_mo: 300, observed: 2026-07,
+        alts: [{ term: "workflow orchestrierung", volume_mo: 10 }, { term: "workflow orchestration", volume_mo: 40, kd: 7 }] }
+    - { node: "layer:reach", term: "llm orchestration", volume_mo: 100, observed: 2026-07,
+        alts: [{ term: "llm orchestrierung", volume_mo: 0 }] }
+    - { node: "layer:acts", term: "ki agenten", volume_mo: 4500, kd: 10, observed: 2026-07,
+        alts: [{ term: "ki agenten workflow", volume_mo: 60 }] }
+    - { node: "surface:home", term: "ki automatisierung", volume_mo: 1200, kd: 42, observed: 2026-07 }
+  pt-br:
+    - { node: "layer:flow", term: "workflow orchestration", volume_mo: 150, kd: 6, observed: 2026-07,
+        alts: [{ term: "workflow ia", volume_mo: 100 }] }
+    - { node: "layer:reach", term: "llm orchestration", volume_mo: 100, observed: 2026-07 }
+    - { node: "layer:acts", term: "agentes de ia", volume_mo: 3600, kd: 22, observed: 2026-07,
+        alts: [{ term: "orquestração de agentes", volume_mo: 50 }] }
+    - { node: "surface:home", term: "automação com ia", volume_mo: 450, observed: 2026-07 }
+  ja:
+    - { node: "layer:flow", term: "ai ワークフロー", volume_mo: 250, observed: 2026-07,
+        alts: [{ term: "llm ワークフロー", volume_mo: 10 }] }
+    - { node: "layer:reach", term: "llm オーケストレーション", volume_mo: 30, observed: 2026-07 }
+    - { node: "layer:acts", term: "aiエージェント 開発", volume_mo: 300, kd: 2, observed: 2026-07,
+        alts: [{ term: "aiエージェント ワークフロー", volume_mo: 80 }] }
+    - { node: "surface:home", term: "aiエージェント ワークフロー", volume_mo: 80, observed: 2026-07,
+        alts: [{ term: "エージェント オーケストレーション", volume_mo: 40 }] }
+  ko:
+    - { node: "layer:flow", term: "ai 워크플로우", volume_mo: 200, observed: 2026-07,
+        alts: [{ term: "워크플로우 오케스트레이션", volume_mo: 50 }] }
+    - { node: "layer:reach", term: "llm 오케스트레이션", volume_mo: 100, observed: 2026-07 }
+    - { node: "layer:acts", term: "ai 에이전트 개발", volume_mo: 250, observed: 2026-07,
+        alts: [{ term: "ai 에이전트 워크플로우", volume_mo: 20 }] }
+    - { node: "surface:home", term: "workflow orchestration", volume_mo: 150, kd: 3, observed: 2026-07,
+        alts: [{ term: "에이전트 오케스트레이션", volume_mo: 150 }] }
+  zh-hans:
+    # CAVEAT · Google volumes are thin for the mainland (search happens on
+    # Baidu/Bing, which Ahrefs does not model here) — picks lean on the
+    # global diaspora + relative order, and the review may prefer EN metas.
+    - { node: "layer:flow", term: "ai 工作流", volume_mo: 70, observed: 2026-07 }
+    - { node: "layer:reach", term: "llm 编排", volume_mo: 0, observed: 2026-07,
+        alts: [{ term: "workflow orchestration", volume_mo: 10 }] }
+    - { node: "layer:acts", term: "智能体开发", volume_mo: 60, observed: 2026-07,
+        alts: [{ term: "智能体编排", volume_mo: 10 }] }
+    - { node: "surface:home", term: "工作流编排", volume_mo: 20, observed: 2026-07 }

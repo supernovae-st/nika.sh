@@ -1,0 +1,109 @@
+# install · fr · DRAFT (revue opérateur requise · voix manifesto: termes
+# techniques EN verbatim · le lexique intraduisible reste byte-identique)
+page: /install
+fig: "install"
+title: "Un binaire. Ta machine."
+punch: "Deux minutes jusqu'à ton premier run."
+lede: >-
+  Nika, c'est **un seul binaire Rust** : pas de daemon, pas de compte, pas de
+  cloud obligatoire. Choisis une porte d'entrée ci-dessous et lance ton
+  premier fichier avec un **modèle local gratuit**.
+stamp: "macOS · Linux · air-gapped OK"
+steps:
+  brew:
+    n: "01 · homebrew"
+    title: "La one-liner"
+    plain: >-
+      macOS ou Linux avec Homebrew : sur ton `PATH` immédiatement.
+      Vérifie avec `nika --version`.
+  script:
+    n: "02 · script"
+    title: "Sans Homebrew"
+    plain: >-
+      Télécharge le **binaire de release vérifié** dans `~/.nika/bin` et
+      imprime l'unique ligne `PATH` à ajouter à ton profil shell.
+      Rouvre le terminal et `nika --version` répond.
+    plain2: >-
+      Une toolchain déjà en place ? **cargo** récupère le tarball de release
+      précompilé, zéro compilation (le binaire arrive sous le nom `nika-cli`
+      jusqu'à la publication crates.io : un symlink vers le nom public, une
+      fois). **nix** construit la source exacte de la release via le flake du
+      repo ; le premier run compile, le store met en cache.
+  manual:
+    n: "03 · manuel"
+    title: "Air-gapped, ou à la main"
+    plain: >-
+      Télécharge le tarball de ta plateforme et `SHA256SUMS` depuis la
+      dernière release, vérifie, puis place `nika` sur ton `PATH`.
+      Rien ne téléphone à la maison.
+  editor:
+    n: "04 · éditeur"
+    title: "L'extension éditeur"
+    plain: >-
+      `supernovae.nika-lang` · sur le VS Code Marketplace et Open VSX
+      (Cursor · Windsurf · VSCodium). Elle télécharge le binaire `nika` de la
+      release correspondante au premier usage, ou réutilise celui déjà sur ton
+      `PATH`. Tout autre éditeur : `nika lsp` parle LSP sur stdio ·
+      source + issues.
+    ghost: "complétions · diagnostics · une vue du plan · dans ton éditeur"
+  agents:
+    n: "05 · agents"
+    title: "Travaille avec tes agents"
+    plain: >-
+      Nika est conçu pour être **écrit par des agents et relu par toi**.
+      `nika init` dépose le câblage du schema + `AGENTS.md` dans ton repo pour
+      que Claude Code, Cursor, Codex et les autres écrivent des workflows
+      valides du premier coup ; `nika wire` ajoute le câblage agent-tool (MCP)
+      explicite là où tu le veux.
+  first_run:
+    n: "06 · premier run"
+    title: "Zéro clé, zéro cloud"
+    plain: >-
+      Commence par `nika welcome`, le miroir : ce que cette machine a déjà
+      (éditeurs · modèles locaux · *présence* des clés, jamais leurs valeurs)
+      et où aller ensuite. Ton premier workflow n'a besoin ni de modèle ni de
+      clé API. Sauve le fichier, audite-le avec `nika check` (plan · coût ·
+      secrets, avant que rien ne tourne), puis `nika run`. Tu ajoutes une
+      étape IA ? Pointe-la sur un **modèle local gratuit** (un `ollama pull`,
+      rien ne quitte ta machine), et `nika doctor` te dit exactement ce qui
+      est câblé.
+capture_title: "ce que tu devrais voir"
+trouble_title: "si quelque chose accroche"
+trouble:
+  - q: "command not found: nika (après le script d'install)"
+    a: >-
+      Le script installe dans `~/.nika/bin` et imprime la ligne `PATH` exacte
+      à ajouter à ton profil shell (`~/.zshrc`, `~/.bashrc`). Ajoute-la,
+      rouvre le terminal, et `nika --version` répond.
+  - q: "macOS bloque le binaire (tarball manuel uniquement)"
+    a: >-
+      Un binaire téléchargé à la main porte le flag quarantine ; brew et le
+      script d'install non. Retire-le une fois, ou clic droit → Ouvrir.
+  - q: "derrière un proxy d'entreprise"
+    a: >-
+      Le script d'install est du curl pur ; il honore les variables proxy
+      standard pour le téléchargement. Le binaire lui-même ne téléphone
+      nulle part.
+  - q: "checksum mismatch sur le tarball"
+    a: >-
+      Un mismatch signifie un téléchargement corrompu ou trafiqué. Ne le
+      lance pas. Retélécharge le tarball et `SHA256SUMS` depuis la page de
+      release et vérifie à nouveau.
+more:
+  next: "Ensuite :"
+  learn: "apprends le fichier en 5 minutes"
+  usecases: "parcours des workflows réels"
+  docs: "docs complètes"
+labels:
+  one_liner: "script d'install"
+  binstall: "cargo binstall"
+  nix: "nix"
+  checksum: "vérification checksum"
+  repo_wiring: "câblage du repo"
+  cursor_wiring: "câblage agent Cursor"
+  welcome: "le miroir · commence ici"
+  check: "audit statique"
+  run: "run"
+  ollama: "le modèle local gratuit"
+  example: "run d'exemple · modèle local"
+  doctor: "check d'environnement"

@@ -1,0 +1,100 @@
+# install · zh-hans · DRAFT（需运营者审阅 · manifesto 语气:
+# 技术术语保留 EN 原文 · 不可翻译词典逐字节保持一致）
+page: /install
+fig: "install"
+title: "一个二进制文件。你的机器。"
+punch: "两分钟到你的第一次 run。"
+lede: >-
+  Nika 是**单个 Rust 二进制文件**：没有 daemon，不需要账号，不强制 cloud。
+  在下面选一个入口，用**免费的本地模型**跑起你的第一个文件。
+stamp: "macOS · Linux · air-gapped OK"
+steps:
+  brew:
+    n: "01 · homebrew"
+    title: "一行命令"
+    plain: >-
+      有 Homebrew 的 macOS 或 Linux：立刻进入你的 `PATH`。
+      用 `nika --version` 确认。
+  script:
+    n: "02 · script"
+    title: "不用 Homebrew"
+    plain: >-
+      把**经过验证的 release 二进制**下载到 `~/.nika/bin`，并打印出要加进
+      shell 配置文件的那一行 `PATH`。重开终端，`nika --version` 就有回应。
+    plain2: >-
+      已经带着 toolchain？**cargo** 直接拉取预编译的 release tarball，
+      无需编译（在 crates.io 发布之前二进制名为 `nika-cli`：给公开名字
+      做一次 symlink 即可）。**nix** 通过仓库的 flake 构建 release 的
+      精确源码；首次 run 编译，store 负责缓存。
+  manual:
+    n: "03 · 手动"
+    title: "air-gapped，或者手动来"
+    plain: >-
+      从最新 release 下载对应平台的 tarball 和 `SHA256SUMS`，校验后把
+      `nika` 放进你的 `PATH`。它不会向任何地方发送数据。
+  editor:
+    n: "04 · 编辑器"
+    title: "编辑器扩展"
+    plain: >-
+      `supernovae.nika-lang` · 在 VS Code Marketplace 和 Open VSX 上
+      （Cursor · Windsurf · VSCodium）。首次使用时自动下载匹配的 `nika`
+      release 二进制，或复用你 `PATH` 上已有的那个。其他编辑器：
+      `nika lsp` 通过 stdio 说 LSP · source + issues。
+    ghost: "补全 · 诊断 · 计划视图 · 就在你的编辑器里"
+  agents:
+    n: "05 · 智能体"
+    title: "与你的智能体协作"
+    plain: >-
+      Nika 生来就是**由智能体书写、由你审阅**的。`nika init` 把 schema
+      接线和 `AGENTS.md` 放进你的仓库，让 Claude Code、Cursor、Codex
+      们第一次就写出合法的 workflow；`nika wire` 在你需要的地方加上
+      显式的 agent-tool（MCP）接线。
+  first_run:
+    n: "06 · 第一次 run"
+    title: "零密钥，零 cloud"
+    plain: >-
+      从 `nika welcome` 开始，它是一面镜子：这台机器已经有什么
+      （编辑器 · 本地模型 · 密钥的*存在与否*，绝不读取值），以及下一步
+      去哪。你的第一个 workflow 不需要模型也不需要 API 密钥。保存文件，
+      用 `nika check` 审计（plan · 成本 · secrets，在任何东西运行之前），
+      然后 `nika run`。要加一个 AI 步骤？指向一个**免费的本地模型**
+      （一次 `ollama pull`，什么都不离开你的机器），`nika doctor` 会
+      准确告诉你接好了什么。
+capture_title: "你应该看到的"
+trouble_title: "如果卡住了"
+trouble:
+  - q: "command not found: nika（安装脚本之后）"
+    a: >-
+      脚本安装到 `~/.nika/bin`，并打印出要加进 shell 配置文件
+      （`~/.zshrc`、`~/.bashrc`）的确切 `PATH` 行。加上它，重开终端，
+      `nika --version` 就有回应。
+  - q: "macOS 拦截了二进制（仅手动 tarball）"
+    a: >-
+      手动下载的二进制带着 quarantine 标记；brew 和安装脚本不带。
+      清除一次即可，或右键 → 打开。
+  - q: "在公司 proxy 之后"
+    a: >-
+      安装脚本就是纯 curl；下载时遵循标准的 proxy 环境变量。二进制
+      本身不向任何地方发送数据。
+  - q: "tarball 的 checksum mismatch"
+    a: >-
+      mismatch 意味着下载损坏或被篡改。不要运行它。从 release 页面
+      重新下载 tarball 和 `SHA256SUMS`，再校验一次。
+more:
+  next: "下一步："
+  learn: "5 分钟学会这个文件"
+  usecases: "浏览真实的 workflow"
+  docs: "完整文档"
+labels:
+  one_liner: "安装脚本"
+  binstall: "cargo binstall"
+  nix: "nix"
+  checksum: "checksum 校验"
+  repo_wiring: "仓库接线"
+  cursor_wiring: "Cursor 智能体接线"
+  welcome: "镜子 · 从这里开始"
+  check: "静态审计"
+  run: "run"
+  ollama: "免费的本地模型"
+  example: "示例 run · 本地模型"
+  doctor: "环境检查"
