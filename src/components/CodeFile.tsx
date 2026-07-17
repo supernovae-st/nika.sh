@@ -187,6 +187,18 @@ function CopyButton({ value }: { value: string }) {
   )
 }
 
+/* the tooltip intent clock (F-SENSATION-2 · R16, the Radix defaults):
+   700ms of settled intent opens a card; once one has been open, the warm
+   window (300ms after a hide) lets its brothers open instantly — shared
+   at module level so every CodeFile on the page belongs to one family. */
+let tipWarmUntil = 0
+/* module helpers: the clock reads live only in event flow (the React
+   compiler forbids impure calls in component-body closures) */
+const tipIsWarm = (open: boolean) => open || performance.now() < tipWarmUntil
+const markTipClosed = () => {
+  tipWarmUntil = performance.now() + 300
+}
+
 export function CodeFile({
   yaml,
   highlight,
@@ -239,10 +251,26 @@ export function CodeFile({
   const tipTermRef = useRef<HTMLElement>(null)
   const tipWordsRef = useRef<HTMLSpanElement>(null)
   const tipLinkRef = useRef<HTMLAnchorElement>(null)
+  const tipDelayRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const hideTip = () => {
+    clearTimeout(tipDelayRef.current)
     const box = tipRef.current
-    if (box) delete box.dataset.on
+    if (!box) return
+    if (box.dataset.on === '1') markTipClosed()
+    delete box.dataset.on
   }
+  /* intent gate: warm (a card is open, or one closed <300ms ago) shows
+     instantly; cold waits 700ms of settled hover. The anchor is a GETTER —
+     the rect is re-measured when the timer fires, never stale. */
+  const requestTip = (tip: CodeTip, anchorOf: () => DOMRect, body: HTMLElement) => {
+    clearTimeout(tipDelayRef.current)
+    const box = tipRef.current
+    if (!box) return
+    const warm = tipIsWarm(box.dataset.on === '1')
+    if (warm) showTip(tip, anchorOf(), body)
+    else tipDelayRef.current = setTimeout(() => showTip(tip, anchorOf(), body), 700)
+  }
+
   /* fill + place the card over an anchor rect (a token span or a lit row) */
   const showTip = (tip: CodeTip, anchor: DOMRect, body: HTMLElement) => {
     const box = tipRef.current
@@ -375,7 +403,7 @@ export function CodeFile({
                 const tokenTip = span ? tipFor(kind, span.textContent ?? '') : null
                 const body = e.currentTarget as HTMLElement
                 if (span && tokenTip) {
-                  showTip(tokenTip, span.getBoundingClientRect(), body)
+                  requestTip(tokenTip, () => span.getBoundingClientRect(), body)
                   return
                 }
                 /* no curated token under the pointer — the lit evidence range
@@ -389,7 +417,7 @@ export function CodeFile({
                   ln <= rangeTip.lines[1]
                 ) {
                   const verb = rangeTip.term
-                  showTip(
+                  requestTip(
                     {
                       term: rangeTip.term,
                       words: rangeTip.words,
@@ -397,7 +425,7 @@ export function CodeFile({
                         ? (verb as NikaVerb)
                         : undefined,
                     },
-                    row.getBoundingClientRect(),
+                    () => row.getBoundingClientRect(),
                     body,
                   )
                   return
@@ -417,11 +445,11 @@ export function CodeFile({
                       )
                     : null
                   if (lineEl && lineTip) {
-                    showTip(lineTip, lineEl.getBoundingClientRect(), body)
+                    requestTip(lineTip, () => lineEl.getBoundingClientRect(), body)
                     return
                   }
                 }
-                delete box.dataset.on
+                hideTip()
               }
             : undefined
         }
