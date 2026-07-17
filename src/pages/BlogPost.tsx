@@ -187,6 +187,7 @@ export function Component() {
           on a one-section page the observer armed everything at hydration anyway;
           baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
       <section ref={ref} aria-labelledby="bp-title" className="v4sec v4-in">
+        <div className="bp-progress" aria-hidden />
         <div className="v4sec-wrap bp-wrap">
           {/* the way back + the register row */}
           <nav className="bp-crumb" aria-label="Breadcrumb" data-rise>
@@ -198,7 +199,10 @@ export function Component() {
             </Link>
           </nav>
           <p className="bp-fig mono" data-rise style={{ ['--rise-delay' as string]: '40ms' }}>
-            {post.tag} · <time dateTime={post.date}>{post.date}</time> · {post.readingMin} min
+            <Link to="/manifesto" viewTransition className="bp-author">
+              {post.author}
+            </Link>{' '}
+            · {post.tag} · <time dateTime={post.date}>{post.date}</time> · {post.readingMin} min
           </p>
           <h1 id="bp-title" className="v4sec-title bp-title">
             {post.title}
