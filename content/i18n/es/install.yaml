@@ -1,0 +1,106 @@
+# install · es · DRAFT (revisión del operador requerida · voz manifesto:
+# términos técnicos en EN verbatim · el léxico intraducible queda byte-idéntico)
+page: /install
+fig: "install"
+title: "Un binario. Tu máquina."
+punch: "Dos minutos hasta tu primer run."
+lede: >-
+  Nika es **un solo binario Rust**: sin daemon, sin cuenta, sin cloud
+  obligatorio. Elige una puerta de entrada abajo y ejecuta tu primer archivo
+  con un **modelo local gratuito**.
+stamp: "macOS · Linux · air-gapped OK"
+steps:
+  brew:
+    n: "01 · homebrew"
+    title: "El one-liner"
+    plain: >-
+      macOS o Linux con Homebrew: en tu `PATH` de inmediato.
+      Compruébalo con `nika --version`.
+  script:
+    n: "02 · script"
+    title: "Sin Homebrew"
+    plain: >-
+      Descarga el **binario de release verificado** en `~/.nika/bin` e
+      imprime la única línea `PATH` que añadir a tu perfil de shell.
+      Reabre la terminal y `nika --version` responde.
+    plain2: >-
+      ¿Ya llevas una toolchain? **cargo** trae el tarball de release
+      precompilado, sin compilar (el binario llega como `nika-cli` hasta la
+      publicación en crates.io: un symlink al nombre público, una vez).
+      **nix** construye la source exacta de la release vía el flake del repo;
+      el primer run compila, el store la cachea.
+  manual:
+    n: "03 · manual"
+    title: "Air-gapped, o a mano"
+    plain: >-
+      Descarga el tarball de tu plataforma y `SHA256SUMS` desde la última
+      release, verifica, y mueve `nika` a tu `PATH`. Nada llama a casa.
+  editor:
+    n: "04 · editor"
+    title: "La extensión del editor"
+    plain: >-
+      `supernovae.nika-lang` · en el VS Code Marketplace y Open VSX
+      (Cursor · Windsurf · VSCodium). Descarga automáticamente el binario
+      `nika` de la release correspondiente en el primer uso, o reutiliza el
+      que ya está en tu `PATH`. ¿Cualquier otro editor? `nika lsp` habla LSP
+      sobre stdio · source + issues.
+    ghost: "completions · diagnósticos · una vista del plan · en tu editor"
+  agents:
+    n: "05 · agentes"
+    title: "Trabaja con tus agentes"
+    plain: >-
+      Nika está hecho para ser **escrito por agentes y revisado por ti**.
+      `nika init` deja el cableado del schema + `AGENTS.md` en tu repo para
+      que Claude Code, Cursor, Codex y compañía escriban workflows válidos a
+      la primera; `nika wire` añade cableado agent-tool (MCP) explícito donde
+      tú quieras.
+  first_run:
+    n: "06 · primer run"
+    title: "Cero claves, cero cloud"
+    plain: >-
+      Empieza con `nika welcome`, el espejo: lo que esta máquina ya tiene
+      (editores · modelos locales · *presencia* de claves, nunca valores) y
+      adónde ir después. Tu primer workflow no necesita modelo ni clave API.
+      Guarda el archivo, audítalo con `nika check` (plan · coste · secretos,
+      antes de que nada corra), y luego `nika run`. ¿Añades un paso de IA?
+      Apúntalo a un **modelo local gratuito** (un `ollama pull`, nada sale de
+      tu máquina), y `nika doctor` te dice exactamente qué está cableado.
+capture_title: "lo que deberías ver"
+trouble_title: "si algo se atasca"
+trouble:
+  - q: "command not found: nika (después del script de instalación)"
+    a: >-
+      El script instala en `~/.nika/bin` e imprime la línea `PATH` exacta que
+      añadir a tu perfil de shell (`~/.zshrc`, `~/.bashrc`). Añádela, reabre
+      la terminal, y `nika --version` responde.
+  - q: "macOS bloquea el binario (solo tarball manual)"
+    a: >-
+      Un binario descargado a mano lleva el flag de quarantine; brew y el
+      script de instalación no. Quítalo una vez, o clic derecho → Abrir.
+  - q: "detrás de un proxy corporativo"
+    a: >-
+      El script de instalación es curl puro; respeta las variables proxy
+      estándar para la descarga. El binario en sí no llama a ninguna parte.
+  - q: "checksum mismatch en el tarball"
+    a: >-
+      Un mismatch significa una descarga corrupta o manipulada. No lo
+      ejecutes. Vuelve a descargar el tarball y `SHA256SUMS` desde la página
+      de release y verifica de nuevo.
+more:
+  next: "Siguiente:"
+  learn: "aprende el archivo en 5 minutos"
+  usecases: "explora workflows reales"
+  docs: "docs completas"
+labels:
+  one_liner: "script de instalación"
+  binstall: "cargo binstall"
+  nix: "nix"
+  checksum: "verificación de checksum"
+  repo_wiring: "cableado del repo"
+  cursor_wiring: "cableado del agente Cursor"
+  welcome: "el espejo · empieza aquí"
+  check: "auditoría estática"
+  run: "run"
+  ollama: "el modelo local gratuito"
+  example: "run de ejemplo · modelo local"
+  doctor: "check del entorno"

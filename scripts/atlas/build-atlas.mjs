@@ -655,6 +655,24 @@ const clockDiff = {
   },
 }
 
+/* the untranslatables lexicon (WO-10 · mega-plan item 7): every name the
+   language OWNS, derived from the graph — the fixed-values contract injected
+   into the localization workflow (the AI fills prose, the locked tokens are
+   EXPLICIT) and the lint floor for content/i18n/** (a translated `after:`
+   cannot exist · i18n-lexicon.test names the drift). Sorted, deduped,
+   deterministic. */
+const untranslatables = [...new Set([
+  ...S.canon.verbNames,
+  ...S.words.map((w) => w.word),
+  ...S.canon.namespaceNames,
+  ...S.canon.builtinNames.map((b) => `nika:${b}`),
+  ...S.errors.codes.map((c) => c.code),
+  ...S.providers.providers.map((p) => p.id),
+  ...S.templates.templates.map((t) => t.name),
+  ...S.canon.extractModeNames,
+  'nika', '.nika.yaml', 'nika check', 'nika run', 'AGPL-3.0', 'Apache-2.0',
+])].sort()
+
 const metaTs = GEN(
   'atlas-meta.generated.ts',
   `/** chrome-safe: provenance + counts only — the full graph stays lazy
@@ -1357,9 +1375,14 @@ if (!REPORT_ONLY) {
     writeFileSync(join(dir, 'index.html'), stub(r.to, r.from.split('/').pop()))
   }
   mkdirSync(join(ROOT, 'public/ontology'), { recursive: true })
+  mkdirSync(join(ROOT, 'public/i18n'), { recursive: true })
   mkdirSync(join(ROOT, 'public/map'), { recursive: true })
   writeFileSync(join(ROOT, 'public/map/constellation.svg'), constellationSvg)
   writeFileSync(join(ROOT, 'public/ontology/language.json'), JSON.stringify(twin, null, 2) + '\n')
+  writeFileSync(
+    join(ROOT, 'public/i18n/untranslatables.json'),
+    JSON.stringify({ lexicon: 1, derived_from: 'build-atlas (the language graph)', entries: untranslatables }, null, 2) + '\n',
+  )
   writeFileSync(join(ROOT, 'public/redirects.json'), redirectsJson)
 }
 

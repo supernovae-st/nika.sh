@@ -1,0 +1,109 @@
+# install · de · DRAFT (Operator-Review erforderlich · Manifesto-Stimme:
+# technische Begriffe bleiben EN verbatim · das Lexikon bleibt byte-identisch)
+page: /install
+fig: "install"
+title: "Ein Binary. Deine Maschine."
+punch: "Zwei Minuten bis zum ersten Run."
+lede: >-
+  Nika ist **ein einziges Rust-Binary**: kein Daemon, kein Account, keine
+  Cloud nötig. Wähl unten einen Weg hinein und starte dein erstes File mit
+  einem **kostenlosen lokalen Modell**.
+stamp: "macOS · Linux · air-gapped OK"
+steps:
+  brew:
+    n: "01 · homebrew"
+    title: "Der Einzeiler"
+    plain: >-
+      macOS oder Linux mit Homebrew: sofort auf deinem `PATH`.
+      Prüf es mit `nika --version`.
+  script:
+    n: "02 · script"
+    title: "Ohne Homebrew"
+    plain: >-
+      Lädt das **verifizierte Release-Binary** nach `~/.nika/bin` und druckt
+      die eine `PATH`-Zeile für dein Shell-Profil. Terminal neu öffnen, und
+      `nika --version` antwortet.
+    plain2: >-
+      Toolchain schon an Bord? **cargo** holt den vorgebauten Release-Tarball,
+      kein Kompilieren (das Binary landet als `nika-cli`, bis der
+      crates.io-Publish steht: einmal einen Symlink auf den öffentlichen Namen
+      legen). **nix** baut die exakte Release-Source über das Repo-Flake; der
+      erste Run kompiliert, der Store cacht.
+  manual:
+    n: "03 · manuell"
+    title: "Air-gapped, oder von Hand"
+    plain: >-
+      Lade den Plattform-Tarball und `SHA256SUMS` vom letzten Release,
+      verifiziere, dann schieb `nika` auf deinen `PATH`.
+      Nichts telefoniert nach Hause.
+  editor:
+    n: "04 · editor"
+    title: "Die Editor-Extension"
+    plain: >-
+      `supernovae.nika-lang` · im VS Code Marketplace und auf Open VSX
+      (Cursor · Windsurf · VSCodium). Sie lädt beim ersten Einsatz das
+      passende `nika`-Release-Binary automatisch, oder nutzt das auf deinem
+      `PATH` vorhandene. Jeder andere Editor: `nika lsp` spricht LSP über
+      stdio · Source + Issues.
+    ghost: "Completions · Diagnostics · eine Sicht auf den Plan · in deinem Editor"
+  agents:
+    n: "05 · agents"
+    title: "Arbeite mit deinen Agents"
+    plain: >-
+      Nika ist gebaut, um **von Agents geschrieben und von dir reviewt** zu
+      werden. `nika init` legt das Schema-Wiring + `AGENTS.md` in dein Repo,
+      damit Claude Code, Cursor, Codex und Co. beim ersten Versuch valide
+      Workflows schreiben; `nika wire` ergänzt explizites Agent-Tool-Wiring
+      (MCP), wo du es willst.
+  first_run:
+    n: "06 · erster run"
+    title: "Null Keys, null Cloud"
+    plain: >-
+      Starte mit `nika welcome`, dem Spiegel: was diese Maschine schon hat
+      (Editoren · lokale Modelle · Key-*Präsenz*, nie Werte) und wohin als
+      Nächstes. Dein erster Workflow braucht weder Modell noch API-Key.
+      Speichere das File, auditiere es mit `nika check` (Plan · Kosten ·
+      Secrets, bevor irgendwas läuft), dann `nika run`. Ein KI-Schritt dazu?
+      Zeig auf ein **kostenloses lokales Modell** (ein `ollama pull`, nichts
+      verlässt deine Maschine), und `nika doctor` sagt dir exakt, was
+      verkabelt ist.
+capture_title: "was du sehen solltest"
+trouble_title: "falls etwas hakt"
+trouble:
+  - q: "command not found: nika (nach dem Install-Script)"
+    a: >-
+      Das Script installiert nach `~/.nika/bin` und druckt die exakte
+      `PATH`-Zeile für dein Shell-Profil (`~/.zshrc`, `~/.bashrc`). Zeile
+      einfügen, Terminal neu öffnen, und `nika --version` antwortet.
+  - q: "macOS blockiert das Binary (nur manueller Tarball)"
+    a: >-
+      Ein von Hand geladenes Binary trägt das Quarantine-Flag; brew und das
+      Install-Script nicht. Einmal entfernen, oder Rechtsklick → Öffnen.
+  - q: "hinter einem Firmen-Proxy"
+    a: >-
+      Das Install-Script ist pures curl; es respektiert die
+      Standard-Proxy-Variablen für den Download. Das Binary selbst
+      telefoniert nirgendwohin.
+  - q: "checksum mismatch beim Tarball"
+    a: >-
+      Ein Mismatch heißt: korrupter oder manipulierter Download. Nicht
+      ausführen. Tarball und `SHA256SUMS` neu von der Release-Seite laden
+      und erneut verifizieren.
+more:
+  next: "Weiter:"
+  learn: "lern das File in 5 Minuten"
+  usecases: "echte Workflows ansehen"
+  docs: "volle Docs"
+labels:
+  one_liner: "Install-Script"
+  binstall: "cargo binstall"
+  nix: "nix"
+  checksum: "Checksum-Verifikation"
+  repo_wiring: "Repo-Wiring"
+  cursor_wiring: "Cursor-Agent-Wiring"
+  welcome: "der Spiegel · starte hier"
+  check: "statisches Audit"
+  run: "run"
+  ollama: "das kostenlose lokale Modell"
+  example: "Beispiel-Run · lokales Modell"
+  doctor: "Environment-Check"

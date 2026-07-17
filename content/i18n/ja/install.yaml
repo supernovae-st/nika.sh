@@ -1,0 +1,106 @@
+# install · ja · DRAFT（オペレーターレビュー必須 · manifesto の声:
+# 技術用語は EN のまま · 翻訳不可レキシコンはバイト一致で保持）
+page: /install
+fig: "install"
+title: "バイナリひとつ。きみのマシンで。"
+punch: "最初の run まで 2 分。"
+lede: >-
+  Nika は **Rust バイナリひとつ**。daemon なし、アカウント不要、cloud も
+  必須ではない。下から入り口を選んで、**無料のローカルモデル**で最初の
+  ファイルを動かそう。
+stamp: "macOS · Linux · air-gapped OK"
+steps:
+  brew:
+    n: "01 · homebrew"
+    title: "ワンライナー"
+    plain: >-
+      Homebrew のある macOS / Linux なら、すぐに `PATH` に載る。
+      `nika --version` で確認。
+  script:
+    n: "02 · script"
+    title: "Homebrew なしで"
+    plain: >-
+      **検証済みの release バイナリ**を `~/.nika/bin` にダウンロードし、
+      シェルプロファイルに足す `PATH` の 1 行を表示する。ターミナルを
+      開き直せば `nika --version` が答える。
+    plain2: >-
+      toolchain がすでにあるなら: **cargo** はビルド済みの release tarball を
+      取ってくる。コンパイル不要（crates.io 公開までバイナリ名は `nika-cli`。
+      公開名への symlink を一度だけ張る）。**nix** はリポジトリの flake から
+      release のソースをそのままビルドする。初回 run はコンパイル、store が
+      キャッシュする。
+  manual:
+    n: "03 · 手動"
+    title: "air-gapped でも、手作業でも"
+    plain: >-
+      最新 release からプラットフォームの tarball と `SHA256SUMS` を
+      ダウンロードして検証し、`nika` を `PATH` に置く。
+      どこにも通信しない。
+  editor:
+    n: "04 · エディタ"
+    title: "エディタ拡張"
+    plain: >-
+      `supernovae.nika-lang` · VS Code Marketplace と Open VSX にある
+      （Cursor · Windsurf · VSCodium）。初回使用時に対応する `nika` release
+      バイナリを自動ダウンロード、`PATH` 上の既存バイナリがあればそれを
+      使う。他のエディタなら: `nika lsp` が stdio で LSP を話す ·
+      source + issues。
+    ghost: "補完 · 診断 · プランのビュー · きみのエディタの中で"
+  agents:
+    n: "05 · エージェント"
+    title: "エージェントと一緒に"
+    plain: >-
+      Nika は**エージェントが書き、きみがレビューする**ために作られている。
+      `nika init` が schema の配線と `AGENTS.md` をリポジトリに置き、
+      Claude Code · Cursor · Codex たちが一発で valid な workflow を書ける
+      ようにする。`nika wire` は agent-tool（MCP）の明示的な配線を、
+      欲しい場所にだけ足す。
+  first_run:
+    n: "06 · 最初の run"
+    title: "キーゼロ、cloud ゼロ"
+    plain: >-
+      まず `nika welcome`、鏡だ: このマシンに何があるか（エディタ ·
+      ローカルモデル · キーの*有無*だけ、値は決して見ない）と、次に
+      行く場所。最初の workflow にモデルも API キーも要らない。ファイルを
+      保存し、`nika check` で監査（plan · コスト · secrets を、何かが
+      動く前に）、それから `nika run`。AI ステップを足すなら
+      **無料のローカルモデル**へ（`ollama pull` ひとつ、マシンから何も
+      出ない）。`nika doctor` が配線済みのものを正確に教えてくれる。
+capture_title: "表示されるはずのもの"
+trouble_title: "引っかかったら"
+trouble:
+  - q: "command not found: nika（インストールスクリプトの後）"
+    a: >-
+      スクリプトは `~/.nika/bin` にインストールし、シェルプロファイル
+      （`~/.zshrc`, `~/.bashrc`）に足す正確な `PATH` 行を表示する。
+      追加してターミナルを開き直せば `nika --version` が答える。
+  - q: "macOS がバイナリをブロックする（手動 tarball のみ）"
+    a: >-
+      手でダウンロードしたバイナリは quarantine フラグ付き。brew と
+      インストールスクリプトは付かない。一度クリアするか、右クリック → 開く。
+  - q: "社内 proxy の内側で"
+    a: >-
+      インストールスクリプトは素の curl。ダウンロードには標準の proxy
+      変数をそのまま使う。バイナリ自体はどこにも通信しない。
+  - q: "tarball の checksum mismatch"
+    a: >-
+      mismatch は破損か改ざんされたダウンロードの印。実行しないこと。
+      release ページから tarball と `SHA256SUMS` を取り直して再検証する。
+more:
+  next: "次へ:"
+  learn: "5 分でファイルを学ぶ"
+  usecases: "実物の workflow を見る"
+  docs: "フルドキュメント"
+labels:
+  one_liner: "インストールスクリプト"
+  binstall: "cargo binstall"
+  nix: "nix"
+  checksum: "checksum 検証"
+  repo_wiring: "リポジトリ配線"
+  cursor_wiring: "Cursor エージェント配線"
+  welcome: "鏡 · ここから"
+  check: "静的監査"
+  run: "run"
+  ollama: "無料のローカルモデル"
+  example: "実行例 · ローカルモデル"
+  doctor: "環境チェック"

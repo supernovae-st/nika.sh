@@ -1,0 +1,102 @@
+# install · ko · DRAFT (오퍼레이터 리뷰 필수 · manifesto 목소리:
+# 기술 용어는 EN 그대로 · 번역 불가 렉시콘은 바이트 동일 유지)
+page: /install
+fig: "install"
+title: "바이너리 하나. 너의 머신."
+punch: "첫 run까지 2분."
+lede: >-
+  Nika는 **Rust 바이너리 하나**다. daemon 없음, 계정 없음, cloud 필수 아님.
+  아래에서 들어갈 문을 고르고 **무료 로컬 모델**로 첫 파일을 실행해 보자.
+stamp: "macOS · Linux · air-gapped OK"
+steps:
+  brew:
+    n: "01 · homebrew"
+    title: "원라이너"
+    plain: >-
+      Homebrew가 있는 macOS 또는 Linux: 바로 `PATH`에 올라간다.
+      `nika --version`으로 확인.
+  script:
+    n: "02 · script"
+    title: "Homebrew 없이"
+    plain: >-
+      **검증된 release 바이너리**를 `~/.nika/bin`에 내려받고, 셸
+      프로필에 추가할 `PATH` 한 줄을 출력한다. 터미널을 다시 열면
+      `nika --version`이 답한다.
+    plain2: >-
+      toolchain이 이미 있다면: **cargo**는 미리 빌드된 release tarball을
+      가져온다. 컴파일 없음 (crates.io publish 전까지 바이너리 이름은
+      `nika-cli`: 공개 이름으로 symlink 한 번). **nix**는 repo flake로
+      release 소스를 그대로 빌드한다. 첫 run은 컴파일하고, store가
+      캐시한다.
+  manual:
+    n: "03 · 수동"
+    title: "air-gapped, 또는 직접"
+    plain: >-
+      최신 release에서 플랫폼 tarball과 `SHA256SUMS`를 내려받아 검증한 뒤
+      `nika`를 `PATH`에 놓는다. 아무 데도 연결하지 않는다.
+  editor:
+    n: "04 · 에디터"
+    title: "에디터 확장"
+    plain: >-
+      `supernovae.nika-lang` · VS Code Marketplace와 Open VSX에 있다
+      (Cursor · Windsurf · VSCodium). 첫 사용 시 맞는 `nika` release
+      바이너리를 자동으로 내려받거나, `PATH`에 이미 있는 것을 재사용한다.
+      다른 에디터라면: `nika lsp`가 stdio로 LSP를 말한다 · source + issues.
+    ghost: "자동완성 · 진단 · 플랜 뷰 · 너의 에디터 안에서"
+  agents:
+    n: "05 · 에이전트"
+    title: "에이전트와 함께"
+    plain: >-
+      Nika는 **에이전트가 쓰고 네가 리뷰하도록** 만들어졌다. `nika init`이
+      schema 연결과 `AGENTS.md`를 repo에 넣어 Claude Code, Cursor, Codex
+      들이 첫 시도에 valid한 workflow를 쓰게 하고, `nika wire`는 원하는
+      곳에만 명시적 agent-tool(MCP) 연결을 더한다.
+  first_run:
+    n: "06 · 첫 run"
+    title: "키 제로, cloud 제로"
+    plain: >-
+      `nika welcome`부터, 거울이다: 이 머신에 이미 있는 것들 (에디터 ·
+      로컬 모델 · 키의 *존재 여부*만, 값은 절대 아님) 그리고 다음에 갈
+      곳. 첫 workflow에는 모델도 API 키도 필요 없다. 파일을 저장하고
+      `nika check`로 감사한 뒤 (plan · 비용 · secrets, 무엇이든 돌기
+      전에) `nika run`. AI 스텝을 더한다면 **무료 로컬 모델**로
+      (`ollama pull` 한 번, 머신 밖으로 아무것도 안 나간다),
+      `nika doctor`가 무엇이 연결됐는지 정확히 알려준다.
+capture_title: "이렇게 보여야 한다"
+trouble_title: "뭔가 걸린다면"
+trouble:
+  - q: "command not found: nika (설치 스크립트 후)"
+    a: >-
+      스크립트는 `~/.nika/bin`에 설치하고 셸 프로필(`~/.zshrc`,
+      `~/.bashrc`)에 추가할 정확한 `PATH` 줄을 출력한다. 추가하고
+      터미널을 다시 열면 `nika --version`이 답한다.
+  - q: "macOS가 바이너리를 차단 (수동 tarball만)"
+    a: >-
+      손으로 내려받은 바이너리는 quarantine 플래그가 붙는다. brew와 설치
+      스크립트는 안 붙는다. 한 번 지우거나, 우클릭 → 열기.
+  - q: "회사 proxy 뒤에서"
+    a: >-
+      설치 스크립트는 순수 curl이다. 다운로드에 표준 proxy 변수를 그대로
+      쓴다. 바이너리 자체는 어디에도 연결하지 않는다.
+  - q: "tarball checksum mismatch"
+    a: >-
+      mismatch는 손상되었거나 변조된 다운로드라는 뜻이다. 실행하지 말 것.
+      release 페이지에서 tarball과 `SHA256SUMS`를 다시 받아 재검증한다.
+more:
+  next: "다음:"
+  learn: "5분 만에 파일 배우기"
+  usecases: "실제 workflow 둘러보기"
+  docs: "전체 문서"
+labels:
+  one_liner: "설치 스크립트"
+  binstall: "cargo binstall"
+  nix: "nix"
+  checksum: "checksum 검증"
+  repo_wiring: "repo 연결"
+  cursor_wiring: "Cursor 에이전트 연결"
+  welcome: "거울 · 여기서 시작"
+  check: "정적 감사"
+  run: "run"
+  ollama: "무료 로컬 모델"
+  example: "예시 run · 로컬 모델"
+  doctor: "환경 체크"

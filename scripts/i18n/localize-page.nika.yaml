@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: Apache-2.0
+# yaml-language-server: $schema=https://nika.sh/spec/v1/workflow.schema.json
+#
+# localize-page · the WO-10 draft factory (§4bis.5 · dogfood — the site's own
+# t3-localization-factory shape, pointed at ONE page × ONE locale).
+#
+#   [twin]──┐
+#   [lexicon]┼──▶[draft]──▶[save]
+#            │   infer      nika:write
+#
+# The lexicon rides into the prompt as FIXED VALUES (the builder-v2 pattern:
+# the model fills prose, the locked tokens are explicit); the draft lands in
+# content/i18n/<locale>/<page>.draft.yaml — NEVER the live file. The gates
+# (src/test/i18n-lexicon.test.ts) + human review stand between a draft and a
+# commit; this workflow only manufactures the raw material.
+#
+# Run (the human's move · a local model keeps it sovereign and unmetered):
+#   nika run scripts/i18n/localize-page.nika.yaml \
+#     --var page=learn --var locale=fr --var language="French"
+nika: v1
+workflow: localize-page
+description: "draft one L1 page translation from the EN twin, lexicon locked"
+
+model: ollama/qwen3.5:4b   # local · zero key · swap any catalog provider
+
+vars:
+  page:
+    type: string
+    required: true
+    description: "Page slug under content/i18n/en (learn, use-cases, convert)"
+  locale:
+    type: string
+    required: true
+    description: "Target locale dir (fr, es, de, pt-br, ja, ko, zh-hans)"
+  language:
+    type: string
+    required: true
+    description: "Target language, written out (French, Japanese)"
+
+permits:
+  fs:
+    read: ["./content/i18n/en/*", "./public/i18n/untranslatables.json"]
+    write: ["./content/i18n/*/*.draft.yaml"]
+  tools: ["nika:read", "nika:write"]
+
+tasks:
+  - id: twin
+    invoke:
+      tool: "nika:read"
+      args:
+        path: "./content/i18n/en/${{ vars.page }}.yaml"
+
+  - id: lexicon
+    invoke:
+      tool: "nika:read"
+      args:
+        path: "./public/i18n/untranslatables.json"
+
+  - id: draft
+    depends_on: [twin, lexicon]
+    with:
+      twin: ${{ tasks.twin.output }}
+      lexicon: ${{ tasks.lexicon.output }}
+    infer:
+      max_tokens: 4000
+      prompt: |
+        Translate this website page copy to ${{ vars.language }}.
+
+        Voice contract (the manifesto precedent):
+        - Hand-crafted register, never word-for-word. Short sentences.
+        - Technical terms stay in English the way developer communities
+          write them (binary, release, workflow, daemon, cloud, proxy).
+        - Every token from the FIXED VALUES list below stays byte-verbatim
+          wherever it appears, especially inside backticks.
+        - Keep the YAML structure and every key EXACTLY as given; translate
+          scalar values only. Keep the markdown-lite markup (`code`,
+          **bold**, *italic*) on the same words.
+        - Never use the em dash.
+
+        FIXED VALUES (never translate):
+        ${{ with.lexicon }}
+
+        THE PAGE (translate values, keep keys):
+        ${{ with.twin }}
+
+  - id: save
+    depends_on: [draft]
+    with:
+      body: ${{ tasks.draft.output }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./content/i18n/${{ vars.locale }}/${{ vars.page }}.draft.yaml"
+        content: "${{ with.body }}"
+
+outputs:
+  draft_path: ${{ tasks.save.output }}
