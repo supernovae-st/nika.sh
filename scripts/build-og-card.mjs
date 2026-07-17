@@ -573,7 +573,7 @@ const CARDS = [
     out: 'og-blog-own-your-stack.png',
     fig: 'FIG B.7',
     headline: 'No cloud<br><span class="b">needed.</span>',
-    sub: 'One Rust binary, your models, your files: 5 of the 16 providers run fully&nbsp;local.',
+    sub: 'One Rust binary, your models, your files: 5 of the 17 providers run fully&nbsp;local.',
     detail:
       '<span class="arrow">▸</span><span>ollama<span class="sep">·</span>lm&nbsp;studio<span class="sep">·</span>llama.cpp<span class="sep">·</span>localai<span class="sep">·</span>vllm</span>',
   },

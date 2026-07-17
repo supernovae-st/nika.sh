@@ -23,7 +23,7 @@ import { CANON } from '../canon.generated'
                              family arcs · the cargo racks
           S.6 the array      9 extract ports fanned off the fetch block — the
                              antenna boom on the flank
-     STERN S.5 the engines   16 provider nozzles: 5 local DOCKED tight on the
+     STERN S.5 the engines   17 provider nozzles: 5 local DOCKED tight on the
                              spine (the thrust you own) · 10 cloud outboard ·
                              1 mock dim
           S.7 the shield     21 error-namespace plates flared as the stern
