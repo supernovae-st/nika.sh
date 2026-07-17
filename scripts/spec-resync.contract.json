@@ -331,7 +331,7 @@
   },
   {
    "path": "src/content/providers.generated.ts",
-   "sha256": "8e222bec3607263a381f9dcfe64ac69c50c8278edf9f018f01150a64a42fcc3d",
+   "sha256": "528f050e79accacaadc0bc99397f00610542d5d062574f1d7f65557c48aeb3f7",
    "consumers": [
     "src/pages/Providers.tsx"
    ]
@@ -345,7 +345,7 @@
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "30204032cdd423bee40178a4e8dd401401b01ff70646c57d644626c4e59fb504",
+   "sha256": "6072609762f657dd9bf34905bd0773e7fefda86397e151fd23434df241d305ff",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
@@ -387,7 +387,7 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "8f86332047e585101330781f77b106ba6d0d36608dc8ff4d1316d0d67c660d6a",
+   "sha256": "8629832b2e0f9f9718f0ad98285f4000d62095a41303f7edf6d9cb89994b9080",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]
