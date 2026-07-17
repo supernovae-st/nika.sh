@@ -26,10 +26,15 @@ import './map-page.css'
    SSR-safe: static content; the reveal is the shared poster-law hook. */
 
 const diffLine = (() => {
-  const b = ATLAS_CLOCK_DIFF.builtins
+  /* BOTH registers (the swarm's sub-cap catch: providers drift was
+     invisible here while /sources showed it) — the agreement claim is
+     only honest when every diffed register is read */
   const parts: string[] = []
-  if (b.ratified_only.length) parts.push(`ratified, ships with the next train: ${b.ratified_only.join(' · ')}`)
-  if (b.shipped_only.length) parts.push(`shipped ahead of canon: ${b.shipped_only.join(' · ')}`)
+  for (const register of ['builtins', 'providers'] as const) {
+    const d = ATLAS_CLOCK_DIFF[register]
+    if (d.ratified_only.length) parts.push(`${register} ratified, ships with the next train: ${d.ratified_only.join(' · ')}`)
+    if (d.shipped_only.length) parts.push(`${register} shipped ahead of canon: ${d.shipped_only.join(' · ')}`)
+  }
   return parts.length ? parts.join(' — ') : 'the two clocks agree today: everything ratified is shipped'
 })()
 

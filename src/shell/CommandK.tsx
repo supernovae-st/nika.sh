@@ -108,6 +108,8 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
   /* the open-time context (round-2B): the palette mounts on open, so the
      page state is simply read once — every action.when stays pure over it */
   const [feedback, setFeedback] = useState<string | null>(null)
+  const feedbackT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  useEffect(() => () => clearTimeout(feedbackT.current), [])
   const ctx = useMemo<PaletteCtx>(
     () => ({
       path: window.location.pathname,
@@ -221,13 +223,13 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
         .then((label) => {
           if (label) {
             setFeedback(`${e.label} · ${label}`)
-            setTimeout(onClose, 700)
+            feedbackT.current = setTimeout(onClose, 700)
           }
         })
         .catch(() => {
           /* clipboard denial / fetch refusal: name it, never crash */
           setFeedback(`${e.label} · failed`)
-          setTimeout(onClose, 900)
+          feedbackT.current = setTimeout(onClose, 900)
         })
       return
     }

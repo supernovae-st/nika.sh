@@ -172,7 +172,9 @@ export function Component() {
   }, [])
   const share = () => {
     const url = `${window.location.origin}/play?y=${compressToEncodedURIComponent(code)}`
-    window.history.replaceState(null, '', url)
+    /* clone the router's state — a null here wiped react-router's
+       usr/key/idx and broke pop-back (the swarm's finding-[8] class) */
+    window.history.replaceState({ ...window.history.state }, '', url)
     void navigator.clipboard?.writeText(url).then(() => {
       track('play-share')
       setShared(true)
