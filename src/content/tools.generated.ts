@@ -27,9 +27,12 @@ export interface ToolEntry {
   description: string
   /** Declared args, schema order. */
   args: ToolArgEntry[]
+  /** Canon-ratified but not in the shipped binary yet (the register carries
+      the spec-derived contract · the clocks disagree on purpose). */
+  ratified_only?: boolean
 }
 
-/** Every builtin, sorted by bare name. Engine version at generation: "0.99.0". */
+/** Every builtin, sorted by bare name. Engine version at generation: "0.104.0". */
 export const TOOLS: ToolEntry[] = [
   {
     "name": "nika:assert",
@@ -219,7 +222,8 @@ export const TOOLS: ToolEntry[] = [
         "type": "object",
         "desc": "EvidenceSnapshot with time and cited evidence items"
       }
-    ]
+    ],
+    "ratified_only": true
   },
   {
     "name": "nika:done",

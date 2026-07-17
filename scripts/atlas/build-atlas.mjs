@@ -26,6 +26,7 @@ import { writeFileSync, mkdirSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readSources } from './lib/read-sources.mjs'
+import { w1ToW2WithMap } from '../lib/w1-to-w2.mjs'
 import { layoutConstellation } from './lib/radial-layout.mjs'
 import { renderConstellation } from './lib/render-constellation.mjs'
 
@@ -70,7 +71,7 @@ const errNs = (code) => {
 /* ─── member resolution per set (source → [{member, title, opener?, url,
        anchor?, status}]) · the clock diff is computed, never written ───────*/
 const ratifiedBuiltins = new Set(S.canon.builtinNames)
-const shippedBuiltins = new Set(S.tools.tools.map((t) => t.bare))
+const shippedBuiltins = new Set(S.tools.tools.filter((t) => !t.ratified_only).map((t) => t.bare))
 const ratifiedProviders = new Set([
   ...S.canon.providerIdsLocal,
   ...S.canon.providerIdsCloud,
@@ -96,8 +97,16 @@ function membersOf(set) {
       return S.canon.namespaceNames.map((m) => ({
         member: m, title: m, opener: null, ...anchor(m), status: 'ratified',
       }))
-    case 'types':
-      return [] // W3 slot · fills when the resync brings $defs.typeExpr
+    case 'types': {
+      /* the closed v1 primitive grammar, read from the SERVED schema (the
+         set's own declared source) — the pattern's first alternation IS
+         the register; PascalCase refs are authored, not members */
+      const pattern = S.schema?.$defs?.typeExpr?.oneOf?.find((o) => o.pattern)?.pattern ?? ''
+      const prims = pattern.match(/\(([a-z|]+)\|\[A-Z\]/)?.[1]?.split('|') ?? []
+      return prims.map((m) => ({
+        member: m, title: m, opener: null, ...anchor(m), status: 'ratified',
+      }))
+    }
     case 'edge-kinds':
     case 'gate-predicates':
     case 'permit-families':
@@ -636,6 +645,14 @@ const clockDiff = {
     ratified_only: [...ratifiedProviders].filter((p) => !shippedProviders.has(p)).sort(),
     shipped_only: [...shippedProviders].filter((p) => !ratifiedProviders.has(p)).sort(),
   },
+  /* the 0.104 flip: the released binary speaks W2 while the public spec (the
+     pin) still teaches W1 — the biggest ratified↔shipped gap the site has
+     ever rendered. The corpus follows the SHIPPED grammar (the visitor's
+     binary); the pin stays the ratified clock. Empties at the pin flip. */
+  grammar: {
+    ratified_only: ['W1 envelope (workflow object · tasks map)'],
+    shipped_only: ['W2 envelope (workflow scalar · tasks sequence · declared depends_on)'],
+  },
 }
 
 const metaTs = GEN(
@@ -663,7 +680,7 @@ export const ATLAS_HUBS = ${JSON.stringify(
 export const ATLAS_SCORE = ${JSON.stringify({ score, waived, unarmed }, null, 2)} as const
 
 /** the two clocks diffed (computed at compile · /map renders the line) */
-export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers', { ratified_only: string[]; shipped_only: string[] }> =
+export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers' | 'grammar', { ratified_only: string[]; shipped_only: string[] }> =
   ${JSON.stringify(clockDiff, null, 2)}
 
 /** flips when /sources ships (WO-7) — TruthLine withholds the link until then */
@@ -1213,6 +1230,30 @@ export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridC
    the 79K of yaml strings becomes an async chunk (the island recipe).
    The SOURCE stays the spec-owned projector emission (frontier law);
    this is a value-equal projection, gate-pinned toEqual in atlas.test. */
+/* W2 at the door (0.104 shipped flip): the rendered YAML passes w1-to-w2 at
+   the access doors (showcase-yaml-access · Play seeds), so the emitted plan
+   facts must point at the RENDERED lines — the same pass's line map re-aims
+   every line0/line1 (0-based in this projection). Value-equality in
+   atlas.test applies the same remap to the ratified emission before
+   comparing. Retires with the pass (see src/lib/w1-to-w2.ts). */
+const showcaseSrc = readFileSync(join(ROOT, 'src/sections/usecases-yaml.generated.ts'), 'utf8')
+const showcaseYamlOf = (slug) => {
+  const m = new RegExp("'" + slug + "': `([\\s\\S]*?)`,\\n").exec(showcaseSrc)
+  if (!m) throw new Error(`showcase yaml for ${slug} not found in usecases-yaml.generated.ts`)
+  return m[1].replace(/\\([`$\\])/g, '$1')
+}
+const dagW2 = Object.fromEntries(
+  Object.entries(S.dag).map(([slug, dag]) => {
+    const { mapLine } = w1ToW2WithMap(showcaseYamlOf(slug))
+    const tasks = dag.tasks.map((t) => ({
+      ...t,
+      line0: mapLine(t.line0 + 1) - 1,
+      line1: mapLine(t.line1 + 1) - 1,
+    }))
+    return [slug, { ...dag, tasks }]
+  }),
+)
+
 const showcaseDagTs = GEN(
   'showcase-dag.generated.ts',
   `/** the showcase plan facts (value-equal projection of SHOWCASE_DAG in
@@ -1234,7 +1275,7 @@ export interface ShowcaseDag {
   outputs: string[]
   waves: number
 }
-export const SHOWCASE_DAG: Record<string, ShowcaseDag> = ${JSON.stringify(S.dag, null, 2)}
+export const SHOWCASE_DAG: Record<string, ShowcaseDag> = ${JSON.stringify(dagW2, null, 2)}
 `,
 )
 

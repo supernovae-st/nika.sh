@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { layoutMiniDag } from './mini-dag-layout'
 import { buildLibrary } from '../flagships/library'
 import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
-import { SHOWCASE_DAG } from '../sections/usecases-yaml.generated'
+// the REMAPPED plan facts (door-served W2 lines) — see library.test.ts
+import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 
 /* the tests build the library with the REAL dictionary (node-side import
    is not the client bundle — the diet law binds the bundle, not vitest) */

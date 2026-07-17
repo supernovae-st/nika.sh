@@ -67,11 +67,35 @@ if (fromBinary && Array.isArray(fromBinary.tools)) {
       }
     })
     .sort((a, b) => (a.bare < b.bare ? -1 : a.bare > b.bare ? 1 : 0))
+  /* the two-clocks union (the register law): the page's vocabulary is the
+     CANON set exactly — a ratified builtin the binary does not ship yet
+     (decide, the 28th) keeps its row, carried from the previous committed
+     catalog (its contract is spec-derived) and FLAGGED ratified_only so
+     nothing downstream mistakes it for shipped. The old catalog carried
+     such rows unflagged and the clocks agreed by lying. */
+  const canonNames = new Set(
+    /builtinNames: \[([^\]]+)\]/.exec(readFileSync(join(ROOT, 'src/canon.generated.ts'), 'utf8'))?.[1]
+      .match(/"([a-z_]+)"/g)
+      ?.map((m) => m.slice(1, -1)) ?? [],
+  )
+  const shippedBares = new Set(tools.map((t) => t.bare))
+  const previous = existsSync(CATALOG) ? JSON.parse(readFileSync(CATALOG, 'utf8')) : { tools: [] }
+  for (const name of canonNames) {
+    if (shippedBares.has(name)) continue
+    const carried = previous.tools.find((t) => t.bare === name)
+    if (!carried) {
+      console.error(`canon builtin '${name}' is neither shipped nor in the previous catalog — the register cannot invent a contract`)
+      process.exit(1)
+    }
+    tools.push({ ...carried, ratified_only: true })
+  }
+  tools.sort((a, b) => (a.bare < b.bare ? -1 : a.bare > b.bare ? 1 : 0))
   const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 5000 })
     .trim()
     .replace(/^nika\s+/, '')
   writeFileSync(CATALOG, `${JSON.stringify({ version, tools }, null, 2)}\n`)
-  console.log(`wrote public/tools/catalog.json (${tools.length} tools · engine ${version})`)
+  const flagged = tools.filter((t) => t.ratified_only).length
+  console.log(`wrote public/tools/catalog.json (${tools.length} tools · ${flagged} ratified-only · engine ${version})`)
 } else {
   console.log('no nika binary reachable — the committed catalog stands')
 }
@@ -112,6 +136,9 @@ export interface ToolEntry {
   description: string
   /** Declared args, schema order. */
   args: ToolArgEntry[]
+  /** Canon-ratified but not in the shipped binary yet (the register carries
+      the spec-derived contract · the clocks disagree on purpose). */
+  ratified_only?: boolean
 }
 
 /** Every builtin, sorted by bare name. Engine version at generation: ${JSON.stringify(String(catalog.version ?? ''))}. */

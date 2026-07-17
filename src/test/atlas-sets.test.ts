@@ -154,8 +154,8 @@ describe('sets.yaml · the versioned constants mirror their gated sources', () =
 
   it('gate predicates pin the closed four of spec/03', () => {
     expect(need('gate-predicates').members!.map((m) => m.id)).toEqual([
-      'succeeded',
-      'failed',
+      'success',
+      'failure',
       'skipped',
       'terminal',
     ])

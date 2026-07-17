@@ -1,0 +1,456 @@
+# nika canonical registry · the single source of truth for Nika canonical facts
+# License · Apache-2.0 (part of the Nika spec)
+#
+# THIS FILE IS THE SOURCE. Every other surface (the .ttl graph nodes, the
+# engine schemars enum, the prose counts in spec/stdlib/README/docs/blueprint)
+# is a PROJECTION of this file. Edit here once → run the projector to update
+# everywhere → drift caught structurally at commit time.
+#
+# Projectors · scripts/canon-projectors.py (in-repo · counts → docs+website) ·
+#   scripts/showcase-projector.py (examples → docs+website) · monorepo gate ·
+#   supernovae plumbing/scripts/audit/nika-showcase-parity.sh + nika-canon-project.sh
+# Architecture · projection-by-default (edit here once → projectors update
+#   every surface · drift is caught structurally at commit time). The .ttl is currently parallel-authored · in Phase 3
+#   it gets generated from this file.
+#
+# Schema versioning · `schema_version` field forward-compat per
+#   no-legacy-no-back-compat.md (the projector rejects unknown versions with
+#   exit 2 · forces explicit upgrade when schema mutates). v1 baseline locked
+#   2026-05-27 evening · 12 categories · 4 yaml shapes (bare/struct/nested/flow).
+#
+# Self-check · for each category, `count: N` MUST equal `len(items)` ·
+#   projector verifies on every invocation · exits 2 (env error) on
+#   intra-canon drift · structural prevention of count-vs-items mismatch.
+#
+# v0.1 · 2026-05-27 · populated from .ttl HEAD (post atomic-language audit · the
+#   most-current canonical truth · cohort 42→27→26→25→22 builtins → 23 (compose
+#   added 2026-06-13) → 24 (image_generate · first §Media graduate · 2026-07-05)
+#   → 25 (tts_generate · §Audio · 2026-07-05) → 26 (image_fx · §Media
+#   graduate #3 · 2026-07-09) → 27 (chart · §Media graduate #4 ·
+#   deterministic/attested · byte-identical SVG · sha256 → trace chain ·
+#   2026-07-09)
+#   + NIKA-FETCH fold into NIKA-BUILTIN per "fetch is a
+#   builtin, not a verb" D-N18).
+# v0.2 · 2026-05-27 evening · schema_version 1 + 6 extended dimensions
+#   (lifecycle_product · lifecycle_decision · lifecycle_risk · diamond_layers ·
+#   steal_pattern_tiers · severity) + flow-style items[] support.
+
+# ---------------------------------------------------------------- schema
+# Forward-compat marker · bump on breaking schema change. The projector
+# refuses to run with an unknown schema_version (exit 2 · explicit upgrade
+# required).
+schema_version: 1
+
+# ---------------------------------------------------------------- counts
+# Top-level counts · derived from items[] length below · stated here for
+# fast grep-based projection checks (the projector reads `count:` lines).
+counts:
+  verbs: 4
+  namespaces: 5
+  builtins: 27
+  providers: 16
+  extract_modes: 9
+  templates: 10
+  error_namespaces: 14
+  error_categories: 12
+  error_codes: 50
+  pillars: 5
+  # ---- extended v0.2 · 2026-05-27 · lifecycle + diamond + steal + severity
+  lifecycle_product: 4
+  lifecycle_decision: 4
+  lifecycle_risk: 4
+  diamond_layers: 7
+  steal_pattern_tiers: 4
+  severity: 4
+  # ---- extended 2026-07-06 · the MCP oracle surface
+  mcp_tools: 8
+  mcp_protocol_versions: 5
+
+# ---------------------------------------------------------------- verbs
+# D-2026-05-22-N18 · "the count is 4, absolute · immutable forever".
+# A verb = a distinct native execution model · fetch is NOT a verb (it is the
+# nika:fetch builtin reached via invoke:). spec/02-verbs.md is the prose home.
+verbs:
+  count: 4
+  immutable: true
+  reference: spec/02-verbs.md
+  items:
+    - { name: infer,  semantic: "LLM generation · structured output · vision · thinking" }
+    - { name: exec,   semantic: "Shell command · blocklist · streaming" }
+    - { name: invoke, semantic: "MCP tool call OR builtin (incl. nika:fetch)" }
+    - { name: agent,  semantic: "Multi-turn agentic loop · tool calling · guardrails" }
+
+# ---------------------------------------------------------------- namespaces
+# The 5 substitution namespaces · LOCKED at v1 (spec/04-variables.md ·
+# loop-locals item/index are for_each-scoped locals · NOT a 6th namespace).
+namespaces:
+  count: 5
+  immutable: true
+  reference: spec/04-variables.md
+  items:
+    - vars
+    - with
+    - tasks
+    - env
+    - secrets
+
+# ---------------------------------------------------------------- builtins
+# Post atomic-language audit · 42→27→26→25→22 (-20 · -48% · zero functional loss) → 23 (compose added 2026-06-13 · ADR-093 · agent-loop self-check intrinsic, loop-only like done) → 24 (image_generate added 2026-07-05 · the first stdlib §Media graduate · openai/gemini/mock · assets land on disk, never inline) → 25 (tts_generate added 2026-07-05 · §Audio · local/openai/elevenlabs/mock · sovereign-first) → 26 (image_fx added 2026-07-09 · §Media graduate #3 · the `image editing` deferred row · deterministic artistic effects · byte-identical artifacts · recipe-in-chunk · zero-dep) → 27 (chart added 2026-07-09 · §Media graduate #4 · deterministic zero-dep renderer · byte-identical SVG · sha256 → trace chain).
+# stdlib/builtins-v0.1.md is the prose home (matches at 27 · cascade complete 2026-07-09 · image_fx #3 + chart #4 §Media graduates · image providers v1.1 local-first + xai · tts_generate §Audio same arc).
+# Admission test · 3 razors · (1) NOT-expressible-in-jq+CEL+Schema · (2) canonical
+# interop format (RFC-6902/7396/9562 · etc.) · (3) cookbook-clarity.
+builtins:
+  count: 27
+  reference: stdlib/builtins-v0.1.md
+  items:
+    - assert
+    - chart
+    - compose
+    - convert
+    - date
+    - done
+    - edit
+    - emit
+    - fetch
+    - glob
+    - grep
+    - hash
+    - image_fx
+    - image_generate
+    - inspect
+    - jq
+    - json_diff
+    - json_merge_patch
+    - log
+    - notify
+    - prompt
+    - read
+    - tts_generate
+    - uuid
+    - validate
+    - wait
+    - write
+
+# ---------------------------------------------------------------- providers
+# 10 cloud + 5 local + 1 test = 16 (openrouter promoted D-2026-06-10-N2 · huggingface + nvidia promoted 2026-07-05 per the same precedent · ADR-104). stdlib/providers-v0.1.md is the prose home.
+# Sovereignty · 5 local providers (sovereignty Rule 1 · zero-cloud default path).
+providers:
+  count: 16
+  reference: stdlib/providers-v0.1.md
+  # Presentation order (operator lock 2026-06-12 · supernovae-alignment Rule 3) ·
+  # local/open-weight FIRST (sovereignty default) · then cloud with mistral (EU ·
+  # open-weight) leading · anthropic/openai never presented first. Projectors
+  # inherit this order · counts are order-independent.
+  items:
+    local:
+      - ollama
+      - lmstudio
+      - llamacpp
+      - localai
+      - vllm
+    cloud:
+      - mistral
+      - anthropic
+      - openai
+      - gemini
+      - deepseek
+      - xai
+      - groq
+      - openrouter
+      - huggingface
+      - nvidia
+    test:
+      - mock
+
+# ---------------------------------------------------------------- extract modes
+# 9 modes for the nika:fetch builtin's mode: parameter (builtins-v0.1.md).
+# stdlib/extract-modes-v0.1.md is the prose home.
+extract_modes:
+  count: 9
+  reference: stdlib/extract-modes-v0.1.md
+  items:
+    - article
+    - feed
+    - jq
+    - links
+    - markdown
+    - metadata
+    - selector
+    - sitemap
+    - text
+
+# ---------------------------------------------------------------- templates
+# The instantiable skeletons (templates/*.nika.yaml · the deterministic
+# authoring path · agents instantiate, never invent). Additive per the
+# stress-to-ratchet trigger: a routing intent with no skeleton that
+# recurs across authoring sessions earns one. templates/README.md is
+# the prose home (the routing table).
+templates:
+  count: 10
+  reference: templates/README.md
+  items:
+    - agent-loop
+    - api-upload-and-create
+    - chain
+    - docker-report
+    - etl-state
+    - fanout
+    - gate-and-act
+    - human-gated-ship
+    - media-asset-pack
+    - website-brief
+
+# ---------------------------------------------------------------- error namespaces
+# Post NIKA-FETCH fold into NIKA-BUILTIN (commit b14bf091c · 2026-05-27 ·
+# matching "fetch is a builtin, not a verb" D-N18 · prior count 15 → 14).
+# spec/05-errors.md is the prose home (matches at 14 · cascade complete 2026-05-27).
+error_namespaces:
+  count: 14
+  reference: spec/05-errors.md
+  items:
+    - NIKA-AGENT
+    - NIKA-BUILTIN
+    - NIKA-CANCEL
+    - NIKA-DAG
+    - NIKA-EXEC
+    - NIKA-IMPL
+    - NIKA-INFER
+    - NIKA-INVOKE
+    - NIKA-MCP
+    - NIKA-PARSE
+    - NIKA-PROVIDER
+    - NIKA-SEC
+    - NIKA-TIMEOUT
+    - NIKA-VAR
+
+# ---------------------------------------------------- error categories (v1 closed enum)
+# spec/05-errors.md §Categories is the prose home · 10 original + 2 additive
+# (process_error · budget_error · divergence-audit 2026-06-11 · spec 44bf15f).
+error_categories:
+  count: 12
+  reference: spec/05-errors.md
+  items:
+    - parse_error
+    - validation_error
+    - variable_error
+    - provider_error
+    - network_error
+    - tool_error
+    - process_error
+    - budget_error
+    - security_error
+    - timeout_error
+    - cancelled
+    - internal_error
+
+# ---------------------------------------------------- concrete error codes (v0.1 normative floor)
+# spec/05-errors.md §Concrete v0.1 codes is the prose home · the projector
+# emits website public/errors/catalog.json from THIS block and the parity
+# check binds the prose table to it (same row set · same fields).
+# transient · false | engine-assessed
+error_codes:
+  count: 53
+  reference: spec/05-errors.md
+  items:
+    - { code: NIKA-PARSE-001, category: parse_error, transient: "false", failure: "the YAML itself does not parse (syntax error)" }
+    - { code: NIKA-PARSE-002, category: validation_error, transient: "false", failure: "missing envelope field (nika: / workflow: / non-empty tasks:)" }
+    - { code: NIKA-PARSE-003, category: parse_error, transient: "false", failure: "nika: version marker is not exactly v1" }
+    - { code: NIKA-PARSE-004, category: validation_error, transient: "false", failure: "workflow: id violates ^[a-z][a-z0-9-]*$" }
+    - { code: NIKA-PARSE-005, category: validation_error, transient: "false", failure: "unknown field — strict mode rejects anything outside the closed v1 set" }
+    - { code: NIKA-PARSE-006, category: validation_error, transient: "false", failure: "task id violates ^[a-z][a-z0-9_]*$ (snake_case · CEL-safe · no hyphens)" }
+    - { code: NIKA-PARSE-007, category: validation_error, transient: "false", failure: "duplicate task id within the workflow" }
+    - { code: NIKA-PARSE-008, category: validation_error, transient: "false", failure: "task declares no verb — exactly one of infer/exec/invoke/agent required" }
+    - { code: NIKA-PARSE-009, category: validation_error, transient: "false", failure: "task declares multiple verbs — exactly one required" }
+    - { code: NIKA-PARSE-010, category: validation_error, transient: "false", failure: "timeout: violates the quoted Go-duration contract (positive · max 24h · descending units)" }
+    - { code: NIKA-PARSE-011, category: validation_error, transient: "false", failure: "retry: block violates the spec shape" }
+    - { code: NIKA-PARSE-012, category: validation_error, transient: "false", failure: "on_error: block violates the spec shape (fields mutually exclusive)" }
+    - { code: NIKA-PARSE-013, category: validation_error, transient: "false", failure: "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)" }
+    - { code: NIKA-PARSE-014, category: validation_error, transient: "false", failure: "secrets: entry is not a store reference — inline literals forbidden" }
+    - { code: NIKA-PARSE-015, category: validation_error, transient: "false", failure: "typed vars: declaration malformed (type in string/number/integer/boolean/array/object)" }
+    # NIKA-PARSE-016 · RETIRED (never reuse) — the jq-binding-contains-template
+    # class folded into NIKA-VAR-005 (static expression violation) at the
+    # deep-conformance registry remap · the allocation hole is deliberate.
+    - { code: NIKA-PARSE-017, category: validation_error, transient: "false", failure: "duplicate mapping key — no silent last-wins" }
+    - { code: NIKA-PARSE-018, category: validation_error, transient: "false", failure: "missing required field in a verb body (infer.prompt · exec.command · invoke.tool)" }
+    - { code: NIKA-PARSE-019, category: validation_error, transient: "false", failure: "generic structural validation — wrong YAML shape for a field" }
+    - { code: NIKA-DAG-001, category: validation_error, transient: "false", failure: "cycle in depends_on (incl. self-dependency)" }
+    - { code: NIKA-DAG-002, category: validation_error, transient: "false", failure: "depends_on references an undeclared task" }
+    - { code: NIKA-DAG-003, category: validation_error, transient: "false", failure: "a tasks.X reference with no declared edge" }
+    - { code: NIKA-DAG-004, category: validation_error, transient: "false", failure: "on_error.recover references a task downstream of the declaring task (await would deadlock)" }
+    - { code: NIKA-VAR-001, category: variable_error, transient: "false", failure: "unresolved reference (unknown namespace entry · undeclared env/vars key)" }
+    - { code: NIKA-VAR-002, category: variable_error, transient: "false", failure: "binding cardinality — a jq binding emitted zero or multiple values" }
+    - { code: NIKA-VAR-003, category: validation_error, transient: "false", failure: "provably-invalid path into a declared schema (static walk)" }
+    - { code: NIKA-VAR-004, category: variable_error, transient: "false", failure: "jq runtime error while evaluating a binding" }
+    - { code: NIKA-VAR-005, category: validation_error, transient: "false", failure: "static expression violation — outside cel-subset/0.1 · chained relation · unknown function · non-boolean when: root · jq compile error" }
+    - { code: NIKA-VAR-006, category: variable_error, transient: "false", failure: "expression type error at evaluation — cross-type compare · non-boolean when: value · for_each over a non-array" }
+    - { code: NIKA-VAR-007, category: variable_error, transient: "false", failure: "bytes value substituted into a string position" }
+    - { code: NIKA-VAR-008, category: validation_error, transient: "false", failure: "unclosed ${{ opener" }
+    - { code: NIKA-VAR-020, category: validation_error, transient: "false", failure: "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)" }
+    - { code: NIKA-VAR-009, category: validation_error, transient: "false", failure: "typed outputs value did not match its declared type: at run end (the output half of the callable contract)" }
+    - { code: NIKA-INFER-001, category: provider_error, transient: "engine-assessed", failure: "provider call failed (HTTP error · provider refusal)" }
+    - { code: NIKA-INFER-002, category: validation_error, transient: "false", failure: "structured output failed schema validation (after any engine-internal retries)" }
+    - { code: NIKA-EXEC-001, category: process_error, transient: "false", failure: "non-zero exit code (default capture modes)" }
+    - { code: NIKA-EXEC-002, category: process_error, transient: "false", failure: "spawn failure (command not found · permission)" }
+    - { code: NIKA-INVOKE-001, category: validation_error, transient: "false", failure: "unknown tool (unresolvable nika:/mcp: id)" }
+    - { code: NIKA-INVOKE-002, category: validation_error, transient: "false", failure: "tool args failed the tool's schema" }
+    - { code: NIKA-AGENT-001, category: budget_error, transient: "false", failure: "max_turns exhausted before completion" }
+    - { code: NIKA-AGENT-002, category: budget_error, transient: "false", failure: "max_tokens_total exhausted before completion" }
+    - { code: NIKA-AGENT-003, category: validation_error, transient: "false", failure: "a skills: path does not resolve (file missing/unreadable at compose time)" }
+    - { code: NIKA-AGENT-004, category: validation_error, transient: "false", failure: "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)" }
+    - { code: NIKA-MCP-001, category: tool_error, transient: "engine-assessed", failure: "MCP server not configured / not reachable at call time" }
+    - { code: NIKA-MCP-002, category: tool_error, transient: "engine-assessed", failure: "MCP tool call failed (transport · tool-side error)" }
+    - { code: NIKA-SEC-001, category: security_error, transient: "false", failure: "exec: blocklist hit" }
+    - { code: NIKA-SEC-002, category: security_error, transient: "false", failure: "agent tool call outside the tools: whitelist" }
+    - { code: NIKA-SEC-003, category: security_error, transient: "false", failure: "run-recursion bound — nested-run depth exceeded OR self-launching workflow" }
+    - { code: NIKA-SEC-004, category: security_error, transient: "false", failure: "effect outside the declared permits: capability boundary (fs/net/exec/tool)" }
+    - { code: NIKA-SEC-005, category: security_error, transient: "false", failure: "SSRF block — a nika:fetch/nika:notify URL resolves to a loopback/private/link-local/metadata target (always-on engine floor · independent of permits:)" }
+    - { code: NIKA-TIMEOUT-001, category: timeout_error, transient: "false", failure: "task (or for_each iteration) exceeded timeout:" }
+    - { code: NIKA-CANCEL-001, category: cancelled, transient: "false", failure: "task cancelled (workflow failure gate · user cancellation)" }
+    - { code: NIKA-BUILTIN-001, category: validation_error, transient: "false", failure: "builtin invoke violates its statically-checkable arg contract (e.g. nika:fetch without url: · nika:jq arg shape)" }
+    - { code: NIKA-BUILTIN-DONE-001, category: validation_error, transient: "false", failure: "nika:done invoked outside an agent: loop" }
+
+# ---------------------------------------------------------------- pillars
+# 5 immutable pillars forever (spec/00-overview · the language backbone).
+# Order is semantic · envelope frames · verbs act · dag composes · variables
+# thread state · errors handle failure.
+pillars:
+  count: 5
+  immutable: true
+  reference: spec/00-overview.md
+  items:
+    - { order: 1, name: envelope,  semantic: "nika: v1 contract envelope (single-version marker · ADR-082)" }
+    - { order: 2, name: verbs,     semantic: "the 4 native execution models" }
+    - { order: 3, name: dag,       semantic: "task composition + control flow (for_each · when)" }
+    - { order: 4, name: variables, semantic: "scope-bound state threading + binding (CEL + jq)" }
+    - { order: 5, name: errors,    semantic: "the 14 error namespaces + handling contract" }
+
+# ---------------------------------------------------------------- lifecycle enums
+# 4-state lifecycle taxonomies · studio-extended dimensions · public
+# framework usable across products. Closed enum forever.
+lifecycle_product:
+  count: 4
+  reference: studio-internal
+  items: [seed, active, mature, sunset]
+
+lifecycle_decision:
+  count: 4
+  reference: studio-internal
+  items: [proposed, active, superseded, archived]
+
+lifecycle_risk:
+  count: 4
+  reference: studio-internal
+  items: [open, mitigated, cleared, archived]
+
+# ---------------------------------------------------------------- diamond layers
+# 7 layers in the Diamond bottom-up admission DAG (ADR-037 + ADR-006 amendment).
+# L0 foundation · L0.5 traits-only · L1 satellites · L2 orchestrators ·
+# L3 verbs · L4 consumers · L5 top apps. Order semantic · monotonic.
+diamond_layers:
+  count: 7
+  reference: nika/engine/docs/adr/adr-037-bottom-up.md
+  items: ["L0", "L0.5", "L1", "L2", "L3", "L4", "L5"]
+
+# ---------------------------------------------------------------- steal-pattern tiers
+# 4-tier triage from steal-pattern.md · A native · B port FSM · C adopt headless ·
+# D defer. Public Tier 0/1/2/3 = the @spnds 3-tier sister (different domain ·
+# CSS/elements/machines). Closed enum forever.
+steal_pattern_tiers:
+  count: 4
+  reference: studio-internal
+  items:
+    - { name: A, semantic: "NATIVE-FIRST · browsers ship 95%+ (popover= · <dialog> · <details>)" }
+    - { name: B, semantic: "STEAL · port FSM · <2000 LOC · ≤4 algo layers · a11y <30%" }
+    - { name: C, semantic: "ADOPT-AS-DEVDEP · >3000 LOC · headless+MIT/Apache" }
+    - { name: D, semantic: "DEFER · >5000 LOC OR specialist (text engines)" }
+
+# ---------------------------------------------------------------- severity
+# 4-level review/finding severity per hq-hygiene + ds-discipline review canon.
+# Order semantic · descending · BLOCKER halts ship · LOW = informational.
+severity:
+  count: 4
+  reference: studio-internal
+  items: [BLOCKER, HIGH, MED, LOW]
+
+# ---------------------------------------------------------------- mcp
+# The in-binary MCP server surface (`nika mcp` · read-only oracle). Tools and
+# protocol revisions are ENGINE-VERIFIED facts (crates/nika-mcp · protocol.rs
+# SUPPORTED array + tools.rs registry) — projected, never hand-typed (the
+# 2026-07-06 audit found the two-tool framing fossilized on four satellite
+# surfaces while the engine served eight).
+mcp:
+  tools:
+    count: 8
+    reference: crates/nika-mcp/src/tools.rs
+    items:
+      - nika_check
+      - nika_explain
+      - nika_schema
+      - nika_examples
+      - nika_template
+      - nika_canon
+      - nika_catalog
+      - nika_tools
+  protocol_versions:
+    count: 5
+    latest: "2026-07-28"
+    reference: crates/nika-mcp/src/protocol.rs
+    items:
+      - "2026-07-28"
+      - "2025-11-25"
+      - "2025-06-18"
+      - "2025-03-26"
+      - "2024-11-05"
+
+# ---------------------------------------------------------------- canonical phrasing
+# F2 one-voice registry (2026-06-10 night arc · B1) · the LOAD-BEARING sentences
+# that MUST read identically across spec · engine doc-comments · docs · website.
+# Each entry · key + the canonical sentence (quote VERBATIM · never paraphrase in
+# live canon prose) + the prose home. Sweep tooling matches on distinctive
+# fragments (`match:`) · a live-canon surface contradicting a phrasing = drift.
+# Historical/dated/archive surfaces exempt (leave-coupled-era prose).
+canonical_phrasing:
+  verb_definition:
+    phrase: "A verb is a distinct native execution model"
+    match: "distinct native execution model"
+    home: spec/02-verbs.md
+  callable_is_tool:
+    phrase: "Everything callable is a tool reached through invoke: · everything about ordering is a DAG construct"
+    match: "callable"
+    home: spec/02-verbs.md
+  fetch_not_a_verb:
+    # home text · "so it is the `nika:fetch` builtin, reached through invoke:"
+    phrase: "fetch is the `nika:fetch` builtin, reached through invoke: · not a verb"
+    match: "`nika:fetch` builtin, reached"
+    home: spec/02-verbs.md
+  jq_one_data_language:
+    phrase: "jq is the single data extraction-and-transform language"
+    match: "extraction-and-transform"
+    home: spec/04-variables.md
+  provider_is_prefix:
+    phrase: "You select an LLM with a single model: field · the provider is the prefix"
+    match: "the provider is the prefix"
+    home: stdlib/providers-v0.1.md
+  envelope_forever:
+    # home text · "names the language and pins the contract version"
+    phrase: "nika: v1 names the language and pins the contract version · v1 is the only value for the lifetime of the v1 contract"
+    match: "pins the contract version"
+    home: spec/01-envelope.md
+  edges_never_inferred:
+    # home text · "(a verb-body reference is an edge too · no invisible edges)"
+    phrase: "the engine rejects the workflow at parse time · it does not silently infer the edge · no invisible edges"
+    match: "no invisible edges"
+    home: spec/03-dag.md
+  cel_not_a_dsl:
+    phrase: "Nika does not invent an expression DSL · it adopts CEL"
+    match: "invent an expression DSL"
+    home: spec/03-dag.md
+  spec_owns_errors:
+    phrase: "the spec table · not any engine's source code · owns the taxonomy"
+    match: "owns the taxonomy"
+    home: spec/05-errors.md
+  prose_wins:
+    # home text · "(kept in sync · the prose is normative on conflict)"
+    phrase: "the prose is normative on conflict · the published JSON Schema and the reference engine follow the spec"
+    match: "the prose is normative on conflict"
+    home: spec/07-conformance.md

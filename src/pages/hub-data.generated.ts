@@ -122,11 +122,11 @@ export const HUBS: Record<string, HubData> = {
         "closed": true,
         "members": [
           {
-            "id": "succeeded",
+            "id": "success",
             "one_liner": "fire when the producer completed clean"
           },
           {
-            "id": "failed",
+            "id": "failure",
             "one_liner": "fire when the producer failed terminally"
           },
           {

@@ -7,10 +7,10 @@
 
    Honesty notes · a cycle can't be layered: `cyclic` flips true and the
    waves fall back to file order (the linter's NIKA-DAG-001 carries the
-   message). Unknown with:/after: targets don't edge (NIKA-DAG-002 speaks).
+   message). Unknown depends_on targets don't edge (NIKA-DAG-002 speaks).
 
-   W2 « the flow » · edges are DERIVED from the two doors: every tasks.X
-   reference in a with: value is a data edge, every after: key a control
+   0.104 · the shipped W2 grammar: edges are DECLARED — depends_on carries
+   the whole precedence graph (the engine refuses an undeclared tasks.X
    edge — G_p = E_d ∪ E_c (the binding IS the edge · no invisible edges). */
 import { parse } from 'yaml'
 
@@ -21,7 +21,7 @@ export interface PlanTask {
   id: string
   /** the ONE verb, or null while the task is still being written */
   verb: PlanVerb | null
-  /** resolved producers — with: bindings (data) ∪ after: keys (control) */
+  /** resolved producers — the declared depends_on list, file order */
   deps: string[]
   /** the card's third line — tool / argv head / model register */
   target: string
@@ -51,22 +51,11 @@ export interface ParsedPlan {
 const strs = (v: unknown): string[] =>
   Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []
 
-const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
-
-function* strings(value: unknown): Generator<string> {
-  if (typeof value === 'string') yield value
-  else if (Array.isArray(value)) for (const v of value) yield* strings(v)
-  else if (value && typeof value === 'object')
-    for (const v of Object.values(value)) yield* strings(v)
-}
-
-/** the two doors → the producers (W2) · with: refs = data · after: keys = control */
+/** the declared producers (W2 · depends_on IS the precedence graph) */
 function producersOf(t: Record<string, unknown>): string[] {
-  const out = new Set<string>()
-  for (const s of strings(t.with)) for (const m of s.matchAll(TASK_REF)) out.add(m[1])
-  if (t.after && typeof t.after === 'object' && !Array.isArray(t.after))
-    for (const k of Object.keys(t.after as object)) out.add(k)
-  return [...out]
+  return Array.isArray(t.depends_on)
+    ? (t.depends_on as unknown[]).filter((d): d is string => typeof d === 'string')
+    : []
 }
 
 function permitsOf(doc: Record<string, unknown>): PlanPermits | null {
@@ -112,14 +101,15 @@ export function parsePlan(src: string): ParsedPlan | null {
   }
   if (!doc || typeof doc !== 'object') return null
   const rawTasks = (doc as Record<string, unknown>).tasks
-  // W1 « the map »: tasks is a MAP whose key IS the identity.
-  if (!rawTasks || typeof rawTasks !== 'object' || Array.isArray(rawTasks)) return null
+  // 0.104 « the sequence »: tasks is a LIST · each item declares its id.
+  if (!Array.isArray(rawTasks)) return null
 
   const tasks: PlanTask[] = []
   const seen = new Set<string>()
-  for (const [id, rt] of Object.entries(rawTasks as Record<string, unknown>)) {
+  for (const rt of rawTasks) {
     if (!rt || typeof rt !== 'object') continue
     const t = rt as Record<string, unknown>
+    const id = typeof t.id === 'string' ? t.id : ''
     if (!id || seen.has(id)) continue
     seen.add(id)
     const verb = VERBS.find((v) => v in t) ?? null

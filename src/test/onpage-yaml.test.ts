@@ -14,6 +14,7 @@ import { NOT_FOUND_YAML } from '../pages/NotFound'
 import { VERBS } from '../content'
 import { EXTENSION_SHOWCASE_YAML } from '../sections/EditorCanvas'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
+import { w1ToW2 } from '../lib/w1-to-w2'
 
 /* ── on-page YAML · every full workflow shown on the site is SCHEMA-TRUE ─────
    The repo rule is "Spec-correct YAML only" (AGENTS.md #1), yet until this
@@ -29,26 +30,48 @@ import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generat
    deps/waves must be exactly the file's with:/after: topology — so the scroll
    story can never drift from the text it animates. */
 
-const schema = JSON.parse(
+/* TWO judges (the two clocks · 0.104 grammar flip):
+   · the LIVING corpus (everything a visitor copy-pastes today) validates
+     against the SHIPPED schema — public/spec/shipped/workflow.schema.json,
+     vendored from the released binary (`nika spec --schema` ·
+     scripts/build-shipped-spec.mjs) — because the visitor's own `nika check`
+     is the released 0.104, which speaks W2;
+   · DATED documents (blog posts) validate against the PIN —
+     public/schema/workflow.json (the ratified spec at the resync pin) —
+     a post wrote the grammar of its day and verbatim history never re-bakes.
+   When the public spec ratifies the flip and the PIN advances past it, the
+   two judges converge and the shipped vendor retires. */
+const shippedSchema = JSON.parse(
+  readFileSync(join(__dirname, '../../public/spec/shipped/workflow.schema.json'), 'utf8'),
+) as Record<string, unknown>
+const pinSchema = JSON.parse(
   readFileSync(join(__dirname, '../../public/schema/workflow.json'), 'utf8'),
 ) as Record<string, unknown>
 
-/* the schema carries informative `format: cel-expression` / `format: jq`
+/* the schemas carry informative `format: cel-expression` / `format: jq`
    annotations — structural validation only here (formats are prose contracts) */
+/* two Ajv instances — both schemas carry the SAME $id (the shipped one
+   embeds the site's own URL), and one registry refuses the duplicate */
 const ajv = new Ajv2020({ strict: false, validateFormats: false, allowUnionTypes: true })
-const validate = ajv.compile(schema)
+const validate = ajv.compile(shippedSchema)
+const ajvPin = new Ajv2020({ strict: false, validateFormats: false, allowUnionTypes: true })
+const validatePin = ajvPin.compile(pinSchema)
 
-function expectValid(label: string, yaml: string) {
-  const doc = parse(yaml) as unknown
-  expect(doc, `${label} must parse to a mapping`).toBeTypeOf('object')
-  const ok = validate(doc)
-  const errors = (validate.errors ?? [])
-    .map((e) => `${e.instancePath || '/'} ${e.message ?? ''}`)
-    .join('\n')
-  expect(ok, `${label} violates workflow.json:\n${errors}`).toBe(true)
+function expectAgainst(judge: typeof validate, judgeName: string) {
+  return (label: string, yaml: string) => {
+    const doc = parse(yaml) as unknown
+    expect(doc, `${label} must parse to a mapping`).toBeTypeOf('object')
+    const ok = judge(doc)
+    const errors = (judge.errors ?? [])
+      .map((e) => `${e.instancePath || '/'} ${e.message ?? ''}`)
+      .join('\n')
+    expect(ok, `${label} violates ${judgeName}:\n${errors}`).toBe(true)
+  }
 }
+const expectValid = expectAgainst(validate, 'the SHIPPED schema (spec/shipped)')
+const expectValidPin = expectAgainst(validatePin, 'the PIN schema (workflow.json)')
 
-describe('on-page YAML · schema-true against public/schema/workflow.json', () => {
+describe('on-page YAML · the living corpus is schema-true against the SHIPPED schema', () => {
   it.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
     'flagship %s validates',
     (label, yaml) => expectValid(label, yaml),
@@ -59,12 +82,13 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
     (label, yaml) => expectValid(label, yaml),
   )
 
-  it('the blog four-verbs fragment validates', () => {
-    /* every yaml fence in every compiled blog post is a real workflow */
+  it('every blog yaml fence validates against the PIN (dated documents)', () => {
+    /* posts are dated documents: each spoke the ratified grammar of its day.
+       Verbatim history never re-bakes — the pin stays their judge. */
     for (const post of BLOG_POSTS)
       for (const t of BLOG_BODIES[post.slug] ?? [])
         if (t.k === 'code' && t.lang === 'yaml')
-          expectValid(`blog/${post.slug} · ${t.filename ?? 'fence'}`, t.text)
+          expectValidPin(`blog/${post.slug} · ${t.filename ?? 'fence'}`, t.text)
   })
 
   it.each([
@@ -82,25 +106,28 @@ describe('on-page YAML · schema-true against public/schema/workflow.json', () =
   it.each(VERBS.map((v) => [v.verb, v.code] as const))(
     '/spec verb card fragment %s seats in a valid file',
     (verb, code) => {
-      /* the cards show task FRAGMENTS — the gate embeds each in a minimal
-         envelope: the fragment is proven AS IT WOULD BE WRITTEN */
+      /* the cards show task ITEMS (`- id: …` · the W2 sequence) — the gate
+         embeds each in a minimal envelope: proven AS IT WOULD BE WRITTEN */
       const indented = code
         .split('\n')
         .map((l) => (l ? `  ${l}` : l))
         .join('\n')
       expectValid(
         `spec verb card · ${verb}`,
-        `nika: v1\nworkflow:\n  id: card-${verb}\ntasks:\n${indented}\n`,
+        `nika: v1\nworkflow: card-${verb}\ntasks:\n${indented}\n`,
       )
     },
   )
 
-  it.each(Object.entries(SHOWCASE_YAML))('showcase %s validates', (slug, yaml) =>
-    expectValid(slug, yaml),
+  /* the projector emission is the RATIFIED clock (W1 · untouched); what the
+     site SERVES is the door output (w1-to-w2) — the gate judges the served
+     form, the same bytes the visitor copies. */
+  it.each(Object.entries(SHOWCASE_YAML))('showcase %s (as served) validates', (slug, yaml) =>
+    expectValid(slug, w1ToW2(yaml)),
   )
 
-  it.each(Object.entries(TEMPLATES_YAML))('template %s validates', (slug, yaml) =>
-    expectValid(slug, yaml),
+  it.each(Object.entries(TEMPLATES_YAML))('template %s (as served) validates', (slug, yaml) =>
+    expectValid(slug, w1ToW2(yaml)),
   )
 })
 

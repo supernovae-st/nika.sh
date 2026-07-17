@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
 nika: v1
-workflow:
-  id: price-watch
+workflow: price-watch
 # zero model · two tools and one CEL compare
 
 # the file IS the blast radius
@@ -14,17 +13,19 @@ vars:
   alert_below: 899  # your threshold · plain data
 
 tasks:
-  snapshot:
+  - id: snapshot
     invoke: { tool: "nika:read", args: { path: ./price.json } }
 
-  price:
+  - id: price
+    depends_on: [snapshot]
     with:
       snapshot: ${{ tasks.snapshot.output }}
     invoke:
       tool: "nika:jq"
       args: { input: "${{ with.snapshot }}", expression: "fromjson | .price" }
 
-  alert:
+  - id: alert
+    depends_on: [price]
     with:
       price: ${{ tasks.price.output }}
     when: ${{ with.price < vars.alert_below }}

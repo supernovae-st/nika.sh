@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
 nika: v1
-workflow:
-  id: meeting-actions
-
+workflow: meeting-actions
 # local model · the recording stays yours
 model: ollama/llama3.2:3b
 
@@ -13,10 +11,11 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  transcript:
+  - id: transcript
     invoke: { tool: "nika:read", args: { path: ./transcript.txt } }
 
-  extract:
+  - id: extract
+    depends_on: [transcript]
     with:
       transcript: ${{ tasks.transcript.output }}
     infer:
@@ -35,7 +34,8 @@ tasks:
                 task: { type: string }
       max_tokens: 400
 
-  save:
+  - id: save
+    depends_on: [extract]
     with:
       extract: ${{ tasks.extract.output }}
     invoke:

@@ -100,8 +100,10 @@ describe('atlas-nav · the §4.11 scannability law holds', () => {
     const soonLabels = new Set(
       [...NAV_REFERENCE.cols.flatMap((c) => c.items)].filter((i) => i.soon).map((i) => i.label),
     )
-    // WO-4 flipped the three hubs live · Types stays the W3 slot
-    expect(soonLabels).toEqual(new Set(['Types']))
+    // WO-4 flipped the three hubs live · the types register landed with the
+    // 0.104 window (10 primitives from the schema's own typeExpr) — nothing
+    // on the reference panel waits anymore
+    expect(soonLabels).toEqual(new Set([]))
     for (const { item } of allItems) {
       if (item.soon) expect(item.to ?? item.href, `${item.label} soon must not link`).toBeUndefined()
     }

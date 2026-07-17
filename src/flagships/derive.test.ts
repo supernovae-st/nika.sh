@@ -12,40 +12,24 @@ import { deriveWorkflow, type NikaVerb } from './derive'
 const VERBS: readonly NikaVerb[] = ['infer', 'exec', 'invoke', 'agent']
 
 interface YamlTask {
-  with?: Record<string, unknown>
-  after?: Record<string, string>
+  id: string
+  depends_on?: string[]
   when?: string
   [k: string]: unknown
 }
 
-/* ground-truth producers (W2 · the two doors): every tasks.X reference in a
-   with: value is a data edge · every after: key a control edge — collected in
-   the task's own key order, deduped, exactly the derivation's contract. */
-const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
-function* strings(v: unknown): Generator<string> {
-  if (typeof v === 'string') yield v
-  else if (Array.isArray(v)) for (const x of v) yield* strings(x)
-  else if (v && typeof v === 'object') for (const x of Object.values(v)) yield* strings(x)
-}
-function producersOf(t: YamlTask): string[] {
-  const out: string[] = []
-  const push = (id: string) => {
-    if (!out.includes(id)) out.push(id)
-  }
-  for (const [k, v] of Object.entries(t)) {
-    if (k === 'with') for (const s of strings(v)) for (const m of s.matchAll(TASK_REF)) push(m[1])
-    else if (k === 'after' && v && typeof v === 'object')
-      for (const key of Object.keys(v)) push(key)
-  }
-  return out
-}
+/* ground-truth producers (0.104 · the shipped W2 grammar): precedence is the
+   DECLARED depends_on list, in file order — `nika check` refuses undeclared
+   tasks.X references (NIKA-DAG-003), so the declaration IS the topology. */
+const producersOf = (t: YamlTask): string[] => t.depends_on ?? []
 interface YamlDoc {
-  workflow: { id: string; description?: string }
+  /** W2 envelope: the scalar IS the id */
+  workflow: string
   /** absent on a zero-model flagship (price-watch runs no inference) */
   model?: string
   permits: Record<string, unknown>
-  /** W1 « the map »: the key IS the task identity */
-  tasks: Record<string, YamlTask>
+  /** W2 « the sequence »: id is a field of each item */
+  tasks: YamlTask[]
   outputs?: Record<string, string>
 }
 
@@ -53,14 +37,14 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
   'derive · %s',
   (_filename, yaml) => {
     const truth = parse(yaml) as YamlDoc
-    const truthTasks = Object.entries(truth.tasks)
+    const truthTasks = truth.tasks.map((t) => [t.id, t] as const)
     const plan = deriveWorkflow(yaml)
 
     it('derives the exact task id set, in file order', () => {
       expect(plan.tasks.map((t) => t.id)).toEqual(truthTasks.map(([id]) => id))
     })
 
-    it('derives every edge from the two doors (with: refs ∪ after: keys == deps in the plan)', () => {
+    it('derives every edge from the declaration (depends_on == deps in the plan)', () => {
       for (const [id, t] of truthTasks) {
         const derived = plan.tasks.find((d) => d.id === id)
         expect(derived, `task ${id} missing from the derivation`).toBeDefined()
@@ -110,13 +94,13 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
     it('pins task line anchors to the real file lines', () => {
       const lines = yaml.split('\n')
       for (const t of plan.tasks) {
-        expect(lines[t.line0 - 1]).toMatch(new RegExp(`^ {2}${t.id}:`))
+        expect(lines[t.line0 - 1]).toMatch(new RegExp(`^ {2}- (id: ${t.id}|\\{ id: ${t.id},)`))
         expect(t.line1).toBeGreaterThanOrEqual(t.line0)
       }
     })
 
     it('derives workflow name, model and outputs', () => {
-      expect(plan.workflow).toBe(truth.workflow.id)
+      expect(plan.workflow).toBe(truth.workflow)
       // a zero-model flagship (price-watch) declares NO model: derive yields ''
       expect(plan.model).toBe(truth.model ?? '')
       expect(plan.outputs).toEqual(Object.keys(truth.outputs ?? {}))

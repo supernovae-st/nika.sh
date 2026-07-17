@@ -33,8 +33,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:glob`",
         "flags": [],
-        "line0": 21,
-        "line1": 26
+        "line0": 19,
+        "line1": 24
       },
       {
         "id": "stylize",
@@ -48,8 +48,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "fan-out · ≤4 in flight"
         ],
-        "line0": 27,
-        "line1": 40
+        "line0": 25,
+        "line1": 39
       }
     ],
     "outputs": [
@@ -67,8 +67,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 14,
-        "line1": 17
+        "line0": 12,
+        "line1": 15
       },
       {
         "id": "extract",
@@ -82,8 +82,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 19,
-        "line1": 38
+        "line0": 17,
+        "line1": 37
       },
       {
         "id": "save",
@@ -95,7 +95,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 40,
+        "line0": 39,
         "line1": 47
       },
       {
@@ -109,7 +109,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:log`",
         "flags": [],
         "line0": 49,
-        "line1": 56
+        "line1": 55
       }
     ],
     "outputs": [
@@ -127,8 +127,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:image_generate`",
         "flags": [],
-        "line0": 10,
-        "line1": 20
+        "line0": 8,
+        "line1": 18
       }
     ],
     "outputs": [
@@ -147,8 +147,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:fetch`",
         "flags": [],
-        "line0": 18,
-        "line1": 31
+        "line0": 16,
+        "line1": 29
       },
       {
         "id": "alert",
@@ -162,8 +162,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 33,
-        "line1": 44
+        "line0": 31,
+        "line1": 43
       }
     ],
     "outputs": [
@@ -181,8 +181,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 11,
-        "line1": 16
+        "line0": 9,
+        "line1": 14
       },
       {
         "id": "thread",
@@ -194,8 +194,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 17,
-        "line1": 21
+        "line0": 15,
+        "line1": 20
       },
       {
         "id": "linkedin",
@@ -207,7 +207,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 23,
+        "line0": 22,
         "line1": 27
       },
       {
@@ -221,7 +221,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "ask the model",
         "flags": [],
         "line0": 29,
-        "line1": 33
+        "line1": 34
       },
       {
         "id": "bundle",
@@ -235,8 +235,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 35,
-        "line1": 54
+        "line0": 36,
+        "line1": 56
       }
     ],
     "outputs": [
@@ -254,8 +254,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:date`",
         "flags": [],
-        "line0": 9,
-        "line1": 12
+        "line0": 7,
+        "line1": 10
       },
       {
         "id": "history",
@@ -265,8 +265,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "run `git`",
         "flags": [],
-        "line0": 14,
-        "line1": 16
+        "line0": 12,
+        "line1": 14
       },
       {
         "id": "digest",
@@ -279,8 +279,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 18,
-        "line1": 29
+        "line0": 16,
+        "line1": 28
       },
       {
         "id": "save",
@@ -292,7 +292,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 31,
+        "line0": 30,
         "line1": 38
       }
     ],
@@ -315,8 +315,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "collects errors",
           "retry"
         ],
-        "line0": 25,
-        "line1": 38
+        "line0": 23,
+        "line1": 36
       },
       {
         "id": "table",
@@ -328,8 +328,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 39,
-        "line1": 55
+        "line0": 37,
+        "line1": 54
       },
       {
         "id": "report",
@@ -341,7 +341,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 57,
+        "line0": 56,
         "line1": 74
       }
     ],
@@ -360,8 +360,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 14,
-        "line1": 17
+        "line0": 12,
+        "line1": 15
       },
       {
         "id": "clauses",
@@ -375,8 +375,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 19,
-        "line1": 39
+        "line0": 17,
+        "line1": 38
       },
       {
         "id": "check",
@@ -388,7 +388,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:validate`",
         "flags": [],
-        "line0": 41,
+        "line0": 40,
         "line1": 55
       },
       {
@@ -402,7 +402,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:assert`",
         "flags": [],
         "line0": 57,
-        "line1": 64
+        "line1": 65
       },
       {
         "id": "memo",
@@ -415,7 +415,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 66,
+        "line0": 67,
         "line1": 75
       },
       {
@@ -429,7 +429,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:write`",
         "flags": [],
         "line0": 77,
-        "line1": 85
+        "line1": 86
       }
     ],
     "outputs": [
@@ -448,8 +448,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 16,
-        "line1": 19
+        "line0": 14,
+        "line1": 17
       },
       {
         "id": "rows",
@@ -461,8 +461,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:convert`",
         "flags": [],
-        "line0": 21,
-        "line1": 32
+        "line0": 19,
+        "line1": 31
       },
       {
         "id": "by_region",
@@ -474,7 +474,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 33,
+        "line0": 32,
         "line1": 42
       },
       {
@@ -488,7 +488,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:chart`",
         "flags": [],
         "line0": 43,
-        "line1": 55
+        "line1": 56
       },
       {
         "id": "rows_md",
@@ -500,8 +500,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 56,
-        "line1": 67
+        "line0": 57,
+        "line1": 69
       },
       {
         "id": "report",
@@ -514,8 +514,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 68,
-        "line1": 86
+        "line0": 70,
+        "line1": 87
       }
     ],
     "outputs": [
@@ -533,8 +533,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 10,
-        "line1": 13
+        "line0": 8,
+        "line1": 11
       },
       {
         "id": "raw",
@@ -544,8 +544,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 15,
-        "line1": 18
+        "line0": 13,
+        "line1": 16
       },
       {
         "id": "rows",
@@ -557,8 +557,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:convert`",
         "flags": [],
-        "line0": 20,
-        "line1": 31
+        "line0": 18,
+        "line1": 30
       },
       {
         "id": "check",
@@ -570,7 +570,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:validate`",
         "flags": [],
-        "line0": 33,
+        "line0": 32,
         "line1": 49
       },
       {
@@ -587,7 +587,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "conditional"
         ],
         "line0": 51,
-        "line1": 60
+        "line1": 61
       },
       {
         "id": "quarantine",
@@ -601,8 +601,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 62,
-        "line1": 72
+        "line0": 63,
+        "line1": 74
       },
       {
         "id": "report",
@@ -616,8 +616,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 74,
-        "line1": 83
+        "line0": 76,
+        "line1": 86
       }
     ],
     "outputs": [
@@ -635,8 +635,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 11,
-        "line1": 14
+        "line0": 9,
+        "line1": 12
       },
       {
         "id": "rows",
@@ -648,8 +648,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:convert`",
         "flags": [],
-        "line0": 16,
-        "line1": 25
+        "line0": 14,
+        "line1": 24
       },
       {
         "id": "overdue",
@@ -661,7 +661,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 27,
+        "line0": 26,
         "line1": 34
       },
       {
@@ -677,7 +677,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "conditional"
         ],
         "line0": 36,
-        "line1": 44
+        "line1": 45
       },
       {
         "id": "approve",
@@ -691,8 +691,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 46,
-        "line1": 54
+        "line0": 47,
+        "line1": 56
       },
       {
         "id": "save",
@@ -707,8 +707,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 56,
-        "line1": 65
+        "line0": 58,
+        "line1": 68
       }
     ],
     "outputs": [
@@ -726,8 +726,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 13,
-        "line1": 17
+        "line0": 11,
+        "line1": 15
       },
       {
         "id": "ask_challenger",
@@ -737,8 +737,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 19,
-        "line1": 23
+        "line0": 17,
+        "line1": 21
       },
       {
         "id": "ask_tiny",
@@ -748,8 +748,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 25,
-        "line1": 29
+        "line0": 23,
+        "line1": 27
       },
       {
         "id": "tabulate",
@@ -763,8 +763,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 31,
-        "line1": 58
+        "line0": 29,
+        "line1": 57
       },
       {
         "id": "persist",
@@ -776,7 +776,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 60,
+        "line0": 59,
         "line1": 74
       }
     ],
@@ -793,8 +793,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "run `git`",
         "flags": [],
-        "line0": 19,
-        "line1": 21
+        "line0": 17,
+        "line1": 19
       },
       {
         "id": "notes",
@@ -808,8 +808,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 23,
-        "line1": 37
+        "line0": 21,
+        "line1": 36
       },
       {
         "id": "changelog",
@@ -821,7 +821,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:edit`",
         "flags": [],
-        "line0": 39,
+        "line0": 38,
         "line1": 53
       },
       {
@@ -836,7 +836,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:notify`",
         "flags": [],
         "line0": 55,
-        "line1": 66
+        "line1": 65
       }
     ],
     "outputs": [
@@ -855,8 +855,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 13,
-        "line1": 16
+        "line0": 11,
+        "line1": 14
       },
       {
         "id": "previous",
@@ -866,8 +866,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 18,
-        "line1": 24
+        "line0": 16,
+        "line1": 23
       },
       {
         "id": "feed",
@@ -877,8 +877,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:fetch`",
         "flags": [],
-        "line0": 26,
-        "line1": 33
+        "line0": 25,
+        "line1": 32
       },
       {
         "id": "fresh",
@@ -891,7 +891,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:json_diff`",
         "flags": [],
-        "line0": 35,
+        "line0": 34,
         "line1": 43
       },
       {
@@ -908,7 +908,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "conditional"
         ],
         "line0": 45,
-        "line1": 57
+        "line1": 58
       },
       {
         "id": "save_state",
@@ -920,8 +920,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 59,
-        "line1": 68
+        "line0": 60,
+        "line1": 70
       }
     ],
     "outputs": [
@@ -939,8 +939,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:fetch`",
         "flags": [],
-        "line0": 15,
-        "line1": 22
+        "line0": 13,
+        "line1": 20
       },
       {
         "id": "top_page",
@@ -952,8 +952,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:fetch`",
         "flags": [],
-        "line0": 24,
-        "line1": 31
+        "line0": 22,
+        "line1": 30
       },
       {
         "id": "brief",
@@ -968,7 +968,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 33,
+        "line0": 32,
         "line1": 53
       },
       {
@@ -982,7 +982,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:write`",
         "flags": [],
         "line0": 55,
-        "line1": 63
+        "line1": 64
       }
     ],
     "outputs": [
@@ -1000,8 +1000,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:uuid`",
         "flags": [],
-        "line0": 19,
-        "line1": 22
+        "line0": 17,
+        "line1": 20
       },
       {
         "id": "queue",
@@ -1011,8 +1011,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 24,
-        "line1": 27
+        "line0": 22,
+        "line1": 25
       },
       {
         "id": "triage",
@@ -1026,8 +1026,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 29,
-        "line1": 50
+        "line0": 27,
+        "line1": 49
       },
       {
         "id": "urgent",
@@ -1039,7 +1039,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 52,
+        "line0": 51,
         "line1": 59
       },
       {
@@ -1056,7 +1056,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "conditional"
         ],
         "line0": 61,
-        "line1": 72
+        "line1": 73
       },
       {
         "id": "board",
@@ -1069,8 +1069,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 74,
-        "line1": 82
+        "line0": 75,
+        "line1": 84
       }
     ],
     "outputs": [
@@ -1088,8 +1088,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 18,
-        "line1": 23
+        "line0": 16,
+        "line1": 21
       },
       {
         "id": "notes",
@@ -1103,8 +1103,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 24,
-        "line1": 54
+        "line0": 22,
+        "line1": 53
       },
       {
         "id": "sections",
@@ -1116,7 +1116,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 55,
+        "line0": 54,
         "line1": 66
       },
       {
@@ -1131,7 +1131,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:write`",
         "flags": [],
         "line0": 68,
-        "line1": 90
+        "line1": 91
       }
     ],
     "outputs": [
@@ -1149,8 +1149,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:fetch`",
         "flags": [],
-        "line0": 19,
-        "line1": 26
+        "line0": 17,
+        "line1": 24
       },
       {
         "id": "pages",
@@ -1167,8 +1167,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "retry",
           "timeout 30s"
         ],
-        "line0": 28,
-        "line1": 45
+        "line0": 26,
+        "line1": 44
       },
       {
         "id": "digest",
@@ -1180,7 +1180,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 47,
+        "line0": 46,
         "line1": 55
       },
       {
@@ -1194,7 +1194,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:write`",
         "flags": [],
         "line0": 57,
-        "line1": 65
+        "line1": 66
       },
       {
         "id": "ping",
@@ -1206,7 +1206,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:notify`",
         "flags": [],
-        "line0": 67,
+        "line0": 68,
         "line1": 76
       }
     ],
@@ -1227,8 +1227,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "retry"
         ],
-        "line0": 24,
-        "line1": 33
+        "line0": 22,
+        "line1": 31
       },
       {
         "id": "baseline",
@@ -1238,8 +1238,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 35,
-        "line1": 38
+        "line0": 33,
+        "line1": 36
       },
       {
         "id": "expected",
@@ -1251,8 +1251,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:json_merge_patch`",
         "flags": [],
-        "line0": 40,
-        "line1": 47
+        "line0": 38,
+        "line1": 46
       },
       {
         "id": "drift",
@@ -1265,7 +1265,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:json_diff`",
         "flags": [],
-        "line0": 49,
+        "line0": 48,
         "line1": 57
       },
       {
@@ -1279,7 +1279,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:hash`",
         "flags": [],
         "line0": 59,
-        "line1": 67
+        "line1": 68
       },
       {
         "id": "explain",
@@ -1293,8 +1293,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 69,
-        "line1": 79
+        "line0": 70,
+        "line1": 81
       },
       {
         "id": "alert",
@@ -1310,8 +1310,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 81,
-        "line1": 93
+        "line0": 83,
+        "line1": 96
       },
       {
         "id": "record",
@@ -1324,8 +1324,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:emit`",
         "flags": [],
-        "line0": 95,
-        "line1": 105
+        "line0": 98,
+        "line1": 109
       }
     ],
     "outputs": [
@@ -1343,8 +1343,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:glob`",
         "flags": [],
-        "line0": 12,
-        "line1": 17
+        "line0": 10,
+        "line1": 15
       },
       {
         "id": "texts",
@@ -1358,8 +1358,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "fan-out · ≤8 in flight"
         ],
-        "line0": 19,
-        "line1": 26
+        "line0": 17,
+        "line1": 25
       },
       {
         "id": "pairs",
@@ -1372,7 +1372,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 28,
+        "line0": 27,
         "line1": 36
       },
       {
@@ -1389,7 +1389,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "collects errors"
         ],
         "line0": 38,
-        "line1": 50
+        "line1": 51
       },
       {
         "id": "bundle",
@@ -1402,8 +1402,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 52,
-        "line1": 60
+        "line0": 53,
+        "line1": 62
       },
       {
         "id": "mirror",
@@ -1417,8 +1417,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "fan-out · ≤8 in flight"
         ],
-        "line0": 62,
-        "line1": 72
+        "line0": 64,
+        "line1": 75
       }
     ],
     "outputs": [
@@ -1436,8 +1436,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "run `git`",
         "flags": [],
-        "line0": 11,
-        "line1": 13
+        "line0": 9,
+        "line1": 11
       },
       {
         "id": "files",
@@ -1449,8 +1449,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 15,
-        "line1": 22
+        "line0": 13,
+        "line1": 21
       },
       {
         "id": "todo_sweep",
@@ -1460,8 +1460,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:grep`",
         "flags": [],
-        "line0": 24,
-        "line1": 29
+        "line0": 23,
+        "line1": 28
       },
       {
         "id": "reviews",
@@ -1477,7 +1477,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "collects errors",
           "typed output"
         ],
-        "line0": 31,
+        "line0": 30,
         "line1": 60
       },
       {
@@ -1491,7 +1491,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:jq`",
         "flags": [],
         "line0": 62,
-        "line1": 71
+        "line1": 72
       },
       {
         "id": "summary",
@@ -1504,8 +1504,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 73,
-        "line1": 83
+        "line0": 74,
+        "line1": 85
       },
       {
         "id": "save",
@@ -1517,8 +1517,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 85,
-        "line1": 92
+        "line0": 87,
+        "line1": 95
       }
     ],
     "outputs": [
@@ -1537,8 +1537,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:glob`",
         "flags": [],
-        "line0": 19,
-        "line1": 22
+        "line0": 17,
+        "line1": 20
       },
       {
         "id": "cvs",
@@ -1553,8 +1553,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "fan-out · ≤8 in flight",
           "collects errors"
         ],
-        "line0": 24,
-        "line1": 34
+        "line0": 22,
+        "line1": 33
       },
       {
         "id": "pairs",
@@ -1567,7 +1567,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 36,
+        "line0": 35,
         "line1": 44
       },
       {
@@ -1585,7 +1585,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "typed output"
         ],
         "line0": 46,
-        "line1": 71
+        "line1": 72
       },
       {
         "id": "ranked",
@@ -1597,8 +1597,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 73,
-        "line1": 80
+        "line0": 74,
+        "line1": 82
       },
       {
         "id": "shortlist",
@@ -1610,8 +1610,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 82,
-        "line1": 89
+        "line0": 84,
+        "line1": 92
       },
       {
         "id": "brief",
@@ -1625,8 +1625,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 91,
-        "line1": 100
+        "line0": 94,
+        "line1": 104
       },
       {
         "id": "save",
@@ -1640,8 +1640,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 102,
-        "line1": 111
+        "line0": 106,
+        "line1": 116
       }
     ],
     "outputs": [
@@ -1659,8 +1659,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:fetch`",
         "flags": [],
-        "line0": 21,
-        "line1": 29
+        "line0": 19,
+        "line1": 27
       },
       {
         "id": "pulse",
@@ -1670,8 +1670,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "run `git`",
         "flags": [],
-        "line0": 30,
-        "line1": 34
+        "line0": 28,
+        "line1": 32
       },
       {
         "id": "kpi_raw",
@@ -1681,8 +1681,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 35,
-        "line1": 38
+        "line0": 33,
+        "line1": 36
       },
       {
         "id": "kpis",
@@ -1694,8 +1694,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:convert`",
         "flags": [],
-        "line0": 40,
-        "line1": 49
+        "line0": 38,
+        "line1": 48
       },
       {
         "id": "revenue",
@@ -1707,7 +1707,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 51,
+        "line0": 50,
         "line1": 60
       },
       {
@@ -1724,7 +1724,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "ask the model · thinking budget",
         "flags": [],
         "line0": 61,
-        "line1": 79
+        "line1": 80
       },
       {
         "id": "stamp",
@@ -1734,8 +1734,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:date`",
         "flags": [],
-        "line0": 81,
-        "line1": 86
+        "line0": 82,
+        "line1": 87
       },
       {
         "id": "save",
@@ -1748,8 +1748,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 88,
-        "line1": 99
+        "line0": 89,
+        "line1": 101
       },
       {
         "id": "bill",
@@ -1761,8 +1761,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:inspect`",
         "flags": [],
-        "line0": 100,
-        "line1": 105
+        "line0": 102,
+        "line1": 106
       },
       {
         "id": "ping",
@@ -1777,8 +1777,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "cleanup always runs"
         ],
-        "line0": 107,
-        "line1": 124
+        "line0": 108,
+        "line1": 126
       }
     ],
     "outputs": [
@@ -1799,8 +1799,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 14,
-        "line1": 24
+        "line0": 12,
+        "line1": 22
       },
       {
         "id": "investigate",
@@ -1814,8 +1814,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 26,
-        "line1": 50
+        "line0": 24,
+        "line1": 49
       },
       {
         "id": "brief",
@@ -1827,7 +1827,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model · thinking budget",
         "flags": [],
-        "line0": 52,
+        "line0": 51,
         "line1": 64
       },
       {
@@ -1841,7 +1841,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:write`",
         "flags": [],
         "line0": 66,
-        "line1": 74
+        "line1": 75
       }
     ],
     "outputs": [
@@ -1860,8 +1860,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "run `journalctl`",
         "flags": [],
-        "line0": 22,
-        "line1": 25
+        "line0": 20,
+        "line1": 23
       },
       {
         "id": "status_history",
@@ -1873,8 +1873,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "retry"
         ],
-        "line0": 27,
-        "line1": 37
+        "line0": 25,
+        "line1": 35
       },
       {
         "id": "runbook",
@@ -1884,8 +1884,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 39,
-        "line1": 44
+        "line0": 37,
+        "line1": 42
       },
       {
         "id": "timeline",
@@ -1901,8 +1901,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 45,
-        "line1": 72
+        "line0": 43,
+        "line1": 71
       },
       {
         "id": "settle",
@@ -1914,8 +1914,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:wait`",
         "flags": [],
-        "line0": 73,
-        "line1": 78
+        "line0": 72,
+        "line1": 76
       },
       {
         "id": "recheck",
@@ -1927,8 +1927,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:fetch`",
         "flags": [],
-        "line0": 80,
-        "line1": 88
+        "line0": 78,
+        "line1": 85
       },
       {
         "id": "confirmed",
@@ -1940,8 +1940,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:assert`",
         "flags": [],
-        "line0": 90,
-        "line1": 99
+        "line0": 87,
+        "line1": 97
       },
       {
         "id": "postmortem",
@@ -1954,8 +1954,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model · thinking budget",
         "flags": [],
-        "line0": 100,
-        "line1": 113
+        "line0": 98,
+        "line1": 110
       },
       {
         "id": "save",
@@ -1967,8 +1967,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 115,
-        "line1": 128
+        "line0": 112,
+        "line1": 126
       },
       {
         "id": "ping",
@@ -1982,8 +1982,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "cleanup always runs"
         ],
-        "line0": 129,
-        "line1": 148
+        "line0": 127,
+        "line1": 145
       }
     ],
     "outputs": [
@@ -2002,8 +2002,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:date`",
         "flags": [],
-        "line0": 21,
-        "line1": 26
+        "line0": 19,
+        "line1": 24
       },
       {
         "id": "tests",
@@ -2015,8 +2015,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "timeout 15m"
         ],
-        "line0": 27,
-        "line1": 31
+        "line0": 25,
+        "line1": 29
       },
       {
         "id": "lint",
@@ -2028,8 +2028,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "timeout 10m"
         ],
-        "line0": 33,
-        "line1": 37
+        "line0": 31,
+        "line1": 35
       },
       {
         "id": "audit",
@@ -2042,8 +2042,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "retry",
           "timeout 5m"
         ],
-        "line0": 39,
-        "line1": 45
+        "line0": 37,
+        "line1": 43
       },
       {
         "id": "gates_green",
@@ -2057,8 +2057,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:assert`",
         "flags": [],
-        "line0": 47,
-        "line1": 54
+        "line0": 45,
+        "line1": 53
       },
       {
         "id": "gate_time",
@@ -2071,8 +2071,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:date`",
         "flags": [],
-        "line0": 56,
-        "line1": 69
+        "line0": 55,
+        "line1": 67
       },
       {
         "id": "conductor",
@@ -2084,8 +2084,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:prompt`",
         "flags": [],
-        "line0": 70,
-        "line1": 77
+        "line0": 68,
+        "line1": 76
       },
       {
         "id": "approved",
@@ -2097,7 +2097,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:assert`",
         "flags": [],
-        "line0": 79,
+        "line0": 78,
         "line1": 88
       },
       {
@@ -2111,7 +2111,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gloss": "call `nika:wait`",
         "flags": [],
         "line0": 89,
-        "line1": 96
+        "line1": 95
       },
       {
         "id": "ship",
@@ -2125,8 +2125,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "timeout 30m"
         ],
-        "line0": 98,
-        "line1": 104
+        "line0": 97,
+        "line1": 102
       },
       {
         "id": "verify",
@@ -2140,8 +2140,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "retry"
         ],
-        "line0": 106,
-        "line1": 118
+        "line0": 104,
+        "line1": 115
       },
       {
         "id": "live",
@@ -2153,8 +2153,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:assert`",
         "flags": [],
-        "line0": 120,
-        "line1": 132
+        "line0": 117,
+        "line1": 130
       },
       {
         "id": "record",
@@ -2168,8 +2168,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "cleanup always runs"
         ],
-        "line0": 133,
-        "line1": 152
+        "line0": 131,
+        "line1": 149
       }
     ],
     "outputs": [

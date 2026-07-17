@@ -44,11 +44,11 @@ export const PLAY_BREAKS: Record<string, PlayBreak> = {
     lesson: 'every ${{ vars.* }} reference must name a declared input · typos die at check, not at 3am',
   },
   fanout: {
-    label: 'Type depends_on like the others',
+    label: 'Type after: like the old grammar',
     find: '    fail_fast: false\n',
-    replace: '    fail_fast: false\n    depends_on: [discover]\n',
+    replace: '    fail_fast: false\n    after: { discover: success }\n',
     fires: 'NIKA-PARSE-024',
-    lesson: 'depends_on does not exist in Nika · the two doors are with (values) and after (effects)',
+    lesson: 'after: died in the 0.104 flip · depends_on declares every edge, when: gates the run',
   },
   'etl-state': {
     label: 'Recover from a downstream task',

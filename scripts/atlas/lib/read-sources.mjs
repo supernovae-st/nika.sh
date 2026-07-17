@@ -64,6 +64,9 @@ export function readSources(ROOT) {
     'canon.generated.ts',
   )
 
+  /* the served workflow schema (spec clock · the types set's declared source) */
+  const schema = json('public/schema/workflow.json')
+
   /* the language words (schema projection · spec clock) */
   const langTs = read('src/content/language.generated.ts')
   const words = parseTsLiteral(
@@ -195,6 +198,7 @@ export function readSources(ROOT) {
     sets,
     marketVocab,
     engineVersion,
+    schema,
     specPin,
     posts,
     tokens,

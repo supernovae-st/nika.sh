@@ -8,7 +8,9 @@
 }
 
 .hub-wrap {
-  padding-block: clamp(48px, 8vh, 84px) 40px;
+  /* the house top offset (the tools/errors constant): the nav is fixed —
+     the old 48px minimum slid the h1 underneath it (the /boundary bug) */
+  padding-block: clamp(124px, 16vh, 188px) 40px;
   max-width: 880px;
 }
 

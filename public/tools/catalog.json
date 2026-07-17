@@ -1,5 +1,5 @@
 {
-  "version": "0.99.0",
+  "version": "0.104.0",
   "tools": [
     {
       "name": "nika:assert",
@@ -189,7 +189,8 @@
           "type": "object",
           "desc": "EvidenceSnapshot with time and cited evidence items"
         }
-      ]
+      ],
+      "ratified_only": true
     },
     {
       "name": "nika:done",

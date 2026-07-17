@@ -19,6 +19,7 @@
    against the spec projector's independent SHOWCASE_DAG derivation. */
 
 import { FLAGSHIP_ENTRIES, type FlagshipEntry } from './index'
+import { w1ToW2 } from '../lib/w1-to-w2'
 import { deriveWorkflow, type FlagshipPlanModel, type NikaVerb } from './derive'
 
 export interface LibraryItem {
@@ -73,21 +74,21 @@ const BROWSE: {
     blurb: 'finds the overdue, drafts reminders, waits for your yes',
     /* the lit lines: the approve task — a human answer gates the save */
     gloss: 'invoke: a human yes sits before anything is saved',
-    highlight: [47, 52],
+    highlight: [48, 54],
   },
   {
     slug: 't4-deep-research-brief',
     blurb: 'an agent works the web inside hard caps, then the brief',
     /* the lit lines: the granted tools + the turn/token ceilings */
     gloss: 'agent: three tools granted, caps it cannot exceed',
-    highlight: [36, 41],
+    highlight: [35, 40],
   },
   {
     slug: 't3-localization-factory',
     blurb: 'every doc translated in parallel, the tree mirrored back',
     /* the lit lines: the fan-out head — one run per item, rate-limited */
     gloss: 'for_each: one run per doc, three in flight at a time',
-    highlight: [42, 43],
+    highlight: [43, 44],
   },
 ]
 
@@ -108,6 +109,13 @@ export const LIBRARY_TABS: { id: string; label: string }[] = [
     (the one fetch beat) yields an empty model — deriveWorkflow('') is a
     line-scan, honest and crash-free; the editor fills when the chunk lands. */
 export function buildLibrary(showcaseYaml: Record<string, string>): LibraryItem[] {
+  /* the W2 door (0.104 shipped flip · idempotent): the browse yamls arrive
+     either raw from the projector emission (tests) or already door-passed
+     (Home's island) — normalize here so the whole model speaks the served
+     grammar. See src/lib/w1-to-w2.ts. */
+  const served = Object.fromEntries(
+    Object.entries(showcaseYaml).map(([k, y]) => [k, w1ToW2(y)]),
+  )
   return [
     ...FLAGSHIP_ENTRIES.map((f) => ({
       id: f.id,
@@ -126,8 +134,8 @@ export function buildLibrary(showcaseYaml: Record<string, string>): LibraryItem[
       filename: `${b.slug}.nika.yaml`,
       label: b.slug,
       blurb: b.blurb,
-      yaml: showcaseYaml[b.slug] ?? '',
-      plan: deriveWorkflow(showcaseYaml[b.slug] ?? ''),
+      yaml: served[b.slug] ?? '',
+      plan: deriveWorkflow(served[b.slug] ?? ''),
       highlight: b.highlight,
       gloss: b.gloss,
       sourceUrl: `https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${b.slug}.nika.yaml`,

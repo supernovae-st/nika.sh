@@ -18,7 +18,7 @@ export type NikaVerb = NikaVerbName
 export interface FlagshipTask {
   id: string
   verb: NikaVerb
-  /** upstream producers — tasks.X bound in with: (data) ∪ after: keys (control) */
+  /** upstream producers — the task's declared depends_on, file order (W2) */
   deps: string[]
   /** the raw when: expression when the task is gated (display verbatim) */
   when?: string
@@ -58,7 +58,6 @@ export interface FlagshipPlanModel {
 }
 
 const VERBS: readonly NikaVerb[] = ['infer', 'exec', 'invoke', 'agent']
-const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
 
 /** indentation width (spaces) of a line */
 function indentOf(line: string): number {
@@ -66,37 +65,22 @@ function indentOf(line: string): number {
   return m ? m[1].length : 0
 }
 
-/* the two doors, line-scanned (W2 « the flow ») · a tasks.X reference inside
-   the with: block is a DATA edge · an after: entry is a CONTROL edge — the
-   precedence graph is exactly their union. tasks.* reads elsewhere in the
-   block (on_error.recover · on_finally) are settled-record reads, NOT
-   precedence, and never count as deps. */
+/* the ONE door, line-scanned (0.104 · the shipped W2 grammar): precedence is
+   DECLARATIVE — `depends_on: [a, b]` carries every edge, in file order
+   (`nika check` refuses an undeclared tasks.X reference · NIKA-DAG-003), so
+   the derivation reads the declaration and nothing else. tasks.* reads in
+   on_error.recover / on_finally are settled-record reads, NOT precedence. */
 function depsOf(body: string[]): string[] {
-  const out: string[] = []
-  const push = (id: string) => {
-    if (!out.includes(id)) out.push(id)
-  }
-  let door: 'with' | 'after' | null = null
   for (const line of body) {
-    if (line.trim() === '') continue
-    const indent = indentOf(line)
-    if (indent <= 4) door = null
-    const head = line.match(/^ {4}(with|after):(.*)$/)
-    if (head) {
-      door = head[1] as 'with' | 'after'
-      const rest = head[2]
-      if (door === 'with') for (const m of rest.matchAll(TASK_REF)) push(m[1])
-      else for (const m of rest.matchAll(/([a-z][a-z0-9_]*)\s*:/g)) push(m[1])
-      continue
-    }
-    if (door === 'with' && indent > 4) {
-      for (const m of line.matchAll(TASK_REF)) push(m[1])
-    } else if (door === 'after' && indent > 4) {
-      const k = line.match(/^\s+([a-z][a-z0-9_]*)\s*:/)
-      if (k) push(k[1])
+    const m = line.match(/\bdepends_on:\s*\[([^\]]*)\]/)
+    if (m) {
+      return m[1]
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
     }
   }
-  return out
+  return []
 }
 
 /** extract the human target chip for a task block, per verb */
@@ -145,7 +129,7 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
   }
   const raws: Raw[] = []
 
-  type Section = '' | 'permits' | 'tasks' | 'outputs' | 'workflow'
+  type Section = '' | 'permits' | 'tasks' | 'outputs'
   let section: Section = ''
   let current: Raw | null = null
 
@@ -169,19 +153,13 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
       if (top) {
         closeTask(n - 1)
         const [, key, rest] = top
-        section = key === 'permits' || key === 'tasks' || key === 'outputs' || key === 'workflow' ? key : ''
-        if (key === 'workflow' && rest.trim()) workflow = rest.trim()
+        section = key === 'permits' || key === 'tasks' || key === 'outputs' ? key : ''
+        /* W2 envelope: `workflow: <id>` — the scalar IS the display name */
+        if (key === 'workflow' && rest.trim()) workflow = rest.replace(/#.*$/, '').trim()
         if (key === 'model') model = rest.replace(/#.*$/, '').trim()
         if (key === 'permits') permitsRange = [n, n]
         continue
       }
-    }
-
-    if (section === 'workflow') {
-      /* W1: the identity object — the display name is its id: field */
-      const row = line.match(/^ {2}id:\s*(.+?)\s*(?:#.*)?$/)
-      if (row) workflow = row[1]
-      continue
     }
 
     if (section === 'permits') {
@@ -198,12 +176,14 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
     }
 
     if (section === 'tasks') {
-      /* W1 « the map »: a task opens at its indent-2 key — bare (block
-         body follows) or with an inline flow body on the same line */
-      const head = line.match(/^ {2}([a-z][a-z0-9_]*):(?:\s*(?:\{.*)?)?(?:\s*#.*)?$/)
-      if (head) {
+      /* W2 « the sequence »: a task opens at its `- id:` item — block form
+         (`- id: x` · body follows as siblings) or whole-task flow form
+         (`- { id: x, … }` · one line is the whole block) */
+      const head = line.match(/^ {2}- id: ([a-z][a-z0-9_]*)\s*(?:#.*)?$/)
+      const flow = line.match(/^ {2}- \{ id: ([a-z][a-z0-9_]*),.*\}\s*(?:#.*)?$/)
+      if (head || flow) {
         closeTask(n - 1)
-        current = { id: head[1], line0: n, line1: n, body: [line] }
+        current = { id: (head ?? flow)![1], line0: n, line1: n, body: [line] }
       } else if (current) {
         current.body.push(line)
         current.line1 = n

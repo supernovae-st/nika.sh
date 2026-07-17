@@ -157,7 +157,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-tools.mjs",
-   "sha256": "d67b42985370c406f85ed3b4a9b7ce8e9d683ec14b25e9c0d94824e082a31885",
+   "sha256": "eb1d2c0395e74791c1cdba9423f5c74bf3fcd415880dc51f8ce2c7fe48220d76",
    "args": [
     "--from-catalog"
    ],
@@ -338,7 +338,7 @@
   },
   {
    "path": "src/content/tools.generated.ts",
-   "sha256": "49df4969d9c412b3f8d852f82ec57f1b504bf51db3b86e78a21937c8abb7d3be",
+   "sha256": "9773a0a437dce0fb82ccef2f04271ffdf42e506b997748f597f4a19579f5ad45",
    "consumers": [
     "src/pages/Tools.tsx"
    ]

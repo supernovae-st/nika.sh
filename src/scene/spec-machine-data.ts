@@ -76,7 +76,7 @@ export const TASK_FIELDS: { name: string; req: boolean; gloss: string }[] = [
   { name: '‹key›', req: true, gloss: 'the map key IS the identity · snake_case · CEL-safe · unique' },
   { name: '‹verb›', req: true, gloss: 'exactly one of infer · exec · invoke · agent' },
   { name: 'with', req: false, gloss: 'the data door · each ${{ tasks.X }} binding IS a typed edge' },
-  { name: 'after', req: false, gloss: 'the control door · {producer: success|failed|skipped|terminal}' },
+  { name: 'after', req: false, gloss: 'the control door · {producer: success|failure|skipped|terminal}' },
   { name: 'when', req: false, gloss: 'a local CEL yes/no (or true/false) · post-gate · false → skipped' },
   { name: 'for_each', req: false, gloss: 'map the task over a collection' },
   { name: 'max_parallel', req: false, gloss: 'cap concurrent for_each iterations · 1 = sequential' },

@@ -134,8 +134,8 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
         {
           "label": "Types",
           "icon": "book",
-          "soon": true,
-          "slot_wave": "W3"
+          "to": "/language",
+          "count": 10
         }
       ]
     },
@@ -215,8 +215,8 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       {
         "label": "Types",
         "icon": "book",
-        "soon": true,
-        "slot_wave": "W3"
+        "to": "/language",
+        "count": 10
       },
       {
         "label": "The spec",

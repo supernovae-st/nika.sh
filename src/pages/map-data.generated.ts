@@ -62,9 +62,9 @@ export const MAP_LAYERS: MapLayer[] = [
         "id": "types",
         "title": "The types",
         "url": "/language",
-        "count": 0,
+        "count": 10,
         "surface": "anchors",
-        "slot": "W3",
+        "slot": null,
         "closed": false,
         "exists": true,
         "lands": null

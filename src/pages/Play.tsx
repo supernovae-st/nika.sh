@@ -9,7 +9,8 @@ const { compressToEncodedURIComponent, decompressFromEncodedURIComponent } = lz
 import { track } from '../lib/track'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import { checkNika, type LintDiag } from '../lib/nika-lint'
+import { checkNika, SHIPPED_AHEAD_CODES, type LintDiag } from '../lib/nika-lint'
+import { w1ToW2 } from '../lib/w1-to-w2'
 import { useAurora } from '../fx/aurora-context'
 import { routeHead } from '../content'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
@@ -67,13 +68,19 @@ const TEMPLATE_ORDER = ['chain', 'gate-and-act', 'fanout', 'etl-state', 'agent-l
    dynamic-imports the same chunk once, at the interaction. The dropdown's
    KEYS ride SHOWCASE_DAG (sync · the plan facts stay first-render) — the
    smoke gate pins DAG keys == YAML keys so the list can never lie. */
+/* W2 at the door (0.104 shipped flip · see showcase-yaml-access.ts): the
+   editor is THE copy-paste surface — every seed must pass `nika check` on
+   the released binary, so the ratified-clock emission converts on the way
+   out here too. */
+const toW2 = (dict: Record<string, string>): Record<string, string> =>
+  Object.fromEntries(Object.entries(dict).map(([k, y]) => [k, w1ToW2(y)]))
 let SSR_SEEDS: string | null = null
 if (import.meta.env.SSR) {
-  SSR_SEEDS = JSON.stringify((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML)
+  SSR_SEEDS = JSON.stringify(toW2((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML))
 }
 const SEEDS_ISLAND_ID = 'play-seeds-island'
 const loadShowcaseYaml = async () =>
-  (await import('../sections/usecases-yaml.generated')).SHOWCASE_YAML
+  toW2((await import('../sections/usecases-yaml.generated')).SHOWCASE_YAML)
 
 const VERB_HUE: Record<NikaVerb, string> = {
   infer: 'var(--verb-infer)',
@@ -84,7 +91,7 @@ const VERB_HUE: Record<NikaVerb, string> = {
 
 export function Component() {
   const seedsJson = useIslandPayload(SEEDS_ISLAND_ID, SSR_SEEDS, async () =>
-    JSON.stringify((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML),
+    JSON.stringify(toW2((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML)),
   )
   const seeds = useMemo<Record<string, string>>(
     () => (seedsJson ? (JSON.parse(seedsJson) as Record<string, string>) : {}),
@@ -488,7 +495,7 @@ export function Component() {
                               catch-alls) stay text; nika-lint-conformance pins
                               the suffixed⊆ERROR_PATHS claim so this can't 404 */}
                           L{d.line} ·{' '}
-                          {/\d{3}$/.test(d.code) ? (
+                          {/\d{3}$/.test(d.code) && !SHIPPED_AHEAD_CODES.has(d.code) ? (
                             <Link className="play-diag-room" to={`/errors/${d.code}`}>
                               {d.code}
                             </Link>

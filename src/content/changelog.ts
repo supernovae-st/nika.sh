@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-17',
+    tag: 'site',
+    title: 'nika.sh v4.18 · the site speaks the shipped grammar',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.18.0',
+    body: 'The 0.104 release flipped the language: the envelope became a scalar (workflow: my-job), tasks became a sequence (- id: …), and every edge is declared (depends_on — an undeclared tasks.X read now dies at check as NIKA-DAG-003; after: died with it). The public spec still teaches the old form, so the site now runs on TWO spec surfaces and says so out loud: /spec/v1 stays the ratified pin, /spec/shipped vendors what the released binary itself embeds (nika spec --schema and --canon, refreshed deliberately, never probed at build), and /sources renders the grammar gap as a third clock line beside builtins and providers. Everything a visitor can copy speaks the shipped grammar and is PROVEN against the released binary: every hero flagship and its served /library file, the /learn walk and its assembled weekly radar, both install hellos with transcripts re-captured verbatim, the verb chapters, the 404, the /convert proof, and every showcase room and template seed, which stay byte-pure ratified projections and convert at the door through one mechanical, idempotent, line-mapped pass — the plan choreography, the hero highlights and the inspector line anchors all re-aim through the same map, so nothing drifts from the text it animates. The playground lint learned the new world (scalar envelope, sequence tasks, duplicate ids, declared-edge DAG-003, after: refused with its fix line), its break-lesson inverted to teach the flip, and a shipped-ahead door renders text-only until the spec lands the room. Alongside the flip: the engine badge reads v0.104.0 everywhere, the tools register carries decide as ratified-not-shipped with its spec contract on the page, the types register lands its primitives read from the schema itself (the last soon chip dies), the provider catalog re-vendors at 0.104, and the hub headers stop sliding under the fixed nav.',
+  },
+  {
     date: '2026-07-13',
     tag: 'site',
     title: 'nika.sh v4.17 · one constant stage, and every word wired to the hull',

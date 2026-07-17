@@ -141,7 +141,7 @@ export function Component() {
               or shipped before ratification lands. The diff below is computed at build time from
               both catalogs; when it is empty, the clocks agree.
             </p>
-            {(['builtins', 'providers'] as const).map((register) => {
+            {(['builtins', 'providers', 'grammar'] as const).map((register) => {
               const diff = ATLAS_CLOCK_DIFF[register]
               const clean = diff.ratified_only.length === 0 && diff.shipped_only.length === 0
               return (

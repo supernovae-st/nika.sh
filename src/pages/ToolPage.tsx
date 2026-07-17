@@ -269,6 +269,24 @@ export function Component() {
             {hit ? hit.name : `nika:${name}`}
           </h1>
 
+          {hit?.ratified_only && (
+            <>
+              <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+                {hit.description}
+              </p>
+              <div className="tp-miss" role="status" data-rise>
+                <p>
+                  <strong>Ratified, not shipped.</strong> The spec ratifies{' '}
+                  <code>{hit.name}</code> as one of {TOOLS.length} builtins; the engine catalog
+                  does not carry it yet. The contract below is spec-derived, and{' '}
+                  <Link to="/sources">the two clocks</Link> disagree here on purpose: that gap is
+                  the register doing its job.
+                </p>
+                <ArgsContract bare={hit.bare} />
+              </div>
+            </>
+          )}
+
           {!hit && (
             <div className="tp-miss" role="status" data-rise>
               <p className="tp-miss-name">nika:{name}</p>

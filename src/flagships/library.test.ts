@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { LIBRARY_TABS, buildLibrary, verbsOf } from './library'
 import { FLAGSHIP_ENTRIES } from './index'
-import { SHOWCASE_DAG, SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
+import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
+/* the REMAPPED plan facts — line0/line1 re-aimed at the door-served W2 lines
+   (scripts/atlas/build-atlas.mjs) · the projector's own numbers point at the
+   ratified W1 emission and would judge the wrong world here */
+import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
+import { w1ToW2 } from '../lib/w1-to-w2'
 
 /* the tests build the library with the REAL dictionary (node-side import
    is not the client bundle — the diet law binds the bundle, not vitest) */
@@ -62,7 +67,7 @@ describe('library · browse-only honesty', () => {
 
   it('every browse yaml is the projected pack corpus, verbatim', () => {
     for (const item of browse) {
-      expect(item.yaml, item.id).toBe(SHOWCASE_YAML[item.id])
+      expect(item.yaml, item.id).toBe(w1ToW2(SHOWCASE_YAML[item.id]))
     }
   })
 

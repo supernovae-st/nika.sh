@@ -213,10 +213,33 @@ describe('atlas · the register diet holds (the namespace-retention law)', () =>
 })
 
 describe('atlas · the derived DAG module IS the projector export', () => {
-  it('showcase-dag.generated toEqual usecases-yaml.generated SHOWCASE_DAG (value-equal, both directions)', async () => {
-    const source = (await import('../sections/usecases-yaml.generated')).SHOWCASE_DAG
+  it('showcase-dag.generated toEqual SHOWCASE_DAG modulo the W2 line remap', async () => {
+    /* the projector export is the RATIFIED clock (W1 lines); the derived
+       module re-aims line0/line1 at the door-served W2 rendering (0.104
+       flip · build-atlas). Equality holds after applying the SAME pass's
+       line map to the source — everything else is byte-identical. */
+    const { SHOWCASE_YAML, SHOWCASE_DAG: source } = await import(
+      '../sections/usecases-yaml.generated'
+    )
     const derived = (await import('../content/showcase-dag.generated')).SHOWCASE_DAG
-    expect(derived).toEqual(source)
+    const { w1ToW2WithMap } = await import('../lib/w1-to-w2')
+    const remapped = Object.fromEntries(
+      Object.entries(source).map(([slug, dag]) => {
+        const { mapLine } = w1ToW2WithMap(SHOWCASE_YAML[slug])
+        return [
+          slug,
+          {
+            ...dag,
+            tasks: dag.tasks.map((t) => ({
+              ...t,
+              line0: mapLine(t.line0 + 1) - 1,
+              line1: mapLine(t.line1 + 1) - 1,
+            })),
+          },
+        ]
+      }),
+    )
+    expect(derived).toEqual(remapped)
   })
 })
 

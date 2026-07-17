@@ -48,7 +48,7 @@ layers:
       - { id: namespaces, anchor: namespaces, title: The namespaces }
       - { id: expressions, anchor: expressions, title: Expressions,
           note: "CEL subset in ${{ }} · size() is the only function · jq lives on output" }
-      - { id: types-slot, anchor: types, title: Types, slot: W3 }
+      - { id: types-slot, anchor: types, title: Types }
 
   - id: flow
     title: The flow
@@ -186,8 +186,7 @@ sets:
     layer: shape
     anchors_exist: false
     title: The types
-    slot: W3
-    source: { artifact: public/schema/workflow.json, field: "$defs.typeExpr", pending: true }
+    source: { artifact: public/schema/workflow.json, field: "$defs.typeExpr" }
     clock: spec
     counted_in_canon: false
     closed: false
@@ -243,8 +242,9 @@ sets:
       terminal. The full producer-status by predicate matrix is
       fixture-proven upstream · the site replays it, never re-derives it.
     members:
-      - { id: succeeded, one_liner: "fire when the producer completed clean" }
-      - { id: failed, one_liner: "fire when the producer failed terminally" }
+      # renamed at the seventeenth-seat pin (spec #118 · succeeded→success · failed→failure)
+      - { id: success, one_liner: "fire when the producer completed clean" }
+      - { id: failure, one_liner: "fire when the producer failed terminally" }
       - { id: skipped, one_liner: "fire when the producer was gated out" }
       - { id: terminal, one_liner: "fire when the producer reached any terminal state" }
 
@@ -307,13 +307,13 @@ sets:
 
   - id: providers
     layer: reach
-    anchors_exist: true   # empirical: the current hub already serves #<id> for all 16
+    anchors_exist: true   # empirical: the current hub serves #<id> for all 17
     title: The providers
     source: { artifact: public/providers/catalog.json, field: providers, ratified_twin: "src/canon.generated.ts · providerIds*" }
     clock: release
     counted_in_canon: true
     closed: false
-    surface: anchors   # WO-6 fusion verdict (§0.6) · the 16 doorway rooms die in 301
+    surface: anchors   # WO-6 fusion verdict (§0.6) · the doorway rooms die in 301
     anchor_page: /providers
     anchor_prefix: ""   # /providers#ollama · /providers#mistral · …
     order: "local-first (locked): the catalog order is the law · local · cloud · mock"
@@ -322,7 +322,8 @@ sets:
     moved_applies: wo-6
     moved_live: true   # WO-6 shipped the stubs · the e2e replays these from redirects.json
     moved:
-      # 16 redirects · /providers/:id → /providers#:id · applied at WO-6 ·
+      # 17 redirects · /providers/:id → /providers#:id · applied at WO-6 ·
+      # (moonshot joined at the seventeenth seat · 0.104) ·
       # redirects.json derives from these lines (output n°13)
       - { from: /providers/ollama, to: "/providers#ollama" }
       - { from: /providers/lmstudio, to: "/providers#lmstudio" }
@@ -330,6 +331,7 @@ sets:
       - { from: /providers/localai, to: "/providers#localai" }
       - { from: /providers/vllm, to: "/providers#vllm" }
       - { from: /providers/mistral, to: "/providers#mistral" }
+      - { from: /providers/moonshot, to: "/providers#moonshot" }
       - { from: /providers/anthropic, to: "/providers#anthropic" }
       - { from: /providers/openai, to: "/providers#openai" }
       - { from: /providers/gemini, to: "/providers#gemini" }

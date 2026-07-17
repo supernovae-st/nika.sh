@@ -43,39 +43,37 @@ export const DOCTOR_CMD = 'nika doctor'
 
 /* the zero-setup first file — no model, no key (exec only) */
 export const HELLO_YAML = `nika: v1
-workflow:
-  id: hello
+workflow: hello
 tasks:
-  greet:
+  - id: greet
     exec:
       command: ["echo", "hello", "from", "nika"]
 `
 
 /* the first AI step — a free local model, nothing leaves the machine */
 export const HELLO_AI_YAML = `nika: v1
-workflow:
-  id: hello-ai
+workflow: hello-ai
 model: ollama/llama3.2:3b   # local · free · swap for any provider in the catalog
 tasks:
-  greet:
+  - id: greet
     infer:
       prompt: "Say hello in one sentence."
 `
 
 /* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
-   Captured 2026-07-13 against nika 0.103.0 (the verified release binary)
+   Captured 2026-07-17 against nika 0.104.0 (the verified release binary)
    running the exact HELLO_YAML above. The honesty law: these frames render
    REAL output — re-capture when the CLI's voice changes, never hand-edit. */
 export const VERSION_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika --version' },
-  { kind: 'out', text: 'nika 0.103.0' },
+  { kind: 'out', text: 'nika 0.104.0' },
 ]
 
 export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika check hello.nika.yaml' },
   { kind: 'out', text: 'nika check · hello.nika.yaml' },
   { kind: 'ok', text: ' ✔ PLAN     1 wave · 1 task · max parallelism 1' },
-  { kind: 'dim', text: '      wave 1 greet (exec · sh -c)' },
+  { kind: 'dim', text: '      wave 1 greet (exec · echo)' },
   { kind: 'ok', text: ' ✔ COST     no inference tasks · $0.00' },
   { kind: 'ok', text: ' ✔ SECRETS  no information-flow escapes' },
   { kind: 'ok', text: ' ✔ TYPES    every deep output reference fits its declared shape' },
@@ -92,7 +90,7 @@ export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
   { kind: 'out', text: '' },
   { kind: 'ok', text: '  ✔  greet  exec · echo  4ms' },
   { kind: 'dim', text: '  ── 1/1 done · $0.00 · elapsed 0.0s ─────────────────────────────' },
-  { kind: 'dim', text: '    trace: .nika/traces/2026-07-13T08-26-07Z-7aab.ndjson · 5 events · chain 801a39c69154a8f466a1a17d941910fdaaaa4af71fdd8e59445bc2d815d6fd83' },
+  { kind: 'dim', text: '    trace: .nika/traces/2026-07-17T21-39-47Z-042f.ndjson · 5 events · chain e7a49a00ceacdc481547021c582c25066cc8f0ccdda4b54bedf71195dde8770d' },
 ]
 
 /* ── troubleshooting · the four honest snags (each fix is verifiable) ────────── */

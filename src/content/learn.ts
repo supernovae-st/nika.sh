@@ -79,8 +79,7 @@ export const STEPS: Step[] = [
       'The whole thing is one plain-text file. Two lines make it real: name the language, name the workflow. That header is the whole ceremony: no project setup, no boilerplate, no config.',
     file: 'weekly-radar.nika.yaml',
     yaml: `nika: v1
-workflow:
-  id: weekly-radar`,
+workflow: weekly-radar`,
     note: 'nika: v1 means the format is frozen. Files you write today won’t break.',
   },
   {
@@ -125,7 +124,8 @@ model: ollama/llama3.2:3b
       'Each task does exactly one thing, with one of the four verbs. This one thinks: it sends a prompt to the model and keeps the answer as its output.',
     file: 'tasks',
     yaml: `tasks:
-  digest:
+  - id: digest
+    depends_on: [fetch_news]
     infer:
       prompt: "Summarize in 5 bullets: \${{ tasks.fetch_news.output }}"`,
     note: 'infer thinks · exec runs a command · invoke uses a tool · agent delegates.',
@@ -151,7 +151,7 @@ digest:
     log: \${{ tasks.repo_log.output }}      # is one edge
   infer:
     prompt: "Cross-reference \${{ with.news }} with \${{ with.log }}…"`,
-    note: 'fetch_news and repo_log run at the same time. digest waits for both. For order with no data, there is after: — { producer: success }.',
+    note: 'fetch_news and repo_log run at the same time. digest waits for both. Order with no data is the same declaration: depends_on works with or without a with: binding.',
     check: {
       q: 'digest reads ${{ tasks.fetch_news.output }} in with:. What did that line just do?',
       options: ['Copied a value once, at parse time', 'Created an edge: digest now waits for fetch_news', 'Nothing until you also declare the dependency'],
@@ -167,23 +167,25 @@ digest:
       'A workflow is a to-do list where some steps wait for others. Steps that wait on nothing all start at the same time, automatically; you never schedule anything. Before anything runs, the runtime reads every with: wire and draws the plan: here, three sources start together, the digest waits for all three, and the save waits for the digest.',
     file: 'tasks · the whole plan',
     yaml: `tasks:
-  fetch_news:
+  - id: fetch_news
     invoke:
       tool: "nika:fetch"
-  repo_log:
+  - id: repo_log
     exec:
       command: ["git", "log", "--since=1 week"]
-  read_notes:
+  - id: read_notes
     invoke:
       tool: "nika:read"
-  digest:
+  - id: digest
+    depends_on: [fetch_news, repo_log, read_notes]
     with:
       news: \${{ tasks.fetch_news.output }}
       log: \${{ tasks.repo_log.output }}
       notes: \${{ tasks.read_notes.output }}
     infer:
       prompt: "One weekly radar, five bullets"
-  save:
+  - id: save
+    depends_on: [digest]
     with:
       brief: \${{ tasks.digest.output }}
     invoke:
@@ -242,7 +244,7 @@ digest:
       'output: binds pieces of a task result to names; the workflow declares what it returns. Downstream tasks (and you) read clean names, not raw API responses.',
     file: 'output · outputs',
     yaml: `tasks:
-  digest:
+  - id: digest
     infer:
       prompt: "…"
     output:
@@ -256,12 +258,10 @@ outputs:
 /* ── the whole file · the nine fragments, assembled ───────────────────────────
    Every idea above, composed into the ONE workflow the page teaches. This
    exact text passes `nika check` on the shipping binary — the transcript
-   below is that run, VERBATIM (captured 2026-07-14 · nika 0.103.0). The
+   below is that run, VERBATIM (captured 2026-07-17 · nika 0.104.0). The
    honesty law: re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
-workflow:
-  id: weekly-radar
-
+workflow: weekly-radar
 vars:
   output_dir: "./radar"
   topic:
@@ -272,23 +272,24 @@ vars:
 model: ollama/llama3.2:3b
 
 tasks:
-  fetch_news:
+  - id: fetch_news
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://hnrss.org/frontpage"
 
-  repo_log:
+  - id: repo_log
     exec:
       command: ["git", "log", "--since=1 week"]
 
-  read_notes:
+  - id: read_notes
     invoke:
       tool: "nika:read"
       args:
         path: "./notes.md"
 
-  digest:
+  - id: digest
+    depends_on: [fetch_news, repo_log, read_notes]
     with:
       news: \${{ tasks.fetch_news.output }}
       log: \${{ tasks.repo_log.output }}
@@ -299,7 +300,8 @@ tasks:
     infer:
       prompt: "One weekly radar on \${{ vars.topic }}, five bullets: \${{ with.news }} \${{ with.log }} \${{ with.notes }}"
 
-  save:
+  - id: save
+    depends_on: [digest]
     with:
       brief: \${{ tasks.digest.output }}
     invoke:
