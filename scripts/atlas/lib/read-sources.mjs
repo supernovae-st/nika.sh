@@ -168,9 +168,19 @@ export function readSources(ROOT) {
   /* blog posts (mentions scan · backtick spans only) */
   const blogDir = join(ROOT, 'content/blog')
   const posts = readdirSync(blogDir)
-    .filter((f) => f.endsWith('.md'))
+    .filter((f) => f.endsWith('.md') && f !== 'README.md')
     .sort()
-    .map((f) => ({ slug: f.replace(/\.md$/, ''), md: readFileSync(join(blogDir, f), 'utf8') }))
+    .map((f) => {
+      const md = readFileSync(join(blogDir, f), 'utf8')
+      /* the ROUTE slug lives in the frontmatter — the filename carries the
+         date prefix and is NOT a URL (the graph once linked /blog/<file> and
+         every post node was a dead door) */
+      const meta = Object.fromEntries(
+        [...(md.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? '').matchAll(/^([a-z_]+):\s*"?([^"\n]*)"?$/gm)]
+          .map((m) => [m[1], m[2]]),
+      )
+      return { slug: meta.slug ?? f.replace(/\.md$/, ''), title: meta.title ?? f, date: meta.date ?? '', md }
+    })
 
   return {
     canon,

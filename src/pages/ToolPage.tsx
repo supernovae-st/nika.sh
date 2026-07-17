@@ -14,7 +14,7 @@ import { PartEgg } from '../scene/parts/PartEgg'
 import { layoutDrum } from '../scene/tools-hud/slot-layout'
 import { TOOL_SOURCES } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
-import { FETCH_MODES } from '../content/room-rails.generated'
+import { FETCH_MODES, FROM_BLOG } from '../content/room-rails.generated'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -389,6 +389,20 @@ export function Component() {
                       ))}
                     </ul>
                   </div>
+                  {(FROM_BLOG[`tool:${hit.bare}`] ?? []).length > 0 && (
+                    <div>
+                      <p className="td-ref-k">from the blog</p>
+                      <ul className="td-chips">
+                        {(FROM_BLOG[`tool:${hit.bare}`] ?? []).map((b) => (
+                          <li key={b.slug}>
+                            <Link className="td-chip" to={`/blog/${b.slug}`}>
+                              {b.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <div>
                     <p className="td-ref-k">where it lives</p>
                     <SourcesRail links={TOOL_SOURCES} />

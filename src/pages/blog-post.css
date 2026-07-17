@@ -301,3 +301,39 @@ a.bp-series-tick:focus-visible {
 .bp-walk-link:focus-visible {
   color: var(--v4-text);
 }
+
+/* the register rail (D5) · the mentions edges rendered — chips reuse the
+   room vocabulary locally (tool-detail.css never loads here) */
+.bp-register {
+  margin: 34px 0 6px;
+  padding-top: 18px;
+  border-top: 1px solid var(--v4-line, rgba(255, 255, 255, 0.08));
+}
+.bp-register-k {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  margin-bottom: 10px;
+}
+.bp-register .td-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.bp-register .td-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid var(--v4-line, rgba(255, 255, 255, 0.1));
+  border-radius: 4px;
+  font-size: 12.5px;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+}
+.bp-register .td-chip:hover {
+  color: var(--v4-text);
+  border-color: var(--v4-text-faint);
+}

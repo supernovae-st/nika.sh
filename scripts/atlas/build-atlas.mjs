@@ -380,13 +380,40 @@ for (const post of S.posts) {
   nodes.push({
     id: `post:${post.slug}`,
     kind: 'surface',
-    title: post.slug,
+    title: post.title,
     url: `/blog/${post.slug}`,
     status: 'both',
     opener: null,
     exists: true,
   })
   for (const target of [...hit].sort()) addEdge(`post:${post.slug}`, target, 'mentions')
+}
+
+/* the cross-rails (D5) · the mentions edges rendered both ways — pure
+   inversion, no new derivation: rooms gain « from the blog », posts gain
+   « the register behind this ». Caps + stable sorts keep the slices lean. */
+const fromBlog = {}
+const postMentions = {}
+const MEMBER_ROOM = {
+  tool: (id) => ({ label: `nika:${id}`, url: `/tools/${id}` }),
+  word: (id) => ({ label: id, url: `/language/${id}` }),
+  code: (id) => ({ label: id, url: `/errors/${id}` }),
+}
+for (const e of edges) {
+  if (e.kind !== 'mentions' || !e.from.startsWith('post:')) continue
+  const slug = e.from.slice(5)
+  const post = S.posts.find((p) => p.slug === slug)
+  if (!post) continue
+  const [memberKind, memberId] = [e.to.slice(0, e.to.indexOf(':')), e.to.slice(e.to.indexOf(':') + 1)]
+  ;(fromBlog[e.to] ??= []).push({ slug, title: post.title, date: post.date })
+  ;(postMentions[slug] ??= []).push({ kind: memberKind, id: memberId, ...MEMBER_ROOM[memberKind](memberId) })
+}
+for (const k of Object.keys(fromBlog)) {
+  fromBlog[k].sort((a, b) => (a.date === b.date ? (a.slug < b.slug ? -1 : 1) : a.date < b.date ? 1 : -1))
+  fromBlog[k] = fromBlog[k].slice(0, 3)
+}
+for (const k of Object.keys(postMentions)) {
+  postMentions[k].sort((a, b) => (a.kind === b.kind ? (a.id < b.id ? -1 : 1) : a.kind < b.kind ? -1 : 1))
 }
 
 /* dedupe (projects-to repeats per set) + stable sort */
@@ -920,6 +947,14 @@ export const TEMPLATE_CARRIES: Record<string, string[]> = ${JSON.stringify(templ
 
 /** the fetch extract modes (canon order · anchors on the fetch room) */
 export const FETCH_MODES: string[] = ${JSON.stringify(S.canon.extractModeNames)}
+
+/** member node id → the posts that mention it (D5 · mentions inverted ·
+ * date desc · cap 3) — the room's « from the blog » rail */
+export const FROM_BLOG: Record<string, { slug: string; title: string; date: string }[]> = ${JSON.stringify(fromBlog)}
+
+/** post slug → the members it mentions (D5 · same edges, other direction) —
+ * the post's « the register behind this » chips */
+export const POST_MENTIONS: Record<string, { kind: string; id: string; label: string; url: string }[]> = ${JSON.stringify(postMentions)}
 `,
 )
 

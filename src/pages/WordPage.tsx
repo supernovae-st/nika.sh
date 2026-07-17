@@ -13,7 +13,7 @@ import type { WordUsage } from '../content/language-usage.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { sourcesForWord } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
-import { WORD_ACCEPTS, WORD_CHAPTERS, CHAPTER_FILES } from '../content/room-rails.generated'
+import { WORD_ACCEPTS, WORD_CHAPTERS, CHAPTER_FILES, FROM_BLOG } from '../content/room-rails.generated'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -439,6 +439,20 @@ export function Component() {
                           <li key={v}>
                             <a className="td-chip" href={`/verbs/${v}`}>
                               {v}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {(FROM_BLOG[`word:${hit.word}`] ?? []).length > 0 && (
+                    <div>
+                      <p className="td-ref-k">from the blog</p>
+                      <ul className="td-chips">
+                        {(FROM_BLOG[`word:${hit.word}`] ?? []).map((b) => (
+                          <li key={b.slug}>
+                            <a className="td-chip" href={`/blog/${b.slug}`}>
+                              {b.title}
                             </a>
                           </li>
                         ))}

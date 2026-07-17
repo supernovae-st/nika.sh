@@ -5,11 +5,15 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, REPO } from '../content'
 import { BLOG_POSTS, BLOG_SERIES, type BlogToken } from '../content/blog.generated'
 import { BlogBody } from '../lib/blog-render'
+import { POST_MENTIONS } from '../content/room-rails.generated'
 import { Component as NotFound } from './NotFound'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
 import './page-chrome.css'
 import './blog-post.css'
+
+/* the palette's kind vocabulary — same glyph, same meaning */
+const REGISTER_GLYPH: Record<string, string> = { tool: '⌗', word: '·', code: '✕' }
 
 /* ─── /blog/<slug> · one post, one page ───────────────────────────────────────
    The reading surface for the markdown blog (content/blog/*.md — compiled at
@@ -262,6 +266,20 @@ export function Component() {
           </article>
 
           {/* the honest foot · the post IS a file — read it, edit it, discuss it */}
+          {(POST_MENTIONS[post.slug] ?? []).length > 0 && (
+            <nav className="bp-register" aria-label="The register behind this post">
+              <p className="bp-register-k mono">the register behind this</p>
+              <ul className="td-chips">
+                {(POST_MENTIONS[post.slug] ?? []).map((m) => (
+                  <li key={`${m.kind}:${m.id}`}>
+                    <Link className="td-chip" to={m.url} viewTransition>
+                      <span aria-hidden>{REGISTER_GLYPH[m.kind] ?? '·'}</span> {m.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
           <div className="bp-foot" data-rise>
             <p className="bp-foot-src mono">
               this post is a file ·{' '}

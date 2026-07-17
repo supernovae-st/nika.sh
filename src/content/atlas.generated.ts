@@ -2313,172 +2313,172 @@ export const ATLAS_NODES: AtlasNode[] = [
     "opener": "which nika tools the file may invoke"
   },
   {
-    "id": "post:2026-05-14-standard-library-not-plugin-store",
+    "id": "post:anatomy-of-a-verb",
     "kind": "surface",
-    "title": "2026-05-14-standard-library-not-plugin-store",
-    "url": "/blog/2026-05-14-standard-library-not-plugin-store",
+    "title": "Anatomy of a verb",
+    "url": "/blog/anatomy-of-a-verb",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-06-04-blast-radius-in-the-file",
+    "id": "post:blast-radius-in-the-file",
     "kind": "surface",
-    "title": "2026-06-04-blast-radius-in-the-file",
-    "url": "/blog/2026-06-04-blast-radius-in-the-file",
+    "title": "The blast radius is part of the file",
+    "url": "/blog/blast-radius-in-the-file",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-06-15-intent-as-code",
+    "id": "post:dag-for-free",
     "kind": "surface",
-    "title": "2026-06-15-intent-as-code",
-    "url": "/blog/2026-06-15-intent-as-code",
+    "title": "The plan you get for free",
+    "url": "/blog/dag-for-free",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-06-22-four-verbs",
+    "id": "post:four-verbs",
     "kind": "surface",
-    "title": "2026-06-22-four-verbs",
-    "url": "/blog/2026-06-22-four-verbs",
+    "title": "Four verbs are enough",
+    "url": "/blog/four-verbs",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-06-29-dag-for-free",
+    "id": "post:injection-goes-nowhere",
     "kind": "surface",
-    "title": "2026-06-29-dag-for-free",
-    "url": "/blog/2026-06-29-dag-for-free",
+    "title": "The prompt injection that goes nowhere",
+    "url": "/blog/injection-goes-nowhere",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-05-anatomy-of-a-verb",
+    "id": "post:intent-as-code",
     "kind": "surface",
-    "title": "2026-07-05-anatomy-of-a-verb",
-    "url": "/blog/2026-07-05-anatomy-of-a-verb",
+    "title": "Intent as Code: why your AI work should be a file",
+    "url": "/blog/intent-as-code",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-05-the-secrets-line",
+    "id": "post:media-are-workflow-citizens",
     "kind": "surface",
-    "title": "2026-07-05-the-secrets-line",
-    "url": "/blog/2026-07-05-the-secrets-line",
+    "title": "Media are workflow citizens",
+    "url": "/blog/media-are-workflow-citizens",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-05-the-trace-you-can-replay",
+    "id": "post:one-wire-five-servers",
     "kind": "surface",
-    "title": "2026-07-05-the-trace-you-can-replay",
-    "url": "/blog/2026-07-05-the-trace-you-can-replay",
+    "title": "One wire, five servers",
+    "url": "/blog/one-wire-five-servers",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-06-media-are-workflow-citizens",
+    "id": "post:standard-library-not-plugin-store",
     "kind": "surface",
-    "title": "2026-07-06-media-are-workflow-citizens",
-    "url": "/blog/2026-07-06-media-are-workflow-citizens",
+    "title": "A standard library, not a plugin store",
+    "url": "/blog/standard-library-not-plugin-store",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-06-one-wire-five-servers",
+    "id": "post:the-agent-workflow-spectrum",
     "kind": "surface",
-    "title": "2026-07-06-one-wire-five-servers",
-    "url": "/blog/2026-07-06-one-wire-five-servers",
+    "title": "The agent workflow spectrum",
+    "url": "/blog/the-agent-workflow-spectrum",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-06-the-editor-tells-the-truth",
+    "id": "post:the-editor-tells-the-truth",
     "kind": "surface",
-    "title": "2026-07-06-the-editor-tells-the-truth",
-    "url": "/blog/2026-07-06-the-editor-tells-the-truth",
+    "title": "The editor tells the truth",
+    "url": "/blog/the-editor-tells-the-truth",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-08-injection-goes-nowhere",
+    "id": "post:the-generative-workflow",
     "kind": "surface",
-    "title": "2026-07-08-injection-goes-nowhere",
-    "url": "/blog/2026-07-08-injection-goes-nowhere",
+    "title": "The generative ai workflow, minus the mystery",
+    "url": "/blog/the-generative-workflow",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-10-the-one-task-rerun",
+    "id": "post:the-mcp-server-you-didnt-build",
     "kind": "surface",
-    "title": "2026-07-10-the-one-task-rerun",
-    "url": "/blog/2026-07-10-the-one-task-rerun",
+    "title": "The MCP server you didn't have to build",
+    "url": "/blog/the-mcp-server-you-didnt-build",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-10-the-run-that-waits",
+    "id": "post:the-one-task-rerun",
     "kind": "surface",
-    "title": "2026-07-10-the-run-that-waits",
-    "url": "/blog/2026-07-10-the-run-that-waits",
+    "title": "The one-task re-run",
+    "url": "/blog/the-one-task-rerun",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-11-the-agent-workflow-spectrum",
+    "id": "post:the-pipeline-is-a-file",
     "kind": "surface",
-    "title": "2026-07-11-the-agent-workflow-spectrum",
-    "url": "/blog/2026-07-11-the-agent-workflow-spectrum",
+    "title": "The pipeline is a file",
+    "url": "/blog/the-pipeline-is-a-file",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-11-the-generative-workflow",
+    "id": "post:the-run-that-waits",
     "kind": "surface",
-    "title": "2026-07-11-the-generative-workflow",
-    "url": "/blog/2026-07-11-the-generative-workflow",
+    "title": "The run that waits for you",
+    "url": "/blog/the-run-that-waits",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-11-the-mcp-server-you-didnt-build",
+    "id": "post:the-secrets-line",
     "kind": "surface",
-    "title": "2026-07-11-the-mcp-server-you-didnt-build",
-    "url": "/blog/2026-07-11-the-mcp-server-you-didnt-build",
+    "title": "The secrets line",
+    "url": "/blog/the-secrets-line",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-11-the-pipeline-is-a-file",
+    "id": "post:the-trace-you-can-replay",
     "kind": "surface",
-    "title": "2026-07-11-the-pipeline-is-a-file",
-    "url": "/blog/2026-07-11-the-pipeline-is-a-file",
+    "title": "The trace you can replay",
+    "url": "/blog/the-trace-you-can-replay",
     "status": "both",
     "opener": null,
     "exists": true
   },
   {
-    "id": "post:2026-07-11-written-by-agents",
+    "id": "post:written-by-agents",
     "kind": "surface",
-    "title": "2026-07-11-written-by-agents",
-    "url": "/blog/2026-07-11-written-by-agents",
+    "title": "Written by agents, reviewed by you",
+    "url": "/blog/written-by-agents",
     "status": "both",
     "opener": null,
     "exists": true
@@ -8991,107 +8991,107 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
-    "from": "post:2026-05-14-standard-library-not-plugin-store",
-    "to": "tool:fetch",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-05-14-standard-library-not-plugin-store",
-    "to": "word:invoke",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-06-04-blast-radius-in-the-file",
-    "to": "code:NIKA-SEC-004",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-06-04-blast-radius-in-the-file",
-    "to": "word:permits",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-06-15-intent-as-code",
-    "to": "word:with",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-06-22-four-verbs",
-    "to": "tool:fetch",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-06-29-dag-for-free",
-    "to": "word:after",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-06-29-dag-for-free",
-    "to": "word:with",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-05-anatomy-of-a-verb",
+    "from": "post:anatomy-of-a-verb",
     "to": "tool:read",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-05-anatomy-of-a-verb",
+    "from": "post:anatomy-of-a-verb",
     "to": "word:exec",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-05-anatomy-of-a-verb",
+    "from": "post:anatomy-of-a-verb",
     "to": "word:tools",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-05-the-secrets-line",
-    "to": "word:outputs",
+    "from": "post:blast-radius-in-the-file",
+    "to": "code:NIKA-SEC-004",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-05-the-secrets-line",
-    "to": "word:secrets",
+    "from": "post:blast-radius-in-the-file",
+    "to": "word:permits",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-05-the-secrets-line",
-    "to": "word:with",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-05-the-trace-you-can-replay",
+    "from": "post:dag-for-free",
     "to": "word:after",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-05-the-trace-you-can-replay",
+    "from": "post:dag-for-free",
     "to": "word:with",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-06-media-are-workflow-citizens",
+    "from": "post:four-verbs",
+    "to": "tool:fetch",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:injection-goes-nowhere",
+    "to": "tool:write",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:intent-as-code",
+    "to": "word:with",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:media-are-workflow-citizens",
     "to": "tool:image_generate",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-06-media-are-workflow-citizens",
+    "from": "post:media-are-workflow-citizens",
     "to": "tool:tts_generate",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-06-media-are-workflow-citizens",
+    "from": "post:media-are-workflow-citizens",
     "to": "word:infer",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-06-one-wire-five-servers",
+    "from": "post:one-wire-five-servers",
     "to": "word:model",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-06-the-editor-tells-the-truth",
+    "from": "post:standard-library-not-plugin-store",
+    "to": "tool:fetch",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:standard-library-not-plugin-store",
+    "to": "word:invoke",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-agent-workflow-spectrum",
+    "to": "code:NIKA-INFER-001",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-agent-workflow-spectrum",
+    "to": "word:model",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-agent-workflow-spectrum",
+    "to": "word:schema",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-agent-workflow-spectrum",
+    "to": "word:tools",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-editor-tells-the-truth",
     "to": "tool:jq",
     "kind": "mentions"
   }
@@ -9099,87 +9099,87 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
 
 const ATLAS_EDGES_2: AtlasEdge[] = [
   {
-    "from": "post:2026-07-06-the-editor-tells-the-truth",
+    "from": "post:the-editor-tells-the-truth",
     "to": "tool:log",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-06-the-editor-tells-the-truth",
+    "from": "post:the-editor-tells-the-truth",
     "to": "word:when",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-08-injection-goes-nowhere",
-    "to": "tool:write",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-10-the-one-task-rerun",
-    "to": "word:outputs",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-10-the-run-that-waits",
-    "to": "word:permits",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-10-the-run-that-waits",
-    "to": "word:when",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-11-the-agent-workflow-spectrum",
-    "to": "code:NIKA-INFER-001",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-11-the-agent-workflow-spectrum",
-    "to": "word:model",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-11-the-agent-workflow-spectrum",
-    "to": "word:schema",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-11-the-agent-workflow-spectrum",
-    "to": "word:tools",
-    "kind": "mentions"
-  },
-  {
-    "from": "post:2026-07-11-the-generative-workflow",
+    "from": "post:the-generative-workflow",
     "to": "tool:image_generate",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-11-the-generative-workflow",
+    "from": "post:the-generative-workflow",
     "to": "word:vars",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-11-the-mcp-server-you-didnt-build",
+    "from": "post:the-mcp-server-you-didnt-build",
     "to": "tool:write",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-11-the-pipeline-is-a-file",
+    "from": "post:the-one-task-rerun",
+    "to": "word:outputs",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-pipeline-is-a-file",
     "to": "word:model",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-11-the-pipeline-is-a-file",
+    "from": "post:the-pipeline-is-a-file",
     "to": "word:permits",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-11-written-by-agents",
+    "from": "post:the-run-that-waits",
+    "to": "word:permits",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-run-that-waits",
+    "to": "word:when",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-secrets-line",
+    "to": "word:outputs",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-secrets-line",
+    "to": "word:secrets",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-secrets-line",
+    "to": "word:with",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-trace-you-can-replay",
+    "to": "word:after",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-trace-you-can-replay",
+    "to": "word:with",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:written-by-agents",
     "to": "word:model",
     "kind": "mentions"
   },
   {
-    "from": "post:2026-07-11-written-by-agents",
+    "from": "post:written-by-agents",
     "to": "word:permits",
     "kind": "mentions"
   },
