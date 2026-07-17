@@ -987,6 +987,11 @@ button.v4sheet-search {
 
 /* the brand context-menu (F-SENSATION-2 · right-click on the mark) */
 .v4nav-brandmenu {
+  /* entry ride @starting-style (R10): the first style pass of the fresh
+     mount starts transparent and settles — no JS, no keyframes */
+  transition:
+    opacity 150ms ease,
+    scale 150ms ease;
   position: fixed;
   z-index: 90;
   min-width: 190px;
@@ -1014,4 +1019,16 @@ button.v4sheet-search {
 .v4nav-brandmenu-item:focus-visible {
   color: var(--v4-text);
   background: rgb(255 255 255 / 0.06);
+}
+
+@starting-style {
+  .v4nav-brandmenu {
+    opacity: 0;
+    scale: 0.97;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v4nav-brandmenu {
+    transition: none;
+  }
 }

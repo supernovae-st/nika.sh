@@ -114,6 +114,10 @@ export function layoutConstellation(twin, { topN = 12 } = {}) {
            anchors are born by their WOs and flip this by recompile */
         linkable: d.page_exists && (!m.anchor || d.anchors_exist),
         hollow: m.status === 'ratified' && sets.find((s) => s.id === `set:${d.id}`)?.clock === 'both',
+        /* the full status axis (Q2B · Design Graph rule 2): both-clocks
+           agreement earns the ring — ratified renders contour (hollow),
+           shipped-only renders plain fill, BOTH renders fill + ring */
+        ringed: m.status === 'both' && sets.find((s) => s.id === `set:${d.id}`)?.clock === 'both',
         x: r2(CENTER + Math.cos(a) * RING.members),
         y: r2(CENTER + Math.sin(a) * RING.members),
       })

@@ -97,7 +97,11 @@ export function renderConstellation(geo, tokens) {
     if (!m.url) continue
     const fill = m.hollow ? 'none' : hue(m.layer)
     const stroke = hue(m.layer)
-    const dot = `<circle cx="${m.x}" cy="${m.y}" r="3.1" fill="${fill}" stroke="${stroke}" stroke-width="${m.hollow ? 1.3 : 0}"/><title>${esc(m.title)}</title>`
+    /* both-clocks members wear the ring: ratified AND shipped, visibly */
+    const ring = m.ringed
+      ? `<circle cx="${m.x}" cy="${m.y}" r="5" fill="none" stroke="${stroke}" stroke-opacity=".5" stroke-width=".9"/>`
+      : ''
+    const dot = `${ring}<circle cx="${m.x}" cy="${m.y}" r="3.1" fill="${fill}" stroke="${stroke}" stroke-width="${m.hollow ? 1.3 : 0}"/><title>${esc(m.title)}</title>`
     if (m.linkable) {
       const href = m.anchor ? `${m.url}#${m.anchor}` : m.url
       parts.push(`<g class="cst-star"><a href="${esc(href)}" tabindex="-1">${dot}</a></g>`)

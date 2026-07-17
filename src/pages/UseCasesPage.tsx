@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useRevealOnce } from '../sections/use-reveal-once'
-import { Link } from 'react-router'
+import { Link, useViewTransitionState } from 'react-router'
 import { useHead } from '@unhead/react'
 import { CodeFile } from '../components/CodeFile'
 import { StampStrip } from '../components/StampStrip'
@@ -275,6 +275,10 @@ function trackSpotlight(e: React.PointerEvent<HTMLDivElement>) {
 function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
   const dict = useContext(YamlDict) // hooks before the miss return (rules-of-hooks)
   const uc = UC_BY_SLUG[card.slug]
+  /* the morph (V4 combo): ONLY the clicked card carries the name — a
+     duplicated view-transition-name silently SKIPS the whole transition.
+     Hook before the miss return (rules-of-hooks · the dict precedent). */
+  const morphing = useViewTransitionState(`/use-cases/${card.slug}`)
   if (!uc) return null
   const cardVerbs = verbsFor(uc) as NikaVerb[]
   const yaml = dict[uc.slug] ?? ''
@@ -289,7 +293,12 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
         <h3 className="ucp-wf-title">
           {/* the room door (WO-5: the gallery gains the links — the rooms
               were reachable only by palette/map, caught by the SPA probe) */}
-          <Link to={`/use-cases/${uc.slug}`} className="ucp-wf-door">
+          <Link
+            to={`/use-cases/${uc.slug}`}
+            viewTransition
+            className="ucp-wf-door"
+            style={morphing ? { viewTransitionName: 'uc-door' } : undefined}
+          >
             {card.title}
           </Link>
         </h3>

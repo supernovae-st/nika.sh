@@ -214,6 +214,25 @@ main > section { overflow-x: clip; }
   }
 }
 
+/* same-document morphs (the carte→room muscle · V4 combo): the shared
+   element rides its own group at the quick register (input is blocked
+   during a transition — never past 300ms). The nav owns its snapshot so
+   scroll restoration cannot make the root jump. reduced-motion is OUR
+   gate — the API does not honor it by itself. */
+::view-transition-group(uc-door) {
+  animation-duration: 260ms;
+}
+.v4nav {
+  view-transition-name: site-nav;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 /* the caret joins the instrument — the last unstyled input state */
 input,
 textarea {

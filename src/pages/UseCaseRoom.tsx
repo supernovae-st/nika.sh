@@ -159,7 +159,7 @@ export function Component() {
             <p className="v4-kick">
               showcase · tier {uc.tier.slice(1)} · {hit.tab.toLowerCase()}
             </p>
-            <h1 id="ucr-title" className="v4-h2">
+            <h1 id="ucr-title" className="v4-h2" style={{ viewTransitionName: 'uc-door' }}>
               {uc.title}
             </h1>
             <p className="hub-opener">{uc.body}</p>
