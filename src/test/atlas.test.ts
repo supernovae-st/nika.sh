@@ -189,6 +189,27 @@ describe('atlas · the register diet holds (the namespace-retention law)', () =>
     walk('src')
     expect(offenders, `static import re-pins the 79K to the initial chunk: ${offenders.join(', ')}`).toEqual([])
   })
+
+  it('nothing imports blog-rails.generated statically except its access doors and tests', () => {
+    const offenders: string[] = []
+    const walk = (dir: string) => {
+      for (const name of readdirSync(join(ROOT, dir))) {
+        const rel = `${dir}/${name}`
+        const full = join(ROOT, rel)
+        if (statSync(full).isDirectory()) {
+          walk(rel)
+          continue
+        }
+        if (!/\.(ts|tsx)$/.test(name) || /\.test\.tsx?$/.test(name)) continue
+        if (rel.endsWith('lib/blog-rails-access.ts')) continue
+        if (rel.endsWith('content/blog-rails.generated.ts')) continue
+        const src = readFileSync(full, 'utf8')
+        if (/^import[^\n]*from ['"].*blog-rails\.generated['"]/m.test(src)) offenders.push(rel)
+      }
+    }
+    walk('src')
+    expect(offenders, `static import re-pins the rails to the initial chunk: ${offenders.join(', ')}`).toEqual([])
+  })
 })
 
 describe('atlas · the derived DAG module IS the projector export', () => {

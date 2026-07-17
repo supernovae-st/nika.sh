@@ -13,7 +13,10 @@ import type { WordUsage } from '../content/language-usage.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { sourcesForWord } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
-import { WORD_ACCEPTS, WORD_CHAPTERS, CHAPTER_FILES, FROM_BLOG } from '../content/room-rails.generated'
+import { WORD_ACCEPTS, WORD_CHAPTERS, CHAPTER_FILES } from '../content/room-rails.generated'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
+import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -95,11 +98,26 @@ function useWordUsage(word: string): { use: WordUsage | undefined; ready: boolea
   return { use, ready: json != null, json }
 }
 
+/* the room's « from the blog » slice rides a byte island (register-diet
+   law) — the rails data never joins the initial chunk */
+type BlogRefs = { slug: string; title: string; date: string }[]
+const blogIslandId = (word: string) => `wd-blog-${word}`
+function useWordBlogRefs(word: string): BlogRefs {
+  const ssr = ssrBlogRails()
+  const payload = useIslandPayload(
+    blogIslandId(word),
+    ssr ? JSON.stringify(ssr.FROM_BLOG[`word:${word}`] ?? []) : null,
+    async () => JSON.stringify((await loadBlogRails()).FROM_BLOG[`word:${word}`] ?? []),
+  )
+  return payload ? (JSON.parse(payload) as BlogRefs) : []
+}
+
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const { word: rawWord } = useParams()
   const word = (rawWord ?? '').toLowerCase()
   const hit = WORD_INDEX[word]
+  const blogRefs = useWordBlogRefs(hit?.word ?? '')
   const { use, ready, json: usageJson } = useWordUsage(hit?.word ?? word)
 
   const required = hit ? hit.decls.filter((d) => d.required) : []
@@ -445,11 +463,12 @@ export function Component() {
                       </ul>
                     </div>
                   )}
-                  {(FROM_BLOG[`word:${hit.word}`] ?? []).length > 0 && (
+                  <Island id={blogIslandId(hit.word)} payload={JSON.stringify(blogRefs)} />
+                  {blogRefs.length > 0 && (
                     <div>
                       <p className="td-ref-k">from the blog</p>
                       <ul className="td-chips">
-                        {(FROM_BLOG[`word:${hit.word}`] ?? []).map((b) => (
+                        {blogRefs.map((b) => (
                           <li key={b.slug}>
                             <a className="td-chip" href={`/blog/${b.slug}`}>
                               {b.title}

@@ -14,7 +14,10 @@ import { PartEgg } from '../scene/parts/PartEgg'
 import { layoutDrum } from '../scene/tools-hud/slot-layout'
 import { TOOL_SOURCES } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
-import { FETCH_MODES, FROM_BLOG } from '../content/room-rails.generated'
+import { FETCH_MODES } from '../content/room-rails.generated'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
+import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { SPEC, SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -133,11 +136,26 @@ function useToolUsage(bare: string): { usage: ToolUsageEntry | undefined; json: 
   return { usage, json }
 }
 
+/* the room's « from the blog » slice rides a byte island (register-diet
+   law) — the rails data never joins the initial chunk */
+type BlogRefs = { slug: string; title: string; date: string }[]
+const blogIslandId = (bare: string) => `td-blog-${bare}`
+function useToolBlogRefs(bare: string): BlogRefs {
+  const ssr = ssrBlogRails()
+  const payload = useIslandPayload(
+    blogIslandId(bare),
+    ssr ? JSON.stringify(ssr.FROM_BLOG[`tool:${bare}`] ?? []) : null,
+    async () => JSON.stringify((await loadBlogRails()).FROM_BLOG[`tool:${bare}`] ?? []),
+  )
+  return payload ? (JSON.parse(payload) as BlogRefs) : []
+}
+
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const { name: rawName } = useParams()
   const name = (rawName ?? '').toLowerCase().replace(/^nika:/, '')
   const hit = TOOL_INDEX[name]
+  const blogRefs = useToolBlogRefs(hit?.bare ?? '')
   const { usage, json: usageJson } = useToolUsage(hit?.bare ?? name)
 
   const family = useMemo(() => TOOLS.filter((t) => hit && t.category === hit.category), [hit])
@@ -389,11 +407,12 @@ export function Component() {
                       ))}
                     </ul>
                   </div>
-                  {(FROM_BLOG[`tool:${hit.bare}`] ?? []).length > 0 && (
+                  <Island id={blogIslandId(hit.bare)} payload={JSON.stringify(blogRefs)} />
+                  {blogRefs.length > 0 && (
                     <div>
                       <p className="td-ref-k">from the blog</p>
                       <ul className="td-chips">
-                        {(FROM_BLOG[`tool:${hit.bare}`] ?? []).map((b) => (
+                        {blogRefs.map((b) => (
                           <li key={b.slug}>
                             <Link className="td-chip" to={`/blog/${b.slug}`}>
                               {b.title}

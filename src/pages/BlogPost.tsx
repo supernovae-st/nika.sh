@@ -5,7 +5,9 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, REPO } from '../content'
 import { BLOG_POSTS, BLOG_SERIES, type BlogToken } from '../content/blog.generated'
 import { BlogBody } from '../lib/blog-render'
-import { POST_MENTIONS, RELATED_POSTS } from '../content/room-rails.generated'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
+import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { Component as NotFound } from './NotFound'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -14,6 +16,28 @@ import './blog-post.css'
 
 /* the palette's kind vocabulary — same glyph, same meaning */
 const REGISTER_GLYPH: Record<string, string> = { tool: '⌗', word: '·', code: '✕' }
+
+/* the per-post rails slice rides a byte island (register-diet law): the
+   data itself never joins the initial chunk — SSG computes it through the
+   access door, hydration reads the island, SPA nav pulls the async chunk */
+interface PostRails {
+  mentions: { kind: string; id: string; label: string; url: string }[]
+  related: { slug: string; title: string; date: string; shared: number }[]
+}
+const railsIslandId = (slug: string) => `bp-rails-${slug}`
+const railsSlice = (rails: { POST_MENTIONS: Record<string, PostRails['mentions']>; RELATED_POSTS: Record<string, PostRails['related']> }, slug: string): PostRails => ({
+  mentions: rails.POST_MENTIONS[slug] ?? [],
+  related: rails.RELATED_POSTS[slug] ?? [],
+})
+function usePostRails(slug: string): PostRails {
+  const ssr = ssrBlogRails()
+  const payload = useIslandPayload(
+    railsIslandId(slug),
+    ssr ? JSON.stringify(railsSlice(ssr, slug)) : null,
+    async () => JSON.stringify(railsSlice(await loadBlogRails(), slug)),
+  )
+  return payload ? (JSON.parse(payload) as PostRails) : { mentions: [], related: [] }
+}
 
 /* ─── /blog/<slug> · one post, one page ───────────────────────────────────────
    The reading surface for the markdown blog (content/blog/*.md — compiled at
@@ -81,6 +105,7 @@ export function Component() {
   const idx = BLOG_POSTS.findIndex((p) => p.slug === slug)
   const post = idx >= 0 ? BLOG_POSTS[idx] : null
   const bodyJson = useBodyJson(slug ?? '')
+  const rails = usePostRails(slug ?? '')
 
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
@@ -274,11 +299,12 @@ export function Component() {
           </article>
 
           {/* the honest foot · the post IS a file — read it, edit it, discuss it */}
-          {(POST_MENTIONS[post.slug] ?? []).length > 0 && (
+          <Island id={railsIslandId(post.slug)} payload={JSON.stringify(rails)} />
+          {rails.mentions.length > 0 && (
             <nav className="bp-register" aria-label="The register behind this post">
               <p className="bp-register-k mono">the register behind this</p>
               <ul className="td-chips">
-                {(POST_MENTIONS[post.slug] ?? []).map((m) => (
+                {rails.mentions.map((m) => (
                   <li key={`${m.kind}:${m.id}`}>
                     <Link className="td-chip" to={m.url} viewTransition>
                       <span aria-hidden>{REGISTER_GLYPH[m.kind] ?? '·'}</span> {m.label}
@@ -288,11 +314,11 @@ export function Component() {
               </ul>
             </nav>
           )}
-          {(RELATED_POSTS[post.slug] ?? []).length > 0 && (
+          {rails.related.length > 0 && (
             <nav className="bp-register" aria-label="Related posts">
               <p className="bp-register-k mono">keep reading · same register</p>
               <ul className="td-chips">
-                {(RELATED_POSTS[post.slug] ?? []).map((r) => (
+                {rails.related.map((r) => (
                   <li key={r.slug}>
                     <Link className="td-chip" to={`/blog/${r.slug}`} viewTransition>
                       {r.title} <span className="bp-register-date">· {r.date}</span>

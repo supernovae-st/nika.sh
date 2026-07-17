@@ -980,7 +980,16 @@ export const TEMPLATE_CARRIES: Record<string, string[]> = ${JSON.stringify(templ
 /** the fetch extract modes (canon order · anchors on the fetch room) */
 export const FETCH_MODES: string[] = ${JSON.stringify(S.canon.extractModeNames)}
 
-/** member node id → the posts that mention it (D5 · mentions inverted ·
+`,
+)
+
+/* the blog cross-rails ride their OWN module (the register-diet law: this
+   data reaches the client only as an async chunk via the access doors —
+   src/lib/blog-rails-access.ts; pages feed their first render from a byte
+   island. A static import outside the doors goes red in atlas.test). */
+const blogRailsTs = GEN(
+  'blog-rails.generated.ts',
+  `/** member node id → the posts that mention it (D5 · mentions inverted ·
  * date desc · cap 3) — the room's « from the blog » rail */
 export const FROM_BLOG: Record<string, { slug: string; title: string; date: string }[]> = ${JSON.stringify(fromBlog)}
 
@@ -1275,6 +1284,7 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/atlas-nav.generated.ts'), navTs)
   writeFileSync(join(ROOT, 'src/content/showcase-dag.generated.ts'), showcaseDagTs)
   writeFileSync(join(ROOT, 'src/content/room-rails.generated.ts'), roomRailsTs)
+  writeFileSync(join(ROOT, 'src/content/blog-rails.generated.ts'), blogRailsTs)
   writeFileSync(join(ROOT, 'src/pages/map-data.generated.ts'), mapDataTs)
   writeFileSync(join(ROOT, 'src/pages/hub-data.generated.ts'), hubDataTs)
   if (nextSiteConfig !== siteConfig) writeFileSync(siteConfigPath, nextSiteConfig)
