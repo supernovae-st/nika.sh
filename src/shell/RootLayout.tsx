@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import ScrollRail from './ScrollRail'
 import { useHead } from '@unhead/react'
@@ -174,7 +174,9 @@ export default function RootLayout() {
         const url = new URL(window.location.href)
         if (url.searchParams.get('node') !== d.id) {
           url.searchParams.set('node', d.id)
-          window.history.pushState({ insp: d.id }, '', url)
+          /* clone the router's own state (usr/key/idx) — a bare object
+             here broke pop-back inside react-router (swarm finding [8]) */
+          window.history.pushState({ ...window.history.state, insp: d.id }, '', url)
         }
       }
     }
@@ -195,7 +197,7 @@ export default function RootLayout() {
     const url = new URL(window.location.href)
     if (url.searchParams.has('node')) {
       url.searchParams.delete('node')
-      window.history.replaceState({}, '', url)
+      window.history.replaceState({ ...window.history.state }, '', url)
     }
   }
 
@@ -204,6 +206,12 @@ export default function RootLayout() {
      regression — never a positioning lib), ~350ms open · 150ms close-grace,
      aria-hidden courtesy (the link stays the semantic object). */
   const [hoverNode, setHoverNode] = useState<string | null>(null)
+  const dropHoverRef = useRef<(() => void) | null>(null)
+  /* a route change remounts the page under the card — the anchor element
+     is gone, the card must go with it (swarm finding [13]) */
+  useEffect(() => {
+    dropHoverRef.current?.()
+  }, [pathname])
   useEffect(() => {
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
     if (!CSS.supports('anchor-name: --x')) return
@@ -211,14 +219,21 @@ export default function RootLayout() {
     let closeT: ReturnType<typeof setTimeout> | undefined
     let current: HTMLElement | null = null
     const drop = () => {
+      clearTimeout(openT)
+      clearTimeout(closeT)
       current?.style.removeProperty('anchor-name')
       current = null
       setHoverNode(null)
     }
+    dropHoverRef.current = drop
     const onOver = (e: PointerEvent) => {
       const el = (e.target as Element).closest?.<HTMLElement>('[data-node-id]') ?? null
       if (el === current && el) {
+        /* back on the settled anchor: cancel BOTH timers — a pending
+           retarget openT would flip the card under the pointer
+           (swarm finding [14]) */
         clearTimeout(closeT)
+        clearTimeout(openT)
         return
       }
       clearTimeout(openT)

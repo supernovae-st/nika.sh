@@ -12,6 +12,7 @@ import {
 } from '../content/atlas-nav.generated'
 import { useMagnetic } from '../fx/use-magnetic'
 import { useFocusTrap, useFocusReturn } from '../lib/focus'
+import { acquireScrollLock, releaseScrollLock } from '../lib/scroll-lock'
 import './nav.css'
 import { NK_ICONS } from '../icons/manifest'
 
@@ -547,8 +548,7 @@ export default function Nav() {
   useFocusTrap(sheetRef, sheetOpen)
   useEffect(() => {
     if (!sheetOpen) return
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    acquireScrollLock()
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setSheetOpen(false)
     }
@@ -557,7 +557,7 @@ export default function Nav() {
       sheetRef.current?.querySelector<HTMLElement>('[data-autofocus]')?.focus()
     })
     return () => {
-      document.body.style.overflow = prevOverflow
+      releaseScrollLock()
       document.removeEventListener('keydown', onKey)
     }
   }, [sheetOpen])

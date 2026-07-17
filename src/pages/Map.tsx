@@ -241,7 +241,9 @@ export function Component() {
                    modifier-clicks keep the real navigation */
                 if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
                 const a = (e.target as Element).closest('a')
-                if (!a) return
+                /* STARS only — the figcaption's real links and the +N
+                   aggregate doors keep their navigation (swarm finding [10]) */
+                if (!a || !a.closest('.cst-star')) return
                 const href = a.getAttribute('href')
                 if (!href || !href.startsWith('/')) return
                 e.preventDefault()

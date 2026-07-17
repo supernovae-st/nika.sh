@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import { shortcutGroups } from '../lib/chords'
 import './shortcuts-overlay.css'
@@ -10,8 +10,14 @@ import './shortcuts-overlay.css'
 
 export default function ShortcutsOverlay({ onClose }: { onClose: () => void }) {
   const ref = useRef<HTMLDivElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
   useFocusTrap(ref, true)
   useFocusReturn(true)
+  /* a modal must RECEIVE focus (swarm finding [2]): without this, Escape
+     targets body and aria-modal strands assistive tech outside the dialog */
+  useEffect(() => {
+    closeRef.current?.focus()
+  }, [])
   return (
     <div
       className="sk-scrim"
@@ -26,7 +32,7 @@ export default function ShortcutsOverlay({ onClose }: { onClose: () => void }) {
       <div ref={ref} className="sk" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
         <div className="sk-head mono">
           <span>keyboard</span>
-          <button type="button" className="sk-close mono" onClick={onClose}>
+          <button ref={closeRef} type="button" className="sk-close mono" onClick={onClose}>
             esc
           </button>
         </div>

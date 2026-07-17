@@ -105,16 +105,26 @@ const blogPages = Object.keys(html).filter((r) => /^\/blog\/[^/]+$/.test(r)).len
 if (rssItems !== blogPages) fails.push(`rss ${rssItems} != blog ${blogPages}`)
 
 /* 8 · waiver liquidation (G.12): anchors_exist:false while the served page
-   already carries the member's id — the waiver is stale, flip it to true */
+   already carries the member's anchor — the waiver is stale, flip it to
+   true. Members come from the SERVED TWIN (dist/ontology/language.json):
+   the sweep's own review caught the first version reading only inline
+   descriptor rows, which every derived-member set lacks — the check was
+   silently inert for exactly the five sets it existed to watch. */
 const descriptor = readFileSync(join(ROOT, 'scripts/atlas/sets.yaml'), 'utf8')
+const twin = JSON.parse(readFileSync(join(DIST, 'ontology/language.json'), 'utf8'))
+const anchorsBySet = new Map()
+for (const node of twin.nodes) {
+  if (node.kind !== 'member' || !node.set || !node.anchor) continue
+  const bucket = anchorsBySet.get(node.set) ?? []
+  bucket.push({ anchor: node.anchor, page: (node.url ?? '').split('#')[0] })
+  anchorsBySet.set(node.set, bucket)
+}
 for (const block of descriptor.split(/\n(?=  - id: )/)) {
   if (!/anchors_exist:\s*false/.test(block)) continue
   const setId = block.match(/- id:\s*(\S+)/)?.[1]
-  const page = block.match(/anchor_page:\s*(\S+)/)?.[1]
-  if (!page || !(page in html)) continue
-  for (const m of block.matchAll(/^\s+- \{ id:\s*([^,}\s]+)/gm)) {
-    if (ids[page]?.has(m[1])) {
-      fails.push(`waiver-périmé ${setId}: #${m[1]} served on ${page} — flip anchors_exist: true`)
+  for (const m of anchorsBySet.get(setId) ?? []) {
+    if (m.page && ids[m.page]?.has(m.anchor)) {
+      fails.push(`waiver-périmé ${setId}: #${m.anchor} served on ${m.page} — flip anchors_exist: true`)
     }
   }
 }

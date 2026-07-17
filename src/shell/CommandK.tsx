@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PALETTE, type PaletteEntry } from '../content/palette.generated'
+import { PATHS, BLOG_PATHS } from '../../site.config'
 import { parseQuery, mergePageHits, type PageTextHit } from '../lib/palette-query'
 import { actionEntries, runAction, type ActionEntry, type PaletteCtx } from '../lib/palette-actions'
 import { track } from '../lib/track'
+import { acquireScrollLock, releaseScrollLock } from '../lib/scroll-lock'
 import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import './command-k.css'
 
@@ -57,6 +59,8 @@ type Pagefind = {
   init?: () => void
   debouncedSearch: (q: string) => Promise<{ results: { data: () => Promise<{ url: string; meta: { title?: string }; excerpt: string }> }[] } | null>
 }
+const SERVED_ROUTES: ReadonlySet<string> = new Set([...PATHS, ...BLOG_PATHS])
+
 let pagefindOnce: Promise<Pagefind | null> | null = null
 const loadPagefind = () => {
   pagefindOnce ??= import(/* @vite-ignore */ `${location.origin}/pagefind/pagefind.js`)
@@ -64,7 +68,12 @@ const loadPagefind = () => {
       m.init?.()
       return m
     })
-    .catch(() => null)
+    .catch(() => {
+      /* never cache a transient failure (swarm finding [5]) — the next
+         query retries the import instead of losing search for the tab */
+      pagefindOnce = null
+      return null
+    })
   return pagefindOnce
 }
 
@@ -163,7 +172,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
           }),
         )
         const taken = new Set(hits.flatMap((h) => (h.kind === 'action' ? [] : [h.href.split('#')[0]])))
-        if (live) setPageHits(mergePageHits(taken, rows))
+        if (live) setPageHits(mergePageHits(taken, rows, 8, SERVED_ROUTES))
       })
     }, registerOnly ? 0 : 130)
     return () => {
@@ -180,14 +189,19 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
   /* the cursor follows the list, never exceeds it */
   const cur = Math.min(cursor, Math.max(0, list.length - 1))
 
+  /* the ctx (path · hasSnippet) is captured at mount — a history
+     navigation under the open palette would run actions against a stale
+     page (swarm finding [7]): Back simply closes */
+  useEffect(() => {
+    window.addEventListener('popstate', onClose)
+    return () => window.removeEventListener('popstate', onClose)
+  }, [onClose])
+
   useEffect(() => {
     inputRef.current?.focus()
     /* scroll lock while open */
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = prev
-    }
+    acquireScrollLock()
+    return releaseScrollLock
   }, [])
 
   /* keep the active option in view as the cursor moves */
@@ -203,12 +217,18 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
       void runAction(e, ctx, (to) => {
         onClose()
         void navigate(to, { viewTransition: true })
-      }).then((label) => {
-        if (label) {
-          setFeedback(`${e.label} · ${label}`)
-          setTimeout(onClose, 700)
-        }
       })
+        .then((label) => {
+          if (label) {
+            setFeedback(`${e.label} · ${label}`)
+            setTimeout(onClose, 700)
+          }
+        })
+        .catch(() => {
+          /* clipboard denial / fetch refusal: name it, never crash */
+          setFeedback(`${e.label} · failed`)
+          setTimeout(onClose, 900)
+        })
       return
     }
     onClose()
@@ -270,10 +290,8 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
               className="ck-opt"
               data-kind={e.kind}
               onPointerMove={() => setCursor(i)}
-              onPointerDown={(ev) => {
-                ev.preventDefault()
-                go(e)
-              }}
+              onPointerDown={(ev) => ev.preventDefault()}
+              onClick={() => go(e)}
             >
               <span className="ck-opt-glyph mono" aria-hidden>
                 {e.kind === 'pagetext' ? '⌕' : e.kind === 'action' ? '»' : KIND_GLYPH[e.kind]}

@@ -39,6 +39,9 @@ const moves = await (await get(`${BASE}/redirects.json`)).json()
 const entries = Array.isArray(moves) ? moves : moves.redirects ?? []
 let doors = 0
 for (const entry of entries) {
+  /* staged moves (live:false) have no stub yet by design — replay only
+     what the compiler declares live (the sweep's own armed trap) */
+  if (entry.live === false) continue
   const from = entry.from ?? entry.source ?? entry[0]
   const to = entry.to ?? entry.target ?? entry[1]
   try {
@@ -47,12 +50,12 @@ for (const entry of entries) {
     const refresh = html.match(/http-equiv="refresh" content="0; url=([^"]+)"/)?.[1]
     const canonical = html.includes('rel="canonical"')
     if (res.status === 200 && refresh === to && canonical) doors += 1
-    else fails.push(`doorway ${from} → status=${res.status} refresh=${refresh ?? '∅'} (attendu ${to})`)
+    else fails.push(`doorway ${from} → status=${res.status} refresh=${refresh ?? '∅'} (expected ${to})`)
   } catch (err) {
     fails.push(`doorway ${from} → ${err.message}`)
   }
 }
-console.log(`doorways: ${doors}/${entries.length} stubs conformes`)
+console.log(`doorways: ${doors}/${entries.length} conforming stubs`)
 
 /* 3 · machine twins — every agent-facing surface parses */
 const MACHINE = [

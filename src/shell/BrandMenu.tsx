@@ -15,6 +15,8 @@ const ITEMS = [
 export default function BrandMenu({ at, onClose }: { at: { x: number; y: number }; onClose: () => void }) {
   const [copied, setCopied] = useState(false)
   const listRef = useRef<HTMLDivElement>(null)
+  const closeT = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  useEffect(() => () => clearTimeout(closeT.current), [])
 
   useEffect(() => {
     const away = (e: PointerEvent) => {
@@ -44,7 +46,7 @@ export default function BrandMenu({ at, onClose }: { at: { x: number; y: number 
       const svg = await (await fetch(MARK_URL)).text()
       await navigator.clipboard.writeText(svg)
       setCopied(true)
-      setTimeout(onClose, 900)
+      closeT.current = setTimeout(onClose, 900)
       return
     }
     if (id === 'download') {

@@ -82,11 +82,16 @@ export function mergePageHits(
   taken: ReadonlySet<string>,
   results: { url: string; title: string; excerpt: string }[],
   cap = 8,
+  /** the SPA's served routes — a hit outside them (the provider doorway
+      stubs, /sitemap, /docs, 404) would in-SPA-navigate to the catch-all
+      (swarm finding [1]); absent = allow all (unit-test convenience) */
+  allowed?: ReadonlySet<string>,
 ): PageTextHit[] {
   const out: PageTextHit[] = []
   const seen = new Set<string>()
   for (const r of results) {
     const href = normalizePagePath(r.url)
+    if (allowed && !allowed.has(href)) continue
     if (taken.has(href) || seen.has(href)) continue
     seen.add(href)
     out.push({

@@ -44,6 +44,19 @@ describe('palette stage 2 · the pagefind merge stays lawful', () => {
     expect(normalizePagePath('/')).toBe('/')
   })
 
+  it('drops hits outside the served SPA routes (the doorway-stub 404 class)', () => {
+    const rows = mergePageHits(
+      new Set(),
+      [
+        { url: '/providers/ollama/', title: 'ollama', excerpt: 'a doorway stub' },
+        { url: '/map/', title: 'The map', excerpt: 'served' },
+      ],
+      8,
+      new Set(['/map']),
+    )
+    expect(rows.map((r) => r.href)).toEqual(['/map'])
+  })
+
   it('dedups against the register stage, strips marks, honors the cap', () => {
     const taken = new Set(['/tools/fetch'])
     const rows = mergePageHits(

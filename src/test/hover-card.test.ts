@@ -22,7 +22,12 @@ describe('hover card · a truncation of the readout, never a fork', () => {
       expect(card.kindGlyph).toBe(readout.kindGlyph)
       expect(card.status).toBe(readout.status)
       if (card.firstLine) {
-        expect(readout.opener!.startsWith(card.firstLine.slice(0, -1)), `${node.id} first line is a prefix`).toBe(true)
+        /* the slice regex keeps the terminal punctuation when present —
+           the honest check: the line minus an optional final mark is a
+           prefix, and the line itself never exceeds the opener */
+        const stem = card.firstLine.replace(/[.!?]$/, '')
+        expect(readout.opener!.startsWith(stem), `${node.id} first line is a prefix`).toBe(true)
+        expect(card.firstLine.length <= readout.opener!.length + 1).toBe(true)
       }
       const setLabel = readout.rows.find((r) => r.label === 'set')?.links?.[0]?.label ?? null
       expect(card.set).toBe(setLabel)

@@ -60,13 +60,17 @@ window.addEventListener('pagereveal', (e) => {
 // then dies. One reload against the new manifest heals it — the session flag
 // keeps a genuinely broken deploy from reload-looping.
 window.addEventListener('vite:preloadError', () => {
-  if (sessionStorage.getItem('lens-chunk-reload') === '1') return
-  sessionStorage.setItem('lens-chunk-reload', '1')
+  /* timestamped guard: one heal per minute — a genuinely broken deploy
+     (every load fails) must never reload-loop, and a boot-time clear would
+     defeat the guard (swarm finding [0]); a LATER new deploy in the same
+     tab still gets its heal once the window passes */
+  const last = Number(sessionStorage.getItem('lens-chunk-reload') ?? 0)
+  if (Date.now() - last < 60_000) return
+  sessionStorage.setItem('lens-chunk-reload', String(Date.now()))
   window.location.reload()
 })
 
 // Prerendered HTML present (prod) → hydrate it. Empty container (dev) → mount fresh.
-sessionStorage.removeItem('lens-chunk-reload')
 if (container.firstChild) {
   /* transition-priority hydration (react-router ships this in ITS entry;
      ours is hand-rolled and missed it): the initial render becomes

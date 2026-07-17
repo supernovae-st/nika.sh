@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useFocusReturn, useFocusTrap } from '../lib/focus'
+import { useScrollLock } from '../lib/scroll-lock'
 import { loadAtlas, type AtlasModule } from '../lib/atlas-access'
 import { readoutFor, nodeIdForHref, type Readout } from './inspector-readout'
+import { BP } from '../lib/breakpoints'
 import './inspector.css'
 
 /* ─── Inspector · round-1 (desktop panel + mobile sheet, two detents) ────────
@@ -18,7 +20,7 @@ import './inspector.css'
 
 type Detent = 'peek' | 'full'
 
-const MOBILE_QUERY = '(max-width: 767px)'
+const MOBILE_QUERY = `(max-width: ${BP.fold - 1}px)`
 
 export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose: () => void }) {
   const [graph, setGraph] = useState<AtlasModule | null>(null)
@@ -29,6 +31,7 @@ export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose
   const titleRef = useRef<HTMLHeadingElement>(null)
   const asideRef = useRef<HTMLElement>(null)
   const dragFrom = useRef<number | null>(null)
+  const dragged = useRef(false)
   useFocusReturn(true)
   /* full-detent sheet is MODAL — the trap arms exactly there */
   useFocusTrap(asideRef, isMobile && detent === 'full')
@@ -62,17 +65,19 @@ export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose
     }
   }, [])
 
-  /* scroll lock rides the MODAL state only (full-detent sheet) */
-  useEffect(() => {
-    if (!(isMobile && detent === 'full')) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [isMobile, detent])
+  /* scroll lock rides the MODAL state only (full-detent sheet) — the
+     refcounted house lock (interleaved overlays restored stale values) */
+  useScrollLock(isMobile && detent === 'full')
 
-  const cycleDetent = () => setDetent((d) => (d === 'peek' ? 'full' : 'peek'))
+  const cycleDetent = () => {
+    /* a real drag already applied its verdict — swallow the trailing
+       click the browser fires after pointerup (swarm finding [9]) */
+    if (dragged.current) {
+      dragged.current = false
+      return
+    }
+    setDetent((d) => (d === 'peek' ? 'full' : 'peek'))
+  }
 
   const resolvedId = graph && nodeId.startsWith('/') ? nodeIdForHref(nodeId, graph) : nodeId
   const readout: Readout | null = graph && resolvedId ? readoutFor(resolvedId, graph) : null
@@ -106,6 +111,7 @@ export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose
           const delta = e.clientY - from
           /* a real gesture, not a tap: up grows, down shrinks — and down
              from peek dismisses (the sheet school) */
+          if (Math.abs(delta) > 60) dragged.current = true
           if (delta < -60) setDetent('full')
           else if (delta > 60) {
             if (detent === 'full') setDetent('peek')

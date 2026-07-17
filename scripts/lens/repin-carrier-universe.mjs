@@ -65,8 +65,16 @@ const css = cssContentInventory(ROOT, discovered.filter((path) => path.endsWith(
 if (css.count_claims.length > 0) {
   throw new Error(`CSS content carries a forbidden count claim: ${css.count_claims[0].selector}`)
 }
+const prevLits = JSON.stringify(universe.css_content_policy.allowed_literals)
+const prevDyn = JSON.stringify(universe.css_content_policy.allowed_dynamic_expressions)
 universe.css_content_policy.allowed_literals = css.literals
 universe.css_content_policy.allowed_dynamic_expressions = css.dynamic_expressions
+if (JSON.stringify(css.literals) !== prevLits || JSON.stringify(css.dynamic_expressions) !== prevDyn) {
+  /* the CI judge (verify-lens-ci.mjs) pins its OWN copy of this policy —
+     a silent divergence here costs a red integrity run later (it did,
+     twice). Name the drift so the judge moves in the same commit. */
+  console.log('⚠ css_content_policy changed — update the hardcoded copy in scripts/verify-lens-ci.mjs (cssPolicy) IN THIS COMMIT or lens-gate-integrity goes red')
+}
 
 console.log(
   `carrier universe: ${universe.carrier_count} carriers · +${extra.length} −${missing.length} · normative ${universe.normative_source_count}`,
