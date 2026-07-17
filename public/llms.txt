@@ -39,7 +39,7 @@ Every served library file (e.g. https://nika.sh/library/daily-brief.nika.yaml) c
 - Showcase source: https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase
 - Walkthroughs: https://docs.nika.sh/examples/overview
 - Interactive explorer: https://nika.sh/#use-cases
-- Blog (markdown source: content/blog in the site repo): https://nika.sh/blog · feed https://nika.sh/rss.xml · full text https://nika.sh/llms-full.txt
+- Blog (markdown source: content/blog in the site repo): https://nika.sh/blog · feed https://nika.sh/rss.xml · full text https://nika.sh/llms-full.txt · every post serves its markdown twin beside the page (append .md, e.g. https://nika.sh/blog/intent-as-code.md)
 
 ## Design system (machine-readable)
 

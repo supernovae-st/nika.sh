@@ -35,7 +35,7 @@ export const BLOG_GENERATED_MIRRORS = [
 ]
 
 /* ── canon values (the site's own generated projection is the source) ──────── */
-function canonValues() {
+export function canonValues() {
   const src = readFileSync(join(ROOT, 'src', 'canon.generated.ts'), 'utf8')
   const num = (key) => {
     const m = src.match(new RegExp(`${key}:\\s*(\\d+)`))
@@ -307,7 +307,18 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = ${JSON.stringify(bodies,
     || BLOG_GENERATED_MIRRORS.some((path) => !projectionBytes.has(path))) {
     throw new Error('blog generated mirror path set differs from the closed four-output contract')
   }
-  const projections = BLOG_GENERATED_MIRRORS.map((path) => [join(ROOT, path), projectionBytes.get(path)])
+  /* the markdown twins (§2c · R5): every post serves its SOURCE beside the
+     page — frontmatter kept (honest data), canon markers RESOLVED (the twin
+     must say what the page says, never an unexpanded placeholder). A family
+     of its own: the four-output contract above stays closed. */
+  const twinProjections = sourceSnapshot.map(({ file, raw }) => {
+    const slug = raw.match(/^---\n[\s\S]*?\bslug:\s*"?([a-z0-9-]+)"?/)?.[1] ?? file.replace(/\.md$/, '')
+    return [`public/blog/${slug}.md`, applyCanonMarkers(raw, canon, file)]
+  })
+  const projections = [
+    ...BLOG_GENERATED_MIRRORS.map((path) => [join(ROOT, path), projectionBytes.get(path)]),
+    ...twinProjections.map(([path, bytes]) => [join(ROOT, path), bytes]),
+  ]
   if (process.argv.includes('--check')) {
     for (const [path, expected] of projections) {
       if (!existsSync(path) || readFileSync(path, 'utf8') !== expected) {
@@ -320,6 +331,6 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = ${JSON.stringify(bodies,
       mkdirSync(dirname(path), { recursive: true })
       writeFileSync(path, bytes)
     }
-    console.log(`wrote ${OUT_TS.replace(`${ROOT}/`, '')} + blog-bodies (${posts.length} posts) + ${OUT_RSS.replace(`${ROOT}/`, '')}`)
+    console.log(`wrote ${OUT_TS.replace(`${ROOT}/`, '')} + blog-bodies (${posts.length} posts) + ${OUT_RSS.replace(`${ROOT}/`, '')} + ${twinProjections.length} md twins`)
   }
 }

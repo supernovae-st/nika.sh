@@ -129,7 +129,15 @@ export function Component() {
     post
       ? {
           title: `${post.title} · Nika`,
-          link: routeHead(`/blog/${post.slug}`).link,
+          link: [
+            ...routeHead(`/blog/${post.slug}`).link,
+            {
+              rel: 'alternate',
+              type: 'text/markdown',
+              href: `https://nika.sh/blog/${post.slug}.md`,
+              title: 'Markdown source',
+            },
+          ],
           script: [
             {
               type: 'application/ld+json',
