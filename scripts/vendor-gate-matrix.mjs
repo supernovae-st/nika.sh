@@ -31,8 +31,8 @@ const FORMS = [
   'with-value',
   'with-status',
   'with-error',
-  'after-succeeded',
-  'after-failed',
+  'after-success',
+  'after-failure',
   'after-skipped',
   'after-terminal',
   'when-true',
@@ -45,8 +45,8 @@ const FORMS = [
 const DEAD = new Set([
   'success/after-skipped',
   'failure/after-skipped',
-  'skipped/after-succeeded',
-  'skipped/after-failed',
+  'skipped/after-success',
+  'skipped/after-failure',
   'cancelled/after-skipped',
 ])
 
