@@ -35,7 +35,7 @@
   },
   {
    "path": "pnpm-lock.yaml",
-   "sha256": "c135271dfc608d9e36e747bb1f9bcf0b5422656213111f62ac9e744dcd44d272"
+   "sha256": "bd14d24dc1864f229bf3ab3241a0b9d8b37f373cf7232cc27ae4fd91157e337d"
   },
   {
    "path": "react-ssg.config.ts",
