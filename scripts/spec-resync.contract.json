@@ -305,7 +305,7 @@
    "path": "src/sections/usecases-yaml.generated.ts",
    "sha256": "448022e0fc4fb705669428ceb892e82b38ffccb7416b754f30c3e8dde2a5f79d",
    "consumers": [
-    "src/pages/UseCasesPage.tsx"
+    "src/sections/showcase-yaml-access.ts"
    ]
   },
   {
