@@ -416,6 +416,38 @@ for (const k of Object.keys(postMentions)) {
   postMentions[k].sort((a, b) => (a.kind === b.kind ? (a.id < b.id ? -1 : 1) : a.kind < b.kind ? -1 : 1))
 }
 
+/* related posts (D6) · two posts that mention the same members are closer
+   than any tag says — score = |shared members|, date breaks ties, cap 3.
+   Derived-only: a post with no mentions gets no rail (never a tag filler). */
+const postMembers = {}
+for (const e of edges) {
+  if (e.kind === 'mentions' && e.from.startsWith('post:')) (postMembers[e.from.slice(5)] ??= new Set()).add(e.to)
+}
+const relatedPosts = {}
+for (const a of Object.keys(postMembers)) {
+  const scored = []
+  for (const b of Object.keys(postMembers)) {
+    if (b === a) continue
+    let shared = 0
+    for (const m of postMembers[b]) if (postMembers[a].has(m)) shared += 1
+    if (shared > 0) scored.push({ slug: b, shared })
+  }
+  const dateOf = (slug) => S.posts.find((p) => p.slug === slug)?.date ?? ''
+  scored.sort((x, y) =>
+    x.shared !== y.shared
+      ? y.shared - x.shared
+      : dateOf(x.slug) !== dateOf(y.slug)
+        ? (dateOf(x.slug) < dateOf(y.slug) ? 1 : -1)
+        : x.slug < y.slug ? -1 : 1,
+  )
+  if (scored.length > 0) {
+    relatedPosts[a] = scored.slice(0, 3).map(({ slug, shared }) => {
+      const post = S.posts.find((p) => p.slug === slug)
+      return { slug, title: post.title, date: post.date, shared }
+    })
+  }
+}
+
 /* dedupe (projects-to repeats per set) + stable sort */
 const edgeKey = (e) => `${e.kind} ${e.from} ${e.to}`
 
@@ -955,6 +987,10 @@ export const FROM_BLOG: Record<string, { slug: string; title: string; date: stri
 /** post slug → the members it mentions (D5 · same edges, other direction) —
  * the post's « the register behind this » chips */
 export const POST_MENTIONS: Record<string, { kind: string; id: string; label: string; url: string }[]> = ${JSON.stringify(postMentions)}
+
+/** post slug → its closest posts by SHARED mentioned members (D6 · score
+ * desc · date breaks ties · cap 3 · derived-only, no tag filler) */
+export const RELATED_POSTS: Record<string, { slug: string; title: string; date: string; shared: number }[]> = ${JSON.stringify(relatedPosts)}
 `,
 )
 

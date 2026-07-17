@@ -337,3 +337,7 @@ a.bp-series-tick:focus-visible {
   color: var(--v4-text);
   border-color: var(--v4-text-faint);
 }
+
+.bp-register-date {
+  color: var(--v4-text-faint);
+}

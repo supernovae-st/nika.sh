@@ -5,7 +5,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, REPO } from '../content'
 import { BLOG_POSTS, BLOG_SERIES, type BlogToken } from '../content/blog.generated'
 import { BlogBody } from '../lib/blog-render'
-import { POST_MENTIONS } from '../content/room-rails.generated'
+import { POST_MENTIONS, RELATED_POSTS } from '../content/room-rails.generated'
 import { Component as NotFound } from './NotFound'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -282,6 +282,20 @@ export function Component() {
                   <li key={`${m.kind}:${m.id}`}>
                     <Link className="td-chip" to={m.url} viewTransition>
                       <span aria-hidden>{REGISTER_GLYPH[m.kind] ?? '·'}</span> {m.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+          {(RELATED_POSTS[post.slug] ?? []).length > 0 && (
+            <nav className="bp-register" aria-label="Related posts">
+              <p className="bp-register-k mono">keep reading · same register</p>
+              <ul className="td-chips">
+                {(RELATED_POSTS[post.slug] ?? []).map((r) => (
+                  <li key={r.slug}>
+                    <Link className="td-chip" to={`/blog/${r.slug}`} viewTransition>
+                      {r.title} <span className="bp-register-date">· {r.date}</span>
                     </Link>
                   </li>
                 ))}
