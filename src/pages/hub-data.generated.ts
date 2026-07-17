@@ -377,19 +377,19 @@ export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridC
     },
     {
       "producer": "success",
-      "form": "after-succeeded",
+      "form": "after-success",
       "dead": false,
       "verdict": "success",
       "code": null,
-      "fixture": "conformance/tests/runtime/gates/022-success-x-after-succeeded"
+      "fixture": "conformance/tests/runtime/gates/022-success-x-after-success"
     },
     {
       "producer": "success",
-      "form": "after-failed",
+      "form": "after-failure",
       "dead": false,
       "verdict": "cancelled",
       "code": null,
-      "fixture": "conformance/tests/runtime/gates/025-success-x-after-failed"
+      "fixture": "conformance/tests/runtime/gates/025-success-x-after-failure"
     },
     {
       "producer": "success",
@@ -457,19 +457,19 @@ export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridC
     },
     {
       "producer": "failure",
-      "form": "after-succeeded",
+      "form": "after-success",
       "dead": false,
       "verdict": "cancelled",
       "code": null,
-      "fixture": "conformance/tests/runtime/gates/023-failure-x-after-succeeded"
+      "fixture": "conformance/tests/runtime/gates/023-failure-x-after-success"
     },
     {
       "producer": "failure",
-      "form": "after-failed",
+      "form": "after-failure",
       "dead": false,
       "verdict": "success",
       "code": null,
-      "fixture": "conformance/tests/runtime/gates/026-failure-x-after-failed"
+      "fixture": "conformance/tests/runtime/gates/026-failure-x-after-failure"
     },
     {
       "producer": "failure",
@@ -537,7 +537,7 @@ export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridC
     },
     {
       "producer": "skipped",
-      "form": "after-succeeded",
+      "form": "after-success",
       "dead": true,
       "verdict": "refused",
       "code": "NIKA-DAG-006",
@@ -545,7 +545,7 @@ export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridC
     },
     {
       "producer": "skipped",
-      "form": "after-failed",
+      "form": "after-failure",
       "dead": true,
       "verdict": "refused",
       "code": "NIKA-DAG-006",
@@ -617,19 +617,19 @@ export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridC
     },
     {
       "producer": "cancelled",
-      "form": "after-succeeded",
+      "form": "after-success",
       "dead": false,
       "verdict": "cancelled",
       "code": null,
-      "fixture": "conformance/tests/runtime/gates/024-cancelled-x-after-succeeded"
+      "fixture": "conformance/tests/runtime/gates/024-cancelled-x-after-success"
     },
     {
       "producer": "cancelled",
-      "form": "after-failed",
+      "form": "after-failure",
       "dead": false,
       "verdict": "cancelled",
       "code": null,
-      "fixture": "conformance/tests/runtime/gates/027-cancelled-x-after-failed"
+      "fixture": "conformance/tests/runtime/gates/027-cancelled-x-after-failure"
     },
     {
       "producer": "cancelled",

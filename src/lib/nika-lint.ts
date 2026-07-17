@@ -67,7 +67,7 @@ interface Task {
   [k: string]: unknown
 }
 
-const AFTER_PREDICATES = ['succeeded', 'failed', 'skipped', 'terminal'] as const
+const AFTER_PREDICATES = ['success', 'failure', 'skipped', 'terminal'] as const
 
 const VERBS = ['infer', 'exec', 'invoke', 'agent'] as const
 const TASK_REF = /\btasks\.([a-z][a-z0-9_]*)\b/g
@@ -228,7 +228,7 @@ export function lintNika(src: string): LintDiag[] {
         if (!idset.has(prod))
           diags.push({ line, code: 'NIKA-DAG-002', message: `after: '${prod}' is not a task`, fix: 'fix the name or add the task' })
         if (typeof pred !== 'string' || !(AFTER_PREDICATES as readonly string[]).includes(pred))
-          diags.push({ line, code: 'NIKA-DAG-005', message: `after: predicate '${String(pred)}' on '${prod}' is unknown`, fix: 'the closed set · succeeded · failed · skipped · terminal (terminal includes cancelled)' })
+          diags.push({ line, code: 'NIKA-DAG-005', message: `after: predicate '${String(pred)}' on '${prod}' is unknown`, fix: 'the closed set · success · failure · skipped · terminal (terminal includes cancelled)' })
       }
 
     // VAR-021 · tasks.* is boundary-only — with:/after: declare the edges,

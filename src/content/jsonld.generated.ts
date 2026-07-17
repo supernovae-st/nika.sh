@@ -1355,7 +1355,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/errors/NIKA-DAG-005",
           "termCode": "NIKA-DAG-005",
           "name": "NIKA-DAG-005",
-          "description": "after: predicate outside the closed set (succeeded · failed · skipped · terminal)"
+          "description": "after: predicate outside the closed set (success · failure · skipped · terminal)"
         },
         {
           "@type": "DefinedTerm",

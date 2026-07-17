@@ -697,7 +697,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/human-gated-ship.nika.yaml",
       "pin": null,
-      "sha256": "7398940b9744413cc38367e7bf574ab8c43c4026347c3304d8abd980891012f1"
+      "sha256": "fde57f64917c0d1727557314043a4ba03f8920caef16e5250fc7fa3ddcf308e5"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",

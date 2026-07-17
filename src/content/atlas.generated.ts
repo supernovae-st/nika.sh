@@ -374,7 +374,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "NIKA-DAG-005",
     "url": "/errors/NIKA-DAG-005",
     "status": "ratified",
-    "opener": "after: predicate outside the closed set (succeeded · failed · skipped · terminal)",
+    "opener": "after: predicate outside the closed set (success · failure · skipped · terminal)",
     "meta": {
       "category": "validation_error",
       "transient": false
@@ -3616,7 +3616,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "anything irreversible (deploy · send · publish)",
     "meta": {
-      "sha256": "7398940b9744413cc38367e7bf574ab8c43c4026347c3304d8abd980891012f1",
+      "sha256": "fde57f64917c0d1727557314043a4ba03f8920caef16e5250fc7fa3ddcf308e5",
       "file": "human-gated-ship.nika.yaml"
     }
   },
