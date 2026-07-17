@@ -59,6 +59,25 @@ function nodeHref(n: AtlasNode): string | null {
   return n.anchor ? `${n.url}#${n.anchor}` : n.url
 }
 
+/* the hover card's slice (round-3): the SAME readout, truncated — one
+   renderer, never a fork (the gate holds the card to readoutFor's output) */
+export function cardSlice(readout: Readout): {
+  title: string
+  kindGlyph: string
+  status: string
+  firstLine: string | null
+  set: string | null
+} {
+  const opener = readout.opener
+  return {
+    title: readout.title,
+    kindGlyph: readout.kindGlyph,
+    status: readout.status,
+    firstLine: opener ? (opener.match(/^[^.!?]*[.!?]?/)?.[0].trim() ?? opener) : null,
+    set: readout.rows.find((r) => r.label === 'set')?.links?.[0]?.label ?? null,
+  }
+}
+
 /* a star's href resolves to its node (url or url#anchor — derived reverse
    lookup, never a second table) */
 export function nodeIdForHref(

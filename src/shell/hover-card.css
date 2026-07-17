@@ -1,0 +1,64 @@
+/* the member mini-card · native CSS Anchor Positioning only (the listener
+   gates on CSS.supports — no positioning lib exists in this codebase) */
+
+.hovercard {
+  position: fixed;
+  position-anchor: --member-hover;
+  position-area: block-start;
+  position-try-fallbacks: flip-block;
+  margin-block-end: 8px;
+  z-index: 70;
+  width: max-content;
+  max-width: 300px;
+  padding: 9px 11px;
+  background: #0c0e12;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 7px;
+  box-shadow: 0 10px 34px rgb(0 0 0 / 0.5);
+  pointer-events: none;
+  font-size: 11.5px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hovercard {
+    animation: hovercard-in 120ms ease-out;
+  }
+  @keyframes hovercard-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+.hovercard-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+}
+.hovercard-glyph {
+  color: var(--v4-text-faint);
+}
+.hovercard-title {
+  color: var(--v4-text);
+  font-weight: 600;
+}
+.hovercard-status {
+  margin-left: auto;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.hovercard-line {
+  margin: 5px 0 0;
+  color: var(--v4-text-dim);
+  font-family: var(--sans, inherit);
+  font-size: 12px;
+  text-wrap: pretty;
+}
+.hovercard-set {
+  margin: 5px 0 0;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}

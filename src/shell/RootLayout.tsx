@@ -29,6 +29,10 @@ const ShortcutsOverlay = lazy(() => import('./ShortcutsOverlay'))
    through the atlas-access door — nothing reaches the entry) */
 const Inspector = lazy(() => import('./Inspector'))
 
+/* the member hover card (round-3) · fine-pointer courtesy — the chunk
+   loads at the first settled hover */
+const HoverCard = lazy(() => import('./HoverCard'))
+
 /* ─── site-wide JSON-LD · Organization + WebSite (schema.org) ─────────────────
    Build-time / zero-runtime: @unhead/react flushes this <script> into every
    route's prerendered HTML (and reconciles on the client — one node, no dupes).
@@ -195,6 +199,51 @@ export default function RootLayout() {
     }
   }
 
+  /* the hover cards (round-3 · the design's laws): fine-pointer only, no
+     card without native anchor positioning (a missing courtesy is not a
+     regression — never a positioning lib), ~350ms open · 150ms close-grace,
+     aria-hidden courtesy (the link stays the semantic object). */
+  const [hoverNode, setHoverNode] = useState<string | null>(null)
+  useEffect(() => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    if (!CSS.supports('anchor-name: --x')) return
+    let openT: ReturnType<typeof setTimeout> | undefined
+    let closeT: ReturnType<typeof setTimeout> | undefined
+    let current: HTMLElement | null = null
+    const drop = () => {
+      current?.style.removeProperty('anchor-name')
+      current = null
+      setHoverNode(null)
+    }
+    const onOver = (e: PointerEvent) => {
+      const el = (e.target as Element).closest?.<HTMLElement>('[data-node-id]') ?? null
+      if (el === current && el) {
+        clearTimeout(closeT)
+        return
+      }
+      clearTimeout(openT)
+      if (!el) {
+        clearTimeout(closeT)
+        closeT = setTimeout(drop, 150)
+        return
+      }
+      clearTimeout(closeT)
+      openT = setTimeout(() => {
+        current?.style.removeProperty('anchor-name')
+        current = el
+        el.style.setProperty('anchor-name', '--member-hover')
+        setHoverNode(el.dataset.nodeId ?? null)
+      }, 350)
+    }
+    document.addEventListener('pointerover', onOver, { passive: true })
+    return () => {
+      document.removeEventListener('pointerover', onOver)
+      clearTimeout(openT)
+      clearTimeout(closeT)
+      drop()
+    }
+  }, [])
+
   /* the g-chords + the `?` door (round-2A · the egg guards verbatim):
      g then a letter navigates; unknown = silent reset (a missed chord does
      not exist); modifiers or a field = abandon; 800ms window. */
@@ -268,6 +317,11 @@ export default function RootLayout() {
       ) : null}
       {/* post-hydration only (the LocaleSuggest law): the SSG tree never
           carried the panel — mounting it during hydration would mismatch */}
+      {hydrated && hoverNode ? (
+        <Suspense fallback={null}>
+          <HoverCard nodeId={hoverNode} />
+        </Suspense>
+      ) : null}
       {hydrated && inspNode ? (
         <Suspense fallback={null}>
           <Inspector nodeId={inspNode} onClose={closeInspector} />

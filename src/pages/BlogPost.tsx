@@ -306,7 +306,7 @@ export function Component() {
               <ul className="td-chips">
                 {rails.mentions.map((m) => (
                   <li key={`${m.kind}:${m.id}`}>
-                    <Link className="td-chip" to={m.url} viewTransition>
+                    <Link className="td-chip" to={m.url} viewTransition data-node-id={`${m.kind}:${m.id}`}>
                       <span aria-hidden>{REGISTER_GLYPH[m.kind] ?? '·'}</span> {m.label}
                     </Link>
                   </li>

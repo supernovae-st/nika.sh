@@ -19,6 +19,7 @@ export function MemberRows({ set }: { set: HubSet }) {
           <span className="hub-member-id">
             <a
               href={`#${set.anchor_prefix}${m.id}`}
+              data-node-id={`${set.node_prefix}:${m.id}`}
               onClick={(e) => {
                 if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
                 e.preventDefault()

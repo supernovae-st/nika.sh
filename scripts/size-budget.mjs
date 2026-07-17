@@ -20,7 +20,10 @@
    real sync-routed page (the hub precedent) — its data is chrome-safe
    already, the weight is the page itself · 346→347 round-2A: the chord
    table + listener ride the entry BY DESIGN (a chord answers on the first
-   keystroke, never after a fetch) — the `?` card stays a lazy chunk.
+   keystroke, never after a fetch) — the `?` card stays a lazy chunk ·
+   347→348 round-3: the hover listener (fine-pointer gate · 350/150 timers ·
+   anchor-name plumbing) rides the entry — the CARD and the graph stay lazy
+   chunks; +0.4KB of listener is the whole cost.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -28,7 +31,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 347
+const BUDGET_KB = 348
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

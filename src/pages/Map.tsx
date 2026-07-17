@@ -212,6 +212,7 @@ export function Component() {
                             <Link
                               className="mp-set-chip"
                               to={s.url}
+                              data-node-id={`set:${s.id}`}
                               onClick={(e) => {
                                 if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
                                 e.preventDefault()
