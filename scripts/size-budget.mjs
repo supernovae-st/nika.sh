@@ -23,7 +23,12 @@
    keystroke, never after a fetch) — the `?` card stays a lazy chunk ·
    347→348 round-3: the hover listener (fine-pointer gate · 350/150 timers ·
    anchor-name plumbing) rides the entry — the CARD and the graph stay lazy
-   chunks; +0.4KB of listener is the whole cost.
+   chunks; +0.4KB of listener is the whole cost ·
+   348→350 w2-flip: the w1-to-w2 door pass rides the entry BY DESIGN — the
+   browse island fallback and the SPA-nav chunk both hand the client RAW
+   ratified bytes, and the served grammar must exist wherever raw bytes
+   arrive (idempotent, so pre-transformed islands stay legal); ~1.5KB gz is
+   the whole pass, and it retires with the pin flip.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -31,7 +36,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 348
+const BUDGET_KB = 350
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
