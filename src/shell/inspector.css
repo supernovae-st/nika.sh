@@ -130,8 +130,65 @@ body[data-insp] {
   border-color: var(--v4-text-faint);
 }
 
+/* the drag handle · a REAL button (M3): 48dp target, labeled, cycles —
+   desktop hides it (the panel has no detents) */
+.insp-handle {
+  all: unset;
+  display: none;
+  cursor: grab;
+  padding: 14px 0 6px;
+  touch-action: none;
+}
+.insp-handle:focus-visible {
+  outline: 2px solid var(--v4-focus-ring, var(--brand));
+  outline-offset: -2px;
+}
+.insp-handle-bar {
+  display: block;
+  width: 44px;
+  height: 4px;
+  margin: 0 auto;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.22);
+}
+
+/* ── the mobile sheet · two detents (svh — dvh resizes mid-gesture) ── */
+@media (max-width: 767px) {
+  .insp {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: 42svh;
+    border-left: none;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    border-radius: 14px 14px 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -14px 44px rgb(0 0 0 / 0.45);
+    transition: height 220ms ease;
+  }
+  .insp[data-detent='full'] {
+    height: 86svh;
+  }
+  .insp-handle {
+    display: block;
+  }
+  body[data-insp] {
+    padding-right: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .insp {
+    transition: none;
+  }
+}
+
 @media (forced-colors: active) {
   .insp {
     border-left: 1px solid CanvasText;
+  }
+  .insp-handle-bar {
+    background: CanvasText;
   }
 }

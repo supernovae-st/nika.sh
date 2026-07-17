@@ -214,7 +214,6 @@ export function Component() {
                               to={s.url}
                               onClick={(e) => {
                                 if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
-                                if (!window.matchMedia('(min-width: 768px) and (pointer: fine)').matches) return
                                 e.preventDefault()
                                 window.dispatchEvent(new CustomEvent('insp:open', { detail: { id: `set:${s.id}` } }))
                               }}

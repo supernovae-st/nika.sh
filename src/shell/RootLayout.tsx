@@ -151,7 +151,12 @@ export default function RootLayout() {
   /* the Inspector bus (round-1): surfaces dispatch insp:open with a node
      id — zero prop drilling, the ck:open precedent · the chunk mounts at
      the first selection */
-  const [inspNode, setInspNode] = useState<string | null>(null)
+  /* deep-link read-side (§6 · the write-side lands at step 3): ?node=<id>
+     opens the Inspector on load — an SSR-safe lazy initializer, never an
+     effect write (the panel only exists client-side anyway) */
+  const [inspNode, setInspNode] = useState<string | null>(() =>
+    import.meta.env.SSR ? null : new URLSearchParams(window.location.search).get('node'),
+  )
   useEffect(() => {
     const onOpen = (e: Event) => {
       const id = (e as CustomEvent<{ id?: string }>).detail?.id
@@ -232,7 +237,9 @@ export default function RootLayout() {
           <CommandK onClose={() => setPaletteOpen(false)} />
         </Suspense>
       ) : null}
-      {inspNode ? (
+      {/* post-hydration only (the LocaleSuggest law): the SSG tree never
+          carried the panel — mounting it during hydration would mismatch */}
+      {hydrated && inspNode ? (
         <Suspense fallback={null}>
           <Inspector nodeId={inspNode} onClose={() => setInspNode(null)} />
         </Suspense>

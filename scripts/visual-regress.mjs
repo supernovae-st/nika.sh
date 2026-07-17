@@ -94,6 +94,10 @@ const FRAMES = [
      HUD tally, the folds): mid-read + the assembled close. */
   { name: 'spec-read', route: '/spec', p: 0.55 },
   { name: 'spec-close', route: '/spec', p: 0.94 },
+  /* the Inspector sheet (round-1 step 2) · born element-anchored (w12i law):
+     the ?node deep-link opens the readout at load, 390px = the phone truth */
+  { name: 'map-inspector-peek', route: '/map?node=set:error-codes', width: 390, height: 844, anchor: '#anatomy', at: 0.05 },
+  { name: 'map-inspector-full', route: '/map?node=set:error-codes&insp=full', width: 390, height: 844, anchor: '#anatomy', at: 0.05 },
 ]
 
 /* ── static file server (no python dependency in CI) ─────────────────────── */
@@ -327,10 +331,22 @@ if (ONLY) {
 
 let failures = 0
 let curRoute = '/'
+let curW = W
 for (const f of FRAMES) {
   const route = f.route ?? '/'
+  /* per-frame viewport (the 390 frames): re-emulate when it changes —
+     a width change is a NEW layout, so force a re-navigation too */
+  const fw = f.width ?? W
+  const fh = f.height ?? H
+  if (fw !== curW) {
+    await send('Emulation.setDeviceMetricsOverride', { width: fw, height: fh, deviceScaleFactor: 1, mobile: fw < 768 })
+    curW = fw
+    curRoute = ''
+  }
   if (route !== curRoute) {
-    await send('Page.navigate', { url: `http://127.0.0.1:${PORT_HTTP}${route}?it=99` })
+    /* a route may carry its own query (?node=…) — it joins with & */
+    const sep = route.includes('?') ? '&' : '?'
+    await send('Page.navigate', { url: `http://127.0.0.1:${PORT_HTTP}${route}${sep}it=99` })
     await sleep(4000)
     /* a navigation is a NEW load — the optional face re-decides there too */
     await appliedGate()
