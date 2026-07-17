@@ -89,12 +89,32 @@
       ;(function () {
         var UMAMI_ID = 'TODO' /* set when stats.nika.sh is live (W12a·F) */
         if (location.hostname !== 'nika.sh' || UMAMI_ID === 'TODO') return
-        var s = document.createElement('script')
-        s.defer = true
-        s.src = 'https://stats.nika.sh/script.js'
-        s.setAttribute('data-website-id', UMAMI_ID)
-        document.head.appendChild(s)
+        var load = function () {
+          var s = document.createElement('script')
+          s.defer = true
+          s.src = 'https://stats.nika.sh/script.js'
+          s.setAttribute('data-website-id', UMAMI_ID)
+          document.head.appendChild(s)
+        }
+        /* speculation guard: a prerendered page must never count a view —
+           load analytics only at activation (the R17 recipe) */
+        if (document.prerendering) {
+          document.addEventListener('prerenderingchange', load, { once: true })
+        } else {
+          load()
+        }
       })()
+    </script>
+    <!-- speculation rules (F-SENSATION-3 · Chromium-only, silent elsewhere):
+         moderate two-tiers — hover/pointerdown prefetches then prerenders the
+         document swaps the SPA does not own; the analytics loader above is
+         prerendering-guarded so nothing double-counts the day the instance
+         goes live. -->
+    <script type="speculationrules">
+      {
+        "prefetch": [{ "where": { "href_matches": "/*" }, "eagerness": "moderate" }],
+        "prerender": [{ "where": { "href_matches": "/*" }, "eagerness": "moderate" }]
+      }
     </script>
   </head>
   <body>

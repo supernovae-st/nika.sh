@@ -298,7 +298,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:2",
       "path": "scripts/build-og-card.mjs",
-      "line": 195,
+      "line": 222,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -310,7 +310,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:3",
       "path": "scripts/build-og-card.mjs",
-      "line": 491,
+      "line": 518,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -322,7 +322,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:4",
       "path": "scripts/build-og-card.mjs",
-      "line": 540,
+      "line": 567,
       "text": "16 providers",
       "source": "16",
       "field": "providers",

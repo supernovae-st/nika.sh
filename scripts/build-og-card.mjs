@@ -180,6 +180,33 @@ const CARDS = [
       '<span class="arrow">▸</span><span>seven&nbsp;layers<span class="sep">·</span>coverage-gated<span class="sep">·</span><b>crawlers&nbsp;get&nbsp;sitemap.xml</b></span>',
   },
   {
+    // /flow — how execution flows; two doors, one graph.
+    out: 'og-flow.png',
+    fig: 'FIG F.0',
+    headline: 'Two doors,<br><span class="b">one graph.</span>',
+    sub: 'How execution flows: data doors (<span style="white-space:nowrap">with:</span>) and state doors (<span style="white-space:nowrap">after:</span>), the edge kinds, the gate predicates. The engine derives the whole run graph before anything&nbsp;runs.',
+    detail:
+      '<span class="arrow">▸</span><span>with:&nbsp;binds<span class="sep">·</span>after:&nbsp;gates<span class="sep">·</span><b>the&nbsp;DAG&nbsp;falls&nbsp;out</b></span>',
+  },
+  {
+    // /boundary — the declared blast radius; permits, secrets, the floor.
+    out: 'og-boundary.png',
+    fig: 'FIG B.0',
+    headline: 'The boundary<br><span class="b">is declared.</span>',
+    sub: 'What a workflow can touch is written before it runs: the permit families, the secret sources, and the floor. Everything not on the list is denied with a named&nbsp;error.',
+    detail:
+      '<span class="arrow">▸</span><span>permits:&nbsp;the&nbsp;whole&nbsp;list<span class="sep">·</span>secrets&nbsp;masked<span class="sep">·</span><b>denied&nbsp;by&nbsp;default</b></span>',
+  },
+  {
+    // /proof — nothing on faith; conformance, oracle, traces.
+    out: 'og-proof.png',
+    fig: 'FIG P.0',
+    headline: 'Nothing<br><span class="b">on faith.</span>',
+    sub: 'The proof surfaces: conformance levels, the oracle tools, hash-chained traces. Every claim re-derivable, on your machine, from public&nbsp;material.',
+    detail:
+      '<span class="arrow">▸</span><span>check<span class="sep">·</span>trace&nbsp;verify<span class="sep">·</span><b>reproducible&nbsp;by&nbsp;anyone</b></span>',
+  },
+  {
     // /templates — the skeleton register; instantiate, never invent.
     out: 'og-templates.png',
     fig: 'FIG T.1',

@@ -23,7 +23,7 @@
   },
   {
    "path": "index.html",
-   "sha256": "fd671b03ee57d7b47231a9058a2705c6077e6ff07de32c4eea1d3d5b5bb77c88"
+   "sha256": "75ae28981066c96654338cad9dcaa6748c539a14ae086de3ccc2a71456f00ae6"
   },
   {
    "path": "public/.well-known/nika-spec-pin.json",
@@ -47,7 +47,7 @@
   },
   {
    "path": "scripts/build-og-card.mjs",
-   "sha256": "1d28e60436bd51ecf5da503f6c03f69245e96a806421018609c4ab1953147238"
+   "sha256": "1815b5e8f880277eca29e23a0b81b9363f0ed01ce91f84405a84f0f68594a78d"
   },
   {
    "path": "scripts/build-lens-semantic-contracts.mjs",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "dfa0f3cc5fad4ec6ae41b5ef711885b9320d878fd6dcff25adf5cdb67fba78e1"
+   "sha256": "d65f6a8015a4adad05a291144f5aeb9f9187aae01870263a5a82f5d799901448"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",

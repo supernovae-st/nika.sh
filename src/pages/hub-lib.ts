@@ -47,6 +47,8 @@ export function useHubHead(hubId: string, marketTitle: string, description: stri
       { name: 'description', content: description },
       { property: 'og:title', content: marketTitle },
       { property: 'og:description', content: description },
+      { property: 'og:image', content: `https://nika.sh/og-${hubId}.png` },
+      { property: 'og:image:alt', content: description },
       { name: 'twitter:title', content: marketTitle },
       { name: 'twitter:description', content: description },
     ],
