@@ -213,6 +213,7 @@ const COMPONENT_FEATURE = {
   BoundaryPage: 'product.boundary',
   ProofPage: 'product.proof',
   UseCaseRoom: 'product.use_cases',
+  SourcesPage: 'site.sources',
 }
 
 const FEATURE_EVIDENCE = {
@@ -235,6 +236,7 @@ const FEATURE_EVIDENCE = {
   'site.brand': 'src/pages/Brand.tsx',
   'site.not_found': 'src/pages/NotFound.tsx',
   'registry.map': 'src/pages/Map.tsx',
+  'site.sources': 'src/pages/Sources.tsx',
   'product.flow': 'src/pages/Flow.tsx',
   'product.boundary': 'src/pages/Boundary.tsx',
   'product.proof': 'src/pages/Proof.tsx',

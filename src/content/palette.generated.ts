@@ -250,6 +250,12 @@ export const PALETTE: PaletteEntry[] = [
     "hint": "Real workflows, whole files: each showcase passes the spec conformance gate and ships with its graph. This is the language at work on real jobs, not a demo reel."
   },
   {
+    "kind": "set",
+    "label": "The truth words",
+    "href": "/sources",
+    "hint": "The vocabulary of how this site tells the truth: spec, canon, schema, pack, pin, catalog, mirror, registry, manifest, atlas. Each word has exactly one meaning · confusing two of them is a prose bug."
+  },
+  {
     "kind": "post",
     "label": "The registry re-proves everything",
     "href": "/blog/the-registry-reproves-everything",

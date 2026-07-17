@@ -667,7 +667,20 @@ export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers', { ratified_only:
   ${JSON.stringify(clockDiff, null, 2)}
 
 /** flips when /sources ships (WO-7) — TruthLine withholds the link until then */
-export const SOURCES_LIVE = false
+export const SOURCES_LIVE = ${JSON.stringify(S.sets.surfaces.find((x) => x.id === 'sources')?.exists === true)}
+
+/** the truth-words register (chrome-safe · /sources renders it anchored and
+ * derives its DefinedTermSet from THIS — gate-pinned equal to the twin) */
+export const TRUTH_WORDS: { title: string; opener: string; members: { id: string; one_liner: string }[] } = ${JSON.stringify(
+    (() => {
+      const set = S.sets.sets.find((x) => x.id === 'truth-words')
+      return {
+        title: set.title,
+        opener: set.opener.trim(),
+        members: set.members.map((m) => ({ id: m.id, one_liner: m.one_liner })),
+      }
+    })(),
+  )}
 `,
 )
 
@@ -1088,9 +1101,13 @@ const nextSiteConfig =
 
 /* hub data (the atlas-born hubs' render module · chrome-lean: pages never
    import the 344-node graph — the bundle-safety law applied to ourselves) */
-const hubSets = (layerId) =>
+const hubSets = (layerId, hubUrl) =>
   S.sets.sets
-    .filter((x) => x.layer === layerId && x.surface === 'anchors' && x.anchors_exist)
+    /* anchored ON the hub page only — a proof-layer set anchored elsewhere
+       (truth-words lives on /sources) belongs to ITS page's head, mirroring
+       the twin's per-anchor_page law */
+    .filter((x) => x.layer === layerId && x.surface === 'anchors' && x.anchors_exist
+      && (x.anchor_page ?? hubUrl).split('#')[0] === hubUrl)
     .map((x) => ({
       id: x.id,
       title: x.title,
@@ -1124,7 +1141,7 @@ const hubData = S.sets.layers
       ...(sec.note ? { note: sec.note } : {}),
       ...(sec.slot ? { slot: sec.slot } : {}),
     })),
-    sets: hubSets(l.id),
+    sets: hubSets(l.id, l.hub),
   }))
 /* the 40-cell verdict grid summary (tiny · the static face of I1 — the
    full matrix with yamls stays its own lazy chunk) */

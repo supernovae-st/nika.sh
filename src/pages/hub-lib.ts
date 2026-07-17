@@ -14,6 +14,35 @@ export const chapterHref = (ch: string) => `${SPEC}/blob/main/${ch}`
    hubs are sync routes and its 80K would ride the initial chunk). One truth
    held by gate, not by hand: atlas.test pins this derivation toEqual the
    compiler's JSONLD_TERMSETS per hub page (the derived-inverses law). */
+/* the /sources termset, derived from the chrome-safe TRUTH_WORDS (same
+   derived-inverses law: atlas.test pins this equal to the twin's
+   JSONLD_TERMSETS['/sources']) */
+export function sourcesJsonldSets(words: {
+  title: string
+  opener: string
+  members: { id: string; one_liner: string }[]
+}): unknown[] {
+  return [
+    {
+      '@type': 'DefinedTermSet',
+      '@id': `${SITE}/sources#set-truth-words`,
+      name: `Nika ${words.title.toLowerCase()}`,
+      description: words.opener,
+      license: 'https://www.apache.org/licenses/LICENSE-2.0',
+      version: ATLAS_PROVENANCE.engine_version,
+      hasDefinedTerm: [...words.members]
+        .sort((a, b) => a.id.localeCompare(b.id))
+        .map((m) => ({
+          '@type': 'DefinedTerm',
+          '@id': `${SITE}/sources#${m.id}`,
+          termCode: m.id,
+          name: m.id,
+          description: m.one_liner,
+        })),
+    },
+  ]
+}
+
 export function hubJsonldSets(hub: HubData): unknown[] {
   return hub.sets
     .filter((set) => set.members.length > 0)

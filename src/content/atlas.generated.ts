@@ -3048,8 +3048,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "counted_in_canon": false,
     "surface": "anchors",
     "clock": "spec",
-    "page_exists": false,
-    "anchors_exist": false
+    "page_exists": true,
+    "anchors_exist": true
   },
   {
     "id": "set:types",
@@ -3495,8 +3495,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/sources",
     "status": "both",
     "opener": null,
-    "exists": false,
-    "lands": "wo-7"
+    "exists": true,
+    "lands": null
   },
   {
     "id": "surface:spec-lens",

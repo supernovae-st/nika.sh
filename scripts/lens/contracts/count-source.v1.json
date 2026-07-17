@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 218,
-    "set_sha256": "fb5bbc4c8e78d96beff7ff9704075a00c153519ea07ad83101f262edc3636d34",
-    "rendered_count": 461,
-    "rendered_set_sha256": "e88a82bc75ba7c0f14ae94bfeb2dab26725656a25f8256726b1a86256da12d17"
+    "count": 219,
+    "set_sha256": "eb0b5decc6c3179ec4d9961b8f8ded5ec93fa5f30739f9339b04fbf6ae9c6c2f",
+    "rendered_count": 463,
+    "rendered_set_sha256": "d95734951f69bc1eadfe19cf0f40c2e0b47585b47414e88de251dfe9ac6aa421"
   },
   "claim_count": 141,
   "bindings": [
@@ -262,7 +262,7 @@
     {
       "selector": "public/llms.txt#count:6",
       "path": "public/llms.txt",
-      "line": 75,
+      "line": 76,
       "text": "9 read-only tools",
       "source": "9",
       "field": "mcpTools",
@@ -298,7 +298,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:2",
       "path": "scripts/build-og-card.mjs",
-      "line": 222,
+      "line": 231,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -310,7 +310,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:3",
       "path": "scripts/build-og-card.mjs",
-      "line": 518,
+      "line": 527,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -322,7 +322,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:4",
       "path": "scripts/build-og-card.mjs",
-      "line": 567,
+      "line": 576,
       "text": "16 providers",
       "source": "16",
       "field": "providers",
@@ -651,7 +651,7 @@
     {
       "selector": "src/content/sitemap.ts#count:1",
       "path": "src/content/sitemap.ts",
-      "line": 90,
+      "line": 91,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1436,7 +1436,7 @@
     {
       "selector": "src/routes.tsx#count:1",
       "path": "src/routes.tsx",
-      "line": 78,
+      "line": 79,
       "text": "four verb",
       "source": "four",
       "field": "verbs",

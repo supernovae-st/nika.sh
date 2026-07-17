@@ -546,8 +546,7 @@ sets:
 
   - id: truth-words
     layer: proof
-    anchors_exist: false
-    anchors_land: wo-7
+    anchors_exist: true   # landed with /sources (WO-7) · the waiver died with it
     title: The truth words
     source: { constants: true, mirrors: "mega-plan §1bis · the vocabulary of the truth", site_meta: true }
     clock: spec
@@ -556,8 +555,6 @@ sets:
     surface: anchors
     anchor_page: /sources
     anchor_prefix: ""
-    lands: wo-7
-    surface_waiver: "/sources lands in WO-7 · the meta-set ships with it · waiver dies with WO-7"
     defined_by: [site:/sources]   # the one site-defined set · it documents the machinery itself
     opener: >-
       The vocabulary of how this site tells the truth: spec, canon, schema,
@@ -589,8 +586,17 @@ surfaces:
       Nika is a workflow language for agentic work. Everything it is fits on
       this map: seven layers, every set counted, every member accountable to
       the spec.
-  - { id: sources, url: /sources, lands: wo-7, atlas_route: true, title: Sources,
-      role: "the public page of the truth system · the three clocks taught" }
+  - id: sources
+    url: /sources
+    exists: true   # landed 2026-07-17 (WO-7 · the epistemology page)
+    atlas_route: true
+    title: Sources
+    role: "the public page of the truth system · the three clocks taught"
+    opener: >-
+      How this site tells the truth: every count, every code block and every
+      claim on these pages is a projection of pinned sources, re-derived at
+      build time and gated in CI. This page teaches the machinery and names
+      what it does not cover yet.
   - { id: spec-lens, url: /spec, exists: true, title: "The spec at a glance",
       role: "the linear lens · derives from canon via spec-machine-data (verdict 2026-07-16 · the hand-body premise retired) · residue: gloss-vs-opener voice merge (op-call) + provenance close (contract field)" }
   - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: true,

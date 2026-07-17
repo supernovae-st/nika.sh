@@ -122,16 +122,16 @@
 <g class="cst-star"><a href="/use-cases/t2-etl-quarantine" tabindex="-1"><circle cx="491.34" cy="142.73" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>etl-quarantine</title></a></g>
 <g class="cst-star"><a href="/use-cases/t2-invoice-chaser" tabindex="-1"><circle cx="512.23" cy="138.27" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>invoice-chaser</title></a></g>
 <g class="cst-star"><a href="/use-cases/t2-model-bench" tabindex="-1"><circle cx="533.3" cy="134.76" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>model-bench</title></a></g>
-<g class="cst-star cst-star--soon"><circle cx="428.99" cy="162.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>atlas</title></g>
-<g class="cst-star cst-star--soon"><circle cx="453.57" cy="153.39" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>canon</title></g>
-<g class="cst-star cst-star--soon"><circle cx="478.59" cy="145.95" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>catalog</title></g>
-<g class="cst-star cst-star--soon"><circle cx="503.99" cy="139.91" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>manifest</title></g>
-<g class="cst-star cst-star--soon"><circle cx="529.69" cy="135.29" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>mirror</title></g>
-<g class="cst-star cst-star--soon"><circle cx="555.6" cy="132.1" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pack</title></g>
-<g class="cst-star cst-star--soon"><circle cx="581.65" cy="130.36" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pin</title></g>
-<g class="cst-star cst-star--soon"><circle cx="607.75" cy="130.06" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>registry</title></g>
-<g class="cst-star cst-star--soon"><circle cx="633.84" cy="131.22" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>schema</title></g>
-<g class="cst-star cst-star--soon"><circle cx="659.81" cy="133.82" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>spec</title></g>
+<g class="cst-star"><a href="/sources#atlas" tabindex="-1"><circle cx="428.99" cy="162.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>atlas</title></a></g>
+<g class="cst-star"><a href="/sources#canon" tabindex="-1"><circle cx="453.57" cy="153.39" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>canon</title></a></g>
+<g class="cst-star"><a href="/sources#catalog" tabindex="-1"><circle cx="478.59" cy="145.95" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>catalog</title></a></g>
+<g class="cst-star"><a href="/sources#manifest" tabindex="-1"><circle cx="503.99" cy="139.91" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>manifest</title></a></g>
+<g class="cst-star"><a href="/sources#mirror" tabindex="-1"><circle cx="529.69" cy="135.29" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>mirror</title></a></g>
+<g class="cst-star"><a href="/sources#pack" tabindex="-1"><circle cx="555.6" cy="132.1" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pack</title></a></g>
+<g class="cst-star"><a href="/sources#pin" tabindex="-1"><circle cx="581.65" cy="130.36" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pin</title></a></g>
+<g class="cst-star"><a href="/sources#registry" tabindex="-1"><circle cx="607.75" cy="130.06" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>registry</title></a></g>
+<g class="cst-star"><a href="/sources#schema" tabindex="-1"><circle cx="633.84" cy="131.22" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>schema</title></a></g>
+<g class="cst-star"><a href="/sources#spec" tabindex="-1"><circle cx="659.81" cy="133.82" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>spec</title></a></g>
 <g class="cst-star"><a href="/tools/assert" tabindex="-1"><circle cx="1049.01" cy="738.89" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:assert</title></a></g>
 <g class="cst-star"><a href="/tools/chart" tabindex="-1"><circle cx="1042.23" cy="759.15" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:chart</title></a></g>
 <g class="cst-star"><a href="/tools/compose" tabindex="-1"><circle cx="1034.54" cy="779.08" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>nika:compose</title></a></g>

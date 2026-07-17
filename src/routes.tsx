@@ -23,6 +23,7 @@ import { Component as Language } from './pages/Language'
 import { Component as WordPage } from './pages/WordPage'
 import { Component as MapPage } from './pages/Map'
 import { Component as FlowPage } from './pages/Flow'
+import { Component as SourcesPage } from './pages/Sources'
 import { Component as BoundaryPage } from './pages/Boundary'
 import { Component as ProofPage } from './pages/Proof'
 import { Component as Providers } from './pages/Providers'
@@ -101,6 +102,7 @@ export const routes: RouteObject[] = [
       /* the atlas-born hubs (WO-4) · their routes ride ATLAS_PATHS (the
          compiler's site.config section) — descriptor flip + recompile is
          how a hub is born */
+      { path: 'sources', Component: SourcesPage },
       { path: 'flow', Component: FlowPage },
       { path: 'boundary', Component: BoundaryPage },
       { path: 'proof', Component: ProofPage },

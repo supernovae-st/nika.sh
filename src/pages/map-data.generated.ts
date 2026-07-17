@@ -313,8 +313,8 @@ export const MAP_LAYERS: MapLayer[] = [
         "surface": "anchors",
         "slot": null,
         "closed": false,
-        "exists": false,
-        "lands": "wo-7"
+        "exists": true,
+        "lands": null
       }
     ]
   }

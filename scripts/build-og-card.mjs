@@ -180,6 +180,15 @@ const CARDS = [
       '<span class="arrow">▸</span><span>seven&nbsp;layers<span class="sep">·</span>coverage-gated<span class="sep">·</span><b>crawlers&nbsp;get&nbsp;sitemap.xml</b></span>',
   },
   {
+    // /sources — the epistemology page; how this site tells the truth.
+    out: 'og-sources.png',
+    fig: 'FIG S.0',
+    headline: 'Nothing here<br><span class="b">is hand-typed.</span>',
+    sub: 'Every count, code block and claim is a projection of pinned sources, re-derived at build time and gated in CI. The page that teaches the machinery also names what it does not cover&nbsp;yet.',
+    detail:
+      '<span class="arrow">▸</span><span>pinned&nbsp;sources<span class="sep">·</span>two&nbsp;clocks<span class="sep">·</span><b>verify&nbsp;it&nbsp;yourself</b></span>',
+  },
+  {
     // /flow — how execution flows; two doors, one graph.
     out: 'og-flow.png',
     fig: 'FIG F.0',

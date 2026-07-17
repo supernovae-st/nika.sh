@@ -16,7 +16,9 @@
    343→344 F-SENSATION-2: the VT-timeout logger, the brand-egg handler
    (its PANEL is a lazy chunk — the entry pays only the right-click hook)
    and the spotlight delegation; the D5/D6 rails paid their own way OUT
-   the same day (the blog-rails island diet).
+   the same day (the blog-rails island diet) · 344→346 WO-7: /sources is a
+   real sync-routed page (the hub precedent) — its data is chrome-safe
+   already, the weight is the page itself.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -24,7 +26,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 344
+const BUDGET_KB = 346
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

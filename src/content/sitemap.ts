@@ -71,6 +71,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'The flow', href: '/flow', hint: 'two doors, one graph · the gate matrix' },
       { label: 'The boundary', href: '/boundary', hint: 'permits · secrets · the always-on floor' },
       { label: 'The proof', href: '/proof', hint: 'run graph · conformance · machine surfaces' },
+      { label: 'Sources', href: '/sources', hint: 'how this site tells the truth · verify it yourself' },
       { label: 'Spec', href: '/spec', hint: 'the language reference · nika: v1' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },
       { label: 'Manifesto', href: '/manifesto', hint: 'the drum of liberation · 8 languages' },

@@ -278,7 +278,7 @@ function verifyCarrierAuthority() {
       '', ' (', ' · ', ')', '+', 'plain words', '· press ▶ · or keep scrolling ·',
       '“', '”', '›', '→', '→ ', '−', '★ ', '✓ ',
     ],
-    allowed_dynamic_expressions: ['attr(href)'],
+    allowed_dynamic_expressions: ['attr(href)', 'counter(verify)'],
   }
   exactStructure('CSS content policy', universe.css_content_policy, cssPolicy)
   const css = cssContentInventory(ROOT, carriers.filter((path) => path.endsWith('.css')))

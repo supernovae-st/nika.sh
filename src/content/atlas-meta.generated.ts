@@ -181,9 +181,7 @@ export const ATLAS_HUBS = [
 
 export const ATLAS_SCORE = {
   "score": 100,
-  "waived": [
-    "truth-words: /sources lands in WO-7 · the meta-set ships with it · waiver dies with WO-7"
-  ],
+  "waived": [],
   "unarmed": [
     "capture-stamps → arms at wo-4 (TermCapture)",
     "count-links (CanonCount deployment) → arms at wo-3",
@@ -206,4 +204,8 @@ export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers', { ratified_only:
 }
 
 /** flips when /sources ships (WO-7) — TruthLine withholds the link until then */
-export const SOURCES_LIVE = false
+export const SOURCES_LIVE = true
+
+/** the truth-words register (chrome-safe · /sources renders it anchored and
+ * derives its DefinedTermSet from THIS — gate-pinned equal to the twin) */
+export const TRUTH_WORDS: { title: string; opener: string; members: { id: string; one_liner: string }[] } = {"title":"The truth words","opener":"The vocabulary of how this site tells the truth: spec, canon, schema, pack, pin, catalog, mirror, registry, manifest, atlas. Each word has exactly one meaning · confusing two of them is a prose bug.","members":[{"id":"spec","one_liner":"the nika-spec repo · the truth of the language"},{"id":"canon","one_liner":"canon.yaml · the counted sets, spec-first"},{"id":"schema","one_liner":"workflow.schema.json · the shapes"},{"id":"pack","one_liner":"the spec corpus vendored inside the engine"},{"id":"pin","one_liner":"SPEC_PIN · the exact spec sha the engine targets"},{"id":"catalog","one_liner":"a machine projection the site serves · byte-diffed in CI"},{"id":"mirror","one_liner":"a byte-pinned copy, sha256-verified"},{"id":"registry","one_liner":"nika-registry THE PRODUCT · shared workflows, re-proven nightly"},{"id":"manifest","one_liner":"the snippet lineage table · every rendered block resolves here"},{"id":"atlas","one_liner":"language_graph 1 · the graph of the language, site-side"}]}

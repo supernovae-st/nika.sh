@@ -3,10 +3,10 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ATLAS_NODES, ATLAS_EDGES, ATLAS_INDEX } from '../content/atlas.generated'
-import { ATLAS_PROVENANCE, ATLAS_SET_COUNTS, ATLAS_HUBS, ATLAS_SCORE } from '../content/atlas-meta.generated'
+import { ATLAS_PROVENANCE, ATLAS_SET_COUNTS, ATLAS_HUBS, ATLAS_SCORE , TRUTH_WORDS } from '../content/atlas-meta.generated'
 import { JSONLD_TERMSETS } from '../content/jsonld.generated'
 import { HUBS } from '../pages/hub-data.generated'
-import { hubJsonldSets } from '../pages/hub-lib'
+import { hubJsonldSets, sourcesJsonldSets } from '../pages/hub-lib'
 import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { SNIPPETS, SNIPPET_REGISTRY, CAPTURES } from '../content/snippets.generated'
 import { PATHS } from '../../site.config'
@@ -234,6 +234,10 @@ describe('atlas · jsonld and market vocab stay lawful', () => {
       })
       expect(hubJsonldSets(h), h.hub).toEqual(anchoredHere)
     }
+  })
+
+  it('the /sources head derivation IS the twin (truth-words · derived-inverses law)', () => {
+    expect(sourcesJsonldSets(TRUTH_WORDS)).toEqual(JSONLD_TERMSETS['/sources'])
   })
 
 

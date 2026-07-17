@@ -35,7 +35,8 @@
       "✓ "
     ],
     "allowed_dynamic_expressions": [
-      "attr(href)"
+      "attr(href)",
+      "counter(verify)"
     ]
   },
   "feature_sources": [
@@ -43,10 +44,10 @@
     "site.config.ts",
     "src/routes.tsx"
   ],
-  "carrier_count": 461,
-  "set_sha256": "e88a82bc75ba7c0f14ae94bfeb2dab26725656a25f8256726b1a86256da12d17",
-  "normative_source_count": 218,
-  "normative_source_sha256": "fb5bbc4c8e78d96beff7ff9704075a00c153519ea07ad83101f262edc3636d34",
+  "carrier_count": 463,
+  "set_sha256": "d95734951f69bc1eadfe19cf0f40c2e0b47585b47414e88de251dfe9ac6aa421",
+  "normative_source_count": 219,
+  "normative_source_sha256": "eb0b5decc6c3179ec4d9961b8f8ded5ec93fa5f30739f9339b04fbf6ae9c6c2f",
   "normative_sources": [
     "content/blog/2025-10-17-the-note-that-started-it.md",
     "content/blog/2026-03-21-naming-the-drum.md",
@@ -175,6 +176,7 @@
     "src/pages/PlayEditor.tsx",
     "src/pages/Proof.tsx",
     "src/pages/Providers.tsx",
+    "src/pages/Sources.tsx",
     "src/pages/Spec.tsx",
     "src/pages/Templates.tsx",
     "src/pages/ToolPage.tsx",
@@ -487,6 +489,7 @@
     "src/pages/page-chrome.css",
     "src/pages/play-page.css",
     "src/pages/providers-page.css",
+    "src/pages/sources-page.css",
     "src/pages/spec-page.css",
     "src/pages/templates-page.css",
     "src/pages/tool-detail.css",
@@ -842,6 +845,7 @@
     "src/pages/PlayEditor.tsx",
     "src/pages/Proof.tsx",
     "src/pages/Providers.tsx",
+    "src/pages/Sources.tsx",
     "src/pages/Spec.tsx",
     "src/pages/Templates.tsx",
     "src/pages/ToolPage.tsx",
@@ -872,6 +876,7 @@
     "src/pages/play-editor-voice.ts",
     "src/pages/play-page.css",
     "src/pages/providers-page.css",
+    "src/pages/sources-page.css",
     "src/pages/spec-page.css",
     "src/pages/templates-page.css",
     "src/pages/tool-detail.css",
