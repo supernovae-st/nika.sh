@@ -44,8 +44,8 @@
     "site.config.ts",
     "src/routes.tsx"
   ],
-  "carrier_count": 473,
-  "set_sha256": "8f34ffe8261f4f0e2ec7026c4f616ec8c23abc27fe42cdd5bd31241dc381661d",
+  "carrier_count": 474,
+  "set_sha256": "a9e788063035a0e9abe61304e6cea9ecea82354bb4c7f442ac9a325ea450671a",
   "normative_source_count": 234,
   "normative_source_sha256": "808198e60d08ed5f92eb2f2c0eccb7103ade3fef4ae420b84354a3284cbb0d46",
   "normative_sources": [
@@ -413,6 +413,7 @@
     "public/docs/index.html",
     "public/errors/catalog.json",
     "public/favicon.svg",
+    "public/i18n/untranslatables.json",
     "public/icons.svg",
     "public/library/daily-brief.nika.yaml",
     "public/library/etl-quarantine.nika.yaml",
@@ -686,6 +687,7 @@
     "public/errors/catalog.json",
     "public/favicon.svg",
     "public/humans.txt",
+    "public/i18n/untranslatables.json",
     "public/icons.svg",
     "public/install.sh",
     "public/library/daily-brief.nika.yaml",
