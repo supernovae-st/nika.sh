@@ -25,6 +25,10 @@ const LocaleSuggest = lazy(() => import('./LocaleSuggest'))
    keystroke — its TABLE is inline; only the CARD is a chunk) */
 const ShortcutsOverlay = lazy(() => import('./ShortcutsOverlay'))
 
+/* the Inspector · lazy like the palette (the graph rides its own chunk
+   through the atlas-access door — nothing reaches the entry) */
+const Inspector = lazy(() => import('./Inspector'))
+
 /* ─── site-wide JSON-LD · Organization + WebSite (schema.org) ─────────────────
    Build-time / zero-runtime: @unhead/react flushes this <script> into every
    route's prerendered HTML (and reconciles on the client — one node, no dupes).
@@ -144,6 +148,19 @@ export default function RootLayout() {
     }
   }, [])
 
+  /* the Inspector bus (round-1): surfaces dispatch insp:open with a node
+     id — zero prop drilling, the ck:open precedent · the chunk mounts at
+     the first selection */
+  const [inspNode, setInspNode] = useState<string | null>(null)
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const id = (e as CustomEvent<{ id?: string }>).detail?.id
+      if (typeof id === 'string' && id) setInspNode(id)
+    }
+    window.addEventListener('insp:open', onOpen)
+    return () => window.removeEventListener('insp:open', onOpen)
+  }, [])
+
   /* the g-chords + the `?` door (round-2A · the egg guards verbatim):
      g then a letter navigates; unknown = silent reset (a missed chord does
      not exist); modifiers or a field = abandon; 800ms window. */
@@ -213,6 +230,11 @@ export default function RootLayout() {
       {paletteOpen ? (
         <Suspense fallback={null}>
           <CommandK onClose={() => setPaletteOpen(false)} />
+        </Suspense>
+      ) : null}
+      {inspNode ? (
+        <Suspense fallback={null}>
+          <Inspector nodeId={inspNode} onClose={() => setInspNode(null)} />
         </Suspense>
       ) : null}
       {shortcutsOpen ? (

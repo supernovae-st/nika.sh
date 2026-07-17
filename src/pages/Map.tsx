@@ -204,7 +204,21 @@ export function Component() {
                               <span className="mp-soon">soon</span>
                             </span>
                           ) : (
-                            <Link className="mp-set-chip" to={s.url}>
+                            /* the Inspector door (round-1): on a fine desktop
+                               pointer the chip SELECTS (the readout opens, the
+                               page stays alive — the room door lives in the
+                               panel); mobile and modifier-clicks keep the
+                               straight navigation until the sheet lands */
+                            <Link
+                              className="mp-set-chip"
+                              to={s.url}
+                              onClick={(e) => {
+                                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+                                if (!window.matchMedia('(min-width: 768px) and (pointer: fine)').matches) return
+                                e.preventDefault()
+                                window.dispatchEvent(new CustomEvent('insp:open', { detail: { id: `set:${s.id}` } }))
+                              }}
+                            >
                               {s.title}
                               <CanonCount setId={s.id} className="mp-set-count" plain />
                             </Link>

@@ -364,7 +364,10 @@ describe('atlas · bundle safety (the register island law)', () => {
       for (const f of readdirSync(join(ROOT, dir), { recursive: true }) as string[]) {
         if (!/\.tsx?$/.test(f)) continue
         const body = readFileSync(join(ROOT, dir, f), 'utf8')
-        const staticImport = /import\s[^;]*from\s+'[^']*content\/atlas\.generated'/.test(body)
+        /* type-only imports are erased at build — the law is about BYTES
+           reaching the entry, and a type adds none (the readout renderer
+           types itself against the graph it will lazy-load) */
+        const staticImport = /import\s(?!type\b)[^;]*from\s+'[^']*content\/atlas\.generated'/.test(body)
         expect(staticImport, `${dir}/${f} imports atlas.generated statically (use atlas-meta or a lazy island)`).toBe(false)
       }
     }
