@@ -45,8 +45,11 @@ export const KIND_PREFIX: Record<string, PaletteKind> = {
   set: 'set',
 }
 
-/** parse a raw palette query into an optional kind scope + the needle */
-export function parseQuery(raw: string): { kind?: PaletteKind; needle: string } {
+/** parse a raw palette query into an optional kind scope + the needle.
+    `>` scopes to ACTIONS (the VS Code precedent · round-2B) — a special
+    kind outside the register grammar. */
+export function parseQuery(raw: string): { kind?: PaletteKind | 'action'; needle: string } {
+  if (raw.startsWith('>')) return { kind: 'action', needle: raw.slice(1).trimStart() }
   const m = raw.match(/^([a-z]{1,8}):(.*)$/i)
   if (m) {
     const kind = KIND_PREFIX[m[1].toLowerCase()]

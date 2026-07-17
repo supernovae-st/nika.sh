@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PALETTE, type PaletteEntry } from '../content/palette.generated'
 import { parseQuery, mergePageHits, type PageTextHit } from '../lib/palette-query'
+import { actionEntries, runAction, type ActionEntry, type PaletteCtx } from '../lib/palette-actions'
+import { track } from '../lib/track'
 import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import './command-k.css'
 
@@ -94,13 +96,37 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
   useFocusReturn(true)
   useFocusTrap(dialogRef, true)
 
+  /* the open-time context (round-2B): the palette mounts on open, so the
+     page state is simply read once — every action.when stays pure over it */
+  const [feedback, setFeedback] = useState<string | null>(null)
+  const ctx = useMemo<PaletteCtx>(
+    () => ({
+      path: window.location.pathname,
+      hasSnippet: document.querySelector('.cf-pre') !== null,
+    }),
+    [],
+  )
+  const actions = useMemo(() => actionEntries(ctx), [ctx])
+
   const hits = useMemo(() => {
     /* the prefix grammar (WO-12): `e:` scopes to error codes, `t:` to tools…
        — the corpus narrows BEFORE scoring; an unknown prefix stays a plain
        query (palette-query.ts, unit-gated) */
     const { kind, needle } = parseQuery(q)
-    const corpus = kind ? PALETTE.filter((e) => e.kind === kind) : PALETTE
-    if (!needle.trim()) return corpus.slice(0, 9)
+    if (kind === 'action') {
+      const text = needle.trim()
+      if (!text) return actions.slice(0, 9)
+      return actions
+        .map((e) => ({ e, s: Math.max(fuzzyScore(text, e.label), fuzzyScore(text, e.hint) - 20) }))
+        .filter((x) => x.s >= 0)
+        .sort((a, b) => b.s - a.s)
+        .slice(0, 9)
+        .map((x) => x.e)
+    }
+    const corpus: (PaletteEntry | ActionEntry)[] = kind
+      ? PALETTE.filter((e) => e.kind === kind)
+      : [...PALETTE, ...actions]
+    if (!needle.trim()) return corpus.filter((e) => e.kind !== 'action').slice(0, 9)
     return corpus.map((e) => ({
       e,
       s: Math.max(fuzzyScore(needle, e.label), fuzzyScore(needle, e.hint) - 20),
@@ -109,7 +135,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
       .sort((a, b) => b.s - a.s)
       .slice(0, 9)
       .map((x) => x.e)
-  }, [q])
+  }, [q, actions])
 
   /* stage 2 · « in pages »: past two characters the palette also asks the
      full-text index — rows land BELOW the registers, deduped by url. A
@@ -136,7 +162,8 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
             return { url: d.url, title: d.meta.title ?? d.url, excerpt: d.excerpt }
           }),
         )
-        if (live) setPageHits(mergePageHits(new Set(hits.map((h) => h.href.split('#')[0])), rows))
+        const taken = new Set(hits.flatMap((h) => (h.kind === 'action' ? [] : [h.href.split('#')[0]])))
+        if (live) setPageHits(mergePageHits(taken, rows))
       })
     }, registerOnly ? 0 : 130)
     return () => {
@@ -145,7 +172,10 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
     }
   }, [q, hits])
 
-  const list: (PaletteEntry | PageTextHit)[] = useMemo(() => [...hits, ...pageHits], [hits, pageHits])
+  const list: (PaletteEntry | ActionEntry | PageTextHit)[] = useMemo(
+    () => [...hits, ...pageHits],
+    [hits, pageHits],
+  )
 
   /* the cursor follows the list, never exceeds it */
   const cur = Math.min(cursor, Math.max(0, list.length - 1))
@@ -167,7 +197,20 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
       ?.scrollIntoView({ block: 'nearest' })
   }, [cur, list])
 
-  const go = (e: PaletteEntry | PageTextHit) => {
+  const go = (e: PaletteEntry | ActionEntry | PageTextHit) => {
+    if (e.kind === 'action') {
+      track('palette-action')
+      void runAction(e, ctx, (to) => {
+        onClose()
+        void navigate(to, { viewTransition: true })
+      }).then((label) => {
+        if (label) {
+          setFeedback(`${e.label} · ${label}`)
+          setTimeout(onClose, 700)
+        }
+      })
+      return
+    }
     onClose()
     navigate(e.href, { viewTransition: true })
   }
@@ -203,7 +246,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
             aria-controls="ck-list"
             aria-activedescendant={list[cur] ? `ck-opt-${cur}` : undefined}
             aria-label="Search pages, posts and error codes"
-            placeholder="pages · posts · error codes… (e: t: v: w: scope a register)"
+            placeholder="pages · posts · error codes… (e: t: scope · > actions)"
             value={q}
             spellCheck={false}
             autoComplete="off"
@@ -220,7 +263,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
         <ul id="ck-list" ref={listRef} className="ck-list" role="listbox" aria-label="Results">
           {list.map((e, i) => (
             <li
-              key={e.href}
+              key={e.kind === 'action' ? e.id : e.href}
               id={`ck-opt-${i}`}
               role="option"
               aria-selected={i === cur}
@@ -233,7 +276,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
               }}
             >
               <span className="ck-opt-glyph mono" aria-hidden>
-                {e.kind === 'pagetext' ? '⌕' : KIND_GLYPH[e.kind]}
+                {e.kind === 'pagetext' ? '⌕' : e.kind === 'action' ? '»' : KIND_GLYPH[e.kind]}
               </span>
               <span className="ck-opt-label">{e.label}</span>
               <span className="ck-opt-hint mono">{e.hint}</span>
@@ -246,7 +289,10 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
           )}
         </ul>
         <p className="ck-foot mono" aria-hidden>
-          ↑↓ move · ↵ open · {PALETTE.length} surfaces
+          {feedback ?? `↑↓ move · ↵ open · > actions · ${PALETTE.length} surfaces`}
+        </p>
+        <p className="ck-sr" role="status">
+          {feedback ?? ''}
         </p>
       </div>
     </div>

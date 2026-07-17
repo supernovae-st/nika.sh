@@ -27,6 +27,7 @@ export type FunnelEvent =
   | 'learn-done'
   | 'github-out'
   | 'convert-open'
+  | 'palette-action'
 
 export function track(event: FunnelEvent): void {
   try {

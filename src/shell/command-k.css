@@ -128,3 +128,14 @@
   letter-spacing: 0.08em;
   color: var(--v4-text-faint);
 }
+
+/* the action feedback line for screen readers (visually collapsed — the
+   foot already shows it to sighted users) */
+.ck-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  margin: 0;
+}
