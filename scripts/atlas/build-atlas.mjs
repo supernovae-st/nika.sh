@@ -1149,7 +1149,7 @@ const hubData = S.sets.layers
 const gateGrid = {
   producers: ['success', 'failure', 'skipped', 'cancelled'],
   forms: [
-    'with-value', 'with-status', 'with-error', 'after-succeeded', 'after-failed',
+    'with-value', 'with-status', 'with-error', 'after-success', 'after-failure',
     'after-skipped', 'after-terminal', 'when-true', 'when-false', 'no-edge',
   ],
   cells: S.gateMatrix,
