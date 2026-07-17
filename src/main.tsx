@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, startTransition } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { createHead, UnheadProvider } from '@unhead/react/client'
 import { createBrowserRouter, RouterProvider, type HydrationState } from 'react-router'
@@ -68,7 +68,13 @@ window.addEventListener('vite:preloadError', () => {
 // Prerendered HTML present (prod) → hydrate it. Empty container (dev) → mount fresh.
 sessionStorage.removeItem('lens-chunk-reload')
 if (container.firstChild) {
-  hydrateRoot(container, tree)
+  /* transition-priority hydration (react-router ships this in ITS entry;
+     ours is hand-rolled and missed it): the initial render becomes
+     time-sliced and interruptible by urgent input — the R4 measured
+     class is TBT 300→70ms on comparable pages. */
+  startTransition(() => {
+    hydrateRoot(container, tree)
+  })
 } else {
   createRoot(container).render(tree)
 }
