@@ -71,6 +71,7 @@ function ChapterBlock({ chapter, index }: { chapter: Chapter; index: number }) {
       className="v4chap"
       style={{ ['--vh' as string]: VERB_HUE[c.verb], ['--rise-delay' as string]: `${index * 60}ms` }}
       data-rise
+      data-verb={c.verb}
       aria-labelledby={`v4chap-${c.verb}`}
     >
       {/* LEFT · the chapter text column */}

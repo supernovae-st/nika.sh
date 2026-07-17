@@ -1653,7 +1653,7 @@
     {
       "selector": "src/sections/Verbs.tsx#count:4",
       "path": "src/sections/Verbs.tsx",
-      "line": 132,
+      "line": 133,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -1665,7 +1665,7 @@
     {
       "selector": "src/sections/Verbs.tsx#count:5",
       "path": "src/sections/Verbs.tsx",
-      "line": 136,
+      "line": 137,
       "text": "fifth verb",
       "source": "fifth",
       "field": "verbs",

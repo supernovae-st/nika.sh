@@ -195,6 +195,21 @@ body { background: var(--bg); overflow-x: clip; }
 main > section { overflow-x: clip; }
 ::selection { background: color-mix(in oklch, var(--brand) 40%, transparent); color: #fff; }
 
+/* the selection takes the verb of the section (F-SENSATION-1's signature
+   gesture): inside a verb zone, selecting text answers in that verb's hue.
+   Scoped on data-verb so the fallback chapters (--vh = text) never produce
+   a text-on-text selection. */
+[data-verb] ::selection {
+  background: color-mix(in oklch, var(--vh, var(--vb-hue, var(--brand))) 55%, transparent);
+  color: #fff;
+}
+
+/* the caret joins the instrument — the last unstyled input state */
+input,
+textarea {
+  caret-color: var(--brand);
+}
+
 button:not(:disabled) {
   cursor: pointer;
 }

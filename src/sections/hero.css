@@ -264,7 +264,12 @@
   letter-spacing: var(--ls-display);
   font-weight: 600;
   text-wrap: balance;
-  color: var(--v4-text);
+  /* headline white-fade (Linear-school · one hero, never more): the display
+     line falls from white-hot to steel — AA holds at .4 on the display size */
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.4));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 /* the receipt link · the pipeline post is the hero's long-form anchor
    (issue #192) — quiet dotted hint at rest, solid on hover */

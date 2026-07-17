@@ -318,6 +318,15 @@
   font-weight: 600;
   letter-spacing: 0.01em;
 }
+/* phosphor glow (the terminal gesture · two layers, tight + wide): the verb
+   word keeps its white-hot core and gains the halo in ITS hue — static
+   text-shadow, zero runtime */
+.v4chap[data-verb] .v4chap-verb,
+.v4chap[data-verb] .v4chap-glyph {
+  text-shadow:
+    0 0 2px color-mix(in oklch, var(--vh) 60%, transparent),
+    0 0 24px color-mix(in oklch, var(--vh) 28%, transparent);
+}
 .v4chap-arrow {
   color: var(--v4-text-faint);
 }
