@@ -43,6 +43,19 @@ const tree = (
   </StrictMode>
 )
 
+// A cross-document view transition that holds its snapshot past the UA's
+// 4s deadline is dropped SILENTLY — surface it, or the fade just vanishes
+// one day and nobody knows why.
+window.addEventListener('pagereveal', (e) => {
+  const vt = (e as Event & { viewTransition?: { finished: Promise<void> } }).viewTransition
+  if (!vt) return
+  const deadline = setTimeout(
+    () => console.warn('cross-document view transition timed out (4s) — snapshot held too long'),
+    4000,
+  )
+  void vt.finished.finally(() => clearTimeout(deadline))
+})
+
 // A deploy can retire hashed chunks under a live tab; the next lazy import
 // then dies. One reload against the new manifest heals it — the session flag
 // keeps a genuinely broken deploy from reload-looping.

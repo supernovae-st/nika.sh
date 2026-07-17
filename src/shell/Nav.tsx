@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
+import { BrandMark } from './BrandMark'
 import { REPO, DOCS, ENGINE_VERSION } from '../content'
 import {
   NAV_BAR_LINKS,
@@ -580,10 +581,7 @@ export default function Nav() {
           itemType="https://schema.org/SiteNavigationElement"
         >
           {/* brand · the butterfly mark + wordmark */}
-          <Link to="/" viewTransition className="v4nav-brand" aria-label="Nika · home">
-            <img src="/nika.svg" alt="" width={19} height={19} />
-            nika
-          </Link>
+          <BrandMark />
 
           {/* desktop rail · owns the ONE sliding hover pill */}
           <div

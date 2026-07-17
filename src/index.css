@@ -204,6 +204,16 @@ main > section { overflow-x: clip; }
   color: #fff;
 }
 
+/* cross-document view transitions (F-SENSATION-2 · Chrome 126 + Safari 18.2):
+   the document swaps the SPA does not own — the static stubs (/sitemap's
+   meta-refresh, 404 recovery, /docs) and hard reloads — fade instead of
+   flashing. Same-document transitions stay the router's. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
 /* the caret joins the instrument — the last unstyled input state */
 input,
 textarea {

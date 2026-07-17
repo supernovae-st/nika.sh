@@ -984,3 +984,34 @@ button.v4sheet-search {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* the brand context-menu (F-SENSATION-2 · right-click on the mark) */
+.v4nav-brandmenu {
+  position: fixed;
+  z-index: 90;
+  min-width: 190px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  background: #0c0e12;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.5);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.v4nav-brandmenu-item {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 5px;
+  color: var(--v4-text-dim);
+  cursor: pointer;
+}
+.v4nav-brandmenu-item:hover,
+.v4nav-brandmenu-item:focus-visible {
+  color: var(--v4-text);
+  background: rgb(255 255 255 / 0.06);
+}

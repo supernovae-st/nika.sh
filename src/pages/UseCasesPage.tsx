@@ -262,6 +262,16 @@ const YamlDict = createContext<Record<string, string>>({})
 
 /* a single workflow · outcome title, two-tone gloss, verb chips, the plan,
    and the real open YAML. Truth (yaml · verbs · plan · tier) is projected. */
+/* one delegated listener per grid (never per card): the hovered card's
+   ::after reads the pointer through two custom properties */
+function trackSpotlight(e: React.PointerEvent<HTMLDivElement>) {
+  const card = (e.target as HTMLElement).closest<HTMLElement>('.ucp-wf')
+  if (!card) return
+  const box = card.getBoundingClientRect()
+  card.style.setProperty('--spot-x', `${(((e.clientX - box.left) / box.width) * 100).toFixed(2)}%`)
+  card.style.setProperty('--spot-y', `${(((e.clientY - box.top) / box.height) * 100).toFixed(2)}%`)
+}
+
 function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
   const dict = useContext(YamlDict) // hooks before the miss return (rules-of-hooks)
   const uc = UC_BY_SLUG[card.slug]
@@ -361,7 +371,7 @@ function PersonaSection({ persona, index }: { persona: Persona; index: number })
         <p className="ucp-metier-hook">{persona.hook}</p>
       </div>
 
-      <div className="ucp-grid">
+      <div className="ucp-grid" onPointerMove={trackSpotlight}>
         {persona.cards.map((card, i) => (
           <WorkflowCard key={card.slug} card={card} fig={`7.${index + 1}.${i + 1}`} />
         ))}

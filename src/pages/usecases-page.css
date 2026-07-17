@@ -524,3 +524,28 @@
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
 }
+
+/* card spotlight (F-SENSATION-2 · low-alpha or it reads template): a
+   pointer-tracked radial, hover-only — at rest the grid is byte-identical */
+.ucp-wf::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  background: radial-gradient(
+    240px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgb(255 255 255 / 0.06),
+    transparent 70%
+  );
+}
+.ucp-wf:hover::after {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ucp-wf::after {
+    transition: none;
+  }
+}

@@ -12,7 +12,11 @@
    stays ~1.4 KB (the bite-on-growth grammar). History: 350→356 W9 ·
    356→357 WO-9a · 357→341 WO-12g · 341→343 L7 head: the W2 pin
    grows the entry-legit spec data (+21 error codes across surfaces) and
-   G.22 ships the chunk-death handler in the entry — data precedent WO-9a.
+   G.22 ships the chunk-death handler in the entry — data precedent WO-9a ·
+   343→344 F-SENSATION-2: the VT-timeout logger, the brand-egg handler
+   (its PANEL is a lazy chunk — the entry pays only the right-click hook)
+   and the spotlight delegation; the D5/D6 rails paid their own way OUT
+   the same day (the blog-rails island diet).
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -20,7 +24,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 343
+const BUDGET_KB = 344
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
