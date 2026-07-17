@@ -111,7 +111,7 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "code": "NIKA-DAG-005",
     "category": "validation_error",
     "transient": false,
-    "failure": "after: predicate outside the closed set (succeeded · failed · skipped · terminal)"
+    "failure": "after: predicate outside the closed set (success · failure · skipped · terminal)"
   },
   {
     "code": "NIKA-DAG-006",

@@ -27,7 +27,7 @@ export const LINT_FIXTURES: LintFixture[] = [
       "NIKA-DAG-001"
     ],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    after: { b: succeeded }\n    infer: { prompt: \"a\" }\n  b:\n    after: { a: succeeded }\n    infer: { prompt: \"b\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    after: { b: success }\n    infer: { prompt: \"a\" }\n  b:\n    after: { a: success }\n    infer: { prompt: \"b\" }\n"
   },
   {
     "id": "dag-topology/002-unresolved-after-target",
@@ -36,7 +36,7 @@ export const LINT_FIXTURES: LintFixture[] = [
       "NIKA-DAG-002"
     ],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    after: { ghost: succeeded }\n    infer: { prompt: \"a\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    after: { ghost: success }\n    infer: { prompt: \"a\" }\n"
   },
   {
     "id": "dag-topology/003-when-task-ref-illegal",
@@ -45,7 +45,7 @@ export const LINT_FIXTURES: LintFixture[] = [
       "NIKA-VAR-021"
     ],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  test:\n    exec: { command: [\"cargo\", \"test\"] }\n  deploy:\n    after: { test: succeeded }\n    when: ${{ tasks.test.duration_ms < 60000 }}\n    exec: { command: [\"./deploy.sh\"] }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  test:\n    exec: { command: [\"cargo\", \"test\"] }\n  deploy:\n    after: { test: success }\n    when: ${{ tasks.test.duration_ms < 60000 }}\n    exec: { command: [\"./deploy.sh\"] }\n"
   },
   {
     "id": "dag-topology/004-self-dependency",
@@ -54,7 +54,7 @@ export const LINT_FIXTURES: LintFixture[] = [
       "NIKA-DAG-001"
     ],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    after: { a: succeeded }\n    infer: { prompt: \"a\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    after: { a: success }\n    infer: { prompt: \"a\" }\n"
   },
   {
     "id": "dag-topology/005-with-binding-is-the-edge",
@@ -86,14 +86,14 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: diamond\ntasks:\n  a:\n    exec: { command: [\"./prepare.sh\"] }\n  b:\n    after: { a: succeeded }\n    infer: { prompt: \"Analyze branch B\" }\n  c:\n    after: { a: succeeded }\n    infer: { prompt: \"Analyze branch C\" }\n  d:\n    with:\n      b: ${{ tasks.b.output }}\n      c: ${{ tasks.c.output }}\n    infer: { prompt: \"Merge · ${{ with.b }} · ${{ with.c }}\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: diamond\ntasks:\n  a:\n    exec: { command: [\"./prepare.sh\"] }\n  b:\n    after: { a: success }\n    infer: { prompt: \"Analyze branch B\" }\n  c:\n    after: { a: success }\n    infer: { prompt: \"Analyze branch C\" }\n  d:\n    with:\n      b: ${{ tasks.b.output }}\n      c: ${{ tasks.c.output }}\n    infer: { prompt: \"Merge · ${{ with.b }} · ${{ with.c }}\" }\n"
   },
   {
     "id": "dag-topology/009-valid-tightened-value-edge",
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: chain\ntasks:\n  fetch:\n    invoke:\n      tool: nika:fetch\n      args: { url: \"https://example.com\", mode: article }\n  summarize:\n    after: { fetch: succeeded }\n    with:\n      content: ${{ tasks.fetch.output }}\n    infer:\n      prompt: \"Summarize · ${{ with.content }}\"\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: chain\ntasks:\n  fetch:\n    invoke:\n      tool: nika:fetch\n      args: { url: \"https://example.com\", mode: article }\n  summarize:\n    after: { fetch: success }\n    with:\n      content: ${{ tasks.fetch.output }}\n    infer:\n      prompt: \"Summarize · ${{ with.content }}\"\n"
   },
   {
     "id": "dag-topology/010-after-malformed-shape",
@@ -118,7 +118,7 @@ export const LINT_FIXTURES: LintFixture[] = [
       "NIKA-DAG-004"
     ],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: dag-recover-deadlock\ntasks:\n  fetch:\n    invoke: { tool: \"nika:fetch\", args: { url: \"https://api.example.com\" } }\n    on_error:\n      recover: ${{ tasks.fallback.output }}\n  fallback:\n    after: { fetch: succeeded }\n    infer: { prompt: \"depends on the task it would rescue\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: dag-recover-deadlock\ntasks:\n  fetch:\n    invoke: { tool: \"nika:fetch\", args: { url: \"https://api.example.com\" } }\n    on_error:\n      recover: ${{ tasks.fallback.output }}\n  fallback:\n    after: { fetch: success }\n    infer: { prompt: \"depends on the task it would rescue\" }\n"
   },
   {
     "id": "dag-topology/013-recover-independent-valid",
@@ -143,7 +143,7 @@ export const LINT_FIXTURES: LintFixture[] = [
       "NIKA-DAG-001"
     ],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    with:\n      b_out: ${{ tasks.b.output }}\n    infer: { prompt: \"a · ${{ with.b_out }}\" }\n  b:\n    after: { a: succeeded }\n    infer: { prompt: \"b\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    with:\n      b_out: ${{ tasks.b.output }}\n    infer: { prompt: \"a · ${{ with.b_out }}\" }\n  b:\n    after: { a: success }\n    infer: { prompt: \"b\" }\n"
   },
   {
     "id": "dag-topology/016-after-unknown-predicate",

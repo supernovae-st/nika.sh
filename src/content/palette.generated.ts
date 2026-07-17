@@ -643,7 +643,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-DAG-005",
     "href": "/errors/NIKA-DAG-005",
-    "hint": "after: predicate outside the closed set (succeeded · failed · skipped · terminal)"
+    "hint": "after: predicate outside the closed set (success · failure · skipped · terminal)"
   },
   {
     "kind": "error",
