@@ -23,7 +23,7 @@ const WITH_EXCERPT = `think:
       Summarize · \${{ with.gather }}`
 
 const AFTER_EXCERPT = `announce:
-  after: { changelog: succeeded }
+  after: { changelog: success }
   invoke:
     tool: "nika:notify"`
 

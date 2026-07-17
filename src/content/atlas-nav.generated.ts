@@ -178,7 +178,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "Providers",
           "icon": "tiles",
           "to": "/providers",
-          "count": 16
+          "count": 17
         },
         {
           "label": "Templates",
@@ -267,7 +267,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "label": "Providers",
         "icon": "tiles",
         "to": "/providers",
-        "count": 16
+        "count": 17
       },
       {
         "label": "Templates",

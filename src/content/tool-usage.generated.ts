@@ -387,7 +387,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "wait": {
     "bare": "wait",
-    "yaml": "nika: v1\nworkflow:\n  id: let-the-index-settle\n  description: \"a declared pause — relative duration XOR absolute until\"\n\ntasks:\n  publish:\n    invoke:\n      tool: \"nika:notify\"\n      args:\n        target: \"https://hooks.example.com/deploys\"\n        message: \"docs published\"\n\n  settle:\n    after:\n      publish: succeeded\n    invoke:\n      tool: \"nika:wait\"\n      args: { duration: \"30s\" }\n\n  verify:\n    after:\n      settle: succeeded\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://docs.example.com/health\"\n        mode: jq\n        jq: \".status\"",
+    "yaml": "nika: v1\nworkflow:\n  id: let-the-index-settle\n  description: \"a declared pause — relative duration XOR absolute until\"\n\ntasks:\n  publish:\n    invoke:\n      tool: \"nika:notify\"\n      args:\n        target: \"https://hooks.example.com/deploys\"\n        message: \"docs published\"\n\n  settle:\n    after:\n      publish: success\n    invoke:\n      tool: \"nika:wait\"\n      args: { duration: \"30s\" }\n\n  verify:\n    after:\n      settle: success\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://docs.example.com/health\"\n        mode: jq\n        jq: \".status\"",
     "source": {
       "kind": "crafted",
       "file": "wait.nika.yaml"

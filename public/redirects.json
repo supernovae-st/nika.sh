@@ -72,6 +72,13 @@
       "applies": "wo-6"
     },
     {
+      "from": "/providers/moonshot",
+      "to": "/providers#moonshot",
+      "status": 301,
+      "live": true,
+      "applies": "wo-6"
+    },
+    {
       "from": "/providers/nvidia",
       "to": "/providers#nvidia",
       "status": 301,

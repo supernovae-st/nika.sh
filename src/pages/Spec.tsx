@@ -939,7 +939,7 @@ const SpecReference = memo(function SpecReference({ sampleYaml }: { sampleYaml: 
                       </span>
                       <span className="spec-anatomy-line">
                         <span className="spec-anatomy-k spec-anatomy-k--opt">after</span>
-                        <span className="spec-anatomy-punct">{': { lint: succeeded }'}</span>
+                        <span className="spec-anatomy-punct">{': { lint: success }'}</span>
                         <span className="spec-anatomy-mark">the control edges</span>
                       </span>
                       <span className="spec-anatomy-line">

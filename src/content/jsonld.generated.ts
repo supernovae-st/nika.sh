@@ -974,6 +974,13 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/providers#moonshot",
+          "termCode": "Moonshot (Kimi)",
+          "name": "Moonshot (Kimi)",
+          "description": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27."
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/providers#nvidia",
           "termCode": "NVIDIA",
           "name": "NVIDIA",
@@ -991,7 +998,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/providers#openai",
           "termCode": "OpenAI",
           "name": "OpenAI",
-          "description": "GPT-4, GPT-4o, and other OpenAI models."
+          "description": "GPT-5.x, the o-series, and other OpenAI models."
         },
         {
           "@type": "DefinedTerm",

@@ -2678,6 +2678,21 @@ export const ATLAS_NODES: AtlasNode[] = [
     }
   },
   {
+    "id": "provider:moonshot",
+    "kind": "member",
+    "set": "providers",
+    "layer": "reach",
+    "title": "Moonshot (Kimi)",
+    "url": "/providers",
+    "anchor": "moonshot",
+    "status": "both",
+    "opener": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27.",
+    "meta": {
+      "kind": "cloud",
+      "dialect": "openai-chat"
+    }
+  },
+  {
     "id": "provider:nvidia",
     "kind": "member",
     "set": "providers",
@@ -2716,7 +2731,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/providers",
     "anchor": "openai",
     "status": "both",
-    "opener": "GPT-4, GPT-4o, and other OpenAI models.",
+    "opener": "GPT-5.x, the o-series, and other OpenAI models.",
     "meta": {
       "kind": "cloud",
       "dialect": "openai-chat"
@@ -8171,6 +8186,11 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
+    "from": "provider:moonshot",
+    "to": "set:providers",
+    "kind": "member-of"
+  },
+  {
     "from": "provider:nvidia",
     "to": "set:providers",
     "kind": "member-of"
@@ -9089,15 +9109,15 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "from": "post:the-agent-workflow-spectrum",
     "to": "word:tools",
     "kind": "mentions"
-  },
-  {
-    "from": "post:the-editor-tells-the-truth",
-    "to": "tool:jq",
-    "kind": "mentions"
   }
 ]
 
 const ATLAS_EDGES_2: AtlasEdge[] = [
+  {
+    "from": "post:the-editor-tells-the-truth",
+    "to": "tool:jq",
+    "kind": "mentions"
+  },
   {
     "from": "post:the-editor-tells-the-truth",
     "to": "tool:log",

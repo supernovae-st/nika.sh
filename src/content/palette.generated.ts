@@ -1219,7 +1219,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "provider",
     "label": "provider: openai",
     "href": "/providers#openai",
-    "hint": "GPT-4, GPT-4o, and other OpenAI models."
+    "hint": "GPT-5.x, the o-series, and other OpenAI models."
   },
   {
     "kind": "provider",
@@ -1262,6 +1262,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "provider: nvidia",
     "href": "/providers#nvidia",
     "hint": "NVIDIA API (integrate.api.nvidia.com) · Nemotron 3 family (Open Model License · agentic-first) + hosted open models · self-hosted NIM containers expose the same surface."
+  },
+  {
+    "kind": "provider",
+    "label": "provider: moonshot",
+    "href": "/providers#moonshot",
+    "hint": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27."
   },
   {
     "kind": "provider",

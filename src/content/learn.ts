@@ -151,7 +151,7 @@ digest:
     log: \${{ tasks.repo_log.output }}      # is one edge
   infer:
     prompt: "Cross-reference \${{ with.news }} with \${{ with.log }}…"`,
-    note: 'fetch_news and repo_log run at the same time. digest waits for both. For order with no data, there is after: — { producer: succeeded }.',
+    note: 'fetch_news and repo_log run at the same time. digest waits for both. For order with no data, there is after: — { producer: success }.',
     check: {
       q: 'digest reads ${{ tasks.fetch_news.output }} in with:. What did that line just do?',
       options: ['Copied a value once, at parse time', 'Created an edge: digest now waits for fetch_news', 'Nothing until you also declare the dependency'],

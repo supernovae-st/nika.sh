@@ -738,7 +738,7 @@ tasks:
   # runs until this task has an answer.
   approve:
     after:
-      draft: succeeded
+      draft: success
     invoke:
       tool: "nika:prompt"
       args:
@@ -844,14 +844,14 @@ tasks:
   # Pack only once the notes are verified — the checksums gate the archive.
   pack_assets:
     after:
-      hash_notes: succeeded
-      count_notes: succeeded
+      hash_notes: success
+      count_notes: success
     exec:
       command: ["gzip", "-kf9", "assets.bin"]
 
   manifest:
     after:
-      pack_assets: succeeded
+      pack_assets: success
     exec:
       command: ["echo", "archive ok"]
 
@@ -952,13 +952,13 @@ tasks:
 
   render_page:
     after:
-      fetch_data: succeeded
+      fetch_data: success
     exec:
       command: ["cat", "./data.txt"]
 
   build_index:
     after:
-      render_page: succeeded
+      render_page: success
     exec:
       command: ["wc", "-c", "./page.txt"]
 
@@ -1617,7 +1617,7 @@ tasks:
     infer: { prompt: "one word", max_tokens: 200 }
 
   loop:
-    after: { bounded: succeeded }
+    after: { bounded: success }
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 3, max_tokens_total: 4000 }
 
 outputs:
@@ -1666,11 +1666,11 @@ tasks:
     exec: { command: ["echo", "ok"] }
 
   use:
-    after: { run: succeeded }
+    after: { run: success }
     invoke: { tool: "nika:read", args: { path: ./notes.md } }
 
   loop:
-    after: { think: succeeded }
+    after: { think: success }
     agent: { prompt: "say done", tools: ["nika:read"], max_turns: 2 }
 
 outputs:
@@ -1804,8 +1804,8 @@ tasks:
 
   digest:
     after:
-      fetch_news: succeeded
-      build: succeeded
+      fetch_news: success
+      build: success
     infer:
       prompt: "Summarize what changed"
 

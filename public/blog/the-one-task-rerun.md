@@ -31,13 +31,13 @@ tasks:
 
   render_page:
     after:
-      fetch_data: succeeded
+      fetch_data: success
     exec:
       command: ["cat", "./data.txt"]
 
   build_index:
     after:
-      render_page: succeeded
+      render_page: success
     exec:
       command: ["wc", "-c", "./page.txt"]
 

@@ -19,7 +19,7 @@ export const ATLAS_PROVENANCE: {
   "engine_version": "v0.103.0",
   "catalogs": {
     "tools": "0.99.0",
-    "providers": "0.99.0"
+    "providers": "0.104.0"
   }
 }
 
@@ -81,7 +81,7 @@ export const ATLAS_SET_COUNTS: Record<string, { count: number; url: string; titl
     "title": "The permit families"
   },
   "providers": {
-    "count": 16,
+    "count": 17,
     "url": "/providers",
     "title": "The providers"
   },
@@ -198,9 +198,7 @@ export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers', { ratified_only:
     "shipped_only": []
   },
   "providers": {
-    "ratified_only": [
-      "moonshot"
-    ],
+    "ratified_only": [],
     "shipped_only": []
   }
 }

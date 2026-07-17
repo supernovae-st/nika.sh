@@ -28,8 +28,8 @@ tasks:
 
   digest:
     after:
-      fetch_news: succeeded
-      build: succeeded
+      fetch_news: success
+      build: success
     infer:
       prompt: "Summarize what changed"
 

@@ -39,14 +39,14 @@ tasks:
   # Pack only once the notes are verified — the checksums gate the archive.
   pack_assets:
     after:
-      hash_notes: succeeded
-      count_notes: succeeded
+      hash_notes: success
+      count_notes: success
     exec:
       command: ["gzip", "-kf9", "assets.bin"]
 
   manifest:
     after:
-      pack_assets: succeeded
+      pack_assets: success
     exec:
       command: ["echo", "archive ok"]
 

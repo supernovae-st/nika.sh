@@ -32,7 +32,7 @@ tasks:
   # runs until this task has an answer.
   approve:
     after:
-      draft: succeeded
+      draft: success
     invoke:
       tool: "nika:prompt"
       args:

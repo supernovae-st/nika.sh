@@ -44,8 +44,8 @@ describe('gate matrix · the vendored corpus is byte-stable and complete', () =>
     expect(dead.map((c) => `${c.producer}/${c.form}`).sort()).toEqual([
       'cancelled/after-skipped',
       'failure/after-skipped',
-      'skipped/after-failed',
-      'skipped/after-succeeded',
+      'skipped/after-failure',
+      'skipped/after-success',
       'success/after-skipped',
     ])
     for (const c of dead) {
@@ -77,10 +77,10 @@ describe('gate matrix · the vendored corpus is byte-stable and complete', () =>
     // status observation settles with the producer, whatever its fate
     for (const p of GATE_PRODUCERS) expect(cell(p, 'with-status').verdict, p).toBe('success')
     // a gate that can no longer fire cancels its waiter; the matching one fires
-    expect(cell('failure', 'after-succeeded').verdict).toBe('cancelled')
-    expect(cell('success', 'after-succeeded').verdict).toBe('success')
-    expect(cell('failure', 'after-failed').verdict).toBe('success')
-    expect(cell('success', 'after-failed').verdict).toBe('cancelled')
+    expect(cell('failure', 'after-success').verdict).toBe('cancelled')
+    expect(cell('success', 'after-success').verdict).toBe('success')
+    expect(cell('failure', 'after-failure').verdict).toBe('success')
+    expect(cell('success', 'after-failure').verdict).toBe('cancelled')
     // terminal fires on any terminal state
     for (const p of GATE_PRODUCERS) expect(cell(p, 'after-terminal').verdict, p).toBe('success')
     // when: is POST-gate business logic — false holds, true admits, always

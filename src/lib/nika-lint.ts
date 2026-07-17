@@ -211,7 +211,7 @@ export function lintNika(src: string): LintDiag[] {
 
     // PARSE-024 · depends_on is dead since W2 — the language spells the intent
     if ('depends_on' in t)
-      diags.push({ line, code: 'NIKA-PARSE-024', message: `task '${id}' carries depends_on: — dead since W2`, fix: 'data → with: bindings (the binding IS the edge) · control → after: {producer: succeeded} · always → after: {producer: terminal}' })
+      diags.push({ line, code: 'NIKA-PARSE-024', message: `task '${id}' carries depends_on: — dead since W2`, fix: 'data → with: bindings (the binding IS the edge) · control → after: {producer: success} · always → after: {producer: terminal}' })
 
     // DAG-002 · every with:/after: edge target must be a declared task
     for (const body of exprBodies(t.with))

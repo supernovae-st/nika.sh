@@ -158,7 +158,7 @@ export const MAP_LAYERS: MapLayer[] = [
         "id": "providers",
         "title": "The providers",
         "url": "/providers",
-        "count": 16,
+        "count": 17,
         "surface": "anchors",
         "slot": null,
         "closed": false,

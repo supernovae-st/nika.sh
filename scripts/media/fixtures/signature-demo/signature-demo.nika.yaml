@@ -21,7 +21,7 @@ tasks:
       args: { pattern: "${{ vars.changes_dir }}/*.md" }
 
   digest:
-    after: { discover: succeeded }
+    after: { discover: success }
     exec:
       command: ["cat", "items/item-1.md", "items/item-2.md", "items/item-3.md", "items/item-4.md", "items/item-5.md"]
 
@@ -82,7 +82,7 @@ tasks:
         ${{ with.survivors }}
 
   publish:
-    after: { verify: succeeded }
+    after: { verify: success }
     with:
       survivors: ${{ tasks.survivors.output }}
     when: ${{ with.survivors.size() > 0 }}

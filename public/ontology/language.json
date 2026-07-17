@@ -5,7 +5,7 @@
   "engine_version": "v0.103.0",
   "catalogs": {
     "tools": "0.99.0",
-    "providers": "0.99.0"
+    "providers": "0.104.0"
   },
   "nodes": [
     {
@@ -2634,6 +2634,21 @@
       }
     },
     {
+      "id": "provider:moonshot",
+      "kind": "member",
+      "set": "providers",
+      "layer": "reach",
+      "title": "Moonshot (Kimi)",
+      "url": "/providers",
+      "anchor": "moonshot",
+      "status": "both",
+      "opener": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27.",
+      "meta": {
+        "kind": "cloud",
+        "dialect": "openai-chat"
+      }
+    },
+    {
       "id": "provider:nvidia",
       "kind": "member",
       "set": "providers",
@@ -2672,7 +2687,7 @@
       "url": "/providers",
       "anchor": "openai",
       "status": "both",
-      "opener": "GPT-4, GPT-4o, and other OpenAI models.",
+      "opener": "GPT-5.x, the o-series, and other OpenAI models.",
       "meta": {
         "kind": "cloud",
         "dialect": "openai-chat"
@@ -8119,6 +8134,11 @@
     },
     {
       "from": "provider:mock",
+      "to": "set:providers",
+      "kind": "member-of"
+    },
+    {
+      "from": "provider:moonshot",
       "to": "set:providers",
       "kind": "member-of"
     },

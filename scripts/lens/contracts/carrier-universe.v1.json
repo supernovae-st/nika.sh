@@ -44,8 +44,8 @@
     "site.config.ts",
     "src/routes.tsx"
   ],
-  "carrier_count": 475,
-  "set_sha256": "2d9452a6bf5e71157ee4831a9e237d5e550150e9eff0a194501ed67d58c9e740",
+  "carrier_count": 476,
+  "set_sha256": "05d560e7d23e705f95a574009305775e227adf9e44a6a64fb758e074c4e4ebd1",
   "normative_source_count": 228,
   "normative_source_sha256": "52447723609124320e82901c49cb13022f3291cd756d15b4471969bdb356a56c",
   "normative_sources": [
@@ -430,6 +430,7 @@
     "public/providers/localai/index.html",
     "public/providers/mistral/index.html",
     "public/providers/mock/index.html",
+    "public/providers/moonshot/index.html",
     "public/providers/nvidia/index.html",
     "public/providers/ollama/index.html",
     "public/providers/openai/index.html",
@@ -715,6 +716,7 @@
     "public/providers/localai/index.html",
     "public/providers/mistral/index.html",
     "public/providers/mock/index.html",
+    "public/providers/moonshot/index.html",
     "public/providers/nvidia/index.html",
     "public/providers/ollama/index.html",
     "public/providers/openai/index.html",

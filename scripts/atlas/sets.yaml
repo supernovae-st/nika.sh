@@ -339,6 +339,7 @@ sets:
       - { from: /providers/openrouter, to: "/providers#openrouter" }
       - { from: /providers/huggingface, to: "/providers#huggingface" }
       - { from: /providers/nvidia, to: "/providers#nvidia" }
+      - { from: /providers/moonshot, to: "/providers#moonshot" }
       - { from: /providers/mock, to: "/providers#mock" }
     opener: >-
       Model access is provider-agnostic and local-first: the same file runs
