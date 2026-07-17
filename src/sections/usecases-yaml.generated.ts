@@ -107,7 +107,7 @@ tasks:
 
   trace:
     after:
-      extract: succeeded
+      extract: success
     invoke:
       tool: "nika:log"
       args:
@@ -449,7 +449,7 @@ tasks:
     with:
       clauses: \${{ tasks.clauses.output.clauses }}
     after:
-      gate: succeeded              # state, no data · the assert passed or the memo is cancelled
+      gate: success              # state, no data · the assert passed or the memo is cancelled
     infer:
       prompt: |
         Write a one-page risk memo from these clauses ·
@@ -545,7 +545,7 @@ tasks:
     with:
       rows_md: \${{ tasks.rows_md.output }}
     after:
-      chart: succeeded
+      chart: success
     invoke:
       tool: "nika:write"
       args:
@@ -866,7 +866,7 @@ tasks:
     with:
       notes_headline: \${{ tasks.notes.output.headline }}
     after:
-      changelog: succeeded
+      changelog: success
     invoke:
       tool: "nika:notify"
       args:
@@ -1283,7 +1283,7 @@ tasks:
 
   ping:
     after:
-      save: succeeded
+      save: success
     invoke:
       tool: "nika:notify"
       args:
@@ -1810,7 +1810,7 @@ tasks:
   # ── the run reports its own bill ──
   bill:
     after:
-      save: succeeded                # state, no data · read the meter once the brief landed
+      save: success                # state, no data · read the meter once the brief landed
     invoke:
       tool: "nika:inspect"
       args: { view: cost }
@@ -1996,14 +1996,14 @@ tasks:
   # ── settle, then confirm recovery before claiming it ──
   settle:
     after:
-      timeline: succeeded
+      timeline: success
     invoke:
       tool: "nika:wait"
       args: { duration: "60s" }
 
   recheck:
     after:
-      settle: succeeded
+      settle: success
     invoke:
       tool: "nika:fetch"
       args:
@@ -2025,7 +2025,7 @@ tasks:
     with:
       events: \${{ tasks.timeline.output.events }}
     after:
-      confirmed: succeeded             # state, no data · recovery proven or no draft
+      confirmed: success             # state, no data · recovery proven or no draft
     infer:
       model: anthropic/claude-sonnet-4-6   # per-task override · thinking budget
       prompt: |
@@ -2138,7 +2138,7 @@ tasks:
     with:
       t0: \${{ tasks.t0.output }}
     after:
-      gates_green: succeeded           # state, no data · the timing is only worth taking on a green board
+      gates_green: success           # state, no data · the timing is only worth taking on a green board
     invoke:
       tool: "nika:date"
       args:
@@ -2169,7 +2169,7 @@ tasks:
   # ── hold until the window · absolute time, not a sleep ──
   hold:
     after:
-      approved: succeeded
+      approved: success
     invoke:
       tool: "nika:wait"
       args:
@@ -2178,7 +2178,7 @@ tasks:
 
   ship:
     after:
-      hold: succeeded
+      hold: success
     exec:
       command: ["./scripts/release.sh", "\${{ vars.version }}"]   # argv: the interpolation cannot break out
       capture: structured
@@ -2186,7 +2186,7 @@ tasks:
 
   verify:
     after:
-      ship: succeeded
+      ship: success
     invoke:
       tool: "nika:fetch"
       args:
@@ -2708,7 +2708,7 @@ tasks:
 
   human:
     after:
-      gates: succeeded              # state, no data · no question until the board is green
+      gates: success              # state, no data · no question until the board is green
     invoke:
       # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:
       #   nika run --resume <trace> --answer human=yes

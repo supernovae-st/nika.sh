@@ -317,7 +317,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "prompt": {
     "bare": "prompt",
-    "yaml": "  human:\n    after:\n      gates: succeeded              # state, no data · no question until the board is green\n    invoke:\n      # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:\n      #   nika run --resume <trace> --answer human=yes\n      tool: \"nika:prompt\"\n      args:\n        message: \"All gates GREEN. Proceed?\"   # SLOT: the decision, fully informed\n        default: false",
+    "yaml": "  human:\n    after:\n      gates: success              # state, no data · no question until the board is green\n    invoke:\n      # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:\n      #   nika run --resume <trace> --answer human=yes\n      tool: \"nika:prompt\"\n      args:\n        message: \"All gates GREEN. Proceed?\"   # SLOT: the decision, fully informed\n        default: false",
     "source": {
       "kind": "template",
       "template": "human-gated-ship",
