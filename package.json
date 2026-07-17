@@ -26,7 +26,7 @@
     "gates": "node scripts/run-gates.mjs",
     "gates:fast": "node scripts/run-gates.mjs --fast",
     "atlas": "node scripts/atlas/build-atlas.mjs",
-    "postbuild": "pagefind --site dist"
+    "postbuild": "pagefind --site dist && node scripts/sort-pagefind-entry.mjs"
   },
   "dependencies": {
     "@codemirror/lang-yaml": "^6.1.3",
