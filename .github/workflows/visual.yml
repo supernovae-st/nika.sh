@@ -29,12 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
           package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
-      - uses: browser-actions/setup-chrome@v2
+      - uses: browser-actions/setup-chrome@2e1d749697dd1612b833dba4a722266286fbefcd # v2
         id: chrome
       - name: enable corepack (pnpm pinned via packageManager)
         run: corepack enable
@@ -58,7 +58,7 @@ jobs:
         run: node scripts/visual-regress.mjs
       - name: upload diffs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: visual-diffs
           path: |
@@ -73,12 +73,12 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
           package-manager-cache: false  # v5 default reads packageManager and wants pnpm pre-installed; corepack runs after — keep v4 behavior
-      - uses: browser-actions/setup-chrome@v2
+      - uses: browser-actions/setup-chrome@2e1d749697dd1612b833dba4a722266286fbefcd # v2
         id: chrome
       - name: enable corepack (pnpm pinned via packageManager)
         run: corepack enable
