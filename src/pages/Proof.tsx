@@ -1,4 +1,5 @@
 import { useRevealOnce } from '../sections/use-reveal-once'
+import { LivingTerminal } from '../components/LivingTerminal'
 import { MemberRows, Rails, HubFoot } from './hub-shared'
 import { useHubHead, chapterHref } from './hub-lib'
 
@@ -44,11 +45,10 @@ export function Component() {
               run state. The kinds themselves live on the flow hub; this page owns the
               envelope and its additive law.
             </p>
-            <p className="hub-slot">
-              a real <code>nika inspect --format json</code> payload renders here with the first W2+
-              release train (engine captures are release-gated by law) · the structure
-              above is the spec's, already fixture-proven.
-            </p>
+            {/* the slot's own prophecy, filled: the first W2+ train shipped
+                (0.104) — the living terminal replays the REAL captures,
+                including `nika inspect` with its human|json dual */}
+            <LivingTerminal />
             <Rails
               rails={[
                 { kind: 'kinds', label: 'the six edge kinds · /flow#edges', href: '/flow#edges' },

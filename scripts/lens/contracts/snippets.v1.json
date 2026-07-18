@@ -13,8 +13,8 @@
       "*.test.*",
       "*.generated.*"
     ],
-    "carrier_count": 52,
-    "block_count": 112
+    "carrier_count": 53,
+    "block_count": 114
   },
   "carriers": [
     {
@@ -711,6 +711,24 @@
           "kind": "jsx-pre",
           "line": 465,
           "sha256": "ff7f809a885b2b1262bf34f372bf1dd8add5d905485993dd4d3db19971839312"
+        }
+      ]
+    },
+    {
+      "path": "src/components/LivingTerminal.tsx",
+      "source_blob": "6eba721b7617b8b5c1e2c3756da5146875ee5106",
+      "blocks": [
+        {
+          "selector": "src/components/LivingTerminal.tsx#pre:1",
+          "kind": "jsx-pre",
+          "line": 128,
+          "sha256": "c23a226a02eb45774e05bf95b04c34d5522be41c1e3602f280524d761e42d9f6"
+        },
+        {
+          "selector": "src/components/LivingTerminal.tsx#pre:2",
+          "kind": "jsx-pre",
+          "line": 130,
+          "sha256": "257ee5423d6db25f8fa9481752e054c0972f423f3698060cf202af2c83394c2e"
         }
       ]
     },
