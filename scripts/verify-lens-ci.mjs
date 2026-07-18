@@ -161,8 +161,8 @@ function gateJob(command) {
     'runs-on': 'ubuntu-latest',
     'timeout-minutes': '10',
     steps: [
-      { uses: 'actions/checkout@v5' },
-      { uses: 'actions/setup-node@v5', with: { 'node-version': '22', 'package-manager-cache': 'false' } },
+      { uses: 'actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd' },
+      { uses: 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444', with: { 'node-version': '22', 'package-manager-cache': 'false' } },
       { run: 'corepack enable' },
       { run: 'pnpm install --frozen-lockfile' },
       { run: command },
@@ -175,9 +175,9 @@ function integrityJob(command) {
     'runs-on': 'ubuntu-latest',
     'timeout-minutes': '10',
     steps: [
-      { uses: 'actions/checkout@v5' },
-      { uses: 'actions/setup-node@v5', with: { 'node-version': '22', 'package-manager-cache': 'false' } },
-      { uses: 'actions/setup-python@v6', with: { 'python-version': '3.12' } },
+      { uses: 'actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd' },
+      { uses: 'actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444', with: { 'node-version': '22', 'package-manager-cache': 'false' } },
+      { uses: 'actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1', with: { 'python-version': '3.12' } },
       { run: 'corepack enable' },
       { run: 'pnpm install --frozen-lockfile' },
       { run: 'pip install pyyaml==6.0.3' },

@@ -127,7 +127,7 @@
   },
   {
    "path": "scripts/verify-lens-ci.mjs",
-   "sha256": "f4f5be0fbb6210f19103ff4bcc4b5dba7b129876683f8d1b9349695d509219f6"
+   "sha256": "985111107c33970db8763ad142ff45a44f6616930900b9e3aea424efbfad1391"
   },
   {
    "path": "scripts/verify_spec_resync_conformance.py",
