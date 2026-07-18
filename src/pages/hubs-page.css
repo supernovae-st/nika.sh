@@ -257,3 +257,67 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── the generic member room (rooms universelles · 2026-07-18) ──────────────
+   The inspector's readout, full-page: the fact table is a machined dl,
+   links ink on hover, the glyph carries the kind. */
+.mr-up {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.mr-up:hover {
+  color: var(--v4-accent);
+}
+.mr-glyph {
+  color: var(--v4-text-faint);
+}
+.mr-rows {
+  margin: 0;
+  display: grid;
+  gap: 0;
+  border: 1px solid rgb(255 255 255 / 0.09);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.mr-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid rgb(255 255 255 / 0.06);
+}
+.mr-row:first-child {
+  border-top: 0;
+}
+.mr-row-label {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  align-self: baseline;
+}
+.mr-row-value {
+  margin: 0;
+  color: var(--v4-text-dim);
+  font-size: 13.5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  align-items: baseline;
+}
+.mr-row-link {
+  color: var(--v4-text);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.mr-row-link:hover,
+.mr-row-link:focus-visible {
+  color: var(--v4-accent);
+}
+@media (max-width: 560px) {
+  .mr-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+}

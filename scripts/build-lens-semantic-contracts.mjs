@@ -214,6 +214,9 @@ const COMPONENT_FEATURE = {
   ProofPage: 'product.proof',
   UseCaseRoom: 'product.use_cases',
   SourcesPage: 'site.sources',
+  /* rooms universelles (verdict 2026-07-18): ONE generic room component
+     serves every roomed register family — its own feature */
+  MemberRoom: 'registry.member_rooms',
 }
 
 const FEATURE_EVIDENCE = {
@@ -240,6 +243,7 @@ const FEATURE_EVIDENCE = {
   'product.flow': 'src/pages/Flow.tsx',
   'product.boundary': 'src/pages/Boundary.tsx',
   'product.proof': 'src/pages/Proof.tsx',
+  'registry.member_rooms': 'src/pages/MemberRoom.tsx',
 }
 
 function featureContract() {

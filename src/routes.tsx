@@ -27,6 +27,7 @@ import { Component as SourcesPage } from './pages/Sources'
 import { Component as BoundaryPage } from './pages/Boundary'
 import { Component as ProofPage } from './pages/Proof'
 import { Component as Providers } from './pages/Providers'
+import { Component as MemberRoom } from './pages/MemberRoom'
 import { Component as Templates } from './pages/Templates'
 
 /* ─── central route table · React Router v7 data router ──────────────────────
@@ -85,10 +86,26 @@ export const routes: RouteObject[] = [
       { path: 'language/:word', Component: WordPage },
       /* the provider register · the human twin of /providers/catalog.json.
          Spec-named set only; the engine's embedded tail stays a count. */
-      /* the provider rooms died in the WO-6 fusion: /providers/:id serves a
-         STATIC meta-refresh stub (compiler-emitted from redirects.json ·
-         the /docs pattern) → /providers#id · the hub is the register */
       { path: 'providers', Component: Providers },
+      /* rooms universelles (operator verdict 2026-07-18 · « chaque élément a
+         sa page ») — ONE generic room route per roomed register family; the
+         member registry + PATHS both derive from the descriptor, so a new
+         family is a descriptor flip, never a route edit. /providers/:id is
+         REBORN as a real page here (the WO-6 meta-refresh stubs die). */
+      { path: 'providers/:id', Component: MemberRoom },
+      { path: 'namespaces/:id', Component: MemberRoom },
+      { path: 'types/:id', Component: MemberRoom },
+      { path: 'edges/:id', Component: MemberRoom },
+      { path: 'predicates/:id', Component: MemberRoom },
+      { path: 'families/:id', Component: MemberRoom },
+      { path: 'modes/:id', Component: MemberRoom },
+      { path: 'permits/:id', Component: MemberRoom },
+      { path: 'secrets/:id', Component: MemberRoom },
+      { path: 'conformance/:id', Component: MemberRoom },
+      { path: 'error-namespaces/:id', Component: MemberRoom },
+      { path: 'error-categories/:id', Component: MemberRoom },
+      { path: 'mcp/:id', Component: MemberRoom },
+      { path: 'truth/:id', Component: MemberRoom },
       /* the skeleton register · the human twin of /templates/catalog.json.
          Deep links open the full SLOT-marked workflow in the product panel. */
       { path: 'templates', Component: Templates },

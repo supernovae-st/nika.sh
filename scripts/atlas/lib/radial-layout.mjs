@@ -106,6 +106,7 @@ export function layoutConstellation(twin, { topN = 12 } = {}) {
         title: m.title,
         url: m.url,
         anchor: m.anchor ?? null,
+        own_page: m.own_page === true,
         set: d.id,
         layer: d.layer,
         /* a star is an <a> only when BOTH truths hold today: its page is

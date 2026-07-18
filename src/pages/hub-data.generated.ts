@@ -7,6 +7,8 @@ export interface HubSetMember {
   id: string
   one_liner?: string
   slot?: string
+  /** the member's own page (rooms universelles) — absent for anchor-only */
+  url?: string
 }
 export interface HubSet {
   id: string
@@ -85,28 +87,34 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "value",
-            "one_liner": "a with binding referencing a task output · carries the binding name"
+            "one_liner": "a with binding referencing a task output · carries the binding name",
+            "url": "/edges/value"
           },
           {
             "id": "terminal-observation",
-            "one_liner": "a status or timing read in with · settles with the producer"
+            "one_liner": "a status or timing read in with · settles with the producer",
+            "url": "/edges/terminal-observation"
           },
           {
             "id": "failure-observation",
-            "one_liner": "an error read in with · flows only when the producer failed"
+            "one_liner": "an error read in with · flows only when the producer failed",
+            "url": "/edges/failure-observation"
           },
           {
             "id": "control",
-            "one_liner": "an after entry · carries its gate predicate"
+            "one_liner": "an after entry · carries its gate predicate",
+            "url": "/edges/control"
           },
           {
             "id": "recovery",
-            "one_liner": "an on_error.recover reference · a parking read, not an ordering edge"
+            "one_liner": "an on_error.recover reference · a parking read, not an ordering edge",
+            "url": "/edges/recovery"
           },
           {
             "id": "finally",
             "one_liner": "reserved · named so the enum is complete before the trace wave gives cleanup identity",
-            "slot": "W5"
+            "slot": "W5",
+            "url": "/edges/finally"
           }
         ]
       },
@@ -123,19 +131,23 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "success",
-            "one_liner": "fire when the producer completed clean"
+            "one_liner": "fire when the producer completed clean",
+            "url": "/predicates/success"
           },
           {
             "id": "failure",
-            "one_liner": "fire when the producer failed terminally"
+            "one_liner": "fire when the producer failed terminally",
+            "url": "/predicates/failure"
           },
           {
             "id": "skipped",
-            "one_liner": "fire when the producer was gated out"
+            "one_liner": "fire when the producer was gated out",
+            "url": "/predicates/skipped"
           },
           {
             "id": "terminal",
-            "one_liner": "fire when the producer reached any terminal state"
+            "one_liner": "fire when the producer reached any terminal state",
+            "url": "/predicates/terminal"
           }
         ]
       }
@@ -177,19 +189,23 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "exec",
-            "one_liner": "which commands may run · false kills the family"
+            "one_liner": "which commands may run · false kills the family",
+            "url": "/permits/exec"
           },
           {
             "id": "fs",
-            "one_liner": "read and write globs · the walk root is gated"
+            "one_liner": "read and write globs · the walk root is gated",
+            "url": "/permits/fs"
           },
           {
             "id": "net",
-            "one_liner": "http allowlist · the SSRF floor stays on regardless"
+            "one_liner": "http allowlist · the SSRF floor stays on regardless",
+            "url": "/permits/net"
           },
           {
             "id": "tools",
-            "one_liner": "which nika tools the file may invoke"
+            "one_liner": "which nika tools the file may invoke",
+            "url": "/permits/tools"
           }
         ]
       },
@@ -206,15 +222,18 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "vault",
-            "one_liner": "the OS keychain backend · the default posture"
+            "one_liner": "the OS keychain backend · the default posture",
+            "url": "/secrets/vault"
           },
           {
             "id": "env",
-            "one_liner": "read from the environment at run time"
+            "one_liner": "read from the environment at run time",
+            "url": "/secrets/env"
           },
           {
             "id": "file",
-            "one_liner": "read from a path the boundary allows"
+            "one_liner": "read from a path the boundary allows",
+            "url": "/secrets/file"
           }
         ]
       }
@@ -264,15 +283,18 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "core",
-            "one_liner": "parse · validate · DAG · variables · typed errors · no execution"
+            "one_liner": "parse · validate · DAG · variables · typed errors · no execution",
+            "url": "/conformance/core"
           },
           {
             "id": "runtime",
-            "one_liner": "executes verbs · evaluates when and for_each over run state"
+            "one_liner": "executes verbs · evaluates when and for_each over run state",
+            "url": "/conformance/runtime"
           },
           {
             "id": "stdlib",
-            "one_liner": "proves the v0.1 library surface · the production default"
+            "one_liner": "proves the v0.1 library surface · the production default",
+            "url": "/conformance/stdlib"
           }
         ]
       },
@@ -288,31 +310,40 @@ export const HUBS: Record<string, HubData> = {
         "closed": false,
         "members": [
           {
-            "id": "nika_check"
+            "id": "nika_check",
+            "url": "/mcp/nika_check"
           },
           {
-            "id": "nika_explain"
+            "id": "nika_explain",
+            "url": "/mcp/nika_explain"
           },
           {
-            "id": "nika_schema"
+            "id": "nika_schema",
+            "url": "/mcp/nika_schema"
           },
           {
-            "id": "nika_examples"
+            "id": "nika_examples",
+            "url": "/mcp/nika_examples"
           },
           {
-            "id": "nika_template"
+            "id": "nika_template",
+            "url": "/mcp/nika_template"
           },
           {
-            "id": "nika_canon"
+            "id": "nika_canon",
+            "url": "/mcp/nika_canon"
           },
           {
-            "id": "nika_catalog"
+            "id": "nika_catalog",
+            "url": "/mcp/nika_catalog"
           },
           {
-            "id": "nika_tools"
+            "id": "nika_tools",
+            "url": "/mcp/nika_tools"
           },
           {
-            "id": "nika_inspect"
+            "id": "nika_inspect",
+            "url": "/mcp/nika_inspect"
           }
         ]
       }

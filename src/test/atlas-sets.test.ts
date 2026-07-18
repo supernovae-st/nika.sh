@@ -187,17 +187,18 @@ describe('sets.yaml · the versioned constants mirror their gated sources', () =
 })
 
 describe('sets.yaml · moved entries are complete and shaped as redirects', () => {
-  it('providers moved covers every cataloged provider (the rooms died in the WO-6 fusion)', () => {
-    const moved = need('providers').moved!
+  it('providers carry NO moved rows — every cataloged provider owns a real room (verdict 2026-07-18)', () => {
+    /* the WO-6 fusion parked the member pages behind 301 stubs; the operator
+       verdict INVERTED it: same URLs, real pages. The register keeps its
+       anchors (the hub view); the room is the member's canonical url. */
+    expect(need('providers').moved).toBeUndefined()
+    expect(need('providers').rooms_url).toBe('/providers')
     const catalog = JSON.parse(
       readFileSync(join(ROOT, 'public/providers/catalog.json'), 'utf8'),
     ) as { providers: { id: string }[] }
-    expect(moved.map((m) => m.from).sort()).toEqual(
-      catalog.providers.map((p) => `/providers/${p.id}`).sort(),
-    )
-    for (const m of moved) {
-      const id = m.from.replace('/providers/', '')
-      expect(m.to).toBe(`/providers#${id}`)
+    const paths = readFileSync(join(ROOT, 'site.config.ts'), 'utf8')
+    for (const p of catalog.providers) {
+      expect(paths.includes(`'/providers/${p.id}'`), `/providers/${p.id} must prerender`).toBe(true)
     }
   })
 

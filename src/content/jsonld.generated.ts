@@ -17,31 +17,31 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#ns-env",
+          "@id": "https://nika.sh/namespaces/env",
           "termCode": "env",
           "name": "env"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#ns-secrets",
+          "@id": "https://nika.sh/namespaces/secrets",
           "termCode": "secrets",
           "name": "secrets"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#ns-tasks",
+          "@id": "https://nika.sh/namespaces/tasks",
           "termCode": "tasks",
           "name": "tasks"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#ns-vars",
+          "@id": "https://nika.sh/namespaces/vars",
           "termCode": "vars",
           "name": "vars"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#ns-with",
+          "@id": "https://nika.sh/namespaces/with",
           "termCode": "with",
           "name": "with"
         }
@@ -57,61 +57,61 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-bool",
+          "@id": "https://nika.sh/types/bool",
           "termCode": "bool",
           "name": "bool"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-bytes",
+          "@id": "https://nika.sh/types/bytes",
           "termCode": "bytes",
           "name": "bytes"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-duration",
+          "@id": "https://nika.sh/types/duration",
           "termCode": "duration",
           "name": "duration"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-integer",
+          "@id": "https://nika.sh/types/integer",
           "termCode": "integer",
           "name": "integer"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-null",
+          "@id": "https://nika.sh/types/null",
           "termCode": "null",
           "name": "null"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-number",
+          "@id": "https://nika.sh/types/number",
           "termCode": "number",
           "name": "number"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-path",
+          "@id": "https://nika.sh/types/path",
           "termCode": "path",
           "name": "path"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-string",
+          "@id": "https://nika.sh/types/string",
           "termCode": "string",
           "name": "string"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-timestamp",
+          "@id": "https://nika.sh/types/timestamp",
           "termCode": "timestamp",
           "name": "timestamp"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language#type-uri",
+          "@id": "https://nika.sh/types/uri",
           "termCode": "uri",
           "name": "uri"
         }
@@ -512,42 +512,42 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#edge-control",
+          "@id": "https://nika.sh/edges/control",
           "termCode": "control",
           "name": "control",
           "description": "an after entry · carries its gate predicate"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#edge-failure-observation",
+          "@id": "https://nika.sh/edges/failure-observation",
           "termCode": "failure-observation",
           "name": "failure-observation",
           "description": "an error read in with · flows only when the producer failed"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#edge-finally",
+          "@id": "https://nika.sh/edges/finally",
           "termCode": "finally",
           "name": "finally",
           "description": "reserved · named so the enum is complete before the trace wave gives cleanup identity"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#edge-recovery",
+          "@id": "https://nika.sh/edges/recovery",
           "termCode": "recovery",
           "name": "recovery",
           "description": "an on_error.recover reference · a parking read, not an ordering edge"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#edge-terminal-observation",
+          "@id": "https://nika.sh/edges/terminal-observation",
           "termCode": "terminal-observation",
           "name": "terminal-observation",
           "description": "a status or timing read in with · settles with the producer"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#edge-value",
+          "@id": "https://nika.sh/edges/value",
           "termCode": "value",
           "name": "value",
           "description": "a with binding referencing a task output · carries the binding name"
@@ -564,28 +564,28 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#predicate-failure",
+          "@id": "https://nika.sh/predicates/failure",
           "termCode": "failure",
           "name": "failure",
           "description": "fire when the producer failed terminally"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#predicate-skipped",
+          "@id": "https://nika.sh/predicates/skipped",
           "termCode": "skipped",
           "name": "skipped",
           "description": "fire when the producer was gated out"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#predicate-success",
+          "@id": "https://nika.sh/predicates/success",
           "termCode": "success",
           "name": "success",
           "description": "fire when the producer completed clean"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/flow#predicate-terminal",
+          "@id": "https://nika.sh/predicates/terminal",
           "termCode": "terminal",
           "name": "terminal",
           "description": "fire when the producer reached any terminal state"
@@ -926,37 +926,37 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools#core",
+          "@id": "https://nika.sh/families/core",
           "termCode": "core",
           "name": "core"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools#data",
+          "@id": "https://nika.sh/families/data",
           "termCode": "data",
           "name": "data"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools#file",
+          "@id": "https://nika.sh/families/file",
           "termCode": "file",
           "name": "file"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools#introspection",
+          "@id": "https://nika.sh/families/introspection",
           "termCode": "introspection",
           "name": "introspection"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools#media",
+          "@id": "https://nika.sh/families/media",
           "termCode": "media",
           "name": "media"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools#network",
+          "@id": "https://nika.sh/families/network",
           "termCode": "network",
           "name": "network"
         }
@@ -974,119 +974,119 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#anthropic",
+          "@id": "https://nika.sh/providers/anthropic",
           "termCode": "Anthropic Claude",
           "name": "Anthropic Claude",
           "description": "Claude models (Opus, Sonnet, Haiku)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#deepseek",
+          "@id": "https://nika.sh/providers/deepseek",
           "termCode": "DeepSeek",
           "name": "DeepSeek",
           "description": "DeepSeek Chat and Coder models."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#gemini",
+          "@id": "https://nika.sh/providers/gemini",
           "termCode": "Google Gemini",
           "name": "Google Gemini",
           "description": "Gemini Pro, Flash, and Ultra models."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#groq",
+          "@id": "https://nika.sh/providers/groq",
           "termCode": "Groq",
           "name": "Groq",
           "description": "Fast inference with Llama, Mixtral models."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#huggingface",
+          "@id": "https://nika.sh/providers/huggingface",
           "termCode": "Hugging Face",
           "name": "Hugging Face",
           "description": "Inference Providers router · 100+ open-weight models across 18 providers (Groq · Cerebras · Together · Scaleway · OVHcloud · …) · zero markup · :provider or :fastest/:cheapest routing suffix."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#llamacpp",
+          "@id": "https://nika.sh/providers/llamacpp",
           "termCode": "llama.cpp",
           "name": "llama.cpp",
           "description": "llama.cpp server (default port 8080) — serves the loaded GGUF; the wire model id is free-form."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#lmstudio",
+          "@id": "https://nika.sh/providers/lmstudio",
           "termCode": "LM Studio",
           "name": "LM Studio",
           "description": "LM Studio local server (default port 1234) — serves the loaded model."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#localai",
+          "@id": "https://nika.sh/providers/localai",
           "termCode": "LocalAI",
           "name": "LocalAI",
           "description": "LocalAI server (default port 8080) — an OpenAI-compatible gateway over local backends."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#mistral",
+          "@id": "https://nika.sh/providers/mistral",
           "termCode": "Mistral AI",
           "name": "Mistral AI",
           "description": "Mistral Large, Medium, Small models."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#mock",
+          "@id": "https://nika.sh/providers/mock",
           "termCode": "Mock",
           "name": "Mock",
           "description": "Deterministic test responses — no API calls, no keys needed."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#moonshot",
+          "@id": "https://nika.sh/providers/moonshot",
           "termCode": "Moonshot (Kimi)",
           "name": "Moonshot (Kimi)",
           "description": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#nvidia",
+          "@id": "https://nika.sh/providers/nvidia",
           "termCode": "NVIDIA",
           "name": "NVIDIA",
           "description": "NVIDIA API (integrate.api.nvidia.com) · Nemotron 3 family (Open Model License · agentic-first) + hosted open models · self-hosted NIM containers expose the same surface."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#ollama",
+          "@id": "https://nika.sh/providers/ollama",
           "termCode": "Ollama",
           "name": "Ollama",
           "description": "Local Ollama server (default port 11434) — serves any pulled model."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#openai",
+          "@id": "https://nika.sh/providers/openai",
           "termCode": "OpenAI",
           "name": "OpenAI",
           "description": "GPT-5.x, the o-series, and other OpenAI models."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#openrouter",
+          "@id": "https://nika.sh/providers/openrouter",
           "termCode": "OpenRouter",
           "name": "OpenRouter",
           "description": "200+ models via unified gateway."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#vllm",
+          "@id": "https://nika.sh/providers/vllm",
           "termCode": "vLLM",
           "name": "vLLM",
           "description": "vLLM server (default port 8000) — serves Hugging Face model ids at throughput."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/providers#xai",
+          "@id": "https://nika.sh/providers/xai",
           "termCode": "xAI Grok",
           "name": "xAI Grok",
           "description": "Grok models (Grok-3, Grok-4)."
@@ -1105,55 +1105,55 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-article",
+          "@id": "https://nika.sh/modes/article",
           "termCode": "article",
           "name": "article"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-feed",
+          "@id": "https://nika.sh/modes/feed",
           "termCode": "feed",
           "name": "feed"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-jq",
+          "@id": "https://nika.sh/modes/jq",
           "termCode": "jq",
           "name": "jq"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-links",
+          "@id": "https://nika.sh/modes/links",
           "termCode": "links",
           "name": "links"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-markdown",
+          "@id": "https://nika.sh/modes/markdown",
           "termCode": "markdown",
           "name": "markdown"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-metadata",
+          "@id": "https://nika.sh/modes/metadata",
           "termCode": "metadata",
           "name": "metadata"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-selector",
+          "@id": "https://nika.sh/modes/selector",
           "termCode": "selector",
           "name": "selector"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-sitemap",
+          "@id": "https://nika.sh/modes/sitemap",
           "termCode": "sitemap",
           "name": "sitemap"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch#mode-text",
+          "@id": "https://nika.sh/modes/text",
           "termCode": "text",
           "name": "text"
         }
@@ -1171,28 +1171,28 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/boundary#exec",
+          "@id": "https://nika.sh/permits/exec",
           "termCode": "exec",
           "name": "exec",
           "description": "which commands may run · false kills the family"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/boundary#fs",
+          "@id": "https://nika.sh/permits/fs",
           "termCode": "fs",
           "name": "fs",
           "description": "read and write globs · the walk root is gated"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/boundary#net",
+          "@id": "https://nika.sh/permits/net",
           "termCode": "net",
           "name": "net",
           "description": "http allowlist · the SSRF floor stays on regardless"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/boundary#tools",
+          "@id": "https://nika.sh/permits/tools",
           "termCode": "tools",
           "name": "tools",
           "description": "which nika tools the file may invoke"
@@ -1209,21 +1209,21 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/boundary#secret-env",
+          "@id": "https://nika.sh/secrets/env",
           "termCode": "env",
           "name": "env",
           "description": "read from the environment at run time"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/boundary#secret-file",
+          "@id": "https://nika.sh/secrets/file",
           "termCode": "file",
           "name": "file",
           "description": "read from a path the boundary allows"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/boundary#secret-vault",
+          "@id": "https://nika.sh/secrets/vault",
           "termCode": "vault",
           "name": "vault",
           "description": "the OS keychain backend · the default posture"
@@ -1242,73 +1242,73 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-budget_error",
+          "@id": "https://nika.sh/error-categories/budget_error",
           "termCode": "budget_error",
           "name": "budget_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-cancelled",
+          "@id": "https://nika.sh/error-categories/cancelled",
           "termCode": "cancelled",
           "name": "cancelled"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-internal_error",
+          "@id": "https://nika.sh/error-categories/internal_error",
           "termCode": "internal_error",
           "name": "internal_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-network_error",
+          "@id": "https://nika.sh/error-categories/network_error",
           "termCode": "network_error",
           "name": "network_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-parse_error",
+          "@id": "https://nika.sh/error-categories/parse_error",
           "termCode": "parse_error",
           "name": "parse_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-process_error",
+          "@id": "https://nika.sh/error-categories/process_error",
           "termCode": "process_error",
           "name": "process_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-provider_error",
+          "@id": "https://nika.sh/error-categories/provider_error",
           "termCode": "provider_error",
           "name": "provider_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-security_error",
+          "@id": "https://nika.sh/error-categories/security_error",
           "termCode": "security_error",
           "name": "security_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-timeout_error",
+          "@id": "https://nika.sh/error-categories/timeout_error",
           "termCode": "timeout_error",
           "name": "timeout_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-tool_error",
+          "@id": "https://nika.sh/error-categories/tool_error",
           "termCode": "tool_error",
           "name": "tool_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-validation_error",
+          "@id": "https://nika.sh/error-categories/validation_error",
           "termCode": "validation_error",
           "name": "validation_error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#cat-variable_error",
+          "@id": "https://nika.sh/error-categories/variable_error",
           "termCode": "variable_error",
           "name": "variable_error"
         }
@@ -1908,140 +1908,140 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-AGENT",
+          "@id": "https://nika.sh/error-namespaces/NIKA-AGENT",
           "termCode": "NIKA-AGENT",
           "name": "NIKA-AGENT",
           "description": "agent: verb errors"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-ASSERT",
+          "@id": "https://nika.sh/error-namespaces/NIKA-ASSERT",
           "termCode": "NIKA-ASSERT",
           "name": "NIKA-ASSERT"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-BUILTIN",
+          "@id": "https://nika.sh/error-namespaces/NIKA-BUILTIN",
           "termCode": "NIKA-BUILTIN",
           "name": "NIKA-BUILTIN",
           "description": "Builtin tool errors · per-builtin sub-namespace"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-CANCEL",
+          "@id": "https://nika.sh/error-namespaces/NIKA-CANCEL",
           "termCode": "NIKA-CANCEL",
           "name": "NIKA-CANCEL",
           "description": "Task or workflow cancellation"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-COMP",
+          "@id": "https://nika.sh/error-namespaces/NIKA-COMP",
           "termCode": "NIKA-COMP",
           "name": "NIKA-COMP"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-DAG",
+          "@id": "https://nika.sh/error-namespaces/NIKA-DAG",
           "termCode": "NIKA-DAG",
           "name": "NIKA-DAG",
           "description": "DAG topology · cycles · invalid deps"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-DECIDE",
+          "@id": "https://nika.sh/error-namespaces/NIKA-DECIDE",
           "termCode": "NIKA-DECIDE",
           "name": "NIKA-DECIDE"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-EXEC",
+          "@id": "https://nika.sh/error-namespaces/NIKA-EXEC",
           "termCode": "NIKA-EXEC",
           "name": "NIKA-EXEC",
           "description": "exec: verb errors"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-IMPL",
+          "@id": "https://nika.sh/error-namespaces/NIKA-IMPL",
           "termCode": "NIKA-IMPL",
           "name": "NIKA-IMPL",
           "description": "Engine internal errors"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-INFER",
+          "@id": "https://nika.sh/error-namespaces/NIKA-INFER",
           "termCode": "NIKA-INFER",
           "name": "NIKA-INFER",
           "description": "infer: verb errors"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-INVOKE",
+          "@id": "https://nika.sh/error-namespaces/NIKA-INVOKE",
           "termCode": "NIKA-INVOKE",
           "name": "NIKA-INVOKE",
           "description": "invoke: verb errors"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-LOCK",
+          "@id": "https://nika.sh/error-namespaces/NIKA-LOCK",
           "termCode": "NIKA-LOCK",
           "name": "NIKA-LOCK"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-MCP",
+          "@id": "https://nika.sh/error-namespaces/NIKA-MCP",
           "termCode": "NIKA-MCP",
           "name": "NIKA-MCP",
           "description": "MCP client errors"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-PARSE",
+          "@id": "https://nika.sh/error-namespaces/NIKA-PARSE",
           "termCode": "NIKA-PARSE",
           "name": "NIKA-PARSE",
           "description": "YAML parse + envelope validation"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-POLICY",
+          "@id": "https://nika.sh/error-namespaces/NIKA-POLICY",
           "termCode": "NIKA-POLICY",
           "name": "NIKA-POLICY"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-PORT",
+          "@id": "https://nika.sh/error-namespaces/NIKA-PORT",
           "termCode": "NIKA-PORT",
           "name": "NIKA-PORT"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-PROVIDER",
+          "@id": "https://nika.sh/error-namespaces/NIKA-PROVIDER",
           "termCode": "NIKA-PROVIDER",
           "name": "NIKA-PROVIDER",
           "description": "Provider adapter errors"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-SEC",
+          "@id": "https://nika.sh/error-namespaces/NIKA-SEC",
           "termCode": "NIKA-SEC",
           "name": "NIKA-SEC",
           "description": "Security policy violations (SSRF · blocklist)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-TIMEOUT",
+          "@id": "https://nika.sh/error-namespaces/NIKA-TIMEOUT",
           "termCode": "NIKA-TIMEOUT",
           "name": "NIKA-TIMEOUT",
           "description": "Task or step timeouts"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-TYPE",
+          "@id": "https://nika.sh/error-namespaces/NIKA-TYPE",
           "termCode": "NIKA-TYPE",
           "name": "NIKA-TYPE"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors#ns-NIKA-VAR",
+          "@id": "https://nika.sh/error-namespaces/NIKA-VAR",
           "termCode": "NIKA-VAR",
           "name": "NIKA-VAR",
           "description": "Variable resolution failures"
@@ -2060,21 +2060,21 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#level-core",
+          "@id": "https://nika.sh/conformance/core",
           "termCode": "core",
           "name": "core",
           "description": "parse · validate · DAG · variables · typed errors · no execution"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#level-runtime",
+          "@id": "https://nika.sh/conformance/runtime",
           "termCode": "runtime",
           "name": "runtime",
           "description": "executes verbs · evaluates when and for_each over run state"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#level-stdlib",
+          "@id": "https://nika.sh/conformance/stdlib",
           "termCode": "stdlib",
           "name": "stdlib",
           "description": "proves the v0.1 library surface · the production default"
@@ -2091,55 +2091,55 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_canon",
+          "@id": "https://nika.sh/mcp/nika_canon",
           "termCode": "nika_canon",
           "name": "nika_canon"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_catalog",
+          "@id": "https://nika.sh/mcp/nika_catalog",
           "termCode": "nika_catalog",
           "name": "nika_catalog"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_check",
+          "@id": "https://nika.sh/mcp/nika_check",
           "termCode": "nika_check",
           "name": "nika_check"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_examples",
+          "@id": "https://nika.sh/mcp/nika_examples",
           "termCode": "nika_examples",
           "name": "nika_examples"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_explain",
+          "@id": "https://nika.sh/mcp/nika_explain",
           "termCode": "nika_explain",
           "name": "nika_explain"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_inspect",
+          "@id": "https://nika.sh/mcp/nika_inspect",
           "termCode": "nika_inspect",
           "name": "nika_inspect"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_schema",
+          "@id": "https://nika.sh/mcp/nika_schema",
           "termCode": "nika_schema",
           "name": "nika_schema"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_template",
+          "@id": "https://nika.sh/mcp/nika_template",
           "termCode": "nika_template",
           "name": "nika_template"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/proof#mcp-nika_tools",
+          "@id": "https://nika.sh/mcp/nika_tools",
           "termCode": "nika_tools",
           "name": "nika_tools"
         }
@@ -2323,70 +2323,70 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#atlas",
+          "@id": "https://nika.sh/truth/atlas",
           "termCode": "atlas",
           "name": "atlas",
           "description": "language_graph 1 · the graph of the language, site-side"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#canon",
+          "@id": "https://nika.sh/truth/canon",
           "termCode": "canon",
           "name": "canon",
           "description": "canon.yaml · the counted sets, spec-first"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#catalog",
+          "@id": "https://nika.sh/truth/catalog",
           "termCode": "catalog",
           "name": "catalog",
           "description": "a machine projection the site serves · byte-diffed in CI"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#manifest",
+          "@id": "https://nika.sh/truth/manifest",
           "termCode": "manifest",
           "name": "manifest",
           "description": "the snippet lineage table · every rendered block resolves here"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#mirror",
+          "@id": "https://nika.sh/truth/mirror",
           "termCode": "mirror",
           "name": "mirror",
           "description": "a byte-pinned copy, sha256-verified"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#pack",
+          "@id": "https://nika.sh/truth/pack",
           "termCode": "pack",
           "name": "pack",
           "description": "the spec corpus vendored inside the engine"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#pin",
+          "@id": "https://nika.sh/truth/pin",
           "termCode": "pin",
           "name": "pin",
           "description": "SPEC_PIN · the exact spec sha the engine targets"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#registry",
+          "@id": "https://nika.sh/truth/registry",
           "termCode": "registry",
           "name": "registry",
           "description": "nika-registry THE PRODUCT · shared workflows, re-proven nightly"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#schema",
+          "@id": "https://nika.sh/truth/schema",
           "termCode": "schema",
           "name": "schema",
           "description": "workflow.schema.json · the shapes"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/sources#spec",
+          "@id": "https://nika.sh/truth/spec",
           "termCode": "spec",
           "name": "spec",
           "description": "the nika-spec repo · the truth of the language"

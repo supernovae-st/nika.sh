@@ -112,9 +112,23 @@ ws.onmessage = (ev) => {
     failedReqs.push(`FAILED ${m.params.errorText}`)
   }
 }
+/* every CDP call carries a DEADLINE (the 2026-07-18 rooms-sweep autopsy: a
+   lost websocket message left `send` pending forever — CPU 0, same page for
+   20 minutes, the whole belt hung; the round-4 law again: one flaky frame
+   must become a ROUTE finding, never a process hang). 25s is generous for
+   any navigate/evaluate on a static page. */
 const send = (method, params = {}) => new Promise((resolve, reject) => {
   const id = ++mid
-  pending.set(id, { resolve, reject })
+  const t = setTimeout(() => {
+    if (pending.has(id)) {
+      pending.delete(id)
+      reject(new Error(`CDP ${method} timed out (25s) — message lost, route becomes a finding`))
+    }
+  }, 25000)
+  pending.set(id, {
+    resolve: (v) => { clearTimeout(t); resolve(v) },
+    reject: (e) => { clearTimeout(t); reject(e) },
+  })
   ws.send(JSON.stringify({ id, method, params }))
 })
 const evaluate = async (expr) => {
@@ -225,7 +239,7 @@ for (const route of NAV_ROUTES) {
   consoleErrs.length = 0
   pageErrs.length = 0
   failedReqs.length = 0
-  await send('Page.navigate', { url: `${BASE}${route}` })
+  await send('Page.navigate', { url: `${BASE}${route}` }).catch((e) => fail(route, 'navigate', String(e).slice(0, 120)))
   await sleep(route === '/' ? 3500 : 1800) /* home mounts the lazy 3D field */
   /* a transient page-context exception racing the evaluate must be a ROUTE
      finding, never a process crash (round 4 died in 57s on an "Uncaught
@@ -335,7 +349,10 @@ const until = async (fn, tries = 12, gap = 400) => {
 const REGISTER_PINS = [
   { route: '/errors/NIKA-SEC-001', row: '.er-row--active', extra: null },
   { route: '/tools/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
-  { route: '/providers/ollama', row: '.pv-row--active', extra: null },
+  /* rooms universelles (2026-07-18): /providers/:id is a REAL member room
+     now (the WO-6 stub died) — the pin asserts the room mounted for the
+     right member with its fact table served (the tools-pin precedent) */
+  { route: '/providers/ollama', row: '.mr-rows', extra: '#mr-title' },
   { route: '/verbs/invoke', row: 'section[data-verb="invoke"]', extra: '.td-usage .cf-panel' },
   { route: '/language/with', row: 'section[data-word="with"]', extra: '.td-usage .cf-panel' },
   { route: '/templates/fanout', row: '.tm-row--active', extra: '.tm-row--active .cf-panel' },
@@ -371,7 +388,7 @@ await check('jsonld · the register pages carry their DefinedTermSets (post-buil
     ['/tools/fetch', 'set-extract-modes'],
   ]
   for (const [route, marker] of want) {
-    await send('Page.navigate', { url: `${BASE}${route}` })
+    await send('Page.navigate', { url: `${BASE}${route}` }).catch((e) => fail(route, 'navigate', String(e).slice(0, 120)))
     await settle()
     const ok = await evaluate(`(() => {
       const scripts = [...document.querySelectorAll('script[type="application/ld+json"]')]

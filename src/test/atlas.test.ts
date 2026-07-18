@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process'
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { SITE } from '../content'
 import { ATLAS_NODES, ATLAS_EDGES, ATLAS_INDEX } from '../content/atlas.generated'
 import { ATLAS_PROVENANCE, ATLAS_SET_COUNTS, ATLAS_HUBS, ATLAS_SCORE , TRUTH_WORDS } from '../content/atlas-meta.generated'
 import { JSONLD_TERMSETS } from '../content/jsonld.generated'
@@ -251,10 +252,15 @@ describe('atlas · jsonld and market vocab stay lawful', () => {
      JSON-LD mounts with those pages at WO-7, not in the hub head) */
   it('the hub head derivation IS the twin, for every set anchored on the page', () => {
     for (const h of Object.values(HUBS)) {
-      const anchoredHere = (JSONLD_TERMSETS[h.hub] ?? []).filter((t) => {
-        const terms = (t as { hasDefinedTerm: { '@id': string }[] }).hasDefinedTerm
-        return terms.every((term) => term['@id'].includes(`${h.hub}#`))
-      })
+      const headSetIds = new Set(h.sets.map((set) => `${SITE}${h.hub}#set-${set.id}`))
+      const anchoredHere = (JSONLD_TERMSETS[h.hub] ?? []).filter((t) =>
+        /* SET IDENTITY decides the head: the hub mounts exactly its anchored
+           sets (hub-data's list); their TERMS may point at their own rooms
+           (rooms universelles · the richest linked-data form). A rooms-
+           surface set on the same page (showcases) keeps the WO-7 law —
+           its JSON-LD mounts with its pages, never in the hub head. */
+        headSetIds.has(String((t as { '@id': string })['@id'])),
+      )
       expect(hubJsonldSets(h), h.hub).toEqual(anchoredHere)
     }
   })

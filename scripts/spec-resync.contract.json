@@ -387,7 +387,7 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "8629832b2e0f9f9718f0ad98285f4000d62095a41303f7edf6d9cb89994b9080",
+   "sha256": "c7abfb675497f805945d808b2e833cfe7fe04f8bdd4c9d67d60f323128079638",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]

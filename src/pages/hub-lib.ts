@@ -20,7 +20,7 @@ export const chapterHref = (ch: string) => `${SPEC}/blob/main/${ch}`
 export function sourcesJsonldSets(words: {
   title: string
   opener: string
-  members: { id: string; one_liner: string }[]
+  members: { id: string; one_liner: string; url?: string }[]
 }): unknown[] {
   return [
     {
@@ -34,7 +34,7 @@ export function sourcesJsonldSets(words: {
         .sort((a, b) => a.id.localeCompare(b.id))
         .map((m) => ({
           '@type': 'DefinedTerm',
-          '@id': `${SITE}/sources#${m.id}`,
+          '@id': m.url ? `${SITE}${m.url}` : `${SITE}/sources#${m.id}`,
           termCode: m.id,
           name: m.id,
           description: m.one_liner,
@@ -57,7 +57,9 @@ export function hubJsonldSets(hub: HubData): unknown[] {
         .sort((a, b) => a.id.localeCompare(b.id)) // the twin rides node-id order
         .map((m) => ({
           '@type': 'DefinedTerm',
-          '@id': `${SITE}${hub.hub}#${set.anchor_prefix}${m.id}`,
+          /* a roomed member's @id IS its page (rooms universelles) —
+             fragment form stays for anchor-only members (the twin's law) */
+          '@id': m.url ? `${SITE}${m.url}` : `${SITE}${hub.hub}#${set.anchor_prefix}${m.id}`,
           termCode: m.id,
           name: m.id,
           ...(m.one_liner ? { description: m.one_liner } : {}),

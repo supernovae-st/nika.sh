@@ -56,7 +56,9 @@ const EDGE_CAP = 8
 
 function nodeHref(n: AtlasNode): string | null {
   if (!n.url || n.url.includes(':')) return null
-  return n.anchor ? `${n.url}#${n.anchor}` : n.url
+  // a roomed member OWNS its page — its door is the room, never a fragment
+  // (own_page · rooms universelles; the anchor stays for the register view)
+  return n.anchor && !n.own_page ? `${n.url}#${n.anchor}` : n.url
 }
 
 /* the hover card's slice (round-3): the SAME readout, truncated — one

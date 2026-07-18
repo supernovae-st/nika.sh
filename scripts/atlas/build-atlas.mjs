@@ -82,7 +82,12 @@ const shippedProviders = new Set(S.providers.providers.map((p) => p.id))
 function membersOf(set) {
   const A = set.anchor_prefix ?? ''
   const page = set.anchor_page
-  const anchor = (m) => ({ url: page, anchor: `${A}${m}` })
+  /* verdict 2026-07-18 (« chaque élément a sa page ») : un set à ancres qui
+     porte rooms_url flippe l'url canonique du membre vers SA ROOM — l'ancre
+     de la vue registre reste portée (le hub garde ses deep-links) */
+  const anchor = set.rooms_url
+    ? (m) => ({ url: `${set.rooms_url}/${m}`, anchor: `${A}${m}`, own_page: true })
+    : (m) => ({ url: page, anchor: `${A}${m}` })
   switch (set.id) {
     case 'words':
       return S.words.map((w) => ({
@@ -157,7 +162,7 @@ function membersOf(set) {
       }))
     case 'extract-modes':
       return S.canon.extractModeNames.map((m) => ({
-        member: m, title: m, opener: null, url: page, anchor: `${A}${m}`, status: 'ratified',
+        member: m, title: m, opener: null, ...anchor(m), status: 'ratified',
       }))
     case 'templates':
       return S.templates.templates.map((t) => ({
@@ -314,6 +319,7 @@ for (const set of S.sets.sets) {
       title: m.title,
       url: m.url,
       ...(m.anchor ? { anchor: m.anchor } : {}),
+      ...(m.own_page ? { own_page: true } : {}),
       status: m.status,
       opener: m.opener ? String(m.opener).trim() : null,
       ...(m.meta ? { meta: m.meta } : {}),
@@ -540,6 +546,10 @@ const knownPages = new Set([
   ...S.sets.layers.flatMap((l) => l.sibling_hubs ?? []),
   ...S.sets.surfaces.map((s) => s.url),
   '/use-cases',
+  /* rooms universelles (verdict 2026-07-18): a roomed anchor set's family
+     root IS a hub door — every member room hangs off its set's register
+     (the hub rows link the rooms · prev/next chains them) */
+  ...S.sets.sets.filter((x) => x.rooms_url).map((x) => x.rooms_url),
 ])
 for (const n of nodes) {
   if (n.kind !== 'member' || !n.url) continue
@@ -567,6 +577,8 @@ const atlasTs = GEN(
   /** room or anchor page (null only while a slot awaits its wave) */
   url: string | null
   anchor?: string
+  /** the member OWNS its page (rooms universelles) — url is the room */
+  own_page?: boolean
   status: 'ratified' | 'shipped' | 'both'
   /** the quotable definitional voice (sets + layers · derived for members) */
   opener: string | null
@@ -688,13 +700,17 @@ export const SOURCES_LIVE = ${JSON.stringify(S.sets.surfaces.find((x) => x.id ==
 
 /** the truth-words register (chrome-safe · /sources renders it anchored and
  * derives its DefinedTermSet from THIS — gate-pinned equal to the twin) */
-export const TRUTH_WORDS: { title: string; opener: string; members: { id: string; one_liner: string }[] } = ${JSON.stringify(
+export const TRUTH_WORDS: { title: string; opener: string; members: { id: string; one_liner: string; url?: string }[] } = ${JSON.stringify(
     (() => {
       const set = S.sets.sets.find((x) => x.id === 'truth-words')
       return {
         title: set.title,
         opener: set.opener.trim(),
-        members: set.members.map((m) => ({ id: m.id, one_liner: m.one_liner })),
+        members: set.members.map((m) => ({
+          id: m.id,
+          one_liner: m.one_liner,
+          ...(set.rooms_url ? { url: `${set.rooms_url}/${m.id}` } : {}),
+        })),
       }
     })(),
   )}
@@ -936,7 +952,9 @@ for (const set of S.sets.sets) {
     version: S.engineVersion,
     hasDefinedTerm: members.map((m) => ({
       '@type': 'DefinedTerm',
-      '@id': `${ORIGIN}${m.url}${m.anchor ? `#${m.anchor}` : ''}`,
+      /* a roomed member's @id IS its page (rooms universelles) — the
+         fragment form stays for anchor-only members */
+      '@id': `${ORIGIN}${m.url}${m.anchor && !m.own_page ? `#${m.anchor}` : ''}`,
       termCode: m.title,
       name: m.title,
       ...(m.opener ? { description: m.opener } : {}),
@@ -1140,9 +1158,18 @@ export const CAPTURES: { id: string; surface: string; export: string; command: s
 /* ATLAS_PATHS (output 3 · §7 WO-4): the routes the atlas introduced, written
    IN PLACE between the site.config.ts markers (the file stays import-free ·
    the rest stays hand-owned). Reading order; only served surfaces emit. */
+const ROOMED_ANCHOR_SETS = new Set(
+  S.sets.sets.filter((x) => x.rooms_url && x.surface === 'anchors').map((x) => x.id),
+)
 const atlasPaths = [
   ...S.sets.surfaces.filter((x) => x.atlas_route && x.exists).map((x) => x.url),
   ...S.sets.layers.filter((l) => l.atlas_route && l.hub_exists).map((l) => l.hub),
+  /* rooms universelles (verdict 2026-07-18): every member of a roomed
+     anchor set is a SERVED page — derived from the graph, never listed */
+  ...nodes
+    .filter((n) => n.kind === 'member' && ROOMED_ANCHOR_SETS.has(n.set))
+    .map((n) => n.url)
+    .sort(),
   /* atlas-born ROOM sets (the showcases · §4.13): every member url joins
      the prerender the day rooms_exist flips — never listed by hand */
   ...(S.sets.sets.find((x) => x.id === 'showcases')?.rooms_exist
@@ -1185,6 +1212,10 @@ const hubSets = (layerId, hubUrl) =>
           id: m.member,
           ...(m.opener ? { one_liner: m.opener } : {}),
           ...(m.meta?.slot ? { slot: m.meta.slot } : {}),
+          /* rooms universelles: a roomed member carries ITS page — the hub
+             head's DefinedTerm @id points at the room (the richest form:
+             set anchored on the register, terms on their own pages) */
+          ...(m.own_page ? { url: m.url } : {}),
         })),
     }))
     .filter((x) => x.members.length > 0)
@@ -1220,6 +1251,8 @@ const hubDataTs = GEN(
   id: string
   one_liner?: string
   slot?: string
+  /** the member's own page (rooms universelles) — absent for anchor-only */
+  url?: string
 }
 export interface HubSet {
   id: string
@@ -1295,6 +1328,48 @@ const dagW2 = Object.fromEntries(
     }))
     return [slug, { ...dag, tasks }]
   }),
+)
+
+/* member rooms (verdict 2026-07-18 · rooms universelles): the generic
+   MemberRoom route's chrome-safe registry — family segment → set identity +
+   ordered members (prev/next · the readout works off the lazy graph). */
+const memberRoomFamilies = Object.fromEntries(
+  S.sets.sets
+    .filter((x) => x.rooms_url && x.surface === 'anchors')
+    .map((set) => [
+      set.rooms_url.slice(1),
+      {
+        set: set.id,
+        title: set.title,
+        hub: (set.anchor_page ?? hubOf(set)).split('#')[0],
+        members: nodes
+          .filter((n) => n.kind === 'member' && n.set === set.id)
+          .map((n) => ({ id: n.id.split(':').slice(1).join(':'), title: n.title, url: n.url, node: n.id })),
+      },
+    ]),
+)
+const memberRoomsTs = GEN(
+  'member-rooms.generated.ts',
+  `/** the generic member-room registry (rooms universelles · one route, every
+ * family): family URL segment → set identity + ordered members. The room's
+ * BODY comes from the lazy graph (readoutFor · the inspector's renderer) —
+ * this module stays chrome-lean by law. */
+export interface MemberRoomEntry {
+  id: string
+  title: string
+  url: string
+  /** the atlas node id (readoutFor's key · TruthLine's key) */
+  node: string
+}
+export interface MemberRoomFamily {
+  set: string
+  title: string
+  /** the register view this family's members anchor on (the parent door) */
+  hub: string
+  members: MemberRoomEntry[]
+}
+export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = ${JSON.stringify(memberRoomFamilies, null, 2)}
+`,
 )
 
 const showcaseDagTs = GEN(
@@ -1388,6 +1463,7 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/snippets.generated.ts'), snippetsTs)
   writeFileSync(join(ROOT, 'src/content/atlas-nav.generated.ts'), navTs)
   writeFileSync(join(ROOT, 'src/content/showcase-dag.generated.ts'), showcaseDagTs)
+  writeFileSync(join(ROOT, 'src/content/member-rooms.generated.ts'), memberRoomsTs)
   writeFileSync(join(ROOT, 'src/content/room-rails.generated.ts'), roomRailsTs)
   writeFileSync(join(ROOT, 'src/content/blog-rails.generated.ts'), blogRailsTs)
   writeFileSync(join(ROOT, 'src/pages/map-data.generated.ts'), mapDataTs)

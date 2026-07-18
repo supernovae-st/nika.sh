@@ -6,6 +6,7 @@ import { CHAPTERS } from '../sections/verbs-data'
 import { PROVIDERS } from './providers.generated'
 import { TEMPLATES } from './templates.generated'
 import { UC_TABS } from '../sections/usecases-data'
+import { MEMBER_ROOM_FAMILIES } from './member-rooms.generated'
 import { DOCS, REPO, SPEC } from '../content'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
@@ -120,8 +121,14 @@ export const SITE_MAP: MapGroup[] = [
       ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/verbs/${c.verb}` })),
       ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/${w.word}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
-      ...PROVIDERS.map((p) => ({ label: `provider: ${p.id}`, href: `/providers#${p.id}` })),
       ...TEMPLATES.map((t) => ({ label: t.file, href: `/templates/${t.name}` })),
+      /* rooms universelles (verdict 2026-07-18): every member of every
+         roomed register — derived from the SAME generated registry the
+         generic room renders, so the map can never drift from the rooms
+         (providers included: the anchors became pages) */
+      ...Object.values(MEMBER_ROOM_FAMILIES).flatMap((f) =>
+        f.members.map((m) => ({ label: `${f.set}: ${m.id}`, href: m.url })),
+      ),
     ],
   },
   {

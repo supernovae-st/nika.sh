@@ -103,7 +103,10 @@ export function renderConstellation(geo, tokens) {
       : ''
     const dot = `${ring}<circle cx="${m.x}" cy="${m.y}" r="3.1" fill="${fill}" stroke="${stroke}" stroke-width="${m.hollow ? 1.3 : 0}"/><title>${esc(m.title)}</title>`
     if (m.linkable) {
-      const href = m.anchor ? `${m.url}#${m.anchor}` : m.url
+      /* a roomed member OWNS its page — link the room, never a fragment
+         (the anchor stays for the register view; own_page is the twin's
+         additive marker · verdict 2026-07-18) */
+      const href = m.anchor && !m.own_page ? `${m.url}#${m.anchor}` : m.url
       parts.push(`<g class="cst-star"><a href="${esc(href)}" tabindex="-1">${dot}</a></g>`)
     } else {
       parts.push(`<g class="cst-star cst-star--soon">${dot}</g>`)

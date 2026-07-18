@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { PROVIDERS, PROVIDER_INDEX, EMBEDDED_EXTRA } from '../content/providers.generated'
@@ -65,21 +65,20 @@ describe('/providers · the compiled projection matches the served catalog', () 
     expect(PATHS).toContain('/providers')
   })
 
-  it('every dead provider room serves its 301 stub (the WO-6 fusion contract)', () => {
-    // the rooms died · their URLs live as compiler-emitted static stubs
-    // (public/providers/<id>/index.html · refresh 0 → /providers#id ·
-    // canonical /providers · noindex) — emitted FROM redirects.json, so
-    // manifest and files cannot drift
+  it('every provider room is REBORN as a real page (verdict 2026-07-18 · the WO-6 stubs die)', () => {
+    /* the fusion's 301 stubs are gone: /providers/:id prerenders the generic
+       member room at the SAME urls (zero broken links ever) — no stub file
+       may survive (public/ copies into dist and would shadow the page), and
+       the redirects manifest carries no provider rows */
     for (const p of PROVIDERS) {
-      const body = readFileSync(join(ROOT, `public/providers/${p.id}/index.html`), 'utf8')
-      expect(body, p.id).toContain(`url=/providers#${p.id}`)
-      expect(body, p.id).toContain('rel="canonical" href="https://nika.sh/providers"')
-      expect(body, p.id).toContain('noindex')
+      expect(
+        existsSync(join(ROOT, `public/providers/${p.id}`)),
+        `${p.id}: a stub dir survives — it would shadow the prerendered room`,
+      ).toBe(false)
     }
     const manifest = JSON.parse(readFileSync(join(ROOT, 'public/redirects.json'), 'utf8')) as {
-      redirects: { from: string; live: boolean }[]
+      redirects: { from: string }[]
     }
-    const live = manifest.redirects.filter((r) => r.live && r.from.startsWith('/providers/'))
-    expect(live.length).toBe(PROVIDERS.length)
+    expect(manifest.redirects.filter((r) => r.from.startsWith('/providers/'))).toEqual([])
   })
 })
