@@ -1,0 +1,101 @@
+/* AnatomyView · the engine's reading — machined table, verb-inked chips.
+   Desktop rides the room's two-up grid (hubs-page.css owns the columns);
+   under the fold it stacks after the file and taps do the sync. */
+
+.anat {
+  border: 1px solid rgb(255 255 255 / 0.09);
+  border-radius: 10px;
+  background: rgb(10 13 18 / 0.55);
+  padding: 12px 12px 10px;
+  min-width: 0;
+}
+.anat-provenance {
+  margin: 0 0 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}
+.anat-waves {
+  display: grid;
+  gap: 10px;
+}
+.anat-wave-kick {
+  margin: 0 0 4px;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.anat-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: none;
+  text-align: left;
+  cursor: default;
+  transition: background-color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui);
+}
+.anat-row:hover,
+.anat-row:focus-visible,
+.anat-row[data-lit] {
+  background: rgb(255 255 255 / 0.045);
+  border-color: rgb(255 255 255 / 0.1);
+}
+.anat-id {
+  color: var(--v4-text);
+  font-size: 12.5px;
+}
+.anat-verb {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  color: var(--v4-text-dim);
+}
+.anat-verb[data-verb='infer'] { color: var(--verb-infer); border-color: color-mix(in oklab, var(--verb-infer) 45%, transparent); }
+.anat-verb[data-verb='exec'] { color: var(--verb-exec); border-color: color-mix(in oklab, var(--verb-exec) 45%, transparent); }
+.anat-verb[data-verb='invoke'] { color: var(--verb-invoke); border-color: color-mix(in oklab, var(--verb-invoke) 45%, transparent); }
+.anat-verb[data-verb='agent'] { color: var(--verb-agent); border-color: color-mix(in oklab, var(--verb-agent) 45%, transparent); }
+.anat-target {
+  color: var(--v4-text-dim);
+  font-size: 11.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+.anat-gates {
+  font-size: 10px;
+  color: var(--v4-text-faint);
+}
+.anat-permits {
+  font-size: 10px;
+  color: var(--v4-text-faint);
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+.anat-edges {
+  margin: 10px 0 0;
+  font-size: 10.5px;
+  color: var(--v4-text-faint);
+}
+
+/* the room's two-up (desktop) · stacked twin (fold) */
+.ucr-anatomy-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 899px) {
+  .ucr-anatomy-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

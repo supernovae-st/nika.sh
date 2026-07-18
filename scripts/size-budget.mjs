@@ -28,7 +28,11 @@
    browse island fallback and the SPA-nav chunk both hand the client RAW
    ratified bytes, and the served grammar must exist wherever raw bytes
    arrive (idempotent, so pre-transformed islands stay legal); ~1.5KB gz is
-   the whole pass, and it retires with the pin flip.
+   the whole pass, and it retires with the pin flip ·
+   350→351 wo14-anatomy: AnatomyView + its access door ride the entry with
+   the rooms they serve (the rooms live in the entry chunk — the weight is
+   the page itself); the 60K vendored graph module stays a lazy chunk (the
+   diet gate pins it) — ~0.9KB gz of component is the whole cost.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -36,7 +40,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 350
+const BUDGET_KB = 351
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

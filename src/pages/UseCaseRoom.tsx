@@ -8,6 +8,9 @@ import { Rails } from './hub-shared'
 import { UC_TABS, verbsFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
 import { useEffect, useState } from 'react'
 import { ssrShowcaseYaml, loadShowcaseYaml } from '../sections/showcase-yaml-access'
+import { ssrAnatomy, ssrAnatomyEngine, loadAnatomy } from '../lib/anatomy-access'
+import { AnatomyView } from '../components/AnatomyView'
+import type { Anatomy } from '../content/anatomy.generated'
 import { Island } from '../lib/ssg-island'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { SITE, routeHead } from '../content'
@@ -38,6 +41,10 @@ const ALL: { uc: UC; tab: string }[] = UC_TABS.flatMap((t) => t.cases.map((uc) =
    time — a shared id would feed the new room the previous room's bytes
    (CDP-caught: the drift room rendered the resume file). */
 const roomIslandId = (slug: string) => `ucr-yaml-${slug}`
+/* the anatomy island (same slug-suffix law): the vendored engine graph +
+   its provenance stamp ride the prerendered HTML as JSON — the 60K module
+   stays an async chunk (anatomy-access · the register diet) */
+const anatomyIslandId = (slug: string) => `ucr-anat-${slug}`
 
 /** the tools a showcase exercises — from the projected model's glosses
     (the compiler derives its witnesses edges from the same source) */
@@ -76,6 +83,34 @@ export function Component() {
     }
   }, [slug, got.slug, got.yaml])
   const yaml = got.slug === slug ? got.yaml : ''
+
+  /* the engine's reading (WO-14): island-first, chunk on SPA hops — and the
+     two-way light: a row lights the file's exact lines (the door-re-aimed
+     pins), a hovered file line lights its row back */
+  const [anat, setAnat] = useState<{ slug: string; a: Anatomy | null; engine: string }>(() => {
+    if (import.meta.env.SSR)
+      return { slug, a: ssrAnatomy()?.[slug] ?? null, engine: ssrAnatomyEngine() }
+    try {
+      const el = document.getElementById(anatomyIslandId(slug)) as HTMLTextAreaElement | null
+      const parsed = el ? (JSON.parse(el.value) as { a: Anatomy; engine: string }) : null
+      return { slug, a: parsed?.a ?? null, engine: parsed?.engine ?? '' }
+    } catch {
+      return { slug, a: null, engine: '' }
+    }
+  })
+  useEffect(() => {
+    if (anat.slug === slug && anat.a) return
+    let live = true
+    void loadAnatomy().then(({ graphs, engine }) => {
+      if (live) setAnat({ slug, a: graphs[slug] ?? null, engine })
+    })
+    return () => {
+      live = false
+    }
+  }, [slug, anat.slug, anat.a])
+  const anatomy = anat.slug === slug ? anat.a : null
+
+  const [focusTask, setFocusTask] = useState<string | null>(null)
 
   const title = hit ? `${hit.uc.title} · a real Nika workflow` : 'Showcase · Nika'
   const description = hit
@@ -155,6 +190,10 @@ export function Component() {
       <section ref={ref} aria-labelledby="ucr-title" className="v4sec v4-in">
         <div className="v4sec-wrap hub-wrap">
           <Island id={roomIslandId(slug)} payload={yaml} />
+          <Island
+            id={anatomyIslandId(slug)}
+            payload={anatomy ? JSON.stringify({ a: anatomy, engine: anat.engine }) : ''}
+          />
           <header>
             <p className="v4-kick">
               showcase · tier {uc.tier.slice(1)} · {hit.tab.toLowerCase()}
@@ -180,11 +219,31 @@ export function Component() {
               {dag.tasks.length} tasks · {dag.waves} wave{dag.waves > 1 ? 's' : ''} · the plan
               falls out of the bindings, nothing is scheduled by hand.
             </p>
-            <CodeFile
-              yaml={yaml}
-              filename={fileFor(uc)}
-              sourceHref={`https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${slug}.nika.yaml`}
-            />
+            <div className={anatomy ? 'ucr-anatomy-grid' : undefined}>
+              <CodeFile
+                yaml={yaml}
+                filename={fileFor(uc)}
+                sourceHref={`https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${slug}.nika.yaml`}
+                highlight={(() => {
+                  const t = focusTask ? dag.tasks.find((x) => x.id === focusTask) : undefined
+                  return t ? [t.line0 + 1, t.line1 + 1] : undefined
+                })()}
+                onLineHover={(line) => {
+                  if (line == null) return setFocusTask(null)
+                  const t = dag.tasks.find((x) => line - 1 >= x.line0 && line - 1 <= x.line1)
+                  setFocusTask(t?.id ?? null)
+                }}
+              />
+              {anatomy && (
+                <AnatomyView
+                  anatomy={anatomy}
+                  dag={dag}
+                  engine={anat.engine}
+                  focus={focusTask}
+                  onFocus={setFocusTask}
+                />
+              )}
+            </div>
             <Rails
               rails={[
                 { kind: 'try it', label: 'open in the playground', href: playHref },
