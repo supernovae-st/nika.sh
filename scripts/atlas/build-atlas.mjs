@@ -808,6 +808,7 @@ function resolveNavItem(item) {
     } else {
       out.to = page
       out.count = nodes.filter((x) => x.kind === 'member' && x.set === setDecl.id).length
+      out._set = setDecl.id
     }
   } else if (node.kind === 'layer') {
     if (node.exists) out.to = node.url
@@ -825,6 +826,46 @@ const navReference = {
   featured: resolveNavItem(S.sets.nav.reference.featured),
   cols: S.sets.nav.reference.cols.map((c) => ({ col: c.col, items: c.items.map(resolveNavItem) })),
 }
+
+/* ONE PATH, ONE DOOR (§4.11 ratchet · 2026-07-18): a panel never shows two
+   sibling rows resolving to the same bare path — the visitor reads two doors
+   and lands in one place (the Types/The-language confusion, operator-named).
+   A LATER row on an already-doored path must be an ANCHORED SUB-DOOR: its
+   set's landing section (a `sections:` entry whose anchor equals the set id,
+   on the page-owner set) gives the deep link, and the row renders as a child
+   of the door above it. No resolvable section anchor = the build goes red
+   naming the row — a second blank door cannot ship. */
+const sectionAnchors = new Set(
+  [...S.sets.sets, ...S.sets.layers].flatMap((owner) =>
+    (owner.sections ?? []).map(
+      (sec) => `${((owner.anchor_page ?? owner.hub) ?? '').split('#')[0]}#${sec.anchor}`,
+    ),
+  ),
+)
+function subordinateCollidingDoors(panel, cols) {
+  const seen = new Set()
+  for (const c of cols) {
+    for (const item of c.items) {
+      const bare = (item.to ?? '').split('#')[0]
+      if (!bare) continue
+      if (!seen.has(bare)) {
+        seen.add(bare)
+        continue
+      }
+      const deep = item._set ? `${bare}#${item._set}` : null
+      if (!deep || !sectionAnchors.has(deep)) {
+        throw new Error(
+          `${panel}: second door to ${bare} (${item.label}) has no landing section anchor — one path, one door`,
+        )
+      }
+      item.to = deep
+      item.sub = true
+    }
+  }
+  for (const c of cols) for (const item of c.items) delete item._set
+}
+subordinateCollidingDoors('nav.reference', navReference.cols)
+subordinateCollidingDoors('nav.product', navProduct)
 const footerCols = [
   ...navReference.cols.map((c) => ({
     kick: c.col,
@@ -848,6 +889,8 @@ export interface NavItem {
   href?: string
   external?: boolean
   icon?: string
+  /** anchored sub-door of the row above (one path, one door — §4.11) */
+  sub?: boolean
   /** the derived register count (a one-token receipt · rendered as a chip) */
   count?: number
   /** the surface has not landed yet (wave slot or a WO ahead) */

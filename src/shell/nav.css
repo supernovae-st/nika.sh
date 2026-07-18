@@ -1032,3 +1032,33 @@ button.v4sheet-search {
     transition: none;
   }
 }
+
+/* ── the anchored sub-door (one path, one door · §4.11 · 2026-07-18) ────────
+   A register living as a SECTION of the door above (Types on the language
+   page) reads as its child, never as a second door: indented under the
+   parent's text column, a § section glyph where the icon tile sits, muted
+   at rest — the deep link (#anchor) does the landing. */
+.v4mega-item--subdoor {
+  margin-left: 18px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: var(--v4-text-dim);
+}
+.v4mega-item--subdoor .v4mega-icobox {
+  border-color: transparent;
+  background: none;
+}
+.v4mega-item--subdoor .v4mega-subglyph {
+  font-size: 13px;
+  line-height: 1;
+  color: var(--v4-text-faint);
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.v4mega-item--subdoor:hover,
+.v4mega-item--subdoor:focus-visible {
+  color: var(--v4-text);
+}
+.v4mega-item--subdoor:hover .v4mega-subglyph,
+.v4mega-item--subdoor:focus-visible .v4mega-subglyph {
+  color: var(--v4-accent);
+}

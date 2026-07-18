@@ -33,11 +33,44 @@ const allItems: { where: string; item: NavItem }[] = [
   ...FOOTER_COLS.flatMap((g) => g.items.map((item) => ({ where: `footer/${g.kick}`, item }))),
 ]
 
+describe('atlas-nav · one path, one door (§4.11 ratchet)', () => {
+  it('no two sibling rows of a panel share a bare path — the later is an anchored sub-door', () => {
+    for (const [panel, cols] of [
+      ['reference', NAV_REFERENCE.cols],
+      ['product', NAV_PRODUCT],
+    ] as const) {
+      const seen = new Set<string>()
+      for (const g of cols) {
+        for (const item of g.items) {
+          if (!item.to) continue
+          const bare = item.to.split('#')[0]
+          if (!seen.has(bare)) {
+            seen.add(bare)
+            continue
+          }
+          expect(item.sub, `${panel}: second door to ${bare} (${item.label}) must be a sub-door`).toBe(true)
+          expect(item.to.includes('#'), `${panel}: sub-door ${item.label} must deep-link an anchor`).toBe(true)
+        }
+      }
+    }
+  })
+
+  it('the sub-door class is exactly the anchored second-doors (today: Types under The language)', () => {
+    const subs = allItems.filter(({ item }) => item.sub)
+    expect(subs.map(({ item }) => `${item.label}→${item.to}`).sort()).toEqual([
+      'Types→/language#types',
+      'Types→/language#types',
+    ])
+  })
+})
+
 describe('atlas-nav · every rendered link resolves', () => {
   it('every internal `to` is a prerendered route or a home anchor', () => {
     for (const { where, item } of allItems) {
       if (item.soon || !item.to) continue
-      expect(routeSet.has(item.to), `${where}: ${item.label} → ${item.to}`).toBe(true)
+      // a sub-door deep-links `page#anchor` — the ROUTE is the bare page
+      const route = item.sub ? item.to.split('#')[0] : item.to
+      expect(routeSet.has(route), `${where}: ${item.label} → ${item.to}`).toBe(true)
     }
     for (const { where, item } of allItems) {
       if (item.href?.startsWith('/#')) {

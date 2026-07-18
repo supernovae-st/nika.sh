@@ -14,6 +14,8 @@ export interface NavItem {
   href?: string
   external?: boolean
   icon?: string
+  /** anchored sub-door of the row above (one path, one door — §4.11) */
+  sub?: boolean
   /** the derived register count (a one-token receipt · rendered as a chip) */
   count?: number
   /** the surface has not landed yet (wave slot or a WO ahead) */
@@ -134,8 +136,9 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
         {
           "label": "Types",
           "icon": "book",
-          "to": "/language",
-          "count": 10
+          "to": "/language#types",
+          "count": 10,
+          "sub": true
         }
       ]
     },
@@ -215,12 +218,9 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       {
         "label": "Types",
         "icon": "book",
-        "to": "/language",
-        "count": 10
-      },
-      {
-        "label": "The spec",
-        "to": "/spec"
+        "to": "/language#types",
+        "count": 10,
+        "sub": true
       }
     ]
   },

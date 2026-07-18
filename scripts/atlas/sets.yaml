@@ -667,7 +667,9 @@ nav:
     # columns 1-3 = the reference cols + these extras appended (the footer is
     # the COMPLETE card where the panel is the curated one) · 4-5 authored
     extras:
-      - { col: The file, item: { label: The spec, to: /spec } }
+      # (The spec door lives once: the panel's « The spec at a glance » row
+      #  mirrors into The reach — a second /spec label was the same
+      #  two-doors-one-path confusion the §4.11 ratchet now refuses)
       - { col: The run, item: { label: Changelog, to: /changelog } }
       - { col: The reach, item: { label: Use cases, to: /use-cases } }
       - { col: The reach, item: { label: Registry, href: "https://github.com/supernovae-st/nika-registry",

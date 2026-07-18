@@ -144,11 +144,14 @@ function ItemLink({
      with plain links (an orphan menuitem is an axe serious) */
   menuitem?: boolean
 }) {
+  /* an anchored sub-door (one path, one door · §4.11): the row visibly
+     belongs to the door above — indented, § glyph, muted icon box */
+  const subClass = item.sub ? ' v4mega-item--subdoor' : ''
   const inner = (
     <>
       {item.icon ? (
         <span className="v4mega-icobox" aria-hidden>
-          <MegaIcon name={item.icon as MegaIconName} />
+          {item.sub ? <span className="v4mega-subglyph">§</span> : <MegaIcon name={item.icon as MegaIconName} />}
         </span>
       ) : null}
       <span className="v4mega-text">
@@ -170,7 +173,7 @@ function ItemLink({
        the compile flips it to a link the day the page ships */
     return (
       <span
-        className={`${className} v4mega-item--soon`}
+        className={`${className}${subClass} v4mega-item--soon`}
         title={item.slot_wave ? `ships with the ${item.slot_wave} wave` : 'landing soon'}
       >
         {inner}
@@ -183,7 +186,7 @@ function ItemLink({
   const href = item.external && item.label === 'Docs' ? DOCS : item.external && item.label === 'GitHub' ? REPO : item.href
   if (item.to) {
     return (
-      <Link ref={refCb} to={item.to} role={menuitem ? 'menuitem' : undefined} className={className} onClick={onSelect}>
+      <Link ref={refCb} to={item.to} role={menuitem ? 'menuitem' : undefined} className={`${className}${subClass}`} onClick={onSelect}>
         {inner}
       </Link>
     )
@@ -193,7 +196,7 @@ function ItemLink({
       ref={refCb}
       href={href}
       role={menuitem ? 'menuitem' : undefined}
-      className={className}
+      className={`${className}${subClass}`}
       onClick={onSelect}
       {...(href?.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})}
     >

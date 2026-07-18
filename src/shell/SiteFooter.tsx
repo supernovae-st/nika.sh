@@ -57,6 +57,17 @@ function LocaleSwitcher() {
 }
 
 function FooterLink({ item }: { item: NavItem }) {
+  /* an anchored sub-door (one path, one door · §4.11): the footer keeps the
+     flat list (completeness is its law) but marks the containment — § glyph,
+     the deep link does the landing */
+  if (item.sub) {
+    return (
+      <Link to={item.to!} className="sitefoot-link sitefoot-link--sub">
+        <span aria-hidden>§ </span>
+        {item.label}
+      </Link>
+    )
+  }
   if (item.soon) {
     return (
       <span

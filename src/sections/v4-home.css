@@ -2759,3 +2759,9 @@
   padding: 12px 14px 2px;
   border-bottom: 1px solid var(--v4-line);
 }
+
+/* the footer's anchored sub-door (one path, one door · §4.11) */
+.sitefoot-link--sub {
+  padding-left: 12px;
+  color: var(--v4-text-faint);
+}
