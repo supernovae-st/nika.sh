@@ -16,9 +16,9 @@ export const ATLAS_PROVENANCE: {
   "language_graph": 1,
   "spec_pin": null,
   "canon_schema_version": 1,
-  "engine_version": "v0.103.0",
+  "engine_version": "v0.104.0",
   "catalogs": {
-    "tools": "0.99.0",
+    "tools": "0.104.0",
     "providers": "0.104.0"
   }
 }
@@ -111,7 +111,7 @@ export const ATLAS_SET_COUNTS: Record<string, { count: number; url: string; titl
     "title": "The truth words"
   },
   "types": {
-    "count": 0,
+    "count": 10,
     "url": "/language",
     "title": "The types"
   },
@@ -191,15 +191,25 @@ export const ATLAS_SCORE = {
 } as const
 
 /** the two clocks diffed (computed at compile · /map renders the line) */
-export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers', { ratified_only: string[]; shipped_only: string[] }> =
+export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers' | 'grammar', { ratified_only: string[]; shipped_only: string[] }> =
   {
   "builtins": {
-    "ratified_only": [],
+    "ratified_only": [
+      "decide"
+    ],
     "shipped_only": []
   },
   "providers": {
     "ratified_only": [],
     "shipped_only": []
+  },
+  "grammar": {
+    "ratified_only": [
+      "W1 envelope (workflow object · tasks map)"
+    ],
+    "shipped_only": [
+      "W2 envelope (workflow scalar · tasks sequence · declared depends_on)"
+    ]
   }
 }
 

@@ -331,7 +331,6 @@ sets:
       - { from: /providers/localai, to: "/providers#localai" }
       - { from: /providers/vllm, to: "/providers#vllm" }
       - { from: /providers/mistral, to: "/providers#mistral" }
-      - { from: /providers/moonshot, to: "/providers#moonshot" }
       - { from: /providers/anthropic, to: "/providers#anthropic" }
       - { from: /providers/openai, to: "/providers#openai" }
       - { from: /providers/gemini, to: "/providers#gemini" }

@@ -2484,13 +2484,13 @@ export const ATLAS_NODES: AtlasNode[] = [
     "exists": true
   },
   {
-    "id": "predicate:failed",
+    "id": "predicate:failure",
     "kind": "member",
     "set": "gate-predicates",
     "layer": "flow",
-    "title": "failed",
+    "title": "failure",
     "url": "/flow",
-    "anchor": "predicate-failed",
+    "anchor": "predicate-failure",
     "status": "ratified",
     "opener": "fire when the producer failed terminally"
   },
@@ -2506,13 +2506,13 @@ export const ATLAS_NODES: AtlasNode[] = [
     "opener": "fire when the producer was gated out"
   },
   {
-    "id": "predicate:succeeded",
+    "id": "predicate:success",
     "kind": "member",
     "set": "gate-predicates",
     "layer": "flow",
-    "title": "succeeded",
+    "title": "success",
     "url": "/flow",
-    "anchor": "predicate-succeeded",
+    "anchor": "predicate-success",
     "status": "ratified",
     "opener": "fire when the producer completed clean"
   },
@@ -3735,7 +3735,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "layer": "reach",
     "title": "nika:decide",
     "url": "/tools/decide",
-    "status": "both",
+    "status": "ratified",
     "opener": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt.",
     "meta": {
       "family": "data"
@@ -4136,6 +4136,116 @@ export const ATLAS_NODES: AtlasNode[] = [
     "anchor": "spec",
     "status": "ratified",
     "opener": "the nika-spec repo · the truth of the language"
+  },
+  {
+    "id": "type:bool",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "bool",
+    "url": "/language",
+    "anchor": "type-bool",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:bytes",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "bytes",
+    "url": "/language",
+    "anchor": "type-bytes",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:duration",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "duration",
+    "url": "/language",
+    "anchor": "type-duration",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:integer",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "integer",
+    "url": "/language",
+    "anchor": "type-integer",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:null",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "null",
+    "url": "/language",
+    "anchor": "type-null",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:number",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "number",
+    "url": "/language",
+    "anchor": "type-number",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:path",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "path",
+    "url": "/language",
+    "anchor": "type-path",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:string",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "string",
+    "url": "/language",
+    "anchor": "type-string",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:timestamp",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "timestamp",
+    "url": "/language",
+    "anchor": "type-timestamp",
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "type:uri",
+    "kind": "member",
+    "set": "types",
+    "layer": "shape",
+    "title": "uri",
+    "url": "/language",
+    "anchor": "type-uri",
+    "status": "ratified",
+    "opener": null
   },
   {
     "id": "verb:agent",
@@ -8116,7 +8226,7 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
-    "from": "predicate:failed",
+    "from": "predicate:failure",
     "to": "set:gate-predicates",
     "kind": "member-of"
   },
@@ -8126,7 +8236,7 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
-    "from": "predicate:succeeded",
+    "from": "predicate:success",
     "to": "set:gate-predicates",
     "kind": "member-of"
   },
@@ -8706,6 +8816,56 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
+    "from": "type:bool",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:bytes",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:duration",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:integer",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:null",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:number",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:path",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:string",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:timestamp",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
+    "from": "type:uri",
+    "to": "set:types",
+    "kind": "member-of"
+  },
+  {
     "from": "verb:agent",
     "to": "set:verbs",
     "kind": "member-of"
@@ -9059,7 +9219,10 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "from": "post:intent-as-code",
     "to": "word:with",
     "kind": "mentions"
-  },
+  }
+]
+
+const ATLAS_EDGES_2: AtlasEdge[] = [
   {
     "from": "post:media-are-workflow-citizens",
     "to": "tool:image_generate",
@@ -9109,10 +9272,7 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "from": "post:the-agent-workflow-spectrum",
     "to": "word:tools",
     "kind": "mentions"
-  }
-]
-
-const ATLAS_EDGES_2: AtlasEdge[] = [
+  },
   {
     "from": "post:the-editor-tells-the-truth",
     "to": "tool:jq",

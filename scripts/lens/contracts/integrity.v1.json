@@ -15,11 +15,11 @@
   },
   {
    "path": ".github/workflows/lens-gates.yml",
-   "sha256": "0743949649f567a168f94c176b46dd6dcc0194f2448dd4687ebb5a3f535642ac"
+   "sha256": "d60a9d34f85fba2cd3483151c3440259ce8ff2fa0fc867f7df9dc9fcf72235aa"
   },
   {
    "path": ".github/workflows/spec-resync.yml",
-   "sha256": "cc5c411d25158f837a8e5020e22b85bc36a849efa8982fea7e592ec43e3d77e7"
+   "sha256": "86e52a4b96f702ddeb9b09b734b1e6a29a0df63941920c25b5a19b40f30f7f1a"
   },
   {
    "path": "index.html",
@@ -31,7 +31,7 @@
   },
   {
    "path": "package.json",
-   "sha256": "c1d8320932fbcd68c136245b73b597686ca8e006aa93921a4174509b08dea8a2"
+   "sha256": "52e65c3ab68857b631fcf57d6223b64224cee09e4a6ff9ad91ac8b05cce84bde"
   },
   {
    "path": "pnpm-lock.yaml",
@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "fd74d6e1854ab328b602a10ed5a9fad48dc8889c0ee6fa3ec43222bb0e7fcde6"
+   "sha256": "77425ff7ab7bcefed735935e9d888d2425a5327da6dc04546e623913cf251574"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "770220d77ffd9fa6d90d38d1f5308e1cbf80474b71929930b0d31c450039db27"
+   "sha256": "c6d3a1626c53aa2433e31bb71e1315088d2a39b08f89b12f66f7709a58484013"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -91,7 +91,7 @@
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "209db4ed601881e91a89d8cf80b5b2f2047d806b3b35f98b1adab1b3422ea098"
+   "sha256": "e17444d8f566059a9beca43fe686bcce6671e1d1a067e4214d0e03d57f5cf46b"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "cd8989c11eacfd87e81ba935daca2b763c98a86c90331cf2c94467c327eb574b"
+   "sha256": "b3d1a9355619807e0091b26538e1e547556a77e6f2b73ce5c64624998d917c35"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
