@@ -201,6 +201,12 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     expect(ts).toContain('KIND_OF_SET')
   })
 
+  it('the 3D scene speaks the kinds seam (member stars resolve through KIND_OF_SET)', () => {
+    const scene = read('src/pages/Map3dScene.tsx')
+    expect(scene).toContain('KIND_HEX')
+    expect(scene).toContain('KIND_OF_SET[m.set]')
+  })
+
   it('/brand projects the graph (every family rendered from the emission)', () => {
     const brand = read('src/pages/Brand.tsx')
     expect(brand).toContain("from '../content/design.generated'")

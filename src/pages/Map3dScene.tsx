@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { layoutConstellation } from '../../scripts/atlas/lib/radial-layout.mjs'
-import { LAYER_HEX } from '../content/design.generated'
+import { LAYER_HEX, KIND_HEX, KIND_OF_SET } from '../content/design.generated'
 
 /* ─── Map3dScene · the constellation in depth (WO-13 · flagged) ──────────────
    The SAME geometry the SVG draws — layoutConstellation over the SERVED
@@ -24,7 +24,7 @@ import { LAYER_HEX } from '../content/design.generated'
 interface Geo {
   layers: { id: string; mid: number }[]
   sets: { id: string; layer: string; x: number; y: number; r: number }[]
-  members: { id: string; layer: string; x: number; y: number }[]
+  members: { id: string; layer: string; set: string; x: number; y: number }[]
   links: { from: string; to: string; weight: number }[]
   center: number
   ring: { layers: number }
@@ -50,7 +50,15 @@ function toScene(geo: Geo) {
       ),
     })),
     dots: geo.sets.map((d) => ({ id: d.id, layer: d.layer, r: d.r, p: pt(d.x, d.y, d.layer) })),
-    stars: geo.members.map((m) => ({ layer: m.layer, p: pt(m.x, m.y, m.layer) })),
+    /* a member star speaks its FAMILY when its set declares one (the kinds
+       seam · fenêtre C's promise: the ontology colours the node — the same
+       KIND_OF_SET resolution every 2D surface reads), its floor's hue
+       otherwise · beacons and set dots stay the layer voice */
+    stars: geo.members.map((m) => ({
+      layer: m.layer,
+      kind: KIND_OF_SET[m.set] ?? null,
+      p: pt(m.x, m.y, m.layer),
+    })),
     wires: geo.links
       .map((l) => {
         const a = geo.sets.find((d) => d.id === l.from)
@@ -66,7 +74,7 @@ function Instanced({
   geom,
   scaleOf,
 }: {
-  items: { p: [number, number, number]; layer?: string; id?: string; r?: number }[]
+  items: { p: [number, number, number]; layer?: string; id?: string; r?: number; kind?: string | null }[]
   geom: THREE.BufferGeometry
   scaleOf: (it: { r?: number }) => number
 }) {
@@ -82,7 +90,13 @@ function Instanced({
       m.makeScale(k, k, k)
       m.setPosition(...it.p)
       mesh.setMatrixAt(i, m)
-      mesh.setColorAt(i, c.set((LAYER_HEX as Record<string, string>)[it.layer ?? it.id ?? ''] ?? '#8fa3bf'))
+      mesh.setColorAt(
+        i,
+        c.set(
+          (it.kind && (KIND_HEX as Record<string, string>)[it.kind]) ||
+            ((LAYER_HEX as Record<string, string>)[it.layer ?? it.id ?? ''] ?? '#8fa3bf'),
+        ),
+      )
     })
     mesh.instanceMatrix.needsUpdate = true
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
