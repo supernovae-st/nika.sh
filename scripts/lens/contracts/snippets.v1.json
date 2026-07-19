@@ -812,18 +812,18 @@
     },
     {
       "path": "src/pages/Install.tsx",
-      "source_blob": "3c5f865fb93585bf5a46d8c28ecdb059ae3c3e8b",
+      "source_blob": "369a04c66a9eaeaf21a93a8bbc7b84155e376573",
       "blocks": [
         {
           "selector": "src/pages/Install.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 249,
+          "line": 251,
           "sha256": "dad94e7658c6cef01f6bca29555f9036d403441e3ae0c22dfb8e2efb1d70e470"
         },
         {
           "selector": "src/pages/Install.tsx#codefile:2",
           "kind": "jsx-codefile",
-          "line": 255,
+          "line": 257,
           "sha256": "9145f585a623bdc626b7736010f08d82d6724a84977353ca7bef83e4094285f1"
         }
       ]
