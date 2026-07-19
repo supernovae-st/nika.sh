@@ -106,6 +106,39 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     }
   })
 
+  it('the status recipe is emitted and the three surfaces consume it (law 2)', () => {
+    const css = read('src/design.generated.css')
+    for (const status of ['ratified', 'shipped', 'both'])
+      expect(css).toContain(`.st-mark[data-status='${status}']::before`)
+    for (const [file, cls] of [
+      ['src/shell/Inspector.tsx', 'insp-status st-mark'],
+      ['src/shell/HoverCard.tsx', 'hovercard-status st-mark'],
+      ['src/pages/MemberRoom.tsx', 'hub-authority st-mark'],
+    ])
+      expect(read(file), `${file} lost the st-mark`).toContain(cls)
+  })
+
+  it('inline ms population only ever shrinks (law 3 ratchet)', () => {
+    const cssFiles: string[] = []
+    const walk = (dir: string) => {
+      for (const name of readdirSync(join(ROOT, dir))) {
+        const rel = join(dir, name)
+        if (statSync(join(ROOT, rel)).isDirectory()) walk(rel)
+        else if (name.endsWith('.css') && !name.endsWith('.generated.css')) cssFiles.push(rel)
+      }
+    }
+    walk('src')
+    const total = cssFiles.reduce(
+      (n, f) => n + (read(f).match(/[0-9]+ms\b/g) ?? []).length,
+      0,
+    )
+    /* measured 2026-07-19 (fenêtre B pin, after the touched-surface fold).
+       New animation cites a token (var(--dur-*) / var(--ease-*)); legacy
+       numbers convert window by window — the ceiling only descends. */
+    const CEILING = 97
+    expect(total, `inline ms count ${total} > ceiling ${CEILING}`).toBeLessThanOrEqual(CEILING)
+  })
+
   it('the map surfaces consume the graph (no local hue map can return)', () => {
     expect(read('src/pages/Map3dScene.tsx')).toContain("from '../content/design.generated'")
     for (const layer of Object.keys(LAYER_HEX))

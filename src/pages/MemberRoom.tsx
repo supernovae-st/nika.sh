@@ -141,7 +141,7 @@ export function Component() {
             </h1>
             {readout?.opener && <p className="hub-opener">{readout.opener}</p>}
             {readout?.status && (
-              <p className="hub-authority mono" data-status={readout.status}>
+              <p className="hub-authority st-mark mono" data-status={readout.status}>
                 {readout.status} · derived from the pinned spec and the released engine ·
                 re-proven at every push
               </p>

@@ -28,3 +28,27 @@
   --ease-settle: linear(0, 0.281 18.2%, 0.622 33.9%, 0.865 48.2%, 0.992 61.5%, 1.029 74.3%, 1.015 86.8%, 1);
   --ease-linear: linear;
 }
+
+/* the two-clocks mark (law 2: the ontology drives the pixel) — ONE recipe,
+   every status surface consumes it (Inspector · hover card · rooms). The
+   GEOMETRY carries the meaning, currentColor keeps each register's voice:
+   ratified=stroke · shipped=filled · both=filled-ring */
+.st-mark::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 7px;
+  vertical-align: 1px;
+}
+.st-mark[data-status='ratified']::before {
+  border: 1.5px solid currentColor;
+}
+.st-mark[data-status='shipped']::before {
+  background: currentColor;
+}
+.st-mark[data-status='both']::before {
+  background: currentColor;
+  box-shadow: 0 0 0 2.5px color-mix(in srgb, currentColor 40%, transparent);
+}

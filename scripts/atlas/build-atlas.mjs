@@ -825,6 +825,32 @@ ${Object.entries(layerHex).map(([k, v]) => `  --layer-${k}: ${v};`).join('\n')}
 ${Object.entries(DSN.motion.dur).map(([k, v]) => `  --dur-${k}: ${v}ms;`).join('\n')}
 ${Object.entries(DSN.motion.ease).map(([k, v]) => `  --ease-${k}: ${v};`).join('\n')}
 }
+
+/* the two-clocks mark (law 2: the ontology drives the pixel) — ONE recipe,
+   every status surface consumes it (Inspector · hover card · rooms). The
+   GEOMETRY carries the meaning, currentColor keeps each register's voice:
+   ${Object.entries(DSN.status).map(([k, v]) => `${k}=${v}`).join(' · ')} */
+.st-mark::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 7px;
+  vertical-align: 1px;
+}
+${Object.entries(DSN.status)
+  .map(([status, recipe]) => {
+    const RECIPES = {
+      stroke: '  border: 1.5px solid currentColor;',
+      filled: '  background: currentColor;',
+      'filled-ring':
+        '  background: currentColor;\n  box-shadow: 0 0 0 2.5px color-mix(in srgb, currentColor 40%, transparent);',
+    }
+    if (!RECIPES[recipe]) throw new Error(`design.status.${status}: unknown recipe '${recipe}'`)
+    return `.st-mark[data-status='${status}']::before {\n${RECIPES[recipe]}\n}`
+  })
+  .join('\n')}
 `
 
 const designTs = GEN(

@@ -33,7 +33,7 @@ export default function HoverCard({ nodeId }: { nodeId: string }) {
       <p className="hovercard-head">
         <span className="hovercard-glyph">{card.kindGlyph}</span>
         <span className="hovercard-title">{card.title}</span>
-        <span className="hovercard-status" data-status={card.status}>
+        <span className="hovercard-status st-mark" data-status={card.status}>
           {card.status}
         </span>
       </p>

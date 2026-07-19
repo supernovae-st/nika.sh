@@ -20,7 +20,7 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .hovercard {
-    animation: hovercard-in 120ms ease-out;
+    animation: hovercard-in var(--dur-quick) ease-out;
   }
   @keyframes hovercard-in {
     from {

@@ -134,7 +134,7 @@ export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose
       </div>
       {readout && (
         <div className="insp-body">
-          <p className="insp-status mono" data-status={readout.status}>
+          <p className="insp-status st-mark mono" data-status={readout.status}>
             {readout.status}
           </p>
           {readout.opener && <p className="insp-opener">{readout.opener}</p>}
