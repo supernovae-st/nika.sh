@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "2892dde4caa141ce710cde9e0109a12a362204fe",
-  "tree": "e59113b967ed5ab4f3b4b699f07eec510ce934a8"
+  "commit": "42fbc495d63ab91b79e22d2a41e063d0bb1dc63f",
+  "tree": "a838ab33b0a4c38374f183f2e058c0f2f23aa108"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "2d72f69b5a259eb10802bd2669e9bb4c639f1b5417f3213ecf552448558103a1",
+   "sha256": "ffccc35f352ea0433b7950f9dc33ec18491abdfe4f15e48cb1c6909bba676b72",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -264,7 +264,7 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "2d72f69b5a259eb10802bd2669e9bb4c639f1b5417f3213ecf552448558103a1",
+   "sha256": "ffccc35f352ea0433b7950f9dc33ec18491abdfe4f15e48cb1c6909bba676b72",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {

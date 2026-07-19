@@ -2,10 +2,10 @@
  "nika_spec_pin_format": 1,
  "$comment": "LENS-011 (PRE1 design-pack contract \u00b7 lot 9i): the EXACT nika-spec identity the website resyncs against \u2014 a full 40-hex commit AND its tree (the content digest). spec-resync fetches THIS commit by sha (never a moving ref), verifies HEAD == spec_commit AND HEAD^{tree} == spec_tree BEFORE any derivation or commit, and opens ONE idempotent PR on a branch UNIQUE to this pin with a plain create push (no --force, no --force-with-lease). LENS-006 binds the stable channel and closed-release attestation into these same bytes; public/.well-known/nika-spec-pin.json is a byte-identical generated twin.",
  "repository": "supernovae-st/nika-spec",
- "spec_commit": "2892dde4caa141ce710cde9e0109a12a362204fe",
- "spec_tree": "e59113b967ed5ab4f3b4b699f07eec510ce934a8",
+ "spec_commit": "42fbc495d63ab91b79e22d2a41e063d0bb1dc63f",
+ "spec_tree": "a838ab33b0a4c38374f183f2e058c0f2f23aa108",
  "channel": "stable",
  "release_closed": true,
  "release_attestation": "scripts/lens/contracts/release-attestation.v1.json",
- "release_attestation_sha256": "f71fc35e9f349d56ad53272762814d136853115f75a1b7b7d54ddce83cd58d0b"
+ "release_attestation_sha256": "9b9729e54712dd77abb864665aeb527c4cd60b5571c9998722b8d45e2d3f25b9"
 }
