@@ -9456,6 +9456,11 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
     "kind": "mentions"
   },
   {
+    "from": "post:the-generative-workflow",
+    "to": "word:const",
+    "kind": "mentions"
+  },
+  {
     "from": "post:the-mcp-server-you-didnt-build",
     "to": "tool:write",
     "kind": "mentions"

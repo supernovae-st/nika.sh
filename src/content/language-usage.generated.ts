@@ -197,11 +197,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "cwd": {
     "word": "cwd",
     "usage": {
-      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"",
+      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n      env:\n        LC_ALL: \"C\"",
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 10
+        "firstLine": 7
       }
     },
     "templates": [],
@@ -246,11 +246,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "env": {
     "word": "env",
     "usage": {
-      "yaml": "  description: \"content-address a file — the receipt survives the run\"\n\nenv:\n  LC_ALL: \"C\"",
+      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n      env:\n        LC_ALL: \"C\"",
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 4
+        "firstLine": 7
       }
     },
     "templates": [],
@@ -815,11 +815,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "shell": {
     "word": "shell",
     "usage": {
-      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"",
+      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n      env:\n        LC_ALL: \"C\"",
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 10
+        "firstLine": 7
       }
     },
     "templates": [],

@@ -24,7 +24,7 @@ permits:
   exec: false
   tools: ["nika:image_generate", "nika:jq", "nika:write"]
 
-vars:
+const:
   subject: "a calm cosmic landing hero"
   out_dir: "./out/assets"
 
@@ -33,7 +33,7 @@ tasks:
     infer:
       max_tokens: 600
       prompt: |
-        Write one vivid, concrete image prompt for: ${{ vars.subject }}.
+        Write one vivid, concrete image prompt for: ${{ const.subject }}.
         No text in the image · no watermark · a calm central zone.
       schema:
         type: object
@@ -50,7 +50,7 @@ tasks:
       args:
         provider: mock
         prompt: "${{ with.image_prompt }}"
-        output_dir: "${{ vars.out_dir }}"
+        output_dir: "${{ const.out_dir }}"
         filename_prefix: "hero"
 
   manifest:
@@ -71,7 +71,7 @@ tasks:
     invoke:
       tool: "nika:write"
       args:
-        path: "${{ vars.out_dir }}/manifest.json"
+        path: "${{ const.out_dir }}/manifest.json"
         create_dirs: true
         content: "${{ with.manifest }}"
 
@@ -79,7 +79,7 @@ outputs:
   manifest: ${{ tasks.manifest.output }}
 ```
 
-The triple, made explicit: `vars:` is the input surface, and changing the subject moves nothing else. The `brief` is the model step, schema-typed so the prompt it writes is a value, not vibes. And the effects are *declared before they happen*: `permits.fs.write` says assets land under `./out/assets/**` and nowhere else. That last line taught me something while writing this. I first asked the audit to infer the boundary for me, and it refused, correctly: *"task `render` uses a dynamic path — `fs` cannot express 'any path'; add the resolved path(s) before running."* The tool would not guess my blast radius. I had to write it down. That is the review working on the *author*.
+The triple, made explicit: `const:` is the value surface, and changing the subject moves nothing else. The `brief` is the model step, schema-typed so the prompt it writes is a value, not vibes. And the effects are *declared before they happen*: `permits.fs.write` says assets land under `./out/assets/**` and nowhere else. That last line taught me something while writing this. I first asked the audit to infer the boundary for me, and it refused, correctly: *"task `render` uses a dynamic path — `fs` cannot express 'any path'; add the resolved path(s) before running."* The tool would not guess my blast radius. I had to write it down. That is the review working on the *author*.
 
 Then the run. Here is the part that separates a declared pipeline from a vendor script: the render step **narrates itself**.
 

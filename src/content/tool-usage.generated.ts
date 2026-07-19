@@ -190,7 +190,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "hash": {
     "bare": "hash",
-    "yaml": "nika: v1\nworkflow:\n  id: pin-the-artifact\n  description: \"content-address a file — the receipt survives the run\"\n\nenv:\n  LC_ALL: \"C\"\n\ntasks:\n  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n\n  pin:\n    with:\n      artifact: ${{ tasks.artifact.output }}\n    invoke:\n      tool: \"nika:hash\"\n      args:\n        content: \"${{ with.artifact }}\"\n        algo: sha256\n\noutputs:\n  sha256: ${{ tasks.pin.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: pin-the-artifact\n  description: \"content-address a file — the receipt survives the run\"\n\ntasks:\n  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n      env:\n        LC_ALL: \"C\"\n\n  pin:\n    with:\n      artifact: ${{ tasks.artifact.output }}\n    invoke:\n      tool: \"nika:hash\"\n      args:\n        content: \"${{ with.artifact }}\"\n        algo: sha256\n\noutputs:\n  sha256: ${{ tasks.pin.output }}",
     "source": {
       "kind": "crafted",
       "file": "hash.nika.yaml"
