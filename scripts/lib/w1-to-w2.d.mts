@@ -6,3 +6,5 @@ export interface W2Result {
 }
 export function w1ToW2WithMap(src: string): W2Result
 export function w1ToW2(src: string): string
+export function downcastValues(src: string): string
+export function serveW2(src: string): string

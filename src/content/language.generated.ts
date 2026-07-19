@@ -182,6 +182,30 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     ]
   },
   {
+    "word": "config",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "envelope",
+        "required": false,
+        "type": "object",
+        "desc": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment, may appear in logs (R3a · LAW-SURFACE-0201 · succeeds the dead `env:` block). Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001)."
+      }
+    ]
+  },
+  {
+    "word": "const",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "envelope",
+        "required": false,
+        "type": "object",
+        "desc": "Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 · the literal half of the dead `vars:` block · everything that is not required:true lands here per the E-split total rule). Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`."
+      }
+    ]
+  },
+  {
     "word": "cwd",
     "verb": false,
     "decls": [
@@ -225,12 +249,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "word": "env",
     "verb": false,
     "decls": [
-      {
-        "scope": "envelope",
-        "required": false,
-        "type": "object",
-        "desc": "Non-sensitive runtime config · `${{ env.X }}` · may appear in logs."
-      },
       {
         "scope": "exec",
         "required": false,
@@ -311,6 +329,18 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "on_finally",
         "required": false
+      }
+    ]
+  },
+  {
+    "word": "inputs",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "envelope",
+        "required": false,
+        "type": "object",
+        "desc": "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies (R3a · LAW-SURFACE-0201 · the typed half of the dead `vars:` block · a required:true value lands here per the E-split total rule). Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211)."
       }
     ]
   },
@@ -491,7 +521,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "envelope",
         "required": false,
         "type": "object",
-        "desc": "The workflow's return value · symmetric to vars. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema."
+        "desc": "The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema."
       }
     ]
   },
@@ -751,18 +781,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "required": false,
         "type": "object",
         "desc": "Named type declarations (spec 09-types.md · PascalCase · acyclic)"
-      }
-    ]
-  },
-  {
-    "word": "vars",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "envelope",
-        "required": false,
-        "type": "object",
-        "desc": "Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declaration object."
       }
     ]
   },

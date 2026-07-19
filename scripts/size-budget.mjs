@@ -49,6 +49,10 @@
    · two-clocks mark · motion tokens render from the emission — the page
    cannot lie) and routes are synchronous BY SSG DESIGN, so the emission
    data + the section rides the entry: ~0.8KB for the projection law.
+   358→359 grammar-door: the value axis joins serveW2 (inputs+const fold
+   back to vars, root refs rewritten) so the serving surfaces downcast the
+   ratified grammar to W2 on the entry: ~0.4KB for copy-paste that survives
+   the C2 flip.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -56,7 +60,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 358
+const BUDGET_KB = 359
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

@@ -26,7 +26,7 @@ permits:
   exec: false
   tools: ["nika:assert", "nika:done", "nika:read"]
 
-vars:
+inputs:
   goal:
     type: string
     required: true
@@ -35,7 +35,7 @@ vars:
 tasks:
   plan:
     infer:
-      prompt: "Break '${{ vars.goal }}' into at most 4 concrete steps."
+      prompt: "Break '${{ inputs.goal }}' into at most 4 concrete steps."
       max_tokens: 400
       schema:
         type: object

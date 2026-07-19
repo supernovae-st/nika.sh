@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { PLAY_BREAKS } from '../pages/play-breaks'
 import { TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
-import { w1ToW2 } from '../lib/w1-to-w2'
+import { serveW2 } from '../lib/w1-to-w2'
 import { lintNika } from '../lib/nika-lint'
 
 /* ── the break-it gates (U8 · structural honesty) ─────────────────────────────
@@ -29,7 +29,7 @@ describe('play breaks · one honest mutation per template seed', () => {
     '%s · the find exists, the code fires mutated, stays quiet pristine',
     (seed, b) => {
       // the button mutates what the page SERVES — the W2 door output
-      const yaml = w1ToW2(TEMPLATES_YAML[seed])
+      const yaml = serveW2(TEMPLATES_YAML[seed])
       expect(yaml, `${seed} skeleton missing`).toBeTruthy()
       expect(yaml.includes(b.find), `${seed}: find not in the skeleton`).toBe(true)
       // one occurrence only — the button applies a single, predictable edit

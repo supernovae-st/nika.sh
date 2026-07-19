@@ -11,7 +11,7 @@
   },
   {
    "path": ".github/nika-spec-pin.json",
-   "sha256": "ffccc35f352ea0433b7950f9dc33ec18491abdfe4f15e48cb1c6909bba676b72"
+   "sha256": "6173804d346b1ba27159ab66d3f4f3800abdf4652608624b704205a72d35bf1f"
   },
   {
    "path": ".github/workflows/lens-gates.yml",
@@ -27,7 +27,7 @@
   },
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "ffccc35f352ea0433b7950f9dc33ec18491abdfe4f15e48cb1c6909bba676b72"
+   "sha256": "6173804d346b1ba27159ab66d3f4f3800abdf4652608624b704205a72d35bf1f"
   },
   {
    "path": "package.json",
@@ -71,11 +71,11 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "b48b7db09a76667843bd1254d37bd243722403b5110cf300e80f2465434cab68"
+   "sha256": "72eedf30baea0d69596fda4356ae8f9067a18ca48afe310a5b1d27200cfdc0e5"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "9ac73a8f359632edaa4db4f612dd0cf09d335a1463c159b71d572c9f8a349021"
+   "sha256": "0c41768d0a9ecfdd190830595823a158e6ad0ea1d3f2534697ff20561913cf50"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -87,11 +87,11 @@
   },
   {
    "path": "scripts/lens/contracts/release-attestation.v1.json",
-   "sha256": "9b9729e54712dd77abb864665aeb527c4cd60b5571c9998722b8d45e2d3f25b9"
+   "sha256": "8cfcb88a729c0a8c4982729f55c0266827a28d24f8a39fed719ef9e23bbdd400"
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "b2bf443069504b3a8d985e4507326b926076317ab826761cc1fa003ae3321422"
+   "sha256": "59260d5cdb865f8c8c41ce72aeab1398bb95245abd30ef2ada8f47eb4dc2c082"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "b48eaecf0651eb7e7a408c369a6001db6dc10d9dea0e4289dc1296b37cd5794a"
+   "sha256": "bad76c6068434b9b2630cb643afbdb3345e78955b473d8312806c8b87756f3b9"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
@@ -135,7 +135,7 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "9a44ede26604e1fc234614bb81d8ab0c90c1e9c72c4a3e2400b19621fb89ff27"
+   "sha256": "871d0b0417cd0406e75a91d7159ebac2574f09740423262364f3e470ed8b283e"
   },
   {
    "path": "src/routes.tsx",

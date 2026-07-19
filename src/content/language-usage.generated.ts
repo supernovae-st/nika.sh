@@ -64,7 +64,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "args": {
     "word": "args",
     "usage": {
-      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }",
       "source": {
         "kind": "template",
         "name": "chain",
@@ -167,14 +167,41 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-EXEC-002"
     ]
   },
+  "config": {
+    "word": "config",
+    "templates": [],
+    "codes": []
+  },
+  "const": {
+    "word": "const",
+    "usage": {
+      "yaml": "const:\n  source: \"./README.md\"             # SLOT: your input — README.md exists in ANY repo, so the\n                                    # skeleton runs green BEFORE you point it at real data",
+      "source": {
+        "kind": "template",
+        "name": "chain",
+        "file": "chain.nika.yaml",
+        "firstLine": 16
+      }
+    },
+    "templates": [
+      "chain",
+      "gate-and-act",
+      "fanout",
+      "etl-state",
+      "website-brief",
+      "media-asset-pack",
+      "api-upload-and-create"
+    ],
+    "codes": []
+  },
   "cwd": {
     "word": "cwd",
     "usage": {
-      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"",
+      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n      env:\n        LC_ALL: \"C\"",
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 10
+        "firstLine": 7
       }
     },
     "templates": [],
@@ -219,11 +246,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "env": {
     "word": "env",
     "usage": {
-      "yaml": "env:\n  LC_ALL: \"C\"",
+      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n      env:\n        LC_ALL: \"C\"",
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 6
+        "firstLine": 7
       }
     },
     "templates": [],
@@ -332,6 +359,24 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-PARSE-008",
       "NIKA-PARSE-018",
       "NIKA-SEC-006"
+    ]
+  },
+  "inputs": {
+    "word": "inputs",
+    "usage": {
+      "yaml": "inputs:\n  goal:\n    type: string\n    required: true\n    description: \"What the agent must accomplish\"   # SLOT",
+      "source": {
+        "kind": "template",
+        "name": "agent-loop",
+        "file": "agent-loop.nika.yaml",
+        "firstLine": 16
+      }
+    },
+    "templates": [
+      "agent-loop"
+    ],
+    "codes": [
+      "NIKA-COMP-004"
     ]
   },
   "invoke": {
@@ -517,7 +562,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "on_codes": {
     "word": "on_codes",
     "usage": {
-      "yaml": "  previous:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.state_path }}\" }\n    on_error:\n      on_codes: [NIKA-BUILTIN-READ-001]   # not-found ONLY · a permission error still fails loudly\n      recover: ${{ tasks.empty.output }}",
+      "yaml": "  previous:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"${{ const.state_path }}\" }\n    on_error:\n      on_codes: [NIKA-BUILTIN-READ-001]   # not-found ONLY · a permission error still fails loudly\n      recover: ${{ tasks.empty.output }}",
       "source": {
         "kind": "template",
         "name": "etl-state",
@@ -533,7 +578,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "on_error": {
     "word": "on_error",
     "usage": {
-      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ const.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
       "source": {
         "kind": "template",
         "name": "gate-and-act",
@@ -570,7 +615,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "output": {
     "word": "output",
     "usage": {
-      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ const.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
       "source": {
         "kind": "template",
         "name": "gate-and-act",
@@ -674,7 +719,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "recover": {
     "word": "recover",
     "usage": {
-      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+      "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ const.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
       "source": {
         "kind": "template",
         "name": "gate-and-act",
@@ -725,7 +770,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "schema": {
     "word": "schema",
     "usage": {
-      "yaml": "  plan:\n    infer:\n      prompt: \"Break '${{ vars.goal }}' into at most 4 concrete steps.\"   # SLOT\n      schema:\n        type: object\n        required: [steps]\n        properties:\n          steps: { type: array, items: { type: string } }",
+      "yaml": "  plan:\n    infer:\n      prompt: \"Break '${{ inputs.goal }}' into at most 4 concrete steps.\"   # SLOT\n      schema:\n        type: object\n        required: [steps]\n        properties:\n          steps: { type: array, items: { type: string } }",
       "source": {
         "kind": "template",
         "name": "agent-loop",
@@ -770,11 +815,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "shell": {
     "word": "shell",
     "usage": {
-      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"",
+      "yaml": "  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n      env:\n        LC_ALL: \"C\"",
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 10
+        "firstLine": 7
       }
     },
     "templates": [],
@@ -841,7 +886,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "tasks": {
     "word": "tasks",
     "usage": {
-      "yaml": "tasks:\n  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+      "yaml": "tasks:\n  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }",
       "source": {
         "kind": "template",
         "name": "chain",
@@ -916,7 +961,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "tool": {
     "word": "tool",
     "usage": {
-      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }",
       "source": {
         "kind": "template",
         "name": "chain",
@@ -966,31 +1011,6 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-TYPE-002"
     ]
   },
-  "vars": {
-    "word": "vars",
-    "usage": {
-      "yaml": "vars:\n  source: \"./README.md\"             # SLOT: your input — README.md exists in ANY repo, so the\n                                    # skeleton runs green BEFORE you point it at real data",
-      "source": {
-        "kind": "template",
-        "name": "chain",
-        "file": "chain.nika.yaml",
-        "firstLine": 16
-      }
-    },
-    "templates": [
-      "chain",
-      "gate-and-act",
-      "fanout",
-      "etl-state",
-      "agent-loop",
-      "website-brief",
-      "media-asset-pack",
-      "api-upload-and-create"
-    ],
-    "codes": [
-      "NIKA-PARSE-015"
-    ]
-  },
   "vision": {
     "word": "vision",
     "usage": {
@@ -1007,7 +1027,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "when": {
     "word": "when",
     "usage": {
-      "yaml": "  act:\n    with:\n      value: ${{ tasks.check.value }}   # the binding IS the edge · check → act\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ with.value > vars.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ with.value }}\"   # SLOT\n        severity: warning",
+      "yaml": "  act:\n    with:\n      value: ${{ tasks.check.value }}   # the binding IS the edge · check → act\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ with.value > const.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ with.value }}\"   # SLOT\n        severity: warning",
       "source": {
         "kind": "template",
         "name": "gate-and-act",

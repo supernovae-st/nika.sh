@@ -1427,6 +1427,18 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
+    "label": "config",
+    "href": "/language/config",
+    "hint": "envelope — Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment,"
+  },
+  {
+    "kind": "word",
+    "label": "const",
+    "href": "/language/const",
+    "hint": "envelope — Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 "
+  },
+  {
+    "kind": "word",
     "label": "cwd",
     "href": "/language/cwd",
     "hint": "exec"
@@ -1447,7 +1459,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "env",
     "href": "/language/env",
-    "hint": "envelope · exec — Non-sensitive runtime config · `${{ env.X }}` · may appear in logs."
+    "hint": "exec"
   },
   {
     "kind": "word",
@@ -1484,6 +1496,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "infer",
     "href": "/language/infer",
     "hint": "task · on_finally"
+  },
+  {
+    "kind": "word",
+    "label": "inputs",
+    "href": "/language/inputs",
+    "hint": "envelope — Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies"
   },
   {
     "kind": "word",
@@ -1567,7 +1585,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "outputs",
     "href": "/language/outputs",
-    "hint": "envelope — The workflow's return value · symmetric to vars. Each entry is a `${{ tasks.X.output }}` reference "
+    "hint": "envelope — The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` referenc"
   },
   {
     "kind": "word",
@@ -1688,12 +1706,6 @@ export const PALETTE: PaletteEntry[] = [
     "label": "types",
     "href": "/language/types",
     "hint": "envelope — Named type declarations (spec 09-types.md · PascalCase · acyclic)"
-  },
-  {
-    "kind": "word",
-    "label": "vars",
-    "href": "/language/vars",
-    "hint": "envelope — Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declarati"
   },
   {
     "kind": "word",
