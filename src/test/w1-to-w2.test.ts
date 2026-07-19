@@ -2,9 +2,9 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { w1ToW2, w1ToW2WithMap } from '../lib/w1-to-w2'
+import { w1ToW2, w1ToW2WithMap, serveW2 } from '../lib/w1-to-w2'
 // the node twin — vitest resolves .mjs fine; parity is the whole point
-import { w1ToW2 as w1ToW2Node } from '../../scripts/lib/w1-to-w2.mjs'
+import { w1ToW2 as w1ToW2Node, serveW2 as serveW2Node } from '../../scripts/lib/w1-to-w2.mjs'
 
 /* ── w1-to-w2 · the mechanical grammar pass, judged ──────────────────────────
    The 0.104 release ships the W2 grammar (workflow scalar · tasks sequence ·
@@ -92,6 +92,66 @@ describe('w1-to-w2 · the mechanical grammar pass', () => {
     for (const m of src.matchAll(/'([a-z0-9-]+)': `([\s\S]*?)`,\n/g)) {
       const yaml = m[2].replace(/\\([`$\\])/g, '$1')
       expect(w1ToW2Node(yaml), `twin drift on ${m[1]}`).toBe(w1ToW2(yaml))
+      expect(serveW2Node(yaml), `serveW2 twin drift on ${m[1]}`).toBe(serveW2(yaml))
     }
+  })
+})
+
+/* ── the value axis · wnew -> w2 · the E-split inverse (C2) ──────────────────
+   The full door serveW2 = envelope (w1ToW2) + value axis: it folds the C2
+   `inputs:` + `const:` split back into one `vars:` block and rewrites the
+   root refs, so what a visitor copies still runs on the released 0.104 binary.
+   secrets is grammar-stable — untouched. */
+const WNEW = `nika: v1
+workflow: watch
+description: "the E-split, served W2"
+
+inputs:
+  city: { type: string, required: true }
+const:
+  threshold: 899
+secrets:
+  hook: { source: env, key: HOOK }
+
+tasks:
+  - id: check
+    with:
+      c: \${{ inputs.city }}
+      t: \${{ const.threshold }}
+    invoke:
+      tool: "nika:noop"
+`
+
+describe('serveW2 · the value axis', () => {
+  const served = serveW2(WNEW)
+
+  it('folds inputs + const into one vars block, secrets untouched', () => {
+    expect(served).toContain('vars:')
+    expect(served).toMatch(/^ {2}city:/m)
+    expect(served).toMatch(/^ {2}threshold: 899/m)
+    expect(served).not.toMatch(/^inputs:/m)
+    expect(served).not.toMatch(/^const:/m)
+    expect(served).toContain('hook: { source: env, key: HOOK }')
+  })
+
+  it('rewrites root refs inputs.|const. to vars. (never a nested field)', () => {
+    expect(served).toContain('${{ vars.city }}')
+    expect(served).toContain('${{ vars.threshold }}')
+    expect(served).not.toMatch(/\$\{\{[^}]*\b(inputs|const)\./)
+  })
+
+  it('parses to the exact W2 shape (single vars object)', () => {
+    const doc = parse(served) as { vars: Record<string, unknown>; inputs?: unknown; const?: unknown }
+    expect(doc.inputs).toBeUndefined()
+    expect(doc.const).toBeUndefined()
+    expect(Object.keys(doc.vars).sort()).toEqual(['city', 'threshold'])
+  })
+
+  it('is idempotent on the served form', () => {
+    expect(serveW2(served)).toBe(served)
+  })
+
+  it('the node twin emits byte-identical serveW2 output', () => {
+    expect(serveW2Node(WNEW)).toBe(served)
   })
 })

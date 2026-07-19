@@ -10,7 +10,7 @@ import { track } from '../lib/track'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { checkNika, SHIPPED_AHEAD_CODES, type LintDiag } from '../lib/nika-lint'
-import { w1ToW2 } from '../lib/w1-to-w2'
+import { serveW2 } from '../lib/w1-to-w2'
 import { useAurora } from '../fx/aurora-context'
 import { routeHead } from '../content'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
@@ -73,7 +73,7 @@ const TEMPLATE_ORDER = ['chain', 'gate-and-act', 'fanout', 'etl-state', 'agent-l
    the released binary, so the ratified-clock emission converts on the way
    out here too. */
 const toW2 = (dict: Record<string, string>): Record<string, string> =>
-  Object.fromEntries(Object.entries(dict).map(([k, y]) => [k, w1ToW2(y)]))
+  Object.fromEntries(Object.entries(dict).map(([k, y]) => [k, serveW2(y)]))
 let SSR_SEEDS: string | null = null
 if (import.meta.env.SSR) {
   SSR_SEEDS = JSON.stringify(toW2((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML))

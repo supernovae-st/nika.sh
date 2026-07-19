@@ -14,7 +14,7 @@ import { NOT_FOUND_YAML } from '../pages/NotFound'
 import { VERBS } from '../content'
 import { EXTENSION_SHOWCASE_YAML } from '../sections/EditorCanvas'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
-import { w1ToW2 } from '../lib/w1-to-w2'
+import { serveW2 } from '../lib/w1-to-w2'
 
 /* ── on-page YAML · every full workflow shown on the site is SCHEMA-TRUE ─────
    The repo rule is "Spec-correct YAML only" (AGENTS.md #1), yet until this
@@ -123,11 +123,11 @@ describe('on-page YAML · the living corpus is schema-true against the SHIPPED s
      site SERVES is the door output (w1-to-w2) — the gate judges the served
      form, the same bytes the visitor copies. */
   it.each(Object.entries(SHOWCASE_YAML))('showcase %s (as served) validates', (slug, yaml) =>
-    expectValid(slug, w1ToW2(yaml)),
+    expectValid(slug, serveW2(yaml)),
   )
 
   it.each(Object.entries(TEMPLATES_YAML))('template %s (as served) validates', (slug, yaml) =>
-    expectValid(slug, w1ToW2(yaml)),
+    expectValid(slug, serveW2(yaml)),
   )
 })
 

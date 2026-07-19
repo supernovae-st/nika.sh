@@ -185,3 +185,56 @@ export function w1ToW2WithMap(src: string): W2Result {
 export function w1ToW2(src: string): string {
   return w1ToW2WithMap(src).text
 }
+
+/* ── the value axis · wnew -> w2 · the inverse of codemod-esplit ─────────────
+   C2 split the W2 `vars:` block into typed `inputs:` (required) + literal
+   `const:` (the E-split). W2's `vars` schema IS that union ("untyped literal
+   OR typed declaration object"), so serving W2 to a 0.104 binary is the exact
+   inverse: fold `inputs` + `const` (+ the unused `config`) back into one
+   `vars` block, and rewrite every `${{ inputs|const|config.X }}` root ref to
+   `${{ vars.X }}`. `secrets` is byte-identical in both grammars — untouched.
+   Text-level like w1ToW2: comments and scalar styles the visitor copies survive.
+   Twin: scripts/lib/w1-to-w2.mjs — output parity pinned by the test. */
+const VALUE_HEADER = /^(inputs|const|config):\s*(#.*)?$/
+
+export function downcastValues(src: string): string {
+  const lines = src.split('\n')
+  const out: string[] = []
+  const bodies: string[] = []
+  const PLACEHOLDER = ' VARS '
+  let placed = false
+  let i = 0
+  while (i < lines.length) {
+    const line = lines[i]
+    if (VALUE_HEADER.test(line)) {
+      let j = i + 1
+      while (j < lines.length && (lines[j].trim() === '' || /^\s/.test(lines[j]))) {
+        if (lines[j].trim() === '') {
+          const next = lines.slice(j + 1).find((x) => x.trim() !== '')
+          if (next === undefined || !/^\s/.test(next)) break // blank ends the block
+        }
+        bodies.push(lines[j])
+        j += 1
+      }
+      if (!placed) { out.push(PLACEHOLDER); placed = true }
+      i = j
+      continue
+    }
+    out.push(line)
+    i += 1
+  }
+  const merged: string[] = []
+  for (const line of out) {
+    if (line === PLACEHOLDER) merged.push('vars:', ...bodies)
+    else merged.push(line)
+  }
+  // rewrite ROOT refs only (never a nested `tasks.x.inputs` field) inside ${{ }}
+  return merged.join('\n').replace(/\$\{\{([^}]*)\}\}/g, (_m, inner) =>
+    '${{' + inner.replace(/(?<![.\w])(inputs|const|config)\.(\w+)/g, 'vars.$2') + '}}')
+}
+
+/** The full door · what the site SERVES to a visitor's released binary ·
+    envelope (w1ToW2) then value axis (downcastValues). Idempotent on W2. */
+export function serveW2(src: string): string {
+  return downcastValues(w1ToW2(src))
+}

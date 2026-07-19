@@ -177,6 +177,20 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/config",
+          "termCode": "config",
+          "name": "config",
+          "description": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment, may appear in logs (R3a · LAW-SURFACE-0201 · succeeds the dead `env:` block). Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001)."
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/const",
+          "termCode": "const",
+          "name": "const",
+          "description": "Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 · the literal half of the dead `vars:` block · everything that is not required:true lands here per the E-split total rule). Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`."
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/cwd",
           "termCode": "cwd",
           "name": "cwd"
@@ -198,8 +212,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/env",
           "termCode": "env",
-          "name": "env",
-          "description": "Non-sensitive runtime config · `${{ env.X }}` · may appear in logs."
+          "name": "env"
         },
         {
           "@type": "DefinedTerm",
@@ -239,6 +252,13 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/infer",
           "termCode": "infer",
           "name": "infer"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/inputs",
+          "termCode": "inputs",
+          "name": "inputs",
+          "description": "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies (R3a · LAW-SURFACE-0201 · the typed half of the dead `vars:` block · a required:true value lands here per the E-split total rule). Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211)."
         },
         {
           "@type": "DefinedTerm",
@@ -328,7 +348,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/outputs",
           "termCode": "outputs",
           "name": "outputs",
-          "description": "The workflow's return value · symmetric to vars. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema."
+          "description": "The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema."
         },
         {
           "@type": "DefinedTerm",
@@ -463,13 +483,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "types",
           "name": "types",
           "description": "Named type declarations (spec 09-types.md · PascalCase · acyclic)"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/vars",
-          "termCode": "vars",
-          "name": "vars",
-          "description": "Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declaration object."
         },
         {
           "@type": "DefinedTerm",
