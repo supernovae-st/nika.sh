@@ -1,8 +1,11 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { yaml as yamlLang } from '@codemirror/lang-yaml'
 import { linter, lintGutter, type Diagnostic } from '@codemirror/lint'
-import { EditorView } from '@codemirror/view'
+import { autocompletion } from '@codemirror/autocomplete'
+import { EditorView, Decoration, type DecorationSet } from '@codemirror/view'
+import { StateEffect, StateField } from '@codemirror/state'
+import { nikaComplete } from './play-editor-complete'
 import { syntaxHighlighting } from '@codemirror/language'
 import { checkNika, type LintDiag } from '../lib/nika-lint'
 import { NIKA_VERB_HEX } from '../design-tokens.generated'
@@ -68,6 +71,8 @@ const cfTheme = EditorView.theme(
     '&.cm-focused .cm-selectionBackground': { backgroundColor: 'rgb(95 211 209 / 0.22)' },
     /* the active line band + brighter gutter · the CodeFile lit-line treatment */
     '.cm-activeLine': { backgroundColor: 'rgb(255 255 255 / 0.035)' },
+    /* U5 · the DAG-hover band — the CodeFile lit-line tint, live */
+    '.cm-nika-lit': { backgroundColor: 'rgb(95 211 209 / 0.12)' },
     '.cm-activeLineGutter': { backgroundColor: 'transparent', color: '#9aa1ad' },
     /* the gutter · dim, right-aligned, with the hairline divider (= .cf-line bg) */
     '.cm-gutters': {
@@ -123,13 +128,62 @@ const cfTheme = EditorView.theme(
   { dark: true },
 )
 
+/* ── U5 · the two-way task light ─────────────────────────────────────────────
+   The DAG's hovered task lights the editor's exact lines (a set-effect
+   decoration — dispatched, never a reconfigure) and a hovered editor line
+   lifts its 1-based number to the page, which resolves the task from the
+   plan's line pins. One field, one effect, zero re-renders per hover. */
+const setLitLines = StateEffect.define<{ from: number; to: number } | null>()
+const litLines = StateField.define<DecorationSet>({
+  create: () => Decoration.none,
+  update(deco, tr) {
+    deco = deco.map(tr.changes)
+    for (const e of tr.effects) {
+      if (e.is(setLitLines)) {
+        if (!e.value) return Decoration.none
+        const marks = []
+        for (let n = e.value.from; n <= Math.min(e.value.to, tr.state.doc.lines); n++) {
+          marks.push(Decoration.line({ class: 'cm-nika-lit' }).range(tr.state.doc.line(n).from))
+        }
+        return Decoration.set(marks)
+      }
+    }
+    return deco
+  },
+  provide: (f) => EditorView.decorations.from(f),
+})
+
 export interface PlayEditorProps {
   value: string
   onChange: (next: string) => void
   onDiags: (diags: LintDiag[]) => void
+  /** U5 · 1-based inclusive line range to light (the DAG's hovered task) */
+  focusRange?: [number, number] | null
+  /** U5 · the pointer's 1-based editor line (null on leave) */
+  onHoverLine?: (line: number | null) => void
 }
 
-export default function PlayEditor({ value, onChange, onDiags }: PlayEditorProps) {
+export default function PlayEditor({ value, onChange, onDiags, focusRange, onHoverLine }: PlayEditorProps) {
+  const viewRef = useRef<EditorView | null>(null)
+  useEffect(() => {
+    const view = viewRef.current
+    if (!view) return
+    view.dispatch({
+      effects: setLitLines.of(focusRange ? { from: focusRange[0], to: focusRange[1] } : null),
+    })
+  }, [focusRange])
+  const hoverExt = useMemo(
+    () =>
+      EditorView.domEventHandlers({
+        mousemove: (ev, view) => {
+          if (!onHoverLine) return
+          const pos = view.posAtCoords({ x: ev.clientX, y: ev.clientY })
+          onHoverLine(pos == null ? null : view.state.doc.lineAt(pos).number)
+        },
+        mouseleave: () => onHoverLine?.(null),
+      }),
+    [onHoverLine],
+  )
   /* the CodeMirror lint source · same call that fills the verdict panel */
   const cmLinter = useMemo(
     () =>
@@ -158,9 +212,18 @@ export default function PlayEditor({ value, onChange, onDiags }: PlayEditorProps
       value={value}
       onChange={onChange}
       theme="none"
+      onCreateEditor={(view) => {
+        viewRef.current = view
+      }}
       extensions={[
         yamlLang(),
         cmLinter,
+        litLines,
+        hoverExt,
+        /* U6 · CANON autocompletion — our source ONLY (no keyword soup):
+           builtins on tool:, provider prefixes on model:, the envelope and
+           task grammars on key positions · gate-pinned to the shipped schema */
+        autocompletion({ override: [nikaComplete], icons: false }),
         lintGutter(),
         cmA11y,
         syntaxHighlighting(cfHighlight),

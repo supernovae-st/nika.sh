@@ -23,6 +23,10 @@ export interface PlanTask {
   verb: PlanVerb | null
   /** resolved producers — the declared depends_on list, file order */
   deps: string[]
+  /** 1-based line of the task's `- id:` head (0 = unknown · U5 sync) */
+  line0: number
+  /** 1-based last line of the task block (inclusive · U5 sync) */
+  line1: number
   /** the card's third line — tool / argv head / model register */
   target: string
   /** a when: gate is declared */
@@ -104,6 +108,27 @@ export function parsePlan(src: string): ParsedPlan | null {
   // 0.104 « the sequence »: tasks is a LIST · each item declares its id.
   if (!Array.isArray(rawTasks)) return null
 
+  /* the line pins (U5 · editor↔DAG sync): a light scan for each `- id:`
+     head — the same tokenizer doctrine as the flagship derivation; a block
+     runs to the line before the next head (or the next top-level key) */
+  const srcLines = src.split('\n')
+  const heads: { id: string; line: number }[] = []
+  let inTasks = false
+  srcLines.forEach((l, i) => {
+    if (/^[A-Za-z0-9_-]+\s*:/.test(l)) inTasks = /^tasks\s*:/.test(l)
+    const m = inTasks
+      ? (/^ {2}- id:\s*([a-z][a-z0-9_]*)/.exec(l) ?? /^ {2}- \{ id:\s*([a-z][a-z0-9_]*)/.exec(l))
+      : null
+    if (m) heads.push({ id: m[1], line: i + 1 })
+  })
+  const lineSpanOf = (id: string): [number, number] => {
+    const at = heads.findIndex((h) => h.id === id)
+    if (at === -1) return [0, 0]
+    let end = at + 1 < heads.length ? heads[at + 1].line - 1 : srcLines.length
+    while (end > heads[at].line && srcLines[end - 1].trim() === '') end -= 1
+    return [heads[at].line, end]
+  }
+
   const tasks: PlanTask[] = []
   const seen = new Set<string>()
   for (const rt of rawTasks) {
@@ -113,7 +138,8 @@ export function parsePlan(src: string): ParsedPlan | null {
     if (!id || seen.has(id)) continue
     seen.add(id)
     const verb = VERBS.find((v) => v in t) ?? null
-    tasks.push({ id, verb, deps: producersOf(t), target: targetOf(t, verb), gated: 'when' in t })
+    const [line0, line1] = lineSpanOf(id)
+    tasks.push({ id, verb, deps: producersOf(t), target: targetOf(t, verb), gated: 'when' in t, line0, line1 })
   }
   if (tasks.length === 0) return null
 

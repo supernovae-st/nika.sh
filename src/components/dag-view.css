@@ -103,6 +103,11 @@
 }
 
 /* the card · the W11 device recipe (morph.css .morph-node), standalone */
+.dv-node[data-lit] {
+  border-color: rgb(95 211 209 / 0.55);
+  background: rgb(95 211 209 / 0.07);
+}
+
 .dv-node {
   position: relative;
   display: flex;

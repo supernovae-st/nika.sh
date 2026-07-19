@@ -31,11 +31,11 @@
   },
   {
    "path": "package.json",
-   "sha256": "52e65c3ab68857b631fcf57d6223b64224cee09e4a6ff9ad91ac8b05cce84bde"
+   "sha256": "f9c0b5624ac60866e4c84918b979b6cceb89cbf45232bb67d10ac5542703ceb7"
   },
   {
    "path": "pnpm-lock.yaml",
-   "sha256": "bd14d24dc1864f229bf3ab3241a0b9d8b37f373cf7232cc27ae4fd91157e337d"
+   "sha256": "b533faa6c7cd92e29d5ae03801ff784c74697e769fef2a989263a890d6db7f59"
   },
   {
    "path": "react-ssg.config.ts",
@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "17cab051702766bf7b653bb8735eb16810b107f6c65b637f086dc4d22510f402"
+   "sha256": "38a68709b3d1a25c0c02e6dacca23c14a535762b850608b178eb1adfc30d70c1"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "68fd108c1a31c0eb6447fbab8f43d22ae6340fafbc7e78b978882f1c2816b99e"
+   "sha256": "b212eb1d34d8b27c8113de0be821609a4eabc20b3a26fc63c46a421fa362dd0d"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",

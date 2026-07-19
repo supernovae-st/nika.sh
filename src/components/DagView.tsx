@@ -23,10 +23,16 @@ export function DagView({
   plan,
   stale,
   simWave,
+  lit,
+  onNodeHover,
 }: {
   plan: ParsedPlan
   stale?: boolean
   simWave?: number
+  /** U5 · task id to light (the editor's hovered line resolved to its task) */
+  lit?: string | null
+  /** U5 · pointer enters/leaves a task card */
+  onNodeHover?: (id: string | null) => void
 }) {
   const boxRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -139,6 +145,9 @@ export function DagView({
                 }}
                 className="dv-node"
                 data-verb={t.verb ?? undefined}
+                data-lit={lit === t.id || undefined}
+                onPointerEnter={onNodeHover ? () => onNodeHover(t.id) : undefined}
+                onPointerLeave={onNodeHover ? () => onNodeHover(null) : undefined}
                 data-run={
                   simWave === undefined
                     ? undefined

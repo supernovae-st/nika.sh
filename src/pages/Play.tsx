@@ -111,6 +111,26 @@ export function Component() {
      (derived from the real DAG); no fabricated durations are ever shown.
      Editing or switching seeds cancels the sim (the plan changed). */
   const [simWave, setSimWave] = useState<number | undefined>(undefined)
+  /* U5 · the two-way task light: DAG hover ↔ editor line band. Both sides
+     resolve through the SAME pins (parse-plan line0/line1) so the light can
+     never disagree with the plan the DAG is drawing. */
+  const [litTask, setLitTask] = useState<string | null>(null)
+  const focusRange = useMemo<[number, number] | null>(() => {
+    if (!litTask || !plan) return null
+    const t = plan.tasks.find((x) => x.id === litTask)
+    return t && t.line0 > 0 ? [t.line0, t.line1] : null
+  }, [litTask, plan])
+  const onHoverLine = useMemo(
+    () => (line: number | null) => {
+      setLitTask(
+        line == null
+          ? null
+          : (plan?.tasks.find((t) => t.line0 > 0 && line >= t.line0 && line <= t.line1)?.id ??
+              null),
+      )
+    },
+    [plan],
+  )
   const simTimer = useRef(0)
   /* the sim beats THE MACHINED FRAME's drum like the home film does — one
      run grammar site-wide: the ring appears at runStart, draws with the
@@ -353,7 +373,13 @@ export function Component() {
                     the chunk fetch. */}
                 {mounted ? (
                   <Suspense fallback={EditorFallback}>
-                    <PlayEditor value={code} onChange={onCode} onDiags={setDiags} />
+                    <PlayEditor
+                      value={code}
+                      onChange={onCode}
+                      onDiags={setDiags}
+                      focusRange={focusRange}
+                      onHoverLine={onHoverLine}
+                    />
                   </Suspense>
                 ) : (
                   EditorFallback
@@ -389,7 +415,13 @@ export function Component() {
                 </button>
               </p>
               {plan ? (
-                <DagView plan={plan} stale={stale} simWave={simWave} />
+                <DagView
+                  plan={plan}
+                  stale={stale}
+                  simWave={simWave}
+                  lit={litTask}
+                  onNodeHover={setLitTask}
+                />
               ) : (
                 <p className="play-dag-empty">add a `tasks:` list and the plan draws itself</p>
               )}

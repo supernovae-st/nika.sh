@@ -42,6 +42,9 @@
    from it AND the map derives its dense tails from it: one source, two
    consumers, both first-render) · the room BODY stays the lazy graph
    (member-room-access) — ~4KB gz of registry+page for 119 real pages.
+   356→357 wo14-u5: the two-way task light (DAG hover ↔ editor lines via
+   the parse-plan pins) rides the entry with Play+DagView — the COMPLETION
+   vocabulary and CodeMirror's autocomplete stay on the /play lazy chunk.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -49,7 +52,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 356
+const BUDGET_KB = 357
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
