@@ -116,12 +116,18 @@ export function Component() {
      never disagree with the plan the DAG is drawing. */
   const [litTask, setLitTask] = useState<string | null>(null)
   const focusRange = useMemo<[number, number] | null>(() => {
-    if (!litTask || !plan) return null
+    /* stale = the pins describe the PREVIOUS doc — no light beats a lie
+       (the same contract the dimmed DAG already keeps) */
+    if (!litTask || !plan || stale) return null
     const t = plan.tasks.find((x) => x.id === litTask)
     return t && t.line0 > 0 ? [t.line0, t.line1] : null
-  }, [litTask, plan])
+  }, [litTask, plan, stale])
   const onHoverLine = useMemo(
     () => (line: number | null) => {
+      if (stale) {
+        setLitTask(null)
+        return
+      }
       setLitTask(
         line == null
           ? null
@@ -129,7 +135,7 @@ export function Component() {
               null),
       )
     },
-    [plan],
+    [plan, stale],
   )
   const simTimer = useRef(0)
   /* the sim beats THE MACHINED FRAME's drum like the home film does — one
@@ -419,7 +425,7 @@ export function Component() {
                   plan={plan}
                   stale={stale}
                   simWave={simWave}
-                  lit={litTask}
+                  lit={stale ? null : litTask}
                   onNodeHover={setLitTask}
                 />
               ) : (
