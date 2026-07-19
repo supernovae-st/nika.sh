@@ -82,8 +82,8 @@ const EXPR_OPEN = /(?<!\\)\$\{\{/g
 const DURATION = /^([0-9]+(\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$/
 const ROOT_ID = /(?<![.\w])([A-Za-z_][A-Za-z0-9_]*)(?:\.([A-Za-z_][A-Za-z0-9_]*))?/g
 const CEL_BUILTINS = new Set(['true', 'false', 'null', 'in', 'size'])
-const LOOP_LOCALS = new Set(['item', 'index'])
-const NAMESPACES = new Set(['vars', 'with', 'tasks', 'env', 'secrets'])
+export const LOOP_LOCALS = new Set(['item', 'index'])
+export const NAMESPACES = new Set(['vars', 'with', 'tasks', 'env', 'secrets'])
 const PROVIDERS = new Set<string>([
   ...CANON.providerIdsCloud,
   ...CANON.providerIdsLocal,

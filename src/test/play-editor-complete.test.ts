@@ -106,4 +106,51 @@ describe('play editor completion · positions', () => {
     const doc = ['tasks:', '  - id: only', '    depends_on: ['].join('\n')
     expect(nikaComplete(ctx(doc))).toBeNull()
   })
+
+  it('interp roots speak the LINT vocabulary, loop locals gated on for_each', () => {
+    const plain = ['tasks:', '  - id: a', '    infer:', '      prompt: "x ${{ '].join('\n')
+    const r = nikaComplete(ctx(plain))
+    expect(r).not.toBeNull()
+    expect(r!.options.map((o) => o.label).sort()).toEqual([
+      'env.',
+      'secrets.',
+      'tasks.',
+      'vars.',
+      'with.',
+    ])
+    const looped = ['tasks:', '  - id: a', '    for_each: ${{ vars.list }}', '    exec:', '      command: ["x", "${{ '].join('\n')
+    const r2 = nikaComplete(ctx(looped))
+    expect(r2!.options.map((o) => o.label)).toContain('item')
+    expect(r2!.options.map((o) => o.label)).toContain('index')
+  })
+
+  it('tasks. offers the other tasks as .output refs', () => {
+    const doc = ['tasks:', '  - id: gather', '  - id: write', '    with:', '      notes: ${{ tasks.'].join('\n')
+    const r = nikaComplete(ctx(doc))
+    expect(r!.options.map((o) => o.label)).toEqual(['tasks.gather.output'])
+  })
+
+  it('vars. offers the envelope block keys · with. offers the current item keys', () => {
+    const doc = [
+      'vars:',
+      '  region: eu',
+      '  bucket: b1',
+      'tasks:',
+      '  - id: a',
+      '    with:',
+      '      notes: hello',
+      '    infer:',
+      '      prompt: "${{ vars.',
+    ].join('\n')
+    const r = nikaComplete(ctx(doc))
+    expect(r!.options.map((o) => o.label).sort()).toEqual(['vars.bucket', 'vars.region'])
+    const doc2 = doc.replace('${{ vars.', '${{ with.')
+    const r2 = nikaComplete(ctx(doc2))
+    expect(r2!.options.map((o) => o.label)).toEqual(['with.notes'])
+  })
+
+  it('an unknown root offers nothing', () => {
+    const doc = ['tasks:', '  - id: a', '    infer:', '      prompt: "${{ nope.'].join('\n')
+    expect(nikaComplete(ctx(doc))).toBeNull()
+  })
 })

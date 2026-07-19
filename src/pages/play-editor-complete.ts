@@ -2,6 +2,7 @@ import type { CompletionContext, CompletionResult, Completion } from '@codemirro
 import { CANON } from '../canon.generated'
 import { TOOLS } from '../content/tools.generated'
 import { PROVIDERS } from '../content/providers.generated'
+import { LOOP_LOCALS, NAMESPACES } from '../lib/nika-lint'
 
 /* ─── play-editor-complete · CANON autocompletion (WO-14 · U6) ───────────────
    ONE completion source, vocabulary from the generated registries only —
@@ -102,9 +103,86 @@ function docTaskIds(ctx: CompletionContext, uptoLine: number): { ids: string[]; 
   return { ids, own }
 }
 
+/* keys of a top-level envelope block (`vars:` · `env:` · `secrets:`) —
+   two-space children, scanned like the task heads */
+function envelopeBlockKeys(ctx: CompletionContext, block: string): string[] {
+  const keys: string[] = []
+  let inBlock = false
+  for (let n = 1; n <= ctx.state.doc.lines; n++) {
+    const text = ctx.state.doc.line(n).text
+    if (/^[A-Za-z0-9_-]+\s*:/.test(text)) inBlock = new RegExp(`^${block}\\s*:`).test(text)
+    else if (inBlock) {
+      const m = text.match(/^ {2}([a-z_][a-z0-9_]*)\s*:/)
+      if (m) keys.push(m[1])
+    }
+  }
+  return keys
+}
+
+/* the task item the cursor sits in: its for_each truth + its with: keys —
+   `item`/`index` are only words INSIDE a for_each task (the lint's rule) */
+function currentTaskBlock(ctx: CompletionContext, uptoLine: number): { forEach: boolean; withKeys: string[] } {
+  let head = 0
+  for (let n = 1; n <= uptoLine; n++) {
+    if (/^ {2}- /.test(ctx.state.doc.line(n).text)) head = n
+  }
+  const out = { forEach: false, withKeys: [] as string[] }
+  if (!head) return out
+  let inWith = false
+  for (let n = head; n <= ctx.state.doc.lines; n++) {
+    const text = ctx.state.doc.line(n).text
+    if (n > head && (/^ {2}- /.test(text) || /^[A-Za-z0-9_-]+\s*:/.test(text))) break
+    if (/^ {4}for_each\s*:/.test(text)) out.forEach = true
+    if (/^ {4}[a-z_]+\s*:/.test(text)) inWith = /^ {4}with\s*:/.test(text)
+    else if (inWith) {
+      const m = text.match(/^ {6}([a-z_][a-z0-9_]*)\s*:/)
+      if (m) out.withKeys.push(m[1])
+    }
+  }
+  return out
+}
+
 export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
   const line = ctx.state.doc.lineAt(ctx.pos)
   const before = line.text.slice(0, ctx.pos - line.from)
+
+  /* ${{ ref }} — the lint's own namespaces (ONE list, imported), the doc's
+     own names: tasks.<id>.output for the other tasks, vars/env/secrets keys
+     from their envelope blocks, with. keys of the current item, item/index
+     only inside a for_each task */
+  const interp = before.match(/\$\{\{\s*([a-z_][a-z0-9_.]*)?$/)
+  if (interp) {
+    const ref = interp[1] ?? ''
+    const from = ctx.pos - ref.length
+    const dot = ref.indexOf('.')
+    if (dot === -1) {
+      const block = currentTaskBlock(ctx, line.number)
+      const options: Completion[] = [...NAMESPACES].map((n) => ({
+        label: `${n}.`,
+        type: 'namespace',
+      }))
+      if (block.forEach)
+        options.push(...[...LOOP_LOCALS].map((l) => ({ label: l, type: 'variable', detail: 'for_each' })))
+      return { from, options, validFor: /^[a-z_][a-z0-9_]*\.?$/ }
+    }
+    const root = ref.slice(0, dot)
+    let options: Completion[] = []
+    if (root === 'tasks') {
+      const { ids, own } = docTaskIds(ctx, line.number)
+      options = ids
+        .filter((id) => id !== own)
+        .map((id) => ({ label: `tasks.${id}.output`, type: 'variable', detail: 'task output' }))
+    } else if (root === 'vars' || root === 'env' || root === 'secrets') {
+      options = envelopeBlockKeys(ctx, root).map((k) => ({ label: `${root}.${k}`, type: 'variable' }))
+    } else if (root === 'with') {
+      options = currentTaskBlock(ctx, line.number).withKeys.map((k) => ({
+        label: `with.${k}`,
+        type: 'variable',
+      }))
+    }
+    if (!options.length) return null
+    return { from, options, validFor: /^[a-z_][a-z0-9_.]*$/ }
+  }
 
   /* depends_on: value position — offer the doc's OTHER task ids (block list
      `[a, b]` or a `- ` item under depends_on both end in an id-ish tail) */
