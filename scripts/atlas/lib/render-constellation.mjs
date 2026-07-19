@@ -26,7 +26,7 @@ const arcBand = (cx, cy, r0, r1, a0, a1) => {
   return `M ${p(r1, a0)} A ${r1} ${r1} 0 ${large} 1 ${p(r1, a1)} L ${p(r0, a1)} A ${r0} ${r0} 0 ${large} 0 ${p(r0, a0)} Z`
 }
 
-export function renderConstellation(geo, tokens) {
+export function renderConstellation(geo, tokens, paper) {
   const { size, center: C, ring } = geo
   const hue = (layer) => tokens[LAYER_HUE[layer]]
 
@@ -36,16 +36,16 @@ export function renderConstellation(geo, tokens) {
   .cst-sector:hover { fill-opacity: .12; }
   .cst-laylab { font-size: 15px; letter-spacing: .08em; text-transform: lowercase; fill-opacity: .85; }
   .cst-setdot { stroke-opacity: .85; fill-opacity: .28; }
-  .cst-setlab { font-size: 10.5px; fill: #aebad0; fill-opacity: .75; }
+  .cst-setlab { font-size: 10.5px; fill: ${paper.lab}; fill-opacity: .75; }
   .cst-star a { transform-box: fill-box; transform-origin: center; transition: transform .15s ease; }
   .cst-star a:hover, .cst-star a:focus-visible { transform: scale(1.8); }
   .cst-star a:focus-visible circle { stroke: #fff; stroke-width: 1.2; }
   .cst-star--soon { opacity: .45; }
-  .cst-agg { font-size: 10px; fill: #8fa0bd; }
-  .cst-agg a:hover text, .cst-agg a:focus-visible text { fill: #e8eefc; }
-  .cst-lk { fill: none; stroke: #9db4e0; stroke-opacity: .10; }
-  .cst-core { fill: #e8eefc; font-size: 17px; letter-spacing: .04em; }
-  .cst-corering { fill: none; stroke: #9db4e0; stroke-opacity: .25; }
+  .cst-agg { font-size: 10px; fill: ${paper.agg}; }
+  .cst-agg a:hover text, .cst-agg a:focus-visible text { fill: ${paper.bright}; }
+  .cst-lk { fill: none; stroke: ${paper.wire}; stroke-opacity: .10; }
+  .cst-core { fill: ${paper.bright}; font-size: 17px; letter-spacing: .04em; }
+  .cst-corering { fill: none; stroke: ${paper.wire}; stroke-opacity: .25; }
   @media (prefers-reduced-motion: reduce) { .cst-sector, .cst-star a { transition: none; } }
   `
 

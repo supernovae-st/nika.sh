@@ -47,7 +47,7 @@
   },
   {
    "path": "scripts/build-og-card.mjs",
-   "sha256": "e065c475d49f7cbd260611b0d76677dae1cf30376fa9b080ca4e9813a5556178"
+   "sha256": "f893129d3ddedde578298553b9f275059ba6ca8daf5c7ea067c06cf4c004f080"
   },
   {
    "path": "scripts/build-lens-semantic-contracts.mjs",
@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "486a96fa16e8ebeebe5d7c74f33a91e566d86f5f82f6e27ad9771452744cef09"
+   "sha256": "dacbf0203f482ec2f28c6be0fdfff4fe4b10c60063bb3d5f5d0fad04121dec56"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "9dfa9b69a0593b157f31fcbd1c9b6de5213d4872c669d7fba7d5401c158efff2"
+   "sha256": "7b9f25447327b3f721fa9c3b4955bf849ef0b1722515eda1fbb1d91868bb06ee"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",

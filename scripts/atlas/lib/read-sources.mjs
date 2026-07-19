@@ -161,6 +161,7 @@ export function readSources(ROOT) {
     fail: hex('fail'),
     markIce: hex('markIce'),
     accent: hex('accent'),
+    accentBright: hex('accentBright'),
   }
 
   /* the spec pin — stamped by the resync cron from its fresh clone; null

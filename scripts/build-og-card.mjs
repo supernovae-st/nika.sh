@@ -31,6 +31,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 const pub = resolve(root, 'public');
 
+/* the design graph (fenêtre A): every shared colour reads the emitted
+   palette — a raw hex here is a fold-law violation (design-graph.test).
+   True black (#000, shadow ground) stays local-assumed. */
+const PALETTE = JSON.parse(readFileSync(resolve(pub, 'design-palette.json'), 'utf8'));
+const { verbs: V, paper: P, accents: A } = PALETTE;
+
 // ── inline the real fonts so the card paints in the brand type ──────────────
 const b64 = (p) => readFileSync(p).toString('base64');
 // THE SHIP watermark · the /spec hero elevation, extracted from the SSG dist
@@ -607,13 +613,13 @@ const cardHtml = (c) => `<!doctype html>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 1200px; height: 630px; }
   :root {
-    --bg: #0a0b0d;
-    --ink: #f4f5f7;
-    --dim: #8a8f98;
-    --faint: #6c727c;
+    --bg: ${P.bg};
+    --ink: ${P.ink};
+    --dim: ${P.dim};
+    --faint: ${P.faint};
     --line: rgba(255,255,255,0.09);
-    --cyan: #22d3ee;
-    --violet: #b07bff;
+    --cyan: ${V.invoke};
+    --violet: ${V.agent};
   }
   body {
     position: relative;
@@ -631,7 +637,7 @@ const cardHtml = (c) => `<!doctype html>
     position: absolute;
     inset: -22%;
     background: conic-gradient(from 200deg,
-      #22d3ee 0%, #b07bff 25%, #22d3ee 50%, #b07bff 75%, #22d3ee 100%);
+      ${V.invoke} 0%, ${V.agent} 25%, ${V.invoke} 50%, ${V.agent} 75%, ${V.invoke} 100%);
     -webkit-mask: radial-gradient(ellipse 70% 76% at 50% 50%,
       transparent 50%, #000 92%);
     filter: blur(86px);
@@ -670,8 +676,8 @@ const cardHtml = (c) => `<!doctype html>
     transform-origin: 50% 100%;
     transform: rotateX(66deg);
     background-image:
-      repeating-linear-gradient(to right, #f4f5f7 0, #f4f5f7 1px, transparent 1px, transparent 52px),
-      repeating-linear-gradient(to bottom, #f4f5f7 0, #f4f5f7 1px, transparent 1px, transparent 52px);
+      repeating-linear-gradient(to right, ${P.ink} 0, ${P.ink} 1px, transparent 1px, transparent 52px),
+      repeating-linear-gradient(to bottom, ${P.ink} 0, ${P.ink} 1px, transparent 1px, transparent 52px);
     opacity: 0.05;
     -webkit-mask-image: radial-gradient(120% 88% at 50% 100%, #000 0%, rgba(0,0,0,0.5) 42%, transparent 78%);
   }
@@ -764,13 +770,13 @@ const cardHtml = (c) => `<!doctype html>
     mask-image: linear-gradient(to right, transparent 0, #000 320px);
   }
   .art svg { width: 100%; height: auto; display: block; }
-  .art [class^='sms'], .art [class*=' sms'] { stroke: #4f86ff; fill: none; }
-  .art [data-stratum='frame'] * { stroke: #8db4ff; }
-  .art [data-stratum='permits'] * { stroke: #ff7a3c; }
-  .art [data-stratum='stdlib'] *, .art [data-stratum='extract'] * { stroke: #22d3ee; }
-  .art [data-stratum='providers'] * { stroke: #5b8cff; }
-  .art [data-stratum='errors'] * { stroke: #b07bff; }
-  .art .sms-port-tip { fill: #22d3ee; stroke: none; }
+  .art [class^='sms'], .art [class*=' sms'] { stroke: ${A.accent}; fill: none; }
+  .art [data-stratum='frame'] * { stroke: ${A.accentBright}; }
+  .art [data-stratum='permits'] * { stroke: ${V.exec}; }
+  .art [data-stratum='stdlib'] *, .art [data-stratum='extract'] * { stroke: ${V.invoke}; }
+  .art [data-stratum='providers'] * { stroke: ${V.infer}; }
+  .art [data-stratum='errors'] * { stroke: ${V.agent}; }
+  .art .sms-port-tip { fill: ${V.invoke}; stroke: none; }
   .art .sms-keel--req, .art .sms-tick--fetch { stroke-width: 1.7; }
 </style>
 </head>
@@ -786,7 +792,7 @@ const cardHtml = (c) => `<!doctype html>
     <div class="top">
       <div class="brand">
         <svg viewBox="0 0 1100 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="${nikaPath}" fill="#f4f5f7" />
+          <path d="${nikaPath}" fill="${P.ink}" />
         </svg>
         <span class="wordmark">nika</span>
       </div>

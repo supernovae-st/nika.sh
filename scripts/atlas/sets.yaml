@@ -747,3 +747,46 @@ snippet_registry:
   - { file: src/sections/EditorCanvas.tsx, kind: crafted-room, gate: "play lint (nika-lint.test.ts) + onpage-yaml" }
   - { file: src/sections/morph/plain-words.ts, kind: crafted-room, gate: "onpage-yaml AJV (the film corpus)" }
   - { file: src/sections/verbs-data.ts, kind: crafted-room, gate: "verb-cards embedding gate (fragment validated as written)" }
+
+# ─── the design graph · fenêtre A (LENS_DESIGN_GRAPH §1 · law 1: a visual
+#     fact has ONE place of declaration) ───────────────────────────────────────
+# Verbs · severity · marks · accents live in the SPEC spine (design-tokens
+# via nika-spec) — this section cites them BY NAME, never by value. A hex
+# below is a SITE-side fact declared exactly once; build-atlas resolves and
+# emits design.generated.css + design.generated.ts + design-palette.json,
+# and the measured forks (og baker · constellation css · map surfaces)
+# consume the emissions. Gate: src/test/design-graph.test.ts (fold law +
+# css ratchet + cross-emission coherence) + atlas.test byte-diff.
+design:
+  paper:                 # the shared dark chrome (og cards · redirect stubs · svg)
+    bg: "#0a0b0d"        # near-black card/stub ground (the og register)
+    ink: "#f4f5f7"       # primary ink on paper
+    dim: "#8a8f98"       # secondary ink · labels
+    faint: "#6c727c"     # tertiary ink · captions
+    bright: "#e8eefc"    # svg core + hover ink
+    lab: "#aebad0"       # svg set labels
+    agg: "#8fa0bd"       # svg +N aggregates
+    wire: "#9db4e0"      # svg wires · rings
+  layers:                # layer → SPINE token (the constellation mapping, promoted
+    shape: markIce       # to the descriptor · render-constellation + map css +
+    flow: infer          # the 3D scene all consume the SAME resolution)
+    acts: agent
+    reach: invoke
+    boundary: exec
+    refusals: fail
+    proof: ok
+  status:                # two-clocks · the systematic visual axis (law 2)
+    ratified: stroke     # contour only · ratified, not yet shipped
+    shipped: filled      # plain fill · shipped, not ratified
+    both: filled-ring    # fill + ring · both clocks agree
+  motion:                # tokens, never numbers (law 3) · surfaces adopt in B
+    dur:                 # ms
+      quick: 120
+      soft: 240
+      slow: 600
+      film: 900
+    ease:
+      out: "cubic-bezier(0.215, 0.61, 0.355, 1)"
+      snap: "linear(0, 0.402 22%, 0.782 40.1%, 0.99 55.8%, 1.037 69.9%, 1.021 82.6%, 1)"
+      settle: "linear(0, 0.281 18.2%, 0.622 33.9%, 0.865 48.2%, 0.992 61.5%, 1.029 74.3%, 1.015 86.8%, 1)"
+      linear: "linear"

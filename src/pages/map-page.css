@@ -73,13 +73,13 @@
 }
 
 /* the layer hue leader — token values, the same story as the drawing */
-.mp-layer[data-layer='shape'] { --mp-hue: #9fd0ff; }
-.mp-layer[data-layer='flow'] { --mp-hue: #5b8cff; }
-.mp-layer[data-layer='acts'] { --mp-hue: #b07bff; }
-.mp-layer[data-layer='reach'] { --mp-hue: #22d3ee; }
-.mp-layer[data-layer='boundary'] { --mp-hue: #ff7a3c; }
-.mp-layer[data-layer='refusals'] { --mp-hue: #ff5d5d; }
-.mp-layer[data-layer='proof'] { --mp-hue: #34d399; }
+.mp-layer[data-layer='shape'] { --mp-hue: var(--layer-shape); }
+.mp-layer[data-layer='flow'] { --mp-hue: var(--layer-flow); }
+.mp-layer[data-layer='acts'] { --mp-hue: var(--layer-acts); }
+.mp-layer[data-layer='reach'] { --mp-hue: var(--layer-reach); }
+.mp-layer[data-layer='boundary'] { --mp-hue: var(--layer-boundary); }
+.mp-layer[data-layer='refusals'] { --mp-hue: var(--layer-refusals); }
+.mp-layer[data-layer='proof'] { --mp-hue: var(--layer-proof); }
 
 .mp-layer-head {
   display: flex;

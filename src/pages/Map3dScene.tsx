@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { layoutConstellation } from '../../scripts/atlas/lib/radial-layout.mjs'
+import { LAYER_HEX } from '../content/design.generated'
 
 /* ─── Map3dScene · the constellation in depth (WO-13 · flagged) ──────────────
    The SAME geometry the SVG draws — layoutConstellation over the SERVED
@@ -19,16 +20,6 @@ import { layoutConstellation } from '../../scripts/atlas/lib/radial-layout.mjs'
    who didn't ask for it. The canvas is decorative (aria-hidden): the SVG
    figure above it carries the semantics and the links. */
 
-/* the SVG's own layer hues (map-page.css) — one voice, two renderers */
-const LAYER_HUE: Record<string, string> = {
-  shape: '#9fd0ff',
-  flow: '#5b8cff',
-  acts: '#b07bff',
-  reach: '#22d3ee',
-  boundary: '#ff7a3c',
-  refusals: '#ff5d5d',
-  proof: '#34d399',
-}
 
 interface Geo {
   layers: { id: string; mid: number }[]
@@ -91,7 +82,7 @@ function Instanced({
       m.makeScale(k, k, k)
       m.setPosition(...it.p)
       mesh.setMatrixAt(i, m)
-      mesh.setColorAt(i, c.set(LAYER_HUE[it.layer ?? it.id ?? ''] ?? '#8fa3bf'))
+      mesh.setColorAt(i, c.set((LAYER_HEX as Record<string, string>)[it.layer ?? it.id ?? ''] ?? '#8fa3bf'))
     })
     mesh.instanceMatrix.needsUpdate = true
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
