@@ -198,3 +198,20 @@
   font-size: 11.5px;
   color: var(--v4-text-faint);
 }
+
+/* ── the design graph section (fenêtre B · projection of the emissions) ───── */
+.brand-swatch-chip--lined {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+}
+
+.brand-clock {
+  color: var(--v4-text);
+}
+
+.brand-dur {
+  display: inline-block;
+  width: var(--w);
+  height: 4px;
+  border-radius: 2px;
+  background: var(--v4-text-dim);
+}

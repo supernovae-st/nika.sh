@@ -807,7 +807,7 @@
     {
       "selector": "src/pages/Brand.tsx#count:1",
       "path": "src/pages/Brand.tsx",
-      "line": 19,
+      "line": 20,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -819,7 +819,7 @@
     {
       "selector": "src/pages/Brand.tsx#count:2",
       "path": "src/pages/Brand.tsx",
-      "line": 20,
+      "line": 21,
       "text": "${CANON.builtins} builtins",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -832,7 +832,7 @@
     {
       "selector": "src/pages/Brand.tsx#count:3",
       "path": "src/pages/Brand.tsx",
-      "line": 177,
+      "line": 186,
       "text": "four verb",
       "source": "four",
       "field": "verbs",

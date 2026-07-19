@@ -2,6 +2,7 @@ import { useHead } from '@unhead/react'
 import { routeHead } from '../content'
 import { CANON } from '../canon.generated'
 import { NIKA_VERB_HEX, NIKA_STATUS, type NikaVerbName } from '../design-tokens.generated'
+import { LAYER_HEX, PAPER, MOTION_DUR_MS, MOTION_EASE, STATUS_RECIPE } from '../content/design.generated'
 import { NK_ICONS, NK_ANIMS, type NikaIconId, type NikaAnimId } from '../icons/manifest'
 import { NikaIcon } from '../icons/Icon'
 import { NikaDots } from '../fx/dotmatrix/NikaDots'
@@ -62,6 +63,14 @@ const VERB_ROWS = (Object.entries(NIKA_VERB_HEX) as [NikaVerbName, string][]).ma
   ([name, hex]) => ({ name, hex, var: `--verb-${name}` }),
 )
 const STATUS_ROWS = Object.entries(NIKA_STATUS).map(([name, hex]) => ({ name, hex }))
+
+/* the SITE-side design graph (fenêtre A emissions) — same projection law:
+   the swatch IS the emission; the page cannot disagree with the compiler */
+const LAYER_ROWS = Object.entries(LAYER_HEX).map(([name, hex]) => ({ name, hex, var: `--layer-${name}` }))
+const PAPER_ROWS = Object.entries(PAPER).map(([name, hex]) => ({ name, hex, var: `--paper-${name}` }))
+const DUR_ROWS = Object.entries(MOTION_DUR_MS).map(([name, ms]) => ({ name, ms, var: `--dur-${name}` }))
+const EASE_NAMES = Object.keys(MOTION_EASE)
+const CLOCK_ROWS = Object.entries(STATUS_RECIPE).map(([status, recipe]) => ({ status, recipe }))
 
 const MOTION_CURATED: NikaAnimId[] = [
   'anim/infer',
@@ -195,6 +204,71 @@ export function Component() {
                   <code className="brand-swatch-hex">{r.hex}</code>
                 </li>
               ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="brand-sec" aria-labelledby="brand-graph">
+        <h2 id="brand-graph" className="brand-h2">
+          The design graph · declared once, derived everywhere
+        </h2>
+        <p className="brand-blurb">
+          The site side of the vocabulary: seven layer hues resolved from the spec spine, the
+          shared paper chrome, motion as tokens, and the two-clocks mark. Every swatch below
+          renders from the compiler's emission — this page cannot disagree with the graph.
+        </p>
+        <div className="brand-palette">
+          <div className="brand-palette-group">
+            <p className="brand-palette-kick">the seven floors</p>
+            <ul className="brand-swatches">
+              {LAYER_ROWS.map((r) => (
+                <li key={r.name} className="brand-swatch">
+                  <span className="brand-swatch-chip" style={{ background: r.hex }} />
+                  <span className="brand-swatch-name">{r.name}</span>
+                  <code className="brand-swatch-hex">{r.var}</code>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="brand-palette-group">
+            <p className="brand-palette-kick">the paper chrome</p>
+            <ul className="brand-swatches">
+              {PAPER_ROWS.map((r) => (
+                <li key={r.name} className="brand-swatch">
+                  <span className="brand-swatch-chip brand-swatch-chip--lined" style={{ background: r.hex }} />
+                  <span className="brand-swatch-name">{r.name}</span>
+                  <code className="brand-swatch-hex">{r.hex}</code>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="brand-palette-group">
+            <p className="brand-palette-kick">the two-clocks mark</p>
+            <ul className="brand-swatches">
+              {CLOCK_ROWS.map((r) => (
+                <li key={r.status} className="brand-swatch">
+                  <span className="st-mark brand-clock" data-status={r.status} />
+                  <span className="brand-swatch-name">{r.status}</span>
+                  <code className="brand-swatch-hex">{r.recipe}</code>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="brand-palette-group">
+            <p className="brand-palette-kick">motion tokens</p>
+            <ul className="brand-swatches">
+              {DUR_ROWS.map((r) => (
+                <li key={r.name} className="brand-swatch">
+                  <span className="brand-dur" style={{ ['--w' as string]: `${r.ms / 12}px` }} />
+                  <span className="brand-swatch-name">{r.name}</span>
+                  <code className="brand-swatch-hex">{r.ms}ms</code>
+                </li>
+              ))}
+              <li className="brand-swatch">
+                <span className="brand-swatch-name">eases</span>
+                <code className="brand-swatch-hex">{EASE_NAMES.join(' · ')}</code>
+              </li>
             </ul>
           </div>
         </div>

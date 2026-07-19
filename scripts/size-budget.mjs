@@ -45,6 +45,10 @@
    356→357 wo14-u5: the two-way task light (DAG hover ↔ editor lines via
    the parse-plan pins) rides the entry with Play+DagView — the COMPLETION
    vocabulary and CodeMirror's autocomplete stay on the /play lazy chunk.
+   357→358 design-graph-b: /brand projects the WHOLE graph (layers · paper
+   · two-clocks mark · motion tokens render from the emission — the page
+   cannot lie) and routes are synchronous BY SSG DESIGN, so the emission
+   data + the section rides the entry: ~0.8KB for the projection law.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -52,7 +56,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 357
+const BUDGET_KB = 358
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

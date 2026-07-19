@@ -139,6 +139,13 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     expect(total, `inline ms count ${total} > ceiling ${CEILING}`).toBeLessThanOrEqual(CEILING)
   })
 
+  it('/brand projects the graph (every family rendered from the emission)', () => {
+    const brand = read('src/pages/Brand.tsx')
+    expect(brand).toContain("from '../content/design.generated'")
+    for (const name of ['LAYER_HEX', 'PAPER', 'MOTION_DUR_MS', 'STATUS_RECIPE'])
+      expect(brand, `/brand lost the ${name} projection`).toContain(name)
+  })
+
   it('the map surfaces consume the graph (no local hue map can return)', () => {
     expect(read('src/pages/Map3dScene.tsx')).toContain("from '../content/design.generated'")
     for (const layer of Object.keys(LAYER_HEX))
