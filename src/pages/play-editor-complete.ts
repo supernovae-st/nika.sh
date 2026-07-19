@@ -80,9 +80,43 @@ const taskKeyOptions: Completion[] = TASK_KEYS.map((k) => ({
   ...((CANON.verbNames as readonly string[]).includes(k) ? { detail: 'verb' } : {}),
 }))
 
+/* the task heads visible in the doc — the parse-plan head grammar (block
+   `  - id: x` and flow `  - { id: x`), scanned on demand: depends_on wants
+   the OTHER tasks' ids, and a wrong id is the workshop's most common
+   DAG-003. The current item's own head is excluded (self-dependency). */
+function docTaskIds(ctx: CompletionContext, uptoLine: number): { ids: string[]; own: string | null } {
+  const ids: string[] = []
+  let own: string | null = null
+  let inTasks = false
+  for (let n = 1; n <= ctx.state.doc.lines; n++) {
+    const text = ctx.state.doc.line(n).text
+    if (/^[A-Za-z0-9_-]+\s*:/.test(text)) inTasks = /^tasks\s*:/.test(text)
+    const m = inTasks
+      ? (text.match(/^ {2}- id:\s*([a-z][a-z0-9_]*)/) ?? text.match(/^ {2}- \{ id:\s*([a-z][a-z0-9_]*)/))
+      : null
+    if (m) {
+      ids.push(m[1])
+      if (n <= uptoLine) own = m[1]
+    }
+  }
+  return { ids, own }
+}
+
 export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
   const line = ctx.state.doc.lineAt(ctx.pos)
   const before = line.text.slice(0, ctx.pos - line.from)
+
+  /* depends_on: value position — offer the doc's OTHER task ids (block list
+     `[a, b]` or a `- ` item under depends_on both end in an id-ish tail) */
+  const dep = before.match(/\bdepends_on:\s*\[?\s*(?:[a-z][a-z0-9_]*\s*,\s*)*([a-z0-9_]*)$/)
+  if (dep) {
+    const { ids, own } = docTaskIds(ctx, line.number)
+    const options: Completion[] = ids
+      .filter((id) => id !== own)
+      .map((id) => ({ label: id, type: 'variable', detail: 'task' }))
+    if (!options.length) return null
+    return { from: ctx.pos - dep[1].length, options, validFor: /^[a-z0-9_]*$/ }
+  }
 
   /* tool: "nika:… — value position (invoke's tool · agent's tools rows) */
   const tool = before.match(/"(nika:[a-z_]*)?$/)

@@ -25,17 +25,25 @@ describe('play editor completion · schema pins', () => {
   })
 })
 
-/* a minimal CompletionContext stand-in: a doc of lines + a cursor */
+/* a minimal CompletionContext stand-in: a doc of lines + a cursor at the end */
 function ctx(text: string, explicit = false) {
   const lines = text.split('\n')
   const pos = text.length
   const lineStart = text.lastIndexOf('\n') + 1
+  const starts: number[] = []
+  let acc = 0
+  for (const l of lines) {
+    starts.push(acc)
+    acc += l.length + 1
+  }
   return {
     pos,
     explicit,
     state: {
       doc: {
-        lineAt: () => ({ from: lineStart, text: lines[lines.length - 1] }),
+        lines: lines.length,
+        line: (n: number) => ({ text: lines[n - 1], from: starts[n - 1], number: n }),
+        lineAt: () => ({ from: lineStart, text: lines[lines.length - 1], number: lines.length }),
       },
     },
   } as never
@@ -69,5 +77,33 @@ describe('play editor completion · positions', () => {
 
   it('a plain value position offers nothing', () => {
     expect(nikaComplete(ctx('workflow: my flow'))).toBeNull()
+  })
+
+  it('depends_on offers the doc task ids, never the task itself', () => {
+    const doc = [
+      'tasks:',
+      '  - id: gather',
+      '    invoke:',
+      '  - id: check',
+      '    exec:',
+      '  - id: write',
+      '    depends_on: [',
+    ].join('\n')
+    const r = nikaComplete(ctx(doc))
+    expect(r).not.toBeNull()
+    expect(r!.options.map((o) => o.label).sort()).toEqual(['check', 'gather'])
+  })
+
+  it('depends_on keeps completing after a comma', () => {
+    const doc = ['tasks:', '  - id: gather', '  - id: check', '  - id: write', '    depends_on: [gather, ch'].join('\n')
+    const r = nikaComplete(ctx(doc))
+    expect(r).not.toBeNull()
+    expect(r!.options.map((o) => o.label)).toContain('check')
+    expect(r!.options.map((o) => o.label)).not.toContain('write')
+  })
+
+  it('depends_on with no other task offers nothing', () => {
+    const doc = ['tasks:', '  - id: only', '    depends_on: ['].join('\n')
+    expect(nikaComplete(ctx(doc))).toBeNull()
   })
 })
