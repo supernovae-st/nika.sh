@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState, useSyncExternalStore } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -10,6 +10,32 @@ import { TruthLine } from '../components/TruthLine'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './map-page.css'
+
+/* WO-13 · the depth lens, flagged: localStorage nika-map-3d=1 opts in;
+   prefers-reduced-motion opts everyone out (the gate mounts NOTHING —
+   the chunk never even loads). Decorative twin of the svg figure. */
+const Map3dScene = lazy(() => import('./Map3dScene'))
+
+/* server + first client render agree on "off" (hydration byte-true, the
+   LocaleSuggest recipe); the live value arrives on the next render */
+const map3dSnapshot = () => {
+  try {
+    return (
+      localStorage.getItem('nika-map-3d') === '1' &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    )
+  } catch {
+    return false
+  }
+}
+
+function useMap3dFlag(): boolean {
+  return useSyncExternalStore(
+    () => () => {},
+    map3dSnapshot,
+    () => false,
+  )
+}
 
 /* ─── /map · the mother page (theme-dark) ─────────────────────────────────────
    The anatomy of the language at a glance — the entry of everything. Three
@@ -104,6 +130,7 @@ function EveryPageRow({ link }: { link: MapLink }) {
 }
 
 export function Component() {
+  const flag3d = useMap3dFlag()
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const constellation = useConstellation()
 
@@ -288,6 +315,12 @@ export function Component() {
                 the same atlas, drawn · members link their rooms · <a href="/map/constellation.svg">the file</a>
               </figcaption>
             </figure>
+
+            {flag3d && (
+              <Suspense fallback={null}>
+                <Map3dScene />
+              </Suspense>
+            )}
           </div>
 
           <section className="mp-everypage" aria-labelledby="mp-everypage-title" id="every-page">

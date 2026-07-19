@@ -303,3 +303,32 @@ a.mp-set-chip:focus-visible {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ── WO-13 · the depth lens (flagged) ─────────────────────────────────────── */
+.mp-3d {
+  position: relative;
+  margin-top: 1.25rem;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 12px;
+  background: rgb(6 10 18 / 0.6);
+  overflow: hidden;
+}
+
+.mp-3d canvas {
+  display: block;
+  width: 100%;
+  height: min(62vh, 560px);
+  touch-action: none;
+  cursor: grab;
+}
+
+.mp-3d-hint {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.6rem;
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgb(255 255 255 / 0.42);
+  pointer-events: none;
+}
