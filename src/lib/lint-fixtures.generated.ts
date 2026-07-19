@@ -175,7 +175,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: research-pipeline\nmodel: mock/echo\nvars:\n  topic:\n    type: string\n    required: true\ntasks:\n  research:\n    infer:\n      prompt: \"Research ${{ vars.topic }}\"\n  summarize:\n    with:\n      research: ${{ tasks.research.output }}\n    infer:\n      prompt: \"Summarize ${{ with.research }}\"\noutputs:\n  brief:\n    value: ${{ tasks.summarize.output }}\n    type: string\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: research-pipeline\nmodel: mock/echo\ninputs:\n  topic:\n    type: string\n    required: true\ntasks:\n  research:\n    infer:\n      prompt: \"Research ${{ inputs.topic }}\"\n  summarize:\n    with:\n      research: ${{ tasks.research.output }}\n    infer:\n      prompt: \"Summarize ${{ with.research }}\"\noutputs:\n  brief:\n    value: ${{ tasks.summarize.output }}\n    type: string\n"
   },
   {
     "id": "envelope/003-nika-version-bad",
@@ -247,7 +247,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "namespaces": [
       "NIKA-PARSE"
     ],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\nvars:\n  topic:\n    type: text\n    required: true\ntasks:\n  a:\n    infer: { prompt: \"Research ${{ vars.topic }}\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ninputs:\n  topic:\n    type: text\n    required: true\ntasks:\n  a:\n    infer: { prompt: \"Research ${{ inputs.topic }}\" }\n"
   },
   {
     "id": "envelope/011-duplicate-task-id",
@@ -499,7 +499,7 @@ export const LINT_FIXTURES: LintFixture[] = [
       "NIKA-POLICY-001"
     ],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t\nvars:\n  m: { default: \"ollama/llama3.2\" }\npolicy:\n  allow:\n    providers: [ollama]\ntasks:\n  s:\n    infer: { prompt: \"summarize\", model: \"${{ vars.m }}\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t\nconst:\n  m: { default: \"ollama/llama3.2\" }\npolicy:\n  allow:\n    providers: [ollama]\ntasks:\n  s:\n    infer: { prompt: \"summarize\", model: \"${{ const.m }}\" }\n"
   },
   {
     "id": "types/001-returns-named-type-valid",
@@ -642,7 +642,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "namespaces": [
       "NIKA-VAR"
     ],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\nvars:\n  topic: \"Rust async runtimes\"\ntasks:\n  a:\n    infer: { prompt: \"Research ${{ vars.topik }}\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\nconst:\n  topic: \"Rust async runtimes\"\ntasks:\n  a:\n    infer: { prompt: \"Research ${{ const.topik }}\" }\n"
   },
   {
     "id": "variables/004-with-undeclared",
@@ -660,7 +660,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "namespaces": [
       "NIKA-VAR"
     ],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    infer: { prompt: \"Running at ${{ env.MISSING }} verbosity\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ntasks:\n  a:\n    infer: { prompt: \"Running at ${{ config.MISSING }} verbosity\" }\n"
   },
   {
     "id": "variables/006-secrets-undeclared",
@@ -685,7 +685,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: translate\nvars:\n  source: \"Hello world\"\ntasks:\n  translate:\n    for_each: [\"fr\", \"de\", \"ja\"]\n    with:\n      locale: ${{ item }}\n      n: ${{ index }}\n    infer:\n      prompt: \"Translate to locale '${{ with.locale }}' (#${{ with.n }}) · ${{ vars.source }}\"\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: translate\nconst:\n  source: \"Hello world\"\ntasks:\n  translate:\n    for_each: [\"fr\", \"de\", \"ja\"]\n    with:\n      locale: ${{ item }}\n      n: ${{ index }}\n    infer:\n      prompt: \"Translate to locale '${{ with.locale }}' (#${{ with.n }}) · ${{ const.source }}\"\n"
   },
   {
     "id": "variables/009-output-binding-reserved-name",
@@ -701,7 +701,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: docs\ntasks:\n  explain:\n    infer:\n      prompt: 'The syntax \\${{ vars.x }} is how you reference variables in Nika.'\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: docs\ntasks:\n  explain:\n    infer:\n      prompt: 'The syntax \\${{ inputs.x }} is how you reference variables in Nika.'\n"
   },
   {
     "id": "variables/011-unclosed-expression",
@@ -710,7 +710,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "namespaces": [
       "NIKA-VAR"
     ],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\nvars:\n  topic: \"Rust\"\ntasks:\n  a:\n    infer: { prompt: \"Research ${{ vars.topic\" }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\nconst:\n  topic: \"Rust\"\ntasks:\n  a:\n    infer: { prompt: \"Research ${{ const.topic\" }\n"
   },
   {
     "id": "variables/012-output-schema-path-provably-invalid",
@@ -760,7 +760,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: review\nvars:\n  pr: { type: string, required: true }\ntasks:\n  review:\n    agent:\n      prompt: \"Review ${{ vars.pr }}\"\n      tools: [\"nika:read\", \"nika:done\"]\n      schema:\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: review\ninputs:\n  pr: { type: string, required: true }\ntasks:\n  review:\n    agent:\n      prompt: \"Review ${{ inputs.pr }}\"\n      tools: [\"nika:read\", \"nika:done\"]\n      schema:\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array }\n"
   },
   {
     "id": "verbs-shape/004-task-id-not-snake-case",

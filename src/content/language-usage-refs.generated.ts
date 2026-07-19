@@ -86,6 +86,22 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-EXEC-002"
     ]
   },
+  "config": {
+    "templates": [],
+    "codes": []
+  },
+  "const": {
+    "templates": [
+      "chain",
+      "gate-and-act",
+      "fanout",
+      "etl-state",
+      "website-brief",
+      "media-asset-pack",
+      "api-upload-and-create"
+    ],
+    "codes": []
+  },
   "cwd": {
     "templates": [],
     "codes": []
@@ -181,6 +197,14 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-008",
       "NIKA-PARSE-018",
       "NIKA-SEC-006"
+    ]
+  },
+  "inputs": {
+    "templates": [
+      "agent-loop"
+    ],
+    "codes": [
+      "NIKA-COMP-004"
     ]
   },
   "invoke": {
@@ -516,21 +540,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "codes": [
       "NIKA-TYPE-001",
       "NIKA-TYPE-002"
-    ]
-  },
-  "vars": {
-    "templates": [
-      "chain",
-      "gate-and-act",
-      "fanout",
-      "etl-state",
-      "agent-loop",
-      "website-brief",
-      "media-asset-pack",
-      "api-upload-and-create"
-    ],
-    "codes": [
-      "NIKA-PARSE-015"
     ]
   },
   "vision": {
