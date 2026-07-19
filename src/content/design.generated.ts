@@ -49,6 +49,21 @@ export const KIND_GLYPH = {
   "post": "§"
 } as const
 
+/** twin set id → its design kind (declared ON each kind at the descriptor ·
+ *  the readout resolves members through THIS — no surface keeps a local map) */
+export const KIND_OF_SET: Record<string, AtlasKind> = {
+  "error-codes": "error",
+  "error-categories": "error",
+  "error-namespaces": "error",
+  "builtins": "tool",
+  "mcp-tools": "tool",
+  "tool-families": "tool",
+  "words": "word",
+  "truth-words": "word",
+  "templates": "template",
+  "showcases": "showcase"
+}
+
 /** normalized 0..1 triples — the three.js seam, extended to kinds */
 export const KIND_RGB: Record<AtlasKind, readonly [number, number, number]> = {
   error: [1, 0.3647, 0.3647],

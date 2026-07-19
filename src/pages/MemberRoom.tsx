@@ -136,7 +136,11 @@ export function Component() {
               · {at + 1}/{fam.members.length}
             </p>
             <h1 id="mr-title" className="v4-h2 mono">
-              {readout?.kindGlyph ? <span className="mr-glyph">{readout.kindGlyph} </span> : null}
+              {readout?.kindGlyph ? (
+                <span className="mr-glyph k-glyph" data-kind={readout.kind ?? undefined}>
+                  {readout.kindGlyph}{' '}
+                </span>
+              ) : null}
               {member.title}
             </h1>
             {readout?.opener && <p className="hub-opener">{readout.opener}</p>}

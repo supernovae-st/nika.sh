@@ -20,13 +20,19 @@ export interface ReadoutRow {
 export interface Readout {
   title: string
   kindGlyph: string
+  kind: AtlasKind | null
   status: string
   opener: string | null
   rows: ReadoutRow[]
   door: ReadoutLink | null
 }
 
-const KIND_GLYPH: Record<string, string> = {
+import { KIND_GLYPH, KIND_OF_SET, type AtlasKind } from '../content/design.generated'
+
+/* NODE-CLASS glyphs (the twin's structural axis: set/layer/chapter…) —
+   distinct from the design graph's FAMILY signatures above (nomenclature:
+   node class ≠ kind; the two collided under one name until fenêtre C+) */
+const NODE_GLYPH: Record<string, string> = {
   set: '≡',
   member: '·',
   layer: '◇',
@@ -66,6 +72,7 @@ function nodeHref(n: AtlasNode): string | null {
 export function cardSlice(readout: Readout): {
   title: string
   kindGlyph: string
+  kind: AtlasKind | null
   status: string
   firstLine: string | null
   set: string | null
@@ -74,6 +81,7 @@ export function cardSlice(readout: Readout): {
   return {
     title: readout.title,
     kindGlyph: readout.kindGlyph,
+    kind: readout.kind,
     status: readout.status,
     firstLine: opener ? (opener.match(/^[^.!?]*[.!?]?/)?.[0].trim() ?? opener) : null,
     set: readout.rows.find((r) => r.label === 'set')?.links?.[0]?.label ?? null,
@@ -134,7 +142,10 @@ export function readoutFor(
   const door = nodeHref(n)
   return {
     title: n.title,
-    kindGlyph: KIND_GLYPH[n.kind] ?? '·',
+    kindGlyph:
+      (n.kind === 'member' && n.set && KIND_OF_SET[n.set] && KIND_GLYPH[KIND_OF_SET[n.set]]) ||
+      (NODE_GLYPH[n.kind] ?? '·'),
+    kind: (n.kind === 'member' && n.set && KIND_OF_SET[n.set]) || null,
     status: n.status,
     opener: n.opener ?? null,
     rows,

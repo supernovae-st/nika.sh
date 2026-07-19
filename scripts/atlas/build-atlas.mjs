@@ -814,6 +814,12 @@ const kindHex = Object.fromEntries(
   }),
 )
 const kindGlyph = Object.fromEntries(Object.entries(DSN.kinds).map(([kind, spec]) => [kind, spec.glyph]))
+const kindOfSet = {}
+for (const [kind, spec] of Object.entries(DSN.kinds))
+  for (const setId of spec.sets ?? []) {
+    if (kindOfSet[setId]) throw new Error(`design.kinds: set '${setId}' claimed twice`)
+    kindOfSet[setId] = kind
+  }
 const SOTA = DSN.sota
 const layerHex = Object.fromEntries(
   Object.entries(DSN.layers).map(([layer, ref]) => {
@@ -881,6 +887,10 @@ ${Object.keys(layerHex).map((k) => `  --color-layer-${k}: var(--layer-${k});`).j
   margin-right: 7px;
   vertical-align: 1px;
 }
+/* the family glyph's voice — every surface that renders a member glyph
+   (Inspector · hover card · rooms) speaks the kind's own hue */
+${Object.keys(kindHex).map((k) => `.k-glyph[data-kind='${k}'] { color: var(--kind-${k}); }`).join('\n')}
+
 ${Object.entries(DSN.status)
   .map(([status, recipe]) => {
     const RECIPES = {
@@ -914,6 +924,10 @@ export const KIND_HEX = ${JSON.stringify(kindHex, null, 2)} as const
 export type AtlasKind = keyof typeof KIND_HEX
 
 export const KIND_GLYPH = ${JSON.stringify(kindGlyph, null, 2)} as const
+
+/** twin set id → its design kind (declared ON each kind at the descriptor ·
+ *  the readout resolves members through THIS — no surface keeps a local map) */
+export const KIND_OF_SET: Record<string, AtlasKind> = ${JSON.stringify(kindOfSet, null, 2)}
 
 /** normalized 0..1 triples — the three.js seam, extended to kinds */
 export const KIND_RGB: Record<AtlasKind, readonly [number, number, number]> = {

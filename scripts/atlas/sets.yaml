@@ -791,12 +791,15 @@ design:
       settle: "linear(0, 0.281 18.2%, 0.622 33.9%, 0.865 48.2%, 0.992 61.5%, 1.029 74.3%, 1.015 86.8%, 1)"
       linear: "linear"
   kinds:                 # fenetre C · famille → ref SPINE (jamais un hex) + glyphe
-    error:    { hue: fail,    glyph: "✗" }
-    tool:     { hue: invoke,  glyph: "◆" }
-    word:     { hue: markIce, glyph: "·" }
-    template: { hue: infer,   glyph: "▤" }
-    showcase: { hue: agent,   glyph: "▶" }
-    post:     { hue: accent,  glyph: "§" }
+    #                       `sets:` = the twin sets this signature covers (the
+    #                       readout resolves a member's kind THROUGH this · one
+    #                       declaration, every surface)
+    error:    { hue: fail,    glyph: "✗", sets: [error-codes, error-categories, error-namespaces] }
+    tool:     { hue: invoke,  glyph: "◆", sets: [builtins, mcp-tools, tool-families] }
+    word:     { hue: markIce, glyph: "·", sets: [words, truth-words] }
+    template: { hue: infer,   glyph: "▤", sets: [templates] }
+    showcase: { hue: agent,   glyph: "▶", sets: [showcases] }
+    post:     { hue: accent,  glyph: "§", sets: [] }
   sota:                  # §7a ratifié · les valeurs des recherches R16-R19
     selection:           # per-verb-section · la couleur du verbe local à 35%
       mix_pct: 35

@@ -97,6 +97,15 @@
   margin-right: 7px;
   vertical-align: 1px;
 }
+/* the family glyph's voice — every surface that renders a member glyph
+   (Inspector · hover card · rooms) speaks the kind's own hue */
+.k-glyph[data-kind='error'] { color: var(--kind-error); }
+.k-glyph[data-kind='tool'] { color: var(--kind-tool); }
+.k-glyph[data-kind='word'] { color: var(--kind-word); }
+.k-glyph[data-kind='template'] { color: var(--kind-template); }
+.k-glyph[data-kind='showcase'] { color: var(--kind-showcase); }
+.k-glyph[data-kind='post'] { color: var(--kind-post); }
+
 .st-mark[data-status='ratified']::before {
   border: 1.5px solid currentColor;
 }

@@ -188,6 +188,19 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     for (const tok of Object.values<{ $type: string }>(dtcg.duration)) expect(tok.$type).toBe('duration')
   })
 
+  it('kinds reach the surfaces THROUGH the graph (no local family map · fenêtre C+)', () => {
+    const readout = read('src/shell/inspector-readout.ts')
+    expect(readout).toContain("from '../content/design.generated'")
+    expect(readout).toContain('NODE_GLYPH')
+    const css = read('src/design.generated.css')
+    for (const kind of Object.keys(KIND_HEX))
+      expect(css).toContain(`.k-glyph[data-kind='${kind}'] { color: var(--kind-${kind}); }`)
+    for (const f of ['src/pages/MemberRoom.tsx', 'src/shell/HoverCard.tsx', 'src/shell/Inspector.tsx'])
+      expect(read(f), `${f} lost the k-glyph voice`).toContain('k-glyph')
+    const ts = read('src/content/design.generated.ts')
+    expect(ts).toContain('KIND_OF_SET')
+  })
+
   it('/brand projects the graph (every family rendered from the emission)', () => {
     const brand = read('src/pages/Brand.tsx')
     expect(brand).toContain("from '../content/design.generated'")

@@ -123,7 +123,9 @@ export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose
       </button>
       <div className="insp-head">
         <span className="insp-kind mono" aria-hidden>
-          {readout?.kindGlyph ?? '·'}
+          <span className="k-glyph" data-kind={readout?.kind ?? undefined}>
+            {readout?.kindGlyph ?? '·'}
+          </span>
         </span>
         <h2 ref={titleRef} tabIndex={-1} className="insp-title">
           {readout?.title ?? '…'}
