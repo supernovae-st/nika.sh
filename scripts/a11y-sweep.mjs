@@ -95,8 +95,7 @@ const evaluate = async (expression) => {
 await send('Page.enable')
 await send('Runtime.enable')
 
-let gate = 0
-for (const route of ROUTES) {
+const audit = async (route, settleMs) => {
   await send('Page.navigate', { url: `http://127.0.0.1:${PORT}${route}` })
   /* deterministic settle — the old blind 3500ms sometimes ran axe against a
      document still mid-navigation (axe then reported html-has-lang/
@@ -110,11 +109,31 @@ for (const route of ROUTES) {
     await sleep(250)
   }
   await evaluate(`document.fonts ? document.fonts.ready.then(() => true) : true`).catch(() => {})
-  await sleep(800)
+  await sleep(settleMs)
   await evaluate(AXE_SRC + '; true')
-  const result = await evaluate(`axe.run(document, { resultTypes: ['violations'] }).then(r => r.violations.map(v => ({ id: v.id, impact: v.impact, count: v.nodes.length, sample: v.nodes[0]?.target?.[0] ?? '' })))`)
-  const bad = result.filter((v) => v.impact === 'critical' || v.impact === 'serious')
-  const soft = result.filter((v) => v.impact !== 'critical' && v.impact !== 'serious')
+  return evaluate(`axe.run(document, { resultTypes: ['violations'] }).then(r => r.violations.map(v => ({ id: v.id, impact: v.impact, count: v.nodes.length, sample: v.nodes[0]?.target?.[0] ?? '' })))`)
+}
+const classify = (result) => ({
+  bad: result.filter((v) => v.impact === 'critical' || v.impact === 'serious'),
+  soft: result.filter((v) => v.impact !== 'critical' && v.impact !== 'serious'),
+})
+
+/* the ONE known hydration race, ratcheted into structure: scroll wells earn
+   tabindex from a client-side measurement (use-scroll-well), and axe can
+   audit the instant before it lands — the recurring ×37 on /use-cases that
+   was green on every manual rerun. When a route's gating set is EXACTLY
+   that rule, re-audit once with a longer settle and let the second verdict
+   stand (a REAL regression still fails — twice). Any other rule, or that
+   rule mixed with others, never retries. */
+const RACE_RULE = 'scrollable-region-focusable'
+
+let gate = 0
+for (const route of ROUTES) {
+  let { bad, soft } = classify(await audit(route, 800))
+  if (bad.length && bad.every((v) => v.id === RACE_RULE)) {
+    console.log(`  ↻ ${route} · ${RACE_RULE} only — the tabindex race, re-auditing once`)
+    ;({ bad, soft } = classify(await audit(route, 2400)))
+  }
   gate += bad.length
   const label = bad.length ? '✗' : '✓'
   console.log(`${label} ${route.padEnd(12)} ${bad.length} gating · ${soft.length} advisory`)
