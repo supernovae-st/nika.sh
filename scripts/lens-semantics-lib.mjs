@@ -400,7 +400,7 @@ export function discoverPrerenderPaths(root) {
   const source = readFileSync(join(root, 'site.config.ts'), 'utf8')
   const arrays = new Map()
   for (const name of [
-    'BLOG_PATHS', 'MANIFESTO_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
+    'BLOG_PATHS', 'MANIFESTO_PATHS', 'INSTALL_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
     'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS',
     'ATLAS_PATHS',
   ]) {

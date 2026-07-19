@@ -69,7 +69,9 @@ describe('i18n · the hreflang cluster is bidirectional, self-inclusive and hone
   it('a page without variants announces NOTHING (the anti-slop law)', () => {
     expect(hreflangLinks('/learn')).toEqual([])
     expect(hreflangLinks('/')).toEqual([])
-    expect(variantsFor('/install')).toHaveLength(1)
+    expect(variantsFor('/convert')).toHaveLength(1)
+    // /install GAINED its cluster at the WO-10 wiring — 8 voices, announced
+    expect(variantsFor('/install')).toHaveLength(8)
   })
 
   it('the manifesto cluster equals the in-page registry cluster (two producers, one gate)', () => {

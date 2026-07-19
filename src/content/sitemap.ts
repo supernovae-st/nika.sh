@@ -8,6 +8,7 @@ import { TEMPLATES } from './templates.generated'
 import { UC_TABS } from '../sections/usecases-data'
 import { MEMBER_ROOM_FAMILIES } from './member-rooms.generated'
 import { DOCS, REPO, SPEC } from '../content'
+import { localizedPaths } from '../lib/i18n'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
    /map's « every page » section renders THIS structure (the human sitemap
@@ -61,7 +62,11 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'Use cases', href: '/use-cases', hint: 'real files you would write' },
       { label: 'Send us a workflow', href: '/convert', hint: 'yours, converted' },
     ],
-    dense: UC_TABS.flatMap((t) => t.cases.map((uc) => ({ label: uc.title, href: `/use-cases/${uc.slug}` }))),
+    dense: [
+      ...UC_TABS.flatMap((t) => t.cases.map((uc) => ({ label: uc.title, href: `/use-cases/${uc.slug}` }))),
+      /* the install locale cluster (WO-10 wiring) — derived from the registry */
+      ...localizedPaths('/install').map((p) => ({ label: `install · ${p.split('/')[1]}`, href: p })),
+    ],
   },
   {
     kick: 'product',

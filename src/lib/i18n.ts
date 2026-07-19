@@ -47,6 +47,9 @@ export const LOCALES: Locale[] = [
    L1 pages join at WO-10 by adding rows — nothing else moves. */
 export const LOCALIZED: Record<string, string[]> = {
   '/manifesto': ['fr', 'es', 'de', 'pt-br', 'ja', 'ko', 'zh-hans'],
+  /* WO-10 wiring (operator-validated 2026-07-19): the install exemplar —
+     reviewed drafts in content/i18n, rendered from i18n-pages.generated */
+  '/install': ['fr', 'es', 'de', 'pt-br', 'ja', 'ko', 'zh-hans'],
 }
 
 const PREFIXES = new Map(LOCALES.filter((l) => l.prefix).map((l) => [l.prefix, l]))

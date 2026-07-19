@@ -64,6 +64,14 @@ export const routes: RouteObject[] = [
       { path: 'ja/manifesto', Component: Manifesto },
       { path: 'ko/manifesto', Component: Manifesto },
       { path: 'zh-hans/manifesto', Component: Manifesto },
+      /* the install cluster (WO-10 wiring · same page, locale from pathname) */
+      { path: 'fr/install', Component: Install },
+      { path: 'es/install', Component: Install },
+      { path: 'de/install', Component: Install },
+      { path: 'pt-br/install', Component: Install },
+      { path: 'ja/install', Component: Install },
+      { path: 'ko/install', Component: Install },
+      { path: 'zh-hans/install', Component: Install },
       { path: 'changelog', Component: Changelog },
       /* the error register · the human twin of /errors/catalog.json. The
          engine's check findings stamp docs_url = /errors/<CODE>; every code

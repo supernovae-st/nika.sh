@@ -23,18 +23,50 @@
 
    The build gate runs before goldens/e2e/a11y because all three drive dist/. */
 import { spawn } from 'node:child_process'
+import { readdirSync, rmSync } from 'node:fs'
+import { join } from 'node:path'
+import { tmpdir } from 'node:os'
+
+/* the SingletonLock law, structural (2026-07-19 · the rooms-sweep autopsy):
+   a KILLED battery leaves its Chrome profile dirs under the tmpdir with a
+   live SingletonLock — the NEXT battery's Chrome sees the lock, queues on
+   the dead owner and never comes up (CPU 0 · same page forever · the belt
+   reads as a 20-minute hang). Every Chrome-driving leg now purges the
+   stale profiles FIRST — a fresh battery can never inherit a dead lock.
+   Profiles only, never processes (a parallel LIVE battery keeps its own
+   dirs open; rm on an open dir is safe on POSIX, and CI runners are
+   single-battery by construction). */
+const chromeProfileSweep = () => {
+  for (const base of ['/tmp', tmpdir()]) {
+    let entries = []
+    try {
+      entries = readdirSync(base)
+    } catch {
+      continue
+    }
+    for (const name of entries) {
+      if (/^(e2e-sweep-|e2e-smoke-|a11y-sweep-|visual-regress-|lh-spot-)/.test(name)) {
+        try {
+          rmSync(join(base, name), { recursive: true, force: true })
+        } catch {
+          /* an open profile of a LIVE battery may refuse — that one is not stale */
+        }
+      }
+    }
+  }
+}
 
 const GATES = [
   { name: 'check', cmd: ['pnpm', 'check'] },
   { name: 'lint', cmd: ['pnpm', 'lint'] },
   { name: 'test', cmd: ['pnpm', 'test'] },
   { name: 'build', cmd: ['pnpm', 'build'], slow: true },
-  { name: 'goldens', cmd: ['node', 'scripts/visual-regress.mjs'], slow: true },
+  { name: 'goldens', cmd: ['node', 'scripts/visual-regress.mjs'], slow: true, chrome: true },
   /* PID-derived ports: the sweep's defaults (4523/9285) belong to whoever ran
      it bare — a parallel session's live belt, a zombie. EADDRINUSE cost a full
      gate run; the runner now always brings its own pair, unique per process. */
-  { name: 'e2e', cmd: ['node', 'scripts/e2e-sweep.mjs', '--port', String(4600 + (process.pid % 97)), '--cdp', String(9400 + (process.pid % 97))], slow: true },
-  { name: 'a11y', cmd: ['node', 'scripts/a11y-sweep.mjs'], slow: true },
+  { name: 'e2e', cmd: ['node', 'scripts/e2e-sweep.mjs', '--port', String(4600 + (process.pid % 97)), '--cdp', String(9400 + (process.pid % 97))], slow: true, chrome: true },
+  { name: 'a11y', cmd: ['node', 'scripts/a11y-sweep.mjs'], slow: true, chrome: true },
 ]
 
 const argv = process.argv.slice(2)
@@ -50,6 +82,7 @@ if (only && !GATES.some((g) => g.name === only)) {
    exit code is read from the child itself either way, never from a pipe */
 const runGate = (gate, stream) =>
   new Promise((resolve) => {
+    if (gate.chrome) chromeProfileSweep()
     const child = spawn(gate.cmd[0], gate.cmd.slice(1), { stdio: ['ignore', 'pipe', 'pipe'] })
     const chunks = []
     const tg = Date.now()

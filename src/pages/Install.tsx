@@ -1,5 +1,5 @@
 import { useHead } from '@unhead/react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, ENGINE_VERSION, DOCS } from '../content'
 import { CodeFile } from '../components/CodeFile'
@@ -9,12 +9,8 @@ import { TermCapture } from '../components/TermCapture'
 import {
   INSTALL_SH_CMD,
   VERIFY_CMD,
-  RELEASES_URL,
   BINSTALL_CMD,
   NIX_RUN_CMD,
-  VSCODE_EXT_URL,
-  OPENVSX_EXT_URL,
-  VSCODE_REPO,
   INIT_CMD,
   WIRE_CMD,
   OLLAMA_PULL_CMD,
@@ -29,6 +25,13 @@ import {
   FIRST_RUN_TRANSCRIPT,
   TROUBLE,
 } from '../content/install'
+import { useEffect, useState } from 'react'
+import { localeOf, hreflangLinks } from '../lib/i18n'
+import type { InstallCopy } from '../content/i18n-pages.generated'
+import { ssrInstallCopy, loadInstallCopy } from '../lib/i18n-copy-access'
+import { Island } from '../lib/ssg-island'
+import { inline } from '../lib/i18n-inline'
+import { INSTALL_LINKS } from '../content/install-links'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
 import './page-chrome.css'
@@ -49,12 +52,58 @@ import './install-page.css'
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
+  /* the L1 wiring (WO-10): the pathname's locale picks the reviewed copy —
+     EN included (one shape, eight voices; the generated module IS the twin,
+     so page↔twin drift cannot exist). Machine surfaces (commands ·
+     transcripts · YAML) stay EN by law (L3 — the binary's voice). */
+  const { pathname } = useLocation()
+  const locale = localeOf(pathname)
+  const lkey = locale.prefix || 'en'
+  /* the register diet (anatomy-access recipe): SSG reads the whole record;
+     the client's FIRST render rides this page's byte island; a locale hop
+     pulls the async chunk once — the eight voices never ride the entry */
+  const [got, setGot] = useState<{ lkey: string; T: InstallCopy | null }>(() => {
+    if (import.meta.env.SSR) return { lkey, T: ssrInstallCopy()?.[lkey] ?? null }
+    try {
+      const el = document.getElementById(`ins-copy-${lkey}`) as HTMLTextAreaElement | null
+      return { lkey, T: el?.value ? (JSON.parse(el.value) as InstallCopy) : null }
+    } catch {
+      return { lkey, T: null }
+    }
+  })
+  useEffect(() => {
+    if (got.lkey === lkey && got.T) return
+    let live = true
+    void loadInstallCopy(lkey).then((copy) => {
+      if (live) setGot({ lkey, T: copy })
+    })
+    return () => {
+      live = false
+    }
+  }, [lkey, got.lkey, got.T])
+  /* a locale hop keeps the PREVIOUS voice for the chunk beat (~1 frame) —
+     no blank flash; the effect swaps it. T is only null on a cold client
+     mount without island or SSR, which the prerender makes impossible. */
+  const T = got.T
+  const t = (text: string) => inline(text, INSTALL_LINKS)
 
   useHead({
     title: 'Install · Nika',
-    link: routeHead('/install').link,
+    /* per-page htmlAttrs — the MANIFESTO pattern, prod-proven to re-patch on
+       SPA nav (a shell-level entry did not; the page-level one wins). A hop
+       to a page that never states lang keeps the last one — the same
+       standing debt the manifesto cluster has; static HTML is always right. */
+    htmlAttrs: { lang: locale.bcp47 },
+    link: [
+      ...routeHead(pathname).link,
+      ...hreflangLinks(pathname).map((l) => ({
+        rel: 'alternate' as const,
+        hreflang: l.hreflang,
+        href: `https://nika.sh${l.href}`,
+      })),
+    ],
     meta: [
-      ...routeHead('/install').meta,
+      ...routeHead(pathname).meta,
       {
         name: 'description',
         content:
@@ -80,6 +129,8 @@ export function Component() {
     ],
   })
 
+  if (!T) return null
+
   return (
     <main className="theme-dark v4page">
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts):
@@ -87,9 +138,10 @@ export function Component() {
           baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
       <section ref={ref} aria-labelledby="ins-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
+          <Island id={`ins-copy-${lkey}`} payload={JSON.stringify(T)} />
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
-            install · {ENGINE_VERSION}
+            {T.fig} · {ENGINE_VERSION}
           </p>
           <h1
             id="ins-title"
@@ -97,154 +149,99 @@ export function Component() {
             data-rise
             style={{ ['--rise-delay' as string]: '60ms' }}
           >
-            One binary. Your machine.
+            {T.title}
           </h1>
           {/* the punch lede (F7) · the catchy line ABOVE the consumer TL;DR */}
           <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
-            Two minutes to your first run.
+            {T.punch}
           </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Nika is <b>one Rust binary</b>: no daemon, no account, no cloud required.
-            Pick a way in below and run your first file with a <b>free local model</b>.
+            {t(T.lede)}
           </p>
           <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
-            macOS · Linux · air-gapped OK
+            {T.stamp}
           </p>
 
           <ol className="ins-steps" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {/* 1 · Homebrew */}
             <li className="ins-step" id="brew">
               <div className="ins-step-copy">
-                <p className="ins-step-n">01 · homebrew</p>
-                <h2 className="ins-step-title">The one-liner</h2>
-                <p className="ins-step-plain">
-                  macOS or Linux with Homebrew: on your <code>PATH</code> immediately.
-                  Check it with <code>nika --version</code>.
-                </p>
+                <p className="ins-step-n">{T.steps.brew.n}</p>
+                <h2 className="ins-step-title">{T.steps.brew.title}</h2>
+                <p className="ins-step-plain">{t(T.steps.brew.plain)}</p>
               </div>
               <div className="ins-step-body ins-step-body--stack">
                 <InstallCommand />
                 {/* the anti-anxiety beat · what a good install answers (verbatim) */}
-                <TermCapture title="what you should see" lines={VERSION_TRANSCRIPT} command="nika --version" />
+                <TermCapture title={T.capture_title} lines={VERSION_TRANSCRIPT} command="nika --version" />
               </div>
             </li>
 
             {/* 2 · the install script */}
             <li className="ins-step" id="script">
               <div className="ins-step-copy">
-                <p className="ins-step-n">02 · script</p>
-                <h2 className="ins-step-title">Without Homebrew</h2>
-                <p className="ins-step-plain">
-                  Downloads the <b>verified release binary</b> into <code>~/.nika/bin</code> and
-                  prints the single <code>PATH</code> line to add to your shell profile.
-                  Reopen the terminal and <code>nika --version</code> works.
-                </p>
+                <p className="ins-step-n">{T.steps.script.n}</p>
+                <h2 className="ins-step-title">{T.steps.script.title}</h2>
+                <p className="ins-step-plain">{t(T.steps.script.plain)}</p>
               </div>
               <div className="ins-step-body ins-step-body--stack">
-                <CopyRow track="install-copy" cmd={INSTALL_SH_CMD} label="install script" />
-                <p className="ins-step-plain">
-                  Already carrying a toolchain? <b>cargo</b> fetches the prebuilt release
-                  tarball, no compile (the binary lands as <code>nika-cli</code> until the
-                  crates.io publish: symlink the public name once). <b>nix</b> builds the
-                  exact release source via the repo flake; the first run compiles, the
-                  store caches it.
-                </p>
-                <CopyRow track="install-copy" cmd={BINSTALL_CMD} label="cargo binstall" />
-                <CopyRow track="install-copy" cmd={NIX_RUN_CMD} label="nix" />
+                <CopyRow track="install-copy" cmd={INSTALL_SH_CMD} label={T.labels.one_liner} />
+                <p className="ins-step-plain">{t(T.steps.script.plain2 ?? '')}</p>
+                <CopyRow track="install-copy" cmd={BINSTALL_CMD} label={T.labels.binstall} />
+                <CopyRow track="install-copy" cmd={NIX_RUN_CMD} label={T.labels.nix} />
               </div>
             </li>
 
             {/* 3 · manual / air-gapped */}
             <li className="ins-step" id="manual">
               <div className="ins-step-copy">
-                <p className="ins-step-n">03 · manual</p>
-                <h2 className="ins-step-title">Air-gapped, or by hand</h2>
-                <p className="ins-step-plain">
-                  Download the platform tarball and <code>SHA256SUMS</code> from the{' '}
-                  <a href={RELEASES_URL} target="_blank" rel="noreferrer" className="ins-link">
-                    latest release
-                  </a>
-                  , verify, then move <code>nika</code> onto your <code>PATH</code>. Nothing
-                  phones home.
-                </p>
+                <p className="ins-step-n">{T.steps.manual.n}</p>
+                <h2 className="ins-step-title">{T.steps.manual.title}</h2>
+                <p className="ins-step-plain">{t(T.steps.manual.plain)}</p>
               </div>
               <div className="ins-step-body">
-                <CopyRow track="install-copy" cmd={VERIFY_CMD} label="checksum verification" />
+                <CopyRow track="install-copy" cmd={VERIFY_CMD} label={T.labels.checksum} />
               </div>
             </li>
 
             {/* 4 · the editor extension */}
             <li className="ins-step" id="editor">
               <div className="ins-step-copy">
-                <p className="ins-step-n">04 · editor</p>
-                <h2 className="ins-step-title">The editor extension</h2>
-                <p className="ins-step-plain">
-                  <code>supernovae.nika-lang</code> · on the{' '}
-                  <a href={VSCODE_EXT_URL} target="_blank" rel="noreferrer" className="ins-link">
-                    VS Code Marketplace
-                  </a>{' '}
-                  and{' '}
-                  <a href={OPENVSX_EXT_URL} target="_blank" rel="noreferrer" className="ins-link">
-                    Open VSX
-                  </a>{' '}
-                  (Cursor · Windsurf · VSCodium). It auto-downloads the matching{' '}
-                  <code>nika</code> release binary on first use, or reuses the one already on
-                  your <code>PATH</code>. Any other editor: <code>nika lsp</code> speaks LSP
-                  over stdio ·{' '}
-                  <a href={VSCODE_REPO} target="_blank" rel="noreferrer" className="ins-link">
-                    source + issues
-                  </a>
-                  .
-                </p>
+                <p className="ins-step-n">{T.steps.editor.n}</p>
+                <h2 className="ins-step-title">{T.steps.editor.title}</h2>
+                <p className="ins-step-plain">{t(T.steps.editor.plain)}</p>
               </div>
               <div className="ins-step-body" aria-hidden>
-                <p className="ins-ghost mono">
-                  completions · diagnostics · a view of the plan · in your editor
-                </p>
+                <p className="ins-ghost mono">{T.steps.editor.ghost}</p>
               </div>
             </li>
 
             {/* 5 · agents */}
             <li className="ins-step" id="agents">
               <div className="ins-step-copy">
-                <p className="ins-step-n">05 · agents</p>
-                <h2 className="ins-step-title">Work with your agents</h2>
-                <p className="ins-step-plain">
-                  Nika is built to be <b>written by agents and reviewed by you</b>.{' '}
-                  <code>nika init</code> drops the schema wiring + <code>AGENTS.md</code> into
-                  your repo so Claude Code, Cursor, Codex and friends author valid workflows
-                  on the first try; <code>nika wire</code> adds explicit agent-tool (MCP)
-                  wiring where you want it.
-                </p>
+                <p className="ins-step-n">{T.steps.agents.n}</p>
+                <h2 className="ins-step-title">{T.steps.agents.title}</h2>
+                <p className="ins-step-plain">{t(T.steps.agents.plain)}</p>
               </div>
               <div className="ins-step-body ins-step-body--stack">
-                <CopyRow track="install-copy" cmd={INIT_CMD} label="repo wiring" />
-                <CopyRow track="install-copy" cmd={WIRE_CMD} label="Cursor agent wiring" />
+                <CopyRow track="install-copy" cmd={INIT_CMD} label={T.labels.repo_wiring} />
+                <CopyRow track="install-copy" cmd={WIRE_CMD} label={T.labels.cursor_wiring} />
               </div>
             </li>
 
             {/* 6 · first run */}
             <li className="ins-step" id="first-run">
               <div className="ins-step-copy">
-                <p className="ins-step-n">06 · first run</p>
-                <h2 className="ins-step-title">Zero keys, zero cloud</h2>
-                <p className="ins-step-plain">
-                  Start with <code>nika welcome</code>, the mirror: what this machine
-                  already has (editors · local models · key <i>presence</i>, never values)
-                  and where to go next. Your first workflow needs no model and no API key.
-                  Save the file, audit it with <code>nika check</code> (plan · cost ·
-                  secrets, before anything runs), then <code>nika run</code>. Adding an AI
-                  step? Point it at a <b>free local model</b> (one <code>ollama pull</code>,
-                  nothing leaves your machine), and <code>nika doctor</code> tells you
-                  exactly what&apos;s wired.
-                </p>
+                <p className="ins-step-n">{T.steps.first_run.n}</p>
+                <h2 className="ins-step-title">{T.steps.first_run.title}</h2>
+                <p className="ins-step-plain">{t(T.steps.first_run.plain)}</p>
                 <div className="ins-cmds">
-                  <CopyRow track="install-copy" cmd={WELCOME_CMD} label="the mirror · start here" />
-                  <CopyRow track="install-copy" cmd={CHECK_CMD} label="static audit" />
-                  <CopyRow track="install-copy" cmd={RUN_CMD} label="run" />
-                  <CopyRow track="install-copy" cmd={OLLAMA_PULL_CMD} label="the free local model" />
-                  <CopyRow track="install-copy" cmd={EXAMPLES_CMD} label="example run · local model" />
-                  <CopyRow track="install-copy" cmd={DOCTOR_CMD} label="environment check" />
+                  <CopyRow track="install-copy" cmd={WELCOME_CMD} label={T.labels.welcome} />
+                  <CopyRow track="install-copy" cmd={CHECK_CMD} label={T.labels.check} />
+                  <CopyRow track="install-copy" cmd={RUN_CMD} label={T.labels.run} />
+                  <CopyRow track="install-copy" cmd={OLLAMA_PULL_CMD} label={T.labels.ollama} />
+                  <CopyRow track="install-copy" cmd={EXAMPLES_CMD} label={T.labels.example} />
+                  <CopyRow track="install-copy" cmd={DOCTOR_CMD} label={T.labels.doctor} />
                 </div>
               </div>
               <div className="ins-step-body ins-step-body--stack">
@@ -253,7 +250,7 @@ export function Component() {
                 </div>
                 {/* the verdicts this exact file earns · captured from the real
                     binary (content/install.ts · the honesty law) */}
-                <TermCapture title="what you should see" lines={FIRST_RUN_TRANSCRIPT} command="nika check hello.nika.yaml" />
+                <TermCapture title={T.capture_title} lines={FIRST_RUN_TRANSCRIPT} command="nika check hello.nika.yaml" />
                 <div className="ins-frame v4-frame-canvas">
                   <CodeFile yaml={HELLO_AI_YAML} filename="hello-ai.nika.yaml" wrap tips />
                 </div>
@@ -264,14 +261,14 @@ export function Component() {
           {/* the honest snags · native accordions, mono register, each ≤4 lines */}
           <section className="ins-trouble" aria-labelledby="ins-trouble-title" data-rise>
             <h2 id="ins-trouble-title" className="ins-trouble-title mono">
-              if something catches
+              {T.trouble_title}
             </h2>
-            {TROUBLE.map((t) => (
-              <details key={t.q} className="ins-trouble-item">
-                <summary className="ins-trouble-q">{t.q}</summary>
+            {T.trouble.map((row, i) => (
+              <details key={row.q} className="ins-trouble-item">
+                <summary className="ins-trouble-q">{t(row.q)}</summary>
                 <div className="ins-trouble-a">
-                  <p>{t.a}</p>
-                  {t.cmd ? <code className="ins-trouble-cmd">{t.cmd}</code> : null}
+                  <p>{t(row.a)}</p>
+                  {TROUBLE[i]?.cmd ? <code className="ins-trouble-cmd">{TROUBLE[i].cmd}</code> : null}
                 </div>
               </details>
             ))}
@@ -279,16 +276,16 @@ export function Component() {
 
           {/* the onward pointers */}
           <p className="ins-more" data-rise>
-            Next:{' '}
+            {T.more.next}{' '}
             <Link to="/learn" className="ins-link">
-              learn the file in 5 minutes
+              {T.more.learn}
             </Link>{' '}
             · <Link to="/use-cases" className="ins-link">
-              browse real workflows
+              {T.more.usecases}
             </Link>{' '}
             ·{' '}
             <a href={DOCS} target="_blank" rel="noreferrer" className="ins-link">
-              full docs
+              {T.more.docs}
             </a>
           </p>
         </div>
