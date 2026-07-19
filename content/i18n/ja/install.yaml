@@ -1,6 +1,7 @@
 # install · ja · DRAFT（オペレーターレビュー必須 · manifesto の声:
 # 技術用語は EN のまま · 翻訳不可レキシコンはバイト一致で保持）
 page: /install
+html_title: "インストール · Nika"
 fig: "install"
 title: "バイナリひとつ。きみのマシンで。"
 punch: "最初の run まで 2 分。"

@@ -2,6 +2,7 @@
 # Transcripts, commands and code stay OUT of this file: they are the binary's
 # voice (L3 machine tier · always EN · the honesty law owns them).
 page: /install
+html_title: "Install · Nika"
 fig: "install"
 title: "One binary. Your machine."
 punch: "Two minutes to your first run."

@@ -1,6 +1,7 @@
 # install · ko · DRAFT (오퍼레이터 리뷰 필수 · manifesto 목소리:
 # 기술 용어는 EN 그대로 · 번역 불가 렉시콘은 바이트 동일 유지)
 page: /install
+html_title: "설치 · Nika"
 fig: "install"
 title: "바이너리 하나. 너의 머신."
 punch: "첫 run까지 2분."

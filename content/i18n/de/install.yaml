@@ -1,6 +1,7 @@
 # install · de · DRAFT (Operator-Review erforderlich · Manifesto-Stimme:
 # technische Begriffe bleiben EN verbatim · das Lexikon bleibt byte-identisch)
 page: /install
+html_title: "Installation · Nika"
 fig: "install"
 title: "Ein Binary. Deine Maschine."
 punch: "Zwei Minuten bis zum ersten Run."

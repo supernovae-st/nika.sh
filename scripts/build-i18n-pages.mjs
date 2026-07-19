@@ -53,6 +53,7 @@ export interface InstallStepCopy {
 }
 export interface InstallCopy {
   page: string
+  html_title: string
   fig: string
   title: string
   punch: string

@@ -86,9 +86,13 @@ export function Component() {
      mount without island or SSR, which the prerender makes impossible. */
   const T = got.T
   const t = (text: string) => inline(text, INSTALL_LINKS)
+  /* head copy rides the same reviewed corpus (one shape, eight voices —
+     the integrity sweep's title-dup law is what forced the honesty here);
+     meta text is plain: the lede minus its inline marks */
+  const plainLede = T ? T.lede.replace(/\*\*|\*|`/g, '') : ''
 
   useHead({
-    title: 'Install · Nika',
+    title: T ? T.html_title : 'Install · Nika',
     /* per-page htmlAttrs — the MANIFESTO pattern, prod-proven to re-patch on
        SPA nav (a shell-level entry did not; the page-level one wins). A hop
        to a page that never states lang keeps the last one — the same
@@ -106,24 +110,22 @@ export function Component() {
       ...routeHead(pathname).meta,
       {
         name: 'description',
-        content:
-          'Install Nika: one Rust binary via Homebrew, the install script, or a verified tarball. Editor extension, agent wiring, and a zero-key first run.',
+        content: plainLede,
       },
-      { property: 'og:title', content: 'Install · Nika' },
+      { property: 'og:title', content: T ? T.html_title : 'Install · Nika' },
       {
         property: 'og:description',
-        content:
-          'One binary, on your machine: brew, curl, or air-gapped tarball. First run needs no model and no API key.',
+        content: T ? `${T.title} ${T.punch}` : '',
       },
       { property: 'og:image', content: 'https://nika.sh/og-install.png' },
       {
         property: 'og:image:alt',
         content: 'Nika install · one binary, your machine. Two minutes to your first run with a free local model.',
       },
-      { name: 'twitter:title', content: 'Install · Nika' },
+      { name: 'twitter:title', content: T ? T.html_title : 'Install · Nika' },
       {
         name: 'twitter:description',
-        content: 'One binary, on your machine. First run needs no model and no API key.',
+        content: T ? `${T.title} ${T.punch}` : '',
       },
       { name: 'twitter:image', content: 'https://nika.sh/og-install.png' },
     ],

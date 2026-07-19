@@ -13,6 +13,7 @@ export interface InstallStepCopy {
 }
 export interface InstallCopy {
   page: string
+  html_title: string
   fig: string
   title: string
   punch: string
@@ -37,6 +38,7 @@ export const I18N_PAGES: { install: Record<string, InstallCopy> } = {
   "install": {
     "de": {
       "page": "/install",
+      "html_title": "Installation · Nika",
       "fig": "install",
       "title": "Ein Binary. Deine Maschine.",
       "punch": "Zwei Minuten bis zum ersten Run.",
@@ -119,6 +121,7 @@ export const I18N_PAGES: { install: Record<string, InstallCopy> } = {
     },
     "en": {
       "page": "/install",
+      "html_title": "Install · Nika",
       "fig": "install",
       "title": "One binary. Your machine.",
       "punch": "Two minutes to your first run.",
@@ -201,6 +204,7 @@ export const I18N_PAGES: { install: Record<string, InstallCopy> } = {
     },
     "es": {
       "page": "/install",
+      "html_title": "Instalación · Nika",
       "fig": "install",
       "title": "Un binario. Tu máquina.",
       "punch": "Dos minutos hasta tu primer run.",
@@ -283,6 +287,7 @@ export const I18N_PAGES: { install: Record<string, InstallCopy> } = {
     },
     "fr": {
       "page": "/install",
+      "html_title": "Installer · Nika",
       "fig": "install",
       "title": "Un binaire. Ta machine.",
       "punch": "Deux minutes jusqu'à ton premier run.",
@@ -365,6 +370,7 @@ export const I18N_PAGES: { install: Record<string, InstallCopy> } = {
     },
     "ja": {
       "page": "/install",
+      "html_title": "インストール · Nika",
       "fig": "install",
       "title": "バイナリひとつ。きみのマシンで。",
       "punch": "最初の run まで 2 分。",
@@ -447,6 +453,7 @@ export const I18N_PAGES: { install: Record<string, InstallCopy> } = {
     },
     "ko": {
       "page": "/install",
+      "html_title": "설치 · Nika",
       "fig": "install",
       "title": "바이너리 하나. 너의 머신.",
       "punch": "첫 run까지 2분.",
@@ -529,6 +536,7 @@ export const I18N_PAGES: { install: Record<string, InstallCopy> } = {
     },
     "pt-br": {
       "page": "/install",
+      "html_title": "Instalação · Nika",
       "fig": "install",
       "title": "Um binário. Sua máquina.",
       "punch": "Dois minutos até o seu primeiro run.",
@@ -611,6 +619,7 @@ export const I18N_PAGES: { install: Record<string, InstallCopy> } = {
     },
     "zh-hans": {
       "page": "/install",
+      "html_title": "安装 · Nika",
       "fig": "install",
       "title": "一个二进制文件。你的机器。",
       "punch": "两分钟到你的第一次 run。",

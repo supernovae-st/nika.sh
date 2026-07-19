@@ -1,6 +1,7 @@
 # install · fr · DRAFT (revue opérateur requise · voix manifesto: termes
 # techniques EN verbatim · le lexique intraduisible reste byte-identique)
 page: /install
+html_title: "Installer · Nika"
 fig: "install"
 title: "Un binaire. Ta machine."
 punch: "Deux minutes jusqu'à ton premier run."

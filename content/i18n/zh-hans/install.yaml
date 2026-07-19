@@ -1,6 +1,7 @@
 # install · zh-hans · DRAFT（需运营者审阅 · manifesto 语气:
 # 技术术语保留 EN 原文 · 不可翻译词典逐字节保持一致）
 page: /install
+html_title: "安装 · Nika"
 fig: "install"
 title: "一个二进制文件。你的机器。"
 punch: "两分钟到你的第一次 run。"

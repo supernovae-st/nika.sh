@@ -1,6 +1,7 @@
 # install · pt-br · DRAFT (revisão do operador obrigatória · voz manifesto:
 # termos técnicos ficam em EN verbatim · o léxico intraduzível fica byte-idêntico)
 page: /install
+html_title: "Instalação · Nika"
 fig: "install"
 title: "Um binário. Sua máquina."
 punch: "Dois minutos até o seu primeiro run."
