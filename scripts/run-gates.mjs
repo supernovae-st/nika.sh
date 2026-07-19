@@ -73,6 +73,48 @@ const etimeSec = (raw) => {
   if (!m) return 0
   return (Number(m[1] ?? 0) * 24 + Number(m[2] ?? 0)) * 3600 + Number(m[3]) * 60 + Number(m[4])
 }
+/* the third port law (2026-07-19 · this session's own autopsy): a YOUNG
+   holder that IS one of our sweeps is a healthy sibling finishing its run
+   (an orphaned goldens from a returned compound held 4519 for ~50s and the
+   next gate failed EADDRINUSE for nothing). Stale = kill (below) · young
+   sibling = WAIT for it, up to a bounded patience · unknown = never touch,
+   the gate fails honestly. */
+const YOUNG_WAIT_MS = 150_000
+const sleepSync = (ms) => execFileSync('sleep', [String(ms / 1000)])
+const youngSiblingOn = (port) => {
+  let pids = []
+  try {
+    pids = execFileSync('lsof', ['-ti', `tcp:${port}`], { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString()
+      .split('\n')
+      .filter(Boolean)
+  } catch {
+    return false
+  }
+  return pids.some((pid) => {
+    try {
+      const cmd = execFileSync('ps', ['-o', 'command=', '-p', pid]).toString()
+      const age = etimeSec(execFileSync('ps', ['-o', 'etime=', '-p', pid]).toString())
+      return SWEEP_CMD.test(cmd) && age <= 900
+    } catch {
+      return false
+    }
+  })
+}
+const waitYoungSiblings = () => {
+  const t0 = Date.now()
+  for (const port of GATE_PORTS) {
+    while (youngSiblingOn(port)) {
+      if (Date.now() - t0 > YOUNG_WAIT_MS) {
+        console.log(`  ⏳ port ${port}: young sibling sweep still running after ${YOUNG_WAIT_MS / 1000}s — proceeding (the gate will name it)`)
+        return
+      }
+      console.log(`  ⏳ port ${port}: waiting for a young sibling sweep to finish`)
+      sleepSync(5000)
+    }
+  }
+}
+
 const portSweep = () => {
   for (const port of GATE_PORTS) {
     let pids = []
@@ -128,6 +170,7 @@ const runGate = (gate, stream) =>
     if (gate.chrome) {
       chromeProfileSweep()
       portSweep()
+      waitYoungSiblings()
     }
     const child = spawn(gate.cmd[0], gate.cmd.slice(1), { stdio: ['ignore', 'pipe', 'pipe'] })
     const chunks = []
