@@ -22,7 +22,7 @@
          node scripts/run-gates.mjs --only e2e (one gate, streamed live)
 
    The build gate runs before goldens/e2e/a11y because all three drive dist/. */
-import { spawn } from 'node:child_process'
+import { execFileSync, spawn } from 'node:child_process'
 import { readdirSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
@@ -56,6 +56,49 @@ const chromeProfileSweep = () => {
   }
 }
 
+/* the EADDRINUSE law, structural (the SingletonLock's sister): a HUNG
+   battery from a killed run keeps its http/CDP listener alive, and the
+   next battery's fixed port is taken (a11y 9251 hit twice in one arc).
+   Before each Chrome leg, free the KNOWN fixed gate ports — but only
+   from a holder that is (a) one of OUR sweep scripts AND (b) older than
+   15 minutes: a live leg never runs that long (the hang autopsy read 20),
+   so a parallel session's HEALTHY battery is never touched, and an
+   unknown process on the port is never ours to kill (the gate then fails
+   honestly on EADDRINUSE, naming the squatter). e2e derives its ports
+   from the pid and needs none of this. */
+const GATE_PORTS = [9251, 9252, 9242, 4519, 9280, 9281]
+const SWEEP_CMD = /a11y-sweep|visual-regress|lighthouse-spot|probe-hydration|e2e-sweep/
+const etimeSec = (raw) => {
+  const m = raw.trim().match(/^(?:(\d+)-)?(?:(\d+):)?(\d+):(\d+)$/)
+  if (!m) return 0
+  return (Number(m[1] ?? 0) * 24 + Number(m[2] ?? 0)) * 3600 + Number(m[3]) * 60 + Number(m[4])
+}
+const portSweep = () => {
+  for (const port of GATE_PORTS) {
+    let pids = []
+    try {
+      pids = execFileSync('lsof', ['-ti', `tcp:${port}`], { stdio: ['ignore', 'pipe', 'ignore'] })
+        .toString()
+        .split('\n')
+        .filter(Boolean)
+    } catch {
+      continue /* free port (or no lsof) — nothing to do */
+    }
+    for (const pid of pids) {
+      try {
+        const cmd = execFileSync('ps', ['-o', 'command=', '-p', pid]).toString()
+        const age = etimeSec(execFileSync('ps', ['-o', 'etime=', '-p', pid]).toString())
+        if (SWEEP_CMD.test(cmd) && age > 900) {
+          process.kill(Number(pid), 'SIGKILL')
+          console.log(`  ↻ port ${port}: killed stale sweep pid ${pid} (${Math.round(age / 60)}min)`)
+        }
+      } catch {
+        /* raced away — fine */
+      }
+    }
+  }
+}
+
 const GATES = [
   { name: 'check', cmd: ['pnpm', 'check'] },
   { name: 'lint', cmd: ['pnpm', 'lint'] },
@@ -82,7 +125,10 @@ if (only && !GATES.some((g) => g.name === only)) {
    exit code is read from the child itself either way, never from a pipe */
 const runGate = (gate, stream) =>
   new Promise((resolve) => {
-    if (gate.chrome) chromeProfileSweep()
+    if (gate.chrome) {
+      chromeProfileSweep()
+      portSweep()
+    }
     const child = spawn(gate.cmd[0], gate.cmd.slice(1), { stdio: ['ignore', 'pipe', 'pipe'] })
     const chunks = []
     const tg = Date.now()
