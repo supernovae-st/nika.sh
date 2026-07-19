@@ -591,7 +591,7 @@
     {
       "selector": "src/content/language-meta.ts#count:2",
       "path": "src/content/language-meta.ts",
-      "line": 19,
+      "line": 20,
       "text": "second verb",
       "source": "second",
       "field": "verbs",
@@ -603,7 +603,7 @@
     {
       "selector": "src/content/language-meta.ts#count:3",
       "path": "src/content/language-meta.ts",
-      "line": 21,
+      "line": 22,
       "text": "first verb",
       "source": "first",
       "field": "verbs",
@@ -615,7 +615,7 @@
     {
       "selector": "src/content/language-meta.ts#count:4",
       "path": "src/content/language-meta.ts",
-      "line": 22,
+      "line": 23,
       "text": "third verb",
       "source": "third",
       "field": "verbs",

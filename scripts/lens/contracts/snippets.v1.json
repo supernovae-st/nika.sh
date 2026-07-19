@@ -489,14 +489,14 @@
     },
     {
       "path": "content/blog/2026-07-11-the-agent-workflow-spectrum.md",
-      "source_blob": "9453e9649255143d675fdef0f663e033ab7c896f",
+      "source_blob": "23bf770fc7ddbe3051b631980135567db32a5430",
       "blocks": [
         {
           "selector": "content/blog/2026-07-11-the-agent-workflow-spectrum.md#fence:1",
           "kind": "markdown-fence",
           "line": 15,
           "language": "yaml",
-          "sha256": "761f1f102e1753bd9ae879111cab8436562fefa70c93d07999a1fc62ce107fca"
+          "sha256": "891b17693a6f46f7b2594b53ec636dce84f128b62d45ef359cbcead1b0b53803"
         }
       ]
     },
@@ -529,14 +529,14 @@
     },
     {
       "path": "content/blog/2026-07-11-the-generative-workflow.md",
-      "source_blob": "7c4d3031ad07b561a5683c5106471bd00ed676f6",
+      "source_blob": "b4d3991d43cb77cc33632812c8fe280f4c8fc8b9",
       "blocks": [
         {
           "selector": "content/blog/2026-07-11-the-generative-workflow.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "e90d21b794a49ac5f52bb9c09a63fcd1adc1bf310c18a5e132eb43a8fc348022"
+          "sha256": "3bcc0d50c184024862f188c3c2df157a4ecca8610c7b96d2ea8b2c1788e2c50f"
         },
         {
           "selector": "content/blog/2026-07-11-the-generative-workflow.md#fence:2",
