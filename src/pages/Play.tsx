@@ -111,6 +111,30 @@ export function Component() {
      (derived from the real DAG); no fabricated durations are ever shown.
      Editing or switching seeds cancels the sim (the plan changed). */
   const [simWave, setSimWave] = useState<number | undefined>(undefined)
+  /* the verdict egg: when the sim completes, the state line TYPES its
+     verdict (motion-safe: reduced-motion shows it whole; the sr-only twin
+     below carries the full text so aria-live never announces partials) */
+  const verdictDone = simWave !== undefined && plan !== null && simWave >= plan.waves.length
+  const [typed, setTyped] = useState(0)
+  useEffect(() => {
+    if (!verdictDone) return
+    const FULL = 'order verified · simulated'.length
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    /* async from the first frame (the effect body stays set-state-free) */
+    const z = window.setTimeout(() => setTyped(reduced ? FULL : 0), 0)
+    let n = 0
+    const t = reduced
+      ? 0
+      : window.setInterval(() => {
+          n += 1
+          setTyped(n)
+          if (n >= FULL) window.clearInterval(t)
+        }, 24)
+    return () => {
+      window.clearTimeout(z)
+      if (t) window.clearInterval(t)
+    }
+  }, [verdictDone])
   /* U5 · the two-way task light: DAG hover ↔ editor line band. Both sides
      resolve through the SAME pins (parse-plan line0/line1) so the light can
      never disagree with the plan the DAG is drawing. */
@@ -399,16 +423,29 @@ export function Component() {
               <p className="play-panel-head play-dag-head">
                 <span className="play-dag-live" aria-hidden />
                 The plan · live
-                <span className="play-dag-state" aria-live="polite">
-                  {simWave !== undefined && plan
-                    ? simWave >= plan.waves.length
-                      ? 'order verified · simulated'
-                      : `wave ${String(simWave + 1).padStart(2, '0')}/${String(plan.waves.length).padStart(2, '0')}`
-                    : stale
-                      ? 'waiting for valid yaml…'
-                      : plan
-                        ? `${plan.tasks.length} task${plan.tasks.length > 1 ? 's' : ''} · ${plan.waves.length} wave${plan.waves.length > 1 ? 's' : ''}`
-                        : '—'}
+                <span className="play-dag-state">
+                  <span className="sr-only" aria-live="polite">
+                    {simWave !== undefined && plan
+                      ? simWave >= plan.waves.length
+                        ? 'order verified · simulated'
+                        : `wave ${String(simWave + 1).padStart(2, '0')}/${String(plan.waves.length).padStart(2, '0')}`
+                      : stale
+                        ? 'waiting for valid yaml…'
+                        : plan
+                          ? `${plan.tasks.length} task${plan.tasks.length > 1 ? 's' : ''} · ${plan.waves.length} wave${plan.waves.length > 1 ? 's' : ''}`
+                          : '—'}
+                  </span>
+                  <span aria-hidden>
+                    {simWave !== undefined && plan
+                      ? verdictDone
+                        ? 'order verified · simulated'.slice(0, typed)
+                        : `wave ${String(simWave + 1).padStart(2, '0')}/${String(plan.waves.length).padStart(2, '0')}`
+                      : stale
+                        ? 'waiting for valid yaml…'
+                        : plan
+                          ? `${plan.tasks.length} task${plan.tasks.length > 1 ? 's' : ''} · ${plan.waves.length} wave${plan.waves.length > 1 ? 's' : ''}`
+                          : '—'}
+                  </span>
                 </span>
                 <button
                   type="button"

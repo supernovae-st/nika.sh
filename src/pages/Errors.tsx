@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
+import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { useHead } from '@unhead/react'
 import { useAnchorScroll } from '../lib/use-anchor-scroll'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -45,7 +48,35 @@ function nsOf(code: string): string {
   return code.split('-').slice(0, 2).join('-')
 }
 
-function CodeRow({ entry, active }: { entry: ErrorCodeEntry; active: boolean }) {
+/* the blog's back-references (D5 · the code:* subset only — 2 edges today,
+   the register page stays diet: ONE island carries the whole subset, the
+   rails module never joins the entry chunk) */
+type BlogRefs = Record<string, { slug: string; title: string; date: string }[]>
+const codeSubset = (all: Record<string, { slug: string; title: string; date: string }[]>): BlogRefs =>
+  Object.fromEntries(
+    Object.entries(all)
+      .filter(([k]) => k.startsWith('code:'))
+      .map(([k, v]) => [k.slice(5), v]),
+  )
+function useErrorBlogRefs(): BlogRefs {
+  const ssr = ssrBlogRails()
+  const payload = useIslandPayload(
+    'er-blog-rails',
+    ssr ? JSON.stringify(codeSubset(ssr.FROM_BLOG)) : null,
+    async () => JSON.stringify(codeSubset((await loadBlogRails()).FROM_BLOG)),
+  )
+  return payload ? (JSON.parse(payload) as BlogRefs) : {}
+}
+
+function CodeRow({
+  entry,
+  active,
+  blogRefs,
+}: {
+  entry: ErrorCodeEntry
+  active: boolean
+  blogRefs?: { slug: string; title: string; date: string }[]
+}) {
   return (
     <li id={entry.code} className={`er-row${active ? ' er-row--active' : ''}`}>
       <div className="er-row-head">
@@ -83,6 +114,18 @@ function CodeRow({ entry, active }: { entry: ErrorCodeEntry; active: boolean }) 
           ))}
         </p>
       ) : null}
+      {/* the sister rail: the posts that write ABOUT this code (D5 inverted ·
+          same island the whole register shares) */}
+      {blogRefs?.length ? (
+        <p className="er-refs mono">
+          <span className="er-refs-k">written about</span>
+          {blogRefs.map((b) => (
+            <Link key={b.slug} className="er-ref" to={`/blog/${b.slug}`}>
+              {b.title}
+            </Link>
+          ))}
+        </p>
+      ) : null}
     </li>
   )
 }
@@ -93,6 +136,7 @@ export function Component() {
   const code = rawCode?.toUpperCase()
   const hit = code ? ERROR_INDEX[code] : undefined
   const miss = Boolean(code) && !hit
+  const blogByCode = useErrorBlogRefs()
 
   const groups = useMemo(
     () =>
@@ -134,6 +178,7 @@ export function Component() {
           baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
       <section ref={ref} aria-labelledby="er-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
+            <Island id="er-blog-rails" payload={JSON.stringify(blogByCode)} />
           <p className="v4sec-fig" data-rise>
             the error register
           </p>
@@ -181,7 +226,7 @@ export function Component() {
               </div>
               <ol className="er-list">
                 {group.entries.map((e) => (
-                  <CodeRow key={e.code} entry={e} active={e.code === code} />
+                  <CodeRow key={e.code} entry={e} active={e.code === code} blogRefs={blogByCode[e.code]} />
                 ))}
               </ol>
             </div>

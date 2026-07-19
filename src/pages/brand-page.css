@@ -222,3 +222,18 @@
   font-size: 11px;
   color: rgb(0 0 0 / 0.75);
 }
+
+/* ── the ONE variable-wght display moment (eggs · operator lock: silent) ──
+   The title breathes its weight on intent — Martian Grotesk is variable
+   (100-900) so this costs zero bytes; the motion cites the graph's own
+   tokens; hover-only = golden-safe; reduced-motion never moves. */
+.brand-title {
+  font-variation-settings: 'wght' 800;
+  transition: font-variation-settings var(--dur-slow) var(--ease-settle);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .brand-title:hover {
+    font-variation-settings: 'wght' 880;
+  }
+}
