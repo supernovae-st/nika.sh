@@ -55,6 +55,20 @@ const webpTwin = (pngPath) => {
   return out;
 };
 
+/* the poster's AVIF twin (fenêtre AVIF · measured on the 8-poster corpus:
+   636KB webp → 233KB avif at PSNR 44dB — terminal text survives cq 28 with
+   tune=ssim). <picture> serves avif first, webp stays the fallback, the
+   png stays the archival master. */
+const avifTwin = (pngPath) => {
+  const out = pngPath.replace(/\.png$/, ".avif");
+  try {
+    execFileSync("avifenc", ["-s", "4", "-j", "4", "--min", "0", "--max", "63", "-a", "end-usage=q", "-a", "cq-level=28", "-a", "tune=ssim", pngPath, out]);
+  } catch {
+    console.warn(`  ⚠ avifenc missing — ${path.basename(out)} NOT regenerated (brew install libavif)`);
+  }
+  return out;
+};
+
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 
 for (const scene of scenes) {
@@ -92,6 +106,7 @@ for (const scene of scenes) {
     await page.evaluate((t) => window.__seek(Number(t)), meta.posterAt ?? 0);
     await page.screenshot({ path: poster, clip });
     webpTwin(poster);
+    avifTwin(poster);
     console.log(`▸ ${scene} · static · poster ${mb(poster)}MB`);
     await page.close();
     continue;
@@ -128,6 +143,7 @@ for (const scene of scenes) {
   await page.evaluate((t) => window.__seek(Number(t)), meta.posterAt ?? 0);
   await page.screenshot({ path: poster, clip });
   webpTwin(poster);
+  avifTwin(poster);
 
   console.log(`  mp4 ${mb(mp4)}MB · webm ${mb(webm)}MB · gif ${mb(gif)}MB · poster ${mb(poster)}MB`);
   if (!flag("keep-frames")) fs.rmSync(framesDir, { recursive: true, force: true });

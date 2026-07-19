@@ -77,6 +77,15 @@ required=(
   public/media/posters/trace-flow.webp
   public/media/posters/kill-resume.webp
   public/media/posters/gate-consent.webp
+  # the AVIF twins (fenêtre AVIF · <picture> first source; needs avifenc)
+  public/media/posters/check-audit.avif
+  public/media/posters/inspect-anatomy.avif
+  public/media/posters/run-live.avif
+  public/media/posters/run-epilogue.avif
+  public/media/posters/trace-outputs.avif
+  public/media/posters/trace-flow.avif
+  public/media/posters/kill-resume.avif
+  public/media/posters/gate-consent.avif
   public/media/videos/run-live.mp4
   public/media/videos/run-live.webm
   public/media/gifs/run-live.optimized.gif
