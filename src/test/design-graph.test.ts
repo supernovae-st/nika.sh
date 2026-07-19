@@ -207,6 +207,16 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     expect(scene).toContain('KIND_OF_SET[m.set]')
   })
 
+  it('the palette speaks the graph for every declared family (⌘K fold)', () => {
+    const ck = read('src/shell/CommandK.tsx')
+    expect(ck).toContain("from '../content/design.generated'")
+    expect(ck).toContain('PALETTE_GLYPH')
+    for (const kind of Object.keys(KIND_HEX))
+      expect(ck, `palette keeps a local glyph for the declared kind '${kind}'`).not.toMatch(
+        new RegExp(`PALETTE_GLYPH[^}]*${kind}:`, 's'),
+      )
+  })
+
   it('/brand projects the graph (every family rendered from the emission)', () => {
     const brand = read('src/pages/Brand.tsx')
     expect(brand).toContain("from '../content/design.generated'")

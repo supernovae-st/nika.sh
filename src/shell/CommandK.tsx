@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PALETTE, type PaletteEntry } from '../content/palette.generated'
+import { KIND_GLYPH, KIND_HEX, type AtlasKind } from '../content/design.generated'
 import { PATHS, BLOG_PATHS } from '../../site.config'
 import { parseQuery, mergePageHits, type PageTextHit } from '../lib/palette-query'
 import { actionEntries, runAction, type ActionEntry, type PaletteCtx } from '../lib/palette-actions'
@@ -77,18 +78,21 @@ const loadPagefind = () => {
   return pagefindOnce
 }
 
-const KIND_GLYPH: Record<PaletteEntry['kind'], string> = {
+/* the entries OUTSIDE the design graph's locked families (page/provider/
+   verb/usecase/set are structural or not-yet-declared kinds) keep a LOCAL
+   voice — everything the graph declares speaks the graph (glyph + hue),
+   so the palette can never diverge from the rooms again */
+const PALETTE_GLYPH: Record<string, string> = {
   page: '▸',
-  post: '¶',
-  error: '✕',
-  tool: '⌗',
   provider: '◇',
-  template: '⎘',
   verb: '›',
-  word: '·',
   usecase: '▣',
   set: '≡',
 }
+const entryGlyph = (kind: PaletteEntry['kind']): string =>
+  (KIND_GLYPH as Record<string, string>)[kind] ?? PALETTE_GLYPH[kind] ?? '·'
+const entryKind = (kind: PaletteEntry['kind']): AtlasKind | null =>
+  kind in KIND_HEX ? (kind as AtlasKind) : null
 
 export default function CommandK({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate()
@@ -295,8 +299,12 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
               onPointerDown={(ev) => ev.preventDefault()}
               onClick={() => go(e)}
             >
-              <span className="ck-opt-glyph mono" aria-hidden>
-                {e.kind === 'pagetext' ? '⌕' : e.kind === 'action' ? '»' : KIND_GLYPH[e.kind]}
+              <span
+                className="ck-opt-glyph k-glyph mono"
+                data-kind={e.kind === 'pagetext' || e.kind === 'action' ? undefined : (entryKind(e.kind) ?? undefined)}
+                aria-hidden
+              >
+                {e.kind === 'pagetext' ? '⌕' : e.kind === 'action' ? '»' : entryGlyph(e.kind)}
               </span>
               <span className="ck-opt-label">{e.label}</span>
               <span className="ck-opt-hint mono">{e.hint}</span>
