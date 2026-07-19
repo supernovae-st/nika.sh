@@ -27,6 +27,61 @@
   --ease-snap: linear(0, 0.402 22%, 0.782 40.1%, 0.99 55.8%, 1.037 69.9%, 1.021 82.6%, 1);
   --ease-settle: linear(0, 0.281 18.2%, 0.622 33.9%, 0.865 48.2%, 0.992 61.5%, 1.029 74.3%, 1.015 86.8%, 1);
   --ease-linear: linear;
+  --kind-error: #ff5d5d;
+  --kind-tool: #22d3ee;
+  --kind-word: #9fd0ff;
+  --kind-template: #5b8cff;
+  --kind-showcase: #b07bff;
+  --kind-post: #4f86ff;
+  /* §7a · the researched values (R16-R19 · ratified §7) */
+  --focus-ring-w: 2px;
+  --focus-ring-offset: 2px;
+  --pressed-dur: 90ms;
+  --pressed-scale: 0.97;
+  --phosphor-tight: 0 0 2px color-mix(in srgb, var(--v4-accent) 60%, transparent);
+  --phosphor-wide: 0 0 24px color-mix(in srgb, var(--v4-accent) 25%, transparent);
+  --grain-opacity: 0.03;
+  /* the elevation ladder — ONE base, generated steps (oklch relative) */
+  --surface-0: oklch(0.145 0.005 260);
+  --surface-1: oklch(from var(--surface-0) calc(l + 0.03) c h);
+  --surface-2: oklch(from var(--surface-0) calc(l + 0.06) c h);
+  --surface-3: oklch(from var(--surface-0) calc(l + 0.09) c h);
+}
+
+/* §7a · selection takes the LOCAL verb's colour (per-verb-section law) */
+[data-verb-scope='infer'] ::selection { background: color-mix(in srgb, #5b8cff 35%, transparent); }
+[data-verb-scope='exec'] ::selection { background: color-mix(in srgb, #ff7a3c 35%, transparent); }
+[data-verb-scope='invoke'] ::selection { background: color-mix(in srgb, #22d3ee 35%, transparent); }
+[data-verb-scope='agent'] ::selection { background: color-mix(in srgb, #b07bff 35%, transparent); }
+
+/* §7a · P3 accents step up GENERATED (never written twice) */
+@supports (color: oklch(from red l c h)) {
+  @media (color-gamut: p3) {
+    :root {
+      --v4-accent: oklch(from #4f86ff l calc(c * 1.15) h);
+      --v4-accent-bright: oklch(from #8db4ff l calc(c * 1.15) h);
+    }
+  }
+}
+
+/* §7c · the Tailwind v4 seam — utilities derive from the graph (the house
+   springs only: out/linear would shadow Tailwind's own defaults) */
+@theme inline {
+  --color-kind-error: var(--kind-error);
+  --color-kind-tool: var(--kind-tool);
+  --color-kind-word: var(--kind-word);
+  --color-kind-template: var(--kind-template);
+  --color-kind-showcase: var(--kind-showcase);
+  --color-kind-post: var(--kind-post);
+  --color-layer-shape: var(--layer-shape);
+  --color-layer-flow: var(--layer-flow);
+  --color-layer-acts: var(--layer-acts);
+  --color-layer-reach: var(--layer-reach);
+  --color-layer-boundary: var(--layer-boundary);
+  --color-layer-refusals: var(--layer-refusals);
+  --color-layer-proof: var(--layer-proof);
+  --ease-snap: var(--ease-snap);
+  --ease-settle: var(--ease-settle);
 }
 
 /* the two-clocks mark (law 2: the ontology drives the pixel) — ONE recipe,

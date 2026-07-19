@@ -28,6 +28,37 @@ export const LAYER_RGB: Record<AtlasLayerId, readonly [number, number, number]> 
   proof: [0.2039, 0.8275, 0.6],
 }
 
+/** family signatures (fenêtre C · --kind-<family> flat, operator-locked):
+ *  hue resolved from the SPINE ref, glyph declared at the descriptor */
+export const KIND_HEX = {
+  "error": "#ff5d5d",
+  "tool": "#22d3ee",
+  "word": "#9fd0ff",
+  "template": "#5b8cff",
+  "showcase": "#b07bff",
+  "post": "#4f86ff"
+} as const
+export type AtlasKind = keyof typeof KIND_HEX
+
+export const KIND_GLYPH = {
+  "error": "✗",
+  "tool": "◆",
+  "word": "·",
+  "template": "▤",
+  "showcase": "▶",
+  "post": "§"
+} as const
+
+/** normalized 0..1 triples — the three.js seam, extended to kinds */
+export const KIND_RGB: Record<AtlasKind, readonly [number, number, number]> = {
+  error: [1, 0.3647, 0.3647],
+  tool: [0.1333, 0.8275, 0.9333],
+  word: [0.6235, 0.8157, 1],
+  template: [0.3569, 0.549, 1],
+  showcase: [0.6902, 0.4824, 1],
+  post: [0.3098, 0.5255, 1],
+}
+
 /** the shared dark chrome (og cards · redirect stubs · the svg's css) */
 export const PAPER = {
   "bg": "#0a0b0d",

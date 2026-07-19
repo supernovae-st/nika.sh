@@ -35,6 +35,32 @@
     "refusals": "#ff5d5d",
     "proof": "#34d399"
   },
+  "kinds": {
+    "error": {
+      "hex": "#ff5d5d",
+      "glyph": "✗"
+    },
+    "tool": {
+      "hex": "#22d3ee",
+      "glyph": "◆"
+    },
+    "word": {
+      "hex": "#9fd0ff",
+      "glyph": "·"
+    },
+    "template": {
+      "hex": "#5b8cff",
+      "glyph": "▤"
+    },
+    "showcase": {
+      "hex": "#b07bff",
+      "glyph": "▶"
+    },
+    "post": {
+      "hex": "#4f86ff",
+      "glyph": "§"
+    }
+  },
   "motion": {
     "dur": {
       "quick": 120,
@@ -53,5 +79,35 @@
     "ratified": "stroke",
     "shipped": "filled",
     "both": "filled-ring"
+  },
+  "sota": {
+    "selection": {
+      "mix_pct": 35
+    },
+    "focus": {
+      "ring_w": "2px",
+      "ring_offset": "2px"
+    },
+    "pressed": {
+      "dur_ms": 90,
+      "scale": 0.97
+    },
+    "phosphor": {
+      "tight": "0 0 2px",
+      "tight_pct": 60,
+      "wide": "0 0 24px",
+      "wide_pct": 25
+    },
+    "elevation": {
+      "base": "oklch(0.145 0.005 260)",
+      "step_l": 0.03,
+      "steps": 3
+    },
+    "gamut": {
+      "chroma_mul": 1.15
+    },
+    "grain": {
+      "opacity": 0.03
+    }
   }
 }

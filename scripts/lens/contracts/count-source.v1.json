@@ -26,8 +26,8 @@
     ],
     "count": 239,
     "set_sha256": "fed7da3603e109115c450285a7fee95e5f09d21bf8f3a51b0fb7f931e938745b",
-    "rendered_count": 483,
-    "rendered_set_sha256": "b4da19e8fb6babf5b49ad86e0b0c09447f4b6f74c255ec1109f5d4c82abf4e9d"
+    "rendered_count": 485,
+    "rendered_set_sha256": "a42289589a998fce2e373d407f2958b4a034ce5ee05626174842590aa8f50ec3"
   },
   "claim_count": 141,
   "bindings": [
@@ -832,7 +832,7 @@
     {
       "selector": "src/pages/Brand.tsx#count:3",
       "path": "src/pages/Brand.tsx",
-      "line": 186,
+      "line": 191,
       "text": "four verb",
       "source": "four",
       "field": "verbs",

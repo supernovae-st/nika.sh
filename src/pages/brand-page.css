@@ -215,3 +215,10 @@
   border-radius: 2px;
   background: var(--v4-text-dim);
 }
+
+.brand-swatch-chip--glyph {
+  display: inline-grid;
+  place-items: center;
+  font-size: 11px;
+  color: rgb(0 0 0 / 0.75);
+}

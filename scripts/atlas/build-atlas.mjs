@@ -806,6 +806,15 @@ export const MAP_LAYERS: MapLayer[] = ${JSON.stringify(mapLayers, null, 2)}
 const DSN = S.sets.design
 if (!DSN?.paper || !DSN?.layers || !DSN?.motion || !DSN?.status)
   throw new Error('sets.yaml design: section incomplete (paper/layers/motion/status)')
+if (!DSN.kinds || !DSN.sota) throw new Error('sets.yaml design: kinds/sota missing (fenêtre C)')
+const kindHex = Object.fromEntries(
+  Object.entries(DSN.kinds).map(([kind, spec]) => {
+    if (!S.tokens[spec.hue]) throw new Error(`design.kinds.${kind}: unknown spine token '${spec.hue}'`)
+    return [kind, S.tokens[spec.hue]]
+  }),
+)
+const kindGlyph = Object.fromEntries(Object.entries(DSN.kinds).map(([kind, spec]) => [kind, spec.glyph]))
+const SOTA = DSN.sota
 const layerHex = Object.fromEntries(
   Object.entries(DSN.layers).map(([layer, ref]) => {
     if (!S.tokens[ref]) throw new Error(`design.layers.${layer}: unknown spine token '${ref}'`)
@@ -824,6 +833,39 @@ ${Object.entries(DSN.paper).map(([k, v]) => `  --paper-${k}: ${v};`).join('\n')}
 ${Object.entries(layerHex).map(([k, v]) => `  --layer-${k}: ${v};`).join('\n')}
 ${Object.entries(DSN.motion.dur).map(([k, v]) => `  --dur-${k}: ${v}ms;`).join('\n')}
 ${Object.entries(DSN.motion.ease).map(([k, v]) => `  --ease-${k}: ${v};`).join('\n')}
+${Object.entries(kindHex).map(([k, v]) => `  --kind-${k}: ${v};`).join('\n')}
+  /* §7a · the researched values (R16-R19 · ratified §7) */
+  --focus-ring-w: ${SOTA.focus.ring_w};
+  --focus-ring-offset: ${SOTA.focus.ring_offset};
+  --pressed-dur: ${SOTA.pressed.dur_ms}ms;
+  --pressed-scale: ${SOTA.pressed.scale};
+  --phosphor-tight: ${SOTA.phosphor.tight} color-mix(in srgb, var(--v4-accent) ${SOTA.phosphor.tight_pct}%, transparent);
+  --phosphor-wide: ${SOTA.phosphor.wide} color-mix(in srgb, var(--v4-accent) ${SOTA.phosphor.wide_pct}%, transparent);
+  --grain-opacity: ${SOTA.grain.opacity};
+  /* the elevation ladder — ONE base, generated steps (oklch relative) */
+  --surface-0: ${SOTA.elevation.base};
+${Array.from({ length: SOTA.elevation.steps }, (_, i) => `  --surface-${i + 1}: oklch(from var(--surface-0) calc(l + ${((i + 1) * SOTA.elevation.step_l).toFixed(2)}) c h);`).join('\n')}
+}
+
+/* §7a · selection takes the LOCAL verb's colour (per-verb-section law) */
+${Object.keys(S.tokens).filter((t) => ['infer', 'exec', 'invoke', 'agent'].includes(t)).map((verb) => `[data-verb-scope='${verb}'] ::selection { background: color-mix(in srgb, ${S.tokens[verb]} ${SOTA.selection.mix_pct}%, transparent); }`).join('\n')}
+
+/* §7a · P3 accents step up GENERATED (never written twice) */
+@supports (color: oklch(from red l c h)) {
+  @media (color-gamut: p3) {
+    :root {
+${['accent', 'accentBright'].map((t) => `      --v4-${t === 'accent' ? 'accent' : 'accent-bright'}: oklch(from ${S.tokens[t]} l calc(c * ${SOTA.gamut.chroma_mul}) h);`).join('\n')}
+    }
+  }
+}
+
+/* §7c · the Tailwind v4 seam — utilities derive from the graph (the house
+   springs only: out/linear would shadow Tailwind's own defaults) */
+@theme inline {
+${Object.keys(kindHex).map((k) => `  --color-kind-${k}: var(--kind-${k});`).join('\n')}
+${Object.keys(layerHex).map((k) => `  --color-layer-${k}: var(--layer-${k});`).join('\n')}
+  --ease-snap: var(--ease-snap);
+  --ease-settle: var(--ease-settle);
 }
 
 /* the two-clocks mark (law 2: the ontology drives the pixel) — ONE recipe,
@@ -866,6 +908,18 @@ export const LAYER_RGB: Record<AtlasLayerId, readonly [number, number, number]> 
 ${Object.entries(layerHex).map(([k, v]) => `  ${k}: [${rgb01(v).join(', ')}],`).join('\n')}
 }
 
+/** family signatures (fenêtre C · --kind-<family> flat, operator-locked):
+ *  hue resolved from the SPINE ref, glyph declared at the descriptor */
+export const KIND_HEX = ${JSON.stringify(kindHex, null, 2)} as const
+export type AtlasKind = keyof typeof KIND_HEX
+
+export const KIND_GLYPH = ${JSON.stringify(kindGlyph, null, 2)} as const
+
+/** normalized 0..1 triples — the three.js seam, extended to kinds */
+export const KIND_RGB: Record<AtlasKind, readonly [number, number, number]> = {
+${Object.entries(kindHex).map(([k, v]) => `  ${k}: [${rgb01(v).join(', ')}],`).join('\n')}
+}
+
 /** the shared dark chrome (og cards · redirect stubs · the svg's css) */
 export const PAPER = ${JSON.stringify(DSN.paper, null, 2)} as const
 
@@ -887,8 +941,10 @@ const designPalette = JSON.stringify(
     accents: { accent: S.tokens.accent, accentBright: S.tokens.accentBright, markIce: S.tokens.markIce },
     paper: DSN.paper,
     layers: layerHex,
+    kinds: Object.fromEntries(Object.entries(kindHex).map(([k, hex]) => [k, { hex, glyph: kindGlyph[k] }])),
     motion: DSN.motion,
     status: DSN.status,
+    sota: SOTA,
   },
   null,
   2,
@@ -898,6 +954,65 @@ const designPalette = JSON.stringify(
    copies: the page inlines the src asset, agents fetch the public one) */
 const geometry = layoutConstellation(twin)
 const constellationSvg = renderConstellation(geometry, S.tokens, DSN.paper)
+
+/* §7b · design-tokens.dtcg.json — the W3C Design Tokens interchange (the
+   site↔studio bridge: Style Dictionary v4 · Tokens Studio · Figma read
+   this). Colors + durations are typed; the linear() springs ride as
+   documented strings (the format has no easing type yet). */
+const dtcgColor = (hex) => ({ $type: 'color', $value: hex })
+const dtcg = JSON.stringify(
+  {
+    $description:
+      'nika.sh design tokens — AUTO-GENERATED by scripts/atlas/build-atlas.mjs from sets.yaml design: + the nika-spec spine. License: Apache-2.0 (machine artifact).',
+    verb: Object.fromEntries(['infer', 'exec', 'invoke', 'agent'].map((v) => [v, dtcgColor(S.tokens[v])])),
+    severity: { ok: dtcgColor(S.tokens.ok), fail: dtcgColor(S.tokens.fail) },
+    accent: { default: dtcgColor(S.tokens.accent), bright: dtcgColor(S.tokens.accentBright), markIce: dtcgColor(S.tokens.markIce) },
+    paper: Object.fromEntries(Object.entries(DSN.paper).map(([k, v]) => [k, dtcgColor(v)])),
+    layer: Object.fromEntries(Object.entries(layerHex).map(([k, v]) => [k, dtcgColor(v)])),
+    kind: Object.fromEntries(Object.entries(kindHex).map(([k, v]) => [k, dtcgColor(v)])),
+    duration: Object.fromEntries(
+      Object.entries(DSN.motion.dur).map(([k, ms]) => [k, { $type: 'duration', $value: `${ms}ms` }]),
+    ),
+    ease: Object.fromEntries(
+      Object.entries(DSN.motion.ease).map(([k, v]) => [
+        k,
+        { $type: 'string', $value: v, $description: 'css easing (linear() springs have no DTCG type yet)' },
+      ]),
+    ),
+  },
+  null,
+  2,
+) + '\n'
+
+/* §7b · design.forced-colors.css — the WHCM theme EMITTED from the same
+   descriptor: system keywords by ROLE · the transparent-outline trick
+   (WHCM draws outlines the normal theme never shows) · forced-color-adjust
+   only where a swatch IS the datum. The box-drawn brand already thinks
+   like WHCM — this makes the mode a system theme OF the brand. */
+const forcedColorsCss = `/* design.forced-colors.css — AUTO-GENERATED by scripts/atlas/build-atlas.mjs
+   (sets.yaml design: · §7b). DO NOT EDIT · regenerate: node scripts/atlas/build-atlas.mjs */
+@media (forced-colors: active) {
+  /* roles → system keywords (the WHCM contract) */
+  :root {
+${Object.keys(kindHex).map((k) => `    --kind-${k}: CanvasText;`).join('\n')}
+${Object.keys(layerHex).map((k) => `    --layer-${k}: CanvasText;`).join('\n')}
+    --focus-ring: Highlight;
+    --phosphor-tight: none;
+    --phosphor-wide: none;
+  }
+  /* the transparent-outline trick: invisible in the normal theme, WHCM
+     paints it — every st-mark stays legible without its fill */
+  .st-mark::before {
+    outline: 1px solid transparent;
+  }
+  /* swatches ARE the datum (the /brand chips · the two-clocks mark):
+     keep their author colors, everything else follows the system */
+  .brand-swatch-chip,
+  .st-mark[data-status]::before {
+    forced-color-adjust: none;
+  }
+}
+`
 
 /* the chrome (sortie 4 · §4.11-4.12: nav + footer as projections). Authored
    intent comes from the descriptor's nav: section; every `ref` item resolves
@@ -1586,8 +1701,10 @@ if (!REPORT_ONLY) {
   if (nextSiteConfig !== siteConfig) writeFileSync(siteConfigPath, nextSiteConfig)
   writeFileSync(join(ROOT, 'src/assets/constellation.generated.svg'), constellationSvg)
   writeFileSync(join(ROOT, 'src/design.generated.css'), designCss)
+  writeFileSync(join(ROOT, 'src/design.forced-colors.generated.css'), forcedColorsCss)
   writeFileSync(join(ROOT, 'src/content/design.generated.ts'), designTs)
   writeFileSync(join(ROOT, 'public/design-palette.json'), designPalette)
+  writeFileSync(join(ROOT, 'public/design-tokens.dtcg.json'), dtcg)
   for (const r of providerStubs) {
     const dir = join(ROOT, 'public', r.from.slice(1))
     mkdirSync(dir, { recursive: true })

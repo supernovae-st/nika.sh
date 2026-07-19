@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './design.generated.css';
+@import './design.forced-colors.generated.css';
 @import './styles/tokens.css';
 @import './styles/print.css';
 

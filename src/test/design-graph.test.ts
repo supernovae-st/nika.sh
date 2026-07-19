@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { LAYER_HEX, LAYER_RGB, PAPER, MOTION_DUR_MS, MOTION_EASE } from '../content/design.generated'
+import { LAYER_HEX, LAYER_RGB, KIND_HEX, KIND_RGB, KIND_GLYPH, PAPER, MOTION_DUR_MS, MOTION_EASE } from '../content/design.generated'
 
 /* ─── design-graph.test · fenêtre A gates (LENS_DESIGN_GRAPH §4) ─────────────
    Three laws, none about specific VALUES (values change spec-first and the
@@ -139,10 +139,59 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     expect(total, `inline ms count ${total} > ceiling ${CEILING}`).toBeLessThanOrEqual(CEILING)
   })
 
+  it('kinds agree across css, ts, json and dtcg — glyph carried, RGB exact (fenêtre C)', () => {
+    const dtcg = JSON.parse(read('public/design-tokens.dtcg.json'))
+    for (const [kind, hex] of Object.entries(KIND_HEX)) {
+      expect(cssVar(`kind-${kind}`)).toBe(hex)
+      expect(palette.kinds[kind].hex).toBe(hex)
+      expect(palette.kinds[kind].glyph).toBe(KIND_GLYPH[kind as keyof typeof KIND_GLYPH])
+      expect(dtcg.kind[kind].$value).toBe(hex)
+      const triple = KIND_RGB[kind as keyof typeof KIND_RGB]
+      ;[1, 3, 5].forEach((at, i) => {
+        expect(Math.abs(triple[i] - parseInt(hex.slice(at, at + 2), 16) / 255)).toBeLessThan(1e-4)
+      })
+    }
+  })
+
+  it('the sota values are emitted (§7a) and the elevation ladder is ONE declaration', () => {
+    const css = read('src/design.generated.css')
+    for (const v of ['--focus-ring-w', '--pressed-dur', '--phosphor-tight', '--grain-opacity', '--surface-0'])
+      expect(css, `${v} missing`).toContain(v)
+    expect(css).toContain('--surface-1: oklch(from var(--surface-0)')
+    expect(css).toContain("[data-verb-scope='infer'] ::selection")
+    expect(css).toContain('@media (color-gamut: p3)')
+  })
+
+  it('the tailwind seam derives from the graph (§7c) without shadowing defaults', () => {
+    const css = read('src/design.generated.css')
+    expect(css).toContain('@theme inline')
+    expect(css).toContain('--color-kind-error: var(--kind-error)')
+    expect(css).toContain('--ease-snap: var(--ease-snap)')
+    expect(css.match(/@theme inline \{[^}]*\}/s)?.[0]).not.toContain('--ease-out')
+  })
+
+  it('the forced-colors theme is emitted from the same descriptor (§7b)', () => {
+    const fc = read('src/design.forced-colors.generated.css')
+    expect(fc).toContain('@media (forced-colors: active)')
+    for (const kind of Object.keys(KIND_HEX)) expect(fc).toContain(`--kind-${kind}: CanvasText`)
+    expect(fc).toContain('outline: 1px solid transparent')
+    expect(fc).toContain('forced-color-adjust: none')
+    expect(read('src/index.css')).toContain("@import './design.forced-colors.generated.css'")
+  })
+
+  it('the dtcg export types its tokens (§7b · the site↔studio bridge)', () => {
+    const dtcg = JSON.parse(read('public/design-tokens.dtcg.json'))
+    expect(dtcg.$description).toContain('Apache-2.0')
+    for (const group of ['verb', 'severity', 'paper', 'layer', 'kind'])
+      for (const tok of Object.values<{ $type: string; $value: string }>(dtcg[group]))
+        expect(tok.$type).toBe('color')
+    for (const tok of Object.values<{ $type: string }>(dtcg.duration)) expect(tok.$type).toBe('duration')
+  })
+
   it('/brand projects the graph (every family rendered from the emission)', () => {
     const brand = read('src/pages/Brand.tsx')
     expect(brand).toContain("from '../content/design.generated'")
-    for (const name of ['LAYER_HEX', 'PAPER', 'MOTION_DUR_MS', 'STATUS_RECIPE'])
+    for (const name of ['LAYER_HEX', 'KIND_HEX', 'PAPER', 'MOTION_DUR_MS', 'STATUS_RECIPE'])
       expect(brand, `/brand lost the ${name} projection`).toContain(name)
   })
 
