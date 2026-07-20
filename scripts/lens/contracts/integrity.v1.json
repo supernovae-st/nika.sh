@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "d8e44d724a7371af1be7d443f8e4f4222a02a490b845a69bc57948fc1be04a26"
+   "sha256": "756688a5f8b986756c15cb815329e690164463720dc3010f0ce5c3c45eff379b"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -91,7 +91,7 @@
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "59260d5cdb865f8c8c41ce72aeab1398bb95245abd30ef2ada8f47eb4dc2c082"
+   "sha256": "37067ef4b2ae821256edac93b1babf2709904e9c1ddc8ac430585198f435f432"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "bad76c6068434b9b2630cb643afbdb3345e78955b473d8312806c8b87756f3b9"
+   "sha256": "44f59678313e71c1f1cacf0765570800420481911f38ed339da37811cb82cfd4"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
