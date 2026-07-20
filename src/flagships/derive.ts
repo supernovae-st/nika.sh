@@ -165,8 +165,17 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
         closeTask(n - 1)
         const [, key, rest] = top
         section = key === 'permits' || key === 'tasks' || key === 'outputs' ? key : ''
-        /* W2 envelope: `workflow: <id>` — the scalar IS the display name */
-        if (key === 'workflow' && rest.trim()) workflow = rest.replace(/#.*$/, '').trim()
+        /* 0.105 envelope: `workflow:` map — `id:` on the next lines carries
+           the display name (the scalar form died at the release) */
+        if (key === 'workflow') {
+          if (rest.trim()) workflow = rest.replace(/#.*$/, '').trim()
+          else {
+            for (let j = n; j < lines.length && /^ {2}\S/.test(lines[j]); j += 1) {
+              const idm = lines[j].match(/^ {2}id:\s*([a-z][a-z0-9-]*)/)
+              if (idm) { workflow = idm[1]; break }
+            }
+          }
+        }
         if (key === 'model') model = rest.replace(/#.*$/, '').trim()
         if (key === 'permits') permitsRange = [n, n]
         continue
