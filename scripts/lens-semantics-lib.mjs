@@ -396,6 +396,32 @@ function literalArray(source, name) {
   return [...match[1].matchAll(/'([^']+)'/g)].map((entry) => entry[1])
 }
 
+/* ERROR_PATHS is the ONE derived array (2026-07-19 · the hand-typed list let
+   a canon-minted code 404 in prod): the register's rooms come from the served
+   catalog (public/errors/catalog.json — the same bytes the docs_url contract
+   reads) ∪ the PENDING_ERROR_CODES literal (pending-error-codes.ts — codes
+   the canon minted while the resync pin lags), deduped + sorted. This is the
+   same union site.config.ts evaluates at config time and
+   src/test/errors.test.ts recomputes independently — three readers, two
+   sources, one list: a divergence fails a gate, so this discovery can never
+   drift from the prerender it describes. */
+function deriveErrorPaths(root, source) {
+  if (/export const ERROR_PATHS = \[/.test(source)) {
+    throw new Error('ERROR_PATHS is derived (catalog ∪ PENDING_ERROR_CODES) — the literal array form is dead')
+  }
+  if (/export const PENDING_ERROR_CODES = \[/.test(source)) {
+    throw new Error('PENDING_ERROR_CODES has one home: pending-error-codes.ts (the bundle-law leaf) — site.config only re-exports it')
+  }
+  const catalog = JSON.parse(readFileSync(join(root, 'public/errors/catalog.json'), 'utf8'))
+  const pending = literalArray(readFileSync(join(root, 'pending-error-codes.ts'), 'utf8'), 'PENDING_ERROR_CODES')
+  return [
+    ...new Set([
+      ...catalog.codes.map((entry) => `/errors/${entry.code}`),
+      ...pending.map((code) => `/errors/${code}`),
+    ]),
+  ].sort()
+}
+
 export function discoverPrerenderPaths(root) {
   const source = readFileSync(join(root, 'site.config.ts'), 'utf8')
   const arrays = new Map()
@@ -406,7 +432,9 @@ export function discoverPrerenderPaths(root) {
   ]) {
     // A registry page can fuse away (its path array leaves the file with it);
     // only arrays still declared join the map — an unknown SPREAD stays fatal.
-    if (new RegExp(`export const ${name} = \\[`).test(source)) {
+    // ERROR_PATHS is the one exception: derived from its two sources, by law.
+    if (name === 'ERROR_PATHS') arrays.set(name, deriveErrorPaths(root, source))
+    else if (new RegExp(`export const ${name} = \\[`).test(source)) {
       arrays.set(name, literalArray(source, name))
     }
   }
