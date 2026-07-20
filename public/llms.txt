@@ -81,7 +81,7 @@ data language (jq) · workflows are callable · mock-first.
 - Releases: https://github.com/supernovae-st/nika/releases
 - The map (every page, one graph): https://nika.sh/map · crawler twin: https://nika.sh/sitemap.xml · atlas twin: https://nika.sh/ontology/language.json
 - The anatomy hubs (one page per language layer, members anchored): https://nika.sh/flow (edges · gates) · https://nika.sh/boundary (permits · secrets) · https://nika.sh/proof (conformance · trace · machine surfaces)
-- The timeline (the one verifiable record — eras · releases · forward gates · every provable claim re-proven in CI): https://nika.sh/timeline
+- The timeline (the one verifiable record: eras · releases · forward gates · every provable claim re-proven in CI): https://nika.sh/timeline
 - Showcase rooms (one URL per conformance-gated real workflow, whole file + plan facts): https://nika.sh/use-cases (the gallery lists all rooms; each room lives at its own slug under that path)
 
 ## Status
