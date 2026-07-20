@@ -1,0 +1,98 @@
+/* /timeline · the one verifiable record — calm ledger over the hub base.
+   The hue is the amber of the archive lamp; proof badges are the only
+   color accents (proved = the hub hue · unprovable = muted, honest). */
+
+.tl-span {
+  margin: -0.4rem 0 0.6rem;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+}
+
+.tl-entries {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  border-left: 2px solid color-mix(in srgb, var(--hub-hue) 28%, transparent);
+}
+
+.tl-entry {
+  display: grid;
+  grid-template-columns: 6.4rem 1fr auto;
+  gap: 0.65rem;
+  align-items: baseline;
+  padding: 0.5rem 0 0.5rem 0.9rem;
+  position: relative;
+}
+
+.tl-entry::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0.95rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--hub-hue) 55%, transparent);
+}
+
+.tl-date {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.tl-body { display: grid; gap: 0.15rem; }
+.tl-title { font-weight: 560; }
+.tl-ver {
+  font-size: 0.82em;
+  margin-right: 0.5em;
+  padding: 0.05em 0.4em;
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 40%, transparent);
+  border-radius: 4px;
+}
+.tl-detail {
+  display: block;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  opacity: 0.7;
+  max-width: 56ch;
+}
+
+.tl-proof {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.tl-proof-proved {
+  color: var(--hub-hue);
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 45%, transparent);
+}
+.tl-proof-proved:hover { background: color-mix(in srgb, var(--hub-hue) 12%, transparent); }
+.tl-proof-recorded { opacity: 0.65; border: 1px dashed color-mix(in srgb, currentColor 30%, transparent); }
+.tl-proof-unprovable { opacity: 0.45; border: 1px dotted color-mix(in srgb, currentColor 25%, transparent); }
+
+.tl-gate-list { border-left-style: dashed; }
+.tl-gate-mark {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+}
+.tl-gate::before { background: transparent; border: 1.5px dashed color-mix(in srgb, var(--hub-hue) 55%, transparent); }
+.tl-conditions {
+  margin: 0.25rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.86rem;
+  opacity: 0.75;
+}
+.tl-conditions li { margin: 0.12rem 0; }
+
+@media (max-width: 640px) {
+  .tl-entry { grid-template-columns: 1fr; gap: 0.15rem; }
+  .tl-proof { justify-self: start; }
+}

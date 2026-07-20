@@ -10,6 +10,7 @@ import { Component as Changelog } from './pages/Changelog'
 import { Component as UseCasesPage } from './pages/UseCasesPage'
 import { Component as UseCaseRoom } from './pages/UseCaseRoom'
 import { Component as Spec } from './pages/Spec'
+import { Component as Timeline } from './pages/Timeline'
 import { Component as Install } from './pages/Install'
 import { Component as Convert } from './pages/Convert'
 import { Component as Brand } from './pages/Brand'
@@ -136,6 +137,7 @@ export const routes: RouteObject[] = [
          ATLAS_PATHS prerenders all 26 · the gallery keeps the browse) */
       { path: 'use-cases/:slug', Component: UseCaseRoom },
       { path: 'spec', Component: Spec },
+      { path: 'timeline', Component: Timeline },
       { path: 'install', Component: Install },
       { path: 'convert', Component: Convert },
       { path: 'brand', Component: Brand },

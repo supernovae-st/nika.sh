@@ -168,6 +168,15 @@ const CARDS = [
       '<span class="arrow">▸</span><span>dated<span class="sep">·</span>tagged<span class="sep">·</span><b>what&nbsp;you&nbsp;wrote&nbsp;still&nbsp;runs</b></span>',
   },
   {
+    route: '/timeline',
+    out: 'og-timeline.png',
+    fig: 'FIG T.0',
+    headline: 'The one<br><span class="b">verifiable record.</span>',
+    sub: 'Born January&nbsp;1, 2026 · 79 versions in 103 days · rewritten from scratch. Every dated claim re-proven in&nbsp;CI.',
+    detail:
+      '<span class="arrow">▸</span><span>eras<span class="sep">·</span>releases<span class="sep">·</span><b>gates,&nbsp;never&nbsp;dates</b></span>',
+  },
+  {
     // /providers — the provider register; local first, keys yours, no lock-in.
     out: 'og-providers.png',
     fig: 'FIG P.0',
