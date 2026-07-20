@@ -47,6 +47,86 @@ function Proof({ evidence }: { evidence: (typeof TIMELINE.eras)[number]['entries
   )
 }
 
+
+/* ── the strip · left→right, real time scale ────────────────────────
+   Day-linear positioning from a fixed origin: the exploration burst
+   (79 versions in 103 days) is VISIBLE as density, the rewrite is a
+   hard cut, the future sits past the now-line as dashed gates. All
+   math is deterministic at build time (now = the SSOT lastUpdated —
+   never the wall clock · SSG stays byte-stable). */
+
+const T0 = Date.parse('2025-07-01')
+const PX_PER_DAY = 3.4
+const GATE_W = 210
+const GATE_GAP = 26
+const dayX = (iso: string) => {
+  const d = Date.parse(iso.length === 7 ? `${iso}-15` : iso)
+  return Math.round(((d - T0) / 86_400_000) * PX_PER_DAY)
+}
+
+function Strip() {
+  const nowX = dayX(TIMELINE.lastUpdated)
+  const cut = dayX('2026-04-13')
+  const flat = TIMELINE.eras.flatMap((era) => era.entries.map((e) => ({ ...e, era: era.id })))
+  const trackW = nowX + 90 + TIMELINE.gates.length * (GATE_W + GATE_GAP) + 60
+  const eraBands = [
+    { id: 'conception', from: dayX('2025-08-01') - 40, to: dayX('2026-01-01'), label: 'conception' },
+    { id: 'exploration', from: dayX('2026-01-01'), to: cut, label: 'exploration · 0.1 → 0.79' },
+    { id: 'diamond', from: cut, to: nowX, label: 'diamond · rewritten from scratch' },
+  ]
+  return (
+    <section className="tl-strip-wrap" aria-label="The timeline as a left-to-right strip. The same entries are listed below.">
+      <div className="tl-strip" tabIndex={0} role="group" aria-label="Scrollable timeline strip — arrow keys scroll">
+        <div className="tl-track" style={{ width: trackW }}>
+          {eraBands.map((b) => (
+            <div key={b.id} className={`tl-band tl-band-${b.id}`} style={{ left: b.from, width: b.to - b.from }}>
+              <span className="tl-band-label">{b.label}</span>
+            </div>
+          ))}
+          <div className="tl-axis" style={{ width: nowX }} />
+          <div className="tl-cut" style={{ left: cut }} aria-hidden="true">
+            <span>the rewrite · orphan branch</span>
+          </div>
+          <div className="tl-now" style={{ left: nowX }}>
+            <span>today</span>
+          </div>
+          {flat.map((e, i) => (
+            <div
+              key={i}
+              className={`tl-node-wrap ${i % 2 ? 'tl-below' : 'tl-above'}`}
+              style={{ left: dayX(e.date) }}
+            >
+              <span className={`tl-node ${e.type === 'release' ? 'tl-node-release' : 'tl-node-milestone'}`} aria-hidden="true" />
+              <div className="tl-card" tabIndex={0}>
+                <span className="tl-card-date">{e.precision === 'month' ? e.date.slice(0, 7) : e.date}</span>
+                <span className="tl-card-title">
+                  {e.type === 'release' && e.version ? <code className="tl-ver">{e.version}</code> : null}
+                  {e.title}
+                </span>
+                {e.detail ? <span className="tl-card-detail">{e.detail}</span> : null}
+                <Proof evidence={e.evidence} />
+              </div>
+            </div>
+          ))}
+          {TIMELINE.gates.map((g, i) => (
+            <div key={g.id} className="tl-gate-card" style={{ left: nowX + 90 + i * (GATE_W + GATE_GAP), width: GATE_W }}>
+              <span className="tl-gate-tag">gate</span>
+              <span className="tl-card-title">{g.title}</span>
+              <ul className="tl-conditions">
+                {g.conditions.slice(0, 2).map((c, j) => (
+                  <li key={j}>{c}</li>
+                ))}
+                {g.conditions.length > 2 ? <li>…</li> : null}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+      <p className="tl-strip-hint" aria-hidden="true">drag · scroll · the full ledger is below</p>
+    </section>
+  )
+}
+
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const head = routeHead('/timeline')
@@ -89,6 +169,8 @@ export function Component() {
               </a>
             </p>
           </header>
+
+          <Strip />
 
           {TIMELINE.eras.map((era) => (
             <section className="hub-sec tl-era" id={era.id} key={era.id} aria-labelledby={`${era.id}-title`}>
