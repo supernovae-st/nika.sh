@@ -7,9 +7,9 @@
 
    Honesty notes · a cycle can't be layered: `cyclic` flips true and the
    waves fall back to file order (the linter's NIKA-DAG-001 carries the
-   message). Unknown depends_on targets don't edge (NIKA-DAG-002 speaks).
+   message). Unknown after:/ref targets don't edge (NIKA-DAG-002 speaks).
 
-   0.104 · the shipped W2 grammar: edges are DECLARED — depends_on carries
+   0.105 · the shipped map grammar: the binding IS the edge — tasks.X refs carry
    the whole precedence graph (the engine refuses an undeclared tasks.X
    edge — G_p = E_d ∪ E_c (the binding IS the edge · no invisible edges). */
 import { parse } from 'yaml'
@@ -21,7 +21,7 @@ export interface PlanTask {
   id: string
   /** the ONE verb, or null while the task is still being written */
   verb: PlanVerb | null
-  /** resolved producers — the declared depends_on list, file order */
+  /** resolved producers — after: keys + tasks.X refs, file order */
   deps: string[]
   /** 1-based line of the task's `- id:` head (0 = unknown · U5 sync) */
   line0: number
@@ -55,11 +55,31 @@ export interface ParsedPlan {
 const strs = (v: unknown): string[] =>
   Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []
 
-/** the declared producers (W2 · depends_on IS the precedence graph) */
+/** the producers (0.105 · the binding IS the edge) — value edges from every
+    `\${{ tasks.X … }}` ref in the task body + control edges from `after:`
+    keys (map · list · scalar predicate forms). depends_on died at 0.105. */
 function producersOf(t: Record<string, unknown>): string[] {
-  return Array.isArray(t.depends_on)
-    ? (t.depends_on as unknown[]).filter((d): d is string => typeof d === 'string')
-    : []
+  const out: string[] = []
+  const push = (d: string): void => {
+    if (d && !out.includes(d)) out.push(d)
+  }
+  const a = t.after
+  if (a && typeof a === 'object' && !Array.isArray(a)) {
+    for (const k of Object.keys(a as Record<string, unknown>)) push(k)
+  } else if (Array.isArray(a)) {
+    for (const d of a) if (typeof d === 'string') push(d)
+  }
+  const scan = (v: unknown): void => {
+    if (typeof v === 'string') {
+      for (const m of v.matchAll(/\btasks\.([a-z][a-z0-9_]*)\b/g)) push(m[1])
+    } else if (Array.isArray(v)) {
+      v.forEach(scan)
+    } else if (v && typeof v === 'object') {
+      Object.values(v as Record<string, unknown>).forEach(scan)
+    }
+  }
+  scan(t)
+  return out
 }
 
 function permitsOf(doc: Record<string, unknown>): PlanPermits | null {
@@ -105,20 +125,20 @@ export function parsePlan(src: string): ParsedPlan | null {
   }
   if (!doc || typeof doc !== 'object') return null
   const rawTasks = (doc as Record<string, unknown>).tasks
-  // 0.104 « the sequence »: tasks is a LIST · each item declares its id.
-  if (!Array.isArray(rawTasks)) return null
+  // 0.105 « the map »: tasks is a MAP keyed by id (the list form died at
+  // the release · PARSE-001). Entries normalize to the same [id, body] view.
+  if (!rawTasks || typeof rawTasks !== 'object' || Array.isArray(rawTasks)) return null
+  const taskEntries = Object.entries(rawTasks as Record<string, unknown>)
 
-  /* the line pins (U5 · editor↔DAG sync): a light scan for each `- id:`
-     head — the same tokenizer doctrine as the flagship derivation; a block
-     runs to the line before the next head (or the next top-level key) */
+  /* the line pins (U5 · editor↔DAG sync): a light scan for each task head
+     (`  name:` · bare or flow-bodied) — a block runs to the line before the
+     next head (or the next top-level key) */
   const srcLines = src.split('\n')
   const heads: { id: string; line: number }[] = []
   let inTasks = false
   srcLines.forEach((l, i) => {
     if (/^[A-Za-z0-9_-]+\s*:/.test(l)) inTasks = /^tasks\s*:/.test(l)
-    const m = inTasks
-      ? (/^ {2}- id:\s*([a-z][a-z0-9_]*)/.exec(l) ?? /^ {2}- \{ id:\s*([a-z][a-z0-9_]*)/.exec(l))
-      : null
+    const m = inTasks ? /^ {2}([a-z][a-z0-9_]*):/.exec(l) : null
     if (m) heads.push({ id: m[1], line: i + 1 })
   })
   const lineSpanOf = (id: string): [number, number] => {
@@ -131,11 +151,9 @@ export function parsePlan(src: string): ParsedPlan | null {
 
   const tasks: PlanTask[] = []
   const seen = new Set<string>()
-  for (const rt of rawTasks) {
-    if (!rt || typeof rt !== 'object') continue
+  for (const [id, rt] of taskEntries) {
+    if (!rt || typeof rt !== 'object' || seen.has(id)) continue
     const t = rt as Record<string, unknown>
-    const id = typeof t.id === 'string' ? t.id : ''
-    if (!id || seen.has(id)) continue
     seen.add(id)
     const verb = VERBS.find((v) => v in t) ?? null
     const [line0, line1] = lineSpanOf(id)

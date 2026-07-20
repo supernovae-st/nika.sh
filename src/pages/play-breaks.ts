@@ -44,11 +44,11 @@ export const PLAY_BREAKS: Record<string, PlayBreak> = {
     lesson: 'every ${{ vars.* }} reference must name a declared input · typos die at check, not at 3am',
   },
   fanout: {
-    label: 'Type after: like the old grammar',
+    label: 'Type a predicate the set refuses',
     find: '    fail_fast: false\n',
     replace: '    fail_fast: false\n    after: { discover: success }\n',
-    fires: 'NIKA-PARSE-024',
-    lesson: 'after: died in the 0.104 flip · depends_on declares every edge, when: gates the run',
+    fires: 'NIKA-DAG-005',
+    lesson: 'the predicate set is CLOSED · succeeded · failed · skipped · terminal · `success` is prose, not a state',
   },
   'etl-state': {
     label: 'Recover from a downstream task',

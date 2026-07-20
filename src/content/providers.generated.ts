@@ -36,7 +36,7 @@ export interface ProviderEntry {
   models: ProviderModelEntry[]
 }
 
-/** The spec-named providers, presentation-law order. Engine at generation: "0.104.0". */
+/** The spec-named providers, presentation-law order. Engine at generation: "0.105.0". */
 export const PROVIDERS: ProviderEntry[] = [
   {
     "id": "ollama",
@@ -644,12 +644,12 @@ export const PROVIDERS: ProviderEntry[] = [
     "id": "moonshot",
     "name": "Moonshot (Kimi)",
     "kind": "cloud",
-    "description": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27.",
+    "description": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider.",
     "env_var": "MOONSHOT_API_KEY",
     "requires_key": true,
     "api_dialect": "openai-chat",
-    "default_model": "kimi-k3",
-    "cheap_model": "kimi-k2.6",
+    "default_model": "kimi-k2",
+    "cheap_model": "kimi-k2",
     "aliases": [
       "kimi"
     ],
@@ -662,10 +662,10 @@ export const PROVIDERS: ProviderEntry[] = [
     ],
     "models": [
       {
-        "id": "k3",
-        "model": "kimi-k3",
-        "context_window_tokens": 1048576,
-        "max_output_tokens": 131072,
+        "id": "k2",
+        "model": "kimi-k2",
+        "context_window_tokens": 128000,
+        "max_output_tokens": 8192,
         "capabilities": {
           "reasoning": false,
           "vision": false,
@@ -673,21 +673,10 @@ export const PROVIDERS: ProviderEntry[] = [
         }
       },
       {
-        "id": "k2-7-code",
-        "model": "kimi-k2.7-code",
-        "context_window_tokens": 262144,
-        "max_output_tokens": 262144,
-        "capabilities": {
-          "reasoning": false,
-          "vision": false,
-          "json_mode": "schema"
-        }
-      },
-      {
-        "id": "k2-6",
-        "model": "kimi-k2.6",
-        "context_window_tokens": 262144,
-        "max_output_tokens": 262144,
+        "id": "k2-5",
+        "model": "kimi-k2.5",
+        "context_window_tokens": 256000,
+        "max_output_tokens": 8192,
         "capabilities": {
           "reasoning": false,
           "vision": false,

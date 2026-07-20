@@ -14,7 +14,7 @@ import { NOT_FOUND_YAML } from '../pages/NotFound'
 import { VERBS } from '../content'
 import { EXTENSION_SHOWCASE_YAML } from '../sections/EditorCanvas'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
-import { serveW2 } from '../lib/w1-to-w2'
+import { serveW105 } from '../lib/w1-to-w2'
 
 /* ── on-page YAML · every full workflow shown on the site is SCHEMA-TRUE ─────
    The repo rule is "Spec-correct YAML only" (AGENTS.md #1), yet until this
@@ -106,7 +106,7 @@ describe('on-page YAML · the living corpus is schema-true against the SHIPPED s
   it.each(VERBS.map((v) => [v.verb, v.code] as const))(
     '/spec verb card fragment %s seats in a valid file',
     (verb, code) => {
-      /* the cards show task ITEMS (`- id: …` · the W2 sequence) — the gate
+      /* the cards show task ENTRIES (`name:` · the released map) — the gate
          embeds each in a minimal envelope: proven AS IT WOULD BE WRITTEN */
       const indented = code
         .split('\n')
@@ -114,7 +114,7 @@ describe('on-page YAML · the living corpus is schema-true against the SHIPPED s
         .join('\n')
       expectValid(
         `spec verb card · ${verb}`,
-        `nika: v1\nworkflow: card-${verb}\ntasks:\n${indented}\n`,
+        `nika: v1\nworkflow:\n  id: card-${verb}\ntasks:\n${indented}\n`,
       )
     },
   )
@@ -123,11 +123,11 @@ describe('on-page YAML · the living corpus is schema-true against the SHIPPED s
      site SERVES is the door output (w1-to-w2) — the gate judges the served
      form, the same bytes the visitor copies. */
   it.each(Object.entries(SHOWCASE_YAML))('showcase %s (as served) validates', (slug, yaml) =>
-    expectValid(slug, serveW2(yaml)),
+    expectValid(slug, serveW105(yaml)),
   )
 
   it.each(Object.entries(TEMPLATES_YAML))('template %s (as served) validates', (slug, yaml) =>
-    expectValid(slug, serveW2(yaml)),
+    expectValid(slug, serveW105(yaml)),
   )
 })
 

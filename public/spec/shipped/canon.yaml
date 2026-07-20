@@ -47,13 +47,13 @@ schema_version: 1
 counts:
   verbs: 4
   namespaces: 5
-  builtins: 27
+  builtins: 28
   providers: 16
   extract_modes: 9
   templates: 10
-  error_namespaces: 14
+  error_namespaces: 21
   error_categories: 12
-  error_codes: 50
+  error_codes: 82
   pillars: 5
   # ---- extended v0.2 · 2026-05-27 · lifecycle + diamond + steal + severity
   lifecycle_product: 4
@@ -63,8 +63,26 @@ counts:
   steal_pattern_tiers: 4
   severity: 4
   # ---- extended 2026-07-06 · the MCP oracle surface
-  mcp_tools: 8
+  mcp_tools: 9
   mcp_protocol_versions: 5
+
+# ------------------------------------------- outcome transitions (spec 13 · W5)
+# THE normative (class × cause) table — machine-readable so the reference
+# evaluator (outcome_core.py) and the engine (vendored pack) consume ONE
+# source. Any pair outside this table is an engine bug, never a state.
+outcome_transitions:
+  trace_format: 2
+  classes: [success, failure, skipped, cancelled]
+  legal:
+    success: [normal, recovered]
+    failure: [verb_error, timeout, retry_exhausted]
+    skipped: [gate, error_skip]
+    cancelled: [upstream, operator, budget]
+  payload:
+    success: [value, attempts, "recovered_from?"]
+    failure: [error, attempts]
+    skipped: ["error?"]
+    cancelled: [reason]
 
 # ---------------------------------------------------------------- verbs
 # D-2026-05-22-N18 · "the count is 4, absolute · immutable forever".
@@ -100,7 +118,7 @@ namespaces:
 # Admission test · 3 razors · (1) NOT-expressible-in-jq+CEL+Schema · (2) canonical
 # interop format (RFC-6902/7396/9562 · etc.) · (3) cookbook-clarity.
 builtins:
-  count: 27
+  count: 28
   reference: stdlib/builtins-v0.1.md
   items:
     - assert
@@ -108,6 +126,7 @@ builtins:
     - compose
     - convert
     - date
+    - decide
     - done
     - edit
     - emit
@@ -203,24 +222,31 @@ templates:
 # ---------------------------------------------------------------- error namespaces
 # Post NIKA-FETCH fold into NIKA-BUILTIN (commit b14bf091c · 2026-05-27 ·
 # matching "fetch is a builtin, not a verb" D-N18 · prior count 15 → 14).
-# spec/05-errors.md is the prose home (matches at 14 · cascade complete 2026-05-27).
+# spec/05-errors.md is the prose home (matches at 15 · NIKA-TYPE joined at W3 · cascade complete 2026-07-14).
 error_namespaces:
-  count: 14
+  count: 21
   reference: spec/05-errors.md
   items:
     - NIKA-AGENT
+    - NIKA-ASSERT
     - NIKA-BUILTIN
     - NIKA-CANCEL
+    - NIKA-COMP
     - NIKA-DAG
     - NIKA-EXEC
     - NIKA-IMPL
     - NIKA-INFER
     - NIKA-INVOKE
+    - NIKA-LOCK
     - NIKA-MCP
+    - NIKA-DECIDE
     - NIKA-PARSE
+    - NIKA-POLICY
+    - NIKA-PORT
     - NIKA-PROVIDER
     - NIKA-SEC
     - NIKA-TIMEOUT
+    - NIKA-TYPE
     - NIKA-VAR
 
 # ---------------------------------------------------- error categories (v1 closed enum)
@@ -249,7 +275,7 @@ error_categories:
 # check binds the prose table to it (same row set · same fields).
 # transient · false | engine-assessed
 error_codes:
-  count: 53
+  count: 82
   reference: spec/05-errors.md
   items:
     - { code: NIKA-PARSE-001, category: parse_error, transient: "false", failure: "the YAML itself does not parse (syntax error)" }
@@ -273,10 +299,33 @@ error_codes:
     - { code: NIKA-PARSE-017, category: validation_error, transient: "false", failure: "duplicate mapping key — no silent last-wins" }
     - { code: NIKA-PARSE-018, category: validation_error, transient: "false", failure: "missing required field in a verb body (infer.prompt · exec.command · invoke.tool)" }
     - { code: NIKA-PARSE-019, category: validation_error, transient: "false", failure: "generic structural validation — wrong YAML shape for a field" }
-    - { code: NIKA-DAG-001, category: validation_error, transient: "false", failure: "cycle in depends_on (incl. self-dependency)" }
-    - { code: NIKA-DAG-002, category: validation_error, transient: "false", failure: "depends_on references an undeclared task" }
-    - { code: NIKA-DAG-003, category: validation_error, transient: "false", failure: "a tasks.X reference with no declared edge" }
+    - { code: NIKA-PARSE-020, category: validation_error, transient: "false", failure: "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)" }
+    - { code: NIKA-PARSE-021, category: validation_error, transient: "false", failure: "top-level description: — it moved into workflow.description" }
+    - { code: NIKA-PARSE-022, category: validation_error, transient: "false", failure: "tasks: is a sequence — it became a map keyed by task id (drop `- id:`, the key IS the identity)" }
+    - { code: NIKA-PARSE-023, category: validation_error, transient: "false", failure: "a task carries an id: field — the map key is the identity, the field is gone" }
+    - { code: NIKA-PARSE-024, category: validation_error, transient: "false", failure: "a task carries depends_on: — dead since W2 (data → with: bindings · control → after: predicates · check --fix migrates)" }
+    - { code: NIKA-PARSE-025, category: validation_error, transient: "false", failure: "decode: with capture: structured — that capture already IS an object · type it with returns:" }
+    - { code: NIKA-COMP-001, category: validation_error, transient: "false", failure: "invoke.workflow: target is not statically resolvable (templated · malformed · unpinned registry ref) — a call graph you cannot draw before the run cannot be bounded (spec 14)" }
+    - { code: NIKA-COMP-002, category: security_error, transient: "false", failure: "the child workflow's effect boundary exceeds the parent capped by the call-site declaration (Authority(child) subset of Authority(parent) intersect declared · spec 14 laws 3/4)" }
+    - { code: NIKA-COMP-003, category: validation_error, transient: "false", failure: "the static call graph is not acyclic (self-launch · cycle · spec 14 law 7 · NIKA-SEC-003 is the runtime depth backstop)" }
+    - { code: NIKA-COMP-004, category: validation_error, transient: "false", failure: "the typed call does not compose — parent args do not fit child inputs, or child outputs do not fit parent returns (spec 14 law 2)" }
+    - { code: NIKA-DAG-001, category: validation_error, transient: "false", failure: "cycle in the precedence graph G_p = E_d ∪ E_c (incl. self-dependency · via with:/after:)" }
+    - { code: NIKA-DAG-002, category: validation_error, transient: "false", failure: "with:/after: references an undeclared task" }
+    # NIKA-DAG-003 · RETIRED (never reuse) — « a tasks.X reference with no
+    # declared edge » became INEXPRESSIBLE in W2: the with: binding IS the
+    # edge (derived, never restated) and a reference outside the boundary is
+    # NIKA-VAR-021. The allocation hole is deliberate.
     - { code: NIKA-DAG-004, category: validation_error, transient: "false", failure: "on_error.recover references a task downstream of the declaring task (await would deadlock)" }
+    - { code: NIKA-DAG-005, category: validation_error, transient: "false", failure: "after: predicate outside the closed set (succeeded · failed · skipped · terminal)" }
+    - { code: NIKA-DAG-006, category: validation_error, transient: "false", failure: "statically dead task — an incoming edge's pass-set excludes every reachable producer state, or the when: gate is false under every reachable upstream combination (gate algebra v2)" }
+    - { code: NIKA-DAG-007, category: validation_error, transient: "false", failure: "status compared against a literal outside the vocabulary (success · failure · skipped · cancelled) — == never matches, != always holds" }
+    - { code: NIKA-TYPE-001, category: validation_error, transient: "false", failure: "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close" }
+    - { code: NIKA-TYPE-002, category: validation_error, transient: "false", failure: "recursive type reference — the types: graph must be acyclic" }
+    - { code: NIKA-TYPE-003, category: validation_error, transient: "false", failure: "returns: and schema: on the same task — one contract, one spelling" }
+    - { code: NIKA-TYPE-004, category: validation_error, transient: "false", failure: "returns: type unreachable from the declared decode: (an object contract over decode: text · …)" }
+    - { code: NIKA-TYPE-005, category: security_error, transient: "false", failure: "a secret-carrying type in a lowered position (reserved with secret<T> · W4)" }
+    - { code: NIKA-TYPE-006, category: validation_error, transient: "false", failure: "regex pattern outside the locked dialect (backreference · lookaround · named group · inline flags · lazy/possessive · word-boundary · unicode-class — spec 09 §the regex dialect)" }
+    - { code: NIKA-TYPE-101, category: validation_error, transient: "false", failure: "run-time contract violation — the decoded value does not fit returns: (exec:/invoke: lane)" }
     - { code: NIKA-VAR-001, category: variable_error, transient: "false", failure: "unresolved reference (unknown namespace entry · undeclared env/vars key)" }
     - { code: NIKA-VAR-002, category: variable_error, transient: "false", failure: "binding cardinality — a jq binding emitted zero or multiple values" }
     - { code: NIKA-VAR-003, category: validation_error, transient: "false", failure: "provably-invalid path into a declared schema (static walk)" }
@@ -286,6 +335,7 @@ error_codes:
     - { code: NIKA-VAR-007, category: variable_error, transient: "false", failure: "bytes value substituted into a string position" }
     - { code: NIKA-VAR-008, category: validation_error, transient: "false", failure: "unclosed ${{ opener" }
     - { code: NIKA-VAR-020, category: validation_error, transient: "false", failure: "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)" }
+    - { code: NIKA-VAR-021, category: validation_error, transient: "false", failure: "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)" }
     - { code: NIKA-VAR-009, category: validation_error, transient: "false", failure: "typed outputs value did not match its declared type: at run end (the output half of the callable contract)" }
     - { code: NIKA-INFER-001, category: provider_error, transient: "engine-assessed", failure: "provider call failed (HTTP error · provider refusal)" }
     - { code: NIKA-INFER-002, category: validation_error, transient: "false", failure: "structured output failed schema validation (after any engine-internal retries)" }
@@ -299,13 +349,22 @@ error_codes:
     - { code: NIKA-AGENT-004, category: validation_error, transient: "false", failure: "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)" }
     - { code: NIKA-MCP-001, category: tool_error, transient: "engine-assessed", failure: "MCP server not configured / not reachable at call time" }
     - { code: NIKA-MCP-002, category: tool_error, transient: "engine-assessed", failure: "MCP tool call failed (transport · tool-side error)" }
+    - { code: NIKA-DECIDE-001, category: validation_error, transient: "false", failure: "the decision bundle is malformed or violates its own laws (float weight · undeclared evidence key in rules · identity key feeding a technical dimension · missing contradictory fixture · monotonicity violated by the bundle's own fixtures) (spec 11)" }
+    - { code: NIKA-DECIDE-002, category: validation_error, transient: "false", failure: "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)" }
+    - { code: NIKA-POLICY-001, category: security_error, transient: "false", failure: "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)" }
+    - { code: NIKA-PORT-001, category: validation_error, transient: "false", failure: "a gateway artifact (deployment bundle · capabilities report · lowering report · fidelity report · authority delta) is malformed or violates its laws (unknown promoted · permissive_unsafe without refusal · disclosure subset-chain violated · child authority exceeding parent) (spec 12)" }
+    - { code: NIKA-PORT-002, category: security_error, transient: "false", failure: "policy lowering is permissive_unsafe — the backend would allow what the policy forbids · refused with the divergence witness (spec 12)" }
     - { code: NIKA-SEC-001, category: security_error, transient: "false", failure: "exec: blocklist hit" }
     - { code: NIKA-SEC-002, category: security_error, transient: "false", failure: "agent tool call outside the tools: whitelist" }
     - { code: NIKA-SEC-003, category: security_error, transient: "false", failure: "run-recursion bound — nested-run depth exceeded OR self-launching workflow" }
     - { code: NIKA-SEC-004, category: security_error, transient: "false", failure: "effect outside the declared permits: capability boundary (fs/net/exec/tool)" }
     - { code: NIKA-SEC-005, category: security_error, transient: "false", failure: "SSRF block — a nika:fetch/nika:notify URL resolves to a loopback/private/link-local/metadata target (always-on engine floor · independent of permits:)" }
+    - { code: NIKA-SEC-006, category: security_error, transient: "false", failure: "secret flow — a secrets.<name> value reaches an unsanctioned sink (exec argument · invoke payload · infer/agent prompt) · the diagnostic carries the taint path + the egress clause that would sanction it (spec 10 · flow rules in 01 §egress)" }
+    - { code: NIKA-SEC-007, category: security_error, transient: "false", failure: "secret egress — a tainted value reaches the workflow boundary (outputs:) · the diagnostic carries the taint path (spec 10 · the to: outputs sanction in 01 §egress)" }
     - { code: NIKA-TIMEOUT-001, category: timeout_error, transient: "false", failure: "task (or for_each iteration) exceeded timeout:" }
     - { code: NIKA-CANCEL-001, category: cancelled, transient: "false", failure: "task cancelled (workflow failure gate · user cancellation)" }
+    - { code: NIKA-ASSERT-001, category: validation_error, transient: "false", failure: "an assert: claims a level the evidence does not support (a StaticProof the IR cannot decide · a mis-leveled obligation · spec 15)" }
+    - { code: NIKA-LOCK-001, category: validation_error, transient: "false", failure: "a dependency resolved that nika.lock does not pin, or a hand-edited lock digest does not match (pin-by-default · the lock's own hash catches the edit · spec 15)" }
     - { code: NIKA-BUILTIN-001, category: validation_error, transient: "false", failure: "builtin invoke violates its statically-checkable arg contract (e.g. nika:fetch without url: · nika:jq arg shape)" }
     - { code: NIKA-BUILTIN-DONE-001, category: validation_error, transient: "false", failure: "nika:done invoked outside an agent: loop" }
 
@@ -322,7 +381,7 @@ pillars:
     - { order: 2, name: verbs,     semantic: "the 4 native execution models" }
     - { order: 3, name: dag,       semantic: "task composition + control flow (for_each · when)" }
     - { order: 4, name: variables, semantic: "scope-bound state threading + binding (CEL + jq)" }
-    - { order: 5, name: errors,    semantic: "the 14 error namespaces + handling contract" }
+    - { order: 5, name: errors,    semantic: "the 15 error namespaces + handling contract" }
 
 # ---------------------------------------------------------------- lifecycle enums
 # 4-state lifecycle taxonomies · studio-extended dimensions · public
@@ -380,7 +439,7 @@ severity:
 # surfaces while the engine served eight).
 mcp:
   tools:
-    count: 8
+    count: 9
     reference: crates/nika-mcp/src/tools.rs
     items:
       - nika_check
@@ -391,6 +450,7 @@ mcp:
       - nika_canon
       - nika_catalog
       - nika_tools
+      - nika_inspect
   protocol_versions:
     count: 5
     latest: "2026-07-28"
@@ -437,8 +497,11 @@ canonical_phrasing:
     match: "pins the contract version"
     home: spec/01-envelope.md
   edges_never_inferred:
-    # home text · "(a verb-body reference is an edge too · no invisible edges)"
-    phrase: "the engine rejects the workflow at parse time · it does not silently infer the edge · no invisible edges"
+    # home text · "the binding IS the edge · no invisible edges" (W2 · the
+    # law inverted its mechanism, not its meaning: pre-W2 the edge had to be
+    # restated in depends_on · since W2 the with:/after: declaration IS the
+    # edge — either way, no edge exists that the source does not show)
+    phrase: "the binding IS the edge — data and its dependency are one declaration · no invisible edges"
     match: "no invisible edges"
     home: spec/03-dag.md
   cel_not_a_dsl:

@@ -19,7 +19,7 @@
    against the spec projector's independent SHOWCASE_DAG derivation. */
 
 import { FLAGSHIP_ENTRIES, type FlagshipEntry } from './index'
-import { serveW2 } from '../lib/w1-to-w2'
+import { serveW105 } from '../lib/w1-to-w2'
 import { deriveWorkflow, type FlagshipPlanModel, type NikaVerb } from './derive'
 
 export interface LibraryItem {
@@ -114,7 +114,7 @@ export function buildLibrary(showcaseYaml: Record<string, string>): LibraryItem[
      (Home's island) — normalize here so the whole model speaks the served
      grammar. See src/lib/w1-to-w2.ts. */
   const served = Object.fromEntries(
-    Object.entries(showcaseYaml).map(([k, y]) => [k, serveW2(y)]),
+    Object.entries(showcaseYaml).map(([k, y]) => [k, serveW105(y)]),
   )
   return [
     ...FLAGSHIP_ENTRIES.map((f) => ({

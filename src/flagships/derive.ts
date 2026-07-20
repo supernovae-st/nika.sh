@@ -65,22 +65,33 @@ function indentOf(line: string): number {
   return m ? m[1].length : 0
 }
 
-/* the ONE door, line-scanned (0.104 · the shipped W2 grammar): precedence is
-   DECLARATIVE — `depends_on: [a, b]` carries every edge, in file order
-   (`nika check` refuses an undeclared tasks.X reference · NIKA-DAG-003), so
-   the derivation reads the declaration and nothing else. tasks.* reads in
+/* the ONE door, line-scanned (0.105 · the shipped map grammar): the binding
+   IS the edge — every `\${{ tasks.X … }}` ref is a value edge and every
+   `after:` entry (map child · inline flow · list) is a control edge
+   (`nika check` refuses an undeclared tasks.X reference · NIKA-DAG-003).
    on_error.recover / on_finally are settled-record reads, NOT precedence. */
 function depsOf(body: string[]): string[] {
-  for (const line of body) {
-    const m = line.match(/\bdepends_on:\s*\[([^\]]*)\]/)
-    if (m) {
-      return m[1]
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean)
-    }
+  const out: string[] = []
+  const push = (d: string): void => {
+    const clean = d.trim().replace(/^["']|["']$/g, '')
+    if (clean && !out.includes(clean)) out.push(clean)
   }
-  return []
+  let inAfter = false
+  for (const line of body) {
+    const flow = line.match(/\bafter:\s*\{([^}]*)\}/)
+    if (flow) {
+      for (const pair of flow[1].split(',')) push(pair.split(':')[0])
+      inAfter = false
+    } else if (/^\s+after:\s*(#.*)?$/.test(line)) {
+      inAfter = true
+    } else if (inAfter) {
+      const child = line.match(/^\s+([A-Za-z0-9_-]+):\s*[a-z]+\s*(#.*)?$/)
+      if (child) push(child[1])
+      else if (line.trim() && !line.trim().startsWith('#')) inAfter = false
+    }
+    for (const m of line.matchAll(/\btasks\.([a-z][a-z0-9_]*)\b/g)) push(m[1])
+  }
+  return out
 }
 
 /** extract the human target chip for a task block, per verb */
@@ -176,11 +187,11 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
     }
 
     if (section === 'tasks') {
-      /* W2 « the sequence »: a task opens at its `- id:` item — block form
-         (`- id: x` · body follows as siblings) or whole-task flow form
-         (`- { id: x, … }` · one line is the whole block) */
-      const head = line.match(/^ {2}- id: ([a-z][a-z0-9_]*)\s*(?:#.*)?$/)
-      const flow = line.match(/^ {2}- \{ id: ([a-z][a-z0-9_]*),.*\}\s*(?:#.*)?$/)
+      /* 0.105 « the map »: a task opens at its `  name:` key — bare (body
+         follows as children) or flow-bodied (`  name: { … }` · one line is
+         the whole block) */
+      const head = line.match(/^ {2}([a-z][a-z0-9_]*):\s*(?:#.*)?$/)
+      const flow = line.match(/^ {2}([a-z][a-z0-9_]*): \{.*\}\s*(?:#.*)?$/)
       if (head || flow) {
         closeTask(n - 1)
         current = { id: (head ?? flow)![1], line0: n, line1: n, body: [line] }

@@ -2,10 +2,10 @@
   "language_graph": 1,
   "spec_pin": null,
   "canon_schema_version": 1,
-  "engine_version": "v0.104.0",
+  "engine_version": "v0.105.0",
   "catalogs": {
-    "tools": "0.104.0",
-    "providers": "0.104.0"
+    "tools": "0.105.0",
+    "providers": "0.105.0"
   },
   "nodes": [
     {
@@ -2732,7 +2732,7 @@
       "anchor": "moonshot",
       "own_page": true,
       "status": "both",
-      "opener": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27.",
+      "opener": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider.",
       "meta": {
         "kind": "cloud",
         "dialect": "openai-chat"
@@ -3790,8 +3790,8 @@
       "layer": "reach",
       "title": "nika:decide",
       "url": "/tools/decide",
-      "status": "ratified",
-      "opener": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt.",
+      "status": "both",
+      "opener": "Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here.",
       "meta": {
         "family": "data"
       }

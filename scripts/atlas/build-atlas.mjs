@@ -26,7 +26,7 @@ import { writeFileSync, mkdirSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readSources } from './lib/read-sources.mjs'
-import { w1ToW2WithMap } from '../lib/w1-to-w2.mjs'
+import { serveW105WithMap } from '../lib/w1-to-w2.mjs'
 import { layoutConstellation } from './lib/radial-layout.mjs'
 import { renderConstellation } from './lib/render-constellation.mjs'
 
@@ -1564,7 +1564,7 @@ const showcaseYamlOf = (slug) => {
 }
 const dagW2 = Object.fromEntries(
   Object.entries(S.dag).map(([slug, dag]) => {
-    const { mapLine } = w1ToW2WithMap(showcaseYamlOf(slug))
+    const { mapLine } = serveW105WithMap(showcaseYamlOf(slug))
     const tasks = dag.tasks.map((t) => ({
       ...t,
       line0: mapLine(t.line0 + 1) - 1,
