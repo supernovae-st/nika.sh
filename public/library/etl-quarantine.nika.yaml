@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
 nika: v1
-workflow: etl-quarantine
+workflow:
+  id: etl-quarantine
 # zero model · a schema gate splits the batch
 
 # the file IS the blast radius
@@ -11,14 +12,13 @@ permits:
 
 tasks:
   # the deterministic fallback if parsing dies
-  - id: empty_batch
+  empty_batch:
     invoke: { tool: "nika:jq", args: { input: [], expression: "." } }
 
-  - id: raw
+  raw:
     invoke: { tool: "nika:read", args: { path: ./data/incoming/orders.csv } }
 
-  - id: rows
-    depends_on: [raw, empty_batch]
+  rows:
     with:
       raw: ${{ tasks.raw.output }}
     invoke:
@@ -28,8 +28,7 @@ tasks:
     on_error:
       recover: ${{ tasks.empty_batch.output }}
 
-  - id: check
-    depends_on: [rows]
+  check:
     with:
       rows: ${{ tasks.rows.output }}
     invoke:
@@ -47,8 +46,7 @@ tasks:
               amount: { type: string }
               currency: { type: string, enum: [ EUR, USD, GBP ] }
 
-  - id: good
-    depends_on: [rows, check]
+  good:
     with:
       rows: ${{ tasks.rows.output }}
       valid: ${{ tasks.check.output.valid }}
@@ -59,8 +57,7 @@ tasks:
         input: "${{ with.rows }}"
         expression: 'group_by(.currency) | map({currency: .[0].currency, orders: length, total: (map(.amount | tonumber) | add)})'
 
-  - id: quarantine
-    depends_on: [check]
+  quarantine:
     with:
       valid: ${{ tasks.check.output.valid }}
       errors: ${{ tasks.check.output.errors }}
@@ -72,8 +69,7 @@ tasks:
         content: "${{ with.errors }}"
         create_dirs: true
 
-  - id: report
-    depends_on: [good]
+  report:
     with:
       totals: ${{ tasks.good.output }}   # value edge · passes when good is skipped (reads null)
     when: ${{ with.totals != null && size(with.totals) > 0 }}

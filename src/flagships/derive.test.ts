@@ -12,24 +12,39 @@ import { deriveWorkflow, type NikaVerb } from './derive'
 const VERBS: readonly NikaVerb[] = ['infer', 'exec', 'invoke', 'agent']
 
 interface YamlTask {
-  id: string
-  depends_on?: string[]
+  after?: Record<string, string> | string[]
   when?: string
   [k: string]: unknown
 }
 
-/* ground-truth producers (0.104 · the shipped W2 grammar): precedence is the
-   DECLARED depends_on list, in file order — `nika check` refuses undeclared
-   tasks.X references (NIKA-DAG-003), so the declaration IS the topology. */
-const producersOf = (t: YamlTask): string[] => t.depends_on ?? []
+/* ground-truth producers (0.105 · the shipped map grammar): the binding IS
+   the edge — after: keys carry the control edges and every `tasks.X` ref in
+   the body is a value edge (`nika check` refuses an undeclared read ·
+   NIKA-DAG-003), so declaration + reads ARE the topology. */
+const producersOf = (t: YamlTask): string[] => {
+  const out: string[] = []
+  const push = (d: string): void => {
+    if (!out.includes(d)) out.push(d)
+  }
+  if (Array.isArray(t.after)) t.after.forEach((d) => typeof d === 'string' && push(d))
+  else for (const k of Object.keys(t.after ?? {})) push(k)
+  const scan = (v: unknown): void => {
+    if (typeof v === 'string')
+      for (const m of v.matchAll(/\btasks\.([a-z][a-z0-9_]*)\b/g)) push(m[1])
+    else if (Array.isArray(v)) v.forEach(scan)
+    else if (v && typeof v === 'object') Object.values(v).forEach(scan)
+  }
+  scan(t)
+  return out
+}
 interface YamlDoc {
-  /** W2 envelope: the scalar IS the id */
-  workflow: string
+  /** 0.105 envelope: the map carries the id */
+  workflow: { id: string; description?: string }
   /** absent on a zero-model flagship (price-watch runs no inference) */
   model?: string
   permits: Record<string, unknown>
-  /** W2 « the sequence »: id is a field of each item */
-  tasks: YamlTask[]
+  /** 0.105 « the map »: tasks keyed by id */
+  tasks: Record<string, YamlTask>
   outputs?: Record<string, string>
 }
 
@@ -37,7 +52,7 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
   'derive · %s',
   (_filename, yaml) => {
     const truth = parse(yaml) as YamlDoc
-    const truthTasks = truth.tasks.map((t) => [t.id, t] as const)
+    const truthTasks = Object.entries(truth.tasks)
     const plan = deriveWorkflow(yaml)
 
     it('derives the exact task id set, in file order', () => {
@@ -94,13 +109,13 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
     it('pins task line anchors to the real file lines', () => {
       const lines = yaml.split('\n')
       for (const t of plan.tasks) {
-        expect(lines[t.line0 - 1]).toMatch(new RegExp(`^ {2}- (id: ${t.id}|\\{ id: ${t.id},)`))
+        expect(lines[t.line0 - 1]).toMatch(new RegExp(`^ {2}${t.id}:`))
         expect(t.line1).toBeGreaterThanOrEqual(t.line0)
       }
     })
 
     it('derives workflow name, model and outputs', () => {
-      expect(plan.workflow).toBe(truth.workflow)
+      expect(plan.workflow).toBe(truth.workflow.id)
       // a zero-model flagship (price-watch) declares NO model: derive yields ''
       expect(plan.model).toBe(truth.model ?? '')
       expect(plan.outputs).toEqual(Object.keys(truth.outputs ?? {}))

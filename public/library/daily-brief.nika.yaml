@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
 nika: v1
-workflow: daily-brief
+workflow:
+  id: daily-brief
 # local model · your notes never leave
 model: ollama/llama3.2:3b
 
@@ -11,23 +12,20 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - { id: notes, invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
-  - { id: inbox, invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
-  - { id: calendar, invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
+  notes: { invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
+  inbox: { invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
+  calendar: { invoke: { tool: "nika:read", args: { path: ./notes/calendar.md } } }
 
-  - id: triage
-    depends_on: [inbox]
+  triage:
     with:
       inbox: ${{ tasks.inbox.output }}
     infer: { prompt: "Flag what is urgent: ${{ with.inbox }}", max_tokens: 300 }
-  - id: agenda
-    depends_on: [calendar]
+  agenda:
     with:
       calendar: ${{ tasks.calendar.output }}
     infer: { prompt: "Plan the day around: ${{ with.calendar }}", max_tokens: 300 }
 
-  - id: draft
-    depends_on: [notes, triage, agenda]
+  draft:
     with:
       notes: ${{ tasks.notes.output }}
       triage: ${{ tasks.triage.output }}
@@ -36,8 +34,7 @@ tasks:
       prompt: "Write the morning brief. Notes: ${{ with.notes }} Urgent: ${{ with.triage }} Plan: ${{ with.agenda }}"
       max_tokens: 500
 
-  - id: save
-    depends_on: [draft]
+  save:
     with:
       draft: ${{ tasks.draft.output }}
     invoke:

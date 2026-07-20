@@ -639,7 +639,7 @@
     {
       "selector": "src/content/learn.ts#count:2",
       "path": "src/content/learn.ts",
-      "line": 124,
+      "line": 125,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -735,7 +735,7 @@
     {
       "selector": "src/flagships/flagship-data.ts#count:1",
       "path": "src/flagships/flagship-data.ts",
-      "line": 230,
+      "line": 224,
       "text": "two builtins",
       "source": "two",
       "field": "builtins",
@@ -759,7 +759,7 @@
     {
       "selector": "src/lib/nika-lint.ts#count:1",
       "path": "src/lib/nika-lint.ts",
-      "line": 207,
+      "line": 214,
       "text": "one verb",
       "source": "one",
       "field": "verbs",

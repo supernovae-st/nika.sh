@@ -32,7 +32,7 @@ export interface ToolEntry {
   ratified_only?: boolean
 }
 
-/** Every builtin, sorted by bare name. Engine version at generation: "0.104.0". */
+/** Every builtin, sorted by bare name. Engine version at generation: "0.105.0". */
 export const TOOLS: ToolEntry[] = [
   {
     "name": "nika:assert",
@@ -209,21 +209,20 @@ export const TOOLS: ToolEntry[] = [
     "name": "nika:decide",
     "bare": "decide",
     "category": "data",
-    "description": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt.",
+    "description": "Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here.",
     "args": [
       {
         "name": "bundle",
         "required": true,
-        "desc": "bundle path or inline Decision Bundle object"
+        "desc": "the Decision Bundle · a ./path.bundle.json string (a permits.fs read) or the inline bundle object"
       },
       {
         "name": "evidence",
         "required": true,
         "type": "object",
-        "desc": "EvidenceSnapshot with time and cited evidence items"
+        "desc": "the EvidenceSnapshot { t, evidence: [{key, value, source, integrity, digest, ...}] }"
       }
-    ],
-    "ratified_only": true
+    ]
   },
   {
     "name": "nika:done",

@@ -901,7 +901,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "tool",
     "label": "nika:decide",
     "href": "/tools/decide",
-    "hint": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt."
+    "hint": "Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here."
   },
   {
     "kind": "tool",
@@ -1189,7 +1189,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "provider",
     "label": "provider: moonshot",
     "href": "/providers#moonshot",
-    "hint": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27."
+    "hint": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider."
   },
   {
     "kind": "provider",

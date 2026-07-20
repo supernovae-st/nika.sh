@@ -16,10 +16,10 @@ export const ATLAS_PROVENANCE: {
   "language_graph": 1,
   "spec_pin": null,
   "canon_schema_version": 1,
-  "engine_version": "v0.104.0",
+  "engine_version": "v0.105.0",
   "catalogs": {
-    "tools": "0.104.0",
-    "providers": "0.104.0"
+    "tools": "0.105.0",
+    "providers": "0.105.0"
   }
 }
 
@@ -194,9 +194,7 @@ export const ATLAS_SCORE = {
 export const ATLAS_CLOCK_DIFF: Record<'builtins' | 'providers' | 'grammar', { ratified_only: string[]; shipped_only: string[] }> =
   {
   "builtins": {
-    "ratified_only": [
-      "decide"
-    ],
+    "ratified_only": [],
     "shipped_only": []
   },
   "providers": {

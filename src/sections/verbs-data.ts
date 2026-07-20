@@ -29,13 +29,13 @@ export const CHAPTERS: Chapter[] = [
     gloss: 'Ask any model · local or cloud.',
     filename: 'think.nika.yaml',
     yaml: `nika: v1
-workflow: think
+workflow:
+  id: think
 model: ollama/llama3.2:3b
 tasks:
-  - id: summarize
+  summarize:
     infer:
-      prompt: "Three risks in this release, ranked"
-`,
+      prompt: "Three risks in this release, ranked"`,
     sub: [
       { n: '5.1.1', label: 'providers', to: '/spec#s4' },
       { n: '5.1.2', label: 'structured output', to: '/spec#s1' },
@@ -49,12 +49,12 @@ tasks:
     gloss: 'A shell command, captured and typed.',
     filename: 'run.nika.yaml',
     yaml: `nika: v1
-workflow: run
+workflow:
+  id: run
 tasks:
-  - id: build
+  build:
     exec:
-      command: ["cargo", "build", "--release"]
-`,
+      command: ["cargo", "build", "--release"]`,
     sub: [
       { n: '5.2.1', label: 'capture & exit codes' },
       { n: '5.2.2', label: 'retry · timeout', to: '/spec#s2' },
@@ -68,13 +68,13 @@ tasks:
     gloss: 'Fetch a page, write a file, call GitHub. Every tool explicit.',
     filename: 'use-a-tool.nika.yaml',
     yaml: `nika: v1
-workflow: use-a-tool
+workflow:
+  id: use-a-tool
 tasks:
-  - id: page
+  page:
     invoke:
       tool: "nika:fetch"
-      args: { url: "https://nika.sh" }
-`,
+      args: { url: "https://nika.sh" }`,
     sub: [
       { n: '5.3.1', label: 'builtins', to: '/spec#s3' },
       { n: '5.3.2', label: 'extract modes', to: '/spec#s5' },
@@ -88,14 +88,14 @@ tasks:
     gloss: 'An autonomous loop, on a leash you can read.',
     filename: 'delegate.nika.yaml',
     yaml: `nika: v1
-workflow: delegate
+workflow:
+  id: delegate
 model: ollama/llama3.2:3b
 tasks:
-  - id: audit
+  audit:
     agent:
       prompt: "Find every dead link in ./docs"
-      tools: [ "nika:read", "nika:fetch" ]
-`,
+      tools: [ "nika:read", "nika:fetch" ]`,
     sub: [
       { n: '5.4.1', label: 'tool allow-list', to: '/spec#permits' },
       { n: '5.4.2', label: 'max turns' },

@@ -238,3 +238,49 @@ export function downcastValues(src: string): string {
 export function serveW2(src: string): string {
   return downcastValues(w1ToW2(src))
 }
+
+/* ── the predicate axis · wnew -> released set ───────────────────────────────
+   The ratified predicate names (success · failure) reached the spec at P-C
+   (#118) but the RELEASED binary still speaks the closed set (succeeded ·
+   failed · skipped · terminal · DAG-005). Folds ONLY inside task-level
+   `after:` blocks (map children · inline flow) — never in prose or prompts. */
+const AFTER_PRED: Record<string, string> = { success: 'succeeded', failure: 'failed' }
+
+export function foldPredicates(src: string): string {
+  const lines = src.split('\n')
+  const out: string[] = []
+  let inAfter = false
+  for (const line of lines) {
+    const inline = /^(\s{4}after:\s*\{)([^}]*)(\}.*)$/.exec(line)
+    if (inline) {
+      const body = inline[2].replace(/\b(success|failure)\b/g, (w) => AFTER_PRED[w])
+      out.push(inline[1] + body + inline[3])
+      inAfter = false
+      continue
+    }
+    if (/^\s{4}after:\s*(#.*)?$/.test(line)) { inAfter = true; out.push(line); continue }
+    if (inAfter) {
+      const child = /^(\s{6}[A-Za-z0-9_-]+:\s*)([a-z]+)(\s*(#.*)?)$/.exec(line)
+      if (child && AFTER_PRED[child[2]]) { out.push(child[1] + AFTER_PRED[child[2]] + child[3]); continue }
+      if (!child && line.trim() !== '' && !line.trimStart().startsWith('#')) inAfter = false
+    }
+    out.push(line)
+  }
+  return out.join('\n')
+}
+
+/** The w105 door · what the site serves a RELEASED 0.105 binary · the
+    envelope/map/after already speak — only the value axis + the predicate
+    names fold. Identity on a W105-native document. */
+export function serveW105(src: string): string {
+  return foldPredicates(downcastValues(src))
+}
+
+/** w105 door with a line map. The value fold only removes/merges lines ABOVE
+    `tasks:` (inputs/const are top-level headers) and the predicate fold is
+    1:1 — so every task line shifts by one constant delta. */
+export function serveW105WithMap(src: string): W2Result {
+  const text = serveW105(src)
+  const delta = src.split('\n').length - text.split('\n').length
+  return { text, mapLine: (n: number) => n - delta }
+}

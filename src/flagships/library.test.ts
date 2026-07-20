@@ -6,7 +6,7 @@ import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
    (scripts/atlas/build-atlas.mjs) · the projector's own numbers point at the
    ratified W1 emission and would judge the wrong world here */
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
-import { serveW2 } from '../lib/w1-to-w2'
+import { serveW105 } from '../lib/w1-to-w2'
 
 /* the tests build the library with the REAL dictionary (node-side import
    is not the client bundle — the diet law binds the bundle, not vitest) */
@@ -67,7 +67,7 @@ describe('library · browse-only honesty', () => {
 
   it('every browse yaml is the projected pack corpus, verbatim', () => {
     for (const item of browse) {
-      expect(item.yaml, item.id).toBe(serveW2(SHOWCASE_YAML[item.id]))
+      expect(item.yaml, item.id).toBe(serveW105(SHOWCASE_YAML[item.id]))
     }
   })
 
