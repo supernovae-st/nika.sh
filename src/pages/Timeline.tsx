@@ -70,8 +70,8 @@ function Strip() {
   const flat = TIMELINE.eras.flatMap((era) => era.entries.map((e) => ({ ...e, era: era.id })))
   const trackW = nowX + 90 + TIMELINE.gates.length * (GATE_W + GATE_GAP) + 60
   const eraBands = [
-    { id: 'conception', from: dayX('2025-08-01') - 40, to: dayX('2026-01-01'), label: 'conception' },
-    { id: 'exploration', from: dayX('2026-01-01'), to: cut, label: 'exploration · 0.1 → 0.79' },
+    { id: 'exploration', from: dayX('2025-08-01') - 40, to: dayX('2026-01-01'), label: 'exploration · private' },
+    { id: 'brouillon', from: dayX('2026-01-01'), to: cut, label: 'brouillon · 0.1 → 0.79' },
     { id: 'diamond', from: cut, to: nowX, label: 'diamond · rewritten from scratch' },
   ]
   return (

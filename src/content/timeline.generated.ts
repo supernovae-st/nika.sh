@@ -5,10 +5,10 @@ export const TIMELINE = {
   "lastUpdated": "2026-07-20",
   "eras": [
     {
-      "id": "conception",
-      "span": "summer 2025 → 2025-12",
-      "title": "Conception",
-      "story": "The ideas take shape through private prototypes and throwaway experiments on the maintainer's machine and private repos — before the language has a repo, a name in git, or a single committed line.",
+      "id": "exploration",
+      "span": "summer 2025 → end 2025",
+      "title": "Exploration",
+      "story": "The idea takes shape through private prototypes and throwaway vibe-code experiments — on the maintainer's machine and private repos, before the language has a public repo, a name in git, or a single committed line. The question being circled: repeatable AI work should live in files, reviewed and re-run, not evaporate into chats.",
       "evidenceClass": "testimony",
       "entries": [
         {
@@ -17,7 +17,22 @@ export const TIMELINE = {
           "type": "milestone",
           "version": null,
           "title": "Private prototypes begin",
-          "detail": "Vibe-code experiments and private-repo brainstorms circle the idea: repeatable AI work should live in files, not chats.",
+          "detail": "Vibe-code experiments and private-repo brainstorms on the maintainer's machine circle the idea: repeatable AI work belongs in files, not chats. No public repo, no git history yet.",
+          "component": null,
+          "evidence": {
+            "class": "testimony",
+            "provable": false,
+            "href": null,
+            "note": null
+          }
+        },
+        {
+          "date": "2025-11",
+          "precision": "month",
+          "type": "milestone",
+          "version": null,
+          "title": "The shape settles",
+          "detail": "Through late 2025 the private experiments converge on a declarative file, verbs, and a check-before-run discipline — the pillars the public engine will carry.",
           "component": null,
           "evidence": {
             "class": "testimony",
@@ -29,10 +44,10 @@ export const TIMELINE = {
       ]
     },
     {
-      "id": "exploration",
+      "id": "brouillon",
       "span": "2026-01-01 → 2026-04-13",
-      "title": "The exploration era (0.1 → 0.79)",
-      "story": "79 minor versions in 103 days. The language finds its shape by shipping: templating, DAG validation, providers, tools — a 138K-line monolith and 192 tags later, the team knows exactly what the language wants to be, and exactly why the engine must be rebuilt to carry it.",
+      "title": "The brouillon era (0.1 → 0.79)",
+      "story": "The language goes to git — on a branch literally named `brouillon` (draft). 79 minor versions in 103 days: templating, DAG validation, providers, tools, check-before-run. A 138K-line monolith and 192 tags. Seven of those versions ship publicly to crates.io through March. By the end the team knows exactly what the language wants to be — and exactly why the engine must be rebuilt to carry it.",
       "evidenceClass": "private-archive",
       "entries": [
         {
@@ -41,7 +56,7 @@ export const TIMELINE = {
           "type": "milestone",
           "version": null,
           "title": "First commit · « initial nika v0.1 with strict templating system »",
-          "detail": "The language is born on New Year's Day, 21:29 CET.",
+          "detail": "The language enters git on New Year's Day 2026, 21:29 CET, on the branch named brouillon.",
           "component": "engine",
           "evidence": {
             "class": "private-archive",
@@ -55,7 +70,7 @@ export const TIMELINE = {
           "precision": "day",
           "type": "milestone",
           "version": null,
-          "title": "DAG validation lands, hours later",
+          "title": "DAG validation lands, nineteen minutes later",
           "detail": "The second commit of day one already carries the spine: workflows are DAGs, validated before they run.",
           "component": "engine",
           "evidence": {
@@ -71,7 +86,37 @@ export const TIMELINE = {
           "type": "release",
           "version": "0.20.0",
           "title": "First public release on crates.io",
-          "detail": "The exploration era goes public. Seven versions ship to crates.io in March — later yanked in favor of the rewrite, but the dated trail is permanent.",
+          "detail": "The brouillon era goes public. The crate is registered and the first version ships — the start of a March trail later yanked in favor of the rewrite, but permanently timestamped.",
+          "component": "engine",
+          "evidence": {
+            "class": "crates-io",
+            "provable": true,
+            "href": "https://crates.io/crates/nika/versions",
+            "note": null
+          }
+        },
+        {
+          "date": "2026-03-05",
+          "precision": "day",
+          "type": "release",
+          "version": "0.21.0",
+          "title": "0.21.0",
+          "detail": null,
+          "component": "engine",
+          "evidence": {
+            "class": "crates-io",
+            "provable": true,
+            "href": "https://crates.io/crates/nika/versions",
+            "note": null
+          }
+        },
+        {
+          "date": "2026-03-12",
+          "precision": "day",
+          "type": "release",
+          "version": "0.27.0",
+          "title": "0.27.0",
+          "detail": null,
           "component": "engine",
           "evidence": {
             "class": "crates-io",
@@ -96,12 +141,27 @@ export const TIMELINE = {
           }
         },
         {
+          "date": "2026-03-22",
+          "precision": "day",
+          "type": "release",
+          "version": "0.38.0",
+          "title": "0.38.0",
+          "detail": null,
+          "component": "engine",
+          "evidence": {
+            "class": "crates-io",
+            "provable": true,
+            "href": "https://crates.io/crates/nika/versions",
+            "note": null
+          }
+        },
+        {
           "date": "2026-03-26",
           "precision": "day",
           "type": "release",
           "version": "0.47.1",
-          "title": "Last crates.io release of the exploration era",
-          "detail": "Six releases in twenty-two days — the era's peak cadence, publicly timestamped.",
+          "title": "Last crates.io release of the brouillon era",
+          "detail": "Seven versions ship to crates.io in twenty-two days (0.20.0 → 0.47.1) — the era's public cadence, every date permanent even after the yank.",
           "component": "engine",
           "evidence": {
             "class": "crates-io",
@@ -116,13 +176,28 @@ export const TIMELINE = {
           "type": "milestone",
           "version": null,
           "title": "v0.71 · the monolith peaks",
-          "detail": "The exploration engine reaches ~138K lines. The lesson is complete: the language deserves a cleaner carrier.",
+          "detail": "The brouillon engine reaches ~138K lines across a single crate. The lesson is complete: the language deserves a cleaner carrier.",
           "component": "engine",
           "evidence": {
             "class": "private-archive",
             "provable": false,
             "href": null,
-            "note": "version bump commit in the legacy archive · 2026-04-05"
+            "note": "version bump commit in the brouillon archive · 2026-04-05"
+          }
+        },
+        {
+          "date": "2026-04-13",
+          "precision": "day",
+          "type": "milestone",
+          "version": null,
+          "title": "v0.79.3 · the brouillon era closes",
+          "detail": "The final draft-era version. The branch stays as read-only reference — read via `git show`, never modified — while the rewrite begins the same day.",
+          "component": "engine",
+          "evidence": {
+            "class": "private-archive",
+            "provable": false,
+            "href": null,
+            "note": "the brouillon branch tip · preserved read-only"
           }
         }
       ]
@@ -130,8 +205,8 @@ export const TIMELINE = {
     {
       "id": "diamond",
       "span": "2026-04-13 → today",
-      "title": "The Diamond era (rewrite from scratch)",
-      "story": "An orphan branch — zero shared history with the exploration code. Craft, not extraction: every crate re-enters through a 12-gate admission. The version line continues (0.80 picks up where 0.79 stopped) because the LANGUAGE is the continuity; the engine is the rewrite.",
+      "title": "The Diamond era (the clean language)",
+      "story": "A rewrite from scratch on an orphan branch — zero shared history with the brouillon code. Craft, not extraction: every crate re-enters through a 12-gate admission. The version line continues (0.80 picks up where 0.79 stopped) because the LANGUAGE is the continuity; the engine is the rewrite. This is where the specification, the conformance suite, and the standard surfaces are built.",
       "evidenceClass": "github-commit",
       "entries": [
         {
@@ -140,7 +215,7 @@ export const TIMELINE = {
           "type": "milestone",
           "version": null,
           "title": "The rewrite begins · Diamond genesis",
-          "detail": "An orphan branch is initialized and 0.80.0-alpha tags the same day. Rewrite from scratch — craft, not extraction — while the exploration branch keeps running as reference.",
+          "detail": "An orphan branch is initialized and 0.80.0-alpha tags the same day. Rewrite from scratch — craft, not extraction — 12-gate crate admission from the first line.",
           "component": "engine",
           "evidence": {
             "class": "github-commit",
@@ -244,7 +319,7 @@ export const TIMELINE = {
           "precision": "day",
           "type": "milestone",
           "version": null,
-          "title": "Governance gains its one public door (NEP process)",
+          "title": "Governance gains its one public door (the NEP process)",
           "detail": "Nobody amends the standard directly, maintainers included. Authority transfer to a technical committee is written down from day one.",
           "component": "spec",
           "evidence": {
@@ -275,7 +350,7 @@ export const TIMELINE = {
           "type": "milestone",
           "version": null,
           "title": "The standard hardening day",
-          "detail": "One day, six merged PRs across engine and spec: least-privilege workflow tokens · SLSA provenance as a release asset · security-insights · the agent-facing surfaces finally tell the standard (llms.txt) · the three mute security classes gain proven fixture pairs (secrets-to-outputs · lethal trifecta · self-launch) · the conformance runner drives ANY engine by command (--engine · 99/99 self-test).",
+          "detail": "One day, several merged PRs across engine and spec: least-privilege workflow tokens · SLSA provenance as a release asset · security-insights · the agent-facing surfaces finally tell the standard (llms.txt) · the three mute security classes gain proven fixture pairs (secrets-to-outputs · lethal trifecta · self-launch) · the conformance runner drives ANY engine by command (--engine · 99/99 self-test).",
           "component": "standard",
           "evidence": {
             "class": "github-pr",
@@ -290,7 +365,7 @@ export const TIMELINE = {
           "type": "milestone",
           "version": null,
           "title": "OpenSSF Scorecard reads 7.3",
-          "detail": "Up from 6.5 the same morning. The declared bar: the official 1.0 does not ship below 10/10.",
+          "detail": "Up from 6.5 the same morning (least-privilege tokens + patched dependencies landed). The declared bar: the official 1.0 does not ship below 10/10.",
           "component": "standard",
           "evidence": {
             "class": "scorecard",
@@ -313,13 +388,23 @@ export const TIMELINE = {
       "note": null
     },
     {
+      "id": "scorecard-10",
+      "title": "OpenSSF Scorecard 10/10",
+      "conditions": [
+        "every mechanical check at 10 (token permissions · signed releases · pinned deps · vulnerabilities · SAST)",
+        "a second reviewer so code-review and branch-protection clear",
+        "the best-practices badge earned"
+      ],
+      "note": "The declared pre-condition of the official 1.0."
+    },
+    {
       "id": "v1",
       "title": "1.0.0 · the first official launch",
       "conditions": [
         "rc gate green + feedback rounds absorbed",
         "real traction, honestly measured",
         "a launch crafted to the same bar as the language",
-        "OpenSSF Scorecard at the declared bar (10/10)"
+        "the Scorecard bar met (10/10)"
       ],
       "note": null
     },
