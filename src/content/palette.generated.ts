@@ -65,6 +65,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
+    "label": "Timeline",
+    "href": "/timeline",
+    "hint": "the one verifiable record"
+  },
+  {
+    "kind": "page",
     "label": "Manifesto",
     "href": "/manifesto",
     "hint": "the drum of liberation"

@@ -1,0 +1,285 @@
+/* /timeline · the one verifiable record — calm ledger over the hub base.
+   The hue is the amber of the archive lamp; proof badges are the only
+   color accents (proved = the hub hue · unprovable = muted, honest). */
+
+.tl-span {
+  margin: -0.4rem 0 0.6rem;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+}
+
+.tl-entries {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  border-left: 2px solid color-mix(in srgb, var(--hub-hue) 28%, transparent);
+}
+
+.tl-entry {
+  display: grid;
+  grid-template-columns: 6.4rem 1fr auto;
+  gap: 0.65rem;
+  align-items: baseline;
+  padding: 0.5rem 0 0.5rem 0.9rem;
+  position: relative;
+}
+
+.tl-entry::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0.95rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--hub-hue) 55%, transparent);
+}
+
+.tl-date {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.tl-body { display: grid; gap: 0.15rem; }
+.tl-title { font-weight: 560; }
+.tl-ver {
+  font-size: 0.82em;
+  margin-right: 0.5em;
+  padding: 0.05em 0.4em;
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 40%, transparent);
+  border-radius: 4px;
+}
+.tl-detail {
+  display: block;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  opacity: 0.7;
+  max-width: 56ch;
+}
+
+.tl-proof {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.tl-proof-proved {
+  color: var(--hub-hue);
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 45%, transparent);
+}
+.tl-proof-proved:hover { background: color-mix(in srgb, var(--hub-hue) 12%, transparent); }
+.tl-proof-recorded { opacity: 0.65; border: 1px dashed color-mix(in srgb, currentColor 30%, transparent); }
+.tl-proof-unprovable { opacity: 0.45; border: 1px dotted color-mix(in srgb, currentColor 25%, transparent); }
+
+.tl-gate-list { border-left-style: dashed; }
+.tl-gate-mark {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+}
+.tl-gate::before { background: transparent; border: 1.5px dashed color-mix(in srgb, var(--hub-hue) 55%, transparent); }
+.tl-conditions {
+  margin: 0.25rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.86rem;
+  opacity: 0.75;
+}
+.tl-conditions li { margin: 0.12rem 0; }
+
+@media (max-width: 640px) {
+  .tl-entry { grid-template-columns: 1fr; gap: 0.15rem; }
+  .tl-proof { justify-self: start; }
+}
+
+/* ── the strip · left→right, real time scale ─────────────────────── */
+
+.tl-strip-wrap { margin: 2.2rem 0 0.6rem; }
+
+.tl-strip {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding: 0.4rem 0 1rem;
+  cursor: grab;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--hub-hue) 40%, transparent) transparent;
+}
+.tl-strip:active { cursor: grabbing; }
+.tl-strip:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--hub-hue) 60%, transparent);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.tl-track {
+  position: relative;
+  height: 380px;
+}
+
+.tl-band {
+  position: absolute;
+  top: 34px;
+  bottom: 34px;
+  border-radius: 10px;
+  scroll-snap-align: start;
+}
+.tl-band-conception { background: color-mix(in srgb, var(--hub-hue) 4%, transparent); }
+.tl-band-exploration { background: color-mix(in srgb, var(--hub-hue) 9%, transparent); }
+.tl-band-diamond { background: color-mix(in srgb, var(--hub-hue) 15%, transparent); }
+.tl-band-label {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  white-space: nowrap;
+}
+
+.tl-axis {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--hub-hue) 15%, transparent),
+    color-mix(in srgb, var(--hub-hue) 70%, transparent));
+}
+
+.tl-cut {
+  position: absolute;
+  top: 44px;
+  bottom: 44px;
+  width: 0;
+  border-left: 2px dashed color-mix(in srgb, var(--hub-hue) 80%, transparent);
+}
+.tl-cut span {
+  position: absolute;
+  top: -26px;
+  left: -4px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--hub-hue);
+  opacity: 0.9;
+}
+
+.tl-now {
+  position: absolute;
+  top: 26px;
+  bottom: 26px;
+  width: 0;
+  border-left: 2px solid var(--hub-hue);
+}
+.tl-now span {
+  position: absolute;
+  bottom: -22px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.7rem;
+  color: var(--hub-hue);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tl-now { animation: tl-pulse 2.6s ease-in-out infinite; }
+  @keyframes tl-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+}
+
+.tl-node-wrap { position: absolute; top: 50%; }
+.tl-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: var(--hub-hue);
+}
+.tl-node-milestone { border-radius: 50%; }
+.tl-node-release { border-radius: 2px; rotate: 45deg; }
+
+.tl-card {
+  position: absolute;
+  left: 0;
+  transform: translateX(-14px);
+  width: 208px;
+  display: grid;
+  gap: 0.18rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 22%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--hub-hue) 5%, rgb(10 10 12 / 0.86));
+  backdrop-filter: blur(4px);
+  transition: border-color 0.18s ease, translate 0.18s ease;
+}
+.tl-above .tl-card { bottom: 26px; }
+.tl-below .tl-card { top: 26px; }
+.tl-above .tl-node-wrap::after,
+.tl-node-wrap::before { content: none; }
+.tl-card:hover,
+.tl-card:focus-visible {
+  border-color: color-mix(in srgb, var(--hub-hue) 60%, transparent);
+  translate: 0 -2px;
+  z-index: 3;
+  outline: none;
+}
+.tl-card-date {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.68rem;
+  opacity: 0.55;
+}
+.tl-card-title { font-size: 0.84rem; font-weight: 560; line-height: 1.35; }
+.tl-card-detail {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease, max-height 0.25s ease;
+}
+.tl-card:hover .tl-card-detail,
+.tl-card:focus-visible .tl-card-detail { opacity: 0.72; max-height: 9rem; }
+
+.tl-gate-card {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.6rem 0.65rem;
+  border: 1.5px dashed color-mix(in srgb, var(--hub-hue) 45%, transparent);
+  border-radius: 10px;
+  scroll-snap-align: start;
+}
+.tl-gate-tag {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hub-hue);
+  opacity: 0.85;
+}
+.tl-gate-card .tl-conditions { font-size: 0.74rem; margin-top: 0.1rem; }
+
+.tl-strip-hint {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.7rem;
+  opacity: 0.4;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .tl-track { height: 330px; }
+  .tl-card { width: 168px; }
+}

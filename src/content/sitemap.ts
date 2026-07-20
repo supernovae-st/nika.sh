@@ -80,6 +80,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'The proof', href: '/proof', hint: 'run graph · conformance · machine surfaces' },
       { label: 'Sources', href: '/sources', hint: 'how this site tells the truth · verify it yourself' },
       { label: 'Spec', href: '/spec', hint: 'the language reference · nika: v1' },
+      { label: 'Timeline', href: '/timeline', hint: 'the one verifiable record · eras · releases · gates' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },
       { label: 'Manifesto', href: '/manifesto', hint: 'the drum of liberation · 8 languages' },
     ],

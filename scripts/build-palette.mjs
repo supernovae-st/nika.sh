@@ -33,6 +33,7 @@ const CORE = [
   ['Use cases', '/use-cases', 'real files you would write'],
   ['Blog', '/blog', 'notes from the source'],
   ['Changelog', '/changelog', 'the ship log'],
+  ['Timeline', '/timeline', 'the one verifiable record'],
   ['Manifesto', '/manifesto', 'the drum of liberation'],
   ['Convert', '/convert', 'send us a workflow'],
   ['Errors', '/errors', 'the typed error registry'],

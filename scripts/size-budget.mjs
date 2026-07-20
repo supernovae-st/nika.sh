@@ -53,6 +53,12 @@
    back to vars, root refs rewritten) so the serving surfaces downcast the
    ratified grammar to W2 on the entry: ~0.4KB for copy-paste that survives
    the C2 flip.
+   359→365 timeline: /timeline is a real sync-routed record page (the
+   WO-7 hub precedent — the weight IS the page): the vendored spec SSOT
+   (26 claims · era model · ~3.9KB gz) + the strip/ledger component
+   (~3.2KB gz) both prerender, so they ride the entry BY SSG DESIGN; CSS
+   pays on its own lane, zero new deps (DOM+CSS native strip · no chart
+   lib), measured 363.4 · margin ~1.6 (the bite-on-growth grammar holds).
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -60,7 +66,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 359
+const BUDGET_KB = 365
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
