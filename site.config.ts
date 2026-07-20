@@ -1,12 +1,25 @@
 /* ─── shared static-site constants (no deps, no JSX) ─────────────────────────
    The single source of truth for the canonical origin + the static route paths.
    Imported by BOTH react-ssg.config.ts (prerender: one index.html per path) and
-   vite.config.ts (the sitemap plugin derives dist/sitemap.xml from PATHS). Kept
-   JSX-free + import-free so it loads cleanly in the Node config program (tsc's
-   tsconfig.node.json) without dragging src/routes.tsx into it.
+   vite.config.ts (the sitemap plugin derives dist/sitemap.xml from PATHS) — and
+   by the app itself (CommandK reads PATHS). Kept JSX-free and free of node
+   builtins so it loads cleanly in every consumer: the Node config program
+   (tsc's tsconfig.node.json), the vitest node env, AND the browser bundle —
+   without dragging src/routes.tsx into any of them. The ONE permitted import
+   shape is a pure-data generated module (see ERROR_PATHS); a node:fs read
+   here would exile the file from the browser.
 
    Add a new static route in src/routes.tsx AND here — both the prerender and the
    sitemap pick it up with zero extra wiring. */
+
+import { ERROR_CODES } from './src/content/errors.generated'
+import { PENDING_ERROR_CODES } from './pending-error-codes'
+
+/* the pending list is AUTHORED in pending-error-codes.ts (a leaf — see its
+   header for the bundle law) and re-exported here: consumers of the static
+   route config read PENDING_ERROR_CODES from this module, the list itself
+   has exactly one home. */
+export { PENDING_ERROR_CODES }
 
 /* the canonical site origin (matches src/content.ts SITE). */
 export const ORIGIN = 'https://nika.sh'
@@ -59,92 +72,25 @@ export const INSTALL_PATHS = ['/fr/install', '/es/install', '/de/install', '/pt-
    (the engine stamps docs_url: https://nika.sh/errors/<CODE> on every check
    finding, and DO's error_document wins over catchall_document in practice:
    un-prerendered deep links 404'd in prod — caught by scripts/e2e-sweep).
-   Kept literal (this file stays import-free); the errors drift gate
-   (src/test/errors.test.ts) fails when a code and its path diverge. */
-export const ERROR_PATHS = [
-  '/errors/NIKA-AGENT-001',
-  '/errors/NIKA-AGENT-002',
-  '/errors/NIKA-AGENT-003',
-  '/errors/NIKA-AGENT-004',
-  '/errors/NIKA-ASSERT-001',
-  '/errors/NIKA-BUILTIN-001',
-  '/errors/NIKA-BUILTIN-DONE-001',
-  '/errors/NIKA-CANCEL-001',
-  '/errors/NIKA-COMP-001',
-  '/errors/NIKA-COMP-002',
-  '/errors/NIKA-COMP-003',
-  '/errors/NIKA-COMP-004',
-  '/errors/NIKA-DAG-001',
-  '/errors/NIKA-DAG-002',
-  '/errors/NIKA-DAG-004',
-  '/errors/NIKA-DAG-005',
-  '/errors/NIKA-DAG-006',
-  '/errors/NIKA-DAG-007',
-  '/errors/NIKA-DECIDE-001',
-  '/errors/NIKA-DECIDE-002',
-  '/errors/NIKA-EXEC-001',
-  '/errors/NIKA-EXEC-002',
-  '/errors/NIKA-INFER-001',
-  '/errors/NIKA-INFER-002',
-  '/errors/NIKA-INVOKE-001',
-  '/errors/NIKA-INVOKE-002',
-  '/errors/NIKA-LOCK-001',
-  '/errors/NIKA-MCP-001',
-  '/errors/NIKA-MCP-002',
-  '/errors/NIKA-PARSE-001',
-  '/errors/NIKA-PARSE-002',
-  '/errors/NIKA-PARSE-003',
-  '/errors/NIKA-PARSE-004',
-  '/errors/NIKA-PARSE-005',
-  '/errors/NIKA-PARSE-006',
-  '/errors/NIKA-PARSE-007',
-  '/errors/NIKA-PARSE-008',
-  '/errors/NIKA-PARSE-009',
-  '/errors/NIKA-PARSE-010',
-  '/errors/NIKA-PARSE-011',
-  '/errors/NIKA-PARSE-012',
-  '/errors/NIKA-PARSE-013',
-  '/errors/NIKA-PARSE-014',
-  '/errors/NIKA-PARSE-015',
-  '/errors/NIKA-PARSE-017',
-  '/errors/NIKA-PARSE-018',
-  '/errors/NIKA-PARSE-019',
-  '/errors/NIKA-PARSE-020',
-  '/errors/NIKA-PARSE-021',
-  '/errors/NIKA-PARSE-022',
-  '/errors/NIKA-PARSE-023',
-  '/errors/NIKA-PARSE-024',
-  '/errors/NIKA-PARSE-025',
-  '/errors/NIKA-POLICY-001',
-  '/errors/NIKA-PORT-001',
-  '/errors/NIKA-PORT-002',
-  '/errors/NIKA-SEC-001',
-  '/errors/NIKA-SEC-002',
-  '/errors/NIKA-SEC-003',
-  '/errors/NIKA-SEC-004',
-  '/errors/NIKA-SEC-005',
-  '/errors/NIKA-SEC-006',
-  '/errors/NIKA-SEC-007',
-  '/errors/NIKA-TIMEOUT-001',
-  '/errors/NIKA-TYPE-001',
-  '/errors/NIKA-TYPE-002',
-  '/errors/NIKA-TYPE-003',
-  '/errors/NIKA-TYPE-004',
-  '/errors/NIKA-TYPE-005',
-  '/errors/NIKA-TYPE-006',
-  '/errors/NIKA-TYPE-101',
-  '/errors/NIKA-VAR-001',
-  '/errors/NIKA-VAR-002',
-  '/errors/NIKA-VAR-003',
-  '/errors/NIKA-VAR-004',
-  '/errors/NIKA-VAR-005',
-  '/errors/NIKA-VAR-006',
-  '/errors/NIKA-VAR-007',
-  '/errors/NIKA-VAR-008',
-  '/errors/NIKA-VAR-009',
-  '/errors/NIKA-VAR-020',
-  '/errors/NIKA-VAR-021',
-]
+
+   DERIVED, never hand-typed: the catalog's compiled projection
+   (src/content/errors.generated.ts — itself byte-diff gated against
+   public/errors/catalog.json, projected from the spec canon.yaml) ∪
+   PENDING_ERROR_CODES (authored in pending-error-codes.ts), deduped and
+   sorted. The projection stands in for a direct read of the JSON because
+   this module also ships to the browser (CommandK imports PATHS — a
+   node:fs read here would break the bundle); the errors drift gate
+   (src/test/errors.test.ts) recomputes the union INDEPENDENTLY from the
+   raw catalog bytes and fails on any divergence, and the lens discovery
+   (scripts/lens-semantics-lib.mjs) derives the same list from the same two
+   sources. A code enters by landing in the catalog or joining PENDING —
+   never by editing this expression. */
+export const ERROR_PATHS: string[] = [
+  ...new Set([
+    ...ERROR_CODES.map((e) => `/errors/${e.code}`),
+    ...PENDING_ERROR_CODES.map((c) => `/errors/${c}`),
+  ]),
+].sort()
 
 /* the stdlib register's deep pages — one static landing per builtin (slug =
    bare name: /tools/fetch). Same prerender law as ERROR_PATHS; kept literal

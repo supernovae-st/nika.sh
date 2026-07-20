@@ -149,7 +149,11 @@ export function Component() {
   const transientCount = useMemo(() => ERROR_CODES.filter((e) => e.transient).length, [])
   const categoryCount = useMemo(() => new Set(ERROR_CODES.map((e) => e.category)).size, [])
 
-  const title = hit ? `${hit.code} · Nika error register` : 'Error register · Nika'
+  const title = hit
+    ? `${hit.code} · Nika error register`
+    : code
+      ? `${code} · Nika error register`
+      : 'Error register · Nika'
   const description = hit
     ? `${hit.code}: ${hit.failure} (${hit.category}${hit.transient ? ' · transient' : ''}). Every Nika error is a typed structure with a stable code.`
     : 'Every registered Nika error code: stable identifiers, categories, and the transient flag the retry machinery reads. Machine twin: /errors/catalog.json.'

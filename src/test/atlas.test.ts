@@ -10,7 +10,7 @@ import { HUBS } from '../pages/hub-data.generated'
 import { hubJsonldSets, sourcesJsonldSets } from '../pages/hub-lib'
 import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { SNIPPETS, SNIPPET_REGISTRY, CAPTURES } from '../content/snippets.generated'
-import { PATHS } from '../../site.config'
+import { PATHS, PENDING_ERROR_CODES } from '../../site.config'
 
 /* ── the atlas compiler gates ─────────────────────────────────────────────────
    build-atlas.mjs is the ONE compiler of the language atlas; these gates make
@@ -137,11 +137,18 @@ describe('atlas · rooms and routes cover each other', () => {
         }
       ).redirects.map((r) => r.from),
     )
+    /* the pending rooms (pending-error-codes.ts, re-exported by site.config ·
+       minted in the canon, awaiting the resync pin) are served AHEAD of
+       their atlas membership: the member node is born the day the pin lands
+       the code in the catalog (build-atlas derives members from it), so
+       until then the pending declaration is the room's known-to-the-graph
+       proof — served with a gated declaration, never an orphan. */
+    const pending = new Set(PENDING_ERROR_CODES.map((c) => `/errors/${c}`))
     const atlasRoots = ['/language/', '/verbs/', '/tools/', '/templates/', '/errors/', '/providers/']
     for (const p of PATHS) {
       if (!atlasRoots.some((r) => p.startsWith(r))) continue
       expect(
-        atlasUrls.has(p) || moved.has(p),
+        atlasUrls.has(p) || moved.has(p) || pending.has(p),
         `${p} served but unknown to the atlas (neither a node nor a declared move)`,
       ).toBe(true)
     }

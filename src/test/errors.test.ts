@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ERROR_CODES, ERROR_INDEX, ERROR_NAMESPACES } from '../content/errors.generated'
-import { ERROR_PATHS, PATHS } from '../../site.config'
+import { ERROR_PATHS, PATHS, PENDING_ERROR_CODES } from '../../site.config'
 
 /* ── the error-register drift gates ───────────────────────────────────────────
    public/errors/catalog.json is the source (projected from the spec's
@@ -39,6 +39,11 @@ describe('/errors · the compiled projection matches the served catalog', () => 
     for (const e of ERROR_CODES) {
       expect(e.code, e.code).toMatch(grammar)
     }
+    /* a pending code is not in the projection yet — judge its shape here or
+       its prerendered room would anchor a malformed URL for a whole wave */
+    for (const c of PENDING_ERROR_CODES) {
+      expect(c, c).toMatch(grammar)
+    }
     expect(ERROR_NAMESPACES.every((ns) => ns.startsWith('NIKA-'))).toBe(true)
   })
 
@@ -47,11 +52,35 @@ describe('/errors · the compiled projection matches the served catalog', () => 
   })
 
   it('every code prerenders its deep page (the engine stamps docs_url on findings)', () => {
-    /* ERROR_PATHS is a literal (site.config stays import-free) — this gate is
-       what keeps it honest: a code added to the catalog without its static
-       landing goes red HERE, never 404 in prod (the e2e-sweep catch: DO's
-       error_document beats catchall_document, so un-prerendered deep links
-       404'd live). Exact-set match: no stale path survives a removal either. */
-    expect(new Set(ERROR_PATHS)).toEqual(new Set(ERROR_CODES.map((e) => `/errors/${e.code}`)))
+    /* ERROR_PATHS is DERIVED in site.config.ts (the catalog's byte-gated
+       projection ∪ PENDING_ERROR_CODES) — this gate recomputes the union
+       INDEPENDENTLY, straight from the served catalog bytes plus the pending
+       literal, and demands exact equality, order included. A code added to
+       the catalog without its static landing goes red HERE, never 404 in
+       prod (the e2e-sweep catch: DO's error_document beats catchall_document,
+       so un-prerendered deep links 404'd live); a code that vanished from
+       BOTH sources (removed from the catalog AND from PENDING) leaves a
+       stale path that fails this exact match. */
+    const catalog = JSON.parse(readFileSync(join(ROOT, 'public/errors/catalog.json'), 'utf8')) as {
+      codes: { code: string }[]
+    }
+    const expected = [
+      ...new Set([
+        ...catalog.codes.map((c) => `/errors/${c.code}`),
+        ...PENDING_ERROR_CODES.map((c) => `/errors/${c}`),
+      ]),
+    ].sort()
+    expect(ERROR_PATHS).toEqual(expected)
+  })
+
+  it('a pending code never duplicates a catalog code (the DELETE law)', () => {
+    /* PENDING_ERROR_CODES exists for the mint→pin gap only: the day the
+       resync pin lands a pending code in the catalog, its entry must be
+       DELETEd — this gate goes red on the overlap, so the list can never
+       accrete stale hand-typed codes (the SSOT the derivation leans on). */
+    const inCatalog = new Set(ERROR_CODES.map((e) => e.code))
+    for (const c of PENDING_ERROR_CODES) {
+      expect(inCatalog.has(c), `${c} landed in the catalog — delete it from PENDING_ERROR_CODES`).toBe(false)
+    }
   })
 })
