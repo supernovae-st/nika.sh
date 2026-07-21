@@ -225,6 +225,46 @@ function Stage() {
       measure()
       apply()
     }
+
+    /* the minimap scrubs · pointer-only travel (the stage is the pointer's
+       surface; keyboards and readers own the ledger). Fraction of the strip
+       = fraction of the record — the same mapping the riding head renders. */
+    const mm = minimapRef.current
+    const scrub = (e: PointerEvent) => {
+      if (!mm) return
+      const r = mm.getBoundingClientRect()
+      const p = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width))
+      window.scrollTo({ top: wrapTop + p * trackScroll, behavior: 'instant' })
+    }
+    const mmUp = () => mm?.removeEventListener('pointermove', scrub)
+    const mmDown = (e: PointerEvent) => {
+      e.preventDefault()
+      mm?.setPointerCapture?.(e.pointerId)
+      scrub(e)
+      mm?.addEventListener('pointermove', scrub)
+    }
+    mm?.addEventListener('pointerdown', mmDown)
+    mm?.addEventListener('pointerup', mmUp)
+    mm?.addEventListener('pointercancel', mmUp)
+
+    /* deep links play the record · #exploration/#brouillon/#diamond seek the
+       era mark onto the playhead, #gates seeks the first gate card (the
+       manifesto's toHash law). The ledger anchor below stays the reading
+       position; this is the visual seat. */
+    const toHash = () => {
+      const id = location.hash.slice(1)
+      if (!['exploration', 'brouillon', 'diamond', 'gates'].includes(id)) return
+      const el = track.querySelector<HTMLElement>(
+        id === 'gates' ? ".tls-ent[data-era='gates']" : `.tls-eramark[data-era='${id}']`,
+      )
+      if (!el) return
+      const cx = el.offsetLeft + el.offsetWidth / 2
+      window.scrollTo({
+        top: wrapTop + Math.max(0, Math.min(trackScroll, cx - stage.clientWidth * PLAYHEAD)),
+        behavior: 'instant',
+      })
+    }
+
     const io = new IntersectionObserver(
       (es) => {
         near = es[0]?.isIntersecting ?? true
@@ -238,13 +278,20 @@ function Stage() {
     io.observe(wrap)
     measure()
     apply()
+    toHash()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize, { passive: true })
+    window.addEventListener('hashchange', toHash)
     return () => {
       io.disconnect()
       cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('hashchange', toHash)
+      mm?.removeEventListener('pointerdown', mmDown)
+      mm?.removeEventListener('pointerup', mmUp)
+      mm?.removeEventListener('pointercancel', mmUp)
+      mm?.removeEventListener('pointermove', scrub)
       track.style.transform = ''
       wrap.style.height = ''
       stage.removeAttribute('data-end')
@@ -350,7 +397,7 @@ function Stage() {
         </div>
       </div>
       <p className="tls-hint mono" aria-hidden="true">
-        scroll plays the record · the full ledger is below
+        scroll plays the record · drag the strip to travel · the full ledger is below
       </p>
     </div>
   )
@@ -498,9 +545,10 @@ export function Component() {
 
           <p className="tl-foot" data-rise>
             The record grows only at its source: a claim lands in the spec&apos;s YAML, CI
-            re-proves it, this page re-renders. Watch the versions arrive on the{' '}
-            <Link to="/changelog">changelog</Link>, or <Link to="/install">install</Link> the
-            engine the record describes. <Link to="/spec">Read the spec →</Link>
+            re-proves it, this page re-renders. The{' '}
+            <Link to="/changelog">changelog</Link> is the exhaustive ship log this record
+            distills, and <Link to="/install">install</Link> puts the engine it describes on
+            your machine. <Link to="/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

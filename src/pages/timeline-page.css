@@ -240,9 +240,14 @@
   align-content: start;
   gap: 0.3rem;
   opacity: 0.45;
-  transition: opacity var(--dur-soft) var(--ease-out);
+  translate: 0 0;
+  transition:
+    opacity var(--dur-soft) var(--ease-out),
+    translate var(--dur-quick) var(--ease-out);
 }
 .tls-ent[data-live] { opacity: 1; }
+/* the pointer lifts what it reads · hover is a preview of live */
+.tls-ent:hover { opacity: 1; translate: 0 -3px; }
 .tls-ent[data-kind='release'] { margin-bottom: 448px; align-content: end; }
 .tls-ent[data-kind='milestone'] { margin-top: 448px; }
 
@@ -463,8 +468,15 @@
   transform: translateX(-50%);
   width: min(460px, 46vw);
   height: 24px;
-  pointer-events: none;
+  /* the strip scrubs · a generous invisible hit area, pointer-only travel */
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  padding: 14px 10px;
+  margin: -14px -10px;
+  box-sizing: content-box;
 }
+.tls-minimap:active { cursor: grabbing; }
 .tls-mstrip {
   position: relative;
   height: 100%;
