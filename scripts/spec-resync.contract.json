@@ -50,7 +50,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/showcase-projector.py",
-   "sha256": "60604742a15c98a4fce73deb03a4d0cc0a4395826dcab8a5970d18b4982451df",
+   "sha256": "44415f4b2e69471462d49004aee232e47e411db809f6be8b91395130d4465d82",
    "args": [
     "--write"
    ],
@@ -82,7 +82,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/design-projector.py",
-   "sha256": "8305ccb6bc2a3dd1460f2bd969c8982342ac87bd76054273b97c53d4090850ae",
+   "sha256": "d2a21e63ba336f90c136b79a6c1377f1c5b742b205e4084da10e8810455bb43f",
    "args": [
     "--write"
    ],
