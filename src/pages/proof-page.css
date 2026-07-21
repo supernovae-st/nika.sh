@@ -39,7 +39,7 @@
   color: var(--v4-text);
 }
 .pf-src a:focus-visible {
-  outline: 1px solid var(--v4-text);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 3px;
 }
 
@@ -106,7 +106,7 @@
   border-bottom-color: var(--v4-text);
 }
 .pf-id:focus-visible {
-  outline: 1px solid var(--v4-text);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 3px;
 }
 .pf-wave {
@@ -174,7 +174,7 @@
   border-bottom-color: var(--hub-hue, var(--v4-text));
 }
 .pf-ref:focus-visible {
-  outline: 1px solid var(--v4-text);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 3px;
 }
 .pf-ref-k {

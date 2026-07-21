@@ -129,14 +129,6 @@
   color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
 }
 
-/* the excerpt pair (/flow doors: two CodeFiles side by side) */
-.hub-pair {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
-  margin-top: 14px;
-}
-
 /* rails (outgoing links · quiet chips) */
 .hub-rails {
   display: flex;
@@ -227,7 +219,7 @@
 }
 
 .gm-btn:focus-visible {
-  outline: 2px solid var(--v4-accent, #4f86ff);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 1px;
 }
 

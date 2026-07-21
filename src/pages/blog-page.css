@@ -86,7 +86,7 @@
   letter-spacing: 0.01em;
   color: var(--v4-text);
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 30%, transparent);
   transition: color 0.18s ease, text-decoration-color 0.18s ease;
 }
@@ -227,7 +227,7 @@
   background: rgb(14 19 30 / 0.7);
 }
 .blog-lead:focus-visible {
-  outline: 1px solid var(--focus-ring);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 2px;
 }
 /* the issue stamp · tabular mono, cut by the plate edge, sub-hairline ink */
@@ -304,7 +304,7 @@
   background: rgb(14 19 30 / 0.7);
 }
 .blog-card:focus-visible {
-  outline: 1px solid var(--focus-ring);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 2px;
 }
 .blog-card-fig {
