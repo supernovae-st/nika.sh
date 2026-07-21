@@ -354,7 +354,7 @@
 .play-verbs-note a {
   color: var(--v4-text-dim);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 28%, transparent);
   transition: color 0.18s ease;
 }
@@ -494,7 +494,7 @@
   transform: translateY(1px); /* the machined dip */
 }
 .play-sim-btn:focus-visible {
-  outline: 1.5px solid var(--v4-focus-ring);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 2px;
 }
 .play-share-btn {
@@ -521,7 +521,7 @@
   transform: translateY(1px); /* the machined dip */
 }
 .play-share-btn:focus-visible {
-  outline: 1.5px solid var(--v4-focus-ring);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 2px;
 }
 .play-sim-note {

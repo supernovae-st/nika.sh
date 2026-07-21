@@ -2020,7 +2020,7 @@
   color: inherit;
   text-decoration: underline dotted color-mix(in oklch, var(--sm-ink-lit) 38%, transparent);
   text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
   transition: color var(--dur-ui) var(--ease-ui);
 }
 .spec-term:hover,

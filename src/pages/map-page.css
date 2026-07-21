@@ -97,7 +97,7 @@
 a.mp-layer-link:hover,
 a.mp-layer-link:focus-visible {
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
 }
 
 .mp-layer-link--soon {

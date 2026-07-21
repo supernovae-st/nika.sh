@@ -130,7 +130,7 @@ a.td-chip:focus-visible {
   border-color: color-mix(in srgb, var(--v4-text) 45%, transparent);
 }
 a.td-chip:focus-visible {
-  outline: 1px solid var(--v4-text);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 2px;
 }
 .td-chip--here {
