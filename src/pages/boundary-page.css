@@ -1,0 +1,81 @@
+/* ─── /boundary page · the security boundary register ─────────────────────────
+   Speaks the register grammar the /errors + /tools + /providers family
+   established (StampStrip · .cl-year-head — pages are sync-imported so the
+   shared rules are always loaded). This file adds only the bd- vocabulary:
+   the three bands (permits · secrets · the floor), the excerpt well, the
+   closing line, plus the page-side restyle of the hub-shared member rows
+   (MemberRows/Rails/HubFoot stay shared with the pinned rooms — the page
+   rules them like register rows, scoped under .bd-page). Monochrome
+   blueprint; the layer hue (--hub-hue, set inline on the page root) survives
+   only in the :target/hover seams the shared hub components already own.
+   SSR-safe: pure CSS. */
+
+.bd-page {
+  min-height: 100vh;
+}
+.bd-page .v4sec-wrap {
+  /* the house top offset (the tools/errors constant) */
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.bd-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* the authority line rides the shared .hub-authority mono recipe — the page
+   only seats it tight under the lede */
+.bd-page .bd-authority {
+  margin: 14px 0 0;
+}
+
+/* ── the three bands · band head reuses the changelog year-head rule line ──── */
+.bd-band {
+  margin-top: clamp(40px, 5vh, 60px);
+  scroll-margin-top: 120px;
+}
+.bd-band-n {
+  /* an h2 wearing the band label (the aria contract keeps its heading) */
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.bd-band-gloss {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+
+/* ── the excerpt well · one CodeFile per band, blueprint width ─────────────── */
+.bd-file {
+  margin-top: 16px;
+  max-width: 640px;
+}
+
+/* ── the shared member rows, register-ruled on this page ───────────────────── */
+.bd-page .hub-members {
+  margin-top: 14px;
+  gap: 0;
+}
+.bd-page .hub-member {
+  padding: 12px 10px;
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+  border-radius: 0;
+  scroll-margin-top: 120px;
+}
+.bd-page .hub-member:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+.bd-page .hub-member-gloss {
+  max-width: 74ch;
+}
+
+/* ── the closing line ──────────────────────────────────────────────────────── */
+.bd-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}

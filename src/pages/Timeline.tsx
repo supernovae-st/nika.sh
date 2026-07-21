@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
+import { StampStrip } from '../components/StampStrip'
 import { TIMELINE } from '../content/timeline.generated'
 import { routeHead } from '../content'
+import '../sections/v4-home.css'
 import './timeline-page.css'
 
 /* ─── /timeline · the one verifiable record ──────────────────────────────────
-   Three eras, dated entries, forward gates. The page renders the
-   vendored projection of nika-spec timeline/timeline.yaml — the SSOT
+   Three eras, dated entries, forward gates — spoken in the register
+   grammar (the /providers · /tools · /errors family). The page renders
+   the vendored projection of nika-spec timeline/timeline.yaml — the SSOT
    whose provable claims are re-proven by the spec's own CI. Every
    proof badge links to the public source (crates.io keeps yanked
    versions listed forever · GitHub keeps commits and releases).
@@ -86,6 +90,15 @@ const TRACK: TrackItem[] = [
   { kind: 'today' },
   ...TIMELINE.gates.map((g): TrackItem => ({ kind: 'gate', g })),
 ]
+
+/* the record's dimensions · derived from the SSOT, never typed (the
+   count-source law) — the stamp figures below read these */
+const ENTRY_COUNT = TRACK.filter((t) => t.kind === 'entry').length
+const PROVEN_COUNT = TRACK.filter((t) => t.kind === 'entry' && t.e.evidence.provable).length
+
+/* band counts pluralize over a widened number — the SSOT tuples carry
+   literal lengths, and `=== 1` on a literal that is never 1 is a TS2367 */
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 
 /* minimap seats · day-linear from the record's dawn, gates in a visual
    tail past the now mark (24 virtual days each — the future has no
@@ -360,43 +373,70 @@ export function Component() {
   })
 
   return (
-    <main className="theme-dark hub-page tl-page" style={{ ['--hub-hue' as string]: '#f0b429' }}>
+    <main className="theme-dark tl-page" style={{ ['--hub-hue' as string]: '#f0b429' }}>
+      {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="tl-title" className="v4sec v4-in">
-        <div className="v4sec-wrap hub-wrap">
-          <header>
-            <p className="v4-kick">the timeline</p>
-            <h1 id="tl-title" className="v4-h2">
-              The one verifiable record
-            </h1>
-            <p className="hub-opener">
-              Three eras, one continuous version line. Every provable claim on this page is
-              re-proven in CI against its public source — crates.io keeps yanked versions
-              listed forever, GitHub keeps commits and releases. What cannot be proven is
-              labeled, never dressed as proof. The future carries conditions, never dates.
-            </p>
-            <p className="hub-authority">
-              Source of truth ·{' '}
-              <a href="https://github.com/supernovae-st/nika-spec/blob/main/timeline/timeline.yaml">
-                timeline/timeline.yaml
-              </a>{' '}
-              · verified by{' '}
-              <a href="https://github.com/supernovae-st/nika-spec/blob/main/timeline/verify.py">
-                verify.py
-              </a>
-            </p>
-          </header>
+        <div className="v4sec-wrap tl-head">
+          <p className="v4sec-fig" data-rise>
+            the verifiable record
+          </p>
+          <h1 id="tl-title" className="v4sec-title tl-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
+            Timeline.
+          </h1>
+          <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+            Three eras, one continuous version line, rendered from the spec&apos;s own{' '}
+            <a href="https://github.com/supernovae-st/nika-spec/blob/main/timeline/timeline.yaml">
+              <code>timeline/timeline.yaml</code>
+            </a>
+            . Every provable claim on this page is <b>re-proven in CI</b> against its public
+            source: crates.io keeps yanked versions listed forever, GitHub keeps commits and
+            releases. What cannot be proven is labeled, never dressed as proof; the future
+            carries conditions, never dates.
+          </p>
+          <p className="tl-authority" data-rise style={{ ['--rise-delay' as string]: '170ms' }}>
+            source of truth ·{' '}
+            <a href="https://github.com/supernovae-st/nika-spec/blob/main/timeline/timeline.yaml">
+              timeline/timeline.yaml
+            </a>{' '}
+            · verified by{' '}
+            <a href="https://github.com/supernovae-st/nika-spec/blob/main/timeline/verify.py">
+              verify.py
+            </a>{' '}
+            · last verified <time dateTime={TIMELINE.lastUpdated}>{TIMELINE.lastUpdated}</time>
+          </p>
+
+          {/* the record's dimensions, at a glance — every figure derived from the SSOT */}
+          <StampStrip
+            items={[
+              { n: TIMELINE.eras.length, label: 'eras', sub: 'exploration · brouillon · diamond' },
+              { n: ENTRY_COUNT, label: 'dated entries', sub: 'every one carries evidence' },
+              { n: PROVEN_COUNT, label: 're-proven in CI', sub: 'against public sources' },
+              { n: TIMELINE.gates.length, label: 'gates ahead', sub: 'conditions, never dates' },
+            ]}
+          />
         </div>
 
         <Stage />
 
-        <div className="v4sec-wrap hub-wrap">
-          {TIMELINE.eras.map((era) => (
-            <section className="hub-sec tl-era" id={era.id} key={era.id} aria-labelledby={`${era.id}-title`}>
-              <h2 className="hub-sec-title" id={`${era.id}-title`}>
-                {era.title}
-              </h2>
+        <div className="v4sec-wrap tl-ledger">
+          {TIMELINE.eras.map((era, gi) => (
+            <section
+              className="tl-era"
+              id={era.id}
+              key={era.id}
+              aria-labelledby={`${era.id}-title`}
+              data-rise
+              style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}
+            >
+              <div className="cl-year-head">
+                <h2 className="cl-year-n tl-era-n" id={`${era.id}-title`}>
+                  {era.title}
+                </h2>
+                <span className="cl-year-rule" aria-hidden />
+                <span className="cl-year-count">{plural(era.entries.length, 'entry', 'entries')}</span>
+              </div>
               <p className="tl-span">{era.span}</p>
-              <p className="hub-sec-note">{era.story}</p>
+              <p className="tl-story">{era.story}</p>
               {era.entries.length > 0 && (
                 <ol className="tl-entries">
                   {era.entries.map((e, i) => (
@@ -417,14 +457,26 @@ export function Component() {
             </section>
           ))}
 
-          <section className="hub-sec tl-gates" id="gates" aria-labelledby="gates-title">
-            <h2 className="hub-sec-title" id="gates-title">
-              What comes next — gates, never dates
-            </h2>
-            <p className="hub-sec-note">
+          <section
+            className="tl-gates"
+            id="gates"
+            aria-labelledby="gates-title"
+            data-rise
+            style={{ ['--rise-delay' as string]: `${180 + TIMELINE.eras.length * 30}ms` }}
+          >
+            <div className="cl-year-head">
+              <h2 className="cl-year-n tl-era-n" id="gates-title">
+                What comes next
+              </h2>
+              <span className="cl-year-rule" aria-hidden />
+              <span className="cl-year-count">
+                {plural(TIMELINE.gates.length, 'gate', 'gates')} · never dates
+              </span>
+            </div>
+            <p className="tl-story">
               Forward motion is expressed as conditions that must hold. A gate flips when its
-              conditions are true — and the timeline gains a dated, proven entry at that
-              moment. No promised dates exist to slip.
+              conditions are true, and the timeline gains a dated, proven entry at that moment.
+              No promised dates exist to slip.
             </p>
             <ol className="tl-entries tl-gate-list">
               {TIMELINE.gates.map((g) => (
@@ -443,6 +495,13 @@ export function Component() {
               ))}
             </ol>
           </section>
+
+          <p className="tl-foot" data-rise>
+            The record grows only at its source: a claim lands in the spec&apos;s YAML, CI
+            re-proves it, this page re-renders. Watch the versions arrive on the{' '}
+            <Link to="/changelog">changelog</Link>, or <Link to="/install">install</Link> the
+            engine the record describes. <Link to="/spec">Read the spec →</Link>
+          </p>
         </div>
       </section>
     </main>
