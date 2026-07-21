@@ -97,189 +97,371 @@
   .tl-proof { justify-self: start; }
 }
 
-/* ── the strip · left→right, real time scale ─────────────────────── */
+/* ─── THE STAGE · the record plays left→right (manifesto stage law) ──────────
+   Desktop + motion only (the capability gate sets data-mode='h'); every
+   other reader keeps the ledger below — the stage is its visual double,
+   aria-hidden. Vertical scroll slides the track through a fixed
+   playhead: releases ride ABOVE the baseline and carry the light,
+   milestones sit BELOW, era marks stand on the rail, the today pulse
+   closes the past and the gates wait as porous cards. Driver in
+   Timeline.tsx (house rAF+translate3d · compositor-only · no
+   scroll-jack). */
 
-.tl-strip-wrap { margin: 2.2rem 0 0.6rem; }
+.tls-scope[data-mode='v'] .tls-wrap,
+.tls-scope[data-mode='v'] .tls-hint { display: none; }
 
-.tl-strip {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  padding: 0.4rem 0 1rem;
-  cursor: grab;
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--hub-hue) 40%, transparent) transparent;
+.tls-wrap { position: relative; }
+.tls-stage {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  overflow: clip;
 }
-.tl-strip:active { cursor: grabbing; }
-.tl-strip:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--hub-hue) 60%, transparent);
-  outline-offset: 4px;
-  border-radius: 8px;
-}
 
-.tl-track {
+.tls-track {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 72px;
+  width: max-content;
+  margin: 0;
+  padding: 0 46vw 0 40vw;
   position: relative;
-  height: 380px;
+  will-change: transform;
 }
-
-.tl-band {
+/* the baseline spans the whole track · warm at both ends */
+.tls-track::before {
+  content: '';
   position: absolute;
-  top: 34px;
-  bottom: 34px;
-  border-radius: 10px;
-  scroll-snap-align: start;
-}
-.tl-band-conception { background: color-mix(in srgb, var(--hub-hue) 4%, transparent); }
-.tl-band-exploration { background: color-mix(in srgb, var(--hub-hue) 9%, transparent); }
-.tl-band-diamond { background: color-mix(in srgb, var(--hub-hue) 15%, transparent); }
-.tl-band-label {
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 0.68rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  opacity: 0.55;
-  white-space: nowrap;
-}
-
-.tl-axis {
-  position: absolute;
-  top: 50%;
   left: 0;
-  height: 2px;
-  background: linear-gradient(90deg,
-    color-mix(in srgb, var(--hub-hue) 15%, transparent),
-    color-mix(in srgb, var(--hub-hue) 70%, transparent));
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--hub-hue) 40%, transparent),
+    color-mix(in srgb, currentColor 22%, transparent) 10%,
+    color-mix(in srgb, currentColor 22%, transparent) 88%,
+    color-mix(in srgb, var(--hub-hue) 52%, transparent)
+  );
 }
 
-.tl-cut {
-  position: absolute;
-  top: 44px;
-  bottom: 44px;
-  width: 0;
-  border-left: 2px dashed color-mix(in srgb, var(--hub-hue) 80%, transparent);
+/* ── entry cards · two staves ── */
+.tls-ent {
+  width: 300px;
+  height: 232px;
+  flex: none;
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  opacity: 0.45;
+  transition: opacity var(--dur-soft) var(--ease-out);
 }
-.tl-cut span {
+.tls-ent[data-live] { opacity: 1; }
+.tls-ent[data-kind='release'] { margin-bottom: 448px; align-content: end; }
+.tls-ent[data-kind='milestone'] { margin-top: 448px; }
+
+/* stems + glyphs reach the baseline */
+.tls-stem {
   position: absolute;
-  top: -26px;
-  left: -4px;
-  transform: translateX(-50%);
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 0.66rem;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  color: var(--hub-hue);
+  left: 18px;
+  width: 1px;
+  background: color-mix(in srgb, currentColor 26%, transparent);
+}
+.tls-ent[data-kind='release'] .tls-stem { top: 100%; height: 104px; }
+.tls-ent[data-kind='milestone'] .tls-stem { bottom: 100%; height: 104px; }
+.tls-glyph {
+  position: absolute;
+  left: 13px;
+  width: 11px;
+  height: 11px;
+}
+.tls-ent[data-kind='release'] .tls-glyph {
+  bottom: -115px;
+  background: var(--hub-hue);
+  border-radius: 2px;
+  rotate: 45deg;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hub-hue) 18%, transparent);
+}
+.tls-ent[data-kind='milestone'] .tls-glyph {
+  top: -115px;
+  border-radius: 50%;
+  background: color-mix(in srgb, currentColor 46%, transparent);
+}
+.tls-ent[data-live][data-kind='release'] .tls-glyph {
+  box-shadow: 0 0 14px 3px color-mix(in srgb, var(--hub-hue) 45%, transparent);
+}
+
+.tls-date {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, currentColor 55%, transparent);
+  transition: color var(--dur-soft) var(--ease-out);
+}
+.tls-ent[data-live] .tls-date { color: var(--hub-hue); }
+.tls-title {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 590;
+  line-height: 1.3;
+  color: color-mix(in srgb, currentColor 72%, transparent);
+  transition: color var(--dur-soft) var(--ease-out);
+}
+.tls-ent[data-live] .tls-title { color: inherit; }
+.tls-line {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: color-mix(in srgb, currentColor 62%, transparent);
+}
+.tls-srcs { margin: 0.1rem 0 0; font-size: 11px; }
+
+/* ── era marks · chapters standing on the rail ── */
+.tls-eramark {
+  flex: none;
+  position: relative;
+  width: 40px;
+  height: 232px;
   opacity: 0.9;
 }
-
-.tl-now {
+.tls-era-rule {
   position: absolute;
-  top: 26px;
-  bottom: 26px;
-  width: 0;
-  border-left: 2px solid var(--hub-hue);
+  left: 19px;
+  top: -140px;
+  bottom: -140px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--hub-hue) 55%, transparent) 30%,
+    color-mix(in srgb, var(--hub-hue) 55%, transparent) 70%,
+    transparent
+  );
 }
-.tl-now span {
+.tls-era-lab {
   position: absolute;
-  bottom: -22px;
-  transform: translateX(-50%);
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 0.7rem;
-  color: var(--hub-hue);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .tl-now { animation: tl-pulse 2.6s ease-in-out infinite; }
-  @keyframes tl-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.45; }
-  }
-}
-
-.tl-node-wrap { position: absolute; top: 50%; }
-.tl-node {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  background: var(--hub-hue);
-}
-.tl-node-milestone { border-radius: 50%; }
-.tl-node-release { border-radius: 2px; rotate: 45deg; }
-
-.tl-card {
-  position: absolute;
-  left: 0;
-  transform: translateX(-14px);
-  width: 208px;
-  display: grid;
-  gap: 0.18rem;
-  padding: 0.5rem 0.6rem;
-  border: 1px solid color-mix(in srgb, var(--hub-hue) 22%, transparent);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--hub-hue) 5%, rgb(10 10 12 / 0.86));
-  backdrop-filter: blur(4px);
-  transition: border-color 0.18s ease, translate 0.18s ease;
-}
-.tl-above .tl-card { bottom: 26px; }
-.tl-below .tl-card { top: 26px; }
-.tl-above .tl-node-wrap::after,
-.tl-node-wrap::before { content: none; }
-.tl-card:hover,
-.tl-card:focus-visible {
-  border-color: color-mix(in srgb, var(--hub-hue) 60%, transparent);
-  translate: 0 -2px;
-  z-index: 3;
-  outline: none;
-}
-.tl-card-date {
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 0.68rem;
-  opacity: 0.55;
-}
-.tl-card-title { font-size: 0.84rem; font-weight: 560; line-height: 1.35; }
-.tl-card-detail {
-  font-size: 0.76rem;
-  line-height: 1.45;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.2s ease, max-height 0.25s ease;
-}
-.tl-card:hover .tl-card-detail,
-.tl-card:focus-visible .tl-card-detail { opacity: 0.72; max-height: 9rem; }
-
-.tl-gate-card {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.6rem 0.65rem;
-  border: 1.5px dashed color-mix(in srgb, var(--hub-hue) 45%, transparent);
-  border-radius: 10px;
-  scroll-snap-align: start;
-}
-.tl-gate-tag {
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 0.64rem;
-  letter-spacing: 0.1em;
+  left: 30px;
+  top: -158px;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--hub-hue);
-  opacity: 0.85;
+  white-space: nowrap;
 }
-.tl-gate-card .tl-conditions { font-size: 0.74rem; margin-top: 0.1rem; }
+.tls-era-lab span {
+  display: block;
+  margin-top: 3px;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  color: color-mix(in srgb, currentColor 45%, transparent);
+}
 
-.tl-strip-hint {
+/* ── the today pulse · the past closes here ── */
+.tls-todaymark {
+  flex: none;
+  position: relative;
+  width: 56px;
+  height: 232px;
+}
+.tls-today-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--hub-hue);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tls-today-dot {
+    animation: tlsPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes tlsPulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hub-hue) 55%, transparent); }
+    50% { box-shadow: 0 0 0 12px transparent; }
+  }
+}
+.tls-todaymark p {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 26px);
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--hub-hue);
+  white-space: nowrap;
+}
+
+/* ── gate cards · porous, centered on the rail, the future ── */
+.tls-gatecard {
+  width: 250px;
+  height: auto;
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border: 1.5px dashed color-mix(in srgb, var(--hub-hue) 45%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--hub-hue) 4%, transparent);
+}
+.tls-gatetag {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10.5px;
+  color: var(--hub-hue);
+}
+.tls-conds {
   margin: 0.2rem 0 0;
-  font-family: var(--font-mono, ui-monospace, monospace);
+  padding-left: 1rem;
+  font-size: 12px;
+  line-height: 1.5;
+  color: color-mix(in srgb, currentColor 62%, transparent);
+}
+.tls-conds li { margin: 0.14rem 0; }
+
+/* ── the playhead · fixed in the stage, the record plays through it ── */
+.tls-playhead {
+  position: absolute;
+  left: 38%;
+  top: 9dvh;
+  bottom: 9dvh;
+  width: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--hub-hue) 50%, transparent) 28%,
+    color-mix(in srgb, var(--hub-hue) 50%, transparent) 72%,
+    transparent
+  );
+}
+.tls-playhead::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -3.5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hub-hue);
+  opacity: 0.85;
+  transform: translateY(-50%);
+}
+
+/* ── the counters · year huge and dim, the era under it ── */
+.tls-year {
+  position: absolute;
+  top: 84px;
+  right: clamp(24px, 6vw, 96px);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  color: color-mix(in srgb, currentColor 40%, transparent);
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tls-eraname {
+  position: absolute;
+  top: calc(84px + clamp(2.6rem, 5.4vw, 4.3rem));
+  right: clamp(24px, 6vw, 96px);
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hub-hue);
+}
+
+/* ── the minimap · every entry a tick, the head rides it ── */
+.tls-minimap {
+  position: absolute;
+  bottom: 7dvh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(460px, 46vw);
+  height: 24px;
+  pointer-events: none;
+}
+.tls-mstrip {
+  position: relative;
+  height: 100%;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+}
+.tls-tick {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  border-radius: 1px 1px 0 0;
+  transform: translateX(-50%);
+}
+.tls-tick[data-kind='release'] {
+  height: 19px;
+  background: color-mix(in srgb, var(--hub-hue) 80%, transparent);
+}
+.tls-tick[data-kind='milestone'] {
+  height: 9px;
+  background: color-mix(in srgb, currentColor 45%, transparent);
+}
+.tls-tick[data-kind='gate'] {
+  height: 13px;
+  background: transparent;
+  border-left: 1.5px dashed color-mix(in srgb, var(--hub-hue) 55%, transparent);
+  width: 0;
+}
+.tls-mnow {
+  position: absolute;
+  bottom: -3px;
+  width: 2px;
+  height: 27px;
+  transform: translateX(-50%);
+  background: var(--hub-hue);
+}
+.tls-mini-ph {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 2px;
+  height: 30px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.75;
+}
+
+/* ── the terminus · lands with the last card ── */
+.tls-terminus {
+  position: absolute;
+  right: clamp(24px, 6vw, 96px);
+  bottom: 13dvh;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.tls-stage[data-end] .tls-terminus {
+  opacity: 1;
+  transform: none;
+}
+.tls-pulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hub-hue);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tls-stage[data-end] .tls-pulse { animation: tlsPulse 2.4s ease-in-out infinite; }
+}
+.tls-terminus p {
+  margin: 0;
+  font-size: 12px;
+  color: color-mix(in srgb, currentColor 55%, transparent);
+}
+
+.tls-hint {
+  margin: 0.4rem 0 0;
   font-size: 0.7rem;
   opacity: 0.4;
-  text-align: right;
-}
-
-@media (max-width: 640px) {
-  .tl-track { height: 330px; }
-  .tl-card { width: 168px; }
+  text-align: center;
 }
