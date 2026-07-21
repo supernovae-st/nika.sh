@@ -89,7 +89,7 @@ data language (jq) · workflows are callable · mock-first.
 
 Shipping in the open (v0.105.0, real semver toward 1.0). The 42-organ skeleton is admitted crate by crate (the repo README carries the live count). Each passes
 a 12-gate admission (TDD, mutation testing ≥90%, zero `.unwrap()` in src).
-Language v0.1 public spec is live; 1.0: summer 2026.
+Language v0.1 public spec is live; 1.0 is readiness-gated: the timeline carries the gates (conditions, never dates).
 Building in public.
 
 ## License
