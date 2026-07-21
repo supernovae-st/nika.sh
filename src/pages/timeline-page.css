@@ -1,13 +1,95 @@
-/* /timeline · the one verifiable record — calm ledger over the hub base.
-   The hue is the amber of the archive lamp; proof badges are the only
-   color accents (proved = the hub hue · unprovable = muted, honest). */
+/* /timeline · the one verifiable record — the register grammar (the
+   /providers · /tools · /errors family: v4sec* header, StampStrip,
+   cl-year-* band heads — shared rules always loaded, pages are
+   sync-imported). This file adds only the tl- (ledger) and tls- (stage)
+   vocabulary. The hue is the amber of the archive lamp (--hub-hue, set
+   inline on <main>): proof badges and the stage keep it as the page's
+   only color accents; every new register surface below is ink-mix
+   monochrome. SSR-safe: pure CSS. */
 
+/* ── the register shell · page scope + the house top offset ─────────────────
+   min-height paints the dark surface under the fixed nav; the first wrap
+   clears it (the tools/errors constant). The ledger wrap sits under the
+   stage — it needs reading rhythm, not nav headroom. */
+.tl-page {
+  min-height: 100vh;
+}
+.tl-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.tl-page .tl-head {
+  padding-bottom: clamp(28px, 5vh, 56px);
+}
+.tl-page .tl-ledger {
+  padding-top: clamp(36px, 6vh, 72px);
+}
+.tl-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* ── the authority line · the SSOT and its verifier, in mono ──────────────── */
+.tl-authority {
+  margin: 14px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+.tl-authority a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.tl-authority a:hover,
+.tl-authority a:focus-visible {
+  color: var(--v4-text);
+}
+.tl-authority a:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 3px;
+}
+
+/* ── era + gates buckets · register band heads over the ledger ──────────────
+   The h2 rides the shared cl-year-n recipe; era titles are long, so the
+   nowrap is released. Deep-link ids (#exploration · #brouillon · #diamond
+   · #gates) keep nav headroom via scroll-margin. */
+.tl-era,
+.tl-gates {
+  margin-top: clamp(44px, 6vh, 72px);
+  scroll-margin-top: 120px;
+}
+.tl-era:first-of-type {
+  margin-top: 0;
+}
+.tl-era-n {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: normal;
+}
 .tl-span {
-  margin: -0.4rem 0 0.6rem;
-  font-family: var(--font-mono, ui-monospace, monospace);
+  margin: 12px 0 0;
+  font-family: var(--mono);
   font-size: 0.78rem;
   letter-spacing: 0.04em;
-  opacity: 0.55;
+  color: color-mix(in srgb, var(--v4-text) 55%, transparent);
+}
+.tl-story {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 66ch;
+}
+
+/* ── the closing line · forward motion ────────────────────────────────────── */
+.tl-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
 }
 
 .tl-entries {

@@ -1,0 +1,203 @@
+/* ─── /proof page · the proof register ────────────────────────────────────────
+   Speaks the register grammar the /errors + /tools + /providers family
+   established (StampStrip · .cl-year-head — pages are sync-imported so the
+   shared rules are always loaded). This file adds only the pf- vocabulary:
+   the band sections, the anchored member rows (conformance levels · oracle
+   tools), the receipt slot plate, the rail lines, the authority line.
+   Monochrome blueprint in ink percentages; the page hue (--hub-hue · the
+   proof green, set inline by the page) survives ONLY as the deep-link
+   :target bar and the rail hover underline: the structure unified, the
+   identity stayed. Zero hex, zero inline ms (design-graph laws 3 + 5).
+   SSR-safe: pure CSS. */
+
+.pf-page {
+  min-height: 100vh;
+}
+.pf-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.pf-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* ── the authority line · compact mono under the lede ──────────────────────── */
+.pf-src {
+  margin: 12px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+.pf-src a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pf-src a:hover,
+.pf-src a:focus-visible {
+  color: var(--v4-text);
+}
+.pf-src a:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 3px;
+}
+
+/* ── the bands · reuse the year-head rule line ─────────────────────────────── */
+.pf-band {
+  margin-top: clamp(40px, 5vh, 60px);
+  scroll-margin-top: 120px;
+}
+.pf-band-n {
+  /* the band label is a real h2 (the old outline survives the swap) —
+     .cl-year-n owns the mono voice; this only resets the heading box */
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pf-gloss {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+.pf-gloss code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+}
+/* layout gap only — the terminal styles itself (living-terminal.css) */
+.pf-band .lterm {
+  margin-top: 14px;
+}
+
+/* ── the member rows · anchored, hairline-ruled ────────────────────────────── */
+.pf-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+.pf-row {
+  padding: 12px 10px 13px 14px;
+  border-top: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+  scroll-margin-top: 120px;
+}
+.pf-row:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 10%, transparent);
+}
+.pf-row-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pf-id {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--v4-text);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 25%, transparent);
+}
+.pf-id:hover,
+.pf-id:focus-visible {
+  border-bottom-color: var(--v4-text);
+}
+.pf-id:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 3px;
+}
+.pf-wave {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  padding: 1.5px 6px;
+  border: 1px dashed color-mix(in srgb, var(--v4-text) 25%, transparent);
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+  cursor: help;
+}
+.pf-desc {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+  max-width: 74ch;
+}
+
+/* the deep-link highlight · the ONE place the layer hue survives */
+.pf-row:target {
+  border-left: 3px solid var(--hub-hue, var(--v4-text));
+  padding-left: 11px;
+  background: color-mix(in srgb, var(--hub-hue, var(--v4-text)) 6%, transparent);
+}
+
+/* ── the receipt slot plate · dashed = ratified, unfilled (the W5 law) ─────── */
+.pf-slot {
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  border: 1px dashed color-mix(in srgb, var(--v4-text) 22%, transparent);
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 56ch;
+}
+.pf-slot code {
+  font-family: var(--mono);
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+}
+
+/* ── the rail lines · outgoing links, one mono line per band ───────────────── */
+.pf-refs {
+  margin: 14px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.pf-ref {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 25%, transparent);
+}
+.pf-ref:hover,
+.pf-ref:focus-visible {
+  color: var(--v4-text);
+  border-bottom-color: var(--hub-hue, var(--v4-text));
+}
+.pf-ref:focus-visible {
+  outline: 1px solid var(--v4-text);
+  outline-offset: 3px;
+}
+.pf-ref-k {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+
+/* ── the closing line ──────────────────────────────────────────────────────── */
+.pf-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}
+
+@media (max-width: 560px) {
+  .pf-row-head {
+    gap: 8px;
+  }
+  .pf-desc {
+    font-size: 13.5px;
+  }
+}
