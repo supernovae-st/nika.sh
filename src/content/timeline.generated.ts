@@ -2,7 +2,7 @@
    Source of truth: nika-spec timeline/timeline.yaml (verified by the
    spec's own CI · timeline/verify.py). Regenerate: node scripts/vendor-timeline.mjs */
 export const TIMELINE = {
-  "lastUpdated": "2026-07-20",
+  "lastUpdated": "2026-07-21",
   "eras": [
     {
       "id": "exploration",
@@ -285,6 +285,21 @@ export const TIMELINE = {
           }
         },
         {
+          "date": "2026-07-06",
+          "precision": "day",
+          "type": "milestone",
+          "version": null,
+          "title": "The registry opens",
+          "detail": "supernovae-st/nika-registry goes public at its root commit: shared workflows, none taken on trust. Every entry is machine re-proven in CI: pinned sha256 · conformance oracle · engine cert.",
+          "component": "registry",
+          "evidence": {
+            "class": "github-commit",
+            "provable": true,
+            "href": "https://github.com/supernovae-st/nika-registry/commit/9f79981021d257c09975be81e13549e645d4bb89",
+            "note": null
+          }
+        },
+        {
           "date": "2026-07-12",
           "precision": "day",
           "type": "release",
@@ -371,6 +386,36 @@ export const TIMELINE = {
             "class": "scorecard",
             "provable": false,
             "href": "https://scorecard.dev/viewer/?uri=github.com/supernovae-st/nika",
+            "note": null
+          }
+        },
+        {
+          "date": "2026-07-20",
+          "precision": "day",
+          "type": "milestone",
+          "version": null,
+          "title": "The record itself ships",
+          "detail": "timeline/timeline.yaml and verify.py land in the spec: the project's history becomes one machine-verified SSOT. Every provable claim is re-proven in CI: push · PR · weekly cron.",
+          "component": "spec",
+          "evidence": {
+            "class": "github-pr",
+            "provable": true,
+            "href": "https://github.com/supernovae-st/nika-spec/pull/155",
+            "note": null
+          }
+        },
+        {
+          "date": "2026-07-20",
+          "precision": "day",
+          "type": "milestone",
+          "version": null,
+          "title": "Releases earn their front page",
+          "detail": "Release notes render from the changelog section: What · Install · Verify · Provenance. Verify carries SHA256SUMS · gh attestation · the SLSA intoto asset.",
+          "component": "engine",
+          "evidence": {
+            "class": "github-pr",
+            "provable": true,
+            "href": "https://github.com/supernovae-st/nika/pull/664",
             "note": null
           }
         }
