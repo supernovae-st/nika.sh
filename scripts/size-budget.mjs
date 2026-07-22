@@ -64,6 +64,16 @@
    rows + band heads ride the entry with the sync-routed pages they serve
    (the WO-7 class: the weight IS the pages); measured 366.8 · margin ~1.2
    (the bite-on-growth grammar holds).
+   368→369 timeline-chapters: the chapter chips (deep links the stage
+   SEEKS · the discoverability of the hash law) + the ledger's today
+   divider + era openings on the minimap ride the entry with the
+   record page they serve (the WO-7 class); measured 368.4 · margin
+   ~0.6 (the bite-on-growth grammar holds).
+   369→370 timeline-plays: the play affordance (the record travels
+   itself at reading pace · the keyboard's one door into the stage's
+   motion · any gesture takes the wheel back) + the terminus's silent
+   butterfly ride the entry with the record page (the WO-7 class);
+   measured 369.1 · margin ~0.9 (the bite-on-growth grammar holds).
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -71,7 +81,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 368
+const BUDGET_KB = 370
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

@@ -96,6 +96,23 @@ const TRACK: TrackItem[] = [
 const ENTRY_COUNT = TRACK.filter((t) => t.kind === 'entry').length
 const PROVEN_COUNT = TRACK.filter((t) => t.kind === 'entry' && t.e.evidence.provable).length
 
+/* the chapters · one chip per era + the gates. The href is the era's
+   deep-link id: the ledger scrolls natively, the stage SEEKS (toHash).
+   Era openings derive from each era's first dated entry — never typed. */
+const CHAPTERS = [
+  ...TIMELINE.eras.map((era) => ({
+    id: era.id,
+    glyph: ERA_GLYPH[era.id] ?? '·',
+    label: era.title.replace(/^The /, ''),
+  })),
+  { id: 'gates', glyph: '◇', label: 'The gates' },
+]
+const ERA_OPENINGS = TIMELINE.eras.flatMap((era) =>
+  era.entries.length > 0
+    ? [{ id: era.id as string, glyph: ERA_GLYPH[era.id] ?? '·', date: era.entries[0].date as string }]
+    : [],
+)
+
 /* band counts pluralize over a widened number — the SSOT tuples carry
    literal lengths, and `=== 1` on a literal that is never 1 is a TS2367 */
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
@@ -120,6 +137,45 @@ const PLAYHEAD = 0.38
 
 function Stage() {
   const [mode, setMode] = useState<'v' | 'h'>('v')
+  const [playing, setPlaying] = useState(false)
+  const [flies, setFlies] = useState<number[]>([])
+  const geomRef = useRef({ wrapTop: 0, trackScroll: 0 })
+
+  /* ▶ the record plays itself at reading pace · any gesture takes the
+     wheel back (wheel/touch/pointer/key). Also the keyboard's one door
+     into the stage's motion — the button is real, never aria-hidden.
+     House law: the imperative lives in an effect, exposed by ref. */
+  const playCtl = useRef<{ start: () => void; stop: () => void } | null>(null)
+  useEffect(() => {
+    let raf = 0
+    const CANCEL = ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const
+    const stop = () => {
+      cancelAnimationFrame(raf)
+      for (const ev of CANCEL) window.removeEventListener(ev, stop)
+      setPlaying(false)
+    }
+    const start = () => {
+      const to = geomRef.current.wrapTop + geomRef.current.trackScroll
+      const from = window.scrollY
+      if (to - from < 40) return
+      const dur = Math.max(6000, ((to - from) / 380) * 1000)
+      const t0 = performance.now()
+      setPlaying(true)
+      for (const ev of CANCEL) window.addEventListener(ev, stop, { passive: true })
+      const step = (now: number) => {
+        const t = Math.min(1, (now - t0) / dur)
+        window.scrollTo(0, from + (to - from) * t)
+        if (t < 1) raf = requestAnimationFrame(step)
+        else stop()
+      }
+      raf = requestAnimationFrame(step)
+    }
+    playCtl.current = { start, stop }
+    return () => {
+      stop()
+      playCtl.current = null
+    }
+  }, [])
   const wrapRef = useRef<HTMLDivElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLOListElement>(null)
@@ -168,6 +224,7 @@ function Stage() {
       trackScroll = Math.max(0, track.scrollWidth - stage.clientWidth)
       wrap.style.height = `calc(100dvh + ${trackScroll}px)`
       wrapTop = wrap.getBoundingClientRect().top + window.scrollY
+      geomRef.current = { wrapTop, trackScroll }
       miniW = (minimapRef.current?.clientWidth ?? 0) - 2
       centers = [...track.querySelectorAll<HTMLElement>('.tls-ent')].map((el) => ({
         el,
@@ -326,6 +383,11 @@ function Stage() {
               {TIMELINE.gates.map((g, i) => (
                 <span key={g.id} className="tls-tick" data-kind="gate" style={{ left: gateSeat(i) }} />
               ))}
+              {ERA_OPENINGS.map((e) => (
+                <span key={e.id} className="tls-mera" style={{ left: seatOf(e.date) }}>
+                  {e.glyph}
+                </span>
+              ))}
               <span className="tls-mnow" style={{ left: NOW_SEAT }} />
             </div>
             <span className="tls-mini-ph" ref={miniRef} />
@@ -340,6 +402,9 @@ function Stage() {
                     <p className="tls-era-lab mono">
                       {ERA_GLYPH[it.era.id]} {it.era.title}
                       <span>{it.era.span}</span>
+                      <span className="tls-era-count">
+                        {plural(it.era.entries.length, 'dated entry', 'dated entries')}
+                      </span>
                     </p>
                   </li>
                 )
@@ -388,7 +453,15 @@ function Stage() {
           </ol>
 
           {/* the terminus lands with the last card */}
-          <div className="tls-terminus">
+          <div
+            className="tls-terminus"
+            onClick={() => setFlies((f) => (f.length > 5 ? f : [...f, Date.now()]))}
+          >
+            {flies.map((id) => (
+              <span key={id} className="tls-fly" onAnimationEnd={() => setFlies((f) => f.filter((x) => x !== id))}>
+                🦋
+              </span>
+            ))}
             <span className="tls-pulse" />
             <p className="mono">
               re-proven in CI · verified <time dateTime={TIMELINE.lastUpdated}>{TIMELINE.lastUpdated}</time>
@@ -396,9 +469,19 @@ function Stage() {
           </div>
         </div>
       </div>
-      <p className="tls-hint mono" aria-hidden="true">
-        scroll plays the record · drag the strip to travel · the full ledger is below
-      </p>
+      <div className="tls-hintrow">
+        <button
+          type="button"
+          className="tls-play mono"
+          onClick={() => (playing ? playCtl.current?.stop() : playCtl.current?.start())}
+          aria-label={playing ? 'Take the wheel back' : 'Play the record: travel it end to end at reading pace'}
+        >
+          {playing ? '⏸ take the wheel' : '▶ play the record'}
+        </button>
+        <p className="tls-hint mono" aria-hidden="true">
+          scroll plays the record · drag the strip to travel · the full ledger is below
+        </p>
+      </div>
     </div>
   )
 }
@@ -461,6 +544,16 @@ export function Component() {
               { n: TIMELINE.gates.length, label: 'gates ahead', sub: 'conditions, never dates' },
             ]}
           />
+
+          {/* the chapters · deep links the whole page understands: the ledger
+              scrolls, the stage SEEKS the era onto the playhead (toHash) */}
+          <nav className="tl-chapters mono" aria-label="Chapters" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
+            {CHAPTERS.map((c) => (
+              <a key={c.id} className="tl-chapter" href={`#${c.id}`}>
+                <span aria-hidden>{c.glyph}</span> {c.label}
+              </a>
+            ))}
+          </nav>
         </div>
 
         <Stage />
@@ -503,6 +596,13 @@ export function Component() {
               )}
             </section>
           ))}
+
+          {/* the past closes here · the same pulse the stage carries */}
+          <div className="tl-today-divider mono" data-rise aria-hidden="true">
+            <span className="tl-today-dot" />
+            today · <time dateTime={TIMELINE.lastUpdated}>{TIMELINE.lastUpdated}</time> ·
+            re-proven in CI
+          </div>
 
           <section
             className="tl-gates"
