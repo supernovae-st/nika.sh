@@ -443,14 +443,25 @@ export const TIMELINE = {
       "note": "The declared pre-condition of the official 1.0."
     },
     {
+      "id": "contract-system",
+      "title": "The contract system · everything carries a contract",
+      "conditions": [
+        "everything that crosses a boundary carries a contract: types · declared errors · effects · bounds · determinism · protocol",
+        "every composition is proven, and unknown information stays visible: Unknown is never dressed as success",
+        "every dynamic verification is attributable, and no capability exercises more authority than its type announces"
+      ],
+      "note": "The five-law constitution, ratified 2026-07-20 · lands before 1.0."
+    },
+    {
       "id": "connectome",
       "title": "The Connectome · memory enters the contract",
       "conditions": [
+        "the sovereign memory ships whole: the connectome orchestrator and its satellites, admitted through the same 12 gates",
         "recall and ingest ship as builtin tools under invoke: never a new verb (the 4 verbs are absolute)",
         "the zero-LLM write path holds: memory is written by deterministic code, never by a model's output",
-        "the store digest is pinned in receipts, so recall is replayable"
+        "the store is exportable on open standards, and its digest is pinned in receipts, so recall is replayable"
       ],
-      "note": "Lands before 1.0 · a declared pre-condition of the official launch."
+      "note": "Lands whole before 1.0 · a declared pre-condition of the official launch."
     },
     {
       "id": "v1",
@@ -460,7 +471,7 @@ export const TIMELINE = {
         "real traction, honestly measured",
         "a launch crafted to the same bar as the language",
         "the Scorecard bar met (10/10)",
-        "the contract system and the Connectome capabilities land first: 1.0 is the culmination, not the start"
+        "the contract system and the Connectome land whole: 1.0 is the culmination, not the start"
       ],
       "note": null
     },
