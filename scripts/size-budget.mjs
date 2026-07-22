@@ -74,6 +74,13 @@
    motion · any gesture takes the wheel back) + the terminus's silent
    butterfly ride the entry with the record page (the WO-7 class);
    measured 369.1 · margin ~0.9 (the bite-on-growth grammar holds).
+   370→372 changelog-catchup: six engine releases join the ship log
+   (0.100 → 0.105 · the register is entry-resident BY DESIGN: the home
+   preview and the sync-routed /changelog both read it first-render),
+   and the catch-up ratchet now BINDS the log to the ENGINE_VERSION
+   pin, so this class of growth arrives with every engine release,
+   deliberately; measured 370.7 · margin ~1.3 (the bite-on-growth
+   grammar holds).
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -81,7 +88,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 370
+const BUDGET_KB = 372
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
