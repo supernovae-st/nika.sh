@@ -433,7 +433,13 @@ function Stage() {
               const { e, era } = it
               const rel = e.type === 'release'
               return (
-                <li key={i} className="tls-ent" data-kind={rel ? 'release' : 'milestone'} data-era={era}>
+                <li
+                  key={i}
+                  className="tls-ent"
+                  data-kind={rel ? 'release' : 'milestone'}
+                  data-era={era}
+                  data-proof={e.evidence.provable ? 'proven' : 'labeled'}
+                >
                   <span className="tls-glyph" />
                   <span className="tls-stem" />
                   <p className="tls-date mono">
@@ -570,6 +576,9 @@ export function Component() {
             >
               <div className="cl-year-head">
                 <h2 className="cl-year-n tl-era-n" id={`${era.id}-title`}>
+                  <span className="tl-era-glyph" aria-hidden="true">
+                    {ERA_GLYPH[era.id]}
+                  </span>{' '}
                   {era.title}
                 </h2>
                 <span className="cl-year-rule" aria-hidden />
