@@ -60,5 +60,5 @@ jobs:
           git push -f origin bot/release-heal
           gh pr create --head bot/release-heal \
             --title "chore(version): every carrier follows $tag" \
-            --body "Automated heal (ONE lane: sync-version.mjs · transcript CAPTURED from the checksum-verified release binary: \`$captured\`). version-truth judges; merge on green." \
+            --body "Automated heal (ONE lane: sync-version.mjs · transcript CAPTURED from the checksum-verified release binary: \`$captured\`). version-truth judges. NOTE: the catch-up ratchet (changelog.test.ts) holds this PR RED until the new release has its ship-log entry in src/content/changelog.ts — write the entry (the register voice · count-free · date from the tag), then merge on green." \
             2>/dev/null || echo "PR already open — refreshed"

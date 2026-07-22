@@ -57,7 +57,27 @@ for (const entry of entries) {
 }
 console.log(`doorways: ${doors}/${entries.length} conforming stubs`)
 
-/* 3 · machine twins — every agent-facing surface parses */
+/* 3 · share cards — every card the generator table declares answers 200
+   as a real png (derived from build-og-card.mjs — the same source the
+   repo-side og-cards.test.ts ratchet reads: one law, two judges; the
+   og-timeline 404 of 2026-07-22 is the incident this block converts). */
+import { readFileSync } from 'node:fs'
+const cardSrc = readFileSync(new URL('../build-og-card.mjs', import.meta.url), 'utf8')
+const cards = [...cardSrc.matchAll(/out: '(og[^']*\.png)'/g)].map((m) => m[1])
+let shares = 0
+for (const card of cards) {
+  try {
+    const res = await get(`${BASE}/${card}`)
+    if (res.status !== 200) throw new Error(`status ${res.status}`)
+    if (!(res.headers.get('content-type') ?? '').includes('image/png')) throw new Error('not a png')
+    shares += 1
+  } catch (err) {
+    fails.push(`share card /${card} → ${err.message}`)
+  }
+}
+console.log(`share cards: ${shares}/${cards.length} × 200 png`)
+
+/* 4 · machine twins — every agent-facing surface parses */
 const MACHINE = [
   ['/errors/catalog.json', 'json'],
   ['/tools/catalog.json', 'json'],
