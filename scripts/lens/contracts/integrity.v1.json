@@ -47,7 +47,7 @@
   },
   {
    "path": "scripts/build-og-card.mjs",
-   "sha256": "cd7ef4f10f6ed73154abdfff688d2be6263b8769de71be9302dc6e3e94c6844e"
+   "sha256": "1808c09c6c9e3f263da19b979124b87c45902fd8fe000d7fa2a32c28e1e12b1d"
   },
   {
    "path": "scripts/build-lens-semantic-contracts.mjs",
