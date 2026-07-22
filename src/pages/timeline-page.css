@@ -125,6 +125,7 @@
 .tl-era:first-of-type {
   margin-top: 0;
 }
+.tl-era-glyph { color: var(--hub-hue); }
 .tl-era-n {
   margin: 0;
   letter-spacing: 0.12em;
@@ -277,6 +278,10 @@
   will-change: transform;
 }
 /* the baseline spans the whole track · warm at both ends */
+/* the baseline BRIGHTENS as the record becomes provable: dim through the
+   testimony dawn, warming through the brouillon, full amber by the proven
+   diamond run, softening into the porous future — the epistemology drawn
+   as light. */
 .tls-track::before {
   content: '';
   position: absolute;
@@ -286,10 +291,12 @@
   height: 1px;
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, var(--hub-hue) 40%, transparent),
-    color-mix(in srgb, currentColor 22%, transparent) 10%,
-    color-mix(in srgb, currentColor 22%, transparent) 88%,
-    color-mix(in srgb, var(--hub-hue) 52%, transparent)
+    color-mix(in srgb, currentColor 12%, transparent),
+    color-mix(in srgb, var(--hub-hue) 22%, transparent) 22%,
+    color-mix(in srgb, var(--hub-hue) 46%, transparent) 46%,
+    color-mix(in srgb, var(--hub-hue) 68%, transparent) 72%,
+    color-mix(in srgb, var(--hub-hue) 30%, transparent) 86%,
+    color-mix(in srgb, var(--hub-hue) 14%, transparent)
   );
 }
 
@@ -303,12 +310,12 @@
   align-content: start;
   gap: 0.3rem;
   opacity: 0.45;
-  translate: 0 0;
+  translate: 0 7px;
   transition:
     opacity var(--dur-soft) var(--ease-out),
-    translate var(--dur-quick) var(--ease-out);
+    translate var(--dur-soft) var(--ease-settle);
 }
-.tls-ent[data-live] { opacity: 1; }
+.tls-ent[data-live] { opacity: 1; translate: 0 0; }
 /* the pointer lifts what it reads · hover is a preview of live */
 .tls-ent:hover { opacity: 1; translate: 0 -3px; }
 .tls-ent[data-kind='release'] { margin-bottom: 472px; align-content: end; }
@@ -323,6 +330,17 @@
 }
 .tls-ent[data-kind='release'] .tls-stem { top: 100%; height: 118px; }
 .tls-ent[data-kind='milestone'] .tls-stem { bottom: 100%; height: 118px; }
+/* the honesty contract, drawn: a labeled (unproven) claim stands on a
+   DASHED stem and a hollow mark — proof is visible before a word is read */
+.tls-ent[data-proof='labeled'] .tls-stem {
+  background: none;
+  width: 0;
+  border-left: 1px dashed color-mix(in srgb, currentColor 30%, transparent);
+}
+.tls-ent[data-proof='labeled'][data-kind='milestone'] .tls-glyph {
+  background: transparent;
+  border: 1.5px dashed color-mix(in srgb, currentColor 45%, transparent);
+}
 .tls-glyph {
   position: absolute;
   left: 13px;
