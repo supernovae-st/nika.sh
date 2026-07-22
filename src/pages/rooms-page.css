@@ -1,0 +1,98 @@
+/* ─── the room templates · /:family/:id + /use-cases/:slug ───────────────────
+   The last two hub-dialect surfaces speak the register grammar (the
+   /providers · /tools · /errors family): v4sec-* header, StampStrip,
+   cl-year-* band heads — shared rules always loaded (sync-imported pages).
+   This file adds only the room- (generic member room) and ucr- (showcase
+   room) chrome vocabulary. The member-room BODY keeps its machined dl
+   (mr-* · hubs-page.css); rails and foot ride the shared hub-* recipes the
+   Flow/Boundary/Proof family still owns. Monochrome ink-mix: zero new hex,
+   zero new media widths, zero inline durations. SSR-safe: pure CSS. */
+
+.room-page,
+.ucr-page {
+  min-height: 100vh;
+}
+.room-page .v4sec-wrap,
+.ucr-page .v4sec-wrap {
+  /* the house top offset (the tools/errors constant): the nav is fixed */
+  padding-top: clamp(124px, 16vh, 188px);
+}
+
+/* the register title wears the member id — mono, breakable anywhere */
+.room-title {
+  font-family: var(--mono);
+  letter-spacing: -0.01em;
+  max-width: 26ch;
+  overflow-wrap: anywhere;
+}
+.ucr-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* the authority line · the mono spec-truth seat under the lede (the bd/tl
+   seat) — .room-authority pairs with .st-mark (design.generated.css owns
+   the status dot recipe; design-graph law 2 pins the pairing) */
+.room-authority,
+.ucr-authority {
+  margin: 14px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+.room-authority a,
+.ucr-authority a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.room-authority a:hover,
+.room-authority a:focus-visible,
+.ucr-authority a:hover,
+.ucr-authority a:focus-visible {
+  color: var(--v4-text);
+}
+
+/* ── the register bands · band head rides the shared cl-year-head recipe;
+   deep-link ids (#facts · #siblings · #file) keep nav headroom ─────────── */
+.room-band,
+.ucr-band {
+  margin-top: clamp(40px, 5vh, 60px);
+  scroll-margin-top: 120px;
+}
+.room-band-n,
+.ucr-band-n {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ucr-band-gloss {
+  margin: 8px 0 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+
+/* the member facts dl seats under its band head at reading width */
+.room-band .mr-rows {
+  margin-top: 14px;
+  max-width: 880px;
+}
+
+/* the door up from the facts (the readout's own rail) */
+.room-door {
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+}
+.room-door a {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.room-door a:hover,
+.room-door a:focus-visible {
+  color: var(--v4-text);
+}

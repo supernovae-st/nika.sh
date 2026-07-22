@@ -4,6 +4,7 @@ import lz from 'lz-string'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { CodeFile } from '../components/CodeFile'
 import { TruthLine } from '../components/TruthLine'
+import { StampStrip } from '../components/StampStrip'
 import { Rails } from './hub-shared'
 import { UC_TABS, verbsFor, fileFor, docsFor, type UC } from '../sections/usecases-data'
 import { useEffect, useState } from 'react'
@@ -16,6 +17,7 @@ import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './hubs-page.css'
+import './rooms-page.css'
 
 const { compressToEncodedURIComponent } = lz
 
@@ -161,12 +163,12 @@ export function Component() {
      room must never render half-true plan facts (or crash the prerender) */
   if (!hit || !dag) {
     return (
-      <main className="theme-dark hub-page">
+      <main className="theme-dark ucr-page">
         <section className="v4sec v4-in">
-          <div className="v4sec-wrap hub-wrap">
-            <p className="v4-kick">the showcases</p>
-            <h1 className="v4-h2">Not a registered showcase</h1>
-            <p className="hub-opener">
+          <div className="v4sec-wrap">
+            <p className="v4sec-fig">the showcases</p>
+            <h1 className="v4sec-title">Not a registered showcase.</h1>
+            <p className="v4sec-lede">
               `{slug}` is not in the showcase corpus. Every registered workflow lives in{' '}
               <Link to="/use-cases">the gallery</Link>.
             </p>
@@ -186,23 +188,30 @@ export function Component() {
   const playHref = `/play?y=${compressToEncodedURIComponent(yaml)}`
 
   return (
-    <main className="theme-dark hub-page" style={{ ['--hub-hue' as string]: '#22d3ee' }}>
+    <main className="theme-dark ucr-page" style={{ ['--hub-hue' as string]: '#22d3ee' }}>
       <section ref={ref} aria-labelledby="ucr-title" className="v4sec v4-in">
-        <div className="v4sec-wrap hub-wrap">
+        <div className="v4sec-wrap">
           <Island id={roomIslandId(slug)} payload={yaml} />
           <Island
             id={anatomyIslandId(slug)}
             payload={anatomy ? JSON.stringify({ a: anatomy, engine: anat.engine }) : ''}
           />
           <header>
-            <p className="v4-kick">
+            <p className="v4sec-fig" data-rise>
               showcase · tier {uc.tier.slice(1)} · {hit.tab.toLowerCase()}
             </p>
-            <h1 id="ucr-title" className="v4-h2" style={{ viewTransitionName: 'uc-door' }}>
+            <h1
+              id="ucr-title"
+              className="v4sec-title ucr-title"
+              data-rise
+              style={{ ['--rise-delay' as string]: '60ms', viewTransitionName: 'uc-door' }}
+            >
               {uc.title}
             </h1>
-            <p className="hub-opener">{uc.body}</p>
-            <p className="hub-authority">
+            <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+              {uc.body}
+            </p>
+            <p className="ucr-authority" data-rise>
               {uc.outcome} · conformance-gated in{' '}
               <a href={`https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${slug}.nika.yaml`}>
                 nika-spec ↗
@@ -211,13 +220,35 @@ export function Component() {
             </p>
           </header>
 
-          <section className="hub-sec" id="file" aria-labelledby="ucr-file-title">
-            <h2 className="hub-sec-title" id="ucr-file-title">
-              The whole file
-            </h2>
-            <p className="hub-sec-note">
-              {dag.tasks.length} tasks · {dag.waves} wave{dag.waves > 1 ? 's' : ''} · the plan
-              falls out of the bindings, nothing is scheduled by hand.
+          {/* the room's dimensions, at a glance — every figure derived from the projected plan */}
+          <StampStrip
+            items={[
+              { n: dag.tasks.length, label: dag.tasks.length === 1 ? 'task' : 'tasks', sub: 'the plan falls out of the bindings' },
+              { n: dag.waves, label: dag.waves === 1 ? 'wave' : 'waves', sub: 'parallel by construction' },
+              { n: verbs.length, label: 'verbs exercised', sub: verbs.join(' · ') },
+              { n: uc.tier, label: 'the tier', sub: hit.tab.toLowerCase() },
+            ]}
+          />
+
+          <section
+            className="ucr-band"
+            id="file"
+            aria-labelledby="ucr-file-title"
+            data-rise
+            style={{ ['--rise-delay' as string]: '180ms' }}
+          >
+            <div className="cl-year-head">
+              <h2 className="cl-year-n ucr-band-n" id="ucr-file-title">
+                The whole file
+              </h2>
+              <span className="cl-year-rule" aria-hidden />
+              <span className="cl-year-count">
+                {dag.tasks.length} {dag.tasks.length === 1 ? 'task' : 'tasks'} · {dag.waves} wave
+                {dag.waves > 1 ? 's' : ''}
+              </span>
+            </div>
+            <p className="ucr-band-gloss">
+              The plan falls out of the bindings, nothing is scheduled by hand.
             </p>
             <div className={anatomy ? 'ucr-anatomy-grid' : undefined}>
               <CodeFile
@@ -254,8 +285,20 @@ export function Component() {
             />
           </section>
 
-          <nav className="hub-sec" id="siblings" aria-label="More showcases in this tier">
-            <h2 className="hub-sec-title">In the same tier</h2>
+          <nav
+            className="ucr-band"
+            id="siblings"
+            aria-label="More showcases in this tier"
+            data-rise
+            style={{ ['--rise-delay' as string]: '210ms' }}
+          >
+            <div className="cl-year-head">
+              <h2 className="cl-year-n ucr-band-n">In the same tier</h2>
+              <span className="cl-year-rule" aria-hidden />
+              <span className="cl-year-count">
+                {tier.length} {tier.length === 1 ? 'showcase' : 'showcases'}
+              </span>
+            </div>
             <div className="hub-rails">
               {prev && (
                 <Link className="hub-rail" to={`/use-cases/${prev.slug}`}>

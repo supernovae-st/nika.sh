@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { TruthLine } from '../components/TruthLine'
+import { StampStrip } from '../components/StampStrip'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import { ssrReadout, loadReadout } from '../lib/member-room-access'
 import type { Readout } from '../shell/inspector-readout'
@@ -10,6 +11,7 @@ import { Island } from '../lib/ssg-island'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './hubs-page.css'
+import './rooms-page.css'
 
 /* ─── the generic member room · one route, every family ──────────────────────
    (rooms universelles · operator verdict 2026-07-18: « chaque élément a sa
@@ -20,9 +22,15 @@ import './hubs-page.css'
    prev/next chaining the set, and the TruthLine. The graph stays a lazy
    chunk (member-room-access); the prerendered HTML carries the whole
    readout as bytes (deep links land on content, not on a fetch). An
-   unknown family or member renders the honest miss. */
+   unknown family or member renders the honest miss. The chrome speaks the
+   register grammar (the /providers · /tools · /errors family). */
 
 const islandId = (family: string, id: string) => `mr-${family}-${id}`
+
+/* the atlas' roomed dimensions · derived from the registry, never typed
+   (the count-source law) — the stamp figures below read these */
+const ROOM_FAMILY_COUNT = Object.keys(MEMBER_ROOM_FAMILIES).length
+const ROOM_COUNT = Object.values(MEMBER_ROOM_FAMILIES).reduce((n, f) => n + f.members.length, 0)
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
@@ -94,12 +102,12 @@ export function Component() {
 
   if (!fam || !member) {
     return (
-      <main className="theme-dark hub-page">
+      <main className="theme-dark room-page">
         <section className="v4sec v4-in">
-          <div className="v4sec-wrap hub-wrap">
-            <p className="v4-kick">the registers</p>
-            <h1 className="v4-h2">Not a registered member</h1>
-            <p className="hub-opener">
+          <div className="v4sec-wrap">
+            <p className="v4sec-fig">the registers</p>
+            <h1 className="v4sec-title">Not a registered member.</h1>
+            <p className="v4sec-lede">
               `{family}/{id}` names nothing in the atlas.{' '}
               {fam ? (
                 <>
@@ -121,21 +129,20 @@ export function Component() {
   const next = at < fam.members.length - 1 ? fam.members[at + 1] : undefined
 
   return (
-    <main className="theme-dark hub-page">
+    <main className="theme-dark room-page">
       <section ref={ref} aria-labelledby="mr-title" className="v4sec v4-in">
-        <div className="v4sec-wrap hub-wrap">
+        <div className="v4sec-wrap">
           <Island
             id={islandId(family, id)}
             payload={readout ? JSON.stringify(readout) : ''}
           />
           <header>
-            <p className="v4-kick">
+            <p className="v4sec-fig" data-rise>
               <Link to={fam.hub} className="mr-up">
                 {fam.title}
-              </Link>{' '}
-              · {at + 1}/{fam.members.length}
+              </Link>
             </p>
-            <h1 id="mr-title" className="v4-h2 mono">
+            <h1 id="mr-title" className="v4sec-title room-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
               {readout?.kindGlyph ? (
                 <span className="mr-glyph k-glyph" data-kind={readout.kind ?? undefined}>
                   {readout.kindGlyph}{' '}
@@ -143,17 +150,44 @@ export function Component() {
               ) : null}
               {member.title}
             </h1>
-            {readout?.opener && <p className="hub-opener">{readout.opener}</p>}
+            {readout?.opener && (
+              <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+                {readout.opener}
+              </p>
+            )}
             {readout?.status && (
-              <p className="hub-authority st-mark mono" data-status={readout.status}>
+              <p className="room-authority st-mark" data-status={readout.status} data-rise>
                 {readout.status} · derived from the pinned spec and the released engine ·
                 re-proven at every push
               </p>
             )}
           </header>
 
+          {/* the room's dimensions, at a glance — every figure derived from the registry */}
+          <StampStrip
+            items={[
+              { n: at + 1, label: 'the seat', sub: `of ${fam.members.length} · prev / next walk it` },
+              { n: fam.members.length, label: 'in this register', sub: fam.title.toLowerCase() },
+              { n: ROOM_FAMILY_COUNT, label: 'roomed registers', sub: 'one route serves them all' },
+              { n: ROOM_COUNT, label: 'rooms in the atlas', sub: 'this page is one of them' },
+            ]}
+          />
+
           {readout && readout.rows.length > 0 && (
-            <section className="hub-sec" id="facts" aria-label="The member's facts">
+            <section
+              className="room-band"
+              id="facts"
+              aria-label="The member's facts"
+              data-rise
+              style={{ ['--rise-delay' as string]: '180ms' }}
+            >
+              <div className="cl-year-head">
+                <span className="cl-year-n room-band-n">the facts</span>
+                <span className="cl-year-rule" aria-hidden />
+                <span className="cl-year-count">
+                  {readout.rows.length} {readout.rows.length === 1 ? 'row' : 'rows'}
+                </span>
+              </div>
               <dl className="mr-rows">
                 {readout.rows.map((r, i) => (
                   <div className="mr-row" key={i}>
@@ -173,12 +207,25 @@ export function Component() {
           )}
 
           {readout?.door && (
-            <p className="hub-sec-note">
+            <p className="room-door">
               <Link to={readout.door.href}>{readout.door.label}</Link>
             </p>
           )}
 
-          <nav className="hub-sec" id="siblings" aria-label="Neighbours in the register">
+          <nav
+            className="room-band"
+            id="siblings"
+            aria-label="Neighbours in the register"
+            data-rise
+            style={{ ['--rise-delay' as string]: '210ms' }}
+          >
+            <div className="cl-year-head">
+              <span className="cl-year-n room-band-n">neighbours</span>
+              <span className="cl-year-rule" aria-hidden />
+              <span className="cl-year-count">
+                {fam.members.length} {fam.members.length === 1 ? 'member' : 'members'} in the register
+              </span>
+            </div>
             <div className="hub-rails">
               {prev && (
                 <Link className="hub-rail" to={prev.url}>
