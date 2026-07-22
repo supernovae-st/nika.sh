@@ -2,7 +2,7 @@
    Source of truth: nika-spec timeline/timeline.yaml (verified by the
    spec's own CI · timeline/verify.py). Regenerate: node scripts/vendor-timeline.mjs */
 export const TIMELINE = {
-  "lastUpdated": "2026-07-21",
+  "lastUpdated": "2026-07-22",
   "eras": [
     {
       "id": "exploration",
@@ -443,13 +443,24 @@ export const TIMELINE = {
       "note": "The declared pre-condition of the official 1.0."
     },
     {
+      "id": "connectome",
+      "title": "The Connectome · memory enters the contract",
+      "conditions": [
+        "recall and ingest ship as builtin tools under invoke: never a new verb (the 4 verbs are absolute)",
+        "the zero-LLM write path holds: memory is written by deterministic code, never by a model's output",
+        "the store digest is pinned in receipts, so recall is replayable"
+      ],
+      "note": "Lands before 1.0 · a declared pre-condition of the official launch."
+    },
+    {
       "id": "v1",
       "title": "1.0.0 · the first official launch",
       "conditions": [
         "rc gate green + feedback rounds absorbed",
         "real traction, honestly measured",
         "a launch crafted to the same bar as the language",
-        "the Scorecard bar met (10/10)"
+        "the Scorecard bar met (10/10)",
+        "the contract system and the Connectome capabilities land first: 1.0 is the culmination, not the start"
       ],
       "note": null
     },
@@ -469,14 +480,6 @@ export const TIMELINE = {
         "the grammar refonte lands and its cascade is green",
         "the reserve/specify/refuse checklist is fully resolved",
         "exit criteria published · six months of zero normative change outside the NEP door proves the freeze"
-      ],
-      "note": null
-    },
-    {
-      "id": "connectome-era",
-      "title": "The Connectome era",
-      "conditions": [
-        "opens after 1.0 · un-numbered until declared"
       ],
       "note": null
     }
