@@ -172,7 +172,7 @@ const CARDS = [
     out: 'og-timeline.png',
     fig: 'FIG T.0',
     headline: 'The one<br><span class="b">verifiable record.</span>',
-    sub: 'Born January&nbsp;1, 2026 · 79 versions in 103 days · rewritten from scratch. Every dated claim re-proven in&nbsp;CI.',
+    sub: 'Three eras: the exploration through 2025, the 79-version brouillon, the diamond rewrite. Every provable claim re-proven in&nbsp;CI.',
     detail:
       '<span class="arrow">▸</span><span>eras<span class="sep">·</span>releases<span class="sep">·</span><b>gates,&nbsp;never&nbsp;dates</b></span>',
   },

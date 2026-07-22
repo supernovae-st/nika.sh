@@ -503,6 +503,24 @@ export function Component() {
         content:
           'Private exploration through 2025 · 79 versions in the 103-day brouillon era · rewritten from scratch April 13. Every dated claim re-proven in CI. The future carries conditions, never dates.',
       },
+      { property: 'og:title', content: 'Timeline · the one verifiable record · Nika' },
+      {
+        property: 'og:description',
+        content:
+          'Three eras: the exploration through 2025, the 79-version brouillon, the diamond rewrite. Every provable claim re-proven in CI; the future carries conditions, never dates.',
+      },
+      { property: 'og:image', content: 'https://nika.sh/og-timeline.png' },
+      {
+        property: 'og:image:alt',
+        content:
+          'Nika timeline: the one verifiable record. Three eras, every provable claim re-proven in CI, gates never dates.',
+      },
+      { name: 'twitter:title', content: 'Timeline · Nika' },
+      {
+        name: 'twitter:description',
+        content: 'The one verifiable record: eras, releases, gates never dates.',
+      },
+      { name: 'twitter:image', content: 'https://nika.sh/og-timeline.png' },
       ...head.meta,
     ],
     link: head.link,
