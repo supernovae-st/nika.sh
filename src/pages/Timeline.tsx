@@ -96,6 +96,23 @@ const TRACK: TrackItem[] = [
 const ENTRY_COUNT = TRACK.filter((t) => t.kind === 'entry').length
 const PROVEN_COUNT = TRACK.filter((t) => t.kind === 'entry' && t.e.evidence.provable).length
 
+/* the chapters · one chip per era + the gates. The href is the era's
+   deep-link id: the ledger scrolls natively, the stage SEEKS (toHash).
+   Era openings derive from each era's first dated entry — never typed. */
+const CHAPTERS = [
+  ...TIMELINE.eras.map((era) => ({
+    id: era.id,
+    glyph: ERA_GLYPH[era.id] ?? '·',
+    label: era.title.replace(/^The /, ''),
+  })),
+  { id: 'gates', glyph: '◇', label: 'The gates' },
+]
+const ERA_OPENINGS = TIMELINE.eras.flatMap((era) =>
+  era.entries.length > 0
+    ? [{ id: era.id as string, glyph: ERA_GLYPH[era.id] ?? '·', date: era.entries[0].date as string }]
+    : [],
+)
+
 /* band counts pluralize over a widened number — the SSOT tuples carry
    literal lengths, and `=== 1` on a literal that is never 1 is a TS2367 */
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
@@ -326,6 +343,11 @@ function Stage() {
               {TIMELINE.gates.map((g, i) => (
                 <span key={g.id} className="tls-tick" data-kind="gate" style={{ left: gateSeat(i) }} />
               ))}
+              {ERA_OPENINGS.map((e) => (
+                <span key={e.id} className="tls-mera" style={{ left: seatOf(e.date) }}>
+                  {e.glyph}
+                </span>
+              ))}
               <span className="tls-mnow" style={{ left: NOW_SEAT }} />
             </div>
             <span className="tls-mini-ph" ref={miniRef} />
@@ -340,6 +362,9 @@ function Stage() {
                     <p className="tls-era-lab mono">
                       {ERA_GLYPH[it.era.id]} {it.era.title}
                       <span>{it.era.span}</span>
+                      <span className="tls-era-count">
+                        {plural(it.era.entries.length, 'dated entry', 'dated entries')}
+                      </span>
                     </p>
                   </li>
                 )
@@ -461,6 +486,16 @@ export function Component() {
               { n: TIMELINE.gates.length, label: 'gates ahead', sub: 'conditions, never dates' },
             ]}
           />
+
+          {/* the chapters · deep links the whole page understands: the ledger
+              scrolls, the stage SEEKS the era onto the playhead (toHash) */}
+          <nav className="tl-chapters mono" aria-label="Chapters" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
+            {CHAPTERS.map((c) => (
+              <a key={c.id} className="tl-chapter" href={`#${c.id}`}>
+                <span aria-hidden>{c.glyph}</span> {c.label}
+              </a>
+            ))}
+          </nav>
         </div>
 
         <Stage />
@@ -503,6 +538,13 @@ export function Component() {
               )}
             </section>
           ))}
+
+          {/* the past closes here · the same pulse the stage carries */}
+          <div className="tl-today-divider mono" data-rise aria-hidden="true">
+            <span className="tl-today-dot" />
+            today · <time dateTime={TIMELINE.lastUpdated}>{TIMELINE.lastUpdated}</time> ·
+            re-proven in CI
+          </div>
 
           <section
             className="tl-gates"

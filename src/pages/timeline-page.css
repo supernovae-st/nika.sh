@@ -50,6 +50,69 @@
   outline-offset: 3px;
 }
 
+/* ── the chapters · era chips, one per deep link ─────────────────────────────
+   The ledger scrolls to the anchor; on the stage the same hash SEEKS the
+   era mark onto the playhead. Register chip voice, the page hue whispers. */
+.tl-chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 22px 0 0;
+}
+.tl-chapter {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 11px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, currentColor 62%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 999px;
+  text-decoration: none;
+  transition:
+    color var(--dur-quick) var(--ease-out),
+    border-color var(--dur-quick) var(--ease-out);
+}
+.tl-chapter span { color: var(--hub-hue); }
+.tl-chapter:hover,
+.tl-chapter:focus-visible {
+  color: inherit;
+  border-color: color-mix(in srgb, var(--hub-hue) 55%, transparent);
+}
+.tl-chapter:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── the ledger's today divider · the stage pulse, mirrored ────────────────── */
+.tl-today-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: clamp(40px, 6vh, 64px) 0 0;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--hub-hue);
+}
+.tl-today-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--hub-hue) 45%, transparent), transparent);
+}
+.tl-today-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hub-hue);
+  flex: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tl-today-dot { animation: tlsPulse 2.4s ease-in-out infinite; }
+}
+
 /* ── era + gates buckets · register band heads over the ledger ──────────────
    The h2 rides the shared cl-year-n recipe; era titles are long, so the
    nowrap is released. Deep-link ids (#exploration · #brouillon · #diamond
@@ -347,6 +410,11 @@
   text-transform: none;
   color: color-mix(in srgb, currentColor 45%, transparent);
 }
+.tls-era-lab .tls-era-count {
+  margin-top: 1px;
+  font-size: 10.5px;
+  color: color-mix(in srgb, var(--hub-hue) 70%, transparent);
+}
 
 /* ── the today pulse · the past closes here ── */
 .tls-todaymark {
@@ -510,6 +578,16 @@
   height: 27px;
   transform: translateX(-50%);
   background: var(--hub-hue);
+}
+/* era openings on the strip · the chapter glyphs stand where their era begins */
+.tls-mera {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 3px;
+  transform: translateX(-50%);
+  font-size: 9px;
+  line-height: 1;
+  color: color-mix(in srgb, var(--hub-hue) 75%, transparent);
 }
 .tls-mini-ph {
   position: absolute;
