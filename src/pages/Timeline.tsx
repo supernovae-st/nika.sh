@@ -137,6 +137,45 @@ const PLAYHEAD = 0.38
 
 function Stage() {
   const [mode, setMode] = useState<'v' | 'h'>('v')
+  const [playing, setPlaying] = useState(false)
+  const [flies, setFlies] = useState<number[]>([])
+  const geomRef = useRef({ wrapTop: 0, trackScroll: 0 })
+
+  /* ▶ the record plays itself at reading pace · any gesture takes the
+     wheel back (wheel/touch/pointer/key). Also the keyboard's one door
+     into the stage's motion — the button is real, never aria-hidden.
+     House law: the imperative lives in an effect, exposed by ref. */
+  const playCtl = useRef<{ start: () => void; stop: () => void } | null>(null)
+  useEffect(() => {
+    let raf = 0
+    const CANCEL = ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const
+    const stop = () => {
+      cancelAnimationFrame(raf)
+      for (const ev of CANCEL) window.removeEventListener(ev, stop)
+      setPlaying(false)
+    }
+    const start = () => {
+      const to = geomRef.current.wrapTop + geomRef.current.trackScroll
+      const from = window.scrollY
+      if (to - from < 40) return
+      const dur = Math.max(6000, ((to - from) / 380) * 1000)
+      const t0 = performance.now()
+      setPlaying(true)
+      for (const ev of CANCEL) window.addEventListener(ev, stop, { passive: true })
+      const step = (now: number) => {
+        const t = Math.min(1, (now - t0) / dur)
+        window.scrollTo(0, from + (to - from) * t)
+        if (t < 1) raf = requestAnimationFrame(step)
+        else stop()
+      }
+      raf = requestAnimationFrame(step)
+    }
+    playCtl.current = { start, stop }
+    return () => {
+      stop()
+      playCtl.current = null
+    }
+  }, [])
   const wrapRef = useRef<HTMLDivElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLOListElement>(null)
@@ -185,6 +224,7 @@ function Stage() {
       trackScroll = Math.max(0, track.scrollWidth - stage.clientWidth)
       wrap.style.height = `calc(100dvh + ${trackScroll}px)`
       wrapTop = wrap.getBoundingClientRect().top + window.scrollY
+      geomRef.current = { wrapTop, trackScroll }
       miniW = (minimapRef.current?.clientWidth ?? 0) - 2
       centers = [...track.querySelectorAll<HTMLElement>('.tls-ent')].map((el) => ({
         el,
@@ -413,7 +453,15 @@ function Stage() {
           </ol>
 
           {/* the terminus lands with the last card */}
-          <div className="tls-terminus">
+          <div
+            className="tls-terminus"
+            onClick={() => setFlies((f) => (f.length > 5 ? f : [...f, Date.now()]))}
+          >
+            {flies.map((id) => (
+              <span key={id} className="tls-fly" onAnimationEnd={() => setFlies((f) => f.filter((x) => x !== id))}>
+                🦋
+              </span>
+            ))}
             <span className="tls-pulse" />
             <p className="mono">
               re-proven in CI · verified <time dateTime={TIMELINE.lastUpdated}>{TIMELINE.lastUpdated}</time>
@@ -421,9 +469,19 @@ function Stage() {
           </div>
         </div>
       </div>
-      <p className="tls-hint mono" aria-hidden="true">
-        scroll plays the record · drag the strip to travel · the full ledger is below
-      </p>
+      <div className="tls-hintrow">
+        <button
+          type="button"
+          className="tls-play mono"
+          onClick={() => (playing ? playCtl.current?.stop() : playCtl.current?.start())}
+          aria-label={playing ? 'Take the wheel back' : 'Play the record: travel it end to end at reading pace'}
+        >
+          {playing ? '⏸ take the wheel' : '▶ play the record'}
+        </button>
+        <p className="tls-hint mono" aria-hidden="true">
+          scroll plays the record · drag the strip to travel · the full ledger is below
+        </p>
+      </div>
     </div>
   )
 }

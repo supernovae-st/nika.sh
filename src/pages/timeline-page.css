@@ -56,8 +56,8 @@
 .tl-chapters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 22px 0 0;
+  gap: 10px;
+  margin: 28px 0 0;
 }
 .tl-chapter {
   display: inline-flex;
@@ -157,7 +157,7 @@
 
 .tl-entries {
   list-style: none;
-  margin: 1rem 0 0;
+  margin: 1.35rem 0 0;
   padding: 0;
   border-left: 2px solid color-mix(in srgb, var(--hub-hue) 28%, transparent);
 }
@@ -165,9 +165,9 @@
 .tl-entry {
   display: grid;
   grid-template-columns: 6.4rem 1fr auto;
-  gap: 0.65rem;
+  gap: 0.8rem;
   align-items: baseline;
-  padding: 0.5rem 0 0.5rem 0.9rem;
+  padding: 0.7rem 0 0.7rem 0.95rem;
   position: relative;
 }
 
@@ -253,7 +253,7 @@
    scroll-jack). */
 
 .tls-scope[data-mode='v'] .tls-wrap,
-.tls-scope[data-mode='v'] .tls-hint { display: none; }
+.tls-scope[data-mode='v'] .tls-hintrow { display: none; }
 
 .tls-wrap { position: relative; }
 .tls-stage {
@@ -269,7 +269,7 @@
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 72px;
+  gap: 96px;
   width: max-content;
   margin: 0;
   padding: 0 46vw 0 40vw;
@@ -295,8 +295,8 @@
 
 /* ── entry cards · two staves ── */
 .tls-ent {
-  width: 300px;
-  height: 232px;
+  width: 316px;
+  height: 240px;
   flex: none;
   position: relative;
   display: grid;
@@ -311,8 +311,8 @@
 .tls-ent[data-live] { opacity: 1; }
 /* the pointer lifts what it reads · hover is a preview of live */
 .tls-ent:hover { opacity: 1; translate: 0 -3px; }
-.tls-ent[data-kind='release'] { margin-bottom: 448px; align-content: end; }
-.tls-ent[data-kind='milestone'] { margin-top: 448px; }
+.tls-ent[data-kind='release'] { margin-bottom: 472px; align-content: end; }
+.tls-ent[data-kind='milestone'] { margin-top: 472px; }
 
 /* stems + glyphs reach the baseline */
 .tls-stem {
@@ -321,8 +321,8 @@
   width: 1px;
   background: color-mix(in srgb, currentColor 26%, transparent);
 }
-.tls-ent[data-kind='release'] .tls-stem { top: 100%; height: 104px; }
-.tls-ent[data-kind='milestone'] .tls-stem { bottom: 100%; height: 104px; }
+.tls-ent[data-kind='release'] .tls-stem { top: 100%; height: 118px; }
+.tls-ent[data-kind='milestone'] .tls-stem { bottom: 100%; height: 118px; }
 .tls-glyph {
   position: absolute;
   left: 13px;
@@ -330,14 +330,14 @@
   height: 11px;
 }
 .tls-ent[data-kind='release'] .tls-glyph {
-  bottom: -115px;
+  bottom: -129px;
   background: var(--hub-hue);
   border-radius: 2px;
   rotate: 45deg;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--hub-hue) 18%, transparent);
 }
 .tls-ent[data-kind='milestone'] .tls-glyph {
-  top: -115px;
+  top: -129px;
   border-radius: 50%;
   background: color-mix(in srgb, currentColor 46%, transparent);
 }
@@ -374,8 +374,8 @@
 .tls-eramark {
   flex: none;
   position: relative;
-  width: 40px;
-  height: 232px;
+  width: 72px;
+  height: 240px;
   opacity: 0.9;
 }
 .tls-era-rule {
@@ -420,8 +420,8 @@
 .tls-todaymark {
   flex: none;
   position: relative;
-  width: 56px;
-  height: 232px;
+  width: 88px;
+  height: 240px;
 }
 .tls-today-dot {
   position: absolute;
@@ -455,7 +455,7 @@
 
 /* ── gate cards · porous, centered on the rail, the future ── */
 .tls-gatecard {
-  width: 250px;
+  width: 268px;
   height: auto;
   margin: 0;
   padding: 0.75rem 0.85rem;
@@ -534,7 +534,7 @@
   bottom: 7dvh;
   left: 50%;
   transform: translateX(-50%);
-  width: min(460px, 46vw);
+  width: min(520px, 48vw);
   height: 24px;
   /* the strip scrubs · a generous invisible hit area, pointer-only travel */
   pointer-events: auto;
@@ -631,9 +631,55 @@
   color: color-mix(in srgb, currentColor 55%, transparent);
 }
 
+.tls-hintrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0.6rem 0 0;
+}
 .tls-hint {
-  margin: 0.4rem 0 0;
+  margin: 0;
   font-size: 0.7rem;
   opacity: 0.4;
-  text-align: center;
+}
+/* the play affordance · the record plays itself at reading pace; any
+   gesture takes the wheel back. Also the keyboard's door into the
+   stage's motion. */
+.tls-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--hub-hue);
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 40%, transparent);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-quick) var(--ease-out),
+    background-color var(--dur-quick) var(--ease-out);
+}
+.tls-play:hover { border-color: color-mix(in srgb, var(--hub-hue) 75%, transparent); background: color-mix(in srgb, var(--hub-hue) 8%, transparent); }
+.tls-play:focus-visible { outline: 2px solid var(--v4-focus-ring); outline-offset: 2px; }
+
+/* the silent egg · the terminus releases a butterfly (house signature) */
+.tls-terminus { cursor: default; }
+.tls-fly {
+  position: absolute;
+  left: 2px;
+  bottom: 8px;
+  font-size: 13px;
+  pointer-events: none;
+  animation: tlsFly 1.9s var(--ease-out) forwards;
+}
+@keyframes tlsFly {
+  0% { opacity: 0; translate: 0 0; rotate: 0deg; }
+  12% { opacity: 1; }
+  35% { rotate: -14deg; translate: -6px -34px; }
+  65% { rotate: 11deg; translate: 8px -64px; }
+  100% { opacity: 0; translate: 2px -104px; rotate: -8deg; }
 }
