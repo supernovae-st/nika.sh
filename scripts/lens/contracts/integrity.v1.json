@@ -19,7 +19,7 @@
   },
   {
    "path": ".github/workflows/spec-resync.yml",
-   "sha256": "86e52a4b96f702ddeb9b09b734b1e6a29a0df63941920c25b5a19b40f30f7f1a"
+   "sha256": "82aa54978dff8ee6855d36333ecc605ce0daf32fe2d43e621382b192944d4093"
   },
   {
    "path": "index.html",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "eea97d56285771b7469cc92f06a76d8cf393928680498d9f5274008012c0e3a8"
+   "sha256": "bfa7e566baaa239656e747f5b94fb44066e7d14c3ab93a536ef96f6af4d0699a"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "0dd9affa25a4fa8aa89d4c8e6d6e4e8a53911cc86374ed12f3fe0bf0555e00e6"
+   "sha256": "7fe755e77f45f245bf7c69ab114eda93b2db5cb318ac7d89005ac52b23c66ab3"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",

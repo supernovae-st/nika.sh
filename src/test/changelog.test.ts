@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { CHANGELOG } from '../content/changelog'
+import { ENGINE_VERSION } from '../content'
 
 /* ── the ship-log truth gate ──────────────────────────────────────────────────
    The changelog's laws lived in a comment and held by discipline alone:
@@ -72,6 +73,19 @@ describe('changelog · the ship log tells the truth', () => {
         `"${e.title}" links a tag that disagrees with its own title`,
       ).toBe(`https://github.com/supernovae-st/nika/releases/tag/v${m![1]}`)
     }
+  })
+
+  it('the ship log never lags the engine pin (the catch-up ratchet)', () => {
+    /* the 0.100-0.105 gap shipped because nothing guarded it: the site
+       said PROD v0.105.0 while the exhaustive ship log stopped at 0.99.
+       Structural fix (stress-to-ratchet): when the ENGINE_VERSION pin
+       bumps, this goes red until the new release has its entry. */
+    const newest = CHANGELOG.map((e) => e.title.match(ENGINE)).find(Boolean)
+    expect(newest, 'no engine release entry found in the register').toBeTruthy()
+    expect(
+      `v${newest![1]}`,
+      `the pin says ${ENGINE_VERSION} but the newest ship-log engine entry is v${newest![1]} — write the entry with the bump, never after`,
+    ).toBe(ENGINE_VERSION)
   })
 
   it('the newest site entry and package.json bump together (the release ritual gate)', () => {

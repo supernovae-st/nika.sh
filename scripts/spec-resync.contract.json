@@ -259,6 +259,18 @@
    "outputs": [
     "public/.well-known/nika-spec-pin.json"
    ]
+  },
+  {
+   "id": "website-timeline",
+   "root": "website",
+   "runtime": "node",
+   "path": "scripts/vendor-timeline.mjs",
+   "sha256": "2bd741424fbb8dc2108588c166c07f5e4fa6176860505802351ffa2a3ecba0b4",
+   "args": [],
+   "depends_on": [],
+   "outputs": [
+    "src/content/timeline.generated.ts"
+   ]
   }
  ],
  "outputs": [
@@ -390,6 +402,13 @@
    "sha256": "53867a018c226127e83561138ef0443e8ec6c518119432e0589a1c7232ada692",
    "consumers": [
     "src/shell/CommandK.tsx"
+   ]
+  },
+  {
+   "path": "src/content/timeline.generated.ts",
+   "sha256": "9030441fee5159d8d010a4c90715b1bcbbe9d9caff98d8afbf8913431d37e84b",
+   "consumers": [
+    "src/pages/Timeline.tsx"
    ]
   }
  ],

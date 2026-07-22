@@ -46,11 +46,46 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-20',
+    tag: 'release',
+    title: 'v0.105.0 · the map comes home',
+    body: 'The refonte reaches users: the file becomes a map. workflow: is an object (id + description), tasks: is a map keyed by id, and precedence reads the way you think: the binding IS the edge (with: declares the data edge) while control-only ordering is after: {producer: succeeded} against a closed predicate set. The old forms die loudly (a scalar workflow: is NIKA-PARSE-020, depends_on: is NIKA-PARSE-024) and nika check --fix machine-migrates the provable cases. The proof layer opens: semantic hash, nika.lock, receipt_format: 1, workflow composition (invoke: workflow:), and nika:decide, the deterministic decision kernel. One security seat ships in the tag: the lethal-trifecta judge (NIKA-SEC-009) refuses private-read plus untrusted-ingress plus external-egress with no blocking human gate on the path. The LSP learns the map end to end: server-side rename, per-block keysets, semantic_document_format: 1. Every surface you copy from re-baked the same day; what you copy runs on YOUR installed binary.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.105.0',
+  },
+  {
+    date: '2026-07-17',
+    tag: 'release',
+    title: 'v0.104.0 · kimi takes a priced seat',
+    body: 'Moonshot joins the canonical catalog: model: moonshot/kimi-k3 runs first-class (1M context, MOONSHOT_API_KEY), and the pricing snapshot makes --max-cost-usd a hard ceiling on kimi spend (the promotion run metered real cents against a printed worst case). K3 is a thinking model, and the honesty ships with it: reasoning spends output tokens, so budget max_tokens generously; starved, the answer comes back empty and the engine says why. The release branch cut from v0.103.0 on purpose: main is mid-refonte and users never ship a transitional grammar. Also in the wave: the lsp, graph and mcp fixtures that shipped red at the previous tag now speak the argv form, banked as a CI-coverage finding.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.104.0',
+  },
+  {
     date: '2026-07-17',
     tag: 'site',
     title: 'nika.sh v4.18 · the site speaks the shipped grammar',
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.18.0',
     body: 'The 0.104 release flipped the language: the envelope became a scalar (workflow: my-job), tasks became a sequence (- id: …), and every edge is declared (depends_on — an undeclared tasks.X read now dies at check as NIKA-DAG-003; after: died with it). The public spec still teaches the old form, so the site now runs on TWO spec surfaces and says so out loud: /spec/v1 stays the ratified pin, /spec/shipped vendors what the released binary itself embeds (nika spec --schema and --canon, refreshed deliberately, never probed at build), and /sources renders the grammar gap as a third clock line beside builtins and providers. Everything a visitor can copy speaks the shipped grammar and is PROVEN against the released binary: every hero flagship and its served /library file, the /learn walk and its assembled weekly radar, both install hellos with transcripts re-captured verbatim, the verb chapters, the 404, the /convert proof, and every showcase room and template seed, which stay byte-pure ratified projections and convert at the door through one mechanical, idempotent, line-mapped pass — the plan choreography, the hero highlights and the inspector line anchors all re-aim through the same map, so nothing drifts from the text it animates. The playground lint learned the new world (scalar envelope, sequence tasks, duplicate ids, declared-edge DAG-003, after: refused with its fix line), its break-lesson inverted to teach the flip, and a shipped-ahead door renders text-only until the spec lands the room. Alongside the flip: the engine badge reads v0.104.0 everywhere, the tools register carries decide as ratified-not-shipped with its spec contract on the page, the types register lands its primitives read from the schema itself (the last soon chip dies), the provider catalog re-vendors at 0.104, and the hub headers stop sliding under the fixed nav.',
+  },
+  {
+    date: '2026-07-13',
+    tag: 'release',
+    title: 'v0.103.0 · the language tightens',
+    body: 'The pre-1.0 window pays for itself: three breaking cuts in one wave, spec and engine merged in the same window. command: is argv-only (execve, no shell: an interpolated value can never break out of its argument) and the string form moves to shell:, the explicit door; semantics ride the field, never the YAML type. A bare ${{ tasks.X }} is now an error (NIKA-VAR-020): name the projection (.output, .status, .error, .duration_ms); the envelope is not a value. And the gate algebra becomes a normative spec table: the when-status pattern is a propagation choice, not redundancy. The whole corpus migrated in lockstep: docs, site, editor, kit and registry re-taught the same day.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.103.0',
+  },
+  {
+    date: '2026-07-13',
+    tag: 'release',
+    title: 'v0.102.0 · the editor speaks the language',
+    body: 'The LSP arc lands server-side: the pause after a colon answers itself (space joins the triggers), args: keys complete from the tool\u2019s own schema, mode: enums scope to the enclosing tool, ${{ vars./secrets./env. }} complete from the FILE\u2019s declarations, hover cards read the graph (wave position, transitive reach, model fallback tiers), and references resolve closure-aware. Around it: wave-sweep.sh, the one-command release sweep, and three new coherence-bot probes born from drifts caught by hand.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.102.0',
+  },
+  {
+    date: '2026-07-13',
+    tag: 'release',
+    title: 'v0.101.0 · the sovereign lane ships whole',
+    body: 'Every release binary now carries local-infer: nika model pull, nika model serve, then a workflow infer against your own machine. No cloud, no external daemon, no build-from-source wall. CPU on every target on purpose (darwin included) until candle\u2019s quantized rms-norm Metal kernel is fixed: honest speed beats a crashing GPU path. The release funnel now pins the teaching both ways: a shipped binary must never utter « built without local inference ».',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.101.0',
   },
   {
     date: '2026-07-13',
@@ -65,6 +100,13 @@ export const CHANGELOG: ChangelogEntry[] = [
     title: 'nika.sh v4.16 · the ship lies down in its own drawing',
     body: 'THE LAY-DOWN closes the spec voyage: past the last station the vessel folds its yaw to the whole revolution, lays flat into the exact pose of its 2D engineering drawing, dissolves into it, and the nika mark closes the file over the sources rail (an e2e pin parks inside the window to prove the handoff every run). The home film front-loads its gesture: the YAML becomes the DAG in the first half of the runway, the wires close over the last landings, and the run (terminal, timeline, badges) rides the same scroll from mid-gesture; the verdict keeps its tail. The voice purge lands site-wide: about 345 authored lines rewritten for real (blog posts, llms.txt, every register and room, this ship log itself), each dash a real edit, while the truth layer keeps its own words: engine failure-lines, provider contracts, captured transcripts and quoted artifacts stay verbatim, because rewriting a citation would make the page lie. WHERE THE LANGUAGE LIVES ships one verified sources map (every URL checked against the live repos before it renders) on the rooms, the 3D berths and the spec close, and the cross-reference graph closes: errors and templates point back at every room that names them, derived by inverting the rooms’ own data. The heavy usage registries leave the initial bundle behind inline-JSON islands (their refs twins keep the graph sync), the dither field drops its framework for one raw quad, the run posters go WebP at a third of the bytes, and the language doors get their share cards. Underneath: the version gate now re-captures transcripts against the real binary on every engine wave (it caught a CLI voice change a sed would have missed), and the heal lane opens one idempotent PR that the gate itself judges.',
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.16.0',
+  },
+  {
+    date: '2026-07-12',
+    tag: 'release',
+    title: 'v0.100.0 · the terminal sings, the models come home',
+    body: 'The terminal learns to sing: a verb band colors every task by its verb, the spinner is a real live probe, and nika run paints the DAG as living wire-art in-frame (states, in-node spinners, edge pulses) while nika inspect --format json|mermaid|dot becomes the ONE graph projector, now projecting declared policy too (retry, timeout, on_error, outputs). nika init becomes a founding wizard: recipes, themes, wiring, everything asked before the first write, and it equips a repo for the agent surfaces project-side. The models come home: nika model pull/list/rm (one models dir by construction, resumable verified downloads) and nika model serve (the sovereign sidecar, OpenAI-compatible on loopback) close the local loop. nika check --fix is an in-binary repair loop that converges, and the machine dry-run ships versioned.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.100.0',
   },
   {
     date: '2026-07-12',
