@@ -16,6 +16,7 @@ export const WORD_GLOSS: Record<string, string> = {
   capture: 'which stream becomes the task output',
   cwd: 'working directory for the command',
   description: 'one honest sentence about the workflow; it shows in listings and traces',
+  env: 'environment variables for the exec command, a name to value map',
   exec: 'the second verb: run a command, captured and typed; its room: /verbs/exec',
   fail_workflow: 'escalate: a caught error still fails the run after recovery',
   infer: 'the first verb: call a model; its room: /verbs/infer',

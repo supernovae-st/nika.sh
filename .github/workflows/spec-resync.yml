@@ -155,4 +155,4 @@ jobs:
           git push origin "${branch}"
           gh pr create --head "${branch}" \
             --title "chore(spec-resync): the generated surfaces follow the pinned spec" \
-            --body "Automated re-derivation at PINNED spec ${SPEC_COMMIT} (tree ${SPEC_TREE}), digest-verified before any generator ran. Provenance: website ${WEBSITE_SHA}. Every generator leg green (templates, tool-usage, language-usage, lint-fixtures, gate-matrix, design projection); a failed leg aborts the run before any push. The visual gates judge; merge on green."
+            --body "Automated re-derivation at PINNED spec ${SPEC_COMMIT} (tree ${SPEC_TREE}), digest-verified before any generator ran. Provenance: website ${WEBSITE_SHA}. Every generator leg green (templates, tool-usage, language-usage, lint-fixtures, gate-matrix, design projection, timeline); a failed leg aborts the run before any push. The visual gates judge; merge on green."

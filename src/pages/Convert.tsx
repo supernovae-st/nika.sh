@@ -29,8 +29,9 @@ const PROOF_ASK =
 
 export const PROOF_YAML = `# from @your-handle's friday ritual · converted + checked
 nika: v1
-workflow: friday-changelog
-description: "the week's merged PRs become a changelog draft"
+workflow:
+  id: friday-changelog
+  description: "the week's merged PRs become a changelog draft"
 model: ollama/llama3.2
 
 permits:
@@ -39,12 +40,11 @@ permits:
   fs: { write: ["./CHANGELOG.draft.md"] }
 
 tasks:
-  - id: collect
+  collect:
     exec:
       command: ["git", "log", "--merges", "--since=7 days ago", "--oneline"]
 
-  - id: draft
-    depends_on: [collect]
+  draft:
     with:
       merges: \${{ tasks.collect.output }}
     infer:
@@ -53,14 +53,12 @@ tasks:
         Group these merges by area and write a changelog draft.
         \${{ with.merges }}
 
-  - id: save
-    depends_on: [draft]
+  save:
     with:
       draft: \${{ tasks.draft.output }}
     invoke:
       tool: "nika:write"
-      args: { path: "./CHANGELOG.draft.md", content: "\${{ with.draft }}" }
-`
+      args: { path: "./CHANGELOG.draft.md", content: "\${{ with.draft }}" }`
 
 const STEPS: { n: string; title: string; body: string }[] = [
   {

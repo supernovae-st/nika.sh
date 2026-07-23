@@ -125,7 +125,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "The language",
           "icon": "book",
           "to": "/language",
-          "count": 57
+          "count": 59
         },
         {
           "label": "The four verbs",
@@ -207,7 +207,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "label": "The language",
         "icon": "book",
         "to": "/language",
-        "count": 57
+        "count": 59
       },
       {
         "label": "The four verbs",

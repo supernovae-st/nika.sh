@@ -1247,7 +1247,7 @@
   letter-spacing: 0.01em;
   color: var(--v4-text);
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
   transition: text-decoration-color var(--dur-ui) var(--ease-ui);
 }
@@ -1458,7 +1458,7 @@
 .sitefoot-maplink:hover,
 .sitefoot-maplink:focus-visible {
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
 }
 .sitefoot-mapstar {
   color: var(--v4-accent);
@@ -1886,7 +1886,7 @@
   letter-spacing: 0.01em;
   color: var(--v4-text);
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 3px;
   text-decoration-color: color-mix(in oklch, var(--v4-text) 32%, transparent);
   transition: text-decoration-color var(--dur-ui) var(--ease-ui);
 }
@@ -2516,7 +2516,7 @@
 }
 
 .v4edx-card:focus-visible {
-  outline: 2px solid #2b62ea;
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 2px;
 }
 
@@ -2677,7 +2677,7 @@
 }
 /* the CodeFile keyboard law's ring — the well is a tab stop now */
 .v4edx-pre:focus-visible {
-  outline: 1.5px solid var(--v4-focus-ring);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: -1.5px;
   border-radius: var(--v4-radius-sm);
 }

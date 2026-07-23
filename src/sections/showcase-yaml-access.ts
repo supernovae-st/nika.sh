@@ -23,10 +23,10 @@
    carries the SAME pass's line map, so the choreography still points at
    the exact rendered lines. Retires with the pass (see w1-to-w2.ts). */
 
-import { w1ToW2 } from '../lib/w1-to-w2'
+import { serveW105 } from '../lib/w1-to-w2'
 
 const toW2 = (dict: Record<string, string>): Record<string, string> =>
-  Object.fromEntries(Object.entries(dict).map(([k, y]) => [k, w1ToW2(y)]))
+  Object.fromEntries(Object.entries(dict).map(([k, y]) => [k, serveW105(y)]))
 
 let SSR_YAMLS: Record<string, string> | null = null
 if (import.meta.env.SSR) {

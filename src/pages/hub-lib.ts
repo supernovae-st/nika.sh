@@ -82,6 +82,9 @@ export function useHubHead(hubId: string, marketTitle: string, description: stri
       { property: 'og:image:alt', content: description },
       { name: 'twitter:title', content: marketTitle },
       { name: 'twitter:description', content: description },
+      /* the global default (index.html) says og.png — without this line X
+         shows the wrong card while og:image says the right one */
+      { name: 'twitter:image', content: `https://nika.sh/og-${hubId}.png` },
     ],
     script: [
       {

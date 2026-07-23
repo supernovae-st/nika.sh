@@ -185,3 +185,102 @@ export function w1ToW2WithMap(src: string): W2Result {
 export function w1ToW2(src: string): string {
   return w1ToW2WithMap(src).text
 }
+
+/* ── the value axis · wnew -> w2 · the inverse of codemod-esplit ─────────────
+   C2 split the W2 `vars:` block into typed `inputs:` (required) + literal
+   `const:` (the E-split). W2's `vars` schema IS that union ("untyped literal
+   OR typed declaration object"), so serving W2 to a 0.104 binary is the exact
+   inverse: fold `inputs` + `const` (+ the unused `config`) back into one
+   `vars` block, and rewrite every `${{ inputs|const|config.X }}` root ref to
+   `${{ vars.X }}`. `secrets` is byte-identical in both grammars — untouched.
+   Text-level like w1ToW2: comments and scalar styles the visitor copies survive.
+   Twin: scripts/lib/w1-to-w2.mjs — output parity pinned by the test. */
+const VALUE_HEADER = /^(inputs|const|config):\s*(#.*)?$/
+
+export function downcastValues(src: string): string {
+  const lines = src.split('\n')
+  const out: string[] = []
+  const bodies: string[] = []
+  const PLACEHOLDER = ' VARS '
+  let placed = false
+  let i = 0
+  while (i < lines.length) {
+    const line = lines[i]
+    if (VALUE_HEADER.test(line)) {
+      let j = i + 1
+      while (j < lines.length && (lines[j].trim() === '' || /^\s/.test(lines[j]))) {
+        if (lines[j].trim() === '') {
+          const next = lines.slice(j + 1).find((x) => x.trim() !== '')
+          if (next === undefined || !/^\s/.test(next)) break // blank ends the block
+        }
+        bodies.push(lines[j])
+        j += 1
+      }
+      if (!placed) { out.push(PLACEHOLDER); placed = true }
+      i = j
+      continue
+    }
+    out.push(line)
+    i += 1
+  }
+  const merged: string[] = []
+  for (const line of out) {
+    if (line === PLACEHOLDER) merged.push('vars:', ...bodies)
+    else merged.push(line)
+  }
+  // rewrite ROOT refs only (never a nested `tasks.x.inputs` field) inside ${{ }}
+  return merged.join('\n').replace(/\$\{\{([^}]*)\}\}/g, (_m, inner) =>
+    '${{' + inner.replace(/(?<![.\w])(inputs|const|config)\.(\w+)/g, 'vars.$2') + '}}')
+}
+
+/** The full door · what the site SERVES to a visitor's released binary ·
+    envelope (w1ToW2) then value axis (downcastValues). Idempotent on W2. */
+export function serveW2(src: string): string {
+  return downcastValues(w1ToW2(src))
+}
+
+/* ── the predicate axis · wnew -> released set ───────────────────────────────
+   The ratified predicate names (success · failure) reached the spec at P-C
+   (#118) but the RELEASED binary still speaks the closed set (succeeded ·
+   failed · skipped · terminal · DAG-005). Folds ONLY inside task-level
+   `after:` blocks (map children · inline flow) — never in prose or prompts. */
+const AFTER_PRED: Record<string, string> = { success: 'succeeded', failure: 'failed' }
+
+export function foldPredicates(src: string): string {
+  const lines = src.split('\n')
+  const out: string[] = []
+  let inAfter = false
+  for (const line of lines) {
+    const inline = /^(\s{4}after:\s*\{)([^}]*)(\}.*)$/.exec(line)
+    if (inline) {
+      const body = inline[2].replace(/\b(success|failure)\b/g, (w) => AFTER_PRED[w])
+      out.push(inline[1] + body + inline[3])
+      inAfter = false
+      continue
+    }
+    if (/^\s{4}after:\s*(#.*)?$/.test(line)) { inAfter = true; out.push(line); continue }
+    if (inAfter) {
+      const child = /^(\s{6}[A-Za-z0-9_-]+:\s*)([a-z]+)(\s*(#.*)?)$/.exec(line)
+      if (child && AFTER_PRED[child[2]]) { out.push(child[1] + AFTER_PRED[child[2]] + child[3]); continue }
+      if (!child && line.trim() !== '' && !line.trimStart().startsWith('#')) inAfter = false
+    }
+    out.push(line)
+  }
+  return out.join('\n')
+}
+
+/** The w105 door · what the site serves a RELEASED 0.105 binary · the
+    envelope/map/after already speak — only the value axis + the predicate
+    names fold. Identity on a W105-native document. */
+export function serveW105(src: string): string {
+  return foldPredicates(downcastValues(src))
+}
+
+/** w105 door with a line map. The value fold only removes/merges lines ABOVE
+    `tasks:` (inputs/const are top-level headers) and the predicate fold is
+    1:1 — so every task line shifts by one constant delta. */
+export function serveW105WithMap(src: string): W2Result {
+  const text = serveW105(src)
+  const delta = src.split('\n').length - text.split('\n').length
+  return { text, mapLine: (n: number) => n - delta }
+}

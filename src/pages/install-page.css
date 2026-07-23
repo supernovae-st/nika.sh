@@ -173,7 +173,7 @@
   color: var(--v4-text);
 }
 .ins-trouble-q:focus-visible {
-  outline: 1px solid var(--focus-ring);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 2px;
 }
 .ins-trouble-a {

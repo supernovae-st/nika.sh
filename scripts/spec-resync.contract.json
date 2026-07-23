@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "42fbc495d63ab91b79e22d2a41e063d0bb1dc63f",
-  "tree": "a838ab33b0a4c38374f183f2e058c0f2f23aa108"
+  "commit": "ffc28208940a5801074d88c3391cd62bf80c09cc",
+  "tree": "6a878265f79988fb7f05ebcf0da159b6caf4331b"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -50,7 +50,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/showcase-projector.py",
-   "sha256": "60604742a15c98a4fce73deb03a4d0cc0a4395826dcab8a5970d18b4982451df",
+   "sha256": "44415f4b2e69471462d49004aee232e47e411db809f6be8b91395130d4465d82",
    "args": [
     "--write"
    ],
@@ -68,7 +68,7 @@
    "root": "spec",
    "runtime": "copy",
    "path": "schemas/workflow.schema.json",
-   "sha256": "624b3fd98b31f8653cf50bfa1a76a885d5e431a8f647de92d9214f912907f8fc",
+   "sha256": "50d244c064ce6098f5114ab19976f0eb0d2363220adbf99e5dcfaa836e275d8f",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -82,7 +82,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/design-projector.py",
-   "sha256": "8305ccb6bc2a3dd1460f2bd969c8982342ac87bd76054273b97c53d4090850ae",
+   "sha256": "d2a21e63ba336f90c136b79a6c1377f1c5b742b205e4084da10e8810455bb43f",
    "args": [
     "--write"
    ],
@@ -233,7 +233,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-palette.mjs",
-   "sha256": "ebe24b24a5224d280d5ed33373a01e05b89da2b9c509445da49a4f6d2adf5cb6",
+   "sha256": "7e853387b89118715ecbf7224499322c04a9de84b5a569a233824754fcacac28",
    "args": [],
    "depends_on": [
     "website-errors",
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "ffccc35f352ea0433b7950f9dc33ec18491abdfe4f15e48cb1c6909bba676b72",
+   "sha256": "6173804d346b1ba27159ab66d3f4f3800abdf4652608624b704205a72d35bf1f",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -259,12 +259,24 @@
    "outputs": [
     "public/.well-known/nika-spec-pin.json"
    ]
+  },
+  {
+   "id": "website-timeline",
+   "root": "website",
+   "runtime": "node",
+   "path": "scripts/vendor-timeline.mjs",
+   "sha256": "2bd741424fbb8dc2108588c166c07f5e4fa6176860505802351ffa2a3ecba0b4",
+   "args": [],
+   "depends_on": [],
+   "outputs": [
+    "src/content/timeline.generated.ts"
+   ]
   }
  ],
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "ffccc35f352ea0433b7950f9dc33ec18491abdfe4f15e48cb1c6909bba676b72",
+   "sha256": "6173804d346b1ba27159ab66d3f4f3800abdf4652608624b704205a72d35bf1f",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
@@ -274,17 +286,17 @@
   },
   {
    "path": "public/schema/workflow.json",
-   "sha256": "624b3fd98b31f8653cf50bfa1a76a885d5e431a8f647de92d9214f912907f8fc",
+   "sha256": "50d244c064ce6098f5114ab19976f0eb0d2363220adbf99e5dcfaa836e275d8f",
    "dist": "schema/workflow.json"
   },
   {
    "path": "public/spec/v1/workflow.schema.json",
-   "sha256": "624b3fd98b31f8653cf50bfa1a76a885d5e431a8f647de92d9214f912907f8fc",
+   "sha256": "50d244c064ce6098f5114ab19976f0eb0d2363220adbf99e5dcfaa836e275d8f",
    "dist": "spec/v1/workflow.schema.json"
   },
   {
    "path": "public/templates/catalog.json",
-   "sha256": "ecd1efcfb07cd68f195098f2c7ab76a631cd436c04d5707491a535b544bb3fa7",
+   "sha256": "2cedd14efa5520bf0418749d72fb456643790c56461cf9bc94a403ab281c0b89",
    "dist": "templates/catalog.json"
   },
   {
@@ -303,14 +315,14 @@
   },
   {
    "path": "src/sections/usecases-yaml.generated.ts",
-   "sha256": "14ba9b51a03426c535f102dec14e9634d5ff88e8d39711fd8c74c8aab633eec2",
+   "sha256": "0d87bb8d9e7903116fabfd42333db8f68923714d81dcc4383550e065c59b9191",
    "consumers": [
     "src/sections/showcase-yaml-access.ts"
    ]
   },
   {
    "path": "src/content/templates.generated.ts",
-   "sha256": "1cd281ba7a417c7c1f37f8f2d2676a5e3c4597a54751637acfae8b46e428ea45",
+   "sha256": "7b1956b3662afceb4daa7a7e94920097983434743d32b69cebafbc62862540a9",
    "consumers": [
     "src/pages/Templates.tsx"
    ]
@@ -324,28 +336,28 @@
   },
   {
    "path": "src/content/language.generated.ts",
-   "sha256": "7b3dee5cffda169c61b6f8a723eb224e42e48b96a4f6d30121bfe916e15ca5b6",
+   "sha256": "116d1f3f0cabb2abd8c5df65c69d9485976e1a3d03db252b5d7903a3ca55108e",
    "consumers": [
     "src/pages/Language.tsx"
    ]
   },
   {
    "path": "src/content/providers.generated.ts",
-   "sha256": "528f050e79accacaadc0bc99397f00610542d5d062574f1d7f65557c48aeb3f7",
+   "sha256": "e6056ce19dab5e21ad565693c6e7cb0108f8660c08a5d2387efe2e72a169542e",
    "consumers": [
     "src/pages/Providers.tsx"
    ]
   },
   {
    "path": "src/content/tools.generated.ts",
-   "sha256": "9773a0a437dce0fb82ccef2f04271ffdf42e506b997748f597f4a19579f5ad45",
+   "sha256": "21d1b46848793caa68214d0d782f0fcea2614c551ad51e63839e78ffbc3e9ef9",
    "consumers": [
     "src/pages/Tools.tsx"
    ]
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "6072609762f657dd9bf34905bd0773e7fefda86397e151fd23434df241d305ff",
+   "sha256": "dab2e9d77bb49b006984f4e7d2aff6fa82f2ca51eb050ab3e4428d7a8c964353",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
@@ -359,21 +371,21 @@
   },
   {
    "path": "src/content/language-usage.generated.ts",
-   "sha256": "dd0ce016b03a3eb26b869c7d6a2539c0c0791e1e597955b742af1ff0a74806e9",
+   "sha256": "d8fadfd7562f2351b50552cda3eee59f05ab063bf5bb8c291d352df29cab4a22",
    "consumers": [
     "src/pages/WordPage.tsx"
    ]
   },
   {
    "path": "src/content/language-usage-refs.generated.ts",
-   "sha256": "749bdac1df0ec06b5ea89e0cd8c066f57f262457307a414f9cc26e913c3eb015",
+   "sha256": "f1a52b87b247080b7dba3ac8998b3d9c90e8d92ed4ce0cfab04f44884c53f18b",
    "consumers": [
     "src/content/graph.ts"
    ]
   },
   {
    "path": "src/lib/lint-fixtures.generated.ts",
-   "sha256": "4f1c5329db8547d368d496b996ccd5846a6ee28bf74bff40b761e041b6a30dde",
+   "sha256": "a3744ef02ed6d2903f9d19caf98f335f2fba9b4c72ea9577366d38f9958896af",
    "consumers": [
     "src/lib/nika-lint-conformance.test.ts"
    ]
@@ -387,9 +399,16 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "c7abfb675497f805945d808b2e833cfe7fe04f8bdd4c9d67d60f323128079638",
+   "sha256": "53867a018c226127e83561138ef0443e8ec6c518119432e0589a1c7232ada692",
    "consumers": [
     "src/shell/CommandK.tsx"
+   ]
+  },
+  {
+   "path": "src/content/timeline.generated.ts",
+   "sha256": "9030441fee5159d8d010a4c90715b1bcbbe9d9caff98d8afbf8913431d37e84b",
+   "consumers": [
+    "src/pages/Timeline.tsx"
    ]
   }
  ],

@@ -110,10 +110,14 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     const css = read('src/design.generated.css')
     for (const status of ['ratified', 'shipped', 'both'])
       expect(css).toContain(`.st-mark[data-status='${status}']::before`)
+    /* the three consuming surfaces: the Inspector panel, the hover card,
+       and the member-room authority line (renamed hub-authority →
+       room-authority when the rooms joined the register grammar — the
+       st-mark pairing is the invariant, the wrapper class is the page's) */
     for (const [file, cls] of [
       ['src/shell/Inspector.tsx', 'insp-status st-mark'],
       ['src/shell/HoverCard.tsx', 'hovercard-status st-mark'],
-      ['src/pages/MemberRoom.tsx', 'hub-authority st-mark'],
+      ['src/pages/MemberRoom.tsx', 'room-authority st-mark'],
     ])
       expect(read(file), `${file} lost the st-mark`).toContain(cls)
   })

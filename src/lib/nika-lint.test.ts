@@ -1,112 +1,114 @@
 import { describe, expect, it } from 'vitest'
 import { lintNika } from './nika-lint'
 
-/* ── the browser lint · the SHIPPED grammar (0.104 · W2), pinned ─────────────
+/* ── the browser lint · the SHIPPED grammar (0.105 · the map), pinned ────────
    The playground teaches with the engine's own vocabulary; this suite pins
-   the classes the linter must speak in the shipped world: the scalar
-   envelope + tasks sequence, declarative depends_on (a tasks.X read without
-   the declared edge is DAG-003 — the engine refuses it), after: is dead
-   (PARSE-024), tasks.* is boundary-only (VAR-021 · on_finally reads its
-   parent only), duplicate ids exist now that tasks are a list (DAG-001),
-   and cycles are judged over the DECLARED graph (DAG-001). */
+   the classes the linter must speak in the shipped world: the map envelope
+   (workflow: {id} · PARSE-020 on the dead scalar) + tasks map, the binding
+   IS the edge (a ghost target is DAG-002), depends_on is dead (PARSE-024),
+   after: carries control edges with a CLOSED predicate set (DAG-005),
+   tasks.* is boundary-only (VAR-021 · on_finally reads its parent only),
+   and cycles are judged over the after:+binding graph (DAG-001). */
 
 const codes = (src: string) => lintNika(src).map((d) => d.code)
 
-const W2_CLEAN = `nika: v1
-workflow: flow-clean
+const W105_CLEAN = `nika: v1
+workflow:
+  id: flow-clean
 tasks:
-  - id: fetch
+  fetch:
     invoke: { tool: "nika:read", args: { path: ./in.md } }
-  - id: digest
-    depends_on: [fetch]
+  digest:
     with:
       notes: \${{ tasks.fetch.output }}
     when: \${{ with.notes != "" }}
     infer: { prompt: "Summarize \${{ with.notes }}" }
-  - id: report
-    depends_on: [digest]
+  report:
+    after:
+      digest: terminal
     with:
       outcome: \${{ tasks.digest.status }}
     exec: { command: ["echo", "\${{ with.outcome }}"] }
 `
 
-describe('nika-lint · the shipped W2 grammar', () => {
-  it('passes a clean declarative workflow', () => {
-    expect(lintNika(W2_CLEAN)).toEqual([])
+describe('nika-lint · the shipped map grammar', () => {
+  it('passes a clean workflow (bindings are the edges)', () => {
+    expect(lintNika(W105_CLEAN)).toEqual([])
   })
 
-  it('refuses the W1 envelope (workflow must be the scalar id)', () => {
+  it('refuses the dead scalar envelope (PARSE-020 · workflow is a map)', () => {
     const out = lintNika(`nika: v1
-workflow:
-  id: old-form
-tasks:
-  - id: a
-    exec: { command: ["ls"] }
-`)
-    expect(out.map((d) => d.code)).toContain('NIKA-PARSE')
-    expect(out.find((d) => d.code === 'NIKA-PARSE')?.message).toMatch(/scalar/)
-  })
-
-  it('refuses the W1 tasks map (tasks must be a sequence)', () => {
-    expect(
-      codes(`nika: v1
-workflow: old-map
+workflow: old-form
 tasks:
   a:
+    exec: { command: ["ls"] }
+`)
+    expect(out.map((d) => d.code)).toContain('NIKA-PARSE-020')
+    expect(out.find((d) => d.code === 'NIKA-PARSE-020')?.message).toMatch(/map/)
+  })
+
+  it('refuses the dead tasks sequence (tasks must be a map)', () => {
+    expect(
+      codes(`nika: v1
+workflow:
+  id: old-list
+tasks:
+  - id: a
     exec: { command: ["ls"] }
 `),
     ).toContain('NIKA-PARSE')
   })
 
-  it('refuses after: (PARSE-024 · dead since 0.104)', () => {
+  it('refuses depends_on (PARSE-024 · dead since 0.105)', () => {
     const out = lintNika(`nika: v1
-workflow: dead-form
+workflow:
+  id: dead-form
 tasks:
-  - id: a
+  a:
     exec: { command: ["ls"] }
-  - id: b
-    after: { a: succeeded }
+  b:
+    depends_on: [a]
     exec: { command: ["ls"] }
 `)
     expect(out.map((d) => d.code)).toContain('NIKA-PARSE-024')
-    expect(out.find((d) => d.code === 'NIKA-PARSE-024')?.fix).toMatch(/depends_on/)
+    expect(out.find((d) => d.code === 'NIKA-PARSE-024')?.fix).toMatch(/after:/)
   })
 
-  it('demands the declared edge for a tasks.* read (DAG-003)', () => {
+  it('refuses a predicate outside the closed set (DAG-005)', () => {
     const out = lintNika(`nika: v1
-workflow: undeclared-read
+workflow:
+  id: bad-predicate
 tasks:
-  - id: a
+  a:
     exec: { command: ["ls"] }
-  - id: b
-    with:
-      x: \${{ tasks.a.output }}
-    exec: { command: ["echo", "\${{ with.x }}"] }
+  b:
+    after: { a: success }
+    exec: { command: ["ls"] }
 `)
-    expect(out.map((d) => d.code)).toContain('NIKA-DAG-003')
-    expect(out.find((d) => d.code === 'NIKA-DAG-003')?.fix).toMatch(/depends_on: \[a\]/)
+    expect(out.map((d) => d.code)).toContain('NIKA-DAG-005')
+    expect(out.find((d) => d.code === 'NIKA-DAG-005')?.fix).toMatch(/succeeded/)
   })
 
   it('refuses a tasks.* read in a verb body or when: (VAR-021 · hoist into with:)', () => {
     expect(
       codes(`nika: v1
-workflow: body-read
+workflow:
+  id: body-read
 tasks:
-  - id: a
+  a:
     exec: { command: ["ls"] }
-  - id: b
-    depends_on: [a]
+  b:
     infer: { prompt: "x \${{ tasks.a.output }}" }
 `),
     ).toContain('NIKA-VAR-021')
     expect(
       codes(`nika: v1
-workflow: when-read
+workflow:
+  id: when-read
 tasks:
-  - id: a
+  a:
     exec: { command: ["ls"] }
-  - id: b
-    depends_on: [a]
+  b:
     when: \${{ tasks.a.output != "" }}
     exec: { command: ["ls"] }
 `),
@@ -115,11 +117,12 @@ tasks:
 
   it('on_finally may read its PARENT only (VAR-021 on a sibling read)', () => {
     const src = (target: string) => `nika: v1
-workflow: finally-read
+workflow:
+  id: finally-read
 tasks:
-  - id: a
+  a:
     exec: { command: ["ls"] }
-  - id: b
+  b:
     exec: { command: ["ls"] }
     on_finally:
       - invoke:
@@ -130,23 +133,25 @@ tasks:
     expect(codes(src('b'))).not.toContain('NIKA-VAR-021')
   })
 
-  it('checks declared targets (DAG-002 on depends_on and with: ghosts)', () => {
+  it('checks edge targets (DAG-002 on after: and with: ghosts)', () => {
     expect(
       codes(`nika: v1
-workflow: bad-dep
+workflow:
+  id: bad-after
 tasks:
-  - id: a
+  a:
     exec: { command: ["ls"] }
-  - id: b
-    depends_on: [ghost]
+  b:
+    after: { ghost: succeeded }
     exec: { command: ["ls"] }
 `),
     ).toContain('NIKA-DAG-002')
     expect(
       codes(`nika: v1
-workflow: bad-with
+workflow:
+  id: bad-with
 tasks:
-  - id: b
+  b:
     with:
       x: \${{ tasks.ghost.output }}
     exec: { command: ["ls"] }
@@ -154,29 +159,19 @@ tasks:
     ).toContain('NIKA-DAG-002')
   })
 
-  it('refuses a duplicate id — a sequence can repeat one (DAG-001)', () => {
+  it('finds a cycle over the binding graph (DAG-001)', () => {
     expect(
       codes(`nika: v1
-workflow: twin-ids
+workflow:
+  id: cross-cycle
 tasks:
-  - id: a
+  a:
+    with:
+      x: \${{ tasks.b.output }}
     exec: { command: ["ls"] }
-  - id: a
-    exec: { command: ["ls"] }
-`),
-    ).toContain('NIKA-DAG-001')
-  })
-
-  it('finds a cycle over the declared graph (DAG-001)', () => {
-    expect(
-      codes(`nika: v1
-workflow: cross-cycle
-tasks:
-  - id: a
-    depends_on: [b]
-    exec: { command: ["ls"] }
-  - id: b
-    depends_on: [a]
+  b:
+    with:
+      x: \${{ tasks.a.output }}
     exec: { command: ["ls"] }
 `),
     ).toContain('NIKA-DAG-001')
@@ -185,14 +180,14 @@ tasks:
   it('keeps the recovery-deadlock guard (DAG-004 · recover reads downstream)', () => {
     expect(
       codes(`nika: v1
-workflow: recover-deadlock
+workflow:
+  id: recover-deadlock
 tasks:
-  - id: a
+  a:
     exec: { command: ["ls"] }
     on_error:
       recover: \${{ tasks.b.output }}
-  - id: b
-    depends_on: [a]
+  b:
     with:
       x: \${{ tasks.a.output }}
     exec: { command: ["ls"] }

@@ -22,7 +22,7 @@ import { mkdtempSync, readFileSync, writeFileSync, readdirSync, rmSync } from 'n
 import { tmpdir } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { w1ToW2 } from './lib/w1-to-w2.mjs'
+import { serveW105 } from './lib/w1-to-w2.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const bin = process.env.NIKA_BIN || 'nika'
@@ -38,10 +38,10 @@ const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 50
 const ucSrc = readFileSync(join(ROOT, 'src/sections/usecases-yaml.generated.ts'), 'utf8')
 const showcases = [...ucSrc.matchAll(/'([a-z0-9-]+)': `([\s\S]*?)`,\n/g)].map((m) => ({
   slug: m[1],
-  yaml: w1ToW2(m[2].replace(/\\([`$\\])/g, '$1')),
+  yaml: serveW105(m[2].replace(/\\([`$\\])/g, '$1')),
 }))
 
-/* corpus 2 · the 7 served flagships (public/library · already W2 + SPDX) */
+/* corpus 2 · the 7 served flagships (public/library · W105-native + SPDX) */
 const flagships = readdirSync(join(ROOT, 'public/library'))
   .filter((f) => f.endsWith('.nika.yaml'))
   .map((f) => ({

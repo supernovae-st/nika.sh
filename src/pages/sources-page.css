@@ -1,22 +1,65 @@
-/* /sources · the epistemology page (rides hubs-page.css for the shell) */
+/* ─── /sources page · the truth register ─────────────────────────────────────
+   Speaks the register grammar the /providers + /tools + /errors family
+   established (StampStrip · .cl-year-head — pages are sync-imported so the
+   shared rules are always loaded). This file adds only the src- vocabulary:
+   the bands, the clock ledger, the two-clocks diff lines, the anchored
+   truth words, the score block, the verify protocol. Monochrome blueprint;
+   the ONLY colour is the page's identity accent on a :target truth word
+   (--hub-hue). SSR-safe: pure CSS. */
 
+.src-page {
+  min-height: 100vh;
+}
+.src-page .v4sec-wrap {
+  /* the house top offset (the tools/errors constant) */
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.src-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* ── the bands · reuse the year-head rule line ─────────────────────────────── */
+.src-band {
+  margin-top: clamp(40px, 5vh, 60px);
+  /* #clocks · #verify deep-links land clear of the fixed nav */
+  scroll-margin-top: 120px;
+}
+.src-band-n {
+  /* the band label is a real h2 (the sections keep their aria names):
+     margin reset + the register tracking over the shared .cl-year-n type */
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.src-band-gloss {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+
+/* ── the clock ledger ──────────────────────────────────────────────────────── */
 .src-clocks {
   display: grid;
   gap: 18px;
-  margin: 22px 0 0;
+  margin: 16px 0 0;
 }
 .src-clock dt {
   font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--v4-text-dim);
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
   margin-bottom: 4px;
 }
 .src-clock dd {
   margin: 0;
-  color: var(--v4-text-dim);
-  max-width: 68ch;
+  font-size: 14px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 78%, transparent);
+  max-width: 74ch;
   text-wrap: pretty;
 }
 .src-clock em {
@@ -30,24 +73,26 @@
   text-underline-offset: 3px;
 }
 
+/* ── the two-clocks diff lines ─────────────────────────────────────────────── */
 .src-clockdiff {
   font-size: 12.5px;
-  color: var(--v4-text-dim);
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
   margin: 10px 0 0;
 }
 .src-clockdiff-k {
   color: var(--v4-text);
 }
 
+/* ── the truth words · the anchored register ───────────────────────────────── */
 .src-words {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 14px 28px;
-  margin: 22px 0 0;
+  margin: 16px 0 0;
 }
 .src-word {
-  /* anchor landing: the header clears the fixed chrome */
-  scroll-margin-top: 90px;
+  /* anchor landing: the word clears the fixed chrome (TruthLine targets) */
+  scroll-margin-top: 120px;
 }
 .src-word dt {
   font-size: 13px;
@@ -57,17 +102,19 @@
 .src-word dd {
   margin: 0;
   font-size: 13.5px;
-  color: var(--v4-text-dim);
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
   text-wrap: pretty;
 }
 .src-word:target dt {
+  /* the page's one identity accent (the deep-linked truth word) */
   color: var(--hub-hue, var(--brand));
 }
 
+/* ── the score block ───────────────────────────────────────────────────────── */
 .src-score {
   font-size: 13px;
   color: var(--v4-text);
-  margin: 18px 0 8px;
+  margin: 16px 0 8px;
 }
 .src-gaps {
   list-style: none;
@@ -78,13 +125,14 @@
 }
 .src-gaps li {
   font-size: 12px;
-  color: var(--v4-text-faint);
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
 }
 
+/* ── the verify protocol ───────────────────────────────────────────────────── */
 .src-verify {
   list-style: none;
   padding: 0;
-  margin: 22px 0 0;
+  margin: 16px 0 0;
   display: grid;
   gap: 20px;
   counter-reset: verify;
@@ -95,20 +143,19 @@
 .src-cmd {
   font-size: 12.5px;
   color: var(--v4-text);
-  background: rgb(255 255 255 / 0.04);
-  border: 1px solid var(--v4-line, rgb(255 255 255 / 0.08));
-  border-radius: 6px;
+  background: color-mix(in srgb, var(--v4-text) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--v4-text) 14%, transparent);
   padding: 10px 12px;
   overflow-x: auto;
   margin: 0 0 6px;
 }
 .src-cmd::before {
   content: counter(verify) ' · ';
-  color: var(--v4-text-faint);
+  color: color-mix(in srgb, var(--v4-text) 40%, transparent);
 }
 .src-why {
   font-size: 13px;
-  color: var(--v4-text-dim);
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
   margin: 0;
   max-width: 68ch;
 }

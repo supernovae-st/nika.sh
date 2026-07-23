@@ -28,11 +28,11 @@ export interface Anatomy {
 }
 
 /** the engine release these graphs were read from (the provenance stamp) */
-export const ANATOMY_ENGINE = "0.104.0"
+export const ANATOMY_ENGINE = "0.105.0"
 
 export const ANATOMY: Record<string, Anatomy> = {
   "agent-loop": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "agent-loop-template",
     "nodes": [
       {
@@ -63,17 +63,17 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "execute",
         "to": "confirm",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "plan",
         "to": "execute",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "api-upload-and-create": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "api-upload-and-create-template",
     "nodes": [
       {
@@ -97,12 +97,12 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "upload",
         "to": "create",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "chain": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "chain-template",
     "nodes": [
       {
@@ -133,17 +133,17 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "gather",
         "to": "think",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "think",
         "to": "persist",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "daily-brief": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "daily-brief",
     "nodes": [
       {
@@ -205,37 +205,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "agenda",
         "to": "draft",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "calendar",
         "to": "agenda",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "draft",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "inbox",
         "to": "triage",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "notes",
         "to": "draft",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "triage",
         "to": "draft",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "docker-report": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "docker-report-template",
     "nodes": [
       {
@@ -272,22 +272,22 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "df",
         "to": "diagnose",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "diagnose",
         "to": "keep",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "ps",
         "to": "diagnose",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "etl-quarantine": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "etl-quarantine",
     "nodes": [
       {
@@ -357,42 +357,47 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "check",
         "to": "good",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "check",
         "to": "quarantine",
-        "kind": "depends_on"
+        "kind": "value"
+      },
+      {
+        "from": "check",
+        "to": "quarantine",
+        "kind": "value"
       },
       {
         "from": "empty_batch",
         "to": "rows",
-        "kind": "depends_on"
+        "kind": "recovery"
       },
       {
         "from": "good",
         "to": "report",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "raw",
         "to": "rows",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "rows",
         "to": "check",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "rows",
         "to": "good",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "etl-state": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "etl-state-template",
     "nodes": [
       {
@@ -404,14 +409,6 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "fresh",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
         "id": "previous",
         "verb": "invoke",
         "tool": "nika:read",
@@ -420,11 +417,11 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "save_state",
+        "id": "fresh",
         "verb": "invoke",
-        "tool": "nika:write",
+        "tool": "nika:fetch",
         "permits": [
-          "tool: nika:write"
+          "tool: nika:fetch"
         ]
       },
       {
@@ -433,6 +430,14 @@ export const ANATOMY: Record<string, Anatomy> = {
         "tool": "nika:json_diff",
         "permits": [
           "tool: nika:json_diff"
+        ]
+      },
+      {
+        "id": "save_state",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "tool: nika:write"
         ]
       },
       {
@@ -449,32 +454,32 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "delta",
         "to": "process",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "empty",
         "to": "previous",
-        "kind": "depends_on"
+        "kind": "recovery"
       },
       {
         "from": "fresh",
         "to": "delta",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "fresh",
         "to": "save_state",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "previous",
         "to": "delta",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "fanout": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "fanout-template",
     "nodes": [
       {
@@ -513,22 +518,22 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "discover",
         "to": "process",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "process",
         "to": "survivors",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "survivors",
         "to": "merge",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "gate-and-act": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "gate-and-act-template",
     "nodes": [
       {
@@ -553,12 +558,12 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "check",
         "to": "act",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "human-gated-ship": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "human-gated-ship-template",
     "nodes": [
       {
@@ -612,32 +617,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "act",
         "to": "record",
-        "kind": "depends_on"
+        "kind": "control"
+      },
+      {
+        "from": "act",
+        "to": "record",
+        "kind": "terminal-observation"
       },
       {
         "from": "check_a",
         "to": "gates",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "check_b",
         "to": "gates",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "gates",
         "to": "human",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "human",
         "to": "act",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "media-asset-pack": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "media-asset-pack-template",
     "nodes": [
       {
@@ -675,27 +685,27 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "brief",
         "to": "manifest",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "brief",
         "to": "render",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "manifest",
         "to": "persist",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "render",
         "to": "manifest",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "meeting-actions": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "meeting-actions",
     "nodes": [
       {
@@ -727,17 +737,17 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "extract",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "transcript",
         "to": "extract",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "pr-risk-review": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "pr-risk-review",
     "nodes": [
       {
@@ -776,22 +786,27 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "diff",
         "to": "risk",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "risk",
         "to": "probe",
-        "kind": "depends_on"
+        "kind": "value"
+      },
+      {
+        "from": "risk",
+        "to": "probe",
+        "kind": "value"
       },
       {
         "from": "risk",
         "to": "report",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "price-watch": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "price-watch",
     "nodes": [
       {
@@ -826,17 +841,17 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "price",
         "to": "alert",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "snapshot",
         "to": "price",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "social-repurpose": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "social-repurpose",
     "nodes": [
       {
@@ -880,37 +895,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "linkedin",
         "to": "bundle",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "newsletter",
         "to": "bundle",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "post",
         "to": "linkedin",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "post",
         "to": "newsletter",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "post",
         "to": "thread",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "thread",
         "to": "bundle",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "standup-digest": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "standup-digest",
     "nodes": [
       {
@@ -948,22 +963,22 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "digest",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "history",
         "to": "digest",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "today",
         "to": "digest",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t1-image-fx-batch": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "image-fx-batch",
     "nodes": [
       {
@@ -990,12 +1005,12 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "shots",
         "to": "stylize",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t1-meeting-actions": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "meeting-actions",
     "nodes": [
       {
@@ -1034,22 +1049,22 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "extract",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "extract",
         "to": "trace",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "transcript",
         "to": "extract",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t1-og-images": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "og-images",
     "nodes": [
       {
@@ -1065,7 +1080,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     "edges": []
   },
   "t1-price-watch": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "price-watch",
     "nodes": [
       {
@@ -1090,12 +1105,17 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "check",
         "to": "alert",
-        "kind": "depends_on"
+        "kind": "value"
+      },
+      {
+        "from": "check",
+        "to": "alert",
+        "kind": "value"
       }
     ]
   },
   "t1-social-repurpose": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "social-repurpose",
     "nodes": [
       {
@@ -1138,37 +1158,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "linkedin",
         "to": "bundle",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "newsletter",
         "to": "bundle",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "post",
         "to": "linkedin",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "post",
         "to": "newsletter",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "post",
         "to": "thread",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "thread",
         "to": "bundle",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t1-standup-digest": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "standup-digest",
     "nodes": [
       {
@@ -1206,22 +1226,22 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "digest",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "history",
         "to": "digest",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "today",
         "to": "digest",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-bookmark-triage": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "bookmark-triage",
     "nodes": [
       {
@@ -1257,17 +1277,22 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "pages",
         "to": "table",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "table",
         "to": "report",
-        "kind": "depends_on"
+        "kind": "value"
+      },
+      {
+        "from": "table",
+        "to": "report",
+        "kind": "value"
       }
     ]
   },
   "t2-contract-guard": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "contract-guard",
     "nodes": [
       {
@@ -1320,37 +1345,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "check",
         "to": "gate",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "clauses",
         "to": "check",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "clauses",
         "to": "memo",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "contract",
         "to": "clauses",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "gate",
         "to": "memo",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "memo",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-csv-chart-report": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "csv-chart-report",
     "nodes": [
       {
@@ -1408,37 +1433,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "by_region",
         "to": "chart",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "by_region",
         "to": "rows_md",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "chart",
         "to": "report",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "raw",
         "to": "rows",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "rows",
         "to": "by_region",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "rows_md",
         "to": "report",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-etl-quarantine": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "etl-quarantine",
     "nodes": [
       {
@@ -1507,42 +1532,47 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "check",
         "to": "good",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "check",
         "to": "quarantine",
-        "kind": "depends_on"
+        "kind": "value"
+      },
+      {
+        "from": "check",
+        "to": "quarantine",
+        "kind": "value"
       },
       {
         "from": "empty_batch",
         "to": "rows",
-        "kind": "depends_on"
+        "kind": "recovery"
       },
       {
         "from": "good",
         "to": "report",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "raw",
         "to": "rows",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "rows",
         "to": "check",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "rows",
         "to": "good",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-invoice-chaser": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "invoice-chaser",
     "nodes": [
       {
@@ -1600,37 +1630,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "approve",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "drafts",
         "to": "approve",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "drafts",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "ledger",
         "to": "rows",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "overdue",
         "to": "drafts",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "rows",
         "to": "overdue",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-model-bench": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "model-bench",
     "nodes": [
       {
@@ -1673,27 +1703,42 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "ask_challenger",
         "to": "tabulate",
-        "kind": "depends_on"
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "ask_challenger",
+        "to": "tabulate",
+        "kind": "value"
       },
       {
         "from": "ask_incumbent",
         "to": "tabulate",
-        "kind": "depends_on"
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "ask_incumbent",
+        "to": "tabulate",
+        "kind": "value"
       },
       {
         "from": "ask_tiny",
         "to": "tabulate",
-        "kind": "depends_on"
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "ask_tiny",
+        "to": "tabulate",
+        "kind": "value"
       },
       {
         "from": "tabulate",
         "to": "persist",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-release-notes": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "release-notes",
     "nodes": [
       {
@@ -1732,27 +1777,32 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "changelog",
         "to": "announce",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "history",
         "to": "notes",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "notes",
         "to": "announce",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "notes",
         "to": "changelog",
-        "kind": "depends_on"
+        "kind": "value"
+      },
+      {
+        "from": "notes",
+        "to": "changelog",
+        "kind": "value"
       }
     ]
   },
   "t2-release-radar": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "release-radar",
     "nodes": [
       {
@@ -1764,14 +1814,6 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "feed",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
         "id": "previous",
         "verb": "invoke",
         "tool": "nika:read",
@@ -1780,11 +1822,11 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "save_state",
+        "id": "feed",
         "verb": "invoke",
-        "tool": "nika:write",
+        "tool": "nika:fetch",
         "permits": [
-          "tool: nika:write"
+          "tool: nika:fetch"
         ]
       },
       {
@@ -1793,6 +1835,14 @@ export const ANATOMY: Record<string, Anatomy> = {
         "tool": "nika:json_diff",
         "permits": [
           "tool: nika:json_diff"
+        ]
+      },
+      {
+        "id": "save_state",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "tool: nika:write"
         ]
       },
       {
@@ -1807,37 +1857,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "feed",
         "to": "digest",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "feed",
         "to": "fresh",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "feed",
         "to": "save_state",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "fresh",
         "to": "digest",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "no_state",
         "to": "previous",
-        "kind": "depends_on"
+        "kind": "recovery"
       },
       {
         "from": "previous",
         "to": "fresh",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-seo-content-brief": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "seo-content-brief",
     "nodes": [
       {
@@ -1875,27 +1925,27 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "brief",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "map",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "map",
         "to": "top_page",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "top_page",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-support-triage": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "support-triage",
     "nodes": [
       {
@@ -1950,37 +2000,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "batch",
         "to": "board",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "batch",
         "to": "escalate",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "queue",
         "to": "triage",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "triage",
         "to": "board",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "triage",
         "to": "urgent",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "urgent",
         "to": "escalate",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t2-transcript-shownotes": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "transcript-shownotes",
     "nodes": [
       {
@@ -2019,27 +2069,32 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "notes",
         "to": "page",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "notes",
         "to": "sections",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "raw",
         "to": "notes",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "sections",
         "to": "page",
-        "kind": "depends_on"
+        "kind": "value"
+      },
+      {
+        "from": "sections",
+        "to": "page",
+        "kind": "value"
       }
     ]
   },
   "t3-competitor-radar": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "competitor-radar",
     "nodes": [
       {
@@ -2089,27 +2144,27 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "digest",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "map",
         "to": "pages",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "pages",
         "to": "digest",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "save",
         "to": "ping",
-        "kind": "depends_on"
+        "kind": "control"
       }
     ]
   },
   "t3-config-drift-sentinel": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "config-drift-sentinel",
     "nodes": [
       {
@@ -2181,57 +2236,57 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "baseline",
         "to": "expected",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "drift",
         "to": "alert",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "drift",
         "to": "explain",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "drift",
         "to": "record",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "expected",
         "to": "drift",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "explain",
         "to": "alert",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "fingerprint",
         "to": "alert",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "fingerprint",
         "to": "record",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "live",
         "to": "drift",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "live",
         "to": "fingerprint",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t3-localization-factory": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "localization-factory",
     "nodes": [
       {
@@ -2294,42 +2349,42 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "bundle",
         "to": "mirror",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "files",
         "to": "pairs",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "files",
         "to": "texts",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "pairs",
         "to": "bundle",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "pairs",
         "to": "translated",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "texts",
         "to": "pairs",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "translated",
         "to": "bundle",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t3-pr-review-fanout": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "pr-review-fanout",
     "nodes": [
       {
@@ -2396,37 +2451,37 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "changed",
         "to": "files",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "files",
         "to": "reviews",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "merged",
         "to": "summary",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "reviews",
         "to": "merged",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "summary",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "todo_sweep",
         "to": "summary",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t3-resume-screener": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "resume-screener",
     "nodes": [
       {
@@ -2503,47 +2558,47 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "brief",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "cvs",
         "to": "pairs",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "pairs",
         "to": "screened",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "pool",
         "to": "cvs",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "pool",
         "to": "pairs",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "ranked",
         "to": "shortlist",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "screened",
         "to": "ranked",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "shortlist",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t4-ceo-monday-brief": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "ceo-monday-brief",
     "nodes": [
       {
@@ -2629,62 +2684,62 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "bill",
         "to": "ping",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "brief",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "kpi_raw",
         "to": "kpis",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "kpis",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "kpis",
         "to": "revenue",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "news",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "pulse",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "revenue",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "save",
         "to": "bill",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "stamp",
         "to": "ping",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "stamp",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t4-deep-research-brief": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "deep-research-brief",
     "nodes": [
       {
@@ -2722,22 +2777,27 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "brief",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "investigate",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
+      },
+      {
+        "from": "investigate",
+        "to": "brief",
+        "kind": "value"
       },
       {
         "from": "plan",
         "to": "investigate",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "t4-incident-war-room": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "incident-war-room",
     "nodes": [
       {
@@ -2821,57 +2881,62 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "confirmed",
         "to": "postmortem",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "logs",
         "to": "timeline",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "postmortem",
         "to": "save",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "recheck",
         "to": "confirmed",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "runbook",
         "to": "timeline",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "save",
         "to": "ping",
-        "kind": "depends_on"
+        "kind": "control"
+      },
+      {
+        "from": "save",
+        "to": "ping",
+        "kind": "terminal-observation"
       },
       {
         "from": "settle",
         "to": "recheck",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "status_history",
         "to": "timeline",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "timeline",
         "to": "postmortem",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "timeline",
         "to": "settle",
-        "kind": "depends_on"
+        "kind": "control"
       }
     ]
   },
   "t4-release-train": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "release-train",
     "nodes": [
       {
@@ -2981,67 +3046,72 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "approved",
         "to": "hold",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "audit",
         "to": "gates_green",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "conductor",
         "to": "approved",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "gate_time",
         "to": "conductor",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "gates_green",
         "to": "gate_time",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "hold",
         "to": "ship",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "lint",
         "to": "gates_green",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "live",
         "to": "record",
-        "kind": "depends_on"
+        "kind": "control"
+      },
+      {
+        "from": "live",
+        "to": "record",
+        "kind": "terminal-observation"
       },
       {
         "from": "ship",
         "to": "verify",
-        "kind": "depends_on"
+        "kind": "control"
       },
       {
         "from": "t0",
         "to": "gate_time",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "tests",
         "to": "gates_green",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "verify",
         "to": "live",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   },
   "website-brief": {
-    "graph_format": 1,
+    "graph_format": 2,
     "workflow": "website-brief-template",
     "nodes": [
       {
@@ -3071,12 +3141,12 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "brief",
         "to": "persist",
-        "kind": "depends_on"
+        "kind": "value"
       },
       {
         "from": "crawl_site",
         "to": "brief",
-        "kind": "depends_on"
+        "kind": "value"
       }
     ]
   }

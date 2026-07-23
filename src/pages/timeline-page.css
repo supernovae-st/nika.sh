@@ -1,0 +1,703 @@
+/* /timeline · the one verifiable record — the register grammar (the
+   /providers · /tools · /errors family: v4sec* header, StampStrip,
+   cl-year-* band heads — shared rules always loaded, pages are
+   sync-imported). This file adds only the tl- (ledger) and tls- (stage)
+   vocabulary. The hue is the amber of the archive lamp (--hub-hue, set
+   inline on <main>): proof badges and the stage keep it as the page's
+   only color accents; every new register surface below is ink-mix
+   monochrome. SSR-safe: pure CSS. */
+
+/* ── the register shell · page scope + the house top offset ─────────────────
+   min-height paints the dark surface under the fixed nav; the first wrap
+   clears it (the tools/errors constant). The ledger wrap sits under the
+   stage — it needs reading rhythm, not nav headroom. */
+.tl-page {
+  min-height: 100vh;
+}
+.tl-page .v4sec-wrap {
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.tl-page .tl-head {
+  padding-bottom: clamp(28px, 5vh, 56px);
+}
+.tl-page .tl-ledger {
+  padding-top: clamp(36px, 6vh, 72px);
+}
+.tl-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* ── the authority line · the SSOT and its verifier, in mono ──────────────── */
+.tl-authority {
+  margin: 14px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+.tl-authority a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.tl-authority a:hover,
+.tl-authority a:focus-visible {
+  color: var(--v4-text);
+}
+.tl-authority a:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 3px;
+}
+
+/* ── the chapters · era chips, one per deep link ─────────────────────────────
+   The ledger scrolls to the anchor; on the stage the same hash SEEKS the
+   era mark onto the playhead. Register chip voice, the page hue whispers. */
+.tl-chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0 0;
+}
+.tl-chapter {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 11px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, currentColor 62%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 999px;
+  text-decoration: none;
+  transition:
+    color var(--dur-quick) var(--ease-out),
+    border-color var(--dur-quick) var(--ease-out);
+}
+.tl-chapter span { color: var(--hub-hue); }
+.tl-chapter:hover,
+.tl-chapter:focus-visible {
+  color: inherit;
+  border-color: color-mix(in srgb, var(--hub-hue) 55%, transparent);
+}
+.tl-chapter:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── the ledger's today divider · the stage pulse, mirrored ────────────────── */
+.tl-today-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: clamp(40px, 6vh, 64px) 0 0;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--hub-hue);
+}
+.tl-today-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--hub-hue) 45%, transparent), transparent);
+}
+.tl-today-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hub-hue);
+  flex: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tl-today-dot { animation: tlsPulse 2.4s ease-in-out infinite; }
+}
+
+/* ── era + gates buckets · register band heads over the ledger ──────────────
+   The h2 rides the shared cl-year-n recipe; era titles are long, so the
+   nowrap is released. Deep-link ids (#exploration · #brouillon · #diamond
+   · #gates) keep nav headroom via scroll-margin. */
+.tl-era,
+.tl-gates {
+  margin-top: clamp(44px, 6vh, 72px);
+  scroll-margin-top: 120px;
+}
+.tl-era:first-of-type {
+  margin-top: 0;
+}
+.tl-era-glyph { color: var(--hub-hue); }
+.tl-era-n {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: normal;
+}
+.tl-span {
+  margin: 12px 0 0;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--v4-text) 55%, transparent);
+}
+.tl-story {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 66ch;
+}
+
+/* ── the closing line · forward motion ────────────────────────────────────── */
+.tl-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}
+
+.tl-entries {
+  list-style: none;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  border-left: 2px solid color-mix(in srgb, var(--hub-hue) 28%, transparent);
+}
+
+.tl-entry {
+  display: grid;
+  grid-template-columns: 6.4rem 1fr auto;
+  gap: 0.8rem;
+  align-items: baseline;
+  padding: 0.7rem 0 0.7rem 0.95rem;
+  position: relative;
+}
+
+.tl-entry::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0.95rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--hub-hue) 55%, transparent);
+}
+
+.tl-date {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.78rem;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.tl-body { display: grid; gap: 0.15rem; }
+.tl-title { font-weight: 560; }
+.tl-ver {
+  font-size: 0.82em;
+  margin-right: 0.5em;
+  padding: 0.05em 0.4em;
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 40%, transparent);
+  border-radius: 4px;
+}
+.tl-detail {
+  display: block;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  opacity: 0.7;
+  max-width: 56ch;
+}
+
+.tl-proof {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.tl-proof-proved {
+  color: var(--hub-hue);
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 45%, transparent);
+}
+.tl-proof-proved:hover { background: color-mix(in srgb, var(--hub-hue) 12%, transparent); }
+.tl-proof-recorded { opacity: 0.65; border: 1px dashed color-mix(in srgb, currentColor 30%, transparent); }
+.tl-proof-unprovable { opacity: 0.45; border: 1px dotted color-mix(in srgb, currentColor 25%, transparent); }
+
+.tl-gate-list { border-left-style: dashed; }
+.tl-gate-mark {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+}
+.tl-gate::before { background: transparent; border: 1.5px dashed color-mix(in srgb, var(--hub-hue) 55%, transparent); }
+.tl-conditions {
+  margin: 0.25rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.86rem;
+  opacity: 0.75;
+}
+.tl-conditions li { margin: 0.12rem 0; }
+
+@media (max-width: 640px) {
+  .tl-entry { grid-template-columns: 1fr; gap: 0.15rem; }
+  .tl-proof { justify-self: start; }
+}
+
+/* ─── THE STAGE · the record plays left→right (manifesto stage law) ──────────
+   Desktop + motion only (the capability gate sets data-mode='h'); every
+   other reader keeps the ledger below — the stage is its visual double,
+   aria-hidden. Vertical scroll slides the track through a fixed
+   playhead: releases ride ABOVE the baseline and carry the light,
+   milestones sit BELOW, era marks stand on the rail, the today pulse
+   closes the past and the gates wait as porous cards. Driver in
+   Timeline.tsx (house rAF+translate3d · compositor-only · no
+   scroll-jack). */
+
+.tls-scope[data-mode='v'] .tls-wrap,
+.tls-scope[data-mode='v'] .tls-hintrow { display: none; }
+
+.tls-wrap { position: relative; }
+.tls-stage {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  overflow: clip;
+}
+
+.tls-track {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 96px;
+  width: max-content;
+  margin: 0;
+  padding: 0 46vw 0 40vw;
+  position: relative;
+  will-change: transform;
+}
+/* the baseline spans the whole track · warm at both ends */
+/* the baseline BRIGHTENS as the record becomes provable: dim through the
+   testimony dawn, warming through the brouillon, full amber by the proven
+   diamond run, softening into the porous future — the epistemology drawn
+   as light. */
+.tls-track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, currentColor 12%, transparent),
+    color-mix(in srgb, var(--hub-hue) 22%, transparent) 22%,
+    color-mix(in srgb, var(--hub-hue) 46%, transparent) 46%,
+    color-mix(in srgb, var(--hub-hue) 68%, transparent) 72%,
+    color-mix(in srgb, var(--hub-hue) 30%, transparent) 86%,
+    color-mix(in srgb, var(--hub-hue) 14%, transparent)
+  );
+}
+
+/* ── entry cards · two staves ── */
+.tls-ent {
+  width: 316px;
+  height: 240px;
+  flex: none;
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  opacity: 0.45;
+  translate: 0 7px;
+  transition:
+    opacity var(--dur-soft) var(--ease-out),
+    translate var(--dur-soft) var(--ease-settle);
+}
+.tls-ent[data-live] { opacity: 1; translate: 0 0; }
+/* the pointer lifts what it reads · hover is a preview of live */
+.tls-ent:hover { opacity: 1; translate: 0 -3px; }
+.tls-ent[data-kind='release'] { margin-bottom: 472px; align-content: end; }
+.tls-ent[data-kind='milestone'] { margin-top: 472px; }
+
+/* stems + glyphs reach the baseline */
+.tls-stem {
+  position: absolute;
+  left: 18px;
+  width: 1px;
+  background: color-mix(in srgb, currentColor 26%, transparent);
+}
+.tls-ent[data-kind='release'] .tls-stem { top: 100%; height: 118px; }
+.tls-ent[data-kind='milestone'] .tls-stem { bottom: 100%; height: 118px; }
+/* the honesty contract, drawn: a labeled (unproven) claim stands on a
+   DASHED stem and a hollow mark — proof is visible before a word is read */
+.tls-ent[data-proof='labeled'] .tls-stem {
+  background: none;
+  width: 0;
+  border-left: 1px dashed color-mix(in srgb, currentColor 30%, transparent);
+}
+.tls-ent[data-proof='labeled'][data-kind='milestone'] .tls-glyph {
+  background: transparent;
+  border: 1.5px dashed color-mix(in srgb, currentColor 45%, transparent);
+}
+.tls-glyph {
+  position: absolute;
+  left: 13px;
+  width: 11px;
+  height: 11px;
+}
+.tls-ent[data-kind='release'] .tls-glyph {
+  bottom: -129px;
+  background: var(--hub-hue);
+  border-radius: 2px;
+  rotate: 45deg;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hub-hue) 18%, transparent);
+}
+.tls-ent[data-kind='milestone'] .tls-glyph {
+  top: -129px;
+  border-radius: 50%;
+  background: color-mix(in srgb, currentColor 46%, transparent);
+}
+.tls-ent[data-live][data-kind='release'] .tls-glyph {
+  box-shadow: 0 0 14px 3px color-mix(in srgb, var(--hub-hue) 45%, transparent);
+}
+
+.tls-date {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, currentColor 55%, transparent);
+  transition: color var(--dur-soft) var(--ease-out);
+}
+.tls-ent[data-live] .tls-date { color: var(--hub-hue); }
+.tls-title {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 590;
+  line-height: 1.3;
+  color: color-mix(in srgb, currentColor 72%, transparent);
+  transition: color var(--dur-soft) var(--ease-out);
+}
+.tls-ent[data-live] .tls-title { color: inherit; }
+.tls-line {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: color-mix(in srgb, currentColor 62%, transparent);
+}
+.tls-srcs { margin: 0.1rem 0 0; font-size: 11px; }
+
+/* ── era marks · chapters standing on the rail ── */
+.tls-eramark {
+  flex: none;
+  position: relative;
+  width: 72px;
+  height: 240px;
+  opacity: 0.9;
+}
+.tls-era-rule {
+  position: absolute;
+  left: 19px;
+  top: -140px;
+  bottom: -140px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--hub-hue) 55%, transparent) 30%,
+    color-mix(in srgb, var(--hub-hue) 55%, transparent) 70%,
+    transparent
+  );
+}
+.tls-era-lab {
+  position: absolute;
+  left: 30px;
+  top: -158px;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hub-hue);
+  white-space: nowrap;
+}
+.tls-era-lab span {
+  display: block;
+  margin-top: 3px;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  color: color-mix(in srgb, currentColor 45%, transparent);
+}
+.tls-era-lab .tls-era-count {
+  margin-top: 1px;
+  font-size: 10.5px;
+  color: color-mix(in srgb, var(--hub-hue) 70%, transparent);
+}
+
+/* ── the today pulse · the past closes here ── */
+.tls-todaymark {
+  flex: none;
+  position: relative;
+  width: 88px;
+  height: 240px;
+}
+.tls-today-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--hub-hue);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tls-today-dot {
+    animation: tlsPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes tlsPulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hub-hue) 55%, transparent); }
+    50% { box-shadow: 0 0 0 12px transparent; }
+  }
+}
+.tls-todaymark p {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 26px);
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--hub-hue);
+  white-space: nowrap;
+}
+
+/* ── gate cards · porous, centered on the rail, the future ── */
+.tls-gatecard {
+  width: 268px;
+  height: auto;
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border: 1.5px dashed color-mix(in srgb, var(--hub-hue) 45%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--hub-hue) 4%, transparent);
+}
+.tls-gatetag {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10.5px;
+  color: var(--hub-hue);
+}
+.tls-conds {
+  margin: 0.2rem 0 0;
+  padding-left: 1rem;
+  font-size: 12px;
+  line-height: 1.5;
+  color: color-mix(in srgb, currentColor 62%, transparent);
+}
+.tls-conds li { margin: 0.14rem 0; }
+
+/* ── the playhead · fixed in the stage, the record plays through it ── */
+.tls-playhead {
+  position: absolute;
+  left: 38%;
+  top: 9dvh;
+  bottom: 9dvh;
+  width: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--hub-hue) 50%, transparent) 28%,
+    color-mix(in srgb, var(--hub-hue) 50%, transparent) 72%,
+    transparent
+  );
+}
+.tls-playhead::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -3.5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hub-hue);
+  opacity: 0.85;
+  transform: translateY(-50%);
+}
+
+/* ── the counters · year huge and dim, the era under it ── */
+.tls-year {
+  position: absolute;
+  top: 84px;
+  right: clamp(24px, 6vw, 96px);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  color: color-mix(in srgb, currentColor 40%, transparent);
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tls-eraname {
+  position: absolute;
+  top: calc(84px + clamp(2.6rem, 5.4vw, 4.3rem));
+  right: clamp(24px, 6vw, 96px);
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hub-hue);
+}
+
+/* ── the minimap · every entry a tick, the head rides it ── */
+.tls-minimap {
+  position: absolute;
+  bottom: 7dvh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(520px, 48vw);
+  height: 24px;
+  /* the strip scrubs · a generous invisible hit area, pointer-only travel */
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  padding: 14px 10px;
+  margin: -14px -10px;
+  box-sizing: content-box;
+}
+.tls-minimap:active { cursor: grabbing; }
+.tls-mstrip {
+  position: relative;
+  height: 100%;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+}
+.tls-tick {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  border-radius: 1px 1px 0 0;
+  transform: translateX(-50%);
+}
+.tls-tick[data-kind='release'] {
+  height: 19px;
+  background: color-mix(in srgb, var(--hub-hue) 80%, transparent);
+}
+.tls-tick[data-kind='milestone'] {
+  height: 9px;
+  background: color-mix(in srgb, currentColor 45%, transparent);
+}
+.tls-tick[data-kind='gate'] {
+  height: 13px;
+  background: transparent;
+  border-left: 1.5px dashed color-mix(in srgb, var(--hub-hue) 55%, transparent);
+  width: 0;
+}
+.tls-mnow {
+  position: absolute;
+  bottom: -3px;
+  width: 2px;
+  height: 27px;
+  transform: translateX(-50%);
+  background: var(--hub-hue);
+}
+/* era openings on the strip · the chapter glyphs stand where their era begins */
+.tls-mera {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 3px;
+  transform: translateX(-50%);
+  font-size: 9px;
+  line-height: 1;
+  color: color-mix(in srgb, var(--hub-hue) 75%, transparent);
+}
+.tls-mini-ph {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 2px;
+  height: 30px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.75;
+}
+
+/* ── the terminus · lands with the last card ── */
+.tls-terminus {
+  position: absolute;
+  right: clamp(24px, 6vw, 96px);
+  bottom: 13dvh;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.tls-stage[data-end] .tls-terminus {
+  opacity: 1;
+  transform: none;
+}
+.tls-pulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hub-hue);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tls-stage[data-end] .tls-pulse { animation: tlsPulse 2.4s ease-in-out infinite; }
+}
+.tls-terminus p {
+  margin: 0;
+  font-size: 12px;
+  color: color-mix(in srgb, currentColor 55%, transparent);
+}
+
+.tls-hintrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0.6rem 0 0;
+}
+.tls-hint {
+  margin: 0;
+  font-size: 0.7rem;
+  opacity: 0.4;
+}
+/* the play affordance · the record plays itself at reading pace; any
+   gesture takes the wheel back. Also the keyboard's door into the
+   stage's motion. */
+.tls-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--hub-hue);
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--hub-hue) 40%, transparent);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-quick) var(--ease-out),
+    background-color var(--dur-quick) var(--ease-out);
+}
+.tls-play:hover { border-color: color-mix(in srgb, var(--hub-hue) 75%, transparent); background: color-mix(in srgb, var(--hub-hue) 8%, transparent); }
+.tls-play:focus-visible { outline: 2px solid var(--v4-focus-ring); outline-offset: 2px; }
+
+/* the silent egg · the terminus releases a butterfly (house signature) */
+.tls-terminus { cursor: default; }
+.tls-fly {
+  position: absolute;
+  left: 2px;
+  bottom: 8px;
+  font-size: 13px;
+  pointer-events: none;
+  animation: tlsFly 1.9s var(--ease-out) forwards;
+}
+@keyframes tlsFly {
+  0% { opacity: 0; translate: 0 0; rotate: 0deg; }
+  12% { opacity: 1; }
+  35% { rotate: -14deg; translate: -6px -34px; }
+  65% { rotate: 11deg; translate: 8px -64px; }
+  100% { opacity: 0; translate: 2px -104px; rotate: -8deg; }
+}

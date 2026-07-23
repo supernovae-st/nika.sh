@@ -235,6 +235,13 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
                 className="underline decoration-1 underline-offset-2 transition-colors hover:text-[var(--fg-mute)]"
               >
                 changelog
+              </Link>{' '}
+              ·{' '}
+              <Link
+                to="/timeline"
+                className="underline decoration-1 underline-offset-2 transition-colors hover:text-[var(--fg-mute)]"
+              >
+                timeline
               </Link>
             </span>
           </span>

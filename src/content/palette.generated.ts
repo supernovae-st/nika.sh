@@ -65,6 +65,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
+    "label": "Timeline",
+    "href": "/timeline",
+    "hint": "the one verifiable record"
+  },
+  {
+    "kind": "page",
     "label": "Manifesto",
     "href": "/manifesto",
     "hint": "the drum of liberation"
@@ -901,7 +907,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "tool",
     "label": "nika:decide",
     "href": "/tools/decide",
-    "hint": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt."
+    "hint": "Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here."
   },
   {
     "kind": "tool",
@@ -1189,7 +1195,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "provider",
     "label": "provider: moonshot",
     "href": "/providers#moonshot",
-    "hint": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27."
+    "hint": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider."
   },
   {
     "kind": "provider",
@@ -1427,6 +1433,18 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
+    "label": "config",
+    "href": "/language/config",
+    "hint": "envelope — Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment,"
+  },
+  {
+    "kind": "word",
+    "label": "const",
+    "href": "/language/const",
+    "hint": "envelope — Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 "
+  },
+  {
+    "kind": "word",
     "label": "cwd",
     "href": "/language/cwd",
     "hint": "exec"
@@ -1447,7 +1465,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "env",
     "href": "/language/env",
-    "hint": "envelope · exec — Non-sensitive runtime config · `${{ env.X }}` · may appear in logs."
+    "hint": "exec"
   },
   {
     "kind": "word",
@@ -1484,6 +1502,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "infer",
     "href": "/language/infer",
     "hint": "task · on_finally"
+  },
+  {
+    "kind": "word",
+    "label": "inputs",
+    "href": "/language/inputs",
+    "hint": "envelope — Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies"
   },
   {
     "kind": "word",
@@ -1567,7 +1591,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "outputs",
     "href": "/language/outputs",
-    "hint": "envelope — The workflow's return value · symmetric to vars. Each entry is a `${{ tasks.X.output }}` reference "
+    "hint": "envelope — The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` referenc"
   },
   {
     "kind": "word",
@@ -1688,12 +1712,6 @@ export const PALETTE: PaletteEntry[] = [
     "label": "types",
     "href": "/language/types",
     "hint": "envelope — Named type declarations (spec 09-types.md · PascalCase · acyclic)"
-  },
-  {
-    "kind": "word",
-    "label": "vars",
-    "href": "/language/vars",
-    "hint": "envelope — Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declarati"
   },
   {
     "kind": "word",

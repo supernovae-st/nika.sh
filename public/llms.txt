@@ -16,7 +16,7 @@ Four verbs, locked forever: `infer` (LLM call), `exec` (subprocess),
 a verb is a distinct native execution model.
 
 The language envelope is `nika: v1`, frozen forever. The engine versions
-independently on real semver toward a 1.0 launch; currently v0.104.0.
+independently on real semver toward a 1.0 launch; currently v0.105.0.
 
 Stdlib v0.1: 28 builtins · 17 providers (Ollama, LM Studio, llama.cpp,
 LocalAI, vLLM, Mistral, Anthropic, OpenAI, Gemini, Groq, DeepSeek, xAI,
@@ -79,15 +79,17 @@ data language (jq) · workflows are callable · mock-first.
 - Docs: https://docs.nika.sh
 - Registry (share workflows · every entry machine-re-proven: pinned sha256 + conformance oracle + engine cert before run): https://github.com/supernovae-st/nika-registry · machine index: https://raw.githubusercontent.com/supernovae-st/nika-registry/main/index.json · never install an LLM-suggested name without resolving it there first
 - Releases: https://github.com/supernovae-st/nika/releases
+- The changelog (the exhaustive ship log: every release and public milestone, dated · the timeline below is its provenance record): https://nika.sh/changelog
 - The map (every page, one graph): https://nika.sh/map · crawler twin: https://nika.sh/sitemap.xml · atlas twin: https://nika.sh/ontology/language.json
 - The anatomy hubs (one page per language layer, members anchored): https://nika.sh/flow (edges · gates) · https://nika.sh/boundary (permits · secrets) · https://nika.sh/proof (conformance · trace · machine surfaces)
+- The timeline (the one verifiable record: eras · releases · forward gates · every provable claim re-proven in CI): https://nika.sh/timeline
 - Showcase rooms (one URL per conformance-gated real workflow, whole file + plan facts): https://nika.sh/use-cases (the gallery lists all rooms; each room lives at its own slug under that path)
 
 ## Status
 
-Shipping in the open (v0.104.0, real semver toward 1.0). The 42-organ skeleton is admitted crate by crate (the repo README carries the live count). Each passes
+Shipping in the open (v0.105.0, real semver toward 1.0). The 42-organ skeleton is admitted crate by crate (the repo README carries the live count). Each passes
 a 12-gate admission (TDD, mutation testing ≥90%, zero `.unwrap()` in src).
-Language v0.1 public spec is live; 1.0: summer 2026.
+Language v0.1 public spec is live; 1.0 is readiness-gated: the timeline carries the gates (conditions, never dates).
 Building in public.
 
 ## License

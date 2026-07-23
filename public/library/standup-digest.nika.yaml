@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
 nika: v1
-workflow: standup-digest
+workflow:
+  id: standup-digest
 # local model · your commits never leave
 model: ollama/llama3.2:3b
 
@@ -13,14 +14,13 @@ permits:
 
 tasks:
   # no dependency · the engine runs them together
-  - id: today
+  today:
     invoke: { tool: "nika:date", args: { op: now } }
 
-  - id: history
+  history:
     exec: { command: [ git, log, --since=yesterday, --oneline, --no-merges ] }
 
-  - id: digest
-    depends_on: [today, history]
+  digest:
     with:
       today: ${{ tasks.today.output }}
       history: ${{ tasks.history.output }}
@@ -34,8 +34,7 @@ tasks:
         Plain words, no fluff.
       max_tokens: 300
 
-  - id: save
-    depends_on: [digest]
+  save:
     with:
       digest: ${{ tasks.digest.output }}
     invoke:

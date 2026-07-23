@@ -13,7 +13,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the namespaces",
       "description": "Each namespace scopes where a value lives and who may read it: vars for inputs, with for bindings, tasks for outputs, env and secrets for the boundary. The boundary law is four sentences and it is the whole story.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -53,7 +53,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the types",
       "description": "Typed contracts for task outputs: types, returns, decode. Ratified with the types wave · this surface fills when the resync brings it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -123,7 +123,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the language words",
       "description": "Every key an author can type in a workflow file, each scoped to the surface where it speaks. The schema declares them · the register lists them all · each room shows the word at work.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -177,6 +177,20 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/config",
+          "termCode": "config",
+          "name": "config",
+          "description": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment, may appear in logs (R3a · LAW-SURFACE-0201 · succeeds the dead `env:` block). Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001)."
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/const",
+          "termCode": "const",
+          "name": "const",
+          "description": "Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 · the literal half of the dead `vars:` block · everything that is not required:true lands here per the E-split total rule). Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`."
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/cwd",
           "termCode": "cwd",
           "name": "cwd"
@@ -198,8 +212,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/env",
           "termCode": "env",
-          "name": "env",
-          "description": "Non-sensitive runtime config · `${{ env.X }}` · may appear in logs."
+          "name": "env"
         },
         {
           "@type": "DefinedTerm",
@@ -239,6 +252,13 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/infer",
           "termCode": "infer",
           "name": "infer"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/inputs",
+          "termCode": "inputs",
+          "name": "inputs",
+          "description": "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies (R3a · LAW-SURFACE-0201 · the typed half of the dead `vars:` block · a required:true value lands here per the E-split total rule). Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211)."
         },
         {
           "@type": "DefinedTerm",
@@ -328,7 +348,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/outputs",
           "termCode": "outputs",
           "name": "outputs",
-          "description": "The workflow's return value · symmetric to vars. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema."
+          "description": "The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema."
         },
         {
           "@type": "DefinedTerm",
@@ -466,13 +486,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/vars",
-          "termCode": "vars",
-          "name": "vars",
-          "description": "Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declaration object."
-        },
-        {
-          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/vision",
           "termCode": "vision",
           "name": "vision"
@@ -508,7 +521,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the edge kinds",
       "description": "The run graph speaks a closed set of edge kinds: value bindings, the two observations, control, recovery and the reserved finally. Unknown kinds are reader-tolerated by law · new ones arrive with the spec.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -560,7 +573,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the gate predicates",
       "description": "An after entry gates on producer state: succeeded, failed, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -600,7 +613,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the four verbs",
       "description": "infer thinks, exec runs, invoke calls a tool, agent loops with judgment. A verb is a distinct native execution model and the set is closed · everything callable is a tool under invoke.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -636,7 +649,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the standard library",
       "description": "Every nika tool the engine ships, each with a JSON Schema for its args. No plugin store · capability is versioned with the engine and granted per file by the boundary.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -678,7 +691,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/tools/decide",
           "termCode": "nika:decide",
           "name": "nika:decide",
-          "description": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt."
+          "description": "Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here."
         },
         {
           "@type": "DefinedTerm",
@@ -842,7 +855,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the templates",
       "description": "Routing skeletons for real work: each template is sha-pinned, conformance-checked and grants exactly the tools it needs. Copy one and the provenance travels with it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -922,7 +935,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the tool families",
       "description": "The library groups by intent: core, file, data, introspection, network, media. Families are anchors on the hub · each lists its members with their one-line contracts.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -970,7 +983,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the providers",
       "description": "Model access is provider-agnostic and local-first: the same file runs on a laptop runtime or a cloud API. Each provider declares its env var, its dialect and its models · the file picks, never the vendor.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1047,7 +1060,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/providers/moonshot",
           "termCode": "Moonshot (Kimi)",
           "name": "Moonshot (Kimi)",
-          "description": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27."
+          "description": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider."
         },
         {
           "@type": "DefinedTerm",
@@ -1101,7 +1114,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the extract modes",
       "description": "nika fetch extracts structure, not just bytes. Each mode is a named contract with a defined output shape · the modes anchor inside the fetch room because that is where an author meets them.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1167,7 +1180,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the permit families",
       "description": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library. Absent means the engine floor · present means default-deny.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1205,7 +1218,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the secret sources",
       "description": "A secret is a masked reference, never a literal: it resolves from vault, env or file at run time and stays masked in every log and every trace the run leaves behind.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1238,7 +1251,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the error categories",
       "description": "A category names the kind of failure, orthogonal to the namespace that raised it. Transient categories are retry candidates · the rest are contract refusals that no retry will fix.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1320,7 +1333,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the error codes",
       "description": "Every failure the engine can name, as data: a stable code with a category and a transient flag. If the engine can refuse it, the refusal has a name you can retry on, route on and search.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1904,7 +1917,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the error namespaces",
       "description": "Codes group by namespace, one per surface of the engine: parse, DAG, variables, security, each verb and the machine seams. A namespace can exist before its first code ships · the register says so out loud.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2056,7 +2069,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the conformance levels",
       "description": "Conformance nests: core parses and validates, runtime executes, stdlib proves the library. A higher level includes every lower one · the fixtures are the contract, not the prose.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2087,7 +2100,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the oracle tools",
       "description": "The read-only oracle an agent loads: check, explain, schema, examples and the rest of the register. The same truth the CLI speaks, served over MCP · nothing here mutates anything.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2151,7 +2164,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the showcases",
       "description": "Real workflows, whole files: each showcase passes the spec conformance gate and ships with its graph. This is the language at work on real jobs, not a demo reel.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2319,7 +2332,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the truth words",
       "description": "The vocabulary of how this site tells the truth: spec, canon, schema, pack, pin, catalog, mirror, registry, manifest, atlas. Each word has exactly one meaning · confusing two of them is a prose bug.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.104.0",
+      "version": "v0.105.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",

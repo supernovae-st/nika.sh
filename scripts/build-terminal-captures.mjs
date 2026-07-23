@@ -29,9 +29,10 @@ const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 50
 /* the fixture the commands run on — the install page's own hello (W2 · the
    file every visitor meets first) */
 const HELLO = `nika: v1
-workflow: hello
+workflow:
+  id: hello
 tasks:
-  - id: greet
+  greet:
     exec:
       command: ["echo", "hello", "from", "nika"]
 `

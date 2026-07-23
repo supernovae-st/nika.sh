@@ -10,7 +10,7 @@ import { HUBS } from '../pages/hub-data.generated'
 import { hubJsonldSets, sourcesJsonldSets } from '../pages/hub-lib'
 import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { SNIPPETS, SNIPPET_REGISTRY, CAPTURES } from '../content/snippets.generated'
-import { PATHS } from '../../site.config'
+import { PATHS, PENDING_ERROR_CODES } from '../../site.config'
 
 /* ── the atlas compiler gates ─────────────────────────────────────────────────
    build-atlas.mjs is the ONE compiler of the language atlas; these gates make
@@ -137,11 +137,18 @@ describe('atlas · rooms and routes cover each other', () => {
         }
       ).redirects.map((r) => r.from),
     )
+    /* the pending rooms (pending-error-codes.ts, re-exported by site.config ·
+       minted in the canon, awaiting the resync pin) are served AHEAD of
+       their atlas membership: the member node is born the day the pin lands
+       the code in the catalog (build-atlas derives members from it), so
+       until then the pending declaration is the room's known-to-the-graph
+       proof — served with a gated declaration, never an orphan. */
+    const pending = new Set(PENDING_ERROR_CODES.map((c) => `/errors/${c}`))
     const atlasRoots = ['/language/', '/verbs/', '/tools/', '/templates/', '/errors/', '/providers/']
     for (const p of PATHS) {
       if (!atlasRoots.some((r) => p.startsWith(r))) continue
       expect(
-        atlasUrls.has(p) || moved.has(p),
+        atlasUrls.has(p) || moved.has(p) || pending.has(p),
         `${p} served but unknown to the atlas (neither a node nor a declared move)`,
       ).toBe(true)
     }
@@ -219,7 +226,7 @@ describe('atlas · the register diet holds (the namespace-retention law)', () =>
 })
 
 describe('atlas · the derived DAG module IS the projector export', () => {
-  it('showcase-dag.generated toEqual SHOWCASE_DAG modulo the W2 line remap', async () => {
+  it('showcase-dag.generated toEqual SHOWCASE_DAG modulo the served line remap', async () => {
     /* the projector export is the RATIFIED clock (W1 lines); the derived
        module re-aims line0/line1 at the door-served W2 rendering (0.104
        flip · build-atlas). Equality holds after applying the SAME pass's
@@ -228,10 +235,10 @@ describe('atlas · the derived DAG module IS the projector export', () => {
       '../sections/usecases-yaml.generated'
     )
     const derived = (await import('../content/showcase-dag.generated')).SHOWCASE_DAG
-    const { w1ToW2WithMap } = await import('../lib/w1-to-w2')
+    const { serveW105WithMap } = await import('../lib/w1-to-w2')
     const remapped = Object.fromEntries(
       Object.entries(source).map(([slug, dag]) => {
-        const { mapLine } = w1ToW2WithMap(SHOWCASE_YAML[slug])
+        const { mapLine } = serveW105WithMap(SHOWCASE_YAML[slug])
         return [
           slug,
           {

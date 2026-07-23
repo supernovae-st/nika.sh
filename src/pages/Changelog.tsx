@@ -256,6 +256,13 @@ export function Component() {
               </span>
               Star on GitHub
             </a>
+            <Link to="/timeline" className="cl-link cl-link--dim">
+              The verifiable record
+              <span aria-hidden className="cl-link-arrow">
+                {' '}
+                →
+              </span>
+            </Link>
             <Link to="/use-cases" className="cl-link cl-link--dim">
               See it in use
               <span aria-hidden className="cl-link-arrow">

@@ -2778,7 +2778,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "anchor": "moonshot",
     "own_page": true,
     "status": "both",
-    "opener": "Moonshot AI — Kimi K3 (1M context, thinking) + K2.x line (international endpoint api.moonshot.ai/v1). Weights announced open 2026-07-27.",
+    "opener": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider.",
     "meta": {
       "kind": "cloud",
       "dialect": "openai-chat"
@@ -3634,7 +3634,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "research / review / open-ended",
     "meta": {
-      "sha256": "0f1cbbe36fe92bbfefd565944ddb1efe12ca721150d600495af531c9f080c926",
+      "sha256": "2e5b88c626e8e0e49673117bbcb4551abc2f7434870feb4df7db1faae7f28e0c",
       "file": "agent-loop.nika.yaml"
     }
   },
@@ -3648,7 +3648,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "call a product API: upload a file, then create from it",
     "meta": {
-      "sha256": "ece58461cf534963cdc98e6bceff0d51fa954f076cf29beceb7beddf1765bc47",
+      "sha256": "0dae4b9b7a4f9fcd6b1038a5452f776148549468fd8ea1408fff224599709ea2",
       "file": "api-upload-and-create.nika.yaml"
     }
   },
@@ -3662,7 +3662,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "take data, produce words, save them",
     "meta": {
-      "sha256": "bd9197b0a806081aaad87c3467737d09abcec419ffdca6dffd32a441c7f22455",
+      "sha256": "ca7eb26a65f73c352cb41c0d2753cfd1fe38beb7eb5452b235f7a3afbbce1be6",
       "file": "chain.nika.yaml"
     }
   },
@@ -3690,7 +3690,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "only what changed since last run · survive bad input",
     "meta": {
-      "sha256": "dd894559fad69754dcf38404bbf34ac3cd9e8a51ef2246dae82423ca35445511",
+      "sha256": "d131a9011228bdce981210dedc980b98d409aead1c1d297aa34530a97d5fd47c",
       "file": "etl-state.nika.yaml"
     }
   },
@@ -3704,7 +3704,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "do this for EVERY item",
     "meta": {
-      "sha256": "0b54e48df2fc0d53e0fe512a38c5842d1fa58b965212b1afac4ac56c1e15afc4",
+      "sha256": "b468ab46eeccf19431f30666ebee95fcfcccd03504f817593fe4f5ea5f752e9f",
       "file": "fanout.nika.yaml"
     }
   },
@@ -3718,7 +3718,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "watch X, act when Y",
     "meta": {
-      "sha256": "1301f2d6d7d3bc9930281f1e159accf0f34e08d8727e8b97c6c47fcdcc168659",
+      "sha256": "33358d359b925aacd188df6012dcff68a03f3d4c393eb200620d1611a3e128ae",
       "file": "gate-and-act.nika.yaml"
     }
   },
@@ -3746,7 +3746,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "generate image/audio assets from a brief",
     "meta": {
-      "sha256": "ebf9ea261f64f5eccbb6f9fd51e8c832d437f07ee3840e2fd642876533ffb0e5",
+      "sha256": "cb3b911c4b726944c0fc53b1db07655148b3357bac0c5ab0683b563b05710b88",
       "file": "media-asset-pack.nika.yaml"
     }
   },
@@ -3760,7 +3760,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "understand a site (domain · theme · assets) from a URL",
     "meta": {
-      "sha256": "93f91f88bbd46444a3130d355621c257942bd1975b97753981f65bed0864ba9f",
+      "sha256": "e272f97ca1e4186f1610c7299009025390412906196bc49cec375f2173022156",
       "file": "website-brief.nika.yaml"
     }
   },
@@ -3836,8 +3836,8 @@ export const ATLAS_NODES: AtlasNode[] = [
     "layer": "reach",
     "title": "nika:decide",
     "url": "/tools/decide",
-    "status": "ratified",
-    "opener": "Apply a portable Decision Bundle to an EvidenceSnapshot with deterministic fixed-point semantics; return the full traced Decision Receipt.",
+    "status": "both",
+    "opener": "Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here.",
     "meta": {
       "family": "data"
     }
@@ -4538,6 +4538,38 @@ export const ATLAS_NODES: AtlasNode[] = [
     }
   },
   {
+    "id": "word:config",
+    "kind": "member",
+    "set": "words",
+    "layer": "shape",
+    "title": "config",
+    "url": "/language/config",
+    "status": "ratified",
+    "opener": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment, may appear in logs (R3a · LAW-SURFACE-0201 · succeeds the dead `env:` block). Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001).",
+    "meta": {
+      "scopes": [
+        "envelope"
+      ],
+      "verb": false
+    }
+  },
+  {
+    "id": "word:const",
+    "kind": "member",
+    "set": "words",
+    "layer": "shape",
+    "title": "const",
+    "url": "/language/const",
+    "status": "ratified",
+    "opener": "Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 · the literal half of the dead `vars:` block · everything that is not required:true lands here per the E-split total rule). Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`.",
+    "meta": {
+      "scopes": [
+        "envelope"
+      ],
+      "verb": false
+    }
+  },
+  {
     "id": "word:cwd",
     "kind": "member",
     "set": "words",
@@ -4593,10 +4625,9 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "env",
     "url": "/language/env",
     "status": "ratified",
-    "opener": "Non-sensitive runtime config · `${{ env.X }}` · may appear in logs.",
+    "opener": null,
     "meta": {
       "scopes": [
-        "envelope",
         "exec"
       ],
       "verb": false
@@ -4698,6 +4729,22 @@ export const ATLAS_NODES: AtlasNode[] = [
         "on_finally"
       ],
       "verb": true
+    }
+  },
+  {
+    "id": "word:inputs",
+    "kind": "member",
+    "set": "words",
+    "layer": "shape",
+    "title": "inputs",
+    "url": "/language/inputs",
+    "status": "ratified",
+    "opener": "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies (R3a · LAW-SURFACE-0201 · the typed half of the dead `vars:` block · a required:true value lands here per the E-split total rule). Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211).",
+    "meta": {
+      "scopes": [
+        "envelope"
+      ],
+      "verb": false
     }
   },
   {
@@ -4920,7 +4967,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "outputs",
     "url": "/language/outputs",
     "status": "ratified",
-    "opener": "The workflow's return value · symmetric to vars. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema.",
+    "opener": "The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema.",
     "meta": {
       "scopes": [
         "envelope"
@@ -5246,22 +5293,6 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/language/types",
     "status": "ratified",
     "opener": "Named type declarations (spec 09-types.md · PascalCase · acyclic)",
-    "meta": {
-      "scopes": [
-        "envelope"
-      ],
-      "verb": false
-    }
-  },
-  {
-    "id": "word:vars",
-    "kind": "member",
-    "set": "words",
-    "layer": "shape",
-    "title": "vars",
-    "url": "/language/vars",
-    "status": "ratified",
-    "opener": "Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declaration object.",
     "meta": {
       "scopes": [
         "envelope"
@@ -6460,6 +6491,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:agent-loop",
+    "to": "word:inputs",
+    "kind": "carries"
+  },
+  {
+    "from": "template:agent-loop",
     "to": "word:invoke",
     "kind": "carries"
   },
@@ -6520,11 +6556,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:agent-loop",
-    "to": "word:vars",
-    "kind": "carries"
-  },
-  {
-    "from": "template:agent-loop",
     "to": "word:with",
     "kind": "carries"
   },
@@ -6536,6 +6567,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:api-upload-and-create",
     "to": "word:args",
+    "kind": "carries"
+  },
+  {
+    "from": "template:api-upload-and-create",
+    "to": "word:const",
     "kind": "carries"
   },
   {
@@ -6585,11 +6621,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:api-upload-and-create",
-    "to": "word:vars",
-    "kind": "carries"
-  },
-  {
-    "from": "template:api-upload-and-create",
     "to": "word:with",
     "kind": "carries"
   },
@@ -6601,6 +6632,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:chain",
     "to": "word:args",
+    "kind": "carries"
+  },
+  {
+    "from": "template:chain",
+    "to": "word:const",
     "kind": "carries"
   },
   {
@@ -6651,11 +6687,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:chain",
     "to": "word:tool",
-    "kind": "carries"
-  },
-  {
-    "from": "template:chain",
-    "to": "word:vars",
     "kind": "carries"
   },
   {
@@ -6770,6 +6801,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:etl-state",
+    "to": "word:const",
+    "kind": "carries"
+  },
+  {
+    "from": "template:etl-state",
     "to": "word:description",
     "kind": "carries"
   },
@@ -6820,11 +6856,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:etl-state",
-    "to": "word:vars",
-    "kind": "carries"
-  },
-  {
-    "from": "template:etl-state",
     "to": "word:when",
     "kind": "carries"
   },
@@ -6846,6 +6877,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:fanout",
     "to": "word:backoff_strategy",
+    "kind": "carries"
+  },
+  {
+    "from": "template:fanout",
+    "to": "word:const",
     "kind": "carries"
   },
   {
@@ -6945,11 +6981,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:fanout",
-    "to": "word:vars",
-    "kind": "carries"
-  },
-  {
-    "from": "template:fanout",
     "to": "word:with",
     "kind": "carries"
   },
@@ -6961,6 +6992,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:gate-and-act",
     "to": "word:args",
+    "kind": "carries"
+  },
+  {
+    "from": "template:gate-and-act",
+    "to": "word:const",
     "kind": "carries"
   },
   {
@@ -7016,11 +7052,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:gate-and-act",
     "to": "word:tool",
-    "kind": "carries"
-  },
-  {
-    "from": "template:gate-and-act",
-    "to": "word:vars",
     "kind": "carries"
   },
   {
@@ -7135,6 +7166,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:media-asset-pack",
+    "to": "word:const",
+    "kind": "carries"
+  },
+  {
+    "from": "template:media-asset-pack",
     "to": "word:description",
     "kind": "carries"
   },
@@ -7191,11 +7227,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:media-asset-pack",
     "to": "word:tool",
-    "kind": "carries"
-  },
-  {
-    "from": "template:media-asset-pack",
-    "to": "word:vars",
     "kind": "carries"
   },
   {
@@ -7215,6 +7246,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:website-brief",
+    "to": "word:const",
+    "kind": "carries"
+  },
+  {
+    "from": "template:website-brief",
     "to": "word:description",
     "kind": "carries"
   },
@@ -7271,11 +7307,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:website-brief",
     "to": "word:tool",
-    "kind": "carries"
-  },
-  {
-    "from": "template:website-brief",
-    "to": "word:vars",
     "kind": "carries"
   },
   {
@@ -9047,6 +9078,16 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
+    "from": "word:config",
+    "to": "set:words",
+    "kind": "member-of"
+  },
+  {
+    "from": "word:const",
+    "to": "set:words",
+    "kind": "member-of"
+  },
+  {
     "from": "word:cwd",
     "to": "set:words",
     "kind": "member-of"
@@ -9093,6 +9134,11 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "word:infer",
+    "to": "set:words",
+    "kind": "member-of"
+  },
+  {
+    "from": "word:inputs",
     "to": "set:words",
     "kind": "member-of"
   },
@@ -9267,11 +9313,6 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
-    "from": "word:vars",
-    "to": "set:words",
-    "kind": "member-of"
-  },
-  {
     "from": "word:vision",
     "to": "set:words",
     "kind": "member-of"
@@ -9330,7 +9371,10 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "from": "post:four-verbs",
     "to": "tool:fetch",
     "kind": "mentions"
-  },
+  }
+]
+
+const ATLAS_EDGES_2: AtlasEdge[] = [
   {
     "from": "post:injection-goes-nowhere",
     "to": "tool:write",
@@ -9340,10 +9384,7 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "from": "post:intent-as-code",
     "to": "word:with",
     "kind": "mentions"
-  }
-]
-
-const ATLAS_EDGES_2: AtlasEdge[] = [
+  },
   {
     "from": "post:media-are-workflow-citizens",
     "to": "tool:image_generate",
@@ -9416,7 +9457,7 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
   },
   {
     "from": "post:the-generative-workflow",
-    "to": "word:vars",
+    "to": "word:const",
     "kind": "mentions"
   },
   {
@@ -9701,6 +9742,11 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
   },
   {
     "from": "code:NIKA-COMP-004",
+    "to": "word:inputs",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-COMP-004",
     "to": "word:outputs",
     "kind": "names"
   },
@@ -9867,11 +9913,6 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
   {
     "from": "code:NIKA-PARSE-014",
     "to": "word:secrets",
-    "kind": "names"
-  },
-  {
-    "from": "code:NIKA-PARSE-015",
-    "to": "word:vars",
     "kind": "names"
   },
   {

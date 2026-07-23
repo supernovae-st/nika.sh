@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.104.0"
+export const TERMINAL_ENGINE = "0.105.0"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.104.0"
+        "text": "nika 0.105.0"
       }
     ]
   },
@@ -70,6 +70,10 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
         "text": " ✔ SCHEMA   every authored schema: is satisfiable"
       },
       {
+        "kind": "ok",
+        "text": " ✔ GATES    every task is statically reachable · status literals in vocabulary"
+      },
+      {
         "kind": "soft",
         "text": " ○ PERMITS  no boundary declared (engine floor only) · `--infer-permits` writes one"
       },
@@ -100,7 +104,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
         "text": "  (no orphans · DAG check NIKA-DAG-001 clean)"
       }
     ],
-    "json": "{\n \"graph_format\": 1,\n \"workflow\": \"hello\",\n \"nodes\": [\n  {\n   \"id\": \"greet\",\n   \"verb\": \"exec\",\n   \"when\": null,\n   \"fan_out\": null,\n   \"permits\": [\n    \"exec: echo\"\n   ],\n   \"cost_interval\": null\n  }\n ],\n \"edges\": []\n}"
+    "json": "{\n \"graph_format\": 2,\n \"workflow\": \"hello\",\n \"nodes\": [\n  {\n   \"id\": \"greet\",\n   \"verb\": \"exec\",\n   \"when\": null,\n   \"fan_out\": null,\n   \"permits\": [\n    \"exec: echo\"\n   ],\n   \"cost_interval\": null\n  }\n ],\n \"edges\": []\n}"
   },
   {
     "id": "explain-parse-019",
@@ -124,7 +128,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "out",
-        "text": "  fix: the field's YAML SHAPE is wrong (a string where a list goes, a list where a map goes) — `tasks:` is a LIST of `- id:` entries, and the finding names the field whose shape to fix"
+        "text": "  fix: the field's YAML SHAPE is wrong (a string where a list goes, a list where a map goes) — `tasks:` is a MAP keyed by task id, and the finding names the field whose shape to fix"
       },
       {
         "kind": "out",
@@ -142,7 +146,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "NIKA-DAG-003 · validation_error · transient: false"
+        "text": "NIKA-DAG-003 · retired — never reused"
       },
       {
         "kind": "out",
@@ -150,7 +154,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "out",
-        "text": "  a tasks.X reference with no declared edge"
+        "text": "  « a `tasks.X` reference with no declared edge » became INEXPRESSIBLE in W2 « the flow »: the `with:` binding IS the edge (derived, never restated), and a reference outside the boundary is NIKA-VAR-021 (hoist it into `with:` — `nika check --fix` applies it)"
       },
       {
         "kind": "out",
@@ -158,15 +162,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "out",
-        "text": "  fix: declare the edge the reference implies — add `depends_on: [<that task>]` to the task whose template reads `tasks.<that task>.output`"
-      },
-      {
-        "kind": "out",
-        "text": ""
-      },
-      {
-        "kind": "out",
-        "text": "full docs: https://nika.sh/errors/NIKA-DAG-003 — `nika check` catches this before a run ever starts."
+        "text": "full docs: https://nika.sh/errors/NIKA-DAG-003 — retired codes keep their page; the successor code carries the live teaching."
       }
     ]
   }

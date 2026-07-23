@@ -1,26 +1,10 @@
-/* ─── the atlas hubs register (/flow · /boundary · /proof) ────────────────────
-   One shared register, the /map grammar continued: calm blueprint, hairline
-   sections, mono chips, member rows as anchored definition lines. The layer
-   hue appears ONLY as the section leader (2px). */
-
-.hub-page {
-  background: var(--v4-bg);
-}
-
-.hub-wrap {
-  /* the house top offset (the tools/errors constant): the nav is fixed —
-     the old 48px minimum slid the h1 underneath it (the /boundary bug) */
-  padding-block: clamp(124px, 16vh, 188px) 40px;
-  max-width: 880px;
-}
-
-.hub-opener {
-  margin: 0 0 8px;
-  font-size: 17px;
-  line-height: 1.65;
-  color: var(--v4-text-dim, rgb(190 205 230 / 0.85));
-  max-width: 62ch;
-}
+/* ─── the atlas hubs' shared register pieces ─────────────────────────────────
+   The hub-shared components (MemberRows · Rails · HubFoot · GateMatrix)
+   consumed by /flow · /boundary · /proof · /sources and the two room
+   templates, plus the member-room BODY (mr-* · the inspector's readout
+   rendered full-page). The old hub page-shell dialect (hub-page · hub-wrap ·
+   hub-opener · hub-sec*) retired when the rooms joined the register grammar
+   (rooms-page.css); member rows as anchored definition lines stay. */
 
 .hub-authority {
   margin: 0 0 40px;
@@ -38,39 +22,6 @@
 .hub-authority a:hover,
 .hub-authority a:focus-visible {
   color: var(--v4-text, #e8eefc);
-}
-
-.hub-sec {
-  margin-top: 44px;
-  border-left: 2px solid var(--hub-hue, rgb(140 170 255 / 0.4));
-  padding-left: 18px;
-  scroll-margin-top: 90px;
-}
-
-.hub-sec-title {
-  margin: 0 0 6px;
-  font-size: 19px;
-  font-weight: 650;
-  color: var(--v4-text, #e8eefc);
-}
-
-.hub-sec-note {
-  margin: 0 0 14px;
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--v4-text-faint, rgb(150 168 198 / 0.75));
-  max-width: 60ch;
-}
-
-.hub-slot {
-  margin: 6px 0 0;
-  font-family: var(--mono);
-  font-size: 12px;
-  padding: 8px 12px;
-  border: 1px dashed var(--v4-line-strong, rgb(140 170 255 / 0.28));
-  border-radius: var(--v4-radius, 4px);
-  color: var(--v4-text-faint, rgb(150 168 198 / 0.75));
-  max-width: 52ch;
 }
 
 /* the member definition rows (an anchored line per member) */
@@ -127,14 +78,6 @@
   border: 1px dashed var(--v4-line-strong, rgb(140 170 255 / 0.3));
   border-radius: 999px;
   color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
-}
-
-/* the excerpt pair (/flow doors: two CodeFiles side by side) */
-.hub-pair {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
-  margin-top: 14px;
 }
 
 /* rails (outgoing links · quiet chips) */
@@ -227,7 +170,7 @@
 }
 
 .gm-btn:focus-visible {
-  outline: 2px solid var(--v4-accent, #4f86ff);
+  outline: 2px solid var(--v4-focus-ring);
   outline-offset: 1px;
 }
 

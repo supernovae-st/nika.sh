@@ -1,0 +1,109 @@
+/* ─── /flow page · the flow register ──────────────────────────────────────────
+   Speaks the register grammar the /errors + /tools + /providers family
+   established (StampStrip · .cl-year-head — pages are sync-imported so the
+   shared rules are always loaded). This file adds only the fl- vocabulary:
+   the authority line, band sections over the SSOT projections, the excerpt
+   pair, the release-gated slot lines, the closing foot. The shared hub
+   machinery (MemberRows · Rails · GateMatrix · TruthLine) keeps its own
+   vocabulary from hub-shared's stylesheet; the layer hue (--hub-hue, set in
+   the TSX) reaches ONLY those shared accents. The fl- vocabulary itself is
+   monochrome blueprint: every tone is a color-mix of the theme ink.
+   SSR-safe: pure CSS. */
+
+.fl-page {
+  min-height: 100vh;
+}
+.fl-page .v4sec-wrap {
+  /* the house top offset (the tools/errors constant) */
+  padding-top: clamp(124px, 16vh, 188px);
+}
+.fl-title {
+  max-width: 20ch;
+  overflow-wrap: anywhere;
+}
+
+/* ── the authority line · the spec chapter, compact mono under the lede ────── */
+.fl-authority {
+  margin: 14px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+}
+.fl-authority a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.fl-authority a:hover,
+.fl-authority a:focus-visible {
+  color: var(--v4-text);
+}
+.fl-authority a:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 3px;
+}
+
+/* ── the bands · reuse the year-head rule line ───────────────────────────────
+   The band label is a real <h2> (the hub's heading outline survives the
+   grammar swap) restyled onto the cl-year-n register voice. */
+.fl-band {
+  margin-top: clamp(40px, 5vh, 60px);
+  scroll-margin-top: 120px;
+}
+.fl-band-n {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.fl-gloss {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 62%, transparent);
+  max-width: 62ch;
+}
+
+/* the excerpt pair (the two doors · CodeFiles side by side) */
+.fl-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+/* ── the release-gated slot · a keyed mono line, never a box ───────────────── */
+.fl-slot {
+  margin: 12px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 52%, transparent);
+  max-width: 62ch;
+}
+.fl-slot-k {
+  margin-right: 8px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 40%, transparent);
+}
+
+/* ── the closing line ──────────────────────────────────────────────────────── */
+.fl-foot {
+  margin-top: clamp(40px, 5vh, 64px);
+  font-size: 14px;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}
+
+/* the flow bands carry longer labels than the buckets the year-head was cut
+   for ("the gate, exhaustively") — let the head wrap before it clips on the
+   narrowest viewports. Scoped to fl- composition; the shared rule is untouched. */
+@media (max-width: 430px) {
+  .fl-band .cl-year-head {
+    flex-wrap: wrap;
+  }
+}

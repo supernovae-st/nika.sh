@@ -15,12 +15,12 @@ import './not-found.css'
    is schema-true — even this one): a complete workflow that would check
    green, gated with the rest in onpage-yaml.test.ts */
 export const NOT_FOUND_YAML = `nika: v1
-workflow: not-found
-description: "404 · nothing at this path parses"
+workflow:
+  id: not-found
+  description: "404 · nothing at this path parses"
 tasks:
-  - id: recover
-    invoke: { tool: "nika:log", args: { message: "go home ↓" } }
-`
+  recover:
+    invoke: { tool: "nika:log", args: { message: "go home ↓" } }`
 
 export function Component() {
   useHead({

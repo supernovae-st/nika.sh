@@ -143,7 +143,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "fetch": {
     "bare": "fetch",
-    "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ vars.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
+    "yaml": "  check:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"${{ const.source_url }}\"\n        mode: jq\n        jq: \".\"\n    output:\n      value: \".value\"               # SLOT: the jq path to the watched field\n    on_error:\n      # Offline rehearsal · a sample UNDER the threshold — the gate stays\n      # closed, the skeleton runs green before you wire the real source.\n      recover: { value: 42 }",
     "source": {
       "kind": "template",
       "template": "gate-and-act",
@@ -162,7 +162,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "glob": {
     "bare": "glob",
-    "yaml": "  discover:\n    invoke:                         # SLOT: glob / fetch sitemap / exec + jq split\n      tool: \"nika:glob\"\n      args: { pattern: \"${{ vars.collection_source }}/*.md\" }",
+    "yaml": "  discover:\n    invoke:                         # SLOT: glob / fetch sitemap / exec + jq split\n      tool: \"nika:glob\"\n      args: { pattern: \"${{ const.collection_source }}/*.md\" }",
     "source": {
       "kind": "template",
       "template": "fanout",
@@ -190,7 +190,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "hash": {
     "bare": "hash",
-    "yaml": "nika: v1\nworkflow:\n  id: pin-the-artifact\n  description: \"content-address a file — the receipt survives the run\"\n\nenv:\n  LC_ALL: \"C\"\n\ntasks:\n  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n\n  pin:\n    with:\n      artifact: ${{ tasks.artifact.output }}\n    invoke:\n      tool: \"nika:hash\"\n      args:\n        content: \"${{ with.artifact }}\"\n        algo: sha256\n\noutputs:\n  sha256: ${{ tasks.pin.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: pin-the-artifact\n  description: \"content-address a file — the receipt survives the run\"\n\ntasks:\n  artifact:\n    exec:\n      shell: \"cat report.md | tr -d '\\r'\"\n      cwd: \"./dist\"\n      env:\n        LC_ALL: \"C\"\n\n  pin:\n    with:\n      artifact: ${{ tasks.artifact.output }}\n    invoke:\n      tool: \"nika:hash\"\n      args:\n        content: \"${{ with.artifact }}\"\n        algo: sha256\n\noutputs:\n  sha256: ${{ tasks.pin.output }}",
     "source": {
       "kind": "crafted",
       "file": "hash.nika.yaml"
@@ -214,7 +214,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "image_generate": {
     "bare": "image_generate",
-    "yaml": "  render:\n    with:\n      brief_image_prompt: ${{ tasks.brief.output.image_prompt }}\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)\n        prompt: \"${{ with.brief_image_prompt }}\"\n        output_dir: \"${{ vars.out_dir }}\"\n        filename_prefix: \"asset\"    # SLOT: filename stem",
+    "yaml": "  render:\n    with:\n      brief_image_prompt: ${{ tasks.brief.output.image_prompt }}\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)\n        prompt: \"${{ with.brief_image_prompt }}\"\n        output_dir: \"${{ const.out_dir }}\"\n        filename_prefix: \"asset\"    # SLOT: filename stem",
     "source": {
       "kind": "template",
       "template": "media-asset-pack",
@@ -300,7 +300,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "notify": {
     "bare": "notify",
-    "yaml": "  act:\n    with:\n      value: ${{ tasks.check.value }}   # the binding IS the edge · check → act\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ with.value > vars.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ with.value }}\"   # SLOT\n        severity: warning",
+    "yaml": "  act:\n    with:\n      value: ${{ tasks.check.value }}   # the binding IS the edge · check → act\n    # when: is a SKIP gate — routing, not failure (a skipped task is not an error)\n    when: ${{ with.value > const.threshold }}   # SLOT: the CEL condition\n    invoke:\n      tool: \"nika:notify\"           # SLOT: the action · notify / write / exec\n      args:\n        channel: webhook\n        target: \"${{ secrets.webhook }}\"\n        message: \"Threshold crossed · ${{ with.value }}\"   # SLOT\n        severity: warning",
     "source": {
       "kind": "template",
       "template": "gate-and-act",
@@ -333,7 +333,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "read": {
     "bare": "read",
-    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ vars.source }}\" }",
+    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }",
     "source": {
       "kind": "template",
       "template": "chain",

@@ -40,7 +40,7 @@ export const MAP_LAYERS: MapLayer[] = [
         "id": "words",
         "title": "The language words",
         "url": "/language",
-        "count": 57,
+        "count": 59,
         "surface": "rooms",
         "slot": null,
         "closed": false,

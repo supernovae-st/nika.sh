@@ -3,14 +3,13 @@ workflow:
   id: pin-the-artifact
   description: "content-address a file — the receipt survives the run"
 
-env:
-  LC_ALL: "C"
-
 tasks:
   artifact:
     exec:
       shell: "cat report.md | tr -d '\r'"
       cwd: "./dist"
+      env:
+        LC_ALL: "C"
 
   pin:
     with:

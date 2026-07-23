@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
 nika: v1
-workflow: social-repurpose
+workflow:
+  id: social-repurpose
 # local model · your draft never leaves
 model: ollama/llama3.2:3b
 
@@ -12,29 +13,25 @@ permits:
 
 tasks:
   # one read · three parallel rewrites · one merge
-  - id: post
+  post:
     invoke: { tool: "nika:read", args: { path: ./post.md } }
 
-  - id: thread
-    depends_on: [post]
+  thread:
     with:
       post: ${{ tasks.post.output }}
     infer: { prompt: "Turn this post into a 6-tweet thread, keep the voice: ${{ with.post }}", max_tokens: 400 }
 
-  - id: linkedin
-    depends_on: [post]
+  linkedin:
     with:
       post: ${{ tasks.post.output }}
     infer: { prompt: "Rewrite this post for LinkedIn, hook first: ${{ with.post }}", max_tokens: 400 }
 
-  - id: newsletter
-    depends_on: [post]
+  newsletter:
     with:
       post: ${{ tasks.post.output }}
     infer: { prompt: "Write a 3-sentence newsletter blurb for this post: ${{ with.post }}", max_tokens: 300 }
 
-  - id: bundle
-    depends_on: [thread, linkedin, newsletter]
+  bundle:
     with:
       thread: ${{ tasks.thread.output }}
       linkedin: ${{ tasks.linkedin.output }}

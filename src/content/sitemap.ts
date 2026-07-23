@@ -9,6 +9,7 @@ import { UC_TABS } from '../sections/usecases-data'
 import { MEMBER_ROOM_FAMILIES } from './member-rooms.generated'
 import { DOCS, REPO, SPEC } from '../content'
 import { localizedPaths } from '../lib/i18n'
+import { PENDING_ERROR_CODES } from '../../pending-error-codes'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
    /map's « every page » section renders THIS structure (the human sitemap
@@ -79,6 +80,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'The proof', href: '/proof', hint: 'run graph · conformance · machine surfaces' },
       { label: 'Sources', href: '/sources', hint: 'how this site tells the truth · verify it yourself' },
       { label: 'Spec', href: '/spec', hint: 'the language reference · nika: v1' },
+      { label: 'Timeline', href: '/timeline', hint: 'the one verifiable record · eras · releases · gates' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },
       { label: 'Manifesto', href: '/manifesto', hint: 'the drum of liberation · 8 languages' },
     ],
@@ -126,6 +128,17 @@ export const SITE_MAP: MapGroup[] = [
       ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/verbs/${c.verb}` })),
       ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/${w.word}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
+      /* the pending rooms (minted in the canon, awaiting the resync pin —
+         pending-error-codes.ts, the leaf site.config derives ERROR_PATHS
+         from): the room prerenders the day the code is minted, so the map
+         lists it the same day. Deduped against the projection — when the
+         pin lands the code, the ERROR_CODES row takes over and this filter
+         yields nothing (the uniqueness gate stays single-voice: overlap is
+         the errors gate's red, not this one's). */
+      ...PENDING_ERROR_CODES.filter((c) => !ERROR_CODES.some((e) => e.code === c)).map((c) => ({
+        label: c,
+        href: `/errors/${c}`,
+      })),
       ...TEMPLATES.map((t) => ({ label: t.file, href: `/templates/${t.name}` })),
       /* rooms universelles (verdict 2026-07-18): every member of every
          roomed register — derived from the SAME generated registry the

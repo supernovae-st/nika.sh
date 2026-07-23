@@ -43,30 +43,30 @@ export const DOCTOR_CMD = 'nika doctor'
 
 /* the zero-setup first file — no model, no key (exec only) */
 export const HELLO_YAML = `nika: v1
-workflow: hello
+workflow:
+  id: hello
 tasks:
-  - id: greet
+  greet:
     exec:
-      command: ["echo", "hello", "from", "nika"]
-`
+      command: ["echo", "hello", "from", "nika"]`
 
 /* the first AI step — a free local model, nothing leaves the machine */
 export const HELLO_AI_YAML = `nika: v1
-workflow: hello-ai
+workflow:
+  id: hello-ai
 model: ollama/llama3.2:3b   # local · free · swap for any provider in the catalog
 tasks:
-  - id: greet
+  greet:
     infer:
-      prompt: "Say hello in one sentence."
-`
+      prompt: "Say hello in one sentence."`
 
 /* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
-   Captured 2026-07-17 against nika 0.104.0 (the verified release binary)
+   Captured 2026-07-17 against nika 0.105.0 (the verified release binary)
    running the exact HELLO_YAML above. The honesty law: these frames render
    REAL output — re-capture when the CLI's voice changes, never hand-edit. */
 export const VERSION_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika --version' },
-  { kind: 'out', text: 'nika 0.104.0' },
+  { kind: 'out', text: 'nika 0.105.0' },
 ]
 
 export const FIRST_RUN_TRANSCRIPT: TermLine[] = [

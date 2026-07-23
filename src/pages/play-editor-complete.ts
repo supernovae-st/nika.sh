@@ -27,7 +27,6 @@ import { LOOP_LOCALS, NAMESPACES } from '../lib/nika-lint'
 export const TOP_LEVEL_KEYS = [
   'nika',
   'workflow',
-  'description',
   'model',
   'vars',
   'env',
@@ -35,11 +34,12 @@ export const TOP_LEVEL_KEYS = [
   'permits',
   'tasks',
   'outputs',
+  'types',
+  'policy',
 ] as const
 
 export const TASK_KEYS = [
-  'id',
-  'depends_on',
+  'after',
   'when',
   'for_each',
   'max_parallel',
@@ -50,7 +50,11 @@ export const TASK_KEYS = [
   'on_finally',
   'with',
   'output',
-  ...CANON.verbNames,
+  'returns',
+  'infer',
+  'exec',
+  'invoke',
+  'agent',
 ] as const
 
 const toolOptions: Completion[] = TOOLS.map((t) => ({

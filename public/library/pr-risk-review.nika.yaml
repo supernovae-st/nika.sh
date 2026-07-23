@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
 nika: v1
-workflow: pr-risk-review
+workflow:
+  id: pr-risk-review
 # local model · the diff never leaves
 model: ollama/llama3.2:3b
 
@@ -12,11 +13,10 @@ permits:
   tools: [ "nika:read", "nika:write" ]
 
 tasks:
-  - id: diff
+  diff:
     exec: { command: [ git, diff, main ] }
 
-  - id: risk
-    depends_on: [diff]
+  risk:
     with:
       diff: ${{ tasks.diff.output }}
     timeout: "120s"
@@ -30,8 +30,7 @@ tasks:
           reasons: { type: array, items: { type: string } }
       max_tokens: 400
 
-  - id: probe
-    depends_on: [risk]
+  probe:
     with:
       score: ${{ tasks.risk.output.score }}
       reasons: ${{ tasks.risk.output.reasons }}
@@ -41,8 +40,7 @@ tasks:
       tools: [ "nika:read" ]
       max_turns: 3
 
-  - id: report
-    depends_on: [risk]
+  report:
     with:
       review: ${{ tasks.risk.output }}
     invoke:
