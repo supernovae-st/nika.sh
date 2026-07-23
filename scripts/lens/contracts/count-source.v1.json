@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 240,
-    "set_sha256": "fbed880343b408d5235571653d76ac5361c24811652c91e74da9ce4732dbdea6",
-    "rendered_count": 492,
-    "rendered_set_sha256": "db0df6ac5ca411874ee3af6bfba2f80cd0d0d8bb82c33eb938e6862656430a7c"
+    "count": 241,
+    "set_sha256": "f55d08a4f04d00a848f4b9b7350a3541b403507787beb293ee76fcd940631e52",
+    "rendered_count": 493,
+    "rendered_set_sha256": "f6b61f93027ccaced4c5ffd5067872a6413c197ba4388432233e7c01037ca55c"
   },
   "claim_count": 141,
   "bindings": [
@@ -250,7 +250,7 @@
     {
       "selector": "public/llms.txt#count:5",
       "path": "public/llms.txt",
-      "line": 70,
+      "line": 95,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -262,7 +262,7 @@
     {
       "selector": "public/llms.txt#count:6",
       "path": "public/llms.txt",
-      "line": 76,
+      "line": 101,
       "text": "9 read-only tools",
       "source": "9",
       "field": "mcpTools",
