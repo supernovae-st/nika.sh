@@ -137,7 +137,8 @@ said otherwise). Each script documents its flags in its own header.
   (critical/serious = gate).
 - `lighthouse-spot.mjs` — perf spots on `/`, `/play`, one post (only TBT
   is stable under load; cross 2+ runs on a calm machine).
-- `size-budget.mjs` — initial-JS budget (350 KB gz, three-leak detector).
+- `size-budget.mjs` — initial-JS budget (the ceiling + its ratchet history
+  live in the script header; three-leak detector).
 - `demo-drive.mjs` — HEADED Chrome through the demo storyboard while the
   operator screen-records; `--dry` is the headless plumbing check. Two of
   its laws generalize: far-below-fold Y coordinates go stale

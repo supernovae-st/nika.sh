@@ -21,14 +21,14 @@ classes:
   pinned-copy: "byte-copy pinned to an upstream rev"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  authored: 643
+  authored: 644
   generated: 304
   pinned-copy: 9
   foreign: 0
   unverified-default: 1
   files_listed: 99
   patterns: 21
-  files_total: 956
+  files_total: 957
 patterns:
 - glob: "public/brand/icons/*.svg"
   class: generated
@@ -167,8 +167,8 @@ patterns:
   evidence: "hand-written design/implementation plans"
 - glob: ".github/workflows/*.yml"
   class: authored
-  count: 6
-  sha256: 9f0e9a26be0237e0e9540b39ee9c409af5e25eb6210d392616e1638ef2370e6f
+  count: 7
+  sha256: f17933d974441d2939b43d907a1ad323bf18dae668a8f1d5d7a8b8f4a53a1785
   evidence: "hand-written CI trust model (comments narrate design decisions); release-heal.yml + spec-resync.yml edit OTHER files, nothing writes these"
 - glob: "src/**/*.generated.*"
   class: generated
@@ -185,12 +185,12 @@ patterns:
 - glob: "src/**"
   class: authored
   count: 337
-  sha256: 97d69afd582532047c7768399ecc695de748347691bfb396fc997af15984ce0a
+  sha256: ae0796d3d18322506e6c354277d0180b213521b35e502b2441ca007a22ce7f78
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   count: 68
-  sha256: cba5dd94030ec743551183a89a8c32ac7c48235fd76578e2cf1fe3fa581f7c71
+  sha256: 34f5221e55eb3dc0b83fd506a8b2060a00d0474bcfb3876925b7291495ab41ed
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker)"
 files:
 - path: ".claude/CLAUDE.md"
@@ -225,7 +225,7 @@ files:
   evidence: "hand-kept node version pin"
 - path: "AGENTS.md"
   class: authored
-  sha256: 94bb8fc3989a6af515cdfdb7180d0217603d21c3dfe31a3d725787ccd710c5c6
+  sha256: 8109b86fc6d2c3d609a945c3753564511b1002aa77f093c02104cba5a60d32a3
   evidence: "hand-written agent entry per the AGENTS.md convention"
 - path: "BRAND.md"
   class: authored
@@ -368,7 +368,7 @@ files:
   evidence: "studio brand asset — exported artwork, no in-repo generator"
 - path: "public/humans.txt"
   class: authored
-  sha256: 0ae415b6f9bff594433dc1c9a355b9a382ef8bed83c059e844339018ef1a4ae0
+  sha256: fe025d6bde4d279ad851cfcdc2ea50cf811d21e82dc7229eee12e4fc0b1f554e
   evidence: "hand-written humans.txt"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "public/i18n/untranslatables.json"
@@ -415,7 +415,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 660cf49c62d988c866b17b703caf198ec8ba104134a695d13d91af8fb9250ba2
+  sha256: 6579e745bac5dc466998f5a65db5d5fbec85cbc6ac5c388826c8c2ccc856b56e
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"

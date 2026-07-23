@@ -9,7 +9,7 @@
 /* ORGANISM */
   Name:     Nika
   Kind:     Semantic YAML workflow engine for AI
-  Status:   Release-candidate 0.105.0 (growing toward the 1.0 launch)
+  Status:   0.105.0, shipping in the open (real semver toward the 1.0 launch)
   Mascot:   Butterfly (🦋, reserved for emergence)
 
 /* SITE */
@@ -19,4 +19,4 @@
   Source:   github.com/supernovae-st/nika.sh
 
 /* LAST UPDATED */
-  Date:     2026-06-10
+  Date:     2026-07-24
