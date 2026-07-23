@@ -21,14 +21,14 @@ classes:
   pinned-copy: "byte-copy pinned to an upstream rev"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  authored: 644
+  authored: 645
   generated: 304
   pinned-copy: 9
   foreign: 0
   unverified-default: 1
   files_listed: 99
   patterns: 21
-  files_total: 957
+  files_total: 958
 patterns:
 - glob: "public/brand/icons/*.svg"
   class: generated
@@ -98,7 +98,7 @@ patterns:
 - glob: "tests/visual/golden/**"
   class: generated
   count: 32
-  sha256: 9a7dac63891f156f7eb26a7d3a413edd851b7d6f1020450963f19e920244b5c9
+  sha256: 5dcb1e010e49a5ad54b8986bec0466c095a8c7fd78aeff6a67f643f95d634a24
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update); re-baked deliberately per platform (darwin/linux)"
   derivation:
     tool: "node scripts/visual-regress.mjs --update (pnpm visual:update)"
@@ -137,7 +137,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   count: 6
-  sha256: 8658964530d1bbeb4bde69726dbe261bb259f57b0bdfc07f3eff31bdc0ac0709
+  sha256: 7a1384694e1eb1d7d28f45f31174837c938f572c428d2ffd9906d5b6e2a032ad
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually above"
 - glob: "content/blog/**"
   class: authored
@@ -184,8 +184,8 @@ patterns:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - glob: "src/**"
   class: authored
-  count: 337
-  sha256: ae0796d3d18322506e6c354277d0180b213521b35e502b2441ca007a22ce7f78
+  count: 338
+  sha256: 4106566829a77c6011b6069d74d10f1f55c478382da0e18cef4a1a4c103fa906
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
@@ -573,7 +573,7 @@ files:
   evidence: "hand-written estate projector (this manifest's generator)"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 4c16f04d317b98f2fb603d5e463b8265afc18af6e384cb8306c83defe74fd646
+  sha256: ac3655be4ebffbff145a9a063b80c418a561a85797b2e351690757223a33c607
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -582,7 +582,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: cc6cfe8546bcd00b106bf66e7e2e3a4ea97e4fbb76e26dafc2ab8945af610dbf
+  sha256: d9d4dbab4373179127ef50dc1edc5fe1b0437e3d0b96d0bbff2e012b6fb41ef5
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
