@@ -218,3 +218,17 @@ export const VERB_SOURCES: SourceLink[] = [
   SRC.mcp,
   SRC.editor,
 ]
+
+/** the sources rail for a provider room */
+export const PROVIDER_SOURCES: SourceLink[] = [
+  {
+    kind: 'spec',
+    label: 'stdlib · providers-v0.1',
+    href: `${SPEC}/blob/main/stdlib/providers-v0.1.md`,
+    hint: 'the ratified provider set: names, env vars, dialects',
+  },
+  SRC.providersCatalog,
+  SRC.docs,
+  SRC.mcp,
+  SRC.editor,
+]

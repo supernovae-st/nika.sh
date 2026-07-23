@@ -471,7 +471,9 @@ export function Component() {
                   <ul className="td-chips">
                     {FETCH_MODES.map((m) => (
                       <li key={m} id={`mode-${m}`}>
-                        <span className="td-chip">{m}</span>
+                        <Link className="td-chip" to={`/modes/${m}`} title="open the mode's page">
+                          {m}
+                        </Link>
                       </li>
                     ))}
                   </ul>

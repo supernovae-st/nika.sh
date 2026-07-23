@@ -1,0 +1,25 @@
+nika: v1
+workflow:
+  id: bilingual-release-note
+  description: "drafted in French, shipped in English — large drafts, small translates"
+
+tasks:
+  draft:
+    infer:
+      model: mistral/mistral-large-latest
+      max_tokens: 120
+      prompt: |
+        Rédige en une phrase la note de version : les traces
+        sont désormais signées et rejouables.
+
+  translate:
+    with:
+      draft: ${{ tasks.draft.output }}
+    infer:
+      model: mistral/mistral-small-latest
+      max_tokens: 120
+      prompt: |
+        Translate to plain English: ${{ with.draft }}
+
+outputs:
+  note: ${{ tasks.translate.output }}

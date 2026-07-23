@@ -201,6 +201,7 @@ const COMPONENT_FEATURE = {
   Language: 'registry.language',
   WordPage: 'registry.language',
   Providers: 'registry.providers',
+  ProviderPage: 'registry.providers',
   Templates: 'registry.templates',
   UseCasesPage: 'product.use_cases',
   Spec: 'site.spec',

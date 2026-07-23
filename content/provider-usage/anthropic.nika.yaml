@@ -1,0 +1,17 @@
+nika: v1
+workflow:
+  id: reasoned-review
+  description: "a careful pass with a visible thinking budget — the key rides ANTHROPIC_API_KEY"
+
+tasks:
+  review:
+    infer:
+      model: anthropic/claude-sonnet-4-20250514
+      max_tokens: 400
+      thinking: { enabled: true, budget_tokens: 2000 }
+      prompt: |
+        Name the single riskiest assumption in this plan:
+        ship on Friday, no rollback path, one reviewer.
+
+outputs:
+  verdict: ${{ tasks.review.output }}

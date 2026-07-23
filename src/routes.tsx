@@ -28,6 +28,7 @@ import { Component as SourcesPage } from './pages/Sources'
 import { Component as BoundaryPage } from './pages/Boundary'
 import { Component as ProofPage } from './pages/Proof'
 import { Component as Providers } from './pages/Providers'
+import { Component as ProviderPage } from './pages/ProviderPage'
 import { Component as MemberRoom } from './pages/MemberRoom'
 import { Component as Templates } from './pages/Templates'
 
@@ -99,9 +100,10 @@ export const routes: RouteObject[] = [
       /* rooms universelles (operator verdict 2026-07-18 · « chaque élément a
          sa page ») — ONE generic room route per roomed register family; the
          member registry + PATHS both derive from the descriptor, so a new
-         family is a descriptor flip, never a route edit. /providers/:id is
-         REBORN as a real page here (the WO-6 meta-refresh stubs die). */
-      { path: 'providers/:id', Component: MemberRoom },
+         family is a descriptor flip, never a route edit. Providers graduated
+         to a DEDICATED room (the ToolPage/WordPage path): derived facts +
+         authored meta + an audited donor file per provider. */
+      { path: 'providers/:id', Component: ProviderPage },
       { path: 'namespaces/:id', Component: MemberRoom },
       { path: 'types/:id', Component: MemberRoom },
       { path: 'edges/:id', Component: MemberRoom },

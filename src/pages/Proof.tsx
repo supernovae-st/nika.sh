@@ -137,22 +137,35 @@ export function Component() {
               {levels.members.map((m) => (
                 <li key={m.id} id={`${levels.anchor_prefix}${m.id}`} className="pf-row">
                   <div className="pf-row-head">
-                    <a
-                      className="pf-id"
-                      href={`#${levels.anchor_prefix}${m.id}`}
-                      data-node-id={`${levels.node_prefix}:${m.id}`}
-                      onClick={(e) => {
-                        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
-                        e.preventDefault()
-                        window.dispatchEvent(
-                          new CustomEvent('insp:open', {
-                            detail: { id: `${levels.node_prefix}:${m.id}` },
-                          }),
-                        )
-                      }}
-                    >
-                      {m.id}
-                    </a>
+                    {/* the level OWNS a page — its id is the door (the hover
+                        card keeps the readout preview) */}
+                    {m.url ? (
+                      <Link
+                        className="pf-id"
+                        to={m.url}
+                        data-node-id={`${levels.node_prefix}:${m.id}`}
+                        title="open the level's page"
+                      >
+                        {m.id}
+                      </Link>
+                    ) : (
+                      <a
+                        className="pf-id"
+                        href={`#${levels.anchor_prefix}${m.id}`}
+                        data-node-id={`${levels.node_prefix}:${m.id}`}
+                        onClick={(e) => {
+                          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+                          e.preventDefault()
+                          window.dispatchEvent(
+                            new CustomEvent('insp:open', {
+                              detail: { id: `${levels.node_prefix}:${m.id}` },
+                            }),
+                          )
+                        }}
+                      >
+                        {m.id}
+                      </a>
+                    )}
                     {m.slot && (
                       <span className="pf-wave" title={`ships with the ${m.slot} wave`}>
                         {m.slot}
@@ -191,12 +204,18 @@ export function Component() {
               reading, as data.
             </p>
             <ol className="pf-list">
-              {oracle.members.map(({ id: t }) => (
+              {oracle.members.map(({ id: t, url }) => (
                 <li key={t} id={`${oracle.anchor_prefix}${t}`} className="pf-row">
                   <div className="pf-row-head">
-                    <a className="pf-id" href={`#${oracle.anchor_prefix}${t}`}>
-                      {t}
-                    </a>
+                    {url ? (
+                      <Link className="pf-id" to={url} title="open the tool's page">
+                        {t}
+                      </Link>
+                    ) : (
+                      <a className="pf-id" href={`#${oracle.anchor_prefix}${t}`}>
+                        {t}
+                      </a>
+                    )}
                   </div>
                   <p className="pf-desc">read-only · the oracle&apos;s {t.replace('nika_', '')} surface</p>
                 </li>

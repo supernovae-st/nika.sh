@@ -2778,136 +2778,136 @@
       "selector": "site.config.ts#page:321",
       "path": "/providers/anthropic",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:322",
       "path": "/providers/deepseek",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:323",
       "path": "/providers/gemini",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:324",
       "path": "/providers/groq",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:325",
       "path": "/providers/huggingface",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:326",
       "path": "/providers/llamacpp",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:327",
       "path": "/providers/lmstudio",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:328",
       "path": "/providers/localai",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:329",
       "path": "/providers/mistral",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:330",
       "path": "/providers/mock",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:331",
       "path": "/providers/moonshot",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:332",
       "path": "/providers/nvidia",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:333",
       "path": "/providers/ollama",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:334",
       "path": "/providers/openai",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:335",
       "path": "/providers/openrouter",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:336",
       "path": "/providers/vllm",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {
       "selector": "site.config.ts#page:337",
       "path": "/providers/xai",
       "route_selector": "src/routes.tsx#route:31",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
+      "component": "ProviderPage",
+      "feature": "registry.providers",
       "presented_as": "live"
     },
     {

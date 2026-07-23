@@ -1,0 +1,16 @@
+nika: v1
+workflow:
+  id: local-summary
+  description: "a summary that never leaves the machine — Ollama serves on localhost:11434"
+
+tasks:
+  summarize:
+    infer:
+      model: ollama/qwen3.5:4b
+      max_tokens: 200
+      prompt: |
+        Summarize in two sentences what a hash-chained trace
+        gives an auditor that a plain log file cannot.
+
+outputs:
+  summary: ${{ tasks.summarize.output }}

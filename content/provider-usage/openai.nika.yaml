@@ -1,0 +1,22 @@
+nika: v1
+workflow:
+  id: typed-extraction
+  description: "the answer arrives as data, not prose — schema makes the shape a contract"
+
+tasks:
+  extract:
+    infer:
+      model: openai/gpt-5-mini
+      max_tokens: 200
+      schema:
+        type: object
+        required: [severity, component]
+        properties:
+          severity: { type: string, enum: [low, medium, high] }
+          component: { type: string }
+      prompt: |
+        "Login fails with a 500 after the session-store deploy."
+        Extract severity and component.
+
+outputs:
+  ticket: ${{ tasks.extract.output }}

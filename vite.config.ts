@@ -89,7 +89,11 @@ function sitemap(): Plugin {
       const tier = (p: string): { priority: string; changefreq: string } => {
         if (p === '/') return { priority: '1.0', changefreq: 'weekly' }
         if (p.startsWith('/blog/')) return { priority: '0.6', changefreq: 'monthly' }
-        if (/^\/(errors|tools|verbs|language|providers|templates)\/.+/.test(p))
+        if (
+          /^\/(errors|tools|verbs|language|providers|templates|namespaces|types|edges|predicates|families|modes|permits|secrets|conformance|error-namespaces|error-categories|mcp|truth|use-cases)\/.+/.test(
+            p,
+          )
+        )
           return { priority: '0.5', changefreq: 'monthly' }
         if (localeOf(p).prefix) return { priority: '0.6', changefreq: 'monthly' }
         return { priority: '0.8', changefreq: 'weekly' }

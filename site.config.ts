@@ -127,9 +127,9 @@ export const TOOL_PATHS = [
   '/tools/write',
 ]
 
-/* (the provider rooms died in the WO-6 fusion — their URLs live as
-   compiler-emitted 301 stubs in public/providers/<id>/ · redirects.json
-   is the manifest) */
+/* (the provider rooms are REAL dedicated pages at /providers/<id> —
+   prerendered via ATLAS_PATHS · served by ProviderPage · the WO-6 stub
+   era is over) */
 
 /* the verb rooms — one static landing per verb (slug = verb name:
    /verbs/infer). Same prerender law; kept literal; the language drift gate

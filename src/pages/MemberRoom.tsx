@@ -27,6 +27,25 @@ import './rooms-page.css'
 
 const islandId = (family: string, id: string) => `mr-${family}-${id}`
 
+/* the family's OG card (the register's own card carries its rooms — a room
+   without one fell back to the HOME card with the home alt, a mismatch) */
+const FAMILY_OG: Record<string, { img: string; alt: string }> = {
+  namespaces: { img: 'og-language', alt: 'The Nika language register: every schema-declared word, one page.' },
+  types: { img: 'og-language', alt: 'The Nika language register: every schema-declared word, one page.' },
+  edges: { img: 'og-flow', alt: 'How execution flows: two doors, one graph — the DAG falls out.' },
+  predicates: { img: 'og-flow', alt: 'How execution flows: two doors, one graph — the DAG falls out.' },
+  families: { img: 'og-tools', alt: 'The Nika standard library: versioned capability, no plugin store.' },
+  modes: { img: 'og-tools', alt: 'The Nika standard library: versioned capability, no plugin store.' },
+  permits: { img: 'og-boundary', alt: 'The boundary is declared: permits, secrets, the always-on floor.' },
+  secrets: { img: 'og-boundary', alt: 'The boundary is declared: permits, secrets, the always-on floor.' },
+  conformance: { img: 'og-proof', alt: 'Nothing on faith: conformance, the oracle, hash-chained traces.' },
+  mcp: { img: 'og-proof', alt: 'Nothing on faith: conformance, the oracle, hash-chained traces.' },
+  'error-namespaces': { img: 'og-errors', alt: 'The Nika error register: every refusal has a name, a category and a fix shape.' },
+  'error-categories': { img: 'og-errors', alt: 'The Nika error register: every refusal has a name, a category and a fix shape.' },
+  truth: { img: 'og-sources', alt: 'How this site tells the truth: pinned sources, two clocks, verify it yourself.' },
+  providers: { img: 'og-providers', alt: 'Nika providers. Local first, bring your own keys, no lock-in.' },
+}
+
 /* the atlas' roomed dimensions · derived from the registry, never typed
    (the count-source law) — the stamp figures below read these */
 const ROOM_FAMILY_COUNT = Object.keys(MEMBER_ROOM_FAMILIES).length
@@ -72,6 +91,7 @@ export function Component() {
       ? `${member.title}, one of ${fam.members.length} in ${fam.title} — every fact derived from the pinned spec and the released engine.`
       : 'This member is not in the register.')
 
+  const og = FAMILY_OG[family]
   useHead({
     title,
     link: routeHead(`/${family}/${id}`).link,
@@ -80,6 +100,12 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      ...(og
+        ? [
+            { property: 'og:image', content: `https://nika.sh/${og.img}.png` },
+            { property: 'og:image:alt', content: og.alt },
+          ]
+        : []),
       { name: 'twitter:title', content: title },
     ],
     script: member

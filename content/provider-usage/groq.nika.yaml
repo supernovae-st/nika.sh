@@ -1,0 +1,19 @@
+nika: v1
+workflow:
+  id: instant-fanout
+  description: "four prompts at once on LPU hardware — a failed item yields null, the batch lives"
+
+tasks:
+  slogan:
+    for_each: ["latency", "cost", "recovery", "provenance"]
+    max_parallel: 4
+    on_error:
+      recover: null
+    infer:
+      model: groq/llama-3.1-8b-instant
+      max_tokens: 30
+      prompt: |
+        A four-word slogan about ${{ item }} in CI pipelines.
+
+outputs:
+  slogans: ${{ tasks.slogan.output }}

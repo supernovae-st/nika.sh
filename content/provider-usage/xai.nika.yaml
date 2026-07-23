@@ -1,0 +1,20 @@
+nika: v1
+workflow:
+  id: retried-verdict
+  description: "transient network noise is policy, not a crash — backoff rides the file"
+
+tasks:
+  judge:
+    retry:
+      max_attempts: 3
+      backoff_ms: 500
+      backoff_strategy: exponential
+    infer:
+      model: xai/grok-3-mini-fast
+      max_tokens: 100
+      prompt: |
+        Yes or no, with one reason: should a failed retry
+        surface the first error or the last?
+
+outputs:
+  verdict: ${{ tasks.judge.output }}

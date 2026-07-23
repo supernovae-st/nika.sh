@@ -1,0 +1,16 @@
+nika: v1
+workflow:
+  id: self-hosted-triage
+  description: "your own server, the familiar API shape — LocalAI on localhost:8080"
+
+tasks:
+  triage:
+    infer:
+      model: localai/default
+      max_tokens: 120
+      prompt: |
+        Three support lines arrive. Order them most urgent first:
+        payment page 500s, typo in footer, password reset loops.
+
+outputs:
+  order: ${{ tasks.triage.output }}

@@ -1,0 +1,25 @@
+nika: v1
+workflow:
+  id: one-key-two-vendors
+  description: "two vendors' models through one endpoint — the router owns the hop"
+
+tasks:
+  first_opinion:
+    infer:
+      model: openrouter/anthropic/claude-sonnet-4-20250514
+      max_tokens: 120
+      prompt: |
+        One sentence: what breaks when prompts live in a wiki
+        instead of version control?
+
+  second_opinion:
+    with:
+      claim: ${{ tasks.first_opinion.output }}
+    infer:
+      model: openrouter/anthropic/claude-haiku-4-5-20251001
+      max_tokens: 120
+      prompt: |
+        Disagree in one sentence, if you can: ${{ with.claim }}
+
+outputs:
+  debate: ${{ tasks.second_opinion.output }}

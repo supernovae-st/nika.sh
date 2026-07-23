@@ -597,6 +597,30 @@ surfaces:
   - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: true,
       moved: { from: /sitemap, to: /map, applied: wo-3 } }
 
+# ─── legacy moves (retired URLs → their living heirs) ────────────────────────
+# Crawl debt surfaced by the 2026-07-24 Ahrefs pass: the Nuxt-era /concepts
+# section (killed in the Astro rewrite, 2026-04-14) and the pre-rename
+# /language/depends_on (the spec's word is `after`) still 404 to crawlers
+# that remember them. Every row becomes a redirects.json entry + a static
+# meta-refresh stub (dist has no server rules · the stub IS the 301).
+# These are NOT atlas surfaces — no node, no graph edge, just the door.
+legacy_moves:
+  - { from: /language/depends_on, to: /language/after, applied: provider-rooms-arc }
+  - { from: /concepts, to: /map, applied: provider-rooms-arc }
+  - { from: /concepts/antifragility, to: /manifesto, applied: provider-rooms-arc }
+  - { from: /concepts/bounded-rationality, to: /manifesto, applied: provider-rooms-arc }
+  - { from: /concepts/chaos-engineering, to: /manifesto, applied: provider-rooms-arc }
+  - { from: /concepts/context-engineering, to: /learn, applied: provider-rooms-arc }
+  - { from: /concepts/dag-execution, to: /flow, applied: provider-rooms-arc }
+  - { from: /concepts/declarative-intent, to: /manifesto, applied: provider-rooms-arc }
+  - { from: /concepts/epistemic-awareness, to: /sources, applied: provider-rooms-arc }
+  - { from: /concepts/graceful-degradation, to: /flow, applied: provider-rooms-arc }
+  - { from: /concepts/multi-provider, to: /providers, applied: provider-rooms-arc }
+  - { from: /concepts/observability-driven, to: /proof, applied: provider-rooms-arc }
+  - { from: /concepts/scope-isolation, to: /boundary, applied: provider-rooms-arc }
+  - { from: /concepts/self-healing, to: /flow, applied: provider-rooms-arc }
+  - { from: /concepts/shaka-system, to: /manifesto, applied: provider-rooms-arc }
+
 # ─── the chrome (§4.11-4.12 · nav + footer as projections) ──────────────────
 # The Reference panel and the footer's anatomy columns DERIVE: items carry a
 # `ref` (a set/layer node id) and the compiler resolves url · count · soon

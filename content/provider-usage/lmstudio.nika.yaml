@@ -1,0 +1,17 @@
+nika: v1
+workflow:
+  id: loaded-model-notes
+  description: "whatever model LM Studio has loaded answers — localhost:1234, no key"
+
+tasks:
+  tighten:
+    infer:
+      model: lmstudio/qwen3.5-4b
+      max_tokens: 150
+      system: You tighten prose. Keep the meaning, halve the words.
+      prompt: |
+        The meeting that was scheduled for the purpose of discussing
+        the roadmap has been moved to a later date next week.
+
+outputs:
+  tight: ${{ tasks.tighten.output }}

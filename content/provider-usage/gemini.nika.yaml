@@ -1,0 +1,17 @@
+nika: v1
+workflow:
+  id: flash-digest
+  description: "a fast, steady digest — GEMINI_API_KEY in the environment, nothing else"
+
+tasks:
+  digest:
+    infer:
+      model: gemini/gemini-2.5-flash
+      max_tokens: 150
+      temperature: 0.2
+      prompt: |
+        Digest to three bullets: the run is a DAG, the DAG comes
+        from references, references are checked before anything runs.
+
+outputs:
+  bullets: ${{ tasks.digest.output }}

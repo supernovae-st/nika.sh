@@ -1,0 +1,16 @@
+nika: v1
+workflow:
+  id: bounded-answer
+  description: "a tight token budget makes the audit price a hard ceiling, not a guess"
+
+tasks:
+  answer:
+    infer:
+      model: deepseek/deepseek-chat
+      max_tokens: 80
+      prompt: |
+        In one sentence: why should a workflow engine refuse
+        to run a file it cannot price?
+
+outputs:
+  answer: ${{ tasks.answer.output }}

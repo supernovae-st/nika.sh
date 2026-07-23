@@ -1,0 +1,16 @@
+nika: v1
+workflow:
+  id: open-weights-answer
+  description: "an open-weight model served by the provider network — policy rides the model id"
+
+tasks:
+  explain:
+    infer:
+      model: huggingface/Qwen/Qwen3.5-397B-A17B:fastest
+      max_tokens: 120
+      prompt: |
+        In two sentences: why do open weights turn a provider
+        catalog into a menu instead of a cage?
+
+outputs:
+  answer: ${{ tasks.explain.output }}

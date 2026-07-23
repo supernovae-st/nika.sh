@@ -8,10 +8,12 @@ import {
   type LanguageWord,
 } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
+import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import { CANON } from '../canon.generated'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
+import './tool-detail.css'
 import './language-page.css'
 
 /* ─── /language + /language/:word · the keyword register (theme-dark) ─────────
@@ -165,6 +167,46 @@ export function Component() {
               <WordRow key={w.word} entry={w} />
             ))}
           </ol>
+
+          {/* the roomed blocks around the words (rooms universelles): the
+              namespaces and the value types own pages too — this register
+              is their contextual door */}
+          <div className="td-sec" data-rise>
+            <div className="cl-year-head">
+              <h2 id="lg-blocks" className="td-h2">
+                the blocks around the words
+              </h2>
+              <span className="cl-year-rule" aria-hidden />
+            </div>
+            <div className="td-refs">
+              <div>
+                <p className="td-ref-k">
+                  the namespaces · every <code>{'${{ … }}'}</code> reference starts at one
+                </p>
+                <ul className="td-chips">
+                  {MEMBER_ROOM_FAMILIES.namespaces.members.map((m) => (
+                    <li key={m.id}>
+                      <Link className="td-chip" to={m.url}>
+                        {m.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="td-ref-k">the value types · what a declared shape can be</p>
+                <ul className="td-chips">
+                  {MEMBER_ROOM_FAMILIES.types.members.map((m) => (
+                    <li key={m.id}>
+                      <Link className="td-chip" to={m.url}>
+                        {m.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
 
           <p className="tp-foot" data-rise>
             A key the schema doesn't declare is a <code>nika check</code> finding{' '}

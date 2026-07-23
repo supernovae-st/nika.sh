@@ -1,0 +1,17 @@
+nika: v1
+workflow:
+  id: nim-catalog-call
+  description: "one catalog, many vendors' models — the hosted endpoint and the container match"
+
+tasks:
+  note:
+    infer:
+      model: nvidia/meta/llama-3.1-70b-instruct
+      max_tokens: 120
+      system: Answer like a release note, not an ad.
+      prompt: |
+        One sentence: what does self-hosting the same container
+        later buy a team that starts on a hosted endpoint?
+
+outputs:
+  line: ${{ tasks.note.output }}

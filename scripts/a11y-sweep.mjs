@@ -39,6 +39,15 @@ function atlasRoutes() {
     const first = twin.nodes.find((n) => n.kind === 'member' && n.set === setId && n.url && !n.anchor)
     if (first) routes.add(first.url)
   }
+  /* rooms universelles: anchor-sets whose members OWN pages get their first
+     room swept too — the provider rooms are dedicated pages now and the
+     generic member room serves the other families at real URLs */
+  const anchorSets = twin.nodes.filter((n) => n.kind === 'set' && n.surface === 'anchors')
+  for (const setNode of anchorSets) {
+    const setId = setNode.id.slice(4)
+    const first = twin.nodes.find((n) => n.kind === 'member' && n.set === setId && n.own_page && n.url)
+    if (first) routes.add(first.url)
+  }
   return [...routes].filter((r) => r && r.startsWith('/')).sort()
 }
 const ROUTES = [...new Set([...CORE_ROUTES, ...atlasRoutes()])]

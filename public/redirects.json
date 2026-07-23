@@ -2,6 +2,111 @@
   "redirects_format": 1,
   "redirects": [
     {
+      "from": "/concepts",
+      "to": "/map",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/antifragility",
+      "to": "/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/bounded-rationality",
+      "to": "/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/chaos-engineering",
+      "to": "/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/context-engineering",
+      "to": "/learn",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/dag-execution",
+      "to": "/flow",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/declarative-intent",
+      "to": "/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/epistemic-awareness",
+      "to": "/sources",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/graceful-degradation",
+      "to": "/flow",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/multi-provider",
+      "to": "/providers",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/observability-driven",
+      "to": "/proof",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/scope-isolation",
+      "to": "/boundary",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/self-healing",
+      "to": "/flow",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/concepts/shaka-system",
+      "to": "/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/language/depends_on",
+      "to": "/language/after",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
       "from": "/sitemap",
       "to": "/map",
       "status": 301,

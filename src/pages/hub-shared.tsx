@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
+import { Link } from 'react-router'
 import { GATE_GRID, type HubSet } from './hub-data.generated'
 import { TruthLine } from '../components/TruthLine'
 import '../sections/v4-home.css'
@@ -17,19 +18,28 @@ export function MemberRows({ set }: { set: HubSet }) {
       {set.members.map((m) => (
         <li key={m.id} className="hub-member" id={`${set.anchor_prefix}${m.id}`}>
           <span className="hub-member-id">
-            <a
-              href={`#${set.anchor_prefix}${m.id}`}
-              data-node-id={`${set.node_prefix}:${m.id}`}
-              onClick={(e) => {
-                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
-                e.preventDefault()
-                window.dispatchEvent(
-                  new CustomEvent('insp:open', { detail: { id: `${set.node_prefix}:${m.id}` } }),
-                )
-              }}
-            >
-              {m.id}
-            </a>
+            {/* the member OWNS a page (rooms universelles) — its id is the
+                DOOR to the room; the hover card keeps the readout preview.
+                Anchor-only members keep the inspector-open behavior. */}
+            {m.url ? (
+              <Link to={m.url} data-node-id={`${set.node_prefix}:${m.id}`} title="open the member's page">
+                {m.id}
+              </Link>
+            ) : (
+              <a
+                href={`#${set.anchor_prefix}${m.id}`}
+                data-node-id={`${set.node_prefix}:${m.id}`}
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+                  e.preventDefault()
+                  window.dispatchEvent(
+                    new CustomEvent('insp:open', { detail: { id: `${set.node_prefix}:${m.id}` } }),
+                  )
+                }}
+              >
+                {m.id}
+              </a>
+            )}
             {m.slot && (
               <span className="hub-member-slot" title={`ships with the ${m.slot} wave`}>
                 {m.slot}

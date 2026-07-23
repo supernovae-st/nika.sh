@@ -6,8 +6,8 @@
 // Drift gate: src/test/palette.test.ts recompiles and byte-diffs.
 
 export interface PaletteEntry {
-  /** page (core surface) · post (journal) · error (registry code) · tool (stdlib builtin) · provider (catalog id) · template (skeleton) · verb (execution model) · word (language key) · set (atlas register) */
-  kind: 'page' | 'post' | 'error' | 'tool' | 'provider' | 'template' | 'verb' | 'word' | 'usecase' | 'set'
+  /** page (core surface) · post (journal) · error (registry code) · tool (stdlib builtin) · provider (catalog id) · template (skeleton) · verb (execution model) · word (language key) · set (atlas register) · member (roomed register member) */
+  kind: 'page' | 'post' | 'error' | 'tool' | 'provider' | 'template' | 'verb' | 'word' | 'usecase' | 'set' | 'member'
   label: string
   href: string
   /** the dim second line — tag · date · one-line failure · … */
@@ -1104,104 +1104,716 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "provider",
     "label": "provider: ollama",
-    "href": "/providers#ollama",
+    "href": "/providers/ollama",
     "hint": "Local Ollama server (default port 11434) — serves any pulled model."
   },
   {
     "kind": "provider",
     "label": "provider: lmstudio",
-    "href": "/providers#lmstudio",
+    "href": "/providers/lmstudio",
     "hint": "LM Studio local server (default port 1234) — serves the loaded model."
   },
   {
     "kind": "provider",
     "label": "provider: llamacpp",
-    "href": "/providers#llamacpp",
+    "href": "/providers/llamacpp",
     "hint": "llama.cpp server (default port 8080) — serves the loaded GGUF; the wire model id is free-form."
   },
   {
     "kind": "provider",
     "label": "provider: localai",
-    "href": "/providers#localai",
+    "href": "/providers/localai",
     "hint": "LocalAI server (default port 8080) — an OpenAI-compatible gateway over local backends."
   },
   {
     "kind": "provider",
     "label": "provider: vllm",
-    "href": "/providers#vllm",
+    "href": "/providers/vllm",
     "hint": "vLLM server (default port 8000) — serves Hugging Face model ids at throughput."
   },
   {
     "kind": "provider",
     "label": "provider: mistral",
-    "href": "/providers#mistral",
+    "href": "/providers/mistral",
     "hint": "Mistral Large, Medium, Small models."
   },
   {
     "kind": "provider",
     "label": "provider: anthropic",
-    "href": "/providers#anthropic",
+    "href": "/providers/anthropic",
     "hint": "Claude models (Opus, Sonnet, Haiku)."
   },
   {
     "kind": "provider",
     "label": "provider: openai",
-    "href": "/providers#openai",
+    "href": "/providers/openai",
     "hint": "GPT-5.x, the o-series, and other OpenAI models."
   },
   {
     "kind": "provider",
     "label": "provider: gemini",
-    "href": "/providers#gemini",
+    "href": "/providers/gemini",
     "hint": "Gemini Pro, Flash, and Ultra models."
   },
   {
     "kind": "provider",
     "label": "provider: deepseek",
-    "href": "/providers#deepseek",
+    "href": "/providers/deepseek",
     "hint": "DeepSeek Chat and Coder models."
   },
   {
     "kind": "provider",
     "label": "provider: xai",
-    "href": "/providers#xai",
+    "href": "/providers/xai",
     "hint": "Grok models (Grok-3, Grok-4)."
   },
   {
     "kind": "provider",
     "label": "provider: groq",
-    "href": "/providers#groq",
+    "href": "/providers/groq",
     "hint": "Fast inference with Llama, Mixtral models."
   },
   {
     "kind": "provider",
     "label": "provider: openrouter",
-    "href": "/providers#openrouter",
+    "href": "/providers/openrouter",
     "hint": "200+ models via unified gateway."
   },
   {
     "kind": "provider",
     "label": "provider: huggingface",
-    "href": "/providers#huggingface",
+    "href": "/providers/huggingface",
     "hint": "Inference Providers router · 100+ open-weight models across 18 providers (Groq · Cerebras · Together · Scaleway · OVHcloud · …) · zero markup · :provider or :fastest/:cheapest routing suffix."
   },
   {
     "kind": "provider",
     "label": "provider: nvidia",
-    "href": "/providers#nvidia",
+    "href": "/providers/nvidia",
     "hint": "NVIDIA API (integrate.api.nvidia.com) · Nemotron 3 family (Open Model License · agentic-first) + hosted open models · self-hosted NIM containers expose the same surface."
   },
   {
     "kind": "provider",
     "label": "provider: moonshot",
-    "href": "/providers#moonshot",
+    "href": "/providers/moonshot",
     "hint": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider."
   },
   {
     "kind": "provider",
     "label": "provider: mock",
-    "href": "/providers#mock",
+    "href": "/providers/mock",
     "hint": "Deterministic test responses — no API calls, no keys needed."
+  },
+  {
+    "kind": "member",
+    "label": "edge: control",
+    "href": "/edges/control",
+    "hint": "an after entry · carries its gate predicate"
+  },
+  {
+    "kind": "member",
+    "label": "edge: failure-observation",
+    "href": "/edges/failure-observation",
+    "hint": "an error read in with · flows only when the producer failed"
+  },
+  {
+    "kind": "member",
+    "label": "edge: finally",
+    "href": "/edges/finally",
+    "hint": "reserved · named so the enum is complete before the trace wave gives cleanup identity"
+  },
+  {
+    "kind": "member",
+    "label": "edge: recovery",
+    "href": "/edges/recovery",
+    "hint": "an on_error.recover reference · a parking read, not an ordering edge"
+  },
+  {
+    "kind": "member",
+    "label": "edge: terminal-observation",
+    "href": "/edges/terminal-observation",
+    "hint": "a status or timing read in with · settles with the producer"
+  },
+  {
+    "kind": "member",
+    "label": "edge: value",
+    "href": "/edges/value",
+    "hint": "a with binding referencing a task output · carries the binding name"
+  },
+  {
+    "kind": "member",
+    "label": "error category: budget_error",
+    "href": "/error-categories/budget_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: cancelled",
+    "href": "/error-categories/cancelled",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: internal_error",
+    "href": "/error-categories/internal_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: network_error",
+    "href": "/error-categories/network_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: parse_error",
+    "href": "/error-categories/parse_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: process_error",
+    "href": "/error-categories/process_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: provider_error",
+    "href": "/error-categories/provider_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: security_error",
+    "href": "/error-categories/security_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: timeout_error",
+    "href": "/error-categories/timeout_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: tool_error",
+    "href": "/error-categories/tool_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: validation_error",
+    "href": "/error-categories/validation_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error category: variable_error",
+    "href": "/error-categories/variable_error",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-AGENT",
+    "href": "/error-namespaces/NIKA-AGENT",
+    "hint": "agent: verb errors"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-ASSERT",
+    "href": "/error-namespaces/NIKA-ASSERT",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-BUILTIN",
+    "href": "/error-namespaces/NIKA-BUILTIN",
+    "hint": "Builtin tool errors · per-builtin sub-namespace"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-CANCEL",
+    "href": "/error-namespaces/NIKA-CANCEL",
+    "hint": "Task or workflow cancellation"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-COMP",
+    "href": "/error-namespaces/NIKA-COMP",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-DAG",
+    "href": "/error-namespaces/NIKA-DAG",
+    "hint": "DAG topology · cycles · invalid deps"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-DECIDE",
+    "href": "/error-namespaces/NIKA-DECIDE",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-EXEC",
+    "href": "/error-namespaces/NIKA-EXEC",
+    "hint": "exec: verb errors"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-IMPL",
+    "href": "/error-namespaces/NIKA-IMPL",
+    "hint": "Engine internal errors"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-INFER",
+    "href": "/error-namespaces/NIKA-INFER",
+    "hint": "infer: verb errors"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-INVOKE",
+    "href": "/error-namespaces/NIKA-INVOKE",
+    "hint": "invoke: verb errors"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-LOCK",
+    "href": "/error-namespaces/NIKA-LOCK",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-MCP",
+    "href": "/error-namespaces/NIKA-MCP",
+    "hint": "MCP client errors"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-PARSE",
+    "href": "/error-namespaces/NIKA-PARSE",
+    "hint": "YAML parse + envelope validation"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-POLICY",
+    "href": "/error-namespaces/NIKA-POLICY",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-PORT",
+    "href": "/error-namespaces/NIKA-PORT",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-PROVIDER",
+    "href": "/error-namespaces/NIKA-PROVIDER",
+    "hint": "Provider adapter errors"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-SEC",
+    "href": "/error-namespaces/NIKA-SEC",
+    "hint": "Security policy violations (SSRF · blocklist)"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-TIMEOUT",
+    "href": "/error-namespaces/NIKA-TIMEOUT",
+    "hint": "Task or step timeouts"
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-TYPE",
+    "href": "/error-namespaces/NIKA-TYPE",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-VAR",
+    "href": "/error-namespaces/NIKA-VAR",
+    "hint": "Variable resolution failures"
+  },
+  {
+    "kind": "member",
+    "label": "family: core",
+    "href": "/families/core",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "family: data",
+    "href": "/families/data",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "family: file",
+    "href": "/families/file",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "family: introspection",
+    "href": "/families/introspection",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "family: media",
+    "href": "/families/media",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "family: network",
+    "href": "/families/network",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "conformance: core",
+    "href": "/conformance/core",
+    "hint": "parse · validate · DAG · variables · typed errors · no execution"
+  },
+  {
+    "kind": "member",
+    "label": "conformance: runtime",
+    "href": "/conformance/runtime",
+    "hint": "executes verbs · evaluates when and for_each over run state"
+  },
+  {
+    "kind": "member",
+    "label": "conformance: stdlib",
+    "href": "/conformance/stdlib",
+    "hint": "proves the v0.1 library surface · the production default"
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_canon",
+    "href": "/mcp/nika_canon",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_catalog",
+    "href": "/mcp/nika_catalog",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_check",
+    "href": "/mcp/nika_check",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_examples",
+    "href": "/mcp/nika_examples",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_explain",
+    "href": "/mcp/nika_explain",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_inspect",
+    "href": "/mcp/nika_inspect",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_schema",
+    "href": "/mcp/nika_schema",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_template",
+    "href": "/mcp/nika_template",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mcp: nika_tools",
+    "href": "/mcp/nika_tools",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: article",
+    "href": "/modes/article",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: feed",
+    "href": "/modes/feed",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: jq",
+    "href": "/modes/jq",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: links",
+    "href": "/modes/links",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: markdown",
+    "href": "/modes/markdown",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: metadata",
+    "href": "/modes/metadata",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: selector",
+    "href": "/modes/selector",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: sitemap",
+    "href": "/modes/sitemap",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "mode: text",
+    "href": "/modes/text",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "namespace: env",
+    "href": "/namespaces/env",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "namespace: secrets",
+    "href": "/namespaces/secrets",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "namespace: tasks",
+    "href": "/namespaces/tasks",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "namespace: vars",
+    "href": "/namespaces/vars",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "namespace: with",
+    "href": "/namespaces/with",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "permit: exec",
+    "href": "/permits/exec",
+    "hint": "which commands may run · false kills the family"
+  },
+  {
+    "kind": "member",
+    "label": "permit: fs",
+    "href": "/permits/fs",
+    "hint": "read and write globs · the walk root is gated"
+  },
+  {
+    "kind": "member",
+    "label": "permit: net",
+    "href": "/permits/net",
+    "hint": "http allowlist · the SSRF floor stays on regardless"
+  },
+  {
+    "kind": "member",
+    "label": "permit: tools",
+    "href": "/permits/tools",
+    "hint": "which nika tools the file may invoke"
+  },
+  {
+    "kind": "member",
+    "label": "predicate: failure",
+    "href": "/predicates/failure",
+    "hint": "fire when the producer failed terminally"
+  },
+  {
+    "kind": "member",
+    "label": "predicate: skipped",
+    "href": "/predicates/skipped",
+    "hint": "fire when the producer was gated out"
+  },
+  {
+    "kind": "member",
+    "label": "predicate: success",
+    "href": "/predicates/success",
+    "hint": "fire when the producer completed clean"
+  },
+  {
+    "kind": "member",
+    "label": "predicate: terminal",
+    "href": "/predicates/terminal",
+    "hint": "fire when the producer reached any terminal state"
+  },
+  {
+    "kind": "member",
+    "label": "secret: env",
+    "href": "/secrets/env",
+    "hint": "read from the environment at run time"
+  },
+  {
+    "kind": "member",
+    "label": "secret: file",
+    "href": "/secrets/file",
+    "hint": "read from a path the boundary allows"
+  },
+  {
+    "kind": "member",
+    "label": "secret: vault",
+    "href": "/secrets/vault",
+    "hint": "the OS keychain backend · the default posture"
+  },
+  {
+    "kind": "member",
+    "label": "truth: atlas",
+    "href": "/truth/atlas",
+    "hint": "language_graph 1 · the graph of the language, site-side"
+  },
+  {
+    "kind": "member",
+    "label": "truth: canon",
+    "href": "/truth/canon",
+    "hint": "canon.yaml · the counted sets, spec-first"
+  },
+  {
+    "kind": "member",
+    "label": "truth: catalog",
+    "href": "/truth/catalog",
+    "hint": "a machine projection the site serves · byte-diffed in CI"
+  },
+  {
+    "kind": "member",
+    "label": "truth: manifest",
+    "href": "/truth/manifest",
+    "hint": "the snippet lineage table · every rendered block resolves here"
+  },
+  {
+    "kind": "member",
+    "label": "truth: mirror",
+    "href": "/truth/mirror",
+    "hint": "a byte-pinned copy, sha256-verified"
+  },
+  {
+    "kind": "member",
+    "label": "truth: pack",
+    "href": "/truth/pack",
+    "hint": "the spec corpus vendored inside the engine"
+  },
+  {
+    "kind": "member",
+    "label": "truth: pin",
+    "href": "/truth/pin",
+    "hint": "SPEC_PIN · the exact spec sha the engine targets"
+  },
+  {
+    "kind": "member",
+    "label": "truth: registry",
+    "href": "/truth/registry",
+    "hint": "nika-registry THE PRODUCT · shared workflows, re-proven nightly"
+  },
+  {
+    "kind": "member",
+    "label": "truth: schema",
+    "href": "/truth/schema",
+    "hint": "workflow.schema.json · the shapes"
+  },
+  {
+    "kind": "member",
+    "label": "truth: spec",
+    "href": "/truth/spec",
+    "hint": "the nika-spec repo · the truth of the language"
+  },
+  {
+    "kind": "member",
+    "label": "type: bool",
+    "href": "/types/bool",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: bytes",
+    "href": "/types/bytes",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: duration",
+    "href": "/types/duration",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: integer",
+    "href": "/types/integer",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: null",
+    "href": "/types/null",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: number",
+    "href": "/types/number",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: path",
+    "href": "/types/path",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: string",
+    "href": "/types/string",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: timestamp",
+    "href": "/types/timestamp",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "type: uri",
+    "href": "/types/uri",
+    "hint": ""
   },
   {
     "kind": "verb",

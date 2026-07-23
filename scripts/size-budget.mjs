@@ -87,6 +87,15 @@
    the entry), the hero closes on the contract tricolon and the proof
    ledger gains the priced-before-it-spends row + the estate note;
    measured 372.0 · margin ~2.0 (the bite-on-growth grammar holds).
+   374→377 provider-rooms: the providers graduate to DEDICATED rooms
+   (the ToolPage class: /providers/:id is sync-routed, the component
+   rides the entry) while the room's CARGO — donor yaml · audit · the
+   authored meta — stays an async chunk behind the byte island
+   (provider-room-access, the register-diet law); the doors half of
+   « chaque élément a sa page » also lands (registers link their
+   member rooms: hubs · errors · tools · sources · language · the
+   fetch modes); measured 375.0 · margin ~2.0 (the bite-on-growth
+   grammar holds).
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -94,7 +103,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 374
+const BUDGET_KB = 377
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

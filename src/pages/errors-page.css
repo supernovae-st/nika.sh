@@ -95,6 +95,7 @@
   border: 1px solid color-mix(in srgb, var(--v4-text) 18%, transparent);
   color: color-mix(in srgb, var(--v4-text) 72%, transparent);
   white-space: nowrap;
+  text-decoration: none;
   cursor: help;
 }
 .er-transient {

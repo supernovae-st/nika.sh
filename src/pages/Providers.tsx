@@ -18,11 +18,13 @@ import '../sections/v4-home.css'
 import './providers-page.css'
 
 /* ─── /providers · the provider register (theme-dark) ─────────────────────────
-   Every spec-named provider as an anchored row — the `provider:` value an
-   author writes under `infer:`. One register page (the /errors · /tools
-   precedent) since the WO-6 fusion: the old /providers/:id rooms are 301
-   stubs onto #id anchors here. A deep-link scrolls to its row and
-   highlights it. A hash that matches nothing gets an honest miss.
+   Every spec-named provider as an anchored row — the prefix an author
+   writes in the model line (`model: ollama/…`). One register page (the
+   /errors · /tools precedent); each row's id is the DOOR to the
+   provider's own room at /providers/<id> (dedicated pages · the ToolPage
+   path), and the #id anchor stays the citable row. A deep-link scrolls
+   to its row and highlights it. A hash that matches nothing gets an
+   honest miss.
 
    Spec truth: rows come from src/content/providers.generated.ts — a
    compiled projection of public/providers/catalog.json, itself derived from
@@ -63,8 +65,11 @@ function ProviderRow({ entry, active }: { entry: ProviderEntry; active: boolean 
   return (
     <li id={entry.id} className={`pv-row${active ? ' pv-row--active' : ''}`}>
       <div className="pv-row-head">
-        <a className="pv-id" href={`#${entry.id}`}>
+        <Link className="pv-id" to={`/providers/${entry.id}`} title="open the provider's room">
           {entry.id}
+        </Link>
+        <a className="pv-hash" href={`#${entry.id}`} aria-label={`anchor the ${entry.id} row`} title="cite this row">
+          #
         </a>
         <span className="pv-name">{entry.name}</span>
         {entry.env_var ? (
@@ -130,9 +135,10 @@ function ProviderRow({ entry, active }: { entry: ProviderEntry; active: boolean 
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
-  /* the fusion (§4.6 · WO-6): the 16 doorway rooms died in 301 stubs — the
-     hub IS the register, #id anchors are the citable surface. The hash
-     drives the same re-aim the rooms had. */
+  /* the register keeps its citable #id anchors; the rooms at /providers/:id
+     are REAL dedicated pages (the WO-6 stubs died · verdict 2026-07-18) and
+     every row's id links its room — the doors half of « chaque élément a sa
+     page ». The hash still re-aims the row for citations. */
   const { hash } = useLocation()
   const id = hash ? hash.slice(1).toLowerCase() : undefined
   const hit = id ? PROVIDER_INDEX[id] : undefined
@@ -190,9 +196,10 @@ export function Component() {
             {hit ? hit.name : 'Providers.'}
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            One <code>provider:</code> line moves a workflow between models: local first, keys via
-            env vars that stay yours, <b>no inference lock-in</b>. The same file runs on a laptop
-            Ollama and a frontier API; swapping is a one-word diff. Machines read the catalog at{' '}
+            One <code>provider/model</code> line moves a workflow between models: local first,
+            keys via env vars that stay yours, <b>no inference lock-in</b>. The same file runs on
+            a laptop Ollama and a frontier API; swapping is a one-word diff. Every provider owns
+            a room — the id in each row is its door. Machines read the catalog at{' '}
             <a href="/providers/catalog.json">/providers/catalog.json</a>; the binary answers{' '}
             <code>nika catalog</code>.
           </p>

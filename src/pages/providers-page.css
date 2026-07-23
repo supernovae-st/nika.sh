@@ -92,6 +92,21 @@
   outline: 2px solid var(--v4-focus-ring);
   outline-offset: 3px;
 }
+/* the citable anchor, kept beside the room door */
+.pv-hash {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: color-mix(in srgb, var(--v4-text) 40%, transparent);
+  text-decoration: none;
+}
+.pv-hash:hover,
+.pv-hash:focus-visible {
+  color: var(--v4-text);
+}
+.pv-hash:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 3px;
+}
 .pv-name {
   font-size: 13.5px;
   color: color-mix(in srgb, var(--v4-text) 72%, transparent);

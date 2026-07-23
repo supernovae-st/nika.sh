@@ -1,0 +1,24 @@
+nika: v1
+workflow:
+  id: mock-first-draft
+  description: "the whole file rehearses for free — swap one word when it goes real"
+
+tasks:
+  draft:
+    infer:
+      model: mock/mock-default
+      max_tokens: 50
+      prompt: |
+        Any deterministic echo will do — the shape is the test.
+
+  prove:
+    with:
+      draft: ${{ tasks.draft.output }}
+    invoke:
+      tool: "nika:assert"
+      args:
+        condition: ${{ with.draft != "" }}
+        message: "the rehearsal produced nothing"
+
+outputs:
+  rehearsal: ${{ tasks.draft.output }}

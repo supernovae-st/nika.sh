@@ -1665,6 +1665,17 @@ for (const surf of S.sets.surfaces) {
     })
   }
 }
+/* legacy moves (retired URLs → living heirs · descriptor §legacy_moves):
+   crawl debt with no atlas node — just the redirect row + the stub */
+for (const mv of S.sets.legacy_moves ?? []) {
+  redirects.push({
+    from: mv.from,
+    to: mv.to,
+    status: 301,
+    live: true,
+    applies: mv.applied ?? null,
+  })
+}
 redirects.sort((a, b) => a.from.localeCompare(b.from))
 const redirectsJson = JSON.stringify({ redirects_format: 1, redirects }, null, 2) + '\n'
 
@@ -1696,7 +1707,10 @@ const stub = (to, label) => `<!doctype html>
   </body>
 </html>
 `
-const providerStubs = redirects.filter((r) => r.live && r.from.startsWith('/providers/'))
+/* every LIVE moved row gets a stub EXCEPT /sitemap (its hand-crafted static
+   stub predates this writer — see routes.tsx) · /providers/ rows would
+   shadow the reborn rooms and providers.test.ts forbids them */
+const legacyStubs = redirects.filter((r) => r.live && r.from !== '/sitemap')
 
 /* ─── write + report ───────────────────────────────────────────────────────*/
 if (!REPORT_ONLY) {
@@ -1719,7 +1733,7 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/design.generated.ts'), designTs)
   writeFileSync(join(ROOT, 'public/design-palette.json'), designPalette)
   writeFileSync(join(ROOT, 'public/design-tokens.dtcg.json'), dtcg)
-  for (const r of providerStubs) {
+  for (const r of legacyStubs) {
     const dir = join(ROOT, 'public', r.from.slice(1))
     mkdirSync(dir, { recursive: true })
     writeFileSync(join(dir, 'index.html'), stub(r.to, r.from.split('/').pop()))

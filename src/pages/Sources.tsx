@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
@@ -240,7 +241,11 @@ export function Component() {
             <dl className="src-words">
               {TRUTH_WORDS.members.map((w) => (
                 <div key={w.id} className="src-word" id={w.id}>
-                  <dt className="mono">{w.id}</dt>
+                  <dt className="mono">
+                    <Link to={`/truth/${w.id}`} title="open the word's page">
+                      {w.id}
+                    </Link>
+                  </dt>
                   <dd>{w.one_liner}</dd>
                 </div>
               ))}

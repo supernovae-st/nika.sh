@@ -1,0 +1,17 @@
+nika: v1
+workflow:
+  id: gguf-classify
+  description: "llama-server answers for whatever GGUF you loaded — the model id is free-form"
+
+tasks:
+  classify:
+    infer:
+      model: llamacpp/default
+      max_tokens: 20
+      temperature: 0
+      prompt: |
+        One word, bug or feature:
+        "clicking save twice creates two invoices"
+
+outputs:
+  label: ${{ tasks.classify.output }}

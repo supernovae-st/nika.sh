@@ -349,10 +349,10 @@ const until = async (fn, tries = 12, gap = 400) => {
 const REGISTER_PINS = [
   { route: '/errors/NIKA-SEC-001', row: '.er-row--active', extra: null },
   { route: '/tools/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
-  /* rooms universelles (2026-07-18): /providers/:id is a REAL member room
-     now (the WO-6 stub died) — the pin asserts the room mounted for the
-     right member with its fact table served (the tools-pin precedent) */
-  { route: '/providers/ollama', row: '.mr-rows', extra: '#mr-title' },
+  /* the provider rooms graduated to DEDICATED pages (the ToolPage path):
+     the pin asserts the room mounted for the right provider with its
+     donor CodeFile served from the prerendered island */
+  { route: '/providers/ollama', row: 'section[data-provider="ollama"]', extra: '.td-usage .cf-panel' },
   { route: '/verbs/invoke', row: 'section[data-verb="invoke"]', extra: '.td-usage .cf-panel' },
   { route: '/language/with', row: 'section[data-word="with"]', extra: '.td-usage .cf-panel' },
   { route: '/templates/fanout', row: '.tm-row--active', extra: '.tm-row--active .cf-panel' },

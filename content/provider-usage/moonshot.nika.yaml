@@ -1,0 +1,17 @@
+nika: v1
+workflow:
+  id: long-context-brief
+  description: "built for long context — the whole document goes in, one brief comes out"
+
+tasks:
+  brief:
+    infer:
+      model: moonshot/kimi-k2
+      max_tokens: 150
+      prompt: |
+        Brief a reviewer in three lines: the file declares its
+        blast radius; permits allowlist what runs, reads, writes
+        and calls; absent permits mean the engine floor.
+
+outputs:
+  brief: ${{ tasks.brief.output }}

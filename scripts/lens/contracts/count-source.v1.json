@@ -24,12 +24,12 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 241,
-    "set_sha256": "f55d08a4f04d00a848f4b9b7350a3541b403507787beb293ee76fcd940631e52",
-    "rendered_count": 493,
-    "rendered_set_sha256": "f6b61f93027ccaced4c5ffd5067872a6413c197ba4388432233e7c01037ca55c"
+    "count": 244,
+    "set_sha256": "04fd7f12e8e7a8473f97757d83bcceab075365839678e6759b88101f38da7685",
+    "rendered_count": 497,
+    "rendered_set_sha256": "7c2dd973732947894ef87c86c90fc6fbded21a55bcff37317260cb3d89f04d44"
   },
-  "claim_count": 141,
+  "claim_count": 142,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -974,9 +974,21 @@
       "reason": "literal is gated against CANON.verbs"
     },
     {
+      "selector": "src/pages/ProviderPage.tsx#count:1",
+      "path": "src/pages/ProviderPage.tsx",
+      "line": 21,
+      "text": "one provider",
+      "source": "one",
+      "field": "providers",
+      "value": 1,
+      "ordinal": false,
+      "relation": "registry-member",
+      "reason": "singular member reference is bounded by CANON.providers"
+    },
+    {
       "selector": "src/pages/Providers.tsx#count:1",
       "path": "src/pages/Providers.tsx",
-      "line": 157,
+      "line": 163,
       "text": "${CANON.providers} providers",
       "source": "${CANON.providers}",
       "field": "providers",
@@ -989,7 +1001,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:2",
       "path": "src/pages/Providers.tsx",
-      "line": 214,
+      "line": 221,
       "text": "one provider",
       "source": "one",
       "field": "providers",
@@ -1436,7 +1448,7 @@
     {
       "selector": "src/routes.tsx#count:1",
       "path": "src/routes.tsx",
-      "line": 89,
+      "line": 90,
       "text": "four verb",
       "source": "four",
       "field": "verbs",

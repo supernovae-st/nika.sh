@@ -181,9 +181,18 @@ const CARDS = [
     out: 'og-providers.png',
     fig: 'FIG P.0',
     headline: 'Local first,<br><span class="b">keys stay yours.</span>',
-    sub: 'One <span style="white-space:nowrap">provider:</span> line moves a workflow between models: laptop Ollama to a frontier API is a one-word diff. Keys ride env vars, never a config&nbsp;file.',
+    sub: 'One <span style="white-space:nowrap">provider/model</span> line moves a workflow between models: laptop Ollama to a frontier API is a one-word diff. Keys ride env vars, never a config&nbsp;file.',
     detail:
       '<span class="arrow">▸</span><span>local&nbsp;default<span class="sep">·</span>model&nbsp;pins<span class="sep">·</span><b>no&nbsp;inference&nbsp;lock-in</b></span>',
+  },
+  {
+    // /errors — the typed register; every refusal has a name.
+    out: 'og-errors.png',
+    fig: 'FIG E.0',
+    headline: 'Every refusal<br><span class="b">has a name.</span>',
+    sub: 'Errors are data: stable codes with a category, a transient flag and a documented fix shape. The engine stamps every finding with its page, never a prose&nbsp;exception.',
+    detail:
+      '<span class="arrow">▸</span><span>stable&nbsp;codes<span class="sep">·</span>typed&nbsp;categories<span class="sep">·</span><b>a&nbsp;fix&nbsp;shape&nbsp;each</b></span>',
   },
   {
     // /map — the mother page; the anatomy of the language, one graph.

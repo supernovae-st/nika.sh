@@ -1,0 +1,17 @@
+nika: v1
+workflow:
+  id: throughput-batch
+  description: "one vLLM server, one batch — continuous batching earns its keep under fan-out"
+
+tasks:
+  caption:
+    for_each: ["checkout", "search", "onboarding"]
+    max_parallel: 3
+    infer:
+      model: vllm/Qwen/Qwen3-8B
+      max_tokens: 60
+      prompt: |
+        One-line release note for the improved ${{ item }} flow.
+
+outputs:
+  notes: ${{ tasks.caption.output }}
