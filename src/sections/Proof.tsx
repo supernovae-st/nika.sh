@@ -64,12 +64,17 @@ const GUARANTEES: { fig: string; claim: string; detail: string }[] = [
   {
     fig: '9.7',
     claim: 'Replayable trace.',
-    detail: 'Every run leaves a replayable record, the audit trail. Same file, same steps, same order: run it again and diff it like code.',
+    detail: 'Every run leaves a hash-chained NDJSON trace: nika trace verify walks the chain and names the first broken link. Same file, same steps, same order: run it again and diff it like code.',
   },
   {
     fig: '9.8',
     claim: 'Portable off any platform.',
     detail: `One binary, ${CANON.providers} model providers, AGPL-3.0 forever. The file outlives the vendor. It still runs the day the company that made it is gone.`,
+  },
+  {
+    fig: '9.9',
+    claim: 'Priced before it spends.',
+    detail: 'nika check prints the plan’s cost floor before a token is spent, and --max-cost-usd is a hard ceiling: a plan whose floor exceeds it never starts.',
   },
 ]
 
@@ -84,8 +89,8 @@ export default function Proof() {
         <SectionHead fig="11" id="proof-title" title={<>The control is the proof.</>}>
           No logos to borrow, no quotes to dress up. Just what the engine{' '}
           <b>guarantees</b>: review before it acts · enforced permissions ·
-          replayable trace · portable off any platform · versioned like code:
-          verifiable in the open spec and the one binary you install.
+          hash-chained trace · priced before it spends · portable off any
+          platform: verifiable in the open spec and the one binary you install.
         </SectionHead>
 
         {/* the headline stats banner · big tabular numbers, hairline-separated */}
@@ -119,7 +124,9 @@ export default function Proof() {
         </p>
 
         <p className="v4proof-note" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-          every number derives from the spec&apos;s <code>canon.yaml</code> · verifiable, never hand-typed
+          every number derives from the spec&apos;s <code>canon.yaml</code> · verifiable, never
+          hand-typed · every repo file declares its provenance in <code>estate.yaml</code> ·
+          authored or generated, hashed
         </p>
       </div>
     </section>

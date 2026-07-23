@@ -19,9 +19,34 @@ The language envelope is `nika: v1`, frozen forever. The engine versions
 independently on real semver toward a 1.0 launch; currently v0.105.0.
 
 Stdlib v0.1: 28 builtins · 17 providers (Ollama, LM Studio, llama.cpp,
-LocalAI, vLLM, Mistral, Anthropic, OpenAI, Gemini, Groq, DeepSeek, xAI,
-OpenRouter, Hugging Face, NVIDIA, mock) · 9 extract modes. Bring your own keys. Every key
-stays yours. Local-first. Runs on your laptop, no daemon.
+LocalAI, vLLM, Mistral, Hugging Face, OpenAI, xAI, Anthropic, Gemini,
+Groq, DeepSeek, OpenRouter, NVIDIA, Moonshot, mock) · 9 extract modes.
+Bring your own keys. Every key stays yours. Local-first. Runs on your
+laptop, no daemon.
+
+## The contract
+
+Every workflow declares its blast radius. The permits: block is a
+default-deny allowlist by family: fs (read/write globs), net.http
+(hosts), exec (argv-sound programs), tools. A step that reaches outside
+it is refused before anything runs (NIKA-SEC-004); link-local and
+metadata endpoints stay refused regardless (NIKA-SEC-005, the always-on
+floor); secrets stay masked references with scoped egress. Every run
+leaves a hash-chained NDJSON trace: `nika trace verify` walks the chain
+and names the first broken link. `nika check` prices the plan's cost
+floor before a token is spent; `--max-cost-usd` is a hard ceiling.
+`nika check --infer-permits` writes the tightest boundary a file can
+prove.
+
+The boundary's laws are numbered public documents (NEP-0002..0009:
+the lethal-trifecta human gate · absent permits declare zero authority
+· untrusted values re-gate at the effect · the environment permit ·
+the data-as-code sink · the trace witness and differential oracle ·
+the egress proxy as the permit's exact projection · path grants
+re-judged at dispatch):
+https://github.com/supernovae-st/nika-spec/tree/main/governance
+Provenance: the public repos ship estate manifests (estate.yaml): every
+tracked file declared authored or generated, hashed, checkable.
 
 ## Examples (canonical · conformance-gated)
 

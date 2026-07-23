@@ -5,6 +5,7 @@ import { SectionHead } from '../../components/SectionHead'
 import { useRevealOnce } from '../use-reveal-once'
 import { useAurora } from '../../fx/aurora-context'
 import type { FlagshipEntry } from '../../flagships'
+import { BOUNDARY_LAWS, GOVERNANCE_DIR } from './laws'
 import './boundary.css'
 
 /* ─── THE BOUNDARY · beat 4 · permits as the consumer feature ─────────────────
@@ -135,6 +136,37 @@ export default function TheBoundary({ flagship }: { flagship: FlagshipEntry }) {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* THE WRITTEN LAW · the receipts rail. Every rule of the boundary is
+            a numbered document in the public spec governance — link the number,
+            state the substance, add nothing. */}
+        <div className="v5bnd-laws" data-rise>
+          <p className="v5bnd-laws-kicker">
+            the written law · numbered, public, reviewable
+          </p>
+          <ul className="v5bnd-laws-list">
+            {BOUNDARY_LAWS.map((law) => (
+              <li className="v5bnd-law" key={law.id}>
+                <a
+                  className="v5bnd-law-id"
+                  href={law.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {law.id}
+                </a>
+                <span className="v5bnd-law-gloss">{law.gloss}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="v5bnd-laws-foot">
+            the full set lives in the spec&rsquo;s{' '}
+            <a href={GOVERNANCE_DIR} target="_blank" rel="noreferrer">
+              governance register
+            </a>{' '}
+            · proposals, numbered and versioned, before they bind the engine
+          </p>
         </div>
       </div>
     </section>

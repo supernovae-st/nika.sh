@@ -81,6 +81,12 @@
    pin, so this class of growth arrives with every engine release,
    deliberately; measured 370.7 · margin ~1.3 (the bite-on-growth
    grammar holds).
+   372→374 contract-front: the written-law rail (the numbered NEPs of
+   the spec governance, linked verbatim) joins the home boundary beat
+   and the /boundary register (the WO-7 class: sync-routed pages ride
+   the entry), the hero closes on the contract tricolon and the proof
+   ledger gains the priced-before-it-spends row + the estate note;
+   measured 372.0 · margin ~2.0 (the bite-on-growth grammar holds).
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -88,7 +94,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 372
+const BUDGET_KB = 374
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

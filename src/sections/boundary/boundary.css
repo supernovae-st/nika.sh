@@ -134,6 +134,73 @@
   display: block;
 }
 
+/* the written law · the receipts rail (numbered NEPs, linked verbatim).
+   Register: hairline-topped mono ledger, two columns on desktop — the same
+   quiet voice as the infer beat above it, never a card. */
+.v5bnd-laws {
+  margin-top: clamp(28px, 4vw, 44px);
+  padding-top: 18px;
+  border-top: 1px solid var(--seam-hairline-soft);
+}
+.v5bnd-laws-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.v5bnd-laws-list {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 40px;
+}
+@media (max-width: 900px) {
+  .v5bnd-laws-list {
+    grid-template-columns: 1fr;
+  }
+}
+.v5bnd-law {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+.v5bnd-law-id {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text);
+  text-decoration: none;
+  border-bottom: 1px solid rgb(96 141 255 / 0.35);
+}
+.v5bnd-law-id:hover,
+.v5bnd-law-id:focus-visible {
+  color: var(--v4-accent);
+  border-bottom-color: currentColor;
+}
+.v5bnd-law-gloss {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+}
+.v5bnd-laws-foot {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--v4-text-faint);
+}
+.v5bnd-laws-foot a {
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.v5bnd-laws-foot a:hover {
+  color: var(--v4-text);
+}
+
 /* the beat is short (a 3-line excerpt · two gloss rows · one denial card) —
    the standard section breath left a dead band above the numbers strip
    (p012 audit · polish wave): this beat exhales earlier, the strip takes

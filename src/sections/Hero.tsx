@@ -308,7 +308,11 @@ export default function Hero({
           {/* the two moments lead (issue #192): audited BEFORE a token is
               spent · a verifiable receipt AFTER every run — the painkiller
               stops hiding behind the specs line (which lives on the plate).
-              The receipt phrase links the long-form anchor, quietly. */}
+              The receipt phrase links the long-form anchor, quietly.
+              The contract tricolon closes it (the front-of-site law): the
+              file IS the contract, and the three receipts are real engine
+              behavior · permits default-deny (02 below) · the hash-chained
+              trace (nika trace verify) · the cost cap (--max-cost-usd). */}
           <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--full">
             Nika turns repeatable AI work into files you can run, review, diff
             and share: <b>audited before a token is spent</b>, with{' '}
@@ -316,11 +320,13 @@ export default function Hero({
               a verifiable receipt
             </Link>{' '}
             after every run. An agent writes the plan; you review it; the
-            runtime <b>enforces</b> it.
+            runtime <b>enforces it as a contract</b>: permits default-deny,
+            the trace hash-chained, cost capped.
           </p>
           <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--short">
             Repeatable AI work as a file: audited before a token is spent, a
-            receipt after every run. The runtime <b>enforces</b> it.
+            receipt after every run. The file is a contract the runtime{' '}
+            <b>enforces</b>.
           </p>
 
           {/* the main CTA row · the primary button + the command-as-CTA install */}

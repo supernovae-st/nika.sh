@@ -4,6 +4,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { CodeFile } from '../components/CodeFile'
 import { StampStrip } from '../components/StampStrip'
 import { ERROR_CODES } from '../content/errors.generated'
+import { REFERENCE_LAWS, GOVERNANCE_DIR } from '../sections/boundary/laws'
 import { MemberRows, Rails, HubFoot } from './hub-shared'
 import { useHubHead, chapterHref } from './hub-lib'
 import '../sections/v4-home.css'
@@ -181,6 +182,52 @@ export function Component() {
               rails={[
                 { kind: 'named by', label: 'NIKA-SEC-005 · SSRF refused', href: '/errors/NIKA-SEC-005' },
                 { kind: 'proof', label: 'static vs runtime enforcement · /proof', href: '/proof#conformance' },
+              ]}
+            />
+          </section>
+
+          {/* the written law · the boundary's rules as numbered public
+              documents (nika-spec governance/). The rows link the documents
+              themselves — the register states each law's substance, the
+              click lands on its full text and status. */}
+          <section
+            className="bd-band"
+            id="laws"
+            aria-labelledby="laws-title"
+            data-rise
+            style={{ ['--rise-delay' as string]: '270ms' }}
+          >
+            <div className="cl-year-head">
+              <h2 className="cl-year-n bd-band-n" id="laws-title">
+                The written law
+              </h2>
+              <span className="cl-year-rule" aria-hidden />
+              <span className="cl-year-count">
+                {REFERENCE_LAWS.length} numbered laws
+              </span>
+            </div>
+            <p className="bd-band-gloss">
+              Every rule of the boundary is a numbered proposal (NEP) in the spec&rsquo;s
+              public governance: written, reviewable, versioned before it binds the
+              engine. The register below states each law&rsquo;s substance; the number
+              links its full text.
+            </p>
+            <ul className="hub-members">
+              {REFERENCE_LAWS.map((law) => (
+                <li key={law.id} className="hub-member" id={law.id.toLowerCase()}>
+                  <span className="hub-member-id">
+                    <a href={law.href} target="_blank" rel="noreferrer">
+                      {law.id}
+                    </a>
+                  </span>
+                  <span className="hub-member-gloss">{law.gloss}</span>
+                </li>
+              ))}
+            </ul>
+            <Rails
+              rails={[
+                { kind: 'index', label: 'the governance register · nika-spec', href: GOVERNANCE_DIR },
+                { kind: 'process', label: 'NEP-0000 · how a law is made', href: 'https://github.com/supernovae-st/nika-spec/blob/main/governance/nep-0000-the-nep-process.md' },
               ]}
             />
           </section>
