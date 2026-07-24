@@ -16,6 +16,9 @@ export interface ProviderAudit {
   /** the worst-case ceiling in USD · null when any task is unpriced (local models are unpriced, never free) */
   cost_ceiling_usd: number | null
   cost_floor_usd: number
+  /** the engine's pricing snapshot rows for the donor's models (models.dev pinned) */
+  pricing: { model: string; input_per_million: number | null; output_per_million: number | null }[]
+  pricing_as_of: string | null
 }
 
 export interface ProviderUsage {
@@ -33,7 +36,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "ollama/qwen3.5:4b",
+        "input_per_million": null,
+        "output_per_million": null
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "lmstudio": {
     "clean": true,
@@ -41,7 +52,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "lmstudio/qwen3.5-4b",
+        "input_per_million": null,
+        "output_per_million": null
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "llamacpp": {
     "clean": true,
@@ -49,7 +68,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "llamacpp/default",
+        "input_per_million": null,
+        "output_per_million": null
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "localai": {
     "clean": true,
@@ -57,7 +84,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "localai/default",
+        "input_per_million": null,
+        "output_per_million": null
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "vllm": {
     "clean": true,
@@ -65,7 +100,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "vllm/Qwen/Qwen3-8B",
+        "input_per_million": null,
+        "output_per_million": null
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "mistral": {
     "clean": true,
@@ -73,7 +116,20 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 2,
     "waves": 2,
     "cost_ceiling_usd": 0.000252,
-    "cost_floor_usd": 0.000252
+    "cost_floor_usd": 0.000252,
+    "pricing": [
+      {
+        "model": "mistral/mistral-large-latest",
+        "input_per_million": 0.5,
+        "output_per_million": 1.5
+      },
+      {
+        "model": "mistral/mistral-small-latest",
+        "input_per_million": 0.15,
+        "output_per_million": 0.6
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "anthropic": {
     "clean": true,
@@ -81,7 +137,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": 0.006,
-    "cost_floor_usd": 0.006
+    "cost_floor_usd": 0.006,
+    "pricing": [
+      {
+        "model": "anthropic/claude-sonnet-4-20250514",
+        "input_per_million": 3,
+        "output_per_million": 15
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "openai": {
     "clean": true,
@@ -89,7 +153,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": 0.0004,
-    "cost_floor_usd": 0.0004
+    "cost_floor_usd": 0.0004,
+    "pricing": [
+      {
+        "model": "openai/gpt-5-mini",
+        "input_per_million": 0.25,
+        "output_per_million": 2
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "gemini": {
     "clean": true,
@@ -97,7 +169,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "gemini/gemini-2.5-flash",
+        "input_per_million": null,
+        "output_per_million": null
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "deepseek": {
     "clean": true,
@@ -105,7 +185,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": 0.000022400000000000002,
-    "cost_floor_usd": 0.000022400000000000002
+    "cost_floor_usd": 0.000022400000000000002,
+    "pricing": [
+      {
+        "model": "deepseek/deepseek-chat",
+        "input_per_million": 0.14,
+        "output_per_million": 0.28
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "xai": {
     "clean": true,
@@ -113,7 +201,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": 0.0012000000000000001,
-    "cost_floor_usd": 0.0004
+    "cost_floor_usd": 0.0004,
+    "pricing": [
+      {
+        "model": "xai/grok-3-mini-fast",
+        "input_per_million": 0.6,
+        "output_per_million": 4
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "groq": {
     "clean": true,
@@ -121,7 +217,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": 0.0000096,
-    "cost_floor_usd": 0.0000096
+    "cost_floor_usd": 0.0000096,
+    "pricing": [
+      {
+        "model": "groq/llama-3.1-8b-instant",
+        "input_per_million": 0.05,
+        "output_per_million": 0.08
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "openrouter": {
     "clean": true,
@@ -129,7 +233,20 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 2,
     "waves": 2,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0.0018
+    "cost_floor_usd": 0.0018,
+    "pricing": [
+      {
+        "model": "openrouter/anthropic/claude-haiku-4-5-20251001",
+        "input_per_million": null,
+        "output_per_million": null
+      },
+      {
+        "model": "openrouter/anthropic/claude-sonnet-4-20250514",
+        "input_per_million": 3,
+        "output_per_million": 15
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "huggingface": {
     "clean": true,
@@ -137,7 +254,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": 0.000432,
-    "cost_floor_usd": 0.000432
+    "cost_floor_usd": 0.000432,
+    "pricing": [
+      {
+        "model": "huggingface/Qwen/Qwen3.5-397B-A17B:fastest",
+        "input_per_million": 0.6,
+        "output_per_million": 3.6
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "nvidia": {
     "clean": true,
@@ -145,7 +270,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": 0,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "nvidia/meta/llama-3.1-70b-instruct",
+        "input_per_million": 0,
+        "output_per_million": 0
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "moonshot": {
     "clean": false,
@@ -153,7 +286,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 1,
     "waves": 1,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "moonshot/kimi-k2",
+        "input_per_million": null,
+        "output_per_million": null
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   },
   "mock": {
     "clean": true,
@@ -161,7 +302,15 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
     "tasks": 2,
     "waves": 2,
     "cost_ceiling_usd": null,
-    "cost_floor_usd": 0
+    "cost_floor_usd": 0,
+    "pricing": [
+      {
+        "model": "mock/mock-default",
+        "input_per_million": null,
+        "output_per_million": null
+      }
+    ],
+    "pricing_as_of": "2026-07-07"
   }
 } as const
 

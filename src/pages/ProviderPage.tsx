@@ -337,19 +337,37 @@ export function Component() {
                   upstream id, so a run stays reproducible after a vendor rotates names.
                 </p>
                 <ul className="pv-models">
-                  {hit.models.map((m) => (
-                    <li className="pv-model" key={m.id}>
-                      <code className="pv-model-id">{m.id}</code>
-                      <span className="pv-model-pin">{m.model}</span>
-                      <span className="pv-model-caps">
-                        {fmtTokens(m.context_window_tokens) && `ctx ${fmtTokens(m.context_window_tokens)}`}
-                        {m.capabilities.reasoning && ' · reasoning'}
-                        {m.capabilities.vision && ' · vision'}
-                        {m.capabilities.json_mode && ` · json:${m.capabilities.json_mode}`}
-                      </span>
-                    </li>
-                  ))}
+                  {hit.models.map((m) => {
+                    /* the engine's own price row for this pin (the audit's
+                       pricing snapshot · models.dev pinned) — an absent
+                       rate stays absent: unpriced is unpriced, never zero */
+                    const price = cargo?.audit.pricing.find((p) => p.model === `${hit.id}/${m.model}`)
+                    return (
+                      <li className="pv-model" key={m.id}>
+                        <code className="pv-model-id">{m.id}</code>
+                        <span className="pv-model-pin">{m.model}</span>
+                        <span className="pv-model-caps">
+                          {fmtTokens(m.context_window_tokens) && `ctx ${fmtTokens(m.context_window_tokens)}`}
+                          {m.capabilities.reasoning && ' · reasoning'}
+                          {m.capabilities.vision && ' · vision'}
+                          {m.capabilities.json_mode && ` · json:${m.capabilities.json_mode}`}
+                        </span>
+                        {price?.input_per_million != null && price?.output_per_million != null && (
+                          <span className="pv-model-price mono" title={`the engine's pricing snapshot · models.dev · ${cargo?.audit.pricing_as_of ?? ''}`}>
+                            ${price.input_per_million}/M in · ${price.output_per_million}/M out
+                          </span>
+                        )}
+                      </li>
+                    )
+                  })}
                 </ul>
+                {cargo?.audit.pricing_as_of && cargo.audit.pricing.some((p) => p.input_per_million != null) && (
+                  <p className="td-pin">
+                    prices are the ENGINE's, not ours: the audit's pricing snapshot (models.dev ·
+                    pinned {cargo.audit.pricing_as_of}) — the same table <code>nika check</code>{' '}
+                    prices your ceiling with.
+                  </p>
+                )}
               </div>
 
               {/* ── the provider in a real file · the crafted donor, audited ── */}

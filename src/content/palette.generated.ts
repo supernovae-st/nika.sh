@@ -1474,6 +1474,84 @@ export const PALETTE: PaletteEntry[] = [
     "hint": "Deterministic test responses — no API calls, no keys needed."
   },
   {
+    "kind": "page",
+    "label": "namespaces · the register root",
+    "href": "/namespaces",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "types · the register root",
+    "href": "/types",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "edges · the register root",
+    "href": "/edges",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "predicates · the register root",
+    "href": "/predicates",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "families · the register root",
+    "href": "/families",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "modes · the register root",
+    "href": "/modes",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "permits · the register root",
+    "href": "/permits",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "secrets · the register root",
+    "href": "/secrets",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "conformance · the register root",
+    "href": "/conformance",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "error-namespaces · the register root",
+    "href": "/error-namespaces",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "error-categories · the register root",
+    "href": "/error-categories",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "mcp · the register root",
+    "href": "/mcp",
+    "hint": "every member, one room each"
+  },
+  {
+    "kind": "page",
+    "label": "truth · the register root",
+    "href": "/truth",
+    "hint": "every member, one room each"
+  },
+  {
     "kind": "member",
     "label": "edge: control",
     "href": "/edges/control",

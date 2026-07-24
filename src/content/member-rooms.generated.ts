@@ -13,6 +13,8 @@ export interface MemberRoomEntry {
   url: string
   /** the atlas node id (readoutFor's key · TruthLine's key) */
   node: string
+  /** the member's one-line teaching (its graph opener · roots render it) */
+  gloss?: string
 }
 export interface MemberRoomFamily {
   set: string
@@ -141,37 +143,43 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "control",
         "title": "control",
         "url": "/edges/control",
-        "node": "edgekind:control"
+        "node": "edgekind:control",
+        "gloss": "an after entry · carries its gate predicate"
       },
       {
         "id": "failure-observation",
         "title": "failure-observation",
         "url": "/edges/failure-observation",
-        "node": "edgekind:failure-observation"
+        "node": "edgekind:failure-observation",
+        "gloss": "an error read in with · flows only when the producer failed"
       },
       {
         "id": "finally",
         "title": "finally",
         "url": "/edges/finally",
-        "node": "edgekind:finally"
+        "node": "edgekind:finally",
+        "gloss": "reserved · named so the enum is complete before the trace wave gives cleanup identity"
       },
       {
         "id": "recovery",
         "title": "recovery",
         "url": "/edges/recovery",
-        "node": "edgekind:recovery"
+        "node": "edgekind:recovery",
+        "gloss": "an on_error.recover reference · a parking read, not an ordering edge"
       },
       {
         "id": "terminal-observation",
         "title": "terminal-observation",
         "url": "/edges/terminal-observation",
-        "node": "edgekind:terminal-observation"
+        "node": "edgekind:terminal-observation",
+        "gloss": "a status or timing read in with · settles with the producer"
       },
       {
         "id": "value",
         "title": "value",
         "url": "/edges/value",
-        "node": "edgekind:value"
+        "node": "edgekind:value",
+        "gloss": "a with binding referencing a task output · carries the binding name"
       }
     ]
   },
@@ -184,25 +192,29 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "failure",
         "title": "failure",
         "url": "/predicates/failure",
-        "node": "predicate:failure"
+        "node": "predicate:failure",
+        "gloss": "fire when the producer failed terminally"
       },
       {
         "id": "skipped",
         "title": "skipped",
         "url": "/predicates/skipped",
-        "node": "predicate:skipped"
+        "node": "predicate:skipped",
+        "gloss": "fire when the producer was gated out"
       },
       {
         "id": "success",
         "title": "success",
         "url": "/predicates/success",
-        "node": "predicate:success"
+        "node": "predicate:success",
+        "gloss": "fire when the producer completed clean"
       },
       {
         "id": "terminal",
         "title": "terminal",
         "url": "/predicates/terminal",
-        "node": "predicate:terminal"
+        "node": "predicate:terminal",
+        "gloss": "fire when the producer reached any terminal state"
       }
     ]
   },
@@ -258,103 +270,120 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "anthropic",
         "title": "Anthropic Claude",
         "url": "/providers/anthropic",
-        "node": "provider:anthropic"
+        "node": "provider:anthropic",
+        "gloss": "Claude models (Opus, Sonnet, Haiku)."
       },
       {
         "id": "deepseek",
         "title": "DeepSeek",
         "url": "/providers/deepseek",
-        "node": "provider:deepseek"
+        "node": "provider:deepseek",
+        "gloss": "DeepSeek Chat and Coder models."
       },
       {
         "id": "gemini",
         "title": "Google Gemini",
         "url": "/providers/gemini",
-        "node": "provider:gemini"
+        "node": "provider:gemini",
+        "gloss": "Gemini Pro, Flash, and Ultra models."
       },
       {
         "id": "groq",
         "title": "Groq",
         "url": "/providers/groq",
-        "node": "provider:groq"
+        "node": "provider:groq",
+        "gloss": "Fast inference with Llama, Mixtral models."
       },
       {
         "id": "huggingface",
         "title": "Hugging Face",
         "url": "/providers/huggingface",
-        "node": "provider:huggingface"
+        "node": "provider:huggingface",
+        "gloss": "Inference Providers router · 100+ open-weight models across 18 providers (Groq · Cerebras · Together · Scaleway · OVHcloud · …) · zero markup · :provider or :fastest/:cheapest routing suffix."
       },
       {
         "id": "llamacpp",
         "title": "llama.cpp",
         "url": "/providers/llamacpp",
-        "node": "provider:llamacpp"
+        "node": "provider:llamacpp",
+        "gloss": "llama.cpp server (default port 8080) — serves the loaded GGUF; the wire model id is free-form."
       },
       {
         "id": "lmstudio",
         "title": "LM Studio",
         "url": "/providers/lmstudio",
-        "node": "provider:lmstudio"
+        "node": "provider:lmstudio",
+        "gloss": "LM Studio local server (default port 1234) — serves the loaded model."
       },
       {
         "id": "localai",
         "title": "LocalAI",
         "url": "/providers/localai",
-        "node": "provider:localai"
+        "node": "provider:localai",
+        "gloss": "LocalAI server (default port 8080) — an OpenAI-compatible gateway over local backends."
       },
       {
         "id": "mistral",
         "title": "Mistral AI",
         "url": "/providers/mistral",
-        "node": "provider:mistral"
+        "node": "provider:mistral",
+        "gloss": "Mistral Large, Medium, Small models."
       },
       {
         "id": "mock",
         "title": "Mock",
         "url": "/providers/mock",
-        "node": "provider:mock"
+        "node": "provider:mock",
+        "gloss": "Deterministic test responses — no API calls, no keys needed."
       },
       {
         "id": "moonshot",
         "title": "Moonshot (Kimi)",
         "url": "/providers/moonshot",
-        "node": "provider:moonshot"
+        "node": "provider:moonshot",
+        "gloss": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider."
       },
       {
         "id": "nvidia",
         "title": "NVIDIA",
         "url": "/providers/nvidia",
-        "node": "provider:nvidia"
+        "node": "provider:nvidia",
+        "gloss": "NVIDIA API (integrate.api.nvidia.com) · Nemotron 3 family (Open Model License · agentic-first) + hosted open models · self-hosted NIM containers expose the same surface."
       },
       {
         "id": "ollama",
         "title": "Ollama",
         "url": "/providers/ollama",
-        "node": "provider:ollama"
+        "node": "provider:ollama",
+        "gloss": "Local Ollama server (default port 11434) — serves any pulled model."
       },
       {
         "id": "openai",
         "title": "OpenAI",
         "url": "/providers/openai",
-        "node": "provider:openai"
+        "node": "provider:openai",
+        "gloss": "GPT-5.x, the o-series, and other OpenAI models."
       },
       {
         "id": "openrouter",
         "title": "OpenRouter",
         "url": "/providers/openrouter",
-        "node": "provider:openrouter"
+        "node": "provider:openrouter",
+        "gloss": "200+ models via unified gateway."
       },
       {
         "id": "vllm",
         "title": "vLLM",
         "url": "/providers/vllm",
-        "node": "provider:vllm"
+        "node": "provider:vllm",
+        "gloss": "vLLM server (default port 8000) — serves Hugging Face model ids at throughput."
       },
       {
         "id": "xai",
         "title": "xAI Grok",
         "url": "/providers/xai",
-        "node": "provider:xai"
+        "node": "provider:xai",
+        "gloss": "Grok models (Grok-3, Grok-4)."
       }
     ]
   },
@@ -428,25 +457,29 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "exec",
         "title": "exec",
         "url": "/permits/exec",
-        "node": "permit:exec"
+        "node": "permit:exec",
+        "gloss": "which commands may run · false kills the family"
       },
       {
         "id": "fs",
         "title": "fs",
         "url": "/permits/fs",
-        "node": "permit:fs"
+        "node": "permit:fs",
+        "gloss": "read and write globs · the walk root is gated"
       },
       {
         "id": "net",
         "title": "net",
         "url": "/permits/net",
-        "node": "permit:net"
+        "node": "permit:net",
+        "gloss": "http allowlist · the SSRF floor stays on regardless"
       },
       {
         "id": "tools",
         "title": "tools",
         "url": "/permits/tools",
-        "node": "permit:tools"
+        "node": "permit:tools",
+        "gloss": "which nika tools the file may invoke"
       }
     ]
   },
@@ -459,19 +492,22 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "env",
         "title": "env",
         "url": "/secrets/env",
-        "node": "secret:env"
+        "node": "secret:env",
+        "gloss": "read from the environment at run time"
       },
       {
         "id": "file",
         "title": "file",
         "url": "/secrets/file",
-        "node": "secret:file"
+        "node": "secret:file",
+        "gloss": "read from a path the boundary allows"
       },
       {
         "id": "vault",
         "title": "vault",
         "url": "/secrets/vault",
-        "node": "secret:vault"
+        "node": "secret:vault",
+        "gloss": "the OS keychain backend · the default posture"
       }
     ]
   },
@@ -484,7 +520,8 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "NIKA-AGENT",
         "title": "NIKA-AGENT",
         "url": "/error-namespaces/NIKA-AGENT",
-        "node": "errns:NIKA-AGENT"
+        "node": "errns:NIKA-AGENT",
+        "gloss": "agent: verb errors"
       },
       {
         "id": "NIKA-ASSERT",
@@ -496,13 +533,15 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "NIKA-BUILTIN",
         "title": "NIKA-BUILTIN",
         "url": "/error-namespaces/NIKA-BUILTIN",
-        "node": "errns:NIKA-BUILTIN"
+        "node": "errns:NIKA-BUILTIN",
+        "gloss": "Builtin tool errors · per-builtin sub-namespace"
       },
       {
         "id": "NIKA-CANCEL",
         "title": "NIKA-CANCEL",
         "url": "/error-namespaces/NIKA-CANCEL",
-        "node": "errns:NIKA-CANCEL"
+        "node": "errns:NIKA-CANCEL",
+        "gloss": "Task or workflow cancellation"
       },
       {
         "id": "NIKA-COMP",
@@ -514,7 +553,8 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "NIKA-DAG",
         "title": "NIKA-DAG",
         "url": "/error-namespaces/NIKA-DAG",
-        "node": "errns:NIKA-DAG"
+        "node": "errns:NIKA-DAG",
+        "gloss": "DAG topology · cycles · invalid deps"
       },
       {
         "id": "NIKA-DECIDE",
@@ -526,25 +566,29 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "NIKA-EXEC",
         "title": "NIKA-EXEC",
         "url": "/error-namespaces/NIKA-EXEC",
-        "node": "errns:NIKA-EXEC"
+        "node": "errns:NIKA-EXEC",
+        "gloss": "exec: verb errors"
       },
       {
         "id": "NIKA-IMPL",
         "title": "NIKA-IMPL",
         "url": "/error-namespaces/NIKA-IMPL",
-        "node": "errns:NIKA-IMPL"
+        "node": "errns:NIKA-IMPL",
+        "gloss": "Engine internal errors"
       },
       {
         "id": "NIKA-INFER",
         "title": "NIKA-INFER",
         "url": "/error-namespaces/NIKA-INFER",
-        "node": "errns:NIKA-INFER"
+        "node": "errns:NIKA-INFER",
+        "gloss": "infer: verb errors"
       },
       {
         "id": "NIKA-INVOKE",
         "title": "NIKA-INVOKE",
         "url": "/error-namespaces/NIKA-INVOKE",
-        "node": "errns:NIKA-INVOKE"
+        "node": "errns:NIKA-INVOKE",
+        "gloss": "invoke: verb errors"
       },
       {
         "id": "NIKA-LOCK",
@@ -556,13 +600,15 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "NIKA-MCP",
         "title": "NIKA-MCP",
         "url": "/error-namespaces/NIKA-MCP",
-        "node": "errns:NIKA-MCP"
+        "node": "errns:NIKA-MCP",
+        "gloss": "MCP client errors"
       },
       {
         "id": "NIKA-PARSE",
         "title": "NIKA-PARSE",
         "url": "/error-namespaces/NIKA-PARSE",
-        "node": "errns:NIKA-PARSE"
+        "node": "errns:NIKA-PARSE",
+        "gloss": "YAML parse + envelope validation"
       },
       {
         "id": "NIKA-POLICY",
@@ -580,19 +626,22 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "NIKA-PROVIDER",
         "title": "NIKA-PROVIDER",
         "url": "/error-namespaces/NIKA-PROVIDER",
-        "node": "errns:NIKA-PROVIDER"
+        "node": "errns:NIKA-PROVIDER",
+        "gloss": "Provider adapter errors"
       },
       {
         "id": "NIKA-SEC",
         "title": "NIKA-SEC",
         "url": "/error-namespaces/NIKA-SEC",
-        "node": "errns:NIKA-SEC"
+        "node": "errns:NIKA-SEC",
+        "gloss": "Security policy violations (SSRF · blocklist)"
       },
       {
         "id": "NIKA-TIMEOUT",
         "title": "NIKA-TIMEOUT",
         "url": "/error-namespaces/NIKA-TIMEOUT",
-        "node": "errns:NIKA-TIMEOUT"
+        "node": "errns:NIKA-TIMEOUT",
+        "gloss": "Task or step timeouts"
       },
       {
         "id": "NIKA-TYPE",
@@ -604,7 +653,8 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "NIKA-VAR",
         "title": "NIKA-VAR",
         "url": "/error-namespaces/NIKA-VAR",
-        "node": "errns:NIKA-VAR"
+        "node": "errns:NIKA-VAR",
+        "gloss": "Variable resolution failures"
       }
     ]
   },
@@ -696,19 +746,22 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "core",
         "title": "core",
         "url": "/conformance/core",
-        "node": "level:core"
+        "node": "level:core",
+        "gloss": "parse · validate · DAG · variables · typed errors · no execution"
       },
       {
         "id": "runtime",
         "title": "runtime",
         "url": "/conformance/runtime",
-        "node": "level:runtime"
+        "node": "level:runtime",
+        "gloss": "executes verbs · evaluates when and for_each over run state"
       },
       {
         "id": "stdlib",
         "title": "stdlib",
         "url": "/conformance/stdlib",
-        "node": "level:stdlib"
+        "node": "level:stdlib",
+        "gloss": "proves the v0.1 library surface · the production default"
       }
     ]
   },
@@ -782,61 +835,71 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "id": "atlas",
         "title": "atlas",
         "url": "/truth/atlas",
-        "node": "truth:atlas"
+        "node": "truth:atlas",
+        "gloss": "language_graph 1 · the graph of the language, site-side"
       },
       {
         "id": "canon",
         "title": "canon",
         "url": "/truth/canon",
-        "node": "truth:canon"
+        "node": "truth:canon",
+        "gloss": "canon.yaml · the counted sets, spec-first"
       },
       {
         "id": "catalog",
         "title": "catalog",
         "url": "/truth/catalog",
-        "node": "truth:catalog"
+        "node": "truth:catalog",
+        "gloss": "a machine projection the site serves · byte-diffed in CI"
       },
       {
         "id": "manifest",
         "title": "manifest",
         "url": "/truth/manifest",
-        "node": "truth:manifest"
+        "node": "truth:manifest",
+        "gloss": "the snippet lineage table · every rendered block resolves here"
       },
       {
         "id": "mirror",
         "title": "mirror",
         "url": "/truth/mirror",
-        "node": "truth:mirror"
+        "node": "truth:mirror",
+        "gloss": "a byte-pinned copy, sha256-verified"
       },
       {
         "id": "pack",
         "title": "pack",
         "url": "/truth/pack",
-        "node": "truth:pack"
+        "node": "truth:pack",
+        "gloss": "the spec corpus vendored inside the engine"
       },
       {
         "id": "pin",
         "title": "pin",
         "url": "/truth/pin",
-        "node": "truth:pin"
+        "node": "truth:pin",
+        "gloss": "SPEC_PIN · the exact spec sha the engine targets"
       },
       {
         "id": "registry",
         "title": "registry",
         "url": "/truth/registry",
-        "node": "truth:registry"
+        "node": "truth:registry",
+        "gloss": "nika-registry THE PRODUCT · shared workflows, re-proven nightly"
       },
       {
         "id": "schema",
         "title": "schema",
         "url": "/truth/schema",
-        "node": "truth:schema"
+        "node": "truth:schema",
+        "gloss": "workflow.schema.json · the shapes"
       },
       {
         "id": "spec",
         "title": "spec",
         "url": "/truth/spec",
-        "node": "truth:spec"
+        "node": "truth:spec",
+        "gloss": "the nika-spec repo · the truth of the language"
       }
     ]
   }

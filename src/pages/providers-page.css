@@ -296,3 +296,13 @@
   margin: 0;
   overflow-wrap: anywhere;
 }
+
+/* the price chip on a model pin — the engine's snapshot, cited */
+.pv-model-price {
+  font-size: 11px;
+  padding: 1px 7px;
+  border: 1px solid color-mix(in srgb, var(--layer-proof) 26%, transparent);
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--layer-proof) 62%, var(--v4-text));
+  white-space: nowrap;
+}

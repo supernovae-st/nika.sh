@@ -11,6 +11,7 @@ import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
+import './providers-page.css'
 
 /* ─── /<family> · every roomed family owns its ROOT (theme-dark) ──────────────
    The 2026-07-24 hole: /types/:id had ten rooms and /types itself 404'd —
@@ -181,15 +182,32 @@ export function Component() {
                 {fam.members.length} {fam.members.length === 1 ? 'door' : 'doors'}
               </span>
             </div>
-            <ul className="td-chips">
-              {fam.members.map((m) => (
-                <li key={m.id}>
-                  <Link className="td-chip" to={m.url}>
-                    {m.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* label + gloss rows when the graph teaches (the register
+                grammar) — bare chips only for the gloss-less families */}
+            {fam.members.some((m) => m.gloss) ? (
+              <ol className="tp-list">
+                {fam.members.map((m) => (
+                  <li key={m.id} className="tp-row" id={m.id}>
+                    <div className="pv-row-head">
+                      <Link className="pv-id" to={m.url} title="open the member's room">
+                        {m.title}
+                      </Link>
+                    </div>
+                    {m.gloss && <p className="pv-desc">{m.gloss}</p>}
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <ul className="td-chips">
+                {fam.members.map((m) => (
+                  <li key={m.id}>
+                    <Link className="td-chip" to={m.url}>
+                      {m.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <p className="tp-foot" data-rise>

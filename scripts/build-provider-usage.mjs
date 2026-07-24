@@ -83,6 +83,14 @@ if (!fromCapture) {
       waves: Array.isArray(r.waves) ? r.waves.length : 0,
       cost_ceiling_usd: r.cost?.has_unbounded ? null : (r.cost?.bounded_total_usd ?? null),
       cost_floor_usd: r.cost?.min_path_total_usd ?? 0,
+      /* the engine's own pricing snapshot rows for the donor's models —
+         null rates stay null (unpriced is unpriced, never zero) */
+      pricing: (r.pricing?.models ?? []).map((m) => ({
+        model: m.model,
+        input_per_million: m.input_per_million ?? null,
+        output_per_million: m.output_per_million ?? null,
+      })),
+      pricing_as_of: r.pricing?.snapshot?.as_of ?? null,
     }
   }
 } else if (!audits || !engine) {
@@ -114,6 +122,9 @@ export interface ProviderAudit {
   /** the worst-case ceiling in USD · null when any task is unpriced (local models are unpriced, never free) */
   cost_ceiling_usd: number | null
   cost_floor_usd: number
+  /** the engine's pricing snapshot rows for the donor's models (models.dev pinned) */
+  pricing: { model: string; input_per_million: number | null; output_per_million: number | null }[]
+  pricing_as_of: string | null
 }
 
 export interface ProviderUsage {

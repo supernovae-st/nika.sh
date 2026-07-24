@@ -134,7 +134,7 @@ export function Component() {
               `{family}/{id}` names nothing in the atlas.{' '}
               {fam ? (
                 <>
-                  The register lists every member: <Link to={fam.hub}>{fam.title}</Link>.
+                  The register lists every member: <Link to={`/${family}`}>{fam.title}</Link>.
                 </>
               ) : (
                 <>
@@ -161,7 +161,10 @@ export function Component() {
           />
           <header>
             <p className="v4sec-fig" data-rise>
-              <Link to={fam.hub} className="mr-up">
+              {/* the true breadcrumb: room → family ROOT → teaching hub
+                  (the roots were born 2026-07-24 · the hub keeps its own
+                  door inside the readout rows) */}
+              <Link to={`/${family}`} className="mr-up">
                 {fam.title}
               </Link>
             </p>
@@ -276,9 +279,13 @@ export function Component() {
                   {next.title}
                 </Link>
               )}
-              <Link className="hub-rail" to={fam.hub}>
+              <Link className="hub-rail" to={`/${family}`}>
                 <span className="hub-rail-kind">all</span>
                 {fam.title}
+              </Link>
+              <Link className="hub-rail" to={fam.hub}>
+                <span className="hub-rail-kind">taught at</span>
+                {fam.hub}
               </Link>
             </div>
           </nav>

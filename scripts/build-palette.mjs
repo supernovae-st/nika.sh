@@ -176,6 +176,16 @@ export function compilePalette() {
     'truth-words': 'truth',
   }
   const ontology = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8'))
+  /* the family ROOTS (the /types 404 class · reborn 2026-07-24): one door
+     per roomed family, straight from site.config's literal list */
+  const rootsBlock = siteConfig.match(/export const FAMILY_ROOT_PATHS = \[([\s\S]*?)\]/)?.[1] ?? ''
+  for (const m of rootsBlock.matchAll(/'(\/[a-z-]+)'/g))
+    entries.push({
+      kind: 'page',
+      label: `${m[1].slice(1)} · the register root`,
+      href: m[1],
+      hint: 'every member, one room each',
+    })
   for (const n of ontology.nodes ?? [])
     if (n.kind === 'member' && n.own_page && n.url && ROOMED_SETS[n.set])
       entries.push({

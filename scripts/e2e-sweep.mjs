@@ -1145,7 +1145,25 @@ await check('mobile · a sheet link navigates (→ /blog)', async () => {
      the belt must not click a moving (or parked-off-screen) target. */
   let link = null
   for (let i = 0; i < 10 && !link; i++) {
-    await evaluate(`(async () => { for (let f = 0; f < 12; f++) await new Promise((r) => requestAnimationFrame(r)) })()`)
+    /* the rAF pump RACES a wall-clock exit: on a runner starved enough
+       that frames never fire, the bare pump never resolves and the CDP
+       evaluate dies at 25s as « message lost » (3 identical findings,
+       2026-07-24) — the race hands control back in ≤900ms so the outer
+       loop retries, and a truly stuck slide-in gets the HONEST message
+       below instead of a lost one */
+    await evaluate(
+      `(async () => { await Promise.race([ (async () => { for (let f = 0; f < 12; f++) await new Promise((r) => requestAnimationFrame(r)) })(), new Promise((r) => setTimeout(r, 900)) ]) })()`,
+    )
+    /* a compositor starved by CONCURRENT load never advances the css
+       slide-in at all (observed under system load 15 · 2026-07-24: the
+       honest « slide-in stuck » 10/10). The check judges the NAVIGATION,
+       never the animation (its own law above) — after three dry pumps,
+       ground the transition and measure the real gesture. */
+    if (i === 3 && !link) {
+      await evaluate(
+        `(() => { const s = document.querySelector('.v4sheet'); if (s) { s.style.transition = 'none'; s.style.transform = 'none'; } })()`,
+      )
+    }
     link = await evaluate(
       `(() => { const a = [...document.querySelectorAll('.v4sheet a[href="/blog"]')][0]; if (!a) return null; a.scrollIntoView({ behavior: 'instant', block: 'center' }); const r = a.getBoundingClientRect(); const w = document.documentElement.clientWidth; return r.left >= 0 && r.right <= w + 1 ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : null })()`,
     )

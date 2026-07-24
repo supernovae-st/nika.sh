@@ -1599,7 +1599,15 @@ const memberRoomFamilies = Object.fromEntries(
         hub: (set.anchor_page ?? hubOf(set)).split('#')[0],
         members: nodes
           .filter((n) => n.kind === 'member' && n.set === set.id)
-          .map((n) => ({ id: n.id.split(':').slice(1).join(':'), title: n.title, url: n.url, node: n.id })),
+          .map((n) => ({
+            id: n.id.split(':').slice(1).join(':'),
+            title: n.title,
+            url: n.url,
+            node: n.id,
+            /* the member's one-line teaching (its graph opener) — the
+               family ROOT renders label+gloss rows, never bare chips */
+            ...(n.opener ? { gloss: n.opener } : {}),
+          })),
       },
     ]),
 )
@@ -1615,6 +1623,8 @@ export interface MemberRoomEntry {
   url: string
   /** the atlas node id (readoutFor's key · TruthLine's key) */
   node: string
+  /** the member's one-line teaching (its graph opener · roots render it) */
+  gloss?: string
 }
 export interface MemberRoomFamily {
   set: string
