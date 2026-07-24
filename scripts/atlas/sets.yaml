@@ -648,6 +648,8 @@ nav:
               desc: "The file declares its blast radius" }
           - { label: Use cases, to: /use-cases, icon: tiles,
               desc: "Real plans, reviewable and bound" }
+          - { label: The library, to: /library, icon: book,
+              desc: "Real files, recorded runs, honest reads" }
           - { label: Manifesto, to: /manifesto, icon: butterfly,
               desc: "The drum of liberation · 8 languages" }
       - col: Try it
@@ -692,14 +694,17 @@ nav:
       #  two-doors-one-path confusion the §4.11 ratchet now refuses)
       - { col: The run, item: { label: Changelog, to: /changelog } }
       - { col: The reach, item: { label: Use cases, to: /use-cases } }
-      - { col: The reach, item: { label: Registry, href: "https://github.com/supernovae-st/nika-registry",
-          slot: true, title: "the surface is owed · the repo is the door today" } }
+      # the registry's on-site room landed with /integrations — the owed
+      # surface is paid, the slot dies (§4.11: one door, one path)
+      - { col: The reach, item: { label: Registry, to: /integrations/registry } }
+      - { col: The reach, item: { label: Integrations, to: /integrations } }
     authored:
       - col: Learn · build
         items:
           - { label: Playground, to: /play }
           - { label: Learn it in 5 min, to: /learn }
           - { label: Install, to: /install }
+          - { label: The library, to: /library }
           - { label: Docs, external: true }
           - { label: Send a workflow, to: /convert }
           - { label: Blog, to: /blog }
@@ -708,13 +713,17 @@ nav:
           - { label: Manifesto, to: /manifesto }
           - { label: Design system, to: /brand }
           - { label: GitHub, external: true }   # href = REPO const
-          - { label: VS Code extension, href: "https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang" }
-          - { label: Homebrew tap, href: "https://github.com/supernovae-st/homebrew-tap" }
+          # the editor + tap doors moved ON-SITE with /integrations — the
+          # rooms carry the marketplace/repo links themselves
+          - { label: VS Code extension, to: /integrations/vscode }
+          - { label: Homebrew tap, to: /integrations/homebrew }
+          - { label: Timeline, to: /timeline }
           - { label: SuperNovae, href: "https://supernovae.studio" }
     machine_row:
       - { label: llms.txt, href: /llms.txt }
       - { label: ontology/language.json, href: /ontology/language.json }
       - { label: rss.xml, href: /rss.xml }
+      - { label: sitemap.xml, href: /sitemap.xml }
       - { label: schema/workflow.json, href: /schema/workflow.json }
 
 # ─── the library heroes (§2bis audit · VERDICT · WO-2b 2026-07-15) ──────────

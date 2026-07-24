@@ -66,6 +66,12 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
         "to": "/use-cases"
       },
       {
+        "label": "The library",
+        "icon": "book",
+        "desc": "Real files, recorded runs, honest reads",
+        "to": "/library"
+      },
+      {
         "label": "Manifesto",
         "icon": "butterfly",
         "desc": "The drum of liberation · 8 languages",
@@ -292,9 +298,11 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       },
       {
         "label": "Registry",
-        "href": "https://github.com/supernovae-st/nika-registry",
-        "slot": true,
-        "title": "the surface is owed · the repo is the door today"
+        "to": "/integrations/registry"
+      },
+      {
+        "label": "Integrations",
+        "to": "/integrations"
       }
     ]
   },
@@ -312,6 +320,10 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       {
         "label": "Install",
         "to": "/install"
+      },
+      {
+        "label": "The library",
+        "to": "/library"
       },
       {
         "label": "Docs",
@@ -344,11 +356,15 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       },
       {
         "label": "VS Code extension",
-        "href": "https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang"
+        "to": "/integrations/vscode"
       },
       {
         "label": "Homebrew tap",
-        "href": "https://github.com/supernovae-st/homebrew-tap"
+        "to": "/integrations/homebrew"
+      },
+      {
+        "label": "Timeline",
+        "to": "/timeline"
       },
       {
         "label": "SuperNovae",
@@ -371,6 +387,10 @@ export const FOOTER_MACHINE: { label: string; href: string }[] =
   {
     "label": "rss.xml",
     "href": "/rss.xml"
+  },
+  {
+    "label": "sitemap.xml",
+    "href": "/sitemap.xml"
   },
   {
     "label": "schema/workflow.json",

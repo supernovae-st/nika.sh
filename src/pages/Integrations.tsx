@@ -114,7 +114,7 @@ export function Component() {
                 the full kit
               </h2>
               <span className="cl-year-rule" aria-hidden />
-              <span className="cl-year-count">terminal + editor + agent · they compose</span>
+              <span className="cl-year-count">the three lanes compose</span>
             </div>
             <p className="td-gloss">
               Most people run all three. The binary does the work, the extension draws the file,

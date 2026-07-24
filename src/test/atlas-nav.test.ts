@@ -81,8 +81,14 @@ describe('atlas-nav · every rendered link resolves', () => {
     expect(routeSet.has(NAV_VERSION_PILL.to)).toBe(true)
   })
 
-  it('machine row surfaces are served files (public/) or routes', () => {
+  it('machine row surfaces are served files (public/ or build-emitted)', () => {
+    /* sitemap.xml is EMITTED at build (vite closeBundle derives it from
+       PATHS) — served in every deploy, never a public/ file. The allowlist
+       names the build-emitted twins explicitly; anything else must exist
+       in public/ at test time. */
+    const BUILD_EMITTED = new Set(['/sitemap.xml'])
     for (const m of FOOTER_MACHINE) {
+      if (BUILD_EMITTED.has(m.href)) continue
       const p = join(ROOT, 'public', m.href)
       expect(() => readFileSync(p), m.href).not.toThrow()
     }
@@ -151,12 +157,17 @@ describe('atlas-nav · the footer completes what the panel curates (§4.12)', ()
     }
   })
 
-  it('five columns in the 28-36 links law, machine row of four', () => {
+  it('five columns in the 22-40 links law, machine row of five', () => {
+    /* §4.12 window widened 36→40 and the machine row 4→5 (2026-07-24):
+       the integrations register + the library joined the chrome — the
+       footer is the COMPLETE card, and the complete card grew with the
+       site (registry's owed slot paid on-site · timeline · sitemap.xml
+       joins the machine twins). Still one screen, still scannable. */
     expect(FOOTER_COLS.length).toBe(5)
     const total = FOOTER_COLS.reduce((n, c) => n + c.items.length, 0)
     expect(total).toBeGreaterThanOrEqual(22)
-    expect(total).toBeLessThanOrEqual(36)
-    expect(FOOTER_MACHINE.length).toBe(4)
+    expect(total).toBeLessThanOrEqual(40)
+    expect(FOOTER_MACHINE.length).toBe(5)
   })
 })
 
