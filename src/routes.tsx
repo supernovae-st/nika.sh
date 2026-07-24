@@ -33,6 +33,7 @@ import { Component as ProofPage } from './pages/Proof'
 import { Component as Providers } from './pages/Providers'
 import { Component as ProviderPage } from './pages/ProviderPage'
 import { Component as MemberRoom } from './pages/MemberRoom'
+import { Component as FamilyRoot } from './pages/FamilyRoot'
 import { Component as Templates } from './pages/Templates'
 import { Component as TemplatePage } from './pages/TemplatePage'
 import { Component as Library } from './pages/Library'
@@ -116,6 +117,22 @@ export const routes: RouteObject[] = [
          to a DEDICATED room (the ToolPage/WordPage path): derived facts +
          authored meta + an audited donor file per provider. */
       { path: 'providers/:id', Component: ProviderPage },
+      /* every roomed family owns its ROOT too (the /types 404 of
+         2026-07-24: rooms without a root are a trimmed-URL dead end) —
+         one generic component, the registry drives it */
+      { path: 'namespaces', Component: FamilyRoot },
+      { path: 'types', Component: FamilyRoot },
+      { path: 'edges', Component: FamilyRoot },
+      { path: 'predicates', Component: FamilyRoot },
+      { path: 'families', Component: FamilyRoot },
+      { path: 'modes', Component: FamilyRoot },
+      { path: 'permits', Component: FamilyRoot },
+      { path: 'secrets', Component: FamilyRoot },
+      { path: 'conformance', Component: FamilyRoot },
+      { path: 'error-namespaces', Component: FamilyRoot },
+      { path: 'error-categories', Component: FamilyRoot },
+      { path: 'mcp', Component: FamilyRoot },
+      { path: 'truth', Component: FamilyRoot },
       { path: 'namespaces/:id', Component: MemberRoom },
       { path: 'types/:id', Component: MemberRoom },
       { path: 'edges/:id', Component: MemberRoom },

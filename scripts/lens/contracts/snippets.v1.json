@@ -824,7 +824,7 @@
     },
     {
       "path": "src/pages/Learn.tsx",
-      "source_blob": "5c93b8a9cef3a5e7bdf8a97893358bc9bbd1ea56",
+      "source_blob": "671fce18078e26718630e9bb6afeadd42558b240",
       "blocks": [
         {
           "selector": "src/pages/Learn.tsx#codefile:1",
@@ -842,13 +842,13 @@
     },
     {
       "path": "src/pages/LibraryRoom.tsx",
-      "source_blob": "6576d8eb3004bb80599804ae981e7630597ee459",
+      "source_blob": "ce7c52e4b01fe8446c34f405e377c6acc9ceddaf",
       "blocks": [
         {
           "selector": "src/pages/LibraryRoom.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 201,
-          "sha256": "0d71c1e7b3230c2a6e122665fecbcc816892eb4378b4109b76f3c19d9adac926"
+          "line": 207,
+          "sha256": "bc3d5219bfa14dba232774719993d665a300d9ea202a7a6598e72a29cc42c1c7"
         }
       ]
     },
@@ -866,12 +866,12 @@
     },
     {
       "path": "src/pages/ProviderPage.tsx",
-      "source_blob": "7bd3954aa0baa240c29decd11d9916b8f93673d2",
+      "source_blob": "b897417cbf921d256c82459894dad3d26ce1de7e",
       "blocks": [
         {
           "selector": "src/pages/ProviderPage.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 354,
+          "line": 378,
           "sha256": "28b9b9930aac318b4e5866eff206b9a632ce999657dfcc46c76d51e538b28a4b"
         }
       ]
@@ -908,12 +908,12 @@
     },
     {
       "path": "src/pages/TemplatePage.tsx",
-      "source_blob": "add035805cd784f7e211b7aeb59056a15a723414",
+      "source_blob": "fb3a4e8e336c7a5a5d9e12e045af878f5e299498",
       "blocks": [
         {
           "selector": "src/pages/TemplatePage.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 159,
+          "line": 185,
           "sha256": "3ac801ae2a88413aaa6d651e14e4070a7435d2f8e5b8d4bca0c23ca27844ef28"
         }
       ]

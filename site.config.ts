@@ -121,6 +121,25 @@ export const INTEGRATION_PATHS = [
   '/integrations/website',
 ]
 
+/* the roomed families' ROOTS — every family with member rooms owns its
+   root page too (the /types 404 class). Kept literal; the drift gate
+   (family-roots.test.ts) pins these against MEMBER_ROOM_FAMILIES. */
+export const FAMILY_ROOT_PATHS = [
+  '/namespaces',
+  '/types',
+  '/edges',
+  '/predicates',
+  '/families',
+  '/modes',
+  '/permits',
+  '/secrets',
+  '/conformance',
+  '/error-namespaces',
+  '/error-categories',
+  '/mcp',
+  '/truth',
+]
+
 /* the manifesto's translated variants (BCP 47 slugs · hreflang cluster) */
 export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto']
 /* the install cluster (WO-10 wiring · mirrors LOCALIZED['/install'] — the
@@ -284,4 +303,4 @@ export const TEMPLATE_PATHS = [
 export const ATLAS_PATHS = ['/map', '/sources', '/flow', '/boundary', '/proof', '/conformance/core', '/conformance/runtime', '/conformance/stdlib', '/edges/control', '/edges/failure-observation', '/edges/finally', '/edges/recovery', '/edges/terminal-observation', '/edges/value', '/error-categories/budget_error', '/error-categories/cancelled', '/error-categories/internal_error', '/error-categories/network_error', '/error-categories/parse_error', '/error-categories/process_error', '/error-categories/provider_error', '/error-categories/security_error', '/error-categories/timeout_error', '/error-categories/tool_error', '/error-categories/validation_error', '/error-categories/variable_error', '/error-namespaces/NIKA-AGENT', '/error-namespaces/NIKA-ASSERT', '/error-namespaces/NIKA-BUILTIN', '/error-namespaces/NIKA-CANCEL', '/error-namespaces/NIKA-COMP', '/error-namespaces/NIKA-DAG', '/error-namespaces/NIKA-DECIDE', '/error-namespaces/NIKA-EXEC', '/error-namespaces/NIKA-IMPL', '/error-namespaces/NIKA-INFER', '/error-namespaces/NIKA-INVOKE', '/error-namespaces/NIKA-LOCK', '/error-namespaces/NIKA-MCP', '/error-namespaces/NIKA-PARSE', '/error-namespaces/NIKA-POLICY', '/error-namespaces/NIKA-PORT', '/error-namespaces/NIKA-PROVIDER', '/error-namespaces/NIKA-SEC', '/error-namespaces/NIKA-TIMEOUT', '/error-namespaces/NIKA-TYPE', '/error-namespaces/NIKA-VAR', '/families/core', '/families/data', '/families/file', '/families/introspection', '/families/media', '/families/network', '/mcp/nika_canon', '/mcp/nika_catalog', '/mcp/nika_check', '/mcp/nika_examples', '/mcp/nika_explain', '/mcp/nika_inspect', '/mcp/nika_schema', '/mcp/nika_template', '/mcp/nika_tools', '/modes/article', '/modes/feed', '/modes/jq', '/modes/links', '/modes/markdown', '/modes/metadata', '/modes/selector', '/modes/sitemap', '/modes/text', '/namespaces/config', '/namespaces/const', '/namespaces/inputs', '/namespaces/secrets', '/namespaces/tasks', '/namespaces/with', '/permits/exec', '/permits/fs', '/permits/net', '/permits/tools', '/predicates/failure', '/predicates/skipped', '/predicates/success', '/predicates/terminal', '/providers/anthropic', '/providers/deepseek', '/providers/gemini', '/providers/groq', '/providers/huggingface', '/providers/llamacpp', '/providers/lmstudio', '/providers/localai', '/providers/mistral', '/providers/mock', '/providers/moonshot', '/providers/nvidia', '/providers/ollama', '/providers/openai', '/providers/openrouter', '/providers/vllm', '/providers/xai', '/secrets/env', '/secrets/file', '/secrets/vault', '/truth/atlas', '/truth/canon', '/truth/catalog', '/truth/manifest', '/truth/mirror', '/truth/pack', '/truth/pin', '/truth/registry', '/truth/schema', '/truth/spec', '/types/bool', '/types/bytes', '/types/duration', '/types/integer', '/types/null', '/types/number', '/types/path', '/types/string', '/types/timestamp', '/types/uri', '/use-cases/t1-image-fx-batch', '/use-cases/t1-meeting-actions', '/use-cases/t1-og-images', '/use-cases/t1-price-watch', '/use-cases/t1-social-repurpose', '/use-cases/t1-standup-digest', '/use-cases/t2-bookmark-triage', '/use-cases/t2-contract-guard', '/use-cases/t2-csv-chart-report', '/use-cases/t2-etl-quarantine', '/use-cases/t2-invoice-chaser', '/use-cases/t2-model-bench', '/use-cases/t2-release-notes', '/use-cases/t2-release-radar', '/use-cases/t2-seo-content-brief', '/use-cases/t2-support-triage', '/use-cases/t2-transcript-shownotes', '/use-cases/t3-competitor-radar', '/use-cases/t3-config-drift-sentinel', '/use-cases/t3-localization-factory', '/use-cases/t3-pr-review-fanout', '/use-cases/t3-resume-screener', '/use-cases/t4-ceo-monday-brief', '/use-cases/t4-deep-research-brief', '/use-cases/t4-incident-war-room', '/use-cases/t4-release-train']
 /* ── ATLAS PATHS END ── */
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...LIBRARY_PATHS, ...INTEGRATION_PATHS, ...ATLAS_PATHS, '/use-cases', '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...LIBRARY_PATHS, ...INTEGRATION_PATHS, ...FAMILY_ROOT_PATHS, ...ATLAS_PATHS, '/use-cases', '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']

@@ -452,6 +452,29 @@ export function Component() {
                   first; beyond it the engine embeds {EMBEDDED_EXTRA} more OpenAI-compatible
                   endpoints.
                 </p>
+                {/* the one-word diff, DRAWN — the product's signature gesture.
+                    The target crosses the sovereignty line on purpose: a local
+                    room swaps toward the first cloud seat (mistral · the
+                    presentation law), a cloud room swaps home to the first
+                    local seat (ollama) — both directions of the same freedom. */}
+                {(() => {
+                  const target =
+                    hit.kind === 'cloud'
+                      ? PROVIDERS.find((p) => p.kind === 'local')
+                      : PROVIDERS.find((p) => p.kind === 'cloud')
+                  if (!target?.default_model || !hit.default_model) return null
+                  return (
+                    <div className="pv-swap mono" role="img" aria-label={`the one-line diff: model ${hit.id} becomes model ${target.id}`}>
+                      <span className="pv-swap-del">
+                        <span className="pv-swap-sign" aria-hidden>−</span> model: {hit.id}/{hit.default_model}
+                      </span>
+                      <span className="pv-swap-add">
+                        <span className="pv-swap-sign" aria-hidden>+</span> model: {target.id}/{target.default_model}
+                      </span>
+                      <span className="pv-swap-cap">the whole migration · nothing else moves</span>
+                    </div>
+                  )
+                })()}
                 {kin.length > 0 && (
                   <ul className="td-chips">
                     {kin.map((p) => (

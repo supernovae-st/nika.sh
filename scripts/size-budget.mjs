@@ -114,6 +114,13 @@
    sync-routed page components + the chrome-lean TABS (the WO-7
    class); measured 384.1 · margin ~1.9 (the bite-on-growth grammar
    holds).
+   386→389 family-roots + the wow pass: thirteen 404 roots die
+   (/types · /permits · /truth … — every roomed family owns its root,
+   FamilyRoot rides the entry as sync-routed pages do, the WO-7
+   class) · the provider rooms gain the DRAWN one-word diff (the
+   sovereignty swap, both directions) · the map TOC dots and the
+   integrations kit-bento are CSS-only; measured 386.7 · margin ~2.3
+   (the bite-on-growth grammar holds).
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -121,7 +128,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 386
+const BUDGET_KB = 389
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

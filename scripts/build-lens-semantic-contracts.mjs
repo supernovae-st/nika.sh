@@ -223,6 +223,7 @@ const COMPONENT_FEATURE = {
   /* rooms universelles (verdict 2026-07-18): ONE generic room component
      serves every roomed register family — its own feature */
   MemberRoom: 'registry.member_rooms',
+  FamilyRoot: 'registry.member_rooms',
   /* the workflow library shelf + rooms (the hero's picking corpus) */
   Library: 'registry.library',
   LibraryRoom: 'registry.library',

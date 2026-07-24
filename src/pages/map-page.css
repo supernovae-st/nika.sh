@@ -466,3 +466,24 @@ a.mp-set-chip:focus-visible {
   color: rgb(255 255 255 / 0.42);
   pointer-events: none;
 }
+
+/* the TOC's three primary doors wear their neighborhood dot — the layer
+   ink again (anatomy=shape · constellation=flow · every page=proof) */
+.mp-toc .td-chip:nth-child(1)::before,
+.mp-toc .td-chip:nth-child(2)::before,
+.mp-toc .td-chip:nth-child(3)::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  margin-right: 7px;
+  vertical-align: 1px;
+  background: var(--layer-shape);
+}
+.mp-toc .td-chip:nth-child(2)::before {
+  background: var(--layer-flow);
+}
+.mp-toc .td-chip:nth-child(3)::before {
+  background: var(--layer-proof);
+}

@@ -210,6 +210,39 @@
   border-bottom-color: var(--v4-text);
 }
 
+/* ── the swap, drawn (the one-word diff · provider rooms) ────────────────────
+   The two inks are the layer tokens the whole site already speaks
+   (refusals red · proof green) — no new color enters the system. */
+.pv-swap {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--seam-hairline, var(--v4-line));
+  border-radius: var(--v4-radius);
+  background: rgb(10 13 18 / 0.55);
+  font-size: 13px;
+}
+.pv-swap-del {
+  color: color-mix(in srgb, var(--layer-refusals) 72%, var(--v4-text));
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--layer-refusals) 45%, transparent);
+}
+.pv-swap-add {
+  color: color-mix(in srgb, var(--layer-proof) 78%, var(--v4-text));
+}
+.pv-swap-sign {
+  display: inline-block;
+  width: 14px;
+  opacity: 0.8;
+}
+.pv-swap-cap {
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
+}
+
 /* ── the closing line ──────────────────────────────────────────────────────── */
 .pv-foot {
   margin-top: clamp(40px, 5vh, 64px);
@@ -229,4 +262,37 @@
   .pv-facts {
     gap: 4px 16px;
   }
+}
+
+/* ── the full-kit bento (/integrations · the three lanes as cards) ──────────
+   CSS-only over the existing dl (the register-diet law: zero new TSX) —
+   the same card shell the whole site speaks. */
+.int-kit .pv-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.int-kit .pv-fact {
+  display: grid;
+  gap: 8px;
+  padding: 16px 18px;
+  border: 1px solid var(--seam-hairline, var(--v4-line));
+  border-radius: var(--v4-radius);
+  background: rgb(10 13 18 / 0.55);
+  transition: border-color var(--dur-ui) var(--ease-ui);
+}
+.int-kit .pv-fact:hover {
+  border-color: var(--v4-line-strong, rgb(255 255 255 / 0.13));
+}
+.int-kit .pv-fact dt {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint, rgb(150 168 198 / 0.75));
+}
+.int-kit .pv-fact dd {
+  margin: 0;
+  overflow-wrap: anywhere;
 }

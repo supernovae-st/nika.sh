@@ -146,6 +146,14 @@ export const SITE_MAP: MapGroup[] = [
          roomed register — derived from the SAME generated registry the
          generic room renders, so the map can never drift from the rooms
          (providers included: the anchors became pages) */
+      /* every family's ROOT joins its rooms (the /types 404 class) —
+         minus the dedicated registers already placed above (providers) */
+      ...Object.keys(MEMBER_ROOM_FAMILIES)
+        .filter((f) => f !== 'providers')
+        .map((f) => ({
+          label: `${f} · the root`,
+          href: `/${f}`,
+        })),
       ...Object.values(MEMBER_ROOM_FAMILIES).flatMap((f) =>
         f.members.map((m) => ({ label: `${f.set}: ${m.id}`, href: m.url })),
       ),

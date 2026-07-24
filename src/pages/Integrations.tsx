@@ -108,7 +108,7 @@ export function Component() {
           />
 
           {/* ── the full kit · all three lanes in one sitting ── */}
-          <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+          <div className="td-sec int-kit" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
             <div className="cl-year-head">
               <h2 id="int-kit" className="td-h2">
                 the full kit
