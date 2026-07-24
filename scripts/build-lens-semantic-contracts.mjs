@@ -188,12 +188,15 @@ function snippetContract() {
 const COMPONENT_FEATURE = {
   Home: 'site.home',
   Blog: 'site.blog',
+  BlogTag: 'site.blog',
+  BlogSeries: 'site.blog',
   BlogPost: 'site.blog',
   Learn: 'product.learn',
   Play: 'product.playground',
   Manifesto: 'site.manifesto',
   Changelog: 'site.changelog',
   Errors: 'registry.errors',
+  ErrorPage: 'registry.errors',
   Tools: 'registry.builtins',
   ToolPage: 'registry.builtins',
   Verbs: 'registry.verbs',
@@ -203,6 +206,7 @@ const COMPONENT_FEATURE = {
   Providers: 'registry.providers',
   ProviderPage: 'registry.providers',
   Templates: 'registry.templates',
+  TemplatePage: 'registry.templates',
   UseCasesPage: 'product.use_cases',
   Spec: 'site.spec',
   Install: 'product.install',
@@ -219,6 +223,12 @@ const COMPONENT_FEATURE = {
   /* rooms universelles (verdict 2026-07-18): ONE generic room component
      serves every roomed register family — its own feature */
   MemberRoom: 'registry.member_rooms',
+  /* the workflow library shelf + rooms (the hero's picking corpus) */
+  Library: 'registry.library',
+  LibraryRoom: 'registry.library',
+  /* the integrations register (client lanes + public repos, README-true) */
+  Integrations: 'registry.integrations',
+  IntegrationRoom: 'registry.integrations',
 }
 
 const FEATURE_EVIDENCE = {
@@ -246,6 +256,8 @@ const FEATURE_EVIDENCE = {
   'product.boundary': 'src/pages/Boundary.tsx',
   'product.proof': 'src/pages/Proof.tsx',
   'registry.member_rooms': 'src/pages/MemberRoom.tsx',
+  'registry.library': 'src/flagships/library.ts',
+  'registry.integrations': 'src/content/integrations.ts',
   'site.timeline': 'src/pages/Timeline.tsx',
 }
 

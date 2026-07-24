@@ -9,6 +9,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { ERROR_CODES, ERROR_INDEX, ERROR_NAMESPACES, type ErrorCodeEntry } from '../content/errors.generated'
 import { CODE_REFS } from '../content/graph'
+import { CATEGORY_GLOSS, nsOf } from './errors-shared'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './errors-page.css'
@@ -29,24 +30,6 @@ import './errors-page.css'
    ERROR_PATHS in site.config.ts — DO's error_document beats the catchall,
    so a deep link must own its static landing to serve a 200). Highlight +
    the deep-link scroll stay client effects. */
-
-const CATEGORY_GLOSS: Record<string, string> = {
-  parse_error: 'the YAML itself is malformed',
-  validation_error: 'well-formed input, spec-rule violation',
-  variable_error: 'reference resolution / substitution',
-  budget_error: 'an agent loop budget exhausted',
-  provider_error: 'the model provider failed',
-  network_error: 'network I/O failed',
-  tool_error: 'a tool invocation failed',
-  security_error: 'a security policy refused the effect',
-  timeout_error: 'a task or step timed out',
-  cancelled: 'cancelled before completion',
-  internal_error: 'an engine bug; report it',
-}
-
-function nsOf(code: string): string {
-  return code.split('-').slice(0, 2).join('-')
-}
 
 /* the blog's back-references (D5 · the code:* subset only — 2 edges today,
    the register page stays diet: ONE island carries the whole subset, the

@@ -64,7 +64,7 @@ Every served library file (e.g. https://nika.sh/library/daily-brief.nika.yaml) c
 - Showcase source: https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase
 - Walkthroughs: https://docs.nika.sh/examples/overview
 - Interactive explorer: https://nika.sh/#use-cases
-- Blog (markdown source: content/blog in the site repo): https://nika.sh/blog · feed https://nika.sh/rss.xml · full text https://nika.sh/llms-full.txt · every post serves its markdown twin beside the page (append .md, e.g. https://nika.sh/blog/intent-as-code.md)
+- Blog (markdown source: content/blog in the site repo): https://nika.sh/blog · feed https://nika.sh/rss.xml · full text https://nika.sh/llms-full.txt · every post serves its markdown twin beside the page (append .md, e.g. https://nika.sh/blog/intent-as-code.md) · one citable register per tag (e.g. https://nika.sh/blog/tags/engine)
 
 ## Design system (machine-readable)
 
@@ -108,6 +108,8 @@ data language (jq) · workflows are callable · mock-first.
 - The map (every page, one graph): https://nika.sh/map · crawler twin: https://nika.sh/sitemap.xml · atlas twin: https://nika.sh/ontology/language.json
 - The anatomy hubs (one page per language layer; every member owns a room of its own, linked from its hub): https://nika.sh/flow (edges · gates) · https://nika.sh/boundary (permits · secrets) · https://nika.sh/proof (conformance · trace · machine surfaces)
 - The timeline (the one verifiable record: eras · releases · forward gates · every provable claim re-proven in CI): https://nika.sh/timeline
+- The workflow library (the files the home page picks from: recorded runs replayed honestly, browse files to read and run · one room each): https://nika.sh/library
+- Integrations (get Nika into your stack · one room per client lane and per public repo, install commands verbatim from the READMEs): https://nika.sh/integrations · Claude Code: https://nika.sh/integrations/claude-code · Codex: https://nika.sh/integrations/codex · Cursor: https://nika.sh/integrations/cursor · VS Code: https://nika.sh/integrations/vscode · Hermes/skills.sh: https://nika.sh/integrations/hermes · the MCP server: https://nika.sh/integrations/mcp
 - Showcase rooms (one URL per conformance-gated real workflow, whole file + plan facts): https://nika.sh/use-cases (the gallery lists all rooms; each room lives at its own slug under that path)
 
 ## Status

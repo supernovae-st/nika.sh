@@ -90,7 +90,7 @@ function sitemap(): Plugin {
         if (p === '/') return { priority: '1.0', changefreq: 'weekly' }
         if (p.startsWith('/blog/')) return { priority: '0.6', changefreq: 'monthly' }
         if (
-          /^\/(errors|tools|verbs|language|providers|templates|namespaces|types|edges|predicates|families|modes|permits|secrets|conformance|error-namespaces|error-categories|mcp|truth|use-cases)\/.+/.test(
+          /^\/(errors|tools|verbs|language|providers|templates|library|namespaces|types|edges|predicates|families|modes|permits|secrets|conformance|error-namespaces|error-categories|mcp|truth|use-cases)\/.+/.test(
             p,
           )
         )

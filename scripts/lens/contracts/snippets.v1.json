@@ -13,8 +13,8 @@
       "*.test.*",
       "*.generated.*"
     ],
-    "carrier_count": 54,
-    "block_count": 114
+    "carrier_count": 56,
+    "block_count": 116
   },
   "carriers": [
     {
@@ -841,6 +841,18 @@
       ]
     },
     {
+      "path": "src/pages/LibraryRoom.tsx",
+      "source_blob": "6576d8eb3004bb80599804ae981e7630597ee459",
+      "blocks": [
+        {
+          "selector": "src/pages/LibraryRoom.tsx#codefile:1",
+          "kind": "jsx-codefile",
+          "line": 201,
+          "sha256": "0d71c1e7b3230c2a6e122665fecbcc816892eb4378b4109b76f3c19d9adac926"
+        }
+      ]
+    },
+    {
       "path": "src/pages/NotFound.tsx",
       "source_blob": "f1092a2d957c34298882aaf7c75930618bb74580",
       "blocks": [
@@ -854,24 +866,24 @@
     },
     {
       "path": "src/pages/ProviderPage.tsx",
-      "source_blob": "338affaebeda0ba9e938441dc62bb0672cc9b3e1",
+      "source_blob": "7bd3954aa0baa240c29decd11d9916b8f93673d2",
       "blocks": [
         {
           "selector": "src/pages/ProviderPage.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 338,
+          "line": 354,
           "sha256": "28b9b9930aac318b4e5866eff206b9a632ce999657dfcc46c76d51e538b28a4b"
         }
       ]
     },
     {
       "path": "src/pages/Sources.tsx",
-      "source_blob": "b3cb5791946be99bd30ee23dc90ce4b24d79debc",
+      "source_blob": "675c68182bc8762868091170ad2d51db0b429cd9",
       "blocks": [
         {
           "selector": "src/pages/Sources.tsx#pre:1",
           "kind": "jsx-pre",
-          "line": 305,
+          "line": 310,
           "sha256": "55db083216caf8ca09d23bb9abff028c769648fa557f9acb7264a27bdc05f4e6"
         }
       ]
@@ -895,6 +907,18 @@
       ]
     },
     {
+      "path": "src/pages/TemplatePage.tsx",
+      "source_blob": "add035805cd784f7e211b7aeb59056a15a723414",
+      "blocks": [
+        {
+          "selector": "src/pages/TemplatePage.tsx#codefile:1",
+          "kind": "jsx-codefile",
+          "line": 159,
+          "sha256": "3ac801ae2a88413aaa6d651e14e4070a7435d2f8e5b8d4bca0c23ca27844ef28"
+        }
+      ]
+    },
+    {
       "path": "src/pages/Templates.tsx",
       "source_blob": "a7c121348f110860c3da3e6cd6d3e86015cf4f8c",
       "blocks": [
@@ -914,7 +938,7 @@
     },
     {
       "path": "src/pages/ToolPage.tsx",
-      "source_blob": "4f8687c4495475e0e466b796a5324bfdd5011120",
+      "source_blob": "38a30e1aac3eb38f85539497410ebfcb64cf3f16",
       "blocks": [
         {
           "selector": "src/pages/ToolPage.tsx#codefile:1",

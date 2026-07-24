@@ -67,6 +67,14 @@ const TAG_HUE: Record<ChangelogTag, string> = {
 }
 const tagHue = (tag: ChangelogTag) => TAG_HUE[tag]
 
+/* the row's citable id — the title, slugged (versions keep their dots:
+   #v0.105.0-the-map-comes-home reads as what it is) */
+const anchorOf = (e: { title: string }) =>
+  e.title
+    .toLowerCase()
+    .replace(/[^a-z0-9.]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
 /* two-tone title · the Raycast sentence register (white claim + grey
    elaboration on the same line). Presentation-only: entries whose title
    carries a « · » split at the FIRST one; single-clause titles stay whole. */
@@ -194,6 +202,7 @@ export function Component() {
                   <li
                     className="cl-tl-row"
                     key={`${e.date}-${e.title}`}
+                    id={anchorOf(e)}
                     style={{ ['--th' as string]: tagHue(e.tag) }}
                   >
                     <span className="cl-tl-spine" aria-hidden>
@@ -206,6 +215,11 @@ export function Component() {
                         {entryDate(e)}
                       </time>
                       <span className="cl-tl-tag">{e.tag}</span>
+                      {/* every shipped thing is citable — the row owns an id
+                          and wears its own anchor (the register grammar) */}
+                      <a className="cl-tl-cite" href={`#${anchorOf(e)}`} aria-label={`anchor: ${e.title}`} title="cite this entry">
+                        #
+                      </a>
                     </div>
                     <div className="cl-tl-body">
                       <h2 className="cl-tl-title">

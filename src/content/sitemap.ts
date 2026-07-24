@@ -1,4 +1,6 @@
-import { BLOG_POSTS } from './blog.generated'
+import { BLOG_POSTS, BLOG_SERIES } from './blog.generated'
+import { LIBRARY_TABS } from '../flagships/library'
+import { INTEGRATION_TABS } from './integrations-tabs'
 import { ERROR_CODES } from './errors.generated'
 import { TOOLS } from './tools.generated'
 import { LANGUAGE_WORDS } from './language.generated'
@@ -153,7 +155,37 @@ export const SITE_MAP: MapGroup[] = [
     kick: 'writing',
     gloss: 'notes from the source: long-form pedagogy, newest first',
     links: [{ label: 'Blog', href: '/blog', hint: 'the journal · rss + full text for machines' }],
-    dense: BLOG_POSTS.map((p) => ({ label: p.title, href: `/blog/${p.slug}` })),
+    dense: [
+      ...BLOG_POSTS.map((p) => ({ label: p.title, href: `/blog/${p.slug}` })),
+      /* the tag registers — derived from the same posts (a pipe-tagged
+         post counts in every register it names) */
+      ...[...new Set(BLOG_POSTS.flatMap((p) => p.tag.split('|').map((t) => t.trim())))]
+        .sort()
+        .map((t) => ({ label: `tag: ${t}`, href: `/blog/tags/${t.toLowerCase()}` })),
+      /* the reading paths — one page per series */
+      ...Object.entries(BLOG_SERIES).map(([sid, s]) => ({
+        label: `path: ${s.title}`,
+        href: `/blog/series/${sid}`,
+      })),
+    ],
+  },
+  {
+    kick: 'the library',
+    gloss: 'the files the home page picks from — recorded runs, honest reads',
+    links: [{ label: 'The shelf', href: '/library', hint: 'ten real files · one room each' }],
+    dense: LIBRARY_TABS.map((t) => ({ label: t.label, href: `/library/${t.id}` })),
+  },
+  {
+    kick: 'the integrations',
+    gloss: 'get Nika into your stack: your agent, your editor, your terminal',
+    links: [
+      {
+        label: 'Integrations',
+        href: '/integrations',
+        hint: 'Claude Code · Codex · Cursor · VS Code · Hermes · MCP · the repos',
+      },
+    ],
+    dense: INTEGRATION_TABS.map((e) => ({ label: e.name, href: `/integrations/${e.id}` })),
   },
   {
     kick: 'machines',

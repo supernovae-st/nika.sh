@@ -172,7 +172,9 @@ const fail = (route, kind, detail) => {
      feed's own law; presence is the contract) */
   const rss = ex(join(DIST, 'rss.xml')) ? readFileSync(join(DIST, 'rss.xml'), 'utf8') : ''
   const llms = ex(join(DIST, 'llms-full.txt')) ? readFileSync(join(DIST, 'llms-full.txt'), 'utf8') : ''
-  const posts = ROUTES.filter((r) => /^\/blog\/.+/.test(r))
+  /* the tag registers and reading paths live under /blog/ but are NOT
+     posts — the feed carries articles, never index pages */
+  const posts = ROUTES.filter((r) => /^\/blog\/.+/.test(r) && !/^\/blog\/(tags|series)\//.test(r))
   let rssMiss = 0
   let llmsMiss = 0
   for (const r of posts) {
@@ -347,7 +349,9 @@ const until = async (fn, tries = 12, gap = 400) => {
    full page (no scroll target) — the pin asserts the room mounted FOR the
    right tool and its usage CodeFile rendered. */
 const REGISTER_PINS = [
-  { route: '/errors/NIKA-SEC-001', row: '.er-row--active', extra: null },
+  /* the error rooms graduated to DEDICATED pages: the pin asserts the room
+     mounted for the right code with its namespace walk served */
+  { route: '/errors/NIKA-SEC-001', row: 'section[data-code="NIKA-SEC-001"]', extra: '#err-title' },
   { route: '/tools/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
   /* the provider rooms graduated to DEDICATED pages (the ToolPage path):
      the pin asserts the room mounted for the right provider with its
@@ -355,7 +359,8 @@ const REGISTER_PINS = [
   { route: '/providers/ollama', row: 'section[data-provider="ollama"]', extra: '.td-usage .cf-panel' },
   { route: '/verbs/invoke', row: 'section[data-verb="invoke"]', extra: '.td-usage .cf-panel' },
   { route: '/language/with', row: 'section[data-word="with"]', extra: '.td-usage .cf-panel' },
-  { route: '/templates/fanout', row: '.tm-row--active', extra: '.tm-row--active .cf-panel' },
+  /* the skeleton rooms graduated too: the whole file serves in the room */
+  { route: '/templates/fanout', row: 'section[data-template="fanout"]', extra: '.td-usage .cf-panel' },
 ]
 for (const pin of REGISTER_PINS) {
   await send('Page.navigate', { url: `${BASE}${pin.route}` })

@@ -606,6 +606,7 @@ surfaces:
 # These are NOT atlas surfaces — no node, no graph edge, just the door.
 legacy_moves:
   - { from: /language/depends_on, to: /language/after, applied: provider-rooms-arc }
+  - { from: /method, to: /timeline, applied: provider-rooms-arc }
   - { from: /concepts, to: /map, applied: provider-rooms-arc }
   - { from: /concepts/antifragility, to: /manifesto, applied: provider-rooms-arc }
   - { from: /concepts/bounded-rationality, to: /manifesto, applied: provider-rooms-arc }
@@ -657,6 +658,8 @@ nav:
               desc: "One file, line by line" }
           - { label: Install, to: /install, icon: run,
               desc: "One binary · two minutes" }
+          - { label: Integrations, to: /integrations, icon: tiles,
+              desc: "Your agent, your editor, one kit" }
           - { label: Send a workflow, to: /convert, icon: tiles,
               desc: "Yours, converted to a file" }
     doctrine_line: { label: "Every claim on this site derives from the spec", to: /map }

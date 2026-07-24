@@ -28,10 +28,22 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
     "hub": "/language",
     "members": [
       {
-        "id": "env",
-        "title": "env",
-        "url": "/namespaces/env",
-        "node": "ns:env"
+        "id": "config",
+        "title": "config",
+        "url": "/namespaces/config",
+        "node": "ns:config"
+      },
+      {
+        "id": "const",
+        "title": "const",
+        "url": "/namespaces/const",
+        "node": "ns:const"
+      },
+      {
+        "id": "inputs",
+        "title": "inputs",
+        "url": "/namespaces/inputs",
+        "node": "ns:inputs"
       },
       {
         "id": "secrets",
@@ -44,12 +56,6 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "title": "tasks",
         "url": "/namespaces/tasks",
         "node": "ns:tasks"
-      },
-      {
-        "id": "vars",
-        "title": "vars",
-        "url": "/namespaces/vars",
-        "node": "ns:vars"
       },
       {
         "id": "with",

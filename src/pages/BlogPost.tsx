@@ -239,7 +239,16 @@ export function Component() {
             <Link to="/manifesto" viewTransition className="bp-author">
               {post.author}
             </Link>{' '}
-            · {post.tag} · <time dateTime={post.date}>{post.date}</time> · {post.readingMin} min
+            ·{' '}
+            {post.tag.split('|').map((t, i) => (
+              <span key={t.trim()}>
+                {i > 0 && ' | '}
+                <Link to={`/blog/tags/${t.trim().toLowerCase()}`} className="bp-author" title="the tag's own register">
+                  {t.trim()}
+                </Link>
+              </span>
+            ))}{' '}
+            · <time dateTime={post.date}>{post.date}</time> · {post.readingMin} min
           </p>
           <h1 id="bp-title" className="v4sec-title bp-title">
             {post.title}
@@ -257,7 +266,13 @@ export function Component() {
           {series && (
             <nav className="bp-series" aria-label={`${series.title} reading path`}>
               <p className="bp-series-head mono">
-                <span className="bp-series-name">{series.title}</span>
+                <Link
+                  to={`/blog/series/${post.series}`}
+                  className="bp-series-name"
+                  title="the reading path's own page"
+                >
+                  {series.title}
+                </Link>
                 <span className="bp-series-claim">{series.claim}</span>
                 <span className="bp-series-count">
                   {stations.findIndex((st) => st.post.slug === post.slug) + 1}/{stations.length}

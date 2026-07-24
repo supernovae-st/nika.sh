@@ -5,6 +5,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { TruthLine } from '../components/TruthLine'
 import { StampStrip } from '../components/StampStrip'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
+import { WORD_INDEX } from '../content/language.generated'
 import { ssrReadout, loadReadout } from '../lib/member-room-access'
 import type { Readout } from '../shell/inspector-readout'
 import { Island } from '../lib/ssg-island'
@@ -46,10 +47,6 @@ const FAMILY_OG: Record<string, { img: string; alt: string }> = {
   providers: { img: 'og-providers', alt: 'Nika providers. Local first, bring your own keys, no lock-in.' },
 }
 
-/* the atlas' roomed dimensions · derived from the registry, never typed
-   (the count-source law) — the stamp figures below read these */
-const ROOM_FAMILY_COUNT = Object.keys(MEMBER_ROOM_FAMILIES).length
-const ROOM_COUNT = Object.values(MEMBER_ROOM_FAMILIES).reduce((n, f) => n + f.members.length, 0)
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
@@ -176,11 +173,10 @@ export function Component() {
               ) : null}
               {member.title}
             </h1>
-            {readout?.opener && (
-              <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-                {readout.opener}
-              </p>
-            )}
+            <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+              {readout?.opener ??
+                `One of ${fam.members.length} in ${fam.title.toLowerCase()} — every fact on this page derives from the pinned spec and the released engine, re-proven at every push.`}
+            </p>
             {readout?.status && (
               <p className="room-authority st-mark" data-status={readout.status} data-rise>
                 {readout.status} · derived from the pinned spec and the released engine ·
@@ -189,13 +185,16 @@ export function Component() {
             )}
           </header>
 
-          {/* the room's dimensions, at a glance — every figure derived from the registry */}
+          {/* the room's dimensions, at a glance — ABOUT the member, never the
+              machinery (the meta stamps read as navel-gazing on every room) */}
           <StampStrip
             items={[
               { n: at + 1, label: 'the seat', sub: `of ${fam.members.length} · prev / next walk it` },
               { n: fam.members.length, label: 'in this register', sub: fam.title.toLowerCase() },
-              { n: ROOM_FAMILY_COUNT, label: 'roomed registers', sub: 'one route serves them all' },
-              { n: ROOM_COUNT, label: 'rooms in the atlas', sub: 'this page is one of them' },
+              readout?.kind
+                ? { n: readout.kind, label: 'the kind', sub: 'the glyph the whole site speaks' }
+                : { n: family, label: 'the family', sub: 'one route serves them all' },
+              { n: readout?.status ?? 'derived', label: 'the clock', sub: 're-proven at every push' },
             ]}
           />
 
@@ -232,9 +231,21 @@ export function Component() {
             </section>
           )}
 
-          {readout?.door && (
+          {/* the door renders only when it leads SOMEWHERE ELSE — a member
+              whose canonical page IS this room was pointing at itself */}
+          {readout?.door && readout.door.href !== member.url && (
             <p className="room-door">
               <Link to={readout.door.href}>{readout.door.label}</Link>
+            </p>
+          )}
+
+          {/* the namespaces that double as language words get the deeper
+              door (env · secrets · tasks · with — `vars` is a namespace
+              only, no schema key declares it: the guard keeps the door
+              honest, never a 404) */}
+          {family === 'namespaces' && WORD_INDEX[id] && (
+            <p className="room-door">
+              <Link to={`/language/${id}`}>the word's own room: {id} →</Link>
             </p>
           )}
 

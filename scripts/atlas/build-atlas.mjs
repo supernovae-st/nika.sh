@@ -377,6 +377,11 @@ for (const [slug, model] of Object.entries(S.dag)) {
    exact NIKA codes · nika:tool · `word:` (the colon marks the key form) */
 const wordSet = new Set(S.words.map((w) => w.word))
 const codeSet = new Set(S.errors.codes.map((c) => c.code))
+const providerSet = new Set([
+  ...S.canon.providerIdsLocal,
+  ...S.canon.providerIdsCloud,
+  ...S.canon.providerIdsTest,
+])
 for (const post of S.posts) {
   const spans = post.md.match(/`[^`\n]+`/g) ?? []
   const hit = new Set()
@@ -390,6 +395,11 @@ for (const post of S.posts) {
     }
     const keyForm = /^([a-z_]+):$/.exec(body.trim())
     if (keyForm && wordSet.has(keyForm[1])) hit.add(`word:${keyForm[1]}`)
+    /* the provider's typed forms: the model-line prefix (`ollama/…`) or
+       the exact id alone in a span */
+    const provForm = /^([a-z]+)\//.exec(body.trim())
+    if (provForm && providerSet.has(provForm[1])) hit.add(`provider:${provForm[1]}`)
+    if (providerSet.has(body.trim())) hit.add(`provider:${body.trim()}`)
   }
   if (hit.size === 0) continue
   nodes.push({
@@ -413,6 +423,7 @@ const MEMBER_ROOM = {
   tool: (id) => ({ label: `nika:${id}`, url: `/tools/${id}` }),
   word: (id) => ({ label: id, url: `/language/${id}` }),
   code: (id) => ({ label: id, url: `/errors/${id}` }),
+  provider: (id) => ({ label: id, url: `/providers/${id}` }),
 }
 for (const e of edges) {
   if (e.kind !== 'mentions' || !e.from.startsWith('post:')) continue

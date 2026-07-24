@@ -17,36 +17,36 @@
   .cst-corering { fill: none; stroke: #9db4e0; stroke-opacity: .25; }
   @media (prefers-reduced-motion: reduce) { .cst-sector, .cst-star a { transition: none; } }
   </style>
-<path class="cst-sector" data-layer="shape" d="M 602.69 390.02 A 210 210 0 0 1 799.86 535.54 L 756.08 549.66 A 164 164 0 0 0 602.10 436.01 Z" fill="#9fd0ff" stroke="#9fd0ff"/>
+<path class="cst-sector" data-layer="shape" d="M 602.69 390.02 A 210 210 0 0 1 800.50 537.54 L 756.58 551.22 A 164 164 0 0 0 602.10 436.01 Z" fill="#9fd0ff" stroke="#9fd0ff"/>
 <text class="cst-laylab" x="925.82" y="163.12" text-anchor="start" fill="#9fd0ff">the shape</text>
-<path class="cst-sector" data-layer="flow" d="M 801.35 540.35 A 210 210 0 0 1 807.38 633.04 L 761.96 625.80 A 164 164 0 0 0 757.25 553.42 Z" fill="#5b8cff" stroke="#5b8cff"/>
+<path class="cst-sector" data-layer="flow" d="M 801.94 542.37 A 210 210 0 0 1 807.04 635.11 L 761.69 627.42 A 164 164 0 0 0 757.70 554.99 Z" fill="#5b8cff" stroke="#5b8cff"/>
 <text class="cst-laylab" x="1144.02" y="567.32" text-anchor="start" fill="#5b8cff">the flow</text>
-<path class="cst-sector" data-layer="acts" d="M 806.53 638.01 A 210 210 0 0 1 788.36 692.85 L 747.10 672.51 A 164 164 0 0 0 761.29 629.68 Z" fill="#b07bff" stroke="#b07bff"/>
-<text class="cst-laylab" x="1117.33" y="771.44" text-anchor="start" fill="#b07bff">the acts</text>
+<path class="cst-sector" data-layer="acts" d="M 806.14 640.07 A 210 210 0 0 1 788.36 692.85 L 747.10 672.51 A 164 164 0 0 0 760.99 631.29 Z" fill="#b07bff" stroke="#b07bff"/>
+<text class="cst-laylab" x="1115.59" y="776.60" text-anchor="start" fill="#b07bff">the acts</text>
 <path class="cst-sector" data-layer="reach" d="M 786.07 697.35 A 210 210 0 0 1 573.36 808.30 L 579.19 762.67 A 164 164 0 0 0 745.32 676.02 Z" fill="#22d3ee" stroke="#22d3ee"/>
 <text class="cst-laylab" x="852.05" y="1083.21" text-anchor="start" fill="#22d3ee">the reach</text>
 <path class="cst-sector" data-layer="boundary" d="M 568.37 807.60 A 210 210 0 0 1 496.17 782.53 L 518.91 742.55 A 164 164 0 0 0 575.30 762.13 Z" fill="#ff7a3c" stroke="#ff7a3c"/>
-<text class="cst-laylab" x="423.81" y="1115.73" text-anchor="middle" fill="#ff7a3c">the boundary</text>
+<text class="cst-laylab" x="418.66" y="1113.95" text-anchor="middle" fill="#ff7a3c">the boundary</text>
 <path class="cst-sector" data-layer="refusals" d="M 491.81 779.99 A 210 210 0 0 1 419.49 492.68 L 459.03 516.19 A 164 164 0 0 0 515.51 740.56 Z" fill="#ff5d5d" stroke="#ff5d5d"/>
 <text class="cst-laylab" x="72.16" y="735.68" text-anchor="end" fill="#ff5d5d">the refusals</text>
 <path class="cst-sector" data-layer="proof" d="M 422.12 488.38 A 210 210 0 0 1 596.98 390.02 L 597.64 436.02 A 164 164 0 0 0 461.09 512.83 Z" fill="#34d399" stroke="#34d399"/>
 <text class="cst-laylab" x="332.81" y="124.99" text-anchor="end" fill="#34d399">the proof</text>
-<path class="cst-lk" data-kind="accepts" d="M 913.25 703.81 Q 691.51 593.93 896.8 455.75" stroke-width="3"/>
+<path class="cst-lk" data-kind="accepts" d="M 912.72 705.37 Q 691.62 594.56 898.06 458.37" stroke-width="3"/>
 <path class="cst-lk" data-kind="carries" d="M 868.81 791.42 Q 672.83 666.05 816.7 848.88" stroke-width="2.26"/>
-<path class="cst-lk" data-kind="carries" d="M 680.11 920.13 Q 656.54 626.38 896.8 455.75" stroke-width="4.31"/>
+<path class="cst-lk" data-kind="carries" d="M 680.11 920.13 Q 656.73 626.78 898.06 458.37" stroke-width="4.31"/>
 <path class="cst-lk" data-kind="grants" d="M 680.11 920.13 Q 652.34 676.73 868.81 791.42" stroke-width="2.92"/>
 <path class="cst-lk" data-kind="names" d="M 279.98 680.55 Q 592.32 640.8 868.81 791.42" stroke-width="3.05"/>
-<path class="cst-lk" data-kind="names" d="M 279.98 680.55 Q 596.52 590.44 896.8 455.75" stroke-width="4"/>
-<circle class="cst-setdot" data-set="verbs" cx="913.25" cy="703.81" r="9.11" fill="#b07bff" stroke="#b07bff"/>
-<text class="cst-setlab" x="928.54" y="708.88" text-anchor="start">verbs</text>
+<path class="cst-lk" data-kind="names" d="M 279.98 680.55 Q 596.71 590.84 898.06 458.37" stroke-width="4"/>
+<circle class="cst-setdot" data-set="verbs" cx="912.72" cy="705.37" r="9.11" fill="#b07bff" stroke="#b07bff"/>
+<text class="cst-setlab" x="928.01" y="710.44" text-anchor="start">verbs</text>
 <circle class="cst-setdot" data-set="permit-families" cx="538.97" cy="924.31" r="9.11" fill="#ff7a3c" stroke="#ff7a3c"/>
 <text class="cst-setlab" x="535.94" y="940.13" text-anchor="middle">permit-families</text>
 <circle class="cst-setdot" data-set="secret-sources" cx="446.91" cy="892.34" r="8.4" fill="#ff7a3c" stroke="#ff7a3c"/>
 <text class="cst-setlab" x="439.81" y="906.01" text-anchor="end">secret-sources</text>
-<circle class="cst-setdot" data-set="edge-kinds" cx="920.26" cy="520.4" r="10.18" fill="#5b8cff" stroke="#5b8cff"/>
-<text class="cst-setlab" x="936.95" y="516.32" text-anchor="start">edge-kinds</text>
-<circle class="cst-setdot" data-set="gate-predicates" cx="927.87" cy="637.41" r="9.11" fill="#5b8cff" stroke="#5b8cff"/>
-<text class="cst-setlab" x="943.88" y="639.18" text-anchor="start">gate-predicates</text>
+<circle class="cst-setdot" data-set="edge-kinds" cx="921.04" cy="523.61" r="10.18" fill="#5b8cff" stroke="#5b8cff"/>
+<text class="cst-setlab" x="937.77" y="519.69" text-anchor="start">edge-kinds</text>
+<circle class="cst-setdot" data-set="gate-predicates" cx="927.48" cy="640.68" r="9.11" fill="#5b8cff" stroke="#5b8cff"/>
+<text class="cst-setlab" x="943.47" y="642.61" text-anchor="start">gate-predicates</text>
 <circle class="cst-setdot" data-set="conformance-levels" cx="341.5" cy="394.87" r="8.4" fill="#34d399" stroke="#34d399"/>
 <text class="cst-setlab" x="329.41" y="385.33" text-anchor="end">conformance-levels</text>
 <circle class="cst-setdot" data-set="mcp-tools" cx="402.51" cy="335.62" r="11.31" fill="#34d399" stroke="#34d399"/>
@@ -71,12 +71,12 @@
 <text class="cst-setlab" x="255.68" y="686.54" text-anchor="end">error-codes</text>
 <circle class="cst-setdot" data-set="error-namespaces" cx="290.88" cy="484.49" r="13.81" fill="#ff5d5d" stroke="#ff5d5d"/>
 <text class="cst-setlab" x="271.39" y="477.19" text-anchor="end">error-namespaces</text>
-<circle class="cst-setdot" data-set="namespaces" cx="650.36" cy="273.86" r="9.69" fill="#9fd0ff" stroke="#9fd0ff"/>
-<text class="cst-setlab" x="652.87" y="257.36" text-anchor="middle">namespaces</text>
-<circle class="cst-setdot" data-set="types" cx="795.96" cy="334.48" r="11.61" fill="#9fd0ff" stroke="#9fd0ff"/>
-<text class="cst-setlab" x="807.09" y="319.56" text-anchor="start">types</text>
-<circle class="cst-setdot" data-set="words" cx="896.8" cy="455.75" r="17" fill="#9fd0ff" stroke="#9fd0ff"/>
-<text class="cst-setlab" x="918.41" y="445.31" text-anchor="start">words</text>
+<circle class="cst-setdot" data-set="namespaces" cx="650.75" cy="273.93" r="10.18" fill="#9fd0ff" stroke="#9fd0ff"/>
+<text class="cst-setlab" x="653.33" y="256.94" text-anchor="middle">namespaces</text>
+<circle class="cst-setdot" data-set="types" cx="797.29" cy="335.47" r="11.61" fill="#9fd0ff" stroke="#9fd0ff"/>
+<text class="cst-setlab" x="808.42" y="320.55" text-anchor="start">types</text>
+<circle class="cst-setdot" data-set="words" cx="898.06" cy="458.37" r="17" fill="#9fd0ff" stroke="#9fd0ff"/>
+<text class="cst-setlab" x="919.77" y="448.15" text-anchor="start">words</text>
 <g class="cst-star"><a href="/verbs/agent" tabindex="-1"><circle cx="1058.67" cy="702.57" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>agent</title></a></g>
 <g class="cst-star"><a href="/verbs/exec" tabindex="-1"><circle cx="1050.82" cy="732.9" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>exec</title></a></g>
 <g class="cst-star"><a href="/verbs/infer" tabindex="-1"><circle cx="1040.97" cy="762.63" r="3.1" fill="#b07bff" stroke="#b07bff" stroke-width="0"/><title>infer</title></a></g>
@@ -88,16 +88,16 @@
 <g class="cst-star"><a href="/secrets/env" tabindex="-1"><circle cx="415.16" cy="1032.13" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>env</title></a></g>
 <g class="cst-star"><a href="/secrets/file" tabindex="-1"><circle cx="383.3" cy="1017.06" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>file</title></a></g>
 <g class="cst-star"><a href="/secrets/vault" tabindex="-1"><circle cx="352.65" cy="999.65" r="3.1" fill="#ff7a3c" stroke="#ff7a3c" stroke-width="0"/><title>vault</title></a></g>
-<g class="cst-star"><a href="/edges/control" tabindex="-1"><circle cx="1034.71" cy="421.31" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>control</title></a></g>
-<g class="cst-star"><a href="/edges/failure-observation" tabindex="-1"><circle cx="1044.64" cy="447.7" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>failure-observation</title></a></g>
-<g class="cst-star"><a href="/edges/finally" tabindex="-1"><circle cx="1052.97" cy="474.64" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>finally</title></a></g>
-<g class="cst-star"><a href="/edges/recovery" tabindex="-1"><circle cx="1059.67" cy="502.02" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>recovery</title></a></g>
-<g class="cst-star"><a href="/edges/terminal-observation" tabindex="-1"><circle cx="1064.72" cy="529.76" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>terminal-observation</title></a></g>
-<g class="cst-star"><a href="/edges/value" tabindex="-1"><circle cx="1068.1" cy="557.76" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>value</title></a></g>
-<g class="cst-star"><a href="/predicates/failure" tabindex="-1"><circle cx="1069.98" cy="604.7" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>failure</title></a></g>
-<g class="cst-star"><a href="/predicates/skipped" tabindex="-1"><circle cx="1068.62" cy="636" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>skipped</title></a></g>
-<g class="cst-star"><a href="/predicates/success" tabindex="-1"><circle cx="1065.18" cy="667.14" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>success</title></a></g>
-<g class="cst-star"><a href="/predicates/terminal" tabindex="-1"><circle cx="1059.67" cy="697.98" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>terminal</title></a></g>
+<g class="cst-star"><a href="/edges/control" tabindex="-1"><circle cx="1036.47" cy="425.67" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>control</title></a></g>
+<g class="cst-star"><a href="/edges/failure-observation" tabindex="-1"><circle cx="1046.14" cy="452.15" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>failure-observation</title></a></g>
+<g class="cst-star"><a href="/edges/finally" tabindex="-1"><circle cx="1054.2" cy="479.17" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>finally</title></a></g>
+<g class="cst-star"><a href="/edges/recovery" tabindex="-1"><circle cx="1060.63" cy="506.63" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>recovery</title></a></g>
+<g class="cst-star"><a href="/edges/terminal-observation" tabindex="-1"><circle cx="1065.4" cy="534.41" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>terminal-observation</title></a></g>
+<g class="cst-star"><a href="/edges/value" tabindex="-1"><circle cx="1068.5" cy="562.44" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>value</title></a></g>
+<g class="cst-star"><a href="/predicates/failure" tabindex="-1"><circle cx="1069.91" cy="609.4" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>failure</title></a></g>
+<g class="cst-star"><a href="/predicates/skipped" tabindex="-1"><circle cx="1068.24" cy="640.68" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>skipped</title></a></g>
+<g class="cst-star"><a href="/predicates/success" tabindex="-1"><circle cx="1064.49" cy="671.78" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>success</title></a></g>
+<g class="cst-star"><a href="/predicates/terminal" tabindex="-1"><circle cx="1058.67" cy="702.57" r="3.1" fill="#5b8cff" stroke="#5b8cff" stroke-width="0"/><title>terminal</title></a></g>
 <g class="cst-star"><a href="/conformance/core" tabindex="-1"><circle cx="210.35" cy="337.18" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>core</title></a></g>
 <g class="cst-star"><a href="/conformance/runtime" tabindex="-1"><circle cx="231.14" cy="308.72" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>runtime</title></a></g>
 <g class="cst-star"><a href="/conformance/stdlib" tabindex="-1"><circle cx="254" cy="281.9" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>stdlib</title></a></g>
@@ -217,11 +217,12 @@
 <g class="cst-star cst-star--soon"><circle cx="191.54" cy="367.49" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-INFER</title></g>
 <g class="cst-star cst-star--soon"><circle cx="202.53" cy="349.17" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-INVOKE</title></g>
 <g class="cst-star cst-star--soon"><circle cx="214.34" cy="331.37" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-LOCK</title></g>
-<g class="cst-star cst-star--soon"><circle cx="612.12" cy="130.16" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>env</title></g>
-<g class="cst-star cst-star--soon"><circle cx="641.45" cy="131.83" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>secrets</title></g>
-<g class="cst-star cst-star--soon"><circle cx="670.61" cy="135.33" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>tasks</title></g>
-<g class="cst-star cst-star--soon"><circle cx="699.49" cy="140.65" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>vars</title></g>
-<g class="cst-star cst-star--soon"><circle cx="727.99" cy="147.76" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>with</title></g>
+<g class="cst-star cst-star--soon"><circle cx="600.37" cy="130" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>config</title></g>
+<g class="cst-star cst-star--soon"><circle cx="628.56" cy="130.87" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>const</title></g>
+<g class="cst-star cst-star--soon"><circle cx="656.64" cy="133.42" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>inputs</title></g>
+<g class="cst-star cst-star--soon"><circle cx="684.51" cy="137.66" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>secrets</title></g>
+<g class="cst-star cst-star--soon"><circle cx="712.08" cy="143.56" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>tasks</title></g>
+<g class="cst-star cst-star--soon"><circle cx="739.25" cy="151.1" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>with</title></g>
 <g class="cst-star cst-star--soon"><circle cx="779.03" cy="165.44" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>bool</title></g>
 <g class="cst-star cst-star--soon"><circle cx="802.89" cy="176.05" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>bytes</title></g>
 <g class="cst-star cst-star--soon"><circle cx="826.12" cy="187.97" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>duration</title></g>
@@ -232,24 +233,24 @@
 <g class="cst-star cst-star--soon"><circle cx="930.44" cy="265.77" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>string</title></g>
 <g class="cst-star cst-star--soon"><circle cx="948.49" cy="284.63" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>timestamp</title></g>
 <g class="cst-star cst-star--soon"><circle cx="965.46" cy="304.47" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>uri</title></g>
-<g class="cst-star"><a href="/language/after" tabindex="-1"><circle cx="959.48" cy="297.22" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>after</title></a></g>
-<g class="cst-star"><a href="/language/agent" tabindex="-1"><circle cx="972.86" cy="313.86" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>agent</title></a></g>
-<g class="cst-star"><a href="/language/args" tabindex="-1"><circle cx="985.48" cy="331.1" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>args</title></a></g>
-<g class="cst-star"><a href="/language/backoff_max_ms" tabindex="-1"><circle cx="997.3" cy="348.9" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_max_ms</title></a></g>
-<g class="cst-star"><a href="/language/backoff_ms" tabindex="-1"><circle cx="1008.3" cy="367.21" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_ms</title></a></g>
-<g class="cst-star"><a href="/language/backoff_strategy" tabindex="-1"><circle cx="1018.46" cy="386" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_strategy</title></a></g>
-<g class="cst-star"><a href="/language/capture" tabindex="-1"><circle cx="1027.75" cy="405.24" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>capture</title></a></g>
-<g class="cst-star"><a href="/language/command" tabindex="-1"><circle cx="1036.15" cy="424.87" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>command</title></a></g>
-<g class="cst-star"><a href="/language/config" tabindex="-1"><circle cx="1043.66" cy="444.87" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>config</title></a></g>
-<g class="cst-star"><a href="/language/const" tabindex="-1"><circle cx="1050.25" cy="465.19" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>const</title></a></g>
-<g class="cst-star"><a href="/language/cwd" tabindex="-1"><circle cx="1055.91" cy="485.79" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>cwd</title></a></g>
-<g class="cst-star"><a href="/language/decode" tabindex="-1"><circle cx="1060.63" cy="506.63" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>decode</title></a></g>
+<g class="cst-star"><a href="/language/after" tabindex="-1"><circle cx="962.49" cy="300.83" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>after</title></a></g>
+<g class="cst-star"><a href="/language/agent" tabindex="-1"><circle cx="975.71" cy="317.61" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>agent</title></a></g>
+<g class="cst-star"><a href="/language/args" tabindex="-1"><circle cx="988.15" cy="334.97" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>args</title></a></g>
+<g class="cst-star"><a href="/language/backoff_max_ms" tabindex="-1"><circle cx="999.79" cy="352.88" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_max_ms</title></a></g>
+<g class="cst-star"><a href="/language/backoff_ms" tabindex="-1"><circle cx="1010.61" cy="371.3" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_ms</title></a></g>
+<g class="cst-star"><a href="/language/backoff_strategy" tabindex="-1"><circle cx="1020.57" cy="390.2" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>backoff_strategy</title></a></g>
+<g class="cst-star"><a href="/language/capture" tabindex="-1"><circle cx="1029.67" cy="409.52" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>capture</title></a></g>
+<g class="cst-star"><a href="/language/command" tabindex="-1"><circle cx="1037.88" cy="429.24" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>command</title></a></g>
+<g class="cst-star"><a href="/language/config" tabindex="-1"><circle cx="1045.19" cy="449.32" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>config</title></a></g>
+<g class="cst-star"><a href="/language/const" tabindex="-1"><circle cx="1051.58" cy="469.7" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>const</title></a></g>
+<g class="cst-star"><a href="/language/cwd" tabindex="-1"><circle cx="1057.03" cy="490.36" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>cwd</title></a></g>
+<g class="cst-star"><a href="/language/decode" tabindex="-1"><circle cx="1061.54" cy="511.24" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>decode</title></a></g>
 <g class="cst-agg"><a href="/use-cases" tabindex="-1"><text x="554.3" y="132.23" text-anchor="middle">+14</text><title>+14 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/tools" tabindex="-1"><text x="890.31" y="969.62" text-anchor="middle">+16</text><title>+16 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/providers" tabindex="-1"><text x="691.44" y="1061.02" text-anchor="middle">+5</text><title>+5 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/errors" tabindex="-1"><text x="130.44" y="579.6" text-anchor="middle">+70</text><title>+70 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/errors" tabindex="-1"><text x="223.97" y="318.04" text-anchor="middle">+9</text><title>+9 more · open the register</title></a></g>
-<g class="cst-agg"><a href="/language" tabindex="-1"><text x="1063.62" y="522.8" text-anchor="middle">+47</text><title>+47 more · open the register</title></a></g>
+<g class="cst-agg"><a href="/language" tabindex="-1"><text x="1064.37" y="527.44" text-anchor="middle">+47</text><title>+47 more · open the register</title></a></g>
 <circle class="cst-corering" cx="600" cy="600" r="64"/>
 <text class="cst-core" x="600" y="605" text-anchor="middle">nika: v1</text>
 </svg>

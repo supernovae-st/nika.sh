@@ -85,6 +85,45 @@ export function compilePalette() {
   for (const p of posts)
     entries.push({ kind: 'post', label: p.title, href: `/blog/${p.slug}`, hint: `${p.tag} · ${p.date}` })
 
+  /* the journal's tag registers + reading paths (citable pages since the
+     projection sweep) — tags derive from the same frontmatter */
+  const tags = [...new Set(posts.flatMap((p) => p.tag.split('|').map((t) => t.trim())))].sort()
+  for (const t of tags)
+    entries.push({
+      kind: 'page',
+      label: `tag: ${t}`,
+      href: `/blog/tags/${t.toLowerCase()}`,
+      hint: 'the journal, one register',
+    })
+
+  /* the library shelf + rooms — the ids ride site.config's literal list
+     (the drift gate pins that list to the shelf itself) */
+  const siteConfig = readFileSync(join(ROOT, 'site.config.ts'), 'utf8')
+  const libraryBlock = siteConfig.match(/export const LIBRARY_PATHS = \[([\s\S]*?)\]/)?.[1] ?? ''
+  for (const m of libraryBlock.matchAll(/'(\/library\/[^']+)'/g))
+    entries.push({
+      kind: 'page',
+      label: m[1].slice('/library/'.length),
+      href: m[1],
+      hint: 'the workflow library · a real file',
+    })
+  const integrationsBlock = siteConfig.match(/export const INTEGRATION_PATHS = \[([\s\S]*?)\]/)?.[1] ?? ''
+  for (const m of integrationsBlock.matchAll(/'(\/integrations\/[^']+)'/g))
+    entries.push({
+      kind: 'page',
+      label: `integration: ${m[1].slice('/integrations/'.length)}`,
+      href: m[1],
+      hint: 'get Nika into your stack',
+    })
+  const seriesBlock = siteConfig.match(/export const BLOG_SERIES_PATHS = \[([\s\S]*?)\]/)?.[1] ?? ''
+  for (const m of seriesBlock.matchAll(/'(\/blog\/series\/[^']+)'/g))
+    entries.push({
+      kind: 'page',
+      label: `path: ${m[1].split('/').pop()}`,
+      href: m[1],
+      hint: 'a reading path through the journal',
+    })
+
   /* error codes · the registry's flat list (code + its one-line failure) */
   const catalog = JSON.parse(readFileSync(join(ROOT, 'public/errors/catalog.json'), 'utf8'))
   for (const e of catalog.codes ?? [])

@@ -107,6 +107,13 @@
       "applies": "provider-rooms-arc"
     },
     {
+      "from": "/method",
+      "to": "/timeline",
+      "status": 301,
+      "live": true,
+      "applies": "provider-rooms-arc"
+    },
+    {
       "from": "/sitemap",
       "to": "/map",
       "status": 301,

@@ -17,9 +17,21 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/namespaces/env",
-          "termCode": "env",
-          "name": "env"
+          "@id": "https://nika.sh/namespaces/config",
+          "termCode": "config",
+          "name": "config"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/namespaces/const",
+          "termCode": "const",
+          "name": "const"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/namespaces/inputs",
+          "termCode": "inputs",
+          "name": "inputs"
         },
         {
           "@type": "DefinedTerm",
@@ -32,12 +44,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/namespaces/tasks",
           "termCode": "tasks",
           "name": "tasks"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/namespaces/vars",
-          "termCode": "vars",
-          "name": "vars"
         },
         {
           "@type": "DefinedTerm",

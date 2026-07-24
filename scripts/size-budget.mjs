@@ -96,6 +96,24 @@
    member rooms: hubs · errors · tools · sources · language · the
    fetch modes); measured 375.0 · margin ~2.0 (the bite-on-growth
    grammar holds).
+   377→383 dedicated-rooms sweep: the duplicate-content class dies —
+   /errors/:code (ErrorPage) and /templates/:name (TemplatePage) become
+   rooms ABOUT the member, the journal's tags earn citable registers
+   (/blog/tags/:tag), and the hero's library earns its shelf + ten
+   rooms (/library · /library/:id — PlanMap + the honesty contract on
+   the face). Five sync-routed page components ride the entry (the
+   WO-7 class: the weight IS the pages; every data module they read
+   was entry-resident already); measured 381.2 · margin ~1.8 (the
+   bite-on-growth grammar holds).
+   383→386 integrations: the ecosystem earns its register — get Nika
+   into your stack, one room per client lane (Claude Code · Codex ·
+   Cursor · VS Code · Hermes · MCP) and per public repo, install
+   rituals verbatim from the READMEs. The authored cargo rides a byte
+   island (integrations-access · the register-diet law: the 388.0
+   naive measure came back to 384.1); the residual is the two
+   sync-routed page components + the chrome-lean TABS (the WO-7
+   class); measured 384.1 · margin ~1.9 (the bite-on-growth grammar
+   holds).
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -103,7 +121,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 377
+const BUDGET_KB = 386
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

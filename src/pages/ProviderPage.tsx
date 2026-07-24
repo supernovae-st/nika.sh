@@ -4,10 +4,16 @@ import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
+/* lz-string is CJS — named ESM imports break the Node prerender (SSG);
+   the default import is the law (Play.tsx · ScrollMorph.tsx) */
+import lz from 'lz-string'
+import { PlanMap } from '../components/PlanMap'
+import { deriveWorkflow } from '../flagships/derive'
 import { SourcesRail } from '../components/SourcesRail'
 import { TruthLine } from '../components/TruthLine'
 import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
+import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { ssrProviderRoom, loadProviderRoom, type ProviderRoomCargo } from '../lib/provider-room-access'
 import { PROVIDERS, PROVIDER_INDEX, EMBEDDED_EXTRA, type ProviderEntry } from '../content/providers.generated'
 import { PROVIDER_SOURCES } from '../content/sources'
@@ -62,12 +68,27 @@ function auditLine(a: ProviderRoomCargo['audit']): string {
 
 const islandId = (id: string) => `pvr-${id}`
 
+/* the room's « from the blog » slice rides its own byte island (the
+   register-diet law) — the rails module never joins the initial chunk */
+type BlogRef = { slug: string; title: string; date: string }
+const blogIslandId = (id: string) => `pvr-blog-${id}`
+function useProviderBlogRefs(id: string): BlogRef[] {
+  const ssr = ssrBlogRails()
+  const payload = useIslandPayload(
+    blogIslandId(id),
+    ssr ? JSON.stringify(ssr.FROM_BLOG[`provider:${id}`] ?? []) : null,
+    async () => JSON.stringify((await loadBlogRails()).FROM_BLOG[`provider:${id}`] ?? []),
+  )
+  return payload ? (JSON.parse(payload) as BlogRef[]) : []
+}
+
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const { id: rawId } = useParams()
   const id = (rawId ?? '').toLowerCase()
   const hit = PROVIDER_INDEX[id]
 
+  const blogRefs = useProviderBlogRefs(hit?.id ?? '')
   const load = useCallback(
     async () => JSON.stringify(await loadProviderRoom(id)),
     [id],
@@ -80,6 +101,12 @@ export function Component() {
   const cargo = useMemo(
     () => (payload ? ((JSON.parse(payload) ?? null) as ProviderRoomCargo | null) : null),
     [payload],
+  )
+  /* the plan grammar on the donor when it has shape (two tasks or more) —
+     derived from the file, the library's own deriveWorkflow */
+  const donorPlan = useMemo(
+    () => (cargo?.usage.yaml ? deriveWorkflow(cargo.usage.yaml) : null),
+    [cargo],
   )
 
   /* the catalog walk (presentation-law order: local first, mistral leads) */
@@ -334,10 +361,23 @@ export function Component() {
                 </div>
                 {cargo ? (
                   <>
+                    {donorPlan && donorPlan.tasks.length >= 2 && (
+                      <PlanMap
+                        tasks={donorPlan.tasks.map((t) => ({ id: t.id, verb: t.verb, wave: t.wave, gate: t.when }))}
+                        waves={donorPlan.waveCount}
+                        well={`pvr-${hit.id}`}
+                      />
+                    )}
                     <div className="td-usage">
                       <CodeFile yaml={cargo.usage.yaml} filename={cargo.usage.file} />
                     </div>
-                    <p className="td-pin">{auditLine(cargo.audit)} · the drift gate re-proves this copy on every test run.</p>
+                    <p className="td-pin">
+                      {auditLine(cargo.audit)} · the drift gate re-proves this copy on every test
+                      run ·{' '}
+                      <Link to={`/play?y=${lz.compressToEncodedURIComponent(cargo.usage.yaml)}`}>
+                        open it in the playground →
+                      </Link>
+                    </p>
                   </>
                 ) : (
                   <p className="td-gloss">loading the donor…</p>
@@ -453,6 +493,21 @@ export function Component() {
                       </li>
                     </ul>
                   </div>
+                  <Island id={blogIslandId(hit.id)} payload={JSON.stringify(blogRefs)} />
+                  {blogRefs.length > 0 && (
+                    <div>
+                      <p className="td-ref-k">from the blog</p>
+                      <ul className="td-chips">
+                        {blogRefs.map((b) => (
+                          <li key={b.slug}>
+                            <a className="td-chip" href={`/blog/${b.slug}`}>
+                              {b.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <div>
                     <p className="td-ref-k">where it lives</p>
                     <SourcesRail links={PROVIDER_SOURCES} />

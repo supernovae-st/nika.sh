@@ -186,6 +186,24 @@ const CARDS = [
       '<span class="arrow">▸</span><span>local&nbsp;default<span class="sep">·</span>model&nbsp;pins<span class="sep">·</span><b>no&nbsp;inference&nbsp;lock-in</b></span>',
   },
   {
+    // /integrations — get Nika into your stack; the client lanes.
+    out: 'og-integrations.png',
+    fig: 'FIG I.0',
+    headline: 'In your stack,<br><span class="b">one kit.</span>',
+    sub: 'Claude Code, Codex, Cursor, VS Code, Hermes, any MCP client: the agent gets the plugin, the editor gets the live DAG, the terminal gets the binary. They&nbsp;compose.',
+    detail:
+      '<span class="arrow">▸</span><span>plugin&nbsp;kit<span class="sep">·</span>editor&nbsp;extension<span class="sep">·</span><b>README-true&nbsp;commands</b></span>',
+  },
+  {
+    // /library — the hero's picking corpus; recorded runs, honest reads.
+    out: 'og-library.png',
+    fig: 'FIG L.0',
+    headline: 'Real files,<br><span class="b">recorded runs.</span>',
+    sub: 'The files the home page picks from: recorded traces replayed beat for beat, browse files shown whole to read and run. Every claim honest, never a fabricated&nbsp;replay.',
+    detail:
+      '<span class="arrow">▸</span><span>ten&nbsp;files<span class="sep">·</span>one&nbsp;room&nbsp;each<span class="sep">·</span><b>the&nbsp;honesty&nbsp;contract</b></span>',
+  },
+  {
     // /errors — the typed register; every refusal has a name.
     out: 'og-errors.png',
     fig: 'FIG E.0',

@@ -147,3 +147,45 @@ P3 — noted, deferred with reasons:
 ## Wave 6 · memory
 
 - Auto-memory: the arc, its laws, the audit residue (P2/P3 backlog).
+
+## Executed same-day follow-ups (arcs 2–3)
+
+- Dedicated rooms: /errors/:code (ErrorPage) · /templates/:name
+  (TemplatePage · PlanMap) — the duplicate-content class is dead.
+- Citability: /blog/tags/:tag ×7 · /blog/series/:id · /library + 10 rooms
+  (PlanMap + honesty contract) · changelog per-release anchors.
+- MemberRoom de-slopped (self-door · lede fallback · deduped facts via
+  readoutFor — inspector and hover cards benefit too · member stamps).
+- /integrations (Ahrefs-named: « claude skills » 12.7k/mo · « mcp server »
+  ~15k · « ecosystem » dead): FULL KIT + one room per client (claude-code ·
+  codex · cursor · vscode · hermes · mcp) + 8 repo rooms — commands
+  verbatim from the READMEs (the SSOT) · the kit contents chipped (9 oracle
+  tools → their /mcp rooms) · « open it in the playground → » on every
+  whole file (templates · provider donors · library) via the ?y= handoff ·
+  GitHub code-search on every error room · nav Product + Learn doors.
+- Laws learned: lz-string default-import (CJS breaks the SSG loader — and
+  a broken SSG config SKIPS the whole prerender silently: always check the
+  page count line) · snippet-lint forbids the envelope literal in authored
+  TS · the e2e rss check must exempt /blog/(tags|series)/ · zombie port
+  4523 after a killed belt (lsof + kill, the ports-PID law).
+
+## The next windows (the ambition backlog · SOTA or better)
+
+1. **Per-code OG cards** — bake og-errors-<CODE>.png for the top error
+   codes (the card carries the code + failure line): no one else gives a
+   typed refusal its own social card.
+2. **Pick-your-stack switcher on /integrations** — zero-JS `<details>`
+   tabs per client (the Stripe-docs pattern, without the JS): one screen,
+   your two installs side by side.
+3. **llms-full.txt beyond the blog** — serve the registers (providers ·
+   errors · integrations) as one agent-readable file; agents stop crawling
+   room by room.
+4. **A releases feed** — rss for /changelog releases (the blog feed
+   precedent); watchers follow the engine without GitHub.
+5. **Query-pillar pages** — the Ahrefs money queries (« claude skills » ·
+   « mcp server » · « agent skills ») deserve teaching posts that route to
+   /integrations rooms; the register ranks, the post explains.
+6. **Sitemap lastmod from git** — per-file real dates instead of the build
+   stamp (crawl-hygiene SOTA).
+7. **Operator (2 min)**: create the Ahrefs Site Audit project for nika.sh
+   and connect GSC — the depends_on-class 404s then auto-flag weekly.

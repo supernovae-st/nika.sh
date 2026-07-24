@@ -458,6 +458,13 @@ export function Component() {
                   →
                 </span>
               </Link>
+              <Link to="/integrations" className="v4doclink" data-track="integrations-open">
+                Plug it into your agent and editor
+                <span aria-hidden className="v4doclink-arrow">
+                  {' '}
+                  →
+                </span>
+              </Link>
               <a href={SPEC} target="_blank" rel="noreferrer" className="v4doclink v4doclink--dim">
                 Read the full spec
                 <span aria-hidden className="v4doclink-arrow">

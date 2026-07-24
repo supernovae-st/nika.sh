@@ -71,7 +71,7 @@ export const ATLAS_SET_COUNTS: Record<string, { count: number; url: string; titl
     "title": "The oracle tools"
   },
   "namespaces": {
-    "count": 5,
+    "count": 6,
     "url": "/language",
     "title": "The namespaces"
   },

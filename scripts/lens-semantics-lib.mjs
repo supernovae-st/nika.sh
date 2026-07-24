@@ -426,8 +426,8 @@ export function discoverPrerenderPaths(root) {
   const source = readFileSync(join(root, 'site.config.ts'), 'utf8')
   const arrays = new Map()
   for (const name of [
-    'BLOG_PATHS', 'MANIFESTO_PATHS', 'INSTALL_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
-    'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS',
+    'BLOG_PATHS', 'BLOG_TAG_PATHS', 'BLOG_SERIES_PATHS', 'MANIFESTO_PATHS', 'INSTALL_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
+    'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS', 'LIBRARY_PATHS', 'INTEGRATION_PATHS',
     'ATLAS_PATHS',
   ]) {
     // A registry page can fuse away (its path array leaves the file with it);

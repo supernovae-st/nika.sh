@@ -63,6 +63,64 @@ export const BLOG_PATHS = [
   '/blog/standard-library-not-plugin-store',
   '/blog/open-spec-copyleft-engine',
 ]
+/* the journal's tag registers — one citable page per tag (slug = the tag,
+   lowercased). Kept literal (this file stays import-free); the drift gate
+   (tag-library-paths.test.ts) re-derives the set from the posts and fails
+   on any divergence. */
+export const BLOG_TAG_PATHS = [
+  '/blog/tags/agents',
+  '/blog/tags/engine',
+  '/blog/tags/language',
+  '/blog/tags/manifesto',
+  '/blog/tags/origins',
+  '/blog/tags/security',
+  '/blog/tags/sovereignty',
+]
+
+/* the journal's reading paths — one citable page per series (slug = the
+   series id). Kept literal; the drift gate (tag-library-paths.test.ts)
+   re-derives the set from the posts' series field. */
+export const BLOG_SERIES_PATHS = ['/blog/series/trace-family']
+
+/* the workflow library — the hero's picking corpus as a register (one room
+   per file · the honesty contract on its face). Kept literal; the drift
+   gate (tag-library-paths.test.ts) pins these against the library tabs. */
+export const LIBRARY_PATHS = [
+  '/library',
+  '/library/daily_brief',
+  '/library/pr_risk_review',
+  '/library/meeting_actions',
+  '/library/price_watch',
+  '/library/social_repurpose',
+  '/library/standup_digest',
+  '/library/etl_quarantine',
+  '/library/t2-invoice-chaser',
+  '/library/t4-deep-research-brief',
+  '/library/t3-localization-factory',
+]
+
+/* the integrations register — get Nika into your stack: one room per
+   client lane (how people search: claude code · codex · cursor · vscode ·
+   hermes · mcp) and per public repo. Kept literal; the drift gate
+   (integrations.test.ts) pins these against the authored module. */
+export const INTEGRATION_PATHS = [
+  '/integrations',
+  '/integrations/claude-code',
+  '/integrations/codex',
+  '/integrations/cursor',
+  '/integrations/vscode',
+  '/integrations/hermes',
+  '/integrations/mcp',
+  '/integrations/engine',
+  '/integrations/spec',
+  '/integrations/registry',
+  '/integrations/client-sdk',
+  '/integrations/audit-workflow',
+  '/integrations/docs',
+  '/integrations/homebrew',
+  '/integrations/website',
+]
+
 /* the manifesto's translated variants (BCP 47 slugs · hreflang cluster) */
 export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto']
 /* the install cluster (WO-10 wiring · mirrors LOCALIZED['/install'] — the
@@ -223,7 +281,7 @@ export const TEMPLATE_PATHS = [
 /* ── ATLAS PATHS · GENERATED between these markers by scripts/atlas/build-atlas.mjs
    (compiler output 3): the routes the ATLAS introduced — hubs and surfaces flip
    into existence by descriptor edit + recompile, never by hand here. DO NOT EDIT. */
-export const ATLAS_PATHS = ['/map', '/sources', '/flow', '/boundary', '/proof', '/conformance/core', '/conformance/runtime', '/conformance/stdlib', '/edges/control', '/edges/failure-observation', '/edges/finally', '/edges/recovery', '/edges/terminal-observation', '/edges/value', '/error-categories/budget_error', '/error-categories/cancelled', '/error-categories/internal_error', '/error-categories/network_error', '/error-categories/parse_error', '/error-categories/process_error', '/error-categories/provider_error', '/error-categories/security_error', '/error-categories/timeout_error', '/error-categories/tool_error', '/error-categories/validation_error', '/error-categories/variable_error', '/error-namespaces/NIKA-AGENT', '/error-namespaces/NIKA-ASSERT', '/error-namespaces/NIKA-BUILTIN', '/error-namespaces/NIKA-CANCEL', '/error-namespaces/NIKA-COMP', '/error-namespaces/NIKA-DAG', '/error-namespaces/NIKA-DECIDE', '/error-namespaces/NIKA-EXEC', '/error-namespaces/NIKA-IMPL', '/error-namespaces/NIKA-INFER', '/error-namespaces/NIKA-INVOKE', '/error-namespaces/NIKA-LOCK', '/error-namespaces/NIKA-MCP', '/error-namespaces/NIKA-PARSE', '/error-namespaces/NIKA-POLICY', '/error-namespaces/NIKA-PORT', '/error-namespaces/NIKA-PROVIDER', '/error-namespaces/NIKA-SEC', '/error-namespaces/NIKA-TIMEOUT', '/error-namespaces/NIKA-TYPE', '/error-namespaces/NIKA-VAR', '/families/core', '/families/data', '/families/file', '/families/introspection', '/families/media', '/families/network', '/mcp/nika_canon', '/mcp/nika_catalog', '/mcp/nika_check', '/mcp/nika_examples', '/mcp/nika_explain', '/mcp/nika_inspect', '/mcp/nika_schema', '/mcp/nika_template', '/mcp/nika_tools', '/modes/article', '/modes/feed', '/modes/jq', '/modes/links', '/modes/markdown', '/modes/metadata', '/modes/selector', '/modes/sitemap', '/modes/text', '/namespaces/env', '/namespaces/secrets', '/namespaces/tasks', '/namespaces/vars', '/namespaces/with', '/permits/exec', '/permits/fs', '/permits/net', '/permits/tools', '/predicates/failure', '/predicates/skipped', '/predicates/success', '/predicates/terminal', '/providers/anthropic', '/providers/deepseek', '/providers/gemini', '/providers/groq', '/providers/huggingface', '/providers/llamacpp', '/providers/lmstudio', '/providers/localai', '/providers/mistral', '/providers/mock', '/providers/moonshot', '/providers/nvidia', '/providers/ollama', '/providers/openai', '/providers/openrouter', '/providers/vllm', '/providers/xai', '/secrets/env', '/secrets/file', '/secrets/vault', '/truth/atlas', '/truth/canon', '/truth/catalog', '/truth/manifest', '/truth/mirror', '/truth/pack', '/truth/pin', '/truth/registry', '/truth/schema', '/truth/spec', '/types/bool', '/types/bytes', '/types/duration', '/types/integer', '/types/null', '/types/number', '/types/path', '/types/string', '/types/timestamp', '/types/uri', '/use-cases/t1-image-fx-batch', '/use-cases/t1-meeting-actions', '/use-cases/t1-og-images', '/use-cases/t1-price-watch', '/use-cases/t1-social-repurpose', '/use-cases/t1-standup-digest', '/use-cases/t2-bookmark-triage', '/use-cases/t2-contract-guard', '/use-cases/t2-csv-chart-report', '/use-cases/t2-etl-quarantine', '/use-cases/t2-invoice-chaser', '/use-cases/t2-model-bench', '/use-cases/t2-release-notes', '/use-cases/t2-release-radar', '/use-cases/t2-seo-content-brief', '/use-cases/t2-support-triage', '/use-cases/t2-transcript-shownotes', '/use-cases/t3-competitor-radar', '/use-cases/t3-config-drift-sentinel', '/use-cases/t3-localization-factory', '/use-cases/t3-pr-review-fanout', '/use-cases/t3-resume-screener', '/use-cases/t4-ceo-monday-brief', '/use-cases/t4-deep-research-brief', '/use-cases/t4-incident-war-room', '/use-cases/t4-release-train']
+export const ATLAS_PATHS = ['/map', '/sources', '/flow', '/boundary', '/proof', '/conformance/core', '/conformance/runtime', '/conformance/stdlib', '/edges/control', '/edges/failure-observation', '/edges/finally', '/edges/recovery', '/edges/terminal-observation', '/edges/value', '/error-categories/budget_error', '/error-categories/cancelled', '/error-categories/internal_error', '/error-categories/network_error', '/error-categories/parse_error', '/error-categories/process_error', '/error-categories/provider_error', '/error-categories/security_error', '/error-categories/timeout_error', '/error-categories/tool_error', '/error-categories/validation_error', '/error-categories/variable_error', '/error-namespaces/NIKA-AGENT', '/error-namespaces/NIKA-ASSERT', '/error-namespaces/NIKA-BUILTIN', '/error-namespaces/NIKA-CANCEL', '/error-namespaces/NIKA-COMP', '/error-namespaces/NIKA-DAG', '/error-namespaces/NIKA-DECIDE', '/error-namespaces/NIKA-EXEC', '/error-namespaces/NIKA-IMPL', '/error-namespaces/NIKA-INFER', '/error-namespaces/NIKA-INVOKE', '/error-namespaces/NIKA-LOCK', '/error-namespaces/NIKA-MCP', '/error-namespaces/NIKA-PARSE', '/error-namespaces/NIKA-POLICY', '/error-namespaces/NIKA-PORT', '/error-namespaces/NIKA-PROVIDER', '/error-namespaces/NIKA-SEC', '/error-namespaces/NIKA-TIMEOUT', '/error-namespaces/NIKA-TYPE', '/error-namespaces/NIKA-VAR', '/families/core', '/families/data', '/families/file', '/families/introspection', '/families/media', '/families/network', '/mcp/nika_canon', '/mcp/nika_catalog', '/mcp/nika_check', '/mcp/nika_examples', '/mcp/nika_explain', '/mcp/nika_inspect', '/mcp/nika_schema', '/mcp/nika_template', '/mcp/nika_tools', '/modes/article', '/modes/feed', '/modes/jq', '/modes/links', '/modes/markdown', '/modes/metadata', '/modes/selector', '/modes/sitemap', '/modes/text', '/namespaces/config', '/namespaces/const', '/namespaces/inputs', '/namespaces/secrets', '/namespaces/tasks', '/namespaces/with', '/permits/exec', '/permits/fs', '/permits/net', '/permits/tools', '/predicates/failure', '/predicates/skipped', '/predicates/success', '/predicates/terminal', '/providers/anthropic', '/providers/deepseek', '/providers/gemini', '/providers/groq', '/providers/huggingface', '/providers/llamacpp', '/providers/lmstudio', '/providers/localai', '/providers/mistral', '/providers/mock', '/providers/moonshot', '/providers/nvidia', '/providers/ollama', '/providers/openai', '/providers/openrouter', '/providers/vllm', '/providers/xai', '/secrets/env', '/secrets/file', '/secrets/vault', '/truth/atlas', '/truth/canon', '/truth/catalog', '/truth/manifest', '/truth/mirror', '/truth/pack', '/truth/pin', '/truth/registry', '/truth/schema', '/truth/spec', '/types/bool', '/types/bytes', '/types/duration', '/types/integer', '/types/null', '/types/number', '/types/path', '/types/string', '/types/timestamp', '/types/uri', '/use-cases/t1-image-fx-batch', '/use-cases/t1-meeting-actions', '/use-cases/t1-og-images', '/use-cases/t1-price-watch', '/use-cases/t1-social-repurpose', '/use-cases/t1-standup-digest', '/use-cases/t2-bookmark-triage', '/use-cases/t2-contract-guard', '/use-cases/t2-csv-chart-report', '/use-cases/t2-etl-quarantine', '/use-cases/t2-invoice-chaser', '/use-cases/t2-model-bench', '/use-cases/t2-release-notes', '/use-cases/t2-release-radar', '/use-cases/t2-seo-content-brief', '/use-cases/t2-support-triage', '/use-cases/t2-transcript-shownotes', '/use-cases/t3-competitor-radar', '/use-cases/t3-config-drift-sentinel', '/use-cases/t3-localization-factory', '/use-cases/t3-pr-review-fanout', '/use-cases/t3-resume-screener', '/use-cases/t4-ceo-monday-brief', '/use-cases/t4-deep-research-brief', '/use-cases/t4-incident-war-room', '/use-cases/t4-release-train']
 /* ── ATLAS PATHS END ── */
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...ATLAS_PATHS, '/use-cases', '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...LIBRARY_PATHS, ...INTEGRATION_PATHS, ...ATLAS_PATHS, '/use-cases', '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']

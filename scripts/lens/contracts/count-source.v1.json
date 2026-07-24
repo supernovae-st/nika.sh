@@ -24,12 +24,12 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 244,
-    "set_sha256": "04fd7f12e8e7a8473f97757d83bcceab075365839678e6759b88101f38da7685",
-    "rendered_count": 497,
-    "rendered_set_sha256": "7c2dd973732947894ef87c86c90fc6fbded21a55bcff37317260cb3d89f04d44"
+    "count": 254,
+    "set_sha256": "b99fbe72768a0e46a02f605cbba9284ed7f8b227aca90199a9c1ddbfd9d2bed3",
+    "rendered_count": 523,
+    "rendered_set_sha256": "7603fd5d2bbbee2ad1b8a8857a3f25599951ec20b6aca51843148321853cd9d4"
   },
-  "claim_count": 142,
+  "claim_count": 145,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -298,7 +298,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:2",
       "path": "scripts/build-og-card.mjs",
-      "line": 246,
+      "line": 255,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -310,7 +310,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:3",
       "path": "scripts/build-og-card.mjs",
-      "line": 542,
+      "line": 551,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -322,7 +322,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:4",
       "path": "scripts/build-og-card.mjs",
-      "line": 591,
+      "line": 600,
       "text": "17 providers",
       "source": "17",
       "field": "providers",
@@ -577,6 +577,42 @@
       "reason": "literal is gated against CANON.verbs"
     },
     {
+      "selector": "src/content/integrations.ts#count:1",
+      "path": "src/content/integrations.ts",
+      "line": 93,
+      "text": "four verbs",
+      "source": "four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "src/content/integrations.ts#count:2",
+      "path": "src/content/integrations.ts",
+      "line": 174,
+      "text": "9 read-only tools",
+      "source": "9",
+      "field": "mcpTools",
+      "value": 9,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.mcpTools"
+    },
+    {
+      "selector": "src/content/integrations.ts#count:3",
+      "path": "src/content/integrations.ts",
+      "line": 203,
+      "text": "four verbs",
+      "source": "four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
+    },
+    {
       "selector": "src/content/language-meta.ts#count:1",
       "path": "src/content/language-meta.ts",
       "line": 11,
@@ -651,7 +687,7 @@
     {
       "selector": "src/content/sitemap.ts#count:1",
       "path": "src/content/sitemap.ts",
-      "line": 99,
+      "line": 101,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -856,7 +892,7 @@
     {
       "selector": "src/pages/Changelog.tsx#count:2",
       "path": "src/pages/Changelog.tsx",
-      "line": 98,
+      "line": 106,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -892,7 +928,7 @@
     {
       "selector": "src/pages/Language.tsx#count:1",
       "path": "src/pages/Language.tsx",
-      "line": 22,
+      "line": 24,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -904,7 +940,7 @@
     {
       "selector": "src/pages/Language.tsx#count:2",
       "path": "src/pages/Language.tsx",
-      "line": 139,
+      "line": 141,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -916,7 +952,7 @@
     {
       "selector": "src/pages/Language.tsx#count:3",
       "path": "src/pages/Language.tsx",
-      "line": 172,
+      "line": 214,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -976,7 +1012,7 @@
     {
       "selector": "src/pages/ProviderPage.tsx#count:1",
       "path": "src/pages/ProviderPage.tsx",
-      "line": 21,
+      "line": 22,
       "text": "one provider",
       "source": "one",
       "field": "providers",
@@ -1448,7 +1484,7 @@
     {
       "selector": "src/routes.tsx#count:1",
       "path": "src/routes.tsx",
-      "line": 90,
+      "line": 102,
       "text": "four verb",
       "source": "four",
       "field": "verbs",

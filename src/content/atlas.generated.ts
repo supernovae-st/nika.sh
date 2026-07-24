@@ -2282,13 +2282,37 @@ export const ATLAS_NODES: AtlasNode[] = [
     "opener": null
   },
   {
-    "id": "ns:env",
+    "id": "ns:config",
     "kind": "member",
     "set": "namespaces",
     "layer": "shape",
-    "title": "env",
-    "url": "/namespaces/env",
-    "anchor": "ns-env",
+    "title": "config",
+    "url": "/namespaces/config",
+    "anchor": "ns-config",
+    "own_page": true,
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "ns:const",
+    "kind": "member",
+    "set": "namespaces",
+    "layer": "shape",
+    "title": "const",
+    "url": "/namespaces/const",
+    "anchor": "ns-const",
+    "own_page": true,
+    "status": "ratified",
+    "opener": null
+  },
+  {
+    "id": "ns:inputs",
+    "kind": "member",
+    "set": "namespaces",
+    "layer": "shape",
+    "title": "inputs",
+    "url": "/namespaces/inputs",
+    "anchor": "ns-inputs",
     "own_page": true,
     "status": "ratified",
     "opener": null
@@ -2313,18 +2337,6 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "tasks",
     "url": "/namespaces/tasks",
     "anchor": "ns-tasks",
-    "own_page": true,
-    "status": "ratified",
-    "opener": null
-  },
-  {
-    "id": "ns:vars",
-    "kind": "member",
-    "set": "namespaces",
-    "layer": "shape",
-    "title": "vars",
-    "url": "/namespaces/vars",
-    "anchor": "ns-vars",
     "own_page": true,
     "status": "ratified",
     "opener": null
@@ -8333,7 +8345,17 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
-    "from": "ns:env",
+    "from": "ns:config",
+    "to": "set:namespaces",
+    "kind": "member-of"
+  },
+  {
+    "from": "ns:const",
+    "to": "set:namespaces",
+    "kind": "member-of"
+  },
+  {
+    "from": "ns:inputs",
     "to": "set:namespaces",
     "kind": "member-of"
   },
@@ -8344,11 +8366,6 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "ns:tasks",
-    "to": "set:namespaces",
-    "kind": "member-of"
-  },
-  {
-    "from": "ns:vars",
     "to": "set:namespaces",
     "kind": "member-of"
   },
@@ -9366,15 +9383,15 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "from": "post:dag-for-free",
     "to": "word:with",
     "kind": "mentions"
-  },
-  {
-    "from": "post:four-verbs",
-    "to": "tool:fetch",
-    "kind": "mentions"
   }
 ]
 
 const ATLAS_EDGES_2: AtlasEdge[] = [
+  {
+    "from": "post:four-verbs",
+    "to": "tool:fetch",
+    "kind": "mentions"
+  },
   {
     "from": "post:injection-goes-nowhere",
     "to": "tool:write",
@@ -9452,6 +9469,16 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
   },
   {
     "from": "post:the-generative-workflow",
+    "to": "provider:gemini",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-generative-workflow",
+    "to": "provider:mock",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-generative-workflow",
     "to": "tool:image_generate",
     "kind": "mentions"
   },
@@ -9468,6 +9495,11 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
   {
     "from": "post:the-one-task-rerun",
     "to": "word:outputs",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:the-pipeline-is-a-file",
+    "to": "provider:ollama",
     "kind": "mentions"
   },
   {
@@ -9513,6 +9545,11 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
   {
     "from": "post:the-trace-you-can-replay",
     "to": "word:with",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:written-by-agents",
+    "to": "provider:ollama",
     "kind": "mentions"
   },
   {

@@ -51,7 +51,7 @@ export const MAP_LAYERS: MapLayer[] = [
         "id": "namespaces",
         "title": "The namespaces",
         "url": "/language",
-        "count": 5,
+        "count": 6,
         "surface": "anchors",
         "slot": null,
         "closed": true,

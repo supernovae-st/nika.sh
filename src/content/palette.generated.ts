@@ -382,6 +382,198 @@ export const PALETTE: PaletteEntry[] = [
     "hint": "Origins · 2025-10-17"
   },
   {
+    "kind": "page",
+    "label": "tag: Agents",
+    "href": "/blog/tags/agents",
+    "hint": "the journal, one register"
+  },
+  {
+    "kind": "page",
+    "label": "tag: Engine",
+    "href": "/blog/tags/engine",
+    "hint": "the journal, one register"
+  },
+  {
+    "kind": "page",
+    "label": "tag: Language",
+    "href": "/blog/tags/language",
+    "hint": "the journal, one register"
+  },
+  {
+    "kind": "page",
+    "label": "tag: Manifesto",
+    "href": "/blog/tags/manifesto",
+    "hint": "the journal, one register"
+  },
+  {
+    "kind": "page",
+    "label": "tag: Origins",
+    "href": "/blog/tags/origins",
+    "hint": "the journal, one register"
+  },
+  {
+    "kind": "page",
+    "label": "tag: Security",
+    "href": "/blog/tags/security",
+    "hint": "the journal, one register"
+  },
+  {
+    "kind": "page",
+    "label": "tag: Sovereignty",
+    "href": "/blog/tags/sovereignty",
+    "hint": "the journal, one register"
+  },
+  {
+    "kind": "page",
+    "label": "daily_brief",
+    "href": "/library/daily_brief",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "pr_risk_review",
+    "href": "/library/pr_risk_review",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "meeting_actions",
+    "href": "/library/meeting_actions",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "price_watch",
+    "href": "/library/price_watch",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "social_repurpose",
+    "href": "/library/social_repurpose",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "standup_digest",
+    "href": "/library/standup_digest",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "etl_quarantine",
+    "href": "/library/etl_quarantine",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "t2-invoice-chaser",
+    "href": "/library/t2-invoice-chaser",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "t4-deep-research-brief",
+    "href": "/library/t4-deep-research-brief",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "t3-localization-factory",
+    "href": "/library/t3-localization-factory",
+    "hint": "the workflow library · a real file"
+  },
+  {
+    "kind": "page",
+    "label": "integration: claude-code",
+    "href": "/integrations/claude-code",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: codex",
+    "href": "/integrations/codex",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: cursor",
+    "href": "/integrations/cursor",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: vscode",
+    "href": "/integrations/vscode",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: hermes",
+    "href": "/integrations/hermes",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: mcp",
+    "href": "/integrations/mcp",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: engine",
+    "href": "/integrations/engine",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: spec",
+    "href": "/integrations/spec",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: registry",
+    "href": "/integrations/registry",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: client-sdk",
+    "href": "/integrations/client-sdk",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: audit-workflow",
+    "href": "/integrations/audit-workflow",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: docs",
+    "href": "/integrations/docs",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: homebrew",
+    "href": "/integrations/homebrew",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "integration: website",
+    "href": "/integrations/website",
+    "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "path: trace-family",
+    "href": "/blog/series/trace-family",
+    "hint": "a reading path through the journal"
+  },
+  {
     "kind": "error",
     "label": "NIKA-PARSE-001",
     "href": "/errors/NIKA-PARSE-001",
@@ -1601,8 +1793,20 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
-    "label": "namespace: env",
-    "href": "/namespaces/env",
+    "label": "namespace: config",
+    "href": "/namespaces/config",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "namespace: const",
+    "href": "/namespaces/const",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "namespace: inputs",
+    "href": "/namespaces/inputs",
     "hint": ""
   },
   {
@@ -1615,12 +1819,6 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "member",
     "label": "namespace: tasks",
     "href": "/namespaces/tasks",
-    "hint": ""
-  },
-  {
-    "kind": "member",
-    "label": "namespace: vars",
-    "href": "/namespaces/vars",
     "hint": ""
   },
   {

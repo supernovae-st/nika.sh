@@ -95,6 +95,12 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
         "to": "/install"
       },
       {
+        "label": "Integrations",
+        "icon": "tiles",
+        "desc": "Your agent, your editor, one kit",
+        "to": "/integrations"
+      },
+      {
         "label": "Send a workflow",
         "icon": "tiles",
         "desc": "Yours, converted to a file",

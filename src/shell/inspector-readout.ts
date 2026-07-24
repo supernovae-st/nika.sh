@@ -121,11 +121,15 @@ export function readoutFor(
   }
   if (n.layer) rows.push({ label: 'layer', value: n.layer })
 
-  /* THE unique value: the edges, grouped by kind, every target a link */
+  /* THE unique value: the edges, grouped by kind, every target a link.
+     The member-of edge to the node's OWN set is skipped — the `set` row
+     above already carries that door (the same fact twice read as noise
+     on every member room · inspector · hover card alike). */
   const byKind = new Map<string, ReadoutLink[]>()
   for (const e of graph.ATLAS_EDGES) {
     const [dir, otherId] = e.from === id ? ['→', e.to] : e.to === id ? ['←', e.from] : [null, '']
     if (!dir) continue
+    if (e.kind === 'member-of' && n.set && otherId === `set:${n.set}`) continue
     const other = graph.ATLAS_INDEX[otherId]
     if (!other) continue
     const href = nodeHref(other)
