@@ -144,9 +144,11 @@ export function Component() {
             <div className="tp-miss" role="status" data-rise>
               <p className="tp-miss-name">{code}</p>
               <p>
-                is not a registered code. The registry is closed and versioned: if the engine
-                raised it, the binaries disagree — <code>nika --version</code> against{' '}
-                <a href="/errors/catalog.json">the served catalog</a>. Walk{' '}
+                is not a registered code. The register is the spec's normative floor, not a
+                ceiling: an engine may mint codes inside a namespace's range — never renamed,
+                never repurposed. If nika raised it, your binary and{' '}
+                <a href="/errors/catalog.json">the served catalog</a> differ (
+                <code>nika --version</code> tells you which). Walk{' '}
                 <Link to="/errors">the register</Link> or <a href={`${SPEC}/blob/main/spec/05-errors.md`}>read spec 05</a>.
               </p>
             </div>
@@ -171,7 +173,7 @@ export function Component() {
                     ? { n: 'transient', label: 'a retry can help', sub: 'network · 503 · rate limit' }
                     : { n: 'stable', label: 'a retry cannot help', sub: 'fix the file, not the timing' },
                   { n: seat + 1, label: `of ${kin.length} in ${ns}`, sub: 'prev / next walk the registry' },
-                  { n: ERROR_CODES.length, label: 'registered codes', sub: 'closed · versioned' },
+                  { n: ERROR_CODES.length, label: 'registered codes', sub: 'the normative floor · versioned' },
                 ]}
               />
 

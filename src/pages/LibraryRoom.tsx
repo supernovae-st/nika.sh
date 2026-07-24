@@ -204,7 +204,7 @@ export function Component() {
                 {hit.yaml ? (
                   <>
                     <div className="td-usage">
-                      <CodeFile yaml={hit.yaml} filename={hit.filename} />
+                      <CodeFile yaml={hit.yaml} filename={hit.filename} highlight={hit.highlight} />
                     </div>
                     <p className="td-pin">
                       lines {hit.highlight[0]}–{hit.highlight[1]}: {hit.gloss}. Source:{' '}

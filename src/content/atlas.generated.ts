@@ -3068,7 +3068,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "The namespaces",
     "url": "/language",
     "status": "ratified",
-    "opener": "Each namespace scopes where a value lives and who may read it: vars for inputs, with for bindings, tasks for outputs, env and secrets for the boundary. The boundary law is four sentences and it is the whole story.",
+    "opener": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies, config and const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime.",
     "closed": true,
     "counted_in_canon": true,
     "surface": "anchors",

@@ -11,7 +11,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "@type": "DefinedTermSet",
       "@id": "https://nika.sh/language#set-namespaces",
       "name": "Nika the namespaces",
-      "description": "Each namespace scopes where a value lives and who may read it: vars for inputs, with for bindings, tasks for outputs, env and secrets for the boundary. The boundary law is four sentences and it is the whole story.",
+      "description": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies, config and const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
       "version": "v0.105.0",
       "hasDefinedTerm": [

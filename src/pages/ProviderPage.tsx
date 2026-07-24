@@ -54,14 +54,20 @@ function fmtTokens(n?: number): string | undefined {
   return n >= 1000 ? `${Math.round(n / 1000)}k` : String(n)
 }
 
-/* the audit verdict, rendered honestly — the three states a donor can be in */
-function auditLine(a: ProviderRoomCargo['audit']): string {
+/* the audit verdict, rendered honestly — the states a donor can be in.
+   The kind matters: the harness's null ceiling is $0 BY CONSTRUCTION
+   (mock never bills), while a local/cloud null ceiling stays an open
+   price (unpriced, never free). */
+function auditLine(a: ProviderRoomCargo['audit'], kind: ProviderEntry['kind']): string {
   if (!a.models_resolve) {
     return 'conform to the served contract · the vendor is cataloged ahead of the runtime: this binary names it, a coming release runs it'
   }
   const shape = `${a.tasks} ${a.tasks === 1 ? 'task' : 'tasks'} · ${a.waves} ${a.waves === 1 ? 'wave' : 'waves'}`
   if (a.cost_ceiling_usd != null) {
     return `check-green against the released engine · ${shape} · worst-case ceiling $${a.cost_ceiling_usd.toFixed(4)}`
+  }
+  if (kind === 'test') {
+    return `check-green against the released engine · ${shape} · ceiling $0.0000 by construction: the harness never bills`
   }
   return `check-green against the released engine · ${shape} · no closed ceiling: an unpriced model is unpriced, never free`
 }
@@ -372,7 +378,7 @@ export function Component() {
                       <CodeFile yaml={cargo.usage.yaml} filename={cargo.usage.file} />
                     </div>
                     <p className="td-pin">
-                      {auditLine(cargo.audit)} · the drift gate re-proves this copy on every test
+                      {auditLine(cargo.audit, hit.kind)} · the drift gate re-proves this copy on every test
                       run ·{' '}
                       <Link to={`/play?y=${lz.compressToEncodedURIComponent(cargo.usage.yaml)}`}>
                         open it in the playground →

@@ -239,10 +239,10 @@ export function Component() {
             </p>
           )}
 
-          {/* the namespaces that double as language words get the deeper
-              door (env · secrets · tasks · with — `vars` is a namespace
-              only, no schema key declares it: the guard keeps the door
-              honest, never a 404) */}
+          {/* a namespace that doubles as a language word gets the deeper
+              door — the WORD_INDEX guard keeps it honest against the spec
+              clock (the set follows canon.namespaceNames; a member the
+              schema declares no key for simply shows no door) */}
           {family === 'namespaces' && WORD_INDEX[id] && (
             <p className="room-door">
               <Link to={`/language/${id}`}>the word's own room: {id} →</Link>

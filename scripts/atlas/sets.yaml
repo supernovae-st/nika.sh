@@ -179,9 +179,10 @@ sets:
     anchor_prefix: ns-
     defined_by: [spec/04-variables.md]
     opener: >-
-      Each namespace scopes where a value lives and who may read it: vars for
-      inputs, with for bindings, tasks for outputs, env and secrets for the
-      boundary. The boundary law is four sentences and it is the whole story.
+      Each namespace scopes where a value lives and who may read it: inputs
+      for what the caller supplies, config and const for fixed values, with
+      for bindings, tasks for outputs, secrets for the boundary. A reference
+      outside its scope is a check finding, never a surprise at runtime.
 
   - id: types
     layer: shape
