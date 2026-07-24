@@ -2,14 +2,23 @@ import { Suspense, lazy, useEffect, useState, useSyncExternalStore } from 'react
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
+import { StampStrip } from '../components/StampStrip'
 import { SITE_MAP, type MapLink } from '../content/sitemap'
 import { MAP_LAYERS, MAP_OPENER } from './map-data.generated'
 import { ATLAS_CLOCK_DIFF } from '../content/atlas-meta.generated'
+import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import { CanonCount } from '../components/CanonCount'
 import { TruthLine } from '../components/TruthLine'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
+import './tool-detail.css'
 import './map-page.css'
+
+/* the map's own dimensions · every figure derived, never typed */
+const MAP_SETS_COUNT = MAP_LAYERS.reduce((n, l) => n + l.sets.length, 0)
+const MAP_ROOMS_COUNT = Object.values(MEMBER_ROOM_FAMILIES).reduce((n, f) => n + f.members.length, 0)
+const MAP_DOORS_COUNT = SITE_MAP.reduce((n, g) => n + g.links.length + (g.dense?.length ?? 0), 0)
+const groupId = (kick: string) => `g-${kick.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
 
 /* WO-13 · the depth lens, flagged: localStorage nika-map-3d=1 opts in;
    prefers-reduced-motion opts everyone out (the gate mounts NOTHING —
@@ -188,27 +197,69 @@ export function Component() {
       <section ref={ref} aria-labelledby="mp-title" className="v4sec v4-in">
         <div className="v4sec-wrap mp-wrap">
           <header className="mp-head">
-            <p className="v4-kick">the map</p>
-            <h1 id="mp-title" className="v4-h2 mp-title">
-              Every page, one graph
+            <p className="v4sec-fig" data-rise>
+              the map
+            </p>
+            <h1 id="mp-title" className="v4sec-title mp-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
+              Every page, <span className="mp-spectrum">one graph</span>.
             </h1>
-            <p className="mp-opener">{MAP_OPENER}</p>
+            <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+              {MAP_OPENER} The anatomy below reads top-down; the constellation draws the same
+              graph; every door on this site is listed once, grouped, and walkable.
+            </p>
             <p className="mp-clock" data-agree={diffLine.startsWith('the two clocks')}>
               {diffLine}
             </p>
+
+            {/* the map's dimensions, at a glance — every figure derived */}
+            <StampStrip
+              items={[
+                { n: MAP_DOORS_COUNT, label: 'doors on this map', sub: 'every served page, listed once' },
+                { n: MAP_LAYERS.length, label: 'layers', sub: 'the anatomy, top-down' },
+                { n: MAP_SETS_COUNT, label: 'sets', sub: 'every one counted' },
+                { n: MAP_ROOMS_COUNT, label: 'member rooms', sub: 'one page per element' },
+              ]}
+            />
+
+            {/* the section walk — the map's own doors (native anchors) */}
+            <nav className="mp-toc" aria-label="Map sections" data-rise>
+              <a className="td-chip" href="#anatomy">
+                the anatomy
+              </a>
+              <a className="td-chip" href="#constellation">
+                the constellation
+              </a>
+              <a className="td-chip" href="#every-page">
+                every page
+              </a>
+              {SITE_MAP.map((g) => (
+                <a key={g.kick} className="td-chip mp-toc-dim" href={`#${groupId(g.kick)}`}>
+                  {g.kick}
+                </a>
+              ))}
+            </nav>
           </header>
 
           <div className="mp-body">
             {/* the LIST is the truth — DOM-first everywhere (mobile law:
                 list before drawing · desktop: two columns, drawing right) */}
             <nav className="mp-anatomy" aria-labelledby="mp-anatomy-title" id="anatomy">
-              <h2 id="mp-anatomy-title" className="mp-sec-title">
-                The anatomy
-              </h2>
+              <div className="cl-year-head">
+                <h2 id="mp-anatomy-title" className="mp-sec-title">
+                  The anatomy
+                </h2>
+                <span className="cl-year-rule" aria-hidden />
+                <span className="cl-year-count">
+                  {MAP_LAYERS.length} layers · {MAP_SETS_COUNT} sets · top-down
+                </span>
+              </div>
               <ol className="mp-layers">
                 {MAP_LAYERS.map((l) => (
                   <li key={l.id} className="mp-layer" data-layer={l.id}>
                     <div className="mp-layer-head">
+                      <span className="mp-layer-n" aria-hidden>
+                        {String(MAP_LAYERS.findIndex((x) => x.id === l.id) + 1).padStart(2, '0')}
+                      </span>
                       {l.exists ? (
                         <Link className="mp-layer-link" to={l.hub}>
                           {l.title}
@@ -265,6 +316,7 @@ export function Component() {
 
             <figure
               className="mp-figure"
+              id="constellation"
               aria-label="The constellation drawing (a lens over the same list)"
               onClick={(e) => {
                 /* the stars select too (round-1 step 3): the svg anchors are
@@ -282,6 +334,11 @@ export function Component() {
                 window.dispatchEvent(new CustomEvent('insp:open', { detail: { href } }))
               }}
             >
+              <div className="cl-year-head">
+                <h2 className="mp-sec-title">The constellation</h2>
+                <span className="cl-year-rule" aria-hidden />
+                <span className="cl-year-count">the same atlas, drawn · a star opens its readout</span>
+              </div>
               {/* safe sink ×2: static build-time bytes from our own compiler
                   emission (scripts/atlas/build-atlas.mjs · committed asset ·
                   the render guard refuses a closing-script sequence) — no
@@ -324,28 +381,62 @@ export function Component() {
           </div>
 
           <section className="mp-everypage" aria-labelledby="mp-everypage-title" id="every-page">
-            <h2 id="mp-everypage-title" className="mp-sec-title">
-              Every page
-            </h2>
+            <div className="cl-year-head">
+              <h2 id="mp-everypage-title" className="mp-sec-title">
+                Every page
+              </h2>
+              <span className="cl-year-rule" aria-hidden />
+              <span className="cl-year-count">
+                {SITE_MAP.length} groups · {MAP_DOORS_COUNT} doors · nothing served is missing
+              </span>
+            </div>
             <div className="mp-groups">
               {SITE_MAP.map((g) => (
-                <section key={g.kick} className="mp-group" aria-label={g.kick}>
-                  <h3 className="mp-kick">{g.kick}</h3>
+                <section key={g.kick} className="mp-group" aria-label={g.kick} id={groupId(g.kick)}>
+                  <div className="cl-year-head">
+                    <h3 className="cl-year-n mp-kick">{g.kick}</h3>
+                    <span className="cl-year-rule" aria-hidden />
+                    <span className="cl-year-count">
+                      {g.links.length + (g.dense?.length ?? 0)}{' '}
+                      {g.links.length + (g.dense?.length ?? 0) === 1 ? 'door' : 'doors'}
+                    </span>
+                  </div>
                   <p className="mp-gloss">{g.gloss}</p>
                   <ul className="mp-links">
                     {g.links.map((l) => (
                       <EveryPageRow key={l.href + l.label} link={l} />
                     ))}
                   </ul>
-                  {g.dense && (
-                    <ul className="mp-dense">
-                      {g.dense.map((l) => (
-                        <li key={l.href}>
-                          <Link to={l.href}>{l.label}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  {g.dense &&
+                    (g.dense.length > 12 ? (
+                      /* the digest law: a long register folds — the chips
+                         stay in the HTML (the coverage gates read them),
+                         the reader opens on demand · zero JS */
+                      <details className="mp-more">
+                        <summary className="mono">
+                          the {g.dense.length} rooms, one chip each
+                        </summary>
+                        <ul className="td-chips mp-dense-chips">
+                          {g.dense.map((l) => (
+                            <li key={l.href}>
+                              <Link className="td-chip" to={l.href}>
+                                {l.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    ) : (
+                      <ul className="td-chips mp-dense-chips">
+                        {g.dense.map((l) => (
+                          <li key={l.href}>
+                            <Link className="td-chip" to={l.href}>
+                              {l.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ))}
                 </section>
               ))}
             </div>

@@ -10,15 +10,110 @@
 }
 
 .mp-wrap {
-  padding-block: clamp(48px, 8vh, 84px) 40px;
+  /* the house page top (the tools-page clamp) — the old 48px start slid
+     the fig under the fixed nav */
+  padding-block: clamp(124px, 16vh, 188px) 40px;
 }
 
 .mp-head {
-  max-width: 720px;
+  max-width: 860px;
 }
 
 .mp-title {
   margin: 0 0 14px;
+}
+
+/* the one multicolor word on the whole site: the map speaks ALL seven
+   layers, so « one graph » wears their spectrum (the layer hues are the
+   SAME tokens the anatomy leaders and the constellation use — no new
+   color enters the system) */
+.mp-spectrum {
+  background: linear-gradient(
+    100deg,
+    var(--layer-shape),
+    var(--layer-flow),
+    var(--layer-acts),
+    var(--layer-reach),
+    var(--layer-boundary),
+    var(--layer-refusals),
+    var(--layer-proof)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (forced-colors: active) {
+  .mp-spectrum {
+    background: none;
+    color: CanvasText;
+  }
+}
+
+/* the section walk · native anchors, chip grammar. The group chips wear
+   a whisper of their neighborhood: hover pulls the spectrum's ink in. */
+.mp-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+.mp-toc .td-chip:hover,
+.mp-toc .td-chip:focus-visible {
+  border-color: color-mix(in srgb, var(--layer-flow) 45%, transparent);
+}
+
+/* the target row announces itself with its own layer ink for a beat.
+   NO scroll-behavior:smooth — even scoped via html:has(.mp-page) it broke
+   the film/spec/play interaction belts site-wide (2026-07-24 bisect: two
+   quiet runs · 9 findings · green again the moment the rule died). The
+   demo-drive law generalizes: the smooth property on html is BANNED, the
+   browser's instant anchor jump is the house scroll. */
+@media (prefers-reduced-motion: no-preference) {
+  .mp-group:target {
+    animation: mp-target-in calc(var(--dur-film) + var(--dur-soft)) ease-out 1;
+  }
+  @keyframes mp-target-in {
+    from {
+      background: color-mix(in srgb, var(--layer-flow) 6%, transparent);
+    }
+    to {
+      background: transparent;
+    }
+  }
+}
+.mp-group {
+  scroll-margin-top: 110px;
+}
+.mp-everypage,
+.mp-figure,
+.mp-anatomy {
+  scroll-margin-top: 110px;
+}
+.mp-toc .mp-toc-dim {
+  opacity: 0.62;
+}
+.mp-toc .mp-toc-dim:hover,
+.mp-toc .mp-toc-dim:focus-visible {
+  opacity: 1;
+}
+
+/* the folded registers (the digest law) */
+.mp-more > summary {
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--v4-text) 55%, transparent);
+  padding: 6px 0;
+}
+.mp-more > summary:hover,
+.mp-more > summary:focus-visible {
+  color: var(--v4-text);
+}
+.mp-more[open] > summary {
+  color: var(--v4-text);
+}
+.mp-dense-chips {
+  margin-top: 10px;
 }
 
 .mp-opener {
@@ -40,13 +135,12 @@
   color: #34d399;
 }
 
-/* ── the two-register body ── */
+/* ── the two registers, STACKED (the 2026-07-24 recompose: the 5fr/7fr
+      side-by-side cramped both — the anatomy squeezed the drawing until
+      its edge labels clipped. Full width each; the drawing breathes). ── */
 .mp-body {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: 28px clamp(24px, 4vw, 56px);
-  margin-top: 40px;
-  align-items: start;
+  display: block;
+  margin-top: clamp(40px, 6vh, 64px);
 }
 
 .mp-sec-title {
@@ -58,18 +152,40 @@
   margin: 0 0 18px;
 }
 
-/* the anatomy list */
+/* the anatomy · a two-column card walk on desktop (air over cram) */
 .mp-layers {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
+  gap: 26px clamp(28px, 4vw, 64px);
 }
 
 .mp-layer {
+  /* the bento card (the blog-card grammar · one system): hairline shell,
+     the layer's 2px hue leader kept INSIDE the card as its left edge */
+  border: 1px solid var(--seam-hairline, var(--v4-line));
   border-left: 2px solid var(--mp-hue, rgb(140 170 255 / 0.4));
-  padding-left: 16px;
+  border-radius: var(--v4-radius);
+  background: rgb(10 13 18 / 0.55);
+  padding: 20px 22px 18px;
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+.mp-layer:hover {
+  border-color: color-mix(in srgb, var(--mp-hue, #89a) 34%, var(--v4-line));
+  border-left-color: var(--mp-hue);
+  background: rgb(12 16 23 / 0.72);
+}
+
+/* the layer index — the anatomy reads as the ordered walk it is */
+.mp-layer-n {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--mp-hue, #8aa) 72%, var(--v4-text));
 }
 
 /* the layer hue leader — token values, the same story as the drawing */
@@ -163,17 +279,20 @@ a.mp-set-chip:focus-visible {
   color: var(--v4-text-faint, rgb(150 168 198 / 0.85));
 }
 
-/* the constellation figure */
+/* the constellation · its own full-width stage, centered — the drawing
+   is the lens over the whole list and it deserves the whole line */
 .mp-figure {
-  margin: 0;
-  position: sticky;
-  top: 84px;
+  margin: clamp(48px, 7vh, 80px) auto 0;
+  max-width: 1040px;
 }
 
 .mp-constellation svg {
   width: 100%;
   height: auto;
   display: block;
+  /* the ring labels sit at the viewBox edge — the standalone stage has
+     air on both sides, let them finish their word */
+  overflow: visible;
 }
 
 .mp-figcap {
@@ -195,10 +314,31 @@ a.mp-set-chip:focus-visible {
   padding-top: 40px;
 }
 
+/* the every-page bento: each group is a CARD, not a floating list — the
+   Linear-grid read: one system, hairline shells, calm hover */
 .mp-groups {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 32px 40px;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 18px;
+}
+.mp-group {
+  border: 1px solid var(--seam-hairline, var(--v4-line));
+  border-radius: var(--v4-radius);
+  background: rgb(10 13 18 / 0.55);
+  padding: 18px 20px 16px;
+  transition: border-color var(--dur-ui) var(--ease-ui);
+}
+.mp-group:hover {
+  border-color: var(--v4-line-strong, rgb(255 255 255 / 0.13));
+}
+/* the heavy groups earn a wider cell — the bento breathes unevenly on
+   purpose (start and reference carry the most doors) */
+@media (min-width: 980px) {
+  .mp-group[id='g-start'],
+  .mp-group[id='g-reference'],
+  .mp-group[id='g-product'] {
+    grid-column: span 2;
+  }
 }
 
 .mp-kick {
@@ -283,14 +423,8 @@ a.mp-set-chip:focus-visible {
 /* ── mobile (the §4quater.10 grammar: list first — already DOM order;
       the drawing becomes a fit-width figure after it) ── */
 @media (max-width: 900px) {
-  .mp-body {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .mp-figure {
-    position: static;
     max-width: 560px;
-    margin-inline: auto;
   }
 }
 
