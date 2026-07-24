@@ -1,241 +1,262 @@
-  🦋 nika · [1mrelease-notes-i18n-paced[0m · 0 tasks
+  🦋 nika · [1mrelease-notes-i18n-paced[0m
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
   [2m── 0/0 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026h[4A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 1 tasks
+[?2026h[4A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 1 task
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m○ [0m discover  [2m[0m
+  [2m○ [0m [2m· [0mdiscover  [2m[0m
   [2m── 0/1 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
 [?2026l[?2026h[5A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 2 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m○ [0m discover  [2m[0m
-  [2m○ [0m digest    [2m[0m
+  [2m○ [0m [2m· [0mdiscover  [2m[0m
+  [2m○ [0m [2m· [0mdigest    [2m[0m
   [2m── 0/2 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[6A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 3 tasks
+  [36m[0m[36m╸[0m[2m───────────────────────[0m [2m0/2[0m
+[?2026l[?2026h[7A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 3 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m○ [0m discover  [2m[0m
-  [2m○ [0m digest    [2m[0m
-  [2m○ [0m stats     [2m[0m
+  [2m○ [0m [2m· [0mdiscover  [2m[0m
+  [2m○ [0m [2m· [0mdigest    [2m[0m
+  [2m○ [0m [2m· [0mstats     [2m[0m
   [2m── 0/3 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[7A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 4 tasks
+  [36m[0m[36m╸[0m[2m───────────────────────[0m [2m0/3[0m
+[?2026l[?2026h[8A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 4 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m○ [0m discover  [2m[0m
-  [2m○ [0m digest    [2m[0m
-  [2m○ [0m stats     [2m[0m
-  [2m○ [0m draft     [2m[0m
+  [2m○ [0m [2m· [0mdiscover  [2m[0m
+  [2m○ [0m [2m· [0mdigest    [2m[0m
+  [2m○ [0m [2m· [0mstats     [2m[0m
+  [2m○ [0m [2m· [0mdraft     [2m[0m
   [2m── 0/4 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[8A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 5 tasks
+  [36m[0m[36m╸[0m[2m───────────────────────[0m [2m0/4[0m
+[?2026l[?2026h[9A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 5 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m○ [0m discover  [2m[0m
-  [2m○ [0m digest    [2m[0m
-  [2m○ [0m stats     [2m[0m
-  [2m○ [0m draft     [2m[0m
-  [2m○ [0m pace      [2m[0m
+  [2m○ [0m [2m· [0mdiscover  [2m[0m
+  [2m○ [0m [2m· [0mdigest    [2m[0m
+  [2m○ [0m [2m· [0mstats     [2m[0m
+  [2m○ [0m [2m· [0mdraft     [2m[0m
+  [2m○ [0m [2m· [0mpace      [2m[0m
   [2m── 0/5 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[9A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 6 tasks
+  [36m[0m[36m╸[0m[2m───────────────────────[0m [2m0/5[0m
+[?2026l[?2026h[10A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 6 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m○ [0m discover   [2m[0m
-  [2m○ [0m digest     [2m[0m
-  [2m○ [0m stats      [2m[0m
-  [2m○ [0m draft      [2m[0m
-  [2m○ [0m pace       [2m[0m
-  [2m○ [0m translate  [2m[0m
+  [2m○ [0m [2m· [0mdiscover   [2m[0m
+  [2m○ [0m [2m· [0mdigest     [2m[0m
+  [2m○ [0m [2m· [0mstats      [2m[0m
+  [2m○ [0m [2m· [0mdraft      [2m[0m
+  [2m○ [0m [2m· [0mpace       [2m[0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
   [2m── 0/6 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[10A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 7 tasks
+  [36m[0m[36m╸[0m[2m───────────────────────[0m [2m0/6[0m
+[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 7 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m○ [0m discover   [2m[0m
-  [2m○ [0m digest     [2m[0m
-  [2m○ [0m stats      [2m[0m
-  [2m○ [0m draft      [2m[0m
-  [2m○ [0m pace       [2m[0m
-  [2m○ [0m translate  [2m[0m
-  [2m○ [0m survivors  [2m[0m
+  [2m○ [0m [2m· [0mdiscover   [2m[0m
+  [2m○ [0m [2m· [0mdigest     [2m[0m
+  [2m○ [0m [2m· [0mstats      [2m[0m
+  [2m○ [0m [2m· [0mdraft      [2m[0m
+  [2m○ [0m [2m· [0mpace       [2m[0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
   [2m── 0/7 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[11A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m[0m[36m╸[0m[2m───────────────────────[0m [2m0/7[0m
+[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m○ [0m discover   [2m[0m
-  [2m○ [0m digest     [2m[0m
-  [2m○ [0m stats      [2m[0m
-  [2m○ [0m draft      [2m[0m
-  [2m○ [0m pace       [2m[0m
-  [2m○ [0m translate  [2m[0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
+  [2m○ [0m [2m· [0mdiscover   [2m[0m
+  [2m○ [0m [2m· [0mdigest     [2m[0m
+  [2m○ [0m [2m· [0mstats      [2m[0m
+  [2m○ [0m [2m· [0mdraft      [2m[0m
+  [2m○ [0m [2m· [0mpace       [2m[0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
   [2m── 0/8 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m[0m[36m╸[0m[2m───────────────────────[0m [2m0/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m○ [0m digest     [2m[0m
-  [2m○ [0m stats      [2m[0m
-  [2m○ [0m draft      [2m[0m
-  [2m○ [0m pace       [2m[0m
-  [2m○ [0m translate  [2m[0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m○ [0m [2m· [0mdigest     [2m[0m
+  [2m○ [0m [2m· [0mstats      [2m[0m
+  [2m○ [0m [2m· [0mdraft      [2m[0m
+  [2m○ [0m [2m· [0mpace       [2m[0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
   [2m── 1/8 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m━━━[0m[36m╸[0m[2m────────────────────[0m [2m1/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m○ [0m stats      [2m[0m
-  [2m○ [0m draft      [2m[0m
-  [2m○ [0m pace       [2m[0m
-  [2m○ [0m translate  [2m[0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m○ [0m [2m· [0mstats      [2m[0m
+  [2m○ [0m [2m· [0mdraft      [2m[0m
+  [2m○ [0m [2m· [0mpace       [2m[0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
   [2m── 2/8 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m━━━━━━[0m[36m╸[0m[2m─────────────────[0m [2m2/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m○ [0m draft      [2m[0m
-  [2m○ [0m pace       [2m[0m
-  [2m○ [0m translate  [2m[0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m○ [0m [2m· [0mdraft      [2m[0m
+  [2m○ [0m [2m· [0mpace       [2m[0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
   [2m── 3/8 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m━━━━━━━━━[0m[36m╸[0m[2m──────────────[0m [2m3/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [2m○ [0m pace       [2m[0m
-  [2m○ [0m translate  [2m[0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [2m○ [0m [2m· [0mpace       [2m[0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
   [2m── 4/8 done · $0.00 · elapsed 0.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m━━━━━━━━━━━━[0m[36m╸[0m[2m───────────[0m [2m4/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [36m◐ [0m pace       [2mfor_each · 4 items[0m  [2m[0ms][0m
-  [2m○ [0m translate  [2m[0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [36m⠋ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[0ms][0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
   [2m── 4/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m━━━━━━━━━━━━[0m[36m╸[0m[2m───────────[0m [2m4/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [32m✔ [0m pace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
-  [2m○ [0m translate  [2m[0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [32m✔ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
+  [2m○ [0m [2m· [0mtranslate  [2m[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
   [2m── 5/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m━━━━━━━━━━━━━━━[0m[36m╸[0m[2m────────[0m [2m5/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [32m✔ [0m pace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
-  [36m◐ [0m translate  [2mfor_each · 4 items[0m  [2m[ 0ms][0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [32m✔ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
+  [36m⠋ [0m [2m· [0mtranslate  [2mfor_each · 4 items[0m  [2m[ 0ms][0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
   [2m── 5/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [36m━━━━━━━━━━━━━━━[0m[36m╸[0m[2m────────[0m [2m5/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [32m✔ [0m pace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
-  [32m✔ [0m translate  [2mfor_each · 4 items[0m  [2m[ 1ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
-  [2m○ [0m survivors  [2m[0m
-  [2m○ [0m publish    [2m[0m
-  [2m── 6/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [32m✔ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
+  [32m✔ [0m [2m· [0mtranslate  [2mfor_each · 4 items[0m  [2m[ 0ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
+  [2m○ [0m [2m· [0msurvivors  [2m[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
+  [2m── 6/8 done · ≥ $0.00 (1 unpriced) · elapsed 6.0s ──────────────[0m
+  [36m━━━━━━━━━━━━━━━━━━[0m[36m╸[0m[2m─────[0m [2m6/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [32m✔ [0m pace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
-  [32m✔ [0m translate  [2mfor_each · 4 items[0m  [2m[ 1ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
-  [36m◐ [0m survivors  [2minvoke · nika:jq [36m▇[0m[0m    [2m[ 0ms][0m
-  [2m○ [0m publish    [2m[0m
-  [2m── 6/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [32m✔ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
+  [32m✔ [0m [2m· [0mtranslate  [2mfor_each · 4 items[0m  [2m[ 0ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
+  [96m⠆ [0m [96m◆ [0msurvivors  [2minvoke · nika:jq [36m▇[0m[0m    [2m[ 0ms][0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
+  [2m── 6/8 done · ≥ $0.00 (1 unpriced) · elapsed 6.0s ──────────────[0m
+  [36m━━━━━━━━━━━━━━━━━━[0m[36m╸[0m[2m─────[0m [2m6/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [32m✔ [0m pace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
-  [32m✔ [0m translate  [2mfor_each · 4 items[0m  [2m[ 1ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
-  [32m✔ [0m survivors  [2minvoke · nika:jq[0m    [2m[11ms][0m  [2m→ [4] · 1.8KB[0m
-  [2m○ [0m publish    [2m[0m
-  [2m── 7/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [32m✔ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
+  [32m✔ [0m [2m· [0mtranslate  [2mfor_each · 4 items[0m  [2m[ 0ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
+  [32m✔ [0m [96m◆ [0msurvivors  [2minvoke · nika:jq[0m    [2m[ 0ms][0m  [2m→ [4] · 1.8KB[0m
+  [2m○ [0m [2m· [0mpublish    [2m[0m
+  [2m── 7/8 done · ≥ $0.00 (1 unpriced) · elapsed 6.0s ──────────────[0m
+  [36m━━━━━━━━━━━━━━━━━━━━━[0m[36m╸[0m[2m──[0m [2m7/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [32m✔ [0m pace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
-  [32m✔ [0m translate  [2mfor_each · 4 items[0m  [2m[ 1ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
-  [32m✔ [0m survivors  [2minvoke · nika:jq[0m    [2m[11ms][0m  [2m→ [4] · 1.8KB[0m
-  [36m◐ [0m publish    [2mexec · printf [36m▇[0m[0m       [2m[ 0ms][0m
-  [2m── 7/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [32m✔ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
+  [32m✔ [0m [2m· [0mtranslate  [2mfor_each · 4 items[0m  [2m[ 0ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
+  [32m✔ [0m [96m◆ [0msurvivors  [2minvoke · nika:jq[0m    [2m[ 0ms][0m  [2m→ [4] · 1.8KB[0m
+  [93m⠉ [0m [93m▷ [0mpublish    [2mexec · printf [36m▇[0m[0m       [2m[ 0ms][0m
+  [2m── 7/8 done · ≥ $0.00 (1 unpriced) · elapsed 6.0s ──────────────[0m
+  [36m━━━━━━━━━━━━━━━━━━━━━[0m[36m╸[0m[2m──[0m [2m7/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [32m✔ [0m pace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
-  [32m✔ [0m translate  [2mfor_each · 4 items[0m  [2m[ 1ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
-  [32m✔ [0m survivors  [2minvoke · nika:jq[0m    [2m[11ms][0m  [2m→ [4] · 1.8KB[0m
-  [32m✔ [0m publish    [2mexec · printf[0m       [2m[14ms][0m  [2m→ "published: release no…" · 32B[0m
-  [2m── 8/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l[?2026h[12A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [32m✔ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
+  [32m✔ [0m [2m· [0mtranslate  [2mfor_each · 4 items[0m  [2m[ 0ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
+  [32m✔ [0m [96m◆ [0msurvivors  [2minvoke · nika:jq[0m    [2m[ 0ms][0m  [2m→ [4] · 1.8KB[0m
+  [32m✔ [0m [93m▷ [0mpublish    [2mexec · printf[0m       [2m[ 5ms][0m  [2m→ "published: release no…" · 32B[0m
+  [2m── 8/8 done · ≥ $0.00 (1 unpriced) · elapsed 6.0s ──────────────[0m
+  [36m━━━━━━━━━━━━━━━━━━━━━━━━[0m[36m[0m[2m[0m [2m8/8[0m
+[?2026l[?2026h[13A[0J  🦋 nika · [1mrelease-notes-i18n-paced[0m · 8 tasks
      permits [32m✓[0m [2mengine floor (no boundary declared)[0m
 
-  [2m↷ [0m discover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
-  [2m↷ [0m digest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
-  [2m↷ [0m stats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
-  [2m↷ [0m draft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
-  [32m✔ [0m pace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
-  [32m✔ [0m translate  [2mfor_each · 4 items[0m  [2m[ 1ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
-  [32m✔ [0m survivors  [2minvoke · nika:jq[0m    [2m[11ms][0m  [2m→ [4] · 1.8KB[0m
-  [32m✔ [0m publish    [2mexec · printf[0m       [2m[14ms][0m  [2m→ "published: release no…" · 32B[0m
-  [2m── 8/8 done · $0.00 · elapsed 6.0s ─────────────────────────────[0m
-[?2026l  pace       ▕[38;2;38;205;247m██████████████████████████████████[0m▏  [2m6.0s[0m
-  translate  ▕                                 [38;2;96;125;139m█[0m▏  [2m 1ms[0m
-  survivors  ▕                                 [38;2;96;125;139m█[0m▏  [2m11ms[0m
-  publish    ▕                                 [38;2;96;125;139m█[0m▏  [2m14ms[0m
+  [2m↷ [0m [2m· [0mdiscover   [2mcache hit (resume)[0m  [2m[0m  [2m→ [5] · 101B[0m
+  [2m↷ [0m [2m· [0mdigest     [2mcache hit (resume)[0m  [2m[0m  [2m→ "- feat: nika test — g…" · 324B[0m
+  [2m↷ [0m [2m· [0mstats      [2mcache hit (resume)[0m  [2m[0m  [2m→ {files} · 11B[0m
+  [2m↷ [0m [2m· [0mdraft      [2mcache hit (resume)[0m  [2m[0m  [2m→ "mock(echo) · Draft co…" · 389B[0m
+  [32m✔ [0m [2m· [0mpace       [2mfor_each · 4 items[0m  [2m[6.0s][0m  [2m→ [4] · 21B[0m
+  [32m✔ [0m [2m· [0mtranslate  [2mfor_each · 4 items[0m  [2m[ 0ms][0m  [2m→ [4] · 1.8KB · 288 tok[0m
+  [32m✔ [0m [96m◆ [0msurvivors  [2minvoke · nika:jq[0m    [2m[ 0ms][0m  [2m→ [4] · 1.8KB[0m
+  [32m✔ [0m [93m▷ [0mpublish    [2mexec · printf[0m       [2m[ 5ms][0m  [2m→ "published: release no…" · 32B[0m
+  [2m── 8/8 done · ≥ $0.00 (4 unpriced) · elapsed 6.0s ──────────────[0m
+  [36m━━━━━━━━━━━━━━━━━━━━━━━━[0m[36m[0m[2m[0m [2m8/8[0m
+[?2026l  [2m· [0mpace       ▕[38;2;38;205;247m██████████████████████████████████[0m▏  [2m6.0s[0m
+  [2m· [0mtranslate  ▕                                 [38;2;96;125;139m█[0m▏  [2m 0ms[0m
+  [96m◆ [0msurvivors  ▕                                 [38;2;96;125;139m█[0m▏  [2m 0ms[0m
+  [93m▷ [0mpublish    ▕                                 [38;2;96;125;139m█[0m▏  [2m 5ms[0m
 [2m  0s ······································· 6.0s[0m
   ╭─ nika [32m✓[0m [1mrelease-notes-i18n-paced[0m ────────────────────────╮
   │  ◆ ⇉ ◆◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ …    8 tasks · 7 waves · 0 r…  │
-  │  6.0s · 288 tok · $0.00                                  │
+  │  6.0s · 288 tok · ≥ $0.00 (4 unpriced)                   │
   │  outputs → receipt (string)                              │
   ╰──────────────────────────────────────────────────────────╯
-  [2mexplore: nika run ]8;;file:///private/tmp/demo-assets/durable/signature-paced.nika.yaml\signature-paced.nika.yaml]8;;\ --json > run.ndjson · nika trace outputs run.ndjson[0m
+  [2mexplore: nika run ]8;;file:///Users/thibaut/supernovae/ventures/nika/02-engineering/repos/website/scripts/media/fixtures/signature-paced/signature-paced.nika.yaml\signature-paced.nika.yaml]8;;\ --json > run.ndjson · nika trace outputs run.ndjson[0m
+    trace: .nika/traces/2026-07-24T14-14-51Z-8f46.ndjson · 22 events · chain 129464abd4f89c4d99d626d37ff94c063e9fffc92c428f08520030a2de2c4ec6
 
   resumed · 4 skipped (cache hit) · 4 ran live

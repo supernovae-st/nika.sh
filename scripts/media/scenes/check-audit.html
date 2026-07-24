@@ -12,16 +12,25 @@
     <div class="headline">Audited before a single token.</div>
   </div>
 
-  <div class="card panel" id="panel" style="left:48px;top:176px;width:1504px;height:557px">
+  <div class="card panel" id="panel" style="left:48px;top:176px;width:1504px;height:654px">
     <div class="card-header">
       <div class="dots"><i></i><i></i><i></i></div>
       <span class="title">signature-demo.nika.yaml</span>
       <span class="badge ok">rc=0 · 1 hint</span>
     </div>
-    <div class="t" style="font-size:19px">
+    <div class="t" style="font-size:11px">
 <span class="ln"><span class="prompt">$ </span><span class="cmd">nika check signature-demo.nika.yaml</span></span>
 <span class="ln"><span class="b">nika check</span> <span class="dim">· signature-demo.nika.yaml</span></span>
-<span class="ln"> <span class="ok">✔</span> <span class="b">PLAN</span>     8 wave(s) · 9 task(s) · max parallelism 2</span>
+<span class="ln"> <span class="ok">✔</span> <span class="b">PLAN</span>     8 waves · 9 tasks · max parallelism 2</span>
+<span class="ln">      <span class="dim">wave 1</span> discover (invoke · nika:glob)</span>
+<span class="ln">      <span class="dim">wave 2</span> digest (exec · cat) · stats (invoke · nika:jq)</span>
+<span class="ln">      <span class="dim">wave 3</span> draft (infer · mock/echo)</span>
+<span class="ln">      <span class="dim">wave 4</span> translate (infer · mock/echo)</span>
+<span class="ln">      <span class="dim">wave 5</span> survivors (invoke · nika:jq)</span>
+<span class="ln">      <span class="dim">wave 6</span> verify (agent · mock/echo)</span>
+<span class="ln">      <span class="dim">wave 7</span> publish (exec · printf)</span>
+<span class="ln">      <span class="dim">wave 8</span> report (infer · mock/echo)</span>
+<span class="ln"> <span class="ok">✔</span> <span class="b">MODELS</span>   <span class="dim">1 model resolves in this binary</span></span>
 <span class="ln"> <span class="warn">⚠ </span> <span class="b">COST</span>     <span class="b">$0.0000 – $0.0000</span> <span class="warn">FLOOR (unbounded tasks present)</span></span>
 <span class="ln">   draft  <span class="dim">mock/echo</span>  <span class="warn">UNBOUNDED</span> <span class="dim">— no catalog price (local/unknown model)</span></span>
 <span class="ln">   translate  <span class="dim">mock/echo</span>  <span class="warn">UNBOUNDED</span> <span class="dim">— no catalog price (local/unknown model)</span></span>
@@ -32,9 +41,20 @@
 <span class="ln"> <span class="ok">✔</span> <span class="b">TOOLS   </span> <span class="dim">every nika: tool names a canonical builtin</span></span>
 <span class="ln"> <span class="ok">✔</span> <span class="b">ARGS    </span> <span class="dim">every invoke arg key is declared + every required arg is present</span></span>
 <span class="ln"> <span class="ok">✔</span> <span class="b">SCHEMA  </span> <span class="dim">every authored schema: is satisfiable</span></span>
+<span class="ln"> <span class="ok">✔</span> <span class="b">GATES   </span> <span class="dim">every task is statically reachable · status literals in vocabulary</span></span>
 <span class="ln"> <span class="dim">○</span> <span class="b">PERMITS</span>  <span class="dim">no boundary declared (engine floor only) · `--infer-permits` writes one</span></span>
 <span class="ln"> <span class="acc">↳</span> <span class="b">HINT</span>     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)</span>
-<span class="ln"> <span class="ok">✔ audited · 9 task(s) · 8 wave(s) · permits none · est ≥$0.0000 · 1 hint</span></span>
+<span class="ln"> <span class="acc">↳</span> <span class="b">HINT</span>     [native-first] native-first/002 · `cat` is file plumbing — `nika:read`/`nika:write` (`create_dirs: true` replaces mkdir) / `nika:glob` cover it inside the permits.fs boundary (no subprocess)</span>
+<span class="ln"> <span class="ok">✔ audited · 9 tasks · 8 waves · permits none · est ≥$0.0000 · 2 hints</span></span>
+<span class="ln"></span>
+<span class="ln">  wave 1 · discover</span>
+<span class="ln">  wave 2 · digest · stats</span>
+<span class="ln">  wave 3 · draft</span>
+<span class="ln">  wave 4 · translate</span>
+<span class="ln">  wave 5 · survivors</span>
+<span class="ln">  wave 6 · verify</span>
+<span class="ln">  wave 7 · publish</span>
+<span class="ln">  wave 8 · report</span>
     </div>
   </div>
   <div class="plate">

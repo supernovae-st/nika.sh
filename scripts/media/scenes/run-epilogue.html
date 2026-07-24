@@ -12,43 +12,45 @@
     <div class="headline">Every run ends with its proof.</div>
   </div>
 
-  <div class="card panel" id="panel" style="left:48px;top:176px;width:1504px;height:654px">
+  <div class="card panel" id="panel" style="left:48px;top:176px;width:1504px;height:645px">
     <div class="card-header">
       <div class="dots"><i></i><i></i><i></i></div>
       <span class="title">signature-demo.nika.yaml</span>
       <span class="badge ok">922 tok · $0.00</span>
     </div>
-    <div class="t" style="font-size:13px">
+    <div class="t" style="font-size:12px">
 <span class="ln"><span class="prompt">$ </span><span class="cmd">nika run signature-demo.nika.yaml</span></span>
 <span class="ln">  🦋 nika · <span class="b">release-notes-i18n</span> · 9 tasks</span>
 <span class="ln">     permits <span class="ok">✓</span> <span class="dim">engine floor (no boundary declared)</span></span>
 <span class="ln"></span>
-<span class="ln">  <span class="ok">✔ </span> discover   <span class="dim">invoke · nika:glob</span>  <span class="dim">[ 3ms]</span>  <span class="dim">→ [5] · 101B</span></span>
-<span class="ln">  <span class="ok">✔ </span> digest     <span class="dim">exec · cat</span>          <span class="dim">[ 9ms]</span>  <span class="dim">→ "- feat: nika test — g…" · 324B</span><span class="acc"> ∥</span></span>
-<span class="ln">  <span class="ok">✔ </span> stats      <span class="dim">invoke · nika:jq</span>    <span class="dim">[ 8ms]</span>  <span class="dim">→ {files} · 11B</span><span class="acc"> ∥</span></span>
-<span class="ln">  <span class="ok">✔ </span> draft      <span class="dim">infer · mock/echo</span>   <span class="dim">[ 0ms]</span>  <span class="dim">→ "mock(echo) · Draft co…" · 389B · 64 tok</span></span>
-<span class="ln">  <span class="ok">✔ </span> translate  <span class="dim">for_each · 4 items</span>  <span class="dim">[ 0ms]</span>  <span class="dim">→ [4] · 1.8KB · 288 tok</span></span>
-<span class="ln">  <span class="ok">✔ </span> survivors  <span class="dim">invoke · nika:jq</span>    <span class="dim">[ 1ms]</span>  <span class="dim">→ [4] · 1.8KB</span></span>
-<span class="ln">  <span class="ok">✔ </span> verify     <span class="dim">agent · 1 turns</span>     <span class="dim">[ 0ms]</span>  <span class="dim">→ "mock(echo) · Review t…" · 2.0KB · 556 tok</span></span>
-<span class="ln">  <span class="ok">✔ </span> publish    <span class="dim">exec · printf</span>       <span class="dim">[33ms]</span>  <span class="dim">→ "published: release no…" · 32B</span></span>
-<span class="ln">  <span class="ok">✔ </span> report     <span class="dim">infer · mock/echo</span>   <span class="dim">[ 0ms]</span>  <span class="dim">→ "mock(echo) · One-line…" · 107B · 14 tok</span></span>
-<span class="ln">  <span class="dim">── 9/9 done · $0.00 · elapsed 0.1s ─────────────────────────────</span></span>
-<span class="ln">  discover   ▕<span style="color:rgb(96 125 139)">██</span>▏                                  <span class="dim"> 3ms</span></span>
-<span class="ln">  digest     ▕    <span style="color:rgb(86 143 163)">██████</span>▏                          <span class="dim"> 9ms</span></span>
-<span class="ln">  stats      ▕     <span style="color:rgb(96 125 139)">█████</span>▏                          <span class="dim"> 8ms</span></span>
-<span class="ln">  draft      ▕          <span style="color:rgb(96 125 139)">█</span>▏                         <span class="dim"> 0ms</span></span>
-<span class="ln">  translate  ▕          <span style="color:rgb(96 125 139)">█</span>▏                         <span class="dim"> 0ms</span></span>
-<span class="ln">  survivors  ▕          <span style="color:rgb(96 125 139)">█</span>▏                         <span class="dim"> 1ms</span></span>
-<span class="ln">  verify     ▕            <span style="color:rgb(96 125 139)">█</span>▏                       <span class="dim"> 0ms</span></span>
-<span class="ln">  publish    ▕            <span style="color:rgb(38 205 247)">██████████████████████</span>▏  <span class="dim">33ms</span></span>
-<span class="ln">  report     ▕                                 <span style="color:rgb(96 125 139)">█</span>▏  <span class="dim"> 0ms</span></span>
-<span class="ln"><span class="dim">  0s ······································· 52ms</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="acc">◆ </span>discover   <span class="dim">invoke · nika:glob</span>  <span class="dim">[ 1ms]</span>  <span class="dim">→ [5] · 101B</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="warn">▷ </span>digest     <span class="dim">exec · cat</span>          <span class="dim">[ 6ms]</span>  <span class="dim">→ "- feat: nika test — g…" · 324B</span><span class="acc"> ∥</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="acc">◆ </span>stats      <span class="dim">invoke · nika:jq</span>    <span class="dim">[ 3ms]</span>  <span class="dim">→ {files} · 11B</span><span class="acc"> ∥</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="acc">◇ </span>draft      <span class="dim">infer · mock/echo</span>   <span class="dim">[ 0ms]</span>  <span class="dim">→ "mock(echo) · Draft co…" · 389B · 64 tok</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="dim">· </span>translate  <span class="dim">for_each · 4 items</span>  <span class="dim">[ 0ms]</span>  <span class="dim">→ [4] · 1.8KB · 288 tok</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="acc">◆ </span>survivors  <span class="dim">invoke · nika:jq</span>    <span class="dim">[ 1ms]</span>  <span class="dim">→ [4] · 1.8KB</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="acc">✦ </span>verify     <span class="dim">agent · 1 turns</span>     <span class="dim">[ 0ms]</span>  <span class="dim">→ "mock(echo) · Review t…" · 2.0KB · 556 tok</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="warn">▷ </span>publish    <span class="dim">exec · printf</span>       <span class="dim">[10ms]</span>  <span class="dim">→ "published: release no…" · 32B</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="acc">◇ </span>report     <span class="dim">infer · mock/echo</span>   <span class="dim">[ 0ms]</span>  <span class="dim">→ "mock(echo) · One-line…" · 107B · 14 tok</span></span>
+<span class="ln">  <span class="dim">── 9/9 done · ≥ $0.00 (7 unpriced) · elapsed 0.0s ──────────────</span></span>
+<span class="ln">  <span class="acc">━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class="dim">9/9</span></span>
+<span class="ln">  <span class="acc">◆ </span>discover   ▕<span style="color:rgb(96 125 139)">█</span>▏                                   <span class="dim"> 1ms</span></span>
+<span class="ln">  <span class="warn">▷ </span>digest     ▕   <span style="color:rgb(74 162 189)">████████</span>▏                         <span class="dim"> 6ms</span></span>
+<span class="ln">  <span class="acc">◆ </span>stats      ▕        <span style="color:rgb(86 143 163)">████</span>▏                        <span class="dim"> 3ms</span></span>
+<span class="ln">  <span class="acc">◇ </span>draft      ▕            <span style="color:rgb(96 125 139)">█</span>▏                       <span class="dim"> 0ms</span></span>
+<span class="ln">  <span class="dim">· </span>translate  ▕              <span style="color:rgb(96 125 139)">█</span>▏                     <span class="dim"> 0ms</span></span>
+<span class="ln">  <span class="acc">◆ </span>survivors  ▕              <span style="color:rgb(96 125 139)">█</span>▏                     <span class="dim"> 1ms</span></span>
+<span class="ln">  <span class="acc">✦ </span>verify     ▕                  <span style="color:rgb(96 125 139)">█</span>▏                 <span class="dim"> 0ms</span></span>
+<span class="ln">  <span class="warn">▷ </span>publish    ▕                   <span style="color:rgb(38 205 247)">██████████████</span>▏   <span class="dim">10ms</span></span>
+<span class="ln">  <span class="acc">◇ </span>report     ▕                                 <span style="color:rgb(96 125 139)">█</span>▏  <span class="dim"> 0ms</span></span>
+<span class="ln"><span class="dim">  0s ······································· 25ms</span></span>
 <span class="ln">  ╭─ nika <span class="ok">✓</span> <span class="b">release-notes-i18n</span> ──────────────────────────────╮</span>
 <span class="ln">  │  ◆ ⇉ ◆◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ …    9 tasks · 8 waves · 0 r…  │</span>
-<span class="ln">  │  54ms · 922 tok · $0.00 · mock/echo · 1 turns            │</span>
+<span class="ln">  │  26ms · 922 tok · ≥ $0.00 (7 unpriced) · mock/echo · 1…  │</span>
 <span class="ln">  │  outputs → notes (string)                                │</span>
 <span class="ln">  ╰──────────────────────────────────────────────────────────╯</span>
 <span class="ln">  <span class="dim">explore: nika run </span><span class="dim lnk">signature-demo.nika.yaml</span><span class="dim"> --json &gt; run.ndjson · nika trace outputs run.ndjson</span></span>
+<span class="ln">    trace: .nika/traces/2026-07-24T14-14-07Z-c77c.ndjson · 31 events · chain 1777838127ca75a1beb44fda050427856ef400c57275f61a8da33dd0b3ee65e9</span>
     </div>
   </div>
   <div class="plate">

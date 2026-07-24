@@ -21,7 +21,7 @@ tasks:
       args: { pattern: "${{ vars.changes_dir }}/*.md" }
 
   digest:
-    after: { discover: success }
+    after: { discover: succeeded }
     exec:
       command: ["cat", "items/item-1.md", "items/item-2.md", "items/item-3.md", "items/item-4.md", "items/item-5.md"]
 
@@ -44,7 +44,7 @@ tasks:
         ${{ with.digest }}
 
   pace:
-    after: { draft: success }
+    after: { draft: succeeded }
     for_each: ${{ vars.locales }}
     max_parallel: 4
     invoke:
@@ -52,7 +52,7 @@ tasks:
       args: { duration: "6s" }
 
   translate:
-    after: { pace: success }
+    after: { pace: succeeded }
     with:
       draft: ${{ tasks.draft.output }}
     for_each: ${{ vars.locales }}

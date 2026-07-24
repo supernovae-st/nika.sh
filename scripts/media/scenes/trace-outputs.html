@@ -21,16 +21,16 @@
     <div class="t" style="font-size:19px">
 <span class="ln"><span class="prompt">$ </span><span class="cmd">nika trace outputs run.ndjson</span></span>
 <span class="ln"><span class="dim">  task       verb                  dur   tok  output</span></span>
-<span class="ln">  discover   <span class="dim">invoke · nika:glob</span>  [36ms]    —  [5] · 101B</span>
-<span class="ln">  digest     <span class="dim">exec · cat        </span>  [12ms]    —  "- feat: nika test — golden testin…" · 324B</span>
-<span class="ln">  stats      <span class="dim">invoke · nika:jq  </span>  [ 9ms]    —  {files} · 11B</span>
-<span class="ln">  draft      <span class="dim">infer · mock/echo </span>  [ 1ms]   64  "mock(echo) · Draft concise releas…" · 389B</span>
+<span class="ln">  discover   <span class="dim">invoke · nika:glob</span>  [ 1ms]    —  [5] · 101B</span>
+<span class="ln">  digest     <span class="dim">exec · cat        </span>  [ 6ms]    —  "- feat: nika test — golden testin…" · 324B</span>
+<span class="ln">  stats      <span class="dim">invoke · nika:jq  </span>  [ 3ms]    —  {files} · 11B</span>
+<span class="ln">  draft      <span class="dim">infer · mock/echo </span>  [ 0ms]   64  "mock(echo) · Draft concise releas…" · 389B</span>
 <span class="ln">  translate  <span class="dim">for_each · 4 items</span>  [ 0ms]  288  [4] · 1.8KB</span>
-<span class="ln">  survivors  <span class="dim">invoke · nika:jq  </span>  [ 5ms]    —  [4] · 1.8KB</span>
+<span class="ln">  survivors  <span class="dim">invoke · nika:jq  </span>  [ 1ms]    —  [4] · 1.8KB</span>
 <span class="ln">  verify     <span class="dim">agent · 1 turns   </span>  [ 0ms]  556  "mock(echo) · Review these localiz…" · 2.0KB</span>
-<span class="ln">  publish    <span class="dim">exec · printf     </span>  [31ms]    —  "published: release notes ready" · 32B</span>
+<span class="ln">  publish    <span class="dim">exec · printf     </span>  [10ms]    —  "published: release notes ready" · 32B</span>
 <span class="ln">  report     <span class="dim">infer · mock/echo </span>  [ 0ms]   14  "mock(echo) · One-line ship report…" · 107B</span>
-<span class="ln"><span class="dim">  9 task(s) · 101ms · 922 tok · full value: nika trace peek </span><span class="dim lnk">run.ndjson</span><span class="dim"> &lt;task&gt;</span></span>
+<span class="ln"><span class="dim">  9 tasks · 26ms · 922 tok · ≥ $0.00 (7 unpriced) · full value: nika trace peek </span><span class="dim lnk">run.ndjson</span><span class="dim"> &lt;task&gt;</span></span>
     </div>
   </div>
   <div class="plate">

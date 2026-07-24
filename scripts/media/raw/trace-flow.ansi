@@ -9,4 +9,4 @@
   publish   [2m─32B→[0m report
   stats     [2m─11B→[0m report
   report    [2m─107B→[0m outputs.notes
-[2m  11 edge(s) · widest: verify→publish · derived from plan bindings × trace sizes[0m
+[2m  11 edges · widest: verify→publish · derived from plan bindings × trace sizes[0m

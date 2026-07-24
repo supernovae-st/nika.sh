@@ -12,7 +12,7 @@
     <div class="headline">It pauses for a human. Durably.</div>
   </div>
 
-  <div class="card panel" id="panel-a" style="left:48px;top:176px;width:738px;height:200px">
+  <div class="card panel" id="panel-a" style="left:48px;top:176px;width:738px;height:264px">
     <div class="card-header">
       <div class="dots"><i></i><i></i><i></i></div>
       <span class="title">the gate · run pauses</span>
@@ -21,6 +21,8 @@
     <div class="t" style="font-size:11px">
 <span class="ln"><span class="prompt">$ </span><span class="cmd">nika run signature-gated.nika.yaml --json &gt; gate.ndjson</span></span>
 <span class="ln"><span class="prompt">$ </span><span class="cmd">echo "exit=$?"</span></span>
+<span class="ln">nika run: trace: .nika/traces/2026-07-24T14-15-10Z-cfcc.ndjson · 21 events · chain 1d730633b18f19970536fbbb862965bcac77aa3ff087ae49a5b5ce74b13e5770</span>
+<span class="ln">nika run: resume: nika run signature-gated.nika.yaml --resume .nika/traces/2026-07-24T14-15-10Z-cfcc.ndjson --answer approve=true|false</span>
 <span class="ln">exit=4</span>
 <span class="ln"> </span>
 <span class="ln"><span class="prompt">$ </span><span class="cmd">tail -1 gate.ndjson | jq -r '.kind, (.fields[] | select(.key=="note").value)'</span></span>
@@ -28,7 +30,7 @@
 <span class="ln">awaiting a `nika:prompt` answer — resume with `--resume &lt;trace&gt; --answer &lt;task&gt;=&lt;value&gt;`</span>
     </div>
   </div>
-  <div class="card panel" id="panel-b" style="left:814px;top:176px;width:738px;height:455px">
+  <div class="card panel" id="panel-b" style="left:814px;top:176px;width:738px;height:503px">
     <div class="card-header">
       <div class="dots"><i></i><i></i><i></i></div>
       <span class="title">the re-arm · --answer approve=true</span>
@@ -39,23 +41,25 @@
 <span class="ln">  🦋 nika · <span class="b">release-notes-i18n-gated</span> · 7 tasks</span>
 <span class="ln">     permits <span class="ok">✓</span> <span class="dim">engine floor (no boundary declared)</span></span>
 <span class="ln"></span>
-<span class="ln">  <span class="dim">↷ </span> discover   <span class="dim">cache hit (resume)</span>      <span class="dim">→ [5] · 101B</span></span>
-<span class="ln">  <span class="dim">↷ </span> digest     <span class="dim">cache hit (resume)</span>      <span class="dim">→ "- feat: nika test — g…" · 324B</span></span>
-<span class="ln">  <span class="dim">↷ </span> draft      <span class="dim">cache hit (resume)</span>      <span class="dim">→ "mock(echo) · Draft co…" · 389B</span></span>
-<span class="ln">  <span class="dim">↷ </span> translate  <span class="dim">cache hit (resume)</span>      <span class="dim">→ [4] · 1.8KB</span></span>
-<span class="ln">  <span class="dim">↷ </span> verify     <span class="dim">cache hit (resume)</span>      <span class="dim">→ "mock(echo) · Review t…" · 2.0KB</span></span>
-<span class="ln">  <span class="ok">✔ </span> approve    <span class="dim">invoke · nika:prompt</span>  <span class="dim">[ 0ms]</span>  <span class="dim">→ true · 4B</span></span>
-<span class="ln">  <span class="ok">✔ </span> publish    <span class="dim">exec · printf</span>         <span class="dim">[18ms]</span>  <span class="dim">→ "published: release no…" · 32B</span></span>
+<span class="ln">  <span class="dim">↷ </span> <span class="dim">· </span>discover   <span class="dim">cache hit (resume)</span>      <span class="dim">→ [5] · 101B</span></span>
+<span class="ln">  <span class="dim">↷ </span> <span class="dim">· </span>digest     <span class="dim">cache hit (resume)</span>      <span class="dim">→ "- feat: nika test — g…" · 324B</span></span>
+<span class="ln">  <span class="dim">↷ </span> <span class="dim">· </span>draft      <span class="dim">cache hit (resume)</span>      <span class="dim">→ "mock(echo) · Draft co…" · 389B</span></span>
+<span class="ln">  <span class="dim">↷ </span> <span class="dim">· </span>translate  <span class="dim">cache hit (resume)</span>      <span class="dim">→ [4] · 1.8KB</span></span>
+<span class="ln">  <span class="dim">↷ </span> <span class="dim">· </span>verify     <span class="dim">cache hit (resume)</span>      <span class="dim">→ "mock(echo) · Review t…" · 2.0KB</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="acc">◆ </span>approve    <span class="dim">invoke · nika:prompt</span>  <span class="dim">[0ms]</span>  <span class="dim">→ true · 4B</span></span>
+<span class="ln">  <span class="ok">✔ </span> <span class="warn">▷ </span>publish    <span class="dim">exec · printf</span>         <span class="dim">[2ms]</span>  <span class="dim">→ "published: release no…" · 32B</span></span>
 <span class="ln">  <span class="dim">── 7/7 done · $0.00 · elapsed 0.0s ─────────────────────────────</span></span>
-<span class="ln">  approve  ▕<span style="color:rgb(96 125 139)">█</span>▏                                   <span class="dim"> 0ms</span></span>
-<span class="ln">  publish  ▕   <span style="color:rgb(38 205 247)">███████████████████████████████</span>▏  <span class="dim">18ms</span></span>
-<span class="ln"><span class="dim">  0s ····································· 20ms</span></span>
+<span class="ln">  <span class="acc">━━━━━━━━━━━━━━━━━━━━━━━━</span> <span class="dim">7/7</span></span>
+<span class="ln">  <span class="acc">◆ </span>approve  ▕<span style="color:rgb(96 125 139)">█</span>▏                                   <span class="dim">0ms</span></span>
+<span class="ln">  <span class="warn">▷ </span>publish  ▕           <span style="color:rgb(38 205 247)">███████████████████████</span>▏  <span class="dim">2ms</span></span>
+<span class="ln"><span class="dim">  0s ······································ 3ms</span></span>
 <span class="ln">  ╭─ nika <span class="ok">✓</span> <span class="b">release-notes-i18n-gated</span> ────────────────────────╮</span>
 <span class="ln">  │  ◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ ◆ ⇉ …    7 tasks · 7 waves · 0 re…  │</span>
-<span class="ln">  │  48ms · $0.00                                            │</span>
+<span class="ln">  │  4ms · $0.00                                             │</span>
 <span class="ln">  │  outputs → receipt (string)                              │</span>
 <span class="ln">  ╰──────────────────────────────────────────────────────────╯</span>
 <span class="ln">  <span class="dim">explore: nika run </span><span class="dim lnk">signature-gated.nika.yaml</span><span class="dim"> --json &gt; run.ndjson · nika trace outputs run.ndjson</span></span>
+<span class="ln">    trace: .nika/traces/2026-07-24T14-15-10Z-16f7.ndjson · 18 events · chain 35321986bec36965092a8834499e7d23384e262c4b300d77313edf85aafa253d</span>
 <span class="ln"></span>
 <span class="ln">  resumed · 5 skipped (cache hit) · 2 ran live</span>
     </div>

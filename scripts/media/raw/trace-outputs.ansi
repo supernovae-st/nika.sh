@@ -1,11 +1,11 @@
 [2m  task       verb                  dur   tok  output[0m
-  discover   [2minvoke · nika:glob[0m  [36ms]    —  [5] · 101B
-  digest     [2mexec · cat        [0m  [12ms]    —  "- feat: nika test — golden testin…" · 324B
-  stats      [2minvoke · nika:jq  [0m  [ 9ms]    —  {files} · 11B
-  draft      [2minfer · mock/echo [0m  [ 1ms]   64  "mock(echo) · Draft concise releas…" · 389B
+  discover   [2minvoke · nika:glob[0m  [ 1ms]    —  [5] · 101B
+  digest     [2mexec · cat        [0m  [ 6ms]    —  "- feat: nika test — golden testin…" · 324B
+  stats      [2minvoke · nika:jq  [0m  [ 3ms]    —  {files} · 11B
+  draft      [2minfer · mock/echo [0m  [ 0ms]   64  "mock(echo) · Draft concise releas…" · 389B
   translate  [2mfor_each · 4 items[0m  [ 0ms]  288  [4] · 1.8KB
-  survivors  [2minvoke · nika:jq  [0m  [ 5ms]    —  [4] · 1.8KB
+  survivors  [2minvoke · nika:jq  [0m  [ 1ms]    —  [4] · 1.8KB
   verify     [2magent · 1 turns   [0m  [ 0ms]  556  "mock(echo) · Review these localiz…" · 2.0KB
-  publish    [2mexec · printf     [0m  [31ms]    —  "published: release notes ready" · 32B
+  publish    [2mexec · printf     [0m  [10ms]    —  "published: release notes ready" · 32B
   report     [2minfer · mock/echo [0m  [ 0ms]   14  "mock(echo) · One-line ship report…" · 107B
-[2m  9 task(s) · 101ms · 922 tok · full value: nika trace peek ]8;;file:///private/tmp/demo-assets/sandbox/run.ndjson\run.ndjson]8;;\ <task>[0m
+[2m  9 tasks · 26ms · 922 tok · ≥ $0.00 (7 unpriced) · full value: nika trace peek ]8;;file:///Users/thibaut/supernovae/ventures/nika/02-engineering/repos/website/scripts/media/fixtures/signature-demo/run.ndjson\run.ndjson]8;;\ <task>[0m

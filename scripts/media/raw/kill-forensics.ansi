@@ -1,10 +1,10 @@
 [2m  task       verb                 dur   tok  output[0m
-  discover   [2minvoke · nika:glob[0m  [3ms]    —  [5] · 101B
-  digest     [2mexec · cat        [0m  [7ms]    —  "- feat: nika test — golden testin…" · 324B
-  stats      [2minvoke · nika:jq  [0m  [3ms]    —  {files} · 11B
+  discover   [2minvoke · nika:glob[0m  [0ms]    —  [5] · 101B
+  digest     [2mexec · cat        [0m  [3ms]    —  "- feat: nika test — golden testin…" · 324B
+  stats      [2minvoke · nika:jq  [0m  [0ms]    —  {files} · 11B
   draft      [2minfer · mock/echo [0m  [0ms]   64  "mock(echo) · Draft concise releas…" · 389B
   pace       [2m—                 [0m           —  —
   translate  [2m—                 [0m           —  —
   survivors  [2m—                 [0m           —  —
   publish    [2m—                 [0m           —  —
-[2m  8 task(s) · 13ms · 64 tok · full value: nika trace peek ]8;;file:///private/tmp/demo-assets/durable/run.ndjson\run.ndjson]8;;\ <task>[0m
+[2m  8 tasks · 4ms · 64 tok · ≥ $0.00 (1 unpriced) · full value: nika trace peek ]8;;file:///Users/thibaut/supernovae/ventures/nika/02-engineering/repos/website/scripts/media/fixtures/signature-paced/run.ndjson\run.ndjson]8;;\ <task>[0m

@@ -20,25 +20,25 @@
     </div>
     <div class="t" style="font-size:15.5px">
 <span class="ln"><span class="prompt">$ </span><span class="cmd">nika inspect signature-demo.nika.yaml</span></span>
-<span class="ln">release-notes-i18n · 9 tasks · 8 waves · ≥ $0.0000 (floor — unbounded tasks)</span>
-<span class="ln">  ◆ discover   invoke · nika:glob</span>
-<span class="ln">    ↓</span>
-<span class="ln">  ╭ wave 2 ── 2 in parallel ──────╮</span>
-<span class="ln">  │ ◆ digest     exec             │</span>
-<span class="ln">  │ ◆ stats      invoke · nika:jq │</span>
-<span class="ln">  ╰───────────────────────────────╯</span>
-<span class="ln">    ↓</span>
-<span class="ln">  ◆ draft      infer · mock/echo</span>
-<span class="ln">    ↓</span>
-<span class="ln">  ◆ translate  infer · mock/echo · for_each ×?</span>
-<span class="ln">    ↓</span>
-<span class="ln">  ◆ survivors  invoke · nika:jq</span>
-<span class="ln">    ↓</span>
-<span class="ln">  ◆ verify     agent · mock/echo</span>
-<span class="ln">    ↓</span>
-<span class="ln">  ◆ publish    exec · when: ${{ tasks.survivors.output.size() &gt; 0 }}</span>
-<span class="ln">    ↓</span>
-<span class="ln">  ◆ report     infer · mock/echo</span>
+<span class="ln"><span class="b">release-notes-i18n</span> · 9 tasks · 8 waves · ≥ $0.0000 (floor — unbounded tasks)</span>
+<span class="ln">  <span class="acc">◆ </span>discover <span class="warn">⧗</span> <span class="dim">invoke · nika:glob</span></span>
+<span class="ln">    <span class="dim">↓</span></span>
+<span class="ln">  <span class="dim">╭ wave 2 ── 2 in parallel ──────╮</span></span>
+<span class="ln">  <span class="dim">│</span> <span class="warn">▷ </span>digest     <span class="dim">exec</span>             <span class="dim">│</span></span>
+<span class="ln">  <span class="dim">│</span> <span class="acc">◆ </span>stats      <span class="dim">invoke · nika:jq</span> <span class="dim">│</span></span>
+<span class="ln">  <span class="dim">╰───────────────────────────────╯</span></span>
+<span class="ln">    <span class="dim">↓</span></span>
+<span class="ln">  <span class="acc">◇ </span>draft      <span class="dim">infer · mock/echo</span></span>
+<span class="ln">    <span class="dim">↓</span></span>
+<span class="ln">  <span class="acc">◇ </span>translate  <span class="dim">infer · mock/echo · for_each ×?</span></span>
+<span class="ln">    <span class="dim">↓</span></span>
+<span class="ln">  <span class="acc">◆ </span>survivors  <span class="dim">invoke · nika:jq</span></span>
+<span class="ln">    <span class="dim">↓</span></span>
+<span class="ln">  <span class="acc">✦ </span>verify     <span class="dim">agent · mock/echo</span></span>
+<span class="ln">    <span class="dim">↓</span></span>
+<span class="ln">  <span class="warn">▷ </span>publish    <span class="dim">exec · when: ${{ with.survivors.size() &gt; 0 }}</span></span>
+<span class="ln">    <span class="dim">↓</span></span>
+<span class="ln">  <span class="acc">◇ </span>report   <span class="warn">⧗</span> <span class="dim">infer · mock/echo</span></span>
 <span class="ln">  (no orphans · DAG check NIKA-DAG-001 clean)</span>
 <span class="ln"></span>
 <span class="ln">parallelism  width 2 · can run together: stats · publish</span>

@@ -1,22 +1,22 @@
-release-notes-i18n · 9 tasks · 8 waves · ≥ $0.0000 (floor — unbounded tasks)
-  ◆ discover   invoke · nika:glob
-    ↓
-  ╭ wave 2 ── 2 in parallel ──────╮
-  │ ◆ digest     exec             │
-  │ ◆ stats      invoke · nika:jq │
-  ╰───────────────────────────────╯
-    ↓
-  ◆ draft      infer · mock/echo
-    ↓
-  ◆ translate  infer · mock/echo · for_each ×?
-    ↓
-  ◆ survivors  invoke · nika:jq
-    ↓
-  ◆ verify     agent · mock/echo
-    ↓
-  ◆ publish    exec · when: ${{ tasks.survivors.output.size() > 0 }}
-    ↓
-  ◆ report     infer · mock/echo
+[1mrelease-notes-i18n[0m · 9 tasks · 8 waves · ≥ $0.0000 (floor — unbounded tasks)
+  [96m◆ [0mdiscover [33m⧗[0m [2minvoke · nika:glob[0m
+    [2m↓[0m
+  [2m╭ wave 2 ── 2 in parallel ──────╮[0m
+  [2m│[0m [93m▷ [0mdigest     [2mexec[0m             [2m│[0m
+  [2m│[0m [96m◆ [0mstats      [2minvoke · nika:jq[0m [2m│[0m
+  [2m╰───────────────────────────────╯[0m
+    [2m↓[0m
+  [94m◇ [0mdraft      [2minfer · mock/echo[0m
+    [2m↓[0m
+  [94m◇ [0mtranslate  [2minfer · mock/echo · for_each ×?[0m
+    [2m↓[0m
+  [96m◆ [0msurvivors  [2minvoke · nika:jq[0m
+    [2m↓[0m
+  [95m✦ [0mverify     [2magent · mock/echo[0m
+    [2m↓[0m
+  [93m▷ [0mpublish    [2mexec · when: ${{ with.survivors.size() > 0 }}[0m
+    [2m↓[0m
+  [94m◇ [0mreport   [33m⧗[0m [2minfer · mock/echo[0m
   (no orphans · DAG check NIKA-DAG-001 clean)
 
 parallelism  width 2 · can run together: stats · publish

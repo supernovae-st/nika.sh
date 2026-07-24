@@ -1,1 +1,3 @@
+nika run: trace: .nika/traces/2026-07-24T14-15-10Z-cfcc.ndjson · 21 events · chain 1d730633b18f19970536fbbb862965bcac77aa3ff087ae49a5b5ce74b13e5770
+nika run: resume: nika run signature-gated.nika.yaml --resume .nika/traces/2026-07-24T14-15-10Z-cfcc.ndjson --answer approve=true|false
 exit=4

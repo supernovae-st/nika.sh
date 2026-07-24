@@ -20,7 +20,7 @@ tasks:
       args: { pattern: "${{ vars.changes_dir }}/*.md" }
 
   digest:
-    after: { discover: success }
+    after: { discover: succeeded }
     exec:
       command: ["cat", "items/item-1.md", "items/item-2.md", "items/item-3.md", "items/item-4.md", "items/item-5.md"]
 
@@ -55,7 +55,7 @@ tasks:
         ${{ with.translations }}
 
   approve:
-    after: { verify: success }
+    after: { verify: succeeded }
     invoke:
       tool: "nika:prompt"
       args: { message: "Publish these release notes?" }
