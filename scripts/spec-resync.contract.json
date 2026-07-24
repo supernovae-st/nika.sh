@@ -233,7 +233,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-palette.mjs",
-   "sha256": "7e853387b89118715ecbf7224499322c04a9de84b5a569a233824754fcacac28",
+   "sha256": "3f11ef59ab697465682c9fb9c8dd2579b93e21875730dee1ca43272151694ac7",
    "args": [],
    "depends_on": [
     "website-errors",
@@ -301,7 +301,7 @@
   },
   {
    "path": "src/canon.generated.ts",
-   "sha256": "692fb151756e3a6deac8ebdeb8fcff351791f4a9b0b5c28ec88e825abbbea1c9",
+   "sha256": "a088af64672e212945a8c7f8979b7433615fbe0ab0d052e1086189f019181f87",
    "consumers": [
     "src/pages/Verbs.tsx"
    ]
@@ -399,7 +399,7 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "53867a018c226127e83561138ef0443e8ec6c518119432e0589a1c7232ada692",
+   "sha256": "deeb86f61c7db961f3e9ab1a5130fd550cf6259dfb9769c59a9f67e3e990d330",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]
