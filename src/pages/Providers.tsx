@@ -11,6 +11,7 @@ import {
   EMBEDDED_EXTRA,
   type ProviderEntry,
 } from '../content/providers.generated'
+import { fmtTokens } from './providers-shared'
 import { CANON } from '../canon.generated'
 import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { routeHead } from '../content'
@@ -52,13 +53,6 @@ const KIND_GLOSS: Record<(typeof KIND_ORDER)[number], { title: string; gloss: st
     title: 'test',
     gloss: 'the harness: mock-first is how workflows are written before they cost anything',
   },
-}
-
-function fmtTokens(n?: number): string | undefined {
-  if (typeof n !== 'number') {
-    return undefined
-  }
-  return n >= 1000 ? `${Math.round(n / 1000)}k` : String(n)
 }
 
 function ProviderRow({ entry, active }: { entry: ProviderEntry; active: boolean }) {

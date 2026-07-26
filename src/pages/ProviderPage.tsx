@@ -16,6 +16,7 @@ import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { ssrProviderRoom, loadProviderRoom, type ProviderRoomCargo } from '../lib/provider-room-access'
 import { PROVIDERS, PROVIDER_INDEX, EMBEDDED_EXTRA, type ProviderEntry } from '../content/providers.generated'
+import { fmtTokens } from './providers-shared'
 import { PROVIDER_SOURCES } from '../content/sources'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
@@ -45,13 +46,6 @@ const KIND_GLOSS: Record<ProviderEntry['kind'], string> = {
   local: 'local · the sovereign default: your hardware, no key',
   cloud: 'cloud · bring your own key; it rides an env var and stays yours',
   test: 'test · the harness: rehearse before anything costs',
-}
-
-function fmtTokens(n?: number): string | undefined {
-  if (typeof n !== 'number') {
-    return undefined
-  }
-  return n >= 1000 ? `${Math.round(n / 1000)}k` : String(n)
 }
 
 /* the audit verdict, rendered honestly — the states a donor can be in.
