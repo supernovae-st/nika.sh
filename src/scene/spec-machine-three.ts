@@ -195,7 +195,11 @@ varying float vKey;
 varying float vNear;
 varying float vHi;
 varying float vPulse;
-uniform float uFade;
+/* highp for the SAME reason as uTime below: MACHINE_COMMON declares uFade in
+   the vertex stage, where the default is highp. The note under it caught
+   uTime and missed its neighbour — the law applies per shared uniform, not
+   per shader. (uHero is fragment-only, so it stays mediump.) */
+uniform highp float uFade;
 uniform float uHero;
 /* highp: the vertex stage declares uTime highp (its default) — a shared
    uniform must agree across stages or the program fails to validate */

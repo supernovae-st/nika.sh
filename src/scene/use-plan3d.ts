@@ -21,10 +21,19 @@ function hasWebGL(): boolean {
   return webglCache
 }
 
-export function usePlan3D(sectionRef: React.RefObject<HTMLElement | null>): boolean {
-  const [able, setAble] = useState(false)
-  const [near, setNear] = useState(false)
+/* ─── the CAPABILITY half, on its own ─────────────────────────────────────────
+   « can this visitor be shown a GL layer at all »: desktop · motion allowed ·
+   no lite-data request · a real context. Separated from the proximity half
+   because not every surface latches the same way — the four verb tiles
+   TOGGLE with the viewport (four GL contexts on one page is a real budget),
+   while a single hero layer latches once.
 
+   It exists because VerbGlyphTile had hand-rolled this exact condition and
+   drifted: it checked wide + reduced + WebGL and forgot prefersLiteData, so a
+   Save-Data visitor on the home page pulled the three.js chunk anyway —
+   against the law written in lib/save-data's own header. One copy now. */
+export function use3dCapable(): boolean {
+  const [able, setAble] = useState(false)
   useEffect(() => {
     if (typeof window === 'undefined') return
     const wide = window.matchMedia('(min-width: 1024px)')
@@ -38,6 +47,12 @@ export function usePlan3D(sectionRef: React.RefObject<HTMLElement | null>): bool
       reduced.removeEventListener('change', decide)
     }
   }, [])
+  return able
+}
+
+export function usePlan3D(sectionRef: React.RefObject<HTMLElement | null>): boolean {
+  const able = use3dCapable()
+  const [near, setNear] = useState(false)
 
   /* one-shot mount trigger — a viewport ahead, then the layer stays mounted
      (its own frameloop gate handles off-screen cost) */

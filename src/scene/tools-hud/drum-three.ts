@@ -133,7 +133,11 @@ varying float vFacing;
 varying float vKey;
 varying float vNear;
 varying float vPulse;
-uniform float uFade;
+/* highp · DRUM_COMMON declares uFade in the vertex stage (default highp) and
+   a shared uniform must agree across stages or the program fails
+   VALIDATE_STATUS silently — a dead line draw call, the exact class the
+   spec-machine W2 probe caught. Lenient drivers hide it; strict ones do not. */
+uniform highp float uFade;
 void main() {
   /* the tol.is line law · THE FOCUS SPLIT (the machine's grammar): ≤1 dims
      sibling rows under a read, the overflow above 1 is the spotlight */

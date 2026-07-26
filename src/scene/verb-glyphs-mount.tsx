@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import type { NikaVerb } from '../components/codefile-highlight'
+import { use3dCapable } from './use-plan3d'
 import './verb-glyphs-tile.css'
 
 /* ─── verb-glyphs-mount · the capability gate + lazy mount for the glyphs ─────
@@ -9,8 +10,9 @@ import './verb-glyphs-tile.css'
    size: THAT is the truth on mobile / reduced-motion / no-WebGL, and the SSR
    output (zero layout shift when the 3D arrives — the canvas covers it).
 
-   Gate (the use-plan3d contract): desktop ≥1024px + motion allowed + a real
-   WebGL context. Mount: an IntersectionObserver keeps the Canvas mounted ONLY
+   Gate: use3dCapable() — THE shared contract (use-plan3d), not a copy:
+   desktop ≥1024px + motion allowed + no lite-data request + a real WebGL
+   context. Mount: an IntersectionObserver keeps the Canvas mounted ONLY
    while the chapter is near the viewport (±35%), so at most the 1-2 visible
    chapters hold a GL context at any time — leave, and the context is
    released; the char takes back over. */
@@ -100,36 +102,14 @@ function VerbPictogram({ verb }: { verb: NikaVerb }) {
   )
 }
 
-let webglCache: boolean | null = null
-function hasWebGL(): boolean {
-  if (webglCache !== null) return webglCache
-  try {
-    const c = document.createElement('canvas')
-    webglCache = !!(c.getContext('webgl2') || c.getContext('webgl'))
-  } catch {
-    webglCache = false
-  }
-  return webglCache
-}
-
 export function VerbGlyphTile({ verb }: { verb: NikaVerb }) {
   const ref = useRef<HTMLDivElement>(null)
-  const [able, setAble] = useState(false)
+  /* the shared capability gate (use-plan3d) — this used to be a hand-rolled
+     copy that had lost prefersLiteData, so a Save-Data visitor still pulled
+     three.js here. The proximity half stays local: these four tiles TOGGLE
+     with the viewport (four GL contexts is a budget), they never latch. */
+  const able = use3dCapable()
   const [live, setLive] = useState(false)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const wide = window.matchMedia('(min-width: 1024px)')
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const decide = () => setAble(wide.matches && !reduced.matches && hasWebGL())
-    decide()
-    wide.addEventListener('change', decide)
-    reduced.addEventListener('change', decide)
-    return () => {
-      wide.removeEventListener('change', decide)
-      reduced.removeEventListener('change', decide)
-    }
-  }, [])
 
   /* mounted only while near — scrolling away RELEASES the GL context */
   useEffect(() => {
