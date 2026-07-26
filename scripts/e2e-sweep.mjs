@@ -874,7 +874,7 @@ await check('palette · Tab trapped, Escape closes, focus returns to the trigger
    links are crawlable <a>; the SPA route change must land the FR page) */
 await check('manifesto · the language rail navigates (EN → FR)', async () => {
   const at = await evaluate(
-    `(() => { const a = document.querySelector('.mf-langs a[href="/fr/manifesto"]'); if (!a) return null; a.scrollIntoView({ behavior: 'instant', block: 'center' }); const r = a.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`,
+    `(() => { const a = document.querySelector('.locale-rail a[href="/fr/manifesto"]'); if (!a) return null; a.scrollIntoView({ behavior: 'instant', block: 'center' }); const r = a.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`,
   )
   if (!at) return 'FR link not found'
   await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: at.x, y: at.y, button: 'left', clickCount: 1 })

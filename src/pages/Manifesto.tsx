@@ -1,7 +1,8 @@
 import { Suspense, lazy, useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router'
+import { useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { SITE } from '../content'
+import { LocaleRail } from '../components/LocaleRail'
 import { MANIFESTO_LOCALES, manifestoCopyFor } from '../content/manifesto-copy'
 import { usePlan3D } from '../scene/use-plan3d'
 import { TheMovements } from '../sections/manifesto/TheMovements'
@@ -203,24 +204,10 @@ export function Component() {
             >
               {c.stamp}
             </a>
-            {/* the language rail · real crawlable links, BCP 47 cluster */}
-            <nav className="mf-langs mono mt-7 flex items-center gap-4 text-[12px] tracking-[0.08em]" aria-label="Languages">
-              {MANIFESTO_LOCALES.map((l) => (
-                <Link
-                  key={l.bcp47}
-                  to={l.path}
-                  lang={l.bcp47}
-                  aria-current={l.path === c.path ? 'page' : undefined}
-                  className={
-                    l.path === c.path
-                      ? 'text-[var(--fg)] underline underline-offset-4 decoration-[var(--cyan)]'
-                      : 'text-[var(--fg-dim)] transition-colors hover:text-[var(--fg)]'
-                  }
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
+            {/* the language rail · real crawlable links, BCP 47 cluster.
+                Registry-derived since the rail became site-wide (one
+                component, two consumers — /install carries the same one). */}
+            <LocaleRail pathname={pathname} />
           </div>
 
           <span className="mf-cue absolute bottom-9 text-[var(--fg-dim)]" aria-hidden>

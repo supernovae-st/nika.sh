@@ -1,0 +1,46 @@
+/* ─── locale-rail · the language cluster, visible ─────────────────────────────
+   The manifesto rail's register, lifted verbatim into one place (mono · 12px ·
+   0.08em · 1rem gutters): quiet siblings, the current voice underlined in the
+   accent. The same restraint as .truth-line — a register, not a control. */
+
+.locale-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  margin-top: 1.75rem;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.locale-rail a {
+  color: var(--fg-dim);
+  text-decoration: none;
+  /* tokens, never numbers (design-graph law 3) */
+  transition: color var(--dur-quick) var(--ease-out);
+}
+
+.locale-rail a:hover {
+  color: var(--fg);
+}
+
+.locale-rail a:focus-visible {
+  color: var(--fg);
+  outline: 1px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* the current voice · underlined in the accent, never a filled chip */
+.locale-rail a[aria-current='page'] {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--cyan);
+  text-underline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .locale-rail a {
+    transition: none;
+  }
+}

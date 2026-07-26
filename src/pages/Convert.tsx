@@ -1,4 +1,5 @@
 import { useHead } from '@unhead/react'
+import { Link } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, REPO } from '../content'
 import { CodeFile } from '../components/CodeFile'
@@ -204,6 +205,27 @@ export function Component() {
             no form here · the funnel is public, on the repo · a GitHub account is the only
             thing we ask for
           </p>
+
+          {/* the way back in · step 03 names the gallery, so the gallery gets a
+              door (a page that promises a destination and never opens it is a
+              dead end — this was the only route on the site with zero outbound
+              links). The skeletons are the « don't wait for us » lane. */}
+          <div className="v4doclinks" data-rise style={{ ['--rise-delay' as string]: '400ms' }}>
+            <Link to="/use-cases" className="v4doclink">
+              See where they land
+              <span aria-hidden className="v4doclink-arrow">
+                {' '}
+                →
+              </span>
+            </Link>
+            <Link to="/templates" className="v4doclink v4doclink--dim">
+              Or start from a skeleton yourself
+              <span aria-hidden className="v4doclink-arrow">
+                {' '}
+                →
+              </span>
+            </Link>
+          </div>
         </div>
       </section>
     </main>

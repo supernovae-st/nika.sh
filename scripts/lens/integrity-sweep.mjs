@@ -14,6 +14,8 @@
 //   7 rss items == blog pages  8 waiver liquidation (anchors_exist:false
 //                                but the member id is served on its page —
 //                                the descriptor must flip to true)
+//   9 no cul-de-sac            (every served page owes one door onward,
+//                                judged outside the chrome)
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -126,6 +128,52 @@ for (const block of descriptor.split(/\n(?=  - id: )/)) {
     if (m.page && ids[m.page]?.has(m.anchor)) {
       fails.push(`waiver-périmé ${setId}: #${m.anchor} served on ${m.page} — flip anchors_exist: true`)
     }
+  }
+}
+
+/* 9 · no served page is a CUL-DE-SAC (the topology ratchet, 2026-07-26).
+   Check 1 proves every link RESOLVES; nothing proved a page had any. Three
+   routes had zero outbound page links in their body — /brand and /convert
+   (real pages a reader entered and could only leave by the chrome) and the
+   /install cluster's seven translations, which the head announced and the
+   page never walked to. A graph whose leaves are dead ends is a hub, not a
+   graph: every page owes at least one door onward.
+
+   Judged on the BODY (the site header/footer carry chrome links on every
+   page — chrome is not editorial interconnection, and counting it would
+   make this check inert by construction). The redirect stubs are exempt by
+   what they ARE: a noindex meta-refresh shell is a doorway, not a room. */
+const CHROME = [/<header[\s\S]*?<\/header>/gi, /<footer[\s\S]*?<\/footer>/gi]
+for (const [r, h] of Object.entries(html)) {
+  if (/http-equiv="refresh"/i.test(h)) continue // a redirect stub is a doorway
+  const body = CHROME.reduce((s, re) => s.replace(re, ''), h)
+  const onward = new Set(
+    [...body.matchAll(/href="(\/[^"#?]*)/g)]
+      .map((m) => m[1].replace(/\/$/, '') || '/')
+      .filter((p) => !/\.[a-z0-9]+$/i.test(p) && !p.startsWith('/assets/') && p !== r),
+  )
+  if (!onward.size) fails.push(`cul-de-sac ${r}: no outbound page link outside the chrome`)
+}
+
+/* 10 · an announced cluster is a WALKABLE cluster (the topology ratchet's
+   sister). /install carried a seven-language hreflang cluster in its head
+   and not one link to it on the page: crawlers were told, readers were not,
+   and the seven translations sat body-orphaned behind ⌘K and /map. If a
+   page announces siblings, its body walks to every one of them.
+
+   Derived from the SERVED BYTES — the page's own hreflang block, not the
+   registry: whatever a page claims to a crawler, it owes to a reader. */
+for (const [r, h] of Object.entries(html)) {
+  const siblings = [...h.matchAll(/<link[^>]+rel="alternate"[^>]*>/gi)]
+    .filter((m) => /hreflang="(?!x-default)/i.test(m[0]))
+    .map((m) => m[0].match(/href="([^"]+)"/)?.[1])
+    .map((href) => (href ? href.replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '') || '/' : null))
+    .filter((p) => p && p !== r)
+  if (!siblings.length) continue
+  const body = CHROME.reduce((s, re) => s.replace(re, ''), h)
+  const missing = [...new Set(siblings)].filter((p) => !body.includes(`href="${p}"`))
+  if (missing.length) {
+    fails.push(`cluster-muet ${r}: announces ${missing.join(' ')} to crawlers, links none to readers`)
   }
 }
 

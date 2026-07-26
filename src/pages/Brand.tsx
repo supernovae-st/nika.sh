@@ -1,4 +1,5 @@
 import { useHead } from '@unhead/react'
+import { Link } from 'react-router'
 import { routeHead } from '../content'
 import { CANON } from '../canon.generated'
 import { NIKA_VERB_HEX, NIKA_STATUS, type NikaVerbName } from '../design-tokens.generated'
@@ -7,6 +8,8 @@ import { NK_ICONS, NK_ANIMS, type NikaIconId, type NikaAnimId } from '../icons/m
 import { NikaIcon } from '../icons/Icon'
 import { NikaDots } from '../fx/dotmatrix/NikaDots'
 import { DagNodeCard } from '../components/dag'
+/* .v4doclinks — the site's routing-out rail (Learn · Play · Convert) */
+import './page-chrome.css'
 import './brand-page.css'
 
 /* ─── /brand · the design system, shown by the system itself ──────────────
@@ -314,6 +317,35 @@ export function Component() {
             </li>
           ))}
         </ul>
+      </section>
+
+      {/* the way back in · this page names the verbs, the builtins and the
+          seven floors, then showed them as swatches and stopped. Each one has
+          a room; the vocabulary should walk back to what it names. */}
+      <section className="brand-sec" aria-label="Where the vocabulary is spoken">
+        <div className="v4doclinks">
+          <Link to="/map" className="v4doclink">
+            The seven floors these hues come from
+            <span aria-hidden className="v4doclink-arrow">
+              {' '}
+              →
+            </span>
+          </Link>
+          <Link to="/verbs" className="v4doclink v4doclink--dim">
+            The verbs
+            <span aria-hidden className="v4doclink-arrow">
+              {' '}
+              →
+            </span>
+          </Link>
+          <Link to="/tools" className="v4doclink v4doclink--dim">
+            The builtins
+            <span aria-hidden className="v4doclink-arrow">
+              {' '}
+              →
+            </span>
+          </Link>
+        </div>
       </section>
     </main>
   )

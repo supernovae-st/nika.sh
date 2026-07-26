@@ -27,6 +27,7 @@ import {
 } from '../content/install'
 import { useEffect, useState } from 'react'
 import { localeOf, hreflangLinks } from '../lib/i18n'
+import { LocaleRail } from '../components/LocaleRail'
 import type { InstallCopy } from '../content/i18n-pages.generated'
 import { ssrInstallCopy, loadInstallCopy } from '../lib/i18n-copy-access'
 import { Island } from '../lib/ssg-island'
@@ -163,6 +164,12 @@ export function Component() {
           <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
             {T.stamp}
           </p>
+          {/* the language rail · the cluster this page already announces in
+              its <head>, now walkable (the manifesto's rail, same component).
+              Seven translations were reachable only through ⌘K or /map. */}
+          <div data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
+            <LocaleRail pathname={pathname} />
+          </div>
 
           <ol className="ins-steps" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {/* 1 · Homebrew */}
