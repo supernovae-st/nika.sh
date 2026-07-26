@@ -24,12 +24,12 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 257,
-    "set_sha256": "306b5712137bc438f37b24fadc56fc749d42556d2c974967602889a5b5607d3c",
-    "rendered_count": 526,
-    "rendered_set_sha256": "12773499337dd8c113a9fc5228765de1de7698ee7c8bee0228e28fee716c0592"
+    "count": 261,
+    "set_sha256": "76f1a11fe004183eca41b0fa2a2cf0da69f12d9da86af9112475b77b3e22d5a2",
+    "rendered_count": 531,
+    "rendered_set_sha256": "c22d3f47e669e30de0da27c71922c46a9fc9ed60b6a834b436aadb679be46a61"
   },
-  "claim_count": 146,
+  "claim_count": 147,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -843,7 +843,7 @@
     {
       "selector": "src/pages/Brand.tsx#count:1",
       "path": "src/pages/Brand.tsx",
-      "line": 20,
+      "line": 23,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -855,7 +855,7 @@
     {
       "selector": "src/pages/Brand.tsx#count:2",
       "path": "src/pages/Brand.tsx",
-      "line": 21,
+      "line": 24,
       "text": "${CANON.builtins} builtins",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -868,7 +868,7 @@
     {
       "selector": "src/pages/Brand.tsx#count:3",
       "path": "src/pages/Brand.tsx",
-      "line": 191,
+      "line": 194,
       "text": "four verb",
       "source": "four",
       "field": "verbs",
@@ -904,7 +904,7 @@
     {
       "selector": "src/pages/FamilyRoot.tsx#count:1",
       "path": "src/pages/FamilyRoot.tsx",
-      "line": 36,
+      "line": 37,
       "text": "nine read-only tools",
       "source": "nine",
       "field": "mcpTools",
@@ -1024,7 +1024,7 @@
     {
       "selector": "src/pages/ProviderPage.tsx#count:1",
       "path": "src/pages/ProviderPage.tsx",
-      "line": 27,
+      "line": 28,
       "text": "one provider",
       "source": "one",
       "field": "providers",
@@ -1036,7 +1036,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:1",
       "path": "src/pages/Providers.tsx",
-      "line": 163,
+      "line": 157,
       "text": "${CANON.providers} providers",
       "source": "${CANON.providers}",
       "field": "providers",
@@ -1049,7 +1049,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:2",
       "path": "src/pages/Providers.tsx",
-      "line": 221,
+      "line": 215,
       "text": "one provider",
       "source": "one",
       "field": "providers",
@@ -1600,6 +1600,18 @@
       "ordinal": false,
       "relation": "registry-member",
       "reason": "singular member reference is bounded by CANON.builtins"
+    },
+    {
+      "selector": "src/scene/use-plan3d.ts#count:1",
+      "path": "src/scene/use-plan3d.ts",
+      "line": 27,
+      "text": "four verb",
+      "source": "four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
     },
     {
       "selector": "src/scene/verb-glyphs-three.tsx#count:1",
