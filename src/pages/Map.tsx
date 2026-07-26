@@ -5,7 +5,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { SITE_MAP, type MapLink } from '../content/sitemap'
 import { MAP_LAYERS, MAP_OPENER } from './map-data.generated'
-import { ATLAS_CLOCK_DIFF } from '../content/atlas-meta.generated'
+import { clockDiffLine } from '../lib/clock-diff'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import { CanonCount } from '../components/CanonCount'
 import { TruthLine } from '../components/TruthLine'
@@ -60,18 +60,11 @@ function useMap3dFlag(): boolean {
 
    SSR-safe: static content; the reveal is the shared poster-law hook. */
 
-const diffLine = (() => {
-  /* BOTH registers (the swarm's sub-cap catch: providers drift was
-     invisible here while /sources showed it) — the agreement claim is
-     only honest when every diffed register is read */
-  const parts: string[] = []
-  for (const register of ['builtins', 'providers'] as const) {
-    const d = ATLAS_CLOCK_DIFF[register]
-    if (d.ratified_only.length) parts.push(`${register} ratified, ships with the next train: ${d.ratified_only.join(' · ')}`)
-    if (d.shipped_only.length) parts.push(`${register} shipped ahead of canon: ${d.shipped_only.join(' · ')}`)
-  }
-  return parts.length ? parts.join(' — ') : 'the two clocks agree today: everything ratified is shipped'
-})()
+/* EVERY register (lib/clock-diff derives the keys from the emission). The
+   hand list that used to live here read builtins+providers and printed
+   « the two clocks agree » while `grammar` carried a live W1/W2 split —
+   the mother page asserting agreement that /sources was contradicting. */
+const diffLine = clockDiffLine()
 
 /* ─── the constellation island · the initial-bundle diet (ToolPage's recipe) ──
    The 39K drawing is this page's heaviest cargo and its only consumer — off

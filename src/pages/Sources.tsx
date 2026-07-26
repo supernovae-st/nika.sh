@@ -12,6 +12,7 @@ import {
   ATLAS_CLOCK_DIFF,
   TRUTH_WORDS,
 } from '../content/atlas-meta.generated'
+import { CLOCK_REGISTERS } from '../lib/clock-diff'
 import { CANON } from '../canon.generated'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -49,9 +50,9 @@ const VERIFY = [
   },
 ] as const
 
-/* the two-clocks diff is computed per register at build (atlas-meta) —
-   this list just names the registers it covers, in the compiler's order */
-const CLOCK_REGISTERS = ['builtins', 'providers', 'grammar'] as const
+/* the two-clocks diff is computed per register at build (atlas-meta) — the
+   registers come from the EMISSION, never a hand list here: this one was
+   right by luck while /map's identical list had gone stale (lib/clock-diff) */
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
