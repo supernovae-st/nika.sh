@@ -9,6 +9,7 @@ import { clockDiffLine } from '../lib/clock-diff'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import { CanonCount } from '../components/CanonCount'
 import { TruthLine } from '../components/TruthLine'
+import { mapLensOn, subscribeMapLens } from '../lib/map-lens'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tool-detail.css'
@@ -20,30 +21,17 @@ const MAP_ROOMS_COUNT = Object.values(MEMBER_ROOM_FAMILIES).reduce((n, f) => n +
 const MAP_DOORS_COUNT = SITE_MAP.reduce((n, g) => n + g.links.length + (g.dense?.length ?? 0), 0)
 const groupId = (kick: string) => `g-${kick.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
 
-/* WO-13 · the depth lens, flagged: localStorage nika-map-3d=1 opts in;
-   prefers-reduced-motion opts everyone out (the gate mounts NOTHING —
-   the chunk never even loads). Decorative twin of the svg figure. */
+/* WO-13 · the depth lens, flagged: the opt-in lives in lib/map-lens (one
+   key, one reader, one toggle — ⌘K carries the door); prefers-reduced-motion
+   opts everyone out (the gate mounts NOTHING — the chunk never even loads).
+   Decorative twin of the svg figure. */
 const Map3dScene = lazy(() => import('./Map3dScene'))
 
 /* server + first client render agree on "off" (hydration byte-true, the
-   LocaleSuggest recipe); the live value arrives on the next render */
-const map3dSnapshot = () => {
-  try {
-    return (
-      localStorage.getItem('nika-map-3d') === '1' &&
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    )
-  } catch {
-    return false
-  }
-}
-
+   LocaleSuggest recipe); the live value arrives on the next render — and
+   the ⌘K toggle lands in the same frame, because the store SUBSCRIBES now */
 function useMap3dFlag(): boolean {
-  return useSyncExternalStore(
-    () => () => {},
-    map3dSnapshot,
-    () => false,
-  )
+  return useSyncExternalStore(subscribeMapLens, mapLensOn, () => false)
 }
 
 /* ─── /map · the mother page (theme-dark) ─────────────────────────────────────

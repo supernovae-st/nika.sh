@@ -1,4 +1,5 @@
 import { variantsFor } from './i18n'
+import { toggleMapLens } from './map-lens'
 
 /* ─── palette-actions · the ⌘K action register (round-2B) ────────────────────
    An action is real value or it does not exist: copy the graph twin URL
@@ -13,6 +14,10 @@ export interface PaletteCtx {
   path: string
   /** a CodeFile is visible on the page (computed at open) */
   hasSnippet: boolean
+  /** the visitor asked for less motion (computed at open · the same
+      read-page-state-once discipline as hasSnippet). An action that would
+      flip a switch the page then refuses does not get offered. */
+  reducedMotion: boolean
 }
 
 export interface PaletteAction {
@@ -76,6 +81,15 @@ export const ACTIONS: PaletteAction[] = [
       await navigator.clipboard.writeText(await res.text())
       return 'copied'
     },
+  },
+  {
+    /* the map's second register · off by default (WO-13), but a flag with
+       no door is a surface nobody has. Here is the door. */
+    id: 'toggle-map-lens',
+    label: 'Toggle the depth lens',
+    hint: 'the constellation in three dimensions · seven layers, seven floors',
+    when: (ctx) => ctx.path === '/map' && !ctx.reducedMotion,
+    run: async () => (toggleMapLens() ? 'lens on' : 'lens off'),
   },
 ]
 

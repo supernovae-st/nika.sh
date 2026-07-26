@@ -118,6 +118,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
     () => ({
       path: window.location.pathname,
       hasSnippet: document.querySelector('.cf-pre') !== null,
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     }),
     [],
   )

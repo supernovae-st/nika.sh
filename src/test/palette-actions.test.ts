@@ -8,7 +8,11 @@ import { parseQuery } from '../lib/palette-query'
    i18n gate extends — never a hand list) · copy-snippet emits EXACTLY the
    yaml + the provenance header. */
 
-const ctx = (path: string, hasSnippet = false) => ({ path, hasSnippet })
+const ctx = (path: string, hasSnippet = false, reducedMotion = false) => ({
+  path,
+  hasSnippet,
+  reducedMotion,
+})
 
 describe('palette actions · pure whens, derived rows', () => {
   it('action ids are unique', () => {
@@ -35,6 +39,14 @@ describe('palette actions · pure whens, derived rows', () => {
     expect(a.when(ctx('/tools/fetch'))).toBe(false)
     expect(blogSlugOf('/blog/four-verbs')).toBe('four-verbs')
     expect(blogSlugOf('/blog/four-verbs/x')).toBeNull()
+  })
+
+  it('toggle-map-lens fires on /map only, and never against a motion preference', () => {
+    const a = ACTIONS.find((x) => x.id === 'toggle-map-lens')!
+    expect(a.when(ctx('/map'))).toBe(true)
+    expect(a.when(ctx('/map', false, true))).toBe(false) // the veto wins
+    expect(a.when(ctx('/'))).toBe(false)
+    expect(a.when(ctx('/types/string'))).toBe(false)
   })
 
   it('locale rows equal variantsFor, self excluded (the i18n gate extends)', () => {
