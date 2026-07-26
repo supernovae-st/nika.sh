@@ -143,7 +143,3 @@ export function buildLibrary(showcaseYaml: Record<string, string>): LibraryItem[
   ]
 }
 
-/** every file rides the strip now (operator 2026-07-13): the tab row is a
-    BROWSER strip — scrollable, edge-faded, wheel-driven — so the whole
-    ten-file corpus lives as tabs and the library picker dies. */
-export const HERO_TAB_COUNT = 10

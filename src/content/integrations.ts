@@ -351,8 +351,6 @@ export const INTEGRATION_INDEX: Record<string, IntegrationEntry> = Object.fromEn
   INTEGRATIONS.map((e) => [e.id, e]),
 )
 
-export const INTEGRATION_CLIENTS = INTEGRATIONS.filter((e) => e.kind === 'client')
-export const INTEGRATION_SURFACES = INTEGRATIONS.filter((e) => e.kind === 'surface')
 
 /** the full kit — the composite ritual for someone with all three lanes */
 export const FULL_KIT: { text: string; code: string }[] = [

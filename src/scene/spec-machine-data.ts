@@ -194,7 +194,6 @@ export const nsScope = (ns: string): string => NS_SCOPE[ns] ?? 'see the error ca
 const PLAN_DAG =
   SHOWCASE_DAG['t1-standup-digest'] ?? Object.values(SHOWCASE_DAG)[0] ?? { tasks: [], outputs: [], waves: 0 }
 export const PLAN_TASKS: ShowcaseTask[] = PLAN_DAG.tasks
-export const PLAN_WAVES: number = PLAN_DAG.waves
 
 /* ── the nine-section spine · fig + anchor (published) + HUD count ────────────
    The TOC, the legend, the schematic, the index rail and the machine's poses
