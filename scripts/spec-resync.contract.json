@@ -233,7 +233,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-palette.mjs",
-   "sha256": "3f11ef59ab697465682c9fb9c8dd2579b93e21875730dee1ca43272151694ac7",
+   "sha256": "20eaf813a0fb86803f106a265ddc469d8e46e9c102b64b3930843b7843af4e48",
    "args": [],
    "depends_on": [
     "website-errors",
@@ -308,7 +308,7 @@
   },
   {
    "path": "src/design-tokens.generated.ts",
-   "sha256": "06f0729a85c582a0812ddc00fac47c908a4a125f5e5b9f634a6f9bc547da2727",
+   "sha256": "ed67d37f83c8c441371431d72d463ef9956fe869dcdcb754c9b1f5dc8bc31973",
    "consumers": [
     "src/pages/Brand.tsx"
    ]
@@ -399,7 +399,7 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "deeb86f61c7db961f3e9ab1a5130fd550cf6259dfb9769c59a9f67e3e990d330",
+   "sha256": "02fa30b744dfedccc38139f3d37ac6c7aa7d3417152a9da07595508469c03c54",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]
