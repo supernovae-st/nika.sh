@@ -698,7 +698,7 @@
     },
     {
       "path": "src/components/CodeFile.tsx",
-      "source_blob": "dd85333e8916400ce52bf11532adf744d616c67f",
+      "source_blob": "6e53e498e963597e5a7199cd5ebba4431a7df127",
       "blocks": [
         {
           "selector": "src/components/CodeFile.tsx#pre:1",
@@ -709,7 +709,7 @@
         {
           "selector": "src/components/CodeFile.tsx#pre:2",
           "kind": "jsx-pre",
-          "line": 465,
+          "line": 511,
           "sha256": "ff7f809a885b2b1262bf34f372bf1dd8add5d905485993dd4d3db19971839312"
         }
       ]
@@ -842,13 +842,13 @@
     },
     {
       "path": "src/pages/LibraryRoom.tsx",
-      "source_blob": "e174e56207d148a7b26b6682a2f7534df9834f24",
+      "source_blob": "7f2646d38df492b9290e0e06c50a0e2d2df0c8ad",
       "blocks": [
         {
           "selector": "src/pages/LibraryRoom.tsx#codefile:1",
           "kind": "jsx-codefile",
           "line": 207,
-          "sha256": "bc3d5219bfa14dba232774719993d665a300d9ea202a7a6598e72a29cc42c1c7"
+          "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         }
       ]
     },
@@ -908,13 +908,13 @@
     },
     {
       "path": "src/pages/TemplatePage.tsx",
-      "source_blob": "669a3e6bb87826bff0809a8e9ebf16f015a7a9f4",
+      "source_blob": "ea169358bc1604c15b222b4dd3ae5501b63e2729",
       "blocks": [
         {
           "selector": "src/pages/TemplatePage.tsx#codefile:1",
           "kind": "jsx-codefile",
           "line": 185,
-          "sha256": "3ac801ae2a88413aaa6d651e14e4070a7435d2f8e5b8d4bca0c23ca27844ef28"
+          "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         }
       ]
     },
@@ -1040,7 +1040,7 @@
     },
     {
       "path": "src/sections/Hero.tsx",
-      "source_blob": "6336983390ecbce9ea4e18cd08d91c238f9ce77c",
+      "source_blob": "b8b2b4973aaf44d2c77974b66e5785fcb98f8a88",
       "blocks": [
         {
           "selector": "src/sections/Hero.tsx#pre:1",
@@ -1058,7 +1058,7 @@
     },
     {
       "path": "src/sections/UseCasesV4.tsx",
-      "source_blob": "cd4917ab6ae52e278af86325c280c7b8a0da718f",
+      "source_blob": "42e37bb211d7ce6044da719712f2332d67add4c1",
       "blocks": [
         {
           "selector": "src/sections/UseCasesV4.tsx#codefile:1",
@@ -1076,7 +1076,7 @@
           "selector": "src/sections/UseCasesV4.tsx#codefile:2",
           "kind": "jsx-codefile",
           "line": 222,
-          "sha256": "edd814f91a2c5b74c54f35f7d85bdc8d72d50b68391ec5ebdf39be99fa1aa2d2"
+          "sha256": "a90c9ef3996fbd7435bdf529b04d950197431e75bc5defb472a2ac05d498458c"
         }
       ]
     },

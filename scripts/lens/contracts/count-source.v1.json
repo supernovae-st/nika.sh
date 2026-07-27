@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 260,
-    "set_sha256": "496dbd00fe43c5157f45dbb485652a8b928e30ac68b2b037d6910f30daca2fba",
-    "rendered_count": 530,
-    "rendered_set_sha256": "4d325570adfa4ed6017284768d753f67e30ba208420a3805b3a4fbc97c45ffac"
+    "count": 262,
+    "set_sha256": "9d372634fa4ddb970717688272ea137f2f62b1691d1bb0005b689dafaf35493f",
+    "rendered_count": 532,
+    "rendered_set_sha256": "9222fb5dcdbb7a3cf290006f69cefb86d7e184f0a97d5731a0a3e797966bf824"
   },
   "claim_count": 147,
   "bindings": [
@@ -334,7 +334,7 @@
     {
       "selector": "src/components/CodeFile.tsx#count:1",
       "path": "src/components/CodeFile.tsx",
-      "line": 125,
+      "line": 145,
       "text": "4 verbs",
       "source": "4",
       "field": "verbs",
