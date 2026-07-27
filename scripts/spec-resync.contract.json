@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "7df9866816a6fed892576fa1eee6a48299d5e05c",
-  "tree": "ca78ab6fd2d0defab88d978c84695536e9238421"
+  "commit": "c6efca4a97053a898e4c8de5910c04d69d85ae05",
+  "tree": "194f301a47ecefb88067cd501d8443a5ac8409bf"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -50,7 +50,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/showcase-projector.py",
-   "sha256": "44415f4b2e69471462d49004aee232e47e411db809f6be8b91395130d4465d82",
+   "sha256": "cb74cb1389ea1a398a7a93c5bb8de710731671a3c474209dcad21a27c7da5851",
    "args": [
     "--write"
    ],
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "a22ccb331d629825af03b4c4ae6d0e6421e9c4f005ee5b8315c86d568e63fda0",
+   "sha256": "2868dfdb2ac9dd6142ffd93087984e2746c5cac65a430e753de45a1e0aab9764",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -276,7 +276,7 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "a22ccb331d629825af03b4c4ae6d0e6421e9c4f005ee5b8315c86d568e63fda0",
+   "sha256": "2868dfdb2ac9dd6142ffd93087984e2746c5cac65a430e753de45a1e0aab9764",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
