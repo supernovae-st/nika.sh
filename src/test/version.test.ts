@@ -65,6 +65,26 @@ describe('version truth · every served surface agrees with ENGINE_VERSION', () 
     expect(learnTs).toContain(`nika ${bare})`)
   })
 
+  /* THE VENDORED PACK IS A SERVED SURFACE TOO. /spec/shipped/PROVENANCE.json
+     and the two catalogs are byte-copies of what the RELEASED binary embeds —
+     the SHIPPED half of the two-clocks doctrine. They stamp the engine they
+     were vendored from, and nothing bound that stamp to what the site
+     ADVERTISES: the page could say « currently v0.106.0 » while serving a
+     catalog taken from 0.105.0, which is the exact « a served surface silently
+     lags the release » class this file exists to kill. Red here means re-vendor
+     against the new binary (never hand-edit the stamp — the honesty law). */
+  it.each([
+    ['spec/shipped/PROVENANCE.json', 'engine_version'],
+    ['providers/catalog.json', 'version'],
+    ['tools/catalog.json', 'version'],
+  ])('%s was vendored from the advertised engine', (path, key) => {
+    const doc = JSON.parse(readFileSync(join(__dirname, '../../public', path), 'utf8'))
+    expect(
+      doc[key],
+      `${path} carries ${key} ${doc[key]} but the site advertises ${ENGINE_VERSION} — re-vendor it against the released binary`,
+    ).toBe(bare)
+  })
+
   it('the two served schema snapshots are byte-identical', () => {
     // R29's exact bug: /schema/workflow.json was fresh while
     // /spec/v1/workflow.schema.json (the $id URL `nika init` wires into

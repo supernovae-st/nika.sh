@@ -9,9 +9,15 @@ export const DOCS = 'https://docs.nika.sh'
 
 /* the CURRENT engine release · the ONE hand-maintained version string on the
    site (hero plate · FAQ · changelog head · /spec invariant all interpolate it).
-   TODO: CI-refresh — canon.generated.ts carries spec counts, not the engine
-   version; bump this ONE const with each release until a version projection
-   exists. public/llms.txt is static — update it in the same commit. */
+   canon.generated.ts carries SPEC counts, not the engine version, so this const
+   is bumped by hand with each release — and every other version-claiming
+   surface is bound to it by src/test/version.test.ts rather than by a note
+   asking anyone to remember: llms.txt · humans.txt · both CLI transcripts ·
+   the newest ship-log entry · and the vendored pack's own stamps
+   (/spec/shipped/PROVENANCE.json + the two catalogs, which means a bump
+   without a re-vendor goes red instead of serving a stale clock). Bumping this
+   line alone turns the suite red and names every surface that must move with
+   it. */
 export const ENGINE_VERSION = 'v0.105.0'
 
 /* the canonical site origin (matches react-ssg.config.ts `origin`). */

@@ -4825,7 +4825,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "config",
     "url": "/language/config",
     "status": "ratified",
-    "opener": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment, may appear in logs (R3a · LAW-SURFACE-0201 · succeeds the dead `env:` block). Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001).",
+    "opener": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment, and it MAY appear in logs. Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001). Succeeds the dead `env:` block (R3a · LAW-SURFACE-0201).",
     "meta": {
       "scopes": [
         "envelope"
@@ -4841,7 +4841,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "const",
     "url": "/language/const",
     "status": "ratified",
-    "opener": "Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 · the literal half of the dead `vars:` block · everything that is not required:true lands here per the E-split total rule). Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`.",
+    "opener": "Named constants · `${{ const.X }}` · a fixed value baked into the workflow. Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`. The literal half of the dead `vars:` block (R3a · LAW-SURFACE-0201) · everything that is not `required: true` lands here per the E-split total rule.",
     "meta": {
       "scopes": [
         "envelope"
@@ -5051,7 +5051,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "inputs",
     "url": "/language/inputs",
     "status": "ratified",
-    "opener": "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies (R3a · LAW-SURFACE-0201 · the typed half of the dead `vars:` block · a required:true value lands here per the E-split total rule). Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211).",
+    "opener": "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies. Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211). The typed half of the dead `vars:` block (R3a · LAW-SURFACE-0201) · a `required: true` value lands here per the E-split total rule.",
     "meta": {
       "scopes": [
         "envelope"
@@ -5311,7 +5311,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "policy",
     "url": "/language/policy",
     "status": "ratified",
-    "opener": "Named workflow law · hard families (require/forbid/allow/limits) are judged at check (NIKA-POLICY-001) · soft families (prefer/optimize) are recorded, never judged in v1 (spec/10-authority.md).",
+    "opener": "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits (NIKA-POLICY-001) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md).",
     "meta": {
       "scopes": [
         "envelope"
@@ -5457,7 +5457,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "skills",
     "url": "/language/skills",
     "status": "ratified",
-    "opener": "Agent Skill (SKILL.md) file paths · agentskills.io shape · explicit static paths only (no globs · no templates) · loaded at compose time and injected into the system context.",
+    "opener": "Agent Skill (SKILL.md) file paths · explicit static paths only, no globs and no templates. They follow the agentskills.io shape, and are loaded at compose time and injected into the system context.",
     "meta": {
       "scopes": [
         "agent"
@@ -5652,7 +5652,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "when",
     "url": "/language/when",
     "status": "ratified",
-    "opener": "LOCAL business condition · evaluated POST-gate over {vars · env · with · item · index} — tasks.* is illegal here (NIKA-VAR-021 · hoist into with:). false → skipped (spec/03-dag.md §when).",
+    "opener": "LOCAL business condition · false skips the task · evaluated POST-gate over {vars · env · with · item · index}. Referring to `tasks.*` is illegal here (NIKA-VAR-021 · hoist it into `with:`) · spec/03-dag.md §when.",
     "meta": {
       "scopes": [
         "task",

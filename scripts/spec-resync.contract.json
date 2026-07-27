@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "34e423d7b02365bb2126ba7d1db896611f5e5bdd",
-  "tree": "d06f55db069c3f61ed41cb2e54525b5a162c4316"
+  "commit": "7df9866816a6fed892576fa1eee6a48299d5e05c",
+  "tree": "ca78ab6fd2d0defab88d978c84695536e9238421"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -68,7 +68,7 @@
    "root": "spec",
    "runtime": "copy",
    "path": "schemas/workflow.schema.json",
-   "sha256": "fa48f9470ee5baf6201b325deffb33d5da92662f08d42bc45a724b90a7d2b078",
+   "sha256": "5169876767a30596bb22b12cffb04a30656b2f7e352e41c47e89887fddb1f25c",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "6758a9ae5caa6a5983e984c8b7ea6243b62eac060ed83c9241380aa55edd3f19",
+   "sha256": "a22ccb331d629825af03b4c4ae6d0e6421e9c4f005ee5b8315c86d568e63fda0",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -276,7 +276,7 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "6758a9ae5caa6a5983e984c8b7ea6243b62eac060ed83c9241380aa55edd3f19",
+   "sha256": "a22ccb331d629825af03b4c4ae6d0e6421e9c4f005ee5b8315c86d568e63fda0",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
@@ -286,12 +286,12 @@
   },
   {
    "path": "public/schema/workflow.json",
-   "sha256": "fa48f9470ee5baf6201b325deffb33d5da92662f08d42bc45a724b90a7d2b078",
+   "sha256": "5169876767a30596bb22b12cffb04a30656b2f7e352e41c47e89887fddb1f25c",
    "dist": "schema/workflow.json"
   },
   {
    "path": "public/spec/v1/workflow.schema.json",
-   "sha256": "fa48f9470ee5baf6201b325deffb33d5da92662f08d42bc45a724b90a7d2b078",
+   "sha256": "5169876767a30596bb22b12cffb04a30656b2f7e352e41c47e89887fddb1f25c",
    "dist": "spec/v1/workflow.schema.json"
   },
   {

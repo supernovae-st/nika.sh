@@ -35,10 +35,10 @@ export const WORD_PROSE: Record<string, string[]> = {
     "argv — the program and its arguments, execve, NO shell. Each element substituted independently (the injection-safe form). Shell features (pipes · redirects · globs) live in `shell:`."
   ],
   "config": [
-    "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment, may appear in logs (R3a · LAW-SURFACE-0201 · succeeds the dead `env:` block). Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001)."
+    "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment, and it MAY appear in logs. Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001). Succeeds the dead `env:` block (R3a · LAW-SURFACE-0201)."
   ],
   "const": [
-    "Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 · the literal half of the dead `vars:` block · everything that is not required:true lands here per the E-split total rule). Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`."
+    "Named constants · `${{ const.X }}` · a fixed value baked into the workflow. Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`. The literal half of the dead `vars:` block (R3a · LAW-SURFACE-0201) · everything that is not `required: true` lands here per the E-split total rule."
   ],
   "cwd": [
     "Working directory for the subprocess · default = the engine's own cwd."
@@ -71,7 +71,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "The honest door of the data-as-code sink (spec/10-authority.md §the data-as-code sink · NEP-0006 · LAW-AUTH-0327) · declares this task's fetch a code-bearing artifact it will never load or run · the non-empty string IS the justification · lifts the sink law only, never the net boundary or the SSRF floor."
   ],
   "inputs": [
-    "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies (R3a · LAW-SURFACE-0201 · the typed half of the dead `vars:` block · a required:true value lands here per the E-split total rule). Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211)."
+    "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies. Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211). The typed half of the dead `vars:` block (R3a · LAW-SURFACE-0201) · a `required: true` value lands here per the E-split total rule."
   ],
   "jitter": [
     "Randomize the computed delay so tasks retrying the same upstream do not synchronize · default TRUE. Engines SHOULD use a full-jitter or equal-jitter family — the anti-thundering-herd default (spec/05-errors.md §Retry policy)."
@@ -110,7 +110,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "The declared capability boundary · once present every category is default-deny unless listed (spec/01-envelope.md §permits · NIKA-SEC-004)."
   ],
   "policy": [
-    "Named workflow law · hard families (require/forbid/allow/limits) are judged at check (NIKA-POLICY-001) · soft families (prefer/optimize) are recorded, never judged in v1 (spec/10-authority.md)."
+    "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits (NIKA-POLICY-001) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md)."
   ],
   "recover": [
     "Recovery output · a `${{ }}` ref OR a literal (merges the former fallback/value per spec/05-errors.md)."
@@ -135,7 +135,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "One shell line, run via /bin/sh -c — the EXPLICIT dangerous door (pipes · redirects · globs). The blocklist applies here; interpolating untrusted values here is on the author. Exactly one of command|shell."
   ],
   "skills": [
-    "Agent Skill (SKILL.md) file paths · agentskills.io shape · explicit static paths only (no globs · no templates) · loaded at compose time and injected into the system context."
+    "Agent Skill (SKILL.md) file paths · explicit static paths only, no globs and no templates. They follow the agentskills.io shape, and are loaded at compose time and injected into the system context."
   ],
   "skip": [
     "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip` · `fail_workflow`."
@@ -174,7 +174,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "Image inputs for the call · each entry `{ source: file | url, path | url }` · the images `prompt:` is allowed to refer to."
   ],
   "when": [
-    "LOCAL business condition · evaluated POST-gate over {vars · env · with · item · index} — tasks.* is illegal here (NIKA-VAR-021 · hoist into with:). false → skipped (spec/03-dag.md §when).",
+    "LOCAL business condition · false skips the task · evaluated POST-gate over {vars · env · with · item · index}. Referring to `tasks.*` is illegal here (NIKA-VAR-021 · hoist it into `with:`) · spec/03-dag.md §when.",
     "Cleanup condition · may read the PARENT task's record (tasks.<parent>.status / .error — the only legal tasks.* target inside on_finally · spec/03-dag.md §on_finally)."
   ],
   "with": [
