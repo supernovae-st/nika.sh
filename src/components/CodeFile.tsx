@@ -159,8 +159,20 @@ function TokenSpan({ token }: { token: Token }) {
      React #418 on /use-cases, which renders many quoted values). The text node
      is the lowest element carrying the quote, so the suppression is scoped tight;
      the server text is correct, so React keeps it instead of regenerating. */
+  /* the semantic role rides ALONGSIDE the syntax class, never instead of it:
+     a reader with CSS off, a forced-colors user, and every existing selector
+     keep the class they had. codefile.css spends ink on the role only. */
+  const role = token.role ? ` cf-r--${token.role}` : ''
   return (
-    <span className={`${KIND_CLASS[token.kind]}${atom}`} suppressHydrationWarning>
+    <span
+      className={`${KIND_CLASS[token.kind]}${atom}${role}`}
+      suppressHydrationWarning
+    >
+      {token.role === 'boundary' && token.kind === 'key' ? (
+        <span className="cf-shield select-none" aria-hidden>
+          ⛨
+        </span>
+      ) : null}
       {token.text}
     </span>
   )
@@ -524,6 +536,7 @@ export function CodeFile({
                   key={i}
                   className={`cf-line ${lit ? 'cf-line--lit' : ''}`}
                   data-ln={n}
+                  data-band={line.band}
                 >
                   {lineNumbers ? (
                     <span className="cf-ln" aria-hidden>

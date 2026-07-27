@@ -14,6 +14,7 @@
    helpers can be unit-tested in isolation. */
 
 import { NIKA_VERB_GLYPH } from '../design-tokens.generated'
+import { BOUNDARY_WORDS, WIRE_WORDS, FAIL_WORDS } from '../content/code-roles.generated'
 
 /** The 4 Nika verbs, locked forever (D-2026-05-22-N18). */
 export const NIKA_VERBS = ['infer', 'exec', 'invoke', 'agent'] as const
@@ -54,15 +55,28 @@ export type TokenKind =
   | 'punct' // : - [ ] { } , and indentation/leading dashes
   | 'plain' // anything else (whitespace, residual)
 
+/** the SEMANTIC role of a declared key, resolved from its position in the
+    file rather than from its spelling. `tools` is agent-scoped under a verb
+    and boundary-scoped under `permits:` — only the parent chain can tell
+    them apart, which is why tokenize() carries an indent stack. */
+export type TokenRole = 'boundary' | 'wire' | 'fail'
+
 export interface Token {
   kind: TokenKind
   text: string
   /** present only when kind === 'verb' */
   verb?: NikaVerb
+  /** present on keys the contract gives a role (see TokenRole) */
+  role?: TokenRole
 }
 
 export interface CodeLine {
   tokens: Token[]
+  /** the line sits inside the declared boundary (`permits:` / `secrets:` and
+      everything beneath). Rendered as a gutter SPINE, not as ink: the blast
+      radius is a SHAPE you can see without reading, which is the one question
+      a reader asks before any other. */
+  band?: 'boundary'
 }
 
 // key:  — the indent + key name, optionally a leading "- " list dash.
@@ -236,6 +250,69 @@ export function tokenizeLine(line: string): CodeLine {
 }
 
 /** Tokenize a whole YAML document, one CodeLine per source line. */
+/* ── the semantic pass · roles resolved from the PARENT CHAIN ────────────────
+   tokenizeLine is deliberately line-local (it is also the flow-line scanner and
+   the comment splitter). The contract, though, is positional: the same word
+   carries different meaning under different parents. So the role is assigned
+   in a second pass that walks the file with an indent stack — the cheapest
+   structure that can answer "what am I inside?".
+
+   Only KEYS get roles, and only three families get one at all (the verbs
+   already carry hue + glyph of their own):
+     · boundary — `permits:` / `secrets:` AND everything beneath them
+     · wire     — `with:` / `after:`, the keys that declare an edge
+     · fail     — the declared failure grammar
+
+   Everything else stays frame ink. Colour is spent where it carries meaning;
+   the rest recedes. */
+const BOUNDARY = new Set(BOUNDARY_WORDS)
+const WIRE = new Set(WIRE_WORDS)
+const FAIL = new Set(FAIL_WORDS)
+
+const KEY_INDENT_RE = /^(\s*)(?:-\s+)?[A-Za-z0-9_.$-]+\s*:/
+
 export function tokenize(yaml: string): CodeLine[] {
-  return yaml.replace(/\r\n/g, '\n').split('\n').map(tokenizeLine)
+  const lines = yaml.replace(/\r\n/g, '\n').split('\n').map(tokenizeLine)
+  /* the stack holds [indent, insideBoundary] for each open key */
+  const stack: { indent: number; boundary: boolean }[] = []
+  const raw = yaml.replace(/\r\n/g, '\n').split('\n')
+
+  lines.forEach((cl, i) => {
+    const m = KEY_INDENT_RE.exec(raw[i] ?? '')
+    if (!m) {
+      /* a continuation line (a flow body, a list item) inherits the block it
+         is inside — the spine must not break mid-declaration */
+      if (raw[i]?.trim() && stack.some((f) => f.boundary)) cl.band = 'boundary'
+      return
+    }
+    const indent = m[1].length
+    while (stack.length && stack[stack.length - 1].indent >= indent) stack.pop()
+    const inBoundary = stack.some((f) => f.boundary)
+
+    const key = cl.tokens.find((t) => t.kind === 'key' || t.kind === 'verb')
+    if (key) {
+      const w = key.text.trim()
+      if (BOUNDARY.has(w) || inBoundary) {
+        /* POSITION OVERRULES SPELLING. `exec:` under `permits:` is a permit
+           CATEGORY, not the act — it names a program the plan may launch, and
+           rendering it as the verb (orange, ▷) told the reader the opposite of
+           the truth. Inside the boundary a verb-spelled key is demoted to a
+           key and takes the boundary's shield. This is the whole reason the
+           pass carries a parent chain instead of a word list. */
+        if (key.kind === 'verb') {
+          key.kind = 'key'
+          delete key.verb
+        }
+        key.role = 'boundary'
+        cl.band = 'boundary'
+      } else if (key.kind === 'key') {
+        if (WIRE.has(w)) key.role = 'wire'
+        else if (FAIL.has(w)) key.role = 'fail'
+      }
+    }
+    const w = key ? key.text.trim() : ''
+    const opensBoundary = BOUNDARY.has(w) || inBoundary
+    stack.push({ indent, boundary: opensBoundary })
+  })
+  return lines
 }

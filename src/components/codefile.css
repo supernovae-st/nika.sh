@@ -724,3 +724,87 @@
   gap: 0;
   padding: 0;
 }
+
+/* ─── the semantic layer · colour by CONTRACT, not by syntax ──────────────────
+   A generic YAML highlighter colours keys, strings and numbers because it does
+   not know the language. Nika declares, for every word, where it may legally
+   live — so the panel can colour by MEANING. The roles come from the served
+   language twin (scripts/build-code-roles.mjs); the position that
+   disambiguates them comes from the tokenizer's parent chain.
+
+   THREE FAMILIES, AND NO NEW COLOUR. The seven layer hues collide with the
+   four verb hues by construction (flow IS infer's blue, reach IS invoke's
+   cyan, boundary IS exec's orange), so inventing a hue for the boundary would
+   either clash or leave the SSOT. Each family therefore reuses something that
+   already means what it says:
+
+     boundary  a SHIELD, not a hue — icons.features.permits is 'shield' in the
+               SSOT already, and a glyph is monochrome-safe the way the verbs'
+               ◇▷◆✦ are. The key brightens; it does not change colour.
+     wire      the ref ink the ${{ … }} already wears — because `with:` and
+               `after:` ARE the edge they introduce. Same fact, same colour.
+     fail      refusals — the one layer hue no verb claims, and the exact hue
+               /errors and the danger ring already speak. */
+
+.cf-r--boundary {
+  color: var(--cf-key);
+  font-weight: 600;
+}
+.cf-shield {
+  margin-right: 0.35ch;
+  opacity: 0.72;
+  font-size: 0.92em;
+}
+.cf-r--wire {
+  color: var(--cf-ref);
+}
+.cf-r--fail {
+  color: color-mix(in srgb, var(--danger, #ff5d5d) 78%, var(--cf-key));
+}
+
+/* forced colors · the glyph carries the boundary, the hue is the system's */
+@media (forced-colors: active) {
+  .cf-r--boundary,
+  .cf-r--wire,
+  .cf-r--fail {
+    color: CanvasText;
+  }
+}
+
+/* ─── THE BOUNDARY IS A SHAPE · the gutter spine ──────────────────────────────
+   The first question a reader asks a plan file is not « is this a key or a
+   string », it is « what can this touch ». That answer was a single word
+   (`permits:`) buried in a column of identical keys.
+
+   Colour could not carry it: the seven layer hues collide with the four verb
+   hues by construction, so the boundary would have had to borrow exec's
+   orange. The gutter, though, was empty — and the parent-chain pass already
+   knows, for every line, whether it sits inside the declaration. So the blast
+   radius becomes a SPINE: one hairline down the left of the block, in the
+   boundary hue, readable without reading a word.
+
+   It is the same hue /boundary and the atlas use for that layer, so the file,
+   the map and the hub all say the boundary with the same mark. */
+.cf-line[data-band='boundary'] {
+  position: relative;
+}
+.cf-line[data-band='boundary']::before {
+  content: '';
+  position: absolute;
+  left: calc(13px + var(--cf-gutter, 2ch) + 4px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--layer-boundary, #ff7a3c) 52%, transparent);
+  pointer-events: none;
+}
+/* the wrap variant's gutter sits on an em rhythm, not a px one */
+.cf-panel--wrap .cf-line[data-band='boundary']::before {
+  left: calc(0.963em + var(--cf-gutter, 2ch) + 0.3em);
+}
+@media (forced-colors: active) {
+  .cf-line[data-band='boundary']::before {
+    background: CanvasText;
+  }
+}

@@ -121,6 +121,15 @@
    sovereignty swap, both directions) · the map TOC dots and the
    integrations kit-bento are CSS-only; measured 386.7 · margin ~2.3
    (the bite-on-growth grammar holds).
+   389→390 semantic-yaml: the panel colours by CONTRACT instead of by YAML
+   syntax. The word→role table is DERIVED from the served language twin
+   (never authored) and the tokenizer gains a parent-chain pass — which is
+   what lets `tools` under `permits:` read as boundary while `tools` under
+   `agent:` reads as the verb's; position is the only thing that can tell
+   them apart. ~0.3KB gz for the whole semantic layer; the plan derivation
+   and the drawing stay in their lazy chunk. DEATH CLAUSE: this retires INTO
+   the spec — the day design/tokens.yaml carries the roles, the derivation
+   leaves the bundle and the ceiling comes back down.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -128,7 +137,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 389
+const BUDGET_KB = 390
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
