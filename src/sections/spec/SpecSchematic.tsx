@@ -11,14 +11,15 @@ import { CANON } from '../../canon.generated'
 /* ─── SpecSchematic · THE SHIP in profile (the designed fallback truth) ───────
    The v2 elevation drawing — the same vessel the 3D stage sails, seen
    side-on, bow LEFT → stern RIGHT (the reading order made horizontal):
-   the keel (10 envelope-key segments) · the bridge cluster (plan slabs by
+   the keel (one segment per envelope key) · the bridge cluster (plan slabs by
    wave) · the core diamond (verb tetrad) · THE RING edge-on (a tall ellipse,
-   4 gate stations + 2 visible spokes) · the hold ring (27 family ticks on
-   an ellipse) · the array fan (9 ports off the fetch flank) · the engine
-   block (16 nozzles: 5 docked · 10 outboard · 1 dim) · the shield skirt
-   (14 flared plates). Serves mobile + no-WebGL + reduced-motion, is the
-   stage's truth until the canvas mounts ([data-machine] retires it), and
-   doubles as the SIDE VIEW thumbnail on the instrument plate.
+   4 gate stations + 2 visible spokes) · the hold ring (one tick per builtin on
+   an ellipse) · the array fan (one port per extract mode off the fetch flank) ·
+   the engine block (one nozzle per provider: local docked · cloud outboard ·
+   mock dim) · the shield skirt (one plate per error-namespace). Serves mobile
+   + no-WebGL + reduced-motion, is the stage's truth until the canvas mounts
+   ([data-machine] retires it), and doubles as the SIDE VIEW thumbnail on the
+   instrument plate.
    Ink: tholos blue-and-black — unlit strata whisper in shadow wire blue,
    ignited strata wash to the lit accent (lit-state synced), the current
    stratum reads brightest. Every count derives from spec-machine-data.
@@ -208,7 +209,7 @@ export function SpecSchematic({
         })}
       </g>
 
-      {/* S.4 · THE HOLD · 27 family ticks on the shallow ring */}
+      {/* S.4 · THE HOLD · one tick per builtin on the shallow ring */}
       <g {...g('stdlib')}>
         <ellipse className="sms-drum" cx={fmt(HOLD_X)} cy={CY} rx={HOLD_RX} ry={HOLD_RY} />
         {HOLD_TICKS.map((t) => {

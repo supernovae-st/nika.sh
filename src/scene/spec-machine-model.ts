@@ -24,11 +24,11 @@ import { CANON } from '../canon.generated'
           S.6 the array      9 extract ports fanned off the fetch block — the
                              antenna boom on the flank
      STERN S.5 the engines   17 provider nozzles: 5 local DOCKED tight on the
-                             spine (the thrust you own) · 10 cloud outboard ·
-                             1 mock dim
-          S.7 the shield     21 error-namespace plates flared as the stern
+                             spine (the thrust you own) · the cloud set outboard ·
+                             the mock dim
+          S.7 the shield     one plate per error-namespace, flared as the stern
                              skirt — failures come back typed: the hull
-     S.0  the keel           the envelope's 10 top-level keys ARE the spine
+     S.0  the keel           the envelope's top-level keys ARE the spine
                              segments everything mounts on — it lights FIRST.
 
    Every node derives from the strata graph (spec-machine-data · CANON
@@ -420,8 +420,8 @@ export function buildSpecMachine(): SpecMachineModel {
         break
       }
       case 'provider': {
-        /* THE ENGINES · 5 local docked on the spine (the thrust you own) ·
-           10 cloud outboard staggered · 1 mock dim on the rim */
+        /* THE ENGINES · local docked on the spine (the thrust you own) ·
+           cloud outboard staggered · mock dim on the rim */
         const local = node.family === 'local'
         const mock = node.family === 'test'
         const nOuter = CANON.providersCloud + CANON.providersTest

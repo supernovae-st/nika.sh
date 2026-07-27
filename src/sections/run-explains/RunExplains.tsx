@@ -9,11 +9,14 @@ import './run-explains.css'
    watched from every side: audited before it starts, storyboarded while it
    runs, replayable after it ends, durable through a kill and a human gate.
 
-   HONESTY: every frame is real output of the real binary (nika 0.93.1),
-   captured on a 100-col pty against committed fixtures, converted to these
-   assets mechanically (scripts/media/ in this repo: raw captures · manifest ·
+   HONESTY: every frame is real output of the real binary, captured on a
+   100-col pty against committed fixtures, converted to these assets
+   mechanically (scripts/media/ in this repo: raw captures · manifest ·
    the regeneration gate). The hero loop replays the recorded frames at
    reading pace; the caption says so.
+   The capture's engine is NOT restated here — it rotted once (this comment
+   said 0.93.1 long after the set was re-shot). The receipt is
+   scripts/media/raw/manifest.json `binary`; a re-shoot updates it there once.
 
    Device: a poster-first <video> hero (plays only in view + motion allowed)
    and a chapter strip swapping ONE still (fixed aspect → zero shift). */

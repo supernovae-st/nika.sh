@@ -8,6 +8,7 @@ import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrShowcaseYaml, loadShowcaseYaml } from '../sections/showcase-yaml-access'
 import { buildLibrary, verbsOf, BROWSE_SLUGS } from '../flagships/library'
 import { SITE, routeHead } from '../content'
+import { CANON } from '../canon.generated'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
@@ -94,7 +95,7 @@ export function Component() {
               { n: library.length, label: 'files', sub: 'one room each' },
               { n: recordedCount, label: 'recorded', sub: 'real traces, replayed' },
               { n: library.length - recordedCount, label: 'browse-only', sub: 'read, then run yourself' },
-              { n: 4, label: 'verbs at most', sub: 'the whole grammar' },
+              { n: CANON.verbs, label: 'verbs at most', sub: 'the whole grammar' },
             ]}
           />
 
