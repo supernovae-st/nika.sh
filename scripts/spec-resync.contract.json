@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "c6efca4a97053a898e4c8de5910c04d69d85ae05",
-  "tree": "194f301a47ecefb88067cd501d8443a5ac8409bf"
+  "commit": "8ab0b1e6e68923b58a9bb61b82ee0ed826b68c7e",
+  "tree": "6167f9ea122cf43ff702e0dacff395ade50958f0"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -68,7 +68,7 @@
    "root": "spec",
    "runtime": "copy",
    "path": "schemas/workflow.schema.json",
-   "sha256": "5169876767a30596bb22b12cffb04a30656b2f7e352e41c47e89887fddb1f25c",
+   "sha256": "6b1480c169ddf47cb72e151b0aa0fd9934bccde0ee5733ec71571e6d634d670c",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "2868dfdb2ac9dd6142ffd93087984e2746c5cac65a430e753de45a1e0aab9764",
+   "sha256": "0cfea91b1f26bf2de3610c64bb81e1238d8aca72a20bae633c3bae599989bcea",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -276,7 +276,7 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "2868dfdb2ac9dd6142ffd93087984e2746c5cac65a430e753de45a1e0aab9764",
+   "sha256": "0cfea91b1f26bf2de3610c64bb81e1238d8aca72a20bae633c3bae599989bcea",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
@@ -286,12 +286,12 @@
   },
   {
    "path": "public/schema/workflow.json",
-   "sha256": "5169876767a30596bb22b12cffb04a30656b2f7e352e41c47e89887fddb1f25c",
+   "sha256": "6b1480c169ddf47cb72e151b0aa0fd9934bccde0ee5733ec71571e6d634d670c",
    "dist": "schema/workflow.json"
   },
   {
    "path": "public/spec/v1/workflow.schema.json",
-   "sha256": "5169876767a30596bb22b12cffb04a30656b2f7e352e41c47e89887fddb1f25c",
+   "sha256": "6b1480c169ddf47cb72e151b0aa0fd9934bccde0ee5733ec71571e6d634d670c",
    "dist": "spec/v1/workflow.schema.json"
   },
   {
@@ -315,7 +315,7 @@
   },
   {
    "path": "src/sections/usecases-yaml.generated.ts",
-   "sha256": "05bc507ca9dc1b2b778c62d3e82eeb072b657be69cc4f807c89dc961ee4e314b",
+   "sha256": "20dc1c2ee98b3a19a7629d1e702af092c675925743892d32bcfe8bb11de61a07",
    "consumers": [
     "src/sections/showcase-yaml-access.ts"
    ]

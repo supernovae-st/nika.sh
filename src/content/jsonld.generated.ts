@@ -219,7 +219,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/decode",
           "termCode": "decode",
           "name": "decode",
-          "description": "How the captured string becomes a value (spec 09 §decode) — illegal with capture: structured (NIKA-PARSE-025)"
+          "description": "How the captured string becomes a value · `text` (default) · `json` · `jsonl` · `bytes`. Illegal with `capture: structured`, which already IS an object (NIKA-PARSE-025) · a non-parsing stream settles the task `failure` inside `on_error:` scope (spec 09 §decode)."
         },
         {
           "@type": "DefinedTerm",
@@ -246,7 +246,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/fail_fast",
           "termCode": "fail_fast",
           "name": "fail_fast",
-          "description": "for_each abort-on-error · default true."
+          "description": "Whether a `for_each` fan-out abandons the batch on the first failure · default true. False finishes every item and yields null at a failed index, so the batch reports what it could."
         },
         {
           "@type": "DefinedTerm",
@@ -274,7 +274,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/inert",
           "termCode": "inert",
           "name": "inert",
-          "description": "The honest door of the data-as-code sink (spec/10-authority.md §the data-as-code sink · NEP-0006 · LAW-AUTH-0327) · declares this task's fetch a code-bearing artifact it will never load or run · the non-empty string IS the justification · lifts the sink law only, never the net boundary or the SSRF floor."
+          "description": "The honest door of the data-as-code sink · declares this task's fetch a code-bearing artifact it will never load or run. The non-empty string IS the justification · it lifts the sink law only, never the net boundary and never the SSRF floor (spec/10-authority.md · NEP-0006 · LAW-AUTH-0327)."
         },
         {
           "@type": "DefinedTerm",
@@ -422,21 +422,21 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/returns",
           "termCode": "returns",
           "name": "returns",
-          "description": "The task's output contract (spec 09-types.md) — exclusive with a verb-level schema: (NIKA-TYPE-003)"
+          "description": "The task's output contract · the TYPED door, where a verb-level `schema:` is the out-of-core hatch. The two are exclusive on one task (NIKA-TYPE-003 · spec 09-types.md)."
         },
         {
           "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/run",
           "termCode": "run",
           "name": "run",
-          "description": "The run's entropy + clock declaration (NEP-0010) · every source of randomness and time is declared, never ambient · the dimensions couple: only ambient×system (the status quo) and none|seeded×virtual (the deterministic states) are legal · a contradiction refuses at parse (NIKA-PARSE-026 ambient×virtual · NIKA-PARSE-027 none|seeded×system) and a strict declaration contradicted by the body refuses at check (NIKA-PARSE-028)."
+          "description": "The run's entropy and clock declaration · every source of randomness and of time is declared, never ambient. The two dimensions couple: only `ambient × system` (the status quo) and `none | seeded × virtual` (the deterministic states) are legal, and a declared contradiction refuses at parse (NEP-0010)."
         },
         {
           "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/schema",
           "termCode": "schema",
           "name": "schema",
-          "description": "JSON Schema · structured output contract."
+          "description": "JSON Schema · the structured-output contract the model's reply must satisfy. The out-of-core hatch; the typed door is task-level `returns:` (both on one task is NIKA-TYPE-003)."
         },
         {
           "@type": "DefinedTerm",
@@ -492,7 +492,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/temperature",
           "termCode": "temperature",
           "name": "temperature",
-          "description": "0-2 · number or `${{ }}`."
+          "description": "Sampling temperature · 0 is the steadiest the provider offers, 2 the loosest. A number in 0-2, or a `${{ }}` reference."
         },
         {
           "@type": "DefinedTerm",
@@ -527,7 +527,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/types",
           "termCode": "types",
           "name": "types",
-          "description": "Named type declarations (spec 09-types.md · PascalCase · acyclic)"
+          "description": "Named type declarations · the workflow's own vocabulary, referenced by name wherever a type is expected. PascalCase · acyclic (spec 09-types.md)."
         },
         {
           "@type": "DefinedTerm",

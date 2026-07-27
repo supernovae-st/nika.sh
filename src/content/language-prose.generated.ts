@@ -47,7 +47,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterization taint · NEP-0004 · LAW-AUTH-0325) · each entry raises ONE binding from untrusted to trusted, check-visible and receipt-recorded. Lifts the taint law only — the value is still matched against the declared boundary (never a permit bypass)."
   ],
   "decode": [
-    "How the captured string becomes a value (spec 09 §decode) — illegal with capture: structured (NIKA-PARSE-025)"
+    "How the captured string becomes a value · `text` (default) · `json` · `jsonl` · `bytes`. Illegal with `capture: structured`, which already IS an object (NIKA-PARSE-025) · a non-parsing stream settles the task `failure` inside `on_error:` scope (spec 09 §decode)."
   ],
   "description": [
     "Free-form prose about the workflow · documentation for whoever reads the file, never read by the engine (spec/01-envelope.md)."
@@ -56,7 +56,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "OS environment variables for THIS subprocess · a key→value map applied over the composed environment. Nothing is inherited — the ambient environment reaches a task only through `permits.env` (spec/01-envelope.md §permits)."
   ],
   "fail_fast": [
-    "for_each abort-on-error · default true."
+    "Whether a `for_each` fan-out abandons the batch on the first failure · default true. False finishes every item and yields null at a failed index, so the batch reports what it could."
   ],
   "fail_workflow": [
     "Fail the whole workflow on this error · the written-down form of the default, so a reader sees the choice instead of inferring it. Exactly one of `recover` · `skip` · `fail_workflow`."
@@ -68,7 +68,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object)."
   ],
   "inert": [
-    "The honest door of the data-as-code sink (spec/10-authority.md §the data-as-code sink · NEP-0006 · LAW-AUTH-0327) · declares this task's fetch a code-bearing artifact it will never load or run · the non-empty string IS the justification · lifts the sink law only, never the net boundary or the SSRF floor."
+    "The honest door of the data-as-code sink · declares this task's fetch a code-bearing artifact it will never load or run. The non-empty string IS the justification · it lifts the sink law only, never the net boundary and never the SSRF floor (spec/10-authority.md · NEP-0006 · LAW-AUTH-0327)."
   ],
   "inputs": [
     "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies. Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211). The typed half of the dead `vars:` block (R3a · LAW-SURFACE-0201) · a `required: true` value lands here per the E-split total rule."
@@ -119,14 +119,14 @@ export const WORD_PROSE: Record<string, string[]> = {
     "Retry policy for this task · `{ max_attempts, backoff_ms, backoff_strategy, backoff_max_ms, jitter, on_codes }`. Retries run BEFORE `on_error` sees anything — the catch handles the last error only (spec/05-errors.md §Retry policy)."
   ],
   "returns": [
-    "The task's output contract (spec 09-types.md) — exclusive with a verb-level schema: (NIKA-TYPE-003)"
+    "The task's output contract · the TYPED door, where a verb-level `schema:` is the out-of-core hatch. The two are exclusive on one task (NIKA-TYPE-003 · spec 09-types.md)."
   ],
   "run": [
-    "The run's entropy + clock declaration (NEP-0010) · every source of randomness and time is declared, never ambient · the dimensions couple: only ambient×system (the status quo) and none|seeded×virtual (the deterministic states) are legal · a contradiction refuses at parse (NIKA-PARSE-026 ambient×virtual · NIKA-PARSE-027 none|seeded×system) and a strict declaration contradicted by the body refuses at check (NIKA-PARSE-028)."
+    "The run's entropy and clock declaration · every source of randomness and of time is declared, never ambient. The two dimensions couple: only `ambient × system` (the status quo) and `none | seeded × virtual` (the deterministic states) are legal, and a declared contradiction refuses at parse (NEP-0010)."
   ],
   "schema": [
-    "JSON Schema · structured output contract.",
-    "JSON Schema · validate the agent's final message as structured output."
+    "JSON Schema · the structured-output contract the model's reply must satisfy. The out-of-core hatch; the typed door is task-level `returns:` (both on one task is NIKA-TYPE-003).",
+    "JSON Schema · the contract the agent's FINAL message must satisfy. The out-of-core hatch; the typed door is task-level `returns:` (both on one task is NIKA-TYPE-003)."
   ],
   "secrets": [
     "Vault-backed masked references · `${{ secrets.X }}` · never inline literals."
@@ -151,8 +151,8 @@ export const WORD_PROSE: Record<string, string[]> = {
     "The task map · the KEY is the task's identity (snake_case · CEL-safe). Source order is presentation only — the graph alone schedules."
   ],
   "temperature": [
-    "0-2 · number or `${{ }}`.",
-    ""
+    "Sampling temperature · 0 is the steadiest the provider offers, 2 the loosest. A number in 0-2, or a `${{ }}` reference.",
+    "Sampling temperature for every turn of the loop · 0 is the steadiest the provider offers, 2 the loosest. A number in 0-2, or a `${{ }}` reference."
   ],
   "thinking": [
     "Extended thinking · `{ enabled, budget_tokens }` — reasoning the model may spend before it answers (spec/02-verbs.md §infer)."
@@ -168,7 +168,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "Whitelist · DEFAULT-DENY (no tools if absent) · gitignore-style globs · `!` negation."
   ],
   "types": [
-    "Named type declarations (spec 09-types.md · PascalCase · acyclic)"
+    "Named type declarations · the workflow's own vocabulary, referenced by name wherever a type is expected. PascalCase · acyclic (spec 09-types.md)."
   ],
   "vision": [
     "Image inputs for the call · each entry `{ source: file | url, path | url }` · the images `prompt:` is allowed to refer to."

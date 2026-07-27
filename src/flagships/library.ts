@@ -88,7 +88,7 @@ const BROWSE: {
     blurb: 'every doc translated in parallel, the tree mirrored back',
     /* the lit lines: the fan-out head — one run per item, rate-limited */
     gloss: 'for_each: one run per doc, three in flight at a time',
-    highlight: [42, 43],
+    highlight: [44, 45],
   },
 ]
 
