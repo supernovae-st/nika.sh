@@ -808,3 +808,38 @@
     background: CanvasText;
   }
 }
+
+/* ─── THE RECEIPT · what the binary said about this exact file ────────────────
+   The product's claim is that a plan is audited BEFORE it runs. Every surface
+   here says so in prose; none of them showed it. This line is the engine's
+   own verdict, captured from `nika check --json` at build time and pinned
+   with the version that produced it — the same discipline as the terminal
+   captures and the vendored catalogs.
+
+   It reads as a receipt, not a badge: mono, faint, one line, under the code
+   where a verdict belongs. The engine stamp sits at the far end because the
+   provenance is the point — a claim about an audit is worthless without the
+   binary that made it. */
+.cf-verdict {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  margin: 0;
+  padding: 7px 14px 8px;
+  border-top: 1px solid var(--cf-seam, rgb(140 170 255 / 0.08));
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--v4-text-faint);
+}
+.cf-verdict-mark {
+  color: var(--v4-text-faint);
+}
+.cf-verdict[data-clean] .cf-verdict-mark {
+  color: var(--severity-ok, #34d399);
+}
+.cf-verdict-src {
+  margin-left: auto;
+  opacity: 0.72;
+}

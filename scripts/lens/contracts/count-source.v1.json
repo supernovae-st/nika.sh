@@ -26,8 +26,8 @@
     ],
     "count": 262,
     "set_sha256": "9d372634fa4ddb970717688272ea137f2f62b1691d1bb0005b689dafaf35493f",
-    "rendered_count": 533,
-    "rendered_set_sha256": "7a045847d01dbc9f287cc09c4f194278da48143725f34f03e010727dff0cbe57"
+    "rendered_count": 534,
+    "rendered_set_sha256": "088cc454039afd013852b0552e4fdf6bfa1a664360a7107b00720391b2016487"
   },
   "claim_count": 147,
   "bindings": [
@@ -334,7 +334,7 @@
     {
       "selector": "src/components/CodeFile.tsx#count:1",
       "path": "src/components/CodeFile.tsx",
-      "line": 145,
+      "line": 149,
       "text": "4 verbs",
       "source": "4",
       "field": "verbs",

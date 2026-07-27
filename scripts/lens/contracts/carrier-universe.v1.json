@@ -44,8 +44,8 @@
     "site.config.ts",
     "src/routes.tsx"
   ],
-  "carrier_count": 533,
-  "set_sha256": "7a045847d01dbc9f287cc09c4f194278da48143725f34f03e010727dff0cbe57",
+  "carrier_count": 534,
+  "set_sha256": "088cc454039afd013852b0552e4fdf6bfa1a664360a7107b00720391b2016487",
   "normative_source_count": 262,
   "normative_source_sha256": "9d372634fa4ddb970717688272ea137f2f62b1691d1bb0005b689dafaf35493f",
   "normative_sources": [
@@ -499,6 +499,7 @@
     "src/content/atlas-nav.generated.ts",
     "src/content/atlas.generated.ts",
     "src/content/blog-rails.generated.ts",
+    "src/content/check-verdicts.generated.ts",
     "src/content/code-roles.generated.ts",
     "src/content/design.generated.ts",
     "src/content/errors.generated.ts",
@@ -840,6 +841,7 @@
     "src/content/blog-rails.generated.ts",
     "src/content/blog.generated.ts",
     "src/content/changelog.ts",
+    "src/content/check-verdicts.generated.ts",
     "src/content/code-roles.generated.ts",
     "src/content/design.generated.ts",
     "src/content/errors.generated.ts",

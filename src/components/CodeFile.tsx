@@ -11,6 +11,7 @@ import { tipFor, tipHref, type CodeTip } from './codefile-tips'
 import { useCopy } from '../lib/use-copy'
 import { CopyIcon } from './CopyRow'
 import { armIdleFlag } from '../fx/idle-flag'
+import { CHECK_VERDICTS, VERDICT_ENGINE } from '../content/check-verdicts.generated'
 import '../shell/shell.css'
 import './codefile.css'
 import '../fx/panel-sheen.css'
@@ -60,6 +61,9 @@ const LazyMiniDag = lazy(() => import('./CodeMiniDag'))
 /* the eager half: does this block even look like a plan? One regex, no
    parse, no import — the derivation itself rides the lazy chunk. */
 const PLAN_SHAPE = /(^|\s)(infer|exec|invoke|agent)\s*:/m
+/* the workflow id is the file's identity in nika, and the cheapest key the
+   panel can read without hashing its own bytes */
+const WF_ID = /^workflow:\s*\n\s+id:\s*(\S+)/m
 const hasPlanShape = (y: string) => y.length > 0 && y.length <= 20000 && PLAN_SHAPE.test(y)
 
 export interface CodeFileProps {
@@ -254,6 +258,15 @@ export function CodeFile({
      hero passes its richer flagship model through its own sibling MiniDag and
      opts out here, so a panel never draws two. */
   const ownPlan = useMemo(() => minimap && hasPlanShape(yaml), [minimap, yaml])
+  /* THE RECEIPT. The site claims « audited before a token is spent » on a
+     dozen surfaces and showed it on none. When the panel holds a whole
+     workflow this site ships, it wears the verdict the BINARY produced —
+     captured at build time from `nika check --json`, never a summary
+     somebody typed. A file with no captured verdict simply shows nothing. */
+  const verdict = useMemo(() => {
+    const id = WF_ID.exec(yaml)?.[1]
+    return id ? CHECK_VERDICTS[id] : undefined
+  }, [yaml])
   /* proximity gate · the lazy chunk is fetched the first time a panel comes
      within a viewport of the fold, then the drawing stays (the usePlan3D
      latch, at 2D cost) */
@@ -590,6 +603,17 @@ export function CodeFile({
             {sourceHref ? <SourceLink href={sourceHref} /> : null}
             <CopyButton value={yaml} />
           </span>
+        ) : null}
+        {verdict ? (
+          <p className="cf-verdict" data-clean={verdict.clean || undefined}>
+            <span className="cf-verdict-mark" aria-hidden>
+              {verdict.clean ? '✔' : '✗'}
+            </span>
+            audited · {verdict.tasks} tasks · {verdict.waves} waves ·{' '}
+            {verdict.permitsDeclared ? 'permits declared' : 'no boundary declared'}
+            {verdict.hints ? ` · ${verdict.hints} hint${verdict.hints > 1 ? 's' : ''}` : ''}
+            <span className="cf-verdict-src">nika {VERDICT_ENGINE}</span>
+          </p>
         ) : null}
         {/* THE PLAN, in the panel's own corner — the same drawing, the same
             hues, the same pairing on every yaml the site shows. Mounted only
