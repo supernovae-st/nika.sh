@@ -140,3 +140,69 @@ describe('voice · authored sources hold the register', () => {
     expect(hits, `intensifier in authored prose:\n${report(hits)}`).toEqual([])
   })
 })
+
+/* ── the page-copy ratchet (the perimeter's blind side) ───────────────────────
+   The gates above guard four surfaces: content/blog, the OG cards, sets.yaml
+   and llms.txt — the places the 2026-07 purge saw the class re-strike. They
+   have never watched src/pages, src/sections or src/content, which is the
+   LARGEST authored-copy surface on the site: every lede, every room blurb,
+   every meta description. 99 em dashes live there today.
+
+   A mass rewrite of 99 user-facing strings is not a gate's business, and
+   doing it blind would risk the meaning of copy nobody asked me to touch. So
+   this takes the shape the codebase already uses for exactly this situation —
+   design-graph's « inline ms population only ever shrinks » (law 3): measure
+   the population, pin it, and let the ceiling only ever descend. New page
+   copy cannot add to the debt, and every conversion lowers the bar behind it.
+
+   Comment prose is out of scope by construction: dev comments in this repo
+   use the em dash freely and ship to nobody. Only what survives comment
+   stripping is judged. */
+describe('voice · page copy carries no NEW em dash (law 3 ratchet)', () => {
+  const stripComments = (src: string) => {
+    const blank = (m: string) => m.replace(/[^\n]/g, '')
+    return src.replace(/\/\*[\s\S]*?\*\//g, blank).replace(/^\s*\/\/.*$/gm, blank)
+  }
+
+  const shipped = (): string[] => {
+    const out: string[] = []
+    const walk = (dir: string) => {
+      for (const name of readdirSync(join(ROOT, dir))) {
+        const rel = `${dir}/${name}`
+        try {
+          if (readdirSync(join(ROOT, rel)).length >= 0) {
+            if (!rel.endsWith('/test')) walk(rel)
+            continue
+          }
+        } catch {
+          /* not a directory */
+        }
+        if (/\.(ts|tsx)$/.test(name) && !name.includes('.generated.') && !name.includes('.test.')) {
+          out.push(rel)
+        }
+      }
+    }
+    walk('src')
+    return out
+  }
+
+  it('the em dash population in shipped code only ever shrinks', () => {
+    const files = shipped()
+    expect(files.length, 'the scan found no source — a gate over nothing').toBeGreaterThan(80)
+    const per = files
+      .map((f) => [f, (stripComments(readFileSync(join(ROOT, f), 'utf8')).match(/—/g) ?? []).length] as const)
+      .filter(([, n]) => n > 0)
+      .sort((a, b) => b[1] - a[1])
+    const total = per.reduce((n, [, c]) => n + c, 0)
+    /* measured 2026-07-27, after the /map clock line converted to the house
+       separator. Convert copy in its own passes; this number only descends. */
+    const CEILING = 99
+    expect(
+      total,
+      `page copy grew em dashes: ${total} > ceiling ${CEILING}. Heaviest:\n${per
+        .slice(0, 5)
+        .map(([f, c]) => `  ${c}× ${f}`)
+        .join('\n')}`,
+    ).toBeLessThanOrEqual(CEILING)
+  })
+})

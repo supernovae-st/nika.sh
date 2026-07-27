@@ -39,7 +39,10 @@ export function clockDiffLine(): string {
     if (d.shipped_only.length)
       parts.push(`${register} shipped ahead of canon: ${d.shipped_only.join(' · ')}`)
   }
+  /* the house separator, not an em dash: this line was dormant until the
+     grammar drift surfaced it, and the copy law (AGENTS.md · no em-dash
+     slop) applies the moment prose reaches a page */
   return parts.length
-    ? parts.join(' — ')
+    ? parts.join(' · ')
     : 'the two clocks agree today: everything ratified is shipped'
 }
