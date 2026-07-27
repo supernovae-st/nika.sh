@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "check": "tsc --noEmit -p tsconfig.app.json && node design/build.mjs --check",
+    "check": "tsc --noEmit -p tsconfig.app.json && node design/build.mjs --check && node design/bench.mjs --check",
     "lint": "eslint src --max-warnings 0",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -26,7 +26,8 @@
     "gates": "node scripts/run-gates.mjs",
     "gates:fast": "node scripts/run-gates.mjs --fast",
     "lens": "node scripts/lens/graph/build-lens.mjs",
-    "postbuild": "pagefind --site dist && node scripts/sort-pagefind-entry.mjs"
+    "postbuild": "pagefind --site dist && node scripts/sort-pagefind-entry.mjs",
+    "bench": "node design/bench.mjs"
   },
   "dependencies": {
     "@codemirror/autocomplete": "6.20.3",
@@ -78,7 +79,7 @@
     "vitest": "^2.1.9",
     "yaml": "^2.9.0"
   },
-  "description": "nika.sh — Intent as Code. The public site for the Nika workflow language. Vite + React 19 + react-three-fiber cinematic 3D, Tailwind v4, static output, deployed to DigitalOcean App Platform.",
+  "description": "nika.sh \u2014 Intent as Code. The public site for the Nika workflow language. Vite + React 19 + react-three-fiber cinematic 3D, Tailwind v4, static output, deployed to DigitalOcean App Platform.",
   "license": "AGPL-3.0-or-later",
   "packageManager": "pnpm@10.32.1",
   "engines": {
