@@ -593,10 +593,33 @@
   padding: 5px 12px;
   border-top: 1px solid var(--v4-line);
 }
-/* the Reference rail holds one full row, not a version + CTA pair */
+/* the Reference rail holds one full row over the drawing it opens */
 .v4mega-rail--ref {
   display: block;
-  padding: 8px 12px 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 92px;
+  padding: 10px 12px;
+  overflow: hidden;
+}
+
+/* THE RAIL IS A WINDOW, not a row with a picture next to it. The stars sit
+   behind the label and dissolve toward the left, so « The map » stays the
+   thing you read and the graph is what you glimpse. pointer-events off: the
+   whole rail is the link, the canvas never intercepts it. */
+.v4mega-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.85;
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 30%, #000 58%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 30%, #000 58%, #000 92%, transparent 100%);
+}
+.v4mega-rail--ref .v4mega-item--feat {
+  position: relative;
 }
 .v4mega-rail--ref .v4mega-item--feat {
   padding-block: 6px;
@@ -930,8 +953,19 @@ button.v4sheet-search {
 /* the chip reads « 62 words », not « ·62 » — the number is derived, the noun
    is authored beside the ref in the descriptor. A receipt nobody has to
    decode. */
+/* the receipts land in a COLUMN, not trailing their labels · eleven chips at
+   eleven different x-positions read as debris; flushed right they read as a
+   ledger, and the eye can total them without moving twice */
+.v4mega-item--ref .v4mega-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
 .v4mega-item--ref .v4mega-chip {
-  margin-left: 0.55ch;
+  flex: none;
+  margin-left: auto;
   font-size: 11px;
   letter-spacing: 0.02em;
   color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-text-dim)) 64%, var(--v4-text-dim));

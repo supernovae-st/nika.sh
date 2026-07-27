@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { BrandMark } from './BrandMark'
 import { REPO, DOCS, ENGINE_VERSION } from '../content'
@@ -15,6 +15,8 @@ import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import { acquireScrollLock, releaseScrollLock } from '../lib/scroll-lock'
 import './nav.css'
 import { NK_ICONS } from '../icons/manifest'
+
+const NavConstellation = lazy(() => import('./NavConstellation'))
 
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
    ONE nav for every route (mounted in RootLayout). The chrome is a
@@ -725,6 +727,12 @@ export default function Nav() {
                       dense columns left a third of the surface empty, and the
                       map is a destination you take after reading, not before */}
                   <div className="v4mega-rail v4mega-rail--ref">
+                    {/* the rail IS the drawing: the site's own constellation,
+                        turning behind the label · lazy, so a visitor who never
+                        opens Reference never fetches the geometry */}
+                    <Suspense fallback={null}>
+                      <NavConstellation />
+                    </Suspense>
                     <ItemLink
                       item={NAV_REFERENCE.featured}
                       className="v4mega-item v4mega-item--feat"
