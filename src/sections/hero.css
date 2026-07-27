@@ -416,24 +416,49 @@
     min-width: 0;
   }
   .v4hero-editor > .v4hero-well > .v4hero-dag {
-    /* the minimap · above the panel floor, clear of the file-tab strip
-       below the panel; scaled to the register of a code minimap. The
-       film's pips keep their data-task rects — the birth reads them
-       wherever the drawing lives. */
+    /* THE MINIMAP RIDES THE TOP-RIGHT CLUSTER (operator 2026-07-27).
+       It sat bottom-right and measurably covered the code — the geometry
+       probe read `dagOverlapsCode: true`, and on pr-risk-review it ate the
+       tail of the schema block. Top-right is where a real editor keeps its
+       minimap AND where the shortest lines are (the envelope: `nika: v1`,
+       `workflow:`), so the same overlay costs the reader far less.
+
+       It docks UNDER source/Copy and wears their exact chrome — one ink,
+       one hairline, one blur — so the corner reads as a single instrument
+       cluster instead of three floating objects. */
     position: absolute;
     right: 10px;
-    bottom: 12px;
-    z-index: 3;
-    transform: scale(0.72);
-    transform-origin: bottom right;
+    /* clears the action row: the float sits 8px into .cf-pre and stands
+       28.5px tall, so the drawing starts below 8+28.5 plus a 10px gutter,
+       measured from the well's own top edge (the panel chrome is 36px). */
+    top: 84px;
+    z-index: 2;
+    transform: scale(0.66);
+    transform-origin: top right;
     pointer-events: auto;
-    /* a quiet backdrop so the drawing reads over code lines — the panel's
-       own ink, slightly lifted, hairline-edged (v4 grammar) */
     padding: 10px 12px 8px;
-    background: color-mix(in srgb, var(--cf-bg, #0a0d14) 86%, transparent);
-    backdrop-filter: blur(3px);
-    border: 1px solid rgb(255 255 255 / 0.07);
+    background: color-mix(in srgb, var(--cf-bg, #0a0d14) 82%, transparent);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgb(140 170 255 / 0.1);
     border-radius: 4px;
+    /* quiet at rest, present on approach — the drawing is a reference, not
+       a claim on attention (reduced-motion keeps the settled state) */
+    opacity: 0.82;
+    transition:
+      opacity var(--dur-quick) var(--ease-out),
+      border-color var(--dur-quick) var(--ease-out);
+  }
+  .v4hero-editor > .v4hero-well:hover > .v4hero-dag,
+  .v4hero-editor > .v4hero-well > .v4hero-dag:focus-within {
+    opacity: 1;
+    border-color: rgb(140 170 255 / 0.26);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .v4hero-editor > .v4hero-well > .v4hero-dag {
+      opacity: 1;
+      transition: none;
+    }
   }
 }
 /* a faint lift on the editor panel so it floats over the field (its own dark
@@ -572,6 +597,24 @@
   line-height: 0;
   margin-right: 6px;
   color: var(--v4-text-dim);
+}
+/* THE MARK MUST BE SIZED IN CSS, not by the width/height attributes.
+   Tailwind preflight ships `img { max-width: 100%; height: auto }`: inside
+   an inline-flex parent that shrink-wraps to its content, the image caps at
+   the parent's width while the parent waits on the image — circular, and
+   every browser resolves it to 0. The mark rendered, the svg loaded
+   (naturalWidth 1100), and the box measured 0×0, so the selected tab has
+   been wearing an invisible logo. The nav brand pins its own 19px for the
+   same reason; this is that remedy, at tab scale. */
+.v4ftab-mark img {
+  /* max-width:none is the one that matters — pinning width/height alone
+     left the box at 0×12, because the percentage cap still resolved against
+     a parent that was itself waiting on this image. Removing the cap breaks
+     the cycle; the parent then shrink-wraps to a real 12px. */
+  max-width: none;
+  width: 12px;
+  height: 12px;
+  display: block;
 }
 .v4ftab[aria-selected='true'] .v4ftab-ext,
 .v4ftab[data-sel] .v4ftab-ext {

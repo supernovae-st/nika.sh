@@ -205,12 +205,34 @@
   min-height: 24px;
   padding: 4px 3px 2px;
   cursor: default;
-  border-radius: var(--v4-radius-sm);
+  border-radius: 7px;
   color: var(--v4-text-dim);
   transition:
-    color var(--dur-ui) var(--ease-ui),
-    background-color var(--dur-ui) var(--ease-ui);
+    color var(--dur-quick) var(--ease-out),
+    background-color var(--dur-quick) var(--ease-out),
+    box-shadow var(--dur-quick) var(--ease-out);
 }
+/* ONE HUE PER NODE, read once and reused by every state (dot · halo · ring).
+   The verb palette is the SSOT (design/tokens.yaml → NIKA_VERB_HEX → the
+   --verb-* customs), so the minimap's pairing highlight now speaks the same
+   colour the keyword wears in the code and the node wears in the VS Code
+   canvas — instead of a flat white wash that read as a grey smudge. */
+.mdag-node {
+  --mdag-hue: var(--v4-text-faint);
+}
+.mdag-node[data-verb='infer'] {
+  --mdag-hue: var(--verb-infer);
+}
+.mdag-node[data-verb='exec'] {
+  --mdag-hue: var(--verb-exec);
+}
+.mdag-node[data-verb='invoke'] {
+  --mdag-hue: var(--verb-invoke);
+}
+.mdag-node[data-verb='agent'] {
+  --mdag-hue: var(--verb-agent);
+}
+
 .mdag-dot {
   width: 7px;
   height: 7px;
@@ -218,17 +240,8 @@
   background: var(--v4-text-faint);
   box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35);
 }
-.mdag-node[data-verb='infer'] .mdag-dot {
-  background: var(--verb-infer);
-}
-.mdag-node[data-verb='exec'] .mdag-dot {
-  background: var(--verb-exec);
-}
-.mdag-node[data-verb='invoke'] .mdag-dot {
-  background: var(--verb-invoke);
-}
-.mdag-node[data-verb='agent'] .mdag-dot {
-  background: var(--verb-agent);
+.mdag-node .mdag-dot {
+  background: var(--mdag-hue);
 }
 .mdag-id {
   font-size: 10.5px;
@@ -248,11 +261,15 @@
 }
 
 /* the paired state · hover/focus here or in the editor lights BOTH sides */
+/* the paired plate · a soft, verb-tinted lozenge with a hairline of the same
+   hue. The first cut washed a hard-cornered rgb(255 255 255 / 0.05) rect
+   behind the label, which read as a rendering glitch rather than a state. */
 .mdag-node:hover,
 .mdag-node:focus-visible,
 .mdag-node[data-hi] {
   color: var(--v4-text);
-  background: rgb(255 255 255 / 0.05);
+  background: color-mix(in srgb, var(--mdag-hue) 13%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mdag-hue) 28%, transparent);
 }
 .mdag-node[data-hi] .mdag-dot {
   box-shadow:
