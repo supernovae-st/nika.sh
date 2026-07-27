@@ -9,6 +9,7 @@ import {
 } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { declProse, type WordProse } from '../lib/language-prose-access'
+import { roleOf, ROLE_FAMILIES } from '../lib/word-role'
 import { useWordProse, proseIslandId } from '../lib/use-word-prose'
 import { Island } from '../lib/ssg-island'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
@@ -37,12 +38,25 @@ import './language-page.css'
 
 function WordRow({ entry, prose }: { entry: LanguageWord; prose: WordProse | null }) {
   const required = entry.decls.filter((d) => d.required)
+  /* the family, in the register's scanning voice — the room says it in a
+     sentence, here it is a mark you can spot without reading */
+  const role = roleOf(entry.word)
   return (
     <li id={entry.word} className="lg-row">
       <div className="tp-row-head">
         <a className="tp-name" href={`/language/${entry.word}`}>
           {entry.word}
         </a>
+        {role && (
+          <span className="lg-role" data-role={role.role} title={role.says}>
+            {role.mark === 'glyph' && (
+              <span className="lg-role-mark" aria-hidden>
+                ⛊
+              </span>
+            )}
+            {role.label}
+          </span>
+        )}
         {entry.decls.map((d) => (
           <span key={d.scope} className="tp-cat" title={`speaks ${d.scope === 'envelope' ? 'at the envelope' : `inside ${d.scope}`}`}>
             {d.scope}
@@ -174,6 +188,53 @@ export function Component() {
               <WordRow key={w.word} entry={w} prose={prose} />
             ))}
           </ol>
+
+          {/* the three semantic FAMILIES · taught once, then worn as a mark on
+              every row above. The classification is the spec's (design/tokens.yaml,
+              derived from the schema), and the hues are the code panel's own, so a
+              reader who learns the marks here reads them in a YAML file too. */}
+          <div className="td-sec" data-rise>
+            <div className="cl-year-head">
+              <h2 id="lg-families" className="td-h2">
+                the three families
+              </h2>
+              <span className="cl-year-rule" aria-hidden />
+              <span className="cl-year-count">
+                {ROLE_FAMILIES.reduce((n, f) => n + f.words.length, 0)} of {LANGUAGE_WORDS.length}{' '}
+                words
+              </span>
+            </div>
+            <p className="td-gloss">
+              Most words carry no family and say nothing about one. These do: the contract
+              declares where each may legally appear, so a surface can colour by MEANING
+              instead of by syntax class. It is the same fact the panel tints and the room
+              states in a sentence.
+            </p>
+            <ul className="lg-families">
+              {ROLE_FAMILIES.map((f) => (
+                <li key={f.role} className="lg-family" data-role={f.role}>
+                  <p className="lg-family-k">
+                    {f.role === 'boundary' && (
+                      <span className="lg-role-mark" aria-hidden>
+                        ⛊
+                      </span>
+                    )}
+                    {f.label}
+                    <span className="lg-family-n">{f.words.length}</span>
+                  </p>
+                  <ul className="td-chips">
+                    {f.words.map((w) => (
+                      <li key={w}>
+                        <a className="td-chip" href={`/language/${w}`}>
+                          {w}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* the roomed blocks around the words (rooms universelles): the
               namespaces and the value types own pages too — this register

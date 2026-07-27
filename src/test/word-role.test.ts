@@ -61,15 +61,36 @@ describe('word roles · the register says what the panel colours', () => {
     }
   })
 
+  /* THE REGISTER TEACHES THE MARKS, so its legend must list exactly what the
+     projection classifies. A family that gained a word in the spec and not
+     here would leave a row wearing a mark the legend never explains. */
+  it('the register legend covers every classified word, and only those', () => {
+    const listed = ROLE_FAMILIES.flatMap((f) => f.words).sort()
+    const projected = Object.values(NIKA_ROLE_WORDS)
+      .flatMap((j) => j.split(' '))
+      .sort()
+    expect(listed).toEqual(projected)
+    /* the count the legend prints is derived, never typed */
+    expect(ROLE_FAMILIES.reduce((n, f) => n + f.words.length, 0)).toBe(projected.length)
+    expect(projected.length).toBeLessThan(LANGUAGE_WORDS.length)
+  })
+
   /* the hues are the PANEL's, never new ones — the same fact must wear the
      same colour in a YAML file and in the room that teaches the word */
   it('the room reuses the panel tokens rather than inventing hues', () => {
     const css = readFileSync(join(ROOT, 'src/pages/tool-detail.css'), 'utf8')
     const block = css.slice(css.indexOf('.wd-role'))
-    for (const token of ['--cf-key', '--cf-ref', '--danger']) {
-      expect(block, `the role line stopped using ${token}`).toContain(token)
+    const register = readFileSync(join(ROOT, 'src/pages/language-page.css'), 'utf8')
+    const legend = register.slice(register.indexOf('.lg-role'))
+    for (const [where, src] of [
+      ['the room', block],
+      ['the register', legend],
+    ] as const) {
+      for (const token of ['--cf-key', '--cf-ref', '--danger']) {
+        expect(src, `${where} stopped using ${token}`).toContain(token)
+      }
+      const hexes = [...src.matchAll(/#[0-9a-fA-F]{3,8}\b/g)].map((m) => m[0])
+      expect(hexes, `a raw hex appeared in ${where}'s role styling: ${hexes.join(' ')}`).toEqual([])
     }
-    const hexes = [...block.matchAll(/#[0-9a-fA-F]{3,8}\b/g)].map((m) => m[0])
-    expect(hexes, `a raw hex appeared in the role styling: ${hexes.join(' ')}`).toEqual([])
   })
 })

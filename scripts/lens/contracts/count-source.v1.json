@@ -916,7 +916,7 @@
     {
       "selector": "src/pages/Language.tsx#count:1",
       "path": "src/pages/Language.tsx",
-      "line": 27,
+      "line": 28,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -928,7 +928,7 @@
     {
       "selector": "src/pages/Language.tsx#count:2",
       "path": "src/pages/Language.tsx",
-      "line": 148,
+      "line": 162,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -940,7 +940,7 @@
     {
       "selector": "src/pages/Language.tsx#count:3",
       "path": "src/pages/Language.tsx",
-      "line": 221,
+      "line": 282,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",

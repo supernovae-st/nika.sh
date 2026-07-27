@@ -91,3 +91,72 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 160px;
 }
+
+/* ── the three families · the mark on the row, the legend below ──────────────
+   The room states a word's family in a sentence; here it is a mark you can
+   spot while scanning 62 rows. Same tokens as the code panel and the room
+   (--cf-key · --cf-ref · --danger), because a reader who learns the marks in
+   this register must read them unchanged in a YAML file. Boundary keeps the
+   shield: a glyph survives forced-colors where a hue does not. */
+.lg-role {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--lg-role-ink, var(--v4-line)) 42%, transparent);
+  color: var(--lg-role-ink, var(--v4-text));
+  background: color-mix(in srgb, var(--lg-role-ink, var(--v4-line)) 9%, transparent);
+  white-space: nowrap;
+}
+.lg-role[data-role='boundary'],
+.lg-family[data-role='boundary'] {
+  --lg-role-ink: var(--cf-key);
+}
+.lg-role[data-role='wire'],
+.lg-family[data-role='wire'] {
+  --lg-role-ink: var(--cf-ref);
+}
+.lg-role[data-role='fail'],
+.lg-family[data-role='fail'] {
+  --lg-role-ink: color-mix(in srgb, var(--danger) 78%, var(--v4-text));
+}
+.lg-role-mark {
+  margin-right: 0.35ch;
+  opacity: 0.78;
+}
+
+.lg-families {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.lg-family {
+  padding-left: 10px;
+  border-left: 2px solid var(--lg-role-ink, var(--v4-line));
+}
+.lg-family-k {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lg-role-ink, var(--v4-text));
+}
+.lg-family-n {
+  margin-left: 0.6ch;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (forced-colors: active) {
+  .lg-role,
+  .lg-family,
+  .lg-family-k {
+    color: CanvasText;
+    border-color: CanvasText;
+    background: Canvas;
+  }
+}
