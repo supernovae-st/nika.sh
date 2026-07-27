@@ -41,19 +41,33 @@
    use-island-payload — the single reader of every island on this site — puts
    it back before any caller sees the bytes.
 
-   A transport encoding, NOT a JSON escape. The first attempt shipped `\\u0024`,
-   which is correct for the JSON islands and would have silently corrupted the
-   ones carrying raw YAML (`${{ … }}`) or an inline SVG — the gate caught it
-   within the minute. Encode on write, decode on read, and the payload's own
-   grammar never enters into it. */
-export const ISLAND_DOLLAR = '\uE000'
-const encode = (payload: string) => payload.split('$').join(ISLAND_DOLLAR)
+   TWO FIXES TRIED AND WITHDRAWN, recorded so nobody re-walks them:
+
+     · a JSON escape (`$` → \\u0024) — correct for the JSON islands, and it
+       would have silently corrupted the ones carrying raw YAML (`${{ … }}`) or
+       an inline SVG. Caught within the minute by the round-trip gate.
+     · a transport sentinel (`$` → a private-use char, undone in
+       use-island-payload) — it broke hydration on every /use-cases page,
+       React #418 across the sweep, because the sentinel does not survive the
+       serialize/parse round trip identically.
+
+   What works is the FIRST fix, scoped to where it is sound: a JSON payload may
+   escape its dollars, because \\u0024 parses back to `$` and `$` can only sit
+   inside a string literal there. A raw-text payload may not, so it ships
+   untouched. Use islandJson() to build a JSON payload and the hazard is gone
+   at the source.
+
+   Empirically it is ONE sentence today — NIKA-PARSE-004 reads « …^[a-z][a-z0-9-]* »
+   and the JSON quote after it escapes to &quot; — but the class is any `$`
+   before an entity, so the gate in src/test/ssg-island.test.ts judges the
+   BUILT pages and fails the day an island swallows the app root again. That is
+   where the bug was observed, and where a recurrence gets caught. */
 
 export function Island({ id, payload }: { id: string; payload: string }) {
   return (
     <textarea
       id={id}
-      value={encode(payload)}
+      value={payload}
       readOnly
       hidden
       tabIndex={-1}

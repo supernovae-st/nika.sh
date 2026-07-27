@@ -1,7 +1,6 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { ISLAND_DOLLAR } from '../lib/ssg-island'
 
 /* ── the dollar hazard, gated ─────────────────────────────────────────────────
    vite-plugin-react-ssg assembles every page with
@@ -22,7 +21,11 @@ import { ISLAND_DOLLAR } from '../lib/ssg-island'
 const DIST = join(__dirname, '../../dist')
 
 const pages: string[] = []
-;(function walk(dir: string) {
+/* the suite runs BEFORE the build in CI's check-lint-build job, so dist/ may
+   not exist — this gate judges built output and skips honestly when there is
+   none rather than exploding at module load. */
+if (existsSync(DIST))
+  (function walk(dir: string) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name)
     if (statSync(p).isDirectory()) walk(p)
@@ -48,27 +51,19 @@ describe.skipIf(pages.length === 0)('ssg islands · no replacement pattern survi
     expect(hit.map((p) => p.slice(DIST.length)), 'an island swallowed the app root').toEqual([])
   })
 
-  it('no island payload carries a bare $ at all', () => {
+  it('no island payload carries a replacement pattern', () => {
     const hit: string[] = []
     for (const p of pages) {
       const html = readFileSync(p, 'utf8')
       for (const m of html.matchAll(/<textarea[^>]*id="([^"]*)"[^>]*>([\s\S]*?)<\/textarea>/g)) {
-        /* the escape ships as the two characters $, so a LONE $ means an
-           island wrote its payload without going through <Island> */
-        if (/\$/.test(m[2])) hit.push(`${p.slice(DIST.length)}#${m[1]}`)
+        /* a STRING search carries no capture groups, so `$1` is left literal —
+           the patterns that actually fire are `$&`, `` $` ``, `$'` and `$$`.
+           A JSON island defuses them at the source (island-json.ts); a raw one
+           is judged here. */
+        if (/\$[&`'$]/.test(m[2])) hit.push(`${p.slice(DIST.length)}#${m[1]}`)
       }
     }
-    expect(hit.slice(0, 6), 'a raw $ reached an island payload').toEqual([])
+    expect(hit.slice(0, 6), 'a replacement pattern reached an island payload').toEqual([])
   })
 
-  /* AND THE ENCODING MUST BE REVERSIBLE · a payload the reader cannot restore
-     is worse than the bug it replaced. Not every island carries JSON (some
-     ship raw YAML, one an inline SVG), so the check is ROUND-TRIP, not parse:
-     decoding must give back a `$` wherever the source had one. */
-  it('the encoding round-trips for JSON, YAML and SVG payloads alike', () => {
-    const cases = ['{"a":"^[a-z]*$"}', 'nika: v1\nx: ${{ tasks.a.output }}', '<svg>$&</svg>', '']
-    for (const c of cases) {
-      expect(c.split('$').join(ISLAND_DOLLAR).split(ISLAND_DOLLAR).join('$'), c).toBe(c)
-    }
-  })
 })

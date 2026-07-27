@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useIslandPayload } from './use-island-payload'
+import { islandJson } from './island-json'
 import { ssrErrorProse, loadErrorProse, type ErrorProse } from './error-prose-access'
 
 /* the ONE reader of the refusal-prose island. Two pages show these sentences —
@@ -19,11 +20,11 @@ export function useErrorProse(scope: string, codes?: readonly string[]): ErrorPr
       codes ? Object.fromEntries(codes.filter((c) => all[c]).map((c) => [c, all[c]])) : all,
     [codes],
   )
-  const load = useCallback(async () => JSON.stringify(pick(await loadErrorProse())), [pick])
+  const load = useCallback(async () => islandJson(pick(await loadErrorProse())), [pick])
   const ssr = ssrErrorProse()
   const payload = useIslandPayload(
     errorProseIslandId(scope),
-    ssr ? JSON.stringify(pick(ssr)) : null,
+    ssr ? islandJson(pick(ssr)) : null,
     load,
   )
   return payload ? (JSON.parse(payload) as ErrorProse) : null

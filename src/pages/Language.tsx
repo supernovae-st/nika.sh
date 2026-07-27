@@ -12,6 +12,7 @@ import { declProse, type WordProse } from '../lib/language-prose-access'
 import { roleOf, ROLE_FAMILIES } from '../lib/word-role'
 import { useWordProse, proseIslandId } from '../lib/use-word-prose'
 import { Island } from '../lib/ssg-island'
+import { islandJson } from '../lib/island-json'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import { CANON } from '../canon.generated'
 import { SPEC, routeHead } from '../content'
@@ -144,7 +145,7 @@ export function Component() {
 
   return (
     <main className="theme-dark tp-page lg-page">
-      <Island id={proseIslandId('register')} payload={JSON.stringify(prose ?? {})} />
+      <Island id={proseIslandId('register')} payload={islandJson(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="lg-title" className="v4sec v4-in">
         <div className="v4sec-wrap">

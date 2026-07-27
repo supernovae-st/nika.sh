@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Link, useParams } from 'react-router'
 import { Island } from '../lib/ssg-island'
+import { islandJson } from '../lib/island-json'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { useHead } from '@unhead/react'
@@ -173,7 +174,7 @@ export function Component() {
 
   return (
     <main className="theme-dark er-page">
-      <Island id={errorProseIslandId('register')} payload={JSON.stringify(prose ?? {})} />
+      <Island id={errorProseIslandId('register')} payload={islandJson(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts):
           on a one-section page the observer armed everything at hydration anyway;
           baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}

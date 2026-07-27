@@ -4,6 +4,7 @@ import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { Island } from '../lib/ssg-island'
+import { islandJson } from '../lib/island-json'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { ERROR_CODES, ERROR_INDEX } from '../content/errors.generated'
@@ -119,7 +120,7 @@ export function Component() {
 
   return (
     <main className="theme-dark tp-page td-page">
-      <Island id={errorProseIslandId(`code-${code}`)} payload={JSON.stringify(prose ?? {})} />
+      <Island id={errorProseIslandId(`code-${code}`)} payload={islandJson(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="err-title" className="v4sec v4-in" data-code={hit?.code}>
         <div className="v4sec-wrap">

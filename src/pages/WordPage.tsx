@@ -18,6 +18,7 @@ import { sourcesForWord } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
 import { WORD_ACCEPTS, WORD_CHAPTERS, CHAPTER_FILES } from '../content/room-rails.generated'
 import { Island } from '../lib/ssg-island'
+import { islandJson } from '../lib/island-json'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { SPEC, SITE, routeHead } from '../content'
@@ -208,7 +209,7 @@ export function Component() {
 
   return (
     <main className="theme-dark tp-page td-page">
-      <Island id={proseIslandId(`word-${word}`)} payload={JSON.stringify(prose ?? {})} />
+      <Island id={proseIslandId(`word-${word}`)} payload={islandJson(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="wd-title" className="v4sec v4-in" data-word={hit?.word}>
         <div className="v4sec-wrap">

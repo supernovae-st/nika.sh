@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useIslandPayload } from './use-island-payload'
+import { islandJson } from './island-json'
 import { ssrWordProse, loadWordProse, type WordProse } from './language-prose-access'
 
 /* the ONE reader of the language prose island — three pages show the
@@ -21,13 +22,13 @@ export function useWordProse(scope: string, words?: readonly string[]): WordPros
     [words],
   )
   const load = useCallback(
-    async () => JSON.stringify(pick(await loadWordProse())),
+    async () => islandJson(pick(await loadWordProse())),
     [pick],
   )
   const ssr = ssrWordProse()
   const payload = useIslandPayload(
     proseIslandId(scope),
-    ssr ? JSON.stringify(pick(ssr)) : null,
+    ssr ? islandJson(pick(ssr)) : null,
     load,
   )
   return payload ? (JSON.parse(payload) as WordProse) : null
