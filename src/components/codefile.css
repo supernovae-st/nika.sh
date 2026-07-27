@@ -655,3 +655,72 @@
     transition: none;
   }
 }
+
+/* ─── the panel's own plan · the minimap, site-wide ───────────────────────────
+   The hero proved the register; this brings it to every yaml the site shows
+   (operator 2026-07-27). Same dock as the hero's (top-right, under the
+   actions), same chrome as the copy chips — one ink, one hairline, one blur —
+   so a reader meets the identical instrument on /use-cases, /library,
+   /templates and a blog fence as on the front page.
+
+   Quiet at rest, present on approach. It is a REFERENCE, not a claim on
+   attention, and it never takes the pointer away from the code: only the
+   nodes are interactive. */
+.cf-minimap {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  transform: scale(0.62);
+  transform-origin: top right;
+  padding: 10px 12px 8px;
+  background: color-mix(in srgb, var(--cf-bg) 82%, transparent);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgb(140 170 255 / 0.1);
+  border-radius: 4px;
+  opacity: 0.78;
+  pointer-events: auto;
+  transition:
+    opacity var(--dur-quick) var(--ease-out),
+    border-color var(--dur-quick) var(--ease-out);
+}
+/* a panel that already floats its copy chip pushes the drawing below them */
+.cf-panel:has(.cf-copy-float) .cf-minimap {
+  top: 52px;
+}
+.cf-panel:hover .cf-minimap,
+.cf-minimap:focus-within {
+  opacity: 1;
+  border-color: rgb(140 170 255 / 0.26);
+}
+/* the drawing is a reference on small screens, not a squeeze — the code is
+   already fighting for width there */
+@media (max-width: 1023px) {
+  .cf-minimap {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cf-minimap {
+    opacity: 1;
+    transition: none;
+  }
+}
+
+/* THE PANEL VARIANT IS THE DRAWING, NOTHING ELSE. The hero's MiniDag is a
+   showcase instrument — a titled survey frame with a run handoff in its
+   plate. In a code panel that chrome is most of the object: on /tools/fetch
+   the sketch is ONE node and the frame around it was three times its size.
+   An editor's minimap is the map. Title, rules, tie, caption and base all
+   drop; the nodes and their wires stay, and so does the pairing. */
+.cf-minimap .mdag-title,
+.cf-minimap .mdag-side,
+.cf-minimap .mdag-tie,
+.cf-minimap .mdag-base {
+  display: none;
+}
+.cf-minimap .mdag-row {
+  gap: 0;
+  padding: 0;
+}

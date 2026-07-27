@@ -182,7 +182,12 @@ export function Component() {
                   <span className="cl-year-count">conformance-gated upstream on every spec push</span>
                 </div>
                 <div className="td-usage">
-                  <CodeFile yaml={hit.yaml} filename={hit.file} />
+                  <CodeFile
+                    yaml={hit.yaml}
+                    filename={hit.file}
+                    /* the skeleton page already draws this plan full-size */
+                    minimap={false}
+                  />
                 </div>
                 <p className="td-pin">
                   sha256 <code>{hit.sha256.slice(0, 16)}…</code>. The copy above re-hashes to its

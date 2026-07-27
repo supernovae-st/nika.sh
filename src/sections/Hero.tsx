@@ -434,6 +434,7 @@ export default function Hero({
               rangeTip={rangeTip}
               onLineHover={onLineHover}
               copyInBody
+              minimap={false}
               chromeSlot={
                 <div className="v4chrometabs">
                   <FileTabs active={index} onSelect={onSelect} />

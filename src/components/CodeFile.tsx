@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import {
   NIKA_VERBS,
   tokenize,
@@ -49,6 +49,19 @@ function tokenizeCached(yaml: string): ReturnType<typeof tokenize> {
   return lines
 }
 
+/* THE MINIMAP IS LAZY, and that is load-bearing rather than tidy: MiniDag +
+   mini-dag-layout + the verb layout run to a few KB gzipped, and the initial
+   JS budget has been sitting inside a kilobyte of its ceiling all week. An
+   eager import here would put the drawing on every page that shows a line of
+   yaml and blow the budget in one commit. One shared chunk, fetched the first
+   time any panel actually draws. */
+const LazyMiniDag = lazy(() => import('./CodeMiniDag'))
+
+/* the eager half: does this block even look like a plan? One regex, no
+   parse, no import — the derivation itself rides the lazy chunk. */
+const PLAN_SHAPE = /(^|\s)(infer|exec|invoke|agent)\s*:/m
+const hasPlanShape = (y: string) => y.length > 0 && y.length <= 20000 && PLAN_SHAPE.test(y)
+
 export interface CodeFileProps {
   /** the raw YAML to render (also what the copy button copies, verbatim) */
   yaml: string
@@ -96,6 +109,13 @@ export interface CodeFileProps {
   /** the file's OFFICIAL registered source — renders a corner link beside
       the copy (spec pack blob · served /library file). */
   sourceHref?: string
+  /** draw the plan minimap in the panel's corner, derived from the yaml
+      itself (lib/code-plan): a complete workflow lays out with real waves, a
+      teaching fragment draws its verbs as one row. Default ON — every yaml on
+      the site reads the same way; a block with no derivable plan draws
+      nothing. The hero opts OUT: it owns a richer flagship model and renders
+      its own MiniDag beside the panel. */
+  minimap?: boolean
 }
 
 /* token kind → syntax class (the literal hue resolves per theme via codefile.css) */
@@ -215,8 +235,34 @@ export function CodeFile({
   copyInBody = false,
   sourceHref,
   bodyProps,
+  minimap = true,
 }: CodeFileProps) {
   const lines = useMemo(() => tokenizeCached(yaml), [yaml])
+  /* the panel's own plan · derived from the bytes, memoised per yaml. The
+     hero passes its richer flagship model through its own sibling MiniDag and
+     opts out here, so a panel never draws two. */
+  const ownPlan = useMemo(() => minimap && hasPlanShape(yaml), [minimap, yaml])
+  /* proximity gate · the lazy chunk is fetched the first time a panel comes
+     within a viewport of the fold, then the drawing stays (the usePlan3D
+     latch, at 2D cost) */
+  const [nearby, setNearby] = useState(false)
+  const panelRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!ownPlan || nearby || typeof IntersectionObserver === 'undefined') return
+    const el = panelRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setNearby(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '100% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [ownPlan, nearby])
   /* the title-bar sheen (panel-sheen.css) parks when the tab hides — arm the
      shared root [data-idle] flag (idempotent · one listener for all panels) */
   useEffect(armIdleFlag, [])
@@ -338,7 +384,7 @@ export function CodeFile({
   }, [yaml])
 
   return (
-    <div className={`cf-panel ${wrap ? 'cf-panel--wrap' : ''} ${className ?? ''}`}>
+    <div ref={panelRef} className={`cf-panel ${wrap ? 'cf-panel--wrap' : ''} ${className ?? ''}`}>
       {/* ── window chrome · the minimal titlebar register (product-frame recipe):
            3 square ticks (the affordance — never macOS traffic lights) + the
            filename in dim mono (or the call-site's chromeSlot — the hero puts
@@ -531,6 +577,15 @@ export function CodeFile({
             {sourceHref ? <SourceLink href={sourceHref} /> : null}
             <CopyButton value={yaml} />
           </span>
+        ) : null}
+        {/* THE PLAN, in the panel's own corner — the same drawing, the same
+            hues, the same pairing on every yaml the site shows. Mounted only
+            once the panel has been near the viewport (the chunk never loads
+            for a block below the fold) and only when the bytes yield a plan. */}
+        {ownPlan && nearby ? (
+          <Suspense fallback={null}>
+            <LazyMiniDag yaml={yaml} />
+          </Suspense>
         ) : null}
       </div>
     </div>

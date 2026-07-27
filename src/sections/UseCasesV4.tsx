@@ -219,7 +219,7 @@ export default function UseCasesV4() {
 
             <div className="v4uc-panel-code">
               <div className="v4uc-scroll">
-                <CodeFile yaml={yaml} wrap tips />
+                <CodeFile yaml={yaml} wrap tips minimap={false} /* the card carries its own PlanMap */ />
               </div>
             </div>
 

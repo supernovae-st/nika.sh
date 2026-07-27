@@ -630,13 +630,18 @@
   color: var(--v4-text);
   background: rgb(255 255 255 / 0.055);
 }
-/* the 2px accent seam · the ONE blue note on the bar · top edge of the chrome */
+/* the 2px accent seam · the ONE blue note on the bar · top edge of the chrome.
+   INSET TO THE LABEL, not to the tab box: at full width it ran the tab's
+   padding too and read as a rule that overshoots its own tab ("la ligne
+   dépasse") — the geometry was right, the reading was wrong. Aligning it to
+   the text, with its ends rounded, makes it point AT the filename. */
 .v4ftab[aria-selected='true']::before,
 .v4ftab[data-sel]::before {
   content: '';
   position: absolute;
-  inset: 0 0 auto 0;
+  inset: 0 0.815em auto 0.815em;
   height: 2px;
+  border-radius: 0 0 2px 2px;
   background: var(--v4-accent-strong);
 }
 /* the tab-strip clip · the non-scrolling wrapper carries the right edge-fade

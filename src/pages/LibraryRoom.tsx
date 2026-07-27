@@ -204,7 +204,14 @@ export function Component() {
                 {hit.yaml ? (
                   <>
                     <div className="td-usage">
-                      <CodeFile yaml={hit.yaml} filename={hit.filename} highlight={hit.highlight} />
+                      <CodeFile
+                        yaml={hit.yaml}
+                        filename={hit.filename}
+                        highlight={hit.highlight}
+                        /* the room draws this exact plan full-size above the
+                           file (PlanMap) — a corner copy would repeat it */
+                        minimap={false}
+                      />
                     </div>
                     <p className="td-pin">
                       lines {hit.highlight[0]}–{hit.highlight[1]}: {hit.gloss}. Source:{' '}
