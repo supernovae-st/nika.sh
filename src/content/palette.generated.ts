@@ -211,7 +211,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "set",
     "label": "The permit families",
     "href": "/permits",
-    "hint": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library. Absent means the engine floor · present means default-deny."
+    "hint": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library, env for the names a child process inherits. Absent means the engine floor · present means default-deny."
   },
   {
     "kind": "set",
@@ -737,12 +737,6 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
-    "label": "NIKA-PARSE-015",
-    "href": "/errors/NIKA-PARSE-015",
-    "hint": "typed vars: declaration malformed (type in string/number/integer/boolean/array/object)"
-  },
-  {
-    "kind": "error",
     "label": "NIKA-PARSE-017",
     "href": "/errors/NIKA-PARSE-017",
     "hint": "duplicate mapping key — no silent last-wins"
@@ -794,6 +788,24 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-PARSE-025",
     "href": "/errors/NIKA-PARSE-025",
     "hint": "decode: with capture: structured — that capture already IS an object · type it with returns:"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-PARSE-026",
+    "href": "/errors/NIKA-PARSE-026",
+    "hint": "a declared entropy x clock contradiction · entropy: ambient paired with clock: virtual — the ambient declaration contradicts the determinism demand (NEP-0010 · F-P3)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-PARSE-027",
+    "href": "/errors/NIKA-PARSE-027",
+    "hint": "a declared entropy x clock contradiction · entropy: none | seeded paired with clock: system — deterministic journals cannot ride the wall clock (NEP-0010 · F-P3)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-PARSE-028",
+    "href": "/errors/NIKA-PARSE-028",
+    "hint": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)"
   },
   {
     "kind": "error",
@@ -901,7 +913,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-VAR-001",
     "href": "/errors/NIKA-VAR-001",
-    "hint": "unresolved reference (unknown namespace entry · undeclared env/vars key)"
+    "hint": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
   },
   {
     "kind": "error",
@@ -1109,6 +1121,18 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-SEC-008",
+    "href": "/errors/NIKA-SEC-008",
+    "hint": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-SEC-009",
+    "href": "/errors/NIKA-SEC-009",
+    "hint": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-TIMEOUT-001",
     "href": "/errors/NIKA-TIMEOUT-001",
     "hint": "task (or for_each iteration) exceeded timeout:"
@@ -1142,6 +1166,66 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-BUILTIN-DONE-001",
     "href": "/errors/NIKA-BUILTIN-DONE-001",
     "hint": "nika:done invoked outside an agent: loop"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-DRIFT-001",
+    "href": "/errors/NIKA-DRIFT-001",
+    "hint": "declared-but-unused — a vars:/env:/secrets: name or a permits: entry (exec program · tool glob · net host · fs path) that nothing in the body references (advisory check hint · never fails the audit — the reverse direction, used-but-undeclared, is the hard NIKA-VAR-001/NIKA-DAG-002/NIKA-SEC-004 surface)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-AUTH-006",
+    "href": "/errors/NIKA-AUTH-006",
+    "hint": "no permits: block declared and the body has effects — absent = zero authority (F-O8 · NEP-0003)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-AUTH-007",
+    "href": "/errors/NIKA-AUTH-007",
+    "hint": "an interpolation reaches a permit bound (host · glob · program · env name) — a bound MUST be a literal, the boundary would be self-serve (F-O1 · NEP-0004 · env per NEP-0005)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-AUTH-008",
+    "href": "/errors/NIKA-AUTH-008",
+    "hint": "an untrusted value reaches a permitted verb's argument and its canonical resolved form escapes the step's permit — re-gate refused (F-O1 · NEP-0004)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-AUTH-009",
+    "href": "/errors/NIKA-AUTH-009",
+    "hint": "a permits env: entry names a dangerous-floor variable · the engine strips the name unconditionally, the grant can never take effect: an inert dead grant (F-O4 · NEP-0005)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-AUTH-010",
+    "href": "/errors/NIKA-AUTH-010",
+    "hint": "a permits net.http: entry carries the *. subdomain wildcard · the grant delegates the boundary to the zone operator (every host under the suffix, present and future) — refused: name exact hosts, or the bare * when allow-all is genuinely intended (F-P5 · NEP-0008)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-VALUES-001",
+    "href": "/errors/NIKA-VALUES-001",
+    "hint": "vars: is a dead envelope field (R3a · the E-split)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-VALUES-002",
+    "href": "/errors/NIKA-VALUES-002",
+    "hint": "env: is a dead envelope field (R3a · the E-split)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-VALUES-003",
+    "href": "/errors/NIKA-VALUES-003",
+    "hint": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-DEFAULT-001",
+    "href": "/errors/NIKA-DEFAULT-001",
+    "hint": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
   },
   {
     "kind": "tool",
@@ -1673,6 +1757,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
+    "label": "error namespace: NIKA-AUTH",
+    "href": "/error-namespaces/NIKA-AUTH",
+    "hint": ""
+  },
+  {
+    "kind": "member",
     "label": "error namespace: NIKA-BUILTIN",
     "href": "/error-namespaces/NIKA-BUILTIN",
     "hint": "Builtin tool errors · per-builtin sub-namespace"
@@ -1699,6 +1789,18 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "member",
     "label": "error namespace: NIKA-DECIDE",
     "href": "/error-namespaces/NIKA-DECIDE",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-DEFAULT",
+    "href": "/error-namespaces/NIKA-DEFAULT",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-DRIFT",
+    "href": "/error-namespaces/NIKA-DRIFT",
     "hint": ""
   },
   {
@@ -1777,6 +1879,12 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "member",
     "label": "error namespace: NIKA-TYPE",
     "href": "/error-namespaces/NIKA-TYPE",
+    "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "error namespace: NIKA-VALUES",
+    "href": "/error-namespaces/NIKA-VALUES",
     "hint": ""
   },
   {
@@ -1982,6 +2090,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "namespace: with",
     "href": "/namespaces/with",
     "hint": ""
+  },
+  {
+    "kind": "member",
+    "label": "permit: env",
+    "href": "/permits/env",
+    "hint": "exact env names a child may see · never inherited, never a glob"
   },
   {
     "kind": "member",
@@ -2365,31 +2479,31 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "args",
     "href": "/language/args",
-    "hint": "invoke"
+    "hint": "invoke — Arguments passed to the tool · an object whose shape is the TOOL's own schema, not the language's. Ea"
   },
   {
     "kind": "word",
     "label": "backoff_max_ms",
     "href": "/language/backoff_max_ms",
-    "hint": "retry"
+    "hint": "retry — Ceiling on the computed delay, in milliseconds · default 60000, one minute. Exponential growth stops c"
   },
   {
     "kind": "word",
     "label": "backoff_ms",
     "href": "/language/backoff_ms",
-    "hint": "retry"
+    "hint": "retry — Initial delay between attempts, in milliseconds · default 1000. `backoff_strategy` decides how it grow"
   },
   {
     "kind": "word",
     "label": "backoff_strategy",
     "href": "/language/backoff_strategy",
-    "hint": "retry"
+    "hint": "retry — Which curve the delay follows between attempts · `fixed` · `linear` · `exponential` · default `exponen"
   },
   {
     "kind": "word",
     "label": "capture",
     "href": "/language/capture",
-    "hint": "exec"
+    "hint": "exec — Which stream becomes the task's output · `stdout` (default) · `stderr` · `combined` · `structured` = `{"
   },
   {
     "kind": "word",
@@ -2413,7 +2527,13 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "cwd",
     "href": "/language/cwd",
-    "hint": "exec"
+    "hint": "exec — Working directory for the subprocess · default = the engine's own cwd."
+  },
+  {
+    "kind": "word",
+    "label": "declassify",
+    "href": "/language/declassify",
+    "hint": "task — The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterizat"
   },
   {
     "kind": "word",
@@ -2425,13 +2545,13 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "description",
     "href": "/language/description",
-    "hint": "workflow"
+    "hint": "workflow — Free-form prose about the workflow · documentation for whoever reads the file, never read by the en"
   },
   {
     "kind": "word",
     "label": "env",
     "href": "/language/env",
-    "hint": "exec"
+    "hint": "exec — OS environment variables for THIS subprocess · a key→value map applied over the composed environment. N"
   },
   {
     "kind": "word",
@@ -2449,7 +2569,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "fail_workflow",
     "href": "/language/fail_workflow",
-    "hint": "on_error"
+    "hint": "on_error — Fail the whole workflow on this error · the written-down form of the default, so a reader sees the "
   },
   {
     "kind": "word",
@@ -2462,6 +2582,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "id",
     "href": "/language/id",
     "hint": "workflow — Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object)."
+  },
+  {
+    "kind": "word",
+    "label": "inert",
+    "href": "/language/inert",
+    "hint": "task — The honest door of the data-as-code sink (spec/10-authority.md §the data-as-code sink · NEP-0006 · LAW-"
   },
   {
     "kind": "word",
@@ -2485,13 +2611,13 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "jitter",
     "href": "/language/jitter",
-    "hint": "retry"
+    "hint": "retry — Randomize the computed delay so tasks retrying the same upstream do not synchronize · default TRUE. En"
   },
   {
     "kind": "word",
     "label": "max_attempts",
     "href": "/language/max_attempts",
-    "hint": "retry"
+    "hint": "retry — Total attempts, counting the first try · integer ≥ 1 · the one required field of a `retry:` block. Eng"
   },
   {
     "kind": "word",
@@ -2509,7 +2635,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "max_tokens_total",
     "href": "/language/max_tokens_total",
-    "hint": "agent"
+    "hint": "agent — Cumulative token budget across every turn of the loop · the SPEND ceiling, where `max_turns` is the st"
   },
   {
     "kind": "word",
@@ -2533,7 +2659,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "on_codes",
     "href": "/language/on_codes",
-    "hint": "retry · on_error — Optional catch-side filter (mirror of retry.on_codes · same regex) · the action applies ONL"
+    "hint": "retry · on_error — Retry ONLY on these canonical `NIKA-<NS>-<NNN>` codes · absent, the engine retries anything"
   },
   {
     "kind": "word",
@@ -2587,13 +2713,19 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "retry",
     "href": "/language/retry",
-    "hint": "task"
+    "hint": "task — Retry policy for this task · `{ max_attempts, backoff_ms, backoff_strategy, backoff_max_ms, jitter, on_"
   },
   {
     "kind": "word",
     "label": "returns",
     "href": "/language/returns",
     "hint": "task — The task's output contract (spec 09-types.md) — exclusive with a verb-level schema: (NIKA-TYPE-003)"
+  },
+  {
+    "kind": "word",
+    "label": "run",
+    "href": "/language/run",
+    "hint": "envelope — The run's entropy + clock declaration (NEP-0010) · every source of randomness and time is declared,"
   },
   {
     "kind": "word",
@@ -2623,19 +2755,19 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "skip",
     "href": "/language/skip",
-    "hint": "on_error"
+    "hint": "on_error — Swallow the error and let the DAG continue · the task produces no output, and the original error st"
   },
   {
     "kind": "word",
     "label": "stdin",
     "href": "/language/stdin",
-    "hint": "exec"
+    "hint": "exec — Data written to the command's standard input · may interpolate `${{ }}`."
   },
   {
     "kind": "word",
     "label": "system",
     "href": "/language/system",
-    "hint": "infer · agent"
+    "hint": "infer · agent — System prompt · the standing instruction, sent ahead of `prompt:` and unchanged by it."
   },
   {
     "kind": "word",
@@ -2653,7 +2785,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "thinking",
     "href": "/language/thinking",
-    "hint": "infer"
+    "hint": "infer — Extended thinking · `{ enabled, budget_tokens }` — reasoning the model may spend before it answers (sp"
   },
   {
     "kind": "word",
@@ -2683,7 +2815,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "vision",
     "href": "/language/vision",
-    "hint": "infer"
+    "hint": "infer — Image inputs for the call · each entry `{ source: file | url, path | url }` · the images `prompt:` is "
   },
   {
     "kind": "word",

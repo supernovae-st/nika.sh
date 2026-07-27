@@ -11,7 +11,7 @@
   },
   {
    "path": ".github/nika-spec-pin.json",
-   "sha256": "6173804d346b1ba27159ab66d3f4f3800abdf4652608624b704205a72d35bf1f"
+   "sha256": "918175891515ff740702bac3d5db5a8bd7383191400d612e65a70cb965b98af6"
   },
   {
    "path": ".github/workflows/lens-gates.yml",
@@ -27,7 +27,7 @@
   },
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "6173804d346b1ba27159ab66d3f4f3800abdf4652608624b704205a72d35bf1f"
+   "sha256": "918175891515ff740702bac3d5db5a8bd7383191400d612e65a70cb965b98af6"
   },
   {
    "path": "package.json",
@@ -59,7 +59,7 @@
   },
   {
    "path": "scripts/lens-semantics-lib.mjs",
-   "sha256": "ebbada61509d7cf823cef879abe07eaa9ec11148bc13a01b170833d65dedd662"
+   "sha256": "d261d870d602b1533da7e72f6d1e051b117ac2e6a695402ec91cdd5e70b624b7"
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
@@ -71,11 +71,11 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "e6756eb4204cb1007569af81969a594b4e40c2a9920138d8158e41f032faf5d5"
+   "sha256": "5bad908c9b07738ed03147b2d5dbbc480da1776509ced284a6a94054253c8c56"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "614ae501c31f0ae2e0046b733cd1721a5021647d141fba802a700de4727eb8f0"
+   "sha256": "4a6721c9b271cca0c5625e3a60c5bda73feaa4491584663ca6272f66733151e8"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -87,7 +87,7 @@
   },
   {
    "path": "scripts/lens/contracts/release-attestation.v1.json",
-   "sha256": "8cfcb88a729c0a8c4982729f55c0266827a28d24f8a39fed719ef9e23bbdd400"
+   "sha256": "0e8e7823a50feea6b125d550f2922fb7276c68260d624a3bb96813c11eaac59f"
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "9d452dbe8aeefa35d52ec9ced9a74ddedf994596d1b226221cadd7942985b44d"
+   "sha256": "695811375dca2b64925cfa550af9beae6b6ca9ccd13c0ec4a6c64e14f1033a6c"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
@@ -135,7 +135,7 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "b8aeef751e418b67b30d4e772f10adc97bcca30fee86f09754667eb5ad35ff08"
+   "sha256": "c0b570cae6976e6556dae8deb79a1b1ce2fbfd97c8cbd945454159e63df8ba3f"
   },
   {
    "path": "src/routes.tsx",

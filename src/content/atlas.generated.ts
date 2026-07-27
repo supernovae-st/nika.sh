@@ -229,6 +229,76 @@ export const ATLAS_NODES: AtlasNode[] = [
     }
   },
   {
+    "id": "code:NIKA-AUTH-006",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-AUTH-006",
+    "url": "/errors/NIKA-AUTH-006",
+    "status": "ratified",
+    "opener": "no permits: block declared and the body has effects — absent = zero authority (F-O8 · NEP-0003)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-AUTH-007",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-AUTH-007",
+    "url": "/errors/NIKA-AUTH-007",
+    "status": "ratified",
+    "opener": "an interpolation reaches a permit bound (host · glob · program · env name) — a bound MUST be a literal, the boundary would be self-serve (F-O1 · NEP-0004 · env per NEP-0005)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-AUTH-008",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-AUTH-008",
+    "url": "/errors/NIKA-AUTH-008",
+    "status": "ratified",
+    "opener": "an untrusted value reaches a permitted verb's argument and its canonical resolved form escapes the step's permit — re-gate refused (F-O1 · NEP-0004)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-AUTH-009",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-AUTH-009",
+    "url": "/errors/NIKA-AUTH-009",
+    "status": "ratified",
+    "opener": "a permits env: entry names a dangerous-floor variable · the engine strips the name unconditionally, the grant can never take effect: an inert dead grant (F-O4 · NEP-0005)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-AUTH-010",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-AUTH-010",
+    "url": "/errors/NIKA-AUTH-010",
+    "status": "ratified",
+    "opener": "a permits net.http: entry carries the *. subdomain wildcard · the grant delegates the boundary to the zone operator (every host under the suffix, present and future) — refused: name exact hosts, or the bare * when allow-all is genuinely intended (F-P5 · NEP-0008)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
     "id": "code:NIKA-BUILTIN-001",
     "kind": "member",
     "set": "error-codes",
@@ -433,6 +503,34 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/errors/NIKA-DECIDE-002",
     "status": "ratified",
     "opener": "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-DEFAULT-001",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-DEFAULT-001",
+    "url": "/errors/NIKA-DEFAULT-001",
+    "status": "ratified",
+    "opener": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-DRIFT-001",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-DRIFT-001",
+    "url": "/errors/NIKA-DRIFT-001",
+    "status": "ratified",
+    "opener": "declared-but-unused — a vars:/env:/secrets: name or a permits: entry (exec program · tool glob · net host · fs path) that nothing in the body references (advisory check hint · never fails the audit — the reverse direction, used-but-undeclared, is the hard NIKA-VAR-001/NIKA-DAG-002/NIKA-SEC-004 surface)",
     "meta": {
       "category": "validation_error",
       "transient": false
@@ -761,20 +859,6 @@ export const ATLAS_NODES: AtlasNode[] = [
     }
   },
   {
-    "id": "code:NIKA-PARSE-015",
-    "kind": "member",
-    "set": "error-codes",
-    "layer": "refusals",
-    "title": "NIKA-PARSE-015",
-    "url": "/errors/NIKA-PARSE-015",
-    "status": "ratified",
-    "opener": "typed vars: declaration malformed (type in string/number/integer/boolean/array/object)",
-    "meta": {
-      "category": "validation_error",
-      "transient": false
-    }
-  },
-  {
     "id": "code:NIKA-PARSE-017",
     "kind": "member",
     "set": "error-codes",
@@ -895,6 +979,48 @@ export const ATLAS_NODES: AtlasNode[] = [
     "url": "/errors/NIKA-PARSE-025",
     "status": "ratified",
     "opener": "decode: with capture: structured — that capture already IS an object · type it with returns:",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-PARSE-026",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-PARSE-026",
+    "url": "/errors/NIKA-PARSE-026",
+    "status": "ratified",
+    "opener": "a declared entropy x clock contradiction · entropy: ambient paired with clock: virtual — the ambient declaration contradicts the determinism demand (NEP-0010 · F-P3)",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-PARSE-027",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-PARSE-027",
+    "url": "/errors/NIKA-PARSE-027",
+    "status": "ratified",
+    "opener": "a declared entropy x clock contradiction · entropy: none | seeded paired with clock: system — deterministic journals cannot ride the wall clock (NEP-0010 · F-P3)",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-PARSE-028",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-PARSE-028",
+    "url": "/errors/NIKA-PARSE-028",
+    "status": "ratified",
+    "opener": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)",
     "meta": {
       "category": "validation_error",
       "transient": false
@@ -1041,6 +1167,34 @@ export const ATLAS_NODES: AtlasNode[] = [
     }
   },
   {
+    "id": "code:NIKA-SEC-008",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-SEC-008",
+    "url": "/errors/NIKA-SEC-008",
+    "status": "ratified",
+    "opener": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-SEC-009",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-SEC-009",
+    "url": "/errors/NIKA-SEC-009",
+    "status": "ratified",
+    "opener": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
     "id": "code:NIKA-TIMEOUT-001",
     "kind": "member",
     "set": "error-codes",
@@ -1153,6 +1307,48 @@ export const ATLAS_NODES: AtlasNode[] = [
     }
   },
   {
+    "id": "code:NIKA-VALUES-001",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-VALUES-001",
+    "url": "/errors/NIKA-VALUES-001",
+    "status": "ratified",
+    "opener": "vars: is a dead envelope field (R3a · the E-split)",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-VALUES-002",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-VALUES-002",
+    "url": "/errors/NIKA-VALUES-002",
+    "status": "ratified",
+    "opener": "env: is a dead envelope field (R3a · the E-split)",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-VALUES-003",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-VALUES-003",
+    "url": "/errors/NIKA-VALUES-003",
+    "status": "ratified",
+    "opener": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
     "id": "code:NIKA-VAR-001",
     "kind": "member",
     "set": "error-codes",
@@ -1160,7 +1356,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "NIKA-VAR-001",
     "url": "/errors/NIKA-VAR-001",
     "status": "ratified",
-    "opener": "unresolved reference (unknown namespace entry · undeclared env/vars key)",
+    "opener": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)",
     "meta": {
       "category": "variable_error",
       "transient": false
@@ -1592,6 +1788,21 @@ export const ATLAS_NODES: AtlasNode[] = [
     }
   },
   {
+    "id": "errns:NIKA-AUTH",
+    "kind": "member",
+    "set": "error-namespaces",
+    "layer": "refusals",
+    "title": "NIKA-AUTH",
+    "url": "/error-namespaces/NIKA-AUTH",
+    "anchor": "ns-NIKA-AUTH",
+    "own_page": true,
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "witnessed": true
+    }
+  },
+  {
     "id": "errns:NIKA-BUILTIN",
     "kind": "member",
     "set": "error-namespaces",
@@ -1659,6 +1870,36 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "NIKA-DECIDE",
     "url": "/error-namespaces/NIKA-DECIDE",
     "anchor": "ns-NIKA-DECIDE",
+    "own_page": true,
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "witnessed": true
+    }
+  },
+  {
+    "id": "errns:NIKA-DEFAULT",
+    "kind": "member",
+    "set": "error-namespaces",
+    "layer": "refusals",
+    "title": "NIKA-DEFAULT",
+    "url": "/error-namespaces/NIKA-DEFAULT",
+    "anchor": "ns-NIKA-DEFAULT",
+    "own_page": true,
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "witnessed": true
+    }
+  },
+  {
+    "id": "errns:NIKA-DRIFT",
+    "kind": "member",
+    "set": "error-namespaces",
+    "layer": "refusals",
+    "title": "NIKA-DRIFT",
+    "url": "/error-namespaces/NIKA-DRIFT",
+    "anchor": "ns-NIKA-DRIFT",
     "own_page": true,
     "status": "ratified",
     "opener": null,
@@ -1854,6 +2095,21 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "NIKA-TYPE",
     "url": "/error-namespaces/NIKA-TYPE",
     "anchor": "ns-NIKA-TYPE",
+    "own_page": true,
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "witnessed": true
+    }
+  },
+  {
+    "id": "errns:NIKA-VALUES",
+    "kind": "member",
+    "set": "error-namespaces",
+    "layer": "refusals",
+    "title": "NIKA-VALUES",
+    "url": "/error-namespaces/NIKA-VALUES",
+    "anchor": "ns-NIKA-VALUES",
     "own_page": true,
     "status": "ratified",
     "opener": null,
@@ -2352,6 +2608,18 @@ export const ATLAS_NODES: AtlasNode[] = [
     "own_page": true,
     "status": "ratified",
     "opener": null
+  },
+  {
+    "id": "permit:env",
+    "kind": "member",
+    "set": "permit-families",
+    "layer": "boundary",
+    "title": "env",
+    "url": "/permits/env",
+    "anchor": "env",
+    "own_page": true,
+    "status": "ratified",
+    "opener": "exact env names a child may see · never inherited, never a glob"
   },
   {
     "id": "permit:exec",
@@ -3083,7 +3351,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "The permit families",
     "url": "/boundary",
     "status": "ratified",
-    "opener": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library. Absent means the engine floor · present means default-deny.",
+    "opener": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library, env for the names a child process inherits. Absent means the engine floor · present means default-deny.",
     "closed": true,
     "counted_in_canon": false,
     "surface": "anchors",
@@ -3646,7 +3914,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "research / review / open-ended",
     "meta": {
-      "sha256": "2e5b88c626e8e0e49673117bbcb4551abc2f7434870feb4df7db1faae7f28e0c",
+      "sha256": "b9b45c252b029f97fb2769f4077b202654d31bc6b8efed67948f131987a2000c",
       "file": "agent-loop.nika.yaml"
     }
   },
@@ -3674,7 +3942,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "take data, produce words, save them",
     "meta": {
-      "sha256": "ca7eb26a65f73c352cb41c0d2753cfd1fe38beb7eb5452b235f7a3afbbce1be6",
+      "sha256": "fd8a0994a95c2b7f714659efa0b4ced3a6a655f1414446f90970ed68805a390d",
       "file": "chain.nika.yaml"
     }
   },
@@ -3716,7 +3984,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "do this for EVERY item",
     "meta": {
-      "sha256": "b468ab46eeccf19431f30666ebee95fcfcccd03504f817593fe4f5ea5f752e9f",
+      "sha256": "777ab461a3984b3618e8beb0b3493776e7a3e6219ee7262f565115a8d9c45743",
       "file": "fanout.nika.yaml"
     }
   },
@@ -3758,7 +4026,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "status": "ratified",
     "opener": "generate image/audio assets from a brief",
     "meta": {
-      "sha256": "cb3b911c4b726944c0fc53b1db07655148b3357bac0c5ab0683b563b05710b88",
+      "sha256": "0a5213baa376e0f16bdd98e8c985aa692f3a5fe48b413fd328f6f40852bb1da7",
       "file": "media-asset-pack.nika.yaml"
     }
   },
@@ -4461,7 +4729,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "args",
     "url": "/language/args",
     "status": "ratified",
-    "opener": null,
+    "opener": "Arguments passed to the tool · an object whose shape is the TOOL's own schema, not the language's. Each builtin and each MCP tool declares its own (spec/02-verbs.md §invoke) · `${{ }}` may appear in any leaf value.",
     "meta": {
       "scopes": [
         "invoke"
@@ -4477,7 +4745,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "backoff_max_ms",
     "url": "/language/backoff_max_ms",
     "status": "ratified",
-    "opener": null,
+    "opener": "Ceiling on the computed delay, in milliseconds · default 60000, one minute. Exponential growth stops climbing here.",
     "meta": {
       "scopes": [
         "retry"
@@ -4493,7 +4761,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "backoff_ms",
     "url": "/language/backoff_ms",
     "status": "ratified",
-    "opener": null,
+    "opener": "Initial delay between attempts, in milliseconds · default 1000. `backoff_strategy` decides how it grows from there.",
     "meta": {
       "scopes": [
         "retry"
@@ -4509,7 +4777,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "backoff_strategy",
     "url": "/language/backoff_strategy",
     "status": "ratified",
-    "opener": null,
+    "opener": "Which curve the delay follows between attempts · `fixed` · `linear` · `exponential` · default `exponential`. Each attempt waits `backoff_ms` flat, `backoff_ms × attempt`, or `backoff_ms × 2^(attempt-1)` capped at `backoff_max_ms`.",
     "meta": {
       "scopes": [
         "retry"
@@ -4525,7 +4793,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "capture",
     "url": "/language/capture",
     "status": "ratified",
-    "opener": null,
+    "opener": "Which stream becomes the task's output · `stdout` (default) · `stderr` · `combined` · `structured` = `{ stdout, stderr, exit_code }`. This is the SOURCE; `decode:` is how that string becomes a value.",
     "meta": {
       "scopes": [
         "exec"
@@ -4589,10 +4857,26 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "cwd",
     "url": "/language/cwd",
     "status": "ratified",
-    "opener": null,
+    "opener": "Working directory for the subprocess · default = the engine's own cwd.",
     "meta": {
       "scopes": [
         "exec"
+      ],
+      "verb": false
+    }
+  },
+  {
+    "id": "word:declassify",
+    "kind": "member",
+    "set": "words",
+    "layer": "shape",
+    "title": "declassify",
+    "url": "/language/declassify",
+    "status": "ratified",
+    "opener": "The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterization taint · NEP-0004 · LAW-AUTH-0325) · each entry raises ONE binding from untrusted to trusted, check-visible and receipt-recorded. Lifts the taint law only — the value is still matched against the declared boundary (never a permit bypass).",
+    "meta": {
+      "scopes": [
+        "task"
       ],
       "verb": false
     }
@@ -4621,7 +4905,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "description",
     "url": "/language/description",
     "status": "ratified",
-    "opener": null,
+    "opener": "Free-form prose about the workflow · documentation for whoever reads the file, never read by the engine (spec/01-envelope.md).",
     "meta": {
       "scopes": [
         "workflow"
@@ -4637,7 +4921,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "env",
     "url": "/language/env",
     "status": "ratified",
-    "opener": null,
+    "opener": "OS environment variables for THIS subprocess · a key→value map applied over the composed environment. Nothing is inherited — the ambient environment reaches a task only through `permits.env` (spec/01-envelope.md §permits).",
     "meta": {
       "scopes": [
         "exec"
@@ -4686,7 +4970,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "fail_workflow",
     "url": "/language/fail_workflow",
     "status": "ratified",
-    "opener": null,
+    "opener": "Fail the whole workflow on this error · the written-down form of the default, so a reader sees the choice instead of inferring it. Exactly one of `recover` · `skip` · `fail_workflow`.",
     "meta": {
       "scopes": [
         "on_error"
@@ -4722,6 +5006,22 @@ export const ATLAS_NODES: AtlasNode[] = [
     "meta": {
       "scopes": [
         "workflow"
+      ],
+      "verb": false
+    }
+  },
+  {
+    "id": "word:inert",
+    "kind": "member",
+    "set": "words",
+    "layer": "shape",
+    "title": "inert",
+    "url": "/language/inert",
+    "status": "ratified",
+    "opener": "The honest door of the data-as-code sink (spec/10-authority.md §the data-as-code sink · NEP-0006 · LAW-AUTH-0327) · declares this task's fetch a code-bearing artifact it will never load or run · the non-empty string IS the justification · lifts the sink law only, never the net boundary or the SSRF floor.",
+    "meta": {
+      "scopes": [
+        "task"
       ],
       "verb": false
     }
@@ -4784,7 +5084,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "jitter",
     "url": "/language/jitter",
     "status": "ratified",
-    "opener": null,
+    "opener": "Randomize the computed delay so tasks retrying the same upstream do not synchronize · default TRUE. Engines SHOULD use a full-jitter or equal-jitter family — the anti-thundering-herd default (spec/05-errors.md §Retry policy).",
     "meta": {
       "scopes": [
         "retry"
@@ -4800,7 +5100,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "max_attempts",
     "url": "/language/max_attempts",
     "status": "ratified",
-    "opener": null,
+    "opener": "Total attempts, counting the first try · integer ≥ 1 · the one required field of a `retry:` block. Engines honor it strictly and surface the LAST error if every attempt fails (spec/05-errors.md §Retry policy).",
     "meta": {
       "scopes": [
         "retry"
@@ -4848,7 +5148,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "max_tokens_total",
     "url": "/language/max_tokens_total",
     "status": "ratified",
-    "opener": null,
+    "opener": "Cumulative token budget across every turn of the loop · the SPEND ceiling, where `max_turns` is the step ceiling. Default is engine-configurable (spec/02-verbs.md §agent).",
     "meta": {
       "scopes": [
         "agent"
@@ -4914,7 +5214,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "on_codes",
     "url": "/language/on_codes",
     "status": "ratified",
-    "opener": null,
+    "opener": "Retry ONLY on these canonical `NIKA-<NS>-<NNN>` codes · absent, the engine retries anything transient. Codes, never HTTP status numbers · the retry-side mirror of `on_error.on_codes`.",
     "meta": {
       "scopes": [
         "retry",
@@ -5060,7 +5360,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "retry",
     "url": "/language/retry",
     "status": "ratified",
-    "opener": null,
+    "opener": "Retry policy for this task · `{ max_attempts, backoff_ms, backoff_strategy, backoff_max_ms, jitter, on_codes }`. Retries run BEFORE `on_error` sees anything — the catch handles the last error only (spec/05-errors.md §Retry policy).",
     "meta": {
       "scopes": [
         "task"
@@ -5080,6 +5380,22 @@ export const ATLAS_NODES: AtlasNode[] = [
     "meta": {
       "scopes": [
         "task"
+      ],
+      "verb": false
+    }
+  },
+  {
+    "id": "word:run",
+    "kind": "member",
+    "set": "words",
+    "layer": "shape",
+    "title": "run",
+    "url": "/language/run",
+    "status": "ratified",
+    "opener": "The run's entropy + clock declaration (NEP-0010) · every source of randomness and time is declared, never ambient · the dimensions couple: only ambient×system (the status quo) and none|seeded×virtual (the deterministic states) are legal · a contradiction refuses at parse (NIKA-PARSE-026 ambient×virtual · NIKA-PARSE-027 none|seeded×system) and a strict declaration contradicted by the body refuses at check (NIKA-PARSE-028).",
+    "meta": {
+      "scopes": [
+        "envelope"
       ],
       "verb": false
     }
@@ -5157,7 +5473,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "skip",
     "url": "/language/skip",
     "status": "ratified",
-    "opener": null,
+    "opener": "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip` · `fail_workflow`.",
     "meta": {
       "scopes": [
         "on_error"
@@ -5173,7 +5489,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "stdin",
     "url": "/language/stdin",
     "status": "ratified",
-    "opener": null,
+    "opener": "Data written to the command's standard input · may interpolate `${{ }}`.",
     "meta": {
       "scopes": [
         "exec"
@@ -5189,7 +5505,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "system",
     "url": "/language/system",
     "status": "ratified",
-    "opener": null,
+    "opener": "System prompt · the standing instruction, sent ahead of `prompt:` and unchanged by it.",
     "meta": {
       "scopes": [
         "infer",
@@ -5239,7 +5555,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "thinking",
     "url": "/language/thinking",
     "status": "ratified",
-    "opener": null,
+    "opener": "Extended thinking · `{ enabled, budget_tokens }` — reasoning the model may spend before it answers (spec/02-verbs.md §infer).",
     "meta": {
       "scopes": [
         "infer"
@@ -5320,7 +5636,7 @@ export const ATLAS_NODES: AtlasNode[] = [
     "title": "vision",
     "url": "/language/vision",
     "status": "ratified",
-    "opener": null,
+    "opener": "Image inputs for the call · each entry `{ source: file | url, path | url }` · the images `prompt:` is allowed to refer to.",
     "meta": {
       "scopes": [
         "infer"
@@ -5567,6 +5883,56 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
     "kind": "belongs-to"
   },
   {
+    "from": "code:NIKA-AUTH-006",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-006",
+    "to": "errns:NIKA-AUTH",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-007",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-007",
+    "to": "errns:NIKA-AUTH",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-008",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-008",
+    "to": "errns:NIKA-AUTH",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-009",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-009",
+    "to": "errns:NIKA-AUTH",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-010",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AUTH-010",
+    "to": "errns:NIKA-AUTH",
+    "kind": "belongs-to"
+  },
+  {
     "from": "code:NIKA-BUILTIN-001",
     "to": "errcat:validation_error",
     "kind": "belongs-to"
@@ -5714,6 +6080,26 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "code:NIKA-DECIDE-002",
     "to": "errns:NIKA-DECIDE",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-DEFAULT-001",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-DEFAULT-001",
+    "to": "errns:NIKA-DEFAULT",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-DRIFT-001",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-DRIFT-001",
+    "to": "errns:NIKA-DRIFT",
     "kind": "belongs-to"
   },
   {
@@ -5947,16 +6333,6 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
     "kind": "belongs-to"
   },
   {
-    "from": "code:NIKA-PARSE-015",
-    "to": "errcat:validation_error",
-    "kind": "belongs-to"
-  },
-  {
-    "from": "code:NIKA-PARSE-015",
-    "to": "errns:NIKA-PARSE",
-    "kind": "belongs-to"
-  },
-  {
     "from": "code:NIKA-PARSE-017",
     "to": "errcat:validation_error",
     "kind": "belongs-to"
@@ -6043,6 +6419,36 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "code:NIKA-PARSE-025",
+    "to": "errns:NIKA-PARSE",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-PARSE-026",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-PARSE-026",
+    "to": "errns:NIKA-PARSE",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-PARSE-027",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-PARSE-027",
+    "to": "errns:NIKA-PARSE",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-PARSE-028",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-PARSE-028",
     "to": "errns:NIKA-PARSE",
     "kind": "belongs-to"
   },
@@ -6147,6 +6553,26 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
     "kind": "belongs-to"
   },
   {
+    "from": "code:NIKA-SEC-008",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-008",
+    "to": "errns:NIKA-SEC",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-009",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-009",
+    "to": "errns:NIKA-SEC",
+    "kind": "belongs-to"
+  },
+  {
     "from": "code:NIKA-TIMEOUT-001",
     "to": "errcat:timeout_error",
     "kind": "belongs-to"
@@ -6224,6 +6650,36 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "code:NIKA-TYPE-101",
     "to": "errns:NIKA-TYPE",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-VALUES-001",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-VALUES-001",
+    "to": "errns:NIKA-VALUES",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-VALUES-002",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-VALUES-002",
+    "to": "errns:NIKA-VALUES",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-VALUES-003",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-VALUES-003",
+    "to": "errns:NIKA-VALUES",
     "kind": "belongs-to"
   },
   {
@@ -6538,6 +6994,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:agent-loop",
+    "to": "word:permits",
+    "kind": "carries"
+  },
+  {
+    "from": "template:agent-loop",
     "to": "word:prompt",
     "kind": "carries"
   },
@@ -6688,6 +7149,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:chain",
+    "to": "word:permits",
+    "kind": "carries"
+  },
+  {
+    "from": "template:chain",
     "to": "word:prompt",
     "kind": "carries"
   },
@@ -6699,6 +7165,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:chain",
     "to": "word:tool",
+    "kind": "carries"
+  },
+  {
+    "from": "template:chain",
+    "to": "word:tools",
     "kind": "carries"
   },
   {
@@ -6963,6 +7434,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   },
   {
     "from": "template:fanout",
+    "to": "word:permits",
+    "kind": "carries"
+  },
+  {
+    "from": "template:fanout",
     "to": "word:prompt",
     "kind": "carries"
   },
@@ -6989,6 +7465,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:fanout",
     "to": "word:tool",
+    "kind": "carries"
+  },
+  {
+    "from": "template:fanout",
+    "to": "word:tools",
     "kind": "carries"
   },
   {
@@ -7215,10 +7696,18 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
     "from": "template:media-asset-pack",
     "to": "word:nika",
     "kind": "carries"
-  },
+  }
+]
+
+const ATLAS_EDGES_1: AtlasEdge[] = [
   {
     "from": "template:media-asset-pack",
     "to": "word:outputs",
+    "kind": "carries"
+  },
+  {
+    "from": "template:media-asset-pack",
+    "to": "word:permits",
     "kind": "carries"
   },
   {
@@ -7239,6 +7728,11 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
   {
     "from": "template:media-asset-pack",
     "to": "word:tool",
+    "kind": "carries"
+  },
+  {
+    "from": "template:media-asset-pack",
+    "to": "word:tools",
     "kind": "carries"
   },
   {
@@ -7380,10 +7874,7 @@ const ATLAS_EDGES_0: AtlasEdge[] = [
     "from": "set:builtins",
     "to": "chapter:stdlib/builtins-v0.1.md",
     "kind": "defined-by"
-  }
-]
-
-const ATLAS_EDGES_1: AtlasEdge[] = [
+  },
   {
     "from": "set:conformance-levels",
     "to": "chapter:spec/07-conformance.md",
@@ -7630,6 +8121,31 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
+    "from": "code:NIKA-AUTH-006",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-AUTH-007",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-AUTH-008",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-AUTH-009",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-AUTH-010",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
     "from": "code:NIKA-BUILTIN-001",
     "to": "set:error-codes",
     "kind": "member-of"
@@ -7701,6 +8217,16 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "code:NIKA-DECIDE-002",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-DEFAULT-001",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-DRIFT-001",
     "to": "set:error-codes",
     "kind": "member-of"
   },
@@ -7820,11 +8346,6 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
-    "from": "code:NIKA-PARSE-015",
-    "to": "set:error-codes",
-    "kind": "member-of"
-  },
-  {
     "from": "code:NIKA-PARSE-017",
     "to": "set:error-codes",
     "kind": "member-of"
@@ -7866,6 +8387,21 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "code:NIKA-PARSE-025",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-PARSE-026",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-PARSE-027",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-PARSE-028",
     "to": "set:error-codes",
     "kind": "member-of"
   },
@@ -7920,6 +8456,16 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
+    "from": "code:NIKA-SEC-008",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-SEC-009",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
     "from": "code:NIKA-TIMEOUT-001",
     "to": "set:error-codes",
     "kind": "member-of"
@@ -7956,6 +8502,21 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "code:NIKA-TYPE-101",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-VALUES-001",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-VALUES-002",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-VALUES-003",
     "to": "set:error-codes",
     "kind": "member-of"
   },
@@ -8115,6 +8676,11 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
+    "from": "errns:NIKA-AUTH",
+    "to": "set:error-namespaces",
+    "kind": "member-of"
+  },
+  {
     "from": "errns:NIKA-BUILTIN",
     "to": "set:error-namespaces",
     "kind": "member-of"
@@ -8136,6 +8702,16 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "errns:NIKA-DECIDE",
+    "to": "set:error-namespaces",
+    "kind": "member-of"
+  },
+  {
+    "from": "errns:NIKA-DEFAULT",
+    "to": "set:error-namespaces",
+    "kind": "member-of"
+  },
+  {
+    "from": "errns:NIKA-DRIFT",
     "to": "set:error-namespaces",
     "kind": "member-of"
   },
@@ -8201,6 +8777,11 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "errns:NIKA-TYPE",
+    "to": "set:error-namespaces",
+    "kind": "member-of"
+  },
+  {
+    "from": "errns:NIKA-VALUES",
     "to": "set:error-namespaces",
     "kind": "member-of"
   },
@@ -8372,6 +8953,11 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   {
     "from": "ns:with",
     "to": "set:namespaces",
+    "kind": "member-of"
+  },
+  {
+    "from": "permit:env",
+    "to": "set:permit-families",
     "kind": "member-of"
   },
   {
@@ -9110,6 +9696,14 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "kind": "member-of"
   },
   {
+    "from": "word:declassify",
+    "to": "set:words",
+    "kind": "member-of"
+  }
+]
+
+const ATLAS_EDGES_2: AtlasEdge[] = [
+  {
     "from": "word:decode",
     "to": "set:words",
     "kind": "member-of"
@@ -9146,6 +9740,11 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "word:id",
+    "to": "set:words",
+    "kind": "member-of"
+  },
+  {
+    "from": "word:inert",
     "to": "set:words",
     "kind": "member-of"
   },
@@ -9256,6 +9855,11 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
   },
   {
     "from": "word:returns",
+    "to": "set:words",
+    "kind": "member-of"
+  },
+  {
+    "from": "word:run",
     "to": "set:words",
     "kind": "member-of"
   },
@@ -9383,10 +9987,7 @@ const ATLAS_EDGES_1: AtlasEdge[] = [
     "from": "post:dag-for-free",
     "to": "word:with",
     "kind": "mentions"
-  }
-]
-
-const ATLAS_EDGES_2: AtlasEdge[] = [
+  },
   {
     "from": "post:four-verbs",
     "to": "tool:fetch",
@@ -9590,6 +10191,31 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
   {
     "from": "code:NIKA-AGENT-004",
     "to": "word:skills",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-AUTH-006",
+    "to": "word:permits",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-AUTH-009",
+    "to": "word:env",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-AUTH-009",
+    "to": "word:inert",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-AUTH-009",
+    "to": "word:permits",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-AUTH-010",
+    "to": "word:permits",
     "kind": "names"
   },
   {
@@ -9838,6 +10464,36 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
     "kind": "names"
   },
   {
+    "from": "code:NIKA-DEFAULT-001",
+    "to": "word:config",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-DEFAULT-001",
+    "to": "word:const",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-DEFAULT-001",
+    "to": "word:inputs",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-DRIFT-001",
+    "to": "word:env",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-DRIFT-001",
+    "to": "word:permits",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-DRIFT-001",
+    "to": "word:secrets",
+    "kind": "names"
+  },
+  {
     "from": "code:NIKA-EXEC-001",
     "to": "word:capture",
     "kind": "names"
@@ -10038,6 +10694,26 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
     "kind": "names"
   },
   {
+    "from": "code:NIKA-PARSE-027",
+    "to": "word:system",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-PARSE-028",
+    "to": "word:jitter",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-PARSE-028",
+    "to": "word:nika",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-PARSE-028",
+    "to": "word:retry",
+    "kind": "names"
+  },
+  {
     "from": "code:NIKA-POLICY-001",
     "to": "word:policy",
     "kind": "names"
@@ -10118,6 +10794,36 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
     "kind": "names"
   },
   {
+    "from": "code:NIKA-SEC-008",
+    "to": "word:inert",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-008",
+    "to": "word:nika",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-009",
+    "to": "word:agent",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-009",
+    "to": "word:invoke",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-009",
+    "to": "word:nika",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-009",
+    "to": "word:prompt",
+    "kind": "names"
+  },
+  {
     "from": "code:NIKA-TIMEOUT-001",
     "to": "word:for_each",
     "kind": "names"
@@ -10180,6 +10886,31 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
   {
     "from": "code:NIKA-TYPE-101",
     "to": "word:returns",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-VALUES-002",
+    "to": "word:env",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-VAR-001",
+    "to": "word:config",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-VAR-001",
+    "to": "word:const",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-VAR-001",
+    "to": "word:inputs",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-VAR-001",
+    "to": "word:secrets",
     "kind": "names"
   },
   {
@@ -10971,7 +11702,10 @@ const ATLAS_EDGES_2: AtlasEdge[] = [
     "from": "showcase:t4-ceo-monday-brief",
     "to": "verb:infer",
     "kind": "witnesses"
-  },
+  }
+]
+
+const ATLAS_EDGES_3: AtlasEdge[] = [
   {
     "from": "showcase:t4-ceo-monday-brief",
     "to": "verb:invoke",
@@ -11088,6 +11822,7 @@ export const ATLAS_EDGES: AtlasEdge[] = [
   ...ATLAS_EDGES_0,
   ...ATLAS_EDGES_1,
   ...ATLAS_EDGES_2,
+  ...ATLAS_EDGES_3,
 ]
 
 export const ATLAS_INDEX: Record<string, AtlasNode> = Object.fromEntries(

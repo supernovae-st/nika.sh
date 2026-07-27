@@ -25,47 +25,26 @@ export interface CodeTip {
 }
 
 /* ── where each concept is SPECIFIED on this site (wave P) ────────────────────
-   Every tip card links to the /spec block that owns its term — real anchors
-   on the prerendered /spec page (S.0 envelope · S.1 verbs · S.2 task shape ·
-   the permits block · S.3 builtins · S.4 models), never guessed deep URLs
-   into the external repo. */
+   A tip card links to the /spec block that owns its term — a real anchor on
+   the prerendered /spec page, never a guessed deep URL into the external repo.
+
+   ONE ENTRY LEFT, AND THAT IS THE POINT. This map held 28 hand-kept anchors.
+   Then the contract gave every declared word a teaching sentence, so every one
+   of them earned a room, and `tipHref` reaches for the room FIRST — which
+   quietly made 27 of these unreachable. Dead code that still looks alive is
+   worse than none, so they are gone, and the gate in the sibling test
+   re-derives reachability rather than trusting this comment.
+
+   What survives is the concept that is a BLOCK rather than a word: `${{ … }}`
+   is grammar the schema never declares as a key, so no room can own it. */
 const SPEC_AT: Record<string, string> = {
-  nika: '/spec#s0',
-  workflow: '/spec#s0',
-  vars: '/spec#s0',
-  outputs: '/spec#s0',
   '${{ … }}': '/spec#s0',
-  model: '/spec#s4',
-  permits: '/spec#permits',
-  fs: '/spec#permits',
-  tools: '/spec#permits',
-  tasks: '/spec#s2',
-  with: '/spec#s2',
-  after: '/spec#s2',
-  when: '/spec#s2',
-  for_each: '/spec#s2',
-  timeout: '/spec#s2',
-  on_error: '/spec#s2',
-  recover: '/spec#s2',
-  infer: '/spec#s1',
-  exec: '/spec#s1',
-  invoke: '/spec#s1',
-  agent: '/spec#s1',
-  prompt: '/spec#s1',
-  schema: '/spec#s1',
-  max_tokens: '/spec#s1',
-  max_turns: '/spec#s1',
-  command: '/spec#s1',
-  shell: '/spec#s1',
-  tool: '/spec#s3',
 }
 
 /** the spec anchor for a tip term — null when the term has no owned block */
 /* EVERY DECLARED WORD OWNS A ROOM, and the room is the better door: it
    carries the word's full opener, its chapters, the verbs that accept it and
-   the skeletons that use it. SPEC_AT stays for the handful of concepts that
-   are BLOCKS rather than words (`${{ … }}`, the permits block) — a word with
-   a room never needs a hand-kept anchor. */
+   the skeletons that use it. */
 export function tipHref(term: string): string | null {
   if (WORD_OPENER[term] || KEY_WORDS[term] || (NIKA_VERBS as readonly string[]).includes(term)) {
     return `/language/${term}`

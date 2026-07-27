@@ -16,10 +16,9 @@
    proper drags the whole path-array module into the initial chunk through
    the map's eager import — the three-leak budget (scripts/size-budget.mjs)
    caught exactly that on 2026-07-19. One authored list, three readers. */
-export const PENDING_ERROR_CODES = [
-  // minted in spec canon commit ab351b1 (NEP-0002 · 2026-07-19 ·
-  // supernovae-st/nika-spec#146) · content projects into
-  // public/errors/catalog.json when the resync pin advances past that
-  // mint — DELETE the entry then
-  'NIKA-SEC-009',
+export const PENDING_ERROR_CODES: string[] = [
+  // EMPTY, and that is the healthy state. NIKA-SEC-009 lived here from its
+  // mint (spec ab351b1 · NEP-0002 · 2026-07-19) until the resync pin advanced
+  // past it on 2026-07-27; the catalog now projects it, so the entry was
+  // deleted per the law above. The next mint re-opens the list.
 ]

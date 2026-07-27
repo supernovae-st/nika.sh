@@ -382,17 +382,19 @@ sets:
     surface: anchors
     rooms_url: /permits   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /boundary
-    anchor_prefix: ""   # /boundary#exec · /boundary#fs · /boundary#net · /boundary#tools
+    anchor_prefix: ""   # /boundary#exec · #fs · #net · #tools · #env
     defined_by: [spec/01-envelope.md]
     opener: >-
       Permits fence a run by family: exec for processes, fs for reads and
-      writes, net for the wire, tools for the library. Absent means the
-      engine floor · present means default-deny.
+      writes, net for the wire, tools for the library, env for the names a
+      child process inherits. Absent means the engine floor · present means
+      default-deny.
     members:
       - { id: exec, one_liner: "which commands may run · false kills the family" }
       - { id: fs, one_liner: "read and write globs · the walk root is gated" }
       - { id: net, one_liner: "http allowlist · the SSRF floor stays on regardless" }
       - { id: tools, one_liner: "which nika tools the file may invoke" }
+      - { id: env, one_liner: "exact env names a child may see · never inherited, never a glob" }
 
   - id: secret-sources
     layer: boundary

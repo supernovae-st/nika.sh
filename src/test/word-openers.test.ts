@@ -49,11 +49,12 @@ describe('word openers · carried from the contract, never invented', () => {
 })
 
 describe('word openers · the coverage debt is published, not papered over', () => {
-  /* measured 2026-07-27 · these 19 words have no teaching sentence in the
-     curated glossary NOR in the contract. The number may only fall: a word
-     leaves this list the day the SPEC gives it an opener, which is where that
-     sentence belongs. */
-  const CEILING = 19
+  /* CLOSED 2026-07-27 · nika-spec#209 wrote the missing `description` fields
+     into schemas/workflow.schema.json, which is where a teaching sentence
+     belongs, and the count went 19 → 0 with no website code at all.
+     The ceiling stays as a RATCHET, not a trophy: a word added to the
+     contract without a sentence re-opens the debt on the next build. */
+  const CEILING = 0
 
   it('the wordless list only ever shrinks', () => {
     expect(

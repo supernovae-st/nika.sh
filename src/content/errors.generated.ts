@@ -48,6 +48,36 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "an assert: claims a level the evidence does not support (a StaticProof the IR cannot decide · a mis-leveled obligation · spec 15)"
   },
   {
+    "code": "NIKA-AUTH-006",
+    "category": "security_error",
+    "transient": false,
+    "failure": "no permits: block declared and the body has effects — absent = zero authority (F-O8 · NEP-0003)"
+  },
+  {
+    "code": "NIKA-AUTH-007",
+    "category": "security_error",
+    "transient": false,
+    "failure": "an interpolation reaches a permit bound (host · glob · program · env name) — a bound MUST be a literal, the boundary would be self-serve (F-O1 · NEP-0004 · env per NEP-0005)"
+  },
+  {
+    "code": "NIKA-AUTH-008",
+    "category": "security_error",
+    "transient": false,
+    "failure": "an untrusted value reaches a permitted verb's argument and its canonical resolved form escapes the step's permit — re-gate refused (F-O1 · NEP-0004)"
+  },
+  {
+    "code": "NIKA-AUTH-009",
+    "category": "security_error",
+    "transient": false,
+    "failure": "a permits env: entry names a dangerous-floor variable · the engine strips the name unconditionally, the grant can never take effect: an inert dead grant (F-O4 · NEP-0005)"
+  },
+  {
+    "code": "NIKA-AUTH-010",
+    "category": "security_error",
+    "transient": false,
+    "failure": "a permits net.http: entry carries the *. subdomain wildcard · the grant delegates the boundary to the zone operator (every host under the suffix, present and future) — refused: name exact hosts, or the bare * when allow-all is genuinely intended (F-P5 · NEP-0008)"
+  },
+  {
     "code": "NIKA-BUILTIN-001",
     "category": "validation_error",
     "transient": false,
@@ -136,6 +166,18 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "category": "validation_error",
     "transient": false,
     "failure": "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)"
+  },
+  {
+    "code": "NIKA-DEFAULT-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
+  },
+  {
+    "code": "NIKA-DRIFT-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "declared-but-unused — a vars:/env:/secrets: name or a permits: entry (exec program · tool glob · net host · fs path) that nothing in the body references (advisory check hint · never fails the audit — the reverse direction, used-but-undeclared, is the hard NIKA-VAR-001/NIKA-DAG-002/NIKA-SEC-004 surface)"
   },
   {
     "code": "NIKA-EXEC-001",
@@ -276,12 +318,6 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "secrets: entry is not a store reference — inline literals forbidden"
   },
   {
-    "code": "NIKA-PARSE-015",
-    "category": "validation_error",
-    "transient": false,
-    "failure": "typed vars: declaration malformed (type in string/number/integer/boolean/array/object)"
-  },
-  {
     "code": "NIKA-PARSE-017",
     "category": "validation_error",
     "transient": false,
@@ -334,6 +370,24 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "category": "validation_error",
     "transient": false,
     "failure": "decode: with capture: structured — that capture already IS an object · type it with returns:"
+  },
+  {
+    "code": "NIKA-PARSE-026",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a declared entropy x clock contradiction · entropy: ambient paired with clock: virtual — the ambient declaration contradicts the determinism demand (NEP-0010 · F-P3)"
+  },
+  {
+    "code": "NIKA-PARSE-027",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a declared entropy x clock contradiction · entropy: none | seeded paired with clock: system — deterministic journals cannot ride the wall clock (NEP-0010 · F-P3)"
+  },
+  {
+    "code": "NIKA-PARSE-028",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)"
   },
   {
     "code": "NIKA-POLICY-001",
@@ -396,6 +450,18 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "secret egress — a tainted value reaches the workflow boundary (outputs:) · the diagnostic carries the taint path (spec 10 · the to: outputs sanction in 01 §egress)"
   },
   {
+    "code": "NIKA-SEC-008",
+    "category": "security_error",
+    "transient": false,
+    "failure": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)"
+  },
+  {
+    "code": "NIKA-SEC-009",
+    "category": "security_error",
+    "transient": false,
+    "failure": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)"
+  },
+  {
     "code": "NIKA-TIMEOUT-001",
     "category": "timeout_error",
     "transient": false,
@@ -444,10 +510,28 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "failure": "run-time contract violation — the decoded value does not fit returns: (exec:/invoke: lane)"
   },
   {
+    "code": "NIKA-VALUES-001",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "vars: is a dead envelope field (R3a · the E-split)"
+  },
+  {
+    "code": "NIKA-VALUES-002",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "env: is a dead envelope field (R3a · the E-split)"
+  },
+  {
+    "code": "NIKA-VALUES-003",
+    "category": "validation_error",
+    "transient": false,
+    "failure": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
+  },
+  {
     "code": "NIKA-VAR-001",
     "category": "variable_error",
     "transient": false,
-    "failure": "unresolved reference (unknown namespace entry · undeclared env/vars key)"
+    "failure": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
   },
   {
     "code": "NIKA-VAR-002",

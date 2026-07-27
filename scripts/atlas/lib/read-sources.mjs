@@ -8,14 +8,50 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { parse as parseYaml } from 'yaml'
 
+/** split a controlled TS literal into code and STRING segments, so a rewrite
+    meant for syntax never lands on prose. Double-quoted only (the controlled
+    emission stringifies every value), backslash-aware. */
+function segments(body) {
+  const out = []
+  let start = 0
+  for (let i = 0; i < body.length; i += 1) {
+    if (body[i] !== '"') continue
+    out.push({ code: true, text: body.slice(start, i) })
+    let end = i + 1
+    for (; end < body.length; end += 1) {
+      if (body[end] === '\\') end += 1
+      else if (body[end] === '"') break
+    }
+    out.push({ code: false, text: body.slice(i, end + 1) })
+    start = end + 1
+    i = end
+  }
+  out.push({ code: true, text: body.slice(start) })
+  return out
+}
+
 /** quote bare/single-quoted keys of a controlled TS object/array literal,
     strip trailing commas, then JSON.parse — census.mjs's parseCanon,
-    generalized. */
+    generalized.
+
+    THE REWRITES TOUCH CODE ONLY. A bare key and a trailing comma are syntax
+    outside a string and PROSE inside one: the spec describes `vision:` as
+    "each entry `{ source: file | url }`", and rewriting that prose into
+    `{ "source": … }` killed the parse on bytes no generator ever emitted.
+    Splitting first also disarms the sibling trap — the single-quote rule
+    would happily span two apostrophes of English ("the task's … language's:")
+    and quote the sentence between them. */
 function parseTsLiteral(body, file) {
-  const jsonish = body
-    .replace(/'([^'\\]*)'\s*:/g, '"$1":')
-    .replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":')
-    .replace(/,(\s*[}\]])/g, '$1')
+  const jsonish = segments(body)
+    .map(({ code, text }) =>
+      code
+        ? text
+            .replace(/'([^'\\]*)'\s*:/g, '"$1":')
+            .replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":')
+            .replace(/,(\s*[}\]])/g, '$1')
+        : text,
+    )
+    .join('')
   try {
     return JSON.parse(jsonish)
   } catch (e) {

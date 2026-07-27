@@ -58,6 +58,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-AGENT-004",
       "NIKA-SEC-002",
       "NIKA-SEC-006",
+      "NIKA-SEC-009",
       "NIKA-BUILTIN-DONE-001"
     ]
   },
@@ -69,7 +70,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 21
+        "firstLine": 25
       }
     },
     "templates": [
@@ -120,7 +121,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 25
+        "firstLine": 30
       }
     },
     "templates": [
@@ -170,12 +171,15 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "config": {
     "word": "config",
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-VAR-001",
+      "NIKA-DEFAULT-001"
+    ]
   },
   "const": {
     "word": "const",
     "usage": {
-      "yaml": "const:\n  source: \"./README.md\"             # SLOT: your input — README.md exists in ANY repo, so the\n                                    # skeleton runs green BEFORE you point it at real data",
+      "yaml": "const:\n  source: \"./README.md\"             # SLOT: your input — README.md exists in ANY repo, so the",
       "source": {
         "kind": "template",
         "name": "chain",
@@ -192,7 +196,10 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "media-asset-pack",
       "api-upload-and-create"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-VAR-001",
+      "NIKA-DEFAULT-001"
+    ]
   },
   "cwd": {
     "word": "cwd",
@@ -204,6 +211,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "firstLine": 7
       }
     },
+    "templates": [],
+    "codes": []
+  },
+  "declassify": {
+    "word": "declassify",
     "templates": [],
     "codes": []
   },
@@ -254,7 +266,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       }
     },
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-DRIFT-001",
+      "NIKA-AUTH-009",
+      "NIKA-VALUES-002"
+    ]
   },
   "exec": {
     "word": "exec",
@@ -276,7 +292,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 25
+        "firstLine": 30
       }
     },
     "templates": [
@@ -305,7 +321,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 25
+        "firstLine": 30
       }
     },
     "templates": [
@@ -345,6 +361,14 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-PARSE-023"
     ]
   },
+  "inert": {
+    "word": "inert",
+    "templates": [],
+    "codes": [
+      "NIKA-SEC-008",
+      "NIKA-AUTH-009"
+    ]
+  },
   "infer": {
     "word": "infer",
     "templates": [
@@ -376,7 +400,9 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "agent-loop"
     ],
     "codes": [
-      "NIKA-COMP-004"
+      "NIKA-COMP-004",
+      "NIKA-VAR-001",
+      "NIKA-DEFAULT-001"
     ]
   },
   "invoke": {
@@ -399,6 +425,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-COMP-001",
       "NIKA-TYPE-101",
       "NIKA-SEC-006",
+      "NIKA-SEC-009",
       "NIKA-BUILTIN-001"
     ]
   },
@@ -410,13 +437,15 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 25
+        "firstLine": 30
       }
     },
     "templates": [
       "fanout"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-PARSE-028"
+    ]
   },
   "max_attempts": {
     "word": "max_attempts",
@@ -426,7 +455,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 25
+        "firstLine": 30
       }
     },
     "templates": [
@@ -442,7 +471,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 25
+        "firstLine": 30
       }
     },
     "templates": [
@@ -476,7 +505,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 32
+        "firstLine": 34
       }
     },
     "templates": [
@@ -494,7 +523,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 32
+        "firstLine": 34
       }
     },
     "templates": [
@@ -552,8 +581,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     "codes": [
       "NIKA-PARSE-002",
       "NIKA-PARSE-003",
+      "NIKA-PARSE-028",
       "NIKA-INVOKE-001",
       "NIKA-SEC-005",
+      "NIKA-SEC-008",
+      "NIKA-SEC-009",
       "NIKA-LOCK-001",
       "NIKA-BUILTIN-001",
       "NIKA-BUILTIN-DONE-001"
@@ -641,7 +673,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 43
+        "firstLine": 47
       }
     },
     "templates": [
@@ -667,21 +699,29 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "permits": {
     "word": "permits",
     "usage": {
-      "yaml": "permits:                            # SLOT: the blast radius · default-deny once present\n  exec: [\"echo\"]                    # SLOT: ONLY the programs the gates + act run (argv form)\n  tools: [\"nika:assert\", \"nika:prompt\", \"nika:notify\"]\n  net: { http: [\"hooks.slack.com\"] }   # SLOT: the webhook host · nothing else may leave",
+      "yaml": "permits:\n  tools: [\"nika:read\", \"nika:write\"]\n  fs: { read: [\"./README.md\"], write: [\"./output.md\"] }\n\n                                    # skeleton runs green BEFORE you point it at real data",
       "source": {
         "kind": "template",
-        "name": "human-gated-ship",
-        "file": "human-gated-ship.nika.yaml",
-        "firstLine": 14
+        "name": "chain",
+        "file": "chain.nika.yaml",
+        "firstLine": 18
       }
     },
     "templates": [
+      "chain",
+      "fanout",
+      "agent-loop",
       "human-gated-ship",
+      "media-asset-pack",
       "docker-report"
     ],
     "codes": [
       "NIKA-SEC-004",
-      "NIKA-SEC-005"
+      "NIKA-SEC-005",
+      "NIKA-DRIFT-001",
+      "NIKA-AUTH-006",
+      "NIKA-AUTH-009",
+      "NIKA-AUTH-010"
     ]
   },
   "policy": {
@@ -700,7 +740,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 26
+        "firstLine": 30
       }
     },
     "templates": [
@@ -713,7 +753,8 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-PARSE-018",
-      "NIKA-SEC-006"
+      "NIKA-SEC-006",
+      "NIKA-SEC-009"
     ]
   },
   "recover": {
@@ -745,14 +786,15 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 25
+        "firstLine": 30
       }
     },
     "templates": [
       "fanout"
     ],
     "codes": [
-      "NIKA-PARSE-011"
+      "NIKA-PARSE-011",
+      "NIKA-PARSE-028"
     ]
   },
   "returns": {
@@ -767,6 +809,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-TYPE-101"
     ]
   },
+  "run": {
+    "word": "run",
+    "templates": [],
+    "codes": []
+  },
   "schema": {
     "word": "schema",
     "usage": {
@@ -775,7 +822,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 23
+        "firstLine": 25
       }
     },
     "templates": [
@@ -809,7 +856,9 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-PARSE-014",
-      "NIKA-SEC-006"
+      "NIKA-VAR-001",
+      "NIKA-SEC-006",
+      "NIKA-DRIFT-001"
     ]
   },
   "shell": {
@@ -875,13 +924,15 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 32
+        "firstLine": 34
       }
     },
     "templates": [
       "agent-loop"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-PARSE-027"
+    ]
   },
   "tasks": {
     "word": "tasks",
@@ -891,7 +942,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 20
+        "firstLine": 24
       }
     },
     "templates": [
@@ -947,7 +998,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 25
+        "firstLine": 30
       }
     },
     "templates": [
@@ -966,7 +1017,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 21
+        "firstLine": 25
       }
     },
     "templates": [
@@ -986,17 +1037,20 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "tools": {
     "word": "tools",
     "usage": {
-      "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
+      "yaml": "  tools: [\"nika:read\", \"nika:write\"]",
       "source": {
         "kind": "template",
-        "name": "agent-loop",
-        "file": "agent-loop.nika.yaml",
-        "firstLine": 32
+        "name": "chain",
+        "file": "chain.nika.yaml",
+        "firstLine": 19
       }
     },
     "templates": [
+      "chain",
+      "fanout",
       "agent-loop",
       "human-gated-ship",
+      "media-asset-pack",
       "docker-report"
     ],
     "codes": [
@@ -1054,7 +1108,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 26
+        "firstLine": 30
       }
     },
     "templates": [

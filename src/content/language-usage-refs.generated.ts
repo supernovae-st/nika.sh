@@ -35,6 +35,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-AGENT-004",
       "NIKA-SEC-002",
       "NIKA-SEC-006",
+      "NIKA-SEC-009",
       "NIKA-BUILTIN-DONE-001"
     ]
   },
@@ -88,7 +89,10 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "config": {
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-VAR-001",
+      "NIKA-DEFAULT-001"
+    ]
   },
   "const": {
     "templates": [
@@ -100,9 +104,16 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "media-asset-pack",
       "api-upload-and-create"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-VAR-001",
+      "NIKA-DEFAULT-001"
+    ]
   },
   "cwd": {
+    "templates": [],
+    "codes": []
+  },
+  "declassify": {
     "templates": [],
     "codes": []
   },
@@ -133,7 +144,11 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "env": {
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-DRIFT-001",
+      "NIKA-AUTH-009",
+      "NIKA-VALUES-002"
+    ]
   },
   "exec": {
     "templates": [
@@ -184,6 +199,13 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-023"
     ]
   },
+  "inert": {
+    "templates": [],
+    "codes": [
+      "NIKA-SEC-008",
+      "NIKA-AUTH-009"
+    ]
+  },
   "infer": {
     "templates": [
       "chain",
@@ -204,7 +226,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "agent-loop"
     ],
     "codes": [
-      "NIKA-COMP-004"
+      "NIKA-COMP-004",
+      "NIKA-VAR-001",
+      "NIKA-DEFAULT-001"
     ]
   },
   "invoke": {
@@ -226,6 +250,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-COMP-001",
       "NIKA-TYPE-101",
       "NIKA-SEC-006",
+      "NIKA-SEC-009",
       "NIKA-BUILTIN-001"
     ]
   },
@@ -233,7 +258,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "templates": [
       "fanout"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-PARSE-028"
+    ]
   },
   "max_attempts": {
     "templates": [
@@ -299,8 +326,11 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "codes": [
       "NIKA-PARSE-002",
       "NIKA-PARSE-003",
+      "NIKA-PARSE-028",
       "NIKA-INVOKE-001",
       "NIKA-SEC-005",
+      "NIKA-SEC-008",
+      "NIKA-SEC-009",
       "NIKA-LOCK-001",
       "NIKA-BUILTIN-001",
       "NIKA-BUILTIN-DONE-001"
@@ -364,12 +394,20 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "permits": {
     "templates": [
+      "chain",
+      "fanout",
+      "agent-loop",
       "human-gated-ship",
+      "media-asset-pack",
       "docker-report"
     ],
     "codes": [
       "NIKA-SEC-004",
-      "NIKA-SEC-005"
+      "NIKA-SEC-005",
+      "NIKA-DRIFT-001",
+      "NIKA-AUTH-006",
+      "NIKA-AUTH-009",
+      "NIKA-AUTH-010"
     ]
   },
   "policy": {
@@ -390,7 +428,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-018",
-      "NIKA-SEC-006"
+      "NIKA-SEC-006",
+      "NIKA-SEC-009"
     ]
   },
   "recover": {
@@ -409,7 +448,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "fanout"
     ],
     "codes": [
-      "NIKA-PARSE-011"
+      "NIKA-PARSE-011",
+      "NIKA-PARSE-028"
     ]
   },
   "returns": {
@@ -422,6 +462,10 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-TYPE-004",
       "NIKA-TYPE-101"
     ]
+  },
+  "run": {
+    "templates": [],
+    "codes": []
   },
   "schema": {
     "templates": [
@@ -445,7 +489,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-014",
-      "NIKA-SEC-006"
+      "NIKA-VAR-001",
+      "NIKA-SEC-006",
+      "NIKA-DRIFT-001"
     ]
   },
   "shell": {
@@ -471,7 +517,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "templates": [
       "agent-loop"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-PARSE-027"
+    ]
   },
   "tasks": {
     "templates": [
@@ -527,8 +575,11 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "tools": {
     "templates": [
+      "chain",
+      "fanout",
       "agent-loop",
       "human-gated-ship",
+      "media-asset-pack",
       "docker-report"
     ],
     "codes": [

@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "ffc28208940a5801074d88c3391cd62bf80c09cc",
-  "tree": "6a878265f79988fb7f05ebcf0da159b6caf4331b"
+  "commit": "f9f6d528bd322a9ca6eb487b1b85aca12fba42a1",
+  "tree": "c09fe9dc8fe8c86492ea5badf8b4180640267447"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -36,7 +36,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/canon-projectors.py",
-   "sha256": "1974de3eba2602c5464b0a0e8ec5edd04b2ce85d286d8845bcf8830b94346aee",
+   "sha256": "ff63f6ae4f8f24e62f0e3f567ca0e1c059b006e1531d35391b37e7d4c266cd2c",
    "args": [
     "--write"
    ],
@@ -68,7 +68,7 @@
    "root": "spec",
    "runtime": "copy",
    "path": "schemas/workflow.schema.json",
-   "sha256": "50d244c064ce6098f5114ab19976f0eb0d2363220adbf99e5dcfaa836e275d8f",
+   "sha256": "fa48f9470ee5baf6201b325deffb33d5da92662f08d42bc45a724b90a7d2b078",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "6173804d346b1ba27159ab66d3f4f3800abdf4652608624b704205a72d35bf1f",
+   "sha256": "918175891515ff740702bac3d5db5a8bd7383191400d612e65a70cb965b98af6",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -276,27 +276,27 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "6173804d346b1ba27159ab66d3f4f3800abdf4652608624b704205a72d35bf1f",
+   "sha256": "918175891515ff740702bac3d5db5a8bd7383191400d612e65a70cb965b98af6",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
    "path": "public/errors/catalog.json",
-   "sha256": "5113f0262a0583e605cd07bfa026f39fcfe6c1b575fd34d3c6cae3fcc209de44",
+   "sha256": "6c8eec7da1981b6fb8ea3f3b87a99acb49f56d2958ba18537ee22439c559e136",
    "dist": "errors/catalog.json"
   },
   {
    "path": "public/schema/workflow.json",
-   "sha256": "50d244c064ce6098f5114ab19976f0eb0d2363220adbf99e5dcfaa836e275d8f",
+   "sha256": "fa48f9470ee5baf6201b325deffb33d5da92662f08d42bc45a724b90a7d2b078",
    "dist": "schema/workflow.json"
   },
   {
    "path": "public/spec/v1/workflow.schema.json",
-   "sha256": "50d244c064ce6098f5114ab19976f0eb0d2363220adbf99e5dcfaa836e275d8f",
+   "sha256": "fa48f9470ee5baf6201b325deffb33d5da92662f08d42bc45a724b90a7d2b078",
    "dist": "spec/v1/workflow.schema.json"
   },
   {
    "path": "public/templates/catalog.json",
-   "sha256": "2cedd14efa5520bf0418749d72fb456643790c56461cf9bc94a403ab281c0b89",
+   "sha256": "c948b8bb978d68e3776e2a1c2ddd2cbf48def0999c31a27d8ae4eac7d68fdd55",
    "dist": "templates/catalog.json"
   },
   {
@@ -315,28 +315,28 @@
   },
   {
    "path": "src/sections/usecases-yaml.generated.ts",
-   "sha256": "0d87bb8d9e7903116fabfd42333db8f68923714d81dcc4383550e065c59b9191",
+   "sha256": "05bc507ca9dc1b2b778c62d3e82eeb072b657be69cc4f807c89dc961ee4e314b",
    "consumers": [
     "src/sections/showcase-yaml-access.ts"
    ]
   },
   {
    "path": "src/content/templates.generated.ts",
-   "sha256": "7b1956b3662afceb4daa7a7e94920097983434743d32b69cebafbc62862540a9",
+   "sha256": "d7ebbf398b4706f2fd42174bb989065f1c9ef4199bf1bc50fca0144849357b57",
    "consumers": [
     "src/pages/Templates.tsx"
    ]
   },
   {
    "path": "src/content/errors.generated.ts",
-   "sha256": "47ce592e12a2efc16168acc17c6fa9b4c6b8a071baec81bb5693cbffd7ae4921",
+   "sha256": "46b0c9bfc089d4e64b896bd123ce9bd9929770710e0c306fd60953035c51f875",
    "consumers": [
     "src/pages/Errors.tsx"
    ]
   },
   {
    "path": "src/content/language.generated.ts",
-   "sha256": "116d1f3f0cabb2abd8c5df65c69d9485976e1a3d03db252b5d7903a3ca55108e",
+   "sha256": "4b3787786893c4efb47fd0bf4948b24a2c929c89ce5973bfaff89e6e0c19b9a8",
    "consumers": [
     "src/pages/Language.tsx"
    ]
@@ -357,7 +357,7 @@
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "dab2e9d77bb49b006984f4e7d2aff6fa82f2ca51eb050ab3e4428d7a8c964353",
+   "sha256": "2822ca2562bcdcb6a162f54544a6be226b77e081e3cab4adeda4d94dbdfa4f1e",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
@@ -371,35 +371,35 @@
   },
   {
    "path": "src/content/language-usage.generated.ts",
-   "sha256": "d8fadfd7562f2351b50552cda3eee59f05ab063bf5bb8c291d352df29cab4a22",
+   "sha256": "b9cb7f14839f87d8466409f437ccfe2f3322d3c6d91b38de07318642aa0c850e",
    "consumers": [
     "src/pages/WordPage.tsx"
    ]
   },
   {
    "path": "src/content/language-usage-refs.generated.ts",
-   "sha256": "f1a52b87b247080b7dba3ac8998b3d9c90e8d92ed4ce0cfab04f44884c53f18b",
+   "sha256": "e765773970c72aad22ad0ba10fdfca668620d848fc36d78c83db1e962798e818",
    "consumers": [
     "src/content/graph.ts"
    ]
   },
   {
    "path": "src/lib/lint-fixtures.generated.ts",
-   "sha256": "a3744ef02ed6d2903f9d19caf98f335f2fba9b4c72ea9577366d38f9958896af",
+   "sha256": "ae0c8a4e896ee636e8bdcf6d205cd53d60b2342213ec89d27c704a4babfd65c1",
    "consumers": [
     "src/lib/nika-lint-conformance.test.ts"
    ]
   },
   {
    "path": "src/content/gate-matrix.generated.ts",
-   "sha256": "df2d6b654f48817eed3e1bccbb74a0acb485a33e66e3551483671dd826f19340",
+   "sha256": "1ad5fe6c8102c63b0ad7dae8e20d3b873891077164369d7bf24a1e672e240b58",
    "consumers": [
     "src/test/gate-matrix.test.ts"
    ]
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "02fa30b744dfedccc38139f3d37ac6c7aa7d3417152a9da07595508469c03c54",
+   "sha256": "b42c3965cf10dffcba953bdeb8e5c3b648b740a8a98b0fe1bc8046737eba4157",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]

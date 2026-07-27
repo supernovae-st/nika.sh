@@ -130,6 +130,22 @@
    and the drawing stay in their lazy chunk. DEATH CLAUSE: this retires INTO
    the spec — the day design/tokens.yaml carries the roles, the derivation
    leaves the bundle and the ceiling comes back down.
+   390→393 pin-advance 2026-07-27: the resync pin was 68 commits behind (the
+   daily cron had been red for six days on a digest pinned to a commit it was
+   not pinned to). Advancing it landed real CONTENT, not code: three new words
+   (declassify · inert · run), a fifth permit family (env · NEP-0005), the
+   24 schema descriptions of nika-spec#209, and the error codes minted since.
+   Measured 392.2 — the growth is prose the contract now teaches, and prose is
+   the point of this site. TWO DEBTS STAND, both named rather than paid here:
+     · the roles clause above, still unpaid (design/tokens.yaml promotion);
+     · NEW · `language.generated.ts` carries every word's FULL description and
+       rides the ENTRY chunk, because the five /language + /verbs pages are
+       sync-routed for the prerenderer. The rooms already ship that prose as
+       prerendered HTML, so the bundle copy only serves SPA-nav — it belongs
+       in a lazy chunk behind an access door (src/lib/atlas-access.ts is the
+       proven shape). That cut is worth more than this raise; it needs the
+       five pages to stop reading the prose synchronously, which is a
+       refactor, not a bump.
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -137,7 +153,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 390
+const BUDGET_KB = 393
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

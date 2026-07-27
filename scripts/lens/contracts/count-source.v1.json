@@ -29,7 +29,7 @@
     "rendered_count": 535,
     "rendered_set_sha256": "6dd41f8a8b7806d784671b293c19e8d06ead6412537b9d150505afc50f8b65da"
   },
-  "claim_count": 147,
+  "claim_count": 145,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -356,30 +356,6 @@
       "reason": "literal is gated against CANON.verbs"
     },
     {
-      "selector": "src/components/codefile-tips.ts#count:1",
-      "path": "src/components/codefile-tips.ts",
-      "line": 29,
-      "text": "1 verbs",
-      "source": "1",
-      "field": "verbs",
-      "value": 1,
-      "ordinal": false,
-      "relation": "section-coordinate",
-      "reason": "S.1 is the stable section coordinate for the verb register"
-    },
-    {
-      "selector": "src/components/codefile-tips.ts#count:2",
-      "path": "src/components/codefile-tips.ts",
-      "line": 30,
-      "text": "3 builtins",
-      "source": "3",
-      "field": "builtins",
-      "value": 3,
-      "ordinal": false,
-      "relation": "section-coordinate",
-      "reason": "S.3 is the stable section coordinate for the builtin register"
-    },
-    {
       "selector": "src/components/dag/DagNodeCard.tsx#count:1",
       "path": "src/components/dag/DagNodeCard.tsx",
       "line": 9,
@@ -627,7 +603,7 @@
     {
       "selector": "src/content/language-meta.ts#count:2",
       "path": "src/content/language-meta.ts",
-      "line": 20,
+      "line": 12,
       "text": "second verb",
       "source": "second",
       "field": "verbs",
@@ -639,7 +615,7 @@
     {
       "selector": "src/content/language-meta.ts#count:3",
       "path": "src/content/language-meta.ts",
-      "line": 22,
+      "line": 13,
       "text": "first verb",
       "source": "first",
       "field": "verbs",
@@ -651,7 +627,7 @@
     {
       "selector": "src/content/language-meta.ts#count:4",
       "path": "src/content/language-meta.ts",
-      "line": 23,
+      "line": 14,
       "text": "third verb",
       "source": "third",
       "field": "verbs",

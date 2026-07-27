@@ -179,7 +179,7 @@ export const HUBS: Record<string, HubData> = {
       {
         "id": "permit-families",
         "title": "The permit families",
-        "opener": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library. Absent means the engine floor · present means default-deny.",
+        "opener": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library, env for the names a child process inherits. Absent means the engine floor · present means default-deny.",
         "anchor_prefix": "",
         "node_prefix": "permit",
         "defined_by": [
@@ -206,6 +206,11 @@ export const HUBS: Record<string, HubData> = {
             "id": "tools",
             "one_liner": "which nika tools the file may invoke",
             "url": "/permits/tools"
+          },
+          {
+            "id": "env",
+            "one_liner": "exact env names a child may see · never inherited, never a glob",
+            "url": "/permits/env"
           }
         ]
       },

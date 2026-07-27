@@ -13,4 +13,4 @@ export const WIRE_WORDS = 'after with'.split(' ')
 /** the declared failure grammar */
 export const FAIL_WORDS = 'backoff_max_ms backoff_ms backoff_strategy fail_workflow jitter max_attempts on_codes on_error on_finally recover retry skip'.split(' ')
 /** every word the contract declares (the totality gate reads this) */
-export const DECLARED_COUNT = 59
+export const DECLARED_COUNT = 62

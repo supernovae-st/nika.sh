@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { tipFor, tipHref } from './codefile-tips'
 import { KEY_WORDS, VERB_WORDS, WHEN_WORDS } from '../sections/morph/plain-words'
@@ -83,5 +85,25 @@ describe('tipHref', () => {
 
   it('returns null for unknown terms', () => {
     expect(tipHref('nope')).toBeNull()
+  })
+
+  /* THE HAND MAP MAY NOT HOLD A CORPSE. A word that gains a teaching sentence
+     in the contract gains a room, and the room wins in tipHref — so its /spec
+     anchor stops being reachable without anyone editing this file. That is how
+     27 of the original 28 entries died silently. This re-derives reachability
+     from the shipping resolver: an entry nobody can reach is deleted, not kept
+     as decoration. */
+  it('every SPEC_AT anchor is still REACHABLE (no entry a room now shadows)', () => {
+    const src = readFileSync(join(__dirname, 'codefile-tips.ts'), 'utf8')
+    const block = src.match(/const SPEC_AT[^=]*=\s*\{([\s\S]*?)\n\}/)?.[1] ?? ''
+    const keys = [...block.matchAll(/^\s*(?:'([^']+)'|([A-Za-z_$][\w$]*))\s*:/gm)].map(
+      (m) => m[1] ?? m[2],
+    )
+    expect(keys.length, 'the SPEC_AT literal was not readable').toBeGreaterThan(0)
+    const shadowed = keys.filter((k) => !String(tipHref(k)).startsWith('/spec'))
+    expect(
+      shadowed,
+      `these anchors are unreachable — a room already owns the word, so delete them:\n  ${shadowed.join(' ')}`,
+    ).toEqual([])
   })
 })

@@ -137,7 +137,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "The language",
           "icon": "book",
           "to": "/language",
-          "count": 59
+          "count": 62
         },
         {
           "label": "The four verbs",
@@ -166,7 +166,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "Error codes",
           "icon": "book",
           "to": "/errors",
-          "count": 82
+          "count": 96
         },
         {
           "label": "The boundary",
@@ -219,7 +219,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "label": "The language",
         "icon": "book",
         "to": "/language",
-        "count": 59
+        "count": 62
       },
       {
         "label": "The four verbs",
@@ -248,7 +248,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "label": "Error codes",
         "icon": "book",
         "to": "/errors",
-        "count": 82
+        "count": 96
       },
       {
         "label": "The boundary",

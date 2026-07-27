@@ -578,7 +578,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/agent-loop.nika.yaml",
       "pin": null,
-      "sha256": "2e5b88c626e8e0e49673117bbcb4551abc2f7434870feb4df7db1faae7f28e0c"
+      "sha256": "b9b45c252b029f97fb2769f4077b202654d31bc6b8efed67948f131987a2000c"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -612,7 +612,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/chain.nika.yaml",
       "pin": null,
-      "sha256": "ca7eb26a65f73c352cb41c0d2753cfd1fe38beb7eb5452b235f7a3afbbce1be6"
+      "sha256": "fd8a0994a95c2b7f714659efa0b4ced3a6a655f1414446f90970ed68805a390d"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -663,7 +663,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/fanout.nika.yaml",
       "pin": null,
-      "sha256": "b468ab46eeccf19431f30666ebee95fcfcccd03504f817593fe4f5ea5f752e9f"
+      "sha256": "777ab461a3984b3618e8beb0b3493776e7a3e6219ee7262f565115a8d9c45743"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -714,7 +714,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/media-asset-pack.nika.yaml",
       "pin": null,
-      "sha256": "cb3b911c4b726944c0fc53b1db07655148b3357bac0c5ab0683b563b05710b88"
+      "sha256": "0a5213baa376e0f16bdd98e8c985aa692f3a5fe48b413fd328f6f40852bb1da7"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",

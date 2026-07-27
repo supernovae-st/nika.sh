@@ -390,8 +390,12 @@ export function discoverRouteClaims(root) {
   return claims
 }
 
+/* the optional `: T[]` is not decoration — an array that empties needs its
+   annotation or TypeScript infers `never[]` and every reader breaks. The
+   reader refused `export const PENDING_ERROR_CODES: string[] = []` on the day
+   the list legitimately emptied, so a legal TS form now parses. */
 function literalArray(source, name) {
-  const match = source.match(new RegExp(`export const ${name} = \\[([\\s\\S]*?)\\]`))
+  const match = source.match(new RegExp(`export const ${name}(?:\\s*:[^=]+)? = \\[([\\s\\S]*?)\\]`))
   if (!match) throw new Error(`static path array missing: ${name}`)
   return [...match[1].matchAll(/'([^']+)'/g)].map((entry) => entry[1])
 }

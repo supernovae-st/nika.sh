@@ -46,12 +46,12 @@ export const ATLAS_SET_COUNTS: Record<string, { count: number; url: string; titl
     "title": "The error categories"
   },
   "error-codes": {
-    "count": 82,
+    "count": 96,
     "url": "/errors",
     "title": "The error codes"
   },
   "error-namespaces": {
-    "count": 21,
+    "count": 25,
     "url": "/errors",
     "title": "The error namespaces"
   },
@@ -76,7 +76,7 @@ export const ATLAS_SET_COUNTS: Record<string, { count: number; url: string; titl
     "title": "The namespaces"
   },
   "permit-families": {
-    "count": 4,
+    "count": 5,
     "url": "/boundary",
     "title": "The permit families"
   },
@@ -121,7 +121,7 @@ export const ATLAS_SET_COUNTS: Record<string, { count: number; url: string; titl
     "title": "The four verbs"
   },
   "words": {
-    "count": 59,
+    "count": 62,
     "url": "/language",
     "title": "The language words"
   }

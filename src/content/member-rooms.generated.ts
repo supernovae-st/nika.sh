@@ -454,6 +454,13 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
     "hub": "/boundary",
     "members": [
       {
+        "id": "env",
+        "title": "env",
+        "url": "/permits/env",
+        "node": "permit:env",
+        "gloss": "exact env names a child may see · never inherited, never a glob"
+      },
+      {
         "id": "exec",
         "title": "exec",
         "url": "/permits/exec",
@@ -530,6 +537,12 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "node": "errns:NIKA-ASSERT"
       },
       {
+        "id": "NIKA-AUTH",
+        "title": "NIKA-AUTH",
+        "url": "/error-namespaces/NIKA-AUTH",
+        "node": "errns:NIKA-AUTH"
+      },
+      {
         "id": "NIKA-BUILTIN",
         "title": "NIKA-BUILTIN",
         "url": "/error-namespaces/NIKA-BUILTIN",
@@ -561,6 +574,18 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "title": "NIKA-DECIDE",
         "url": "/error-namespaces/NIKA-DECIDE",
         "node": "errns:NIKA-DECIDE"
+      },
+      {
+        "id": "NIKA-DEFAULT",
+        "title": "NIKA-DEFAULT",
+        "url": "/error-namespaces/NIKA-DEFAULT",
+        "node": "errns:NIKA-DEFAULT"
+      },
+      {
+        "id": "NIKA-DRIFT",
+        "title": "NIKA-DRIFT",
+        "url": "/error-namespaces/NIKA-DRIFT",
+        "node": "errns:NIKA-DRIFT"
       },
       {
         "id": "NIKA-EXEC",
@@ -648,6 +673,12 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "title": "NIKA-TYPE",
         "url": "/error-namespaces/NIKA-TYPE",
         "node": "errns:NIKA-TYPE"
+      },
+      {
+        "id": "NIKA-VALUES",
+        "title": "NIKA-VALUES",
+        "url": "/error-namespaces/NIKA-VALUES",
+        "node": "errns:NIKA-VALUES"
       },
       {
         "id": "NIKA-VAR",

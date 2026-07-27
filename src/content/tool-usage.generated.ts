@@ -30,7 +30,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 52
+      "firstLine": 54
     },
     "templates": [
       "agent-loop",
@@ -107,7 +107,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 32
+      "firstLine": 34
     },
     "templates": [
       "agent-loop"
@@ -167,7 +167,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 20
+      "firstLine": 25
     },
     "templates": [
       "fanout"
@@ -219,7 +219,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "media-asset-pack",
       "file": "media-asset-pack.nika.yaml",
-      "firstLine": 35
+      "firstLine": 37
     },
     "templates": [
       "media-asset-pack"
@@ -247,7 +247,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 42
+      "firstLine": 47
     },
     "templates": [
       "fanout",
@@ -338,7 +338,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 21
+      "firstLine": 25
     },
     "templates": [
       "chain",
@@ -404,7 +404,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 34
+      "firstLine": 38
     },
     "templates": [
       "chain",

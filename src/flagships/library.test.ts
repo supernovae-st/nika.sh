@@ -111,6 +111,26 @@ describe('library · the hero panel-height law', () => {
     }
   })
 
+  /* A RANGE CAN BE NON-EMPTY AND STILL LIE. Both of these passed the
+     non-empty check while pointing at the wrong block: the spec's examples
+     grew `permits:` heads (NEP-0003) and every line number below them slid,
+     so `t4` lit `tasks:/plan:/infer:` under a gloss promising the agent's
+     three tools and its caps, and `t3` lit a `nika:read` arg list under a
+     gloss promising the fan-out head. The gloss opens with the key it
+     teaches, so that key is the evidence the range must actually contain. */
+  it('every highlight range CONTAINS the key its gloss names', () => {
+    for (const item of LIBRARY) {
+      const key = /^([a-z_]+):/.exec(item.gloss)?.[1]
+      expect(key, `${item.id} gloss must open with the key it teaches`).toBeDefined()
+      const [lo, hi] = item.highlight
+      const slice = item.yaml.split('\n').slice(lo - 1, hi).join('\n')
+      expect(
+        new RegExp(`(^|\\s)${key}:`, 'm').test(slice),
+        `${item.filename} lines ${lo}-${hi} never mention \`${key}:\` — the range slid off its evidence`,
+      ).toBe(true)
+    }
+  })
+
   it('every highlight range points at real, non-empty evidence lines', () => {
     for (const item of LIBRARY) {
       const [lo, hi] = item.highlight
