@@ -11,6 +11,8 @@ import {
 } from '../content/language.generated'
 import type { WordUsage } from '../content/language-usage.generated'
 import { WORD_GLOSS } from '../content/language-meta'
+import { declProse, wordVoice } from '../lib/language-prose-access'
+import { useWordProse, proseIslandId } from '../lib/use-word-prose'
 import { sourcesForWord } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
 import { WORD_ACCEPTS, WORD_CHAPTERS, CHAPTER_FILES } from '../content/room-rails.generated'
@@ -122,7 +124,8 @@ export function Component() {
 
   const required = hit ? hit.decls.filter((d) => d.required) : []
   const types = hit ? [...new Set(hit.decls.map((d) => d.type).filter(Boolean))] : []
-  const rawVoice = hit ? (hit.decls.find((d) => d.desc)?.desc ?? WORD_GLOSS[hit.word]) : undefined
+  const prose = useWordProse(`word-${word}`, hit ? [hit.word] : [])
+  const rawVoice = hit ? (wordVoice(prose, hit.word) || WORD_GLOSS[hit.word]) : undefined
   /* glosses are clause-style — the lede needs a sentence end */
   const voice = rawVoice && !/[.!?]$/.test(rawVoice.trim()) ? `${rawVoice.trim()}.` : rawVoice
 
@@ -201,6 +204,7 @@ export function Component() {
 
   return (
     <main className="theme-dark tp-page td-page">
+      <Island id={proseIslandId(`word-${word}`)} payload={JSON.stringify(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="wd-title" className="v4sec v4-in" data-word={hit?.word}>
         <div className="v4sec-wrap">
@@ -288,7 +292,7 @@ export function Component() {
                   <b>before anything runs</b>.
                 </p>
                 <dl className="tp-args td-args">
-                  {hit.decls.map((d) => (
+                  {hit.decls.map((d, di) => (
                     <div className="tp-arg" key={d.scope}>
                       <dt className={`tp-arg-name${d.required ? ' tp-arg-name--required' : ''}`}>
                         {d.scope}
@@ -305,7 +309,7 @@ export function Component() {
                             {d.format}
                           </code>
                         )}
-                        {d.desc ?? WORD_GLOSS[hit.word]}
+                        {declProse(prose, hit.word, di) || WORD_GLOSS[hit.word]}
                         <span className="td-none" style={{ display: 'block', margin: '2px 0 0' }}>
                           {SCOPE_BLURB[d.scope]}
                         </span>

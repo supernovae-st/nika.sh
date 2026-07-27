@@ -103,12 +103,34 @@ export function readSources(ROOT) {
   /* the served workflow schema (spec clock · the types set's declared source) */
   const schema = json('public/schema/workflow.json')
 
-  /* the language words (schema projection · spec clock) */
+  /* the language words (schema projection · spec clock).
+
+     TWO MODULES SINCE THE ENTRY DIET: the index is light because it rides the
+     entry chunk, and the teaching sentences live beside it. The compiler wants
+     them joined — `opener` IS decls[0].desc — so they are re-married here,
+     where the cost is a build script rather than every visitor's first paint.
+     Index-aligned by construction (the generator emits one slot per decl). */
   const langTs = read('src/content/language.generated.ts')
   const words = parseTsLiteral(
     sliceLiteral(langTs, 'export const LANGUAGE_WORDS', '[', ']', 'language.generated.ts'),
     'language.generated.ts',
   )
+  const prose = parseTsLiteral(
+    sliceLiteral(
+      read('src/content/language-prose.generated.ts'),
+      'export const WORD_PROSE',
+      '{',
+      '}',
+      'language-prose.generated.ts',
+    ),
+    'language-prose.generated.ts',
+  )
+  for (const w of words) {
+    const sentences = prose[w.word] ?? []
+    w.decls.forEach((d, i) => {
+      if (sentences[i]) d.desc = sentences[i]
+    })
+  }
 
   /* the usage twins (same-run refs · the site's existing edge derivations) */
   const wordRefs = parseTsLiteral(

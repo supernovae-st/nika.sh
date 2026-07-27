@@ -130,6 +130,16 @@
    and the drawing stay in their lazy chunk. DEATH CLAUSE: this retires INTO
    the spec — the day design/tokens.yaml carries the roles, the derivation
    leaves the bundle and the ceiling comes back down.
+   393→390 PAID, same day: the debt below was not carried, it was cut. The
+   language index and its PROSE are two modules now — the sentences reach the
+   three rooms that show them (/language · /language/:word · /verbs/:name)
+   through src/lib/language-prose-access.ts: present at SSG by a top-level SSR
+   import (so the rooms stay readable with JavaScript off), embedded as a byte
+   island for hydration, an async chunk only on SPA-nav. Measured 392.2 → 388.6
+   — the ceiling returns to where it stood before the pin advance, with ~1.4
+   margin, and the entry stops growing every time the contract teaches a word.
+   A gate pins it: language.test asserts the entry-resident index carries no
+   "desc" at all. The ROLES clause above is still open; it is a separate debt.
    390→393 pin-advance 2026-07-27: the resync pin was 68 commits behind (the
    daily cron had been red for six days on a digest pinned to a commit it was
    not pinned to). Advancing it landed real CONTENT, not code: three new words
@@ -153,7 +163,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 393
+const BUDGET_KB = 390
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

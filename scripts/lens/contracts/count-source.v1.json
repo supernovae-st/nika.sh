@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 262,
-    "set_sha256": "11f93a33b9ff93734d6accb7910e4aac62febbaadd5453798f5edd102ec78f52",
-    "rendered_count": 535,
-    "rendered_set_sha256": "26be01af70721ebe1b5e49a7abc46ddc4854667db6d89edf13059e4c68ead4bb"
+    "count": 264,
+    "set_sha256": "2c8b9eb7f87d3777116ac96398a79dfd61352e55a60775f5644b431007acfba5",
+    "rendered_count": 538,
+    "rendered_set_sha256": "5c47b39125eb04843f932b81851e06bbb3f10bb53cd9b6e409cab4472fa01088"
   },
   "claim_count": 145,
   "bindings": [
@@ -916,7 +916,7 @@
     {
       "selector": "src/pages/Language.tsx#count:1",
       "path": "src/pages/Language.tsx",
-      "line": 24,
+      "line": 27,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -928,7 +928,7 @@
     {
       "selector": "src/pages/Language.tsx#count:2",
       "path": "src/pages/Language.tsx",
-      "line": 141,
+      "line": 148,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -940,7 +940,7 @@
     {
       "selector": "src/pages/Language.tsx#count:3",
       "path": "src/pages/Language.tsx",
-      "line": 214,
+      "line": 221,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1230,7 +1230,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:1",
       "path": "src/pages/VerbPage.tsx",
-      "line": 25,
+      "line": 28,
       "text": "one verb",
       "source": "one",
       "field": "verbs",
@@ -1242,7 +1242,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:2",
       "path": "src/pages/VerbPage.tsx",
-      "line": 26,
+      "line": 29,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1254,7 +1254,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:3",
       "path": "src/pages/VerbPage.tsx",
-      "line": 60,
+      "line": 63,
       "text": "${CANON.providers} providers",
       "source": "${CANON.providers}",
       "field": "providers",
@@ -1267,7 +1267,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:4",
       "path": "src/pages/VerbPage.tsx",
-      "line": 93,
+      "line": 99,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1279,7 +1279,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:5",
       "path": "src/pages/VerbPage.tsx",
-      "line": 93,
+      "line": 99,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1291,7 +1291,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:6",
       "path": "src/pages/VerbPage.tsx",
-      "line": 109,
+      "line": 115,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -1303,7 +1303,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:7",
       "path": "src/pages/VerbPage.tsx",
-      "line": 123,
+      "line": 129,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1315,7 +1315,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:8",
       "path": "src/pages/VerbPage.tsx",
-      "line": 135,
+      "line": 141,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1327,7 +1327,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:9",
       "path": "src/pages/VerbPage.tsx",
-      "line": 160,
+      "line": 167,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1339,7 +1339,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:10",
       "path": "src/pages/VerbPage.tsx",
-      "line": 203,
+      "line": 210,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1351,7 +1351,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:11",
       "path": "src/pages/VerbPage.tsx",
-      "line": 370,
+      "line": 377,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1424,7 +1424,7 @@
     {
       "selector": "src/pages/WordPage.tsx#count:1",
       "path": "src/pages/WordPage.tsx",
-      "line": 36,
+      "line": 38,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1436,7 +1436,7 @@
     {
       "selector": "src/pages/WordPage.tsx#count:2",
       "path": "src/pages/WordPage.tsx",
-      "line": 351,
+      "line": 355,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1448,7 +1448,7 @@
     {
       "selector": "src/pages/WordPage.tsx#count:3",
       "path": "src/pages/WordPage.tsx",
-      "line": 556,
+      "line": 560,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",

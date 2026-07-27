@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { LANGUAGE_SCOPES, LANGUAGE_WORDS, WORD_INDEX } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
+import { WORD_PROSE } from '../content/language-prose.generated'
 import { CHAPTERS } from '../sections/verbs-data'
 import { CANON } from '../canon.generated'
 import { LANGUAGE_PATHS, VERB_PATHS, PATHS } from '../../site.config'
@@ -19,12 +20,28 @@ import { LANGUAGE_PATHS, VERB_PATHS, PATHS } from '../../site.config'
 const ROOT = join(__dirname, '../..')
 
 describe('/language · the compiled projection matches the served schema', () => {
-  it('language.generated.ts is exactly what the compiler emits today', () => {
-    const path = join(ROOT, 'src/content/language.generated.ts')
-    const committed = readFileSync(path, 'utf8')
+  /* BOTH halves, or the gate guards the half that cannot grow. The compiler
+     emits the light index AND the prose module; gating only the index would
+     let every teaching sentence drift unwatched — which is precisely the half
+     that changes every time the contract teaches another word. */
+  it('both emitted modules are exactly what the compiler emits today', () => {
+    const paths = [
+      join(ROOT, 'src/content/language.generated.ts'),
+      join(ROOT, 'src/content/language-prose.generated.ts'),
+    ]
+    const committed = paths.map((p) => readFileSync(p, 'utf8'))
     execFileSync('node', [join(ROOT, 'scripts/build-language.mjs')])
-    const fresh = readFileSync(path, 'utf8')
-    expect(fresh).toBe(committed)
+    for (const [i, p] of paths.entries()) {
+      expect(readFileSync(p, 'utf8'), p).toBe(committed[i])
+    }
+  })
+
+  /* THE INDEX STAYS LIGHT. It rides the entry chunk for every visitor, so a
+     `desc` creeping back into a declaration is a 3.9 KB regression nobody
+     would notice until the budget bit. */
+  it('the entry-resident index carries NO prose', () => {
+    const src = readFileSync(join(ROOT, 'src/content/language.generated.ts'), 'utf8')
+    expect(src.includes('"desc"'), 'a description leaked back into the light index').toBe(false)
   })
 
   it('the verb-flagged words ARE the canon verbs (exactly)', () => {
@@ -38,7 +55,7 @@ describe('/language · the compiled projection matches the served schema', () =>
 
   it('every word row can speak — a schema desc or the editorial gloss', () => {
     for (const w of LANGUAGE_WORDS) {
-      const spoken = w.decls.some((d) => d.desc) || Boolean(WORD_GLOSS[w.word])
+      const spoken = (WORD_PROSE[w.word] ?? []).some(Boolean) || Boolean(WORD_GLOSS[w.word])
       expect(spoken, `${w.word} has neither a schema description nor a gloss`).toBe(true)
     }
   })
@@ -70,7 +87,7 @@ describe('/language · the compiled projection matches the served schema', () =>
       expect(entry, `gloss for unknown word "${word}"`).toBeDefined()
       expect(typeof gloss).toBe('string')
       expect(
-        entry.decls.every((d) => !d.desc),
+        !(WORD_PROSE[word] ?? []).some(Boolean),
         `"${word}" carries a schema description — drop its gloss (one voice)`,
       ).toBe(true)
     }

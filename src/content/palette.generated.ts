@@ -2467,7 +2467,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "after",
     "href": "/language/after",
-    "hint": "task — The CONTROL boundary · {producer-task: predicate}. Each entry is one control edge (spec/03-dag.md §afte"
+    "hint": "task"
   },
   {
     "kind": "word",
@@ -2479,79 +2479,79 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "args",
     "href": "/language/args",
-    "hint": "invoke — Arguments passed to the tool · an object whose shape is the TOOL's own schema, not the language's. Ea"
+    "hint": "invoke"
   },
   {
     "kind": "word",
     "label": "backoff_max_ms",
     "href": "/language/backoff_max_ms",
-    "hint": "retry — Ceiling on the computed delay, in milliseconds · default 60000, one minute. Exponential growth stops c"
+    "hint": "retry"
   },
   {
     "kind": "word",
     "label": "backoff_ms",
     "href": "/language/backoff_ms",
-    "hint": "retry — Initial delay between attempts, in milliseconds · default 1000. `backoff_strategy` decides how it grow"
+    "hint": "retry"
   },
   {
     "kind": "word",
     "label": "backoff_strategy",
     "href": "/language/backoff_strategy",
-    "hint": "retry — Which curve the delay follows between attempts · `fixed` · `linear` · `exponential` · default `exponen"
+    "hint": "retry"
   },
   {
     "kind": "word",
     "label": "capture",
     "href": "/language/capture",
-    "hint": "exec — Which stream becomes the task's output · `stdout` (default) · `stderr` · `combined` · `structured` = `{"
+    "hint": "exec"
   },
   {
     "kind": "word",
     "label": "command",
     "href": "/language/command",
-    "hint": "exec — argv — the program and its arguments, execve, NO shell. Each element substituted independently (the inj"
+    "hint": "exec"
   },
   {
     "kind": "word",
     "label": "config",
     "href": "/language/config",
-    "hint": "envelope — Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment,"
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "const",
     "href": "/language/const",
-    "hint": "envelope — Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 "
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "cwd",
     "href": "/language/cwd",
-    "hint": "exec — Working directory for the subprocess · default = the engine's own cwd."
+    "hint": "exec"
   },
   {
     "kind": "word",
     "label": "declassify",
     "href": "/language/declassify",
-    "hint": "task — The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterizat"
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "decode",
     "href": "/language/decode",
-    "hint": "exec — How the captured string becomes a value (spec 09 §decode) — illegal with capture: structured (NIKA-PARS"
+    "hint": "exec"
   },
   {
     "kind": "word",
     "label": "description",
     "href": "/language/description",
-    "hint": "workflow — Free-form prose about the workflow · documentation for whoever reads the file, never read by the en"
+    "hint": "workflow"
   },
   {
     "kind": "word",
     "label": "env",
     "href": "/language/env",
-    "hint": "exec — OS environment variables for THIS subprocess · a key→value map applied over the composed environment. N"
+    "hint": "exec"
   },
   {
     "kind": "word",
@@ -2563,31 +2563,31 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "fail_fast",
     "href": "/language/fail_fast",
-    "hint": "task — for_each abort-on-error · default true."
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "fail_workflow",
     "href": "/language/fail_workflow",
-    "hint": "on_error — Fail the whole workflow on this error · the written-down form of the default, so a reader sees the "
+    "hint": "on_error"
   },
   {
     "kind": "word",
     "label": "for_each",
     "href": "/language/for_each",
-    "hint": "task — Map this task over a collection · `${{ ... }}` reference OR a literal array."
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "id",
     "href": "/language/id",
-    "hint": "workflow — Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object)."
+    "hint": "workflow"
   },
   {
     "kind": "word",
     "label": "inert",
     "href": "/language/inert",
-    "hint": "task — The honest door of the data-as-code sink (spec/10-authority.md §the data-as-code sink · NEP-0006 · LAW-"
+    "hint": "task"
   },
   {
     "kind": "word",
@@ -2599,7 +2599,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "inputs",
     "href": "/language/inputs",
-    "hint": "envelope — Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies"
+    "hint": "envelope"
   },
   {
     "kind": "word",
@@ -2611,19 +2611,19 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "jitter",
     "href": "/language/jitter",
-    "hint": "retry — Randomize the computed delay so tasks retrying the same upstream do not synchronize · default TRUE. En"
+    "hint": "retry"
   },
   {
     "kind": "word",
     "label": "max_attempts",
     "href": "/language/max_attempts",
-    "hint": "retry — Total attempts, counting the first try · integer ≥ 1 · the one required field of a `retry:` block. Eng"
+    "hint": "retry"
   },
   {
     "kind": "word",
     "label": "max_parallel",
     "href": "/language/max_parallel",
-    "hint": "task — Cap concurrent for_each iterations · default unbounded · 1 = sequential."
+    "hint": "task"
   },
   {
     "kind": "word",
@@ -2635,7 +2635,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "max_tokens_total",
     "href": "/language/max_tokens_total",
-    "hint": "agent — Cumulative token budget across every turn of the loop · the SPEND ceiling, where `max_turns` is the st"
+    "hint": "agent"
   },
   {
     "kind": "word",
@@ -2647,19 +2647,19 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "model",
     "href": "/language/model",
-    "hint": "envelope · infer · agent — Default model · `<provider>/<name>` (e.g. ollama/qwen3.5:9b · anthropic/claude-sonn"
+    "hint": "envelope · infer · agent"
   },
   {
     "kind": "word",
     "label": "nika",
     "href": "/language/nika",
-    "hint": "envelope — Language contract version · exactly `v1` for the v1 lifetime. NOT `v1.0` · `1` · `1.0`."
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "on_codes",
     "href": "/language/on_codes",
-    "hint": "retry · on_error — Retry ONLY on these canonical `NIKA-<NS>-<NNN>` codes · absent, the engine retries anything"
+    "hint": "retry · on_error"
   },
   {
     "kind": "word",
@@ -2671,31 +2671,31 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "on_finally",
     "href": "/language/on_finally",
-    "hint": "task — Cleanup mini-tasks · ALWAYS run (success/fail/timeout/cancel) · sequential · best-effort."
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "output",
     "href": "/language/output",
-    "hint": "task — Named jq-expression bindings · `${{ tasks.X.<name> }}`. jq is the single data extraction-and-transform "
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "outputs",
     "href": "/language/outputs",
-    "hint": "envelope — The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` referenc"
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "permits",
     "href": "/language/permits",
-    "hint": "envelope — The declared capability boundary · once present every category is default-deny unless listed (spec/"
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "policy",
     "href": "/language/policy",
-    "hint": "envelope — Named workflow law · hard families (require/forbid/allow/limits) are judged at check (NIKA-POLICY-0"
+    "hint": "envelope"
   },
   {
     "kind": "word",
@@ -2707,132 +2707,132 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "recover",
     "href": "/language/recover",
-    "hint": "on_error — Recovery output · a `${{ }}` ref OR a literal (merges the former fallback/value per spec/05-errors."
+    "hint": "on_error"
   },
   {
     "kind": "word",
     "label": "retry",
     "href": "/language/retry",
-    "hint": "task — Retry policy for this task · `{ max_attempts, backoff_ms, backoff_strategy, backoff_max_ms, jitter, on_"
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "returns",
     "href": "/language/returns",
-    "hint": "task — The task's output contract (spec 09-types.md) — exclusive with a verb-level schema: (NIKA-TYPE-003)"
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "run",
     "href": "/language/run",
-    "hint": "envelope — The run's entropy + clock declaration (NEP-0010) · every source of randomness and time is declared,"
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "schema",
     "href": "/language/schema",
-    "hint": "infer · agent — JSON Schema · structured output contract."
+    "hint": "infer · agent"
   },
   {
     "kind": "word",
     "label": "secrets",
     "href": "/language/secrets",
-    "hint": "envelope — Vault-backed masked references · `${{ secrets.X }}` · never inline literals."
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "shell",
     "href": "/language/shell",
-    "hint": "exec — One shell line, run via /bin/sh -c — the EXPLICIT dangerous door (pipes · redirects · globs). The block"
+    "hint": "exec"
   },
   {
     "kind": "word",
     "label": "skills",
     "href": "/language/skills",
-    "hint": "agent — Agent Skill (SKILL.md) file paths · agentskills.io shape · explicit static paths only (no globs · no t"
+    "hint": "agent"
   },
   {
     "kind": "word",
     "label": "skip",
     "href": "/language/skip",
-    "hint": "on_error — Swallow the error and let the DAG continue · the task produces no output, and the original error st"
+    "hint": "on_error"
   },
   {
     "kind": "word",
     "label": "stdin",
     "href": "/language/stdin",
-    "hint": "exec — Data written to the command's standard input · may interpolate `${{ }}`."
+    "hint": "exec"
   },
   {
     "kind": "word",
     "label": "system",
     "href": "/language/system",
-    "hint": "infer · agent — System prompt · the standing instruction, sent ahead of `prompt:` and unchanged by it."
+    "hint": "infer · agent"
   },
   {
     "kind": "word",
     "label": "tasks",
     "href": "/language/tasks",
-    "hint": "envelope — The task map · the KEY is the task's identity (snake_case · CEL-safe). Source order is presentation"
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "temperature",
     "href": "/language/temperature",
-    "hint": "infer · agent — 0-2 · number or `${{ }}`."
+    "hint": "infer · agent"
   },
   {
     "kind": "word",
     "label": "thinking",
     "href": "/language/thinking",
-    "hint": "infer — Extended thinking · `{ enabled, budget_tokens }` — reasoning the model may spend before it answers (sp"
+    "hint": "infer"
   },
   {
     "kind": "word",
     "label": "timeout",
     "href": "/language/timeout",
-    "hint": "task · on_finally — Go-duration string · quoted · e.g. \"30s\" \"5m\" \"1h30m\" \"2.5s\". Max 24h."
+    "hint": "task · on_finally"
   },
   {
     "kind": "word",
     "label": "tool",
     "href": "/language/tool",
-    "hint": "invoke — Tool reference · nika:<path> (closed v0.1 builtin set) OR mcp:<server>/<tool> (requires the slash). T"
+    "hint": "invoke"
   },
   {
     "kind": "word",
     "label": "tools",
     "href": "/language/tools",
-    "hint": "agent — Whitelist · DEFAULT-DENY (no tools if absent) · gitignore-style globs · `!` negation."
+    "hint": "agent"
   },
   {
     "kind": "word",
     "label": "types",
     "href": "/language/types",
-    "hint": "envelope — Named type declarations (spec 09-types.md · PascalCase · acyclic)"
+    "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "vision",
     "href": "/language/vision",
-    "hint": "infer — Image inputs for the call · each entry `{ source: file | url, path | url }` · the images `prompt:` is "
+    "hint": "infer"
   },
   {
     "kind": "word",
     "label": "when",
     "href": "/language/when",
-    "hint": "task · on_finally — LOCAL business condition · evaluated POST-gate over {vars · env · with · item · index} — t"
+    "hint": "task · on_finally"
   },
   {
     "kind": "word",
     "label": "with",
     "href": "/language/with",
-    "hint": "task — Task-level scope injection · `${{ with.X }}`."
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "workflow",
     "href": "/language/workflow",
-    "hint": "envelope · invoke — The workflow object · a stable home for identity and metadata (W1 'the map')."
+    "hint": "envelope · invoke"
   }
 ]

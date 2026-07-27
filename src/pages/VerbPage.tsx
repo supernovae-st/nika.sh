@@ -4,6 +4,9 @@ import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
+import { declProse } from '../lib/language-prose-access'
+import { useWordProse, proseIslandId } from '../lib/use-word-prose'
+import { Island } from '../lib/ssg-island'
 import { CHAPTERS } from '../sections/verbs-data'
 import { PartEgg } from '../scene/parts/PartEgg'
 import { VERB_SOURCES } from '../content/sources'
@@ -72,10 +75,13 @@ export function Component() {
   const block = useMemo(
     () =>
       LANGUAGE_WORDS.flatMap((w) =>
-        w.decls.filter((d) => d.scope === name).map((d) => ({ word: w.word, ...d })),
+        w.decls.map((d, di) => ({ word: w.word, di, ...d })).filter((d) => d.scope === name),
       ),
     [name],
   )
+  /* only the words this verb accepts — the room never ships the register */
+  const blockWords = useMemo(() => [...new Set(block.map((d) => d.word))], [block])
+  const prose = useWordProse(`verb-${name}`, blockWords)
   const required = block.filter((d) => d.required)
   const templates = useMemo(
     () => TEMPLATES.filter((t) => new RegExp(`^\\s+${name}:`, 'm').test(t.yaml)).map((t) => t.name),
@@ -146,6 +152,7 @@ export function Component() {
 
   return (
     <main className="theme-dark tp-page td-page vb-page">
+      <Island id={proseIslandId(`verb-${name}`)} payload={JSON.stringify(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section
         ref={ref}
@@ -270,7 +277,7 @@ export function Component() {
                       </dt>
                       <dd className="tp-arg-desc">
                         {d.type && <code className="tp-arg-type">{d.type}</code>}
-                        {d.desc ?? WORD_GLOSS[d.word]}
+                        {declProse(prose, d.word, d.di) || WORD_GLOSS[d.word]}
                       </dd>
                     </div>
                   ))}

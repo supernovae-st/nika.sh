@@ -8,6 +8,9 @@ import {
   type LanguageWord,
 } from '../content/language.generated'
 import { WORD_GLOSS } from '../content/language-meta'
+import { declProse, type WordProse } from '../lib/language-prose-access'
+import { useWordProse, proseIslandId } from '../lib/use-word-prose'
+import { Island } from '../lib/ssg-island'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import { CANON } from '../canon.generated'
 import { SPEC, routeHead } from '../content'
@@ -32,7 +35,7 @@ import './language-page.css'
    LANGUAGE_PATHS in site.config.ts). Highlight + the deep-link scroll stay
    client effects. */
 
-function WordRow({ entry }: { entry: LanguageWord }) {
+function WordRow({ entry, prose }: { entry: LanguageWord; prose: WordProse | null }) {
   const required = entry.decls.filter((d) => d.required)
   return (
     <li id={entry.word} className="lg-row">
@@ -60,7 +63,7 @@ function WordRow({ entry }: { entry: LanguageWord }) {
         )}
       </div>
       <dl className="tp-args lg-decls">
-        {entry.decls.map((d) => (
+        {entry.decls.map((d, di) => (
           <div className="tp-arg" key={d.scope}>
             <dt className={`tp-arg-name${d.required ? ' tp-arg-name--required' : ''}`}>
               {d.scope}
@@ -72,7 +75,7 @@ function WordRow({ entry }: { entry: LanguageWord }) {
             </dt>
             <dd className="tp-arg-desc">
               {d.type && <code className="tp-arg-type">{d.type}</code>}
-              {d.desc ?? WORD_GLOSS[entry.word]}
+              {declProse(prose, entry.word, di) || WORD_GLOSS[entry.word]}
               {d.enum && (
                 <span className="lg-enum">
                   {' '}
@@ -93,6 +96,9 @@ function WordRow({ entry }: { entry: LanguageWord }) {
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
+  /* the whole register shows every word's sentence, so this page carries the
+     whole prose payload — the only page that does */
+  const prose = useWordProse('register')
 
   const declsTotal = LANGUAGE_WORDS.reduce((n, w) => n + w.decls.length, 0)
 
@@ -124,6 +130,7 @@ export function Component() {
 
   return (
     <main className="theme-dark tp-page lg-page">
+      <Island id={proseIslandId('register')} payload={JSON.stringify(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="lg-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
@@ -164,7 +171,7 @@ export function Component() {
 
           <ol className="tp-list lg-list" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {LANGUAGE_WORDS.map((w) => (
-              <WordRow key={w.word} entry={w} />
+              <WordRow key={w.word} entry={w} prose={prose} />
             ))}
           </ol>
 

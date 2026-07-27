@@ -18,8 +18,6 @@ export interface WordDecl {
   format?: string
   /** the schema's own regex (the word's, or its items') */
   pattern?: string
-  /** the schema's own description — the teaching voice, never prose */
-  desc?: string
 }
 
 export interface LanguageWord {
@@ -84,8 +82,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "object",
-        "desc": "The CONTROL boundary · {producer-task: predicate}. Each entry is one control edge (spec/03-dag.md §after). State, never data — observe outcomes through with:."
+        "type": "object"
       }
     ]
   },
@@ -110,8 +107,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "invoke",
         "required": false,
-        "type": "object",
-        "desc": "Arguments passed to the tool · an object whose shape is the TOOL's own schema, not the language's. Each builtin and each MCP tool declares its own (spec/02-verbs.md §invoke) · `${{ }}` may appear in any leaf value."
+        "type": "object"
       }
     ]
   },
@@ -122,8 +118,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "retry",
         "required": false,
-        "type": "integer",
-        "desc": "Ceiling on the computed delay, in milliseconds · default 60000, one minute. Exponential growth stops climbing here."
+        "type": "integer"
       }
     ]
   },
@@ -134,8 +129,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "retry",
         "required": false,
-        "type": "integer",
-        "desc": "Initial delay between attempts, in milliseconds · default 1000. `backoff_strategy` decides how it grows from there."
+        "type": "integer"
       }
     ]
   },
@@ -151,8 +145,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
           "fixed",
           "linear",
           "exponential"
-        ],
-        "desc": "Which curve the delay follows between attempts · `fixed` · `linear` · `exponential` · default `exponential`. Each attempt waits `backoff_ms` flat, `backoff_ms × attempt`, or `backoff_ms × 2^(attempt-1)` capped at `backoff_max_ms`."
+        ]
       }
     ]
   },
@@ -169,8 +162,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
           "stderr",
           "combined",
           "structured"
-        ],
-        "desc": "Which stream becomes the task's output · `stdout` (default) · `stderr` · `combined` · `structured` = `{ stdout, stderr, exit_code }`. This is the SOURCE; `decode:` is how that string becomes a value."
+        ]
       }
     ]
   },
@@ -181,8 +173,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "exec",
         "required": false,
-        "type": "array",
-        "desc": "argv — the program and its arguments, execve, NO shell. Each element substituted independently (the injection-safe form). Shell features (pipes · redirects · globs) live in `shell:`."
+        "type": "array"
       }
     ]
   },
@@ -193,8 +184,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment, may appear in logs (R3a · LAW-SURFACE-0201 · succeeds the dead `env:` block). Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001)."
+        "type": "object"
       }
     ]
   },
@@ -205,8 +195,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 · the literal half of the dead `vars:` block · everything that is not required:true lands here per the E-split total rule). Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`."
+        "type": "object"
       }
     ]
   },
@@ -217,8 +206,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "exec",
         "required": false,
-        "type": "string",
-        "desc": "Working directory for the subprocess · default = the engine's own cwd."
+        "type": "string"
       }
     ]
   },
@@ -229,8 +217,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "array",
-        "desc": "The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterization taint · NEP-0004 · LAW-AUTH-0325) · each entry raises ONE binding from untrusted to trusted, check-visible and receipt-recorded. Lifts the taint law only — the value is still matched against the declared boundary (never a permit bypass)."
+        "type": "array"
       }
     ]
   },
@@ -247,8 +234,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
           "json",
           "jsonl",
           "bytes"
-        ],
-        "desc": "How the captured string becomes a value (spec 09 §decode) — illegal with capture: structured (NIKA-PARSE-025)"
+        ]
       }
     ]
   },
@@ -259,8 +245,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "workflow",
         "required": false,
-        "type": "string",
-        "desc": "Free-form prose about the workflow · documentation for whoever reads the file, never read by the engine (spec/01-envelope.md)."
+        "type": "string"
       }
     ]
   },
@@ -271,8 +256,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "exec",
         "required": false,
-        "type": "object",
-        "desc": "OS environment variables for THIS subprocess · a key→value map applied over the composed environment. Nothing is inherited — the ambient environment reaches a task only through `permits.env` (spec/01-envelope.md §permits)."
+        "type": "object"
       }
     ]
   },
@@ -297,8 +281,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "boolean",
-        "desc": "for_each abort-on-error · default true."
+        "type": "boolean"
       }
     ]
   },
@@ -309,8 +292,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "on_error",
         "required": false,
-        "type": "boolean",
-        "desc": "Fail the whole workflow on this error · the written-down form of the default, so a reader sees the choice instead of inferring it. Exactly one of `recover` · `skip` · `fail_workflow`."
+        "type": "boolean"
       }
     ]
   },
@@ -321,8 +303,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "string | array",
-        "desc": "Map this task over a collection · `${{ ... }}` reference OR a literal array."
+        "type": "string | array"
       }
     ]
   },
@@ -334,8 +315,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "workflow",
         "required": true,
         "type": "string",
-        "pattern": "^[a-z][a-z0-9-]*$",
-        "desc": "Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object)."
+        "pattern": "^[a-z][a-z0-9-]*$"
       }
     ]
   },
@@ -346,8 +326,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "string",
-        "desc": "The honest door of the data-as-code sink (spec/10-authority.md §the data-as-code sink · NEP-0006 · LAW-AUTH-0327) · declares this task's fetch a code-bearing artifact it will never load or run · the non-empty string IS the justification · lifts the sink law only, never the net boundary or the SSRF floor."
+        "type": "string"
       }
     ]
   },
@@ -372,8 +351,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies (R3a · LAW-SURFACE-0201 · the typed half of the dead `vars:` block · a required:true value lands here per the E-split total rule). Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211)."
+        "type": "object"
       }
     ]
   },
@@ -398,8 +376,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "retry",
         "required": false,
-        "type": "boolean",
-        "desc": "Randomize the computed delay so tasks retrying the same upstream do not synchronize · default TRUE. Engines SHOULD use a full-jitter or equal-jitter family — the anti-thundering-herd default (spec/05-errors.md §Retry policy)."
+        "type": "boolean"
       }
     ]
   },
@@ -410,8 +387,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "retry",
         "required": true,
-        "type": "integer",
-        "desc": "Total attempts, counting the first try · integer ≥ 1 · the one required field of a `retry:` block. Engines honor it strictly and surface the LAST error if every attempt fails (spec/05-errors.md §Retry policy)."
+        "type": "integer"
       }
     ]
   },
@@ -422,8 +398,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "integer",
-        "desc": "Cap concurrent for_each iterations · default unbounded · 1 = sequential."
+        "type": "integer"
       }
     ]
   },
@@ -445,8 +420,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "agent",
         "required": false,
-        "type": "integer | string",
-        "desc": "Cumulative token budget across every turn of the loop · the SPEND ceiling, where `max_turns` is the step ceiling. Default is engine-configurable (spec/02-verbs.md §agent)."
+        "type": "integer | string"
       }
     ]
   },
@@ -468,8 +442,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "string",
-        "desc": "Default model · `<provider>/<name>` (e.g. ollama/qwen3.5:9b · anthropic/claude-sonnet-4-6 · mock/echo)."
+        "type": "string"
       },
       {
         "scope": "infer",
@@ -490,8 +463,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": true,
-        "type": "\"v1\"",
-        "desc": "Language contract version · exactly `v1` for the v1 lifetime. NOT `v1.0` · `1` · `1.0`."
+        "type": "\"v1\""
       }
     ]
   },
@@ -503,15 +475,13 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "retry",
         "required": false,
         "type": "array",
-        "pattern": "^NIKA-[A-Z]{2,9}(-[A-Z][A-Z0-9_]{1,15})?-[0-9]{3}$",
-        "desc": "Retry ONLY on these canonical `NIKA-<NS>-<NNN>` codes · absent, the engine retries anything transient. Codes, never HTTP status numbers · the retry-side mirror of `on_error.on_codes`."
+        "pattern": "^NIKA-[A-Z]{2,9}(-[A-Z][A-Z0-9_]{1,15})?-[0-9]{3}$"
       },
       {
         "scope": "on_error",
         "required": false,
         "type": "array",
-        "pattern": "^NIKA-[A-Z]{2,9}(-[A-Z][A-Z0-9_]{1,15})?-[0-9]{3}$",
-        "desc": "Optional catch-side filter (mirror of retry.on_codes · same regex) · the action applies ONLY when the final error code is listed · unlisted codes fall through to the default fail (spec/05-errors.md §Fields)."
+        "pattern": "^NIKA-[A-Z]{2,9}(-[A-Z][A-Z0-9_]{1,15})?-[0-9]{3}$"
       }
     ]
   },
@@ -532,8 +502,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "array",
-        "desc": "Cleanup mini-tasks · ALWAYS run (success/fail/timeout/cancel) · sequential · best-effort."
+        "type": "array"
       }
     ]
   },
@@ -545,8 +514,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "task",
         "required": false,
         "type": "object",
-        "format": "jq",
-        "desc": "Named jq-expression bindings · `${{ tasks.X.<name> }}`. jq is the single data extraction-and-transform language (the former RFC 9535 JSONPath was dropped · jq is a superset · per spec/04-variables.md §216-225). Reserved names forbidden at parse time (spec/04-variables.md §Rules): output · status · error · started_at · ended_at · duration_ms — enforced via propertyNames."
+        "format": "jq"
       }
     ]
   },
@@ -557,8 +525,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema."
+        "type": "object"
       }
     ]
   },
@@ -569,8 +536,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "The declared capability boundary · once present every category is default-deny unless listed (spec/01-envelope.md §permits · NIKA-SEC-004)."
+        "type": "object"
       }
     ]
   },
@@ -581,8 +547,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "Named workflow law · hard families (require/forbid/allow/limits) are judged at check (NIKA-POLICY-001) · soft families (prefer/optimize) are recorded, never judged in v1 (spec/10-authority.md)."
+        "type": "object"
       }
     ]
   },
@@ -608,8 +573,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "decls": [
       {
         "scope": "on_error",
-        "required": false,
-        "desc": "Recovery output · a `${{ }}` ref OR a literal (merges the former fallback/value per spec/05-errors.md)."
+        "required": false
       }
     ]
   },
@@ -619,8 +583,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "decls": [
       {
         "scope": "task",
-        "required": false,
-        "desc": "Retry policy for this task · `{ max_attempts, backoff_ms, backoff_strategy, backoff_max_ms, jitter, on_codes }`. Retries run BEFORE `on_error` sees anything — the catch handles the last error only (spec/05-errors.md §Retry policy)."
+        "required": false
       }
     ]
   },
@@ -630,8 +593,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "decls": [
       {
         "scope": "task",
-        "required": false,
-        "desc": "The task's output contract (spec 09-types.md) — exclusive with a verb-level schema: (NIKA-TYPE-003)"
+        "required": false
       }
     ]
   },
@@ -642,8 +604,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "The run's entropy + clock declaration (NEP-0010) · every source of randomness and time is declared, never ambient · the dimensions couple: only ambient×system (the status quo) and none|seeded×virtual (the deterministic states) are legal · a contradiction refuses at parse (NIKA-PARSE-026 ambient×virtual · NIKA-PARSE-027 none|seeded×system) and a strict declaration contradicted by the body refuses at check (NIKA-PARSE-028)."
+        "type": "object"
       }
     ]
   },
@@ -654,14 +615,12 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "infer",
         "required": false,
-        "type": "object",
-        "desc": "JSON Schema · structured output contract."
+        "type": "object"
       },
       {
         "scope": "agent",
         "required": false,
-        "type": "object",
-        "desc": "JSON Schema · validate the agent's final message as structured output."
+        "type": "object"
       }
     ]
   },
@@ -672,8 +631,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "Vault-backed masked references · `${{ secrets.X }}` · never inline literals."
+        "type": "object"
       }
     ]
   },
@@ -684,8 +642,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "exec",
         "required": false,
-        "type": "string",
-        "desc": "One shell line, run via /bin/sh -c — the EXPLICIT dangerous door (pipes · redirects · globs). The blocklist applies here; interpolating untrusted values here is on the author. Exactly one of command|shell."
+        "type": "string"
       }
     ]
   },
@@ -696,8 +653,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "agent",
         "required": false,
-        "type": "array",
-        "desc": "Agent Skill (SKILL.md) file paths · agentskills.io shape · explicit static paths only (no globs · no templates) · loaded at compose time and injected into the system context."
+        "type": "array"
       }
     ]
   },
@@ -708,8 +664,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "on_error",
         "required": false,
-        "type": "boolean",
-        "desc": "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip` · `fail_workflow`."
+        "type": "boolean"
       }
     ]
   },
@@ -720,8 +675,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "exec",
         "required": false,
-        "type": "string",
-        "desc": "Data written to the command's standard input · may interpolate `${{ }}`."
+        "type": "string"
       }
     ]
   },
@@ -732,14 +686,12 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "infer",
         "required": false,
-        "type": "string",
-        "desc": "System prompt · the standing instruction, sent ahead of `prompt:` and unchanged by it."
+        "type": "string"
       },
       {
         "scope": "agent",
         "required": false,
-        "type": "string",
-        "desc": "System prompt · the standing instruction, sent ahead of `prompt:` and unchanged by any turn of the loop."
+        "type": "string"
       }
     ]
   },
@@ -750,8 +702,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": true,
-        "type": "object",
-        "desc": "The task map · the KEY is the task's identity (snake_case · CEL-safe). Source order is presentation only — the graph alone schedules."
+        "type": "object"
       }
     ]
   },
@@ -762,8 +713,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "infer",
         "required": false,
-        "type": "number | string",
-        "desc": "0-2 · number or `${{ }}`."
+        "type": "number | string"
       },
       {
         "scope": "agent",
@@ -779,8 +729,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "infer",
         "required": false,
-        "type": "object",
-        "desc": "Extended thinking · `{ enabled, budget_tokens }` — reasoning the model may spend before it answers (spec/02-verbs.md §infer)."
+        "type": "object"
       }
     ]
   },
@@ -792,8 +741,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "task",
         "required": false,
         "type": "string",
-        "pattern": "^[0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h)([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))*$",
-        "desc": "Go-duration string · quoted · e.g. \"30s\" \"5m\" \"1h30m\" \"2.5s\". Max 24h."
+        "pattern": "^[0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h)([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))*$"
       },
       {
         "scope": "on_finally",
@@ -810,8 +758,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "invoke",
         "required": false,
         "type": "string",
-        "pattern": "^mcp:[a-z][a-z0-9-]*/[A-Za-z0-9_/-]+$",
-        "desc": "Tool reference · nika:<path> (closed v0.1 builtin set) OR mcp:<server>/<tool> (requires the slash). The namespace set is CLOSED at v1 (spec/02-verbs.md) — an x-<vendor>: prefix is RESERVED, not valid (engine-specific tools route through mcp: · spec/06-stdlib-contract.md §Namespace ownership)."
+        "pattern": "^mcp:[a-z][a-z0-9-]*/[A-Za-z0-9_/-]+$"
       }
     ]
   },
@@ -822,8 +769,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "agent",
         "required": false,
-        "type": "array",
-        "desc": "Whitelist · DEFAULT-DENY (no tools if absent) · gitignore-style globs · `!` negation."
+        "type": "array"
       }
     ]
   },
@@ -834,8 +780,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": false,
-        "type": "object",
-        "desc": "Named type declarations (spec 09-types.md · PascalCase · acyclic)"
+        "type": "object"
       }
     ]
   },
@@ -846,8 +791,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "infer",
         "required": false,
-        "type": "array",
-        "desc": "Image inputs for the call · each entry `{ source: file | url, path | url }` · the images `prompt:` is allowed to refer to."
+        "type": "array"
       }
     ]
   },
@@ -859,15 +803,13 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "task",
         "required": false,
         "type": "boolean | string",
-        "format": "cel-expression",
-        "desc": "LOCAL business condition · evaluated POST-gate over {vars · env · with · item · index} — tasks.* is illegal here (NIKA-VAR-021 · hoist into with:). false → skipped (spec/03-dag.md §when)."
+        "format": "cel-expression"
       },
       {
         "scope": "on_finally",
         "required": false,
         "type": "boolean | string",
-        "format": "cel-expression",
-        "desc": "Cleanup condition · may read the PARENT task's record (tasks.<parent>.status / .error — the only legal tasks.* target inside on_finally · spec/03-dag.md §on_finally)."
+        "format": "cel-expression"
       }
     ]
   },
@@ -878,8 +820,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "object",
-        "desc": "Task-level scope injection · `${{ with.X }}`."
+        "type": "object"
       }
     ]
   },
@@ -890,14 +831,12 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": true,
-        "type": "object",
-        "desc": "The workflow object · a stable home for identity and metadata (W1 'the map')."
+        "type": "object"
       },
       {
         "scope": "invoke",
         "required": false,
-        "type": "string",
-        "desc": "Compose another workflow (spec 14) · a STATIC target: a filesystem path OR registry:owner/name@version (pinned). A templated target is refused at check (NIKA-COMP-001). Exactly one of tool: | workflow: (the invoke tagged union · G21)."
+        "type": "string"
       }
     ]
   }

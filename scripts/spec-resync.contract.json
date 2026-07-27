@@ -127,7 +127,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-language.mjs",
-   "sha256": "d2c100e5ea33a775db720fcea4b56bc9b7a5d325fd0f5cc22ecd5e089980203a",
+   "sha256": "cf38c55e5c53be4b2513799656b52fcbb5546504b51072317cccf11bc6933bff",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -336,7 +336,7 @@
   },
   {
    "path": "src/content/language.generated.ts",
-   "sha256": "4b3787786893c4efb47fd0bf4948b24a2c929c89ce5973bfaff89e6e0c19b9a8",
+   "sha256": "0d778e116ed94f17720234f88391aa29d946b988ca808edfeb4a39a8463f4944",
    "consumers": [
     "src/pages/Language.tsx"
    ]
@@ -399,7 +399,7 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "ab5d00d7b0265da918e7fa36f8ebbc611bbf97c3d5359e073e25ebb8c133b20d",
+   "sha256": "fa88640c203aa8d366adc62c67014c2a90523940c3962a7187dfd871b7b7dbd6",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]
