@@ -32,23 +32,43 @@ describe('tipFor', () => {
     expect(tipFor('tref', '*shared')).toBeNull()
   })
 
-  it('stays silent on uncurated tokens (noise is the failure mode)', () => {
-    expect(tipFor('key', 'path')).toBeNull() // schema/args plumbing
-    expect(tipFor('key', 'type')).toBeNull()
-    expect(tipFor('key', 'id')).toBeNull()
+  /* THE SILENCE RULE CHANGED ITS MECHANISM, not its intent (2026-07-27).
+     It used to mean "only the 21 keys somebody curated speak", which left 38
+     declared words — `after`, `retry`, `for_each`, `outputs`, `on_error` —
+     hovering blank on the surface built to teach the language. It now means
+     "only DECLARED words speak", read from the contract itself. Every piece
+     of real plumbing below is not a nika word, so it stays silent exactly as
+     before; the difference is that the rule is now derived instead of typed,
+     and a word cannot be forgotten into silence. `id` IS declared, and having
+     it explain itself is the point of the change. */
+  it('stays silent on everything the contract does not declare', () => {
+    expect(tipFor('key', 'path')).toBeNull() // args plumbing
+    expect(tipFor('key', 'type')).toBeNull() // json-schema plumbing
+    expect(tipFor('key', 'required')).toBeNull()
+    expect(tipFor('key', 'properties')).toBeNull()
+    expect(tipFor('key', 'url')).toBeNull()
+    expect(tipFor('key', 'egress')).toBeNull()
     expect(tipFor('string', 'permits')).toBeNull() // wrong kind
     expect(tipFor('verb', 'INFER')).toBeNull() // case-sensitive canon
     expect(tipFor('key', '')).toBeNull()
   })
 })
 
-/* ── the spec links · every curated term points at ITS /spec block ── */
+/* ── the doors · a WORD goes to its room, a BLOCK to its /spec anchor ──
+   Every declared word owns a prerendered room (/language/<word>) carrying its
+   full opener, its chapters, the verbs that accept it and the skeletons that
+   use it. That is strictly more than a /spec anchor, and it needs no hand-kept
+   map — SPEC_AT survives only for the concepts that are BLOCKS rather than
+   words, which have no room to go to. */
 describe('tipHref', () => {
-  it('routes concepts to the /spec blocks that own them', () => {
-    expect(tipHref('permits')).toBe('/spec#permits')
-    expect(tipHref('when')).toBe('/spec#s2')
-    expect(tipHref('invoke')).toBe('/spec#s1')
-    expect(tipHref('model')).toBe('/spec#s4')
+  it('a declared word goes to its own room', () => {
+    expect(tipHref('permits')).toBe('/language/permits')
+    expect(tipHref('when')).toBe('/language/when')
+    expect(tipHref('invoke')).toBe('/language/invoke')
+    expect(tipHref('model')).toBe('/language/model')
+  })
+
+  it('a concept that is a BLOCK, not a word, keeps its /spec anchor', () => {
     expect(tipHref('${{ … }}')).toBe('/spec#s0')
   })
 
@@ -57,7 +77,7 @@ describe('tipHref', () => {
       expect(tipHref(key), key).not.toBeNull()
     }
     for (const verb of ['infer', 'exec', 'invoke', 'agent']) {
-      expect(tipHref(verb), verb).toBe('/spec#s1')
+      expect(tipHref(verb), verb).toBe(`/language/${verb}`)
     }
   })
 

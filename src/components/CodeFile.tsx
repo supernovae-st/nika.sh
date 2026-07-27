@@ -7,7 +7,7 @@ import {
   type Token,
   type TokenKind,
 } from './codefile-highlight'
-import { tipFor, tipHref, type CodeTip } from './codefile-tips'
+import type { CodeTip } from './codefile-tips'
 import { useCopy } from '../lib/use-copy'
 import { CopyIcon } from './CopyRow'
 import { armIdleFlag } from '../fx/idle-flag'
@@ -57,6 +57,16 @@ function tokenizeCached(yaml: string): ReturnType<typeof tokenize> {
    yaml and blow the budget in one commit. One shared chunk, fetched the first
    time any panel actually draws. */
 const LazyMiniDag = lazy(() => import('./CodeMiniDag'))
+
+/* ─── the hover glossary is a CHUNK, not a constant ───────────────────────────
+   The resolver now carries the contract's own opener for every declared word
+   it can teach — real prose, and ~1.2KB gz of it. That has no business in the
+   initial graph: `tips` is opt-in (the hero and two reading surfaces), the
+   card only ever fires on a fine pointer, and a phone must never pay for a
+   tooltip it cannot open. The module is fetched at MOUNT on the few panels
+   that ask for tips, so it is resident long before a human reaches a word. */
+type TipModule = typeof import('./codefile-tips')
+let TIPS: TipModule | null = null
 
 /* the eager half: does this block even look like a plan? One regex, no
    parse, no import — the derivation itself rides the lazy chunk. */
@@ -291,6 +301,18 @@ export function CodeFile({
   /* the title-bar sheen (panel-sheen.css) parks when the tab hides — arm the
      shared root [data-idle] flag (idempotent · one listener for all panels) */
   useEffect(armIdleFlag, [])
+  /* fetch the glossary the moment a tips-enabled panel mounts — long before a
+     pointer reaches a word, and never on a panel that does not ask for tips */
+  useEffect(() => {
+    if (!tips || TIPS) return
+    let live = true
+    void import('./codefile-tips').then((m) => {
+      if (live) TIPS = m
+    })
+    return () => {
+      live = false
+    }
+  }, [tips])
   /* wrap variant only: each line's leading-space count, in ch — codefile.css
      turns it into the hanging indent (a wrapped continuation lands 2ch past
      the line's own indentation, like a real editor's wrap guide). */
@@ -350,7 +372,7 @@ export function CodeFile({
     if (tipWordsRef.current) tipWordsRef.current.textContent = tip.words
     if (tip.verb) box.dataset.verb = tip.verb
     else delete box.dataset.verb
-    const href = tipHref(tip.term)
+    const href = TIPS?.tipHref(tip.term) ?? null
     if (tipLinkRef.current && href) tipLinkRef.current.setAttribute('href', href)
     box.dataset.link = href ? '1' : ''
     const b = body.getBoundingClientRect()
@@ -471,7 +493,7 @@ export function CodeFile({
                     : span.classList.contains('cf-key')
                       ? 'key'
                       : 'tref'
-                const tokenTip = span ? tipFor(kind, span.textContent ?? '') : null
+                const tokenTip = span ? (TIPS?.tipFor(kind, span.textContent ?? '') ?? null) : null
                 const body = e.currentTarget as HTMLElement
                 if (span && tokenTip) {
                   requestTip(tokenTip, () => span.getBoundingClientRect(), body)
@@ -510,7 +532,7 @@ export function CodeFile({
                     row.querySelector<HTMLElement>('.cf-verb') ??
                     row.querySelector<HTMLElement>('.cf-key')
                   const lineTip = lineEl
-                    ? tipFor(
+                    ? TIPS?.tipFor(
                         lineEl.classList.contains('cf-verb') ? 'verb' : 'key',
                         lineEl.textContent ?? '',
                       )

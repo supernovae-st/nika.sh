@@ -26,8 +26,8 @@
     ],
     "count": 262,
     "set_sha256": "9d372634fa4ddb970717688272ea137f2f62b1691d1bb0005b689dafaf35493f",
-    "rendered_count": 534,
-    "rendered_set_sha256": "088cc454039afd013852b0552e4fdf6bfa1a664360a7107b00720391b2016487"
+    "rendered_count": 535,
+    "rendered_set_sha256": "6dd41f8a8b7806d784671b293c19e8d06ead6412537b9d150505afc50f8b65da"
   },
   "claim_count": 147,
   "bindings": [
@@ -334,7 +334,7 @@
     {
       "selector": "src/components/CodeFile.tsx#count:1",
       "path": "src/components/CodeFile.tsx",
-      "line": 149,
+      "line": 159,
       "text": "4 verbs",
       "source": "4",
       "field": "verbs",
@@ -358,7 +358,7 @@
     {
       "selector": "src/components/codefile-tips.ts#count:1",
       "path": "src/components/codefile-tips.ts",
-      "line": 28,
+      "line": 29,
       "text": "1 verbs",
       "source": "1",
       "field": "verbs",
@@ -370,7 +370,7 @@
     {
       "selector": "src/components/codefile-tips.ts#count:2",
       "path": "src/components/codefile-tips.ts",
-      "line": 29,
+      "line": 30,
       "text": "3 builtins",
       "source": "3",
       "field": "builtins",

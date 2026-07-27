@@ -77,8 +77,14 @@ describe('the hover resolver · cmTipAt (the static glossary, live)', () => {
     expect(line.slice(hit!.from, hit!.to)).toBe('${{ vars.source }}')
   })
 
-  it('stays silent on plumbing keys, values and empty air', () => {
-    expect(cmTipAt('      id: gather', 7)).toBeNull() /* id = plumbing */
+  /* `id` moved out of this list on 2026-07-27: the glossary stopped being a
+     curated set of 21 keys and became the contract's declared vocabulary, so
+     a declared word now explains itself. Real plumbing — json-schema keys,
+     arg names, values, indentation — is not a nika word and stays silent,
+     which is what this test was always protecting. */
+  it('stays silent on everything the contract does not declare', () => {
+    expect(cmTipAt('      type: object', 7)).toBeNull() /* json-schema */
+    expect(cmTipAt('      path: ./x.md', 7)).toBeNull() /* an arg name */
     expect(cmTipAt('    tool: "nika:read"', 13)).toBeNull() /* the value */
     expect(cmTipAt('    infer:', 0)).toBeNull() /* the indent */
   })

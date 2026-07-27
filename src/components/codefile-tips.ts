@@ -13,6 +13,7 @@ import {
   VERB_WORDS,
 } from '../sections/morph/plain-words'
 import { NIKA_VERBS, type NikaVerb } from './codefile-highlight'
+import { WORD_OPENER } from '../content/word-openers.generated'
 
 export interface CodeTip {
   /** the term the tip names (the key · the verb · `${{ … }}`) */
@@ -60,7 +61,15 @@ const SPEC_AT: Record<string, string> = {
 }
 
 /** the spec anchor for a tip term — null when the term has no owned block */
+/* EVERY DECLARED WORD OWNS A ROOM, and the room is the better door: it
+   carries the word's full opener, its chapters, the verbs that accept it and
+   the skeletons that use it. SPEC_AT stays for the handful of concepts that
+   are BLOCKS rather than words (`${{ … }}`, the permits block) — a word with
+   a room never needs a hand-kept anchor. */
 export function tipHref(term: string): string | null {
+  if (WORD_OPENER[term] || KEY_WORDS[term] || (NIKA_VERBS as readonly string[]).includes(term)) {
+    return `/language/${term}`
+  }
   return SPEC_AT[term] ?? null
 }
 
@@ -83,7 +92,10 @@ export function tipFor(kind: string, text: string): CodeTip | null {
   }
   if (kind === 'key') {
     const key = text.trim()
-    const words = KEY_WORDS[key]
+    /* the curated line FIRST — it is written in the anyone register, where
+       the contract's opener is written in the spec register. The opener is
+       the fallback that takes coverage from 21 words to 40. */
+    const words = KEY_WORDS[key] ?? WORD_OPENER[key]
     return words ? { term: key, words } : null
   }
   return null
