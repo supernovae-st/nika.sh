@@ -112,7 +112,7 @@ if (rssItems !== blogPages) fails.push(`rss ${rssItems} != blog ${blogPages}`)
    the sweep's own review caught the first version reading only inline
    descriptor rows, which every derived-member set lacks — the check was
    silently inert for exactly the five sets it existed to watch. */
-const descriptor = readFileSync(join(ROOT, 'scripts/atlas/sets.yaml'), 'utf8')
+const descriptor = readFileSync(join(ROOT, 'scripts/lens/graph/sets.yaml'), 'utf8')
 const twin = JSON.parse(readFileSync(join(DIST, 'ontology/language.json'), 'utf8'))
 const anchorsBySet = new Map()
 for (const node of twin.nodes) {

@@ -3502,14 +3502,6 @@
     },
     {
       "selector": "site.config.ts#page:410",
-      "path": "/truth/atlas",
-      "route_selector": "src/routes.tsx#route:59",
-      "component": "MemberRoom",
-      "feature": "registry.member_rooms",
-      "presented_as": "live"
-    },
-    {
-      "selector": "site.config.ts#page:411",
       "path": "/truth/canon",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -3517,8 +3509,16 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:412",
+      "selector": "site.config.ts#page:411",
       "path": "/truth/catalog",
+      "route_selector": "src/routes.tsx#route:59",
+      "component": "MemberRoom",
+      "feature": "registry.member_rooms",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:412",
+      "path": "/truth/lens",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
       "feature": "registry.member_rooms",

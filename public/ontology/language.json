@@ -3393,7 +3393,7 @@
       "title": "The truth words",
       "url": "/sources",
       "status": "ratified",
-      "opener": "The vocabulary of how this site tells the truth: spec, canon, schema, pack, pin, catalog, mirror, registry, manifest, atlas. Each word has exactly one meaning · confusing two of them is a prose bug.",
+      "opener": "The vocabulary of how this site tells the truth: spec, canon, schema, pack, pin, catalog, mirror, registry, manifest, lens. Each word has exactly one meaning · confusing two of them is a prose bug.",
       "closed": false,
       "counted_in_canon": false,
       "surface": "anchors",
@@ -4363,18 +4363,6 @@
       }
     },
     {
-      "id": "truth:atlas",
-      "kind": "member",
-      "set": "truth-words",
-      "layer": "proof",
-      "title": "atlas",
-      "url": "/truth/atlas",
-      "anchor": "atlas",
-      "own_page": true,
-      "status": "ratified",
-      "opener": "language_graph 1 · the graph of the language, site-side"
-    },
-    {
       "id": "truth:canon",
       "kind": "member",
       "set": "truth-words",
@@ -4397,6 +4385,18 @@
       "own_page": true,
       "status": "ratified",
       "opener": "a machine projection the site serves · byte-diffed in CI"
+    },
+    {
+      "id": "truth:lens",
+      "kind": "member",
+      "set": "truth-words",
+      "layer": "proof",
+      "title": "lens",
+      "url": "/truth/lens",
+      "anchor": "lens",
+      "own_page": true,
+      "status": "ratified",
+      "opener": "language_graph 1 · the graph of the language, site-side"
     },
     {
       "id": "truth:manifest",
@@ -9471,17 +9471,17 @@
       "kind": "member-of"
     },
     {
-      "from": "truth:atlas",
-      "to": "set:truth-words",
-      "kind": "member-of"
-    },
-    {
       "from": "truth:canon",
       "to": "set:truth-words",
       "kind": "member-of"
     },
     {
       "from": "truth:catalog",
+      "to": "set:truth-words",
+      "kind": "member-of"
+    },
+    {
+      "from": "truth:lens",
       "to": "set:truth-words",
       "kind": "member-of"
     },

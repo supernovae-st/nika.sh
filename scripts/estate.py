@@ -116,14 +116,14 @@ def marker_gate(chunk: str) -> str | None:
 
 # Known tools → their commit-time drift gate + declared inputs (used when the
 # marker itself does not carry a "Drift gate:" line).
-ATLAS = "scripts/atlas/build-atlas.mjs"
-ATLAS_GATE = (
-    "src/test/atlas.test.ts + design-graph.test.ts (+ atlas-census/nav/sets companions) "
+LENS = "scripts/lens/graph/build-lens.mjs"
+LENS_GATE = (
+    "src/test/lens.test.ts + design-graph.test.ts (+ lens-census/nav/sets companions) "
     f"recompile + byte-diff — pnpm test in {GATE_YML}"
 )
-ATLAS_INPUTS = [
-    "scripts/atlas/sets.yaml",
-    "scripts/atlas/market-vocab.yaml",
+LENS_INPUTS = [
+    "scripts/lens/graph/sets.yaml",
+    "scripts/lens/graph/market-vocab.yaml",
     "the gated site sources sets.yaml declares (site facts + the spec spine)",
 ]
 ICONS = "design/build.mjs"
@@ -141,12 +141,12 @@ BLOG = "scripts/build-blog.mjs"
 BLOG_GATE = f"src/test/blog.test.ts + src/test/blog-twins.test.ts — pnpm test in {GATE_YML}"
 
 TOOL_GATES = {
-    ATLAS: ATLAS_GATE,
+    LENS: LENS_GATE,
     ICONS: ICONS_GATE,
     BLOG: BLOG_GATE,
 }
 TOOL_INPUTS = {
-    ATLAS: ATLAS_INPUTS,
+    LENS: LENS_INPUTS,
     ICONS: ICONS_INPUTS,
     BLOG: ["content/blog/*.md", "src/canon.generated.ts (canon marker values)"],
     "scripts/build-anatomy.mjs": [
@@ -246,7 +246,7 @@ def build_overrides(contract: dict, engine: str) -> dict:
         "index.html": auth("hand-written Vite entry shell"),
         "site.config.ts": auth(
             "hand-written site facts",
-            note="scripts/atlas/build-atlas.mjs rewrites a derived block in place when sets.yaml changes (build-atlas.mjs:1715) — a bot-maintained region inside an authored file",
+            note="scripts/lens/graph/build-lens.mjs rewrites a derived block in place when sets.yaml changes (build-lens.mjs:1715) — a bot-maintained region inside an authored file",
         ),
         "pending-error-codes.ts": auth(
             "hand-kept escrow list — its own header: list a code the day the canon mints it, DELETE the entry the day the resync pin advances past the mint"
@@ -291,54 +291,54 @@ def build_overrides(contract: dict, engine: str) -> dict:
             "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS",
             note=f"{sync_note}; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection",
         ),
-        # ── atlas projections without in-file markers ─────────────────────
+        # ── lens projections without in-file markers ─────────────────────
         "public/i18n/untranslatables.json": gen(
-            "in-file 'derived_from: build-atlas (the language graph)' key",
-            f"node {ATLAS} (pnpm atlas)",
-            ATLAS_GATE,
-            ATLAS_INPUTS,
+            "in-file 'derived_from: build-lens (the language graph)' key",
+            f"node {LENS} (pnpm lens)",
+            LENS_GATE,
+            LENS_INPUTS,
         ),
         "public/ontology/language.json": gen(
-            "written by build-atlas.mjs:1731 (the language-graph twin · language_graph shape)",
-            f"node {ATLAS} (pnpm atlas)",
-            ATLAS_GATE,
-            ATLAS_INPUTS,
+            "written by build-lens.mjs:1731 (the language-graph twin · language_graph shape)",
+            f"node {LENS} (pnpm lens)",
+            LENS_GATE,
+            LENS_INPUTS,
         ),
         "public/map/constellation.svg": gen(
-            "written by build-atlas.mjs:1730 — the served twin of src/assets/constellation.generated.svg",
-            f"node {ATLAS} (pnpm atlas)",
-            ATLAS_GATE,
-            ATLAS_INPUTS,
+            "written by build-lens.mjs:1730 — the served twin of src/assets/constellation.generated.svg",
+            f"node {LENS} (pnpm lens)",
+            LENS_GATE,
+            LENS_INPUTS,
         ),
         "src/assets/constellation.generated.svg": gen(
-            "written by build-atlas.mjs:1716 (.generated. basename · no textual marker inside the SVG)",
-            f"node {ATLAS} (pnpm atlas)",
-            ATLAS_GATE,
-            ATLAS_INPUTS,
+            "written by build-lens.mjs:1716 (.generated. basename · no textual marker inside the SVG)",
+            f"node {LENS} (pnpm lens)",
+            LENS_GATE,
+            LENS_INPUTS,
         ),
         "public/redirects.json": gen(
-            "written by build-atlas.mjs:1736 (redirects_format shape)",
-            f"node {ATLAS} (pnpm atlas)",
-            ATLAS_GATE,
-            ATLAS_INPUTS,
+            "written by build-lens.mjs:1736 (redirects_format shape)",
+            f"node {LENS} (pnpm lens)",
+            LENS_GATE,
+            LENS_INPUTS,
         ),
         "public/sitemap/index.html": gen(
-            "the atlas redirect stub template (build-atlas.mjs stub() · the redirects.json '/sitemap' row): meta-refresh + canonical, no prose comment",
-            f"node {ATLAS} (pnpm atlas)",
-            ATLAS_GATE,
-            ATLAS_INPUTS,
+            "the lens redirect stub template (build-lens.mjs stub() · the redirects.json '/sitemap' row): meta-refresh + canonical, no prose comment",
+            f"node {LENS} (pnpm lens)",
+            LENS_GATE,
+            LENS_INPUTS,
         ),
         "public/design-palette.json": gen(
-            "in-file '_generated: scripts/atlas/build-atlas.mjs — DO NOT EDIT' key",
-            f"node {ATLAS} (pnpm atlas)",
-            ATLAS_GATE,
-            ATLAS_INPUTS,
+            "in-file '_generated: scripts/lens/graph/build-lens.mjs — DO NOT EDIT' key",
+            f"node {LENS} (pnpm lens)",
+            LENS_GATE,
+            LENS_INPUTS,
         ),
         "public/design-tokens.dtcg.json": gen(
-            "in-file $description: 'AUTO-GENERATED by scripts/atlas/build-atlas.mjs from sets.yaml design: + the nika-spec spine'",
-            f"node {ATLAS} (pnpm atlas)",
-            ATLAS_GATE,
-            ATLAS_INPUTS,
+            "in-file $description: 'AUTO-GENERATED by scripts/lens/graph/build-lens.mjs from sets.yaml design: + the nika-spec spine'",
+            f"node {LENS} (pnpm lens)",
+            LENS_GATE,
+            LENS_INPUTS,
         ),
         # ── the released binary's baked surfaces ──────────────────────────
         "public/tools/catalog.json": gen(
@@ -404,7 +404,7 @@ def build_overrides(contract: dict, engine: str) -> dict:
             "hand-written static error shell — DigitalOcean's error_document serves it for un-prerendered deep links (pending-error-codes.ts header)"
         ),
         "public/docs/index.html": auth(
-            "hand-written courtesy redirect to docs.nika.sh — bespoke prose comment, NOT the atlas stub template"
+            "hand-written courtesy redirect to docs.nika.sh — bespoke prose comment, NOT the lens stub template"
         ),
         "public/ontology/design/index.html": auth(
             "static ontology landing page — design/build.mjs's output list excludes it and no other writer was found",
@@ -606,10 +606,10 @@ def build_patterns(contract: dict, engine: str) -> list:
         },
         {
             "glob": "src/**/*.generated.*",
-            "when": lambda rel, chunk: ATLAS in chunk,
+            "when": lambda rel, chunk: LENS in chunk,
             "class": "generated",
-            "evidence": "every member's in-file marker cites scripts/atlas/build-atlas.mjs (from scripts/atlas/sets.yaml — the authored descriptor + the gated sources)",
-            "derivation": {"tool": f"node {ATLAS} (pnpm atlas)", "gate": ATLAS_GATE, "inputs": ATLAS_INPUTS},
+            "evidence": "every member's in-file marker cites scripts/lens/graph/build-lens.mjs (from scripts/lens/graph/sets.yaml — the authored descriptor + the gated sources)",
+            "derivation": {"tool": f"node {LENS} (pnpm lens)", "gate": LENS_GATE, "inputs": LENS_INPUTS},
         },
         {
             "glob": "src/**",

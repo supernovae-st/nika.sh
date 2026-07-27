@@ -37,7 +37,7 @@ function useMap3dFlag(): boolean {
 /* ─── /map · the mother page (theme-dark) ─────────────────────────────────────
    The anatomy of the language at a glance — the entry of everything. Three
    registers, one truth: the LIST is the truth (keyboard path · reading
-   order), the CONSTELLATION is a lens over the same atlas (crawlable
+   order), the CONSTELLATION is a lens over the same lens (crawlable
    anchors, out of tab order), the EVERY-PAGE registry is the absorbed
    human sitemap (content/sitemap.ts · its coverage gate lives on).
 
@@ -318,10 +318,10 @@ export function Component() {
               <div className="cl-year-head">
                 <h2 className="mp-sec-title">The constellation</h2>
                 <span className="cl-year-rule" aria-hidden />
-                <span className="cl-year-count">the same atlas, drawn · a star opens its readout</span>
+                <span className="cl-year-count">the same lens, drawn · a star opens its readout</span>
               </div>
               {/* safe sink ×2: static build-time bytes from our own compiler
-                  emission (scripts/atlas/build-atlas.mjs · committed asset ·
+                  emission (scripts/lens/graph/build-lens.mjs · committed asset ·
                   the render guard refuses a closing-script sequence) — no
                   user input ever reaches these innerHTMLs (the MegaIcon
                   precedent). The script island carries the EXACT source
@@ -350,7 +350,7 @@ export function Component() {
                 dangerouslySetInnerHTML={{ __html: constellation }}
               />
               <figcaption className="mp-figcap">
-                the same atlas, drawn · members link their rooms · <a href="/map/constellation.svg">the file</a>
+                the same lens, drawn · members link their rooms · <a href="/map/constellation.svg">the file</a>
               </figcaption>
             </figure>
 

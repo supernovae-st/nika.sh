@@ -120,7 +120,7 @@ function sitemap(): Plugin {
 }
 
 /* ─── DefinedTermSet JSON-LD injector (WO-7a) ─────────────────────────────────
-   The compiler's jsonld.generated.ts carries one DefinedTermSet per atlas
+   The compiler's jsonld.generated.ts carries one DefinedTermSet per lens
    page ("Pages mount these at WO-7"). Every route is SYNC-prerendered, so a
    runtime import would drag the ~80K corpus into the initial chunk (the
    bundle-derive law); JSON-LD only has value in the STATIC html (crawlers

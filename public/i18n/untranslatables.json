@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "derived_from": "build-atlas (the language graph)",
+  "derived_from": "build-lens (the language graph)",
   "entries": [
     ".nika.yaml",
     "AGPL-3.0",

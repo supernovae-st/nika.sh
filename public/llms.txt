@@ -105,7 +105,7 @@ data language (jq) · workflows are callable · mock-first.
 - Registry (share workflows · every entry machine-re-proven: pinned sha256 + conformance oracle + engine cert before run): https://github.com/supernovae-st/nika-registry · machine index: https://raw.githubusercontent.com/supernovae-st/nika-registry/main/index.json · never install an LLM-suggested name without resolving it there first
 - Releases: https://github.com/supernovae-st/nika/releases
 - The changelog (the exhaustive ship log: every release and public milestone, dated · the timeline below is its provenance record): https://nika.sh/changelog
-- The map (every page, one graph): https://nika.sh/map · crawler twin: https://nika.sh/sitemap.xml · atlas twin: https://nika.sh/ontology/language.json
+- The map (every page, one graph): https://nika.sh/map · crawler twin: https://nika.sh/sitemap.xml · lens twin: https://nika.sh/ontology/language.json
 - The anatomy hubs (one page per language layer; every member owns a room of its own, linked from its hub): https://nika.sh/flow (edges · gates) · https://nika.sh/boundary (permits · secrets) · https://nika.sh/proof (conformance · trace · machine surfaces)
 - The register roots (every roomed family owns its root page listing its rooms, each member glossed): https://nika.sh/types · /namespaces · /edges · /predicates · /families · /modes · /permits · /secrets · /conformance · /error-namespaces · /error-categories · /mcp · /truth
 - The timeline (the one verifiable record: eras · releases · forward gates · every provable claim re-proven in CI): https://nika.sh/timeline

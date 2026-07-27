@@ -5,7 +5,7 @@ import { TruthLine } from '../components/TruthLine'
 import '../sections/v4-home.css'
 import './hubs-page.css'
 
-/* ─── the atlas hubs' shared pieces (/flow · /boundary · /proof) ──────────────
+/* ─── the lens hubs' shared pieces (/flow · /boundary · /proof) ──────────────
    Everything derived rides hub-data.generated (chrome-lean · the pages
    never import the 344-node graph — our own bundle-safety law). Authored
    prose on the pages stays opener-and-transitions thin: the sections

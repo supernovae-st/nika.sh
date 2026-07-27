@@ -21,7 +21,7 @@ import './tool-detail.css'
    panel opened (the duplicate-content class the 2026-07-24 audit named).
    Everything derived: the entry from templates.generated (the served
    catalog's projection · sha256-pinned, re-hashed on every test run), the
-   grants/carries rails from the atlas compiler (room-rails.generated).
+   grants/carries rails from the lens compiler (room-rails.generated).
    Unknown names keep the honest miss. Every room prerenders
    (TEMPLATE_PATHS) — deep links land on a real 200. */
 

@@ -1,4 +1,4 @@
-/* ─── the atlas hubs' shared register pieces ─────────────────────────────────
+/* ─── the lens hubs' shared register pieces ─────────────────────────────────
    The hub-shared components (MemberRows · Rails · HubFoot · GateMatrix)
    consumed by /flow · /boundary · /proof · /sources and the two room
    templates, plus the member-room BODY (mr-* · the inspector's readout

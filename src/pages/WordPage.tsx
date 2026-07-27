@@ -447,7 +447,7 @@ export function Component() {
                     <p className="td-ref-k">where it lives</p>
                     <SourcesRail links={sourcesForWord(hit)} />
                   </div>
-                  {/* WO-5b · the atlas rails: which verbs accept the word
+                  {/* WO-5b · the lens rails: which verbs accept the word
                       (schema-derived) + the chapters its scopes live in */}
                   {(WORD_ACCEPTS[hit.word] ?? []).length > 0 && (
                     <div>

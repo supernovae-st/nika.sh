@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useFocusReturn, useFocusTrap } from '../lib/focus'
 import { useScrollLock } from '../lib/scroll-lock'
-import { loadAtlas, type AtlasModule } from '../lib/atlas-access'
+import { loadLens, type LensModule } from '../lib/lens-access'
 import { readoutFor, nodeIdForHref, type Readout } from './inspector-readout'
 import { BP } from '../lib/breakpoints'
 import './inspector.css'
@@ -23,7 +23,7 @@ type Detent = 'peek' | 'full'
 const MOBILE_QUERY = `(max-width: ${BP.fold - 1}px)`
 
 export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose: () => void }) {
-  const [graph, setGraph] = useState<AtlasModule | null>(null)
+  const [graph, setGraph] = useState<LensModule | null>(null)
   const [isMobile, setIsMobile] = useState(() => window.matchMedia(MOBILE_QUERY).matches)
   const [detent, setDetent] = useState<Detent>(() =>
     new URLSearchParams(window.location.search).get('insp') === 'full' ? 'full' : 'peek',
@@ -45,7 +45,7 @@ export default function Inspector({ nodeId, onClose }: { nodeId: string; onClose
 
   useEffect(() => {
     let live = true
-    void loadAtlas().then((m) => {
+    void loadLens().then((m) => {
       if (live) setGraph(m)
     })
     return () => {

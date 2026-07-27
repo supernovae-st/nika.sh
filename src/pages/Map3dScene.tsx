@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-import { layoutConstellation } from '../../scripts/atlas/lib/radial-layout.mjs'
+import { layoutConstellation } from '../../scripts/lens/graph/lib/radial-layout.mjs'
 import { LAYER_HEX, KIND_HEX, KIND_OF_SET, PAPER } from '../content/design.generated'
 
 /* ─── Map3dScene · the constellation in depth (WO-13 · flagged) ──────────────

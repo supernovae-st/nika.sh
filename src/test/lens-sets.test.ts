@@ -11,8 +11,8 @@ import {
   VERB_PATHS,
 } from '../../site.config'
 
-/* ── the atlas descriptor gates ───────────────────────────────────────────────
-   scripts/atlas/sets.yaml is the ONE authored input of the language atlas
+/* ── the lens descriptor gates ───────────────────────────────────────────────
+   scripts/lens/graph/sets.yaml is the ONE authored input of the language lens
    (mega-plan §2): every canonical set declared once — its layer, its gated
    source, its surface (rooms or anchors), its unique data. These gates pin
    the descriptor against the sources it claims to describe, so an edit that
@@ -43,14 +43,14 @@ interface SetDecl {
 }
 
 interface Descriptor {
-  atlas_descriptors: number
+  lens_descriptors: number
   layers: { id: string; title: string; hub: string; hub_exists: boolean; lands?: string; opener: string }[]
   sets: SetDecl[]
   surfaces: { id: string; url: string }[]
   library_heroes: { file: string; class: string | null }[]
 }
 
-const doc = parse(readFileSync(join(ROOT, 'scripts/atlas/sets.yaml'), 'utf8')) as Descriptor
+const doc = parse(readFileSync(join(ROOT, 'scripts/lens/graph/sets.yaml'), 'utf8')) as Descriptor
 const schema = JSON.parse(readFileSync(join(ROOT, 'public/schema/workflow.json'), 'utf8')) as {
   properties: {
     permits: { properties: Record<string, unknown> }
@@ -70,7 +70,7 @@ const need = (id: string): SetDecl => {
 
 describe('sets.yaml · the descriptor is structurally sound', () => {
   it('declares the marker and the seven anatomical layers, in reading order', () => {
-    expect(doc.atlas_descriptors).toBe(1)
+    expect(doc.lens_descriptors).toBe(1)
     expect(doc.layers.map((l) => l.id)).toEqual([
       'shape',
       'flow',
@@ -181,7 +181,7 @@ describe('sets.yaml · the versioned constants mirror their gated sources', () =
       'mirror',
       'registry',
       'manifest',
-      'atlas',
+      'lens',
     ])
   })
 })

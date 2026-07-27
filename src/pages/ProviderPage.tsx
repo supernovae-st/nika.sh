@@ -39,7 +39,7 @@ import './hubs-page.css'
    prerendered HTML carries it whole via the byte island below, so deep
    links land on content and hydration stays byte-true.
 
-   SSR-safe: every room prerenders (ATLAS_PATHS). Unknown ids get the
+   SSR-safe: every room prerenders (LENS_PATHS). Unknown ids get the
    honest miss. */
 
 const KIND_GLOSS: Record<ProviderEntry['kind'], string> = {

@@ -211,7 +211,7 @@ export function Component() {
           </div>
 
           <p className="tp-foot" data-rise>
-            The whole atlas lives in <Link to="/map">the map</Link>.{' '}
+            The whole lens lives in <Link to="/map">the map</Link>.{' '}
             <Link to="/spec">Read the spec →</Link>
           </p>
 

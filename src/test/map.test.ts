@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { SITE_MAP, sitemapInternalHrefs } from '../content/sitemap'
 import { MAP_LAYERS, MAP_OPENER } from '../pages/map-data.generated'
 import { PATHS } from '../../site.config'
-import { layoutConstellation } from '../../scripts/atlas/lib/radial-layout.mjs'
+import { layoutConstellation } from '../../scripts/lens/graph/lib/radial-layout.mjs'
 
 /* ── /map · the mother page's gates ───────────────────────────────────────────
    The coverage promise moved here whole from the old /sitemap gate (§0.12b:
@@ -138,7 +138,7 @@ describe('/map · the constellation is one drawing, twice served', () => {
       const page = n.url.split('#')[0]
       liveByPage.set(page, (liveByPage.get(page) ?? false) || n.anchors_exist === true)
     }
-    // providers was live pre-atlas · WO-4 lit its hubs' sections — each
+    // providers was live pre-lens · WO-4 lit its hubs' sections — each
     // enrichment WO widens this by descriptor, the gate follows the twin
     expect(liveByPage.get('/providers')).toBe(true)
     const fragments = [...svg.matchAll(/<a href="([^"]+)#[^"]+"/g)].map((m) => m[1])

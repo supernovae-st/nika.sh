@@ -11,7 +11,7 @@ type Graph = Parameters<typeof readoutFor>[1]
 
 let SSR_GRAPH: Graph | null = null
 if (import.meta.env.SSR) {
-  SSR_GRAPH = (await import('../content/atlas.generated')) as unknown as Graph
+  SSR_GRAPH = (await import('../content/lens.generated')) as unknown as Graph
 }
 
 /** the readout at SSG time (null on the client — ride the island) */
@@ -20,6 +20,6 @@ export const ssrReadout = (nodeId: string): Readout | null =>
 
 /** the readout on the client — the lazy graph chunk, once */
 export const loadReadout = async (nodeId: string): Promise<Readout | null> => {
-  const graph = (await import('../content/atlas.generated')) as unknown as Graph
+  const graph = (await import('../content/lens.generated')) as unknown as Graph
   return readoutFor(nodeId, graph)
 }

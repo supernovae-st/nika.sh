@@ -3,8 +3,8 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { SITE } from '../content'
-import { ATLAS_NODES, ATLAS_EDGES, ATLAS_INDEX } from '../content/atlas.generated'
-import { ATLAS_PROVENANCE, ATLAS_SET_COUNTS, ATLAS_HUBS, ATLAS_SCORE , TRUTH_WORDS } from '../content/atlas-meta.generated'
+import { LENS_NODES, LENS_EDGES, LENS_INDEX } from '../content/lens.generated'
+import { LENS_PROVENANCE, LENS_SET_COUNTS, LENS_HUBS, LENS_SCORE , TRUTH_WORDS } from '../content/lens-meta.generated'
 import { JSONLD_TERMSETS } from '../content/jsonld.generated'
 import { HUBS } from '../pages/hub-data.generated'
 import { hubJsonldSets, sourcesJsonldSets } from '../pages/hub-lib'
@@ -12,8 +12,8 @@ import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { SNIPPETS, SNIPPET_REGISTRY, CAPTURES } from '../content/snippets.generated'
 import { PATHS, PENDING_ERROR_CODES } from '../../site.config'
 
-/* ── the atlas compiler gates ─────────────────────────────────────────────────
-   build-atlas.mjs is the ONE compiler of the language atlas; these gates make
+/* ── the lens compiler gates ─────────────────────────────────────────────────
+   build-lens.mjs is the ONE compiler of the language lens; these gates make
    its whole output surface un-driftable: recompile + byte-diff every emission
    (the errors.test.ts pattern, ×6), pin the twin to the module, cross-check
    counts against the census (two independent readers of the same sources must
@@ -22,12 +22,12 @@ import { PATHS, PENDING_ERROR_CODES } from '../../site.config'
 
 const ROOT = join(__dirname, '../..')
 const OUTPUTS = [
-  'src/content/atlas.generated.ts',
-  'src/content/atlas-meta.generated.ts',
+  'src/content/lens.generated.ts',
+  'src/content/lens-meta.generated.ts',
   'src/content/jsonld.generated.ts',
   'src/content/market-vocab.generated.ts',
   'src/content/snippets.generated.ts',
-  'src/content/atlas-nav.generated.ts',
+  'src/content/lens-nav.generated.ts',
   'src/content/room-rails.generated.ts',
   'src/content/showcase-dag.generated.ts',
   'src/pages/map-data.generated.ts',
@@ -41,43 +41,43 @@ const OUTPUTS = [
   'public/map/constellation.svg',
   'public/ontology/language.json',
   'public/redirects.json',
-  // the in-place ATLAS_PATHS block + the moved-row 301 stubs are emissions too
+  // the in-place LENS_PATHS block + the moved-row 301 stubs are emissions too
   'site.config.ts',
   ...JSON.parse(readFileSync(join(__dirname, '../../public/redirects.json'), 'utf8'))
     .redirects.filter((r: { from: string }) => r.from.startsWith('/providers/'))
     .map((r: { from: string }) => `public${r.from}/index.html`),
 ]
 
-describe('atlas · the compiler is idempotent and the score is green', () => {
+describe('lens · the compiler is idempotent and the score is green', () => {
   it('every emission is exactly what the compiler emits today (and the score exits green)', () => {
     const before = OUTPUTS.map((p) => readFileSync(join(ROOT, p), 'utf8'))
     // exits 2 on any armed §6.1 violation — a red score fails right here
-    execFileSync('node', [join(ROOT, 'scripts/atlas/build-atlas.mjs')])
+    execFileSync('node', [join(ROOT, 'scripts/lens/graph/build-lens.mjs')])
     OUTPUTS.forEach((p, i) => {
       expect(readFileSync(join(ROOT, p), 'utf8'), `${p} drifted`).toBe(before[i])
     })
   })
 
   it('the committed score is 100 with every waiver written', () => {
-    expect(ATLAS_SCORE.score).toBe(100)
-    for (const w of ATLAS_SCORE.waived) expect(w).toMatch(/lands in WO-\d|waiver dies/i)
+    expect(LENS_SCORE.score).toBe(100)
+    for (const w of LENS_SCORE.waived) expect(w).toMatch(/lands in WO-\d|waiver dies/i)
   })
 })
 
-describe('atlas · the twin is the module, byte-level', () => {
+describe('lens · the twin is the module, byte-level', () => {
   it('public/ontology/language.json carries the same provenance, nodes and edges', () => {
     const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8'))
     expect(twin.language_graph).toBe(1)
-    expect(twin.spec_pin).toBe(ATLAS_PROVENANCE.spec_pin)
-    expect(twin.engine_version).toBe(ATLAS_PROVENANCE.engine_version)
-    expect(twin.nodes).toEqual(ATLAS_NODES)
-    expect(twin.edges).toEqual(ATLAS_EDGES)
+    expect(twin.spec_pin).toBe(LENS_PROVENANCE.spec_pin)
+    expect(twin.engine_version).toBe(LENS_PROVENANCE.engine_version)
+    expect(twin.nodes).toEqual(LENS_NODES)
+    expect(twin.edges).toEqual(LENS_EDGES)
   })
 })
 
-describe('atlas · two independent readers agree (census cross-check)', () => {
+describe('lens · two independent readers agree (census cross-check)', () => {
   const census = JSON.parse(
-    execFileSync('node', [join(ROOT, 'scripts/atlas/census.mjs'), '--json'], { encoding: 'utf8' }),
+    execFileSync('node', [join(ROOT, 'scripts/lens/graph/census.mjs'), '--json'], { encoding: 'utf8' }),
   ) as { sets: { id: string; count: number }[] }
   const censusCount = (id: string) => census.sets.find((s) => s.id === id)?.count
 
@@ -89,28 +89,28 @@ describe('atlas · two independent readers agree (census cross-check)', () => {
     ['mcp.tools', 'mcp-tools'],
     ['errors.codes', 'error-codes'],
     ['providers.shipped', 'providers'],
-  ])('census %s == atlas %s', (censusId, atlasId) => {
-    expect(ATLAS_SET_COUNTS[atlasId].count).toBe(censusCount(censusId))
+  ])('census %s == lens %s', (censusId, lensId) => {
+    expect(LENS_SET_COUNTS[lensId].count).toBe(censusCount(censusId))
   })
 
   it('builtins cover the shipped catalog (union with ratified)', () => {
-    expect(ATLAS_SET_COUNTS.builtins.count).toBeGreaterThanOrEqual(censusCount('builtins.shipped')!)
+    expect(LENS_SET_COUNTS.builtins.count).toBeGreaterThanOrEqual(censusCount('builtins.shipped')!)
   })
 
   it('the words register covers every schema word (task + envelope are subsets)', () => {
-    expect(ATLAS_SET_COUNTS.words.count).toBeGreaterThanOrEqual(
+    expect(LENS_SET_COUNTS.words.count).toBeGreaterThanOrEqual(
       censusCount('words.task')! + censusCount('words.envelope')!,
     )
   })
 })
 
-describe('atlas · rooms and routes cover each other', () => {
+describe('lens · rooms and routes cover each other', () => {
   const pathSet = new Set(PATHS)
-  it('every room member the atlas declares is a served route', () => {
-    for (const n of ATLAS_NODES) {
+  it('every room member the lens declares is a served route', () => {
+    for (const n of LENS_NODES) {
       if (n.kind !== 'member' || !n.url || n.anchor) continue
       // room members only (anchored members point at pages judged below)
-      const set = ATLAS_INDEX[`set:${n.set}`]
+      const set = LENS_INDEX[`set:${n.set}`]
       if (set?.surface !== 'rooms') continue
       expect(pathSet.has(n.url), `${n.id} → ${n.url} missing from PATHS`).toBe(true)
     }
@@ -118,7 +118,7 @@ describe('atlas · rooms and routes cover each other', () => {
 
   it('every anchored member points at a page that exists or is landing', () => {
     const landing = new Set(['/flow', '/boundary', '/proof', '/sources', '/map'])
-    for (const n of ATLAS_NODES) {
+    for (const n of LENS_NODES) {
       if (n.kind !== 'member' || !n.anchor || !n.url) continue
       const page = n.url.split('#')[0]
       expect(
@@ -128,8 +128,8 @@ describe('atlas · rooms and routes cover each other', () => {
     }
   })
 
-  it('every atlas route in PATHS resolves to an atlas node or a declared move (no orphan registry)', () => {
-    const atlasUrls = new Set(ATLAS_NODES.filter((n) => n.url).map((n) => n.url!.split('#')[0]))
+  it('every lens route in PATHS resolves to an lens node or a declared move (no orphan registry)', () => {
+    const lensUrls = new Set(LENS_NODES.filter((n) => n.url).map((n) => n.url!.split('#')[0]))
     const moved = new Set(
       (
         JSON.parse(readFileSync(join(ROOT, 'public/redirects.json'), 'utf8')) as {
@@ -139,49 +139,49 @@ describe('atlas · rooms and routes cover each other', () => {
     )
     /* the pending rooms (pending-error-codes.ts, re-exported by site.config ·
        minted in the canon, awaiting the resync pin) are served AHEAD of
-       their atlas membership: the member node is born the day the pin lands
-       the code in the catalog (build-atlas derives members from it), so
+       their lens membership: the member node is born the day the pin lands
+       the code in the catalog (build-lens derives members from it), so
        until then the pending declaration is the room's known-to-the-graph
        proof — served with a gated declaration, never an orphan. */
     const pending = new Set(PENDING_ERROR_CODES.map((c) => `/errors/${c}`))
-    const atlasRoots = ['/language/', '/verbs/', '/tools/', '/templates/', '/errors/', '/providers/']
+    const lensRoots = ['/language/', '/verbs/', '/tools/', '/templates/', '/errors/', '/providers/']
     for (const p of PATHS) {
-      if (!atlasRoots.some((r) => p.startsWith(r))) continue
+      if (!lensRoots.some((r) => p.startsWith(r))) continue
       expect(
-        atlasUrls.has(p) || moved.has(p) || pending.has(p),
-        `${p} served but unknown to the atlas (neither a node nor a declared move)`,
+        lensUrls.has(p) || moved.has(p) || pending.has(p),
+        `${p} served but unknown to the lens (neither a node nor a declared move)`,
       ).toBe(true)
     }
   })
 })
 
-describe('atlas · the graph is referentially whole', () => {
+describe('lens · the graph is referentially whole', () => {
   it('every edge endpoint resolves and kinds stay in the closed enum', () => {
     const kinds = new Set([
       'member-of', 'belongs-to', 'names', 'grants', 'accepts',
       'carries', 'defined-by', 'witnesses', 'projects-to', 'mentions',
     ])
-    for (const e of ATLAS_EDGES) {
-      expect(ATLAS_INDEX[e.from], `missing from: ${e.from}`).toBeDefined()
-      expect(ATLAS_INDEX[e.to], `missing to: ${e.to}`).toBeDefined()
+    for (const e of LENS_EDGES) {
+      expect(LENS_INDEX[e.from], `missing from: ${e.from}`).toBeDefined()
+      expect(LENS_INDEX[e.to], `missing to: ${e.to}`).toBeDefined()
       expect(kinds.has(e.kind), e.kind).toBe(true)
     }
   })
 
   it('the clock diff is computed, never written: builtin statuses partition', () => {
-    for (const n of ATLAS_NODES.filter((x) => x.kind === 'member' && x.set === 'builtins')) {
+    for (const n of LENS_NODES.filter((x) => x.kind === 'member' && x.set === 'builtins')) {
       expect(['ratified', 'shipped', 'both']).toContain(n.status)
     }
   })
 
   it('the seven hubs chain the reading order', () => {
-    expect(ATLAS_HUBS.map((h) => h.id)).toEqual([
+    expect(LENS_HUBS.map((h) => h.id)).toEqual([
       'shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof',
     ])
   })
 })
 
-describe('atlas · the register diet holds (the namespace-retention law)', () => {
+describe('lens · the register diet holds (the namespace-retention law)', () => {
   it('nothing imports usecases-yaml.generated statically except the access doors and tests', () => {
     const offenders: string[] = []
     const walk = (dir: string) => {
@@ -225,11 +225,11 @@ describe('atlas · the register diet holds (the namespace-retention law)', () =>
   })
 })
 
-describe('atlas · the derived DAG module IS the projector export', () => {
+describe('lens · the derived DAG module IS the projector export', () => {
   it('showcase-dag.generated toEqual SHOWCASE_DAG modulo the served line remap', async () => {
     /* the projector export is the RATIFIED clock (W1 lines); the derived
        module re-aims line0/line1 at the door-served W2 rendering (0.104
-       flip · build-atlas). Equality holds after applying the SAME pass's
+       flip · build-lens). Equality holds after applying the SAME pass's
        line map to the source — everything else is byte-identical. */
     const { SHOWCASE_YAML, SHOWCASE_DAG: source } = await import(
       '../sections/usecases-yaml.generated'
@@ -256,7 +256,7 @@ describe('atlas · the derived DAG module IS the projector export', () => {
   })
 })
 
-describe('atlas · jsonld and market vocab stay lawful', () => {
+describe('lens · jsonld and market vocab stay lawful', () => {
   /* the derived-inverses law: the hubs rebuild their DefinedTermSets from
      bundle-resident HubData (never a second shipped copy of the 80K corpus)
      — this gate holds the derivation equal to the twin's ANCHORED sets (a
@@ -299,7 +299,7 @@ describe('atlas · jsonld and market vocab stay lawful', () => {
       'layer:acts', 'layer:flow', 'layer:reach', 'surface:home',
     ])
     for (const [node, v] of Object.entries(MARKET_VOCAB)) {
-      expect(ATLAS_INDEX[node], `vocab node ${node} not in atlas`).toBeDefined()
+      expect(LENS_INDEX[node], `vocab node ${node} not in lens`).toBeDefined()
       expect(v.volume_mo).toBeGreaterThan(0)
       expect(v.observed).toBe('2026-07')
     }
@@ -320,7 +320,7 @@ describe('atlas · jsonld and market vocab stay lawful', () => {
   })
 })
 
-describe('atlas · the snippet manifest (§2bis · no floating code)', () => {
+describe('lens · the snippet manifest (§2bis · no floating code)', () => {
   it('templates and showcases are manifest-covered with their pins and shas', () => {
     const templates = SNIPPETS.filter((s) => s.source.kind === 'spec-template')
     const catalog = JSON.parse(readFileSync(join(ROOT, 'public/templates/catalog.json'), 'utf8')) as {
@@ -378,13 +378,13 @@ describe('atlas · the snippet manifest (§2bis · no floating code)', () => {
   })
 })
 
-describe('atlas · the palette covers every living room (⌘K parity)', () => {
+describe('lens · the palette covers every living room (⌘K parity)', () => {
   it('every member of an existing rooms-set has a palette entry at its href', async () => {
     const { PALETTE } = await import('../content/palette.generated')
     const hrefs = new Set(PALETTE.map((p: { href: string }) => p.href))
-    for (const n of ATLAS_NODES) {
+    for (const n of LENS_NODES) {
       if (n.kind !== 'member' || !n.url || n.anchor) continue
-      const set = ATLAS_INDEX[`set:${n.set}`]
+      const set = LENS_INDEX[`set:${n.set}`]
       if (set?.surface !== 'rooms' || (set as { page_exists?: boolean }).page_exists === false) continue
       expect(hrefs.has(n.url), `${n.id} room ${n.url} missing from the palette`).toBe(true)
     }
@@ -392,13 +392,13 @@ describe('atlas · the palette covers every living room (⌘K parity)', () => {
 
   it('provenance sanity: the vendored catalog vintage never exceeds the release', () => {
     const v = (s: string) => s.replace(/^v/, '').split('.').map(Number)
-    const [cat, eng] = [v(ATLAS_PROVENANCE.catalogs.tools), v(ATLAS_PROVENANCE.engine_version)]
+    const [cat, eng] = [v(LENS_PROVENANCE.catalogs.tools), v(LENS_PROVENANCE.engine_version)]
     const le = cat[0] < eng[0] || (cat[0] === eng[0] && (cat[1] < eng[1] || (cat[1] === eng[1] && cat[2] <= eng[2])))
-    expect(le, `catalogs ${ATLAS_PROVENANCE.catalogs.tools} newer than displayed release ${ATLAS_PROVENANCE.engine_version}?`).toBe(true)
+    expect(le, `catalogs ${LENS_PROVENANCE.catalogs.tools} newer than displayed release ${LENS_PROVENANCE.engine_version}?`).toBe(true)
   })
 })
 
-describe('atlas · bundle safety (the register island law)', () => {
+describe('lens · bundle safety (the register island law)', () => {
   it('no page, section or shell imports the full graph statically', () => {
     const dirs = ['src/pages', 'src/sections', 'src/shell']
     for (const dir of dirs) {
@@ -408,8 +408,8 @@ describe('atlas · bundle safety (the register island law)', () => {
         /* type-only imports are erased at build — the law is about BYTES
            reaching the entry, and a type adds none (the readout renderer
            types itself against the graph it will lazy-load) */
-        const staticImport = /import\s(?!type\b)[^;]*from\s+'[^']*content\/atlas\.generated'/.test(body)
-        expect(staticImport, `${dir}/${f} imports atlas.generated statically (use atlas-meta or a lazy island)`).toBe(false)
+        const staticImport = /import\s(?!type\b)[^;]*from\s+'[^']*content\/lens\.generated'/.test(body)
+        expect(staticImport, `${dir}/${f} imports lens.generated statically (use lens-meta or a lazy island)`).toBe(false)
       }
     }
   })

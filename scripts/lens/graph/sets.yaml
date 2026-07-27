@@ -1,11 +1,11 @@
-# ─── sets.yaml · the atlas descriptor table (AUTHORED · operator-reviewed) ───
+# ─── sets.yaml · the lens descriptor table (AUTHORED · operator-reviewed) ───
 #
-# The ONE authored input of the language atlas (mega-plan §2 · §3). Every
+# The ONE authored input of the language lens (mega-plan §2 · §3). Every
 # canonical set the site projects is DECLARED here exactly once: which layer
 # owns it, which gated source carries its members, which surface renders them
 # (rooms or anchors), and what unique data justifies a room (the
-# three-conditions law). build-atlas.mjs (WO-2) compiles this file plus the
-# gated sources into atlas.generated.ts + the served twin; nothing downstream
+# three-conditions law). build-lens.mjs (WO-2) compiles this file plus the
+# gated sources into lens.generated.ts + the served twin; nothing downstream
 # re-declares a set.
 #
 # LAWS OF THIS FILE
@@ -30,10 +30,10 @@
 # the waivers · the moved entries · the versioned member constants. Everything
 # else is derivation plumbing the gates judge.
 
-atlas_descriptors: 1
+lens_descriptors: 1
 revised: 2026-07-15
 
-# ─── the seven layers · the anatomy (order = the reading order of the atlas ·
+# ─── the seven layers · the anatomy (order = the reading order of the lens ·
 #     /map is the cover, hubs chain prev/next in this order) ─────────────────
 layers:
   - id: shape
@@ -54,7 +54,7 @@ layers:
     title: The flow
     hub: /flow
     hub_exists: true
-    atlas_route: true
+    lens_route: true
     opener: >-
       Tasks link through two doors: with binds values, after orders effects.
       The engine reads those bindings and builds the run graph · nothing else
@@ -91,7 +91,7 @@ layers:
     title: The boundary
     hub: /boundary
     hub_exists: true
-    atlas_route: true
+    lens_route: true
     opener: >-
       The file declares its blast radius. Permits allowlist what runs, reads,
       writes and calls · secrets stay masked references. Absent means the
@@ -119,7 +119,7 @@ layers:
     title: The proof
     hub: /proof
     hub_exists: true
-    atlas_route: true
+    lens_route: true
     opener: >-
       A run you can verify, a graph you can read. The proof layer is how
       Nika shows its work: the run graph, the hash-chained trace, the
@@ -556,7 +556,7 @@ sets:
     defined_by: [site:/sources]   # the one site-defined set · it documents the machinery itself
     opener: >-
       The vocabulary of how this site tells the truth: spec, canon, schema,
-      pack, pin, catalog, mirror, registry, manifest, atlas. Each word has
+      pack, pin, catalog, mirror, registry, manifest, lens. Each word has
       exactly one meaning · confusing two of them is a prose bug.
     members:
       - { id: spec, one_liner: "the nika-spec repo · the truth of the language" }
@@ -568,7 +568,7 @@ sets:
       - { id: mirror, one_liner: "a byte-pinned copy, sha256-verified" }
       - { id: registry, one_liner: "nika-registry THE PRODUCT · shared workflows, re-proven nightly" }
       - { id: manifest, one_liner: "the snippet lineage table · every rendered block resolves here" }
-      - { id: atlas, one_liner: "language_graph 1 · the graph of the language, site-side" }
+      - { id: lens, one_liner: "language_graph 1 · the graph of the language, site-side" }
 
 # ─── named surfaces (non-set pages that join the graph) ──────────────────────
 surfaces:
@@ -577,7 +577,7 @@ surfaces:
   - id: map
     url: /map
     exists: true   # lands in the WO-3a leg that carries this flip
-    atlas_route: true
+    lens_route: true
     title: The map
     role: "the mother page · the anatomy at a glance · every page reachable in 3 nav edges"
     opener: >-
@@ -587,7 +587,7 @@ surfaces:
   - id: sources
     url: /sources
     exists: true   # landed 2026-07-17 (WO-7 · the epistemology page)
-    atlas_route: true
+    lens_route: true
     title: Sources
     role: "the public page of the truth system · the three clocks taught"
     opener: >-
@@ -606,7 +606,7 @@ surfaces:
 # /language/depends_on (the spec's word is `after`) still 404 to crawlers
 # that remember them. Every row becomes a redirects.json entry + a static
 # meta-refresh stub (dist has no server rules · the stub IS the 301).
-# These are NOT atlas surfaces — no node, no graph edge, just the door.
+# These are NOT lens surfaces — no node, no graph edge, just the door.
 legacy_moves:
   - { from: /language/depends_on, to: /language/after, applied: provider-rooms-arc }
   - { from: /method, to: /timeline, applied: provider-rooms-arc }
@@ -791,11 +791,11 @@ snippet_registry:
 #     fact has ONE place of declaration) ───────────────────────────────────────
 # Verbs · severity · marks · accents live in the SPEC spine (design-tokens
 # via nika-spec) — this section cites them BY NAME, never by value. A hex
-# below is a SITE-side fact declared exactly once; build-atlas resolves and
+# below is a SITE-side fact declared exactly once; build-lens resolves and
 # emits design.generated.css + design.generated.ts + design-palette.json,
 # and the measured forks (og baker · constellation css · map surfaces)
 # consume the emissions. Gate: src/test/design-graph.test.ts (fold law +
-# css ratchet + cross-emission coherence) + atlas.test byte-diff.
+# css ratchet + cross-emission coherence) + lens.test byte-diff.
 design:
   paper:                 # the shared dark chrome (og cards · redirect stubs · svg)
     bg: "#0a0b0d"        # near-black card/stub ground (the og register)

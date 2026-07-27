@@ -11,7 +11,7 @@
 
    Pages feed their FIRST render from a byte island (ssg-island.tsx) whose
    payload they compute via ssrShowcaseYaml(). The bundle-safety gate in
-   atlas.test pins "no static import of usecases-yaml.generated outside
+   lens.test pins "no static import of usecases-yaml.generated outside
    this module" so the law cannot silently regress.
 
    W2 at the door (0.104 shipped flip): the projector emission cites the

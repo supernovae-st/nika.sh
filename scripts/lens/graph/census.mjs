@@ -1,8 +1,8 @@
-/* ─── atlas census · WO-1 of the language-atlas plan ──────────────────────────
+/* ─── lens census · WO-1 of the language-lens plan ──────────────────────────
    Reads every truth source the site already carries and prints the world:
    each canonical set, its members, and the ratified-vs-shipped diff (the
    two clocks made visible). READ-ONLY: writes nothing; it is the
-   executable proof that the atlas compiler has everything it needs, and
+   executable proof that the lens compiler has everything it needs, and
    the first surface where a clock lag becomes a named fact.
 
    Sources (all gated upstream · plan §1):
@@ -13,13 +13,13 @@
      public/templates/catalog.json   spec-time   (the ten skeletons)
      public/providers/catalog.json   release-time (the shipped catalog)
 
-   Run: node scripts/atlas/census.mjs            table for humans
-        node scripts/atlas/census.mjs --json     the same, machine-shaped */
+   Run: node scripts/lens/graph/census.mjs            table for humans
+        node scripts/lens/graph/census.mjs --json     the same, machine-shaped */
 import { readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..')
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..')
 const read = (p) => readFileSync(join(ROOT, p), 'utf8')
 const json = (p) => JSON.parse(read(p))
 
@@ -50,7 +50,7 @@ const errors = json('public/errors/catalog.json')
 const templates = json('public/templates/catalog.json')
 const providers = json('public/providers/catalog.json')
 
-/* ── the sets · one row per canonical set the atlas will carry ── */
+/* ── the sets · one row per canonical set the lens will carry ── */
 const taskWords = Object.keys(schema.$defs?.task?.properties ?? {}).sort()
 const envelopeWords = Object.keys(schema.properties ?? {}).sort()
 const shippedBuiltins = (tools.tools ?? [])
@@ -96,7 +96,7 @@ const world = {
 if (process.argv.includes('--json')) {
   process.stdout.write(JSON.stringify(world, null, 2) + '\n')
 } else {
-  console.log(`atlas census · engine ${world.engine_version} · canon v${world.canon_schema_version}`)
+  console.log(`lens census · engine ${world.engine_version} · canon v${world.canon_schema_version}`)
   for (const s of world.sets) {
     console.log(`  ${s.id.padEnd(20)} ${String(s.count).padStart(3)}  [${s.clock}]`)
   }

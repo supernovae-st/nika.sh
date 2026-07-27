@@ -1,5 +1,5 @@
 /* ─── read-sources · the compiler's one reading room ─────────────────────────
-   Every truth source build-atlas.mjs consumes, read ONCE here, each with the
+   Every truth source build-lens.mjs consumes, read ONCE here, each with the
    same discipline census.mjs proved: controlled-emission TS modules are
    sliced and JSON.parsed (never eval'd) — if an emission style drifts, the
    parse dies loudly and names the drifted file. Pure readers: no writes,
@@ -172,8 +172,8 @@ export function readSources(ROOT) {
   const templates = json('public/templates/catalog.json')
 
   /* the descriptor (the ONE authored input) + market vocab */
-  const sets = parseYaml(read('scripts/atlas/sets.yaml'))
-  const marketVocab = parseYaml(read('scripts/atlas/market-vocab.yaml'))
+  const sets = parseYaml(read('scripts/lens/graph/sets.yaml'))
+  const marketVocab = parseYaml(read('scripts/lens/graph/market-vocab.yaml'))
 
   /* the displayed release truth (release cascade maintains it · the
      version-truth gate pins every served surface to it) */
@@ -201,7 +201,7 @@ export function readSources(ROOT) {
   }
 
   /* the spec pin — stamped by the resync cron from its fresh clone; null
-     until the first post-atlas resync runs (named in the report) */
+     until the first post-lens resync runs (named in the report) */
   const pinPath = join(ROOT, 'public/spec/v1/PIN')
   const specPin = existsSync(pinPath) ? readFileSync(pinPath, 'utf8').trim() : null
 

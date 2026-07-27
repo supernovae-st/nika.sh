@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { ATLAS_CLOCK_DIFF } from '../content/atlas-meta.generated'
+import { LENS_CLOCK_DIFF } from '../content/lens-meta.generated'
 import { CLOCK_REGISTERS, clockDiffLine, clockDrift } from '../lib/clock-diff'
 
 /* ── the two-clocks honesty gate ──────────────────────────────────────────────
@@ -20,7 +20,7 @@ const read = (p: string) => readFileSync(join(ROOT, p), 'utf8')
 
 describe('two clocks · every emitted register is read', () => {
   it('CLOCK_REGISTERS is exactly the emission keys (no hand list can drift)', () => {
-    expect(CLOCK_REGISTERS).toEqual(Object.keys(ATLAS_CLOCK_DIFF))
+    expect(CLOCK_REGISTERS).toEqual(Object.keys(LENS_CLOCK_DIFF))
     expect(CLOCK_REGISTERS.length).toBeGreaterThan(0)
   })
 
@@ -35,7 +35,7 @@ describe('two clocks · every emitted register is read', () => {
   it('a drifting register names its members in the line (nothing summarised away)', () => {
     const line = clockDiffLine()
     for (const r of clockDrift()) {
-      for (const m of [...ATLAS_CLOCK_DIFF[r].ratified_only, ...ATLAS_CLOCK_DIFF[r].shipped_only]) {
+      for (const m of [...LENS_CLOCK_DIFF[r].ratified_only, ...LENS_CLOCK_DIFF[r].shipped_only]) {
         expect(line, `${r} member not surfaced`).toContain(m)
       }
     }

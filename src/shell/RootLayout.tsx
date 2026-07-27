@@ -26,7 +26,7 @@ const LocaleSuggest = lazy(() => import('./LocaleSuggest'))
 const ShortcutsOverlay = lazy(() => import('./ShortcutsOverlay'))
 
 /* the Inspector · lazy like the palette (the graph rides its own chunk
-   through the atlas-access door — nothing reaches the entry) */
+   through the lens-access door — nothing reaches the entry) */
 const Inspector = lazy(() => import('./Inspector'))
 
 /* the member hover card (round-3) · fine-pointer courtesy — the chunk

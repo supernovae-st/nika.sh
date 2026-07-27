@@ -142,7 +142,7 @@
        rides the ENTRY chunk, because the five /language + /verbs pages are
        sync-routed for the prerenderer. The rooms already ship that prose as
        prerendered HTML, so the bundle copy only serves SPA-nav — it belongs
-       in a lazy chunk behind an access door (src/lib/atlas-access.ts is the
+       in a lazy chunk behind an access door (src/lib/lens-access.ts is the
        proven shape). That cut is worth more than this raise; it needs the
        five pages to stop reading the prose synchronously, which is a
        refactor, not a bump.

@@ -16,12 +16,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
 const PORT = 9251
 
-/* the atlas legs DERIVE from the served twin (§6.8bis: the hardcoded sample
+/* the lens legs DERIVE from the served twin (§6.8bis: the hardcoded sample
    died with WO-2) — every existing hub + the first room of every rooms-set,
-   so a page class the atlas grows is swept the day it lands, never
-   remembered by hand. The funnel + blog sample stays curated (not atlas). */
+   so a page class the lens grows is swept the day it lands, never
+   remembered by hand. The funnel + blog sample stays curated (not lens). */
 const CORE_ROUTES = ['/', '/manifesto', '/fr/manifesto', '/es/manifesto', '/de/manifesto', '/pt-br/manifesto', '/ja/manifesto', '/ko/manifesto', '/zh-hans/manifesto', '/play', '/install', '/learn', '/spec', '/use-cases', '/blog', '/blog/four-verbs', '/blog/intent-as-code', '/blog/own-your-stack', '/blog/dag-for-free', '/blog/blast-radius-in-the-file', '/blog/standard-library-not-plugin-store', '/blog/open-spec-copyleft-engine', '/blog/the-note-that-started-it', '/blog/naming-the-drum', '/blog/starting-over-on-purpose', '/blog/the-trace-you-can-replay', '/blog/anatomy-of-a-verb', '/blog/the-cost-line', '/changelog', '/map', '/convert', '/brand']
-function atlasRoutes() {
+function lensRoutes() {
   const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8'))
   const routes = new Set()
   for (const n of twin.nodes) {
@@ -50,7 +50,7 @@ function atlasRoutes() {
   }
   return [...routes].filter((r) => r && r.startsWith('/')).sort()
 }
-const ROUTES = [...new Set([...CORE_ROUTES, ...atlasRoutes()])]
+const ROUTES = [...new Set([...CORE_ROUTES, ...lensRoutes()])]
 const AXE_SRC = readFileSync(join(ROOT, 'node_modules/axe-core/axe.min.js'), 'utf8')
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.woff2': 'font/woff2', '.webp': 'image/webp', '.txt': 'text/plain', '.xml': 'application/xml' }

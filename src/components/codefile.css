@@ -783,7 +783,7 @@
    radius becomes a SPINE: one hairline down the left of the block, in the
    boundary hue, readable without reading a word.
 
-   It is the same hue /boundary and the atlas use for that layer, so the file,
+   It is the same hue /boundary and the lens use for that layer, so the file,
    the map and the hub all say the boundary with the same mark. */
 .cf-line[data-band='boundary'] {
   position: relative;

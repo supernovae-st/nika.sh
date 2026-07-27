@@ -839,7 +839,7 @@ h1, h2 { font-family: var(--headline); }
      and the mini-dag's highlighted node both read through tint alone */
   .ck-opt[aria-selected='true'],
   .mdag-node[data-hi],
-  /* the new atlas surfaces born interactive (WO-3..5): selected matrix
+  /* the new lens surfaces born interactive (WO-3..5): selected matrix
      cell · pressed check option · map set chips keep their hairline via
      border, listed here for the registry's completeness */
   .gm-btn[aria-pressed='true'],

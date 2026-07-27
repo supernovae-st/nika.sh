@@ -1,6 +1,6 @@
 {
   "design_palette": 1,
-  "_generated": "scripts/atlas/build-atlas.mjs — DO NOT EDIT (sets.yaml design: + the spec spine)",
+  "_generated": "scripts/lens/graph/build-lens.mjs — DO NOT EDIT (sets.yaml design: + the spec spine)",
   "verbs": {
     "infer": "#5b8cff",
     "exec": "#ff7a3c",

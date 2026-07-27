@@ -10,7 +10,7 @@ import { LOCALES, LOCALIZED } from '../lib/i18n'
    1 · PARITY — every locale file carries exactly the EN twin's key shape
        (a missing gloss or an invented section cannot ship silently);
    2 · LEXICON — public/i18n/untranslatables.json (derived from the language
-       graph by build-atlas) is the floor: a lexicon token present in an EN
+       graph by build-lens) is the floor: a lexicon token present in an EN
        value survives byte-verbatim in every translation of that value
        (a translated `after:` cannot exist · the drift is NAMED);
    3 · ANTI-SLOP — drafts exist ≠ pages ship: a locale dir here NOT yet in

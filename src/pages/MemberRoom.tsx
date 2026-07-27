@@ -131,7 +131,7 @@ export function Component() {
             <p className="v4sec-fig">the registers</p>
             <h1 className="v4sec-title">Not a registered member.</h1>
             <p className="v4sec-lede">
-              `{family}/{id}` names nothing in the atlas.{' '}
+              `{family}/{id}` names nothing in the lens.{' '}
               {fam ? (
                 <>
                   The register lists every member: <Link to={`/${family}`}>{fam.title}</Link>.

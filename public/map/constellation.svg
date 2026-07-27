@@ -123,9 +123,9 @@
 <g class="cst-star"><a href="/use-cases/t2-etl-quarantine" tabindex="-1"><circle cx="500.51" cy="140.65" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>etl-quarantine</title></a></g>
 <g class="cst-star"><a href="/use-cases/t2-invoice-chaser" tabindex="-1"><circle cx="521.48" cy="136.6" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>invoice-chaser</title></a></g>
 <g class="cst-star"><a href="/use-cases/t2-model-bench" tabindex="-1"><circle cx="542.62" cy="133.52" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>model-bench</title></a></g>
-<g class="cst-star"><a href="/truth/atlas" tabindex="-1"><circle cx="428.99" cy="162.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>atlas</title></a></g>
-<g class="cst-star"><a href="/truth/canon" tabindex="-1"><circle cx="453.57" cy="153.39" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>canon</title></a></g>
-<g class="cst-star"><a href="/truth/catalog" tabindex="-1"><circle cx="478.59" cy="145.95" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>catalog</title></a></g>
+<g class="cst-star"><a href="/truth/canon" tabindex="-1"><circle cx="428.99" cy="162.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>canon</title></a></g>
+<g class="cst-star"><a href="/truth/catalog" tabindex="-1"><circle cx="453.57" cy="153.39" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>catalog</title></a></g>
+<g class="cst-star"><a href="/truth/lens" tabindex="-1"><circle cx="478.59" cy="145.95" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>lens</title></a></g>
 <g class="cst-star"><a href="/truth/manifest" tabindex="-1"><circle cx="503.99" cy="139.91" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>manifest</title></a></g>
 <g class="cst-star"><a href="/truth/mirror" tabindex="-1"><circle cx="529.69" cy="135.29" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>mirror</title></a></g>
 <g class="cst-star"><a href="/truth/pack" tabindex="-1"><circle cx="555.6" cy="132.1" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>pack</title></a></g>

@@ -7,11 +7,11 @@ import { routeHead } from '../content'
 import { HubFoot } from './hub-shared'
 import { sourcesJsonldSets } from './hub-lib'
 import {
-  ATLAS_PROVENANCE,
-  ATLAS_SCORE,
-  ATLAS_CLOCK_DIFF,
+  LENS_PROVENANCE,
+  LENS_SCORE,
+  LENS_CLOCK_DIFF,
   TRUTH_WORDS,
-} from '../content/atlas-meta.generated'
+} from '../content/lens-meta.generated'
 import { CLOCK_REGISTERS } from '../lib/clock-diff'
 import { CANON } from '../canon.generated'
 import '../sections/v4-home.css'
@@ -50,13 +50,13 @@ const VERIFY = [
   },
 ] as const
 
-/* the two-clocks diff is computed per register at build (atlas-meta) — the
+/* the two-clocks diff is computed per register at build (lens-meta) — the
    registers come from the EMISSION, never a hand list here: this one was
    right by luck while /map's identical list had gone stale (lib/clock-diff) */
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
-  const p = ATLAS_PROVENANCE
+  const p = LENS_PROVENANCE
   useHead({
     title: TITLE,
     link: routeHead('/sources').link,
@@ -91,12 +91,12 @@ export function Component() {
     () =>
       CLOCK_REGISTERS.reduce(
         (n, r) =>
-          n + ATLAS_CLOCK_DIFF[r].ratified_only.length + ATLAS_CLOCK_DIFF[r].shipped_only.length,
+          n + LENS_CLOCK_DIFF[r].ratified_only.length + LENS_CLOCK_DIFF[r].shipped_only.length,
         0,
       ),
     [],
   )
-  const gapCount = ATLAS_SCORE.waived.length + ATLAS_SCORE.unarmed.length
+  const gapCount = LENS_SCORE.waived.length + LENS_SCORE.unarmed.length
 
   /* the clock ledger rows (the band count derives from this list) */
   const clocks = [
@@ -162,7 +162,7 @@ export function Component() {
           <StampStrip
             items={[
               { n: TRUTH_WORDS.members.length, label: 'truth words', sub: 'one meaning each' },
-              { n: ATLAS_SCORE.score, label: 'coverage score', sub: 'gaps named, not hidden' },
+              { n: LENS_SCORE.score, label: 'coverage score', sub: 'gaps named, not hidden' },
               { n: driftCount, label: 'clock drift', sub: 'ratified vs shipped' },
               { n: VERIFY.length, label: 'verify commands', sub: 'no trust required' },
             ]}
@@ -206,7 +206,7 @@ export function Component() {
               both catalogs; when it is empty, the clocks agree.
             </p>
             {CLOCK_REGISTERS.map((register) => {
-              const diff = ATLAS_CLOCK_DIFF[register]
+              const diff = LENS_CLOCK_DIFF[register]
               const clean = diff.ratified_only.length === 0 && diff.shipped_only.length === 0
               return (
                 <p key={register} className="src-clockdiff mono">
@@ -270,12 +270,12 @@ export function Component() {
               are the honest remainder: what this site does not judge yet, by name.
             </p>
             <p className="src-score mono">
-              atlas coverage · {ATLAS_SCORE.score}/100
-              {ATLAS_SCORE.waived.length > 0 ? ` · ${ATLAS_SCORE.waived.length} waived` : ' · no waivers'}
+              lens coverage · {LENS_SCORE.score}/100
+              {LENS_SCORE.waived.length > 0 ? ` · ${LENS_SCORE.waived.length} waived` : ' · no waivers'}
             </p>
-            {ATLAS_SCORE.waived.length > 0 && (
+            {LENS_SCORE.waived.length > 0 && (
               <ul className="src-gaps">
-                {ATLAS_SCORE.waived.map((w) => (
+                {LENS_SCORE.waived.map((w) => (
                   <li key={w} className="mono">
                     waived · {w}
                   </li>
@@ -283,7 +283,7 @@ export function Component() {
               </ul>
             )}
             <ul className="src-gaps">
-              {ATLAS_SCORE.unarmed.map((u) => (
+              {LENS_SCORE.unarmed.map((u) => (
                 <li key={u} className="mono">
                   {u}
                 </li>

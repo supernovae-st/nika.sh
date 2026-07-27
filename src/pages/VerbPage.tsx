@@ -337,7 +337,7 @@ export function Component() {
                     <p className="td-ref-k">where it lives</p>
                     <SourcesRail links={VERB_SOURCES} />
                   </div>
-                  {/* WO-5b · the atlas rails: the words this verb's block
+                  {/* WO-5b · the lens rails: the words this verb's block
                       accepts (schema-derived) + its declared error namespace */}
                   <div>
                     <p className="td-ref-k">accepts</p>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { loadAtlas } from '../lib/atlas-access'
+import { loadLens } from '../lib/lens-access'
 import { readoutFor, cardSlice } from './inspector-readout'
 import './hover-card.css'
 
@@ -17,7 +17,7 @@ export default function HoverCard({ nodeId }: { nodeId: string }) {
 
   useEffect(() => {
     let live = true
-    void loadAtlas().then((graph) => {
+    void loadLens().then((graph) => {
       if (!live) return
       const readout = readoutFor(nodeId, graph)
       setCard(readout ? cardSlice(readout) : null)

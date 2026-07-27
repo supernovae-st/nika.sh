@@ -1,8 +1,8 @@
-import { ATLAS_PROVENANCE, SOURCES_LIVE } from '../content/atlas-meta.generated'
+import { LENS_PROVENANCE, SOURCES_LIVE } from '../content/lens-meta.generated'
 import './truth-line.css'
 
-/* ─── TruthLine · the page carries its freshness (atlas §4 convention) ───────
-   ONE per atlas page, page footer, discrete: where this page's truth comes
+/* ─── TruthLine · the page carries its freshness (lens §4 convention) ───────
+   ONE per lens page, page footer, discrete: where this page's truth comes
    from (spec pin · engine release · the vendored catalog vintage when it
    lags) + « this page as data » (the served twin, node-addressed). The
    « about sources » link appears when /sources ships (WO-7) — a link that
@@ -10,7 +10,7 @@ import './truth-line.css'
    does not render. */
 
 export function TruthLine({ nodeId }: { nodeId?: string }) {
-  const p = ATLAS_PROVENANCE
+  const p = LENS_PROVENANCE
   const pin = p.spec_pin ? `spec@${p.spec_pin.slice(0, 7)}` : 'spec pin · next resync stamps it'
   const catalogLag = p.catalogs.tools !== p.engine_version.replace(/^v/, '')
   return (

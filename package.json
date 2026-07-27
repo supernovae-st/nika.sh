@@ -25,7 +25,7 @@
     "spec-resync:verify": "node scripts/verify_generated_outputs.mjs",
     "gates": "node scripts/run-gates.mjs",
     "gates:fast": "node scripts/run-gates.mjs --fast",
-    "atlas": "node scripts/atlas/build-atlas.mjs",
+    "lens": "node scripts/lens/graph/build-lens.mjs",
     "postbuild": "pagefind --site dist && node scripts/sort-pagefind-entry.mjs"
   },
   "dependencies": {

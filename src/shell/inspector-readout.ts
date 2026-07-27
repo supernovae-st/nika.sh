@@ -1,4 +1,4 @@
-import type { AtlasNode, AtlasEdge } from '../content/atlas.generated'
+import type { LensNode, LensEdge } from '../content/lens.generated'
 
 /* ─── inspector-readout · the per-set render table (round-1) ─────────────────
    ONE pure function from a node + the graph to a structured readout — the
@@ -20,14 +20,14 @@ export interface ReadoutRow {
 export interface Readout {
   title: string
   kindGlyph: string
-  kind: AtlasKind | null
+  kind: LensKind | null
   status: string
   opener: string | null
   rows: ReadoutRow[]
   door: ReadoutLink | null
 }
 
-import { KIND_GLYPH, KIND_OF_SET, type AtlasKind } from '../content/design.generated'
+import { KIND_GLYPH, KIND_OF_SET, type LensKind } from '../content/design.generated'
 
 /* NODE-CLASS glyphs (the twin's structural axis: set/layer/chapter…) —
    distinct from the design graph's FAMILY signatures above (nomenclature:
@@ -60,7 +60,7 @@ const MEMBER_META: Record<string, (meta: Record<string, unknown>) => ReadoutRow[
 
 const EDGE_CAP = 8
 
-function nodeHref(n: AtlasNode): string | null {
+function nodeHref(n: LensNode): string | null {
   if (!n.url || n.url.includes(':')) return null
   // a roomed member OWNS its page — its door is the room, never a fragment
   // (own_page · rooms universelles; the anchor stays for the register view)
@@ -72,7 +72,7 @@ function nodeHref(n: AtlasNode): string | null {
 export function cardSlice(readout: Readout): {
   title: string
   kindGlyph: string
-  kind: AtlasKind | null
+  kind: LensKind | null
   status: string
   firstLine: string | null
   set: string | null
@@ -92,10 +92,10 @@ export function cardSlice(readout: Readout): {
    lookup, never a second table) */
 export function nodeIdForHref(
   href: string,
-  graph: { ATLAS_INDEX: Record<string, AtlasNode> },
+  graph: { LENS_INDEX: Record<string, LensNode> },
 ): string | null {
   const [path, frag] = href.split('#')
-  for (const [id, n] of Object.entries(graph.ATLAS_INDEX)) {
+  for (const [id, n] of Object.entries(graph.LENS_INDEX)) {
     if (n.url !== path) continue
     if ((n.anchor ?? '') === (frag ?? '')) return id
   }
@@ -104,14 +104,14 @@ export function nodeIdForHref(
 
 export function readoutFor(
   id: string,
-  graph: { ATLAS_INDEX: Record<string, AtlasNode>; ATLAS_EDGES: AtlasEdge[] },
+  graph: { LENS_INDEX: Record<string, LensNode>; LENS_EDGES: LensEdge[] },
 ): Readout | null {
-  const n = graph.ATLAS_INDEX[id]
+  const n = graph.LENS_INDEX[id]
   if (!n) return null
   const rows: ReadoutRow[] = []
 
   if (n.set) {
-    const set = graph.ATLAS_INDEX[`set:${n.set}`]
+    const set = graph.LENS_INDEX[`set:${n.set}`]
     if (set) {
       const href = nodeHref(set)
       rows.push({ label: 'set', links: [{ label: set.title, href: href ?? `/map#${n.set}` }] })
@@ -126,11 +126,11 @@ export function readoutFor(
      above already carries that door (the same fact twice read as noise
      on every member room · inspector · hover card alike). */
   const byKind = new Map<string, ReadoutLink[]>()
-  for (const e of graph.ATLAS_EDGES) {
+  for (const e of graph.LENS_EDGES) {
     const [dir, otherId] = e.from === id ? ['→', e.to] : e.to === id ? ['←', e.from] : [null, '']
     if (!dir) continue
     if (e.kind === 'member-of' && n.set && otherId === `set:${n.set}`) continue
-    const other = graph.ATLAS_INDEX[otherId]
+    const other = graph.LENS_INDEX[otherId]
     if (!other) continue
     const href = nodeHref(other)
     if (!href) continue

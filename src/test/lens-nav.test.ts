@@ -10,12 +10,12 @@ import {
   NAV_REFERENCE,
   NAV_VERSION_PILL,
   type NavItem,
-} from '../content/atlas-nav.generated'
-import { ATLAS_SET_COUNTS } from '../content/atlas-meta.generated'
+} from '../content/lens-nav.generated'
+import { LENS_SET_COUNTS } from '../content/lens-meta.generated'
 import { PATHS } from '../../site.config'
 
 /* ── the chrome-projection gates (§4.11-4.12) ─────────────────────────────────
-   Nav + footer read atlas-nav.generated.ts; these gates hold the §4.11
+   Nav + footer read lens-nav.generated.ts; these gates hold the §4.11
    verdicts structurally: the scannability law (descs only on the Product
    featured-class), the count chips = the derived register counts, soon
    flags only on surfaces that genuinely have not landed, every link a real
@@ -33,7 +33,7 @@ const allItems: { where: string; item: NavItem }[] = [
   ...FOOTER_COLS.flatMap((g) => g.items.map((item) => ({ where: `footer/${g.kick}`, item }))),
 ]
 
-describe('atlas-nav · one path, one door (§4.11 ratchet)', () => {
+describe('lens-nav · one path, one door (§4.11 ratchet)', () => {
   it('no two sibling rows of a panel share a bare path — the later is an anchored sub-door', () => {
     for (const [panel, cols] of [
       ['reference', NAV_REFERENCE.cols],
@@ -64,7 +64,7 @@ describe('atlas-nav · one path, one door (§4.11 ratchet)', () => {
   })
 })
 
-describe('atlas-nav · every rendered link resolves', () => {
+describe('lens-nav · every rendered link resolves', () => {
   it('every internal `to` is a prerendered route or a home anchor', () => {
     for (const { where, item } of allItems) {
       if (item.soon || !item.to) continue
@@ -95,7 +95,7 @@ describe('atlas-nav · every rendered link resolves', () => {
   })
 })
 
-describe('atlas-nav · the §4.11 scannability law holds', () => {
+describe('lens-nav · the §4.11 scannability law holds', () => {
   it('descs live ONLY on the product panel and the featured row', () => {
     for (const g of NAV_REFERENCE.cols) {
       for (const item of g.items) {
@@ -125,7 +125,7 @@ describe('atlas-nav · the §4.11 scannability law holds', () => {
     const expectCount = (label: string, setId: string) => {
       const item = allItems.find((x) => x.item.label === label && x.item.count != null)
       expect(item, `${label} with a chip`).toBeTruthy()
-      expect(item!.item.count).toBe(ATLAS_SET_COUNTS[setId].count)
+      expect(item!.item.count).toBe(LENS_SET_COUNTS[setId].count)
     }
     expectCount('The language', 'words')
     expectCount('The four verbs', 'verbs')
@@ -149,7 +149,7 @@ describe('atlas-nav · the §4.11 scannability law holds', () => {
   })
 })
 
-describe('atlas-nav · the footer completes what the panel curates (§4.12)', () => {
+describe('lens-nav · the footer completes what the panel curates (§4.12)', () => {
   it('every reference panel item appears in the footer columns', () => {
     const footerLabels = new Set(FOOTER_COLS.flatMap((c) => c.items.map((i) => i.label)))
     for (const item of NAV_REFERENCE.cols.flatMap((c) => c.items)) {
@@ -171,7 +171,7 @@ describe('atlas-nav · the footer completes what the panel curates (§4.12)', ()
   })
 })
 
-describe('atlas-nav · the anti-slop voice on the chrome', () => {
+describe('lens-nav · the anti-slop voice on the chrome', () => {
   it('no em dash, no banned intensifiers, anywhere in the nav data', () => {
     const texts = [
       ...allItems.map(({ item }) => `${item.label} ${item.desc ?? ''} ${item.title ?? ''}`),

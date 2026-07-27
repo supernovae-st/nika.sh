@@ -12,7 +12,7 @@ Three laws, gated in `src/test/i18n-lexicon.test.ts`:
    into a route until the operator ratifies the draft; the hreflang cluster
    only ever announces what ships.
 2. **The lexicon floor** — `public/i18n/untranslatables.json` (derived from
-   the language graph by build-atlas) lists every name the language OWNS:
+   the language graph by build-lens) lists every name the language OWNS:
    verbs, reserved keys, `nika:` builtins, error codes, providers, templates.
    A lexicon token present in an EN value survives BYTE-VERBATIM in every
    translation of that value (a translated `after:` cannot exist).

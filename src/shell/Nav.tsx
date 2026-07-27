@@ -9,7 +9,7 @@ import {
   NAV_REFERENCE,
   NAV_VERSION_PILL,
   type NavItem,
-} from '../content/atlas-nav.generated'
+} from '../content/lens-nav.generated'
 import { useMagnetic } from '../fx/use-magnetic'
 import { useFocusTrap, useFocusReturn } from '../lib/focus'
 import { acquireScrollLock, releaseScrollLock } from '../lib/scroll-lock'
@@ -19,7 +19,7 @@ import { NK_ICONS } from '../icons/manifest'
 /* ─── Nav · the v4 shared shell nav (monochrome blueprint) ────────────────────
    ONE nav for every route (mounted in RootLayout). The chrome is a
    PROJECTION since WO-3 (§4.11): the bar, both panels and the footer read
-   atlas-nav.generated.ts — the Reference panel's items, counts and `soon`
+   lens-nav.generated.ts — the Reference panel's items, counts and `soon`
    badges resolve against the language graph at compile time (a hub landing
    flips them in the same build · never an edit here).
 
@@ -666,7 +666,7 @@ export default function Nav() {
               )}
             </MegaDisclosure>
 
-            {/* Reference ▾ · the Atlas panel (generated · chips, no descs) */}
+            {/* Reference ▾ · the Lens panel (generated · chips, no descs) */}
             <MegaDisclosure
               label="Reference"
               open={openPanel === 'reference'}

@@ -1,6 +1,6 @@
 import { useHead } from '@unhead/react'
 import { HUBS, type HubData } from './hub-data.generated'
-import { ATLAS_PROVENANCE } from '../content/atlas-meta.generated'
+import { LENS_PROVENANCE } from '../content/lens-meta.generated'
 import { SITE, SPEC, routeHead } from '../content'
 
 /* ─── hub-lib · the hubs' non-component seams (react-refresh law) ────────────
@@ -12,10 +12,10 @@ export const chapterHref = (ch: string) => `${SPEC}/blob/main/${ch}`
 /* the hubs' DefinedTermSets, DERIVED from HubData already in the bundle —
    never a second shipped copy (jsonld.generated is a lazy-page corpus; the
    hubs are sync routes and its 80K would ride the initial chunk). One truth
-   held by gate, not by hand: atlas.test pins this derivation toEqual the
+   held by gate, not by hand: lens.test pins this derivation toEqual the
    compiler's JSONLD_TERMSETS per hub page (the derived-inverses law). */
 /* the /sources termset, derived from the chrome-safe TRUTH_WORDS (same
-   derived-inverses law: atlas.test pins this equal to the twin's
+   derived-inverses law: lens.test pins this equal to the twin's
    JSONLD_TERMSETS['/sources']) */
 export function sourcesJsonldSets(words: {
   title: string
@@ -29,7 +29,7 @@ export function sourcesJsonldSets(words: {
       name: `Nika ${words.title.toLowerCase()}`,
       description: words.opener,
       license: 'https://www.apache.org/licenses/LICENSE-2.0',
-      version: ATLAS_PROVENANCE.engine_version,
+      version: LENS_PROVENANCE.engine_version,
       hasDefinedTerm: [...words.members]
         .sort((a, b) => a.id.localeCompare(b.id))
         .map((m) => ({
@@ -52,7 +52,7 @@ export function hubJsonldSets(hub: HubData): unknown[] {
       name: `Nika ${set.title.toLowerCase()}`,
       description: set.opener.trim(),
       license: 'https://www.apache.org/licenses/LICENSE-2.0',
-      version: ATLAS_PROVENANCE.engine_version,
+      version: LENS_PROVENANCE.engine_version,
       hasDefinedTerm: [...set.members]
         .sort((a, b) => a.id.localeCompare(b.id)) // the twin rides node-id order
         .map((m) => ({

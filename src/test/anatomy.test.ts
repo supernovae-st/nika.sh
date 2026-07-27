@@ -95,7 +95,7 @@ describe('anatomy · the register diet holds', () => {
         if (!/\.(ts|tsx)$/.test(e.name) || /\.test\./.test(e.name)) continue
         if (rel.endsWith('src/lib/anatomy-access.ts')) continue
         const src = readFileSync(join(ROOT, rel), 'utf8')
-        // type-only imports erase at compile time — allowed (the atlas.test law)
+        // type-only imports erase at compile time — allowed (the lens.test law)
         const staticImport = /^import (?!type\b).*from '[^']*anatomy\.generated'$/m
         if (staticImport.test(src)) offenders.push(rel)
       }

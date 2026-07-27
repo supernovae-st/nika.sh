@@ -5,7 +5,7 @@ import { LAYER_HEX, LAYER_RGB, KIND_HEX, KIND_RGB, KIND_GLYPH, PAPER, MOTION_DUR
 
 /* ─── design-graph.test · fenêtre A gates (LENS_DESIGN_GRAPH §4) ─────────────
    Three laws, none about specific VALUES (values change spec-first and the
-   byte-diff in atlas.test already judges the emissions):
+   byte-diff in lens.test already judges the emissions):
 
    1. FOLD LAW — a file folded into the graph can never grow a raw hex
       back (each folded file's hex census ⊆ its explicit local-assumed
@@ -28,7 +28,7 @@ const hexCensus = (src: string) =>
 
 describe('design graph · the fold law (folded files stay folded)', () => {
   const FOLDED: Record<string, string[]> = {
-    'scripts/atlas/lib/render-constellation.mjs': [],
+    'scripts/lens/graph/lib/render-constellation.mjs': [],
     'scripts/build-og-card.mjs': [],
     'src/pages/Map3dScene.tsx': ['#8fa3bf', '#3d4f6b'],
     'src/pages/map-page.css': ['#e8eefc', '#34d399', '#22d3ee', '#5b8cff', '#b07bff', '#ff7a3c', '#ff5d5d'],

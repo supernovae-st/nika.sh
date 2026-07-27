@@ -5,7 +5,7 @@ import { prefersLiteData } from '../lib/save-data'
 import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
 import type { FunnelEvent } from '../lib/track'
 import { variantsFor } from '../lib/i18n'
-import { FOOTER_COLS, FOOTER_MACHINE, type NavItem } from '../content/atlas-nav.generated'
+import { FOOTER_COLS, FOOTER_MACHINE, type NavItem } from '../content/lens-nav.generated'
 import '../sections/v4-home.css'
 
 /* ─── SiteFooter · the ONE footer, every route (F7) ───────────────────────────
@@ -18,7 +18,7 @@ import '../sections/v4-home.css'
    going » (two curated panels), the footer answers « what exists » — the
    complete card. Its first three columns ARE the Reference panel's columns
    plus their extras, the last two are authored intent — all five read
-   atlas-nav.generated.ts (one source, two projections, zero drift). The
+   lens-nav.generated.ts (one source, two projections, zero drift). The
    FOR MACHINES row names the site's own machine surfaces (the agents-first
    identity, said in the chrome). */
 

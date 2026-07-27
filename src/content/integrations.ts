@@ -338,7 +338,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: 'https://github.com/supernovae-st/nika.sh',
     license: 'MIT',
     what: 'nika.sh itself: every page a projection of pinned sources, every count derived, every claim re-proven in CI.',
-    how: 'The atlas compiles one graph of the whole language and the coverage gates hold the site to it: every citable element owns a room, every register links its rooms, the machine twins (catalogs · schema · ontology · llms.txt) serve the same facts the pages render. The page that teaches the machinery also names what it does not cover yet.',
+    how: 'The lens compiles one graph of the whole language and the coverage gates hold the site to it: every citable element owns a room, every register links its rooms, the machine twins (catalogs · schema · ontology · llms.txt) serve the same facts the pages render. The page that teaches the machinery also names what it does not cover yet.',
     install: [{ text: 'You are here. Machines start at', code: 'https://nika.sh/llms.txt' }],
     doors: [
       { label: 'how this site tells the truth', href: '/sources' },

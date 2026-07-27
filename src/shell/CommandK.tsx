@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { PALETTE, type PaletteEntry } from '../content/palette.generated'
-import { KIND_GLYPH, KIND_HEX, type AtlasKind } from '../content/design.generated'
+import { KIND_GLYPH, KIND_HEX, type LensKind } from '../content/design.generated'
 import { PATHS, BLOG_PATHS } from '../../site.config'
 import { parseQuery, mergePageHits, type PageTextHit } from '../lib/palette-query'
 import { actionEntries, runAction, type ActionEntry, type PaletteCtx } from '../lib/palette-actions'
@@ -91,8 +91,8 @@ const PALETTE_GLYPH: Record<string, string> = {
 }
 const entryGlyph = (kind: PaletteEntry['kind']): string =>
   (KIND_GLYPH as Record<string, string>)[kind] ?? PALETTE_GLYPH[kind] ?? '·'
-const entryKind = (kind: PaletteEntry['kind']): AtlasKind | null =>
-  kind in KIND_HEX ? (kind as AtlasKind) : null
+const entryKind = (kind: PaletteEntry['kind']): LensKind | null =>
+  kind in KIND_HEX ? (kind as LensKind) : null
 
 export default function CommandK({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate()

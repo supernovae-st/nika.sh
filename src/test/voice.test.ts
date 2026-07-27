@@ -12,7 +12,7 @@ import { describe, expect, it } from 'vitest'
    Authored perimeter:
      · content/blog/*.md          (posts + frontmatter · README is repo-doc)
      · build-og-card.mjs CARDS    (the text baked into OG pixels)
-     · scripts/atlas/sets.yaml    (openers · titles · roles · nav/footer)
+     · scripts/lens/graph/sets.yaml    (openers · titles · roles · nav/footer)
      · public/llms.txt            (the agents front door)
 
    Tolerated inside posts: fenced code, inline code, and *"..."* italic-quote
@@ -101,8 +101,8 @@ function corpus(): Array<{ where: string; lines: string[]; clean: (l: string, i:
       offset: og.offset,
     },
     {
-      where: 'scripts/atlas/sets.yaml',
-      lines: readFileSync(join(ROOT, 'scripts/atlas/sets.yaml'), 'utf8').split('\n'),
+      where: 'scripts/lens/graph/sets.yaml',
+      lines: readFileSync(join(ROOT, 'scripts/lens/graph/sets.yaml'), 'utf8').split('\n'),
       clean: (line: string) => (line.trimStart().startsWith('#') ? null : line),
     },
     {

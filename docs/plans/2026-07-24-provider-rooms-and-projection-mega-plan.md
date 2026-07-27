@@ -78,9 +78,9 @@
   catalog order) · TruthLine.
 - Route swap in `routes.tsx`: `providers/:id` → ProviderPage (MemberRoom
   keeps the other 13 families).
-- Atlas: providers family leaves `MEMBER_ROOM_FAMILIES` (explicit
+- Lens: providers family leaves `MEMBER_ROOM_FAMILIES` (explicit
   descriptor/compiler flag, regenerated — never hand-edited); `/providers/*`
-  paths stay prerendered (ATLAS_PATHS or a derived PROVIDER_PATHS, the
+  paths stay prerendered (LENS_PATHS or a derived PROVIDER_PATHS, the
   ERROR_PATHS import precedent).
 - Per-page head: authored title/description · `og-providers.png` + alt ·
   BreadcrumbList + DefinedTerm JSON-LD (aligned with jsonld.generated).
@@ -124,7 +124,7 @@ P1 — execute in this arc:
   living pages.
 
 P2 — this arc where cheap, else noted:
-- Sitemap `tier()` regex misses the 13 atlas room families + `/use-cases/:slug`
+- Sitemap `tier()` regex misses the 13 lens room families + `/use-cases/:slug`
   (~145 reference rooms weighted 0.8/weekly instead of 0.5/monthly).
 - `/errors` + `/errors/:code` have NO og:image and `og-errors.png` does not
   exist; member rooms ship no og:image at all — add the family cards.

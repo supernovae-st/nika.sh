@@ -1,4 +1,4 @@
-import { ATLAS_CLOCK_DIFF } from '../content/atlas-meta.generated'
+import { LENS_CLOCK_DIFF } from '../content/lens-meta.generated'
 
 /* ─── the two clocks · one reading, every register ───────────────────────────
    Two clocks run on this language: what the SPEC has ratified at the pin, and
@@ -16,15 +16,15 @@ import { ATLAS_CLOCK_DIFF } from '../content/atlas-meta.generated'
    fourth register joins the compiler's emission and this reads it the same
    day, with nobody remembering to. clock-diff.test.ts pins that. */
 
-export type ClockRegister = keyof typeof ATLAS_CLOCK_DIFF
+export type ClockRegister = keyof typeof LENS_CLOCK_DIFF
 
 /** every register the compiler emits, in its emission order */
-export const CLOCK_REGISTERS = Object.keys(ATLAS_CLOCK_DIFF) as ClockRegister[]
+export const CLOCK_REGISTERS = Object.keys(LENS_CLOCK_DIFF) as ClockRegister[]
 
 /** the registers that actually disagree today */
 export function clockDrift(): ClockRegister[] {
   return CLOCK_REGISTERS.filter((r) => {
-    const d = ATLAS_CLOCK_DIFF[r]
+    const d = LENS_CLOCK_DIFF[r]
     return d.ratified_only.length > 0 || d.shipped_only.length > 0
   })
 }
@@ -33,7 +33,7 @@ export function clockDrift(): ClockRegister[] {
 export function clockDiffLine(): string {
   const parts: string[] = []
   for (const register of CLOCK_REGISTERS) {
-    const d = ATLAS_CLOCK_DIFF[register]
+    const d = LENS_CLOCK_DIFF[register]
     if (d.ratified_only.length)
       parts.push(`${register} ratified, ships with the next train: ${d.ratified_only.join(' · ')}`)
     if (d.shipped_only.length)

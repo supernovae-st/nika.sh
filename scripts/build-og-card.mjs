@@ -217,7 +217,7 @@ const CARDS = [
     out: 'og-map.png',
     fig: 'FIG M.0',
     headline: 'Every page,<br><span class="b">one graph.</span>',
-    sub: 'Seven layers, every set counted, every member accountable to the spec: the whole site derives from one atlas, and CI fails when a page ships without joining&nbsp;it.',
+    sub: 'Seven layers, every set counted, every member accountable to the spec: the whole site derives from one lens, and CI fails when a page ships without joining&nbsp;it.',
     detail:
       '<span class="arrow">▸</span><span>seven&nbsp;layers<span class="sep">·</span>coverage-gated<span class="sep">·</span><b>crawlers&nbsp;get&nbsp;sitemap.xml</b></span>',
   },

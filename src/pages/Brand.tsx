@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { routeHead } from '../content'
 import { CANON } from '../canon.generated'
 import { NIKA_VERB_HEX, NIKA_STATUS, type NikaVerbName } from '../design-tokens.generated'
-import { LAYER_HEX, KIND_HEX, KIND_GLYPH, PAPER, MOTION_DUR_MS, MOTION_EASE, STATUS_RECIPE, type AtlasKind } from '../content/design.generated'
+import { LAYER_HEX, KIND_HEX, KIND_GLYPH, PAPER, MOTION_DUR_MS, MOTION_EASE, STATUS_RECIPE, type LensKind } from '../content/design.generated'
 import { NK_ICONS, NK_ANIMS, type NikaIconId, type NikaAnimId } from '../icons/manifest'
 import { NikaIcon } from '../icons/Icon'
 import { NikaDots } from '../fx/dotmatrix/NikaDots'
@@ -74,7 +74,7 @@ const PAPER_ROWS = Object.entries(PAPER).map(([name, hex]) => ({ name, hex, var:
 const DUR_ROWS = Object.entries(MOTION_DUR_MS).map(([name, ms]) => ({ name, ms, var: `--dur-${name}` }))
 const EASE_NAMES = Object.keys(MOTION_EASE)
 const CLOCK_ROWS = Object.entries(STATUS_RECIPE).map(([status, recipe]) => ({ status, recipe }))
-const KIND_ROWS = (Object.keys(KIND_HEX) as AtlasKind[]).map((name) => ({
+const KIND_ROWS = (Object.keys(KIND_HEX) as LensKind[]).map((name) => ({
   name,
   hex: KIND_HEX[name],
   glyph: KIND_GLYPH[name],

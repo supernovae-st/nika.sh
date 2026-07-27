@@ -866,7 +866,7 @@
     },
     {
       "path": "src/pages/ProviderPage.tsx",
-      "source_blob": "c9c18ee660ba3dba6dda1d8e4ce5fa5222cd66b8",
+      "source_blob": "7aea46066102ec92bd9081d2c7e85e8271a16e1e",
       "blocks": [
         {
           "selector": "src/pages/ProviderPage.tsx#codefile:1",
@@ -878,7 +878,7 @@
     },
     {
       "path": "src/pages/Sources.tsx",
-      "source_blob": "50c9df621d62c24e1cb31447d58b04cd418deb0a",
+      "source_blob": "d0e140151765a81addc22273e9849120cc4d9b2e",
       "blocks": [
         {
           "selector": "src/pages/Sources.tsx#pre:1",
@@ -908,7 +908,7 @@
     },
     {
       "path": "src/pages/TemplatePage.tsx",
-      "source_blob": "ea169358bc1604c15b222b4dd3ae5501b63e2729",
+      "source_blob": "ebf84616a06acc048b24b30ccdbcae95bc4f8916",
       "blocks": [
         {
           "selector": "src/pages/TemplatePage.tsx#codefile:1",
@@ -980,7 +980,7 @@
     },
     {
       "path": "src/pages/VerbPage.tsx",
-      "source_blob": "d834744d9ece3b0266fecc34e62740292d7336d4",
+      "source_blob": "a3f505e7a02b78f10b3d8d6ed935956a2de30f49",
       "blocks": [
         {
           "selector": "src/pages/VerbPage.tsx#codefile:1",
@@ -992,7 +992,7 @@
     },
     {
       "path": "src/pages/WordPage.tsx",
-      "source_blob": "b5373f61b8619db4d273bb6bb1becd7e39915e27",
+      "source_blob": "82232265aed01a7207a285db1d2c65c850a46f51",
       "blocks": [
         {
           "selector": "src/pages/WordPage.tsx#codefile:1",

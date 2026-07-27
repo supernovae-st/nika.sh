@@ -3,7 +3,7 @@ import { LIBRARY_TABS, buildLibrary, verbsOf } from './library'
 import { FLAGSHIP_ENTRIES } from './index'
 import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
 /* the REMAPPED plan facts — line0/line1 re-aimed at the door-served W2 lines
-   (scripts/atlas/build-atlas.mjs) · the projector's own numbers point at the
+   (scripts/lens/graph/build-lens.mjs) · the projector's own numbers point at the
    ratified W1 emission and would judge the wrong world here */
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { serveW105 } from '../lib/w1-to-w2'

@@ -3,7 +3,7 @@
    (FROM_BLOG · POST_MENTIONS · RELATED_POSTS) must reach the client only as
    an async chunk — pages feed their FIRST render from a byte island
    (ssg-island.tsx) whose payload they compute via ssrBlogRails(). The
-   bundle-safety gate in atlas.test pins "no static import of
+   bundle-safety gate in lens.test pins "no static import of
    blog-rails.generated outside this module". */
 
 type BlogRails = typeof import('../content/blog-rails.generated')

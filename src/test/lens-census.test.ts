@@ -1,4 +1,4 @@
-/* the census smoke gate — WO-1 of the language-atlas plan.
+/* the census smoke gate — WO-1 of the language-lens plan.
    Asserts STRUCTURE, never counts (counts move with the clocks; the
    census's job is to report them, this gate's job is to guarantee the
    report itself cannot rot: every declared set present, members sorted,
@@ -9,8 +9,8 @@ import { describe, expect, it } from 'vitest'
 
 const ROOT = join(__dirname, '../..')
 
-describe('atlas census · the world dump holds its shape', () => {
-  const out = execFileSync('node', [join(ROOT, 'scripts/atlas/census.mjs'), '--json'], {
+describe('lens census · the world dump holds its shape', () => {
+  const out = execFileSync('node', [join(ROOT, 'scripts/lens/graph/census.mjs'), '--json'], {
     encoding: 'utf8',
   })
   const world = JSON.parse(out)

@@ -157,7 +157,7 @@ export const routes: RouteObject[] = [
          public/sitemap/index.html (the /docs pattern · a React stub
          hydrated during its own refresh and threw #418). */
       { path: 'map', Component: MapPage },
-      /* the atlas-born hubs (WO-4) · their routes ride ATLAS_PATHS (the
+      /* the lens-born hubs (WO-4) · their routes ride LENS_PATHS (the
          compiler's site.config section) — descriptor flip + recompile is
          how a hub is born */
       { path: 'sources', Component: SourcesPage },
@@ -166,7 +166,7 @@ export const routes: RouteObject[] = [
       { path: 'proof', Component: ProofPage },
       { path: 'use-cases', Component: UseCasesPage },
       /* one room per conformance-gated showcase (§4.13 · rooms_exist flip:
-         ATLAS_PATHS prerenders all 26 · the gallery keeps the browse) */
+         LENS_PATHS prerenders all 26 · the gallery keeps the browse) */
       { path: 'use-cases/:slug', Component: UseCaseRoom },
       /* the workflow library · the hero's picking corpus as a register —
          ten real files, one room each (the honesty contract on its face) */
