@@ -13,8 +13,16 @@
    clean component-only export (react-refresh / fast-refresh friendly) and the
    helpers can be unit-tested in isolation. */
 
-import { NIKA_VERB_GLYPH } from '../design-tokens.generated'
-import { BOUNDARY_WORDS, WIRE_WORDS, FAIL_WORDS } from '../content/code-roles.generated'
+import { NIKA_VERB_GLYPH, NIKA_ROLE_WORDS } from '../design-tokens.generated'
+
+/* the role memberships now ride the SHARED design SSOT (nika-spec
+   design/tokens.yaml → design-projector), which is the same module the vscode
+   extension consumes — so an editor and this panel cannot disagree about what
+   a word MEANS. Split here rather than shipped as arrays: a space-joined
+   string costs a fraction of a literal array in the entry chunk. */
+const BOUNDARY_WORDS = NIKA_ROLE_WORDS.boundary.split(' ')
+const WIRE_WORDS = NIKA_ROLE_WORDS.wire.split(' ')
+const FAIL_WORDS = NIKA_ROLE_WORDS.fail.split(' ')
 
 /** The 4 Nika verbs, locked forever (D-2026-05-22-N18). */
 export const NIKA_VERBS = ['infer', 'exec', 'invoke', 'agent'] as const

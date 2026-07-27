@@ -11,7 +11,7 @@
   },
   {
    "path": ".github/nika-spec-pin.json",
-   "sha256": "918175891515ff740702bac3d5db5a8bd7383191400d612e65a70cb965b98af6"
+   "sha256": "6758a9ae5caa6a5983e984c8b7ea6243b62eac060ed83c9241380aa55edd3f19"
   },
   {
    "path": ".github/workflows/lens-gates.yml",
@@ -27,7 +27,7 @@
   },
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "918175891515ff740702bac3d5db5a8bd7383191400d612e65a70cb965b98af6"
+   "sha256": "6758a9ae5caa6a5983e984c8b7ea6243b62eac060ed83c9241380aa55edd3f19"
   },
   {
    "path": "package.json",
@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "6318303f3bf2e1b8856332b435bdcbdb97f82ee6396ce22099ae137e75d2e43c"
+   "sha256": "cc384ee92f795b4fa5c17d4130d4c194b4389a7146ccaa21441f3090b41505fc"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "f1d26cc6cd7708f77759af2c76366c222be318d47988c2f35e4bc3fc58ebd4a0"
+   "sha256": "c4f11d3e52eeea612166840a4085472cf93edd996346c0b1fe4dd7142af7933c"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -87,7 +87,7 @@
   },
   {
    "path": "scripts/lens/contracts/release-attestation.v1.json",
-   "sha256": "0e8e7823a50feea6b125d550f2922fb7276c68260d624a3bb96813c11eaac59f"
+   "sha256": "47404cf765d63b27a3d47bde712122ae4d7a037df6887da6d7d1cfcb5789176f"
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "b12db150947dfff227389d42d4dda0bd9702f1ae963a98e6b0a1d528fd9a79fe"
+   "sha256": "f9c7cea90bfa2328a5ee03d3e8496e7476da3b42d2e678937affc03767bb9ae6"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",

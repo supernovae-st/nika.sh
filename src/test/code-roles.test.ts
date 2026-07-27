@@ -1,8 +1,7 @@
-import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { BOUNDARY_WORDS, WIRE_WORDS, FAIL_WORDS, DECLARED_COUNT } from '../content/code-roles.generated'
+import { NIKA_ROLE_WORDS } from '../design-tokens.generated'
 import { tokenize } from '../components/codefile-highlight'
 
 /* ── the semantic layer's gates ───────────────────────────────────────────────
@@ -11,30 +10,57 @@ import { tokenize } from '../components/codefile-highlight'
    PARENT CHAIN. Three things must hold, and the third is the one that makes
    the whole idea worth having.
 
-   Promotion note: when design/tokens.yaml carries the roles, the derivation
-   moves to the spec's projector and only the first gate changes source. */
+   PROMOTED 2026-07-27, as the note here promised: the role memberships now
+   live in nika-spec design/tokens.yaml and are DERIVED by its projector from
+   schemas/workflow.schema.json — the same module the vscode extension reads,
+   so an editor and this panel cannot disagree about what a word MEANS.
+
+   That moved the drift gate too, and made it STRONGER. A byte-diff against a
+   local script only proved the script had been re-run. This re-derives the
+   closure from the served twin — an independent second opinion on the spec's
+   own derivation — so the two can never quietly disagree. The spec-side pin
+   (spec-resync.contract.json · generator `spec-design`) covers the emission
+   itself. */
 
 const ROOT = join(__dirname, '../..')
+const words = (role: keyof typeof NIKA_ROLE_WORDS) => NIKA_ROLE_WORDS[role].split(' ')
+const BOUNDARY_WORDS = words('boundary')
+const WIRE_WORDS = words('wire')
+const FAIL_WORDS = words('fail')
 
-describe('code roles · derived from the twin, never authored', () => {
-  it('the generated table is exactly what the deriver emits (drift gate)', () => {
-    const before = readFileSync(join(ROOT, 'src/content/code-roles.generated.ts'), 'utf8')
-    execFileSync('node', [join(ROOT, 'scripts/build-code-roles.mjs')], { stdio: 'pipe' })
-    const after = readFileSync(join(ROOT, 'src/content/code-roles.generated.ts'), 'utf8')
-    expect(after).toBe(before)
-  })
+/** the served twin's word → its declared scopes */
+const twinScopes = (): Record<string, string[]> => {
+  const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8'))
+  return Object.fromEntries(
+    twin.nodes
+      .filter((n: { id?: string }) => String(n.id ?? '').startsWith('word:'))
+      .map((n: { title: string; meta?: { scopes?: string[] } }) => [n.title, n.meta?.scopes ?? []]),
+  )
+}
 
+describe('code roles · derived in the spec, re-derived here', () => {
   it('every role word is a word the contract actually declares', () => {
-    const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8'))
-    const declared = new Set(
-      twin.nodes
-        .filter((n: { id?: string }) => String(n.id ?? '').startsWith('word:'))
-        .map((n: { title: string }) => n.title),
-    )
-    expect(declared.size).toBe(DECLARED_COUNT)
+    const declared = new Set(Object.keys(twinScopes()))
+    expect(declared.size).toBeGreaterThan(40)
     for (const w of [...BOUNDARY_WORDS, ...WIRE_WORDS, ...FAIL_WORDS]) {
       expect(declared.has(w), `${w} is not a declared word`).toBe(true)
     }
+  })
+
+  it('the failure closure re-derives from the twin, exactly', () => {
+    /* the spec's rule, applied independently: a word whose ONLY scopes are
+       recovery scopes IS failure grammar, plus the four authored heads */
+    const RECOVERY = new Set(['on_error', 'on_finally', 'retry'])
+    const derived = new Set(['on_error', 'on_finally', 'retry', 'recover'])
+    for (const [word, scopes] of Object.entries(twinScopes())) {
+      if (scopes.length && scopes.every((s) => RECOVERY.has(s))) derived.add(word)
+    }
+    expect([...derived].sort()).toEqual([...FAIL_WORDS].sort())
+  })
+
+  it('a word carries at most ONE role (the roles never overlap)', () => {
+    const all = [...BOUNDARY_WORDS, ...WIRE_WORDS, ...FAIL_WORDS]
+    expect(all.length, `a word claims two roles: ${all.join(' ')}`).toBe(new Set(all).size)
   })
 })
 

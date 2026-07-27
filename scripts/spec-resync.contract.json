@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "f9f6d528bd322a9ca6eb487b1b85aca12fba42a1",
-  "tree": "c09fe9dc8fe8c86492ea5badf8b4180640267447"
+  "commit": "34e423d7b02365bb2126ba7d1db896611f5e5bdd",
+  "tree": "d06f55db069c3f61ed41cb2e54525b5a162c4316"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -82,7 +82,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/design-projector.py",
-   "sha256": "d2a21e63ba336f90c136b79a6c1377f1c5b742b205e4084da10e8810455bb43f",
+   "sha256": "de83ae5bc8df77833b83af338253a0c484f7c809dab11c8eb259c42c8927ea03",
    "args": [
     "--write"
    ],
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "918175891515ff740702bac3d5db5a8bd7383191400d612e65a70cb965b98af6",
+   "sha256": "6758a9ae5caa6a5983e984c8b7ea6243b62eac060ed83c9241380aa55edd3f19",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -276,7 +276,7 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "918175891515ff740702bac3d5db5a8bd7383191400d612e65a70cb965b98af6",
+   "sha256": "6758a9ae5caa6a5983e984c8b7ea6243b62eac060ed83c9241380aa55edd3f19",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
@@ -308,7 +308,7 @@
   },
   {
    "path": "src/design-tokens.generated.ts",
-   "sha256": "ed67d37f83c8c441371431d72d463ef9956fe869dcdcb754c9b1f5dc8bc31973",
+   "sha256": "b88dc03950adfacb84cae15ca45c265d7a14437001622a61d84bece383689d6e",
    "consumers": [
     "src/pages/Brand.tsx"
    ]

@@ -130,6 +130,14 @@
    and the drawing stay in their lazy chunk. DEATH CLAUSE: this retires INTO
    the spec — the day design/tokens.yaml carries the roles, the derivation
    leaves the bundle and the ceiling comes back down.
+   CLAUSE DISCHARGED 2026-07-27: design/tokens.yaml carries the three roles
+   and the spec's projector DERIVES their membership from workflow.schema.json,
+   so scripts/build-code-roles.mjs and code-roles.generated.ts are gone and the
+   memberships arrive in design-tokens.generated.ts — the same module the
+   vscode extension consumes, which is what makes an editor and this panel
+   unable to disagree about what a word MEANS. The bytes were never the point
+   here (a space-joined table is a rounding error); the SECOND PRODUCER was.
+   The ceiling came down by the prose diet below, on the same day.
    393→390 PAID, same day: the debt below was not carried, it was cut. The
    language index and its PROSE are two modules now — the sentences reach the
    three rooms that show them (/language · /language/:word · /verbs/:name)
@@ -139,7 +147,7 @@
    — the ceiling returns to where it stood before the pin advance, with ~1.4
    margin, and the entry stops growing every time the contract teaches a word.
    A gate pins it: language.test asserts the entry-resident index carries no
-   "desc" at all. The ROLES clause above is still open; it is a separate debt.
+   "desc" at all. The ROLES clause above is discharged the same day.
    390→393 pin-advance 2026-07-27: the resync pin was 68 commits behind (the
    daily cron had been red for six days on a digest pinned to a commit it was
    not pinned to). Advancing it landed real CONTENT, not code: three new words
