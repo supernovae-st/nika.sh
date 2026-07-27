@@ -350,3 +350,24 @@
 .cl-tl-gh:focus-visible {
   color: var(--v4-text);
 }
+
+/* ─── the lede's doorways ─────────────────────────────────────────────────────
+   The lede names five surfaces (the spec · the verbs · the permits boundary ·
+   the tool library · the playground) and each one is a link now. Inside a
+   text block a link may NEVER be colour-only (WCAG 1.4.1 · axe
+   link-in-text-block, which this repo has already gone red on once): the
+   house language is the hero receipt-link / .bp-author treatment — a quiet
+   dotted hint at rest, solid on hover. Copied, not re-invented. */
+.cl-lede-door {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in oklab, var(--v4-text-faint) 70%, transparent);
+  text-underline-offset: 3px;
+}
+
+.cl-lede-door:hover,
+.cl-lede-door:focus-visible {
+  color: var(--v4-text);
+  text-decoration-style: solid;
+  text-decoration-color: currentColor;
+}

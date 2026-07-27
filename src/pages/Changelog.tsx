@@ -153,10 +153,18 @@ export function Component() {
             Changelog.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+            {/* the lede is the loop (the manifesto stamp's recipe: same words,
+                now doorways). It named five surfaces and opened none — the
+                /convert class, one register down: a page that says « the tool
+                library landed » owes the reader the library. */}
             A workflow language earns trust by <b>moving</b>, and by not breaking what you
-            wrote. Every public milestone, dated and tagged: the spec opened, the verbs locked,
-            the <code>permits:</code> boundary (what a plan is allowed to touch), the tool
-            library and the playground landed.
+            wrote. Every public milestone, dated and tagged: <Link className="cl-lede-door" to="/spec">the spec</Link>{' '}
+            opened, <Link className="cl-lede-door" to="/verbs">the verbs</Link> locked, the{' '}
+            <Link className="cl-lede-door" to="/boundary">
+              <code>permits:</code> boundary
+            </Link>{' '}
+            (what a plan is allowed to touch), <Link className="cl-lede-door" to="/tools">the tool library</Link> and{' '}
+            <Link className="cl-lede-door" to="/play">the playground</Link> landed.
           </p>
 
           {/* the ship-log register · the log's dimensions, at a glance */}
