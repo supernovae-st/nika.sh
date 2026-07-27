@@ -94,8 +94,13 @@ function depsOf(body: string[]): string[] {
   return out
 }
 
-/** extract the human target chip for a task block, per verb */
-function targetOf(verb: NikaVerb, block: string, model: string): string {
+/** The flagship chip's target label, read from a raw YAML BLOCK by regex.
+    Deliberately VERBOSE: exec joins the whole argv (« docker ps --all »)
+    because the chip is the only place the reader sees the command.
+    Not interchangeable with parse-plan's nodeTarget, which is the compact
+    label for a live DAG node — same idea, different register, so they no
+    longer share a name (they never shared a contract). */
+function chipTarget(verb: NikaVerb, block: string, model: string): string {
   switch (verb) {
     case 'invoke': {
       const m = block.match(/tool:\s*"?([^",\s}]+)/)
@@ -229,7 +234,7 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
       wave: -1,
       line0: raw.line0,
       line1: raw.line1,
-      target: targetOf(verb, block, model),
+      target: chipTarget(verb, block, model),
     } satisfies FlagshipTask
   })
 

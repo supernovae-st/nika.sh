@@ -97,7 +97,12 @@ function permitsOf(doc: Record<string, unknown>): PlanPermits | null {
   }
 }
 
-function targetOf(t: Record<string, unknown>, verb: PlanVerb | null): string {
+/** The live DAG node's target label, read from a PARSED task object.
+    Deliberately COMPACT: exec takes the head word only (« docker »), and a
+    missing or interpolated model falls back to the verb's own word. The
+    flagship chip (flagships/derive · chipTarget) answers the same question
+    for a different register and gives a different answer on purpose. */
+function nodeTarget(t: Record<string, unknown>, verb: PlanVerb | null): string {
   if (verb === 'invoke') {
     const tool = (t.invoke as Record<string, unknown> | undefined)?.tool
     return typeof tool === 'string' ? tool : 'tool'
@@ -157,7 +162,7 @@ export function parsePlan(src: string): ParsedPlan | null {
     seen.add(id)
     const verb = VERBS.find((v) => v in t) ?? null
     const [line0, line1] = lineSpanOf(id)
-    tasks.push({ id, verb, deps: producersOf(t), target: targetOf(t, verb), gated: 'when' in t, line0, line1 })
+    tasks.push({ id, verb, deps: producersOf(t), target: nodeTarget(t, verb), gated: 'when' in t, line0, line1 })
   }
   if (tasks.length === 0) return null
 

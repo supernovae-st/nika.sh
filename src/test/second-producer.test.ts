@@ -41,8 +41,6 @@ const ALLOWED: Record<string, string> = {
     'a name collision, not a duplicate: blog-render interpolates markdown, i18n-inline interpolates locale copy',
   SectionHead:
     'a name collision, not a duplicate: components/SectionHead is the v4sec masthead, ToolPage has a local cl-year-head row',
-  targetOf:
-    'two parsers of one concept over DIFFERENT inputs (flagships/derive reads raw YAML text, lib/parse-plan reads a parsed object) — a real unification candidate, deliberately not forced',
 }
 
 const files: string[] = []
