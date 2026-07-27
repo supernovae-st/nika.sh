@@ -16,11 +16,41 @@ import { ERROR_PATHS, PATHS, PENDING_ERROR_CODES } from '../../site.config'
 const ROOT = join(__dirname, '../..')
 
 describe('/errors · the compiled projection matches the served catalog', () => {
-  it('errors.generated.ts is exactly what the compiler emits today', () => {
-    const committed = readFileSync(join(ROOT, 'src/content/errors.generated.ts'), 'utf8')
+  /* BOTH halves, or the gate guards the one that cannot grow. The compiler
+     emits the light index AND the refusal prose; gating only the index would
+     let 96 sentences drift unwatched — the half that changes every time the
+     canon mints a code (thirteen arrived on 2026-07-27 alone). */
+  it('both emitted modules are exactly what the compiler emits today', () => {
+    const paths = [
+      join(ROOT, 'src/content/errors.generated.ts'),
+      join(ROOT, 'src/content/error-prose.generated.ts'),
+    ]
+    const committed = paths.map((p) => readFileSync(p, 'utf8'))
     execFileSync('node', [join(ROOT, 'scripts/build-errors.mjs')])
-    const fresh = readFileSync(join(ROOT, 'src/content/errors.generated.ts'), 'utf8')
-    expect(fresh).toBe(committed)
+    for (const [i, p] of paths.entries()) {
+      expect(readFileSync(p, 'utf8'), p).toBe(committed[i])
+    }
+  })
+
+  /* THE INDEX STAYS LIGHT. It rides the entry chunk for every visitor, so a
+     `failure` creeping back is a MEASURED 4.2 KB regression nobody would
+     notice until the budget bit. */
+  it('the entry-resident index carries NO refusal prose', () => {
+    const src = readFileSync(join(ROOT, 'src/content/errors.generated.ts'), 'utf8')
+    expect(src.includes('"failure"'), 'a refusal sentence leaked back into the light index').toBe(
+      false,
+    )
+  })
+
+  /* every code the index names must have its sentence, or a room renders a
+     bare identifier */
+  it('every code has a sentence in the prose module', () => {
+    const prose = readFileSync(join(ROOT, 'src/content/error-prose.generated.ts'), 'utf8')
+    const index = readFileSync(join(ROOT, 'src/content/errors.generated.ts'), 'utf8')
+    const codes = [...index.matchAll(/"code": "([A-Z0-9-]+)"/g)].map((m) => m[1])
+    expect(codes.length).toBeGreaterThan(80)
+    const missing = codes.filter((c) => !prose.includes(`"${c}":`))
+    expect(missing, `codes with no refusal sentence: ${missing.join(' ')}`).toEqual([])
   })
 
   it('every catalog code is in the module, uniquely indexed', () => {

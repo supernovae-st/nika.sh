@@ -11,8 +11,6 @@ export interface ErrorCodeEntry {
   category: string
   /** Whether a retry might succeed (network · 503 · rate limit). */
   transient: boolean
-  /** One line: the failure this code names. */
-  failure: string
 }
 
 /** Every registered code, sorted. Registry version: "3". */
@@ -20,578 +18,482 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
   {
     "code": "NIKA-AGENT-001",
     "category": "budget_error",
-    "transient": false,
-    "failure": "max_turns exhausted before completion"
+    "transient": false
   },
   {
     "code": "NIKA-AGENT-002",
     "category": "budget_error",
-    "transient": false,
-    "failure": "max_tokens_total exhausted before completion"
+    "transient": false
   },
   {
     "code": "NIKA-AGENT-003",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a skills: path does not resolve (file missing/unreadable at compose time)"
+    "transient": false
   },
   {
     "code": "NIKA-AGENT-004",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)"
+    "transient": false
   },
   {
     "code": "NIKA-ASSERT-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "an assert: claims a level the evidence does not support (a StaticProof the IR cannot decide · a mis-leveled obligation · spec 15)"
+    "transient": false
   },
   {
     "code": "NIKA-AUTH-006",
     "category": "security_error",
-    "transient": false,
-    "failure": "no permits: block declared and the body has effects — absent = zero authority (F-O8 · NEP-0003)"
+    "transient": false
   },
   {
     "code": "NIKA-AUTH-007",
     "category": "security_error",
-    "transient": false,
-    "failure": "an interpolation reaches a permit bound (host · glob · program · env name) — a bound MUST be a literal, the boundary would be self-serve (F-O1 · NEP-0004 · env per NEP-0005)"
+    "transient": false
   },
   {
     "code": "NIKA-AUTH-008",
     "category": "security_error",
-    "transient": false,
-    "failure": "an untrusted value reaches a permitted verb's argument and its canonical resolved form escapes the step's permit — re-gate refused (F-O1 · NEP-0004)"
+    "transient": false
   },
   {
     "code": "NIKA-AUTH-009",
     "category": "security_error",
-    "transient": false,
-    "failure": "a permits env: entry names a dangerous-floor variable · the engine strips the name unconditionally, the grant can never take effect: an inert dead grant (F-O4 · NEP-0005)"
+    "transient": false
   },
   {
     "code": "NIKA-AUTH-010",
     "category": "security_error",
-    "transient": false,
-    "failure": "a permits net.http: entry carries the *. subdomain wildcard · the grant delegates the boundary to the zone operator (every host under the suffix, present and future) — refused: name exact hosts, or the bare * when allow-all is genuinely intended (F-P5 · NEP-0008)"
+    "transient": false
   },
   {
     "code": "NIKA-BUILTIN-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "builtin invoke violates its statically-checkable arg contract (e.g. nika:fetch without url: · nika:jq arg shape)"
+    "transient": false
   },
   {
     "code": "NIKA-BUILTIN-DONE-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "nika:done invoked outside an agent: loop"
+    "transient": false
   },
   {
     "code": "NIKA-CANCEL-001",
     "category": "cancelled",
-    "transient": false,
-    "failure": "task cancelled (workflow failure gate · user cancellation)"
+    "transient": false
   },
   {
     "code": "NIKA-COMP-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "invoke.workflow: target is not statically resolvable (templated · malformed · unpinned registry ref) — a call graph you cannot draw before the run cannot be bounded (spec 14)"
+    "transient": false
   },
   {
     "code": "NIKA-COMP-002",
     "category": "security_error",
-    "transient": false,
-    "failure": "the child workflow's effect boundary exceeds the parent capped by the call-site declaration (Authority(child) subset of Authority(parent) intersect declared · spec 14 laws 3/4)"
+    "transient": false
   },
   {
     "code": "NIKA-COMP-003",
     "category": "validation_error",
-    "transient": false,
-    "failure": "the static call graph is not acyclic (self-launch · cycle · spec 14 law 7 · NIKA-SEC-003 is the runtime depth backstop)"
+    "transient": false
   },
   {
     "code": "NIKA-COMP-004",
     "category": "validation_error",
-    "transient": false,
-    "failure": "the typed call does not compose — parent args do not fit child inputs, or child outputs do not fit parent returns (spec 14 law 2)"
+    "transient": false
   },
   {
     "code": "NIKA-DAG-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "cycle in the precedence graph G_p = E_d ∪ E_c (incl. self-dependency · via with:/after:)"
+    "transient": false
   },
   {
     "code": "NIKA-DAG-002",
     "category": "validation_error",
-    "transient": false,
-    "failure": "with:/after: references an undeclared task"
+    "transient": false
   },
   {
     "code": "NIKA-DAG-004",
     "category": "validation_error",
-    "transient": false,
-    "failure": "on_error.recover references a task downstream of the declaring task (await would deadlock)"
+    "transient": false
   },
   {
     "code": "NIKA-DAG-005",
     "category": "validation_error",
-    "transient": false,
-    "failure": "after: predicate outside the closed set (success · failure · skipped · terminal)"
+    "transient": false
   },
   {
     "code": "NIKA-DAG-006",
     "category": "validation_error",
-    "transient": false,
-    "failure": "statically dead task — an incoming edge's pass-set excludes every reachable producer state, or the when: gate is false under every reachable upstream combination (gate algebra v2)"
+    "transient": false
   },
   {
     "code": "NIKA-DAG-007",
     "category": "validation_error",
-    "transient": false,
-    "failure": "status compared against a literal outside the vocabulary (success · failure · skipped · cancelled) — == never matches, != always holds"
+    "transient": false
   },
   {
     "code": "NIKA-DECIDE-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "the decision bundle is malformed or violates its own laws (float weight · undeclared evidence key in rules · identity key feeding a technical dimension · missing contradictory fixture · monotonicity violated by the bundle's own fixtures) (spec 11)"
+    "transient": false
   },
   {
     "code": "NIKA-DECIDE-002",
     "category": "validation_error",
-    "transient": false,
-    "failure": "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)"
+    "transient": false
   },
   {
     "code": "NIKA-DEFAULT-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
+    "transient": false
   },
   {
     "code": "NIKA-DRIFT-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "declared-but-unused — a vars:/env:/secrets: name or a permits: entry (exec program · tool glob · net host · fs path) that nothing in the body references (advisory check hint · never fails the audit — the reverse direction, used-but-undeclared, is the hard NIKA-VAR-001/NIKA-DAG-002/NIKA-SEC-004 surface)"
+    "transient": false
   },
   {
     "code": "NIKA-EXEC-001",
     "category": "process_error",
-    "transient": false,
-    "failure": "non-zero exit code (default capture modes)"
+    "transient": false
   },
   {
     "code": "NIKA-EXEC-002",
     "category": "process_error",
-    "transient": false,
-    "failure": "spawn failure (command not found · permission)"
+    "transient": false
   },
   {
     "code": "NIKA-INFER-001",
     "category": "provider_error",
-    "transient": false,
-    "failure": "provider call failed (HTTP error · provider refusal)"
+    "transient": false
   },
   {
     "code": "NIKA-INFER-002",
     "category": "validation_error",
-    "transient": false,
-    "failure": "structured output failed schema validation (after any engine-internal retries)"
+    "transient": false
   },
   {
     "code": "NIKA-INVOKE-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "unknown tool (unresolvable nika:/mcp: id)"
+    "transient": false
   },
   {
     "code": "NIKA-INVOKE-002",
     "category": "validation_error",
-    "transient": false,
-    "failure": "tool args failed the tool's schema"
+    "transient": false
   },
   {
     "code": "NIKA-LOCK-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a dependency resolved that nika.lock does not pin, or a hand-edited lock digest does not match (pin-by-default · the lock's own hash catches the edit · spec 15)"
+    "transient": false
   },
   {
     "code": "NIKA-MCP-001",
     "category": "tool_error",
-    "transient": false,
-    "failure": "MCP server not configured / not reachable at call time"
+    "transient": false
   },
   {
     "code": "NIKA-MCP-002",
     "category": "tool_error",
-    "transient": false,
-    "failure": "MCP tool call failed (transport · tool-side error)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-001",
     "category": "parse_error",
-    "transient": false,
-    "failure": "the YAML itself does not parse (syntax error)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-002",
     "category": "validation_error",
-    "transient": false,
-    "failure": "missing envelope field (nika: / workflow: / non-empty tasks:)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-003",
     "category": "parse_error",
-    "transient": false,
-    "failure": "nika: version marker is not exactly v1"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-004",
     "category": "validation_error",
-    "transient": false,
-    "failure": "workflow: id violates ^[a-z][a-z0-9-]*$"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-005",
     "category": "validation_error",
-    "transient": false,
-    "failure": "unknown field — strict mode rejects anything outside the closed v1 set"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-006",
     "category": "validation_error",
-    "transient": false,
-    "failure": "task id violates ^[a-z][a-z0-9_]*$ (snake_case · CEL-safe · no hyphens)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-007",
     "category": "validation_error",
-    "transient": false,
-    "failure": "duplicate task id within the workflow"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-008",
     "category": "validation_error",
-    "transient": false,
-    "failure": "task declares no verb — exactly one of infer/exec/invoke/agent required"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-009",
     "category": "validation_error",
-    "transient": false,
-    "failure": "task declares multiple verbs — exactly one required"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-010",
     "category": "validation_error",
-    "transient": false,
-    "failure": "timeout: violates the quoted Go-duration contract (positive · max 24h · descending units)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-011",
     "category": "validation_error",
-    "transient": false,
-    "failure": "retry: block violates the spec shape"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-012",
     "category": "validation_error",
-    "transient": false,
-    "failure": "on_error: block violates the spec shape (fields mutually exclusive)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-013",
     "category": "validation_error",
-    "transient": false,
-    "failure": "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-014",
     "category": "validation_error",
-    "transient": false,
-    "failure": "secrets: entry is not a store reference — inline literals forbidden"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-017",
     "category": "validation_error",
-    "transient": false,
-    "failure": "duplicate mapping key — no silent last-wins"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-018",
     "category": "validation_error",
-    "transient": false,
-    "failure": "missing required field in a verb body (infer.prompt · exec.command · invoke.tool)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-019",
     "category": "validation_error",
-    "transient": false,
-    "failure": "generic structural validation — wrong YAML shape for a field"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-020",
     "category": "validation_error",
-    "transient": false,
-    "failure": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-021",
     "category": "validation_error",
-    "transient": false,
-    "failure": "top-level description: — it moved into workflow.description"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-022",
     "category": "validation_error",
-    "transient": false,
-    "failure": "tasks: is a sequence — it became a map keyed by task id (drop `- id:`, the key IS the identity)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-023",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a task carries an id: field — the map key is the identity, the field is gone"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-024",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a task carries depends_on: — dead since W2 (data → with: bindings · control → after: predicates · check --fix migrates)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-025",
     "category": "validation_error",
-    "transient": false,
-    "failure": "decode: with capture: structured — that capture already IS an object · type it with returns:"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-026",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a declared entropy x clock contradiction · entropy: ambient paired with clock: virtual — the ambient declaration contradicts the determinism demand (NEP-0010 · F-P3)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-027",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a declared entropy x clock contradiction · entropy: none | seeded paired with clock: system — deterministic journals cannot ride the wall clock (NEP-0010 · F-P3)"
+    "transient": false
   },
   {
     "code": "NIKA-PARSE-028",
     "category": "validation_error",
-    "transient": false,
-    "failure": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)"
+    "transient": false
   },
   {
     "code": "NIKA-POLICY-001",
     "category": "security_error",
-    "transient": false,
-    "failure": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)"
+    "transient": false
   },
   {
     "code": "NIKA-PORT-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a gateway artifact (deployment bundle · capabilities report · lowering report · fidelity report · authority delta) is malformed or violates its laws (unknown promoted · permissive_unsafe without refusal · disclosure subset-chain violated · child authority exceeding parent) (spec 12)"
+    "transient": false
   },
   {
     "code": "NIKA-PORT-002",
     "category": "security_error",
-    "transient": false,
-    "failure": "policy lowering is permissive_unsafe — the backend would allow what the policy forbids · refused with the divergence witness (spec 12)"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-001",
     "category": "security_error",
-    "transient": false,
-    "failure": "exec: blocklist hit"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-002",
     "category": "security_error",
-    "transient": false,
-    "failure": "agent tool call outside the tools: whitelist"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-003",
     "category": "security_error",
-    "transient": false,
-    "failure": "run-recursion bound — nested-run depth exceeded OR self-launching workflow"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-004",
     "category": "security_error",
-    "transient": false,
-    "failure": "effect outside the declared permits: capability boundary (fs/net/exec/tool)"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-005",
     "category": "security_error",
-    "transient": false,
-    "failure": "SSRF block — a nika:fetch/nika:notify URL resolves to a loopback/private/link-local/metadata target (always-on engine floor · independent of permits:)"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-006",
     "category": "security_error",
-    "transient": false,
-    "failure": "secret flow — a secrets.<name> value reaches an unsanctioned sink (exec argument · invoke payload · infer/agent prompt) · the diagnostic carries the taint path + the egress clause that would sanction it (spec 10 · flow rules in 01 §egress)"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-007",
     "category": "security_error",
-    "transient": false,
-    "failure": "secret egress — a tainted value reaches the workflow boundary (outputs:) · the diagnostic carries the taint path (spec 10 · the to: outputs sanction in 01 §egress)"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-008",
     "category": "security_error",
-    "transient": false,
-    "failure": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)"
+    "transient": false
   },
   {
     "code": "NIKA-SEC-009",
     "category": "security_error",
-    "transient": false,
-    "failure": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)"
+    "transient": false
   },
   {
     "code": "NIKA-TIMEOUT-001",
     "category": "timeout_error",
-    "transient": false,
-    "failure": "task (or for_each iteration) exceeded timeout:"
+    "transient": false
   },
   {
     "code": "NIKA-TYPE-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close"
+    "transient": false
   },
   {
     "code": "NIKA-TYPE-002",
     "category": "validation_error",
-    "transient": false,
-    "failure": "recursive type reference — the types: graph must be acyclic"
+    "transient": false
   },
   {
     "code": "NIKA-TYPE-003",
     "category": "validation_error",
-    "transient": false,
-    "failure": "returns: and schema: on the same task — one contract, one spelling"
+    "transient": false
   },
   {
     "code": "NIKA-TYPE-004",
     "category": "validation_error",
-    "transient": false,
-    "failure": "returns: type unreachable from the declared decode: (an object contract over decode: text · …)"
+    "transient": false
   },
   {
     "code": "NIKA-TYPE-005",
     "category": "security_error",
-    "transient": false,
-    "failure": "a secret-carrying type in a lowered position (reserved with secret<T> · W4)"
+    "transient": false
   },
   {
     "code": "NIKA-TYPE-006",
     "category": "validation_error",
-    "transient": false,
-    "failure": "regex pattern outside the locked dialect (backreference · lookaround · named group · inline flags · lazy/possessive · word-boundary · unicode-class — spec 09 §the regex dialect)"
+    "transient": false
   },
   {
     "code": "NIKA-TYPE-101",
     "category": "validation_error",
-    "transient": false,
-    "failure": "run-time contract violation — the decoded value does not fit returns: (exec:/invoke: lane)"
+    "transient": false
   },
   {
     "code": "NIKA-VALUES-001",
     "category": "validation_error",
-    "transient": false,
-    "failure": "vars: is a dead envelope field (R3a · the E-split)"
+    "transient": false
   },
   {
     "code": "NIKA-VALUES-002",
     "category": "validation_error",
-    "transient": false,
-    "failure": "env: is a dead envelope field (R3a · the E-split)"
+    "transient": false
   },
   {
     "code": "NIKA-VALUES-003",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-001",
     "category": "variable_error",
-    "transient": false,
-    "failure": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-002",
     "category": "variable_error",
-    "transient": false,
-    "failure": "binding cardinality — a jq binding emitted zero or multiple values"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-003",
     "category": "validation_error",
-    "transient": false,
-    "failure": "provably-invalid path into a declared schema (static walk)"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-004",
     "category": "variable_error",
-    "transient": false,
-    "failure": "jq runtime error while evaluating a binding"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-005",
     "category": "validation_error",
-    "transient": false,
-    "failure": "static expression violation — outside cel-subset/0.1 · chained relation · unknown function · non-boolean when: root · jq compile error"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-006",
     "category": "variable_error",
-    "transient": false,
-    "failure": "expression type error at evaluation — cross-type compare · non-boolean when: value · for_each over a non-array"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-007",
     "category": "variable_error",
-    "transient": false,
-    "failure": "bytes value substituted into a string position"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-008",
     "category": "validation_error",
-    "transient": false,
-    "failure": "unclosed ${{ opener"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-009",
     "category": "validation_error",
-    "transient": false,
-    "failure": "typed outputs value did not match its declared type: at run end (the output half of the callable contract)"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-020",
     "category": "validation_error",
-    "transient": false,
-    "failure": "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)"
+    "transient": false
   },
   {
     "code": "NIKA-VAR-021",
     "category": "validation_error",
-    "transient": false,
-    "failure": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)"
+    "transient": false
   }
 ]
 

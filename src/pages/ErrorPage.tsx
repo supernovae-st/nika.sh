@@ -7,6 +7,8 @@ import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { ERROR_CODES, ERROR_INDEX } from '../content/errors.generated'
+import { failureOf } from '../lib/error-prose-access'
+import { useErrorProse, errorProseIslandId } from '../lib/use-error-prose'
 import { CODE_REFS } from '../content/graph'
 import { CATEGORY_GLOSS, nsOf } from './errors-shared'
 import { SITE, SPEC, routeHead } from '../content'
@@ -53,12 +55,16 @@ export function Component() {
   const prev = at > 0 ? ERROR_CODES[at - 1] : undefined
   const next = at >= 0 && at < ERROR_CODES.length - 1 ? ERROR_CODES[at + 1] : undefined
   const refs = hit ? CODE_REFS[hit.code] : undefined
+  /* the canon's own sentence · prerendered into this page, embedded as an
+     island for hydration, an async chunk only on SPA-nav */
+  const prose = useErrorProse(`code-${code}`, hit ? [hit.code] : [])
+  const failure = hit ? failureOf(prose, hit.code) : ''
 
   const title = hit
-    ? `${hit.code} · ${hit.failure} · Nika`
+    ? `${hit.code} · ${failure} · Nika`
     : 'Not a registered code · Nika'
   const description = hit
-    ? `${hit.code}: ${hit.failure} (${hit.category}${hit.transient ? ' · transient' : ''}). A typed refusal with a stable code. Route on it, never on prose.`
+    ? `${hit.code}: ${failure} (${hit.category}${hit.transient ? ' · transient' : ''}). A typed refusal with a stable code. Route on it, never on prose.`
     : `${code} is not a registered Nika error code. The register lists all of them.`
 
   useHead({
@@ -113,6 +119,7 @@ export function Component() {
 
   return (
     <main className="theme-dark tp-page td-page">
+      <Island id={errorProseIslandId(`code-${code}`)} payload={JSON.stringify(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="err-title" className="v4sec v4-in" data-code={hit?.code}>
         <div className="v4sec-wrap">
@@ -159,7 +166,7 @@ export function Component() {
               <Island id={islandId(hit.code)} payload={JSON.stringify(blogRefs)} />
 
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-                {hit.failure}. A typed refusal, one of {ERROR_CODES.length} the registry names:
+                {failure}. A typed refusal, one of {ERROR_CODES.length} the registry names:
                 stable code, spec category, the transient flag the retry machinery reads. The
                 engine stamps this page's address on the finding itself. Route on the code,
                 never on prose. Machines read <a href="/errors/catalog.json">the catalog</a>.

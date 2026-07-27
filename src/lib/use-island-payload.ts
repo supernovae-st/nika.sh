@@ -1,4 +1,10 @@
 import { useEffect, useState } from 'react'
+import { ISLAND_DOLLAR } from './ssg-island'
+
+/* the island ships every `$` as ISLAND_DOLLAR so no replacement pattern can
+   survive the SSG plugin's `template.replace(…, string)` assembly · see
+   ssg-island.tsx. This is the one place the bytes come back. */
+const decode = (raw: string) => raw.split(ISLAND_DOLLAR).join('$')
 
 /* the reader half of the ssg-island recipe (see ssg-island.tsx for the
    full mechanism note) — its own module per the react-refresh law */
@@ -13,7 +19,7 @@ export function useIslandPayload(
 ): string {
   const [payload, setPayload] = useState<string>(() => {
     if (import.meta.env.SSR) return ssrPayload ?? ''
-    return (document.getElementById(id) as HTMLTextAreaElement | null)?.value ?? ''
+    return decode((document.getElementById(id) as HTMLTextAreaElement | null)?.value ?? '')
   })
   /* SPA-nav fallback · fires once when the island is absent (never on
      first load: the island always carries the bytes there) — an effect,

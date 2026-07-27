@@ -1221,7 +1221,7 @@ export const footerRows = (col: { fromPanel?: number; items: NavItem[] }): NavIt
     ? col.items
     : [
         ...(NAV_REFERENCE.cols[col.fromPanel]?.items ?? []).map(
-          ({ desc: _d, layer: _l, ...rest }) => rest,
+          ({ desc, layer, ...rest }) => (void desc, void layer, rest),
         ),
         ...col.items,
       ]

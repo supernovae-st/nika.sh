@@ -113,7 +113,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-errors.mjs",
-   "sha256": "3eb73b7e99e2f6310aa524f34350dfa64efb240d9c5357728b098ec85bb08784",
+   "sha256": "6f0a18c54fece13dba78b27b36fae2d32f32312d5a84104197943643a2614ab3",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -329,7 +329,7 @@
   },
   {
    "path": "src/content/errors.generated.ts",
-   "sha256": "46b0c9bfc089d4e64b896bd123ce9bd9929770710e0c306fd60953035c51f875",
+   "sha256": "651a2da9d3a4adb29658929404f2cf4478233f571f696762c27adbfceb8462a4",
    "consumers": [
     "src/pages/Errors.tsx"
    ]

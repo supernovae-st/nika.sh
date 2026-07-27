@@ -8,6 +8,8 @@ import { useAnchorScroll } from '../lib/use-anchor-scroll'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { ERROR_CODES, ERROR_INDEX, ERROR_NAMESPACES, type ErrorCodeEntry } from '../content/errors.generated'
+import { failureOf, type ErrorProse } from '../lib/error-prose-access'
+import { useErrorProse, errorProseIslandId } from '../lib/use-error-prose'
 import { CODE_REFS } from '../content/graph'
 import { CATEGORY_GLOSS, nsOf } from './errors-shared'
 import { SPEC, routeHead } from '../content'
@@ -55,10 +57,12 @@ function CodeRow({
   entry,
   active,
   blogRefs,
+  prose,
 }: {
   entry: ErrorCodeEntry
   active: boolean
   blogRefs?: { slug: string; title: string; date: string }[]
+  prose: ErrorProse | null
 }) {
   return (
     <li id={entry.code} className={`er-row${active ? ' er-row--active' : ''}`}>
@@ -79,7 +83,7 @@ function CodeRow({
           </span>
         )}
       </div>
-      <p className="er-failure">{entry.failure}</p>
+      <p className="er-failure">{failureOf(prose, entry.code)}</p>
       {/* the graph, closed: the words and tools whose pages NAME this code
           point back from here (derived by inverting the rooms' own data —
           graph.ts; a code nothing names carries no line) */}
@@ -119,6 +123,9 @@ export function Component() {
   const { code: rawCode } = useParams()
   const code = rawCode?.toUpperCase()
   const hit = code ? ERROR_INDEX[code] : undefined
+  /* the register shows every sentence, so this page carries the whole corpus
+     (prerendered into the HTML · an island for hydration · a chunk on SPA-nav) */
+  const prose = useErrorProse('register')
   const miss = Boolean(code) && !hit
   const blogByCode = useErrorBlogRefs()
 
@@ -139,7 +146,7 @@ export function Component() {
       ? `${code} · Nika error register`
       : 'Error register · Nika'
   const description = hit
-    ? `${hit.code}: ${hit.failure} (${hit.category}${hit.transient ? ' · transient' : ''}). Every Nika error is a typed structure with a stable code.`
+    ? `${hit.code}: ${failureOf(prose, hit.code)} (${hit.category}${hit.transient ? ' · transient' : ''}). Every Nika error is a typed structure with a stable code.`
     : 'Every registered Nika error code: stable identifiers, categories, and the transient flag the retry machinery reads. Machine twin: /errors/catalog.json.'
 
   useHead({
@@ -166,6 +173,7 @@ export function Component() {
 
   return (
     <main className="theme-dark er-page">
+      <Island id={errorProseIslandId('register')} payload={JSON.stringify(prose ?? {})} />
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts):
           on a one-section page the observer armed everything at hydration anyway;
           baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
@@ -221,7 +229,13 @@ export function Component() {
               </div>
               <ol className="er-list">
                 {group.entries.map((e) => (
-                  <CodeRow key={e.code} entry={e} active={e.code === code} blogRefs={blogByCode[e.code]} />
+                  <CodeRow
+                    key={e.code}
+                    entry={e}
+                    active={e.code === code}
+                    blogRefs={blogByCode[e.code]}
+                    prose={prose}
+                  />
                 ))}
               </ol>
             </div>
