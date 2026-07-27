@@ -35,7 +35,7 @@ export function Component() {
 
   const title = tag ? `${tag} · the journal, by tag · Nika` : 'Not a journal tag · Nika'
   const description = tag
-    ? `Every journal post filed under ${tag} — ${posts.length} ${posts.length === 1 ? 'post' : 'posts'}, newest first. The whole journal lives at /blog.`
+    ? `Every journal post filed under ${tag}: ${posts.length} ${posts.length === 1 ? 'post' : 'posts'}, newest first. The whole journal lives at /blog.`
     : `${slug} is not a tag the journal uses.`
 
   useHead({
@@ -112,7 +112,7 @@ export function Component() {
           {tag && (
             <>
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-                Every post filed under <b>{tag}</b>, newest first — one register of{' '}
+                Every post filed under <b>{tag}</b>, newest first, one register of{' '}
                 {TAGS.length} the journal keeps. The shelf lens on{' '}
                 <Link to={`/blog?tag=${encodeURIComponent(tag)}`}>the journal</Link> filters the
                 same set in place.

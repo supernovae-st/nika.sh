@@ -47,7 +47,7 @@ export function Component() {
   const surfaceCount = INTEGRATION_TABS.filter((t) => t.kind === 'surface').length
 
   const title = 'Integrations · Claude Code, Codex, Cursor, VS Code, MCP · Nika'
-  const description = `Plug Nika into what you already run: the agent plugin (Claude Code · Codex · Cursor · Hermes), the editor extension (VS Code · Cursor · Windsurf), the MCP server in the binary — and the ${INTEGRATION_TABS.length} public surfaces behind them.`
+  const description = `Plug Nika into what you already run: the agent plugin (Claude Code · Codex · Cursor · Hermes), the editor extension (VS Code · Cursor · Windsurf), the MCP server in the binary, and the ${INTEGRATION_TABS.length} public surfaces behind them.`
 
   useHead({
     title,
@@ -60,7 +60,7 @@ export function Component() {
       { property: 'og:image', content: 'https://nika.sh/og-integrations.png' },
       {
         property: 'og:image:alt',
-        content: 'Nika integrations: your agent, your editor, your terminal — one kit.',
+        content: 'Nika integrations: your agent, your editor, your terminal: one kit.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
@@ -94,7 +94,7 @@ export function Component() {
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Nika meets you where you work: your agent gets the plugin kit, your editor gets the
-            live DAG, your terminal gets the binary — and they compose. Every room below is
+            live DAG, your terminal gets the binary, and they compose. Every room below is
             README-true: the commands are the repos' own, never invented.
           </p>
 
@@ -118,7 +118,7 @@ export function Component() {
             </div>
             <p className="td-gloss">
               Most people run all three. The binary does the work, the extension draws the file,
-              the plugin teaches the agent to delegate — one sitting installs the lot.
+              the plugin teaches the agent to delegate. One sitting installs the lot.
             </p>
             <dl className="pv-facts">
               {(cargo?.kit ?? []).map((s) => (

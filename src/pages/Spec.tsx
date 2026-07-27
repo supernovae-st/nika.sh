@@ -900,7 +900,7 @@ const SpecReference = memo(function SpecReference({ sampleYaml }: { sampleYaml: 
               <div id="s2" className="spec-block" data-sec="" data-stratum="plan" data-rise>
                 <SpecHead fig="S.2" name="The task shape" register={{ href: '/language', label: 'the keyword register' }} count="1 identity · 1 verb · 2 doors">
                   A task is a DAG node. Its map key is its identity and exactly one verb binds;
-                  <code>tasks.*</code> crosses the boundary through two doors — <code>with</code>{' '}
+                  <code>tasks.*</code> crosses the boundary through two doors: <code>with</code>{' '}
                   (data) and <code>after</code> (control); everything else is an optional
                   structural control.
                 </SpecHead>

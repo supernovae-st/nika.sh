@@ -79,7 +79,7 @@ export function LivingTerminal() {
             lines: [
               {
                 kind: 'soft',
-                text: `not on this record — the terminal replays recorded runs of nika ${engine}, byte-verbatim.`,
+                text: `not on this record. The terminal replays recorded runs of nika ${engine}, byte-verbatim.`,
               },
               {
                 kind: 'soft',
@@ -94,7 +94,7 @@ export function LivingTerminal() {
   return (
     <div className="lterm">
       <p className="lterm-face mono">
-        record player, not a sandbox — recorded runs of nika {engine || '…'}, replayed
+        record player, not a sandbox: recorded runs of nika {engine || '…'}, replayed
         verbatim · re-captured at every release
       </p>
       <div className="lterm-frame">

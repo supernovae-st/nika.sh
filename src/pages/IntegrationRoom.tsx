@@ -48,7 +48,7 @@ export function Component() {
 
   const title = hit ? `${hit.title} · Nika` : tab ? `${tab.name} · Integrations · Nika` : 'Not an integration · Nika'
   const description = hit
-    ? `${hit.what} License: ${hit.license}; source and claims live in the repo — this room is its projection.`
+    ? `${hit.what} License: ${hit.license}; source and claims live in the repo. This room is its projection.`
     : `${id} is not a lane or surface the ecosystem ships.`
 
   useHead({
@@ -62,7 +62,7 @@ export function Component() {
       { property: 'og:image', content: 'https://nika.sh/og-integrations.png' },
       {
         property: 'og:image:alt',
-        content: 'Nika integrations: your agent, your editor, your terminal — one kit.',
+        content: 'Nika integrations: your agent, your editor, your terminal: one kit.',
       },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
@@ -141,7 +141,7 @@ export function Component() {
           {hit && (
             <>
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-                {hit.what} Source, license and claims live in <a href={hit.repo}>the repo</a> —
+                {hit.what} Source, license and claims live in <a href={hit.repo}>the repo</a>.
                 this room is its projection, never its replacement.
               </p>
 

@@ -137,7 +137,7 @@ model: ollama/llama3.2:3b
     topic: 'the plan',
     title: 'The wiring is the plan. The plan is free.',
     plain:
-      'with: names what a task takes in — and each wire IS an edge of the plan. Tasks that don’t feed each other run in parallel automatically. You never schedule anything. The plan (which tasks wait on which) falls out of the file.',
+      'with: names what a task takes in, and each wire IS an edge of the plan. Tasks that don’t feed each other run in parallel automatically. You never schedule anything. The plan (which tasks wait on which) falls out of the file.',
     file: 'with',
     yaml: `fetch_news:
   invoke:
@@ -204,7 +204,7 @@ digest:
     topic: 'the branch',
     title: 'Branch like an adult',
     plain:
-      'when: makes a task conditional, a yes/no test over what it imports. The wiring already orders it; when: decides whether an admitted step runs — and it reads the step’s own bindings, never the graph.',
+      'when: makes a task conditional, a yes/no test over what it imports. The wiring already orders it; when: decides whether an admitted step runs, and it reads the step’s own bindings, never the graph.',
     file: 'when',
     yaml: `alert:
   with:

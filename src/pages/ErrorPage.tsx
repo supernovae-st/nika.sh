@@ -58,7 +58,7 @@ export function Component() {
     ? `${hit.code} · ${hit.failure} · Nika`
     : 'Not a registered code · Nika'
   const description = hit
-    ? `${hit.code}: ${hit.failure} (${hit.category}${hit.transient ? ' · transient' : ''}). A typed refusal with a stable code — route on it, never on prose.`
+    ? `${hit.code}: ${hit.failure} (${hit.category}${hit.transient ? ' · transient' : ''}). A typed refusal with a stable code. Route on it, never on prose.`
     : `${code} is not a registered Nika error code. The register lists all of them.`
 
   useHead({
@@ -145,7 +145,7 @@ export function Component() {
               <p className="tp-miss-name">{code}</p>
               <p>
                 is not a registered code. The register is the spec's normative floor, not a
-                ceiling: an engine may mint codes inside a namespace's range — never renamed,
+                ceiling: an engine may mint codes inside a namespace's range, never renamed,
                 never repurposed. If nika raised it, your binary and{' '}
                 <a href="/errors/catalog.json">the served catalog</a> differ (
                 <code>nika --version</code> tells you which). Walk{' '}
@@ -161,7 +161,7 @@ export function Component() {
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
                 {hit.failure}. A typed refusal, one of {ERROR_CODES.length} the registry names:
                 stable code, spec category, the transient flag the retry machinery reads. The
-                engine stamps this page's address on the finding itself — route on the code,
+                engine stamps this page's address on the finding itself. Route on the code,
                 never on prose. Machines read <a href="/errors/catalog.json">the catalog</a>.
               </p>
 
@@ -187,7 +187,7 @@ export function Component() {
                 </div>
                 <p className="td-gloss">
                   <code>nika explain {hit.code}</code> answers offline with the failure, the fix
-                  shape and this page's address — the same text the check finding carries. A code
+                  shape and this page's address: the same text the check finding carries. A code
                   is a contract: never renamed, never repurposed, safe to route on in{' '}
                   <Link to="/language/on_codes">on_codes</Link> and{' '}
                   <Link to="/language/retry">retry</Link> policy.
@@ -265,7 +265,7 @@ export function Component() {
                         <a
                           className="td-chip"
                           href={`https://github.com/search?q=repo%3Asupernovae-st%2Fnika+${hit.code}&type=code`}
-                          title="where the engine raises it — live code search"
+                          title="where the engine raises it · live code search"
                         >
                           the engine's own source ↗
                         </a>

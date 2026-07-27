@@ -138,7 +138,7 @@ export function Component() {
             <>
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
                 Your intent sounds like: <b>{hit.intent}</b> One of {TEMPLATES.length} skeletons
-                the pack ships — green as-is under <code>nika check</code>, fill the{' '}
+                the pack ships, green as-is under <code>nika check</code>. Fill the{' '}
                 <code># SLOT:</code> lines, repair from the fix lines, re-check. Machines read{' '}
                 <a href="/templates/catalog.json">the catalog</a>; the binary answers{' '}
                 <code>nika template</code>.
@@ -185,7 +185,7 @@ export function Component() {
                   <CodeFile yaml={hit.yaml} filename={hit.file} />
                 </div>
                 <p className="td-pin">
-                  sha256 <code>{hit.sha256.slice(0, 16)}…</code> — the copy above re-hashes to its
+                  sha256 <code>{hit.sha256.slice(0, 16)}…</code>. The copy above re-hashes to its
                   pin on every test run (a copy is re-provable, never trusted). Source:{' '}
                   <a href={`${SPEC}/blob/main/templates/${hit.file}`}>{hit.file}</a> in the spec pack ·{' '}
                   <Link to={`/play?y=${lz.compressToEncodedURIComponent(hit.yaml)}`}>

@@ -716,7 +716,7 @@
     },
     {
       "path": "src/components/LivingTerminal.tsx",
-      "source_blob": "6eba721b7617b8b5c1e2c3756da5146875ee5106",
+      "source_blob": "454f06c4e774411d4e5f948dbb3552ca49f0522e",
       "blocks": [
         {
           "selector": "src/components/LivingTerminal.tsx#pre:1",
@@ -842,7 +842,7 @@
     },
     {
       "path": "src/pages/LibraryRoom.tsx",
-      "source_blob": "ce7c52e4b01fe8446c34f405e377c6acc9ceddaf",
+      "source_blob": "e174e56207d148a7b26b6682a2f7534df9834f24",
       "blocks": [
         {
           "selector": "src/pages/LibraryRoom.tsx#codefile:1",
@@ -866,7 +866,7 @@
     },
     {
       "path": "src/pages/ProviderPage.tsx",
-      "source_blob": "7db20fbfcdeeeafcb51f6fc842e4241fe9b8aea3",
+      "source_blob": "c9c18ee660ba3dba6dda1d8e4ce5fa5222cd66b8",
       "blocks": [
         {
           "selector": "src/pages/ProviderPage.tsx#codefile:1",
@@ -890,7 +890,7 @@
     },
     {
       "path": "src/pages/Spec.tsx",
-      "source_blob": "360b632f598204aba099fe2e15039c26fdcf651f",
+      "source_blob": "978c071ee08db0a55bc85c78afd1afa3d585d68b",
       "blocks": [
         {
           "selector": "src/pages/Spec.tsx#codefile:1",
@@ -908,7 +908,7 @@
     },
     {
       "path": "src/pages/TemplatePage.tsx",
-      "source_blob": "fb3a4e8e336c7a5a5d9e12e045af878f5e299498",
+      "source_blob": "669a3e6bb87826bff0809a8e9ebf16f015a7a9f4",
       "blocks": [
         {
           "selector": "src/pages/TemplatePage.tsx#codefile:1",

@@ -59,7 +59,7 @@ function Proof({ evidence, tabbable = true }: { evidence: Evidence; tabbable?: b
     )
   }
   return (
-    <span className="tl-proof tl-proof-unprovable" title="labeled honestly — no mechanical proof exists or is claimed">
+    <span className="tl-proof tl-proof-unprovable" title="labeled honestly · no mechanical proof exists or is claimed">
       ○ {label}
     </span>
   )

@@ -257,11 +257,11 @@ export function Component() {
                   <span className="cl-year-count">{KIND_GLOSS[hit.kind]}</span>
                 </div>
                 <p className="td-gloss">
-                  A workflow names this provider in the model line —{' '}
+                  A workflow names this provider in the model line (
                   <code>
                     model: {hit.id}/{hit.default_model ?? '…'}
-                  </code>{' '}
-                  — and the engine speaks <code>{hit.api_dialect}</code> on the wire.{' '}
+                  </code>
+                  ), and the engine speaks <code>{hit.api_dialect}</code> on the wire.{' '}
                   {hit.env_var ? (
                     <>
                       The key rides <code>{hit.env_var}</code> in the environment, never a config
@@ -358,7 +358,7 @@ export function Component() {
                 {cargo?.audit.pricing_as_of && cargo.audit.pricing.some((p) => p.input_per_million != null) && (
                   <p className="td-pin">
                     prices are the ENGINE's, not ours: the audit's pricing snapshot (models.dev ·
-                    pinned {cargo.audit.pricing_as_of}) — the same table <code>nika check</code>{' '}
+                    pinned {cargo.audit.pricing_as_of}): the same table <code>nika check</code>{' '}
                     prices your ceiling with.
                   </p>
                 )}
@@ -459,8 +459,8 @@ export function Component() {
                   </span>
                 </div>
                 <p className="td-gloss">
-                  Moving off {hit.name} is editing one line: the rest of the file — tasks, permits,
-                  outputs, the trace — does not change. The register orders the catalog local
+                  Moving off {hit.name} is editing one line. The rest of the file (tasks, permits,
+                  outputs, the trace) does not change. The register orders the catalog local
                   first; beyond it the engine embeds {EMBEDDED_EXTRA} more OpenAI-compatible
                   endpoints.
                 </p>

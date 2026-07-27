@@ -33,7 +33,7 @@ export function Component() {
 
   const title = hit ? `${hit.title} · a reading path · Nika` : 'Not a reading path · Nika'
   const description = hit
-    ? `${hit.claim}. ${legs.length} ${legs.length === 1 ? 'stop' : 'stops'}, in reading order — a path through the journal.`
+    ? `${hit.claim}. ${legs.length} ${legs.length === 1 ? 'stop' : 'stops'}, in reading order: a path through the journal.`
     : `${id} is not a reading path the journal keeps.`
 
   useHead({
@@ -120,7 +120,7 @@ export function Component() {
           {hit && (
             <>
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-                <b>{hit.claim}.</b> Read the stops in order — each one stands alone, together they
+                <b>{hit.claim}.</b> Read the stops in order. Each one stands alone, together they
                 make the argument. The posts carry the same rail on their own pages.
               </p>
 

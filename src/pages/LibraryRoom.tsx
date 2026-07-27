@@ -56,7 +56,7 @@ export function Component() {
     ? `${hit.label} · ${hit.blurb} · Nika`
     : 'Not a library file · Nika'
   const description = hit
-    ? `${hit.filename}: ${hit.blurb}. ${recorded ? 'Recorded from a real nika run — the home page replays its trace.' : `A pack showcase file, shown whole to read; nika run ${hit.filename} is the honest affordance.`}`
+    ? `${hit.filename}: ${hit.blurb}. ${recorded ? 'Recorded from a real nika run. The home page replays its trace.' : `A pack showcase file, shown whole to read; nika run ${hit.filename} is the honest affordance.`}`
     : `${id} names no file in the library.`
 
   useHead({
@@ -150,13 +150,13 @@ export function Component() {
                 {hit.blurb}.{' '}
                 {recorded ? (
                   <>
-                    This file carries a <b>real recorded trace</b> — the{' '}
+                    This file carries a <b>real recorded trace</b>. The{' '}
                     <Link to="/">home page</Link> replays it, beat for beat, from the run record.
                   </>
                 ) : (
                   <>
                     A pack showcase file, shown whole to read;{' '}
-                    <code>nika run {hit.filename}</code> is the honest affordance — this site
+                    <code>nika run {hit.filename}</code> is the honest affordance. This site
                     never fabricates a replay for it.
                   </>
                 )}

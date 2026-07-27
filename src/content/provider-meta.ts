@@ -53,12 +53,12 @@ export const PROVIDER_META: Record<string, ProviderMeta> = {
     title: 'llama.cpp · Nika workflows on bare GGUF',
     angle:
       'The C/C++ engine most local stacks build on: one quantized GGUF, one llama-server, zero dependencies.',
-    pick: 'when you want the metal — quantized weights, CPU and GPU offload, nothing else running.',
+    pick: 'when you want the metal: quantized weights, CPU and GPU offload, nothing else running.',
     note: 'Open source (MIT) · the upstream lives at ggml-org/llama.cpp.',
     setup: [
       { text: 'Install the server', code: 'brew install llama.cpp' },
       { text: 'Serve the GGUF you have', code: 'llama-server -m model.gguf' },
-      { text: 'The wire model id is free-form — the server answers for whatever it loaded.' },
+      { text: 'The wire model id is free-form. The server answers for whatever it loaded.' },
     ],
   },
   localai: {
@@ -112,7 +112,7 @@ export const PROVIDER_META: Record<string, ProviderMeta> = {
   openai: {
     title: 'OpenAI · typed outputs in Nika workflows',
     angle:
-      'The most widely known API. Structured outputs make schema: a real contract — the answer arrives as data the next task can trust.',
+      'The most widely known API. Structured outputs make schema: a real contract. The answer arrives as data the next task can trust.',
     pick: 'when downstream tasks consume the answer as data, not prose.',
     console: { label: 'platform.openai.com', href: 'https://platform.openai.com/api-keys' },
     setup: [
@@ -134,7 +134,7 @@ export const PROVIDER_META: Record<string, ProviderMeta> = {
   deepseek: {
     title: 'DeepSeek · frontier quality at floor prices',
     angle:
-      'Strong models at aggressive prices, with an open-weight track record — the audit’s cost ceiling stays almost invisible.',
+      'Strong models at aggressive prices, with an open-weight track record. The audit’s cost ceiling stays almost invisible.',
     pick: 'high-volume text work where the price per call decides.',
     note: 'DeepSeek · Hangzhou, China.',
     console: { label: 'platform.deepseek.com', href: 'https://platform.deepseek.com/api_keys' },
@@ -156,7 +156,7 @@ export const PROVIDER_META: Record<string, ProviderMeta> = {
   groq: {
     title: 'Groq · instant fan-outs on LPU hardware',
     angle:
-      'Custom LPU hardware serving open models at extreme tokens per second. Groq is the chip company, not the model — no relation to Grok.',
+      'Custom LPU hardware serving open models at extreme tokens per second. Groq is the chip company, not the model. No relation to Grok.',
     pick: 'wide fan-outs and interactive loops where latency is the feature.',
     console: { label: 'console.groq.com', href: 'https://console.groq.com/keys' },
     setup: [
@@ -203,7 +203,7 @@ export const PROVIDER_META: Record<string, ProviderMeta> = {
   moonshot: {
     title: 'Moonshot Kimi · long context, cataloged ahead',
     angle:
-      'Kimi models built for very long context. Cataloged ahead of the runtime: this binary names the vendor, a coming release runs it — the audit below says so honestly.',
+      'Kimi models built for very long context. Cataloged ahead of the runtime: this binary names the vendor, a coming release runs it. The audit below says so honestly.',
     pick: 'whole-document work, once the runtime lands.',
     note: 'Moonshot AI · Beijing, China.',
     console: { label: 'platform.kimi.ai', href: 'https://platform.kimi.ai' },
@@ -215,10 +215,10 @@ export const PROVIDER_META: Record<string, ProviderMeta> = {
   mock: {
     title: 'mock · rehearse workflows for free',
     angle:
-      'The harness: deterministic, offline, free. Every file should rehearse here before it costs anything — going real is a one-word diff.',
+      'The harness: deterministic, offline, free. Every file should rehearse here before it costs anything. Going real is a one-word diff.',
     pick: 'always first. Author against mock, then swap the model line.',
     setup: [
-      { text: 'Nothing to install and no key — the engine ships it.' },
+      { text: 'Nothing to install and no key. The engine ships it.' },
       { text: 'Rehearse any file', code: 'nika run file.nika.yaml --model mock/mock-default' },
     ],
   },

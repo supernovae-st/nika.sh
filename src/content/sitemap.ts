@@ -179,7 +179,7 @@ export const SITE_MAP: MapGroup[] = [
   },
   {
     kick: 'the library',
-    gloss: 'the files the home page picks from — recorded runs, honest reads',
+    gloss: 'the files the home page picks from: recorded runs, honest reads',
     links: [{ label: 'The shelf', href: '/library', hint: 'ten real files · one room each' }],
     dense: LIBRARY_TABS.map((t) => ({ label: t.label, href: `/library/${t.id}` })),
   },

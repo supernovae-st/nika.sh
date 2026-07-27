@@ -73,7 +73,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: AGENTS_REPO,
     license: 'MIT',
     what: 'One plugin install hands the agent the whole kit: 4 skills, 3 subagents, 5 slash commands, the read-only MCP oracle and the seatbelt hooks.',
-    how: 'The agent authors a plain-text workflow it can `nika check` before a token is spent and `nika trace verify` after. The oracle answers read-only (check · inspect · explain · schema · examples · template · canon · catalog · tools); the subagents author, debug and migrate; `/nika:check` is one keystroke. Updating is TWO rungs by design — refresh the marketplace clone, then move the install — because an install once sat three releases behind, silently, with a fresh clone right next to it.',
+    how: 'The agent authors a plain-text workflow it can `nika check` before a token is spent and `nika trace verify` after. The oracle answers read-only (check · inspect · explain · schema · examples · template · canon · catalog · tools); the subagents author, debug and migrate; `/nika:check` is one keystroke. Updating is TWO rungs by design: refresh the marketplace clone, then move the install. The reason is that an install once sat three releases behind, silently, with a fresh clone right next to it.',
     install: [
       { text: 'Add the marketplace', code: 'claude plugin marketplace add supernovae-st/nika-agents' },
       { text: 'Install the kit', code: 'claude plugin install nika@nika' },
@@ -98,7 +98,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     title: 'Nika for Codex · the same kit, the same marketplace',
     repo: AGENTS_REPO,
     license: 'MIT',
-    what: 'Codex installs the identical plugin kit from the identical repo — skills, subagents, commands, the MCP oracle.',
+    what: 'Codex installs the identical plugin kit from the identical repo: skills, subagents, commands, the MCP oracle.',
     how: 'One marketplace, every client: the kit is authored once and served to Claude Code and Codex from the same source, so the delegation idiom never forks. The agent drafts the workflow, `nika check` audits it before anything runs, the trace verifies after.',
     install: [
       { text: 'Add the marketplace', code: 'codex plugin marketplace add supernovae-st/nika-agents' },
@@ -124,7 +124,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: AGENTS_REPO,
     license: 'MIT',
     what: 'Cursor takes BOTH halves: the plugin bundle (rule · skill · subagent · commands · hooks · MCP) from its marketplace, and the editor extension from Open VSX.',
-    how: 'Search « nika » in Settings → Plugins: one Add installs the full bundle. Teams wire this repo as a team marketplace (Dashboard → Plugins). Until the listing serves you, `nika init` equips the repo fully — rules, MCP, the three subagents, the seatbelt hooks. The extension is the other half: the live DAG on the file the agent writes.',
+    how: 'Search « nika » in Settings → Plugins: one Add installs the full bundle. Teams wire this repo as a team marketplace (Dashboard → Plugins). Until the listing serves you, `nika init` equips the repo fully: rules, MCP, the three subagents, the seatbelt hooks. The extension is the other half: the live DAG on the file the agent writes.',
     install: [
       { text: 'The plugin: search « nika » in Settings → Plugins, one Add.' },
       { text: 'Or equip the repo directly', code: 'nika init' },
@@ -150,7 +150,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: 'https://github.com/supernovae-st/nika-vscode',
     license: 'MIT',
     what: 'A .nika.yaml file becomes a live graph: prompts on the cards, wires carrying named data, permits as chips. See the DAG before you run it.',
-    how: 'Syntax, diagnostics and the DAG view ride the served contract: files validate against the same workflow.schema.json this site serves, via the yaml-language-server line the extension writes for you. Local traces, your models — the extension never phones home.',
+    how: 'Syntax, diagnostics and the DAG view ride the served contract: files validate against the same workflow.schema.json this site serves, via the yaml-language-server line the extension writes for you. Local traces, your models. The extension never phones home.',
     install: [
       { text: 'From the CLI', code: 'code --install-extension supernovae.nika-lang' },
       { text: 'Cursor, Windsurf and VSCodium install the same id from Open VSX.' },
@@ -176,8 +176,8 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     title: 'Nika for Hermes · a skill that delegates',
     repo: AGENTS_REPO,
     license: 'MIT',
-    what: 'The Hermes-facing skill teaches the delegation idiom: Hermes orchestrates, Nika executes — repeatable work leaves the chat and becomes a checkable file.',
-    how: 'The skill ships in the agentskills.io shape, so any skills.sh-compatible client can install it. The agent keeps the conversation; the workflow file keeps the work — checked before it runs, traced after, reusable forever.',
+    what: 'The Hermes-facing skill teaches the delegation idiom: Hermes orchestrates, Nika executes. Repeatable work leaves the chat and becomes a checkable file.',
+    how: 'The skill ships in the agentskills.io shape, so any skills.sh-compatible client can install it. The agent keeps the conversation; the workflow file keeps the work: checked before it runs, traced after, reusable forever.',
     install: [
       { text: 'Tap the marketplace', code: 'hermes skills tap add supernovae-st/nika-agents' },
       { text: 'Any skills.sh client', code: 'npx skills add supernovae-st/nika-agents' },
@@ -195,7 +195,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     title: 'The Nika MCP server · read-only, in the binary',
     repo: 'https://github.com/supernovae-st/nika',
     license: 'AGPL-3.0-or-later',
-    what: 'The binary IS the MCP server: `nika mcp` serves 9 read-only tools — check, inspect, explain, schema, examples, template, canon, catalog, tools.',
+    what: 'The binary IS the MCP server: `nika mcp` serves 9 read-only tools: check, inspect, explain, schema, examples, template, canon, catalog, tools.',
     how: 'No separate server to install or trust: the same binary that runs workflows answers the oracle, read-only by construction. Zed, Warp and friends wire in one command with `nika wire <client>`; anything else takes the plain config line: command `nika`, args `["mcp"]`.',
     install: [
       { text: 'Wire a known client', code: 'nika wire cursor' },
@@ -237,7 +237,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: 'https://github.com/supernovae-st/nika-spec',
     license: 'Apache-2.0',
     what: 'The language specification: nine chapters, the JSON Schema, the canon counts, the template pack, the conformance suite.',
-    how: 'The envelope line is locked at v1 forever and evolves additively (the SQL / Dockerfile contract model); the reference engine versions separately. Everything countable on this site derives from the spec’s canon.yaml — never hand-typed — and every skeleton is conformance-gated upstream on every spec push.',
+    how: 'The envelope line is locked at v1 forever and evolves additively (the SQL / Dockerfile contract model); the reference engine versions separately. Everything countable on this site derives from the spec’s canon.yaml, never hand-typed, and every skeleton is conformance-gated upstream on every spec push.',
     install: [
       { text: 'Read it where it lives', code: 'git clone https://github.com/supernovae-st/nika-spec' },
       { text: 'or walk the served projections below.' },
@@ -256,7 +256,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: 'https://github.com/supernovae-st/nika-registry',
     license: 'Apache-2.0',
     what: 'The npm-of-workflows: share workflow files as verified, content-pinned entries.',
-    how: 'Every entry is pinned to an exact source revision and re-proven by CI: hash, conformance oracle, engine certificate, advisories. The binary pulls with `nika run registry:owner/name` — cached, offline-capable, and the workflow’s own permits never govern the fetch. Never install an LLM-suggested name without resolving it there first.',
+    how: 'Every entry is pinned to an exact source revision and re-proven by CI: hash, conformance oracle, engine certificate, advisories. The binary pulls with `nika run registry:owner/name`: cached, offline-capable, and the workflow’s own permits never govern the fetch. Never install an LLM-suggested name without resolving it there first.',
     install: [
       { text: 'Audit it first, always', code: 'nika check registry:owner/name@version' },
       { text: 'Then run it', code: 'nika run registry:owner/name@version' },
@@ -277,7 +277,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: 'https://github.com/supernovae-st/nika-client',
     license: 'MIT',
     what: 'A typed, zero-dependency TS client: drive the shipped binary today, target the future serve API without pretending.',
-    how: 'The /local module works TODAY against the binary: `check --json`, the `run --json` event stream, the dry-run plan object, `test`, `trace verify` — typed end to end. The root module targets the future `nika serve` HTTP API and says so plainly.',
+    how: 'The /local module works TODAY against the binary: `check --json`, the `run --json` event stream, the dry-run plan object, `test`, `trace verify`, typed end to end. The root module targets the future `nika serve` HTTP API and says so plainly.',
     install: [{ text: 'Install', code: 'npm install @supernovae-st/nika-client' }],
     doors: [
       { label: 'the machine catalogs it mirrors', href: '/map' },
@@ -292,7 +292,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: 'https://github.com/supernovae-st/nika-site-audit',
     license: 'Apache-2.0',
     what: 'A full SEO + GEO site audit as ONE workflow file: discover, crawl bounded, score deterministically, one narrated verdict.',
-    how: 'Ten tasks, five waves — and the diagram in its README is generated by `nika inspect --format mermaid`, not drawn by hand. The whole audit is checked before a single request leaves your machine; artifacts land as receipts. The pattern for real work: a repo whose product IS a workflow file.',
+    how: 'Ten tasks, five waves, and the diagram in its README is generated by `nika inspect --format mermaid`, not drawn by hand. The whole audit is checked before a single request leaves your machine; artifacts land as receipts. The pattern for real work: a repo whose product IS a workflow file.',
     install: [
       { text: 'Offline verdict first (mock model)', code: 'nika run site-audit.nika.yaml' },
       { text: 'then point it at a site and a real model.' },
@@ -311,7 +311,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     license: 'MIT',
     what: 'The task-oriented documentation, built by Mintlify from a public source repo.',
     how: 'A docs.json navigation plus .mdx pages; every merge to main deploys. The repo runs its own drift gate in CI so the docs never silently disagree with the shipped engine. This site is the reference register; the docs are the hand-held path.',
-    install: [{ text: 'Nothing to install — read it live.' }],
+    install: [{ text: 'Nothing to install. Read it live.' }],
     doors: [
       { label: 'learn, the short path', href: '/learn' },
       { label: 'this site’s own map', href: '/map' },
@@ -326,7 +326,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     repo: 'https://github.com/supernovae-st/homebrew-tap',
     license: 'MIT',
     what: 'The official Homebrew tap, tracking the latest tagged release.',
-    how: 'The formula pins the exact release and its checksums; `brew upgrade` follows the tags. The pin lives in Formula/nika.rb — never repeated in prose, because a repeated number is a number that rots.',
+    how: 'The formula pins the exact release and its checksums; `brew upgrade` follows the tags. The pin lives in Formula/nika.rb, never repeated in prose, because a repeated number is a number that rots.',
     install: [{ text: 'Install', code: 'brew install supernovae-st/tap/nika' }],
     doors: [{ label: 'every install path', href: '/install' }],
   },

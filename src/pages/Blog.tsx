@@ -30,7 +30,7 @@ const SOON: { slug: string; tag: string; date: string; title: string; teaser: st
     tag: 'Security',
     date: 'soon',
     title: 'The advisory that names itself',
-    teaser: 'When a published workflow goes bad, the registry does not unpublish history — an advisory attaches to the pinned entry in the open, and the verify protocol already told you never to install what one names.',
+    teaser: 'When a published workflow goes bad, the registry does not unpublish history. An advisory attaches to the pinned entry in the open, and the verify protocol already told you never to install what one names.',
   },
   {
     slug: 'the-run-that-never-runs',

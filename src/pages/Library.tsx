@@ -37,7 +37,7 @@ export function Component() {
   const recordedCount = library.filter((x) => x.flagship).length
 
   const title = 'The library · real workflow files, recorded runs · Nika'
-  const description = `The files the home page picks from: ${library.length} real workflows — ${recordedCount} with recorded traces the site replays honestly, the rest straight from the spec pack to read and run.`
+  const description = `The files the home page picks from: ${library.length} real workflows. ${recordedCount} carry recorded traces the site replays honestly, the rest straight from the spec pack to read and run.`
 
   useHead({
     title,
@@ -84,7 +84,7 @@ export function Component() {
             The shelf.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            The files the <Link to="/">home page</Link> picks from — every one real, every claim
+            The files the <Link to="/">home page</Link> picks from. Every one real, every claim
             honest: a file with a recorded trace replays from the record; a browse-only file is
             shown to read, with <code>nika run</code> as the affordance. Each owns a room.
           </p>
@@ -116,7 +116,7 @@ export function Component() {
           </ol>
 
           <p className="tp-foot" data-rise>
-            The wider gallery lives in <Link to="/use-cases">the showcase</Link> — every entry
+            The wider gallery lives in <Link to="/use-cases">the showcase</Link>. Every entry
             conformance-gated upstream. <Link to="/spec">Read the spec →</Link>
           </p>
         </div>

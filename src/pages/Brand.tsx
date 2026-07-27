@@ -224,7 +224,7 @@ export function Component() {
         <p className="brand-blurb">
           The site side of the vocabulary: seven layer hues resolved from the spec spine, the
           shared paper chrome, motion as tokens, and the two-clocks mark. Every swatch below
-          renders from the compiler's emission — this page cannot disagree with the graph.
+          renders from the compiler's emission. This page cannot disagree with the graph.
           Tooling reads the same facts as{' '}
           <a href="/design-tokens.dtcg.json" className="brand-dtcg mono">
             design-tokens.dtcg.json

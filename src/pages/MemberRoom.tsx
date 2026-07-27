@@ -33,8 +33,8 @@ const islandId = (family: string, id: string) => `mr-${family}-${id}`
 const FAMILY_OG: Record<string, { img: string; alt: string }> = {
   namespaces: { img: 'og-language', alt: 'The Nika language register: every schema-declared word, one page.' },
   types: { img: 'og-language', alt: 'The Nika language register: every schema-declared word, one page.' },
-  edges: { img: 'og-flow', alt: 'How execution flows: two doors, one graph — the DAG falls out.' },
-  predicates: { img: 'og-flow', alt: 'How execution flows: two doors, one graph — the DAG falls out.' },
+  edges: { img: 'og-flow', alt: 'How execution flows: two doors, one graph. The DAG falls out.' },
+  predicates: { img: 'og-flow', alt: 'How execution flows: two doors, one graph. The DAG falls out.' },
   families: { img: 'og-tools', alt: 'The Nika standard library: versioned capability, no plugin store.' },
   modes: { img: 'og-tools', alt: 'The Nika standard library: versioned capability, no plugin store.' },
   permits: { img: 'og-boundary', alt: 'The boundary is declared: permits, secrets, the always-on floor.' },
@@ -85,7 +85,7 @@ export function Component() {
   const description =
     readout?.opener ??
     (member && fam
-      ? `${member.title}, one of ${fam.members.length} in ${fam.title} — every fact derived from the pinned spec and the released engine.`
+      ? `${member.title}, one of ${fam.members.length} in ${fam.title}. Every fact derived from the pinned spec and the released engine.`
       : 'This member is not in the register.')
 
   const og = FAMILY_OG[family]
@@ -178,7 +178,7 @@ export function Component() {
             </h1>
             <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
               {readout?.opener ??
-                `One of ${fam.members.length} in ${fam.title.toLowerCase()} — every fact on this page derives from the pinned spec and the released engine, re-proven at every push.`}
+                `One of ${fam.members.length} in ${fam.title.toLowerCase()}. Every fact on this page derives from the pinned spec and the released engine, re-proven at every push.`}
             </p>
             {readout?.status && (
               <p className="room-authority st-mark" data-status={readout.status} data-rise>

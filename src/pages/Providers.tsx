@@ -193,7 +193,7 @@ export function Component() {
             One <code>provider/model</code> line moves a workflow between models: local first,
             keys via env vars that stay yours, <b>no inference lock-in</b>. The same file runs on
             a laptop Ollama and a frontier API; swapping is a one-word diff. Every provider owns
-            a room — the id in each row is its door. Machines read the catalog at{' '}
+            a room: the id in each row is its door. Machines read the catalog at{' '}
             <a href="/providers/catalog.json">/providers/catalog.json</a>; the binary answers{' '}
             <code>nika catalog</code>.
           </p>

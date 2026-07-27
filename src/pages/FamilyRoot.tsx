@@ -159,7 +159,7 @@ export function Component() {
 
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             {readout?.opener ??
-              `Every member owns a room — derived from the pinned spec and the released engine, re-proven at every push.`}{' '}
+              `Every member owns a room, derived from the pinned spec and the released engine, re-proven at every push.`}{' '}
             The teaching lives on <Link to={fam.hub}>{fam.hub}</Link>; this root lists the rooms.
           </p>
 

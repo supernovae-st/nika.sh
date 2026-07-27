@@ -146,23 +146,47 @@ describe('voice · authored sources hold the register', () => {
    and llms.txt — the places the 2026-07 purge saw the class re-strike. They
    have never watched src/pages, src/sections or src/content, which is the
    LARGEST authored-copy surface on the site: every lede, every room blurb,
-   every meta description. 99 em dashes live there today.
+   every meta description.
 
-   A mass rewrite of 99 user-facing strings is not a gate's business, and
-   doing it blind would risk the meaning of copy nobody asked me to touch. So
-   this takes the shape the codebase already uses for exactly this situation —
-   design-graph's « inline ms population only ever shrinks » (law 3): measure
-   the population, pin it, and let the ceiling only ever descend. New page
-   copy cannot add to the debt, and every conversion lowers the bar behind it.
+   The population was 72 when this gate was written and is ZERO now: the
+   conversion pass ran the same day (rupture becomes a period, apposition a
+   colon, aside a parenthesis). What began as design-graph's « only ever
+   shrinks » ratchet therefore lands on its floor, and the rule is simply:
+   page copy carries no em dash.
 
-   Comment prose is out of scope by construction: dev comments in this repo
-   use the em dash freely and ship to nobody. Only what survives comment
-   stripping is judged. */
+   THE COUNT IS PROSE ONLY. The first measurement read 99 and was wrong three
+   ways: trailing // comments were counted as copy (eight of them), so were
+   verbatim terminal captures and engine-mirrored lint messages, and so were
+   em dashes drawn as glyphs. Each is excluded below, by construction rather
+   than by an allowlist — a ceiling that counted engine output would pressure
+   someone into rewriting a quote to go green. */
 describe('voice · page copy carries no NEW em dash (law 3 ratchet)', () => {
-  const stripComments = (src: string) => {
-    const blank = (m: string) => m.replace(/[^\n]/g, '')
-    return src.replace(/\/\*[\s\S]*?\*\//g, blank).replace(/^\s*\/\/.*$/gm, blank)
-  }
+  const blank = (m: string) => m.replace(/[^\n]/g, '')
+
+  /* Block comments, full-line // comments, AND trailing ones. The first cut
+     forgot trailing (`const x = 1 // the body — recognition floor`) and
+     counted eight dev comments as shipped copy. `://` is spared so a URL in
+     a string never reads as a comment. */
+  const stripComments = (src: string) =>
+    src
+      .replace(/\/\*[\s\S]*?\*\//g, blank)
+      .replace(/^\s*\/\/.*$/gm, blank)
+      .replace(/(?<!:)\/\/[^\n]*/g, blank)
+
+  /* ── the two classes a rewrite must never touch ───────────────────────────
+     VERBATIM · terminal captures and the lint diagnostics that mirror the
+     engine's own wording. The existing gates put this class out of scope by
+     construction for a reason: "rewriting a quote makes the post lie". A
+     ceiling that counted them would pressure someone into editing engine
+     output to go green — the worst outcome this gate could cause.
+     GLYPH · an em dash standing for an empty value (`?? '—'`, `[ — ]`) or
+     drawn as a mark (the aria-hidden list bullet in Wedge) is correct
+     typography, not prose. A bare em dash alone on a line is never a
+     sentence. */
+  const VERBATIM = /kind:\s*'(?:dim|soft|out|err)'|diags\.push\(|↳\s*HINT|code:\s*'NIKA-/
+  const GLYPH = /(['"`])\s*—\s*\1|\[\s*—\s*\]|\?\?\s*'—'|^\s*—\s*$/
+
+  const isCountable = (line: string) => !VERBATIM.test(line) && !GLYPH.test(line)
 
   const shipped = (): string[] => {
     const out: string[] = []
@@ -190,13 +214,23 @@ describe('voice · page copy carries no NEW em dash (law 3 ratchet)', () => {
     const files = shipped()
     expect(files.length, 'the scan found no source — a gate over nothing').toBeGreaterThan(80)
     const per = files
-      .map((f) => [f, (stripComments(readFileSync(join(ROOT, f), 'utf8')).match(/—/g) ?? []).length] as const)
+      .map((f) => {
+        const n = stripComments(readFileSync(join(ROOT, f), 'utf8'))
+          .split('\n')
+          .filter(isCountable)
+          .reduce((sum, line) => sum + (line.match(/—/g) ?? []).length, 0)
+        return [f, n] as const
+      })
       .filter(([, n]) => n > 0)
       .sort((a, b) => b[1] - a[1])
     const total = per.reduce((n, [, c]) => n + c, 0)
-    /* measured 2026-07-27, after the /map clock line converted to the house
-       separator. Convert copy in its own passes; this number only descends. */
-    const CEILING = 99
+    /* The population is ZERO. It was 72 when this gate was written and the
+       conversion pass closed it the same day, so the ratchet has reached its
+       floor: page copy carries no em dash at all, and the ceiling can never
+       rise off it. If this goes red, read the names it prints — one of them
+       is new prose, not a false positive (the verbatim and glyph classes are
+       excluded above, by construction). */
+    const CEILING = 0
     expect(
       total,
       `page copy grew em dashes: ${total} > ceiling ${CEILING}. Heaviest:\n${per

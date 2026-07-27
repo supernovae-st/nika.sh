@@ -50,7 +50,7 @@ window.addEventListener('pagereveal', (e) => {
   const vt = (e as Event & { viewTransition?: { finished: Promise<void> } }).viewTransition
   if (!vt) return
   const deadline = setTimeout(
-    () => console.warn('cross-document view transition timed out (4s) — snapshot held too long'),
+    () => console.warn('cross-document view transition timed out (4s): snapshot held too long'),
     4000,
   )
   void vt.finished.finally(() => clearTimeout(deadline))
