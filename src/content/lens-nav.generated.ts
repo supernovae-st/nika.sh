@@ -18,6 +18,8 @@ export interface NavItem {
   sub?: boolean
   /** the derived register count (a one-token receipt · rendered as a chip) */
   count?: number
+  /** what the count counts — authored, so the chip reads « 62 words » */
+  unit?: string
   /** the lens layer the destination belongs to — the row wears its colour */
   layer?: string
   /** the surface has not landed yet (wave slot or a WO ahead) */
@@ -141,6 +143,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "desc": "Every key you can type",
           "to": "/language",
           "count": 62,
+          "unit": "words",
           "layer": "shape"
         },
         {
@@ -149,16 +152,14 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "desc": "infer, exec, invoke, agent",
           "to": "/verbs",
           "count": 4,
+          "unit": "verbs",
           "layer": "acts"
         },
         {
           "label": "Types",
           "icon": "book",
           "desc": "The shapes a value takes",
-          "to": "/language#types",
-          "count": 10,
-          "layer": "shape",
-          "sub": true
+          "to": "/language/types"
         }
       ]
     },
@@ -178,6 +179,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "desc": "Every refusal has a name",
           "to": "/errors",
           "count": 96,
+          "unit": "codes",
           "layer": "refusals"
         },
         {
@@ -205,6 +207,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "desc": "Tools it calls, no install",
           "to": "/tools",
           "count": 28,
+          "unit": "tools",
           "layer": "reach"
         },
         {
@@ -213,6 +216,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "desc": "Models to point it at",
           "to": "/providers",
           "count": 17,
+          "unit": "providers",
           "layer": "reach"
         },
         {
@@ -221,6 +225,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "desc": "Files to start from",
           "to": "/templates",
           "count": 10,
+          "unit": "files",
           "layer": "reach"
         },
         {

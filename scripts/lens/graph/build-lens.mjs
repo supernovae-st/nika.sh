@@ -1087,6 +1087,10 @@ function resolveNavItem(item) {
     } else {
       out.to = page
       out.count = nodes.filter((x) => x.kind === 'member' && x.set === setDecl.id).length
+      /* the chip answers « 62 what? ». The noun is authored beside the ref
+         (nav.*.unit) because it is editorial — « codes » not « error-codes »,
+         « files » not « templates » — while the NUMBER stays derived. */
+      if (item.unit) out.unit = item.unit
       out._set = setDecl.id
       if (setDecl.layer) out.layer = setDecl.layer
     }
@@ -1191,6 +1195,8 @@ export interface NavItem {
   sub?: boolean
   /** the derived register count (a one-token receipt · rendered as a chip) */
   count?: number
+  /** what the count counts — authored, so the chip reads « 62 words » */
+  unit?: string
   /** the lens layer the destination belongs to — the row wears its colour */
   layer?: string
   /** the surface has not landed yet (wave slot or a WO ahead) */

@@ -56,12 +56,21 @@ describe('lens-nav · one path, one door (§4.11 ratchet)', () => {
     }
   })
 
-  it('the sub-door class is exactly the anchored second-doors (today: Types under The language)', () => {
+  /* THE CLASS IS EMPTY NOW, and that is the finding. It held exactly one
+     member — Types, deep-linking /language#types — and the operator clicked it:
+     « ça redirige vers n'importe quoi ». The anchor exists, but it is one row
+     buried in a 62-row register, so the browser lands near the page foot and
+     the door reads as broken. The set's own descriptor already said
+     `anchors_exist: false`.
+
+     The word HAS a room, like every declared word, carrying its definition,
+     its declarations and its usage — so the door is /language/types and the
+     sub-door treatment (the § glyph, the indent) goes with it. An anchored
+     second door is now a thing this nav does not do; if one returns, it will
+     be a decision, and this gate will ask for it. */
+  it('no door deep-links an anchor any more (the sub-door class is empty)', () => {
     const subs = allItems.filter(({ item }) => item.sub)
-    expect(subs.map(({ item }) => `${item.label}→${item.to}`).sort()).toEqual([
-      'Types→/language#types',
-      'Types→/language#types',
-    ])
+    expect(subs.map(({ item }) => `${item.label}→${item.to}`)).toEqual([])
   })
 })
 

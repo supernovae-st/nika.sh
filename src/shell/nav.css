@@ -593,6 +593,14 @@
   padding: 5px 12px;
   border-top: 1px solid var(--v4-line);
 }
+/* the Reference rail holds one full row, not a version + CTA pair */
+.v4mega-rail--ref {
+  display: block;
+  padding: 8px 12px 4px;
+}
+.v4mega-rail--ref .v4mega-item--feat {
+  padding-block: 6px;
+}
 .v4mega-rail-version {
   display: inline-flex;
   align-items: center;
@@ -916,6 +924,20 @@ button.v4sheet-search {
 .v4mega-item--ref {
   align-items: flex-start;
   padding-block: 8px;
+  gap: 9px;
+}
+
+/* the chip reads « 62 words », not « ·62 » — the number is derived, the noun
+   is authored beside the ref in the descriptor. A receipt nobody has to
+   decode. */
+.v4mega-item--ref .v4mega-chip {
+  margin-left: 0.55ch;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-text-dim)) 64%, var(--v4-text-dim));
+}
+.v4mega-unit {
+  opacity: 0.72;
 }
 
 /* ── the row wears the colour of the page it opens ───────────────────────────
@@ -925,15 +947,41 @@ button.v4sheet-search {
    the boundary is orange in both places. Spent on the icon tile only — the
    label stays ink, because colour that lands everywhere stops meaning
    anything. */
+/* THE COLOUR IS THE MARK, so the box around it goes. Eleven identical 26px
+   plates gave the panel a grid but no information — three of them carried the
+   very same glyph. Unboxed, the layer hue does the work the border was doing,
+   the labels become the hero, and the row breathes. */
+/* EVERY Reference row, layered or not · two rows carry no layer (Types is a
+   word's room, the spec is one page) and leaving them boxed while nine others
+   were not read as an accident rather than a distinction. */
+.v4mega-item--ref .v4mega-icobox,
+.v4mega-item--feat .v4mega-icobox {
+  border-color: transparent;
+  background: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+}
+.v4mega-item--ref:hover .v4mega-icobox,
+.v4mega-item--ref:focus-visible .v4mega-icobox,
+.v4mega-item--feat:hover .v4mega-icobox,
+.v4mega-item--feat:focus-visible .v4mega-icobox {
+  border-color: transparent;
+  background: none;
+}
 .v4mega-item[data-layer] .v4mega-icobox {
-  border-color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-line)) 34%, var(--v4-line));
-  color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-text-dim)) 62%, var(--v4-text-dim));
+  border-color: transparent;
+  background: none;
+  color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-text-dim)) 70%, var(--v4-text-dim));
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
 }
 .v4mega-item[data-layer]:hover .v4mega-icobox,
 .v4mega-item[data-layer]:focus-visible .v4mega-icobox {
   color: var(--nav-layer-ink, var(--v4-accent));
-  border-color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-line-strong)) 58%, transparent);
-  background: color-mix(in oklch, var(--nav-layer-ink, var(--v4-text)) 12%, transparent);
+  border-color: transparent;
+  background: none;
 }
 .v4mega-item[data-layer='shape'] { --nav-layer-ink: var(--layer-shape); }
 .v4mega-item[data-layer='flow'] { --nav-layer-ink: var(--layer-flow); }

@@ -161,7 +161,12 @@ function ItemLink({
       <span className="v4mega-text">
         <span className="v4mega-label">
           {item.label}
-          {item.count != null && <span className="v4mega-chip">·{item.count}</span>}
+          {item.count != null && (
+            <span className="v4mega-chip">
+              {item.count}
+              {item.unit ? <span className="v4mega-unit"> {item.unit}</span> : null}
+            </span>
+          )}
           {item.slot && (
             <span className="v4mega-soon" title={item.title ?? 'the surface is owed'}>
               slot
@@ -578,6 +583,9 @@ export default function Nav() {
 
   /* the panels' flattened item counts (roving index bases) */
   const productItemCount = NAV_PRODUCT.reduce((n, g) => n + g.items.length, 0)
+  /* the map sits LAST in the Reference panel now, so it takes the index after
+     every column row (roving focus follows reading order) */
+  const refItemCount = NAV_REFERENCE.cols.reduce((n, g) => n + g.items.length, 0)
 
   return (
     <>
@@ -688,16 +696,6 @@ export default function Nav() {
             >
               {({ close, registerItem }) => (
                 <>
-                  <div className="v4mega-feat">
-                    <ItemLink
-                      item={NAV_REFERENCE.featured}
-                      className="v4mega-item v4mega-item--feat"
-                      onSelect={close}
-                      refCb={registerItem(0)}
-                      menuitem
-                      showDesc
-                    />
-                  </div>
                   <div className="v4mega-refcols">
                     {NAV_REFERENCE.cols.map((group, gi) => (
                       <div key={group.col} className="v4mega-col">
@@ -706,7 +704,7 @@ export default function Nav() {
                         </p>
                         {group.items.map((item, ii) => {
                           const flatIdx =
-                            1 + NAV_REFERENCE.cols.slice(0, gi).reduce((n, g) => n + g.items.length, 0) + ii
+                            NAV_REFERENCE.cols.slice(0, gi).reduce((n, g) => n + g.items.length, 0) + ii
                           return (
                             <div key={item.label} className="v4mega-cell">
                               <ItemLink
@@ -722,6 +720,19 @@ export default function Nav() {
                         })}
                       </div>
                     ))}
+                  </div>
+                  {/* the map closes the panel · a full-width band ABOVE three
+                      dense columns left a third of the surface empty, and the
+                      map is a destination you take after reading, not before */}
+                  <div className="v4mega-rail v4mega-rail--ref">
+                    <ItemLink
+                      item={NAV_REFERENCE.featured}
+                      className="v4mega-item v4mega-item--feat"
+                      onSelect={close}
+                      refCb={registerItem(refItemCount)}
+                      menuitem
+                      showDesc
+                    />
                   </div>
                 </>
               )}

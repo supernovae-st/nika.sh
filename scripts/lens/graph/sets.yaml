@@ -685,20 +685,26 @@ nav:
     cols:
       - col: What you write
         items:
-          - { ref: "set:words", label: The language, icon: book, desc: "Every key you can type" }
-          - { ref: "set:verbs", label: The four verbs, icon: verbs, desc: "infer, exec, invoke, agent" }
-          - { ref: "set:types", label: Types, icon: book, desc: "The shapes a value takes" }
+          - { ref: "set:words", label: The language, icon: book, desc: "Every key you can type", unit: words }
+          - { ref: "set:verbs", label: The four verbs, icon: verbs, desc: "infer, exec, invoke, agent", unit: verbs }
+          # NOT set:types · that ref resolves to /language#types, a row buried in
+          # a 62-row register (the operator clicked it and landed at the page
+          # foot: « ça redirige vers n'importe quoi »). /types is worse still —
+          # a family root whose own opener says « this surface fills when the
+          # resync brings it ». The word HAS a room, like every declared word,
+          # and the room carries its definition, its declarations and its usage.
+          - { label: Types, to: /language/types, icon: book, desc: "The shapes a value takes" }
       - col: When it runs
         items:
           - { ref: "layer:flow", label: The flow, icon: run, desc: "How a file becomes work" }
-          - { ref: "set:error-codes", label: Error codes, icon: book, desc: "Every refusal has a name" }
+          - { ref: "set:error-codes", label: Error codes, icon: book, desc: "Every refusal has a name", unit: codes }
           - { ref: "layer:boundary", label: The boundary, icon: shield, desc: "What a run may touch" }
           - { ref: "layer:proof", label: The proof, icon: shield, desc: "The trace a run leaves" }
       - col: What it can touch
         items:
-          - { ref: "set:builtins", label: Standard library, icon: tiles, desc: "Tools it calls, no install" }
-          - { ref: "set:providers", label: Providers, icon: tiles, desc: "Models to point it at" }
-          - { ref: "set:templates", label: Templates, icon: tiles, desc: "Files to start from" }
+          - { ref: "set:builtins", label: Standard library, icon: tiles, desc: "Tools it calls, no install", unit: tools }
+          - { ref: "set:providers", label: Providers, icon: tiles, desc: "Models to point it at", unit: providers }
+          - { ref: "set:templates", label: Templates, icon: tiles, desc: "Files to start from", unit: files }
           - { label: The spec at a glance, to: /spec, icon: book, desc: "The contract, on one page" }
   footer:
     # columns 1-3 = the reference cols + these extras appended (the footer is
