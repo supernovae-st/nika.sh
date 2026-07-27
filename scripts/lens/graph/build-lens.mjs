@@ -1067,6 +1067,14 @@ function resolveNavItem(item) {
   if (!node) throw new Error(`nav ref not in the lens: ${item.ref}`)
   const out = { label: item.label }
   if (item.icon) out.icon = item.icon
+  /* the authored second line survives the ref resolution. It used to be
+     dropped here, which is why eleven Reference rows shipped as a bare
+     two-word label while the sibling Product panel (whose items carry no ref)
+     kept every one of its descs — the panels differed by an accident of this
+     branch, not by intent. */
+  if (item.desc) out.desc = item.desc
+  /* the LAYER the destination belongs to, so a menu row can wear the colour of
+     the page it opens · derived from the graph, never authored twice */
   if (node.kind === 'set') {
     const setDecl = S.sets.sets.find((s) => `set:${s.id}` === item.ref)
     const page = setDecl.surface === 'rooms'
@@ -1080,8 +1088,10 @@ function resolveNavItem(item) {
       out.to = page
       out.count = nodes.filter((x) => x.kind === 'member' && x.set === setDecl.id).length
       out._set = setDecl.id
+      if (setDecl.layer) out.layer = setDecl.layer
     }
   } else if (node.kind === 'layer') {
+    out.layer = String(item.ref).slice('layer:'.length)
     if (node.exists) out.to = node.url
     else {
       out.soon = true
@@ -1137,13 +1147,30 @@ function subordinateCollidingDoors(panel, cols) {
 }
 subordinateCollidingDoors('nav.reference', navReference.cols)
 subordinateCollidingDoors('nav.product', navProduct)
+/* the footer takes the panel's rows STRIPPED of their second line. The panel
+   is the curated door and teaches what is behind each click; the footer is the
+   complete card, five dense columns where a desc per row would triple its
+   height and teach nothing a reader who scrolled that far still needs. Same
+   items, two registers. */
+const bare = (item) => {
+  const { desc: _desc, layer: _layer, ...rest } = item
+  return rest
+}
+/* THE FOOTER DOES NOT RE-SERIALIZE THE PANEL. Its first three columns ARE the
+   Reference columns plus a few extras, and emitting them whole meant shipping
+   eleven rows twice in the entry chunk — the same labels, urls and counts, at
+   ~1.1KB. The footer now names the panel column it extends and the consumer
+   composes, so there is one serialization and one truth. The rows still arrive
+   stripped: the panel is the curated door and teaches what is behind a click,
+   the footer is the complete card where a desc per row would triple its
+   height. Same items, two registers. */
 const footerCols = [
-  ...navReference.cols.map((c) => ({
+  ...navReference.cols.map((c, i) => ({
     kick: c.col,
-    items: [
-      ...c.items,
-      ...S.sets.nav.footer.extras.filter((e) => e.col === c.col).map((e) => resolveNavItem(e.item)),
-    ],
+    fromPanel: i,
+    items: S.sets.nav.footer.extras
+      .filter((e) => e.col === c.col)
+      .map((e) => bare(resolveNavItem(e.item))),
   })),
   ...S.sets.nav.footer.authored.map((c) => ({ kick: c.col, items: c.items.map(resolveNavItem) })),
 ]
@@ -1164,6 +1191,8 @@ export interface NavItem {
   sub?: boolean
   /** the derived register count (a one-token receipt · rendered as a chip) */
   count?: number
+  /** the lens layer the destination belongs to — the row wears its colour */
+  layer?: string
   /** the surface has not landed yet (wave slot or a WO ahead) */
   soon?: boolean
   slot_wave?: string | null
@@ -1184,7 +1213,20 @@ export const NAV_DOCTRINE = ${JSON.stringify(S.sets.nav.product.doctrine_line, n
 export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: NavItem[] }[] } =
   ${JSON.stringify(navReference, null, 2)}
 
-export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = ${JSON.stringify(footerCols, null, 2)}
+/** the footer row set for a column · the first three EXTEND the Reference
+ *  panel (serialized once), the rest are authored. One composer, so the
+ *  component and its gates can never disagree about what the footer holds. */
+export const footerRows = (col: { fromPanel?: number; items: NavItem[] }): NavItem[] =>
+  col.fromPanel == null
+    ? col.items
+    : [
+        ...(NAV_REFERENCE.cols[col.fromPanel]?.items ?? []).map(
+          ({ desc: _d, layer: _l, ...rest }) => rest,
+        ),
+        ...col.items,
+      ]
+
+export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }[] = ${JSON.stringify(footerCols, null, 2)}
 
 export const FOOTER_MACHINE: { label: string; href: string }[] =
   ${JSON.stringify(S.sets.nav.footer.machine_row, null, 2)}

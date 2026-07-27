@@ -147,6 +147,10 @@ function ItemLink({
   /* an anchored sub-door (one path, one door · §4.11): the row visibly
      belongs to the door above — indented, § glyph, muted icon box */
   const subClass = item.sub ? ' v4mega-item--subdoor' : ''
+  /* the row wears the LAYER of the page it opens, so the menu is a small
+     legend of the ontology and a click lands on a page of the same colour.
+     Derived in the lens (nav item → its set's or layer's id), never authored. */
+  const layer = item.layer ? { 'data-layer': item.layer } : {}
   const inner = (
     <>
       {item.icon ? (
@@ -186,7 +190,14 @@ function ItemLink({
   const href = item.external && item.label === 'Docs' ? DOCS : item.external && item.label === 'GitHub' ? REPO : item.href
   if (item.to) {
     return (
-      <Link ref={refCb} to={item.to} role={menuitem ? 'menuitem' : undefined} className={`${className}${subClass}`} onClick={onSelect}>
+      <Link
+        ref={refCb}
+        to={item.to}
+        role={menuitem ? 'menuitem' : undefined}
+        className={`${className}${subClass}`}
+        onClick={onSelect}
+        {...layer}
+      >
         {inner}
       </Link>
     )
@@ -666,7 +677,7 @@ export default function Nav() {
               )}
             </MegaDisclosure>
 
-            {/* Reference ▾ · the Lens panel (generated · chips, no descs) */}
+            {/* Reference ▾ · the Lens panel (generated · a chip, a colour, a second line) */}
             <MegaDisclosure
               label="Reference"
               open={openPanel === 'reference'}
@@ -704,6 +715,7 @@ export default function Nav() {
                                 onSelect={close}
                                 refCb={registerItem(flatIdx)}
                                 menuitem
+                                showDesc
                               />
                             </div>
                           )

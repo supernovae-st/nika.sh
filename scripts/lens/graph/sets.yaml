@@ -652,13 +652,13 @@ nav:
           - { label: Use cases, to: /use-cases, icon: tiles,
               desc: "Real plans, reviewable and bound" }
           - { label: The library, to: /library, icon: book,
-              desc: "Real files, recorded runs, honest reads" }
+              desc: "Real files, recorded runs" }
           - { label: Manifesto, to: /manifesto, icon: butterfly,
-              desc: "The drum of liberation · 8 languages" }
+              desc: "The drum, in 8 languages" }
       - col: Try it
         items:
           - { label: Playground, to: /play, icon: terminal,
-              desc: "Write Nika in the browser, checked live" }
+              desc: "Write it live in the browser" }
           - { label: Learn it in 5 min, to: /learn, icon: book,
               desc: "One file, line by line" }
           - { label: Install, to: /install, icon: run,
@@ -669,25 +669,37 @@ nav:
               desc: "Yours, converted to a file" }
     doctrine_line: { label: "Every claim on this site derives from the spec", to: /map }
   reference:
-    featured: { label: The map, desc: "every page, one graph", to: /map, icon: tiles }
+    # THE HEADS ANSWER A QUESTION, they do not name our ontology. « The reach »
+    # is a canonical LAYER here and means nothing to a visitor — the layer's own
+    # opener says « reach is what a workflow can touch », so that is what the
+    # head says now. The sibling Product panel has read this way from the start
+    # (« Why nika » · « Try it ») and Reference was the one left behind.
+    #
+    # Every row carries a desc for the same reason: a two-word abstract label
+    # asks a reader to guess what is behind the click, and eight of these labels
+    # open with « The », so the distinguishing word never leads. The LABEL stays
+    # the page's canonical name (the hubs call themselves « The boundary » and
+    # « The proof »; a menu that renamed them would teach two names for one
+    # page) and the second line is what makes the row scannable.
+    featured: { label: The map, desc: "Every page, and how they connect", to: /map, icon: tiles }
     cols:
-      - col: The file
+      - col: What you write
         items:
-          - { ref: "set:words", label: The language, icon: book }
-          - { ref: "set:verbs", label: The four verbs, icon: verbs }
-          - { ref: "set:types", label: Types, icon: book }
-      - col: The run
+          - { ref: "set:words", label: The language, icon: book, desc: "Every key you can type" }
+          - { ref: "set:verbs", label: The four verbs, icon: verbs, desc: "infer, exec, invoke, agent" }
+          - { ref: "set:types", label: Types, icon: book, desc: "The shapes a value takes" }
+      - col: When it runs
         items:
-          - { ref: "layer:flow", label: The flow, icon: run }
-          - { ref: "set:error-codes", label: Error codes, icon: book }
-          - { ref: "layer:boundary", label: The boundary, icon: shield }
-          - { ref: "layer:proof", label: The proof, icon: shield }
-      - col: The reach
+          - { ref: "layer:flow", label: The flow, icon: run, desc: "How a file becomes work" }
+          - { ref: "set:error-codes", label: Error codes, icon: book, desc: "Every refusal has a name" }
+          - { ref: "layer:boundary", label: The boundary, icon: shield, desc: "What a run may touch" }
+          - { ref: "layer:proof", label: The proof, icon: shield, desc: "The trace a run leaves" }
+      - col: What it can touch
         items:
-          - { ref: "set:builtins", label: Standard library, icon: tiles }
-          - { ref: "set:providers", label: Providers, icon: tiles }
-          - { ref: "set:templates", label: Templates, icon: tiles }
-          - { label: The spec at a glance, to: /spec, icon: book }
+          - { ref: "set:builtins", label: Standard library, icon: tiles, desc: "Tools it calls, no install" }
+          - { ref: "set:providers", label: Providers, icon: tiles, desc: "Models to point it at" }
+          - { ref: "set:templates", label: Templates, icon: tiles, desc: "Files to start from" }
+          - { label: The spec at a glance, to: /spec, icon: book, desc: "The contract, on one page" }
   footer:
     # columns 1-3 = the reference cols + these extras appended (the footer is
     # the COMPLETE card where the panel is the curated one) · 4-5 authored
@@ -695,12 +707,12 @@ nav:
       # (The spec door lives once: the panel's « The spec at a glance » row
       #  mirrors into The reach — a second /spec label was the same
       #  two-doors-one-path confusion the §4.11 ratchet now refuses)
-      - { col: The run, item: { label: Changelog, to: /changelog } }
-      - { col: The reach, item: { label: Use cases, to: /use-cases } }
+      - { col: When it runs, item: { label: Changelog, to: /changelog } }
+      - { col: What it can touch, item: { label: Use cases, to: /use-cases } }
       # the registry's on-site room landed with /integrations — the owed
       # surface is paid, the slot dies (§4.11: one door, one path)
-      - { col: The reach, item: { label: Registry, to: /integrations/registry } }
-      - { col: The reach, item: { label: Integrations, to: /integrations } }
+      - { col: What it can touch, item: { label: Registry, to: /integrations/registry } }
+      - { col: What it can touch, item: { label: Integrations, to: /integrations } }
     authored:
       - col: Learn · build
         items:

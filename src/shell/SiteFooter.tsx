@@ -5,7 +5,16 @@ import { prefersLiteData } from '../lib/save-data'
 import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
 import type { FunnelEvent } from '../lib/track'
 import { variantsFor } from '../lib/i18n'
-import { FOOTER_COLS, FOOTER_MACHINE, type NavItem } from '../content/lens-nav.generated'
+/* the first three footer columns EXTEND the Reference panel's, so the panel is
+   serialized once and composed at render rather than shipped twice in the
+   entry chunk. `footerRows` is emitted beside the data so this component and
+   its gates read the footer through the same composer. */
+import {
+  FOOTER_COLS,
+  FOOTER_MACHINE,
+  footerRows,
+  type NavItem,
+} from '../content/lens-nav.generated'
 import '../sections/v4-home.css'
 
 /* ─── SiteFooter · the ONE footer, every route (F7) ───────────────────────────
@@ -152,7 +161,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
             <div className="sitefoot-col" key={col.kick}>
               <p className="sitefoot-kick">{col.kick}</p>
               <ul className="sitefoot-list">
-                {col.items.map((l) => (
+                {footerRows(col).map((l) => (
                   <li key={l.label}>
                     <FooterLink item={l} />
                   </li>

@@ -569,6 +569,13 @@
   font-size: 13px;
   line-height: 1.35;
   color: var(--v4-text-dim);
+  /* a second line that breaks « Write it in the browser, / checked live »
+     reads as a stumble, so `balance` splits the halves evenly when a wrap is
+     unavoidable. The cap keeps a long desc from stealing the column next door
+     — measured against the real column (234px) rather than guessed: at 36ch
+     the CAP was the thing forcing the wrap, not the column. */
+  text-wrap: pretty;
+  max-width: 30ch;
 }
 
 /* ── the bottom rail · one slim hairline-separated row spanning both columns.
@@ -871,7 +878,11 @@ button.v4sheet-search {
 
 /* the wide panel · featured row above three columns */
 .v4mega--wide {
-  width: 760px;
+  /* 760 → 900: three columns of two-line rows need ~290px each. Measured, not
+     guessed — at 760 the column gave the description 177px, so « The contract,
+     on one page » broke in two and the panel read as a stack of fragments.
+     Capped to the viewport so a narrow window still lands inside it. */
+  width: min(900px, calc(100vw - 32px));
   grid-template-columns: 1fr;
   gap: 4px;
 }
@@ -895,14 +906,42 @@ button.v4sheet-search {
 .v4mega-refcols {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 4px 12px;
+  gap: 4px 18px;
 }
 
-/* reference rows · single-line label register (no desc slab) */
+/* reference rows · a label, a receipt, and the line that makes it scannable.
+   These shipped as bare two-word labels while the sibling Product panel gave
+   every row a second line — a difference nobody chose, so the register read as
+   a poem (« The map · The flow · The proof ») instead of a menu. */
 .v4mega-item--ref {
-  align-items: center;
-  padding-block: 7px;
+  align-items: flex-start;
+  padding-block: 8px;
 }
+
+/* ── the row wears the colour of the page it opens ───────────────────────────
+   Each Reference row carries the LENS LAYER of its destination (derived), and
+   the layer hues are the ones the hub pages already wear. So the panel is a
+   small legend: /errors is refusals-red here and refusals-red when you land,
+   the boundary is orange in both places. Spent on the icon tile only — the
+   label stays ink, because colour that lands everywhere stops meaning
+   anything. */
+.v4mega-item[data-layer] .v4mega-icobox {
+  border-color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-line)) 34%, var(--v4-line));
+  color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-text-dim)) 62%, var(--v4-text-dim));
+}
+.v4mega-item[data-layer]:hover .v4mega-icobox,
+.v4mega-item[data-layer]:focus-visible .v4mega-icobox {
+  color: var(--nav-layer-ink, var(--v4-accent));
+  border-color: color-mix(in oklch, var(--nav-layer-ink, var(--v4-line-strong)) 58%, transparent);
+  background: color-mix(in oklch, var(--nav-layer-ink, var(--v4-text)) 12%, transparent);
+}
+.v4mega-item[data-layer='shape'] { --nav-layer-ink: var(--layer-shape); }
+.v4mega-item[data-layer='flow'] { --nav-layer-ink: var(--layer-flow); }
+.v4mega-item[data-layer='acts'] { --nav-layer-ink: var(--layer-acts); }
+.v4mega-item[data-layer='reach'] { --nav-layer-ink: var(--layer-reach); }
+.v4mega-item[data-layer='boundary'] { --nav-layer-ink: var(--layer-boundary); }
+.v4mega-item[data-layer='refusals'] { --nav-layer-ink: var(--layer-refusals); }
+.v4mega-item[data-layer='proof'] { --nav-layer-ink: var(--layer-proof); }
 
 /* the count chip · a one-token receipt, derived, never a phrase */
 .v4mega-chip {

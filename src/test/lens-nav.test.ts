@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
   FOOTER_COLS,
+  footerRows,
   FOOTER_MACHINE,
   NAV_BAR_LINKS,
   NAV_DOCTRINE,
@@ -30,7 +31,7 @@ const allItems: { where: string; item: NavItem }[] = [
   ...NAV_PRODUCT.flatMap((g) => g.items.map((item) => ({ where: `product/${g.col}`, item }))),
   { where: 'reference/featured', item: NAV_REFERENCE.featured },
   ...NAV_REFERENCE.cols.flatMap((g) => g.items.map((item) => ({ where: `reference/${g.col}`, item }))),
-  ...FOOTER_COLS.flatMap((g) => g.items.map((item) => ({ where: `footer/${g.kick}`, item }))),
+  ...FOOTER_COLS.flatMap((g) => footerRows(g).map((item) => ({ where: `footer/${g.kick}`, item }))),
 ]
 
 describe('lens-nav · one path, one door (§4.11 ratchet)', () => {
@@ -96,20 +97,58 @@ describe('lens-nav · every rendered link resolves', () => {
 })
 
 describe('lens-nav · the §4.11 scannability law holds', () => {
-  it('descs live ONLY on the product panel and the featured row', () => {
+  /* SUPERSEDED 2026-07-27, and deliberately so. This gate used to assert the
+     OPPOSITE: descs on the Product panel only, none in Reference, on the
+     reading that a dense index scans faster naked. Shipped, it did not — the
+     operator's verdict on the rendered panel was that it is « moche et pas
+     compréhensible », and looking at it as a visitor rather than as its author
+     makes the reason plain:
+
+       · the heads named our ontology (« The reach »), not the reader's question
+       · eight of eleven labels open with « The », so the word that
+         distinguishes them never leads
+       · the counts carried no unit — 62 what?
+       · one row had a second line and ten did not, which reads as broken
+         rather than as restraint
+
+     A two-word abstract label is not scannable, it is unguessable. So the law
+     inverts: every Reference row carries its second line, and the FOOTER keeps
+     none, because the footer is the complete card where the panel is the
+     curated one. The original reading is preserved above rather than deleted. */
+  it('every Reference row carries its second line, the footer carries none', () => {
     for (const g of NAV_REFERENCE.cols) {
       for (const item of g.items) {
-        expect(item.desc, `reference/${g.col}/${item.label} carries a desc`).toBeUndefined()
+        expect(item.desc, `reference/${g.col}/${item.label} has no desc`).toBeTruthy()
       }
     }
     for (const g of FOOTER_COLS) {
-      for (const item of g.items) {
+      for (const item of footerRows(g)) {
         expect(item.desc, `footer/${g.kick}/${item.label} carries a desc`).toBeUndefined()
       }
     }
     expect(NAV_REFERENCE.featured.desc).toBeTruthy()
     for (const g of NAV_PRODUCT) {
       for (const item of g.items) expect(item.desc, `product ${item.label}`).toBeTruthy()
+    }
+  })
+
+  /* THE HEADS ANSWER A QUESTION. « The reach » is a canonical layer id and
+     means nothing to a visitor; a head that opens with « The » is naming our
+     taxonomy rather than the reader's intent. */
+  it('no panel column head names our ontology', () => {
+    for (const g of [...NAV_REFERENCE.cols.map((c) => c.col), ...NAV_PRODUCT.map((c) => c.col)]) {
+      expect(g.startsWith('The '), `the column head "${g}" names our taxonomy`).toBe(false)
+    }
+  })
+
+  /* the row wears the colour of the page it opens · a layer outside the
+     canonical seven would tint a row with a hue no hub page wears */
+  it('every layer a row carries is one the lens declares', () => {
+    const LAYERS = ['shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof']
+    const tinted = NAV_REFERENCE.cols.flatMap((g) => g.items).filter((i) => i.layer)
+    expect(tinted.length, 'no Reference row carries its layer').toBeGreaterThan(6)
+    for (const item of tinted) {
+      expect(LAYERS, `${item.label} claims layer "${item.layer}"`).toContain(item.layer)
     }
   })
 
@@ -151,7 +190,7 @@ describe('lens-nav · the §4.11 scannability law holds', () => {
 
 describe('lens-nav · the footer completes what the panel curates (§4.12)', () => {
   it('every reference panel item appears in the footer columns', () => {
-    const footerLabels = new Set(FOOTER_COLS.flatMap((c) => c.items.map((i) => i.label)))
+    const footerLabels = new Set(FOOTER_COLS.flatMap((c) => footerRows(c).map((i) => i.label)))
     for (const item of NAV_REFERENCE.cols.flatMap((c) => c.items)) {
       expect(footerLabels.has(item.label), `${item.label} missing from footer`).toBe(true)
     }
@@ -164,7 +203,7 @@ describe('lens-nav · the footer completes what the panel curates (§4.12)', () 
        site (registry's owed slot paid on-site · timeline · sitemap.xml
        joins the machine twins). Still one screen, still scannable. */
     expect(FOOTER_COLS.length).toBe(5)
-    const total = FOOTER_COLS.reduce((n, c) => n + c.items.length, 0)
+    const total = FOOTER_COLS.reduce((n, c) => n + footerRows(c).length, 0)
     expect(total).toBeGreaterThanOrEqual(22)
     expect(total).toBeLessThanOrEqual(40)
     expect(FOOTER_MACHINE.length).toBe(5)

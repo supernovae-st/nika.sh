@@ -18,6 +18,8 @@ export interface NavItem {
   sub?: boolean
   /** the derived register count (a one-token receipt · rendered as a chip) */
   count?: number
+  /** the lens layer the destination belongs to — the row wears its colour */
+  layer?: string
   /** the surface has not landed yet (wave slot or a WO ahead) */
   soon?: boolean
   slot_wave?: string | null
@@ -68,13 +70,13 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
       {
         "label": "The library",
         "icon": "book",
-        "desc": "Real files, recorded runs, honest reads",
+        "desc": "Real files, recorded runs",
         "to": "/library"
       },
       {
         "label": "Manifesto",
         "icon": "butterfly",
-        "desc": "The drum of liberation · 8 languages",
+        "desc": "The drum, in 8 languages",
         "to": "/manifesto"
       }
     ]
@@ -85,7 +87,7 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
       {
         "label": "Playground",
         "icon": "terminal",
-        "desc": "Write Nika in the browser, checked live",
+        "desc": "Write it live in the browser",
         "to": "/play"
       },
       {
@@ -126,84 +128,105 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
   "featured": {
     "label": "The map",
     "icon": "tiles",
-    "desc": "every page, one graph",
+    "desc": "Every page, and how they connect",
     "to": "/map"
   },
   "cols": [
     {
-      "col": "The file",
+      "col": "What you write",
       "items": [
         {
           "label": "The language",
           "icon": "book",
+          "desc": "Every key you can type",
           "to": "/language",
-          "count": 62
+          "count": 62,
+          "layer": "shape"
         },
         {
           "label": "The four verbs",
           "icon": "verbs",
+          "desc": "infer, exec, invoke, agent",
           "to": "/verbs",
-          "count": 4
+          "count": 4,
+          "layer": "acts"
         },
         {
           "label": "Types",
           "icon": "book",
+          "desc": "The shapes a value takes",
           "to": "/language#types",
           "count": 10,
+          "layer": "shape",
           "sub": true
         }
       ]
     },
     {
-      "col": "The run",
+      "col": "When it runs",
       "items": [
         {
           "label": "The flow",
           "icon": "run",
+          "desc": "How a file becomes work",
+          "layer": "flow",
           "to": "/flow"
         },
         {
           "label": "Error codes",
           "icon": "book",
+          "desc": "Every refusal has a name",
           "to": "/errors",
-          "count": 96
+          "count": 96,
+          "layer": "refusals"
         },
         {
           "label": "The boundary",
           "icon": "shield",
+          "desc": "What a run may touch",
+          "layer": "boundary",
           "to": "/boundary"
         },
         {
           "label": "The proof",
           "icon": "shield",
+          "desc": "The trace a run leaves",
+          "layer": "proof",
           "to": "/proof"
         }
       ]
     },
     {
-      "col": "The reach",
+      "col": "What it can touch",
       "items": [
         {
           "label": "Standard library",
           "icon": "tiles",
+          "desc": "Tools it calls, no install",
           "to": "/tools",
-          "count": 28
+          "count": 28,
+          "layer": "reach"
         },
         {
           "label": "Providers",
           "icon": "tiles",
+          "desc": "Models to point it at",
           "to": "/providers",
-          "count": 17
+          "count": 17,
+          "layer": "reach"
         },
         {
           "label": "Templates",
           "icon": "tiles",
+          "desc": "Files to start from",
           "to": "/templates",
-          "count": 10
+          "count": 10,
+          "layer": "reach"
         },
         {
           "label": "The spec at a glance",
           "icon": "book",
+          "desc": "The contract, on one page",
           "to": "/spec"
         }
       ]
@@ -211,55 +234,29 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
   ]
 }
 
-export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
+/** the footer row set for a column · the first three EXTEND the Reference
+ *  panel (serialized once), the rest are authored. One composer, so the
+ *  component and its gates can never disagree about what the footer holds. */
+export const footerRows = (col: { fromPanel?: number; items: NavItem[] }): NavItem[] =>
+  col.fromPanel == null
+    ? col.items
+    : [
+        ...(NAV_REFERENCE.cols[col.fromPanel]?.items ?? []).map(
+          ({ desc: _d, layer: _l, ...rest }) => rest,
+        ),
+        ...col.items,
+      ]
+
+export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }[] = [
   {
-    "kick": "The file",
-    "items": [
-      {
-        "label": "The language",
-        "icon": "book",
-        "to": "/language",
-        "count": 62
-      },
-      {
-        "label": "The four verbs",
-        "icon": "verbs",
-        "to": "/verbs",
-        "count": 4
-      },
-      {
-        "label": "Types",
-        "icon": "book",
-        "to": "/language#types",
-        "count": 10,
-        "sub": true
-      }
-    ]
+    "kick": "What you write",
+    "fromPanel": 0,
+    "items": []
   },
   {
-    "kick": "The run",
+    "kick": "When it runs",
+    "fromPanel": 1,
     "items": [
-      {
-        "label": "The flow",
-        "icon": "run",
-        "to": "/flow"
-      },
-      {
-        "label": "Error codes",
-        "icon": "book",
-        "to": "/errors",
-        "count": 96
-      },
-      {
-        "label": "The boundary",
-        "icon": "shield",
-        "to": "/boundary"
-      },
-      {
-        "label": "The proof",
-        "icon": "shield",
-        "to": "/proof"
-      },
       {
         "label": "Changelog",
         "to": "/changelog"
@@ -267,31 +264,9 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
     ]
   },
   {
-    "kick": "The reach",
+    "kick": "What it can touch",
+    "fromPanel": 2,
     "items": [
-      {
-        "label": "Standard library",
-        "icon": "tiles",
-        "to": "/tools",
-        "count": 28
-      },
-      {
-        "label": "Providers",
-        "icon": "tiles",
-        "to": "/providers",
-        "count": 17
-      },
-      {
-        "label": "Templates",
-        "icon": "tiles",
-        "to": "/templates",
-        "count": 10
-      },
-      {
-        "label": "The spec at a glance",
-        "icon": "book",
-        "to": "/spec"
-      },
       {
         "label": "Use cases",
         "to": "/use-cases"
