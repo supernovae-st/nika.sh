@@ -13,6 +13,7 @@ import type { WordUsage } from '../content/language-usage.generated'
 import { WORD_GLOSS } from '../content/language-meta'
 import { declProse, wordVoice } from '../lib/language-prose-access'
 import { useWordProse, proseIslandId } from '../lib/use-word-prose'
+import { roleOf } from '../lib/word-role'
 import { sourcesForWord } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
 import { WORD_ACCEPTS, WORD_CHAPTERS, CHAPTER_FILES } from '../content/room-rails.generated'
@@ -125,6 +126,9 @@ export function Component() {
   const required = hit ? hit.decls.filter((d) => d.required) : []
   const types = hit ? [...new Set(hit.decls.map((d) => d.type).filter(Boolean))] : []
   const prose = useWordProse(`word-${word}`, hit ? [hit.word] : [])
+  /* the family the SPEC puts this word in — the same projection the code
+     panel colours by, said out loud instead of only tinted */
+  const role = hit ? roleOf(hit.word) : null
   const rawVoice = hit ? (wordVoice(prose, hit.word) || WORD_GLOSS[hit.word]) : undefined
   /* glosses are clause-style — the lede needs a sentence end */
   const voice = rawVoice && !/[.!?]$/.test(rawVoice.trim()) ? `${rawVoice.trim()}.` : rawVoice
@@ -286,6 +290,16 @@ export function Component() {
                     {hit.decls.length} declaration{hit.decls.length > 1 ? 's' : ''}
                   </span>
                 </div>
+                {role && (
+                  <p className="wd-role" data-role={role.role}>
+                    {role.mark === 'glyph' && (
+                      <span className="wd-role-mark" aria-hidden>
+                        ⛊
+                      </span>
+                    )}
+                    <b>{role.label}</b> · {role.says}
+                  </p>
+                )}
                 <p className="td-gloss">
                   Descriptions are the schema's own; the deeper invariants (value languages and
                   regexes) ride the same projection. A miss is a <code>nika check</code> finding{' '}

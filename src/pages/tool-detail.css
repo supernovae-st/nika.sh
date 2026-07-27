@@ -233,3 +233,52 @@ a.td-chip:focus-visible {
   padding: 2px 8px;
   font-size: 11px;
 }
+
+/* ── the word's semantic FAMILY, said out loud (the role wave) ────────────────
+   The spec classifies each declared word into at most one role, and the code
+   panel has coloured by it for a while: `permits` reads as the boundary,
+   `with` as the wiring, `jitter` as failure grammar. The register never SAID
+   so, which left the tint unexplained — a reader saw a colour and had to
+   infer the family.
+
+   The hues here are the panel's own tokens, not new ones. That is the point:
+   the same fact wears the same colour whether you meet it in a YAML file, in
+   a hover card, or in the room that teaches the word. No role invents a hue
+   (the seven layer hues already collide with the four verb hues), so boundary
+   also carries a SHIELD — a glyph survives forced-colors and a monochrome
+   terminal the way a hue cannot. */
+.wd-role {
+  margin: 12px 0 0;
+  padding-left: 10px;
+  border-left: 2px solid var(--wd-role-ink, var(--v4-line));
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 72%, transparent);
+  max-width: 62ch;
+}
+.wd-role b {
+  color: var(--wd-role-ink, var(--v4-text));
+  font-weight: 600;
+}
+.wd-role[data-role='boundary'] {
+  --wd-role-ink: var(--cf-key);
+}
+.wd-role[data-role='wire'] {
+  --wd-role-ink: var(--cf-ref);
+}
+.wd-role[data-role='fail'] {
+  --wd-role-ink: color-mix(in srgb, var(--danger) 78%, var(--v4-text));
+}
+.wd-role-mark {
+  margin-right: 0.4ch;
+  opacity: 0.74;
+}
+
+/* forced colors · the glyph carries the boundary, the hue is the system's */
+@media (forced-colors: active) {
+  .wd-role,
+  .wd-role b {
+    color: CanvasText;
+    border-left-color: CanvasText;
+  }
+}
