@@ -20,6 +20,8 @@ export interface NavItem {
   count?: number
   /** what the count counts — authored, so the chip reads « 62 words » */
   unit?: string
+  /** the HUD readout on the featured row · [n, noun] pairs, derived */
+  stats?: [number, string][]
   /** the lens layer the destination belongs to — the row wears its colour */
   layer?: string
   /** the surface has not landed yet (wave slot or a WO ahead) */
@@ -131,7 +133,21 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
     "label": "The map",
     "icon": "tiles",
     "desc": "Every page, and how they connect",
-    "to": "/map"
+    "to": "/map",
+    "stats": [
+      [
+        7,
+        "layers"
+      ],
+      [
+        20,
+        "registers"
+      ],
+      [
+        351,
+        "members"
+      ]
+    ]
   },
   "cols": [
     {

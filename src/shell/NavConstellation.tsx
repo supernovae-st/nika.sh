@@ -26,12 +26,18 @@ import { prefersLiteData } from '../lib/save-data'
 const DEPTH = 1.15 /* how far the seven layers stand apart along z */
 const FOV = 2.6 /* the smaller, the stronger the perspective */
 const TURN = 0.000085 /* radians per ms · a full turn in roughly two minutes */
-/* the rail is WIDE and SHALLOW, so x and y take their own scales: one
-   min(w,h) made a 60px smudge in a 1180px band. A wide, low disc reads as a
-   graph seen edge-on, which is exactly what it is. */
-const SPAN_X = 0.2 /* of the rail's width */
-const SPAN_Y = 0.44 /* of the rail's height */
-const AT_X = 0.69 /* the disc sits right, the label reads left */
+/* THE BAND IS WIDE AND SHALLOW, so x and y take their own scales — one
+   min(w,h) drew a 60px smudge in a 1180px strip. And the disc must fit WHOLE:
+   at the previous sizing the perspective pushed near stars past the band's
+   floor and the drawing read as a crop. SPAN_Y is the half-height the nearest
+   star may reach, so the widest ring still lands inside. */
+const SPAN_X = 0.135 /* of the band's width */
+const SPAN_Y = 0.33 /* of the band's height · leaves room for the near ring */
+/* THE BAND READS IN THREE ZONES · title left, graph centre-right, readout far
+   right. The disc used to run to the panel's edge and the mask cut it into
+   arcs; sized and placed to clear BOTH neighbours, it reads whole. */
+const AT_X = 0.57
+const TILT = 0.34 /* a slight lean, so the rings read as rings and not lines */
 
 export default function NavConstellation() {
   const ref = useRef<HTMLCanvasElement | null>(null)
@@ -76,11 +82,15 @@ export default function NavConstellation() {
       for (let i = 0; i < NAV_STARS.length; i += 1) {
         const [x, y, layer] = NAV_STARS[i]
         const z0 = (layer / (STAR_LAYERS.length - 1) - 0.5) * DEPTH
+        /* turn about Y, then lean the whole sky so the seven rings read as
+           rings rather than as seven flat lines stacked in a row */
         const zr = x * sin + z0 * cos
         const xr = x * cos - z0 * sin
-        const k = FOV / (FOV + zr) /* the perspective divide */
+        const yt = y * Math.cos(TILT) - zr * Math.sin(TILT)
+        const zt = y * Math.sin(TILT) + zr * Math.cos(TILT)
+        const k = FOV / (FOV + zt) /* the perspective divide */
         const px = cx + xr * k * sx
-        const py = cy + y * k * sy
+        const py = cy + yt * k * sy
         if (px < -8 || px > w + 8 || py < -8 || py > h + 8) continue
         const depth = Math.max(0, Math.min(1, (k - 0.62) / 0.78))
         ctx.globalAlpha = 0.14 + depth * 0.58

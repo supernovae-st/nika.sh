@@ -1107,8 +1107,16 @@ function resolveNavItem(item) {
   return out
 }
 const navProduct = S.sets.nav.product.cols.map((c) => ({ col: c.col, items: c.items.map(resolveNavItem) }))
+/* the HUD readout · the graph counting ITSELF, so the panel's header is an
+   instrument reading rather than a caption. Three numbers, derived here: a
+   claim on this site that nobody typed. */
+const lensStats = [
+  [nodes.filter((n) => n.kind === 'layer').length, 'layers'],
+  [nodes.filter((n) => n.kind === 'set').length, 'registers'],
+  [nodes.filter((n) => n.kind === 'member').length, 'members'],
+]
 const navReference = {
-  featured: resolveNavItem(S.sets.nav.reference.featured),
+  featured: { ...resolveNavItem(S.sets.nav.reference.featured), stats: lensStats },
   cols: S.sets.nav.reference.cols.map((c) => ({ col: c.col, items: c.items.map(resolveNavItem) })),
 }
 
@@ -1197,6 +1205,8 @@ export interface NavItem {
   count?: number
   /** what the count counts — authored, so the chip reads « 62 words » */
   unit?: string
+  /** the HUD readout on the featured row · [n, noun] pairs, derived */
+  stats?: [number, string][]
   /** the lens layer the destination belongs to — the row wears its colour */
   layer?: string
   /** the surface has not landed yet (wave slot or a WO ahead) */
