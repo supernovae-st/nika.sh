@@ -630,3 +630,39 @@ Item 4.2a (`moonshot`) is independent of all of this and can go first or last.
 
 Commit trailer on every one of these:
 `Co-Authored-By: Nika 🦋 <nika@supernovae.studio>`
+
+---
+
+## Addendum · the npm door (2026-07-28, distribution wave)
+
+A twelfth surface family arrives with `v0.106.1`: the browser half of
+`nika check` ships as an npm package, `@supernovae-st/nika-check-wasm`,
+published by the engine's own release train with npm provenance (plan:
+engine `docs/plans/2026-07-28-check-wasm-npm-distribution.md`). Until the
+npm credential exists, every release still attaches the publish-ready
+tarball (`supernovae-st-nika-check-wasm-<ver>.tgz` + `.sha256`) — the
+asset truth precedes the registry truth, and door copy must respect that
+order.
+
+Per-door one-liners (same review rules as the eleven above — the operator
+merges each):
+
+- **Engine README (install section, after docker)** — asset-truth
+  phrasing, true from the minute the tag runs:
+  > Embedding the checker (browser · JS tooling)? Every release attaches
+  > the wasm half of `nika check` as an npm tarball — on the registry as
+  > `@supernovae-st/nika-check-wasm` — the same rows, codes and spans as
+  > the binary, judged before a token is spent. It powers
+  > [nika.sh/play](https://nika.sh/play).
+- **docs.nika.sh (an "embed the checker" page, new)** — the crate
+  README's Use-from-JavaScript section is the source (quickstart, Vite
+  `optimizeDeps.exclude`, Node bytes-init, the in-band `wasm:true` +
+  `legs:[]` honesty contract, AGPL §13 sentence). Do not restate: project.
+- **Site /play** — once the package is live on npm, the provenance chip
+  gains a sibling link « embed this checker » → the npm page. Gated on
+  the registry truth, not the asset truth (a link to a 404 package is a
+  lie with a hyperlink).
+- **Client README (nika-client)** — one cross-reference line in its
+  ecosystem table: the SDK talks to a serve daemon; the wasm package IS
+  the checker in-page — different seats, zero overlap, and naming both
+  kills the « which one do I install? » question.
