@@ -59,7 +59,16 @@ const CLEAN = [
  *  half steps were carrying nothing, again. */
 const CEILING_LITERALS = 493
 const CEILING_HALF = 188
-const CEILING_RELATIVE = 23
+/* 23 → 24 · 2026-07-28 · l'indicateur du chip éditable (node.generated.css).
+   Le ▾ vaut 0.85em, et c'est le seul endroit de l'arc où une unité RELATIVE est
+   le bon choix plutôt qu'une dette : cet indicateur doit suivre la taille du
+   chip qui le porte, quelle que soit la rampe que l'hôte y branche — un px
+   projeté le figerait et le désaccorderait sur toute surface qui ne binde pas
+   la rampe du canvas. Le ratchet existe contre les tailles de CORPS en em, qui
+   rendent l'échelle inauditable ; un glyphe décoratif de 0.85em dans une
+   pastille n'est pas ce cas-là. Un plafond qu'on lève sans dire quoi l'a acheté
+   est un plafond qui remonte pour toujours. */
+const CEILING_RELATIVE = 24
 
 const rel = (p: string) => p.slice(ROOT.length + 1)
 const count = (re: RegExp, src: string) => (src.match(re) ?? []).length
