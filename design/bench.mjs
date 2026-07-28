@@ -319,6 +319,39 @@ const ATOMS = [
    terminal and a forced-colors screen, so each carries a shape, not only a hue */
 const PILLS = STATES.map((st) => [st.label, st.id, st.form])
 
+/* ── LE PLAYGROUND · le DAG qu'on opère ───────────────────────────────────────
+   Pas une galerie de plus : un graphe réel qu'on fait tourner. C'est le
+   workflow `daily-brief` que le héros du site montre déjà — sept tâches,
+   quatre vagues, les mêmes arêtes que le fichier déclare. Le prendre ailleurs
+   aurait été inventer un exemple pour illustrer un système qui existe. */
+const DAG = {
+  nodes: [
+    { id: 'notes', verb: 'invoke', wave: 0, sub: ['args', 'path ./notes/today.md'], body: 'nika:read' },
+    { id: 'inbox', verb: 'invoke', wave: 0, sub: ['args', 'path ./notes/inbox.md'], body: 'nika:read' },
+    { id: 'calendar', verb: 'invoke', wave: 0, sub: ['args', 'path ./notes/calendar.md'], body: 'nika:read' },
+    { id: 'triage', verb: 'infer', wave: 1, sub: ['with', 'inbox'], body: '« Flag what is urgent »' },
+    { id: 'agenda', verb: 'infer', wave: 1, sub: ['with', 'calendar'], body: '« Plan the day around »' },
+    { id: 'draft', verb: 'infer', wave: 2, sub: ['with', 'notes · triage · agenda'], body: '« Write the brief »' },
+    { id: 'save', verb: 'invoke', wave: 3, sub: ['args', 'path ./brief.md'], body: 'nika:write' },
+  ],
+  edges: [
+    ['inbox', 'triage'], ['calendar', 'agenda'], ['notes', 'draft'],
+    ['triage', 'draft'], ['agenda', 'draft'], ['draft', 'save'],
+  ],
+}
+const WAVES = Math.max(...DAG.nodes.map((n) => n.wave)) + 1
+const ROW = {}
+for (const n of DAG.nodes) { ROW[n.wave] = (ROW[n.wave] ?? 0) + 1; n.row = ROW[n.wave] }
+
+const dagNode = (n) => `        <article class="nc pg-node" data-verb="${n.verb}" data-state="idle" data-id="${n.id}"
+          style="grid-column:${n.wave + 1};grid-row:${n.row}" tabindex="0" role="button"
+          aria-label="${n.id} · clique pour changer son état">
+          <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH[n.verb]}</span><span class="nc-id">${n.id}</span><span class="nc-verb">${n.verb}</span></div>
+          <div class="nc-sub"><span class="nc-k">${n.sub[0]}</span> ${esc(n.sub[1])}</div>
+          <div class="nc-body">${esc(n.body)}</div>
+          <div class="nc-why"><span class="pg-line"></span></div>
+        </article>`
+
 /* the coherence ledger · what the three surfaces actually share today. This is
    the table the bench exists to empty; every « non » is a place the surfaces
    may drift with nothing to stop them. */
@@ -384,7 +417,8 @@ const NODE_SPECIMENS = {
     id: 'research', sub: ['tools', 'fetch · write · done'],
     body: '« Research plan · ${{ with.plan_queries }} »',
     band: { loop: 'tour 7 / 25', pct: 41, tk: '61 400 / 150 000' },
-    why: [['en cours', null]],
+    /* la ligne d'état est ajoutée par STATE_LINE · la répéter ici la doublait */
+    why: [],
   },
 }
 
@@ -774,6 +808,27 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
   .sw b{font:500 10px/1 var(--mono);letter-spacing:.04em;color:var(--nk-dim)}
   .sw span{font:10px/1 var(--mono);color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  /* ── le playground ──────────────────────────────────────────────────────
+     Le graphe et ses fils partagent un seul repère : les arêtes sont tracées
+     au runtime depuis les rectangles réels des nœuds, donc elles restent
+     justes quand la grille se réagence. */
+  .pg-wrap{position:relative;min-width:760px}
+  .pg-wires{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+  .pg-grid{position:relative;z-index:2;display:grid;
+    grid-template-columns:repeat(var(--waves),minmax(0,1fr));
+    gap:16px 40px;align-items:start}
+  .pg-node{width:100%;cursor:pointer;outline-offset:3px}
+  .pg-node:focus-visible{outline:2px solid var(--nk-infer)}
+  .pg-line{font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption);letter-spacing:.04em}
+  .pg-edge{fill:none;stroke:var(--nk-strong);stroke-width:1.4;vector-effect:non-scaling-stroke;
+    transition:stroke var(--nk-dur) var(--ease),stroke-opacity var(--nk-dur) var(--ease);
+    stroke-opacity:.5}
+  /* une arête dont la source a réussi porte le courant · les autres restent éteintes */
+  .pg-edge[data-live]{stroke:var(--nk-st-done);stroke-opacity:.9}
+  .pg-edge[data-dead]{stroke:var(--nk-fail);stroke-opacity:.75;stroke-dasharray:4 3}
+  .pg-arrow{fill:var(--nk-strong)}
+  @media (prefers-reduced-motion:reduce){.pg-edge{transition:none}}
+
   /* ── les surfaces · trois pages, la même plaque ──────────────────────── */
   .srf-word,.srf-ns{display:grid;padding:7px 10px;font-family:var(--mono);width:auto}
   .srf-word{grid-template-columns:1fr auto;gap:8px;align-items:baseline}
@@ -1147,6 +1202,35 @@ ${PILLS.map(([label, id]) => `            <span class="nc-st nc-st--${id}">${esc
             <span class="srf-ctx">200k</span>
           </div>
           <span class="cell-note">le rail est <em>gravé</em> avec le même puits que le code · l’accent marque les modèles qui ne veulent aucune clé</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Le playground</h2><span class="sec-n">${DAG.nodes.length} tâches · ${WAVES} vagues · ${DAG.edges.length} arêtes</span></div>
+    <p class="sec-note">
+      Un graphe qu’on <b>opère</b>, pas une galerie de plus. C’est <code>daily-brief</code>, le
+      workflow que le héros du site montre déjà, avec ses vraies arêtes. <b>Clique un nœud</b> pour
+      lui faire parcourir ses huit états ; <b>joue le run</b> pour le voir se dérouler vague par
+      vague, comme une trace réelle l’écrirait. Les arêtes suivent : une arête dont la source n’a
+      pas encore réussi reste éteinte.
+    </p>
+    <div class="console" style="position:static;margin:0 0 14px">
+      <span class="console-k">le run</span>
+      <span class="seg" role="group" aria-label="Le run">
+        <button type="button" id="pg-play">▶ jouer</button>
+        <button type="button" id="pg-step">pas à pas</button>
+        <button type="button" id="pg-fail">faire échouer</button>
+        <button type="button" id="pg-reset">au repos</button>
+      </span>
+      <span class="console-note" id="pg-say">sept tâches au repos · rien n’a encore tourné</span>
+    </div>
+    <div class="stage" data-stage>
+      <div class="pg-wrap">
+        <svg class="pg-wires" aria-hidden><g id="pg-edges"></g></svg>
+        <div class="pg-grid" style="--waves:${WAVES}">
+${DAG.nodes.map(dagNode).join('\n')}
         </div>
       </div>
     </div>
@@ -1528,6 +1612,107 @@ ${LEDGER.map(([what, where, ok, verdict]) => `        <tr><td>${esc(what)}</td><
     else if (k === 'x') setExplode(!state.explode);
     else if (k === '0') { state.knobs = {}; save(); applyKnobs(); }
   });
+
+  /* ── le playground · un run qu'on regarde se dérouler ────────────────────
+     Les arêtes se tracent depuis les rectangles RÉELS des nœuds, jamais depuis
+     des coordonnées écrites : la grille peut se réagencer, les fils suivent.
+     Un ResizeObserver suffit, il n'y a pas de boucle. */
+  var DAG = ${JSON.stringify({ edges: DAG.edges })};
+  var pgWrap = document.querySelector('.pg-wrap');
+  if (pgWrap) {
+    var pgSvg = document.getElementById('pg-edges');
+    var pgSay = document.getElementById('pg-say');
+    var STATES_ORDER = ${JSON.stringify(STATES.map((st) => st.id))};
+    var STATE_TEXT = ${JSON.stringify(Object.fromEntries(STATES.map((st) => [st.id, st.label])))};
+    var nodeOf = function (id) { return pgWrap.querySelector('[data-id="' + id + '"]'); };
+
+    function drawEdges() {
+      var box = pgWrap.getBoundingClientRect();
+      while (pgSvg.firstChild) pgSvg.removeChild(pgSvg.firstChild);
+      DAG.edges.forEach(function (e) {
+        var a = nodeOf(e[0]), b = nodeOf(e[1]);
+        if (!a || !b) return;
+        var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+        var x1 = ra.right - box.left, y1 = ra.top - box.top + ra.height / 2;
+        var x2 = rb.left - box.left, y2 = rb.top - box.top + rb.height / 2;
+        var mid = x1 + (x2 - x1) / 2;
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('class', 'pg-edge');
+        path.setAttribute('d', 'M' + x1 + ' ' + y1 + ' C' + mid + ' ' + y1 + ' ' + mid + ' ' + y2 + ' ' + x2 + ' ' + y2);
+        var from = a.dataset.state, to = b.dataset.state;
+        if (from === 'ok') path.setAttribute('data-live', '');
+        if (from === 'failed' || to === 'skipped') path.setAttribute('data-dead', '');
+        pgSvg.appendChild(path);
+      });
+    }
+
+    function say(msg) { if (pgSay) pgSay.textContent = msg; }
+    function setState(node, st) { node.dataset.state = st; node.querySelector('.pg-line').textContent = STATE_TEXT[st] || ''; drawEdges(); }
+    function allNodes() { return Array.prototype.slice.call(pgWrap.querySelectorAll('.pg-node')); }
+    function reset() { allNodes().forEach(function (n) { setState(n, 'idle'); }); say('sept tâches au repos · rien n’a encore tourné'); }
+
+    /* clic · le nœud parcourt ses huit états, un par un */
+    pgWrap.addEventListener('click', function (e) {
+      var n = e.target.closest('.pg-node');
+      if (!n) return;
+      var i = STATES_ORDER.indexOf(n.dataset.state);
+      var next = STATES_ORDER[(i + 1) % STATES_ORDER.length];
+      setState(n, next);
+      say(n.dataset.id + ' · ' + STATE_TEXT[next]);
+    });
+    pgWrap.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var n = e.target.closest('.pg-node');
+      if (!n) return;
+      e.preventDefault();
+      n.click();
+    });
+
+    /* le run · vague par vague, comme une trace réelle l'écrit */
+    var waves = [];
+    allNodes().forEach(function (n) {
+      var w = Number(getComputedStyle(n).gridColumnStart) - 1;
+      (waves[w] = waves[w] || []).push(n);
+    });
+    var timer = 0, at = 0;
+    function stop() { if (timer) { clearTimeout(timer); timer = 0; } }
+    function playWave(i, fail) {
+      if (i >= waves.length) { say('run terminé · 7 tâches · 4 vagues'); return; }
+      waves[i].forEach(function (n) { setState(n, 'running'); });
+      say('vague ' + (i + 1) + ' / ' + waves.length + ' · ' + waves[i].length + (waves[i].length > 1 ? ' tâches en parallèle' : ' tâche'));
+      timer = setTimeout(function () {
+        var broke = false;
+        waves[i].forEach(function (n) {
+          if (fail && i === 1 && n.dataset.id === 'triage') { setState(n, 'failed'); broke = true; }
+          else setState(n, 'ok');
+        });
+        if (broke) {
+          waves.slice(i + 1).forEach(function (w) { w.forEach(function (n) { setState(n, 'skipped'); }); });
+          say('refusé en vague ' + (i + 1) + ' · NIKA-INFER-007 · la suite est sautée');
+          return;
+        }
+        timer = setTimeout(function () { playWave(i + 1, fail); }, 260);
+      }, 700);
+    }
+    function run(fail) { stop(); reset(); at = 0; timer = setTimeout(function () { playWave(0, fail); }, 120); }
+
+    document.getElementById('pg-play').addEventListener('click', function () { run(false); });
+    document.getElementById('pg-fail').addEventListener('click', function () { run(true); });
+    document.getElementById('pg-reset').addEventListener('click', function () { stop(); reset(); });
+    document.getElementById('pg-step').addEventListener('click', function () {
+      stop();
+      if (at === 0) reset();
+      if (at >= waves.length) { at = 0; reset(); return; }
+      waves.slice(0, at).forEach(function (w) { w.forEach(function (n) { setState(n, 'ok'); }); });
+      waves[at].forEach(function (n) { setState(n, 'ok'); });
+      at += 1;
+      say('vague ' + at + ' / ' + waves.length + ' posée');
+    });
+
+    reset();
+    requestAnimationFrame(drawEdges);
+    new ResizeObserver(drawEdges).observe(pgWrap);
+  }
 
   /* the pointer takes the lamp · one rAF and two property writes for a whole
      stage, no per-specimen listener */
