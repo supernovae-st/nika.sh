@@ -358,11 +358,20 @@ describe('a state is never a colour alone', () => {
   })
 
   it('every state pill sets a shape, not only a hue', () => {
+    /* THE SELECTOR IS THE CANVAS'S, and this gate had hard-coded mine. It hunted
+       `.nc-st--running::before` — a name the bench invented — so the day the
+       bench converged on the canvas's `.dag-node.status-running .nc-dot`, a gate
+       that was supposed to protect the shapes reported that all seven had lost
+       theirs. Both prefixes now come from the projected contract. */
+    const C = TOKENS.match(/NIKA_NODE_CLASSES = \{([\s\S]*?)\} as const/)?.[1] ?? ''
+    const wrapper = C.match(/wrapper: '([^']+)'/)?.[1] ?? 'dag-node'
+    const prefix = C.match(/status_prefix: '([^']+)'/)?.[1] ?? 'status-'
+    const dot = C.match(/dot: '([^']+)'/)?.[1] ?? 'nc-dot'
     const COLOURISH = /^(background|background-color|color|animation)$/
     const naked: string[] = []
     for (const st of STATES) {
-      const rule = BENCH.match(new RegExp(`\\.nc-st--${st}::before\\{([^}]*)\\}`))
-      if (!rule) { naked.push(`${st} (no ::before rule at all)`); continue }
+      const rule = BENCH.match(new RegExp(`\\.${wrapper}\\.${prefix}${st} \\.${dot}\\{([^}]*)\\}`))
+      if (!rule) { naked.push(`${st} (no shape rule at all)`); continue }
       const props = rule[1].split(';').map((d) => d.split(':')[0].trim()).filter(Boolean)
       if (!props.some((prop) => !COLOURISH.test(prop))) naked.push(`${st} → ${props.join(' ')}`)
     }

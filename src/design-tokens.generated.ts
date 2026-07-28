@@ -109,7 +109,7 @@ export const NIKA_PROVIDERS_ORDER: readonly string[] = [
  *  THE LAMP IS THE POINT. One light in the room; every plate obeys it.
  *  A plate alone cannot know where the light is, so these are
  *  quantities on a SCENE — one gradient lights a hundred plates. */
-export const NIKA_MATERIAL = { plate: { radius_px: 7, pad_px: 7, bevel: 0.06, bevel_lit: 0.15, grain: 0.03, lift_px: 3, contact: { y_px: 1, blur_px: 3, alpha: 0.38 }, ambient: { y_px: 24, blur_px: 40, spread_px: -24, alpha: 0.55 } }, well: { inset_alpha: 0.4, glow_alpha: 0.05 }, lamp: { reach_vmax: 60, core: 0.26, falloff: 0.22, drift_s: 40 }, glass: { tint: 0.88, blur_px: 11, saturate: 1.12, border: 0.09, grain: 0.03 }, ground: { grid: { cell_px: 40, arm_px: 4, stroke: 0.05, far_cell_px: 96, far_arm_px: 6, far_stroke: 0.07 }, vignette: { reach_x: 1.2, reach_y: 1.0, at_y: 0.38, clear: 0.55, edge: 0.38 }, vignette_running: { reach_x: 1.1, reach_y: 0.92, at_y: 0.4, clear: 0.46, edge: 0.5 }, spot: { radius_px: 680, hue: '79 134 255', alpha: 0.06, fade: 0.7, ease_ms: 400 }, cursor: { box_px: 20, arm_px: 6, arm_held_px: 4, stroke_px: 1.5, halo: 0.55 } }, node: { status: ['pending', 'running', 'success', 'failed', 'retrying', 'skipped', 'cancelled'], marks: { stale: 'its recorded trace no longer matches the file', stale_up: 'something it depends on went stale', cached: 'it did not run · a previous identical run answered', recovered: 'it failed and its on_error branch caught it', audit: 'check found something · severity below', dead_gate: 'its when: can never be true · it will never run', asking: 'parked on a question · WAITING, not working' }, audit_severity: ['error', 'warning', 'info'], anatomy: { infer: ['head', 'sub', 'body', 'why'], exec: ['head', 'sub', 'body', 'why'], invoke: ['head', 'body', 'sub', 'why'], agent: ['head', 'sub', 'body', 'band', 'why'] } }, motion: { lift_ms: 190, drawer_ms: 420, ease_lift: 'linear(0, 0.1 6%, 0.54 19%, 0.85 32%, 0.97 42%, 1.02 50%, 1.008 70%, 1)', ease_drawer: 'linear(0, 0.04 8%, 0.38 24%, 0.78 42%, 1.04 62%, 0.99 78%, 1)' } } as const
+export const NIKA_MATERIAL = { plate: { radius_px: 7, pad_px: 7, bevel: 0.06, bevel_lit: 0.15, grain: 0.03, lift_px: 3, contact: { y_px: 1, blur_px: 3, alpha: 0.38 }, ambient: { y_px: 24, blur_px: 40, spread_px: -24, alpha: 0.55 } }, well: { inset_alpha: 0.4, glow_alpha: 0.05 }, lamp: { reach_vmax: 60, core: 0.26, falloff: 0.22, drift_s: 40 }, glass: { tint: 0.88, blur_px: 11, saturate: 1.12, border: 0.09, grain: 0.03 }, ground: { grid: { cell_px: 40, arm_px: 4, stroke: 0.05, far_cell_px: 96, far_arm_px: 6, far_stroke: 0.07 }, vignette: { reach_x: 1.2, reach_y: 1.0, at_y: 0.38, clear: 0.55, edge: 0.38 }, vignette_running: { reach_x: 1.1, reach_y: 0.92, at_y: 0.4, clear: 0.46, edge: 0.5 }, spot: { radius_px: 680, hue: '79 134 255', alpha: 0.06, fade: 0.7, ease_ms: 400 }, cursor: { box_px: 20, arm_px: 6, arm_held_px: 4, stroke_px: 1.5, halo: 0.55 } }, node: { status: ['pending', 'running', 'success', 'failed', 'retrying', 'skipped', 'cancelled'], marks: { stale: 'its recorded trace no longer matches the file', stale_up: 'something it depends on went stale', cached: 'it did not run · a previous identical run answered', recovered: 'it failed and its on_error branch caught it', audit: 'check found something · severity below', dead_gate: 'its when: can never be true · it will never run', asking: 'parked on a question · WAITING, not working' }, audit_severity: ['error', 'warning', 'info'], anatomy: { infer: ['head', 'sub', 'body', 'why'], exec: ['head', 'sub', 'body', 'why'], invoke: ['head', 'body', 'sub', 'why'], agent: ['head', 'sub', 'body', 'band', 'why'] }, classes: { wrapper: 'dag-node', card: 'nc', status_prefix: 'status-', verb_prefix: 'verb-', audit_prefix: 'audit-', mark: { stale: 'is-stale', stale_up: 'stale-up', cached: 'is-cached', recovered: 'is-recovered', audit: 'has-audit', dead_gate: 'dead-gate', asking: 'is-asking' }, part: { head: 'nc-head', tile: 'nc-tile', id: 'nc-id', st: 'nc-st', dot: 'nc-dot', sub: 'nc-sub', sub_k: 'nc-sub-k', sub_v: 'nc-sub-v', body: 'nc-body', band: 'nc-agent-band', why: 'nc-policy', why_line: 'nc-pol', badge: 'nc-badge', chip: 'nc-chip' } } }, motion: { lift_ms: 190, drawer_ms: 420, ease_lift: 'linear(0, 0.1 6%, 0.54 19%, 0.85 32%, 0.97 42%, 1.02 50%, 1.008 70%, 1)', ease_drawer: 'linear(0, 0.04 8%, 0.38 24%, 0.78 42%, 1.04 62%, 0.99 78%, 1)' } } as const
 
 /** THE NODE · two axes, never one.
  *  ONE status, ANY marks. `pending` deliberately has no resting rule
@@ -120,3 +120,26 @@ export const NIKA_NODE_STATUS = ['pending', 'running', 'success', 'failed', 'ret
 export const NIKA_NODE_MARKS = { stale: 'its recorded trace no longer matches the file', stale_up: 'something it depends on went stale', cached: 'it did not run · a previous identical run answered', recovered: 'it failed and its on_error branch caught it', audit: 'check found something · severity below', dead_gate: 'its when: can never be true · it will never run', asking: 'parked on a question · WAITING, not working' } as const
 export const NIKA_AUDIT_SEVERITY = ['error', 'warning', 'info'] as const
 export const NIKA_NODE_ANATOMY = { infer: ['head', 'sub', 'body', 'why'], exec: ['head', 'sub', 'body', 'why'], invoke: ['head', 'body', 'sub', 'why'], agent: ['head', 'sub', 'body', 'band', 'why'] } as const
+export const NIKA_NODE_CLASSES = { wrapper: 'dag-node', card: 'nc', status_prefix: 'status-', verb_prefix: 'verb-', audit_prefix: 'audit-', mark: { stale: 'is-stale', stale_up: 'stale-up', cached: 'is-cached', recovered: 'is-recovered', audit: 'has-audit', dead_gate: 'dead-gate', asking: 'is-asking' }, part: { head: 'nc-head', tile: 'nc-tile', id: 'nc-id', st: 'nc-st', dot: 'nc-dot', sub: 'nc-sub', sub_k: 'nc-sub-k', sub_v: 'nc-sub-v', body: 'nc-body', band: 'nc-agent-band', why: 'nc-policy', why_line: 'nc-pol', badge: 'nc-badge', chip: 'nc-chip' } } as const
+
+/** THE ONE FUNCTION THAT NAMES A NODE.
+ *  Three surfaces draw this card; before this, each spelled its class
+ *  string by hand and two of the three were wrong in the same way —
+ *  they hung the state on the CARD. It hangs on the WRAPPER, and the
+ *  card inside carries none. Call this; do not re-spell it. */
+export function nikaNodeClass(n: {
+  status: (typeof NIKA_NODE_STATUS)[number]
+  verb: keyof typeof NIKA_NODE_ANATOMY
+  marks?: readonly (keyof typeof NIKA_NODE_CLASSES.mark)[]
+  auditWorst?: (typeof NIKA_AUDIT_SEVERITY)[number]
+}): string {
+  const c = NIKA_NODE_CLASSES
+  const out = [c.wrapper, c.status_prefix + n.status, c.verb_prefix + n.verb]
+  for (const m of n.marks ?? []) {
+    out.push(c.mark[m])
+    /* the severity rides WITH the audit mark — adjacent, not appended.
+       Order is nothing to CSS and everything to a parity test. */
+    if (m === 'audit') out.push(c.audit_prefix + (n.auditWorst ?? 'error'))
+  }
+  return out.join(' ')
+}

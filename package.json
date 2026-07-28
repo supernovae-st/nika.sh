@@ -15,6 +15,7 @@
     "visual:update": "node scripts/visual-regress.mjs --update",
     "icons": "node design/build.mjs",
     "links:record": "node scripts/check-record-links.mjs",
+    "pin:canvas": "node design/pin-canvas-contract.mjs",
     "lens:gate": "node scripts/lens-gate.mjs",
     "lens:adversarial": "node scripts/test-lens-integrity-adversarial.mjs",
     "lens:semantic-contracts": "node scripts/build-lens-semantic-contracts.mjs",

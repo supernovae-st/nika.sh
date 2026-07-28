@@ -1,0 +1,145 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { describe, expect, it } from 'vitest'
+import {
+  NIKA_NODE_CLASSES,
+  NIKA_NODE_STATUS,
+  NIKA_NODE_ANATOMY,
+  nikaNodeClass,
+} from '../design-tokens.generated'
+import pin from './canvas-contract.pin.json'
+
+/* ── LA CARTE · un objet, trois surfaces ──────────────────────────────────────
+   Le canvas VS Code, le site et le banc dessinent la même carte de nœud. Avant
+   ce gate, chacun épelait sa chaîne de classes à la main, et deux des trois se
+   trompaient de la MÊME façon : ils accrochaient l'état à la CARTE. Il pend au
+   WRAPPER — `.dag-node.status-running` enveloppe `.nc`, qui n'en porte aucun.
+
+   Le canvas vit dans un autre dépôt : le lire directement rendrait ce gate
+   inerte en CI, là où il compte. Alors il est ÉPINGLÉ ici avec son SHA
+   (design/pin-canvas-contract.mjs), et la CI juge l'épingle. Quand le canvas
+   bouge, la dérive devient un diff daté au lieu d'un silence.
+
+   Et on LIT sa fonction, on ne l'exécute pas : évaluer du code venu d'un autre
+   dépôt pour prouver une égalité de chaînes, c'est payer bien trop cher une
+   comparaison de mots. */
+
+/* la source, SANS ses commentaires : un gate qui ne distingue pas le code de la
+   prose ÉCRITE SUR le code finit par interdire d'expliquer ses propres
+   trouvailles — celui-ci a flaggé le commentaire qui citait `.nc--running`
+   comme l'erreur corrigée. */
+const BENCH = readFileSync(join(__dirname, '../../design/bench.mjs'), 'utf8')
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+/* la page BÂTIE · c'est elle que l'œil voit, donc c'est elle qu'on juge */
+const HTML = readFileSync(join(__dirname, '../../design/bench.html'), 'utf8')
+
+/** les fragments de classe que `nodeClassOf()` écrit, DANS SON ORDRE. */
+function canvasTokens(): string[] {
+  const src = pin.nodeClassOf
+  const out: string[] = []
+  /* le socle est un template literal : `dag-node status-${…} verb-${…}` */
+  const base = src.match(/`([^`]*)`/)
+  expect(base, 'le socle template de nodeClassOf a disparu · le canvas a changé de forme').toBeTruthy()
+  for (const part of (base as RegExpMatchArray)[1].split(/\s+/)) {
+    out.push(part.replace(/\$\{[^}]*\}/g, ''))
+  }
+  /* puis les marques, une par ternaire, chacune un littéral entre quotes.
+     Le délimiteur se ferme sur LUI-MÊME et pas sur n'importe quel guillemet :
+     ` has-audit audit-${node.auditWorst ?? 'error'}` en contient un à
+     l'intérieur, et une classe qui exclut les trois coupe au mauvais endroit.
+     (Payé trois fois dans cet arc — esc/escAttr, un backtick en commentaire,
+     celui-ci.) */
+  for (const m of src.matchAll(/\?\s*(?:'([^']*)'|"([^"]*)"|`([^`]*)`)\s*:/g)) {
+    /* dépouiller AVANT de découper : `${node.auditWorst ?? 'error'}` porte des
+       espaces, et couper d'abord en fait trois mots là où il n'y en a qu'un */
+    const lit = (m[1] ?? m[2] ?? m[3] ?? '').replace(/\$\{[^}]*\}/g, '')
+    for (const w of lit.trim().split(/\s+/).filter(Boolean)) out.push(w)
+  }
+  return out
+}
+
+describe('la carte du nœud · le contrat de classes', () => {
+  it('chaque classe du contrat porte au moins une règle dans le canvas', () => {
+    const naked = Object.entries(pin.styled).filter(([, n]) => n === 0).map(([c]) => c)
+    expect(naked, `classes projetées sans aucune peau dans dag.css · canvas ${pin.sha}`).toEqual([])
+    expect(Object.keys(pin.styled).length).toBeGreaterThanOrEqual(
+      NIKA_NODE_STATUS.length + Object.keys(NIKA_NODE_CLASSES.mark).length,
+    )
+  })
+
+  it('la projection écrit les mêmes mots, dans le même ordre, que le canvas', () => {
+    const tok = canvasTokens()
+    const c = NIKA_NODE_CLASSES
+    /* le socle · wrapper puis les deux préfixes */
+    expect(tok.slice(0, 3), 'le socle du canvas n’est plus wrapper + status- + verb-')
+      .toEqual([c.wrapper, c.status_prefix, c.verb_prefix])
+    /* les marques · même liste, même ORDRE, la sévérité collée à son marqueur */
+    const projected = Object.entries(c.mark).flatMap(([, cls]) =>
+      cls === c.mark.audit ? [cls, c.audit_prefix] : [cls])
+    expect(tok.slice(3), 'les marques du canvas et celles de la spec ont divergé').toEqual(projected)
+  })
+
+  it('la fonction projetée compose une chaîne exacte, cas par cas', () => {
+    const c = NIKA_NODE_CLASSES
+    const verbs = Object.keys(NIKA_NODE_ANATOMY) as (keyof typeof NIKA_NODE_ANATOMY)[]
+    const ALL = Object.keys(c.mark) as (keyof typeof c.mark)[]
+    let n = 0
+    for (const status of NIKA_NODE_STATUS) {
+      for (const verb of verbs) {
+        expect(nikaNodeClass({ status, verb }))
+          .toBe(`${c.wrapper} ${c.status_prefix}${status} ${c.verb_prefix}${verb}`)
+        n++
+      }
+    }
+    /* toutes les marques ensemble · un nœud PEUT être success ET périmé ET
+       en cache : trois faits, pas trois états concurrents */
+    expect(nikaNodeClass({ status: 'success', verb: 'agent', marks: ALL, auditWorst: 'warning' }))
+      .toBe([c.wrapper, `${c.status_prefix}success`, `${c.verb_prefix}agent`,
+        c.mark.stale, c.mark.stale_up, c.mark.cached, c.mark.recovered,
+        c.mark.audit, `${c.audit_prefix}warning`, c.mark.dead_gate, c.mark.asking].join(' '))
+    expect(n).toBe(NIKA_NODE_STATUS.length * verbs.length)
+  })
+
+  it('le banc n’invente aucun mot du vocabulaire de la carte', () => {
+    /* LA MOITIÉ INGAGNABLE. Le banc peut ne montrer qu'une PARTIE du canvas —
+       mais tout ce qu'il montre doit porter le nom que le canvas lui donne.
+       Sinon on documente une carte qui n'existe nulle part.
+
+       ON JUGE LE HTML SERVI, PAS LA SOURCE. La première version lisait
+       bench.mjs et cherchait un point : elle a laissé passer `class="nc-${name}"`,
+       qui fabriquait `nc-why` 37 fois et `nc-band` 9 fois. Une classe assemblée
+       n'a pas de point, donc elle était invisible pour exactement le défaut que
+       ce gate existe pour attraper. */
+    const known = new Set<string>(pin.families)
+    const written = [...new Set([...BENCH.matchAll(/\.(nc[a-z0-9-]*)/g)].map((m) => m[1]))]
+    const served = [...new Set(
+      [...HTML.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter((c) => /^nc(-|$)/.test(c)),
+    )]
+    const invented = [...new Set([...written, ...served])].filter((cls) => !known.has(cls)).sort()
+    expect(invented,
+      `le banc emploie des classes absentes du canvas ${pin.sha} — chacune est une carte qui n’existe que sur le banc`)
+      .toEqual([])
+    /* et le HTML doit réellement en porter : un gate qui juge une page vide
+       est vert par absence */
+    expect(served.length, 'la page bâtie ne porte aucune classe de carte').toBeGreaterThan(10)
+  })
+
+  it('chaque carte servie porte son enveloppe, et l’enveloppe seule porte l’état', () => {
+    const naked = [...HTML.matchAll(/<article class="(nc[^"]*)"/g)].map((m) => m[1])
+    expect(naked, 'des cartes sans enveloppe · l’état n’aurait rien à quoi s’accrocher').toEqual([])
+    const wrapped = [...HTML.matchAll(/<article class="([^"]*\bdag-node\b[^"]*)"/g)].map((m) => m[1])
+    expect(wrapped.length, 'plus aucune carte enveloppée dans la page bâtie').toBeGreaterThan(20)
+    for (const cls of wrapped) {
+      expect(cls, `une enveloppe sans état · ${cls}`).toMatch(/\bstatus-[a-z]+/)
+      expect(cls, `une enveloppe sans verbe · ${cls}`).toMatch(/\bverb-[a-z]+/)
+    }
+  })
+
+  it('l’état pend au wrapper, jamais à la carte', () => {
+    expect(nikaNodeClass({ status: 'running', verb: 'infer' }).split(' ')[0]).toBe(NIKA_NODE_CLASSES.wrapper)
+    /* un modificateur d'état sur .nc serait une seconde grammaire pour la même
+       idée — c'est exactement l'erreur que le banc avait faite */
+    const onCard = [...BENCH.matchAll(/\.nc--[a-z-]+/g)].map((m) => m[0])
+    expect(onCard, 'le banc accroche un état à la carte au lieu du wrapper').toEqual([])
+  })
+})

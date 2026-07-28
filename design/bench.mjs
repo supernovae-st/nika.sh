@@ -141,6 +141,10 @@ const NODE_STATUS = listConst('NIKA_NODE_STATUS')
 const MARKS = objConst('NIKA_NODE_MARKS')
 const ANATOMY = objConst('NIKA_NODE_ANATOMY')
 const AUDIT = listConst('NIKA_AUDIT_SEVERITY')
+/* LE CONTRAT DE CLASSES · comment la carte s'écrit. Le banc ne l'invente plus :
+   il l'a inventé une fois (`.nc--running`, `nc-glyph`, `nc-why`) et documentait
+   alors une carte qui n'existait sur aucune surface. */
+const NODE_CLASSES = objConst('NIKA_NODE_CLASSES')
 
 const LAYERS = ['shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof']
 const LAYER_HEX = Object.fromEntries(LAYERS.map((l) => [l, cssVar(`layer-${l}`)]))
@@ -419,14 +423,14 @@ ${sh.nodes.map(([id, w]) => {
       </div>`
 }
 
-const dagNode = (n) => `        <article class="nc pg-node" data-verb="${n.verb}" data-state="idle" data-id="${n.id}"
+const dagNode = (n) => `        <article class="dag-node verb-${n.verb} status-pending pg-node" data-id="${n.id}"
           style="grid-column:${n.wave + 1};grid-row:${n.row}" tabindex="0" role="button"
-          aria-label="${n.id} · clique pour changer son état">
-          <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH[n.verb]}</span><span class="nc-id">${n.id}</span><span class="nc-verb">${n.verb}</span></div>
-          <div class="nc-sub"><span class="nc-k">${n.sub[0]}</span> ${esc(n.sub[1])}</div>
+          aria-label="${n.id} · clique pour changer son état"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">${VERB_GLYPH[n.verb]}</span><span class="nc-id">${n.id}</span><span class="nc-badge">${n.verb}</span></div>
+          <div class="nc-sub"><span class="nc-sub-k">${n.sub[0]}</span> ${esc(n.sub[1])}</div>
           <div class="nc-body">${esc(n.body)}</div>
-          <div class="nc-why"><span class="pg-line"></span></div>
-        </article>`
+          <div class="nc-policy"><span class="pg-line"></span></div>
+        </div></article>`
 
 /* LE LEDGER · trois états, pas deux. « Partagé » disait deux choses très
    différentes : une valeur projetée vers trois cibles, et une valeur qu'une
@@ -523,14 +527,17 @@ const STATE_LINE = {
 
 const renderNode = (verb, { state = 'pending', anatomy = ANATOMY[verb], spec } = {}) => {
   const s = spec ?? NODE_SPECIMENS[verb]
+  /* LA CLASSE VIENT DU CONTRAT, jamais d'une concaténation. `nc-${name}`
+     fabriquait `nc-why` et `nc-band` — deux mots que le canvas n'a pas, et
+     qu'un gate cherchant un point dans la source ne pouvait pas voir. */
   const p = (name, i, inner, extra = '') =>
-    `<div class="nc-${name}${extra}" data-part="${esc(PART_NAME[name])}" style="--i:${i}">${inner}</div>`
+    `<div class="${NODE_CLASSES.part[name]}${extra}" data-part="${esc(PART_NAME[name])}" style="--i:${i}">${inner}</div>`
   const part = {
-    head: (i) => p('head', i, `<span class="nc-glyph">${VERB_GLYPH[verb]}</span><span class="nc-id">${s.id}</span><span class="nc-verb">${verb}</span>`),
-    sub: (i) => p('sub', i, `<span class="nc-k">${s.sub[0]}</span> ${esc(s.sub[1])}`),
-    body: (i) => p('body', i, esc(s.body), s.bodyKind === 'cmd' ? ' nc-body--cmd' : ''),
+    head: (i) => p('head', i, `<span class="nc-tile">${VERB_GLYPH[verb]}</span><span class="nc-id">${s.id}</span><span class="nc-badge">${verb}</span>`),
+    sub: (i) => p('sub', i, `<span class="nc-sub-k">${s.sub[0]}</span> ${esc(s.sub[1])}`),
+    body: (i) => p('body', i, esc(s.body), s.bodyKind === 'cmd' ? ' nc-body-cmd' : ''),
     band: (i) => (s.band
-      ? p('band', i, `<span>${s.band.loop}</span><span class="nc-meter"><i style="width:${s.band.pct}%"></i></span><span class="nc-tk">${s.band.tk}</span>`)
+      ? p('band', i, `<span>${s.band.loop}</span><span class="nc-ab-meter"><i style="width:${s.band.pct}%"></i></span><span class="nc-ab-tk">${s.band.tk}</span>`)
       : ''),
     why: (i) => {
       const line = STATE_LINE[state]
@@ -540,15 +547,15 @@ const renderNode = (verb, { state = 'pending', anatomy = ANATOMY[verb], spec } =
       return p('why', i, s.why.map(([t, layer]) => `<span class="nc-chip"${layer ? ` style="--chip:var(--nk-${layer})"` : ''}>${esc(t)}</span>`).join('') + extra)
     },
   }
-  return `<article class="nc" data-verb="${verb}" data-state="${state}">${anatomy.map((name, i) => part[name](i)).join('')}</article>`
+  return `<article class="dag-node verb-${verb} status-${state}"><div class="nc">${anatomy.map((name, i) => part[name](i)).join('')}</div></article>`
 }
 
 const stateNode = (st) => `        <div class="cell">
           <span class="cell-k">${st.id}</span>
-          <article class="nc" data-verb="exec" data-state="${st.id}">
-            <div class="nc-head" data-part="tête" style="--i:0"><span class="nc-glyph">${VERB_GLYPH.exec}</span><span class="nc-id">build</span><span class="nc-verb">exec</span></div>
-            <div class="nc-why" data-part="pourquoi" style="--i:1"><span class="nc-st nc-st--${st.id}">${esc(st.label)}</span></div>
-          </article>
+          <article class="dag-node verb-exec status-${st.id}"><div class="nc">
+            <div class="nc-head" data-part="tête" style="--i:0"><span class="nc-tile">${VERB_GLYPH.exec}</span><span class="nc-id">build</span><span class="nc-badge">exec</span></div>
+            <div class="nc-policy" data-part="pourquoi" style="--i:1"><span class="nc-st"><i class="nc-dot"></i>${esc(st.label)}</span></div>
+          </div></article>
           <span class="cell-note">${esc(st.form)}</span>
         </div>`
 
@@ -764,32 +771,32 @@ ${groundCssProjected}
   @media (prefers-reduced-motion:reduce){.nc{transition:none}.nc:hover{transform:none}}
   .nc-head{display:flex;align-items:center;gap:7px;padding:calc(var(--nk-pad) * 1.14) calc(var(--nk-pad) * 1.42);
     border-bottom:1px solid var(--nk-edge);background:color-mix(in oklch,var(--nk-verb,var(--nk-ink)) 8%,transparent)}
-  .nc-glyph{color:var(--nk-verb,var(--nk-ink));font-size:calc(var(--nk-fs) + .5px);line-height:1}
+  .nc-tile{color:var(--nk-verb,var(--nk-ink));font-size:calc(var(--nk-fs) + .5px);line-height:1}
   .nc-id{font-size:calc(var(--nk-fs) + 1px);font-weight:600;letter-spacing:-.01em}
-  .nc-verb{margin-left:auto;font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.07em;color:var(--nk-verb-text,var(--nk-dim))}
-  .nc-sub,.nc-body,.nc-why{padding:var(--nk-pad) calc(var(--nk-pad) * 1.42)}
+  .nc-badge{margin-left:auto;font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.07em;color:var(--nk-verb-text,var(--nk-dim))}
+  .nc-sub,.nc-body,.nc-policy{padding:var(--nk-pad) calc(var(--nk-pad) * 1.42)}
   .nc-sub{color:var(--nk-dim);border-bottom:1px dashed var(--nk-edge)}
-  .nc-k{color:var(--nk-faint)}
+  .nc-sub-k{color:var(--nk-faint)}
   .nc-body{line-height:1.45}
-  .nc-body--cmd{color:var(--nk-exec-text)}
-  .nc-why{border-top:1px solid var(--nk-edge);display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+  .nc-body-cmd{color:var(--nk-exec-text)}
+  .nc-policy{border-top:1px solid var(--nk-edge);display:flex;flex-wrap:wrap;gap:5px;align-items:center}
   .nc-chip{display:inline-flex;align-items:center;padding:1px 6px;border-radius:999px;
     border:1px solid color-mix(in oklch,var(--chip,var(--nk-strong)) 44%,transparent);
     background:color-mix(in oklch,var(--chip,var(--nk-ink)) 10%,transparent);
     color:var(--chip,var(--nk-dim));font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.03em;white-space:nowrap}
-  .nc-band{display:flex;align-items:center;gap:8px;padding:calc(var(--nk-pad) * .86) calc(var(--nk-pad) * 1.42);
+  .nc-agent-band{display:flex;align-items:center;gap:8px;padding:calc(var(--nk-pad) * .86) calc(var(--nk-pad) * 1.42);
     border-top:1px solid var(--nk-edge);background:color-mix(in oklch,var(--nk-agent) 9%,transparent);
     font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-agent-text)}
-  .nc-meter{flex:1;height:3px;border-radius:2px;background:color-mix(in oklch,var(--nk-agent) 22%,transparent);overflow:hidden}
-  .nc-meter i{display:block;height:100%;background:var(--nk-agent)}
-  .nc-tk{font-variant-numeric:tabular-nums}
+  .nc-ab-meter{flex:1;height:3px;border-radius:2px;background:color-mix(in oklch,var(--nk-agent) 22%,transparent);overflow:hidden}
+  .nc-ab-meter i{display:block;height:100%;background:var(--nk-agent)}
+  .nc-ab-tk{font-variant-numeric:tabular-nums}
 
-${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-${v});--nk-verb-text:var(--nk-${v}-text)}`).join('\n')}
-  .nc[data-state=success]{border-color:color-mix(in oklch,var(--nk-ok) 46%,var(--nk-edge))}
-  .nc[data-state=failed]{border-color:color-mix(in oklch,var(--nk-fail) 54%,var(--nk-edge))}
-  .nc[data-state=running]{border-color:color-mix(in oklch,var(--nk-st-running) 50%,var(--nk-edge))}
-  .nc[data-state=retrying]{border-color:color-mix(in oklch,var(--nk-st-retrying) 44%,var(--nk-edge))}
-  .nc[data-state=skipped]{opacity:.52}
+${Object.keys(VERB_HEX).map((v) => `  .dag-node.verb-${v} .nc{--nk-verb:var(--nk-${v});--nk-verb-text:var(--nk-${v}-text)}`).join('\n')}
+  .dag-node.status-success .nc{border-color:color-mix(in oklch,var(--nk-ok) 46%,var(--nk-edge))}
+  .dag-node.status-failed .nc{border-color:color-mix(in oklch,var(--nk-fail) 54%,var(--nk-edge))}
+  .dag-node.status-running .nc{border-color:color-mix(in oklch,var(--nk-st-running) 50%,var(--nk-edge))}
+  .dag-node.status-retrying .nc{border-color:color-mix(in oklch,var(--nk-st-retrying) 44%,var(--nk-edge))}
+  .dag-node.status-skipped .nc{opacity:.52}
 
   .nc-st{display:inline-flex;align-items:center;gap:5px;font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.05em}
   /* LA FORME DIT L'ÉTAT. La page l'affirmait et c'était faux : quatre états
@@ -798,24 +805,24 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
      Chaque pastille porte maintenant une GÉOMÉTRIE, qui survit au contraste
      forcé (une géométrie n'est pas une couleur) et au mouvement réduit (elle
      ne bouge pas). */
-  .nc-st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;
+  .nc-dot{width:6px;height:6px;border-radius:50%;background:currentColor;
     flex:0 0 auto}
-  .nc-st--success::before{border-radius:50%;background:currentColor}            /* plein · c'est fait */
-  .nc-st--running::before{background:transparent;box-shadow:inset 0 0 0 2px currentColor} /* anneau · en cours */
-  .nc-st--failed::before{border-radius:1px;transform:rotate(45deg)}        /* losange · barré */
-  .nc-st--retrying::before{border-radius:50%;background:transparent;
+  .dag-node.status-success .nc-dot{border-radius:50%;background:currentColor}            /* plein · c'est fait */
+  .dag-node.status-running .nc-dot{background:transparent;box-shadow:inset 0 0 0 2px currentColor} /* anneau · en cours */
+  .dag-node.status-failed .nc-dot{border-radius:1px;transform:rotate(45deg)}        /* losange · barré */
+  .dag-node.status-retrying .nc-dot{border-radius:50%;background:transparent;
     box-shadow:inset 0 0 0 1.5px currentColor,0 0 0 2px color-mix(in oklch,currentColor 34%,transparent)}
-  .nc-st--skipped::before{border-radius:1px;width:7px;height:2px}
-  .nc-st--cancelled::before{border-radius:1px;width:7px;height:2px;transform:rotate(-45deg)}          /* trait · rien n'a couru */                               /* anneau fin · vieux */
-  .nc-st--pending::before{width:4px;height:4px}                               /* plus petit · au repos */      /* carré creux · en écriture */
-  .nc-st--pending{color:var(--nk-faint)}
-  .nc-st--running{color:var(--nk-st-running)}
-  .nc-st--success{color:var(--nk-st-done)}
-  .nc-st--failed{color:var(--nk-fail-text)}
-  .nc-st--retrying{color:var(--nk-st-retrying)}
-  .nc-st--skipped{color:var(--nk-st-muted)}
-  .nc-st--cancelled{color:var(--nk-st-muted)}
-  .nc-st--running::before{animation:p 1.6s ease-in-out infinite}
+  .dag-node.status-skipped .nc-dot{border-radius:1px;width:7px;height:2px}
+  .dag-node.status-cancelled .nc-dot{border-radius:1px;width:7px;height:2px;transform:rotate(-45deg)}          /* trait · rien n'a couru */                               /* anneau fin · vieux */
+  .dag-node.status-pending .nc-dot{width:4px;height:4px}                               /* plus petit · au repos */      /* carré creux · en écriture */
+  .dag-node.status-pending .nc-st{color:var(--nk-faint)}
+  .dag-node.status-running .nc-st{color:var(--nk-st-running)}
+  .dag-node.status-success .nc-st{color:var(--nk-st-done)}
+  .dag-node.status-failed .nc-st{color:var(--nk-fail-text)}
+  .dag-node.status-retrying .nc-st{color:var(--nk-st-retrying)}
+  .dag-node.status-skipped .nc-st{color:var(--nk-st-muted)}
+  .dag-node.status-cancelled .nc-st{color:var(--nk-st-muted)}
+  .dag-node.status-running .nc-dot{animation:p 1.6s ease-in-out infinite}
   @keyframes p{0%,100%{opacity:1}50%{opacity:.28}}
 
   /* ── THE ONE BOLD MOMENT · the node takes itself apart ───────────────────
@@ -836,7 +843,7 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
     font:10px/1.3 var(--mono);letter-spacing:.05em;color:var(--nk-faint);white-space:nowrap}
   .stage[data-explode] .nc-head{border-bottom-style:dashed}
   @media (prefers-reduced-motion:reduce){
-    .nc-st--running::before{animation:none}
+    .dag-node.status-running .nc-dot{animation:none}
     .stage,.nc,.stage[data-explode] .nc > *{transition:none}
     .stage[data-explode] .nc > *{transform:none}
   }
@@ -933,7 +940,7 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
 
   /* une marque n'est pas un statut · elle se pose PAR-DESSUS, en trait
      pointillé, pour qu'on lise « et aussi » plutôt que « au lieu de » */
-  .nc-mark{border-style:dashed;color:var(--nk-caption);--chip:var(--nk-strong)}
+  .nc-stale{border-style:dashed;color:var(--nk-caption);--chip:var(--nk-strong)}
   .nc[data-mark]{border-style:dashed}
 
   .sw{display:grid;gap:5px}
@@ -1259,12 +1266,12 @@ ${Object.entries(STATUS).map(([k, v]) => swatch(k, v)).join('\n')}
 
     <div class="stage nk-ground" data-stage>
       <div class="mat-anatomy">
-        <article class="nc mat-big" data-verb="infer">
-          <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div>
-          <div class="nc-sub"><span class="nc-k">model</span> mistral/mistral-large-latest</div>
+        <article class="dag-node verb-infer status-pending mat-big"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
+          <div class="nc-sub"><span class="nc-sub-k">model</span> mistral/mistral-large-latest</div>
           <div class="nc-body">« Flag what is urgent »</div>
-          <div class="nc-why"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div>
-        </article>
+          <div class="nc-policy"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div>
+        </div></article>
         <ol class="mat-calls">
           <li><b>①</b> <span>le biseau</span> <code>inset 0 1px 0 · ${MAT.plate.bevel}</code> — l’arête haute prend la lumière ; c’est elle, et rien d’autre, qui dit d’où elle vient</li>
           <li><b>②</b> <span>le grain</span> <code>opacity ${MAT.plate.grain}</code> — un dither de Bayer, jamais un bruit lisse : le papier a une trame, pas un flou</li>
@@ -1377,10 +1384,10 @@ ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v,
     </p>
     <div class="stage nk-ground" data-stage><div class="rack">
 ${Object.entries(MARKS).map(([id, means]) => `        <div class="cell"><span class="cell-k">${esc(id.replace('_', '-'))}</span>
-          <article class="nc" data-verb="exec" data-state="success" data-mark="${id}">
-            <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH.exec}</span><span class="nc-id">build</span><span class="nc-verb">exec</span></div>
-            <div class="nc-why"><span class="nc-st nc-st--success">réussi</span><span class="nc-chip nc-mark">${esc(id.replace('_', '-'))}</span></div>
-          </article>
+          <article class="dag-node verb-exec status-success ${NODE_CLASSES.mark[id]}"><div class="nc">
+            <div class="nc-head"><span class="nc-tile">${VERB_GLYPH.exec}</span><span class="nc-id">build</span><span class="nc-badge">exec</span></div>
+            <div class="nc-policy"><span class="nc-st"><i class="nc-dot"></i>réussi</span><span class="nc-chip nc-stale">${esc(id.replace('_', '-'))}</span></div>
+          </div></article>
           <span class="cell-note">${esc(means)}</span></div>`).join('\n')}
     </div></div>
     <p class="typ-legend">
@@ -1412,7 +1419,7 @@ ${ATOMS.map(atomBlock).join('\n')}
         <div class="cell" style="max-width:none;flex:1 1 100%">
           <span class="cell-k">pastilles d’état · <em>nc-st-*</em></span>
           <div class="chiprow">
-${PILLS.map(([label, id]) => `            <span class="nc-st nc-st--${id}">${esc(label)}</span>`).join('\n')}
+${PILLS.map(([label, id]) => `            <span class="dag-node status-${id}"><span class="nc-st"><i class="nc-dot"></i>${esc(label)}</span></span>`).join('\n')}
           </div>
           <span class="cell-note">chacune porte une forme en plus de sa teinte · c’est ce qui la garde lisible en contraste forcé</span>
         </div>
@@ -1513,11 +1520,11 @@ ${SHAPES.map((sh) => `        <div class="cell" style="max-width:300px"><span cl
     </p>
     <div class="stage nk-ground" data-stage><div class="rack">
 ${FORCED.map((f) => `        <div class="cell"><span class="cell-k">${esc(f.label)}</span>
-          <article class="nc" data-verb="infer" data-state="idle" data-force="${f.k}">
-            <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div>
-            <div class="nc-sub"><span class="nc-k">with</span> inbox</div>
+          <article class="dag-node verb-infer status-pending" data-force="${f.k}"><div class="nc">
+            <div class="nc-head"><span class="nc-tile">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
+            <div class="nc-sub"><span class="nc-sub-k">with</span> inbox</div>
             <div class="nc-body">« Flag what is urgent »</div>
-          </article>
+          </div></article>
           <span class="cell-note">${esc(f.note)}</span></div>`).join('\n')}
     </div></div>
   </section>
@@ -1734,17 +1741,17 @@ ${LEDGER.map(([what, where, lvl, verdict]) => `        <tr><td>${esc(what)}</td>
   var PROBES = [
     ['.nc-id', 'le nom de la tâche', 'body'],
     ['.nc-body', 'le corps', 'body'],
-    ['.nc-body--cmd', 'un corps de commande', 'body'],
+    ['.nc-body-cmd', 'un corps de commande', 'body'],
     ['.nc-sub', 'la rangée mécanisme', 'spot'],
-    ['.nc-verb', 'le verbe, dans la tête', 'spot'],
+    ['.nc-badge', 'le verbe, dans la tête', 'spot'],
     ['.nc-chip', 'une puce de permis', 'spot'],
-    ['.nc-tk', 'le compteur de jetons', 'spot'],
-    ['.nc-st--success', 'l’état réussi', 'spot'],
-    ['.nc-st--failed', 'l’état refusé', 'spot'],
+    ['.nc-ab-tk', 'le compteur de jetons', 'spot'],
+    ['.dag-node.status-success .nc-st', 'l’état réussi', 'spot'],
+    ['.dag-node.status-failed .nc-st', 'l’état refusé', 'spot'],
     ['.cell-k', 'l’étiquette d’un plateau', 'spot'],
     ['.cell-note', 'la légende sous un spécimen', 'spot'],
-    ['.nc-st--skipped', 'l’état sauté', 'muted'],
-    ['.nc-st--pending', 'l’état au repos', 'muted'],
+    ['.dag-node.status-skipped .nc-st', 'l’état sauté', 'muted'],
+    ['.dag-node.status-pending .nc-st', 'l’état au repos', 'muted'],
     /* AJOUTÉ 2026-07-28 · huit familles étaient arrivées sur la page sans que
        le contrôle les voie. Un instrument en retard sur sa propre page mesure
        l'état d'hier et le rapporte comme celui d'aujourd'hui. */
@@ -2054,15 +2061,29 @@ ${groundJs()}
         var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('class', 'pg-edge');
         path.setAttribute('d', 'M' + x1 + ' ' + y1 + ' C' + mid + ' ' + y1 + ' ' + mid + ' ' + y2 + ' ' + x2 + ' ' + y2);
-        var from = a.dataset.state, to = b.dataset.state;
-        if (from === 'ok') path.setAttribute('data-live', '');
+        var from = statusOf(a), to = statusOf(b);
+        /* 'ok' ici était MORT : l'état s'appelle 'success' depuis le renommage,
+           donc aucune arête ne portait jamais le courant. La convergence vers
+           les noms du canvas l'a mis au jour. */
+        if (from === 'success') path.setAttribute('data-live', '');
         if (from === 'failed' || to === 'skipped') path.setAttribute('data-dead', '');
         pgSvg.appendChild(path);
       });
     }
 
     function say(msg) { if (pgSay) pgSay.textContent = msg; }
-    function setState(node, st) { node.dataset.state = st; node.querySelector('.pg-line').textContent = STATE_TEXT[st] || ''; drawEdges(); }
+    /* L'ÉTAT EST UNE CLASSE SUR L'ENVELOPPE, comme dans le canvas — pas un
+       attribut sur la carte. Deux surfaces qui lisent le même CSS doivent
+       porter l'état au même endroit, sinon les règles ne mordent que chez une. */
+    function statusOf(el) {
+      var m = /(?:^|\s)status-([a-z]+)/.exec(el.className);
+      return m ? m[1] : 'pending';
+    }
+    function setState(node, st) {
+      node.className = node.className.replace(/(?:^|\s)status-[a-z]+/, ' status-' + st);
+      node.querySelector('.pg-line').textContent = STATE_TEXT[st] || '';
+      drawEdges();
+    }
     function allNodes() { return Array.prototype.slice.call(pgWrap.querySelectorAll('.pg-node')); }
     function reset() { allNodes().forEach(function (n) { setState(n, 'pending'); }); say('sept tâches au repos · rien n’a encore tourné'); }
 
@@ -2070,7 +2091,7 @@ ${groundJs()}
     pgWrap.addEventListener('click', function (e) {
       var n = e.target.closest('.pg-node');
       if (!n) return;
-      var i = STATES_ORDER.indexOf(n.dataset.state);
+      var i = STATES_ORDER.indexOf(statusOf(n));
       var next = STATES_ORDER[(i + 1) % STATES_ORDER.length];
       setState(n, next);
       say(n.dataset.id + ' · ' + STATE_TEXT[next]);
