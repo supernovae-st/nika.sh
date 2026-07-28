@@ -343,6 +343,19 @@ const WAVES = Math.max(...DAG.nodes.map((n) => n.wave)) + 1
 const ROW = {}
 for (const n of DAG.nodes) { ROW[n.wave] = (ROW[n.wave] ?? 0) + 1; n.row = ROW[n.wave] }
 
+/* CE QU'UN POINTEUR FAIT, MONTRÉ D'UN COUP. On ne peut pas survoler quatre
+   cartes à la fois, donc un banc qui compte sur le survol ne montre jamais
+   ses états d'interaction. Chacun est forcé ici par un data-force qui applique
+   exactement les mêmes règles que l'état réel — si la règle change, la vitrine
+   change avec elle, elle ne peut pas mentir. */
+const FORCED = [
+  { k: 'rest', label: 'au repos', note: `le biseau à ${MAT.plate.bevel} · l’ombre courte et l’ombre longue` },
+  { k: 'hover', label: 'survolé', note: `six choses ensemble · ${MAT.plate.lift_px}px de levée, biseau ${MAT.plate.bevel}→${MAT.plate.bevel_lit}, ombre allongée, titre 500→600` },
+  { k: 'focus', label: 'au clavier', note: 'le même relief, plus l’anneau · le relief ne remplace jamais l’anneau' },
+  { k: 'select', label: 'sélectionné', note: 'la teinte du verbe passe dans le trait · c’est un état, pas un survol' },
+  { k: 'dim', label: 'atténué', note: 'le reste du graphe quand un nœud est mis en avant · il recule, il ne disparaît pas' },
+]
+
 const dagNode = (n) => `        <article class="nc pg-node" data-verb="${n.verb}" data-state="idle" data-id="${n.id}"
           style="grid-column:${n.wave + 1};grid-row:${n.row}" tabindex="0" role="button"
           aria-label="${n.id} · clique pour changer son état">
@@ -808,6 +821,19 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
   .sw b{font:500 10px/1 var(--mono);letter-spacing:.04em;color:var(--nk-dim)}
   .sw span{font:10px/1 var(--mono);color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  /* les états forcés · exactement les mêmes déclarations que les vraies, mais
+     déclenchées par un attribut, pour qu'une vitrine ne puisse pas diverger */
+  .nc[data-force='hover'],.nc[data-force='focus']{
+    transform:translateY(calc(var(--nk-lift) * -1));
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel-lit)),var(--nk-contact),
+      0 calc(var(--nk-lift) * 13) calc(var(--nk-lift) * 18) -28px rgb(0 0 0 / .62)}
+  .nc[data-force='focus']{outline:2px solid var(--nk-verb);outline-offset:3px}
+  .nc[data-force='select']{border-color:color-mix(in oklch,var(--nk-verb) 62%,var(--nk-edge));
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel-lit)),
+      0 0 0 1px color-mix(in oklch,var(--nk-verb) 30%,transparent),
+      var(--nk-contact),var(--nk-ambient)}
+  .nc[data-force='dim']{opacity:.42}
+
   /* ── le playground ──────────────────────────────────────────────────────
      Le graphe et ses fils partagent un seul repère : les arêtes sont tracées
      au runtime depuis les rectangles réels des nœuds, donc elles restent
@@ -1234,6 +1260,24 @@ ${DAG.nodes.map(dagNode).join('\n')}
         </div>
       </div>
     </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Les interactions</h2><span class="sec-n">${FORCED.length} états, forcés côte à côte</span></div>
+    <p class="sec-note">
+      On ne peut pas survoler quatre cartes à la fois : un banc qui compte sur le pointeur ne
+      montre jamais ses états d’interaction. Chacun est <b>forcé</b> ici, en appliquant exactement
+      les mêmes règles que l’état réel — si la règle change, la vitrine change avec elle.
+    </p>
+    <div class="stage" data-stage><div class="rack">
+${FORCED.map((f) => `        <div class="cell"><span class="cell-k">${esc(f.label)}</span>
+          <article class="nc" data-verb="infer" data-state="idle" data-force="${f.k}">
+            <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div>
+            <div class="nc-sub"><span class="nc-k">with</span> inbox</div>
+            <div class="nc-body">« Flag what is urgent »</div>
+          </article>
+          <span class="cell-note">${esc(f.note)}</span></div>`).join('\n')}
+    </div></div>
   </section>
 
   <section>
