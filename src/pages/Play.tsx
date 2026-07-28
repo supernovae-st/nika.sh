@@ -445,6 +445,19 @@ export function Component() {
                     ? `nika ${oracle.engine} · wasm · ${oracle.legs.join('+').toLowerCase()}`
                     : 'preview port'}
                 </span>
+                {/* registry-truth gated (front-doors addendum law): this link
+                    exists only because the package is live on npm — the same
+                    attested bytes this page runs */}
+                {oracle ? (
+                  <a
+                    className="play-embed-link"
+                    href="https://www.npmjs.com/package/@supernovae-st/nika-check-wasm"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    embed this checker
+                  </a>
+                ) : null}
                 <span
                   className="play-editor-status"
                   data-valid={valid}

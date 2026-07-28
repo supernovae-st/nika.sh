@@ -664,3 +664,22 @@
   color: var(--v4-text-dim);
   border-color: var(--v4-line-strong);
 }
+
+/* the sibling door — same plate voice as the chip it stands beside; a link,
+   so it carries the underline the chip must not */
+.play-embed-link {
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  letter-spacing: var(--ls-plate);
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--v4-line-strong);
+}
+
+.play-embed-link:hover,
+.play-embed-link:focus-visible {
+  color: var(--v4-text);
+  text-decoration-color: currentColor;
+}
