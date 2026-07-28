@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "check": "tsc --noEmit -p tsconfig.app.json && node design/build.mjs --check && node design/build-ground.mjs --check && node design/bench.mjs --check",
+    "check": "tsc --noEmit -p tsconfig.app.json && node design/build.mjs --check && node design/bench.mjs --check",
     "lint": "eslint src --max-warnings 0",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -27,8 +27,7 @@
     "gates:fast": "node scripts/run-gates.mjs --fast",
     "lens": "node scripts/lens/graph/build-lens.mjs",
     "postbuild": "pagefind --site dist && node scripts/sort-pagefind-entry.mjs",
-    "bench": "node design/bench.mjs",
-    "ground": "node design/build-ground.mjs"
+    "bench": "node design/bench.mjs"
   },
   "dependencies": {
     "@codemirror/autocomplete": "6.20.3",

@@ -3,7 +3,7 @@
 @import './design.forced-colors.generated.css';
 @import './styles/tokens.css';
 @import './styles/plate.css';
-@import './styles/ground.css';
+@import './styles/ground.generated.css';
 @import './styles/print.css';
 
 /* ─── v4 trust-landing utilities · black & white token system ────────────────

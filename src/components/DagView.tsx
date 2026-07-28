@@ -82,7 +82,11 @@ export function DagView({
   return (
     <div
       ref={boxRef}
-      className="dv"
+      /* LE SOL DU CANVAS · la trame de croix, la vignette qui connaît le run,
+         la lampe bleue et le curseur d’arpentage viennent tous du fichier que
+         nika-spec projette (styles/ground.generated.css) — le même que le
+         canvas VS Code reçoit. Le site cesse ici de dessiner sa propre nappe. */
+      className="dv nk-ground"
       data-stale={stale || undefined}
       role="img"
       aria-label={`The plan: ${plan.waves.map((w) => w.map((t) => t.id).join(' + ')).join(', then ')}${plan.cyclic ? ' (cycle detected)' : ''}`}

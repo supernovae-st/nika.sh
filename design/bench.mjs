@@ -33,7 +33,7 @@
  * there and stops holding it. The same is true of every knob marked « spec ». */
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { groundCss, groundJs, CURSORS } from './ground.mjs'
+import { groundJs, CURSORS } from './ground.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const OUT = `${ROOT}design/bench.html`
@@ -42,6 +42,9 @@ const OUT = `${ROOT}design/bench.html`
 const tokensTs = readFileSync(`${ROOT}src/design-tokens.generated.ts`, 'utf8')
 const designCss = readFileSync(`${ROOT}src/design.generated.css`, 'utf8')
 const siteCss = readFileSync(`${ROOT}src/styles/tokens.css`, 'utf8')
+/* le sol est REÇU, pas produit · le banc inline le fichier que la spec
+   projette, exactement comme le site le charge */
+const groundCssProjected = readFileSync(`${ROOT}src/styles/ground.generated.css`, 'utf8')
 
 const constObject = (name) => {
   const body = tokensTs.match(new RegExp(`export const ${name} = \\{([^}]*)\\}`))?.[1]
@@ -639,7 +642,7 @@ ${Object.entries(theme.verbText).map(([k, v]) => `    --nk-${k}-text:${v};`).joi
 ${Object.entries(theme.layer).map(([k, v]) => `    --nk-${k}:${v};`).join('\n')}
   }
 
-${groundCss(MAT)}
+${groundCssProjected}
   *{box-sizing:border-box}
   body{margin:0;background:var(--room-bg);color:var(--room-ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
   .wrap{max-width:1180px;margin:0 auto;padding:38px 22px 90px}
