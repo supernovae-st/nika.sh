@@ -54,8 +54,16 @@ for (const c of CONTRACT) {
 const fn = ts.match(/function nodeClassOf\(node: DagNode\): string \{[\s\S]*?\n\}/)
 if (!fn) { console.error('✗ nodeClassOf() introuvable dans dag.ts · le canvas a bougé'); process.exit(1) }
 
-/* toutes les familles .nc* stylées · le banc n'a pas le droit d'en inventer */
-const families = [...new Set([...css.matchAll(/\.(nc[a-z0-9-]*)/g)].map((m) => m[1]))].sort()
+/* LE VOCABULAIRE DU CANVAS · ce qu'il STYLE **et** ce qu'il ÉCRIT. La première
+   version ne relevait que le CSS, et déclarait donc « inventées » cinq classes
+   que son propre TypeScript émet — nc-pol-permits, nc-pol-retry et les autres,
+   précisément celles qui n'avaient aucune peau. Un instrument qui ne regarde
+   qu'une moitié appelle invention ce qui est simplement muet. */
+const families = [...new Set([
+  ...[...css.matchAll(/\.(nc[a-z0-9-]*)/g)].map((m) => m[1]),
+  ...[...ts.matchAll(/['"`](nc-[a-z0-9-]+)['"`]/g)].map((m) => m[1]),
+  ...[...ts.matchAll(/'(nc-[a-z0-9-]+)',/g)].map((m) => m[1]),
+])].sort()
 
 /* CE QUE LE CANVAS REÇOIT VRAIMENT · la question que la matrice pose, et à
    laquelle personne ne pouvait répondre depuis ce dépôt. Un fichier projeté
