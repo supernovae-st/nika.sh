@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-27',
+    tag: 'release',
+    title: 'v0.106.0 · the values split, the authority speaks',
+    body: 'The authority release: two flag-days in one window, and both change what an existing file MEANS. The value forms split into the four authorities. vars: and env: are dead (NIKA-VALUES-001 · NIKA-VALUES-002); inputs: · config: · const: · secrets: are the whole family, and the law is classify-not-rename: every entry moves to the authority its ROLE commands, never to one bulk destination (--var keeps its spelling; its target is inputs: now). And permits: stops being optional: absent is the EMPTY boundary, not the unconfined floor. A body carrying any effect with no block refuses NIKA-AUTH-006 before a token is spent; nika check --infer-permits prints the tightest block, and the round-trip law holds (the inferred block re-checks clean). Around them the attestation lane arrives whole: a run declares its entropy and its clock, boots from a manifest, seals what it covered, signs, anchors to a public transparency log, and exports a pack an auditor reads without trusting us. nika check --fix applies the mechanical half of the migration and stops untouched rather than guess at the rest. The site re-baked the same day: every served workflow speaks the four authorities natively, the hello declares its touch, the /learn radar opens on a blocking human gate (NIKA-SEC-009 · the lethal-trifecta judge), and the w1-to-w2 serving door retired. What you copy runs on YOUR installed binary.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.106.0',
+  },
+  {
     date: '2026-07-20',
     tag: 'release',
     title: 'v0.105.0 · the map comes home',
