@@ -8,6 +8,7 @@ import { FileTabsGhost } from '../Hero'
 import TheRun from '../run/TheRun'
 import ThePlan from '../plan/ThePlan'
 import { useAurora } from '../../fx/aurora-context'
+import { useScrollWellTab } from '../../lib/use-scroll-well'
 import { formatMs, type FlagshipEntry, type FlagshipTask } from '../../flagships'
 import { buildScript } from '../run/replay-model'
 import {
@@ -216,6 +217,12 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
   const dagRef = useRef<HTMLDivElement>(null)
   const termRef = useRef<HTMLDivElement>(null)
   const termBodyRef = useRef<HTMLDivElement>(null)
+  /* LE PUITS DOIT ÊTRE ATTEIGNABLE POUR ÊTRE DÉFILÉ. Ce terminal défile en
+     vertical (une hauteur fixe, overflow-y:auto) et n'avait aucun arrêt de
+     tabulation : axe le refuse, à juste titre — au clavier, le texte au-delà de
+     la première ligne visible était inatteignable. Le crochet maison lui donne
+     son tabIndex exactement quand il déborde, et le lui reprend sinon. */
+  useScrollWellTab(termBodyRef, timeline.reveal)
   const donePanelRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef(new Map<string, HTMLDivElement | null>())
   const wireRefs = useRef<(SVGPathElement | null)[]>([])
@@ -1722,7 +1729,13 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
                 recorded
               </span>
             </div>
-            <div className="morph-term-body" ref={termBodyRef} role="log" aria-live="off">
+            <div
+              className="morph-term-body"
+              ref={termBodyRef}
+              role="log"
+              aria-live="off"
+              aria-label="the run's terminal output"
+            >
               {script.lines.slice(0, timeline.reveal).map((line, i) => (
                 <div
                   className="morph-line"
