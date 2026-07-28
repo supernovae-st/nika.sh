@@ -272,3 +272,46 @@ describe('the two voices · the frontier is argument vs proof', () => {
       + '— a display cut at body size is not the same typeface, it is a worse one').toHaveLength(0)
   })
 })
+
+/* ── the bench obeys the law it displays ─────────────────────────────────────
+   design/bench.html is the page that shows the type scale and the four
+   weights. It was itself running on twelve hard-coded sizes including five
+   half-pixel steps (9.5 · 10.5 · 11.5 · 12.5 · 13.5) and a font-weight of 550
+   — a fifth weight, on the page that pins exactly four.
+
+   An instrument that does not obey the law it displays teaches the law is
+   optional. So the bench is gated by it, and the gate is ABSOLUTE rather than
+   a ratchet, because the bench is one file and there was no debt left after
+   the sweep.
+
+   RELATIVE ADJUSTMENTS ARE NOT SCALE STEPS. calc(var(--nk-fs) - 1.5px) is a
+   delta from the projected body size, not a size someone chose; it stays. */
+describe('the bench obeys the law it displays', () => {
+  const BENCH = readFileSync(join(ROOT, 'design/bench.mjs'), 'utf8')
+
+  it('sets no half-pixel size outside a relative calc', () => {
+    /* only TYPE declarations: the first draft matched any half-pixel and
+       flagged paddings, radii and a 1.5px stroke — the law is about the scale,
+       so the pattern has to be about the scale too */
+    const offenders: string[] = []
+    for (const m of BENCH.matchAll(/font(?:-size)?:\s*([^;{}]+)/g)) {
+      const value = m[1]
+      if (value.includes('calc(')) continue /* a delta from the projected body, not a step */
+      const half = value.match(/\b\d+\.5px/)
+      if (!half) continue
+      offenders.push(`bench.mjs:${BENCH.slice(0, m.index).split('\n').length} → ${half[0]}`)
+    }
+    expect(offenders, `half-pixel sizes in the bench's own chrome: ${offenders.join(' · ')}`)
+      .toHaveLength(0)
+  })
+
+  it('sets no weight outside the four', () => {
+    const CANON = new Set(['400', '500', '600', '700'])
+    const bad: string[] = []
+    for (const m of BENCH.matchAll(/font(?:-weight)?:\s*(\d{3})\b/g)) {
+      if (CANON.has(m[1])) continue
+      bad.push(`${m[1]} at bench.mjs:${BENCH.slice(0, m.index).split('\n').length}`)
+    }
+    expect(bad, `weights outside 400/500/600/700: ${bad.join(' · ')}`).toHaveLength(0)
+  })
+})
