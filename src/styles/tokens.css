@@ -158,8 +158,20 @@
   --type-h3: clamp(1.25rem, 1.05rem + 0.6vw, 1.625rem);    /* 20 → 26px · card titles */
   --type-body: 17px;        /* ledes · section prose (measure ≤ 65ch) */
   --type-body-sm: 15px;     /* secondary prose · card copy */
+  --type-ui: 14px;          /* controls · buttons · list rows · table cells */
   --type-eyebrow: 13px;     /* mono eyebrows · [ BRACKET ] plates (Cursor register) */
   --type-plate: 12px;       /* mono metadata plates · version · captions */
+  --type-mini: 11px;        /* dense mono labels · the site's largest single mass */
+  --type-micro: 10px;       /* chips · counters · badges · the smallest we set */
+  /* THE SCALE IS CLOSED, AND EVERY STEP IS A WHOLE PIXEL. It was already
+     named and documented here — and bypassed 673 times against 13 uses, with
+     241 of those bypasses landing on HALF pixels (10.5 · 11.5 · 12.5 · 13.5 ·
+     14.5 · 15.5). Nobody perceives 11px against 11.5px as a hierarchy; those
+     are accretion, not design, and they are what makes a page read as
+     assembled rather than composed. The three steps above (14 · 11 · 10) were
+     not invented: they are where the site's own mass already sits, measured
+     across every stylesheet. Ratchets in src/test/type-scale.test.ts hold the
+     count down and forbid the scale itself from ever gaining a half step. */
   --lh-display: 1.06;
   --lh-body: 1.65;
   --ls-display: -0.018em;

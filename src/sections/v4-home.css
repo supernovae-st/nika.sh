@@ -165,7 +165,7 @@
   border: 1px dashed var(--v4-line);
   border-radius: var(--v4-radius);
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   line-height: 1.75;
   color: var(--v4-text-dim);
   /* the evaporation · the ONE dithered edge-fade on the site (T8): the top of
@@ -183,7 +183,7 @@
 }
 .v4wedge-chat-kicker {
   margin-bottom: 12px;
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -209,7 +209,7 @@
 .v4wedge-arrow {
   display: none;
   font-family: var(--mono);
-  font-size: 18px;
+  font-size: var(--type-body);
   color: var(--v4-text-faint);
   user-select: none;
 }
@@ -234,7 +234,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   letter-spacing: 0.06em;
   color: var(--v4-text-faint);
 }
@@ -302,7 +302,7 @@
   align-items: baseline;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   letter-spacing: 0.02em;
   color: var(--v4-text);
   font-variant-numeric: tabular-nums;
@@ -349,7 +349,7 @@
 .v4chap-sub {
   margin-top: 16px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--type-plate);
   line-height: 2;
   letter-spacing: 0.01em;
   color: var(--v4-text-dim);
@@ -399,7 +399,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -419,7 +419,7 @@
 .v4wedge-versus-lede {
   margin-top: clamp(48px, 7vh, 88px);
   max-width: 44rem;
-  font-size: 15.5px;
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--v4-text-dim);
 }
@@ -473,14 +473,14 @@
   top: 12px;
   right: 16px;
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
 }
 .v4versus-them {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--v4-text-dim);
@@ -496,7 +496,7 @@
 .v4versus-themlist li {
   display: flex;
   gap: 9px;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.5;
   color: var(--v4-text-dim);
 }
@@ -515,7 +515,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--v4-text);
@@ -536,7 +536,7 @@
 .v4versus-nikalist li {
   display: flex;
   gap: 9px;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.5;
   color: var(--v4-text);
 }
@@ -598,7 +598,7 @@
 }
 .v4belt-count-fig {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -615,14 +615,14 @@
 .v4belt-count-n .v4belt-count-unit {
   margin-left: 6px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--type-plate);
   font-weight: 400;
   letter-spacing: 0.02em;
   color: var(--v4-text-faint);
   vertical-align: 4px;
 }
 .v4belt-count-label {
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   line-height: 1.45;
   color: var(--v4-text-dim);
 }
@@ -662,7 +662,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--v4-text);
@@ -677,19 +677,19 @@
   border-left: 1px solid var(--vh, color-mix(in oklch, var(--v4-text) 40%, transparent));
 }
 .v4belt-reg-cap {
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   line-height: 1.5;
   color: var(--v4-text-dim);
   max-width: 24ch;
 }
 .v4belt-reg-cap code {
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   color: var(--v4-text);
 }
 .v4belt-reg-count {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -715,7 +715,7 @@
   border-radius: var(--v4-radius-sm);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   color: var(--v4-text);
   transition: border-color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
 }
@@ -727,7 +727,7 @@
 .v4belt-chip em {
   font-style: normal;
   font-family: var(--display);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.01em;
   color: var(--v4-text-faint);
   white-space: nowrap;
@@ -754,7 +754,7 @@
   gap: 9px;
   margin-bottom: 7px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -768,7 +768,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -804,7 +804,7 @@
   border-radius: var(--v4-radius);
   background: transparent;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--type-plate);
   letter-spacing: 0.02em;
   color: var(--v4-text-dim);
   cursor: pointer;
@@ -823,7 +823,7 @@
   color: var(--v4-bg);
 }
 .v4uc-tab-n {
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.1em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -836,7 +836,7 @@
 .v4uc-hook {
   margin-top: 24px;
   max-width: 44rem;
-  font-size: 16px;
+  font-size: var(--type-body);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -926,7 +926,7 @@
 }
 .v4uc-card-fig {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.18em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -936,12 +936,12 @@
    (the curated icon from usecases-data; decorative, aria-hidden) */
 .v4uc-card-icon {
   flex: 0 0 auto;
-  font-size: 15px;
+  font-size: var(--type-body-sm);
   line-height: 1;
   user-select: none;
 }
 .v4uc-card-title {
-  font-size: 16px;
+  font-size: var(--type-body);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--v4-text);
@@ -949,7 +949,7 @@
 .v4uc-card-tier {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.06em;
   padding: 2px 7px;
   border: 1px solid var(--v4-line);
@@ -962,7 +962,7 @@
 .v4uc-card-body {
   display: block;
   margin-top: 9px;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -973,7 +973,7 @@
   margin-top: 8px;
   display: flex;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.55;
   color: var(--v4-text);
   text-wrap: pretty;
@@ -993,7 +993,7 @@
 .v4uc-card-tasks {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -1014,14 +1014,14 @@
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.01em;
   color: var(--v4-text-dim);
 }
 .v4uc-verb-glyph {
   color: var(--vh, var(--v4-text-faint));
   user-select: none;
-  font-size: 12px;
+  font-size: var(--type-plate);
   line-height: 1;
 }
 
@@ -1048,7 +1048,7 @@
 }
 .v4uc-panel-file {
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   letter-spacing: 0.01em;
   color: var(--v4-text-dim);
 }
@@ -1059,7 +1059,7 @@
 .v4uc-panel-link {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.02em;
   color: var(--v4-text-dim);
   text-decoration: underline;
@@ -1087,7 +1087,7 @@
   margin-top: 12px;
   display: flex;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.55;
   color: var(--v4-text);
   text-wrap: pretty;
@@ -1104,7 +1104,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   letter-spacing: 0.03em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -1175,7 +1175,7 @@
 }
 .v4log-date {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--type-plate);
   letter-spacing: 0.04em;
   color: var(--v4-text-dim);
   font-variant-numeric: tabular-nums;
@@ -1188,7 +1188,7 @@
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -1197,7 +1197,7 @@
   min-width: 0;
 }
 .v4log-title {
-  font-size: 16px;
+  font-size: var(--type-body);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.3;
@@ -1207,7 +1207,7 @@
 .v4log-desc {
   margin-top: 7px;
   max-width: 44rem;
-  font-size: 14px;
+  font-size: var(--type-ui);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -1243,7 +1243,7 @@
   align-items: center;
   min-height: 44px;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   letter-spacing: 0.01em;
   color: var(--v4-text);
   text-decoration: underline;
@@ -1256,7 +1256,7 @@
 }
 .v4log-more-note {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -1289,7 +1289,7 @@
   display: flex;
   align-items: baseline;
   gap: 12px;
-  font-size: 16px;
+  font-size: var(--type-body);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.3;
@@ -1298,7 +1298,7 @@
 .v4proof-fig {
   flex: 0 0 auto;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.18em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -1307,7 +1307,7 @@
   margin: 9px 0 0;
   padding-left: calc(12px + 2.6em); /* align under the claim text, past the fig */
   max-width: 40rem;
-  font-size: 14px;
+  font-size: var(--type-ui);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -1341,7 +1341,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   letter-spacing: 0.03em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -1405,7 +1405,7 @@
 }
 .sitefoot-kick {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -1419,7 +1419,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 32px;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   color: var(--v4-text-dim);
   text-decoration: none;
   transition: color var(--dur-ui) var(--ease-ui);
@@ -1430,7 +1430,7 @@
 .sitefoot-ext {
   margin-left: 4px;
   color: var(--v4-text-faint);
-  font-size: 11px;
+  font-size: var(--type-mini);
 }
 /* (the W8 ASCII plate is retired — operator call: one signature, the
    footer's living particle butterfly. Bake script + generated file removed;
@@ -1450,7 +1450,7 @@
   text-align: left;
 }
 .sitefoot-maplink {
-  font-size: 14px;
+  font-size: var(--type-ui);
   font-weight: 600;
   color: var(--v4-text);
   text-decoration: none;
@@ -1463,11 +1463,11 @@
 .sitefoot-mapstar {
   color: var(--v4-accent);
   margin-right: 7px;
-  font-size: 12px;
+  font-size: var(--type-plate);
 }
 .sitefoot-doctrine {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
 }
@@ -1494,7 +1494,7 @@
 .sitefoot-soon {
   margin-left: 7px;
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: var(--type-micro);
   letter-spacing: 0.08em;
   padding: 1px 5px;
   border: 1px dashed var(--v4-line-strong);
@@ -1511,13 +1511,13 @@
   padding: 12px 0;
   border-top: 1px solid var(--v4-line);
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   text-align: left;
 }
 .sitefoot-machines-kick {
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: var(--type-micro);
   color: var(--v4-text-faint);
 }
 .sitefoot-machine-link {
@@ -1544,7 +1544,7 @@
   padding: 12px 0;
   border-top: 1px solid var(--v4-line);
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   text-align: left;
 }
 .sitefoot-lang-link {
@@ -1581,7 +1581,7 @@
 .v4cta-lede {
   margin-top: 16px;
   max-width: 34rem;
-  font-size: 16.5px;
+  font-size: var(--type-body);
   line-height: 1.6;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -1605,7 +1605,7 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  font-size: 14.5px;
+  font-size: var(--type-ui);
   color: var(--v4-text);
   border-radius: var(--v4-radius);
   transition: color var(--dur-ui) var(--ease-ui);
@@ -1666,20 +1666,20 @@
 }
 .v4fits-fig {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.1em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
 }
 .v4fits-them-name {
-  font-size: 16px;
+  font-size: var(--type-body);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--v4-text);
 }
 .v4fits-them-does {
   grid-column: 2;
-  font-size: 14px;
+  font-size: var(--type-ui);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -1690,7 +1690,7 @@
   align-items: baseline;
   gap: 8px;
   min-width: 0;
-  font-size: 14.5px;
+  font-size: var(--type-ui);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -1757,14 +1757,14 @@
 .v4start-num {
   /* the FIG N.n.m sub-plate index (was a 19px circled glyph pre-grammar-unify) */
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--type-plate);
   letter-spacing: 0.08em;
   line-height: 1.4;
   color: var(--v4-text-dim);
   font-variant-numeric: tabular-nums;
 }
 .v4start-title {
-  font-size: 16px;
+  font-size: var(--type-body);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--v4-text);
@@ -1774,7 +1774,7 @@
 }
 .v4start-desc {
   max-width: 42rem;
-  font-size: 14.5px;
+  font-size: var(--type-ui);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -1793,7 +1793,7 @@
 }
 .v4start-or {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -1811,7 +1811,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.06em;
   color: var(--v4-text-faint);
 }
@@ -1838,20 +1838,20 @@
   border-top: 1px solid var(--v4-line);
 }
 .v4start-stack-kicker {
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.2em;
   color: var(--v4-text-faint);
 }
 .v4start-stack-doors {
   margin-top: 10px;
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   line-height: 1.9;
   letter-spacing: 0.01em;
   color: var(--v4-text);
 }
 .v4start-stack-note {
   margin-top: 8px;
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   line-height: 1.6;
   color: var(--v4-text-dim);
 }
@@ -1882,7 +1882,7 @@
   align-items: center;
   min-height: 44px;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   letter-spacing: 0.01em;
   color: var(--v4-text);
   text-decoration: underline;
@@ -1895,7 +1895,7 @@
 }
 .v4start-more-note {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -1935,7 +1935,7 @@
 }
 .v4faq-fig {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.08em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -1970,7 +1970,7 @@
   margin: 0 0 4px;
   padding: 0 0 20px;
   max-width: 46rem;
-  font-size: 14.5px;
+  font-size: var(--type-ui);
   line-height: 1.6;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -2027,7 +2027,7 @@
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
   padding: 16px 16px 17px;
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   line-height: 1.45;
   letter-spacing: 0.01em;
   color: var(--v4-text-dim);
@@ -2077,7 +2077,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -2108,7 +2108,7 @@
 }
 .v4every-kicker {
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--v4-text);
@@ -2121,13 +2121,13 @@
 }
 .v4every-body {
   margin-top: 8px;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
 }
 .v4every-body code {
-  font-size: 12px;
+  font-size: var(--type-plate);
   color: var(--v4-text);
 }
 .v4every-cta {
@@ -2151,7 +2151,7 @@
   min-height: 32px;
   width: fit-content;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--type-plate);
   letter-spacing: 0.01em;
   color: var(--v4-text-dim);
   text-decoration: none;
@@ -2180,7 +2180,7 @@
 }
 .v4convert-ask {
   max-width: 38rem;
-  font-size: 15.5px;
+  font-size: var(--type-body-sm);
   line-height: 1.65;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -2190,7 +2190,7 @@
   font-weight: 600;
 }
 .v4convert-ask code {
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   color: var(--v4-text);
 }
 .v4convert-cta {
@@ -2205,7 +2205,7 @@
   background-color: color-mix(in oklch, var(--v4-bg-raised) 70%, transparent);
   background-image: var(--v4-grain-img);
   background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
-  font-size: 14px;
+  font-size: var(--type-ui);
   font-weight: 560;
   color: var(--v4-text);
   text-decoration: none;
@@ -2243,7 +2243,7 @@
 .v4ed-tab {
   margin: 0 0 14px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.04em;
   color: var(--v4-text-dim);
 }
@@ -2314,7 +2314,7 @@
   gap: 8px;
   margin: 0;
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: var(--type-plate);
 }
 
 .v4ed-glyph {
@@ -2328,7 +2328,7 @@
 
 .v4ed-status {
   margin-left: auto;
-  font-size: 11px;
+  font-size: var(--type-mini);
   color: var(--v4-text-dim);
 }
 
@@ -2338,7 +2338,7 @@
 .v4ed-card-body {
   margin: 5px 0 0;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   line-height: 1.5;
   color: var(--v4-text-dim);
   overflow: hidden;
@@ -2351,7 +2351,7 @@
   margin: 7px 0 0;
   padding: 1px 6px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   color: var(--v4-text-dim);
   border: 1px solid var(--v4-line);
   border-radius: 4px;
@@ -2363,7 +2363,7 @@
   gap: 12px;
   margin: 16px 0 0;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
 }
 
 .v4ed-run {
@@ -2388,7 +2388,7 @@
 }
 
 .v4ed-claims li {
-  font-size: 15px;
+  font-size: var(--type-body-sm);
   line-height: 1.65;
   color: var(--v4-text-dim);
 }
@@ -2442,7 +2442,7 @@
 .v4edx-tab-hint {
   float: right;
   color: var(--v4-text-faint);
-  font-size: 10px;
+  font-size: var(--type-micro);
 }
 
 .v4edx-stage {
@@ -2539,7 +2539,7 @@
   border-radius: 8px 0 0 8px;
   border-right: 1px solid var(--v4-line);
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   color: var(--v4edx-hue);
   background: color-mix(in srgb, var(--v4edx-hue) 9%, transparent);
 }
@@ -2554,7 +2554,7 @@
 
 .v4edx-id {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--type-plate);
   font-weight: 600;
   color: var(--v4-text);
   white-space: nowrap;
@@ -2566,7 +2566,7 @@
   display: flex;
   gap: 6px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   min-width: 0;
 }
 
@@ -2587,7 +2587,7 @@
   top: 6px;
   right: 8px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   color: var(--v4-text-faint);
 }
 
@@ -2669,7 +2669,7 @@
 .v4edx-pre {
   margin: 0;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   line-height: 1.55;
   color: var(--v4-text-dim);
   overflow-x: auto;
@@ -2714,9 +2714,9 @@
 }
 
 @media (max-width: 480px) {
-  .v4edx-id { font-size: 10.5px; }
-  .v4edx-fact { font-size: 9px; }
-  .v4edx-tile { width: 26px; font-size: 11px; }
+  .v4edx-id { font-size: var(--type-micro); }
+  .v4edx-fact { font-size: var(--type-micro); }
+  .v4edx-tile { width: 26px; font-size: var(--type-mini); }
   .v4edx-body { padding: 6px 20px 6px 8px; }
   .v4edx-tab-hint { display: none; }
   /* the duration meta needs air a 40%-wide card doesn't have — the ✓ dot
