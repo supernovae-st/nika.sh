@@ -1,5 +1,5 @@
 {
-  "sha": "b2f88b1",
+  "sha": "988d81f",
   "contract": [
     "status-pending",
     "status-running",
@@ -219,5 +219,42 @@
     "nc-xpk-dot",
     "nc-xpk-edge"
   ],
+  "receives": {
+    "design-tokens.generated.ts": {
+      "present": true,
+      "refs": 11,
+      "state": "reçoit"
+    },
+    "ground.generated.css": {
+      "present": false,
+      "refs": 0,
+      "state": "jamais livré"
+    },
+    "node.generated.css": {
+      "present": false,
+      "refs": 0,
+      "state": "jamais livré"
+    }
+  },
+  "symbols": {
+    "NIKA_VERB_HEX": 4,
+    "NIKA_VERB_RGB": 0,
+    "NIKA_VERB_TEXT": 2,
+    "NIKA_VERB_GLYPH": 1,
+    "NIKA_VERB_CODICON": 1,
+    "NIKA_VERB_FA": 0,
+    "NIKA_VERB_ICON": 0,
+    "NIKA_FEATURE_CODICON": 0,
+    "NIKA_ROLE_WORDS": 0,
+    "NIKA_ROLE_MARK": 0,
+    "NIKA_ROLE_CODICON": 0,
+    "NIKA_ROLE_WEB_TOKEN": 0,
+    "NIKA_ROLE_VSCODE": 0,
+    "NIKA_SEVERITY": 1,
+    "NIKA_SEVERITY_TEXT": 1,
+    "NIKA_STATUS": 2,
+    "NIKA_BRAND": 2,
+    "NIKA_PROVIDERS_ORDER": 3
+  },
   "nodeClassOf": "function nodeClassOf(node: DagNode): string {\n  return `dag-node status-${node.status} verb-${node.verb}`\n    + (node.stale ? ' is-stale' : '')\n    + (node.staleUpstream ? ' stale-up' : '')\n    + (node.cached ? ' is-cached' : '')\n    + (node.recoveredFrom !== undefined ? ' is-recovered' : '')\n    + (node.auditCount ? ` has-audit audit-${node.auditWorst ?? 'error'}` : '')\n    + (node.deadGate ? ' dead-gate' : '')\n    // A parked question is WAITING, not working — the strip's frame\n    // holds while the human thinks (motion = state).\n    + (node.pausedQuestion ? ' is-asking' : '');\n}"
 }

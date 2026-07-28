@@ -233,3 +233,42 @@ describe('la carte projetée · une géométrie, trois surfaces', () => {
       `le site emploie des classes de carte absentes du canvas ${pin.sha}`).toEqual([])
   })
 })
+
+/* ── LA MATRICE DE SYNCHRONISATION · la page qui juge doit être jugée ─────────
+   Une matrice qui se dégrade en silence est pire que pas de matrice : elle
+   affiche « tout va bien » avec les mêmes pixels qu'une mesure réelle. Ces
+   quatre clauses la tiennent honnête. */
+describe('la matrice de synchronisation · mesurée, pas déclarée', () => {
+  const HTML_M = readFileSync(join(__dirname, '../../design/bench.html'), 'utf8')
+  const cells = [...HTML_M.matchAll(/class="mx-c mx-(\w+)"/g)].map((m) => m[1])
+
+  it('l’épingle porte ce que le canvas REÇOIT, pas seulement ce qu’il style', () => {
+    expect(pin.receives, 'l’épingle ne mesure plus la livraison · la colonne canvas serait inventée')
+      .toBeTruthy()
+    expect(Object.keys(pin.symbols ?? {}).length,
+      'aucun symbole projeté relevé chez le canvas').toBeGreaterThan(5)
+  })
+
+  it('elle porte réellement des cases, et de plusieurs états', () => {
+    expect(cells.length, 'la matrice est vide · elle passerait pour verte').toBeGreaterThan(40)
+    expect(new Set(cells).size, 'un seul état partout · l’instrument est cassé, pas la synchro')
+      .toBeGreaterThan(2)
+  })
+
+  it('elle ne cache pas les trous · le compte des manques suit l’épingle', () => {
+    const gaps = cells.filter((c) => c === 'gap').length
+    /* l'épingle est un JSON figé : TypeScript en infère les clés littérales,
+       donc on l'indexe par une vue élargie plutôt qu'en forçant chaque nom */
+    const receives = pin.receives as Record<string, { state: string } | undefined>
+    const missing = ['ground.generated.css', 'node.generated.css']
+      .filter((f) => receives[f]?.state !== 'reçoit').length
+    /* chaque fichier jamais livré vaut une case rouge, et il y a en plus les
+       symboles absents du module du canvas — donc au moins autant */
+    expect(gaps, 'la matrice affiche moins de trous que l’épingle n’en constate')
+      .toBeGreaterThanOrEqual(missing)
+  })
+
+  it('le verdict cite le SHA de l’épingle · une mesure sans date ne vaut rien', () => {
+    expect(HTML_M).toContain(pin.sha)
+  })
+})

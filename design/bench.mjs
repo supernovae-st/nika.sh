@@ -31,7 +31,7 @@
  * assertions in verbAnatomies.test.ts). It lives here until it earns its place
  * in nika-spec design/tokens.yaml — at which point this script reads it from
  * there and stops holding it. The same is true of every knob marked « spec ». */
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { groundJs, CURSORS } from './ground.mjs'
 
@@ -451,6 +451,99 @@ const dagNode = (n) => `        <article class="dag-node verb-${n.verb} status-p
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>`
 
+/* ── LA MATRICE DE SYNCHRONISATION ────────────────────────────────────────────
+   Quatre surfaces, une colonne chacune, et chaque case est MESURÉE — pas
+   déclarée. Un ledger à trois états disait « projeté » sans jamais dire VERS
+   QUI : c'est ce mot-là qui cachait le fait le plus important de cette page,
+   à savoir que deux fichiers projetés vers le canvas ne lui ont jamais été
+   livrés (je les projetais dans un bac-à-sable, parce qu'une autre session
+   tient ce dépôt).
+
+   Les cinq états d'une case ·
+     source            la spec le porte · c'est d'ici que ça part
+     reçoit            la surface a l'artefact ET le référence
+     livré · muet      l'artefact est là, personne ne le lit
+     jamais livré      l'artefact n'est pas arrivé
+     écrit             la surface tient sa propre version
+     —                 le concept ne s'applique pas ici
+
+   La colonne canvas vient de l'épingle (design/pin-canvas-contract.mjs) : ce
+   dépôt ne peut pas lire le voisin en CI, donc il lit ce que l'épingle a
+   constaté, avec le SHA. Une dérive devient un diff daté. */
+const PIN = JSON.parse(readFileSync(`${ROOT}src/test/canvas-contract.pin.json`, 'utf8'))
+/* le banc se lit LUI-MÊME pour sa propre colonne · il n'a pas le droit de se
+   déclarer synchronisé, il doit le prouver comme les autres */
+const benchSrc = readFileSync(fileURLToPath(import.meta.url), 'utf8')
+
+/** combien de fichiers d'un arbre NOMMENT une chaîne (hors le fichier généré
+ *  lui-même : un export qui ne se cite que soi n'est lu par personne) */
+const refsIn = (dir, needle, skip = /\.generated\.(ts|css)$/) => {
+  let n = 0
+  const walk = (d) => {
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name.startsWith('.')) continue
+      const full = `${d}/${e.name}`
+      if (e.isDirectory()) { walk(full); continue }
+      if (!/\.(ts|tsx|css|mjs)$/.test(e.name) || skip.test(e.name)) continue
+      if (readFileSync(full, 'utf8').includes(needle)) n += 1
+    }
+  }
+  walk(dir)
+  return n
+}
+
+/* LES CONCEPTS · ce qu'un design system partage, et par quoi on le prouve.
+   `sym` = un symbole du module projeté · `file` = un fichier projeté entier ·
+   `own` = rien n'est projeté, chaque surface écrit le sien. */
+const SYNC = [
+  { row: 'les 4 hues de verbe', sym: 'NIKA_VERB_HEX' },
+  { row: 'les ramps de texte', sym: 'NIKA_VERB_TEXT' },
+  { row: 'sévérité · statuts', sym: 'NIKA_SEVERITY' },
+  { row: 'rôles sémantiques', sym: 'NIKA_ROLE_WORDS' },
+  { row: 'glyphes · codicons', sym: 'NIKA_VERB_CODICON' },
+  { row: 'la matière · plaque, verre, lampe, ressorts', sym: 'NIKA_MATERIAL' },
+  { row: 'statut · marques du nœud', sym: 'NIKA_NODE_STATUS' },
+  { row: 'l’anatomie par verbe', sym: 'NIKA_NODE_ANATOMY' },
+  { row: 'le contrat de classes', sym: 'NIKA_NODE_CLASSES' },
+  { row: 'la fonction qui nomme un nœud', sym: 'nikaNodeClass' },
+  { row: 'la maison des builtins', sym: 'NIKA_CATEGORY_HUE' },
+  { row: 'la sévérité d’audit', sym: 'NIKA_AUDIT_SEVERITY' },
+  { row: 'le sol · trame, vignette, lampe', file: 'ground.generated.css' },
+  { row: 'la géométrie de la carte', file: 'node.generated.css' },
+  { row: 'le rendu du DAG', own: ['dag.ts', 'DagView + MiniDag', 'le banc'] },
+  { row: 'le rendu du YAML', own: ['TextMate', 'codefile-highlight', '—'] },
+  { row: 'le placement du graphe', own: ['son layout', 'elkClient', 'mini-dag-layout'] },
+]
+
+/* LE SITE, C'EST src/ ET scripts/ — sa chaîne CSS vit dans scripts/lens, et un
+   sondeur qui ne regarde que src/ déclarerait muet ce que le builder consomme.
+   design/ en est EXCLU : c'est le banc, et une surface ne se prouve pas
+   synchronisée avec les références d'une autre. */
+const SITE_DIRS = [`${ROOT}src`, `${ROOT}scripts`]
+const refsInDirs = (dirs, needle, skip) => dirs.reduce((n, d) => n + refsIn(d, needle, skip), 0)
+const cellFor = (c, surface) => {
+  if (c.own) return { s: c.own[surface === 'canvas' ? 0 : surface === 'site' ? 1 : 2], k: 'own' }
+  if (c.file) {
+    if (surface === 'canvas') {
+      const r = PIN.receives?.[c.file]
+      return { s: r ? r.state : 'inconnu', k: r?.state === 'reçoit' ? 'ok' : 'gap' }
+    }
+    if (surface === 'site') {
+      const n = refsInDirs(SITE_DIRS, c.file, /^$/)
+      return { s: n ? 'reçoit' : 'jamais livré', k: n ? 'ok' : 'gap' }
+    }
+    return { s: benchSrc.includes(c.file) ? 'reçoit' : 'jamais livré',
+      k: benchSrc.includes(c.file) ? 'ok' : 'gap' }
+  }
+  if (surface === 'canvas') {
+    const n = PIN.symbols?.[c.sym]
+    if (n === undefined) return { s: 'jamais livré', k: 'gap' }
+    return { s: n ? 'reçoit' : 'livré · muet', k: n ? 'ok' : 'mute' }
+  }
+  const n = surface === 'site' ? refsInDirs(SITE_DIRS, c.sym) : (benchSrc.match(new RegExp(c.sym, 'g')) || []).length
+  return { s: n ? 'reçoit' : 'livré · muet', k: n ? 'ok' : 'mute' }
+}
+
 /* LE LEDGER · trois états, pas deux. « Partagé » disait deux choses très
    différentes : une valeur projetée vers trois cibles, et une valeur qu'une
    surface applique vraiment. Le gate du sol a montré l'écart de la façon la
@@ -812,6 +905,27 @@ ${nodeCssProjected}
   .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
   .bx-tools .nc{width:auto}
   .bx-opt{color:var(--nk-faint);border-style:dashed}
+  /* LA MATRICE · une case = un état, et l'état a une FORME autant qu'une teinte
+     (le point, le tiret, le vide) — la couleur seule ne dirait rien en contraste
+     forcé, et c'est le tableau qui juge la synchronisation. */
+  .mx-sync td.mx-c{white-space:nowrap;font-size:calc(var(--nk-fs) - 1px);
+    letter-spacing:.02em;text-align:center;padding-left:10px;padding-right:10px}
+  .mx-what{width:38%}
+  .mx-c::before{content:'';display:inline-block;width:6px;height:6px;margin-right:7px;
+    vertical-align:1px;border-radius:50%;background:currentColor}
+  .mx-src{color:var(--nk-dim)}
+  .mx-src::before{border-radius:1px;transform:rotate(45deg)}
+  .mx-ok{color:var(--nk-ok)}
+  .mx-mute{color:var(--nk-caption)}
+  .mx-mute::before{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+  .mx-gap{color:var(--nk-fail-text)}
+  .mx-gap::before{width:7px;height:2px;border-radius:1px}
+  .mx-own{color:var(--nk-faint)}
+  .mx-own::before{opacity:.4;width:3px;height:3px}
+  .mx-lg{font-weight:400;padding:1px 7px 1px 0;white-space:nowrap}
+  .mx-lg::before{content:'';display:inline-block;width:6px;height:6px;margin-right:6px;
+    vertical-align:1px;border-radius:50%;background:currentColor}
+  .mx-verdict{border-left:2px solid var(--nk-fail);padding-left:13px;margin-top:16px}
   /* LE CLAMP DU CANVAS N'A PAS DE SENS ICI. Un nœud dans un graphe coupe sa
      description à 3 lignes pour tenir la grille ; une page de RÉFÉRENCE existe
      pour la donner en entier. Même carte, deux hôtes, deux besoins — c'est
@@ -1665,14 +1779,45 @@ ${Object.keys(ROLE_WORDS).map((r) => bindingRow(r, '·', ROLE_CODICON[r], `<code
   </section>
 
   <section>
-    <div class="sec-head"><h2>Ce qui est partagé, ce qui ne l’est pas</h2><span class="sec-n">${LEDGER.filter((r) => r[2] === 2).length} consommés · ${LEDGER.filter((r) => r[2] === 1).length} projetés · ${LEDGER.filter((r) => !r[2]).length} écrits</span></div>
-    <p class="sec-note">Le tableau que cet atelier existe pour vider. Chaque « non » est un endroit où les surfaces peuvent diverger sans que rien ne l’empêche.</p>
-    <div class="tw"><table>
-      <thead><tr><th>ce que c’est</th><th>où ça vit</th><th>dans le SSOT ?</th></tr></thead>
+    <div class="sec-head"><h2>Ce qui est synchronisé, ce qui ne l’est pas</h2>
+      <span class="sec-n">${SYNC.length} concepts × 4 surfaces · mesuré, pas déclaré</span></div>
+    <p class="sec-note">
+      Chaque case est <b>constatée</b> : on cherche l’artefact dans l’arbre de la surface, puis
+      on compte qui le nomme. Un ledger à trois états disait « projeté » sans jamais dire
+      <em>vers qui</em> — et c’est ce mot-là qui cachait le fait le plus important de cette page.
+      La colonne canvas vient de l’épingle <code>${PIN.sha}</code> : ce dépôt ne peut pas lire le
+      voisin en intégration continue, alors il lit ce que l’épingle a constaté, et une dérive
+      devient un diff daté au lieu d’un silence.
+    </p>
+    <div class="tw"><table class="mx-sync">
+      <thead><tr><th>le concept</th><th>spec</th><th>canvas VS&nbsp;Code</th><th>site</th><th>ce banc</th></tr></thead>
       <tbody>
-${LEDGER.map(([what, where, lvl, verdict]) => `        <tr><td>${esc(what)}</td><td>${esc(where)}</td><td class="lg-${['no', 'mid', 'yes'][lvl]}">${esc(verdict)}</td></tr>`).join('\n')}
+${SYNC.map((c) => {
+  const cells = ['canvas', 'site', 'bench'].map((sf) => cellFor(c, sf))
+  const src = c.own ? { s: '—', k: 'own' } : { s: 'source', k: 'src' }
+  return `        <tr><td class="mx-what">${esc(c.row)}</td>`
+    + `<td class="mx-c mx-${src.k}">${esc(src.s)}</td>`
+    + cells.map((x) => `<td class="mx-c mx-${x.k}">${esc(x.s)}</td>`).join('')
+    + '</tr>'
+}).join('\n')}
       </tbody>
     </table></div>
+    <p class="typ-legend">
+      <b class="mx-lg mx-src">source</b> la spec le porte ·
+      <b class="mx-lg mx-ok">reçoit</b> l’artefact est là et référencé ·
+      <b class="mx-lg mx-mute">livré · muet</b> il est là, personne ne le lit ·
+      <b class="mx-lg mx-gap">jamais livré</b> il n’est pas arrivé ·
+      <b class="mx-lg mx-own">écrit</b> la surface tient sa propre version.
+    </p>
+    <p class="sec-note mx-verdict">
+      <b>Le verdict.</b> Le site et ce banc reçoivent tout ce que la spec projette. Le canvas
+      reçoit le module de jetons — mais sa copie est en retard de
+      <b>${(() => { const miss = SYNC.filter((c) => c.sym && PIN.symbols?.[c.sym] === undefined).length; return miss })()}
+      symboles</b>, et les deux feuilles qu’on lui projette ne lui ont
+      <b>jamais été livrées</b>. Ce n’est pas de la négligence : une autre session tient ce
+      dépôt, et la règle de cet atelier est de ne jamais y écrire pendant ce temps. Le trou est
+      donc <em>délibéré</em> — ce tableau existe pour qu’il reste <em>visible</em>.
+    </p>
   </section>
 
   <footer>
