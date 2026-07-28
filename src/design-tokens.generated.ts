@@ -143,3 +143,11 @@ export function nikaNodeClass(n: {
   }
   return out.join(' ')
 }
+
+/** THE BUILTIN'S HOUSE · one hue per catalogue category, ALIASED.
+ *  A category never introduces a colour — it borrows the one its
+ *  meaning already has: what touches your disk wears the success
+ *  green, what leaves the machine wears the accent, what looks at the
+ *  run itself wears the critical red. Resolved at projection time, so
+ *  a moved palette moves these too. */
+export const NIKA_CATEGORY_HUE = { core: '#5a606b', file: '#34d399', data: '#4f86ff', network: '#4f86ff', introspection: '#e0b071', media: '#8a83ff' } as const

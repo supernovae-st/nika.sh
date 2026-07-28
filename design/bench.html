@@ -194,6 +194,14 @@
    it to its own host. TYPE SIZE is host-bound for the same reason and one more:
    a card sits inside a page that owns a type scale, and the page must win. The
    canvas already defines --nk-fs-* (12.5 · 11 · 10.5 · 10 · 9.5), so it keeps
+   ROW HEIGHTS ARE MINIMA, not fixed. They were `height:` — the canvas's exact
+   pixel rows, sized for the canvas's own type. The moment type became
+   host-bound, a surface with a larger ramp overflowed its row and the text sat
+   ON the dashed rule below it: the card read as if it had dotted leaders
+   running through every mechanism line. A row that must hold text the host
+   sizes cannot be a fixed height. The canvas is unchanged — its content is
+   exactly its old height, so the minimum is the height.
+
    its ramp untouched; the fallbacks below are whole pixels because a half step
    was measured three times to move nothing. The fallback ramp is COARSER than
    the bound one on purpose — six steps inside 3.5px cannot all be whole and
@@ -216,7 +224,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  height: 22px;
+  min-height: 22px;
   flex: none;
 }
 :where(.nc-tile) {
@@ -241,7 +249,7 @@
 :where(.nc-st) {
   flex: 0 0 18px;
   width: 18px;
-  height: 22px;
+  min-height: 22px;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -260,7 +268,7 @@
   display: flex;
   align-items: baseline;
   gap: 10px;
-  height: 15px;
+  min-height: 15px;
   font-size: var(--nk-fs-sub, 10px);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -411,6 +419,16 @@
      quantities the site and the canvas bind, arriving through the same
      projection. A bevel on the top edge, a contact shadow and an ambient one,
      the paper's tooth over the face. */
+  /* LE BANC BRANCHE LES JETONS DE LA CARTE. node.generated.css porte la
+     géométrie et laisse la couleur à la surface : sans ces six lignes, la carte
+     tombait sur son repli transparent et la trame du sol traversait le texte.
+     C'est ce qui rendait les cartes « pointillées ».
+     (Aucun backtick dans un commentaire de template literal — payé 3× cet arc.) */
+  .stage{--nk-card:var(--nk-surface);--nk-card-border:var(--nk-edge);
+    --nk-ink:var(--nk-ink);--nk-mono:var(--nk-face-mono);
+    --nk-fs-heading:calc(var(--nk-fs) + 1px);--nk-fs-label:var(--nk-fs);
+    --nk-fs-sub:var(--nk-fs);--nk-fs-body:var(--nk-fs);
+    --nk-fs-meta:calc(var(--nk-fs) - 1.5px);--nk-fw-strong:600}
   .nc{width:252px;overflow:hidden;font-size:var(--nk-fs);box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact),var(--nk-ambient)}
   .nc::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
     opacity:var(--nk-grain);background-image:repeating-conic-gradient(#fff 0% 25%,transparent 0% 50%);
@@ -425,7 +443,40 @@
   .nc-badge{margin-left:auto;letter-spacing:.07em;color:var(--nk-verb-text,var(--nk-dim))}
   .nc-sub,.nc-body,.nc-policy{padding:var(--nk-pad) calc(var(--nk-pad) * 1.42)}
   .nc-sub{color:var(--nk-dim);border-bottom:1px dashed var(--nk-edge)}
-  .nc-sub-k{color:var(--nk-faint)}
+  .bx-k{color:var(--nk-faint);font-weight:400}
+  .cat-house{margin:0 0 22px}
+  .cat-head{display:flex;align-items:baseline;gap:9px;margin:0 0 9px;
+    font-family:var(--nk-face-mono);font-size:var(--nk-fs);letter-spacing:.09em;
+    text-transform:uppercase;color:var(--nk-dim)}
+  .cat-n{color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  .nc-chip-icon{color:var(--cat);line-height:1}
+  .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
+  .bx-tools .nc{width:auto}
+  .bx-opt{color:var(--nk-faint);border-style:dashed}
+  /* LE CLAMP DU CANVAS N'A PAS DE SENS ICI. Un nœud dans un graphe coupe sa
+     description à 3 lignes pour tenir la grille ; une page de RÉFÉRENCE existe
+     pour la donner en entier. Même carte, deux hôtes, deux besoins — c'est
+     exactement ce que la géométrie projetée permet sans se dédoubler. */
+  .bx-tools .nc-body{-webkit-line-clamp:unset;display:block;min-height:44px}
+  .bx-tools .nc-policy{margin-top:auto;padding-top:7px;border-top:1px solid var(--nk-edge)}
+  /* une rangée d'une seule hauteur : l'article est la case de grille, la carte
+     doit la remplir — sinon la ligne de pastilles danse d'une carte à l'autre */
+  .bx-tools .dag-node{display:flex}
+  .bx-tools .nc{display:flex;flex-direction:column;flex:1}
+  .cat-hex{margin-left:auto;padding-right:2px;color:var(--nk-faint);
+    font-size:calc(var(--nk-fs) - 1.5px);font-variant-numeric:tabular-nums}
+  .nc-cat-core{--cat:#5a606b}
+  .nc-cat-file{--cat:#34d399}
+  .nc-cat-data{--cat:#4f86ff}
+  .nc-cat-network{--cat:#4f86ff}
+  .nc-cat-introspection{--cat:#e0b071}
+  .nc-cat-media{--cat:#8a83ff}
+  .cat-house:has(.nc-cat-core) .bx-tools .nc:hover{border-color:color-mix(in oklch,#5a606b 42%,var(--nk-edge))}
+  .cat-house:has(.nc-cat-file) .bx-tools .nc:hover{border-color:color-mix(in oklch,#34d399 42%,var(--nk-edge))}
+  .cat-house:has(.nc-cat-data) .bx-tools .nc:hover{border-color:color-mix(in oklch,#4f86ff 42%,var(--nk-edge))}
+  .cat-house:has(.nc-cat-network) .bx-tools .nc:hover{border-color:color-mix(in oklch,#4f86ff 42%,var(--nk-edge))}
+  .cat-house:has(.nc-cat-introspection) .bx-tools .nc:hover{border-color:color-mix(in oklch,#e0b071 42%,var(--nk-edge))}
+  .cat-house:has(.nc-cat-media) .bx-tools .nc:hover{border-color:color-mix(in oklch,#8a83ff 42%,var(--nk-edge))}
 
   .nc-body-cmd{color:var(--nk-exec-text)}
   .nc-policy{border-top:1px solid var(--nk-edge);display:flex;flex-wrap:wrap;gap:5px;align-items:center}
@@ -842,10 +893,10 @@
         </div>
       </div>
       <div class="stage nk-ground" data-stage><div class="rack">
-        <div class="cell"><span class="cell-k">infer · head · sub · body · why</span><article class="dag-node verb-infer status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div></div></article></div>
-        <div class="cell"><span class="cell-k">exec · head · sub · body · why</span><article class="dag-node verb-exec status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · decode text</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span></div></div></article></div>
-        <div class="cell"><span class="cell-k">invoke · head · body · sub · why</span><article class="dag-node verb-invoke status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span></div></div></article></div>
-        <div class="cell"><span class="cell-k">agent · head · sub · body · band · why</span><article class="dag-node verb-agent status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">en cours</span></div></div></article></div>
+        <div class="cell"><span class="cell-k">infer · head · sub · body · why</span><article class="dag-node verb-infer status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> anthropic/claude-haiku-4-5</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div></div></article></div>
+        <div class="cell"><span class="cell-k">exec · head · sub · body · why</span><article class="dag-node verb-exec status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · decode text</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span></div></div></article></div>
+        <div class="cell"><span class="cell-k">invoke · head · body · sub · why</span><article class="dag-node verb-invoke status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span></div></div></article></div>
+        <div class="cell"><span class="cell-k">agent · head · sub · body · band · why</span><article class="dag-node verb-agent status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">en cours</span></div></div></article></div>
       </div></div>
     </div>
     <div class="diff">
@@ -1072,7 +1123,7 @@
       <div class="mat-anatomy">
         <article class="dag-node verb-infer status-pending mat-big"><div class="nc">
           <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">model</span> mistral/mistral-large-latest</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">model</b> mistral/mistral-large-latest</span></div>
           <div class="nc-body">« Flag what is urgent »</div>
           <div class="nc-policy"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div>
         </div></article>
@@ -1207,46 +1258,270 @@
         <div class="mtx-vhead"><span style="color:var(--nk-invoke)">◆</span> invoke</div>
         <div class="mtx-vhead"><span style="color:var(--nk-agent)">✦</span> agent</div>
         <div class="mtx-shead">en attente<em>pastille plus petite · « pending is CALM », il ne s’annonce pas</em></div>
-        <div class="mtx-cell"><article class="dag-node verb-infer status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-exec status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · decode text</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-invoke status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-agent status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-infer status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> anthropic/claude-haiku-4-5</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-exec status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · decode text</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-invoke status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-agent status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"></div></div></article></div>
         <div class="mtx-shead">en cours<em>anneau · et il pulse quand le mouvement est permis</em></div>
-        <div class="mtx-cell"><article class="dag-node verb-infer status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip">en cours</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-exec status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · decode text</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip">en cours</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-invoke status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip">en cours</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-agent status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">en cours</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-infer status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> anthropic/claude-haiku-4-5</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip">en cours</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-exec status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · decode text</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip">en cours</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-invoke status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip">en cours</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-agent status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">en cours</span></div></div></article></div>
         <div class="mtx-shead">réussi<em>pastille pleine · la seule qui l’est</em></div>
-        <div class="mtx-cell"><article class="dag-node verb-infer status-success"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip">0,4 s · $0,0012</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-exec status-success"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · decode text</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip">0,4 s · $0,0012</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-invoke status-success"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip">0,4 s · $0,0012</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-agent status-success"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">0,4 s · $0,0012</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-infer status-success"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> anthropic/claude-haiku-4-5</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip">0,4 s · $0,0012</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-exec status-success"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · decode text</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip">0,4 s · $0,0012</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-invoke status-success"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip">0,4 s · $0,0012</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-agent status-success"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">0,4 s · $0,0012</span></div></div></article></div>
         <div class="mtx-shead">refusé<em>losange + le code du refus</em></div>
-        <div class="mtx-cell"><article class="dag-node verb-infer status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-exec status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · decode text</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-invoke status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-agent status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-infer status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> anthropic/claude-haiku-4-5</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-exec status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · decode text</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-invoke status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-agent status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article></div>
         <div class="mtx-shead">nouvel essai<em>anneau doublé + le compteur d’essai</em></div>
-        <div class="mtx-cell"><article class="dag-node verb-infer status-retrying"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-exec status-retrying"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · decode text</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-invoke status-retrying"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-agent status-retrying"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-infer status-retrying"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> anthropic/claude-haiku-4-5</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-exec status-retrying"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · decode text</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-invoke status-retrying"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-agent status-retrying"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span></div></div></article></div>
         <div class="mtx-shead">sauté<em>trait plat · rien n’a couru</em></div>
-        <div class="mtx-cell"><article class="dag-node verb-infer status-skipped"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip">when: false</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-exec status-skipped"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · decode text</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip">when: false</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-invoke status-skipped"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip">when: false</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-agent status-skipped"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">when: false</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-infer status-skipped"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> anthropic/claude-haiku-4-5</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip">when: false</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-exec status-skipped"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · decode text</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip">when: false</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-invoke status-skipped"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip">when: false</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-agent status-skipped"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">when: false</span></div></div></article></div>
         <div class="mtx-shead">annulé<em>trait barré · quelqu’un a coupé</em></div>
-        <div class="mtx-cell"><article class="dag-node verb-infer status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip">coupé à la main</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-exec status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · decode text</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip">coupé à la main</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-invoke status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip">coupé à la main</span></div></div></article></div>
-        <div class="mtx-cell"><article class="dag-node verb-agent status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">coupé à la main</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-infer status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> anthropic/claude-haiku-4-5</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span><span class="nc-chip">coupé à la main</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-exec status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">tally</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · decode text</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span><span class="nc-chip">coupé à la main</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-invoke status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip">coupé à la main</span></div></div></article></div>
+        <div class="mtx-cell"><article class="dag-node verb-agent status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">coupé à la main</span></div></div></article></div>
       </div>
     </div>
   </section>
 
   <section>
-    <div class="sec-head"><h2>Les marques</h2><span class="sec-n">le second axe · 7 · orthogonales au statut</span></div>
+    <div class="sec-head"><h2>Les builtins</h2><span class="sec-n">28 outils · 6 maisons</span></div>
+    <p class="sec-note">
+      Une carte par builtin, groupée par <b>maison</b>. Rien ici n’est écrit : les outils, leur
+      catégorie, leurs arguments et ce qu’ils font viennent du catalogue que l’engine sert. La
+      teinte de chaque maison vient de <code>builtin.category</code> — six alias, aucune couleur
+      neuve — et le canvas VS Code peint la sienne avec les mêmes.
+    </p>
+    <div class="cat-house">
+      <p class="cat-head"><span class="nc-chip-icon nc-cat-core">▪</span> core
+        <span class="cat-n">6</span>
+        <span class="cat-hex">#5a606b</span></p>
+      <div class="stage nk-ground bx-tools" data-stage>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">assert</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-core">▪</span> nika:assert</span></div>
+          <div class="nc-body">Fail-fast guard: fail the task when condition is false (else no-op).</div>
+          <div class="nc-policy"><span class="nc-chip">condition</span><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">done</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-core">▪</span> nika:done</span></div>
+          <div class="nc-body">Mark the current agent loop complete (the loop-completion sentinel · agent loops only).</div>
+          <div class="nc-policy"><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">emit</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-core">▪</span> nika:emit</span></div>
+          <div class="nc-body">Emit a custom machine event for subscribers/journal (distinct from log).</div>
+          <div class="nc-policy"><span class="nc-chip">event_type</span><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">log</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-core">▪</span> nika:log</span></div>
+          <div class="nc-body">Emit a human-readable diagnostic log line to the run stream (best-effort · never fails).</div>
+          <div class="nc-policy"><span class="nc-chip">message</span><span class="nc-chip bx-opt">+2 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">prompt</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-core">▪</span> nika:prompt</span></div>
+          <div class="nc-body">Ask a human (confirm|input|choice). Blocks until answered; uses default when headless.</div>
+          <div class="nc-policy"><span class="nc-chip">message</span><span class="nc-chip bx-opt">+3 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">wait</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-core">▪</span> nika:wait</span></div>
+          <div class="nc-body">Pause: relative duration (e.g. "30s") XOR absolute until (ISO 8601). Exactly one.</div>
+          <div class="nc-policy"><span class="nc-chip bx-opt">+3 optionnels</span></div>
+        </div></article>
+      </div>
+    </div>
+    <div class="cat-house">
+      <p class="cat-head"><span class="nc-chip-icon nc-cat-file">▪</span> file
+        <span class="cat-n">5</span>
+        <span class="cat-hex">#34d399</span></p>
+      <div class="stage nk-ground bx-tools" data-stage>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">edit</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-file">▪</span> nika:edit</span></div>
+          <div class="nc-body">In-place literal find/replace (all occurrences · count caps it). NOT regex.</div>
+          <div class="nc-policy"><span class="nc-chip">path</span><span class="nc-chip">find</span><span class="nc-chip">replace</span><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">glob</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-file">▪</span> nika:glob</span></div>
+          <div class="nc-body">Glob match · returns paths sorted lexicographically.</div>
+          <div class="nc-policy"><span class="nc-chip">pattern</span><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">grep</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-file">▪</span> nika:grep</span></div>
+          <div class="nc-body">Recursive regex search · returns {path,line,match} sorted by (path,line).</div>
+          <div class="nc-policy"><span class="nc-chip">pattern</span><span class="nc-chip bx-opt">+2 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">read</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-file">▪</span> nika:read</span></div>
+          <div class="nc-body">Read a file · returns its text (or opaque bytes with binary: true).</div>
+          <div class="nc-policy"><span class="nc-chip">path</span><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">write</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-file">▪</span> nika:write</span></div>
+          <div class="nc-body">Write a file · returns the path. overwrite defaults true · create_dirs defaults false.</div>
+          <div class="nc-policy"><span class="nc-chip">path</span><span class="nc-chip">content</span><span class="nc-chip bx-opt">+2 optionnels</span></div>
+        </div></article>
+      </div>
+    </div>
+    <div class="cat-house">
+      <p class="cat-head"><span class="nc-chip-icon nc-cat-data">▪</span> data
+        <span class="cat-n">9</span>
+        <span class="cat-hex">#4f86ff</span></p>
+      <div class="stage nk-ground bx-tools" data-stage>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">convert</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:convert</span></div>
+          <div class="nc-body">Convert between json·yaml·toml·csv (from/to · identity rejected).</div>
+          <div class="nc-policy"><span class="nc-chip">input</span><span class="nc-chip">from</span><span class="nc-chip">to</span><span class="nc-chip bx-opt">+2 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">date</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:date</span></div>
+          <div class="nc-body">Timestamp arithmetic · op-discriminated (now|add|subtract|format|parse|diff) · strftime grammar · ISO 8601 out.</div>
+          <div class="nc-policy"><span class="nc-chip">op</span><span class="nc-chip bx-opt">+8 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">decide</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:decide</span></div>
+          <div class="nc-body">Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here.</div>
+          <div class="nc-policy"><span class="nc-chip">bundle</span><span class="nc-chip">evidence</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">hash</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:hash</span></div>
+          <div class="nc-body">Content hashing · blake3 (default) | sha256 | sha512 · hex (default) or base64.</div>
+          <div class="nc-policy"><span class="nc-chip">content</span><span class="nc-chip bx-opt">+2 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">jq</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:jq</span></div>
+          <div class="nc-body">Run a jq expression over input · THE data-transform language (map·filter·select·reshape). Emits exactly one value.</div>
+          <div class="nc-policy"><span class="nc-chip">expression</span><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">json_diff</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:json_diff</span></div>
+          <div class="nc-body">JSON diff · returns an RFC 6902 JSON Patch.</div>
+          <div class="nc-policy"><span class="nc-chip">before</span><span class="nc-chip">after</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">json_merge_patch</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:json_merge_patch</span></div>
+          <div class="nc-body">RFC 7396 merge patch (null deletes a key) over a target object.</div>
+          <div class="nc-policy"><span class="nc-chip">target</span><span class="nc-chip">patch</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">uuid</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:uuid</span></div>
+          <div class="nc-body">Generate a UUID · v7 (default · sortable) or v4 (random).</div>
+          <div class="nc-policy"><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">validate</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-data">▪</span> nika:validate</span></div>
+          <div class="nc-body">Validate data against a JSON Schema · returns {valid, errors} (invalid data is a report, not a failure).</div>
+          <div class="nc-policy"><span class="nc-chip">data</span><span class="nc-chip">schema</span><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+      </div>
+    </div>
+    <div class="cat-house">
+      <p class="cat-head"><span class="nc-chip-icon nc-cat-network">▪</span> network
+        <span class="cat-n">2</span>
+        <span class="cat-hex">#4f86ff</span></p>
+      <div class="stage nk-ground bx-tools" data-stage>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">fetch</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-network">▪</span> nika:fetch</span></div>
+          <div class="nc-body">HTTP request + content extraction · returns the extracted body (non-2xx is an error). SSRF-defended.</div>
+          <div class="nc-policy"><span class="nc-chip bx-opt">+10 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">notify</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-network">▪</span> nika:notify</span></div>
+          <div class="nc-body">Send a notification · v0.1 engines support the webhook channel.</div>
+          <div class="nc-policy"><span class="nc-chip">target</span><span class="nc-chip">message</span><span class="nc-chip bx-opt">+3 optionnels</span></div>
+        </div></article>
+      </div>
+    </div>
+    <div class="cat-house">
+      <p class="cat-head"><span class="nc-chip-icon nc-cat-introspection">▪</span> introspection
+        <span class="cat-n">2</span>
+        <span class="cat-hex">#e0b071</span></p>
+      <div class="stage nk-ground bx-tools" data-stage>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">compose</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-introspection">▪</span> nika:compose</span></div>
+          <div class="nc-body">Statically check a Nika workflow draft you wrote · returns the full `nika check` verdict as JSON (conformance + secret-flow + permits + the termination/cost certificate) · NEVER executes it. Iterate until valid, then deliver the draft. Agent loops only.</div>
+          <div class="nc-policy"><span class="nc-chip">workflow_yaml</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">inspect</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-introspection">▪</span> nika:inspect</span></div>
+          <div class="nc-body">Introspect the running workflow · view: cost | records | dag_info | threads.</div>
+          <div class="nc-policy"><span class="nc-chip">view</span></div>
+        </div></article>
+      </div>
+    </div>
+    <div class="cat-house">
+      <p class="cat-head"><span class="nc-chip-icon nc-cat-media">▪</span> media
+        <span class="cat-n">4</span>
+        <span class="cat-hex">#8a83ff</span></p>
+      <div class="stage nk-ground bx-tools" data-stage>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">chart</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-media">▪</span> nika:chart</span></div>
+          <div class="nc-body">Render a DETERMINISTIC chart artifact from rows + a semantic spec (bar | line | area_band | scatter | heatmap) — byte-identical SVG saved at `out`, sha256 in outputs (the trace-chain receipt) · optional Vega-Lite sibling via compile_to. Pure compute + one permit-gated write: no network, no clock, re-runs are idempotent.</div>
+          <div class="nc-policy"><span class="nc-chip">data</span><span class="nc-chip">chart</span><span class="nc-chip">out</span><span class="nc-chip bx-opt">+2 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">image_fx</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-media">▪</span> nika:image_fx</span></div>
+          <div class="nc-body">Apply deterministic artistic effects to a PNG (dither · palette · duotone · pixelate · halftone · grain · vignette · chromatic_aberration · scanlines · glitch · ascii) — byte-identical forever for identical input+args; the recipe rides the artifact (tEXt) and outputs carry path + sha256, bytes never inline.</div>
+          <div class="nc-policy"><span class="nc-chip">input</span><span class="nc-chip">out</span><span class="nc-chip">ops</span><span class="nc-chip bx-opt">+1 optionnel</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">image_generate</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-media">▪</span> nika:image_generate</span></div>
+          <div class="nc-body">Generate image assets (local compat servers · openai gpt-image-2 · gemini gemini-3.1-flash-image · xai grok-imagine-image · mock for offline runs) — saves files under output_dir and returns paths + dimensions + sha256 (+ a provenance manifest); image bytes never ride outputs.</div>
+          <div class="nc-policy"><span class="nc-chip">prompt</span><span class="nc-chip">output_dir</span><span class="nc-chip bx-opt">+22 optionnels</span></div>
+        </div></article>
+        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">tts_generate</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-media">▪</span> nika:tts_generate</span></div>
+          <div class="nc-body">Synthesize speech audio (local compat servers · openai gpt-4o-mini-tts · elevenlabs · mock for offline runs) — saves ONE audio file under output_dir and returns path + format + sha256 + duration (+ a provenance manifest); audio bytes never ride outputs.</div>
+          <div class="nc-policy"><span class="nc-chip">text</span><span class="nc-chip">output_dir</span><span class="nc-chip bx-opt">+9 optionnels</span></div>
+        </div></article>
+      </div>
+    </div>
+    <p class="typ-legend">
+      Les pastilles nommées sont les arguments <b>requis</b> ; le compte gris dit combien
+      restent facultatifs. Un builtin sans pastille ne demande rien.
+    </p>
+  </section>
+
+  <section>
+   <div class="sec-head"><h2>Les marques</h2><span class="sec-n">le second axe · 7 · orthogonales au statut</span></div>
     <p class="sec-note">
       Un nœud porte <b>un</b> statut et <b>n</b> marques. Le banc les avait écrasés en une seule
       liste de huit, et c’est comme ça qu’il montrait « périmé » à côté de « réussi » comme si une
@@ -1314,12 +1589,12 @@
       pour de vrai, et donc une décision que le canvas a dû prendre.
     </p>
     <div class="stage nk-ground" data-stage><div class="rack">
-        <div class="cell"><span class="cell-k">nom très long</span><article class="dag-node verb-invoke status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">reconcile-quarterly-ledger-against-bank</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./ledger/q3.csv</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span></div></div></article><span class="cell-note">l’identifiant déborde · il tronque, il ne pousse pas</span></div>
-        <div class="cell"><span class="cell-k">corps qui enroule</span><article class="dag-node verb-infer status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">summarise</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">model</span> mistral/mistral-large-latest</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Read the thread below and answer in three bullets: what was decided, what is still open, and who owes the next move. ${{ with.thread }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · thread</span><span class="nc-chip">max_tokens 400</span></div></div></article><span class="cell-note">un prompt réel fait quatre lignes · la hauteur suit</span></div>
+        <div class="cell"><span class="cell-k">nom très long</span><article class="dag-node verb-invoke status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">reconcile-quarterly-ledger-against-bank</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./ledger/q3.csv</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span></div></div></article><span class="cell-note">l’identifiant déborde · il tronque, il ne pousse pas</span></div>
+        <div class="cell"><span class="cell-k">corps qui enroule</span><article class="dag-node verb-infer status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◇</span><span class="nc-id">summarise</span><span class="nc-badge">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">model</b> mistral/mistral-large-latest</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Read the thread below and answer in three bullets: what was decided, what is still open, and who owes the next move. ${{ with.thread }} »</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · thread</span><span class="nc-chip">max_tokens 400</span></div></div></article><span class="cell-note">un prompt réel fait quatre lignes · la hauteur suit</span></div>
         <div class="cell"><span class="cell-k">rien à déclarer</span><article class="dag-node verb-exec status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">ping</span><span class="nc-badge">exec</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:1">true</div></div></article><span class="cell-note">le minimum qui reste un nœud · tête et essence</span></div>
-        <div class="cell"><span class="cell-k">trop à déclarer</span><article class="dag-node verb-exec status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">deploy</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">capture</span> stdout · stderr · code</div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">./bin/ship --all</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · net</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · fs</span><span class="nc-chip" style="--chip:var(--nk-refusals)">retry ×3</span><span class="nc-chip" style="--chip:var(--nk-refusals)">on_error · recover</span><span class="nc-chip" style="--chip:var(--nk-refusals)">timeout 90 s</span><span class="nc-chip" style="--chip:var(--nk-flow)">parallel ×2</span></div></div></article><span class="cell-note">sept permis · les puces enroulent, la carte ne casse pas</span></div>
-        <div class="cell"><span class="cell-k">la bande d’agent</span><article class="dag-node verb-agent status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k">tools</span> fetch · write · done</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">en cours</span></div></div></article><span class="cell-note">la seule rangée qui bouge en cours de run</span></div>
-        <div class="cell"><span class="cell-k">refus, avec sa cause</span><article class="dag-node verb-invoke status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">write-brief</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:write</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k">args</span> path ./out/x.md</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · fs.write = [ ./brief.md ]</span><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article><span class="cell-note">le code ET la ligne qui l’a déclenché</span></div>
+        <div class="cell"><span class="cell-k">trop à déclarer</span><article class="dag-node verb-exec status-pending"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">▷</span><span class="nc-id">deploy</span><span class="nc-badge">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">capture</b> stdout · stderr · code</span></div><div class="nc-body nc-body-cmd" data-part="essence · ce qu’il fait" style="--i:2">./bin/ship --all</div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · net</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · fs</span><span class="nc-chip" style="--chip:var(--nk-refusals)">retry ×3</span><span class="nc-chip" style="--chip:var(--nk-refusals)">on_error · recover</span><span class="nc-chip" style="--chip:var(--nk-refusals)">timeout 90 s</span><span class="nc-chip" style="--chip:var(--nk-flow)">parallel ×2</span></div></div></article><span class="cell-note">sept permis · les puces enroulent, la carte ne casse pas</span></div>
+        <div class="cell"><span class="cell-k">la bande d’agent</span><article class="dag-node verb-agent status-running"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">en cours</span></div></div></article><span class="cell-note">la seule rangée qui bouge en cours de run</span></div>
+        <div class="cell"><span class="cell-k">refus, avec sa cause</span><article class="dag-node verb-invoke status-failed"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">◆</span><span class="nc-id">write-brief</span><span class="nc-badge">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:write</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-sub-k"><b class="bx-k">args</b> path ./out/x.md</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · fs.write = [ ./brief.md ]</span><span class="nc-chip" style="--chip:var(--nk-fail-text)">NIKA-EXEC-014</span></div></div></article><span class="cell-note">le code ET la ligne qui l’a déclenché</span></div>
     </div></div>
   </section>
 
@@ -1426,7 +1701,7 @@
           style="grid-column:1;grid-row:1" tabindex="0" role="button"
           aria-label="notes · clique pour changer son état"><div class="nc">
           <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">notes</span><span class="nc-badge">invoke</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">args</span> path ./notes/today.md</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/today.md</span></div>
           <div class="nc-body">nika:read</div>
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>
@@ -1434,7 +1709,7 @@
           style="grid-column:1;grid-row:2" tabindex="0" role="button"
           aria-label="inbox · clique pour changer son état"><div class="nc">
           <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">inbox</span><span class="nc-badge">invoke</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">args</span> path ./notes/inbox.md</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/inbox.md</span></div>
           <div class="nc-body">nika:read</div>
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>
@@ -1442,7 +1717,7 @@
           style="grid-column:1;grid-row:3" tabindex="0" role="button"
           aria-label="calendar · clique pour changer son état"><div class="nc">
           <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">calendar</span><span class="nc-badge">invoke</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">args</span> path ./notes/calendar.md</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">args</b> path ./notes/calendar.md</span></div>
           <div class="nc-body">nika:read</div>
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>
@@ -1450,7 +1725,7 @@
           style="grid-column:2;grid-row:1" tabindex="0" role="button"
           aria-label="triage · clique pour changer son état"><div class="nc">
           <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">with</span> inbox</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> inbox</span></div>
           <div class="nc-body">« Flag what is urgent »</div>
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>
@@ -1458,7 +1733,7 @@
           style="grid-column:2;grid-row:2" tabindex="0" role="button"
           aria-label="agenda · clique pour changer son état"><div class="nc">
           <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">agenda</span><span class="nc-badge">infer</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">with</span> calendar</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> calendar</span></div>
           <div class="nc-body">« Plan the day around »</div>
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>
@@ -1466,7 +1741,7 @@
           style="grid-column:3;grid-row:1" tabindex="0" role="button"
           aria-label="draft · clique pour changer son état"><div class="nc">
           <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">draft</span><span class="nc-badge">infer</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">with</span> notes · triage · agenda</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> notes · triage · agenda</span></div>
           <div class="nc-body">« Write the brief »</div>
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>
@@ -1474,7 +1749,7 @@
           style="grid-column:4;grid-row:1" tabindex="0" role="button"
           aria-label="save · clique pour changer son état"><div class="nc">
           <div class="nc-head"><span class="nc-tile">◆</span><span class="nc-id">save</span><span class="nc-badge">invoke</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">args</span> path ./brief.md</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">args</b> path ./brief.md</span></div>
           <div class="nc-body">nika:write</div>
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>
@@ -1552,35 +1827,35 @@
         <div class="cell"><span class="cell-k">au repos</span>
           <article class="dag-node verb-infer status-pending" data-force="rest"><div class="nc">
             <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-            <div class="nc-sub"><span class="nc-sub-k">with</span> inbox</div>
+            <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> inbox</span></div>
             <div class="nc-body">« Flag what is urgent »</div>
           </div></article>
           <span class="cell-note">le biseau à 0.06 · l’ombre courte et l’ombre longue</span></div>
         <div class="cell"><span class="cell-k">survolé</span>
           <article class="dag-node verb-infer status-pending" data-force="hover"><div class="nc">
             <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-            <div class="nc-sub"><span class="nc-sub-k">with</span> inbox</div>
+            <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> inbox</span></div>
             <div class="nc-body">« Flag what is urgent »</div>
           </div></article>
           <span class="cell-note">six choses ensemble · 3px de levée, biseau 0.06→0.15, ombre allongée, titre 500→600</span></div>
         <div class="cell"><span class="cell-k">au clavier</span>
           <article class="dag-node verb-infer status-pending" data-force="focus"><div class="nc">
             <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-            <div class="nc-sub"><span class="nc-sub-k">with</span> inbox</div>
+            <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> inbox</span></div>
             <div class="nc-body">« Flag what is urgent »</div>
           </div></article>
           <span class="cell-note">le même relief, plus l’anneau · le relief ne remplace jamais l’anneau</span></div>
         <div class="cell"><span class="cell-k">sélectionné</span>
           <article class="dag-node verb-infer status-pending" data-force="select"><div class="nc">
             <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-            <div class="nc-sub"><span class="nc-sub-k">with</span> inbox</div>
+            <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> inbox</span></div>
             <div class="nc-body">« Flag what is urgent »</div>
           </div></article>
           <span class="cell-note">la teinte du verbe passe dans le trait · c’est un état, pas un survol</span></div>
         <div class="cell"><span class="cell-k">atténué</span>
           <article class="dag-node verb-infer status-pending" data-force="dim"><div class="nc">
             <div class="nc-head"><span class="nc-tile">◇</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-            <div class="nc-sub"><span class="nc-sub-k">with</span> inbox</div>
+            <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> inbox</span></div>
             <div class="nc-body">« Flag what is urgent »</div>
           </div></article>
           <span class="cell-note">le reste du graphe quand un nœud est mis en avant · il recule, il ne disparaît pas</span></div>
