@@ -16,6 +16,7 @@ const browseSubset = (all: Record<string, string>): Record<string, string> =>
   Object.fromEntries(BROWSE_SLUGS.map((slug) => [slug, all[slug] ?? '']))
 
 import ScrollMorph from '../sections/morph/ScrollMorph'
+import TheReading from '../sections/TheReading'
 import TheBoundary from '../sections/boundary/TheBoundary'
 import ProofStrip from '../sections/ProofStrip'
 import Wedge from '../sections/Wedge'
@@ -254,6 +255,12 @@ export function Component() {
         {/* FIG 0.0 · the hero — DOM-first · instant · the calm first screen */}
         <Island id={HOME_ISLAND_ID} payload={browseJson} />
         <Hero item={item} index={libIdx} onSelect={onPick} flagship={flagship} />
+
+        {/* 01 · THE READING — the H1's promise kept in the next screen: the
+             three captured findings on an agent's early draft, one at a time,
+             then the engine's own repair (the TypeScript ladder form — reader
+             driven, held still, never a playback). */}
+        <TheReading />
 
         {/* FIG 1.0 · THE MORPH — ONE continuous scroll-linked scene at every
              width (W20): the selected file travels, BURSTS into its DAG, then

@@ -1,0 +1,198 @@
+/* ─── 01 · the reading · the ladder that holds one finding still ──────────────
+   TypeScript's gradual-adoption ladder, in the house register: reader-driven
+   stops, one diagnostic at a time, a human caption outside the code. The
+   diagnostic itself is the dg-* atom (diagnostic.css); this file owns only the
+   rail, the panel frame, the caption and the repair view. Severity hues come
+   from the projected --audit-* / --sev-ok, never a literal. */
+
+.rd-counter {
+  margin: 0 0 14px;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  letter-spacing: var(--ls-plate);
+  color: var(--v4-text-faint);
+}
+
+.rd {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 820px) {
+  .rd {
+    grid-template-columns: 176px 1fr;
+    align-items: start;
+  }
+}
+
+/* ── the rail · one stop per finding, then the repair ──────────────────────── */
+.rd-rail {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+@media (min-width: 820px) {
+  .rd-rail {
+    flex-direction: column;
+  }
+}
+
+.rd-stop {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--v4-line);
+  border-radius: 6px;
+  background: none;
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+  letter-spacing: var(--ls-plate);
+  text-transform: uppercase;
+  color: var(--v4-text-dim);
+  cursor: pointer;
+  text-align: left;
+}
+
+.rd-stop:hover {
+  border-color: var(--v4-line-strong);
+  color: var(--v4-text);
+}
+
+.rd-stop:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: 2px;
+}
+
+.rd-stop[aria-selected='true'] {
+  border-color: var(--v4-line-strong);
+  background: var(--v4-bg-raised);
+  color: var(--v4-text);
+}
+
+.rd-stop-glyph {
+  color: var(--audit-error);
+  font-size: var(--type-plate);
+}
+
+.rd-stop-glyph--ok {
+  color: var(--sev-ok);
+}
+
+/* ── the panel · the atom's home for one stop ──────────────────────────────── */
+.rd-panel {
+  border: 1px solid var(--v4-line);
+  border-radius: 7px;
+  background: var(--v4-bg-raised);
+  padding: 18px 20px;
+  min-height: 190px;
+}
+
+/* the human caption · the reader's words, outside the code (the TS pattern) */
+.rd-caption {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--v4-line);
+  font-family: var(--display);
+  font-size: var(--type-body-sm);
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+  max-width: 58ch;
+}
+
+/* ── the repair · the engine's own diff, then the green verdict ────────────── */
+.rd-repair {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rd-repair-cmd {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+}
+
+.rd-repair-cmd code {
+  color: var(--v4-text);
+  background: rgb(255 255 255 / 0.05);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+.rd-repair-cmd-note {
+  color: var(--v4-text-faint);
+  font-size: var(--type-mini);
+}
+
+/* the sign is the carrier, never the colour alone (forced-colors keeps it) */
+.rd-diff {
+  display: flex;
+  flex-direction: column;
+}
+
+.rd-diff-row {
+  display: grid;
+  grid-template-columns: 3ch 1.5ch 1fr;
+  gap: 0 10px;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  line-height: 1.6;
+  white-space: pre;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.rd-diff-ln {
+  color: var(--v4-hud-faint);
+  text-align: right;
+  user-select: none;
+}
+
+.rd-diff-sign {
+  text-align: center;
+}
+
+.rd-diff-row--before .rd-diff-sign,
+.rd-diff-row--before .rd-diff-code {
+  color: var(--v4-text-faint);
+}
+
+.rd-diff-row--after .rd-diff-sign {
+  color: var(--sev-ok);
+}
+
+.rd-diff-row--after .rd-diff-code {
+  color: var(--v4-text);
+}
+
+.rd-repair-verdict {
+  margin-top: 4px;
+}
+
+.rd-twins {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+  color: var(--v4-text-faint);
+}
+
+.rd-twins a {
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--v4-line-strong);
+}
+
+.rd-twins a:hover,
+.rd-twins a:focus-visible {
+  color: var(--v4-text);
+  border-bottom-color: currentColor;
+}

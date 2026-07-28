@@ -78,6 +78,8 @@ const broken = audit(BROKEN)
 const fixed = audit(FIXED)
 const bytes = readFileSync(`${HERO}/${BROKEN}`)
 
+const brokenLines = bytes.toString('utf8').split('\n')
+
 const findings = (broken.findings ?? [])
   .filter((f) => !ENVIRONMENTAL.has(f.kind))
   .map((f) => {
@@ -93,8 +95,28 @@ const findings = (broken.findings ?? [])
       line: at?.line ?? null,
       col: at?.col ?? null,
       span: f.span ? [f.span.start, f.span.end] : null,
+      /* the offending line, verbatim from the served twin — a renderer must
+         never re-slice the file by byte span in JS (3 header bytes already
+         split the two arithmetics), so the capture hands it the line whole */
+      sourceLine: at ? brokenLines[at.line - 1] : null,
     }
   })
+
+/* THE REPAIRS · the exact line pairs the twins disagree on. Both files are
+   served and committed, and hero-check.test.ts proves the fixed twin IS
+   nika check --fix applied to the broken one — so this diff is a captured
+   fact about two public artifacts, not an authored claim. */
+const fixedLines = readFileSync(`${HERO}/${FIXED}`, 'utf8').split('\n')
+const repairs = brokenLines
+  .map((before, i) => ({ line: i + 1, before, after: fixedLines[i] }))
+  .filter((r) => r.before !== r.after)
+
+/* the green verdict the repair lands on, for the ladder's last stop */
+const fixedVerdict = {
+  tasks: (fixed.certificate?.derivation ?? []).length,
+  waves: Array.isArray(fixed.waves) ? fixed.waves.length : 0,
+  permitsDeclared: (fixed.permits?.source ?? 'floor') === 'declared',
+}
 
 /* the two things that would make the page lie if they ever stopped holding:
    a hero that shows no diagnostics, or a fix that does not land */
@@ -148,6 +170,8 @@ export interface HeroFinding {
   col: number | null
   /** BYTE offsets into the file, zero-width · not JS string indices */
   span: readonly [number, number] | null
+  /** the offending line, verbatim — never re-derive it from span in JS */
+  sourceLine: string | null
 }
 
 /* NOT packed into one delimited string like its check-verdicts sibling: those
@@ -158,6 +182,15 @@ export const HERO_FINDINGS: readonly HeroFinding[] = ${JSON.stringify(findings, 
 
 /** the twin with both typos fixed · what the hero lands on */
 export const HERO_FIXED_CLEAN = ${fixed.clean === true}
+
+/** the exact line pairs the twins disagree on · a captured diff of two served
+ *  files, whose pair law (fixed twin == nika check --fix on the broken one)
+ *  hero-check.test.ts proves byte for byte */
+export const HERO_REPAIRS: readonly { line: number; before: string; after: string }[] =
+  ${JSON.stringify(repairs, null, 2)}
+
+/** the green verdict the repair lands on */
+export const HERO_FIXED_VERDICT = ${JSON.stringify(fixedVerdict)}
 `
 
 const OUT = `${ROOT}src/content/hero-check.generated.ts`

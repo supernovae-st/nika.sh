@@ -39,6 +39,8 @@ export interface HeroFinding {
   col: number | null
   /** BYTE offsets into the file, zero-width · not JS string indices */
   span: readonly [number, number] | null
+  /** the offending line, verbatim — never re-derive it from span in JS */
+  sourceLine: string | null
 }
 
 /* NOT packed into one delimited string like its check-verdicts sibling: those
@@ -56,7 +58,8 @@ export const HERO_FINDINGS: readonly HeroFinding[] = [
     "task": null,
     "line": 21,
     "col": 16,
-    "span": [418, 418]
+    "span": [418, 418],
+    "sourceLine": "      changes: ${{ tasks.dif.output }}"
   },
   {
     "code": "NIKA-SEC-004",
@@ -68,7 +71,8 @@ export const HERO_FINDINGS: readonly HeroFinding[] = [
     "task": "save",
     "line": null,
     "col": null,
-    "span": null
+    "span": null,
+    "sourceLine": null
   },
   {
     "code": "NIKA-BUILTIN-001",
@@ -80,9 +84,30 @@ export const HERO_FINDINGS: readonly HeroFinding[] = [
     "task": "save",
     "line": null,
     "col": null,
-    "span": null
+    "span": null,
+    "sourceLine": null
   }
 ]
 
 /** the twin with both typos fixed · what the hero lands on */
 export const HERO_FIXED_CLEAN = true
+
+/** the exact line pairs the twins disagree on · a captured diff of two served
+ *  files, whose pair law (fixed twin == nika check --fix on the broken one)
+ *  hero-check.test.ts proves byte for byte */
+export const HERO_REPAIRS: readonly { line: number; before: string; after: string }[] =
+  [
+  {
+    "line": 21,
+    "before": "      changes: ${{ tasks.dif.output }}",
+    "after": "      changes: ${{ tasks.diff.output }}"
+  },
+  {
+    "line": 32,
+    "before": "      tool: \"nika:wrte\"",
+    "after": "      tool: \"nika:write\""
+  }
+]
+
+/** the green verdict the repair lands on */
+export const HERO_FIXED_VERDICT = {"tasks":3,"waves":3,"permitsDeclared":true}
