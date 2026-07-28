@@ -343,21 +343,21 @@
   },
   {
    "path": "src/content/providers.generated.ts",
-   "sha256": "e6056ce19dab5e21ad565693c6e7cb0108f8660c08a5d2387efe2e72a169542e",
+   "sha256": "d95239307d83caba7ba206c741bdb991351f3ccd825d1302d44553221fe28ea7",
    "consumers": [
     "src/pages/Providers.tsx"
    ]
   },
   {
    "path": "src/content/tools.generated.ts",
-   "sha256": "21d1b46848793caa68214d0d782f0fcea2614c551ad51e63839e78ffbc3e9ef9",
+   "sha256": "37c9100d13aa87702cc377b7588d32b7287ea1206ff8bea9dc4998e4aefbcc47",
    "consumers": [
     "src/pages/Tools.tsx"
    ]
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "2822ca2562bcdcb6a162f54544a6be226b77e081e3cab4adeda4d94dbdfa4f1e",
+   "sha256": "22f4793ca9acc451da4432f6744b05f19349988c9c7bcc0fe9b072b581c800a5",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
@@ -371,7 +371,7 @@
   },
   {
    "path": "src/content/language-usage.generated.ts",
-   "sha256": "b9cb7f14839f87d8466409f437ccfe2f3322d3c6d91b38de07318642aa0c850e",
+   "sha256": "471fb65434ec15a455138820a719bea8c06d381e1c3165f599447a3ea9854bdd",
    "consumers": [
     "src/pages/WordPage.tsx"
    ]
