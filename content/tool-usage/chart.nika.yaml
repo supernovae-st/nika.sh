@@ -3,6 +3,12 @@ workflow:
   id: runs-per-month
   description: "rows in, one deterministic svg out — same bytes every run"
 
+permits:
+  fs:
+    write: ["./charts/runs.svg"]
+  exec: false
+  tools: ["nika:chart"]
+
 tasks:
   render:
     invoke:

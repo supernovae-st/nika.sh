@@ -5,6 +5,10 @@ workflow:
 
 model: ollama/qwen3.5:4b
 
+permits:
+  exec: false
+  tools: ["nika:compose", "nika:done", "nika:read"]
+
 tasks:
   build:
     agent:

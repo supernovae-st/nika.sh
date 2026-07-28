@@ -3,6 +3,11 @@ workflow:
   id: let-the-index-settle
   description: "a declared pause — relative duration XOR absolute until"
 
+permits:
+  net: { http: ["docs.example.com"] }
+  exec: false
+  tools: ["nika:fetch", "nika:notify", "nika:wait"]
+
 tasks:
   publish:
     invoke:

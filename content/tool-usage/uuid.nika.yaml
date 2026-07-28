@@ -3,6 +3,12 @@ workflow:
   id: stamp-the-run
   description: "a sortable v7 id — minted once, threaded through the file"
 
+permits:
+  fs:
+    write: ["./run-id.txt"]
+  exec: false
+  tools: ["nika:uuid", "nika:write"]
+
 tasks:
   mint:
     invoke:

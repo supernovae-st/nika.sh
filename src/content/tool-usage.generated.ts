@@ -42,7 +42,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "chart": {
     "bare": "chart",
-    "yaml": "nika: v1\nworkflow:\n  id: runs-per-month\n  description: \"rows in, one deterministic svg out — same bytes every run\"\n\ntasks:\n  render:\n    invoke:\n      tool: \"nika:chart\"\n      args:\n        data:\n          - { month: \"jan\", runs: 41 }\n          - { month: \"feb\", runs: 57 }\n          - { month: \"mar\", runs: 64 }\n        chart: { type: bar, x: month, y: runs }\n        out: \"./charts/runs.svg\"\n\noutputs:\n  receipt: ${{ tasks.render.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: runs-per-month\n  description: \"rows in, one deterministic svg out — same bytes every run\"\n\npermits:\n  fs:\n    write: [\"./charts/runs.svg\"]\n  exec: false\n  tools: [\"nika:chart\"]\n\ntasks:\n  render:\n    invoke:\n      tool: \"nika:chart\"\n      args:\n        data:\n          - { month: \"jan\", runs: 41 }\n          - { month: \"feb\", runs: 57 }\n          - { month: \"mar\", runs: 64 }\n        chart: { type: bar, x: month, y: runs }\n        out: \"./charts/runs.svg\"\n\noutputs:\n  receipt: ${{ tasks.render.output }}",
     "source": {
       "kind": "crafted",
       "file": "chart.nika.yaml"
@@ -54,7 +54,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "compose": {
     "bare": "compose",
-    "yaml": "nika: v1\nworkflow:\n  id: delegate-a-sub-run\n  description: \"the agent drafts a sub-workflow and spawns it through its one doorway\"\n\nmodel: ollama/qwen3.5:4b\n\ntasks:\n  build:\n    agent:\n      system: \"Draft a minimal workflow for the goal, spawn it via nika:compose, call nika:done with its outputs.\"\n      prompt: \"Summarize ./notes.md into three bullet points.\"\n      skills:\n        - \"./skills/summarizer/SKILL.md\"\n      tools:\n        - \"nika:compose\"\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 8\n      max_tokens_total: 40000\n\noutputs:\n  result: ${{ tasks.build.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: delegate-a-sub-run\n  description: \"the agent drafts a sub-workflow and spawns it through its one doorway\"\n\nmodel: ollama/qwen3.5:4b\n\npermits:\n  exec: false\n  tools: [\"nika:compose\", \"nika:done\", \"nika:read\"]\n\ntasks:\n  build:\n    agent:\n      system: \"Draft a minimal workflow for the goal, spawn it via nika:compose, call nika:done with its outputs.\"\n      prompt: \"Summarize ./notes.md into three bullet points.\"\n      skills:\n        - \"./skills/summarizer/SKILL.md\"\n      tools:\n        - \"nika:compose\"\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 8\n      max_tokens_total: 40000\n\noutputs:\n  result: ${{ tasks.build.output }}",
     "source": {
       "kind": "crafted",
       "file": "compose.nika.yaml"
@@ -119,7 +119,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "edit": {
     "bare": "edit",
-    "yaml": "nika: v1\nworkflow:\n  id: bump-log-level\n  description: \"literal find/replace in place — not regex, no surprises\"\n\ntasks:\n  bump:\n    invoke:\n      tool: \"nika:edit\"\n      args:\n        path: \"./config.toml\"\n        find: 'level = \"info\"'\n        replace: 'level = \"debug\"'\n        count: 1\n\noutputs:\n  changed: ${{ tasks.bump.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: bump-log-level\n  description: \"literal find/replace in place — not regex, no surprises\"\n\npermits:\n  fs:\n    read: [\"./config.toml\"]\n    write: [\"./config.toml\"]\n  exec: false\n  tools: [\"nika:edit\"]\n\ntasks:\n  bump:\n    invoke:\n      tool: \"nika:edit\"\n      args:\n        path: \"./config.toml\"\n        find: 'level = \"info\"'\n        replace: 'level = \"debug\"'\n        count: 1\n\noutputs:\n  changed: ${{ tasks.bump.output }}",
     "source": {
       "kind": "crafted",
       "file": "edit.nika.yaml"
@@ -178,7 +178,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "grep": {
     "bare": "grep",
-    "yaml": "nika: v1\nworkflow:\n  id: count-the-todos\n  description: \"recursive regex search — {path, line, match}, sorted\"\n\ntasks:\n  todos:\n    invoke:\n      tool: \"nika:grep\"\n      args:\n        pattern: \"TODO|FIXME\"\n        path: \"./src\"\n\n  lines:\n    with:\n      todos: ${{ tasks.todos.output }}\n    invoke:\n      tool: \"nika:jq\"\n      args:\n        input: ${{ with.todos }}\n        expression: \"map(.path) | join(\\\"\\\\n\\\")\"\n\n  tally:\n    with:\n      hits: ${{ tasks.lines.output }}\n    exec:\n      command: [\"wc\", \"-l\"]\n      stdin: \"${{ with.hits }}\"\n\noutputs:\n  count: ${{ tasks.tally.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: count-the-todos\n  description: \"recursive regex search — {path, line, match}, sorted\"\n\npermits:\n  fs:\n    read: [\"./src/**\"]\n  exec: [\"wc\"]\n  tools: [\"nika:grep\", \"nika:jq\"]\n\ntasks:\n  todos:\n    invoke:\n      tool: \"nika:grep\"\n      args:\n        pattern: \"TODO|FIXME\"\n        path: \"./src\"\n\n  lines:\n    with:\n      todos: ${{ tasks.todos.output }}\n    invoke:\n      tool: \"nika:jq\"\n      args:\n        input: ${{ with.todos }}\n        expression: \"map(.path) | join(\\\"\\\\n\\\")\"\n\n  tally:\n    with:\n      hits: ${{ tasks.lines.output }}\n    exec:\n      command: [\"wc\", \"-l\"]\n      stdin: \"${{ with.hits }}\"\n\noutputs:\n  count: ${{ tasks.tally.output }}",
     "source": {
       "kind": "crafted",
       "file": "grep.nika.yaml"
@@ -202,7 +202,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "image_fx": {
     "bare": "image_fx",
-    "yaml": "nika: v1\nworkflow:\n  id: poster-treatment\n  description: \"deterministic artistic ops over a png — seeded, replayable\"\n\ntasks:\n  stylize:\n    invoke:\n      tool: \"nika:image_fx\"\n      args:\n        input: \"./shots/hero.png\"\n        out: \"./shots/hero-poster.png\"\n        ops:\n          - duotone: {}\n          - grain: {}\n        seed: 7\n\n  review:\n    with:\n      poster: ${{ tasks.stylize.output }}\n    infer:\n      model: ollama/llama3.2-vision\n      prompt: \"Poster at ${{ with.poster }} — is the subject still legible after the treatment? One line.\"\n      vision:\n        - { source: file, path: \"./shots/hero-poster.png\" }\n      thinking: { enabled: true, budget_tokens: 2000 }\n\noutputs:\n  poster: ${{ tasks.stylize.output }}\n  verdict: ${{ tasks.review.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: poster-treatment\n  description: \"deterministic artistic ops over a png — seeded, replayable\"\n\npermits:\n  fs:\n    write: [\"./shots/hero-poster.png\"]\n  exec: false\n  tools: [\"nika:image_fx\"]\n\ntasks:\n  stylize:\n    invoke:\n      tool: \"nika:image_fx\"\n      args:\n        input: \"./shots/hero.png\"\n        out: \"./shots/hero-poster.png\"\n        ops:\n          - duotone: {}\n          - grain: {}\n        seed: 7\n\n  review:\n    with:\n      poster: ${{ tasks.stylize.output }}\n    infer:\n      model: ollama/llama3.2-vision\n      prompt: \"Poster at ${{ with.poster }} — is the subject still legible after the treatment? One line.\"\n      vision:\n        - { source: file, path: \"./shots/hero-poster.png\" }\n      thinking: { enabled: true, budget_tokens: 2000 }\n\noutputs:\n  poster: ${{ tasks.stylize.output }}\n  verdict: ${{ tasks.review.output }}",
     "source": {
       "kind": "crafted",
       "file": "image_fx.nika.yaml"
@@ -351,7 +351,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "tts_generate": {
     "bare": "tts_generate",
-    "yaml": "nika: v1\nworkflow:\n  id: say-the-verdict\n  description: \"one audio file under output_dir — mock provider runs offline\"\n\ntasks:\n  line:\n    infer:\n      model: ollama/qwen3.5:4b\n      prompt: \"One warm sentence announcing a green run. Nothing else.\"\n      temperature: 0.9\n    retry:\n      max_attempts: 3\n      backoff_ms: 500\n      backoff_max_ms: 4000\n\n  speak:\n    with:\n      line: ${{ tasks.line.output }}\n    invoke:\n      tool: \"nika:tts_generate\"\n      args:\n        provider: mock\n        text: \"${{ with.line }}\"\n        output_dir: \"./audio\"\n    on_finally:\n      - invoke:\n          tool: \"nika:log\"\n          args: { message: \"audio pass done — anything staged is under ./audio\" }\n\noutputs:\n  audio: ${{ tasks.speak.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: say-the-verdict\n  description: \"one audio file under output_dir — mock provider runs offline\"\n\npermits:\n  fs:\n    write: [\"./audio/**\"]\n  exec: false\n  tools: [\"nika:log\", \"nika:tts_generate\"]\n\ntasks:\n  line:\n    infer:\n      model: ollama/qwen3.5:4b\n      prompt: \"One warm sentence announcing a green run. Nothing else.\"\n      temperature: 0.9\n    retry:\n      max_attempts: 3\n      backoff_ms: 500\n      backoff_max_ms: 4000\n\n  speak:\n    with:\n      line: ${{ tasks.line.output }}\n    invoke:\n      tool: \"nika:tts_generate\"\n      args:\n        provider: mock\n        text: \"${{ with.line }}\"\n        output_dir: \"./audio\"\n    on_finally:\n      - invoke:\n          tool: \"nika:log\"\n          args: { message: \"audio pass done — anything staged is under ./audio\" }\n\noutputs:\n  audio: ${{ tasks.speak.output }}",
     "source": {
       "kind": "crafted",
       "file": "tts_generate.nika.yaml"
@@ -363,7 +363,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "uuid": {
     "bare": "uuid",
-    "yaml": "nika: v1\nworkflow:\n  id: stamp-the-run\n  description: \"a sortable v7 id — minted once, threaded through the file\"\n\ntasks:\n  mint:\n    invoke:\n      tool: \"nika:uuid\"\n      args: { version: v7 }\n\n  stamp:\n    with:\n      mint: ${{ tasks.mint.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./run-id.txt\"\n        content: \"${{ with.mint }}\"\n\noutputs:\n  run_id: ${{ tasks.mint.output }}",
+    "yaml": "nika: v1\nworkflow:\n  id: stamp-the-run\n  description: \"a sortable v7 id — minted once, threaded through the file\"\n\npermits:\n  fs:\n    write: [\"./run-id.txt\"]\n  exec: false\n  tools: [\"nika:uuid\", \"nika:write\"]\n\ntasks:\n  mint:\n    invoke:\n      tool: \"nika:uuid\"\n      args: { version: v7 }\n\n  stamp:\n    with:\n      mint: ${{ tasks.mint.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./run-id.txt\"\n        content: \"${{ with.mint }}\"\n\noutputs:\n  run_id: ${{ tasks.mint.output }}",
     "source": {
       "kind": "crafted",
       "file": "uuid.nika.yaml"
@@ -387,7 +387,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "wait": {
     "bare": "wait",
-    "yaml": "nika: v1\nworkflow:\n  id: let-the-index-settle\n  description: \"a declared pause — relative duration XOR absolute until\"\n\ntasks:\n  publish:\n    invoke:\n      tool: \"nika:notify\"\n      args:\n        target: \"https://hooks.example.com/deploys\"\n        message: \"docs published\"\n\n  settle:\n    after:\n      publish: success\n    invoke:\n      tool: \"nika:wait\"\n      args: { duration: \"30s\" }\n\n  verify:\n    after:\n      settle: success\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://docs.example.com/health\"\n        mode: jq\n        jq: \".status\"",
+    "yaml": "nika: v1\nworkflow:\n  id: let-the-index-settle\n  description: \"a declared pause — relative duration XOR absolute until\"\n\npermits:\n  net: { http: [\"docs.example.com\"] }\n  exec: false\n  tools: [\"nika:fetch\", \"nika:notify\", \"nika:wait\"]\n\ntasks:\n  publish:\n    invoke:\n      tool: \"nika:notify\"\n      args:\n        target: \"https://hooks.example.com/deploys\"\n        message: \"docs published\"\n\n  settle:\n    after:\n      publish: success\n    invoke:\n      tool: \"nika:wait\"\n      args: { duration: \"30s\" }\n\n  verify:\n    after:\n      settle: success\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://docs.example.com/health\"\n        mode: jq\n        jq: \".status\"",
     "source": {
       "kind": "crafted",
       "file": "wait.nika.yaml"

@@ -3,6 +3,12 @@ workflow:
   id: count-the-todos
   description: "recursive regex search — {path, line, match}, sorted"
 
+permits:
+  fs:
+    read: ["./src/**"]
+  exec: ["wc"]
+  tools: ["nika:grep", "nika:jq"]
+
 tasks:
   todos:
     invoke:

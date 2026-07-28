@@ -3,6 +3,13 @@ workflow:
   id: bump-log-level
   description: "literal find/replace in place — not regex, no surprises"
 
+permits:
+  fs:
+    read: ["./config.toml"]
+    write: ["./config.toml"]
+  exec: false
+  tools: ["nika:edit"]
+
 tasks:
   bump:
     invoke:

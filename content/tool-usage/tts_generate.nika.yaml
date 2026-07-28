@@ -3,6 +3,12 @@ workflow:
   id: say-the-verdict
   description: "one audio file under output_dir — mock provider runs offline"
 
+permits:
+  fs:
+    write: ["./audio/**"]
+  exec: false
+  tools: ["nika:log", "nika:tts_generate"]
+
 tasks:
   line:
     infer:
