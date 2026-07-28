@@ -188,7 +188,12 @@ describe('la carte projetée · une géométrie, trois surfaces', () => {
        retrying et success s'effondraient en trois disques identiques,
        exactement dans la condition où le second signal doit servir. */
     const shapes = new Map<string, string>()
-    for (const m of NODE_CSS.matchAll(/status-([a-z]+) \.nc-dot\) \{([^}]*)\}/g)) {
+    /* LA FORME VIT DANS LA RÈGLE DE GÉOMÉTRIE, pas dans celle de couleur. Les
+       deux moitiés ont des sélecteurs opposés depuis nika-spec#227 — la
+       géométrie à (0,2,0) pour battre la base `.nc-dot`, la couleur à (0,0,0)
+       pour toujours perdre contre l'hôte. Un gate qui lisait encore la règle
+       unique d'avant aurait rapporté sept états sans forme. */
+    for (const m of NODE_CSS.matchAll(/\.dag-node\.status-([a-z]+) :where\(\.nc-dot\) \{([^}]*)\}/g)) {
       shapes.set(m[1], geometryOf(m[2]).join(' · '))
     }
     expect(shapes.size, 'des statuts sans forme projetée').toBe(NIKA_NODE_STATUS.length)
