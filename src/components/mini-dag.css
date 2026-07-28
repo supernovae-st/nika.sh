@@ -18,7 +18,7 @@
   align-items: center;
   gap: 12px;
   margin: 0 0 16px;
-  font-size: 11px;
+  font-size: var(--type-mini);
   font-weight: var(--fw-medium);
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -128,7 +128,7 @@
   padding-bottom: 2px;
 }
 .mdag-cap-meta {
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.08em;
   line-height: 1.5;
   color: var(--v4-text-faint);
@@ -244,7 +244,7 @@
   background: var(--mdag-hue);
 }
 .mdag-id {
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   line-height: 1.2;
   letter-spacing: 0.03em;
   max-width: 76px;
@@ -256,7 +256,7 @@
 .mdag-seal,
 .mdag-fan {
   margin-left: 3px;
-  font-size: 8.5px;
+  font-size: var(--type-micro);
   color: var(--v4-text-faint);
 }
 
@@ -319,7 +319,7 @@
    of three read without collisions */
 .mdag--rail .mdag-id {
   max-width: 62px;
-  font-size: 10px;
+  font-size: var(--type-micro);
 }
 /* THE MINIMAP REGISTER (operator 2026-07-13 v2) · in the hero the rail is
    an editor's minimap riding the panel — the survey chrome dies (no title,
@@ -331,7 +331,7 @@
    rendered, the site's mono-link size) and the pips grow their HIT AREA
    with transparent padding (the drawing's ink is untouched). */
 .v4hero-dag .v4plan-run {
-  font-size: 15px;
+  font-size: var(--type-body-sm);
   padding: 12px 9px;
   margin: -12px -9px;
 }

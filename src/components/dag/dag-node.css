@@ -60,19 +60,19 @@
 
 .v5plan-node-id {
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   font-weight: var(--fw-semibold);
   color: var(--v4-text);
 }
 .v5plan-node-verb {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.1em;
   color: var(--node-vhue, var(--v4-text-dim));
 }
 .v5plan-node-target {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   color: var(--v4-text-faint);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -85,7 +85,7 @@
   border: 1px solid rgb(230 184 115 / 0.35);
   border-radius: var(--v4-radius-sm);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   color: var(--cf-num);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -95,7 +95,7 @@
 .v5plan-node-chip {
   margin-top: 4px;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   font-variant-numeric: tabular-nums;
   color: var(--cf-str);
 }

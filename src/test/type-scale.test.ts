@@ -42,15 +42,23 @@ const LITERAL = /font-size:\s*[0-9.]+(?:px|rem)/g
 const HALF = /font-size:\s*[0-9]+\.5px/g
 
 /** files whose type is fully on the scale · this list only grows */
-const CLEAN = ['src/sections/v4-home.css', 'src/pages/spec-page.css']
+const CLEAN = [
+  'src/sections/v4-home.css',
+  'src/pages/spec-page.css',
+  /* the site's three DAG renderers · the ledger's « écrit trois fois » row,
+     and the place a size drifting hurts a reader most */
+  'src/components/dag/dag-node.css',
+  'src/components/dag-view.css',
+  'src/components/mini-dag.css',
+]
 
 /** the debt, as measured 2026-07-28 · these only descend.
  *  570 → 511 and 229 → 197 when spec-page.css was cleared:
  *  59 sizes, 32 of them half-pixels, and the two golden frames that
  *  cover that page moved 1.34% and 1.48% — under the 1.5% gate. The
  *  half steps were carrying nothing, again. */
-const CEILING_LITERALS = 511
-const CEILING_HALF = 197
+const CEILING_LITERALS = 493
+const CEILING_HALF = 188
 const CEILING_RELATIVE = 23
 
 const rel = (p: string) => p.slice(ROOT.length + 1)
