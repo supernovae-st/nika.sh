@@ -23,7 +23,8 @@ const wasmBytes = readFileSync(join(ROOT, 'src/lib/check-wasm/pkg/nika_check_was
 const broken = readFileSync(join(ROOT, 'public/hero/pr-review.broken.nika.yaml'), 'utf8')
 const fixed = readFileSync(join(ROOT, 'public/hero/pr-review.nika.yaml'), 'utf8')
 
-const ready = init(wasmBytes)
+// the object form — positional module bytes are the glue's deprecated path
+const ready = init({ module_or_path: wasmBytes })
 
 describe('the vendored wasm · the same voice as the captured binary', () => {
   it('speaks for the same engine version the captures pin', async () => {
