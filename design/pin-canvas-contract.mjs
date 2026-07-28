@@ -57,7 +57,42 @@ if (!fn) { console.error('✗ nodeClassOf() introuvable dans dag.ts · le canvas
 /* toutes les familles .nc* stylées · le banc n'a pas le droit d'en inventer */
 const families = [...new Set([...css.matchAll(/\.(nc[a-z0-9-]*)/g)].map((m) => m[1]))].sort()
 
-const next = { sha, contract: CONTRACT, styled, families, nodeClassOf: fn[0] }
+/* CE QUE LE CANVAS REÇOIT VRAIMENT · la question que la matrice pose, et à
+   laquelle personne ne pouvait répondre depuis ce dépôt. Un fichier projeté
+   VERS une surface qui ne l'a jamais reçu n'est pas partagé : il est disponible.
+   Trois états, mesurés, jamais supposés. */
+const ARTEFACTS = {
+  'design-tokens.generated.ts': 'src/design-tokens.generated.ts',
+  'ground.generated.css': 'src/webview/ground.generated.css',
+  'node.generated.css': 'src/webview/node.generated.css',
+}
+const receives = {}
+for (const [name, rel] of Object.entries(ARTEFACTS)) {
+  const here = existsSync(join(CANVAS, rel))
+  /* combien de fichiers du canvas le NOMMENT · 0 = livré mais pas branché */
+  let refs = 0
+  try {
+    refs = execFileSync('git', ['-C', CANVAS, 'grep', '-l', name.replace('.ts', '').replace('.css', ''), '--', 'src'],
+      { encoding: 'utf8' }).trim().split('\n').filter(Boolean).length
+  } catch { refs = 0 }
+  receives[name] = { present: here, refs, state: !here ? 'jamais livré' : refs ? 'reçoit' : 'livré, pas branché' }
+}
+
+/* les symboles projetés que le canvas CONSOMME · un export que personne ne lit
+   est une valeur partagée sur le papier seulement */
+const tokens = existsSync(join(CANVAS, ARTEFACTS['design-tokens.generated.ts']))
+  ? readFileSync(join(CANVAS, ARTEFACTS['design-tokens.generated.ts']), 'utf8') : ''
+const symbols = {}
+for (const m of tokens.matchAll(/export (?:const|function) (NIKA_[A-Z_]+|nikaNodeClass)\b/g)) {
+  let n = 0
+  try {
+    n = execFileSync('git', ['-C', CANVAS, 'grep', '-l', m[1], '--', 'src'], { encoding: 'utf8' })
+      .trim().split('\n').filter(Boolean).filter((f) => !f.endsWith('design-tokens.generated.ts')).length
+  } catch { n = 0 }
+  symbols[m[1]] = n
+}
+
+const next = { sha, contract: CONTRACT, styled, families, receives, symbols, nodeClassOf: fn[0] }
 const prev = existsSync(PIN) ? JSON.parse(readFileSync(PIN, 'utf8')) : null
 
 if (process.argv.includes('--write')) {

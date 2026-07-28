@@ -453,6 +453,27 @@
   .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
   .bx-tools .nc{width:auto}
   .bx-opt{color:var(--nk-faint);border-style:dashed}
+  /* LA MATRICE · une case = un état, et l'état a une FORME autant qu'une teinte
+     (le point, le tiret, le vide) — la couleur seule ne dirait rien en contraste
+     forcé, et c'est le tableau qui juge la synchronisation. */
+  .mx-sync td.mx-c{white-space:nowrap;font-size:calc(var(--nk-fs) - 1px);
+    letter-spacing:.02em;text-align:center;padding-left:10px;padding-right:10px}
+  .mx-what{width:38%}
+  .mx-c::before{content:'';display:inline-block;width:6px;height:6px;margin-right:7px;
+    vertical-align:1px;border-radius:50%;background:currentColor}
+  .mx-src{color:var(--nk-dim)}
+  .mx-src::before{border-radius:1px;transform:rotate(45deg)}
+  .mx-ok{color:var(--nk-ok)}
+  .mx-mute{color:var(--nk-caption)}
+  .mx-mute::before{background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+  .mx-gap{color:var(--nk-fail-text)}
+  .mx-gap::before{width:7px;height:2px;border-radius:1px}
+  .mx-own{color:var(--nk-faint)}
+  .mx-own::before{opacity:.4;width:3px;height:3px}
+  .mx-lg{font-weight:400;padding:1px 7px 1px 0;white-space:nowrap}
+  .mx-lg::before{content:'';display:inline-block;width:6px;height:6px;margin-right:6px;
+    vertical-align:1px;border-radius:50%;background:currentColor}
+  .mx-verdict{border-left:2px solid var(--nk-fail);padding-left:13px;margin-top:16px}
   /* LE CLAMP DU CANVAS N'A PAS DE SENS ICI. Un nœud dans un graphe coupe sa
      description à 3 lignes pour tenir la grille ; une page de RÉFÉRENCE existe
      pour la donner en entier. Même carte, deux hôtes, deux besoins — c'est
@@ -1951,32 +1972,54 @@
   </section>
 
   <section>
-    <div class="sec-head"><h2>Ce qui est partagé, ce qui ne l’est pas</h2><span class="sec-n">10 consommés · 6 projetés · 3 écrits</span></div>
-    <p class="sec-note">Le tableau que cet atelier existe pour vider. Chaque « non » est un endroit où les surfaces peuvent diverger sans que rien ne l’empêche.</p>
-    <div class="tw"><table>
-      <thead><tr><th>ce que c’est</th><th>où ça vit</th><th>dans le SSOT ?</th></tr></thead>
+    <div class="sec-head"><h2>Ce qui est synchronisé, ce qui ne l’est pas</h2>
+      <span class="sec-n">17 concepts × 4 surfaces · mesuré, pas déclaré</span></div>
+    <p class="sec-note">
+      Chaque case est <b>constatée</b> : on cherche l’artefact dans l’arbre de la surface, puis
+      on compte qui le nomme. Un ledger à trois états disait « projeté » sans jamais dire
+      <em>vers qui</em> — et c’est ce mot-là qui cachait le fait le plus important de cette page.
+      La colonne canvas vient de l’épingle <code>988d81f</code> : ce dépôt ne peut pas lire le
+      voisin en intégration continue, alors il lit ce que l’épingle a constaté, et une dérive
+      devient un diff daté au lieu d’un silence.
+    </p>
+    <div class="tw"><table class="mx-sync">
+      <thead><tr><th>le concept</th><th>spec</th><th>canvas VS&nbsp;Code</th><th>site</th><th>ce banc</th></tr></thead>
       <tbody>
-        <tr><td>hues des verbes</td><td>tokens.yaml → 3 cibles</td><td class="lg-yes">consommé</td></tr>
-        <tr><td>sévérité · statuts</td><td>tokens.yaml → 3 cibles</td><td class="lg-yes">consommé</td></tr>
-        <tr><td>rôles sémantiques</td><td>tokens.yaml (27/07)</td><td class="lg-yes">consommé</td></tr>
-        <tr><td>glyphes · codicons</td><td>tokens.yaml → 3 cibles</td><td class="lg-yes">consommé</td></tr>
-        <tr><td>rayon · densité · levée</td><td>material.plate (28/07)</td><td class="lg-yes">consommé</td></tr>
-        <tr><td>biseau · ombres · grain</td><td>material.plate (28/07)</td><td class="lg-yes">consommé</td></tr>
-        <tr><td>durée · courbes de ressort</td><td>material.motion (28/07)</td><td class="lg-yes">consommé</td></tr>
-        <tr><td>le sol · trame, vignette, lampe</td><td>material.ground → 2 cibles</td><td class="lg-mid">projeté · le canvas ne l’importe pas encore</td></tr>
-        <tr><td>le curseur d’arpentage</td><td>material.ground.cursor (28/07)</td><td class="lg-mid">projeté · idem</td></tr>
-        <tr><td>statut · marques du nœud</td><td>material.node (28/07)</td><td class="lg-yes">consommé · le contrat de classes, une fonction pour trois</td></tr>
-        <tr><td>la géométrie de la carte</td><td>material.card (28/07) → node.generated.css</td><td class="lg-yes">consommé · le site et ce banc la portent · le canvas la reçoit</td></tr>
-        <tr><td>la forme de chaque statut</td><td>material.node.signal (28/07)</td><td class="lg-yes">consommé · 7 géométries distinctes, couleur retirée</td></tr>
-        <tr><td>anatomie du nœud</td><td>material.node.anatomy · confirmée par verbAnatomies.test</td><td class="lg-mid">projeté</td></tr>
-        <tr><td>le verre flottant</td><td>material.glass · 13 copies dans dag.css</td><td class="lg-mid">projeté · les 13 sites à reprendre</td></tr>
-        <tr><td>les familles d’atomes</td><td>dag.css · 139 familles épinglées · 9 mortes</td><td class="lg-mid">projeté · le contrat les nomme, les peaux restent</td></tr>
-        <tr><td>hues des 7 couches</td><td>design.generated.css</td><td class="lg-no">écrit · site seulement</td></tr>
-        <tr><td>géométrie · placement</td><td>elkClient · mini-dag-layout</td><td class="lg-no">écrit deux fois</td></tr>
-        <tr><td>rendu du DAG</td><td>dag.ts · DagView · MiniDag</td><td class="lg-mid">projeté · DagView a adopté la carte du canvas · MiniDag reste</td></tr>
-        <tr><td>rendu du YAML</td><td>codefile-highlight · TextMate</td><td class="lg-no">deux grammaires</td></tr>
+        <tr><td class="mx-what">les 4 hues de verbe</td><td class="mx-c mx-src">source</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">les ramps de texte</td><td class="mx-c mx-src">source</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-mute">livré · muet</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">sévérité · statuts</td><td class="mx-c mx-src">source</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">rôles sémantiques</td><td class="mx-c mx-src">source</td><td class="mx-c mx-mute">livré · muet</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">glyphes · codicons</td><td class="mx-c mx-src">source</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-mute">livré · muet</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">la matière · plaque, verre, lampe, ressorts</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">statut · marques du nœud</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">l’anatomie par verbe</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">le contrat de classes</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">la fonction qui nomme un nœud</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">la maison des builtins</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-mute">livré · muet</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">la sévérité d’audit</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-mute">livré · muet</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">le sol · trame, vignette, lampe</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">la géométrie de la carte</td><td class="mx-c mx-src">source</td><td class="mx-c mx-gap">jamais livré</td><td class="mx-c mx-ok">reçoit</td><td class="mx-c mx-ok">reçoit</td></tr>
+        <tr><td class="mx-what">le rendu du DAG</td><td class="mx-c mx-own">—</td><td class="mx-c mx-own">dag.ts</td><td class="mx-c mx-own">DagView + MiniDag</td><td class="mx-c mx-own">le banc</td></tr>
+        <tr><td class="mx-what">le rendu du YAML</td><td class="mx-c mx-own">—</td><td class="mx-c mx-own">TextMate</td><td class="mx-c mx-own">codefile-highlight</td><td class="mx-c mx-own">—</td></tr>
+        <tr><td class="mx-what">le placement du graphe</td><td class="mx-c mx-own">—</td><td class="mx-c mx-own">son layout</td><td class="mx-c mx-own">elkClient</td><td class="mx-c mx-own">mini-dag-layout</td></tr>
       </tbody>
     </table></div>
+    <p class="typ-legend">
+      <b class="mx-lg mx-src">source</b> la spec le porte ·
+      <b class="mx-lg mx-ok">reçoit</b> l’artefact est là et référencé ·
+      <b class="mx-lg mx-mute">livré · muet</b> il est là, personne ne le lit ·
+      <b class="mx-lg mx-gap">jamais livré</b> il n’est pas arrivé ·
+      <b class="mx-lg mx-own">écrit</b> la surface tient sa propre version.
+    </p>
+    <p class="sec-note mx-verdict">
+      <b>Le verdict.</b> Le site et ce banc reçoivent tout ce que la spec projette. Le canvas
+      reçoit le module de jetons — mais sa copie est en retard de
+      <b>7
+      symboles</b>, et les deux feuilles qu’on lui projette ne lui ont
+      <b>jamais été livrées</b>. Ce n’est pas de la négligence : une autre session tient ce
+      dépôt, et la règle de cet atelier est de ne jamais y écrire pendant ce temps. Le trou est
+      donc <em>délibéré</em> — ce tableau existe pour qu’il reste <em>visible</em>.
+    </p>
   </section>
 
   <footer>
