@@ -172,6 +172,24 @@
      not invented: they are where the site's own mass already sits, measured
      across every stylesheet. Ratchets in src/test/type-scale.test.ts hold the
      count down and forbid the scale itself from ever gaining a half step. */
+  /* THE FOUR WEIGHTS, AND WHY THERE ARE EXACTLY FOUR. Clash Display ships as
+     three static cuts — 500, 600, 700 — and nothing else. Ask a browser for
+     any other weight on it and you do not get that weight: you get a
+     SYNTHESISED one, the glyphs smeared wider by the rasteriser. That is a
+     real typographic defect, and it is invisible in code review. So the set
+     is the three cuts the display face physically owns, plus 400 for the
+     variable faces' regular.
+
+     The site had nine values: 400 · 450 · 500 · 560 · 590 · 600 · 650 · 700
+     (plus a 100 that turned out to be an @font-face range, not a use). The
+     odd ones were real intentions — 560 meant « a little heavier than the
+     prose around it », twenty-four times — but 560 against 600 is not a
+     contrast anyone perceives; it is the half-pixel problem wearing a
+     different hat. Snapped, all twenty-eight of them. */
+  --fw-regular: 400;   /* body · prose · data · the resting weight */
+  --fw-medium: 500;    /* UI emphasis · nav · labels · Clash's lightest cut */
+  --fw-semibold: 600;  /* titles · emphasis inside prose · Clash's middle cut */
+  --fw-bold: 700;      /* the loudest thing on a page · Clash's heaviest cut */
   --lh-display: 1.06;
   --lh-body: 1.65;
   --ls-display: -0.018em;

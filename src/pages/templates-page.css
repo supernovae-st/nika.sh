@@ -28,7 +28,7 @@
 .tm-miss-name {
   font-family: var(--mono);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.08em;
   margin: 0 0 6px;
 }
@@ -76,7 +76,7 @@
 .tm-name {
   font-family: var(--mono);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.04em;
   color: var(--v4-text);
   text-decoration: none;

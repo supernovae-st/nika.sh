@@ -55,7 +55,7 @@
 .lrn-step-title {
   font-family: var(--display);
   font-size: clamp(1.15rem, 1rem + 0.7vw, 1.45rem);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.015em;
   line-height: 1.12;
   color: var(--v4-text);
@@ -183,7 +183,7 @@
 }
 .lrn-tip b {
   color: var(--v4-text);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 
 /* ── the mini-DAG plate · step 06's 2D comprehension anchor ───────────────────
@@ -225,7 +225,7 @@
   fill: var(--v4-text);
   font-family: var(--mono);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.01em;
 }
 .lrn-dag-verb {
@@ -238,7 +238,7 @@
   fill: var(--v4-text-faint);
   font-family: var(--mono);
   font-size: 10px;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
@@ -302,7 +302,7 @@
 .lrn-err-field-key {
   font-family: var(--mono);
   font-size: 12.5px;
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
   color: var(--v4-text);
   letter-spacing: 0.01em;
 }
@@ -329,7 +329,7 @@
 .lrn-cta-title {
   max-width: 22ch;
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.022em;
   line-height: 1.05;
   font-size: clamp(1.6rem, 1rem + 2.4vw, 2.4rem);
@@ -360,7 +360,7 @@
 .lrn-full-title {
   margin-top: 8px;
   font-size: clamp(22px, 3vw, 30px);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.02em;
   color: var(--v4-text);
 }

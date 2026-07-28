@@ -139,3 +139,55 @@ describe('type scale · closed set, shrinking debt', () => {
     ).toBeLessThanOrEqual(CEILING_RELATIVE)
   })
 })
+
+/* ── the weights · four, because the display face owns exactly three ─────────
+   Clash Display ships as three static cuts (500 · 600 · 700). Ask a browser
+   for any other weight on it and you do not get that weight — you get a
+   SYNTHESISED one, the glyphs mechanically smeared by the rasteriser. It is a
+   real defect and it is invisible in review, so the token set is pinned to the
+   cuts the file physically provides, plus 400 for the variable faces.
+
+   These are ABSOLUTE, not ratchets: the whole site landed on the four in one
+   pass (141 declarations, 28 of them snapped off 450 · 560 · 590 · 650), so
+   there is no debt left to ratchet down — only a floor to defend. */
+describe('type weights · pinned to the cuts that exist', () => {
+  const TOKENS = readFileSync(join(ROOT, 'src/styles/tokens.css'), 'utf8')
+
+  it('the set is exactly four, and they are the canonical steps', () => {
+    const steps = [...TOKENS.matchAll(/--fw-([a-z]+):\s*(\d+);/g)].map(([, n, v]) => [n, +v] as const)
+    expect(steps.map(([n]) => n)).toEqual(['regular', 'medium', 'semibold', 'bold'])
+    expect(steps.map(([, v]) => v)).toEqual([400, 500, 600, 700])
+  })
+
+  /* the clause worth having: the tokens are not four numbers someone liked,
+     they are what the display face can actually render */
+  it('every non-regular step is a cut Clash Display really ships', () => {
+    const css = readFileSync(join(ROOT, 'src/index.css'), 'utf8')
+    const cuts = [...css.matchAll(/@font-face\s*\{[^}]*\}/g)]
+      .filter((m) => /font-family:\s*'Clash Display'/.test(m[0]))
+      .map((m) => Number(m[0].match(/font-weight:\s*(\d+)\s*;/)?.[1]))
+      .filter((n) => Number.isFinite(n))
+      .sort((a, b) => a - b)
+    expect(cuts, 'Clash Display declares no static cuts — did the @font-face set move?')
+      .toHaveLength(3)
+    const tokens = [...TOKENS.matchAll(/--fw-(?:medium|semibold|bold):\s*(\d+);/g)]
+      .map((m) => Number(m[1])).sort((a, b) => a - b)
+    expect(tokens, `tokens ${tokens.join('/')} do not match Clash's cuts ${cuts.join('/')} `
+      + '— a weight the face does not ship gets synthesised, never rendered').toEqual(cuts)
+  })
+
+  it('no stylesheet writes a raw weight outside an @font-face', () => {
+    const offenders: string[] = []
+    for (const file of SHEETS) {
+      const src = readFileSync(file, 'utf8')
+      let inFace = false
+      src.split('\n').forEach((line, i) => {
+        if (line.includes('@font-face')) inFace = true
+        if (inFace) { if (line.includes('}')) inFace = false; return }
+        const m = line.match(/font-weight:\s*(\d+)\s*;/)
+        if (m) offenders.push(`${rel(file)}:${i + 1} → ${m[1]}`)
+      })
+    }
+    expect(offenders, `raw weights: ${offenders.join(' · ')}`).toHaveLength(0)
+  })
+})

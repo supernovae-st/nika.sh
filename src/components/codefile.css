@@ -302,17 +302,17 @@
   color: var(--cf-comment);
   font-style: italic;
 }
-.cf-key { color: var(--cf-key); font-weight: 500; }
+.cf-key { color: var(--cf-key); font-weight: var(--fw-medium); }
 .cf-str { color: var(--cf-str); }
 .cf-num { color: var(--cf-num); font-variant-numeric: tabular-nums; }
-.cf-bool { color: var(--cf-bool); font-weight: 500; }
+.cf-bool { color: var(--cf-bool); font-weight: var(--fw-medium); }
 .cf-ref { color: var(--cf-ref); }
 .cf-punct { color: var(--cf-punct); }
 .cf-plain { color: var(--cf-plain); }
 
 /* the 4 verbs · each in its canonical verb-hue + a leading glyph. */
 .cf-verb {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 .cf-verb-glyph {
   margin-right: 0.45em;
@@ -505,12 +505,12 @@
   padding: 6px 10px;
 }
 .cf-tipbox-term {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--v4-text, #f4f5f7);
 }
 .cf-tipbox-term::after {
   content: ' · ';
-  font-weight: 400;
+  font-weight: var(--fw-regular);
   color: var(--v4-text-faint, #6b7280);
 }
 .cf-tipbox[data-verb='infer'] .cf-tipbox-term,
@@ -748,7 +748,7 @@
 
 .cf-r--boundary {
   color: var(--cf-key);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 .cf-shield {
   margin-right: 0.35ch;

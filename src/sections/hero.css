@@ -262,7 +262,7 @@
   font-size: var(--type-display);
   line-height: var(--lh-display);
   letter-spacing: var(--ls-display);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   text-wrap: balance;
   /* headline white-fade (Linear-school · one hero, never more): the display
      line falls from white-hot to steel — AA holds at .4 on the display size */
@@ -295,7 +295,7 @@
   color: #bfc6d4;
 }
 .v4hero-sub b {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--v4-text);
 }
 /* phones read the SHORT sub (a 7-line paragraph wall is a defect class) */
@@ -812,7 +812,7 @@
   border-radius: var(--v4-radius);
   background: var(--v4-accent-cta);
   color: #fff;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.14),
     0 1px 0 rgb(0 0 0 / 0.4),

@@ -37,7 +37,7 @@ body[data-insp] {
 .insp-title {
   flex: 1;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--v4-text);
   outline: none;
   overflow-wrap: anywhere;

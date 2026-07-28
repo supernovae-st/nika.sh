@@ -186,7 +186,7 @@
   margin-left: -6px;
   color: var(--v4-text);
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   font-size: 16px;
   letter-spacing: -0.01em;
   border-radius: var(--v4-radius);
@@ -253,7 +253,7 @@
   padding: 7px 11px;
   border-radius: var(--v4-radius);
   font-size: 14px;
-  font-weight: 450;
+  font-weight: var(--fw-medium);
   letter-spacing: -0.005em;
   color: var(--v4-text-dim);
   white-space: nowrap;
@@ -371,7 +371,7 @@
   padding: 8px 15px;
   border-radius: var(--v4-radius);
   font-size: 13.5px;
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.005em;
   color: var(--v4-bg);
   background: var(--v4-text);
@@ -555,7 +555,7 @@
 .v4mega-label {
   display: block;
   font-size: 15px;
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
   line-height: 1.25;
   transition: color var(--dur-ui) var(--ease-ui);
 }
@@ -650,7 +650,7 @@
   white-space: nowrap;
 }
 .v4mega-readout-cell b {
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   font-variant-numeric: tabular-nums;
   color: color-mix(in oklch, var(--v4-text) 76%, transparent);
 }
@@ -682,7 +682,7 @@
   padding: 4px 8px;
   border-radius: var(--v4-radius);
   font-size: 13px;
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.005em;
   color: var(--v4-accent);
   white-space: nowrap;
@@ -821,7 +821,7 @@ button.v4sheet-search {
   margin-top: 18px;
   border-radius: var(--v4-radius);
   font-size: 16px;
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
   color: var(--v4-bg);
   background: var(--v4-text);
 }
@@ -956,7 +956,7 @@ button.v4sheet-search {
 }
 
 .v4mega-item--feat .v4mega-label {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 
 .v4mega-item--feat .v4mega-label::before {

@@ -19,7 +19,7 @@
   color: #0a0b0d;
   font-family: var(--mono, ui-monospace, monospace);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.01em;
   text-decoration: none;
   box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.55);

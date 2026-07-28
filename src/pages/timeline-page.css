@@ -191,7 +191,7 @@
 }
 
 .tl-body { display: grid; gap: 0.15rem; }
-.tl-title { font-weight: 560; }
+.tl-title { font-weight: var(--fw-semibold); }
 .tl-ver {
   font-size: 0.82em;
   margin-right: 0.5em;
@@ -374,7 +374,7 @@
 .tls-title {
   margin: 0;
   font-size: 15.5px;
-  font-weight: 590;
+  font-weight: var(--fw-semibold);
   line-height: 1.3;
   color: color-mix(in srgb, currentColor 72%, transparent);
   transition: color var(--dur-soft) var(--ease-out);

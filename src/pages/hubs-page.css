@@ -134,7 +134,7 @@
 }
 
 .gm-grid th {
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   color: var(--v4-text-faint, rgb(150 168 198 / 0.7));
   padding: 6px 8px;
   text-align: left;

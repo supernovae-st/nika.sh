@@ -285,7 +285,7 @@ html::-webkit-scrollbar-thumb:hover { background: rgb(79 134 255 / 0.45); }
   display: flex;
   justify-content: center;
   font-family: var(--headline);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   font-size: clamp(2.6rem, 9.2vw, 9.5rem);
   letter-spacing: 0.02em;
   line-height: 1;
@@ -636,14 +636,14 @@ h1, h2 { font-family: var(--headline); }
 }
 .mf-title {
   font-family: var(--headline);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   letter-spacing: -0.02em;
   line-height: 0.98;
   font-size: clamp(2.8rem, 1rem + 8.5vw, 7rem);
 }
 .mf-statement {
   font-family: var(--headline);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.01em;
   line-height: 1.07;
   font-size: clamp(1.7rem, 1rem + 3.1vw, 3.3rem);
@@ -1014,7 +1014,7 @@ h1, h2 { font-family: var(--headline); }
 .mr-now { color: var(--cyan); font-size: 11px; }
 .mr-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--fg);
   margin-bottom: 4px;
 }

@@ -190,7 +190,7 @@ a.bp-series-tick:focus-visible {
 }
 .bp-body p b {
   color: var(--v4-text);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 .bp-body p em {
   font-style: italic;
@@ -209,7 +209,7 @@ a.bp-series-tick:focus-visible {
 .bp-h {
   margin: 1.9em 0 0.7em;
   font-size: clamp(19px, 2.2vw, 24px);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.02em;
   color: var(--v4-text);
   scroll-margin-top: 96px;
@@ -219,7 +219,7 @@ a.bp-series-tick:focus-visible {
    the glyph rides the heading's trailing space. */
 .bp-h-anchor {
   font-size: 0.82em;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   color: var(--v4-text-faint);
   text-decoration: none;
   opacity: 0;

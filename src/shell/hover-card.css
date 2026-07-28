@@ -39,7 +39,7 @@
 }
 .hovercard-title {
   color: var(--v4-text);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 .hovercard-status {
   margin-left: auto;

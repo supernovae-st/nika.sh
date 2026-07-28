@@ -165,7 +165,7 @@
 }
 .v5run-verdict-exit {
   color: var(--cf-str);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 .v5run-verdict-exit[data-exit='1'] {
   color: var(--danger);

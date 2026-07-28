@@ -222,7 +222,7 @@
 }
 .play-pass-line b {
   color: var(--v4-text);
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
 }
 .play-pass-line code {
   font-family: var(--mono);

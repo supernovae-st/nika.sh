@@ -135,7 +135,7 @@
 .v4punch {
   margin-top: 14px;
   font-family: var(--headline);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   font-size: clamp(19px, 1.1rem + 0.9vw, 26px);
   letter-spacing: -0.01em;
   line-height: 1.15;
@@ -225,7 +225,7 @@
 }
 .v4block-name {
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.018em;
   line-height: 1.06;
   font-size: clamp(1.35rem, 1rem + 1.4vw, 1.85rem);
@@ -251,7 +251,7 @@
 }
 .v4block-cap b {
   color: var(--v4-text);
-  font-weight: 560;
+  font-weight: var(--fw-semibold);
 }
 .v4block-cap code,
 .v4block-cap .mono {

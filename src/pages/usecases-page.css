@@ -24,7 +24,7 @@
   margin-top: 10px;
   min-height: 2.5em;
   font-family: var(--headline);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   font-size: clamp(19px, 1.1rem + 0.9vw, 26px);
   letter-spacing: -0.01em;
   line-height: 1.2;
@@ -145,7 +145,7 @@
 .ucp-metier-title {
   margin-top: 14px;
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.022em;
   line-height: 1.02;
   font-size: clamp(1.6rem, 1rem + 2.4vw, 2.6rem);
@@ -225,7 +225,7 @@
 }
 .ucp-wf-title {
   font-size: 17px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: -0.01em;
   color: var(--v4-text);
 }
@@ -264,7 +264,7 @@
 }
 .ucp-wf-gloss b {
   color: var(--v4-text);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
 }
 
 /* the verb chips · glyph + name, hairline-bordered, monochrome (hue whisper on
@@ -316,7 +316,7 @@
 }
 .ucp-wf-filename b {
   color: var(--v4-text);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 .ucp-wf-prompt {
   color: var(--v4-text-faint);

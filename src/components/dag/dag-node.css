@@ -61,7 +61,7 @@
 .v5plan-node-id {
   font-family: var(--mono);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--v4-text);
 }
 .v5plan-node-verb {

@@ -103,7 +103,7 @@
   color: var(--v4-text-faint);
 }
 .v4trust b {
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   color: var(--v4-text-dim);
 }
 
@@ -299,7 +299,7 @@
   margin: 8px 0 0;
   font-family: var(--display);
   font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.1rem);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--v4-text);

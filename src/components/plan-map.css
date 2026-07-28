@@ -78,7 +78,7 @@
 .pm-node-id {
   font-family: var(--mono);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--v4-text);
 }
 .pm-node-verb {
@@ -105,7 +105,7 @@
   right: -13px;
   top: 44px;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   line-height: 1;
   color: rgb(141 180 255 / 0.72);
   pointer-events: none;

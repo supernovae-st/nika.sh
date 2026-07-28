@@ -29,7 +29,7 @@
 .er-miss-code {
   font-family: var(--mono);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.08em;
   margin: 0 0 6px;
 }
@@ -73,7 +73,7 @@
 .er-code {
   font-family: var(--mono);
   font-size: 13.5px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   letter-spacing: 0.06em;
   color: var(--v4-text);
   text-decoration: none;

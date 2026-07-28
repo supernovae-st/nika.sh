@@ -151,7 +151,7 @@
   transition: border-color 0.18s ease, color 0.18s ease;
 }
 .smc-label b {
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: #c9dbff;
   letter-spacing: 0.12em;
 }
