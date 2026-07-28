@@ -586,8 +586,9 @@
   td:first-child{font-family:var(--mono);font-size:12px;white-space:nowrap}
   td code{font-size:11px}
   .bind-g{display:inline-block;width:1.1em;text-align:center}
-  .yes{color:#1f8a5c;font-weight:600}.no{color:#c2410c;font-weight:600}
-  @media (prefers-color-scheme:dark){.yes{color:#34d399}.no{color:#ff9a6f}}
+  .lg-yes{color:#1f8a5c;font-weight:600}.lg-no{color:#c2410c;font-weight:600}
+  .lg-mid{color:#a16207;font-weight:600}
+  @media (prefers-color-scheme:dark){.lg-yes{color:#34d399}.lg-no{color:#ff9a6f}.lg-mid{color:#fbbf24}}
 
   /* the control · what the light does to the text */
   .apca{width:100%;border-collapse:collapse;font-size:13px}
@@ -1211,33 +1212,18 @@
     <div class="stage nk-ground" data-stage><div class="rack">
         <div class="cell">
           <span class="cell-k">puces de politique · <em>nc-pol-*</em></span>
-          <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-refusals)">on_error · recover</span><span class="nc-chip" style="--chip:var(--nk-refusals)">retry ×5</span><span class="nc-chip" style="--chip:var(--nk-refusals)">fail_fast</span><span class="nc-chip" style="--chip:var(--nk-refusals)">on_finally</span><span class="nc-chip" style="--chip:var(--nk-flow)">parallel ×3</span><span class="nc-chip" style="--chip:var(--nk-flow)">per-item</span><span class="nc-chip" style="--chip:var(--nk-shape)">typed</span><span class="nc-chip" style="--chip:var(--nk-acts)">thinking</span><span class="nc-chip" style="--chip:var(--nk-acts)">vision</span></div>
-          <span class="cell-note">ce que la tâche promet quand ça tourne mal, ou en parallèle</span>
+          <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-refusals)">recover</span><span class="nc-chip" style="--chip:var(--nk-refusals)">retry</span><span class="nc-chip" style="--chip:var(--nk-refusals)">failfast</span><span class="nc-chip" style="--chip:var(--nk-refusals)">finally</span><span class="nc-chip" style="--chip:var(--nk-refusals)">fail</span><span class="nc-chip" style="--chip:var(--nk-flow)">parallel</span><span class="nc-chip" style="--chip:var(--nk-flow)">peritem</span><span class="nc-chip" style="--chip:var(--nk-flow)">outs</span><span class="nc-chip" style="--chip:var(--nk-shape)">typed</span><span class="nc-chip" style="--chip:var(--nk-acts)">think</span><span class="nc-chip" style="--chip:var(--nk-acts)">vision</span><span class="nc-chip" style="--chip:var(--nk-null)">more</span></div>
+          <span class="cell-note">ce que la tâche promet quand ça tourne mal, ou en parallèle · 11 variantes déclarées</span>
         </div>
         <div class="cell">
           <span class="cell-k">catégories d’outils · <em>nc-cat-*</em></span>
           <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-reach)">file</span><span class="nc-chip" style="--chip:var(--nk-reach)">data</span><span class="nc-chip" style="--chip:var(--nk-reach)">network</span><span class="nc-chip" style="--chip:var(--nk-reach)">media</span><span class="nc-chip" style="--chip:var(--nk-reach)">introspection</span></div>
-          <span class="cell-note">la famille du builtin appelé · toutes de la couche reach</span>
+          <span class="cell-note">la famille du builtin appelé · 6 variantes, toutes de la couche reach</span>
         </div>
         <div class="cell">
-          <span class="cell-k">les permis · <em>nc-permit-*</em></span>
-          <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · fs</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · net</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · env</span><span class="nc-chip" style="--chip:var(--nk-boundary)">secrets</span></div>
-          <span class="cell-note">ce que le fichier autorise · toutes de la couche boundary, jamais d’une autre</span>
-        </div>
-        <div class="cell">
-          <span class="cell-k">les fils · <em>nc-wire-*</em></span>
-          <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip" style="--chip:var(--nk-flow)">after · triage</span><span class="nc-chip" style="--chip:var(--nk-flow)">for_each</span><span class="nc-chip" style="--chip:var(--nk-flow)">when</span><span class="nc-chip" style="--chip:var(--nk-flow)">needs</span></div>
-          <span class="cell-note">ce qui déclare une arête · la même encre que le ${{ }} qu’elle introduit</span>
-        </div>
-        <div class="cell">
-          <span class="cell-k">ce que la trace rapporte · <em>nc-trace-*</em></span>
-          <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-proof)">0,4 s</span><span class="nc-chip" style="--chip:var(--nk-proof)">$0,0012</span><span class="nc-chip" style="--chip:var(--nk-proof)">1 284 jetons</span><span class="nc-chip" style="--chip:var(--nk-proof)">hash a3f9…</span><span class="nc-chip" style="--chip:var(--nk-refusals)">essai 2 / 5</span><span class="nc-chip" style="--chip:var(--nk-null)">NIKA-EXEC-014</span></div>
-          <span class="cell-note">écrit après coup · jamais déclaré par l’auteur</span>
-        </div>
-        <div class="cell">
-          <span class="cell-k">la forme déclarée · <em>nc-shape-*</em></span>
-          <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-shape)">typed</span><span class="nc-chip" style="--chip:var(--nk-shape)">schema</span><span class="nc-chip" style="--chip:var(--nk-shape)">returns</span><span class="nc-chip" style="--chip:var(--nk-shape)">outputs</span><span class="nc-chip" style="--chip:var(--nk-shape)">const</span></div>
-          <span class="cell-note">ce que la tâche promet de rendre · la couche shape</span>
+          <span class="cell-k">les pastilles de la bande · <em>nc-pill-*</em></span>
+          <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-proof)">fact</span><span class="nc-chip" style="--chip:var(--nk-acts)">method</span></div>
+          <span class="cell-note">la famille que ce banc ne montrait pas · un fait mesuré, une méthode nommée</span>
         </div>
         <div class="cell" style="max-width:none;flex:1 1 100%">
           <span class="cell-k">pastilles d’état · <em>nc-st-*</em></span>
@@ -1573,27 +1559,28 @@
   </section>
 
   <section>
-    <div class="sec-head"><h2>Ce qui est partagé, ce qui ne l’est pas</h2><span class="sec-n">9 sur 16</span></div>
+    <div class="sec-head"><h2>Ce qui est partagé, ce qui ne l’est pas</h2><span class="sec-n">7 consommés · 5 projetés · 5 écrits</span></div>
     <p class="sec-note">Le tableau que cet atelier existe pour vider. Chaque « non » est un endroit où les surfaces peuvent diverger sans que rien ne l’empêche.</p>
     <div class="tw"><table>
       <thead><tr><th>ce que c’est</th><th>où ça vit</th><th>dans le SSOT ?</th></tr></thead>
       <tbody>
-        <tr><td>hues des verbes</td><td>design/tokens.yaml → 3 cibles</td><td class="yes">partagé</td></tr>
-        <tr><td>sévérité · statuts</td><td>design/tokens.yaml → 3 cibles</td><td class="yes">partagé</td></tr>
-        <tr><td>rôles sémantiques</td><td>design/tokens.yaml (2026-07-27)</td><td class="yes">partagé</td></tr>
-        <tr><td>glyphes · codicons</td><td>design/tokens.yaml → 3 cibles</td><td class="yes">partagé</td></tr>
-        <tr><td>hues des 7 couches</td><td>design.generated.css</td><td class="no">site seulement</td></tr>
-        <tr><td>rayon · densité · levée</td><td>design/tokens.yaml → material (2026-07-28)</td><td class="yes">partagé</td></tr>
-        <tr><td>biseau · ombres · grain</td><td>design/tokens.yaml → material (2026-07-28)</td><td class="yes">partagé</td></tr>
-        <tr><td>la lampe · une par scène</td><td>design/tokens.yaml → material (2026-07-28)</td><td class="yes">partagé</td></tr>
-        <tr><td>le verre flottant</td><td>design/tokens.yaml → material · trouvé dans dag.css</td><td class="yes">nommé · 13 copies à reprendre</td></tr>
-        <tr><td>durée · courbe de levée</td><td>design/tokens.yaml → material</td><td class="yes">partagé</td></tr>
-        <tr><td>anatomie du nœud</td><td>dag.ts · 9 373 lignes</td><td class="no">vscode seulement</td></tr>
-        <tr><td>les 84 jetons --nk-*</td><td>vscode src/webview/dag.css</td><td class="no">existent · projetés de rien</td></tr>
-        <tr><td>les gris de la peau marque</td><td>body[data-nk-theme='nika']</td><td class="no">transcrits ici · à promouvoir</td></tr>
-        <tr><td>géométrie · placement</td><td>elkClient · mini-dag-layout</td><td class="no">écrit deux fois</td></tr>
-        <tr><td>rendu du DAG</td><td>dag.ts · DagView · MiniDag</td><td class="no">écrit trois fois</td></tr>
-        <tr><td>rendu du YAML</td><td>codefile-highlight · TextMate</td><td class="no">deux grammaires</td></tr>
+        <tr><td>hues des verbes</td><td>tokens.yaml → 3 cibles</td><td class="lg-yes">consommé</td></tr>
+        <tr><td>sévérité · statuts</td><td>tokens.yaml → 3 cibles</td><td class="lg-yes">consommé</td></tr>
+        <tr><td>rôles sémantiques</td><td>tokens.yaml (27/07)</td><td class="lg-yes">consommé</td></tr>
+        <tr><td>glyphes · codicons</td><td>tokens.yaml → 3 cibles</td><td class="lg-yes">consommé</td></tr>
+        <tr><td>rayon · densité · levée</td><td>material.plate (28/07)</td><td class="lg-yes">consommé</td></tr>
+        <tr><td>biseau · ombres · grain</td><td>material.plate (28/07)</td><td class="lg-yes">consommé</td></tr>
+        <tr><td>durée · courbes de ressort</td><td>material.motion (28/07)</td><td class="lg-yes">consommé</td></tr>
+        <tr><td>le sol · trame, vignette, lampe</td><td>material.ground → 2 cibles</td><td class="lg-mid">projeté · le canvas ne l’importe pas encore</td></tr>
+        <tr><td>le curseur d’arpentage</td><td>material.ground.cursor (28/07)</td><td class="lg-mid">projeté · idem</td></tr>
+        <tr><td>statut · marques du nœud</td><td>material.node (28/07)</td><td class="lg-mid">projeté · le banc le lit, le canvas a le sien</td></tr>
+        <tr><td>anatomie du nœud</td><td>material.node.anatomy · confirmée par verbAnatomies.test</td><td class="lg-mid">projeté</td></tr>
+        <tr><td>le verre flottant</td><td>material.glass · 13 copies dans dag.css</td><td class="lg-mid">projeté · les 13 sites à reprendre</td></tr>
+        <tr><td>les familles d’atomes</td><td>dag.css · 3 vocabulaires sur ~45 sous-parties</td><td class="lg-no">écrit · et relevé à la main</td></tr>
+        <tr><td>hues des 7 couches</td><td>design.generated.css</td><td class="lg-no">écrit · site seulement</td></tr>
+        <tr><td>géométrie · placement</td><td>elkClient · mini-dag-layout</td><td class="lg-no">écrit deux fois</td></tr>
+        <tr><td>rendu du DAG</td><td>dag.ts · DagView · MiniDag</td><td class="lg-no">écrit trois fois</td></tr>
+        <tr><td>rendu du YAML</td><td>codefile-highlight · TextMate</td><td class="lg-no">deux grammaires</td></tr>
       </tbody>
     </table></div>
   </section>

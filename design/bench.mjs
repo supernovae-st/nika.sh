@@ -310,47 +310,33 @@ const VARIANTS = [
       why: [['permits · fs.write = [ ./brief.md ]', 'boundary']] } },
 ]
 
-/* the atom families · what the node is made of, isolated so each can be judged
-   on its own before it is judged in a crowd */
+/* LES ATOMES · ce que le canvas DÉCLARE, et rien de plus.
+   Quatre des sept familles que ce banc montrait — permis, fils, trace, forme —
+   n'existaient nulle part : zéro règle dans dag.css, inventées ici et
+   présentées comme le système. Retirées.
+   Les variantes ci-dessous sont celles que le fichier déclare, relevées une
+   par une. La couverture reste honnête et faible : le canvas porte une
+   quarantaine de familles de sous-parties, la plupart internes à la mise en
+   page ; ces trois-là sont celles qui sont un VOCABULAIRE, c'est-à-dire un
+   jeu fermé qu'un auteur peut reconnaître. */
 const ATOMS = [
   {
     id: 'pol', title: 'puces de politique', cls: 'nc-pol-*',
-    note: 'ce que la tâche promet quand ça tourne mal, ou en parallèle',
-    chips: [
-      ['on_error · recover', 'refusals'], ['retry ×5', 'refusals'], ['fail_fast', 'refusals'],
-      ['on_finally', 'refusals'], ['parallel ×3', 'flow'], ['per-item', 'flow'],
-      ['typed', 'shape'], ['thinking', 'acts'], ['vision', 'acts'],
-    ],
+    note: 'ce que la tâche promet quand ça tourne mal, ou en parallèle · 11 variantes déclarées',
+    chips: [['recover', 'refusals'], ['retry', 'refusals'], ['failfast', 'refusals'],
+      ['finally', 'refusals'], ['fail', 'refusals'], ['parallel', 'flow'], ['peritem', 'flow'],
+      ['outs', 'flow'], ['typed', 'shape'], ['think', 'acts'], ['vision', 'acts'], ['more', null]],
   },
   {
     id: 'cat', title: 'catégories d’outils', cls: 'nc-cat-*',
-    note: 'la famille du builtin appelé · toutes de la couche reach',
+    note: 'la famille du builtin appelé · 6 variantes, toutes de la couche reach',
     chips: [['core', 'reach'], ['file', 'reach'], ['data', 'reach'], ['network', 'reach'],
       ['media', 'reach'], ['introspection', 'reach']],
   },
   {
-    id: 'permits', title: 'les permis', cls: 'nc-permit-*',
-    note: 'ce que le fichier autorise · toutes de la couche boundary, jamais d’une autre',
-    chips: [['permits · fs', 'boundary'], ['permits · exec', 'boundary'], ['permits · net', 'boundary'],
-      ['permits · tools', 'boundary'], ['permits · env', 'boundary'], ['secrets', 'boundary']],
-  },
-  {
-    id: 'wire', title: 'les fils', cls: 'nc-wire-*',
-    note: 'ce qui déclare une arête · la même encre que le ${{ }} qu’elle introduit',
-    chips: [['with · inbox', 'flow'], ['after · triage', 'flow'], ['for_each', 'flow'],
-      ['when', 'flow'], ['needs', 'flow']],
-  },
-  {
-    id: 'trace', title: 'ce que la trace rapporte', cls: 'nc-trace-*',
-    note: 'écrit après coup · jamais déclaré par l’auteur',
-    chips: [['0,4 s', 'proof'], ['$0,0012', 'proof'], ['1 284 jetons', 'proof'],
-      ['hash a3f9…', 'proof'], ['essai 2 / 5', 'refusals'], ['NIKA-EXEC-014', null]],
-  },
-  {
-    id: 'shape', title: 'la forme déclarée', cls: 'nc-shape-*',
-    note: 'ce que la tâche promet de rendre · la couche shape',
-    chips: [['typed', 'shape'], ['schema', 'shape'], ['returns', 'shape'],
-      ['outputs', 'shape'], ['const', 'shape']],
+    id: 'pill', title: 'les pastilles de la bande', cls: 'nc-pill-*',
+    note: 'la famille que ce banc ne montrait pas · un fait mesuré, une méthode nommée',
+    chips: [['fact', 'proof'], ['method', 'acts']],
   },
 ]
 
@@ -442,26 +428,31 @@ const dagNode = (n) => `        <article class="nc pg-node" data-verb="${n.verb}
           <div class="nc-why"><span class="pg-line"></span></div>
         </article>`
 
-/* the coherence ledger · what the three surfaces actually share today. This is
-   the table the bench exists to empty; every « non » is a place the surfaces
-   may drift with nothing to stop them. */
+/* LE LEDGER · trois états, pas deux. « Partagé » disait deux choses très
+   différentes : une valeur projetée vers trois cibles, et une valeur qu'une
+   surface applique vraiment. Le gate du sol a montré l'écart de la façon la
+   plus nette possible — le site chargeait le fichier et aucune page ne posait
+   la classe. Une copie parfaite que personne n'applique, c'est zéro surface.
+   Donc · CONSOMMÉ = projeté ET appliqué partout · PROJETÉ = disponible, pas
+   encore branché · ÉCRIT = chaque surface tient sa propre version. */
 const LEDGER = [
-  ['hues des verbes', 'design/tokens.yaml → 3 cibles', true, 'partagé'],
-  ['sévérité · statuts', 'design/tokens.yaml → 3 cibles', true, 'partagé'],
-  ['rôles sémantiques', 'design/tokens.yaml (2026-07-27)', true, 'partagé'],
-  ['glyphes · codicons', 'design/tokens.yaml → 3 cibles', true, 'partagé'],
-  ['hues des 7 couches', 'design.generated.css', false, 'site seulement'],
-  ['rayon · densité · levée', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
-  ['biseau · ombres · grain', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
-  ['la lampe · une par scène', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
-  ['le verre flottant', 'design/tokens.yaml → material · trouvé dans dag.css', true, 'nommé · 13 copies à reprendre'],
-  ['durée · courbe de levée', 'design/tokens.yaml → material', true, 'partagé'],
-  ['anatomie du nœud', 'dag.ts · 9 373 lignes', false, 'vscode seulement'],
-  ['les 84 jetons --nk-*', 'vscode src/webview/dag.css', false, 'existent · projetés de rien'],
-  ['les gris de la peau marque', "body[data-nk-theme='nika']", false, 'transcrits ici · à promouvoir'],
-  ['géométrie · placement', 'elkClient · mini-dag-layout', false, 'écrit deux fois'],
-  ['rendu du DAG', 'dag.ts · DagView · MiniDag', false, 'écrit trois fois'],
-  ['rendu du YAML', 'codefile-highlight · TextMate', false, 'deux grammaires'],
+  ['hues des verbes', 'tokens.yaml → 3 cibles', 2, 'consommé'],
+  ['sévérité · statuts', 'tokens.yaml → 3 cibles', 2, 'consommé'],
+  ['rôles sémantiques', 'tokens.yaml (27/07)', 2, 'consommé'],
+  ['glyphes · codicons', 'tokens.yaml → 3 cibles', 2, 'consommé'],
+  ['rayon · densité · levée', 'material.plate (28/07)', 2, 'consommé'],
+  ['biseau · ombres · grain', 'material.plate (28/07)', 2, 'consommé'],
+  ['durée · courbes de ressort', 'material.motion (28/07)', 2, 'consommé'],
+  ['le sol · trame, vignette, lampe', 'material.ground → 2 cibles', 1, 'projeté · le canvas ne l’importe pas encore'],
+  ['le curseur d’arpentage', 'material.ground.cursor (28/07)', 1, 'projeté · idem'],
+  ['statut · marques du nœud', 'material.node (28/07)', 1, 'projeté · le banc le lit, le canvas a le sien'],
+  ['anatomie du nœud', 'material.node.anatomy · confirmée par verbAnatomies.test', 1, 'projeté'],
+  ['le verre flottant', 'material.glass · 13 copies dans dag.css', 1, 'projeté · les 13 sites à reprendre'],
+  ['les familles d’atomes', 'dag.css · 3 vocabulaires sur ~45 sous-parties', 0, 'écrit · et relevé à la main'],
+  ['hues des 7 couches', 'design.generated.css', 0, 'écrit · site seulement'],
+  ['géométrie · placement', 'elkClient · mini-dag-layout', 0, 'écrit deux fois'],
+  ['rendu du DAG', 'dag.ts · DagView · MiniDag', 0, 'écrit trois fois'],
+  ['rendu du YAML', 'codefile-highlight · TextMate', 0, 'deux grammaires'],
 ]
 
 /* a linear() easing, plotted from its own stops. The curve IS the value the
@@ -1057,8 +1048,9 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   td:first-child{font-family:var(--mono);font-size:12px;white-space:nowrap}
   td code{font-size:11px}
   .bind-g{display:inline-block;width:1.1em;text-align:center}
-  .yes{color:#1f8a5c;font-weight:600}.no{color:#c2410c;font-weight:600}
-  @media (prefers-color-scheme:dark){.yes{color:#34d399}.no{color:#ff9a6f}}
+  .lg-yes{color:#1f8a5c;font-weight:600}.lg-no{color:#c2410c;font-weight:600}
+  .lg-mid{color:#a16207;font-weight:600}
+  @media (prefers-color-scheme:dark){.lg-yes{color:#34d399}.lg-no{color:#ff9a6f}.lg-mid{color:#fbbf24}}
 
   /* the control · what the light does to the text */
   .apca{width:100%;border-collapse:collapse;font-size:13px}
@@ -1589,12 +1581,12 @@ ${Object.keys(ROLE_WORDS).map((r) => bindingRow(r, '·', ROLE_CODICON[r], `<code
   </section>
 
   <section>
-    <div class="sec-head"><h2>Ce qui est partagé, ce qui ne l’est pas</h2><span class="sec-n">${LEDGER.filter((r) => r[2]).length} sur ${LEDGER.length}</span></div>
+    <div class="sec-head"><h2>Ce qui est partagé, ce qui ne l’est pas</h2><span class="sec-n">${LEDGER.filter((r) => r[2] === 2).length} consommés · ${LEDGER.filter((r) => r[2] === 1).length} projetés · ${LEDGER.filter((r) => !r[2]).length} écrits</span></div>
     <p class="sec-note">Le tableau que cet atelier existe pour vider. Chaque « non » est un endroit où les surfaces peuvent diverger sans que rien ne l’empêche.</p>
     <div class="tw"><table>
       <thead><tr><th>ce que c’est</th><th>où ça vit</th><th>dans le SSOT ?</th></tr></thead>
       <tbody>
-${LEDGER.map(([what, where, ok, verdict]) => `        <tr><td>${esc(what)}</td><td>${esc(where)}</td><td class="${ok ? 'yes' : 'no'}">${esc(verdict)}</td></tr>`).join('\n')}
+${LEDGER.map(([what, where, lvl, verdict]) => `        <tr><td>${esc(what)}</td><td>${esc(where)}</td><td class="lg-${['no', 'mid', 'yes'][lvl]}">${esc(verdict)}</td></tr>`).join('\n')}
       </tbody>
     </table></div>
   </section>
@@ -2173,8 +2165,8 @@ if (process.argv.includes('--check')) {
     console.error('bench: DRIFT · run node design/bench.mjs')
     process.exit(1)
   }
-  console.log(`✓ bench in sync · ${Object.keys(ANATOMY).length} verbs · ${STATES.length} states · ${KNOBS.length} knobs · ${LEDGER.filter((r) => r[2]).length}/${LEDGER.length} shared`)
+  console.log(`✓ bench in sync · ${Object.keys(ANATOMY).length} verbs · ${STATES.length} states · ${KNOBS.length} knobs · ${LEDGER.filter((r) => r[2] === 2).length}/${LEDGER.length} shared`)
 } else {
   writeFileSync(OUT, html)
-  console.log(`wrote design/bench.html · ${Object.keys(ANATOMY).length} verbs · ${STATES.length} states · ${KNOBS.length} knobs · ${LEDGER.filter((r) => r[2]).length}/${LEDGER.length} shared`)
+  console.log(`wrote design/bench.html · ${Object.keys(ANATOMY).length} verbs · ${STATES.length} states · ${KNOBS.length} knobs · ${LEDGER.filter((r) => r[2] === 2).length}/${LEDGER.length} shared`)
 }
