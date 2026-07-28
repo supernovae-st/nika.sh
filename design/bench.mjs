@@ -49,6 +49,20 @@ const groundCssProjected = readFileSync(`${ROOT}src/styles/ground.generated.css`
    redéclarait 11 des 13 sélecteurs à la main : c'était une 3e carte. */
 const nodeCssProjected = readFileSync(`${ROOT}src/styles/node.generated.css`, 'utf8')
 
+/* LES 28 BUILTINS · lus dans le catalogue que l'engine sert, jamais listés ici.
+   Chacun porte la teinte de sa MAISON (les 6 catégories), qui vient depuis
+   2026-07-28 de la spec — avant, seul le canvas savait à quoi ressemble une
+   catégorie, et cette page ne pouvait montrer aucun builtin. */
+const TOOLS = JSON.parse(
+  readFileSync(`${ROOT}src/content/tools.generated.ts`, 'utf8')
+    .match(/export const TOOLS[^=]*= (\[[\s\S]*?\n\])/)[1],
+)
+
+/* L'ORDRE DES MAISONS · du plus interne au plus lointain : la plomberie, puis
+   ce qui touche le disque, puis la donnée, puis ce qui sort de la machine,
+   puis ce qui regarde le run, puis ce qui fabrique. */
+const CAT_ORDER = ['core', 'file', 'data', 'network', 'introspection', 'media']
+
 const constObject = (name) => {
   const body = tokensTs.match(new RegExp(`export const ${name} = \\{([^}]*)\\}`))?.[1]
   if (!body) throw new Error(`bench: ${name} not found in design-tokens.generated.ts`)
@@ -148,6 +162,8 @@ const AUDIT = listConst('NIKA_AUDIT_SEVERITY')
    il l'a inventé une fois (`.nc--running`, `nc-glyph`, `nc-why`) et documentait
    alors une carte qui n'existait sur aucune surface. */
 const NODE_CLASSES = objConst('NIKA_NODE_CLASSES')
+/* la teinte de chaque maison · six alias, aucune couleur neuve */
+const CAT_HUE = constObject('NIKA_CATEGORY_HUE')
 
 const LAYERS = ['shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof']
 const LAYER_HEX = Object.fromEntries(LAYERS.map((l) => [l, cssVar(`layer-${l}`)]))
@@ -430,7 +446,7 @@ const dagNode = (n) => `        <article class="dag-node verb-${n.verb} status-p
           style="grid-column:${n.wave + 1};grid-row:${n.row}" tabindex="0" role="button"
           aria-label="${n.id} · clique pour changer son état"><div class="nc">
           <div class="nc-head"><span class="nc-tile">${VERB_GLYPH[n.verb]}</span><span class="nc-id">${n.id}</span><span class="nc-badge">${n.verb}</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">${n.sub[0]}</span> ${esc(n.sub[1])}</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">${n.sub[0]}</b> ${esc(n.sub[1])}</span></div>
           <div class="nc-body">${esc(n.body)}</div>
           <div class="nc-policy"><span class="pg-line"></span></div>
         </div></article>`
@@ -539,7 +555,7 @@ const renderNode = (verb, { state = 'pending', anatomy = ANATOMY[verb], spec } =
     `<div class="${NODE_CLASSES.part[name]}${extra}" data-part="${esc(PART_NAME[name])}" style="--i:${i}">${inner}</div>`
   const part = {
     head: (i) => p('head', i, `<span class="nc-tile">${VERB_GLYPH[verb]}</span><span class="nc-id">${s.id}</span><span class="nc-badge">${verb}</span>`),
-    sub: (i) => p('sub', i, `<span class="nc-sub-k">${s.sub[0]}</span> ${esc(s.sub[1])}`),
+    sub: (i) => p('sub', i, `<span class="nc-sub-k"><b class="bx-k">${s.sub[0]}</b> ${esc(s.sub[1])}</span>`),
     body: (i) => p('body', i, esc(s.body), s.bodyKind === 'cmd' ? ' nc-body-cmd' : ''),
     band: (i) => (s.band
       ? p('band', i, `<span>${s.band.loop}</span><span class="nc-ab-meter"><i style="width:${s.band.pct}%"></i></span><span class="nc-ab-tk">${s.band.tk}</span>`)
@@ -762,6 +778,16 @@ ${nodeCssProjected}
      quantities the site and the canvas bind, arriving through the same
      projection. A bevel on the top edge, a contact shadow and an ambient one,
      the paper's tooth over the face. */
+  /* LE BANC BRANCHE LES JETONS DE LA CARTE. node.generated.css porte la
+     géométrie et laisse la couleur à la surface : sans ces six lignes, la carte
+     tombait sur son repli transparent et la trame du sol traversait le texte.
+     C'est ce qui rendait les cartes « pointillées ».
+     (Aucun backtick dans un commentaire de template literal — payé 3× cet arc.) */
+  .stage{--nk-card:var(--nk-surface);--nk-card-border:var(--nk-edge);
+    --nk-ink:var(--nk-ink);--nk-mono:var(--nk-face-mono);
+    --nk-fs-heading:calc(var(--nk-fs) + 1px);--nk-fs-label:var(--nk-fs);
+    --nk-fs-sub:var(--nk-fs);--nk-fs-body:var(--nk-fs);
+    --nk-fs-meta:calc(var(--nk-fs) - 1.5px);--nk-fw-strong:600}
   .nc{width:252px;overflow:hidden;font-size:var(--nk-fs);box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact),var(--nk-ambient)}
   .nc::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
     opacity:var(--nk-grain);background-image:repeating-conic-gradient(#fff 0% 25%,transparent 0% 50%);
@@ -776,7 +802,30 @@ ${nodeCssProjected}
   .nc-badge{margin-left:auto;letter-spacing:.07em;color:var(--nk-verb-text,var(--nk-dim))}
   .nc-sub,.nc-body,.nc-policy{padding:var(--nk-pad) calc(var(--nk-pad) * 1.42)}
   .nc-sub{color:var(--nk-dim);border-bottom:1px dashed var(--nk-edge)}
-  .nc-sub-k{color:var(--nk-faint)}
+  .bx-k{color:var(--nk-faint);font-weight:400}
+  .cat-house{margin:0 0 22px}
+  .cat-head{display:flex;align-items:baseline;gap:9px;margin:0 0 9px;
+    font-family:var(--nk-face-mono);font-size:var(--nk-fs);letter-spacing:.09em;
+    text-transform:uppercase;color:var(--nk-dim)}
+  .cat-n{color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  .nc-chip-icon{color:var(--cat);line-height:1}
+  .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
+  .bx-tools .nc{width:auto}
+  .bx-opt{color:var(--nk-faint);border-style:dashed}
+  /* LE CLAMP DU CANVAS N'A PAS DE SENS ICI. Un nœud dans un graphe coupe sa
+     description à 3 lignes pour tenir la grille ; une page de RÉFÉRENCE existe
+     pour la donner en entier. Même carte, deux hôtes, deux besoins — c'est
+     exactement ce que la géométrie projetée permet sans se dédoubler. */
+  .bx-tools .nc-body{-webkit-line-clamp:unset;display:block;min-height:44px}
+  .bx-tools .nc-policy{margin-top:auto;padding-top:7px;border-top:1px solid var(--nk-edge)}
+  /* une rangée d'une seule hauteur : l'article est la case de grille, la carte
+     doit la remplir — sinon la ligne de pastilles danse d'une carte à l'autre */
+  .bx-tools .dag-node{display:flex}
+  .bx-tools .nc{display:flex;flex-direction:column;flex:1}
+  .cat-hex{margin-left:auto;padding-right:2px;color:var(--nk-faint);
+    font-size:calc(var(--nk-fs) - 1.5px);font-variant-numeric:tabular-nums}
+${CAT_ORDER.map((c) => `  .nc-cat-${c}{--cat:${CAT_HUE[c]}}`).join('\n')}
+${CAT_ORDER.map((c) => `  .cat-house:has(.nc-cat-${c}) .bx-tools .nc:hover{border-color:color-mix(in oklch,${CAT_HUE[c]} 42%,var(--nk-edge))}`).join('\n')}
 
   .nc-body-cmd{color:var(--nk-exec-text)}
   .nc-policy{border-top:1px solid var(--nk-edge);display:flex;flex-wrap:wrap;gap:5px;align-items:center}
@@ -1264,7 +1313,7 @@ ${Object.entries(STATUS).map(([k, v]) => swatch(k, v)).join('\n')}
       <div class="mat-anatomy">
         <article class="dag-node verb-infer status-pending mat-big"><div class="nc">
           <div class="nc-head"><span class="nc-tile">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-          <div class="nc-sub"><span class="nc-sub-k">model</span> mistral/mistral-large-latest</div>
+          <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">model</b> mistral/mistral-large-latest</span></div>
           <div class="nc-body">« Flag what is urgent »</div>
           <div class="nc-policy"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div>
         </div></article>
@@ -1371,7 +1420,39 @@ ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v,
   </section>
 
   <section>
-    <div class="sec-head"><h2>Les marques</h2><span class="sec-n">le second axe · ${Object.keys(MARKS).length} · orthogonales au statut</span></div>
+    <div class="sec-head"><h2>Les builtins</h2><span class="sec-n">${TOOLS.length} outils · ${CAT_ORDER.length} maisons</span></div>
+    <p class="sec-note">
+      Une carte par builtin, groupée par <b>maison</b>. Rien ici n’est écrit : les outils, leur
+      catégorie, leurs arguments et ce qu’ils font viennent du catalogue que l’engine sert. La
+      teinte de chaque maison vient de <code>builtin.category</code> — six alias, aucune couleur
+      neuve — et le canvas VS Code peint la sienne avec les mêmes.
+    </p>
+${CAT_ORDER.map((cat) => `    <div class="cat-house">
+      <p class="cat-head"><span class="nc-chip-icon nc-cat-${cat}">▪</span> ${cat}
+        <span class="cat-n">${TOOLS.filter((t) => t.category === cat).length}</span>
+        <span class="cat-hex">${CAT_HUE[cat]}</span></p>
+      <div class="stage nk-ground bx-tools" data-stage>
+${TOOLS.filter((t) => t.category === cat).map((t) => {
+  const req = (t.args || []).filter((a) => a.required)
+  const opt = (t.args || []).length - req.length
+  return `        <article class="dag-node verb-invoke status-pending"><div class="nc">
+          <div class="nc-head"><span class="nc-tile">${VERB_GLYPH.invoke}</span><span class="nc-id">${esc(t.bare)}</span></div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-${cat}">▪</span> ${esc(t.name)}</span></div>
+          <div class="nc-body">${esc(t.description)}</div>
+          <div class="nc-policy">${req.map((a) => `<span class="nc-chip">${esc(a.name)}</span>`).join('')}${
+            opt ? `<span class="nc-chip bx-opt">+${opt} optionnel${opt > 1 ? 's' : ''}</span>` : ''}</div>
+        </div></article>`
+}).join('\n')}
+      </div>
+    </div>`).join('\n')}
+    <p class="typ-legend">
+      Les pastilles nommées sont les arguments <b>requis</b> ; le compte gris dit combien
+      restent facultatifs. Un builtin sans pastille ne demande rien.
+    </p>
+  </section>
+
+  <section>
+   <div class="sec-head"><h2>Les marques</h2><span class="sec-n">le second axe · ${Object.keys(MARKS).length} · orthogonales au statut</span></div>
     <p class="sec-note">
       Un nœud porte <b>un</b> statut et <b>n</b> marques. Le banc les avait écrasés en une seule
       liste de huit, et c’est comme ça qu’il montrait « périmé » à côté de « réussi » comme si une
@@ -1518,7 +1599,7 @@ ${SHAPES.map((sh) => `        <div class="cell" style="max-width:300px"><span cl
 ${FORCED.map((f) => `        <div class="cell"><span class="cell-k">${esc(f.label)}</span>
           <article class="dag-node verb-infer status-pending" data-force="${f.k}"><div class="nc">
             <div class="nc-head"><span class="nc-tile">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-badge">infer</span></div>
-            <div class="nc-sub"><span class="nc-sub-k">with</span> inbox</div>
+            <div class="nc-sub"><span class="nc-sub-k"><b class="bx-k">with</b> inbox</span></div>
             <div class="nc-body">« Flag what is urgent »</div>
           </div></article>
           <span class="cell-note">${esc(f.note)}</span></div>`).join('\n')}

@@ -112,11 +112,19 @@ describe('la carte du nœud · le contrat de classes', () => {
        n'a pas de point, donc elle était invisible pour exactement le défaut que
        ce gate existe pour attraper. */
     const known = new Set<string>(pin.families)
+    /* UN PRÉFIXE N'EST PAS UNE CLASSE. `.nc-cat-${cat}` laisse `nc-cat-` dans la
+       source : c'est une FAMILLE, vivante si le canvas en style un membre. Le
+       même artefact de concaténation faussait l'audit du canvas — 6 de mes 15
+       « classes mortes » étaient des fragments. Le scan du HTML SERVI, lui,
+       reste strict : là, les classes sont assemblées et sans excuse. */
+    const alive = (cls: string) => known.has(cls)
+      || (cls.endsWith('-') && [...known].some((k) => k.startsWith(cls)))
     const written = [...new Set([...BENCH.matchAll(/\.(nc[a-z0-9-]*)/g)].map((m) => m[1]))]
+      .filter((cls) => !alive(cls))
     const served = [...new Set(
       [...HTML.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter((c) => /^nc(-|$)/.test(c)),
     )]
-    const invented = [...new Set([...written, ...served])].filter((cls) => !known.has(cls)).sort()
+    const invented = [...new Set([...written, ...served.filter((c) => !known.has(c))])].sort()
     expect(invented,
       `le banc emploie des classes absentes du canvas ${pin.sha} — chacune est une carte qui n’existe que sur le banc`)
       .toEqual([])
