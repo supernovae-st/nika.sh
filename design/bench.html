@@ -441,7 +441,45 @@
   .knob-l{font-size:13px;font-weight:500}
   .knob output{font:500 12px/1 var(--mono);color:var(--room-ink);font-variant-numeric:tabular-nums;
     padding:3px 6px;background:var(--room-bg);border:1px solid var(--room-line);border-radius:5px}
-  .knob input[type=range]{width:100%;accent-color:var(--room-accent);cursor:ew-resize}
+  /* LE CURSEUR · dessiné, pas hérité. La propriété accent-color ne fait que
+     teinter un widget natif : la géométrie reste celle du système, et huit pilules bleues
+     iOS sur la page qui EST le design system, c'est le signe le plus net qu'on
+     n'a pas regardé. Un rail de 2px, une tête carrée de 12px, un anneau de
+     focus qui ne disparaît pas — le registre de la page, pas celui de macOS. */
+  /* LE RAIL EST PEINT SUR L'INPUT, pas sur son pseudo-élément : une variable
+     posée en ligne n'atteignait pas ::-webkit-slider-runnable-track, donc les
+     huit rails retombaient sur le repli et affichaient 50 % quoi qu'il arrive.
+     L'input lit sa propre variable, toujours, dans tous les moteurs. */
+  .knob input[type=range]{-webkit-appearance:none;appearance:none;width:100%;
+    cursor:ew-resize;height:14px;margin:0;
+    /* background-COLOR explicite · en passant de la propriété raccourcie à
+       background-image, le fond blanc que le navigateur donne à un range est
+       revenu, et chaque rail est devenu une dalle blanche. Une sonde l'avait
+       dit — rgb(255,255,255) — et je ne l'ai pas lue. */
+    background-color:transparent;
+    background-image:linear-gradient(to right,
+      var(--room-accent) 0 var(--fill, 0%),
+      color-mix(in oklch, var(--room-ink) 20%, transparent) var(--fill, 0%) 100%);
+    background-repeat:no-repeat;background-size:100% 2px;background-position:0 center}
+  .knob input[type=range]:focus{outline:none}
+  .knob input[type=range]::-webkit-slider-runnable-track{height:2px;background:transparent}
+  .knob input[type=range]::-moz-range-track{height:2px;background:transparent}
+  .knob input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:12px;height:12px;margin-top:-5px;border-radius:2px;background:var(--room-bg);
+    border:1.5px solid var(--room-accent);
+    box-shadow:0 1px 2px rgb(0 0 0 / .45);transition:border-color 120ms,transform 120ms}
+  .knob input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:2px;
+    background:var(--room-bg);border:1.5px solid var(--room-accent);
+    box-shadow:0 1px 2px rgb(0 0 0 / .45)}
+  .knob input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.12)}
+  .knob input[type=range]:active::-webkit-slider-thumb{transform:scale(0.94)}
+  /* jamais supprimé « pour le polish » · Geist le répète de chaque composant */
+  .knob input[type=range]:focus-visible::-webkit-slider-thumb{
+    outline:2px solid var(--room-accent);outline-offset:2px}
+  .knob input[type=range]:focus-visible::-moz-range-thumb{
+    outline:2px solid var(--room-accent);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){
+    .knob input[type=range]::-webkit-slider-thumb{transition:none}}
   .knob input:focus-visible{outline:2px solid var(--room-accent);outline-offset:3px}
   .knob-note{font-size:11px;line-height:1.45;color:var(--room-faint)}
   .home{display:inline-block;font:500 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;
@@ -960,7 +998,7 @@
   </div>
   <nav class="dex" id="dex" aria-label="Les sections du banc"></nav>
 
-  <section>
+  <section id="l-atelier">
     <div class="sec-head"><h2>L’atelier</h2><span class="sec-n">8 mesures · 8 partagées</span></div>
     <p class="sec-note">
       Les mesures que toutes les surfaces se partagent — et depuis le 28 juillet elles se les
@@ -1052,7 +1090,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="la-typographie">
     <div class="sec-head"><h2>La typographie</h2><span class="sec-n">3 faces · 10 marches · 4 graisses</span></div>
     <p class="sec-note">
       La couche qu’on a mis le plus de temps à verrouiller et qu’on ne voyait nulle part.
@@ -1209,7 +1247,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="les-couleurs">
     <div class="sec-head"><h2>Les couleurs</h2><span class="sec-n">4 verbes · 7 couches · 5 statuts · 3 rôles</span></div>
     <p class="sec-note">
       Valeurs lues dans les projections, jamais retapées. Et une seule idée les tient :
@@ -1258,7 +1296,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="la-matiere">
     <div class="sec-head"><h2>La matière</h2><span class="sec-n">la plaque · la lampe · les ressorts</span></div>
     <p class="sec-note">
       Un seul objet physique, projeté depuis <code>nika-spec design/tokens.yaml</code> vers les
@@ -1388,7 +1426,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="la-matrice">
     <div class="sec-head"><h2>La matrice</h2><span class="sec-n">4 verbes × 7 états = 28 cas</span></div>
     <p class="sec-note">
       Tous les cas, d’un seul écran. Un état porté par la seule teinte meurt en contraste forcé
@@ -1443,7 +1481,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="le-chip-editable">
     <div class="sec-head"><h2>Le chip éditable</h2><span class="sec-n">1 contrôle · mesuré à 3.04:1</span></div>
     <p class="sec-note">
       Une valeur qu’on peut <b>changer</b> n’est pas une étiquette. Le canvas n’en a qu’une —
@@ -1478,7 +1516,7 @@
     </p>
   </section>
 
-  <section>
+  <section id="les-pastilles-de-politique">
     <div class="sec-head"><h2>Les pastilles de politique</h2><span class="sec-n">14 · dont 5 sans peau jusqu’au 28 juillet</span></div>
     <p class="sec-note">
       Une carte dit deux choses : ce qu’une tâche <b>fait</b>, et comment elle se
@@ -1561,7 +1599,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="la-valeur-typee">
     <div class="sec-head"><h2>La valeur typée</h2><span class="sec-n">7 rendus · le premier primitif de contrôle</span></div>
     <p class="sec-note">
       Une carte qui montre tous ses arguments ne montre rien. Le <b>registre d’essence</b> nomme
@@ -1616,7 +1654,7 @@
     </p>
   </section>
 
-  <section>
+  <section id="les-builtins">
     <div class="sec-head"><h2>Les builtins</h2><span class="sec-n">28 outils · 6 maisons</span></div>
     <p class="sec-note">
       Une carte par builtin, groupée par <b>maison</b>. Rien ici n’est écrit : les outils, leur
@@ -1868,7 +1906,7 @@
     </p>
   </section>
 
-  <section>
+  <section id="les-marques">
    <div class="sec-head"><h2>Les marques</h2><span class="sec-n">le second axe · 7 · orthogonales au statut</span></div>
     <p class="sec-note">
       Un nœud porte <b>un</b> statut et <b>n</b> marques. Le banc les avait écrasés en une seule
@@ -1928,7 +1966,7 @@
     </p>
   </section>
 
-  <section>
+  <section id="les-variantes">
     <div class="sec-head"><h2>Les variantes</h2><span class="sec-n">6 cas limites</span></div>
     <p class="sec-note">
       Une galerie de chemins heureux est une brochure. Voici les formes qui cassent réellement
@@ -1946,7 +1984,7 @@
     </div></div>
   </section>
 
-  <section>
+  <section id="les-atomes">
     <div class="sec-head"><h2>Les atomes</h2><span class="sec-n">les pièces, isolées</span></div>
     <p class="sec-note">Chaque pièce doit tenir seule avant de tenir dans un nœud. C’est là que la bascule de palette est la plus cruelle.</p>
     <div class="stage nk-ground" data-stage><div class="rack">
@@ -1981,7 +2019,7 @@
     </div></div>
   </section>
 
-  <section>
+  <section id="les-surfaces">
     <div class="sec-head"><h2>Les surfaces</h2><span class="sec-n">trois pages · la même plaque</span></div>
     <p class="sec-note">
       La preuve que le partage n’est pas une intention. Trois primitives construites le 28 juillet
@@ -2022,7 +2060,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="le-playground">
     <div class="sec-head"><h2>Le playground</h2><span class="sec-n">7 tâches · 4 vagues · 6 arêtes</span></div>
     <p class="sec-note">
       Un graphe qu’on <b>opère</b>, pas une galerie de plus. C’est <code>daily-brief</code>, le
@@ -2106,7 +2144,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="les-formes">
     <div class="sec-head"><h2>Les formes</h2><span class="sec-n">5 silhouettes que le layout doit tenir</span></div>
     <p class="sec-note">
       Un seul exemple ne montre jamais la disposition : il montre <em>sa</em> disposition. Voici
@@ -2164,7 +2202,7 @@
     </div></div>
   </section>
 
-  <section>
+  <section id="les-interactions">
     <div class="sec-head"><h2>Les interactions</h2><span class="sec-n">5 états, forcés côte à côte</span></div>
     <p class="sec-note">
       On ne peut pas survoler quatre cartes à la fois : un banc qui compte sur le pointeur ne
@@ -2210,7 +2248,7 @@
     </div></div>
   </section>
 
-  <section>
+  <section id="le-curseur">
     <div class="sec-head"><h2>Le curseur</h2><span class="sec-n">6 formes · aucune dessinée</span></div>
     <p class="sec-note">
       Le canvas n’a <b>aucun curseur dessiné</b>. Il a un vocabulaire natif où chaque forme dit
@@ -2254,7 +2292,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="les-liaisons">
     <div class="sec-head"><h2>Les liaisons</h2><span class="sec-n">un sens · trois orthographes</span></div>
     <p class="sec-note">
       La famille qui prouve que le système est <b>partagé</b> et pas seulement coordonné :
@@ -2276,7 +2314,7 @@
     </table></div>
   </section>
 
-  <section>
+  <section id="le-controle">
     <div class="sec-head"><h2>Le contrôle</h2><span class="sec-n">APCA · mesuré sur le rendu, pas sur les jetons</span></div>
     <p class="sec-note">
       Ce que la lumière fait aux textes. Chaque ligne compose réellement les fonds
@@ -2298,7 +2336,7 @@
     </p>
   </section>
 
-  <section>
+  <section id="ce-qui-est-synchronise-ce-qui-ne-l-est-pas">
     <div class="sec-head"><h2>Ce qui est synchronisé, ce qui ne l’est pas</h2>
       <span class="sec-n">17 concepts × 4 surfaces · mesuré, pas déclaré</span></div>
     <p class="sec-note">
@@ -2658,8 +2696,21 @@
   document.querySelectorAll('button[data-room]').forEach(function (b) {
     b.addEventListener('click', function () { setRoom(b.dataset.room); });
   });
+  /* LA JAUGE DOIT DIRE LA VALEUR. WebKit ne remplit pas son rail tout seul, donc
+     la portion pleine vient d'une variable — et tant que personne ne la posait,
+     les huit curseurs affichaient 50 % quelle que soit leur position : « force
+     du trait » montrait une barre à moitié pleine sur une valeur de zéro. Une
+     jauge qui ment est pire que le widget natif qu'elle remplace.
+     (Firefox a ::-moz-range-progress et se remplit seul · ceci est pour WebKit.) */
+  function paintTrack(input) {
+    var min = Number(input.min || 0), max = Number(input.max || 100);
+    var pct = max === min ? 0 : ((Number(input.value) - min) / (max - min)) * 100;
+    input.style.setProperty('--fill', pct.toFixed(2) + '%');
+  }
   document.querySelectorAll('input[data-knob]').forEach(function (input) {
+    paintTrack(input);
     input.addEventListener('input', function () {
+      paintTrack(input);
       state.knobs[input.dataset.knob] = Number(input.value);
       save(); applyKnobs();
     });
@@ -2667,6 +2718,7 @@
   document.getElementById('explode').addEventListener('click', function () { setExplode(!state.explode); });
   document.getElementById('reset').addEventListener('click', function () {
     state.knobs = {}; save(); applyKnobs();
+    document.querySelectorAll('input[data-knob]').forEach(paintTrack);
   });
   document.getElementById('copy').addEventListener('click', function (e) {
     var txt = plainDiff();
@@ -2766,8 +2818,9 @@
     secs.forEach(function (sec, i) {
       var h = sec.querySelector('h2');
       if (!h) return;
-      var id = 'sec-' + i;
-      sec.id = id;
+      /* l'id est ÉCRIT dans le document · le JS ne fait plus que lire ce que
+         le build a posé, sinon un lien profond ouvert à froid n'a rien à viser */
+      var id = sec.id || ('sec-' + i);
       var a = document.createElement('a');
       a.href = '#' + id;
       a.className = 'dex-a';
