@@ -164,6 +164,14 @@ const AUDIT = listConst('NIKA_AUDIT_SEVERITY')
 const NODE_CLASSES = objConst('NIKA_NODE_CLASSES')
 /* la teinte de chaque maison · six alias, aucune couleur neuve */
 const CAT_HUE = constObject('NIKA_CATEGORY_HUE')
+/* L'IDENTITÉ DE LA CARTE · promue du canvas le 28/07. Le glyphe de la maison,
+   le créneau d'aperçu que la carte gagne, et surtout QUEL argument est l'âme
+   d'un builtin — une carte qui montre tous ses args ne montre rien. */
+const CAT_GLYPH = constObject('NIKA_CATEGORY_GLYPH')
+const PREVIEW_BY_CAT = constObject('NIKA_PREVIEW_BY_CATEGORY')
+const PREVIEW_OVER = constObject('NIKA_PREVIEW_OVERRIDE')
+const ESSENCE = objConst('NIKA_ESSENCE')
+const previewOf = (bare, cat) => PREVIEW_OVER[bare] ?? PREVIEW_BY_CAT[cat] ?? 'none'
 
 const LAYERS = ['shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof']
 const LAYER_HEX = Object.fromEntries(LAYERS.map((l) => [l, cssVar(`layer-${l}`)]))
@@ -906,6 +914,25 @@ ${nodeCssProjected}
   .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
   .bx-tools .nc{width:auto}
   .bx-opt{color:var(--nk-faint);border-style:dashed}
+  /* L'ESSENCE · l'argument qui EST le builtin, et comment il se rend. Une ligne
+     à part, plus haut que la description : c'est ce qu'on lit en premier sur un
+     canvas quand on cherche « qu'est-ce que cette tâche fait, au juste ». */
+  /* (0,3,0) EXPRÈS · la règle de galerie .bx-tools .nc-body pose display:block
+     en (0,2,0) et écrasait ce flex : la clé et le rendu se collaient en
+     « conditionCONDITION ». Une spécificité qu'on ne calcule pas est une
+     spécificité qui décide à notre place. (Et aucun backtick ici · 4e fois.) */
+  .bx-tools .nc-body.bx-ess{display:flex;align-items:baseline;gap:8px;margin-top:0;
+    padding-bottom:7px;border-bottom:1px dashed var(--nk-edge);-webkit-line-clamp:unset}
+  .bx-ess-k{color:var(--cat,var(--nk-strong));font-weight:600;letter-spacing:.01em}
+  .bx-ess-r{margin-left:auto;font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-faint);
+    letter-spacing:.06em;text-transform:uppercase}
+  /* le créneau d'aperçu · une carte qui développe une image le dit dans sa tête */
+  .bx-prev{margin-left:auto;font-size:calc(var(--nk-fs) - 2px);letter-spacing:.07em;
+    text-transform:uppercase;color:var(--cat,var(--nk-dim));
+    border:1px solid color-mix(in oklch,var(--cat,var(--nk-edge)) 38%,transparent);
+    border-radius:3px;padding:0 5px}
+  .bx-tools .dag-node{--cat:var(--nk-dim)}
+${CAT_ORDER.map((c) => `  .cat-house:has(.nc-cat-${c}) .bx-tools .dag-node{--cat:${CAT_HUE[c]}}`).join('\n')}
   /* LA MATRICE · une case = un état, et l'état a une FORME autant qu'une teinte
      (le point, le tiret, le vide) — la couleur seule ne dirait rien en contraste
      forcé, et c'est le tableau qui juge la synchronisation. */
@@ -1551,8 +1578,10 @@ ${TOOLS.filter((t) => t.category === cat).map((t) => {
   const req = (t.args || []).filter((a) => a.required)
   const opt = (t.args || []).length - req.length
   return `        <article class="dag-node verb-invoke status-pending"><div class="nc">
-          <div class="nc-head"><span class="nc-tile">${VERB_GLYPH.invoke}</span><span class="nc-id">${esc(t.bare)}</span></div>
-          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-${cat}">▪</span> ${esc(t.name)}</span></div>
+          <div class="nc-head"><span class="nc-tile">${VERB_GLYPH.invoke}</span><span class="nc-id">${esc(t.bare)}</span>${
+            previewOf(t.bare, cat) !== 'none' ? `<span class="bx-prev" title="créneau d’aperçu">${esc(previewOf(t.bare, cat))}</span>` : ''}</div>
+          <div class="nc-sub"><span class="nc-sub-k"><span class="nc-chip-icon nc-cat-${cat}">${CAT_GLYPH[cat]}</span> ${esc(t.name)}</span></div>
+          ${ESSENCE[t.bare] ? `<div class="nc-body bx-ess"><b class="bx-ess-k">${esc(ESSENCE[t.bare].arg)}</b><span class="bx-ess-r">${esc(ESSENCE[t.bare].render)}</span></div>` : ''}
           <div class="nc-body">${esc(t.description)}</div>
           <div class="nc-policy">${req.map((a) => `<span class="nc-chip">${esc(a.name)}</span>`).join('')}${
             opt ? `<span class="nc-chip bx-opt">+${opt} optionnel${opt > 1 ? 's' : ''}</span>` : ''}</div>
