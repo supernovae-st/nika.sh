@@ -17,6 +17,7 @@ import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { routeHead } from '../content'
 import '../sections/v4-home.css'
 import './providers-page.css'
+import { ModelAxis } from './ModelAxis'
 
 /* ─── /providers · the provider register (theme-dark) ─────────────────────────
    Every spec-named provider as an anchored row — the prefix an author
@@ -218,6 +219,8 @@ export function Component() {
               { n: EMBEDDED_EXTRA, label: 'embedded tail', sub: 'openai-compatible' },
             ]}
           />
+
+          <ModelAxis />
 
           {groups.map((group, gi) => (
             <div className="pv-family" key={group.kind} data-rise style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}>
