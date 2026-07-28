@@ -10,6 +10,7 @@ import { track } from '../lib/track'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { checkNika, SHIPPED_AHEAD_CODES, type LintDiag } from '../lib/nika-lint'
+import { loadCheckOracle, type OracleInfo } from '../lib/check-wasm/oracle'
 import { useAurora } from '../fx/aurora-context'
 import { routeHead } from '../content'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
@@ -96,6 +97,35 @@ export function Component() {
   const [seed, setSeed] = useState('chain')
   const [code, setCode] = useState(seeds['chain'] ?? '')
   const [diags, setDiags] = useState<LintDiag[]>(() => checkNika(seeds['chain'] ?? ''))
+  /* the REAL checker, when it lands: the wasm artifact registers the oracle
+     (nika-lint's own seam) and the current file is re-judged once — later
+     edits flow through checkNika, which now prefers the engine's voice. The
+     ref carries the latest code so the one-shot effect never closes over a
+     stale draft; a failed load leaves the port as the floor, silently. */
+  const [oracle, setOracle] = useState<OracleInfo | null>(null)
+  const codeAtLoad = useRef('')
+  useEffect(() => {
+    /* the ref tracks the latest draft OUTSIDE render (react-hooks/refs):
+       the one-shot loader below must re-judge whatever the reader typed
+       while the artifact was downloading, never the mount-time seed */
+    codeAtLoad.current = code
+  }, [code])
+  useEffect(() => {
+    let alive = true
+    loadCheckOracle().then(
+      (info) => {
+        if (!alive) return
+        setOracle(info)
+        /* re-judge the CURRENT draft once — later edits flow through
+           checkNika, which now prefers the oracle */
+        setDiags(checkNika(codeAtLoad.current))
+      },
+      () => {}, /* no oracle is a state, not an error — the port is the floor */
+    )
+    return () => {
+      alive = false
+    }
+  }, [])
   /* the LIVE PLAN (W12b·E1) · parsePlan on a 150ms debounce; an unparseable
      mid-edit source keeps the LAST VALID plan on screen, dimmed ([data-stale])
      — the picture never flickers while you type */
@@ -383,6 +413,14 @@ export function Component() {
                     {shared ? 'Link copied to clipboard' : ''}
                   </span>
                 </button>
+                {/* the judge's provenance · in-band coverage, never implied:
+                    the wasm oracle IS the engine's parser+analyzer (legs
+                    named), the port is an approximation and says so */}
+                <span className="play-oracle" data-live={oracle ? true : undefined}>
+                  {oracle
+                    ? `nika ${oracle.engine} · wasm · ${oracle.legs.join('+').toLowerCase()}`
+                    : 'preview port'}
+                </span>
                 <span
                   className="play-editor-status"
                   data-valid={valid}

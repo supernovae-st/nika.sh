@@ -1,0 +1,21 @@
+{
+  "what": "the static half of nika check, compiled to the browser: nika-schema parse + nika-check conformance, the same SchemaError Display and spec_code() as the binary",
+  "crate": "nika-check-wasm",
+  "engine_version": "0.106.0",
+  "source": "https://github.com/supernovae-st/nika/tree/feat/check-wasm/crates/nika-check-wasm",
+  "commit": "70a7a3e4aadf2ffd862e4d3e7a1cdffdcf55e9a3",
+  "branch": "feat/check-wasm — pre-admission (the engine's 12-gate ceremony is a named debt; this artifact ships to /play only, where it replaces a 13-code TypeScript approximation with the real parser and analyzer)",
+  "coverage": "in-band: every verdict carries wasm:true and a closed legs:[] list (PARSE, CONFORM). The browser half never claims the binary's reach.",
+  "gates": {
+    "differential_leg_a": "crate tests/differential.rs · check()'s assembly byte-compared against parse+analyze over the 125-fixture conformance corpus, always on",
+    "differential_leg_b": "same file, NIKA_DIFF_CLI=1 · rows vs the same tree's nika-cli check --json on the shared legs, proven red then green",
+    "site": "src/test/check-wasm-oracle.test.ts · the vendored artifact re-judges the served hero twins against the CLI-captured truth in hero-check.generated.ts"
+  },
+  "built_with": {
+    "wasm_bindgen_cli": "0.2.118 (matches the workspace Cargo.lock)",
+    "profile": "wasm-release (debug off · fat LTO · opt-level z)",
+    "post": "wasm-opt -Oz --enable-bulk-memory --enable-nontrapping-float-to-int"
+  },
+  "wasm_sha256_16": "743385de94b16755",
+  "revendor": "engine: crates/nika-check-wasm/build-wasm.sh · copy pkg/{nika_check_wasm.js,.d.ts,_bg.wasm,_bg.wasm.d.ts} here · update commit + sha in this file"
+}

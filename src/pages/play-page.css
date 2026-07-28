@@ -644,3 +644,23 @@
     font-size: 16px;
   }
 }
+
+/* ── the judge's provenance · which checker is speaking ─────────────────────
+   The wasm oracle is the engine's own parser and analyzer, and says so with
+   its engine version and its covered legs; before it lands (or if it never
+   does) the chip says what the floor is. Coverage is stated, never implied. */
+.play-oracle {
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  letter-spacing: var(--ls-plate);
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  border: 1px solid var(--v4-line);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+.play-oracle[data-live] {
+  color: var(--v4-text-dim);
+  border-color: var(--v4-line-strong);
+}
