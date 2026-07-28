@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "050f3c527f9cb2e71ebc45bfd8091b0fc50a8f625ea5aa54a2f7a521429dc09c"
+   "sha256": "2b44a9a22d9299850da917549cfea4ed837247e08ca549679dde997ed4cfa9e8"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "c60489f957d601d7f996c773b3f06aa90403ddb6dabd447774705c99d0665bfd"
+   "sha256": "393ee1d26a9b391fc480c43ff3251e677ad8c400b4b23947390289a865cae7a3"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -91,7 +91,7 @@
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "8052f46eb320d7c9887b24c55b0037f43338d7a84a6ce071733e7208d2667d64"
+   "sha256": "2b0032d6cae65a08ecfaad09a76bc8fd6d7374c15a65726871c3f167cbe84342"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "4cd5f62f36dfafa991f4eb68b0e6642b69ce07b0196c8c0d0bef20ef71345608"
+   "sha256": "65b658737870c57b28e1042bc8ada0851823cad914f5d104695333ae022c5a7f"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",

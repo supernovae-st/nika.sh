@@ -1004,7 +1004,7 @@
     },
     {
       "path": "src/sections/EditorCanvas.tsx",
-      "source_blob": "c435bc29d76391df49933db9f3819548b297f9b7",
+      "source_blob": "00e51a7f6d59d362274819d33792f7d391760a9a",
       "blocks": [
         {
           "selector": "src/sections/EditorCanvas.tsx#pre:1",

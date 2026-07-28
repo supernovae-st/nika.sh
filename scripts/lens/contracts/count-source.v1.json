@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 269,
-    "set_sha256": "01b11a7bd56632df23d433b391c9a40d7fa193ad3ec5cc974b4e621c4697b304",
-    "rendered_count": 544,
-    "rendered_set_sha256": "ef367f8f2af6fc745e55616e634e3db0b85ac6b39573eb29990ad0fa41032d42"
+    "count": 268,
+    "set_sha256": "c755ec30d1a4045303fd0084511957fb9e3e979b23cc841bdf76ffc2dac571a5",
+    "rendered_count": 543,
+    "rendered_set_sha256": "c5305c79ea4992d1c2074897492c0d71b2c5a822d306c566a8fdf4a9075fd4fa"
   },
   "claim_count": 145,
   "bindings": [
@@ -407,7 +407,7 @@
     {
       "selector": "src/content/changelog.ts#count:1",
       "path": "src/content/changelog.ts",
-      "line": 115,
+      "line": 122,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -419,7 +419,7 @@
     {
       "selector": "src/content/changelog.ts#count:2",
       "path": "src/content/changelog.ts",
-      "line": 115,
+      "line": 122,
       "text": "four verb",
       "source": "four",
       "field": "verbs",
@@ -431,7 +431,7 @@
     {
       "selector": "src/content/changelog.ts#count:3",
       "path": "src/content/changelog.ts",
-      "line": 157,
+      "line": 164,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -443,7 +443,7 @@
     {
       "selector": "src/content/changelog.ts#count:4",
       "path": "src/content/changelog.ts",
-      "line": 284,
+      "line": 291,
       "text": "${CANON.verbs} verbs",
       "source": "${CANON.verbs}",
       "field": "verbs",
@@ -456,7 +456,7 @@
     {
       "selector": "src/content/changelog.ts#count:5",
       "path": "src/content/changelog.ts",
-      "line": 321,
+      "line": 328,
       "text": "One verb",
       "source": "One",
       "field": "verbs",
@@ -468,7 +468,7 @@
     {
       "selector": "src/content/changelog.ts#count:6",
       "path": "src/content/changelog.ts",
-      "line": 326,
+      "line": 333,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -480,7 +480,7 @@
     {
       "selector": "src/content/changelog.ts#count:7",
       "path": "src/content/changelog.ts",
-      "line": 327,
+      "line": 334,
       "text": "fifth verb",
       "source": "fifth",
       "field": "verbs",
@@ -492,7 +492,7 @@
     {
       "selector": "src/content/changelog.ts#count:8",
       "path": "src/content/changelog.ts",
-      "line": 338,
+      "line": 345,
       "text": "${CANON.extractModes} extract modes",
       "source": "${CANON.extractModes}",
       "field": "extractModes",
@@ -505,7 +505,7 @@
     {
       "selector": "src/content/changelog.ts#count:9",
       "path": "src/content/changelog.ts",
-      "line": 339,
+      "line": 346,
       "text": "One builtin",
       "source": "One",
       "field": "builtins",
@@ -517,7 +517,7 @@
     {
       "selector": "src/content/changelog.ts#count:10",
       "path": "src/content/changelog.ts",
-      "line": 344,
+      "line": 351,
       "text": "${CANON.builtins} builtins",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -530,7 +530,7 @@
     {
       "selector": "src/content/changelog.ts#count:11",
       "path": "src/content/changelog.ts",
-      "line": 345,
+      "line": 352,
       "text": "${CANON.builtins} builtin",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -543,7 +543,7 @@
     {
       "selector": "src/content/changelog.ts#count:12",
       "path": "src/content/changelog.ts",
-      "line": 357,
+      "line": 364,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -651,7 +651,7 @@
     {
       "selector": "src/content/learn.ts#count:2",
       "path": "src/content/learn.ts",
-      "line": 125,
+      "line": 128,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -723,7 +723,7 @@
     {
       "selector": "src/content/sources.ts#count:5",
       "path": "src/content/sources.ts",
-      "line": 215,
+      "line": 216,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -771,7 +771,7 @@
     {
       "selector": "src/lib/nika-lint.ts#count:1",
       "path": "src/lib/nika-lint.ts",
-      "line": 214,
+      "line": 219,
       "text": "one verb",
       "source": "one",
       "field": "verbs",
@@ -976,7 +976,7 @@
     {
       "selector": "src/pages/Play.tsx#count:1",
       "path": "src/pages/Play.tsx",
-      "line": 593,
+      "line": 589,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1532,7 +1532,7 @@
     {
       "selector": "src/scene/spec-machine-data.ts#count:1",
       "path": "src/scene/spec-machine-data.ts",
-      "line": 64,
+      "line": 70,
       "text": "one verb",
       "source": "one",
       "field": "verbs",
