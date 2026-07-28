@@ -26,16 +26,13 @@ const transcript = ti > -1 ? process.argv[ti + 1] : null
 const edits = [
   ['src/content.ts', (s) => s.replace(/(export const ENGINE_VERSION = ')v[\d.]+(')/, `$1${tag}$2`)],
   ['public/llms.txt', (s) => s.replace(/v0\.\d+\.\d+/g, tag)],
-  /* humans.txt speaks two registers: "nika 0.x.y" AND the Status line
-     ("Release-candidate 0.x.y") — the first heal only knew the former and
-     left the trunk red on every wave (found on the 0.103 wave) */
-  [
-    'public/humans.txt',
-    (s) =>
-      s
-        .replace(/(nika )0\.\d+\.\d+/g, `$1${bare}`)
-        .replace(/(Release-candidate )0\.\d+\.\d+/g, `$1${bare}`),
-  ],
+  /* humans.txt: version.test.ts asserts GLOBALLY that no 0.x.y other than
+     the live one survives anywhere in the file — but this lane used to know
+     only NAMED registers ("nika 0.x.y", then "Release-candidate 0.x.y"
+     added on the 0.103 wave), and every new register re-drifted the trunk
+     ("Status: 0.x.y" struck on the 0.106 wave). The judge's grammar IS the
+     lane's grammar now: every 0.x.y in humans.txt is the live version. */
+  ['public/humans.txt', (s) => s.replace(/0\.\d+\.\d+/g, bare)],
   ['src/content/learn.ts', (s) => s.replace(/(nika )0\.\d+\.\d+/g, `$1${bare}`)],
   ['src/content/install.ts', (s) => {
     s = s.replace(/(against nika )0\.\d+\.\d+/g, `$1${bare}`)

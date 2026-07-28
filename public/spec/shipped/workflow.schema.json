@@ -48,85 +48,88 @@
         "$ref": "#/$defs/typeExpr"
       }
     },
-    "vars": {
+    "inputs": {
       "type": "object",
-      "description": "Workflow inputs · `${{ vars.X }}`. Each value is untyped (the literal default) OR a typed declaration object.",
+      "description": "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies (R3a · LAW-SURFACE-0201 · the typed half of the dead `vars:` block · a required:true value lands here per the E-split total rule). Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211).",
       "additionalProperties": {
-        "anyOf": [
-          {
-            "type": [
-              "string",
-              "number",
-              "boolean",
-              "array",
-              "object",
-              "null"
-            ]
-          },
-          {
-            "type": "object",
-            "required": [
-              "type"
-            ],
-            "properties": {
-              "type": {
-                "type": "string",
-                "enum": [
-                  "string",
-                  "number",
-                  "integer",
-                  "boolean",
-                  "array",
-                  "object"
-                ]
-              },
-              "required": {
-                "type": "boolean"
-              },
-              "description": {
-                "type": "string"
-              },
-              "default": {}
-            }
-          }
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type"
         ],
-        "if": {
-          "type": "object",
-          "required": [
-            "type"
-          ],
-          "properties": {
-            "type": {
-              "type": "string"
-            }
-          }
-        },
-        "then": {
-          "properties": {
-            "type": {
-              "enum": [
-                "string",
-                "number",
-                "integer",
-                "boolean",
-                "array",
-                "object"
-              ]
-            }
+        "properties": {
+          "type": {
+            "$ref": "#/$defs/typeExpr"
           },
-          "$comment": "A typed-var declaration (an object carrying a string `type:`) MUST use the closed type enum per spec/01-envelope.md §vars · the untyped-object default form (no `type:` key) is untouched."
+          "required": {
+            "type": "boolean",
+            "description": "The caller MUST supply a value (no default is consulted)."
+          },
+          "default": {
+            "description": "The value used when the caller supplies none · MUST conform to `type:` (R3b · LAW-TYPE-0211 · NIKA-DEFAULT-001 · the P0 soundness hole is closed at check)."
+          },
+          "description": {
+            "type": "string"
+          }
         }
       }
     },
-    "env": {
+    "config": {
       "type": "object",
-      "description": "Non-sensitive runtime config · `${{ env.X }}` · may appear in logs.",
+      "description": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment or environment, may appear in logs (R3a · LAW-SURFACE-0201 · succeeds the dead `env:` block). Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001).",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "$ref": "#/$defs/typeExpr"
+          },
+          "default": {
+            "description": "The value used when the deployment supplies none · MUST conform to `type:` (NIKA-DEFAULT-001)."
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "const": {
+      "type": "object",
+      "description": "Named constants · `${{ const.X }}` · a fixed value baked into the workflow (R3a · LAW-SURFACE-0201 · the literal half of the dead `vars:` block · everything that is not required:true lands here per the E-split total rule). Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`.",
       "additionalProperties": {
         "type": [
           "string",
           "number",
-          "boolean"
-        ]
+          "boolean",
+          "array",
+          "object",
+          "null"
+        ],
+        "if": {
+          "type": "object",
+          "required": [
+            "type",
+            "value"
+          ]
+        },
+        "then": {
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/typeExpr"
+            },
+            "value": {
+              "description": "The constant value · MUST conform to `type:` (NIKA-DEFAULT-001)."
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "$comment": "An object carrying BOTH `type` and `value` is a typed constant · the type speaks the full TypeExpr (R3b) and values_core checks the value against it (NIKA-DEFAULT-001) · an object missing either key is a bare literal object constant."
+        }
       }
     },
     "secrets": {
@@ -276,6 +279,60 @@
             "type": "string"
           },
           "description": "Allowed nika:/mcp: tool ids · globs ok."
+        },
+        "env": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+              },
+              {
+                "pattern": "\\$\\{\\{"
+              }
+            ]
+          },
+          "description": "Engine env names passed through to child processes · exact POSIX names, no globs · composed with the runner env floor, never inherited (spec/01-envelope.md §permits · NEP-0005). An interpolated entry passes the shape gate and is refused as a non-literal bound (NIKA-AUTH-007)."
+        }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The run's entropy + clock declaration (NEP-0010) · every source of randomness and time is declared, never ambient · the dimensions couple: only ambient×system (the status quo) and none|seeded×virtual (the deterministic states) are legal · a contradiction refuses at parse (NIKA-PARSE-026 ambient×virtual · NIKA-PARSE-027 none|seeded×system) and a strict declaration contradicted by the body refuses at check (NIKA-PARSE-028).",
+      "properties": {
+        "entropy": {
+          "description": "none (strict determinism) · ambient (the honest status quo, default) · { seeded: <u64> } (the deterministic seams + the pinned seed · two runs of the same file with the same seed produce byte-identical journals)",
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "ambient"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "seeded": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "The run's pinned seed (u64)"
+                }
+              },
+              "required": [
+                "seeded"
+              ]
+            }
+          ]
+        },
+        "clock": {
+          "enum": [
+            "system",
+            "virtual"
+          ],
+          "description": "system (wall time, default) · virtual (the injected virtual clock · time becomes a contract input · a timeout: budget reads against it)"
         }
       }
     },
@@ -380,7 +437,7 @@
     },
     "outputs": {
       "type": "object",
-      "description": "The workflow's return value · symmetric to vars. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema.",
+      "description": "The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema.",
       "additionalProperties": {
         "anyOf": [
           {
@@ -397,16 +454,8 @@
                 "type": "string"
               },
               "type": {
-                "type": "string",
-                "enum": [
-                  "string",
-                  "number",
-                  "integer",
-                  "boolean",
-                  "array",
-                  "object"
-                ],
-                "description": "flat closed enum — the workflow-contract halves (typed vars/outputs) widen to the 09-types grammar together at the input-authority window (G9)"
+                "$ref": "#/$defs/typeExpr",
+                "description": "The output's type · the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead alongside the inputs half · LAW-SURFACE-0211)."
               },
               "description": {
                 "type": "string"
@@ -457,8 +506,8 @@
             "^[a-z][a-z0-9_]*$": {
               "type": "string",
               "enum": [
-                "succeeded",
-                "failed",
+                "success",
+                "failure",
                 "skipped",
                 "terminal"
               ],
@@ -536,6 +585,44 @@
           "additionalProperties": {
             "type": "string",
             "format": "jq"
+          }
+        },
+        "inert": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The honest door of the data-as-code sink (spec/10-authority.md §the data-as-code sink · NEP-0006 · LAW-AUTH-0327) · declares this task's fetch a code-bearing artifact it will never load or run · the non-empty string IS the justification · lifts the sink law only, never the net boundary or the SSRF floor."
+        },
+        "declassify": {
+          "type": "array",
+          "description": "The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterization taint · NEP-0004 · LAW-AUTH-0325) · each entry raises ONE binding from untrusted to trusted, check-visible and receipt-recorded. Lifts the taint law only — the value is still matched against the declared boundary (never a permit bypass).",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to",
+              "because"
+            ],
+            "properties": {
+              "from": {
+                "type": "string",
+                "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)+$",
+                "description": "The ONE binding this entry raises (e.g. inputs.p · config.region · tasks.fetch.output) · a dotted value-binding path."
+              },
+              "to": {
+                "type": "string",
+                "enum": [
+                  "trusted"
+                ],
+                "description": "The target integrity label · v1 knows exactly one raise: untrusted -> trusted."
+              },
+              "because": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The non-empty justification · recorded in the run receipt with the taint path and the value digest."
+              }
+            }
           }
         },
         "infer": {
