@@ -332,6 +332,7 @@
   color: var(--v4-text-dim);
 }
 .mx-plot {
+  --plate-ink: color-mix(in oklch, var(--v4-text) 82%, var(--v4-bg-raised));
   margin-top: 18px;
   padding: 16px clamp(12px, 2vw, 22px) 12px;
   border-radius: var(--plate-radius);
@@ -370,7 +371,7 @@
   padding: 2px 0;
   font-family: var(--mono);
   font-size: var(--type-micro);
-  color: var(--v4-text-faint);
+  color: var(--plate-ink, var(--v4-text-dim));
 }
 .mx-row[data-keyless] .mx-name {
   color: var(--v4-text);

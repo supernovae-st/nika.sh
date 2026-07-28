@@ -227,7 +227,7 @@
 }
 .ec-cat {
   font-size: var(--type-micro);
-  color: var(--v4-text-faint);
+  color: var(--plate-ink-quiet);
 }
 .ec-more {
   opacity: 0.7;

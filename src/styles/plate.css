@@ -149,3 +149,14 @@
     transition: none;
   }
 }
+
+/* ── the plate's own ink ──────────────────────────────────────────────────────
+   Measured, not guessed: the first pass set every plate label to --v4-text-dim
+   and the whole family landed at Lc 38-42, well under the 60 a glanced label
+   owes. Derived from the page's ink so it moves with the theme, and set high
+   enough that the resting state is readable. A reveal may dim BELOW this —
+   that recession is deliberate and temporary; the resting state is not. */
+.plate {
+  --plate-ink: color-mix(in oklch, var(--v4-text) 82%, var(--v4-bg-raised));
+  --plate-ink-quiet: color-mix(in oklch, var(--v4-text) 76%, var(--v4-bg-raised));
+}

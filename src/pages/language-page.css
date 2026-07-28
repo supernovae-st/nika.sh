@@ -215,7 +215,7 @@
   gap: 6px;
   padding: 6px 9px;
   text-decoration: none;
-  color: var(--v4-text-dim);
+  color: var(--plate-ink);
   font-family: var(--mono);
   font-size: var(--type-mini);
   /* the plate's own transition already carries transform + shadow; opacity
@@ -232,7 +232,7 @@
 }
 .wt-also {
   font-size: var(--type-micro);
-  color: var(--v4-text-faint);
+  color: var(--plate-ink-quiet);
   font-variant-numeric: tabular-nums;
 }
 
