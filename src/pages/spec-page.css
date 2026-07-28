@@ -100,7 +100,7 @@
 }
 .spec-head-fig {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--v4-text-dim);
@@ -118,7 +118,7 @@
 .spec-head-count {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -128,7 +128,7 @@
 .spec-head-cap {
   margin-top: 12px;
   max-width: 46rem;
-  font-size: 15.5px;
+  font-size: var(--type-body-sm);
   line-height: 1.6;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -179,14 +179,14 @@
 }
 .spec-key-name {
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: var(--type-ui);
   font-weight: var(--fw-semibold);
   color: var(--v4-text);
 }
 .spec-key-req {
   justify-self: end;
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--v4-text-dim);
@@ -197,7 +197,7 @@
 }
 .spec-key-gloss {
   grid-column: 1 / -1;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.5;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -217,7 +217,7 @@
 .spec-aside-cap {
   margin-bottom: 8px;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -255,14 +255,14 @@
 }
 .spec-field-name {
   font-family: var(--mono);
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   font-weight: var(--fw-semibold);
   color: var(--v4-text);
 }
 .spec-field-req {
   justify-self: start;
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--v4-text-dim);
@@ -277,7 +277,7 @@
   color: var(--v4-text-faint);
 }
 .spec-field-gloss {
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.5;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -327,20 +327,20 @@
   flex: 0 0 auto;
   width: 1.6rem;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.08em;
   color: var(--v4-text-faint);
 }
 .spec-permits-cat-key code {
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: var(--type-ui);
   font-weight: var(--fw-semibold);
   color: var(--v4-text);
 }
 .spec-permits-cat-gloss {
   margin: 7px 0 0;
   padding-left: calc(1.6rem + 11px);
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -353,7 +353,7 @@
 .spec-permits-cat-shape {
   display: block;
   margin-top: 6px;
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   letter-spacing: 0.01em;
   color: var(--v4-text-faint);
 }
@@ -374,7 +374,7 @@
 }
 .spec-permits-denials-head {
   margin: 0 0 12px;
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--v4-text-dim);
@@ -393,13 +393,13 @@
   gap: 4px;
 }
 .spec-permits-code-id {
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   font-weight: var(--fw-semibold);
   letter-spacing: 0.01em;
   color: var(--v4-text);
 }
 .spec-permits-code-fail {
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   line-height: 1.5;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -408,7 +408,7 @@
   margin: 16px 0 0;
   padding-top: 12px;
   border-top: 1px solid var(--v4-line);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   line-height: 1.5;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -431,7 +431,7 @@
   gap: 8px;
   margin-bottom: 11px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--v4-text-dim);
@@ -464,7 +464,7 @@
   border-radius: var(--v4-radius);
   background: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   color: var(--v4-text);
   transition: border-color 0.18s ease, background-color 0.18s ease;
 }
@@ -503,13 +503,13 @@
   flex: 0 0 auto;
   width: 8.5rem;
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   font-weight: var(--fw-semibold);
   color: var(--v4-text);
   letter-spacing: 0.01em;
 }
 .spec-ns-scope {
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   line-height: 1.5;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -530,7 +530,7 @@
   display: flex;
   align-items: baseline;
   gap: 12px;
-  font-size: 15.5px;
+  font-size: var(--type-body-sm);
   font-weight: var(--fw-semibold);
   letter-spacing: -0.01em;
   line-height: 1.3;
@@ -539,7 +539,7 @@
 .spec-invariant-fig {
   flex: 0 0 auto;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.16em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -548,7 +548,7 @@
   margin: 8px 0 0;
   padding-left: calc(12px + 2.6rem);
   max-width: 44rem;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -571,7 +571,7 @@
   align-items: center;
   gap: 12px;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: var(--type-mini);
   letter-spacing: 0.03em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -601,7 +601,7 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  font-size: 14.5px;
+  font-size: var(--type-ui);
   color: var(--v4-text);
   border-radius: var(--v4-radius);
   transition: color 0.18s ease;
@@ -771,19 +771,19 @@
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
   color: var(--v4-text-dim);
   font-family: var(--mono);
-  font-size: 15px;
+  font-size: var(--type-body-sm);
   line-height: 1;
 }
 .spec-verbcard-name {
   font-family: var(--mono);
-  font-size: 16px;
+  font-size: var(--type-body);
   font-weight: var(--fw-semibold);
   letter-spacing: -0.01em;
   color: var(--v4-text);
 }
 .spec-verbcard-tag {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
   text-transform: uppercase;
@@ -791,14 +791,14 @@
 .spec-verbcard-fig {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.16em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
 }
 .spec-verbcard-model {
   margin-top: 12px;
-  font-size: 13.5px;
+  font-size: var(--type-eyebrow);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -840,7 +840,7 @@
   }
 }
 .spec-anatomy-cap {
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -851,7 +851,7 @@
   flex-direction: column;
   gap: 9px;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   line-height: 1.4;
 }
 .spec-anatomy-line {
@@ -887,7 +887,7 @@
 }
 .spec-anatomy-mark {
   margin-left: auto;
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -907,7 +907,7 @@
   flex-wrap: wrap;
   gap: 16px;
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.04em;
   color: var(--v4-text-dim);
 }
@@ -984,18 +984,18 @@
 }
 .spec-boundary-core-glyph {
   font-family: var(--mono);
-  font-size: 22px;
+  font-size: var(--type-h3);
   color: var(--cf-ref, #5fd3d1);
   line-height: 1;
 }
 .spec-boundary-core-label {
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   font-weight: var(--fw-semibold);
   letter-spacing: -0.01em;
   color: var(--v4-text);
 }
 .spec-boundary-core-sub {
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -1058,18 +1058,18 @@
   background: color-mix(in oklch, var(--gh) 11%, transparent);
   color: var(--gh);
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   line-height: 1;
 }
 .spec-boundary-gate-cap {
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   font-weight: var(--fw-semibold);
   color: var(--v4-text);
   letter-spacing: -0.005em;
 }
 .spec-boundary-gate-shape {
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   line-height: 1.45;
   color: var(--v4-text-faint);
   text-wrap: pretty;
@@ -1078,7 +1078,7 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.08em;
   color: var(--v4-text-faint);
 }
@@ -1087,7 +1087,7 @@
 .spec-permits-cat-glyph {
   flex: 0 0 auto;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: var(--type-eyebrow);
   color: var(--v4-text-dim);
 }
 /* a small red-amber dot on the denials head, the "fault" register */
@@ -1125,7 +1125,7 @@
 }
 .spec-tldr-kicker {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -1160,7 +1160,7 @@
 }
 .spec-tldr-plate {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--v4-text-faint);
@@ -1169,7 +1169,7 @@
 }
 .spec-tldr-gloss {
   margin: 0;
-  font-size: 14px;
+  font-size: var(--type-ui);
   line-height: 1.55;
   color: var(--v4-text-dim);
   text-wrap: pretty;
@@ -1193,7 +1193,7 @@
   border: 1px solid var(--v4-line);
   border-radius: var(--v4-radius-sm);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.01em;
   color: var(--v4-text-dim);
   background: color-mix(in oklch, var(--v4-bg) 55%, transparent);
@@ -1202,7 +1202,7 @@
 .spec-tldr-link {
   margin-top: 13px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.03em;
   color: var(--v4-text-faint);
 }
@@ -1334,7 +1334,7 @@
 .spec-rail-hud {
   position: absolute;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.16em;
   color: color-mix(in oklch, var(--sm-ink-lit) 58%, transparent);
   font-variant-numeric: tabular-nums;
@@ -1546,7 +1546,7 @@
   padding: 11px 2px;
   border-bottom: 1px solid var(--v4-line);
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--v4-text-dim);
@@ -1672,7 +1672,7 @@
   -webkit-backdrop-filter: blur(8px) saturate(1.25);
   backdrop-filter: blur(8px) saturate(1.25);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.14em;
   color: color-mix(in oklch, var(--sm-ink-lit) 72%, var(--v4-text-dim));
   cursor: pointer;
@@ -1708,7 +1708,7 @@
   box-shadow: var(--seam-panel); /* seam kit */
 }
 .spec-plate-kicker {
-  font-size: 10px;
+  font-size: var(--type-micro);
   letter-spacing: 0.22em;
   color: var(--v4-text-dim);
 }
@@ -1722,7 +1722,7 @@
   gap: 16px;
   padding: 6px 0;
   border-bottom: 1px solid var(--v4-line);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.05em;
 }
 .spec-plate-row dt {
@@ -1800,7 +1800,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.08em;
   color: var(--v4-text-faint);
   font-variant-numeric: tabular-nums;
@@ -1822,7 +1822,7 @@
   min-width: 0;
   max-width: 240px;
   overflow: hidden;
-  font-size: 12.5px;
+  font-size: var(--type-plate);
   font-weight: var(--fw-semibold);
   letter-spacing: -0.005em;
   color: var(--v4-text-dim);
@@ -1847,7 +1847,7 @@
   min-width: 0;
   overflow: hidden;
   margin-left: auto;
-  font-size: 9.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.08em;
   color: var(--v4-text-faint);
   opacity: 0;
@@ -1947,7 +1947,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 10.5px;
+  font-size: var(--type-micro);
   letter-spacing: 0.22em;
   color: color-mix(in oklch, var(--sm-ink-lit) 70%, var(--v4-text-dim));
 }
@@ -2353,7 +2353,7 @@
 .spec-head-register {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--type-mini);
   letter-spacing: 0.06em;
   color: color-mix(in srgb, var(--v4-text) 58%, transparent);
   text-decoration: none;
