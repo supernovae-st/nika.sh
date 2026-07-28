@@ -415,6 +415,7 @@ const LEDGER = [
   ['rayon · densité · levée', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
   ['biseau · ombres · grain', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
   ['la lampe · une par scène', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
+  ['le verre flottant', 'design/tokens.yaml → material · trouvé dans dag.css', true, 'nommé · 13 copies à reprendre'],
   ['durée · courbe de levée', 'design/tokens.yaml → material', true, 'partagé'],
   ['anatomie du nœud', 'dag.ts · 9 373 lignes', false, 'vscode seulement'],
   ['les 84 jetons --nk-*', 'vscode src/webview/dag.css', false, 'existent · projetés de rien'],
@@ -588,6 +589,11 @@ ${KNOBS.map((k) => `    ${k.css}:${k.def}${k.unit};`).join('\n')}
     --nk-contact:0 ${MAT.plate.contact.y_px}px ${MAT.plate.contact.blur_px}px rgb(0 0 0 / ${MAT.plate.contact.alpha});
     --nk-ambient:0 ${MAT.plate.ambient.y_px}px ${MAT.plate.ambient.blur_px}px ${MAT.plate.ambient.spread_px}px rgb(0 0 0 / ${MAT.plate.ambient.alpha});
     --nk-bevel-lit:${MAT.plate.bevel_lit};
+    --nk-glass-tint:${MAT.glass.tint};
+    --nk-glass-blur:${MAT.glass.blur_px}px;
+    --nk-glass-saturate:${MAT.glass.saturate};
+    --nk-glass-border:${MAT.glass.border};
+    --nk-glass-grain:${MAT.glass.grain};
     --nk-grain:${MAT.plate.grain};
     --nk-ease-lift:${MAT.motion.ease_lift};
     --nk-edge: color-mix(in oklch, var(--nk-line), var(--nk-strong) calc(var(--nk-line-boost) * 1%));
@@ -833,11 +839,15 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   @media (max-width:719.98px){.mat-anatomy{grid-template-columns:1fr}}
   .mat-big{width:300px}
   .mat-calls{list-style:none;margin:0;padding:0;display:grid;gap:11px;max-width:62ch}
-  .mat-calls li{display:grid;grid-template-columns:auto auto 1fr;gap:9px;align-items:baseline;
-    font:12px/1.5 var(--sans);color:var(--nk-caption)}
+  /* une seule colonne de texte · le repère et le nom en tête de ligne, la
+     valeur en ligne dans la phrase. Trois colonnes poussaient le code à droite
+     et hachaient la lecture. */
+  .mat-calls li{font:12px/1.6 var(--sans);color:var(--nk-caption);
+    padding-left:1.9em;text-indent:-1.9em}
   .mat-calls b{font:12px/1 var(--mono);color:var(--nk-ink)}
   .mat-calls > li > span{font:500 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;
-    color:var(--nk-dim);white-space:nowrap}
+    color:var(--nk-dim);white-space:nowrap;margin-right:2px}
+  .mat-calls b{margin-right:6px}
   .mat-calls code{font-size:10.5px;background:rgb(0 0 0 / .22);color:var(--nk-dim);
     padding:1px 5px;border-radius:3px}
   .mat-calls em{font-style:normal;color:var(--nk-ink)}
@@ -864,6 +874,26 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
   .sw b{font:500 10px/1 var(--mono);letter-spacing:.04em;color:var(--nk-dim)}
   .sw span{font:10px/1 var(--mono);color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  /* ── le verre · la seconde primitive ─────────────────────────────────── */
+  .gl-demo{position:relative;padding:22px;border-radius:var(--nk-radius);background:var(--nk-bg);overflow:hidden}
+  .gl-behind{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .gl-card{height:52px;border-radius:calc(var(--nk-radius) * .8);
+    background:color-mix(in oklch,var(--t) 16%,var(--nk-surface));
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact)}
+  .gl-bar{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);
+    display:flex;align-items:center;gap:10px;padding:8px 13px;
+    border-radius:999px;border:1px solid rgb(255 255 255 / var(--nk-glass-border));
+    background:color-mix(in oklch,var(--nk-surface) calc(var(--nk-glass-tint) * 100%),transparent);
+    backdrop-filter:blur(var(--nk-glass-blur)) saturate(var(--nk-glass-saturate));
+    box-shadow:var(--nk-contact),var(--nk-ambient);white-space:nowrap}
+  .gl-bar::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    opacity:var(--nk-glass-grain);background-image:repeating-conic-gradient(#fff 0% 25%,transparent 0% 50%);
+    background-size:3px 3px;mix-blend-mode:overlay}
+  .gl-k{font:500 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--nk-caption)}
+  .gl-pill{font:500 11px/1 var(--mono);padding:5px 9px;border-radius:999px;
+    background:rgb(255 255 255 / .06);color:var(--nk-dim)}
+  .gl-sep{width:1px;height:16px;background:var(--nk-strong)}
+
   /* ── les formes de graphe ────────────────────────────────────────────── */
   .mg{position:relative;padding:4px 0}
   .mg-wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
@@ -1161,6 +1191,37 @@ ${Object.entries(STATUS).map(([k, v]) => swatch(k, v)).join('\n')}
           <li><b>⑥</b> <span>la levée</span> <code>${MAT.plate.lift_px}px · ${MAT.motion.lift_ms}ms</code> — au survol, six choses bougent ensemble ou aucune</li>
         </ol>
       </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Le verre</h2><span class="sec-n">la seconde primitive · trouvée dans le canvas, pas décidée</span></div>
+    <div class="stage" data-stage>
+      <div class="gl-demo">
+        <div class="gl-behind">
+${['infer', 'exec', 'invoke', 'agent', 'infer', 'exec'].map((v) => `          <span class="gl-card" style="--t:var(--nk-${v})"></span>`).join('\n')}
+        </div>
+        <div class="gl-bar">
+          <span class="gl-k">le run</span>
+          <span class="gl-pill">▶ jouer</span>
+          <span class="gl-pill">pas à pas</span>
+          <span class="gl-sep"></span>
+          <span class="gl-k">7 tâches · 4 vagues</span>
+        </div>
+      </div>
+      <p class="typ-legend">
+        <b>Une plaque se pose ; un verre flotte.</b> C’est toute la différence, et c’est pourquoi
+        ils ne peuvent pas partager un jeton : la plaque prend un biseau parce que la lumière
+        tombe sur son arête haute, le verre prend un flou parce que ce qui est derrière doit
+        rester lisible comme de la <em>profondeur</em>, pas comme du contenu. Ils partagent le
+        grain, parce qu’il n’y a qu’un papier.
+      </p>
+      <p class="typ-legend">
+        Cette primitive n’a pas été décidée : elle a été <b>trouvée</b>. Treize sélecteurs
+        distincts de <code>dag.css</code> portent la même recette à la main — barre d’outils,
+        omnibar, rail du plan, scrubber, titre, pastille de statut, deux palettes, panneau de
+        description, bandeau périmé, la marque. Vingt déclarations <code>backdrop-filter</code>,
+        neuf en blur+saturate, et aucun nom partagé. C’est exactement la dette que le bloc
+        <code>material</code> existe pour arrêter, debout juste à côté de lui.
+      </p>
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">La lampe</h2><span class="sec-n">une par pièce, jamais une par carte</span></div>
