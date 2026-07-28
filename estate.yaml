@@ -509,13 +509,13 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "src/lib/check-wasm/PROVENANCE.json"
   class: generated
-  sha256: 1330f84fce006d0cf6628b78851c4273c784e7021f82bb106826ed817f3b9364
-  evidence: "the vendored wasm oracle's receipt: nika-check-wasm built from engine feat/check-wasm 865b20bf5 (ADR-107 proposed · the sha256 here pins the .wasm BESIDE it, not this json)"
+  sha256: f3edb4523fbdad2a959b586fd2f9ccaeb862f019334bbbc7099e20563caefdc5
+  evidence: "the vendored wasm oracle's receipt: nika-check-wasm from RELEASE v0.106.1 (54605ee6a7ce · ADR-107 accepted · the sha256 here pins the .wasm BESIDE it, not this json · host paths remapped out of the bytes: strings shows zero absolute home paths)"
   derivation:
-    tool: "engine crates/nika-check-wasm/build-wasm.sh (wasm-release profile + wasm-bindgen 0.2.118 + wasm-opt -Oz) · copied per the PROVENANCE revendor field"
+    tool: "node scripts/revendor-check-wasm.mjs v0.106.1 (release npm-tarball asset · sha256 sidecar verified · never a local build)"
     gate: "src/test/check-wasm-oracle.test.ts loads the REAL artifact in node and re-judges the served hero twins against the CLI-captured truth (engine version pinned · CONFORM row byte-equal · line/col from two arithmetics)"
     inputs:
-    - "supernovae-st/nika feat/check-wasm (pre-admission · the 12-gate dossier is ADR-107)"
+    - "supernovae-st/nika release v0.106.1 asset supernovae-st-nika-check-wasm-0.106.1.tgz (attested · gh attestation verify)"
 - path: "public/spec/shipped/PROVENANCE.json"
   class: generated
   sha256: 1627bae89511c7eb8466b4fb77bb538fe126ace00181684ce6c3a49f92da3c99
