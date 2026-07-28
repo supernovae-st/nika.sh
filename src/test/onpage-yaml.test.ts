@@ -14,7 +14,6 @@ import { NOT_FOUND_YAML } from '../pages/NotFound'
 import { VERBS } from '../content'
 import { EXTENSION_SHOWCASE_YAML } from '../sections/EditorCanvas'
 import { SHOWCASE_YAML, TEMPLATES_YAML } from '../sections/usecases-yaml.generated'
-import { serveW105 } from '../lib/w1-to-w2'
 
 /* ── on-page YAML · every full workflow shown on the site is SCHEMA-TRUE ─────
    The repo rule is "Spec-correct YAML only" (AGENTS.md #1), yet until this
@@ -30,34 +29,22 @@ import { serveW105 } from '../lib/w1-to-w2'
    deps/waves must be exactly the file's with:/after: topology — so the scroll
    story can never drift from the text it animates. */
 
-/* TWO judges (the two clocks · 0.104 grammar flip):
-   · the LIVING corpus (everything a visitor copy-pastes today) validates
-     against the SHIPPED schema — public/spec/shipped/workflow.schema.json,
-     vendored from the released binary (`nika spec --schema` ·
-     scripts/build-shipped-spec.mjs) — because the visitor's own `nika check`
-     is the released 0.104, which speaks W2;
-   · DATED documents (blog posts) validate against the PIN —
-     public/schema/workflow.json (the ratified spec at the resync pin) —
-     a post wrote the grammar of its day and verbatim history never re-bakes.
-   When the public spec ratifies the flip and the PIN advances past it, the
-   two judges converge and the shipped vendor retires. */
-const shippedSchema = JSON.parse(
-  readFileSync(join(__dirname, '../../public/spec/shipped/workflow.schema.json'), 'utf8'),
-) as Record<string, unknown>
+/* ONE judge (the two clocks converged · 0.106 flag-day): the ratified PIN —
+   public/schema/workflow.json (the spec at the resync pin) — now speaks the
+   released binary's own grammar (version.test.ts pins the /spec/shipped
+   vendor to the SAME engine), so the whole corpus, living and dated alike,
+   validates against the pin. The shipped-vs-pin split judge retired with
+   the w1-to-w2 door. */
 const pinSchema = JSON.parse(
   readFileSync(join(__dirname, '../../public/schema/workflow.json'), 'utf8'),
 ) as Record<string, unknown>
 
-/* the schemas carry informative `format: cel-expression` / `format: jq`
+/* the schema carries informative `format: cel-expression` / `format: jq`
    annotations — structural validation only here (formats are prose contracts) */
-/* two Ajv instances — both schemas carry the SAME $id (the shipped one
-   embeds the site's own URL), and one registry refuses the duplicate */
-const ajv = new Ajv2020({ strict: false, validateFormats: false, allowUnionTypes: true })
-const validate = ajv.compile(shippedSchema)
 const ajvPin = new Ajv2020({ strict: false, validateFormats: false, allowUnionTypes: true })
 const validatePin = ajvPin.compile(pinSchema)
 
-function expectAgainst(judge: typeof validate, judgeName: string) {
+function expectAgainst(judge: typeof validatePin, judgeName: string) {
   return (label: string, yaml: string) => {
     const doc = parse(yaml) as unknown
     expect(doc, `${label} must parse to a mapping`).toBeTypeOf('object')
@@ -68,10 +55,10 @@ function expectAgainst(judge: typeof validate, judgeName: string) {
     expect(ok, `${label} violates ${judgeName}:\n${errors}`).toBe(true)
   }
 }
-const expectValid = expectAgainst(validate, 'the SHIPPED schema (spec/shipped)')
-const expectValidPin = expectAgainst(validatePin, 'the PIN schema (workflow.json)')
+const expectValid = expectAgainst(validatePin, 'the PIN schema (workflow.json)')
+const expectValidPin = expectValid
 
-describe('on-page YAML · the living corpus is schema-true against the SHIPPED schema', () => {
+describe('on-page YAML · the whole corpus is schema-true against the PIN', () => {
   it.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
     'flagship %s validates',
     (label, yaml) => expectValid(label, yaml),
@@ -119,15 +106,14 @@ describe('on-page YAML · the living corpus is schema-true against the SHIPPED s
     },
   )
 
-  /* the projector emission is the RATIFIED clock (W1 · untouched); what the
-     site SERVES is the door output (w1-to-w2) — the gate judges the served
-     form, the same bytes the visitor copies. */
+  /* the projector emission IS what the site serves (one clock · 0.106) —
+     the gate judges the same bytes the visitor copies. */
   it.each(Object.entries(SHOWCASE_YAML))('showcase %s (as served) validates', (slug, yaml) =>
-    expectValid(slug, serveW105(yaml)),
+    expectValid(slug, yaml),
   )
 
   it.each(Object.entries(TEMPLATES_YAML))('template %s (as served) validates', (slug, yaml) =>
-    expectValid(slug, serveW105(yaml)),
+    expectValid(slug, yaml),
   )
 })
 

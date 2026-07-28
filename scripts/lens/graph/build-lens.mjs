@@ -26,7 +26,6 @@ import { writeFileSync, mkdirSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readSources } from './lib/read-sources.mjs'
-import { serveW105WithMap } from '../../lib/w1-to-w2.mjs'
 import { layoutConstellation } from './lib/radial-layout.mjs'
 import { renderConstellation } from './lib/render-constellation.mjs'
 
@@ -1619,29 +1618,10 @@ export const GATE_GRID: { producers: string[]; forms: string[]; cells: GateGridC
    the 79K of yaml strings becomes an async chunk (the island recipe).
    The SOURCE stays the spec-owned projector emission (frontier law);
    this is a value-equal projection, gate-pinned toEqual in lens.test. */
-/* W2 at the door (0.104 shipped flip): the rendered YAML passes w1-to-w2 at
-   the access doors (showcase-yaml-access · Play seeds), so the emitted plan
-   facts must point at the RENDERED lines — the same pass's line map re-aims
-   every line0/line1 (0-based in this projection). Value-equality in
-   lens.test applies the same remap to the ratified emission before
-   comparing. Retires with the pass (see src/lib/w1-to-w2.ts). */
-const showcaseSrc = readFileSync(join(ROOT, 'src/sections/usecases-yaml.generated.ts'), 'utf8')
-const showcaseYamlOf = (slug) => {
-  const m = new RegExp("'" + slug + "': `([\\s\\S]*?)`,\\n").exec(showcaseSrc)
-  if (!m) throw new Error(`showcase yaml for ${slug} not found in usecases-yaml.generated.ts`)
-  return m[1].replace(/\\([`$\\])/g, '$1')
-}
-const dagW2 = Object.fromEntries(
-  Object.entries(S.dag).map(([slug, dag]) => {
-    const { mapLine } = serveW105WithMap(showcaseYamlOf(slug))
-    const tasks = dag.tasks.map((t) => ({
-      ...t,
-      line0: mapLine(t.line0 + 1) - 1,
-      line1: mapLine(t.line1 + 1) - 1,
-    }))
-    return [slug, { ...dag, tasks }]
-  }),
-)
+/* One clock (0.106 flag-day): the rendered YAML IS the projector emission
+   (the w1-to-w2 door retired with the pin flip), so the plan facts point
+   at the emitted lines verbatim — no remap. */
+const dagW2 = S.dag
 
 /* member rooms (verdict 2026-07-18 · rooms universelles): the generic
    MemberRoom route's chrome-safe registry — family segment → set identity +

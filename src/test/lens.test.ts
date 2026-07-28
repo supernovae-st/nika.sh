@@ -227,32 +227,12 @@ describe('lens · the register diet holds (the namespace-retention law)', () => 
 
 describe('lens · the derived DAG module IS the projector export', () => {
   it('showcase-dag.generated toEqual SHOWCASE_DAG modulo the served line remap', async () => {
-    /* the projector export is the RATIFIED clock (W1 lines); the derived
-       module re-aims line0/line1 at the door-served W2 rendering (0.104
-       flip · build-lens). Equality holds after applying the SAME pass's
-       line map to the source — everything else is byte-identical. */
-    const { SHOWCASE_YAML, SHOWCASE_DAG: source } = await import(
-      '../sections/usecases-yaml.generated'
-    )
+    /* one clock (0.106 flag-day): the projector's own line0/line1 point at
+       the SERVED rendering — the derived module is a value-equal copy (the
+       w1-to-w2 remap retired with the pin flip). */
+    const { SHOWCASE_DAG: source } = await import('../sections/usecases-yaml.generated')
     const derived = (await import('../content/showcase-dag.generated')).SHOWCASE_DAG
-    const { serveW105WithMap } = await import('../lib/w1-to-w2')
-    const remapped = Object.fromEntries(
-      Object.entries(source).map(([slug, dag]) => {
-        const { mapLine } = serveW105WithMap(SHOWCASE_YAML[slug])
-        return [
-          slug,
-          {
-            ...dag,
-            tasks: dag.tasks.map((t) => ({
-              ...t,
-              line0: mapLine(t.line0 + 1) - 1,
-              line1: mapLine(t.line1 + 1) - 1,
-            })),
-          },
-        ]
-      }),
-    )
-    expect(derived).toEqual(remapped)
+    expect(derived).toEqual(source)
   })
 })
 

@@ -10,7 +10,6 @@ import { track } from '../lib/track'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { checkNika, SHIPPED_AHEAD_CODES, type LintDiag } from '../lib/nika-lint'
-import { serveW105 } from '../lib/w1-to-w2'
 import { useAurora } from '../fx/aurora-context'
 import { routeHead } from '../content'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
@@ -68,19 +67,16 @@ const TEMPLATE_ORDER = ['chain', 'gate-and-act', 'fanout', 'etl-state', 'agent-l
    dynamic-imports the same chunk once, at the interaction. The dropdown's
    KEYS ride SHOWCASE_DAG (sync · the plan facts stay first-render) — the
    smoke gate pins DAG keys == YAML keys so the list can never lie. */
-/* W2 at the door (0.104 shipped flip · see showcase-yaml-access.ts): the
-   editor is THE copy-paste surface — every seed must pass `nika check` on
-   the released binary, so the ratified-clock emission converts on the way
-   out here too. */
-const toW2 = (dict: Record<string, string>): Record<string, string> =>
-  Object.fromEntries(Object.entries(dict).map(([k, y]) => [k, serveW105(y)]))
+/* One clock (0.106 flag-day · see showcase-yaml-access.ts): the editor is
+   THE copy-paste surface — every seed passes `nika check` on the released
+   binary AS EMITTED; the w1-to-w2 door retired with the pin flip. */
 let SSR_SEEDS: string | null = null
 if (import.meta.env.SSR) {
-  SSR_SEEDS = JSON.stringify(toW2((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML))
+  SSR_SEEDS = JSON.stringify((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML)
 }
 const SEEDS_ISLAND_ID = 'play-seeds-island'
 const loadShowcaseYaml = async () =>
-  toW2((await import('../sections/usecases-yaml.generated')).SHOWCASE_YAML)
+  (await import('../sections/usecases-yaml.generated')).SHOWCASE_YAML
 
 const VERB_HUE: Record<NikaVerb, string> = {
   infer: 'var(--verb-infer)',
@@ -91,7 +87,7 @@ const VERB_HUE: Record<NikaVerb, string> = {
 
 export function Component() {
   const seedsJson = useIslandPayload(SEEDS_ISLAND_ID, SSR_SEEDS, async () =>
-    JSON.stringify(toW2((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML)),
+    JSON.stringify((await import('../sections/usecases-yaml.generated')).TEMPLATES_YAML),
   )
   const seeds = useMemo<Record<string, string>>(
     () => (seedsJson ? (JSON.parse(seedsJson) as Record<string, string>) : {}),

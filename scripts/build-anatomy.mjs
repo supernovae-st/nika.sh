@@ -22,7 +22,6 @@ import { mkdtempSync, readFileSync, writeFileSync, readdirSync, rmSync } from 'n
 import { tmpdir } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { serveW105 } from './lib/w1-to-w2.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const bin = process.env.NIKA_BIN || 'nika'
@@ -31,14 +30,13 @@ const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 50
   .trim()
   .replace(/^nika\s+/, '')
 
-/* corpus 1 · the 26 showcase rooms — the projector emission is the ratified
-   clock (W1); the ROOM serves the door output, so the engine reads the
-   door output (anything else would vendor the anatomy of a file the
-   visitor never sees) */
+/* corpus 1 · the 26 showcase rooms — one clock (0.106 flag-day): the
+   projector emission IS what the room serves, so the engine reads it
+   verbatim (the w1-to-w2 door retired with the pin flip) */
 const ucSrc = readFileSync(join(ROOT, 'src/sections/usecases-yaml.generated.ts'), 'utf8')
 const showcases = [...ucSrc.matchAll(/'([a-z0-9-]+)': `([\s\S]*?)`,\n/g)].map((m) => ({
   slug: m[1],
-  yaml: serveW105(m[2].replace(/\\([`$\\])/g, '$1')),
+  yaml: m[2].replace(/\\([`$\\])/g, '$1'),
 }))
 
 /* corpus 2 · the 7 served flagships (public/library · W105-native + SPDX) */

@@ -19,7 +19,6 @@
    against the spec projector's independent SHOWCASE_DAG derivation. */
 
 import { FLAGSHIP_ENTRIES, type FlagshipEntry } from './index'
-import { serveW105 } from '../lib/w1-to-w2'
 import { deriveWorkflow, type FlagshipPlanModel, type NikaVerb } from './derive'
 
 export interface LibraryItem {
@@ -109,13 +108,9 @@ export const LIBRARY_TABS: { id: string; label: string }[] = [
     (the one fetch beat) yields an empty model — deriveWorkflow('') is a
     line-scan, honest and crash-free; the editor fills when the chunk lands. */
 export function buildLibrary(showcaseYaml: Record<string, string>): LibraryItem[] {
-  /* the W2 door (0.104 shipped flip · idempotent): the browse yamls arrive
-     either raw from the projector emission (tests) or already door-passed
-     (Home's island) — normalize here so the whole model speaks the served
-     grammar. See src/lib/w1-to-w2.ts. */
-  const served = Object.fromEntries(
-    Object.entries(showcaseYaml).map(([k, y]) => [k, serveW105(y)]),
-  )
+  /* one clock (0.106 flag-day): the projector emission IS the served
+     grammar — the w1-to-w2 door retired with the pin flip. */
+  const served = showcaseYaml
   return [
     ...FLAGSHIP_ENTRIES.map((f) => ({
       id: f.id,
