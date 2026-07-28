@@ -230,14 +230,14 @@ const PART_NAME = {
    a state that only exists as a hue dies in forced-colors and in colour-blind
    eyes, so each one owes a second signal. */
 const STATES = [
-  { id: 'idle', label: 'au repos', form: 'rien · le repos est l’absence de signal' },
-  { id: 'running', label: 'en cours', form: 'pastille qui pulse' },
-  { id: 'ok', label: 'réussi', form: 'bordure teintée' },
-  { id: 'failed', label: 'refusé', form: 'bordure teintée + code' },
-  { id: 'retrying', label: 'nouvel essai', form: 'compteur d’essai' },
-  { id: 'skipped', label: 'sauté', form: 'opacité 52 %' },
-  { id: 'stale', label: 'trace périmée', form: 'trait pointillé' },
-  { id: 'developing', label: 'en écriture', form: 'trait pointillé + teinte shape' },
+  { id: 'idle', label: 'au repos', form: 'pastille plus petite · le repos est un signal faible, pas absent' },
+  { id: 'running', label: 'en cours', form: 'anneau · et il pulse quand le mouvement est permis' },
+  { id: 'ok', label: 'réussi', form: 'pastille pleine · la seule qui l’est' },
+  { id: 'failed', label: 'refusé', form: 'losange + le code du refus' },
+  { id: 'retrying', label: 'nouvel essai', form: 'anneau doublé + le compteur d’essai' },
+  { id: 'skipped', label: 'sauté', form: 'trait plat · rien n’a couru · opacité 52 %' },
+  { id: 'stale', label: 'trace périmée', form: 'anneau fin + le trait pointillé de la carte' },
+  { id: 'developing', label: 'en écriture', form: 'carré creux + le trait pointillé' },
 ]
 
 /* THE EDGE CASES. A gallery of happy paths is a brochure. These are the shapes
@@ -765,7 +765,25 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .nc[data-state=developing]{border-color:color-mix(in oklch,var(--nk-shape) 40%,var(--nk-edge));border-style:dashed}
 
   .nc-st{display:inline-flex;align-items:center;gap:5px;font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.05em}
-  .nc-st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  /* LA FORME DIT L'ÉTAT. La page l'affirmait et c'était faux : quatre états
+     sur huit ne posaient que de la couleur sur la carte, et la « forme »
+     annoncée pour l’état réussi était « bordure teintée » — la teinte elle-même.
+     Chaque pastille porte maintenant une GÉOMÉTRIE, qui survit au contraste
+     forcé (une géométrie n'est pas une couleur) et au mouvement réduit (elle
+     ne bouge pas). */
+  .nc-st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;
+    flex:0 0 auto}
+  .nc-st--ok::before{border-radius:50%;background:currentColor}            /* plein · c'est fait */
+  .nc-st--running::before{background:transparent;box-shadow:inset 0 0 0 2px currentColor} /* anneau · en cours */
+  .nc-st--failed::before{border-radius:1px;transform:rotate(45deg)}        /* losange · barré */
+  .nc-st--retrying::before{border-radius:50%;background:transparent;
+    box-shadow:inset 0 0 0 1.5px currentColor,0 0 0 2px color-mix(in oklch,currentColor 34%,transparent)}
+  .nc-st--skipped::before{border-radius:1px;width:7px;height:2px}          /* trait · rien n'a couru */
+  .nc-st--stale::before{border-radius:50%;background:transparent;
+    box-shadow:inset 0 0 0 1px currentColor}                               /* anneau fin · vieux */
+  .nc-st--idle::before{width:4px;height:4px}                               /* plus petit · au repos */
+  .nc-st--developing::before{border-radius:1px;width:6px;height:6px;
+    background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}      /* carré creux · en écriture */
   .nc-st--idle,.nc-st--stale{color:var(--nk-faint)}
   .nc-st--running{color:var(--nk-st-running)}
   .nc-st--ok{color:var(--nk-st-done)}

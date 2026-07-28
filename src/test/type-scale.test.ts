@@ -319,3 +319,40 @@ describe('the bench obeys the law it displays', () => {
     expect(bad, `weights outside 400/500/600/700: ${bad.join(' · ')}`).toHaveLength(0)
   })
 })
+
+/* ── a state may not be a colour alone ───────────────────────────────────────
+   The bench says « la forme dit l'état, pas seulement la couleur » and the
+   claim was false: four of the eight states set border-color on the card and
+   nothing else, and the second signal the page ADVERTISED for `ok` was
+   « bordure teintée » — the colour itself, described as though it were an
+   alternative to the colour.
+
+   A state carried by hue alone dies twice: in forced-colors, where the system
+   repaints every border, and under a colour-blind eye. So each state pill now
+   carries a GEOMETRY, and geometry is what this gate measures. Animation does
+   not count — reduced-motion removes it, which is exactly how `running` came
+   to have no surviving signal. */
+describe('a state is never a colour alone', () => {
+  const BENCH = readFileSync(join(ROOT, 'design/bench.mjs'), 'utf8')
+  /* only the STATES table carries a `form:` — the knobs and the graph shapes
+     share the { id, label } head, and the first draft of this pattern swept
+     all three up and reported fourteen naked states that do not exist */
+  const STATES = [...BENCH.matchAll(/\{ id: '([a-z]+)', label: '[^']*', form:/g)].map((m) => m[1])
+
+  it('the bench declares eight states', () => {
+    expect(STATES).toEqual(['idle', 'running', 'ok', 'failed', 'retrying', 'skipped', 'stale', 'developing'])
+  })
+
+  it('every state pill sets a shape, not only a hue', () => {
+    const COLOURISH = /^(background|background-color|color|animation)$/
+    const naked: string[] = []
+    for (const st of STATES) {
+      const rule = BENCH.match(new RegExp(`\\.nc-st--${st}::before\\{([^}]*)\\}`))
+      if (!rule) { naked.push(`${st} (no ::before rule at all)`); continue }
+      const props = rule[1].split(';').map((d) => d.split(':')[0].trim()).filter(Boolean)
+      if (!props.some((prop) => !COLOURISH.test(prop))) naked.push(`${st} → ${props.join(' ')}`)
+    }
+    expect(naked, `states carried by hue alone: ${naked.join(' · ')} `
+      + '— a hue dies in forced-colors and under a colour-blind eye').toHaveLength(0)
+  })
+})
