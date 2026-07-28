@@ -33,6 +33,7 @@
  * there and stops holding it. The same is true of every knob marked « spec ». */
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { groundCss, groundJs, CURSORS } from './ground.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const OUT = `${ROOT}design/bench.html`
@@ -638,6 +639,7 @@ ${Object.entries(theme.verbText).map(([k, v]) => `    --nk-${k}-text:${v};`).joi
 ${Object.entries(theme.layer).map(([k, v]) => `    --nk-${k}:${v};`).join('\n')}
   }
 
+${groundCss(MAT)}
   *{box-sizing:border-box}
   body{margin:0;background:var(--room-bg);color:var(--room-ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
   .wrap{max-width:1180px;margin:0 auto;padding:38px 22px 90px}
@@ -713,26 +715,13 @@ ${Object.entries(theme.layer).map(([k, v]) => `    --nk-${k}:${v};`).join('\n')}
      plus-lighter because the room is dark: soft-light barely lifts a backdrop
      already near zero, which is how the site's first binding shipped a lamp
      that moved one pixel sample in 5394. */
-  /* LE PLATEAU EST LE SOL DU CANVAS · quatre couches, dans l'ordre du canvas :
-     la couleur, la trame de croix, la vignette (::before), la lampe (::after) */
-  .stage{position:relative;isolation:isolate;color:var(--nk-ink);
-    background-color:var(--nk-bg);
-    background-image:${crossImg(GR.grid.cell_px, GR.grid.arm_px, GR.grid.stroke)};
-    background-size:${GR.grid.cell_px}px ${GR.grid.cell_px}px;
-    border:1px solid var(--room-strong);border-radius:12px;padding:24px;overflow-x:auto}
-  /* la vignette · la mare tombe sur ses bords, et elle CONNAÎT le run */
-  .stage::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
-    border-radius:inherit;background:${vign(GR.vignette)};
-    transition:background ${MAT.motion.drawer_ms}ms var(--ease)}
-  .stage[data-running]::before{background:${vign(GR.vignette_running)}}
-  /* LA LAMPE EST CELLE DU CANVAS · bleue, 680px, 6% — elle existait avant que
-     le site n'en invente une blanche. Deux échelles, une seule idée, et
-     l'original est ici. */
-  .stage::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
-    border-radius:inherit;opacity:var(--spot-on,1);
-    transition:opacity ${GR.spot.ease_ms}ms ease-out;
-    background:radial-gradient(${GR.spot.radius_px}px circle at var(--lamp-x) var(--lamp-y),
-      rgb(${GR.spot.hue} / ${GR.spot.alpha}), transparent ${GR.spot.fade * 100}%)}
+  /* le plateau EST le sol · les quatre couches viennent de design/ground.mjs,
+     la même source que le site consomme (src/styles/ground.css). Le banc n'en
+     tient pas une copie : il inline le même bloc, et ground-parity.test.ts
+     refuse qu'ils divergent d'un octet. */
+  .stage{color:var(--nk-ink);border:1px solid var(--room-strong);border-radius:12px;
+    padding:24px;overflow-x:auto}
+
   @media (prefers-reduced-motion:no-preference){
     .stage{animation:lamp-drift ${MAT.lamp.drift_s}s linear infinite}
     .stage[data-lamp]{animation-play-state:paused}}
@@ -942,6 +931,10 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
   .sw b{font:500 10px/1 var(--mono);letter-spacing:.04em;color:var(--nk-dim)}
   .sw span{font:10px/1 var(--mono);color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  .curs{padding:14px 16px;border-radius:var(--nk-radius);background:var(--nk-surface);
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact);gap:6px}
+  .curs-say{font-size:calc(var(--nk-fs) + .5px);color:var(--nk-caption)}
+
   /* ── le verre · la seconde primitive ─────────────────────────────────── */
   .gl-demo{position:relative;padding:22px;border-radius:var(--nk-radius);background:var(--nk-bg);overflow:hidden}
   .gl-behind{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
@@ -1089,6 +1082,17 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
       <button type="button" data-room="dark" aria-pressed="false">sombre</button>
     </span>
     <button type="button" class="btn" id="explode" aria-pressed="false">démonter</button>
+    <span class="console-k">sol</span>
+    <span class="seg" role="group" aria-label="La trame">
+      <button type="button" data-grid="near" aria-pressed="true">près</button>
+      <button type="button" data-grid="far" aria-pressed="false">loin</button>
+      <button type="button" data-grid="off" aria-pressed="false">sans</button>
+    </span>
+    <span class="seg" role="group" aria-label="La vignette et le spot">
+      <button type="button" data-gfx="running" aria-pressed="false">en cours</button>
+      <button type="button" data-gfx="novign" aria-pressed="false">sans vignette</button>
+      <button type="button" data-gfx="nospot" aria-pressed="false">sans lampe</button>
+    </span>
     <span class="console-note"><kbd>T</kbd> plateau · <kbd>X</kbd> démonter · <kbd>0</kbd> réinitialiser</span>
   </div>
   <nav class="dex" id="dex" aria-label="Les sections du banc"></nav>
@@ -1109,7 +1113,7 @@ ${KNOBS.map(knobRow).join('\n')}
           <span class="apca-sub" id="dirty">rien n’a bougé</span>
         </div>
       </div>
-      <div class="stage" data-stage><div class="rack">
+      <div class="stage nk-ground" data-stage><div class="rack">
 ${Object.keys(ANATOMY).map((v) => `        <div class="cell"><span class="cell-k">${v} · ${ANATOMY[v].join(' · ')}</span>${renderNode(v, { state: v === 'agent' ? 'running' : 'idle' })}</div>`).join('\n')}
       </div></div>
     </div>
@@ -1128,7 +1132,7 @@ ${Object.keys(ANATOMY).map((v) => `        <div class="cell"><span class="cell-k
       bouge dans le SSOT bouge sur cette page à la génération suivante.
     </p>
 
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="typ-faces">
 ${FACES.map((f) => `        <div class="typ-face">
           <div class="typ-face-k"><b>${esc(f.face)}</b><code>${f.varname}</code></div>
@@ -1140,7 +1144,7 @@ ${FACES.map((f) => `        <div class="typ-face">
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">L’échelle</h2><span class="sec-n">plus jamais un demi-pixel</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <table class="typ-scale">
 ${TYPE_STEPS.map((t) => `        <tr>
           <td class="typ-n"><code>--type-${t.name}</code></td>
@@ -1152,7 +1156,7 @@ ${TYPE_STEPS.map((t) => `        <tr>
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Les graisses</h2><span class="sec-n">quatre, parce que le display n’a que trois coupes</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <table class="typ-scale typ-weights">
         <tr><th></th><th>Martian Grotesk <em>variable</em></th><th>Clash Display <em>coupes statiques</em></th></tr>
 ${WEIGHTS.map((w) => `        <tr>
@@ -1170,7 +1174,7 @@ ${WEIGHTS.map((w) => `        <tr>
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">La frontière</h2><span class="sec-n">l’argument · la preuve</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="typ-frontier">
         <div class="typ-side">
           <span class="cell-k">l’argument</span>
@@ -1204,7 +1208,7 @@ ${WEIGHTS.map((w) => `        <tr>
       littéralement le même hex. Une quatrième palette entrerait en collision ou quitterait le SSOT.
     </p>
 
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <span class="cell-k">les quatre verbes · un modèle d’exécution natif chacun</span>
       <div class="swatches" style="margin-top:10px">
 ${Object.entries(VERB_HEX).map(([k, v]) => `        <div class="sw"><i style="background:${v}"></i><b><span style="color:${v}">${VERB_GLYPH[k]}</span> ${k}</b><span>${v}</span></div>`).join('\n')}
@@ -1243,7 +1247,7 @@ ${Object.entries(STATUS).map(([k, v]) => swatch(k, v)).join('\n')}
       les arêtes la <b>captent</b>, le code est <b>gravé</b> dans la plaque et non posé dessus.
     </p>
 
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="mat-anatomy">
         <article class="nc mat-big" data-verb="infer">
           <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div>
@@ -1263,7 +1267,7 @@ ${Object.entries(STATUS).map(([k, v]) => swatch(k, v)).join('\n')}
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Le verre</h2><span class="sec-n">la seconde primitive · trouvée dans le canvas, pas décidée</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="gl-demo">
         <div class="gl-behind">
 ${['infer', 'exec', 'invoke', 'agent', 'infer', 'exec'].map((v) => `          <span class="gl-card" style="--t:var(--nk-${v})"></span>`).join('\n')}
@@ -1294,7 +1298,7 @@ ${['infer', 'exec', 'invoke', 'agent', 'infer', 'exec'].map((v) => `          <s
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">La lampe</h2><span class="sec-n">une par pièce, jamais une par carte</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="mat-lamps">
 ${[['0', 'éteinte'], [String(MAT.lamp.core), MAT.lamp.core + ' · la valeur du SSOT'], ['0.55', '0.55 · un projecteur']].map(([core, label]) => `        <div class="mat-lamp" style="--lamp-core:${core};--lamp-x:26%;--lamp-y:18%">
           <span class="cell-k">${esc(label)}</span>
@@ -1312,7 +1316,7 @@ ${['infer', 'exec', 'invoke', 'agent'].map((v) => `            <span class="mat-
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Les ressorts</h2><span class="sec-n">deux courbes, en CSS pur</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="mat-curves">
 ${[['la levée', MAT.motion.ease_lift, MAT.motion.lift_ms], ['le tiroir', MAT.motion.ease_drawer, MAT.motion.drawer_ms]].map(([label, css, ms]) => {
   const c = plotEase(css)
@@ -1343,7 +1347,7 @@ ${[['la levée', MAT.motion.ease_lift, MAT.motion.lift_ms], ['le tiroir', MAT.mo
       refus, un compteur d’essai, un coût, une trace périmée. Une case qui ne fait que changer
       de couleur n’apprend rien.
     </p>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="matrix">
         <div class="mtx-corner"></div>
 ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-vhead"><span style="color:var(--nk-${v})">${VERB_GLYPH[v]}</span> ${v}</div>`).join('\n')}
@@ -1361,7 +1365,7 @@ ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v,
       qui n’a rien à déclarer, une autre qui a trop. Chacune est une chose qu’un auteur écrit
       pour de vrai, et donc une décision que le canvas a dû prendre.
     </p>
-    <div class="stage" data-stage><div class="rack">
+    <div class="stage nk-ground" data-stage><div class="rack">
 ${VARIANTS.map((v) => `        <div class="cell"><span class="cell-k">${esc(v.label)}</span>${renderNode(v.verb, { state: v.state ?? 'idle', spec: v.spec, anatomy: v.anatomy ?? ANATOMY[v.verb] })}<span class="cell-note">${esc(v.note)}</span></div>`).join('\n')}
     </div></div>
   </section>
@@ -1369,7 +1373,7 @@ ${VARIANTS.map((v) => `        <div class="cell"><span class="cell-k">${esc(v.la
   <section>
     <div class="sec-head"><h2>Les atomes</h2><span class="sec-n">les pièces, isolées</span></div>
     <p class="sec-note">Chaque pièce doit tenir seule avant de tenir dans un nœud. C’est là que la bascule de palette est la plus cruelle.</p>
-    <div class="stage" data-stage><div class="rack">
+    <div class="stage nk-ground" data-stage><div class="rack">
 ${ATOMS.map(atomBlock).join('\n')}
         <div class="cell" style="max-width:none;flex:1 1 100%">
           <span class="cell-k">pastilles d’état · <em>nc-st-*</em></span>
@@ -1390,7 +1394,7 @@ ${PILLS.map(([label, id]) => `            <span class="nc-st nc-st--${id}">${esc
       sont <b>la même plaque</b> : même rayon, même biseau, mêmes deux ombres, même encre dérivée,
       même lampe. Aucune n’a redécidé quoi que ce soit.
     </p>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="rack">
         <div class="cell">
           <span class="cell-k">/language · une cellule de mot</span>
@@ -1441,7 +1445,7 @@ ${PILLS.map(([label, id]) => `            <span class="nc-st nc-st--${id}">${esc
       </span>
       <span class="console-note" id="pg-say">sept tâches au repos · rien n’a encore tourné</span>
     </div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="pg-wrap">
         <svg class="pg-wires" aria-hidden><g id="pg-edges"></g></svg>
         <div class="pg-grid" style="--waves:${WAVES}">
@@ -1459,7 +1463,7 @@ ${DAG.nodes.map(dagNode).join('\n')}
       sans les vouloir — la tâche unique, et le fichier qui parse sans rien déclarer. Même moteur,
       mêmes arêtes calculées au runtime : ce sont de vrais petits graphes, pas des icônes.
     </p>
-    <div class="stage" data-stage><div class="rack">
+    <div class="stage nk-ground" data-stage><div class="rack">
 ${SHAPES.map((sh) => `        <div class="cell" style="max-width:300px"><span class="cell-k">${esc(sh.label)}</span>
       ${miniGraph(sh)}
           <span class="cell-note">${esc(sh.note)}</span></div>`).join('\n')}
@@ -1473,7 +1477,7 @@ ${SHAPES.map((sh) => `        <div class="cell" style="max-width:300px"><span cl
       montre jamais ses états d’interaction. Chacun est <b>forcé</b> ici, en appliquant exactement
       les mêmes règles que l’état réel — si la règle change, la vitrine change avec elle.
     </p>
-    <div class="stage" data-stage><div class="rack">
+    <div class="stage nk-ground" data-stage><div class="rack">
 ${FORCED.map((f) => `        <div class="cell"><span class="cell-k">${esc(f.label)}</span>
           <article class="nc" data-verb="infer" data-state="idle" data-force="${f.k}">
             <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div>
@@ -1482,6 +1486,25 @@ ${FORCED.map((f) => `        <div class="cell"><span class="cell-k">${esc(f.labe
           </article>
           <span class="cell-note">${esc(f.note)}</span></div>`).join('\n')}
     </div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Le curseur</h2><span class="sec-n">${CURSORS.length} formes · aucune dessinée</span></div>
+    <p class="sec-note">
+      Le canvas n’a <b>aucun curseur dessiné</b>. Il a un vocabulaire natif où chaque forme dit
+      ce que le geste va faire — et le recenser était le travail. En inventer un aurait refait
+      l’erreur de la lampe blanche : ajouter au système une chose qu’il ne dit pas.
+      Passe la souris sur un plateau : la nappe se saisit, et elle se tient au clic.
+    </p>
+    <div class="stage nk-ground" data-stage>
+      <div class="rack">
+${CURSORS.map(([css, means, where]) => `        <div class="cell curs" style="cursor:${css}">
+          <span class="cell-k">${css}</span>
+          <span class="curs-say">${esc(means)}</span>
+          <span class="cell-note">${esc(where)}</span>
+        </div>`).join('\n')}
+      </div>
+    </div>
   </section>
 
   <section>
@@ -1871,6 +1894,44 @@ ${LEDGER.map(([what, where, ok, verdict]) => `        <tr><td>${esc(what)}</td><
     else if (k === 'x') setExplode(!state.explode);
     else if (k === '0') { state.knobs = {}; save(); applyKnobs(); }
   });
+
+${groundJs()}
+  /* ── les options du sol ─────────────────────────────────────────────────
+     Chaque bascule pose un attribut que le CSS généré connaît déjà : rien
+     n'est stylé ici, on ne fait qu'allumer des règles qui viennent de la même
+     source que celles du site. Une option qui aurait son propre CSS serait
+     une cinquième couche que le canvas n'a pas. */
+  (function () {
+    var grounds = document.querySelectorAll('.nk-ground');
+    var press = function (sel, on) {
+      document.querySelectorAll(sel).forEach(function (b) {
+        b.setAttribute('aria-pressed', String(on(b)));
+      });
+    };
+    document.querySelectorAll('button[data-grid]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.dataset.grid;
+        grounds.forEach(function (g) {
+          if (v === 'near') { g.removeAttribute('data-lod'); g.removeAttribute('data-grid'); }
+          else if (v === 'far') { g.dataset.lod = 'far'; g.removeAttribute('data-grid'); }
+          else { g.dataset.grid = 'off'; g.removeAttribute('data-lod'); }
+        });
+        press('button[data-grid]', function (x) { return x.dataset.grid === v; });
+      });
+    });
+    document.querySelectorAll('button[data-gfx]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.dataset.gfx, on = b.getAttribute('aria-pressed') !== 'true';
+        grounds.forEach(function (g) {
+          var attr = v === 'running' ? 'data-running' : v === 'novign' ? 'data-vignette' : 'data-spot';
+          if (!on) g.removeAttribute(attr);
+          else if (v === 'running') g.setAttribute('data-running', '');
+          else g.setAttribute(attr, 'off');
+        });
+        b.setAttribute('aria-pressed', String(on));
+      });
+    });
+  })();
 
   /* ── L'INDEX SE DÉRIVE DE LA PAGE ────────────────────────────────────────
      Vingt sections dans un seul défilement, c'est un rouleau — exactement le

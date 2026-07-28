@@ -31,7 +31,7 @@
   },
   {
    "path": "package.json",
-   "sha256": "4e89789685db1d89c9c8c9852d3f06bab910383da1408e0dabf8a4ed1006f63f"
+   "sha256": "204e68e1804f0c5d01c2b7be002951335feb3cd8b040b46c07e5261dc77cc41b"
   },
   {
    "path": "pnpm-lock.yaml",
@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "1b07c4b489e029685bd3b0c67673312583e0e8ebc28631ad1fbe7d05e7238993"
+   "sha256": "a00e3cd07716f502162bdb343f5920241d6564fe9aa8b2ddb5c0726cfb06dc0d"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "3fe43dce3e9a977a2e48fd55242b83178b3062972a2be3c0efaec2787d3bc121"
+   "sha256": "54fa348d7b707f68a03f77592ebae71b685cd1e6615cf35dd9659626df7b3ee3"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",

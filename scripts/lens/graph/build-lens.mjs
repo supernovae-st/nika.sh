@@ -871,6 +871,7 @@ ${(() => {
     `  --lamp-drift: ${la.drift_s}s;`,
     `  --dur-lift: ${mo.lift_ms}ms;`,
     `  --dur-drawer: ${mo.drawer_ms}ms;`,
+    `  --dur-spot: ${m.ground.spot.ease_ms}ms;`,
     `  --ease-lift: ${mo.ease_lift};`,
     `  --ease-drawer: ${mo.ease_drawer};`,
   ].join('\n')

@@ -108,6 +108,78 @@
     --nk-proof:#388a34;
   }
 
+/* ── le sol du canvas · quatre couches ───────────────────────────────
+   Généré par design/ground.mjs depuis NIKA_MATERIAL.ground. NE PAS ÉDITER.
+   Le site et le banc reçoivent ce même bloc ; ground-parity.test.ts refuse
+   qu'ils divergent. */
+.nk-ground {
+  position: relative;
+  isolation: isolate;
+  cursor: grab;
+  /* le nom du canvas d'abord, celui de la surface hôte ensuite · jamais un
+     hex : un repli codé en dur est une seconde opinion sur la couleur */
+  background-color: var(--nk-page, var(--nk-bg));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.05'%3E%3Cpath d='M20 16v8M16 20h8'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 40px 40px;
+}
+.nk-ground:active { cursor: grabbing; }
+/* le zoom arrière prend une maille plus large et un trait un peu plus ferme :
+   à distance, une trame trop fine devient du bruit */
+.nk-ground[data-lod='far'] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.07'%3E%3Cpath d='M48 42v12M42 48h12'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 96px 96px;
+}
+.nk-ground[data-grid='off'] { background-image: none; }
+
+/* la vignette · la mare tombe sur ses bords, ET ELLE CONNAÎT LE RUN.
+   Pendant l'exécution la chute se resserre et le bord noircit : c'est le seul
+   signal ambiant qui dit qu'un run est en vol. */
+.nk-ground::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(120% 100% at 50% 38%, transparent 55.00000000000001%, rgb(0 0 0 / 0.38) 100%);
+  transition: background var(--dur-drawer) var(--ease-ui);
+}
+.nk-ground[data-running]::before { background: radial-gradient(110.00000000000001% 92% at 50% 40%, transparent 46%, rgb(0 0 0 / 0.5) 100%); }
+.nk-ground[data-vignette='off']::before { background: none; }
+
+/* le spot · une lampe bleue qui suit le pointeur. Elle existait dans le canvas
+   avant que le web n'en invente une blanche ; celle-ci est l'originale. Les
+   coordonnées sont en PIXELS, comme le canvas les écrit. */
+.nk-ground::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: var(--spot-on, 0);
+  transition: opacity var(--dur-spot) ease-out;
+  background: radial-gradient(
+    680px circle at var(--spot-x, 50%) var(--spot-y, 40%),
+    rgb(79 134 255 / 0.06),
+    transparent 70%
+  );
+}
+.nk-ground[data-spot='off']::after { opacity: 0; }
+
+/* ce qu'il devient quand on lui en demande moins */
+@media (prefers-reduced-motion: reduce) {
+  .nk-ground::before,
+  .nk-ground::after { transition: none; }
+}
+@media (forced-colors: active) {
+  /* la trame et la vignette sont de la profondeur, pas de l'information :
+     en contraste forcé elles disparaissent plutôt que de manger le contraste */
+  .nk-ground { background-image: none; }
+  .nk-ground::before,
+  .nk-ground::after { display: none; }
+}
+
   *{box-sizing:border-box}
   body{margin:0;background:var(--room-bg);color:var(--room-ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
   .wrap{max-width:1180px;margin:0 auto;padding:38px 22px 90px}
@@ -183,26 +255,13 @@
      plus-lighter because the room is dark: soft-light barely lifts a backdrop
      already near zero, which is how the site's first binding shipped a lamp
      that moved one pixel sample in 5394. */
-  /* LE PLATEAU EST LE SOL DU CANVAS · quatre couches, dans l'ordre du canvas :
-     la couleur, la trame de croix, la vignette (::before), la lampe (::after) */
-  .stage{position:relative;isolation:isolate;color:var(--nk-ink);
-    background-color:var(--nk-bg);
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.05'%3E%3Cpath d='M20 16v8M16 20h8'/%3E%3C/g%3E%3C/svg%3E");
-    background-size:40px 40px;
-    border:1px solid var(--room-strong);border-radius:12px;padding:24px;overflow-x:auto}
-  /* la vignette · la mare tombe sur ses bords, et elle CONNAÎT le run */
-  .stage::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
-    border-radius:inherit;background:radial-gradient(120% 100% at 50% 38%, transparent 55.00000000000001%, rgb(0 0 0 / 0.38) 100%);
-    transition:background 420ms var(--ease)}
-  .stage[data-running]::before{background:radial-gradient(110.00000000000001% 92% at 50% 40%, transparent 46%, rgb(0 0 0 / 0.5) 100%)}
-  /* LA LAMPE EST CELLE DU CANVAS · bleue, 680px, 6% — elle existait avant que
-     le site n'en invente une blanche. Deux échelles, une seule idée, et
-     l'original est ici. */
-  .stage::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
-    border-radius:inherit;opacity:var(--spot-on,1);
-    transition:opacity 400ms ease-out;
-    background:radial-gradient(680px circle at var(--lamp-x) var(--lamp-y),
-      rgb(79 134 255 / 0.06), transparent 70%)}
+  /* le plateau EST le sol · les quatre couches viennent de design/ground.mjs,
+     la même source que le site consomme (src/styles/ground.css). Le banc n'en
+     tient pas une copie : il inline le même bloc, et ground-parity.test.ts
+     refuse qu'ils divergent d'un octet. */
+  .stage{color:var(--nk-ink);border:1px solid var(--room-strong);border-radius:12px;
+    padding:24px;overflow-x:auto}
+
   @media (prefers-reduced-motion:no-preference){
     .stage{animation:lamp-drift 40s linear infinite}
     .stage[data-lamp]{animation-play-state:paused}}
@@ -415,6 +474,10 @@
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
   .sw b{font:500 10px/1 var(--mono);letter-spacing:.04em;color:var(--nk-dim)}
   .sw span{font:10px/1 var(--mono);color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  .curs{padding:14px 16px;border-radius:var(--nk-radius);background:var(--nk-surface);
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact);gap:6px}
+  .curs-say{font-size:calc(var(--nk-fs) + .5px);color:var(--nk-caption)}
+
   /* ── le verre · la seconde primitive ─────────────────────────────────── */
   .gl-demo{position:relative;padding:22px;border-radius:var(--nk-radius);background:var(--nk-bg);overflow:hidden}
   .gl-behind{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
@@ -562,6 +625,17 @@
       <button type="button" data-room="dark" aria-pressed="false">sombre</button>
     </span>
     <button type="button" class="btn" id="explode" aria-pressed="false">démonter</button>
+    <span class="console-k">sol</span>
+    <span class="seg" role="group" aria-label="La trame">
+      <button type="button" data-grid="near" aria-pressed="true">près</button>
+      <button type="button" data-grid="far" aria-pressed="false">loin</button>
+      <button type="button" data-grid="off" aria-pressed="false">sans</button>
+    </span>
+    <span class="seg" role="group" aria-label="La vignette et le spot">
+      <button type="button" data-gfx="running" aria-pressed="false">en cours</button>
+      <button type="button" data-gfx="novign" aria-pressed="false">sans vignette</button>
+      <button type="button" data-gfx="nospot" aria-pressed="false">sans lampe</button>
+    </span>
     <span class="console-note"><kbd>T</kbd> plateau · <kbd>X</kbd> démonter · <kbd>0</kbd> réinitialiser</span>
   </div>
   <nav class="dex" id="dex" aria-label="Les sections du banc"></nav>
@@ -645,7 +719,7 @@
           <span class="apca-sub" id="dirty">rien n’a bougé</span>
         </div>
       </div>
-      <div class="stage" data-stage><div class="rack">
+      <div class="stage nk-ground" data-stage><div class="rack">
         <div class="cell"><span class="cell-k">infer · head · sub · body · why</span><article class="nc" data-verb="infer" data-state="idle"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-glyph">◇</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-k">model</span> anthropic/claude-haiku-4-5</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Flag what is urgent: ${{ with.inbox }} »</div><div class="nc-why" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div></article></div>
         <div class="cell"><span class="cell-k">exec · head · sub · body · why</span><article class="nc" data-verb="exec" data-state="idle"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-glyph">▷</span><span class="nc-id">tally</span><span class="nc-verb">exec</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-k">capture</span> stdout · decode text</div><div class="nc-body nc-body--cmd" data-part="essence · ce qu’il fait" style="--i:2">wc -l</div><div class="nc-why" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · exec</span><span class="nc-chip">stdin ${{ }}</span></div></article></div>
         <div class="cell"><span class="cell-k">invoke · head · body · sub · why</span><article class="nc" data-verb="invoke" data-state="idle"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-glyph">◆</span><span class="nc-id">calendar</span><span class="nc-verb">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-k">args</span> path ./notes/calendar.md</div><div class="nc-why" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span><span class="nc-chip" style="--chip:var(--nk-boundary)">permits · tools</span></div></article></div>
@@ -667,7 +741,7 @@
       bouge dans le SSOT bouge sur cette page à la génération suivante.
     </p>
 
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="typ-faces">
         <div class="typ-face">
           <div class="typ-face-k"><b>Clash Display</b><code>--headline</code></div>
@@ -691,7 +765,7 @@
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">L’échelle</h2><span class="sec-n">plus jamais un demi-pixel</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <table class="typ-scale">
         <tr>
           <td class="typ-n"><code>--type-display</code></td>
@@ -757,7 +831,7 @@
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Les graisses</h2><span class="sec-n">quatre, parce que le display n’a que trois coupes</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <table class="typ-scale typ-weights">
         <tr><th></th><th>Martian Grotesk <em>variable</em></th><th>Clash Display <em>coupes statiques</em></th></tr>
         <tr>
@@ -790,7 +864,7 @@
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">La frontière</h2><span class="sec-n">l’argument · la preuve</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="typ-frontier">
         <div class="typ-side">
           <span class="cell-k">l’argument</span>
@@ -824,7 +898,7 @@
       littéralement le même hex. Une quatrième palette entrerait en collision ou quitterait le SSOT.
     </p>
 
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <span class="cell-k">les quatre verbes · un modèle d’exécution natif chacun</span>
       <div class="swatches" style="margin-top:10px">
         <div class="sw"><i style="background:#5b8cff"></i><b><span style="color:#5b8cff">◇</span> infer</b><span>#5b8cff</span></div>
@@ -872,7 +946,7 @@
       les arêtes la <b>captent</b>, le code est <b>gravé</b> dans la plaque et non posé dessus.
     </p>
 
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="mat-anatomy">
         <article class="nc mat-big" data-verb="infer">
           <div class="nc-head"><span class="nc-glyph">◇</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div>
@@ -892,7 +966,7 @@
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Le verre</h2><span class="sec-n">la seconde primitive · trouvée dans le canvas, pas décidée</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="gl-demo">
         <div class="gl-behind">
           <span class="gl-card" style="--t:var(--nk-infer)"></span>
@@ -928,7 +1002,7 @@
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">La lampe</h2><span class="sec-n">une par pièce, jamais une par carte</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="mat-lamps">
         <div class="mat-lamp" style="--lamp-core:0;--lamp-x:26%;--lamp-y:18%">
           <span class="cell-k">éteinte</span>
@@ -967,7 +1041,7 @@
     </div>
 
     <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Les ressorts</h2><span class="sec-n">deux courbes, en CSS pur</span></div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="mat-curves">
         <div class="mat-curve">
           <span class="cell-k">la levée · 190ms · 8 points</span>
@@ -1003,7 +1077,7 @@
       refus, un compteur d’essai, un coût, une trace périmée. Une case qui ne fait que changer
       de couleur n’apprend rien.
     </p>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="matrix">
         <div class="mtx-corner"></div>
         <div class="mtx-vhead"><span style="color:var(--nk-infer)">◇</span> infer</div>
@@ -1062,7 +1136,7 @@
       qui n’a rien à déclarer, une autre qui a trop. Chacune est une chose qu’un auteur écrit
       pour de vrai, et donc une décision que le canvas a dû prendre.
     </p>
-    <div class="stage" data-stage><div class="rack">
+    <div class="stage nk-ground" data-stage><div class="rack">
         <div class="cell"><span class="cell-k">nom très long</span><article class="nc" data-verb="invoke" data-state="idle"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-glyph">◆</span><span class="nc-id">reconcile-quarterly-ledger-against-bank</span><span class="nc-verb">invoke</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:1">nika:read</div><div class="nc-sub" data-part="mécanisme · comment" style="--i:2"><span class="nc-k">args</span> path ./ledger/q3.csv</div><div class="nc-why" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-reach)">core</span></div></article><span class="cell-note">l’identifiant déborde · il tronque, il ne pousse pas</span></div>
         <div class="cell"><span class="cell-k">corps qui enroule</span><article class="nc" data-verb="infer" data-state="idle"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-glyph">◇</span><span class="nc-id">summarise</span><span class="nc-verb">infer</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-k">model</span> mistral/mistral-large-latest</div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Read the thread below and answer in three bullets: what was decided, what is still open, and who owes the next move. ${{ with.thread }} »</div><div class="nc-why" data-part="pourquoi · ce qui l’autorise" style="--i:3"><span class="nc-chip" style="--chip:var(--nk-flow)">with · thread</span><span class="nc-chip">max_tokens 400</span></div></article><span class="cell-note">un prompt réel fait quatre lignes · la hauteur suit</span></div>
         <div class="cell"><span class="cell-k">rien à déclarer</span><article class="nc" data-verb="exec" data-state="idle"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-glyph">▷</span><span class="nc-id">ping</span><span class="nc-verb">exec</span></div><div class="nc-body nc-body--cmd" data-part="essence · ce qu’il fait" style="--i:1">true</div></article><span class="cell-note">le minimum qui reste un nœud · tête et essence</span></div>
@@ -1075,7 +1149,7 @@
   <section>
     <div class="sec-head"><h2>Les atomes</h2><span class="sec-n">les pièces, isolées</span></div>
     <p class="sec-note">Chaque pièce doit tenir seule avant de tenir dans un nœud. C’est là que la bascule de palette est la plus cruelle.</p>
-    <div class="stage" data-stage><div class="rack">
+    <div class="stage nk-ground" data-stage><div class="rack">
         <div class="cell">
           <span class="cell-k">puces de politique · <em>nc-pol-*</em></span>
           <div class="chiprow"><span class="nc-chip" style="--chip:var(--nk-refusals)">on_error · recover</span><span class="nc-chip" style="--chip:var(--nk-refusals)">retry ×5</span><span class="nc-chip" style="--chip:var(--nk-refusals)">fail_fast</span><span class="nc-chip" style="--chip:var(--nk-refusals)">on_finally</span><span class="nc-chip" style="--chip:var(--nk-flow)">parallel ×3</span><span class="nc-chip" style="--chip:var(--nk-flow)">per-item</span><span class="nc-chip" style="--chip:var(--nk-shape)">typed</span><span class="nc-chip" style="--chip:var(--nk-acts)">thinking</span><span class="nc-chip" style="--chip:var(--nk-acts)">vision</span></div>
@@ -1132,7 +1206,7 @@
       sont <b>la même plaque</b> : même rayon, même biseau, mêmes deux ombres, même encre dérivée,
       même lampe. Aucune n’a redécidé quoi que ce soit.
     </p>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="rack">
         <div class="cell">
           <span class="cell-k">/language · une cellule de mot</span>
@@ -1183,7 +1257,7 @@
       </span>
       <span class="console-note" id="pg-say">sept tâches au repos · rien n’a encore tourné</span>
     </div>
-    <div class="stage" data-stage>
+    <div class="stage nk-ground" data-stage>
       <div class="pg-wrap">
         <svg class="pg-wires" aria-hidden><g id="pg-edges"></g></svg>
         <div class="pg-grid" style="--waves:4">
@@ -1256,7 +1330,7 @@
       sans les vouloir — la tâche unique, et le fichier qui parse sans rien déclarer. Même moteur,
       mêmes arêtes calculées au runtime : ce sont de vrais petits graphes, pas des icônes.
     </p>
-    <div class="stage" data-stage><div class="rack">
+    <div class="stage nk-ground" data-stage><div class="rack">
         <div class="cell" style="max-width:300px"><span class="cell-k">la chaîne</span>
       <div class="mg" data-graph="chain" data-edges="[[&quot;a&quot;,&quot;b&quot;],[&quot;b&quot;,&quot;c&quot;],[&quot;c&quot;,&quot;d&quot;]]">
         <svg class="mg-wires" aria-hidden><g></g></svg>
@@ -1313,7 +1387,7 @@
       montre jamais ses états d’interaction. Chacun est <b>forcé</b> ici, en appliquant exactement
       les mêmes règles que l’état réel — si la règle change, la vitrine change avec elle.
     </p>
-    <div class="stage" data-stage><div class="rack">
+    <div class="stage nk-ground" data-stage><div class="rack">
         <div class="cell"><span class="cell-k">au repos</span>
           <article class="nc" data-verb="infer" data-state="idle" data-force="rest">
             <div class="nc-head"><span class="nc-glyph">◇</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div>
@@ -1350,6 +1424,50 @@
           </article>
           <span class="cell-note">le reste du graphe quand un nœud est mis en avant · il recule, il ne disparaît pas</span></div>
     </div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Le curseur</h2><span class="sec-n">6 formes · aucune dessinée</span></div>
+    <p class="sec-note">
+      Le canvas n’a <b>aucun curseur dessiné</b>. Il a un vocabulaire natif où chaque forme dit
+      ce que le geste va faire — et le recenser était le travail. En inventer un aurait refait
+      l’erreur de la lampe blanche : ajouter au système une chose qu’il ne dit pas.
+      Passe la souris sur un plateau : la nappe se saisit, et elle se tient au clic.
+    </p>
+    <div class="stage nk-ground" data-stage>
+      <div class="rack">
+        <div class="cell curs" style="cursor:grab">
+          <span class="cell-k">grab</span>
+          <span class="curs-say">la nappe · on peut la saisir</span>
+          <span class="cell-note">.nk-ground</span>
+        </div>
+        <div class="cell curs" style="cursor:grabbing">
+          <span class="cell-k">grabbing</span>
+          <span class="curs-say">la nappe · on la tient</span>
+          <span class="cell-note">.nk-ground:active</span>
+        </div>
+        <div class="cell curs" style="cursor:pointer">
+          <span class="cell-k">pointer</span>
+          <span class="curs-say">ça ouvre quelque chose</span>
+          <span class="cell-note">42 usages dans le canvas</span>
+        </div>
+        <div class="cell curs" style="cursor:crosshair">
+          <span class="cell-k">crosshair</span>
+          <span class="curs-say">on va relier deux points</span>
+          <span class="cell-note">3 usages</span>
+        </div>
+        <div class="cell curs" style="cursor:help">
+          <span class="cell-k">help</span>
+          <span class="curs-say">ça s’explique au survol</span>
+          <span class="cell-note">2 usages</span>
+        </div>
+        <div class="cell curs" style="cursor:zoom-in">
+          <span class="cell-k">zoom-in</span>
+          <span class="curs-say">ça grandit au clic</span>
+          <span class="cell-note">1 usage</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section>
@@ -1759,6 +1877,71 @@
     else if (k === 'x') setExplode(!state.explode);
     else if (k === '0') { state.knobs = {}; save(); applyKnobs(); }
   });
+
+/* généré par design/ground.mjs · ne pas éditer */
+(function () {
+  var lite = false;
+  try {
+    var c = navigator.connection;
+    lite = !!(c && c.saveData) || matchMedia('(prefers-reduced-data: reduce)').matches;
+  } catch (e) { /* un navigateur sans l'API n'est pas un navigateur économe */ }
+  document.querySelectorAll('.nk-ground').forEach(function (el) {
+    if (lite) return; /* Save-Data · le sol garde sa trame, la lampe ne s'allume pas */
+    var raf = 0, at = null;
+    el.addEventListener('pointermove', function (e) {
+      var r = el.getBoundingClientRect();
+      at = { x: e.clientX - r.left, y: e.clientY - r.top };
+      el.style.setProperty('--spot-on', '1');
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        raf = 0;
+        if (!at) return;
+        el.style.setProperty('--spot-x', at.x.toFixed(1) + 'px');
+        el.style.setProperty('--spot-y', at.y.toFixed(1) + 'px');
+      });
+    });
+    el.addEventListener('pointerleave', function () {
+      el.style.setProperty('--spot-on', '0');
+    });
+  });
+})();
+
+  /* ── les options du sol ─────────────────────────────────────────────────
+     Chaque bascule pose un attribut que le CSS généré connaît déjà : rien
+     n'est stylé ici, on ne fait qu'allumer des règles qui viennent de la même
+     source que celles du site. Une option qui aurait son propre CSS serait
+     une cinquième couche que le canvas n'a pas. */
+  (function () {
+    var grounds = document.querySelectorAll('.nk-ground');
+    var press = function (sel, on) {
+      document.querySelectorAll(sel).forEach(function (b) {
+        b.setAttribute('aria-pressed', String(on(b)));
+      });
+    };
+    document.querySelectorAll('button[data-grid]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.dataset.grid;
+        grounds.forEach(function (g) {
+          if (v === 'near') { g.removeAttribute('data-lod'); g.removeAttribute('data-grid'); }
+          else if (v === 'far') { g.dataset.lod = 'far'; g.removeAttribute('data-grid'); }
+          else { g.dataset.grid = 'off'; g.removeAttribute('data-lod'); }
+        });
+        press('button[data-grid]', function (x) { return x.dataset.grid === v; });
+      });
+    });
+    document.querySelectorAll('button[data-gfx]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.dataset.gfx, on = b.getAttribute('aria-pressed') !== 'true';
+        grounds.forEach(function (g) {
+          var attr = v === 'running' ? 'data-running' : v === 'novign' ? 'data-vignette' : 'data-spot';
+          if (!on) g.removeAttribute(attr);
+          else if (v === 'running') g.setAttribute('data-running', '');
+          else g.setAttribute(attr, 'off');
+        });
+        b.setAttribute('aria-pressed', String(on));
+      });
+    });
+  })();
 
   /* ── L'INDEX SE DÉRIVE DE LA PAGE ────────────────────────────────────────
      Vingt sections dans un seul défilement, c'est un rouleau — exactement le

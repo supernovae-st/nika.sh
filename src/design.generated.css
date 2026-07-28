@@ -51,6 +51,7 @@
   --lamp-drift: 40s;
   --dur-lift: 190ms;
   --dur-drawer: 420ms;
+  --dur-spot: 400ms;
   --ease-lift: linear(0, 0.1 6%, 0.54 19%, 0.85 32%, 0.97 42%, 1.02 50%, 1.008 70%, 1);
   --ease-drawer: linear(0, 0.04 8%, 0.38 24%, 0.78 42%, 1.04 62%, 0.99 78%, 1);
   /* §7a · the researched values (R16-R19 · ratified §7) */
