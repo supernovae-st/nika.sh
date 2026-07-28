@@ -171,6 +171,25 @@ const CAT_GLYPH = constObject('NIKA_CATEGORY_GLYPH')
 const PREVIEW_BY_CAT = constObject('NIKA_PREVIEW_BY_CATEGORY')
 const PREVIEW_OVER = constObject('NIKA_PREVIEW_OVERRIDE')
 const ESSENCE = objConst('NIKA_ESSENCE')
+/* LES 14 PASTILLES DE POLITIQUE · ce qu'une carte dit du COMPORTEMENT. Cinq
+   d'entre elles n'avaient aucune peau dans le canvas jusqu'au 28/07 : un retry
+   ressemblait au pixel près à un permits. Le libellé vient du canvas. */
+const POLICY = [
+  ['retry', '↻×3', 'jusqu’à 3 tentatives sur échec'],
+  ['timeout', '⏱ 30s', 'plafond dur · au-delà, la tâche est annulée'],
+  ['recover', '✚ recover', 'l’échec est absorbé par la branche déclarée'],
+  ['skip', '⤼ skip', 'l’échec saute la tâche · l’erreur reste lisible'],
+  ['fail', '✗ fail', 'un échec ici arrête tout le run'],
+  ['think', '∴ thinking 4k', 'budget de raisonnement · la dépense est réelle'],
+  ['vision', '▣ vision ×2', 'des images voyagent avec le prompt'],
+  ['typed', '⊨ typed', 'la sortie est validée contre un schéma'],
+  ['parallel', '∥ max 4', 'plafond de parallélisme'],
+  ['peritem', '⤼ per-item', 'la politique s’applique à chaque élément'],
+  ['failfast', '⊗ fail-fast', 'le premier échec arrête la boucle'],
+  ['finally', '◈ finally ×2', 'ce qui tourne quoi qu’il arrive'],
+  ['permits', '▦ 4', 'LE RAYON D’ACTION · ce que le plan peut toucher'],
+  ['tools', '⚒ 6', 'ce que l’agent peut atteindre'],
+]
 const previewOf = (bare, cat) => PREVIEW_OVER[bare] ?? PREVIEW_BY_CAT[cat] ?? 'none'
 
 /* LES SEPT RENDUS · une valeur réelle par rendu. Ce ne sont pas des exemples
@@ -927,6 +946,12 @@ ${nodeCssProjected}
   .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
   .bx-tools .nc{width:auto}
   .bx-opt{color:var(--nk-faint);border-style:dashed}
+  .bx-pols{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:0}
+  .bx-pol{display:grid;grid-template-columns:auto 74px minmax(0,1fr);align-items:center;gap:11px;
+    padding:9px 14px;border-bottom:1px solid var(--nk-edge)}
+  .bx-pol-k{font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.06em;color:var(--nk-faint)}
+  .bx-pol-why{font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .bx-vals{display:flex;flex-direction:column;gap:0}
   .bx-val{display:grid;grid-template-columns:96px minmax(0,1fr) minmax(0,1.25fr);
     align-items:baseline;gap:16px;padding:10px 14px;border-bottom:1px solid var(--nk-edge)}
@@ -1579,6 +1604,24 @@ ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-vhead"><span style="c
 ${STATES.map((st) => `        <div class="mtx-shead">${esc(st.label)}<em>${esc(st.form)}</em></div>
 ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v, { state: st.id })}</div>`).join('\n')}`).join('\n')}
       </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Les pastilles de politique</h2><span class="sec-n">${POLICY.length} · dont 5 sans peau jusqu’au 28 juillet</span></div>
+    <p class="sec-note">
+      Une carte dit deux choses : ce qu’une tâche <b>fait</b>, et comment elle se
+      <b>comporte</b>. Le second, c’est cette rangée. Le canvas en émet quatorze et n’en stylait
+      que neuf — un <code>retry</code> était indiscernable d’un <code>permits</code>, et les cinq
+      muettes étaient les plus lourdes : le compte d’essais, le plafond dur, la branche d’échec,
+      <b>le rayon d’action</b>, et ce qu’un agent peut atteindre. Aucune n’invente sa teinte.
+    </p>
+    <div class="stage nk-ground bx-pols" data-stage>
+${POLICY.map(([k, label, why]) => `      <div class="bx-pol">
+        <span class="nc-pol nc-pol-${k}">${esc(label)}</span>
+        <span class="bx-pol-k">${k}</span>
+        <span class="bx-pol-why">${esc(why)}</span>
+      </div>`).join('\n')}
     </div>
   </section>
 

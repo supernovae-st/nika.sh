@@ -157,6 +157,26 @@
 :where(.nc-ess-text) { color: inherit; }
 :where(.nc-ess-rest) { opacity: 0.55; font-weight: var(--nk-fw-plain, 400); }
 
+/* LES PASTILLES DE POLITIQUE · ce qu'une carte dit du COMPORTEMENT d'une tâche.
+   Aucune n'invente sa teinte : chacune emprunte une signification déjà posée.
+   Cinq n'avaient aucune peau dans le canvas — un `retry` était indiscernable
+   d'un `permits`, et c'est exactement la distinction que le code voulait. */
+:where(.nc-pol) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; padding: 1px 6px; border-radius: 4px; font-family: var(--nk-mono, ui-monospace, monospace); font-size: var(--nk-fs-note, 9px); color: var(--nk-ink-dim, inherit); background: color-mix(in srgb, currentColor 5%, transparent); border: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+:where(.nc-pol-retry) { color: var(--nk-pol-retry, #e0b071); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-timeout) { color: var(--nk-pol-timeout, #4f86ff); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-recover) { color: var(--nk-pol-recover, #e0b071); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-skip) { color: var(--nk-pol-skip, #5a606b); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-fail) { color: var(--nk-pol-fail, #ff5d5d); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-think) { color: var(--nk-pol-think, #90b4ff); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-vision) { color: var(--nk-pol-vision, #90b4ff); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-typed) { color: var(--nk-pol-typed, #4f86ff); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-parallel) { color: var(--nk-pol-parallel, #4f86ff); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-peritem) { color: var(--nk-pol-peritem, #5a606b); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-failfast) { color: var(--nk-pol-failfast, #e0b071); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-finally) { color: var(--nk-pol-finally, #5a606b); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-permits) { color: var(--nk-pol-permits, #ff7a3c); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-pol-tools) { color: var(--nk-pol-tools, #c5a4ff); border-color: color-mix(in srgb, currentColor 40%, transparent); }
+
 @media (prefers-reduced-motion: reduce) {
   :where(.nc) { transition: none; }
 }
