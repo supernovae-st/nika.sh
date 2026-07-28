@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-07-28',
+    tag: 'release',
+    title: 'v0.106.1 · the checker reaches the browser',
+    body: 'The browser release: the parse + conformance half of nika check compiled to WebAssembly and admitted through the full 12-gate ceremony (ADR-107), including a three-leg adversarial review that found a real engine bug before any browser saw it (a jq nesting bomb that killed the checking instance for good; the guard now refuses at depth 128 on every surface). The artifact debuts on npm as @supernovae-st/nika-check-wasm, packed by the release train itself: manifest projected from cargo metadata, host paths remapped out of the bytes, the tarball attached to the release and attested whether or not a registry credential exists. The registry copy carries npm provenance, byte-verified against the attested asset by the train\u2019s own gate. In-band honesty rides every verdict (wasm: true and a closed legs: list), so the browser half can never be mistaken for the full binary. Around it the ladder tightens: when:/for_each: stop admitting the loop locals, and the audited card stops calling a ceiling a floor. This site\u2019s /play runs the exact attested artifact. Embed it from npm and it judges your files the same way.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.106.1',
+  },
+  {
     date: '2026-07-27',
     tag: 'release',
     title: 'v0.106.0 · the values split, the authority speaks',

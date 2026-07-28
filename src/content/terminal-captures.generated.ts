@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.106.0"
+export const TERMINAL_ENGINE = "0.106.1"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.106.0"
+        "text": "nika 0.106.1"
       }
     ]
   },
@@ -55,7 +55,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "ok",
-        "text": " ✔ TYPES    every deep output reference fits its declared shape"
+        "text": " ✔ TYPES    deep references fit the shapes tasks declare · builtin output has none"
       },
       {
         "kind": "ok",
@@ -83,7 +83,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "ok",
-        "text": " ✔ audited · 1 task · 1 wave · permits declared · est ≥$0.0000 · 0 hints"
+        "text": " ✔ audited · 1 task · 1 wave · permits declared · est ≤$0.0000 · 0 hints"
       }
     ]
   },

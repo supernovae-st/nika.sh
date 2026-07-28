@@ -16,10 +16,10 @@ export const LENS_PROVENANCE: {
   "language_graph": 1,
   "spec_pin": null,
   "canon_schema_version": 1,
-  "engine_version": "v0.106.0",
+  "engine_version": "v0.106.1",
   "catalogs": {
-    "tools": "0.106.0",
-    "providers": "0.106.0"
+    "tools": "0.106.1",
+    "providers": "0.106.1"
   }
 }
 

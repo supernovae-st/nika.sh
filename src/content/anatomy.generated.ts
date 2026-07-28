@@ -28,7 +28,7 @@ export interface Anatomy {
 }
 
 /** the engine release these graphs were read from (the provenance stamp) */
-export const ANATOMY_ENGINE = "0.106.0"
+export const ANATOMY_ENGINE = "0.106.1"
 
 export const ANATOMY: Record<string, Anatomy> = {
   "agent-loop": {
