@@ -233,18 +233,42 @@ export function Component() {
   })
   useEffect(() => () => stopSimRef.current(), [])
 
-  /* SHARE (E2) · the file as a link — ?y= carries the yaml (lz-string), so
+  /* SHARE (E2) · the file as a link — #y= carries the yaml (lz-string), so
      a playground state is one URL. Loaded post-hydration (SSG stays the
-     template truth); Share copies the canonical link. */
+     template truth); Share copies the canonical link.
+
+     THE FRAGMENT, NOT THE QUERY STRING. This page promises "nothing leaves
+     the tab" three times, including in the meta description that search and
+     social cards render. A query string does leave: it is sent with the
+     request and lands in the host's and the CDN's access logs, and in the
+     Referer of anything the page later loads. RFC 3986 §3.5 — "the fragment
+     identifier … is dereferenced solely by the user agent" — so `#` keeps
+     the promise the copy already makes. Same convention as the TypeScript
+     playground (`#code/<lz-string>`).
+
+     `?y=` is still READ so links shared before this change keep working;
+     they are rewritten to `#y=` in place, which also scrubs the workflow
+     out of the address bar. */
   const [shared, setShared] = useState(false)
   useEffect(() => {
     /* deferred one frame — the effect body only wires the external read
        (the repo lint bans synchronous setState in effects) */
     const raf = requestAnimationFrame(() => {
-      const y = new URLSearchParams(window.location.search).get('y')
+      const hashed = new URLSearchParams(window.location.hash.slice(1)).get('y')
+      const queried = new URLSearchParams(window.location.search).get('y')
+      const y = hashed ?? queried
       if (!y) return
       const src = decompressFromEncodedURIComponent(y)
       if (!src) return
+      /* a legacy `?y=` link: rewrite to the fragment form in place, so the
+         workflow leaves the address bar and the next share is private */
+      if (!hashed) {
+        window.history.replaceState(
+          { ...window.history.state },
+          '',
+          `${window.location.pathname}#y=${queried}`,
+        )
+      }
       setSeed('shared')
       setCode(src)
       setDiags(checkNika(src))
@@ -254,7 +278,7 @@ export function Component() {
     return () => cancelAnimationFrame(raf)
   }, [])
   const share = () => {
-    const url = `${window.location.origin}/play?y=${compressToEncodedURIComponent(code)}`
+    const url = `${window.location.origin}/play#y=${compressToEncodedURIComponent(code)}`
     /* clone the router's state — a null here wiped react-router's
        usr/key/idx and broke pop-back (the swarm's finding-[8] class) */
     window.history.replaceState({ ...window.history.state }, '', url)
