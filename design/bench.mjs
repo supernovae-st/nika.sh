@@ -45,6 +45,9 @@ const siteCss = readFileSync(`${ROOT}src/styles/tokens.css`, 'utf8')
 /* le sol est REÇU, pas produit · le banc inline le fichier que la spec
    projette, exactement comme le site le charge */
 const groundCssProjected = readFileSync(`${ROOT}src/styles/ground.generated.css`, 'utf8')
+/* LA CARTE · même fichier que le site et le canvas VS Code reçoivent. Le banc
+   redéclarait 11 des 13 sélecteurs à la main : c'était une 3e carte. */
+const nodeCssProjected = readFileSync(`${ROOT}src/styles/node.generated.css`, 'utf8')
 
 const constObject = (name) => {
   const body = tokensTs.match(new RegExp(`export const ${name} = \\{([^}]*)\\}`))?.[1]
@@ -449,13 +452,15 @@ const LEDGER = [
   ['durée · courbes de ressort', 'material.motion (28/07)', 2, 'consommé'],
   ['le sol · trame, vignette, lampe', 'material.ground → 2 cibles', 1, 'projeté · le canvas ne l’importe pas encore'],
   ['le curseur d’arpentage', 'material.ground.cursor (28/07)', 1, 'projeté · idem'],
-  ['statut · marques du nœud', 'material.node (28/07)', 1, 'projeté · le banc le lit, le canvas a le sien'],
+  ['statut · marques du nœud', 'material.node (28/07)', 2, 'consommé · le contrat de classes, une fonction pour trois'],
+  ['la géométrie de la carte', 'material.card (28/07) → node.generated.css', 2, 'consommé · le site et ce banc la portent · le canvas la reçoit'],
+  ['la forme de chaque statut', 'material.node.signal (28/07)', 2, 'consommé · 7 géométries distinctes, couleur retirée'],
   ['anatomie du nœud', 'material.node.anatomy · confirmée par verbAnatomies.test', 1, 'projeté'],
   ['le verre flottant', 'material.glass · 13 copies dans dag.css', 1, 'projeté · les 13 sites à reprendre'],
-  ['les familles d’atomes', 'dag.css · 3 vocabulaires sur ~45 sous-parties', 0, 'écrit · et relevé à la main'],
+  ['les familles d’atomes', 'dag.css · 139 familles épinglées · 9 mortes', 1, 'projeté · le contrat les nomme, les peaux restent'],
   ['hues des 7 couches', 'design.generated.css', 0, 'écrit · site seulement'],
   ['géométrie · placement', 'elkClient · mini-dag-layout', 0, 'écrit deux fois'],
-  ['rendu du DAG', 'dag.ts · DagView · MiniDag', 0, 'écrit trois fois'],
+  ['rendu du DAG', 'dag.ts · DagView · MiniDag', 1, 'projeté · DagView a adopté la carte du canvas · MiniDag reste'],
   ['rendu du YAML', 'codefile-highlight · TextMate', 0, 'deux grammaires'],
 ]
 
@@ -656,6 +661,7 @@ ${Object.entries(theme.layer).map(([k, v]) => `    --nk-${k}:${v};`).join('\n')}
   }
 
 ${groundCssProjected}
+${nodeCssProjected}
   *{box-sizing:border-box}
   body{margin:0;background:var(--room-bg);color:var(--room-ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
   .wrap{max-width:1180px;margin:0 auto;padding:38px 22px 90px}
@@ -756,12 +762,7 @@ ${groundCssProjected}
      quantities the site and the canvas bind, arriving through the same
      projection. A bevel on the top edge, a contact shadow and an ambient one,
      the paper's tooth over the face. */
-  .nc{position:relative;width:252px;background:var(--nk-surface);
-    border:1px solid var(--nk-edge);border-radius:var(--nk-radius);
-    overflow:hidden;font-family:var(--mono);font-size:var(--nk-fs);
-    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact),var(--nk-ambient);
-    transition:border-radius var(--nk-dur) var(--ease),border-color var(--nk-dur) var(--ease),
-      transform var(--nk-dur) var(--nk-ease-lift),box-shadow var(--nk-dur) var(--nk-ease-lift)}
+  .nc{width:252px;overflow:hidden;font-size:var(--nk-fs);box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact),var(--nk-ambient)}
   .nc::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
     opacity:var(--nk-grain);background-image:repeating-conic-gradient(#fff 0% 25%,transparent 0% 50%);
     background-size:3px 3px;mix-blend-mode:overlay}
@@ -769,21 +770,17 @@ ${groundCssProjected}
     box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel-lit)),var(--nk-contact),
       0 calc(var(--nk-lift) * 13) calc(var(--nk-lift) * 18) -28px rgb(0 0 0 / .62)}
   @media (prefers-reduced-motion:reduce){.nc{transition:none}.nc:hover{transform:none}}
-  .nc-head{display:flex;align-items:center;gap:7px;padding:calc(var(--nk-pad) * 1.14) calc(var(--nk-pad) * 1.42);
-    border-bottom:1px solid var(--nk-edge);background:color-mix(in oklch,var(--nk-verb,var(--nk-ink)) 8%,transparent)}
-  .nc-tile{color:var(--nk-verb,var(--nk-ink));font-size:calc(var(--nk-fs) + .5px);line-height:1}
-  .nc-id{font-size:calc(var(--nk-fs) + 1px);font-weight:600;letter-spacing:-.01em}
-  .nc-badge{margin-left:auto;font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.07em;color:var(--nk-verb-text,var(--nk-dim))}
+  .nc-head{padding:calc(var(--nk-pad) * 1.14) calc(var(--nk-pad) * 1.42);border-bottom:1px solid var(--nk-edge);background:color-mix(in oklch,var(--nk-verb,var(--nk-ink)) 8%,transparent)}
+  .nc-tile{color:var(--nk-verb,var(--nk-ink));line-height:1}
+
+  .nc-badge{margin-left:auto;letter-spacing:.07em;color:var(--nk-verb-text,var(--nk-dim))}
   .nc-sub,.nc-body,.nc-policy{padding:var(--nk-pad) calc(var(--nk-pad) * 1.42)}
   .nc-sub{color:var(--nk-dim);border-bottom:1px dashed var(--nk-edge)}
   .nc-sub-k{color:var(--nk-faint)}
-  .nc-body{line-height:1.45}
+
   .nc-body-cmd{color:var(--nk-exec-text)}
   .nc-policy{border-top:1px solid var(--nk-edge);display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-  .nc-chip{display:inline-flex;align-items:center;padding:1px 6px;border-radius:999px;
-    border:1px solid color-mix(in oklch,var(--chip,var(--nk-strong)) 44%,transparent);
-    background:color-mix(in oklch,var(--chip,var(--nk-ink)) 10%,transparent);
-    color:var(--chip,var(--nk-dim));font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.03em;white-space:nowrap}
+  .nc-chip{display:inline-flex;align-items:center;color:var(--chip,var(--nk-dim));letter-spacing:.03em}
   .nc-agent-band{display:flex;align-items:center;gap:8px;padding:calc(var(--nk-pad) * .86) calc(var(--nk-pad) * 1.42);
     border-top:1px solid var(--nk-edge);background:color-mix(in oklch,var(--nk-agent) 9%,transparent);
     font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-agent-text)}
@@ -798,15 +795,14 @@ ${Object.keys(VERB_HEX).map((v) => `  .dag-node.verb-${v} .nc{--nk-verb:var(--nk
   .dag-node.status-retrying .nc{border-color:color-mix(in oklch,var(--nk-st-retrying) 44%,var(--nk-edge))}
   .dag-node.status-skipped .nc{opacity:.52}
 
-  .nc-st{display:inline-flex;align-items:center;gap:5px;font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.05em}
+  .nc-st{gap:5px;font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.05em}
   /* LA FORME DIT L'ÉTAT. La page l'affirmait et c'était faux : quatre états
      sur huit ne posaient que de la couleur sur la carte, et la « forme »
      annoncée pour l’état réussi était « bordure teintée » — la teinte elle-même.
      Chaque pastille porte maintenant une GÉOMÉTRIE, qui survit au contraste
      forcé (une géométrie n'est pas une couleur) et au mouvement réduit (elle
      ne bouge pas). */
-  .nc-dot{width:6px;height:6px;border-radius:50%;background:currentColor;
-    flex:0 0 auto}
+
   .dag-node.status-success .nc-dot{border-radius:50%;background:currentColor}            /* plein · c'est fait */
   .dag-node.status-running .nc-dot{background:transparent;box-shadow:inset 0 0 0 2px currentColor} /* anneau · en cours */
   .dag-node.status-failed .nc-dot{border-radius:1px;transform:rotate(45deg)}        /* losange · barré */
