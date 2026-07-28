@@ -24,12 +24,12 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 268,
-    "set_sha256": "c755ec30d1a4045303fd0084511957fb9e3e979b23cc841bdf76ffc2dac571a5",
-    "rendered_count": 543,
-    "rendered_set_sha256": "c5305c79ea4992d1c2074897492c0d71b2c5a822d306c566a8fdf4a9075fd4fa"
+    "count": 270,
+    "set_sha256": "b5739568f14da061b739ab039673a429694b75b459a6c96d866d1d8c066dec50",
+    "rendered_count": 546,
+    "rendered_set_sha256": "3c3b49e2d69240b629b250a6573a696a6ae0785507cf59a27db5b816da386991"
   },
-  "claim_count": 145,
+  "claim_count": 147,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -1228,6 +1228,30 @@
       "reason": "singular member reference is bounded by CANON.providers"
     },
     {
+      "selector": "src/pages/VerbField.tsx#count:1",
+      "path": "src/pages/VerbField.tsx",
+      "line": 9,
+      "text": "fifth verb",
+      "source": "fifth",
+      "field": "verbs",
+      "value": 5,
+      "ordinal": true,
+      "relation": "ordinal-member",
+      "reason": "ordinal member reference is bounded by CANON.verbs"
+    },
+    {
+      "selector": "src/pages/VerbField.tsx#count:2",
+      "path": "src/pages/VerbField.tsx",
+      "line": 56,
+      "text": "fourth verb",
+      "source": "fourth",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": true,
+      "relation": "ordinal-member",
+      "reason": "ordinal member reference is bounded by CANON.verbs"
+    },
+    {
       "selector": "src/pages/VerbPage.tsx#count:1",
       "path": "src/pages/VerbPage.tsx",
       "line": 28,
@@ -1363,7 +1387,7 @@
     {
       "selector": "src/pages/Verbs.tsx#count:1",
       "path": "src/pages/Verbs.tsx",
-      "line": 14,
+      "line": 15,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1375,7 +1399,7 @@
     {
       "selector": "src/pages/Verbs.tsx#count:2",
       "path": "src/pages/Verbs.tsx",
-      "line": 26,
+      "line": 27,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1387,7 +1411,7 @@
     {
       "selector": "src/pages/Verbs.tsx#count:3",
       "path": "src/pages/Verbs.tsx",
-      "line": 27,
+      "line": 28,
       "text": "${CANON.verbs} verbs",
       "source": "${CANON.verbs}",
       "field": "verbs",
@@ -1400,7 +1424,7 @@
     {
       "selector": "src/pages/Verbs.tsx#count:4",
       "path": "src/pages/Verbs.tsx",
-      "line": 40,
+      "line": 41,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -1412,7 +1436,7 @@
     {
       "selector": "src/pages/Verbs.tsx#count:5",
       "path": "src/pages/Verbs.tsx",
-      "line": 56,
+      "line": 57,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
