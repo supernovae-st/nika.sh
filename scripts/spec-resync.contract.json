@@ -308,7 +308,7 @@
   },
   {
    "path": "src/design-tokens.generated.ts",
-   "sha256": "35c06841ed1b2c013474928c7b1235cf29b1eecf7f2d897b4842346075b1e57a",
+   "sha256": "9f7a9021d44a8e63fbc96f0ffe1c06e7e16d6ce39cdce4b41fc535309d4922b3",
    "consumers": [
     "src/pages/Brand.tsx"
    ]
