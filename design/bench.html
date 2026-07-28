@@ -55,9 +55,16 @@
     --nk-proof:#34d399;
     --nk-radius:7px;
     --nk-pad:7px;
+    --nk-bevel:0.06;
+    --nk-lift:3px;
     --nk-fs:11.5px;
     --nk-line-boost:0;
-    --nk-dur:140ms;
+    --nk-dur:190ms;
+    --nk-contact:0 1px 3px rgb(0 0 0 / 0.38);
+    --nk-ambient:0 24px 40px -24px rgb(0 0 0 / 0.55);
+    --nk-bevel-lit:0.15;
+    --nk-grain:0.03;
+    --nk-ease-lift:linear(0, 0.1 6%, 0.54 19%, 0.85 32%, 0.97 42%, 1.02 50%, 1.008 70%, 1);
     --nk-edge: color-mix(in oklch, var(--nk-line), var(--nk-strong) calc(var(--nk-line-boost) * 1%));
     /* the BENCH's own captions · derived from the canvas ink so they move
        with it, and set high enough that the control below clears them. The
@@ -154,9 +161,23 @@
   .cell-note{font:11px/1.45 var(--sans);color:var(--nk-caption)}
   .chiprow{display:flex;flex-wrap:wrap;gap:6px}
 
-  .nc{width:252px;background:var(--nk-surface);border:1px solid var(--nk-edge);border-radius:var(--nk-radius);
+  /* THE SPECIMEN IS THE PLATE. Not a card that resembles one — the same
+     quantities the site and the canvas bind, arriving through the same
+     projection. A bevel on the top edge, a contact shadow and an ambient one,
+     the paper's tooth over the face. */
+  .nc{position:relative;width:252px;background:var(--nk-surface);
+    border:1px solid var(--nk-edge);border-radius:var(--nk-radius);
     overflow:hidden;font-family:var(--mono);font-size:var(--nk-fs);
-    transition:border-radius var(--nk-dur) var(--ease), border-color var(--nk-dur) var(--ease)}
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact),var(--nk-ambient);
+    transition:border-radius var(--nk-dur) var(--ease),border-color var(--nk-dur) var(--ease),
+      transform var(--nk-dur) var(--nk-ease-lift),box-shadow var(--nk-dur) var(--nk-ease-lift)}
+  .nc::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    opacity:var(--nk-grain);background-image:repeating-conic-gradient(#fff 0% 25%,transparent 0% 50%);
+    background-size:3px 3px;mix-blend-mode:overlay}
+  .nc:hover{transform:translateY(calc(var(--nk-lift) * -1));
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel-lit)),var(--nk-contact),
+      0 calc(var(--nk-lift) * 13) calc(var(--nk-lift) * 18) -28px rgb(0 0 0 / .62)}
+  @media (prefers-reduced-motion:reduce){.nc{transition:none}.nc:hover{transform:none}}
   .nc-head{display:flex;align-items:center;gap:7px;padding:calc(var(--nk-pad) * 1.14) calc(var(--nk-pad) * 1.42);
     border-bottom:1px solid var(--nk-edge);background:color-mix(in oklch,var(--nk-verb,var(--nk-ink)) 8%,transparent)}
   .nc-glyph{color:var(--nk-verb,var(--nk-ink));font-size:calc(var(--nk-fs) + .5px);line-height:1}
@@ -262,8 +283,8 @@
     <p class="lede">
       Cette page est une <b>projection</b>, pas un dessin : la palette vient de
       <code>design-tokens.generated.ts</code>, les couches de <code>design.generated.css</code>,
-      la durée de <code>tokens.css</code>, l’anatomie de la table de canon dans
-      <code>design/bench.mjs</code>. Elle s’ouvre hors-ligne, depuis un checkout, sans serveur.
+      la matière — la plaque, la lampe, les courbes — de <code>nika-spec design/tokens.yaml</code>,
+      qui est aussi ce que dessinent le canvas VS Code et le site. Elle s’ouvre hors-ligne, depuis un checkout, sans serveur.
       Les curseurs bougent tous les spécimens à la fois, le contrôle dit ce que ça coûte
       aux textes, et le diff en bas dit quoi coller — <b>et dans quel fichier</b>.
     </p>
@@ -286,12 +307,12 @@
   </div>
 
   <section>
-    <div class="sec-head"><h2>L’atelier</h2><span class="sec-n">5 mesures · 4 partagées</span></div>
+    <div class="sec-head"><h2>L’atelier</h2><span class="sec-n">7 mesures · 7 partagées</span></div>
     <p class="sec-note">
-      Les cinq valeurs que toutes les surfaces se partagent — ou devraient. Chacune dit
-      <b>où va son diff</b> : c’est la question qu’un nuancier ne sait pas répondre. Un rayon
-      voyage, VS Code dessine le même nœud ; un rythme de page ne voyage pas, VS Code n’a pas
-      de sections. Marquer la destination, c’est ce qui garde le partagé partagé.
+      Les mesures que toutes les surfaces se partagent — et depuis le 28 juillet elles se les
+      partagent vraiment : chacune vient de <code>design/tokens.yaml</code> et arrive ici par la
+      même projection que la palette. Le banc ne tient plus le canon, il le lit. Chaque curseur
+      dit encore <b>où va son diff</b> — et la réponse est désormais la même pour les trois.
     </p>
     <div class="shop">
       <div class="desk">
@@ -301,7 +322,7 @@
           <output id="o-radius" for="k-radius">7px</output>
         </span>
         <input type="range" id="k-radius" data-knob="radius" min="0" max="14" step="1" value="7">
-        <span class="knob-note"><b class="home home--spec">partagé</b> le coin · le réglage le plus visible, et il voyage tel quel vers VS Code</span>
+        <span class="knob-note"><b class="home home--spec">partagé</b> le coin · projeté depuis la spec, le même que dessine VS Code</span>
       </label>
       <label class="knob" for="k-pad">
         <span class="knob-head">
@@ -310,6 +331,22 @@
         </span>
         <input type="range" id="k-pad" data-knob="pad" min="3" max="14" step="0.5" value="7">
         <span class="knob-note"><b class="home home--spec">partagé</b> l’air dans chaque rangée · c’est lui qui décide combien de nœuds tiennent à l’écran</span>
+      </label>
+      <label class="knob" for="k-bevel">
+        <span class="knob-head">
+          <span class="knob-l">l’arête qui capte</span>
+          <output id="o-bevel" for="k-bevel">0.06</output>
+        </span>
+        <input type="range" id="k-bevel" data-knob="bevel" min="0" max="0.3" step="0.01" value="0.06">
+        <span class="knob-note"><b class="home home--spec">partagé</b> le blanc posé sur le bord haut · c’est lui qui dit d’où vient la lumière</span>
+      </label>
+      <label class="knob" for="k-lift">
+        <span class="knob-head">
+          <span class="knob-l">la levée</span>
+          <output id="o-lift" for="k-lift">3px</output>
+        </span>
+        <input type="range" id="k-lift" data-knob="lift" min="0" max="8" step="1" value="3">
+        <span class="knob-note"><b class="home home--spec">partagé</b> de combien la plaque monte quand on la prend</span>
       </label>
       <label class="knob" for="k-fs">
         <span class="knob-head">
@@ -329,11 +366,11 @@
       </label>
       <label class="knob" for="k-dur">
         <span class="knob-head">
-          <span class="knob-l">durée</span>
-          <output id="o-dur" for="k-dur">140ms</output>
+          <span class="knob-l">durée de la levée</span>
+          <output id="o-dur" for="k-dur">190ms</output>
         </span>
-        <input type="range" id="k-dur" data-knob="dur" min="0" max="400" step="10" value="140">
-        <span class="knob-note"><b class="home home--site">site</b> lu dans tokens.css (140ms) · le site le possède aujourd’hui, les deux surfaces en auraient besoin</span>
+        <input type="range" id="k-dur" data-knob="dur" min="0" max="400" step="10" value="190">
+        <span class="knob-note"><b class="home home--spec">partagé</b> projeté · la courbe qui l’accompagne aussi (linear(0, 0.1 6%, 0.54…)</span>
       </label>
         <div class="desk-foot">
           <button type="button" class="btn" id="reset">réinitialiser</button>
@@ -511,7 +548,7 @@
   </section>
 
   <section>
-    <div class="sec-head"><h2>Ce qui est partagé, ce qui ne l’est pas</h2><span class="sec-n">4 sur 13</span></div>
+    <div class="sec-head"><h2>Ce qui est partagé, ce qui ne l’est pas</h2><span class="sec-n">8 sur 15</span></div>
     <p class="sec-note">Le tableau que cet atelier existe pour vider. Chaque « non » est un endroit où les surfaces peuvent diverger sans que rien ne l’empêche.</p>
     <div class="tw"><table>
       <thead><tr><th>ce que c’est</th><th>où ça vit</th><th>dans le SSOT ?</th></tr></thead>
@@ -521,8 +558,10 @@
         <tr><td>rôles sémantiques</td><td>design/tokens.yaml (2026-07-27)</td><td class="yes">partagé</td></tr>
         <tr><td>glyphes · codicons</td><td>design/tokens.yaml → 3 cibles</td><td class="yes">partagé</td></tr>
         <tr><td>hues des 7 couches</td><td>design.generated.css</td><td class="no">site seulement</td></tr>
-        <tr><td>rayon · densité · corps</td><td>design/bench.mjs (canon de travail)</td><td class="no">ici, pas encore projeté</td></tr>
-        <tr><td>durée · courbe</td><td>src/styles/tokens.css</td><td class="no">site seulement</td></tr>
+        <tr><td>rayon · densité · levée</td><td>design/tokens.yaml → material (2026-07-28)</td><td class="yes">partagé</td></tr>
+        <tr><td>biseau · ombres · grain</td><td>design/tokens.yaml → material (2026-07-28)</td><td class="yes">partagé</td></tr>
+        <tr><td>la lampe · une par scène</td><td>design/tokens.yaml → material (2026-07-28)</td><td class="yes">partagé</td></tr>
+        <tr><td>durée · courbe de levée</td><td>design/tokens.yaml → material</td><td class="yes">partagé</td></tr>
         <tr><td>anatomie du nœud</td><td>dag.ts · 9 373 lignes</td><td class="no">vscode seulement</td></tr>
         <tr><td>les 84 jetons --nk-*</td><td>vscode src/webview/dag.css</td><td class="no">existent · projetés de rien</td></tr>
         <tr><td>les gris de la peau marque</td><td>body[data-nk-theme='nika']</td><td class="no">transcrits ici · à promouvoir</td></tr>
@@ -536,10 +575,9 @@
   <footer>
     <p>
       Généré par <code>design/bench.mjs</code> · régénérer <code>node design/bench.mjs</code> ·
-      la dérive est gatée par <code>--check</code>. L’anatomie et les trois mesures marquées
-      « ici, pas encore projeté » sont un canon de travail, relevé sur le canvas livré ; elles
-      rejoindront <code>nika-spec design/tokens.yaml</code> quand elles auront fait leurs preuves
-      ici. Les réglages restent dans ce navigateur — rien ne part nulle part.
+      la dérive est gatée par <code>--check</code>. L’anatomie du nœud reste un canon de travail
+      relevé sur le canvas livré ; la matière, elle, a rejoint
+      <code>nika-spec design/tokens.yaml</code> le 28 juillet et n’est plus écrite ici. Les réglages restent dans ce navigateur — rien ne part nulle part.
     </p>
     <p>
       Le contrôle APCA implémente la formule 0.1.9. Chaque sonde déclare ce qu’elle est :
@@ -553,7 +591,7 @@
 </div>
 
 <script>
-  var KNOBS = [{"id":"radius","css":"--nk-radius","unit":"px","def":7,"home":"spec","key":"node.radius"},{"id":"pad","css":"--nk-pad","unit":"px","def":7,"home":"spec","key":"node.pad"},{"id":"fs","css":"--nk-fs","unit":"px","def":11.5,"home":"spec","key":"node.font_size"},{"id":"edge","css":"--nk-line-boost","unit":"","def":0,"home":"spec","key":"node.edge_boost"},{"id":"dur","css":"--nk-dur","unit":"ms","def":140,"home":"site","key":"--dur-ui"}];
+  var KNOBS = [{"id":"radius","css":"--nk-radius","unit":"px","def":7,"home":"spec","key":"material.plate.radius_px"},{"id":"pad","css":"--nk-pad","unit":"px","def":7,"home":"spec","key":"material.plate.pad_px"},{"id":"bevel","css":"--nk-bevel","unit":"","def":0.06,"home":"spec","key":"material.plate.bevel"},{"id":"lift","css":"--nk-lift","unit":"px","def":3,"home":"spec","key":"material.plate.lift_px"},{"id":"fs","css":"--nk-fs","unit":"px","def":11.5,"home":"spec","key":"node.font_size"},{"id":"edge","css":"--nk-line-boost","unit":"","def":0,"home":"spec","key":"node.edge_boost"},{"id":"dur","css":"--nk-dur","unit":"ms","def":190,"home":"spec","key":"material.motion.lift_ms"}];
   var HOMES = {"spec":{"path":"nika-spec · design/tokens.yaml","hint":"partagé · projeté vers les trois surfaces"},"site":{"path":"nika.sh · src/styles/tokens.css","hint":"site seulement · aucune projection à ce jour"}};
   var STORE = 'nika-bench-v2';
   var stages = document.querySelectorAll('[data-stage]');

@@ -47,6 +47,19 @@ const constObject = (name) => {
   if (!body) throw new Error(`bench: ${name} not found in design-tokens.generated.ts`)
   return Object.fromEntries([...body.matchAll(/(\w+):\s*'([^']+)'/g)].map((m) => [m[1], m[2]]))
 }
+/* THE PLATE IS NO LONGER THIS FILE'S TO INVENT. Until 2026-07-28 the bench
+   authored the node's radius, its padding, its shadows — and the ledger below
+   carried a row admitting they were "here, not projected yet". They now live
+   in nika-spec design/tokens.yaml and arrive through the same projection as
+   the palette, so the bench draws the object the site and the canvas draw
+   rather than a careful drawing OF it. That row turns green in this commit,
+   which is the only honest way for a coherence ledger to move. */
+const materialLit = tokensTs.match(/export const NIKA_MATERIAL = (\{.*\}) as const/)?.[1]
+if (!materialLit) throw new Error('bench: NIKA_MATERIAL not found — is the spec projection current?')
+const MAT = JSON.parse(
+  materialLit.replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":').replace(/'/g, '"'),
+)
+
 const cssVar = (name) => designCss.match(new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{3,8})`))?.[1] ?? null
 /* the site's own non-colour tokens · the motion knob's default is DERIVED from
    what the site actually ships, never retyped here */
@@ -128,20 +141,26 @@ const theme = {
    stops the site's private opinions from leaking into the spec. */
 const KNOBS = [
   { id: 'radius', label: 'rayon du nœud', css: '--nk-radius', min: 0, max: 14, step: 1,
-    unit: 'px', def: 7, home: 'spec', key: 'node.radius',
-    note: 'le coin · le réglage le plus visible, et il voyage tel quel vers VS Code' },
+    unit: 'px', def: MAT.plate.radius_px, home: 'spec', key: 'material.plate.radius_px',
+    note: 'le coin · projeté depuis la spec, le même que dessine VS Code' },
   { id: 'pad', label: 'densité', css: '--nk-pad', min: 3, max: 14, step: 0.5,
-    unit: 'px', def: 7, home: 'spec', key: 'node.pad',
+    unit: 'px', def: MAT.plate.pad_px, home: 'spec', key: 'material.plate.pad_px',
     note: 'l’air dans chaque rangée · c’est lui qui décide combien de nœuds tiennent à l’écran' },
+  { id: 'bevel', label: 'l’arête qui capte', css: '--nk-bevel', min: 0, max: 0.3, step: 0.01,
+    unit: '', def: MAT.plate.bevel, home: 'spec', key: 'material.plate.bevel',
+    note: 'le blanc posé sur le bord haut · c’est lui qui dit d’où vient la lumière' },
+  { id: 'lift', label: 'la levée', css: '--nk-lift', min: 0, max: 8, step: 1,
+    unit: 'px', def: MAT.plate.lift_px, home: 'spec', key: 'material.plate.lift_px',
+    note: 'de combien la plaque monte quand on la prend' },
   { id: 'fs', label: 'corps du texte', css: '--nk-fs', min: 9.5, max: 14, step: 0.5,
     unit: 'px', def: 11.5, home: 'spec', key: 'node.font_size',
     note: 'la base · tout le reste du nœud se calcule à partir d’elle' },
   { id: 'edge', label: 'force du trait', css: '--nk-line-boost', min: 0, max: 100, step: 5,
     unit: '', def: 0, home: 'spec', key: 'node.edge_boost',
     note: 'de la ligne discrète vers la ligne franche · monte-le et regarde le contrôle plus bas' },
-  { id: 'dur', label: 'durée', css: '--nk-dur', min: 0, max: 400, step: 10,
-    unit: 'ms', def: DUR_MS, home: 'site', key: '--dur-ui',
-    note: `lu dans tokens.css (${DUR_UI}) · le site le possède aujourd’hui, les deux surfaces en auraient besoin` },
+  { id: 'dur', label: 'durée de la levée', css: '--nk-dur', min: 0, max: 400, step: 10,
+    unit: 'ms', def: MAT.motion.lift_ms, home: 'spec', key: 'material.motion.lift_ms',
+    note: `projeté · la courbe qui l’accompagne aussi (${MAT.motion.ease_lift.slice(0, 22)}…)` },
 ]
 const HOMES = {
   spec: { path: 'nika-spec · design/tokens.yaml', hint: 'partagé · projeté vers les trois surfaces' },
@@ -211,8 +230,10 @@ const LEDGER = [
   ['rôles sémantiques', 'design/tokens.yaml (2026-07-27)', true, 'partagé'],
   ['glyphes · codicons', 'design/tokens.yaml → 3 cibles', true, 'partagé'],
   ['hues des 7 couches', 'design.generated.css', false, 'site seulement'],
-  ['rayon · densité · corps', 'design/bench.mjs (canon de travail)', false, 'ici, pas encore projeté'],
-  ['durée · courbe', 'src/styles/tokens.css', false, 'site seulement'],
+  ['rayon · densité · levée', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
+  ['biseau · ombres · grain', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
+  ['la lampe · une par scène', 'design/tokens.yaml → material (2026-07-28)', true, 'partagé'],
+  ['durée · courbe de levée', 'design/tokens.yaml → material', true, 'partagé'],
   ['anatomie du nœud', 'dag.ts · 9 373 lignes', false, 'vscode seulement'],
   ['les 84 jetons --nk-*', 'vscode src/webview/dag.css', false, 'existent · projetés de rien'],
   ['les gris de la peau marque', "body[data-nk-theme='nika']", false, 'transcrits ici · à promouvoir'],
@@ -334,6 +355,11 @@ ${Object.entries(VERB_TEXT).map(([k, v]) => `    --nk-${k}-text:${v};`).join('\n
 ${Object.entries(STATUS).map(([k, v]) => `    --nk-st-${k}:${v};`).join('\n')}
 ${Object.entries(LAYER_HEX).map(([k, v]) => `    --nk-${k}:${v};`).join('\n')}
 ${KNOBS.map((k) => `    ${k.css}:${k.def}${k.unit};`).join('\n')}
+    --nk-contact:0 ${MAT.plate.contact.y_px}px ${MAT.plate.contact.blur_px}px rgb(0 0 0 / ${MAT.plate.contact.alpha});
+    --nk-ambient:0 ${MAT.plate.ambient.y_px}px ${MAT.plate.ambient.blur_px}px ${MAT.plate.ambient.spread_px}px rgb(0 0 0 / ${MAT.plate.ambient.alpha});
+    --nk-bevel-lit:${MAT.plate.bevel_lit};
+    --nk-grain:${MAT.plate.grain};
+    --nk-ease-lift:${MAT.motion.ease_lift};
     --nk-edge: color-mix(in oklch, var(--nk-line), var(--nk-strong) calc(var(--nk-line-boost) * 1%));
     /* the BENCH's own captions · derived from the canvas ink so they move
        with it, and set high enough that the control below clears them. The
@@ -418,9 +444,23 @@ ${Object.entries(theme.layer).map(([k, v]) => `    --nk-${k}:${v};`).join('\n')}
   .cell-note{font:11px/1.45 var(--sans);color:var(--nk-caption)}
   .chiprow{display:flex;flex-wrap:wrap;gap:6px}
 
-  .nc{width:252px;background:var(--nk-surface);border:1px solid var(--nk-edge);border-radius:var(--nk-radius);
+  /* THE SPECIMEN IS THE PLATE. Not a card that resembles one — the same
+     quantities the site and the canvas bind, arriving through the same
+     projection. A bevel on the top edge, a contact shadow and an ambient one,
+     the paper's tooth over the face. */
+  .nc{position:relative;width:252px;background:var(--nk-surface);
+    border:1px solid var(--nk-edge);border-radius:var(--nk-radius);
     overflow:hidden;font-family:var(--mono);font-size:var(--nk-fs);
-    transition:border-radius var(--nk-dur) var(--ease), border-color var(--nk-dur) var(--ease)}
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact),var(--nk-ambient);
+    transition:border-radius var(--nk-dur) var(--ease),border-color var(--nk-dur) var(--ease),
+      transform var(--nk-dur) var(--nk-ease-lift),box-shadow var(--nk-dur) var(--nk-ease-lift)}
+  .nc::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+    opacity:var(--nk-grain);background-image:repeating-conic-gradient(#fff 0% 25%,transparent 0% 50%);
+    background-size:3px 3px;mix-blend-mode:overlay}
+  .nc:hover{transform:translateY(calc(var(--nk-lift) * -1));
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel-lit)),var(--nk-contact),
+      0 calc(var(--nk-lift) * 13) calc(var(--nk-lift) * 18) -28px rgb(0 0 0 / .62)}
+  @media (prefers-reduced-motion:reduce){.nc{transition:none}.nc:hover{transform:none}}
   .nc-head{display:flex;align-items:center;gap:7px;padding:calc(var(--nk-pad) * 1.14) calc(var(--nk-pad) * 1.42);
     border-bottom:1px solid var(--nk-edge);background:color-mix(in oklch,var(--nk-verb,var(--nk-ink)) 8%,transparent)}
   .nc-glyph{color:var(--nk-verb,var(--nk-ink));font-size:calc(var(--nk-fs) + .5px);line-height:1}
@@ -523,8 +563,8 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
     <p class="lede">
       Cette page est une <b>projection</b>, pas un dessin : la palette vient de
       <code>design-tokens.generated.ts</code>, les couches de <code>design.generated.css</code>,
-      la durée de <code>tokens.css</code>, l’anatomie de la table de canon dans
-      <code>design/bench.mjs</code>. Elle s’ouvre hors-ligne, depuis un checkout, sans serveur.
+      la matière — la plaque, la lampe, les courbes — de <code>nika-spec design/tokens.yaml</code>,
+      qui est aussi ce que dessinent le canvas VS Code et le site. Elle s’ouvre hors-ligne, depuis un checkout, sans serveur.
       Les curseurs bougent tous les spécimens à la fois, le contrôle dit ce que ça coûte
       aux textes, et le diff en bas dit quoi coller — <b>et dans quel fichier</b>.
     </p>
@@ -549,10 +589,10 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   <section>
     <div class="sec-head"><h2>L’atelier</h2><span class="sec-n">${KNOBS.length} mesures · ${KNOBS.filter((k) => k.home === 'spec').length} partagées</span></div>
     <p class="sec-note">
-      Les cinq valeurs que toutes les surfaces se partagent — ou devraient. Chacune dit
-      <b>où va son diff</b> : c’est la question qu’un nuancier ne sait pas répondre. Un rayon
-      voyage, VS Code dessine le même nœud ; un rythme de page ne voyage pas, VS Code n’a pas
-      de sections. Marquer la destination, c’est ce qui garde le partagé partagé.
+      Les mesures que toutes les surfaces se partagent — et depuis le 28 juillet elles se les
+      partagent vraiment : chacune vient de <code>design/tokens.yaml</code> et arrive ici par la
+      même projection que la palette. Le banc ne tient plus le canon, il le lit. Chaque curseur
+      dit encore <b>où va son diff</b> — et la réponse est désormais la même pour les trois.
     </p>
     <div class="shop">
       <div class="desk">
@@ -657,10 +697,9 @@ ${LEDGER.map(([what, where, ok, verdict]) => `        <tr><td>${esc(what)}</td><
   <footer>
     <p>
       Généré par <code>design/bench.mjs</code> · régénérer <code>node design/bench.mjs</code> ·
-      la dérive est gatée par <code>--check</code>. L’anatomie et les trois mesures marquées
-      « ici, pas encore projeté » sont un canon de travail, relevé sur le canvas livré ; elles
-      rejoindront <code>nika-spec design/tokens.yaml</code> quand elles auront fait leurs preuves
-      ici. Les réglages restent dans ce navigateur — rien ne part nulle part.
+      la dérive est gatée par <code>--check</code>. L’anatomie du nœud reste un canon de travail
+      relevé sur le canvas livré ; la matière, elle, a rejoint
+      <code>nika-spec design/tokens.yaml</code> le 28 juillet et n’est plus écrite ici. Les réglages restent dans ce navigateur — rien ne part nulle part.
     </p>
     <p>
       Le contrôle APCA implémente la formule 0.1.9. Chaque sonde déclare ce qu’elle est :
