@@ -34,17 +34,17 @@ describe('verbGlyph', () => {
 /* ── template refs (${{ … }}) + &anchors / *aliases are carved out ONCE ──
    Regression guard for the doubled-ref bug: classifyValue split the value on a
    DOUBLY-wrapped capture group, so String.split interleaved both groups and
-   every ref was emitted twice (`${{ vars.x }}${{ vars.x }}`). The split now
+   every ref was emitted twice (`${{ inputs.x }}${{ inputs.x }}`). The split now
    uses TREF_RE's single capture group, so each ref appears exactly once. */
 describe('tokenizeLine · template refs / anchors', () => {
   it('emits a ${{ … }} ref exactly ONCE (no doubling)', () => {
-    const { tokens } = tokenizeLine('  files: ${{ vars.cv_glob }}')
+    const { tokens } = tokenizeLine('  files: ${{ inputs.cv_glob }}')
     const refs = tokens.filter((t) => t.kind === 'tref')
     expect(refs).toHaveLength(1)
-    expect(refs[0].text).toBe('${{ vars.cv_glob }}')
+    expect(refs[0].text).toBe('${{ inputs.cv_glob }}')
     // and the whole line text round-trips with the ref present exactly once
     const text = tokens.map((t) => t.text).join('')
-    expect(text).toBe('  files: ${{ vars.cv_glob }}')
+    expect(text).toBe('  files: ${{ inputs.cv_glob }}')
     expect(text).not.toContain('}}${{')
   })
 
@@ -140,7 +140,7 @@ describe('CodeFile · template ref rendering', () => {
     '  pool:',
     '    invoke:',
     '      args:',
-    '        files: ${{ vars.cv_glob }}',
+    '        files: ${{ inputs.cv_glob }}',
     '  pick:',
     '    infer:',
     '      prompt: ${{ tasks.pool.output }}',
@@ -153,19 +153,19 @@ describe('CodeFile · template ref rendering', () => {
     const text = container.textContent ?? ''
     // the doubled-ref signature must be absent everywhere
     expect(text).not.toContain('}}${{')
-    expect(text).not.toContain('${{ vars.cv_glob }}${{ vars.cv_glob }}')
+    expect(text).not.toContain('${{ inputs.cv_glob }}${{ inputs.cv_glob }}')
     expect(text).not.toContain('${{ tasks.pool.output }}${{ tasks.pool.output }}')
     // and each ref still appears (exactly once)
     const once = (hay: string, needle: string) => hay.split(needle).length - 1
-    expect(once(text, '${{ vars.cv_glob }}')).toBe(1)
+    expect(once(text, '${{ inputs.cv_glob }}')).toBe(1)
     expect(once(text, '${{ tasks.pool.output }}')).toBe(1)
   })
 
   it('marks the ref text with a .cf-ref span', () => {
-    const { container } = render(<CodeFile yaml="files: ${{ vars.cv_glob }}" lineNumbers={false} />)
+    const { container } = render(<CodeFile yaml="files: ${{ inputs.cv_glob }}" lineNumbers={false} />)
     const refSpans = container.querySelectorAll('.cf-ref')
     expect(refSpans.length).toBe(1)
-    expect(refSpans[0].textContent).toBe('${{ vars.cv_glob }}')
+    expect(refSpans[0].textContent).toBe('${{ inputs.cv_glob }}')
   })
 })
 

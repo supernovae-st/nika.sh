@@ -49,7 +49,7 @@ tasks:
 
   hero_image:
     after:
-      fetch_commits: succeeded
+      fetch_commits: success
     invoke:
       tool: "nika:image_generate"
       args:
@@ -60,8 +60,8 @@ tasks:
 
   publish:
     after:
-      write_notes: succeeded
-      hero_image: succeeded
+      write_notes: success
+      hero_image: success
     exec:
       command: ["gh", "release", "create", "v1.5.0", "--notes-file", "notes.md"]`
 

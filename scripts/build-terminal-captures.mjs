@@ -26,11 +26,14 @@ const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 50
   .trim()
   .replace(/^nika\s+/, '')
 
-/* the fixture the commands run on — the install page's own hello (W2 · the
-   file every visitor meets first) */
+/* the fixture the commands run on — the install page's own hello (0.106:
+   the file every visitor meets first declares its touch — an absent
+   permits: is the EMPTY boundary now) */
 const HELLO = `nika: v1
 workflow:
   id: hello
+permits:
+  exec: ["echo"]
 tasks:
   greet:
     exec:

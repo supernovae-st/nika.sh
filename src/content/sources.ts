@@ -176,12 +176,13 @@ const SCOPE_CHAPTER: Record<string, SourceLink> = {
 
 /* words whose PROSE home differs from their scope's default */
 const WORD_CHAPTER: Record<string, SourceLink> = {
-  vars: chapter('04-variables.md', 'inputs, interpolation and the ${{ }} grammar'),
-  env: chapter('04-variables.md', 'runtime config; it may appear in logs'),
+  inputs: chapter('04-variables.md', 'typed caller parameters and the ${{ }} grammar'),
+  config: chapter('04-variables.md', 'typed deployment config; it may appear in logs'),
+  const: chapter('04-variables.md', 'fixed values baked into the file'),
   secrets: chapter('04-variables.md', 'masked references, never inline literals'),
   with: chapter('04-variables.md', 'task-level scope injection'),
   output: chapter('04-variables.md', 'named jq bindings over a task result'),
-  outputs: chapter('04-variables.md', 'the workflow return value, symmetric to vars'),
+  outputs: chapter('04-variables.md', 'the workflow return value, symmetric to inputs'),
   tool: chapter('06-stdlib-contract.md', 'the closed nika: set + the mcp: lane'),
   args: chapter('06-stdlib-contract.md', 'validated against the builtin contract'),
 }

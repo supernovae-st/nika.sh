@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.105.0"
+export const TERMINAL_ENGINE = "0.106.0"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.105.0"
+        "text": "nika 0.106.0"
       }
     ]
   },
@@ -74,16 +74,16 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
         "text": " ✔ GATES    every task is statically reachable · status literals in vocabulary"
       },
       {
-        "kind": "soft",
-        "text": " ○ PERMITS  no boundary declared (engine floor only) · `--infer-permits` writes one"
-      },
-      {
-        "kind": "soft",
-        "text": " ↳ HINT     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)"
+        "kind": "ok",
+        "text": " ✔ PERMITS  body fits the declared boundary"
       },
       {
         "kind": "ok",
-        "text": " ✔ audited · 1 task · 1 wave · permits none · est ≥$0.0000 · 1 hint"
+        "text": " ✔ TRIFECTA no lethal trifecta without a dominating human gate"
+      },
+      {
+        "kind": "ok",
+        "text": " ✔ audited · 1 task · 1 wave · permits declared · est ≥$0.0000 · 0 hints"
       }
     ]
   },

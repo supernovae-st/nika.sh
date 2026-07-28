@@ -18,7 +18,7 @@ export const DOCS = 'https://docs.nika.sh'
    without a re-vendor goes red instead of serving a stale clock). Bumping this
    line alone turns the suite red and names every surface that must move with
    it. */
-export const ENGINE_VERSION = 'v0.105.0'
+export const ENGINE_VERSION = 'v0.106.0'
 
 /* the canonical site origin (matches react-ssg.config.ts `origin`). */
 export const SITE = 'https://nika.sh'
@@ -48,7 +48,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
     body: `Any of ${CANON.providers} providers: Ollama, Mistral, Anthropic, OpenAI and more. You pick, per task or per file.`,
     code: `research:
   infer:
-    prompt: "Research \${{ vars.topic }}"`,
+    prompt: "Research \${{ inputs.topic }}"`,
   },
   {
     verb: 'exec',
@@ -74,7 +74,7 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
     body: 'An autonomous tool-use loop. Tools are default-deny. The whitelist is in the file, reviewable.',
     code: `research:
   agent:
-    prompt: "Research \${{ vars.topic }}"
+    prompt: "Research \${{ inputs.topic }}"
     tools: ["nika:fetch"]`,
   },
 ]

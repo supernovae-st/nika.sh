@@ -92,19 +92,27 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
     const doc = parse(FULL_FILE) as {
       nika: string
       workflow: { id: string }
-      vars: Record<string, unknown>
+      inputs: Record<string, unknown>
+      const: Record<string, unknown>
+      permits: Record<string, unknown>
       model: string
       tasks: Record<string, Task>
       outputs: Record<string, unknown>
     }
-    /* the envelope (01) · the inputs (02) · the model (03) */
+    /* the envelope (01) · the value split (02) · the model (03) */
     expect(doc.nika).toBe('v1')
     expect(doc.workflow.id).toBe('weekly-radar')
-    expect(Object.keys(doc.vars)).toEqual(['output_dir', 'topic'])
+    expect(Object.keys(doc.inputs)).toEqual(['topic'])
+    expect(Object.keys(doc.const)).toEqual(['output_dir'])
     expect(doc.model).toBe('ollama/llama3.2:3b')
-    /* the plan (05/06) · same five tasks, same wave shape as the drawn DAG */
+    /* 0.106 · the authority speaks: the file declares its boundary, and the
+       lethal-trifecta judge (private read + untrusted ingress + write)
+       demands the blocking human gate that opens the run */
+    expect(doc.permits).toBeDefined()
+    /* the plan (05/06) · the five drawn tasks plus the 0.106 entry gate */
     const whole = Object.entries(doc.tasks)
     expect(whole.map(([id]) => id)).toEqual([
+      'approve',
       'fetch_news',
       'repo_log',
       'read_notes',
@@ -112,6 +120,10 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
       'save',
     ])
     const deps = Object.fromEntries(whole.map(([id, t]) => [id, producersOf(t)]))
+    expect(deps.approve).toEqual([])
+    expect(deps.fetch_news).toEqual(['approve'])
+    expect(deps.repo_log).toEqual(['approve'])
+    expect(deps.read_notes).toEqual(['approve'])
     expect(deps.digest).toEqual(['fetch_news', 'repo_log', 'read_notes'])
     expect(deps.save).toEqual(['digest'])
     /* the failure policy (08) rides the digest · the outputs (09) are named */

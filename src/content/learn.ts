@@ -19,7 +19,8 @@ export const DICT: Record<string, string> = {
   nika: 'the format marker · v1 is frozen, files you write today keep working',
   workflow: 'the file’s name · what you call when you run it',
   model: 'which brain to ask · local or any cloud, one line to swap',
-  vars: 'the inputs · change them from the command line, not the file',
+  inputs: 'the caller’s parameters · typed, validated, passed from the command line',
+  const: 'the file’s wiring · fixed values baked in, edit the file to change them',
   permits: PERMITS_WORDS,
   tasks: 'the to-do list · each item does exactly one thing',
   id: 'the workflow’s handle · what you call from the command line',
@@ -88,20 +89,22 @@ workflow:
     topic: 'the inputs',
     title: 'Declare what can change',
     plain:
-      'Inputs live in vars. A bare value is a default you can override from the command line; a typed var documents itself and gets validated before anything runs.',
-    file: 'vars',
-    yaml: `vars:
-  output_dir: "./radar"
+      'Every value states its role. inputs: are the parameters a caller supplies: typed, documented, validated before anything runs. const: is the wiring baked into the file; changing it means editing the file, on purpose.',
+    file: 'inputs · const',
+    yaml: `inputs:
   topic:
     type: string
     required: true
-    description: "Subject to research"`,
-    note: 'Use it anywhere as ${{ vars.topic }}. Change the input, not the file.',
+    description: "Subject to research"
+
+const:
+  output_dir: "./radar"`,
+    note: 'Use it anywhere as ${{ inputs.topic }}. Change the input, not the file.',
     check: {
       q: 'Next week the topic changes. What do you edit?',
       options: ['The file, then re-save it', 'Nothing: pass the new value on the command line', 'A separate config file'],
       answer: 1,
-      why: 'vars are the declared inputs: nika run weekly-radar.nika.yaml --var topic="new subject". The file stays the contract; the inputs move per run.',
+      why: 'inputs are the declared parameters: nika run weekly-radar.nika.yaml --var topic="new subject". The file stays the contract; the inputs move per run.',
     },
   },
   {
@@ -127,7 +130,7 @@ model: ollama/llama3.2:3b
     yaml: `tasks:
   digest:
     after:
-      fetch_news: succeeded
+      fetch_news: success
     infer:
       prompt: "Summarize in 5 bullets: \${{ tasks.fetch_news.output }}"`,
     note: 'infer thinks · exec runs a command · invoke uses a tool · agent delegates.',
@@ -180,9 +183,9 @@ digest:
       tool: "nika:read"
   digest:
     after:
-      fetch_news: succeeded
-      repo_log: succeeded
-      read_notes: succeeded
+      fetch_news: success
+      repo_log: success
+      read_notes: success
     with:
       news: \${{ tasks.fetch_news.output }}
       log: \${{ tasks.repo_log.output }}
@@ -191,7 +194,7 @@ digest:
       prompt: "One weekly radar, five bullets"
   save:
     after:
-      digest: succeeded
+      digest: success
     with:
       brief: \${{ tasks.digest.output }}
     invoke:
@@ -262,34 +265,60 @@ outputs:
 ]
 
 /* ── the whole file · the nine fragments, assembled ───────────────────────────
-   Every idea above, composed into the ONE workflow the page teaches. This
-   exact text passes `nika check` on the shipping binary — the transcript
-   below is that run, VERBATIM (captured 2026-07-17 · nika 0.105.0). The
-   honesty law: re-capture when the CLI's voice changes, never hand-edit. */
+   Every idea above, composed into the ONE workflow the page teaches, plus
+   what 0.106 demands of it: the file declares its authority (`permits:`
+   absent is the EMPTY boundary now) and, because it reads private notes,
+   ingests an untrusted feed AND writes a file, a blocking human gate opens
+   the run (NIKA-SEC-009 · the lethal-trifecta judge · the gate must
+   dominate every path to the write). This exact text passes `nika check`
+   on the shipping binary — the transcript below is that run, VERBATIM
+   (captured 2026-07-28 · nika 0.106.0). The honesty law: re-capture when
+   the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
 workflow:
   id: weekly-radar
-vars:
-  output_dir: "./radar"
+inputs:
   topic:
     type: string
     required: true
     description: "Subject to research"
+const:
+  output_dir: "./radar"
 
 model: ollama/llama3.2:3b
 
+permits:
+  fs:
+    read: ["./notes.md"]
+    write: ["./radar/*"]
+  net: { http: ["hnrss.org"] }
+  exec: ["git"]
+  tools: ["nika:fetch", "nika:read", "nika:write", "nika:prompt"]
+
 tasks:
+  approve:
+    invoke:
+      tool: "nika:prompt"
+      args:
+        message: "Run the weekly radar? It fetches hnrss.org, reads ./notes.md and writes ./radar/."
+
   fetch_news:
+    after:
+      approve: success
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://hnrss.org/frontpage"
 
   repo_log:
+    after:
+      approve: success
     exec:
       command: ["git", "log", "--since=1 week"]
 
   read_notes:
+    after:
+      approve: success
     invoke:
       tool: "nika:read"
       args:
@@ -304,7 +333,7 @@ tasks:
       max_attempts: 3
       backoff_ms: 1000
     infer:
-      prompt: "One weekly radar on \${{ vars.topic }}, five bullets: \${{ with.news }} \${{ with.log }} \${{ with.notes }}"
+      prompt: "One weekly radar on \${{ inputs.topic }}, five bullets: \${{ with.news }} \${{ with.log }} \${{ with.notes }}"
 
   save:
     with:
@@ -312,7 +341,7 @@ tasks:
     invoke:
       tool: "nika:write"
       args:
-        path: "\${{ vars.output_dir }}/radar.md"
+        path: "\${{ const.output_dir }}/radar.md"
         content: "\${{ with.brief }}"
 
 outputs:
@@ -321,10 +350,11 @@ outputs:
 export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika check weekly-radar.nika.yaml' },
   { kind: 'out', text: 'nika check · weekly-radar.nika.yaml' },
-  { kind: 'ok', text: ' ✔ PLAN     3 waves · 5 tasks · max parallelism 3' },
-  { kind: 'dim', text: '      wave 1 fetch_news (invoke · nika:fetch) · repo_log (exec · git) · read_notes (invoke · nika:read)' },
-  { kind: 'dim', text: '      wave 2 digest (infer · ollama/llama3.2:3b)' },
-  { kind: 'dim', text: '      wave 3 save (invoke · nika:write)' },
+  { kind: 'ok', text: ' ✔ PLAN     4 waves · 6 tasks · max parallelism 3' },
+  { kind: 'dim', text: '      wave 1 approve (invoke · nika:prompt)' },
+  { kind: 'dim', text: '      wave 2 fetch_news (invoke · nika:fetch) · repo_log (exec · git) · read_notes (invoke · nika:read)' },
+  { kind: 'dim', text: '      wave 3 digest (infer · ollama/llama3.2:3b)' },
+  { kind: 'dim', text: '      wave 4 save (invoke · nika:write)' },
   { kind: 'ok', text: ' ✔ MODELS   1 model resolves in this binary' },
   { kind: 'warn', text: ' ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)' },
   { kind: 'dim', text: '   digest  ollama/llama3.2:3b  UNBOUNDED — no max_tokens declared' },
@@ -333,12 +363,13 @@ export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'ok', text: ' ✔ TOOLS    every nika: tool names a canonical builtin' },
   { kind: 'ok', text: ' ✔ ARGS     every invoke arg key is declared + every required arg is present' },
   { kind: 'ok', text: ' ✔ SCHEMA   every authored schema: is satisfiable' },
-  { kind: 'soft', text: ' ○ PERMITS  no boundary declared (engine floor only) · `--infer-permits` writes one' },
+  { kind: 'ok', text: ' ✔ GATES    every task is statically reachable · status literals in vocabulary' },
+  { kind: 'ok', text: ' ✔ PERMITS  body fits the declared boundary' },
+  { kind: 'ok', text: ' ✔ TRIFECTA no lethal trifecta without a dominating human gate' },
   { kind: 'soft', text: ' ↳ HINT     [cost] declare `max_tokens` on `digest` — the cost report becomes a hard ceiling instead of UNBOUNDED' },
-  { kind: 'soft', text: ' ↳ HINT     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)' },
   { kind: 'soft', text: ' ↳ HINT     [inputs] `read_notes` reads `./notes.md` which does not exist here — create it (or point its var elsewhere) · the run would fail at that wave' },
   { kind: 'soft', text: ' ↳ HINT     [inputs] required input(s) with no default · pass at run time: --var topic=…' },
-  { kind: 'ok', text: ' ✔ audited · 5 tasks · 3 waves · permits none · est ≥$0.0000 · 4 hints' },
+  { kind: 'ok', text: ' ✔ audited · 6 tasks · 4 waves · permits declared · est ≥$0.0000 · 3 hints' },
 ]
 
 export const ERROR_JSON = `{

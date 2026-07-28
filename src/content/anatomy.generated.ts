@@ -28,7 +28,7 @@ export interface Anatomy {
 }
 
 /** the engine release these graphs were read from (the provenance stamp) */
-export const ANATOMY_ENGINE = "0.105.0"
+export const ANATOMY_ENGINE = "0.106.0"
 
 export const ANATOMY: Record<string, Anatomy> = {
   "agent-loop": {
@@ -548,7 +548,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "act",
         "verb": "invoke",
         "tool": "nika:notify",
-        "when": "${{ with.value > vars.threshold }}",
+        "when": "${{ with.value > const.threshold }}",
         "permits": [
           "tool: nika:notify"
         ]
@@ -830,7 +830,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "alert",
         "verb": "invoke",
         "tool": "nika:write",
-        "when": "${{ with.price < vars.alert_below }}",
+        "when": "${{ with.price < config.alert_below }}",
         "permits": [
           "fs.write: ./price-alert.md",
           "tool: nika:write"
@@ -1095,7 +1095,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "alert",
         "verb": "invoke",
         "tool": "nika:notify",
-        "when": "${{ with.price < vars.alert_below }}",
+        "when": "${{ with.price < const.alert_below }}",
         "permits": [
           "tool: nika:notify"
         ]

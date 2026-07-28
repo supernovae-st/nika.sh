@@ -94,7 +94,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "tts_generate.nika.yaml",
-        "firstLine": 7
+        "firstLine": 13
       }
     },
     "templates": [],
@@ -107,7 +107,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "tts_generate.nika.yaml",
-        "firstLine": 7
+        "firstLine": 13
       }
     },
     "templates": [],
@@ -636,7 +636,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "tts_generate.nika.yaml",
-        "firstLine": 17
+        "firstLine": 23
       }
     },
     "templates": [],
@@ -881,7 +881,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "compose.nika.yaml",
-        "firstLine": 9
+        "firstLine": 13
       }
     },
     "templates": [],
@@ -910,7 +910,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "grep.nika.yaml",
-        "firstLine": 23
+        "firstLine": 29
       }
     },
     "templates": [],
@@ -971,7 +971,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "tts_generate.nika.yaml",
-        "firstLine": 7
+        "firstLine": 13
       }
     },
     "templates": [],
@@ -984,7 +984,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "image_fx.nika.yaml",
-        "firstLine": 18
+        "firstLine": 24
       }
     },
     "templates": [],
@@ -1072,7 +1072,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "image_fx.nika.yaml",
-        "firstLine": 18
+        "firstLine": 24
       }
     },
     "templates": [],

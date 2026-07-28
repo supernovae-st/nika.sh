@@ -32,8 +32,8 @@ describe('the mark regex · classification', () => {
   })
 
   it('carves ${{ refs }} anywhere, including inside quoted strings', () => {
-    expect(scan('      args: { path: "${{ vars.source }}" }')).toEqual([
-      'ref:${{ vars.source }}',
+    expect(scan('      args: { path: "${{ const.source }}" }')).toEqual([
+      'ref:${{ const.source }}',
     ])
     expect(scan('    prompt: Summarize ${{ tasks.gather.output }}')).toEqual([
       'ref:${{ tasks.gather.output }}',
@@ -70,11 +70,11 @@ describe('the hover resolver · cmTipAt (the static glossary, live)', () => {
   })
 
   it('tips a ${{ ref }} anywhere in the line, span-exact', () => {
-    const line = '      args: { path: "${{ vars.source }}" }'
+    const line = '      args: { path: "${{ const.source }}" }'
     const s = line.indexOf('${{')
     const hit = cmTipAt(line, s + 5)
     expect(hit?.tip.term).toBe('${{ … }}')
-    expect(line.slice(hit!.from, hit!.to)).toBe('${{ vars.source }}')
+    expect(line.slice(hit!.from, hit!.to)).toBe('${{ const.source }}')
   })
 
   /* `id` moved out of this list on 2026-07-27: the glossary stopped being a
@@ -93,13 +93,14 @@ describe('the hover resolver · cmTipAt (the static glossary, live)', () => {
 describe('the live editor · rendered voice', () => {
   const DOC = [
     'nika: v1',
-    'workflow: chain',
+    'workflow:',
+    '  id: chain',
     'tasks:',
-    '  - id: gather',
+    '  gather:',
     '    invoke:',
     '      tool: "nika:read"',
-    '      args: { path: "${{ vars.source }}" }',
-    '  - id: think',
+    '      args: { path: "${{ const.source }}" }',
+    '  think:',
     '    infer:',
     '      prompt: go',
     '      temperature: 0.2',
@@ -118,7 +119,7 @@ describe('the live editor · rendered voice', () => {
         Array.from(view.dom.querySelectorAll(sel)).map((el) => el.textContent)
       expect(cls('.cm-nika-verb--invoke')).toEqual(['invoke'])
       expect(cls('.cm-nika-verb--infer')).toEqual(['infer'])
-      expect(cls('.cm-nika-ref')).toEqual(['${{ vars.source }}'])
+      expect(cls('.cm-nika-ref')).toEqual(['${{ const.source }}'])
       expect(cls('.cm-nika-num')).toEqual(['0.2'])
     } finally {
       view.destroy()

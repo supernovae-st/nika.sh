@@ -75,6 +75,7 @@ tasks:
   })
 
   it('refuses a predicate outside the closed set (DAG-005)', () => {
+    // 0.106 ratified success/failure — the OLD names are the strays now
     const out = lintNika(`nika: v1
 workflow:
   id: bad-predicate
@@ -82,11 +83,11 @@ tasks:
   a:
     exec: { command: ["ls"] }
   b:
-    after: { a: success }
+    after: { a: succeeded }
     exec: { command: ["ls"] }
 `)
     expect(out.map((d) => d.code)).toContain('NIKA-DAG-005')
-    expect(out.find((d) => d.code === 'NIKA-DAG-005')?.fix).toMatch(/succeeded/)
+    expect(out.find((d) => d.code === 'NIKA-DAG-005')?.fix).toMatch(/success/)
   })
 
   it('refuses a tasks.* read in a verb body or when: (VAR-021 · hoist into with:)', () => {

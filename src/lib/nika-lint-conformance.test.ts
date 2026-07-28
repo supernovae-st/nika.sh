@@ -56,15 +56,12 @@ describe('nika-lint · the corpus is vendored and byte-stable', () => {
   })
 })
 
-/* ── SUSPENDED 2026-07-17 · the ratified↔shipped grammar gap ─────────────────
-   The vendored corpus speaks the PIN's grammar (W1 · spec d5700ad) while the
-   port now speaks the SHIPPED grammar (0.104 · W2 — the visitor's binary;
-   see src/lib/w1-to-w2.ts). Replaying W1 fixtures against a W2 port judges
-   nothing. RESUMES when the public spec ratifies the flip and the resync
-   re-vendors a W2 corpus: flip describe.skip back to describe — the suite
-   needs no other change. The vendored/byte-stable leg above stays LIVE
-   (it pins the corpus bytes, not the grammar). */
-describe.skip('nika-lint · replay: covered codes are corpus-proven', () => {
+/* ── RESUMED 2026-07-28 · the two clocks converged (0.106 flag-day) ──────────
+   The suspension clause fired exactly as written: the public spec ratified
+   the grammar (pin 8ab0b1e speaks inputs · config · const · secrets +
+   success/failure), the resync re-vendored the corpus in that grammar, and
+   the port re-learned it — the replay judges again. */
+describe('nika-lint · replay: covered codes are corpus-proven', () => {
   const covered = LINT_FIXTURES.filter(
     (f) => !f.valid && f.codes.some((c) => coverage.has(c)),
   )
@@ -84,7 +81,7 @@ describe.skip('nika-lint · replay: covered codes are corpus-proven', () => {
   )
 })
 
-describe.skip('nika-lint · replay: the valid corpus is the false-positive floor', () => { // SUSPENDED · same W1-pin law as above
+describe('nika-lint · replay: the valid corpus is the false-positive floor', () => {
   const valid = LINT_FIXTURES.filter((f) => f.valid)
   it.each(valid.map((f) => [f.id, f] as const))('%s → zero diagnostics', (_id, f) => {
     const got = lintNika(f.yaml)
@@ -95,7 +92,7 @@ describe.skip('nika-lint · replay: the valid corpus is the false-positive floor
   })
 })
 
-describe.skip('nika-lint · replay: no mislabeling outside the coverage', () => { // SUSPENDED · same W1-pin law as above
+describe('nika-lint · replay: no mislabeling outside the coverage', () => {
   /* an invalid fixture whose expectation names NO covered code and NO bare
      namespace latitude: the port may stay silent (subset), but it must not
      claim one of ITS codes on someone else's failure class. The bare

@@ -56,19 +56,28 @@ export interface MachineNode {
   gloss?: string
 }
 
-/* ── the envelope keys · from the JSON schema (required rows FIRST — the
-   disclosure fold slices this list at the required/optional boundary) ─────── */
+/* ── the envelope keys · DERIVED from the served pin schema (required rows
+   FIRST — the disclosure fold slices this list at the required/optional
+   boundary; optional rows keep the schema's own property order). Derive,
+   never recount:
+     python3 -c "import json; s=json.load(open('public/schema/workflow.json'));
+       req=s['required']; print([k for k in req] +
+       [k for k in s['properties'] if k not in req])"
+   Glosses are authored one-liners over each key's schema description. ─────── */
 export const ENVELOPE_KEYS: { key: string; req: boolean; gloss: string }[] = [
   { key: 'nika', req: true, gloss: 'the version marker · exactly v1, forever' },
-  { key: 'workflow', req: true, gloss: 'the workflow id · kebab-case · unique in the file' },
-  { key: 'tasks', req: true, gloss: 'the DAG · one or more nodes, each binding one verb' },
-  { key: 'description', req: false, gloss: 'a human note · free text' },
+  { key: 'workflow', req: true, gloss: 'the identity object · id (kebab-case) + optional description' },
+  { key: 'tasks', req: true, gloss: 'the DAG · a map keyed by id, each entry binding one verb' },
   { key: 'model', req: false, gloss: 'the default model · provider/name (e.g. ollama/llama3.2:3b)' },
-  { key: 'vars', req: false, gloss: 'typed inputs · ${{ vars.X }} · with required / default' },
-  { key: 'env', req: false, gloss: 'non-sensitive runtime config · ${{ env.X }}' },
+  { key: 'types', req: false, gloss: 'named type declarations · the file’s own vocabulary' },
+  { key: 'inputs', req: false, gloss: 'typed caller parameters · ${{ inputs.X }} · required / default' },
+  { key: 'config', req: false, gloss: 'typed deployment config · ${{ config.X }} · may appear in logs' },
+  { key: 'const', req: false, gloss: 'fixed values baked into the file · ${{ const.X }}' },
   { key: 'secrets', req: false, gloss: 'vault-backed references · never inline literals' },
-  { key: 'permits', req: false, gloss: 'the capability boundary · default-deny once present' },
-  { key: 'outputs', req: false, gloss: 'the return value · ${{ tasks.X.output }} · symmetric to vars' },
+  { key: 'permits', req: false, gloss: 'the capability boundary · absent is the EMPTY boundary' },
+  { key: 'run', req: false, gloss: 'the entropy + clock declaration · nothing ambient' },
+  { key: 'policy', req: false, gloss: 'named workflow law · require / forbid / allow, judged at check' },
+  { key: 'outputs', req: false, gloss: 'the return value · ${{ tasks.X.output }} · symmetric to inputs' },
 ]
 
 /* ── the task shape · from the JSON schema $defs.task (required first) ─────── */

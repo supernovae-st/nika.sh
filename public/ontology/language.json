@@ -2,10 +2,10 @@
   "language_graph": 1,
   "spec_pin": null,
   "canon_schema_version": 1,
-  "engine_version": "v0.105.0",
+  "engine_version": "v0.106.0",
   "catalogs": {
-    "tools": "0.105.0",
-    "providers": "0.105.0"
+    "tools": "0.106.0",
+    "providers": "0.106.0"
   },
   "nodes": [
     {

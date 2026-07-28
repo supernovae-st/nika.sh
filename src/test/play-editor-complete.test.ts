@@ -70,87 +70,89 @@ describe('play editor completion · positions', () => {
     expect(nikaComplete(ctx(''))).toBeNull()
   })
 
-  it('task positions offer the task grammar', () => {
-    expect(nikaComplete(ctx('  - i'))!.options.length).toBe(TASK_KEYS.length)
-    expect(nikaComplete(ctx('    dep'))!.options.length).toBe(TASK_KEYS.length)
+  it('task body positions offer the task grammar · the 2-space NAME offers nothing', () => {
+    expect(nikaComplete(ctx('tasks:\n  gather:\n    inf'))!.options.length).toBe(TASK_KEYS.length)
+    // the map key IS the identity — the author's own word, nothing to offer
+    expect(nikaComplete(ctx('tasks:\n  ga'))).toBeNull()
   })
 
   it('a plain value position offers nothing', () => {
     expect(nikaComplete(ctx('workflow: my flow'))).toBeNull()
   })
 
-  it('depends_on offers the doc task ids, never the task itself', () => {
+  it('after: offers the doc task ids, never the task itself', () => {
     const doc = [
       'tasks:',
-      '  - id: gather',
+      '  gather:',
       '    invoke:',
-      '  - id: check',
+      '  check:',
       '    exec:',
-      '  - id: write',
-      '    depends_on: [',
+      '  write:',
+      '    after: { ',
     ].join('\n')
     const r = nikaComplete(ctx(doc))
     expect(r).not.toBeNull()
     expect(r!.options.map((o) => o.label).sort()).toEqual(['check', 'gather'])
   })
 
-  it('depends_on keeps completing after a comma', () => {
-    const doc = ['tasks:', '  - id: gather', '  - id: check', '  - id: write', '    depends_on: [gather, ch'].join('\n')
+  it('after: keeps completing after a comma', () => {
+    const doc = ['tasks:', '  gather:', '  check:', '  write:', '    after: { gather: success, ch'].join('\n')
     const r = nikaComplete(ctx(doc))
     expect(r).not.toBeNull()
     expect(r!.options.map((o) => o.label)).toContain('check')
     expect(r!.options.map((o) => o.label)).not.toContain('write')
   })
 
-  it('depends_on with no other task offers nothing', () => {
-    const doc = ['tasks:', '  - id: only', '    depends_on: ['].join('\n')
+  it('after: with no other task offers nothing', () => {
+    const doc = ['tasks:', '  only:', '    after: { '].join('\n')
     expect(nikaComplete(ctx(doc))).toBeNull()
   })
 
   it('interp roots speak the LINT vocabulary, loop locals gated on for_each', () => {
-    const plain = ['tasks:', '  - id: a', '    infer:', '      prompt: "x ${{ '].join('\n')
+    const plain = ['tasks:', '  a:', '    infer:', '      prompt: "x ${{ '].join('\n')
     const r = nikaComplete(ctx(plain))
     expect(r).not.toBeNull()
     expect(r!.options.map((o) => o.label).sort()).toEqual([
-      'env.',
+      'config.',
+      'const.',
+      'inputs.',
       'secrets.',
       'tasks.',
-      'vars.',
       'with.',
     ])
-    const looped = ['tasks:', '  - id: a', '    for_each: ${{ vars.list }}', '    exec:', '      command: ["x", "${{ '].join('\n')
+    const looped = ['tasks:', '  a:', '    for_each: ${{ const.list }}', '    exec:', '      command: ["x", "${{ '].join('\n')
     const r2 = nikaComplete(ctx(looped))
     expect(r2!.options.map((o) => o.label)).toContain('item')
     expect(r2!.options.map((o) => o.label)).toContain('index')
   })
 
   it('tasks. offers the other tasks as .output refs', () => {
-    const doc = ['tasks:', '  - id: gather', '  - id: write', '    with:', '      notes: ${{ tasks.'].join('\n')
+    const doc = ['tasks:', '  gather:', '  write:', '    with:', '      notes: ${{ tasks.'].join('\n')
     const r = nikaComplete(ctx(doc))
     expect(r!.options.map((o) => o.label)).toEqual(['tasks.gather.output'])
   })
 
-  it('vars. offers the envelope block keys · with. offers the current item keys', () => {
+  it('inputs. offers the envelope block keys · with. offers the current item keys', () => {
     const doc = [
-      'vars:',
+      'inputs:',
       '  region: eu',
       '  bucket: b1',
       'tasks:',
-      '  - id: a',
+      '  a:',
       '    with:',
       '      notes: hello',
       '    infer:',
-      '      prompt: "${{ vars.',
+      '      prompt: "${{ inputs.',
     ].join('\n')
     const r = nikaComplete(ctx(doc))
-    expect(r!.options.map((o) => o.label).sort()).toEqual(['vars.bucket', 'vars.region'])
-    const doc2 = doc.replace('${{ vars.', '${{ with.')
+    expect(r!.options.map((o) => o.label).sort()).toEqual(['inputs.bucket', 'inputs.region'])
+    const doc2 = doc.replace('${{ inputs.', '${{ with.')
     const r2 = nikaComplete(ctx(doc2))
     expect(r2!.options.map((o) => o.label)).toEqual(['with.notes'])
   })
 
   it('an unknown root offers nothing', () => {
-    const doc = ['tasks:', '  - id: a', '    infer:', '      prompt: "${{ nope.'].join('\n')
+    const doc = ['tasks:', '  a:', '    infer:', '      prompt: "${{ nope.'].join('\n')
     expect(nikaComplete(ctx(doc))).toBeNull()
   })
 })

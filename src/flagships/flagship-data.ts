@@ -224,9 +224,15 @@ outputs:
     /* the zero-model tab: not every workflow needs an LLM · the DAG, two
        builtins and one CEL compare do the whole job deterministically. */
     gloss: 'when: zero model · plain data opens the gate',
-    highlight: [25, 28],
+    highlight: [26, 29],
     artifact: 'wrote price-alert.md',
     traceNdjson: priceWatchTrace,
+    /* alert_below is `config:` BY ROLE (the E-split classify-not-rename law):
+       a deployment dial — every deployment of the watch sets ITS threshold
+       without editing the logic. Not `inputs:` (nobody passes --var to a
+       cron watch) · not `const:` (the value is a setting, not wiring). The
+       vitrine now teaches all three: daily-brief has inputs-shaped reads,
+       the showcases carry const, price-watch carries config. */
     yaml: `nika: v1
 workflow:
   id: price-watch
@@ -237,8 +243,9 @@ permits:
   fs: { read: [ ./price.json ], write: [ ./price-alert.md ] }
   tools: [ "nika:read", "nika:jq", "nika:write" ]
 
-vars:
-  alert_below: 899  # your threshold · plain data
+config:
+  # your threshold · the deployment's dial
+  alert_below: { type: number, default: 899 }
 
 tasks:
   snapshot:
@@ -254,12 +261,12 @@ tasks:
   alert:
     with:
       price: \${{ tasks.price.output }}
-    when: \${{ with.price < vars.alert_below }}
+    when: \${{ with.price < config.alert_below }}
     invoke:
       tool: "nika:write"
       args:
         path: ./price-alert.md
-        content: "Price drop: now \${{ with.price }} (target \${{ vars.alert_below }})"
+        content: "Price drop: now \${{ with.price }} (target \${{ config.alert_below }})"
 
 outputs:
   price: "\${{ tasks.price.output }}"

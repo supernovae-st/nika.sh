@@ -41,10 +41,14 @@ export const RUN_CMD = 'nika run hello.nika.yaml'
 export const WELCOME_CMD = 'nika welcome'
 export const DOCTOR_CMD = 'nika doctor'
 
-/* the zero-setup first file — no model, no key (exec only) */
+/* the zero-setup first file — no model, no key (exec only). 0.106: an
+   absent permits: is the EMPTY boundary, so even the hello declares its
+   touch — two more lines, and the file IS the blast radius from day one. */
 export const HELLO_YAML = `nika: v1
 workflow:
   id: hello
+permits:
+  exec: ["echo"]
 tasks:
   greet:
     exec:
@@ -61,12 +65,12 @@ tasks:
       prompt: "Say hello in one sentence."`
 
 /* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
-   Captured 2026-07-17 against nika 0.105.0 (the verified release binary)
+   Captured 2026-07-28 against nika 0.106.0 (the verified release binary)
    running the exact HELLO_YAML above. The honesty law: these frames render
    REAL output — re-capture when the CLI's voice changes, never hand-edit. */
 export const VERSION_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: 'nika --version' },
-  { kind: 'out', text: 'nika 0.105.0' },
+  { kind: 'out', text: 'nika 0.106.0' },
 ]
 
 export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
@@ -80,17 +84,18 @@ export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
   { kind: 'ok', text: ' ✔ TOOLS    every nika: tool names a canonical builtin' },
   { kind: 'ok', text: ' ✔ ARGS     every invoke arg key is declared + every required arg is present' },
   { kind: 'ok', text: ' ✔ SCHEMA   every authored schema: is satisfiable' },
-  { kind: 'soft', text: ' ○ PERMITS  no boundary declared (engine floor only) · `--infer-permits` writes one' },
-  { kind: 'dim', text: ' ↳ HINT     [permits] no `permits:` boundary declared — run `nika check --infer-permits` to generate the tightest one (default-deny once present)' },
-  { kind: 'ok', text: ' ✔ audited · 1 task · 1 wave · permits none · est ≥$0.0000 · 1 hint' },
+  { kind: 'ok', text: ' ✔ GATES    every task is statically reachable · status literals in vocabulary' },
+  { kind: 'ok', text: ' ✔ PERMITS  body fits the declared boundary' },
+  { kind: 'ok', text: ' ✔ TRIFECTA no lethal trifecta without a dominating human gate' },
+  { kind: 'ok', text: ' ✔ audited · 1 task · 1 wave · permits declared · est ≥$0.0000 · 0 hints' },
   { kind: 'out', text: '' },
   { kind: 'cmd', text: 'nika run hello.nika.yaml' },
   { kind: 'out', text: '  🦋 nika · hello · 1 task' },
-  { kind: 'dim', text: '     permits ✓ engine floor (no boundary declared)' },
+  { kind: 'dim', text: '     permits ✓ declared boundary · default-deny' },
   { kind: 'out', text: '' },
-  { kind: 'ok', text: '  ✔  greet  exec · echo  4ms' },
+  { kind: 'ok', text: '  ✔  greet  exec · echo  13ms' },
   { kind: 'dim', text: '  ── 1/1 done · $0.00 · elapsed 0.0s ─────────────────────────────' },
-  { kind: 'dim', text: '    trace: .nika/traces/2026-07-17T21-39-47Z-042f.ndjson · 5 events · chain e7a49a00ceacdc481547021c582c25066cc8f0ccdda4b54bedf71195dde8770d' },
+  { kind: 'dim', text: '    trace: .nika/traces/2026-07-28T00-14-59Z-1e25.ndjson · 7 events · chain d1d0936cf6689561617e4d4df41132e9b1ba403d47611ee39353a946b1263d42' },
 ]
 
 /* ── troubleshooting · the four honest snags (each fix is verifiable) ────────── */

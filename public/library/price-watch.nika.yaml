@@ -10,8 +10,9 @@ permits:
   fs: { read: [ ./price.json ], write: [ ./price-alert.md ] }
   tools: [ "nika:read", "nika:jq", "nika:write" ]
 
-vars:
-  alert_below: 899  # your threshold · plain data
+config:
+  # your threshold · the deployment's dial
+  alert_below: { type: number, default: 899 }
 
 tasks:
   snapshot:
@@ -27,12 +28,12 @@ tasks:
   alert:
     with:
       price: ${{ tasks.price.output }}
-    when: ${{ with.price < vars.alert_below }}
+    when: ${{ with.price < config.alert_below }}
     invoke:
       tool: "nika:write"
       args:
         path: ./price-alert.md
-        content: "Price drop: now ${{ with.price }} (target ${{ vars.alert_below }})"
+        content: "Price drop: now ${{ with.price }} (target ${{ config.alert_below }})"
 
 outputs:
   price: "${{ tasks.price.output }}"

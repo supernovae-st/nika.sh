@@ -23,19 +23,22 @@ import { LOOP_LOCALS, NAMESPACES } from '../lib/nika-lint'
 
 /* the structural keys — pinned to public/spec/shipped/workflow.schema.json
    by the test (hand-listed here because a JSON schema is not a TS module;
-   the GATE is what keeps it honest) */
+   the GATE is what keeps it honest) · 0.106: the value authorities
+   inputs · config · const · secrets replace vars/env, run + policy land */
 export const TOP_LEVEL_KEYS = [
   'nika',
   'workflow',
   'model',
-  'vars',
-  'env',
+  'types',
+  'inputs',
+  'config',
+  'const',
   'secrets',
   'permits',
+  'run',
+  'policy',
   'tasks',
   'outputs',
-  'types',
-  'policy',
 ] as const
 
 export const TASK_KEYS = [
@@ -44,11 +47,13 @@ export const TASK_KEYS = [
   'for_each',
   'max_parallel',
   'fail_fast',
+  'inert',
   'retry',
   'on_error',
   'timeout',
   'on_finally',
   'with',
+  'declassify',
   'output',
   'returns',
   'infer',
@@ -85,10 +90,10 @@ const taskKeyOptions: Completion[] = TASK_KEYS.map((k) => ({
   ...((CANON.verbNames as readonly string[]).includes(k) ? { detail: 'verb' } : {}),
 }))
 
-/* the task heads visible in the doc — the parse-plan head grammar (block
-   `  - id: x` and flow `  - { id: x`), scanned on demand: depends_on wants
+/* the task heads visible in the doc — the map grammar (0.105+ · the KEY is
+   the identity: `  name:` under `tasks:`), scanned on demand: after: wants
    the OTHER tasks' ids, and a wrong id is the workshop's most common
-   DAG-003. The current item's own head is excluded (self-dependency). */
+   DAG-002. The current item's own head is excluded (self-dependency). */
 function docTaskIds(ctx: CompletionContext, uptoLine: number): { ids: string[]; own: string | null } {
   const ids: string[] = []
   let own: string | null = null
@@ -96,9 +101,7 @@ function docTaskIds(ctx: CompletionContext, uptoLine: number): { ids: string[]; 
   for (let n = 1; n <= ctx.state.doc.lines; n++) {
     const text = ctx.state.doc.line(n).text
     if (/^[A-Za-z0-9_-]+\s*:/.test(text)) inTasks = /^tasks\s*:/.test(text)
-    const m = inTasks
-      ? (text.match(/^ {2}- id:\s*([a-z][a-z0-9_]*)/) ?? text.match(/^ {2}- \{ id:\s*([a-z][a-z0-9_]*)/))
-      : null
+    const m = inTasks ? text.match(/^ {2}([a-z][a-z0-9_]*)\s*:/) : null
     if (m) {
       ids.push(m[1])
       if (n <= uptoLine) own = m[1]
@@ -107,8 +110,8 @@ function docTaskIds(ctx: CompletionContext, uptoLine: number): { ids: string[]; 
   return { ids, own }
 }
 
-/* keys of a top-level envelope block (`vars:` · `env:` · `secrets:`) —
-   two-space children, scanned like the task heads */
+/* keys of a top-level envelope block (`inputs:` · `config:` · `const:` ·
+   `secrets:`) — two-space children, scanned like the task heads */
 function envelopeBlockKeys(ctx: CompletionContext, block: string): string[] {
   const keys: string[] = []
   let inBlock = false
@@ -127,15 +130,18 @@ function envelopeBlockKeys(ctx: CompletionContext, block: string): string[] {
    `item`/`index` are only words INSIDE a for_each task (the lint's rule) */
 function currentTaskBlock(ctx: CompletionContext, uptoLine: number): { forEach: boolean; withKeys: string[] } {
   let head = 0
+  let inTasks = false
   for (let n = 1; n <= uptoLine; n++) {
-    if (/^ {2}- /.test(ctx.state.doc.line(n).text)) head = n
+    const text = ctx.state.doc.line(n).text
+    if (/^[A-Za-z0-9_-]+\s*:/.test(text)) inTasks = /^tasks\s*:/.test(text)
+    if (inTasks && /^ {2}[a-z][a-z0-9_]*\s*:/.test(text)) head = n
   }
   const out = { forEach: false, withKeys: [] as string[] }
   if (!head) return out
   let inWith = false
-  for (let n = head; n <= ctx.state.doc.lines; n++) {
+  for (let n = head + 1; n <= ctx.state.doc.lines; n++) {
     const text = ctx.state.doc.line(n).text
-    if (n > head && (/^ {2}- /.test(text) || /^[A-Za-z0-9_-]+\s*:/.test(text))) break
+    if (/^ {2}[a-z][a-z0-9_]*\s*:/.test(text) || /^[A-Za-z0-9_-]+\s*:/.test(text)) break
     if (/^ {4}for_each\s*:/.test(text)) out.forEach = true
     if (/^ {4}[a-z_]+\s*:/.test(text)) inWith = /^ {4}with\s*:/.test(text)
     else if (inWith) {
@@ -151,9 +157,9 @@ export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
   const before = line.text.slice(0, ctx.pos - line.from)
 
   /* ${{ ref }} — the lint's own namespaces (ONE list, imported), the doc's
-     own names: tasks.<id>.output for the other tasks, vars/env/secrets keys
-     from their envelope blocks, with. keys of the current item, item/index
-     only inside a for_each task */
+     own names: tasks.<id>.output for the other tasks, inputs/config/const/
+     secrets keys from their envelope blocks, with. keys of the current
+     item, item/index only inside a for_each task */
   const interp = before.match(/\$\{\{\s*([a-z_][a-z0-9_.]*)?$/)
   if (interp) {
     const ref = interp[1] ?? ''
@@ -176,7 +182,7 @@ export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
       options = ids
         .filter((id) => id !== own)
         .map((id) => ({ label: `tasks.${id}.output`, type: 'variable', detail: 'task output' }))
-    } else if (root === 'vars' || root === 'env' || root === 'secrets') {
+    } else if (root === 'inputs' || root === 'config' || root === 'const' || root === 'secrets') {
       options = envelopeBlockKeys(ctx, root).map((k) => ({ label: `${root}.${k}`, type: 'variable' }))
     } else if (root === 'with') {
       options = currentTaskBlock(ctx, line.number).withKeys.map((k) => ({
@@ -188,9 +194,12 @@ export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
     return { from, options, validFor: /^[a-z_][a-z0-9_.]*$/ }
   }
 
-  /* depends_on: value position — offer the doc's OTHER task ids (block list
-     `[a, b]` or a `- ` item under depends_on both end in an id-ish tail) */
-  const dep = before.match(/\bdepends_on:\s*\[?\s*(?:[a-z][a-z0-9_]*\s*,\s*)*([a-z0-9_]*)$/)
+  /* after: producer position — offer the doc's OTHER task ids (inline flow
+     `after: { <id>` or a 6-space block child under `after:`) */
+  const dep = before.match(/\bafter:\s*\{\s*(?:[a-z][a-z0-9_]*\s*:\s*[a-z]+\s*,\s*)*([a-z0-9_]*)$/)
+    ?? (/^\s{6}[a-z0-9_]*$/.test(before) && /\bafter:/.test(ctx.state.doc.line(line.number - 1)?.text ?? '')
+      ? before.match(/([a-z0-9_]*)$/)
+      : null)
   if (dep) {
     const { ids, own } = docTaskIds(ctx, line.number)
     const options: Completion[] = ids
@@ -221,18 +230,19 @@ export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
     }
   }
 
-  /* key positions: indentation decides the register (the W2 grammar) */
-  const key = before.match(/^(\s*)(- )?([a-z_]*)$/)
+  /* key positions: indentation decides the register (the map grammar) */
+  const key = before.match(/^(\s*)([a-z_]*)$/)
   if (key) {
     const indent = key[1].length
-    const word = key[3]
+    const word = key[2]
     const from = ctx.pos - word.length
-    if (indent === 0 && !key[2]) {
+    if (indent === 0) {
       if (!word && !ctx.explicit) return null
       return { from, options: topLevelOptions, validFor: /^[a-z_]*$/ }
     }
-    /* inside a task item: the `  - ` head or the 4-space body keys */
-    if ((indent === 2 && key[2]) || indent === 4) {
+    /* inside a task entry: the 4-space body keys (2-space = the task NAME,
+       the author's own word — nothing to offer) */
+    if (indent === 4) {
       if (!word && !ctx.explicit) return null
       return { from, options: taskKeyOptions, validFor: /^[a-z_]*$/ }
     }

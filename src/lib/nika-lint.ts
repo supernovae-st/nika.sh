@@ -1,9 +1,10 @@
 /* ─── nika-lint · the oracle's static checks, in the browser ────────────────
    A TypeScript port of the conformance cross-refs + the eight hard rules
    (docs.nika.sh/guides/agent-authoring), speaking the SHIPPED grammar
-   (0.104 · W2: workflow scalar · tasks sequence · declarative depends_on —
-   the visitor's own binary is the contract). Same NIKA codes, same fix lines —
-   the playground teaches with the engine's own vocabulary. Line numbers
+   (0.106 · the map envelope + the value authorities: inputs · config ·
+   const · secrets — the visitor's own binary is the contract). Same NIKA
+   codes, same fix lines — the playground teaches with the engine's own
+   vocabulary. Line numbers
    come from a light scanner over the source text (task blocks + envelope
    keys), not a CST: precise enough to put the squiggle on the right task.
    Note · 'exec' below is the Nika VERB (a yaml key) — nothing here runs
@@ -83,7 +84,10 @@ const DURATION = /^([0-9]+(\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$/
 const ROOT_ID = /(?<![.\w])([A-Za-z_][A-Za-z0-9_]*)(?:\.([A-Za-z_][A-Za-z0-9_]*))?/g
 const CEL_BUILTINS = new Set(['true', 'false', 'null', 'in', 'size'])
 export const LOOP_LOCALS = new Set(['item', 'index'])
-export const NAMESPACES = new Set(['vars', 'with', 'tasks', 'env', 'secrets'])
+/* the six namespaces (0.106 · R3a the E-split): the value authorities
+   inputs · config · const · secrets, plus the two graph scopes with · tasks.
+   `vars` and `env` died at the flag-day (NIKA-VALUES-001/-002). */
+export const NAMESPACES = new Set(['inputs', 'config', 'const', 'secrets', 'with', 'tasks'])
 const PROVIDERS = new Set<string>([
   ...CANON.providerIdsCloud,
   ...CANON.providerIdsLocal,
@@ -164,8 +168,9 @@ export function lintNika(src: string): LintDiag[] {
   const idset = new Set(ids)
 
   /* 0.105 precedence: the BINDING is the edge — every tasks.X read implies
-     it · `after:` carries the control edges ({producer: predicate}). */
-  const PREDICATES = new Set(['succeeded', 'failed', 'skipped', 'terminal'])
+     it · `after:` carries the control edges ({producer: predicate}).
+     0.106 ratified the predicate names: success · failure (DAG-005). */
+  const PREDICATES = new Set(['success', 'failure', 'skipped', 'terminal'])
   const aftersOf = (t: Task | null | undefined): Array<[string, unknown]> => {
     const a = (t as Task | undefined)?.after
     if (!a) return []
@@ -223,21 +228,27 @@ export function lintNika(src: string): LintDiag[] {
 
     // PARSE-024 · depends_on died at 0.105 — the binding IS the edge
     if ('depends_on' in t)
-      diags.push({ line, code: 'NIKA-PARSE-024', message: `task '${id}' carries depends_on: — dead since 0.105`, fix: 'data → with: bindings (the binding IS the edge) · control → after: {producer: succeeded}' })
+      diags.push({ line, code: 'NIKA-PARSE-024', message: `task '${id}' carries depends_on: — dead since 0.105`, fix: 'data → with: bindings (the binding IS the edge) · control → after: {producer: success}' })
 
     // DAG-002 · every control edge must name a task · DAG-005 · predicates
+    // DAG-001 · a self-edge is a cycle of length one (after: { self: … })
     for (const [d, pred] of aftersOf(t)) {
-      if (!idset.has(d))
+      if (d === id)
+        diags.push({ line, code: 'NIKA-DAG-001', message: `after: '${id}' waits for itself`, fix: 'a task never depends on itself · drop the self-edge' })
+      else if (!idset.has(d))
         diags.push({ line, code: 'NIKA-DAG-002', message: `after: '${d}' is not a task`, fix: 'fix the name or add the task' })
       if (typeof pred === 'string' && !PREDICATES.has(pred))
-        diags.push({ line, code: 'NIKA-DAG-005', message: `after.${d}: '${pred}' is not a predicate`, fix: 'the set is closed · succeeded · failed · skipped · terminal' })
+        diags.push({ line, code: 'NIKA-DAG-005', message: `after.${d}: '${pred}' is not a predicate`, fix: 'the set is closed · success · failure · skipped · terminal' })
     }
 
     // DAG-002 · a tasks.X binding must name a task (the binding IS the edge)
     for (const body of exprBodies(t.with))
-      for (const m of body.matchAll(TASK_REF))
-        if (!idset.has(m[1]))
+      for (const m of body.matchAll(TASK_REF)) {
+        if (m[1] === id)
+          diags.push({ line, code: 'NIKA-DAG-001', message: `with: on '${id}' binds its own output`, fix: 'a task never depends on itself · drop the self-binding' })
+        else if (!idset.has(m[1]))
           diags.push({ line, code: 'NIKA-DAG-002', message: `with: binds tasks.${m[1]} · not a task`, fix: 'fix the name or add the task' })
+      }
 
     // VAR-021 · tasks.* is boundary-only — with:/after: declare the edges,
     // the body reads its bindings (when:/for_each:/verb fields are LOCAL)
@@ -253,9 +264,10 @@ export function lintNika(src: string): LintDiag[] {
           if (m[1] !== id)
             diags.push({ line, code: 'NIKA-VAR-021', message: `on_finally on '${id}' reads tasks.${m[1]} · only the parent is legal there`, fix: `cleanup reads its parent only · \${{ tasks.${id}.status }}` })
 
-    // VAR-001 · roots must resolve
-    const vars = new Set(Object.keys((doc.vars as object) || {}))
-    const env = new Set(Object.keys((doc.env as object) || {}))
+    // VAR-001 · roots must resolve (the four value authorities + with)
+    const inputs = new Set(Object.keys((doc.inputs as object) || {}))
+    const config = new Set(Object.keys((doc.config as object) || {}))
+    const consts = new Set(Object.keys((doc.const as object) || {}))
     const secrets = new Set(Object.keys((doc.secrets as object) || {}))
     const withKeys = new Set(Object.keys((t.with as object) || {}))
     const inForEach = 'for_each' in t
@@ -266,16 +278,18 @@ export function lintNika(src: string): LintDiag[] {
         if (LOOP_LOCALS.has(root)) {
           if (!inForEach)
             diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}' is a for_each loop-local · no for_each on '${id}'`, fix: 'add for_each: or use a namespace' })
-        } else if (root === 'vars' && seg && !vars.has(seg))
-          diags.push({ line, code: 'NIKA-VAR-001', message: `vars.${seg} is not declared`, fix: `declare it under vars:` })
-        else if (root === 'env' && seg && !env.has(seg))
-          diags.push({ line, code: 'NIKA-VAR-001', message: `env.${seg} is not declared`, fix: 'declare it under env:' })
+        } else if (root === 'inputs' && seg && !inputs.has(seg))
+          diags.push({ line, code: 'NIKA-VAR-001', message: `inputs.${seg} is not declared`, fix: `declare it under inputs:` })
+        else if (root === 'config' && seg && !config.has(seg))
+          diags.push({ line, code: 'NIKA-VAR-001', message: `config.${seg} is not declared`, fix: 'declare it under config:' })
+        else if (root === 'const' && seg && !consts.has(seg))
+          diags.push({ line, code: 'NIKA-VAR-001', message: `const.${seg} is not declared`, fix: 'declare it under const:' })
         else if (root === 'secrets' && seg && !secrets.has(seg))
           diags.push({ line, code: 'NIKA-VAR-001', message: `secrets.${seg} is not declared`, fix: 'declare it under secrets:' })
         else if (root === 'with' && seg && !withKeys.has(seg))
           diags.push({ line, code: 'NIKA-VAR-001', message: `with.${seg} is not in this task's with:`, fix: 'add it to with:' })
         else if (seg && !NAMESPACES.has(root) && !LOOP_LOCALS.has(root))
-          diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}.${seg}' uses an unknown namespace`, fix: 'the five namespaces · vars with tasks env secrets' })
+          diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}.${seg}' uses an unknown namespace`, fix: 'the six namespaces · inputs config const secrets with tasks' })
       }
 
     // hard rule 6 · write needs content
@@ -311,7 +325,7 @@ export function lintNika(src: string): LintDiag[] {
       if (!body)
         diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is a bare string · never evaluated`, fix: 'wrap it · when: ${{ … }} · or use the literal true/false' })
       else if (!/[=!<>?]|&&|\|\||\bin\b|\b(size|has)\s*\(|\.(contains|startsWith|endsWith)\s*\(|^\s*!/.test(body))
-        diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is not boolean-shaped`, fix: 'compare something · e.g. ${{ vars.x > 0 }} · has(vars.x) · x.contains("…")' })
+        diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is not boolean-shaped`, fix: 'compare something · e.g. ${{ inputs.x > 0 }} · has(inputs.x) · x.contains("…")' })
     }
 
     // output: bindings are pure jq — ${{ }} never appears inside them
