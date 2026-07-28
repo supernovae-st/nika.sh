@@ -169,6 +169,25 @@ const theme = {
     boundary: '#d18616', refusals: '#e51400', proof: '#388a34' },
 }
 
+/* ── LE SOL · les quatre couches que le canvas dessine ───────────────────────
+   Le plateau du banc peignait un aplat là où le canvas empile une trame, une
+   vignette qui connaît le run, et une lampe bleue qui suit le pointeur. C'est
+   pour ça que les deux divergeaient à l'œil.
+
+   LE SVG DE LA TRAME EST DÉRIVÉ, jamais recopié : la croix se construit depuis
+   cell_px et arm_px, donc changer la maille dans le SSOT change le dessin ici
+   sans que personne ne retouche une data-URI. */
+const crossImg = (cell, arm, stroke) => {
+  const c = cell / 2
+  const d = `M${c} ${c - arm}v${arm * 2}M${c - arm} ${c}h${arm * 2}`
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${cell}' height='${cell}'>`
+    + `<g stroke='#ffffff' stroke-opacity='${stroke}'><path d='${d}'/></g></svg>`
+  return `url("data:image/svg+xml,${svg.replace(/</g, '%3C').replace(/>/g, '%3E').replace(/#/g, '%23')}")`
+}
+const GR = MAT.ground
+const vign = (v) => `radial-gradient(${v.reach_x * 100}% ${v.reach_y * 100}% at 50% ${v.at_y * 100}%,`
+  + ` transparent ${v.clear * 100}%, rgb(0 0 0 / ${v.edge}) 100%)`
+
 /* ── THE KNOBS · the five values every surface shares ─────────────────────────
    Each one names WHERE ITS DIFF GOES, because that is the question a designer
    cannot answer from a swatch: does this knob travel? A radius travels — the
@@ -694,14 +713,26 @@ ${Object.entries(theme.layer).map(([k, v]) => `    --nk-${k}:${v};`).join('\n')}
      plus-lighter because the room is dark: soft-light barely lifts a backdrop
      already near zero, which is how the site's first binding shipped a lamp
      that moved one pixel sample in 5394. */
-  .stage{position:relative;isolation:isolate;background:var(--nk-bg);color:var(--nk-ink);
+  /* LE PLATEAU EST LE SOL DU CANVAS · quatre couches, dans l'ordre du canvas :
+     la couleur, la trame de croix, la vignette (::before), la lampe (::after) */
+  .stage{position:relative;isolation:isolate;color:var(--nk-ink);
+    background-color:var(--nk-bg);
+    background-image:${crossImg(GR.grid.cell_px, GR.grid.arm_px, GR.grid.stroke)};
+    background-size:${GR.grid.cell_px}px ${GR.grid.cell_px}px;
     border:1px solid var(--room-strong);border-radius:12px;padding:24px;overflow-x:auto}
+  /* la vignette · la mare tombe sur ses bords, et elle CONNAÎT le run */
+  .stage::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+    border-radius:inherit;background:${vign(GR.vignette)};
+    transition:background ${MAT.motion.drawer_ms}ms var(--ease)}
+  .stage[data-running]::before{background:${vign(GR.vignette_running)}}
+  /* LA LAMPE EST CELLE DU CANVAS · bleue, 680px, 6% — elle existait avant que
+     le site n'en invente une blanche. Deux échelles, une seule idée, et
+     l'original est ici. */
   .stage::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
-    mix-blend-mode:plus-lighter;
-    background:radial-gradient(${MAT.lamp.reach_vmax}vmax circle at var(--lamp-x) var(--lamp-y),
-      rgb(255 255 255 / calc(${MAT.lamp.core} * .62)) 0%,
-      rgb(255 255 255 / calc(${MAT.lamp.core} * .2)) ${MAT.lamp.falloff * 100}%,
-      transparent 62%)}
+    border-radius:inherit;opacity:var(--spot-on,1);
+    transition:opacity ${GR.spot.ease_ms}ms ease-out;
+    background:radial-gradient(${GR.spot.radius_px}px circle at var(--lamp-x) var(--lamp-y),
+      rgb(${GR.spot.hue} / ${GR.spot.alpha}), transparent ${GR.spot.fade * 100}%)}
   @media (prefers-reduced-motion:no-preference){
     .stage{animation:lamp-drift ${MAT.lamp.drift_s}s linear infinite}
     .stage[data-lamp]{animation-play-state:paused}}
