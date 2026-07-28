@@ -61,8 +61,11 @@ if (!fn) { console.error('✗ nodeClassOf() introuvable dans dag.ts · le canvas
    qu'une moitié appelle invention ce qui est simplement muet. */
 const families = [...new Set([
   ...[...css.matchAll(/\.(nc[a-z0-9-]*)/g)].map((m) => m[1]),
-  ...[...ts.matchAll(/['"`](nc-[a-z0-9-]+)['"`]/g)].map((m) => m[1]),
-  ...[...ts.matchAll(/'(nc-[a-z0-9-]+)',/g)].map((m) => m[1]),
+  /* UN LITTÉRAL PORTE SOUVENT PLUSIEURS CLASSES · `'nc-chip nc-model nc-engine'`
+     est une seule chaîne et trois mots. La première version capturait la chaîne
+     entière, donc nc-model restait invisible — la classe même dont on venait de
+     prouver qu'elle n'avait aucune peau. On découpe. */
+  ...[...ts.matchAll(/['"`]((?:nc-[a-z0-9-]+ ?)+)['"`]/g)].flatMap((m) => m[1].trim().split(/\s+/)),
 ])].sort()
 
 /* CE QUE LE CANVAS REÇOIT VRAIMENT · la question que la matrice pose, et à

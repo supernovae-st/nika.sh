@@ -63,6 +63,16 @@ const TOOLS = JSON.parse(
    puis ce qui regarde le run, puis ce qui fabrique. */
 const CAT_ORDER = ['core', 'file', 'data', 'network', 'introspection', 'media']
 
+/* LE CHIP ÉDITABLE · une valeur qu'on peut CHANGER. Le canvas n'en a qu'un —
+   nc-model, un <button> qui ouvre le sélecteur de fournisseur, écrit le YAML et
+   se défait au ⌘Z — et jusqu'au 28/07 il n'avait aucune peau : le seul contrôle
+   qui touche au fichier ressemblait trait pour trait à une étiquette morte. */
+const EDITABLE = [
+  ['anthropic/claude-haiku-4-5', 'infer', 'le modèle · clic → sélecteur → le YAML change'],
+  ['mistral/mistral-large-latest', 'infer', 'un autre fournisseur · le catalogue en connaît 17'],
+  ['ollama/qwen2.5', 'infer', 'local · aucune clé'],
+]
+
 const constObject = (name) => {
   const body = tokensTs.match(new RegExp(`export const ${name} = \\{([^}]*)\\}`))?.[1]
   if (!body) throw new Error(`bench: ${name} not found in design-tokens.generated.ts`)
@@ -946,6 +956,20 @@ ${nodeCssProjected}
   .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
   .bx-tools .nc{width:auto}
   .bx-opt{color:var(--nk-faint);border-style:dashed}
+  .bx-eds{display:flex;flex-direction:column;gap:0}
+  .bx-ed{display:grid;grid-template-columns:250px minmax(0,1fr);align-items:center;gap:16px;
+    padding:11px 14px;border-bottom:1px solid var(--nk-edge)}
+  .bx-ed:last-child{border-bottom:0}
+  /* --nk-strong est un BLANC À 20 % D'ALPHA, pas une encre : la bordure du chip
+     vaut « 61 % de currentColor », donc elle est tombée à 12,2 % et la garantie
+     de 3:1 s'est évaporée. La transparence se COMPOSE — un jeton translucide
+     branché là où le contrat suppose une encre opaque annule sa mesure. */
+  .bx-ed .nc-model{justify-self:start;font-family:var(--nk-face-mono);
+    font-size:calc(var(--nk-fs) - 0.5px);color:var(--nk-ink);
+    /* background-color, PAS background · le raccourci aurait effacé le chevron
+       que la projection pose en background-image */
+    background-color:transparent}
+  .bx-ed-why{font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption)}
   .bx-pols{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:0}
   .bx-pol{display:grid;grid-template-columns:auto 74px minmax(0,1fr);align-items:center;gap:11px;
     padding:9px 14px;border-bottom:1px solid var(--nk-edge)}
@@ -1605,6 +1629,33 @@ ${STATES.map((st) => `        <div class="mtx-shead">${esc(st.label)}<em>${esc(s
 ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v, { state: st.id })}</div>`).join('\n')}`).join('\n')}
       </div>
     </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Le chip éditable</h2><span class="sec-n">1 contrôle · mesuré à 3.04:1</span></div>
+    <p class="sec-note">
+      Une valeur qu’on peut <b>changer</b> n’est pas une étiquette. Le canvas n’en a qu’une —
+      <code>nc-model</code>, un bouton qui ouvre le sélecteur de fournisseur, écrit le YAML et se
+      défait au ⌘Z — et c’était le <b>seul chip interactif sans peau</b> : audité, tous les autres
+      en avaient une. Trois faits font la différence, et Geist comme shadcn tiennent les trois :
+      un <b>indicateur au repos</b> (jamais seulement au survol), un <b>anneau de focus</b> qu’on
+      ne supprime pas « pour le polish », et un <b>nom accessible qui dit l’action</b> — l’infobulle
+      ajoute du contexte, elle ne nomme pas. Survole, puis tabule dessus.
+    </p>
+    <div class="stage nk-ground bx-eds" data-stage>
+${EDITABLE.map(([val, verb, why]) => `      <div class="bx-ed">
+        <button type="button" class="nc-pol nc-model" aria-label="Changer le modèle de cette tâche">${esc(val)}</button>
+        <span class="bx-ed-why">${esc(why)}</span>
+      </div>`).join('\n')}
+    </div>
+    <p class="typ-legend">
+      La bordure au repos vaut <b>61 %</b> de l’encre du chip, pas 34 % : le premier jet affirmait
+      tenir le plancher de 3:1 de Geist et la mesure l’a démenti — <b>1,83:1</b> sur le pire plan.
+      Résolue sur les trois plans stockés et les deux graisses d’encre, elle atteint
+      <b>3,04:1</b> au repos et <b>4,90:1</b> au survol, pour que le renforcement se voie.
+      Un nombre écrit parce qu’il « semble juste » est un nombre sur lequel le contrat aura tort
+      pour toujours.
+    </p>
   </section>
 
   <section>

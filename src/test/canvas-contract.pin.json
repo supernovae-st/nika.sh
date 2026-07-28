@@ -1,5 +1,5 @@
 {
-  "sha": "df3bd33",
+  "sha": "bc8e93c",
   "contract": [
     "status-pending",
     "status-running",
@@ -142,6 +142,7 @@
     "nc-fe",
     "nc-file-glyph",
     "nc-file-name",
+    "nc-foreach",
     "nc-fx",
     "nc-fx-",
     "nc-fx-a",
@@ -166,6 +167,7 @@
     "nc-io-wire",
     "nc-mode-grand",
     "nc-mode-min",
+    "nc-model",
     "nc-params",
     "nc-pill",
     "nc-pill-fact",
