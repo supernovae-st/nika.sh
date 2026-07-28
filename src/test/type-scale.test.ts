@@ -191,3 +191,84 @@ describe('type weights · pinned to the cuts that exist', () => {
     expect(offenders, `raw weights: ${offenders.join(' · ')}`).toHaveLength(0)
   })
 })
+
+/* ── the two voices · already true, and now defended ─────────────────────────
+   The arc opened on a bad number: "340 declarations of --mono against 25 of
+   --display", read as a monospace site with a sans sprinkled on top. It was
+   counting DECLARATIONS. :root already sets font-family: var(--display), so
+   the prose voice is the DEFAULT and never needs declaring — mono does, every
+   time. Asked what it actually renders, the home page answers 145 elements in
+   Martian Grotesk, 106 in Martian Mono, 2 in Clash Display.
+
+   So the frontier the operator chose — argument in the prose voice, proof in
+   the mono one — was already built. Every candidate violation turned out to be
+   a deliberate register: provenance plates ("recorded from a real nika run ·
+   nothing staged"), bracket kickers (uppercase, letterspaced), counts, tokens,
+   dates. Even the thesis line sits inside the artifact's plate strip, beside
+   "audited · 7 tasks · 4 waves".
+
+   Nothing to migrate, then. What was missing is the floor under it, because
+   all three of these can be broken silently by a one-line edit:
+
+     · the default flips, and every unstyled paragraph changes voice at once
+     · a variable is renamed, and two voices swap without a single call site
+       moving (--display is the GROTESK and --headline is the display face —
+       the names invite exactly that mistake)
+     · the display cut leaks down to body sizes, where it is simply a worse
+       typeface than the text face it displaced
+
+   The third has a real floor to defend: Clash is set in seven places and its
+   smallest is 19px. */
+describe('the two voices · the frontier is argument vs proof', () => {
+  const INDEX = readFileSync(join(ROOT, 'src/index.css'), 'utf8')
+  const TOKENS = readFileSync(join(ROOT, 'src/styles/tokens.css'), 'utf8')
+
+  it('the prose voice is the document default', () => {
+    const root = INDEX.match(/:root\s*\{[\s\S]*?\n\}/)?.[0] ?? ''
+    expect(root, ':root no longer sets a font-family — every unstyled block just changed voice')
+      .toMatch(/font-family:\s*var\(--display\)/)
+  })
+
+  it('each variable still points at the face it is named for', () => {
+    const face = (name: string) =>
+      (INDEX + TOKENS).match(new RegExp(`--${name}:\\s*'([^']+)'`))?.[1]
+    /* the names are counter-intuitive on purpose-of-history: --display is the
+       GROTESK (prose), --headline is Clash (the actual display face). Pinned
+       here so a tidy-up rename cannot swap the voices without a call site. */
+    expect(face('display'), '--display is meant to be the prose grotesk').toBe('Martian Grotesk')
+    expect(face('headline'), '--headline is meant to be Clash Display').toBe('Clash Display')
+    expect(face('mono'), '--mono is meant to be Martian Mono').toBe('Martian Mono')
+  })
+
+  it('the display face never drops to body sizes', () => {
+    const FLOOR = 19
+    const px = (v: string): number | null => {
+      const clamp = v.match(/clamp\(\s*([^,]+),/)
+      const raw = (clamp ? clamp[1] : v).trim()
+      const rem = raw.match(/^([\d.]+)rem$/)
+      if (rem) return Number(rem[1]) * 16
+      const p = raw.match(/^([\d.]+)px$/)
+      if (p) return Number(p[1])
+      const ref = raw.match(/var\(--([a-z0-9-]+)\)/)
+      if (ref) {
+        const v2 = TOKENS.match(new RegExp(`--${ref[1]}:\\s*([^;]+);`))?.[1]
+        return v2 ? px(v2) : null
+      }
+      return null
+    }
+    const small: string[] = []
+    for (const file of SHEETS) {
+      const src = readFileSync(file, 'utf8')
+      for (const m of src.matchAll(/([^{}]*)\{([^{}]*var\(--headline\)[^{}]*)\}/g)) {
+        const size = m[2].match(/font-size:\s*([^;]+);/)?.[1]
+        if (!size) continue /* inherits — judged where it is set */
+        const n = px(size)
+        if (n !== null && n < FLOOR) {
+          small.push(`${rel(file)} ${m[1].trim().split('\n').pop()?.trim()} → ${size.trim()}`)
+        }
+      }
+    }
+    expect(small, `Clash Display below ${FLOOR}px: ${small.join(' · ')} `
+      + '— a display cut at body size is not the same typeface, it is a worse one').toHaveLength(0)
+  })
+})
