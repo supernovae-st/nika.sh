@@ -1735,6 +1735,15 @@ export default function ScrollMorph({ flagship }: { flagship: FlagshipEntry }) {
               role="log"
               aria-live="off"
               aria-label="the run's terminal output"
+              /* REACHABLE BY DEFAULT (a11y sweep · scrollable-region-focusable).
+                 The tab stop used to arrive only via the hook, post-hydration —
+                 a race axe kept winning as the entry chunk grew (screen 01
+                 widened the window past the sweep's one re-audit). Flipped:
+                 the PRERENDERED element carries the stop, and the hook
+                 surrenders it when the content fits. A stop on a non-scrolling
+                 well is harmless; its absence on a scrolling one is a serious
+                 violation — the asymmetry decides the default. */
+              tabIndex={0}
             >
               {script.lines.slice(0, timeline.reveal).map((line, i) => (
                 <div
