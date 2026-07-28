@@ -2,7 +2,37 @@ import { useLayoutEffect, useRef } from 'react'
 import type { ParsedPlan } from '../lib/parse-plan'
 import { useScrollWellTab } from '../lib/use-scroll-well'
 import { verbGlyph } from './codefile-highlight'
+import {
+  nikaNodeClass,
+  NIKA_NODE_CLASSES,
+  NIKA_NODE_STATUS,
+  type NikaVerbName,
+} from '../design-tokens.generated'
+import '../styles/node.generated.css'
 import './dag-view.css'
+
+/* ── THE CARD IS THE CANVAS'S CARD ────────────────────────────────────────────
+   This page used to draw a node of its own invention: 21 `.dv-*` selectors,
+   ZERO of them shared with the 139 the VS Code canvas styles. Two surfaces
+   drawing the same object, agreeing on nothing, because there was nothing to
+   agree with.
+
+   What converges is the STRUCTURE and the VOCABULARY — the class string comes
+   from nikaNodeClass(), the parts carry the canvas's names, the geometry is
+   projected. What does NOT converge is the skin: this page's blue plate is its
+   own register and stays in dag-view.css, layered on top. `node.generated.css`
+   carries no colour on purpose, so it can be worn by both.
+
+   A task with no verb yet is genuinely site-only — the canvas never renders a
+   half-written file — so it keeps a `dv-` prefix. Shared concepts take the
+   shared name; site concepts keep the site's. */
+function cardClass(
+  verb: string | null | undefined,
+  status: (typeof NIKA_NODE_STATUS)[number] | undefined,
+): string {
+  if (!verb) return `${NIKA_NODE_CLASSES.wrapper} dv-draft`
+  return nikaNodeClass({ status: status ?? 'pending', verb: verb as NikaVerbName })
+}
 
 /* ─── DagView · the standalone live plan (W12b · E1) ──────────────────────────
    The flat DAG as a pure component: waves left→right, parallel tasks
@@ -147,45 +177,58 @@ export function DagView({
                 ref={(el) => {
                   nodeRefs.current.set(t.id, el)
                 }}
-                className="dv-node"
-                data-verb={t.verb ?? undefined}
-                data-lit={lit === t.id || undefined}
-                onPointerEnter={onNodeHover ? () => onNodeHover(t.id) : undefined}
-                onPointerLeave={onNodeHover ? () => onNodeHover(null) : undefined}
-                data-run={
+                className={cardClass(
+                  t.verb,
                   simWave === undefined
                     ? undefined
                     : w < simWave
-                      ? 'done'
+                      ? 'success'
                       : w === simWave
                         ? 'running'
-                        : 'pending'
-                }
+                        : 'pending',
+                )}
+                data-lit={lit === t.id || undefined}
+                onPointerEnter={onNodeHover ? () => onNodeHover(t.id) : undefined}
+                onPointerLeave={onNodeHover ? () => onNodeHover(null) : undefined}
               >
-                <span className="dv-node-id">{t.id}</span>
-                <span className="dv-node-verb">
-                  {t.verb ? (
-                    <>
-                      <span aria-hidden>{verbGlyph(t.verb)} </span>
-                      {t.verb}
-                    </>
-                  ) : (
-                    'no verb yet'
+                <div className="nc">
+                  <div className="nc-head">
+                    <span className="nc-tile" aria-hidden>
+                      {t.verb ? verbGlyph(t.verb) : '·'}
+                    </span>
+                    <span className="nc-id">{t.id}</span>
+                    {/* NO nc-badge. That slot is the canvas's FAN-OUT COUNT
+                        (`×3` · empty otherwise) — putting the verb's name in it
+                        was inventing a meaning for a word that already had one,
+                        and the symptom was the id truncating to « gath… » on a
+                        108px card. The verb reads from the tile and from the
+                        wrapper's verb- class, which tints the whole card. */}
+                    {simWave !== undefined && (
+                      <span className="nc-st" aria-hidden>
+                        <i className="nc-dot" />
+                      </span>
+                    )}
+                  </div>
+                  <div className="nc-sub">
+                    <span className="nc-sub-k" title={t.target}>
+                      {t.target}
+                    </span>
+                  </div>
+                  {(t.gated || simWave !== undefined) && (
+                    <div className="nc-policy">
+                      {t.gated && (
+                        <span className="nc-chip" aria-label="gated by when:">
+                          when:
+                        </span>
+                      )}
+                      {simWave !== undefined && (
+                        <span className="nc-chip dv-run">
+                          {w < simWave ? 'done' : w === simWave ? 'running' : 'queued'}
+                        </span>
+                      )}
+                    </div>
                   )}
-                </span>
-                <span className="dv-node-target" title={t.target}>
-                  {t.target}
-                </span>
-                {t.gated && (
-                  <span className="dv-node-when" aria-label="gated by when:">
-                    when:
-                  </span>
-                )}
-                {simWave !== undefined && (
-                  <span className="dv-node-run" aria-hidden>
-                    {w < simWave ? '✓ done' : w === simWave ? '● running' : '· queued'}
-                  </span>
-                )}
+                </div>
               </div>
             ))}
           </div>

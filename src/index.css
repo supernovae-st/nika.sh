@@ -836,7 +836,7 @@ h1, h2 { font-family: var(--headline); }
   .cf-line--lit,
   .play-seed[aria-pressed='true'],
   .blog-card:hover,
-  .dv-node[data-run='running'],
+  .dv .dag-node.status-running .nc,
   /* the two named A1 debts (Lens §6.8quater): the palette's selected row
      and the mini-dag's highlighted node both read through tint alone */
   .ck-opt[aria-selected='true'],

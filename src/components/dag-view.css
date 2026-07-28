@@ -102,13 +102,38 @@
   gap: 14px;
 }
 
+/* ── LE SITE BRANCHE LES JETONS HÔTES DE LA CARTE ─────────────────────────────
+   node.generated.css porte la GÉOMÉTRIE et aucune couleur : chaque surface
+   branche les six noms ci-dessous chez elle. Le canvas les branche sur le thème
+   VS Code ; ici c'est la palette v4. C'est ce qui permet à la même carte de
+   porter la plaque bleue de ce site et la carte plate de l'éditeur. */
+.dv {
+  --nk-mono: var(--mono);
+  --nk-ink: var(--v4-text);
+  --nk-ink-dim: var(--v4-text-dim);
+  --nk-card: transparent;
+  --nk-card-border: transparent;
+  --nk-border: rgb(230 184 115 / 0.35);
+  /* LA TYPO EST HÔTE-LIÉE · une carte vit dans une page qui possède son
+     échelle, et c'est la page qui gagne. Le canvas branche ces mêmes noms sur
+     sa rampe à lui (12,5 · 11 · 10,5 · 10 · 9,5) ; ici, sur l'échelle fermée
+     du site. Le repli entier du fichier projeté ne sert qu'à une surface qui
+     ne branche rien. */
+  --nk-fs-heading: var(--type-plate);
+  --nk-fs-label: var(--type-mini);
+  --nk-fs-sub: var(--type-micro);
+  --nk-fs-body: var(--type-micro);
+  --nk-fs-meta: var(--type-micro);
+  --nk-fw-strong: var(--fw-semibold);
+}
+
 /* the card · the W11 device recipe (morph.css .morph-node), standalone */
-.dv-node[data-lit] {
+.dv .dag-node[data-lit] .nc {
   border-color: rgb(95 211 209 / 0.55);
   background: rgb(95 211 209 / 0.07);
 }
 
-.dv-node {
+.dv .nc {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -133,26 +158,26 @@
     0 2px 0 rgb(2 6 20 / 0.55),
     0 12px 26px -14px rgb(20 50 160 / 0.45);
 }
-.dv-node[data-verb='infer'] {
+.dv .dag-node.verb-infer {
   --dv-vhue: var(--verb-infer);
 }
-.dv-node[data-verb='exec'] {
+.dv .dag-node.verb-exec {
   --dv-vhue: var(--verb-exec);
 }
-.dv-node[data-verb='invoke'] {
+.dv .dag-node.verb-invoke {
   --dv-vhue: var(--verb-invoke);
 }
-.dv-node[data-verb='agent'] {
+.dv .dag-node.verb-agent {
   --dv-vhue: var(--verb-agent);
 }
 /* a task still being written · dashed shell until its verb lands */
-.dv-node:not([data-verb]) {
+.dv .dag-node.dv-draft .nc {
   border-style: dashed;
   --dv-vhue: var(--v4-text-faint);
 }
 /* a NEW card pops in (keys are task ids — edits replay nothing) */
 @media (prefers-reduced-motion: no-preference) {
-  .dv-node {
+  .dv .nc {
     animation: dv-node-in 0.24s var(--ease-ui, ease);
   }
 }
@@ -163,7 +188,7 @@
   }
 }
 
-.dv-node-id {
+.dv .nc-id {
   font-family: var(--mono);
   font-size: var(--type-plate);
   font-weight: var(--fw-semibold);
@@ -172,13 +197,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.dv-node-verb {
-  font-family: var(--mono);
-  font-size: var(--type-micro);
-  letter-spacing: 0.1em;
-  color: var(--dv-vhue, var(--v4-text-dim));
-}
-.dv-node-target {
+.dv .nc-sub-k {
   font-family: var(--mono);
   font-size: var(--type-micro);
   color: var(--v4-text-faint);
@@ -186,7 +205,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.dv-node-when {
+.dv .nc-policy .nc-chip {
   margin-top: 3px;
   padding: 1px 5px;
   align-self: flex-start;
@@ -215,10 +234,10 @@
    derived from the real DAG. No fabricated durations, ever: a card runs,
    then it is done. Pulse is motion-gated; reduced-motion still steps
    through the states (content, not decoration). */
-.dv-node[data-run='pending'] {
+.dv .dag-node.status-pending .nc {
   opacity: 0.5;
 }
-.dv-node[data-run='running'] {
+.dv .dag-node.status-running .nc {
   border-color: color-mix(in srgb, var(--dv-vhue, var(--v4-accent)) 65%, rgb(96 141 255 / 0.42));
   box-shadow:
     inset 2px 0 0 var(--dv-vhue, var(--v4-accent)),
@@ -228,7 +247,7 @@
     0 12px 26px -14px rgb(20 50 160 / 0.55);
 }
 @media (prefers-reduced-motion: no-preference) {
-  .dv-node[data-run='running'] {
+  .dv .dag-node.status-running .nc {
     animation: dv-run-pulse 1.2s ease-in-out infinite;
   }
 }
@@ -242,16 +261,16 @@
       0 12px 26px -14px rgb(20 50 160 / 0.55);
   }
 }
-.dv-node-run {
+.dv .dv-run {
   margin-top: 3px;
   font-family: var(--mono);
   font-size: var(--type-micro);
   letter-spacing: 0.06em;
   color: var(--v4-text-faint);
 }
-.dv-node[data-run='running'] .dv-node-run {
+.dv .dag-node.status-running .dv-run {
   color: var(--dv-vhue, var(--v4-accent));
 }
-.dv-node[data-run='done'] .dv-node-run {
+.dv .dag-node.status-success .dv-run {
   color: var(--cf-str);
 }
