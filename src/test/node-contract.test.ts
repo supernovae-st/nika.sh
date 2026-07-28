@@ -257,8 +257,11 @@ describe('la matrice de synchronisation · mesurée, pas déclarée', () => {
 
   it('elle ne cache pas les trous · le compte des manques suit l’épingle', () => {
     const gaps = cells.filter((c) => c === 'gap').length
+    /* l'épingle est un JSON figé : TypeScript en infère les clés littérales,
+       donc on l'indexe par une vue élargie plutôt qu'en forçant chaque nom */
+    const receives = pin.receives as Record<string, { state: string } | undefined>
     const missing = ['ground.generated.css', 'node.generated.css']
-      .filter((f) => pin.receives?.[f]?.state !== 'reçoit').length
+      .filter((f) => receives[f]?.state !== 'reçoit').length
     /* chaque fichier jamais livré vaut une case rouge, et il y a en plus les
        symboles absents du module du canvas — donc au moins autant */
     expect(gaps, 'la matrice affiche moins de trous que l’épingle n’en constate')
