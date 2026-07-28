@@ -468,12 +468,19 @@ export default function Hero({
                 CHECK_VERDICTS[item.flagship.filename.replace('.nika.yaml', '')]
               if (!v) return null
               return (
-                <p className="v4verdict" aria-label="What nika check said about this file">
+                <p className="v4verdict">
+                  {/* the attribution reads aloud but never draws: an aria-label
+                      on a <p> MASKS its visible text on some screen readers,
+                      so the context rides a sr-only lead instead */}
+                  <span className="sr-only">nika check: </span>
                   <span className="v4verdict-tick" aria-hidden>
                     ✔
                   </span>
                   audited · {v.tasks} tasks · {v.waves} waves ·{' '}
                   {v.permitsDeclared ? 'permits declared' : 'permits none'}
+                  {/* the checker keeps thinking on a green file — hints are
+                      captured advisory counts, shown only when they exist */}
+                  {v.hints > 0 && <> · {v.hints} {v.hints === 1 ? 'hint' : 'hints'}</>}
                   <span className="v4verdict-engine">nika {VERDICT_ENGINE}</span>
                 </p>
               )

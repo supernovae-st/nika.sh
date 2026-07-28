@@ -24,7 +24,7 @@ Eleven surfaces, audited empirically on 2026-07-28 against `nika 0.106.0`
 
 ### 1.1 `public/llms.txt` (the agents front door)
 
-`/Users/thibaut/supernovae/ventures/nika/02-engineering/repos/website/public/llms.txt:4-8`
+`(this repo) public/llms.txt:4-8`
 
 ```
 > Nika is the control layer for AI agents: the agent writes its plan as a
@@ -36,7 +36,7 @@ Eleven surfaces, audited empirically on 2026-07-28 against `nika 0.106.0`
 
 ### 1.2 Home `<head>` + JSON-LD
 
-`/Users/thibaut/supernovae/ventures/nika/02-engineering/repos/website/src/pages/Home.tsx:79`
+`(this repo) src/pages/Home.tsx:79`
 (JSON-LD `SoftwareApplication.description`)
 
 ```
@@ -49,7 +49,7 @@ length: `:160` (meta description), `:166` (`og:description`), `:172`
 
 ### 1.3 Home H1
 
-`/Users/thibaut/supernovae/ventures/nika/02-engineering/repos/website/src/sections/Hero.tsx:303`
+`(this repo) src/sections/Hero.tsx:303`
 
 ```
             Useful AI work shouldn&rsquo;t disappear into chats.
@@ -59,7 +59,7 @@ Eyebrow above it, `Hero.tsx:298`: `[ INTENT AS CODE ]`.
 
 ### 1.4 Engine README
 
-`/Users/thibaut/supernovae/ventures/nika/02-engineering/repos/engine/repo/README.md:11-12`
+`(supernovae-st/nika) README.md:11-12`
 
 ```
 > **Intent as Code.** The workflow language for AI: one file, 4 verbs,
@@ -76,7 +76,7 @@ AI task twice, make it a workflow.
 
 ### 1.5 Spec README
 
-`/Users/thibaut/supernovae/ventures/nika/02-engineering/repos/spec/repo/README.md:10-13`
+`(supernovae-st/nika-spec) README.md:10-13`
 
 ```
 <h1 align="center">Nika · the workflow language for AI</h1>
@@ -92,7 +92,7 @@ Navigation root is `docs.json:130-140`, first tab → first group → first page
 page**, and Mintlify renders the frontmatter `title` as the H1, so the page's
 visible H1 is the word « Introduction ».
 
-`/Users/thibaut/supernovae/ventures/nika/02-engineering/repos/docs/repo/introduction.mdx:2-3`
+`(supernovae-st/nika-docs) introduction.mdx:2-3`
 
 ```
 title: "Introduction"
@@ -108,7 +108,7 @@ file, four verbs, one Rust binary. If you do the same AI task twice, make
 it a workflow.
 ```
 
-Site-level, `/Users/thibaut/supernovae/ventures/nika/02-engineering/repos/docs/repo/docs.json:4`
+Site-level, `(supernovae-st/nika-docs) docs.json:4`
 
 ```
 "description": "Documentation for Nika — the AGPL workflow engine for AI. Semantic YAML, Rust, runs on your laptop.",
@@ -548,7 +548,7 @@ diverged from its own landing page).
 
 ### 4.1 The ratchet that costs least, because it already exists
 
-`dx/scripts/audit/canon-phrasing-coherence.sh` is a shipped, run-all-wired gate
+a phrasing-coherence gate in our private monorepo tooling is a shipped, run-all-wired gate
 that reads a `canonical_phrasing:` registry in `spec/repo/canon.yaml` and
 verifies each load-bearing sentence still lives verbatim at its canonical home.
 It carries ten entries today:

@@ -20,12 +20,11 @@ The hour-old version of this doc sold **CONTROL** — H1 « Review the plan befo
 your agent runs it. » The operator killed it with one question: *does anyone
 actually want to review a plan?*
 
-They do not, and the proof is in-house. `dx/.claude/rules/auto-vs-confirm.md:27`
-records the operator's own written policy — « Thibaut opère majoritairement en
-**bypass / acceptEdits permission mode** » — with `:36` budgeting ~90% of actions
-to silent TRUST. The man who *built* the control layer runs everything on
-bypass. Every permission prompt ever shipped converges on "allow always".
-« Review the plan » sells a chore, and a chore is not a wedge.
+They do not, and no survey is needed: every permission prompt ever shipped
+converges on "allow always". sudo prompts get muscle-memoried, cookie banners
+get dismissed, agent tools grow an allow-always button and everyone reaches it
+within a week — the very people who build review layers run their own tools on
+bypass. « Review the plan » sells a chore, and a chore is not a wedge.
 
 **The plan's value was never that a human reads it. It is that a machine can —
 and Nika's machine reads it better than any human would.**
@@ -316,7 +315,11 @@ grant — all real lines sliced from `t3-pr-review-fanout` as already projected
 
 ## 6. Canonical copy (use verbatim · tighten for fit, never drift)
 
-- **H1** — « **Nobody reads the plan. Nika compiles it.** »
+- **H1** — « **Your agent writes the workflow. Nika reads it back.** »
+  *(shipped 2026-07-28 · supersedes this doc's earlier draft line « Nobody
+  reads the plan. Nika compiles it. » — the noun « compiles » invites
+  "compiles to what?" in two seconds and the negative open reads as a scold;
+  the shipped line names the loop instead. The wedge is unchanged.)*
 - **sub (desktop)** — « Your agent writes what it intends to do as a file. Nika
   reads it like a compiler: unknown fields with the line and the column, secrets
   traced to every place they could flow, the worst-case bill, the permission your
@@ -436,7 +439,7 @@ them to every remaining screen.
 
 ## 10. Out of scope
 
-The private strategy canon (`ventures/nika/01-product/strategy/`). If the
+The private strategy canon (it lives outside this repository). If the
 product's canonical pitch moves too, that is a separate operator decision — as
 v4.1 §8 flagged and the hour-old v5 already called overdue. The engine README is
 the surface where the public pitch and the private canon actually meet, and §8
