@@ -121,13 +121,27 @@
 /* THE SECOND SIGNAL · one geometry per status, because a hue dies under
    forced-colors and under a colour-blind eye. `pending` is the deliberate
    understatement: smaller, and nothing else. */
-:where(.dag-node.status-pending .nc-dot) { box-sizing: border-box; width: 4px; height: 4px; border-radius: 50%; background: currentColor; border: 0 solid; outline: none; box-shadow: none; transform: none; }  /* small */
-:where(.dag-node.status-running .nc-dot) { box-sizing: border-box; width: 7px; height: 7px; border-radius: 50%; background: transparent; border: 2px solid currentColor; outline: none; box-shadow: none; transform: none; }  /* ring */
-:where(.dag-node.status-success .nc-dot) { box-sizing: border-box; width: 7px; height: 7px; border-radius: 50%; background: currentColor; border: 0 solid; outline: none; box-shadow: none; transform: none; }  /* filled */
-:where(.dag-node.status-failed .nc-dot) { box-sizing: border-box; width: 7px; height: 7px; border-radius: 1px; background: currentColor; border: 0 solid; outline: none; box-shadow: none; transform: rotate(45deg); }  /* diamond */
-:where(.dag-node.status-retrying .nc-dot) { box-sizing: border-box; width: 7px; height: 7px; border-radius: 50%; background: transparent; border: 1.5px solid currentColor; outline: 1px solid currentColor; outline-offset: 1px; box-shadow: none; transform: none; }  /* ring_halo */
-:where(.dag-node.status-skipped .nc-dot) { box-sizing: border-box; width: 7px; height: 2px; border-radius: 1px; background: currentColor; border: 0 solid; outline: none; box-shadow: none; transform: none; }  /* bar */
-:where(.dag-node.status-cancelled .nc-dot) { box-sizing: border-box; width: 7px; height: 2px; border-radius: 1px; background: currentColor; border: 0 solid; outline: none; box-shadow: none; transform: rotate(-45deg); }  /* bar_struck */
+/* small */
+.dag-node.status-pending :where(.nc-dot) { box-sizing: border-box; width: 4px; height: 4px; border-radius: 50%; border: 0 solid; outline: none; transform: none; }
+:where(.dag-node.status-pending .nc-dot) { background: currentColor; box-shadow: none; }
+/* ring */
+.dag-node.status-running :where(.nc-dot) { box-sizing: border-box; width: 7px; height: 7px; border-radius: 50%; border: 2px solid currentColor; outline: none; transform: none; }
+:where(.dag-node.status-running .nc-dot) { background: transparent; box-shadow: none; }
+/* filled */
+.dag-node.status-success :where(.nc-dot) { box-sizing: border-box; width: 7px; height: 7px; border-radius: 50%; border: 0 solid; outline: none; transform: none; }
+:where(.dag-node.status-success .nc-dot) { background: currentColor; box-shadow: none; }
+/* diamond */
+.dag-node.status-failed :where(.nc-dot) { box-sizing: border-box; width: 7px; height: 7px; border-radius: 1px; border: 0 solid; outline: none; transform: rotate(45deg); }
+:where(.dag-node.status-failed .nc-dot) { background: currentColor; box-shadow: none; }
+/* ring_halo */
+.dag-node.status-retrying :where(.nc-dot) { box-sizing: border-box; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid currentColor; outline: 1px solid currentColor; outline-offset: 1px; transform: none; }
+:where(.dag-node.status-retrying .nc-dot) { background: transparent; box-shadow: none; }
+/* bar */
+.dag-node.status-skipped :where(.nc-dot) { box-sizing: border-box; width: 7px; height: 2px; border-radius: 1px; border: 0 solid; outline: none; transform: none; }
+:where(.dag-node.status-skipped .nc-dot) { background: currentColor; box-shadow: none; }
+/* bar_struck */
+.dag-node.status-cancelled :where(.nc-dot) { box-sizing: border-box; width: 7px; height: 2px; border-radius: 1px; border: 0 solid; outline: none; transform: rotate(-45deg); }
+:where(.dag-node.status-cancelled .nc-dot) { background: currentColor; box-shadow: none; }
 
 @media (prefers-reduced-motion: reduce) {
   :where(.nc) { transition: none; }
