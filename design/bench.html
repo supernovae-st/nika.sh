@@ -8,6 +8,8 @@
 <style>
   @property --nk-verb { syntax: '<color>'; inherits: true; initial-value: #5b8cff; }
   @property --nk-line-boost { syntax: '<number>'; inherits: true; initial-value: 0; }
+  @property --lamp-x { syntax: '<length-percentage>'; inherits: true; initial-value: 50%; }
+  @property --lamp-y { syntax: '<length-percentage>'; inherits: true; initial-value: 22%; }
 
   :root {
     --room-bg: #f7f8fa; --room-panel: #fff; --room-ink: #16181d; --room-dim: #5a6070;
@@ -153,7 +155,27 @@
   .diff .add{color:#1f8a5c}.diff .del{color:#c2410c}.diff .file{color:var(--room-ink);font-weight:600}
   @media (prefers-color-scheme:dark){.diff .add{color:#34d399}.diff .del{color:#ff9a6f}}
 
-  .stage{background:var(--nk-bg);color:var(--nk-ink);border:1px solid var(--room-strong);border-radius:12px;padding:24px;overflow-x:auto}
+  /* THE ROOM. The bench showed the plates but not the light that makes them
+     objects. One additive gradient over the stage lights every specimen at
+     once — the same numbers the site binds, projected from the same block.
+     plus-lighter because the room is dark: soft-light barely lifts a backdrop
+     already near zero, which is how the site's first binding shipped a lamp
+     that moved one pixel sample in 5394. */
+  .stage{position:relative;isolation:isolate;background:var(--nk-bg);color:var(--nk-ink);
+    border:1px solid var(--room-strong);border-radius:12px;padding:24px;overflow-x:auto}
+  .stage::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+    mix-blend-mode:plus-lighter;
+    background:radial-gradient(60vmax circle at var(--lamp-x) var(--lamp-y),
+      rgb(255 255 255 / calc(0.26 * .62)) 0%,
+      rgb(255 255 255 / calc(0.26 * .2)) 22%,
+      transparent 62%)}
+  @media (prefers-reduced-motion:no-preference){
+    .stage{animation:lamp-drift 40s linear infinite}
+    .stage[data-lamp]{animation-play-state:paused}}
+  @keyframes lamp-drift{
+    0%{--lamp-x:22%;--lamp-y:14%}25%{--lamp-x:68%;--lamp-y:26%}
+    50%{--lamp-x:82%;--lamp-y:58%}75%{--lamp-x:38%;--lamp-y:46%}
+    100%{--lamp-x:22%;--lamp-y:14%}}
   .rack{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
   .cell{display:grid;gap:8px;max-width:268px}
   .cell-k{font:500 10px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--nk-caption)}
@@ -897,6 +919,30 @@
     if (k === 't') setSkin(state.skin === 'brand' ? 'theme' : 'brand');
     else if (k === 'x') setExplode(!state.explode);
     else if (k === '0') { state.knobs = {}; save(); applyKnobs(); }
+  });
+
+  /* the pointer takes the lamp · one rAF and two property writes for a whole
+     stage, no per-specimen listener */
+  var lampRaf = 0, lampAt = null;
+  stages.forEach(function (s) {
+    s.addEventListener('pointermove', function (e) {
+      var r = s.getBoundingClientRect();
+      lampAt = { s: s, x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 };
+      s.dataset.lamp = 'held';
+      if (lampRaf) return;
+      lampRaf = requestAnimationFrame(function () {
+        lampRaf = 0;
+        if (!lampAt) return;
+        lampAt.s.style.setProperty('--lamp-x', lampAt.x.toFixed(2) + '%');
+        lampAt.s.style.setProperty('--lamp-y', lampAt.y.toFixed(2) + '%');
+      });
+    });
+    /* the drift resumes from the angle you handed it, never snapping back */
+    s.addEventListener('pointerleave', function () {
+      s.removeAttribute('data-lamp');
+      s.style.removeProperty('--lamp-x');
+      s.style.removeProperty('--lamp-y');
+    });
   });
 
   setSkin(state.skin); setRoom(state.room); setExplode(state.explode); applyKnobs();

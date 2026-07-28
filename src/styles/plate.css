@@ -34,19 +34,28 @@
   isolation: isolate;
 }
 
-/* the light itself · soft-light so it MODULATES what is under it rather than
-   painting over it — a lamp reveals a surface, it does not repaint it */
+/* THE LIGHT ADDS, because the room is dark. The first binding used
+   soft-light, on the reasoning that a lamp should MODULATE a surface rather
+   than paint over it. That reasoning is right for a light backdrop and
+   mathematically almost a no-op on a dark one: soft-light barely lifts a
+   backdrop already near zero, and a pixel diff across two lamp positions moved
+   1 sample in 5394. Real code, real cost, no effect.
+
+   plus-lighter is what a compositor uses for light: it adds. The spec still
+   says HOW MUCH light (--lamp-core); this file decides how it composites,
+   which is exactly the split the material block is for. The core is scaled
+   down here because additive at the same number would blow out. */
 .cabinet::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: plus-lighter;
   background: radial-gradient(
     var(--lamp-reach) circle at var(--lamp-x) var(--lamp-y),
-    rgb(255 255 255 / var(--lamp-core)) 0%,
-    rgb(255 255 255 / calc(var(--lamp-core) * 0.34)) calc(var(--lamp-falloff) * 100%),
+    rgb(255 255 255 / calc(var(--lamp-core) * 0.62)) 0%,
+    rgb(255 255 255 / calc(var(--lamp-core) * 0.2)) calc(var(--lamp-falloff) * 100%),
     transparent 62%
   );
 }
