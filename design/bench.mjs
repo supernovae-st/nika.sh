@@ -135,6 +135,15 @@ for (const [l, hex] of Object.entries(LAYER_HEX)) {
    script runs in the website's CI, where no vscode checkout exists. That is
    precisely the gap the ledger's « pas encore projeté » row names — the day
    these live in nika-spec design/tokens.yaml, this block deletes itself. */
+/* NO FAMILY INVENTS A HUE. The spec says it in prose; here it is computed, so
+   the page cannot claim a coherence the values do not have. A layer that is
+   literally the same hex as a verb or a severity is listed with its source. */
+const HUE_SOURCES = { ...VERB_HEX, ok: SEVERITY.ok, fail: SEVERITY.fail }
+const COLLISIONS = LAYERS.map((l) => {
+  const hit = Object.entries(HUE_SOURCES).find(([, hex]) => hex.toLowerCase() === LAYER_HEX[l].toLowerCase())
+  return hit ? [l, hit[0]] : null
+}).filter(Boolean)
+
 const brand = {
   bg: '#0d0d0e', /* --nk-page */
   surface: '#17171a', /* --nk-surface */
@@ -765,6 +774,31 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
   .sw b{font:500 10px/1 var(--mono);letter-spacing:.04em;color:var(--nk-dim)}
   .sw span{font:10px/1 var(--mono);color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  /* ── les surfaces · trois pages, la même plaque ──────────────────────── */
+  .srf-word,.srf-ns{display:grid;padding:7px 10px;font-family:var(--mono);width:auto}
+  .srf-word{grid-template-columns:1fr auto;gap:8px;align-items:baseline}
+  .srf-ns{grid-template-columns:1fr auto;gap:2px 10px;
+    border-left:2px solid color-mix(in srgb,var(--nk-fail) 55%,transparent)}
+  .srf-w{font-size:var(--nk-fs);color:var(--nk-ink)}
+  .srf-n{font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption);font-variant-numeric:tabular-nums}
+  .srf-big{font-size:calc(var(--nk-fs) + 3px);color:var(--nk-ink);grid-row:span 2;align-self:center;
+    font-variant-numeric:tabular-nums}
+  .srf-cat{font-size:calc(var(--nk-fs) - 2px);color:var(--nk-caption)}
+  .srf-row{display:grid;grid-template-columns:112px 1fr 44px;gap:9px;align-items:center;
+    padding:3px 0;font-family:var(--mono);font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption)}
+  .srf-row--keyed .srf-name{color:var(--nk-caption)}
+  .srf-name{color:var(--nk-ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .srf-track{position:relative;height:9px;border-radius:5px;background:rgb(0 0 0 / .24);
+    box-shadow:var(--well-inset)}
+  .srf-bar{position:absolute;inset:2px auto 2px 2px;width:46%;border-radius:3px;
+    background:color-mix(in srgb,var(--nk-infer) 40%,transparent)}
+  .srf-bar--dim{width:64%;background:color-mix(in srgb,var(--nk-ink) 16%,transparent)}
+  .srf-dot{position:absolute;top:50%;left:46%;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;
+    border-radius:50%;background:var(--nk-infer)}
+  .srf-dot--dim{left:64%;background:var(--nk-dim)}
+  .srf-ctx{text-align:right;font-variant-numeric:tabular-nums}
+
+  .sw-eq{font-style:normal;color:var(--nk-dim)}
   .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px}
 
   .tw{overflow-x:auto;border:1px solid var(--room-line);border-radius:10px}
@@ -923,15 +957,42 @@ ${WEIGHTS.map((w) => `        <tr>
   </section>
 
   <section>
-    <div class="sec-head"><h2>Les jetons</h2><span class="sec-n">${Object.keys(VERB_HEX).length} verbes · ${LAYERS.length} couches · ${Object.keys(ROLE_WORDS).length} rôles</span></div>
-    <p class="sec-note">Valeurs lues dans les projections, jamais retapées. Le reste de la page ne connaît que ces noms.</p>
+    <div class="sec-head"><h2>Les couleurs</h2><span class="sec-n">${Object.keys(VERB_HEX).length} verbes · ${LAYERS.length} couches · ${Object.keys(STATUS).length} statuts · ${Object.keys(ROLE_WORDS).length} rôles</span></div>
+    <p class="sec-note">
+      Valeurs lues dans les projections, jamais retapées. Et une seule idée les tient :
+      <b>aucune famille n’invente une teinte</b>. Les sept couches réutilisent celles des verbes
+      et des sévérités par construction — ${COLLISIONS.length} des ${LAYERS.length} sont
+      littéralement le même hex. Une quatrième palette entrerait en collision ou quitterait le SSOT.
+    </p>
+
     <div class="stage" data-stage>
-      <div class="swatches">
-${Object.entries(VERB_HEX).map(([k, v]) => swatch(k, v)).join('\n')}
+      <span class="cell-k">les quatre verbes · un modèle d’exécution natif chacun</span>
+      <div class="swatches" style="margin-top:10px">
+${Object.entries(VERB_HEX).map(([k, v]) => `        <div class="sw"><i style="background:${v}"></i><b><span style="color:${v}">${VERB_GLYPH[k]}</span> ${k}</b><span>${v}</span></div>`).join('\n')}
+      </div>
+
+      <span class="cell-k" style="display:block;margin-top:24px">les sept couches · ce qu’une ligne du fichier <em>est</em></span>
+      <div class="swatches" style="margin-top:10px">
+${LAYERS.map((l) => {
+  const hex = LAYER_HEX[l]
+  const from = COLLISIONS.find((c) => c[0] === l)
+  return `        <div class="sw"><i style="background:${hex}"></i><b>${l}</b><span>${hex}${from ? ` <em class="sw-eq">= ${from[1]}</em>` : ''}</span></div>`
+}).join('\n')}
+      </div>
+
+      <span class="cell-k" style="display:block;margin-top:24px">sévérité et statuts · ce que la trace rapporte</span>
+      <div class="swatches" style="margin-top:10px">
 ${swatch('ok', SEVERITY.ok)}
 ${swatch('fail', SEVERITY.fail)}
-${Object.entries(LAYER_HEX).map(([k, v]) => swatch(k, v)).join('\n')}
+${swatch('fail-text', SEVERITY_TEXT.fail)}
+${Object.entries(STATUS).map(([k, v]) => swatch(k, v)).join('\n')}
       </div>
+
+      <p class="typ-legend">
+        <code>fail</code> est la teinte de <b>remplissage</b> ; <code>fail-text</code> est sa
+        jumelle lisible. Le banc portait la première sur sa pastille « refusé » — l’état qu’on a
+        le plus besoin de lire était le plus dur à lire, à Lc 45. Le bon jeton existait déjà.
+      </p>
     </div>
   </section>
 
@@ -1048,6 +1109,47 @@ ${PILLS.map(([label, id]) => `            <span class="nc-st nc-st--${id}">${esc
           <span class="cell-note">chacune porte une forme en plus de sa teinte · c’est ce qui la garde lisible en contraste forcé</span>
         </div>
     </div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Les surfaces</h2><span class="sec-n">trois pages · la même plaque</span></div>
+    <p class="sec-note">
+      La preuve que le partage n’est pas une intention. Trois primitives construites le 28 juillet
+      pour trois pages différentes — le mot dans <code>/language</code>, le tiroir de namespace
+      dans <code>/errors</code>, la rangée d’axe dans <code>/providers</code> — et toutes trois
+      sont <b>la même plaque</b> : même rayon, même biseau, mêmes deux ombres, même encre dérivée,
+      même lampe. Aucune n’a redécidé quoi que ce soit.
+    </p>
+    <div class="stage" data-stage>
+      <div class="rack">
+        <div class="cell">
+          <span class="cell-k">/language · une cellule de mot</span>
+          <div class="srf-word nc"><span class="srf-w">workflow</span><span class="srf-n">+1</span></div>
+          <span class="cell-note">le liseré marque ce que le schéma <em>exige</em> ici · <code>+n</code> compte les autres blocs où le mot parle</span>
+        </div>
+        <div class="cell">
+          <span class="cell-k">/errors · un tiroir de namespace</span>
+          <div class="srf-ns nc" data-tone="reach">
+            <span class="srf-w">SEC</span><span class="srf-big">9</span><span class="srf-cat">security</span>
+          </div>
+          <span class="cell-note">le liseré rouge dit que ce namespace garde une <em>portée</em>, pas une <em>forme</em> · dérivé de la catégorie dominante</span>
+        </div>
+        <div class="cell" style="max-width:340px">
+          <span class="cell-k">/providers · une rangée d’axe</span>
+          <div class="srf-row">
+            <span class="srf-name">qwen3.5:4b</span>
+            <span class="srf-track"><span class="srf-bar"></span><span class="srf-dot"></span></span>
+            <span class="srf-ctx">128k</span>
+          </div>
+          <div class="srf-row srf-row--keyed">
+            <span class="srf-name">claude-sonnet-4</span>
+            <span class="srf-track"><span class="srf-bar srf-bar--dim"></span><span class="srf-dot srf-dot--dim"></span></span>
+            <span class="srf-ctx">200k</span>
+          </div>
+          <span class="cell-note">le rail est <em>gravé</em> avec le même puits que le code · l’accent marque les modèles qui ne veulent aucune clé</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section>
