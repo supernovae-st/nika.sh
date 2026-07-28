@@ -25,6 +25,20 @@ const hasNika = (() => {
 })()
 
 describe('check verdicts · the receipt cannot drift from the binary', () => {
+  it('every hero flagship joins a captured verdict by its served filename', async () => {
+    /* the hero's verdict strip joins CHECK_VERDICTS on the flagship's served
+       filename (minus extension), because flagship ids are snake_case while
+       verdicts key on the workflow id parsed from the yaml. The first draft
+       joined on the id, matched nothing, and rendered for nobody — silently.
+       This pins the join: a renamed library file or a diverging workflow id
+       goes red here instead of quietly blanking the hero. */
+    const { FLAGSHIP_ENTRIES } = await import('../flagships')
+    for (const f of FLAGSHIP_ENTRIES) {
+      const key = f.filename.replace('.nika.yaml', '')
+      expect(CHECK_VERDICTS[key], `no captured verdict for ${f.filename}`).toBeDefined()
+    }
+  })
+
   it('every shipped library workflow has a captured verdict', () => {
     const ids: string[] = []
     for (const name of readdirSync(join(ROOT, 'public/library'))) {

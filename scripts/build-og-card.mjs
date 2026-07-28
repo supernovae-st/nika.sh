@@ -74,11 +74,11 @@ const nikaPath = nikaSvg.match(/<path d="([^"]+)"/)[1];
 // ─────────────────────────────────────────────────────────────────────────────
 const CARDS = [
   {
-    // HOME — the control pitch (UNCHANGED · the existing card, byte-identical).
+    // HOME — the checked-language pitch (the compiler wedge · 2026-07-28).
     out: 'og.png',
     fig: 'FIG 0.0',
-    headline: 'See what your AI will do.<br><span class="b">Before it does it.</span>',
-    sub: 'The control layer for AI agents: a reviewable, enforceable plan before it acts.',
+    headline: 'Your agent writes the workflow.<br><span class="b">Nika reads it back.</span>',
+    sub: 'The checked workflow language for AI: every fix named before a token is spent.',
     detail:
       '<span class="arrow">▸</span><span><b>permits:</b> everything it can touch, and nothing&nbsp;else.</span>',
   },

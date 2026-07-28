@@ -5,6 +5,7 @@ import { MiniDag } from '../components/MiniDag'
 import { InstallCommand } from '../components/InstallCommand'
 import { useMagnetic } from '../fx/use-magnetic'
 import { ENGINE_VERSION } from '../content'
+import { CHECK_VERDICTS, VERDICT_ENGINE } from '../content/check-verdicts.generated'
 import { type FlagshipEntry } from '../flagships'
 import { LIBRARY_TABS, type LibraryItem } from '../flagships/library'
 import '../shell/shell.css'
@@ -298,35 +299,37 @@ export default function Hero({
             [ INTENT AS CODE ]
           </p>
 
-          {/* the REAL <h1> · the wedge · the SEO win. */}
+          {/* the REAL <h1> · the wedge · the SEO win. The compiler wedge
+              (2026-07-28): nobody re-reads a plan, and nobody has to — the
+              checker reads it back. The line names the loop the product
+              actually lives in: an agent writes, nika check answers. */}
           <h1 data-rise style={rise(80)} className="v4hero-h1">
-            Useful AI work shouldn&rsquo;t disappear into chats.
+            Your agent writes the workflow. Nika reads it back.
           </h1>
 
           {/* the sub · ONE sentence pair. The full version is desktop; phones
               get the short register (the 7-line sub wall is a defect class). */}
-          {/* the two moments lead (issue #192): audited BEFORE a token is
-              spent · a verifiable receipt AFTER every run — the painkiller
-              stops hiding behind the specs line (which lives on the plate).
-              The receipt phrase links the long-form anchor, quietly.
-              The contract tricolon closes it (the front-of-site law): the
-              file IS the contract, and the three receipts are real engine
-              behavior · permits default-deny (02 below) · the hash-chained
-              trace (nika trace verify) · the cost cap (--max-cost-usd). */}
+          {/* the checked-language lead: the position line first, then the two
+              moments (audited BEFORE a token is spent · a verifiable receipt
+              AFTER every run), with the fixes NAMED in plain words — each one
+              real check output (did-you-mean · the UNBOUNDED cost floor ·
+              NIKA-DRIFT-001). The contract tricolon closes it: permits
+              default-deny (02 below) · the hash-chained trace (nika trace
+              verify) · the cost cap (--max-cost-usd). */}
           <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--full">
-            Nika turns repeatable AI work into files you can run, review, diff
-            and share: <b>audited before a token is spent</b>, with{' '}
+            The checked workflow language for AI: <b>audited before a token is
+            spent</b>, every fix named (the typo, the unbounded cost, the
+            permit wider than the code), with{' '}
             <Link to="/blog/the-pipeline-is-a-file" className="v4hero-sublink">
               a verifiable receipt
             </Link>{' '}
-            after every run. An agent writes the plan; you review it; the
-            runtime <b>enforces it as a contract</b>: permits default-deny,
-            the trace hash-chained, cost capped.
+            after every run. The runtime <b>enforces the file as a contract</b>:
+            permits default-deny, the trace hash-chained, cost capped.
           </p>
           <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--short">
-            Repeatable AI work as a file: audited before a token is spent, a
-            receipt after every run. The file is a contract the runtime{' '}
-            <b>enforces</b>.
+            The checked workflow language for AI: audited before a token is
+            spent, a receipt after every run. The file is a contract the
+            runtime <b>enforces</b>.
           </p>
 
           {/* the main CTA row · the primary button + the command-as-CTA install */}
@@ -447,6 +450,34 @@ export default function Hero({
                   `v4ftab-${item.id}`,
               }}
             />
+            {/* THE VERDICT STRIP · what the binary said about THIS file,
+                captured (check-verdicts.generated · re-proven by its drift
+                gate), never re-phrased. The wedge is « Nika reads it back » —
+                this is the reading, on the artifact itself.
+
+                THE JOIN is the served filename, not item.id: flagship ids are
+                snake_case while verdicts key on the workflow id parsed from
+                the served yaml, and the first draft of this strip joined on
+                item.id — which matched NOTHING and rendered for nobody,
+                silently. check-verdicts.test.ts now gates this join. A
+                browse-only pick (no flagship) shows nothing rather than a
+                claim nobody ran. */}
+            {(() => {
+              const v =
+                item.flagship &&
+                CHECK_VERDICTS[item.flagship.filename.replace('.nika.yaml', '')]
+              if (!v) return null
+              return (
+                <p className="v4verdict" aria-label="What nika check said about this file">
+                  <span className="v4verdict-tick" aria-hidden>
+                    ✔
+                  </span>
+                  audited · {v.tasks} tasks · {v.waves} waves ·{' '}
+                  {v.permitsDeclared ? 'permits declared' : 'permits none'}
+                  <span className="v4verdict-engine">nika {VERDICT_ENGINE}</span>
+                </p>
+              )
+            })()}
           </div>
         </div>
       </div>

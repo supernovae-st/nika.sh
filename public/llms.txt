@@ -1,11 +1,11 @@
 # nika.sh · llms.txt
 # https://llmstxt.org/
 
-> Nika is the control layer for AI agents: the agent writes its plan as a
-> readable file first (steps, tools, permissions, outputs), you review it, the
-> runtime enforces it, then it runs (traced and replayable). An open workflow
-> language plus its reference engine in Rust. Apache-2.0 spec ·
-> AGPL-3.0-or-later engine. Paris. SuperNovae Studio.
+> Nika is the checked workflow language for AI: an agent writes its plan as a
+> readable file (steps, tools, permissions, outputs), nika check reads it back
+> before a token is spent, the runtime enforces it, then it runs (traced and
+> replayable). An open workflow language plus its reference engine in Rust.
+> Apache-2.0 spec · AGPL-3.0-or-later engine. Paris. SuperNovae Studio.
 
 ## What
 

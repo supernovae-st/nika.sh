@@ -1065,3 +1065,36 @@
     display: none;
   }
 }
+
+/* ── the verdict strip · what the binary said about THIS file ────────────────
+   Captured output (check-verdicts.generated · drift-gated), never re-phrased:
+   the wedge is « Nika reads it back », and this is the reading, printed on the
+   artifact. Mono plate register; the tick wears the projected pass hue
+   (--sev-ok · nika-spec severity.ok) and the words stay in ordinary ink — the
+   severity-never-carries-prose law, applied to good news too. */
+.v4verdict {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 10px 2px 0;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  letter-spacing: var(--ls-plate);
+  color: var(--v4-text-dim);
+}
+
+.v4verdict-tick {
+  color: var(--sev-ok);
+}
+
+.v4verdict-engine {
+  margin-left: auto;
+  color: var(--v4-hud-faint);
+}
+
+@media (forced-colors: active) {
+  .v4verdict-tick {
+    color: CanvasText;
+    font-weight: var(--fw-bold);
+  }
+}

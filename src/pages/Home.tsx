@@ -76,7 +76,7 @@ const HOME_JSONLD = {
       downloadUrl: `${SITE}/install.sh`,
       license: 'https://www.gnu.org/licenses/agpl-3.0.html',
       description:
-        'The control layer for AI agents. Nika makes an agent write its plan as a readable file first: every step, tool and permission. You review it, the runtime enforces it, then it runs: traced and replayable. One Rust binary, any model, AGPL forever.',
+        'The checked workflow language for AI. An agent writes its plan as a file; nika check reads it back before a token is spent and names every fix. The runtime enforces it as a contract, and every run leaves a replayable trace. One Rust binary, any model, AGPL forever.',
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -157,19 +157,19 @@ export function Component() {
       {
         name: 'description',
         content:
-          'The control layer for AI agents: the plan is a file you review before it runs, permissions enforced, every run replayable. One binary, any model, AGPL.',
+          'The checked workflow language for AI: an agent writes the plan as a file, nika check reads it back before a token is spent, the runtime enforces it. One binary, any model, AGPL.',
       },
       { property: 'og:title', content: 'Nika · Intent as Code' },
       {
         property: 'og:description',
         content:
-          'The control layer for AI agents. Review the plan before it acts, enforce its permissions, replay the trace. One file, four verbs, one binary.',
+          'The checked workflow language for AI. An agent writes the plan; nika check reads it back before a token is spent; every run leaves a replayable trace.',
       },
       { name: 'twitter:title', content: 'Nika · Intent as Code' },
       {
         name: 'twitter:description',
         content:
-          'The control layer for AI agents. Review before it acts, enforce its permissions, replay the trace.',
+          'The checked workflow language for AI. Audited before a token is spent, enforced as a contract, replayable after.',
       },
     ],
   })
