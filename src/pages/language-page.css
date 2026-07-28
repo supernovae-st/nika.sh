@@ -160,3 +160,95 @@
     background: Canvas;
   }
 }
+
+/* ── the word table · the page's one signature ────────────────────────────────
+   Ten blocks, 76 cells, and the fact a list cannot show: a word standing in
+   more than one room. Hovering lights the same word wherever else it speaks —
+   the relation is decls[].scope, straight from the schema, never authored. */
+.wt {
+  margin: clamp(30px, 4.5vh, 50px) 0 clamp(24px, 3.5vh, 40px);
+}
+.wt-head,
+.wt-legend {
+  max-width: 68ch;
+  font-size: var(--type-body-sm);
+  color: var(--v4-text-dim);
+}
+.wt-head b {
+  color: var(--v4-text);
+}
+.wt-legend {
+  margin-top: 18px;
+  font-size: var(--type-plate);
+  color: var(--v4-text-faint);
+}
+.wt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(122px, 1fr));
+  gap: clamp(10px, 1.4vw, 18px);
+  margin-top: 20px;
+}
+.wt-col-head {
+  margin: 0 0 8px;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  letter-spacing: var(--ls-plate);
+  color: var(--v4-text-faint);
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+.wt-col-n {
+  font-variant-numeric: tabular-nums;
+}
+.wt-cells {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 5px;
+}
+.wt-cell {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 9px;
+  text-decoration: none;
+  color: var(--v4-text-dim);
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+  /* the plate's own transition already carries transform + shadow; opacity
+     joins them so the dim and the lift read as one gesture */
+  transition:
+    transform var(--dur-lift) var(--ease-lift),
+    box-shadow var(--dur-lift) var(--ease-lift),
+    opacity var(--dur-ui) var(--ease-ui),
+    color var(--dur-ui) var(--ease-ui);
+}
+/* a filled corner where the schema REQUIRES the word at that surface */
+.wt-cell[data-required] {
+  border-left: 2px solid color-mix(in srgb, var(--v4-accent) 62%, transparent);
+}
+.wt-also {
+  font-size: var(--type-micro);
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* the reveal · everything recedes except the same word, wherever it speaks */
+.wt-grid[data-dimmed] .wt-cell {
+  opacity: 0.34;
+}
+.wt-grid[data-dimmed] .wt-cell.is-lit {
+  opacity: 1;
+  color: var(--v4-text);
+}
+.wt-grid[data-dimmed] .wt-cell.is-lit .wt-also {
+  color: var(--v4-accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .wt-cell {
+    transition: none;
+  }
+}

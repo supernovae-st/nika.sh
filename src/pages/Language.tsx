@@ -20,6 +20,7 @@ import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
 import './language-page.css'
+import { WordTable } from './WordTable'
 
 /* ─── /language + /language/:word · the keyword register (theme-dark) ─────────
    Every key an author can type in a .nika.yaml, as an anchored row — the
@@ -183,6 +184,8 @@ export function Component() {
               </li>
             ))}
           </ul>
+
+          <WordTable />
 
           <ol className="tp-list lg-list" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {LANGUAGE_WORDS.map((w) => (
