@@ -16,6 +16,7 @@ import { CATEGORY_GLOSS, nsOf } from './errors-shared'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './errors-page.css'
+import { ErrorCabinet } from './ErrorCabinet'
 
 /* ─── /errors + /errors/:code · the error register (theme-dark) ───────────────
    The engine stamps `docs_url: https://nika.sh/errors/<CODE>` on every check
@@ -216,6 +217,8 @@ export function Component() {
               { n: transientCount, label: 'transient', sub: 'retry-able' },
             ]}
           />
+
+          <ErrorCabinet />
 
           {groups.map((group, gi) => (
             <div className="er-ns" key={group.ns} data-rise style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}>

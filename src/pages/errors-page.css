@@ -179,3 +179,63 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 140px;
 }
+
+
+/* ── the refusal shelf · 23 namespaces at a glance ────────────────────────────
+   The register below already groups by namespace, so a second grouped view
+   would copy the data rather than design it. What was missing is the overview:
+   a wall you take in with one look and jump from. The tint says whether a
+   namespace mostly refuses a REACH or a SHAPE, so the shelf reads before
+   anything is opened. */
+.ec {
+  margin: clamp(28px, 4vh, 46px) 0 clamp(24px, 3.5vh, 40px);
+}
+.ec-head {
+  max-width: 68ch;
+  font-size: var(--type-body-sm);
+  color: var(--v4-text-dim);
+}
+.ec-head b {
+  color: var(--v4-text);
+}
+.ec-shelf {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: clamp(8px, 1.1vw, 13px);
+}
+.ec-front {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 10px;
+  text-decoration: none;
+  font-family: var(--mono);
+}
+.ec-ns {
+  font-size: var(--type-plate);
+  color: var(--v4-text);
+  letter-spacing: 0.03em;
+}
+.ec-n {
+  font-size: var(--type-ui);
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+  grid-row: span 2;
+  align-self: center;
+}
+.ec-cat {
+  font-size: var(--type-micro);
+  color: var(--v4-text-faint);
+}
+.ec-more {
+  opacity: 0.7;
+}
+/* a refusal about REACH is not the same event as one about SHAPE */
+.ec-front[data-tone='reach'] {
+  border-left: 2px solid color-mix(in srgb, var(--danger) 55%, transparent);
+}
+.ec-front[data-tone='shape'] {
+  border-left: 2px solid color-mix(in srgb, var(--v4-text) 18%, transparent);
+}
