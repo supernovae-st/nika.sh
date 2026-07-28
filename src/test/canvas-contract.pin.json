@@ -1,5 +1,5 @@
 {
-  "sha": "988d81f",
+  "sha": "df3bd33",
   "contract": [
     "status-pending",
     "status-running",
@@ -67,7 +67,7 @@
     "nc-tile": 21,
     "nc-id": 9,
     "nc-st": 6,
-    "nc-dot": 19,
+    "nc-dot": 20,
     "nc-sub": 3,
     "nc-sub-k": 1,
     "nc-sub-v": 11,
@@ -226,14 +226,14 @@
       "state": "reçoit"
     },
     "ground.generated.css": {
-      "present": false,
-      "refs": 0,
-      "state": "jamais livré"
+      "present": true,
+      "refs": 2,
+      "state": "reçoit"
     },
     "node.generated.css": {
-      "present": false,
-      "refs": 0,
-      "state": "jamais livré"
+      "present": true,
+      "refs": 2,
+      "state": "reçoit"
     }
   },
   "symbols": {
@@ -249,12 +249,30 @@
     "NIKA_ROLE_MARK": 0,
     "NIKA_ROLE_CODICON": 0,
     "NIKA_ROLE_WEB_TOKEN": 0,
+    "NIKA_ROLE_WEB_WEIGHT": 0,
+    "NIKA_ROLE_WEB_MIX_PCT": 0,
     "NIKA_ROLE_VSCODE": 0,
     "NIKA_SEVERITY": 1,
     "NIKA_SEVERITY_TEXT": 1,
     "NIKA_STATUS": 2,
     "NIKA_BRAND": 2,
-    "NIKA_PROVIDERS_ORDER": 3
+    "NIKA_PROVIDERS_ORDER": 3,
+    "NIKA_MATERIAL": 0,
+    "NIKA_NODE_STATUS": 0,
+    "NIKA_NODE_MARKS": 0,
+    "NIKA_AUDIT_SEVERITY": 0,
+    "NIKA_AUDIT_HUE": 0,
+    "NIKA_NODE_ANATOMY": 0,
+    "NIKA_NODE_CLASSES": 0,
+    "nikaNodeClass": 0,
+    "NIKA_CATEGORY_HUE": 0,
+    "NIKA_CATEGORY_GLYPH": 0,
+    "NIKA_PREVIEW_KINDS": 0,
+    "NIKA_PREVIEW_BY_CATEGORY": 0,
+    "NIKA_PREVIEW_OVERRIDE": 0,
+    "NIKA_ESSENCE_RENDERS": 0,
+    "NIKA_ESSENCE": 0,
+    "NIKA_PORT": 0
   },
   "nodeClassOf": "function nodeClassOf(node: DagNode): string {\n  return `dag-node status-${node.status} verb-${node.verb}`\n    + (node.stale ? ' is-stale' : '')\n    + (node.staleUpstream ? ' stale-up' : '')\n    + (node.cached ? ' is-cached' : '')\n    + (node.recoveredFrom !== undefined ? ' is-recovered' : '')\n    + (node.auditCount ? ` has-audit audit-${node.auditWorst ?? 'error'}` : '')\n    + (node.deadGate ? ' dead-gate' : '')\n    // A parked question is WAITING, not working — the strip's frame\n    // holds while the human thinks (motion = state).\n    + (node.pausedQuestion ? ' is-asking' : '');\n}"
 }

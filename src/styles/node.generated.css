@@ -143,6 +143,20 @@
 .dag-node.status-cancelled :where(.nc-dot) { box-sizing: border-box; width: 7px; height: 2px; border-radius: 1px; border: 0 solid; outline: none; transform: rotate(-45deg); }
 :where(.dag-node.status-cancelled .nc-dot) { background: currentColor; box-shadow: none; }
 
+/* LA VALEUR TYPÉE · le premier primitif de contrôle. Chaque rendu emprunte une
+   teinte qui veut déjà dire quelque chose : un chemin porte le vert du succès
+   parce qu'un chemin a eu lieu ou non ; une condition porte l'ambre du non-réglé ;
+   une durée est sourde et tabulaire parce que c'est un nombre qu'on compare, pas
+   un mot qu'on lit. La forme vient de la spec, la teinte est un alias. */
+:where(.nc-ess-code) { color: var(--nk-ess-code, #4f86ff); font-family: var(--nk-mono, ui-monospace, monospace); padding: 0 4px; border-radius: 3px; background: color-mix(in srgb, currentColor 10%, transparent); }
+:where(.nc-ess-url) { color: var(--nk-ess-url, #4f86ff); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-ess-path) { color: var(--nk-ess-path, #34d399); font-family: var(--nk-mono, ui-monospace, monospace); }
+:where(.nc-ess-condition) { color: var(--nk-ess-condition, #e0b071); }
+:where(.nc-ess-event) { color: var(--nk-ess-event, #22d3ee); }
+:where(.nc-ess-duration) { color: var(--nk-ess-duration, #5a606b); font-variant-numeric: tabular-nums; }
+:where(.nc-ess-text) { color: inherit; }
+:where(.nc-ess-rest) { opacity: 0.55; font-weight: var(--nk-fw-plain, 400); }
+
 @media (prefers-reduced-motion: reduce) {
   :where(.nc) { transition: none; }
 }
