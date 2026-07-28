@@ -617,7 +617,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "@type": "DefinedTermSet",
       "@id": "https://nika.sh/flow#set-gate-predicates",
       "name": "Nika the gate predicates",
-      "description": "An after entry gates on producer state: succeeded, failed, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
+      "description": "An after entry gates on producer state: success, failure, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
       "version": "v0.106.0",
       "hasDefinedTerm": [

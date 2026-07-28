@@ -175,7 +175,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "set",
     "label": "The gate predicates",
     "href": "/predicates",
-    "hint": "An after entry gates on producer state: succeeded, failed, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it."
+    "hint": "An after entry gates on producer state: success, failure, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it."
   },
   {
     "kind": "set",

@@ -243,7 +243,7 @@ sets:
     defined_by: [spec/03-dag.md]
     evidence: { kind: fixtures, ref: "nika-spec gen-gate-matrix.py · the producer-status × predicate matrix" }
     opener: >-
-      An after entry gates on producer state: succeeded, failed, skipped or
+      An after entry gates on producer state: success, failure, skipped or
       terminal. The full producer-status by predicate matrix is
       fixture-proven upstream · the site replays it, never re-derives it.
     members:

@@ -121,7 +121,7 @@ export const HUBS: Record<string, HubData> = {
       {
         "id": "gate-predicates",
         "title": "The gate predicates",
-        "opener": "An after entry gates on producer state: succeeded, failed, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
+        "opener": "An after entry gates on producer state: success, failure, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
         "anchor_prefix": "predicate-",
         "node_prefix": "predicate",
         "defined_by": [

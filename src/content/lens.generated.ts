@@ -3306,7 +3306,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "The gate predicates",
     "url": "/flow",
     "status": "ratified",
-    "opener": "An after entry gates on producer state: succeeded, failed, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
+    "opener": "An after entry gates on producer state: success, failure, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
     "closed": true,
     "counted_in_canon": false,
     "surface": "anchors",
