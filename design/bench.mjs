@@ -356,6 +356,44 @@ const FORCED = [
   { k: 'dim', label: 'atténué', note: 'le reste du graphe quand un nœud est mis en avant · il recule, il ne disparaît pas' },
 ]
 
+/* LES FORMES QU'UN GRAPHE PREND. Un seul exemple ne montre jamais la
+   disposition : il montre SA disposition. Ces cinq sont les silhouettes que le
+   layout doit tenir, et deux d'entre elles sont des cas dégénérés qu'un
+   fichier réel produit sans qu'on l'ait voulu — la tâche unique et le fichier
+   qui ne déclare rien. Même moteur de rendu, mêmes arêtes calculées au
+   runtime : ce sont de vrais petits graphes, pas des icônes. */
+const SHAPES = [
+  { id: 'chain', label: 'la chaîne', note: 'chaque tâche attend la précédente · une vague par tâche, aucun parallélisme à gagner',
+    nodes: [['a', 0], ['b', 1], ['c', 2], ['d', 3]], edges: [['a', 'b'], ['b', 'c'], ['c', 'd']] },
+  { id: 'fan', label: 'l’éventail', note: 'une source, cinq lectures indépendantes · une seule vague, tout en parallèle',
+    nodes: [['src', 0], ['r1', 1], ['r2', 1], ['r3', 1], ['r4', 1], ['r5', 1]],
+    edges: [['src', 'r1'], ['src', 'r2'], ['src', 'r3'], ['src', 'r4'], ['src', 'r5']] },
+  { id: 'diamond', label: 'le losange', note: 'deux branches qui se rejoignent · la jointure attend la plus lente',
+    nodes: [['in', 0], ['l', 1], ['r', 1], ['out', 2]],
+    edges: [['in', 'l'], ['in', 'r'], ['l', 'out'], ['r', 'out']] },
+  { id: 'solo', label: 'une seule tâche', note: 'le cas dégénéré le plus fréquent · un fichier commence toujours comme ça',
+    nodes: [['only', 0]], edges: [] },
+  { id: 'empty', label: 'rien de déclaré', note: 'le fichier parse mais n’a pas de tâches · dire « vide » vaut mieux que dessiner un cadre vide',
+    nodes: [], edges: [] },
+]
+
+const miniGraph = (sh) => {
+  if (!sh.nodes.length) {
+    return `<div class="mg-empty">aucune tâche déclarée</div>`
+  }
+  const waves = Math.max(...sh.nodes.map((n) => n[1])) + 1
+  const rows = {}
+  return `<div class="mg" data-graph="${sh.id}" data-edges="${escAttr(JSON.stringify(sh.edges))}">
+        <svg class="mg-wires" aria-hidden><g></g></svg>
+        <div class="mg-grid" style="--w:${waves}">
+${sh.nodes.map(([id, w]) => {
+  rows[w] = (rows[w] ?? 0) + 1
+  return `          <span class="mg-node" data-id="${id}" style="grid-column:${w + 1};grid-row:${rows[w]}">${id}</span>`
+}).join('\n')}
+        </div>
+      </div>`
+}
+
 const dagNode = (n) => `        <article class="nc pg-node" data-verb="${n.verb}" data-state="idle" data-id="${n.id}"
           style="grid-column:${n.wave + 1};grid-row:${n.row}" tabindex="0" role="button"
           aria-label="${n.id} · clique pour changer son état">
@@ -409,6 +447,11 @@ const plotEase = (css) => {
 
 /* ── the page ─────────────────────────────────────────────────────────────── */
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+/* AN ATTRIBUTE NEEDS ITS QUOTES ESCAPED TOO. esc() handles text; a JSON payload
+   in a double-quoted attribute breaks at its first inner quote, which is
+   exactly how the mini-graphs shipped with `data-edges="[["` and drew nothing.
+   Text and attributes are not the same escape. */
+const escAttr = (s) => esc(s).replace(/"/g, '&quot;')
 
 const swatch = (k, v) => `        <div class="sw"><i style="background:${v}"></i><b>${k}</b><span>${v}</span></div>`
 
@@ -821,6 +864,22 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
   .sw b{font:500 10px/1 var(--mono);letter-spacing:.04em;color:var(--nk-dim)}
   .sw span{font:10px/1 var(--mono);color:var(--nk-faint);font-variant-numeric:tabular-nums}
+  /* ── les formes de graphe ────────────────────────────────────────────── */
+  .mg{position:relative;padding:4px 0}
+  .mg-wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .mg-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(var(--w),minmax(0,1fr));
+    gap:7px 26px;align-items:start;justify-items:start}
+  .mg-node{display:block;width:100%;padding:5px 8px;border-radius:calc(var(--nk-radius) * .7);
+    background:var(--nk-surface);border:1px solid var(--nk-edge);
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact);
+    font-family:var(--mono);font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-dim);
+    text-align:center;letter-spacing:.03em}
+  .mg-edge{fill:none;stroke:var(--nk-strong);stroke-width:1.2;stroke-opacity:.55;
+    vector-effect:non-scaling-stroke}
+  .mg-empty{padding:16px 12px;border:1px dashed var(--nk-strong);border-radius:var(--nk-radius);
+    font-family:var(--mono);font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption);
+    text-align:center;letter-spacing:.04em}
+
   /* les états forcés · exactement les mêmes déclarations que les vraies, mais
      déclenchées par un attribut, pour qu'une vitrine ne puisse pas diverger */
   .nc[data-force='hover'],.nc[data-force='focus']{
@@ -1263,6 +1322,21 @@ ${DAG.nodes.map(dagNode).join('\n')}
   </section>
 
   <section>
+    <div class="sec-head"><h2>Les formes</h2><span class="sec-n">${SHAPES.length} silhouettes que le layout doit tenir</span></div>
+    <p class="sec-note">
+      Un seul exemple ne montre jamais la disposition : il montre <em>sa</em> disposition. Voici
+      les silhouettes qu’un fichier réel produit, y compris les deux cas dégénérés qu’on obtient
+      sans les vouloir — la tâche unique, et le fichier qui parse sans rien déclarer. Même moteur,
+      mêmes arêtes calculées au runtime : ce sont de vrais petits graphes, pas des icônes.
+    </p>
+    <div class="stage" data-stage><div class="rack">
+${SHAPES.map((sh) => `        <div class="cell" style="max-width:300px"><span class="cell-k">${esc(sh.label)}</span>
+      ${miniGraph(sh)}
+          <span class="cell-note">${esc(sh.note)}</span></div>`).join('\n')}
+    </div></div>
+  </section>
+
+  <section>
     <div class="sec-head"><h2>Les interactions</h2><span class="sec-n">${FORCED.length} états, forcés côte à côte</span></div>
     <p class="sec-note">
       On ne peut pas survoler quatre cartes à la fois : un banc qui compte sur le pointeur ne
@@ -1655,6 +1729,33 @@ ${LEDGER.map(([what, where, ok, verdict]) => `        <tr><td>${esc(what)}</td><
     if (k === 't') setSkin(state.skin === 'brand' ? 'theme' : 'brand');
     else if (k === 'x') setExplode(!state.explode);
     else if (k === '0') { state.knobs = {}; save(); applyKnobs(); }
+  });
+
+  /* les petits graphes · la MÊME façon de tracer que le playground, appliquée
+     à n'importe quel conteneur [data-graph] · un seul chemin de code pour les
+     deux, donc ils ne peuvent pas diverger */
+  document.querySelectorAll('[data-graph]').forEach(function (g) {
+    var svg = g.querySelector('.mg-wires > g');
+    var edges = JSON.parse(g.dataset.edges || '[]');
+    var draw = function () {
+      var box = g.getBoundingClientRect();
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+      edges.forEach(function (e) {
+        var a = g.querySelector('[data-id="' + e[0] + '"]');
+        var b = g.querySelector('[data-id="' + e[1] + '"]');
+        if (!a || !b) return;
+        var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+        var x1 = ra.right - box.left, y1 = ra.top - box.top + ra.height / 2;
+        var x2 = rb.left - box.left, y2 = rb.top - box.top + rb.height / 2;
+        var mid = x1 + (x2 - x1) / 2;
+        var pth = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pth.setAttribute('class', 'mg-edge');
+        pth.setAttribute('d', 'M' + x1 + ' ' + y1 + ' C' + mid + ' ' + y1 + ' ' + mid + ' ' + y2 + ' ' + x2 + ' ' + y2);
+        svg.appendChild(pth);
+      });
+    };
+    requestAnimationFrame(draw);
+    new ResizeObserver(draw).observe(g);
   });
 
   /* ── le playground · un run qu'on regarde se dérouler ────────────────────
