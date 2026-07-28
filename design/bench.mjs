@@ -173,6 +173,19 @@ const PREVIEW_OVER = constObject('NIKA_PREVIEW_OVERRIDE')
 const ESSENCE = objConst('NIKA_ESSENCE')
 const previewOf = (bare, cat) => PREVIEW_OVER[bare] ?? PREVIEW_BY_CAT[cat] ?? 'none'
 
+/* LES SEPT RENDUS · une valeur réelle par rendu. Ce ne sont pas des exemples
+   décoratifs : chacun est ce qu'un vrai fichier écrit à cet endroit, et c'est
+   pour ça qu'on voit tout de suite pourquoi un chemin n'est pas une url. */
+const RENDER_SPECIMEN = [
+  ['path', './notes/calendar.md', 'read · write · edit · decide'],
+  ['url', 'https://api.github.com/repos', 'fetch'],
+  ['code', '.[] | select(.ok)', 'jq · glob · grep · date · convert · inspect · compose'],
+  ['condition', 'steps.check.ok == true', 'assert · validate'],
+  ['event', 'run.finished', 'emit'],
+  ['duration', '30s', 'wait'],
+  ['text', '« Flag what is urgent »', 'log · prompt · notify · hash · uuid · image_generate · tts_generate'],
+]
+
 const LAYERS = ['shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof']
 const LAYER_HEX = Object.fromEntries(LAYERS.map((l) => [l, cssVar(`layer-${l}`)]))
 for (const [l, hex] of Object.entries(LAYER_HEX)) {
@@ -914,6 +927,14 @@ ${nodeCssProjected}
   .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
   .bx-tools .nc{width:auto}
   .bx-opt{color:var(--nk-faint);border-style:dashed}
+  .bx-vals{display:flex;flex-direction:column;gap:0}
+  .bx-val{display:grid;grid-template-columns:96px minmax(0,1fr) minmax(0,1.25fr);
+    align-items:baseline;gap:16px;padding:10px 14px;border-bottom:1px solid var(--nk-edge)}
+  .bx-val:last-child{border-bottom:0}
+  .bx-val-k{font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.08em;text-transform:uppercase;
+    color:var(--nk-faint)}
+  .bx-val-who{font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption);
+    overflow:hidden;text-overflow:ellipsis}
   /* L'ESSENCE · l'argument qui EST le builtin, et comment il se rend. Une ligne
      à part, plus haut que la description : c'est ce qu'on lit en premier sur un
      canvas quand on cherche « qu'est-ce que cette tâche fait, au juste ». */
@@ -1559,6 +1580,31 @@ ${STATES.map((st) => `        <div class="mtx-shead">${esc(st.label)}<em>${esc(s
 ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v, { state: st.id })}</div>`).join('\n')}`).join('\n')}
       </div>
     </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>La valeur typée</h2><span class="sec-n">${RENDER_SPECIMEN.length} rendus · le premier primitif de contrôle</span></div>
+    <p class="sec-note">
+      Une carte qui montre tous ses arguments ne montre rien. Le <b>registre d’essence</b> nomme
+      celui qui répond « qu’est-ce que cette tâche fait, au juste » — et chaque rendu
+      <b>emprunte</b> une teinte qui veut déjà dire quelque chose plutôt que d’en choisir une.
+      Lis la colonne de droite : c’est le raisonnement, pas une palette.
+    </p>
+    <div class="stage nk-ground bx-vals" data-stage>
+${RENDER_SPECIMEN.map(([k, val, who]) => `      <div class="bx-val">
+        <span class="bx-val-k">${k}</span>
+        <span class="nc-ess-${k}">${esc(val)}</span>
+        <span class="bx-val-who">${esc(who)}</span>
+      </div>`).join('\n')}
+    </div>
+    <p class="typ-legend">
+      <b>chemin</b> le vert du succès — un chemin a eu lieu, ou non ·
+      <b>condition</b> l’ambre du nouvel essai — rien n’est réglé ·
+      <b>url · code</b> le bleu de la donnée — ce qui voyage ·
+      <b>événement</b> la voix d’<code>invoke</code> ·
+      <b>durée</b> sourde et <b>tabulaire</b> — un nombre qu’on compare ·
+      <b>texte</b> l’encre de la surface, aucune teinte propre.
+    </p>
   </section>
 
   <section>

@@ -329,6 +329,20 @@
 .dag-node.status-cancelled :where(.nc-dot) { box-sizing: border-box; width: 7px; height: 2px; border-radius: 1px; border: 0 solid; outline: none; transform: rotate(-45deg); }
 :where(.dag-node.status-cancelled .nc-dot) { background: currentColor; box-shadow: none; }
 
+/* LA VALEUR TYPÉE · le premier primitif de contrôle. Chaque rendu emprunte une
+   teinte qui veut déjà dire quelque chose : un chemin porte le vert du succès
+   parce qu'un chemin a eu lieu ou non ; une condition porte l'ambre du non-réglé ;
+   une durée est sourde et tabulaire parce que c'est un nombre qu'on compare, pas
+   un mot qu'on lit. La forme vient de la spec, la teinte est un alias. */
+:where(.nc-ess-code) { color: var(--nk-ess-code, #4f86ff); font-family: var(--nk-mono, ui-monospace, monospace); padding: 0 4px; border-radius: 3px; background: color-mix(in srgb, currentColor 10%, transparent); }
+:where(.nc-ess-url) { color: var(--nk-ess-url, #4f86ff); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); }
+:where(.nc-ess-path) { color: var(--nk-ess-path, #34d399); font-family: var(--nk-mono, ui-monospace, monospace); }
+:where(.nc-ess-condition) { color: var(--nk-ess-condition, #e0b071); }
+:where(.nc-ess-event) { color: var(--nk-ess-event, #22d3ee); }
+:where(.nc-ess-duration) { color: var(--nk-ess-duration, #5a606b); font-variant-numeric: tabular-nums; }
+:where(.nc-ess-text) { color: inherit; }
+:where(.nc-ess-rest) { opacity: 0.55; font-weight: var(--nk-fw-plain, 400); }
+
 @media (prefers-reduced-motion: reduce) {
   :where(.nc) { transition: none; }
 }
@@ -467,6 +481,14 @@
   .bx-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
   .bx-tools .nc{width:auto}
   .bx-opt{color:var(--nk-faint);border-style:dashed}
+  .bx-vals{display:flex;flex-direction:column;gap:0}
+  .bx-val{display:grid;grid-template-columns:96px minmax(0,1fr) minmax(0,1.25fr);
+    align-items:baseline;gap:16px;padding:10px 14px;border-bottom:1px solid var(--nk-edge)}
+  .bx-val:last-child{border-bottom:0}
+  .bx-val-k{font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.08em;text-transform:uppercase;
+    color:var(--nk-faint)}
+  .bx-val-who{font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption);
+    overflow:hidden;text-overflow:ellipsis}
   /* L'ESSENCE · l'argument qui EST le builtin, et comment il se rend. Une ligne
      à part, plus haut que la description : c'est ce qu'on lit en premier sur un
      canvas quand on cherche « qu'est-ce que cette tâche fait, au juste ». */
@@ -1353,6 +1375,61 @@
         <div class="mtx-cell"><article class="dag-node verb-agent status-cancelled"><div class="nc"><div class="nc-head" data-part="tête · qui et quel verbe" style="--i:0"><span class="nc-tile">✦</span><span class="nc-id">research</span><span class="nc-badge">agent</span></div><div class="nc-sub" data-part="mécanisme · comment" style="--i:1"><span class="nc-sub-k"><b class="bx-k">tools</b> fetch · write · done</span></div><div class="nc-body" data-part="essence · ce qu’il fait" style="--i:2">« Research plan · ${{ with.plan_queries }} »</div><div class="nc-agent-band" data-part="bande · où il en est" style="--i:3"><span>tour 7 / 25</span><span class="nc-ab-meter"><i style="width:41%"></i></span><span class="nc-ab-tk">61 400 / 150 000</span></div><div class="nc-policy" data-part="pourquoi · ce qui l’autorise" style="--i:4"><span class="nc-chip">coupé à la main</span></div></div></article></div>
       </div>
     </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>La valeur typée</h2><span class="sec-n">7 rendus · le premier primitif de contrôle</span></div>
+    <p class="sec-note">
+      Une carte qui montre tous ses arguments ne montre rien. Le <b>registre d’essence</b> nomme
+      celui qui répond « qu’est-ce que cette tâche fait, au juste » — et chaque rendu
+      <b>emprunte</b> une teinte qui veut déjà dire quelque chose plutôt que d’en choisir une.
+      Lis la colonne de droite : c’est le raisonnement, pas une palette.
+    </p>
+    <div class="stage nk-ground bx-vals" data-stage>
+      <div class="bx-val">
+        <span class="bx-val-k">path</span>
+        <span class="nc-ess-path">./notes/calendar.md</span>
+        <span class="bx-val-who">read · write · edit · decide</span>
+      </div>
+      <div class="bx-val">
+        <span class="bx-val-k">url</span>
+        <span class="nc-ess-url">https://api.github.com/repos</span>
+        <span class="bx-val-who">fetch</span>
+      </div>
+      <div class="bx-val">
+        <span class="bx-val-k">code</span>
+        <span class="nc-ess-code">.[] | select(.ok)</span>
+        <span class="bx-val-who">jq · glob · grep · date · convert · inspect · compose</span>
+      </div>
+      <div class="bx-val">
+        <span class="bx-val-k">condition</span>
+        <span class="nc-ess-condition">steps.check.ok == true</span>
+        <span class="bx-val-who">assert · validate</span>
+      </div>
+      <div class="bx-val">
+        <span class="bx-val-k">event</span>
+        <span class="nc-ess-event">run.finished</span>
+        <span class="bx-val-who">emit</span>
+      </div>
+      <div class="bx-val">
+        <span class="bx-val-k">duration</span>
+        <span class="nc-ess-duration">30s</span>
+        <span class="bx-val-who">wait</span>
+      </div>
+      <div class="bx-val">
+        <span class="bx-val-k">text</span>
+        <span class="nc-ess-text">« Flag what is urgent »</span>
+        <span class="bx-val-who">log · prompt · notify · hash · uuid · image_generate · tts_generate</span>
+      </div>
+    </div>
+    <p class="typ-legend">
+      <b>chemin</b> le vert du succès — un chemin a eu lieu, ou non ·
+      <b>condition</b> l’ambre du nouvel essai — rien n’est réglé ·
+      <b>url · code</b> le bleu de la donnée — ce qui voyage ·
+      <b>événement</b> la voix d’<code>invoke</code> ·
+      <b>durée</b> sourde et <b>tabulaire</b> — un nombre qu’on compare ·
+      <b>texte</b> l’encre de la surface, aucune teinte propre.
+    </p>
   </section>
 
   <section>
