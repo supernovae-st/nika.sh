@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
@@ -288,5 +289,76 @@ describe('la matrice de synchronisation · mesurée, pas déclarée', () => {
 
   it('le verdict cite le SHA de l’épingle · une mesure sans date ne vaut rien', () => {
     expect(HTML_M).toContain(pin.sha)
+  })
+})
+
+/* ── LE BANC · deux fautes qui se répètent, structurées plutôt que rappelées ───
+   Cinq fois dans le même arc, un backtick posé dans un commentaire CSS a fermé
+   le template literal du générateur et cassé la page. Cinq occurrences, c'est
+   un motif que la discipline ne rattrape pas : ça devient un gate.
+
+   Et les ancres : elles étaient posées par JavaScript, donc un lien profond
+   ouvert à froid n'avait rien à viser et atterrissait toujours en haut. Un
+   identifiant que le document ne porte pas n'existe pas pour le navigateur qui
+   vient de l'ouvrir. */
+describe('le banc · les deux fautes qui se répétaient', () => {
+  const PAGE = readFileSync(join(__dirname, '../../design/bench.html'), 'utf8')
+
+  it('le générateur se parse · un backtick égaré ne passe plus', () => {
+    /* LA BONNE FORME DU GATE, trouvée en le voyant échouer. La première version
+       interdisait tout backtick en commentaire de bloc et en a trouvé NEUF,
+       tous inoffensifs : ils vivent dans du JS ordinaire, hors du template. Un
+       gate qui punit neuf innocents pour attraper un coupable apprend à être
+       ignoré.
+
+       L'invariant réel n'est pas « pas de backtick », c'est « le fichier se
+       parse ». Ça attrape exactement la faute — et toutes ses variantes, pas
+       seulement celle qu'on a déjà vue cinq fois. */
+    const r = spawnSync(process.execPath, ['--check', join(__dirname, '../../design/bench.mjs')],
+      { encoding: 'utf8' })
+    expect(r.status, `bench.mjs ne se parse plus :\n${r.stderr.split('\n').slice(0, 4).join('\n')}`)
+      .toBe(0)
+  })
+
+  it('chaque section porte son ancre DANS le document', () => {
+    const sections = (PAGE.match(/<section\b/g) ?? []).length
+    const anchored = [...PAGE.matchAll(/<section id="([a-z0-9-]+)"/g)].map((m) => m[1])
+    expect(sections, 'la page a perdu ses sections').toBeGreaterThan(15)
+    /* une section sans <h2> n'a rien à nommer · on tolère l'écart, pas plus */
+    expect(sections - anchored.length,
+      'des sections n’ont pas d’ancre écrite · un lien profond y atterrira en haut')
+      .toBeLessThanOrEqual(1)
+    expect(new Set(anchored).size, 'deux sections partagent une ancre').toBe(anchored.length)
+    /* et ce sont des SLUGS : insérer une section ne doit pas déplacer les liens
+       déjà partagés, ce qu’un numéro de position fait silencieusement */
+    expect(anchored.filter((a) => /^sec-\d+$/.test(a)),
+      'des ancres sont des numéros de position · elles bougeront à la prochaine insertion')
+      .toEqual([])
+  })
+
+  it('le curseur du banc est DESSINÉ, pas un widget natif teinté', () => {
+    expect(PAGE, 'les curseurs sont revenus au widget système')
+      .toContain('::-webkit-slider-thumb')
+    expect(PAGE).toContain('appearance:none')
+    /* et il garde son anneau · Geist le répète de chaque composant */
+    expect(PAGE, 'l’anneau de focus du curseur a disparu').toContain('focus-visible::-webkit-slider-thumb')
+    /* LE FOND DOIT ÊTRE REPRIS EXPLICITEMENT · passer de la propriété raccourcie
+       à background-image rend au navigateur le blanc qu'il donne à un range, et
+       chaque rail devient une dalle. Vu à l'écran, après l'avoir déduit faux. */
+    expect(PAGE, 'le fond natif du range est revenu · les rails redeviennent des dalles')
+      .toContain('background-color:transparent')
+    /* et la jauge doit DIRE la valeur · sans --fill posé, les huit rails
+       affichaient 50 % quelle que soit leur position */
+    expect(PAGE, 'rien ne pose --fill · la jauge afficherait une valeur fausse')
+      .toContain("setProperty('--fill'")
+    /* LE FOND DOIT ÊTRE REPRIS EXPLICITEMENT · en passant de la propriété
+       raccourcie à background-image, le blanc que le navigateur donne à un
+       range revient et chaque rail devient une dalle. Vu à l'écran, pas déduit. */
+    expect(PAGE, 'le fond natif du range est revenu · les rails redeviennent des dalles blanches')
+      .toContain('background-color:transparent')
+    /* et la jauge doit DIRE la valeur · sans --fill posé, les huit rails
+       affichaient 50 % quelle que soit leur position */
+    expect(PAGE, 'rien ne pose --fill · la jauge afficherait une valeur fausse')
+      .toContain("setProperty('--fill'")
   })
 })
