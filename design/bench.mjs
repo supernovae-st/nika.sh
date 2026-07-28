@@ -602,6 +602,9 @@ ${KNOBS.map((k) => `    ${k.css}:${k.def}${k.unit};`).join('\n')}
        first draft used --nk-st-muted and read Lc 20 — the page that judges
        contrast was failing its own bar. */
     --nk-caption: color-mix(in oklch, var(--nk-ink) 80%, var(--nk-bg));
+    /* la prose explicative · plus forte que la légende, moins que l'encre
+       pleine, et à 14px pour que son plancher tombe de 90 à 75 */
+    --nk-prose: color-mix(in oklch, var(--nk-ink) 91%, var(--nk-bg));
     transition: background-color calc(var(--nk-dur) * 2) var(--ease);
   }
   .stage[data-skin="theme"] {
@@ -636,6 +639,19 @@ ${Object.entries(theme.layer).map(([k, v]) => `    --nk-${k}:${v};`).join('\n')}
   kbd{font:500 10px/1 var(--mono);padding:3px 5px;border:1px solid var(--room-strong);border-bottom-width:2px;border-radius:4px;color:var(--room-dim)}
   .console-note{margin-left:auto;font-size:13px;color:var(--room-dim)}
 
+  /* l'index · collant sous la console, une seule ligne qui défile */
+  .dex{position:sticky;top:56px;z-index:19;display:flex;gap:3px;overflow-x:auto;
+    margin:8px 0 0;padding:7px 8px;scrollbar-width:none;
+    background:color-mix(in oklch,var(--room-panel) 92%,transparent);
+    backdrop-filter:blur(10px);border:1px solid var(--room-line);border-radius:9px}
+  .dex::-webkit-scrollbar{display:none}
+  .dex-a{flex:0 0 auto;padding:5px 9px;border-radius:6px;text-decoration:none;
+    font:500 11px/1 var(--mono);letter-spacing:.03em;color:var(--room-dim);white-space:nowrap;
+    transition:background-color 120ms var(--ease),color 120ms var(--ease)}
+  .dex-a:hover{color:var(--room-ink);background:var(--room-line)}
+  .dex-a:focus-visible{outline:2px solid var(--room-accent);outline-offset:2px}
+  .dex-a[aria-current='true']{background:var(--room-accent);color:#fff}
+  section{scroll-margin-top:116px}
   section{margin-top:48px}
   .sec-head{display:flex;align-items:baseline;gap:11px;margin-bottom:5px}
   h2{margin:0;font-size:18px;letter-spacing:-.012em}
@@ -819,7 +835,10 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .typ-s{color:var(--nk-ink);line-height:1.1;font-family:var(--display)}
   .typ-note{font:11px/1.4 var(--sans);color:var(--nk-caption);max-width:42ch}
   .typ-warn{font:10px/1 var(--mono);color:var(--nk-fail-text);letter-spacing:.05em;vertical-align:2px}
-  .typ-legend{margin:16px 0 0;font:12px/1.6 var(--sans);color:var(--nk-caption);max-width:74ch}
+  /* 12px pour de la prose lue en continu ne passe pas le plancher du CORPS
+     (Lc 90 à cette taille) quelle que soit la couleur. La taille était le
+     problème, pas la teinte. */
+  .typ-legend{margin:16px 0 0;font:14px/1.62 var(--sans);color:var(--nk-prose);max-width:70ch}
   .typ-legend b{color:var(--nk-dim)}
   .typ-frontier{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px}
   .typ-side{display:grid;gap:9px;align-content:start}
@@ -891,7 +910,7 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
     background-size:3px 3px;mix-blend-mode:overlay}
   .gl-k{font:500 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--nk-caption)}
   .gl-pill{font:500 11px/1 var(--mono);padding:5px 9px;border-radius:999px;
-    background:rgb(255 255 255 / .06);color:var(--nk-dim)}
+    background:rgb(255 255 255 / .06);color:var(--nk-caption)}
   .gl-sep{width:1px;height:16px;background:var(--nk-strong)}
 
   /* ── les formes de graphe ────────────────────────────────────────────── */
@@ -902,7 +921,7 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .mg-node{display:block;width:100%;padding:5px 8px;border-radius:calc(var(--nk-radius) * .7);
     background:var(--nk-surface);border:1px solid var(--nk-edge);
     box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact);
-    font-family:var(--mono);font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-dim);
+    font-family:var(--mono);font-size:calc(var(--nk-fs) - 1.5px);color:var(--nk-caption);
     text-align:center;letter-spacing:.03em}
   .mg-edge{fill:none;stroke:var(--nk-strong);stroke-width:1.2;stroke-opacity:.55;
     vector-effect:non-scaling-stroke}
@@ -1023,6 +1042,7 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
     <button type="button" class="btn" id="explode" aria-pressed="false">démonter</button>
     <span class="console-note"><kbd>T</kbd> plateau · <kbd>X</kbd> démonter · <kbd>0</kbd> réinitialiser</span>
   </div>
+  <nav class="dex" id="dex" aria-label="Les sections du banc"></nav>
 
   <section>
     <div class="sec-head"><h2>L’atelier</h2><span class="sec-n">${KNOBS.length} mesures · ${KNOBS.filter((k) => k.home === 'spec').length} partagées</span></div>
@@ -1618,7 +1638,18 @@ ${LEDGER.map(([what, where, ok, verdict]) => `        <tr><td>${esc(what)}</td><
     ['.cell-k', 'l’étiquette d’un plateau', 'spot'],
     ['.cell-note', 'la légende sous un spécimen', 'spot'],
     ['.nc-st--skipped', 'l’état sauté', 'muted'],
-    ['.nc-st--idle', 'l’état au repos', 'muted']
+    ['.nc-st--idle', 'l’état au repos', 'muted'],
+    /* AJOUTÉ 2026-07-28 · huit familles étaient arrivées sur la page sans que
+       le contrôle les voie. Un instrument en retard sur sa propre page mesure
+       l'état d'hier et le rapporte comme celui d'aujourd'hui. */
+    ['.typ-sample', 'un spécimen de face', 'body'],
+    ['.typ-note', 'la note d’une marche', 'spot'],
+    ['.typ-legend', 'une légende de section', 'body'],
+    ['.mat-calls li', 'un appel d’anatomie', 'spot'],
+    ['.gl-k', 'une étiquette sur le verre', 'spot'],
+    ['.gl-pill', 'une pastille sur le verre', 'spot'],
+    ['.pg-line', 'l’état dans le playground', 'spot'],
+    ['.mg-node', 'un nœud de silhouette', 'spot']
   ];
   function control() {
     var rows = [];
@@ -1791,6 +1822,40 @@ ${LEDGER.map(([what, where, ok, verdict]) => `        <tr><td>${esc(what)}</td><
     else if (k === 'x') setExplode(!state.explode);
     else if (k === '0') { state.knobs = {}; save(); applyKnobs(); }
   });
+
+  /* ── L'INDEX SE DÉRIVE DE LA PAGE ────────────────────────────────────────
+     Vingt sections dans un seul défilement, c'est un rouleau — exactement le
+     reproche qu'on a fait au registre des refus avant de lui donner son
+     étagère. La leçon vaut ici aussi.
+     Il est CONSTRUIT depuis les <section> réelles, jamais écrit à la main :
+     une liste écrite peut annoncer une section qui n'existe plus, celle-ci
+     ne le peut pas. Et l'observateur marque où on est. */
+  var dex = document.getElementById('dex');
+  if (dex) {
+    var secs = Array.prototype.slice.call(document.querySelectorAll('.wrap > section'));
+    var links = [];
+    secs.forEach(function (sec, i) {
+      var h = sec.querySelector('h2');
+      if (!h) return;
+      var id = 'sec-' + i;
+      sec.id = id;
+      var a = document.createElement('a');
+      a.href = '#' + id;
+      a.className = 'dex-a';
+      a.textContent = h.textContent.trim();
+      dex.appendChild(a);
+      links.push({ a: a, sec: sec });
+    });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var hit = links.find(function (l) { return l.sec === en.target; });
+          if (hit) hit.a.setAttribute('aria-current', en.isIntersecting ? 'true' : 'false');
+        });
+      }, { rootMargin: '-15% 0px -70% 0px' });
+      links.forEach(function (l) { io.observe(l.sec); });
+    }
+  }
 
   /* les petits graphes · la MÊME façon de tracer que le playground, appliquée
      à n'importe quel conteneur [data-graph] · un seul chemin de code pour les
