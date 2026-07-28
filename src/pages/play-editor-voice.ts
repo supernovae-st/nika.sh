@@ -1,30 +1,32 @@
 import {
   Decoration,
   EditorView,
-  MatchDecorator,
   ViewPlugin,
   hoverTooltip,
   type DecorationSet,
   type ViewUpdate,
 } from '@codemirror/view'
-import { RangeSetBuilder } from '@codemirror/state'
-import { HighlightStyle } from '@codemirror/language'
-import { tags as t } from '@lezer/highlight'
+import { RangeSetBuilder, type Range } from '@codemirror/state'
 import { tipFor, tipHref, type CodeTip } from '../components/codefile-tips'
+import { tokenize, type Token } from '../components/codefile-highlight'
 
-/* ─── /play · the editor's yaml voice (loop T6 · one-voice law) ──────────────
-   The live editor must speak the SAME dialect as the static CodeFile
-   (components/codefile.css): the exact --cf-* token hues, the 4 verb keys in
-   their canonical colours, ${{ refs }} in teal live-wiring. Two layers:
+/* ─── /play · the editor's yaml voice · ONE classifier ───────────────────────
+   The live editor speaks the SAME dialect as the static CodeFile because it
+   now runs the SAME code: tokenize(), the site's whole-file pass, drives every
+   coloured span in here. Until 2026-07-28 this file kept a second grammar — a
+   lezer HighlightStyle for base YAML plus a MatchDecorator regex for the nika
+   signatures — and a regex knows only spelling. The panel's own law says
+   POSITION OVERRULES SPELLING: `exec:` under `permits:` is a permit category,
+   demoted to a key wearing the boundary; the regex kept painting it as the
+   orange verb, so /play told the reader the opposite of the truth inside the
+   one block that most needed to be read right.
 
-   1. cfHighlight — a HighlightStyle over the lezer-yaml tags. lezer tags every
-      plain scalar as `content` (no number/bool distinction), which matches the
-      CodeFile tokenizer's own rule: bare scalars read as strings (sage).
-   2. nikaMarks — one MatchDecorator for the three signatures the grammar can't
-      see: verb KEYS, ${{ refs }}, and bare number/bool values. Same rules as
-      the CodeFile tokenizer (verbs only in key position; bools cover the YAML
-      1.1 forms). PlayEditor's theme colours the mark classes — editor-scoped
-      selectors, so the marks win over single-class highlight spans. */
+   One classifier, two renderers. The panel renders tokens as spans at build
+   time; this file maps the SAME tokens to CodeMirror decorations at edit time.
+   tokenize() is lossless per line (its tokens concatenate back to the source
+   line), which is what makes the offset mapping below exact rather than
+   heuristic. The lezer yaml language stays mounted for STRUCTURE only —
+   indentation and folding — and paints nothing. */
 
 export const CF_BG = '#0d0e12'
 export const CF_LINE = 'rgb(255 255 255 / 0.07)'
@@ -38,63 +40,97 @@ export const CF_COMMENT = '#757c8a'
 export const CF_PUNCT = '#78808e'
 export const CF_PLAIN = '#aab0bb'
 
-/* the token voice · mirrors src/styles/tokens.css --cf-* (keys brightest ink,
-   strings sage, structure receding). lezer-yaml maps: Key/* → definition(
-   propertyName) · QuotedLiteral → string · Literal/BlockLiteralContent →
-   content · Anchor/Alias → labelName · Tag → typeName · ":-," → separator. */
-export const cfHighlight = HighlightStyle.define([
-  { tag: t.definition(t.propertyName), color: CF_KEY, fontWeight: '500' },
-  { tag: [t.string, t.content], color: CF_STR },
-  { tag: t.special(t.string), color: CF_PUNCT } /* block headers · | and > */,
-  { tag: t.number, color: CF_NUM },
-  { tag: [t.bool, t.null], color: CF_BOOL, fontWeight: '500' },
-  { tag: [t.labelName, t.typeName], color: CF_REF } /* &anchors · *aliases · !!tags */,
-  { tag: [t.comment, t.lineComment], color: CF_COMMENT },
-  { tag: [t.separator, t.punctuation, t.brace, t.squareBracket, t.meta], color: CF_PUNCT },
-  { tag: t.keyword, color: CF_BOOL } /* %YAML directive names */,
-])
+/* ── token → decoration class · the ONE mapping ──────────────────────────────
+   Mirrors the static panel's KIND_CLASS (CodeFile.tsx): every kind that
+   carries ink gets a class the PlayEditor theme paints from the same CF_*
+   values / projected tokens. `plain` carries none — the content base colour
+   IS its ink. A role rides WITH the kind class, exactly as the panel stacks
+   `cf-key cf-role--boundary`: the role's entry sits later in the theme, so it
+   wins at equal specificity — the cascade IS the precedence, stated. */
+const KIND_CLASS: Partial<Record<Token['kind'], string>> = {
+  key: 'cm-cf-key',
+  string: 'cm-cf-str',
+  comment: 'cm-cf-comment',
+  punct: 'cm-cf-punct',
+  tref: 'cm-nika-ref',
+  number: 'cm-nika-num',
+  boolean: 'cm-nika-bool',
+}
 
-/* the three grammar-blind signatures, one line-scan:
-   group 2 → a verb KEY (indent · optional "- " · verb · lookahead ":")
-   group 3 → a ${{ … }} ref (anywhere, incl. inside quoted strings)
-   group 5 → a bare number/bool/null VALUE ("key: 3" · "- true"), nothing else
-             before line end but an optional trailing comment */
-export const NIKA_MARK_RE =
-  /^(\s*(?:-\s+)?)(agent|exec|infer|invoke)(?=:)|(\$\{\{[^}]*\}\})|(:\s+|^\s*-\s+)(-?\d+(?:\.\d+)?|true|false|null|~|yes|no|on|off)(?=\s*(?:#.*)?$)/g
+function classOf(t: Token): string | null {
+  if (t.kind === 'verb' && t.verb) return `cm-nika-verb cm-nika-verb--${t.verb}`
+  const base = KIND_CLASS[t.kind]
+  const role = t.role ? ` cm-nika-role cm-nika-role--${t.role}` : ''
+  if (!base && !role) return null
+  return `${base ?? ''}${role}`.trim()
+}
 
-const verbMark: Record<string, Decoration> = Object.fromEntries(
-  ['agent', 'exec', 'infer', 'invoke'].map((v) => [
-    v,
-    Decoration.mark({ class: `cm-nika-verb cm-nika-verb--${v}` }),
-  ]),
-)
-const refMark = Decoration.mark({ class: 'cm-nika-ref' })
-const numMark = Decoration.mark({ class: 'cm-nika-num' })
-const boolMark = Decoration.mark({ class: 'cm-nika-bool' })
+export interface NikaSpan {
+  from: number
+  to: number
+  cls: string
+}
 
-const nikaMatcher = new MatchDecorator({
-  regexp: NIKA_MARK_RE,
-  decorate(add, from, _to, m) {
-    if (m[2]) {
-      const s = from + m[1].length
-      add(s, s + m[2].length, verbMark[m[2]])
-    } else if (m[3]) {
-      add(from, from + m[0].length, refMark)
-    } else if (m[5]) {
-      const s = from + m[4].length
-      add(s, s + m[5].length, /^[-\d]/.test(m[5]) ? numMark : boolMark)
+/** the whole document's voice, as spans + boundary-band line indices — pure
+    and testable. This is the seam the parity gate probes: the editor's
+    classification IS tokenize()'s, so the panel and the editor can only
+    disagree if this function stops being called. */
+export function nikaSpansOf(doc: string): { spans: NikaSpan[]; bands: number[] } {
+  const lines = tokenize(doc)
+  const raw = doc.split('\n')
+  const spans: NikaSpan[] = []
+  const bands: number[] = []
+  let off = 0
+  lines.forEach((cl, i) => {
+    if (cl.band === 'boundary') bands.push(i)
+    let col = 0
+    for (const t of cl.tokens) {
+      const cls = classOf(t)
+      if (cls && t.text.length > 0) spans.push({ from: off + col, to: off + col + t.text.length, cls })
+      col += t.text.length
     }
-  },
-})
+    off += (raw[i]?.length ?? 0) + 1
+  })
+  return { spans, bands }
+}
+
+/* decorations are interned per class — a rebuild re-uses them, so a keystroke
+   allocates ranges, never mark objects */
+const markCache = new Map<string, Decoration>()
+function markFor(cls: string): Decoration {
+  let d = markCache.get(cls)
+  if (!d) {
+    d = Decoration.mark({ class: cls })
+    markCache.set(cls, d)
+  }
+  return d
+}
+/* the boundary band · the static panel's gutter spine, as a line class */
+const bandLine = Decoration.line({ class: 'cm-nika-band' })
+
+function buildVoice(view: EditorView): DecorationSet {
+  const { spans, bands } = nikaSpansOf(view.state.doc.toString())
+  const ranges: Range<Decoration>[] = []
+  for (const b of bands) {
+    if (b + 1 <= view.state.doc.lines) ranges.push(bandLine.range(view.state.doc.line(b + 1).from))
+  }
+  for (const s of spans) if (s.to > s.from) ranges.push(markFor(s.cls).range(s.from, s.to))
+  /* Decoration.set sorts — line decos and marks interleave at the same from */
+  return Decoration.set(ranges, true)
+}
 
 export const nikaMarks = ViewPlugin.fromClass(
   class {
     deco: DecorationSet
     constructor(view: EditorView) {
-      this.deco = nikaMatcher.createDeco(view)
+      this.deco = buildVoice(view)
     }
     update(u: ViewUpdate) {
-      this.deco = nikaMatcher.updateDeco(u, this.deco)
+      /* whole-doc re-tokenize per edit: the files this editor holds are tens
+         of lines, and the semantic pass is positional (an indent change up
+         top can re-parent everything below) — incremental would be wrong,
+         not just complex */
+      if (u.docChanged) this.deco = buildVoice(u.view)
     }
   },
   { decorations: (v) => v.deco },

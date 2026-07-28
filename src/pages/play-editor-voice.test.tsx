@@ -1,25 +1,32 @@
 import { describe, expect, it } from 'vitest'
 import { EditorState } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
-import { yaml as yamlLang } from '@codemirror/lang-yaml'
-import { syntaxHighlighting } from '@codemirror/language'
-import { NIKA_MARK_RE, cfHighlight, cmTipAt, nikaMarks, wrapHang } from './play-editor-voice'
+import { cmTipAt, nikaMarks, nikaSpansOf, wrapHang } from './play-editor-voice'
 
-/* ─── /play editor · one-voice law (loop T6) ─────────────────────────────────
-   The live playground editor must speak the SAME yaml dialect as the static
-   CodeFile: the 4 verb keys in their canonical hues, ${{ refs }} in teal
-   live-wiring, number/bool values typed. The grammar can't see those (lezer
-   tags every plain scalar as `content`), so PlayEditor adds a MatchDecorator.
-   These tests pin (a) the mark regex's classification and (b) that a real
-   EditorView actually renders the mark spans — a silent decorator (wrong
-   precedence, dead plugin, viewport miss) fails here, not in production. */
+/* ─── /play editor · one-voice law (loop T6 · one classifier since 2026-07-28) ─
+   The live playground editor speaks the SAME yaml dialect as the static
+   CodeFile because it runs the same code: tokenize() drives every span. These
+   tests pin (a) the classification as the editor consumes it (nikaSpansOf,
+   the pure seam) and (b) that a real EditorView actually renders the spans —
+   a silent decorator (wrong precedence, dead plugin) fails here, not in
+   production. The classification CASES are unchanged from the regex era on
+   purpose: the refactor had to keep every answer while changing the answerer. */
 
+/* the nika-semantic spans of one line, named — base ink (cm-cf-*) filtered out */
 const scan = (line: string) =>
-  Array.from(line.matchAll(NIKA_MARK_RE), (m) =>
-    m[2] ? `verb:${m[2]}` : m[3] ? `ref:${m[3]}` : `val:${m[5]}`,
-  )
+  nikaSpansOf(line)
+    .spans.filter((s) => !s.cls.startsWith('cm-cf-') || s.cls.includes('cm-nika-role'))
+    .map((s) => {
+      const text = line.slice(s.from, s.to).trim()
+      const verb = s.cls.match(/cm-nika-verb--(\w+)/)
+      if (verb) return `verb:${verb[1]}`
+      const role = s.cls.match(/cm-nika-role--(\w+)/)
+      if (role) return `role:${role[1]}:${text}`
+      if (s.cls.includes('cm-nika-ref')) return `ref:${text}`
+      return `val:${text}`
+    })
 
-describe('the mark regex · classification', () => {
+describe('the classification · tokenize() as the editor consumes it', () => {
   it('lights the 4 verbs only in key position', () => {
     expect(scan('    invoke:            # SLOT: source')).toEqual(['verb:invoke'])
     expect(scan('    infer:')).toEqual(['verb:infer'])
@@ -44,12 +51,31 @@ describe('the mark regex · classification', () => {
     expect(scan('      retries: 3')).toEqual(['val:3'])
     expect(scan('      temperature: 0.2')).toEqual(['val:0.2'])
     expect(scan('      required: true')).toEqual(['val:true'])
+    /* on_fail is NOT in the projected fail vocabulary (on_error/on_finally
+       are) — a surface that tinted it would invent a classification */
     expect(scan('      on_fail: ~')).toEqual(['val:~'])
     /* trailing comment allowed after the value */
     expect(scan('      timeout: 30   # seconds')).toEqual(['val:30'])
     /* numbers inside strings / ids stay strings */
     expect(scan('model: ollama/qwen3.5:4b')).toEqual([])
     expect(scan('  - id: task2')).toEqual([])
+  })
+
+  it('demotes a verb-spelled permit category — the law the regex era broke', () => {
+    /* POSITION OVERRULES SPELLING (codefile-highlight, the panel's own words):
+       `exec:` under `permits:` names a program the plan may launch, not the
+       act. The regex painted it as the orange verb inside the one block that
+       most needed reading right; the classifier demotes it to a boundary key
+       on BOTH surfaces now, because it IS both surfaces. */
+    const doc = 'permits:\n  exec: ["git"]\n  tools: ["nika:read"]'
+    const { spans, bands } = nikaSpansOf(doc)
+    const at = (word: string) =>
+      spans.filter((s) => doc.slice(s.from, s.to).trim() === word).map((s) => s.cls)
+    expect(at('exec').join(' ')).toContain('cm-nika-role--boundary')
+    expect(at('exec').join(' ')).not.toContain('cm-nika-verb')
+    expect(at('permits').join(' ')).toContain('cm-nika-role--boundary')
+    /* and the band covers the whole declaration — the spine must not break */
+    expect(bands).toEqual([0, 1, 2])
   })
 })
 
@@ -110,7 +136,7 @@ describe('the live editor · rendered voice', () => {
     const view = new EditorView({
       state: EditorState.create({
         doc: DOC,
-        extensions: [yamlLang(), syntaxHighlighting(cfHighlight), nikaMarks],
+        extensions: [nikaMarks],
       }),
       parent: document.body,
     })

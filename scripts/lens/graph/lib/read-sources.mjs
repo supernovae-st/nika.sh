@@ -221,6 +221,24 @@ export function readSources(ROOT) {
   for (const k of ['plate', 'well', 'lamp', 'motion'])
     if (!material[k]) throw new Error(`design-tokens: NIKA_MATERIAL.${k} missing`)
 
+  /* THE AUDIT LADDER · the hue each `nika check` severity wears. Bound in
+     nika-spec `severity.audit` as ALIASES into the stored palette, so read the
+     RESOLVED map instead of re-deriving it here: a rebinding upstream must not
+     leave this stylesheet holding last month's colour. Read as a literal rather
+     than by the `hex()` name regex — error/warning/info are words far too
+     common to match on across the whole module. */
+  const auditLit = tokensTs.match(/export const NIKA_AUDIT_HUE = (\{.*?\}) as const/)?.[1]
+  if (!auditLit)
+    throw new Error('design-tokens: NIKA_AUDIT_HUE not found — is the spec projection current?')
+  const auditHue = JSON.parse(
+    auditLit
+      .replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":')
+      .replace(/'/g, '"')
+      .replace(/,(\s*\})/, '$1'),
+  )
+  for (const k of ['error', 'warning', 'info'])
+    if (!auditHue[k]) throw new Error(`design-tokens: NIKA_AUDIT_HUE.${k} missing`)
+
   const tokens = {
     infer: hex('infer'),
     exec: hex('exec'),
@@ -231,6 +249,9 @@ export function readSources(ROOT) {
     markIce: hex('markIce'),
     accent: hex('accent'),
     accentBright: hex('accentBright'),
+    auditError: auditHue.error,
+    auditWarning: auditHue.warning,
+    auditInfo: auditHue.info,
   }
 
   /* the spec pin — stamped by the resync cron from its fresh clone; null

@@ -1,0 +1,246 @@
+/* ─── diagnostic · ONE finding, in the shape the binary printed it ────────────
+   The dg-* anatomy is the convention every compiler converged on (rustc ·
+   miette · Elm): severity, where, what, what to do. The hue comes from
+   --audit-* (design.generated.css · projected from nika-spec severity.audit) —
+   never a literal here, and never the only carrier: the glyph differs per
+   severity and the severity word is in the accessible name.
+
+   THE CONTRAST LAW. The hue paints the GLYPH, the RULE and the CARET only.
+   Message and code stay in ordinary ink: the spec keeps a separate `fail_text`
+   ramp beside `severity.fail` precisely because the stored hue does not clear
+   the body-copy floor, so no severity hue may carry prose here. A wall of red
+   is also worse design than calm prose with one red mark — which is why rustc
+   looks the way it does.
+
+   Static · SSR-safe · dark register (it carries its own floor, so it reads on
+   any section theme). */
+
+.dg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dg {
+  --dg-hue: var(--audit-info);
+  position: relative;
+  padding: 10px 0 10px 14px;
+  border-left: 2px solid var(--dg-hue);
+  font-family: var(--mono);
+}
+
+.dg[data-sev='error'] {
+  --dg-hue: var(--audit-error);
+}
+.dg[data-sev='warning'] {
+  --dg-hue: var(--audit-warning);
+}
+.dg[data-sev='info'] {
+  --dg-hue: var(--audit-info);
+}
+
+/* ── the head row · glyph · gate · code ─────────────────────────────────────
+   One line, three ranks of loudness: the mark, the pass that found it, the
+   code you can look up. */
+.dg-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  margin: 0;
+  font-size: var(--type-mini);
+  letter-spacing: var(--ls-plate);
+}
+
+.dg-glyph {
+  color: var(--dg-hue);
+  font-size: var(--type-plate);
+  line-height: 1;
+}
+
+/* the severity word · read aloud, never drawn (the glyph is its visual twin) */
+.dg-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.dg-gate {
+  color: var(--v4-text);
+  text-transform: uppercase;
+  font-weight: var(--fw-semibold);
+}
+
+.dg-code {
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--v4-line-strong);
+}
+
+a.dg-code:hover,
+a.dg-code:focus-visible {
+  color: var(--v4-text);
+  border-bottom-color: currentColor;
+}
+
+/* ── the sentence · the engine's own words ─────────────────────────────────── */
+.dg-msg {
+  margin: 6px 0 0;
+  max-width: 68ch;
+  color: var(--v4-text);
+  font-family: var(--display);
+  font-size: var(--type-body-sm);
+  line-height: 1.55;
+}
+
+/* the identifiers the engine backticked — the eye should land here first */
+.dg-tok {
+  font-family: var(--mono);
+  font-size: var(--type-eyebrow);
+  color: var(--v4-text);
+  background: rgb(255 255 255 / 0.05);
+  border-radius: 3px;
+  padding: 0.1em 0.34em;
+}
+
+/* ── the span · gutter, source, caret ───────────────────────────────────────
+   The caret rides in its OWN <pre> under the source, padded with spaces in the
+   same mono grid. A positioned overlay drifts the moment the reader changes
+   font size; text under text cannot. */
+.dg-span {
+  margin-top: 10px;
+}
+
+.dg-loc {
+  margin: 0 0 4px;
+  display: flex;
+  gap: 6px;
+  color: var(--v4-text-faint);
+  font-size: var(--type-mini);
+}
+
+.dg-loc-arm {
+  color: var(--v4-hud-faint);
+}
+
+.dg-src,
+.dg-caret {
+  display: grid;
+  grid-template-columns: 3ch 1fr;
+  gap: 0 12px;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.dg-ln {
+  color: var(--v4-hud-faint);
+  text-align: right;
+  user-select: none;
+}
+
+.dg-code-line {
+  color: var(--v4-text-dim);
+}
+
+.dg-caret .dg-code-line {
+  color: var(--dg-hue);
+}
+
+/* ── the fix · the command that teaches this code ──────────────────────────── */
+.dg-fix {
+  margin: 8px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--type-mini);
+  color: var(--v4-text-faint);
+}
+
+.dg-fix-k {
+  text-transform: uppercase;
+  letter-spacing: var(--ls-plate);
+  color: var(--v4-hud-faint);
+}
+
+.dg-fix-cmd {
+  font-family: var(--mono);
+  color: var(--v4-text-dim);
+}
+
+/* ── forced colours · severity survives as weight + the glyph ───────────────
+   Hue is gone in this mode by definition; the mark and the rule must still
+   separate a failure from a remark. */
+@media (forced-colors: active) {
+  .dg {
+    border-left-color: CanvasText;
+  }
+  .dg[data-sev='error'] {
+    border-left-width: 3px;
+  }
+  .dg-glyph,
+  .dg-caret .dg-code-line {
+    color: CanvasText;
+    font-weight: var(--fw-bold);
+  }
+}
+
+/* ── the task, when there is no position ────────────────────────────────────
+   37 findings in 111 name a task instead of a span (the two are near-disjoint).
+   Without this row the largest class after parse renders as a headless
+   sentence. */
+.dg-at {
+  margin: 8px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--type-mini);
+  color: var(--v4-text-faint);
+}
+
+.dg-at-k {
+  text-transform: uppercase;
+  letter-spacing: var(--ls-plate);
+  color: var(--v4-hud-faint);
+}
+
+.dg-at-v {
+  font-family: var(--mono);
+  color: var(--v4-text-dim);
+}
+
+/* the span label · rustc's rule, terser than the message because it points */
+.dg-label {
+  color: var(--v4-text-faint);
+}
+
+.dg-fix-words {
+  font-family: var(--display);
+  color: var(--v4-text-dim);
+}
+
+/* ── UNNECESSARY · the LSP tag for "this declares something nothing uses" ────
+   The sanctioned rendering is FADED, never squiggled — which is exactly the
+   weight NIKA-DRIFT-001 deserves beside a real failure: it is a tidy-up, not a
+   problem. Two visual ranks in one list, for free. */
+.dg[data-tag='unnecessary'] {
+  opacity: 0.72;
+}
+
+.dg[data-tag='unnecessary'] .dg-msg {
+  color: var(--v4-text-dim);
+}
+
+/* a fix the engine only SUSPECTS reads quieter than one it can apply */
+.dg-fix[data-appl='maybe'] .dg-fix-words {
+  color: var(--v4-text-faint);
+}

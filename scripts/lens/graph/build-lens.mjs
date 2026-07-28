@@ -876,6 +876,20 @@ ${(() => {
     `  --ease-drawer: ${mo.ease_drawer};`,
   ].join('\n')
 })()}
+  /* ── THE AUDIT LADDER · projected from nika-spec severity.audit ────────
+     What nika check found, wearing the weight it already means. Aliases,
+     never colours of their own: error borrows the failure red, warning the
+     retrying amber, info the brand accent. The canvas binds the same three —
+     before the binding moved into the spec it only existed in dag.css, and
+     this stylesheet could draw none of it. */
+  --audit-error: ${S.tokens.auditError};
+  --audit-warning: ${S.tokens.auditWarning};
+  --audit-info: ${S.tokens.auditInfo};
+  /* the PASS half of the severity pair (nika-spec severity.ok) — the hero's
+     verdict tick and every audited-green surface. Projected beside the audit
+     ladder so no stylesheet ever re-types the stored value the way --danger
+     was hand-typed beside severity.fail for months. */
+  --sev-ok: ${S.tokens.ok};
   /* §7a · the researched values (R16-R19 · ratified §7) */
   --focus-ring-w: ${SOTA.focus.ring_w};
   --focus-ring-offset: ${SOTA.focus.ring_offset};

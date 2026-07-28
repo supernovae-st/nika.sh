@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: Apache-2.0
+# © SuperNovae Studio · nika.sh
+nika: v1
+workflow:
+  id: pr-review
+# a local model reads the diff · nothing leaves this machine
+model: ollama/llama3.2:3b
+
+# the file IS the blast radius
+permits:
+  exec: [ git ]
+  fs: { write: [ ./REVIEW.md ] }
+  tools: [ "nika:read", "nika:write" ]
+
+tasks:
+  diff:
+    exec: { command: [ git, diff, main ] }
+
+  judge:
+    with:
+      changes: ${{ tasks.dif.output }}
+    agent:
+      prompt: "read the files this diff touches, then judge the risk: ${{ with.changes }}"
+      tools: [ "nika:read" ]
+      max_turns: 4
+      max_tokens_total: 4000
+
+  save:
+    with:
+      verdict: ${{ tasks.judge.output }}
+    invoke:
+      tool: "nika:wrte"
+      args: { path: ./REVIEW.md, content: "${{ with.verdict }}" }
+
+outputs:
+  review: "${{ tasks.judge.output }}"

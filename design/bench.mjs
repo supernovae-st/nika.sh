@@ -565,6 +565,7 @@ const LEDGER = [
   ['la géométrie de la carte', 'material.card (28/07) → node.generated.css', 2, 'consommé · le site et ce banc la portent · le canvas la reçoit'],
   ['la forme de chaque statut', 'material.node.signal (28/07)', 2, 'consommé · 7 géométries distinctes, couleur retirée'],
   ['anatomie du nœud', 'material.node.anatomy · confirmée par verbAnatomies.test', 1, 'projeté'],
+  ['l’échelle d’audit', 'severity.audit (28/07) · le site la peint enfin', 1, 'projeté · le canvas garde sa résolution locale'],
   ['le verre flottant', 'material.glass · 13 copies dans dag.css', 1, 'projeté · les 13 sites à reprendre'],
   ['les familles d’atomes', 'dag.css · 139 familles épinglées · 9 mortes', 1, 'projeté · le contrat les nomme, les peaux restent'],
   ['hues des 7 couches', 'design.generated.css', 0, 'écrit · site seulement'],

@@ -24,7 +24,7 @@ export const NIKA_VERB_GLYPH = { infer: '◇', exec: '▷', invoke: '◆', agent
 export const NIKA_VERB_CODICON = { infer: 'sparkle', exec: 'terminal', invoke: 'plug', agent: 'robot', } as const
 export const NIKA_VERB_FA = { infer: 'sparkles', exec: 'terminal', invoke: 'plug', agent: 'robot', } as const
 /** nika.sh ontology ids (public/brand/icons.json) */
-export const NIKA_VERB_ICON = { infer: 'ai-magic/sparkle', exec: 'console', invoke: 'api-connection', agent: 'agent-graph', } as const
+export const NIKA_VERB_ICON = { infer: 'ai-magic/sparkle', exec: 'code/console', invoke: 'code/api-connection', agent: 'code/agent', } as const
 
 /** per-FEATURE codicon bindings (icons.features · an OPEN set, unlike
  *  the 4 verbs) — drawn on the icon_grid contract: 16px · filled ·
@@ -48,6 +48,13 @@ export const NIKA_ROLE_MARK = { boundary: 'glyph', wire: 'ref-ink', fail: 'dange
 export const NIKA_ROLE_CODICON = { boundary: 'shield', wire: 'arrow-right', fail: 'error', } as const
 /** the web binding: the CSS custom property each role reuses */
 export const NIKA_ROLE_WEB_TOKEN = { boundary: '--cf-key', wire: '--cf-ref', fail: '--danger', } as const
+/** the role's visual QUANTITIES on the web · sparse: a role appears
+ *  here only if it carries one. boundary reads at a heavier cut of the
+ *  key ink (it is not a different colour, it is a firmer one); fail is
+ *  the danger hue mixed INTO the key ink rather than replacing it, so a
+ *  recovery word still reads as a key first. */
+export const NIKA_ROLE_WEB_WEIGHT = { boundary: 600, } as const
+export const NIKA_ROLE_WEB_MIX_PCT = { fail: 78, } as const
 /** the editor binding — a vscode semantic-token type, so an EDITOR can
  *  speak the same roles the site does while its colours stay the
  *  user's theme (LOCK-005: the skin is theme-driven, the MEANING is
@@ -119,6 +126,12 @@ export const NIKA_MATERIAL = { plate: { radius_px: 7, pad_px: 7, bevel: 0.06, be
 export const NIKA_NODE_STATUS = ['pending', 'running', 'success', 'failed', 'retrying', 'skipped', 'cancelled'] as const
 export const NIKA_NODE_MARKS = { stale: 'its recorded trace no longer matches the file', stale_up: 'something it depends on went stale', cached: 'it did not run · a previous identical run answered', recovered: 'it failed and its on_error branch caught it', audit: 'check found something · severity below', dead_gate: 'its when: can never be true · it will never run', asking: 'parked on a question · WAITING, not working' } as const
 export const NIKA_AUDIT_SEVERITY = ['error', 'warning', 'info'] as const
+/** the hue each audit level wears. Aliases into the stored palette,
+ *  never a colour of its own: a finding borrows the weight it already
+ *  means (error = the failure red · warning = the retrying amber ·
+ *  info = the brand accent). Bound in tokens.yaml `severity.audit` —
+ *  before that the map lived only in the canvas's own stylesheet. */
+export const NIKA_AUDIT_HUE = { error: '#ff5d5d', warning: '#e0b071', info: '#4f86ff', } as const
 export const NIKA_NODE_ANATOMY = { infer: ['head', 'sub', 'body', 'why'], exec: ['head', 'sub', 'body', 'why'], invoke: ['head', 'body', 'sub', 'why'], agent: ['head', 'sub', 'body', 'band', 'why'] } as const
 export const NIKA_NODE_CLASSES = { wrapper: 'dag-node', card: 'nc', status_prefix: 'status-', verb_prefix: 'verb-', audit_prefix: 'audit-', mark: { stale: 'is-stale', stale_up: 'stale-up', cached: 'is-cached', recovered: 'is-recovered', audit: 'has-audit', dead_gate: 'dead-gate', asking: 'is-asking' }, part: { head: 'nc-head', tile: 'nc-tile', id: 'nc-id', st: 'nc-st', dot: 'nc-dot', sub: 'nc-sub', sub_k: 'nc-sub-k', sub_v: 'nc-sub-v', body: 'nc-body', band: 'nc-agent-band', why: 'nc-policy', why_line: 'nc-pol', badge: 'nc-badge', chip: 'nc-chip' } } as const
 

@@ -6,18 +6,47 @@ import { autocompletion } from '@codemirror/autocomplete'
 import { EditorView, Decoration, type DecorationSet } from '@codemirror/view'
 import { StateEffect, StateField } from '@codemirror/state'
 import { nikaComplete } from './play-editor-complete'
-import { syntaxHighlighting } from '@codemirror/language'
 import { checkNika, type LintDiag } from '../lib/nika-lint'
-import { NIKA_VERB_HEX } from '../design-tokens.generated'
+import {
+  NIKA_VERB_HEX,
+  NIKA_ROLE_WEB_TOKEN,
+  NIKA_ROLE_WEB_WEIGHT,
+  NIKA_ROLE_WEB_MIX_PCT,
+} from '../design-tokens.generated'
+
+/* THE ROLE MARKS · derived, never listed. Each role's ink and its quantity
+   (a firmer cut, a mix percentage) are projected from nika-spec, so a role
+   added upstream arrives here STYLED rather than arriving invisible — which
+   is exactly how the three roles reached this editor unpainted in the first
+   place: the static panel read them, nothing here did. */
+const roleTheme = Object.fromEntries(
+  (Object.keys(NIKA_ROLE_WEB_TOKEN) as (keyof typeof NIKA_ROLE_WEB_TOKEN)[]).map((role) => {
+    const ink = `var(${NIKA_ROLE_WEB_TOKEN[role]})`
+    const mix = (NIKA_ROLE_WEB_MIX_PCT as Record<string, number | undefined>)[role]
+    const weight = (NIKA_ROLE_WEB_WEIGHT as Record<string, number | undefined>)[role]
+    return [
+      `.cm-nika-role--${role}`,
+      {
+        /* a mixed role reads as a KEY first and its family second — the
+           failure grammar is danger poured into the key ink, not instead of it */
+        color: mix ? `color-mix(in srgb, ${ink} ${mix}%, var(--cf-key))` : ink,
+        ...(weight ? { fontWeight: String(weight) } : {}),
+      },
+    ]
+  }),
+)
 import {
   CF_BG,
+  CF_COMMENT,
   CF_GUTTER_INK,
+  CF_KEY,
   CF_LINE,
   CF_NUM,
   CF_BOOL,
   CF_PLAIN,
+  CF_PUNCT,
   CF_REF,
-  cfHighlight,
+  CF_STR,
   nikaHoverTips,
   nikaMarks,
   wrapHang,
@@ -97,6 +126,21 @@ const cfTheme = EditorView.theme(
     '.cm-nika-ref': { color: CF_REF },
     '.cm-nika-num': { color: CF_NUM, fontVariantNumeric: 'tabular-nums' },
     '.cm-nika-bool': { color: CF_BOOL, fontWeight: '500' },
+    /* the base yaml ink · the SAME tokenize() spans the static panel paints —
+       the lezer highlight layer is gone, so these four carry keys, strings,
+       comments and structure. Declared BEFORE the role entries: a key inside
+       the boundary stacks both classes and the role must win in the cascade. */
+    '.cm-cf-key': { color: CF_KEY, fontWeight: '500' },
+    '.cm-cf-str': { color: CF_STR },
+    '.cm-cf-comment': { color: CF_COMMENT },
+    '.cm-cf-punct': { color: CF_PUNCT },
+    /* the boundary band · the static panel's spine (codefile.css
+       [data-band='boundary']::before), as a line inset — the blast radius
+       stays a SHAPE you can see without reading, even mid-edit */
+    '.cm-nika-band': {
+      boxShadow: 'inset 2px 0 0 color-mix(in srgb, var(--layer-boundary, #ff7a3c) 52%, transparent)',
+    },
+    ...roleTheme,
     /* the lint hover card · the site panel register (hairline, mono, the
        error accent riding the exec amber like the validator panel). */
     '.cm-tooltip': {
@@ -226,7 +270,6 @@ export default function PlayEditor({ value, onChange, onDiags, focusRange, onHov
         autocompletion({ override: [nikaComplete], icons: false }),
         lintGutter(),
         cmA11y,
-        syntaxHighlighting(cfHighlight),
         nikaMarks,
         nikaHoverTips /* the static panels' curated hover glossary, live */,
         EditorView.lineWrapping /* long SLOT comments fade into wrap, never clip */,
