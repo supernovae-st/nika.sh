@@ -1,0 +1,151 @@
+/* ── THE PLATE, AND THE LAMP THAT LIGHTS IT ──────────────────────────────────
+   The one physical object this site, the VS Code canvas and the design bench
+   all draw. Every number here is projected from nika-spec design/tokens.yaml
+   (--plate-* · --lamp-* · --dur-lift · --ease-lift, emitted into
+   design.generated.css); this file only decides how the WEB binds them.
+
+   THE LAMP IS A SCENE, NOT A CARD PROPERTY. There is one light in the room and
+   every plate obeys it: the bevel brightens as a plate turns toward it, the
+   shadow lengthens away from it. A plate alone cannot know where the light is,
+   so a single gradient over the cabinet lights all of them at once — one
+   composited layer whatever the count, which is what makes ninety-six plates
+   affordable.
+
+   WHAT IT DEGRADES TO. Reduced motion pins the lamp and drops the lift: the
+   plates stay plates, the relief stays, only the movement goes. Save-Data
+   drops the glass and the grain and leans on the borders. Without JS the lamp
+   simply rests at its default angle and the cabinet is a grid of links, which
+   is what it is underneath. */
+
+@property --lamp-x {
+  syntax: '<length-percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+@property --lamp-y {
+  syntax: '<length-percentage>';
+  inherits: true;
+  initial-value: 22%;
+}
+
+/* ── the room ─────────────────────────────────────────────────────────────── */
+.cabinet {
+  position: relative;
+  isolation: isolate;
+}
+
+/* the light itself · soft-light so it MODULATES what is under it rather than
+   painting over it — a lamp reveals a surface, it does not repaint it */
+.cabinet::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  background: radial-gradient(
+    var(--lamp-reach) circle at var(--lamp-x) var(--lamp-y),
+    rgb(255 255 255 / var(--lamp-core)) 0%,
+    rgb(255 255 255 / calc(var(--lamp-core) * 0.34)) calc(var(--lamp-falloff) * 100%),
+    transparent 62%
+  );
+}
+
+/* the room lives without a pointer · a slow orbit, overridden the moment a
+   pointer arrives (the JS sets --lamp-x/y and pauses this) */
+@media (prefers-reduced-motion: no-preference) {
+  .cabinet {
+    animation: lamp-drift var(--lamp-drift) linear infinite;
+  }
+  .cabinet[data-lamp='held'] {
+    animation-play-state: paused;
+  }
+}
+@keyframes lamp-drift {
+  0% { --lamp-x: 22%; --lamp-y: 14%; }
+  25% { --lamp-x: 68%; --lamp-y: 26%; }
+  50% { --lamp-x: 82%; --lamp-y: 58%; }
+  75% { --lamp-x: 38%; --lamp-y: 46%; }
+  100% { --lamp-x: 22%; --lamp-y: 14%; }
+}
+
+/* ── the object ───────────────────────────────────────────────────────────── */
+.plate {
+  position: relative;
+  border-radius: var(--plate-radius);
+  padding: calc(var(--plate-pad) * 1.15) calc(var(--plate-pad) * 1.42);
+  background: var(--v4-bg-raised);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--plate-bevel)),
+    var(--plate-contact),
+    var(--plate-ambient);
+  transition:
+    transform var(--dur-lift) var(--ease-lift),
+    box-shadow var(--dur-lift) var(--ease-lift);
+}
+
+/* the paper's tooth · a Bayer dither, never a smooth noise — the site's own
+   grain image, at the alpha the spec sets */
+.plate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--plate-grain);
+  background-image: var(--v4-grain-img);
+  background-size: var(--v4-grain-size, 4px) var(--v4-grain-size, 4px);
+}
+
+.plate > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* picked up · six things move together, never separately */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .plate:is(:hover, :focus-within) {
+    transform: translateY(calc(var(--plate-lift) * -1));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / var(--plate-bevel-lit)),
+      var(--plate-contact),
+      0 calc(var(--plate-lift) * 13) calc(var(--plate-lift) * 18) -28px rgb(0 0 0 / 0.62);
+  }
+}
+/* the relief still answers a keyboard, and still answers without motion */
+.plate:is(:hover, :focus-within) {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--plate-bevel-lit)),
+    var(--plate-contact),
+    var(--plate-ambient);
+}
+
+/* ── the well · the code is CUT INTO the plate, not boxed on it ───────────── */
+.plate-well {
+  border-radius: calc(var(--plate-radius) * 0.6);
+  padding: calc(var(--plate-pad) * 0.86) var(--plate-pad);
+  background: rgb(0 0 0 / 0.22);
+  /* the exact inverse of the bevel: shadow at the top lip, light pooling at
+     the bottom one. That inversion is the whole of why it reads as carved. */
+  box-shadow: var(--well-inset);
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+}
+
+/* ── the inscription · a variable face can do what a static one cannot ────── */
+.plate-title {
+  font-variation-settings: 'wght' 500;
+  transition: font-variation-settings var(--dur-lift) var(--ease-ui);
+}
+.plate:is(:hover, :focus-within) .plate-title {
+  font-variation-settings: 'wght' 600;
+}
+
+/* ── how it gives up ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .plate,
+  .plate-title {
+    transition: none;
+  }
+}

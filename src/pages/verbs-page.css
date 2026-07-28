@@ -75,3 +75,108 @@
     font-size: 17px;
   }
 }
+
+/* ── the verb field · the page's one signature ────────────────────────────────
+   Three primitives and a loop, drawn. The plates are the site's shared object
+   (styles/plate.css, projected from nika-spec design/tokens.yaml) so this
+   field is lit by the same lamp the VS Code canvas will be. Everything that is
+   not the field stays quiet: this is where the page spends its boldness. */
+.vfield {
+  margin: clamp(34px, 5vh, 58px) 0 clamp(28px, 4vh, 46px);
+  display: grid;
+  justify-items: center;
+  gap: 0;
+}
+.vfield-axis {
+  margin: 0 0 16px;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  letter-spacing: var(--ls-plate);
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.vfield-axis--low {
+  margin: 14px 0 16px;
+}
+.vfield-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2.2vw, 26px);
+  width: 100%;
+  max-width: 780px;
+}
+@media (max-width: 719.98px) {
+  .vfield-row {
+    grid-template-columns: 1fr;
+  }
+  .vfield-wires {
+    display: none;
+  }
+}
+.vfield-plate {
+  display: grid;
+  gap: 5px;
+  text-decoration: none;
+  color: inherit;
+  /* the plate takes the verb's hue in its bevel and in its grain — the tint is
+     the only saturated thing on the card, so the light reads as coloured by
+     what it lands on rather than by a background wash */
+  background:
+    linear-gradient(color-mix(in oklch, var(--vf-hue) 7%, transparent), transparent 62%),
+    var(--v4-bg-raised);
+}
+.vfield-glyph {
+  color: var(--vf-hue);
+  font-size: var(--type-body);
+  line-height: 1;
+}
+.vfield-verb {
+  font-family: var(--mono);
+  font-size: var(--type-ui);
+  color: var(--v4-text);
+}
+.vfield-does {
+  font-size: var(--type-body-sm);
+  color: var(--v4-text-dim);
+}
+.vfield-why {
+  font-size: var(--type-plate);
+  color: var(--v4-text-faint);
+}
+.vfield-wires {
+  width: min(100%, 780px);
+  height: 46px;
+  margin-top: -2px;
+  overflow: visible;
+}
+.vfield-wires path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--v4-text) 22%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.vfield-plate--loop {
+  width: min(100%, 340px);
+}
+.vfield-close {
+  margin: clamp(22px, 3vh, 34px) 0 0;
+  max-width: 60ch;
+  text-align: center;
+  font-size: var(--type-body-sm);
+  color: var(--v4-text-dim);
+}
+/* the three read as one rank · a plate that is shorter than its neighbour
+   reads as less important, and here they are exactly equal in standing */
+.vfield-row > li {
+  display: grid;
+}
+.vfield-plate {
+  align-content: start;
+}
+.vfield-why {
+  margin-top: auto;
+  padding-top: 4px;
+}

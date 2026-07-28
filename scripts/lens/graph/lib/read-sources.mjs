@@ -210,6 +210,17 @@ export function readSources(ROOT) {
     if (!m) throw new Error(`design-tokens: ${name} not found`)
     return m[1]
   }
+  /* THE PLATE · the physical object all three surfaces draw, projected from
+     nika-spec design/tokens.yaml. Quantities, never CSS — the stylesheet below
+     binds them; the canvas binds the same numbers its own way. */
+  const matLit = /export const NIKA_MATERIAL = (\{.*\}) as const/.exec(tokensTs)?.[1]
+  if (!matLit) throw new Error('design-tokens: NIKA_MATERIAL not found — is the spec projection current?')
+  const material = JSON.parse(
+    matLit.replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":').replace(/'/g, '"'),
+  )
+  for (const k of ['plate', 'well', 'lamp', 'motion'])
+    if (!material[k]) throw new Error(`design-tokens: NIKA_MATERIAL.${k} missing`)
+
   const tokens = {
     infer: hex('infer'),
     exec: hex('exec'),
@@ -261,6 +272,7 @@ export function readSources(ROOT) {
     specPin,
     posts,
     tokens,
+    material,
     gateMatrix,
   }
 }

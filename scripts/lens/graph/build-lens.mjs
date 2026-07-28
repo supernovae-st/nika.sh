@@ -850,6 +850,31 @@ ${Object.entries(layerHex).map(([k, v]) => `  --layer-${k}: ${v};`).join('\n')}
 ${Object.entries(DSN.motion.dur).map(([k, v]) => `  --dur-${k}: ${v}ms;`).join('\n')}
 ${Object.entries(DSN.motion.ease).map(([k, v]) => `  --ease-${k}: ${v};`).join('\n')}
 ${Object.entries(kindHex).map(([k, v]) => `  --kind-${k}: ${v};`).join('\n')}
+  /* ── THE PLATE · projected from nika-spec design/tokens.yaml ───────────
+     One physical object, three surfaces. The numbers are quantities; this is
+     where the WEB binds them. The canvas binds the same ones its own way. */
+${(() => {
+  const m = S.material, pl = m.plate, w = m.well, la = m.lamp, mo = m.motion
+  return [
+    `  --plate-radius: ${pl.radius_px}px;`,
+    `  --plate-pad: ${pl.pad_px}px;`,
+    `  --plate-bevel: ${pl.bevel};`,
+    `  --plate-bevel-lit: ${pl.bevel_lit};`,
+    `  --plate-grain: ${pl.grain};`,
+    `  --plate-lift: ${pl.lift_px}px;`,
+    `  --plate-contact: 0 ${pl.contact.y_px}px ${pl.contact.blur_px}px rgb(0 0 0 / ${pl.contact.alpha});`,
+    `  --plate-ambient: 0 ${pl.ambient.y_px}px ${pl.ambient.blur_px}px ${pl.ambient.spread_px}px rgb(0 0 0 / ${pl.ambient.alpha});`,
+    `  --well-inset: inset 0 1px 2px rgb(0 0 0 / ${w.inset_alpha}), inset 0 -1px 0 rgb(255 255 255 / ${w.glow_alpha});`,
+    `  --lamp-reach: ${la.reach_vmax}vmax;`,
+    `  --lamp-core: ${la.core};`,
+    `  --lamp-falloff: ${la.falloff};`,
+    `  --lamp-drift: ${la.drift_s}s;`,
+    `  --dur-lift: ${mo.lift_ms}ms;`,
+    `  --dur-drawer: ${mo.drawer_ms}ms;`,
+    `  --ease-lift: ${mo.ease_lift};`,
+    `  --ease-drawer: ${mo.ease_drawer};`,
+  ].join('\n')
+})()}
   /* §7a · the researched values (R16-R19 · ratified §7) */
   --focus-ring-w: ${SOTA.focus.ring_w};
   --focus-ring-offset: ${SOTA.focus.ring_offset};

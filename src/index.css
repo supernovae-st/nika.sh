@@ -2,6 +2,7 @@
 @import './design.generated.css';
 @import './design.forced-colors.generated.css';
 @import './styles/tokens.css';
+@import './styles/plate.css';
 @import './styles/print.css';
 
 /* ─── v4 trust-landing utilities · black & white token system ────────────────

@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
+import { VerbField } from './VerbField'
 import { CHAPTERS } from '../sections/verbs-data'
 import { LANGUAGE_WORDS } from '../content/language.generated'
 import { CANON } from '../canon.generated'
@@ -73,6 +74,8 @@ export function Component() {
               { n: 'one', label: 'per task', sub: 'never two' },
             ]}
           />
+
+          <VerbField />
 
           <ol className="vbs-list" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
             {CHAPTERS.map((c, i) => (

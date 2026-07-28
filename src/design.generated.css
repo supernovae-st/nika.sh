@@ -33,6 +33,26 @@
   --kind-template: #5b8cff;
   --kind-showcase: #b07bff;
   --kind-post: #4f86ff;
+  /* ── THE PLATE · projected from nika-spec design/tokens.yaml ───────────
+     One physical object, three surfaces. The numbers are quantities; this is
+     where the WEB binds them. The canvas binds the same ones its own way. */
+  --plate-radius: 7px;
+  --plate-pad: 7px;
+  --plate-bevel: 0.06;
+  --plate-bevel-lit: 0.15;
+  --plate-grain: 0.03;
+  --plate-lift: 3px;
+  --plate-contact: 0 1px 3px rgb(0 0 0 / 0.38);
+  --plate-ambient: 0 24px 40px -24px rgb(0 0 0 / 0.55);
+  --well-inset: inset 0 1px 2px rgb(0 0 0 / 0.4), inset 0 -1px 0 rgb(255 255 255 / 0.05);
+  --lamp-reach: 60vmax;
+  --lamp-core: 0.1;
+  --lamp-falloff: 0.22;
+  --lamp-drift: 40s;
+  --dur-lift: 190ms;
+  --dur-drawer: 420ms;
+  --ease-lift: linear(0, 0.1 6%, 0.54 19%, 0.85 32%, 0.97 42%, 1.02 50%, 1.008 70%, 1);
+  --ease-drawer: linear(0, 0.04 8%, 0.38 24%, 0.78 42%, 1.04 62%, 0.99 78%, 1);
   /* §7a · the researched values (R16-R19 · ratified §7) */
   --focus-ring-w: 2px;
   --focus-ring-offset: 2px;
