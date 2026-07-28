@@ -352,7 +352,7 @@ describe('a state is never a colour alone', () => {
 
   it('the bench gives every projected status a face', () => {
     expect(STATES.length, 'le statut du nœud a disparu de la projection').toBeGreaterThan(4)
-    const faced = [...BENCH.matchAll(/^  ([a-z_]+): \{ label: '/gm)].map((m) => m[1])
+    const faced = [...BENCH.matchAll(/^ {2}([a-z_]+): \{ label: '/gm)].map((m) => m[1])
     expect(STATES.filter((st) => !faced.includes(st)),
       'des statuts projetés sortiraient muets du banc').toEqual([])
   })
