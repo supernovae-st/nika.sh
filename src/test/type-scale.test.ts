@@ -342,13 +342,19 @@ describe('the bench obeys the law it displays', () => {
    to have no surviving signal. */
 describe('a state is never a colour alone', () => {
   const BENCH = readFileSync(join(ROOT, 'design/bench.mjs'), 'utf8')
-  /* only the STATES table carries a `form:` — the knobs and the graph shapes
-     share the { id, label } head, and the first draft of this pattern swept
-     all three up and reported fourteen naked states that do not exist */
-  const STATES = [...BENCH.matchAll(/\{ id: '([a-z]+)', label: '[^']*', form:/g)].map((m) => m[1])
+  /* THE LIST IS NOT WRITTEN HERE EITHER. The first draft of this gate hard-coded
+     eight names — the exact sin it exists to catch — and went red the day the
+     bench started reading the projection and found seven. The status enum lives
+     in nika-spec; this reads it, and the bench's faces are checked against it. */
+  const TOKENS = readFileSync(join(ROOT, 'src/design-tokens.generated.ts'), 'utf8')
+  const STATES = [...(TOKENS.match(/NIKA_NODE_STATUS = \[([^\]]*)\]/)?.[1] ?? '')
+    .matchAll(/'([^']+)'/g)].map((m) => m[1])
 
-  it('the bench declares eight states', () => {
-    expect(STATES).toEqual(['idle', 'running', 'ok', 'failed', 'retrying', 'skipped', 'stale', 'developing'])
+  it('the bench gives every projected status a face', () => {
+    expect(STATES.length, 'le statut du nœud a disparu de la projection').toBeGreaterThan(4)
+    const faced = [...BENCH.matchAll(/^  ([a-z_]+): \{ label: '/gm)].map((m) => m[1])
+    expect(STATES.filter((st) => !faced.includes(st)),
+      'des statuts projetés sortiraient muets du banc').toEqual([])
   })
 
   it('every state pill sets a shape, not only a hue', () => {

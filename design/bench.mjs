@@ -118,6 +118,30 @@ const FACES = [
     sample: 'infer: { model: mistral/mistral-large-latest }', size: 'var(--type-eyebrow)', weight: 400 },
 ]
 
+/* ── LE NŒUD · deux axes, lus, plus jamais tenus ici ──────────────────────────
+   Le banc portait UNE liste de huit états, et elle était fausse de trois
+   façons : deux renommés (idle→pending, ok→success), deux qui ne sont pas des
+   statuts (stale est une MARQUE orthogonale · developing était une invention
+   du site), et un vrai statut absent (cancelled).
+
+   Un nœud porte UN statut et N marques. Les écraser en une liste produit un
+   tableau où « périmé » côtoie « réussi » comme si une tâche ne pouvait pas
+   être les deux — elle peut, et la plupart des tâches finies le deviennent. */
+const listConst = (name) => {
+  const m = tokensTs.match(new RegExp(`export const ${name} = \\[([^\\]]*)\\]`))
+  if (!m) throw new Error(`bench: ${name} absent de la projection`)
+  return [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1])
+}
+const objConst = (name) => {
+  const m = tokensTs.match(new RegExp(`export const ${name} = \\{(.*?)\\} as const`))
+  if (!m) throw new Error(`bench: ${name} absent de la projection`)
+  return JSON.parse(`{${m[1]}}`.replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":').replace(/'/g, '"'))
+}
+const NODE_STATUS = listConst('NIKA_NODE_STATUS')
+const MARKS = objConst('NIKA_NODE_MARKS')
+const ANATOMY = objConst('NIKA_NODE_ANATOMY')
+const AUDIT = listConst('NIKA_AUDIT_SEVERITY')
+
 const LAYERS = ['shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof']
 const LAYER_HEX = Object.fromEntries(LAYERS.map((l) => [l, cssVar(`layer-${l}`)]))
 for (const [l, hex] of Object.entries(LAYER_HEX)) {
@@ -231,16 +255,6 @@ const HOMES = {
 
 /* ── THE NODE CANON · draft, recovered from the shipped canvas ────────────── */
 
-/* the build order per verb. `invoke` is the ONE reorder: its essence — the tool
-   it calls — leads the mechanism, because that is what a reader looks for
-   first. Everything else puts the mechanism (the verdict-bearing row) before
-   the essence. The agent band rides between the ordered pair and the why. */
-const ANATOMY = {
-  infer: ['head', 'sub', 'body', 'why'],
-  exec: ['head', 'sub', 'body', 'why'],
-  invoke: ['head', 'body', 'sub', 'why'],
-  agent: ['head', 'sub', 'body', 'band', 'why'],
-}
 const PART_NAME = {
   head: 'tête · qui et quel verbe',
   sub: 'mécanisme · comment',
@@ -249,19 +263,21 @@ const PART_NAME = {
   why: 'pourquoi · ce qui l’autorise',
 }
 
-/* every state a node can wear. `form` names what carries it BESIDES colour —
-   a state that only exists as a hue dies in forced-colors and in colour-blind
-   eyes, so each one owes a second signal. */
-const STATES = [
-  { id: 'idle', label: 'au repos', form: 'pastille plus petite · le repos est un signal faible, pas absent' },
-  { id: 'running', label: 'en cours', form: 'anneau · et il pulse quand le mouvement est permis' },
-  { id: 'ok', label: 'réussi', form: 'pastille pleine · la seule qui l’est' },
-  { id: 'failed', label: 'refusé', form: 'losange + le code du refus' },
-  { id: 'retrying', label: 'nouvel essai', form: 'anneau doublé + le compteur d’essai' },
-  { id: 'skipped', label: 'sauté', form: 'trait plat · rien n’a couru · opacité 52 %' },
-  { id: 'stale', label: 'trace périmée', form: 'anneau fin + le trait pointillé de la carte' },
-  { id: 'developing', label: 'en écriture', form: 'carré creux + le trait pointillé' },
-]
+/* LE VISAGE de chaque statut · le libellé et la forme sont de la présentation,
+   l'identité est projetée. Si la spec ajoute un statut, le gate exige qu'il
+   reçoive un visage ici plutôt que de le laisser sortir muet. */
+const STATE_FACE = {
+  pending: { label: 'en attente', form: 'pastille plus petite · « pending is CALM », il ne s’annonce pas' },
+  running: { label: 'en cours', form: 'anneau · et il pulse quand le mouvement est permis' },
+  success: { label: 'réussi', form: 'pastille pleine · la seule qui l’est' },
+  failed: { label: 'refusé', form: 'losange + le code du refus' },
+  retrying: { label: 'nouvel essai', form: 'anneau doublé + le compteur d’essai' },
+  skipped: { label: 'sauté', form: 'trait plat · rien n’a couru' },
+  cancelled: { label: 'annulé', form: 'trait barré · quelqu’un a coupé' },
+}
+const missing = NODE_STATUS.filter((id) => !STATE_FACE[id])
+if (missing.length) throw new Error(`bench: statuts sans visage · ${missing.join(' ')}`)
+const STATES = NODE_STATUS.map((id) => ({ id, ...STATE_FACE[id] }))
 
 /* THE EDGE CASES. A gallery of happy paths is a brochure. These are the shapes
    that actually break a card: a name longer than its box, a prompt that wraps
@@ -505,17 +521,16 @@ const NODE_SPECIMENS = {
 /* every state says something true about a run, and a cell that only changes
    hue teaches nothing. These are the lines a real trace carries. */
 const STATE_LINE = {
-  idle: null,
+  pending: null,
   running: ['en cours', null],
-  ok: ['0,4 s · $0,0012', null],
+  success: ['0,4 s · $0,0012', null],
   failed: ['NIKA-EXEC-014', 'fail'],
   retrying: ['essai 2 / 5', 'refusals'],
   skipped: ['when: false', null],
-  stale: ['trace vieille de 3 j', null],
-  developing: ['jamais enregistré', 'shape'],
+  cancelled: ['coupé à la main', null],
 }
 
-const renderNode = (verb, { state = 'idle', anatomy = ANATOMY[verb], spec } = {}) => {
+const renderNode = (verb, { state = 'pending', anatomy = ANATOMY[verb], spec } = {}) => {
   const s = spec ?? NODE_SPECIMENS[verb]
   const p = (name, i, inner, extra = '') =>
     `<div class="nc-${name}${extra}" data-part="${esc(PART_NAME[name])}" style="--i:${i}">${inner}</div>`
@@ -779,13 +794,11 @@ ${groundCssProjected}
   .nc-tk{font-variant-numeric:tabular-nums}
 
 ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-${v});--nk-verb-text:var(--nk-${v}-text)}`).join('\n')}
-  .nc[data-state=ok]{border-color:color-mix(in oklch,var(--nk-ok) 46%,var(--nk-edge))}
+  .nc[data-state=success]{border-color:color-mix(in oklch,var(--nk-ok) 46%,var(--nk-edge))}
   .nc[data-state=failed]{border-color:color-mix(in oklch,var(--nk-fail) 54%,var(--nk-edge))}
   .nc[data-state=running]{border-color:color-mix(in oklch,var(--nk-st-running) 50%,var(--nk-edge))}
   .nc[data-state=retrying]{border-color:color-mix(in oklch,var(--nk-st-retrying) 44%,var(--nk-edge))}
   .nc[data-state=skipped]{opacity:.52}
-  .nc[data-state=stale]{border-style:dashed;opacity:.78}
-  .nc[data-state=developing]{border-color:color-mix(in oklch,var(--nk-shape) 40%,var(--nk-edge));border-style:dashed}
 
   .nc-st{display:inline-flex;align-items:center;gap:5px;font-size:calc(var(--nk-fs) - 1.5px);letter-spacing:.05em}
   /* LA FORME DIT L'ÉTAT. La page l'affirmait et c'était faux : quatre états
@@ -796,24 +809,21 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
      ne bouge pas). */
   .nc-st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;
     flex:0 0 auto}
-  .nc-st--ok::before{border-radius:50%;background:currentColor}            /* plein · c'est fait */
+  .nc-st--success::before{border-radius:50%;background:currentColor}            /* plein · c'est fait */
   .nc-st--running::before{background:transparent;box-shadow:inset 0 0 0 2px currentColor} /* anneau · en cours */
   .nc-st--failed::before{border-radius:1px;transform:rotate(45deg)}        /* losange · barré */
   .nc-st--retrying::before{border-radius:50%;background:transparent;
     box-shadow:inset 0 0 0 1.5px currentColor,0 0 0 2px color-mix(in oklch,currentColor 34%,transparent)}
-  .nc-st--skipped::before{border-radius:1px;width:7px;height:2px}          /* trait · rien n'a couru */
-  .nc-st--stale::before{border-radius:50%;background:transparent;
-    box-shadow:inset 0 0 0 1px currentColor}                               /* anneau fin · vieux */
-  .nc-st--idle::before{width:4px;height:4px}                               /* plus petit · au repos */
-  .nc-st--developing::before{border-radius:1px;width:6px;height:6px;
-    background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}      /* carré creux · en écriture */
-  .nc-st--idle,.nc-st--stale{color:var(--nk-faint)}
+  .nc-st--skipped::before{border-radius:1px;width:7px;height:2px}
+  .nc-st--cancelled::before{border-radius:1px;width:7px;height:2px;transform:rotate(-45deg)}          /* trait · rien n'a couru */                               /* anneau fin · vieux */
+  .nc-st--pending::before{width:4px;height:4px}                               /* plus petit · au repos */      /* carré creux · en écriture */
+  .nc-st--pending{color:var(--nk-faint)}
   .nc-st--running{color:var(--nk-st-running)}
-  .nc-st--ok{color:var(--nk-st-done)}
+  .nc-st--success{color:var(--nk-st-done)}
   .nc-st--failed{color:var(--nk-fail-text)}
   .nc-st--retrying{color:var(--nk-st-retrying)}
   .nc-st--skipped{color:var(--nk-st-muted)}
-  .nc-st--developing{color:var(--nk-shape)}
+  .nc-st--cancelled{color:var(--nk-st-muted)}
   .nc-st--running::before{animation:p 1.6s ease-in-out infinite}
   @keyframes p{0%,100%{opacity:1}50%{opacity:.28}}
 
@@ -929,6 +939,11 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
   .mat-axis{stroke:var(--nk-strong);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
   .mat-path{fill:none;stroke:var(--nk-infer);stroke-width:1.5;vector-effect:non-scaling-stroke;
     stroke-linejoin:round;stroke-linecap:round}
+
+  /* une marque n'est pas un statut · elle se pose PAR-DESSUS, en trait
+     pointillé, pour qu'on lise « et aussi » plutôt que « au lieu de » */
+  .nc-mark{border-style:dashed;color:var(--nk-caption);--chip:var(--nk-strong)}
+  .nc[data-mark]{border-style:dashed}
 
   .sw{display:grid;gap:5px}
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
@@ -1117,7 +1132,7 @@ ${KNOBS.map(knobRow).join('\n')}
         </div>
       </div>
       <div class="stage nk-ground" data-stage><div class="rack">
-${Object.keys(ANATOMY).map((v) => `        <div class="cell"><span class="cell-k">${v} · ${ANATOMY[v].join(' · ')}</span>${renderNode(v, { state: v === 'agent' ? 'running' : 'idle' })}</div>`).join('\n')}
+${Object.keys(ANATOMY).map((v) => `        <div class="cell"><span class="cell-k">${v} · ${ANATOMY[v].join(' · ')}</span>${renderNode(v, { state: v === 'agent' ? 'running' : 'pending' })}</div>`).join('\n')}
       </div></div>
     </div>
     <div class="diff">
@@ -1361,6 +1376,30 @@ ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v,
   </section>
 
   <section>
+    <div class="sec-head"><h2>Les marques</h2><span class="sec-n">le second axe · ${Object.keys(MARKS).length} · orthogonales au statut</span></div>
+    <p class="sec-note">
+      Un nœud porte <b>un</b> statut et <b>n</b> marques. Le banc les avait écrasés en une seule
+      liste de huit, et c’est comme ça qu’il montrait « périmé » à côté de « réussi » comme si une
+      tâche ne pouvait pas être les deux — <b>elle peut</b>, et la plupart des tâches finies le
+      deviennent. Chacune est un fait de plus, pas un état de remplacement.
+    </p>
+    <div class="stage nk-ground" data-stage><div class="rack">
+${Object.entries(MARKS).map(([id, means]) => `        <div class="cell"><span class="cell-k">${esc(id.replace('_', '-'))}</span>
+          <article class="nc" data-verb="exec" data-state="success" data-mark="${id}">
+            <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH.exec}</span><span class="nc-id">build</span><span class="nc-verb">exec</span></div>
+            <div class="nc-why"><span class="nc-st nc-st--success">réussi</span><span class="nc-chip nc-mark">${esc(id.replace('_', '-'))}</span></div>
+          </article>
+          <span class="cell-note">${esc(means)}</span></div>`).join('\n')}
+    </div></div>
+    <p class="typ-legend">
+      Toutes portées ici sur un nœud <b>réussi</b>, exprès : c’est la combinaison que l’ancienne
+      liste rendait impossible à dire. <code>audit</code> se décline en
+      ${AUDIT.join(' · ')} ; <code>dead-gate</code> est le seul qui promette que la tâche
+      <em>ne courra jamais</em>.
+    </p>
+  </section>
+
+  <section>
     <div class="sec-head"><h2>Les variantes</h2><span class="sec-n">${VARIANTS.length} cas limites</span></div>
     <p class="sec-note">
       Une galerie de chemins heureux est une brochure. Voici les formes qui cassent réellement
@@ -1369,7 +1408,7 @@ ${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v,
       pour de vrai, et donc une décision que le canvas a dû prendre.
     </p>
     <div class="stage nk-ground" data-stage><div class="rack">
-${VARIANTS.map((v) => `        <div class="cell"><span class="cell-k">${esc(v.label)}</span>${renderNode(v.verb, { state: v.state ?? 'idle', spec: v.spec, anatomy: v.anatomy ?? ANATOMY[v.verb] })}<span class="cell-note">${esc(v.note)}</span></div>`).join('\n')}
+${VARIANTS.map((v) => `        <div class="cell"><span class="cell-k">${esc(v.label)}</span>${renderNode(v.verb, { state: v.state ?? 'pending', spec: v.spec, anatomy: v.anatomy ?? ANATOMY[v.verb] })}<span class="cell-note">${esc(v.note)}</span></div>`).join('\n')}
     </div></div>
   </section>
 
@@ -1708,12 +1747,12 @@ ${LEDGER.map(([what, where, ok, verdict]) => `        <tr><td>${esc(what)}</td><
     ['.nc-verb', 'le verbe, dans la tête', 'spot'],
     ['.nc-chip', 'une puce de permis', 'spot'],
     ['.nc-tk', 'le compteur de jetons', 'spot'],
-    ['.nc-st--ok', 'l’état réussi', 'spot'],
+    ['.nc-st--success', 'l’état réussi', 'spot'],
     ['.nc-st--failed', 'l’état refusé', 'spot'],
     ['.cell-k', 'l’étiquette d’un plateau', 'spot'],
     ['.cell-note', 'la légende sous un spécimen', 'spot'],
     ['.nc-st--skipped', 'l’état sauté', 'muted'],
-    ['.nc-st--idle', 'l’état au repos', 'muted'],
+    ['.nc-st--pending', 'l’état au repos', 'muted'],
     /* AJOUTÉ 2026-07-28 · huit familles étaient arrivées sur la page sans que
        le contrôle les voie. Un instrument en retard sur sa propre page mesure
        l'état d'hier et le rapporte comme celui d'aujourd'hui. */
@@ -2033,7 +2072,7 @@ ${groundJs()}
     function say(msg) { if (pgSay) pgSay.textContent = msg; }
     function setState(node, st) { node.dataset.state = st; node.querySelector('.pg-line').textContent = STATE_TEXT[st] || ''; drawEdges(); }
     function allNodes() { return Array.prototype.slice.call(pgWrap.querySelectorAll('.pg-node')); }
-    function reset() { allNodes().forEach(function (n) { setState(n, 'idle'); }); say('sept tâches au repos · rien n’a encore tourné'); }
+    function reset() { allNodes().forEach(function (n) { setState(n, 'pending'); }); say('sept tâches au repos · rien n’a encore tourné'); }
 
     /* clic · le nœud parcourt ses huit états, un par un */
     pgWrap.addEventListener('click', function (e) {
