@@ -82,7 +82,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/design-projector.py",
-   "sha256": "8059a8e60287512dc99c6853b18ef210619c66344da9fde05466e2e6ae481225",
+   "sha256": "95e45271abeddf97fd140359bff5d1ffca725b424d4d1e77261370db6e393a07",
    "args": [
     "--write"
    ],
@@ -308,7 +308,7 @@
   },
   {
    "path": "src/design-tokens.generated.ts",
-   "sha256": "fccddb74c479490f4123acec5fcda694b44308c115fc40589062cafe209ca28e",
+   "sha256": "29bee05b78b616ae77fb4c3b8923ee2cc953c77346d3ce0b99f953a237fc1ca8",
    "consumers": [
     "src/pages/Brand.tsx"
    ]
