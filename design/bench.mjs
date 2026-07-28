@@ -87,6 +87,33 @@ const EASE_UI = siteVar('ease-ui')
 const DUR_MS = Number(DUR_UI.match(/([\d.]+)ms/)?.[1] ?? 0)
 if (!DUR_MS) throw new Error(`bench: --dur-ui is not in ms (${DUR_UI})`)
 
+/* ── THE TYPE SYSTEM, read from the site's own tokens ─────────────────────────
+   Nine steps and four weights, locked 2026-07-28 after the site was found
+   running on 81 distinct sizes (241 of them half-pixels) and nine weights. The
+   bench never retypes them: it reads tokens.css, so a step that moves in the
+   SSOT moves here on the next generation. */
+const TYPE_STEPS = [...siteCss.matchAll(/--type-([a-z0-9-]+):\s*([^;]+);(?:\s*\/\*\s*(.*?)\s*\*\/)?/g)]
+  .map(([, name, value, note]) => ({ name, value: value.trim(), note: (note ?? '').trim() }))
+const WEIGHTS = [...siteCss.matchAll(/--fw-([a-z]+):\s*(\d+);(?:\s*\/\*\s*(.*?)\s*\*\/)?/g)]
+  .map(([, name, value, note]) => ({ name, value: Number(value), note: (note ?? '').trim() }))
+if (TYPE_STEPS.length < 7) throw new Error('bench: the type scale vanished from tokens.css')
+if (WEIGHTS.length !== 4) throw new Error(`bench: expected 4 weights, found ${WEIGHTS.length}`)
+
+/* the three faces and what each is FOR · the names are counter-intuitive on
+   purpose-of-history and that is exactly why they are shown */
+const FACES = [
+  { varname: '--headline', face: 'Clash Display', role: 'l’argument, en grand',
+    note: 'trois coupes statiques · 500 · 600 · 700, et rien d’autre. Toute autre graisse serait synthétisée.',
+    sample: 'Intent as Code.', size: 'var(--type-h2)', weight: 600 },
+  { varname: '--display', face: 'Martian Grotesk', role: 'la prose · le défaut du document',
+    note: 'variable 100–900 · c’est elle que :root pose, donc tout texte non stylé la parle.',
+    sample: 'Nika turns repeatable AI work into files you can run, review and diff.',
+    size: 'var(--type-body)', weight: 400 },
+  { varname: '--mono', face: 'Martian Mono', role: 'la preuve',
+    note: 'variable 100–800 · sœur du grotesque, même squelette · le code, les jetons, les comptes.',
+    sample: 'infer: { model: mistral/mistral-large-latest }', size: 'var(--type-eyebrow)', weight: 400 },
+]
+
 const LAYERS = ['shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof']
 const LAYER_HEX = Object.fromEntries(LAYERS.map((l) => [l, cssVar(`layer-${l}`)]))
 for (const [l, hex] of Object.entries(LAYER_HEX)) {
@@ -158,6 +185,9 @@ const KNOBS = [
   { id: 'edge', label: 'force du trait', css: '--nk-line-boost', min: 0, max: 100, step: 5,
     unit: '', def: 0, home: 'spec', key: 'node.edge_boost',
     note: 'de la ligne discrète vers la ligne franche · monte-le et regarde le contrôle plus bas' },
+  { id: 'lamp', label: 'la lampe', css: '--lamp-core', min: 0, max: 0.6, step: 0.02,
+    unit: '', def: MAT.lamp.core, home: 'spec', key: 'material.lamp.core',
+    note: 'la lumière de la pièce · monte-la et regarde les plaques se tourner vers elle' },
   { id: 'dur', label: 'durée de la levée', css: '--nk-dur', min: 0, max: 400, step: 10,
     unit: 'ms', def: MAT.motion.lift_ms, home: 'spec', key: 'material.motion.lift_ms',
     note: `projeté · la courbe qui l’accompagne aussi (${MAT.motion.ease_lift.slice(0, 22)}…)` },
@@ -201,6 +231,37 @@ const STATES = [
   { id: 'developing', label: 'en écriture', form: 'trait pointillé + teinte shape' },
 ]
 
+/* THE EDGE CASES. A gallery of happy paths is a brochure. These are the shapes
+   that actually break a card: a name longer than its box, a prompt that wraps
+   four times, a task with nothing to declare, one with too much. Each is a real
+   thing an author writes, and each is a decision the canvas has to have made. */
+const VARIANTS = [
+  { label: 'nom très long', note: 'l’identifiant déborde · il tronque, il ne pousse pas',
+    verb: 'invoke',
+    spec: { id: 'reconcile-quarterly-ledger-against-bank', sub: ['args', 'path ./ledger/q3.csv'],
+      body: 'nika:read', why: [['core', 'reach']] } },
+  { label: 'corps qui enroule', note: 'un prompt réel fait quatre lignes · la hauteur suit',
+    verb: 'infer',
+    spec: { id: 'summarise', sub: ['model', 'mistral/mistral-large-latest'],
+      body: '« Read the thread below and answer in three bullets: what was decided, what is still open, and who owes the next move. ${{ with.thread }} »',
+      why: [['with · thread', 'flow'], ['max_tokens 400', null]] } },
+  { label: 'rien à déclarer', note: 'le minimum qui reste un nœud · tête et essence',
+    verb: 'exec', anatomy: ['head', 'body'],
+    spec: { id: 'ping', sub: ['', ''], body: 'true', bodyKind: 'cmd', why: [] } },
+  { label: 'trop à déclarer', note: 'sept permis · les puces enroulent, la carte ne casse pas',
+    verb: 'exec',
+    spec: { id: 'deploy', sub: ['capture', 'stdout · stderr · code'], body: './bin/ship --all', bodyKind: 'cmd',
+      why: [['permits · exec', 'boundary'], ['permits · net', 'boundary'], ['permits · fs', 'boundary'],
+        ['retry ×3', 'refusals'], ['on_error · recover', 'refusals'], ['timeout 90 s', 'refusals'],
+        ['parallel ×2', 'flow']] } },
+  { label: 'la bande d’agent', note: 'la seule rangée qui bouge en cours de run',
+    verb: 'agent', state: 'running' },
+  { label: 'refus, avec sa cause', note: 'le code ET la ligne qui l’a déclenché',
+    verb: 'invoke', state: 'failed',
+    spec: { id: 'write-brief', sub: ['args', 'path ./out/x.md'], body: 'nika:write',
+      why: [['permits · fs.write = [ ./brief.md ]', 'boundary']] } },
+]
+
 /* the atom families · what the node is made of, isolated so each can be judged
    on its own before it is judged in a crowd */
 const ATOMS = [
@@ -219,7 +280,35 @@ const ATOMS = [
     chips: [['core', 'reach'], ['file', 'reach'], ['data', 'reach'], ['network', 'reach'],
       ['media', 'reach'], ['introspection', 'reach']],
   },
+  {
+    id: 'permits', title: 'les permis', cls: 'nc-permit-*',
+    note: 'ce que le fichier autorise · toutes de la couche boundary, jamais d’une autre',
+    chips: [['permits · fs', 'boundary'], ['permits · exec', 'boundary'], ['permits · net', 'boundary'],
+      ['permits · tools', 'boundary'], ['permits · env', 'boundary'], ['secrets', 'boundary']],
+  },
+  {
+    id: 'wire', title: 'les fils', cls: 'nc-wire-*',
+    note: 'ce qui déclare une arête · la même encre que le ${{ }} qu’elle introduit',
+    chips: [['with · inbox', 'flow'], ['after · triage', 'flow'], ['for_each', 'flow'],
+      ['when', 'flow'], ['needs', 'flow']],
+  },
+  {
+    id: 'trace', title: 'ce que la trace rapporte', cls: 'nc-trace-*',
+    note: 'écrit après coup · jamais déclaré par l’auteur',
+    chips: [['0,4 s', 'proof'], ['$0,0012', 'proof'], ['1 284 jetons', 'proof'],
+      ['hash a3f9…', 'proof'], ['essai 2 / 5', 'refusals'], ['NIKA-EXEC-014', null]],
+  },
+  {
+    id: 'shape', title: 'la forme déclarée', cls: 'nc-shape-*',
+    note: 'ce que la tâche promet de rendre · la couche shape',
+    chips: [['typed', 'shape'], ['schema', 'shape'], ['returns', 'shape'],
+      ['outputs', 'shape'], ['const', 'shape']],
+  },
 ]
+
+/* the pills, isolated · a state is the one atom that must survive a monochrome
+   terminal and a forced-colors screen, so each carries a shape, not only a hue */
+const PILLS = STATES.map((st) => [st.label, st.id, st.form])
 
 /* the coherence ledger · what the three surfaces actually share today. This is
    the table the bench exists to empty; every « non » is a place the surfaces
@@ -241,6 +330,27 @@ const LEDGER = [
   ['rendu du DAG', 'dag.ts · DagView · MiniDag', false, 'écrit trois fois'],
   ['rendu du YAML', 'codefile-highlight · TextMate', false, 'deux grammaires'],
 ]
+
+/* a linear() easing, plotted from its own stops. The curve IS the value the
+   spec ships, so the drawing cannot drift from it: parse, scale, done. */
+const plotEase = (css) => {
+  const inner = css.slice(css.indexOf('(') + 1, css.lastIndexOf(')'))
+  const stops = inner.split(',').map((raw) => {
+    const [v, pct] = raw.trim().split(/\s+/)
+    return { v: Number(v), pct: pct ? Number(pct.replace('%', '')) : null }
+  })
+  const n = stops.length - 1
+  stops.forEach((st, i) => { if (st.pct === null) st.pct = (i / n) * 100 })
+  const lo = Math.min(...stops.map((st) => st.v))
+  const hi = Math.max(...stops.map((st) => st.v))
+  const y = (v) => 46 - ((v - lo) / (hi - lo)) * 40
+  return {
+    d: stops.map((st, i) => `${i ? 'L' : 'M'}${(st.pct * 2.4).toFixed(1)} ${y(st.v).toFixed(1)}`).join(' '),
+    over: hi > 1.001,
+    one: y(1).toFixed(1),
+    stops: stops.length,
+  }
+}
 
 /* ── the page ─────────────────────────────────────────────────────────────── */
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -269,8 +379,21 @@ const NODE_SPECIMENS = {
   },
 }
 
-const renderNode = (verb, { state = 'idle', anatomy = ANATOMY[verb] } = {}) => {
-  const s = NODE_SPECIMENS[verb]
+/* every state says something true about a run, and a cell that only changes
+   hue teaches nothing. These are the lines a real trace carries. */
+const STATE_LINE = {
+  idle: null,
+  running: ['en cours', null],
+  ok: ['0,4 s · $0,0012', null],
+  failed: ['NIKA-EXEC-014', 'fail'],
+  retrying: ['essai 2 / 5', 'refusals'],
+  skipped: ['when: false', null],
+  stale: ['trace vieille de 3 j', null],
+  developing: ['jamais enregistré', 'shape'],
+}
+
+const renderNode = (verb, { state = 'idle', anatomy = ANATOMY[verb], spec } = {}) => {
+  const s = spec ?? NODE_SPECIMENS[verb]
   const p = (name, i, inner, extra = '') =>
     `<div class="nc-${name}${extra}" data-part="${esc(PART_NAME[name])}" style="--i:${i}">${inner}</div>`
   const part = {
@@ -280,7 +403,13 @@ const renderNode = (verb, { state = 'idle', anatomy = ANATOMY[verb] } = {}) => {
     band: (i) => (s.band
       ? p('band', i, `<span>${s.band.loop}</span><span class="nc-meter"><i style="width:${s.band.pct}%"></i></span><span class="nc-tk">${s.band.tk}</span>`)
       : ''),
-    why: (i) => p('why', i, s.why.map(([t, layer]) => `<span class="nc-chip"${layer ? ` style="--chip:var(--nk-${layer})"` : ''}>${esc(t)}</span>`).join('')),
+    why: (i) => {
+      const line = STATE_LINE[state]
+      const extra = line
+        ? `<span class="nc-chip"${line[1] ? ` style="--chip:var(--nk-${line[1] === 'fail' ? 'fail-text' : line[1]})"` : ''}>${esc(line[0])}</span>`
+        : ''
+      return p('why', i, s.why.map(([t, layer]) => `<span class="nc-chip"${layer ? ` style="--chip:var(--nk-${layer})"` : ''}>${esc(t)}</span>`).join('') + extra)
+    },
   }
   return `<article class="nc" data-verb="${verb}" data-state="${state}">${anatomy.map((name, i) => part[name](i)).join('')}</article>`
 }
@@ -549,6 +678,89 @@ ${Object.keys(VERB_HEX).map((v) => `  .nc[data-verb="${v}"]{--nk-verb:var(--nk-$
     .stage[data-explode] .nc > *{transform:none}
   }
 
+  /* ── LA MATRICE · tous les cas, d'un seul écran ─────────────────────────
+     Quatre verbes en colonnes, huit états en lignes. Le nœud prend la largeur
+     de sa colonne : c'est la comparaison qui compte, pas la taille. */
+  .matrix{display:grid;grid-template-columns:minmax(104px,132px) repeat(4,minmax(0,1fr));
+    gap:10px;align-items:start;min-width:820px}
+  .matrix .nc{width:100%}
+  .mtx-corner{}
+  .mtx-vhead{font:500 10px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;
+    color:var(--nk-dim);padding-bottom:4px;border-bottom:1px solid var(--nk-edge)}
+  .mtx-shead{display:grid;gap:3px;padding-top:6px;font:500 10px/1.3 var(--mono);
+    letter-spacing:.06em;text-transform:uppercase;color:var(--nk-caption)}
+  .mtx-shead em{font:11px/1.35 var(--sans);font-style:normal;letter-spacing:0;
+    text-transform:none;color:var(--nk-faint)}
+  .mtx-cell{min-width:0}
+
+  /* ── la typographie ─────────────────────────────────────────────────── */
+  .typ-faces{display:grid;gap:22px}
+  .typ-face{display:grid;gap:7px;padding-bottom:18px;border-bottom:1px solid var(--nk-edge)}
+  .typ-face:last-child{border-bottom:0;padding-bottom:0}
+  .typ-face-k{display:flex;align-items:baseline;gap:10px;font:500 11px/1 var(--mono);letter-spacing:.06em}
+  .typ-face-k b{color:var(--nk-ink);font-size:13px;letter-spacing:0}
+  .typ-face-k code{color:var(--nk-dim);background:none;padding:0}
+  .typ-face-role{font:11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--nk-caption)}
+  .typ-sample{color:var(--nk-ink);line-height:1.18;letter-spacing:-.01em}
+  .typ-face-note{font:12px/1.5 var(--sans);color:var(--nk-caption);max-width:64ch}
+  .typ-scale{width:100%;border-collapse:collapse}
+  .typ-scale td,.typ-scale th{padding:9px 12px 9px 0;border-bottom:1px solid var(--nk-edge);
+    vertical-align:baseline;text-align:left}
+  .typ-scale th{font:500 10px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--nk-caption)}
+  .typ-scale th em{font-style:normal;color:var(--nk-faint)}
+  .typ-n{white-space:nowrap;font:11px/1 var(--mono);color:var(--nk-dim);width:1%}
+  .typ-n code{background:none;padding:0;color:inherit}
+  .typ-v{font:11px/1 var(--mono);color:var(--nk-faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .typ-s{color:var(--nk-ink);line-height:1.1;font-family:var(--display)}
+  .typ-note{font:11px/1.4 var(--sans);color:var(--nk-caption);max-width:42ch}
+  .typ-warn{font:10px/1 var(--mono);color:var(--nk-fail-text);letter-spacing:.05em;vertical-align:2px}
+  .typ-legend{margin:16px 0 0;font:12px/1.6 var(--sans);color:var(--nk-caption);max-width:74ch}
+  .typ-legend b{color:var(--nk-dim)}
+  .typ-frontier{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px}
+  .typ-side{display:grid;gap:9px;align-content:start}
+  .typ-arg{margin:0;font-family:var(--headline);font-size:var(--type-h3);line-height:1.14;
+    letter-spacing:-.015em;color:var(--nk-ink)}
+  .typ-arg-body{margin:0;font-family:var(--display);font-size:var(--type-body-sm);
+    line-height:1.6;color:var(--nk-dim);max-width:44ch}
+  .typ-proof{margin:0;padding:11px 13px;border-radius:calc(var(--nk-radius) * .6);
+    background:rgb(0 0 0 / .24);box-shadow:var(--well-inset);
+    font-family:var(--mono);font-size:var(--type-plate);line-height:1.55;color:var(--nk-dim);
+    white-space:pre-wrap;overflow-x:auto}
+  .typ-plate{margin:0;font-family:var(--mono);font-size:var(--type-mini);letter-spacing:.06em;
+    color:var(--nk-caption)}
+
+  /* ── la matière ─────────────────────────────────────────────────────── */
+  .mat-anatomy{display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:start}
+  @media (max-width:719.98px){.mat-anatomy{grid-template-columns:1fr}}
+  .mat-big{width:300px}
+  .mat-calls{list-style:none;margin:0;padding:0;display:grid;gap:11px;max-width:62ch}
+  .mat-calls li{display:grid;grid-template-columns:auto auto 1fr;gap:9px;align-items:baseline;
+    font:12px/1.5 var(--sans);color:var(--nk-caption)}
+  .mat-calls b{font:12px/1 var(--mono);color:var(--nk-ink)}
+  .mat-calls > li > span{font:500 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;
+    color:var(--nk-dim);white-space:nowrap}
+  .mat-calls code{font-size:10.5px;background:rgb(0 0 0 / .22);color:var(--nk-dim);
+    padding:1px 5px;border-radius:3px}
+  .mat-calls em{font-style:normal;color:var(--nk-ink)}
+  .mat-lamps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
+  .mat-lamp{display:grid;gap:8px}
+  .mat-lamp-room{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(2,1fr);
+    gap:8px;padding:14px;border-radius:var(--nk-radius);background:var(--nk-bg)}
+  .mat-lamp-room::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+    border-radius:inherit;mix-blend-mode:plus-lighter;
+    background:radial-gradient(70% 90% at var(--lamp-x) var(--lamp-y),
+      rgb(255 255 255 / calc(var(--lamp-core) * .62)) 0%,
+      rgb(255 255 255 / calc(var(--lamp-core) * .2)) 40%, transparent 72%)}
+  .mat-tile{height:38px;border-radius:calc(var(--nk-radius) * .8);
+    background:color-mix(in oklch,var(--t) 12%,var(--nk-surface));
+    box-shadow:inset 0 1px 0 rgb(255 255 255 / var(--nk-bevel)),var(--nk-contact)}
+  .mat-curves{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+  .mat-curve{display:grid;gap:7px}
+  .mat-curve svg{width:100%;height:52px;overflow:visible}
+  .mat-axis{stroke:var(--nk-strong);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke}
+  .mat-path{fill:none;stroke:var(--nk-infer);stroke-width:1.5;vector-effect:non-scaling-stroke;
+    stroke-linejoin:round;stroke-linecap:round}
+
   .sw{display:grid;gap:5px}
   .sw i{height:40px;border-radius:calc(var(--nk-radius) * .85);border:1px solid color-mix(in oklch,var(--nk-ink) 12%,transparent)}
   .sw b{font:500 10px/1 var(--mono);letter-spacing:.04em;color:var(--nk-dim)}
@@ -635,6 +847,82 @@ ${Object.keys(ANATOMY).map((v) => `        <div class="cell"><span class="cell-k
   </section>
 
   <section>
+    <div class="sec-head"><h2>La typographie</h2><span class="sec-n">3 faces · ${TYPE_STEPS.length} marches · ${WEIGHTS.length} graisses</span></div>
+    <p class="sec-note">
+      La couche qu’on a mis le plus de temps à verrouiller et qu’on ne voyait nulle part.
+      Le site tournait sur <b>81 tailles distinctes</b>, dont 241 déclarations en demi-pixel,
+      et sur <b>neuf graisses</b>. Tout est lu ici dans <code>tokens.css</code> : une marche qui
+      bouge dans le SSOT bouge sur cette page à la génération suivante.
+    </p>
+
+    <div class="stage" data-stage>
+      <div class="typ-faces">
+${FACES.map((f) => `        <div class="typ-face">
+          <div class="typ-face-k"><b>${esc(f.face)}</b><code>${f.varname}</code></div>
+          <div class="typ-face-role">${esc(f.role)}</div>
+          <div class="typ-sample" style="font-family:var(${f.varname});font-size:${f.size};font-weight:${f.weight}">${esc(f.sample)}</div>
+          <div class="typ-face-note">${esc(f.note)}</div>
+        </div>`).join('\n')}
+      </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">L’échelle</h2><span class="sec-n">plus jamais un demi-pixel</span></div>
+    <div class="stage" data-stage>
+      <table class="typ-scale">
+${TYPE_STEPS.map((t) => `        <tr>
+          <td class="typ-n"><code>--type-${t.name}</code></td>
+          <td class="typ-v">${esc(t.value)}</td>
+          <td class="typ-s" style="font-size:${t.value}">Intent as Code</td>
+          <td class="typ-note">${esc(t.note)}</td>
+        </tr>`).join('\n')}
+      </table>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Les graisses</h2><span class="sec-n">quatre, parce que le display n’a que trois coupes</span></div>
+    <div class="stage" data-stage>
+      <table class="typ-scale typ-weights">
+        <tr><th></th><th>Martian Grotesk <em>variable</em></th><th>Clash Display <em>coupes statiques</em></th></tr>
+${WEIGHTS.map((w) => `        <tr>
+          <td class="typ-n"><code>--fw-${w.name}</code> <span class="typ-v">${w.value}</span></td>
+          <td class="typ-s" style="font-family:var(--display);font-weight:${w.value};font-size:var(--type-h3)">Aa Nika ${w.value}</td>
+          <td class="typ-s" style="font-family:var(--headline);font-weight:${w.value};font-size:var(--type-h3)">Aa Nika ${w.value}${w.value === 400 ? ' <span class="typ-warn">↯ synthétisée</span>' : ''}</td>
+        </tr>`).join('\n')}
+      </table>
+      <p class="typ-legend">
+        Clash ne livre que <b>500 · 600 · 700</b>. Demander 400 au navigateur ne donne pas 400 :
+        ça donne une graisse <b>fabriquée</b>, les glyphes étirés par le rastériseur. C’est un
+        vrai défaut typographique et il est invisible en relecture — d’où le gate qui épingle le
+        jeu de jetons aux <code>@font-face</code> réellement déclarés.
+      </p>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">La frontière</h2><span class="sec-n">l’argument · la preuve</span></div>
+    <div class="stage" data-stage>
+      <div class="typ-frontier">
+        <div class="typ-side">
+          <span class="cell-k">l’argument</span>
+          <p class="typ-arg">Useful AI work shouldn’t disappear into chats.</p>
+          <p class="typ-arg-body">Nika turns repeatable AI work into files you can run, review, diff and share — audited before a token is spent.</p>
+          <span class="cell-note">Clash pour le titre, le grotesque pour la prose · une seule famille, deux échelles</span>
+        </div>
+        <div class="typ-side">
+          <span class="cell-k">la preuve</span>
+          <pre class="typ-proof">permits:
+  fs: { read: [ ./notes/* ], write: [ ./brief.md ] }
+  tools: [ "nika:read", "nika:write" ]</pre>
+          <p class="typ-plate">audited · 7 tasks · 4 waves · permits declared</p>
+          <span class="cell-note">Martian Mono · le code, les jetons, les comptes, les plaques de provenance</span>
+        </div>
+      </div>
+      <p class="typ-legend">
+        La frontière <b>est</b> le message : la prose argumente, le mono prouve. Un mot du langage
+        cité <em>dans</em> une phrase reste en mono — c’est la seule traversée autorisée, et elle
+        est ce qui rend la frontière lisible plutôt que rigide.
+      </p>
+    </div>
+  </section>
+
+  <section>
     <div class="sec-head"><h2>Les jetons</h2><span class="sec-n">${Object.keys(VERB_HEX).length} verbes · ${LAYERS.length} couches · ${Object.keys(ROLE_WORDS).length} rôles</span></div>
     <p class="sec-note">Valeurs lues dans les projections, jamais retapées. Le reste de la page ne connaît que ces noms.</p>
     <div class="stage" data-stage>
@@ -648,13 +936,102 @@ ${Object.entries(LAYER_HEX).map(([k, v]) => swatch(k, v)).join('\n')}
   </section>
 
   <section>
-    <div class="sec-head"><h2>Les états</h2><span class="sec-n">${STATES.length} · la forme dit l’état, pas seulement la couleur</span></div>
+    <div class="sec-head"><h2>La matière</h2><span class="sec-n">la plaque · la lampe · les ressorts</span></div>
     <p class="sec-note">
-      Un état porté par la seule teinte meurt en contraste forcé et sous un œil daltonien.
-      Chacun doit un second signal — c’est ce que dit la légende sous chaque spécimen.
+      Un seul objet physique, projeté depuis <code>nika-spec design/tokens.yaml</code> vers les
+      trois surfaces. Ce ne sont pas des ombres décoratives : la lumière a une <b>direction</b>,
+      les arêtes la <b>captent</b>, le code est <b>gravé</b> dans la plaque et non posé dessus.
+    </p>
+
+    <div class="stage" data-stage>
+      <div class="mat-anatomy">
+        <article class="nc mat-big" data-verb="infer">
+          <div class="nc-head"><span class="nc-glyph">${VERB_GLYPH.infer}</span><span class="nc-id">triage</span><span class="nc-verb">infer</span></div>
+          <div class="nc-sub"><span class="nc-k">model</span> mistral/mistral-large-latest</div>
+          <div class="nc-body">« Flag what is urgent »</div>
+          <div class="nc-why"><span class="nc-chip" style="--chip:var(--nk-flow)">with · inbox</span><span class="nc-chip">max_tokens 300</span></div>
+        </article>
+        <ol class="mat-calls">
+          <li><b>①</b> <span>le biseau</span> <code>inset 0 1px 0 · ${MAT.plate.bevel}</code> — l’arête haute prend la lumière ; c’est elle, et rien d’autre, qui dit d’où elle vient</li>
+          <li><b>②</b> <span>le grain</span> <code>opacity ${MAT.plate.grain}</code> — un dither de Bayer, jamais un bruit lisse : le papier a une trame, pas un flou</li>
+          <li><b>③</b> <span>le puits</span> <code>inset 0 1px 2px · ${MAT.well.inset_alpha}</code> — l’exact inverse du biseau : ombre en haut, lueur en bas. Cette inversion est <em>tout</em> ce qui fait lire « gravé »</li>
+          <li><b>④</b> <span>le contact</span> <code>0 ${MAT.plate.contact.y_px}px ${MAT.plate.contact.blur_px}px</code> — l’ombre courte, là où la plaque touche</li>
+          <li><b>⑤</b> <span>l’ambiance</span> <code>0 ${MAT.plate.ambient.y_px}px ${MAT.plate.ambient.blur_px}px ${MAT.plate.ambient.spread_px}px</code> — l’ombre longue, là où elle pend</li>
+          <li><b>⑥</b> <span>la levée</span> <code>${MAT.plate.lift_px}px · ${MAT.motion.lift_ms}ms</code> — au survol, six choses bougent ensemble ou aucune</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">La lampe</h2><span class="sec-n">une par pièce, jamais une par carte</span></div>
+    <div class="stage" data-stage>
+      <div class="mat-lamps">
+${[['0', 'éteinte'], [String(MAT.lamp.core), MAT.lamp.core + ' · la valeur du SSOT'], ['0.55', '0.55 · un projecteur']].map(([core, label]) => `        <div class="mat-lamp" style="--lamp-core:${core};--lamp-x:26%;--lamp-y:18%">
+          <span class="cell-k">${esc(label)}</span>
+          <div class="mat-lamp-room">
+${['infer', 'exec', 'invoke', 'agent'].map((v) => `            <span class="mat-tile" style="--t:var(--nk-${v})"></span>`).join('\n')}
+          </div>
+        </div>`).join('\n')}
+      </div>
+      <p class="typ-legend">
+        <b>0.10 était invisible</b> : forcée à deux coins opposés de la même page, le rendu bougeait
+        un échantillon sur 5394. Du code, du coût, aucun effet — pire que pas de lampe. Deux causes
+        empilées : <code>soft-light</code> ne soulève presque rien sur un fond déjà noir, et la
+        valeur était trop faible d’un ordre. La lumière <b>s’ajoute</b> maintenant.
+      </p>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px"><h2 style="font-size:15px">Les ressorts</h2><span class="sec-n">deux courbes, en CSS pur</span></div>
+    <div class="stage" data-stage>
+      <div class="mat-curves">
+${[['la levée', MAT.motion.ease_lift, MAT.motion.lift_ms], ['le tiroir', MAT.motion.ease_drawer, MAT.motion.drawer_ms]].map(([label, css, ms]) => {
+  const c = plotEase(css)
+  return `        <div class="mat-curve">
+          <span class="cell-k">${esc(label)} · ${ms}ms · ${c.stops} points</span>
+          <svg viewBox="0 0 240 52" preserveAspectRatio="none" aria-hidden>
+            <line class="mat-axis" x1="0" y1="${c.one}" x2="240" y2="${c.one}"/>
+            <path class="mat-path" d="${c.d}"/>
+          </svg>
+          <span class="cell-note">${c.over ? 'dépasse la cible puis revient — c’est ce qui donne la masse' : 'monte et se pose sans dépasser'}</span>
+        </div>`
+}).join('\n')}
+      </div>
+      <p class="typ-legend">
+        <code>linear()</code> échantillonne la courbe : une valeur au-dessus de 1 est un
+        dépassement, donc un ressort, en CSS pur et sans librairie. Les deux vivent dans le SSOT,
+        donc le canvas VS Code — qui est une <em>webview</em>, même moteur — bouge exactement pareil.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>La matrice</h2><span class="sec-n">${Object.keys(ANATOMY).length} verbes × ${STATES.length} états = ${Object.keys(ANATOMY).length * STATES.length} cas</span></div>
+    <p class="sec-note">
+      Tous les cas, d’un seul écran. Un état porté par la seule teinte meurt en contraste forcé
+      et sous un œil daltonien, donc chacun doit un <b>second signal</b> — il est nommé dans la
+      colonne de gauche. Et chaque cellule porte la ligne qu’un vrai run écrirait : un code de
+      refus, un compteur d’essai, un coût, une trace périmée. Une case qui ne fait que changer
+      de couleur n’apprend rien.
+    </p>
+    <div class="stage" data-stage>
+      <div class="matrix">
+        <div class="mtx-corner"></div>
+${Object.keys(ANATOMY).map((v) => `        <div class="mtx-vhead"><span style="color:var(--nk-${v})">${VERB_GLYPH[v]}</span> ${v}</div>`).join('\n')}
+${STATES.map((st) => `        <div class="mtx-shead">${esc(st.label)}<em>${esc(st.form)}</em></div>
+${Object.keys(ANATOMY).map((v) => `        <div class="mtx-cell">${renderNode(v, { state: st.id })}</div>`).join('\n')}`).join('\n')}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Les variantes</h2><span class="sec-n">${VARIANTS.length} cas limites</span></div>
+    <p class="sec-note">
+      Une galerie de chemins heureux est une brochure. Voici les formes qui cassent réellement
+      une carte : un nom plus long que sa boîte, un prompt qui enroule quatre fois, une tâche
+      qui n’a rien à déclarer, une autre qui a trop. Chacune est une chose qu’un auteur écrit
+      pour de vrai, et donc une décision que le canvas a dû prendre.
     </p>
     <div class="stage" data-stage><div class="rack">
-${STATES.map(stateNode).join('\n')}
+${VARIANTS.map((v) => `        <div class="cell"><span class="cell-k">${esc(v.label)}</span>${renderNode(v.verb, { state: v.state ?? 'idle', spec: v.spec, anatomy: v.anatomy ?? ANATOMY[v.verb] })}<span class="cell-note">${esc(v.note)}</span></div>`).join('\n')}
     </div></div>
   </section>
 
@@ -663,6 +1040,13 @@ ${STATES.map(stateNode).join('\n')}
     <p class="sec-note">Chaque pièce doit tenir seule avant de tenir dans un nœud. C’est là que la bascule de palette est la plus cruelle.</p>
     <div class="stage" data-stage><div class="rack">
 ${ATOMS.map(atomBlock).join('\n')}
+        <div class="cell" style="max-width:none;flex:1 1 100%">
+          <span class="cell-k">pastilles d’état · <em>nc-st-*</em></span>
+          <div class="chiprow">
+${PILLS.map(([label, id]) => `            <span class="nc-st nc-st--${id}">${esc(label)}</span>`).join('\n')}
+          </div>
+          <span class="cell-note">chacune porte une forme en plus de sa teinte · c’est ce qui la garde lisible en contraste forcé</span>
+        </div>
     </div></div>
   </section>
 
