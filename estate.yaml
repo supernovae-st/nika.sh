@@ -591,7 +591,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: fb1b730e0f759c7dd2cdec808b93015b559b8b190b2afbe72db4ccf15d29f6fa
+  sha256: 68cb51e7f0a50cac753fb08c9e3011b8aab56d71df3d623655e1d398ee5c84cb
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -626,7 +626,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: e09d7641fac983b7239e075882a29966e21ec2afa67bbfe55072bb43f4262860
+  sha256: 311eeda90a2974bbfb468ba14945c0dd58bf040355be2df9c638b00a0d26c8f3
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
