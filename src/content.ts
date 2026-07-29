@@ -83,7 +83,8 @@ export const VERBS: { verb: string; tagline: string; body: string; code: string 
 
 /* ─── §use-cases · concrete workflows anyone can picture ───────────────────
    Each card: what it does in plain words + the verbs it uses. The site-audit
-   one is REAL (supernovae-st/nika-site-audit ships today). */
+   one RAN for real (supernovae-st/nika-site-audit · archived 2026-07-29, kept
+   public as evidence of scale rather than as a place to learn the grammar). */
 /* ─── §versus · why a file beats the alternatives (direct, no jargon) ─── */
 export interface Versus {
   them: string
