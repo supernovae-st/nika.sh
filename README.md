@@ -105,6 +105,33 @@ DigitalOcean App Platform, auto-deploy on push to `main` (spec in
 Full runbook · doctl, diagnosis, docs.nika.sh setup: [`DEPLOY.md`](DEPLOY.md).
 Infra DRI: Nicolas.
 
+<!-- city:map -->
+## The city · where this repo sits
+
+```
+📜 nika-spec ──── the civil code · the law tables, the corpus, the exam
+    │ sync-pack: byte-gated mirror        │ projectors: drift-gated
+    ▼                                     ▼
+⚙️ nika ───────── the engine + the catalog (the yellow pages)
+    │ the release train                  🖥️ nika.sh · 📖 nika-docs   ◀── you are here
+    ▼                                     the showroom · the manual
+📦 homebrew-tap · npm · Docker ── the docks
+🔌 nika-client · 🎨 nika-vscode · 🤖 nika-agents ── the doors
+🏪 nika-registry ── the market · 🔍 nika-site-audit ── the witness
+```
+
+**This building** · THE SHOWROOM · shows the language; everything it shows is projected from the spec.
+
+**Consumes** · the spec (resync contract, sha-pinned, lens gates) · the engine's attested wasm checker.
+
+**Serves** · humans at [nika.sh](https://nika.sh).
+
+**Truth lives** · `*.generated.*` come from projectors · `estate.yaml` pins every derived file · a language fact is imported, never typed.
+
+Every fact has one home · everything else is a gated projection.
+The living map: [nika.sh/map](https://nika.sh/map).
+<!-- /city:map -->
+
 ## License
 
 AGPL-3.0-or-later · a [SuperNovae Studio](https://supernovae.studio) creation
