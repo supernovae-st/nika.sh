@@ -71,11 +71,11 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "acdd0ccc5d0f2abb5c43b790273252916ef3b85cf261bc0cff7b86012c7c87ab"
+   "sha256": "e05546214a5dbc087336df34ee8debecd8843fdb1d82888ce6f242f7d670c419"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "8e07e4bba2c89cfe684892ec69f043b9ef41e70e6b225be49754f3fb7e09e5c9"
+   "sha256": "9b04db766b220bad57e740719c5fd4fd92d0bc55def12c759d2189fb06b96a5d"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -91,7 +91,7 @@
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "cdb4f46e3e83649460b5f8d529435631b9f937c70533607c1af3798ac60f7317"
+   "sha256": "0d1ecad6059212b4a0e128b24d6abdd0de9de429be9c5b8c7c2f82045d03f4e5"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "e09d7641fac983b7239e075882a29966e21ec2afa67bbfe55072bb43f4262860"
+   "sha256": "311eeda90a2974bbfb468ba14945c0dd58bf040355be2df9c638b00a0d26c8f3"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
@@ -135,7 +135,7 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "2342b8c8519c1a8c062f0e3aa42012cdfc7fbb7e7d0cb13da16cad9145e10522"
+   "sha256": "0540b128415155b22a41eb0a81a530b1116b4d4294c1123176f8dce04395527e"
   },
   {
    "path": "src/routes.tsx",

@@ -29,6 +29,12 @@
    (the H1's promise kept one screen down; a lazy pitch is a blank fold).
    The twins stay served files, the repair diff is captured data, margin
    back to ~1.2 KB ·
+   394→403 corpus-flatten (2026-07-29): the spec rebuilt its 26 jobs richer
+   (measured comments · tighter permits) and their DAG geometry rides the
+   entry through usecases-data + spec-machine-data — content growth, not
+   code growth. DEBT, named: SHOWCASE_DAG belongs on the island recipe the
+   anatomy already rides (the register diet); paying it buys back ~8 KB
+   and this ceiling comes back DOWN with it ·
    348→350 w2-flip: the w1-to-w2 door pass rides the entry BY DESIGN — the
    browse island fallback and the SPA-nav chunk both hand the client RAW
    ratified bytes, and the served grammar must exist wherever raw bytes
@@ -191,7 +197,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 394
+const BUDGET_KB = 403
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
