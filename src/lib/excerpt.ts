@@ -1,6 +1,6 @@
 /* ─── excerpt · a TRUE slice of a projected showcase YAML ─────────────────────
-   The hero shows a FOCUSED window onto the real `t3-resume-screener` file (the
-   only projected showcase with a real `permits:` block). We never hand-type the
+   The hero shows a FOCUSED window onto the real `resume-screener` file (a
+   projected showcase with a real `permits:` block). We never hand-type the
    YAML — we slice real, contiguous line ranges out of the projected string and
    stitch them with a bare `…` marker where lines were trimmed. So every visible
    character (bar the `…` glyph) is verbatim from the spec projector.

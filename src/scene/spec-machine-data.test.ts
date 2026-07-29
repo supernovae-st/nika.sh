@@ -117,7 +117,7 @@ describe('MACHINE_NODES · every stratum node is real and anchored', () => {
   })
 
   it('the plan ring mirrors the standup-digest showcase DAG', () => {
-    const dag = SHOWCASE_DAG['t1-standup-digest']
+    const dag = SHOWCASE_DAG['standup-digest']
     expect(dag).toBeDefined()
     expect(PLAN_TASKS.map((t) => t.id)).toEqual(dag.tasks.map((t) => t.id))
     const ids = new Set(PLAN_TASKS.map((t) => t.id))

@@ -52,7 +52,7 @@ export const PLAY_BREAKS: Record<string, PlayBreak> = {
   },
   'etl-state': {
     label: 'Recover from a downstream task',
-    find: 'recover: ${{ tasks.empty.output }}',
+    find: 'recover: []',
     replace: 'recover: ${{ tasks.delta.output }}',
     fires: 'NIKA-DAG-004',
     lesson: 'a recover value must come from UPSTREAM · reading your own future is a cycle in disguise',

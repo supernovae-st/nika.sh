@@ -235,11 +235,11 @@ export default function UseCasesV4() {
         <p className="v4uc-note">
           {total} workflows · four tiers ·{' '}
           <a
-            href="https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase"
+            href="https://github.com/supernovae-st/nika-spec/tree/main/examples"
             target="_blank"
             rel="noreferrer"
           >
-            nika-spec/examples/showcase
+            nika-spec/examples
           </a>{' '}
           the plan, the typed answers and the tools, all checked before it runs
         </p>

@@ -1460,7 +1460,7 @@ for (const t of S.templates.templates) {
 for (const slug of Object.keys(S.dag).sort()) {
   snippets.push({
     id: `snip:showcase:${slug}`,
-    source: { kind: 'spec-showcase', artifact: `examples/showcase/${slug}.nika.yaml`, pin: S.specPin },
+    source: { kind: 'spec-showcase', artifact: `examples/${slug}.nika.yaml`, pin: S.specPin },
     gates: ['showcase-projector --check (byte parity)', 'spec conformance gate upstream'],
     badge: 're-proven at every push',
     rendered_on: ['/use-cases'],

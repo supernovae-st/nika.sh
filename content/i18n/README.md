@@ -23,7 +23,7 @@ Three laws, gated in `src/test/i18n-lexicon.test.ts`:
    step maps it to the page's segment renderer.
 
 Sourcing (§4bis.5 · dogfood): future drafts come from the Nika workflow at
-`scripts/i18n/localize-page.nika.yaml` (the t3-localization-factory shape:
+`scripts/i18n/localize-page.nika.yaml` (the localization-factory shape:
 the lexicon rides in as fixed values, the model fills prose only), then human
 review, then commit. The files in this PR are hand-authored first drafts for
 the operator's review — the workflow is the scale path, not tonight's source.

@@ -209,11 +209,16 @@ export function compilePalette() {
   /* showcases · one room per conformance-gated workflow (slugs from the
      generated projection · regex like the words below — never an import) */
   const ucSrc = readFileSync(join(ROOT, 'src/sections/usecases-yaml.generated.ts'), 'utf8')
-  const slugs = [...new Set([...ucSrc.matchAll(/'(t\d-[a-z0-9-]+)':/g)].map((m) => m[1]))].sort()
+  /* bare slugs since the spec flattened examples/ — lex the SHOWCASE_YAML
+     block's own entries (escape-aware: a lazy dot-star truncates on \`,) */
+  const scBlock = ucSrc.slice(ucSrc.indexOf('SHOWCASE_YAML'), ucSrc.indexOf('SHOWCASE_DAG'))
+  const slugs = [
+    ...new Set([...scBlock.matchAll(/'([a-z0-9-]+)': `(?:[^`\\]|\\[\s\S])*`,\n/g)].map((m) => m[1])),
+  ].sort()
   for (const slug of slugs)
     entries.push({
       kind: 'usecase',
-      label: slug.replace(/^t\d-/, '').replace(/-/g, ' '),
+      label: slug.replace(/-/g, ' '),
       href: `/use-cases/${slug}`,
       hint: 'a real workflow · the whole file, one room',
     })

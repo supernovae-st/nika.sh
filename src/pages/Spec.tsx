@@ -141,7 +141,7 @@ const PROVIDERS_TEST = CANON.providerIdsTest.map(displayProvider)
 /* the register diet: the worked fragment rides a byte island (SSG: the SSR
    door · hydration: the island · SPA-nav: the async chunk) */
 const SPEC_ISLAND_ID = 'spec-sample-island'
-const SAMPLE_SLUG = 't1-standup-digest'
+const SAMPLE_SLUG = 'standup-digest'
 const ssrSample = (): string | null => {
   const all = ssrShowcaseYaml()
   if (!all) return null

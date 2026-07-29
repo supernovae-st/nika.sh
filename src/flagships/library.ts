@@ -1,7 +1,7 @@
 /* ─── the workflow library · the hero's picking corpus (wave K) ───────────────
    TEN files: the 7 recorded flagships (real traces · the honesty suite in
    trace.test.ts) + 3 browse-only files straight from the embedded pack
-   (`nika-pack` examples/showcase · projected verbatim by the spec's
+   (`nika-pack` examples/ · projected verbatim by the spec's
    showcase-projector into usecases-yaml.generated.ts — already on this page
    for the use-case gallery, so re-listing them here costs zero new bytes).
 
@@ -69,25 +69,25 @@ const BROWSE: {
   highlight: [number, number]
 }[] = [
   {
-    slug: 't2-invoice-chaser',
+    slug: 'invoice-chaser',
     blurb: 'finds the overdue, drafts reminders, waits for your yes',
     /* the lit lines: the approve task — a human answer gates the save */
     gloss: 'invoke: a human yes sits before anything is saved',
-    highlight: [50, 58],
+    highlight: [56, 64],
   },
   {
-    slug: 't4-deep-research-brief',
+    slug: 'deep-research-brief',
     blurb: 'an agent works the web inside hard caps, then the brief',
     /* the lit lines: the granted tools + the turn/token ceilings */
-    gloss: 'agent: three tools granted, caps it cannot exceed',
-    highlight: [32, 43],
+    gloss: 'agent: two tools granted, caps it cannot exceed',
+    highlight: [68, 85],
   },
   {
-    slug: 't3-localization-factory',
+    slug: 'localization-factory',
     blurb: 'every doc translated in parallel, the tree mirrored back',
     /* the lit lines: the fan-out head — one run per item, rate-limited */
     gloss: 'for_each: one run per doc, three in flight at a time',
-    highlight: [44, 45],
+    highlight: [69, 70],
   },
 ]
 
@@ -133,7 +133,7 @@ export function buildLibrary(showcaseYaml: Record<string, string>): LibraryItem[
       plan: deriveWorkflow(served[b.slug] ?? ''),
       highlight: b.highlight,
       gloss: b.gloss,
-      sourceUrl: `https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${b.slug}.nika.yaml`,
+      sourceUrl: `https://github.com/supernovae-st/nika-spec/blob/main/examples/${b.slug}.nika.yaml`,
     })),
   ]
 }

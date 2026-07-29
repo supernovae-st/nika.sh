@@ -93,12 +93,12 @@ describe('mini-dag layout · gates and fan-outs derive from the file', () => {
   })
 
   it('marks localization-factory’s fan-outs exactly as the spec projector does', () => {
-    const lay = layoutMiniDag(by('t3-localization-factory').plan, 'band')
+    const lay = layoutMiniDag(by('localization-factory').plan, 'band')
     const mine = lay.nodes
       .filter((n) => n.fanout)
       .map((n) => n.id)
       .sort()
-    const spec = SHOWCASE_DAG['t3-localization-factory'].tasks
+    const spec = SHOWCASE_DAG['localization-factory'].tasks
       .filter((t) => t.flags.some((f) => f.startsWith('fan-out')))
       .map((t) => t.id)
       .sort()

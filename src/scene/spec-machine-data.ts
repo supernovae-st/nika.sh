@@ -201,7 +201,7 @@ export const nsScope = (ns: string): string => NS_SCOPE[ns] ?? 'see the error ca
    standup-digest (invoke · exec · infer in a tiny readable DAG) — sliced from
    the showcase projection, with the same graceful fallback as SAMPLE_YAML. */
 const PLAN_DAG =
-  SHOWCASE_DAG['t1-standup-digest'] ?? Object.values(SHOWCASE_DAG)[0] ?? { tasks: [], outputs: [], waves: 0 }
+  SHOWCASE_DAG['standup-digest'] ?? Object.values(SHOWCASE_DAG)[0] ?? { tasks: [], outputs: [], waves: 0 }
 export const PLAN_TASKS: ShowcaseTask[] = PLAN_DAG.tasks
 
 /* ── the nine-section spine · fig + anchor (published) + HUD count ────────────

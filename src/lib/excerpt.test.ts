@@ -6,7 +6,7 @@ import { sliceExcerpt, TRIM } from './excerpt'
    These tests pin the contract that the hero excerpt is verbatim source (never
    hand-typed) and that the `permits:` block is locatable for emphasis. */
 
-const YAML = SHOWCASE_YAML['t3-resume-screener']
+const YAML = SHOWCASE_YAML['resume-screener']
 
 describe('sliceExcerpt', () => {
   it('lifts the requested ranges verbatim from the source', () => {
@@ -39,7 +39,7 @@ describe('sliceExcerpt', () => {
 
   it('locates the permits block (1-based span within the excerpt)', () => {
     // permits header through the tools list, lifted as one contiguous slice
-    const { text, highlight } = sliceExcerpt(YAML, [[1, 12]], /permits:|^\s*(fs|read|write|tools):/)
+    const { text, highlight } = sliceExcerpt(YAML, [[1, 16]], /permits:|^\s*(fs|read|write|tools):/)
     expect(highlight).toBeDefined()
     const lines = text.split('\n')
     const [lo, hi] = highlight!
@@ -62,7 +62,7 @@ describe('sliceExcerpt', () => {
     expect(withTag.highlight).toBeUndefined()
   })
 
-  it('the real t3 file carries a permits block with no net category', () => {
+  it('the real resume-screener file carries a permits block with no net category', () => {
     // the story depends on this: fs read/write + tools, and crucially NO net:
     expect(YAML).toMatch(/permits:/)
     expect(YAML).toMatch(/tools: \[/)

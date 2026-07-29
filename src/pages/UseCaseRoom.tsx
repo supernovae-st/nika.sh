@@ -13,6 +13,7 @@ import { ssrAnatomy, ssrAnatomyEngine, loadAnatomy } from '../lib/anatomy-access
 import { AnatomyView } from '../components/AnatomyView'
 import type { Anatomy } from '../content/anatomy.generated'
 import { Island } from '../lib/ssg-island'
+import { islandJson } from '../lib/island-json'
 import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
@@ -43,6 +44,19 @@ const ALL: { uc: UC; tab: string }[] = UC_TABS.flatMap((t) => t.cases.map((uc) =
    time — a shared id would feed the new room the previous room's bytes
    (CDP-caught: the drift room rendered the resume file). */
 const roomIslandId = (slug: string) => `ucr-yaml-${slug}`
+/* the island ships islandJson(yaml) — a $-defused JSON string (the dollar
+   hazard · ssg-island.tsx: the 0.107 corpus put `-$";` in a jq expression,
+   `$` + `&quot;` made `$&`, and the SSG replace pasted the app root into
+   this island) — the reader parses the raw bytes back */
+const readRoomIsland = (slug: string): string => {
+  const el = document.getElementById(roomIslandId(slug)) as HTMLTextAreaElement | null
+  if (!el?.value) return ''
+  try {
+    return JSON.parse(el.value) as string
+  } catch {
+    return ''
+  }
+}
 /* the anatomy island (same slug-suffix law): the vendored engine graph +
    its provenance stamp ride the prerendered HTML as JSON — the 60K module
    stays an async chunk (anatomy-access · the register diet) */
@@ -70,9 +84,7 @@ export function Component() {
      '' for the fetch beat and the chunk corrects it. */
   const [got, setGot] = useState(() => ({
     slug,
-    yaml: import.meta.env.SSR
-      ? (ssrShowcaseYaml()?.[slug] ?? '')
-      : ((document.getElementById(roomIslandId(slug)) as HTMLTextAreaElement | null)?.value ?? ''),
+    yaml: import.meta.env.SSR ? (ssrShowcaseYaml()?.[slug] ?? '') : readRoomIsland(slug),
   }))
   useEffect(() => {
     if (got.slug === slug && got.yaml) return
@@ -191,10 +203,10 @@ export function Component() {
     <main className="theme-dark ucr-page" style={{ ['--hub-hue' as string]: '#22d3ee' }}>
       <section ref={ref} aria-labelledby="ucr-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
-          <Island id={roomIslandId(slug)} payload={yaml} />
+          <Island id={roomIslandId(slug)} payload={yaml ? islandJson(yaml) : ''} />
           <Island
             id={anatomyIslandId(slug)}
-            payload={anatomy ? JSON.stringify({ a: anatomy, engine: anat.engine }) : ''}
+            payload={anatomy ? islandJson({ a: anatomy, engine: anat.engine }) : ''}
           />
           <header>
             <p className="v4sec-fig" data-rise>
@@ -213,7 +225,7 @@ export function Component() {
             </p>
             <p className="ucr-authority" data-rise>
               {uc.outcome} · conformance-gated in{' '}
-              <a href={`https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${slug}.nika.yaml`}>
+              <a href={`https://github.com/supernovae-st/nika-spec/blob/main/examples/${slug}.nika.yaml`}>
                 nika-spec ↗
               </a>{' '}
               · re-proven at every push
@@ -254,7 +266,7 @@ export function Component() {
               <CodeFile
                 yaml={yaml}
                 filename={fileFor(uc)}
-                sourceHref={`https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${slug}.nika.yaml`}
+                sourceHref={`https://github.com/supernovae-st/nika-spec/blob/main/examples/${slug}.nika.yaml`}
                 highlight={(() => {
                   const t = focusTask ? dag.tasks.find((x) => x.id === focusTask) : undefined
                   return t ? [t.line0 + 1, t.line1 + 1] : undefined

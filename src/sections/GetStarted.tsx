@@ -19,7 +19,7 @@ import { SectionHead } from '../components/SectionHead'
        real public/install.sh URL), each with a copy button (the hero's monochrome
        install pattern, .v4install).
      6.0.2 WRITE A FILE — a SHORT, TRUE slice of a real projected showcase
-       (`SHOWCASE_YAML['t1-standup-digest']`, the smallest real multi-verb file):
+       (`SHOWCASE_YAML['standup-digest']`, the smallest real multi-verb file):
        header + a couple of representative tasks, rendered by <CodeFile wrap tips />. READ-
        ONLY — sliced from the projected source by line range, never hand-typed.
      6.0.3 RUN IT — `nika run` → it prints the plan, checks the permits, runs within

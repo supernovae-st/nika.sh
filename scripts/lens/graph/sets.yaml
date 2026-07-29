@@ -526,7 +526,7 @@ sets:
   - id: showcases
     layer: proof
     title: The showcases
-    source: { artifact: src/sections/usecases-yaml.generated.ts, field: SHOWCASE_YAML, upstream: "nika-spec examples/showcase (conformance-gated · manifest-hashed)" }
+    source: { artifact: src/sections/usecases-yaml.generated.ts, field: SHOWCASE_YAML, upstream: "nika-spec examples/ (conformance-gated · manifest-hashed)" }
     clock: spec
     counted_in_canon: false
     closed: false

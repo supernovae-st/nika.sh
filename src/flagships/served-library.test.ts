@@ -40,7 +40,7 @@ describe('public/library · the served copies are the rendered truth', () => {
       } else {
         /* browse wing → the spec pack blob, name-for-name */
         expect(item.sourceUrl).toBe(
-          `https://github.com/supernovae-st/nika-spec/blob/main/examples/showcase/${item.id}.nika.yaml`,
+          `https://github.com/supernovae-st/nika-spec/blob/main/examples/${item.id}.nika.yaml`,
         )
       }
     }

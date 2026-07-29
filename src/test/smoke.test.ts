@@ -35,8 +35,8 @@ describe('smoke · module graph imports without throwing', () => {
     expect(CANON.builtinNames.length).toBe(CANON.builtins)
   })
 
-  it('the fil-rouge showcase DAG (t3-resume-screener) imports with a non-empty, well-formed shape', () => {
-    const dag = SHOWCASE_DAG['t3-resume-screener']
+  it('the fil-rouge showcase DAG (resume-screener) imports with a non-empty, well-formed shape', () => {
+    const dag = SHOWCASE_DAG['resume-screener']
     expect(dag).toBeTruthy()
     expect(dag.tasks.length).toBeGreaterThan(0)
     expect(dag.waves).toBeGreaterThan(0)

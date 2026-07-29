@@ -73,19 +73,19 @@ const PERSONAS: Persona[] = [
     hook: 'No coding background needed. If you can read a checklist, you can read these files.',
     cards: [
       {
-        slug: 't1-meeting-actions',
+        slug: 'meeting-actions',
         title: 'Turn meeting notes into owned actions',
         claim: 'A transcript goes in, a task list comes out.',
         gloss: 'each item typed {owner, task, due}, checked, ready for your tracker.',
       },
       {
-        slug: 't1-price-watch',
+        slug: 'price-watch',
         title: 'Watch a price and get pinged when it moves',
         claim: 'No AI involved at all.',
         gloss: 'one fetch, one compare, one ping. A robot you can already trust.',
       },
       {
-        slug: 't2-invoice-chaser',
+        slug: 'invoice-chaser',
         title: 'Chase overdue invoices without the awkward part',
         claim: 'The reminders get drafted for you.',
         gloss: 'nothing is saved until you read them and type yes.',
@@ -99,25 +99,25 @@ const PERSONAS: Persona[] = [
     hook: 'The Monday-morning chores, briefs, queues and radars, described once, done every week.',
     cards: [
       {
-        slug: 't4-ceo-monday-brief',
+        slug: 'ceo-monday-brief',
         title: 'Start the week with the numbers already gathered',
         claim: 'Market, repo pulse and the KPI sheet collected in parallel.',
         gloss: 'the ping even reports its own cost.',
       },
       {
-        slug: 't3-competitor-radar',
+        slug: 'competitor-radar',
         title: 'Know what competitors shipped, every Monday',
         claim: 'It reads their sites while you sleep.',
         gloss: 'one brief on your desk at 8am, with what it signals.',
       },
       {
-        slug: 't2-support-triage',
+        slug: 'support-triage',
         title: 'Wake up to a sorted support queue',
         claim: 'Overnight tickets get tagged, drafted and batched.',
         gloss: 'humans start at 9am on the hard ones.',
       },
       {
-        slug: 't3-resume-screener',
+        slug: 'resume-screener',
         title: 'Screen forty resumes with one fair rubric',
         claim: 'Candidate #1 and #40 get the same questions.',
         gloss: 'scored on a local model, so the personal data stays home.',
@@ -131,43 +131,43 @@ const PERSONAS: Persona[] = [
     hook: 'The boring parts of shipping run themselves, with a human gate exactly where it counts.',
     cards: [
       {
-        slug: 't1-standup-digest',
+        slug: 'standup-digest',
         title: 'Have the standup note already written',
         claim: 'It reads yesterday’s commits and writes your three bullets.',
         gloss: 'you glance, tweak one word, go.',
       },
       {
-        slug: 't2-release-notes',
+        slug: 'release-notes',
         title: 'Ship release notes in your own voice',
         claim: 'git log in, changelog out, team pinged.',
         gloss: 'zero copy-paste on release day.',
       },
       {
-        slug: 't2-release-radar',
+        slug: 'release-radar',
         title: 'Hear about dependency releases only when they matter',
         claim: 'It diffs the release feeds against last run.',
         gloss: 'no ping means nothing shipped.',
       },
       {
-        slug: 't3-pr-review-fanout',
+        slug: 'pr-review-fanout',
         title: 'Give big PRs a reviewer per file',
         claim: 'One read-only reviewer per changed file, in parallel, under budget.',
         gloss: 'attention finally scales with the diff.',
       },
       {
-        slug: 't4-release-train',
+        slug: 'release-train',
         title: 'Ship only when everything is green, and a human says go',
         claim: 'Tests, lint and audit run in parallel; a person signs the GO.',
         gloss: 'it ships on time or not at all, and the record shows which.',
       },
       {
-        slug: 't3-config-drift-sentinel',
+        slug: 'config-drift-sentinel',
         title: 'Get paged only for changes nobody approved',
         claim: 'It diffs live prod against the signed-off baseline.',
         gloss: 'silence means prod matches exactly.',
       },
       {
-        slug: 't4-incident-war-room',
+        slug: 'incident-war-room',
         title: 'Have the postmortem drafted before the retro',
         claim: 'Logs, status history and the runbook gathered in parallel.',
         gloss: 'a typed timeline, verified before any draft.',
@@ -181,19 +181,19 @@ const PERSONAS: Persona[] = [
     hook: 'One voice, many surfaces. The publishing chores run themselves; the voice stays yours.',
     cards: [
       {
-        slug: 't1-social-repurpose',
+        slug: 'social-repurpose',
         title: 'Say it once, publish it everywhere',
         claim: 'One post becomes a thread, a LinkedIn version and a newsletter blurb.',
         gloss: 'rewritten in parallel, same voice on every channel.',
       },
       {
-        slug: 't2-seo-content-brief',
+        slug: 'seo-content-brief',
         title: 'Turn a rival’s best page into your content brief',
         claim: 'It reads what actually ranks.',
         gloss: 'your writer starts from the gaps, not a blank page.',
       },
       {
-        slug: 't3-localization-factory',
+        slug: 'localization-factory',
         title: 'Get the docs in French by lunch',
         claim: 'Every file found, translated in parallel, filed back in place.',
         gloss: 'same folder layout, same voice.',
@@ -207,19 +207,19 @@ const PERSONAS: Persona[] = [
     hook: 'Reading, digging and cleaning at machine pace, with a record you can check afterwards.',
     cards: [
       {
-        slug: 't4-deep-research-brief',
+        slug: 'deep-research-brief',
         title: 'Turn “get me up to speed” into a brief you can audit',
         claim: 'A fast model plans, an agent digs inside hard budgets, a careful model writes.',
         gloss: 'every step leaves a record.',
       },
       {
-        slug: 't2-contract-guard',
+        slug: 'contract-guard',
         title: 'Check a dense document without it leaving your machine',
         claim: 'A local model reads the clauses.',
         gloss: 'the document never touches the internet, and two checks gate the memo.',
       },
       {
-        slug: 't2-etl-quarantine',
+        slug: 'etl-quarantine',
         title: 'Stop re-running the whole night for three bad rows',
         claim: 'A checkpoint splits good rows from bad.',
         gloss: 'rejects land in quarantine, the pipeline keeps going.',
@@ -571,11 +571,11 @@ export function Component() {
           <p className="ucp-note">
             {total} workflows · four tiers ·{' '}
             <a
-              href="https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase"
+              href="https://github.com/supernovae-st/nika-spec/tree/main/examples"
               target="_blank"
               rel="noreferrer"
             >
-              nika-spec/examples/showcase
+              nika-spec/examples
             </a>{' '}
             · every file audited before it runs: plan, cost, secrets
           </p>

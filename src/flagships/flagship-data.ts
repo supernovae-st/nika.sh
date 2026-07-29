@@ -332,8 +332,8 @@ outputs:
 `,
   },
   /* ── the library wing · recorded in the same trace lab (wave K) ─────────────
-     Hand-shaped from their embedded-pack cousins (nika-pack examples/showcase
-     t1-standup-digest · t2-etl-quarantine) exactly like the five above were:
+     Hand-shaped from their embedded-pack cousins (nika-pack examples/
+     standup-digest · etl-quarantine) exactly like the five above were:
      permits added, model pinned local, then RUN — the yaml below is the byte
      file that ran, the trace is the verbatim stream. They live in the library
      panel (not the 5-tab strip) and carry the full recorded story. */

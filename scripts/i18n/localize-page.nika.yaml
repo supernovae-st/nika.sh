@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://nika.sh/spec/v1/workflow.schema.json
 #
 # localize-page · the WO-10 draft factory (§4bis.5 · dogfood — the site's own
-# t3-localization-factory shape, pointed at ONE page × ONE locale).
+# localization-factory shape, pointed at ONE page × ONE locale).
 #
 #   [twin]──┐
 #   [lexicon]┼──▶[draft]──▶[save]
