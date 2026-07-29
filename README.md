@@ -124,6 +124,8 @@ Infra DRI: Nicolas.
 
 **This building** · THE SHOWROOM · shows the language; everything it shows is projected from the spec.
 
+**Root** · neither · this building projects both. Language facts come from nika-spec (canon and showcase projectors), engine facts from the release pins · nothing authoritative is typed here.
+
 **Consumes** · the spec (resync contract, sha-pinned, lens gates) · the engine's attested wasm checker.
 
 **Serves** · humans at [nika.sh](https://nika.sh).
